@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70731781152
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C3F78115F
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:14:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX31l-0008FI-K3; Fri, 18 Aug 2023 13:12:49 -0400
+	id 1qX31m-0008FV-En; Fri, 18 Aug 2023 13:12:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX31i-0008EP-OX
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:46 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qX31j-0008Er-Rj
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:47 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX31g-00081g-Hx
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:46 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bf3a2f4528so6939275ad.2
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:12:44 -0700 (PDT)
+ id 1qX31h-000821-PS
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:47 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bc73a2b0easo9420435ad.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:12:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692378763; x=1692983563;
+ d=linaro.org; s=google; t=1692378764; x=1692983564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aNsGM1lrXvwjZfK8fzxAwlxZ3vZk+R9BD/kfTxJ1kzo=;
- b=QmJnSHmAERh0B3/YwLvWptTFBOT1GwzYcz/MQ0I0LP4S1Fdrw9a3XwuSkpIZEP4jjg
- ySmkoJbjeQySUYRCxBWse1MC58y9YpXheSgVwfS/D6pGhTPXwylND6hi6PmYN9JanO3V
- EmOktTv2ut1Ld8QJuefFxUnrNE85Tjg9FxWcAiXJF5VPbjX+t/LoCXqT7NjCH2J40XU+
- RcFASXK0NJOypZQlCfQtgGQnyRurj02bUdKSEe0qPd//oQReJhCfQBt6i4aZMa3xoTvI
- Ta4AVTedtA1sbJAE3g1hLB8g3SO6fvN31i/Z8MwrMlNGuprONkpWzXDp0THk0LP11ZrI
- 1yPQ==
+ :reply-to; bh=jBDFYDN4txkYXCl4MK4JvDX5trolAszB5+TZawsyMV0=;
+ b=Pxt1d9D+XP0sFJvyHYNG15isOnN3taKco+vzi1yxM43rFgGnHIosqnwtOR+EcrzM1m
+ ZxrJ4+LEbtN/H7B1Ih4SoLJXwyK3TtA8AD+M0JkqvGZZNfLE2ycs7uUMKgkygN1kDk1b
+ xR7BIA6BEfIxZBXae6edvUDWQZEKOqk2XsrYWXJPkL+5ObdblBWLF0YsJJLTEopCo8Fn
+ 9d4C7WxHMu6pKjUIWvz77Yc3PGzwAornGG9VLg+h3r5IfJgn6TgJLRWZehWNHspFROTn
+ G8OxC9PWJhn1X0rAKSatvDAqfl2JvjURvEnwt+CaGi34H4wQLVUHho99AV07mX2kiayq
+ rGtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692378763; x=1692983563;
+ d=1e100.net; s=20221208; t=1692378764; x=1692983564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aNsGM1lrXvwjZfK8fzxAwlxZ3vZk+R9BD/kfTxJ1kzo=;
- b=LvpM4Udn1dnu3mNEa+Wlt47Nay5Gy+yVbM5qRA4g0GMBmyhAp+bPLFfXYRVvYyy5Y5
- qkoDlMu9ZeAP+ng3BGzNz+HLqX2bPpl3jWM1LJ38fKdN9w904xgUWV7CdEBQTkkaVgBt
- 4I8IDMgGyxFWovf88dvAyum3VZKKtUoVq+vd0kqlO8Rn29q7domHO3CHb8WtDy5bz42L
- U0Vn+2xBuJDDouMAc3w3qT9lzEjMMWYpDdHtFKahGZBcqlV42HNi4MYy0dY6nMT6qeYP
- oCFMKKEMQDseR0DYmN00TDqKQ6YK2fOwJV5s1nj/aTCIctKwYHBdfvrCF43rPD/3uAzc
- iquw==
-X-Gm-Message-State: AOJu0YxaLkiaSdP+fUUvSKJbUN3iLmeAvhvNsiYyKpkQZSkm4/cnpywA
- 1PHXF+PmZ2VizMoiV2LBYIyqnY+rAqlHrnON+C0=
-X-Google-Smtp-Source: AGHT+IHU4knB3cv5c5iiVsaSn1JTPophB2olJSmtUBiXhGzgM3Q98Ri+NuIrVdoa3V1NnAA42Xj3GA==
-X-Received: by 2002:a17:902:f68b:b0:1bb:9c45:130f with SMTP id
- l11-20020a170902f68b00b001bb9c45130fmr3064503plg.69.1692378763410; 
- Fri, 18 Aug 2023 10:12:43 -0700 (PDT)
+ bh=jBDFYDN4txkYXCl4MK4JvDX5trolAszB5+TZawsyMV0=;
+ b=YmRn8jFoXslRGqEd0bx+QFf1oRx2/zSv5eVQgx55ghquG2/VbRb6itVS0ZyReZdUxx
+ sPlG38ULF+ISaezHbktZTDQK7ngcAlq3ZRaX0RlAooiz6AoK2Jux3DWbt0gump8TXyOr
+ OLLd80LzOrWzfn+wor4RQ0nJCguN3T38yM8V2ZjBxDWGs4XllvUz2Recj5Q5AMPVt5SX
+ W/10HbHdV/nvoRFLtvBlZCLCWzNExMhTJA0P1g1ZXvkBL3CsZz44m8xDpG30FbCy7qq+
+ 5gXpBPrppm4vxHMT3k19RDjP1yWAFwI1VhNEjXAIKC4GwgVvM0sqTzRTLneWH5HXeQPn
+ eUfw==
+X-Gm-Message-State: AOJu0YxnZfs4Qflt4A/12uALdKdlP9Hzh6OP35JZpHgbzCmXyv4nWEx3
+ 8K11ojAWKUWGpkz1rjxBhhatNbdOvimg1JwQOn8=
+X-Google-Smtp-Source: AGHT+IHKnK6l4nJuZTkeTFcBfpDB31w2oEYvB24UDbHX8eQqMfTRVX+iIB5mo3lkyn1WHd2kkrwhXA==
+X-Received: by 2002:a17:902:d904:b0:1bc:25ed:374 with SMTP id
+ c4-20020a170902d90400b001bc25ed0374mr2911066plz.49.1692378764559; 
+ Fri, 18 Aug 2023 10:12:44 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.12.42
+ jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.12.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 10:12:43 -0700 (PDT)
+ Fri, 18 Aug 2023 10:12:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 11/33] migration: Remove qemu_host_page_size
-Date: Fri, 18 Aug 2023 10:12:05 -0700
-Message-Id: <20230818171227.141728-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/33] hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
+Date: Fri, 18 Aug 2023 10:12:06 -0700
+Message-Id: <20230818171227.141728-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818171227.141728-1-richard.henderson@linaro.org>
 References: <20230818171227.141728-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,81 +90,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace with the maximum of the real host page size
-and the target page size.  This is an exact replacement.
+The size of the allocation need not match the alignment.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- migration/ram.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ hw/tpm/tpm_ppi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 9040d66e61..1cabf935f2 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3033,7 +3033,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+diff --git a/hw/tpm/tpm_ppi.c b/hw/tpm/tpm_ppi.c
+index 7f74e26ec6..91eeafd53a 100644
+--- a/hw/tpm/tpm_ppi.c
++++ b/hw/tpm/tpm_ppi.c
+@@ -47,8 +47,7 @@ void tpm_ppi_reset(TPMPPI *tpmppi)
+ void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
+                   hwaddr addr, Object *obj)
  {
-     RAMState **rsp = opaque;
-     RAMBlock *block;
--    int ret;
-+    int ret, max_hg_page_size;
- 
-     if (compress_threads_save_setup()) {
-         return -1;
-@@ -3048,6 +3048,12 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     }
-     (*rsp)->pss[RAM_CHANNEL_PRECOPY].pss_channel = f;
- 
-+    /*
-+     * ??? Mirrors the previous use of qemu_host_page_size below,
-+     * but is this really what was intended for the migration?
-+     */
-+    max_hg_page_size = MAX(qemu_real_host_page_size(), TARGET_PAGE_SIZE);
-+
-     WITH_RCU_READ_LOCK_GUARD() {
-         qemu_put_be64(f, ram_bytes_total_with_ignored()
-                          | RAM_SAVE_FLAG_MEM_SIZE);
-@@ -3056,8 +3062,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-             qemu_put_byte(f, strlen(block->idstr));
-             qemu_put_buffer(f, (uint8_t *)block->idstr, strlen(block->idstr));
-             qemu_put_be64(f, block->used_length);
--            if (migrate_postcopy_ram() && block->page_size !=
--                                          qemu_host_page_size) {
-+            if (migrate_postcopy_ram() &&
-+                block->page_size != max_hg_page_size) {
-                 qemu_put_be64(f, block->page_size);
-             }
-             if (migrate_ignore_shared()) {
-@@ -3881,12 +3887,20 @@ static int ram_load_precopy(QEMUFile *f)
- {
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     int flags = 0, ret = 0, invalid_flags = 0, len = 0, i = 0;
-+    int max_hg_page_size;
-+
-     /* ADVISE is earlier, it shows the source has the postcopy capability on */
-     bool postcopy_advised = migration_incoming_postcopy_advised();
-     if (!migrate_compress()) {
-         invalid_flags |= RAM_SAVE_FLAG_COMPRESS_PAGE;
-     }
- 
-+    /*
-+     * ??? Mirrors the previous use of qemu_host_page_size below,
-+     * but is this really what was intended for the migration?
-+     */
-+    max_hg_page_size = MAX(qemu_real_host_page_size(), TARGET_PAGE_SIZE);
-+
-     while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
-         ram_addr_t addr, total_ram_bytes;
-         void *host = NULL, *host_bak = NULL;
-@@ -3987,7 +4001,7 @@ static int ram_load_precopy(QEMUFile *f)
-                     }
-                     /* For postcopy we need to check hugepage sizes match */
-                     if (postcopy_advised && migrate_postcopy_ram() &&
--                        block->page_size != qemu_host_page_size) {
-+                        block->page_size != max_hg_page_size) {
-                         uint64_t remote_page_size = qemu_get_be64(f);
-                         if (remote_page_size != block->page_size) {
-                             error_report("Mismatched RAM page size %s "
+-    tpmppi->buf = qemu_memalign(qemu_real_host_page_size(),
+-                                HOST_PAGE_ALIGN(TPM_PPI_ADDR_SIZE));
++    tpmppi->buf = qemu_memalign(qemu_real_host_page_size(), TPM_PPI_ADDR_SIZE);
+     memory_region_init_ram_device_ptr(&tpmppi->ram, obj, "tpm-ppi",
+                                       TPM_PPI_ADDR_SIZE, tpmppi->buf);
+     vmstate_register_ram(&tpmppi->ram, DEVICE(obj));
 -- 
 2.34.1
 
