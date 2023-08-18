@@ -2,56 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0AA780FC2
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 18:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A60D1780FE6
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 18:08:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX1ua-0000Jw-Hd; Fri, 18 Aug 2023 12:01:20 -0400
+	id 1qX20m-0004vF-17; Fri, 18 Aug 2023 12:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qX1uG-00009r-QJ
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 12:01:01 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qX20j-0004uZ-Ar
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 12:07:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qX1uC-0005TP-Io
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 12:00:59 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qX20h-0006eK-94
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 12:07:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692374456;
+ s=mimecast20190719; t=1692374858;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=t7ubXIDNkdtocgbBc/XbxAMAN9vwXKjC27NqGnLUzIE=;
- b=agIXZMu+v5YzF7N0PXbcgYQuOWSjO8ddb/xfR3+LZ9RvyYflLBV6gUyf/KFYgMgB0GJGV9
- yQUzYa92NNsWHgAyKBwuufMcMh5mzJTCFPqRotShl1GoYDZBECJRYnGKRIByCJ8MFBLG0E
- UAnHkl8wbiT/syIt+kE2TKTaP9tgNWE=
+ bh=MeTwQ1QC/rv3TT/QL7u5vQxFZEwRI0OYEr4Ox6NfW+g=;
+ b=RYys8C+TgsyOK7lf7328BwDqf93uqNTls27j/2zrwnYSOujF7/e0AnTVzQfZhP/3GU1sVo
+ ByE87PW5u/5LIU4KQHe50PqCFy46Vw3DAXuSq5/cJeC4PhbzKI4siA/KVZzq1d22YQnYOq
+ tzppx8PqTkfE5NeBZIGpLxtF6n2MCFo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-650-Ve4geKUROCe2bTxozcjBTA-1; Fri, 18 Aug 2023 12:00:52 -0400
-X-MC-Unique: Ve4geKUROCe2bTxozcjBTA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-48-kxEAI-IhNMen4z_QqKbuHg-1; Fri, 18 Aug 2023 12:07:35 -0400
+X-MC-Unique: kxEAI-IhNMen4z_QqKbuHg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 261A68022E4;
- Fri, 18 Aug 2023 16:00:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.192.160])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C02140C6F4E;
- Fri, 18 Aug 2023 16:00:51 +0000 (UTC)
-Date: Fri, 18 Aug 2023 18:00:50 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH] block: Be more verbose in create fallback
-Message-ID: <ZN+Vssz5xiHuRcUn@redhat.com>
-References: <20230720140024.46836-1-hreitz@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A54748DC66D;
+ Fri, 18 Aug 2023 16:07:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DCB6C1121314;
+ Fri, 18 Aug 2023 16:07:33 +0000 (UTC)
+Date: Fri, 18 Aug 2023 11:07:32 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
+ pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
+Subject: Re: [PATCH 04/21] block: Take AioContext lock for bdrv_append() more
+ consistently
+Message-ID: <pj55hyytlsplxdkaslwwqefwgvhfgndgisgeexgqrzitt6muxh@xefgj2fyko32>
+References: <20230817125020.208339-1-kwolf@redhat.com>
+ <20230817125020.208339-5-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230720140024.46836-1-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <20230817125020.208339-5-kwolf@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -75,27 +79,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.07.2023 um 16:00 hat Hanna Czenczek geschrieben:
-> For image creation code, we have central fallback code for protocols
-> that do not support creating new images (like NBD or iscsi).  So for
-> them, you can only specify existing paths/exports that are overwritten
-> to make clean new images.  In such a case, if the given path cannot be
-> opened (assuming a pre-existing image there), we print an error message
-> that tries to describe what is going on: That with this protocol, you
-> cannot create new images, but only overwrite existing ones; and the
-> given path could not be opened as a pre-existing image.
+On Thu, Aug 17, 2023 at 02:50:03PM +0200, Kevin Wolf wrote:
+> The documentation for bdrv_append() says that the caller must hold the
+> AioContext lock for bs_top. Change all callers to actually adhere to the
+> contract.
 > 
-> However, the current message is confusing, because it does not say that
-> the protocol in question does not support creating new images, but
-> instead that "image creation" is unsupported.  This can be interpreted
-> to mean that `qemu-img create` will not work in principle, which is not
-> true.  Be more verbose for clarity.
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  tests/unit/test-bdrv-drain.c     | 3 +++
+>  tests/unit/test-bdrv-graph-mod.c | 6 ++++++
+>  tests/unit/test-block-iothread.c | 3 +++
+>  3 files changed, 12 insertions(+)
 > 
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2217204
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 
-Thanks, applied to the block branch.
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Kevin
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
