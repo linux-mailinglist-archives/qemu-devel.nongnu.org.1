@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C0B780F47
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3684780F52
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:36:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX1Uz-0001vh-Jd; Fri, 18 Aug 2023 11:34:53 -0400
+	id 1qX1WM-0003sA-Ll; Fri, 18 Aug 2023 11:36:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qX1Uq-0001tL-M1
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:34:44 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qX1WL-0003rf-Gl
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:36:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qX1Uo-0005pq-G8
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:34:44 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qX1WJ-0006YN-A1
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:36:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692372881;
+ s=mimecast20190719; t=1692372974;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RbZBHxBS6f1NRqol718NP515SeJIK+VKS3d/wQlQTis=;
- b=exL3DBGuXc80QjsDbhphuwatVm30Dt2NaNAIaLZhNm8jlF8O2CPlwxP6HCjh+qG3N3CrYc
- 9OXnPy2v8UZpw3fkoQpQLHkJsmLkpH2qVerhQDNlhRnL105uHVg/CSMKL+IJnL97drrQW4
- s6nNZBU9wJZRVcoFjudaAuReMwDVmTQ=
+ bh=J8h1tttFDxqEWc/RC2h7PhLMSmn/0iiazO510DoEYFg=;
+ b=PlbxYqzmJRZg9kpYg/0MxcRFqLiIf9jw0CKZ8ftyCCNYRYRt8ZTQGk0FOKMN5Rsz9dQP+9
+ wfiEDVylDYVj++mPI3Hr5eytLyO1ZhN1iOvPr02j/EaTTZv4TnEaqd+CsArHYensg2lXVC
+ Z5ZCasLX2TrUQVMODqzenw9CSQMLn4g=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-691-qYrZlvEqM7mw1XS0z_j80A-1; Fri, 18 Aug 2023 11:34:39 -0400
-X-MC-Unique: qYrZlvEqM7mw1XS0z_j80A-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-453-7VzaXOc6OZac3Uxk3FfQTA-1; Fri, 18 Aug 2023 11:36:12 -0400
+X-MC-Unique: 7VzaXOc6OZac3Uxk3FfQTA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA02C28237D6;
- Fri, 18 Aug 2023 15:34:38 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 33F6B492C13;
- Fri, 18 Aug 2023 15:34:38 +0000 (UTC)
-Date: Fri, 18 Aug 2023 10:34:36 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, eesposit@redhat.com, 
- pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 03/21] preallocate: Don't poll during permission updates
-Message-ID: <lvj73pqyickfk2kinh2c3ibicvgfk2gld6v7a6bnxhk63xnjiz@rqdf4rwiwwew>
-References: <20230817125020.208339-1-kwolf@redhat.com>
- <20230817125020.208339-4-kwolf@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35F921C07560;
+ Fri, 18 Aug 2023 15:36:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.160])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5DA5C2166B2D;
+ Fri, 18 Aug 2023 15:36:11 +0000 (UTC)
+Date: Fri, 18 Aug 2023 17:36:10 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH 0/2] block: change reqs_lock to QemuMutex
+Message-ID: <ZN+P6hM/+2ZiDbKy@redhat.com>
+References: <20230808155852.2745350-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230817125020.208339-4-kwolf@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+In-Reply-To: <20230808155852.2745350-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,48 +76,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 17, 2023 at 02:50:02PM +0200, Kevin Wolf wrote:
-> When the permission related BlockDriver callbacks are called, we are in
-> the middle of an operation traversing the block graph. Polling in such a
-> place is a very bad idea because the graph could change in unexpected
-> ways. In the future, callers will also hold the graph lock, which is
-> likely to turn polling into a deadlock.
-
-One I'm sure you encountered before writing this patch ;)
-
+Am 08.08.2023 um 17:58 hat Stefan Hajnoczi geschrieben:
+> As part of the ongoing multi-queue QEMU block layer work, I found that CoMutex
+> reqs_lock scales poorly when more IOThreads are added. These patches double
+> IOPS in the 4 IOThreads randread benchmark that I have been running with my
+> out-of-tree virtio-blk-iothread-vq-mapping branch
+> (https://gitlab.com/stefanha/qemu/-/commits/virtio-blk-iothread-vq-mapping).
 > 
-> So we need to get rid of calls to functions like bdrv_getlength() or
-> bdrv_truncate() there as these functions poll internally. They are
-> currently used so that when no parent has write/resize permissions on
-> the image any more, the preallocate filter drops the extra preallocated
-> area in the image file and gives up write/resize permissions itself.
+> These patches can be merged in preparation for virtio-blk multi-queue block
+> layer support.
 
-Sounds like a sane plan, and the patch matches the implementation
-spelled out here.
+Thanks, applied to the block branch.
 
-> 
-> In order to achieve this without polling in .bdrv_check_perm, don't
-> immediately truncate the image, but only schedule a BH to do so. The
-> filter keeps the write/resize permissions a bit longer now until the BH
-> has executed.
-> 
-> There is one case in which delaying doesn't work: Reopening the image
-> read-only. In this case, bs->file will likely be reopened read-only,
-> too, so keeping write permissions a bit longer on it doesn't work. But
-> we can already cover this case in preallocate_reopen_prepare() and not
-> rely on the permission updates for it.
-> 
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  block/preallocate.c | 89 +++++++++++++++++++++++++++++++++++----------
->  1 file changed, 69 insertions(+), 20 deletions(-)
->  
-
-Reviewed-by: Eric Blake <eblake@redhat.com>
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Kevin
 
 
