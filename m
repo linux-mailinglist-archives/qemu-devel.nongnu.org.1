@@ -2,74 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D1078077F
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFE678077E
 	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 10:52:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWvCe-0003mT-3v; Fri, 18 Aug 2023 04:51:32 -0400
+	id 1qWvD7-0003qB-CD; Fri, 18 Aug 2023 04:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWvCc-0003mF-O7
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:51:30 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWvD5-0003q0-39
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:51:59 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWvCa-0003Qi-Jm
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:51:30 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5234f46c6f9so815910a12.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 01:51:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWvD0-0003SM-L8
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:51:58 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-4fe48d0ab0fso900110e87.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 01:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692348686; x=1692953486;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=0yHkRs5QgjksIu8x/sQiIvjSeNm63Cx5gLquvDCuTwI=;
- b=KW/Ndg/99eFO9hqFqW9p5mKaQUuVptrV0cZzQFQsjrsKCKXiEdBPqrBz6ORdjNj572
- 9faKCaeZO9kmEnyYGOotR/FwYD0ZaiDCHmKxQzc3LIULj+qDn5xnzI377TxJ+bEZMNkr
- zbZr5LEPXgGBS/Sc+ogxc+TUzF/RSd6A2Z31RQfe5cLsHEY1S2XC7Ri1JI12X4MQ8Dqg
- 2nsGGoc9M+Dt/0rTEiZqM2MtQhSRCc5LjRv/kcf0qrx+L7Oj0Az88z0zn3rv3zE38nFB
- cxcMjUES115M2lSukdAkLnJMkrYwCd4/a7mHqjQ/3U0s32m2XzSTlL650SH6WmkOdc6n
- eqrA==
+ d=linaro.org; s=google; t=1692348713; x=1692953513;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9ct5v1vsopfYbpIktsovlfO/wAJ1jigcygAVVqsEsCE=;
+ b=EOY35TczKA1Nk1OzEnUxGAfBaCJOqcWkj+WolOg9OfYy/CuKiBvtSH5lSodWEazb4a
+ nfUqdLdXv10SbHbxTQDWtVylVXesxuIsp46GwAUQf961j+BrehroL23CGL4PXI00y3uh
+ j3zpP0Wy19OB2wbtC3rZVJJvcMjlEMXS9fgwgvS5XSiDX9SpakaPQK7GswoPeUlhrbMD
+ psTF1fKpaHXwrD+JJVbxPFpk+RCuFX0J9LhLwKcI8+CMKIaO1Le+5QGLy5mSMUnKaZ5l
+ Rc1RFfBMEAKvARMzvHIa4NPpUV+ZUskb5FKJn+sqFvPbi5WzwijZx4SgJ3UCeJOcIfle
+ /cPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692348686; x=1692953486;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0yHkRs5QgjksIu8x/sQiIvjSeNm63Cx5gLquvDCuTwI=;
- b=I9XBmHXI6JV5Sozk0MFpA8b9QY40DgLdaABClmIvUjmYF6+vRpS1QAkXZEpJzrnOuT
- uTJEZr2hiCzIYjJSaJ1x2PuYwA++N49FF9A3ab6RL8XilB6v/NQvIcTe9fuWjm0oI6ey
- OoRC+DWZlihVIJ3y9Ws8ZXE0Q8BzEIblm6UFZz51EI7x/uIv9v5jI++tLxTS1/1IA7i9
- w3wtpsOv9xyW3yYxfS0IjQq0kk4BMMpSVA3ofMUJIUkubBbq9VxUjB1Z8sJrkU5X621k
- wP/wWj+3//JmioD1n0hw+6mca/89rfEBjWtIrwNvIiP8zjv8qcmmoJrx+7iDMV2UwI5f
- gDUQ==
-X-Gm-Message-State: AOJu0YxGE2yZqN9h1y9NM4kIeEzL5GcE3cjMU8QrPSgC3YAUjmoK/2xi
- mIvINZ770zN6adsixf++m5NUBauc7db0bBu30vJjyRu3oB+mWmzh
-X-Google-Smtp-Source: AGHT+IEkuzhSmmV0y4pTvry1jklkKH4Y1WMTYB9TQ0XEczpsjBx0nEze25qoJHQ53J3jXljTvMmb2rzVtBjzqE22c+A=
-X-Received: by 2002:aa7:cc8f:0:b0:51e:4439:f474 with SMTP id
- p15-20020aa7cc8f000000b0051e4439f474mr1664246edt.35.1692348686458; Fri, 18
- Aug 2023 01:51:26 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692348713; x=1692953513;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9ct5v1vsopfYbpIktsovlfO/wAJ1jigcygAVVqsEsCE=;
+ b=VaCPsc1Z3svMZf2OnV7x+gygOvjvHrlE7cLdQ9KMlUJifwFRnHylrPBlaABvc2M436
+ kQzO7xR/NhXL4ont2TBsOzIj6/OrQckwVUhGPgOHIkhZikT11swTPNmTu5Q0MFZa8kTh
+ GtTX5zxl7LkrevqGGGOPhZ4vKxWFeRPrbDiYVu911ddixS4ljm7QQ50H2PP7DgH0/gu5
+ LuRHfA8/0kJ3NEL7SuhrwrxA720+OE2HqNz2Bmvwe7cM5mhDLgE1lBLJCcbTm5eFoQzt
+ WFuarRBys+WmFOtj9pQOjWG1UX6sWeRLnbKiiGW+EuX8CHl/P3FJvXL+nu7yHrNeiipG
+ QqCQ==
+X-Gm-Message-State: AOJu0YxaddPysw0H9W2nUWbxXnPCSZWdCH81BoobF5aDymKej6lQ0Tfa
+ tsbr/28y4LA07l1P2UhEZsU8upyQp4LgvtvGFak=
+X-Google-Smtp-Source: AGHT+IHpYWs1U6lvO5hnijnG1pqokKawpKQDu9srrO53ySwA/YPR00tabIcvhv3ed7CVeteQU5e7AA==
+X-Received: by 2002:a05:6512:b96:b0:4fb:94c6:fd63 with SMTP id
+ b22-20020a0565120b9600b004fb94c6fd63mr1558719lfv.17.1692348712518; 
+ Fri, 18 Aug 2023 01:51:52 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.184.114])
+ by smtp.gmail.com with ESMTPSA id
+ z12-20020aa7cf8c000000b005256d4d58a6sm840324edx.18.2023.08.18.01.51.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Aug 2023 01:51:52 -0700 (PDT)
+Message-ID: <05e574af-50e0-e71c-2e88-ab7fafd71155@linaro.org>
+Date: Fri, 18 Aug 2023 10:51:49 +0200
 MIME-Version: 1.0
-References: <20230816145547.477974-1-richard.henderson@linaro.org>
- <20230816145547.477974-3-richard.henderson@linaro.org>
- <CAFEAcA9WUcJzrfQXnjM0Jw8CjaY6BW9hAKWGDRrMVU3BR2u6Vw@mail.gmail.com>
- <c03f11e3-847c-a792-51e0-16679485b43e@linaro.org>
-In-Reply-To: <c03f11e3-847c-a792-51e0-16679485b43e@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 18 Aug 2023 09:51:15 +0100
-Message-ID: <CAFEAcA-D5J6TR1CfgmomrSRDJ+62ShE4-VJUuw8=xBr1wmJTAg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] tcg: Fold deposit with zero to and
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 02/18] target/loongarch: Add new object class for
+ loongarch32 cpus
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>,
+ richard.henderson@linaro.org, Jiajie Chen <c@jia.je>
+Cc: qemu-devel@nongnu.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
+ yijun@loongson.cn, shenjinyang@loongson.cn
+References: <20230817093121.1053890-1-gaosong@loongson.cn>
+ <20230817093121.1053890-3-gaosong@loongson.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230817093121.1053890-3-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,25 +96,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 17 Aug 2023 at 23:07, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 8/17/23 08:50, Peter Maydell wrote:
-> >> +    if (arg_is_const(op->args[1])
-> >> +        && arg_info(op->args[1])->val == 0
-> >> +        && op->args[3] == 0) {
-> >> +        uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
-> >
-> > The docs for the TCG deposit op don't say what the restrictions on the
-> > immediate args are, but this will be UB for QEMU if args[4] is 0.
-> > Have we already sanitized those somewhere?
->
-> tcg_gen_deposit_{i32,i64} do so.
+Hi Jiajie, Song,
 
-Cool.
+(+Huacai)
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+On 17/8/23 11:31, Song Gao wrote:
+> From: Jiajie Chen <c@jia.je>
+> 
+> Add object class for future loongarch32 cpus. It is derived from the
+> loongarch64 object class.
 
-thanks
--- PMM
+Is it how the architecture design happened? IIUC per [*] it seems
+the arch was designed as a whole then adapted per segment (32/R,64).
+So from a QOM PoV better would be to have a abstract 'common' parent
+objs/classes, then derive 32/64 from it.
+IMHO this matters for the maintainability of target/loongarch/, but
+if this isn't important then I won't object much to this series.
+
+Regards,
+
+Phil.
+
+[*] 
+https://lore.kernel.org/linux-arch/20210706041820.1536502-1-chenhuacai@loongson.cn/
+
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   target/loongarch/cpu.c | 19 +++++++++++++++++++
+>   target/loongarch/cpu.h |  1 +
+>   2 files changed, 20 insertions(+)
+
+
+> @@ -750,6 +760,15 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+>           .class_size = sizeof(LoongArchCPUClass),
+>           .class_init = loongarch_cpu_class_init,
+>       },
+> +    {
+> +        .name = TYPE_LOONGARCH32_CPU,
+> +        .parent = TYPE_LOONGARCH_CPU,
+> +        .instance_size = sizeof(LoongArchCPU),
+> +
+> +        .abstract = true,
+> +        .class_size = sizeof(LoongArchCPUClass),
+> +        .class_init = loongarch32_cpu_class_init,
+> +    },
+>       DEFINE_LOONGARCH_CPU_TYPE("la464", loongarch_la464_initfn),
+>   };
+>   
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index 5a71d64a04..2af4c414b0 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -382,6 +382,7 @@ struct ArchCPU {
+>   };
+>   
+>   #define TYPE_LOONGARCH_CPU "loongarch-cpu"
+> +#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
+>   
+>   OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
+>                           LOONGARCH_CPU)
+
 
