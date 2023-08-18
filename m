@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854C778051A
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCF4780520
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:37:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWr3I-0003Bg-4D; Fri, 18 Aug 2023 00:25:36 -0400
+	id 1qWrDX-0005D5-46; Fri, 18 Aug 2023 00:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWr36-0003BL-Tu
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:25:26 -0400
+ id 1qWrDV-0005Cv-98
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:36:09 -0400
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWr34-0003v0-8d
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:25:24 -0400
+ id 1qWrDQ-0008Ha-Vs
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:36:09 -0400
 Received: from [192.168.8.104] (unknown [94.25.229.58])
- by mail.ispras.ru (Postfix) with ESMTPSA id 2566940F1DE1;
- Fri, 18 Aug 2023 04:25:19 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2566940F1DE1
+ by mail.ispras.ru (Postfix) with ESMTPSA id 9B31E40F1DE1;
+ Fri, 18 Aug 2023 04:36:02 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9B31E40F1DE1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1692332720;
- bh=g3sW/rv4STPmk0kfIfxoXmmWUxSSbc7vHYGv1NcJLUM=;
+ s=default; t=1692333363;
+ bh=DC7KOBbhr13U7b2zHCCb8+fdoO9pVzOhkwgIrjDUPVg=;
  h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=ZRkWAEM0+cKXkTU3/tEuiOYKL4atIXSsf9AbifzU6QNUeWAhuDuN7QodqUpDVLqgT
- anxgE+NNrjlcBs9M6B2dncjFCUPDnjoPNyDUHFksbhJxUTIh6fPGMJAltk568sglKm
- kwKmmxRmayf/gY+yJSnlELn9eDNMCH2iwoXGCWbg=
-Message-ID: <f7114265-8c24-2b7a-a1d0-8073ecd878d8@ispras.ru>
-Date: Fri, 18 Aug 2023 07:25:18 +0300
+ b=VI+J+ESaxvk5Kqy7c71k+EUe4+O+vFrIhK2ipV1fc4/PEhSiCEta8kn68VJAlKKXH
+ L5K8vCGNidSiP6+vjjPP3jd7ZD26kErEThVXRUGDf/4s7VRBflkcUOX3McEwdeI7df
+ GUIKg9SF+w/bALQcWHmEIpnobqmOWbWadQUFM5DY=
+Message-ID: <95adc4ea-225c-bcd5-cec2-9edf1c2cf496@ispras.ru>
+Date: Fri, 18 Aug 2023 07:36:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 3/4] replay: allow runstate shutdown->running when
- replaying trace
+Subject: Re: [PATCH 4/4] replay: simple auto-snapshot mode for record
 Content-Language: en-US
 To: Nicholas Piggin <npiggin@gmail.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
@@ -44,9 +43,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org,
  =?UTF-8?B?0JTQvtCy0LPQsNC70Y7QuiDQn9Cw0LLQtdC7?= <Pavel.Dovgalyuk@ispras.ru>
 References: <20230814163135.187882-1-npiggin@gmail.com>
- <20230814163135.187882-4-npiggin@gmail.com>
+ <20230814163135.187882-5-npiggin@gmail.com>
 From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230814163135.187882-4-npiggin@gmail.com>
+In-Reply-To: <20230814163135.187882-5-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=83.149.199.84;
@@ -72,81 +71,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-
 On 14.08.2023 19:31, Nicholas Piggin wrote:
-> When replaying a trace, it is possible to go from shutdown to
-> running with a reverse-debugging step. This can be useful if the
-> problem being debugged triggers a reset or shutdown.
+> record makes an initial snapshot when the machine is created, to enable
+> reverse-debugging. Often the issue being debugged appears near the end of
+> the trace, so it is important for performance to keep snapshots close to
+> the end.
+> 
+> This implements a periodic snapshot mode that keeps a rolling set of
+> recent snapshots.
+> 
+> Arguably this should be done by the debugger or a program that talks to
+> QMP, but for setting up simple scenarios and tests, it is convenient to
+> have this feature.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   include/sysemu/runstate.h |  1 +
->   replay/replay.c           |  2 ++
->   softmmu/runstate.c        | 19 +++++++++++++++++++
->   3 files changed, 22 insertions(+)
+>   docs/system/replay.rst   |  5 ++++
+>   include/sysemu/replay.h  | 11 ++++++++
+>   qemu-options.hx          |  9 +++++--
+>   replay/replay-snapshot.c | 57 ++++++++++++++++++++++++++++++++++++++++
+>   replay/replay.c          | 25 ++++++++++++++++++
+>   softmmu/vl.c             |  9 +++++++
+>   6 files changed, 114 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-> index 7beb29c2e2..85a1167ccb 100644
-> --- a/include/sysemu/runstate.h
-> +++ b/include/sysemu/runstate.h
-> @@ -9,6 +9,7 @@ void runstate_set(RunState new_state);
->   RunState runstate_get(void);
->   bool runstate_is_running(void);
->   bool runstate_needs_reset(void);
-> +void runstate_replay_enable(void);
+> diff --git a/docs/system/replay.rst b/docs/system/replay.rst
+> index 3105327423..bef9ea4171 100644
+> --- a/docs/system/replay.rst
+> +++ b/docs/system/replay.rst
+> @@ -156,6 +156,11 @@ for storing VM snapshots. Here is the example of the command line for this:
+>   ``empty.qcow2`` drive does not connected to any virtual block device and used
+>   for VM snapshots only.
 >   
->   typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
->   
-> diff --git a/replay/replay.c b/replay/replay.c
-> index 0f7d766efe..e64f71209a 100644
-> --- a/replay/replay.c
-> +++ b/replay/replay.c
-> @@ -272,6 +272,8 @@ static void replay_enable(const char *fname, int mode)
->           /* go to the beginning */
->           fseek(replay_file, HEADER_SIZE, SEEK_SET);
->           replay_fetch_data_kind();
+> +``rrsnapmode`` can be used to select just an initial snapshot or periodic
+> +snapshots, with ``rrsnapcount`` specifying the number of periodic snapshots
+> +to maintain, and ``rrsnaptime`` the amount of run time in seconds between
+> +periodic snapshots.
 > +
-> +        runstate_replay_enable();
->       }
+>   .. _network-label:
 >   
->       replay_init_events();
-> diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-> index f3bd862818..9fd3e57485 100644
-> --- a/softmmu/runstate.c
-> +++ b/softmmu/runstate.c
-> @@ -174,6 +174,12 @@ static const RunStateTransition runstate_transitions_def[] = {
->       { RUN_STATE__MAX, RUN_STATE__MAX },
->   };
+>   Network devices
+> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+> index 08aae5869f..a83e54afc6 100644
+> --- a/include/sysemu/replay.h
+> +++ b/include/sysemu/replay.h
+> @@ -45,6 +45,17 @@ typedef enum ReplayCheckpoint ReplayCheckpoint;
 >   
-> +static const RunStateTransition replay_runstate_transitions_def[] = {
-> +    { RUN_STATE_SHUTDOWN, RUN_STATE_RUNNING},
-> +
-> +    { RUN_STATE__MAX, RUN_STATE__MAX },
+>   typedef struct ReplayNetState ReplayNetState;
+>   
+> +enum ReplaySnapshotMode {
+> +    REPLAY_SNAPSHOT_MODE_INITIAL,
+> +    REPLAY_SNAPSHOT_MODE_PERIODIC,
 > +};
+> +typedef enum ReplaySnapshotMode ReplaySnapshotMode;
 > +
->   static bool runstate_valid_transitions[RUN_STATE__MAX][RUN_STATE__MAX];
+> +extern ReplaySnapshotMode replay_snapshot_mode;
+> +
+> +extern uint64_t replay_snapshot_periodic_delay;
+> +extern int replay_snapshot_periodic_nr_keep;
+> +
+
+It seems that all of these doesn't have to be exported,
+you can add it into the internal replay header.
+
+>   /* Name of the initial VM snapshot */
+>   extern char *replay_snapshot
 >   
->   bool runstate_check(RunState state)
-> @@ -181,6 +187,19 @@ bool runstate_check(RunState state)
->       return current_run_state == state;
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 29b98c3d4c..0dce93eeab 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4530,13 +4530,13 @@ SRST
+>   ERST
+>   
+>   DEF("icount", HAS_ARG, QEMU_OPTION_icount, \
+> -    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>]]\n" \
+> +    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]\n" \
+>       "                enable virtual instruction counter with 2^N clock ticks per\n" \
+>       "                instruction, enable aligning the host and virtual clocks\n" \
+>       "                or disable real time cpu sleeping, and optionally enable\n" \
+>       "                record-and-replay mode\n", QEMU_ARCH_ALL)
+>   SRST
+> -``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot]]``
+> +``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]]``
+>       Enable virtual instruction counter. The virtual cpu will execute one
+>       instruction every 2^N ns of virtual time. If ``auto`` is specified
+>       then the virtual cpu speed will be automatically adjusted to keep
+> @@ -4578,6 +4578,11 @@ SRST
+>       name. In record mode, a new VM snapshot with the given name is created
+>       at the start of execution recording. In replay mode this option
+>       specifies the snapshot name used to load the initial VM state.
+> +    ``rrsnapmode=periodic`` will additionally cause a periodic snapshot to
+> +    be created after ``rrsnaptime=secs`` seconds of real runtime. The last
+> +    ``rrsnapcount=N`` periodic snapshots (not including the initial) will
+> +    be kept (0 for infinite). Periodic snapshots are useful to speed
+> +    reverse debugging operations near the end of the recorded trace.
+>   ERST
+>   
+>   DEF("watchdog-action", HAS_ARG, QEMU_OPTION_watchdog_action, \
+> diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
+> index 10a7cf7992..38eac61c43 100644
+> --- a/replay/replay-snapshot.c
+> +++ b/replay/replay-snapshot.c
+> @@ -69,6 +69,53 @@ void replay_vmstate_register(void)
+>       vmstate_register(NULL, 0, &vmstate_replay, &replay_state);
 >   }
 >   
-> +void runstate_replay_enable(void)
+> +static QEMUTimer *replay_snapshot_timer;
+> +static int replay_snapshot_count;
+> +
+> +static void replay_snapshot_timer_cb(void *opaque)
 > +{
-> +    const RunStateTransition *p;
+> +    Error *err = NULL;
+> +    char *name;
 > +
-> +    assert(replay_mode == REPLAY_MODE_PLAY);
-> +
-> +    for (p = &replay_runstate_transitions_def[0]; p->from != RUN_STATE__MAX;
-> +         p++) {
-> +        runstate_valid_transitions[p->from][p->to] = true;
+> +    if (!replay_can_snapshot()) {
+> +        /* Try again soon */
+> +        timer_mod(replay_snapshot_timer,
+> +                  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
+> +                  replay_snapshot_periodic_delay / 10);
+> +        return;
 > +    }
 > +
+> +    name = g_strdup_printf("%s-%d", replay_snapshot, replay_snapshot_count);
+> +    if (!save_snapshot(name,
+> +                       true, NULL, false, NULL, &err)) {
+> +        error_report_err(err);
+> +        error_report("Could not create periodic snapshot "
+> +                     "for icount record, disabling");
+> +        g_free(name);
+> +        return;
+> +    }
+> +    g_free(name);
+> +    replay_snapshot_count++;
+> +
+> +    if (replay_snapshot_periodic_nr_keep >= 1 &&
+> +        replay_snapshot_count > replay_snapshot_periodic_nr_keep) {
+> +        int del_nr;
+> +
+> +        del_nr = replay_snapshot_count - replay_snapshot_periodic_nr_keep - 1;
+> +        name = g_strdup_printf("%s-%d", replay_snapshot, del_nr);
+> +        if (!delete_snapshot(name, false, NULL, &err)) {
+> +            error_report_err(err);
+> +            error_report("Could not delete periodic snapshot "
+> +                         "for icount record");
+> +        }
+> +        g_free(name);
+> +    }
+> +
+> +    timer_mod(replay_snapshot_timer,
+> +              qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
+> +              replay_snapshot_periodic_delay);
+
+I'm not sure that realtime is not the best choice for such of a timer.
+Virtual machine may be stopped or slowed down for some reason.
+
 > +}
 > +
->   static void runstate_init(void)
+>   void replay_vmstate_init(void)
 >   {
->       const RunStateTransition *p;
+>       Error *err = NULL;
+> @@ -81,6 +128,16 @@ void replay_vmstate_init(void)
+>                   error_report("Could not create snapshot for icount record");
+>                   exit(1);
+>               }
+> +
+> +            if (replay_snapshot_mode == REPLAY_SNAPSHOT_MODE_PERIODIC) {
+> +                replay_snapshot_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
+> +                                                     replay_snapshot_timer_cb,
+> +                                                     NULL);
+> +                timer_mod(replay_snapshot_timer,
+> +                          qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
+> +                          replay_snapshot_periodic_delay);
+> +            }
+> +
+
+Please also delete placeholder comment for the snapshotting timer
+in replay_enable function.
+
+>           } else if (replay_mode == REPLAY_MODE_PLAY) {
+>               if (!load_snapshot(replay_snapshot, NULL, false, NULL, &err)) {
+>                   error_report_err(err);
+> diff --git a/replay/replay.c b/replay/replay.c
+> index e64f71209a..fa5930700d 100644
+> --- a/replay/replay.c
+> +++ b/replay/replay.c
+> @@ -29,6 +29,10 @@
+>   ReplayMode replay_mode = REPLAY_MODE_NONE;
+>   char *replay_snapshot;
+>   
+> +ReplaySnapshotMode replay_snapshot_mode;
+> +uint64_t replay_snapshot_periodic_delay;
+> +int replay_snapshot_periodic_nr_keep;
+> +
+>   /* Name of replay file  */
+>   static char *replay_filename;
+>   ReplayState replay_state;
+> @@ -313,6 +317,27 @@ void replay_configure(QemuOpts *opts)
+>       }
+>   
+>       replay_snapshot = g_strdup(qemu_opt_get(opts, "rrsnapshot"));
+> +    if (replay_snapshot && mode == REPLAY_MODE_RECORD) {
+
+Can such a snapshotting may be useful in replay mode?
+
+> +        const char *snapmode;
+> +
+> +        snapmode = qemu_opt_get(opts, "rrsnapmode");
+> +        if (!snapmode || !strcmp(snapmode, "initial")) {
+> +            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_INITIAL;
+> +        } else if (!strcmp(snapmode, "periodic")) {
+> +            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_PERIODIC;
+> +        } else {
+> +            error_report("Invalid rrsnapmode option: %s", snapmode);
+> +            exit(1);
+> +        }
+> +
+> +        /* Default 10 host seconds of machine runtime per snapshot. */
+> +        replay_snapshot_periodic_delay =
+> +                           qemu_opt_get_number(opts, "rrsnaptime", 10) * 1000;
+> +
+> +        /* Default 2, to cover at least the last 10 host seconds of runtime. */
+> +        replay_snapshot_periodic_nr_keep =
+> +                           qemu_opt_get_number(opts, "rrsnapcount", 2);
+> +    }
+>       replay_vmstate_register();
+>       replay_enable(fname, mode);
+>   
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..e032eb45e8 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -446,6 +446,15 @@ static QemuOptsList qemu_icount_opts = {
+>           }, {
+>               .name = "rrsnapshot",
+>               .type = QEMU_OPT_STRING,
+> +        }, {
+> +            .name = "rrsnapmode",
+> +            .type = QEMU_OPT_STRING,
+> +        }, {
+> +            .name = "rrsnaptime",
+> +            .type = QEMU_OPT_NUMBER,
+> +        }, {
+> +            .name = "rrsnapcount",
+> +            .type = QEMU_OPT_NUMBER,
+>           },
+>           { /* end of list */ }
+>       },
 
 
