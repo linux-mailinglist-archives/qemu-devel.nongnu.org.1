@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E1C780D71
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 16:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F143D780D9C
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 16:10:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX05m-0004x6-Gb; Fri, 18 Aug 2023 10:04:46 -0400
+	id 1qX05t-000516-VV; Fri, 18 Aug 2023 10:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qWwJW-00019B-Jv
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:02:45 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWwoM-0006LM-6I
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:34:34 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qWwJT-0001wd-PZ
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:02:42 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1bc7b25c699so5302255ad.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 03:02:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWwoJ-0002w9-T4
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:34:33 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso695417f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 03:34:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1692352957; x=1692957757;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=31GINzzYQwcFhLtFADq2qE3kGAZ7hCDuvdbkdYG3ZG4=;
- b=Hub7cTPQ4vN50w76b0/v3w79+ptQJrCl5m2gZw4S54f6LDyMQnRe1dFxYjlyteuIwL
- tojbHpYrZeTg9zrdvEfy/Q40IC4Z988yzr4mv9GBu09faLEbQ3nKHUHNEhpuTCdhLf+Y
- snRi7ModfTVBD2V4/QUyUpGm5SZaY62LoWQRsyxuceHAjfGcNaqhErc/nZrJGph1j+EK
- S7+vD8B6ch5NLqRp1Pmh5oWCyzCF8YiVQI2vZV5c2Nd6YGr25aPRBNxuEMhAE6wJRffZ
- aI08Dg7d+4ciBXij0zUg6NotWs2/44I9yxoNnV4UJi2ha0I+rWvebknNBMNL1bABwc5a
- StUQ==
+ d=linaro.org; s=google; t=1692354870; x=1692959670;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nNeiD6SgZeYmifVlEyYsY7DIkfofnE8mvMfwnBOhO8U=;
+ b=Fd1Kz/SXmHsldOgVG5hyG8rn5EUdKsgOK65eZVoV+vpHCxr860TrAHeTn3sLLnk7Ql
+ swLEitKiPTM1Tn9IxxQHkpaXQwPe7skI9QPDapLsyIGz3kcu1dG0SXkb3mm6xZpN3uPl
+ BmGOMbK1+tabu+qH01qZsyNA69B73cF+BPNniucu5E5HG70CIKcVbJwCj64QqHHDei6B
+ P4A8yYW4fTkIL+8ix/H40A2u8HeJoD+76RCHfiPUSNTXlP6zME6fEN7bP3UmW5gd+6ga
+ HThuqLIomMM0bcA5Kw78JZLHFoFLZSg59Um6ZUn/Q6KZDoqjVuwC+ujdxKi1ja8AndnS
+ J0sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692352957; x=1692957757;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=31GINzzYQwcFhLtFADq2qE3kGAZ7hCDuvdbkdYG3ZG4=;
- b=HMVrLK8/8wtSRbeROLGggNYazN/TLHeaRdeVsiAuKtxzuUsUi+FGheAO9CIiYk6N3L
- y/tlyrsLaxfVQlD1360ffCFIX8y4DRir+17rB7LnWyUYW1zyjP1HJdnQQZ65Wjc4KIkw
- 4RzHq8eIPpwN8z/Vs3WrJtyXUVYCVbqCwmRKlkPCudzvhq6AqeQMgtrQFGI4pyU8EKU6
- eL8Ssw/6oyJUA1p74GnaKWGWeZ75F2y5uVvWw1WxjcGIs9JSGxH2eLy94+XP3KesuW5r
- nSL7exY5fHM3ZgUUXvvsuIzuro9F/nUbFwJI09emOtFWRaH0R2t0cTvcy/wP5Ecblc14
- 5tXw==
-X-Gm-Message-State: AOJu0YzM4RP1SE9fTtI/IRBCnSAPfVCuuP2W3IwivwXREUJ2IO9eC1+S
- JYHNebpxdFXHiYGMFje4vzBlIAuNfqaedBH8DFAIMg==
-X-Google-Smtp-Source: AGHT+IE6rNpSw5TwL5XaRfZnlR+euKR85FYMHegC0NFntgq5m8KLCkl1WNdKFIZuuqZeZc6Gx1qWZ067g7DCSBI5co0=
-X-Received: by 2002:a17:90b:3d1:b0:26d:506e:24a3 with SMTP id
- go17-20020a17090b03d100b0026d506e24a3mr577997pjb.38.1692352957042; Fri, 18
- Aug 2023 03:02:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692354870; x=1692959670;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nNeiD6SgZeYmifVlEyYsY7DIkfofnE8mvMfwnBOhO8U=;
+ b=F4/pVto/Sk3yYecBs76L30Htb885CTOSLpdqX/giAmpz7xeCrfqclbegMEstTUAcsS
+ 9Rp+JVtVwrbL7zkEj9Wh/MnG8todpJcPFp6Vfl6wpDnrH7DeGlQpcjSEW3es3e6sQSIe
+ oeEd6zfOFJZxKiDrbBuAlf60XeVFz3JwsLkvgJvXGSa51pjijBdVvBBqvTGN/SeKJkwo
+ bFxqsbs+0tjLrry3V7P4pIpeQUPt/4Ydt0JMFMb+RFcUksWXGmmkaEyqOCaMZwQGdnIX
+ CGq4i7BAY1tMgRUfHP1SM8ZW5zf3hFrlGqJ0LPG6/cvm5Gz4sgrF+i1miJ5nNjQ2M3qk
+ h7DQ==
+X-Gm-Message-State: AOJu0YxC8qAN0+09+NVTFOM8Hhk7wovJr4iPxWKgDq3vQ/XrGIManKUr
+ iI2UqdajS8/AJw6FEikieZ/XR0rzsnHA8uIp5LY=
+X-Google-Smtp-Source: AGHT+IHV7IIjkFmiECTTmexMWdJ+vPgtB7EedLCR/iRE8Gt6mhXvJoFi30WSdWktYkIqceI6Qh9Asg==
+X-Received: by 2002:a5d:6511:0:b0:317:e542:80a8 with SMTP id
+ x17-20020a5d6511000000b00317e54280a8mr1530856wru.15.1692354869878; 
+ Fri, 18 Aug 2023 03:34:29 -0700 (PDT)
+Received: from localhost.localdomain ([92.88.170.41])
+ by smtp.gmail.com with ESMTPSA id
+ m4-20020a056000008400b0030ada01ca78sm2323386wrx.10.2023.08.18.03.34.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 18 Aug 2023 03:34:29 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Jiajie Chen <c@jia.je>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/4] target/loongarch: Cleanups in preparation of loongarch32
+ support
+Date: Fri, 18 Aug 2023 12:34:21 +0200
+Message-ID: <20230818103425.16271-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230818090224.409192-1-chigot@adacore.com>
- <20230818090224.409192-4-chigot@adacore.com>
- <CAFEAcA_1SdA_BH_u01FAYaZkABbCB2EcSf329=-GpZ2canjP7A@mail.gmail.com>
-In-Reply-To: <CAFEAcA_1SdA_BH_u01FAYaZkABbCB2EcSf329=-GpZ2canjP7A@mail.gmail.com>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Fri, 18 Aug 2023 12:02:26 +0200
-Message-ID: <CAJ307Ei_nx9T_p105W7hR8JTuosHQ2WXf7Pn=qELG=Y59nt7EA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] gdbstub: replace exit(0) with proper shutdown
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=chigot@adacore.com; helo=mail-pl1-x635.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,108 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 18, 2023 at 11:10=E2=80=AFAM Peter Maydell <peter.maydell@linar=
-o.org> wrote:
->
-> On Fri, 18 Aug 2023 at 10:03, Cl=C3=A9ment Chigot <chigot@adacore.com> wr=
-ote:
-> >
-> > This replaces the exit(0) call by a shutdown request, ensuring a proper
-> > cleanup of Qemu. Otherwise, some connections could be broken without
-> > being correctly flushed.
-> >
-> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> > ---
-> >  gdbstub/gdbstub.c |  3 +--
-> >  gdbstub/softmmu.c | 11 +++++++++++
-> >  gdbstub/user.c    |  2 ++
-> >  3 files changed, 14 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-> > index 5f28d5cf57..358eed1935 100644
-> > --- a/gdbstub/gdbstub.c
-> > +++ b/gdbstub/gdbstub.c
-> > @@ -1298,7 +1298,6 @@ static void handle_v_kill(GArray *params, void *u=
-ser_ctx)
-> >      gdb_put_packet("OK");
-> >      error_report("QEMU: Terminated via GDBstub");
-> >      gdb_exit(0);
-> > -    exit(0);
-> >  }
-> >
-> >  static const GdbCmdParseEntry gdb_v_commands_table[] =3D {
-> > @@ -1818,7 +1817,7 @@ static int gdb_handle_packet(const char *line_buf=
-)
-> >          /* Kill the target */
-> >          error_report("QEMU: Terminated via GDBstub");
-> >          gdb_exit(0);
-> > -        exit(0);
-> > +        break;
-> >      case 'D':
-> >          {
-> >              static const GdbCmdParseEntry detach_cmd_desc =3D {
-> > diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-> > index f509b7285d..9ca7ae10bc 100644
-> > --- a/gdbstub/softmmu.c
-> > +++ b/gdbstub/softmmu.c
-> > @@ -434,6 +434,17 @@ void gdb_exit(int code)
-> >      }
-> >
-> >      qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
-> > +
-> > +    /*
-> > +     * Shutdown request is a clean way to stop the QEMU, compared
-> > +     * to a direct call to exit(). But we can't pass the exit code
-> > +     * through it so avoid doing that when it can matter.
-> > +     */
-> > +    if (code) {
-> > +        exit(code);
-> > +    } else {
-> > +        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > +    }
-> >  }
-> >
-> >  /*
-> > diff --git a/gdbstub/user.c b/gdbstub/user.c
-> > index 5b375be1d9..f3d97d621f 100644
-> > --- a/gdbstub/user.c
-> > +++ b/gdbstub/user.c
-> > @@ -113,6 +113,8 @@ void gdb_exit(int code)
-> >          gdb_put_packet(buf);
-> >          gdbserver_state.allow_stop_reply =3D false;
-> >      }
-> > +
-> > +    exit(code);
-> >  }
->
-> These are not the only places that call gdb_exit().
-> Notably, qemu_cleanup() calls it, and I'm pretty sure
-> it does not expect that gdb_exit() will either call
-> exit() or qemu_system_shutdown_request(), because it's
-> already in the process of cleaning up and stopping
-> the system.
+Jiajie, this series contains few notes I took while
+reviewing your series adding loongarch32 support [*].
 
-Indeed, I did miss that. I used to have it directly in
-gdb_handle_packet and in handle_v_kill. But now that the support of
-softmmu and user has been splitted, I thought putting it in gdb_exit
-was a solution.
-However, IIUC the code, the second request will simply be ignored, the
-main loop (where the requests matter) have been already exited.
-I see what I can do anyway to avoid this double request.
+If your series isn't merged, consider rebasing it on
+this one.
 
-> If we send the "we're exiting" report to the gdb process,
-> that ought to be sufficient. If we're not actually managing
-> to send that last packet to gdb because we don't flush
-> the data out to the file descriptor, then it seems to me
-> that the fix ought to be to ensure we do do that flush
-> as part of gdb_exit() not to rearrange or try to avoid
-> all the subsequent calls to exit().
+Regards,
 
-Here, I'm seeing the symptoms with a gdb connection being closed too
-sharply and a fd not being flush. But looking at the qemu_cleanup(),
-many things could require a proper cleanup which will be skipped by a
-simple exit(0). This could lead to many unexpected side effects.
+Phil.
 
-Thanks,
-Cl=C3=A9ment
+[*] https://lore.kernel.org/qemu-devel/20230817093121.1053890-1-gaosong@loongson.cn/
+
+Philippe Mathieu-Daudé (4):
+  target/loongarch: Log I/O write accesses to CSR registers
+  target/loongarch: Remove duplicated disas_set_info assignment
+  target/loongarch: Rename 64-bit specific functions
+  target/loongarch: Extract 64-bit specifics to
+    loongarch64_cpu_class_init
+
+ target/loongarch/cpu.c | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
+
+-- 
+2.41.0
+
 
