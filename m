@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714D7781160
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70731781152
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:13:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX31j-0008EZ-Dh; Fri, 18 Aug 2023 13:12:47 -0400
+	id 1qX31l-0008FI-K3; Fri, 18 Aug 2023 13:12:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX31i-0008EB-3V
+ id 1qX31i-0008EP-OX
  for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:46 -0400
 Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX31f-00081X-TF
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:45 -0400
+ id 1qX31g-00081g-Hx
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:12:46 -0400
 Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bba48b0bd2so8738905ad.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:12:43 -0700 (PDT)
+ d9443c01a7336-1bf3a2f4528so6939275ad.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:12:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692378762; x=1692983562;
+ d=linaro.org; s=google; t=1692378763; x=1692983563;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zm6LGbzRYY77HgezAnXq5Cmr5DPYLmRbQvieaAAbplU=;
- b=h8miP2KVjiASi/7WufWnevxrGkCfGySgUm2aRmkUQjL4Ulw/8lN1OEt0ESpD25Ui8H
- TuIOtlN70v3+sTMzyu6UhC0avpKzMK93Eip6mRh6QouX0vpNomyc4i6B5+aARk2UudmC
- mn6/lk2s7bpNb4P7wZ2uLDWHvFClI/rjL+pdz2iVgyfhxB+ExXzdHZyWIMnOEvwzJYjz
- rzGE5MvnEYpDz+/I9herQurC9Gbu84nbYGgnuAfoqCTe2IuGLiNgTtg8dF3IqygDnxnP
- kiqlfy2B6SYFQj3v0xYiFFh3Lbf++BFZNIaSbIwWbsYrjAAboneBgFEhsdj9eGrQQoDf
- HFJw==
+ :reply-to; bh=aNsGM1lrXvwjZfK8fzxAwlxZ3vZk+R9BD/kfTxJ1kzo=;
+ b=QmJnSHmAERh0B3/YwLvWptTFBOT1GwzYcz/MQ0I0LP4S1Fdrw9a3XwuSkpIZEP4jjg
+ ySmkoJbjeQySUYRCxBWse1MC58y9YpXheSgVwfS/D6pGhTPXwylND6hi6PmYN9JanO3V
+ EmOktTv2ut1Ld8QJuefFxUnrNE85Tjg9FxWcAiXJF5VPbjX+t/LoCXqT7NjCH2J40XU+
+ RcFASXK0NJOypZQlCfQtgGQnyRurj02bUdKSEe0qPd//oQReJhCfQBt6i4aZMa3xoTvI
+ Ta4AVTedtA1sbJAE3g1hLB8g3SO6fvN31i/Z8MwrMlNGuprONkpWzXDp0THk0LP11ZrI
+ 1yPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692378762; x=1692983562;
+ d=1e100.net; s=20221208; t=1692378763; x=1692983563;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zm6LGbzRYY77HgezAnXq5Cmr5DPYLmRbQvieaAAbplU=;
- b=BjNnAeGnDufDnMBVF4Mo/V+c+mahN0CpbJTmXSa2VvTCO0PF86w1+5avWyO/bHzJox
- XHrcr+1e2hRwrRSelyR9AzFrQPYW3kW+x6SFZhwKKcJv7oVKZHuBbEaNYDjJ2HsJsuWo
- LU+6b0MD46K8cdoQdZuH+nA/Eeb+YOmq4mSUGF5SMKewnqy4ZTuESprHMFmWJK/aW9VE
- Kr8VCbh1qv8mgbVbAKrQ35R0K6sAR3Ntjoab1zsFYcOhbcSvBQGCNnhVzJvnHwyH+4d4
- KaXpKTpGYmzStLyfwrkjYnFmTjeOWIbr+7vnWdJkd/Z3xMTZAvn2Byc9i1Foz8Q1j82C
- GCuw==
-X-Gm-Message-State: AOJu0Yzgvxv5XWIoW9ss5zM0elvlW7SPq1VMlDzN3Ka5jFYvEZlmQRSr
- o7GqGt7dythGC9Rw5op59AZhZXvdOHfGIoLdQYA=
-X-Google-Smtp-Source: AGHT+IFOjtUxYZ71Es18mBbC1mE6rnYf+4KgENswBOvYMooWh2S3laC+yhmn+LbBT4jLhWEu0DRshg==
-X-Received: by 2002:a17:903:1248:b0:1bb:fffd:63d8 with SMTP id
- u8-20020a170903124800b001bbfffd63d8mr3283905plh.36.1692378762590; 
- Fri, 18 Aug 2023 10:12:42 -0700 (PDT)
+ bh=aNsGM1lrXvwjZfK8fzxAwlxZ3vZk+R9BD/kfTxJ1kzo=;
+ b=LvpM4Udn1dnu3mNEa+Wlt47Nay5Gy+yVbM5qRA4g0GMBmyhAp+bPLFfXYRVvYyy5Y5
+ qkoDlMu9ZeAP+ng3BGzNz+HLqX2bPpl3jWM1LJ38fKdN9w904xgUWV7CdEBQTkkaVgBt
+ 4I8IDMgGyxFWovf88dvAyum3VZKKtUoVq+vd0kqlO8Rn29q7domHO3CHb8WtDy5bz42L
+ U0Vn+2xBuJDDouMAc3w3qT9lzEjMMWYpDdHtFKahGZBcqlV42HNi4MYy0dY6nMT6qeYP
+ oCFMKKEMQDseR0DYmN00TDqKQ6YK2fOwJV5s1nj/aTCIctKwYHBdfvrCF43rPD/3uAzc
+ iquw==
+X-Gm-Message-State: AOJu0YxaLkiaSdP+fUUvSKJbUN3iLmeAvhvNsiYyKpkQZSkm4/cnpywA
+ 1PHXF+PmZ2VizMoiV2LBYIyqnY+rAqlHrnON+C0=
+X-Google-Smtp-Source: AGHT+IHU4knB3cv5c5iiVsaSn1JTPophB2olJSmtUBiXhGzgM3Q98Ri+NuIrVdoa3V1NnAA42Xj3GA==
+X-Received: by 2002:a17:902:f68b:b0:1bb:9c45:130f with SMTP id
+ l11-20020a170902f68b00b001bb9c45130fmr3064503plg.69.1692378763410; 
+ Fri, 18 Aug 2023 10:12:43 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.12.40
+ jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.12.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 10:12:42 -0700 (PDT)
+ Fri, 18 Aug 2023 10:12:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 10/33] linux-user: Remove HOST_PAGE_ALIGN from mmap.c
-Date: Fri, 18 Aug 2023 10:12:04 -0700
-Message-Id: <20230818171227.141728-11-richard.henderson@linaro.org>
+Subject: [PATCH 11/33] migration: Remove qemu_host_page_size
+Date: Fri, 18 Aug 2023 10:12:05 -0700
+Message-Id: <20230818171227.141728-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818171227.141728-1-richard.henderson@linaro.org>
 References: <20230818171227.141728-1-richard.henderson@linaro.org>
@@ -90,73 +90,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This removes a hidden use of qemu_host_page_size, using instead
-the existing host_page_size local within each function.
+Replace with the maximum of the real host page size
+and the target page size.  This is an exact replacement.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ migration/ram.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 48a6ef0af9..35f270ec2e 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -147,7 +147,7 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
+diff --git a/migration/ram.c b/migration/ram.c
+index 9040d66e61..1cabf935f2 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3033,7 +3033,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+ {
+     RAMState **rsp = opaque;
+     RAMBlock *block;
+-    int ret;
++    int ret, max_hg_page_size;
  
-     last = start + len - 1;
-     host_start = start & -host_page_size;
--    host_last = HOST_PAGE_ALIGN(last) - 1;
-+    host_last = ROUND_UP(last, host_page_size) - 1;
-     nranges = 0;
- 
-     mmap_lock();
-@@ -345,8 +345,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
-         start &= -host_page_size;
+     if (compress_threads_save_setup()) {
+         return -1;
+@@ -3048,6 +3048,12 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
      }
-     start = ROUND_UP(start, align);
--
--    size = HOST_PAGE_ALIGN(size);
-+    size = ROUND_UP(size, host_page_size);
+     (*rsp)->pss[RAM_CHANNEL_PRECOPY].pss_channel = f;
  
-     if (reserved_va) {
-         return mmap_find_vma_reserved(start, size, align);
-@@ -506,7 +505,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-      */
-     if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-         host_len = len + offset - host_offset;
--        host_len = HOST_PAGE_ALIGN(host_len);
-+        host_len = ROUND_UP(host_len, host_page_size);
-         start = mmap_find_vma(real_start, host_len, TARGET_PAGE_SIZE);
-         if (start == (abi_ulong)-1) {
-             errno = ENOMEM;
-@@ -551,7 +550,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-         void *p;
++    /*
++     * ??? Mirrors the previous use of qemu_host_page_size below,
++     * but is this really what was intended for the migration?
++     */
++    max_hg_page_size = MAX(qemu_real_host_page_size(), TARGET_PAGE_SIZE);
++
+     WITH_RCU_READ_LOCK_GUARD() {
+         qemu_put_be64(f, ram_bytes_total_with_ignored()
+                          | RAM_SAVE_FLAG_MEM_SIZE);
+@@ -3056,8 +3062,8 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+             qemu_put_byte(f, strlen(block->idstr));
+             qemu_put_buffer(f, (uint8_t *)block->idstr, strlen(block->idstr));
+             qemu_put_be64(f, block->used_length);
+-            if (migrate_postcopy_ram() && block->page_size !=
+-                                          qemu_host_page_size) {
++            if (migrate_postcopy_ram() &&
++                block->page_size != max_hg_page_size) {
+                 qemu_put_be64(f, block->page_size);
+             }
+             if (migrate_ignore_shared()) {
+@@ -3881,12 +3887,20 @@ static int ram_load_precopy(QEMUFile *f)
+ {
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     int flags = 0, ret = 0, invalid_flags = 0, len = 0, i = 0;
++    int max_hg_page_size;
++
+     /* ADVISE is earlier, it shows the source has the postcopy capability on */
+     bool postcopy_advised = migration_incoming_postcopy_advised();
+     if (!migrate_compress()) {
+         invalid_flags |= RAM_SAVE_FLAG_COMPRESS_PAGE;
+     }
  
-         host_len = len + offset - host_offset;
--        host_len = HOST_PAGE_ALIGN(host_len);
-+        host_len = ROUND_UP(host_len, host_page_size);
-         host_prot = target_to_host_prot(target_prot);
- 
-         /* Note: we prefer to control the mapping address. */
-@@ -581,7 +580,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             goto fail;
-         }
-         last = start + len - 1;
--        real_last = HOST_PAGE_ALIGN(last) - 1;
-+        real_last = ROUND_UP(last, host_page_size) - 1;
- 
-         /*
-          * Test if requested memory area fits target address space
-@@ -749,7 +748,7 @@ static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
- 
-     last = start + len - 1;
-     real_start = start & -host_page_size;
--    real_last = HOST_PAGE_ALIGN(last) - 1;
-+    real_last = ROUND_UP(last, host_page_size) - 1;
- 
-     /*
-      * If guest pages remain on the first or last host pages,
++    /*
++     * ??? Mirrors the previous use of qemu_host_page_size below,
++     * but is this really what was intended for the migration?
++     */
++    max_hg_page_size = MAX(qemu_real_host_page_size(), TARGET_PAGE_SIZE);
++
+     while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
+         ram_addr_t addr, total_ram_bytes;
+         void *host = NULL, *host_bak = NULL;
+@@ -3987,7 +4001,7 @@ static int ram_load_precopy(QEMUFile *f)
+                     }
+                     /* For postcopy we need to check hugepage sizes match */
+                     if (postcopy_advised && migrate_postcopy_ram() &&
+-                        block->page_size != qemu_host_page_size) {
++                        block->page_size != max_hg_page_size) {
+                         uint64_t remote_page_size = qemu_get_be64(f);
+                         if (remote_page_size != block->page_size) {
+                             error_report("Mismatched RAM page size %s "
 -- 
 2.34.1
 
