@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A36780FB2
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1341780FB6
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX1sF-0005Ja-8D; Fri, 18 Aug 2023 11:58:55 -0400
+	id 1qX1sq-0006kQ-Oc; Fri, 18 Aug 2023 11:59:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qX1sD-0005J5-DI
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:53 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qX1so-0006bt-6T
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:59:30 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qX1sA-0004wd-FL
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:53 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe45481edfso10489335e9.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:58:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qX1sk-00050m-EO
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:59:29 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1bdcb800594so8649915ad.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:59:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692374329; x=1692979129;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Tt8gFXZAVgdSU8JxW7d1fDhLvNPeIviD1msZV2xcw/0=;
- b=N+simupBpQC/XNMuPjHaVTjvwF9Q5bN3vSU5CC15EUYwYKLzB9ltQr8cKJBWZN2LFV
- 7k71gTogBVFVAW/evF27LAF+9/Hcj2nOw0NfcERIhN9rze1cwLUjlTz0dLlMdbrLVsH6
- BU1rkPegAWei2ocylJTtb6+GAMoBLraY7DI7J9PAttJNk++hjaP0XzRZV3gWoifBfN7z
- kQknWNx2DxI8XAznWDIMw0H/B10bq3Jae86KhKFc7rS+b/2e32mChg+UH58VFWwdUpvG
- OJlgVQ5J6VoOIOScvJpwT3SUS62xLoLNNDSl4aJQSw5bJInBfJHZW23LgddpYNsmsIT0
- vwgA==
+ d=linaro.org; s=google; t=1692374363; x=1692979163;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=R1Rgw9Wi0OJ/Q5yK8AYhV+VudpJMLGVi8f29II1Jnbc=;
+ b=DY5++WHSfw3dqZheF+d86USu8QPrcsZiQnvGFAgWnjrjpgSntKHrTlKUp1I668ea5g
+ 66A2S4uZ3/+PZksWFM6SwTQAKSz86NIR+hT/OknK+972e5GPPdiL2iSzmc/5OLUWLVXR
+ qx4xcTQlbLeukoKnspgm9Wp6IhUUHuDWpFDA02qDKmn/1BFzt992YDq09klkj5m+Tzu1
+ TFIy39yQ8K5PcnWUMDAxl0KBjXkVYJgBguOIwsEVHD5TQX/KZb/fjygsDuaTeD4VeRQm
+ IqjYZoA+wnFLXJVGsUH0QMx1YA1KoAQXappnHzAjzF50mVRTLNIokA/5UCuYbU2hJ/Pr
+ 4k3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692374329; x=1692979129;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Tt8gFXZAVgdSU8JxW7d1fDhLvNPeIviD1msZV2xcw/0=;
- b=CLg6fS1Z2dlUh3lxr2JLXIB2XizDnP86VUq41CM8BxJsHMzwu9rQ3XseKWQGeXF6xI
- jYp7bmc02HDJep9BKy+jxh63a3wtQqSCQhsW+wybQRgeuGFCSE7UoFYQ+EFRgFpqy7RG
- Gtf5iEUZlh0dZouWyB41di+f93Pk38WLSRwsG9yAgOt28J4F4PL43mmikKKKsqWHbXTN
- qKbBWwx8P8oZDDAeY0dmDhlplyLJ7btGlLO2q/AcITc0wCzwDFxR3w/a3bRZD3jdDiPs
- jNIiWmpLunv3/POvyH46PscX6+Gw7cSEVGhGRX3MppWNlRY03TB/2VSeJmDKuj7WxKVB
- 5r0A==
-X-Gm-Message-State: AOJu0YxBRToDVKtvwAWlfL3dFm5Pts0O0sgb6CAp7ol/T80xRXztmbMk
- Ei4O3ny5D5ffjfTl3HW8glsvWbpH2DKvQ19932k=
-X-Google-Smtp-Source: AGHT+IHrRHQAa8psh6HkaX5DtFA1zBhnSH53y7d1O3vf6UXmyS3CdSOmIoDaAixhXM5u5J6Xa3raDQ==
-X-Received: by 2002:a7b:cb8e:0:b0:3f8:fc96:6bfd with SMTP id
- m14-20020a7bcb8e000000b003f8fc966bfdmr2461506wmi.17.1692374328768; 
- Fri, 18 Aug 2023 08:58:48 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20221208; t=1692374363; x=1692979163;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=R1Rgw9Wi0OJ/Q5yK8AYhV+VudpJMLGVi8f29II1Jnbc=;
+ b=BB0iFn4cJ3RY4jTXR+y9svdyv/22pkVfLs8gllOMV/clAB+GRuoIiJ7kCJOTj6MqE3
+ pyBuTe28XzktyDJXdcKTPKm8gJmw1pOruYoEF4d1BxmhCI9vBJptANLk0EdFLM2qk9E2
+ 6UveepbSdjO0q7+os1Gr6avAa2279FlR3jNpyyzVspIj7zE3IesuYWB6fueK5YlpCXOP
+ bII+N8yqrSptvoXTtNFdsowL+LqiZ0ZuZN1JlOeinpIMRCpAfjvlQiaUGAR6HoPL4h/+
+ NJpqi4bh1n6AkVXUHZ0YSSttJeO05NrRFWIZzwkj88R+Y5cK+A32YpSfXVOVkQT7FsLt
+ DUDw==
+X-Gm-Message-State: AOJu0YwPOvWWVXceg3VfeF+jukrhKSk9mYbfAcmGT/6qkCqlTejESzEU
+ Q1t8MuUeVNDmVrDrj3oRHFgO3Q==
+X-Google-Smtp-Source: AGHT+IH7Bvrok8GVfPQmc1ONRzRaj6VIhb4/2LxPwx5ZeSKWaNBw32RkC5+9nqd8idmihtid4oKfhg==
+X-Received: by 2002:a17:902:f7d1:b0:1bb:3406:a612 with SMTP id
+ h17-20020a170902f7d100b001bb3406a612mr2560052plw.57.1692374363479; 
+ Fri, 18 Aug 2023 08:59:23 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:cf24:6daf:2b9e:7972?
+ ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- y21-20020a7bcd95000000b003fbb346279dsm3275702wmj.38.2023.08.18.08.58.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 08:58:48 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: [PATCH 2/2] audio/jackaudio: Avoid dynamic stack allocation in
- qjack_process()
-Date: Fri, 18 Aug 2023 16:58:46 +0100
-Message-Id: <20230818155846.1651287-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230818155846.1651287-1-peter.maydell@linaro.org>
-References: <20230818155846.1651287-1-peter.maydell@linaro.org>
+ x21-20020a170902ea9500b001bc39aa63ebsm1932046plb.121.2023.08.18.08.59.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Aug 2023 08:59:23 -0700 (PDT)
+Message-ID: <64b018a9-917b-0f83-9d8c-1491f0d676dd@linaro.org>
+Date: Fri, 18 Aug 2023 08:59:21 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 3/4] target/loongarch: Rename 64-bit specific functions
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Jiajie Chen <c@jia.je>
+References: <20230818103425.16271-1-philmd@linaro.org>
+ <20230818103425.16271-4-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230818103425.16271-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.454,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,86 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid a dynamic stack allocation in qjack_process().  Since this
-function is a JACK process callback, we are not permitted to malloc()
-here, so we allocate a working buffer in qjack_client_init() instead.
+On 8/18/23 03:34, Philippe Mathieu-Daudé wrote:
+> These functions are specific to loongarch64 cores. Rename
+> including the '64' suffix in preparation of supporting
+> loongarch32 cores.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/loongarch/cpu.c | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index dc617be36f..19572e37ad 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -76,7 +76,7 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
+>       cpu_loop_exit_restore(cs, pc);
+>   }
+>   
+> -static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
+> +static void loongarch64_cpu_set_pc(CPUState *cs, vaddr value)
+>   {
+>       LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+>       CPULoongArchState *env = &cpu->env;
+> @@ -84,7 +84,7 @@ static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
+>       env->pc = value;
+>   }
+>   
+> -static vaddr loongarch_cpu_get_pc(CPUState *cs)
+> +static vaddr loongarch64_cpu_get_pc(CPUState *cs)
+>   {
+>       LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+>       CPULoongArchState *env = &cpu->env;
+> @@ -356,7 +356,7 @@ static bool loongarch_cpu_has_work(CPUState *cs)
+>   #endif
+>   }
 
-The codebase has very few VLAs, and if we can get rid of them all we
-can make the compiler error on new additions.  This is a defensive
-measure against security bugs where an on-stack dynamic allocation
-isn't correctly size-checked (e.g.  CVE-2021-3527).
+Not 64-bit specific.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-This feels like we ought to be able to say "we know there are at most
-X channels, so allocate an array of size X on the stack", but I
-couldn't find anything in the audio subsystem from a quick look that
-set an obvious bound on the number of channels.  Is there some
-straightforward constant MAX_CHANNELS somewhere?
----
- audio/jackaudio.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/audio/jackaudio.c b/audio/jackaudio.c
-index 7cb2a49f971..e1eaa3477dc 100644
---- a/audio/jackaudio.c
-+++ b/audio/jackaudio.c
-@@ -70,6 +70,9 @@ typedef struct QJackClient {
-     int             buffersize;
-     jack_port_t   **port;
-     QJackBuffer     fifo;
-+
-+    /* Used as workspace by qjack_process() */
-+    float **process_buffers;
- }
- QJackClient;
- 
-@@ -267,22 +270,21 @@ static int qjack_process(jack_nframes_t nframes, void *arg)
-     }
- 
-     /* get the buffers for the ports */
--    float *buffers[c->nchannels];
-     for (int i = 0; i < c->nchannels; ++i) {
--        buffers[i] = jack_port_get_buffer(c->port[i], nframes);
-+        c->process_buffers[i] = jack_port_get_buffer(c->port[i], nframes);
-     }
- 
-     if (c->out) {
-         if (likely(c->enabled)) {
--            qjack_buffer_read_l(&c->fifo, buffers, nframes);
-+            qjack_buffer_read_l(&c->fifo, c->process_buffers, nframes);
-         } else {
-             for (int i = 0; i < c->nchannels; ++i) {
--                memset(buffers[i], 0, nframes * sizeof(float));
-+                memset(c->process_buffers[i], 0, nframes * sizeof(float));
-             }
-         }
-     } else {
-         if (likely(c->enabled)) {
--            qjack_buffer_write_l(&c->fifo, buffers, nframes);
-+            qjack_buffer_write_l(&c->fifo, c->process_buffers, nframes);
-         }
-     }
- 
-@@ -448,6 +450,9 @@ static int qjack_client_init(QJackClient *c)
-           jack_get_client_name(c->client));
-     }
- 
-+    /* Allocate working buffer for process callback */
-+    c->process_buffers = g_new(float *, c->nchannels);
-+
-     jack_set_process_callback(c->client, qjack_process , c);
-     jack_set_port_registration_callback(c->client, qjack_port_registration, c);
-     jack_set_xrun_callback(c->client, qjack_xrun, c);
-@@ -579,6 +584,7 @@ static void qjack_client_fini_locked(QJackClient *c)
- 
-         qjack_buffer_free(&c->fifo);
-         g_free(c->port);
-+        g_free(c->process_buffers);
- 
-         c->state = QJACK_STATE_DISCONNECTED;
-         /* fallthrough */
--- 
-2.34.1
-
+r~
 
