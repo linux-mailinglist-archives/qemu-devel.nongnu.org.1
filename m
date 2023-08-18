@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D36781196
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4AD781197
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX39w-0007LR-Kx; Fri, 18 Aug 2023 13:21:17 -0400
+	id 1qX3AD-0007sb-8m; Fri, 18 Aug 2023 13:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39o-0006dY-Nt
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:08 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39w-0007VX-7g
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:16 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39m-0001u6-DL
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:08 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-99d90ffed68so479432266b.0
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:21:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39s-0001ur-QY
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:15 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4fe389d6f19so1553439e87.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:21:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692379265; x=1692984065;
+ d=linaro.org; s=google; t=1692379271; x=1692984071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uEMElgMvR1O3ZuyrTpBd0rfdnbX1M9RkvLN7Ub/Z4Dw=;
- b=MuRNZy5Wj9JU8nMw9ACBoTqf4tCv1Sl/DlN5qy6tgakiWAxwj1ST0ZH6Rgx+oUY4r9
- JlInG3SlRt53sUpL/jFfOptGIiIgdXjbZSJ/WZI485yZjfTs6jeoY4dBuq9XUt60Qyu6
- P4OwEO1EmnPCxlFvBBaNoMUZMnyfmQUScb6+n9BVOzZd9T8QQmN4kD9iUqim8dOtJh9n
- bM6VgPfxzAGfO2ZVM3mxMEq9axPd77kyz3XOd+IBeWKISeVJPARBetDXL2Jl006MND35
- y48GLYskOJNDoF+VLQjp62AJTQWN+vfTkeDng6FhEtw4hhC0u2SRtae0uD9we14UBYda
- 1GvA==
+ bh=H2Fkk9ynZ3VBGOLEApNmPZej9m7TD3tkTeJS3zvlq3E=;
+ b=GOphnewwFZStjeXzZW+e56mkMSIPCps0URPpllO+w64WvAbusLh3sSEfMDa7ND/9M5
+ Wbbc4L0nIFMJKeK2rmyWRR9S1Xm4bhpf0AgtApp0UnLMTnaPYvFuvtEklcm7hQn+hliG
+ rZ/qZ+kcrFdTGcvWqGV4IV2QtS7h3nGr9WVjbeXoQFWAUN9DnPbwNeZ53nTQnOpAdqux
+ JYjvoyiyJzyf1mL/rfEJ9zaQpngDbG1sXoetbg9yqm+KlatYHd2VmEzEil6DXeq178HO
+ riaMjmkcCz4GqAtaANPelLhjx1os3VqCXu4WB4S2aq66vRotWYT+Y/uX/sp6abVw9LHm
+ 0WSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692379265; x=1692984065;
+ d=1e100.net; s=20221208; t=1692379271; x=1692984071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uEMElgMvR1O3ZuyrTpBd0rfdnbX1M9RkvLN7Ub/Z4Dw=;
- b=B1ByX1F3Up5FwN3V7PWD+kgWLLIr0DfZqMSw/gtdRCQnBu2M2FBSMQHdirXxy4DQDK
- sU0AUwWzUes5T+zfn+RH3fjEhLLv5GrSy7DEYPZIJtQROE6zW7inHoKzRfGVvFeP60Jg
- x+xgB2s2qHg3c3VC9DKVMRDK+zLf9N+iHPs6JPHUXB9B0sxnJg2411YpO1WshXZlbkmu
- bBfL6KHUVqcLJpgg0Y0Ije4VNl3MzthoTz5W2aPIqz+8xi8aR89lrLCXRa/Hc73K2Qpe
- XNeY3te16XRtUbK/jvO6v+mZN4EGUa+bYKI7fwo/goXmOk3y8+0Nd+Ka/jNN8PvAFeAh
- 5MfQ==
-X-Gm-Message-State: AOJu0YwsDmharJPbk4n2Dz00DIhw6P0oS3UwCDSe4QUH4No67DRg677d
- 9NKxwx1UojUNOx9ZGYj84VSgRA0RiV4miAmuxDs=
-X-Google-Smtp-Source: AGHT+IFfivwRxuLAN1HQuB3QQYL0Ca8mPGPEDObH+BVRtXkPgGa40G63gWKQCvJG8k5r3dC/pEBADw==
-X-Received: by 2002:a17:906:5195:b0:997:e9a3:9c4f with SMTP id
- y21-20020a170906519500b00997e9a39c4fmr3658167ejk.30.1692379264879; 
- Fri, 18 Aug 2023 10:21:04 -0700 (PDT)
+ bh=H2Fkk9ynZ3VBGOLEApNmPZej9m7TD3tkTeJS3zvlq3E=;
+ b=EUwvaV9GUXGfnE0F5GGrBCjrYb0Q9fGDyqnfFVduVpJOLyjiJtKeZeO7cT+RgSUa+i
+ jg8K2uBqs1BQXm9SQAlF9HQIsPHptntJ/r+ebN0ZthXnuUqwYnnnhkzOM22CWOtoERws
+ m3M49qitpqSYY4Zz4YEYpX+F+9CGj9Z5bxpmftgA3Zy4/NwzKwOC+EAAC09URYJuePZQ
+ cvZGtN1QsD5+GTu296J676TXU1AFls7YyiW2kPYzClDrmmDVZAiyNi+VKIENmtDWE6Qi
+ u76UznRZ/hTpT0UvOgxMXyTJdwg7vaUM3g7BdE3B8VljEMJOyAPzgATz1KdMPlIAHU+Q
+ Uhtg==
+X-Gm-Message-State: AOJu0Yx942WmdgPRLQchBtehkxO5fPUznKaCA+yy0GxH8pid+qmSKE+8
+ tTMGjWMj8KP9kjS6fEyRX7CLcPogJ0ZJuxzkkvc=
+X-Google-Smtp-Source: AGHT+IHLeh8Nsum5fRrW/DxPhzkb0NOc62cZ3QyEYYBH84oQ2NFByIZAiDjhWNbbtf1SePekRAQxVQ==
+X-Received: by 2002:a05:6512:3f0a:b0:4fe:181f:2736 with SMTP id
+ y10-20020a0565123f0a00b004fe181f2736mr3090125lfa.33.1692379270913; 
+ Fri, 18 Aug 2023 10:21:10 -0700 (PDT)
 Received: from m1x-phil.lan (cnf78-h01-176-184-27-79.dsl.sta.abo.bbox.fr.
  [176.184.27.79]) by smtp.gmail.com with ESMTPSA id
- yy10-20020a170906dc0a00b0099d02ca4327sm1411861ejb.54.2023.08.18.10.21.03
+ c4-20020aa7df04000000b00523b1335618sm1269391edy.97.2023.08.18.10.21.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 18 Aug 2023 10:21:04 -0700 (PDT)
+ Fri, 18 Aug 2023 10:21:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -62,18 +62,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 7/8] target/loongarch: Add new object class for loongarch32
- cpus
-Date: Fri, 18 Aug 2023 19:20:15 +0200
-Message-ID: <20230818172016.24504-8-philmd@linaro.org>
+Subject: [PATCH v2 8/8] target/loongarch: Add GDB support for loongarch32 mode
+Date: Fri, 18 Aug 2023 19:20:16 +0200
+Message-ID: <20230818172016.24504-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230818172016.24504-1-philmd@linaro.org>
 References: <20230818172016.24504-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,60 +97,169 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jiajie Chen <c@jia.je>
 
-Add object class stub for future loongarch32 cpus.
+GPRs and PC are 32-bit wide in loongarch32 mode.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20230817093121.1053890-3-gaosong@loongson.cn>
-[Rebased on TYPE_LOONGARCH64_CPU introduction]
+Message-ID: <20230817093121.1053890-4-gaosong@loongson.cn>
+[PMD: Rebased, set gdb_num_core_regs]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/cpu.h |  1 +
- target/loongarch/cpu.c | 11 +++++++++++
- 2 files changed, 12 insertions(+)
+ configs/targets/loongarch64-softmmu.mak |  2 +-
+ target/loongarch/cpu.c                  | 10 ++++++
+ target/loongarch/gdbstub.c              | 32 ++++++++++++++----
+ gdb-xml/loongarch-base32.xml            | 45 +++++++++++++++++++++++++
+ 4 files changed, 81 insertions(+), 8 deletions(-)
+ create mode 100644 gdb-xml/loongarch-base32.xml
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 3235ad081f..b8af491041 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -382,6 +382,7 @@ struct ArchCPU {
- };
- 
- #define TYPE_LOONGARCH_CPU "loongarch-cpu"
-+#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
- #define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
- 
- OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
+diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
+index 9abc99056f..f23780fdd8 100644
+--- a/configs/targets/loongarch64-softmmu.mak
++++ b/configs/targets/loongarch64-softmmu.mak
+@@ -1,5 +1,5 @@
+ TARGET_ARCH=loongarch64
+ TARGET_BASE_ARCH=loongarch
+ TARGET_SUPPORTS_MTTCG=y
+-TARGET_XML_FILES= gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
++TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
+ TARGET_NEED_FDT=y
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 356d039560..5082506f10 100644
+index 5082506f10..f42e8497d6 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -726,6 +726,10 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+@@ -726,8 +726,18 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
  #endif
  }
  
-+static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
++static gchar *loongarch32_gdb_arch_name(CPUState *cs)
 +{
++    return g_strdup("loongarch32");
 +}
 +
- static gchar *loongarch64_gdb_arch_name(CPUState *cs)
+ static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
  {
-     return g_strdup("loongarch64");
-@@ -758,6 +762,13 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
-         .class_size = sizeof(LoongArchCPUClass),
-         .class_init = loongarch_cpu_class_init,
-     },
-+    {
-+        .name = TYPE_LOONGARCH32_CPU,
-+        .parent = TYPE_LOONGARCH_CPU,
++    CPUClass *cc = CPU_CLASS(c);
 +
-+        .abstract = true,
-+        .class_init = loongarch32_cpu_class_init,
-+    },
-     {
-         .name = TYPE_LOONGARCH64_CPU,
-         .parent = TYPE_LOONGARCH_CPU,
++    cc->gdb_num_core_regs = 35;
++    cc->gdb_core_xml_file = "loongarch-base32.xml";
++    cc->gdb_arch_name = loongarch32_gdb_arch_name;
+ }
+ 
+ static gchar *loongarch64_gdb_arch_name(CPUState *cs)
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 0752fff924..a462e25737 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -34,16 +34,25 @@ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
++    uint64_t val;
+ 
+     if (0 <= n && n < 32) {
+-        return gdb_get_regl(mem_buf, env->gpr[n]);
++        val = env->gpr[n];
+     } else if (n == 32) {
+         /* orig_a0 */
+-        return gdb_get_regl(mem_buf, 0);
++        val = 0;
+     } else if (n == 33) {
+-        return gdb_get_regl(mem_buf, env->pc);
++        val = env->pc;
+     } else if (n == 34) {
+-        return gdb_get_regl(mem_buf, env->CSR_BADV);
++        val = env->CSR_BADV;
++    }
++
++    if (0 <= n && n <= 34) {
++        if (is_la64(env)) {
++            return gdb_get_reg64(mem_buf, val);
++        } else {
++            return gdb_get_reg32(mem_buf, val);
++        }
+     }
+     return 0;
+ }
+@@ -52,15 +61,24 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
+-    target_ulong tmp = ldtul_p(mem_buf);
++    target_ulong tmp;
++    int read_length;
+     int length = 0;
+ 
++    if (is_la64(env)) {
++        tmp = ldq_p(mem_buf);
++        read_length = 8;
++    } else {
++        tmp = ldl_p(mem_buf);
++        read_length = 4;
++    }
++
+     if (0 <= n && n < 32) {
+         env->gpr[n] = tmp;
+-        length = sizeof(target_ulong);
++        length = read_length;
+     } else if (n == 33) {
+         env->pc = tmp;
+-        length = sizeof(target_ulong);
++        length = read_length;
+     }
+     return length;
+ }
+diff --git a/gdb-xml/loongarch-base32.xml b/gdb-xml/loongarch-base32.xml
+new file mode 100644
+index 0000000000..af47bbd3da
+--- /dev/null
++++ b/gdb-xml/loongarch-base32.xml
+@@ -0,0 +1,45 @@
++<?xml version="1.0"?>
++<!-- Copyright (C) 2022 Free Software Foundation, Inc.
++
++     Copying and distribution of this file, with or without modification,
++     are permitted in any medium without royalty provided the copyright
++     notice and this notice are preserved.  -->
++
++<!DOCTYPE feature SYSTEM "gdb-target.dtd">
++<feature name="org.gnu.gdb.loongarch.base">
++  <reg name="r0" bitsize="32" type="uint32" group="general"/>
++  <reg name="r1" bitsize="32" type="code_ptr" group="general"/>
++  <reg name="r2" bitsize="32" type="data_ptr" group="general"/>
++  <reg name="r3" bitsize="32" type="data_ptr" group="general"/>
++  <reg name="r4" bitsize="32" type="uint32" group="general"/>
++  <reg name="r5" bitsize="32" type="uint32" group="general"/>
++  <reg name="r6" bitsize="32" type="uint32" group="general"/>
++  <reg name="r7" bitsize="32" type="uint32" group="general"/>
++  <reg name="r8" bitsize="32" type="uint32" group="general"/>
++  <reg name="r9" bitsize="32" type="uint32" group="general"/>
++  <reg name="r10" bitsize="32" type="uint32" group="general"/>
++  <reg name="r11" bitsize="32" type="uint32" group="general"/>
++  <reg name="r12" bitsize="32" type="uint32" group="general"/>
++  <reg name="r13" bitsize="32" type="uint32" group="general"/>
++  <reg name="r14" bitsize="32" type="uint32" group="general"/>
++  <reg name="r15" bitsize="32" type="uint32" group="general"/>
++  <reg name="r16" bitsize="32" type="uint32" group="general"/>
++  <reg name="r17" bitsize="32" type="uint32" group="general"/>
++  <reg name="r18" bitsize="32" type="uint32" group="general"/>
++  <reg name="r19" bitsize="32" type="uint32" group="general"/>
++  <reg name="r20" bitsize="32" type="uint32" group="general"/>
++  <reg name="r21" bitsize="32" type="uint32" group="general"/>
++  <reg name="r22" bitsize="32" type="data_ptr" group="general"/>
++  <reg name="r23" bitsize="32" type="uint32" group="general"/>
++  <reg name="r24" bitsize="32" type="uint32" group="general"/>
++  <reg name="r25" bitsize="32" type="uint32" group="general"/>
++  <reg name="r26" bitsize="32" type="uint32" group="general"/>
++  <reg name="r27" bitsize="32" type="uint32" group="general"/>
++  <reg name="r28" bitsize="32" type="uint32" group="general"/>
++  <reg name="r29" bitsize="32" type="uint32" group="general"/>
++  <reg name="r30" bitsize="32" type="uint32" group="general"/>
++  <reg name="r31" bitsize="32" type="uint32" group="general"/>
++  <reg name="orig_a0" bitsize="32" type="uint32" group="general"/>
++  <reg name="pc" bitsize="32" type="code_ptr" group="general"/>
++  <reg name="badv" bitsize="32" type="code_ptr" group="general"/>
++</feature>
 -- 
 2.41.0
 
