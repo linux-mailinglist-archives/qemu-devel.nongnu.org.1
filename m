@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739C8780658
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 09:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F17780659
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 09:29:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWtul-0003YC-5R; Fri, 18 Aug 2023 03:28:59 -0400
+	id 1qWtuo-0003Yr-VV; Fri, 18 Aug 2023 03:29:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qWtuh-0003Y4-3W
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:28:55 -0400
+ id 1qWtuk-0003Yb-5I
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:28:59 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qWtub-0002Uz-Cc
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:28:53 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qWtuh-0002VT-4o
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:28:57 -0400
 Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxNvGpHd9kLdAZAA--.52948S3;
- Fri, 18 Aug 2023 15:28:41 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxV_GwHd9kNtAZAA--.53435S3;
+ Fri, 18 Aug 2023 15:28:48 +0800 (CST)
 Received: from [10.20.42.239] (unknown [10.20.42.239])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxniOlHd9k1XNdAA--.57138S3; 
- Fri, 18 Aug 2023 15:28:37 +0800 (CST)
-Subject: Re: [PATCH v4 07/18] linux-user: Load vdso image if available
+ AQAAf8CxF8yvHd9k4XNdAA--.57894S3; 
+ Fri, 18 Aug 2023 15:28:47 +0800 (CST)
+Subject: Re: [PATCH v4 15/18] linux-user/loongarch64: Add vdso
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20230816180338.572576-1-richard.henderson@linaro.org>
- <20230816180338.572576-8-richard.henderson@linaro.org>
+ <20230816180338.572576-16-richard.henderson@linaro.org>
 From: gaosong <gaosong@loongson.cn>
-Message-ID: <41dee294-d74c-1e58-b7c0-6325e4aea83a@loongson.cn>
-Date: Fri, 18 Aug 2023 15:28:37 +0800
+Message-ID: <f4c46986-6577-1441-da0d-2e9755896efc@loongson.cn>
+Date: Fri, 18 Aug 2023 15:28:47 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20230816180338.572576-8-richard.henderson@linaro.org>
+In-Reply-To: <20230816180338.572576-16-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=gbk; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxniOlHd9k1XNdAA--.57138S3
+X-CM-TRANSID: AQAAf8CxF8yvHd9k4XNdAA--.57894S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ArW7Ww13Aw13Kw1rXr17twc_yoW8GFy7pa
- 95Ww1DArWrAw4rAFs2yw48Z3WkXF1DuF4UGw45G3ykA34vyr4j934DK3W29ws8Xr1vvF4U
- t398ZrZ8GFWDurgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW7WFWfAw1rZry7tF4UAr4UJrc_yoW8WF1rp3
+ y3Cr4rur48JrZrXFsxJ34jqF95XFs7uF1Yg3W3Wr17AryxAw18uw1DKF98W3W7Z340yF40
+ qFyDGw1UKayDWagCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
  0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
  IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
  e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
  0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
  xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
  67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
  AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
  F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
  1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
  xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
- VUUUUUU==
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8r9
+ N3UUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: -34
@@ -80,46 +80,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Richard
-
 ÔÚ 2023/8/17 ÉÏÎç2:03, Richard Henderson Ð´µÀ:
-> @@ -3629,10 +3694,13 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
->       }
->   
->       /*
-> -     * TODO: load a vdso, which would also contain the signal trampolines.
-> -     * Otherwise, allocate a private page to hold them.
-> +     * Load a vdso if available, which will amongst other things contain the
-> +     * signal trampolines.  Otherwise, allocate a separate page for them.
->        */
-> -    if (TARGET_ARCH_HAS_SIGTRAMP_PAGE) {
-> +    const VdsoImageInfo *vdso = vdso_image_info();
-> +    if (vdso) {
-> +        load_elf_vdso(&vdso_info, vdso);
-> +    } else if (TARGET_ARCH_HAS_SIGTRAMP_PAGE) {
-I see some targets already support vdso.
+> Signed-off-by: Richard Henderson<richard.henderson@linaro.org>
+> ---
+>   linux-user/loongarch64/vdso-asmoffset.h |   8 ++
+>   linux-user/elfload.c                    |   4 +
+>   linux-user/loongarch64/signal.c         |  17 +++-
+>   linux-user/loongarch64/Makefile.vdso    |   7 ++
+>   linux-user/loongarch64/meson.build      |   4 +
+>   linux-user/loongarch64/vdso.S           | 130 ++++++++++++++++++++++++
+>   linux-user/loongarch64/vdso.ld          |  73 +++++++++++++
+>   linux-user/loongarch64/vdso.so          | Bin 0 -> 3560 bytes
+>   linux-user/meson.build                  |   1 +
+>   9 files changed, 243 insertions(+), 1 deletion(-)
+>   create mode 100644 linux-user/loongarch64/vdso-asmoffset.h
+>   create mode 100644 linux-user/loongarch64/Makefile.vdso
+>   create mode 100644 linux-user/loongarch64/meson.build
+>   create mode 100644 linux-user/loongarch64/vdso.S
+>   create mode 100644 linux-user/loongarch64/vdso.ld
+>   create mode 100755 linux-user/loongarch64/vdso.so
 
-./linux-user/aarch64/vdso-be.so
-./linux-user/aarch64/vdso-le.so
-./linux-user/arm/vdso-arm-be.so
-./linux-user/arm/vdso-arm-le.so
-./linux-user/arm/vdso-thm-be.so
-./linux-user/arm/vdso-thm-le.so
-./linux-user/hppa/vdso.so
-./linux-user/i386/vdso.so
-./linux-user/loongarch64/vdso.so
-./linux-user/ppc/vdso-32.so
-./linux-user/ppc/vdso-64.so
-./linux-user/ppc/vdso-64le.so
-./linux-user/riscv/vdso-32.so
-./linux-user/riscv/vdso-64.so
-./linux-user/s390x/vdso.so
-./linux-user/x86_64/vdso.so
+I run a simply LoongArch binary on x86_64.
 
-This branch will never reach.
+I got
 
-what about remove TARGET_ARCH_HAS_SIGTRAMP_PAGE and setup_sigtramp() for 
-these targets?
+...
+Linking TBs 0x7f0e7004f240 index 1 -> 0x7f0e7004f3c0
+Trace 0: 0x7f0e7004f3c0 [00000000/00000001200084b4/00000000/00000000] 
+__gettimeofday
+Trace 0: 0x7f0e7004f500 [00000000/0000555555d5c644/00000000/00000000] 
+__vdso_gettimeofday
+Trace 0: 0x7f0e7004f640 [00000000/0000555555d5c64c/00000000/00000000] 
+__vdso_gettimeofday
+Trace 0: 0x7f0e7004f740 [00000000/00000001200084c0/00000000/00000000] 
+__gettimeofday
+...
+
+So
+Tested-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
 Thanks.
 Song Gao
