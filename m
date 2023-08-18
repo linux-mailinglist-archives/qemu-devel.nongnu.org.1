@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754C0780792
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 10:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9167807DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 11:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWvHo-0005Uu-L0; Fri, 18 Aug 2023 04:56:52 -0400
+	id 1qWvNU-0006q2-PG; Fri, 18 Aug 2023 05:02:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zltjiangshi@gmail.com>)
- id 1qWvHl-0005Uk-6n
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:56:49 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1qWvNN-0006pg-1z
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:02:37 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zltjiangshi@gmail.com>)
- id 1qWvHi-0005Dv-F5
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:56:48 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4ff9121fd29so935819e87.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 01:56:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1qWvNK-00078U-U0
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:02:36 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe4a89e8c4so6710605e9.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 02:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692349004; x=1692953804;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=X1e2Uww4gRQpdo8lUST7I+XPJWueSs3M9mFBaTBTD70=;
- b=FKmm0Q2MA7qMQGF4s7qyAY0iQWHgj+OyXW/9Vvt3z7P7eHWkdhr5yagri8oaoR69d6
- A3TNP43KI2zi6a6UcPip1LxPWnp46Ma0bBuFlVTpCkZJzVC8U9k/c9CzxQjir0gmuKlL
- VcNHk0gReqDL1QwLpXrmxYtCX/4VbHIuQ/k0BqCHa/bHIrEn82LJ/zYFC5ybBPaoVZqD
- HXEF2AsK599CqwLHUQ7f/2pX2jJS8p/yp/eaHIdEuxkH3+anI/dYwZLj1B7W/H956uwA
- vgYdEhmDguCFetMXIwd8bcoxv52/VwY035HPze3FQ1RkDYq7zuWuncNC9oCL9tIhJYP+
- KvHw==
+ d=adacore.com; s=google; t=1692349352; x=1692954152;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DAUhZSBJn3JLih4kQ23lXkAMrnHRWXshQwHFQUtfLS8=;
+ b=hJFV/Ur/eFFMqGyhCXF3vT0QUDZjZlh4NNArxyWLKWP7GCM9kJMNW6EMFs4L0u2XM1
+ OnWmOpNY8Yxi+3yQG2FUYqO5aqbAjVzMDRxl2SclToYM1GIGojplH8GCiJg4vS+QB1xP
+ PuHWEFK//KCXQ6OMj9An43V+hlolmv0RqKso2pfqxZiSJBeTQDhF0+lObSRVVfw2RMO7
+ h62hwcB58apas5kpt5dsfjnu6vkynzSXr3EkUKzbIS9XxdYxBkB0ynfuvx4RKCIIbWC1
+ fIp6J6HHN7fyLaNzPkZBh2iQFYpQM1DX9Dme7vwA/bokrbJRg+Wft8Iu+0jyD88dJwin
+ NLVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692349004; x=1692953804;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=X1e2Uww4gRQpdo8lUST7I+XPJWueSs3M9mFBaTBTD70=;
- b=bEOVqjwge772Bz6indE7edbIxfZLRJ4W4Z0fmVXong0TqUPZ9DdgvFgqZMHg3UCb8E
- xine1on39tDBjcNY3uGvfFrpG0pkqk0zOAG6+BiYhBeJxLxmkO6REiDWBlc9cvj32Om8
- XmraMan1JlBWcjb8Vt+IWLq6NStq+YkecGYYVrWaG3/GKRHDteuFhfzDeF8FtO97b7ty
- 5hc7NSyWPuQdFrD+zhQmDNphtk+Ur+s1C8eAUujR/0rp37Rs77iKhZ8aGV4aBnQfThT1
- jfIcLUniUJAw/1IH2nGFerCEfIL3o2RB9NYUYcZ/h7UF+T4tFABzD+oIUrJ3WkPXZaqU
- PGSQ==
-X-Gm-Message-State: AOJu0YxK0sHx3c1Omh5BG1gkLiUbZTWXT29Zj+thfqK7FufkxO4MrdxV
- TfFfnKwZ5TOrdfG86FISTJVkw07lJjP8Ibbgpws=
-X-Google-Smtp-Source: AGHT+IE8pEU/JlnUieR3MUE3XdPpfJjJiciFD932GazYet7599OLvtVUM6DBcQSsaqxz+Mlc02sGGTxuQPwWFw7uP6c=
-X-Received: by 2002:a05:6512:324d:b0:4ff:9aaa:6e3e with SMTP id
- c13-20020a056512324d00b004ff9aaa6e3emr1263050lfr.41.1692349003860; Fri, 18
- Aug 2023 01:56:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692349352; x=1692954152;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DAUhZSBJn3JLih4kQ23lXkAMrnHRWXshQwHFQUtfLS8=;
+ b=lZyhAQtZRlCDP14FAC6owJys9uMxzcv7hgskWy6ctqR6ysMK1R/+08im8aP4zmAhpg
+ 1yxFL/HxUsdWZ7RfF5HMXPbU2rKWybxnS+p0CafC4TSxVBJGllNt80Q0QX356eWeIJPQ
+ En2i2GnpIFVl4p47edZquPmXu2A4kph01TtLokEy6nK4ffy1orh0RwScek22GDQRSQYQ
+ vIQ2jqWxmdBe1Sulf4OtXIfedMDA9ZtaFQrpE4Gy6nWEuGFBQV0tvIACYQMXigrx2gPO
+ pJa13pRLdq2a6QppGmny2KdCK7ZAbMhg2WqOobM3DmLObrK3mJEZ7295biXyp8xC48es
+ FSpw==
+X-Gm-Message-State: AOJu0YxQyxLpX0ejmSvU+UwFU79xrNJlcwL/4sy04JvmnIw5zbFBbx8Q
+ tIBPEjyDtmR09rh44rExjQrxZiLM2zxTnjUjvxc=
+X-Google-Smtp-Source: AGHT+IGj0XR7rTD7hiMpcv/9PO/YXjXcRD8OAhqUGDpuC+U/UpiFzy4hDJtebfjUmZiykRTXUGDWZw==
+X-Received: by 2002:a5d:434a:0:b0:317:e5ec:8767 with SMTP id
+ u10-20020a5d434a000000b00317e5ec8767mr1346988wrr.21.1692349352134; 
+ Fri, 18 Aug 2023 02:02:32 -0700 (PDT)
+Received: from chigot-Dell.home ([2a01:cb15:8123:8100:44f6:7cae:4aa1:4fb7])
+ by smtp.gmail.com with ESMTPSA id
+ r5-20020adfe685000000b0030647449730sm2085745wrm.74.2023.08.18.02.02.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Aug 2023 02:02:31 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+Subject: [PATCH 0/3] Risc-V/gdb: replace exit(0) with proper shutdown
+Date: Fri, 18 Aug 2023 11:02:21 +0200
+Message-Id: <20230818090224.409192-1-chigot@adacore.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230817093121.1053890-1-gaosong@loongson.cn>
- <20230817093121.1053890-3-gaosong@loongson.cn>
- <05e574af-50e0-e71c-2e88-ab7fafd71155@linaro.org>
-In-Reply-To: <05e574af-50e0-e71c-2e88-ab7fafd71155@linaro.org>
-From: chen huacai <zltjiangshi@gmail.com>
-Date: Fri, 18 Aug 2023 16:56:33 +0800
-Message-ID: <CABDp7VpC8bryYW+Vm6fWGkajmKZmqeMDU+eUts+qHcz+F3Yt_w@mail.gmail.com>
-Subject: Re: [PATCH v3 02/18] target/loongarch: Add new object class for
- loongarch32 cpus
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>, 
- richard.henderson@linaro.org, Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org, 
- maobibo@loongson.cn, yangxiaojuan@loongson.cn, yijun@loongson.cn, 
- shenjinyang@loongson.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=zltjiangshi@gmail.com; helo=mail-lf1-x134.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,83 +90,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Philippe,
+This serie replaces some of the call to exit(0) in hardware used by
+Risc-V boards or made when gdb is requested to exit. 
+Otherwise, the gdb connection can be too abruptly disconnected resulting
+in the last gdb packet "Wxx" being not sent. 
 
-On Fri, Aug 18, 2023 at 4:52=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> Hi Jiajie, Song,
->
-> (+Huacai)
->
-> On 17/8/23 11:31, Song Gao wrote:
-> > From: Jiajie Chen <c@jia.je>
-> >
-> > Add object class for future loongarch32 cpus. It is derived from the
-> > loongarch64 object class.
->
-> Is it how the architecture design happened? IIUC per [*] it seems
-> the arch was designed as a whole then adapted per segment (32/R,64).
-> So from a QOM PoV better would be to have a abstract 'common' parent
-> objs/classes, then derive 32/64 from it.
-> IMHO this matters for the maintainability of target/loongarch/, but
-> if this isn't important then I won't object much to this series.
-From my point of view, it is more natural to have loongarch32-cpu
-together with loongarch64-cpu, not loongarch32-cpu and loongarch-cpu
-(only for 64bit).
+As qemu_system_shutdown_request doesn't allow to pass the exit code,
+only perform the above modification on a sucessful exit.
 
-Huacai
->
-> Regards,
->
-> Phil.
->
-> [*]
-> https://lore.kernel.org/linux-arch/20210706041820.1536502-1-chenhuacai@lo=
-ongson.cn/
->
-> > Signed-off-by: Jiajie Chen <c@jia.je>
-> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> > Signed-off-by: Song Gao <gaosong@loongson.cn>
-> > ---
-> >   target/loongarch/cpu.c | 19 +++++++++++++++++++
-> >   target/loongarch/cpu.h |  1 +
-> >   2 files changed, 20 insertions(+)
->
->
-> > @@ -750,6 +760,15 @@ static const TypeInfo loongarch_cpu_type_infos[] =
-=3D {
-> >           .class_size =3D sizeof(LoongArchCPUClass),
-> >           .class_init =3D loongarch_cpu_class_init,
-> >       },
-> > +    {
-> > +        .name =3D TYPE_LOONGARCH32_CPU,
-> > +        .parent =3D TYPE_LOONGARCH_CPU,
-> > +        .instance_size =3D sizeof(LoongArchCPU),
-> > +
-> > +        .abstract =3D true,
-> > +        .class_size =3D sizeof(LoongArchCPUClass),
-> > +        .class_init =3D loongarch32_cpu_class_init,
-> > +    },
-> >       DEFINE_LOONGARCH_CPU_TYPE("la464", loongarch_la464_initfn),
-> >   };
-> >
-> > diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> > index 5a71d64a04..2af4c414b0 100644
-> > --- a/target/loongarch/cpu.h
-> > +++ b/target/loongarch/cpu.h
-> > @@ -382,6 +382,7 @@ struct ArchCPU {
-> >   };
-> >
-> >   #define TYPE_LOONGARCH_CPU "loongarch-cpu"
-> > +#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
-> >
-> >   OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
-> >                           LOONGARCH_CPU)
->
->
+Clément Chigot (3):
+  hw/misc/sifive_test.c: replace exit(0) with proper shutdown
+  hw/char: riscv_htif: replace exit(0) with proper shutdown
+  gdbstub: replace exit(0) with proper shutdown
 
+ gdbstub/gdbstub.c     |  3 +--
+ gdbstub/softmmu.c     | 11 +++++++++++
+ gdbstub/user.c        |  2 ++
+ hw/char/riscv_htif.c  | 12 +++++++++++-
+ hw/misc/sifive_test.c |  4 +++-
+ 5 files changed, 28 insertions(+), 4 deletions(-)
 
---=20
-Huacai Chen
+-- 
+2.25.1
+
 
