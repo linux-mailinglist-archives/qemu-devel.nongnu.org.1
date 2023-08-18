@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816F4780655
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 09:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C18780733
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 10:33:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWttD-0002qS-QR; Fri, 18 Aug 2023 03:27:23 -0400
+	id 1qWutm-00047n-Fn; Fri, 18 Aug 2023 04:32:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qWtt7-0002qG-Mo
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:27:17 -0400
-Received: from mgamail.intel.com ([192.55.52.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qWtt4-000240-0X
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:27:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692343634; x=1723879634;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=b/VwXdY1S8Rrt8d506nAf7O88j1HNGObBnysetfFOpg=;
- b=eURgdYOh5JeqJKt8CkRt+uqTVO4LTjQr02EGcFr93JjBnUtcqQ0CM/b7
- EQxMMHDokKCPToZWA/wv92AINFqAtK+oEO+t9mBPcHW1xLqb/yknE6/Sf
- joo3tfet0F34Ltc12zK7DFnxaxuqP8grHZE2jg3aw/ksp1T8clvb/m0ot
- fVHparQ9sN67Fjvb3BbKl78E8BC941dJYYhA918wCKUO1Z/3rJMkel6lZ
- ZtTWwHhwoTKxs2CbjG8wp3ZUEzswGWJiQFyZ38qZQX1AqAsIVtZPC65wz
- 0fMyNGi9rPszffWe4tgYV17WGxR4d1K6QBGpvg9rSVg/C5s6eyPCIMKNP g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="352624892"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="352624892"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2023 00:27:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="908757435"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="908757435"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by orsmga005.jf.intel.com with ESMTP; 18 Aug 2023 00:27:05 -0700
-Date: Fri, 18 Aug 2023 15:37:39 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Moger, Babu" <babu.moger@amd.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Wei Wang <wei.w.wang@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
- CPUID[4]
-Message-ID: <ZN8fw0CU+j/dOvBy@liuzhao-OptiPlex-7080>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-15-zhao1.liu@linux.intel.com>
- <19ba8210-3e11-a36f-3b26-52cbe40042b1@amd.com>
- <3f7510f2-20f3-93df-72b3-01cfa687f554@amd.com>
- <ZMzJaElw/T5caQU+@liuzhao-OptiPlex-7080>
- <5947274f-e29d-cb76-3325-5dc75f205eeb@amd.com>
- <ZNnkR+G6PvE2q77E@liuzhao-OptiPlex-7080>
- <4615221c-407c-1542-56c8-a9557a5800b2@amd.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWutg-00044R-Vi
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:31:59 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWute-00043r-GQ
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 04:31:56 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-99bfcf4c814so80407566b.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 01:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692347512; x=1692952312;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RNMX0AnjJjzsQQCysR3g14AmYaJFpG1hGnEYkiSti3s=;
+ b=wsjaOFNYZsvnPUlxyO4J0luZmIS4HffIgkerVxk//FE3CU8RIuNwbL2xD+Htc3X9Vr
+ CmFUZsZDUdp3HM4oskEO8zC/QtGO4IMF/lqVs3O6dGvgcljkJ+venMd1PXgIKfstWjfK
+ vk76l9DHVBaqKu6vynBmGNRfzFaxNErzORA610KaxQTLq4eT/gXP/a7TvTBh42fIEFni
+ UbbELPjXLP67GYJBZzIDGokbOqXaCrJqLdUNJkrnp7ltNMYAgwq+G2A05MR3qfza2r8y
+ Vro2NBLIyjiSEm1lZpfjdg/BPP7kmKsLf3gqMzAaMCbbq50P3wPZVpyzDgLKz5nrC/nK
+ QiTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692347512; x=1692952312;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RNMX0AnjJjzsQQCysR3g14AmYaJFpG1hGnEYkiSti3s=;
+ b=Qpoq0+aN7nN0TIwyt7733NE5HJeB2jc16ryEV143q7O4CEgA3N45fhvxT38UuWMEfj
+ j40oVLfI08G3b8R/K9HzMOmf3LmhCVbZP5xWW4epo4RABSxg9Df8XDf/aaeh//cfzlv7
+ pkm2gZCTUQQNwiCOmQYXlL3t4QzudBB+F6JVGsFMs/3v880l8DjC2ueWpQoNQGjrSpiH
+ 2Slo2OSqMI0kd51VHOfjNtnK7ICV6ngu57lrn+2z4+7LXZJgBqU/+h0ckITKWK2SLN/D
+ 5HSfLHrHk1jV92kIQQMA+03VHrP+Rg3OAUF8vDtUnwu24fGBF1RVw8AlkJq7D6lXk5ea
+ 3ipA==
+X-Gm-Message-State: AOJu0YzBKdVkmpPJebYK7biswlwSjONQMe5c7QJGG2+B460174QwYjB4
+ vaLIwQHJkSViwVY2tPqK0qhNYw==
+X-Google-Smtp-Source: AGHT+IFPo9l+IULqXhDyve/DOzEDEYbjGx8jyY3mN2byf1pfWXuUa31VFsXgK9ukWLtmU/I6rYMgkQ==
+X-Received: by 2002:a17:907:75fa:b0:99e:7a2:a8f6 with SMTP id
+ jz26-20020a17090775fa00b0099e07a2a8f6mr1264012ejc.45.1692347512342; 
+ Fri, 18 Aug 2023 01:31:52 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.184.114])
+ by smtp.gmail.com with ESMTPSA id
+ rv6-20020a17090710c600b0099cc3c7ace2sm922405ejb.140.2023.08.18.01.31.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Aug 2023 01:31:51 -0700 (PDT)
+Message-ID: <5ad95579-f8f3-2926-dd37-bd84151f10ac@linaro.org>
+Date: Fri, 18 Aug 2023 10:31:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4615221c-407c-1542-56c8-a9557a5800b2@amd.com>
-Received-SPF: none client-ip=192.55.52.136;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 2/4] util/defer-call: move defer_call() to util/
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>,
+ xen-devel@lists.xenproject.org, Anthony Perard <anthony.perard@citrix.com>,
+ Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Aarushi Mehta <mehta.aaru20@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Paul Durrant <paul@xen.org>, Ilya Maximets <i.maximets@ovn.org>
+References: <20230817155847.3605115-1-stefanha@redhat.com>
+ <20230817155847.3605115-3-stefanha@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230817155847.3605115-3-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,103 +100,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Babu,
+Hi Stefan,
 
-On Mon, Aug 14, 2023 at 11:03:53AM -0500, Moger, Babu wrote:
-> Date: Mon, 14 Aug 2023 11:03:53 -0500
-> From: "Moger, Babu" <babu.moger@amd.com>
-> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
->  CPUID[4]
+On 17/8/23 17:58, Stefan Hajnoczi wrote:
+> The networking subsystem may wish to use defer_call(), so move the code
+> to util/ where it can be reused.
 > 
-> Hi Zhao,
+> As a reminder of what defer_call() does:
 > 
+> This API defers a function call within a defer_call_begin()/defer_call_end()
+> section, allowing multiple calls to batch up. This is a performance
+> optimization that is used in the block layer to submit several I/O requests
+> at once instead of individually:
 > 
-> On 8/14/23 03:22, Zhao Liu wrote:
-> > Hi Babu,
-> > 
-> > On Fri, Aug 04, 2023 at 10:48:29AM -0500, Moger, Babu wrote:
-> >> Date: Fri, 4 Aug 2023 10:48:29 -0500
-> >> From: "Moger, Babu" <babu.moger@amd.com>
-> >> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
-> >>  CPUID[4]
-> >>
-> >> Hi Zhao,
-> >>
-> >> On 8/4/23 04:48, Zhao Liu wrote:
-> >>> Hi Babu,
-> >>>
-> >>> On Thu, Aug 03, 2023 at 11:41:40AM -0500, Moger, Babu wrote:
-> >>>> Date: Thu, 3 Aug 2023 11:41:40 -0500
-> >>>> From: "Moger, Babu" <babu.moger@amd.com>
-> >>>> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
-> >>>>  CPUID[4]
-> >>>>
-> >>>> Hi Zhao,
-> >>>>
-> >>>> On 8/2/23 18:49, Moger, Babu wrote:
-> >>>>> Hi Zhao,
-> >>>>>
-> >>>>> Hitting this error after this patch.
-> >>>>>
-> >>>>> ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code should
-> >>>>> not be reached
-> >>>>> Bail out! ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code
-> >>>>> should not be reached
-> >>>>> Aborted (core dumped)
-> >>>>>
-> >>>>> Looks like share_level for all the caches for AMD is not initialized.
-> >>>
-> >>> I missed these change when I rebase. Sorry for that.
-> >>>
-> >>> BTW, could I ask a question? From a previous discussion[1], I understand
-> >>> that the cache info is used to show the correct cache information in
-> >>> new machine. And from [2], the wrong cache info may cause "compatibility
-> >>> issues".
-> >>>
-> >>> Is this "compatibility issues" AMD specific? I'm not sure if Intel should
-> >>> update the cache info like that. thanks!
-> >>
-> >> I was going to comment about that. Good that you asked me.
-> >>
-> >> Compatibility is qemu requirement.  Otherwise the migrations will fail.
-> >>
-> >> Any changes in the topology is going to cause migration problems.
-> > 
-> > Could you please educate me more about the details of the "migration
-> > problem"?
-> > 
-> > I didn't understand why it was causing the problem and wasn't sure if I
-> > was missing any cases.
-> > 
+>    defer_call_begin(); <-- start of section
+>    ...
+>    defer_call(my_func, my_obj); <-- deferred my_func(my_obj) call
+>    defer_call(my_func, my_obj); <-- another
+>    defer_call(my_func, my_obj); <-- another
+>    ...
+>    defer_call_end(); <-- end of section, my_func(my_obj) is called once
 > 
-> I am not an expert on migration but I test VM migration sometimes.
-> Here are some guidelines.
-> https://developers.redhat.com/blog/2015/03/24/live-migrating-qemu-kvm-virtual-machines
-
-Thanks for the material!
-
+> Suggested-by: Ilya Maximets <i.maximets@ovn.org>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>   MAINTAINERS                       |  3 ++-
+>   include/qemu/defer-call.h         | 15 +++++++++++++++
+>   include/sysemu/block-backend-io.h |  4 ----
+>   block/blkio.c                     |  1 +
+>   block/io_uring.c                  |  1 +
+>   block/linux-aio.c                 |  1 +
+>   block/nvme.c                      |  1 +
+>   hw/block/dataplane/xen-block.c    |  1 +
+>   hw/block/virtio-blk.c             |  1 +
+>   hw/scsi/virtio-scsi.c             |  1 +
+>   block/plug.c => util/defer-call.c |  2 +-
+>   block/meson.build                 |  1 -
+>   util/meson.build                  |  1 +
+>   13 files changed, 26 insertions(+), 7 deletions(-)
+>   create mode 100644 include/qemu/defer-call.h
+>   rename block/plug.c => util/defer-call.c (99%)
 > 
-> When you migrate a VM to newer qemu using the same CPU type, migration
-> should work seamless. That means list of CPU features should be compatible
-> when you move to newer qemu version with CPU type.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6111b6b4d9..7cd7132ffc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2676,12 +2676,13 @@ S: Supported
+>   F: util/async.c
+>   F: util/aio-*.c
+>   F: util/aio-*.h
+> +F: util/defer-call.c
 
-I see. This patches set adds the "-smp cluster" command and the
-"x-l2-cache-topo" command. Migration requires that the target and
-source VM command lines are the same, so the new commands ensure that
-the migration is consistent.
+If used by network/other backends, maybe worth adding a
+brand new section instead, rather than "Block I/O path".
 
-But this patch set also includes some topology fixes (nr_cores fix and
-l1 cache topology fix) and encoding change (use APIC ID offset to encode
-addressable ids), these changes would affect migration and may cause
-CPUID change for VM view. Thus if this patch set is accepted, these
-changes also need to be pushed into stable versions. Do you agree?
+>   F: util/fdmon-*.c
+>   F: block/io.c
+> -F: block/plug.c
+>   F: migration/block*
+>   F: include/block/aio.h
+>   F: include/block/aio-wait.h
+> +F: include/qemu/defer-call.h
+>   F: scripts/qemugdb/aio.py
+>   F: tests/unit/test-fdmon-epoll.c
+>   T: git https://github.com/stefanha/qemu.git block
+> diff --git a/include/qemu/defer-call.h b/include/qemu/defer-call.h
+> new file mode 100644
+> index 0000000000..291f86c987
+> --- /dev/null
+> +++ b/include/qemu/defer-call.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Deferred calls
+> + *
+> + * Copyright Red Hat.
+> + */
+> +
+> +#ifndef QEMU_DEFER_CALL_H
+> +#define QEMU_DEFER_CALL_H
+> +
 
-And about cache info for different CPU generations, migration usually
-happens on the same CPU type, and Intel uses the same default cache
-info for all CPU types. With the consistent cache info, migration is
-also Ok. So if we don't care about the specific cache info in the VM,
-it's okay to use the same default cache info for all CPU types. Right?
+Please add smth like:
 
-Thanks,
-Zhao
+    /* See documentation in util/defer-call.c */
+
+> +void defer_call_begin(void);
+> +void defer_call_end(void);
+> +void defer_call(void (*fn)(void *), void *opaque);
+> +
+> +#endif /* QEMU_DEFER_CALL_H */
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
