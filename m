@@ -2,50 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14CA780518
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 854C778051A
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:25:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWr1A-0002Qf-RR; Fri, 18 Aug 2023 00:23:24 -0400
+	id 1qWr3I-0003Bg-4D; Fri, 18 Aug 2023 00:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWr15-0002Ol-11
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:23:19 -0400
+ id 1qWr36-0003BL-Tu
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:25:26 -0400
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWr12-0003jq-EE
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:23:18 -0400
+ id 1qWr34-0003v0-8d
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:25:24 -0400
 Received: from [192.168.8.104] (unknown [94.25.229.58])
- by mail.ispras.ru (Postfix) with ESMTPSA id 6A34F40F1DE1;
- Fri, 18 Aug 2023 04:23:12 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6A34F40F1DE1
+ by mail.ispras.ru (Postfix) with ESMTPSA id 2566940F1DE1;
+ Fri, 18 Aug 2023 04:25:19 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2566940F1DE1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1692332593;
- bh=GJAiuw8h1BHAc4YGuwsuh4TrNHigJRjM5xHQIGyj/RI=;
+ s=default; t=1692332720;
+ bh=g3sW/rv4STPmk0kfIfxoXmmWUxSSbc7vHYGv1NcJLUM=;
  h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=eoWWdY2JB1iOZtUQW6pErv0zXcik9RrVSB5PRswq8+yMjOeS0r41fed07uTrRHUyj
- G0ZYnXNRXjLWgq/jAebtR0nBin6ST4sX67/IOhMApdMXSbiEE2U46uVi5OQAWsXhbB
- s0V0MC21VnK2Z7/6tTGx9bvUb3QIu8yl5anAEehc=
-Message-ID: <7af8a4f7-06f8-436f-e125-d6389fcdbbda@ispras.ru>
-Date: Fri, 18 Aug 2023 07:23:11 +0300
+ b=ZRkWAEM0+cKXkTU3/tEuiOYKL4atIXSsf9AbifzU6QNUeWAhuDuN7QodqUpDVLqgT
+ anxgE+NNrjlcBs9M6B2dncjFCUPDnjoPNyDUHFksbhJxUTIh6fPGMJAltk568sglKm
+ kwKmmxRmayf/gY+yJSnlELn9eDNMCH2iwoXGCWbg=
+Message-ID: <f7114265-8c24-2b7a-a1d0-8073ecd878d8@ispras.ru>
+Date: Fri, 18 Aug 2023 07:25:18 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 2/4] tests/avocado: replay_linux.py add replay-dump.py test
+Subject: Re: [PATCH 3/4] replay: allow runstate shutdown->running when
+ replaying trace
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+To: Nicholas Piggin <npiggin@gmail.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
  <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
+ Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?B?0JTQvtCy0LPQsNC70Y7QuiDQn9Cw0LLQtdC7?= <Pavel.Dovgalyuk@ispras.ru>
 References: <20230814163135.187882-1-npiggin@gmail.com>
- <20230814163135.187882-3-npiggin@gmail.com>
+ <20230814163135.187882-4-npiggin@gmail.com>
 From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230814163135.187882-3-npiggin@gmail.com>
+In-Reply-To: <20230814163135.187882-4-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=83.149.199.84;
@@ -71,116 +72,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+
 On 14.08.2023 19:31, Nicholas Piggin wrote:
-> This runs replay-dump.py after recording a trace, and fails the test if
-> the script fails.
-> 
-> replay-dump.py is modified to exit with non-zero if an error is
-> encountered while parsing.
-
-I would like to have separate test for replay-dump, because
-replay-linux tests are very heavy to replay and knowing the exact
-reason of the failure in advance would be more convenient.
-
-What do you think of splitting the test?
-
+> When replaying a trace, it is possible to go from shutdown to
+> running with a reverse-debugging step. This can be useful if the
+> problem being debugged triggers a reset or shutdown.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-> It's possible this could introduce failures to existing test if an
-> unimplemented event gets recorded. I would make a new test for this but
-> it takes quite a while to record such a long trace that includes some
-> block and net events to excercise the script.
+>   include/sysemu/runstate.h |  1 +
+>   replay/replay.c           |  2 ++
+>   softmmu/runstate.c        | 19 +++++++++++++++++++
+>   3 files changed, 22 insertions(+)
 > 
-> Thanks,
-> Nick
-> 
->   scripts/replay-dump.py        |  6 ++++--
->   tests/avocado/replay_linux.py | 16 +++++++++++++++-
->   2 files changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
-> index 937ae19ff1..8f4715632a 100755
-> --- a/scripts/replay-dump.py
-> +++ b/scripts/replay-dump.py
-> @@ -21,6 +21,7 @@
->   import argparse
->   import struct
->   import os
-> +import sys
->   from collections import namedtuple
+> diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
+> index 7beb29c2e2..85a1167ccb 100644
+> --- a/include/sysemu/runstate.h
+> +++ b/include/sysemu/runstate.h
+> @@ -9,6 +9,7 @@ void runstate_set(RunState new_state);
+>   RunState runstate_get(void);
+>   bool runstate_is_running(void);
+>   bool runstate_needs_reset(void);
+> +void runstate_replay_enable(void);
 >   
->   # This mirrors some of the global replay state which some of the
-> @@ -97,7 +98,7 @@ def call_decode(table, index, dumpfile):
->           print("Could not decode index: %d" % (index))
->           print("Entry is: %s" % (decoder))
->           print("Decode Table is:\n%s" % (table))
-> -        return False
-> +        sys.exit(1)
->       else:
->           return decoder.fn(decoder.eid, decoder.name, dumpfile)
+>   typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
 >   
-> @@ -118,7 +119,7 @@ def print_event(eid, name, string=None, event_count=None):
->   def decode_unimp(eid, name, _unused_dumpfile):
->       "Unimplimented decoder, will trigger exit"
->       print("%s not handled - will now stop" % (name))
-> -    return False
-> +    sys.exit(1)
->   
->   # Checkpoint decoder
->   def swallow_async_qword(eid, name, dumpfile):
-> @@ -401,3 +402,4 @@ def decode_file(filename):
->   if __name__ == "__main__":
->       args = parse_arguments()
->       decode_file(args.file)
-> +    sys.exit(0)
-> diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
-> index a76dd507fc..12937ce0ec 100644
-> --- a/tests/avocado/replay_linux.py
-> +++ b/tests/avocado/replay_linux.py
-> @@ -11,6 +11,7 @@
->   import os
->   import logging
->   import time
-> +import subprocess
->   
->   from avocado import skipUnless
->   from avocado_qemu import BUILD_DIR
-> @@ -21,6 +22,11 @@
->   from avocado.utils.path import find_command
->   from avocado_qemu import LinuxTest
->   
-> +from pathlib import Path
+> diff --git a/replay/replay.c b/replay/replay.c
+> index 0f7d766efe..e64f71209a 100644
+> --- a/replay/replay.c
+> +++ b/replay/replay.c
+> @@ -272,6 +272,8 @@ static void replay_enable(const char *fname, int mode)
+>           /* go to the beginning */
+>           fseek(replay_file, HEADER_SIZE, SEEK_SET);
+>           replay_fetch_data_kind();
 > +
-> +self_dir = Path(__file__).parent
-> +src_dir = self_dir.parent.parent
-> +
->   class ReplayLinux(LinuxTest):
->       """
->       Boots a Linux system, checking for a successful initialization
-> @@ -94,7 +100,7 @@ def launch_and_wait(self, record, args, shift):
->           else:
->               vm.event_wait('SHUTDOWN', self.timeout)
->               vm.shutdown(True)
-> -            logger.info('successfully fihished the replay')
-> +            logger.info('successfully finished the replay')
->           elapsed = time.time() - start_time
->           logger.info('elapsed time %.2f sec' % elapsed)
->           return elapsed
-> @@ -105,6 +111,14 @@ def run_rr(self, args=None, shift=7):
->           logger = logging.getLogger('replay')
->           logger.info('replay overhead {:.2%}'.format(t2 / t1 - 1))
+> +        runstate_replay_enable();
+>       }
 >   
-> +        try:
-> +            replay_path = os.path.join(self.workdir, 'replay.bin')
-> +            subprocess.check_call(["./scripts/replay-dump.py",
-> +                                   "-f", replay_path],
-> +                                  cwd=src_dir, stdout=subprocess.DEVNULL)
-> +        except subprocess.CalledProcessError:
-> +            self.fail('replay-dump.py failed')
+>       replay_init_events();
+> diff --git a/softmmu/runstate.c b/softmmu/runstate.c
+> index f3bd862818..9fd3e57485 100644
+> --- a/softmmu/runstate.c
+> +++ b/softmmu/runstate.c
+> @@ -174,6 +174,12 @@ static const RunStateTransition runstate_transitions_def[] = {
+>       { RUN_STATE__MAX, RUN_STATE__MAX },
+>   };
+>   
+> +static const RunStateTransition replay_runstate_transitions_def[] = {
+> +    { RUN_STATE_SHUTDOWN, RUN_STATE_RUNNING},
 > +
->   @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
->   class ReplayLinuxX8664(ReplayLinux):
->       """
+> +    { RUN_STATE__MAX, RUN_STATE__MAX },
+> +};
+> +
+>   static bool runstate_valid_transitions[RUN_STATE__MAX][RUN_STATE__MAX];
+>   
+>   bool runstate_check(RunState state)
+> @@ -181,6 +187,19 @@ bool runstate_check(RunState state)
+>       return current_run_state == state;
+>   }
+>   
+> +void runstate_replay_enable(void)
+> +{
+> +    const RunStateTransition *p;
+> +
+> +    assert(replay_mode == REPLAY_MODE_PLAY);
+> +
+> +    for (p = &replay_runstate_transitions_def[0]; p->from != RUN_STATE__MAX;
+> +         p++) {
+> +        runstate_valid_transitions[p->from][p->to] = true;
+> +    }
+> +
+> +}
+> +
+>   static void runstate_init(void)
+>   {
+>       const RunStateTransition *p;
 
 
