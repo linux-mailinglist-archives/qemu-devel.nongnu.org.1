@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7A0781548
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 00:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6E078154B
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 00:15:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX7iw-0004yO-4i; Fri, 18 Aug 2023 18:13:42 -0400
+	id 1qX7iw-0004ys-PN; Fri, 18 Aug 2023 18:13:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX7it-0004wZ-MI
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 18:13:39 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qX7iu-0004xH-Aj
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 18:13:40 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX7ir-0004NY-F3
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 18:13:39 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1bc8045e09dso10901115ad.0
+ id 1qX7is-0004Nl-4L
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 18:13:40 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bf0b24d925so10722495ad.3
  for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 15:13:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692396816; x=1693001616;
+ d=linaro.org; s=google; t=1692396817; x=1693001617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7tLG8/XHxQLwSuertWPZX823LWYyhiS+FEGkrYeTEgw=;
- b=ZmP06Wd+ePylm1HjV+TG70o9WYnVbq+EjDnGpksYfN/KsUEQ/tto6Jgu9s/MNRnCr8
- GYMfFbgwhwhhz/t6Z77zTikzTVX71AgiB72N8SqsoiI4ZyWamRSkz7CrrDdMk2rcERHS
- sGQH+Brg07QhvdA4fuizh92htLaGwl+2e1oBmKulHh0GuhLvUGe0B/5j5weMePjlMigi
- cHfpaw7qPjFWh6jWYFCudX7gaPLbAm/ijo8Nn2b+ucNt4E2uk+tV+1BXplueiSax9kqi
- pCNPUhNK/83I2K6zAw2kxC5G8efrS+LQoxWZwZEhc9INT8nTCFz4V26MdYtRINp27jK5
- BdBw==
+ bh=pEJRBqcm/a/oZOTyU1G7jiSQvb9uC+VmTRMunIK2Qko=;
+ b=P6T8hPryDhCTsg2jtsV98G8Pk0fkpoKceXlwWZzQlC93Kx6uuPDgJ2OcgKHNo13uxT
+ rQjJDgux+KNrKzYdT0e9VQcSny8vg2ywK6+HCuncfculK0nak6MJVH7n7tVBDEBJBUAw
+ awLiMmixZ+U97X6Lt/0uEZfUYIuuN9AxZ8dEtmJS4c81V+V6LtbVpXtxhqaFktvwQZd7
+ g7bEtwTUdCQBCFp+Nk92xUwlEF9MvC617jvzEx0CwkQRU2uDZdTfGyTMxL9ck1iIvDEd
+ 2T1hTPpsm8XA+vIdY9naInegzupZ42rYElCKmt0zhYR7Mv2QOBLiJaiSUxK9+/+L2XUz
+ f88Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692396816; x=1693001616;
+ d=1e100.net; s=20221208; t=1692396817; x=1693001617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7tLG8/XHxQLwSuertWPZX823LWYyhiS+FEGkrYeTEgw=;
- b=l/OoNv1MZf5OhfoCwaIvcU+puJ8U57YznRFk862bW1MedZ7vQ/ZWPPzpO1IjpNzihZ
- Nw+QiA9J41b3jVMbI/88OjC+6NlDulSxgpZyxlVVj5Zyq9ir4qs8gD3K1298IMdpBsxJ
- zZSMvyiMGQLOwj7qbsc44zjMyDVaoboXNAR4DvwcqpXvG19ZrFy3dJecvmD9NFKqrN28
- vnBA0i7vtP5MLVICxbxyELMHo6ofrAe8mkQ6vdhUTXtEZMnZEgSjn2DiTUGdCeglLJV7
- Tdm0rlHA3WjVfTqxo1la5QmXtQ23/1P0skOcoj2JIqa542JKe6EuH9Sjtc/CLL/jzIES
- W1BA==
-X-Gm-Message-State: AOJu0Yy16nqHoClsCICZw7flsjIElIQbf1LNgh2l6O0Haw0svjGhL5Qs
- IWhP9wJ6zXPvMWY5KAD5a/rHL7qXoh6EwR24A+8=
-X-Google-Smtp-Source: AGHT+IFAvnRc00MpDmbaIlaIwzgEdKoN2Trj7POx0VJPYx4iMBpfjB7jRJRgIJM/MtKY76X5zMNMgQ==
-X-Received: by 2002:a17:902:bf46:b0:1bd:bba1:be7b with SMTP id
- u6-20020a170902bf4600b001bdbba1be7bmr504517pls.39.1692396816061; 
+ bh=pEJRBqcm/a/oZOTyU1G7jiSQvb9uC+VmTRMunIK2Qko=;
+ b=ks5eQl1QIE0nltJyHRnGCFkSK/ggl9JMPWB5e3ZfAjsri4kPOuz0JdJtaG7lEu8/Mx
+ MQkVYKu0uYZdFYkOxSWFhVUrVQfqLF4xZJyJhM/a5qBvmi5RN90CEDTA2gNIx4LaA8w5
+ MGM5u1AG4s7yDttTN5Y5E/00qNhEmqHmaCV9VoblHHWqUmn0p3ckSDWu0spr4oWn4mUJ
+ EnXnKsopeLeOGEP6lD/YS4P+puBMVnjMM5IQZ49cYBLbPGomRuDF/p2ywoWUu8Mw37S1
+ LXexA/WPd25J2jfotBU5e7U2CAOV80Cv223sGZQFXKXdw14FK325OMX7sdVHsA+nVD9U
+ xKNQ==
+X-Gm-Message-State: AOJu0YxEape21S27LoVlo+yoR5Q09NkzpBpJS1SUpIRc1FXkwf73Ko1U
+ TlpLCpvSclRMkr/k5CqE7uHbx+gS37JM1xiMfgY=
+X-Google-Smtp-Source: AGHT+IGDRZ9uWn0UG4seIt/obgJNLf+p4nSr6BWX0SqJhH8LIZ4hgYPnaNI+AorAkvgwS/bdmUkEYw==
+X-Received: by 2002:a17:903:484:b0:1bf:525b:f96e with SMTP id
+ jj4-20020a170903048400b001bf525bf96emr446610plb.16.1692396816885; 
  Fri, 18 Aug 2023 15:13:36 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- y7-20020a17090322c700b001bdb85291casm2231417plg.208.2023.08.18.15.13.35
+ y7-20020a17090322c700b001bdb85291casm2231417plg.208.2023.08.18.15.13.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 15:13:35 -0700 (PDT)
+ Fri, 18 Aug 2023 15:13:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 08/23] target/sparc: Use tcg_gen_movcond_i64 in gen_edge
-Date: Fri, 18 Aug 2023 15:13:12 -0700
-Message-Id: <20230818221327.150194-9-richard.henderson@linaro.org>
+Cc: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v2 09/23] target/tricore: Replace gen_cond_w with
+ tcg_gen_negsetcond_tl
+Date: Fri, 18 Aug 2023 15:13:13 -0700
+Message-Id: <20230818221327.150194-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818221327.150194-1-richard.henderson@linaro.org>
 References: <20230818221327.150194-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,50 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The setcond + neg + or sequence is a complex method of
-performing a conditional move.
-
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ target/tricore/translate.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index bd877a5e4a..fa80a91161 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -2916,7 +2916,7 @@ static void gen_edge(DisasContext *dc, TCGv dst, TCGv s1, TCGv s2,
- 
-     tcg_gen_shr_tl(lo1, tcg_constant_tl(tabl), lo1);
-     tcg_gen_shr_tl(lo2, tcg_constant_tl(tabr), lo2);
--    tcg_gen_andi_tl(dst, lo1, omask);
-+    tcg_gen_andi_tl(lo1, lo1, omask);
-     tcg_gen_andi_tl(lo2, lo2, omask);
- 
-     amask = -8;
-@@ -2926,18 +2926,9 @@ static void gen_edge(DisasContext *dc, TCGv dst, TCGv s1, TCGv s2,
-     tcg_gen_andi_tl(s1, s1, amask);
-     tcg_gen_andi_tl(s2, s2, amask);
- 
--    /* We want to compute
--        dst = (s1 == s2 ? lo1 : lo1 & lo2).
--       We've already done dst = lo1, so this reduces to
--        dst &= (s1 == s2 ? -1 : lo2)
--       Which we perform by
--        lo2 |= -(s1 == s2)
--        dst &= lo2
--    */
--    tcg_gen_setcond_tl(TCG_COND_EQ, lo1, s1, s2);
--    tcg_gen_neg_tl(lo1, lo1);
--    tcg_gen_or_tl(lo2, lo2, lo1);
--    tcg_gen_and_tl(dst, dst, lo2);
-+    /* Compute dst = (s1 == s2 ? lo1 : lo1 & lo2). */
-+    tcg_gen_and_tl(lo2, lo2, lo1);
-+    tcg_gen_movcond_tl(TCG_COND_EQ, dst, s1, s2, lo1, lo2);
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 1947733870..6ae5ccbf72 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -2680,13 +2680,6 @@ gen_accumulating_condi(int cond, TCGv ret, TCGv r1, int32_t con,
+     gen_accumulating_cond(cond, ret, r1, temp, op);
  }
  
- static void gen_alignaddr(TCGv dst, TCGv s1, TCGv s2, bool left)
+-/* ret = (r1 cond r2) ? 0xFFFFFFFF ? 0x00000000;*/
+-static inline void gen_cond_w(TCGCond cond, TCGv ret, TCGv r1, TCGv r2)
+-{
+-    tcg_gen_setcond_tl(cond, ret, r1, r2);
+-    tcg_gen_neg_tl(ret, ret);
+-}
+-
+ static inline void gen_eqany_bi(TCGv ret, TCGv r1, int32_t con)
+ {
+     TCGv b0 = tcg_temp_new();
+@@ -5692,7 +5685,8 @@ static void decode_rr_accumulator(DisasContext *ctx)
+         gen_helper_eq_h(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         break;
+     case OPC2_32_RR_EQ_W:
+-        gen_cond_w(TCG_COND_EQ, cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
++        tcg_gen_negsetcond_tl(TCG_COND_EQ, cpu_gpr_d[r3],
++                              cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         break;
+     case OPC2_32_RR_EQANY_B:
+         gen_helper_eqany_b(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
+@@ -5729,10 +5723,12 @@ static void decode_rr_accumulator(DisasContext *ctx)
+         gen_helper_lt_hu(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         break;
+     case OPC2_32_RR_LT_W:
+-        gen_cond_w(TCG_COND_LT, cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
++        tcg_gen_negsetcond_tl(TCG_COND_LT, cpu_gpr_d[r3],
++                              cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         break;
+     case OPC2_32_RR_LT_WU:
+-        gen_cond_w(TCG_COND_LTU, cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2]);
++        tcg_gen_negsetcond_tl(TCG_COND_LTU, cpu_gpr_d[r3],
++                              cpu_gpr_d[r1], cpu_gpr_d[r2]);
+         break;
+     case OPC2_32_RR_MAX:
+         tcg_gen_movcond_tl(TCG_COND_GT, cpu_gpr_d[r3], cpu_gpr_d[r1],
 -- 
 2.34.1
 
