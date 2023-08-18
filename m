@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E47780DA6
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 16:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E1C780D71
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 16:05:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX05h-0004st-T3; Fri, 18 Aug 2023 10:04:41 -0400
+	id 1qX05m-0004x6-Gb; Fri, 18 Aug 2023 10:04:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWwHL-0001si-9M
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:00:27 -0400
-Received: from mgamail.intel.com ([192.55.52.120])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWwHI-0000JL-09
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:00:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692352824; x=1723888824;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=a0VoBnpjvHlXR+armB5DHuKMSrzGJQBBTVyLn0diito=;
- b=LJYHQGVI1+XG3rXMlYiXJhWmtCmJCaLOU0fHFq/uka7Iuuk/Ixld+jxM
- SfBmFy/U0CoHvl02Zyzq+u9+r7wvQfCoYCkGJRSxJAr4vjdEuC2XElAp2
- uWrzyQP81kpeig/k+edz6VSmbbV/Ds/bxyTztkx/sn/lpIy2VGZyhK3LK
- am7JIStcyR1BDqE9iShxicZm7ngQEXKKKxc75jgoXUmNtmZXkRHZmv8eI
- nXFl5P7C6iN5FwVcHoS1OMQMh6fwCWcK2Q3/rPoPFydzlF6dp+fW1mx7p
- BZDksHcU1NnyobiE7xOpu0IYjpSfVFyc5js4RITgKJNneMNxWPbtfHRq7 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="371966988"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="371966988"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2023 02:59:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="849235869"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="849235869"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by fmsmga002.fm.intel.com with ESMTP; 18 Aug 2023 02:59:23 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
- xiaoyao.li@intel.com, Isaku Yamahata <isaku.yamahata@gmail.com>,
- erdemaktas@google.com, Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v2 58/58] docs: Add TDX documentation
-Date: Fri, 18 Aug 2023 05:50:41 -0400
-Message-Id: <20230818095041.1973309-59-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230818095041.1973309-1-xiaoyao.li@intel.com>
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1qWwJW-00019B-Jv
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:02:45 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1qWwJT-0001wd-PZ
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:02:42 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1bc7b25c699so5302255ad.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 03:02:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adacore.com; s=google; t=1692352957; x=1692957757;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=31GINzzYQwcFhLtFADq2qE3kGAZ7hCDuvdbkdYG3ZG4=;
+ b=Hub7cTPQ4vN50w76b0/v3w79+ptQJrCl5m2gZw4S54f6LDyMQnRe1dFxYjlyteuIwL
+ tojbHpYrZeTg9zrdvEfy/Q40IC4Z988yzr4mv9GBu09faLEbQ3nKHUHNEhpuTCdhLf+Y
+ snRi7ModfTVBD2V4/QUyUpGm5SZaY62LoWQRsyxuceHAjfGcNaqhErc/nZrJGph1j+EK
+ S7+vD8B6ch5NLqRp1Pmh5oWCyzCF8YiVQI2vZV5c2Nd6YGr25aPRBNxuEMhAE6wJRffZ
+ aI08Dg7d+4ciBXij0zUg6NotWs2/44I9yxoNnV4UJi2ha0I+rWvebknNBMNL1bABwc5a
+ StUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692352957; x=1692957757;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=31GINzzYQwcFhLtFADq2qE3kGAZ7hCDuvdbkdYG3ZG4=;
+ b=HMVrLK8/8wtSRbeROLGggNYazN/TLHeaRdeVsiAuKtxzuUsUi+FGheAO9CIiYk6N3L
+ y/tlyrsLaxfVQlD1360ffCFIX8y4DRir+17rB7LnWyUYW1zyjP1HJdnQQZ65Wjc4KIkw
+ 4RzHq8eIPpwN8z/Vs3WrJtyXUVYCVbqCwmRKlkPCudzvhq6AqeQMgtrQFGI4pyU8EKU6
+ eL8Ssw/6oyJUA1p74GnaKWGWeZ75F2y5uVvWw1WxjcGIs9JSGxH2eLy94+XP3KesuW5r
+ nSL7exY5fHM3ZgUUXvvsuIzuro9F/nUbFwJI09emOtFWRaH0R2t0cTvcy/wP5Ecblc14
+ 5tXw==
+X-Gm-Message-State: AOJu0YzM4RP1SE9fTtI/IRBCnSAPfVCuuP2W3IwivwXREUJ2IO9eC1+S
+ JYHNebpxdFXHiYGMFje4vzBlIAuNfqaedBH8DFAIMg==
+X-Google-Smtp-Source: AGHT+IE6rNpSw5TwL5XaRfZnlR+euKR85FYMHegC0NFntgq5m8KLCkl1WNdKFIZuuqZeZc6Gx1qWZ067g7DCSBI5co0=
+X-Received: by 2002:a17:90b:3d1:b0:26d:506e:24a3 with SMTP id
+ go17-20020a17090b03d100b0026d506e24a3mr577997pjb.38.1692352957042; Fri, 18
+ Aug 2023 03:02:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.120; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230818090224.409192-1-chigot@adacore.com>
+ <20230818090224.409192-4-chigot@adacore.com>
+ <CAFEAcA_1SdA_BH_u01FAYaZkABbCB2EcSf329=-GpZ2canjP7A@mail.gmail.com>
+In-Reply-To: <CAFEAcA_1SdA_BH_u01FAYaZkABbCB2EcSf329=-GpZ2canjP7A@mail.gmail.com>
+From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Date: Fri, 18 Aug 2023 12:02:26 +0200
+Message-ID: <CAJ307Ei_nx9T_p105W7hR8JTuosHQ2WXf7Pn=qELG=Y59nt7EA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] gdbstub: replace exit(0) with proper shutdown
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=chigot@adacore.com; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,170 +88,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add docs/system/i386/tdx.rst for TDX support, and add tdx in
-confidential-guest-support.rst
+On Fri, Aug 18, 2023 at 11:10=E2=80=AFAM Peter Maydell <peter.maydell@linar=
+o.org> wrote:
+>
+> On Fri, 18 Aug 2023 at 10:03, Cl=C3=A9ment Chigot <chigot@adacore.com> wr=
+ote:
+> >
+> > This replaces the exit(0) call by a shutdown request, ensuring a proper
+> > cleanup of Qemu. Otherwise, some connections could be broken without
+> > being correctly flushed.
+> >
+> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> > ---
+> >  gdbstub/gdbstub.c |  3 +--
+> >  gdbstub/softmmu.c | 11 +++++++++++
+> >  gdbstub/user.c    |  2 ++
+> >  3 files changed, 14 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> > index 5f28d5cf57..358eed1935 100644
+> > --- a/gdbstub/gdbstub.c
+> > +++ b/gdbstub/gdbstub.c
+> > @@ -1298,7 +1298,6 @@ static void handle_v_kill(GArray *params, void *u=
+ser_ctx)
+> >      gdb_put_packet("OK");
+> >      error_report("QEMU: Terminated via GDBstub");
+> >      gdb_exit(0);
+> > -    exit(0);
+> >  }
+> >
+> >  static const GdbCmdParseEntry gdb_v_commands_table[] =3D {
+> > @@ -1818,7 +1817,7 @@ static int gdb_handle_packet(const char *line_buf=
+)
+> >          /* Kill the target */
+> >          error_report("QEMU: Terminated via GDBstub");
+> >          gdb_exit(0);
+> > -        exit(0);
+> > +        break;
+> >      case 'D':
+> >          {
+> >              static const GdbCmdParseEntry detach_cmd_desc =3D {
+> > diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+> > index f509b7285d..9ca7ae10bc 100644
+> > --- a/gdbstub/softmmu.c
+> > +++ b/gdbstub/softmmu.c
+> > @@ -434,6 +434,17 @@ void gdb_exit(int code)
+> >      }
+> >
+> >      qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
+> > +
+> > +    /*
+> > +     * Shutdown request is a clean way to stop the QEMU, compared
+> > +     * to a direct call to exit(). But we can't pass the exit code
+> > +     * through it so avoid doing that when it can matter.
+> > +     */
+> > +    if (code) {
+> > +        exit(code);
+> > +    } else {
+> > +        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> > +    }
+> >  }
+> >
+> >  /*
+> > diff --git a/gdbstub/user.c b/gdbstub/user.c
+> > index 5b375be1d9..f3d97d621f 100644
+> > --- a/gdbstub/user.c
+> > +++ b/gdbstub/user.c
+> > @@ -113,6 +113,8 @@ void gdb_exit(int code)
+> >          gdb_put_packet(buf);
+> >          gdbserver_state.allow_stop_reply =3D false;
+> >      }
+> > +
+> > +    exit(code);
+> >  }
+>
+> These are not the only places that call gdb_exit().
+> Notably, qemu_cleanup() calls it, and I'm pretty sure
+> it does not expect that gdb_exit() will either call
+> exit() or qemu_system_shutdown_request(), because it's
+> already in the process of cleaning up and stopping
+> the system.
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Indeed, I did miss that. I used to have it directly in
+gdb_handle_packet and in handle_v_kill. But now that the support of
+softmmu and user has been splitted, I thought putting it in gdb_exit
+was a solution.
+However, IIUC the code, the second request will simply be ignored, the
+main loop (where the requests matter) have been already exited.
+I see what I can do anyway to avoid this double request.
 
----
-Changes since v1:
- - Add prerequisite of private gmem;
- - update example command to launch TD;
+> If we send the "we're exiting" report to the gdb process,
+> that ought to be sufficient. If we're not actually managing
+> to send that last packet to gdb because we don't flush
+> the data out to the file descriptor, then it seems to me
+> that the fix ought to be to ensure we do do that flush
+> as part of gdb_exit() not to rearrange or try to avoid
+> all the subsequent calls to exit().
 
-Changes since RFC v4:
- - add the restriction that kernel-irqchip must be split
----
- docs/system/confidential-guest-support.rst |   1 +
- docs/system/i386/tdx.rst                   | 114 +++++++++++++++++++++
- docs/system/target-i386.rst                |   1 +
- 3 files changed, 116 insertions(+)
- create mode 100644 docs/system/i386/tdx.rst
+Here, I'm seeing the symptoms with a gdb connection being closed too
+sharply and a fd not being flush. But looking at the qemu_cleanup(),
+many things could require a proper cleanup which will be skipped by a
+simple exit(0). This could lead to many unexpected side effects.
 
-diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-index 0c490dbda2b7..66129fbab64c 100644
---- a/docs/system/confidential-guest-support.rst
-+++ b/docs/system/confidential-guest-support.rst
-@@ -38,6 +38,7 @@ Supported mechanisms
- Currently supported confidential guest mechanisms are:
- 
- * AMD Secure Encrypted Virtualization (SEV) (see :doc:`i386/amd-memory-encryption`)
-+* Intel Trust Domain Extension (TDX) (see :doc:`i386/tdx`)
- * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
- * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
- 
-diff --git a/docs/system/i386/tdx.rst b/docs/system/i386/tdx.rst
-new file mode 100644
-index 000000000000..48c0861c0530
---- /dev/null
-+++ b/docs/system/i386/tdx.rst
-@@ -0,0 +1,114 @@
-+Intel Trusted Domain eXtension (TDX)
-+====================================
-+
-+Intel Trusted Domain eXtensions (TDX) refers to an Intel technology that extends
-+Virtual Machine Extensions (VMX) and Multi-Key Total Memory Encryption (MKTME)
-+with a new kind of virtual machine guest called a Trust Domain (TD). A TD runs
-+in a CPU mode that is designed to protect the confidentiality of its memory
-+contents and its CPU state from any other software, including the hosting
-+Virtual Machine Monitor (VMM), unless explicitly shared by the TD itself.
-+
-+Prerequisites
-+-------------
-+
-+To run TD, the physical machine needs to have TDX module loaded and initialized
-+while KVM hypervisor has TDX support and has TDX enabled. If those requirements
-+are met, the ``KVM_CAP_VM_TYPES`` will report the support of ``KVM_X86_TDX_VM``.
-+
-+Trust Domain Virtual Firmware (TDVF)
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Trust Domain Virtual Firmware (TDVF) is required to provide TD services to boot
-+TD Guest OS. TDVF needs to be copied to guest private memory and measured before
-+a TD boots.
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_INIT_MEM_REGION``
-+to copy the TDVF image to TD's private memory space.
-+
-+Since TDX doesn't support readonly memslot, TDVF cannot be mapped as pflash
-+device and it actually works as RAM. "-bios" option is chosen to load TDVF.
-+
-+OVMF is the opensource firmware that implements the TDVF support. Thus the
-+command line to specify and load TDVF is ``-bios OVMF.fd``
-+
-+KVM private gmem
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+TD's memory (RAM) need to be able to be transformed between private and shared.
-+And its BIOS (OVMF/TDVF) needs to be mapped as private. Thus QEMU needs to
-+allocate private gmem for them via KVM's IOCTL (KVM_CREATE_GUEST_MEMFD), which
-+requires KVM is newer enough with gmem support.
-+
-+Feature Control
-+---------------
-+
-+Unlike non-TDX VM, the CPU features (enumerated by CPU or MSR) of a TD is not
-+under full control of VMM. VMM can only configure part of features of a TD on
-+``KVM_TDX_INIT_VM`` command of VM scope ``MEMORY_ENCRYPT_OP`` ioctl.
-+
-+The configurable features have three types:
-+
-+- Attributes:
-+  - PKS (bit 30) controls whether Supervisor Protection Keys is exposed to TD,
-+  which determines related CPUID bit and CR4 bit;
-+  - PERFMON (bit 63) controls whether PMU is exposed to TD.
-+
-+- XSAVE related features (XFAM):
-+  XFAM is a 64b mask, which has the same format as XCR0 or IA32_XSS MSR. It
-+  determines the set of extended features available for use by the guest TD.
-+
-+- CPUID features:
-+  Only some bits of some CPUID leaves are directly configurable by VMM.
-+
-+What features can be configured is reported via TDX capabilities.
-+
-+TDX capabilities
-+~~~~~~~~~~~~~~~~
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_CAPABILITIES``
-+to get the TDX capabilities from KVM. It returns a data structure of
-+``struct kvm_tdx_capabilites``, which tells the supported configuration of
-+attributes, XFAM and CPUIDs.
-+
-+Launching a TD (TDX VM)
-+-----------------------
-+
-+To launch a TDX guest:
-+
-+.. parsed-literal::
-+
-+    |qemu_system_x86| \\
-+        -object memory-backend-ram,id=mem0,size=${mem},private=on \\
-+        -object tdx-guest,id=tdx0 \\
-+        -machine ...,kernel-irqchip=split,confidential-guest-support=tdx0,memory-backend=mem0 \\
-+        -bios OVMF.fd \\
-+
-+Debugging
-+---------
-+
-+Bit 0 of TD attributes, is DEBUG bit, which decides if the TD runs in off-TD
-+debug mode. When in off-TD debug mode, TD's VCPU state and private memory are
-+accessible via given SEAMCALLs. This requires KVM to expose APIs to invoke those
-+SEAMCALLs and resonponding QEMU change.
-+
-+It's targeted as future work.
-+
-+restrictions
-+------------
-+
-+ - kernel-irqchip must be split;
-+
-+ - No readonly support for private memory;
-+
-+ - No SMM support: SMM support requires manipulating the guset register states
-+   which is not allowed;
-+
-+Live Migration
-+--------------
-+
-+TODO
-+
-+References
-+----------
-+
-+- `TDX Homepage <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html>`__
-diff --git a/docs/system/target-i386.rst b/docs/system/target-i386.rst
-index 1b8a1f248abb..4d58cdbc4e06 100644
---- a/docs/system/target-i386.rst
-+++ b/docs/system/target-i386.rst
-@@ -29,6 +29,7 @@ Architectural features
-    i386/kvm-pv
-    i386/sgx
-    i386/amd-memory-encryption
-+   i386/tdx
- 
- OS requirements
- ~~~~~~~~~~~~~~~
--- 
-2.34.1
-
+Thanks,
+Cl=C3=A9ment
 
