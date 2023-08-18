@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54ED3780962
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 12:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41569780961
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 12:00:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWwFB-0001VD-D9; Fri, 18 Aug 2023 05:58:13 -0400
+	id 1qWwFO-0002G1-1K; Fri, 18 Aug 2023 05:58:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWwEv-0001G3-8r
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:57:57 -0400
+ id 1qWwF0-0001II-3V
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:58:02 -0400
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWwEs-0000Eg-G2
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:57:56 -0400
+ id 1qWwEu-0000Ev-0S
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:57:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692352674; x=1723888674;
+ t=1692352676; x=1723888676;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4pumGxfrijyUn0Q5nX1dtYuXDXgLxajixMrQt/+4nDw=;
- b=aglyKzLB5UUp5oyiWkUlavq86IZ+SPQqRKIy4T3CCY30imNxAWas38uB
- Dl3y8kpeJ0CSFUf0YIU9V0/nNMI62173WFE0epHyGmFAwjrEndcPt8Wl6
- DZ3dCzf0yfPhY8n/VAIanjPHHmkE1oyrBoADGmnR++D95psdETCYp+OLs
- bt/khITGk90svpVC4jB9TwEETCeeA4mOqQzzdckBMNiiM6+hO9KzLXbiL
- U4gORbjOypM3DDkPsgdlUTOwYEY2q1lK6m1XoBL4ocEUCIRghyQ8WB1Gj
- rzt+KjmtrwvCrLJk517x4d2v5Fbh8MnfiqgJV5K8EixsGXgIq9/35epNV w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="371966127"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="371966127"
+ bh=2N2aM9wH/rXuk9SRUqbVx5Kuno6nIQTpUhHJzi/wXXE=;
+ b=AaJY8wk8quPuiAdulbcloeLvhoqTjzIx5f2SGblIvZo3PthikO4DxXnn
+ Zk1bZ4sAUNpStA3qBiJgun6aVpodrdGg327XvFLAc7ALijc8kjTtrt4S8
+ JkIzfMQszPlTqwRhJXM8wUJKa8L9rpAjQL9MmcTeE6POFFMk559gA68Cc
+ bzOEXbTJY3/bx3ZDurShB5EJSVCGK2/lAXtKMN9uNceGHqk2x+/MeAyB2
+ Oz6AmVIJnv1AUtothaKyOpdc0riGz91GbQ8xtU+VoM2/bvTwZ4lGoJMW4
+ I0PXIcaYCesd7G6rY4zYqVUiimyluwtE+7hcyShgFAYH3IDXFMJg1hdd9 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="371966146"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="371966146"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2023 02:56:37 -0700
+ 18 Aug 2023 02:56:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="849235208"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="849235208"
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="849235224"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="849235224"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by fmsmga002.fm.intel.com with ESMTP; 18 Aug 2023 02:56:32 -0700
+ by fmsmga002.fm.intel.com with ESMTP; 18 Aug 2023 02:56:37 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -56,10 +56,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
  xiaoyao.li@intel.com, Isaku Yamahata <isaku.yamahata@gmail.com>,
  erdemaktas@google.com, Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v2 25/58] kvm/tdx: Don't complain when converting vMMIO region
- to shared
-Date: Fri, 18 Aug 2023 05:50:08 -0400
-Message-Id: <20230818095041.1973309-26-xiaoyao.li@intel.com>
+Subject: [PATCH v2 26/58] kvm/tdx: Ignore memory conversion to shared of
+ unassigned region
+Date: Fri, 18 Aug 2023 05:50:09 -0400
+Message-Id: <20230818095041.1973309-27-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818095041.1973309-1-xiaoyao.li@intel.com>
 References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
@@ -91,47 +91,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Because vMMIO region needs to be shared region, guest TD may explicitly
-convert such region from private to shared.  Don't complain such
-conversion.
+TDX requires vMMIO region to be shared.  For KVM, MMIO region is the region
+which kvm memslot isn't assigned to (except in-kernel emulation).
+qemu has the memory region for vMMIO at each device level.
+
+While OVMF issues MapGPA(to-shared) conservatively on 32bit PCI MMIO
+region, qemu doesn't find corresponding vMMIO region because it's before
+PCI device allocation and memory_region_find() finds the device region, not
+PCI bus region.  It's safe to ignore MapGPA(to-shared) because when guest
+accesses those region they use GPA with shared bit set for vMMIO.  Ignore
+memory conversion request of non-assigned region to shared and return
+success.  Otherwise OVMF is confused and panics there.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ accel/kvm/kvm-all.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index fceec7f2a83f..9d0aa8c97feb 100644
+index 9d0aa8c97feb..8d53c89e9dbf 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -3094,8 +3094,24 @@ static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-          */
-         ram_block_convert_range(rb, offset, size, to_private);
-     } else {
--        warn_report("Convert non guest-memfd backed memory region (0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
--                    start, size, to_private ? "private" : "shared");
-+        MemoryRegion *mr = section.mr;
-+
+@@ -3070,6 +3070,18 @@ static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+     trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
+     section = memory_region_find(get_system_memory(), start, size);
+     if (!section.mr) {
 +        /*
-+         * Because vMMIO region must be shared, guest TD may convert vMMIO
-+         * region to shared explicitly.  Don't complain such case.  See
-+         * memory_region_type() for checking if the region is MMIO region.
++         * Ignore converting non-assigned region to shared.
++         *
++         * TDX requires vMMIO region to be shared to inject #VE to guest.
++         * OVMF issues conservatively MapGPA(shared) on 32bit PCI MMIO region,
++         * and vIO-APIC 0xFEC00000 4K page.
++         * OVMF assigns 32bit PCI MMIO region to
++         * [top of low memory: typically 2GB=0xC000000,  0xFC00000)
 +         */
-+        if (to_private ||
-+            memory_region_is_ram(mr) ||
-+            memory_region_is_ram_device(mr) ||
-+            memory_region_is_rom(mr) ||
-+            memory_region_is_romd(mr)) {
-+            warn_report("Convert non guest-memfd backed memory region (0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") of %s to %s",
-+                        start, size, mr->name, to_private ? "private" : "shared");
-+	    } else {
-+		    ret = 0;
-+	    }
-+
++        if (!to_private) {
++            ret = 0;
++        }
+         return ret;
      }
  
-     memory_region_unref(section.mr);
 -- 
 2.34.1
 
