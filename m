@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC4B78111E
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 18:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48134781136
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:06:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX2nf-0003fg-Ru; Fri, 18 Aug 2023 12:58:15 -0400
+	id 1qX2um-0005fV-Ps; Fri, 18 Aug 2023 13:05:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX2nc-0003fE-Qd
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 12:58:13 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX2uZ-0005bo-8x
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:05:24 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX2nZ-0005Qy-KJ
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 12:58:12 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-52564f3faf7so1391838a12.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 09:58:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX2uW-0006hu-AD
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:05:22 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2b9b904bb04so18252611fa.1
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:05:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692377887; x=1692982687;
+ d=linaro.org; s=google; t=1692378318; x=1692983118;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7baqFmpBu+Mre8YaPCnWgi3AcZD5BeDf3ToXDPwDohI=;
- b=IFG8DmKH5pPdwiNTdz7wt+YomQFBtgxvakmLnUWyTRBRak5JgL64GllTuUgaR3v/BY
- l/KZWjVxEk4Q7//PMrOcyeeRe8NjGBwCXllQUfoFALZ9ZyiTxrfcWOiuRzigsNCrqcWo
- 1mfvAShcrBmKkEyGjH4j5f6jpTS6x7v7h0o/tfkybcU/20y7y/SzAyULuF0yRky1oh4B
- 0+mMsR7GjxrcbC1abD50cGdC5eC+TDuWNcRluliipXk71fhuCIR70iuVee0l5nAGlPOo
- q3cMvqGsoUGhhct/xZldsoYsFKBPTO71YnZ6ahXC2uQXVhIqd9wQ0NmezaFquRNWWAc3
- Swhg==
+ bh=php5sYodc4HHGmotxhihN653QTZrU8HbzRy+YarPOdo=;
+ b=zmW0SczY1wKPVNI1wgom1ZtcT+ZJC5Pwgfh1ksz6DlkH+dPkm1q0srGNh7D4GT+jhD
+ 8HEtOqpUIDyeade5IhmvIhVtoH4/ZRfPX4LzrRpdWT0DPWGjQxxhYyMVAlzDxBM+h20B
+ oqeBkkvq5i581c6ZaIMPfLZFvKr0S+f3JDa4nqbs6lum4CBZak+kcJm1HfTLPnC+PKt4
+ Nq7ULpleKO4RDx19joBoXhx3lYFp9qJ1Pq7BApC2W8fmUo+wYU7T+M+P1Vj+5S/osVk0
+ 6qjj+8wW0Sk/TMb8UAJTICRpgDbHmgnAhzzSMUpSNLNjzj0hIHoA67OE0A4aSC0DJFP8
+ cV+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692377887; x=1692982687;
+ d=1e100.net; s=20221208; t=1692378318; x=1692983118;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7baqFmpBu+Mre8YaPCnWgi3AcZD5BeDf3ToXDPwDohI=;
- b=MJWAeOftZ9URE8Q8aXQz3tVqF6vs/k4bA/7agOo7cIZ3k8Bn7YphtZXmGYk6lMAKXW
- 2KsM7p5+pUmrAJJAMoEwZgYBqQfJsnOSoGNIGRy61e3TC2xVnutGoC6LNE8kvcRTV1NG
- AEnLtNISilJvY5AeqIDlRRKGJKSC+++R/WdL0gbOKVkLY5KjJ4J2DEbhSAip/6hPPTUm
- NTlcKdMdQbV6Cb0+ZQMMk14xUqDBKLg8fIWEXV63vaSHfdQH7rx6QOzk+V8fj2gEYR06
- ChkaJc3exw5fmVIBQukjv6YoirXY4BjcJTSIkLZQjrmikN97rAQoPePCfqnttbU6HHbi
- 8j9w==
-X-Gm-Message-State: AOJu0YwfcnoJuMCTHs8cVedxBNibmtJlw99dUzbI9u8HSUyRfWn7Gy7I
- paYZpGfoS2Fmg6r7jHmeeQCLUA==
-X-Google-Smtp-Source: AGHT+IEoHu6DqAueSmkaWS5MnmmgN8HpgXRs7bINn7Eu3jOxEnPTFuNQirNLagBGUerTOsBHPlWf6g==
-X-Received: by 2002:a17:907:7719:b0:99b:f392:10b2 with SMTP id
- kw25-20020a170907771900b0099bf39210b2mr2507977ejc.39.1692377887558; 
- Fri, 18 Aug 2023 09:58:07 -0700 (PDT)
+ bh=php5sYodc4HHGmotxhihN653QTZrU8HbzRy+YarPOdo=;
+ b=gEUAaZouOymqbDsEm44wC9XfW2sDY1eWZg246OnV0DDJBmKRrCu3hMb5WuqbzpXU3H
+ ZOl7FJuwUzK8aIROnmUeb7YsZ1+d29sEJRYjGFzzXBNVTuauOGu87G9OfWG0CXhs+/+h
+ RMs950Nt1cC4jFW0KehSi1+EJW22NO5VKgzkiCA0nxiZeRG4OxIAtFmOWcGbEO7wQkGv
+ UNX6xSkLHkydMZiS83f10Kfah+nJ+UPk+4T1Bf8eZXAc06/xFe2Fp1rGm/T4NhuLsVS4
+ PMJg9G72jYImyBXcDvf/LITXzJlAJoJgJLtSkVjks6LJIvOUN1nBn72SQYhwKqQTF9iK
+ e58g==
+X-Gm-Message-State: AOJu0Yyp1r7ilrM9dlTn0RsElb6dz8SbdhqRjh89mnwxHBBPCjB65jWg
+ Tdf2L0VYu4HVKmNYfPSeir6hkg==
+X-Google-Smtp-Source: AGHT+IF3+R/B8uF1DPzGIDaW/XV6m2vqYdrKPp7U5SB4HSqbVAi5vA/uVPHhHiic9GWK3NngaB+syA==
+X-Received: by 2002:a2e:8881:0:b0:2b9:e831:f15f with SMTP id
+ k1-20020a2e8881000000b002b9e831f15fmr2347206lji.32.1692378317867; 
+ Fri, 18 Aug 2023 10:05:17 -0700 (PDT)
 Received: from [192.168.69.115] (cnf78-h01-176-184-27-79.dsl.sta.abo.bbox.fr.
  [176.184.27.79]) by smtp.gmail.com with ESMTPSA id
- f15-20020a170906084f00b0099cf9bf4c98sm1391617ejd.8.2023.08.18.09.58.06
+ y17-20020a170906525100b00992c92af6f4sm1406699ejm.144.2023.08.18.10.05.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Aug 2023 09:58:07 -0700 (PDT)
-Message-ID: <fdb85dbf-f19f-2006-e334-1b6b0f4b639e@linaro.org>
-Date: Fri, 18 Aug 2023 18:58:05 +0200
+ Fri, 18 Aug 2023 10:05:17 -0700 (PDT)
+Message-ID: <ee302180-616c-23eb-1b3d-26e9ba3a5e29@linaro.org>
+Date: Fri, 18 Aug 2023 19:05:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 01/18] target/loongarch: Add function to check current
- arch
+Subject: Re: [PATCH v3 08/18] target/loongarch: Truncate high 32 bits of
+ address in VA32 mode
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, c@jia.je, maobibo@loongson.cn,
- yangxiaojuan@loongson.cn, yijun@loongson.cn, shenjinyang@loongson.cn
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: c@jia.je, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
+ yijun@loongson.cn, shenjinyang@loongson.cn
 References: <20230817093121.1053890-1-gaosong@loongson.cn>
- <20230817093121.1053890-2-gaosong@loongson.cn>
+ <20230817093121.1053890-9-gaosong@loongson.cn>
+ <095e6d5a-a19d-abc0-4a9a-d23dddd33755@linaro.org>
+ <b03c7041-83c1-3a79-da4e-a2a5fd523c22@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230817093121.1053890-2-gaosong@loongson.cn>
+In-Reply-To: <b03c7041-83c1-3a79-da4e-a2a5fd523c22@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -55
 X-Spam_score: -5.6
 X-Spam_bar: -----
@@ -95,20 +98,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/8/23 11:31, Song Gao wrote:
-> From: Jiajie Chen <c@jia.je>
+On 18/8/23 17:25, Richard Henderson wrote:
+> On 8/18/23 02:41, Philippe Mathieu-Daudé wrote:
+>>> +static inline void set_pc(CPULoongArchState *env, uint64_t value)
+>>> +{
+>>> +    if (is_va32(env)) {
+>>> +        env->pc = (uint32_t)value;
+>>
+>> That would become loongarch32_cpu_set_pc().
+>>
+>>> +    } else {
+>>> +        env->pc = value;
+>>
+>> This is the current loongarch_cpu_set_pc().
 > 
-> Add is_la64 function to check if the current cpucfg[1].arch equals to
-> 2(LA64).
-> 
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu.h | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+> No, it would not.  LA64 has a 32-bit address mode, much like MIPS, 
+> Power, and others.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Got it!
 
 
