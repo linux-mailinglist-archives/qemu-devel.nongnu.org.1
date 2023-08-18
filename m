@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFBF781168
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E36B781167
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:15:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX325-0008OR-3q; Fri, 18 Aug 2023 13:13:09 -0400
+	id 1qX32c-0000ow-VV; Fri, 18 Aug 2023 13:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX322-0008Ls-BT
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:13:06 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qX323-0008Mv-2E
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:13:07 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX320-00087V-7v
+ id 1qX321-00087j-DZ
  for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:13:06 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bdcb800594so9297315ad.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:13:03 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bf078d5fb7so9040535ad.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692378783; x=1692983583;
+ d=linaro.org; s=google; t=1692378784; x=1692983584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Gjb3/VxZ1+V+7wtutprokQqvAFJJgSE2zXjUQaXpThk=;
- b=kuEh4+JpYpTD2nX3jTcmYmIBK4Ol079fEd+Rg8VYjlUXmu0EjcLNEADNKcQuiXW+OS
- Q4d5LE4HafACHHc+AjLcjRewUjw5/WZVrHvPBcwRWuWIwsazVJ9ZVpGjK48eZjQ8tQ0n
- ovx3a7bdRRaApix4Mrs6c3TcfbnWqa6m8LhLxzjvJlIU3XCCrLQEAzvZ9X1VS3lE1bpk
- oR0iBB1tbw8RmigtLebGjYPNG4LhcEiPsjv1HDmnArmia3bR3dsTJdTP8Po9xiBTU0Ji
- rZW9dpxjm8fFrmRJca1TBtTXz860EkWLTyuYZEg7OOTET8pQ6O1sKZZrnz08fA31lCxe
- bK/g==
+ :reply-to; bh=vhJle2SLoLtjF46S9WwbX4E0SKnoT2uUHN79WdZXuqE=;
+ b=KZ976yVP4xOp4JFWPwsekBKbtE3bDi47WnvNsriLCvXaS0bEOaHpD60z4G+rA8aH1V
+ A/K+gbc0wDElXTaoYq86mbMkB/6Rg6jaRkMMg5y4hk/+Pv3ME8p+46xQpKxvm8fUcO0a
+ peFGDqg6QoOd0hQT1TUqz2X9UY+KieJmfZ6hAA5UAymPwYGkmt31EkFO/IDED8OW36vZ
+ sya0J8up+SPh7JRVrCZAgCF48wD2UtKnZcvb8m/rgQOYWCzX5R9Nef4qaYjtZAIrEDfq
+ p9ABUuNLKioZffFzYfUEmLOv4DHQRct9gAG3EFgrOT0bbaqKiQhchzl+Mk3FptuLIvGK
+ PC7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692378783; x=1692983583;
+ d=1e100.net; s=20221208; t=1692378784; x=1692983584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gjb3/VxZ1+V+7wtutprokQqvAFJJgSE2zXjUQaXpThk=;
- b=GK5eAdMR9A0LGSO/jsZBIsHhkrnvlN2BY5/CUzeua/zwkujHIHbyNhh2jwLLyAELna
- 6X35QgyAKfl0G0T+tby3A5PergAur4jTKQtjW4WIwxhw7X/DihxfmXM0Lc1R4e8m5JuG
- 5naYtXGANx/pJgYajOPKKZFx4Ppn6t8KB47LXKpdrRJ2t2h8J1aHmEeMeVFXxwGRYORP
- yJR+6Vhb6f8KgIkd9OdJ9h/TZ36GzI3HYfz6IrVT9u+AQsqVlisBC16vY31iXWtCAHkd
- a19fRsudGUFtAq24d7sqgExOpb5wJebMpGe6eOuY/bI0Uw2HPI8be1tCTavH2C3ocCKO
- hzCQ==
-X-Gm-Message-State: AOJu0Yx9gQu7DsVbS6UJ27w2m1Pef9jmKlG1AzRbPmythMa7xBdG3fXs
- tVVnCYX5HzpkVayU7Ys9rfjNsWWRhRKKwD32J5E=
-X-Google-Smtp-Source: AGHT+IF/zxx6NHtIOi7MP523B1m/DRNQQx3+431M8mAhjLFg9lzwjwxt4HQKraLPL72iaeXb4DeNxg==
-X-Received: by 2002:a17:902:7005:b0:1bc:9c70:b955 with SMTP id
- y5-20020a170902700500b001bc9c70b955mr3086081plk.28.1692378783022; 
+ bh=vhJle2SLoLtjF46S9WwbX4E0SKnoT2uUHN79WdZXuqE=;
+ b=YQbMXrtFsDNVX+uOuvKZEUnL+jFU6iB+5GYyofTJs6a1de+3sL4tFFGmus5ne2t2kG
+ ou5E2ch77VzdK9bOhzmv2vwCLUsuxKtAJ38rURZh0OvqnmPEZX4RJXNk5p4laZ817841
+ gcoEe0zohuCD0uQ/MJJLsmLdO+7gLyi3apQ2Toq1S1pd3XNLfQjBr4o+J3hFWUQQiAl7
+ oaoMhXswmphtaucaDU3SEzEH7QDoYWepkTWZV5uAcZP2NP99SKuzUDYu9O3khOiOgn5D
+ Y44r8pFtHwW96rrLnIXUa8akH1NwG3sZO5gHzDnSWy8qJbERrPnuitaij1bR/owW8cky
+ rTXg==
+X-Gm-Message-State: AOJu0YzdrLkrj/klXIFIs5RPSF9xVXq2g67AxhmmommEjyPb/ymTfCN7
+ K8jfRzRjAOA+eywOUFCZ20Xh93IMKtoMwKtvraI=
+X-Google-Smtp-Source: AGHT+IEwucnpdPonJExbeNnWgHzOyi1U2zM9wc8fP+pqFjMd2fqT7cfIreQMTgwOVIIStSxpZvSHtg==
+X-Received: by 2002:a17:903:2448:b0:1b5:561a:5ca9 with SMTP id
+ l8-20020a170903244800b001b5561a5ca9mr3395672pls.50.1692378783729; 
  Fri, 18 Aug 2023 10:13:03 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.13.02
+ jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.13.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 10:13:02 -0700 (PDT)
+ Fri, 18 Aug 2023 10:13:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 29/33] linux-user: Allow TARGET_PAGE_BITS_VARY
-Date: Fri, 18 Aug 2023 10:12:23 -0700
-Message-Id: <20230818171227.141728-30-richard.henderson@linaro.org>
+Subject: [PATCH 30/33] target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64
+ user-only
+Date: Fri, 18 Aug 2023 10:12:24 -0700
+Message-Id: <20230818171227.141728-31-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818171227.141728-1-richard.henderson@linaro.org>
 References: <20230818171227.141728-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,68 +91,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If set, match the host and guest page sizes.
+Since aarch64 binaries are generally built for multiple
+page sizes, it is trivial to allow the page size to vary.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/main.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ target/arm/cpu-param.h |  6 ++++-
+ target/arm/cpu.c       | 51 ++++++++++++++++++++++++------------------
+ 2 files changed, 34 insertions(+), 23 deletions(-)
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 3dd3310331..2334d7cc67 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -55,6 +55,7 @@
- #include "loader.h"
- #include "user-mmap.h"
- #include "accel/tcg/perf.h"
-+#include "exec/page-vary.h"
+diff --git a/target/arm/cpu-param.h b/target/arm/cpu-param.h
+index b3b35f7aa1..7585a810b2 100644
+--- a/target/arm/cpu-param.h
++++ b/target/arm/cpu-param.h
+@@ -19,9 +19,13 @@
+ #endif
  
- #ifdef CONFIG_SEMIHOSTING
- #include "semihosting/semihost.h"
-@@ -683,6 +684,7 @@ int main(int argc, char **argv, char **envp)
-     int i;
-     int ret;
-     int execfd;
-+    int host_page_size;
-     unsigned long max_reserved_va;
-     bool preserve_argv0;
+ #ifdef CONFIG_USER_ONLY
+-#define TARGET_PAGE_BITS 12
+ # ifdef TARGET_AARCH64
+ #  define TARGET_TAGGED_ADDRESSES
++/* Allow user-only to vary page size from 4k */
++#  define TARGET_PAGE_BITS_VARY
++#  define TARGET_PAGE_BITS_MIN  12
++# else
++#  define TARGET_PAGE_BITS 12
+ # endif
+ #else
+ /*
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 93c28d50e5..cb05f7a8a8 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1586,7 +1586,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     ARMCPU *cpu = ARM_CPU(dev);
+     ARMCPUClass *acc = ARM_CPU_GET_CLASS(dev);
+     CPUARMState *env = &cpu->env;
+-    int pagebits;
+     Error *local_err = NULL;
+     bool no_aa32 = false;
  
-@@ -794,6 +796,16 @@ int main(int argc, char **argv, char **envp)
-                                  opt_one_insn_per_tb, &error_abort);
-         ac->init_machine(NULL);
+@@ -1953,28 +1952,36 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+            !cpu_isar_feature(aa32_vfp_simd, cpu) ||
+            !arm_feature(env, ARM_FEATURE_XSCALE));
+ 
+-    if (arm_feature(env, ARM_FEATURE_V7) &&
+-        !arm_feature(env, ARM_FEATURE_M) &&
+-        !arm_feature(env, ARM_FEATURE_PMSA)) {
+-        /* v7VMSA drops support for the old ARMv5 tiny pages, so we
+-         * can use 4K pages.
+-         */
+-        pagebits = 12;
+-    } else {
+-        /* For CPUs which might have tiny 1K pages, or which have an
+-         * MPU and might have small region sizes, stick with 1K pages.
+-         */
+-        pagebits = 10;
+-    }
+-    if (!set_preferred_target_page_bits(pagebits)) {
+-        /* This can only ever happen for hotplugging a CPU, or if
+-         * the board code incorrectly creates a CPU which it has
+-         * promised via minimum_page_size that it will not.
+-         */
+-        error_setg(errp, "This CPU requires a smaller page size than the "
+-                   "system is using");
+-        return;
++#ifndef CONFIG_USER_ONLY
++    {
++        int pagebits;
++        if (arm_feature(env, ARM_FEATURE_V7) &&
++            !arm_feature(env, ARM_FEATURE_M) &&
++            !arm_feature(env, ARM_FEATURE_PMSA)) {
++            /*
++             * v7VMSA drops support for the old ARMv5 tiny pages,
++             * so we can use 4K pages.
++             */
++            pagebits = 12;
++        } else {
++            /*
++             * For CPUs which might have tiny 1K pages, or which have an
++             * MPU and might have small region sizes, stick with 1K pages.
++             */
++            pagebits = 10;
++        }
++        if (!set_preferred_target_page_bits(pagebits)) {
++            /*
++             * This can only ever happen for hotplugging a CPU, or if
++             * the board code incorrectly creates a CPU which it has
++             * promised via minimum_page_size that it will not.
++             */
++            error_setg(errp, "This CPU requires a smaller page size "
++                       "than the system is using");
++            return;
++        }
      }
-+
-+    /*
-+     * Finalize page size before creating CPUs.
-+     * This will do nothing if !TARGET_PAGE_BITS_VARY.
-+     * The most efficient setting is to match the host.
-+     */
-+    host_page_size = qemu_real_host_page_size();
-+    set_preferred_target_page_bits(ctz32(host_page_size));
-+    finalize_target_page_bits();
-+
-     cpu = cpu_create(cpu_type);
-     env = cpu->env_ptr;
-     cpu_reset(cpu);
-@@ -807,8 +819,6 @@ int main(int argc, char **argv, char **envp)
-      */
-     max_reserved_va = MAX_RESERVED_VA(cpu);
-     if (reserved_va != 0) {
--        int host_page_size = qemu_real_host_page_size();
--
-         if ((reserved_va + 1) % host_page_size) {
-             char *s = size_to_str(host_page_size);
-             fprintf(stderr, "Reserved virtual address not aligned mod %s\n", s);
-@@ -907,7 +917,7 @@ int main(int argc, char **argv, char **envp)
-      * If we're in a chroot with no /proc, fall back to 1 page.
-      */
-     if (mmap_min_addr == 0) {
--        mmap_min_addr = qemu_real_host_page_size();
-+        mmap_min_addr = host_page_size;
-         qemu_log_mask(CPU_LOG_PAGE,
-                       "host mmap_min_addr=0x%lx (fallback)\n",
-                       mmap_min_addr);
++#endif
+ 
+     /* This cpu-id-to-MPIDR affinity is used only for TCG; KVM will override it.
+      * We don't support setting cluster ID ([16..23]) (known as Aff2
 -- 
 2.34.1
 
