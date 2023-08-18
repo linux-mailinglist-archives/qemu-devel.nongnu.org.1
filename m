@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39797780806
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 11:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E2A78084D
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 11:31:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWvVB-0002VM-Vx; Fri, 18 Aug 2023 05:10:42 -0400
+	id 1qWvnq-00070i-AP; Fri, 18 Aug 2023 05:29:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWvV8-0002Tm-Ex
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:10:38 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWvnn-00070X-Ku
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:29:55 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWvV6-00023E-7J
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:10:38 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4fe3b86cec1so959341e87.2
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 02:10:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWvnl-0006wg-8j
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:29:55 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5234f46c6f9so861063a12.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 02:29:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692349834; x=1692954634;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eeqSIo/mIgJJPlkKnQJIhYtY/4H6w1YKGY2KemlysLo=;
- b=u9HS2nc+Gu0SpCxxm1/tIrN/wGR6liQBgfO97ZzmDQVdDqqvS4Czu6JXam4OznDH78
- cMDKE6b95wBdCUv06V9hnet4UdSgUSc8/f+kPIVideeOmIhc1HFoWlPgw1XpZMtzQ1Ad
- RQFPAEDK7/8SRVwLGBTIgBpyIVz8dyp6hkrtP4XZmDvCPZYLFIJpzx/zl/WEmzA6wEWZ
- 7M0T7azz/CsWy6hzSTqxHdp+Ocp748LqVcylUZIFYTjmtDBNK++htnAzdyscGLJwXXyF
- Wr7ljUvDoSn/jn0MG3gbkNFoCPmX5Pv2bHJmPYRrY6z2o4Ck+uI3xpO0ESxHTSnZrQoJ
- uKWA==
+ d=linaro.org; s=google; t=1692350992; x=1692955792;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dbSVVpJeAp7w3Zk7Y13X7ZjeTi+XoDMcA8frpilYA/c=;
+ b=E2M03ojcf3rxEEi+3BcnIGbQA0A2X7Bdf2G1jBavODuDwMSOY5GTzQCLdycEStZtGo
+ vsUITLp21O+555rgNZ15vhPgG+pc9JrtZcrT3bTGMsoMNTN14+6WTYhADkzluO0wT0Kq
+ oupqNKTfyvL9mTtxzEVLHgZWDjCGMm174dUtMLqH/2honnPUm43TP/V7NOJwGORN5cQh
+ gs7amMLfCJbUGQvvws7FlpCI52zhwCi/au/mIU0JMItkbLz327stqbbfU94XhlkqSNzt
+ w2JvQAoW1w7b6qhLVP/GYM6kAQBzP3D+nmYH/Iw8Jl8U1nTN5ciiB90cTZhuca/B1st4
+ Wwqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692349834; x=1692954634;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eeqSIo/mIgJJPlkKnQJIhYtY/4H6w1YKGY2KemlysLo=;
- b=MnCfIvqJFajFlwmTNentsdMyrVgOPbB66OWRXs2HvCmk+DLJZnNHAmQOYK8ICIWpTT
- gxS5KfeFyvepRBmBTnLMXp0uP/UgEXjLz4gf76KsHco/ys8HhVWPSLZdQGiS6AaJujuz
- XB56JlTfyEb5FnijfUkXirRdli6GiUEdKEnEkzhNPJ9tvTnGhMlfI4J98dqaL1RLBnqS
- X2QPu/7A3ytYOn1vVZBIAsIpijtQwzmFff7udmacSdZ8jXrY7TKNtR+twT/gMVG4IDyL
- YuX9vDmNkMQX/d4WeYHx2gujP81FnrmFO35afyUSybP0lVnvaA6+37NhjCAQnvkmgV4g
- Vstg==
-X-Gm-Message-State: AOJu0Yw0ZldXa1vZXulJpuchRwwAyrxU8+9PjEks0+qlHj5bZFvJ2smw
- RRTpoVDgc/kq5iO9kl1Yhi6AkpBe9Qbzu8KJzf0xsA==
-X-Google-Smtp-Source: AGHT+IGpPXbnuDC5Q4q/+adG29s1Bdb6e1Iga624Iu59tSavQaGLrzEDSu0HT+If0X5xgL7CHc5zAnAkaziVjeuCXV8=
-X-Received: by 2002:a19:ca1d:0:b0:4fe:958:88ac with SMTP id
- a29-20020a19ca1d000000b004fe095888acmr1124027lfg.6.1692349834066; Fri, 18 Aug
- 2023 02:10:34 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692350992; x=1692955792;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dbSVVpJeAp7w3Zk7Y13X7ZjeTi+XoDMcA8frpilYA/c=;
+ b=IoNxLduwnIQFCOoP2+D1DbvxaOR9XiaPy8DEMH7mR5wgiBYKlw1qyxPPMadTBVwxvf
+ NoSxB5A/OPMRp6wsx7+OD5OwNDIYuuK+jJ2QEYCU19cg865lyH1/hfGwJSy0agKW31xL
+ PpHj7Jts3TKj3dKVGValLElQf4UKkycYy/GPE4493BK+e8QgmXDqQ1BBDvyhhXetNeOH
+ qSK4ETh756Yk47Zn3kG9J2GAYty6bht6RnwSm/NqsJgayzzoeqKxtp9hkCgHzhH0A2XU
+ cYmDvUThUtpiESCMV2sIBBb5r2mA1HGhETpkWhsrvkw+H2Hg7gH8RlqxmpDH/owG6NU3
+ vzLQ==
+X-Gm-Message-State: AOJu0Ywsu3VEeAvLnfN0Drz5HzbCbdsfH6iNO5Dg1tcX4h+YdrYwKRwE
+ yT0M8tuW3wTMBSMerqIF4FNbHp9gdUfPG3Bwawo=
+X-Google-Smtp-Source: AGHT+IGvfYNnj+w1TRhvYST+cvbpo6Zh0l84CQ1CQw/jz+OUh5epa2nzzziRggyCrtRc0Iq0gIZo5Q==
+X-Received: by 2002:a50:ee07:0:b0:523:3ff6:dfc2 with SMTP id
+ g7-20020a50ee07000000b005233ff6dfc2mr1805320eds.29.1692350991801; 
+ Fri, 18 Aug 2023 02:29:51 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.184.114])
+ by smtp.gmail.com with ESMTPSA id
+ e8-20020aa7d7c8000000b005231e1780aasm860159eds.91.2023.08.18.02.29.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Aug 2023 02:29:51 -0700 (PDT)
+Message-ID: <a650e078-bfdd-cb94-dbd3-923d7c16f7c8@linaro.org>
+Date: Fri, 18 Aug 2023 11:29:49 +0200
 MIME-Version: 1.0
-References: <20230818090224.409192-1-chigot@adacore.com>
- <20230818090224.409192-4-chigot@adacore.com>
-In-Reply-To: <20230818090224.409192-4-chigot@adacore.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 18 Aug 2023 10:10:23 +0100
-Message-ID: <CAFEAcA_1SdA_BH_u01FAYaZkABbCB2EcSf329=-GpZ2canjP7A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] gdbstub: replace exit(0) with proper shutdown
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 13/18] target/loongarch: Add loongarch32 cpu la132
+Content-Language: en-US
+To: c@jia.je, Huacai Chen <chenhuacai@kernel.org>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org,
+ Song Gao <gaosong@loongson.cn>, maobibo@loongson.cn,
+ yangxiaojuan@loongson.cn, yijun@loongson.cn, shenjinyang@loongson.cn
+References: <20230817093121.1053890-1-gaosong@loongson.cn>
+ <20230817093121.1053890-14-gaosong@loongson.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230817093121.1053890-14-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,90 +95,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 18 Aug 2023 at 10:03, Cl=C3=A9ment Chigot <chigot@adacore.com> wrot=
-e:
->
-> This replaces the exit(0) call by a shutdown request, ensuring a proper
-> cleanup of Qemu. Otherwise, some connections could be broken without
-> being correctly flushed.
->
-> Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+On 17/8/23 11:31, Song Gao wrote:
+> From: Jiajie Chen <c@jia.je>
+> 
+> Add la132 as a loongarch32 cpu type and allow virt machine to be used
+> with la132 instead of la464.
+> 
+> Due to lack of public documentation of la132, it is currently a
+> synthetic loongarch32 cpu model. Details need to be added in the future.
+> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->  gdbstub/gdbstub.c |  3 +--
->  gdbstub/softmmu.c | 11 +++++++++++
->  gdbstub/user.c    |  2 ++
->  3 files changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-> index 5f28d5cf57..358eed1935 100644
-> --- a/gdbstub/gdbstub.c
-> +++ b/gdbstub/gdbstub.c
-> @@ -1298,7 +1298,6 @@ static void handle_v_kill(GArray *params, void *use=
-r_ctx)
->      gdb_put_packet("OK");
->      error_report("QEMU: Terminated via GDBstub");
->      gdb_exit(0);
-> -    exit(0);
->  }
->
->  static const GdbCmdParseEntry gdb_v_commands_table[] =3D {
-> @@ -1818,7 +1817,7 @@ static int gdb_handle_packet(const char *line_buf)
->          /* Kill the target */
->          error_report("QEMU: Terminated via GDBstub");
->          gdb_exit(0);
-> -        exit(0);
-> +        break;
->      case 'D':
->          {
->              static const GdbCmdParseEntry detach_cmd_desc =3D {
-> diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-> index f509b7285d..9ca7ae10bc 100644
-> --- a/gdbstub/softmmu.c
-> +++ b/gdbstub/softmmu.c
-> @@ -434,6 +434,17 @@ void gdb_exit(int code)
->      }
->
->      qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
+>   hw/loongarch/virt.c    |  5 -----
+>   target/loongarch/cpu.c | 29 +++++++++++++++++++++++++++++
+>   2 files changed, 29 insertions(+), 5 deletions(-)
+> 
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index 8d95c997dc..95e00a044c 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+
+
+> +static void loongarch_la132_initfn(Object *obj)
+> +{
+> +    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+> +    CPULoongArchState *env = &cpu->env;
 > +
-> +    /*
-> +     * Shutdown request is a clean way to stop the QEMU, compared
-> +     * to a direct call to exit(). But we can't pass the exit code
-> +     * through it so avoid doing that when it can matter.
-> +     */
-> +    if (code) {
-> +        exit(code);
-> +    } else {
-> +        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +    int i;
+> +
+> +    for (i = 0; i < 21; i++) {
+> +        env->cpucfg[i] = 0x0;
 > +    }
->  }
->
->  /*
-> diff --git a/gdbstub/user.c b/gdbstub/user.c
-> index 5b375be1d9..f3d97d621f 100644
-> --- a/gdbstub/user.c
-> +++ b/gdbstub/user.c
-> @@ -113,6 +113,8 @@ void gdb_exit(int code)
->          gdb_put_packet(buf);
->          gdbserver_state.allow_stop_reply =3D false;
->      }
 > +
-> +    exit(code);
->  }
+> +    cpu->dtb_compatible = "loongarch,Loongson-1C103";
+> +
+> +    uint32_t data = 0;
+> +    data = FIELD_DP32(data, CPUCFG1, ARCH, 1); /* LA32 */
+> +    data = FIELD_DP32(data, CPUCFG1, PGMMU, 1);
+> +    data = FIELD_DP32(data, CPUCFG1, IOCSR, 1);
+> +    data = FIELD_DP32(data, CPUCFG1, PALEN, 0x1f); /* 32 bits */
+> +    data = FIELD_DP32(data, CPUCFG1, VALEN, 0x1f); /* 32 bits */
+> +    data = FIELD_DP32(data, CPUCFG1, UAL, 1);
+> +    data = FIELD_DP32(data, CPUCFG1, RI, 0);
+> +    data = FIELD_DP32(data, CPUCFG1, EP, 0);
+> +    data = FIELD_DP32(data, CPUCFG1, RPLV, 0);
+> +    data = FIELD_DP32(data, CPUCFG1, HP, 1);
+> +    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
+> +    env->cpucfg[1] = data;
 
-These are not the only places that call gdb_exit().
-Notably, qemu_cleanup() calls it, and I'm pretty sure
-it does not expect that gdb_exit() will either call
-exit() or qemu_system_shutdown_request(), because it's
-already in the process of cleaning up and stopping
-the system.
+So we have PRid = env->cpucfg[0] = 0...
 
-If we send the "we're exiting" report to the gdb process,
-that ought to be sufficient. If we're not actually managing
-to send that last packet to gdb because we don't flush
-the data out to the file descriptor, then it seems to me
-that the fix ought to be to ensure we do do that flush
-as part of gdb_exit() not to rearrange or try to avoid
-all the subsequent calls to exit().
+The LA132 series is 0x8000, so we can use smth like:
 
--- PMM
+        env->cpucfg[0] = 0x148042;  /* PRID */
+
+> +}
+> +
+>   static void loongarch_cpu_list_entry(gpointer data, gpointer user_data)
+>   {
+>       const char *typename = object_class_get_name(OBJECT_CLASS(data));
+> @@ -779,6 +807,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+>           .class_init = loongarch32_cpu_class_init,
+>       },
+>       DEFINE_LOONGARCH_CPU_TYPE("la464", loongarch_la464_initfn),
+> +    DEFINE_LOONGARCH32_CPU_TYPE("la132", loongarch_la132_initfn),
+>   };
+
+CPUNAME_REG in loongarch_qemu_read() is likely incorrect, but not a
+big deal.
 
