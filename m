@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9B0780969
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 12:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B0A780946
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 12:00:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWwDW-0008IN-RY; Fri, 18 Aug 2023 05:56:30 -0400
+	id 1qWwE4-0000oq-M4; Fri, 18 Aug 2023 05:57:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWwDT-00084F-1a
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:56:27 -0400
+ id 1qWwDY-0000W5-Dl
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:56:32 -0400
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWwDQ-000847-AU
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:56:26 -0400
+ id 1qWwDV-00085G-TR
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 05:56:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692352584; x=1723888584;
+ t=1692352589; x=1723888589;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kXbz035m1UkBnkuE826SCE8I4pfJ0GU89RlTelDHwBk=;
- b=SQhv3NlWgKsaYQS91XQvb1v7C80eATSVAMEMdMgWq6PrmklIUB09++Sa
- PgHh/MQ/F/XjhWz1iwxy1OpJ+iogIlZ1Z/fYhhft8oteytFDH3u+b5gyC
- inC60FE+j5PbDPG4SIG4XlE6mf9wseRVR4Q7Kio3mi9Joh1x4yEtz2VF+
- IlzN6mUqcMXs8dNBZtTsfa2FGE7FynT4A28DSPQ9YT28SG9JRvPnpeLZu
- pXZ7LeXinGCgyiOWoTDtxw9qB65zBfrSVClxXlw6f2+s0hfy0T52YUExs
- c2W18SMBbEIB2d/NmdzsbvFmYvrPCxDGE1giMV1I7cXUnqXe8WHikSIFK g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="371965970"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="371965970"
+ bh=CLI8i4NLnFT1VxTuNpWDpAzjpebLGmZNzlqiDs9hxoY=;
+ b=JRJsqfUAgX7o4YapKO3Tkvpl0/f/iwMv46fD9zhsgc5mh7B5x2xlT2kh
+ 7wYYF+3MFe95HI0+/4XOllBNp3gZ8iuUnBP1ddjmxvkiSQbxhPZ5/RxGo
+ v/mvBCoAh0FON5UQuDmpSYBxtm2jN4cE/MICihWFtINt+DOEaUZw0Q2PI
+ dv9pFSb2rkLiHbrHolu79kXwMuO5Iik5cahFF51d6maWXuOgVdN32lLC+
+ BoGgN7bi48QrK8Ywizm7+9qu8pdVHJjy83lhkrsBPZ8FvmJzaMhoxM2re
+ Xe2lOz8AbSXTcetx0ljWLFY6nGislwvgD9E2vTn2XuX7RHwlVGi88Teom Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="371966024"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="371966024"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2023 02:56:12 -0700
+ 18 Aug 2023 02:56:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="849235160"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="849235160"
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="849235167"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="849235167"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by fmsmga002.fm.intel.com with ESMTP; 18 Aug 2023 02:56:06 -0700
+ by fmsmga002.fm.intel.com with ESMTP; 18 Aug 2023 02:56:12 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -56,10 +56,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
  xiaoyao.li@intel.com, Isaku Yamahata <isaku.yamahata@gmail.com>,
  erdemaktas@google.com, Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v2 20/58] i386/tdx: Allows mrconfigid/mrowner/mrownerconfig
- for TDX_INIT_VM
-Date: Fri, 18 Aug 2023 05:50:03 -0400
-Message-Id: <20230818095041.1973309-21-xiaoyao.li@intel.com>
+Subject: [PATCH v2 21/58] i386/tdx: Implement user specified tsc frequency
+Date: Fri, 18 Aug 2023 05:50:04 -0400
+Message-Id: <20230818095041.1973309-22-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818095041.1973309-1-xiaoyao.li@intel.com>
 References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
@@ -89,102 +88,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+Reuse "-cpu,tsc-frequency=" to get user wanted tsc frequency and call VM
+scope VM_SET_TSC_KHZ to set the tsc frequency of TD before KVM_TDX_INIT_VM.
 
-When creating TDX vm, three sha384 hash values can be provided for
-TDX attestation.
+Besides, sanity check the tsc frequency to be in the legal range and
+legal granularity (required by TDX module).
 
-So far they were hard coded as 0. Now allow user to specify those values
-via property mrconfigid, mrowner and mrownerconfig. Choose hex-encoded
-string as format since it's friendly for user to input.
-
-example
--object tdx-guest, \
-  mrconfigid=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef, \
-  mrowner=fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210, \
-  mrownerconfig=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
-TODO:
- - community requests to use base64 encoding if no special reason
+Changes from RFC v4:
+  - Use VM scope VM_SET_TSC_KHZ to set the TSC frequency of TD since KVM
+    side drop the @tsc_khz field in struct kvm_tdx_init_vm
 ---
- qapi/qom.json         | 11 ++++++++++-
- target/i386/kvm/tdx.c | 13 +++++++++++++
- target/i386/kvm/tdx.h |  3 +++
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ target/i386/kvm/kvm.c |  9 +++++++++
+ target/i386/kvm/tdx.c | 24 ++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index cc08b9a98df9..87c1d440f331 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -873,10 +873,19 @@
- #
- # @sept-ve-disable: bit 28 of TD attributes (default: 0)
- #
-+# @mrconfigid: MRCONFIGID SHA384 hex string of 48 * 2 length (default: 0)
-+#
-+# @mrowner: MROWNER SHA384 hex string of 48 * 2 length (default: 0)
-+#
-+# @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
-+#
- # Since: 8.2
- ##
- { 'struct': 'TdxGuestProperties',
--  'data': { '*sept-ve-disable': 'bool' } }
-+  'data': { '*sept-ve-disable': 'bool',
-+            '*mrconfigid': 'str',
-+            '*mrowner': 'str',
-+            '*mrownerconfig': 'str' } }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index d51067fdc12a..4a146bc42f63 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -859,6 +859,15 @@ static int kvm_arch_set_tsc_khz(CPUState *cs)
+     int r, cur_freq;
+     bool set_ioctl = false;
  
- ##
- # @ThreadContextProperties:
++    /*
++     * TSC of TD vcpu is immutable, it cannot be set/changed via vcpu scope
++     * VM_SET_TSC_KHZ, but only be initialized via VM scope VM_SET_TSC_KHZ
++     * before ioctl KVM_TDX_INIT_VM in tdx_pre_create_vcpu()
++     */
++    if (is_tdx_vm()) {
++        return 0;
++    }
++
+     if (!env->tsc_khz) {
+         return 0;
+     }
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 73da15377ec3..33d015a08c34 100644
+index 33d015a08c34..a72badfbfd65 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -521,6 +521,13 @@ int tdx_pre_create_vcpu(CPUState *cpu)
-     init_vm->cpuid.nent = kvm_x86_arch_cpuid(env, init_vm->cpuid.entries, 0);
-     init_vm->attributes = tdx_guest->attributes;
+@@ -32,6 +32,9 @@
+                                      (1U << KVM_FEATURE_PV_SCHED_YIELD) | \
+                                      (1U << KVM_FEATURE_MSI_EXT_DEST_ID))
  
-+    QEMU_BUILD_BUG_ON(sizeof(init_vm->mrconfigid) != sizeof(tdx_guest->mrconfigid));
-+    QEMU_BUILD_BUG_ON(sizeof(init_vm->mrowner) != sizeof(tdx_guest->mrowner));
-+    QEMU_BUILD_BUG_ON(sizeof(init_vm->mrownerconfig) != sizeof(tdx_guest->mrownerconfig));
-+    memcpy(init_vm->mrconfigid, tdx_guest->mrconfigid, sizeof(tdx_guest->mrconfigid));
-+    memcpy(init_vm->mrowner, tdx_guest->mrowner, sizeof(tdx_guest->mrowner));
-+    memcpy(init_vm->mrownerconfig, tdx_guest->mrownerconfig, sizeof(tdx_guest->mrownerconfig));
++#define TDX_MIN_TSC_FREQUENCY_KHZ   (100 * 1000)
++#define TDX_MAX_TSC_FREQUENCY_KHZ   (10 * 1000 * 1000)
 +
-     do {
-         r = tdx_vm_ioctl(KVM_TDX_INIT_VM, 0, init_vm);
-     } while (r == -EAGAIN);
-@@ -575,6 +582,12 @@ static void tdx_guest_init(Object *obj)
-     object_property_add_bool(obj, "sept-ve-disable",
-                              tdx_guest_get_sept_ve_disable,
-                              tdx_guest_set_sept_ve_disable);
-+    object_property_add_sha384(obj, "mrconfigid", tdx->mrconfigid,
-+                               OBJ_PROP_FLAG_READWRITE);
-+    object_property_add_sha384(obj, "mrowner", tdx->mrowner,
-+                               OBJ_PROP_FLAG_READWRITE);
-+    object_property_add_sha384(obj, "mrownerconfig", tdx->mrownerconfig,
-+                               OBJ_PROP_FLAG_READWRITE);
- }
+ #define TDX_TD_ATTRIBUTES_DEBUG             BIT_ULL(0)
+ #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
+ #define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
+@@ -513,6 +516,27 @@ int tdx_pre_create_vcpu(CPUState *cpu)
+         goto out_free;
+     }
  
- static void tdx_guest_finalize(Object *obj)
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index 46a24ee8c7cc..68f8327f2231 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -21,6 +21,9 @@ typedef struct TdxGuest {
- 
-     bool initialized;
-     uint64_t attributes;    /* TD attributes */
-+    uint8_t mrconfigid[48];     /* sha348 digest */
-+    uint8_t mrowner[48];        /* sha348 digest */
-+    uint8_t mrownerconfig[48];  /* sha348 digest */
- } TdxGuest;
- 
- #ifdef CONFIG_TDX
++    r = -EINVAL;
++    if (env->tsc_khz && (env->tsc_khz < TDX_MIN_TSC_FREQUENCY_KHZ ||
++                         env->tsc_khz > TDX_MAX_TSC_FREQUENCY_KHZ)) {
++        error_report("Invalid TSC %ld KHz, must specify cpu_frequency between [%d, %d] kHz",
++                      env->tsc_khz, TDX_MIN_TSC_FREQUENCY_KHZ,
++                      TDX_MAX_TSC_FREQUENCY_KHZ);
++        goto out;
++    }
++
++    if (env->tsc_khz % (25 * 1000)) {
++        error_report("Invalid TSC %ld KHz, it must be multiple of 25MHz", env->tsc_khz);
++        goto out;
++    }
++
++    /* it's safe even env->tsc_khz is 0. KVM uses host's tsc_khz in this case */
++    r = kvm_vm_ioctl(kvm_state, KVM_SET_TSC_KHZ, env->tsc_khz);
++    if (r < 0) {
++        error_report("Unable to set TSC frequency to %" PRId64 " kHz", env->tsc_khz);
++        goto out;
++    }
++
+     r = setup_td_guest_attributes(x86cpu);
+     if (r) {
+         goto out;
 -- 
 2.34.1
 
