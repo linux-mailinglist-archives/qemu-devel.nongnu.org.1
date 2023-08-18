@@ -2,86 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D8D780FB1
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17449780FB5
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX1rx-0005F5-S0; Fri, 18 Aug 2023 11:58:37 -0400
+	id 1qX1sD-0005J4-D1; Fri, 18 Aug 2023 11:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX1rw-0005Em-Hm
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:36 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qX1sB-0005IY-FU
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:51 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX1ru-0004vd-ES
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:36 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1bdf4752c3cso7925195ad.2
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:58:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qX1s9-0004wY-9x
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:51 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fe426b86a8so10415405e9.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:58:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692374312; x=1692979112;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ShSb47kAc4/i6wGIEWiO2fpeQiW5R2KHKjk4nVZoq5I=;
- b=KDI5Qmnjieha7O9m2qmYAQwkfOb1q2tVS/g/BiFLrh4memS+i+ioH1pvtCGVjDaur/
- +4CNCSSc7PDXOrEjSgBNLd2uI9O7E31mYKNPv7DUuvtGfycGa739cJlNVHAnfgvdLCeu
- OAKNaBPN6tlK6EZB17mj+Fh4gv1WoWZDuaj12u45q7mV6f+DMZH/zzAzIgpxjrOLegWV
- /B9lQJVuK8DvR+ECxSTpPlcP2CMaaWxf1XkhBA67onkR+fMytpmzS1feOGsZzvhIQTwV
- 3E0YNbbFCmG86zS+6ZdrTgGUfO9ygDrRTYO/z1+jFbWAon0pu4y4G3qbq0dyNcDN1tNR
- wODQ==
+ d=linaro.org; s=google; t=1692374328; x=1692979128;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0dO/wbtq8s027/zPH3VXaim0ZVbTnHkkKvCPXCOUCRw=;
+ b=zvWIIwzazgnt78RszVZDw57OKdZ0HJK5FG144KehN6X/GOOvHW/Rq4RyQo0LB2fMNH
+ H9swZVXXclB16x2RH2wZhiAGatvWAnQVXXiGwBBJDGcAYH7BzPg7t61eu+AiF36gwXL1
+ PSxWvlPy1oIzWuOtCCEkXc8gHNBQGmIlSebCZk6Pp5QTomT5/XPVj/Fe9AJSFU0sQ/8K
+ ArxNl8AJArQMyocO3q6DbKaruhuERJq2a6mrqjaYSekctdN8e68oA73xZSnxr7p6c2q0
+ eQ3ALPo3NWvc85IykFHw14cc8Jk3riYEtb77ALF1eLRdtrB03HSN0LU+BwZmGROHLtca
+ yl8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692374312; x=1692979112;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ShSb47kAc4/i6wGIEWiO2fpeQiW5R2KHKjk4nVZoq5I=;
- b=Qnmlf9IgE5hzCXJlbChLVuDmWSc804WEt1moKwfx8SIM5GACFVVfj9rtPZ46CvxmEP
- B16Owe8gFByTI2NcghkVVd6vhn6lCG2N6VzMbH+lwjruYgl0x9RT+Fh+WOK/pdwintyz
- ZRTweG3qzj090kZiVJpIzJxY7n8bAeuZhRJhurvgtReCmfOpjEelyDsTl+vlqyl1XTJu
- ewuHoHUrwLbHPajScjMFS0ovt3tTGvnRABytP2fuqHSkbGIwZTDzWvh4M4XMpd3VZq5l
- v9KBGX+5bpSdOeSXZErYUboysWhQe6DMOTb6X8Z3k2tMq+59lug1YaC7eXvhLdGUAnyl
- W3ZQ==
-X-Gm-Message-State: AOJu0YwSa+mkgmccbd1BRyObBE+rPqx9EzgsK3I9A8Y34wKbsu4HW4ff
- Y8Y2bcV/kYGrPLgHA649dwhOiw==
-X-Google-Smtp-Source: AGHT+IG+rbpyfzd3s6ndwrvthL5hHG4Dr5fJ5OjjJLooJMr+L+FuOzvstuyjbdUMrWumknqpWqiU7g==
-X-Received: by 2002:a17:903:4ca:b0:1bb:59a0:3d34 with SMTP id
- jm10-20020a17090304ca00b001bb59a03d34mr2753458plb.30.1692374312520; 
- Fri, 18 Aug 2023 08:58:32 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:cf24:6daf:2b9e:7972?
- ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
+ d=1e100.net; s=20221208; t=1692374328; x=1692979128;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0dO/wbtq8s027/zPH3VXaim0ZVbTnHkkKvCPXCOUCRw=;
+ b=AM+irQFqv/k1e7DKbIn95V+17Yr2A5CwFrj/J5Sy8w9Xnxu7tSagkz2RFdLYyrvnU6
+ I/B3fDL9UhEtdPKwkb/heuo8x1KTQhwXaogQcDK43UT+NWPQJdmAYh6PeUn9KVMC1fFp
+ Nv4U4K901o9+Ywgefxz/PANWgP33ywK3E6y/mBpL2qUFt03M5zIXajfWub9LR8rUPFZW
+ Qpl3h3xXfE60HQRunhsH1g3TzlMHaEm5NNqsxb9TACZxYxmiXifIbJ5JQV7fLLRS8tfn
+ ndVMXGRT2WbPfGxnKwLwTb66uldpi5DiNAu9p4hIabN5+XDEksC6Lp/AeJk7EEx34mBa
+ W94g==
+X-Gm-Message-State: AOJu0Yw3s/ErFMYbE6OoQjtyV0B0WHaOAxRAAd+NF5f2sG0hneuOWQs1
+ Uz17wx5tPy6p1x2u45oT6pbfCexBlC2/jlxfSBs=
+X-Google-Smtp-Source: AGHT+IHYw0Ktrwi/7K1HLgRcvYtkg25PLmuniFwuusImxGgMsmMrxF68Xc2GmJJ6NqNZWAz/fQ51dA==
+X-Received: by 2002:a7b:cc13:0:b0:3fb:ef86:e2e with SMTP id
+ f19-20020a7bcc13000000b003fbef860e2emr2441361wmh.19.1692374327679; 
+ Fri, 18 Aug 2023 08:58:47 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- a8-20020a170902ecc800b001bb97e51ad5sm1942044plh.99.2023.08.18.08.58.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Aug 2023 08:58:32 -0700 (PDT)
-Message-ID: <58779418-210d-1843-126e-815f91cacbe6@linaro.org>
-Date: Fri, 18 Aug 2023 08:58:30 -0700
+ y21-20020a7bcd95000000b003fbb346279dsm3275702wmj.38.2023.08.18.08.58.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Aug 2023 08:58:47 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Subject: [PATCH 0/2] audio/jackaudio: avoid dynamic stack allocations
+Date: Fri, 18 Aug 2023 16:58:44 +0100
+Message-Id: <20230818155846.1651287-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/4] target/loongarch: Remove duplicated disas_set_info
- assignment
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Jiajie Chen <c@jia.je>
-References: <20230818103425.16271-1-philmd@linaro.org>
- <20230818103425.16271-3-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230818103425.16271-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.454,
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,18 +89,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/18/23 03:34, Philippe Mathieu-Daudé wrote:
-> Commit 228021f05e ("target/loongarch: Add core definition") sets
-> disas_set_info to loongarch_cpu_disas_set_info. Probably due to
-> a failed git-rebase, commit ca61e75071 ("target/loongarch: Add gdb
-> support") also sets it to the same value. Remove the duplication.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/loongarch/cpu.c | 1 -
->   1 file changed, 1 deletion(-)
+This patchset removes two variable length arrays from the jack audio
+backend.  The codebase has very few VLAs, and if we can get rid of
+them all we can make the compiler error on new additions.  This is a
+defensive measure against security bugs where an on-stack dynamic
+allocation isn't correctly size-checked (e.g.  CVE-2021-3527).
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+The first one is fairly straightforward (although the JACK API's
+requirement that (a) you don't pass it an overlong client name and
+(b) that maximum length is provided by calling a function, not as a
+compile time constant makes it a little less clean than it might be.
 
-r~
+The second one avoids the dynamic allocation, but if the audio
+subsystem has a compile-time upper bound on the number of
+channels then we could use a fixed-size stack array rather than
+the awkward "allocate a working buffer at init time" that I
+have in this patch. Suggestions for improvements welcome.
+
+Disclaimer: tested only with "make check", which doesn't actually
+exercise the audio subsystem.
+
+thanks
+-- PMM
+
+Peter Maydell (2):
+  audio/jackaudio: Avoid dynamic stack allocation in qjack_client_init
+  audio/jackaudio: Avoid dynamic stack allocation in qjack_process()
+
+ audio/jackaudio.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+-- 
+2.34.1
+
 
