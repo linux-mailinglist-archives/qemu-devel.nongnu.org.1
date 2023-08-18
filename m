@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503A3780EB5
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0571D780EB7
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:12:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX18D-0006D6-6S; Fri, 18 Aug 2023 11:11:21 -0400
+	id 1qX18E-0006EM-5N; Fri, 18 Aug 2023 11:11:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qX17w-0006Cj-CO
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:11:04 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qX17x-0006D4-Vy
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:11:06 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qX17u-0007Yv-3C
+ id 1qX17u-0007Z0-3H
  for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:11:04 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe2ba3e260so10045375e9.2
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:11:00 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31783d02093so953520f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:11:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692371459; x=1692976259;
+ d=linaro.org; s=google; t=1692371460; x=1692976260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zkt8qeBW+o4jPjnQtmwyry6dtMA1gn9lr1yNsAxm/7I=;
- b=dBO3ez6iXfKSZWQ9wwStyk0pXwuQHhLJpRoDydIsRRXRLNiipDgtZ9u/kcCOv6mL25
- M6ziks3ZBJAd/8dIhUA0XDQAihq0LJxDYqKz76lX6+BxVB5VmcpI0pyGC4kcS5uQ50vA
- sM8K/c2ZFm0uP+8EpFuvVAcg11dRklvNSwtm673WVmC+UqaAyMPs7+1BCi19KzWJ3XIA
- y9j6l3RH0zGNGhP6w6n6DgoJupJia+6SxTxGksv5DxswgbbI3st9FLIoM49J7PMGRpUv
- AvHkBZfo4mjm3lzM9LVcLPa5ifl2oFa8XYtlxmc1XJCI0K6hmmvan7GVJ2Z5zdCVsXne
- F3/Q==
+ bh=UJiiohdKQZbGGA4ANTWMA+44jYq1EDm9KHj0/oftavU=;
+ b=ITxIhNTjD4V/gTxIbkqVUyHXR4kGcSEpSYVVuvDAvTk2ngkOZdJJt4fTM7VtxLhU6q
+ +b83HgAmeeZ1XnuUFHOc05qCOkn/ru9IRIfoN1cSs3GPBtnqhn+qyBij5AZtiymUYTak
+ DWZ1TL3tEPIgKYq4wFo0grGCGtkA9uzm2Luk8IjeV/C8YgOpPwSee+zRAdiDY4H9FSro
+ VRGzs3aUkzs/hKCRzGVdOgCExiB0xjqo3X0KrI2P6W9qojDZF9+E4qavyMKvzeK/oQUe
+ KEGcosQLdKYQl9+Tx79K6M/9kDWTg1ClXN4WWUY7pZPkdoSBK/hM3qQtDhlZHGRTsaXT
+ 11VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692371459; x=1692976259;
+ d=1e100.net; s=20221208; t=1692371460; x=1692976260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zkt8qeBW+o4jPjnQtmwyry6dtMA1gn9lr1yNsAxm/7I=;
- b=OjtOzXvHwZy/HWIKFLOWNBOkPYpR+/ufqKKBW4lQQCyfih5NGbJ4+JxwTlfUwalC7d
- BcRY7mMWnKdplAQ7g3It7YtIrT/H1tRVp2tQXRAe7mzO4V31xfEOFRcx4r7x9GDERRMM
- oiWsDH8vl5PhfUEGJee64pHF7lW/HFYLkSQ4vkdxom80UT9cpK9LHrvmcoCpvX5heMDA
- 85cLLTXt/6VButfM9c37E9LBapNN8J4iIygqaKeQ9UaafYHhM5RkDRyFpL4Xo/b10a5G
- NhAXlxXm6hGUgfh9cn9Ht32rREN92okmvkkwSw57WNx1zX0apes3qSmZmhAZC2v6EW0C
- AeTA==
-X-Gm-Message-State: AOJu0YxeJ6Go1BYJk9qAfmE1l9z0XYKEMtyhhs7BaUvAixapWiuPFf0J
- ckNYv9SKqrRdLm+5iSJtYDTvruVY6QJdXeol/Rg=
-X-Google-Smtp-Source: AGHT+IGvAmojPG58h09GVWaC11785t7b8un9f4G1FDITviLgCZnMtKKSOXAoS9Jcnax/kEyUdyADJw==
-X-Received: by 2002:a05:600c:365a:b0:3fb:b008:2003 with SMTP id
- y26-20020a05600c365a00b003fbb0082003mr2369243wmq.38.1692371459453; 
- Fri, 18 Aug 2023 08:10:59 -0700 (PDT)
+ bh=UJiiohdKQZbGGA4ANTWMA+44jYq1EDm9KHj0/oftavU=;
+ b=AiSe3uDMX+Op4QVFCXNA0hLR2Rny2ckUXN7I9y1aQ5HSBeJyVM4Tr9YduzRkDQhPVM
+ +AJEBkHLTfOMdmVodJpAcWMeWu/Ol6cavstEK2+/UOpZJVPijmxQoNCeyA8ZelALH2Ko
+ 10SoZWf7IKfFe1nDPswGQKWAAPeD/vK/EeKOF56UDhT8NxUceUMN+PyfHACXMPMeweBd
+ TlMN5Yx2WTAfpRGkU0ugt2BpmsdAgacTWQyiRTh7qnbv8FtN9Lqtg+OVmgI+huoDUEg6
+ DZMqKIYukJe2p7z75H7HX/4bNl9G94JTT496wP0OP1oJS+PKb36HlyxBPomSMNRRwDwZ
+ MHQA==
+X-Gm-Message-State: AOJu0YxY355bziZIsbtw0TZ5WN2c0I7tjtHIDTU7T16slLhZvA+IZn3C
+ 0PnYRZ/kcQGrBXHu0QBHE04Qa1Cs4BJEvV2IOJ4=
+X-Google-Smtp-Source: AGHT+IHF9wBoC1qcLaECybzOAXmTth/29ps36aYfnEe2B+mrxQwj+SPXrPpc5gqZ23iCYN2u4dWUNA==
+X-Received: by 2002:a5d:494c:0:b0:317:de6f:22cb with SMTP id
+ r12-20020a5d494c000000b00317de6f22cbmr2539092wrs.2.1692371460007; 
+ Fri, 18 Aug 2023 08:11:00 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  a26-20020a5d457a000000b00316eb7770b8sm3097631wrc.5.2023.08.18.08.10.59
@@ -61,16 +61,17 @@ To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/3] ui/spice-display: Avoid dynamic stack allocation
-Date: Fri, 18 Aug 2023 16:10:55 +0100
-Message-Id: <20230818151057.1541189-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/3] ui/vnc-enc-hextile: Use static rather than dynamic length
+ stack array
+Date: Fri, 18 Aug 2023 16:10:56 +0100
+Message-Id: <20230818151057.1541189-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230818151057.1541189-1-peter.maydell@linaro.org>
 References: <20230818151057.1541189-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,8 +94,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use an autofree heap allocation instead of a variable-length
-array on the stack in qemu_spice_create_update().
+In the send_hextile_tile_* function we create a variable length array
+data[].  In fact we know that the client_pf.bytes_per_pixel is at
+most 4 (enforced by set_pixel_format()), so we can make the array a
+compile-time fixed length of 1536 bytes.
 
 The codebase has very few VLAs, and if we can get rid of them all we
 can make the compiler error on new additions.  This is a defensive
@@ -103,35 +106,45 @@ isn't correctly size-checked (e.g.  CVE-2021-3527).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-I was a little unsure about this allocation given that it's
-in the display_refresh callback, but the code already does
-a g_malloc() every time it calls qemu_spice_create_one_update()
-so one more presumably won't hurt.
----
- ui/spice-display.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ ui/vnc-enc-hextile-template.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 3f3f8013d86..0e2fbfb17c1 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -189,7 +189,7 @@ static void qemu_spice_create_update(SimpleSpiceDisplay *ssd)
- {
-     static const int blksize = 32;
-     int blocks = DIV_ROUND_UP(surface_width(ssd->ds), blksize);
--    int dirty_top[blocks];
-+    g_autofree int *dirty_top = NULL;
-     int y, yoff1, yoff2, x, xoff, blk, bw;
-     int bpp = surface_bytes_per_pixel(ssd->ds);
-     uint8_t *guest, *mirror;
-@@ -198,6 +198,7 @@ static void qemu_spice_create_update(SimpleSpiceDisplay *ssd)
-         return;
-     };
+diff --git a/ui/vnc-enc-hextile-template.h b/ui/vnc-enc-hextile-template.h
+index 0c56262afff..283c0eaefaf 100644
+--- a/ui/vnc-enc-hextile-template.h
++++ b/ui/vnc-enc-hextile-template.h
+@@ -7,6 +7,8 @@
+ #define NAME BPP
+ #endif
  
-+    dirty_top = g_new(int, blocks);
-     for (blk = 0; blk < blocks; blk++) {
-         dirty_top[blk] = -1;
++#define MAX_CLIENT_BPP 4
++
+ static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
+                                              int x, int y, int w, int h,
+                                              void *last_bg_,
+@@ -25,10 +27,13 @@ static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
+     int bg_count = 0;
+     int fg_count = 0;
+     int flags = 0;
+-    uint8_t data[(vs->client_pf.bytes_per_pixel + 2) * 16 * 16];
++    uint8_t data[(MAX_CLIENT_BPP + 2) * 16 * 16];
+     int n_data = 0;
+     int n_subtiles = 0;
+ 
++    /* Enforced by set_pixel_format() */
++    assert(vs->client_pf.bytes_per_pixel <= MAX_CLIENT_BPP);
++
+     for (j = 0; j < h; j++) {
+         for (i = 0; i < w; i++) {
+             switch (n_colors) {
+@@ -205,6 +210,7 @@ static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
      }
+ }
+ 
++#undef MAX_CLIENT_BPP
+ #undef NAME
+ #undef pixel_t
+ #undef CONCAT_I
 -- 
 2.34.1
 
