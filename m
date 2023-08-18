@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4F2781193
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D28781187
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:20:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX39f-0004fR-GO; Fri, 18 Aug 2023 13:20:59 -0400
+	id 1qX39U-0004RX-VY; Fri, 18 Aug 2023 13:20:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX396-0004BW-MK
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39C-0004Jj-MK
  for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:20:34 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX393-0001Yf-LA
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:20:24 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-522bd411679so1425635a12.0
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:20:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX399-0001fN-6H
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:20:29 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-99bf3f59905so146858366b.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:20:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692379220; x=1692984020;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mDtd+c+3Qy7qT1cETD4DvUtfqEuVRT5+UyNPPIyLIv4=;
- b=qpwnE4mkPEKdVpb9GfEb+T/p4S1qx1egCYbKC6hPYyE0tTIq2cE1UvOTlb+OTPwAOX
- EKNe8tcmmr11KCaQMkg9qUbUisKGzW5HdrnP0Ljs9DnlSpJpButOoziHP+gDkw36e3wJ
- 8LCrVlJ185bkxNzJi+fKsuzhi/U8v9ojlfeVvTb6/rmNUb+40zZLtsMriRzs0zuzuDkd
- CT4oxH6+O7rCqEZIfj8wAQxHKw1fGceECn+hrojNopX/quzGVi/gsZzezz/6t8wt118z
- hfKXZRQnOBjySWLlhxUAE0oE2NDJW1AWjZ+2NsjPZtXcFQS2ajZQBONkiE4ceGegI8r4
- 9SYA==
+ d=linaro.org; s=google; t=1692379225; x=1692984025;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tvng4YPVMkWkkh2eZJ6qlqU3fIhQVOx369AKXLs8f1o=;
+ b=N/xlX/0U5f7k4DLrB8XbfHpLf8mI3p/OyDl0Qzv4kpd2xATdEJuxHuWiafAyxQGj0g
+ DFC+KSipTcoOdmcey74UlgCF5opDOzEMWInJmkJsaK99Fd1jWG2rnvr3OQrDlJ9TCY61
+ 8Yyk4v4t2Px8cDMIrk83TO0uSRuLdTfFuzJsv6BohYjA66T8dfLPMz07gTY2mxbZh3e1
+ rTeQ+UVH7cuzir8Fu5OrBYQ/mEwv00Jk05npXroOdZqe6kcxV8zFgQo7PQbKL5DO09I4
+ lwawbgd/1Y8xSX/yXJ8zjURFdiIli8Spk21pb83f6N87L3bMYtN7k5WpzGCQbHNJd6DE
+ UXiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692379220; x=1692984020;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mDtd+c+3Qy7qT1cETD4DvUtfqEuVRT5+UyNPPIyLIv4=;
- b=C3gJ7XkgjaEE5DO0PZxfUu0kQ1PA5yyvm+piyRb7tAQsrdEPq+vR/7kXw7s3Dx1rf7
- 1KoagNFI2rJ9axEpR1sqk5hVIi81zw1OMP3dAVaoPyE8zuyg7p2xfhekFrzxZUaBYkik
- TD1Q3WYlOnLZuiBFkLIHcxvo58d6uG5vBoMWU6NvaOmgJ6uOY3xyAGDmvSOhl+f8B6x8
- /xICvyYW+6ibTu50bcnfTZLAPOngxPjA3vJX5E9BbI/oFMOe2/PT7PTxLJMO/tmoiRIz
- aosOdRQ8zZFeGmoFIeplIfMy2sojdTSthZOLHIuQX2tdKBteBDdl5yER8S4H8ar9FHgL
- MNFQ==
-X-Gm-Message-State: AOJu0YxIYpwulBulvk+tM6bUXuySKTm5kxaIwqRebGp/OZcpM1Meqc81
- vgAFOgz/HPNCLCibGCCHOQCAmD0PlHST2/lUUl4=
-X-Google-Smtp-Source: AGHT+IG2F0evyq2bw60x7TibF5Zp1hwCx49M7j7w9ISAYvWu/6u92buNRXU7VBiZcg1WBUtgmOyZpg==
-X-Received: by 2002:a17:906:305a:b0:99b:4a29:fb6a with SMTP id
- d26-20020a170906305a00b0099b4a29fb6amr2580541ejd.59.1692379219750; 
- Fri, 18 Aug 2023 10:20:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692379225; x=1692984025;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tvng4YPVMkWkkh2eZJ6qlqU3fIhQVOx369AKXLs8f1o=;
+ b=YKNVpH6Fbm8AouKuFSuFXVcID/u4czndlEowDhwiBZ03AJa5Er/4UBaEWAQZ0SgMK/
+ UZxBR2EXqxKyoR6/u3oP9g8MV4nzsnM6hz/pGoHTj80KNVCpt44BHP4+fU7Ig5/cXS/K
+ sD5BpMxgf75cb+ZCOa6ZMMJ7DrvZIlmyRbYtq2OZ2xN/5WyIBhmVZ/hslH5Je5dQwgHs
+ P2HwBLLN/V/vregmW4OAj9XUErGXniiXaIpuGODLEW212wowb2luuaEYZ8gG0k8iv/Q5
+ 9vguQjFjuxsVFguFXEeKA0pHwLCyo/uYk2o/VLoNPGjgrWDNaAqAbGuhmDDgSyC/yDwT
+ Q6QA==
+X-Gm-Message-State: AOJu0Ywkv+2EIiJaF0nShtJopFG99CqmeCQeRI+CtLaove/jAe6ox1ZW
+ XlDDOBzJq+W4fBsyDvj5kpH1gXhtmi+OMxiMhJo=
+X-Google-Smtp-Source: AGHT+IFPW5IGlCJXSOETdK3KTmwogrhfQIwj9cWQBLDoQJjUupvETyhKHiA99WN8A4hcaMXcQT+IZQ==
+X-Received: by 2002:a17:907:75cc:b0:99b:4668:865f with SMTP id
+ jl12-20020a17090775cc00b0099b4668865fmr2330966ejc.10.1692379225214; 
+ Fri, 18 Aug 2023 10:20:25 -0700 (PDT)
 Received: from m1x-phil.lan (cnf78-h01-176-184-27-79.dsl.sta.abo.bbox.fr.
  [176.184.27.79]) by smtp.gmail.com with ESMTPSA id
- dt9-20020a170906b78900b0099bcf9c2ec6sm1398869ejb.75.2023.08.18.10.20.18
+ ja24-20020a170907989800b00992b8d56f3asm1429260ejc.105.2023.08.18.10.20.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 18 Aug 2023 10:20:19 -0700 (PDT)
+ Fri, 18 Aug 2023 10:20:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -60,16 +61,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>
-Subject: [PATCH v2 0/8] target/loongarch: Cleanups in preparation of
- loongarch32 support
-Date: Fri, 18 Aug 2023 19:20:08 +0200
-Message-ID: <20230818172016.24504-1-philmd@linaro.org>
+Subject: [PATCH v2 1/8] target/loongarch: Log I/O write accesses to CSR
+ registers
+Date: Fri, 18 Aug 2023 19:20:09 +0200
+Message-ID: <20230818172016.24504-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230818172016.24504-1-philmd@linaro.org>
+References: <20230818172016.24504-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,46 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-- Do no rename loongarch_cpu_get/set_pc (rth)
-- Rebased Jiajie's patches for convenience
-- Added rth's R-b
+Various CSR registers have Read/Write fields. We might
+want to see guest trying to change such registers.
 
-Jiajie, this series contains few notes I took while
-reviewing your series adding loongarch32 support [*].
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/loongarch/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-If your series isn't merged, consider rebasing it on
-this one.
-
-Regards,
-
-Phil.
-
-[*] https://lore.kernel.org/qemu-devel/20230817093121.1053890-1-gaosong@loongson.cn/
-
-Jiajie Chen (3):
-  target/loongarch: Add function to check current arch
-  target/loongarch: Add new object class for loongarch32 cpus
-  target/loongarch: Add GDB support for loongarch32 mode
-
-Philippe Mathieu-Daudé (4):
-  target/loongarch: Log I/O write accesses to CSR registers
-  target/loongarch: Remove duplicated disas_set_info assignment
-  target/loongarch: Introduce abstract TYPE_LOONGARCH64_CPU
-  target/loongarch: Extract 64-bit specifics to
-    loongarch64_cpu_class_init
-
-Song Gao (1):
-  target/loongarch: Fix loongarch_la464_initfn() misses setting LSPW
-
- configs/targets/loongarch64-softmmu.mak |  2 +-
- target/loongarch/cpu.h                  | 12 +++++
- target/loongarch/cpu.c                  | 62 +++++++++++++++++++------
- target/loongarch/gdbstub.c              | 32 ++++++++++---
- gdb-xml/loongarch-base32.xml            | 45 ++++++++++++++++++
- 5 files changed, 132 insertions(+), 21 deletions(-)
- create mode 100644 gdb-xml/loongarch-base32.xml
-
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index ad93ecac92..7107968699 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -544,6 +544,8 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+ static void loongarch_qemu_write(void *opaque, hwaddr addr,
+                                  uint64_t val, unsigned size)
+ {
++    qemu_log_mask(LOG_UNIMP, "[%s]: Unimplemented reg 0x%" HWADDR_PRIx "\n",
++                  __func__, addr);
+ }
+ 
+ static uint64_t loongarch_qemu_read(void *opaque, hwaddr addr, unsigned size)
 -- 
 2.41.0
 
