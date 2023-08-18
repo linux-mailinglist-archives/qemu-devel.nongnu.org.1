@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B29C781180
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4F2781193
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX38b-0003RQ-FF; Fri, 18 Aug 2023 13:19:53 -0400
+	id 1qX39f-0004fR-GO; Fri, 18 Aug 2023 13:20:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qX38X-0003QM-Ch
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:19:50 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qX38U-00017p-3e
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:19:49 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37IEktwm013553; Fri, 18 Aug 2023 17:19:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=To7Jn9VbJLI3gAU0H4neuJYznoQ/19t4NmHyz2Q3tWE=;
- b=szX3uJ5U9x4Ey702FCWal6uOCgwZI8++3TaAHXXOkcZskD5AWVoDDOxaNFGmEmQHz9YW
- ocF1dD091FssVTopT0jQP1LpckAFjqtGrUKHl5gJ6zXP2U75aU+nAFX5N04APOowbg80
- +pB5Nr6wg2RfJLIKqNMGOVnWr99KjChQXZKCii0oMa2CHutXJsfe0Vt0NOE7syurdNoZ
- +4D63Hm2h91YiLBxOuxbexOsDWdOuxHQts5KcX7o8MNNn/38qRvAa3sct6gZLpTEjuPr
- Eka8Xzx0iTqdd6M12vAybH6P+etCLGWwFNiduwDl9fPiiV+1uaIQR/h8cgbMlipPaLDG hg== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se30t4gpm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Aug 2023 17:19:39 +0000
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 37IGm4Tu019863; Fri, 18 Aug 2023 17:19:38 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3sey40pe1e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Aug 2023 17:19:38 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37IHJU25009206;
- Fri, 18 Aug 2023 17:19:37 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-65-173-148.vpn.oracle.com
- [10.65.173.148])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3sey40pds5-4; Fri, 18 Aug 2023 17:19:37 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX396-0004BW-MK
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:20:34 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX393-0001Yf-LA
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:20:24 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-522bd411679so1425635a12.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:20:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692379220; x=1692984020;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mDtd+c+3Qy7qT1cETD4DvUtfqEuVRT5+UyNPPIyLIv4=;
+ b=qpwnE4mkPEKdVpb9GfEb+T/p4S1qx1egCYbKC6hPYyE0tTIq2cE1UvOTlb+OTPwAOX
+ EKNe8tcmmr11KCaQMkg9qUbUisKGzW5HdrnP0Ljs9DnlSpJpButOoziHP+gDkw36e3wJ
+ 8LCrVlJ185bkxNzJi+fKsuzhi/U8v9ojlfeVvTb6/rmNUb+40zZLtsMriRzs0zuzuDkd
+ CT4oxH6+O7rCqEZIfj8wAQxHKw1fGceECn+hrojNopX/quzGVi/gsZzezz/6t8wt118z
+ hfKXZRQnOBjySWLlhxUAE0oE2NDJW1AWjZ+2NsjPZtXcFQS2ajZQBONkiE4ceGegI8r4
+ 9SYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692379220; x=1692984020;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mDtd+c+3Qy7qT1cETD4DvUtfqEuVRT5+UyNPPIyLIv4=;
+ b=C3gJ7XkgjaEE5DO0PZxfUu0kQ1PA5yyvm+piyRb7tAQsrdEPq+vR/7kXw7s3Dx1rf7
+ 1KoagNFI2rJ9axEpR1sqk5hVIi81zw1OMP3dAVaoPyE8zuyg7p2xfhekFrzxZUaBYkik
+ TD1Q3WYlOnLZuiBFkLIHcxvo58d6uG5vBoMWU6NvaOmgJ6uOY3xyAGDmvSOhl+f8B6x8
+ /xICvyYW+6ibTu50bcnfTZLAPOngxPjA3vJX5E9BbI/oFMOe2/PT7PTxLJMO/tmoiRIz
+ aosOdRQ8zZFeGmoFIeplIfMy2sojdTSthZOLHIuQX2tdKBteBDdl5yER8S4H8ar9FHgL
+ MNFQ==
+X-Gm-Message-State: AOJu0YxIYpwulBulvk+tM6bUXuySKTm5kxaIwqRebGp/OZcpM1Meqc81
+ vgAFOgz/HPNCLCibGCCHOQCAmD0PlHST2/lUUl4=
+X-Google-Smtp-Source: AGHT+IG2F0evyq2bw60x7TibF5Zp1hwCx49M7j7w9ISAYvWu/6u92buNRXU7VBiZcg1WBUtgmOyZpg==
+X-Received: by 2002:a17:906:305a:b0:99b:4a29:fb6a with SMTP id
+ d26-20020a170906305a00b0099b4a29fb6amr2580541ejd.59.1692379219750; 
+ Fri, 18 Aug 2023 10:20:19 -0700 (PDT)
+Received: from m1x-phil.lan (cnf78-h01-176-184-27-79.dsl.sta.abo.bbox.fr.
+ [176.184.27.79]) by smtp.gmail.com with ESMTPSA id
+ dt9-20020a170906b78900b0099bcf9c2ec6sm1398869ejb.75.2023.08.18.10.20.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 18 Aug 2023 10:20:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
- boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
- viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net
-Subject: [PATCH v4 3/3] vhost-user: move VhostUserProtocolFeature definition
- to header file
-Date: Fri, 18 Aug 2023 13:19:26 -0400
-Message-Id: <20230818171926.3136840-4-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230818171926.3136840-1-jonah.palmer@oracle.com>
-References: <20230818171926.3136840-1-jonah.palmer@oracle.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Huacai Chen <chenhuacai@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>
+Subject: [PATCH v2 0/8] target/loongarch: Cleanups in preparation of
+ loongarch32 support
+Date: Fri, 18 Aug 2023 19:20:08 +0200
+Message-ID: <20230818172016.24504-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-18_21,2023-08-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxlogscore=999
- spamscore=0 mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308180159
-X-Proofpoint-GUID: GRhMmk54lxebpU_bDYQU6YTRaaRsE3_J
-X-Proofpoint-ORIG-GUID: GRhMmk54lxebpU_bDYQU6YTRaaRsE3_J
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,143 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the definition of VhostUserProtocolFeature to
-include/hw/virtio/vhost-user.h.
+v2:
+- Do no rename loongarch_cpu_get/set_pc (rth)
+- Rebased Jiajie's patches for convenience
+- Added rth's R-b
 
-Remove previous definitions in hw/scsi/vhost-user-scsi.c,
-hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
+Jiajie, this series contains few notes I took while
+reviewing your series adding loongarch32 support [*].
 
-Previously there were 3 separate definitions of this over 3 different
-files. Now only 1 definition of this will be present for these 3 files.
+If your series isn't merged, consider rebasing it on
+this one.
 
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- hw/scsi/vhost-user-scsi.c      |  4 ----
- hw/virtio/vhost-user.c         | 21 ---------------------
- hw/virtio/virtio-qmp.c         | 22 +---------------------
- include/hw/virtio/vhost-user.h | 21 +++++++++++++++++++++
- 4 files changed, 22 insertions(+), 46 deletions(-)
+Regards,
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index ee99b19e7a..df6b66cc1a 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -39,10 +39,6 @@ static const int user_feature_bits[] = {
-     VHOST_INVALID_FEATURE_BIT
- };
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--};
--
- static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..a096335921 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -56,27 +56,6 @@
-  */
- #define VHOST_USER_MAX_CONFIG_SIZE 256
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- #define VHOST_USER_PROTOCOL_FEATURE_MASK ((1 << VHOST_USER_PROTOCOL_F_MAX) - 1)
- 
- typedef enum VhostUserRequest {
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 9c3284e6c3..2e1f9c0e7a 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -17,6 +17,7 @@
- #include "qapi/qapi-commands-qom.h"
- #include "qapi/qmp/qobject.h"
- #include "qapi/qmp/qjson.h"
-+#include "hw/virtio/vhost-user.h"
- 
- #include "standard-headers/linux/virtio_ids.h"
- #include "standard-headers/linux/vhost_types.h"
-@@ -37,27 +38,6 @@
- #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
-     { .virtio_bit = name, .feature_desc = desc }
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- /* Virtio transport features mapping */
- static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-     /* Virtio device transport features */
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..80e2b4a463 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -11,6 +11,27 @@
- #include "chardev/char-fe.h"
- #include "hw/virtio/virtio.h"
- 
-+enum VhostUserProtocolFeature {
-+    VHOST_USER_PROTOCOL_F_MQ = 0,
-+    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
-+    VHOST_USER_PROTOCOL_F_RARP = 2,
-+    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
-+    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
-+    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
-+    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
-+    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
-+    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
-+    VHOST_USER_PROTOCOL_F_CONFIG = 9,
-+    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
-+    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
-+    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
-+    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-+    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-+    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-+    VHOST_USER_PROTOCOL_F_STATUS = 16,
-+    VHOST_USER_PROTOCOL_F_MAX
-+};
-+
- /**
-  * VhostUserHostNotifier - notifier information for one queue
-  * @rcu: rcu_head for cleanup
+Phil.
+
+[*] https://lore.kernel.org/qemu-devel/20230817093121.1053890-1-gaosong@loongson.cn/
+
+Jiajie Chen (3):
+  target/loongarch: Add function to check current arch
+  target/loongarch: Add new object class for loongarch32 cpus
+  target/loongarch: Add GDB support for loongarch32 mode
+
+Philippe Mathieu-Daudé (4):
+  target/loongarch: Log I/O write accesses to CSR registers
+  target/loongarch: Remove duplicated disas_set_info assignment
+  target/loongarch: Introduce abstract TYPE_LOONGARCH64_CPU
+  target/loongarch: Extract 64-bit specifics to
+    loongarch64_cpu_class_init
+
+Song Gao (1):
+  target/loongarch: Fix loongarch_la464_initfn() misses setting LSPW
+
+ configs/targets/loongarch64-softmmu.mak |  2 +-
+ target/loongarch/cpu.h                  | 12 +++++
+ target/loongarch/cpu.c                  | 62 +++++++++++++++++++------
+ target/loongarch/gdbstub.c              | 32 ++++++++++---
+ gdb-xml/loongarch-base32.xml            | 45 ++++++++++++++++++
+ 5 files changed, 132 insertions(+), 21 deletions(-)
+ create mode 100644 gdb-xml/loongarch-base32.xml
+
 -- 
-2.39.3
+2.41.0
 
 
