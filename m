@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D9F780DA4
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 16:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F805780DC1
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 16:13:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX05u-00051Z-Co; Fri, 18 Aug 2023 10:04:54 -0400
+	id 1qX05v-00052f-TQ; Fri, 18 Aug 2023 10:04:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWwvX-0007p4-Eo
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:42:00 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWxEL-0003wQ-Us
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 07:01:26 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWwvV-0004ke-6T
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 06:41:59 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31ade53706fso693594f8f.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 03:41:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWxEH-0002qu-1L
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 07:01:25 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-4fe21e7f3d1so1122507e87.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 04:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692355315; x=1692960115;
+ d=linaro.org; s=google; t=1692356456; x=1692961256;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=n6IgZ0rfNCif1gHHt+tORJ13/81yw0609dvPe88zHtA=;
- b=ndBBFNSubyxARv19LLB4043J27CNV0OpUgXWasjtH2r8BeBU+ctHo5Xn9RExZuVYzx
- yflP3NEO1KI1pfiNMM9q130LS7uTCFPLoCdu6D2XTr4SWJDTSKaQ44HCEtznYQdeLV5F
- 40PbXEK93oG6HVLGf1J3fPNhQ9VBSnJiWO96WyovnQfNdGhRI9zqb2Zv0hbMHuQSvD9k
- tWVYSHxVGXPKV8fn5FYuiB1eXW3PZSdFvsujwrcPnb/+vyyKhIz/77O8HvBBzw+aeNv7
- W+2hqZeM1mk6aIS0S2Hs97yOFCyeg7OUjK3tKAcH1V63u3G0MkEc6v09Zjyb8Hvw4/y+
- rjbw==
+ bh=jWR/H3Fx3maf4deZQaN0CobAw+W+WIoK9ipv1S9tXQE=;
+ b=vUoKh0hXFHP6Hx0KDiOWFoyDJSji99TW5xf5egsdUyYhh85BvZ25q/slkmGlPfNATX
+ F/buvQk8FySJFlZuVPO/esA3OZE87PYoGSgkArGjsRUvD+cy0A2eFklixOQkYxCRRt74
+ CnUeYC1AMpAQ/zfwP9PTx0izhU4SFMqmOrXY+1aTWb3Ym7zl5f1u/kj9diwbOWWXtU7U
+ KzoPjuk19xviwmPLXet2GBGB3gVWeqMoPVwYqj//v+VTeg0AWJI98c+Z3P53rrlH21tF
+ hK7Obun1zQBPwQXEz3WIQ+PwpkR1+9vYVKWzjMCTOlJ3i6MzgzNtc3Ndt4aXwDS7miOn
+ 4guA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692355315; x=1692960115;
+ d=1e100.net; s=20221208; t=1692356456; x=1692961256;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n6IgZ0rfNCif1gHHt+tORJ13/81yw0609dvPe88zHtA=;
- b=MPBS3G7l2cB4XA8GzvfsboonXWXVmcWlFW10ZQXl/wVgpbiRooOaxPJbyQoyQjn9/u
- grvUy7JjgmCqF6Vkyl0rrshSOu8fVK0x4PnR1fFsd1lKcQC3SKcQwSj5Ql22nE2dNHVN
- oua49mhOyPPW/+quFb/Ok6acWirc3V/ZBSX2qMQjfIb5glWb1WkU9/PV2uvxFPiODuIM
- mTiFn022P+HFrJEty6Smg6g308AHqIWhYSQoUmN7PIeJUi4akakx9EUWFuG1MquDv1vk
- wGLvXjTnJPFQKOykGYeV87d9f4sBREKhlGqhjxdX4ln0+uaJCVF7LnWW+dwNLDZ8Za2K
- p5XA==
-X-Gm-Message-State: AOJu0YzGbvkEsnoHYnq437o10NYNPAWXi0pYjoHfaIT3+LoDZ/9Io9xX
- 1HyT4rnt+7anfmCIn+EDdk2iDw==
-X-Google-Smtp-Source: AGHT+IG3XTDDOlgz1uTG7VcELjpB9TR7bkAEolt4l5/Y30IBDkAIy7f0H7bPxo+OCQ18jdpgn/ywqg==
-X-Received: by 2002:a5d:698b:0:b0:313:f61c:42ab with SMTP id
- g11-20020a5d698b000000b00313f61c42abmr1637790wru.56.1692355315679; 
- Fri, 18 Aug 2023 03:41:55 -0700 (PDT)
+ bh=jWR/H3Fx3maf4deZQaN0CobAw+W+WIoK9ipv1S9tXQE=;
+ b=ebYJgpLsO3U35xfqcek7d899m/3vb54yO5nDdndA40YYeifnzwO6SgEhN4pd9G2KbF
+ PuxJ2CvPdjvTFaq3Sm8JbH+w4No6puHfiZBuqrvchT/sFv7CxtsMkgrZ+kK6+330Bwij
+ oeRIKeXQ8ZBT6ZCrfZ9cwk8suGpEG1DC6eTe2Fsx+joDlsSB1bOq6vprIvaQZg8yj7g2
+ 38n407NZscb/VKtNEydnCotyk6kl5ploSqx+cu1VA08x6ga5+7Tis6aS/XubW8aLKkCa
+ U4TTmt+vPNHXVoL51Gfpyd7Q4f0t31A+oGgQmL408axf4mTfNQVyH4J7+HrHpS0J2v3z
+ d8HQ==
+X-Gm-Message-State: AOJu0Yy9I1fgwp3bX1g7GUKB4dTeGGXRxlbhv9uZpbzxl/m62boDIE3+
+ 6ppeqWqn4MKqIin7GJAxK7C2lA==
+X-Google-Smtp-Source: AGHT+IGTA9ukeQULAkqEkLGQXPxCl3ViVT5DpeQTuiQ7DPbmop9W3DIbltCd0j3DVJvZt2n8pl1nrg==
+X-Received: by 2002:ac2:4f0a:0:b0:4fe:8f0:6aa with SMTP id
+ k10-20020ac24f0a000000b004fe08f006aamr1549632lfr.49.1692356455709; 
+ Fri, 18 Aug 2023 04:00:55 -0700 (PDT)
 Received: from [192.168.24.175] ([92.88.170.62])
  by smtp.gmail.com with ESMTPSA id
- z1-20020adfd0c1000000b003143c9beeaesm2352678wrh.44.2023.08.18.03.41.53
+ u4-20020a7bc044000000b003fe2bea77ccsm2442611wmc.5.2023.08.18.04.00.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Aug 2023 03:41:55 -0700 (PDT)
-Message-ID: <f7929fcf-f525-ebd6-98a6-910d8c184192@linaro.org>
-Date: Fri, 18 Aug 2023 12:41:41 +0200
+ Fri, 18 Aug 2023 04:00:55 -0700 (PDT)
+Message-ID: <e24e67e0-fd01-6374-3bb7-1a73a35b48da@linaro.org>
+Date: Fri, 18 Aug 2023 13:00:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 13/18] target/loongarch: Add loongarch32 cpu la132
+Subject: Re: [PATCH v3 4/6] hw/virtio/vhost-vdpa: Use target-agnostic
+ qemu_target_page_mask()
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, c@jia.je, maobibo@loongson.cn,
- yangxiaojuan@loongson.cn, yijun@loongson.cn, shenjinyang@loongson.cn
-References: <20230817093121.1053890-1-gaosong@loongson.cn>
- <20230817093121.1053890-14-gaosong@loongson.cn>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20230710094931.84402-1-philmd@linaro.org>
+ <20230710094931.84402-5-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230817093121.1053890-14-gaosong@loongson.cn>
+In-Reply-To: <20230710094931.84402-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -60
 X-Spam_score: -6.1
 X-Spam_bar: ------
@@ -94,27 +95,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/8/23 11:31, Song Gao wrote:
-> From: Jiajie Chen <c@jia.je>
+ping?
+
+On 10/7/23 11:49, Philippe Mathieu-Daudé wrote:
+> Similarly to commit e414ed2c47 ("virtio-iommu: Use
+> target-agnostic qemu_target_page_mask"), Replace the
+> target-specific TARGET_PAGE_SIZE and TARGET_PAGE_MASK
+> definitions by a call to the runtime qemu_target_page_size()
+> helper which is target agnostic.
 > 
-> Add la132 as a loongarch32 cpu type and allow virt machine to be used
-> with la132 instead of la464.
-> 
-> Due to lack of public documentation of la132, it is currently a
-> synthetic loongarch32 cpu model. Details need to be added in the future.
-> 
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> Acked-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/loongarch/virt.c    |  5 -----
->   target/loongarch/cpu.c | 29 +++++++++++++++++++++++++++++
->   2 files changed, 29 insertions(+), 5 deletions(-)
+>   hw/virtio/vhost-vdpa.c | 26 +++++++++++++++-----------
+>   1 file changed, 15 insertions(+), 11 deletions(-)
+> 
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index a3dd7c712a..2717edf51d 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/vfio.h>
+>   #include <sys/eventfd.h>
+>   #include <sys/ioctl.h>
+> +#include "exec/target_page.h"
+>   #include "hw/virtio/vhost.h"
+>   #include "hw/virtio/vhost-backend.h"
+>   #include "hw/virtio/virtio-net.h"
+> @@ -23,7 +24,6 @@
+>   #include "migration/blocker.h"
+>   #include "qemu/cutils.h"
+>   #include "qemu/main-loop.h"
+> -#include "cpu.h"
+>   #include "trace.h"
+>   #include "qapi/error.h"
+>   
+> @@ -313,9 +313,11 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+>       Int128 llend, llsize;
+>       void *vaddr;
+>       int ret;
+> +    int page_size = qemu_target_page_size();
+> +    int page_mask = -page_size;
+>   
+>       if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+> -                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+> +                                            v->iova_range.last, page_mask)) {
+>           return;
+>       }
+>       if (memory_region_is_iommu(section->mr)) {
+> @@ -323,14 +325,14 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+>           return;
+>       }
+>   
+> -    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+> -                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
+> +    if (unlikely((section->offset_within_address_space & ~page_mask) !=
+> +                 (section->offset_within_region & ~page_mask))) {
+>           error_report("%s received unaligned region", __func__);
+>           return;
+>       }
+>   
+> -    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
+> -    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
+> +    iova = ROUND_UP(section->offset_within_address_space, page_size);
+> +    llend = vhost_vdpa_section_end(section, page_mask);
+>       if (int128_ge(int128_make64(iova), llend)) {
+>           return;
+>       }
+> @@ -396,23 +398,25 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+>       hwaddr iova;
+>       Int128 llend, llsize;
+>       int ret;
+> +    int page_size = qemu_target_page_size();
+> +    int page_mask = -page_size;
+>   
+>       if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+> -                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+> +                                            v->iova_range.last, page_mask)) {
+>           return;
+>       }
+>       if (memory_region_is_iommu(section->mr)) {
+>           vhost_vdpa_iommu_region_del(listener, section);
+>       }
+>   
+> -    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+> -                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
+> +    if (unlikely((section->offset_within_address_space & ~page_mask) !=
+> +                 (section->offset_within_region & ~page_mask))) {
+>           error_report("%s received unaligned region", __func__);
+>           return;
+>       }
+>   
+> -    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
+> -    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
+> +    iova = ROUND_UP(section->offset_within_address_space, page_size);
+> +    llend = vhost_vdpa_section_end(section, page_mask);
+>   
+>       trace_vhost_vdpa_listener_region_del(v, iova,
+>           int128_get64(int128_sub(llend, int128_one())));
 
-There are 2 distincts changes in this patch:
-
-- addition of la132 cores
-- remove restriction of la464 cores in the virt machine.
-
-Please split in 2 patches.
 
