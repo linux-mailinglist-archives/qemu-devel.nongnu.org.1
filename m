@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF30A780F71
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A51780F7C
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:45:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX1bs-0002mL-UA; Fri, 18 Aug 2023 11:42:00 -0400
+	id 1qX1ee-0000MD-Pl; Fri, 18 Aug 2023 11:44:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qX1bn-0002Yy-Mo
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:41:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qX1bl-00084A-Fo
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:41:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692373312;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OEGuO+CVAn4dYe5kDfDxflke8GAykRXauHDwDDmklao=;
- b=U7Cg/AIol10zTeRAYuMtAcz7j7Tmq/UKyRSeye5nz+HiBk10JDrcBQk/otUwbWaqyUBGUJ
- RQhWNoz5xiXaLmcK0vorkGIlyVSD34Q79rdXbvGLcBTOMzUBoDWvMfLfyI3tM5ai6j2bqd
- lJ721Y1zsZDT6q8a6p1gP2A0xdokAjg=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-153-8FBL6IDlMSCrNet3NhFsxw-1; Fri, 18 Aug 2023 11:41:49 -0400
-X-MC-Unique: 8FBL6IDlMSCrNet3NhFsxw-1
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-56c13bf96b2so1149375eaf.0
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:41:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qX1ec-0000LT-QY
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:44:51 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qX1ea-0001mA-H5
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:44:50 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bf0b24d925so7922225ad.3
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:44:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692373487; x=1692978287;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=doeutOUn44L8jw+lOHBD199GqBXSr/S9eSHYvvWRDkQ=;
+ b=FeqZ2bUJ2lVPkxT/QMq9hzvfHsfIkdMQVmBMlNTzjlpDia+k0ob5i/VzPej7PsMiMg
+ BulzMhd/GMiJ3HAa3v8psEK0y7zfsFCw+STdgQT/IMGfNHuwVEtN1jlqqIhlOUFy37gF
+ TKmxocol599khHGriSKSxt0Oo9ufd0ZMD90E60X37lnhLWkzlACH1hG1ECJe26DyHY/W
+ yZGlvZQ+M9vaWkxlzY7zBYOmkoodyrmd3H4qnS4x4aVCPOMD1K0fgi4IHvDY73kMM/fk
+ UPQ9CZP76L7AaS6z15yYMzFpK1Tt23F2U/Uzmq97gcCq2Xw007B19XpkZV0V0hDv4Tlh
+ KhBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692373309; x=1692978109;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OEGuO+CVAn4dYe5kDfDxflke8GAykRXauHDwDDmklao=;
- b=fm2yYYbl+YwmEYYi+cifrUgW1h55846d5lHnFVPZapn0F3OgeigqI0K+YFg+ehBgvn
- LC9OVyURwWmqRC3SPUwG8YqdJlZhjdvBkzWugq6gID0INZl9GkmSYdrKhrBPRUFzdvEc
- mQD43pvftGzD6SX78EIr3CI/PjLbEnb6EsqWsh77jiUPmffwZecRjdjTNji5YWMuvhoX
- es/Pwb7On2+IOJ5eiZe4/ec2A+K84vxGWVNBVQXn5OOVhY2GMIgkid2sTygFOxI5v7pm
- ZkKCkknHhzM8xyUa7LWQMPj8I0TuwpfjcyVP1BzsBCGkFvR/+Xxs6eRnEoKNR30jtwtW
- k9rA==
-X-Gm-Message-State: AOJu0YySeP+y/JVeTeVlAIhfqwtilbpeHhrjikjQXUlXZBMDLfiOjw5F
- 9RxgOifEtnoLHpwpmj4ghcpchobaTJuHZSPjoXhnVOIBFxfxYjRw/nbGI7jSEHqh0gTjPbeH+aR
- BpYzw1qbGhoruM/dy4BUk9AKGyadp8cU=
-X-Received: by 2002:a05:6358:9209:b0:132:d07d:8f3b with SMTP id
- d9-20020a056358920900b00132d07d8f3bmr3747657rwb.28.1692373308860; 
- Fri, 18 Aug 2023 08:41:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIIPWYfu3Mlh5EvwIFl/mQ1Y1vo3pJhmqd8dPxlujtN8YKFGBQzatmEvaxzzzFuOsDC8a9915OQdxrCT0o9p8=
-X-Received: by 2002:a05:6358:9209:b0:132:d07d:8f3b with SMTP id
- d9-20020a056358920900b00132d07d8f3bmr3747638rwb.28.1692373308564; Fri, 18 Aug
- 2023 08:41:48 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692373487; x=1692978287;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=doeutOUn44L8jw+lOHBD199GqBXSr/S9eSHYvvWRDkQ=;
+ b=J7Y7ox3JIUce+S905AUKq1G3zgTOHsl/goCQDodLpLcPPys9viNBAOSnDGhsRM1jMn
+ DLlOsXRZ+GkWLvf83/FNcdv/Jmp3Pgl5/E4kUgvvxBVykmVL//S/6uRFtRbR4j3wAjDP
+ RVSsPWBQC4rD9KWe1NS7zUDc+xMpdIurvIzaCGIf2xCMYVw46JjEsaSbVzK029nlPA8p
+ yUlWcY1YUqVvw5qoDFCUYBQEx9ivt2trc0wA99DXl5jaDk+tvAgxccjJyzN5HSHgWUi5
+ 7vnMN56NDYa27bxnvPgrMd7p8PvR6OqclLDLMZHumU3VXFcOYc4MSoz0m7ldk0Ycpizb
+ 46HQ==
+X-Gm-Message-State: AOJu0YwOA6LM5H9wMy7D5XOklIV/pavPccy4CKbZuRRrbqOlJsV28bDX
+ Fx3fxXH5l4MV3pFRRWqZGTGMyA==
+X-Google-Smtp-Source: AGHT+IHHO5EAsiupE0NvOPIVJT7PPzJV11vBKeetiktm4Gd+42sVl+xJiIIj0+aA7fEqpngkm0Uq/g==
+X-Received: by 2002:a17:902:d3cc:b0:1b6:649b:92cc with SMTP id
+ w12-20020a170902d3cc00b001b6649b92ccmr2604267plb.69.1692373487001; 
+ Fri, 18 Aug 2023 08:44:47 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:cf24:6daf:2b9e:7972?
+ ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
+ by smtp.gmail.com with ESMTPSA id
+ ix21-20020a170902f81500b001bb8895848bsm1946055plb.71.2023.08.18.08.44.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 18 Aug 2023 08:44:46 -0700 (PDT)
+Message-ID: <d6d4d4ae-6514-760b-e13c-6652ca4ae103@linaro.org>
+Date: Fri, 18 Aug 2023 08:44:44 -0700
 MIME-Version: 1.0
-References: <cover.1689748694.git.yin31149@gmail.com>
- <abecff1ddd3020adacb398e0f553600d0b088205.1689748694.git.yin31149@gmail.com>
-In-Reply-To: <abecff1ddd3020adacb398e0f553600d0b088205.1689748694.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 18 Aug 2023 17:41:12 +0200
-Message-ID: <CAJaqyWeKmBA5mu=0EbAc1MyStMXxqJ1gd8sbXMoFxvL9Xu-rGw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] vdpa: Check device ack in
- vhost_vdpa_net_load_rx_mode()
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/arm: Remove unused allocation_tag_mem() argument
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230818123834.1370818-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230818123834.1370818-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.454,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,172 +95,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 9:54=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> Considering that vhost_vdpa_net_load_rx_mode() is only called
-> within vhost_vdpa_net_load_rx() now, this patch refactors
-> vhost_vdpa_net_load_rx_mode() to include a check for the
-> device's ack, simplifying the code and improving its maintainability.
->
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-
+On 8/18/23 05:38, Peter Maydell wrote:
+> The allocation_tag_mem() function takes an argument tag_size,
+> but it never uses it. Remove the argument. In mte_probe_int()
+> in particular this also lets us delete the code computing
+> the value we were passing in.
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->  net/vhost-vdpa.c | 76 ++++++++++++++++++++----------------------------
->  1 file changed, 31 insertions(+), 45 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index ae8f59adaa..fe0ba19724 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -814,14 +814,24 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPASta=
-te *s,
->          .iov_base =3D &on,
->          .iov_len =3D sizeof(on),
->      };
-> -    return vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_RX,
-> -                                   cmd, &data, 1);
-> +    ssize_t dev_written;
-> +
-> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_RX,
-> +                                          cmd, &data, 1);
-> +    if (unlikely(dev_written < 0)) {
-> +        return dev_written;
-> +    }
-> +    if (*s->status !=3D VIRTIO_NET_OK) {
-> +        return -EIO;
-> +    }
-> +
-> +    return 0;
->  }
->
->  static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->                                    const VirtIONet *n)
->  {
-> -    ssize_t dev_written;
-> +    ssize_t r;
->
->      if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) =
-{
->          return 0;
-> @@ -846,13 +856,9 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->       * configuration only at live migration.
->       */
->      if (!n->mac_table.uni_overflow && !n->promisc) {
-> -        dev_written =3D vhost_vdpa_net_load_rx_mode(s,
-> -                                            VIRTIO_NET_CTRL_RX_PROMISC, =
-0);
-> -        if (unlikely(dev_written < 0)) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PROMISC,=
- 0);
-> +        if (unlikely(r < 0)) {
-> +            return r;
->          }
->      }
->
-> @@ -874,13 +880,9 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->       * configuration only at live migration.
->       */
->      if (n->mac_table.multi_overflow || n->allmulti) {
-> -        dev_written =3D vhost_vdpa_net_load_rx_mode(s,
-> -                                            VIRTIO_NET_CTRL_RX_ALLMULTI,=
- 1);
-> -        if (unlikely(dev_written < 0)) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_ALLMULTI=
-, 1);
-> +        if (unlikely(r < 0)) {
-> +            return r;
->          }
->      }
->
-> @@ -899,13 +901,9 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->       * configuration only at live migration.
->       */
->      if (n->alluni) {
-> -        dev_written =3D vhost_vdpa_net_load_rx_mode(s,
-> -                                            VIRTIO_NET_CTRL_RX_ALLUNI, 1=
-);
-> -        if (dev_written < 0) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_ALLUNI, =
-1);
-> +        if (r < 0) {
-> +            return r;
->          }
->      }
->
-> @@ -920,13 +918,9 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->       * configuration only at live migration.
->       */
->      if (n->nomulti) {
-> -        dev_written =3D vhost_vdpa_net_load_rx_mode(s,
-> -                                            VIRTIO_NET_CTRL_RX_NOMULTI, =
-1);
-> -        if (dev_written < 0) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_NOMULTI,=
- 1);
-> +        if (r < 0) {
-> +            return r;
->          }
->      }
->
-> @@ -941,13 +935,9 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->       * configuration only at live migration.
->       */
->      if (n->nouni) {
-> -        dev_written =3D vhost_vdpa_net_load_rx_mode(s,
-> -                                            VIRTIO_NET_CTRL_RX_NOUNI, 1)=
-;
-> -        if (dev_written < 0) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_NOUNI, 1=
-);
-> +        if (r < 0) {
-> +            return r;
->          }
->      }
->
-> @@ -962,13 +952,9 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->       * configuration only at live migration.
->       */
->      if (n->nobcast) {
-> -        dev_written =3D vhost_vdpa_net_load_rx_mode(s,
-> -                                            VIRTIO_NET_CTRL_RX_NOBCAST, =
-1);
-> -        if (dev_written < 0) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_NOBCAST,=
- 1);
-> +        if (r < 0) {
-> +            return r;
->          }
->      }
->
-> --
-> 2.25.1
->
+> I was looking at this function to see what argument I needed to pass it
+> for the FEAT_MOPS stuff, and it turns out the answer was "it doesn't
+> matter because it never uses the argument anyway" :-)
+> 
+>   target/arm/tcg/mte_helper.c | 42 +++++++++++++------------------------
+>   1 file changed, 14 insertions(+), 28 deletions(-)
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
 
