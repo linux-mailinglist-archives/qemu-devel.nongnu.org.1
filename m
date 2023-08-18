@@ -2,85 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D687804E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 05:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A63780517
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:21:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWqMl-0004yq-R0; Thu, 17 Aug 2023 23:41:43 -0400
+	id 1qWqxU-0000Z2-Sw; Fri, 18 Aug 2023 00:19:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWqMW-0004qk-Ss
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 23:41:24 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWqMU-0006uQ-JJ
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 23:41:24 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1bcad794ad4so3925575ad.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 20:41:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692330081; x=1692934881;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IparW9SPByo6/A9bvQ/tQtdT2GpOXLLLQEZKSqQazeI=;
- b=1CMHMXzfGIQCTFaBc5V/TBf5JUOn5RdLgqE9VzGUarzLpxRMmJHqK2mNkAxg/wQigd
- zWG2nJsDhwwUJYAgS1KB3c2hGLNQYTf8Ma7+P33oA/t4KDME+czJGu8x5iaYWH9djJcY
- 2dc6g1LrRIXKCGdVZlT/tHwgdgLEb4AoQAk6ziHDENgXUSZE/absCaa1ZPqG8FruVOUJ
- q1z9p4XK/v66s4IS/ayP+TOVWxWk61CoeUbI7Hy8w4VPWIzE4RkOcyoe7yHPJLZlcWMz
- c0C150GtZrIz2llTyEFmWzPydMQrMu4pQuHNv0q77Q+MRc0+KfqPCYn2uY+YAk200agi
- 8gPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692330081; x=1692934881;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IparW9SPByo6/A9bvQ/tQtdT2GpOXLLLQEZKSqQazeI=;
- b=injVTz5zlAoZT2lmfSS8h44QP+0Y6vEYOwjqXUSELLows882tzUy5XlZ3n7nbJIAt8
- ls4Bfd5uqR/nfdnS97Y7Nkx68pZWsR8CxEQVwCoxdZJMSULh1AgUA+ILmd6EcPjFOlm1
- FH/5fZ5PIpwlTnw7C3GZEdPys1Eu3UuoKEz/1t/xNFqzgATv3ICqe3V/gqbYMVz4jIz5
- TLC+TJN4ubPqU4f+Nq+uRmWMXdBBf07FmQhIe5nu7uLCen3TVT8BpKQBdVY5tIzqz0DE
- BSTgsAm0HF4h0x9EDIgTLZdfINJ5ckevaWpd3/LXZd3qFHOcZ0L+lfSrxWtBGOFCN2Ns
- aWdw==
-X-Gm-Message-State: AOJu0YyZRHOML3euJcq4qrBuD8q18Sbq1cANkCeenVb8Zd7N1+ErCNTs
- TsB1VJkxkw58odiK4sEpPwHjlw==
-X-Google-Smtp-Source: AGHT+IHBnIsOWFng//F/WxCyYQGsfWAPsEbz61g5qUrCdlghEpwyh8qs/mPUvcCk49uWJ8qpC3otMw==
-X-Received: by 2002:a17:902:ce81:b0:1bc:2c79:c6a4 with SMTP id
- f1-20020a170902ce8100b001bc2c79c6a4mr1291368plg.56.1692330080954; 
- Thu, 17 Aug 2023 20:41:20 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- ik20-20020a170902ab1400b001b9da8b4eb7sm561680plb.35.2023.08.17.20.41.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Aug 2023 20:41:20 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: [PATCH v2] target/riscv: Allocate itrigger timers only once
-Date: Fri, 18 Aug 2023 12:40:58 +0900
-Message-ID: <20230818034059.9146-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1qWqxT-0000Yt-0Y
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:19:35 -0400
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1qWqxO-00023H-Vy
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:19:34 -0400
+Received: from [192.168.8.104] (unknown [94.25.229.58])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 1823A40F1DE1;
+ Fri, 18 Aug 2023 04:19:24 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1823A40F1DE1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1692332364;
+ bh=w4qvhc9HmQsMu2Qyw5Bc5OqKefjv8G+2Sjh084HhSFc=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=pmsRqNeJXTjZ1MFGEaER3rLztsIt4GcaABFNz5qcvQ1HHf3w4eEUSpFJsIgM+y1ay
+ 9qbisvNg/5cPy49Ct/d54h4ZO8jKRPNbtLdY7MPd/+Da3pBZT+WTj6Xn5qR1GkQavj
+ TTkK5rPzcECT7jEZLIPD7/SNAfh96Yx8IS9nCrAI=
+Message-ID: <5e37dd04-63f8-f68b-95b3-b64e567c97ce@ispras.ru>
+Date: Fri, 18 Aug 2023 07:19:23 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/4] scripts/replay_dump.sh: Update to current rr record
+ format
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?B?0JTQvtCy0LPQsNC70Y7QuiDQn9Cw0LLQtdC7?= <Pavel.Dovgalyuk@ispras.ru>
+References: <20230814163135.187882-1-npiggin@gmail.com>
+ <20230814163135.187882-2-npiggin@gmail.com>
+From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+In-Reply-To: <20230814163135.187882-2-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=83.149.199.84;
+ envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,99 +72,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-riscv_trigger_init() had been called on reset events that can happen
-several times for a CPU and it allocated timers for itrigger. If old
-timers were present, they were simply overwritten by the new timers,
-resulting in a memory leak.
+On 14.08.2023 19:31, Nicholas Piggin wrote:
+> This thing seems to have fallen by the wayside. This gets it working with
+> the current format, although does not quite implement all events.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Divide riscv_trigger_init() into two functions, namely
-riscv_trigger_realize() and riscv_trigger_reset() and call them in
-appropriate timing. The timer allocation will happen only once for a
-CPU in riscv_trigger_realize().
+The code looks ok, therefore
+Rewieved-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 
-Fixes: 5a4ae64cac ("target/riscv: Add itrigger support when icount is enabled")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- target/riscv/debug.h |  3 ++-
- target/riscv/cpu.c   |  8 +++++++-
- target/riscv/debug.c | 15 ++++++++++++---
- 3 files changed, 21 insertions(+), 5 deletions(-)
+However, there is one thing about idea or replay-dump script.
+I think it never will be used for parsing the older versions of the log.
+Record/replay can only replay the log generated by the same
+QEMU version. Any of virtual hw behavior change or some main loop
+refactoring may break the replay.
 
-diff --git a/target/riscv/debug.h b/target/riscv/debug.h
-index c471748d5a..5794aa6ee5 100644
---- a/target/riscv/debug.h
-+++ b/target/riscv/debug.h
-@@ -143,7 +143,8 @@ void riscv_cpu_debug_excp_handler(CPUState *cs);
- bool riscv_cpu_debug_check_breakpoint(CPUState *cs);
- bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
- 
--void riscv_trigger_init(CPURISCVState *env);
-+void riscv_trigger_realize(CPURISCVState *env);
-+void riscv_trigger_reset_hold(CPURISCVState *env);
- 
- bool riscv_itrigger_enabled(CPURISCVState *env);
- void riscv_itrigger_update_priv(CPURISCVState *env);
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index e12b6ef7f6..7e0512dd5f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -904,7 +904,7 @@ static void riscv_cpu_reset_hold(Object *obj)
- 
- #ifndef CONFIG_USER_ONLY
-     if (cpu->cfg.debug) {
--        riscv_trigger_init(env);
-+        riscv_trigger_reset_hold(env);
-     }
- 
-     if (kvm_enabled()) {
-@@ -1475,6 +1475,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
- 
-     riscv_cpu_register_gdb_regs_for_features(cs);
- 
-+#ifndef CONFIG_USER_ONLY
-+    if (cpu->cfg.debug) {
-+        riscv_trigger_realize(&cpu->env);
-+    }
-+#endif
-+
-     qemu_init_vcpu(cs);
-     cpu_reset(cs);
- 
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index 75ee1c4971..ddd46b2d3e 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -903,7 +903,17 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
-     return false;
- }
- 
--void riscv_trigger_init(CPURISCVState *env)
-+void riscv_trigger_realize(CPURISCVState *env)
-+{
-+    int i;
-+
-+    for (i = 0; i < RV_MAX_TRIGGERS; i++) {
-+        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                              riscv_itrigger_timer_cb, env);
-+    }
-+}
-+
-+void riscv_trigger_reset_hold(CPURISCVState *env)
- {
-     target_ulong tdata1 = build_tdata1(env, TRIGGER_TYPE_AD_MATCH, 0, 0);
-     int i;
-@@ -928,7 +938,6 @@ void riscv_trigger_init(CPURISCVState *env)
-         env->tdata3[i] = 0;
-         env->cpu_breakpoint[i] = NULL;
-         env->cpu_watchpoint[i] = NULL;
--        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                              riscv_itrigger_timer_cb, env);
-+        timer_del(env->itrigger_timer[i]);
-     }
- }
--- 
-2.41.0
+That is why I think that support of the past replay log
+formats is useless.
+
+> ---
+> My python skills are not good. Any help on this or patch 2 is
+> appreciated.
+> 
+> Thanks,
+> Nick
+> 
+>   scripts/replay-dump.py | 107 ++++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 101 insertions(+), 6 deletions(-)
+> 
+> diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
+> index 3ba97a6d30..937ae19ff1 100755
+> --- a/scripts/replay-dump.py
+> +++ b/scripts/replay-dump.py
+> @@ -20,6 +20,7 @@
+>   
+>   import argparse
+>   import struct
+> +import os
+>   from collections import namedtuple
+>   
+>   # This mirrors some of the global replay state which some of the
+> @@ -62,6 +63,10 @@ def read_byte(fin):
+>       "Read a single byte"
+>       return struct.unpack('>B', fin.read(1))[0]
+>   
+> +def read_bytes(fin, nr):
+> +    "Read a nr bytes"
+> +    return fin.read(nr)
+> +
+>   def read_event(fin):
+>       "Read a single byte event, but save some state"
+>       if replay_state.already_read:
+> @@ -122,12 +127,18 @@ def swallow_async_qword(eid, name, dumpfile):
+>       print("  %s(%d) @ %d" % (name, eid, step_id))
+>       return True
+>   
+> +def swallow_bytes(eid, name, dumpfile, nr):
+> +    "Swallow nr bytes of data without looking at it"
+> +    dumpfile.seek(nr, os.SEEK_CUR)
+> +    return True
+> +
+>   async_decode_table = [ Decoder(0, "REPLAY_ASYNC_EVENT_BH", swallow_async_qword),
+> -                       Decoder(1, "REPLAY_ASYNC_INPUT", decode_unimp),
+> -                       Decoder(2, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
+> -                       Decoder(3, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
+> -                       Decoder(4, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
+> -                       Decoder(5, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
+> +                       Decoder(1, "REPLAY_ASYNC_BH_ONESHOT", decode_unimp),
+> +                       Decoder(2, "REPLAY_ASYNC_INPUT", decode_unimp),
+> +                       Decoder(3, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
+> +                       Decoder(4, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
+> +                       Decoder(5, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
+> +                       Decoder(6, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
+>   ]
+>   # See replay_read_events/replay_read_event
+>   def decode_async(eid, name, dumpfile):
+> @@ -156,6 +167,13 @@ def decode_audio_out(eid, name, dumpfile):
+>       print_event(eid, name, "%d" % (audio_data))
+>       return True
+>   
+> +def decode_random(eid, name, dumpfile):
+> +    ret = read_dword(dumpfile)
+> +    size = read_dword(dumpfile)
+> +    swallow_bytes(eid, name, dumpfile, size)
+> +    print_event(eid, name, "%d %d" % (ret, size))
+> +    return True
+> +
+>   def decode_checkpoint(eid, name, dumpfile):
+>       """Decode a checkpoint.
+>   
+> @@ -184,6 +202,38 @@ def decode_interrupt(eid, name, dumpfile):
+>       print_event(eid, name)
+>       return True
+>   
+> +def decode_exception(eid, name, dumpfile):
+> +    print_event(eid, name)
+> +    return True
+> +
+> +def decode_shutdown(eid, name, dumpfile):
+> +    print_event(eid, name)
+> +    return True
+> +
+> +def decode_end(eid, name, dumpfile):
+> +    print_event(eid, name)
+> +    return False
+> +
+> +def decode_char_write(eid, name, dumpfile):
+> +    res = read_dword(dumpfile)
+> +    offset = read_dword(dumpfile)
+> +    print_event(eid, name)
+> +    return True
+> +
+> +def decode_async_char_read(eid, name, dumpfile):
+> +    char_id = read_byte(dumpfile)
+> +    size = read_dword(dumpfile)
+> +    print_event(eid, name, "device:%x chars:%s" % (char_id, read_bytes(dumpfile, size)))
+> +    return True
+> +
+> +def decode_async_net(eid, name, dumpfile):
+> +    net_id = read_byte(dumpfile)
+> +    flags = read_dword(dumpfile)
+> +    size = read_dword(dumpfile)
+> +    swallow_bytes(eid, name, dumpfile, size)
+> +    print_event(eid, name, "net:%x flags:%x bytes:%d" % (net_id, flags, size))
+> +    return True
+> +
+>   def decode_clock(eid, name, dumpfile):
+>       clock_data = read_qword(dumpfile)
+>       print_event(eid, name, "0x%x" % (clock_data))
+> @@ -268,6 +318,48 @@ def decode_clock(eid, name, dumpfile):
+>                     Decoder(28, "EVENT_CP_RESET", decode_checkpoint),
+>   ]
+>   
+> +v12_event_table = [Decoder(0, "EVENT_INSTRUCTION", decode_instruction),
+> +                  Decoder(1, "EVENT_INTERRUPT", decode_interrupt),
+> +                  Decoder(2, "EVENT_EXCEPTION", decode_exception),
+> +                  Decoder(3, "EVENT_ASYNC_BH", swallow_async_qword),
+> +                  Decoder(4, "EVENT_ASYNC_BH_ONESHOT", swallow_async_qword),
+> +                  Decoder(5, "EVENT_ASYNC_INPUT", decode_unimp),
+> +                  Decoder(6, "EVENT_ASYNC_INPUT_SYNC", decode_unimp),
+> +                  Decoder(7, "EVENT_ASYNC_CHAR_READ", decode_async_char_read),
+> +                  Decoder(8, "EVENT_ASYNC_BLOCK", swallow_async_qword),
+> +                  Decoder(9, "EVENT_ASYNC_NET", decode_async_net),
+> +                  Decoder(10, "EVENT_SHUTDOWN", decode_unimp),
+> +                  Decoder(11, "EVENT_SHUTDOWN_HOST_ERR", decode_shutdown),
+> +                  Decoder(12, "EVENT_SHUTDOWN_HOST_QMP_QUIT", decode_shutdown),
+> +                  Decoder(13, "EVENT_SHUTDOWN_HOST_QMP_RESET", decode_shutdown),
+> +                  Decoder(14, "EVENT_SHUTDOWN_HOST_SIGNAL", decode_shutdown),
+> +                  Decoder(15, "EVENT_SHUTDOWN_HOST_UI", decode_shutdown),
+> +                  Decoder(16, "EVENT_SHUTDOWN_GUEST_SHUTDOWN", decode_shutdown),
+> +                  Decoder(17, "EVENT_SHUTDOWN_GUEST_RESET", decode_shutdown),
+> +                  Decoder(18, "EVENT_SHUTDOWN_GUEST_PANIC", decode_shutdown),
+> +                  Decoder(19, "EVENT_SHUTDOWN_SUBSYS_RESET", decode_shutdown),
+> +                  Decoder(20, "EVENT_SHUTDOWN_SNAPSHOT_LOAD", decode_shutdown),
+> +                  Decoder(21, "EVENT_SHUTDOWN___MAX", decode_shutdown),
+> +                  Decoder(22, "EVENT_CHAR_WRITE", decode_char_write),
+> +                  Decoder(23, "EVENT_CHAR_READ_ALL", decode_unimp),
+> +                  Decoder(24, "EVENT_CHAR_READ_ALL_ERROR", decode_unimp),
+> +                  Decoder(25, "EVENT_AUDIO_OUT", decode_audio_out),
+> +                  Decoder(26, "EVENT_AUDIO_IN", decode_unimp),
+> +                  Decoder(27, "EVENT_RANDOM", decode_random),
+> +                  Decoder(28, "EVENT_CLOCK_HOST", decode_clock),
+> +                  Decoder(29, "EVENT_CLOCK_VIRTUAL_RT", decode_clock),
+> +                  Decoder(30, "EVENT_CP_CLOCK_WARP_START", decode_checkpoint),
+> +                  Decoder(31, "EVENT_CP_CLOCK_WARP_ACCOUNT", decode_checkpoint),
+> +                  Decoder(32, "EVENT_CP_RESET_REQUESTED", decode_checkpoint),
+> +                  Decoder(33, "EVENT_CP_SUSPEND_REQUESTED", decode_checkpoint),
+> +                  Decoder(34, "EVENT_CP_CLOCK_VIRTUAL", decode_checkpoint),
+> +                  Decoder(35, "EVENT_CP_CLOCK_HOST", decode_checkpoint),
+> +                  Decoder(36, "EVENT_CP_CLOCK_VIRTUAL_RT", decode_checkpoint),
+> +                  Decoder(37, "EVENT_CP_INIT", decode_checkpoint_init),
+> +                  Decoder(38, "EVENT_CP_RESET", decode_checkpoint),
+> +                  Decoder(39, "EVENT_END", decode_end),
+> +]
+> +
+>   def parse_arguments():
+>       "Grab arguments for script"
+>       parser = argparse.ArgumentParser()
+> @@ -285,7 +377,10 @@ def decode_file(filename):
+>   
+>       print("HEADER: version 0x%x" % (version))
+>   
+> -    if version == 0xe02007:
+> +    if version == 0xe0200c:
+> +        event_decode_table = v12_event_table
+> +        replay_state.checkpoint_start = 12
+> +    elif version == 0xe02007:
+>           event_decode_table = v7_event_table
+>           replay_state.checkpoint_start = 12
+>       elif version == 0xe02006:
 
 
