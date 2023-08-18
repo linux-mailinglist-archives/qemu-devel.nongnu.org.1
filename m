@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17449780FB5
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDAD780FB4
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 17:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX1sD-0005J4-D1; Fri, 18 Aug 2023 11:58:53 -0400
+	id 1qX1sE-0005J7-47; Fri, 18 Aug 2023 11:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qX1sB-0005IY-FU
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:51 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qX1sC-0005Il-GU
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:52 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qX1s9-0004wY-9x
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:51 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fe426b86a8so10415405e9.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:58:48 -0700 (PDT)
+ id 1qX1sA-0004wa-Ad
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 11:58:52 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-317f1c480eeso961391f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 08:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1692374328; x=1692979128;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0dO/wbtq8s027/zPH3VXaim0ZVbTnHkkKvCPXCOUCRw=;
- b=zvWIIwzazgnt78RszVZDw57OKdZ0HJK5FG144KehN6X/GOOvHW/Rq4RyQo0LB2fMNH
- H9swZVXXclB16x2RH2wZhiAGatvWAnQVXXiGwBBJDGcAYH7BzPg7t61eu+AiF36gwXL1
- PSxWvlPy1oIzWuOtCCEkXc8gHNBQGmIlSebCZk6Pp5QTomT5/XPVj/Fe9AJSFU0sQ/8K
- ArxNl8AJArQMyocO3q6DbKaruhuERJq2a6mrqjaYSekctdN8e68oA73xZSnxr7p6c2q0
- eQ3ALPo3NWvc85IykFHw14cc8Jk3riYEtb77ALF1eLRdtrB03HSN0LU+BwZmGROHLtca
- yl8A==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GiLjnG2DY03Yn8ZcFWzWxO2i88SwNhYf8beW+L7aAF8=;
+ b=ZcraEF7Otpa9r+c4gjxjJ0ZKZB9NuCnPbo8DRkN5+7IHbEbTsivD+A8jXe4ScS3iD+
+ FbUfyTNDGrPs3qxaU1DpKrX7rOWMkb9XBX7OUvgoJZEPuw+MkevpkjH7neJwIjNCwBbE
+ F3R6Qwlu5uyo5nf/M+O0SPkOH1X870miIa/Pm5rzkWN7VkGbgvdadYI7lo3OnWDVLfLS
+ 1n/7HFV/oJq+Bre3EzI7yits04+lJh3DwXgkhj8fwGh8cokLZvI9WaYEEdYM2kBTgQzw
+ WPImbvzhdbKKBllk3iEHl5a+reXUd3LX1Wg6hk5ZIKH7TDl4prKOXqZZyWzFTbCm3UBu
+ Nrgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1692374328; x=1692979128;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0dO/wbtq8s027/zPH3VXaim0ZVbTnHkkKvCPXCOUCRw=;
- b=AM+irQFqv/k1e7DKbIn95V+17Yr2A5CwFrj/J5Sy8w9Xnxu7tSagkz2RFdLYyrvnU6
- I/B3fDL9UhEtdPKwkb/heuo8x1KTQhwXaogQcDK43UT+NWPQJdmAYh6PeUn9KVMC1fFp
- Nv4U4K901o9+Ywgefxz/PANWgP33ywK3E6y/mBpL2qUFt03M5zIXajfWub9LR8rUPFZW
- Qpl3h3xXfE60HQRunhsH1g3TzlMHaEm5NNqsxb9TACZxYxmiXifIbJ5JQV7fLLRS8tfn
- ndVMXGRT2WbPfGxnKwLwTb66uldpi5DiNAu9p4hIabN5+XDEksC6Lp/AeJk7EEx34mBa
- W94g==
-X-Gm-Message-State: AOJu0Yw3s/ErFMYbE6OoQjtyV0B0WHaOAxRAAd+NF5f2sG0hneuOWQs1
- Uz17wx5tPy6p1x2u45oT6pbfCexBlC2/jlxfSBs=
-X-Google-Smtp-Source: AGHT+IHYw0Ktrwi/7K1HLgRcvYtkg25PLmuniFwuusImxGgMsmMrxF68Xc2GmJJ6NqNZWAz/fQ51dA==
-X-Received: by 2002:a7b:cc13:0:b0:3fb:ef86:e2e with SMTP id
- f19-20020a7bcc13000000b003fbef860e2emr2441361wmh.19.1692374327679; 
- Fri, 18 Aug 2023 08:58:47 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GiLjnG2DY03Yn8ZcFWzWxO2i88SwNhYf8beW+L7aAF8=;
+ b=TaFuBHfdTAlEc58Qq8N8P6czWbYZ+RLpXhRJqvOEWeau9syoVO6IHd+epahGZwS0Sn
+ 50S8+CgJz7upOzm3Ey5O14YXnYAA0LFgzMvuRVpaq433mwEvIE72oN0gN4Ls4vc/w9gO
+ eIgUpp6MS4OmFeZDa68M7g1AhydnDhyx4STyOMrpY4bus6gG+dR5LvrInw2ib1GC6atA
+ jgWYq/DyYrftzhWRFS6pPDLVGjP0prZB152sDWJPr8ve/ZbE607yPDKuF2oYaA4F1G1Q
+ S5flK4887r6vnfGVFDZtByeS9Yg8sQt1B6m5JQMLz6bQADhu7AT28f5ec2Bq00cAad8G
+ eYRg==
+X-Gm-Message-State: AOJu0Yz0B1mr6Fq5pTbI05xTly0hZZphiYcA99gguYMEQ5sZDvqCviqN
+ WsHYqmnM/3U28I26xZlLNDiRn3M47QMwmGtgkGY=
+X-Google-Smtp-Source: AGHT+IFcvXwOeyX1gml07wwECoRmqLU3TxUezM3bRCMBGWeSqNGgBLBl1pY40uA4tAOpUYIsez3niw==
+X-Received: by 2002:adf:f186:0:b0:319:8a5a:ab5e with SMTP id
+ h6-20020adff186000000b003198a5aab5emr2304939wro.38.1692374328298; 
+ Fri, 18 Aug 2023 08:58:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  y21-20020a7bcd95000000b003fbb346279dsm3275702wmj.38.2023.08.18.08.58.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 08:58:47 -0700 (PDT)
+ Fri, 18 Aug 2023 08:58:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: [PATCH 0/2] audio/jackaudio: avoid dynamic stack allocations
-Date: Fri, 18 Aug 2023 16:58:44 +0100
-Message-Id: <20230818155846.1651287-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/2] audio/jackaudio: Avoid dynamic stack allocation in
+ qjack_client_init
+Date: Fri, 18 Aug 2023 16:58:45 +0100
+Message-Id: <20230818155846.1651287-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230818155846.1651287-1-peter.maydell@linaro.org>
+References: <20230818155846.1651287-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,36 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset removes two variable length arrays from the jack audio
-backend.  The codebase has very few VLAs, and if we can get rid of
-them all we can make the compiler error on new additions.  This is a
-defensive measure against security bugs where an on-stack dynamic
-allocation isn't correctly size-checked (e.g.  CVE-2021-3527).
+Avoid a dynamic stack allocation in qjack_client_init(), by using
+a g_autofree heap allocation instead.
 
-The first one is fairly straightforward (although the JACK API's
-requirement that (a) you don't pass it an overlong client name and
-(b) that maximum length is provided by calling a function, not as a
-compile time constant makes it a little less clean than it might be.
+(We stick with allocate + snprintf() because the JACK API requires
+the name to be no more than its maximum size, so g_strdup_printf()
+would require an extra truncation step.)
 
-The second one avoids the dynamic allocation, but if the audio
-subsystem has a compile-time upper bound on the number of
-channels then we could use a fixed-size stack array rather than
-the awkward "allocate a working buffer at init time" that I
-have in this patch. Suggestions for improvements welcome.
+The codebase has very few VLAs, and if we can get rid of them all we
+can make the compiler error on new additions.  This is a defensive
+measure against security bugs where an on-stack dynamic allocation
+isn't correctly size-checked (e.g.  CVE-2021-3527).
 
-Disclaimer: tested only with "make check", which doesn't actually
-exercise the audio subsystem.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ audio/jackaudio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-thanks
--- PMM
-
-Peter Maydell (2):
-  audio/jackaudio: Avoid dynamic stack allocation in qjack_client_init
-  audio/jackaudio: Avoid dynamic stack allocation in qjack_process()
-
- audio/jackaudio.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
-
+diff --git a/audio/jackaudio.c b/audio/jackaudio.c
+index 5bdf3d7a78d..7cb2a49f971 100644
+--- a/audio/jackaudio.c
++++ b/audio/jackaudio.c
+@@ -400,7 +400,8 @@ static void qjack_client_connect_ports(QJackClient *c)
+ static int qjack_client_init(QJackClient *c)
+ {
+     jack_status_t status;
+-    char client_name[jack_client_name_size()];
++    int client_name_len = jack_client_name_size(); /* includes NUL */
++    g_autofree char *client_name = g_new(char, client_name_len);
+     jack_options_t options = JackNullOption;
+ 
+     if (c->state == QJACK_STATE_RUNNING) {
+@@ -409,7 +410,7 @@ static int qjack_client_init(QJackClient *c)
+ 
+     c->connect_ports = true;
+ 
+-    snprintf(client_name, sizeof(client_name), "%s-%s",
++    snprintf(client_name, client_name_len, "%s-%s",
+         c->out ? "out" : "in",
+         c->opt->client_name ? c->opt->client_name : audio_application_name());
+ 
 -- 
 2.34.1
 
