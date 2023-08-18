@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F17780659
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 09:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816F4780655
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 09:28:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWtuo-0003Yr-VV; Fri, 18 Aug 2023 03:29:02 -0400
+	id 1qWttD-0002qS-QR; Fri, 18 Aug 2023 03:27:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qWtuk-0003Yb-5I
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:28:59 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qWtuh-0002VT-4o
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:28:57 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxV_GwHd9kNtAZAA--.53435S3;
- Fri, 18 Aug 2023 15:28:48 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxF8yvHd9k4XNdAA--.57894S3; 
- Fri, 18 Aug 2023 15:28:47 +0800 (CST)
-Subject: Re: [PATCH v4 15/18] linux-user/loongarch64: Add vdso
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230816180338.572576-1-richard.henderson@linaro.org>
- <20230816180338.572576-16-richard.henderson@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <f4c46986-6577-1441-da0d-2e9755896efc@loongson.cn>
-Date: Fri, 18 Aug 2023 15:28:47 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qWtt7-0002qG-Mo
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:27:17 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qWtt4-000240-0X
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 03:27:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692343634; x=1723879634;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=b/VwXdY1S8Rrt8d506nAf7O88j1HNGObBnysetfFOpg=;
+ b=eURgdYOh5JeqJKt8CkRt+uqTVO4LTjQr02EGcFr93JjBnUtcqQ0CM/b7
+ EQxMMHDokKCPToZWA/wv92AINFqAtK+oEO+t9mBPcHW1xLqb/yknE6/Sf
+ joo3tfet0F34Ltc12zK7DFnxaxuqP8grHZE2jg3aw/ksp1T8clvb/m0ot
+ fVHparQ9sN67Fjvb3BbKl78E8BC941dJYYhA918wCKUO1Z/3rJMkel6lZ
+ ZtTWwHhwoTKxs2CbjG8wp3ZUEzswGWJiQFyZ38qZQX1AqAsIVtZPC65wz
+ 0fMyNGi9rPszffWe4tgYV17WGxR4d1K6QBGpvg9rSVg/C5s6eyPCIMKNP g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="352624892"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="352624892"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2023 00:27:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="908757435"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="908757435"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.28])
+ by orsmga005.jf.intel.com with ESMTP; 18 Aug 2023 00:27:05 -0700
+Date: Fri, 18 Aug 2023 15:37:39 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Moger, Babu" <babu.moger@amd.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Wei Wang <wei.w.wang@intel.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
+ CPUID[4]
+Message-ID: <ZN8fw0CU+j/dOvBy@liuzhao-OptiPlex-7080>
+References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
+ <20230801103527.397756-15-zhao1.liu@linux.intel.com>
+ <19ba8210-3e11-a36f-3b26-52cbe40042b1@amd.com>
+ <3f7510f2-20f3-93df-72b3-01cfa687f554@amd.com>
+ <ZMzJaElw/T5caQU+@liuzhao-OptiPlex-7080>
+ <5947274f-e29d-cb76-3325-5dc75f205eeb@amd.com>
+ <ZNnkR+G6PvE2q77E@liuzhao-OptiPlex-7080>
+ <4615221c-407c-1542-56c8-a9557a5800b2@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <20230816180338.572576-16-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxF8yvHd9k4XNdAA--.57894S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7WFWfAw1rZry7tF4UAr4UJrc_yoW8WF1rp3
- y3Cr4rur48JrZrXFsxJ34jqF95XFs7uF1Yg3W3Wr17AryxAw18uw1DKF98W3W7Z340yF40
- qFyDGw1UKayDWagCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8r9
- N3UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-4.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4615221c-407c-1542-56c8-a9557a5800b2@amd.com>
+Received-SPF: none client-ip=192.55.52.136;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,47 +92,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/8/17 ÉÏÎç2:03, Richard Henderson Ð´µÀ:
-> Signed-off-by: Richard Henderson<richard.henderson@linaro.org>
-> ---
->   linux-user/loongarch64/vdso-asmoffset.h |   8 ++
->   linux-user/elfload.c                    |   4 +
->   linux-user/loongarch64/signal.c         |  17 +++-
->   linux-user/loongarch64/Makefile.vdso    |   7 ++
->   linux-user/loongarch64/meson.build      |   4 +
->   linux-user/loongarch64/vdso.S           | 130 ++++++++++++++++++++++++
->   linux-user/loongarch64/vdso.ld          |  73 +++++++++++++
->   linux-user/loongarch64/vdso.so          | Bin 0 -> 3560 bytes
->   linux-user/meson.build                  |   1 +
->   9 files changed, 243 insertions(+), 1 deletion(-)
->   create mode 100644 linux-user/loongarch64/vdso-asmoffset.h
->   create mode 100644 linux-user/loongarch64/Makefile.vdso
->   create mode 100644 linux-user/loongarch64/meson.build
->   create mode 100644 linux-user/loongarch64/vdso.S
->   create mode 100644 linux-user/loongarch64/vdso.ld
->   create mode 100755 linux-user/loongarch64/vdso.so
+Hi Babu,
 
-I run a simply LoongArch binary on x86_64.
+On Mon, Aug 14, 2023 at 11:03:53AM -0500, Moger, Babu wrote:
+> Date: Mon, 14 Aug 2023 11:03:53 -0500
+> From: "Moger, Babu" <babu.moger@amd.com>
+> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
+>  CPUID[4]
+> 
+> Hi Zhao,
+> 
+> 
+> On 8/14/23 03:22, Zhao Liu wrote:
+> > Hi Babu,
+> > 
+> > On Fri, Aug 04, 2023 at 10:48:29AM -0500, Moger, Babu wrote:
+> >> Date: Fri, 4 Aug 2023 10:48:29 -0500
+> >> From: "Moger, Babu" <babu.moger@amd.com>
+> >> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
+> >>  CPUID[4]
+> >>
+> >> Hi Zhao,
+> >>
+> >> On 8/4/23 04:48, Zhao Liu wrote:
+> >>> Hi Babu,
+> >>>
+> >>> On Thu, Aug 03, 2023 at 11:41:40AM -0500, Moger, Babu wrote:
+> >>>> Date: Thu, 3 Aug 2023 11:41:40 -0500
+> >>>> From: "Moger, Babu" <babu.moger@amd.com>
+> >>>> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
+> >>>>  CPUID[4]
+> >>>>
+> >>>> Hi Zhao,
+> >>>>
+> >>>> On 8/2/23 18:49, Moger, Babu wrote:
+> >>>>> Hi Zhao,
+> >>>>>
+> >>>>> Hitting this error after this patch.
+> >>>>>
+> >>>>> ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code should
+> >>>>> not be reached
+> >>>>> Bail out! ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code
+> >>>>> should not be reached
+> >>>>> Aborted (core dumped)
+> >>>>>
+> >>>>> Looks like share_level for all the caches for AMD is not initialized.
+> >>>
+> >>> I missed these change when I rebase. Sorry for that.
+> >>>
+> >>> BTW, could I ask a question? From a previous discussion[1], I understand
+> >>> that the cache info is used to show the correct cache information in
+> >>> new machine. And from [2], the wrong cache info may cause "compatibility
+> >>> issues".
+> >>>
+> >>> Is this "compatibility issues" AMD specific? I'm not sure if Intel should
+> >>> update the cache info like that. thanks!
+> >>
+> >> I was going to comment about that. Good that you asked me.
+> >>
+> >> Compatibility is qemu requirement.  Otherwise the migrations will fail.
+> >>
+> >> Any changes in the topology is going to cause migration problems.
+> > 
+> > Could you please educate me more about the details of the "migration
+> > problem"?
+> > 
+> > I didn't understand why it was causing the problem and wasn't sure if I
+> > was missing any cases.
+> > 
+> 
+> I am not an expert on migration but I test VM migration sometimes.
+> Here are some guidelines.
+> https://developers.redhat.com/blog/2015/03/24/live-migrating-qemu-kvm-virtual-machines
 
-I got
+Thanks for the material!
 
-...
-Linking TBs 0x7f0e7004f240 index 1 -> 0x7f0e7004f3c0
-Trace 0: 0x7f0e7004f3c0 [00000000/00000001200084b4/00000000/00000000] 
-__gettimeofday
-Trace 0: 0x7f0e7004f500 [00000000/0000555555d5c644/00000000/00000000] 
-__vdso_gettimeofday
-Trace 0: 0x7f0e7004f640 [00000000/0000555555d5c64c/00000000/00000000] 
-__vdso_gettimeofday
-Trace 0: 0x7f0e7004f740 [00000000/00000001200084c0/00000000/00000000] 
-__gettimeofday
-...
+> 
+> When you migrate a VM to newer qemu using the same CPU type, migration
+> should work seamless. That means list of CPU features should be compatible
+> when you move to newer qemu version with CPU type.
 
-So
-Tested-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+I see. This patches set adds the "-smp cluster" command and the
+"x-l2-cache-topo" command. Migration requires that the target and
+source VM command lines are the same, so the new commands ensure that
+the migration is consistent.
 
-Thanks.
-Song Gao
+But this patch set also includes some topology fixes (nr_cores fix and
+l1 cache topology fix) and encoding change (use APIC ID offset to encode
+addressable ids), these changes would affect migration and may cause
+CPUID change for VM view. Thus if this patch set is accepted, these
+changes also need to be pushed into stable versions. Do you agree?
 
+And about cache info for different CPU generations, migration usually
+happens on the same CPU type, and Intel uses the same default cache
+info for all CPU types. With the consistent cache info, migration is
+also Ok. So if we don't care about the specific cache info in the VM,
+it's okay to use the same default cache info for all CPU types. Right?
+
+Thanks,
+Zhao
 
