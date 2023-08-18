@@ -2,51 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A63780517
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14CA780518
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:24:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWqxU-0000Z2-Sw; Fri, 18 Aug 2023 00:19:36 -0400
+	id 1qWr1A-0002Qf-RR; Fri, 18 Aug 2023 00:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWqxT-0000Yt-0Y
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:19:35 -0400
+ id 1qWr15-0002Ol-11
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:23:19 -0400
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWqxO-00023H-Vy
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:19:34 -0400
+ id 1qWr12-0003jq-EE
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:23:18 -0400
 Received: from [192.168.8.104] (unknown [94.25.229.58])
- by mail.ispras.ru (Postfix) with ESMTPSA id 1823A40F1DE1;
- Fri, 18 Aug 2023 04:19:24 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1823A40F1DE1
+ by mail.ispras.ru (Postfix) with ESMTPSA id 6A34F40F1DE1;
+ Fri, 18 Aug 2023 04:23:12 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6A34F40F1DE1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1692332364;
- bh=w4qvhc9HmQsMu2Qyw5Bc5OqKefjv8G+2Sjh084HhSFc=;
+ s=default; t=1692332593;
+ bh=GJAiuw8h1BHAc4YGuwsuh4TrNHigJRjM5xHQIGyj/RI=;
  h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=pmsRqNeJXTjZ1MFGEaER3rLztsIt4GcaABFNz5qcvQ1HHf3w4eEUSpFJsIgM+y1ay
- 9qbisvNg/5cPy49Ct/d54h4ZO8jKRPNbtLdY7MPd/+Da3pBZT+WTj6Xn5qR1GkQavj
- TTkK5rPzcECT7jEZLIPD7/SNAfh96Yx8IS9nCrAI=
-Message-ID: <5e37dd04-63f8-f68b-95b3-b64e567c97ce@ispras.ru>
-Date: Fri, 18 Aug 2023 07:19:23 +0300
+ b=eoWWdY2JB1iOZtUQW6pErv0zXcik9RrVSB5PRswq8+yMjOeS0r41fed07uTrRHUyj
+ G0ZYnXNRXjLWgq/jAebtR0nBin6ST4sX67/IOhMApdMXSbiEE2U46uVi5OQAWsXhbB
+ s0V0MC21VnK2Z7/6tTGx9bvUb3QIu8yl5anAEehc=
+Message-ID: <7af8a4f7-06f8-436f-e125-d6389fcdbbda@ispras.ru>
+Date: Fri, 18 Aug 2023 07:23:11 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 1/4] scripts/replay_dump.sh: Update to current rr record
- format
+Subject: Re: [PATCH 2/4] tests/avocado: replay_linux.py add replay-dump.py test
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
  <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?B?0JTQvtCy0LPQsNC70Y7QuiDQn9Cw0LLQtdC7?= <Pavel.Dovgalyuk@ispras.ru>
+ Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
 References: <20230814163135.187882-1-npiggin@gmail.com>
- <20230814163135.187882-2-npiggin@gmail.com>
+ <20230814163135.187882-3-npiggin@gmail.com>
 From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230814163135.187882-2-npiggin@gmail.com>
+In-Reply-To: <20230814163135.187882-3-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=83.149.199.84;
@@ -73,193 +72,115 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14.08.2023 19:31, Nicholas Piggin wrote:
-> This thing seems to have fallen by the wayside. This gets it working with
-> the current format, although does not quite implement all events.
+> This runs replay-dump.py after recording a trace, and fails the test if
+> the script fails.
+> 
+> replay-dump.py is modified to exit with non-zero if an error is
+> encountered while parsing.
+
+I would like to have separate test for replay-dump, because
+replay-linux tests are very heavy to replay and knowing the exact
+reason of the failure in advance would be more convenient.
+
+What do you think of splitting the test?
+
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-The code looks ok, therefore
-Rewieved-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-
-However, there is one thing about idea or replay-dump script.
-I think it never will be used for parsing the older versions of the log.
-Record/replay can only replay the log generated by the same
-QEMU version. Any of virtual hw behavior change or some main loop
-refactoring may break the replay.
-
-That is why I think that support of the past replay log
-formats is useless.
-
 > ---
-> My python skills are not good. Any help on this or patch 2 is
-> appreciated.
+> It's possible this could introduce failures to existing test if an
+> unimplemented event gets recorded. I would make a new test for this but
+> it takes quite a while to record such a long trace that includes some
+> block and net events to excercise the script.
 > 
 > Thanks,
 > Nick
 > 
->   scripts/replay-dump.py | 107 ++++++++++++++++++++++++++++++++++++++---
->   1 file changed, 101 insertions(+), 6 deletions(-)
+>   scripts/replay-dump.py        |  6 ++++--
+>   tests/avocado/replay_linux.py | 16 +++++++++++++++-
+>   2 files changed, 19 insertions(+), 3 deletions(-)
 > 
 > diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
-> index 3ba97a6d30..937ae19ff1 100755
+> index 937ae19ff1..8f4715632a 100755
 > --- a/scripts/replay-dump.py
 > +++ b/scripts/replay-dump.py
-> @@ -20,6 +20,7 @@
->   
+> @@ -21,6 +21,7 @@
 >   import argparse
 >   import struct
-> +import os
+>   import os
+> +import sys
 >   from collections import namedtuple
 >   
 >   # This mirrors some of the global replay state which some of the
-> @@ -62,6 +63,10 @@ def read_byte(fin):
->       "Read a single byte"
->       return struct.unpack('>B', fin.read(1))[0]
+> @@ -97,7 +98,7 @@ def call_decode(table, index, dumpfile):
+>           print("Could not decode index: %d" % (index))
+>           print("Entry is: %s" % (decoder))
+>           print("Decode Table is:\n%s" % (table))
+> -        return False
+> +        sys.exit(1)
+>       else:
+>           return decoder.fn(decoder.eid, decoder.name, dumpfile)
 >   
-> +def read_bytes(fin, nr):
-> +    "Read a nr bytes"
-> +    return fin.read(nr)
-> +
->   def read_event(fin):
->       "Read a single byte event, but save some state"
->       if replay_state.already_read:
-> @@ -122,12 +127,18 @@ def swallow_async_qword(eid, name, dumpfile):
->       print("  %s(%d) @ %d" % (name, eid, step_id))
->       return True
+> @@ -118,7 +119,7 @@ def print_event(eid, name, string=None, event_count=None):
+>   def decode_unimp(eid, name, _unused_dumpfile):
+>       "Unimplimented decoder, will trigger exit"
+>       print("%s not handled - will now stop" % (name))
+> -    return False
+> +    sys.exit(1)
 >   
-> +def swallow_bytes(eid, name, dumpfile, nr):
-> +    "Swallow nr bytes of data without looking at it"
-> +    dumpfile.seek(nr, os.SEEK_CUR)
-> +    return True
-> +
->   async_decode_table = [ Decoder(0, "REPLAY_ASYNC_EVENT_BH", swallow_async_qword),
-> -                       Decoder(1, "REPLAY_ASYNC_INPUT", decode_unimp),
-> -                       Decoder(2, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
-> -                       Decoder(3, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
-> -                       Decoder(4, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
-> -                       Decoder(5, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
-> +                       Decoder(1, "REPLAY_ASYNC_BH_ONESHOT", decode_unimp),
-> +                       Decoder(2, "REPLAY_ASYNC_INPUT", decode_unimp),
-> +                       Decoder(3, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
-> +                       Decoder(4, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
-> +                       Decoder(5, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
-> +                       Decoder(6, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
->   ]
->   # See replay_read_events/replay_read_event
->   def decode_async(eid, name, dumpfile):
-> @@ -156,6 +167,13 @@ def decode_audio_out(eid, name, dumpfile):
->       print_event(eid, name, "%d" % (audio_data))
->       return True
+>   # Checkpoint decoder
+>   def swallow_async_qword(eid, name, dumpfile):
+> @@ -401,3 +402,4 @@ def decode_file(filename):
+>   if __name__ == "__main__":
+>       args = parse_arguments()
+>       decode_file(args.file)
+> +    sys.exit(0)
+> diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
+> index a76dd507fc..12937ce0ec 100644
+> --- a/tests/avocado/replay_linux.py
+> +++ b/tests/avocado/replay_linux.py
+> @@ -11,6 +11,7 @@
+>   import os
+>   import logging
+>   import time
+> +import subprocess
 >   
-> +def decode_random(eid, name, dumpfile):
-> +    ret = read_dword(dumpfile)
-> +    size = read_dword(dumpfile)
-> +    swallow_bytes(eid, name, dumpfile, size)
-> +    print_event(eid, name, "%d %d" % (ret, size))
-> +    return True
-> +
->   def decode_checkpoint(eid, name, dumpfile):
->       """Decode a checkpoint.
+>   from avocado import skipUnless
+>   from avocado_qemu import BUILD_DIR
+> @@ -21,6 +22,11 @@
+>   from avocado.utils.path import find_command
+>   from avocado_qemu import LinuxTest
 >   
-> @@ -184,6 +202,38 @@ def decode_interrupt(eid, name, dumpfile):
->       print_event(eid, name)
->       return True
+> +from pathlib import Path
+> +
+> +self_dir = Path(__file__).parent
+> +src_dir = self_dir.parent.parent
+> +
+>   class ReplayLinux(LinuxTest):
+>       """
+>       Boots a Linux system, checking for a successful initialization
+> @@ -94,7 +100,7 @@ def launch_and_wait(self, record, args, shift):
+>           else:
+>               vm.event_wait('SHUTDOWN', self.timeout)
+>               vm.shutdown(True)
+> -            logger.info('successfully fihished the replay')
+> +            logger.info('successfully finished the replay')
+>           elapsed = time.time() - start_time
+>           logger.info('elapsed time %.2f sec' % elapsed)
+>           return elapsed
+> @@ -105,6 +111,14 @@ def run_rr(self, args=None, shift=7):
+>           logger = logging.getLogger('replay')
+>           logger.info('replay overhead {:.2%}'.format(t2 / t1 - 1))
 >   
-> +def decode_exception(eid, name, dumpfile):
-> +    print_event(eid, name)
-> +    return True
+> +        try:
+> +            replay_path = os.path.join(self.workdir, 'replay.bin')
+> +            subprocess.check_call(["./scripts/replay-dump.py",
+> +                                   "-f", replay_path],
+> +                                  cwd=src_dir, stdout=subprocess.DEVNULL)
+> +        except subprocess.CalledProcessError:
+> +            self.fail('replay-dump.py failed')
 > +
-> +def decode_shutdown(eid, name, dumpfile):
-> +    print_event(eid, name)
-> +    return True
-> +
-> +def decode_end(eid, name, dumpfile):
-> +    print_event(eid, name)
-> +    return False
-> +
-> +def decode_char_write(eid, name, dumpfile):
-> +    res = read_dword(dumpfile)
-> +    offset = read_dword(dumpfile)
-> +    print_event(eid, name)
-> +    return True
-> +
-> +def decode_async_char_read(eid, name, dumpfile):
-> +    char_id = read_byte(dumpfile)
-> +    size = read_dword(dumpfile)
-> +    print_event(eid, name, "device:%x chars:%s" % (char_id, read_bytes(dumpfile, size)))
-> +    return True
-> +
-> +def decode_async_net(eid, name, dumpfile):
-> +    net_id = read_byte(dumpfile)
-> +    flags = read_dword(dumpfile)
-> +    size = read_dword(dumpfile)
-> +    swallow_bytes(eid, name, dumpfile, size)
-> +    print_event(eid, name, "net:%x flags:%x bytes:%d" % (net_id, flags, size))
-> +    return True
-> +
->   def decode_clock(eid, name, dumpfile):
->       clock_data = read_qword(dumpfile)
->       print_event(eid, name, "0x%x" % (clock_data))
-> @@ -268,6 +318,48 @@ def decode_clock(eid, name, dumpfile):
->                     Decoder(28, "EVENT_CP_RESET", decode_checkpoint),
->   ]
->   
-> +v12_event_table = [Decoder(0, "EVENT_INSTRUCTION", decode_instruction),
-> +                  Decoder(1, "EVENT_INTERRUPT", decode_interrupt),
-> +                  Decoder(2, "EVENT_EXCEPTION", decode_exception),
-> +                  Decoder(3, "EVENT_ASYNC_BH", swallow_async_qword),
-> +                  Decoder(4, "EVENT_ASYNC_BH_ONESHOT", swallow_async_qword),
-> +                  Decoder(5, "EVENT_ASYNC_INPUT", decode_unimp),
-> +                  Decoder(6, "EVENT_ASYNC_INPUT_SYNC", decode_unimp),
-> +                  Decoder(7, "EVENT_ASYNC_CHAR_READ", decode_async_char_read),
-> +                  Decoder(8, "EVENT_ASYNC_BLOCK", swallow_async_qword),
-> +                  Decoder(9, "EVENT_ASYNC_NET", decode_async_net),
-> +                  Decoder(10, "EVENT_SHUTDOWN", decode_unimp),
-> +                  Decoder(11, "EVENT_SHUTDOWN_HOST_ERR", decode_shutdown),
-> +                  Decoder(12, "EVENT_SHUTDOWN_HOST_QMP_QUIT", decode_shutdown),
-> +                  Decoder(13, "EVENT_SHUTDOWN_HOST_QMP_RESET", decode_shutdown),
-> +                  Decoder(14, "EVENT_SHUTDOWN_HOST_SIGNAL", decode_shutdown),
-> +                  Decoder(15, "EVENT_SHUTDOWN_HOST_UI", decode_shutdown),
-> +                  Decoder(16, "EVENT_SHUTDOWN_GUEST_SHUTDOWN", decode_shutdown),
-> +                  Decoder(17, "EVENT_SHUTDOWN_GUEST_RESET", decode_shutdown),
-> +                  Decoder(18, "EVENT_SHUTDOWN_GUEST_PANIC", decode_shutdown),
-> +                  Decoder(19, "EVENT_SHUTDOWN_SUBSYS_RESET", decode_shutdown),
-> +                  Decoder(20, "EVENT_SHUTDOWN_SNAPSHOT_LOAD", decode_shutdown),
-> +                  Decoder(21, "EVENT_SHUTDOWN___MAX", decode_shutdown),
-> +                  Decoder(22, "EVENT_CHAR_WRITE", decode_char_write),
-> +                  Decoder(23, "EVENT_CHAR_READ_ALL", decode_unimp),
-> +                  Decoder(24, "EVENT_CHAR_READ_ALL_ERROR", decode_unimp),
-> +                  Decoder(25, "EVENT_AUDIO_OUT", decode_audio_out),
-> +                  Decoder(26, "EVENT_AUDIO_IN", decode_unimp),
-> +                  Decoder(27, "EVENT_RANDOM", decode_random),
-> +                  Decoder(28, "EVENT_CLOCK_HOST", decode_clock),
-> +                  Decoder(29, "EVENT_CLOCK_VIRTUAL_RT", decode_clock),
-> +                  Decoder(30, "EVENT_CP_CLOCK_WARP_START", decode_checkpoint),
-> +                  Decoder(31, "EVENT_CP_CLOCK_WARP_ACCOUNT", decode_checkpoint),
-> +                  Decoder(32, "EVENT_CP_RESET_REQUESTED", decode_checkpoint),
-> +                  Decoder(33, "EVENT_CP_SUSPEND_REQUESTED", decode_checkpoint),
-> +                  Decoder(34, "EVENT_CP_CLOCK_VIRTUAL", decode_checkpoint),
-> +                  Decoder(35, "EVENT_CP_CLOCK_HOST", decode_checkpoint),
-> +                  Decoder(36, "EVENT_CP_CLOCK_VIRTUAL_RT", decode_checkpoint),
-> +                  Decoder(37, "EVENT_CP_INIT", decode_checkpoint_init),
-> +                  Decoder(38, "EVENT_CP_RESET", decode_checkpoint),
-> +                  Decoder(39, "EVENT_END", decode_end),
-> +]
-> +
->   def parse_arguments():
->       "Grab arguments for script"
->       parser = argparse.ArgumentParser()
-> @@ -285,7 +377,10 @@ def decode_file(filename):
->   
->       print("HEADER: version 0x%x" % (version))
->   
-> -    if version == 0xe02007:
-> +    if version == 0xe0200c:
-> +        event_decode_table = v12_event_table
-> +        replay_state.checkpoint_start = 12
-> +    elif version == 0xe02007:
->           event_decode_table = v7_event_table
->           replay_state.checkpoint_start = 12
->       elif version == 0xe02006:
+>   @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+>   class ReplayLinuxX8664(ReplayLinux):
+>       """
 
 
