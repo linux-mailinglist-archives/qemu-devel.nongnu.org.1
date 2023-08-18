@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B55781195
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D36781196
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX39l-0005qZ-DF; Fri, 18 Aug 2023 13:21:05 -0400
+	id 1qX39w-0007LR-Kx; Fri, 18 Aug 2023 13:21:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39i-0005LL-Cg
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:02 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39o-0006dY-Nt
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:08 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39g-0001sv-3i
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:02 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-52164adea19so1484827a12.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:20:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39m-0001u6-DL
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:08 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-99d90ffed68so479432266b.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:21:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692379258; x=1692984058;
+ d=linaro.org; s=google; t=1692379265; x=1692984065;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9/is4OP2bMjv02N4bH1oF/ePbIH9KS0BSaVmzaTcaDA=;
- b=dA5WUZ0S2vTnGslEVMRBUVx8KNBdTrZlqN6x0N26Np0kJQgNcU4UVvnJY7vIzAuX/p
- qCxXh5HjvHI6MeFX+tdEpPNXZInZIt/h7CFq627e2CnrKPZH4dDQLAbrwPu8GG2IKNcO
- DxSac0kvsiRip9kVMNMURH5MKQgNpfw8BrnsTAlux0A6mmg8vo8bG3yBPD40YxYvfdqm
- LTjsuId/Z1rxRxrMDHEOFYgE45JfWvF6KoO8z/CY6ZsNmZrjyhqUqBb7gOD60rDXXNy/
- KNHPLjyjtQ8gl8UUIqN/D1Lyr+ZPot7sttOUauq+jVS+L9HQwRDhpR1n4QaSz7Hjm0ue
- x4aQ==
+ bh=uEMElgMvR1O3ZuyrTpBd0rfdnbX1M9RkvLN7Ub/Z4Dw=;
+ b=MuRNZy5Wj9JU8nMw9ACBoTqf4tCv1Sl/DlN5qy6tgakiWAxwj1ST0ZH6Rgx+oUY4r9
+ JlInG3SlRt53sUpL/jFfOptGIiIgdXjbZSJ/WZI485yZjfTs6jeoY4dBuq9XUt60Qyu6
+ P4OwEO1EmnPCxlFvBBaNoMUZMnyfmQUScb6+n9BVOzZd9T8QQmN4kD9iUqim8dOtJh9n
+ bM6VgPfxzAGfO2ZVM3mxMEq9axPd77kyz3XOd+IBeWKISeVJPARBetDXL2Jl006MND35
+ y48GLYskOJNDoF+VLQjp62AJTQWN+vfTkeDng6FhEtw4hhC0u2SRtae0uD9we14UBYda
+ 1GvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692379258; x=1692984058;
+ d=1e100.net; s=20221208; t=1692379265; x=1692984065;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9/is4OP2bMjv02N4bH1oF/ePbIH9KS0BSaVmzaTcaDA=;
- b=dQ+EHAWDH8Mwtz2JrsYl5ypI5rn0kQqoWk11V4OgTI97pfO4SMaDtjhx+hjGsX6PVO
- ZI2Jx8BefJ5PlPaqYg2gMt9gC6YpuaWB6OhXJkgqGXqDrDCbfX09RMfXVXGaIqdNbN9f
- uHovsik6ot5kw7H84XNrJGiOMNp0SMMXlUbu4UBYQzxqLKUbVHuxiRg1DwAVIXnl04Jj
- 5FDyzEV6LMPXZE2wzmN5U/AfbaB39CVJEbPMuJqbBi0ZtROE2HxhCmvgfKHaHvYFltL0
- 1LfvD5OMC11tFWXn21rRsH6z7SqEzW6UCQiJw8iB3X/soNYyWPv9fNb2VXgVub5nV0X9
- WR+w==
-X-Gm-Message-State: AOJu0YyzRhIYcUL60ANlHz3gGN9BNPUfDaXfilE6qyglYdKW/ZEtBcu1
- BJpCbiO42wUcdD8zeQhkBw5DY+iPkny/mDmLZoQ=
-X-Google-Smtp-Source: AGHT+IGMuYO09ODliCu7WuNcFjBMf4wysAZOg7iFopcb/HBQH4MvsvHzB3WfKciAptgxvStF3RL5XA==
-X-Received: by 2002:a05:6402:104f:b0:525:65f7:60 with SMTP id
- e15-20020a056402104f00b0052565f70060mr2883752edu.29.1692379258514; 
- Fri, 18 Aug 2023 10:20:58 -0700 (PDT)
+ bh=uEMElgMvR1O3ZuyrTpBd0rfdnbX1M9RkvLN7Ub/Z4Dw=;
+ b=B1ByX1F3Up5FwN3V7PWD+kgWLLIr0DfZqMSw/gtdRCQnBu2M2FBSMQHdirXxy4DQDK
+ sU0AUwWzUes5T+zfn+RH3fjEhLLv5GrSy7DEYPZIJtQROE6zW7inHoKzRfGVvFeP60Jg
+ x+xgB2s2qHg3c3VC9DKVMRDK+zLf9N+iHPs6JPHUXB9B0sxnJg2411YpO1WshXZlbkmu
+ bBfL6KHUVqcLJpgg0Y0Ije4VNl3MzthoTz5W2aPIqz+8xi8aR89lrLCXRa/Hc73K2Qpe
+ XNeY3te16XRtUbK/jvO6v+mZN4EGUa+bYKI7fwo/goXmOk3y8+0Nd+Ka/jNN8PvAFeAh
+ 5MfQ==
+X-Gm-Message-State: AOJu0YwsDmharJPbk4n2Dz00DIhw6P0oS3UwCDSe4QUH4No67DRg677d
+ 9NKxwx1UojUNOx9ZGYj84VSgRA0RiV4miAmuxDs=
+X-Google-Smtp-Source: AGHT+IFfivwRxuLAN1HQuB3QQYL0Ca8mPGPEDObH+BVRtXkPgGa40G63gWKQCvJG8k5r3dC/pEBADw==
+X-Received: by 2002:a17:906:5195:b0:997:e9a3:9c4f with SMTP id
+ y21-20020a170906519500b00997e9a39c4fmr3658167ejk.30.1692379264879; 
+ Fri, 18 Aug 2023 10:21:04 -0700 (PDT)
 Received: from m1x-phil.lan (cnf78-h01-176-184-27-79.dsl.sta.abo.bbox.fr.
  [176.184.27.79]) by smtp.gmail.com with ESMTPSA id
- w9-20020a056402070900b00525683f9b2fsm1289223edx.5.2023.08.18.10.20.57
+ yy10-20020a170906dc0a00b0099d02ca4327sm1411861ejb.54.2023.08.18.10.21.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 18 Aug 2023 10:20:58 -0700 (PDT)
+ Fri, 18 Aug 2023 10:21:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -62,17 +62,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 6/8] target/loongarch: Add function to check current arch
-Date: Fri, 18 Aug 2023 19:20:14 +0200
-Message-ID: <20230818172016.24504-7-philmd@linaro.org>
+Subject: [PATCH v2 7/8] target/loongarch: Add new object class for loongarch32
+ cpus
+Date: Fri, 18 Aug 2023 19:20:15 +0200
+Message-ID: <20230818172016.24504-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230818172016.24504-1-philmd@linaro.org>
 References: <20230818172016.24504-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,47 +98,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jiajie Chen <c@jia.je>
 
-Add is_la64 function to check if the current cpucfg[1].arch equals to
-2(LA64).
+Add object class stub for future loongarch32 cpus.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
-Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20230817093121.1053890-2-gaosong@loongson.cn>
+Message-ID: <20230817093121.1053890-3-gaosong@loongson.cn>
+[Rebased on TYPE_LOONGARCH64_CPU introduction]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/cpu.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/loongarch/cpu.h |  1 +
+ target/loongarch/cpu.c | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
 diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index c50b3a5ef3..3235ad081f 100644
+index 3235ad081f..b8af491041 100644
 --- a/target/loongarch/cpu.h
 +++ b/target/loongarch/cpu.h
-@@ -132,6 +132,11 @@ FIELD(CPUCFG1, HP, 24, 1)
- FIELD(CPUCFG1, IOCSR_BRD, 25, 1)
- FIELD(CPUCFG1, MSG_INT, 26, 1)
+@@ -382,6 +382,7 @@ struct ArchCPU {
+ };
  
-+/* cpucfg[1].arch */
-+#define CPUCFG1_ARCH_LA32R       0
-+#define CPUCFG1_ARCH_LA32        1
-+#define CPUCFG1_ARCH_LA64        2
-+
- /* cpucfg[2] bits */
- FIELD(CPUCFG2, FP, 0, 1)
- FIELD(CPUCFG2, FP_SP, 1, 1)
-@@ -421,6 +426,11 @@ static inline int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
+ #define TYPE_LOONGARCH_CPU "loongarch-cpu"
++#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
+ #define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
+ 
+ OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 356d039560..5082506f10 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -726,6 +726,10 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
  #endif
  }
  
-+static inline bool is_la64(CPULoongArchState *env)
++static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
 +{
-+    return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
 +}
 +
- /*
-  * LoongArch CPUs hardware flags.
-  */
+ static gchar *loongarch64_gdb_arch_name(CPUState *cs)
+ {
+     return g_strdup("loongarch64");
+@@ -758,6 +762,13 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+         .class_size = sizeof(LoongArchCPUClass),
+         .class_init = loongarch_cpu_class_init,
+     },
++    {
++        .name = TYPE_LOONGARCH32_CPU,
++        .parent = TYPE_LOONGARCH_CPU,
++
++        .abstract = true,
++        .class_init = loongarch32_cpu_class_init,
++    },
+     {
+         .name = TYPE_LOONGARCH64_CPU,
+         .parent = TYPE_LOONGARCH_CPU,
 -- 
 2.41.0
 
