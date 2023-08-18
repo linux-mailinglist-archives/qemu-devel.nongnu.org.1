@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FC77804E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 05:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D687804E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 05:42:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWqJU-0004Bk-7z; Thu, 17 Aug 2023 23:38:16 -0400
+	id 1qWqMl-0004yq-R0; Thu, 17 Aug 2023 23:41:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWqJS-00046j-2N
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 23:38:14 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qWqMW-0004qk-Ss
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 23:41:24 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWqJP-00069k-Jl
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 23:38:13 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-689e8115f8dso441907b3a.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 20:38:11 -0700 (PDT)
+ id 1qWqMU-0006uQ-JJ
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 23:41:24 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1bcad794ad4so3925575ad.3
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 20:41:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692329890; x=1692934690;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kNR+2DDMQySc8psqEDhnZbBav2KTV36MZCBGyLQQO2o=;
- b=L/CK5B6o9bUTmA9O5pvpITsWSqnV+QJ17QEiUv654sydnRMWxbBxfLZeNTHI/h6W0i
- ZpdY3HonQgydo6BcpTWRm72geqWSDst7Kd0oQH8ct1lchEE/zRvSYv+VidZ+o+CYzkqv
- LLalQ3e1hmH2UXvybzy5fAj1fgHP9Ga/09m62FDNgsISMKSSdmRWOdh/6cKfn88e16Z/
- 973cfP5pHE/iTY2MRvQZ9IgNiV0N1uNSb6mlQVW1eRGSVySHmgepWyyOoTvnk4teLL5T
- YaCUyecSzOXN8thIUGBhpTJkDzkvbQG+RW1I4QNate7FQOEiy/jmIyjTfQrwx5Zi7/MW
- 5aJw==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692330081; x=1692934881;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IparW9SPByo6/A9bvQ/tQtdT2GpOXLLLQEZKSqQazeI=;
+ b=1CMHMXzfGIQCTFaBc5V/TBf5JUOn5RdLgqE9VzGUarzLpxRMmJHqK2mNkAxg/wQigd
+ zWG2nJsDhwwUJYAgS1KB3c2hGLNQYTf8Ma7+P33oA/t4KDME+czJGu8x5iaYWH9djJcY
+ 2dc6g1LrRIXKCGdVZlT/tHwgdgLEb4AoQAk6ziHDENgXUSZE/absCaa1ZPqG8FruVOUJ
+ q1z9p4XK/v66s4IS/ayP+TOVWxWk61CoeUbI7Hy8w4VPWIzE4RkOcyoe7yHPJLZlcWMz
+ c0C150GtZrIz2llTyEFmWzPydMQrMu4pQuHNv0q77Q+MRc0+KfqPCYn2uY+YAk200agi
+ 8gPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692329890; x=1692934690;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kNR+2DDMQySc8psqEDhnZbBav2KTV36MZCBGyLQQO2o=;
- b=P/1lyDDoi+QMfFIVStjhCsAkmHVR17AXQazGBzgqiZFC6ki2yr+aRPs2rSP28ee1dm
- 9ZW+IlKJVRiNKXj9TZOUhJDqGOdjMYMxfYuiEY1vszDwaxmpHEtAFqqBO1xzLizYhhVZ
- QlrfcUH5ny/k9R1cg0N8GFF81k0r3Gf3g+KtIgk2xGVaraiAGpNkXoK2Jqi97wxyLLtF
- OnM+pPYt1OyILh657yufTJiGRCTb959lUK2da13yF6+QTaqYSeQ3DjTpAShFp5l+5m5Z
- 1GHSfKhdF5RNWvm9XGXjNhq9JlvYAplD7wVwPG3ZJV/JL0cTPxa5QkaYugKHQx6AYgI3
- Vg9Q==
-X-Gm-Message-State: AOJu0YxXn1OoahP10wXIrkOUKr38nyMGT70Hba0jK0OG504nCxlmqlqu
- 3IfTpABg5crEDJydg9z/o0mbfN4JBs57DUHPQ68=
-X-Google-Smtp-Source: AGHT+IGryy5QLtBJti7KVoHCAM2QOGm/9g7I5lYKjNjuGo8MbuMLKuMBH97IHBoW3Y6PGt0msODO0g==
-X-Received: by 2002:a05:6a00:23d5:b0:687:4323:ec31 with SMTP id
- g21-20020a056a0023d500b006874323ec31mr1482671pfc.13.1692329890332; 
- Thu, 17 Aug 2023 20:38:10 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692330081; x=1692934881;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IparW9SPByo6/A9bvQ/tQtdT2GpOXLLLQEZKSqQazeI=;
+ b=injVTz5zlAoZT2lmfSS8h44QP+0Y6vEYOwjqXUSELLows882tzUy5XlZ3n7nbJIAt8
+ ls4Bfd5uqR/nfdnS97Y7Nkx68pZWsR8CxEQVwCoxdZJMSULh1AgUA+ILmd6EcPjFOlm1
+ FH/5fZ5PIpwlTnw7C3GZEdPys1Eu3UuoKEz/1t/xNFqzgATv3ICqe3V/gqbYMVz4jIz5
+ TLC+TJN4ubPqU4f+Nq+uRmWMXdBBf07FmQhIe5nu7uLCen3TVT8BpKQBdVY5tIzqz0DE
+ BSTgsAm0HF4h0x9EDIgTLZdfINJ5ckevaWpd3/LXZd3qFHOcZ0L+lfSrxWtBGOFCN2Ns
+ aWdw==
+X-Gm-Message-State: AOJu0YyZRHOML3euJcq4qrBuD8q18Sbq1cANkCeenVb8Zd7N1+ErCNTs
+ TsB1VJkxkw58odiK4sEpPwHjlw==
+X-Google-Smtp-Source: AGHT+IHBnIsOWFng//F/WxCyYQGsfWAPsEbz61g5qUrCdlghEpwyh8qs/mPUvcCk49uWJ8qpC3otMw==
+X-Received: by 2002:a17:902:ce81:b0:1bc:2c79:c6a4 with SMTP id
+ f1-20020a170902ce8100b001bc2c79c6a4mr1291368plg.56.1692330080954; 
+ Thu, 17 Aug 2023 20:41:20 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- c24-20020aa781d8000000b00686a80f431dsm484135pfn.126.2023.08.17.20.38.07
+ ik20-20020a170902ab1400b001b9da8b4eb7sm561680plb.35.2023.08.17.20.41.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Aug 2023 20:38:10 -0700 (PDT)
+ Thu, 17 Aug 2023 20:41:20 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RESEND v5 26/26] contrib/plugins: Add cc plugin
-Date: Fri, 18 Aug 2023 12:36:45 +0900
-Message-ID: <20230818033648.8326-27-akihiko.odaki@daynix.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Subject: [PATCH v2] target/riscv: Allocate itrigger timers only once
+Date: Fri, 18 Aug 2023 12:40:58 +0900
+Message-ID: <20230818034059.9146-1-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230818033648.8326-1-akihiko.odaki@daynix.com>
-References: <20230818033648.8326-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,131 +96,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This demonstrates how to write a plugin in C++.
+riscv_trigger_init() had been called on reset events that can happen
+several times for a CPU and it allocated timers for itrigger. If old
+timers were present, they were simply overwritten by the new timers,
+resulting in a memory leak.
 
+Divide riscv_trigger_init() into two functions, namely
+riscv_trigger_realize() and riscv_trigger_reset() and call them in
+appropriate timing. The timer allocation will happen only once for a
+CPU in riscv_trigger_realize().
+
+Fixes: 5a4ae64cac ("target/riscv: Add itrigger support when icount is enabled")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 ---
- docs/devel/tcg-plugins.rst |  8 ++++++++
- configure                  | 15 ++++++++++++---
- contrib/plugins/Makefile   |  5 +++++
- contrib/plugins/cc.cc      | 17 +++++++++++++++++
- tests/tcg/Makefile.target  |  3 +++
- 5 files changed, 45 insertions(+), 3 deletions(-)
- create mode 100644 contrib/plugins/cc.cc
+ target/riscv/debug.h |  3 ++-
+ target/riscv/cpu.c   |  8 +++++++-
+ target/riscv/debug.c | 15 ++++++++++++---
+ 3 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index c9f8b27590..0a11f8036c 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -584,6 +584,14 @@ The plugin has a number of arguments, all of them are optional:
-   configuration arguments implies ``l2=on``.
-   (default: N = 2097152 (2MB), B = 64, A = 16)
+diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+index c471748d5a..5794aa6ee5 100644
+--- a/target/riscv/debug.h
++++ b/target/riscv/debug.h
+@@ -143,7 +143,8 @@ void riscv_cpu_debug_excp_handler(CPUState *cs);
+ bool riscv_cpu_debug_check_breakpoint(CPUState *cs);
+ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
  
-+- contrib/plugins/cc.cc
-+
-+cc plugin demonstrates how to write a plugin in C++. It simply outputs
-+"hello, world" to the plugin log::
-+
-+  $ qemu-system-arm $(QEMU_ARGS) \
-+    -plugin ./contrib/plugins/libcc.so -d plugin
-+
- API
- ---
+-void riscv_trigger_init(CPURISCVState *env);
++void riscv_trigger_realize(CPURISCVState *env);
++void riscv_trigger_reset_hold(CPURISCVState *env);
  
-diff --git a/configure b/configure
-index 26ec5e4f54..0065b0dfe0 100755
---- a/configure
-+++ b/configure
-@@ -293,10 +293,18 @@ else
-   cc="${CC-${cross_prefix}gcc}"
- fi
+ bool riscv_itrigger_enabled(CPURISCVState *env);
+ void riscv_itrigger_update_priv(CPURISCVState *env);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index e12b6ef7f6..7e0512dd5f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -904,7 +904,7 @@ static void riscv_cpu_reset_hold(Object *obj)
  
--if test -z "${CXX}${cross_prefix}"; then
--  cxx="c++"
-+if test -n "${CXX+x}"; then
-+  cxx="$CXX"
- else
--  cxx="${CXX-${cross_prefix}g++}"
-+  if test -n "${cross_prefix}"; then
-+    cxx="${cross_prefix}g++"
-+  else
-+    cxx="c++"
-+  fi
+ #ifndef CONFIG_USER_ONLY
+     if (cpu->cfg.debug) {
+-        riscv_trigger_init(env);
++        riscv_trigger_reset_hold(env);
+     }
+ 
+     if (kvm_enabled()) {
+@@ -1475,6 +1475,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+ 
+     riscv_cpu_register_gdb_regs_for_features(cs);
+ 
++#ifndef CONFIG_USER_ONLY
++    if (cpu->cfg.debug) {
++        riscv_trigger_realize(&cpu->env);
++    }
++#endif
 +
-+  if ! has "$cxx"; then
-+    cxx=
-+  fi
- fi
+     qemu_init_vcpu(cs);
+     cpu_reset(cs);
  
- # Preferred ObjC compiler:
-@@ -1702,6 +1710,7 @@ echo "MESON=$meson" >> $config_host_mak
- echo "NINJA=$ninja" >> $config_host_mak
- echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
- echo "CC=$cc" >> $config_host_mak
-+echo "CXX=$cxx" >> $config_host_mak
- echo "EXESUF=$EXESUF" >> $config_host_mak
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 75ee1c4971..ddd46b2d3e 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -903,7 +903,17 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+     return false;
+ }
  
- # use included Linux headers
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index b2b9db9f51..93d86b3d07 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -21,6 +21,9 @@ NAMES += lockstep
- NAMES += hwprofile
- NAMES += cache
- NAMES += drcov
-+ifneq ($(CXX),)
-+NAMES += cc
-+endif
- 
- SONAMES := $(addsuffix .so,$(addprefix lib,$(NAMES)))
- 
-@@ -31,6 +34,8 @@ CFLAGS += -fPIC -Wall
- CFLAGS += $(if $(CONFIG_DEBUG_TCG), -ggdb -O0)
- CFLAGS += -I$(SRC_PATH)/include/qemu
- 
-+CXXFLAGS := $(CFLAGS)
-+
- all: $(SONAMES)
- 
- %.o: %.c
-diff --git a/contrib/plugins/cc.cc b/contrib/plugins/cc.cc
-new file mode 100644
-index 0000000000..83a5528db0
---- /dev/null
-+++ b/contrib/plugins/cc.cc
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include <qemu-plugin.h>
-+
-+extern "C" {
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-+                                           const qemu_info_t *info, int argc,
-+                                           char **argv)
+-void riscv_trigger_init(CPURISCVState *env)
++void riscv_trigger_realize(CPURISCVState *env)
 +{
-+    qemu_plugin_outs("hello, world\n");
-+    return 0;
++    int i;
++
++    for (i = 0; i < RV_MAX_TRIGGERS; i++) {
++        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
++                                              riscv_itrigger_timer_cb, env);
++    }
 +}
 +
-+};
-diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 462289f47c..3d7837d3b8 100644
---- a/tests/tcg/Makefile.target
-+++ b/tests/tcg/Makefile.target
-@@ -149,6 +149,9 @@ PLUGIN_SRC=$(SRC_PATH)/tests/plugin
- PLUGIN_LIB=../../plugin
- VPATH+=$(PLUGIN_LIB)
- PLUGINS=$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
-+ifneq ($(CXX),)
-+PLUGINS+=$(patsubst %.cc, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.cc)))
-+endif
- 
- # We need to ensure expand the run-plugin-TEST-with-PLUGIN
- # pre-requistes manually here as we can't use stems to handle it. We
++void riscv_trigger_reset_hold(CPURISCVState *env)
+ {
+     target_ulong tdata1 = build_tdata1(env, TRIGGER_TYPE_AD_MATCH, 0, 0);
+     int i;
+@@ -928,7 +938,6 @@ void riscv_trigger_init(CPURISCVState *env)
+         env->tdata3[i] = 0;
+         env->cpu_breakpoint[i] = NULL;
+         env->cpu_watchpoint[i] = NULL;
+-        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+-                                              riscv_itrigger_timer_cb, env);
++        timer_del(env->itrigger_timer[i]);
+     }
+ }
 -- 
 2.41.0
 
