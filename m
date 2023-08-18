@@ -2,88 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C170781203
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A49D4781277
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:58:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX3LZ-0005EE-Dj; Fri, 18 Aug 2023 13:33:17 -0400
+	id 1qX3jD-00010H-MS; Fri, 18 Aug 2023 13:57:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX3LW-0005Dt-PV
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:33:14 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qX3jB-0000z8-9I
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:57:41 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX3LU-0006Yj-Nl
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:33:14 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bf078d5f33so9513005ad.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:33:12 -0700 (PDT)
+ id 1qX3j9-00049Q-74
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:57:41 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3a76d882052so834726b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692379991; x=1692984791;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ubul+p4uZP8PiavwZt3QMXedP9v4ag8lYdOPV7ZdsbE=;
- b=ZaJJyaRTioylWBwK9zvJ4Fcr4I/vJ/aOHjsIbOr9dXj032pLFddsNAH8za43zD1hr2
- 8nDrolk+h1dlSx/ZSHkujLp0QpeG/dBPgnHZi4jNz3Y6avihOafOFr7K5OSQCuTTQRKd
- 14dCtKq/6gXOj2hGa6s5KolA3sZEsdFVj99yP3pqiCX/1L8nprcY4+gi3xeXCxkvRpZK
- VxIbAE5oSagqhaML/D36B2N4o5/8z6ep8bjiMbtAQaPAi8alU6MlZUwmWfJNrR/sZQzL
- iYgDHpJy8X/Kojzfwd4bHpFeczFDaA7IeEP+noPS2b8rqMk8xE4Koe5Smb3sw7Zwxdzf
- 4JHw==
+ d=linaro.org; s=google; t=1692381457; x=1692986257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rJDVG/AZSqjsj3RL7418yahcbtiSsjy6tBuRAsKJOWE=;
+ b=xsuhjVKCtAA2gpICbFZ42YTASbpesnoZkMoHGNRNfYJwV6c4G23G2iagbM149ECrRo
+ 81OCfluDnuPvglhovAPa3uP3l3Q+xhqRG5zl6VAYg2L5swXeOTa4fkvykHXVGsqa3lsD
+ v7AdF/G3YTLx6ciOF9mbJKKoGHi/vWW1BISc3o04sG0xkd+BqsDwfL/Dl8CBLOd7Wevc
+ 0+MmG+WHo2jc5VV2Cj0K4uXUlfu+wQyAJe7nYgapHTFuSa13pVnqLtwhgFykcRAO9SJo
+ yGLxvpnHbupMvhbR8nCKSigQs7nevyqog12TDNPYcjZl6oOPFdUj7jjGAokX2R1uZhNv
+ miEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692379991; x=1692984791;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ubul+p4uZP8PiavwZt3QMXedP9v4ag8lYdOPV7ZdsbE=;
- b=lPdmTI93+Y6xw9UFuvNyVO02RJ3K4eOjdddIqkYn/Tqg0I9rcGac8oiVvLXh1xY+MM
- r0s7kopY2gbUdNjSOBev9niYKyxV1IRp4csa3lbyHrCM+//g2MHbNoUq2kzkwvb4u0Cz
- O2wP+F4RtYRP4jMokSnmiKfeHGHNtc8DiQCIbNGRmWmbDmSHU2L1Hu1FDIM2MS/uigC3
- FzNwj0nY72tW90/xyO6n8x4n8lqtp955f4TI0y+nHVdVUFrRjCWP0+RVwFmNs+UjnzoM
- 0uiY3upsYBTtPkpXeYFQqLre12/Gt9Hfjj4c0o6uaGBgGQoB5QN4zoTxO8TKP9Hu3dTp
- cXHw==
-X-Gm-Message-State: AOJu0YxeS9q8DouL7jmF/wpQC2VA4TsLPeIf8N9S8HRyxowJ2mYPgLd1
- FSWFnTSN/Zv9TsjTo/LRGtSQdA==
-X-Google-Smtp-Source: AGHT+IEOk4/U3ZSxI5ZfcxAKVSICw5EHFPnPtjkU6a7ooQUcXXzTsTZygqo9DaOAyh8rswYuR7aX3w==
-X-Received: by 2002:a17:902:e74b:b0:1b8:94f4:3e0 with SMTP id
- p11-20020a170902e74b00b001b894f403e0mr4088043plf.14.1692379991440; 
- Fri, 18 Aug 2023 10:33:11 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:cf24:6daf:2b9e:7972?
- ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
+ d=1e100.net; s=20221208; t=1692381457; x=1692986257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rJDVG/AZSqjsj3RL7418yahcbtiSsjy6tBuRAsKJOWE=;
+ b=j5EEu7SL/x/bL1TFC7t6ZLPP9vI00T+qsM90CMVPqEFmuihoLpdwiCfEJpcRk8OALD
+ SZTO3L5PTfhZlnXbN842tIqqjtDXnS4F1pCgASIXgJrolDRM356lJabZx22RVH6fTaMk
+ Q85TJdC4TdIw3vu5AT4OEyaa+6BA6uXOCCc40MuhKA2PiBRmMKNEjt5ymcrMu/Z8vXJS
+ s8eszJJEF59CdY1FswRjEBryuebwzmLsyPW/UqXTMINM7ZGrip3MhjuaYRUgsuXQj1G5
+ Q2DspXPDxTZerFvtmYNc8I+ofHvpsFBN2U7/H680dJ1jz9pbdxgyoGPypf3nxD4kfOTL
+ C8FA==
+X-Gm-Message-State: AOJu0Yzudc1LMqHMXxyAnBA1Ly7KKn5/mxDAs0KdOLS5zzHrz3r4UF42
+ wo6aCVC9zW9FV6UXOj1DW6yAOHeUCZuVG0t96A4=
+X-Google-Smtp-Source: AGHT+IH0ENIuV5YxxPyLAE50ex0KOjjX3VRAyw8TnUjymFpq03wszh45weg+tfIytounN2mRN0zAxA==
+X-Received: by 2002:a05:6808:1307:b0:3a4:894a:9f57 with SMTP id
+ y7-20020a056808130700b003a4894a9f57mr4430852oiv.6.1692381457636; 
+ Fri, 18 Aug 2023 10:57:37 -0700 (PDT)
+Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- s13-20020a63b40d000000b0050f85ef50d1sm1666848pgf.26.2023.08.18.10.33.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 18 Aug 2023 10:33:11 -0700 (PDT)
-Message-ID: <b72e474b-528f-e8dd-62a7-4cc259f8943a@linaro.org>
-Date: Fri, 18 Aug 2023 10:33:09 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 4/8] target/loongarch: Introduce abstract
- TYPE_LOONGARCH64_CPU
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, Jiajie Chen
- <c@jia.je>, Song Gao <gaosong@loongson.cn>
-References: <20230818172016.24504-1-philmd@linaro.org>
- <20230818172016.24504-5-philmd@linaro.org>
+ q11-20020a638c4b000000b005637030d00csm1838212pgn.30.2023.08.18.10.57.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 18 Aug 2023 10:57:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230818172016.24504-5-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Cc: imp@bsdimp.com
+Subject: [PATCH 0/3] bsd-user: image_info cleanups
+Date: Fri, 18 Aug 2023 10:57:33 -0700
+Message-Id: <20230818175736.144194-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.454,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,18 +88,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/18/23 10:20, Philippe Mathieu-Daudé wrote:
-> In preparation of introducing TYPE_LOONGARCH32_CPU, introduce
-> an abstract TYPE_LOONGARCH64_CPU.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/loongarch/cpu.h |  1 +
->   target/loongarch/cpu.c | 12 +++++++++---
->   2 files changed, 10 insertions(+), 3 deletions(-)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This mirrors some changes I've posted for linux-user,
+removing stuff from image_info which is unused.
 
 
 r~
+
+
+Richard Henderson (3):
+  bsd-user: Remove ELF_START_MMAP and image_info.start_mmap
+  bsd-user: Remove image_info.mmap
+  bsd-user: Remove image_info.start_brk
+
+ bsd-user/arm/target_arch_elf.h    | 1 -
+ bsd-user/i386/target_arch_elf.h   | 1 -
+ bsd-user/qemu.h                   | 3 ---
+ bsd-user/x86_64/target_arch_elf.h | 1 -
+ bsd-user/elfload.c                | 4 +---
+ bsd-user/main.c                   | 2 --
+ 6 files changed, 1 insertion(+), 11 deletions(-)
+
+-- 
+2.34.1
+
 
