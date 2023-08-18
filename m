@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4AD781197
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF477811F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:28:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX3AD-0007sb-8m; Fri, 18 Aug 2023 13:21:33 -0400
+	id 1qX3GM-0003QF-9b; Fri, 18 Aug 2023 13:27:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39w-0007VX-7g
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:16 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qX39s-0001ur-QY
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:21:15 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4fe389d6f19so1553439e87.3
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692379271; x=1692984071;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H2Fkk9ynZ3VBGOLEApNmPZej9m7TD3tkTeJS3zvlq3E=;
- b=GOphnewwFZStjeXzZW+e56mkMSIPCps0URPpllO+w64WvAbusLh3sSEfMDa7ND/9M5
- Wbbc4L0nIFMJKeK2rmyWRR9S1Xm4bhpf0AgtApp0UnLMTnaPYvFuvtEklcm7hQn+hliG
- rZ/qZ+kcrFdTGcvWqGV4IV2QtS7h3nGr9WVjbeXoQFWAUN9DnPbwNeZ53nTQnOpAdqux
- JYjvoyiyJzyf1mL/rfEJ9zaQpngDbG1sXoetbg9yqm+KlatYHd2VmEzEil6DXeq178HO
- riaMjmkcCz4GqAtaANPelLhjx1os3VqCXu4WB4S2aq66vRotWYT+Y/uX/sp6abVw9LHm
- 0WSA==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qX3GK-0003Q4-5k
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:27:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qX3GH-0003z6-CD
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:27:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692379668;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=clnCBxlTgpW9aVJsvzZebFxwfT5onc39XDyU6msNJdY=;
+ b=IfznOCz9yDfl9CUmqIdT51EpX9JkdR5jaj7IxKaWOo+VKUVpQyNcTf5eYwedOCBg14482R
+ TLM7XVnxPX/yLGsBPlN2WM8IIrFNAjqS4yGlV3PcoDO6cvO/vAvFUA6q5T1KOhyxchk2q/
+ gx7CZXe9H/q7AXY1senO4dApCwV92xs=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-y_08kUU8MB2twBlRDXptmg-1; Fri, 18 Aug 2023 13:27:46 -0400
+X-MC-Unique: y_08kUU8MB2twBlRDXptmg-1
+Received: by mail-yb1-f199.google.com with SMTP id
+ 3f1490d57ef6-d63e5f828a0so1433133276.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:27:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692379271; x=1692984071;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1692379666; x=1692984466;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H2Fkk9ynZ3VBGOLEApNmPZej9m7TD3tkTeJS3zvlq3E=;
- b=EUwvaV9GUXGfnE0F5GGrBCjrYb0Q9fGDyqnfFVduVpJOLyjiJtKeZeO7cT+RgSUa+i
- jg8K2uBqs1BQXm9SQAlF9HQIsPHptntJ/r+ebN0ZthXnuUqwYnnnhkzOM22CWOtoERws
- m3M49qitpqSYY4Zz4YEYpX+F+9CGj9Z5bxpmftgA3Zy4/NwzKwOC+EAAC09URYJuePZQ
- cvZGtN1QsD5+GTu296J676TXU1AFls7YyiW2kPYzClDrmmDVZAiyNi+VKIENmtDWE6Qi
- u76UznRZ/hTpT0UvOgxMXyTJdwg7vaUM3g7BdE3B8VljEMJOyAPzgATz1KdMPlIAHU+Q
- Uhtg==
-X-Gm-Message-State: AOJu0Yx942WmdgPRLQchBtehkxO5fPUznKaCA+yy0GxH8pid+qmSKE+8
- tTMGjWMj8KP9kjS6fEyRX7CLcPogJ0ZJuxzkkvc=
-X-Google-Smtp-Source: AGHT+IHLeh8Nsum5fRrW/DxPhzkb0NOc62cZ3QyEYYBH84oQ2NFByIZAiDjhWNbbtf1SePekRAQxVQ==
-X-Received: by 2002:a05:6512:3f0a:b0:4fe:181f:2736 with SMTP id
- y10-20020a0565123f0a00b004fe181f2736mr3090125lfa.33.1692379270913; 
- Fri, 18 Aug 2023 10:21:10 -0700 (PDT)
-Received: from m1x-phil.lan (cnf78-h01-176-184-27-79.dsl.sta.abo.bbox.fr.
- [176.184.27.79]) by smtp.gmail.com with ESMTPSA id
- c4-20020aa7df04000000b00523b1335618sm1269391edy.97.2023.08.18.10.21.09
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 18 Aug 2023 10:21:10 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 8/8] target/loongarch: Add GDB support for loongarch32 mode
-Date: Fri, 18 Aug 2023 19:20:16 +0200
-Message-ID: <20230818172016.24504-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230818172016.24504-1-philmd@linaro.org>
-References: <20230818172016.24504-1-philmd@linaro.org>
+ bh=clnCBxlTgpW9aVJsvzZebFxwfT5onc39XDyU6msNJdY=;
+ b=XkqkXCFAeTNKgJuAiDHElpvRRa/8vY/FgKbyhYDqzqFtq2UadEVi/mjQ4s9k7NsW1W
+ 6kn5TIMyjdv4qL44VW2nLVj5l8Cl0Bw0BjDjam6xZ1qMTKxYYabg9oFmJUMS+haRRgH7
+ yYIfuBJl48ZWSJ97XaJHnjfk1ubwS+EJymzM7pmTRS+4qLD5ajAviN2B8QT1wsiVJv14
+ sEHJ4YhvyYw3Yeraa7gLl8PbPuG/QbKGwwgrggiNl3hYyYQaw2eyajs+MmkG9k68gO7c
+ bUI8rwfvABPjBDStWHFsnZYqP1Hymzj1CAqQGUynbNbhkcZa8SbOs6XrHoK8vtoRsaFr
+ pmEA==
+X-Gm-Message-State: AOJu0YwvStBCdGuDr0NCSkd9qQT+M1VY/dlGnaF61qdGpB+R+uQ/nLsQ
+ G2sHaV1TUtNGqplRbtVCj0itgPsI0bdLaEPKRG7vSG69Rpl9aN+wwxzNNlyU0hMetOQ0NMRxVeW
+ v081Pn+XsSsrcvINbkhjFgYIN2fHO4TY=
+X-Received: by 2002:a05:6902:1348:b0:d62:d067:4f68 with SMTP id
+ g8-20020a056902134800b00d62d0674f68mr3488104ybu.23.1692379665858; 
+ Fri, 18 Aug 2023 10:27:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPSdwtK7GkDAqD1hbOXS+6KfbNHUK7DM4ikHXi5yrQ2bSSwQYcK2nW2YlVl+ZPWrky9SEi5G7gN8xv4GJ9lgo=
+X-Received: by 2002:a05:6902:1348:b0:d62:d067:4f68 with SMTP id
+ g8-20020a056902134800b00d62d0674f68mr3488087ybu.23.1692379665571; Fri, 18 Aug
+ 2023 10:27:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+References: <cover.1689748694.git.yin31149@gmail.com>
+ <3a002790e6c880af928c6470ecbf03e7c65a68bb.1689748694.git.yin31149@gmail.com>
+In-Reply-To: <3a002790e6c880af928c6470ecbf03e7c65a68bb.1689748694.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Fri, 18 Aug 2023 19:27:09 +0200
+Message-ID: <CAJaqyWc0UAiTo4u4ps_vSLYVJb1KHEUn+c7MEPf2vNuWRFMCiQ@mail.gmail.com>
+Subject: Re: [PATCH v3 8/8] vdpa: Send cvq state load commands in parallel
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,172 +95,326 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiajie Chen <c@jia.je>
+On Wed, Jul 19, 2023 at 9:54=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This patch enables sending CVQ state load commands
+> in parallel at device startup by following steps:
+>
+>   * Refactor vhost_vdpa_net_load_cmd() to iterate through
+> the control commands shadow buffers. This allows different
+> CVQ state load commands to use their own unique buffers.
+>
+>   * Delay the polling and checking of buffers until either
+> the SVQ is full or control commands shadow buffers are full.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> ---
+>  net/vhost-vdpa.c | 157 +++++++++++++++++++++++++++++------------------
+>  1 file changed, 96 insertions(+), 61 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 795c9c1fd2..1ebb58f7f6 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -633,6 +633,26 @@ static uint16_t vhost_vdpa_net_svq_available_slots(V=
+hostVDPAState *s)
+>      return vhost_svq_available_slots(svq);
+>  }
+>
+> +/*
+> + * Poll SVQ for multiple pending control commands and check the device's=
+ ack.
+> + *
+> + * Caller should hold the BQL when invoking this function.
+> + */
+> +static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s,
+> +                                        size_t cmds_in_flight)
+> +{
+> +    vhost_vdpa_net_svq_poll(s, cmds_in_flight);
+> +
+> +    /* Device should and must use only one byte ack each control command=
+ */
+> +    assert(cmds_in_flight < vhost_vdpa_net_cvq_cmd_page_len());
+> +    for (int i =3D 0; i < cmds_in_flight; ++i) {
+> +        if (s->status[i] !=3D VIRTIO_NET_OK) {
+> +            return -EIO;
+> +        }
+> +    }
+> +    return 0;
+> +}
+> +
+>  static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, void **out_cur=
+sor,
+>                                         void **in_cursor, uint8_t class,
+>                                         uint8_t cmd, const struct iovec *=
+data_sg,
+> @@ -642,19 +662,41 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASta=
+te *s, void **out_cursor,
+>          .class =3D class,
+>          .cmd =3D cmd,
+>      };
+> -    size_t data_size =3D iov_size(data_sg, data_num);
+> +    size_t data_size =3D iov_size(data_sg, data_num),
+> +           left_bytes =3D vhost_vdpa_net_cvq_cmd_page_len() -
+> +                        (*out_cursor - s->cvq_cmd_out_buffer);
+>      /* Buffers for the device */
+>      struct iovec out =3D {
+> -        .iov_base =3D *out_cursor,
+>          .iov_len =3D sizeof(ctrl) + data_size,
+>      };
+>      struct iovec in =3D {
+> -        .iov_base =3D *in_cursor,
+>          .iov_len =3D sizeof(*s->status),
+>      };
+>      ssize_t r;
+>
+> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
+;
+> +    if (sizeof(ctrl) > left_bytes || data_size > left_bytes - sizeof(ctr=
+l) ||
 
-GPRs and PC are 32-bit wide in loongarch32 mode.
+I'm ok with this code, but maybe we can simplify the code if we use
+two struct iovec as cursors instead of a void **? I think functions
+like iov_size and iov_copy already take care of a few checks here.
 
-Signed-off-by: Jiajie Chen <c@jia.je>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20230817093121.1053890-4-gaosong@loongson.cn>
-[PMD: Rebased, set gdb_num_core_regs]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- configs/targets/loongarch64-softmmu.mak |  2 +-
- target/loongarch/cpu.c                  | 10 ++++++
- target/loongarch/gdbstub.c              | 32 ++++++++++++++----
- gdb-xml/loongarch-base32.xml            | 45 +++++++++++++++++++++++++
- 4 files changed, 81 insertions(+), 8 deletions(-)
- create mode 100644 gdb-xml/loongarch-base32.xml
+Apart from that it would be great to merge this call to
+vhost_vdpa_net_svq_flush, but I find it very hard to do unless we
+scatter it through all callers of vhost_vdpa_net_load_cmd.
 
-diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
-index 9abc99056f..f23780fdd8 100644
---- a/configs/targets/loongarch64-softmmu.mak
-+++ b/configs/targets/loongarch64-softmmu.mak
-@@ -1,5 +1,5 @@
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
- TARGET_SUPPORTS_MTTCG=y
--TARGET_XML_FILES= gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
-+TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
- TARGET_NEED_FDT=y
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 5082506f10..f42e8497d6 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -726,8 +726,18 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
- #endif
- }
- 
-+static gchar *loongarch32_gdb_arch_name(CPUState *cs)
-+{
-+    return g_strdup("loongarch32");
-+}
-+
- static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
- {
-+    CPUClass *cc = CPU_CLASS(c);
-+
-+    cc->gdb_num_core_regs = 35;
-+    cc->gdb_core_xml_file = "loongarch-base32.xml";
-+    cc->gdb_arch_name = loongarch32_gdb_arch_name;
- }
- 
- static gchar *loongarch64_gdb_arch_name(CPUState *cs)
-diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
-index 0752fff924..a462e25737 100644
---- a/target/loongarch/gdbstub.c
-+++ b/target/loongarch/gdbstub.c
-@@ -34,16 +34,25 @@ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-     CPULoongArchState *env = &cpu->env;
-+    uint64_t val;
- 
-     if (0 <= n && n < 32) {
--        return gdb_get_regl(mem_buf, env->gpr[n]);
-+        val = env->gpr[n];
-     } else if (n == 32) {
-         /* orig_a0 */
--        return gdb_get_regl(mem_buf, 0);
-+        val = 0;
-     } else if (n == 33) {
--        return gdb_get_regl(mem_buf, env->pc);
-+        val = env->pc;
-     } else if (n == 34) {
--        return gdb_get_regl(mem_buf, env->CSR_BADV);
-+        val = env->CSR_BADV;
-+    }
-+
-+    if (0 <= n && n <= 34) {
-+        if (is_la64(env)) {
-+            return gdb_get_reg64(mem_buf, val);
-+        } else {
-+            return gdb_get_reg32(mem_buf, val);
-+        }
-     }
-     return 0;
- }
-@@ -52,15 +61,24 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-     CPULoongArchState *env = &cpu->env;
--    target_ulong tmp = ldtul_p(mem_buf);
-+    target_ulong tmp;
-+    int read_length;
-     int length = 0;
- 
-+    if (is_la64(env)) {
-+        tmp = ldq_p(mem_buf);
-+        read_length = 8;
-+    } else {
-+        tmp = ldl_p(mem_buf);
-+        read_length = 4;
-+    }
-+
-     if (0 <= n && n < 32) {
-         env->gpr[n] = tmp;
--        length = sizeof(target_ulong);
-+        length = read_length;
-     } else if (n == 33) {
-         env->pc = tmp;
--        length = sizeof(target_ulong);
-+        length = read_length;
-     }
-     return length;
- }
-diff --git a/gdb-xml/loongarch-base32.xml b/gdb-xml/loongarch-base32.xml
-new file mode 100644
-index 0000000000..af47bbd3da
---- /dev/null
-+++ b/gdb-xml/loongarch-base32.xml
-@@ -0,0 +1,45 @@
-+<?xml version="1.0"?>
-+<!-- Copyright (C) 2022 Free Software Foundation, Inc.
-+
-+     Copying and distribution of this file, with or without modification,
-+     are permitted in any medium without royalty provided the copyright
-+     notice and this notice are preserved.  -->
-+
-+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
-+<feature name="org.gnu.gdb.loongarch.base">
-+  <reg name="r0" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r1" bitsize="32" type="code_ptr" group="general"/>
-+  <reg name="r2" bitsize="32" type="data_ptr" group="general"/>
-+  <reg name="r3" bitsize="32" type="data_ptr" group="general"/>
-+  <reg name="r4" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r5" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r6" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r7" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r8" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r9" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r10" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r11" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r12" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r13" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r14" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r15" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r16" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r17" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r18" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r19" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r20" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r21" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r22" bitsize="32" type="data_ptr" group="general"/>
-+  <reg name="r23" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r24" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r25" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r26" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r27" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r28" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r29" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r30" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r31" bitsize="32" type="uint32" group="general"/>
-+  <reg name="orig_a0" bitsize="32" type="uint32" group="general"/>
-+  <reg name="pc" bitsize="32" type="code_ptr" group="general"/>
-+  <reg name="badv" bitsize="32" type="code_ptr" group="general"/>
-+</feature>
--- 
-2.41.0
+Apart from the minor comments I think the series is great, thanks!
+
+> +        vhost_vdpa_net_svq_available_slots(s) < 2) {
+> +        /*
+> +         * It is time to flush all pending control commands if SVQ is fu=
+ll
+> +         * or control commands shadow buffers are full.
+> +         *
+> +         * We can poll here since we've had BQL from the time
+> +         * we sent the descriptor.
+> +         */
+> +        r =3D vhost_vdpa_net_svq_flush(s, *in_cursor - (void *)s->status=
+);
+> +        if (unlikely(r < 0)) {
+> +            return r;
+> +        }
+> +
+> +        *out_cursor =3D s->cvq_cmd_out_buffer;
+> +        *in_cursor =3D s->status;
+> +        left_bytes =3D vhost_vdpa_net_cvq_cmd_page_len();
+> +    }
+> +
+> +    out.iov_base =3D *out_cursor;
+> +    in.iov_base =3D *in_cursor;
+> +
+> +    assert(data_size <=3D left_bytes - sizeof(ctrl));
+>      /* Each CVQ command has one out descriptor and one in descriptor */
+>      assert(vhost_vdpa_net_svq_available_slots(s) >=3D 2);
+>
+> @@ -670,11 +712,11 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASta=
+te *s, void **out_cursor,
+>          return r;
+>      }
+>
+> -    /*
+> -     * We can poll here since we've had BQL from the time
+> -     * we sent the descriptor.
+> -     */
+> -    return vhost_vdpa_net_svq_poll(s, 1);
+> +    /* iterate the cursors */
+> +    *out_cursor +=3D out.iov_len;
+> +    *in_cursor +=3D in.iov_len;
+> +
+> +    return 0;
+>  }
+>
+>  static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
+,
+> @@ -685,15 +727,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
+s, const VirtIONet *n,
+>              .iov_base =3D (void *)n->mac,
+>              .iov_len =3D sizeof(n->mac),
+>          };
+> -        ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, i=
+n_cursor,
+> -                                                  VIRTIO_NET_CTRL_MAC,
+> -                                                  VIRTIO_NET_CTRL_MAC_AD=
+DR_SET,
+> -                                                  &data, 1);
+> -        if (unlikely(dev_written < 0)) {
+> -            return dev_written;
+> -        }
+> -        if (*s->status !=3D VIRTIO_NET_OK) {
+> -            return -EIO;
+> +        ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> +                                               VIRTIO_NET_CTRL_MAC,
+> +                                               VIRTIO_NET_CTRL_MAC_ADDR_=
+SET,
+> +                                               &data, 1);
+> +        if (unlikely(r < 0)) {
+> +            return r;
+>          }
+>      }
+>
+> @@ -738,15 +777,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
+s, const VirtIONet *n,
+>              .iov_len =3D mul_macs_size,
+>          },
+>      };
+> -    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cu=
+rsor,
+> +    ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>                                  VIRTIO_NET_CTRL_MAC,
+>                                  VIRTIO_NET_CTRL_MAC_TABLE_SET,
+>                                  data, ARRAY_SIZE(data));
+> -    if (unlikely(dev_written < 0)) {
+> -        return dev_written;
+> -    }
+> -    if (*s->status !=3D VIRTIO_NET_OK) {
+> -        return -EIO;
+> +    if (unlikely(r < 0)) {
+> +        return r;
+>      }
+>
+>      return 0;
+> @@ -757,7 +793,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>                                    void **out_cursor, void **in_cursor)
+>  {
+>      struct virtio_net_ctrl_mq mq;
+> -    ssize_t dev_written;
+> +    ssize_t r;
+>
+>      if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
+>          return 0;
+> @@ -768,15 +804,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
+,
+>          .iov_base =3D &mq,
+>          .iov_len =3D sizeof(mq),
+>      };
+> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> -                                          VIRTIO_NET_CTRL_MQ,
+> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SE=
+T,
+> -                                          &data, 1);
+> -    if (unlikely(dev_written < 0)) {
+> -        return dev_written;
+> -    }
+> -    if (*s->status !=3D VIRTIO_NET_OK) {
+> -        return -EIO;
+> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> +                                   VIRTIO_NET_CTRL_MQ,
+> +                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
+> +                                   &data, 1);
+> +    if (unlikely(r < 0)) {
+> +        return r;
+>      }
+>
+>      return 0;
+> @@ -787,7 +820,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAStat=
+e *s,
+>                                          void **out_cursor, void **in_cur=
+sor)
+>  {
+>      uint64_t offloads;
+> -    ssize_t dev_written;
+> +    ssize_t r;
+>
+>      if (!virtio_vdev_has_feature(&n->parent_obj,
+>                                   VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
+> @@ -815,15 +848,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASt=
+ate *s,
+>          .iov_base =3D &offloads,
+>          .iov_len =3D sizeof(offloads),
+>      };
+> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> -                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS=
+,
+> -                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS=
+_SET,
+> -                                          &data, 1);
+> -    if (unlikely(dev_written < 0)) {
+> -        return dev_written;
+> -    }
+> -    if (*s->status !=3D VIRTIO_NET_OK) {
+> -        return -EIO;
+> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> +                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS,
+> +                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
+> +                                   &data, 1);
+> +    if (unlikely(r < 0)) {
+> +        return r;
+>      }
+>
+>      return 0;
+> @@ -838,15 +868,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPASta=
+te *s,
+>          .iov_base =3D &on,
+>          .iov_len =3D sizeof(on),
+>      };
+> -    ssize_t dev_written;
+> +    ssize_t r;
+>
+> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> -                                          VIRTIO_NET_CTRL_RX, cmd, &data=
+, 1);
+> -    if (unlikely(dev_written < 0)) {
+> -        return dev_written;
+> -    }
+> -    if (*s->status !=3D VIRTIO_NET_OK) {
+> -        return -EIO;
+> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> +                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
+> +    if (unlikely(r < 0)) {
+> +        return r;
+>      }
+>
+>      return 0;
+> @@ -1001,15 +1028,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostV=
+DPAState *s,
+>          .iov_base =3D &vid,
+>          .iov_len =3D sizeof(vid),
+>      };
+> -    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cu=
+rsor,
+> -                                                  VIRTIO_NET_CTRL_VLAN,
+> -                                                  VIRTIO_NET_CTRL_VLAN_A=
+DD,
+> -                                                  &data, 1);
+> -    if (unlikely(dev_written < 0)) {
+> -        return dev_written;
+> -    }
+> -    if (unlikely(*s->status !=3D VIRTIO_NET_OK)) {
+> -        return -EIO;
+> +    ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> +                                           VIRTIO_NET_CTRL_VLAN,
+> +                                           VIRTIO_NET_CTRL_VLAN_ADD,
+> +                                           &data, 1);
+> +    if (unlikely(r < 0)) {
+> +        return r;
+>      }
+>
+>      return 0;
+> @@ -1078,6 +1102,17 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+>          return r;
+>      }
+>
+> +    /*
+> +     * We need to poll and check all pending device's used buffers.
+> +     *
+> +     * We can poll here since we've had BQL from the time
+> +     * we sent the descriptor.
+> +     */
+> +    r =3D vhost_vdpa_net_svq_flush(s, in_cursor - (void *)s->status);
+> +    if (unlikely(r)) {
+> +        return r;
+> +    }
+> +
+>      return 0;
+>  }
+>
+> --
+> 2.25.1
+>
 
 
