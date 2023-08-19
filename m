@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0277818B0
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 11:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BAE78189D
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 11:50:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXIZx-0008DI-7F; Sat, 19 Aug 2023 05:49:09 -0400
+	id 1qXIZx-0008Dl-Sn; Sat, 19 Aug 2023 05:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qXIZo-00088F-TA
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:02 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qXIZq-000895-Nd
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:03 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qXIZm-0004Kv-O0
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:00 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fee5ddc23eso2195395e9.1
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 02:48:55 -0700 (PDT)
+ id 1qXIZo-0004Mw-7j
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:02 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fe2ba3e260so16620865e9.2
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 02:48:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692438534; x=1693043334;
+ d=gmail.com; s=20221208; t=1692438538; x=1693043338;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LC9QfRGLuG6b7Lw7VS826b9rKt2FAmv6aiZlfH5TGvE=;
- b=Svr8cV+1ay0HI6RqefiBgsdpiRXT2OC8xhWCOLGEU0cA0kf0ruswpbYlNz3uqtAieI
- GD9FnDx4Zn/MMjoJO0ZW14YOxEkQPDPiE3wmYL4oxTWn7ibA3EQo4ipYuU5e7g482CkN
- oJcS+QJJEg70Fc2PTiOi0Ua0fMtDrP7CkHYs2JYJOWafIhzStqp3p5cN303vdRXZLnPQ
- OAUBMpaII0aDzikzBWHklAt5+zOa9yt44sG+tVznvsw2nSP+lj3c0d+7NeOhK5HH5Jh5
- Lhy0Z0nHa0LPzd0XLW63Xi+3Hw7b9f0r0jDGKf90KJ68geKYHtKnjPB5WNFhxxmBAiRp
- H1EA==
+ bh=o7/wy2dOrFP6M6dk0v3scBILrw/gLVb9Blae0ntr5oA=;
+ b=ncE+zDEfu7sHQP56suY5yzTZn3fZR3PbM8vMOz+t07GWoJtsQuyZMyQw2T93KjaVAt
+ /sByLQLPZW42yX6OhfTEP5UNT6BZRdfxnMrYzlM/HO0sv2f/yU6Om6CiYw0pUBlqHf18
+ UOkFrr8BfJY2F68f/jVl83T92BQpd7mN32iyGl9fs32M3qP97I+p27dEaXrV+2ubvaDx
+ zG2R2v7Jc0JsTV50n06hO0aMO8GQY0Vtu41YmU/tXHEfEp/l0wyjY89B8MdpUQEBwdIq
+ iGxQs6qMQXXs46SaywT0U29h7XwlbPKbHJsk7as+wvlUAu27WyI18cRDboDL71z8VqTX
+ +72w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692438534; x=1693043334;
+ d=1e100.net; s=20221208; t=1692438538; x=1693043338;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LC9QfRGLuG6b7Lw7VS826b9rKt2FAmv6aiZlfH5TGvE=;
- b=PRJH8uhEM+TZ0/2gqf2PIACoIQ19WG22/axRX8ozRZiv8SW4xm+vc1hNAx7cgX/JAs
- 6QA3V+vDmkxX5Mm/Dhg3wKtKc//2WKhKybR2jL79gryHwOZKZOAZubve5Sn7wjF0AOXr
- 1+GcvT0wcYOgGMgPgXdDSybJdlziAyTAll4EU0SzrJ+lSQK1LtlbD/W5Ij1pllLu9tCp
- i59O3Wb6N3HJmlnFB7de6/R7FcpCC6hcJB3jXN48A76HHEhSKPfnUjvIRGhsCPuy4ReE
- rhCyuOZsWyNdWl3JyN82LNy1cMRew/NfoJIPEmAwrW+5seuV2jvCwnPW1UEAhx/RR+Yn
- 26Mw==
-X-Gm-Message-State: AOJu0Yz39FxQea0nB/pLX2fL/78YMn9Oxp9NrFxXLwZmEyv85UOy3MXY
- EX0MyS8VA6J05PXbwNkIhUACygf7s4c=
-X-Google-Smtp-Source: AGHT+IHIDNpKTe/Tku1PvKCzIHgwJD2I+Cf54Bk9i2SRHSVMQp7AdlQopjOUnwr0l32v+vmxlArijA==
-X-Received: by 2002:a05:600c:28d:b0:3fd:2f8e:2c69 with SMTP id
- 13-20020a05600c028d00b003fd2f8e2c69mr1206195wmk.32.1692438534537; 
- Sat, 19 Aug 2023 02:48:54 -0700 (PDT)
+ bh=o7/wy2dOrFP6M6dk0v3scBILrw/gLVb9Blae0ntr5oA=;
+ b=bZyZtwS2fnvB/p0583r91PTbryq4LVXcM1Zu4xRV0agyaH+llnCs4V5ZdeQ2EKrcbx
+ gHXJj1XueppqTZSBprimUmQHzA/3RVcG6BxY5scotnP8ZWDZF49eR4RAufEO3BQLCoA1
+ WMKdO44hV7Z4tuU8mD01melTBSakoK5FK6toLu4LI2Iqih6E9tF5rZfXU5dsWw9Nhl78
+ hdWke8VZHBHCTvsCHj8cVbX+c9C/ir8XNz39Gq6q5r7ugxTnh5MilOCdPAMKrZsSYmcp
+ 74oKoiVVpLQw3OhtC/5MkM+b1n6sJ2yFQ1QHJyOUiNMgU5YLlKuWc4lUxD7J+7rxxgg+
+ UrkA==
+X-Gm-Message-State: AOJu0YzBNWKmCdNGdU82AFeoD/RmcF3TpKhKeMu5vZXgrKYbOvU8O0RL
+ IaTQ7DmiRygKmD6kEv5htAH5IAPgrrY=
+X-Google-Smtp-Source: AGHT+IEcsoea8x5RVgjug44bU+BJNKfMRmP65n5XyECXt0orT9CQ4Fc2ta74bWKZp7BSYQhHXSDu+w==
+X-Received: by 2002:a05:600c:2807:b0:3fd:30f7:2be1 with SMTP id
+ m7-20020a05600c280700b003fd30f72be1mr1060532wmb.39.1692438538320; 
+ Sat, 19 Aug 2023 02:48:58 -0700 (PDT)
 Received: from karim.my.domain ([197.39.34.171])
  by smtp.gmail.com with ESMTPSA id
- o18-20020adfead2000000b003143b14848dsm5617216wrn.102.2023.08.19.02.48.51
+ o18-20020adfead2000000b003143b14848dsm5617216wrn.102.2023.08.19.02.48.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 19 Aug 2023 02:48:54 -0700 (PDT)
+ Sat, 19 Aug 2023 02:48:57 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 09/22] Implement ipc_perm conversion between host and target.
-Date: Sat, 19 Aug 2023 11:47:53 +0200
-Message-Id: <20230819094806.14965-10-kariem.taha2.7@gmail.com>
+Subject: [PATCH 10/22] Implement shmid_ds conversion between host and target.
+Date: Sat, 19 Aug 2023 11:47:54 +0200
+Message-Id: <20230819094806.14965-11-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,54 +98,59 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-mem.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ bsd-user/bsd-mem.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
-index 6c123abf04..e69250cc0d 100644
+index e69250cc0d..4446c94725 100644
 --- a/bsd-user/bsd-mem.c
 +++ b/bsd-user/bsd-mem.c
-@@ -36,3 +36,44 @@ void target_set_brk(abi_ulong new_brk)
-     bsd_target_original_brk = bsd_target_brk = HOST_PAGE_ALIGN(new_brk);
-     brk_page = HOST_PAGE_ALIGN(bsd_target_brk);
+@@ -77,3 +77,49 @@ abi_long host_to_target_ipc_perm(abi_ulong target_addr,
+     return 0;
  }
-+
-+abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,
+ 
++abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,
 +        abi_ulong target_addr)
 +{
-+    struct target_ipc_perm *target_ip;
++    struct target_shmid_ds *target_sd;
 +
-+    if (!lock_user_struct(VERIFY_READ, target_ip, target_addr, 1)) {
++    if (!lock_user_struct(VERIFY_READ, target_sd, target_addr, 1)) {
 +        return -TARGET_EFAULT;
 +    }
-+    __get_user(host_ip->cuid, &target_ip->cuid);
-+    __get_user(host_ip->cgid, &target_ip->cgid);
-+    __get_user(host_ip->uid, &target_ip->uid);
-+    __get_user(host_ip->gid, &target_ip->gid);
-+    __get_user(host_ip->mode, &target_ip->mode);
-+    __get_user(host_ip->seq, &target_ip->seq);
-+    __get_user(host_ip->key, &target_ip->key);
-+    unlock_user_struct(target_ip, target_addr, 0);
++    if (target_to_host_ipc_perm(&(host_sd->shm_perm), target_addr)) {
++        return -TARGET_EFAULT;
++    }
++    __get_user(host_sd->shm_segsz, &target_sd->shm_segsz);
++    __get_user(host_sd->shm_lpid, &target_sd->shm_lpid);
++    __get_user(host_sd->shm_cpid, &target_sd->shm_cpid);
++    __get_user(host_sd->shm_nattch, &target_sd->shm_nattch);
++    __get_user(host_sd->shm_atime, &target_sd->shm_atime);
++    __get_user(host_sd->shm_dtime, &target_sd->shm_dtime);
++    __get_user(host_sd->shm_ctime, &target_sd->shm_ctime);
++    unlock_user_struct(target_sd, target_addr, 0);
 +
 +    return 0;
 +}
 +
-+abi_long host_to_target_ipc_perm(abi_ulong target_addr,
-+        struct ipc_perm *host_ip)
++abi_long host_to_target_shmid_ds(abi_ulong target_addr,
++        struct shmid_ds *host_sd)
 +{
-+    struct target_ipc_perm *target_ip;
++    struct target_shmid_ds *target_sd;
 +
-+    if (!lock_user_struct(VERIFY_WRITE, target_ip, target_addr, 0)) {
++    if (!lock_user_struct(VERIFY_WRITE, target_sd, target_addr, 0)) {
 +        return -TARGET_EFAULT;
 +    }
-+    __put_user(host_ip->cuid, &target_ip->cuid);
-+    __put_user(host_ip->cgid, &target_ip->cgid);
-+    __put_user(host_ip->uid, &target_ip->uid);
-+    __put_user(host_ip->gid, &target_ip->gid);
-+    __put_user(host_ip->mode, &target_ip->mode);
-+    __put_user(host_ip->seq, &target_ip->seq);
-+    __put_user(host_ip->key, &target_ip->key);
-+    unlock_user_struct(target_ip, target_addr, 1);
++    if (host_to_target_ipc_perm(target_addr, &(host_sd->shm_perm))) {
++        return -TARGET_EFAULT;
++    }
++    __put_user(host_sd->shm_segsz, &target_sd->shm_segsz);
++    __put_user(host_sd->shm_lpid, &target_sd->shm_lpid);
++    __put_user(host_sd->shm_cpid, &target_sd->shm_cpid);
++    __put_user(host_sd->shm_nattch, &target_sd->shm_nattch);
++    __put_user(host_sd->shm_atime, &target_sd->shm_atime);
++    __put_user(host_sd->shm_dtime, &target_sd->shm_dtime);
++    __put_user(host_sd->shm_ctime, &target_sd->shm_ctime);
++    unlock_user_struct(target_sd, target_addr, 1);
 +
 +    return 0;
 +}
