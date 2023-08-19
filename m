@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29704781638
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 03:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A171E78163D
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 03:04:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXAMK-0008Rh-7t; Fri, 18 Aug 2023 21:02:32 -0400
+	id 1qXAMM-0008Sj-6J; Fri, 18 Aug 2023 21:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXAMI-0008QV-F8
+ id 1qXAMI-0008QT-Az
  for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:30 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXAMG-0007LS-5K
+ id 1qXAMG-0007Lf-1a
  for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:30 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bddac1b7bfso10763355ad.0
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 18:02:26 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6889078ee66so1257382b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 18:02:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1692406946; x=1693011746;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BZh7KEWKFGt6A4dyVK13WHinjbZLYVQb3GflKbX48PQ=;
- b=nHSf3lhu49Z5FSGNDBnw6e94UBjSAzSjIS5SOkXLdo9wknKm4VR+2GUcMsCUmj99z7
- FXHp2/FN7gzeM3cZ3Nybkj8vcBRktmL6knVPrLujnfgUtmLjvkeTfj053FfaY2ussB1a
- 0iSW1ydYc5Uv/iWrQIOMEknhrTJZBph5YV5k7cDf4GQyIqzKgzaaQbkdWIk49mt3xx4Z
- uWAWdswlGicEQLSPdPJiXgb6SEMrTnOkvsYlT83Qmgas/G80cTcfYZodjQGQa9fZFBgF
- xugCMhQ/Ox2SYXD3GdxvWBn315sZxc1w5YtTssgEHiKlzfXO1KUV+RrcmLRKfpLRRWIO
- lUNw==
+ bh=ZRvobRxifTOwS5r7R7zXbKsRuZh6imu3x1ylIR15QTo=;
+ b=vSko8l00lJ/TbMwRXhOCOhzuMltviL06MrhXmbaZ+WA6VbtgxNFy4qNtBdn5AcXqPj
+ zY06qybaC4EC3+HvW8OM8cA9TFgcQfE7HTxbKu+s1tV0/9etrIbXocr2MUHMBitX0yuB
+ XMD6D/DXPDDzsSwYFB4k5WPzkIJdki4I7/lSGFyW2EYemGgctdPIM/sbeX0K6IaXhlSe
+ adR5pOXzBUJObFqd86n2dWDMreKNyLBtSPXM9kqEEkzGtGN0DA3NP294kDr8mQH5Q3yI
+ 8/ZxlHiPxltspoAwp0Pl78TPJgi79ocr/dY4m6bxxOctdxIW6peLObg1z3ZMXWctvgmy
+ Ijug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1692406946; x=1693011746;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BZh7KEWKFGt6A4dyVK13WHinjbZLYVQb3GflKbX48PQ=;
- b=Hv9VEYrBAf9jNvPBHNTQ//WKl5G+bJWuD8Zv+QrNIQt0ayZ0ktzhThjLKQNw4FdVg5
- hwwJyQ8ZJtq6oLnNp9J3du8qxkV11nTcDas/7GfAOLkmAK9KGJJBYWsuozZNz9BURPmP
- 759Juo9Fma2cQ6o6O1Te7DyDHyDuUThAMIIc59yrGjGRaDB0g4dzg6jZ7TrGFQuMkDYg
- OPMrh0hX4VqcU7fs9N61FoGCp4uHfl/So8VgOn1xEt4Glr5fF8Rpfce7dFmxdZaxsf6V
- wehJcyR2HSHzttzQIP8SXvqEsasQQ0xheJGSUx6u0opytyc//kC6cMFtGbO8BynRfZCL
- dNFg==
-X-Gm-Message-State: AOJu0YwL0tYFQo6rA/mAsvOmMpHNNqzVm3kNviy1gVBToZB5edStul8E
- 49Xm3TahYF+VGOCmBhkCXbgx3n3/SI4g4NxqJnY=
-X-Google-Smtp-Source: AGHT+IGvQHvmWbHuOFGG3mjYrRbrZ9AcoMO/tiE8RTnhqBlszrcb3TYfda/C7TpFdGfHU8DQUKwz6Q==
-X-Received: by 2002:a17:903:44e:b0:1bf:3fe5:5e71 with SMTP id
- iw14-20020a170903044e00b001bf3fe55e71mr1040104plb.6.1692406945784; 
- Fri, 18 Aug 2023 18:02:25 -0700 (PDT)
+ bh=ZRvobRxifTOwS5r7R7zXbKsRuZh6imu3x1ylIR15QTo=;
+ b=gOVdQv0FBLZQOFzDESr3SOBGcDY9ua8P05n/I6J+ARkWmAWfGj+a/NizsERQXyneAx
+ gZG/7688w/FV0vi72oUVWUtS2geIYxznzR43MS5jpBajHsndVtFf7gTnXlv4F5lOsqEs
+ E/YundQMy1t+Km7eLQuqMcBt8ANLlmunicddT9c+lpuIbA2uAi5bM2VYhey1ouzON+DT
+ n2YpIHGeRsmiuZrdyQqCa5LjXIWMM/VyF8i9bGRoXvr/yltRnAeY49FW3f0pzz9d1wVb
+ tafmcBFnRC0dXZgLuAsYYSjf3QaaSkeQM2Pba5TWgkRwhD+Y7INF02AZ1PjOsEHFHSWD
+ 7S5Q==
+X-Gm-Message-State: AOJu0YzakWh4vXmm7UulJLolXmHW0vdf7IIEy6uQDQPDPc+s1MnOXW3H
+ 7DzsnNlTuPz9PbDChls0uscFmFpwFT4HB2R2sc0=
+X-Google-Smtp-Source: AGHT+IHBpa13d5+x55j1vb5IXf9CPDBvSMnQp3ThkTW39w2093KoZOIj6nzn3e1B+z+sRZoe+Jz15w==
+X-Received: by 2002:a05:6a20:8f09:b0:137:2281:944f with SMTP id
+ b9-20020a056a208f0900b001372281944fmr916565pzk.40.1692406946554; 
+ Fri, 18 Aug 2023 18:02:26 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
  b13-20020a170902d50d00b001b87bedcc6fsm2372019plg.93.2023.08.18.18.02.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 18:02:25 -0700 (PDT)
+ Fri, 18 Aug 2023 18:02:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	ardb@kernel.org
-Subject: [PATCH v2 06/18] target/arm: Use clmul_16* routines
-Date: Fri, 18 Aug 2023 18:02:06 -0700
-Message-Id: <20230819010218.192706-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/18] target/s390x: Use clmul_16* routines
+Date: Fri, 18 Aug 2023 18:02:07 -0700
+Message-Id: <20230819010218.192706-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230819010218.192706-1-richard.henderson@linaro.org>
 References: <20230819010218.192706-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,77 +93,72 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Use generic routines for 16-bit carry-less multiply.
-Remove our local version of pmull_w.
+Remove our local version of galois_multiply16.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_internal.h |  6 ------
- target/arm/tcg/mve_helper.c   |  8 ++------
- target/arm/tcg/vec_helper.c   | 13 -------------
- 3 files changed, 2 insertions(+), 25 deletions(-)
+ target/s390x/tcg/vec_int_helper.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
-index c4afba6d9f..3ca1b94ccf 100644
---- a/target/arm/tcg/vec_internal.h
-+++ b/target/arm/tcg/vec_internal.h
-@@ -219,12 +219,6 @@ int16_t do_sqrdmlah_h(int16_t, int16_t, int16_t, bool, bool, uint32_t *);
- int32_t do_sqrdmlah_s(int32_t, int32_t, int32_t, bool, bool, uint32_t *);
- int64_t do_sqrdmlah_d(int64_t, int64_t, int64_t, bool, bool);
+diff --git a/target/s390x/tcg/vec_int_helper.c b/target/s390x/tcg/vec_int_helper.c
+index edff4d6b2b..11477556e5 100644
+--- a/target/s390x/tcg/vec_int_helper.c
++++ b/target/s390x/tcg/vec_int_helper.c
+@@ -180,7 +180,6 @@ static uint##TBITS##_t galois_multiply##BITS(uint##TBITS##_t a,                \
+     }                                                                          \
+     return res;                                                                \
+ }
+-DEF_GALOIS_MULTIPLY(16, 32)
+ DEF_GALOIS_MULTIPLY(32, 64)
  
--/*
-- * 16 x 16 -> 32 vector polynomial multiply where the inputs are
-- * in the low 16 bits of each 32-bit element
-- */
--uint64_t pmull_w(uint64_t op1, uint64_t op2);
--
- /**
-  * bfdotadd:
-  * @sum: addend
-diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
-index 96ddfb4b3a..c666a96ba1 100644
---- a/target/arm/tcg/mve_helper.c
-+++ b/target/arm/tcg/mve_helper.c
-@@ -985,14 +985,10 @@ DO_2OP_L(vmulltuw, 1, 4, uint32_t, 8, uint64_t, DO_MUL)
-  * Polynomial multiply. We can always do this generating 64 bits
-  * of the result at a time, so we don't need to use DO_2OP_L.
-  */
--#define VMULLPW_MASK 0x0000ffff0000ffffULL
--#define DO_VMULLPBW(N, M) pmull_w((N) & VMULLPW_MASK, (M) & VMULLPW_MASK)
--#define DO_VMULLPTW(N, M) DO_VMULLPBW((N) >> 16, (M) >> 16)
--
- DO_2OP(vmullpbh, 8, uint64_t, clmul_8x4_even)
- DO_2OP(vmullpth, 8, uint64_t, clmul_8x4_odd)
--DO_2OP(vmullpbw, 8, uint64_t, DO_VMULLPBW)
--DO_2OP(vmullptw, 8, uint64_t, DO_VMULLPTW)
-+DO_2OP(vmullpbw, 8, uint64_t, clmul_16x2_even)
-+DO_2OP(vmullptw, 8, uint64_t, clmul_16x2_odd)
- 
- /*
-  * Because the computation type is at least twice as large as required,
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index cd630ff905..5def86b573 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2029,19 +2029,6 @@ void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
-     clear_tail(d, opr_sz, simd_maxsz(desc));
+ static S390Vector galois_multiply64(uint64_t a, uint64_t b)
+@@ -231,6 +230,30 @@ void HELPER(gvec_vgfma8)(void *v1, const void *v2, const void *v3,
+     q1[1] = do_gfma8(q2[1], q3[1], q4[1]);
  }
  
--uint64_t pmull_w(uint64_t op1, uint64_t op2)
--{
--    uint64_t result = 0;
--    int i;
--    for (i = 0; i < 16; ++i) {
--        uint64_t mask = (op1 & 0x0000000100000001ull) * 0xffffffff;
--        result ^= op2 & mask;
--        op1 >>= 1;
--        op2 <<= 1;
--    }
--    return result;
--}
--
- void HELPER(neon_pmull_h)(void *vd, void *vn, void *vm, uint32_t desc)
- {
-     int hi = simd_data(desc);
++static inline uint64_t do_gfma16(uint64_t n, uint64_t m, uint64_t a)
++{
++    return clmul_16x2_even(n, m) ^ clmul_16x2_odd(n, m) ^ a;
++}
++
++void HELPER(gvec_vgfm16)(void *v1, const void *v2, const void *v3, uint32_t d)
++{
++    uint64_t *q1 = v1;
++    const uint64_t *q2 = v2, *q3 = v3;
++
++    q1[0] = do_gfma16(q2[0], q3[0], 0);
++    q1[1] = do_gfma16(q2[1], q3[1], 0);
++}
++
++void HELPER(gvec_vgfma16)(void *v1, const void *v2, const void *v3,
++                         const void *v4, uint32_t d)
++{
++    uint64_t *q1 = v1;
++    const uint64_t *q2 = v2, *q3 = v3, *q4 = v4;
++
++    q1[0] = do_gfma16(q2[0], q3[0], q4[0]);
++    q1[1] = do_gfma16(q2[1], q3[1], q4[1]);
++}
++
+ #define DEF_VGFM(BITS, TBITS)                                                  \
+ void HELPER(gvec_vgfm##BITS)(void *v1, const void *v2, const void *v3,         \
+                              uint32_t desc)                                    \
+@@ -248,7 +271,6 @@ void HELPER(gvec_vgfm##BITS)(void *v1, const void *v2, const void *v3,         \
+         s390_vec_write_element##TBITS(v1, i, d);                               \
+     }                                                                          \
+ }
+-DEF_VGFM(16, 32)
+ DEF_VGFM(32, 64)
+ 
+ void HELPER(gvec_vgfm64)(void *v1, const void *v2, const void *v3,
+@@ -284,7 +306,6 @@ void HELPER(gvec_vgfma##BITS)(void *v1, const void *v2, const void *v3,        \
+         s390_vec_write_element##TBITS(v1, i, d);                               \
+     }                                                                          \
+ }
+-DEF_VGFMA(16, 32)
+ DEF_VGFMA(32, 64)
+ 
+ void HELPER(gvec_vgfma64)(void *v1, const void *v2, const void *v3,
 -- 
 2.34.1
 
