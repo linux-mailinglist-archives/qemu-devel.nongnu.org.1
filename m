@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DF67818A3
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 11:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261687818A4
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 11:50:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXIab-0001R6-61; Sat, 19 Aug 2023 05:49:49 -0400
+	id 1qXIae-0001nX-9B; Sat, 19 Aug 2023 05:49:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qXIaY-00017i-Fr
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:46 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1qXIac-0001iD-3D
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:50 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qXIaW-0004V4-8C
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:46 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-31771bb4869so1527174f8f.0
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 02:49:43 -0700 (PDT)
+ id 1qXIaZ-0004Vn-QF
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:49:49 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31781e15a0cso1510130f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 02:49:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692438583; x=1693043383;
+ d=gmail.com; s=20221208; t=1692438586; x=1693043386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8exV3yGEz7WY1shJuX9lY3GrexPeAxEd4BeLNUOtn40=;
- b=COXuRg2J/O0vzsu4Z02XurXcnBGPID3XEw1524yyMPAWNZ/I1HBOPZ+TVHZc3phsb8
- +LRzxIwHIY7UIXYHp/wXx4/RER7yMqR+SPTBbwb77HqgSzpWa2SLatjWhscAD/no7+IX
- wKw8oZ1TbgYQiDkbqkWxlNGdZrNLDfjNSKLzA42cRZjVSHw3Yf/k6NiottHKeRqmmWrg
- oN8ab+8dca1VJjXUVFIu5kOiL1P5+p0BUnujG8Jx3YW2jtTFoUmr1gTeP0ifec7Dmcj3
- L3Icf2I7+xXrnL7qyce5F/a19ZIsCll1OFnmU114G6VXY1v6vYh5JkJ1F366qTbZV2ED
- 62IQ==
+ bh=c81n0IuPWBObuKho74EdgZfgQ3nDUAJ4UIi37AKURKc=;
+ b=rUl9bcXMWFoXJsW3TjwlV9KVakgFyZ8xwGTlRuKt6Cwc3iFcdX9FhLNJAMKqQrAumA
+ pTyhdZ1P/jg9Ge03KRQeTQW7lIRU19L6sSxnWdHsqX0Qr7vyJ+sAKIMuNJdmErwpNv8H
+ 6T8T6bvp5krIPcpdd0ZOqKPDc/O+3UiZx7jxuw0EiscuCjk4vd/OCnHrPFpQw1a4xAsi
+ eM7u8S078+PWmKWT/a+4XygOIGSq7ypL5GTDmzKeNPzPAyYjF/tkx+r6fD40NUZpFVSc
+ 8yO8E4OcK4RTnKeprSa7ipD3JUevx1OCwthlh6V1G068zRbgi1u7ylCmMEC9tA2APT8Q
+ cbpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692438583; x=1693043383;
+ d=1e100.net; s=20221208; t=1692438586; x=1693043386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8exV3yGEz7WY1shJuX9lY3GrexPeAxEd4BeLNUOtn40=;
- b=IhLfDmidEI1lqyZVotVuBS+aVPsk45IdJ2xhclZ+9lLcOt6DiH++W6OIPnlj7b0OuE
- OEV2iI5Hu3MSUx+Mnt4SiiVlTkc/2xwFYne8P5ZH3XLrmyAKxXjAK0Lv0TaXwaD3jnlY
- /hsjvhs0QfP+7ep7WEffjjK/mfmuwo07rG9ENNvpbcpuUOPzqyivjEGFNimldV0IbJA0
- J8yJNqTxNtQrzsuIiGVzwPKTzrRwNRYy95fqZdOTte2s1ZzokZ3AuMIJeDW6j1yYg0Yk
- 2KUL69pF+KXBnVwiGI1TKj/seElyQ25LhpORshDpdwPjPya9h1fEv+lbTaB21KASdxkl
- IGbQ==
-X-Gm-Message-State: AOJu0YyE+Vjs34HMzWt8ssQZu5ueBUvzeqR+v+AyXT/iVQkvSx0DiBLd
- PGROe0dHcPKj00a/PCVXAJ1BFRRBuZs=
-X-Google-Smtp-Source: AGHT+IFboCsi42EbFDMZvtnrwzMzMMTEY3JU9GoaF1K2rz11RnVWzDQMY0vguvA+wnLtqsB+RyTbgA==
-X-Received: by 2002:a05:6000:889:b0:31a:d6cb:7f9e with SMTP id
- cs9-20020a056000088900b0031ad6cb7f9emr1178952wrb.21.1692438582670; 
- Sat, 19 Aug 2023 02:49:42 -0700 (PDT)
+ bh=c81n0IuPWBObuKho74EdgZfgQ3nDUAJ4UIi37AKURKc=;
+ b=MF9RBPIAhbMX32lpQU+P10VPFTQDlUQir1+SYC82f5x28IcO/6A3oPcGtfNFwyZj4b
+ cClnH7gFFEUn79pS+WL8xCps51zSMWwPMc7zo5K2hAQZfYWOI2vZyh/TiNSXztIqleRk
+ S8LQwfcqU3zF2Y4hg+Ref36OV7vrnlnJF19dac/1ok5LQjIRspMexZ+KvEDrYBXNgUnp
+ UDPXL21SkP7lirJLBtDQ41qdyYmXUWt6A5lkfV0EtPifUgEdizb22Hy7p4gE4Rx5+KL0
+ 9gS6jUbCvnKeULCV4Q7C5B/vyYe4n7jkgLm2Cr4iR0YUruJpMg8JUI0x0AtVB1oyCVC1
+ OJxg==
+X-Gm-Message-State: AOJu0Yyc3WJt8EEAU83iUSUPVAW4ROmAQ1uRrBwUzzG0HRJ+B2iYaWQd
+ SCFDcdwS6wPUleUOg/w/wbZc7xP37/Q=
+X-Google-Smtp-Source: AGHT+IHJ4NsPVPWpo1tsCP90BMHOCCasqcUc26h0Ln9J4x2CIPe5BkrnkXcloN3JSZwV6UcZdHixAA==
+X-Received: by 2002:adf:a345:0:b0:318:1535:34fb with SMTP id
+ d5-20020adfa345000000b00318153534fbmr1215984wrb.13.1692438586253; 
+ Sat, 19 Aug 2023 02:49:46 -0700 (PDT)
 Received: from karim.my.domain ([197.39.34.171])
  by smtp.gmail.com with ESMTPSA id
- o18-20020adfead2000000b003143b14848dsm5617216wrn.102.2023.08.19.02.49.38
+ o18-20020adfead2000000b003143b14848dsm5617216wrn.102.2023.08.19.02.49.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 19 Aug 2023 02:49:42 -0700 (PDT)
+ Sat, 19 Aug 2023 02:49:45 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 20/22] Implement shmctl(2)
-Date: Sat, 19 Aug 2023 11:48:04 +0200
-Message-Id: <20230819094806.14965-21-kariem.taha2.7@gmail.com>
+Subject: [PATCH 21/22] Implement shmat(2) and shmdt(2)
+Date: Sat, 19 Aug 2023 11:48:05 +0200
+Message-Id: <20230819094806.14965-22-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,62 +98,105 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-mem.h            | 33 +++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 ++++
- 2 files changed, 37 insertions(+)
+ bsd-user/bsd-mem.h            | 72 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  8 ++++
+ 2 files changed, 80 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index 3d91d3eb30..221ad76d8c 100644
+index 221ad76d8c..f737b94885 100644
 --- a/bsd-user/bsd-mem.h
 +++ b/bsd-user/bsd-mem.h
-@@ -302,4 +302,37 @@ static inline abi_long do_bsd_shmget(abi_long arg1, abi_ulong arg2,
-     return get_errno(shmget(arg1, arg2, arg3));
+@@ -335,4 +335,76 @@ static inline abi_long do_bsd_shmctl(abi_long shmid, abi_long cmd,
+     return ret;
  }
  
-+/* shmctl(2) */
-+static inline abi_long do_bsd_shmctl(abi_long shmid, abi_long cmd,
-+        abi_ulong buff)
++/* shmat(2) */
++static inline abi_long do_bsd_shmat(int shmid, abi_ulong shmaddr, int shmflg)
 +{
-+    struct shmid_ds dsarg;
-+    abi_long ret = -TARGET_EINVAL;
++    abi_ulong raddr;
++    abi_long ret;
++    void *host_raddr;
++    struct shmid_ds shm_info;
++    int i;
 +
-+    cmd &= 0xff;
-+
-+    switch (cmd) {
-+    case IPC_STAT:
-+    case IPC_SET:
-+        if (target_to_host_shmid_ds(&dsarg, buff)) {
-+            return -TARGET_EFAULT;
-+        }
-+        ret = get_errno(shmctl(shmid, cmd, &dsarg));
-+        if (host_to_target_shmid_ds(buff, &dsarg)) {
-+            return -TARGET_EFAULT;
-+        }
-+        break;
-+
-+    case IPC_RMID:
-+        ret = get_errno(shmctl(shmid, cmd, NULL));
-+        break;
-+
-+    default:
-+        ret = -TARGET_EINVAL;
-+        break;
++    /* Find out the length of the shared memory segment. */
++    ret = get_errno(shmctl(shmid, IPC_STAT, &shm_info));
++    if (is_error(ret)) {
++        /* Can't get the length */
++        return ret;
 +    }
 +
-+    return ret;
++    mmap_lock();
++
++    if (shmaddr) {
++        host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
++    } else {
++        abi_ulong mmap_start;
++
++        mmap_start = mmap_find_vma(0, shm_info.shm_segsz);
++
++        if (mmap_start == -1) {
++            errno = ENOMEM;
++            host_raddr = (void *)-1;
++        } else {
++            host_raddr = shmat(shmid, g2h_untagged(mmap_start),
++                shmflg); /* | SHM_REMAP XXX WHY? */
++        }
++    }
++
++    if (host_raddr == (void *)-1) {
++        mmap_unlock();
++        return get_errno((long)host_raddr);
++    }
++    raddr = h2g((unsigned long)host_raddr);
++
++    page_set_flags(raddr, raddr + shm_info.shm_segsz,
++        PAGE_VALID | PAGE_READ | ((shmflg & SHM_RDONLY) ? 0 : PAGE_WRITE));
++
++    for (i = 0; i < N_BSD_SHM_REGIONS; i++) {
++        if (bsd_shm_regions[i].start == 0) {
++            bsd_shm_regions[i].start = raddr;
++            bsd_shm_regions[i].size = shm_info.shm_segsz;
++            break;
++        }
++    }
++
++    mmap_unlock();
++    return raddr;
++}
++
++/* shmdt(2) */
++static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
++{
++    int i;
++
++    for (i = 0; i < N_BSD_SHM_REGIONS; ++i) {
++        if (bsd_shm_regions[i].start == shmaddr) {
++            bsd_shm_regions[i].start = 0;
++            page_set_flags(shmaddr,
++                shmaddr + bsd_shm_regions[i].size, 0);
++            break;
++        }
++    }
++
++    return get_errno(shmdt(g2h_untagged(shmaddr)));
 +}
 +
  #endif /* BSD_USER_BSD_MEM_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index a7db78b9b4..9681c65ce9 100644
+index 9681c65ce9..f76bc1eb38 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -555,6 +555,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_shmget(arg1, arg2, arg3);
+@@ -559,6 +559,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_shmctl(arg1, arg2, arg3);
          break;
  
-+    case TARGET_FREEBSD_NR_shmctl: /* shmctl(2) */
-+        ret = do_bsd_shmctl(arg1, arg2, arg3);
++    case TARGET_FREEBSD_NR_shmat: /* shmat(2) */
++        ret = do_bsd_shmat(arg1, arg2, arg3);
++        break;
++
++    case TARGET_FREEBSD_NR_shmdt: /* shmdt(2) */
++        ret = do_bsd_shmdt(arg1);
 +        break;
 +
          /*
