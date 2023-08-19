@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25DA781540
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 00:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5241B781632
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 03:03:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX7j8-00056r-DU; Fri, 18 Aug 2023 18:13:54 -0400
+	id 1qXAMG-0008Pb-AP; Fri, 18 Aug 2023 21:02:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX7j5-00055a-RZ
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 18:13:51 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qXAMD-0008PG-7G
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:25 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX7j3-0004R7-Bk
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 18:13:51 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1bdcb800594so11418025ad.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 15:13:48 -0700 (PDT)
+ id 1qXAMA-0007KV-Cl
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:24 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bdf4752c3cso11100265ad.2
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 18:02:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692396828; x=1693001628;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rHihCY1+Gt7MEUwLK92P49s3A0ddHA08RG6gNlnoj30=;
- b=ba7RNMYIvduUi8SHzWAz2qNIlDnXVwp26F0eaVcrEXr9tsYKXJVtI1OXaSG/O7qOHw
- q0qxYQRvbsGY/ySYLwbG/YobI8qo0+Dg7Jfc6K5UNwCbz5SBwUiLMXlJ2Y5F4m7TW44S
- gDYx0cWXjgvjAsgkkg6QAIeeFjmYG6r1x05PsTmpKtbULGm57QrcIOkRmXnHiTvGsLuZ
- Ei4Zdm4tuRy4B8groxcARrM24SNJ7n3GhiljjBGTeH3z1TTPrix8oO9IFQkTS3FncRkU
- JoHtdh1i5CXgNKdRDvySAeYa6GHrUYFWxtDu5KwoiBGziy7vNdCJ4XRV8VU7yzQY86ke
- KPUA==
+ d=linaro.org; s=google; t=1692406940; x=1693011740;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=StsXV2oQjsYMrk/IfkhJGMnUJ1DUHAkNVFqVcXqK7oM=;
+ b=nb93tbUCyaPlVvSpiwSVa3sVqKDFF0hZur+BBqELcyGjGaJixyh03/4jjvA4Yzvv5B
+ nfla+1cK2UPTwzwJLRkynxXb9zfUXVEVZ3y5AfESkYMf3M0PtnaxiuFQREbwi9ILSqI+
+ UwSY75xk6+N9p+kTjgQZS5h2k0y2oXxEsIzs1uLB/Lp7v0kTJU/DMb9ArQhoTRyM2AQR
+ SRr+AYnKfUz3hCE1MEdJ0iLcEgK11RCcojCaFEVksXktA1OgzyVcF1QHcuIm3yAldRHI
+ r53xuMVz78B1WSDkKnyWII7p61nZPJjOq2lg1CqGwUPQaBAWPjwri4jt6GIbQfeF3AiK
+ wsCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692396828; x=1693001628;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rHihCY1+Gt7MEUwLK92P49s3A0ddHA08RG6gNlnoj30=;
- b=LTiDugyEkoQ6ToV5fnzA+SAnTtpeRfTw8hIMQx3cvOFNOGCxFtVSqc8Se0X0rBU1Fe
- UCOiUcVi7lrtI8+11JHtc3smGa/2UDi1MeOtYNYUWQsp8jSmIbHlsSQ51bmOZVX6Xm0s
- 10wlNdW5bWguzAzwCkqO5tF3LM6NZQsoFzevZ9tzJop3TNRq4dUV8mHvWI5/JmSGERre
- OkOg4EuMBzscEYTlBD4RJdJqHcwzPNmUJKpMf9StgSoEZoi79wjYCrlP3L/jaGZShAkl
- sICMCTP9LdJ4en3FjN5hvOxxxatmHMCwnhLV27OvNcZlgevPsJsoLBg8seuQd8ns+HA7
- U/kg==
-X-Gm-Message-State: AOJu0Yx3i+kiPnySi4k6nyQWAq4T4Kifo9bksz4Ug3XpIPaPJeaKfN8T
- i7ela87mpPR7DAeCT26Apm6dqXwVUR+m8EE3gmE=
-X-Google-Smtp-Source: AGHT+IGGjKTalAWb/03wRCHS1YW7KZEfXX8lVTNlzbAY1UkPvAnnCx23PVXbYy8T2hsgWfysMvH0sw==
-X-Received: by 2002:a17:903:2589:b0:1bd:aebc:134f with SMTP id
- jb9-20020a170903258900b001bdaebc134fmr432659plb.13.1692396828153; 
- Fri, 18 Aug 2023 15:13:48 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692406940; x=1693011740;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=StsXV2oQjsYMrk/IfkhJGMnUJ1DUHAkNVFqVcXqK7oM=;
+ b=exR9YeNFVz4OJWIDMQd6BGLK45omCAN+uLLiwbtF8doc//Ly9rm3mNcpbhgRiINKG0
+ OEhh7LEu3BusXOsDKASzLFzdsqHrQMCeZVoc6wICXUhJZIDjN+l6W4Mg3a6Ez5hqthqL
+ oGY5LPin9kkhEQ77PkCrMxCuji99+dJJSnpHKuPxGYK9xRZG93tJA9KKQ5/zY4S7UC78
+ H++eTL9nuThmAY/2kH8vH1vE9bkZipDFXaGeskiN6aPfvVGPSKipuO0MLmLpCx5RKR/h
+ TH/10BOHcqQheSoDbN+7A3myqCvHGgic8YWRsYF47IQeiZMfjihS23cPg+cZI+0Ukt4e
+ WuhQ==
+X-Gm-Message-State: AOJu0YzOB1a+NOnLzU4ksQVw4ik/ZoqhTSEoFrXu4ZHTUzpkyDoikkg9
+ 9T+i3kI1pm3MDzBdpMqqNIttHkkDiu5eTovWq6k=
+X-Google-Smtp-Source: AGHT+IHdVues/NA2SswKTK87qdX3DYKmR1xQmMjwMqemkTnt5qlX3zikPVjLbTE/hO5mtkbuwJbj/w==
+X-Received: by 2002:a17:903:44f:b0:1bc:682a:b130 with SMTP id
+ iw15-20020a170903044f00b001bc682ab130mr732711plb.27.1692406940314; 
+ Fri, 18 Aug 2023 18:02:20 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- y7-20020a17090322c700b001bdb85291casm2231417plg.208.2023.08.18.15.13.47
+ b13-20020a170902d50d00b001b87bedcc6fsm2372019plg.93.2023.08.18.18.02.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 15:13:47 -0700 (PDT)
+ Fri, 18 Aug 2023 18:02:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 23/23] tcg/i386: Implement negsetcond_*
-Date: Fri, 18 Aug 2023 15:13:27 -0700
-Message-Id: <20230818221327.150194-24-richard.henderson@linaro.org>
+Cc: berrange@redhat.com,
+	ardb@kernel.org
+Subject: [PATCH v2 00/18] crypto: Provide clmul.h and host accel
+Date: Fri, 18 Aug 2023 18:02:00 -0700
+Message-Id: <20230819010218.192706-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230818221327.150194-1-richard.henderson@linaro.org>
-References: <20230818221327.150194-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,108 +89,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/i386/tcg-target.h     |  4 ++--
- tcg/i386/tcg-target.c.inc | 27 +++++++++++++++++++--------
- 2 files changed, 21 insertions(+), 10 deletions(-)
+Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
+carry-less multiply under emulation.
 
-diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
-index f3cdc6927a..efc5ff8f9d 100644
---- a/tcg/i386/tcg-target.h
-+++ b/tcg/i386/tcg-target.h
-@@ -156,7 +156,7 @@ typedef enum {
- #define TCG_TARGET_HAS_muls2_i32        1
- #define TCG_TARGET_HAS_muluh_i32        0
- #define TCG_TARGET_HAS_mulsh_i32        0
--#define TCG_TARGET_HAS_negsetcond_i32   0
-+#define TCG_TARGET_HAS_negsetcond_i32   1
- 
- #if TCG_TARGET_REG_BITS == 64
- /* Keep 32-bit values zero-extended in a register.  */
-@@ -194,7 +194,7 @@ typedef enum {
- #define TCG_TARGET_HAS_muls2_i64        1
- #define TCG_TARGET_HAS_muluh_i64        0
- #define TCG_TARGET_HAS_mulsh_i64        0
--#define TCG_TARGET_HAS_negsetcond_i64   0
-+#define TCG_TARGET_HAS_negsetcond_i64   1
- #define TCG_TARGET_HAS_qemu_st8_i32     0
- #else
- #define TCG_TARGET_HAS_qemu_st8_i32     1
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 16e830051d..e778dc642f 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -1529,7 +1529,7 @@ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
- 
- static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-                             TCGArg dest, TCGArg arg1, TCGArg arg2,
--                            int const_arg2)
-+                            int const_arg2, bool neg)
- {
-     bool inv = false;
-     bool cleared;
-@@ -1570,11 +1570,13 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-          * This is always smaller than the SETCC expansion.
-          */
-         tcg_out_cmp(s, arg1, arg2, const_arg2, rexw);
--        tgen_arithr(s, ARITH_SBB, dest, dest);              /* T:-1 F:0 */
--        if (inv) {
--            tgen_arithi(s, ARITH_ADD, dest, 1, 0);          /* T:0  F:1 */
--        } else {
--            tcg_out_modrm(s, OPC_GRP3_Ev, EXT3_NEG, dest);  /* T:1  F:0 */
-+        tgen_arithr(s, ARITH_SBB + (neg ? rexw : 0), dest, dest); /* T:-1 F:0 */
-+        if (inv && neg) {
-+            tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NOT, dest); /* T:0 F:-1 */
-+        } else if (inv) {
-+            tgen_arithi(s, ARITH_ADD, dest, 1, 0);                /* T:0  F:1 */
-+        } else if (!neg) {
-+            tcg_out_modrm(s, OPC_GRP3_Ev, EXT3_NEG, dest);        /* T:1  F:0 */
-         }
-         return;
- 
-@@ -1588,7 +1590,8 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-             if (inv) {
-                 tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NOT, dest);
-             }
--            tcg_out_shifti(s, SHIFT_SHR + rexw, dest, rexw ? 63 : 31);
-+            tcg_out_shifti(s, (neg ? SHIFT_SAR : SHIFT_SHR) + rexw,
-+                           dest, rexw ? 63 : 31);
-             return;
-         }
-         break;
-@@ -1614,6 +1617,9 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-     if (!cleared) {
-         tcg_out_ext8u(s, dest, dest);
-     }
-+    if (neg) {
-+        tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NEG, dest);
-+    }
- }
- 
- #if TCG_TARGET_REG_BITS == 32
-@@ -2632,7 +2638,10 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
-                        arg_label(args[3]), 0);
-         break;
-     OP_32_64(setcond):
--        tcg_out_setcond(s, rexw, args[3], a0, a1, a2, const_a2);
-+        tcg_out_setcond(s, rexw, args[3], a0, a1, a2, const_a2, false);
-+        break;
-+    OP_32_64(negsetcond):
-+        tcg_out_setcond(s, rexw, args[3], a0, a1, a2, const_a2, true);
-         break;
-     OP_32_64(movcond):
-         tcg_out_movcond(s, rexw, args[5], a0, a1, a2, const_a2, args[3]);
-@@ -3377,6 +3386,8 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
- 
-     case INDEX_op_setcond_i32:
-     case INDEX_op_setcond_i64:
-+    case INDEX_op_negsetcond_i32:
-+    case INDEX_op_negsetcond_i64:
-         return C_O1_I2(q, r, re);
- 
-     case INDEX_op_movcond_i32:
+Changes for v2:
+  * Only accelerate clmul_64; keep generic helpers for other sizes.
+  * Drop most of the Int128 interfaces, except for clmul_64.
+  * Use the same acceleration format as aes-round.h.
+
+
+r~
+
+
+[1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
+
+Richard Henderson (18):
+  crypto: Add generic 8-bit carry-less multiply routines
+  target/arm: Use clmul_8* routines
+  target/s390x: Use clmul_8* routines
+  target/ppc: Use clmul_8* routines
+  crypto: Add generic 16-bit carry-less multiply routines
+  target/arm: Use clmul_16* routines
+  target/s390x: Use clmul_16* routines
+  target/ppc: Use clmul_16* routines
+  crypto: Add generic 32-bit carry-less multiply routines
+  target/arm: Use clmul_32* routines
+  target/s390x: Use clmul_32* routines
+  target/ppc: Use clmul_32* routines
+  crypto: Add generic 64-bit carry-less multiply routine
+  target/arm: Use clmul_64
+  target/s390x: Use clmul_64
+  target/ppc: Use clmul_64
+  host/include/i386: Implement clmul.h
+  host/include/aarch64: Implement clmul.h
+
+ host/include/aarch64/host/cpuinfo.h      |   1 +
+ host/include/aarch64/host/crypto/clmul.h |  41 +++++
+ host/include/generic/host/crypto/clmul.h |  15 ++
+ host/include/i386/host/cpuinfo.h         |   1 +
+ host/include/i386/host/crypto/clmul.h    |  29 ++++
+ host/include/x86_64/host/crypto/clmul.h  |   1 +
+ include/crypto/clmul.h                   |  83 ++++++++++
+ include/qemu/cpuid.h                     |   3 +
+ target/arm/tcg/vec_internal.h            |  11 --
+ crypto/clmul.c                           | 112 ++++++++++++++
+ target/arm/tcg/mve_helper.c              |  16 +-
+ target/arm/tcg/vec_helper.c              | 102 ++-----------
+ target/ppc/int_helper.c                  |  64 ++++----
+ target/s390x/tcg/vec_int_helper.c        | 186 ++++++++++-------------
+ util/cpuinfo-aarch64.c                   |   4 +-
+ util/cpuinfo-i386.c                      |   1 +
+ crypto/meson.build                       |   9 +-
+ 17 files changed, 425 insertions(+), 254 deletions(-)
+ create mode 100644 host/include/aarch64/host/crypto/clmul.h
+ create mode 100644 host/include/generic/host/crypto/clmul.h
+ create mode 100644 host/include/i386/host/crypto/clmul.h
+ create mode 100644 host/include/x86_64/host/crypto/clmul.h
+ create mode 100644 include/crypto/clmul.h
+ create mode 100644 crypto/clmul.c
+
 -- 
 2.34.1
 
