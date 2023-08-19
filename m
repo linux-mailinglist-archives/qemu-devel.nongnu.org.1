@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD3878180C
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB3B78180D
 	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 09:35:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXGSy-00047U-SD; Sat, 19 Aug 2023 03:33:48 -0400
+	id 1qXGTl-0004FE-Ey; Sat, 19 Aug 2023 03:34:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qXGSv-00047M-4P
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 03:33:45 -0400
+ id 1qXGTj-0004F3-C1
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 03:34:35 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qXGSr-0004dI-NB
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 03:33:44 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qXGTf-0004gK-Pj
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 03:34:34 -0400
 Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxyepOcOBkoxkaAA--.44063S3;
- Sat, 19 Aug 2023 15:33:34 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxxPCFcOBkpxkaAA--.54405S3;
+ Sat, 19 Aug 2023 15:34:29 +0800 (CST)
 Received: from [10.20.42.239] (unknown [10.20.42.239])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Ax3c5NcOBk7jReAA--.34424S3; 
- Sat, 19 Aug 2023 15:33:33 +0800 (CST)
-Subject: Re: [PATCH v2 1/8] target/loongarch: Log I/O write accesses to CSR
- registers
+ AQAAf8DxDc+FcOBk9DReAA--.34086S3; 
+ Sat, 19 Aug 2023 15:34:29 +0800 (CST)
+Subject: Re: [PATCH v2 2/8] target/loongarch: Remove duplicated disas_set_info
+ assignment
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Huacai Chen <chenhuacai@loongson.cn>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, Jiajie Chen <c@jia.je>
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, Jiajie Chen
+ <c@jia.je>, Richard Henderson <richard.henderson@linaro.org>
 References: <20230818172016.24504-1-philmd@linaro.org>
- <20230818172016.24504-2-philmd@linaro.org>
+ <20230818172016.24504-3-philmd@linaro.org>
 From: gaosong <gaosong@loongson.cn>
-Message-ID: <15174b0e-6fab-2c96-95e7-f06b3ce91fa8@loongson.cn>
-Date: Sat, 19 Aug 2023 15:33:33 +0800
+Message-ID: <80fec397-74e7-8faf-e0cf-c2b2cc06810a@loongson.cn>
+Date: Sat, 19 Aug 2023 15:34:29 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20230818172016.24504-2-philmd@linaro.org>
+In-Reply-To: <20230818172016.24504-3-philmd@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Ax3c5NcOBk7jReAA--.34424S3
+X-CM-TRANSID: AQAAf8DxDc+FcOBk9DReAA--.34086S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrur17KryUuw1UAr4xAFWDtrc_yoWfKrX_X3
- WfAr90kryUuw1S9a1IvF98Aw1rJF48GFnakFyUXrs7G343Xan5Aw40q3Z3C3WYvr4xuF13
- Z3srJr15Cr1j9osvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbxkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8r9N3UU
- UUU==
+X-Coremail-Antispam: 1Uk129KBj93XoW7urWxAF47XF1xAryUKr1DCFX_yoW8JFyfpr
+ Zxua4UtFW8J3ykZw1kW34rXFyDur17Gr429a17Kr97Cw13XryxWF18ta9FyF1DWayxCF12
+ gF1rC3WUZa15JFbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAF
+ wI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7tx6
+ UUUUU
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: -53
@@ -85,27 +86,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 在 2023/8/19 上午1:20, Philippe Mathieu-Daudé 写道:
-> Various CSR registers have Read/Write fields. We might
-> want to see guest trying to change such registers.
+> Commit 228021f05e ("target/loongarch: Add core definition") sets
+> disas_set_info to loongarch_cpu_disas_set_info. Probably due to
+> a failed git-rebase, commit ca61e75071 ("target/loongarch: Add gdb
+> support") also sets it to the same value. Remove the duplication.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/loongarch/cpu.c | 2 ++
->   1 file changed, 2 insertions(+)
+>   target/loongarch/cpu.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
 > diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index ad93ecac92..7107968699 100644
+> index 7107968699..dc617be36f 100644
 > --- a/target/loongarch/cpu.c
 > +++ b/target/loongarch/cpu.c
-> @@ -544,6 +544,8 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->   static void loongarch_qemu_write(void *opaque, hwaddr addr,
->                                    uint64_t val, unsigned size)
->   {
-> +    qemu_log_mask(LOG_UNIMP, "[%s]: Unimplemented reg 0x%" HWADDR_PRIx "\n",
-> +                  __func__, addr);
->   }
->   
->   static uint64_t loongarch_qemu_read(void *opaque, hwaddr addr, unsigned size)
+> @@ -723,7 +723,6 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+>       cc->disas_set_info = loongarch_cpu_disas_set_info;
+>       cc->gdb_read_register = loongarch_cpu_gdb_read_register;
+>       cc->gdb_write_register = loongarch_cpu_gdb_write_register;
+> -    cc->disas_set_info = loongarch_cpu_disas_set_info;
+>       cc->gdb_num_core_regs = 35;
+>       cc->gdb_core_xml_file = "loongarch-base64.xml";
+>       cc->gdb_stop_before_watchpoint = true;
 > 
 
 Reviewed-by: Song Gao <gaosong@loongson.cn>
