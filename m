@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40BE2781630
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 03:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29704781638
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 03:04:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXAMJ-0008Qz-Aj; Fri, 18 Aug 2023 21:02:31 -0400
+	id 1qXAMK-0008Rh-7t; Fri, 18 Aug 2023 21:02:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXAMG-0008QG-T2
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:28 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qXAMI-0008QV-F8
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:30 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXAME-0007LJ-Nm
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:28 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bf3a2f44ffso9956005ad.1
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 18:02:25 -0700 (PDT)
+ id 1qXAMG-0007LS-5K
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 21:02:30 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1bddac1b7bfso10763355ad.0
+ for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 18:02:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692406945; x=1693011745;
+ d=linaro.org; s=google; t=1692406946; x=1693011746;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u46/76awb7qaVCGpS1Wp9lBTQhA5OFbmzjWjo/GEWhA=;
- b=kql0IMv2Yow40XiBFqkHQpHh0ydvj/vs9ypV8Z/oQY4Ivg9SgyQvoVxYNN4BpJnGn3
- 1VZo/s8wB3fBVFZXAm8zXZaI17twWZ4cs2oHwDrwoSih59Gj3TK27SzLsk8/Q4rKBHCD
- rrtCzFSYL4XgFk/VUHSoKuu0MleW8/CAiMms0dI2n5M3Zj9rSnCZDqm9GgSLckzqW2J5
- nWrfiuRTuZGY3vGg0Nl8WGhpCt41OL+zLFTH6B13ZcCoCKAeaus5ixWwv+38wGYrtatp
- esXydpEWV6yRwuSGTNYDpLIlYrGcP8UXNC9OenivTpsbfIRpUZWfeb5DE3GLY+UknZYS
- fwsQ==
+ bh=BZh7KEWKFGt6A4dyVK13WHinjbZLYVQb3GflKbX48PQ=;
+ b=nHSf3lhu49Z5FSGNDBnw6e94UBjSAzSjIS5SOkXLdo9wknKm4VR+2GUcMsCUmj99z7
+ FXHp2/FN7gzeM3cZ3Nybkj8vcBRktmL6knVPrLujnfgUtmLjvkeTfj053FfaY2ussB1a
+ 0iSW1ydYc5Uv/iWrQIOMEknhrTJZBph5YV5k7cDf4GQyIqzKgzaaQbkdWIk49mt3xx4Z
+ uWAWdswlGicEQLSPdPJiXgb6SEMrTnOkvsYlT83Qmgas/G80cTcfYZodjQGQa9fZFBgF
+ xugCMhQ/Ox2SYXD3GdxvWBn315sZxc1w5YtTssgEHiKlzfXO1KUV+RrcmLRKfpLRRWIO
+ lUNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692406945; x=1693011745;
+ d=1e100.net; s=20221208; t=1692406946; x=1693011746;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u46/76awb7qaVCGpS1Wp9lBTQhA5OFbmzjWjo/GEWhA=;
- b=ZuntxOqI4rxRMZyxmhd/vIFzycMnoEm4m+JSi5BiX1IRipj1bWHe/vZ6Bx6n4XaphH
- AaT7n5/DUehb1ti7fwdFO1mrD5aZLZXeqro5DLPnwESrC8lqs9U26bJ1TQik+7yufT4M
- v0WxFZuo/EZvKs/HI0S3eTKETBVlIdRT4CE9j5Py7xJi0l8LrKnTjsJgyX+/R8pT5lAU
- sfRw43ZJkivwmZ+CD/ay/dUJ1/g802e70CErmDXPJJOkF61zcyPEyZCqAhLx2MGbQ0dX
- 0Lw9pbOwTEgqdcqbKd/XrVtTGUp7bvvjatwvJQpuJY6+scuda3SfRMy1vVT3D+AP/VHX
- ULVA==
-X-Gm-Message-State: AOJu0YwCi1l8S4Si+N5v83IZKXfqQBTWPwAGZU6vXF4vaj3UZusiNqaL
- R2DYnhkcuxK9nPPzfzr5jbcp92slR5w15622lPk=
-X-Google-Smtp-Source: AGHT+IFoRQPJOVUSNOFTpRedvWfaRZu9ZiGhMdXwUWr+GTXBP61RUAMfgKNgFZOqV3msFoPqO8bJOQ==
-X-Received: by 2002:a17:903:22cd:b0:1bd:a50a:e2d0 with SMTP id
- y13-20020a17090322cd00b001bda50ae2d0mr946722plg.66.1692406944900; 
- Fri, 18 Aug 2023 18:02:24 -0700 (PDT)
+ bh=BZh7KEWKFGt6A4dyVK13WHinjbZLYVQb3GflKbX48PQ=;
+ b=Hv9VEYrBAf9jNvPBHNTQ//WKl5G+bJWuD8Zv+QrNIQt0ayZ0ktzhThjLKQNw4FdVg5
+ hwwJyQ8ZJtq6oLnNp9J3du8qxkV11nTcDas/7GfAOLkmAK9KGJJBYWsuozZNz9BURPmP
+ 759Juo9Fma2cQ6o6O1Te7DyDHyDuUThAMIIc59yrGjGRaDB0g4dzg6jZ7TrGFQuMkDYg
+ OPMrh0hX4VqcU7fs9N61FoGCp4uHfl/So8VgOn1xEt4Glr5fF8Rpfce7dFmxdZaxsf6V
+ wehJcyR2HSHzttzQIP8SXvqEsasQQ0xheJGSUx6u0opytyc//kC6cMFtGbO8BynRfZCL
+ dNFg==
+X-Gm-Message-State: AOJu0YwL0tYFQo6rA/mAsvOmMpHNNqzVm3kNviy1gVBToZB5edStul8E
+ 49Xm3TahYF+VGOCmBhkCXbgx3n3/SI4g4NxqJnY=
+X-Google-Smtp-Source: AGHT+IGvQHvmWbHuOFGG3mjYrRbrZ9AcoMO/tiE8RTnhqBlszrcb3TYfda/C7TpFdGfHU8DQUKwz6Q==
+X-Received: by 2002:a17:903:44e:b0:1bf:3fe5:5e71 with SMTP id
+ iw14-20020a170903044e00b001bf3fe55e71mr1040104plb.6.1692406945784; 
+ Fri, 18 Aug 2023 18:02:25 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
  by smtp.gmail.com with ESMTPSA id
- b13-20020a170902d50d00b001b87bedcc6fsm2372019plg.93.2023.08.18.18.02.24
+ b13-20020a170902d50d00b001b87bedcc6fsm2372019plg.93.2023.08.18.18.02.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 18:02:24 -0700 (PDT)
+ Fri, 18 Aug 2023 18:02:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	ardb@kernel.org
-Subject: [PATCH v2 05/18] crypto: Add generic 16-bit carry-less multiply
- routines
-Date: Fri, 18 Aug 2023 18:02:05 -0700
-Message-Id: <20230819010218.192706-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 06/18] target/arm: Use clmul_16* routines
+Date: Fri, 18 Aug 2023 18:02:06 -0700
+Message-Id: <20230819010218.192706-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230819010218.192706-1-richard.henderson@linaro.org>
 References: <20230819010218.192706-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,66 +92,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use generic routines for 16-bit carry-less multiply.
+Remove our local version of pmull_w.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/crypto/clmul.h | 16 ++++++++++++++++
- crypto/clmul.c         | 21 +++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ target/arm/tcg/vec_internal.h |  6 ------
+ target/arm/tcg/mve_helper.c   |  8 ++------
+ target/arm/tcg/vec_helper.c   | 13 -------------
+ 3 files changed, 2 insertions(+), 25 deletions(-)
 
-diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
-index 153b5e3057..c7ad28aa85 100644
---- a/include/crypto/clmul.h
-+++ b/include/crypto/clmul.h
-@@ -38,4 +38,20 @@ uint64_t clmul_8x4_odd(uint64_t, uint64_t);
-  */
- uint64_t clmul_8x4_packed(uint32_t, uint32_t);
+diff --git a/target/arm/tcg/vec_internal.h b/target/arm/tcg/vec_internal.h
+index c4afba6d9f..3ca1b94ccf 100644
+--- a/target/arm/tcg/vec_internal.h
++++ b/target/arm/tcg/vec_internal.h
+@@ -219,12 +219,6 @@ int16_t do_sqrdmlah_h(int16_t, int16_t, int16_t, bool, bool, uint32_t *);
+ int32_t do_sqrdmlah_s(int32_t, int32_t, int32_t, bool, bool, uint32_t *);
+ int64_t do_sqrdmlah_d(int64_t, int64_t, int64_t, bool, bool);
  
-+/**
-+ * clmul_16x2_even:
-+ *
-+ * Perform two 16x16->32 carry-less multiplies.
-+ * The odd words of the inputs are ignored.
-+ */
-+uint64_t clmul_16x2_even(uint64_t, uint64_t);
-+
-+/**
-+ * clmul_16x2_odd:
-+ *
-+ * Perform two 16x16->32 carry-less multiplies.
-+ * The even bytes of the inputs are ignored.
-+ */
-+uint64_t clmul_16x2_odd(uint64_t, uint64_t);
-+
- #endif /* CRYPTO_CLMUL_H */
-diff --git a/crypto/clmul.c b/crypto/clmul.c
-index 82d873fee5..2c87cfbf8a 100644
---- a/crypto/clmul.c
-+++ b/crypto/clmul.c
-@@ -58,3 +58,24 @@ uint64_t clmul_8x4_packed(uint32_t n, uint32_t m)
- {
-     return clmul_8x4_even_int(unpack_8_to_16(n), unpack_8_to_16(m));
+-/*
+- * 16 x 16 -> 32 vector polynomial multiply where the inputs are
+- * in the low 16 bits of each 32-bit element
+- */
+-uint64_t pmull_w(uint64_t op1, uint64_t op2);
+-
+ /**
+  * bfdotadd:
+  * @sum: addend
+diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
+index 96ddfb4b3a..c666a96ba1 100644
+--- a/target/arm/tcg/mve_helper.c
++++ b/target/arm/tcg/mve_helper.c
+@@ -985,14 +985,10 @@ DO_2OP_L(vmulltuw, 1, 4, uint32_t, 8, uint64_t, DO_MUL)
+  * Polynomial multiply. We can always do this generating 64 bits
+  * of the result at a time, so we don't need to use DO_2OP_L.
+  */
+-#define VMULLPW_MASK 0x0000ffff0000ffffULL
+-#define DO_VMULLPBW(N, M) pmull_w((N) & VMULLPW_MASK, (M) & VMULLPW_MASK)
+-#define DO_VMULLPTW(N, M) DO_VMULLPBW((N) >> 16, (M) >> 16)
+-
+ DO_2OP(vmullpbh, 8, uint64_t, clmul_8x4_even)
+ DO_2OP(vmullpth, 8, uint64_t, clmul_8x4_odd)
+-DO_2OP(vmullpbw, 8, uint64_t, DO_VMULLPBW)
+-DO_2OP(vmullptw, 8, uint64_t, DO_VMULLPTW)
++DO_2OP(vmullpbw, 8, uint64_t, clmul_16x2_even)
++DO_2OP(vmullptw, 8, uint64_t, clmul_16x2_odd)
+ 
+ /*
+  * Because the computation type is at least twice as large as required,
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index cd630ff905..5def86b573 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -2029,19 +2029,6 @@ void HELPER(gvec_pmull_q)(void *vd, void *vn, void *vm, uint32_t desc)
+     clear_tail(d, opr_sz, simd_maxsz(desc));
  }
-+
-+uint64_t clmul_16x2_even(uint64_t n, uint64_t m)
-+{
-+    uint64_t r = 0;
-+
-+    n &= 0x0000ffff0000ffffull;
-+    m &= 0x0000ffff0000ffffull;
-+
-+    for (int i = 0; i < 16; ++i) {
-+        uint64_t mask = (n & 0x0000000100000001ull) * 0xffffffffull;
-+        r ^= m & mask;
-+        n >>= 1;
-+        m <<= 1;
-+    }
-+    return r;
-+}
-+
-+uint64_t clmul_16x2_odd(uint64_t n, uint64_t m)
-+{
-+    return clmul_16x2_even(n >> 16, m >> 16);
-+}
+ 
+-uint64_t pmull_w(uint64_t op1, uint64_t op2)
+-{
+-    uint64_t result = 0;
+-    int i;
+-    for (i = 0; i < 16; ++i) {
+-        uint64_t mask = (op1 & 0x0000000100000001ull) * 0xffffffff;
+-        result ^= op2 & mask;
+-        op1 >>= 1;
+-        op2 <<= 1;
+-    }
+-    return result;
+-}
+-
+ void HELPER(neon_pmull_h)(void *vd, void *vn, void *vm, uint32_t desc)
+ {
+     int hi = simd_data(desc);
 -- 
 2.34.1
 
