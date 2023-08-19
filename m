@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EAF7818A0
-	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 11:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5827818B1
+	for <lists+qemu-devel@lfdr.de>; Sat, 19 Aug 2023 11:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXIZw-0008DB-G7; Sat, 19 Aug 2023 05:49:08 -0400
+	id 1qXIZu-0008Bh-Fv; Sat, 19 Aug 2023 05:49:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qXIZU-0007ut-1D
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:48:45 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qXIZZ-000808-CT
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:48:51 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qXIZR-0004H0-Ay
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:48:39 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3198d2745feso1477214f8f.1
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 02:48:36 -0700 (PDT)
+ id 1qXIZU-0004Hd-MT
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 05:48:42 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fee06efd6bso3082345e9.0
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 02:48:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692438515; x=1693043315;
+ d=gmail.com; s=20221208; t=1692438519; x=1693043319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HCSfwfk5J8aV9f6C+8dP8rhVQliK6Ou3TFJHqD6MEtM=;
- b=ewGnM/vPEBE6AFXNnT09XxqlMfyHCC7LhF7nbqJL6s4fbFO3Yf1JkePnBtmlDiwB1+
- tXVvJ/ndie5my1ivIJwTnorfPgPitAlbEx+C+JDCvNs5T3vHdfKHfvxcXTkKX4LRASmf
- kQ5ZfEaosCM1eyyKx2BPka9u27uIEkW2du9Uy5Ff/DmU7BUo6nG91+d1oaahbvWUtWyR
- EmaTnTweCTLOENNM04ca1KmTqtrnpiZ14Ha1k81WU9y7tfdWXRrrHr/4e0g6j79+PEQ7
- QbZbkkHP8Ml54exm937GqNNa2jI8z3MnOfO9nEdZnMkn46Y+bAGgegYVauSHwEayCNM/
- 0+cQ==
+ bh=+ssWpB1TdSRberSIq+NHyAWC3tlwKWsnTa+/5C/DIew=;
+ b=IH5fns7DEmJIqMNrQC/mBIKSArzlDJw+ncy+MgfhjoD5cbdjMKWFsHi2w81dtuzagc
+ WnXaZCnr5S8EjF71aj9hwkGPrO9usiLf+XOq6n5TiE5rOabVDqYt4gfQ/f5MEKLGjlcQ
+ P2NF8yTEUOl7APRdQtJwiLsr9HOVY5vqMcAd6UtCiGkCHdfmF0yZHPeZAJDDETBAh4iP
+ o4JlIAX0VB5Vl+uz/u+6av6zJP/5k1XUhhVsoF16UVp2hxgjeJIqGOXJjTV3wBxz26VF
+ JmD0fIjQygfdBv+KNaOHkmdv58FOiLm/qLoEgVNN3w58iI4Cgu4Li/tX8aRt4Sx4Ygue
+ cwoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692438515; x=1693043315;
+ d=1e100.net; s=20221208; t=1692438519; x=1693043319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HCSfwfk5J8aV9f6C+8dP8rhVQliK6Ou3TFJHqD6MEtM=;
- b=O9GA4aLb2O6JTd7iV5zdnSHEjFtC5nVat8c0YxEDiqXsaijkBk3lYIxSbAUmr1eKyH
- 0r8HCwqwRrOBd59ny4B7Vg1iF8sl9Jkx0kJOelQrwWpQldvvupso98RuYzQQH8lHdSgG
- p98wQxt6F/5pOEltMr2PJVM/pFSAFjjyP83QszM8/2/KcLpMjJfU5Pq369K5GXiT0Qjx
- bQSMN/FbvuZLNOQKLNfqxqyvqpt8ls7IkgGy6KKYR9baEjQ71ntsSf/+pbIzq5Zl2bmp
- q4yLyvK+3KFnCUc3D4Ap9Jvyuz6HrX87mRp+0fqYwHcFfNZBLclhanpgO9JQcZmwA8Jt
- MrPQ==
-X-Gm-Message-State: AOJu0YyEFaIUiEheCof2a192Vv4ClqDicEup4qWFDISYTpUi/VErINR0
- PoW2AyI9XwsGyzPBQ7QY7VwAgovXdqY=
-X-Google-Smtp-Source: AGHT+IHIATPMcZRxARaz4kzhFpdzFBkIJoMJH9v2d6wHRQQHMAtkZGQy4K1my7gQgSATNWPfuP0EtA==
-X-Received: by 2002:a5d:4908:0:b0:314:11fe:c72e with SMTP id
- x8-20020a5d4908000000b0031411fec72emr1136032wrq.46.1692438515468; 
- Sat, 19 Aug 2023 02:48:35 -0700 (PDT)
+ bh=+ssWpB1TdSRberSIq+NHyAWC3tlwKWsnTa+/5C/DIew=;
+ b=ej1FgI33LrJFpXqT4eF05HD+SavN98E3fDLUuNzn/Kxn6HTLOsX3/v+1cyr3MmY9RZ
+ tDt1UUtuHtrfyOmrFfpN31lPwzSA2NJxq3qpIZcAoG5kSBcdX5VTg2tU0QzXktUk6dcH
+ mhkHpr+gSXUAF3Pge4+xjIk6x4dvbEEszXzTbXMDvEIaDd6bOt9UUrn3XOT5ujA31HG/
+ TQLtafGlygn9GIzBw4CoUF0nvtEJ0excV10MkbkTOYF8tQ3YGqFOIO3WQ3reevg3v/hC
+ QRyIg0ECDqxoK8LJdN6/OnqEi3YuViW2WN/0e8/dzqm+iA8afAsZPQ0vo5bcnJ1AqFQ+
+ I1Pg==
+X-Gm-Message-State: AOJu0YzX5jrT2qsIogXmji2o+B7VjghRKCqOQYydSoUzNpY8M10hT81F
+ UtEu6ZpC2Zitxp5jDIOER1gPhu0gsEM=
+X-Google-Smtp-Source: AGHT+IEdqpPAOVcVMkwpnAPSvNz6ER4gY0v6cBGEGCzA0Dw/+7rhdV+bPZOwvRmMsOH81qLl46qXCw==
+X-Received: by 2002:adf:dcc1:0:b0:314:1096:6437 with SMTP id
+ x1-20020adfdcc1000000b0031410966437mr3367362wrm.19.1692438519098; 
+ Sat, 19 Aug 2023 02:48:39 -0700 (PDT)
 Received: from karim.my.domain ([197.39.34.171])
  by smtp.gmail.com with ESMTPSA id
- o18-20020adfead2000000b003143b14848dsm5617216wrn.102.2023.08.19.02.48.32
+ o18-20020adfead2000000b003143b14848dsm5617216wrn.102.2023.08.19.02.48.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 19 Aug 2023 02:48:35 -0700 (PDT)
+ Sat, 19 Aug 2023 02:48:38 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+Cc: imp@bsdimp.com, Kyle Evans <kevans@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 04/22] Introduce freebsd/os-misc.h to the source tree
-Date: Sat, 19 Aug 2023 11:47:48 +0200
-Message-Id: <20230819094806.14965-5-kariem.taha2.7@gmail.com>
+Subject: [PATCH 05/22] Implement shm_open2(2) system call
+Date: Sat, 19 Aug 2023 11:47:49 +0200
+Message-Id: <20230819094806.14965-6-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -93,52 +93,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Kyle Evans <kevans@FreeBSD.org>
 
-To preserve the copyright notice and help with the 'Author' info for
-subsequent changes to the file.
-
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-misc.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
- create mode 100644 bsd-user/freebsd/os-misc.h
+ bsd-user/freebsd/os-misc.h    | 52 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 13 +++++++++
+ 2 files changed, 65 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-misc.h b/bsd-user/freebsd/os-misc.h
-new file mode 100644
-index 0000000000..8436ccb2f7
---- /dev/null
+index 8436ccb2f7..993e4598f9 100644
+--- a/bsd-user/freebsd/os-misc.h
 +++ b/bsd-user/freebsd/os-misc.h
-@@ -0,0 +1,28 @@
-+/*
-+ *  miscellaneous FreeBSD system call shims
-+ *
-+ *  Copyright (c) 2013-14 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
+@@ -24,5 +24,57 @@
+ #include <sys/random.h>
+ #include <sched.h>
+ 
++int shm_open2(const char *path, int flags, mode_t mode, int shmflags,
++    const char *);
 +
-+#ifndef OS_MISC_H
-+#define OS_MISC_H
++#if defined(__FreeBSD_version) && __FreeBSD_version >= 1300048
++/* shm_open2(2) */
++static inline abi_long do_freebsd_shm_open2(abi_ulong pathptr, abi_ulong flags,
++    abi_long mode, abi_ulong shmflags, abi_ulong nameptr)
++{
++    int ret;
++    void *uname, *upath;
 +
-+#include <sys/cpuset.h>
-+#include <sys/random.h>
-+#include <sched.h>
++#ifdef SHM_ANON
++#define SHM_PATH(p) (p) == SHM_ANON ? (p) : path(p)
++    if (pathptr == (uintptr_t)SHM_ANON) {
++        upath = SHM_ANON;
++    } else
++#else
++#define SHM_PATH(p) path(p)
++#endif
++    {
++        upath = lock_user_string(pathptr);
++        if (upath == NULL) {
++            return -TARGET_EFAULT;
++        }
++    }
 +
++    uname = NULL;
++    if (nameptr != 0) {
++        uname = lock_user_string(nameptr);
++        if (uname == NULL) {
++            unlock_user(upath, pathptr, 0);
++            return -TARGET_EFAULT;
++        }
++    }
++    ret = get_errno(shm_open2(SHM_PATH(upath),
++                target_to_host_bitmask(flags, fcntl_flags_tbl), mode,
++                target_to_host_bitmask(shmflags, shmflag_flags_tbl), uname));
 +
-+#endif /* OS_MISC_H */
++#ifdef SHM_ANON
++    if (upath != SHM_ANON)
++#endif
++    {
++        unlock_user(upath, pathptr, 0);
++    }
++    if (uname != NULL) {
++        unlock_user(uname, nameptr, 0);
++    }
++    return ret;
++}
++#undef SHM_PATH
++#endif /* __FreeBSD_version >= 1300048 */
++
+ 
+ #endif /* OS_MISC_H */
+diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
+index 2224a280ea..b4311db578 100644
+--- a/bsd-user/freebsd/os-syscall.c
++++ b/bsd-user/freebsd/os-syscall.c
+@@ -33,9 +33,13 @@
+ #include "signal-common.h"
+ #include "user/syscall-trace.h"
+ 
++/* BSD independent syscall shims */
+ #include "bsd-file.h"
+ #include "bsd-proc.h"
+ 
++/* *BSD dependent syscall shims */
++#include "os-misc.h"
++
+ /* I/O */
+ safe_syscall3(int, open, const char *, path, int, flags, mode_t, mode);
+ safe_syscall4(int, openat, int, fd, const char *, path, int, flags, mode_t,
+@@ -482,6 +486,15 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_undelete(arg1);
+         break;
+ 
++        /*
++         * Memory management system calls.
++         */
++#if defined(__FreeBSD_version) && __FreeBSD_version >= 1300048
++    case TARGET_FREEBSD_NR_shm_open2: /* shm_open2(2) */
++        ret = do_freebsd_shm_open2(arg1, arg2, arg3, arg4, arg5);
++        break;
++#endif
++
+         /*
+          * sys{ctl, arch, call}
+          */
 -- 
 2.40.0
 
