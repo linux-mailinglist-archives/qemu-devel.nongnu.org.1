@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80529782004
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 22:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BED782007
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 22:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXpHY-0004yk-O3; Sun, 20 Aug 2023 16:44:20 -0400
+	id 1qXpSQ-0000lK-41; Sun, 20 Aug 2023 16:55:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXpHV-0004xF-OM
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 16:44:17 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXpHT-0007kk-9l
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 16:44:17 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6bca5d6dcedso2202182a34.1
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 13:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692564254; x=1693169054;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UN+H+/GfTniCDQqNqoi86BdHI3S12YJ9y5ScYnnODH0=;
- b=CxCjfDjMg+WEGWFKC6MY8TWAL6WjSzrsbcDmjQj6XF3hi4Qgsz+pqWv2q4/Iew0qIQ
- 8XJ6qUyQc6HrD6oaN8Ydee+6TLmA2X74u93dipKhxxdjbZWAo7VQIl0f2/F3AU0igFj+
- 7OUQ1HrUavDwPvDXOmurOLrKlU5uc/qhBGn0o/sIMWTO/FT1vEjS4hzme05JooO9HApc
- 1TGnGeZYkEKBwGmRRi6rUF7ShYqLpehFJypubUxPb6WJpBPdbMYAVF3KgJfMuUPHmcCI
- 46FMX6miXNnPn8SZIro+H32dhY8/XtU1UIFyhFtFKpL6/hp//xW4uCaxRU4IK9IZOkFl
- ChQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692564254; x=1693169054;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UN+H+/GfTniCDQqNqoi86BdHI3S12YJ9y5ScYnnODH0=;
- b=lK4kxo+U8UqW42UclF+t7mhGY5fbo2OtPqx4GVH4nXVQf05gCSEhRJjeVqKn8hJRym
- G8Mtyt15R3yXYIMath4OCU4iZGx/qfBhvM3i57xcPac76IT6J5u1TcjKfdiWBp2x5OEI
- cztvxygwPbzFGBLCemOGZii5dthm5sCguXu4LZLW8PbbWvGce1SAojEaZUeDlSUdmoD4
- wcWSCVvNZvDMIBfytF0YRdX6tY3nYGcjYvpx1pc3jXhr0EjWRlAT4qHliKdUo0PiwHJZ
- d1qTvBvSEysk+cW0tt+elKU8qRcumKFMS35/oM9IU8N3rIgBBYazL3Wfg0TVCNVWz6uD
- b6uQ==
-X-Gm-Message-State: AOJu0YyS0V/kjp06rYcWSZyUFvU6p3wcl/g0X9NvUnzm/PWiTPElL11X
- mvBbDC9GpJ2wfYJ62IFMp9sKC19NBYVudCEdWRA=
-X-Google-Smtp-Source: AGHT+IEusVR/EhK3aTYp4l+/i6Pv9XNBtaX/FqCN1ZkZzXp6RoSZd+xBApkr/gx85+jhZglAbyx77w==
-X-Received: by 2002:a05:6870:b524:b0:1bb:a227:7008 with SMTP id
- v36-20020a056870b52400b001bba2277008mr6454963oap.3.1692564253964; 
- Sun, 20 Aug 2023 13:44:13 -0700 (PDT)
-Received: from stoup.. ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
- by smtp.gmail.com with ESMTPSA id
- c7-20020aa78c07000000b0064fde7ae1ffsm1430149pfd.38.2023.08.20.13.44.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Aug 2023 13:44:13 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXpSO-0000lC-KL
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 16:55:32 -0400
+Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXpSL-0001Uy-TI
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 16:55:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
+ t=1692564924; bh=vyeKvbhdqvNswqiakBT/p7kzRar2+XJHlJtS+rHOV8E=;
+ h=From:To:Subject:cc:Date:From;
+ b=XFfis1KLYz7RRq75DMWtC1h0LLOdisXGX3ejA+C2+zEfVrM6f3wyFhxPGr7ln/a80
+ ocv/8G/kjkAZvFi2Xr0sktcKPr5H0OM1bpq/0hTIV4lW0KbrWC3rgkfpU8RyfYF6b1
+ oPU9iivx33RdZeEuxL8m1h6pWshjkC2OLyUGIY2f/IPhNTySrYj45CFgu2W+tf0kiD
+ /9LtwoZTqYzHAKMPJOljCjISiLx5sqhTtE1sd4lGnxHEk/rlBFMh6kLfr7dKcObaKA
+ 0UmgYNfB27sIkuEvrGgYm+SLO0mRgSVEv3J8YSPHeY/ElhiJkTOLds93kB/IfGAZ25
+ Wr9goW1Y1K9Wg==
+Received: from localhost (localhost [127.0.0.1])
+ by elaine.keithp.com (Postfix) with ESMTP id ED7DB3F20D83;
+ Sun, 20 Aug 2023 13:55:24 -0700 (PDT)
+X-Virus-Scanned: Debian amavis at keithp.com
+Received: from elaine.keithp.com ([127.0.0.1])
+ by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
+ id Xqta2Ek163F1; Sun, 20 Aug 2023 13:55:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
+ t=1692564924; bh=vyeKvbhdqvNswqiakBT/p7kzRar2+XJHlJtS+rHOV8E=;
+ h=From:To:Subject:cc:Date:From;
+ b=XFfis1KLYz7RRq75DMWtC1h0LLOdisXGX3ejA+C2+zEfVrM6f3wyFhxPGr7ln/a80
+ ocv/8G/kjkAZvFi2Xr0sktcKPr5H0OM1bpq/0hTIV4lW0KbrWC3rgkfpU8RyfYF6b1
+ oPU9iivx33RdZeEuxL8m1h6pWshjkC2OLyUGIY2f/IPhNTySrYj45CFgu2W+tf0kiD
+ /9LtwoZTqYzHAKMPJOljCjISiLx5sqhTtE1sd4lGnxHEk/rlBFMh6kLfr7dKcObaKA
+ 0UmgYNfB27sIkuEvrGgYm+SLO0mRgSVEv3J8YSPHeY/ElhiJkTOLds93kB/IfGAZ25
+ Wr9goW1Y1K9Wg==
+Received: from keithp.com (unknown [98.97.112.104])
+ by elaine.keithp.com (Postfix) with ESMTPSA id 0F1D83F2069A;
+ Sun, 20 Aug 2023 13:55:24 -0700 (PDT)
+Received: by keithp.com (Postfix, from userid 1000)
+ id 3EB021E601E7; Sun, 20 Aug 2023 13:55:25 -0700 (PDT)
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
-	imp@bsdimp.com,
-	kariem.taha2.7@gmail.com
-Subject: [PATCH 4/4] linux-user: Track shm regions with an interval tree
-Date: Sun, 20 Aug 2023 13:44:08 -0700
-Message-Id: <20230820204408.327348-5-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230820204408.327348-1-richard.henderson@linaro.org>
-References: <20230820204408.327348-1-richard.henderson@linaro.org>
+Subject: Funny results with long double denorms on m68k
+cc: Laurent Vivier <laurent@vivier.eu>
+Date: Sun, 20 Aug 2023 13:55:24 -0700
+Message-ID: <87bkf1l9hf.fsf@keithp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
+ helo=elaine.keithp.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,176 +74,129 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Keith Packard <keithp@keithp.com>
+From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the fixed size shm_regions[] array.
-Remove references when other mappings completely remove
-or replace a region.
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/mmap.c | 81 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 53 insertions(+), 28 deletions(-)
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 44116c014b..8eaf57b208 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -24,18 +24,11 @@
- #include "user-internals.h"
- #include "user-mmap.h"
- #include "target_mman.h"
-+#include "qemu/interval-tree.h"
- 
- static pthread_mutex_t mmap_mutex = PTHREAD_MUTEX_INITIALIZER;
- static __thread int mmap_lock_count;
- 
--#define N_SHM_REGIONS  32
--
--static struct shm_region {
--    abi_ulong start;
--    abi_ulong size;
--    bool in_use;
--} shm_regions[N_SHM_REGIONS];
--
- void mmap_lock(void)
- {
-     if (mmap_lock_count++ == 0) {
-@@ -73,6 +66,44 @@ void mmap_fork_end(int child)
-     }
- }
- 
-+/* Protected by mmap_lock. */
-+static IntervalTreeRoot shm_regions;
-+
-+static void shm_region_add(abi_ptr start, abi_ptr last)
-+{
-+    IntervalTreeNode *i = g_new0(IntervalTreeNode, 1);
-+
-+    i->start = start;
-+    i->last = last;
-+    interval_tree_insert(i, &shm_regions);
-+}
-+
-+static abi_ptr shm_region_find(abi_ptr start)
-+{
-+    IntervalTreeNode *i;
-+
-+    for (i = interval_tree_iter_first(&shm_regions, start, start); i;
-+         i = interval_tree_iter_next(i, start, start)) {
-+        if (i->start == start) {
-+            return i->last;
-+        }
-+    }
-+    return 0;
-+}
-+
-+static void shm_region_rm_complete(abi_ptr start, abi_ptr last)
-+{
-+    IntervalTreeNode *i, *n;
-+
-+    for (i = interval_tree_iter_first(&shm_regions, start, last); i; i = n) {
-+        n = interval_tree_iter_next(i, start, last);
-+        if (i->start >= start && i->last <= last) {
-+            interval_tree_remove(i, &shm_regions);
-+            g_free(i);
-+        }
-+    }
-+}
-+
- /*
-  * Validate target prot bitmask.
-  * Return the prot bitmask for the host in *HOST_PROT.
-@@ -729,6 +760,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             page_set_flags(passthrough_last + 1, last, page_flags);
-         }
-     }
-+    shm_region_rm_complete(start, last);
-  the_end:
-     trace_target_mmap_complete(start);
-     if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
-@@ -826,6 +858,7 @@ int target_munmap(abi_ulong start, abi_ulong len)
-     mmap_lock();
-     mmap_reserve_or_unmap(start, len);
-     page_set_flags(start, start + len - 1, 0);
-+    shm_region_rm_complete(start, start + len - 1);
-     mmap_unlock();
- 
-     return 0;
-@@ -915,8 +948,10 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-         new_addr = h2g(host_addr);
-         prot = page_get_flags(old_addr);
-         page_set_flags(old_addr, old_addr + old_size - 1, 0);
-+        shm_region_rm_complete(old_addr, old_addr + old_size - 1);
-         page_set_flags(new_addr, new_addr + new_size - 1,
-                        prot | PAGE_VALID | PAGE_RESET);
-+        shm_region_rm_complete(new_addr, new_addr + new_size - 1);
-     }
-     mmap_unlock();
-     return new_addr;
-@@ -1045,6 +1080,7 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
- 
-     WITH_MMAP_LOCK_GUARD() {
-         void *host_raddr;
-+        abi_ulong last;
- 
-         if (shmaddr) {
-             host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
-@@ -1066,19 +1102,14 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
-             return get_errno(-1);
-         }
-         raddr = h2g(host_raddr);
-+        last = raddr + shm_info.shm_segsz - 1;
- 
--        page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
-+        page_set_flags(raddr, last,
-                        PAGE_VALID | PAGE_RESET | PAGE_READ |
-                        (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
- 
--        for (int i = 0; i < N_SHM_REGIONS; i++) {
--            if (!shm_regions[i].in_use) {
--                shm_regions[i].in_use = true;
--                shm_regions[i].start = raddr;
--                shm_regions[i].size = shm_info.shm_segsz;
--                break;
--            }
--        }
-+        shm_region_rm_complete(raddr, last);
-+        shm_region_add(raddr, last);
-     }
- 
-     /*
-@@ -1102,23 +1133,17 @@ abi_long target_shmdt(abi_ulong shmaddr)
-     /* shmdt pointers are always untagged */
- 
-     WITH_MMAP_LOCK_GUARD() {
--        int i;
--
--        for (i = 0; i < N_SHM_REGIONS; ++i) {
--            if (shm_regions[i].in_use && shm_regions[i].start == shmaddr) {
--                break;
--            }
--        }
--        if (i == N_SHM_REGIONS) {
-+        abi_ulong last = shm_region_find(shmaddr);
-+        if (last == 0) {
-             return -TARGET_EINVAL;
-         }
- 
-         rv = get_errno(shmdt(g2h_untagged(shmaddr)));
-         if (rv == 0) {
--            abi_ulong size = shm_regions[i].size;
-+            abi_ulong size = last - shmaddr + 1;
- 
--            shm_regions[i].in_use = false;
--            page_set_flags(shmaddr, shmaddr + size - 1, 0);
-+            page_set_flags(shmaddr, last, 0);
-+            shm_region_rm_complete(shmaddr, last);
-             mmap_reserve_or_unmap(shmaddr, size);
-         }
-     }
--- 
-2.34.1
+I'm doing some testing of an fmal implementation and discovered some
+"odd" results on m68k where the emulated 80-bit FPU is generating
+results that don't match how GCC computes things. Assuming gcc is
+correct, this means there are some subtle bugs in how qemu is handling
+denorms for this platform.
 
+From=20what I can discern from examining gcc output, the 68881 80-bit
+format handles denorms differently than the 8087. It allows normal
+numbers to have an exponent field of zero -- with an explicit 1
+bit. Furthermore, denorms don't have their exponent biased by 1, the
+natural 0 value is correct.
+
+As a simple example of this issue, I've attached a sample program which
+multiplies the smallest denorm (__LDBL_DENORM_MIN__, or 0x1p-16446l) by
+the largest value (__LDBL_MAX__, or 0x1p+16383l). This should be
+0x1p-63, but qemu computes this as 0x1p-62. In raw form:
+
+           x:  0x1p+16383                 0x7ffe 0x80000000 0x00000000
+           y:  0x1p-16446                 0x0000 0x00000000 0x00000001
+   build_mul:  0x1p-63                    0x3fc0 0x80000000 0x00000000
+ runtime_mul:  0x1p-62                    0x3fc1 0x80000000 0x00000000
+
+Looking just at the exponents, we see that the runtime computed value
+has an exponent of 0x3fc1. Subtracting the bias of 0x3fff, we get -62.
+
+This particular fault comes from converting the denorm into canonical
+form in fpu/softfloat-parts.c.inc:partsN(canonicalize):
+
+        } else {
+            int shift =3D frac_normalize(p);
+            p->cls =3D float_class_normal;
+            p->exp =3D fmt->frac_shift - fmt->exp_bias - shift + 1;
+        }
+
+the extra '1' added there is the exponent bias required for standard
+denorm format values.
+
+This is only one of a number of related faults; there are similar issues
+when converting back from canonical form to 68881 form. As that involves
+complicated rounding semantics, it's a lot more difficult to figure out
+how to fix it. For instance:
+
+           x:  0x1.1p-8223                0x1fe0 0x88000000 0x00000000
+           y:  0x1.1p-8224                0x1fdf 0x88000000 0x00000000
+   build_mul:  0x1p-16446                 0x0000 0x00000000 0x00000001
+ runtime_mul:  0x0p+0                     0x0000 0x00000000 0x00000000
+
+In this case, the multiplication results in a value just larger than 1/2
+of the smallest denorm. That should round up to the smallest denorm, but
+qemu generates zero instead.
+
+=2D--------
+
+#include <stdio.h>
+#include <stdint.h>
+
+#define X       0x1p+16383l
+#define Y       0x1p-16446l
+
+static long double build_mul =3D X * Y;
+static volatile long double x =3D X;
+static volatile long double y =3D Y;
+
+static void
+dump_ld(const char *label, long double ld)
+{
+    union {
+        long double     d;
+        struct {
+            uint32_t    exp:16;
+            uint32_t    space:16;
+            uint32_t    h;
+            uint32_t    l;
+        };
+    } u;
+
+    u.d =3D ld;
+    printf("%12s: % -27La 0x%04x 0x%08x 0x%08x\n", label, u.d, u.exp, u.h, =
+u.l);
+}
+
+int main(void)
+{
+    long double runtime_mul =3D x * y;
+
+    dump_ld("x", x);
+    dump_ld("y", y);
+    dump_ld("build_mul", build_mul);
+    dump_ld("runtime_mul", runtime_mul);
+    return 0;
+}
+
+=2D-=20
+=2Dkeith
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmTifb0ACgkQ2yIaaQAA
+ABE+6RAAsYu1UQHkPWQ7MQFe8RgnuhuaPaVO4nCeHVj408zY8qC49dPvNfAqPDi+
+xy1m6EXQmGZrvPvHdcwUrr0SQ5OdD10T3WBdZEcGZ0AA0owvlL/9avWLEYmYYAAD
+j51O2VyrKo3AOjqm9ycbu/AufczpMBgg2GW05g3VbfAbpwr3AtMemaN9P2Jk83pq
+rMK0mQUx2IZjmz8dHcqdX4xVqoavL+ajB+iIsBEuCPL7VhwUemo/jTCZQYH4ZduR
+jQbolAEkdrkuJ9HpW39C/PjxTmB1YtO2evmooX5TKG2bEAlxyTJgzJyd+gp9pCRP
+PMrfNE0+b7Su98Q+QkNLUpnZJ0NDtP604bnzhogrgIhPdiiiUkfImLpfG6ViYrbC
+YOEDA+KjhPylrDEC0jkMmKgU6x+NVkheHZ5vI3iMt8bmP+teQDWMTDz4bMxretFs
+ho9tR/44J4tOkC9cTsLSndREUr65buWKv7t5mNnOSpr1mUpSsl7Zlh4MagFvc8jM
+rE6nXB8l2Z1IGqtU1HkDRjonpBK0L5OfMTSusCskXDLwbKUAUSRXzgOJz3ZvOdE6
+NYQBycq75e8zYw6iyEmGIUFj7HdWP4SwhW1jipcl/j5O1J9K+gQGgYA/bM+9pyqc
+0zit1Jh77bAEJXhK8jejIuXuykEu6He3hHTiXc9426dxDET129g=
+=Gcja
+-----END PGP SIGNATURE-----
+--=-=-=--
 
