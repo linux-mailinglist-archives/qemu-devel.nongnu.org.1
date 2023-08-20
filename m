@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CBAE781C60
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1862781C61
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:27:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXa0S-0001K2-OR; Sun, 20 Aug 2023 00:25:40 -0400
+	id 1qXa1j-0001xU-Sg; Sun, 20 Aug 2023 00:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXa0N-0001Je-Is
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:25:36 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXa1f-0001vk-Nw
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:26:57 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXa0K-0007ko-UC
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:25:34 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52683da3f5cso2678687a12.3
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:25:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXa1b-0007sE-IS
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:26:55 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4fe21e7f3d1so3332948e87.3
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692505531; x=1693110331;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692505609; x=1693110409;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IBDRJd8hg7Hz8YRoEsm4QD6D7iUoHYr9ssufWFhK4qw=;
- b=kE2ASh4HcD77N6pXE4KbdN95Hhk3PguiyU00Yr0VM1SfnDg4dMJWtR0t+/ZMEsvVgm
- bGIkcWsbMyQw1uEzY9pjsBvHciqKO6LQS5L9jSpHXXvp/7defUB4ydqku5+y9MwXVnYM
- 6oca5ZVV1+Ejh+KFwR+yIwTB7WTC86H+yGxFCP4b+t4CpT2qE5fC0AlgeziGk/7cy0Xn
- am4+ogUqN6nT18wmAnrpf+/kKAnRg4ZPmDPj+9J5JkDOcVYtYSaqcviwPUOOiYT7NjjY
- blMJMoBCPp75YYS125IyYO/zMh+lINYx8aKgRoe0/nbEAeEUpSGZSoVIpj/VBtoAMihv
- FujA==
+ bh=oZoJa1ExXgSC+HpWz3rg6pua/y98tFfgAaxhOCXdQSY=;
+ b=rI565r67fcwtgIOjBW0aFFgQqMsocZJypD2g4CL/eN0+cyAeafxhtU305XWIIn4mV8
+ O90ezJTNqTVq2YRzLkuyk/RZI8VTHsE3sKvdHt7seV8yUS/8B6Of1kj16AZKAlKkDh22
+ PtwVO7hv28VXVoYCxxtHCST1nP85o/rlpsyhm4fUB4KYPPAMAPuVW9JP/Rw0Sf6PCEB6
+ d8lE8FMFORzgH6RC3KITe6nmnGxXyDEfpE9aAf11Re3556TIO+04O05fZ2kDwcuRJ+vB
+ l0kks667nfNYsCz71/U+LzuFGQlRUUpk/2DObyNjHGZsUPaQGrW8cSv9QS/stBi+4vjg
+ 5yCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692505531; x=1693110331;
+ d=1e100.net; s=20221208; t=1692505609; x=1693110409;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=IBDRJd8hg7Hz8YRoEsm4QD6D7iUoHYr9ssufWFhK4qw=;
- b=byd9ovMw4e7IjSr3knlkh+sgruSBJy/2+YJE5b6dFeZzIRdLfFB6UVo2THQM4pluwJ
- ptZa6hism+JL9aHw++t6D6DMLCc683eIUV1VrI+kEH1142SFPcJeQoWdiHdJigmGaR65
- sKg4qh0JBsx5g/vbSOY+LTeO9nv0qdeQ2ibapz/7Vbvj6lHwL1oMQw8ZBUIwwbMCSTyx
- R/jnfG4/oeKDMYuy5gsqrUGxrbBhvB095ZKZm3vHepacLGlivqehbuGd1TaIKVU6wHPB
- LIQP1cYN2WCjefatsj4DBkuv8rAXaIAMOMJSUGFQIz9kalYw9/O7/I/BvJ7I6k8XJgcU
- SKOQ==
-X-Gm-Message-State: AOJu0YydxvwIOuLFkwyzGhNVT+GZU94hGcXZv3ztg/Gja18MfVoye+Aa
- EYk8kN2LnkbctYjgKQK4NIM5GWloINgTIU2ebR5mzxtA80/bXu6npIs=
-X-Google-Smtp-Source: AGHT+IH/APNDrmVc6eykUwcg+NJ6Od39CB5/g/KQB22Bl1NKspSB70nensaS46khFuTWwGupEkh1IQJNC0N9hDVGuvY=
-X-Received: by 2002:aa7:ccc9:0:b0:51e:362d:b172 with SMTP id
- y9-20020aa7ccc9000000b0051e362db172mr2302069edt.32.1692505531354; Sat, 19 Aug
- 2023 21:25:31 -0700 (PDT)
+ bh=oZoJa1ExXgSC+HpWz3rg6pua/y98tFfgAaxhOCXdQSY=;
+ b=EeRViSuPPOyd7Pkly02QZ10EoHLvOR+A04rf0+dUhqZCFJT3VihKo4xvQ/2/L22RWe
+ Wgd2Nf/jO9uqjh6mD+tth+Q4xCSGixe5XM/HnYBtXQ8RaA9TcAus0eEfIskDE0s5dekc
+ ObfqOulbxV+q15sH2R7sZ1D6Yb0RX6O5hXaRW61fGcWqq7Zf4VWNFauUOqRJ+WDos5uM
+ MPr0dF+CTOvUUqqoPKTYMjByMLyf+/liRWDxO76+/3GkZJ5Q/pkxDd/+qJERdladXuKC
+ vRHtKeSCeAarnIVrl7+9OS0m65R25ZsnLMOFxt/wNLlE7Md1PXO4bsNCEtGSYnkQ3NCY
+ q5oA==
+X-Gm-Message-State: AOJu0YzkeMW6w7G3274m+8T/F+I7iyw/O5Qeo67tT8yoa/mM554UbXxr
+ k+p2DkrINYjZpnMDkOLVqv/2CVoGMFPM07BnDJ1oEt/Qm4VHbzT4irs=
+X-Google-Smtp-Source: AGHT+IHUrTdAqBEOfCBdWhj1ZhuLrbKj+BpTXhCUFmTp2aPx2YUXue+TWArHrXhvBQdsa7WCgU48+cju17b+hMDLIBI=
+X-Received: by 2002:a05:6512:1145:b0:4fb:76a5:2325 with SMTP id
+ m5-20020a056512114500b004fb76a52325mr1849762lfg.24.1692505609562; Sat, 19 Aug
+ 2023 21:26:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-11-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-11-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-12-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-12-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:25:24 -0600
-Message-ID: <CANCZdfpudvR6+g8Vp9xqhCXrJSwNzdUac8MiE4wFbkuMSswk=A@mail.gmail.com>
-Subject: Re: [PATCH 10/22] Implement shmid_ds conversion between host and
- target.
+Date: Sat, 19 Aug 2023 22:26:42 -0600
+Message-ID: <CANCZdfp5A27NZkYPTk_+3jUpy==9-7pUdgnpPx2ZAizPQrqbDA@mail.gmail.com>
+Subject: Re: [PATCH 11/22] Introduce bsd-mem.h to the source tree
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000fa21fd060353267b"
-Received-SPF: none client-ip=2a00:1450:4864:20::533;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x533.google.com
+Content-Type: multipart/alternative; boundary="000000000000a3818c0603532bbe"
+Received-SPF: none client-ip=2a00:1450:4864:20::12f;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -83,183 +82,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000fa21fd060353267b
+--000000000000a3818c0603532bbe
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 19, 2023 at 3:48=E2=80=AFAM Karim Taha <kariem.taha2.7@gmail.co=
+On Sat, Aug 19, 2023 at 3:49=E2=80=AFAM Karim Taha <kariem.taha2.7@gmail.co=
 m> wrote:
 
 > From: Stacey Son <sson@FreeBSD.org>
 >
+> To preserve the copyright notice and help with the 'Author' info for
+> subsequent changes to the file.
+>
+
+I'd drop the first 'To' in this message. It's clearer without it what is
+meant.
+
+
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->  bsd-user/bsd-mem.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
+>  bsd-user/bsd-mem.h            | 65 +++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c |  1 +
+>  2 files changed, 66 insertions(+)
+>  create mode 100644 bsd-user/bsd-mem.h
 >
 
+otherwise
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
-diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
-> index e69250cc0d..4446c94725 100644
-> --- a/bsd-user/bsd-mem.c
-> +++ b/bsd-user/bsd-mem.c
-> @@ -77,3 +77,49 @@ abi_long host_to_target_ipc_perm(abi_ulong target_addr=
-,
->      return 0;
->  }
+Warner
+
+
+> diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
+> new file mode 100644
+> index 0000000000..fed7b7cd80
+> --- /dev/null
+> +++ b/bsd-user/bsd-mem.h
+> @@ -0,0 +1,65 @@
+> +/*
+> + *  memory management system call shims and definitions
+> + *
+> + *  Copyright (c) 2013-15 Stacey D. Son
+> + *
+> + *  This program is free software; you can redistribute it and/or modify
+> + *  it under the terms of the GNU General Public License as published by
+> + *  the Free Software Foundation; either version 2 of the License, or
+> + *  (at your option) any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *  GNU General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU General Public License
+> + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +/*
+> + * Copyright (c) 1982, 1986, 1993
+> + *      The Regents of the University of California.  All rights reserve=
+d.
+> + *
+> + * Redistribution and use in source and binary forms, with or without
+> + * modification, are permitted provided that the following conditions
+> + * are met:
+> + * 1. Redistributions of source code must retain the above copyright
+> + *    notice, this list of conditions and the following disclaimer.
+> + * 2. Redistributions in binary form must reproduce the above copyright
+> + *    notice, this list of conditions and the following disclaimer in th=
+e
+> + *    documentation and/or other materials provided with the distributio=
+n.
+> + * 4. Neither the name of the University nor the names of its contributo=
+rs
+> + *    may be used to endorse or promote products derived from this
+> software
+> + *    without specific prior written permission.
+> + *
+> + * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' A=
+ND
+> + * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+> + * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+> PURPOSE
+> + * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE
+> LIABLE
+> + * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+> CONSEQUENTIAL
+> + * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOO=
+DS
+> + * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+> + * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+> STRICT
+> + * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+> WAY
+> + * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY O=
+F
+> + * SUCH DAMAGE.
+> + */
+> +
+> +#ifndef BSD_USER_BSD_MEM_H
+> +#define BSD_USER_BSD_MEM_H
+> +
+> +#include <sys/types.h>
+> +#include <sys/ipc.h>
+> +#include <sys/mman.h>
+> +#include <sys/shm.h>
+> +#include <fcntl.h>
+> +
+> +#include "qemu-bsd.h"
+> +
+> +extern struct bsd_shm_regions bsd_shm_regions[];
+> +extern abi_ulong bsd_target_brk;
+> +extern abi_ulong bsd_target_original_brk;
+> +extern abi_ulong brk_page;
+> +
+> +#endif /* BSD_USER_BSD_MEM_H */
+> diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.=
+c
+> index c0a22eb746..7e2a395e0f 100644
+> --- a/bsd-user/freebsd/os-syscall.c
+> +++ b/bsd-user/freebsd/os-syscall.c
+> @@ -35,6 +35,7 @@
 >
-> +abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,
-> +        abi_ulong target_addr)
-> +{
-> +    struct target_shmid_ds *target_sd;
-> +
-> +    if (!lock_user_struct(VERIFY_READ, target_sd, target_addr, 1)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    if (target_to_host_ipc_perm(&(host_sd->shm_perm), target_addr)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    __get_user(host_sd->shm_segsz, &target_sd->shm_segsz);
-> +    __get_user(host_sd->shm_lpid, &target_sd->shm_lpid);
-> +    __get_user(host_sd->shm_cpid, &target_sd->shm_cpid);
-> +    __get_user(host_sd->shm_nattch, &target_sd->shm_nattch);
-> +    __get_user(host_sd->shm_atime, &target_sd->shm_atime);
-> +    __get_user(host_sd->shm_dtime, &target_sd->shm_dtime);
-> +    __get_user(host_sd->shm_ctime, &target_sd->shm_ctime);
-> +    unlock_user_struct(target_sd, target_addr, 0);
-> +
-> +    return 0;
-> +}
-> +
-> +abi_long host_to_target_shmid_ds(abi_ulong target_addr,
-> +        struct shmid_ds *host_sd)
-> +{
-> +    struct target_shmid_ds *target_sd;
-> +
-> +    if (!lock_user_struct(VERIFY_WRITE, target_sd, target_addr, 0)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    if (host_to_target_ipc_perm(target_addr, &(host_sd->shm_perm))) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    __put_user(host_sd->shm_segsz, &target_sd->shm_segsz);
-> +    __put_user(host_sd->shm_lpid, &target_sd->shm_lpid);
-> +    __put_user(host_sd->shm_cpid, &target_sd->shm_cpid);
-> +    __put_user(host_sd->shm_nattch, &target_sd->shm_nattch);
-> +    __put_user(host_sd->shm_atime, &target_sd->shm_atime);
-> +    __put_user(host_sd->shm_dtime, &target_sd->shm_dtime);
-> +    __put_user(host_sd->shm_ctime, &target_sd->shm_ctime);
-> +    unlock_user_struct(target_sd, target_addr, 1);
-> +
-> +    return 0;
-> +}
-> +
+>  /* BSD independent syscall shims */
+>  #include "bsd-file.h"
+> +#include "bsd-mem.h"
+>  #include "bsd-proc.h"
+>
+>  /* *BSD dependent syscall shims */
 > --
 > 2.40.0
 >
 >
 
---000000000000fa21fd060353267b
+--000000000000a3818c0603532bbe
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 3:48=E2=80=AF=
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 3:49=E2=80=AF=
 AM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
 7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
 =3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
 -left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 <br>
+To preserve the copyright notice and help with the &#39;Author&#39; info fo=
+r<br>
+subsequent changes to the file.<br></blockquote><div><br></div><div>I&#39;d=
+ drop the first &#39;To&#39; in this message. It&#39;s clearer without it w=
+hat is meant.<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
+ding-left:1ex">
 Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-mem.c | 46 +++++++++++++++++++++++++++++++++++++++++++++=
-+<br>
-=C2=A01 file changed, 46 insertions(+)<br></blockquote><div><br></div><div>=
-Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.c=
-om</a>&gt;</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">
-diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c<br>
-index e69250cc0d..4446c94725 100644<br>
---- a/bsd-user/bsd-mem.c<br>
-+++ b/bsd-user/bsd-mem.c<br>
-@@ -77,3 +77,49 @@ abi_long host_to_target_ipc_perm(abi_ulong target_addr,<=
-br>
-=C2=A0 =C2=A0 =C2=A0return 0;<br>
-=C2=A0}<br>
+=C2=A0bsd-user/bsd-mem.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 65 ++++=
++++++++++++++++++++++++++++++++<br>
+=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 1 +<br>
+=C2=A02 files changed, 66 insertions(+)<br>
+=C2=A0create mode 100644 bsd-user/bsd-mem.h<br></blockquote><div><br></div>=
+<div>otherwise</div><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp=
+@bsdimp.com">imp@bsdimp.com</a>&gt;</div><div><br></div><div>Warner<br></di=
+v><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h<br>
+new file mode 100644<br>
+index 0000000000..fed7b7cd80<br>
+--- /dev/null<br>
++++ b/bsd-user/bsd-mem.h<br>
+@@ -0,0 +1,65 @@<br>
++/*<br>
++ *=C2=A0 memory management system call shims and definitions<br>
++ *<br>
++ *=C2=A0 Copyright (c) 2013-15 Stacey D. Son<br>
++ *<br>
++ *=C2=A0 This program is free software; you can redistribute it and/or mod=
+ify<br>
++ *=C2=A0 it under the terms of the GNU General Public License as published=
+ by<br>
++ *=C2=A0 the Free Software Foundation; either version 2 of the License, or=
 <br>
-+abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong target_addr)<br>
-+{<br>
-+=C2=A0 =C2=A0 struct target_shmid_ds *target_sd;<br>
++ *=C2=A0 (at your option) any later version.<br>
++ *<br>
++ *=C2=A0 This program is distributed in the hope that it will be useful,<b=
+r>
++ *=C2=A0 but WITHOUT ANY WARRANTY; without even the implied warranty of<br=
+>
++ *=C2=A0 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See th=
+e<br>
++ *=C2=A0 GNU General Public License for more details.<br>
++ *<br>
++ *=C2=A0 You should have received a copy of the GNU General Public License=
+<br>
++ *=C2=A0 along with this program; if not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
++ */<br>
 +<br>
-+=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_READ, target_sd, target_addr, 1=
-)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 if (target_to_host_ipc_perm(&amp;(host_sd-&gt;shm_perm), tar=
-get_addr)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_segsz, &amp;target_sd-&gt;shm_seg=
-sz);<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_lpid, &amp;target_sd-&gt;shm_lpid=
-);<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_cpid, &amp;target_sd-&gt;shm_cpid=
-);<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_nattch, &amp;target_sd-&gt;shm_na=
-ttch);<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_atime, &amp;target_sd-&gt;shm_ati=
-me);<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_dtime, &amp;target_sd-&gt;shm_dti=
-me);<br>
-+=C2=A0 =C2=A0 __get_user(host_sd-&gt;shm_ctime, &amp;target_sd-&gt;shm_cti=
-me);<br>
-+=C2=A0 =C2=A0 unlock_user_struct(target_sd, target_addr, 0);<br>
++/*<br>
++ * Copyright (c) 1982, 1986, 1993<br>
++ *=C2=A0 =C2=A0 =C2=A0 The Regents of the University of California.=C2=A0 =
+All rights reserved.<br>
++ *<br>
++ * Redistribution and use in source and binary forms, with or without<br>
++ * modification, are permitted provided that the following conditions<br>
++ * are met:<br>
++ * 1. Redistributions of source code must retain the above copyright<br>
++ *=C2=A0 =C2=A0 notice, this list of conditions and the following disclaim=
+er.<br>
++ * 2. Redistributions in binary form must reproduce the above copyright<br=
+>
++ *=C2=A0 =C2=A0 notice, this list of conditions and the following disclaim=
+er in the<br>
++ *=C2=A0 =C2=A0 documentation and/or other materials provided with the dis=
+tribution.<br>
++ * 4. Neither the name of the University nor the names of its contributors=
+<br>
++ *=C2=A0 =C2=A0 may be used to endorse or promote products derived from th=
+is software<br>
++ *=C2=A0 =C2=A0 without specific prior written permission.<br>
++ *<br>
++ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS&#39;&=
+#39; AND<br>
++ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<b=
+r>
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURP=
+OSE<br>
++ * ARE DISCLAIMED.=C2=A0 IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE =
+LIABLE<br>
++ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENT=
+IAL<br>
++ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS=
+<br>
++ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)<b=
+r>
++ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STR=
+ICT<br>
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY W=
+AY<br>
++ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF<=
+br>
++ * SUCH DAMAGE.<br>
++ */<br>
 +<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
++#ifndef BSD_USER_BSD_MEM_H<br>
++#define BSD_USER_BSD_MEM_H<br>
 +<br>
-+abi_long host_to_target_shmid_ds(abi_ulong target_addr,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct shmid_ds *host_sd)<br>
-+{<br>
-+=C2=A0 =C2=A0 struct target_shmid_ds *target_sd;<br>
++#include &lt;sys/types.h&gt;<br>
++#include &lt;sys/ipc.h&gt;<br>
++#include &lt;sys/mman.h&gt;<br>
++#include &lt;sys/shm.h&gt;<br>
++#include &lt;fcntl.h&gt;<br>
 +<br>
-+=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_WRITE, target_sd, target_addr, =
-0)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 if (host_to_target_ipc_perm(target_addr, &amp;(host_sd-&gt;s=
-hm_perm))) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_segsz, &amp;target_sd-&gt;shm_seg=
-sz);<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_lpid, &amp;target_sd-&gt;shm_lpid=
-);<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_cpid, &amp;target_sd-&gt;shm_cpid=
-);<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_nattch, &amp;target_sd-&gt;shm_na=
-ttch);<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_atime, &amp;target_sd-&gt;shm_ati=
-me);<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_dtime, &amp;target_sd-&gt;shm_dti=
-me);<br>
-+=C2=A0 =C2=A0 __put_user(host_sd-&gt;shm_ctime, &amp;target_sd-&gt;shm_cti=
-me);<br>
-+=C2=A0 =C2=A0 unlock_user_struct(target_sd, target_addr, 1);<br>
++#include &quot;qemu-bsd.h&quot;<br>
 +<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
++extern struct bsd_shm_regions bsd_shm_regions[];<br>
++extern abi_ulong bsd_target_brk;<br>
++extern abi_ulong bsd_target_original_brk;<br>
++extern abi_ulong brk_page;<br>
 +<br>
++#endif /* BSD_USER_BSD_MEM_H */<br>
+diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c<=
+br>
+index c0a22eb746..7e2a395e0f 100644<br>
+--- a/bsd-user/freebsd/os-syscall.c<br>
++++ b/bsd-user/freebsd/os-syscall.c<br>
+@@ -35,6 +35,7 @@<br>
+<br>
+=C2=A0/* BSD independent syscall shims */<br>
+=C2=A0#include &quot;bsd-file.h&quot;<br>
++#include &quot;bsd-mem.h&quot;<br>
+=C2=A0#include &quot;bsd-proc.h&quot;<br>
+<br>
+=C2=A0/* *BSD dependent syscall shims */<br>
 -- <br>
 2.40.0<br>
 <br>
 </blockquote></div></div>
 
---000000000000fa21fd060353267b--
+--000000000000a3818c0603532bbe--
 
