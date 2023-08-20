@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C50781C5D
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A546C781C5E
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:24:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXZxV-0008Fz-L8; Sun, 20 Aug 2023 00:22:37 -0400
+	id 1qXZz0-0000fm-4f; Sun, 20 Aug 2023 00:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZxT-0008Fp-4c
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:22:35 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZyx-0000fa-JR
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:24:07 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZxQ-0007KP-Cz
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:22:34 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-522dd6b6438so2650433a12.0
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:22:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZyv-0007P6-9A
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:24:07 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-529fb04a234so915081a12.3
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:24:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692505351; x=1693110151;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692505443; x=1693110243;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nQKg6FKFPtPrfIGepbVU6+4Z5nXpUe0RaWYkYYJpcgc=;
- b=br4b/S9HsNHdjLvISRkNCpf8Oi9osr+geRuaK9iKPqLSYNQbxQ031G0aV1pO2vOeWy
- BigJq+w47gNvnS/sBSl69/tSEUm6Um4vvPOYgVK8TEIDPyOql2FCu/EZJXq/ZkYPtcHN
- +LNpSW7KJGKWNqfa0Pv1LsvAmIjqjXvB2Kh3A54vp8GWBs5Kq1+MLLgvLsYgUcwqMZob
- OemqcjFhOQbk8RKMlrGa7b0qtYab24oey5qzGgy79+1bDiLg2nQ0Okmxjl2mKGaYK3Sb
- avNL19simiIpPQ68idFYYyKaa5fq/fBf0UOrAuP4in8d5ICsY5CJ6nXtw943BXyFPESh
- k6QA==
+ bh=QhLF90GUNl9OLk4MCaOmVMHpJQGOkzXPOfe5QGKu0KI=;
+ b=CFsHNmRFnCRK32srKdIgC75fgDIvhrCYmMUqplSNvFOKUPQzGn32E4L0NAoAqeEMec
+ rfzT3CuY1XtPkbC/wU0wsGn0MpU3Awe3oNeF0fPU/M5qf6ABwZR9HV6aTrF/Obc18K5I
+ vnCDxLzIf1lEgtA25a8+y9Sc0P49DTNoTh9HVbVX77TNRalJZ7NTTJ9yuYNCuqLYTlLM
+ 1elPaH6ZrHypDyuDPLomgUg/sTin8j0kluVAdHdh5Perxenor4ASt2yerhFUBxsgjdO8
+ eWedU9g8PD70YFPJ8b03+HlEAI0R9a4af2S/tor/jY9YhPi1IlnTUshQVkSQcK0e/Wu2
+ G0SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692505351; x=1693110151;
+ d=1e100.net; s=20221208; t=1692505443; x=1693110243;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nQKg6FKFPtPrfIGepbVU6+4Z5nXpUe0RaWYkYYJpcgc=;
- b=IlotgLd/5yb4WEoHDQUaJikncCDEp/VRRtT+X0y643cjXbLKb/6R2WNKaA2n8WQktj
- 0aHddw0v6p0OtjElgjsy1KX5fxa6bE1fd//MltJMZjouFVD7gGOHcLPAqoMw0eGO3yh4
- LqgkDC1muPCaxVGjlz96Wlur8mPfuYuYGIZWd6VjAnVAU+gAPjB7zIM9El9PwaGYn3jg
- wpQSiJBjkANsBQdaMagAkaQZePDJ04nNy6f+gD4IT33P5mlTY6yAG1iCg9cfUAQQf5dP
- 5WcH9zzLP40M98iSCXFzB9jm8/Wpe/eK3mecP5Vvk6l/pOFk4mVCOzaDpT9ODRnLvKaY
- T9cg==
-X-Gm-Message-State: AOJu0Yz7LC0LhBrmqLbAWgJLe/xCrqGNUnMJz4dB8Z41TwOXaQsyBLIy
- J2ndjE4wy2fmMr5JxnAmPrV21qeY/BooHJe0W//K9DcHsjjR6lGpTM0=
-X-Google-Smtp-Source: AGHT+IE6x8iu09YAYoMVOVUtisJ/oeZtxE4Y3k8wFTZ4HtqI3R7dQckS/vhpFR73mBLJqcHakX69jTkihxbN6/2YeIk=
-X-Received: by 2002:a50:fb9a:0:b0:523:364b:e6a9 with SMTP id
- e26-20020a50fb9a000000b00523364be6a9mr2066076edq.38.1692505350494; Sat, 19
- Aug 2023 21:22:30 -0700 (PDT)
+ bh=QhLF90GUNl9OLk4MCaOmVMHpJQGOkzXPOfe5QGKu0KI=;
+ b=acvPbdHpoE1EYupm1i2pokZe2vpZQpBNMQ7Okb5wQWSCNFQpjq7ur3x8amSciJ/hGc
+ cW+brFHGqWWySgJXLqgK5Rv2P464A2nYWkwSmbddAr50r2goXAUdFxz+16kk2dVkCID/
+ oeui8YsqKCVQtNT+hz3ynTtO2jIA+Q+h8+gpOzFcsSXYhyxFtUkdViQDYVQ6O72gsEEw
+ ZpZy8XOaMVEn9XV0w8sACKkQUd4vk0vylRBuhliQdgwSxl0j2PE38V01bazdxA4255/K
+ TvbWS+eFBXuElZX9ZTLwbW4Qo7mbvFmST44N9ZQ/bdvihOvgLNHaKE7xmKaqax3Jo9nV
+ truQ==
+X-Gm-Message-State: AOJu0YyUKvjWPmISNWXtS0NLnh/1l6f6Ho9vp0N0qbFjx9WxOIAbJdhv
+ fQEQlDIykcWvhswunyo8JZ7J+YFSjcaLUuvJz8atzw==
+X-Google-Smtp-Source: AGHT+IEf7Ybjr9IpszJFlltcIcsucp9TCICCRUILyklu1P1Q9JF1ndIGdgS5bRxuGsuGpqK0s5BpsUa4efcrc0VQ+Sk=
+X-Received: by 2002:aa7:db4a:0:b0:522:2711:873 with SMTP id
+ n10-20020aa7db4a000000b0052227110873mr2718714edt.1.1692505443682; Sat, 19 Aug
+ 2023 21:24:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-9-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-9-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-10-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-10-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:22:23 -0600
-Message-ID: <CANCZdfrP0cRHOhgV9Q4sbZS1KrfSu2BwUiGyCQFz+sMOxbFaog@mail.gmail.com>
-Subject: Re: [PATCH 08/22] Implement target_set_brk function in bsd-mem.c
- instead of os-syscall.c
+Date: Sat, 19 Aug 2023 22:23:56 -0600
+Message-ID: <CANCZdfpdB9HHwe_B9c8vDBJLjek3P4cn4mSOV+L4gU=062xrXA@mail.gmail.com>
+Subject: Re: [PATCH 09/22] Implement ipc_perm conversion between host and
+ target.
 To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>, 
- =?UTF-8?Q?Mika=C3=ABl_Urankar?= <mikael.urankar@gmail.com>
-Content-Type: multipart/alternative; boundary="0000000000003270780603531c38"
-Received-SPF: none client-ip=2a00:1450:4864:20::530;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x530.google.com
+Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000c059dd060353211f"
+Received-SPF: none client-ip=2a00:1450:4864:20::52d;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -84,7 +83,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003270780603531c38
+--000000000000c059dd060353211f
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -93,100 +92,72 @@ m> wrote:
 
 > From: Stacey Son <sson@FreeBSD.org>
 >
-> Co-authored-by: Mika=C3=ABl Urankar <mikael.urankar@gmail.com>
-> Signed-off-by: Mika=C3=ABl Urankar <mikael.urankar@gmail.com>
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->  bsd-user/bsd-mem.c            | 38 +++++++++++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  4 ----
->  2 files changed, 38 insertions(+), 4 deletions(-)
+>  bsd-user/bsd-mem.c | 41 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
-but see below
-
 
 > diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
-> index e69de29bb2..6c123abf04 100644
+> index 6c123abf04..e69250cc0d 100644
 > --- a/bsd-user/bsd-mem.c
 > +++ b/bsd-user/bsd-mem.c
-> @@ -0,0 +1,38 @@
-> +/*
-> + *  memory management system conversion routines
-> + *
-> + *  Copyright (c) 2013 Stacey D. Son
-> + *
-> + *  This program is free software; you can redistribute it and/or modify
-> + *  it under the terms of the GNU General Public License as published by
-> + *  the Free Software Foundation; either version 2 of the License, or
-> + *  (at your option) any later version.
-> + *
-> + *  This program is distributed in the hope that it will be useful,
-> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + *  GNU General Public License for more details.
-> + *
-> + *  You should have received a copy of the GNU General Public License
-> + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-> + */
-> +#include "qemu/osdep.h"
-> +
-> +#include <sys/ipc.h>
-> +#include <sys/shm.h>
-> +
->
-
-I'll let others comment if this is a good thing here or it needs to be
-elsewhere.
-I can't recall what the project's rules are for system headers on code that
-runs on a limited subset of systems. For code that can run anywhere, I
-know that the preference is to put this in osdep.h, but in this case I'm
-unsure.
-
-Warner
-
-
-> +#include "qemu.h"
-> +#include "qemu-bsd.h"
-> +
-> +struct bsd_shm_regions bsd_shm_regions[N_BSD_SHM_REGIONS];
-> +
-> +abi_ulong bsd_target_brk;
-> +abi_ulong bsd_target_original_brk;
-> +abi_ulong brk_page;
-> +
-> +void target_set_brk(abi_ulong new_brk)
-> +{
-> +
-> +    bsd_target_original_brk =3D bsd_target_brk =3D HOST_PAGE_ALIGN(new_b=
+> @@ -36,3 +36,44 @@ void target_set_brk(abi_ulong new_brk)
+>      bsd_target_original_brk =3D bsd_target_brk =3D HOST_PAGE_ALIGN(new_b=
 rk);
-> +    brk_page =3D HOST_PAGE_ALIGN(bsd_target_brk);
+>      brk_page =3D HOST_PAGE_ALIGN(bsd_target_brk);
+>  }
+> +
+> +abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,
+> +        abi_ulong target_addr)
+> +{
+> +    struct target_ipc_perm *target_ip;
+> +
+> +    if (!lock_user_struct(VERIFY_READ, target_ip, target_addr, 1)) {
+> +        return -TARGET_EFAULT;
+> +    }
+> +    __get_user(host_ip->cuid, &target_ip->cuid);
+> +    __get_user(host_ip->cgid, &target_ip->cgid);
+> +    __get_user(host_ip->uid, &target_ip->uid);
+> +    __get_user(host_ip->gid, &target_ip->gid);
+> +    __get_user(host_ip->mode, &target_ip->mode);
+> +    __get_user(host_ip->seq, &target_ip->seq);
+> +    __get_user(host_ip->key, &target_ip->key);
+> +    unlock_user_struct(target_ip, target_addr, 0);
+> +
+> +    return 0;
 > +}
-> diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.=
-c
-> index 2920370ad2..c0a22eb746 100644
-> --- a/bsd-user/freebsd/os-syscall.c
-> +++ b/bsd-user/freebsd/os-syscall.c
-> @@ -59,10 +59,6 @@ safe_syscall3(ssize_t, writev, int, fd, const struct
-> iovec *, iov, int, iovcnt);
->  safe_syscall4(ssize_t, pwritev, int, fd, const struct iovec *, iov, int,
-> iovcnt,
->      off_t, offset);
->
-> -void target_set_brk(abi_ulong new_brk)
-> -{
-> -}
-> -
->  /*
->   * errno conversion.
->   */
+> +
+> +abi_long host_to_target_ipc_perm(abi_ulong target_addr,
+> +        struct ipc_perm *host_ip)
+> +{
+> +    struct target_ipc_perm *target_ip;
+> +
+> +    if (!lock_user_struct(VERIFY_WRITE, target_ip, target_addr, 0)) {
+> +        return -TARGET_EFAULT;
+> +    }
+> +    __put_user(host_ip->cuid, &target_ip->cuid);
+> +    __put_user(host_ip->cgid, &target_ip->cgid);
+> +    __put_user(host_ip->uid, &target_ip->uid);
+> +    __put_user(host_ip->gid, &target_ip->gid);
+> +    __put_user(host_ip->mode, &target_ip->mode);
+> +    __put_user(host_ip->seq, &target_ip->seq);
+> +    __put_user(host_ip->key, &target_ip->key);
+> +    unlock_user_struct(target_ip, target_addr, 1);
+> +
+> +    return 0;
+> +}
+> +
 > --
 > 2.40.0
 >
 >
 
---0000000000003270780603531c38
+--000000000000c059dd060353211f
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -197,103 +168,72 @@ AM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
 =3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
 -left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 <br>
-Co-authored-by: Mika=C3=ABl Urankar &lt;<a href=3D"mailto:mikael.urankar@gm=
-ail.com" target=3D"_blank">mikael.urankar@gmail.com</a>&gt;<br>
-Signed-off-by: Mika=C3=ABl Urankar &lt;<a href=3D"mailto:mikael.urankar@gma=
-il.com" target=3D"_blank">mikael.urankar@gmail.com</a>&gt;<br>
+Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-mem.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 38 ++++=
-+++++++++++++++++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 4 ----<br>
-=C2=A02 files changed, 38 insertions(+), 4 deletions(-)<br></blockquote><di=
-v><br></div><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.=
-com">imp@bsdimp.com</a>&gt;</div><div><br></div><div>but see below<br></div=
-><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
- 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0bsd-user/bsd-mem.c | 41 +++++++++++++++++++++++++++++++++++++++++<br>
+=C2=A01 file changed, 41 insertions(+)<br></blockquote><div><br></div><div>=
+Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.c=
+om</a>&gt;</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex">
 diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c<br>
-index e69de29bb2..6c123abf04 100644<br>
+index 6c123abf04..e69250cc0d 100644<br>
 --- a/bsd-user/bsd-mem.c<br>
 +++ b/bsd-user/bsd-mem.c<br>
-@@ -0,0 +1,38 @@<br>
-+/*<br>
-+ *=C2=A0 memory management system conversion routines<br>
-+ *<br>
-+ *=C2=A0 Copyright (c) 2013 Stacey D. Son<br>
-+ *<br>
-+ *=C2=A0 This program is free software; you can redistribute it and/or mod=
-ify<br>
-+ *=C2=A0 it under the terms of the GNU General Public License as published=
- by<br>
-+ *=C2=A0 the Free Software Foundation; either version 2 of the License, or=
-<br>
-+ *=C2=A0 (at your option) any later version.<br>
-+ *<br>
-+ *=C2=A0 This program is distributed in the hope that it will be useful,<b=
-r>
-+ *=C2=A0 but WITHOUT ANY WARRANTY; without even the implied warranty of<br=
->
-+ *=C2=A0 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See th=
-e<br>
-+ *=C2=A0 GNU General Public License for more details.<br>
-+ *<br>
-+ *=C2=A0 You should have received a copy of the GNU General Public License=
-<br>
-+ *=C2=A0 along with this program; if not, see &lt;<a href=3D"http://www.gn=
-u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
-censes/</a>&gt;.<br>
-+ */<br>
-+#include &quot;qemu/osdep.h&quot;<br>
+@@ -36,3 +36,44 @@ void target_set_brk(abi_ulong new_brk)<br>
+=C2=A0 =C2=A0 =C2=A0bsd_target_original_brk =3D bsd_target_brk =3D HOST_PAG=
+E_ALIGN(new_brk);<br>
+=C2=A0 =C2=A0 =C2=A0brk_page =3D HOST_PAGE_ALIGN(bsd_target_brk);<br>
+=C2=A0}<br>
 +<br>
-+#include &lt;sys/ipc.h&gt;<br>
-+#include &lt;sys/shm.h&gt;<br>
-+<br></blockquote><div><br></div><div>I&#39;ll let others comment if this i=
-s a good thing here or it needs to be elsewhere.</div><div>I can&#39;t reca=
-ll what the project&#39;s rules are for system headers on code that</div><d=
-iv>runs on a limited subset of systems. For code that can run anywhere, I</=
-div><div>know that the preference is to put this in osdep.h, but in this ca=
-se I&#39;m</div><div>unsure.</div><div><br></div><div>Warner<br></div><div>=
-=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+#include &quot;qemu.h&quot;<br>
-+#include &quot;qemu-bsd.h&quot;<br>
-+<br>
-+struct bsd_shm_regions bsd_shm_regions[N_BSD_SHM_REGIONS];<br>
-+<br>
-+abi_ulong bsd_target_brk;<br>
-+abi_ulong bsd_target_original_brk;<br>
-+abi_ulong brk_page;<br>
-+<br>
-+void target_set_brk(abi_ulong new_brk)<br>
++abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong target_addr)<br>
 +{<br>
++=C2=A0 =C2=A0 struct target_ipc_perm *target_ip;<br>
 +<br>
-+=C2=A0 =C2=A0 bsd_target_original_brk =3D bsd_target_brk =3D HOST_PAGE_ALI=
-GN(new_brk);<br>
-+=C2=A0 =C2=A0 brk_page =3D HOST_PAGE_ALIGN(bsd_target_brk);<br>
++=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_READ, target_ip, target_addr, 1=
+)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
++=C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;cuid, &amp;target_ip-&gt;cuid);<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;cgid, &amp;target_ip-&gt;cgid);<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;uid, &amp;target_ip-&gt;uid);<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;gid, &amp;target_ip-&gt;gid);<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;mode, &amp;target_ip-&gt;mode);<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;seq, &amp;target_ip-&gt;seq);<br>
++=C2=A0 =C2=A0 __get_user(host_ip-&gt;key, &amp;target_ip-&gt;key);<br>
++=C2=A0 =C2=A0 unlock_user_struct(target_ip, target_addr, 0);<br>
++<br>
++=C2=A0 =C2=A0 return 0;<br>
 +}<br>
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c<=
-br>
-index 2920370ad2..c0a22eb746 100644<br>
---- a/bsd-user/freebsd/os-syscall.c<br>
-+++ b/bsd-user/freebsd/os-syscall.c<br>
-@@ -59,10 +59,6 @@ safe_syscall3(ssize_t, writev, int, fd, const struct iov=
-ec *, iov, int, iovcnt);<br>
-=C2=A0safe_syscall4(ssize_t, pwritev, int, fd, const struct iovec *, iov, i=
-nt, iovcnt,<br>
-=C2=A0 =C2=A0 =C2=A0off_t, offset);<br>
-<br>
--void target_set_brk(abi_ulong new_brk)<br>
--{<br>
--}<br>
--<br>
-=C2=A0/*<br>
-=C2=A0 * errno conversion.<br>
-=C2=A0 */<br>
++<br>
++abi_long host_to_target_ipc_perm(abi_ulong target_addr,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct ipc_perm *host_ip)<br>
++{<br>
++=C2=A0 =C2=A0 struct target_ipc_perm *target_ip;<br>
++<br>
++=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_WRITE, target_ip, target_addr, =
+0)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
++=C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;cuid, &amp;target_ip-&gt;cuid);<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;cgid, &amp;target_ip-&gt;cgid);<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;uid, &amp;target_ip-&gt;uid);<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;gid, &amp;target_ip-&gt;gid);<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;mode, &amp;target_ip-&gt;mode);<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;seq, &amp;target_ip-&gt;seq);<br>
++=C2=A0 =C2=A0 __put_user(host_ip-&gt;key, &amp;target_ip-&gt;key);<br>
++=C2=A0 =C2=A0 unlock_user_struct(target_ip, target_addr, 1);<br>
++<br>
++=C2=A0 =C2=A0 return 0;<br>
++}<br>
++<br>
 -- <br>
 2.40.0<br>
 <br>
 </blockquote></div></div>
 
---0000000000003270780603531c38--
+--000000000000c059dd060353211f--
 
