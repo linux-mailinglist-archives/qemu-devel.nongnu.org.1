@@ -2,51 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28BB781D84
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 13:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001B9781D9C
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 13:48:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXg8f-0006IZ-Dm; Sun, 20 Aug 2023 06:58:34 -0400
+	id 1qXgtG-0005La-SL; Sun, 20 Aug 2023 07:46:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qXg8X-0006Gf-5Q
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 06:58:25 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qXgt5-0005LM-CJ
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 07:46:32 -0400
+Received: from mailout05.t-online.de ([194.25.134.82])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qXg8E-0005H8-LE
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 06:58:09 -0400
-Received: from cslab-raptor.. (unknown [166.111.226.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id EF4DB440AC;
- Sun, 20 Aug 2023 10:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1692529076; bh=MpXbOwiS4MDA6mYXv1z0R8eZYtTZ/CJ70sFXNXJITp8=;
- h=From:To:Cc:Subject:Date;
- b=rit8VQ9ccrRlghSqxn3ThpBqgTdfP8UsKWChwN4N0bs0mRAzfRy8UwWTb5bOJz/fq
- feosAQX0M9cWHWmAoktWG/CswTq3rONdEC3uyf8AGvXMOfDrqJnmSELwplaPkEweUJ
- hq1vMIq3ElnRuyZpNyEI+r6KETI8MuWfsAmdNM8A=
-From: Jiajie Chen <c@jia.je>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, gaosong@loongson.cn,
- yangxiaojuan@loongson.cn, zhaotianrui@loongson.cn, Jiajie Chen <c@jia.je>
-Subject: [PATCH] hw/loongarch: Fix ACPI processor id off-by-one error
-Date: Sun, 20 Aug 2023 18:56:59 +0800
-Message-ID: <20230820105658.99123-2-c@jia.je>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qXgt2-0007hK-Cb
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 07:46:31 -0400
+Received: from fwd70.aul.t-online.de (fwd70.aul.t-online.de [10.223.144.96])
+ by mailout05.t-online.de (Postfix) with SMTP id 8E3DC21D7A;
+ Sun, 20 Aug 2023 13:46:24 +0200 (CEST)
+Received: from [192.168.211.200] ([79.208.21.165]) by fwd70.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1qXgsy-0ZVVYH0; Sun, 20 Aug 2023 13:46:24 +0200
+Content-Type: multipart/alternative;
+ boundary="------------Ee2B5ChgEfctzzdDEQ8zZKnW"
+Message-ID: <7d4e70f5-c930-e665-c0b0-44e3d8831743@t-online.de>
+Date: Sun, 20 Aug 2023 13:46:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v6 00/12] Add VIRTIO sound card
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
+X-TOI-EXPURGATEID: 150726::1692531984-7C9A9E98-BEDB2912/0/0 CLEAN NORMAL
+X-TOI-MSGID: 654c00b1-3dd9-44e9-8164-aebac8631a74
+Received-SPF: none client-ip=194.25.134.82; envelope-from=vr_qemu@t-online.de;
+ helo=mailout05.t-online.de
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, NICE_REPLY_A=-4.279, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,57 +72,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In hw/acpi/aml-build.c:build_pptt() function, the code assumes that the
-ACPI processor id equals to the cpu index, for example if we have 8
-cpus, then the ACPI processor id should be in range 0-7.
+This is a multi-part message in MIME format.
+--------------Ee2B5ChgEfctzzdDEQ8zZKnW
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-However, in hw/loongarch/acpi-build.c:build_madt() function we broke the
-assumption. If we have 8 cpus again, the ACPI processor id in MADT table
-would be in range 1-8. It violates the following description taken from
-ACPI spec 6.4 table 5.138:
+Hi Manos,
 
-If the processor structure represents an actual processor, this field
-must match the value of ACPI processor ID field in the processor’s entry
-in the MADT.
+I tested the virtio-sound-pci device. It seems the device works 
+unreliably. Audio playback has a lot of dropouts. I can actually hear my 
+mouse moving around. Audio recording with audacity doesn't work. Either 
+recording stops with an error or the recorded stream is silent.
 
-It will break the latest Linux 6.5-rc6 with the
-following error message:
+I'll see if I can change the code so audio playback works reliably. I 
+don't think it makes sense to review the current code as it is. I will 
+of course report any issues I find.
 
-ACPI PPTT: PPTT table found, but unable to locate core 7 (8)
-Invalid BIOS PPTT
+With best regards,
+Volker
 
-Here 7 is the last cpu index, 8 is the ACPI processor id learned from
-MADT.
+> This patch series adds an audio device implementing the recent virtio
+> sound spec (1.2) and a corresponding PCI wrapper device.
+>
+> https://github.com/epilys/qemu-virtio-snd/tree/virtio-snd-v6
+>
+> Main differences with v5 patch series [^v5]
+> <cover.1690626150.git.manos.pitsidianakis@linaro.org>:
+>
+> - Free any existing PCM stream resources before allocating a new one.
+> - Add docs.
+>
+> [^v5]:
+> https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/
+>
+> Previously:
+>
+> [^v4]:
+> https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/
+> [^v3]:
+> https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/
+>
+>
+> Emmanouil Pitsidianakis (12):
+>    Add virtio-sound device stub
+>    Add virtio-sound-pci device
+>    virtio-sound: handle control messages and streams
+>    virtio-sound: set PCM stream parameters
+>    virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
+>    virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
+>    virtio-sound: handle VIRTIO_SND_PCM_SET_PARAMS
+>    virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
+>    virtio-sound: handle VIRTIO_SND_PCM_RELEASE
+>    virtio-sound: implement audio output (TX)
+>    virtio-sound: implement audio capture (RX)
+>    docs/system: add basic virtio-snd documentation
+>
+>   MAINTAINERS                        |    6 +
+>   docs/system/device-emulation.rst   |    1 +
+>   docs/system/devices/virtio-snd.rst |   36 +
+>   hw/virtio/Kconfig                  |    5 +
+>   hw/virtio/meson.build              |    2 +
+>   hw/virtio/trace-events             |   20 +
+>   hw/virtio/virtio-snd-pci.c         |   91 ++
+>   hw/virtio/virtio-snd.c             | 1308 ++++++++++++++++++++++++++++
+>   include/hw/pci/pci.h               |    1 +
+>   include/hw/virtio/virtio-snd.h     |  158 ++++
+>   softmmu/qdev-monitor.c             |    1 +
+>   11 files changed, 1629 insertions(+)
+>   create mode 100644 docs/system/devices/virtio-snd.rst
+>   create mode 100644 hw/virtio/virtio-snd-pci.c
+>   create mode 100644 hw/virtio/virtio-snd.c
+>   create mode 100644 include/hw/virtio/virtio-snd.h
+>
+--------------Ee2B5ChgEfctzzdDEQ8zZKnW
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-With this patch, Linux can properly detect SMT threads when "-smp
-8,sockets=1,cores=4,threads=2" is passed:
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">Hi Manos,<br>
+      <br>
+      I tested the virtio-sound-pci device. It seems the device works
+      unreliably. Audio playback has a lot of dropouts. I can actually
+      hear my mouse moving around. Audio recording with audacity doesn't
+      work. Either recording stops with an error or the recorded stream
+      is silent.<br>
+      <br>
+      I'll see if I can change the code so audio playback works
+      reliably. I don't think it makes sense to review the current code
+      as it is. <span _d-id="86700" class="--l --r sentence_highlight">I
+        will of course report any issues I find.</span><br>
+      <br>
+      With best regards,<br>
+      Volker<br>
+      <br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:cover.1692089917.git.manos.pitsidianakis@linaro.org">
+      <pre class="moz-quote-pre" wrap="">
+This patch series adds an audio device implementing the recent virtio 
+sound spec (1.2) and a corresponding PCI wrapper device.
 
-Thread(s) per core:  2
-Core(s) per socket:  2
-Socket(s):           2
+<a class="moz-txt-link-freetext" href="https://github.com/epilys/qemu-virtio-snd/tree/virtio-snd-v6">https://github.com/epilys/qemu-virtio-snd/tree/virtio-snd-v6</a>
 
-The detection of number of sockets is still wrong, but that is out of
-scope of the commit.
+Main differences with v5 patch series [^v5]
+<a class="moz-txt-link-rfc2396E" href="mailto:cover.1690626150.git.manos.pitsidianakis@linaro.org">&lt;cover.1690626150.git.manos.pitsidianakis@linaro.org&gt;</a>:
 
-Signed-off-by: Jiajie Chen <c@jia.je>
----
- hw/loongarch/acpi-build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- Free any existing PCM stream resources before allocating a new one.
+- Add docs.
 
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index 0b62c3a2f7..ae292fc543 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -127,7 +127,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
-         build_append_int_noprefix(table_data, 17, 1);    /* Type */
-         build_append_int_noprefix(table_data, 15, 1);    /* Length */
-         build_append_int_noprefix(table_data, 1, 1);     /* Version */
--        build_append_int_noprefix(table_data, i + 1, 4); /* ACPI Processor ID */
-+        build_append_int_noprefix(table_data, i, 4);     /* ACPI Processor ID */
-         build_append_int_noprefix(table_data, arch_id, 4); /* Core ID */
-         build_append_int_noprefix(table_data, 1, 4);     /* Flags */
-     }
--- 
-2.41.0
+[^v5]: 
+<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/">https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/</a>
 
+Previously:
+
+[^v4]: 
+<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/">https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/</a>
+[^v3]: 
+<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/">https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/</a>
+
+
+Emmanouil Pitsidianakis (12):
+  Add virtio-sound device stub
+  Add virtio-sound-pci device
+  virtio-sound: handle control messages and streams
+  virtio-sound: set PCM stream parameters
+  virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
+  virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
+  virtio-sound: handle VIRTIO_SND_PCM_SET_PARAMS
+  virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
+  virtio-sound: handle VIRTIO_SND_PCM_RELEASE
+  virtio-sound: implement audio output (TX)
+  virtio-sound: implement audio capture (RX)
+  docs/system: add basic virtio-snd documentation
+
+ MAINTAINERS                        |    6 +
+ docs/system/device-emulation.rst   |    1 +
+ docs/system/devices/virtio-snd.rst |   36 +
+ hw/virtio/Kconfig                  |    5 +
+ hw/virtio/meson.build              |    2 +
+ hw/virtio/trace-events             |   20 +
+ hw/virtio/virtio-snd-pci.c         |   91 ++
+ hw/virtio/virtio-snd.c             | 1308 ++++++++++++++++++++++++++++
+ include/hw/pci/pci.h               |    1 +
+ include/hw/virtio/virtio-snd.h     |  158 ++++
+ softmmu/qdev-monitor.c             |    1 +
+ 11 files changed, 1629 insertions(+)
+ create mode 100644 docs/system/devices/virtio-snd.rst
+ create mode 100644 hw/virtio/virtio-snd-pci.c
+ create mode 100644 hw/virtio/virtio-snd.c
+ create mode 100644 include/hw/virtio/virtio-snd.h
+
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------Ee2B5ChgEfctzzdDEQ8zZKnW--
 
