@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D6B781C36
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 04:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB45781C44
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 05:36:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXYYU-0007as-9q; Sat, 19 Aug 2023 22:52:42 -0400
+	id 1qXZDj-0006PK-Lh; Sat, 19 Aug 2023 23:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qXYYR-0007aQ-O7
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 22:52:39 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1qXZDg-0006PA-Is
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 23:35:16 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qXYYP-0000jB-9F
- for qemu-devel@nongnu.org; Sat, 19 Aug 2023 22:52:39 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2bcb0b973a5so8660711fa.3
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 19:52:36 -0700 (PDT)
+ id 1qXZDd-0007Qx-3M
+ for qemu-devel@nongnu.org; Sat, 19 Aug 2023 23:35:16 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2b9b5ee9c5aso35181331fa.1
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 20:35:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692499955; x=1693104755;
+ d=gmail.com; s=20221208; t=1692502510; x=1693107310;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kkAg3XaInhgYAUWKspB7yVlU+RjuQbLVneJpSV9JHuM=;
- b=qsg2MoJWA7a1LZBVG23zNAbadJCQF5JwLkU+TeoPaWEgpv1db5tv3D3038uD+bkwQA
- 9MwaEWJShaT+juj28WPXidcI5694/rBjeh505w//6bulZp1Z3KIZVYRQ9d2mvu7E6+rB
- BRR3qlBMrzfYS7UeJgkooEIES+XwdthG6Gsdg4RKYIqXERGUw1JL/7ctlgNAG+TaLcOT
- ouXpSKzYMgOuIMA0LgDAvWu4w8r4alKyOXS15AF2xwl9gvEdaGeVCtrbdOKwm6xoQElI
- DUBuMWKb5TRtm+njcY/R6jtyYTtae0/lII2s0su0A0p7wuv2lnxt6L3t7nkxAsDvi8Om
- 5pIQ==
+ bh=K74PUvP9nvjwWwZ0n3EUA1bucR5fnmhLSgV6F4/mJVs=;
+ b=LI7xW3md/sfQrEmN0yEVTeo8udsgl36NkZi8NuykRyHUd+gL00/KY8LfVAteU8i+8I
+ yqHSy9OGAzXW9NgxekV562qtnBiTSLiUPWgCCt+QMOV4qQ5F+lpA51xl7ZBxQNtDhZy2
+ GaN0Z+gmYzfgVb9H8zKPOUj0BLOta6AlQQtCwbp5LqVbmb2R0eWn3QWBFJcrtqzOR6dC
+ vvH7amGY9V8Pz7wscM9NbSI5mE/xFdGSswUaA5zRPDtaY5+/oUUYaldoU3iKTVYYdv+l
+ 9r/rKpS506j08FoVswMsv+B2VunDsu0DW0TkX7x2GgnWfj6Yk2SkI4cF7nIj9wAoFiL0
+ KGXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692499955; x=1693104755;
+ d=1e100.net; s=20221208; t=1692502510; x=1693107310;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kkAg3XaInhgYAUWKspB7yVlU+RjuQbLVneJpSV9JHuM=;
- b=UXwWBDEdN5pxUn82LdF7/DAAp733BNiOFkWl1a0Ixvsjnau424CB1mRbUPGk8nKFf8
- xJrIGD4bQlvHZmJoPt/Au9QuLm7Gklc0heijioYjuksruiH52Q/NcHAcbMWS9lMmS/rQ
- Kdg6vEXekIAyT9ACZ65rjPKmcUL4k2ISr9B2zrcb9JoJWZi4esrucps4JBa96rACp757
- xW1htHbGb5/+Ua9j2EJhMYCWuzZ7pJv8/ubbvmUyKXxneRhHPCqwDRdCuGC3EoI4Q5Bx
- Hd12MfII2NiapJH/H+nakKEfbHM2z8EOIjElhDaegVEDaFcXL6mQvtEAcqF7LZWz/FYl
- qb4w==
-X-Gm-Message-State: AOJu0YzkB20Y0omELTsf/MusM1X8YvkvSTqZeCkIxCqQf0t3f7VkcY3e
- RMQ8xFoGf3LVZM37QoIJTDpgX4lAAXkZ/+KJCdE=
-X-Google-Smtp-Source: AGHT+IE70MPO09D+J6INabYYBT+CqYlyqURE0FiV+njufyqJ+vi8Q0QY0g/hgxFOXFDUGs/vVMg2D/qlpJFFpJAfhbA=
-X-Received: by 2002:a2e:9b4e:0:b0:2b9:ecc5:d1de with SMTP id
- o14-20020a2e9b4e000000b002b9ecc5d1demr2098454ljj.37.1692499954882; Sat, 19
- Aug 2023 19:52:34 -0700 (PDT)
+ bh=K74PUvP9nvjwWwZ0n3EUA1bucR5fnmhLSgV6F4/mJVs=;
+ b=cvdLmArGwDGoiJ0dCBdMkqgPqW7PFiOFZofL+QI1pGeRersbh/1K9atagWE3x1NI10
+ b3vIOTyiixv7RD49Gb2Pux3aw4SlmgEY1oa9X97ilw7SN6jayTvCdS4TiKefoKvarckw
+ jUi1CRHcB4riPtAPB82l2Meff+WCwgkoLRGG1KoAHmLhBTKVqau8JW678gLHZRgH5BtA
+ MxOivI0JqKzFaEOtyN4uuGsIGXm0501zStx1DQQALS1+qCyR6zvxcmfbDfRskk5DpBbL
+ VK89bxTDq+Fpq+/chiDQP6HjQ3Zq5l+7dQwEzqhoH1e5blc5Bw01inBps0wuZHF/qzWG
+ vU+g==
+X-Gm-Message-State: AOJu0Yzbit47ouZIXOKzFqhjGERwaCQ51KoV1B1encUpv79hswFxsx4y
+ 91hULuZnxV7TYtMRK5MLTY6oyHXlrfNGQ6iK7ao=
+X-Google-Smtp-Source: AGHT+IF4q5znA/K7hw7vo/sHJuddEWQFcMfVWODVvIrjqCADc2GHaX1Rf7vlujKXv79GeLBvvWX26J6NieRYbL+k4iI=
+X-Received: by 2002:a2e:999a:0:b0:2bb:8bc1:db55 with SMTP id
+ w26-20020a2e999a000000b002bb8bc1db55mr2207145lji.52.1692502509543; Sat, 19
+ Aug 2023 20:35:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1689748694.git.yin31149@gmail.com>
- <152177c4e7082236fba9d31d535e40f8c2984349.1689748694.git.yin31149@gmail.com>
- <CAJaqyWez2iz1Ew67W_zwY8oqTwG14F4uwJgiint5n+G6fDEPwQ@mail.gmail.com>
-In-Reply-To: <CAJaqyWez2iz1Ew67W_zwY8oqTwG14F4uwJgiint5n+G6fDEPwQ@mail.gmail.com>
+ <3a002790e6c880af928c6470ecbf03e7c65a68bb.1689748694.git.yin31149@gmail.com>
+ <CAJaqyWc0UAiTo4u4ps_vSLYVJb1KHEUn+c7MEPf2vNuWRFMCiQ@mail.gmail.com>
+In-Reply-To: <CAJaqyWc0UAiTo4u4ps_vSLYVJb1KHEUn+c7MEPf2vNuWRFMCiQ@mail.gmail.com>
 From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Sun, 20 Aug 2023 10:52:23 +0800
-Message-ID: <CAKrof1NMrgyt7Xroyn78yyLjNzB=Fg6fJ71-_djXH80M1RNzRQ@mail.gmail.com>
-Subject: Re: [PATCH v3 6/8] vdpa: Move vhost_svq_poll() to the caller of
- vhost_vdpa_net_cvq_add()
+Date: Sun, 20 Aug 2023 11:34:57 +0800
+Message-ID: <CAKrof1NWWpgMPscnG1oc4Qxwk+rgVUx-tWWNMRSJGcSy-R2hng@mail.gmail.com>
+Subject: Re: [PATCH v3 8/8] vdpa: Send cvq state load commands in parallel
 To: Eugenio Perez Martin <eperezma@redhat.com>
 Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
  18801353760@163.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -91,142 +90,342 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/8/18 23:48, Eugenio Perez Martin wrote:
+On 2023/8/19 01:27, Eugenio Perez Martin wrote:
 > On Wed, Jul 19, 2023 at 9:54=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.co=
 m> wrote:
 >>
->> This patch moves vhost_svq_poll() to the caller of
->> vhost_vdpa_net_cvq_add() and introduces a helper funtion.
+>> This patch enables sending CVQ state load commands
+>> in parallel at device startup by following steps:
 >>
->> By making this change, next patches in this series is
->> able to refactor vhost_vdpa_net_load_x() only to delay
->> the polling and checking process until either the SVQ
->> is full or control commands shadow buffers are full.
+>>    * Refactor vhost_vdpa_net_load_cmd() to iterate through
+>> the control commands shadow buffers. This allows different
+>> CVQ state load commands to use their own unique buffers.
 >>
+>>    * Delay the polling and checking of buffers until either
+>> the SVQ is full or control commands shadow buffers are full.
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
 >> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 >> ---
->>   net/vhost-vdpa.c | 50 ++++++++++++++++++++++++++++++++++++++----------
->>   1 file changed, 40 insertions(+), 10 deletions(-)
+>>   net/vhost-vdpa.c | 157 +++++++++++++++++++++++++++++------------------
+>>   1 file changed, 96 insertions(+), 61 deletions(-)
 >>
 >> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->> index fe0ba19724..d06f38403f 100644
+>> index 795c9c1fd2..1ebb58f7f6 100644
 >> --- a/net/vhost-vdpa.c
 >> +++ b/net/vhost-vdpa.c
->> @@ -609,15 +609,21 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPASta=
-te *s,
->>               qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device que=
-ue\n",
->>                             __func__);
->>           }
->> -        return r;
->>       }
+>> @@ -633,6 +633,26 @@ static uint16_t vhost_vdpa_net_svq_available_slots(=
+VhostVDPAState *s)
+>>       return vhost_svq_available_slots(svq);
+>>   }
 >>
->> -    /*
->> -     * We can poll here since we've had BQL from the time we sent the
->> -     * descriptor. Also, we need to take the answer before SVQ pulls by=
- itself,
->> -     * when BQL is released
->> -     */
->> -    return vhost_svq_poll(svq, 1);
->> +    return r;
+>> +/*
+>> + * Poll SVQ for multiple pending control commands and check the device'=
+s ack.
+>> + *
+>> + * Caller should hold the BQL when invoking this function.
+>> + */
+>> +static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s,
+>> +                                        size_t cmds_in_flight)
+>> +{
+>> +    vhost_vdpa_net_svq_poll(s, cmds_in_flight);
+>> +
+>> +    /* Device should and must use only one byte ack each control comman=
+d */
+>> +    assert(cmds_in_flight < vhost_vdpa_net_cvq_cmd_page_len());
+>> +    for (int i =3D 0; i < cmds_in_flight; ++i) {
+>> +        if (s->status[i] !=3D VIRTIO_NET_OK) {
+>> +            return -EIO;
+>> +        }
+>> +    }
+>> +    return 0;
 >> +}
 >> +
->> +/*
->> + * Convenience wrapper to poll SVQ for multiple control commands.
->> + *
->> + * Caller should hold the BQL when invoking this function, and should t=
-ake
->> + * the answer before SVQ pulls by itself when BQL is released.
->> + */
->> +static ssize_t vhost_vdpa_net_svq_poll(VhostVDPAState *s, size_t cmds_i=
-n_flight)
->> +{
->> +    VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.shado=
-w_vqs, 0);
->> +    return vhost_svq_poll(svq, cmds_in_flight);
->>   }
->>
->>   /* Convenience wrapper to get number of available SVQ descriptors */
->> @@ -645,6 +651,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAStat=
-e *s, uint8_t class,
->>           .iov_base =3D s->status,
+>>   static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, void **out_c=
+ursor,
+>>                                          void **in_cursor, uint8_t class=
+,
+>>                                          uint8_t cmd, const struct iovec=
+ *data_sg,
+>> @@ -642,19 +662,41 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASt=
+ate *s, void **out_cursor,
+>>           .class =3D class,
+>>           .cmd =3D cmd,
+>>       };
+>> -    size_t data_size =3D iov_size(data_sg, data_num);
+>> +    size_t data_size =3D iov_size(data_sg, data_num),
+>> +           left_bytes =3D vhost_vdpa_net_cvq_cmd_page_len() -
+>> +                        (*out_cursor - s->cvq_cmd_out_buffer);
+>>       /* Buffers for the device */
+>>       struct iovec out =3D {
+>> -        .iov_base =3D *out_cursor,
+>>           .iov_len =3D sizeof(ctrl) + data_size,
+>>       };
+>>       struct iovec in =3D {
+>> -        .iov_base =3D *in_cursor,
 >>           .iov_len =3D sizeof(*s->status),
 >>       };
->> +    ssize_t r;
+>>       ssize_t r;
 >>
->>       assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl=
-));
->>       /* Each CVQ command has one out descriptor and one in descriptor *=
-/
->> @@ -657,7 +664,16 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASta=
-te *s, uint8_t class,
->>       iov_to_buf(data_sg, data_num, 0,
->>                  s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
->>
->> -    return vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
->> +    r =3D vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
->> +    if (unlikely(r < 0)) {
->> +        return r;
->> +    }
->> +
->> +    /*
->> +     * We can poll here since we've had BQL from the time
->> +     * we sent the descriptor.
->> +     */
->> +    return vhost_vdpa_net_svq_poll(s, 1);
->>   }
->>
->>   static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet =
-*n)
->> @@ -1152,6 +1168,12 @@ static int vhost_vdpa_net_excessive_mac_filter_cv=
-q_add(VhostVDPAState *s,
->>       if (unlikely(r < 0)) {
->>           return r;
->>       }
->> +
->> +    /*
->> +     * We can poll here since we've had BQL from the time
->> +     * we sent the descriptor.
->> +     */
->> +    vhost_vdpa_net_svq_poll(s, 1);
+>> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl)=
+);
+>> +    if (sizeof(ctrl) > left_bytes || data_size > left_bytes - sizeof(ct=
+rl) ||
 >
-> Don't we need to check the return value of vhost_vdpa_net_svq_poll here?
+> I'm ok with this code, but maybe we can simplify the code if we use
+> two struct iovec as cursors instead of a void **? I think functions
+> like iov_size and iov_copy already take care of a few checks here.
 
 Hi Eugenio,
 
-Yes, we should always check the return value of
-vhost_vdpa_net_svq_poll(). I will fix this problem
-in the v4 patch.
+Thanks for the explanation, I will refactor the patch according to your
+suggestion!
 
-Thanks!
+>
+> Apart from that it would be great to merge this call to
+> vhost_vdpa_net_svq_flush, but I find it very hard to do unless we
+> scatter it through all callers of vhost_vdpa_net_load_cmd.
+
+Yes, I agree with you. Maybe we can consider refactoring like this in
+the future if needed.
+
+>
+> Apart from the minor comments I think the series is great, thanks!
+
+Thanks for your review:)!
 
 
 >
->>       if (*s->status !=3D VIRTIO_NET_OK) {
->>           return sizeof(*s->status);
->>       }
->> @@ -1266,10 +1288,18 @@ static int vhost_vdpa_net_handle_ctrl_avail(Vhos=
-tShadowVirtqueue *svq,
->>               goto out;
->>           }
->>       } else {
->> -        dev_written =3D vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
->> -        if (unlikely(dev_written < 0)) {
->> +        ssize_t r;
->> +        r =3D vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
->> +        if (unlikely(r < 0)) {
->> +            dev_written =3D r;
->>               goto out;
->>           }
->> +
+>> +        vhost_vdpa_net_svq_available_slots(s) < 2) {
 >> +        /*
+>> +         * It is time to flush all pending control commands if SVQ is f=
+ull
+>> +         * or control commands shadow buffers are full.
+>> +         *
 >> +         * We can poll here since we've had BQL from the time
 >> +         * we sent the descriptor.
 >> +         */
->> +        dev_written =3D vhost_vdpa_net_svq_poll(s, 1);
+>> +        r =3D vhost_vdpa_net_svq_flush(s, *in_cursor - (void *)s->statu=
+s);
+>> +        if (unlikely(r < 0)) {
+>> +            return r;
+>> +        }
+>> +
+>> +        *out_cursor =3D s->cvq_cmd_out_buffer;
+>> +        *in_cursor =3D s->status;
+>> +        left_bytes =3D vhost_vdpa_net_cvq_cmd_page_len();
+>> +    }
+>> +
+>> +    out.iov_base =3D *out_cursor;
+>> +    in.iov_base =3D *in_cursor;
+>> +
+>> +    assert(data_size <=3D left_bytes - sizeof(ctrl));
+>>       /* Each CVQ command has one out descriptor and one in descriptor *=
+/
+>>       assert(vhost_vdpa_net_svq_available_slots(s) >=3D 2);
+>>
+>> @@ -670,11 +712,11 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASt=
+ate *s, void **out_cursor,
+>>           return r;
 >>       }
 >>
->>       if (unlikely(dev_written < sizeof(status))) {
+>> -    /*
+>> -     * We can poll here since we've had BQL from the time
+>> -     * we sent the descriptor.
+>> -     */
+>> -    return vhost_vdpa_net_svq_poll(s, 1);
+>> +    /* iterate the cursors */
+>> +    *out_cursor +=3D out.iov_len;
+>> +    *in_cursor +=3D in.iov_len;
+>> +
+>> +    return 0;
+>>   }
+>>
+>>   static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet =
+*n,
+>> @@ -685,15 +727,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState =
+*s, const VirtIONet *n,
+>>               .iov_base =3D (void *)n->mac,
+>>               .iov_len =3D sizeof(n->mac),
+>>           };
+>> -        ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, =
+in_cursor,
+>> -                                                  VIRTIO_NET_CTRL_MAC,
+>> -                                                  VIRTIO_NET_CTRL_MAC_A=
+DDR_SET,
+>> -                                                  &data, 1);
+>> -        if (unlikely(dev_written < 0)) {
+>> -            return dev_written;
+>> -        }
+>> -        if (*s->status !=3D VIRTIO_NET_OK) {
+>> -            return -EIO;
+>> +        ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> +                                               VIRTIO_NET_CTRL_MAC,
+>> +                                               VIRTIO_NET_CTRL_MAC_ADDR=
+_SET,
+>> +                                               &data, 1);
+>> +        if (unlikely(r < 0)) {
+>> +            return r;
+>>           }
+>>       }
+>>
+>> @@ -738,15 +777,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState =
+*s, const VirtIONet *n,
+>>               .iov_len =3D mul_macs_size,
+>>           },
+>>       };
+>> -    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_c=
+ursor,
+>> +    ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>>                                   VIRTIO_NET_CTRL_MAC,
+>>                                   VIRTIO_NET_CTRL_MAC_TABLE_SET,
+>>                                   data, ARRAY_SIZE(data));
+>> -    if (unlikely(dev_written < 0)) {
+>> -        return dev_written;
+>> -    }
+>> -    if (*s->status !=3D VIRTIO_NET_OK) {
+>> -        return -EIO;
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>>       }
+>>
+>>       return 0;
+>> @@ -757,7 +793,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>>                                     void **out_cursor, void **in_cursor)
+>>   {
+>>       struct virtio_net_ctrl_mq mq;
+>> -    ssize_t dev_written;
+>> +    ssize_t r;
+>>
+>>       if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
+>>           return 0;
+>> @@ -768,15 +804,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *=
+s,
+>>           .iov_base =3D &mq,
+>>           .iov_len =3D sizeof(mq),
+>>       };
+>> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> -                                          VIRTIO_NET_CTRL_MQ,
+>> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_S=
+ET,
+>> -                                          &data, 1);
+>> -    if (unlikely(dev_written < 0)) {
+>> -        return dev_written;
+>> -    }
+>> -    if (*s->status !=3D VIRTIO_NET_OK) {
+>> -        return -EIO;
+>> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> +                                   VIRTIO_NET_CTRL_MQ,
+>> +                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
+>> +                                   &data, 1);
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>>       }
+>>
+>>       return 0;
+>> @@ -787,7 +820,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASta=
+te *s,
+>>                                           void **out_cursor, void **in_c=
+ursor)
+>>   {
+>>       uint64_t offloads;
+>> -    ssize_t dev_written;
+>> +    ssize_t r;
+>>
+>>       if (!virtio_vdev_has_feature(&n->parent_obj,
+>>                                    VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
+>> @@ -815,15 +848,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAS=
+tate *s,
+>>           .iov_base =3D &offloads,
+>>           .iov_len =3D sizeof(offloads),
+>>       };
+>> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> -                                          VIRTIO_NET_CTRL_GUEST_OFFLOAD=
+S,
+>> -                                          VIRTIO_NET_CTRL_GUEST_OFFLOAD=
+S_SET,
+>> -                                          &data, 1);
+>> -    if (unlikely(dev_written < 0)) {
+>> -        return dev_written;
+>> -    }
+>> -    if (*s->status !=3D VIRTIO_NET_OK) {
+>> -        return -EIO;
+>> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> +                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS,
+>> +                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
+>> +                                   &data, 1);
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>>       }
+>>
+>>       return 0;
+>> @@ -838,15 +868,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPASt=
+ate *s,
+>>           .iov_base =3D &on,
+>>           .iov_len =3D sizeof(on),
+>>       };
+>> -    ssize_t dev_written;
+>> +    ssize_t r;
+>>
+>> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> -                                          VIRTIO_NET_CTRL_RX, cmd, &dat=
+a, 1);
+>> -    if (unlikely(dev_written < 0)) {
+>> -        return dev_written;
+>> -    }
+>> -    if (*s->status !=3D VIRTIO_NET_OK) {
+>> -        return -EIO;
+>> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> +                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>>       }
+>>
+>>       return 0;
+>> @@ -1001,15 +1028,12 @@ static int vhost_vdpa_net_load_single_vlan(Vhost=
+VDPAState *s,
+>>           .iov_base =3D &vid,
+>>           .iov_len =3D sizeof(vid),
+>>       };
+>> -    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_c=
+ursor,
+>> -                                                  VIRTIO_NET_CTRL_VLAN,
+>> -                                                  VIRTIO_NET_CTRL_VLAN_=
+ADD,
+>> -                                                  &data, 1);
+>> -    if (unlikely(dev_written < 0)) {
+>> -        return dev_written;
+>> -    }
+>> -    if (unlikely(*s->status !=3D VIRTIO_NET_OK)) {
+>> -        return -EIO;
+>> +    ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>> +                                           VIRTIO_NET_CTRL_VLAN,
+>> +                                           VIRTIO_NET_CTRL_VLAN_ADD,
+>> +                                           &data, 1);
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>>       }
+>>
+>>       return 0;
+>> @@ -1078,6 +1102,17 @@ static int vhost_vdpa_net_load(NetClientState *nc=
+)
+>>           return r;
+>>       }
+>>
+>> +    /*
+>> +     * We need to poll and check all pending device's used buffers.
+>> +     *
+>> +     * We can poll here since we've had BQL from the time
+>> +     * we sent the descriptor.
+>> +     */
+>> +    r =3D vhost_vdpa_net_svq_flush(s, in_cursor - (void *)s->status);
+>> +    if (unlikely(r)) {
+>> +        return r;
+>> +    }
+>> +
+>>       return 0;
+>>   }
+>>
 >> --
 >> 2.25.1
 >>
