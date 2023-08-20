@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D2B781E5E
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 16:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B92781E6B
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 17:05:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXjpq-0007Rv-Hi; Sun, 20 Aug 2023 10:55:22 -0400
+	id 1qXjxe-0000cK-N7; Sun, 20 Aug 2023 11:03:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjpo-0007Rk-NK
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:55:20 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qXjxa-0000by-GX
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:03:22 -0400
+Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjpm-0003sw-FN
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:55:20 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-68a41031768so83595b3a.3
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 07:55:17 -0700 (PDT)
+ id 1qXjxX-0005NV-Lj
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:03:21 -0400
+Received: by mail-il1-x12a.google.com with SMTP id
+ e9e14a558f8ab-34ac2e3064cso7474305ab.1
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 08:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692543316; x=1693148116;
+ d=linaro.org; s=google; t=1692543798; x=1693148598;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hw8Ocz2z6zeSozNqPuULEet/XqgWkUfKwoh2hGFCX0k=;
- b=RFdHk3Dxd8xNWhu0XTW0tRHIxcCQxZJUR4nw49vA8GRZT1pvCnhwiEg7H3/uMDNmYi
- P27Ac4cTW91Zsh0Qln2EC+OVw2ywOuverof77nQ4mxQ64ojBSCuBdkI585ty6tHXrezo
- gIiBaShaAa8e+waUjbFk/r/rhVlgBh4oxNqKoJEmNB2paGWaQj2s9hqrIX2Rq/FbiRhP
- 9gfYIhYAMO7GdqiJ8xHboF7pf5Q9jI7GTljQ2VAWwRsbofLn12DaFg0M8E1WgMm7RTMw
- rljDNayY9E9vVZrMbXQAkp1JGw72eLgtgQ0UWgBd7bxitOCNXO4zYGDzZ4rdUOpe3Pfg
- mYDg==
+ bh=GHyNteRwgNhTDLpwoQFqMheIGtBKBG1AQRAOSPbDdNI=;
+ b=a6EJ2rWW7WPwEckGUH3l2SAZkBviUSco50HgvDYIw/0IJUAzyKhOP3nfgBI/Idoq+B
+ IzZ3wGHXhxmiK51Q8/oBceLEHMWeawKQ8PfEhrixIlJZGi5GU4cB/jxg1JrZbY4FR2S3
+ hzcGHi3RM8LNog+B1WEFh49plFVvpKZfM9aSv9HhVmqduPfbcrrwcY61b/f/aSx5wR5F
+ esa71nUgXCAWPJ5Mpmr5Skr9zyNpc7oI1CJE3wJEp4Cwf070wTvL5iolwR2GDfcIUZYW
+ r4wr9/WoLs4cnDl3OD1uGhrBIoDWQqbKTDZpNRqSLznMoSStFjq1HRZmpuvAmje6fxY+
+ EduA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692543316; x=1693148116;
+ d=1e100.net; s=20221208; t=1692543798; x=1693148598;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hw8Ocz2z6zeSozNqPuULEet/XqgWkUfKwoh2hGFCX0k=;
- b=UyiwgcXvpJ3Og30CoE5Ym412afIVPM93gHqmzkBM0QO4uLh1u2YqV/tM/ekVrsQNdr
- dm9mrvdR5LVkkgjYOOnwLQ/KUti5xqBel8D6stS9VMFy0YxsQI5vISTbB8Bkm0XPwvRD
- ok8b8CZxEDNZeO/q6C4o2LJIbGajYJmDRmb4WnpLXURDhXKoeljqaDyM26aDXzE3Hlmy
- AB9i7eq2eZASZ1Fh1PgqcZce422YCUyc5XaQ04EACzr/MJRQJuKqRHB7Gzgm9/0TqWcg
- eFhh/4VwPNqQx/Nk9hh3vELSVwT3BuGhJWMtRkwex2iUlV5A/Aln2xhg+20+zt85g+C3
- ZkPQ==
-X-Gm-Message-State: AOJu0YycMwMLkA8LoFhIJf7hxaSn1/9avQyy6b/ibHK052DlD2eSr4ss
- aNCjX75a6SNveD2nuq5I4pSXAA==
-X-Google-Smtp-Source: AGHT+IFaJNi87bKf7Q3PkFeYpHJX3MugdrcXy+D75UvGnMUpcsh4660gkPWGtQeP2ZMg/adlVsaGpg==
-X-Received: by 2002:a05:6a20:8e01:b0:13e:b7e9:1a71 with SMTP id
- y1-20020a056a208e0100b0013eb7e91a71mr3451178pzj.14.1692543316667; 
- Sun, 20 Aug 2023 07:55:16 -0700 (PDT)
+ bh=GHyNteRwgNhTDLpwoQFqMheIGtBKBG1AQRAOSPbDdNI=;
+ b=OsHsjxHpsC71BF5drBragiwKNQiXNkb6biZM++3QF72jSwkvxt2IStuPaJseA9i90I
+ dvxgofrBSnhPoOn57eSWxRSYinSusM2/Ho7XA63RWqeu75fr0JFe6pfl3R1mm2/o8FWy
+ qYSQxsFGc8p/ETupbmc/B0Dwuncua8UgFjXe1VRaxFvNzAhnRDxxJPoc7FStkBp/sFrr
+ XsuXygGq9yLo7OdRd/Rps+XaGSikXiBm7muG+NXIkHf+1PTcMFD8/9hBwXUyEy9enFEk
+ SmuWP5g4hhnJVAqG+dlkf404A7diP/eSqveUBk/AKBRbNRBAMndMnkKMR87HEK4CgGFF
+ fw3A==
+X-Gm-Message-State: AOJu0Yww3jVbZZXh6dD2Yp2xKrXgYRWGV83BdKedm3wydZIhR6MjBKBi
+ dw4xLTCCh+arCzyCT4cf63Wp1Q==
+X-Google-Smtp-Source: AGHT+IE3kM8cPo5KQW2TiXZGisUR/6Px6Yon1x2l1TAX/KcTSefatuFo+/6f6+IoiCQ0BOXexzXSlA==
+X-Received: by 2002:a05:6e02:17ce:b0:32c:9c5e:900c with SMTP id
+ z14-20020a056e0217ce00b0032c9c5e900cmr7291570ilu.8.1692543798093; 
+ Sun, 20 Aug 2023 08:03:18 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:347d:4d37:bdd7:f5e5?
  ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
  by smtp.gmail.com with ESMTPSA id
- 2-20020a170902e9c200b001a6d4ea7301sm5174505plk.251.2023.08.20.07.55.15
+ q11-20020a638c4b000000b005637030d00csm4872335pgn.30.2023.08.20.08.03.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Aug 2023 07:55:16 -0700 (PDT)
-Message-ID: <cf5468f9-32fc-4e6c-a0ad-5e87b578bcb5@linaro.org>
-Date: Sun, 20 Aug 2023 07:55:14 -0700
+ Sun, 20 Aug 2023 08:03:17 -0700 (PDT)
+Message-ID: <404b85e2-2c62-e354-2a00-72637cfc1697@linaro.org>
+Date: Sun, 20 Aug 2023 08:03:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 16/22] Implement mincore(2)
+Subject: Re: [PATCH 17/22] Implement do_obreak function
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+ =?UTF-8?Q?Mika=c3=abl_Urankar?= <mikael.urankar@gmail.com>
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-17-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-18-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230819094806.14965-17-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-18-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12a.google.com
 X-Spam_score_int: -63
 X-Spam_score: -6.4
 X-Spam_bar: ------
@@ -97,35 +98,120 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/19/23 02:48, Karim Taha wrote:
-> +/* mincore(2) */
-> +static inline abi_long do_bsd_mincore(abi_ulong target_addr, abi_ulong len,
-> +        abi_ulong target_vec)
+> From: Stacey Son <sson@FreeBSD.org>
+> 
+> Co-authored-by: Mikaël Urankar <mikael.urankar@gmail.com>
+> 
+> Signed-off-by: Mikaël Urankar <mikael.urankar@gmail.com>
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> ---
+>   bsd-user/bsd-mem.h            | 85 +++++++++++++++++++++++++++++++++++
+>   bsd-user/freebsd/os-syscall.c |  7 +++
+>   2 files changed, 92 insertions(+)
+> 
+> diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
+> index edbccd3111..6f33148eb7 100644
+> --- a/bsd-user/bsd-mem.h
+> +++ b/bsd-user/bsd-mem.h
+> @@ -167,4 +167,89 @@ static inline abi_long do_bsd_mincore(abi_ulong target_addr, abi_ulong len,
+>       return ret;
+>   }
+>   
+> +#ifdef DO_DEBUG
+> +#define DEBUGF_BRK(message, args...) \
+> +    do { fprintf(stderr, (message), ## args); } while (0)
+> +#else
+> +#define DEBUGF_BRK(message, args...)
+> +#endif
+
+We are trying to get rid of all of this old-style debugging.
+We are replacing them with tracepoints.
+
+> +
+> +/* do_brk() must return target values and target errnos. */
+> +static inline abi_long do_obreak(abi_ulong new_brk)
 > +{
-> +    abi_long ret;
-> +    void *p, *a;
+> +    abi_long mapped_addr;
+> +    int new_alloc_size;
 > +
-> +    a = lock_user(VERIFY_WRITE, target_addr, len, 0);
-> +    if (a == NULL) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    p = lock_user_string(target_vec);
-> +    if (p == NULL) {
-> +        unlock_user(a, target_addr, 0);
-> +        return -TARGET_EFAULT;
-> +    }
-> +    ret = get_errno(mincore(a, len, p));
-> +    unlock_user(p, target_vec, ret);
-> +    unlock_user(a, target_addr, 0);
+> +    DEBUGF_BRK("do_brk(" TARGET_ABI_FMT_lx ") -> ", new_brk);
 > +
-> +    return ret;
+> +    if (!new_brk) {
+> +        DEBUGF_BRK(TARGET_ABI_FMT_lx " (!new_brk)\n", bsd_target_brk);
+> +        return bsd_target_brk;
+> +    }
+> +    if (new_brk < bsd_target_original_brk) {
+> +        DEBUGF_BRK(TARGET_ABI_FMT_lx " (new_brk < bsd_target_original_brk)\n",
+> +                   bsd_target_brk);
+> +        return bsd_target_brk;
+> +    }
 
-This is wrong.
+These two cases may be combined, since original_brk will never be 0.
 
-(1) VERIFY_WRITE is incorrect.  Here you need a combination of guest_range_valid_untagged 
-and page_check_range(addr, len, PAGE_VALID).
+> +
+> +    /*
+> +     * If the new brk is less than the highest page reserved to the target heap
+> +     * allocation, set it and we're almost done...
+> +     */
+> +    if (new_brk <= brk_page) {
+> +        /*
+> +         * Heap contents are initialized to zero, as for anonymous mapped pages.
+> +         */
+> +        if (new_brk > bsd_target_brk) {
+> +            memset(g2h_untagged(bsd_target_brk), 0, new_brk - bsd_target_brk);
+> +        }
+> +        bsd_target_brk = new_brk;
+> +        DEBUGF_BRK(TARGET_ABI_FMT_lx " (new_brk <= brk_page)\n",
+> +                   bsd_target_brk);
+> +        return bsd_target_brk;
+> +    }
+> +
+> +    /*
+> +     * We need to allocate more memory after the brk... Note that we don't use
+> +     * MAP_FIXED because that will map over the top of any existing mapping
+> +     * (like the one with the host libc or qemu itself); instead we treat
+> +     * "mapped but at wrong address" as a failure and unmap again.
+> +     */
+> +    new_alloc_size = HOST_PAGE_ALIGN(new_brk - brk_page);
 
-(2) vec is not a string, it is an array of size DIV_ROUND_UP(len, TARGET_PAGE_SIZE).  For 
-that, you do want lock_user(VERIFY_WRITE).
+We removed all HOST_PAGE_ALIGN from brk in linux-user this cycle.
+
+> +    mapped_addr = get_errno(target_mmap(brk_page, new_alloc_size,
+> +                                        PROT_READ | PROT_WRITE,
+> +                                        MAP_ANON | MAP_PRIVATE, -1, 0));
+> +
+> +    if (mapped_addr == brk_page) {
+> +        /*
+> +         * Heap contents are initialized to zero, as for anonymous mapped pages.
+> +         * Technically the new pages are already initialized to zero since they
+> +         * *are* anonymous mapped pages, however we have to take care with the
+> +         * contents that come from the remaining part of the previous page: it
+> +         * may contains garbage data due to a previous heap usage (grown then
+> +         * shrunken).
+> +         */
+> +        memset(g2h_untagged(bsd_target_brk), 0, brk_page - bsd_target_brk);
+> +
+> +        bsd_target_brk = new_brk;
+> +        brk_page = HOST_PAGE_ALIGN(bsd_target_brk);
+> +        DEBUGF_BRK(TARGET_ABI_FMT_lx " (mapped_addr == brk_page)\n",
+> +            bsd_target_brk);
+> +        return bsd_target_brk;
+> +    } else if (mapped_addr != -1) {
+> +        /*
+> +         * Mapped but at wrong address, meaning there wasn't actually enough
+> +         * space for this brk.
+> +         */
+> +        target_munmap(mapped_addr, new_alloc_size);
+> +        mapped_addr = -1;
+> +        DEBUGF_BRK(TARGET_ABI_FMT_lx " (mapped_addr != -1)\n", bsd_target_brk);
+> +    } else {
+> +        DEBUGF_BRK(TARGET_ABI_FMT_lx " (otherwise)\n", bsd_target_brk);
+> +    }
+
+It may require additional work in target_mmap, but you probably want to use MAP_FIXED | 
+MAP_EXCL here.  On the linux-user side we changed to use MAP_FIXED_NOREPLACE, which is 
+approximately the same thing.
 
 
 r~
