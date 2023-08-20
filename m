@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C66781E40
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 16:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292E7781E41
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 16:26:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXjMr-0001RK-25; Sun, 20 Aug 2023 10:25:25 -0400
+	id 1qXjNC-0001bx-9X; Sun, 20 Aug 2023 10:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjMo-0001R6-W5
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:25:23 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qXjN6-0001Yx-Pw
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:25:40 -0400
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjMl-0006rT-4q
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:25:21 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1bdcb800594so13881265ad.1
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 07:25:17 -0700 (PDT)
+ id 1qXjN3-0006uD-L3
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:25:39 -0400
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-790f831c6fbso86285939f.2
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 07:25:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692541516; x=1693146316;
+ d=linaro.org; s=google; t=1692541535; x=1693146335;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7/9MZe/Yllt4OSPa3gZtSFCVfF0JbuhfrgaaozADvCI=;
- b=AKd8CfPGNK7dfrefdw89+QnvyPxMjTXOnU4R9vjzymWYAP5GxYONPE3v617QUDUFYR
- mmZVJSsqDGDVv9CFzUVKNvaJ+55tdN5C52lqGf8AVqZVItQcaYJRGkFGHkfkpnGONht+
- iTwoz87d84q2ZmzmVHO8fBmy1IQWM5AHxGuo5eJLUelkWXWyxTHrRLCqv1POmJ2VXr59
- R86WNlVWhOPTl6JL2ABJJMSEgUUbFk8EHsWbtwgmhainFIpzUaRTiNgpSnx4WmySc2Eo
- wzWnOJRkkIblS3QmCA1g+RAGJBFvHSNDlZIdCyLiE+KK7HS+h95P1PpwP6RzNMFKWm8+
- Sohg==
+ bh=EYj8QVdIwiEFfQzS2mP0JtqlbbDEMzho5oS43Wx91ik=;
+ b=EX0GlsL/50XW+tdDAt/yPPnRO4ttkhtFpLWUZrbZrqOerKtsSYu39nqOREn3nVElZ6
+ kNOh56K0DZBD13J+k6Y5Q9tV8fhOgQqzs22abt9YPWPnvNokef66aV2mZe7obvZwg4mz
+ 3jr57jllIlUTkxURjUKgpxUZuymZUjhna4kZ8G5G7cmCy1+4mOe9zeNSUxxSpYPZ6+f6
+ eC0u+kq7uSNmokQRkRPN27RmZtKjSuARFydk7rbSAWDsuOQMAU/9tJgSwPOFTvmBTbn1
+ +fUx8CnLw3t82ewQthf7xAwzbkcV8M7PcDU2MSFOyFeEahe2yTERyNBFbIqjPWGGSahk
+ 91dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692541516; x=1693146316;
+ d=1e100.net; s=20221208; t=1692541535; x=1693146335;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7/9MZe/Yllt4OSPa3gZtSFCVfF0JbuhfrgaaozADvCI=;
- b=QytVV9ugPS1BxxNy4GKFYz7aPUKJiGF3i0Ks8u8x6Omd3T9La01WfX/O2OKyLNtzVm
- 9gR+E0iWJNEP5Nd4SF4IpMT+SIoHGjMovawXtAzsmrxOCtTwDU26Ncd/Yy90CyDR/SJF
- 02v/T4cHYXyhP+71V5/Vjfb7o65QmJHXB1GC0Pt4rE4LcvxkHfzHezjwiCuOOEchHwRH
- 3jgQGSCl1ItTEwqOxHqoC3kt0d3S8NqdCXnQOfSrSWOVaH39P88ObuPPyp9vYE6Ydzn5
- ej6ovM6qA1DGqRUBTeHViLtas9/BVVYXcvX/yDvZsk3kJb0xV2vdWhNEPM6u860fp9St
- ikxQ==
-X-Gm-Message-State: AOJu0YycQF3k/W2yavOhl2ltfm6Ug+6sDq0qXkxg9NgKup7r5wSOoTth
- hdkc7FkgW2Ogef0djchyOnFWDQ==
-X-Google-Smtp-Source: AGHT+IGw1dzbVnr0EhygsKdQtJGVsTvWgQ1KadDkBOv/fko+7yQEWJBF1RAFLWhQnnFouU8mKlPpHw==
-X-Received: by 2002:a17:902:e84f:b0:1bc:506a:58f2 with SMTP id
- t15-20020a170902e84f00b001bc506a58f2mr2956928plg.46.1692541516300; 
- Sun, 20 Aug 2023 07:25:16 -0700 (PDT)
+ bh=EYj8QVdIwiEFfQzS2mP0JtqlbbDEMzho5oS43Wx91ik=;
+ b=VBijRL0MDRadHSX2A3XYv7r1IMogLGR3o4WTRIk7bpNd8HByShW2loiX6MxUjbEZgt
+ 96Pw+QBpCi2HDgurqllIMEYVYblF1kG0LgbNyGlgSdWa3sUvb4C5okIwDaEPcbQ4EN45
+ pn2uajRa50E7PPmxYezm+NXjNv8rFQzdMrsiZRm1lv/AlbuU8yGHg9p2zxtEXQGytDxQ
+ SPpd2mmDmdkW6lR8nEwj0Lz8FPus5xqB6x6CdNBbvhLf+rGUaYUL4jkQ/mG3smfrowMg
+ LDXbE60YyFXDbP99jhqU+Owv8s9fqWgvehuRzEyl9E+7KeYuprHxgPbjra9/O/q0Z0zN
+ 3Zhw==
+X-Gm-Message-State: AOJu0YyDjGYCt37CXfYhrEo4OC/o1wfZHSg8+riuQfWIUAkAr84QuXKq
+ /WT1/pjBDW75gQUkw5fBB61dlQ==
+X-Google-Smtp-Source: AGHT+IHTGwHMbyE43YKNHag8OylukOReWitHFydRv6+dqzuA3GLP0MN5fXhCzyBaUBjjUJ4N/OSbfQ==
+X-Received: by 2002:a05:6e02:118d:b0:348:dbbf:a9f5 with SMTP id
+ y13-20020a056e02118d00b00348dbbfa9f5mr6067426ili.26.1692541534967; 
+ Sun, 20 Aug 2023 07:25:34 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:347d:4d37:bdd7:f5e5?
  ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
  by smtp.gmail.com with ESMTPSA id
- jj4-20020a170903048400b001b9f7bc3e77sm1395027plb.189.2023.08.20.07.25.15
+ x9-20020a656aa9000000b00563ea47c948sm4357667pgu.53.2023.08.20.07.25.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Aug 2023 07:25:15 -0700 (PDT)
-Message-ID: <7865c37c-c8ff-5387-33b9-20dc099f90b7@linaro.org>
-Date: Sun, 20 Aug 2023 07:25:14 -0700
+ Sun, 20 Aug 2023 07:25:34 -0700 (PDT)
+Message-ID: <00005378-71f6-d44e-7f25-a67ff46db434@linaro.org>
+Date: Sun, 20 Aug 2023 07:25:32 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 12/22] Implement mmap(2) and munmap(2)
+Subject: Re: [PATCH 13/22] Implement mprotect(2)
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-13-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-14-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230819094806.14965-13-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-14-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd36.google.com
 X-Spam_score_int: -63
 X-Spam_score: -6.4
 X-Spam_bar: ------
@@ -97,14 +97,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/19/23 02:47, Karim Taha wrote:
-> +    case TARGET_FREEBSD_NR_mmap: /* mmap(2) */
-> +        ret = do_bsd_mmap(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6, arg7,
-> +           arg8);
-
-Indentation.  Align after (.
+> From: Stacey Son<sson@FreeBSD.org>
+> 
+> Signed-off-by: Stacey Son<sson@FreeBSD.org>
+> Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
+> ---
+>   bsd-user/bsd-mem.h            | 7 +++++++
+>   bsd-user/freebsd/os-syscall.c | 4 ++++
+>   2 files changed, 11 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
