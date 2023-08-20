@@ -2,61 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001B9781D9C
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 13:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDB0781E01
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 15:55:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXgtG-0005La-SL; Sun, 20 Aug 2023 07:46:42 -0400
+	id 1qXis0-0001PT-2W; Sun, 20 Aug 2023 09:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qXgt5-0005LM-CJ
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 07:46:32 -0400
-Received: from mailout05.t-online.de ([194.25.134.82])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qXgt2-0007hK-Cb
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 07:46:31 -0400
-Received: from fwd70.aul.t-online.de (fwd70.aul.t-online.de [10.223.144.96])
- by mailout05.t-online.de (Postfix) with SMTP id 8E3DC21D7A;
- Sun, 20 Aug 2023 13:46:24 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.21.165]) by fwd70.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qXgsy-0ZVVYH0; Sun, 20 Aug 2023 13:46:24 +0200
-Content-Type: multipart/alternative;
- boundary="------------Ee2B5ChgEfctzzdDEQ8zZKnW"
-Message-ID: <7d4e70f5-c930-e665-c0b0-44e3d8831743@t-online.de>
-Date: Sun, 20 Aug 2023 13:46:23 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qXiry-0001PL-9g
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 09:53:30 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qXirw-0000hX-8x
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 09:53:30 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6bd0a0a6766so1906586a34.2
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 06:53:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692539606; x=1693144406;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ysLZ9+shxdReUpGzuwqor8utFJDRhs02RtjNqz/OsCI=;
+ b=oaK4B6TZmxzQiNaw7wQS9nqVu2cQUfwzEqKA9QOXu21W6SPLPBpCtfiXH31nX/M0Bq
+ gBVcphX1VfcnY/57qNXrU/KfHRrKOGsELO1Tm69y7Je/wpHrarVnee+lcR1V3CxdYe4s
+ EeLWtgfIlr1QhkYkBbtWiPhBtMFzvCQopzKBDB6l/Xl5b1oEh9HdBJaE/Ct6Gxa/dBYV
+ tX8DNKiCW0DPayAWOYl21woAhnZ3a4slrYeiasDJ8yaZo8xf6UrzmIZMkn7YI9NJ8lP4
+ wWtf77H/UKSMzLcFZ4+w9rMgbhcMrQuJr0lO4YPxnbRJy89ma+yfNbdY/W4vNuUXz6DI
+ JQMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692539606; x=1693144406;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ysLZ9+shxdReUpGzuwqor8utFJDRhs02RtjNqz/OsCI=;
+ b=gN3ddJSHY3IwSm6r623cJ5k8XNxuDCgpJvLgBGkT60AngdkZ6/nEeV4HCrO6mkRZb3
+ 56wrJ7Qe3bTwtD63MHbtQnp8wxPz4pBTi5SxQe9aIjAA7SvAsIgjh/OOU4FH//I0JK+u
+ KXYvkU5nCjc43+9x+4uFenYPBNePixI9KHwQ74dfivbMXH2hJ8XItB9O2D28HNBg+zkt
+ smtZNypBW4l5mHQjr+hZaDbXkgV/esBINVyInfU124cRrRLCssnRWj1FOlib76lAWbDg
+ dUvKkUDirADGDQ4WnapsZegeSdRg34t+5OEzY6BaIm9gXC/cg7tXZ4QQMbdtUbdrYO6g
+ tWyg==
+X-Gm-Message-State: AOJu0YzIaFXoLv3b2oeYhuC2Mw8QdyTqlBnw8rAD95C4SCeR3S2dC4hE
+ HU7d5l+OJoeAPiT4sDqqQunOEF6Hau+FqIaZ+z4=
+X-Google-Smtp-Source: AGHT+IGC0N+QUzhS8n7k+24uNNnS4l5axT7KsAP0/N+/qLN615Jpr4HEHTXJntA68cgc+Nk3m+K0Gg==
+X-Received: by 2002:a9d:6c97:0:b0:6bc:fb5f:7b06 with SMTP id
+ c23-20020a9d6c97000000b006bcfb5f7b06mr5339106otr.17.1692539605853; 
+ Sun, 20 Aug 2023 06:53:25 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:347d:4d37:bdd7:f5e5?
+ ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
+ by smtp.gmail.com with ESMTPSA id
+ c190-20020a6335c7000000b005697e8cc5f3sm2609577pga.22.2023.08.20.06.53.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 20 Aug 2023 06:53:25 -0700 (PDT)
+Message-ID: <2e7d8be5-1802-6701-09d1-4eb45bc54725@linaro.org>
+Date: Sun, 20 Aug 2023 06:53:23 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v6 00/12] Add VIRTIO sound card
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] bsd-user: Add missing break after do_bsd_preadv
 Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
-X-TOI-EXPURGATEID: 150726::1692531984-7C9A9E98-BEDB2912/0/0 CLEAN NORMAL
-X-TOI-MSGID: 654c00b1-3dd9-44e9-8164-aebac8631a74
-Received-SPF: none client-ip=194.25.134.82; envelope-from=vr_qemu@t-online.de;
- helo=mailout05.t-online.de
-X-Spam_score_int: -68
-X-Spam_score: -6.9
+To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
+Cc: Kyle Evans <kevans@freebsd.org>
+References: <20230820045419.89691-1-imp@bsdimp.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230820045419.89691-1-imp@bsdimp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
+X-Spam_score_int: -63
+X-Spam_score: -6.4
 X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, NICE_REPLY_A=-4.279, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-6.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.279,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,164 +95,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------Ee2B5ChgEfctzzdDEQ8zZKnW
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On 8/19/23 21:54, Warner Losh wrote:
+> Without it, we'd call preadv, then write with weird parameters, which is
+> clearly not ideal...
+> 
+> Signed-off-by: Warner Losh<imp@bsdimp.com>
+> ---
+>   bsd-user/freebsd/os-syscall.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-Hi Manos,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-I tested the virtio-sound-pci device. It seems the device works 
-unreliably. Audio playback has a lot of dropouts. I can actually hear my 
-mouse moving around. Audio recording with audacity doesn't work. Either 
-recording stops with an error or the recorded stream is silent.
-
-I'll see if I can change the code so audio playback works reliably. I 
-don't think it makes sense to review the current code as it is. I will 
-of course report any issues I find.
-
-With best regards,
-Volker
-
-> This patch series adds an audio device implementing the recent virtio
-> sound spec (1.2) and a corresponding PCI wrapper device.
->
-> https://github.com/epilys/qemu-virtio-snd/tree/virtio-snd-v6
->
-> Main differences with v5 patch series [^v5]
-> <cover.1690626150.git.manos.pitsidianakis@linaro.org>:
->
-> - Free any existing PCM stream resources before allocating a new one.
-> - Add docs.
->
-> [^v5]:
-> https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/
->
-> Previously:
->
-> [^v4]:
-> https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/
-> [^v3]:
-> https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/
->
->
-> Emmanouil Pitsidianakis (12):
->    Add virtio-sound device stub
->    Add virtio-sound-pci device
->    virtio-sound: handle control messages and streams
->    virtio-sound: set PCM stream parameters
->    virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
->    virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
->    virtio-sound: handle VIRTIO_SND_PCM_SET_PARAMS
->    virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
->    virtio-sound: handle VIRTIO_SND_PCM_RELEASE
->    virtio-sound: implement audio output (TX)
->    virtio-sound: implement audio capture (RX)
->    docs/system: add basic virtio-snd documentation
->
->   MAINTAINERS                        |    6 +
->   docs/system/device-emulation.rst   |    1 +
->   docs/system/devices/virtio-snd.rst |   36 +
->   hw/virtio/Kconfig                  |    5 +
->   hw/virtio/meson.build              |    2 +
->   hw/virtio/trace-events             |   20 +
->   hw/virtio/virtio-snd-pci.c         |   91 ++
->   hw/virtio/virtio-snd.c             | 1308 ++++++++++++++++++++++++++++
->   include/hw/pci/pci.h               |    1 +
->   include/hw/virtio/virtio-snd.h     |  158 ++++
->   softmmu/qdev-monitor.c             |    1 +
->   11 files changed, 1629 insertions(+)
->   create mode 100644 docs/system/devices/virtio-snd.rst
->   create mode 100644 hw/virtio/virtio-snd-pci.c
->   create mode 100644 hw/virtio/virtio-snd.c
->   create mode 100644 include/hw/virtio/virtio-snd.h
->
---------------Ee2B5ChgEfctzzdDEQ8zZKnW
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">Hi Manos,<br>
-      <br>
-      I tested the virtio-sound-pci device. It seems the device works
-      unreliably. Audio playback has a lot of dropouts. I can actually
-      hear my mouse moving around. Audio recording with audacity doesn't
-      work. Either recording stops with an error or the recorded stream
-      is silent.<br>
-      <br>
-      I'll see if I can change the code so audio playback works
-      reliably. I don't think it makes sense to review the current code
-      as it is. <span _d-id="86700" class="--l --r sentence_highlight">I
-        will of course report any issues I find.</span><br>
-      <br>
-      With best regards,<br>
-      Volker<br>
-      <br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:cover.1692089917.git.manos.pitsidianakis@linaro.org">
-      <pre class="moz-quote-pre" wrap="">
-This patch series adds an audio device implementing the recent virtio 
-sound spec (1.2) and a corresponding PCI wrapper device.
-
-<a class="moz-txt-link-freetext" href="https://github.com/epilys/qemu-virtio-snd/tree/virtio-snd-v6">https://github.com/epilys/qemu-virtio-snd/tree/virtio-snd-v6</a>
-
-Main differences with v5 patch series [^v5]
-<a class="moz-txt-link-rfc2396E" href="mailto:cover.1690626150.git.manos.pitsidianakis@linaro.org">&lt;cover.1690626150.git.manos.pitsidianakis@linaro.org&gt;</a>:
-
-- Free any existing PCM stream resources before allocating a new one.
-- Add docs.
-
-[^v5]: 
-<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/">https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/</a>
-
-Previously:
-
-[^v4]: 
-<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/">https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/</a>
-[^v3]: 
-<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/">https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/</a>
-
-
-Emmanouil Pitsidianakis (12):
-  Add virtio-sound device stub
-  Add virtio-sound-pci device
-  virtio-sound: handle control messages and streams
-  virtio-sound: set PCM stream parameters
-  virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
-  virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
-  virtio-sound: handle VIRTIO_SND_PCM_SET_PARAMS
-  virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
-  virtio-sound: handle VIRTIO_SND_PCM_RELEASE
-  virtio-sound: implement audio output (TX)
-  virtio-sound: implement audio capture (RX)
-  docs/system: add basic virtio-snd documentation
-
- MAINTAINERS                        |    6 +
- docs/system/device-emulation.rst   |    1 +
- docs/system/devices/virtio-snd.rst |   36 +
- hw/virtio/Kconfig                  |    5 +
- hw/virtio/meson.build              |    2 +
- hw/virtio/trace-events             |   20 +
- hw/virtio/virtio-snd-pci.c         |   91 ++
- hw/virtio/virtio-snd.c             | 1308 ++++++++++++++++++++++++++++
- include/hw/pci/pci.h               |    1 +
- include/hw/virtio/virtio-snd.h     |  158 ++++
- softmmu/qdev-monitor.c             |    1 +
- 11 files changed, 1629 insertions(+)
- create mode 100644 docs/system/devices/virtio-snd.rst
- create mode 100644 hw/virtio/virtio-snd-pci.c
- create mode 100644 hw/virtio/virtio-snd.c
- create mode 100644 include/hw/virtio/virtio-snd.h
-
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------Ee2B5ChgEfctzzdDEQ8zZKnW--
+r~
 
