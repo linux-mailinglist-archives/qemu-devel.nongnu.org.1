@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764E0781C69
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF18781C6B
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:43:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXaHT-0007xt-4z; Sun, 20 Aug 2023 00:43:15 -0400
+	id 1qXaHv-00005D-M6; Sun, 20 Aug 2023 00:43:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaHP-0007xe-AK
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:43:11 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaHt-00004z-Og
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:43:42 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaHN-0002Rj-7O
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:43:11 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99c0cb7285fso271958766b.0
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:43:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaHr-0002Ud-LT
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:43:41 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-99c3c8adb27so282703966b.1
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:43:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692506587; x=1693111387;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692506617; x=1693111417;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2TM2jGSDfDMPqHid/mn3h9umFtxNljf6p+kNCwRMMHg=;
- b=HFcDB0/AzfARRvtafRpmvtR9d8+BfXQhEf3HJaABFXNhErkIKrqB5ow65JMSSN2nCp
- piwB5FL+fNjjr/9xx7JTGirTr2iubLAs33MAfJR5ot1LQAzQoAtoHGH1dWvEpQtOBLDV
- /1pwx3AfsXvyFrxz6jsiT+8xkE819dGEEWlXcX61TMjfVO8iLA/F6ki8vBlh5gpkOMLw
- 8lANc87SpyM9gR/aiSRXkt86eTCp59ALhD+/3NGez2DVx6riTIeQs28EUCeoos5fwuLF
- XgYdMD5ipsKTiOAFiipukGceMKE395gn0e9WaNbxh0S1atA/pDsQMrc+ZZhUVi0iGWO+
- L/CQ==
+ bh=5+XswHuAZwHssPFQKa4sQjLhnDT5jdgQgZrmCCdip3M=;
+ b=AU4a4KjamR3VyyJukCtN/S+V2nWUqAxoedMHWAxL35dhWRdSq0eGTD5T8qvujyuNLr
+ 930meHGHi889/HbJ28Gx0vBQKOoUPuCek/yXbZ/9URBJrliSYHq/VR+AaBBj4QRPb4wN
+ A5kt1eESAet7/4XMGxCRgRreOyMz570Rf6yKQc1kmGB1MLh5fLidQ3C1kXl1LUOHfRR0
+ ZKbPj8VWo2HTEEM4PCsfLw1iXhHkX5fF4Wj8g8Nrs5uWSDP2tLtV74YdPx+rmHAletwi
+ Ufj95OKWd3a7K2/o6QPvyXE3/qwsejryawhQGq4i/o5OOmZHFEU0VG4t9EdlwH1HZiUE
+ 0uXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692506587; x=1693111387;
+ d=1e100.net; s=20221208; t=1692506617; x=1693111417;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2TM2jGSDfDMPqHid/mn3h9umFtxNljf6p+kNCwRMMHg=;
- b=S+aE5NaEkIs7wgPnIp7ze6ki193B2KeM/dlpqM7OUbmDgDvTLzPmoJgy0d66S8ZDUx
- 4AvU6OuJkj6TidC70GM9SB2fn9wJgnPVB+x5ksg1vK3o0zeVR4cZc+G5JesqDaNAm3rc
- agKYTXSvWStP5udsKHnZJb6e7SkEN6a2Kg+oUGgxtaVmjmzmCbLo0zU46Nt6BedCInzY
- vvrVB0bzGhitVaU+N2X58S+FJqmx8wBF+k0qewpcO2b2szg2wI0VZNuEkskFOpI88O2+
- VosiMIV938qZoZZLLk/He61S2+SPJK/zU97maD5myM2mXPFlTjwiWboE1Wggs2y6JZkE
- oEcA==
-X-Gm-Message-State: AOJu0Yw2VlDjsnrzn5Uvi1bwM7yXwBjVRVAK7vK1WwKE0iU+YaGpnHv+
- tFbERNrloDVbr8kzqc6VTf5MzfezF1TMplluIyurqA==
-X-Google-Smtp-Source: AGHT+IHpRfu+dQhvjFILDnf/+ti5yTYvbSReUe9mN+uw9Z84OkcZKJJ8Pf65G+QXAXg9EzqWdieyC/IbwovX4QeqApA=
-X-Received: by 2002:a17:906:30c3:b0:9a1:83a4:6979 with SMTP id
- b3-20020a17090630c300b009a183a46979mr1097344ejb.73.1692506586825; Sat, 19 Aug
- 2023 21:43:06 -0700 (PDT)
+ bh=5+XswHuAZwHssPFQKa4sQjLhnDT5jdgQgZrmCCdip3M=;
+ b=TexV7o3x4AmOZ8UGNt2hsvi68NODLCVS1+i6WuC2wraFzCq21MIYXOd0ndljC0H0zm
+ KR2GN3pmLu6yLOjn11kUDmJBOREpE5eoM0cWG1abe2CjtYWCRg+pd6Kn3Loomb2Ru/MF
+ xHnXiRDYEAAnD/EOgYsp4cixHCS0kC65PavApxTKk7HlnM8ErQqrbTSSEp5xJEWvb5op
+ ykX9Bo/NnndhGxv7e3v3BOiss6TUj3vaZOyDhaI45TpzPZjRN12tuMbaF7CaQVT0OtOY
+ QiaF5Gqg4F8mcOqZ4x1MTuHh1dMOba1+586vaM98qPnQnmf+RnbIBtOxAAV/qE/bX2TX
+ FqaQ==
+X-Gm-Message-State: AOJu0YxHJVZDTSi813PmHFa8ul0B4j4h1Nio2WFjz3Q6mYriU49eQAaB
+ UkT1PK8L9wlWxczvAC5iClSDSfoYlIgIQr7Ucy8yA4hP08k0LiCNM+w=
+X-Google-Smtp-Source: AGHT+IFzi2VClZZGJjLQbwQGtHaa70pTg3uB8OD3CwgWmyJPKxdo4jMCcfQtrTqcPkQvwoaWgZne1LHW65FUT2AvWdQ=
+X-Received: by 2002:a17:906:18c:b0:99c:ae35:8cd with SMTP id
+ 12-20020a170906018c00b0099cae3508cdmr2753043ejb.43.1692506617607; Sat, 19 Aug
+ 2023 21:43:37 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-20-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-20-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-21-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-21-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:42:59 -0600
-Message-ID: <CANCZdfqaokMoA1M8PtLcFyXOBb0_9L1gWXYZWb-+Nw0LoQP4KQ@mail.gmail.com>
-Subject: Re: [PATCH 19/22] Implement shm_unlink(2) and shmget(2)
+Date: Sat, 19 Aug 2023 22:43:30 -0600
+Message-ID: <CANCZdfruRBZD71MDRFtJCXw31BDXWAmujxz_12+uT1-_+5f9dQ@mail.gmail.com>
+Subject: Re: [PATCH 20/22] Implement shmctl(2)
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000e356eb06035365c1"
-Received-SPF: none client-ip=2a00:1450:4864:20::629;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x629.google.com
+Content-Type: multipart/alternative; boundary="000000000000b90744060353670e"
+Received-SPF: none client-ip=2a00:1450:4864:20::636;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -82,7 +82,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e356eb06035365c1
+--000000000000b90744060353670e
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -94,14 +94,14 @@ m> wrote:
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->  bsd-user/bsd-mem.h            | 23 +++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  8 ++++++++
->  2 files changed, 31 insertions(+)
+>  bsd-user/bsd-mem.h            | 33 +++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c |  4 ++++
+>  2 files changed, 37 insertions(+)
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
---000000000000e356eb06035365c1
+--000000000000b90744060353670e
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -116,12 +116,12 @@ Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-mem.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 23 ++++=
-+++++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 ++++++++<br>
-=C2=A02 files changed, 31 insertions(+)<br></blockquote><div><br></div><div=
+=C2=A0bsd-user/bsd-mem.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 33 ++++=
++++++++++++++++++++++++++++++<br>
+=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 4 ++++<br>
+=C2=A02 files changed, 37 insertions(+)<br></blockquote><div><br></div><div=
 >Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
-com</a>&gt; <br></div></div></div>
+com</a>&gt;</div><div>=C2=A0</div></div></div>
 
---000000000000e356eb06035365c1--
+--000000000000b90744060353670e--
 
