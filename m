@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E99F781C68
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 764E0781C69
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:43:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXaGg-0007Mg-T3; Sun, 20 Aug 2023 00:42:26 -0400
+	id 1qXaHT-0007xt-4z; Sun, 20 Aug 2023 00:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaGe-0007MY-EL
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:42:24 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaHP-0007xe-AK
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:43:11 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaGc-0002OV-40
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:42:24 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51a52a7d859so6875125a12.0
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:42:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaHN-0002Rj-7O
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:43:11 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-99c0cb7285fso271958766b.0
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:43:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692506539; x=1693111339;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692506587; x=1693111387;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=10+qqe5OmKz3i5H5cWl5P95gk61KHXYRPmiQRoyT1CI=;
- b=bO9g/uI/gzRXwsKy38IV5llujl0esmtGG/BZo7fL2+T8DOdLi+o2f81RJAoe5ML/kw
- 5B/pRqRVksoSYlPZ1/5z2gxUDGXx+osiTGs8+Xl4cKI5FAa3knwk7DzjfUUhzIwltbpd
- iWQaS9jWpD4GGJ+c5xvMUQA3WKJ8ZzrGogwpJvMYzbUgYryEygvoMMf/0pppo8HsKH9m
- c9cHSDNnm0masSV20gnbgoCBNfjKdIh4bLcJO7IxzrdCSCHcmwB5Y7y4sjvhYaF9ewZ4
- lC+4pwGqDHmgg3ykdPYWJ0YjMtob0fYZ8PYeS+jyr2eAHz047khpuInwnciOon1mF0lu
- kWuQ==
+ bh=2TM2jGSDfDMPqHid/mn3h9umFtxNljf6p+kNCwRMMHg=;
+ b=HFcDB0/AzfARRvtafRpmvtR9d8+BfXQhEf3HJaABFXNhErkIKrqB5ow65JMSSN2nCp
+ piwB5FL+fNjjr/9xx7JTGirTr2iubLAs33MAfJR5ot1LQAzQoAtoHGH1dWvEpQtOBLDV
+ /1pwx3AfsXvyFrxz6jsiT+8xkE819dGEEWlXcX61TMjfVO8iLA/F6ki8vBlh5gpkOMLw
+ 8lANc87SpyM9gR/aiSRXkt86eTCp59ALhD+/3NGez2DVx6riTIeQs28EUCeoos5fwuLF
+ XgYdMD5ipsKTiOAFiipukGceMKE395gn0e9WaNbxh0S1atA/pDsQMrc+ZZhUVi0iGWO+
+ L/CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692506539; x=1693111339;
+ d=1e100.net; s=20221208; t=1692506587; x=1693111387;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=10+qqe5OmKz3i5H5cWl5P95gk61KHXYRPmiQRoyT1CI=;
- b=IMbopMuyuoHn+tmM3BOJMwGsvbxrvYa+jvmkFcDLbF0vpJ1YBY8YokuKEli3C+JPlz
- sEyMJojdhNqwFzq64bksy783XjsXl3qGX+q6//o3898N0SZAm2fSow8fcIxUosNH0Bvc
- oAgMdX0II7GN8RgyBsCu/YClyjvjiH1u4RpViBicQH9rSPeGJrLCg0VngiT9LxTecP/U
- xT0vYXVhpG2fyv4hRzuoV9UKjCOZZ+1mKnG97m61ttaan7LdQ3zn7/QWI5uSecDigYZC
- /h711KAmGS8UOTxjFE6z3BMkGgUtdj+G5g2/4KCILU8FqZr2dJ70K8LKRwygSZ67JIWx
- fyQg==
-X-Gm-Message-State: AOJu0YyIwIfG4bRPNQbal6tEGlKF4/LdtSdQJ4kXPfCzFkZQEHIFURhQ
- yzJMvdOIX0f5otc7ZFThNdIttU/qqaIHA634NZDJpw==
-X-Google-Smtp-Source: AGHT+IHormf/qQ7WKaM0gxa/9ectKM8SiX+0H4WEuZxNhTXte7fKzfjLqrVW95gNSrr5JeePY6cCt85H1vrb+V8i6kI=
-X-Received: by 2002:a17:906:7693:b0:99b:cb59:79b3 with SMTP id
- o19-20020a170906769300b0099bcb5979b3mr3611880ejm.1.1692506539010; Sat, 19 Aug
- 2023 21:42:19 -0700 (PDT)
+ bh=2TM2jGSDfDMPqHid/mn3h9umFtxNljf6p+kNCwRMMHg=;
+ b=S+aE5NaEkIs7wgPnIp7ze6ki193B2KeM/dlpqM7OUbmDgDvTLzPmoJgy0d66S8ZDUx
+ 4AvU6OuJkj6TidC70GM9SB2fn9wJgnPVB+x5ksg1vK3o0zeVR4cZc+G5JesqDaNAm3rc
+ agKYTXSvWStP5udsKHnZJb6e7SkEN6a2Kg+oUGgxtaVmjmzmCbLo0zU46Nt6BedCInzY
+ vvrVB0bzGhitVaU+N2X58S+FJqmx8wBF+k0qewpcO2b2szg2wI0VZNuEkskFOpI88O2+
+ VosiMIV938qZoZZLLk/He61S2+SPJK/zU97maD5myM2mXPFlTjwiWboE1Wggs2y6JZkE
+ oEcA==
+X-Gm-Message-State: AOJu0Yw2VlDjsnrzn5Uvi1bwM7yXwBjVRVAK7vK1WwKE0iU+YaGpnHv+
+ tFbERNrloDVbr8kzqc6VTf5MzfezF1TMplluIyurqA==
+X-Google-Smtp-Source: AGHT+IHpRfu+dQhvjFILDnf/+ti5yTYvbSReUe9mN+uw9Z84OkcZKJJ8Pf65G+QXAXg9EzqWdieyC/IbwovX4QeqApA=
+X-Received: by 2002:a17:906:30c3:b0:9a1:83a4:6979 with SMTP id
+ b3-20020a17090630c300b009a183a46979mr1097344ejb.73.1692506586825; Sat, 19 Aug
+ 2023 21:43:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-19-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-19-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-20-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-20-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:42:11 -0600
-Message-ID: <CANCZdfo9hoG2rWdkeTNbHKSx1EK6=M_Cb5m0pOPjh1kpnnQgcA@mail.gmail.com>
-Subject: Re: [PATCH 18/22] Implement shm_open(2)
+Date: Sat, 19 Aug 2023 22:42:59 -0600
+Message-ID: <CANCZdfqaokMoA1M8PtLcFyXOBb0_9L1gWXYZWb-+Nw0LoQP4KQ@mail.gmail.com>
+Subject: Re: [PATCH 19/22] Implement shm_unlink(2) and shmget(2)
 To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>, 
- Kyle Evans <kevans@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000009bf510603536309"
-Received-SPF: none client-ip=2a00:1450:4864:20::532;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x532.google.com
+Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000e356eb06035365c1"
+Received-SPF: none client-ip=2a00:1450:4864:20::629;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -83,7 +82,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000009bf510603536309
+--000000000000e356eb06035365c1
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -92,44 +91,37 @@ m> wrote:
 
 > From: Stacey Son <sson@FreeBSD.org>
 >
-> Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
->
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->  bsd-user/bsd-mem.h            | 27 +++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  4 ++++
+>  bsd-user/bsd-mem.h            | 23 +++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c |  8 ++++++++
 >  2 files changed, 31 insertions(+)
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
---00000000000009bf510603536309
+--000000000000e356eb06035365c1
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
 <div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 3:49=E2=80=AF=
-AM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" target=3D"_bl=
-ank">kariem.taha2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"=
-gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
-4,204,204);padding-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-<br>
-Co-authored-by: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
+AM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
+7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 <br>
 Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-mem.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 27 ++++=
-+++++++++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 4 ++++<br>
+=C2=A0bsd-user/bsd-mem.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 23 ++++=
++++++++++++++++++++<br>
+=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 ++++++++<br>
 =C2=A02 files changed, 31 insertions(+)<br></blockquote><div><br></div><div=
->Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" target=3D"_=
-blank">imp@bsdimp.com</a>&gt;<br><br>
- </div></div></div>
+>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
+com</a>&gt; <br></div></div></div>
 
---00000000000009bf510603536309--
+--000000000000e356eb06035365c1--
 
