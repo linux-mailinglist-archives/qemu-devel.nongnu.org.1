@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428A3781E58
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 16:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 117AE781E59
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 16:44:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXjd2-0004o2-KI; Sun, 20 Aug 2023 10:42:08 -0400
+	id 1qXjex-0005jK-O9; Sun, 20 Aug 2023 10:44:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjd0-0004ns-9x
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:42:06 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1qXjev-0005it-Cc
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:44:05 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjcy-0001NH-5a
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:42:06 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-68a40d85593so89522b3a.2
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 07:42:03 -0700 (PDT)
+ id 1qXjet-0001dG-5y
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 10:44:05 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-68a3c555378so540522b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 07:44:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692542522; x=1693147322;
+ d=linaro.org; s=google; t=1692542642; x=1693147442;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4JN1wqWILJOz/L5FUeRhtHJreGeZ0jcC25x/eT0TgTs=;
- b=RXpKwjEw+MqVe5KmOo02Gs8y/pvq+sGaCA7SL0WcylmYksxEyCoQFUL+irrUpvXtTh
- Lm+34sUHJk146hPOseV2x36jH+74i1huFGG0rVmoYG5B5f+BzCmDodqTTf0zsemU5LmL
- Ay2fH6GNzSkjyZZ7SDLVXyYKe6uh01Nyy3dPzB3CKgTJlPoBHOjFP84osfgEkIZKqnv/
- 5M8vfd+Ar8zLNj4x4nzLu9o59oKXXZKYTdo3cq4vtoIfUK72dtdBZIZkijRwu2jR401G
- 5Z1xM8H/sTra8mTuU80pt9RriiSn6DMhvzAphxKEdmWgLtAO9oZCg4Bh0Oingx1zDsQz
- PSPA==
+ bh=Ym4HCUZ/enpGumG5sHGUTcfP57BLYfqtv+Zw8m93K0E=;
+ b=fmmQukcsyPWcRL8c15clB45FuOJbaPmicQI/etrNANSLe8/JtkBTdXP43xaqJs/CPI
+ dkSBOhy3GVENXn9zANxalod7k/dkyggOb7Ug2MNp/F18NKO/TULq7SlwbpWqP5QLDmAp
+ 2zc6+FxhEnSridhjHJ0JZ8owOgiIfI3hUD1woXmOulCKMpi02dblhdv6j0DXMETxcEC6
+ vB8ANfFh2vZbuLNfNqlPI3twk6EmoGyUPvLXCp8Zg8DqDghXdNxU9mxyNkvcI8fnaan+
+ 9QA55LVsvC4GVmVKi7f0OK+uSC5Vf+40/WJd08a8ogL/DInKtcK4ReEGpWtuXSu/S1nd
+ 2j+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692542522; x=1693147322;
+ d=1e100.net; s=20221208; t=1692542642; x=1693147442;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4JN1wqWILJOz/L5FUeRhtHJreGeZ0jcC25x/eT0TgTs=;
- b=HBFx+KMP/104kCEh7z1srn91jygQ5crMfRGqVAriRCsj+sV3DIMspTp5BGotfA8urj
- OjXAH3ykvFtvNtwWCRkXeAZ5w3JPKSDpQdC04DTkLfqh4/Mqcxw1P6+l+irw5SuqGAWv
- mfyTKWUQn2HDf6Akq6XTGRe8t+x62spyyh3ZxNv9QQ1QKyPT7C4B+dC0r6aLJJYsp+o8
- c8WlPbhaUqm6d5radNr6euB1drVieVzMAAPZU4y9ccRV3F+hRQZ5Wkv90vWNaDh92kAm
- SxhEJx93iKmaqAoYCjvkyMH3XntsT7t9Q61rTKlZI90V4laGqwHAL55miWdcSdJo1KxM
- K4Cw==
-X-Gm-Message-State: AOJu0YxXUKq9JkyE38TLrRoNrZLUnvXfzUWdmP3vdOsmsrrcLp4w/FSe
- 1fQyYUGUP6Z/rfAWwCR+yuxWmQ==
-X-Google-Smtp-Source: AGHT+IG1/52gVBbnOUl4gn/MdCq896MP+tBrM0u9W5mLXcWzrw34Tq5lX2DAR8F0VJFM2+ZseJ1YKw==
-X-Received: by 2002:a05:6a20:914d:b0:13e:23bc:f4cc with SMTP id
- x13-20020a056a20914d00b0013e23bcf4ccmr3194883pzc.37.1692542522639; 
- Sun, 20 Aug 2023 07:42:02 -0700 (PDT)
+ bh=Ym4HCUZ/enpGumG5sHGUTcfP57BLYfqtv+Zw8m93K0E=;
+ b=HYtMi6z8q+MX8ssRQDf4pb3ODpZY+WLfeJeDxicrw9yzgQZNRMM+R2u40acc3yct/p
+ mQuZgzTb4QU/s4Lpt+9kjT1L2NXVQTvULDT90YnMvjY7RDTffSqxEUoTv9SianVQ6KeD
+ +uf26KTdUo4wcrnKCUtjRyHICwtokcV/kX+PwX5Vkir5jG1xZswbgRb3U8m/TT9sJVqk
+ rxdG9m2rt6wKHFh/GFXAhmO0SjwqYINdhbzIokhRWJss6GoP/HHHao4TpCrfz6LtOMo1
+ N1WgPBHrvBBX3N9xqFep2by/cL6h6yCff+gq5dDlbdixt5WG2JQXLVC/VqzbewgBFV4O
+ Hc9w==
+X-Gm-Message-State: AOJu0YwgsMB1Y0fR+hrOHUkjcwUYyb4Lgn7tykBjpeEpOUPLEECkoBjq
+ tyDCiJXitqoFr6RnBvEWziYdLt24D4DHk9Wpvbs=
+X-Google-Smtp-Source: AGHT+IG5mEsVpFqFxhoAW3IUY1utO1uZyoloM5I3NZtezlkCd38CketjfkhcQivl4TEqQJy74ZSkUQ==
+X-Received: by 2002:a05:6a21:6da5:b0:138:64d4:b055 with SMTP id
+ wl37-20020a056a216da500b0013864d4b055mr6200071pzb.55.1692542641762; 
+ Sun, 20 Aug 2023 07:44:01 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:347d:4d37:bdd7:f5e5?
  ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
  by smtp.gmail.com with ESMTPSA id
- jj10-20020a170903048a00b001bf574dd1fesm3094115plb.141.2023.08.20.07.42.01
+ e11-20020a63aa0b000000b00566095dac12sm4768303pgf.19.2023.08.20.07.44.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Aug 2023 07:42:02 -0700 (PDT)
-Message-ID: <fb8dc083-96e1-1a18-fc89-63c305b56640@linaro.org>
-Date: Sun, 20 Aug 2023 07:42:00 -0700
+ Sun, 20 Aug 2023 07:44:01 -0700 (PDT)
+Message-ID: <413ed4db-0908-4197-ecb7-1069a152c74f@linaro.org>
+Date: Sun, 20 Aug 2023 07:43:59 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Subject: Re: [PATCH 15/22] Implement mlock(2), munlock(2), mlockall(2),
  munlockall(2), madvise(2), minherit(2)
 Content-Language: en-US
-To: Warner Losh <imp@bsdimp.com>, Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
  <20230819094806.14965-16-kariem.taha2.7@gmail.com>
- <CANCZdfoTq3oYL007soQTn-4XhtxchqBkWecUk6QiEOcTNMvoFA@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CANCZdfoTq3oYL007soQTn-4XhtxchqBkWecUk6QiEOcTNMvoFA@mail.gmail.com>
+In-Reply-To: <20230819094806.14965-16-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -63
 X-Spam_score: -6.4
 X-Spam_bar: ------
@@ -98,37 +97,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/19/23 21:37, Warner Losh wrote:
->     +/* madvise(2) */
->     +static inline abi_long do_bsd_madvise(abi_long arg1, abi_long arg2,
->     +        abi_long arg3)
->     +{
->     +    /*
->     +     * A straight passthrough may not be safe because qemu sometimes
->     +     * turns private file-backed mapping into anonymous mappings. This
->     +     * will break MADV_DONTNEED.  This is a hint, so ignoring and returing
->     +     * success is ok.
->     +     */
->     +    return get_errno(0);
-> 
-> 
-> This looks like it was copied from an early linux-user implementation, and
-> that seems to have been fixed to no longer cause problems. Can someone
-> that knows about the linux-user history here comment?
+On 8/19/23 02:47, Karim Taha wrote:
+> +static inline abi_long do_bsd_mlock(abi_long arg1, abi_long arg2)
+> +{
+> +    return get_errno(mlock(g2h_untagged(arg1), arg2));
+> +}
+> +
+> +/* munlock(2) */
+> +static inline abi_long do_bsd_munlock(abi_long arg1, abi_long arg2)
+> +{
+> +    return get_errno(munlock(g2h_untagged(arg1), arg2));
+> +}
 
-We now track pages that are "passthrough" and ok for DONTNEED etc.
+I think these two need guest_range_valid_untagged.
 
-
-     case MADV_DONTNEED:
-         if (page_check_range(start, len, PAGE_PASSTHROUGH)) {
-             ret = get_errno(madvise(g2h_untagged(start), len, advice));
-             if ((advice == MADV_DONTNEED) && (ret == 0)) {
-                 page_reset_target_data(start, start + len - 1);
-             }
-         }
-
-
-It's still not ideal, but it's something.
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
