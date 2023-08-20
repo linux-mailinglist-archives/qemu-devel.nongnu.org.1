@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B7A781C54
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAAA781C57
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:09:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXZjd-0002xB-1e; Sun, 20 Aug 2023 00:08:17 -0400
+	id 1qXZkU-0003su-Up; Sun, 20 Aug 2023 00:09:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZjZ-0002u7-FW
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:08:13 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZkQ-0003s9-13
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:09:06 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZjX-00059u-5V
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:08:13 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4fe1b00fce2so3197566e87.3
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:08:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZkM-0005Co-7B
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:09:04 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4ff9121fd29so3215970e87.3
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692504488; x=1693109288;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692504540; x=1693109340;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+h/S1NMnIno3c+qjRLgS13fjAsehR1sXLY4gmwaHaLw=;
- b=L46uSaaqzhMXoVtWVMv1UT/OEts2Q+/qJIhGoiVJqXBTMsjhFXXtA43yy0bQxT38tg
- QROCLSTRpUUxTjNsBc/Gx193rcAMdq0l2vl3sPCeQi3A0IuwalW7JiMQQn9oiL9I4yhe
- ggASjHhCjgi/BSG3S7FV43zOGQkIyqFW2Ch+D4DOd6xGUVqKfmtCGmWXSHAh+Lr4FqGa
- 7x58COrPAvIogyaqVkJNK5xAy4SCnwg4AW1cFtaEtggoiimxFFbU279IhPNWwJU6Cket
- ++tG/06V8APLgGUGjFMzTfY0Q9rOcAobgMrxhKCn77zUS4LZu8+Cqg8leeN+8d9Bgacg
- DafA==
+ bh=p8M0HmCvxQeYQFpBLoe2kVFE1V1vKH7gkDXVWOfrLZw=;
+ b=g/vexghz9/LgCBrW+qVigFvdtBe5hkVgVyUpMdCnPgCbDWdGORS4zxqt/A35lAhIUY
+ fEJ0Sgmv7OMDngvPWgXC/tOU+2Bmo7EhN3mSTVR+m0+UO+IwNQMzCLnKKUbQF74JZp66
+ SGul7eU2+wXg86iI32ZQPjKWkvOjawzfWrRrotTK7exOs8k036YmhJnNaoiVKnCa/gnS
+ l8+1up3v9fin8+PpEcbJD5mETfrvT0j6oxdLO1tzXoXkASNoSzERcF+tNyXF9Evxk0x5
+ bXm1I0Tq+Nw/GzxxhBdTa4C5iHH+k3lHLk7fYSgmDoUWlbHJxAU7vn3P/VXHzFB9dagc
+ UJWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692504488; x=1693109288;
+ d=1e100.net; s=20221208; t=1692504540; x=1693109340;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+h/S1NMnIno3c+qjRLgS13fjAsehR1sXLY4gmwaHaLw=;
- b=hkxjY6YWcZ63DRe66DJI0wW9xjaFZ9OlE92niCgZERpFe1uGsk8W45IVDfwuK90Pgd
- kSmvLjSIat2Vo7P1EDSDxVOIbljsGYGuJ6pvubto8yJulu76vSMse7Vvx5j3TD5DXSZi
- TtNm9a/8Buu8K1kC7g79lbXFpW+tNIdgzw3x6WXLlpja9yMveGIrTOzfpkBPWcwuigkM
- pO9oGqrJeaWhXU86WglN7Udeu6NiE9R50++4fHCMhbhg8RmrrS4pUrvCHWrReakIqXke
- jCzLSIuQY5Dr7Ysjzf5SlEA/wkToYTmzj9WMIRMfnSsIGK7rRsvc2SGjZSMMURdSy0LG
- qUZw==
-X-Gm-Message-State: AOJu0YwR5palkKnherOFUsJ6s3yS3nNfKebeT4+xnmOkhJ/qqk5s3EQc
- QIj769AnqCPuWnGYXSjKcsy5yJV6KAoPXWtMyfAaU5JRuayvrc9I
-X-Google-Smtp-Source: AGHT+IGTVqihbJNU80EIedgH4OsrwJq7E0yPVWDXYuoHrqiTUSQzQ1uZzt2aHomjPQxeaGNE/bYAKY5vezXT6DxYqIM=
-X-Received: by 2002:a05:6512:3ca1:b0:500:7d05:552a with SMTP id
- h33-20020a0565123ca100b005007d05552amr173957lfv.53.1692504488135; Sat, 19 Aug
- 2023 21:08:08 -0700 (PDT)
+ bh=p8M0HmCvxQeYQFpBLoe2kVFE1V1vKH7gkDXVWOfrLZw=;
+ b=V6lwwU1tLm1tHSMAf+pIQ2K7KHNbnLut/5NZZzP1UlxJ85HAR6mj2RuLAZZjnB5VSP
+ IIPJY66OVuT0beZZEKwPzj5wCJX3rjbZoo1WfGEL+Q1rKq5Q8qO9hqyN78uzmWSsHTtg
+ BFuQngpw3dqUFkrbezHYN3dM0nZVTVgzjGSecmrib6ZLpoUPMVSgz0XEnHJzwUH9U2Sy
+ 28xgol9kg6bJONNBcuk9RQc2MfqZcnHWSfKXuldxYikFBDaJFJB/8tZpYlLYDRz0eAdt
+ bhT2pU2pr5iPkLx5+TBmD5wm06mBUrr80jL/ye8dCDPhMhk8p2Nq7QrqSL6GxO5VzzCr
+ HeCQ==
+X-Gm-Message-State: AOJu0Yya6TpQWo1KaZMRSNhtvVtzRyr+xIzZYZ/0EHZzZPjnvYIqaRAv
+ TOiOuYEsyrgetyl+b3qUgfT61inWGmcN39/VuyBSmg==
+X-Google-Smtp-Source: AGHT+IFutDzFaEy+a96wYmzxJatgx9pqPbcQ/orWwmY6gZzzXZu2nJJAPm7dvsSzZ14lwJMHQ1yKEhJtIzmrQt/6FJE=
+X-Received: by 2002:a05:6512:6d1:b0:4f8:7734:8dd2 with SMTP id
+ u17-20020a05651206d100b004f877348dd2mr2457532lff.53.1692504540249; Sat, 19
+ Aug 2023 21:09:00 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-3-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-3-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-4-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230819094806.14965-4-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:08:01 -0600
-Message-ID: <CANCZdfo7czz0JPOnq2XwdwE8ntpTfEzHA-12OAjDGdsj87wCww@mail.gmail.com>
-Subject: Re: [PATCH 02/22] Implement struct target_shmid_ds
+Date: Sat, 19 Aug 2023 22:08:53 -0600
+Message-ID: <CANCZdfqADEjsNEamgznGe_c8uzB-o=fBvm4XefGi31A9Pjgb+A@mail.gmail.com>
+Subject: Re: [PATCH 03/22] Declarations for ipc_perm and shmid_ds conversion
+ functions
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000cbe31c060352e8c8"
-Received-SPF: none client-ip=2a00:1450:4864:20::12b;
- envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12b.google.com
+Content-Type: multipart/alternative; boundary="000000000000e71c32060352eb5b"
+Received-SPF: none client-ip=2a00:1450:4864:20::12f;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -82,7 +83,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000cbe31c060352e8c8
+--000000000000e71c32060352eb5b
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -94,51 +95,71 @@ m> wrote:
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->  bsd-user/syscall_defs.h | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  bsd-user/qemu-bsd.h | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 bsd-user/qemu-bsd.h
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
 
-> diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-> index 39a9bc8ed7..074df7bdd6 100644
-> --- a/bsd-user/syscall_defs.h
-> +++ b/bsd-user/syscall_defs.h
-> @@ -72,6 +72,26 @@ struct target_ipc_perm {
->  #define TARGET_IPC_SET  1   /* set options */
->  #define TARGET_IPC_STAT 2   /* get options */
->
+> diff --git a/bsd-user/qemu-bsd.h b/bsd-user/qemu-bsd.h
+> new file mode 100644
+> index 0000000000..f98942ea91
+> --- /dev/null
+> +++ b/bsd-user/qemu-bsd.h
+> @@ -0,0 +1,45 @@
 > +/*
-> + * sys/shm.h
+> + *  BSD conversion extern declarations
+> + *
+> + *  Copyright (c) 2013 Stacey D. Son
+> + *
+> + *  This program is free software; you can redistribute it and/or modify
+> + *  it under the terms of the GNU General Public License as published by
+> + *  the Free Software Foundation; either version 2 of the License, or
+> + *  (at your option) any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *  GNU General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU General Public License
+> + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 > + */
-> +struct target_shmid_ds {
-> +    struct  target_ipc_perm shm_perm; /* peration permission structure *=
-/
-> +    abi_ulong   shm_segsz;  /* size of segment in bytes */
-> +    int32_t     shm_lpid;   /* process ID of last shared memory op */
-> +    int32_t     shm_cpid;   /* process ID of creator */
-> +    int32_t     shm_nattch; /* number of current attaches */
-> +    target_time_t shm_atime;  /* time of last shmat() */
-> +    target_time_t shm_dtime;  /* time of last shmdt() */
-> +    target_time_t shm_ctime;  /* time of last change by shmctl() */
-> +};
 > +
-> +#define N_BSD_SHM_REGIONS   32
-> +struct bsd_shm_regions {
-> +    abi_long start;
-> +    abi_long size;
-> +};
+> +#ifndef QEMU_BSD_H
+> +#define QEMU_BSD_H
 > +
->  /*
->   *  sys/mman.h
->   */
+> +#include <sys/types.h>
+> +#include <sys/ipc.h>
+> +#include <sys/msg.h>
+> +#include <sys/resource.h>
+> +#include <sys/sem.h>
+> +#include <sys/shm.h>
+> +#include <sys/socket.h>
+> +#include <sys/un.h>
+> +#include <sys/uuid.h>
+> +#include <sys/wait.h>
+> +#include <netinet/in.h>
+> +
+> +/* bsd-mem.c */
+> +abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,
+> +        abi_ulong target_addr);
+> +abi_long host_to_target_ipc_perm(abi_ulong target_addr,
+> +        struct ipc_perm *host_ip);
+> +abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,
+> +        abi_ulong target_addr);
+> +abi_long host_to_target_shmid_ds(abi_ulong target_addr,
+> +        struct shmid_ds *host_sd);
+> +
+> +#endif /* QEMU_BSD_H */
 > --
 > 2.40.0
 >
 >
 
---000000000000cbe31c060352e8c8
+--000000000000e71c32060352eb5b
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -153,55 +174,78 @@ Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/syscall_defs.h | 20 ++++++++++++++++++++<br>
-=C2=A01 file changed, 20 insertions(+)<br></blockquote><div><br></div><div>=
-Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.c=
-om</a>&gt;<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">
-diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h<br>
-index 39a9bc8ed7..074df7bdd6 100644<br>
---- a/bsd-user/syscall_defs.h<br>
-+++ b/bsd-user/syscall_defs.h<br>
-@@ -72,6 +72,26 @@ struct target_ipc_perm {<br>
-=C2=A0#define TARGET_IPC_SET=C2=A0 1=C2=A0 =C2=A0/* set options */<br>
-=C2=A0#define TARGET_IPC_STAT 2=C2=A0 =C2=A0/* get options */<br>
-<br>
+=C2=A0bsd-user/qemu-bsd.h | 45 ++++++++++++++++++++++++++++++++++++++++++++=
++<br>
+=C2=A01 file changed, 45 insertions(+)<br>
+=C2=A0create mode 100644 bsd-user/qemu-bsd.h<br></blockquote><div><br></div=
+><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bs=
+dimp.com</a>&gt;<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote=
+" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
+padding-left:1ex">
+diff --git a/bsd-user/qemu-bsd.h b/bsd-user/qemu-bsd.h<br>
+new file mode 100644<br>
+index 0000000000..f98942ea91<br>
+--- /dev/null<br>
++++ b/bsd-user/qemu-bsd.h<br>
+@@ -0,0 +1,45 @@<br>
 +/*<br>
-+ * sys/shm.h<br>
++ *=C2=A0 BSD conversion extern declarations<br>
++ *<br>
++ *=C2=A0 Copyright (c) 2013 Stacey D. Son<br>
++ *<br>
++ *=C2=A0 This program is free software; you can redistribute it and/or mod=
+ify<br>
++ *=C2=A0 it under the terms of the GNU General Public License as published=
+ by<br>
++ *=C2=A0 the Free Software Foundation; either version 2 of the License, or=
+<br>
++ *=C2=A0 (at your option) any later version.<br>
++ *<br>
++ *=C2=A0 This program is distributed in the hope that it will be useful,<b=
+r>
++ *=C2=A0 but WITHOUT ANY WARRANTY; without even the implied warranty of<br=
+>
++ *=C2=A0 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See th=
+e<br>
++ *=C2=A0 GNU General Public License for more details.<br>
++ *<br>
++ *=C2=A0 You should have received a copy of the GNU General Public License=
+<br>
++ *=C2=A0 along with this program; if not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
 + */<br>
-+struct target_shmid_ds {<br>
-+=C2=A0 =C2=A0 struct=C2=A0 target_ipc_perm shm_perm; /* peration permissio=
-n structure */<br>
-+=C2=A0 =C2=A0 abi_ulong=C2=A0 =C2=A0shm_segsz;=C2=A0 /* size of segment in=
- bytes */<br>
-+=C2=A0 =C2=A0 int32_t=C2=A0 =C2=A0 =C2=A0shm_lpid;=C2=A0 =C2=A0/* process =
-ID of last shared memory op */<br>
-+=C2=A0 =C2=A0 int32_t=C2=A0 =C2=A0 =C2=A0shm_cpid;=C2=A0 =C2=A0/* process =
-ID of creator */<br>
-+=C2=A0 =C2=A0 int32_t=C2=A0 =C2=A0 =C2=A0shm_nattch; /* number of current =
-attaches */<br>
-+=C2=A0 =C2=A0 target_time_t shm_atime;=C2=A0 /* time of last shmat() */<br=
->
-+=C2=A0 =C2=A0 target_time_t shm_dtime;=C2=A0 /* time of last shmdt() */<br=
->
-+=C2=A0 =C2=A0 target_time_t shm_ctime;=C2=A0 /* time of last change by shm=
-ctl() */<br>
-+};<br>
 +<br>
-+#define N_BSD_SHM_REGIONS=C2=A0 =C2=A032<br>
-+struct bsd_shm_regions {<br>
-+=C2=A0 =C2=A0 abi_long start;<br>
-+=C2=A0 =C2=A0 abi_long size;<br>
-+};<br>
++#ifndef QEMU_BSD_H<br>
++#define QEMU_BSD_H<br>
 +<br>
-=C2=A0/*<br>
-=C2=A0 *=C2=A0 sys/mman.h<br>
-=C2=A0 */<br>
++#include &lt;sys/types.h&gt;<br>
++#include &lt;sys/ipc.h&gt;<br>
++#include &lt;sys/msg.h&gt;<br>
++#include &lt;sys/resource.h&gt;<br>
++#include &lt;sys/sem.h&gt;<br>
++#include &lt;sys/shm.h&gt;<br>
++#include &lt;sys/socket.h&gt;<br>
++#include &lt;sys/un.h&gt;<br>
++#include &lt;sys/uuid.h&gt;<br>
++#include &lt;sys/wait.h&gt;<br>
++#include &lt;netinet/in.h&gt;<br>
++<br>
++/* bsd-mem.c */<br>
++abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong target_addr);<br>
++abi_long host_to_target_ipc_perm(abi_ulong target_addr,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct ipc_perm *host_ip);<br>
++abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong target_addr);<br>
++abi_long host_to_target_shmid_ds(abi_ulong target_addr,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct shmid_ds *host_sd);<br>
++<br>
++#endif /* QEMU_BSD_H */<br>
 -- <br>
 2.40.0<br>
 <br>
 </blockquote></div></div>
 
---000000000000cbe31c060352e8c8--
+--000000000000e71c32060352eb5b--
 
