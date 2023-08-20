@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58881781E6F
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 17:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70927781E71
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 17:08:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXjzd-0002HS-HZ; Sun, 20 Aug 2023 11:05:29 -0400
+	id 1qXk1x-0003Az-CM; Sun, 20 Aug 2023 11:07:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjza-0002Gs-97
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:05:26 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qXk1v-0003Ab-1r
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:07:51 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXjzX-0005hg-JS
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:05:25 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-68a3082c771so499111b3a.0
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 08:05:23 -0700 (PDT)
+ id 1qXk1r-0006JX-Tx
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:07:50 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68a3ced3ec6so512196b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 08:07:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692543922; x=1693148722;
+ d=linaro.org; s=google; t=1692544066; x=1693148866;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
  bh=IgQ5j9DStC31gUgU4AeKIRfVM2UMWogdzdmNkmxJ1Lg=;
- b=LJGpmTkPbQYk296g/dm/CZ9p3MeOd7CBWnnCVK80WlVXuwlz7eyrE6DcXKbvXjtHgI
- DWrXSte3FV+4uhhoZTEbrpHHr6ZWcGL/i+UrbUedbrIADVoSGwlWMUv1FL5Kgcn1wBD1
- FDVjlAgqyp5Fn364AY61WpCRt8FO1Hp4ERdhS02uLajVzZCDOMhgRrMUrqC75KcHQu8Q
- 0M4HEhn2kxE48ac647qWOco8qL1q8LFzPznZKdGZzLadmW2m6eNv5JN7gIXTrjUmRJZW
- A6aRhS4qUBOx0SS6AzvjRmDTGN4/uvFXwyZsB0f3bfzNLN916Lbu4KsfFN/BxusXDkAT
- vuJQ==
+ b=ikrpvok4YHuETBEGomZ3xY/7TxXnjSZV/fug4R5nC/wWVSFCsTpj1fVCKWkmdS1PS5
+ GihKoGsbASn7RhR7XZFTnFgf46VzXrP+xW0E7JKWRAopReT4v7qte8iRQN+PIQXszYpV
+ nYrLPZ7ErbhXHYRgV5fiR87v1cun1ga1138cqkWcYES9SXYxHSeqKpAaEbb/ucrKiZHi
+ /CvQCpa/27sOGzfKkwt6YcIpknKXO/3ItRpCO8Rj7GiBpEP4ENyA8FXztREAACdi7L8V
+ pnvXOw8MdKQBedvbMO55G2use9VhGtMlOCY9CRFhGnNyROlA3zPz5EWnS4m+pn4QjTFa
+ E/jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692543922; x=1693148722;
+ d=1e100.net; s=20221208; t=1692544066; x=1693148866;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
  bh=IgQ5j9DStC31gUgU4AeKIRfVM2UMWogdzdmNkmxJ1Lg=;
- b=iRq0+eQyC5Hr/W4gId3KeaahRekEsn5t50zRcZq+dru0GlfMw44i5VWhP8E/QZXStE
- HIMsLRyS02b/Nz4YTtM3mw/hJXPkf33ZVpbF/6bA7DTi45IcU2AUMPg4vPEEj77LaM3z
- 31I0p/Dm+nMcTlJJmi8k3050jyyItQQRJi/s3liWQTuOr6RWMzWIdjhiDZ6ioX1eLg16
- AgiTnxAmvjOM+nfaqYLqTXLlG6hKW4vzK6SItDMoyyWBn/bGxe58y/7GMW6Vkuug9EMr
- eMubqQk6KFtbTouoN+y19xH9etH7dyt6JDaPLsofrulGUzfFs4SGGMrIsySAMfOaXO8u
- zbeQ==
-X-Gm-Message-State: AOJu0YxkRP3OkMwB1HEIiFqqD/E/QUjvl7KQqKsdDc0rLcikS/EkHOfQ
- 3PK7POWs5qrhhX2DYuHWxMvQ8w==
-X-Google-Smtp-Source: AGHT+IF0X6TOdIP/ioocAb+nEKwKsTKwEFD8dsf+roCMkWSg5z6aCxU1D0cH61I7KAVlCq3lH370vw==
-X-Received: by 2002:a05:6a20:4414:b0:12e:44:a1a6 with SMTP id
- ce20-20020a056a20441400b0012e0044a1a6mr7031267pzb.11.1692543922192; 
- Sun, 20 Aug 2023 08:05:22 -0700 (PDT)
+ b=I8jiLI2od+3Ho4W+N/QxHUoU6GEGizlNMvElpqG5S3Cwb3wPbmKbOJeoLyFXXj9Lp3
+ 6zBOGupByxEyB8XB7qlHVPnUQEzW19o77+YOBGriPQMoePOO4O/tAZwt5qjOFZ/Wv5lP
+ JDn7UVrMcnn4P6/Vn0stNJqV5Br5PLcdnfW0CSFK+l1R4kyXbCIBpvjATd4anGKkQEpU
+ 5EoKcYC2BM9tduBuLNOk+ZeFL7ruBv9wxaRcncZUihTaAehpwoQi+L0iUCav6wKiYHRe
+ k32sGjqTzGqLqwH4NDYFDIY+egsiIUiZAHaZxOxHSAA2oWn4CneWn2qWD7e2EHIfrENK
+ 0cBA==
+X-Gm-Message-State: AOJu0Yxv7miv/HxPkRKdqF+oFc13KsU0JsfCCxSnMLo2mN8XGh7locd1
+ elD+zhKGdPBhCvPEmZrEC/LmEA==
+X-Google-Smtp-Source: AGHT+IFWr8SnJ1reX4OacsnAnnmuBHcA2zqFQuqc+h2zo072oZI//Z3dDBJaf9T6z07JO4VqTIWfXg==
+X-Received: by 2002:a05:6a20:1585:b0:13d:860e:e346 with SMTP id
+ h5-20020a056a20158500b0013d860ee346mr6846356pzj.5.1692544066311; 
+ Sun, 20 Aug 2023 08:07:46 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:347d:4d37:bdd7:f5e5?
  ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
  by smtp.gmail.com with ESMTPSA id
- p21-20020aa78615000000b006889348ba6dsm243855pfn.93.2023.08.20.08.05.21
+ z7-20020a633307000000b005642314f05fsm4827557pgz.1.2023.08.20.08.07.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Aug 2023 08:05:21 -0700 (PDT)
-Message-ID: <70ee3cd9-0c52-59af-8968-6f997bc2cf02@linaro.org>
-Date: Sun, 20 Aug 2023 08:05:20 -0700
+ Sun, 20 Aug 2023 08:07:45 -0700 (PDT)
+Message-ID: <a14d0ddf-98b9-e1c7-4b89-4af9cbc0d10f@linaro.org>
+Date: Sun, 20 Aug 2023 08:07:44 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
@@ -72,8 +72,8 @@ From: Richard Henderson <richard.henderson@linaro.org>
 In-Reply-To: <20230819094806.14965-20-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -63
 X-Spam_score: -6.4
 X-Spam_bar: ------
