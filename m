@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DC1781C6D
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C50781C77
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:54:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXaKM-0001Y1-Lt; Sun, 20 Aug 2023 00:46:14 -0400
+	id 1qXaRD-00036c-Dg; Sun, 20 Aug 2023 00:53:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaKC-0001RT-FL
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:46:06 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaR9-00036R-7o
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:53:15 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaK8-0003Hf-KT
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:46:02 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-529fb2c6583so859075a12.1
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:46:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXaR7-0004BI-22
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:53:14 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-99c0290f0a8so271073766b.1
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:53:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692506759; x=1693111559;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692507191; x=1693111991;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7Y0dtdHL2ulTHB5kL4b2wAK8q9r/JU2zmlzYv8fZ5kY=;
- b=XgmCcjr+2qs/AI5QwL9uzg528xe2kCWquSCVMftRK1xCmi1BBmc/7vVkZGUaUVNHFP
- 7w83dOGLkTkv4iEZIpvAoIhYTYFo53YprAyE2N0i8FRyao/U7cJ9gEldH/whZsQy9Qj3
- 1ldRPpXkPP/Nt1PZHFl/sWCgdOLTtm5hxr/LxLnNxNWJSr3vZsdJE4RCb2EfPTM+vliE
- HSRtFuX6F2oKsv6atacSZIxG/kwdP9DLVICV87lb5bLuhw7PjQ4VsEuIuV1Q4WspRQHb
- jiwa8ZPSJf5YQ+6pbWDSTMmoB8QDF/or6O8c8lBYyushYDFyzSWwlVCJa0zME06bdwFq
- wYwA==
+ bh=oGqLu/mYFY2m3RDIHm2xkcbAEyxlzP5zAYIyIhCi13Q=;
+ b=tMjp4sudoGXT0rF/LH5ql66PheGIyTtx0l555jYoKDA0rrpye/nxkqM/DqFM77aBG+
+ LbGTa0vjlqMdj1J3Mo95CE0OGD78bLfGRGIWeyX7NbujTXu/fUPUaOWrxgxMj/BN8Jl5
+ hNYneyQZ3EU3J4FahjZ9+6qZdic/AvEWip1xwi7yZeO+nG4ULihA8X1MfP+PO8dX7Qay
+ mkjYMw6rKSAuSq18jiBmDDHAJAR2sBixaX+NK22z44TvKlyzr/RNDSz16lkcDH8W9VW3
+ BUCP+j6SEvZ71Nrzt99Xtc2gtY1paeoOzdIItWcW8OvGwdf73HdnOaIDTlJLy7JTnAgQ
+ OLmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692506759; x=1693111559;
+ d=1e100.net; s=20221208; t=1692507191; x=1693111991;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7Y0dtdHL2ulTHB5kL4b2wAK8q9r/JU2zmlzYv8fZ5kY=;
- b=e5NAMlzsFscn1mtMVfc0+eFa5wi7gkQvKMBYbfIxPwKm7sV2zhc3q1K5EUkRMcuDCq
- tYkVPHiaaZSCjPNxb+6kFs5Pi2Umd1AYOB/ex8VuW/zfmgLBoFyzzdAaoUEVPE5i8E+1
- vGIJbtyl+lT2HTLs3r26sACe2p5889Kb/QrsC3Ox/dW2aLShKkrFlCUyntaXKHo2hY8o
- CMejOMsgjw5lw5cz7567xObfHnYmEuf9NEXiuCLPpBBafueu1G5+bg9szoOjSxIjJQNL
- +c8fkTKdHL3GP8BNOMM0Nk0Yhx0YCwuQVlKd/gSoQSLjjBSSpEqM6qwFL9FwFkYj0Xvr
- y0bw==
-X-Gm-Message-State: AOJu0YwNl4HfM8Lmn/UD8o+j2fyoRf8uYUpQyPxAu++rc/nBYcyJxA/h
- hcAaHS2gSP8eshuM2MBTRWnZwJZNTxWhV9oy136nPw==
-X-Google-Smtp-Source: AGHT+IEjLO8KVqM9i/zbIucfujG9TFMo67xLZi0CVymphYm3y5YtxK0DdTrdiazIVoMkqio6zq17WO7kpw9IsAlDk64=
-X-Received: by 2002:a17:907:75d7:b0:98e:2b00:c509 with SMTP id
- jl23-20020a17090775d700b0098e2b00c509mr2285804ejc.30.1692506759077; Sat, 19
- Aug 2023 21:45:59 -0700 (PDT)
+ bh=oGqLu/mYFY2m3RDIHm2xkcbAEyxlzP5zAYIyIhCi13Q=;
+ b=GzdedKmmVyQSuwk4PZjA7ktb33dYS4hvFFmuQ0vghu9gJzesBuo7bXjIpZwehYkDRt
+ TqtWiQC0UFkeANxUlmduStFxe+VlxEsZtTKwtDuYP6BTHPXchwrVFHbcjuS3lfnnTrDN
+ I2oszIB0uwNEGpgbvZCOSuj6nozbk6kEie41P6X7rA6AiIu0Y342/WQB6xIdx1gW5NWW
+ +eYfCKaHec4z3QFemlz/F7r/+MbZzOgyWyoA3S+2y80Hy/Ie19umjtlxohb51Lw0H6EH
+ TIvDR2rayj610OSjjWYbqbR+01d+QB2OcNUCf7lvTvhEBIG88i6/GyWam9K4AYetdEL1
+ wmEQ==
+X-Gm-Message-State: AOJu0YwlNoFaQGA1rAMagzdE0jURMaYXZQ5PqfGh707sZR3Z3qegx9Yu
+ wIt+jxRIwiUpl7DnatJJO2LN/bZd/jw/g2Jfo5SAyA==
+X-Google-Smtp-Source: AGHT+IFvUpGGBrhyyfdWfYjO2ifV0UTeNKVjMMNq59RPuoYq70Gt1oXrNqkbM3Hinb7tzWGqVE1MQdAg1Q4OL/ZjPVs=
+X-Received: by 2002:a17:906:30c3:b0:9a1:83a4:6979 with SMTP id
+ b3-20020a17090630c300b009a183a46979mr1104775ejb.73.1692507191363; Sat, 19 Aug
+ 2023 21:53:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-23-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-23-kariem.taha2.7@gmail.com>
+References: <20230818175736.144194-1-richard.henderson@linaro.org>
+ <7dbdecd7-e3f1-beae-9fbc-55973c8035e2@linaro.org>
+In-Reply-To: <7dbdecd7-e3f1-beae-9fbc-55973c8035e2@linaro.org>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:45:52 -0600
-Message-ID: <CANCZdfob_JyoD9a-HRgeFVVGDxQC-ta_mg70+F9OmPJ9DET9Gg@mail.gmail.com>
-Subject: Re: [PATCH 22/22] Add stubs for vadvise(), sbrk() and sstk()
-To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000027b0bc06035370c0"
-Received-SPF: none client-ip=2a00:1450:4864:20::531;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x531.google.com
+Date: Sat, 19 Aug 2023 22:53:04 -0600
+Message-ID: <CANCZdfpPBdM0LKoL_Ao-Wd6kxyKxtcgBOiB8b9-wDgEQHb9GNQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] bsd-user: image_info cleanups
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000ebd9fe0603538930"
+Received-SPF: none client-ip=2a00:1450:4864:20::62d;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -82,50 +82,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000027b0bc06035370c0
+--000000000000ebd9fe0603538930
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 19, 2023 at 3:49=E2=80=AFAM Karim Taha <kariem.taha2.7@gmail.co=
-m> wrote:
+On Sat, Aug 19, 2023 at 4:44=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
 
-> From: Stacey Son <sson@FreeBSD.org>
+> On 18/8/23 19:57, Richard Henderson wrote:
 >
-> The above system calls are not supported by qemu.
+> > Richard Henderson (3):
+> >    bsd-user: Remove ELF_START_MMAP and image_info.start_mmap
+> >    bsd-user: Remove image_info.mmap
+> >    bsd-user: Remove image_info.start_brk
 >
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> ---
->  bsd-user/bsd-mem.h            | 21 +++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c | 12 ++++++++++++
->  2 files changed, 33 insertions(+)
+> Series:
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 >
 
-Reviewed-by: Warner Losh <imp@bsdimp.com>
+Queued for post release freeze pull request.
 
---00000000000027b0bc06035370c0
+--000000000000ebd9fe0603538930
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 3:49=E2=80=AF=
-AM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
-7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 4:44=E2=80=AF=
+AM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">phi=
+lmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">On 18/8/23 19:57, Richard Henderson wrote:<br>
 <br>
-The above system calls are not supported by qemu.<br>
+&gt; Richard Henderson (3):<br>
+&gt;=C2=A0 =C2=A0 bsd-user: Remove ELF_START_MMAP and image_info.start_mmap=
 <br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
-arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
----<br>
-=C2=A0bsd-user/bsd-mem.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 21 ++++=
-+++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c | 12 ++++++++++++<br>
-=C2=A02 files changed, 33 insertions(+)<br></blockquote><div><br></div><div=
->Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
-com</a>&gt; <br></div></div></div>
+&gt;=C2=A0 =C2=A0 bsd-user: Remove image_info.mmap<br>
+&gt;=C2=A0 =C2=A0 bsd-user: Remove image_info.start_brk<br>
+<br>
+Series:<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br></blockquote><div><br=
+></div><div>Queued for post release freeze pull request. <br></div></div></=
+div>
 
---00000000000027b0bc06035370c0--
+--000000000000ebd9fe0603538930--
 
