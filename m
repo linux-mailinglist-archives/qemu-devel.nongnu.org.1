@@ -2,62 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14CD781D32
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 11:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C28BB781D84
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 13:00:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXer4-00023f-O5; Sun, 20 Aug 2023 05:36:18 -0400
+	id 1qXg8f-0006IZ-Dm; Sun, 20 Aug 2023 06:58:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qXer1-00023U-2o
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 05:36:15 -0400
-Received: from mailout04.t-online.de ([194.25.134.18])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qXg8X-0006Gf-5Q
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 06:58:25 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qXeqy-0007TP-Hy
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 05:36:14 -0400
-Received: from fwd84.aul.t-online.de (fwd84.aul.t-online.de [10.223.144.110])
- by mailout04.t-online.de (Postfix) with SMTP id C6DB33D78;
- Sun, 20 Aug 2023 11:33:40 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.21.165]) by fwd84.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qXeoU-2C3uNd0; Sun, 20 Aug 2023 11:33:38 +0200
-Message-ID: <f49650d9-f80f-bbbe-1c0a-4a42a6c6ec76@t-online.de>
-Date: Sun, 20 Aug 2023 11:33:38 +0200
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qXg8E-0005H8-LE
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 06:58:09 -0400
+Received: from cslab-raptor.. (unknown [166.111.226.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id EF4DB440AC;
+ Sun, 20 Aug 2023 10:57:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1692529076; bh=MpXbOwiS4MDA6mYXv1z0R8eZYtTZ/CJ70sFXNXJITp8=;
+ h=From:To:Cc:Subject:Date;
+ b=rit8VQ9ccrRlghSqxn3ThpBqgTdfP8UsKWChwN4N0bs0mRAzfRy8UwWTb5bOJz/fq
+ feosAQX0M9cWHWmAoktWG/CswTq3rONdEC3uyf8AGvXMOfDrqJnmSELwplaPkEweUJ
+ hq1vMIq3ElnRuyZpNyEI+r6KETI8MuWfsAmdNM8A=
+From: Jiajie Chen <c@jia.je>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, gaosong@loongson.cn,
+ yangxiaojuan@loongson.cn, zhaotianrui@loongson.cn, Jiajie Chen <c@jia.je>
+Subject: [PATCH] hw/loongarch: Fix ACPI processor id off-by-one error
+Date: Sun, 20 Aug 2023 18:56:59 +0800
+Message-ID: <20230820105658.99123-2-c@jia.je>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v6 01/12] Add virtio-sound device stub
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
- <86f98e0b7da6cf1a8b308b1e14400f66d18fd010.1692089917.git.manos.pitsidianakis@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <86f98e0b7da6cf1a8b308b1e14400f66d18fd010.1692089917.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TOI-EXPURGATEID: 150726::1692524018-2B024649-BD601FEE/0/0 CLEAN NORMAL
-X-TOI-MSGID: 2dba8bd6-8929-4f29-9360-837257e63317
-Received-SPF: none client-ip=194.25.134.18; envelope-from=vr_qemu@t-online.de;
- helo=mailout04.t-online.de
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-1.862, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,32 +62,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Manos,
+In hw/acpi/aml-build.c:build_pptt() function, the code assumes that the
+ACPI processor id equals to the cpu index, for example if we have 8
+cpus, then the ACPI processor id should be in range 0-7.
 
-> Add a new VIRTIO device for the virtio sound device id. Functionality
-> will be added in the following commits.
+However, in hw/loongarch/acpi-build.c:build_madt() function we broke the
+assumption. If we have 8 cpus again, the ACPI processor id in MADT table
+would be in range 1-8. It violates the following description taken from
+ACPI spec 6.4 table 5.138:
 
-I think the virtio-snd.c code, the trace events and the Kconfig 
-VIRTIO_SND should be moved to hw/audio. The code for nearly all audio 
-devices is in this directory. This would be similar to other virtio 
-devices. E.g. the virtio-scsi code is in hw/scsi and the virtio-net code 
-is in hw/net.
+If the processor structure represents an actual processor, this field
+must match the value of ACPI processor ID field in the processor’s entry
+in the MADT.
 
-With best regards,
-Volker
+It will break the latest Linux 6.5-rc6 with the
+following error message:
 
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->   MAINTAINERS                    |   6 +
->   hw/virtio/Kconfig              |   5 +
->   hw/virtio/meson.build          |   1 +
->   hw/virtio/trace-events         |   9 ++
->   hw/virtio/virtio-snd.c         | 231 +++++++++++++++++++++++++++++++++
->   include/hw/virtio/virtio-snd.h |  80 ++++++++++++
->   6 files changed, 332 insertions(+)
->   create mode 100644 hw/virtio/virtio-snd.c
->   create mode 100644 include/hw/virtio/virtio-snd.h
->
->
+ACPI PPTT: PPTT table found, but unable to locate core 7 (8)
+Invalid BIOS PPTT
+
+Here 7 is the last cpu index, 8 is the ACPI processor id learned from
+MADT.
+
+With this patch, Linux can properly detect SMT threads when "-smp
+8,sockets=1,cores=4,threads=2" is passed:
+
+Thread(s) per core:  2
+Core(s) per socket:  2
+Socket(s):           2
+
+The detection of number of sockets is still wrong, but that is out of
+scope of the commit.
+
+Signed-off-by: Jiajie Chen <c@jia.je>
+---
+ hw/loongarch/acpi-build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index 0b62c3a2f7..ae292fc543 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -127,7 +127,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
+         build_append_int_noprefix(table_data, 17, 1);    /* Type */
+         build_append_int_noprefix(table_data, 15, 1);    /* Length */
+         build_append_int_noprefix(table_data, 1, 1);     /* Version */
+-        build_append_int_noprefix(table_data, i + 1, 4); /* ACPI Processor ID */
++        build_append_int_noprefix(table_data, i, 4);     /* ACPI Processor ID */
+         build_append_int_noprefix(table_data, arch_id, 4); /* Core ID */
+         build_append_int_noprefix(table_data, 1, 4);     /* Flags */
+     }
+-- 
+2.41.0
 
 
