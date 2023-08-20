@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E48781C58
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71162781C59
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 06:17:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXZlH-0004g2-Rw; Sun, 20 Aug 2023 00:09:59 -0400
+	id 1qXZrb-00066Y-8d; Sun, 20 Aug 2023 00:16:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZlG-0004fr-A6
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:09:58 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZrZ-00066L-7y
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:16:29 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZlE-0005Jh-6q
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:09:58 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so4593678a12.0
- for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:09:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qXZrW-0006Om-OU
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 00:16:28 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51cff235226so4597926a12.0
+ for <qemu-devel@nongnu.org>; Sat, 19 Aug 2023 21:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692504594; x=1693109394;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1692504985; x=1693109785;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3aANH9BT8Cchha/fX0LxWm06dw8tJcyEz3eyG1bX5EM=;
- b=clJ3kN+w5CUv2Wq3gCPvRU/pe9UEAulNMFhfLq4v/1N+RRK62TqhmBc+1kuXXRMS5x
- Qb1+sz0PiUZNqOv2AQ/QpH1gLKuOEIBl/N1YMPaDuYBr0kbik9jevSMHRnveCf+7dHfA
- 02qrvkKbD3xKh2AXbHj3JQaEP5GZCiOAR8I+XDGnbr3yc8JLLwEnTa+i1kCSeDYAbtbt
- Bz6d0RBKfHsK5Xuk6vnU1JQjI5Zqm4kHaLP/0Y9JOsIOVvGNdWVB/awRWge9bK9y87x6
- ja7l07Lxw/msogChwbGuNOYXMRWealW4mfDXhk2ar49wokiLlzuedk7aB2Cxhz7XA2gE
- BVfA==
+ bh=ZYyaegt9TN3krI5nYGEP8DnZDz2/ZbgywWXOxWfXQug=;
+ b=Fgo9q/qrRm6uvA4hUHCWFDNgULLb0FnkcNquSWaRdL9/ZFkayI87rD5/CbcKp4Tbg5
+ 4//gya1ueZKOWU/mpjtCPASUzkh2oATZ+MtJs+jgHgliLu0epng8Ybqe4fdf0aM+fe7Z
+ 7/lon+LwrG7VFm5eSVb3fOQ/v2YC6ZwE8EwWUpLAM7+ft/ab8N2DNRlRZYV+PuBqgNUC
+ /1gmTkfq+ZLIkDyzBvhLF9hT4Rn+tsM3ovByxQfs/ooUf7zz0VsdDLB2p8lasjZkiG7w
+ KwCUJNTTIYjvYCqKiFI8r5bgR8DsQgRJZdY7f4P3srL7opNjAZMIb7Cjo21qh5Mh4PWF
+ Rocg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692504594; x=1693109394;
+ d=1e100.net; s=20221208; t=1692504985; x=1693109785;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=3aANH9BT8Cchha/fX0LxWm06dw8tJcyEz3eyG1bX5EM=;
- b=WSSYFQWwtKsYoDR8x7AEaE3bTDpd0uxSuZzbgVCmw0DhzyHT2jdlbMW2sRnizdGKgd
- Ga/ivF1z42TEudAPptCdPC0DF5RQx0IR/EiVjgkRNF/04cMUMfq42gb16gRU86KK9cTJ
- PS6jQYZTfq06Q9QqH6aRJKSuODouiRcJzj86NRpvU49EJgGmvefWZD/9UtkS07o66vCq
- eD6ZEZ7cfR2BmCOevsXXNPFhkXHTbwJpUE6Q9aa85Mfqqy5AhsqG4MW+tyrV+TFFA2cH
- wMSR6DjrwVfRFSOk0yt8j8kCWVG2FJ3xpIGoly+GEiexJ1f/mIq0UT5ktdAVXY2B4PPA
- VRdw==
-X-Gm-Message-State: AOJu0YwUW05zO0/AE/Qxg75NMmmJSh7+SQGZqzhOP3bZXa6lb8gLi4D8
- puhhusBZpTuNNR+OCVS91TyHNf8NFHI3ohCJ9exxTB/PHTE670EX
-X-Google-Smtp-Source: AGHT+IGzgArLj6rZRqPvjgxM2pJuJptC/xVFJ8hGlQZ3UAcuEp2I91kTGfq6crL0e5tgnMWkkekbNNaizrEOGdAvgSs=
-X-Received: by 2002:aa7:d297:0:b0:522:2add:5841 with SMTP id
- w23-20020aa7d297000000b005222add5841mr3310327edq.7.1692504594686; Sat, 19 Aug
- 2023 21:09:54 -0700 (PDT)
+ bh=ZYyaegt9TN3krI5nYGEP8DnZDz2/ZbgywWXOxWfXQug=;
+ b=X/C6ANvE758Zj2Lvm7u3WBMjkn2Ypfv/ZvDwnQ7IF5030SLUFRywLVvBrfNg0Y95en
+ Ux8hTnozwojt+tvOhCKG+6n7wMwNOPBURIGm5Uz6B7bJbet19y/ngxoyPEoEoN5shIJ4
+ EcVh3lM6HKbv1/KIbDvX2woAa8i06RwWn9NHCDeIXe3MqW2RJpD6bScd2widNmRTceHk
+ aj0Y/GZWv2i3jQl31bJCADaQAg1jc8tnEzqBz7elW6zqOHC9kiHitoo7pFLP38Pfk6RK
+ 4OoJgDKbZSTiiHhhAOzLqeoFXQRpi88JDYocDYS0xLlvGlhxtTZYRgPuIhqSbEWsWRJ2
+ oUYA==
+X-Gm-Message-State: AOJu0YxKR5EAusjORnQWI5DqOTsbTutx+mFgMvSd0bQTQ3YLcJDr9bwm
+ G/ZdFNy6QEMbrMSRGPggq6FZPvCwVto2FVklLLTrUg==
+X-Google-Smtp-Source: AGHT+IHeeuUAdEZoZ1rtC1h5GtbOykv28gqT1cUIes7L6ih+OVyoGjOAJ3fCWvXwXTREuj1iom1PMaBz6VBzfLYWIB4=
+X-Received: by 2002:aa7:db47:0:b0:523:b37e:b83b with SMTP id
+ n7-20020aa7db47000000b00523b37eb83bmr3317294edt.13.1692504985122; Sat, 19 Aug
+ 2023 21:16:25 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-5-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230819094806.14965-5-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-6-kariem.taha2.7@gmail.com>
+ <e631bda3-d722-66d2-2774-1af9823ab0eb@linaro.org>
+In-Reply-To: <e631bda3-d722-66d2-2774-1af9823ab0eb@linaro.org>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sat, 19 Aug 2023 22:09:47 -0600
-Message-ID: <CANCZdfp0Q5ck-vMMOA4AQbELGEQaBE881LSXEiW-vfZyUky2ng@mail.gmail.com>
-Subject: Re: [PATCH 04/22] Introduce freebsd/os-misc.h to the source tree
-To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000025b662060352ef73"
-Received-SPF: none client-ip=2a00:1450:4864:20::52f;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x52f.google.com
+Date: Sat, 19 Aug 2023 22:16:17 -0600
+Message-ID: <CANCZdfooOYC2jnbG+MX8ib=bn_OSXkrmTJnjC+ODBxYF9JAUHg@mail.gmail.com>
+Subject: Re: [PATCH 05/22] Implement shm_open2(2) system call
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org, 
+ Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="0000000000006b4d000603530647"
+Received-SPF: none client-ip=2a00:1450:4864:20::531;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -82,52 +84,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000025b662060352ef73
+--0000000000006b4d000603530647
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 19, 2023 at 3:48=E2=80=AFAM Karim Taha <kariem.taha2.7@gmail.co=
-m> wrote:
+On Sat, Aug 19, 2023 at 9:10=E2=80=AFAM Richard Henderson <
+richard.henderson@linaro.org> wrote:
 
-> From: Stacey Son <sson@FreeBSD.org>
+> On 8/19/23 02:47, Karim Taha wrote:
+> > From: Kyle Evans <kevans@FreeBSD.org>
+> >
+> > Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+> > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> > ---
+> >   bsd-user/freebsd/os-misc.h    | 52 ++++++++++++++++++++++++++++++++++=
++
+> >   bsd-user/freebsd/os-syscall.c | 13 +++++++++
+> >   2 files changed, 65 insertions(+)
+> >
+> > diff --git a/bsd-user/freebsd/os-misc.h b/bsd-user/freebsd/os-misc.h
+> > index 8436ccb2f7..993e4598f9 100644
+> > --- a/bsd-user/freebsd/os-misc.h
+> > +++ b/bsd-user/freebsd/os-misc.h
+> > @@ -24,5 +24,57 @@
+> >   #include <sys/random.h>
+> >   #include <sched.h>
+> >
+> > +int shm_open2(const char *path, int flags, mode_t mode, int shmflags,
+> > +    const char *);
+> > +
+> > +#if defined(__FreeBSD_version) && __FreeBSD_version >=3D 1300048
+> > +/* shm_open2(2) */
+> > +static inline abi_long do_freebsd_shm_open2(abi_ulong pathptr,
+> abi_ulong flags,
+> > +    abi_long mode, abi_ulong shmflags, abi_ulong nameptr)
+> > +{
+> > +    int ret;
+> > +    void *uname, *upath;
+> > +
+> > +#ifdef SHM_ANON
 >
-> To preserve the copyright notice and help with the 'Author' info for
-> subsequent changes to the file.
->
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> ---
->  bsd-user/freebsd/os-misc.h | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->  create mode 100644 bsd-user/freebsd/os-misc.h
+> Why would SHM_ANON not be defined?  You've already restricted the functio=
+n
+> to freebsd13+
+> (presumably so that shm_open2() is in libc.a).
 >
 
- Reviewed-by: Warner Losh <imp@bsdimp.com>
+Good catch Richard. It's like this in the bsd-user fork, but after talking
+it over with Kyle, we're
+sure that's due to a cut and past from shm_open when this was implemented.
+We should change
+it before we submit it upstream absolutely. It's always defined on FreeBSD
+and that will make
+this code simpler.
 
---00000000000025b662060352ef73
+Warner
+
+
+> > +#define SHM_PATH(p) (p) =3D=3D SHM_ANON ? (p) : path(p)
+> > +    if (pathptr =3D=3D (uintptr_t)SHM_ANON) {
+> > +        upath =3D SHM_ANON;
+> > +    } else
+> > +#else
+> > +#define SHM_PATH(p) path(p)
+> > +#endif
+> > +    {
+> > +        upath =3D lock_user_string(pathptr);
+> > +        if (upath =3D=3D NULL) {
+> > +            return -TARGET_EFAULT;
+> > +        }
+> > +    }
+> > +
+> > +    uname =3D NULL;
+> > +    if (nameptr !=3D 0) {
+> > +        uname =3D lock_user_string(nameptr);
+> > +        if (uname =3D=3D NULL) {
+> > +            unlock_user(upath, pathptr, 0);
+> > +            return -TARGET_EFAULT;
+> > +        }
+> > +    }
+> > +    ret =3D get_errno(shm_open2(SHM_PATH(upath),
+>
+> There is no need for SHM_PATH because you've already handled the conditio=
+n
+> while setting
+> upath above.
+>
+>
+>
+> r~
+>
+
+--0000000000006b4d000603530647
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 3:48=E2=80=AF=
-AM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
-7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 19, 2023 at 9:10=E2=80=AF=
+AM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
+chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">On 8/19/23 02:47, Karim Taha wrote:<br>
+&gt; From: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
+&gt; <br>
+&gt; Signed-off-by: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
+&gt; Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.c=
+om" target=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0bsd-user/freebsd/os-misc.h=C2=A0 =C2=A0 | 52 +++++++++++++=
+++++++++++++++++++++++<br>
+&gt;=C2=A0 =C2=A0bsd-user/freebsd/os-syscall.c | 13 +++++++++<br>
+&gt;=C2=A0 =C2=A02 files changed, 65 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/bsd-user/freebsd/os-misc.h b/bsd-user/freebsd/os-misc.h<b=
+r>
+&gt; index 8436ccb2f7..993e4598f9 100644<br>
+&gt; --- a/bsd-user/freebsd/os-misc.h<br>
+&gt; +++ b/bsd-user/freebsd/os-misc.h<br>
+&gt; @@ -24,5 +24,57 @@<br>
+&gt;=C2=A0 =C2=A0#include &lt;sys/random.h&gt;<br>
+&gt;=C2=A0 =C2=A0#include &lt;sched.h&gt;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +int shm_open2(const char *path, int flags, mode_t mode, int shmflags,=
 <br>
-To preserve the copyright notice and help with the &#39;Author&#39; info fo=
-r<br>
-subsequent changes to the file.<br>
+&gt; +=C2=A0 =C2=A0 const char *);<br>
+&gt; +<br>
+&gt; +#if defined(__FreeBSD_version) &amp;&amp; __FreeBSD_version &gt;=3D 1=
+300048<br>
+&gt; +/* shm_open2(2) */<br>
+&gt; +static inline abi_long do_freebsd_shm_open2(abi_ulong pathptr, abi_ul=
+ong flags,<br>
+&gt; +=C2=A0 =C2=A0 abi_long mode, abi_ulong shmflags, abi_ulong nameptr)<b=
+r>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 int ret;<br>
+&gt; +=C2=A0 =C2=A0 void *uname, *upath;<br>
+&gt; +<br>
+&gt; +#ifdef SHM_ANON<br>
 <br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
-arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
----<br>
-=C2=A0bsd-user/freebsd/os-misc.h | 28 ++++++++++++++++++++++++++++<br>
-=C2=A01 file changed, 28 insertions(+)<br>
-=C2=A0create mode 100644 bsd-user/freebsd/os-misc.h<br></blockquote><div><b=
-r></div><div>=C2=A0Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdim=
-p.com">imp@bsdimp.com</a>&gt;<br></div></div></div>
+Why would SHM_ANON not be defined?=C2=A0 You&#39;ve already restricted the =
+function to freebsd13+ <br>
+(presumably so that shm_open2() is in libc.a).<br></blockquote><div><br></d=
+iv><div>Good catch Richard. It&#39;s like this in the bsd-user fork, but af=
+ter talking it over with Kyle, we&#39;re <br></div><div>sure that&#39;s due=
+ to a cut and past from shm_open when this was implemented. We should chang=
+e</div><div>it before we submit it upstream absolutely. It&#39;s always def=
+ined on FreeBSD and that will make</div><div>this code simpler.</div><div><=
+br></div><div>Warner<br></div><div>=C2=A0</div><blockquote class=3D"gmail_q=
+uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
+04);padding-left:1ex">
+&gt; +#define SHM_PATH(p) (p) =3D=3D SHM_ANON ? (p) : path(p)<br>
+&gt; +=C2=A0 =C2=A0 if (pathptr =3D=3D (uintptr_t)SHM_ANON) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 upath =3D SHM_ANON;<br>
+&gt; +=C2=A0 =C2=A0 } else<br>
+&gt; +#else<br>
+&gt; +#define SHM_PATH(p) path(p)<br>
+&gt; +#endif<br>
+&gt; +=C2=A0 =C2=A0 {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 upath =3D lock_user_string(pathptr);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (upath =3D=3D NULL) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 uname =3D NULL;<br>
+&gt; +=C2=A0 =C2=A0 if (nameptr !=3D 0) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 uname =3D lock_user_string(nameptr);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (uname =3D=3D NULL) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 unlock_user(upath, pathptr,=
+ 0);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 ret =3D get_errno(shm_open2(SHM_PATH(upath),<br>
+<br>
+There is no need for SHM_PATH because you&#39;ve already handled the condit=
+ion while setting <br>
+upath above.<br>
+<br>
+<br>
+<br>
+r~<br>
+</blockquote></div></div>
 
---00000000000025b662060352ef73--
+--0000000000006b4d000603530647--
 
