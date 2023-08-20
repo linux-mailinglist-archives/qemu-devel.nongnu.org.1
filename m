@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70927781E71
-	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 17:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2C7781E72
+	for <lists+qemu-devel@lfdr.de>; Sun, 20 Aug 2023 17:11:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXk1x-0003Az-CM; Sun, 20 Aug 2023 11:07:53 -0400
+	id 1qXk4h-000429-8x; Sun, 20 Aug 2023 11:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXk1v-0003Ab-1r
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:07:51 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qXk4f-00041y-Ne
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:10:41 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXk1r-0006JX-Tx
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:07:50 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-68a3ced3ec6so512196b3a.1
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 08:07:47 -0700 (PDT)
+ id 1qXk4d-0006mo-Jh
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 11:10:41 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bf078d5f33so19570725ad.3
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 08:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692544066; x=1693148866;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1692544238; x=1693149038;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=IgQ5j9DStC31gUgU4AeKIRfVM2UMWogdzdmNkmxJ1Lg=;
- b=ikrpvok4YHuETBEGomZ3xY/7TxXnjSZV/fug4R5nC/wWVSFCsTpj1fVCKWkmdS1PS5
- GihKoGsbASn7RhR7XZFTnFgf46VzXrP+xW0E7JKWRAopReT4v7qte8iRQN+PIQXszYpV
- nYrLPZ7ErbhXHYRgV5fiR87v1cun1ga1138cqkWcYES9SXYxHSeqKpAaEbb/ucrKiZHi
- /CvQCpa/27sOGzfKkwt6YcIpknKXO/3ItRpCO8Rj7GiBpEP4ENyA8FXztREAACdi7L8V
- pnvXOw8MdKQBedvbMO55G2use9VhGtMlOCY9CRFhGnNyROlA3zPz5EWnS4m+pn4QjTFa
- E/jQ==
+ bh=O8MFuZpeKY4hnXkA4Z6IvjsIfVWiTj1q20cG2xdwOg8=;
+ b=nQ+Hxadb4Ty5xzH6eMBE3jpE54co29ZUh7sKwdhrXqdvh0jzVSebZQCLzStTIuU1t+
+ KoGK0K9GV4Zi2QGt+qdInUtq50zOKLvsKrvULallt9LgWZZar0nqABya3ZcDjlYxltZ7
+ cqupR5wqHP97FgA1hVJ1uGFaAh8x/fNRfMld9c9GJjCYpo+uuWjZb2COKZaqGUmxHbSm
+ +8e8fmDQHIbL/kNpAyp7kPxw7TwGZoLspLBWZaRSZn4YnVgEbRCyQg+AG/XQ/fS/nm3w
+ pMP12ZM9yHtS1CCLFFEZ0XmokhE2kePU0IHj807Vr76sRsM6pz5L3az2vhPft6nl7hw4
+ vENg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692544066; x=1693148866;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1692544238; x=1693149038;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IgQ5j9DStC31gUgU4AeKIRfVM2UMWogdzdmNkmxJ1Lg=;
- b=I8jiLI2od+3Ho4W+N/QxHUoU6GEGizlNMvElpqG5S3Cwb3wPbmKbOJeoLyFXXj9Lp3
- 6zBOGupByxEyB8XB7qlHVPnUQEzW19o77+YOBGriPQMoePOO4O/tAZwt5qjOFZ/Wv5lP
- JDn7UVrMcnn4P6/Vn0stNJqV5Br5PLcdnfW0CSFK+l1R4kyXbCIBpvjATd4anGKkQEpU
- 5EoKcYC2BM9tduBuLNOk+ZeFL7ruBv9wxaRcncZUihTaAehpwoQi+L0iUCav6wKiYHRe
- k32sGjqTzGqLqwH4NDYFDIY+egsiIUiZAHaZxOxHSAA2oWn4CneWn2qWD7e2EHIfrENK
- 0cBA==
-X-Gm-Message-State: AOJu0Yxv7miv/HxPkRKdqF+oFc13KsU0JsfCCxSnMLo2mN8XGh7locd1
- elD+zhKGdPBhCvPEmZrEC/LmEA==
-X-Google-Smtp-Source: AGHT+IFWr8SnJ1reX4OacsnAnnmuBHcA2zqFQuqc+h2zo072oZI//Z3dDBJaf9T6z07JO4VqTIWfXg==
-X-Received: by 2002:a05:6a20:1585:b0:13d:860e:e346 with SMTP id
- h5-20020a056a20158500b0013d860ee346mr6846356pzj.5.1692544066311; 
- Sun, 20 Aug 2023 08:07:46 -0700 (PDT)
+ bh=O8MFuZpeKY4hnXkA4Z6IvjsIfVWiTj1q20cG2xdwOg8=;
+ b=GGdJBSIbtvkKImmk3lVbqBh8rvhOi6HZx0hqEdiF1qnsB2XFbqd5uFYbUXtkVgZHKT
+ JrgblzAKoBnHNYvjbCKdL1Q89j9K7qhSaeO3aztl6tOeNfc6lQmPgbTlq5QSscRY1ktd
+ ZQZVhbOxy42wDJyZva+U789vScnAHc5h590GM+QYsSYXZfn8CfAdMu88XBplqg2BDeiW
+ T33yvDHmJuUeYCMBYklMMhJ2T/uvIcPpiSywSZSsVISAOdowr2Cx19gq1Vu9Qb00XD4X
+ b0Wb6gDoprQRsfpEE3RknWIu5QwR8pyWCv4i2VnWOkwXf4EhRn7MyHEMHQcixhAL4blz
+ 2eUQ==
+X-Gm-Message-State: AOJu0YxmLoNT0B/bwBcsPzx2OLdyqJYxjQ6gUlVdQ3nDXUzMS8yCS13s
+ 60Aconf7s7Q+k/4lQsLj+gwkrHE+sTlqVlQcBXk=
+X-Google-Smtp-Source: AGHT+IE7pK8cEn6f1Xwdtn/lJtifOB3Z7B+iEUNsID8X16TCcl9d7/KGU7bvWZsa83wJO8fd4ppseg==
+X-Received: by 2002:a17:902:f684:b0:1bf:205e:fe5d with SMTP id
+ l4-20020a170902f68400b001bf205efe5dmr6283895plg.7.1692544237796; 
+ Sun, 20 Aug 2023 08:10:37 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:347d:4d37:bdd7:f5e5?
  ([2602:47:d483:7301:347d:4d37:bdd7:f5e5])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a633307000000b005642314f05fsm4827557pgz.1.2023.08.20.08.07.45
+ iw14-20020a170903044e00b001bdea189261sm5212715plb.229.2023.08.20.08.10.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Aug 2023 08:07:45 -0700 (PDT)
-Message-ID: <a14d0ddf-98b9-e1c7-4b89-4af9cbc0d10f@linaro.org>
-Date: Sun, 20 Aug 2023 08:07:44 -0700
+ Sun, 20 Aug 2023 08:10:37 -0700 (PDT)
+Message-ID: <561ef2b3-b4a1-3f58-bff1-73bc034b0aa0@linaro.org>
+Date: Sun, 20 Aug 2023 08:10:35 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 19/22] Implement shm_unlink(2) and shmget(2)
+Subject: Re: [PATCH 18/22] Implement shm_open(2)
 Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
-References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-20-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230819094806.14965-20-kariem.taha2.7@gmail.com>
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+ Kyle Evans <kevans@FreeBSD.org>
+References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-19-kariem.taha2.7@gmail.com>
+ <7262295e-b98c-448a-a864-fab81e05babb@linaro.org>
+In-Reply-To: <7262295e-b98c-448a-a864-fab81e05babb@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -63
 X-Spam_score: -6.4
 X-Spam_bar: ------
@@ -96,17 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/19/23 02:48, Karim Taha wrote:
-> From: Stacey Son<sson@FreeBSD.org>
+On 8/20/23 08:04, Richard Henderson wrote:
+> On 8/19/23 02:48, Karim Taha wrote:
+>> +#define SHM_PATH(p) ((p) == SHM_ANON ? (p) : path(p))
+>> +    if (arg1 == (uintptr_t)SHM_ANON) {
+>> +        p = SHM_ANON;
+>> +    } else {
+>> +        p = lock_user_string(arg1);
+>> +        if (p == NULL) {
+>> +            return -TARGET_EFAULT;
+>> +        }
+>> +    }
+>> +    ret = get_errno(shm_open(SHM_PATH(p),
 > 
-> Signed-off-by: Stacey Son<sson@FreeBSD.org>
-> Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
-> ---
->   bsd-user/bsd-mem.h            | 23 +++++++++++++++++++++++
->   bsd-user/freebsd/os-syscall.c |  8 ++++++++
->   2 files changed, 31 insertions(+)
+> Again, SHM_PATH is not needed, because the condition is handled by this IF.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Oh, no, that's something different.
+
+But path() is wrong for shm_open, because it's not a path in the regular file system.
+
 
 r~
 
