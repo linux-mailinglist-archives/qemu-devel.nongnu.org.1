@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8146E7835D3
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 00:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D1D783611
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 01:02:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYDQ7-0006Tw-R5; Mon, 21 Aug 2023 18:30:47 -0400
+	id 1qYDtR-0002vI-MS; Mon, 21 Aug 2023 19:01:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qYDQ4-0006Rn-T0
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 18:30:44 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qYDtO-0002uo-7Q
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 19:01:02 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qYDQ2-00011i-Bx
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 18:30:44 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1bda9207132so30142385ad.0
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 15:30:41 -0700 (PDT)
+ id 1qYDtL-0006HL-BG
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 19:01:01 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-56a9c951aaaso976182a12.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 16:00:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692657040; x=1693261840;
+ d=gmail.com; s=20221208; t=1692658857; x=1693263657;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=nNPzaFzeYLsSfgRlWm4jcR7ku+ZIkaKbn5zIZ6TjKtY=;
- b=pzvPd8tmhLGnA1NIqaWnNAu7ROyL7dNs/agavNLrdKuHf2F54+ZiBCdeys0WG3DlBf
- el9IGjmbNeiL/HCaKLSZ1g6wruUAlE/CqYyg+nCwRuN1lPOWn3M6KbDU34Yuq8XyQHv0
- VQdCHtiZqTJ+ieR9ls9FQeklmE/NswJ1gFxsFM1mnlxcB0gcHO+uy/XskHSNPin6G0uI
- vdPNmvXwRYgMBPgR+3Lrhj2ZCOBgvBqToMsdenqQBzEMwz0rVsR/EuCFjaSBbHbQk6mI
- /155oVL8bhN6ztVI2Sg2HpSPXjbQeD7v2oSWuWJqNi7M7DijUPzixEiGRD7p2Ngv/k/8
- AbaA==
+ bh=Klij9wv5DPga//TKbsnaBDvfDfkb7jucsR0dMXHv8YQ=;
+ b=s5Lr2ep7iAKN7KmGI1/v5pG4Fy5SbsntwOSZqJY7MHXxB04MlnLd/Dc4viOVbX6HKt
+ rh4vXMaIp3VwS4ETG3pVWewzCfqSaxZl1wt5NA9vbuST4U+MFPIr7iheAoW+/o+GAgTK
+ 9Y2oK50suHEUb64boUuFKgjJBsFoFzrfmF4pw9flPdDqIoEhv4eCyNPAZvHwjzlGRmzY
+ X661l9f6GhvmlkU1UAz+kPEnqe2+gGJAALMhHgMN8DKLBkmmMilGYbvewvdTgHlC/VxL
+ RU5YyJhET/KfxUS3CFgiH7aMR2g4LFe583XYupalNuQiv/rk0aQ92ziQtsCONwRYoUq1
+ 8Ezw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692657040; x=1693261840;
+ d=1e100.net; s=20221208; t=1692658857; x=1693263657;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nNPzaFzeYLsSfgRlWm4jcR7ku+ZIkaKbn5zIZ6TjKtY=;
- b=bOHO3SLlMYlbqfWBKMeJlYL7QnUWJYd03m3pX8r6/I7ASkODtKCN+X90KnsyPPehz/
- UjAFQXBZSQeb3sNg0/Hd45mSw/10Hfzxa8IfRnfFMxj+5vPvbCchnXvbx9XyYSJXaKBg
- bhxq7AVNfea569h0Pup/CVi1/2Idq8SGnnzxLQTBjZ2W99Bf0pQfTWvGBJM8rbL0bV7L
- bNkd6MbzkCTp+H7qqPnz6qMqHKm/xKG3I/RISIraTgxavgg+mf3YDpvtW5aY3cJ+a+yq
- KCFWlpyyknYoTCUO+s09e8Ww/wX7K6W3QfBgz7MeuDvF88r9F3LxkCAI1HfWlDJKXCrc
- XuGQ==
-X-Gm-Message-State: AOJu0YztTlDtpswALBuWLq15WAIJIfRiYZi4MJRiAEhl4IZGU6/BTi1t
- hH6FOGdfFSaulV7DWT325FA=
-X-Google-Smtp-Source: AGHT+IGzfcemV/qSVwWRmG53F6Lzz+WBODZzzn6pWTlhZnymN0nr+ZQgh107vhpIB+nAnO1Z4Yn8Vg==
-X-Received: by 2002:a17:902:7684:b0:1bc:e6a:205a with SMTP id
- m4-20020a170902768400b001bc0e6a205amr7188735pll.4.1692657040230; 
- Mon, 21 Aug 2023 15:30:40 -0700 (PDT)
+ bh=Klij9wv5DPga//TKbsnaBDvfDfkb7jucsR0dMXHv8YQ=;
+ b=VsqCRM+wpw+6uYJ9yNrGx3BJZOYsPWlAP+DnOcg6Cv4QZK77tbO1jtjkcKFaDPtBb8
+ tKiR/EsgE4yyrxZ8p5oWI2wi1OY7XaYYPsKXIkr6ysEHl1N/J2LyILPLpH7K5nJAYmLB
+ e5bwbSU+3Pwd+wPnmHXRD8/VxRGpN/c8NhT7JPUHbBQ7VoMOs1J4mY+5UcwY3J3wVTW+
+ wYrSjmkTMfZpHqQY/J6yQ7a42z/l3cmec8Z9dMaGVk6H+93/48Aq8lXcWVDG3LDLQBeq
+ WQPxu+nlI6LTrKHPMWgmDRtiVqwG1g9VyvQkqnHqW2SfV//WzHpZ/c16jl0MAd9H/yw0
+ nPnw==
+X-Gm-Message-State: AOJu0Yz+kGbgtDtRzrCjFTkL9go1BTBvjhrTtoBN4MZO+nQ4mP1eYr40
+ lqX3zlHbdA+F4X9i4HicJ/k=
+X-Google-Smtp-Source: AGHT+IHv/GegNd8oLQThewA7cqV9YChRmbTzNOQyZgtTBoOJOXZJqPenMjxk1PJgmY8inKr8cDR9nw==
+X-Received: by 2002:a05:6a20:4417:b0:140:54ab:7f43 with SMTP id
+ ce23-20020a056a20441700b0014054ab7f43mr7284618pzb.52.1692658857456; 
+ Mon, 21 Aug 2023 16:00:57 -0700 (PDT)
 Received: from localhost ([192.55.55.51]) by smtp.gmail.com with ESMTPSA id
- r21-20020a170902be1500b001bbbc655ca1sm7544906pls.219.2023.08.21.15.30.39
+ a9-20020a62bd09000000b0068844ee18dfsm6584873pff.83.2023.08.21.16.00.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Aug 2023 15:30:39 -0700 (PDT)
-Date: Mon, 21 Aug 2023 15:30:38 -0700
+ Mon, 21 Aug 2023 16:00:56 -0700 (PDT)
+Date: Mon, 21 Aug 2023 16:00:54 -0700
 From: Isaku Yamahata <isaku.yamahata@gmail.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -74,16 +74,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Laszlo Ersek <lersek@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v2 45/58] i386/tdx: Limit the range size for MapGPA
-Message-ID: <20230821223038.GA3642077@ls.amr.corp.intel.com>
+Subject: Re: [PATCH v2 08/58] i386/tdx: Adjust the supported CPUID based on
+ TDX restrictions
+Message-ID: <20230821230054.GB3642077@ls.amr.corp.intel.com>
 References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-46-xiaoyao.li@intel.com>
+ <20230818095041.1973309-9-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230818095041.1973309-46-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=isaku.yamahata@gmail.com; helo=mail-pl1-x635.google.com
+In-Reply-To: <20230818095041.1973309-9-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=isaku.yamahata@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,82 +107,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 18, 2023 at 05:50:28AM -0400,
+On Fri, Aug 18, 2023 at 05:49:51AM -0400,
 Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> If the range for TDG.VP.VMCALL<MapGPA> is too large, process the limited
-> size and return retry error.  It's bad for VMM to take too long time,
-> e.g. second order, with blocking vcpu execution.  It results in too many
-> missing timer interrupts.
-
-This patch requires the guest side patch. [1]
-Unless with large guest memory, it's unlikely to hit the limit with KVM/qemu,
-though.
-
-[1] https://lore.kernel.org/all/20230811021246.821-1-decui@microsoft.com/
-
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
->  target/i386/kvm/tdx.c | 19 ++++++++++++++++++-
->  1 file changed, 18 insertions(+), 1 deletion(-)
-> 
 > diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> index 0c43c1f7759f..ced55be506d1 100644
+> index 56cb826f6125..3198bc9fd5fb 100644
 > --- a/target/i386/kvm/tdx.c
 > +++ b/target/i386/kvm/tdx.c
-> @@ -994,12 +994,16 @@ static hwaddr tdx_shared_bit(X86CPU *cpu)
->      return (cpu->phys_bits > 48) ? BIT_ULL(51) : BIT_ULL(47);
->  }
->  
-> +/* 64MB at most in one call. What value is appropriate? */
-> +#define TDX_MAP_GPA_MAX_LEN     (64 * 1024 * 1024)
+...
+> +static inline uint32_t host_cpuid_reg(uint32_t function,
+> +                                      uint32_t index, int reg)
+> +{
+> +    uint32_t eax, ebx, ecx, edx;
+> +    uint32_t ret = 0;
 > +
->  static void tdx_handle_map_gpa(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
->  {
->      hwaddr shared_bit = tdx_shared_bit(cpu);
->      hwaddr gpa = vmcall->in_r12 & ~shared_bit;
->      bool private = !(vmcall->in_r12 & shared_bit);
->      hwaddr size = vmcall->in_r13;
-> +    bool retry = false;
->      int ret = 0;
->  
->      vmcall->status_code = TDG_VP_VMCALL_INVALID_OPERAND;
-> @@ -1018,12 +1022,25 @@ static void tdx_handle_map_gpa(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
->          return;
->      }
->  
-> +    if (size > TDX_MAP_GPA_MAX_LEN) {
-> +        retry = true;
-> +        size = TDX_MAP_GPA_MAX_LEN;
-> +    }
+> +    host_cpuid(function, index, &eax, &ebx, &ecx, &edx);
 > +
->      if (size > 0) {
->          ret = kvm_convert_memory(gpa, size, private);
->      }
->  
->      if (!ret) {
-> -        vmcall->status_code = TDG_VP_VMCALL_SUCCESS;
-> +        if (retry) {
-> +            vmcall->status_code = TDG_VP_VMCALL_RETRY;
-> +            vmcall->out_r11 = gpa + size;
-> +            if (!private) {
-> +                vmcall->out_r11 |= shared_bit;
-> +            }
-> +        } else {
-> +            vmcall->status_code = TDG_VP_VMCALL_SUCCESS;
-> +        }
->      }
->  }
->  
-> -- 
-> 2.34.1
-> 
-> 
+> +    switch (reg) {
+> +    case R_EAX:
+> +        ret |= eax;
+> +        break;
+> +    case R_EBX:
+> +        ret |= ebx;
+> +        break;
+> +    case R_ECX:
+> +        ret |= ecx;
+> +        break;
+> +    case R_EDX:
+> +        ret |= edx;
 
+Nitpick: "|" isn't needed as we initialize ret = 0 above. Just '='.
 -- 
 Isaku Yamahata <isaku.yamahata@linux.intel.com>
 
