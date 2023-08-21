@@ -2,77 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0387824FC
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 09:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7886782507
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 10:02:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXzos-00053S-9b; Mon, 21 Aug 2023 03:59:26 -0400
+	id 1qXzr5-0006n8-Q1; Mon, 21 Aug 2023 04:01:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qXzol-00052w-67
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 03:59:20 -0400
-Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qXzoi-0003Nu-W2
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 03:59:18 -0400
-Received: by mail-qk1-x72f.google.com with SMTP id
- af79cd13be357-76d93cf8e13so181106085a.2
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 00:59:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692604756; x=1693209556;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GK8ZAAmo6Qu+cR/x9t1Aizb6kW9bSve+mWpXMwMwguE=;
- b=QLTwi1y+E7tnKWvPeWJ9PEFSUzlqJp5JDx7lo0c0I6g8bMnPrQT4/Z+bzyVmvUSAQc
- DWUxnML7aetC9W5U4NQfYwZ7dSiJnnVc1KYNYzxYlQ1hvapCleKk8A40It+ecFtIyNhu
- JZyA0x/FM6mIP5oxVxhvalF8Ll77FHs53B6Z4O6PGSJK2Ejh+TVcpeb/8ndimaRLcvQn
- NOqxo7L1roOkLWDJC7I345U1bE5rHZeg8YYqwD+6T8MYxl7RJyJWiInm/HNoiOxUBC+p
- w4DKQP7dvA9hkMhxYuGr4gja8TsxDWDUq5xwzI09XyTcgDFuqf/CTeiaDOhogxEUMXrC
- EkCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692604756; x=1693209556;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GK8ZAAmo6Qu+cR/x9t1Aizb6kW9bSve+mWpXMwMwguE=;
- b=i4yAbGDegjrwTQ3nhOHSNhYdvXDARk0fWyQAYgAWEu8EmZr1FSa9z45VKZ2hv0P3KJ
- /aX/zAFyCZc4IfPi+4cyrRhYMCU23mrRD2iNYzzpZTNNyElCvDxkVHH/pGqx/xwCG7rz
- JN6mh0vYFSZ1bF7PBDMVIlWvBBrxmkgLXfP8pPMJvXqU/LT50v/fUw+AvErTw0+xP/X5
- yVy/YV+lHyqPimrux9413dAIE2g470DCgHCs+xEZPlT6aWx9U5sSgMcSPlHatl16ybQa
- Oifcr+XSbljMBXXxpqdf8bKcNe2txl3xJ2gXxDt/mz5VhF9F9i/Jvzmuhoxyz24urmbC
- k/jA==
-X-Gm-Message-State: AOJu0YzSC/rIx66NaOTEO4rYfcMAM4oj+qdmf7EKWfmMJpRLvX9RIWhy
- lCilcjmXjInHtjpyDzN6QzGagX5Nxnms4NAhN+g=
-X-Google-Smtp-Source: AGHT+IFLXdRwYmZs+cGI+cKOCWyZAGn2exvQPK0v3L5yuo2DPZhAP3dlRGlI362n59xOP7cDvAzMPoRg0ATIFkp17Ic=
-X-Received: by 2002:a05:622a:c7:b0:410:9111:4a0b with SMTP id
- p7-20020a05622a00c700b0041091114a0bmr6847140qtw.13.1692604755779; Mon, 21 Aug
- 2023 00:59:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qXzr2-0006lD-7R
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:01:40 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qXzqy-0003zK-N3
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:01:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=jnFdpoNDQlz6IgELDzeUSGqF7KpvO1p/79AFq+GeOE0=; b=Fblp1cDgoWWllu+BjJrHjBfLli
+ wKzzIBp+T2x2Dx34jrtvwCpsZL0btTP7uVRXbpsni3eaX4joDnjPhCq4jNnuOkCey7qoUuIwF/M1+
+ I5tzUM6d2tK1wweEqrbOB5zgNE+L1DksPRg5MP3Gz4yoRRjXCuFgcSaAE8kml8yev2A8hvo25Vu4a
+ kjg5T/yqChEoOE/1FFUS7hlagwWVElDYLA/lJN681vtn+UnPYiB09l5tTFaJLpPoptm2thUwXAZkI
+ RekZDxgEQPnjMZGJU/i1S1JcBGVbu/POhERHwFYw5lmJp3JcS3M0p8HkCFSHatKDzTYBdyOiMeaMn
+ O4o6r/49PqjByzv5Y12+yHG14eH5rfz8oKkzG1sCh1ZZgzL5uL7jcXdp7Frf7gHJKFnd4L9FxwuLm
+ it+Bct+4C1ZT0jDc0e39MVOdy9zTHGyezwYoLz1/O6EAddF0FS2k4RqhcoNOl7yxyXgYF0WWgikCk
+ AEH5Lxu8NoXvn2kVOUxWBfWf40LX19AAifm5saerFO9x5xpVpybXbHJan5bi8O8Pi9rfCrIsehm/z
+ /bX4RfCnZgc7iHfNkVsf2yrSaE1hjpAWUMCenCDfZvZh224kmmlutbIxi8wmSD2xhjoENL6Vb/aFM
+ 9nomZ6L5g+wSZaat6XKQEL1pHOQ4J3MwloOHGnDf0=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 1/2] audio/jackaudio: Avoid dynamic stack allocation in
+ qjack_client_init
+Date: Mon, 21 Aug 2023 10:01:32 +0200
+Message-ID: <3689052.BXi5odulOJ@silver>
+In-Reply-To: <20230818155846.1651287-2-peter.maydell@linaro.org>
+References: <20230818155846.1651287-1-peter.maydell@linaro.org>
+ <20230818155846.1651287-2-peter.maydell@linaro.org>
 MIME-Version: 1.0
-References: <20230818151057.1541189-1-peter.maydell@linaro.org>
- <20230818151057.1541189-3-peter.maydell@linaro.org>
-In-Reply-To: <20230818151057.1541189-3-peter.maydell@linaro.org>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 21 Aug 2023 11:59:04 +0400
-Message-ID: <CAJ+F1CJ7f-im=McBqrHP=TDWhAoSQV4Sg7h2YXBxcAL9J-TRHg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] ui/vnc-enc-hextile: Use static rather than dynamic
- length stack array
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72f.google.com
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,76 +68,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Fri, Aug 18, 2023 at 7:11=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> In the send_hextile_tile_* function we create a variable length array
-> data[].  In fact we know that the client_pf.bytes_per_pixel is at
-> most 4 (enforced by set_pixel_format()), so we can make the array a
-> compile-time fixed length of 1536 bytes.
->
+On Friday, August 18, 2023 5:58:45 PM CEST Peter Maydell wrote:
+> Avoid a dynamic stack allocation in qjack_client_init(), by using
+> a g_autofree heap allocation instead.
+> 
+> (We stick with allocate + snprintf() because the JACK API requires
+> the name to be no more than its maximum size, so g_strdup_printf()
+> would require an extra truncation step.)
+> 
 > The codebase has very few VLAs, and if we can get rid of them all we
 > can make the compiler error on new additions.  This is a defensive
 > measure against security bugs where an on-stack dynamic allocation
 > isn't correctly size-checked (e.g.  CVE-2021-3527).
->
+
+Sounds good, what compiler flag will that be?
+
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  ui/vnc-enc-hextile-template.h | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/ui/vnc-enc-hextile-template.h b/ui/vnc-enc-hextile-template.=
-h
-> index 0c56262afff..283c0eaefaf 100644
-> --- a/ui/vnc-enc-hextile-template.h
-> +++ b/ui/vnc-enc-hextile-template.h
-> @@ -7,6 +7,8 @@
->  #define NAME BPP
->  #endif
->
-> +#define MAX_CLIENT_BPP 4
-> +
+>  audio/jackaudio.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/audio/jackaudio.c b/audio/jackaudio.c
+> index 5bdf3d7a78d..7cb2a49f971 100644
+> --- a/audio/jackaudio.c
+> +++ b/audio/jackaudio.c
+> @@ -400,7 +400,8 @@ static void qjack_client_connect_ports(QJackClient *c)
+>  static int qjack_client_init(QJackClient *c)
+>  {
+>      jack_status_t status;
+> -    char client_name[jack_client_name_size()];
+> +    int client_name_len = jack_client_name_size(); /* includes NUL */
 
-BPP is more often used to mean bits per pixel. Do you mind renaming
-MAX_BYTES_PER_PIXEL ?
+I would add `const` here.
 
+> +    g_autofree char *client_name = g_new(char, client_name_len);
+>      jack_options_t options = JackNullOption;
+>  
+>      if (c->state == QJACK_STATE_RUNNING) {
+> @@ -409,7 +410,7 @@ static int qjack_client_init(QJackClient *c)
+>  
+>      c->connect_ports = true;
+>  
+> -    snprintf(client_name, sizeof(client_name), "%s-%s",
+> +    snprintf(client_name, client_name_len, "%s-%s",
+>          c->out ? "out" : "in",
+>          c->opt->client_name ? c->opt->client_name : audio_application_name());
 
->  static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
->                                               int x, int y, int w, int h,
->                                               void *last_bg_,
-> @@ -25,10 +27,13 @@ static void CONCAT(send_hextile_tile_, NAME)(VncState=
- *vs,
->      int bg_count =3D 0;
->      int fg_count =3D 0;
->      int flags =3D 0;
-> -    uint8_t data[(vs->client_pf.bytes_per_pixel + 2) * 16 * 16];
-> +    uint8_t data[(MAX_CLIENT_BPP + 2) * 16 * 16];
->      int n_data =3D 0;
->      int n_subtiles =3D 0;
->
-> +    /* Enforced by set_pixel_format() */
-> +    assert(vs->client_pf.bytes_per_pixel <=3D MAX_CLIENT_BPP);
-> +
->      for (j =3D 0; j < h; j++) {
->          for (i =3D 0; i < w; i++) {
->              switch (n_colors) {
-> @@ -205,6 +210,7 @@ static void CONCAT(send_hextile_tile_, NAME)(VncState=
- *vs,
->      }
->  }
->
-> +#undef MAX_CLIENT_BPP
->  #undef NAME
->  #undef pixel_t
->  #undef CONCAT_I
-> --
-> 2.34.1
->
->
+Unrelated, but this could be shortened by Elvis operator BTW:
+
+    c->opt->client_name ?: audio_application_name()
+
+Anyway:
+
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+
+Best regards,
+Christian Schoenebeck
 
 
---=20
-Marc-Andr=C3=A9 Lureau
 
