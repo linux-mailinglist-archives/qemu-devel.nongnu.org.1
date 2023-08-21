@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B21D782204
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 05:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9228478220E
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 05:59:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXvoj-0006wV-P7; Sun, 20 Aug 2023 23:43:01 -0400
+	id 1qXw37-00006i-Mf; Sun, 20 Aug 2023 23:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXvoh-0006w8-2g
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 23:42:59 -0400
-Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qXw34-00006P-BL
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 23:57:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXvoe-0000YM-2l
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 23:42:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1692589373; bh=0GNawiVWwtkaxabFIF47FaOCTMJLp1JkCAvK/oNe2io=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=LY/Ke0iwFMx3hFZdJYGhl7Id/NF7ITR02hAppo0a2ybfoqkb7MVoWv9bI4WW2qMnE
- +YAYXkjBFprokX41FTI1T5Sj8yEi7PBT2s7/WWYMZGEN0ScyWTiu3FaURQr3Ne6eD8
- iu4jcMtYkgMdAtVBM40DRTWQmLPPjf+LnokzovYYNxPMwD35sKYEAZR28Nh8INMkGa
- SDgBUdPE3DbtF7INXMbAsRUNR5dpXu/kCW4IyNpfd7kUF8oEJrHNJJtRfak120JUhX
- PvMBB74MuUPt+YPce9iyCo8DYUYDT+cdz5CQEAzmkOs/+zWUvq0xu3xxHhr1sIsyJt
- CBGAR+YuamDvg==
-Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id 7F8D93F20FF0;
- Sun, 20 Aug 2023 20:42:53 -0700 (PDT)
-X-Virus-Scanned: Debian amavis at keithp.com
-Received: from elaine.keithp.com ([127.0.0.1])
- by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id kS4kd5P4wNRb; Sun, 20 Aug 2023 20:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1692589372; bh=0GNawiVWwtkaxabFIF47FaOCTMJLp1JkCAvK/oNe2io=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=GLrLUPXxQFeccwaBCSaHA/jqIUxeWYZoj7lEir1XNjh/kC0Fx04uzQCHKlspih73r
- fi7Rp/DlWiOOQc4XxH+lljZbgPtI8gwOXQcNtioT5H0pbELRB1YGR5dCSjuQS5QTgh
- GjYmdldg0mhl85Tu5Bx2KOTNz5+ZfNEflbVdAnzza+v4nOrUORrN3xC3yBIN8KNb9U
- nTqMQJByDOE750HGY8usKK0W5srIeyI+d7aRW2HnWr5qY494T+gv0QMqnSyI/QVS/k
- nddGbfwEVjoabqnEI5jtcMq24hBdLFjeF4cQlYLkZNM/F/Z2sZKOWLoVBB+AnfYpup
- 9DWcwzhDYdcyg==
-Received: from keithp.com (unknown [98.97.112.104])
- by elaine.keithp.com (Postfix) with ESMTPSA id 82A213F20D83;
- Sun, 20 Aug 2023 20:42:52 -0700 (PDT)
-Received: by keithp.com (Postfix, from userid 1000)
- id A52D91E601E7; Sun, 20 Aug 2023 20:42:52 -0700 (PDT)
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] softfloat: Handle m68k extended precision denormals
- properly
-In-Reply-To: <420b8a0d-4a36-ff07-e95c-fff3b980d1c2@linaro.org>
-References: <20230821003237.376935-1-richard.henderson@linaro.org>
- <877cppkx0r.fsf@keithp.com>
- <420b8a0d-4a36-ff07-e95c-fff3b980d1c2@linaro.org>
-Date: Sun, 20 Aug 2023 20:42:52 -0700
-Message-ID: <874jktkqmb.fsf@keithp.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qXw31-0003O2-Fk
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 23:57:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692590265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=88zEsS7uE4I5YDu2doVi9ZHb8DvbVjaLkKPSA2oJ7dk=;
+ b=KUVBs/qhQKnUnLqp314JjNSyhA/bMRXcqiMNE+uVBSlDAviSEnk1go4tffpk/wviw+rt2S
+ sNq9FoPyshPllG5qsUVAT3WXc2FKxYp+mRfg62YXz71b4n+qs5l8wVp9YU++tTbNeV/B1D
+ LUpP+9aKHTrmVI2t7nnTQBcqLNM716g=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-298-Lh3trF0ZOt-Y-JAnrYwt6w-1; Sun, 20 Aug 2023 23:57:41 -0400
+X-MC-Unique: Lh3trF0ZOt-Y-JAnrYwt6w-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b8405aace3so29745901fa.3
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 20:57:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692590260; x=1693195060;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=88zEsS7uE4I5YDu2doVi9ZHb8DvbVjaLkKPSA2oJ7dk=;
+ b=BmvjSDYTTU6GSZF3dXgvtlJ5Cw4WfW9qd9d1WYoD0wvQ7/WyrwGFqEKCi7ObBmBQO2
+ opBU1gweUdtbdad++lIV0qqQNcX+iXE/gjFW1J2jkdyo5fFBmuE2N4NUVhoJtA6Q7a8/
+ jC59+LsQbUu1yRy030LCoojgtnxT8HYmnwYntUicrqOr0Luh+BPvjp72k7cFNaKc8UxA
+ MU6B+FT2SjtF7HNnHlc2UK+IPGatJKnWHSDfHIKVVgWG90w51+VRJvdvUFWkUgwjC7QV
+ 0ZfoN4C5Kfgy6JvCvOShyeSQepqu2oh0syR3ozqFeh0Zoq/91w60ipmz5WYsDzvVtkeq
+ 8tLg==
+X-Gm-Message-State: AOJu0Yx/7gIlczZ5KBEEiJtWLbtw+Dat/1g3CmbMaL5HMORbV46PBYbO
+ pFS6QkksaO3epe8iut/RfuYBwku4JltDEPhCGmXDPLRsw0EQPIeIv7J9l1HEoODDVWj9dKAyIYS
+ cCeJxuHl2Qc9uWfy3bQ/AZ8f+sOnNVh4=
+X-Received: by 2002:a2e:980f:0:b0:2b9:ea6b:64b with SMTP id
+ a15-20020a2e980f000000b002b9ea6b064bmr3637286ljj.37.1692590260322; 
+ Sun, 20 Aug 2023 20:57:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKPaaoiMFoKHTqrfHm6CmaxlvNd1FgKbxGssZ7EiEokQo6h62e24RMXCj9wDQRi0ueb+aNYJ89Ndl2uFBGfbo=
+X-Received: by 2002:a2e:980f:0:b0:2b9:ea6b:64b with SMTP id
+ a15-20020a2e980f000000b002b9ea6b064bmr3637272ljj.37.1692590259974; Sun, 20
+ Aug 2023 20:57:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
- helo=elaine.keithp.com
+References: <20230802204125.33688-1-andrew@daynix.com>
+ <20230802204125.33688-2-andrew@daynix.com>
+ <CACGkMEshvbR3kK+NWqHqDZBkDNLHkWPtxTPE-hVhtaSzAeBvcA@mail.gmail.com>
+ <CABcq3pESApSkzCngEW4JUmtbx2bpiRzeo928fSaVkk50JRrd9g@mail.gmail.com>
+ <CACGkMEviH+GXBvsbzsR3PU76XbXA4=tMg2dGBtc5PGs935ci7w@mail.gmail.com>
+ <CABcq3pEesaCErpS2Z+FfP6Ac0xEmGZ5HfR2hKBL=0gZhKEqUbw@mail.gmail.com>
+ <CACGkMEu8HVxc9QjVU+vTOAiH4oAUG87q7kHGqbk1Hkv+VRNZ7Q@mail.gmail.com>
+ <CABcq3pE5fJC7hqD2q3O9WmPGHJhp5Gs0bC=icoHaRD7uBGo9oQ@mail.gmail.com>
+In-Reply-To: <CABcq3pE5fJC7hqD2q3O9WmPGHJhp5Gs0bC=icoHaRD7uBGo9oQ@mail.gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 21 Aug 2023 11:57:29 +0800
+Message-ID: <CACGkMEt6kF8TgV41Nhj_GdzQqKb_T1AWLse+XwXrZVj9AAR-qQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/5] ebpf: Added eBPF map update through mmap.
+To: Andrew Melnichenko <andrew@daynix.com>
+Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, berrange@redhat.com, 
+ qemu-devel@nongnu.org, yuri.benditovich@daynix.com, yan@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,46 +98,426 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Keith Packard <keithp@keithp.com>
-From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Fri, Aug 18, 2023 at 10:08=E2=80=AFAM Andrew Melnichenko <andrew@daynix.=
+com> wrote:
+>
+> Hi all,
+>
+> On Wed, Aug 16, 2023 at 4:16=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
+wrote:
+> >
+> > On Mon, Aug 14, 2023 at 4:36=E2=80=AFPM Andrew Melnichenko <andrew@dayn=
+ix.com> wrote:
+> > >
+> > > Hi, all.
+> > >
+> > > I've researched an issue a bit. And what can we do?
+> > > In the case of an "old" kernel 5.4, we need to load RSS eBPF without
+> > > BPF_F_MAPPABLE
+> > > and use bpf syscall to update the maps. This requires additional capa=
+bilities,
+> > > and the libvirtd will never give any capabilities to Qemu.
+> > > So, the only case for "fallback" is running Qemu manually with
+> > > capabilities(or with root) on kernel 5.4.
+> > >
+> > > We can add hack/fallback to RSS ebpf loading routine with additional
+> > > checks and modify for BPF_F_MAPPABLE.
+> > > And we can add a fallback for mmap/syscall ebpf access.
+> > >
+> > > The problem is that we need kernel 5.5 with BPF_F_MAPPABLE in headers
+> > > to compile Qemu with fallback,
+> > > or move macro to the Qemu headers.
+> > >
+> > > It can be implemented something like this:
+> > > RSS eBPF open/load:
+> > >  * open the skeleton.
+> > >  * load the skeleton as is - it would fail because of an unknown BPF_=
+F_MAPPABLE.
+> > >  * hack/modify map_flags for skeleton and try to reload.
+> > > RSS eBPF map update(this is straightforward):
+> > >  * check the mem pointer if null, use bpf syscall
+> > >
+> > > The advantage of hacks in Qemu is that we are aware of the eBPF conte=
+xt.
+> > > I suggest creating different series of patches that would implement
+> > > the hack/fallback,
+> > > If we really want to support eBPF on old kernels.
+> >
+> > So I think the simplest way is to disable eBPF RSS support on old
+> > kernels? (e.g during the configure)
+> >
+> > Thanks
+>
+> I think it's possible to check BPF_F_MAPPABLE flag during configuration.
+> The absence of this flag would indicate that the kernel probably is
+> old on the build machine.
+>
+> It wouldn't solve the issue with a "new" environment and old
+> kernel(g.e. fallback kernel).
 
+eBPF RSS support will just be disabled, this seems to be fine.
 
-> That does look like a correct change.  I'll fold it in.
-> Please let us know if you encounter anything else.
+> Or "old" environment and new kernel(g.e. self-build one).
 
-Thanks so much. With these fixes, all of my long double math library
-tests in picolibc are passing now (once I fixed a bunch of additional
-m68k-denorm related math library bugs). That includes the fmal tests I
-mentioned, which check all four rounding modes across a fairly extensive
-set of inputs.
+I don't see what's the issue in this case.
 
-=2D-=20
-=2Dkeith
+> Also, the environment on the build maintainer's machine and end-up
+> system may be different
+> (assuming that the build machine is always up to date).
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+Yes, but this "issue" is not specific to RSS eBPF?
 
------BEGIN PGP SIGNATURE-----
+> On the other hand, there is already a fallback to "in-qemu" RSS if eBPF f=
+ails.
 
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmTi3TwACgkQ2yIaaQAA
-ABH6eBAAqBvz/D0jjjTkBq2Ntjq9XawF1W4yNvj1vF4d3CAEXNTsttXyjVem7hUu
-ZvCCe7oG34m18EVsidY5Z0ZasC1IcnskvtRUHYtHY9Rpmv1we0x61UZpzcg4jm2R
-my3zaWsn4vSEhQeN1E0CSN606p1K36pj+7YZ4kjxwADY2lHZqUV0ftqj7UIIO4pC
-JOx3rH4Q0j4niVS5ljMxo7yrjfHzCECGT8UlGzB5eJbBMnVOnAI1YFm+zYuQMOpU
-O4XJVqmSk+E1XGzuY3rkuaHT0+KFT7vmIt+bOTIZHKwkongf8jVxKauS6mMDSJRr
-h1RD0Gd9nL6hnBFOREcICHA7TKI6MZWqNBX7E1EOwudX4+U48yEFjvkJc3VpXb++
-b/gj83eZglF22N72F27PCkj3vIyvXLKCc+dgZ/m8Rct2sUNI/9mlK3MhLefN/02V
-mPY3UDrw/uO0W0cjvLDol0Ky7QjB5VX2O+Fr373hvMEDSz9vc5T6sYLtnr2eIUxc
-3OVWS5pLXdu3af03NwNMfUm6ZoJAg0VFbD8UJisM09Otx1hEuyH+AMu6cHt+W2sB
-Kfwrjc4JTW5aFDYae72KMSCJA+u6DbtuqBZwAZvJdA8ro7Yb3sNxuAVYYyZrc4QO
-CNOwR5FAz+d1bWBP373T5utFq2NKFiUWxzmCt0RziEnbzBK5Rdw=
-=wXbL
------END PGP SIGNATURE-----
---=-=-=--
+I see, but the question is what's the implication for the mgmt layer
+e.g libvirt in this case?
+
+Thanks
+
+>
+> If it requires, we can add the check, I don't see that it solves much
+> without hack.
+> It will be required if we add mmap/syscall hack for element update.
+>
+> >
+> > >
+> > > On Wed, Aug 9, 2023 at 5:21=E2=80=AFAM Jason Wang <jasowang@redhat.co=
+m> wrote:
+> > > >
+> > > > On Wed, Aug 9, 2023 at 7:15=E2=80=AFAM Andrew Melnichenko <andrew@d=
+aynix.com> wrote:
+> > > > >
+> > > > > Hi all,
+> > > > >
+> > > > > On Tue, Aug 8, 2023 at 5:39=E2=80=AFAM Jason Wang <jasowang@redha=
+t.com> wrote:
+> > > > > >
+> > > > > > On Thu, Aug 3, 2023 at 5:01=E2=80=AFAM Andrew Melnychenko <andr=
+ew@daynix.com> wrote:
+> > > > > > >
+> > > > > > > Changed eBPF map updates through mmaped array.
+> > > > > > > Mmaped arrays provide direct access to map data.
+> > > > > > > It should omit using bpf_map_update_elem() call,
+> > > > > > > which may require capabilities that are not present.
+> > > > > > >
+> > > > > > > Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> > > > > > > ---
+> > > > > > >  ebpf/ebpf_rss.c | 117 ++++++++++++++++++++++++++++++++++++++=
+----------
+> > > > > > >  ebpf/ebpf_rss.h |   5 +++
+> > > > > > >  2 files changed, 99 insertions(+), 23 deletions(-)
+> > > > > > >
+> > > > > > > diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+> > > > > > > index cee658c158b..247f5eee1b6 100644
+> > > > > > > --- a/ebpf/ebpf_rss.c
+> > > > > > > +++ b/ebpf/ebpf_rss.c
+> > > > > > > @@ -27,19 +27,83 @@ void ebpf_rss_init(struct EBPFRSSContext =
+*ctx)
+> > > > > > >  {
+> > > > > > >      if (ctx !=3D NULL) {
+> > > > > > >          ctx->obj =3D NULL;
+> > > > > > > +        ctx->program_fd =3D -1;
+> > > > > > > +        ctx->map_configuration =3D -1;
+> > > > > > > +        ctx->map_toeplitz_key =3D -1;
+> > > > > > > +        ctx->map_indirections_table =3D -1;
+> > > > > > > +
+> > > > > > > +        ctx->mmap_configuration =3D NULL;
+> > > > > > > +        ctx->mmap_toeplitz_key =3D NULL;
+> > > > > > > +        ctx->mmap_indirections_table =3D NULL;
+> > > > > > >      }
+> > > > > > >  }
+> > > > > > >
+> > > > > > >  bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx)
+> > > > > > >  {
+> > > > > > > -    return ctx !=3D NULL && ctx->obj !=3D NULL;
+> > > > > > > +    return ctx !=3D NULL && (ctx->obj !=3D NULL || ctx->prog=
+ram_fd !=3D -1);
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
+> > > > > > > +{
+> > > > > > > +    if (!ebpf_rss_is_loaded(ctx)) {
+> > > > > > > +        return false;
+> > > > > > > +    }
+> > > > > > > +
+> > > > > > > +    ctx->mmap_configuration =3D mmap(NULL, qemu_real_host_pa=
+ge_size(),
+> > > > > > > +                                   PROT_READ | PROT_WRITE, M=
+AP_SHARED,
+> > > > > > > +                                   ctx->map_configuration, 0=
+);
+> > > > > > > +    if (ctx->mmap_configuration =3D=3D MAP_FAILED) {
+> > > > > > > +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF conf=
+iguration array");
+> > > > > > > +        return false;
+> > > > > > > +    }
+> > > > > > > +    ctx->mmap_toeplitz_key =3D mmap(NULL, qemu_real_host_pag=
+e_size(),
+> > > > > > > +                                   PROT_READ | PROT_WRITE, M=
+AP_SHARED,
+> > > > > > > +                                   ctx->map_toeplitz_key, 0)=
+;
+> > > > > > > +    if (ctx->mmap_toeplitz_key =3D=3D MAP_FAILED) {
+> > > > > > > +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF toep=
+litz key");
+> > > > > > > +        goto toeplitz_fail;
+> > > > > > > +    }
+> > > > > > > +    ctx->mmap_indirections_table =3D mmap(NULL, qemu_real_ho=
+st_page_size(),
+> > > > > > > +                                   PROT_READ | PROT_WRITE, M=
+AP_SHARED,
+> > > > > > > +                                   ctx->map_indirections_tab=
+le, 0);
+> > > > > > > +    if (ctx->mmap_indirections_table =3D=3D MAP_FAILED) {
+> > > > > > > +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF indi=
+rection table");
+> > > > > > > +        goto indirection_fail;
+> > > > > > > +    }
+> > > > > > > +
+> > > > > > > +    return true;
+> > > > > > > +
+> > > > > > > +indirection_fail:
+> > > > > > > +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size(=
+));
+> > > > > > > +toeplitz_fail:
+> > > > > > > +    munmap(ctx->mmap_configuration, qemu_real_host_page_size=
+());
+> > > > > > > +
+> > > > > > > +    ctx->mmap_configuration =3D NULL;
+> > > > > > > +    ctx->mmap_toeplitz_key =3D NULL;
+> > > > > > > +    ctx->mmap_indirections_table =3D NULL;
+> > > > > > > +    return false;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +static void ebpf_rss_munmap(struct EBPFRSSContext *ctx)
+> > > > > > > +{
+> > > > > > > +    if (!ebpf_rss_is_loaded(ctx)) {
+> > > > > > > +        return;
+> > > > > > > +    }
+> > > > > > > +
+> > > > > > > +    munmap(ctx->mmap_indirections_table, qemu_real_host_page=
+_size());
+> > > > > > > +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size(=
+));
+> > > > > > > +    munmap(ctx->mmap_configuration, qemu_real_host_page_size=
+());
+> > > > > > > +
+> > > > > > > +    ctx->mmap_configuration =3D NULL;
+> > > > > > > +    ctx->mmap_toeplitz_key =3D NULL;
+> > > > > > > +    ctx->mmap_indirections_table =3D NULL;
+> > > > > > >  }
+> > > > > > >
+> > > > > > >  bool ebpf_rss_load(struct EBPFRSSContext *ctx)
+> > > > > > >  {
+> > > > > > >      struct rss_bpf *rss_bpf_ctx;
+> > > > > > >
+> > > > > > > -    if (ctx =3D=3D NULL) {
+> > > > > > > +    if (ctx =3D=3D NULL || ebpf_rss_is_loaded(ctx)) {
+> > > > > > >          return false;
+> > > > > > >      }
+> > > > > > >
+> > > > > > > @@ -66,10 +130,18 @@ bool ebpf_rss_load(struct EBPFRSSContext=
+ *ctx)
+> > > > > > >      ctx->map_toeplitz_key =3D bpf_map__fd(
+> > > > > > >              rss_bpf_ctx->maps.tap_rss_map_toeplitz_key);
+> > > > > > >
+> > > > > > > +    if (!ebpf_rss_mmap(ctx)) {
+> > > > > > > +        goto error;
+> > > > > > > +    }
+> > > > > > > +
+> > > > > > >      return true;
+> > > > > > >  error:
+> > > > > > >      rss_bpf__destroy(rss_bpf_ctx);
+> > > > > > >      ctx->obj =3D NULL;
+> > > > > > > +    ctx->program_fd =3D -1;
+> > > > > > > +    ctx->map_configuration =3D -1;
+> > > > > > > +    ctx->map_toeplitz_key =3D -1;
+> > > > > > > +    ctx->map_indirections_table =3D -1;
+> > > > > > >
+> > > > > > >      return false;
+> > > > > > >  }
+> > > > > > > @@ -77,15 +149,11 @@ error:
+> > > > > > >  static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
+> > > > > > >                                  struct EBPFRSSConfig *config=
+)
+> > > > > > >  {
+> > > > > > > -    uint32_t map_key =3D 0;
+> > > > > > > -
+> > > > > > >      if (!ebpf_rss_is_loaded(ctx)) {
+> > > > > > >          return false;
+> > > > > > >      }
+> > > > > > > -    if (bpf_map_update_elem(ctx->map_configuration,
+> > > > > > > -                            &map_key, config, 0) < 0) {
+> > > > > > > -        return false;
+> > > > > > > -    }
+> > > > > > > +
+> > > > > > > +    memcpy(ctx->mmap_configuration, config, sizeof(*config))=
+;
+> > > > > > >      return true;
+> > > > > > >  }
+> > > > > > >
+> > > > > > > @@ -93,27 +161,19 @@ static bool ebpf_rss_set_indirections_ta=
+ble(struct EBPFRSSContext *ctx,
+> > > > > > >                                              uint16_t *indire=
+ctions_table,
+> > > > > > >                                              size_t len)
+> > > > > > >  {
+> > > > > > > -    uint32_t i =3D 0;
+> > > > > > > -
+> > > > > > >      if (!ebpf_rss_is_loaded(ctx) || indirections_table =3D=
+=3D NULL ||
+> > > > > > >         len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
+> > > > > > >          return false;
+> > > > > > >      }
+> > > > > > >
+> > > > > > > -    for (; i < len; ++i) {
+> > > > > > > -        if (bpf_map_update_elem(ctx->map_indirections_table,=
+ &i,
+> > > > > > > -                                indirections_table + i, 0) <=
+ 0) {
+> > > > > > > -            return false;
+> > > > > > > -        }
+> > > > > > > -    }
+> > > > > > > +    memcpy(ctx->mmap_indirections_table, indirections_table,
+> > > > > > > +            sizeof(*indirections_table) * len);
+> > > > > >
+> > > > > > As discussed, should we stick the compatibility on the host wit=
+hout
+> > > > > > bpf mmap support?
+> > > > > >
+> > > > > > If we don't, we need at least probe BPF mmap and disable ebpf r=
+ss? If
+> > > > > > yes, we should track if the map is mmaped and switch between me=
+mcpy
+> > > > > > and syscall.
+> > > > > >
+> > > > > > Thanks
+> > > > >
+> > > > > I've made some tests.
+> > > > > I've checked eBPF program on kernels 5.4, 5.5, and 6.3 with libbp=
+f
+> > > > > 1.0.1, 1.1.0, and last 1.2.0.
+> > > >
+> > > > It looks to me we don't check the libbpf version now. Do we need to=
+ do
+> > > > that (e.g the bpf mmap support for libbpf is not supported from the
+> > > > start).
+> > > >
+> > > > > Overall, eBPF program requires explicit declaration of BPF_F_MAPP=
+ABLE map_flags.
+> > > > > Without this flag, the program can be loaded on every tested
+> > > > > kernel/libbpf configuration but Qemu can't mmap() the eBPF
+> > > > > fds(obviously).
+> > > >
+> > > > Exactly, and that's why I'm asking whether or not we need to probe =
+mmap here.
+> > > >
+> > > > This is because, without this series, Qemu can work without BPF mma=
+p
+> > > > (but with privilege). And this doesn't work after this series.
+> > > >
+> > > > > Alternative to mmap() is bpf_map_update_elem() syscall/method whi=
+ch
+> > > > > would require capabilities for Qemu.
+> > > >
+> > > > Yes, but that's a different "problem". I think we should keep Qemu
+> > > > work in that setup. (privilege + syscall updating).
+> > > >
+> > > > > With this flag, kernel 5.4 + libbpf can't load eBPF object.
+> > > > > So, compatibility would require 2 different eBPF objects or some =
+kind
+> > > > > of hack, also it would require additional capability for Qemu.
+> > > > > I don't think that we need checks for disabling eBPF RSS. It woul=
+dn't
+> > > > > brake anything on the old kernel and after an update, it should w=
+ork
+> > > > > ok.
+> > > >
+> > > > Even on old kernel + old libbpf without bpf mmap support?
+> > > >
+> > > > Thanks
+> > > >
+> > > > >
+> > > > > >
+> > > > > > >      return true;
+> > > > > > >  }
+> > > > > > >
+> > > > > > >  static bool ebpf_rss_set_toepliz_key(struct EBPFRSSContext *=
+ctx,
+> > > > > > >                                       uint8_t *toeplitz_key)
+> > > > > > >  {
+> > > > > > > -    uint32_t map_key =3D 0;
+> > > > > > > -
+> > > > > > >      /* prepare toeplitz key */
+> > > > > > >      uint8_t toe[VIRTIO_NET_RSS_MAX_KEY_SIZE] =3D {};
+> > > > > > >
+> > > > > > > @@ -123,10 +183,7 @@ static bool ebpf_rss_set_toepliz_key(str=
+uct EBPFRSSContext *ctx,
+> > > > > > >      memcpy(toe, toeplitz_key, VIRTIO_NET_RSS_MAX_KEY_SIZE);
+> > > > > > >      *(uint32_t *)toe =3D ntohl(*(uint32_t *)toe);
+> > > > > > >
+> > > > > > > -    if (bpf_map_update_elem(ctx->map_toeplitz_key, &map_key,=
+ toe,
+> > > > > > > -                            0) < 0) {
+> > > > > > > -        return false;
+> > > > > > > -    }
+> > > > > > > +    memcpy(ctx->mmap_toeplitz_key, toe, VIRTIO_NET_RSS_MAX_K=
+EY_SIZE);
+> > > > > > >      return true;
+> > > > > > >  }
+> > > > > > >
+> > > > > > > @@ -160,6 +217,20 @@ void ebpf_rss_unload(struct EBPFRSSConte=
+xt *ctx)
+> > > > > > >          return;
+> > > > > > >      }
+> > > > > > >
+> > > > > > > -    rss_bpf__destroy(ctx->obj);
+> > > > > > > +    ebpf_rss_munmap(ctx);
+> > > > > > > +
+> > > > > > > +    if (ctx->obj) {
+> > > > > > > +        rss_bpf__destroy(ctx->obj);
+> > > > > > > +    } else {
+> > > > > > > +        close(ctx->program_fd);
+> > > > > > > +        close(ctx->map_configuration);
+> > > > > > > +        close(ctx->map_toeplitz_key);
+> > > > > > > +        close(ctx->map_indirections_table);
+> > > > > > > +    }
+> > > > > > > +
+> > > > > > >      ctx->obj =3D NULL;
+> > > > > > > +    ctx->program_fd =3D -1;
+> > > > > > > +    ctx->map_configuration =3D -1;
+> > > > > > > +    ctx->map_toeplitz_key =3D -1;
+> > > > > > > +    ctx->map_indirections_table =3D -1;
+> > > > > > >  }
+> > > > > > > diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
+> > > > > > > index bf3f2572c7c..ab08a7266d0 100644
+> > > > > > > --- a/ebpf/ebpf_rss.h
+> > > > > > > +++ b/ebpf/ebpf_rss.h
+> > > > > > > @@ -20,6 +20,11 @@ struct EBPFRSSContext {
+> > > > > > >      int map_configuration;
+> > > > > > >      int map_toeplitz_key;
+> > > > > > >      int map_indirections_table;
+> > > > > > > +
+> > > > > > > +    /* mapped eBPF maps for direct access to omit bpf_map_up=
+date_elem() */
+> > > > > > > +    void *mmap_configuration;
+> > > > > > > +    void *mmap_toeplitz_key;
+> > > > > > > +    void *mmap_indirections_table;
+> > > > > > >  };
+> > > > > > >
+> > > > > > >  struct EBPFRSSConfig {
+> > > > > > > --
+> > > > > > > 2.41.0
+> > > > > > >
+> > > > > >
+> > > > >
+> > > >
+> > >
+> >
+>
+
 
