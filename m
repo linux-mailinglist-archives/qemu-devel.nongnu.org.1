@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD89782E21
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 18:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B01A6782E3C
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 18:19:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY7ZT-0000SK-NH; Mon, 21 Aug 2023 12:16:03 -0400
+	id 1qY7cM-0001Sn-9q; Mon, 21 Aug 2023 12:19:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qY7ZR-0000S4-RO
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:16:01 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qY7cJ-0001SQ-L8
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:18:59 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qY7ZB-000570-Jh
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:16:01 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2b9a2033978so55932971fa.0
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 09:15:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qY7cG-0005b2-UC
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:18:59 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1bf078d5fb7so21515775ad.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 09:18:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1692634543; x=1693239343;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nbaqsHhWhvbRUY2T7mkaRH3NtXhUGBcWkaATiI983q4=;
- b=lAgRyGotU6p9QI8LrUJL2G87imHRZQQgX3N93WoGlytmZdZAD8Vhex7hIg3R1XHdbz
- 9iRvBA9CtSSKR3K6Z56zIceeH6Fe08hL0OcimYVNajIQ7NZA3BaddD2Vjy0aVqXnInbD
- tLF4igc8SrEq1XF8MwkgVIuJ7pTBWtmxCmTohhsm/UnBgdHk7NOLXYApNdpxPaCbzcNN
- FnZWGiI2RY9eVG1SyMSgh3IAj/PlFb7c2TGHPpx+Dkb1D+pHybjG7sdAbd+tGu/AIkDi
- pEzAos3m7TttEiWJMQdrn/x7NAzubTITa3Fs896VvkibAv+skZGaOyzj4injwnzniyOb
- rU5A==
+ d=linaro.org; s=google; t=1692634735; x=1693239535;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=OHMiMwBHsslwu2UbA08PFYRV0Sj70L/ui0QUiOTJCFY=;
+ b=qgCrXprWvLh8adPiHHIlcFHUJIWONDqKL/mPesdkxqYFFj1TPWQJlZmpKJLrvfDHmH
+ WBrDat8NSLhNekJxvcphIa9ToqLWcTjMlju8GnNq+6chUHX7ewei+1SeL6dPMCarICMU
+ q6gVoX9kcqeTgURTzuS/PhDlaM01GczfYzcz/Qxm6rRHaiic8sRw6wdciB14QdEm8bvb
+ AvvwQgGloiwY6VxuUAi38OCHsKafStatk1DuZnovxihQeuA0zUWYUbxA8oZP9wfaIzxQ
+ tqbJggl0h+/Ah9uNc3RNmUlVx7cMyKmCFXISGqBme8tdKPcDsyOjjjYMEJvqRxPdPFmk
+ ypug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692634543; x=1693239343;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1692634735; x=1693239535;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nbaqsHhWhvbRUY2T7mkaRH3NtXhUGBcWkaATiI983q4=;
- b=hT/ONqWEdksk1Zbm8IIsWq8pGMWir9G60OFzYdtWXC/Seq49X3a6xhCVddux3stzkX
- SH9xEI6fWlHgmcql7fDscj/2Sh4WumVUTDpYm75/iSFAWo/EUKzXvh0gamoiSp1XPgTn
- /sHplpO6lY6LewB7UKDH4O0CVqO1Br9OOBwr90ZoQ8r6mJp5+0g1NazIj5INFD7k4OrN
- KgXdxw9YJE+3Q0pyyr1BPdHzuaFFxVDVEVQCol00CyaQn9NK25kCEN5ZHeWPuLXcCGy4
- HllxyFG2wZYwgD7/Iz4HeHXKSIzP3uJnCRvBW7MDayXlvn5O+ECooWczs52sN72fUbcR
- eEYA==
-X-Gm-Message-State: AOJu0YzRSazcDdO2Nb4AHEQ9dU3O+Qus1q0PF9u+my1jdXKXJtsdZnI2
- LsDUht2y9nfdo3Xcyvgndd7v9/tMe1D7h7yCNhqAQQ==
-X-Google-Smtp-Source: AGHT+IEy3nRVK4gX/idDFdi1vCZDPKPtGTa1PNCWfWmRHjq3Y3pYaNVIZqjEhDwVC83+ZkAM8Y5rw2Q/T5kN3FtKtGY=
-X-Received: by 2002:a2e:99d4:0:b0:2bc:b9c7:7ba8 with SMTP id
- l20-20020a2e99d4000000b002bcb9c77ba8mr3139171ljj.43.1692634543036; Mon, 21
- Aug 2023 09:15:43 -0700 (PDT)
+ bh=OHMiMwBHsslwu2UbA08PFYRV0Sj70L/ui0QUiOTJCFY=;
+ b=VkVSlNggRJspxBqbZ+713fetg2js4CNszd3/UiytOY7H2oj7FyxNA6AScC3IhXqsLc
+ B0QURQRePdkp/fD3e2v4Lt3Up2fkOvxcXVMSDiPVjgyvyZCipimX2lUN+OKN9mY3G1S9
+ UVfHqTRzv+mYUzD1Ht/QaGB9d02nvBir9CqXkiSn/guLTGOiRsMf5Vq3zP20VGAgBHn7
+ hrqWc9ewAR6V/Q4TirrJC4FLblgNXbmcEQNybBxVGE7KUYV7JlMbkXnH2RIJQpU+VcOO
+ imntWp2RUr3WET8UTE9gz67PMNiOgr9TfAT27KD2IyxvP82MKSW/Ag0u7CJ7ZTPmuOlV
+ 0Mig==
+X-Gm-Message-State: AOJu0YwnJjBKovSHH5HcT1TzhbiDTu9ynlUEgnEVFMe+5153ke/SPm2/
+ rBzlM3vur/pGO8sY/sINMCbd6P5GxZCPlFteJwU=
+X-Google-Smtp-Source: AGHT+IFKJm9teIsf7FzDnw0y9VNqeNS5merQYar3EhRpmxXjoHQeWA/x7K+xm+erhRJZmpwA9ydLJw==
+X-Received: by 2002:a17:903:22c8:b0:1bd:f1a7:8285 with SMTP id
+ y8-20020a17090322c800b001bdf1a78285mr6327673plg.1.1692634735401; 
+ Mon, 21 Aug 2023 09:18:55 -0700 (PDT)
+Received: from stoup.. ([2602:47:d483:7301:2c08:e710:4459:46f1])
+ by smtp.gmail.com with ESMTPSA id
+ e16-20020a17090301d000b001ab2b4105ddsm7234549plh.60.2023.08.21.09.18.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Aug 2023 09:18:55 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com,
+	ardb@kernel.org
+Subject: [PATCH v3 00/19] crypto: Provide clmul.h and host accel
+Date: Mon, 21 Aug 2023 09:18:34 -0700
+Message-Id: <20230821161854.419893-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230728082502.26439-1-jason.chien@sifive.com>
- <20230728082502.26439-2-jason.chien@sifive.com>
- <CAKmqyKMX=Q3+kdaKAJrQHeya7ctnyt0HSt=NUQWUAOj9JEPZ8g@mail.gmail.com>
-In-Reply-To: <CAKmqyKMX=Q3+kdaKAJrQHeya7ctnyt0HSt=NUQWUAOj9JEPZ8g@mail.gmail.com>
-From: Jason Chien <jason.chien@sifive.com>
-Date: Tue, 22 Aug 2023 00:15:31 +0800
-Message-ID: <CADr__8rmCu9F2ktxYGtZfUeD_z+pNVa4KKsZ8XvxxVGmMJfrcw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] hw/intc: Make rtc variable names consistent
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Anup Patel <apatel@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Andrew Jones <ajones@ventanamicro.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Type: multipart/alternative; boundary="000000000000ac44430603713013"
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=jason.chien@sifive.com; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,145 +90,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ac44430603713013
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
+carry-less multiply under emulation.
 
-Ping.
+Changes for v3:
+  * Update target/i386 ops_sse.h.
+  * Apply r-b.
 
-On Fri, Aug 11, 2023 at 2:25=E2=80=AFAM Alistair Francis <alistair23@gmail.=
-com>
-wrote:
+Changes for v2:
+  * Only accelerate clmul_64; keep generic helpers for other sizes.
+  * Drop most of the Int128 interfaces, except for clmul_64.
+  * Use the same acceleration format as aes-round.h.
 
-> On Fri, Jul 28, 2023 at 4:57=E2=80=AFAM Jason Chien <jason.chien@sifive.c=
-om>
-> wrote:
-> >
-> > The variables whose values are given by cpu_riscv_read_rtc() should be
-> named
-> > "rtc". The variables whose value are given by cpu_riscv_read_rtc_raw()
-> > should be named "rtc_r".
-> >
-> > Signed-off-by: Jason Chien <jason.chien@sifive.com>
->
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
->
-> Alistair
->
-> > ---
-> >  hw/intc/riscv_aclint.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-> > index bf77e29a70..25cf7a5d9d 100644
-> > --- a/hw/intc/riscv_aclint.c
-> > +++ b/hw/intc/riscv_aclint.c
-> > @@ -64,13 +64,13 @@ static void
-> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
-> >      uint64_t next;
-> >      uint64_t diff;
-> >
-> > -    uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);
-> > +    uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);
-> >
-> >      /* Compute the relative hartid w.r.t the socket */
-> >      hartid =3D hartid - mtimer->hartid_base;
-> >
-> >      mtimer->timecmp[hartid] =3D value;
-> > -    if (mtimer->timecmp[hartid] <=3D rtc_r) {
-> > +    if (mtimer->timecmp[hartid] <=3D rtc) {
-> >          /*
-> >           * If we're setting an MTIMECMP value in the "past",
-> >           * immediately raise the timer interrupt
-> > @@ -81,7 +81,7 @@ static void
-> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
-> >
-> >      /* otherwise, set up the future timer interrupt */
-> >      qemu_irq_lower(mtimer->timer_irqs[hartid]);
-> > -    diff =3D mtimer->timecmp[hartid] - rtc_r;
-> > +    diff =3D mtimer->timecmp[hartid] - rtc;
-> >      /* back to ns (note args switched in muldiv64) */
-> >      uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PER_SECOND,
-> timebase_freq);
-> >
-> > --
-> > 2.17.1
-> >
-> >
->
 
---000000000000ac44430603713013
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+r~
 
-<div dir=3D"ltr">Ping.</div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
- class=3D"gmail_attr">On Fri, Aug 11, 2023 at 2:25=E2=80=AFAM Alistair Fran=
-cis &lt;<a href=3D"mailto:alistair23@gmail.com">alistair23@gmail.com</a>&gt=
-; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
- 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Fri,=
- Jul 28, 2023 at 4:57=E2=80=AFAM Jason Chien &lt;<a href=3D"mailto:jason.ch=
-ien@sifive.com" target=3D"_blank">jason.chien@sifive.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; The variables whose values are given by cpu_riscv_read_rtc() should be=
- named<br>
-&gt; &quot;rtc&quot;. The variables whose value are given by cpu_riscv_read=
-_rtc_raw()<br>
-&gt; should be named &quot;rtc_r&quot;.<br>
-&gt;<br>
-&gt; Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.co=
-m" target=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
-<br>
-Reviewed-by: Alistair Francis &lt;<a href=3D"mailto:alistair.francis@wdc.co=
-m" target=3D"_blank">alistair.francis@wdc.com</a>&gt;<br>
-<br>
-Alistair<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 hw/intc/riscv_aclint.c | 6 +++---<br>
-&gt;=C2=A0 1 file changed, 3 insertions(+), 3 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c<br>
-&gt; index bf77e29a70..25cf7a5d9d 100644<br>
-&gt; --- a/hw/intc/riscv_aclint.c<br>
-&gt; +++ b/hw/intc/riscv_aclint.c<br>
-&gt; @@ -64,13 +64,13 @@ static void riscv_aclint_mtimer_write_timecmp(RISC=
-VAclintMTimerState *mtimer,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t next;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t diff;<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);<br>
-&gt; +=C2=A0 =C2=A0 uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 /* Compute the relative hartid w.r.t the socket */=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 hartid =3D hartid - mtimer-&gt;hartid_base;<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 mtimer-&gt;timecmp[hartid] =3D value;<br>
-&gt; -=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc_r) {<br>
-&gt; +=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* If we&#39;re setting an MTIM=
-ECMP value in the &quot;past&quot;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* immediately raise the timer =
-interrupt<br>
-&gt; @@ -81,7 +81,7 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVA=
-clintMTimerState *mtimer,<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 /* otherwise, set up the future timer interrupt */=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 qemu_irq_lower(mtimer-&gt;timer_irqs[hartid]);<br>
-&gt; -=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc_r;<br>
-&gt; +=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 /* back to ns (note args switched in muldiv64) */<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PE=
-R_SECOND, timebase_freq);<br>
-&gt;<br>
-&gt; --<br>
-&gt; 2.17.1<br>
-&gt;<br>
-&gt;<br>
-</blockquote></div>
 
---000000000000ac44430603713013--
+[1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
+
+
+Richard Henderson (19):
+  crypto: Add generic 8-bit carry-less multiply routines
+  target/arm: Use clmul_8* routines
+  target/s390x: Use clmul_8* routines
+  target/ppc: Use clmul_8* routines
+  crypto: Add generic 16-bit carry-less multiply routines
+  target/arm: Use clmul_16* routines
+  target/s390x: Use clmul_16* routines
+  target/ppc: Use clmul_16* routines
+  crypto: Add generic 32-bit carry-less multiply routines
+  target/arm: Use clmul_32* routines
+  target/s390x: Use clmul_32* routines
+  target/ppc: Use clmul_32* routines
+  crypto: Add generic 64-bit carry-less multiply routine
+  target/arm: Use clmul_64
+  target/i386: Use clmul_64
+  target/s390x: Use clmul_64
+  target/ppc: Use clmul_64
+  host/include/i386: Implement clmul.h
+  host/include/aarch64: Implement clmul.h
+
+ host/include/aarch64/host/cpuinfo.h      |   1 +
+ host/include/aarch64/host/crypto/clmul.h |  41 +++++
+ host/include/generic/host/crypto/clmul.h |  15 ++
+ host/include/i386/host/cpuinfo.h         |   1 +
+ host/include/i386/host/crypto/clmul.h    |  29 ++++
+ host/include/x86_64/host/crypto/clmul.h  |   1 +
+ include/crypto/clmul.h                   |  83 ++++++++++
+ include/qemu/cpuid.h                     |   3 +
+ target/arm/tcg/vec_internal.h            |  11 --
+ target/i386/ops_sse.h                    |  40 ++---
+ crypto/clmul.c                           | 112 ++++++++++++++
+ target/arm/tcg/mve_helper.c              |  16 +-
+ target/arm/tcg/vec_helper.c              | 102 ++-----------
+ target/ppc/int_helper.c                  |  64 ++++----
+ target/s390x/tcg/vec_int_helper.c        | 186 ++++++++++-------------
+ util/cpuinfo-aarch64.c                   |   4 +-
+ util/cpuinfo-i386.c                      |   1 +
+ crypto/meson.build                       |   9 +-
+ 18 files changed, 434 insertions(+), 285 deletions(-)
+ create mode 100644 host/include/aarch64/host/crypto/clmul.h
+ create mode 100644 host/include/generic/host/crypto/clmul.h
+ create mode 100644 host/include/i386/host/crypto/clmul.h
+ create mode 100644 host/include/x86_64/host/crypto/clmul.h
+ create mode 100644 include/crypto/clmul.h
+ create mode 100644 crypto/clmul.c
+
+-- 
+2.34.1
+
 
