@@ -2,87 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486DD782D60
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 17:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1B7782D74
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 17:46:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY6wO-00046l-AJ; Mon, 21 Aug 2023 11:35:40 -0400
+	id 1qY75e-0007qY-8F; Mon, 21 Aug 2023 11:45:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qY6wM-00046Q-IB
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:35:38 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qY6wJ-0004dB-35
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:35:38 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-56b2e689828so968113a12.1
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 08:35:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692632133; x=1693236933;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=q2l6UNXdtK+jyC/R+QKTInrYGYMkqySzNPx1uNlBl3I=;
- b=J/bt/fkJ55BJbI7pKPh+/Dgq8X/KXu80ORtW19QTtcPMhNqnnBRsBktJjxJROS/MWd
- zfkvwBG9hzCx6EQiVpZOrkpMGUf/r/EC1xg5A8AjZGZIDLBH+RzTd8PK66qxOF1byEps
- HXMF0rnHOZyWMCmBKszM86YVKEFRNcytY7s1REIAdEgFYdSxVvPT0BWzAjpbyshlmWql
- hHHiY+8O1D2FJfbOfHhMbe6x8u5+xmqz5x5ZzNNQh6wCbsg+SbezkRW8PauFsriRTpyF
- Oua8RtGKIln2zsE5F0qIoj1Ui0h5wp59AaQ++uEOMWsYRwL5a5t82/Zr8IR2yTPqUw4R
- BRoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692632133; x=1693236933;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=q2l6UNXdtK+jyC/R+QKTInrYGYMkqySzNPx1uNlBl3I=;
- b=feZy9ZmP5bd+Qm/yd83aDF+QoZKd1uT3plb6+JkGid5rXiYP1Yd0PmYVlmP4BCUftP
- r1UnGf/movJjZ4YRAXn/QaaV8GxVZ/Xh+nZM8UyRnivS6MvnmhAhLXfOH1NZjPWwXPef
- t6qS7Ec3qizrlrl7heeo+8blLBZqvyahRB3uZ5isu8po5reLZXlBDap+X3P1GMOe41bf
- 9u485jd3zf+m8SCJRUYokhxJSg3cbgY8PcnxtVQ2q1Fu2XnGdHMoDjNGnOEZ6aX/JcDt
- p/SogPOcyKbX80J5FWEATh/oE3HYXsCX0VYItJsKClMVILF7xKSZc44KZ5Vue7TqmUyt
- tblA==
-X-Gm-Message-State: AOJu0Yx4TqTmJox7AZ2cjgabQQsxLpA5KHeCA7UXix/TcMlEVbqO4GfX
- ocUXckhrBQbb06Qib2j+ywextA==
-X-Google-Smtp-Source: AGHT+IEFPPh5A37pBqgxuwgcGpeiIxxjHPoapQfEaX3F/ZIWM6LXoqkhib4rjuAzk5aSqt40XSVxlA==
-X-Received: by 2002:a05:6a20:160b:b0:132:f61e:7d41 with SMTP id
- l11-20020a056a20160b00b00132f61e7d41mr10536129pzj.5.1692632133311; 
- Mon, 21 Aug 2023 08:35:33 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:2c08:e710:4459:46f1?
- ([2602:47:d483:7301:2c08:e710:4459:46f1])
- by smtp.gmail.com with ESMTPSA id
- f15-20020a170902ce8f00b001bdc9daadc9sm7246884plg.89.2023.08.21.08.35.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Aug 2023 08:35:32 -0700 (PDT)
-Message-ID: <69ea3d48-71b3-253e-0e51-58476ff764e2@linaro.org>
-Date: Mon, 21 Aug 2023 08:35:31 -0700
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qY75a-0007qO-Ob
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:45:10 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qY75W-0006Ij-VZ
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:45:10 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 54FE2616E1
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 15:45:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BF5C433C7
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 15:45:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1692632704;
+ bh=/N5K13dvgUyjDAMSC1Vh9tTUsG/POJt6cq/pm3eJeIk=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=EUV+uwO/qYF7TPQ+JK5u7Z8woMAbEnS+C+LoH56wuNm7plyrHBW0CQknCKpLtMj7q
+ dXukPN2hXw2KUGfN7fqdDP+yX/Wgsx/MulDC7p9Qw/HwduQ6e+DjxraFUC9e+pM3jE
+ Z9yKo3Msts/NMGulSLx+yzmPMRBxNTL8kxa9ZNaZfVGFK/5odor7DBx5+TZNluu6Sa
+ 4RASe21BoTOOzwQKRPHeNZ10Tjink1zgX0MFKQ6LGV21IuQZdOXBHOn0HuVEdcSm2y
+ WcN9ERW1SsXWCOMzRsc6yarYHig0l6qG3TnTG3mBU6KGJr8d7XgUJUMKWEET7zKJZH
+ bb3JPlSv/C64A==
+Received: by mail-lf1-f41.google.com with SMTP id
+ 2adb3069b0e04-5007abb15e9so2211856e87.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 08:45:04 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz3+n4PYHaRuhwMYUPFAL0zyx09n+U/p7mowdnTtMrx66GT3mCo
+ MsJBVUsAUsMtX4v9zgyTPMpsw7XFQGm+75oiH0s=
+X-Google-Smtp-Source: AGHT+IHncQ5fpzHL4fm5fWPBQC6HBG3lcW7o4PAStdIjojLbzXeSHAllCECKfn5FyDV2b+qKpdqSWyBrIaAKMC61uZw=
+X-Received: by 2002:a19:4f19:0:b0:4ff:ae42:19e2 with SMTP id
+ d25-20020a194f19000000b004ffae4219e2mr3840867lfb.58.1692632702697; Mon, 21
+ Aug 2023 08:45:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/ppc: Fix LQ, STQ register-pair order for big-endian
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org, Ivan Warren
- <ivan@vmfacility.fr>, qemu-stable@nongnu.org
-References: <20230821153051.93658-1-npiggin@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230821153051.93658-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20230819010218.192706-1-richard.henderson@linaro.org>
+ <CAMj1kXFWeUzWkpt5o0Bh6CXzBHoxkZk7wUiLsidEvDjH_SSnHw@mail.gmail.com>
+ <dcbfe992-303d-5472-e7c7-4c1c717cde7b@linaro.org>
+In-Reply-To: <dcbfe992-303d-5472-e7c7-4c1c717cde7b@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 21 Aug 2023 17:44:51 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG1LTHySAwh1fOMQCWnK=raXs7pmvwoq2n3bJRd-QKK-A@mail.gmail.com>
+Message-ID: <CAMj1kXG1LTHySAwh1fOMQCWnK=raXs7pmvwoq2n3bJRd-QKK-A@mail.gmail.com>
+Subject: Re: [PATCH v2 00/18] crypto: Provide clmul.h and host accel
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,41 +80,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/21/23 08:30, Nicholas Piggin wrote:
-> LQ, STQ have the same register-pair ordering as LQARX/STQARX., which is
-> the even (lower) register contains the most significant bits. This is
-> not implemented correctly for big-endian.
-> 
-> do_ldst_quad() has variables low_addr_gpr and high_addr_gpr which is
-> confusing because they are low and high addresses, whereas LQARX/STQARX.
-> and most such things use the low and high values for lo/hi variables.
-> The conversion to native 128-bit memory access functions missed this
-> strangeness.
-> 
-> Fix this by changing the if condition, and change the variable names to
-> hi/lo to match convention.
-> 
-> Cc:qemu-stable@nongnu.org
-> Reported-by: Ivan Warren<ivan@vmfacility.fr>
-> Fixes: 57b38ffd0c6f ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1836
-> Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
-> ---
-> Hi Ivan,
-> 
-> Thanks for your report. This gets AIX7.2 booting for me again with TCG,
-> if you would be able to confirm that it works there, it would be great.
-> 
-> Thanks,
-> Nick
-> 
->   target/ppc/translate/fixedpoint-impl.c.inc | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
+On Mon, 21 Aug 2023 at 17:15, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 8/21/23 07:57, Ard Biesheuvel wrote:
+> >> Richard Henderson (18):
+> >>    crypto: Add generic 8-bit carry-less multiply routines
+> >>    target/arm: Use clmul_8* routines
+> >>    target/s390x: Use clmul_8* routines
+> >>    target/ppc: Use clmul_8* routines
+> >>    crypto: Add generic 16-bit carry-less multiply routines
+> >>    target/arm: Use clmul_16* routines
+> >>    target/s390x: Use clmul_16* routines
+> >>    target/ppc: Use clmul_16* routines
+> >>    crypto: Add generic 32-bit carry-less multiply routines
+> >>    target/arm: Use clmul_32* routines
+> >>    target/s390x: Use clmul_32* routines
+> >>    target/ppc: Use clmul_32* routines
+> >>    crypto: Add generic 64-bit carry-less multiply routine
+> >>    target/arm: Use clmul_64
+> >>    target/s390x: Use clmul_64
+> >>    target/ppc: Use clmul_64
+> >>    host/include/i386: Implement clmul.h
+> >>    host/include/aarch64: Implement clmul.h
+> >>
+> >
+> > I didn't re-run the OpenSSL benchmark, but the x86 Linux kernel still
+> > passes all its crypto selftests when running under TCG emulation on a
+> > TX2 arm64 host, so
+> >
+> > Tested-by: Ard Biesheuvel <ardb@kernel.org>
+>
+> Oh, whoops.  What's missing here?  Any target/i386 changes.
+>
 
-Thanks for the catch.
+Ah yes - I hadn't spotted that. The below seems to do the trick.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+--- a/target/i386/ops_sse.h
++++ b/target/i386/ops_sse.h
+@@ -2156,7 +2156,10 @@ void glue(helper_pclmulqdq, SUFFIX)(CPUX86State
+*env, Reg *d, Reg *v, Reg *s,
+     for (i = 0; i < 1 << SHIFT; i += 2) {
+         a = v->Q(((ctrl & 1) != 0) + i);
+         b = s->Q(((ctrl & 16) != 0) + i);
+-        clmulq(&d->Q(i), &d->Q(i + 1), a, b);
++
++        Int128 r = clmul_64(a, b);
++        d->Q(i) = int128_getlo(r);
++        d->Q(i + 1) = int128_gethi(r);
+     }
+ }
 
+[and the #include added and clmulq() dropped]
 
-r~
+I did a quick RFC4106 benchmark with tcrypt (which doesn't speed up as
+much as OpenSSL but it is a bit of a hassle cross-rebuilding that)
+
+no acceleration:
+
+tcrypt: test 7 (160 bit key, 8192 byte blocks): 1547 operations in 1
+seconds (12673024 bytes)
+
+AES only:
+
+tcrypt: test 7 (160 bit key, 8192 byte blocks): 1679 operations in 1
+seconds (13754368 bytes)
+
+AES and PMULL
+
+tcrypt: test 7 (160 bit key, 8192 byte blocks): 3298 operations in 1
+seconds (27017216 bytes)
 
