@@ -2,57 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7886782507
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 10:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C67D782542
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 10:18:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXzr5-0006n8-Q1; Mon, 21 Aug 2023 04:01:43 -0400
+	id 1qY05s-0001cL-44; Mon, 21 Aug 2023 04:17:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1qXzr2-0006lD-7R
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:01:40 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1qXzqy-0003zK-N3
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:01:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=jnFdpoNDQlz6IgELDzeUSGqF7KpvO1p/79AFq+GeOE0=; b=Fblp1cDgoWWllu+BjJrHjBfLli
- wKzzIBp+T2x2Dx34jrtvwCpsZL0btTP7uVRXbpsni3eaX4joDnjPhCq4jNnuOkCey7qoUuIwF/M1+
- I5tzUM6d2tK1wweEqrbOB5zgNE+L1DksPRg5MP3Gz4yoRRjXCuFgcSaAE8kml8yev2A8hvo25Vu4a
- kjg5T/yqChEoOE/1FFUS7hlagwWVElDYLA/lJN681vtn+UnPYiB09l5tTFaJLpPoptm2thUwXAZkI
- RekZDxgEQPnjMZGJU/i1S1JcBGVbu/POhERHwFYw5lmJp3JcS3M0p8HkCFSHatKDzTYBdyOiMeaMn
- O4o6r/49PqjByzv5Y12+yHG14eH5rfz8oKkzG1sCh1ZZgzL5uL7jcXdp7Frf7gHJKFnd4L9FxwuLm
- it+Bct+4C1ZT0jDc0e39MVOdy9zTHGyezwYoLz1/O6EAddF0FS2k4RqhcoNOl7yxyXgYF0WWgikCk
- AEH5Lxu8NoXvn2kVOUxWBfWf40LX19AAifm5saerFO9x5xpVpybXbHJan5bi8O8Pi9rfCrIsehm/z
- /bX4RfCnZgc7iHfNkVsf2yrSaE1hjpAWUMCenCDfZvZh224kmmlutbIxi8wmSD2xhjoENL6Vb/aFM
- 9nomZ6L5g+wSZaat6XKQEL1pHOQ4J3MwloOHGnDf0=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] audio/jackaudio: Avoid dynamic stack allocation in
- qjack_client_init
-Date: Mon, 21 Aug 2023 10:01:32 +0200
-Message-ID: <3689052.BXi5odulOJ@silver>
-In-Reply-To: <20230818155846.1651287-2-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
+ id 1qY05o-0001c1-4i
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:16:56 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
+ id 1qY05l-0006vg-PX
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:16:55 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5007c8308c3so1333274e87.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 01:16:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692605811; x=1693210611;
+ h=user-agent:in-reply-to:content-disposition:mime-version:references
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QhwxeqshD7fzJd+qQ6N069xlL0fmdKj5A4NzzwjtbfQ=;
+ b=WR+1X932yFaNSzTXB5mopXHHPq0gDAdL9/ISkPe21AF9wh0kN1qXQw/GojGLPpqhg6
+ YsatK9TDuQIYbu30zzm7QlWad2geTIMW+1GC4IlE+pEWf41IPx/wpYpUZGginS2oBK2i
+ 9JyoFTcPiz+UeFB4O/MfUmqcZX45kPbMKBx0Gk1qw7BIGEEtn7zxpIYL2pn04Ynno11T
+ aFUv20hoSBGIBmYrpKZXMqMRIFyNBjE78ArHp70IqbVARNAk0J7iUll+JssWU8B2JOmi
+ 0HbuwrZdXTZ3pRsWvdVXctgz0fcmjSCo7cPqjhAlaiiN3KkQQB96pMUBnl2Ix4sZ+Rzs
+ JQTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692605811; x=1693210611;
+ h=user-agent:in-reply-to:content-disposition:mime-version:references
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QhwxeqshD7fzJd+qQ6N069xlL0fmdKj5A4NzzwjtbfQ=;
+ b=NC4OQhIwubLWstm13gkvF3texOXlu7cWhrF2A6vvVKjxbIkcJ+GxT3srDhAUaz1kKL
+ 7kTMr36S21UT7a1PcYMD0vmdQzjYAsCfukU7qPsHMCaB+aNcgZQQJoephT56QMTk0ueF
+ Sdt0fhMAUu8DW6wuR+8OhJCzHU3G3qAqiMV3UtogZe3u0gc6Mu/yTJF2tnbhirJKEDAa
+ em/gz6vGGmC4Dmprwr+1f1EGL/Qr/Zom9rKnulk43kP+7HOSoxdieZNyW94K/h6JA0MS
+ 8fLrQwKRBRQ86YEV/UHVewm/2o39rzctv2Dr1119AJSwwW7HAmqxRElAUKYimYcoC6vk
+ zhWQ==
+X-Gm-Message-State: AOJu0Yw94UVbmbBuBsnfguJVgoE6f5PLNL8bRDnsEqwkQM+7lNKA7mjj
+ WKLnTyBdPbtNId87UDky7s8=
+X-Google-Smtp-Source: AGHT+IH6UKgW6VGsgnhPd2ir9XGLGHdHqZ9QvWv6cR6qjoSXtXVsCOF0kPrRyEgDDQPfZ3VXnuM2tA==
+X-Received: by 2002:a05:6512:3c89:b0:4fb:7666:3bc0 with SMTP id
+ h9-20020a0565123c8900b004fb76663bc0mr5446102lfv.47.1692605811008; 
+ Mon, 21 Aug 2023 01:16:51 -0700 (PDT)
+Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
+ by smtp.gmail.com with ESMTPSA id
+ b11-20020ac247eb000000b004fddb0eb961sm1645321lfp.18.2023.08.21.01.16.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Aug 2023 01:16:50 -0700 (PDT)
+Date: Mon, 21 Aug 2023 10:16:49 +0200
+From: Francisco Iglesias <frasse.iglesias@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Subject: Re: [PATCH 2/2] audio/jackaudio: Avoid dynamic stack allocation in
+ qjack_process()
+Message-ID: <20230821081648.GN6984@fralle-msi>
 References: <20230818155846.1651287-1-peter.maydell@linaro.org>
- <20230818155846.1651287-2-peter.maydell@linaro.org>
+ <20230818155846.1651287-3-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230818155846.1651287-3-peter.maydell@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -1020
+X-Spam_score: -102.1
+X-Spam_bar: ---------------------------------------------------
+X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_WELCOMELIST=-0.01,
+ USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,62 +96,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Friday, August 18, 2023 5:58:45 PM CEST Peter Maydell wrote:
-> Avoid a dynamic stack allocation in qjack_client_init(), by using
-> a g_autofree heap allocation instead.
-> 
-> (We stick with allocate + snprintf() because the JACK API requires
-> the name to be no more than its maximum size, so g_strdup_printf()
-> would require an extra truncation step.)
+On [2023 Aug 18] Fri 16:58:46, Peter Maydell wrote:
+> Avoid a dynamic stack allocation in qjack_process().  Since this
+> function is a JACK process callback, we are not permitted to malloc()
+> here, so we allocate a working buffer in qjack_client_init() instead.
 > 
 > The codebase has very few VLAs, and if we can get rid of them all we
 > can make the compiler error on new additions.  This is a defensive
 > measure against security bugs where an on-stack dynamic allocation
 > isn't correctly size-checked (e.g.  CVE-2021-3527).
-
-Sounds good, what compiler flag will that be?
-
+> 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
+
 > ---
->  audio/jackaudio.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> This feels like we ought to be able to say "we know there are at most
+> X channels, so allocate an array of size X on the stack", but I
+> couldn't find anything in the audio subsystem from a quick look that
+> set an obvious bound on the number of channels.  Is there some
+> straightforward constant MAX_CHANNELS somewhere?
+> ---
+>  audio/jackaudio.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 > 
 > diff --git a/audio/jackaudio.c b/audio/jackaudio.c
-> index 5bdf3d7a78d..7cb2a49f971 100644
+> index 7cb2a49f971..e1eaa3477dc 100644
 > --- a/audio/jackaudio.c
 > +++ b/audio/jackaudio.c
-> @@ -400,7 +400,8 @@ static void qjack_client_connect_ports(QJackClient *c)
->  static int qjack_client_init(QJackClient *c)
->  {
->      jack_status_t status;
-> -    char client_name[jack_client_name_size()];
-> +    int client_name_len = jack_client_name_size(); /* includes NUL */
-
-I would add `const` here.
-
-> +    g_autofree char *client_name = g_new(char, client_name_len);
->      jack_options_t options = JackNullOption;
+> @@ -70,6 +70,9 @@ typedef struct QJackClient {
+>      int             buffersize;
+>      jack_port_t   **port;
+>      QJackBuffer     fifo;
+> +
+> +    /* Used as workspace by qjack_process() */
+> +    float **process_buffers;
+>  }
+>  QJackClient;
 >  
->      if (c->state == QJACK_STATE_RUNNING) {
-> @@ -409,7 +410,7 @@ static int qjack_client_init(QJackClient *c)
+> @@ -267,22 +270,21 @@ static int qjack_process(jack_nframes_t nframes, void *arg)
+>      }
 >  
->      c->connect_ports = true;
+>      /* get the buffers for the ports */
+> -    float *buffers[c->nchannels];
+>      for (int i = 0; i < c->nchannels; ++i) {
+> -        buffers[i] = jack_port_get_buffer(c->port[i], nframes);
+> +        c->process_buffers[i] = jack_port_get_buffer(c->port[i], nframes);
+>      }
 >  
-> -    snprintf(client_name, sizeof(client_name), "%s-%s",
-> +    snprintf(client_name, client_name_len, "%s-%s",
->          c->out ? "out" : "in",
->          c->opt->client_name ? c->opt->client_name : audio_application_name());
-
-Unrelated, but this could be shortened by Elvis operator BTW:
-
-    c->opt->client_name ?: audio_application_name()
-
-Anyway:
-
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-
-Best regards,
-Christian Schoenebeck
-
-
+>      if (c->out) {
+>          if (likely(c->enabled)) {
+> -            qjack_buffer_read_l(&c->fifo, buffers, nframes);
+> +            qjack_buffer_read_l(&c->fifo, c->process_buffers, nframes);
+>          } else {
+>              for (int i = 0; i < c->nchannels; ++i) {
+> -                memset(buffers[i], 0, nframes * sizeof(float));
+> +                memset(c->process_buffers[i], 0, nframes * sizeof(float));
+>              }
+>          }
+>      } else {
+>          if (likely(c->enabled)) {
+> -            qjack_buffer_write_l(&c->fifo, buffers, nframes);
+> +            qjack_buffer_write_l(&c->fifo, c->process_buffers, nframes);
+>          }
+>      }
+>  
+> @@ -448,6 +450,9 @@ static int qjack_client_init(QJackClient *c)
+>            jack_get_client_name(c->client));
+>      }
+>  
+> +    /* Allocate working buffer for process callback */
+> +    c->process_buffers = g_new(float *, c->nchannels);
+> +
+>      jack_set_process_callback(c->client, qjack_process , c);
+>      jack_set_port_registration_callback(c->client, qjack_port_registration, c);
+>      jack_set_xrun_callback(c->client, qjack_xrun, c);
+> @@ -579,6 +584,7 @@ static void qjack_client_fini_locked(QJackClient *c)
+>  
+>          qjack_buffer_free(&c->fifo);
+>          g_free(c->port);
+> +        g_free(c->process_buffers);
+>  
+>          c->state = QJACK_STATE_DISCONNECTED;
+>          /* fallthrough */
+> -- 
+> 2.34.1
+> 
+> 
 
