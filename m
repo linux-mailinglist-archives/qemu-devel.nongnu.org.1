@@ -2,101 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA3D782DD3
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 18:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD89782E21
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 18:17:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY7Om-0006dp-Ee; Mon, 21 Aug 2023 12:05:00 -0400
+	id 1qY7ZT-0000SK-NH; Mon, 21 Aug 2023 12:16:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qY7Oj-0006dZ-08
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:04:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qY7Og-0002du-GH
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:04:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692633889;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aCpTt5dH6yer94p6uLtt8gmsJ+utYOf+/4jsL0KvGjk=;
- b=ZrWBvg+LaSZ7wi/zYstl2G9aOJTAWy2fzgwfP745V033qLSogNmSn+hBV4YWy/WGHgwhFy
- v3sf8I30mLfb2n7HXEmxi1glmhOGDBZfMtYUdc/LeZIVtwJ9A+tNGs2CcOJf04UoUi7mdn
- pvD3dlWWBDfktg7l9CzIv+/wnxOSL/s=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-186-uamFyIHKP3edpzV_cHz9Ag-1; Mon, 21 Aug 2023 12:04:47 -0400
-X-MC-Unique: uamFyIHKP3edpzV_cHz9Ag-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6b9c09823e7so4007832a34.1
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 09:04:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qY7ZR-0000S4-RO
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:16:01 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qY7ZB-000570-Jh
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:16:01 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2b9a2033978so55932971fa.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 09:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1692634543; x=1693239343;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=nbaqsHhWhvbRUY2T7mkaRH3NtXhUGBcWkaATiI983q4=;
+ b=lAgRyGotU6p9QI8LrUJL2G87imHRZQQgX3N93WoGlytmZdZAD8Vhex7hIg3R1XHdbz
+ 9iRvBA9CtSSKR3K6Z56zIceeH6Fe08hL0OcimYVNajIQ7NZA3BaddD2Vjy0aVqXnInbD
+ tLF4igc8SrEq1XF8MwkgVIuJ7pTBWtmxCmTohhsm/UnBgdHk7NOLXYApNdpxPaCbzcNN
+ FnZWGiI2RY9eVG1SyMSgh3IAj/PlFb7c2TGHPpx+Dkb1D+pHybjG7sdAbd+tGu/AIkDi
+ pEzAos3m7TttEiWJMQdrn/x7NAzubTITa3Fs896VvkibAv+skZGaOyzj4injwnzniyOb
+ rU5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692633886; x=1693238686;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aCpTt5dH6yer94p6uLtt8gmsJ+utYOf+/4jsL0KvGjk=;
- b=ldjbb1DU9FC8BGNpIZyQznVYl+B9MLadN+pYLkKoQh2hGGj3nDn0l55ozh4xYtf+5y
- NBUJM31cmHcxtAzwnEUFcoRymT7FkeEIisizCa+cHUDglVIL6lp7Xd7NwzQb0InBUMlE
- dj81Ie87TSYVAtHmXDav3t58t6WCJ6VoRHuffLhslU+fDl/KdM8K2GCMUzbAkJHIO3nx
- 9amH3pB/eDUXLqiqJVlOjsV2WJhMQ3GwO6QcUb9EyPq/Bi63Wm6dzqpYOqZEgCXjr0Zs
- V8MTW80ZsyFLFcx4AMeKP59hiCH42N/85IjN1X64wdZfy9TEWu0LkuTcTqnb2RCWZy3f
- 0BLg==
-X-Gm-Message-State: AOJu0YzrnwyDS3M5TMcg2YUfM2Xx3A+Q3XeSCY09nGcs6q9Ddu5ixHqE
- ZYinJUkQ9aOzx04mlaeiprizwhY/DLXOaqZApW7Mlke4zvLCrrv4Mbk58HfHowSPIOgYXiHDht5
- ESrIlFynQeff8wlk=
-X-Received: by 2002:a05:6830:478e:b0:6b9:f1d3:160 with SMTP id
- df14-20020a056830478e00b006b9f1d30160mr8637592otb.11.1692633886454; 
- Mon, 21 Aug 2023 09:04:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1nc6oTGP/RpC66v9141OP1fez6LLQZOEhd04VxqXv2L/YZTOlUJ7M8qL1CQ8BSed3wjOoUA==
-X-Received: by 2002:a05:6830:478e:b0:6b9:f1d3:160 with SMTP id
- df14-20020a056830478e00b006b9f1d30160mr8637530otb.11.1692633885751; 
- Mon, 21 Aug 2023 09:04:45 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- q19-20020a9d6653000000b006b9a9bc7773sm3539910otm.56.2023.08.21.09.04.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Aug 2023 09:04:45 -0700 (PDT)
-Date: Mon, 21 Aug 2023 10:04:43 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@redhat.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>, qemu-devel@nongnu.org, Paolo
- Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>, Alex
- =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Philippe
- =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Beraldo Leal
- <bleal@redhat.com>, richard.henderson@linaro.org, "Daniel P.
- =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Gerd Hoffmann
- <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Wainer dos
- Santos Moschetta <wainersm@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Eric Blake <eblake@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: Re: [8.1 regression] Re: [PULL 05/19] virtio-gpu-udmabuf: correct
- naming of QemuDmaBuf size properties
-Message-ID: <20230821100443.6034d0a4.alex.williamson@redhat.com>
-In-Reply-To: <CAMxuvaxjHq=3oB74McSdHSMthtv0XLwk0k6tW92FjY1yyeoA_w@mail.gmail.com>
-References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
- <20230717124545.177236-6-marcandre.lureau@redhat.com>
- <20230816150810.15d90b34.alex.williamson@redhat.com>
- <20230816152549.09cfcece.alex.williamson@redhat.com>
- <CAMxuvaxjHq=3oB74McSdHSMthtv0XLwk0k6tW92FjY1yyeoA_w@mail.gmail.com>
-Organization: Red Hat
+ d=1e100.net; s=20221208; t=1692634543; x=1693239343;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nbaqsHhWhvbRUY2T7mkaRH3NtXhUGBcWkaATiI983q4=;
+ b=hT/ONqWEdksk1Zbm8IIsWq8pGMWir9G60OFzYdtWXC/Seq49X3a6xhCVddux3stzkX
+ SH9xEI6fWlHgmcql7fDscj/2Sh4WumVUTDpYm75/iSFAWo/EUKzXvh0gamoiSp1XPgTn
+ /sHplpO6lY6LewB7UKDH4O0CVqO1Br9OOBwr90ZoQ8r6mJp5+0g1NazIj5INFD7k4OrN
+ KgXdxw9YJE+3Q0pyyr1BPdHzuaFFxVDVEVQCol00CyaQn9NK25kCEN5ZHeWPuLXcCGy4
+ HllxyFG2wZYwgD7/Iz4HeHXKSIzP3uJnCRvBW7MDayXlvn5O+ECooWczs52sN72fUbcR
+ eEYA==
+X-Gm-Message-State: AOJu0YzRSazcDdO2Nb4AHEQ9dU3O+Qus1q0PF9u+my1jdXKXJtsdZnI2
+ LsDUht2y9nfdo3Xcyvgndd7v9/tMe1D7h7yCNhqAQQ==
+X-Google-Smtp-Source: AGHT+IEy3nRVK4gX/idDFdi1vCZDPKPtGTa1PNCWfWmRHjq3Y3pYaNVIZqjEhDwVC83+ZkAM8Y5rw2Q/T5kN3FtKtGY=
+X-Received: by 2002:a2e:99d4:0:b0:2bc:b9c7:7ba8 with SMTP id
+ l20-20020a2e99d4000000b002bcb9c77ba8mr3139171ljj.43.1692634543036; Mon, 21
+ Aug 2023 09:15:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230728082502.26439-1-jason.chien@sifive.com>
+ <20230728082502.26439-2-jason.chien@sifive.com>
+ <CAKmqyKMX=Q3+kdaKAJrQHeya7ctnyt0HSt=NUQWUAOj9JEPZ8g@mail.gmail.com>
+In-Reply-To: <CAKmqyKMX=Q3+kdaKAJrQHeya7ctnyt0HSt=NUQWUAOj9JEPZ8g@mail.gmail.com>
+From: Jason Chien <jason.chien@sifive.com>
+Date: Tue, 22 Aug 2023 00:15:31 +0800
+Message-ID: <CADr__8rmCu9F2ktxYGtZfUeD_z+pNVa4KKsZ8XvxxVGmMJfrcw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] hw/intc: Make rtc variable names consistent
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Anup Patel <apatel@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Andrew Jones <ajones@ventanamicro.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Type: multipart/alternative; boundary="000000000000ac44430603713013"
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=jason.chien@sifive.com; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,133 +89,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 21 Aug 2023 14:20:38 +0400
-Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> wrote:
+--000000000000ac44430603713013
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Hi Alex
->=20
-> On Thu, Aug 17, 2023 at 1:25=E2=80=AFAM Alex Williamson
-> <alex.williamson@redhat.com> wrote:
+Ping.
+
+On Fri, Aug 11, 2023 at 2:25=E2=80=AFAM Alistair Francis <alistair23@gmail.=
+com>
+wrote:
+
+> On Fri, Jul 28, 2023 at 4:57=E2=80=AFAM Jason Chien <jason.chien@sifive.c=
+om>
+> wrote:
 > >
-> > On Wed, 16 Aug 2023 15:08:10 -0600
-> > Alex Williamson <alex.williamson@redhat.com> wrote: =20
-> > > > diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-> > > > index 8f9fbf583e..3d19dbe382 100644
-> > > > --- a/ui/egl-helpers.c
-> > > > +++ b/ui/egl-helpers.c
-> > > > @@ -314,9 +314,9 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmab=
-uf)
-> > > >      }
-> > > >
-> > > >      attrs[i++] =3D EGL_WIDTH;
-> > > > -    attrs[i++] =3D dmabuf->width;
-> > > > +    attrs[i++] =3D dmabuf->backing_width;
-> > > >      attrs[i++] =3D EGL_HEIGHT;
-> > > > -    attrs[i++] =3D dmabuf->height;
-> > > > +    attrs[i++] =3D dmabuf->backing_height;
-> > > >      attrs[i++] =3D EGL_LINUX_DRM_FOURCC_EXT;
-> > > >      attrs[i++] =3D dmabuf->fourcc;
-> > > >
-> > > > diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-> > > > index 42db1bb6cf..eee821d73a 100644
-> > > > --- a/ui/gtk-egl.c
-> > > > +++ b/ui/gtk-egl.c
-> > > > @@ -262,9 +262,10 @@ void gd_egl_scanout_dmabuf(DisplayChangeListen=
-er *dcl,
-> > > >      }
-> > > >
-> > > >      gd_egl_scanout_texture(dcl, dmabuf->texture,
-> > > > -                           dmabuf->y0_top, dmabuf->width, dmabuf->=
-height,
-> > > > -                           dmabuf->x, dmabuf->y, dmabuf->scanout_w=
-idth,
-> > > > -                           dmabuf->scanout_height, NULL);
-> > > > +                           dmabuf->y0_top,
-> > > > +                           dmabuf->backing_width, dmabuf->backing_=
-height,
-> > > > +                           dmabuf->x, dmabuf->y, dmabuf->width,
-> > > > +                           dmabuf->height, NULL);
-> > > >
-> > > >      if (dmabuf->allow_fences) {
-> > > >          vc->gfx.guest_fb.dmabuf =3D dmabuf;
-> > > > @@ -284,7 +285,8 @@ void gd_egl_cursor_dmabuf(DisplayChangeListener=
- *dcl,
-> > > >          if (!dmabuf->texture) {
-> > > >              return;
-> > > >          }
-> > > > -        egl_fb_setup_for_tex(&vc->gfx.cursor_fb, dmabuf->width, dm=
-abuf->height,
-> > > > +        egl_fb_setup_for_tex(&vc->gfx.cursor_fb,
-> > > > +                             dmabuf->backing_width, dmabuf->backin=
-g_height,
-> > > >                               dmabuf->texture, false);
-> > > >      } else {
-> > > >          egl_fb_destroy(&vc->gfx.cursor_fb);
-> > > > diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-> > > > index a9a7fdf50c..4513d3d059 100644
-> > > > --- a/ui/gtk-gl-area.c
-> > > > +++ b/ui/gtk-gl-area.c
-> > > > @@ -301,9 +301,10 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeLi=
-stener *dcl,
-> > > >      }
-> > > >
-> > > >      gd_gl_area_scanout_texture(dcl, dmabuf->texture,
-> > > > -                               dmabuf->y0_top, dmabuf->width, dmab=
-uf->height,
-> > > > -                               dmabuf->x, dmabuf->y, dmabuf->scano=
-ut_width,
-> > > > -                               dmabuf->scanout_height, NULL);
-> > > > +                               dmabuf->y0_top,
-> > > > +                               dmabuf->backing_width, dmabuf->back=
-ing_height,
-> > > > +                               dmabuf->x, dmabuf->y, dmabuf->width,
-> > > > +                               dmabuf->height, NULL);
-> > > >
-> > > >      if (dmabuf->allow_fences) {
-> > > >          vc->gfx.guest_fb.dmabuf =3D dmabuf; =20
-> > > =20
+> > The variables whose values are given by cpu_riscv_read_rtc() should be
+> named
+> > "rtc". The variables whose value are given by cpu_riscv_read_rtc_raw()
+> > should be named "rtc_r".
 > >
-> > I suspect the issues is in these last few chunks where width and height
-> > are replaced with backing_width and backing height, but
-> > hw/vfio/display.c never sets backing_*.  It appears that the following
-> > resolves the issue:
+> > Signed-off-by: Jason Chien <jason.chien@sifive.com>
+>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+>
+> Alistair
+>
+> > ---
+> >  hw/intc/riscv_aclint.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
 > >
-> > diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-> > index bec864f482f4..837d9e6a309e 100644
-> > --- a/hw/vfio/display.c
-> > +++ b/hw/vfio/display.c
-> > @@ -243,6 +243,8 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCID=
-evice *vdev,
-> >      dmabuf->dmabuf_id  =3D plane.dmabuf_id;
-> >      dmabuf->buf.width  =3D plane.width;
-> >      dmabuf->buf.height =3D plane.height;
-> > +    dmabuf->buf.backing_width =3D plane.width;
-> > +    dmabuf->buf.backing_height =3D plane.height;
-> >      dmabuf->buf.stride =3D plane.stride;
-> >      dmabuf->buf.fourcc =3D plane.drm_format;
-> >      dmabuf->buf.modifier =3D plane.drm_format_mod;
+> > diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+> > index bf77e29a70..25cf7a5d9d 100644
+> > --- a/hw/intc/riscv_aclint.c
+> > +++ b/hw/intc/riscv_aclint.c
+> > @@ -64,13 +64,13 @@ static void
+> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
+> >      uint64_t next;
+> >      uint64_t diff;
 > >
-> > I'll post that formally, but I really have no idea how dmabuf display
-> > works, so confirmation would be appreciated.  Thanks, =20
->=20
-> Looks correct to me. I wish Kim would chime in.
->=20
-> I am not familiar with vfio/display. Looking at the kernel side, it
-> seems it doesn't have a concept for scanout geometry that is different
-> from the backing dmabuf/texture dimension.
->=20
-> Should we make this a blocker for release? Are you sending the patch?
+> > -    uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);
+> > +    uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);
+> >
+> >      /* Compute the relative hartid w.r.t the socket */
+> >      hartid =3D hartid - mtimer->hartid_base;
+> >
+> >      mtimer->timecmp[hartid] =3D value;
+> > -    if (mtimer->timecmp[hartid] <=3D rtc_r) {
+> > +    if (mtimer->timecmp[hartid] <=3D rtc) {
+> >          /*
+> >           * If we're setting an MTIMECMP value in the "past",
+> >           * immediately raise the timer interrupt
+> > @@ -81,7 +81,7 @@ static void
+> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
+> >
+> >      /* otherwise, set up the future timer interrupt */
+> >      qemu_irq_lower(mtimer->timer_irqs[hartid]);
+> > -    diff =3D mtimer->timecmp[hartid] - rtc_r;
+> > +    diff =3D mtimer->timecmp[hartid] - rtc;
+> >      /* back to ns (note args switched in muldiv64) */
+> >      uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PER_SECOND,
+> timebase_freq);
+> >
+> > --
+> > 2.17.1
+> >
+> >
+>
 
-I did send a patch, Kim commented there:
+--000000000000ac44430603713013
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-https://lore.kernel.org/all/20230816215550.1723696-1-alex.williamson@redhat=
-.com/
+<div dir=3D"ltr">Ping.</div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Fri, Aug 11, 2023 at 2:25=E2=80=AFAM Alistair Fran=
+cis &lt;<a href=3D"mailto:alistair23@gmail.com">alistair23@gmail.com</a>&gt=
+; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
+ 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Fri,=
+ Jul 28, 2023 at 4:57=E2=80=AFAM Jason Chien &lt;<a href=3D"mailto:jason.ch=
+ien@sifive.com" target=3D"_blank">jason.chien@sifive.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; The variables whose values are given by cpu_riscv_read_rtc() should be=
+ named<br>
+&gt; &quot;rtc&quot;. The variables whose value are given by cpu_riscv_read=
+_rtc_raw()<br>
+&gt; should be named &quot;rtc_r&quot;.<br>
+&gt;<br>
+&gt; Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.co=
+m" target=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
+<br>
+Reviewed-by: Alistair Francis &lt;<a href=3D"mailto:alistair.francis@wdc.co=
+m" target=3D"_blank">alistair.francis@wdc.com</a>&gt;<br>
+<br>
+Alistair<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/intc/riscv_aclint.c | 6 +++---<br>
+&gt;=C2=A0 1 file changed, 3 insertions(+), 3 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c<br>
+&gt; index bf77e29a70..25cf7a5d9d 100644<br>
+&gt; --- a/hw/intc/riscv_aclint.c<br>
+&gt; +++ b/hw/intc/riscv_aclint.c<br>
+&gt; @@ -64,13 +64,13 @@ static void riscv_aclint_mtimer_write_timecmp(RISC=
+VAclintMTimerState *mtimer,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t next;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t diff;<br>
+&gt;<br>
+&gt; -=C2=A0 =C2=A0 uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);<br>
+&gt; +=C2=A0 =C2=A0 uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 /* Compute the relative hartid w.r.t the socket */=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 hartid =3D hartid - mtimer-&gt;hartid_base;<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 mtimer-&gt;timecmp[hartid] =3D value;<br>
+&gt; -=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc_r) {<br>
+&gt; +=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* If we&#39;re setting an MTIM=
+ECMP value in the &quot;past&quot;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* immediately raise the timer =
+interrupt<br>
+&gt; @@ -81,7 +81,7 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVA=
+clintMTimerState *mtimer,<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 /* otherwise, set up the future timer interrupt */=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 qemu_irq_lower(mtimer-&gt;timer_irqs[hartid]);<br>
+&gt; -=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc_r;<br>
+&gt; +=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 /* back to ns (note args switched in muldiv64) */<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0 uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PE=
+R_SECOND, timebase_freq);<br>
+&gt;<br>
+&gt; --<br>
+&gt; 2.17.1<br>
+&gt;<br>
+&gt;<br>
+</blockquote></div>
 
-Follow-up suggest vhost-user-gpu is also affected.  Empirically the
-patch I sent works, I think it's correct, but Gerd is probably most
-qualified to respond to the comments.  I don't know how a "scanout"
-relates to what we provide in vfio_device_gfx_plane_info.  Thanks,
-
-Alex
-
+--000000000000ac44430603713013--
 
