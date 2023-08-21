@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007DA782D4D
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 17:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 486DD782D60
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 17:36:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY6s2-0002Rv-HN; Mon, 21 Aug 2023 11:31:10 -0400
+	id 1qY6wO-00046l-AJ; Mon, 21 Aug 2023 11:35:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qY6rz-0002Qv-Ms; Mon, 21 Aug 2023 11:31:07 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qY6wM-00046Q-IB
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:35:38 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qY6rx-0003IR-5k; Mon, 21 Aug 2023 11:31:07 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bddac1b7bfso23226925ad.0; 
- Mon, 21 Aug 2023 08:31:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qY6wJ-0004dB-35
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:35:38 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-56b2e689828so968113a12.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 08:35:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692631863; x=1693236663;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=X2LPhUW3SN75wkeBtuhWPs9a+AL16jdU+jvPoUBrxtE=;
- b=geIKqbiJ9PASmP4m2AS98W/vDF6vVYrGs/NEP6fe/+ZPNw0elfPZzGlKLAdfFEzbRG
- mS7PseS63a6TXTqr9VXwSeSIn49rj9/voZBfBd8lq1XFg6T+k9L8pj+x2CU+i+LlA25O
- ZhcWgkJjUhodUjw1HGZj/z+VI+OTfjKGlnFoCmPAnR5mwOcjXpAgFLvX1ULGjQ0phm90
- 4rLBfq8v55XS0MsUo4lnbpz8Nr2CB6S4NfYEkrIN/et+XGOeqhCd7/s28RpizQJXHmOz
- RVslwBiUfC4gBMgUxE6app8GpSRZe+q6s461zjiIgRG+SRRJx8vj/Kcz/6x6LiAJUG8c
- ib5Q==
+ d=linaro.org; s=google; t=1692632133; x=1693236933;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=q2l6UNXdtK+jyC/R+QKTInrYGYMkqySzNPx1uNlBl3I=;
+ b=J/bt/fkJ55BJbI7pKPh+/Dgq8X/KXu80ORtW19QTtcPMhNqnnBRsBktJjxJROS/MWd
+ zfkvwBG9hzCx6EQiVpZOrkpMGUf/r/EC1xg5A8AjZGZIDLBH+RzTd8PK66qxOF1byEps
+ HXMF0rnHOZyWMCmBKszM86YVKEFRNcytY7s1REIAdEgFYdSxVvPT0BWzAjpbyshlmWql
+ hHHiY+8O1D2FJfbOfHhMbe6x8u5+xmqz5x5ZzNNQh6wCbsg+SbezkRW8PauFsriRTpyF
+ Oua8RtGKIln2zsE5F0qIoj1Ui0h5wp59AaQ++uEOMWsYRwL5a5t82/Zr8IR2yTPqUw4R
+ BRoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692631863; x=1693236663;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=X2LPhUW3SN75wkeBtuhWPs9a+AL16jdU+jvPoUBrxtE=;
- b=aWiYsYsUGaHm20nlKj9oOMpmVtvokq8ZNKD2ALMhup+eTVzgXxkrAD4AJhcqIsaJ/z
- OsmJdvMuxIKJQ1d+4K4q8zsQFb8yuyEfPTUxUE1AMWbWQjLX8tMKF8Ds0u3PEGk3ohZS
- GoPyYAQAhgjsx+a5jwXg5Z2MEmOG9xKIQg4zevTopmuH5xTF9de9hH6jjAU4csApjv9g
- 34g5jdrv9mBhPcYSFfaraXaL68zQOUBq520e9c0dfK6jeVWQ17cXuvW8HG38Z6MXcMeA
- w2G1+yWPYlcOHdrIH89yu+/AxBFgVcBZSwfQS6oFF6VjcbIRpRaiK7ksLNL/wmX9I6zm
- LBAw==
-X-Gm-Message-State: AOJu0Yzn2sJJ0aentOxEZZrNABQ8C3X9ohm3znHRLwIbhJnHZKwrLRZ4
- RIVMddW4xWvs8CeI4JHYDzc=
-X-Google-Smtp-Source: AGHT+IHuYZb/GiXemuG+Ew9lck3SN8jb6DX2gLc23oID4sBmViZAhoUTWBxAwMgv5Aeo+su4YIeuCw==
-X-Received: by 2002:a17:902:e806:b0:1be:f37f:a8d5 with SMTP id
- u6-20020a170902e80600b001bef37fa8d5mr11834572plg.10.1692631862838; 
- Mon, 21 Aug 2023 08:31:02 -0700 (PDT)
-Received: from wheely.local0.net ([203.220.228.132])
+ d=1e100.net; s=20221208; t=1692632133; x=1693236933;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q2l6UNXdtK+jyC/R+QKTInrYGYMkqySzNPx1uNlBl3I=;
+ b=feZy9ZmP5bd+Qm/yd83aDF+QoZKd1uT3plb6+JkGid5rXiYP1Yd0PmYVlmP4BCUftP
+ r1UnGf/movJjZ4YRAXn/QaaV8GxVZ/Xh+nZM8UyRnivS6MvnmhAhLXfOH1NZjPWwXPef
+ t6qS7Ec3qizrlrl7heeo+8blLBZqvyahRB3uZ5isu8po5reLZXlBDap+X3P1GMOe41bf
+ 9u485jd3zf+m8SCJRUYokhxJSg3cbgY8PcnxtVQ2q1Fu2XnGdHMoDjNGnOEZ6aX/JcDt
+ p/SogPOcyKbX80J5FWEATh/oE3HYXsCX0VYItJsKClMVILF7xKSZc44KZ5Vue7TqmUyt
+ tblA==
+X-Gm-Message-State: AOJu0Yx4TqTmJox7AZ2cjgabQQsxLpA5KHeCA7UXix/TcMlEVbqO4GfX
+ ocUXckhrBQbb06Qib2j+ywextA==
+X-Google-Smtp-Source: AGHT+IEFPPh5A37pBqgxuwgcGpeiIxxjHPoapQfEaX3F/ZIWM6LXoqkhib4rjuAzk5aSqt40XSVxlA==
+X-Received: by 2002:a05:6a20:160b:b0:132:f61e:7d41 with SMTP id
+ l11-20020a056a20160b00b00132f61e7d41mr10536129pzj.5.1692632133311; 
+ Mon, 21 Aug 2023 08:35:33 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:2c08:e710:4459:46f1?
+ ([2602:47:d483:7301:2c08:e710:4459:46f1])
  by smtp.gmail.com with ESMTPSA id
- p12-20020a170902eacc00b001b9df8f14d7sm7156241pld.267.2023.08.21.08.30.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Aug 2023 08:31:02 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- Ivan Warren <ivan@vmfacility.fr>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org
-Subject: [PATCH] target/ppc: Fix LQ, STQ register-pair order for big-endian
-Date: Tue, 22 Aug 2023 01:30:51 +1000
-Message-Id: <20230821153051.93658-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ f15-20020a170902ce8f00b001bdc9daadc9sm7246884plg.89.2023.08.21.08.35.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 21 Aug 2023 08:35:32 -0700 (PDT)
+Message-ID: <69ea3d48-71b3-253e-0e51-58476ff764e2@linaro.org>
+Date: Mon, 21 Aug 2023 08:35:31 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/ppc: Fix LQ, STQ register-pair order for big-endian
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org, Ivan Warren
+ <ivan@vmfacility.fr>, qemu-stable@nongnu.org
+References: <20230821153051.93658-1-npiggin@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230821153051.93658-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,79 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LQ, STQ have the same register-pair ordering as LQARX/STQARX., which is
-the even (lower) register contains the most significant bits. This is
-not implemented correctly for big-endian.
+On 8/21/23 08:30, Nicholas Piggin wrote:
+> LQ, STQ have the same register-pair ordering as LQARX/STQARX., which is
+> the even (lower) register contains the most significant bits. This is
+> not implemented correctly for big-endian.
+> 
+> do_ldst_quad() has variables low_addr_gpr and high_addr_gpr which is
+> confusing because they are low and high addresses, whereas LQARX/STQARX.
+> and most such things use the low and high values for lo/hi variables.
+> The conversion to native 128-bit memory access functions missed this
+> strangeness.
+> 
+> Fix this by changing the if condition, and change the variable names to
+> hi/lo to match convention.
+> 
+> Cc:qemu-stable@nongnu.org
+> Reported-by: Ivan Warren<ivan@vmfacility.fr>
+> Fixes: 57b38ffd0c6f ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1836
+> Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
+> ---
+> Hi Ivan,
+> 
+> Thanks for your report. This gets AIX7.2 booting for me again with TCG,
+> if you would be able to confirm that it works there, it would be great.
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/translate/fixedpoint-impl.c.inc | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 
-do_ldst_quad() has variables low_addr_gpr and high_addr_gpr which is
-confusing because they are low and high addresses, whereas LQARX/STQARX.
-and most such things use the low and high values for lo/hi variables.
-The conversion to native 128-bit memory access functions missed this
-strangeness.
+Thanks for the catch.
 
-Fix this by changing the if condition, and change the variable names to
-hi/lo to match convention.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Ivan Warren <ivan@vmfacility.fr>
-Fixes: 57b38ffd0c6f ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1836
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Hi Ivan,
 
-Thanks for your report. This gets AIX7.2 booting for me again with TCG,
-if you would be able to confirm that it works there, it would be great.
-
-Thanks,
-Nick
-
- target/ppc/translate/fixedpoint-impl.c.inc | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
-index f47f1a50e8..b423c09c26 100644
---- a/target/ppc/translate/fixedpoint-impl.c.inc
-+++ b/target/ppc/translate/fixedpoint-impl.c.inc
-@@ -71,7 +71,7 @@ static bool do_ldst_quad(DisasContext *ctx, arg_D *a, bool store, bool prefixed)
- {
- #if defined(TARGET_PPC64)
-     TCGv ea;
--    TCGv_i64 low_addr_gpr, high_addr_gpr;
-+    TCGv_i64 lo, hi;
-     TCGv_i128 t16;
- 
-     REQUIRE_INSNS_FLAGS(ctx, 64BX);
-@@ -94,21 +94,21 @@ static bool do_ldst_quad(DisasContext *ctx, arg_D *a, bool store, bool prefixed)
-     gen_set_access_type(ctx, ACCESS_INT);
-     ea = do_ea_calc(ctx, a->ra, tcg_constant_tl(a->si));
- 
--    if (prefixed || !ctx->le_mode) {
--        low_addr_gpr = cpu_gpr[a->rt];
--        high_addr_gpr = cpu_gpr[a->rt + 1];
-+    if (ctx->le_mode && prefixed) {
-+        lo = cpu_gpr[a->rt];
-+        hi = cpu_gpr[a->rt + 1];
-     } else {
--        low_addr_gpr = cpu_gpr[a->rt + 1];
--        high_addr_gpr = cpu_gpr[a->rt];
-+        lo = cpu_gpr[a->rt + 1];
-+        hi = cpu_gpr[a->rt];
-     }
-     t16 = tcg_temp_new_i128();
- 
-     if (store) {
--        tcg_gen_concat_i64_i128(t16, low_addr_gpr, high_addr_gpr);
-+        tcg_gen_concat_i64_i128(t16, lo, hi);
-         tcg_gen_qemu_st_i128(t16, ea, ctx->mem_idx, DEF_MEMOP(MO_128));
-     } else {
-         tcg_gen_qemu_ld_i128(t16, ea, ctx->mem_idx, DEF_MEMOP(MO_128));
--        tcg_gen_extr_i128_i64(low_addr_gpr, high_addr_gpr, t16);
-+        tcg_gen_extr_i128_i64(lo, hi, t16);
-     }
- #else
-     qemu_build_not_reached();
--- 
-2.40.1
-
+r~
 
