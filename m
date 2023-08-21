@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5999C782A9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 15:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2083B782AAD
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 15:38:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY53P-0006ZC-L8; Mon, 21 Aug 2023 09:34:47 -0400
+	id 1qY56F-0007Ug-K5; Mon, 21 Aug 2023 09:37:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qY53N-0006Yo-FY
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:34:45 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qY53K-0007ds-B5
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:34:45 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fe61ae020bso4924878e87.2
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 06:34:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692624879; x=1693229679;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vSgSyOkxqCv7nlZFrRELUHu1cwaa8TTkOGR9a6OvPwc=;
- b=m8qNlwdyYXrtkt1yLh05y4GA8593DTdrFgHa7h45S6hOXmF5QEnZUR5/2D4SS/p5ah
- yKrFagCT2pvxJoN284nxSlorC7/wJRd25xFj2pjDIuYt52Z3Yf6FrYSuSybT0Rr5cIHg
- Lo58PjmygqF7LqdIl0MCNnknHLv7Vuioun0WBW1K3BdHV+j03KbcYNYFdEsa0F8zHy1v
- 7oC9qoydT0jPnCpUqy63RNrb7s+YXPIEBV3QQlYn48yhXTbS+WDDRHtesNlJApdqgRLJ
- DxZMl7k++xYORhljA5XlRZETR2NBp0BkZwMugX9VqMcCWUmD6N7mT0it07XaQma/PN+I
- BjDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692624879; x=1693229679;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vSgSyOkxqCv7nlZFrRELUHu1cwaa8TTkOGR9a6OvPwc=;
- b=mGbeYvR3Bl0deit73kMkKiPpkiXgDuC2eCogG0st/2j9Qj0qNfBxOUAm7zoNOxDhGq
- ywE6HUQl9HTCio0DquDR5p0vUW+xtXwiW5PksqGq4G+g27Af/x473wKi1Qp0cpIxIIe2
- 88ZJV45Se1eGNmLuIL1Hqwrh8eP+WZAa2p6MjR4hR0a8mGXyzqfEyXNYnNJLmALU6Byh
- zZxnbdhrjqR7nP5dH7Uk+tl1//3cKzj0a03IgL7TL6QQnuG08GgivS3m720AJYRWTZbE
- yvdbmpZmp415sn/bjQpiuPfvzMEhoeKwFIgr2TkHNLkLqFF/GN6pajpnRouNs1vKXR37
- GV/w==
-X-Gm-Message-State: AOJu0YzRG3IFPmk4Ns1ed8F2dcrUNgIwUaKltV5D2JYWYzsDL+xL8Rhi
- LfUMG5xVJJ79H4D4eTOSxXwUuWsPy8l4oGKLu3mPyg==
-X-Google-Smtp-Source: AGHT+IGrfQfM/nQmskK+cPGV1aFT0nuxobYolj+ZkjVdRIppg37vMIxEI+ruQx2dQ5qSrqzW9/ZjsxFbJgHA6LUqc4E=
-X-Received: by 2002:a05:6512:ea4:b0:4fb:8c52:611 with SMTP id
- bi36-20020a0565120ea400b004fb8c520611mr5810342lfb.38.1692624878896; Mon, 21
- Aug 2023 06:34:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qY56C-0007UY-L9
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:37:40 -0400
+Received: from mgamail.intel.com ([134.134.136.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qY569-00089z-O9
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:37:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692625057; x=1724161057;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=M+ae2WWZJRbnkbrcvS/1ir92dZk28ks8tEhtEglPDk4=;
+ b=KVTLUjATdkCG78j6tSSCQUCQ+aD22PpwBuI32uznFVZ0MmME5LdujS5B
+ CsInOBkhIj0Ufh9XJXlUmOAGrKwdfR/ADUxz9Q3LRcJQefTYib3bCP4iQ
+ DS3rBJbq7semfFvtlRZfDeppdBgFqmDKlPC3Aq1izCFQRcAoW954/MpLr
+ 6A/1vxZWd81Zh1cDjPQUerfRpFjRbq0Wv5iTixjknjAlh63oag3ylJYGm
+ JBcb7r/KISrFjo7Ft5Hki/vVYHKHhq+dMezMQXWC3AJnq/cTrjG9SYaTq
+ AEWRLTpqXlY/OCGzNp0Pv8bjZ3rxk4gt6P8l2TxELeP0udSD1rwDE09Gg w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="376340154"
+X-IronPort-AV: E=Sophos;i="6.01,190,1684825200"; d="scan'208";a="376340154"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2023 06:37:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="1066606579"
+X-IronPort-AV: E=Sophos;i="6.01,190,1684825200"; d="scan'208";a="1066606579"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77])
+ ([10.93.6.77])
+ by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2023 06:37:17 -0700
+Message-ID: <e031e715-8962-831f-a56a-935a006b8aa8@intel.com>
+Date: Mon, 21 Aug 2023 21:37:15 +0800
 MIME-Version: 1.0
-References: <20230810191626.81084-1-francisco.iglesias@amd.com>
- <20230810191626.81084-6-francisco.iglesias@amd.com>
-In-Reply-To: <20230810191626.81084-6-francisco.iglesias@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 21 Aug 2023 14:34:28 +0100
-Message-ID: <CAFEAcA8tQh=xwndU=jrnn5WAwKfYpBC0Kpwdvoc4UF+Ca-auRw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/8] hw/misc: Introduce a model of Xilinx Versal's
- CFRAME_REG
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 03/58] target/i386: Parse TDX vm type
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-4-xiaoyao.li@intel.com> <ZOMf6AMe1ShL3rjC@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZOMf6AMe1ShL3rjC@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -77
+X-Spam_score: -7.8
+X-Spam_bar: -------
+X-Spam_report: (-7.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-3.374,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,344 +95,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 20:16, Francisco Iglesias
-<francisco.iglesias@amd.com> wrote:
->
-> Introduce a model of Xilinx Versal's Configuration Frame controller
-> (CFRAME_REG).
->
-> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
-> ---
->  MAINTAINERS                              |   2 +
->  hw/misc/meson.build                      |   1 +
->  hw/misc/xlnx-versal-cframe-reg.c         | 753 +++++++++++++++++++++++
->  include/hw/misc/xlnx-versal-cframe-reg.h | 289 +++++++++
->  4 files changed, 1045 insertions(+)
->  create mode 100644 hw/misc/xlnx-versal-cframe-reg.c
->  create mode 100644 include/hw/misc/xlnx-versal-cframe-reg.h
+On 8/21/2023 4:27 PM, Daniel P. Berrangé wrote:
+> On Fri, Aug 18, 2023 at 05:49:46AM -0400, Xiaoyao Li wrote:
+>> TDX VM requires VM type KVM_X86_TDX_VM to be passed to
+>> kvm_ioctl(KVM_CREATE_VM).
+>>
+>> If tdx-guest object is specified to confidential-guest-support, like,
+>>
+>>    qemu -machine ...,confidential-guest-support=tdx0 \
+>>         -object tdx-guest,id=tdx0,...
+>>
+>> it parses VM type as KVM_X86_TDX_VM.
+>>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>>   target/i386/kvm/kvm.c | 10 +++++++++-
+>>   1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> index 62f237068a3a..77f4772afe6c 100644
+>> --- a/target/i386/kvm/kvm.c
+>> +++ b/target/i386/kvm/kvm.c
+>> @@ -32,6 +32,7 @@
+>>   #include "sysemu/runstate.h"
+>>   #include "kvm_i386.h"
+>>   #include "sev.h"
+>> +#include "tdx.h"
+>>   #include "xen-emu.h"
+>>   #include "hyperv.h"
+>>   #include "hyperv-proto.h"
+>> @@ -158,6 +159,7 @@ static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
+>>   static const char* vm_type_name[] = {
+>>       [KVM_X86_DEFAULT_VM] = "default",
+>>       [KVM_X86_SW_PROTECTED_VM] = "sw-protected-vm",
+>> +    [KVM_X86_TDX_VM] = "tdx",
+>>   };
+>>   
+>>   int kvm_get_vm_type(MachineState *ms, const char *vm_type)
+>> @@ -170,12 +172,18 @@ int kvm_get_vm_type(MachineState *ms, const char *vm_type)
+>>               kvm_type = KVM_X86_DEFAULT_VM;
+>>           } else if (!g_ascii_strcasecmp(vm_type, "sw-protected-vm")) {
+>>               kvm_type = KVM_X86_SW_PROTECTED_VM;
+>> -        } else {
+>> +        } else if (!g_ascii_strcasecmp(vm_type, "tdx")) {
+>> +            kvm_type = KVM_X86_TDX_VM;
+>> +        }else {
+>>               error_report("Unknown kvm-type specified '%s'", vm_type);
+>>               exit(1);
+>>           }
+>>       }
+> 
+> This whole block of code should go away - as this should not exist
+> as a user visible property. It should be sufficient to use the
+> tdx-guest object type to identify use of TDX.
+> 
 
-> +static XlnxCFrame *cframes_get_frame(XlnxVersalCFrameReg *s, uint32_t addr)
-> +{
-> +    for (int i = 0; i < s->cframes->len; i++) {
-> +        XlnxCFrame *f = &g_array_index(s->cframes, XlnxCFrame, i);
-> +
-> +        if (f->addr == addr) {
-> +            return f;
-> +        }
-> +    }
-> +    return NULL;
-> +}
+yes, agreed.
 
-The handling of this and especially how it turns out in
-the migration support still feels quite awkward to me.
+It's here because this series is based on the gmem series, which 
+introduced property. I'm sorry that I forgot to mention it in the commit 
+message.
 
-The operations we want here seem to be:
- * find a cframe given the 'addr'
- * insert a new cframe for a given 'addr', overwriting any
-   old data
- * iterate through n cframes starting at a given 'addr'
+Next gmem series will drop the implementation of kvm-type property [1] 
+and above code will be dropped in next version as well.
 
-You can do this with a GTree
-https://developer-old.gnome.org/glib/stable/glib-Balanced-Binary-Trees.html
-You can use GUINT_TO_POINTER(addr) as the keys, and use
-a Fifo32 as your data. Insert-with-overwrite is
-g_tree_replace_node(). Find-a-frame is g_tree_lookup().
-Iterate through n cframes is
- for (node = g_tree_lookup(...), i = 0; i < n; node =
-g_tree_node_next(node), i++) {
-    ...
- }
+[1] 
+https://lore.kernel.org/qemu-devel/9b3a3e88-21f4-bfd2-a9c3-60a25832e698@intel.com/
 
-GTrees are supported by the migration code, there is a
-VMSTATE_GTREE_DIRECT_KEY_V() macro, so you don't need to
-do any pre-save or post-load hooks. (This to me is one
-of the main benefits of using it rather than a GArray.)
 
-Is the data in each cframe fixed-size, or can it vary?
-The impression I get is that each cframe is always the
-same amount of data, and we use a fifo purely to handle
-the "guest writes the frame data a word at a time and
-when it's all arrived we put it into the cframe data
-structure". If so, it might be simpler to use a fifo32
-for the new_f, but have the data in the gtree structure
-be a simple fixed-size block of memory.
-
-> +
-> +static void cframe_alloc(XlnxCFrame *f)
-> +{
-> +    f->addr = 0;
-> +    fifo32_create(&f->data, FRAME_NUM_WORDS);
-> +}
-> +
-> +static void cframe_move(XlnxCFrame *dst, XlnxCFrame *src)
-> +{
-> +    fifo32_destroy(&dst->data);
-> +    dst[0] = src[0];
-> +}
-> +
-> +static void cfrm_fdri_post_write(RegisterInfo *reg, uint64_t val)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(reg->opaque);
-> +
-> +    if (s->row_configured && s->rowon && s->wcfg) {
-> +        XlnxCFrame *new_f = &s->new_f;
-> +
-> +        if (fifo32_num_free(&new_f->data) >= N_WORDS_128BIT) {
-> +            fifo32_push(&new_f->data, s->regs[R_FDRI0]);
-> +            fifo32_push(&new_f->data, s->regs[R_FDRI1]);
-> +            fifo32_push(&new_f->data, s->regs[R_FDRI2]);
-> +            fifo32_push(&new_f->data, s->regs[R_FDRI3]);
-> +        }
-> +
-> +        if (fifo32_is_full(&new_f->data)) {
-> +            XlnxCFrame *cur_f;
-> +
-> +            /* Include block type and frame address */
-> +            new_f->addr = extract32(s->regs[R_FAR0], 0, 23);
-> +
-> +            cur_f = cframes_get_frame(s, new_f->addr);
-> +
-> +            if (cur_f) {
-> +                cframe_move(cur_f, new_f);
-> +            } else {
-> +                g_array_append_val(s->cframes, new_f[0]);
-> +            }
-> +
-> +            cframe_incr_far(s);
-> +
-> +            /* Realloc new_f */
-> +            cframe_alloc(new_f);
-> +        }
-> +    }
-> +}
-> +
-> +static void cfrm_readout_frames(XlnxVersalCFrameReg *s, uint32_t start_addr,
-> +                                uint32_t end_addr)
-> +{
-> +    for (uint32_t addr = start_addr; addr < end_addr; addr++) {
-> +        XlnxCFrame *f = cframes_get_frame(s, addr);
-> +
-> +        /* Transmit the data if a frame was found */
-> +        if (f) {
-> +            Fifo32 data = f->data;
-> +
-> +            while (!fifo32_is_empty(&data)) {
-> +                XlnxCfiPacket pkt = {};
-> +
-> +                g_assert(fifo32_num_used(&data) >= N_WORDS_128BIT);
-> +
-> +                pkt.data[0] = fifo32_pop(&data);
-> +                pkt.data[1] = fifo32_pop(&data);
-> +                pkt.data[2] = fifo32_pop(&data);
-> +                pkt.data[3] = fifo32_pop(&data);
-> +
-> +                if (s->cfg.cfu_fdro) {
-> +                    xlnx_cfi_transfer_packet(s->cfg.cfu_fdro, &pkt);
-> +                }
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +static void cfrm_frcnt_post_write(RegisterInfo *reg, uint64_t val)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(reg->opaque);
-> +
-> +    if (s->row_configured && s->rowon && s->rcfg) {
-> +        uint32_t start_addr = extract32(s->regs[R_FAR0], 0, 23);
-> +        uint32_t end_addr = start_addr + s->regs[R_FRCNT0] / FRAME_NUM_QWORDS;
-> +
-> +        cfrm_readout_frames(s, start_addr, end_addr);
-> +    }
-> +}
-
-> +static void cframe_reg_cfi_transfer_packet(XlnxCfiIf *cfi_if,
-> +                                           XlnxCfiPacket *pkt)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(cfi_if);
-> +    uint64_t we = MAKE_64BIT_MASK(0, 4 * 8);
-> +
-> +    if (!s->row_configured) {
-> +        return;
-> +    }
-> +
-> +    switch (pkt->reg_addr) {
-> +    case CFRAME_FAR:
-> +        s->regs[R_FAR0] = pkt->data[0];
-> +        break;
-> +    case CFRAME_SFR:
-> +        s->regs[R_FAR_SFR0] = pkt->data[0];
-> +        register_write(&s->regs_info[R_FAR_SFR3], 0,
-> +                       we, object_get_typename(OBJECT(s)),
-> +                       XLNX_VERSAL_CFRAME_REG_ERR_DEBUG);
-> +        break;
-> +    case CFRAME_FDRI:
-> +    {
-> +        s->regs[R_FDRI0] = pkt->data[0];
-> +        s->regs[R_FDRI1] = pkt->data[1];
-> +        s->regs[R_FDRI2] = pkt->data[2];
-> +        register_write(&s->regs_info[R_FDRI3], pkt->data[3],
-> +                       we, object_get_typename(OBJECT(s)),
-> +                       XLNX_VERSAL_CFRAME_REG_ERR_DEBUG);
-> +        break;
-> +    }
-
-The braces here seem to be unnecessary ?
-
-> +    case CFRAME_CMD:
-> +        ARRAY_FIELD_DP32(s->regs, CMD0, CMD, pkt->data[0]);
-> +
-> +        register_write(&s->regs_info[R_CMD3], 0,
-> +                       we, object_get_typename(OBJECT(s)),
-> +                       XLNX_VERSAL_CFRAME_REG_ERR_DEBUG);
-> +        break;
-> +    default:
-> +        break;
-> +    }
-> +}
-
-> +static void cframe_reg_reset_enter(Object *obj, ResetType type)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(obj);
-> +    unsigned int i;
-> +
-> +    for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
-> +        register_reset(&s->regs_info[i]);
-> +    }
-> +    memset(s->wfifo, 0, WFIFO_SZ * sizeof(uint32_t));
-
-Doesn't reset also need to do something about s->new_f
-and the other cframes ?
-
-> +}
-
-> +static int cframes_reg_pre_save(void *opaque)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(opaque);
-> +    uint32_t *cf_data;
-> +
-> +    s->cf_dlen = s->cframes->len * MIG_CFRAME_SZ;
-> +    s->cf_data = g_new(uint8_t, s->cf_dlen);
-> +
-> +    cf_data = (uint32_t *) s->cf_data;
-> +
-> +    for (int i = 0; i < s->cframes->len; i++) {
-> +        XlnxCFrame *f = &g_array_index(s->cframes, XlnxCFrame, i);
-> +        Fifo32 data = f->data;
-> +
-> +        *cf_data++ = f->addr;
-> +
-> +        while (!fifo32_is_empty(&data)) {
-> +            *cf_data++ = fifo32_pop(&data);
-> +        }
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static int cframes_reg_post_load(void *opaque, int version_id)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(opaque);
-> +
-> +    if (s->cf_dlen) {
-> +        uint32_t num_frames = s->cf_dlen / MIG_CFRAME_SZ;
-> +        uint32_t *cf_data = (uint32_t *) s->cf_data;
-> +        XlnxCFrame new_f;
-> +
-> +        for (int i = 0; i < num_frames; i++) {
-> +            cframe_alloc(&new_f);
-> +
-> +            new_f.addr = *cf_data++;
-> +
-> +            while (!fifo32_is_full(&new_f.data)) {
-> +                fifo32_push(&new_f.data, *cf_data++);
-> +            }
-> +
-> +            g_array_append_val(s->cframes, new_f);
-> +        }
-> +    }
-> +
-> +    g_free(s->cf_data);
-> +    s->cf_data = NULL;
-> +    s->cf_dlen = 0;
-> +
-> +    return 0;
-> +}
-> +
-> +static const VMStateDescription vmstate_cframe_reg = {
-> +    .name = TYPE_XLNX_VERSAL_CFRAME_REG,
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .pre_save = cframes_reg_pre_save,
-> +    .post_load = cframes_reg_post_load,
-> +    .fields = (VMStateField[]) {
-> +        VMSTATE_UINT32_ARRAY(wfifo, XlnxVersalCFrameReg, 4),
-> +        VMSTATE_UINT32_ARRAY(regs, XlnxVersalCFrameReg, CFRAME_REG_R_MAX),
-> +        VMSTATE_BOOL(rowon, XlnxVersalCFrameReg),
-> +        VMSTATE_BOOL(wcfg, XlnxVersalCFrameReg),
-> +        VMSTATE_BOOL(rcfg, XlnxVersalCFrameReg),
-> +        VMSTATE_VARRAY_UINT32_ALLOC(cf_data, XlnxVersalCFrameReg, cf_dlen,
-> +                                    0, vmstate_info_uint8, uint8_t),
-> +        VMSTATE_END_OF_LIST(),
-
-This seems to omit migration of s->new_f.
-
-> +    }
-> +};
-> +
-> +static Property cframe_regs_props[] = {
-> +    DEFINE_PROP_LINK("cfu-fdro", XlnxVersalCFrameReg, cfg.cfu_fdro,
-> +                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-> +    DEFINE_PROP_UINT32("blktype0-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[0], 0),
-> +    DEFINE_PROP_UINT32("blktype1-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[1], 0),
-> +    DEFINE_PROP_UINT32("blktype2-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[2], 0),
-> +    DEFINE_PROP_UINT32("blktype3-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[3], 0),
-> +    DEFINE_PROP_UINT32("blktype4-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[4], 0),
-> +    DEFINE_PROP_UINT32("blktype5-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[5], 0),
-> +    DEFINE_PROP_UINT32("blktype6-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[6], 0),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +static void cframe_reg_class_init(ObjectClass *klass, void *data)
-> +{
-> +    ResettableClass *rc = RESETTABLE_CLASS(klass);
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    XlnxCfiIfClass *xcic = XLNX_CFI_IF_CLASS(klass);
-> +
-> +    dc->vmsd = &vmstate_cframe_reg;
-> +    dc->realize = cframe_reg_realize;
-> +    rc->phases.enter = cframe_reg_reset_enter;
-> +    rc->phases.hold = cframe_reg_reset_hold;
-> +    device_class_set_props(dc, cframe_regs_props);
-> +    xcic->cfi_transfer_packet = cframe_reg_cfi_transfer_packet;
-> +}
-> +
-> +static const TypeInfo cframe_reg_info = {
-> +    .name          = TYPE_XLNX_VERSAL_CFRAME_REG,
-> +    .parent        = TYPE_SYS_BUS_DEVICE,
-> +    .instance_size = sizeof(XlnxVersalCFrameReg),
-> +    .class_init    = cframe_reg_class_init,
-> +    .instance_init = cframe_reg_init,
-> +    .interfaces = (InterfaceInfo[]) {
-> +        { TYPE_XLNX_CFI_IF },
-> +        { }
-> +    }
-> +};
-> +
-> +static void cframe_reg_register_types(void)
-> +{
-> +    type_register_static(&cframe_reg_info);
-> +}
-> +
-> +type_init(cframe_reg_register_types)
-
-thanks
--- PMM
 
