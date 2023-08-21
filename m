@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF66278212D
+	by mail.lfdr.de (Postfix) with ESMTPS id CE23F78212C
 	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 03:25:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXtes-0002VG-Uj; Sun, 20 Aug 2023 21:24:42 -0400
+	id 1qXtfK-0002Yk-Qf; Sun, 20 Aug 2023 21:25:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXteq-0002Ur-QA
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 21:24:40 -0400
-Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXten-0000wM-Rf
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 21:24:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1692581075; bh=d+shdVQeeQ4OE3BXVJMbavRxKvsD8dfup4LM/xVSt6E=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=U7byCxF6VHVyaQyZ0wUxLDlJ6ustDiCu21aFtPV0D3Ve0lkIPLr8a6ZoSN4cpVLM7
- c8yxpvuvGQaANwtGu2nzh/yyO11mK2MYFpkIGkD7AB8Pijktl/0HcOIjvSAWS4SAkz
- XRCorI915eaBlKn7gJHxnIXziMl63WIO4d6Wp7d5eaS9e8DJJ8JxZcLyQUVPl8T3RF
- cXFkxWsTV93vP5dCxxpMwC3LcIOMlrI+hNuPrmcetS7Eib3vRA4+2eL34hSvwrBESd
- JALDeWQqttdcAJlHIf4+gICnHzQuuoT1DRWuZtmRF/DBNC0hO11OgA8YK09SThfKn0
- TKyLc77kTiqzA==
-Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id F3BBB3F21123;
- Sun, 20 Aug 2023 18:24:34 -0700 (PDT)
-X-Virus-Scanned: Debian amavis at keithp.com
-Received: from elaine.keithp.com ([127.0.0.1])
- by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id cOnwNlBiS59k; Sun, 20 Aug 2023 18:24:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1692581074; bh=d+shdVQeeQ4OE3BXVJMbavRxKvsD8dfup4LM/xVSt6E=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=MVuZUeSN6XeClnCbAlCBcoEWnKJd+u4qHqI9iIrjza/BokO8oPsvSGszk8/RJUXjU
- +PTFiY/w9wge4ZDt9glrw98O72OhtvL0/VzyuRtEwbacGtY+KKJJo0l3ur03nfSiZ8
- Y2NXZBl2lM4HYv5C4nxocRJBrnxUKLDw6Hwzbl6b5hgkC1bI5cmzVgL+yfrh1A2iUX
- Qzm6zZRzc2AmdC4S/Xfj73JVmXhUxMvAtDsqnq66/wfu28Fsx8Gxnu8jXFKLvruhED
- U9ZozRAVfa1NthVNRjDCHV2UUY8PRYXhUF9AYLAIthl+G/URt9jU02ZZ77krZaa3Pn
- ziblUXZfybm1g==
-Received: from keithp.com (unknown [98.97.112.104])
- by elaine.keithp.com (Postfix) with ESMTPSA id 156073F20FF0;
- Sun, 20 Aug 2023 18:24:34 -0700 (PDT)
-Received: by keithp.com (Postfix, from userid 1000)
- id C277F1E601E7; Sun, 20 Aug 2023 18:24:36 -0700 (PDT)
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] softfloat: Handle m68k extended precision denormals
- properly
-In-Reply-To: <20230821003237.376935-1-richard.henderson@linaro.org>
-References: <20230821003237.376935-1-richard.henderson@linaro.org>
-Date: Sun, 20 Aug 2023 18:24:36 -0700
-Message-ID: <877cppkx0r.fsf@keithp.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1qXtfH-0002Y5-Ek
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 21:25:07 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1qXtfD-0000xA-P5
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 21:25:07 -0400
+Received: from loongson.cn (unknown [10.20.42.170])
+ by gateway (Coremail) with SMTP id _____8Dx_+vlvOJk2HEaAA--.53108S3;
+ Mon, 21 Aug 2023 09:24:53 +0800 (CST)
+Received: from [10.20.42.170] (unknown [10.20.42.170])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxXSPkvOJkOB5fAA--.16960S3; 
+ Mon, 21 Aug 2023 09:24:52 +0800 (CST)
+Message-ID: <5b4b93c2-bfe2-09b0-facd-42f899767451@loongson.cn>
+Date: Mon, 21 Aug 2023 09:24:52 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
- helo=elaine.keithp.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] hw/loongarch: Fix ACPI processor id off-by-one error
+Content-Language: en-US
+To: Jiajie Chen <c@jia.je>
+Cc: richard.henderson@linaro.org, gaosong@loongson.cn,
+ zhaotianrui@loongson.cn, qemu-devel@nongnu.org, =?UTF-8?B?5p2O6aaZ5p2l?=
+ <lixianglai@loongson.cn>
+References: <20230820105658.99123-2-c@jia.je>
+From: bibo mao <maobibo@loongson.cn>
+In-Reply-To: <20230820105658.99123-2-c@jia.je>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxXSPkvOJkOB5fAA--.16960S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tF18AF4rJr1fZF4fWF4ftFc_yoW8KrWkpF
+ Wjv3ykKr1kGr4fC3s7Aas2gFyrJr4kGw47ZF4xKrykAa4xWry0qF10krZIvFZrCw1rC3Z2
+ vr4Utw1UWF43AFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1EksDUU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.279,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,85 +78,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Keith Packard <keithp@keithp.com>
-From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
++ Add xianglai
+
+Good catch.
+
+In theory, it is logical id, and it can be not equal to physical id.
+However it must be equal to _UID in cpu dsdt table which is missing
+now.
+
+Can pptt table parse error be fixed if cpu dsdt table is added?
+
+Regards
+Bibo Mao
 
 
-> Motorola treats denormals with explicit integer bit set as
-> having unbiased exponent 0, unlike Intel which treats it as
-> having unbiased exponent 1 (like all other IEEE formats).
+在 2023/8/20 18:56, Jiajie Chen 写道:
+> In hw/acpi/aml-build.c:build_pptt() function, the code assumes that the
+> ACPI processor id equals to the cpu index, for example if we have 8
+> cpus, then the ACPI processor id should be in range 0-7.
+> 
+> However, in hw/loongarch/acpi-build.c:build_madt() function we broke the
+> assumption. If we have 8 cpus again, the ACPI processor id in MADT table
+> would be in range 1-8. It violates the following description taken from
+> ACPI spec 6.4 table 5.138:
+> 
+> If the processor structure represents an actual processor, this field
+> must match the value of ACPI processor ID field in the processor’s entry
+> in the MADT.
+> 
+> It will break the latest Linux 6.5-rc6 with the
+> following error message:
+> 
+> ACPI PPTT: PPTT table found, but unable to locate core 7 (8)
+> Invalid BIOS PPTT
+> 
+> Here 7 is the last cpu index, 8 is the ACPI processor id learned from
+> MADT.
+> 
+> With this patch, Linux can properly detect SMT threads when "-smp
+> 8,sockets=1,cores=4,threads=2" is passed:
+> 
+> Thread(s) per core:  2
+> Core(s) per socket:  2
+> Socket(s):           2
+> 
+> The detection of number of sockets is still wrong, but that is out of
+> scope of the commit.
+> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> ---
+>  hw/loongarch/acpi-build.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+> index 0b62c3a2f7..ae292fc543 100644
+> --- a/hw/loongarch/acpi-build.c
+> +++ b/hw/loongarch/acpi-build.c
+> @@ -127,7 +127,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
+>          build_append_int_noprefix(table_data, 17, 1);    /* Type */
+>          build_append_int_noprefix(table_data, 15, 1);    /* Length */
+>          build_append_int_noprefix(table_data, 1, 1);     /* Version */
+> -        build_append_int_noprefix(table_data, i + 1, 4); /* ACPI Processor ID */
+> +        build_append_int_noprefix(table_data, i, 4);     /* ACPI Processor ID */
+>          build_append_int_noprefix(table_data, arch_id, 4); /* Core ID */
+>          build_append_int_noprefix(table_data, 1, 4);     /* Flags */
+>      }
 
-Thanks for having a look at this. Your patch fixes a couple of cases,
-but there are further adventures that await if you're interested.
-
-           x:  0x1p0                      0x3fff 0x80000000 0x00000000
-           y:  0x1p-16383                 0x0000 0x80000000 0x00000000
-   build_mul:  0x1p-16382                 0x0000 0x80000000 0x00000000
- runtime_mul:  0x1p-16383                 0x0001 0x80000000 0x00000000
-
-I think the enclosed additional patch fixes this. I've still got 75 fmal
-failures on this target, but the obvious 'multiply is broken' problem
-appears fixed.
-
-From=20b722c92f8329f56f5243496eca3779f1156aff4f Mon Sep 17 00:00:00 2001
-From: Keith Packard <keithp@keithp.com>
-Date: Sun, 20 Aug 2023 18:20:13 -0700
-Subject: [PATCH] softfloat: Handle m68k LDBL_MIN_EXP normal values
-
-Unlike Intel 80-bit floats, Motorola allows for normal values with a
-zero exponent. Handle that by not setting exponent to 1 when the value
-is normal for this format.
-
-Signed-off-by: Keith Packard <keithp@keithp.com>
-=2D--
- fpu/softfloat-parts.c.inc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index d0c43c28fb..cea854cdf1 100644
-=2D-- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -288,7 +288,7 @@ static void partsN(uncanon_normal)(FloatPartsN *p, floa=
-t_status *s,
-             p->frac_lo &=3D ~round_mask;
-         }
-=20
-=2D        exp =3D (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) !=3D 0;
-+        exp =3D (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) !=3D 0 && !fmt->m68=
-k_denormal;
-         frac_shr(p, frac_shift);
-=20
-         if (is_tiny && (flags & float_flag_inexact)) {
-=2D-=20
-2.40.1
-
-=2D-=20
-=2Dkeith
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmTivNQACgkQ2yIaaQAA
-ABEP7Q//Vpu3XULzWBw3jU/2jltEgwbn98PhtZC7TiaS6z9zz7R/2ixsg2RdfS77
-tZ9V3t/Ra4KwFVsAdKKlxJM97TrP1tWhrY7yXAdWsbGjyzbs9wQVWILOwHj1Y2Ex
-HupMQfDSHJxT3BLjV4ZjSTpGqofyfK3fxre9hnnXDrlHNUYM39tf5TJODdKMPheT
-4LLxCE0vS4jH1DDZTjIITwpMWimtdGCmA3YF4e6RxrkylP843fURH3T5z6mXomGN
-Tcgn9XzqYvMrOWe1z7J6H7JHlhUyb/Tj9y81i/QkufifrEuyflAkRb2FBSFXX+ZA
-IdwL/jzB0uHZAjLXGhEacGcScHHmH10pGvqh8f6qheRwWY9Uj8xlwFtpfRBj5iID
-+s2TjzOfabTJsq2LRB9DfUyhmRi30DiEQKkWO61Uh/58KWOeoA3zipaiQAMFvMpk
-eN+Xr0KIdapAvk6BFxaLQArRh5iZCCJmPfYnZUVl5TVrAX9vrxcbmerj9AGmrn64
-vmPFW5KgX5Zpt3JaVmkFHhZEvVXjVqjixaIS6c5zJcTPRCrfcJCHkhBgJQG6H+/m
-DBWW0JyPHC3U/Ww3soOGok2Z7yG1rjZbDV/GO7Xdrb30TISzCtbQzq4uR6z6FkFm
-+DWp0bPyJh5746M4Ed3KuEQySxgW/+OPw8fvl0/2bzu0JXaBJCQ=
-=ec9u
------END PGP SIGNATURE-----
---=-=-=--
 
