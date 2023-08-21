@@ -2,95 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E880F782578
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 10:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D848678258B
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 10:35:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY0Jj-0005SO-FM; Mon, 21 Aug 2023 04:31:20 -0400
+	id 1qY0NC-00075s-Uj; Mon, 21 Aug 2023 04:34:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qY0Jc-0005Pe-0Q
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:31:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qY0NA-00075h-LI
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:34:52 -0400
+Received: from mout.kundenserver.de ([212.227.126.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qY0JW-0001RI-RP
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:31:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692606666;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=osShmlhSLm6as0q0/K5ahFfuxapUA1DPWiguusUWPn8=;
- b=PRqIpua5QhnvwMyTjKh7AjogNVRnZ8djEjDthr06jkopxSU16hnV+SDskouOg1NLNYwTxF
- W9qTB1GfTXtg63Ok3fGKfV6GgwjWdhK7TqHQvIsx8GNr0VNqtVGajcWbj1CLc0jYUJAjH6
- SfXl49ax18t2tkmEJDZPzv88cMnmUtg=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-410-1A8Fx_XgMyiXRf8OW7cPxA-1; Mon, 21 Aug 2023 04:31:04 -0400
-X-MC-Unique: 1A8Fx_XgMyiXRf8OW7cPxA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b710c5677eso32335371fa.0
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 01:31:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692606663; x=1693211463;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=osShmlhSLm6as0q0/K5ahFfuxapUA1DPWiguusUWPn8=;
- b=Fapk5qOCDK25WGeV5iDpqjroHqb/TUE1ekNVmWrZGqthJq3FJPaaFnI9u9JwKWjLbM
- PtpEHfRXGQ635C4j+KGQSptwL0IcitHPutflBJgNcyAgAs8BqbSsDLZJ2rnAmBPB/etv
- BplyuqqpgS92evulJvfiKSr1cgq5anw8M2PBCrQIQ1QjM4Icj1nJi+6ZbRKQBCo1GX5d
- 8JS4WJUV4nkfAiSHPFpLXker5XUU8Sad4XS+SngA4OcjwBp23AGKdOfF6dJnvqdcxLPS
- rZ0DAQ3MVlwh9SmCRc8YjIAKARR+Atlw1cVMgDBPt2kMjcjQKFpI+o72lcHE98l5Wp0p
- oDAA==
-X-Gm-Message-State: AOJu0YykyHW5CJNzCeLTK4UXOdrMyUERQjQc0K03DjL6ZBaZzpU8uqSD
- K+m+TRFXL6QY07QE9vC73bqzrOvKLzmMXwChq0uV+4WIAGBC2c208hmBBNlKXJM/BQF2I13S0kJ
- XJktMCd570VDJjtQ=
-X-Received: by 2002:a05:651c:14f:b0:2bc:c4af:36b9 with SMTP id
- c15-20020a05651c014f00b002bcc4af36b9mr289337ljd.52.1692606663184; 
- Mon, 21 Aug 2023 01:31:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF6drYz7yvz7YdUTHjtBy52bEREn41lFz+l7y/8u/T1VnaBRX89otvv8n+I/9GhD1cUmfMJg==
-X-Received: by 2002:a05:651c:14f:b0:2bc:c4af:36b9 with SMTP id
- c15-20020a05651c014f00b002bcc4af36b9mr289312ljd.52.1692606662771; 
- Mon, 21 Aug 2023 01:31:02 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- 15-20020a05600c028f00b003fee8793911sm6009011wmk.44.2023.08.21.01.31.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Aug 2023 01:31:02 -0700 (PDT)
-Message-ID: <a68102e5-bc67-52b0-c72b-5bca9c472c4e@redhat.com>
-Date: Mon, 21 Aug 2023 10:31:01 +0200
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qY0N6-0001zf-3B
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 04:34:52 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1N5FxN-1pZPOP0a9d-0117wp; Mon, 21 Aug 2023 10:34:40 +0200
+Message-ID: <75b13a6f-5866-4948-00fb-fbfdb7866e3d@vivier.eu>
+Date: Mon, 21 Aug 2023 10:34:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v3 5/5] target/s390x: AP-passthrough for PV guests
-Content-Language: en-US
-To: Steffen Eiden <seiden@linux.ibm.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Janosch Frank <frankja@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Michael Mueller <mimu@linux.vnet.ibm.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20230818111520.698615-1-seiden@linux.ibm.com>
- <20230818111520.698615-6-seiden@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230818111520.698615-6-seiden@linux.ibm.com>
+Subject: Re: Funny results with long double denorms on m68k
+Content-Language: fr
+To: Keith Packard <keithp@keithp.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <87bkf1l9hf.fsf@keithp.com>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <87bkf1l9hf.fsf@keithp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -63
-X-Spam_score: -6.4
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:lGQRLX6U/YoOsDS1XOKuBeJWLU97AC02EGB4hLL5MGhs2ECKLPV
+ t7zfuaImHpY6vpOe9907yA9OuAfaC2W0uoZSRpFTmnZ1eJ9glfLr5y69+WseQltJ104D9I/
+ WyvKB6KPIDseKlWn27sDcByTvTHS3FKbWUGjPKMm2yn8vSh9bdIam0AiY/BG3Aa/ZgLZtnZ
+ bxhsb7nrYWjb0PFEpotIA==
+UI-OutboundReport: notjunk:1;M01:P0:F16c1T6wDUE=;W+IlWp7uAbgFQkXjx/AE4tZc5hC
+ 8Vg0Fr63xSeNSYM8ZHKnyvngXizTke0rMNrXRj0Nw+Tt0mNCjPvD6xU1hwwp/HtXE6vwj//p1
+ 2BRxycbDnAvbjnpEQmeVFgFpg6XhM8f0JE1q8tmPTYdtHXCdUDajIjQutwbw0qpauWiNNI+OF
+ /sgJb4Fd5phv5BBawdzu9HQfGBHYTyncoi/UYHM0Rbz2gdfzwWFXdGtUZNZNL60A8u6bgdhvi
+ phcxNbOgrhsA83nWe452GSkew8fL4yKyDlFwGhMtQccdmxS3g9rRNl05cWsoFdJ8dfnuzrWo3
+ D63dElgJB2gnipbxleJUgA44KNpH9O2F1cbd2tog9ICwhGN5cEcMMQLM6bJDiQZKaL4nW5FiI
+ 551O7InSNWeiIBBSUMMfMXQ8yrKksnvgSAuf2vXLlPtoJa8Wmi1hjfmgev1F9y1DAxu5bTSSm
+ dT9CqH/3DHeYHpvEB9pyAwRjh93LnMSU1KhHwZmN4FNvJCa5f/vtfL+uKxfac02jRmezQGVhI
+ NIb35MO3N/96uI9R0g3ElkNs/KBJxyyuT2aLgxAAPx7YqjgXkq3eXCJUFVLjzya00hL7KjV2/
+ 0pUemQs2w7vkbc/yue/cpwXeneFWw8xCYLAkeG+AnCCttJJ4tVbxtOXehH0FgSpK6Wqn1uXok
+ HgZoYXwvEGRgX/dDgc2jJdd+Pli1z922Ju6XxDOY7o5QBgPmoSPAxNOOKl+JZDnhOYIr3waTV
+ QrW1NTMaUd7muTyaheEKY4FikD+Ex3wop8fh3VOt6FEPWQuKr89vyuA8Q4lB0wWV/UJQo8AiR
+ BrDwK+Pd5SoT445N0fxIeC4p9qgjCRzKvVeqgpH4e1xQj9xiBY+xP9DH7qG+F4mFPADNyqF4k
+ L4nWvrjQ1hPACgg==
+Received-SPF: none client-ip=212.227.126.131; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -61
+X-Spam_score: -6.2
 X-Spam_bar: ------
-X-Spam_report: (-6.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.279, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.279,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,130 +74,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/08/2023 13.15, Steffen Eiden wrote:
-> Enabling AP-passthrough(AP-pt) for PV-guest by using the new CPU
-> features for PV-AP-pt of KVM.
+Le 20/08/2023 à 22:55, Keith Packard a écrit :
+> #include <stdio.h>
+> #include <stdint.h>
 > 
-> As usual QEMU first checks which CPU features are available and then
-> sets them if available and selected by user. An additional check is done
-> to verify that PV-AP can only be enabled if "regular" AP-pt is enabled
-> as well. Note that KVM itself does not enforce this restriction.
+> #define X       0x1p+16383l
+> #define Y       0x1p-16446l
 > 
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> ---
-...
-> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-> index a7e2cdf668..937387a768 100644
-> --- a/target/s390x/kvm/kvm.c
-> +++ b/target/s390x/kvm/kvm.c
-> @@ -2307,6 +2307,42 @@ static bool ap_enabled(const S390FeatBitmap features)
->       return test_bit(S390_FEAT_AP, features);
->   }
->   
-> +static bool uv_feat_supported(void)
-> +{
-> +    return kvm_vm_check_attr(kvm_state, KVM_S390_VM_CPU_MODEL,
-> +                             KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST);
-> +}
-> +
-> +static int query_uv_feat_guest(S390FeatBitmap features)
-> +{
-> +    struct kvm_s390_vm_cpu_uv_feat prop = {};
-> +    struct kvm_device_attr attr = {
-> +        .group = KVM_S390_VM_CPU_MODEL,
-> +        .attr = KVM_S390_VM_CPU_MACHINE_UV_FEAT_GUEST,
-> +        .addr = (uint64_t) &prop,
-> +    };
-> +    int rc;
-> +
-> +    // AP support check is currently the only user of the UV feature test.
+> static long double build_mul = X * Y;
+> static volatile long double x = X;
+> static volatile long double y = Y;
+> 
+> static void
+> dump_ld(const char *label, long double ld)
+> {
+>      union {
+>          long double     d;
+>          struct {
+>              uint32_t    exp:16;
+>              uint32_t    space:16;
+>              uint32_t    h;
+>              uint32_t    l;
+>          };
+>      } u;
+> 
+>      u.d = ld;
+>      printf("%12s: % -27La 0x%04x 0x%08x 0x%08x\n", label, u.d, u.exp, u.h, u.l);
+> }
+> 
+> int main(void)
+> {
+>      long double runtime_mul = x * y;
+> 
+>      dump_ld("x", x);
+>      dump_ld("y", y);
+>      dump_ld("build_mul", build_mul);
+>      dump_ld("runtime_mul", runtime_mul);
+>      return 0;
+> }
 
-Cosmetical nit: QEMU coding style mandates /* ... */ comments
+FYI, result of this program on a real hardware (q800/m68040) is:
 
-> +    if (!(uv_feat_supported() && ap_available())) {
-> +        return 0;
-> +    }
-> +
-> +    rc = kvm_vm_ioctl(kvm_state, KVM_GET_DEVICE_ATTR, &attr);
-> +    if (rc) {
-> +        return  rc;
-> +    }
-> +
-> +    if (prop.ap) {
-> +        set_bit(S390_FEAT_UV_FEAT_AP, features);
-> +    }
-> +    if (prop.ap_intr) {
-> +        set_bit(S390_FEAT_UV_FEAT_AP_INTR, features);
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   static int kvm_to_feat[][2] = {
->       { KVM_S390_VM_CPU_FEAT_ESOP, S390_FEAT_ESOP },
->       { KVM_S390_VM_CPU_FEAT_SIEF2, S390_FEAT_SIE_F2 },
-> @@ -2501,11 +2537,39 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
->           set_bit(S390_FEAT_DIAG_318, model->features);
->       }
->   
-> +    /* Test for Ultravisor features that influence secure guest behavior */
-> +    query_uv_feat_guest(model->features);
-> +
->       /* strip of features that are not part of the maximum model */
->       bitmap_and(model->features, model->features, model->def->full_feat,
->                  S390_FEAT_MAX);
->   }
->   
-> +static int configure_uv_feat_guest(const S390FeatBitmap features)
-> +{
-> +
+            x:  0x8p+16380                 0x7ffe 0x80000000 0x00000000
+            y:  0x0.000000000000001p-16386 0x0000 0x00000000 0x00000001
+    build_mul:  0x8p-66                    0x3fc0 0x80000000 0x00000000
+  runtime_mul:  0x8p-66                    0x3fc0 0x80000000 0x00000000
 
-Nit: Please remove the empty line.
-
-> +    struct kvm_s390_vm_cpu_uv_feat uv_feat = {};
-> +    struct kvm_device_attr attribute = {
-> +        .group = KVM_S390_VM_CPU_MODEL,
-> +        .attr = KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST,
-> +        .addr = (__u64) &uv_feat,
-> +    };
-> +
-> +    // AP support check is currently the only user of the UV feature test.
-
-Nit: /* ... */ comment, please
-
-> +    if (!(uv_feat_supported() && ap_enabled(features))) {
-> +        return 0;
-> +    }
-> +
-> +    if (test_bit(S390_FEAT_UV_FEAT_AP, features)) {
-> +        uv_feat.ap = 1;
-> +    }
-> +    if (test_bit(S390_FEAT_UV_FEAT_AP_INTR, features)) {
-> +        uv_feat.ap_intr = 1;
-> +    }
-> +
-> +    return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attribute);
-> +}
-> +
->   static void kvm_s390_configure_apie(bool interpret)
->   {
->       uint64_t attr = interpret ? KVM_S390_VM_CRYPTO_ENABLE_APIE :
-> @@ -2569,6 +2633,13 @@ void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
->       if (ap_enabled(model->features)) {
->           kvm_s390_configure_apie(true);
->       }
-> +
-> +    /* configure UV-features for the guest indicated via query / test_bit */
-> +    rc = configure_uv_feat_guest(model->features);
-> +    if (rc) {
-> +        error_setg(errp, "KVM: Error configuring CPU UV features %d", rc);
-> +        return;
-> +    }
->   }
->   
->   void kvm_s390_restart_interrupt(S390CPU *cpu)
-
-With the nits fixed:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-
+Thanks,
+Laurent
 
