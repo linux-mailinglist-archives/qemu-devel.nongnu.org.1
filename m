@@ -2,71 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808D67826C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 12:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5747826C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 12:07:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY1mw-0005jL-80; Mon, 21 Aug 2023 06:05:34 -0400
+	id 1qY1ok-0006U3-Qh; Mon, 21 Aug 2023 06:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qY1ms-0005j5-Jf
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 06:05:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qY1oi-0006Tv-4M
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 06:07:24 -0400
+Received: from mout.kundenserver.de ([212.227.126.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qY1mq-0003ZY-0B
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 06:05:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692612327;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=RcsxCO40yfMmwnszlOwCtEvlVHI21Q9hLL8lzpOp0TQ=;
- b=Fsr6soY8TV9lCOjeqBDKbetFKwnz00KHeJYKSTeV7BRPoPKo9seOOZ0rz3MtasPNv8yLfp
- B2jp4/nfHC0CrTuKP/21HBGIA67FmWnq5Gt9LSpVxKezNF2EV7iSTnkQm2sdIgn3KCwvtg
- elxJ7Ep+5hR9wDyVfnQgeM4T5jPrthQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-693-AtqjKZowMy2LgW8f47Kzdg-1; Mon, 21 Aug 2023 06:05:25 -0400
-X-MC-Unique: AtqjKZowMy2LgW8f47Kzdg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3721A800C7A;
- Mon, 21 Aug 2023 10:05:25 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.139])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B334440D2843;
- Mon, 21 Aug 2023 10:05:23 +0000 (UTC)
-Date: Mon, 21 Aug 2023 11:05:21 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Jonah Palmer <jonah.palmer@oracle.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, laurent@vivier.eu,
- mst@redhat.com, boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
- viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
- eduardo@habkost.net
-Subject: Re: [PATCH v4 1/3] qmp: remove virtio_list, search QOM tree instead
-Message-ID: <ZOM24ZC7+lXXTBWl@redhat.com>
-References: <20230818171926.3136840-1-jonah.palmer@oracle.com>
- <20230818171926.3136840-2-jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qY1of-00048v-Kf
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 06:07:23 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1Mn2Jj-1pqP0W2ZwV-00kA2U; Mon, 21 Aug 2023 12:07:15 +0200
+Message-ID: <fe3ff30d-cf2c-0c45-b4f5-107dead420ac@vivier.eu>
+Date: Mon, 21 Aug 2023 12:07:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230818171926.3136840-2-jonah.palmer@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: Funny results with long double denorms on m68k
+Content-Language: fr
+From: Laurent Vivier <laurent@vivier.eu>
+To: Keith Packard <keithp@keithp.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <87bkf1l9hf.fsf@keithp.com>
+ <75b13a6f-5866-4948-00fb-fbfdb7866e3d@vivier.eu>
+In-Reply-To: <75b13a6f-5866-4948-00fb-fbfdb7866e3d@vivier.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:vps4mOigRLtgmGheiWP1m0QFWT7G3yX0dbBtxmjC5oyBNmGmtXr
+ /7fvucsH9iWzE/+8xf1IFtPl4vN7HUZB5a4d8VUUaBQlNayijMUiuDkg/tiI2WcP9DpTtmO
+ 2KKRcbFrvWaczmqGvEY7CpeT3h5bb5hNG99+jmxjYgyMwc/tkwX50IbyxW4YrKMRTe1nsrL
+ 2kxUnxGjdNiMiRKwPQJXA==
+UI-OutboundReport: notjunk:1;M01:P0:5Hb71H4mZs0=;6Jz2sUm/QBfWTTxR5jtLUsZO+Cz
+ Ujka9cTHK8dEgZoky8acS0OieL8zHnQzAx36iMhU6vcFx3MmM/i1xDZYUIzeSxqCZLHnEhAz6
+ +yXhRID2869KWFHydJ81gcVtGVP3dWFtQRYFb6n1HyV7QqPV7v/G8kZJMyvUn1hfw4jCE1Moe
+ TtL1Zx/1ttrzdAkYb7Kidf8Gbo+7dNT1sD+lSwbUqWnZH1dzm/NveopSAmMFqQRz2dtzyrZ3G
+ g9+wP7EcBimGt8CWPaAt3pz+yR01CPVW2v9Gji3aa+9rm1hHA4MRIntIrolGap1Mej3S53f8K
+ hIZdhlx2SFM5G88raFxI8NHTuEDZnOSBY7KSPV/3CCQP68hVwRTU4z2PZWotdGpEGg357zTga
+ n6/4nvK06c4QLhqnBVLzGB2n3I+PQ9nFupZk7TL0H18RBBx87Wzbp4/4UgBkKYrCXnQezaAXX
+ 6fulK7Q3LJ8ZEBBtyHYTyyNF95keYWmW/JahhzrP+PFC/wdbCN0NU4k89UL+Xv+M/gHBb+Gzl
+ W0VG5jb/dFuTjunw7W9SDy1AhWjpv7F+mHaeArkEQcUtDMWkvqUQK2pQa2usDI6tW77FQrhLR
+ 69POsOThx0uqe8TisYk83g2OOnXW+sgDI0wFvhg0ovUitdR2nZgMy/BC3faHQKoOXm8a2RzNZ
+ 7u5XHSoCbKcrPYxIfQAnW1KTStTTy9DxaFHQcxWnGQnPbn9301goPBm70Aq6RGLYRwoeOrksm
+ 7ncweQQ47tr04QZ95/cKrRBiyBpJWfBXpppD3bferALkAkgNDVpKzsW53xnrIi4NtZ7q+BTdW
+ 0uDFJBkPlpHPzaaD2wE7IAh1wmPq6mH8nBU+dOTiNaIIRNsw9hsctV4led5QEvGWX7FCFNyBB
+ Qhrhbe7Qx8Lp7/w==
+Received-SPF: none client-ip=212.227.126.131; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.279,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,103 +72,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 18, 2023 at 01:19:24PM -0400, Jonah Palmer wrote:
-> The virtio_list duplicates information about virtio devices that already
-> exist in the QOM composition tree. Instead of creating this list of
-> realized virtio devices, search the QOM composition tree instead.
+Le 21/08/2023 à 10:34, Laurent Vivier a écrit :
+> Le 20/08/2023 à 22:55, Keith Packard a écrit :
+>> #include <stdio.h>
+>> #include <stdint.h>
+>>
+>> #define X       0x1p+16383l
+>> #define Y       0x1p-16446l
+>>
+>> static long double build_mul = X * Y;
+>> static volatile long double x = X;
+>> static volatile long double y = Y;
+>>
+>> static void
+>> dump_ld(const char *label, long double ld)
+>> {
+>>      union {
+>>          long double     d;
+>>          struct {
+>>              uint32_t    exp:16;
+>>              uint32_t    space:16;
+>>              uint32_t    h;
+>>              uint32_t    l;
+>>          };
+>>      } u;
+>>
+>>      u.d = ld;
+>>      printf("%12s: % -27La 0x%04x 0x%08x 0x%08x\n", label, u.d, u.exp, u.h, u.l);
+>> }
+>>
+>> int main(void)
+>> {
+>>      long double runtime_mul = x * y;
+>>
+>>      dump_ld("x", x);
+>>      dump_ld("y", y);
+>>      dump_ld("build_mul", build_mul);
+>>      dump_ld("runtime_mul", runtime_mul);
+>>      return 0;
+>> }
 > 
-> This patch modifies the QMP command qmp_x_query_virtio to instead
-> recursively search the QOM composition tree for devices of type
-> 'TYPE_VIRTIO_DEVICE'. The device is also checked to ensure it's
-> realized.
+> FYI, result of this program on a real hardware (q800/m68040) is:
 > 
-> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-> ---
+>             x:  0x8p+16380                 0x7ffe 0x80000000 0x00000000
+>             y:  0x0.000000000000001p-16386 0x0000 0x00000000 0x00000001
+>     build_mul:  0x8p-66                    0x3fc0 0x80000000 0x00000000
+>   runtime_mul:  0x8p-66                    0x3fc0 0x80000000 0x00000000
 > 
->  Jonah: In the v2 patches, the qmp_x_query_virtio function was
->  iterating through devices found via. qmp_qom_list and appending
->  "/virtio-backend" to devices' paths to check if they were a virtio
->  device.
-> 
->  This method was messy and involved unneeded string manipulation.
-> 
->  Instead, we can use recursion with object_get_root to iterate through
->  all parent and child device paths to find virtio devices.
-> 
->  The qmp_find_virtio_device function was also updated to simplify the
->  method of determining if a path is to a valid and realized virtio
->  device.
-> 
->  hw/virtio/virtio-qmp.c | 88 +++++++++++++++---------------------------
->  hw/virtio/virtio-qmp.h |  7 ----
->  hw/virtio/virtio.c     |  6 ---
->  3 files changed, 32 insertions(+), 69 deletions(-)
-> 
-> diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-> index 7515b0947b..ac5f0ee0ee 100644
-> --- a/hw/virtio/virtio-qmp.c
-> +++ b/hw/virtio/virtio-qmp.c
-> @@ -667,70 +667,46 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
->      return features;
->  }
->  
-> -VirtioInfoList *qmp_x_query_virtio(Error **errp)
-> +static int query_dev_child(Object *child, void *opaque)
->  {
-> -    VirtioInfoList *list = NULL;
-> -    VirtioInfo *node;
-> -    VirtIODevice *vdev;
-> +    VirtioInfoList **vdevs = opaque;
-> +    Object *dev = object_dynamic_cast(child, TYPE_VIRTIO_DEVICE);
-> +    if (dev != NULL && DEVICE(dev)->realized) {
-> +        VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +
-> +        VirtioInfo *info = g_new(VirtioInfo, 1);
-> +
-> +        /* Get canonical path of device */
-> +        g_autofree char *path = object_get_canonical_path(dev);
->  
-> -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
-> -        DeviceState *dev = DEVICE(vdev);
-> -        Error *err = NULL;
-> -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
-> -
-> -        if (err == NULL) {
-> -            GString *is_realized = qobject_to_json_pretty(obj, true);
-> -            /* virtio device is NOT realized, remove it from list */
-> -            if (!strncmp(is_realized->str, "false", 4)) {
-> -                QTAILQ_REMOVE(&virtio_list, vdev, next);
-> -            } else {
-> -                node = g_new(VirtioInfo, 1);
-> -                node->path = g_strdup(dev->canonical_path);
-> -                node->name = g_strdup(vdev->name);
-> -                QAPI_LIST_PREPEND(list, node);
-> -            }
-> -           g_string_free(is_realized, true);
-> -        }
-> -        qobject_unref(obj);
-> +        info->path = g_strdup(path);
 
-Just call object_get_canonical_path(dev) directly and avoid
-duplicating & freeing the intermediate 'path' variable
+When I developped the FPU emulation I compared the result of QEMU and a real hardware using 
+https://github.com/vivier/m68k-testfloat and https://github.com/vivier/m68k-softfloat
 
-> +        info->name = g_strdup(vdev->name);
-> +        QAPI_LIST_PREPEND(*vdevs, info);
->      }
-> +    return 0;
-> +}
->  
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Thanks,
+Laurent
 
 
