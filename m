@@ -2,76 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1459A7820F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 02:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF66278212D
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 03:25:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXsqa-0001iA-SD; Sun, 20 Aug 2023 20:32:44 -0400
+	id 1qXtes-0002VG-Uj; Sun, 20 Aug 2023 21:24:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXsqZ-0001hn-F2
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 20:32:43 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qXsqX-00009d-3A
- for qemu-devel@nongnu.org; Sun, 20 Aug 2023 20:32:43 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3a78a29bca3so2052901b6e.0
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 17:32:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692577959; x=1693182759;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=6jTK5S+/19Rgt22kVhE3usOa9jqvvDn75V8SaSLGO4w=;
- b=Go+4bgDQLUGC8Youb61vIUApRDsXbDdO97pMbAYWA4ETXgZNbRoTG67Py8se6cnD0i
- RRIB/FEIg03ZOwwNfRwM+yqB0D65OwDBQlLUbhZrJsnrR0GX0dlrDQaWGXMkjjmK4IBX
- Srt8yS2OEsHPP5sk5oejsOhzE2hvD8r/uSmc8scH1KH/p0/VRYN7Yjk8PjV/FGWZR7Ry
- G6VGHm3FhK2VfXFCd/epHJaWOsRaNGxjBekQTC+Is+609pNL+20PI3IdTSueFIisehfJ
- Z/BZpdI4XDEi36f+p/3D4q5uAyU1mnPUcz+5ESlj+5uNmPwo0k0OowKbb/pZfVi0Z3Wf
- fCJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692577959; x=1693182759;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6jTK5S+/19Rgt22kVhE3usOa9jqvvDn75V8SaSLGO4w=;
- b=QpraScm4upEU5XAv7jFa76AzAWhYL/rEauPGs/piLcaWW8HBNV5tNOtcsZqMeiYc3z
- la8IuoTR7rv1qvkfeRdcqdYR1MG8eJDe1nzeKcxp772rxgQ21wl7ilGeRK6O/Up4ogZv
- EeYwvdQtDTbQrSGTYOzId+1y69aXJcGgRIFSaxKNokKwG8SRydVN4XUm/Rg0MiGnZKNH
- RCbYa+XdCXI6AVdiYsB00Q5dAXqPFPrfm+Nb/saA3Cf+r54qy9pG6qamAPwVNudhJG9G
- IKTwkFNwdxJ1m78zFpAfEoq7uQG92XKKN11mUeNjumsIldPoihUZTJFAeN9fEwPgAPWG
- B1bQ==
-X-Gm-Message-State: AOJu0YzmJlVhy96zvftG3hG/ExP/oalSibaJnp/akn65FNr4zwbmngrT
- pC0VrnNPuLlJ1k3I4R5hZPCkZJd3W/vSoc6INSk=
-X-Google-Smtp-Source: AGHT+IHOx2y1HVTAzVcPb3PPRUxzX+MZmrwjIVjF0vvurFuiFu4jqwyGHGh3JZaArOggfhO7kisCPg==
-X-Received: by 2002:a05:6808:159f:b0:3a7:5453:a626 with SMTP id
- t31-20020a056808159f00b003a75453a626mr8046022oiw.4.1692577959303; 
- Sun, 20 Aug 2023 17:32:39 -0700 (PDT)
-Received: from stoup.. ([2602:47:d483:7301:7da6:8db:fd7a:4d62])
- by smtp.gmail.com with ESMTPSA id
- n16-20020aa79050000000b0068664ace38asm5112484pfo.19.2023.08.20.17.32.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Aug 2023 17:32:38 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Keith Packard <keithp@keithp.com>
-Subject: [PATCH] softfloat: Handle m68k extended precision denormals properly
-Date: Sun, 20 Aug 2023 17:32:37 -0700
-Message-Id: <20230821003237.376935-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXteq-0002Ur-QA
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 21:24:40 -0400
+Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qXten-0000wM-Rf
+ for qemu-devel@nongnu.org; Sun, 20 Aug 2023 21:24:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
+ t=1692581075; bh=d+shdVQeeQ4OE3BXVJMbavRxKvsD8dfup4LM/xVSt6E=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=U7byCxF6VHVyaQyZ0wUxLDlJ6ustDiCu21aFtPV0D3Ve0lkIPLr8a6ZoSN4cpVLM7
+ c8yxpvuvGQaANwtGu2nzh/yyO11mK2MYFpkIGkD7AB8Pijktl/0HcOIjvSAWS4SAkz
+ XRCorI915eaBlKn7gJHxnIXziMl63WIO4d6Wp7d5eaS9e8DJJ8JxZcLyQUVPl8T3RF
+ cXFkxWsTV93vP5dCxxpMwC3LcIOMlrI+hNuPrmcetS7Eib3vRA4+2eL34hSvwrBESd
+ JALDeWQqttdcAJlHIf4+gICnHzQuuoT1DRWuZtmRF/DBNC0hO11OgA8YK09SThfKn0
+ TKyLc77kTiqzA==
+Received: from localhost (localhost [127.0.0.1])
+ by elaine.keithp.com (Postfix) with ESMTP id F3BBB3F21123;
+ Sun, 20 Aug 2023 18:24:34 -0700 (PDT)
+X-Virus-Scanned: Debian amavis at keithp.com
+Received: from elaine.keithp.com ([127.0.0.1])
+ by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
+ id cOnwNlBiS59k; Sun, 20 Aug 2023 18:24:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
+ t=1692581074; bh=d+shdVQeeQ4OE3BXVJMbavRxKvsD8dfup4LM/xVSt6E=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=MVuZUeSN6XeClnCbAlCBcoEWnKJd+u4qHqI9iIrjza/BokO8oPsvSGszk8/RJUXjU
+ +PTFiY/w9wge4ZDt9glrw98O72OhtvL0/VzyuRtEwbacGtY+KKJJo0l3ur03nfSiZ8
+ Y2NXZBl2lM4HYv5C4nxocRJBrnxUKLDw6Hwzbl6b5hgkC1bI5cmzVgL+yfrh1A2iUX
+ Qzm6zZRzc2AmdC4S/Xfj73JVmXhUxMvAtDsqnq66/wfu28Fsx8Gxnu8jXFKLvruhED
+ U9ZozRAVfa1NthVNRjDCHV2UUY8PRYXhUF9AYLAIthl+G/URt9jU02ZZ77krZaa3Pn
+ ziblUXZfybm1g==
+Received: from keithp.com (unknown [98.97.112.104])
+ by elaine.keithp.com (Postfix) with ESMTPSA id 156073F20FF0;
+ Sun, 20 Aug 2023 18:24:34 -0700 (PDT)
+Received: by keithp.com (Postfix, from userid 1000)
+ id C277F1E601E7; Sun, 20 Aug 2023 18:24:36 -0700 (PDT)
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] softfloat: Handle m68k extended precision denormals
+ properly
+In-Reply-To: <20230821003237.376935-1-richard.henderson@linaro.org>
+References: <20230821003237.376935-1-richard.henderson@linaro.org>
+Date: Sun, 20 Aug 2023 18:24:36 -0700
+Message-ID: <877cppkx0r.fsf@keithp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
+ helo=elaine.keithp.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,155 +76,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Keith Packard <keithp@keithp.com>
+From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Motorola treats denormals with explicit integer bit set as
-having unbiased exponent 0, unlike Intel which treats it as
-having unbiased exponent 1 (like all other IEEE formats).
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Add a flag on FloatFmt to differentiate the behaviour.
 
-Reported-by: Keith Packard <keithp@keithp.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- fpu/softfloat.c                |  9 +++++-
- tests/tcg/m68k/denormal.c      | 53 ++++++++++++++++++++++++++++++++++
- fpu/softfloat-parts.c.inc      |  5 ++--
- tests/tcg/m68k/Makefile.target |  2 +-
- 4 files changed, 65 insertions(+), 4 deletions(-)
- create mode 100644 tests/tcg/m68k/denormal.c
+> Motorola treats denormals with explicit integer bit set as
+> having unbiased exponent 0, unlike Intel which treats it as
+> having unbiased exponent 1 (like all other IEEE formats).
 
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index 0cc130ae9b..3adfa8cee0 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -517,6 +517,7 @@ typedef struct {
-  *   round_mask: bits below lsb which must be rounded
-  * The following optional modifiers are available:
-  *   arm_althp: handle ARM Alternative Half Precision
-+ *   m68k_denormal: explicit integer bit for extended precision may be 1
-  */
- typedef struct {
-     int exp_size;
-@@ -526,6 +527,7 @@ typedef struct {
-     int frac_size;
-     int frac_shift;
-     bool arm_althp;
-+    bool m68k_denormal;
-     uint64_t round_mask;
- } FloatFmt;
- 
-@@ -576,7 +578,12 @@ static const FloatFmt float128_params = {
- static const FloatFmt floatx80_params[3] = {
-     [floatx80_precision_s] = { FLOATX80_PARAMS(23) },
-     [floatx80_precision_d] = { FLOATX80_PARAMS(52) },
--    [floatx80_precision_x] = { FLOATX80_PARAMS(64) },
-+    [floatx80_precision_x] = {
-+        FLOATX80_PARAMS(64),
-+#ifdef TARGET_M68K
-+        .m68k_denormal = true,
-+#endif
-+    },
- };
- 
- /* Unpack a float to parts, but do not canonicalize.  */
-diff --git a/tests/tcg/m68k/denormal.c b/tests/tcg/m68k/denormal.c
-new file mode 100644
-index 0000000000..599dafa663
---- /dev/null
-+++ b/tests/tcg/m68k/denormal.c
-@@ -0,0 +1,53 @@
-+/*
-+ * Test m68k extended double denormals.
-+ */
-+
-+#include <stdio.h>
-+#include <stdint.h>
-+
-+#define X0      0x1p+16383l
-+#define Y0      0x1p-16446l
-+#define X1      0x1.1p-8223l
-+#define Y1      0x1.1p-8224l
-+
-+static volatile long double test[2][3] = {
-+    { X0, Y0, X0 * Y0 },
-+    { X1, Y1, X1 * Y1 },
-+};
-+
-+static void dump_ld(const char *label, long double ld)
-+{
-+    union {
-+        long double     d;
-+        struct {
-+            uint32_t    exp:16;
-+            uint32_t    space:16;
-+            uint32_t    h;
-+            uint32_t    l;
-+        };
-+    } u;
-+
-+    u.d = ld;
-+    printf("%12s: % -27La 0x%04x 0x%08x 0x%08x\n", label, u.d, u.exp, u.h, u.l);
-+}
-+
-+int main(void)
-+{
-+    int i, err = 0;
-+
-+    for (i = 0; i < 2; ++i) {
-+        long double x = test[i][0];
-+        long double y = test[i][1];
-+        long double build_mul = test[i][2];
-+        long double runtime_mul = x * y;
-+
-+        if (runtime_mul != build_mul) {
-+            dump_ld("x", x);
-+            dump_ld("y", y);
-+            dump_ld("build_mul", build_mul);
-+            dump_ld("runtime_mul", runtime_mul);
-+            err = 1;
-+        }
-+    }
-+    return err;
-+}
+Thanks for having a look at this. Your patch fixes a couple of cases,
+but there are further adventures that await if you're interested.
+
+           x:  0x1p0                      0x3fff 0x80000000 0x00000000
+           y:  0x1p-16383                 0x0000 0x80000000 0x00000000
+   build_mul:  0x1p-16382                 0x0000 0x80000000 0x00000000
+ runtime_mul:  0x1p-16383                 0x0001 0x80000000 0x00000000
+
+I think the enclosed additional patch fixes this. I've still got 75 fmal
+failures on this target, but the obvious 'multiply is broken' problem
+appears fixed.
+
+From=20b722c92f8329f56f5243496eca3779f1156aff4f Mon Sep 17 00:00:00 2001
+From: Keith Packard <keithp@keithp.com>
+Date: Sun, 20 Aug 2023 18:20:13 -0700
+Subject: [PATCH] softfloat: Handle m68k LDBL_MIN_EXP normal values
+
+Unlike Intel 80-bit floats, Motorola allows for normal values with a
+zero exponent. Handle that by not setting exponent to 1 when the value
+is normal for this format.
+
+Signed-off-by: Keith Packard <keithp@keithp.com>
+=2D--
+ fpu/softfloat-parts.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index 527e15e6ab..d0c43c28fb 100644
---- a/fpu/softfloat-parts.c.inc
+index d0c43c28fb..cea854cdf1 100644
+=2D-- a/fpu/softfloat-parts.c.inc
 +++ b/fpu/softfloat-parts.c.inc
-@@ -118,7 +118,8 @@ static void partsN(canonicalize)(FloatPartsN *p, float_status *status,
-         } else {
-             int shift = frac_normalize(p);
-             p->cls = float_class_normal;
--            p->exp = fmt->frac_shift - fmt->exp_bias - shift + 1;
-+            p->exp = fmt->frac_shift - fmt->exp_bias
-+                   - shift + !fmt->m68k_denormal;
+@@ -288,7 +288,7 @@ static void partsN(uncanon_normal)(FloatPartsN *p, floa=
+t_status *s,
+             p->frac_lo &=3D ~round_mask;
          }
-     } else if (likely(p->exp < fmt->exp_max) || fmt->arm_althp) {
-         p->cls = float_class_normal;
-@@ -256,7 +257,7 @@ static void partsN(uncanon_normal)(FloatPartsN *p, float_status *s,
-             is_tiny = !frac_addi(&discard, p, inc);
-         }
- 
--        frac_shrjam(p, 1 - exp);
-+        frac_shrjam(p, !fmt->m68k_denormal - exp);
- 
-         if (p->frac_lo & round_mask) {
-             /* Need to recompute round-to-even/round-to-odd. */
-diff --git a/tests/tcg/m68k/Makefile.target b/tests/tcg/m68k/Makefile.target
-index 1163c7ef03..6ff214e60a 100644
---- a/tests/tcg/m68k/Makefile.target
-+++ b/tests/tcg/m68k/Makefile.target
-@@ -4,7 +4,7 @@
- #
- 
- VPATH += $(SRC_PATH)/tests/tcg/m68k
--TESTS += trap
-+TESTS += trap denormal
- 
- # On m68k Linux supports 4k and 8k pages (but 8k is currently broken)
- EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-8192
--- 
-2.34.1
+=20
+=2D        exp =3D (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) !=3D 0;
++        exp =3D (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) !=3D 0 && !fmt->m68=
+k_denormal;
+         frac_shr(p, frac_shift);
+=20
+         if (is_tiny && (flags & float_flag_inexact)) {
+=2D-=20
+2.40.1
 
+=2D-=20
+=2Dkeith
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmTivNQACgkQ2yIaaQAA
+ABEP7Q//Vpu3XULzWBw3jU/2jltEgwbn98PhtZC7TiaS6z9zz7R/2ixsg2RdfS77
+tZ9V3t/Ra4KwFVsAdKKlxJM97TrP1tWhrY7yXAdWsbGjyzbs9wQVWILOwHj1Y2Ex
+HupMQfDSHJxT3BLjV4ZjSTpGqofyfK3fxre9hnnXDrlHNUYM39tf5TJODdKMPheT
+4LLxCE0vS4jH1DDZTjIITwpMWimtdGCmA3YF4e6RxrkylP843fURH3T5z6mXomGN
+Tcgn9XzqYvMrOWe1z7J6H7JHlhUyb/Tj9y81i/QkufifrEuyflAkRb2FBSFXX+ZA
+IdwL/jzB0uHZAjLXGhEacGcScHHmH10pGvqh8f6qheRwWY9Uj8xlwFtpfRBj5iID
++s2TjzOfabTJsq2LRB9DfUyhmRi30DiEQKkWO61Uh/58KWOeoA3zipaiQAMFvMpk
+eN+Xr0KIdapAvk6BFxaLQArRh5iZCCJmPfYnZUVl5TVrAX9vrxcbmerj9AGmrn64
+vmPFW5KgX5Zpt3JaVmkFHhZEvVXjVqjixaIS6c5zJcTPRCrfcJCHkhBgJQG6H+/m
+DBWW0JyPHC3U/Ww3soOGok2Z7yG1rjZbDV/GO7Xdrb30TISzCtbQzq4uR6z6FkFm
++DWp0bPyJh5746M4Ed3KuEQySxgW/+OPw8fvl0/2bzu0JXaBJCQ=
+=ec9u
+-----END PGP SIGNATURE-----
+--=-=-=--
 
