@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A978782905
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 14:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915FF782931
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 14:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY40p-0000SG-Uk; Mon, 21 Aug 2023 08:28:04 -0400
+	id 1qY45q-000371-LP; Mon, 21 Aug 2023 08:33:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY40k-0000Rx-Jy
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 08:27:59 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qY45f-00032d-55
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 08:33:05 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY40i-0001uX-Ae
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 08:27:58 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fe32016bc8so30753215e9.1
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 05:27:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qY45d-0003Jh-1N
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 08:33:02 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52a0856b4fdso1379946a12.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 05:33:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692620871; x=1693225671;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=c5AsHork1Kqem5QnDyAcfdk2jG4gWf2y0zaLNmFXP3s=;
- b=f2GpCajC5ovl2VizaeFvfaszmpOHkT30IO+l1DfSzjsIUnVIw4UPqIWkQxWgk/B6Rj
- ZYflbJRA2P3PwU68mG9HLcEhLs+6Q04ifV0OfFIrcpAul7xzpJjqfqo0kEuKv4anVWOL
- 1zzytSCURfB6C0iP4i+B97YT/FhIQgOdxhds1EvKrB9VEVwu9blT5iHr9GxjXvEuwivh
- b0y8Wv7IYJnOmFwAXEGZlbK1cFlyMtIqQ/chPP4w0uW+nqzNxuk8odEFa9mwLHRv81Au
- fHIPzphG6OhlaZf8Y8TflmRsOOWqUf/AYREQgOHyCPy4geHNrrt8Ix2eUZxI30XJxTeP
- 8RJw==
+ d=linaro.org; s=google; t=1692621179; x=1693225979;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hOztm/taKr2gTMVzNRsYrt5Ec+2ScsV7F5g6NlQkKuU=;
+ b=Sqs8ahFJCuK93+D1FVaOfirq0V+/8bZe3HyBg1EfcSc8+zD/Wwf7fr2XXyoVJ7HvGC
+ 1lWA6FmGHynMf8381/4YYE3NpmK6ow/G4r24mA9tXgcW2pDap17LhJ+h8eVam6nueMlK
+ njmywpVM5iew/hVefy/4f/+ABIRorRTpUhzqe4DWvbrnLcOtwLR6Y2Xq5FEpWekJjG8H
+ r1nAO+CX/mf1gvmRVqRx4i72a31FEDDqY0VIT7MoWqJ4OavD8ekxGniKwz7zsmnli2ti
+ SPWb1M0HvdhH/n8z3C+mTy8tdUjCRIE3hV/zdQGgxfYgNaAtaioKdirBpi4LO8/pUfl/
+ Jnkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692620871; x=1693225671;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c5AsHork1Kqem5QnDyAcfdk2jG4gWf2y0zaLNmFXP3s=;
- b=IN5D6wlhuRpgRnkMYHUYzCgvw7L0AX0MrihPBHn2E6n9G4yBzL6X9Qd3cQaa+wmUYI
- UEIaRZbtcNB1HrxgR9g1Cs7j/v6A9zsH8ZCHr0gShhoXddSpL9CwFK7UYox+Sl/BYoM8
- MXSPMM/Gz4pp5xsFuQKeBvq5UUG6n29mlMkjSEqQ5DqqoQ20jLzJoVdIe1SC3mKYgsbm
- e1sH/qvSHKKzyMQOTsEX4j695a2zomAN2cNB7tcT3GGc2ifItEyHwrbj++uRI2i7DLvP
- Wjr4y2Khk/mHy0av5wSBqCRh2HBDTwjGdzi/SMCnHxLx+PZn0IgeLegIKlwbhLrpKe/T
- qTXw==
-X-Gm-Message-State: AOJu0YwujE/Bb/ZyRk9v13fiyLVXv6CdfzhTfCpqhlweZ2MLb+DCYf8Y
- mU1i9j3vxVzQBXeILaX+bskFlQ==
-X-Google-Smtp-Source: AGHT+IHzCiscUzRrsWGycPCEdZ2qeNyO+Y+hplEmYMRw1wtkAdOydUYqyuR8/ms8D0/+Iek5gcdXmg==
-X-Received: by 2002:a1c:4b09:0:b0:3fe:d1b9:7ea8 with SMTP id
- y9-20020a1c4b09000000b003fed1b97ea8mr5104675wma.28.1692620871140; 
- Mon, 21 Aug 2023 05:27:51 -0700 (PDT)
-Received: from [192.168.69.115] (static-176-182-122-208.ncc.abo.bbox.fr.
- [176.182.122.208]) by smtp.gmail.com with ESMTPSA id
- 20-20020a05600c025400b003fbb1a9586esm16058721wmj.15.2023.08.21.05.27.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Aug 2023 05:27:50 -0700 (PDT)
-Message-ID: <5b109694-7694-9fb1-91ba-637089268c92@linaro.org>
-Date: Mon, 21 Aug 2023 14:27:49 +0200
+ d=1e100.net; s=20221208; t=1692621179; x=1693225979;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hOztm/taKr2gTMVzNRsYrt5Ec+2ScsV7F5g6NlQkKuU=;
+ b=TFvQjVEaQP+lGBq8NLse859H7VH93XXJb//fjKHEmwQtaQIYFoBb4Q/S2rDxZhrMZr
+ 2qHBpREzOzq/c5BLP0+pNKf6Cs+H1YVxJygFk4GzrTjoTelUNFSI4oPpk6qTOMfboONT
+ xZSYrs1JCmkE8N5I4s0QWmAVr0Yb0VXFDfYGMVT/pz2joqUnu1bw15tBpK0+u6gxRPT2
+ lR6xzG4qTLvn5rQPcbVgVPuPv3CebrSlF3b2ZqMry+MzCyS96hxGivJjrLa2mvD4ct4B
+ 5Qm0vj2mnnDkbkTkz0yfkQYVmGSGyvaF1ci7TMP8FCalTeXrxVAK3YGqSvd8J5yMb4hG
+ KnIw==
+X-Gm-Message-State: AOJu0YyVCM7+3SesQw8D4X9OsFv5EusytOeAli/wOgpVxUGBiciRpHD3
+ Zg7mNS6S4ZidzlhX/zufJN6N9/Sq+DS78UUETqGRTg==
+X-Google-Smtp-Source: AGHT+IH4Mdp4pbuApoRBZG4hMC6H1+2yoKJBsPjYcjwAfRE2m+iUlCLffhTRUTVI+1YSp8vTEWG/FjruuPUNwOQWWAk=
+X-Received: by 2002:a05:6402:5154:b0:51d:95f2:ee76 with SMTP id
+ n20-20020a056402515400b0051d95f2ee76mr4661637edd.27.1692621178960; Mon, 21
+ Aug 2023 05:32:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 14/18] target/arm: Use clmul_64
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, ardb@kernel.org
-References: <20230819010218.192706-1-richard.henderson@linaro.org>
- <20230819010218.192706-15-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230819010218.192706-15-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
+References: <20230810191626.81084-1-francisco.iglesias@amd.com>
+ <20230810191626.81084-3-francisco.iglesias@amd.com>
+In-Reply-To: <20230810191626.81084-3-francisco.iglesias@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 21 Aug 2023 13:32:48 +0100
+Message-ID: <CAFEAcA9Od+6QXr=jcAjOXwuBZizMYANbX-y7oebcTd6MapMLcw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/8] hw/misc: Introduce a model of Xilinx Versal's
+ CFU_APB
+To: Francisco Iglesias <francisco.iglesias@amd.com>
+Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
+ edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
+ tong.ho@amd.com, vikram.garhwal@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,14 +88,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/8/23 03:02, Richard Henderson wrote:
-> Use generic routine for 64-bit carry-less multiply.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/vec_helper.c | 22 ++++------------------
->   1 file changed, 4 insertions(+), 18 deletions(-)
+On Thu, 10 Aug 2023 at 20:16, Francisco Iglesias
+<francisco.iglesias@amd.com> wrote:
+>
+> Introduce a model of the software programming interface (CFU_APB) of
+> Xilinx Versal's Configuration Frame Unit.
+>
+> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
+-- PMM
 
