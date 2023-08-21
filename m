@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBD8782385
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 08:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 905727823B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 08:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXyEq-0001uh-WF; Mon, 21 Aug 2023 02:18:09 -0400
+	id 1qXyMd-0005Yp-I2; Mon, 21 Aug 2023 02:26:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qXyEo-0001tF-BV
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 02:18:06 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qXyMZ-0005YW-Nc
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 02:26:07 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qXyEl-0006BN-JE
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 02:18:06 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fef3c3277bso1156395e9.1
- for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 23:18:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qXyMU-0007t2-7f
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 02:26:07 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fef4b063a7so215745e9.2
+ for <qemu-devel@nongnu.org>; Sun, 20 Aug 2023 23:26:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692598682; x=1693203482;
+ d=linaro.org; s=google; t=1692599160; x=1693203960;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gl1eOXu8iN7Kzx956eSc8+DM/IwL9/EWz9C+OcIYleo=;
- b=G6wbMkkuVZuzvgda16Ed2H0QKsO4W/bBecLy9OIOqZ9Rg2lGl07aozi6HADgGHYD5a
- L6GgtpFgFHBIE0dpw6WQdvHy81Myec1C1lPDJc/+YiN3wRHS2QMj4HRTHiVufNBWo7lg
- TAWlA1eTitXfbpXQZwDOCdjS1v48BDtbW20Sb5QTSnipsswzmXro4dlLUvaD48sL9Q66
- eketLE7AOfczr3IK7HmIMU+AgPm+wHRY+YUYPYkZgszvJUMfoNOUlKSb4qdmgOW1qhXa
- ZqB1hQBHE7/5YtqtSVTWsHQaSryIgitNlnv0GpEd0F4g4YxNzSXYB3iw5lYBAEOBh26l
- VKHw==
+ bh=1LjCYZOaNbe4p8bAQ6lKcPt90MMQV1bGtuapUowMtG4=;
+ b=N2DQR+dNWPBJmDA9yYhHnDUPg27qkTZnOYgA1bjLOC+cElFq20aSj24hAYehGnTab/
+ WRkeSCsxxzXtFm3iRY7tcKJUbV1AY+hlYkJWxCW+8m+p/acUNyczoh4EiHXUrEeUFIih
+ s5jHAIgIDeslt2QTrReRbWUCCoNlHLDLFrX0H67UQxFSj2eCdGMbnO7Az7nNpKvqUyke
+ /LAJk1Ay9Er9quZodSwjlEr7R8iZLB/2yh9fjtsYoz9nOVSAM4LqN1jl7wTAb1zB59aL
+ LcEHhsEeStklNFis9RmATO1daqp2Stc0Ng31qGgedCAoyZ+g3EYA+ZDfLyiz/WENucSG
+ DaeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692598682; x=1693203482;
+ d=1e100.net; s=20221208; t=1692599160; x=1693203960;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gl1eOXu8iN7Kzx956eSc8+DM/IwL9/EWz9C+OcIYleo=;
- b=VtNjOp2RtCcFJ/+1aK0XtFtiXKBybuXJzzS6ydkh9kMVr3CsHT1aZeCHtEvCtmdEIi
- 7M5BgRAcqyrfiWabyRitIgkv49EK1pDhZ09aeVG/slvRWrfvhyAsDjJ2QGhh+F+UPPc9
- eUN6zKXvotNbYkGjeuz2y+TvRn/6CdHvhyz3PTh83fR1vyZ1zv1ci5Plh/b1EIgRKgAP
- yP+xZqgh6DNuxd5MJ+BIQcNQ2E6cE+rOcmlR0vgQOqEowNF9LsYnRogxayu0VFJDBcs2
- JBhOonK1RwhU2J+VZJE9DTa/gyAXwsKAW9+tp/NId5p04kAw71vDGqjp04FDz2fVdd6e
- 9A7A==
-X-Gm-Message-State: AOJu0YwBhBW2sBFGJGsi+2T/m3jmlNZvI1BlDUqWsgq/AjUS+/4ZmYnP
- PYT/tx/93Z6YJK1I0f2wYhyhsQ==
-X-Google-Smtp-Source: AGHT+IF+7IgJeC1qEJWOIpu6yhx2qpm9bC2u68HHQbFhYq65VhQbzvYaA6Aaesv5Amw2/CQ3XpODCQ==
-X-Received: by 2002:a5d:5962:0:b0:319:7b96:a1be with SMTP id
- e34-20020a5d5962000000b003197b96a1bemr3274272wri.71.1692598681971; 
- Sun, 20 Aug 2023 23:18:01 -0700 (PDT)
+ bh=1LjCYZOaNbe4p8bAQ6lKcPt90MMQV1bGtuapUowMtG4=;
+ b=JiIF9dOLfcxHpo6VAwpMLjkfwQ67f5GAaQ56BpCX2F541PniztZlHkrRpyVN915F6d
+ iy6P1SFfonwb0eflZuN2fqxefC67ODISS++Y+y+uGwsdev5SQPW3F2OEeD797RBaiqLx
+ ec3tPBvBB6EyTZ8eOAH9wDE4XtBhuWyTsIF7gK6MsQ2PrK7w1JZx7dy4we7iuaeHrBX5
+ HvQjUfCaeNComWlUOPMm+4gSkhIczWFzaxU7y6gjTg2Ag/dKhozx+BDLoM2zhb+iKH1w
+ JA3n37E+KIA619MyYJ50kWrTXFrw1TGQmYvWPNwmIa6vQn1g3Gu6KAuQxNil34VnSaf+
+ xBVg==
+X-Gm-Message-State: AOJu0YwloUa35uAxKj5LBSDBtTsu+Z1twcbsMoU9H+zmgwi1UqBiEd1q
+ ddNshacdMKAS937YFrvOa9QWAg==
+X-Google-Smtp-Source: AGHT+IEpVxTeYnpx0NuwNL1mz4UTQcFYARflic+Ia4goMqlpeM+DeBH8DM90Bv9/tMfiXSy8gwAIRQ==
+X-Received: by 2002:a1c:7214:0:b0:3fe:9a6:f44 with SMTP id
+ n20-20020a1c7214000000b003fe09a60f44mr4474060wmc.32.1692599160280; 
+ Sun, 20 Aug 2023 23:26:00 -0700 (PDT)
 Received: from [192.168.69.115] (static-176-182-122-208.ncc.abo.bbox.fr.
  [176.182.122.208]) by smtp.gmail.com with ESMTPSA id
- n16-20020adfe790000000b0030ae53550f5sm11153442wrm.51.2023.08.20.23.18.00
+ a22-20020a05600c225600b003fed8e12d62sm9276169wmm.27.2023.08.20.23.25.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Aug 2023 23:18:01 -0700 (PDT)
-Message-ID: <d4465e1c-c01d-568a-a002-818f56a391e6@linaro.org>
-Date: Mon, 21 Aug 2023 08:18:00 +0200
+ Sun, 20 Aug 2023 23:25:59 -0700 (PDT)
+Message-ID: <9a2bd4f2-6c8e-7241-9521-338911558f0e@linaro.org>
+Date: Mon, 21 Aug 2023 08:25:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] target/arm: Fix 64-bit SSRA
+Subject: Re: [PATCH 1/4] linux-user: Move shmat and shmdt implementations to
+ mmap.c
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-stable@nongnu.org
-References: <20230821022025.397682-1-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu, imp@bsdimp.com, kariem.taha2.7@gmail.com
+References: <20230820204408.327348-1-richard.henderson@linaro.org>
+ <20230820204408.327348-2-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230821022025.397682-1-richard.henderson@linaro.org>
+In-Reply-To: <20230820204408.327348-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -63
 X-Spam_score: -6.4
 X-Spam_bar: ------
 X-Spam_report: (-6.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.279,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,17 +94,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/8/23 04:20, Richard Henderson wrote:
-> Typo applied byte-wise shift instead of double-word shift.
+On 20/8/23 22:44, Richard Henderson wrote:
+> Rename from do_* to target_*.  Fix some minor checkpatch errors.
 > 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 631e565450c ("target/arm: Create gen_gvec_[us]sra")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1779
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/tcg/translate.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   linux-user/user-mmap.h |   4 ++
+>   linux-user/mmap.c      | 138 +++++++++++++++++++++++++++++++++++++++
+>   linux-user/syscall.c   | 143 ++---------------------------------------
+>   3 files changed, 146 insertions(+), 139 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
