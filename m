@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8A27829D7
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 15:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E092D7829D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 15:01:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY4Wz-0000la-Mi; Mon, 21 Aug 2023 09:01:17 -0400
+	id 1qY4X5-0000pm-7l; Mon, 21 Aug 2023 09:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY4W6-0000GN-PN
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:00:29 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY4WC-0000JL-V4
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:00:31 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY4W2-00017z-5S
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:00:22 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-31aeef88a55so1500728f8f.2
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 06:00:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY4W7-00018W-LI
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:00:26 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fe12820bffso32873885e9.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 06:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692622816; x=1693227616;
+ d=linaro.org; s=google; t=1692622822; x=1693227622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9qcp2zjh0Kae/JSBm9k7FRLIsQxWf7QHOQrpHAvtUzg=;
- b=R+psxyLRTAvK6U4Ca3UnBWDC5fKvwr8WsPF2NzCTreZ3aIIsyPclM46TXe9dzqgHbW
- dUKpFtPOYX70VW51uzbgDKHVoQsR+GFwRoo4iLI+hLd1ncVRr2L4v7DWFXWGrKk7mkye
- 8J5FB1Ss6QbnCoWxNtiIT0nvvu93NxtKr4GccB04e5zwzC6RfL5RPLtFePWCtWdghzTQ
- RjIfZRR4nfkfQ98LcBV9FhfgVm5teha8Gbph+J0e5kbHXUXmg00nYUEeaulsYEbyrNgb
- MOWkR+O8d+Dmj2xW81hKt13jqJcY/DrizSsictFzANDqMQJSUnWQGWCx76ghM1KkcDbd
- KZ0w==
+ bh=BKQfb1Masg0LUXafLP8DDVqoNx75e63Lg2kg56KHPJU=;
+ b=EPfeNXFdRxPD+IEi1EH5vbxv/Rxb3+w6X1qydqFslcvxaypRHVXWPW8nurWtgYScs4
+ gIxGKMnqWajKkMcEg1W/zqOfSTfx7urUCVNiz+kGRDVQ3JC4wbjcPZs4S6HbwXDJ/XGX
+ ceERdWsI1Z69sf2g4ynrlydfSwH2AjV8f4oW/gt2VMXIHOmHPokVXGwrZogk+HwsqPMw
+ m4zQqV5uorRwNQm/qhIlYv1HN8FRKVuCruqiPHbJsPO4eL/31dcbbg4wg8/p0zO8ZmWX
+ pdJeMVGFu8TQD8LWbFfDZbur7g3+PEHrKO78j7XKolcZed/8/LwUolI+Cff3sSVZiJEJ
+ 8Ypg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692622816; x=1693227616;
+ d=1e100.net; s=20221208; t=1692622822; x=1693227622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9qcp2zjh0Kae/JSBm9k7FRLIsQxWf7QHOQrpHAvtUzg=;
- b=TodSqvRA+6lphJeduPVG+0rb08tuykgTBekplfq2Y6wbznpVt7T8N+IlGIAmJ1nh4m
- 5la6TXsN3/MhP7L0BNfohir5395eRB9oNBFlZEhf1TMKsNJ6DOmlQ7C++q39x+02UMnI
- EQZlxwv1zb6d9ECEtMKC8UmCeIn2TZLf1rMMiDsc2S2R+8WGQCOFV5NG9ffK+MJN80tS
- iuRkH9kAoLAiqTHxwQFti51+lvoyjU/Y3xeehBbibpqEucRPVCOy1rDjhb1oUM7VhEa/
- ZpvCr842zFKQusawt6+goE/ayqdyDjWQQAIfA1Z5rNyLQ9P2urRfc+8AUwSnROZ3w8Pq
- SgnA==
-X-Gm-Message-State: AOJu0YyHSu4xROiNj5W7NVrBnC0uZN/pXnTpWI8MMBhQ3RlkTIhIMg8n
- Mts+c7DZ15kWPKK5MOFiYdLbogN/WdusmDuMQvM=
-X-Google-Smtp-Source: AGHT+IGKLjjqCat6vSR9f0K1KK8CmbiWyHG8v4ykeFsp66OhI1AxNrhjjTYhkfYebLsPx8VjScFT6w==
-X-Received: by 2002:a5d:51c1:0:b0:317:e18e:27bc with SMTP id
- n1-20020a5d51c1000000b00317e18e27bcmr4406693wrv.71.1692622815707; 
- Mon, 21 Aug 2023 06:00:15 -0700 (PDT)
+ bh=BKQfb1Masg0LUXafLP8DDVqoNx75e63Lg2kg56KHPJU=;
+ b=aRghPR4DYm73ng1D3BkgqQQD3dcIh6QUGvbYzwMtnV/3l3UD/TM9oFQrql5GJjk/2I
+ oDTgQi8ggSqtCTs1ZdpDZOfpeARxvuRaQLndCqPy4MjrVrIheb1h2UrebtdbLTUaxtWn
+ IkZbL2RiJNwTFSek8wySKfQZ2RoMxFFj0RvRGj1/+9xPqyOkKJ5453sfzGOZmQtyMrOi
+ 5NhkkYnXehVU7S4fLsYF7bBb2M+E5gPbwXu1zmHAWA9AO1D7A9H/3OetyLTxHXORWhxP
+ bZnlShv6pbJy6DO3twbj+SCekBOnPFwmxVIh7caipXk7JXlVZjTkmYCmszmj3ovMfpE2
+ Namw==
+X-Gm-Message-State: AOJu0YywNIqk8ub9IaN2eXF0kjh8PM1mhrW0vNeXdyUl8w1DlOPmKBWo
+ thgQJORoy8zYmQaEJd15+INJ2Mcu0XuxDs1FLiU=
+X-Google-Smtp-Source: AGHT+IFn9WJ2CO3DRc/8z7nyeiN9VLw1AvwmTgz8yhgDYVrfw7Mb0VStUtaJX3Fgciweb9riB4szJw==
+X-Received: by 2002:a7b:cbcb:0:b0:3fe:34c2:654b with SMTP id
+ n11-20020a7bcbcb000000b003fe34c2654bmr4988052wmi.14.1692622822071; 
+ Mon, 21 Aug 2023 06:00:22 -0700 (PDT)
 Received: from m1x-phil.lan (static-176-182-122-208.ncc.abo.bbox.fr.
  [176.182.122.208]) by smtp.gmail.com with ESMTPSA id
- j7-20020adfea47000000b00317731a6e07sm12502404wrn.62.2023.08.21.06.00.13
+ f15-20020a7bcd0f000000b003fe1c332810sm16202208wmj.33.2023.08.21.06.00.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 21 Aug 2023 06:00:14 -0700 (PDT)
+ Mon, 21 Aug 2023 06:00:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -62,18 +62,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Huacai Chen <chenhuacai@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 2/8] target/loongarch: Remove duplicated disas_set_info
- assignment
-Date: Mon, 21 Aug 2023 14:59:53 +0200
-Message-ID: <20230821125959.28666-3-philmd@linaro.org>
+Subject: [PATCH v3 3/8] target/loongarch: Fix loongarch_la464_initfn() misses
+ setting LSPW
+Date: Mon, 21 Aug 2023 14:59:54 +0200
+Message-ID: <20230821125959.28666-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821125959.28666-1-philmd@linaro.org>
 References: <20230821125959.28666-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,30 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 228021f05e ("target/loongarch: Add core definition") sets
-disas_set_info to loongarch_cpu_disas_set_info. Probably due to
-a failed git-rebase, commit ca61e75071 ("target/loongarch: Add gdb
-support") also sets it to the same value. Remove the duplication.
+From: Song Gao <gaosong@loongson.cn>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230817093121.1053890-11-gaosong@loongson.cn>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/cpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/loongarch/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 7107968699..dc617be36f 100644
+index dc617be36f..a1ebc20330 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -723,7 +723,6 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-     cc->disas_set_info = loongarch_cpu_disas_set_info;
-     cc->gdb_read_register = loongarch_cpu_gdb_read_register;
-     cc->gdb_write_register = loongarch_cpu_gdb_write_register;
--    cc->disas_set_info = loongarch_cpu_disas_set_info;
-     cc->gdb_num_core_regs = 35;
-     cc->gdb_core_xml_file = "loongarch-base64.xml";
-     cc->gdb_stop_before_watchpoint = true;
+@@ -391,6 +391,7 @@ static void loongarch_la464_initfn(Object *obj)
+     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
+     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
+     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
++    data = FIELD_DP32(data, CPUCFG2, LSPW, 1);
+     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
+     env->cpucfg[2] = data;
+ 
 -- 
 2.41.0
 
