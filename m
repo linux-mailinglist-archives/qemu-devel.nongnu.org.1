@@ -2,74 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B55782F46
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 19:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E93782F73
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 19:31:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY8Vl-0000mu-1o; Mon, 21 Aug 2023 13:16:17 -0400
+	id 1qY8j8-0003Qo-HS; Mon, 21 Aug 2023 13:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qY8VU-0000mh-4r
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 13:16:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qY8VR-00005w-Jd
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 13:15:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692638156;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8olqO7ZvdKc07kSyKxloCofZ5Rm+dvTQOxgwYQqHB2M=;
- b=SXsmD9LiLXz59MeMTwFdm2Bo2BsE7D47TuykxwLucmFlWDNR1VvJ7C+tmCUqN6hRzHgzVA
- 0UC2g1svUM/Bb/zK41cRbTn7ld6pm0GEdJOL2YIUd4BZzmrJN60+OmkWzZE35C2AtrHOMj
- uSdLRX4RS3EOoQZNLRFUwJoZD8kqkzE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-260-CgHAJ1AjNRK-89BBv0-Zrw-1; Mon, 21 Aug 2023 13:15:54 -0400
-X-MC-Unique: CgHAJ1AjNRK-89BBv0-Zrw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E78D8D40A2;
- Mon, 21 Aug 2023 17:15:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F10CD492C14;
- Mon, 21 Aug 2023 17:15:53 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E58DB21E690D; Mon, 21 Aug 2023 19:15:52 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Andrew Melnichenko <andrew@daynix.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  jasowang@redhat.com,
- mst@redhat.com,  eblake@redhat.com,  berrange@redhat.com,
- qemu-devel@nongnu.org,  yuri.benditovich@daynix.com,  yan@daynix.com
-Subject: Re: [PATCH v5 4/5] qmp: Added new command to retrieve eBPF blob.
-References: <20230802204125.33688-1-andrew@daynix.com>
- <20230802204125.33688-5-andrew@daynix.com>
- <87sf8yx7qa.fsf@pond.sub.org>
- <CABcq3pHwT1-j_UZOG54yWawrTewdo-HL7X9ROO6xXkdB8hq71A@mail.gmail.com>
-Date: Mon, 21 Aug 2023 19:15:52 +0200
-In-Reply-To: <CABcq3pHwT1-j_UZOG54yWawrTewdo-HL7X9ROO6xXkdB8hq71A@mail.gmail.com>
- (Andrew Melnichenko's message of "Tue, 8 Aug 2023 20:43:36 +0300")
-Message-ID: <87pm3g8gfr.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY8j6-0003Px-AB
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 13:30:04 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY8j4-0002rX-3S
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 13:30:04 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-31965c94001so3094592f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 10:30:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692639000; x=1693243800;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EvO69nucgaFjZyc/ys1Q2ii8/KbXilX+Cn2Pm0FkLFU=;
+ b=NQu46tlc/QsJr6ZLMPtNQJzTYoDg8o3/msdyGoY9ilreGjmA+cOMdrqT8+RbpcwZxO
+ 6jfE5DdnTrvDqI8BxcXzOrEwE0uq0Z3bFEeUgA5Cdec42c7ePcqVcbD6nZyia9J8CI4A
+ cZy5RqaT9+OI4srMtGnrgtRfsBSrPP0sdf/r4cNYuRa3LMs74SacJ29oCccuU0B0jOK1
+ O1ATZkG4F1FFw8KFsbNeXaAR1gmTgxEeIK4xv1zfCYstFWK039UVPte7ia3ycQo5ltqm
+ 9afC6eGWJfUHNKAJfOI/bsFtF49ze2lk81dO9vfq68tnHFZCU3fl5ixD9bIHYhfzXNKR
+ A45A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692639000; x=1693243800;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EvO69nucgaFjZyc/ys1Q2ii8/KbXilX+Cn2Pm0FkLFU=;
+ b=lanDtaGbbcVQgY0EmJ5azc8efgY9yvh3Lg/yjkjwWk3WesdOy49UagioFeQzmiz8b0
+ tIJGPFMov3o+OmkrkHSHjuI8GtB39uOvlz7rGi7obGdXPeiAjFXC+OCugMOlrxCBWoTz
+ P8yRsVp/q5p7Wg+2SwoJw4GjvrBBrIk8+EU2kPhuPrNsXfgx5wyi5GwqZJXNyiP8hJuR
+ a6pBca8NUcPcPQDwZHxb0xIRKFEmDcjSziwdPhRB0ORTtMbCZu/odiY0CH8yPSI125s9
+ fhqOI3ffSu9Gi2OnjYtc/93N0ZMkYE6g1i/UyrwkAs3d2p7bhpm3QyNDUFOtsr0ocxei
+ Q4tw==
+X-Gm-Message-State: AOJu0YzOuLUXT5uTAIqXD8jaD+cYkZEnCPKq6WH3ng4lrvJYLiZ3WTC+
+ SSyIGagq0Rdw+Ms4CEYpRjdPTQ==
+X-Google-Smtp-Source: AGHT+IH1nY/orGV88m247xIhYGvt/bH04SF8MOS1g9PXAv2h6xy7CnBMs953jkQ3f9i/ITAZ/R7hEA==
+X-Received: by 2002:a5d:6949:0:b0:319:7471:2965 with SMTP id
+ r9-20020a5d6949000000b0031974712965mr5467203wrw.21.1692638999976; 
+ Mon, 21 Aug 2023 10:29:59 -0700 (PDT)
+Received: from [192.168.69.115]
+ (cor91-h05-176-171-248-246.dsl.sta.abo.bbox.fr. [176.171.248.246])
+ by smtp.gmail.com with ESMTPSA id
+ e1-20020adfe7c1000000b0031b2c01f342sm7232713wrn.87.2023.08.21.10.29.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 21 Aug 2023 10:29:59 -0700 (PDT)
+Message-ID: <8a237a8f-cad1-a873-9c38-218f51699786@linaro.org>
+Date: Mon, 21 Aug 2023 19:29:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 15/19] target/i386: Use clmul_64
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: berrange@redhat.com, ardb@kernel.org
+References: <20230821161854.419893-1-richard.henderson@linaro.org>
+ <20230821161854.419893-16-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230821161854.419893-16-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,92 +94,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Andrew Melnichenko <andrew@daynix.com> writes:
+On 21/8/23 18:18, Richard Henderson wrote:
+> Use generic routine for 64-bit carry-less multiply.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/i386/ops_sse.h | 40 +++++++++-------------------------------
+>   1 file changed, 9 insertions(+), 31 deletions(-)
 
-> Hi all,
-> Thanks for the comments - I'll update and send new patches.
->
-> On Sat, Aug 5, 2023 at 10:34=E2=80=AFAM Markus Armbruster <armbru@redhat.=
-com> wrote:
->>
->> Andrew Melnychenko <andrew@daynix.com> writes:
->>
->> > Now, the binary objects may be retrieved by id.
->> > It would require for future qmp commands that may require specific
->> > eBPF blob.
->> >
->> > Added command "request-ebpf". This command returns
->> > eBPF program encoded base64. The program taken from the
->> > skeleton and essentially is an ELF object that can be
->> > loaded in the future with libbpf.
->> >
->> > The reason to use the command to provide the eBPF object
->> > instead of a separate artifact was to avoid issues related
->> > to finding the eBPF itself. eBPF object is an ELF binary
->> > that contains the eBPF program and eBPF map description(BTF).
->> > Overall, eBPF object should contain the program and enough
->> > metadata to create/load eBPF with libbpf. As the eBPF
->> > maps/program should correspond to QEMU, the eBPF can't
->> > be used from different QEMU build.
->> >
->> > The first solution was a helper that comes with QEMU
->> > and loads appropriate eBPF objects. And the issue is
->> > to find a proper helper if the system has several
->> > different QEMUs installed and/or built from the source,
->> > which helpers may not be compatible.
->> >
->> > Another issue is QEMU updating while there is a running
->> > QEMU instance. With an updated helper, it may not be
->> > possible to hotplug virtio-net device to the already
->> > running QEMU. Overall, requesting the eBPF object from
->> > QEMU itself solves possible failures with acceptable effort.
->> >
->> > Links:
->> > [PATCH 3/5] qmp: Added the helper stamp check.
->> > https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
->> >
->> > Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
->> > ---
->>
->> [...]
->>
->> > diff --git a/qapi/ebpf.json b/qapi/ebpf.json
->> > new file mode 100644
->> > index 00000000000..40851f8c177
->> > --- /dev/null
->> > +++ b/qapi/ebpf.json
-
-[...]
-
->> > +##
->> > +# @request-ebpf:
->> > +#
->> > +# Returns eBPF object that can be loaded with libbpf.
->> > +# Management applications (g.e. libvirt) may load it and pass file
->> > +# descriptors to QEMU. Which allows running QEMU without BPF capabili=
-ties.
->> > +# It's crucial that eBPF program/map is compatible with QEMU, so it's
->> > +# provided through QMP.
->> > +#
->> > +# Returns: RSS eBPF object encoded in base64.
->>
->> What does "RSS" mean?
->
-> RSS - Receive-side Scaling.
-
-Suggest to use something like "receive-side scaling (RSS)" the first
-time.
-
-You could also put a general introduction right below the header, like
-
-      ##
-      # =3D eBPF Objects
-      #
-      # Text goes here
-      ##
-
-This is not a demand.
-
-[...]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
