@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8482C7829B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 14:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533E47829C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 15:00:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY4UB-0007Md-Mi; Mon, 21 Aug 2023 08:58:23 -0400
+	id 1qY4Vu-0000AZ-BA; Mon, 21 Aug 2023 09:00:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qY4U9-0007MB-KD
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 08:58:21 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY4Vr-00009p-Lq
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:00:07 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qY4U7-0000lJ-83
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 08:58:21 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-5007abb15e9so1916657e87.0
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 05:58:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qY4Vp-00011C-6K
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 09:00:07 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fee769fcc3so16203745e9.2
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 06:00:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692622697; x=1693227497;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9AXhkJc4wnoaXIkJWcdWtTmLAonQ/5Ep2biAFuEjr0M=;
- b=Ww0wPj89ceO4dgoxAKvXdETo7mCkocZxaNk74AEuGv73rAOodygyxBQghE6oWD056H
- ZC5gZl+qpQYY4mbi57eXIVAc7B6P086V9n3IioLCLSBAqGQoDi8/6d3x9pciimgYk8i4
- 6YlBjL4HEyw24CLS2OsVP+jI8D308pOhYrfmNThBNmalb1UfBB2KXnLJJtE+f3Q8vBxF
- di2K6CfwZa51DJ9EbRJA4clfKqn6J0CLikjq3yHwpQIZLc71sFtKnMDmU4OXTPA8/U9e
- EKIM3wqL3oSC2KwSNgiDiDHcD3a+0zQ7gO5TJ1Lb+mEShg0+42b/OqndKHpvsva9HfiM
- +4zg==
+ d=linaro.org; s=google; t=1692622803; x=1693227603;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KgBR8gQV2lgGU70zxpW1e+QFtxeVXReDbInMcX6UyB4=;
+ b=RrvIkp+oz3+a3NM0iQB2yrUoZRJ2+fxxuVy5pGou836MiU48d75g62nDrAvQVIVl74
+ phkM/5VgytiJdmBNJTm6xnyCBV0V+VExd0CAzcaoEENelw/U/j8aCuWyLvhc5qG6Y5Oo
+ gYnzPCus+VA9sSgDCf2txxS0H3XYTDbzm0rkaWC9EvP8zQ8e1L9UbAngIU3DXvCVkFRB
+ t5jlmMjAda2nHMyFZQ+ORjRmOXNaWWBqOqkXsBwEYTGLPM5OSB2wU7jq/q/+I3GJl6db
+ N3xJGNBL3Gisl5mo3cHB52fq6fNGQ6qt4ce/yWxoOn0UaQo+Yd4rPMwCONdCp3wGhBOB
+ mj0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692622697; x=1693227497;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1692622803; x=1693227603;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=9AXhkJc4wnoaXIkJWcdWtTmLAonQ/5Ep2biAFuEjr0M=;
- b=et/qNGV43hVti7P2hy4KuP0AFqgBZTjPkPzzZi3F5A6qR3Rd7bypkRPf3HkMpk99Y8
- 7p247oE4acLJMLUhZkEZ4nR80KFuEbzciZM0R0EZuvT6es3Ez6G+Nyd5j1lZsXf28OKO
- iN2hNt4Bgt82hz4gSmuQH613FhlJakcIL2F6oj3G+baS8xvR4kAOmw+tDWm6Run7DhRK
- rUBbJ36ruD0t73ixd07Hm54XcJVgkyt5oX6jJiYZddedfsAYDfzef3A+hGRcnKlHQqw6
- l0FtABSDGD93mvXIse9T44PHW/tOMAsevLfX884/aqgf+2FCXAn3/c13/Q4B2PRGDEFM
- JjvQ==
-X-Gm-Message-State: AOJu0YznAspBatCvbxhe4Bclv7P9GD8VsCKU6HxT9dg/lhMA8aMY9HDI
- O5QOErzrw5xWmcjrTjuBMrAYbJh9iaf5aZt0r+qcow==
-X-Google-Smtp-Source: AGHT+IHC+ESplssJVH1l0CjOLWTh/P2mDbgifOapXBFkJHXz5wpYBkxjGaqlBaDs2CPXQXJvcJVxtqr7aP1cElscuGs=
-X-Received: by 2002:a05:6512:1192:b0:4fd:f85d:f67a with SMTP id
- g18-20020a056512119200b004fdf85df67amr5732197lfr.61.1692622697236; Mon, 21
- Aug 2023 05:58:17 -0700 (PDT)
+ bh=KgBR8gQV2lgGU70zxpW1e+QFtxeVXReDbInMcX6UyB4=;
+ b=VFIW4Eti1rP5kdw5keJikFD5uJM+4GowhTYV2solmo7zJLPPeWR49Wb7Vt2R3I2CRp
+ PcXNxv6HH/j3dFHCL+tnEQN1LxZWzb84QmtlNf4WVU/H2kPM+/skkUBcYGEWBuKcwam6
+ eR/BCrLNvLyyLVuHvr8yPYQxl7Q/Bq32Bn4athHyZdc1mXIfeA7bCBL4nlv3zkQTm9eH
+ VwPT5ajn9+0EHBOQyp2bIREVcbytjSfteEY30KeCx7QTUe31QWGQMkcXvBf/Dfs/TMjf
+ 81OiMiO8a70y0I30gNccwhWP2PpMmDZjX/Kw8ivhTcjRz1fAUtztMt0phCKKbmttq7Sm
+ 0Tyg==
+X-Gm-Message-State: AOJu0YzMKYi7JRJKUJjRqAmEMiY4t7W9thjMYNxkIwAmJKuBQSjGwPVN
+ rfsS20bf7CtxC9uFtMoZ0YZV2WT4MtiVSVIiIjg=
+X-Google-Smtp-Source: AGHT+IFyK8teZuCDXQaxWJAg158rjWrDHYZSc+7aSSGwEN+MHkHWfZoYRhW8629wGDhotCRfnLX//g==
+X-Received: by 2002:a1c:7907:0:b0:3fb:be7c:d58a with SMTP id
+ l7-20020a1c7907000000b003fbbe7cd58amr5040747wme.26.1692622803316; 
+ Mon, 21 Aug 2023 06:00:03 -0700 (PDT)
+Received: from m1x-phil.lan (static-176-182-122-208.ncc.abo.bbox.fr.
+ [176.182.122.208]) by smtp.gmail.com with ESMTPSA id
+ a19-20020a05600c225300b003fee83ae4a3sm7216401wmm.9.2023.08.21.06.00.01
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 21 Aug 2023 06:00:02 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Jiajie Chen <c@jia.je>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH v3 0/8] target/loongarch: Cleanups in preparation of
+ loongarch32 support
+Date: Mon, 21 Aug 2023 14:59:51 +0200
+Message-ID: <20230821125959.28666-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230810191626.81084-1-francisco.iglesias@amd.com>
- <20230810191626.81084-9-francisco.iglesias@amd.com>
-In-Reply-To: <20230810191626.81084-9-francisco.iglesias@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 21 Aug 2023 13:58:06 +0100
-Message-ID: <CAFEAcA_o=W4jw929dAV+PNGL9zdhVEOWkBE0fFtx-J50cXQ3xA@mail.gmail.com>
-Subject: Re: [PATCH v2 8/8] hw/arm/versal: Connect the CFRAME_REG and
- CFRAME_BCAST_REG
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,17 +92,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 20:16, Francisco Iglesias
-<francisco.iglesias@amd.com> wrote:
->
-> Connect the Configuration Frame controller (CFRAME_REG) and the
-> Configuration Frame broadcast controller (CFRAME_BCAST_REG) to the
-> Versal machine.
->
-> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Series fully reviewed.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+v3:
+- Do not rename loongarch_la464_initfn (rth)
+- Added R-b
 
-thanks
--- PMM
+v2:
+- Do no rename loongarch_cpu_get/set_pc (rth)
+- Rebased Jiajie's patches for convenience
+- Added rth's R-b
+
+Jiajie, this series contains few notes I took while
+reviewing your series adding loongarch32 support [*].
+
+If your series isn't merged, consider rebasing it on
+this one.
+
+Regards,
+
+Phil.
+
+[*] https://lore.kernel.org/qemu-devel/20230817093121.1053890-1-gaosong@loongson.cn/
+
+Jiajie Chen (3):
+  target/loongarch: Add function to check current arch
+  target/loongarch: Add new object class for loongarch32 cpus
+  target/loongarch: Add GDB support for loongarch32 mode
+
+Philippe Mathieu-Daudé (4):
+  target/loongarch: Log I/O write accesses to CSR registers
+  target/loongarch: Remove duplicated disas_set_info assignment
+  target/loongarch: Introduce abstract TYPE_LOONGARCH64_CPU
+  target/loongarch: Extract 64-bit specifics to
+    loongarch64_cpu_class_init
+
+Song Gao (1):
+  target/loongarch: Fix loongarch_la464_initfn() misses setting LSPW
+
+ configs/targets/loongarch64-softmmu.mak |  2 +-
+ target/loongarch/cpu.h                  | 12 +++++
+ target/loongarch/cpu.c                  | 60 ++++++++++++++++++++-----
+ target/loongarch/gdbstub.c              | 32 ++++++++++---
+ gdb-xml/loongarch-base32.xml            | 45 +++++++++++++++++++
+ 5 files changed, 131 insertions(+), 20 deletions(-)
+ create mode 100644 gdb-xml/loongarch-base32.xml
+
+-- 
+2.41.0
+
 
