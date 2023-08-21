@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA744782485
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 09:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D3A782487
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 09:37:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qXzT5-0000CZ-Qs; Mon, 21 Aug 2023 03:36:55 -0400
+	id 1qXzTt-00018D-SB; Mon, 21 Aug 2023 03:37:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eesposit@redhat.com>)
- id 1qXzSN-0008Ih-F8
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 03:36:13 -0400
+ id 1qXzTJ-0000JB-2V
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 03:37:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eesposit@redhat.com>)
- id 1qXzSJ-00063J-Cq
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 03:36:10 -0400
+ id 1qXzTB-0006GE-TC
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 03:37:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692603366;
+ s=mimecast20190719; t=1692603421;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IOqmsxyQz/+esoujPR0sG4w0Mnp7eccHLgcGIhNwSQA=;
- b=XkI+/NXB6V2lD8Fq0ThREHt1TBTCQLPL78Y1POCNFF00seT7GdGmi/7men+vTb4fO57BOw
- pG8Xg0XQSlO3VjSBBRSljEqfdhFL6Ir5emmq0pTghOOEZfSTS3k5UrMOafuiSjte2sVLXw
- 0DnWNlfOCVeiz8kV5iYkcMmSekBTSt4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jzYUfGOuphqn9e4ZFKIyYNQTV3zqWjd+dyPXUk/YQfE=;
+ b=YDsjKK97sDHQ7SV2gWR8trF6fudeVonqaRfcyHIuvZKDqf0N1sN7F7dBttRaWA0GtXv0m2
+ Pb4XETufFEeVHAMiHoi362rgS4BJ0TlQQHBLRzAlki6cy1Y+xoU7mYQv7fgMMKrf1nnfQc
+ kr9YM7jiUgpoxDal8/JxoFh9/KBwsGo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-Jrw8wfWsNyuRBm6F34dKFw-1; Mon, 21 Aug 2023 03:34:59 -0400
-X-MC-Unique: Jrw8wfWsNyuRBm6F34dKFw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-31adc3ca07aso1777361f8f.2
- for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 00:34:58 -0700 (PDT)
+ us-mta-407-13O4UWnwMfyZHRuJ3twmsQ-1; Mon, 21 Aug 2023 03:35:02 -0400
+X-MC-Unique: 13O4UWnwMfyZHRuJ3twmsQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3180237cef3so1807071f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 00:35:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692603298; x=1693208098;
+ d=1e100.net; s=20221208; t=1692603301; x=1693208101;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IOqmsxyQz/+esoujPR0sG4w0Mnp7eccHLgcGIhNwSQA=;
- b=c14UBFFSLa6pFcwNwDkP7aVkPkVI+4DMOiPNE9Pve2GQwqZQcoRWrEJxT/NTaOPiKT
- 8MH/UUtFW+R5V8NAXvUZNSTcZPTF26c3KkdeWffCGrSwvl1826H83joCOs4E9mqBmuID
- pdHdrChz6iqeELFI7g++8Wa/10Tf/1eXAcsQwv0nHhTiXoJFQ+sdiTHtFM6J+2zGcpvX
- 8zz9Zp+dR1Is0//7ApXWsahtlj268bhLP6r8tMYWLHQ4jHcb7XwvLCZE/2mQw0Xi0drM
- kiypZKWORH/kF+Z43A98jehHE5bkT4S3j2z1vK+jUtZjQWA1byDF0NDOWGgPFlzw5s0F
- dAfw==
-X-Gm-Message-State: AOJu0Yz2yu1xJhP2Vt1THZBOZ6AW0OW0UiAqXpebIfPEnGpjYnTK8SbK
- 9SqSeUsZ1F7DzJEpX0rVBpgAwaMkNOIVYGjzZ3UdgSBgX76vocUi1ewSDy7uK6538oqePfV5XFE
- hBx4ZzdEYJ25Vyps=
-X-Received: by 2002:adf:f6c7:0:b0:319:6d8a:75f5 with SMTP id
- y7-20020adff6c7000000b003196d8a75f5mr4452188wrp.20.1692603297912; 
- Mon, 21 Aug 2023 00:34:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF0V12mIYKdAB1Kozqkod2+32zFlWvUfQSdacWSXuXHtLgJe1qoRCChN7sF9ktFDJ37YygqQ==
-X-Received: by 2002:adf:f6c7:0:b0:319:6d8a:75f5 with SMTP id
- y7-20020adff6c7000000b003196d8a75f5mr4452184wrp.20.1692603297754; 
- Mon, 21 Aug 2023 00:34:57 -0700 (PDT)
+ bh=jzYUfGOuphqn9e4ZFKIyYNQTV3zqWjd+dyPXUk/YQfE=;
+ b=Uuf9BArhTDkkVTrqTkdNRrVTg6f01zB96lvMAcfYc91O5LeQSubPpO8zoYSkaGmXsm
+ mRHmbbbk/WXTXMmWkxx7GKXBv6n+tjGpGcLfh8d3TijogY+VVfUZLq/6tG9WkNnFKK47
+ MgRdP+qdM2wBvUiqfUbPGaUmkzR1mpeeERGPpXwrRjzO9rxagnfIdAeGF1nttQ1URz3U
+ JVoNgolYmQfy29MAtFuQ2nfmXyBAn4UpqPhvjeisn0wVDZU3VHkvhn24ERhZRDRXuhFC
+ 7YBcmAV/DNF+qf3JwSlXKC3fqd02Ah0ybfeHWZzmQLwb+r5aqNmhwgKQuli6uNm24T/q
+ yvlA==
+X-Gm-Message-State: AOJu0Yxdv5ir7T9gHs0T19NmR0PgD94tQc/vk2d8529tzb3dOGA5SQG2
+ FVh32uCfnIzkF81VOPPVaBgaqTC0VGKh34z+4cN6IX/J3TFhKE1+4CFGBRW9J2muX1l5PbyinsB
+ MwvH6cLxDU2QSkfA=
+X-Received: by 2002:a5d:4f0f:0:b0:319:89ce:da0b with SMTP id
+ c15-20020a5d4f0f000000b0031989ceda0bmr4077084wru.68.1692603301451; 
+ Mon, 21 Aug 2023 00:35:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGgYNGjCPSQ95IPgoXUzYgu1Mj+NXewlBVcMuxP42mcRpRKd3l209sdwav9lL9fkI1mBfsQ6Q==
+X-Received: by 2002:a5d:4f0f:0:b0:319:89ce:da0b with SMTP id
+ c15-20020a5d4f0f000000b0031989ceda0bmr4077074wru.68.1692603301242; 
+ Mon, 21 Aug 2023 00:35:01 -0700 (PDT)
 Received: from [192.168.149.106]
  (58.254.164.109.static.wline.lns.sme.cust.swisscom.ch. [109.164.254.58])
  by smtp.gmail.com with ESMTPSA id
- d4-20020adfe844000000b003196b1bb528sm11460393wrn.64.2023.08.21.00.34.57
+ o1-20020a5d62c1000000b0031ad2663ed0sm11333097wrv.66.2023.08.21.00.35.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Aug 2023 00:34:57 -0700 (PDT)
-Message-ID: <6e0ad551-055d-02c8-981f-9a711ce443fd@redhat.com>
-Date: Mon, 21 Aug 2023 09:34:57 +0200
+ Mon, 21 Aug 2023 00:35:00 -0700 (PDT)
+Message-ID: <94253d77-c914-525f-fa7c-3c6c9330f432@redhat.com>
+Date: Mon, 21 Aug 2023 09:35:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 06/21] block-coroutine-wrapper: Add
- no_co_wrapper_bdrv_wrlock functions
+Subject: Re: [PATCH 07/21] block-coroutine-wrapper: Allow arbitrary parameter
+ names
 Content-Language: de-CH
 To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
 Cc: stefanha@redhat.com, eblake@redhat.com, pbonzini@redhat.com,
  vsementsov@yandex-team.ru, qemu-devel@nongnu.org
 References: <20230817125020.208339-1-kwolf@redhat.com>
- <20230817125020.208339-7-kwolf@redhat.com>
+ <20230817125020.208339-8-kwolf@redhat.com>
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-In-Reply-To: <20230817125020.208339-7-kwolf@redhat.com>
+In-Reply-To: <20230817125020.208339-8-kwolf@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eesposit@redhat.com;
@@ -109,8 +109,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 Am 17/08/2023 um 14:50 schrieb Kevin Wolf:
-> Add a new wrapper type for GRAPH_WRLOCK functions that should be called
-> from coroutine context.
+> Don't assume specific parameter names like 'bs' or 'blk' in the
+> generated code, but use the actual name.
 > 
 > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 
