@@ -2,70 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E85F782DA7
-	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 17:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA3D782DD3
+	for <lists+qemu-devel@lfdr.de>; Mon, 21 Aug 2023 18:06:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qY7Ik-0002Az-Om; Mon, 21 Aug 2023 11:58:46 -0400
+	id 1qY7Om-0006dp-Ee; Mon, 21 Aug 2023 12:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qY7Ih-0002Ad-L9
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:58:43 -0400
-Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qY7Oj-0006dZ-08
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:04:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qY7Ie-0001AQ-IJ
- for qemu-devel@nongnu.org; Mon, 21 Aug 2023 11:58:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1692633517; bh=59av9dyf1ZroCB1Rfs04RuXtAb5V+NW3VRfxoekeWCY=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=JwRf27OFJn6teRlMFazQGzhnfEgQO/ilB5zDbA7CDFWzRAsuVbdcRAnLGzcZz3nXv
- 32CUaTkUXFvd2NiL8K3wlfmTLqBeK44e7zmbR9L53lIPOtP4p4g9mhotEBjCY7PkEd
- RrufFUxZoPhVDoV3GhIXZ/cfHbRHdzxD7R/sWOdbBPNtn1ksn8IoPswKV868Dl+MnD
- L7JAkfwxb7ds53DzbReFrMheMUEdYy052oU0dqO1VeOZbkzeUWcut6xYXmrimAlkt4
- +WTuI3dZJPul+4t6pSsB40/yVtyVa9GouQ3SHPZ4DGX7Df6ul/TmKaIbwQnCqudZPU
- V5qCkYGD6lZIw==
-Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id 3FEBB3F20D83;
- Mon, 21 Aug 2023 08:58:37 -0700 (PDT)
-X-Virus-Scanned: Debian amavis at keithp.com
-Received: from elaine.keithp.com ([127.0.0.1])
- by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id bWYkMjngnTrQ; Mon, 21 Aug 2023 08:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1692633516; bh=59av9dyf1ZroCB1Rfs04RuXtAb5V+NW3VRfxoekeWCY=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=GRCMqHyRaSYCMBHFbK4CGTvXkTY2Bg3y6urIh7rJChYeWJ0OOoENH1zonzxup45ef
- 9Psfc0IthelapA03+eMjmmNsdukrtzm3tZBki+sometImZdkxNsSUbhQMGFZIpAj/J
- gIf7hFQ04S7u1mMh8Jm0SILUYuWojiZI+DxvS127R0wuU2NVIAW/7WZAMtJQLtpR1X
- pzD7JkUUcb4jUXuurkZU/myaUsQJUCrDUsS8dGb2aCkyWmErh2Dmw8owAtPNOH2Xtm
- CEUt9q1zU5XyzvldpB5ESvbdcsf5+YzH9glawwLKTmg8TSU+V0u6AzUbFOJW8guKRO
- Je8aHEMgSFOiA==
-Received: from keithp.com (unknown [98.97.112.104])
- by elaine.keithp.com (Postfix) with ESMTPSA id 4F24B3F20D23;
- Mon, 21 Aug 2023 08:58:36 -0700 (PDT)
-Received: by keithp.com (Postfix, from userid 1000)
- id C50BD1E601E7; Mon, 21 Aug 2023 08:58:36 -0700 (PDT)
-To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org, Richard
- Henderson <richard.henderson@linaro.org>
-Subject: Re: Funny results with long double denorms on m68k
-In-Reply-To: <fe3ff30d-cf2c-0c45-b4f5-107dead420ac@vivier.eu>
-References: <87bkf1l9hf.fsf@keithp.com>
- <75b13a6f-5866-4948-00fb-fbfdb7866e3d@vivier.eu>
- <fe3ff30d-cf2c-0c45-b4f5-107dead420ac@vivier.eu>
-Date: Mon, 21 Aug 2023 08:58:36 -0700
-Message-ID: <871qfwl74j.fsf@keithp.com>
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qY7Og-0002du-GH
+ for qemu-devel@nongnu.org; Mon, 21 Aug 2023 12:04:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692633889;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aCpTt5dH6yer94p6uLtt8gmsJ+utYOf+/4jsL0KvGjk=;
+ b=ZrWBvg+LaSZ7wi/zYstl2G9aOJTAWy2fzgwfP745V033qLSogNmSn+hBV4YWy/WGHgwhFy
+ v3sf8I30mLfb2n7HXEmxi1glmhOGDBZfMtYUdc/LeZIVtwJ9A+tNGs2CcOJf04UoUi7mdn
+ pvD3dlWWBDfktg7l9CzIv+/wnxOSL/s=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-186-uamFyIHKP3edpzV_cHz9Ag-1; Mon, 21 Aug 2023 12:04:47 -0400
+X-MC-Unique: uamFyIHKP3edpzV_cHz9Ag-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-6b9c09823e7so4007832a34.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 09:04:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692633886; x=1693238686;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aCpTt5dH6yer94p6uLtt8gmsJ+utYOf+/4jsL0KvGjk=;
+ b=ldjbb1DU9FC8BGNpIZyQznVYl+B9MLadN+pYLkKoQh2hGGj3nDn0l55ozh4xYtf+5y
+ NBUJM31cmHcxtAzwnEUFcoRymT7FkeEIisizCa+cHUDglVIL6lp7Xd7NwzQb0InBUMlE
+ dj81Ie87TSYVAtHmXDav3t58t6WCJ6VoRHuffLhslU+fDl/KdM8K2GCMUzbAkJHIO3nx
+ 9amH3pB/eDUXLqiqJVlOjsV2WJhMQ3GwO6QcUb9EyPq/Bi63Wm6dzqpYOqZEgCXjr0Zs
+ V8MTW80ZsyFLFcx4AMeKP59hiCH42N/85IjN1X64wdZfy9TEWu0LkuTcTqnb2RCWZy3f
+ 0BLg==
+X-Gm-Message-State: AOJu0YzrnwyDS3M5TMcg2YUfM2Xx3A+Q3XeSCY09nGcs6q9Ddu5ixHqE
+ ZYinJUkQ9aOzx04mlaeiprizwhY/DLXOaqZApW7Mlke4zvLCrrv4Mbk58HfHowSPIOgYXiHDht5
+ ESrIlFynQeff8wlk=
+X-Received: by 2002:a05:6830:478e:b0:6b9:f1d3:160 with SMTP id
+ df14-20020a056830478e00b006b9f1d30160mr8637592otb.11.1692633886454; 
+ Mon, 21 Aug 2023 09:04:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1nc6oTGP/RpC66v9141OP1fez6LLQZOEhd04VxqXv2L/YZTOlUJ7M8qL1CQ8BSed3wjOoUA==
+X-Received: by 2002:a05:6830:478e:b0:6b9:f1d3:160 with SMTP id
+ df14-20020a056830478e00b006b9f1d30160mr8637530otb.11.1692633885751; 
+ Mon, 21 Aug 2023 09:04:45 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ q19-20020a9d6653000000b006b9a9bc7773sm3539910otm.56.2023.08.21.09.04.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 21 Aug 2023 09:04:45 -0700 (PDT)
+Date: Mon, 21 Aug 2023 10:04:43 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@redhat.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>, qemu-devel@nongnu.org, Paolo
+ Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>, Alex
+ =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Philippe
+ =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Beraldo Leal
+ <bleal@redhat.com>, richard.henderson@linaro.org, "Daniel P.
+ =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Gerd Hoffmann
+ <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Wainer dos
+ Santos Moschetta <wainersm@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [8.1 regression] Re: [PULL 05/19] virtio-gpu-udmabuf: correct
+ naming of QemuDmaBuf size properties
+Message-ID: <20230821100443.6034d0a4.alex.williamson@redhat.com>
+In-Reply-To: <CAMxuvaxjHq=3oB74McSdHSMthtv0XLwk0k6tW92FjY1yyeoA_w@mail.gmail.com>
+References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
+ <20230717124545.177236-6-marcandre.lureau@redhat.com>
+ <20230816150810.15d90b34.alex.williamson@redhat.com>
+ <20230816152549.09cfcece.alex.williamson@redhat.com>
+ <CAMxuvaxjHq=3oB74McSdHSMthtv0XLwk0k6tW92FjY1yyeoA_w@mail.gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
- helo=elaine.keithp.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,47 +109,136 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Keith Packard <keithp@keithp.com>
-From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Mon, 21 Aug 2023 14:20:38 +0400
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com> wrote:
 
+> Hi Alex
+>=20
+> On Thu, Aug 17, 2023 at 1:25=E2=80=AFAM Alex Williamson
+> <alex.williamson@redhat.com> wrote:
+> >
+> > On Wed, 16 Aug 2023 15:08:10 -0600
+> > Alex Williamson <alex.williamson@redhat.com> wrote: =20
+> > > > diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+> > > > index 8f9fbf583e..3d19dbe382 100644
+> > > > --- a/ui/egl-helpers.c
+> > > > +++ b/ui/egl-helpers.c
+> > > > @@ -314,9 +314,9 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmab=
+uf)
+> > > >      }
+> > > >
+> > > >      attrs[i++] =3D EGL_WIDTH;
+> > > > -    attrs[i++] =3D dmabuf->width;
+> > > > +    attrs[i++] =3D dmabuf->backing_width;
+> > > >      attrs[i++] =3D EGL_HEIGHT;
+> > > > -    attrs[i++] =3D dmabuf->height;
+> > > > +    attrs[i++] =3D dmabuf->backing_height;
+> > > >      attrs[i++] =3D EGL_LINUX_DRM_FOURCC_EXT;
+> > > >      attrs[i++] =3D dmabuf->fourcc;
+> > > >
+> > > > diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+> > > > index 42db1bb6cf..eee821d73a 100644
+> > > > --- a/ui/gtk-egl.c
+> > > > +++ b/ui/gtk-egl.c
+> > > > @@ -262,9 +262,10 @@ void gd_egl_scanout_dmabuf(DisplayChangeListen=
+er *dcl,
+> > > >      }
+> > > >
+> > > >      gd_egl_scanout_texture(dcl, dmabuf->texture,
+> > > > -                           dmabuf->y0_top, dmabuf->width, dmabuf->=
+height,
+> > > > -                           dmabuf->x, dmabuf->y, dmabuf->scanout_w=
+idth,
+> > > > -                           dmabuf->scanout_height, NULL);
+> > > > +                           dmabuf->y0_top,
+> > > > +                           dmabuf->backing_width, dmabuf->backing_=
+height,
+> > > > +                           dmabuf->x, dmabuf->y, dmabuf->width,
+> > > > +                           dmabuf->height, NULL);
+> > > >
+> > > >      if (dmabuf->allow_fences) {
+> > > >          vc->gfx.guest_fb.dmabuf =3D dmabuf;
+> > > > @@ -284,7 +285,8 @@ void gd_egl_cursor_dmabuf(DisplayChangeListener=
+ *dcl,
+> > > >          if (!dmabuf->texture) {
+> > > >              return;
+> > > >          }
+> > > > -        egl_fb_setup_for_tex(&vc->gfx.cursor_fb, dmabuf->width, dm=
+abuf->height,
+> > > > +        egl_fb_setup_for_tex(&vc->gfx.cursor_fb,
+> > > > +                             dmabuf->backing_width, dmabuf->backin=
+g_height,
+> > > >                               dmabuf->texture, false);
+> > > >      } else {
+> > > >          egl_fb_destroy(&vc->gfx.cursor_fb);
+> > > > diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+> > > > index a9a7fdf50c..4513d3d059 100644
+> > > > --- a/ui/gtk-gl-area.c
+> > > > +++ b/ui/gtk-gl-area.c
+> > > > @@ -301,9 +301,10 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeLi=
+stener *dcl,
+> > > >      }
+> > > >
+> > > >      gd_gl_area_scanout_texture(dcl, dmabuf->texture,
+> > > > -                               dmabuf->y0_top, dmabuf->width, dmab=
+uf->height,
+> > > > -                               dmabuf->x, dmabuf->y, dmabuf->scano=
+ut_width,
+> > > > -                               dmabuf->scanout_height, NULL);
+> > > > +                               dmabuf->y0_top,
+> > > > +                               dmabuf->backing_width, dmabuf->back=
+ing_height,
+> > > > +                               dmabuf->x, dmabuf->y, dmabuf->width,
+> > > > +                               dmabuf->height, NULL);
+> > > >
+> > > >      if (dmabuf->allow_fences) {
+> > > >          vc->gfx.guest_fb.dmabuf =3D dmabuf; =20
+> > > =20
+> >
+> > I suspect the issues is in these last few chunks where width and height
+> > are replaced with backing_width and backing height, but
+> > hw/vfio/display.c never sets backing_*.  It appears that the following
+> > resolves the issue:
+> >
+> > diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> > index bec864f482f4..837d9e6a309e 100644
+> > --- a/hw/vfio/display.c
+> > +++ b/hw/vfio/display.c
+> > @@ -243,6 +243,8 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCID=
+evice *vdev,
+> >      dmabuf->dmabuf_id  =3D plane.dmabuf_id;
+> >      dmabuf->buf.width  =3D plane.width;
+> >      dmabuf->buf.height =3D plane.height;
+> > +    dmabuf->buf.backing_width =3D plane.width;
+> > +    dmabuf->buf.backing_height =3D plane.height;
+> >      dmabuf->buf.stride =3D plane.stride;
+> >      dmabuf->buf.fourcc =3D plane.drm_format;
+> >      dmabuf->buf.modifier =3D plane.drm_format_mod;
+> >
+> > I'll post that formally, but I really have no idea how dmabuf display
+> > works, so confirmation would be appreciated.  Thanks, =20
+>=20
+> Looks correct to me. I wish Kim would chime in.
+>=20
+> I am not familiar with vfio/display. Looking at the kernel side, it
+> seems it doesn't have a concept for scanout geometry that is different
+> from the backing dmabuf/texture dimension.
+>=20
+> Should we make this a blocker for release? Are you sending the patch?
 
-> When I developped the FPU emulation I compared the result of QEMU and a r=
-eal hardware using=20
-> https://github.com/vivier/m68k-testfloat and https://github.com/vivier/m6=
-8k-softfloat
+I did send a patch, Kim commented there:
 
-It looks like the second of those has similar issues with m68k denorms?
+https://lore.kernel.org/all/20230816215550.1723696-1-alex.williamson@redhat=
+.com/
 
-https://github.com/vivier/m68k-softfloat/blob/6ecdd5c9627d02c7502de4acaf54c=
-5c5b0a43bdf/softfloat/bits64/softfloat.c#L640
+Follow-up suggest vhost-user-gpu is also affected.  Empirically the
+patch I sent works, I think it's correct, but Gerd is probably most
+qualified to respond to the comments.  I don't know how a "scanout"
+relates to what we provide in vfio_device_gfx_plane_info.  Thanks,
 
-=2D-=20
-=2Dkeith
+Alex
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmTjiawACgkQ2yIaaQAA
-ABHxmQ/+NVobEm5VLq3H/wwQa++nnzJ7ev1vhJJc5BXuKHgtvFWlT/s9/IWKRSw3
-uRDIRA1IkxgFI+PRtmFq7gfGJZOvXdpnR7Nr9XWkI13zPH9SlY51JCgIKaCYmVzc
-ne89I4HaPvJ+AmsnctqGgUuqgGvbGxeCMbEfWFGb2addIeVAIifxKUkGM01oSTZU
-9E64OVxNqmHoZYfGP0QwyxhocHsHo+QSHtbx1KzUhVzigWyoanUhLNqLJROU18aK
-AGmQq+GMvR+ZJpkzDaQ+47Jgbpr3c+iiFsupyg0TPBN6aHSOJnAUbcMIg/G4lt8+
-QKxmqsTghHLiKKblk9spzyzaVoG/O3taNkwDafyeoyU5JpY6SMCzOLxB45f5iGM1
-DF6XcTp3Np/QDVz9cZNxg1MJGde514m4Pgn3Ioj3xXt8PI2vTG/i1jtnTBwzoGCG
-1HJsZhc1W5e7X2BZoURu3hdjJBvXYR9U3znCxbMJotdAsWTOayulMYOy+2tf2U9e
-cpfXfc0zA5A46hOuGTVnBbXGYqf2oAvXah9oOkDWB1Xm6OdF+Up5vSIEXqaBsDTy
-Ryo8ZO56XtyTZJ+RM+w403861qwebvRjFXwYaIiE6WRwbzppFq7ZejpjtgJspxCL
-y9uvPZNYnNySX1D8VH/oMvt3hLIXRULrMDp0MzIghQgeXGyAr94=
-=yPaO
------END PGP SIGNATURE-----
---=-=-=--
 
