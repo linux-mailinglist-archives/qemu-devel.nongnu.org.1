@@ -2,80 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513C978420F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF016784212
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYRQL-0006ce-Oq; Tue, 22 Aug 2023 09:27:57 -0400
+	id 1qYRRJ-0008CM-3l; Tue, 22 Aug 2023 09:28:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYRQJ-0006aD-82
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:27:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYRQG-0003sq-Sr
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:27:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692710872;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=E9o7H94etu7JWY7Q+ZJIsMV0C8D46s248ZHLN6wXok0=;
- b=TqeK+iUopIiuMUvmiaFeSaK38l6ZxOwvsg8bP3PmIq96vLm+tmi7HScEPF6dTWWbO3vsOF
- zGW13C8+y+MYbdmV7kQTc85NHVP+jJRNXl8HKFhTsJEtThCfAdas9CWtVjmUxlkbqb6Ykd
- 4BYpOadHhOheIVtI1HnMdWzpG+adJ+0=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-299-4aHABKqsN7ymaY9GhFXqIA-1; Tue, 22 Aug 2023 09:27:47 -0400
-X-MC-Unique: 4aHABKqsN7ymaY9GhFXqIA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F24173C0DDAC;
- Tue, 22 Aug 2023 13:27:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B0BF6140E970;
- Tue, 22 Aug 2023 13:27:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A759421E690D; Tue, 22 Aug 2023 15:27:45 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org,  qemu-ppc@nongnu.org,  Paolo Bonzini
- <pbonzini@redhat.com>,  Peter Xu <peterx@redhat.com>,  Igor Mammedov
- <imammedo@redhat.com>,  Thiner Logoer <logoerthiner1@163.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P .
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Elena
- Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
- <jag.raman@oracle.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Ani Sinha
- <anisinha@redhat.com>,  Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,  Greg Kurz
- <groug@kaod.org>,  Eric Blake <eblake@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>
-Subject: Re: [PATCH v2 3/9] backends/hostmem-file: Add "rom" property to
- support VM templating with R/O files
-References: <20230822114504.239505-1-david@redhat.com>
- <20230822114504.239505-4-david@redhat.com>
-Date: Tue, 22 Aug 2023 15:27:45 +0200
-In-Reply-To: <20230822114504.239505-4-david@redhat.com> (David Hildenbrand's
- message of "Tue, 22 Aug 2023 13:44:51 +0200")
-Message-ID: <87v8d72omm.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYRR2-0008AX-Hc
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:28:41 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYRQz-0003xj-Cl
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:28:39 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fee5ddc23eso30829705e9.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 06:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692710912; x=1693315712;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AdZ6t3FEvjVbC9VbhArQHV+p79IK14MZ5kvSDksimjE=;
+ b=aPrAMpnk3dbgDMp2/civwwTYBCSxLGy2exEJGkXN9whNm9jLkggoyWJe8VftsuXyW0
+ ODkteNvqpS7Abp9ORm+d65wEKJmDk6iWoUo8OVJcgJhG7EZVZ9BW1gkAgEdJ9ztOUzap
+ HIBzA0EYDOh80eOr1mGcPhdIhgiQCWt36rWNjHOM8Pa39C21hopurjnI/WZWWy0CVTCD
+ xoCojjApwaUvsfLarOmi403O3DmVWfStiAtAz8Y48ScDI9Luvv6SXb7Bn5mfZqfz/tCy
+ gIT059UJtBqRuU79zUTAp1DYFhSuQ5pWIK/OlFDOgg99MU11KVi63aVjQ6vspRAoxc5v
+ ULtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692710912; x=1693315712;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AdZ6t3FEvjVbC9VbhArQHV+p79IK14MZ5kvSDksimjE=;
+ b=NjYdubDi7TzlTR7ty9FFY0fGxO9JuFzA7AvTXOg3jTRrl2K9T95BO2fyv/mqGhKzbF
+ UUX+ei74paAuMnejoUfsygPNFywVpaY2ch0MSG0nYrdLWuC72ceMwJ1uSwSLbkDjkvj6
+ cNrSJO2JUBU0bvvZmg2R6flyouOnz6HY2QgxbPmRiBxSO1MEIXATdJfxmoIOBUXRa3eY
+ GohrdeItlwO6fb3V4aSmmvjb44Q2jUGhEfYHKCWETOy8jS68O8KItf7jhk/p6LzLUx0p
+ /T648DAOKjb7FFdCy/PdiYnY2c7dnglxo3n8jkjAfCDUQIBcuzccqJ1ToqcP+o+R/63u
+ 58eg==
+X-Gm-Message-State: AOJu0Yx26MhTJWSYDsYIwkACDA0OawK4se7knc6wt9THFFRcGU0CKo0f
+ HOljMSa+vobbYv6DioMW/lyrgWAcUywyd5RbFlB1tA==
+X-Google-Smtp-Source: AGHT+IFfd0RJqcuZEy4JUdvzR+xrlBfA33cvQF9otAv8FkOzwkikrVy6wRHExB0OoswaKw0EtxL4KA==
+X-Received: by 2002:a7b:c8d8:0:b0:3fe:195c:eca3 with SMTP id
+ f24-20020a7bc8d8000000b003fe195ceca3mr7107732wml.9.1692710912713; 
+ Tue, 22 Aug 2023 06:28:32 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ m7-20020a5d6247000000b003195504c754sm15879049wrv.31.2023.08.22.06.28.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 06:28:32 -0700 (PDT)
+Message-ID: <8d7b2863-c5e1-4222-3011-1d58157b62a8@linaro.org>
+Date: Tue, 22 Aug 2023 15:28:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 08/12] target/loongarch: Use generic hrev64_i64() in
+ REVB.4H opcode
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Greg Kurz
+ <groug@kaod.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nicholas Piggin <npiggin@gmail.com>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org
+References: <20230822124042.54739-1-philmd@linaro.org>
+ <20230822125122.54991-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230822125122.54991-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,121 +105,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-David Hildenbrand <david@redhat.com> writes:
+On 22/8/23 14:51, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/loongarch/insn_trans/trans_bit.c.inc | 15 +--------------
+>   1 file changed, 1 insertion(+), 14 deletions(-)
+> 
+> diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/insn_trans/trans_bit.c.inc
+> index 95b4ee5bc8..c04806dc21 100644
+> --- a/target/loongarch/insn_trans/trans_bit.c.inc
+> +++ b/target/loongarch/insn_trans/trans_bit.c.inc
+> @@ -124,19 +124,6 @@ static void gen_revb_2h(TCGv dest, TCGv src1)
+>       tcg_gen_or_tl(dest, t0, t1);
+>   }
+>   
+> -static void gen_revb_4h(TCGv dest, TCGv src1)
+> -{
+> -    TCGv mask = tcg_constant_tl(0x00FF00FF00FF00FFULL);
+> -    TCGv t0 = tcg_temp_new();
+> -    TCGv t1 = tcg_temp_new();
+> -
+> -    tcg_gen_shri_tl(t0, src1, 8);
+> -    tcg_gen_and_tl(t0, t0, mask);
+> -    tcg_gen_and_tl(t1, src1, mask);
+> -    tcg_gen_shli_tl(t1, t1, 8);
+> -    tcg_gen_or_tl(dest, t0, t1);
+> -}
+> -
+>   static void gen_revh_2w(TCGv dest, TCGv src1)
+>   {
+>       TCGv_i64 t0 = tcg_temp_new_i64();
+> @@ -175,7 +162,7 @@ TRANS(clz_d, gen_rr, EXT_NONE, EXT_NONE, gen_clz_d)
+>   TRANS(cto_d, gen_rr, EXT_NONE, EXT_NONE, gen_cto_d)
+>   TRANS(ctz_d, gen_rr, EXT_NONE, EXT_NONE, gen_ctz_d)
+>   TRANS(revb_2h, gen_rr, EXT_NONE, EXT_SIGN, gen_revb_2h)
+> -TRANS(revb_4h, gen_rr, EXT_NONE, EXT_NONE, gen_revb_4h)
+> +TRANS(revb_4h, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_hrev64_i64)
 
-> For now, "share=off,readonly=on" would always result in us opening the
-> file R/O and mmap'ing the opened file MAP_PRIVATE R/O -- effectively
-> turning it into ROM.
->
-> Especially for VM templating, "share=off" is a common use case. However,
-> that use case is impossible with files that lack write permissions,
-> because "share=off,readonly=on" will not give us writable RAM.
->
-> The sole user of ROM via memory-backend-file are R/O NVDIMMs, but as we
-> have users (Kata Containers) that rely on the existing behavior --
-> malicious VMs should not be able to consume COW memory for R/O NVDIMMs --
-> we cannot change the semantics of "share=off,readonly=on"
->
-> So let's add a new "rom" property with on/off/auto values. "auto" is
-> the default and what most people will use: for historical reasons, to not
-> change the old semantics, it defaults to the value of the "readonly"
-> property.
->
-> For VM templating, one can now use:
->     -object memory-backend-file,share=off,readonly=on,rom=off,...
->
-> But we'll disallow:
->     -object memory-backend-file,share=on,readonly=on,rom=off,...
-> because we would otherwise get an error when trying to mmap the R/O file
-> shared and writable. An explicit error message is cleaner.
->
-> We will also disallow for now:
->     -object memory-backend-file,share=off,readonly=off,rom=on,...
->     -object memory-backend-file,share=on,readonly=off,rom=on,...
-> It's not harmful, but also not really required for now.
->
-> Alternatives that were abandoned:
-> * Make "unarmed=on" for the NVDIMM set the memory region container
->   readonly. We would still see a change of ROM->RAM and possibly run
->   into memslot limits with vhost-user. Further, there might be use cases
->   for "unarmed=on" that should still allow writing to that memory
->   (temporary files, system RAM, ...).
-> * Add a new "readonly=on/off/auto" parameter for NVDIMMs. Similar issues
->   as with "unarmed=on".
-> * Make "readonly" consume "on/off/file" instead of being a 'bool' type.
->   This would slightly changes the behavior of the "readonly" parameter:
->   values like true/false (as accepted by a 'bool'type) would no longer be
->   accepted.
->
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-
-[...]
-
->  static void file_backend_instance_finalize(Object *o)
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index fa3e88c8e6..0cf83c6f39 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -668,6 +668,9 @@
->  # @readonly: if true, the backing file is opened read-only; if false,
->  #     it is opened read-write.  (default: false)
->  #
-> +# @rom: whether to create Read Only Memory (ROM).  If set to 'auto', it
-> +#       defaults to the value of @readonly.  (default: auto, since 8.2)
-> +#
->  # Since: 2.1
->  ##
-
-The commit message discusses how @readonly, @rom and @share interact.
-The doc comments don't, and users have to guess.
-
-I can see two ways to help users:
-
-1. Describe their interaction in full, so users can understand how to
-get from them what they need.
-
-2. Provide suitable guidance on how to use them.
-
->  { 'struct': 'MemoryBackendFileProperties',
-> @@ -677,7 +680,8 @@
->              '*discard-data': 'bool',
->              'mem-path': 'str',
->              '*pmem': { 'type': 'bool', 'if': 'CONFIG_LIBPMEM' },
-> -            '*readonly': 'bool' } }
-> +            '*readonly': 'bool',
-> +            '*rom': 'OnOffAuto' } }
->  ##
->  # @MemoryBackendMemfdProperties:
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 29b98c3d4c..03ce0b0a30 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -4976,7 +4976,7 @@ SRST
->      they are specified. Note that the 'id' property must be set. These
->      objects are placed in the '/objects' path.
->  
-> -    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off``
-> +    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off,rom=on|off|auto``
->          Creates a memory file backend object, which can be used to back
->          the guest RAM with huge pages.
->  
-> @@ -5066,6 +5066,14 @@ SRST
->          The ``readonly`` option specifies whether the backing file is opened
->          read-only or read-write (default).
->  
-> +        The ``rom`` option specifies whether to create Read Only Memory (ROM)
-> +        that cannot be modified by the VM. If set to ``on``, the VM cannot
-> +        modify the memory. If set to ``off``, the VM can modify the memory.
-> +        If set to ``auto`` (default), the value of the ``readonly`` property
-> +        is used. This option is primarily helpful for VM templating, where we
-> +        want to open a file readonly (``readonly=on``) and allow private
-> +        modifications of the memory by the VM (``share=off``, ``rom=off``).
-> +
-
-Here, you provide some guidance.
-
->      ``-object memory-backend-ram,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
->          Creates a memory backend object, which can be used to back the
->          guest RAM. Memory backend objects offer more control than the
-
+We should use tcg_gen_hrev64_tl() instead.
 
