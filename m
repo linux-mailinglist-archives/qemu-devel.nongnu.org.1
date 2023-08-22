@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0FF783FE5
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A344784003
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:49:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYPpo-0003nJ-8c; Tue, 22 Aug 2023 07:46:08 -0400
+	id 1qYPps-0003xc-03; Tue, 22 Aug 2023 07:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYPpO-0003hH-1P
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYPpP-0003hM-6r
  for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYPpJ-0006nR-VG
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:40 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYPpM-0006o7-Hf
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692704737;
+ s=mimecast20190719; t=1692704739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xjl+jwf6S6C7TTZrfneBrUP7JU1jXf7dtndXiCRb7qo=;
- b=QIzVu5SA+HnGA8uSdj+XEP44MJ2XbpsXkkul+sTJ7d9wNqLpO3O4fhLIadNXfxzVXhW980
- MO1rpv5+rnpwc3aS9wRvaWWIXGqWrI0T63QBi91AK3o6YdiFPM2JTbYYuUMjd0lGP7ET0M
- 7bs/Xme9kBCJuqJ1JkoXXtWmhCJajMQ=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-98-375V_4UPPoi01TpPu1tTag-1; Tue, 22 Aug 2023 07:45:33 -0400
-X-MC-Unique: 375V_4UPPoi01TpPu1tTag-1
+ bh=5geHhbE4MutI03r2OAElxDRwY2xkiopLerPizWqXowo=;
+ b=H+MOXsr5rRmyhAajopwDItfs91d5UXtVEtegaQB8iP94s8pZTAUBfjqyXKLgBOh3TPtyHd
+ JNRppuexxommwhzQiefMIw0xiu+U16APd3Cxy3cGmK0MdSk5mmsxtAOtudck+CXXFAKBi/
+ z1qmmsB8R3bgw+IM/jg5sYP80OMaEok=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-447-wr-JtGezOdaVqHVIaOxUpg-1; Tue, 22 Aug 2023 07:45:36 -0400
+X-MC-Unique: wr-JtGezOdaVqHVIaOxUpg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FD1A1C0514A;
- Tue, 22 Aug 2023 11:45:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DB91101B429;
+ Tue, 22 Aug 2023 11:45:36 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.54])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7AD3A492C13;
- Tue, 22 Aug 2023 11:45:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 79489492C13;
+ Tue, 22 Aug 2023 11:45:33 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -56,15 +56,15 @@ Cc: qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
  Greg Kurz <groug@kaod.org>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v2 8/9] docs: Don't mention "-mem-path" in multi-process.rst
-Date: Tue, 22 Aug 2023 13:44:56 +0200
-Message-ID: <20230822114504.239505-9-david@redhat.com>
+Subject: [PATCH v2 9/9] docs: Start documenting VM templating
+Date: Tue, 22 Aug 2023 13:44:57 +0200
+Message-ID: <20230822114504.239505-10-david@redhat.com>
 In-Reply-To: <20230822114504.239505-1-david@redhat.com>
 References: <20230822114504.239505-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,33 +88,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"-mem-path" corresponds to "memory-backend-file,share=off" and,
-therefore, creates a private COW mapping of the file. For multi-proces
-QEMU, we need proper shared file-backed memory.
+Let's add some details about VM templating, focusing on the VM memory
+configuration only.
 
-Let's make that clearer.
+There is much more to VM templating (VM state? block devices?), but I leave
+that as future work.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- docs/devel/multi-process.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ docs/vm-templating.txt | 109 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 109 insertions(+)
+ create mode 100644 docs/vm-templating.txt
 
-diff --git a/docs/devel/multi-process.rst b/docs/devel/multi-process.rst
-index e4801751f2..4ef539c0b0 100644
---- a/docs/devel/multi-process.rst
-+++ b/docs/devel/multi-process.rst
-@@ -409,8 +409,9 @@ the initial messages sent to the emulation process is a guest memory
- table. Each entry in this table consists of a file descriptor and size
- that the emulation process can ``mmap()`` to directly access guest
- memory, similar to ``vhost_user_set_mem_table()``. Note guest memory
--must be backed by file descriptors, such as when QEMU is given the
--*-mem-path* command line option.
-+must be backed by shared file-backed memory, for example, using
-+*-object memory-backend-file,share=on* and setting that memory backend
-+as RAM for the machine.
- 
- IOMMU operations
- ^^^^^^^^^^^^^^^^
+diff --git a/docs/vm-templating.txt b/docs/vm-templating.txt
+new file mode 100644
+index 0000000000..419362c1ea
+--- /dev/null
++++ b/docs/vm-templating.txt
+@@ -0,0 +1,109 @@
++QEMU VM templating
++==================
++
++This document explains how to use VM templating in QEMU.
++
++For now, the focus is on VM memory aspects, and not about how to save and
++restore other VM state (i.e., migrate-to-file with 'x-ignore-shared').
++
++Overview
++--------
++
++With VM templating, a single template VM serves as the starting point for
++new VMs. This allows for fast and efficient replication of VMs, resulting
++in fast startup times and reduced memory consumption.
++
++Conceptually, the VM state is frozen, to then be used as a basis for new
++VMs. The Copy-On-Write mechanism in the operating systems makes
++sure that new VMs are able to read template VM memory; however, any
++modifications stay private and don't modify the original template VM or any
++other created VM.
++
++Memory configuration
++--------------------
++
++In order to create the template VM, we have to make sure that VM memory
++ends up in a file, from where it can be reused for the new VMs:
++
++Supply VM RAM via memory-backend-file, with 'share=on' (modifications go
++to the file) and 'readonly=off' (open the file writable). Note that
++'readonly=off' is implicit.
++
++In the following command-line example, a 2GB VM is created, whereby VM RAM
++is to be stored in the 'template' file.
++
++ qemu [...] -m 2g \
++   -object memory-backend-file,id=pc.ram,mem-path=template,size=2g,share=on,... \
++   -machine q35,memory-backend=pc.ram',
++
++If multiple memory backends are used (vNUMA, DIMMs), configure all
++memory backends accordingly.
++
++Once the VM is in the desired state, stop the VM and save other VM state,
++leaving the current state of VM RAM reside in the file.
++
++In order to have a new VM be based on a template VM, we have to
++configure VM RAM to be based on a template VM RAM file; however, the VM
++should not be able to modify file content.
++
++Supply VM RAM via memory-backend-file, with 'share=off' (modifications stay
++private), 'readonly=on' (open the file readonly) and 'rom=off' (don't make
++the memory readonly for the VM). Note that 'share=off' is implicit and
++that other VM state has to be restored separately.
++
++In the following command-line example, a 2GB VM is created based on the
++existing 2GB file 'template'.
++
++ qemu [...] -m 2g \
++   -object memory-backend-file,id=pc.ram,mem-path=template,size=2g,readonly=on,rom=off,... \
++   -machine q35,memory-backend=pc.ram',
++
++If multiple memory backends are used (vNUMA, DIMMs), configure all
++memory backends accordingly.
++
++Note that '-mem-path' cannot be used for VM templating when creating the
++template VM or when starting new VMs based on a template VM.
++
++Incompatible features
++---------------------
++
++Some features are incompatible with VM templating, as the underlying file
++cannot be modified to discard VM RAM, or to actually share memory with
++another process.
++
++vhost-user and multi-process QEMU
++'''''''''''''''''''''''''''''''''
++
++vhost-user and multi-process QEMU are incompatible with VM templating.
++These technologies rely on shared memory, however, the template VMs
++don't actually share memory ('share=off'), even though they are file-based.
++
++virtio-balloon
++''''''''''''''
++
++virtio-balloon inflation and "free page reporting" cannot discard VM RAM
++and will repeatedly report errors. While virtio-balloon can be used
++for template VMs (e.g., report VM RAM stats), "free page reporting"
++should be disabled and the balloon should not be inflated.
++
++virtio-mem
++''''''''''
++
++virtio-mem cannot discard VM RAM that is managed by the virtio-mem
++device. virtio-mem will fail early when realizing the device. To use
++VM templating with virtio-mem, either hotplug virtio-mem devices to the new
++VM, or don't supply any memory to the template VM using virtio-mem
++(requested-size=0), not using a template VM file as memory backend for the
++virtio-mem device.
++
++VM migration
++''''''''''''
++
++For VM migration, "x-release-ram" similarly relies on discarding of VM
++RAM on the migration source to free up migrated RAM, and will
++repeatedly report errors.
++
++Postcopy live migration fails discarding VM RAM on the migration
++destination early and refuses to activate postcopy live migration. Note
++that postcopy live migration usually only works on selected filesystems
++(shmem/tmpfs, hugetlbfs) either way.
 -- 
 2.41.0
 
