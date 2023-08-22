@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AC5784685
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D276784698
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTse-0000W2-6Z; Tue, 22 Aug 2023 12:05:20 -0400
+	id 1qYTwa-00024w-A2; Tue, 22 Aug 2023 12:09:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYTsX-0000HD-76
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:05:13 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qYTwY-00024Z-Ad
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:09:22 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYTsV-0006Ha-1w
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:05:12 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso36393825ad.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:05:10 -0700 (PDT)
+ id 1qYTwW-0007PA-5m
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:09:22 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bc3d94d40fso36429295ad.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692720309; x=1693325109;
+ d=linaro.org; s=google; t=1692720559; x=1693325359;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9BnmY5HcdqEuZ3Tq47Sj8pUuTaWms0RpdOb5kp5T5EM=;
- b=u1gU6f3jQ1PKwB71jIt7fTLsI5o/aYVBU6NbWbCqqV/UzCMWnAMkwWJlaoRPxTjXXq
- w/YpDHLowgpgUBSoBZbHrn+Eqp0LcElXqnT7X5f+JFfQOKNSWQijTwuXpUL1odZmp4xb
- ewP2yIva4JEfFVFJs2HBEydvs55LkWRzRZX8dzhLQ3dU6gXabAEUWOyDOaQoKEHKf+ff
- SL3SyeJTliaZ5eVhZyqjYD5wFNVh5pzoNgn263bBacG3WS1SeLj42n4LXFsrhfA/6ojx
- lcqvrl4PkhiUun1mrWpJp8dXTOSUBarjPocyRChSGanfnImQJfm200tPJj5E9lSj+pjf
- dPHA==
+ bh=MS9EIAW+T0o67WH4zmSjqABrY3sNZx3QPqLBlOzVlDI=;
+ b=Gw4SXDecjAojbT9ZOO5KJGN1hlelJDixOp+nii9mRwGMwq4++XjFMCsAPbpuPSMoa0
+ 7O/SA21FTZYjLQ/z5D06maK8fBDe8gA0oqNtYQZ7wxTG13c92yBwMgXOA3NQiKZCjjb9
+ FT3Q/iZqWt6UrYSAnVCbfYNhCkmKRiIZDXwgdJRwtt0JA4McI8D5o/O008rXi+JKwI/1
+ AYQGHnjl3VEhenbH0swL1Y/kwfVq36RvLM+Q+vh0ZDPuYxpPJ12h8DfT2CTYafM11sOC
+ SIrGV3q5EccpOQGMHvzvmz7Et1e9nqv+adR6Gf2S1e0wwO4D5D8/eSZKp6JcN32ur/r7
+ rGRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692720309; x=1693325109;
+ d=1e100.net; s=20221208; t=1692720559; x=1693325359;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9BnmY5HcdqEuZ3Tq47Sj8pUuTaWms0RpdOb5kp5T5EM=;
- b=I3dl2w9ApZX6FY7k2LJr+SVvylQNujkMidnpcf1qM/nhknO00Y1aOQsS/gXrmoNDAg
- jPQZgPshGSeDiIUDRw1PDy7eflXYbKCuH3iHmZJg9fhXNofb9rapdWT2MhSYEJdw+YBS
- PsFGfF6Qwgb3gypSbIq23MvvfHspJLlxKcvaUBSFD98YfL5jgjCsOiUrxO8vW/mNmpy+
- t73t8U2yUauXUPwBwOeXvgDusM9WY6i5izIhT7fZg7/XxsqPvr3spQ4AZ1ywPLVVdi+R
- /Jgt9vv6iTE0lA5i1SIIzBQjSAb7T3NGTJpuPHPoR/1h0tWx1Onppef6+OGigs+jB/i1
- PGBw==
-X-Gm-Message-State: AOJu0Ywf1GHfnMfVTKOis5WMolqYoUoGnxbt0kbPRCdC75V8KJh9HTwX
- nIEeZmdVrWB7rzQSo2qPQSztSw==
-X-Google-Smtp-Source: AGHT+IEBsRTATv5TFvCe8BrDheAsO1ZsbwvbxQzOGXcRIHNlFaHLqpQcEkyZue7JV5EnqjGdINCY8g==
-X-Received: by 2002:a17:903:548:b0:1bd:da96:dc70 with SMTP id
- jo8-20020a170903054800b001bdda96dc70mr9966163plb.49.1692720309381; 
- Tue, 22 Aug 2023 09:05:09 -0700 (PDT)
+ bh=MS9EIAW+T0o67WH4zmSjqABrY3sNZx3QPqLBlOzVlDI=;
+ b=V0qlfgiD5yhv1v3ab6ADJIGiq7LGZkIXhfW9NZdjesdZrlWIiGFb2b+nkQJYMmTmxx
+ 3qsWVuGok0j8nwpAiRGv0pGJeFxwzQlInbfOEQG8lNsV0CPsXwe8AifzcygHjLSq+mqI
+ 9T2qupRQ0KMWGQvJXf2I7ijKzokjUVKES+xh3KLbgbr6zSPuAHlGxL0gl4PJWvPy8DM9
+ qyeZm+w2MFa0uYHscxKXrjGXV6jIIrSOI05e9yA9jMVdTo4e1iWjIDmEKrqHUJ2DIeYi
+ 3IscC2R3aVnzCz86bRNXmC5DHncKtkX5ly8uBIJvxqrK3qXL1iSyykYVeYYjKFKsGUN9
+ DNOA==
+X-Gm-Message-State: AOJu0YyZyne5jDU7O//xe9gOe1hMAnlwjpRIbgtdTsIcbOxaJW6EopiA
+ G1ZBewRgyRJCGvN6XswTTs9Qag==
+X-Google-Smtp-Source: AGHT+IHnUN4UI74Xqf0cQVSOjkLXVe0ljIXCYpbHgnWj3lPS7MUM/5wIl+TXOx6PcnpRXtQAXvsQ+w==
+X-Received: by 2002:a17:902:8647:b0:1c0:9b7c:f82a with SMTP id
+ y7-20020a170902864700b001c09b7cf82amr1138680plt.53.1692720558758; 
+ Tue, 22 Aug 2023 09:09:18 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
  ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- u12-20020a17090282cc00b001bc0f974117sm9305161plz.57.2023.08.22.09.05.08
+ p10-20020a170902e74a00b001bbbbda70ccsm9240131plf.158.2023.08.22.09.09.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 09:05:08 -0700 (PDT)
-Message-ID: <d1ebf318-92fe-dd83-8500-17496e84070f@linaro.org>
-Date: Tue, 22 Aug 2023 09:05:07 -0700
+ Tue, 22 Aug 2023 09:09:18 -0700 (PDT)
+Message-ID: <c6dbfd51-0975-ff42-ee22-937e27aee547@linaro.org>
+Date: Tue, 22 Aug 2023 09:09:16 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 6/7] tcg/tcg-op: Document deposit_z()
+Subject: Re: [RFC PATCH] docs/style: permit inline loop variables
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230822093712.38922-1-philmd@linaro.org>
- <20230822093712.38922-7-philmd@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>
+References: <20230822155004.1158931-1-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230822093712.38922-7-philmd@linaro.org>
+In-Reply-To: <20230822155004.1158931-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -98,29 +99,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/23 02:37, Philippe Mathieu-Daudé wrote:
-> Document deposit_z_i32() and deposit_z_i64(), added in
-> commit 07cc68d528 ("tcg: Add deposit_z expander").
+On 8/22/23 08:50, Alex Bennée wrote:
+> I've already wasted enough of my time debugging aliased variables in
+> deeply nested loops. While not scattering variable declarations around
+> is a good aim I think we can make an exception for stuff used inside a
+> loop.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
 > ---
->   docs/devel/tcg-ops.rst | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
-> index 306025ece7..7ea6aba502 100644
-> --- a/docs/devel/tcg-ops.rst
-> +++ b/docs/devel/tcg-ops.rst
-> @@ -449,6 +449,10 @@ Misc
->          |
->          |     *dest* = (*t1* & ~0x0f00) | ((*t2* << 8) & 0x0f00)
->   
-> +   * - deposit_z_i32/i64 *dest*, *t1*, *pos*, *len*
-> +
-> +     - | Similar to deposit, except that a zero value is deposited.
+>   docs/devel/style.rst | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
 
-Nack -- deposit_z is not a tcg opcode.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
