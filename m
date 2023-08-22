@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F5C784794
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1141784796
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:29:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYUDW-0008Kn-FR; Tue, 22 Aug 2023 12:26:54 -0400
+	id 1qYUFV-0000lq-WA; Tue, 22 Aug 2023 12:28:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qYUDP-0008Jw-S6
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:26:48 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYUFS-0000lZ-SM
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:28:54 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qYUDL-0002dA-CA
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:26:46 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-52a1ce529fdso860544a12.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:26:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYUFP-0002wT-WF
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:28:54 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-317716a4622so4222206f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:28:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692721601; x=1693326401;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KQbt1N+xe74ITT69tg5yWz1GrQEUZduKDftwx0/q1QM=;
- b=EyfH2JBKCLAXa7NMqp/rf0izdawHW2d98fZ+OnQzHT+VgAhzlMvFFFLH9oQeOzRs+0
- /DZZVRlWZ1Yg5yiaGTk3JGFxXf9uqLJuQt2WhnA7I2uKoAKqGTEe3K+m4RAkkTdVs/Ha
- ibxKLdyhdy7sZ/0NOi8DifQx4vhB4/O4sIm9T/ScPNp79qSy3BoC6Q6cxOt9Ridhxz7L
- DQdTRSR4ubG7cRzj9r3Y5SPPBnvQMrhtx3z/Fy5+OFGrcLyC7bEg25Cxx8MuNHwZsz/2
- 7rrnpOxUAmgvssWZXg+QwiIjSou6bN8cLw2n6zqEGjTBTIYLm3l3ZDs9fm46kmHSpiq7
- N+Bw==
+ d=linaro.org; s=google; t=1692721730; x=1693326530;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q3ZKJeK3dj+pXizGZ2gnFoNv1vZYmRKM7P5et2CZMMw=;
+ b=sLGpvQKj0zQdVU6u5txBnGXJkGwVEa8wBYIuVM93RkRANx/vCn0xAT7wj+3oRm4f+0
+ tVLlBVZDzTcdNbLOwGEdIYLMx0q0TLM0ndnnHwU1jsYnFkM8XFNDEOumEQkDGkLUUqzG
+ SzSdajrYJlpaE9jw40/qDO02WTVhJeEiZfQiL2/RPIF4U7N0ZQORnP2QhRjjoj1rhePw
+ UJmBgO8f5SqnNL278m4/xIvkCYCKQZ+KxooH2HnW6Aaiz8Egnb7r8Rk6rbBgbFRe6p+R
+ M7zWdAg+ROgqu5jdUCyypqd2YBP5cp6DJN+3KG2CUltUHb30PmhIPxiSBa5ArIbKz529
+ wXlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692721601; x=1693326401;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1692721730; x=1693326530;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=KQbt1N+xe74ITT69tg5yWz1GrQEUZduKDftwx0/q1QM=;
- b=E4Ui9RxO8ZSLyK6ZgKYoxsB+01M+Yl05AYWaGU7Nw4gqz7j5yU8lJSrkUTyBvjQlYu
- WWdvBKVz1PRzmqn2V+ogN+FM6D6OVQ249KFNb9VBak4i0F4oPOkq2ySW+3opkMux8orp
- GI3xRiONKRHRagva6h9GB6RkzS3opmkTK6EDYLAZFQkgJJUUlHnJYMWMtsakUtXXPz2W
- WZS4LTz6bnsOUl8kdO8BnAuS/skBhT7NnQ3PGgZygQElrCAgoNHmyL3iYp5e6mwT2aRi
- 0BTpNpbp5K7Y4yMX9H9ApkKYfUo1X4N8wyMyU2Mzv5lXT1IPeE0mbCGRkTjaw3AfwjRK
- 23mg==
-X-Gm-Message-State: AOJu0YwKZz+fD+7SFMulVW6YXXvrKlYC2tN0jYlqrOST3dxX0bCRYx9h
- jz5IiF8JuckfmRICU1WIDiZTKytu2n9mYYjt6mvFasIOQRNFqysn
-X-Google-Smtp-Source: AGHT+IGXKEkCmEVO4dzUb3gYsvfF/MpV6gVng7b9OXk22uo1L/WGt8isOeRnpJo4cv/v1cRhk/T6MUtsDJ3NBgzCA/8=
-X-Received: by 2002:a05:6402:3447:b0:523:1004:1ca0 with SMTP id
- l7-20020a056402344700b0052310041ca0mr9283237edc.5.1692721601490; Tue, 22 Aug
- 2023 09:26:41 -0700 (PDT)
+ bh=Q3ZKJeK3dj+pXizGZ2gnFoNv1vZYmRKM7P5et2CZMMw=;
+ b=Zi/GV6k55M6z4O72hP8YC22wlqhlTL0WCPKg1YzbPjOgEt+L/4ye6agAmOM5po9dwX
+ MwTijiYvT8KIzBYt5vYpUs16oiwaYAtgHxxbRtm5TQIUu2hIzKtUyvP+ZO8umBBxs5TA
+ AdMHVYBsygeKBxHHXZDqzwCpJKu3womhWEp1kKEIIuLlDXTImjjRn00pGqibJ8gzvDYs
+ 5VMkqqIEi1eXGDt5+jVyWTqsSYeYWLC0m9UCL36NblL6mWVsCgVzarpZCgZIOaLokUFH
+ Y8JxGapSQBFhJcX9YIfIE0g2klktpU1Ms/Xqc3YknRJQ3Ezee2F7Z3t2VQ84dvGQ1hiV
+ iiiQ==
+X-Gm-Message-State: AOJu0YwP957lsEOxCM31d2oG6CAD64AkApDt3erJarAAVI/t35Rfyl7x
+ pWmKE8ZNe4x/KRhNLGy1FkY8IhXvrTbkMdJOtxyJ3g==
+X-Google-Smtp-Source: AGHT+IGw6gGdPotJr1sff29UMxEJtMbIKGuwTrzBn5DAT1Za3cbr/+vltL5IYP4bfaM9Df2oDBA+rA==
+X-Received: by 2002:adf:f6c9:0:b0:319:6956:725f with SMTP id
+ y9-20020adff6c9000000b003196956725fmr8000156wrp.41.1692721730122; 
+ Tue, 22 Aug 2023 09:28:50 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.214.4])
+ by smtp.gmail.com with ESMTPSA id
+ b14-20020a5d4b8e000000b0031434c08bb7sm16281378wrt.105.2023.08.22.09.28.48
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 22 Aug 2023 09:28:49 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] docs/devel/tcg-ops: Bury mentions of trunc_shr_i64_i32()
+Date: Tue, 22 Aug 2023 18:28:47 +0200
+Message-ID: <20230822162847.71206-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230822161755.1225779-1-matti.schulze@fau.de>
-In-Reply-To: <20230822161755.1225779-1-matti.schulze@fau.de>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 22 Aug 2023 17:26:30 +0100
-Message-ID: <CAFEAcA_j+2LHnmkLARcSuDJ4i0rRV0TdVkCDTY-22WUWLB4HZA@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Fix bug in memory translation for executable
- Realm memory pages
-To: Matti Schulze <matti.schulze@fau.de>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,37 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 22 Aug 2023 at 17:18, Matti Schulze <matti.schulze@fau.de> wrote:
->
-> This patch fixes a bug in the memory translation for target/arm.
-> If in realm space, e.g., R-EL2 executing code from an executable
-> memory page currently results in a level 3 permission fault.
-> As we cannot access secure memory from an insecure space,
-> QEMU checks on each memory translation if the in_space is secure va
-> !ptw->in_secure.
-> If this is the case we always set the NS bit in the memory attributes
-> to prevent ever reading secure memory from an insecure space.
-> This collides with FEAT_RME, since if the system is in realm space,
-> !ptw->in_secure also applies, and thus QEMU sets the NS bit,
-> meaning that the memory will be translated into insecure space.
+Commit 609ad70562 ("tcg: Split trunc_shr_i32 opcode into
+extr[lh]_i64_i32") remove trunc_shr_i64_i32(). Update the
+backend documentation.
 
-In the patch series
-https://patchew.org/QEMU/20230714154648.327466-1-peter.maydell@linaro.org/
-(which is just waiting for 8.1 to formally be released before
-it gets applied) the ptw->in_secure field is removed entirely
-in favour of only ever looking at ptw->in_space (among other
-reasons, because it fixes this kind of bug).
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ docs/devel/tcg-ops.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-There are also some other realm-related bugs which we noticed
-but which again are pending 8.1 release before they go into
-the tree. If you're playing with the realm support, I would
-suggest you start with this branch for the moment:
- https://git.linaro.org/people/peter.maydell/qemu-arm.git/log/?h=target-arm-for-8.2
-and see whether the bugs you're trying to fix are still
-present there. (Don't use that branch indefinitely, though --
-by next week I expect it to have merged into upstream and
-then it will just be stale.)
+diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
+index 6a166c5665..53695e1623 100644
+--- a/docs/devel/tcg-ops.rst
++++ b/docs/devel/tcg-ops.rst
+@@ -882,14 +882,15 @@ sub2_i32, brcond2_i32).
+ On a 64 bit target, the values are transferred between 32 and 64-bit
+ registers using the following ops:
+ 
+-- trunc_shr_i64_i32
++- extrl_i64_i32
++- extrh_i64_i32
+ - ext_i32_i64
+ - extu_i32_i64
+ 
+ They ensure that the values are correctly truncated or extended when
+ moved from a 32-bit to a 64-bit register or vice-versa. Note that the
+-trunc_shr_i64_i32 is an optional op. It is not necessary to implement
+-it if all the following conditions are met:
++extrl_i64_i32 and extrh_i64_i32 are optional ops. It is not necessary
++to implement them if all the following conditions are met:
+ 
+ - 64-bit registers can hold 32-bit values
+ - 32-bit values in a 64-bit register do not need to stay zero or
+-- 
+2.41.0
 
-thanks
--- PMM
 
