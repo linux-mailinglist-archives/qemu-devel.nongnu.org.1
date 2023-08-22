@@ -2,63 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77770784801
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D84784805
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:51:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYUZs-0001yR-CI; Tue, 22 Aug 2023 12:50:00 -0400
+	id 1qYUb1-00033E-Re; Tue, 22 Aug 2023 12:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYUZq-0001yH-EG
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:49:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYUZo-0007l5-C3
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:49:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692722995;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=8NXlZJvffVJ3OH4sQPP+ycUNjIZyFPoJmZN5lZEDAEE=;
- b=GhqkpTQNghJWXth3la/D7VdiFi/Nir0q15Wm/QKoNc1yYHg1wdfAY7Ja+lyuOo1j2t9dRH
- Srt7SXuHSppNPau3jVdF6IDd1stWYwxD/RzKqEtvJGPfLNl/2aO4OCqiAgJa6htyBKC+8f
- jVohX5TXkOLY8j64LrdPnM3tfsDVvbk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-500-O8eJ4vy1NruIpzCQzN51jQ-1; Tue, 22 Aug 2023 12:49:53 -0400
-X-MC-Unique: O8eJ4vy1NruIpzCQzN51jQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EBFA101A528
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 16:49:53 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.177])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 69927492C14;
- Tue, 22 Aug 2023 16:49:51 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH] tests/qtest/bios-tables-test: Check for virtio-iommu device
- before using it
-Date: Tue, 22 Aug 2023 18:49:48 +0200
-Message-Id: <20230822164948.65187-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYUaz-00032Y-0Z
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:51:09 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYUaw-0008GA-T9
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:51:08 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31969580797so4220507f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:51:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692723065; x=1693327865;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qvFTzvIqEB4aU+iZkunqaVrUT+ErHPbxknUSbQolqaM=;
+ b=W1fXDhV3UQwmLbvdk45fIaIUC6pjGMTMJgChTFrQkwC+C7ktPwN+Qyy5JTK+bXkyT3
+ 5LPYuqoGfw3XwoiYsJ7cgl8IB/Hs5OZtCHEcm8MDPExXZZovMxs6EAU0QOmKyUeUh6aC
+ NC7K0YvhRKUly71ZYr0JeAAgInR5Bm8SROruBF9iwU+JVxD6WSFP/bpI/DTYEg5w2jZr
+ s7Be5sam1kdfT33qbhAQNhgzn66tuDXSOMQuxAEFaJYCrQh7v1bw9s9NvR6hWj4+dLUT
+ VpUgWWtg2CzWbqSfwlQFpOOC6goEsvda2L0KHGpy/v4dqgOZQj6D1DqZQJcXQMd+GbAb
+ ly9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692723065; x=1693327865;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qvFTzvIqEB4aU+iZkunqaVrUT+ErHPbxknUSbQolqaM=;
+ b=je6Mrb3u8Xvlzzf5JDZPRm/PavfOAysi5Id2oyDkIpPg17Bi2yoQ20dvEn2p/Pxw7Y
+ OAkVGbZ6gKnn6c9lfhwfXExPj6W64CyXvnUOQ2Ix6kzF25h4zqsrsvvj+6m8Av2l3eGZ
+ Gd1Flc4ZX/QOLpYOub7rj0YASkya/UCspntnp8A05UHbGu+ZZp2OlS5nmGoYGuXs/GK4
+ XFDTLXkJRJL4UZl/EMZJaWxDQZ39TMXhs58zE5/hw5cNnao7FsebYSLhN5xucLT2vHEf
+ txWxldqK1LdyM/IwIYRiqIA8kUkZZVaYWM+3MeBGEle2uyWEkq0zn7jIjf2qTFWCnpEC
+ uMaA==
+X-Gm-Message-State: AOJu0YzyGa0ZmengogusENGLyh5XQhsp2fvIq7GPPo3th878WrkENaBp
+ +wPZ2CrsS40Dxzd89AMCg68UyqGf/b3T8AETOm2E2A==
+X-Google-Smtp-Source: AGHT+IGuD0xjeVkKV3IT2+x0pYldtHcPI7AWDVKLjOSixxpszyRZwDwXkFi6Xq5jpD2QwRDzdZuwjA==
+X-Received: by 2002:adf:fa43:0:b0:319:71be:9241 with SMTP id
+ y3-20020adffa43000000b0031971be9241mr8104379wrr.25.1692723064896; 
+ Tue, 22 Aug 2023 09:51:04 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.214.4])
+ by smtp.gmail.com with ESMTPSA id
+ t10-20020a5d49ca000000b0031ad2f9269dsm16285107wrs.40.2023.08.22.09.51.03
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 22 Aug 2023 09:51:04 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] tcg: Prohibit incomplete extr[lh]_i64_i32() implementation
+Date: Tue, 22 Aug 2023 18:51:01 +0200
+Message-ID: <20230822165101.72695-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,42 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio-iommu device might be missing in the QEMU binary (e.g. in
-downstream RHEL builds), so let's better check for its availability first
-before using it.
+extrl_i64_i32() and extrh_i64_i32() work in pair. Backends
+can not implement one without the other. Enforce that
+assumption.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/qtest/bios-tables-test.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/tcg/tcg.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 47ba20b957..dd06e6300a 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2138,7 +2138,9 @@ int main(int argc, char *argv[])
-                 qtest_add_func("acpi/q35/core-count2",
-                                test_acpi_q35_tcg_core_count2);
-             }
--            qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
-+            if (qtest_has_device("virtio-iommu-pci")) {
-+                qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
-+            }
- #ifdef CONFIG_POSIX
-             qtest_add_func("acpi/q35/cxl", test_acpi_q35_cxl);
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 0875971719..a6f51130aa 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -172,6 +172,9 @@ typedef uint64_t TCGRegSet;
+ #define TCG_TARGET_HAS_v256             0
  #endif
-@@ -2173,7 +2175,9 @@ int main(int argc, char *argv[])
-             qtest_add_func("acpi/virt/memhp", test_acpi_virt_tcg_memhp);
-             qtest_add_func("acpi/virt/pxb", test_acpi_virt_tcg_pxb);
-             qtest_add_func("acpi/virt/oem-fields", test_acpi_virt_oem_fields);
--            qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
-+            if (qtest_has_device("virtio-iommu-pci")) {
-+                qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
-+            }
-         }
-     }
-     ret = g_test_run();
+ 
++QEMU_BUILD_BUG_MSG(TCG_TARGET_HAS_extrl_i64_i32 != TCG_TARGET_HAS_extrh_i64_i32,
++                   "Both extrl_i64_i32()/extrh_i64_i32() must exist");
++
+ typedef enum TCGOpcode {
+ #define DEF(name, oargs, iargs, cargs, flags) INDEX_op_ ## name,
+ #include "tcg/tcg-opc.h"
 -- 
-2.39.3
+2.41.0
 
 
