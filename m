@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A344784003
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DFE78401C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:52:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYPps-0003xc-03; Tue, 22 Aug 2023 07:46:12 -0400
+	id 1qYPvi-0003Fg-9f; Tue, 22 Aug 2023 07:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYPpP-0003hM-6r
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYPpM-0006o7-Hf
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692704739;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qYPvg-0003FR-Ci; Tue, 22 Aug 2023 07:52:12 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qYPvd-0000vR-SX; Tue, 22 Aug 2023 07:52:12 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 67C471F85D;
+ Tue, 22 Aug 2023 11:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1692705126; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5geHhbE4MutI03r2OAElxDRwY2xkiopLerPizWqXowo=;
- b=H+MOXsr5rRmyhAajopwDItfs91d5UXtVEtegaQB8iP94s8pZTAUBfjqyXKLgBOh3TPtyHd
- JNRppuexxommwhzQiefMIw0xiu+U16APd3Cxy3cGmK0MdSk5mmsxtAOtudck+CXXFAKBi/
- z1qmmsB8R3bgw+IM/jg5sYP80OMaEok=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-447-wr-JtGezOdaVqHVIaOxUpg-1; Tue, 22 Aug 2023 07:45:36 -0400
-X-MC-Unique: wr-JtGezOdaVqHVIaOxUpg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ bh=Iu55il7brsUz8rBEuK308QQGaHmjDqbMy8k9/lU8BT8=;
+ b=gcMDuXhO4qQLD5BKCcJeQzve2kb97tSjHaZAHocmymMImLNQdltxRIgLSwEq7xTsZsrU71
+ l88O9v/6GDqzW0z3S2dQ3Bi0ywxzIcw9VTKdo86k19XkQBAZHniYLTr0mS2meP5bDZjXJU
+ yz/NG5wxczlIpXzdmNil9ITsY7j+XIA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1692705126;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iu55il7brsUz8rBEuK308QQGaHmjDqbMy8k9/lU8BT8=;
+ b=G7Bo+ZwI002kZaoKkT9JfBt04O2wsix6fPyrElwRG8kuMSbrPShXnH4E/H2l1PNJ/PhbFn
+ eTimODiXz7TOU+BA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DB91101B429;
- Tue, 22 Aug 2023 11:45:36 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.193.54])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 79489492C13;
- Tue, 22 Aug 2023 11:45:33 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Thiner Logoer <logoerthiner1@163.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Greg Kurz <groug@kaod.org>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v2 9/9] docs: Start documenting VM templating
-Date: Tue, 22 Aug 2023 13:44:57 +0200
-Message-ID: <20230822114504.239505-10-david@redhat.com>
-In-Reply-To: <20230822114504.239505-1-david@redhat.com>
-References: <20230822114504.239505-1-david@redhat.com>
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 088AE13919;
+ Tue, 22 Aug 2023 11:52:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id DBWxAGah5GSGUQAAMHmgww
+ (envelope-from <cfontana@suse.de>); Tue, 22 Aug 2023 11:52:06 +0000
+Message-ID: <ecaf4816-90d1-9acf-968f-b590a274180b@suse.de>
+Date: Tue, 22 Aug 2023 13:52:05 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2 00/10] block: Make raw_co_get_allocated_file_size
+ asynchronous
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Jo=c3=a3o_Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
+ Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>
+References: <20230609201910.12100-1-farosas@suse.de>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20230609201910.12100-1-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,134 +93,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's add some details about VM templating, focusing on the VM memory
-configuration only.
+Hi all,
 
-There is much more to VM templating (VM state? block devices?), but I leave
-that as future work.
+we currently have to maintain something downstream for this, since the current behavior can compound problems on top of existing bad NFS latency,
+could someone continue to help reviewing this work?
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- docs/vm-templating.txt | 109 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 109 insertions(+)
- create mode 100644 docs/vm-templating.txt
+Thanks,
 
-diff --git a/docs/vm-templating.txt b/docs/vm-templating.txt
-new file mode 100644
-index 0000000000..419362c1ea
---- /dev/null
-+++ b/docs/vm-templating.txt
-@@ -0,0 +1,109 @@
-+QEMU VM templating
-+==================
-+
-+This document explains how to use VM templating in QEMU.
-+
-+For now, the focus is on VM memory aspects, and not about how to save and
-+restore other VM state (i.e., migrate-to-file with 'x-ignore-shared').
-+
-+Overview
-+--------
-+
-+With VM templating, a single template VM serves as the starting point for
-+new VMs. This allows for fast and efficient replication of VMs, resulting
-+in fast startup times and reduced memory consumption.
-+
-+Conceptually, the VM state is frozen, to then be used as a basis for new
-+VMs. The Copy-On-Write mechanism in the operating systems makes
-+sure that new VMs are able to read template VM memory; however, any
-+modifications stay private and don't modify the original template VM or any
-+other created VM.
-+
-+Memory configuration
-+--------------------
-+
-+In order to create the template VM, we have to make sure that VM memory
-+ends up in a file, from where it can be reused for the new VMs:
-+
-+Supply VM RAM via memory-backend-file, with 'share=on' (modifications go
-+to the file) and 'readonly=off' (open the file writable). Note that
-+'readonly=off' is implicit.
-+
-+In the following command-line example, a 2GB VM is created, whereby VM RAM
-+is to be stored in the 'template' file.
-+
-+ qemu [...] -m 2g \
-+   -object memory-backend-file,id=pc.ram,mem-path=template,size=2g,share=on,... \
-+   -machine q35,memory-backend=pc.ram',
-+
-+If multiple memory backends are used (vNUMA, DIMMs), configure all
-+memory backends accordingly.
-+
-+Once the VM is in the desired state, stop the VM and save other VM state,
-+leaving the current state of VM RAM reside in the file.
-+
-+In order to have a new VM be based on a template VM, we have to
-+configure VM RAM to be based on a template VM RAM file; however, the VM
-+should not be able to modify file content.
-+
-+Supply VM RAM via memory-backend-file, with 'share=off' (modifications stay
-+private), 'readonly=on' (open the file readonly) and 'rom=off' (don't make
-+the memory readonly for the VM). Note that 'share=off' is implicit and
-+that other VM state has to be restored separately.
-+
-+In the following command-line example, a 2GB VM is created based on the
-+existing 2GB file 'template'.
-+
-+ qemu [...] -m 2g \
-+   -object memory-backend-file,id=pc.ram,mem-path=template,size=2g,readonly=on,rom=off,... \
-+   -machine q35,memory-backend=pc.ram',
-+
-+If multiple memory backends are used (vNUMA, DIMMs), configure all
-+memory backends accordingly.
-+
-+Note that '-mem-path' cannot be used for VM templating when creating the
-+template VM or when starting new VMs based on a template VM.
-+
-+Incompatible features
-+---------------------
-+
-+Some features are incompatible with VM templating, as the underlying file
-+cannot be modified to discard VM RAM, or to actually share memory with
-+another process.
-+
-+vhost-user and multi-process QEMU
-+'''''''''''''''''''''''''''''''''
-+
-+vhost-user and multi-process QEMU are incompatible with VM templating.
-+These technologies rely on shared memory, however, the template VMs
-+don't actually share memory ('share=off'), even though they are file-based.
-+
-+virtio-balloon
-+''''''''''''''
-+
-+virtio-balloon inflation and "free page reporting" cannot discard VM RAM
-+and will repeatedly report errors. While virtio-balloon can be used
-+for template VMs (e.g., report VM RAM stats), "free page reporting"
-+should be disabled and the balloon should not be inflated.
-+
-+virtio-mem
-+''''''''''
-+
-+virtio-mem cannot discard VM RAM that is managed by the virtio-mem
-+device. virtio-mem will fail early when realizing the device. To use
-+VM templating with virtio-mem, either hotplug virtio-mem devices to the new
-+VM, or don't supply any memory to the template VM using virtio-mem
-+(requested-size=0), not using a template VM file as memory backend for the
-+virtio-mem device.
-+
-+VM migration
-+''''''''''''
-+
-+For VM migration, "x-release-ram" similarly relies on discarding of VM
-+RAM on the migration source to free up migrated RAM, and will
-+repeatedly report errors.
-+
-+Postcopy live migration fails discarding VM RAM on the migration
-+destination early and refuses to activate postcopy live migration. Note
-+that postcopy live migration usually only works on selected filesystems
-+(shmem/tmpfs, hugetlbfs) either way.
--- 
-2.41.0
+Claudio
+
+
+On 6/9/23 22:19, Fabiano Rosas wrote:
+> Hi,
+> 
+> The major change from the last version is that this time I'm moving
+> all of the callers of bdrv_get_allocated_file_size() into
+> coroutines. I had to make some temporary changes to avoid asserts
+> while not all the callers were converted.
+> 
+> I tried my best to explain why I think the changes are safe. To avoid
+> changing too much of the code I added a change that removes the
+> dependency of qmp_query_block from hmp_nbd_server_start, that way I
+> don't need to move all of the nbd code into a coroutine as well.
+> 
+> Based on:
+>  [PATCH v2 00/11] block: Re-enable the graph lock
+>  https://lore.kernel.org/r/20230605085711.21261-1-kwolf@redhat.com
+> 
+> changes:
+> 
+>   - fixed duplicated commit message [Lin]
+>   - clarified why we need to convert info-block [Claudio]
+>   - added my rationale of why the changes are safe [Eric]
+>   - converted all callers to coroutines [Kevin]
+>   - made hmp_nbd_server_start don't depend on qmp_query_block
+> 
+> CI run: https://gitlab.com/farosas/qemu/-/pipelines/895525156
+> ===
+> v1:
+> https://lore.kernel.org/r/20230523213903.18418-1-farosas@suse.de
+> 
+> As discussed in another thread [1], here's an RFC addressing a VCPU
+> softlockup encountered when issuing QMP commands that target a disk
+> placed on NFS.
+> 
+> Since QMP commands happen with the qemu_global_mutex locked, any
+> command that takes too long to finish will block other threads waiting
+> to take the global mutex. One such thread could be a VCPU thread going
+> out of the guest to handle IO.
+> 
+> This is the case when issuing the QMP command query-block, which
+> eventually calls raw_co_get_allocated_file_size(). This function makes
+> an 'fstat' call that has been observed to take a long time (seconds)
+> over NFS.
+> 
+> NFS latency issues aside, we can improve the situation by not blocking
+> VCPU threads while the command is running.
+> 
+> Move the 'fstat' call into the thread-pool and make the necessary
+> adaptations to ensure raw_co_get_allocated_file_size runs in a
+> coroutine in the block driver aio_context.
+> 
+> 1- Question about QMP and BQL
+> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03141.html
+> 
+> Fabiano Rosas (8):
+>   block: Remove bdrv_query_block_node_info
+>   block: Remove unnecessary variable in bdrv_block_device_info
+>   block: Allow the wrapper script to see functions declared in qapi.h
+>   block: Temporarily mark bdrv_co_get_allocated_file_size as mixed
+>   block: Convert bdrv_query_block_graph_info to coroutine
+>   block: Convert bdrv_block_device_info into co_wrapper
+>   block: Don't query all block devices at hmp_nbd_server_start
+>   block: Convert qmp_query_block() to coroutine_fn
+> 
+> João Silva (1):
+>   block: Add a thread-pool version of fstat
+> 
+> Lin Ma (1):
+>   block: Convert qmp_query_named_block_nodes to coroutine
+> 
+>  block/file-posix.c                 | 40 +++++++++++++++++--
+>  block/meson.build                  |  1 +
+>  block/monitor/block-hmp-cmds.c     | 22 ++++++-----
+>  block/qapi.c                       | 62 +++++++++---------------------
+>  blockdev.c                         |  6 +--
+>  hmp-commands-info.hx               |  1 +
+>  include/block/block-hmp-cmds.h     |  2 +-
+>  include/block/qapi.h               | 17 ++++----
+>  include/block/raw-aio.h            |  4 +-
+>  qapi/block-core.json               |  5 ++-
+>  qemu-img.c                         |  2 -
+>  scripts/block-coroutine-wrapper.py |  1 +
+>  12 files changed, 90 insertions(+), 73 deletions(-)
+> 
 
 
