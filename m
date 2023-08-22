@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CB9783A7F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 604F9783A76
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:11:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLXH-0002ED-0b; Tue, 22 Aug 2023 03:10:43 -0400
+	id 1qYLXM-0002F6-Jh; Tue, 22 Aug 2023 03:10:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXE-0002E1-CY
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:40 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXK-0002El-VV
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:46 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXC-0002H0-20
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:40 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3159d5e409dso3251458f8f.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXI-0002KG-JO
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:46 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-31781e15a0cso3748876f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688236; x=1693293036;
+ d=linaro.org; s=google; t=1692688242; x=1693293042;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3rrV84vf0KvDLl6SX1WoOdtWUazfK9wKjoL6Oup5qkU=;
- b=o0DJEZ3ZbcILe/mUyXV8pLMc89CYUZgNN0pVKfss1GbALAGuDWym5TId9QjU1/6apg
- 0Wt7e0xoBmX1zg3eWbTgDb5lErKwUuOq2ebySYPcrf8/Sg3+iKIdD5i8jSartWLtam0I
- KVYM0UyhXG5P0hiUJU+zcx1cXinMK8v9aLEjv7ALMk1bR/a6DTzYwpcEH1yvr35byaSV
- HyUdGHcZlvY5Ler158XU7XMci1m7OxMTQl87uUGdtRtg9n/+7Q8KHw6NC35AZ8is+xhv
- 3FuXvtiogxx3K4fTXYWudbufew0EKKhXyAJiVR7atUBS+ZWSEDNTb6dh1JviIhTnqCwu
- q3Vg==
+ bh=0lC9gMe2kWPLwbVJidGFgIBdYr23SH/S3e9rEjZW5mo=;
+ b=p+kn9GafdB0xXa1Dw7rRxlicImYgfLyC3uKKpmu0F1cJ2kKYn7xgNXWUGF6dPyk75W
+ rSsjW18lVP/L8haPnegDJofBjPrcKmxXUEiuaJdOrEn5dAH8QD8rJaDN1zNA1UTCK5ZX
+ BNFZeL9hmQVCHHbdatxROkv+pWN50ZlgwZxjG2j2A6DBYG/MQ15aTwvRkrUpT30uCgcp
+ hCIdeTkzxtfl92cR/2Y4nBDlKXZthmOVEvNUxk2zuiCti7S7ObKKw2+SFLCp0jmC5Eaw
+ TT/w2BD0UwA/SBOuB1lteDpVBmv/b3b1KzGzJbB0QBPvts8n5y+fWNI/K/owbcIhYBUL
+ RfUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688236; x=1693293036;
+ d=1e100.net; s=20221208; t=1692688242; x=1693293042;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3rrV84vf0KvDLl6SX1WoOdtWUazfK9wKjoL6Oup5qkU=;
- b=h0jLOqqpN5z04MBYaW8IN5RAA5KPiKqHi7h1WjD5TEAr0g/vmusrwj0R3TulVTNQw5
- +1faT/WVDc8RCsc8UjYnj9Pr44dM6R/l1bhi6+heecTezY+8I3rTITFRphy+4/Ki+Gog
- DjBdI5LKkb26l7RqVtP2uJ1IB7RsNgKBn1xin3SRh+Sfa39gsS2XljehhGiLfkDmvqRW
- aYrNiF88vPbWghddKe8WoE6uIABVmVDOYFzaLKDrnSflPlczaGGXHGQSmOJQCvX65lFL
- O1fNwKA/UAe29RCgRb5F5pz5O4Ad4jwE4oOxlTuflodP3KkqEfI/g0727xxQFczMuddu
- uE0Q==
-X-Gm-Message-State: AOJu0YxQJfa1KM3+DAwzm8IAqpxQZ+Jj4QxxNcy1YK4cxN/t6ofsHH5F
- eiLHAIc1jJDXNVyY1LF87uLLt0RvuxQwq6a0tfLAfQ==
-X-Google-Smtp-Source: AGHT+IGC63g8Iuh2EyKSzG9m4TEBb+gZXn5b3mibAuzt6qjlSPR/8JESgd2sjVJEinH6S1n7US2aCQ==
-X-Received: by 2002:a5d:50cf:0:b0:316:fc03:3c66 with SMTP id
- f15-20020a5d50cf000000b00316fc033c66mr9299388wrt.3.1692688236252; 
- Tue, 22 Aug 2023 00:10:36 -0700 (PDT)
+ bh=0lC9gMe2kWPLwbVJidGFgIBdYr23SH/S3e9rEjZW5mo=;
+ b=abuFSbi2x2vSlqKsn24wKV0eMQPzMfCbYq5BcPVUh2rPfAo0dGd0Shnws9jdO6rawK
+ A15yiEQlSgh8rkGhQd9bH3M4BxnjmYl/1z+eVUgag3hZTn+tXQVJ8hbozB4YuIRf0JB5
+ Fsz2FoN31YhqPthf4jAq3E/Rn/QZmf8YeO/WGWUobVRuOAKC4udBEWrIjYmFT3u7dMnf
+ aTIfTYwaLk7klvEPIsV1GzO6b5HbPqNqiH6vjCJkmNE71RwyFJpBP5tHFcK7qqoFEKDA
+ /Xf4PUDhMPPEIs0K8vZ9u+Q6awPcz0xN2eY9Hr4rFMLRKjhGIpc8N5htFP7wnHW+ZfTo
+ trIg==
+X-Gm-Message-State: AOJu0YzqVq3+TxQzeEeYhCj/s/jBY+Bgi+DzRLPc+Se2tcH1TkeUMggp
+ 6oTXaaABAtcD1XODBEkwWbJq7DbPJWh400G4CELi7w==
+X-Google-Smtp-Source: AGHT+IHHMDXewg4fM/JMkjIbB4W3IJ/zoSi43ESrLlRDFRuUT7U6qwCz1Pm4sBDy1Kwo0yrNtO89OA==
+X-Received: by 2002:a5d:4403:0:b0:317:4ef8:1659 with SMTP id
+ z3-20020a5d4403000000b003174ef81659mr5926769wrq.28.1692688242746; 
+ Tue, 22 Aug 2023 00:10:42 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- r11-20020a5d4e4b000000b00317b063590fsm14876710wrt.55.2023.08.22.00.10.34
+ v1-20020a5d6101000000b0031c612146f1sm1305025wrt.100.2023.08.22.00.10.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:10:35 -0700 (PDT)
+ Tue, 22 Aug 2023 00:10:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Song Gao <gaosong@loongson.cn>
 Cc: Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 03/19] target/loongarch: Support LoongArch32 VPPN
-Date: Tue, 22 Aug 2023 09:09:56 +0200
-Message-ID: <20230822071013.34884-4-philmd@linaro.org>
+Subject: [PATCH v5 04/19] target/loongarch: Add LA64 & VA32 to DisasContext
+Date: Tue, 22 Aug 2023 09:09:57 +0200
+Message-ID: <20230822071013.34884-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822071013.34884-1-philmd@linaro.org>
 References: <20230822071013.34884-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,93 +94,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jiajie Chen <c@jia.je>
 
-VPPN of TLBEHI/TLBREHI is limited to 19 bits in LA32.
+Add LA64 and VA32(32-bit Virtual Address) to DisasContext to allow the
+translator to reject doubleword instructions in LA32 mode for example.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20230822032724.1353391-4-gaosong@loongson.cn>
+Message-ID: <20230822032724.1353391-5-gaosong@loongson.cn>
 ---
- target/loongarch/cpu-csr.h    |  6 ++++--
- target/loongarch/tlb_helper.c | 23 ++++++++++++++++++-----
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ target/loongarch/cpu.h       | 13 +++++++++++++
+ target/loongarch/translate.h |  2 ++
+ target/loongarch/translate.c |  3 +++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-index b93f99a9ef..c59d7a9fcb 100644
---- a/target/loongarch/cpu-csr.h
-+++ b/target/loongarch/cpu-csr.h
-@@ -57,7 +57,8 @@ FIELD(CSR_TLBIDX, PS, 24, 6)
- FIELD(CSR_TLBIDX, NE, 31, 1)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index b8af491041..72109095e4 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -432,6 +432,17 @@ static inline bool is_la64(CPULoongArchState *env)
+     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
+ }
  
- #define LOONGARCH_CSR_TLBEHI         0x11 /* TLB EntryHi */
--FIELD(CSR_TLBEHI, VPPN, 13, 35)
-+FIELD(CSR_TLBEHI_32, VPPN, 13, 19)
-+FIELD(CSR_TLBEHI_64, VPPN, 13, 35)
++static inline bool is_va32(CPULoongArchState *env)
++{
++    /* VA32 if !LA64 or VA32L[1-3] */
++    bool va32 = !is_la64(env);
++    uint64_t plv = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
++    if (plv >= 1 && (FIELD_EX64(env->CSR_MISC, CSR_MISC, VA32) & (1 << plv))) {
++        va32 = true;
++    }
++    return va32;
++}
++
+ /*
+  * LoongArch CPUs hardware flags.
+  */
+@@ -439,6 +450,7 @@ static inline bool is_la64(CPULoongArchState *env)
+ #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
+ #define HW_FLAGS_EUEN_FPE   0x04
+ #define HW_FLAGS_EUEN_SXE   0x08
++#define HW_FLAGS_VA32       0x20
  
- #define LOONGARCH_CSR_TLBELO0        0x12 /* TLB EntryLo0 */
- #define LOONGARCH_CSR_TLBELO1        0x13 /* TLB EntryLo1 */
-@@ -164,7 +165,8 @@ FIELD(CSR_TLBRERA, PC, 2, 62)
- #define LOONGARCH_CSR_TLBRELO1       0x8d /* TLB refill entrylo1 */
- #define LOONGARCH_CSR_TLBREHI        0x8e /* TLB refill entryhi */
- FIELD(CSR_TLBREHI, PS, 0, 6)
--FIELD(CSR_TLBREHI, VPPN, 13, 35)
-+FIELD(CSR_TLBREHI_32, VPPN, 13, 19)
-+FIELD(CSR_TLBREHI_64, VPPN, 13, 35)
- #define LOONGARCH_CSR_TLBRPRMD       0x8f /* TLB refill mode info */
- FIELD(CSR_TLBRPRMD, PPLV, 0, 2)
- FIELD(CSR_TLBRPRMD, PIE, 2, 1)
-diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-index 1f8e7911c7..c8b8b0497f 100644
---- a/target/loongarch/tlb_helper.c
-+++ b/target/loongarch/tlb_helper.c
-@@ -300,8 +300,13 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
+ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+@@ -448,6 +460,7 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+     *flags = env->CSR_CRMD & (R_CSR_CRMD_PLV_MASK | R_CSR_CRMD_PG_MASK);
+     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
+     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
++    *flags |= is_va32(env) * HW_FLAGS_VA32;
+ }
  
-     if (tlb_error == TLBRET_NOMATCH) {
-         env->CSR_TLBRBADV = address;
--        env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN,
--                                      extract64(address, 13, 35));
-+        if (is_la64(env)) {
-+            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_64,
-+                                        VPPN, extract64(address, 13, 35));
-+        } else {
-+            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_32,
-+                                        VPPN, extract64(address, 13, 19));
-+        }
-     } else {
-         if (!FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
-             env->CSR_BADV = address;
-@@ -366,12 +371,20 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
+ void loongarch_cpu_list(void);
+diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
+index 7f60090580..b6fa5df82d 100644
+--- a/target/loongarch/translate.h
++++ b/target/loongarch/translate.h
+@@ -33,6 +33,8 @@ typedef struct DisasContext {
+     uint16_t plv;
+     int vl;   /* Vector length */
+     TCGv zero;
++    bool la64; /* LoongArch64 mode */
++    bool va32; /* 32-bit virtual address */
+ } DisasContext;
  
-     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
-         csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
--        csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN);
-+        if (is_la64(env)) {
-+            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
-+        } else {
-+            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
-+        }
-         lo0 = env->CSR_TLBRELO0;
-         lo1 = env->CSR_TLBRELO1;
-     } else {
-         csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
--        csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI, VPPN);
-+        if (is_la64(env)) {
-+            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
-+        } else {
-+            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
-+        }
-         lo0 = env->CSR_TLBELO0;
-         lo1 = env->CSR_TLBELO1;
+ void generate_exception(DisasContext *ctx, int excp);
+diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+index 3146a2d4ac..ac847745df 100644
+--- a/target/loongarch/translate.c
++++ b/target/loongarch/translate.c
+@@ -119,6 +119,9 @@ static void loongarch_tr_init_disas_context(DisasContextBase *dcbase,
+         ctx->vl = LSX_LEN;
      }
-@@ -491,7 +504,7 @@ void helper_tlbfill(CPULoongArchState *env)
  
-     if (pagesize == stlb_ps) {
-         /* Only write into STLB bits [47:13] */
--        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_VPPN_SHIFT);
-+        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
++    ctx->la64 = is_la64(env);
++    ctx->va32 = (ctx->base.tb->flags & HW_FLAGS_VA32) != 0;
++
+     ctx->zero = tcg_constant_tl(0);
+ }
  
-         /* Choose one set ramdomly */
-         set = get_random_tlb(0, 7);
 -- 
 2.41.0
 
