@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D276784698
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A18FC78469F
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:12:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTwa-00024w-A2; Tue, 22 Aug 2023 12:09:24 -0400
+	id 1qYTyY-0003Z5-HB; Tue, 22 Aug 2023 12:11:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYTwY-00024Z-Ad
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:09:22 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYTyX-0003Yo-DO
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:11:25 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYTwW-0007PA-5m
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:09:22 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso36429295ad.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:09:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYTyU-0007vf-R1
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:11:25 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31c615eb6feso710326f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692720559; x=1693325359;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1692720681; x=1693325481;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MS9EIAW+T0o67WH4zmSjqABrY3sNZx3QPqLBlOzVlDI=;
- b=Gw4SXDecjAojbT9ZOO5KJGN1hlelJDixOp+nii9mRwGMwq4++XjFMCsAPbpuPSMoa0
- 7O/SA21FTZYjLQ/z5D06maK8fBDe8gA0oqNtYQZ7wxTG13c92yBwMgXOA3NQiKZCjjb9
- FT3Q/iZqWt6UrYSAnVCbfYNhCkmKRiIZDXwgdJRwtt0JA4McI8D5o/O008rXi+JKwI/1
- AYQGHnjl3VEhenbH0swL1Y/kwfVq36RvLM+Q+vh0ZDPuYxpPJ12h8DfT2CTYafM11sOC
- SIrGV3q5EccpOQGMHvzvmz7Et1e9nqv+adR6Gf2S1e0wwO4D5D8/eSZKp6JcN32ur/r7
- rGRQ==
+ bh=fYXOxCO8GCfJ+uJeY+lM2xEQWVhSlqX7B6CBlP/rDRw=;
+ b=k6njMkkDDgSKtykAiW2sykCWDPGt4ZOWHGn+6pHzR7EZB+3R6gveFge3obp6bhsxEh
+ QpnkhOTnoc7saRf0V9pvs2cjniV4Dr8bxuNmK8mJLsK1RrIXRYwqEs+O/VE6BhiE0EPq
+ pG5X7AuT/glrKVY09mOSZxqpfdhfTpK5IOhd/HQt3Ut7KcaX150ZlppnQHHRWkSmEb43
+ hpqHzSD47oqDzSs8z5SrgiyvhhruY/fwAZTTzuLBnWAuYYuzarGL4bWS9vLEeNjuwpBz
+ kyzQeHbiXXKMZnS6DR9TDZc4PfhvlAk0PWMK9ckOmrKGMf41GENt7AEv1uQQxMr/Q/DH
+ 1ZKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692720559; x=1693325359;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1692720681; x=1693325481;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MS9EIAW+T0o67WH4zmSjqABrY3sNZx3QPqLBlOzVlDI=;
- b=V0qlfgiD5yhv1v3ab6ADJIGiq7LGZkIXhfW9NZdjesdZrlWIiGFb2b+nkQJYMmTmxx
- 3qsWVuGok0j8nwpAiRGv0pGJeFxwzQlInbfOEQG8lNsV0CPsXwe8AifzcygHjLSq+mqI
- 9T2qupRQ0KMWGQvJXf2I7ijKzokjUVKES+xh3KLbgbr6zSPuAHlGxL0gl4PJWvPy8DM9
- qyeZm+w2MFa0uYHscxKXrjGXV6jIIrSOI05e9yA9jMVdTo4e1iWjIDmEKrqHUJ2DIeYi
- 3IscC2R3aVnzCz86bRNXmC5DHncKtkX5ly8uBIJvxqrK3qXL1iSyykYVeYYjKFKsGUN9
- DNOA==
-X-Gm-Message-State: AOJu0YyZyne5jDU7O//xe9gOe1hMAnlwjpRIbgtdTsIcbOxaJW6EopiA
- G1ZBewRgyRJCGvN6XswTTs9Qag==
-X-Google-Smtp-Source: AGHT+IHnUN4UI74Xqf0cQVSOjkLXVe0ljIXCYpbHgnWj3lPS7MUM/5wIl+TXOx6PcnpRXtQAXvsQ+w==
-X-Received: by 2002:a17:902:8647:b0:1c0:9b7c:f82a with SMTP id
- y7-20020a170902864700b001c09b7cf82amr1138680plt.53.1692720558758; 
- Tue, 22 Aug 2023 09:09:18 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
- ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
- by smtp.gmail.com with ESMTPSA id
- p10-20020a170902e74a00b001bbbbda70ccsm9240131plf.158.2023.08.22.09.09.17
+ bh=fYXOxCO8GCfJ+uJeY+lM2xEQWVhSlqX7B6CBlP/rDRw=;
+ b=OOQZD64H31xt20NcxfSD/rmO0GCVBljv3NRM86e4OsgxtcAROD972PUgR9FGnvtVQt
+ zM89EhlgqvAHeVrO0PUvCGd/+T9tqr2qLMyi/j4EgFvL9+g5nVP+HR2EXdPFflSLRiSj
+ ktlNkEXz6pVRRM7NuM01N2gLt9lxUdk94uDcD5axqV7n6P3IY2phiBe4D8LTF8rSuS+t
+ BdFIx75YEW+DXXM1J7N5/Ai7hOfUSswBTOTqRDNsfFX6vPHKw1vXBam4fyzfUFG6/k57
+ tNl5/fb/tSv0zO3g/6vN5W6GAXHb/Wol7vdpUR9P9xJwU974gUBaJuy9Xc+9yBTBC2v1
+ dM6Q==
+X-Gm-Message-State: AOJu0Yx+P1jDzJkGKhKeacsvQcZ+LsGCcX/HwXf5pdRqEdwF+smgrypc
+ 7v+ZEXa2UMOgotWTS5I/r7dzmybzGX9NzquvlJHcig==
+X-Google-Smtp-Source: AGHT+IGe5ZiEHDsp66p8sD7i0Bd9o+kBffg9WgIXN22aFtC3D3t/6QrFOsOyAmupdqhX+Df3IVgjQQ==
+X-Received: by 2002:a5d:4389:0:b0:306:46c4:d313 with SMTP id
+ i9-20020a5d4389000000b0030646c4d313mr6435045wrq.28.1692720681057; 
+ Tue, 22 Aug 2023 09:11:21 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ b4-20020adff904000000b003197c7d08ddsm16289194wrr.71.2023.08.22.09.11.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 09:09:18 -0700 (PDT)
-Message-ID: <c6dbfd51-0975-ff42-ee22-937e27aee547@linaro.org>
-Date: Tue, 22 Aug 2023 09:09:16 -0700
+ Tue, 22 Aug 2023 09:11:20 -0700 (PDT)
+Message-ID: <9ad24cdc-adf4-0a38-9362-e46c559fae7d@linaro.org>
+Date: Tue, 22 Aug 2023 18:11:17 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH] docs/style: permit inline loop variables
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 11/12] target/loongarch: Use generic hrev64_i32() in
+ REVB.2H opcode
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Juan Quintela <quintela@redhat.com>
-References: <20230822155004.1158931-1-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230822155004.1158931-1-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Greg Kurz
+ <groug@kaod.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nicholas Piggin <npiggin@gmail.com>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org
+References: <20230822124042.54739-1-philmd@linaro.org>
+ <20230822125221.55046-1-philmd@linaro.org>
+ <1ea2097b-fb72-29c4-622a-79f96f69c2c1@linaro.org>
+In-Reply-To: <1ea2097b-fb72-29c4-622a-79f96f69c2c1@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -99,18 +106,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/23 08:50, Alex Bennée wrote:
-> I've already wasted enough of my time debugging aliased variables in
-> deeply nested loops. While not scattering variable declarations around
-> is a good aim I think we can make an exception for stuff used inside a
-> loop.
-> 
-> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
-> ---
->   docs/devel/style.rst | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
+On 22/8/23 15:30, Philippe Mathieu-Daudé wrote:
+> On 22/8/23 14:52, Philippe Mathieu-Daudé wrote:
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/loongarch/insn_trans/trans_bit.c.inc | 15 +--------------
+>>   1 file changed, 1 insertion(+), 14 deletions(-)
+>>
+>> diff --git a/target/loongarch/insn_trans/trans_bit.c.inc 
+>> b/target/loongarch/insn_trans/trans_bit.c.inc
+>> index c04806dc21..9d564a0999 100644
+>> --- a/target/loongarch/insn_trans/trans_bit.c.inc
+>> +++ b/target/loongarch/insn_trans/trans_bit.c.inc
+>> @@ -111,19 +111,6 @@ static void gen_revb_2w(TCGv dest, TCGv src1)
+>>       tcg_gen_rotri_i64(dest, dest, 32);
+>>   }
+>> -static void gen_revb_2h(TCGv dest, TCGv src1)
+>> -{
+>> -    TCGv mask = tcg_constant_tl(0x00FF00FF);
+>> -    TCGv t0 = tcg_temp_new();
+>> -    TCGv t1 = tcg_temp_new();
+>> -
+>> -    tcg_gen_shri_tl(t0, src1, 8);
+>> -    tcg_gen_and_tl(t0, t0, mask);
+>> -    tcg_gen_and_tl(t1, src1, mask);
+>> -    tcg_gen_shli_tl(t1, t1, 8);
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Looking at 
+https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#_revb_2h4h2wd
+the sign extension is missing, so the next line:
 
-r~
+>> -    tcg_gen_or_tl(dest, t0, t1);
+
+should be replaced by smth like:
+
+         tcg_gen_or_tl(t0, t0, t1);
+         tcg_gen_ext32s_tl(dest, t0);
+
+>> -}
+
 
