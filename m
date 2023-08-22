@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DFE78401C
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF99B784032
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYPvi-0003Fg-9f; Tue, 22 Aug 2023 07:52:14 -0400
+	id 1qYQ0p-0004Qv-1X; Tue, 22 Aug 2023 07:57:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
- id 1qYPvg-0003FR-Ci; Tue, 22 Aug 2023 07:52:12 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qYQ0n-0004QW-49
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:57:29 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
- id 1qYPvd-0000vR-SX; Tue, 22 Aug 2023 07:52:12 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 67C471F85D;
- Tue, 22 Aug 2023 11:52:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692705126; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Iu55il7brsUz8rBEuK308QQGaHmjDqbMy8k9/lU8BT8=;
- b=gcMDuXhO4qQLD5BKCcJeQzve2kb97tSjHaZAHocmymMImLNQdltxRIgLSwEq7xTsZsrU71
- l88O9v/6GDqzW0z3S2dQ3Bi0ywxzIcw9VTKdo86k19XkQBAZHniYLTr0mS2meP5bDZjXJU
- yz/NG5wxczlIpXzdmNil9ITsY7j+XIA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692705126;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Iu55il7brsUz8rBEuK308QQGaHmjDqbMy8k9/lU8BT8=;
- b=G7Bo+ZwI002kZaoKkT9JfBt04O2wsix6fPyrElwRG8kuMSbrPShXnH4E/H2l1PNJ/PhbFn
- eTimODiXz7TOU+BA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 088AE13919;
- Tue, 22 Aug 2023 11:52:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id DBWxAGah5GSGUQAAMHmgww
- (envelope-from <cfontana@suse.de>); Tue, 22 Aug 2023 11:52:06 +0000
-Message-ID: <ecaf4816-90d1-9acf-968f-b590a274180b@suse.de>
-Date: Tue, 22 Aug 2023 13:52:05 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qYQ0k-0002eK-E5
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:57:28 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51cff235226so9065554a12.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 04:57:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692705444; x=1693310244;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PgqrI3T3hOuQEDML+sVpS9zcCtCaRRyYRjkYaQ3SPyE=;
+ b=lrTAwuF/+Sl4oKcU3i6cFc6QeCkvI2BhC38SUyxRy0hGgJdsG5pbkmKARH+v1UuHDf
+ zzl3Sjb5lxfqdAQpHn4oS9whCll+X7oJs0ckmV4Fv9/Zwnz1Eyb3muS0kBV8wWH0lpHq
+ FUFOmylitRh8SICa0CbqlI9HwteELoHiwVBKlcxVJ7ioaOIOL2DlZHs991ON1UefUjAI
+ 5EtHoGkWL8awLiZYRxFwXWAp1Ri2xFSylNMP2Dj6d0/MaRrFDjehXMAOYuvKsqSzQ1uG
+ Q2fjdVmSDgdI3C05jSPglV+8Hl0bQcUK+xymbtABA8e4g/jsfsT7KnLDLgrPeFzFadGH
+ 4dMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692705444; x=1693310244;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PgqrI3T3hOuQEDML+sVpS9zcCtCaRRyYRjkYaQ3SPyE=;
+ b=RI5/xNmeCJ5+ijEL2fg+qjOhi59djMS9tQO8mj10KQv6KrFUp3mINkogirq40dv4kZ
+ 1vtv2D90lZ7J1KVshkM7GcMu9YaugkcJ2erwnGFh49bkEyxF9KVwOzIX0lgNDlyDVgjn
+ 7W1VhZs1ndluCdXu3k4sfesOP5riOijEVJi9T0F2P2k4422Gr7Gcb9aWvHJRnzj9AXD+
+ fBukpuYHwsu/QSDoPlAH0PkXR4yq1hQB1nWOiX28GdfOA2Ng3bR3nsoDg9R5aSVL73zC
+ bEXlDmx/1rreNB8i30rjVtkELT4O3npY6Sn/wgoCyOKkLc5IMrhsm7rdvl1JuqAgS28T
+ 5lNA==
+X-Gm-Message-State: AOJu0YyQpCmySVIJzCnqIoFEFTCf4SErh9pdeC7oJuUsA648PpaoDJvH
+ w0WRkEREM/aYRRzaRt2CvF6D3j+PgOOqpPslCkjn8w==
+X-Google-Smtp-Source: AGHT+IHulOu2gt/82OGfW7XqCuqluMSw0hxSodqQ00VCKzlQncVgDk5XB31OI5bIAhXDCrn/AZSVA9hVBYvm4lUlEu4=
+X-Received: by 2002:a05:6402:1d4c:b0:51f:ef58:da87 with SMTP id
+ dz12-20020a0564021d4c00b0051fef58da87mr12708958edb.2.1692705444165; Tue, 22
+ Aug 2023 04:57:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v2 00/10] block: Make raw_co_get_allocated_file_size
- asynchronous
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Jo=c3=a3o_Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
- Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>
-References: <20230609201910.12100-1-farosas@suse.de>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <20230609201910.12100-1-farosas@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+References: <20230822110129.41022-1-philmd@linaro.org>
+ <20230822110129.41022-6-philmd@linaro.org>
+In-Reply-To: <20230822110129.41022-6-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 22 Aug 2023 12:57:13 +0100
+Message-ID: <CAFEAcA-GJiVX5kbx58MNAHQ1z4-bJzjFzJsha_Lp7XB674-NUA@mail.gmail.com>
+Subject: Re: [PATCH 5/6] target/mips: Use hswap_i64() in DSHD opcode
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>, 
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Song Gao <gaosong@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,99 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+On Tue, 22 Aug 2023 at 12:02, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Commit 46be8425ff ("tcg: Implement tcg_gen_{h,w}swap_{i32,i64}")
+> introduced the generic hswap_i32(). Use it instead of open-coding
+> it in gen_bshfl().
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  target/mips/tcg/translate.c | 14 +-------------
+>  1 file changed, 1 insertion(+), 13 deletions(-)
+>
+> diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
+> index 9bb40f1849..4f34ea9b6a 100644
+> --- a/target/mips/tcg/translate.c
+> +++ b/target/mips/tcg/translate.c
+> @@ -4948,19 +4948,7 @@ static void gen_bshfl(DisasContext *ctx, uint32_t =
+op2, int rt, int rd)
+>          }
+>          break;
+>      case OPC_DSHD:
+> -        {
+> -            TCGv t1 =3D tcg_temp_new();
+> -            TCGv t2 =3D tcg_constant_tl(0x0000FFFF0000FFFFULL);
+> -
+> -            tcg_gen_shri_tl(t1, t0, 16);
+> -            tcg_gen_and_tl(t1, t1, t2);
+> -            tcg_gen_and_tl(t0, t0, t2);
+> -            tcg_gen_shli_tl(t0, t0, 16);
+> -            tcg_gen_or_tl(t0, t0, t1);
+> -            tcg_gen_shri_tl(t1, t0, 32);
+> -            tcg_gen_shli_tl(t0, t0, 32);
+> -            tcg_gen_or_tl(cpu_gpr[rd], t0, t1);
+> -        }
+> +        tcg_gen_hswap_i64(cpu_gpr[rd], t0);
 
-we currently have to maintain something downstream for this, since the current behavior can compound problems on top of existing bad NFS latency,
-could someone continue to help reviewing this work?
+We know that target_long here is 64 bits, but for consistency
+with the rest of the function maybe tcg_gen_hswap_tl()
+is better? I'm not sure...
 
-Thanks,
-
-Claudio
-
-
-On 6/9/23 22:19, Fabiano Rosas wrote:
-> Hi,
-> 
-> The major change from the last version is that this time I'm moving
-> all of the callers of bdrv_get_allocated_file_size() into
-> coroutines. I had to make some temporary changes to avoid asserts
-> while not all the callers were converted.
-> 
-> I tried my best to explain why I think the changes are safe. To avoid
-> changing too much of the code I added a change that removes the
-> dependency of qmp_query_block from hmp_nbd_server_start, that way I
-> don't need to move all of the nbd code into a coroutine as well.
-> 
-> Based on:
->  [PATCH v2 00/11] block: Re-enable the graph lock
->  https://lore.kernel.org/r/20230605085711.21261-1-kwolf@redhat.com
-> 
-> changes:
-> 
->   - fixed duplicated commit message [Lin]
->   - clarified why we need to convert info-block [Claudio]
->   - added my rationale of why the changes are safe [Eric]
->   - converted all callers to coroutines [Kevin]
->   - made hmp_nbd_server_start don't depend on qmp_query_block
-> 
-> CI run: https://gitlab.com/farosas/qemu/-/pipelines/895525156
-> ===
-> v1:
-> https://lore.kernel.org/r/20230523213903.18418-1-farosas@suse.de
-> 
-> As discussed in another thread [1], here's an RFC addressing a VCPU
-> softlockup encountered when issuing QMP commands that target a disk
-> placed on NFS.
-> 
-> Since QMP commands happen with the qemu_global_mutex locked, any
-> command that takes too long to finish will block other threads waiting
-> to take the global mutex. One such thread could be a VCPU thread going
-> out of the guest to handle IO.
-> 
-> This is the case when issuing the QMP command query-block, which
-> eventually calls raw_co_get_allocated_file_size(). This function makes
-> an 'fstat' call that has been observed to take a long time (seconds)
-> over NFS.
-> 
-> NFS latency issues aside, we can improve the situation by not blocking
-> VCPU threads while the command is running.
-> 
-> Move the 'fstat' call into the thread-pool and make the necessary
-> adaptations to ensure raw_co_get_allocated_file_size runs in a
-> coroutine in the block driver aio_context.
-> 
-> 1- Question about QMP and BQL
-> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03141.html
-> 
-> Fabiano Rosas (8):
->   block: Remove bdrv_query_block_node_info
->   block: Remove unnecessary variable in bdrv_block_device_info
->   block: Allow the wrapper script to see functions declared in qapi.h
->   block: Temporarily mark bdrv_co_get_allocated_file_size as mixed
->   block: Convert bdrv_query_block_graph_info to coroutine
->   block: Convert bdrv_block_device_info into co_wrapper
->   block: Don't query all block devices at hmp_nbd_server_start
->   block: Convert qmp_query_block() to coroutine_fn
-> 
-> João Silva (1):
->   block: Add a thread-pool version of fstat
-> 
-> Lin Ma (1):
->   block: Convert qmp_query_named_block_nodes to coroutine
-> 
->  block/file-posix.c                 | 40 +++++++++++++++++--
->  block/meson.build                  |  1 +
->  block/monitor/block-hmp-cmds.c     | 22 ++++++-----
->  block/qapi.c                       | 62 +++++++++---------------------
->  blockdev.c                         |  6 +--
->  hmp-commands-info.hx               |  1 +
->  include/block/block-hmp-cmds.h     |  2 +-
->  include/block/qapi.h               | 17 ++++----
->  include/block/raw-aio.h            |  4 +-
->  qapi/block-core.json               |  5 ++-
->  qemu-img.c                         |  2 -
->  scripts/block-coroutine-wrapper.py |  1 +
->  12 files changed, 90 insertions(+), 73 deletions(-)
-> 
-
+thanks
+-- PMM
 
