@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A51784B7F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 22:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A347E784BC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 23:02:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYY53-0002eG-Kz; Tue, 22 Aug 2023 16:34:25 -0400
+	id 1qYYV3-0001c0-07; Tue, 22 Aug 2023 17:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYY50-0002cm-VB
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 16:34:22 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qYYUO-0001Ww-7S
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 17:00:36 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYY4y-0005Ed-GV
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 16:34:22 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-68a6cd7c6a6so1003450b3a.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 13:34:20 -0700 (PDT)
+ id 1qYYUJ-0001vM-HR
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 17:00:34 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1bf55a81eeaso21362885ad.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 14:00:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692736459; x=1693341259;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WsaRliMGQZhQnMvBkKr3ovb5Yrpz1aO1dp2IimUflrE=;
- b=ndptI9LtTqvLHw/k9Ef+04SNc0KF1e4SqbSN4cAQcXHbknMIfPAeQDR/R/awh5ZoHi
- 9Yb8GN94vkZqm0BeJiKm4bjwUk1xJxueKVVZiFNbqGq2WWNikI0iSG+SAZYyOcTCYvI4
- QKJmM4e7ByfEBkP9dopD0fdPbgOufHe7e3668mA/txIt2EjkixcWkp2b+oIQfSoSgHMw
- rsHKY4iOyGLj0f8yzTfNnQDk6aqMbSuSThVC1DSDryP7Y2iTDDnakhVN3Q2gXPp1bxqJ
- ePACBlOEmaPblnd5nPlfoxjipP5OiRM93NTgV5ae/wNuh6w0s1Cy/MWuMGPS40ygkfC+
- df3A==
+ d=linaro.org; s=google; t=1692738028; x=1693342828;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NG9qe/IwC9AH5QGOSFN6JBEq8U38bU0YfV3QgAnrpv8=;
+ b=XnCP60ToZk93xDWVjT1t1DoGVn4rGkuY+rFIje4hSPpsALHmZH+ta7HaDUFEPZDAGB
+ rjaVESP5UfWhtE8uPWcvO2HL4E3bWmg8KsCJthVGvjFog+uiAiSnB4Yv+qkMycIAkpVf
+ jSK0PtSDupFXFD+PCW8CvU1HPZwipyc9WTM41DW5y5CuESB2H07T3wzqxNg7cjuN19b5
+ RlTjZ6zdAX0aRc3rHBs1QTRelIQ7YQVC4WsDK/slkUXHux6mcLvfvs7bp/g/8LhNNfWH
+ Urv3lR3MZPxeKcuCoA5h+x8A8F6LnhhPhcddKGNLAN/LSUJl1M+X2gldNV8m1WYFpPoA
+ 0BJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692736459; x=1693341259;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WsaRliMGQZhQnMvBkKr3ovb5Yrpz1aO1dp2IimUflrE=;
- b=XJBqdYkQtJ0mSfzVN0Jh+sce0VQd06CvM8NiXiyCdtVYciJ8AbTHln7p8BC9pQANgE
- ZGDXwwX5UOtOt2XPjFnJf5RAqEXij06cHulGdXFAuouYdzt3USnJHb8xGPDjDctJQHo9
- piOUsPJCjXfCEorgIuLp8635FpTSskfir76gI44vDKImFkrCThXjcYy9wHWNfZzZ0ZNM
- dNrS14+iG+Ve0E/zY/Isc6uzD9z5COFUQ+xO7SfAVBBHy8NmS81VEpYlxIOrFKnBI+uN
- aYqN4G8DuQ6uEDP9YbJIYkdUGafgyFrvVbDUi4No6llbGWNcQdDKD0uzFHO9MQOZ6mlb
- +IbA==
-X-Gm-Message-State: AOJu0YwEPdPYgEKN+FNBMBXtYzvfzxnOwJlXcAPKBANpouryFrFvFSjD
- P/tAhGDkfqW2mzoxBUtnOYSPrzkrA6N/2wxAD60=
-X-Google-Smtp-Source: AGHT+IF6++pYlnkB1lGbhA55ryJYLu490q8fGJc9sC8ZGv6E79MGVATzoaKaVTHZbE0YFiC+49PWEg==
-X-Received: by 2002:a05:6a20:8e12:b0:148:c3ea:fb6c with SMTP id
- y18-20020a056a208e1200b00148c3eafb6cmr7827464pzj.36.1692736458951; 
- Tue, 22 Aug 2023 13:34:18 -0700 (PDT)
-Received: from stoup.. ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
+ d=1e100.net; s=20221208; t=1692738028; x=1693342828;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NG9qe/IwC9AH5QGOSFN6JBEq8U38bU0YfV3QgAnrpv8=;
+ b=APDR2spDccfZ5mbhYztygHWTXmLBVQKpRZh0mP9RNOhZ2+l/OJ5mu7cHxn51MX+/i7
+ WeMjzJlAs3lQunUaywngVK1tAtXUKY9jX3KQuZyJZwhezgnH0gEh/0f7FnRWSTWlhi6J
+ /ERRg8DGx32Z3N3077/V3FoJQPZRvo/42Jrwzp27Iw57JWarr6VvaxYbWInIyL/X4lfw
+ aLjGuUFLZ4xLl4glCAqPNdWVSpAuCIx0jFIG+Zw/tL4pmCp1K3UqpVMNpPYXrPGT6nBe
+ 4pNvbbnd+e5EKk5739R8UayASkEX/9Kyo4fK1/rMzJ89manVOB9D6HRG+BnIJmCCrnIR
+ BEBQ==
+X-Gm-Message-State: AOJu0Yy2AoSZiCYdBBZrcKvWlCurBrY9vvFN4PJnmN/tDD9pwkrSZNfC
+ HnWUkuX7bsP2koeWvanY0AOhSw==
+X-Google-Smtp-Source: AGHT+IHMI8AuC8mPuloeE8ZF2sxPtJtYpoJ8yMUUPUYgaUf7VuacfmjKm35GxGMzn01d6/X9H9J+Vw==
+X-Received: by 2002:a17:902:d2c6:b0:1bf:1052:f28f with SMTP id
+ n6-20020a170902d2c600b001bf1052f28fmr9468914plc.52.1692738028486; 
+ Tue, 22 Aug 2023 14:00:28 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
+ ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- i25-20020a633c59000000b00564aee22f33sm8311823pgn.14.2023.08.22.13.34.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Aug 2023 13:34:18 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PATCH v3 3/3] linux-user: Detect and report host crashes
-Date: Tue, 22 Aug 2023 13:34:15 -0700
-Message-Id: <20230822203415.1184491-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230822203415.1184491-1-richard.henderson@linaro.org>
-References: <20230822203415.1184491-1-richard.henderson@linaro.org>
+ q6-20020a170902a3c600b001b89045ff03sm9592433plb.233.2023.08.22.14.00.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 14:00:28 -0700 (PDT)
+Message-ID: <0c8347bf-7865-88b7-7c84-584a924b57ac@linaro.org>
+Date: Tue, 22 Aug 2023 14:00:26 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 21/22] Implement shmat(2) and shmdt(2)
+Content-Language: en-US
+To: Warner Losh <imp@bsdimp.com>
+Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org,
+ Stacey Son <sson@freebsd.org>
+References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-22-kariem.taha2.7@gmail.com>
+ <eb0506c6-f9bd-5a1f-870b-b6d07dd337ea@linaro.org>
+ <CANCZdfrmw6c9kxFTUrWegaU78SHBjqVMEHuO8VVsPN=7hGQb0Q@mail.gmail.com>
+ <c7dbf551-f833-c5e3-302e-fcea2d411bb5@linaro.org>
+ <CANCZdfpROK+m4B3-0NiN4uwpV+4pUd7dWwec-_f5_VWNjwpEKg@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CANCZdfpROK+m4B3-0NiN4uwpV+4pUd7dWwec-_f5_VWNjwpEKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,131 +101,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On 8/22/23 12:54, Warner Losh wrote:
+> As a practical matter, they both consume about the same resources until the MAP_ANON
+> region starts to get populated with data...
+> 
+> With PROT_NONE, I think they would have the same effect. If it is to be a backing store for
+> something like malloc, then MAP_ANON would be best. If you are replacing it with a lot of
+> things, like a mix of files, devices and/or anon memory, then MAP_GUARD and replace it
+> with MAP_FIXED later. Most likely you'll want MAP_GUARD to reserve the area, and then
+> MAP_FIXED to use it for mmap'd memory, shared memory, executable pages, etc.
+> 
+> Does that tell you what you need to know?
 
-If there is an internal program error in the qemu source code which
-raises SIGSEGV or SIGBUS, we currently assume the signal belongs to
-the guest.
+Yes.
 
-With an artificial error introduced, we will now print
+The reserved_va area is replaced with a mix of files, anon, etc, based on whatever the 
+guest requires.  So it might be reasonable to adjust bsd-user/mmap.c to use MAP_GUARD for 
+managing the reserved_va area instead of MAP_ANON.  No rush, of course.
 
-QEMU internal SIGSEGV {si_code=1, si_addr=(nil)}
-QEMU v8.1.50 target x86_64 running /usr/bin/cat
-QEMU backtrace:
-    ./qemu-x86_64(+0xf83d9) [0x55c48587a3d9]
-    ./qemu-x86_64(+0xf8663) [0x55c48587a663]
-    /lib/x86_64-linux-gnu/libc.so.6(+0x42520) [0x7f39eee42520]
-    ./qemu-x86_64(+0x1132fa) [0x55c4858952fa]
-    ./qemu-x86_64(+0x11396f) [0x55c48589596f]
-    ./qemu-x86_64(+0x1140ef) [0x55c4858960ef]
-    ./qemu-x86_64(+0x115796) [0x55c485897796]
-    ./qemu-x86_64(+0x11f9dd) [0x55c4858a19dd]
-    ./qemu-x86_64(+0x3f8da) [0x55c4857c18da]
-    ./qemu-x86_64(+0xf3bfb) [0x55c485875bfb]
-    /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x7f39eee29d90]
-    /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x7f39eee29e40]
-    ./qemu-x86_64(+0x39075) [0x55c4857bb075]
-Segmentation fault
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Message-Id: <20230812164314.352131-1-deller@gmx.de>
-[rth: Use in_code_gen_buffer and die_with_signal]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/signal.c | 54 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 6 deletions(-)
-
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 57fbf2f58b..1ffd1354c3 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -23,6 +23,7 @@
- 
- #include <sys/ucontext.h>
- #include <sys/resource.h>
-+#include <execinfo.h>
- 
- #include "qemu.h"
- #include "user-internals.h"
-@@ -32,6 +33,7 @@
- #include "signal-common.h"
- #include "host-signal.h"
- #include "user/safe-syscall.h"
-+#include "tcg/tcg.h"
- 
- static struct target_sigaction sigact_table[TARGET_NSIG];
- 
-@@ -785,6 +787,34 @@ static inline void rewind_if_in_safe_syscall(void *puc)
-     }
- }
- 
-+static G_NORETURN
-+void die_with_backtrace(siginfo_t *info)
-+{
-+    void *array[20];
-+    int size;
-+
-+    fprintf(stderr,
-+            "QEMU internal SIG%s {si_code=%d, si_addr=%p}\n"
-+            "QEMU v" QEMU_VERSION " target " UNAME_MACHINE " running %s\n",
-+            sigabbrev_np(info->si_signo), info->si_code, info->si_addr,
-+            exec_path);
-+
-+    size = backtrace(array, ARRAY_SIZE(array));
-+    if (size) {
-+        char **strings = backtrace_symbols(array, size);
-+        if (strings) {
-+            fprintf(stderr, "QEMU backtrace:\n");
-+            for (int i = 0; i < size; ++i) {
-+                fprintf(stderr, "    %s\n", strings[i]);
-+            }
-+            free(strings);
-+        }
-+    }
-+
-+    preexit_cleanup(thread_cpu->env_ptr, TARGET_SIGKILL);
-+    die_with_signal(info->si_signo);
-+}
-+
- static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
- {
-     CPUArchState *env = thread_cpu->env_ptr;
-@@ -820,16 +850,28 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
-         is_write = host_signal_write(info, uc);
-         access_type = adjust_signal_pc(&pc, is_write);
- 
-+        /* If this was a write to a TB protected page, restart. */
-+        if (is_write
-+            && host_sig == SIGSEGV
-+            && info->si_code == SEGV_ACCERR
-+            && h2g_valid(host_addr)
-+            && handle_sigsegv_accerr_write(cpu, sigmask, pc, guest_addr)) {
-+            return;
-+        }
-+
-+        /*
-+         * If the access was not on behalf of the guest, within the executable
-+         * mapping of the generated code buffer, then it is a host bug.
-+         */
-+        if (access_type != MMU_INST_FETCH
-+            && !in_code_gen_buffer((void *)(pc - tcg_splitwx_diff))) {
-+            die_with_backtrace(info);
-+        }
-+
-         if (host_sig == SIGSEGV) {
-             bool maperr = true;
- 
-             if (info->si_code == SEGV_ACCERR && h2g_valid(host_addr)) {
--                /* If this was a write to a TB protected page, restart. */
--                if (is_write &&
--                    handle_sigsegv_accerr_write(cpu, sigmask, pc, guest_addr)) {
--                    return;
--                }
--
-                 /*
-                  * With reserved_va, the whole address space is PROT_NONE,
-                  * which means that we may get ACCERR when we want MAPERR.
--- 
-2.34.1
-
+r~
 
