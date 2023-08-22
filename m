@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B137784106
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 14:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B34784105
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 14:42:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYQh3-0006IX-50; Tue, 22 Aug 2023 08:41:09 -0400
+	id 1qYQh6-0006KS-NR; Tue, 22 Aug 2023 08:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQgy-0006HS-LS
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:41:04 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQh2-0006Iw-5O
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:41:08 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQgt-0005VK-Fz
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:41:04 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fee7b7689dso26913315e9.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 05:40:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQgz-0005ZQ-J9
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:41:07 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-317c3ac7339so3895586f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 05:41:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692708056; x=1693312856;
+ d=linaro.org; s=google; t=1692708063; x=1693312863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FMJ1pPQagpK0TSh9v/NKR2oLVoAprcpSVFmmxK4Cqak=;
- b=Rymdns0DyULq3a5x+1rnkoVEIO4KYyWViPo3DyxG2w8P3R+vgb62qkAuzmFVfqn5lI
- +zP1pWohkqrMNQNtfzRF+LcfzLtUuSzC0GezfLHpEoKJHjGRVwvxbOVotPndB7eH/Sds
- IhqJTmBJYfI46QLJQoVtYMv6libNJjgjgrpVi+0Ohvf4hbzJuVsEs31BtMEtY0qDfYFj
- waHGCEnarHZ9X2ff0VWfc9UGqbP+I6pTFQs8yZI7B8odcyX9ABto9Af8d4tZhCkaDzLQ
- UVON3hmRueU2WBRibRP0g2IzS9stF4HF0sd5DC0mJ6QBwcZ9kk6UVedzPzHgjKHenv7d
- PklQ==
+ bh=nsvUqHlFX1jn4aW9Gaw9PjawxbooLIqjbrbXDvQlkNQ=;
+ b=MojuRq3FcpEf1spcBl2fm+knldksxR4XIvwkbCZDoW/kyW6EKK2Aq2JsjcSw4SsnGS
+ 3Ei0IW0w2y3nXhtD47WGgg5chYQMHz8JuUGVok00ftlwd2RA/AzKGgmpVRaQg/nH8mXS
+ sfZJooNcH2Uf0albij0xzSD17WVUA+vGUOhdV3Mqt46lKc5kg2Vw+4bFsj3X97Z2qjG6
+ TuNu0Tr4geaYFMjoFsUbDSuQtxinxoYM0SpGzzAUoNC1n0yHJAUcPw+p4rGp0Fr722YQ
+ DKMj+PXIbDc73wqMsAKWaCugRD0i/UjJZ32GkP6q0VWfpew4ujfPWS5Wl/NR9FDe3WVr
+ 2GTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692708056; x=1693312856;
+ d=1e100.net; s=20221208; t=1692708063; x=1693312863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FMJ1pPQagpK0TSh9v/NKR2oLVoAprcpSVFmmxK4Cqak=;
- b=cRaoBvJbERzifVOXefquQfz+gD2PGTNp6/giDQu7nCJ0d11hxl9RyCWVyDv1+MUb0B
- ONsCjPgenVucAunpN8AeUlk1sNX/2afwpqZ1FTbEyTbbYVLvKBBA76ky4YEci4E2u01U
- pYfJmi96xz/3uZNukGClZuMBkwap0Kluhubmvz/IWSDOQb6WZ0fIK9FnEktv8b8vPyaU
- csLCgki7I27X1MrHDq3ZtzkdhNaFkXn4Z1vZYAv3oyL8ZZ12c0wDSOxHkgMGAHQEWuYm
- r67biSQVXvE2+WxXxV9qDKfWCpS+yKvWLd2qdw7GgDEDyhXcOFVMMGaNFRVKi0OTdep/
- tr8g==
-X-Gm-Message-State: AOJu0YwKiVpIhnHAVD1IPBhCCUwvWYCJ+HJTW97mzruH+PduLvBKiQ5f
- Z+ogg4/de711Ghv5fGYnycUUhI3fxix7rFRHzPlIjA==
-X-Google-Smtp-Source: AGHT+IGA1XpLTRwm10tD1/vFpYdPD5UcmMuFAPGxnjpp0nEcUI1hqn/xdkbcOSwFtimnBouL7iGBEQ==
-X-Received: by 2002:a05:600c:255:b0:3fe:d57e:d933 with SMTP id
- 21-20020a05600c025500b003fed57ed933mr7346330wmj.15.1692708055863; 
- Tue, 22 Aug 2023 05:40:55 -0700 (PDT)
+ bh=nsvUqHlFX1jn4aW9Gaw9PjawxbooLIqjbrbXDvQlkNQ=;
+ b=Y8fUrRswKqLYN6il18in6zj0zT30GnwGpBGC204whsDurlVKQ9Oly6X51+rbUVVrd/
+ sRtUci/XUL8pLsU0ipbnJ0vo7Ds30aZQ0qp/6HX4jYho9+10TBJxw6HA3BPWcAmuOddy
+ pyVUi+fASUPELQWj4F2dRAfrRaDE02uOrcASfbH8tFbVhCGp3CDnkG38511nMKXlbmgD
+ vjWAVNWwhM/E38xq3Fg5BOhrHlXpX1Q5pJ/g7JAkZb0YQYn+Nqu6wniTs5RoMhRRWqGp
+ 1xC6ZahYUP6jfntGcXJAoTPpcrlIX+2EJM9WzvgLl6WEVJOugx3mBPijSn9Uah4P9Gii
+ JHzA==
+X-Gm-Message-State: AOJu0Yy2pwBH6QGP2dKpAXIph4x8hytexzTnfo/zisuPGbDnxUBo+wz7
+ lk0B/xeZi9a2iwJAnLQeBN6RDfz9bbrsLFCQR2/5Rw==
+X-Google-Smtp-Source: AGHT+IFXcp7PpI6NQt0baty1G8NK68D6J0m5F9ngxPegcQNZfqWiaXYFHOnDnY6pvA4cXo0m1x/y4g==
+X-Received: by 2002:adf:f70c:0:b0:317:5af3:caa4 with SMTP id
+ r12-20020adff70c000000b003175af3caa4mr7256713wrp.38.1692708063580; 
+ Tue, 22 Aug 2023 05:41:03 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a7bcb01000000b003fefcbe7fa8sm936392wmj.28.2023.08.22.05.40.52
+ r15-20020a056000014f00b0031ad5a54bedsm15923239wrx.9.2023.08.22.05.41.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 05:40:55 -0700 (PDT)
+ Tue, 22 Aug 2023 05:41:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -71,17 +71,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Nicholas Piggin <npiggin@gmail.com>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org
-Subject: [PATCH 01/12] tcg/tcg-op: Factor tcg_gen_hrev32_i32() out
-Date: Tue, 22 Aug 2023 14:40:31 +0200
-Message-ID: <20230822124042.54739-2-philmd@linaro.org>
+Subject: [PATCH 02/12] target/arm: Use generic hrev32_i32() in ARM REV16 and
+ VREV16 opcodes
+Date: Tue, 22 Aug 2023 14:40:32 +0200
+Message-ID: <20230822124042.54739-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822124042.54739-1-philmd@linaro.org>
 References: <20230822124042.54739-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,92 +105,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Byteswapping each halfword is a common operation, so
-extract to a new tcg_gen_hrev32_i32() generic helper.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/devel/tcg-ops.rst      |  4 ++++
- include/tcg/tcg-op-common.h |  1 +
- tcg/tcg-op.c                | 29 +++++++++++++++++++++++------
- 3 files changed, 28 insertions(+), 6 deletions(-)
+ target/arm/tcg/translate-a32.h  |  1 -
+ target/arm/tcg/translate-neon.c |  2 +-
+ target/arm/tcg/translate.c      | 14 +-------------
+ 3 files changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
-index 7ea6aba502..17965faa03 100644
---- a/docs/devel/tcg-ops.rst
-+++ b/docs/devel/tcg-ops.rst
-@@ -490,6 +490,10 @@ Misc
-          into 32-bit output *t0*.  Depending on the host, this may be a simple shift,
-          or may require additional canonicalization.
- 
-+   * - hrev32_i32 *t0*, *t1*
-+
-+     - | Byteswap each halfword within a 32-bit value.
-+
-    * - hswap_i32/i64 *t0*, *t1*
- 
-      - | Swap 16-bit halfwords within a 32/64-bit value.
-diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
-index be382bbf77..bb515dfd51 100644
---- a/include/tcg/tcg-op-common.h
-+++ b/include/tcg/tcg-op-common.h
-@@ -360,6 +360,7 @@ void tcg_gen_ext16u_i32(TCGv_i32 ret, TCGv_i32 arg);
- void tcg_gen_bswap16_i32(TCGv_i32 ret, TCGv_i32 arg, int flags);
- void tcg_gen_bswap32_i32(TCGv_i32 ret, TCGv_i32 arg);
- void tcg_gen_hswap_i32(TCGv_i32 ret, TCGv_i32 arg);
-+void tcg_gen_hrev32_i32(TCGv_i32 ret, TCGv_i32 arg);
- void tcg_gen_smin_i32(TCGv_i32, TCGv_i32 arg1, TCGv_i32 arg2);
- void tcg_gen_smax_i32(TCGv_i32, TCGv_i32 arg1, TCGv_i32 arg2);
- void tcg_gen_umin_i32(TCGv_i32, TCGv_i32 arg1, TCGv_i32 arg2);
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index c436c5e263..b1b5d9b45b 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -1073,14 +1073,9 @@ void tcg_gen_bswap32_i32(TCGv_i32 ret, TCGv_i32 arg)
-     } else {
-         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
-         TCGv_i32 t1 = tcg_temp_ebb_new_i32();
--        TCGv_i32 t2 = tcg_constant_i32(0x00ff00ff);
- 
-                                         /* arg = abcd */
--        tcg_gen_shri_i32(t0, arg, 8);   /*  t0 = .abc */
--        tcg_gen_and_i32(t1, arg, t2);   /*  t1 = .b.d */
--        tcg_gen_and_i32(t0, t0, t2);    /*  t0 = .a.c */
--        tcg_gen_shli_i32(t1, t1, 8);    /*  t1 = b.d. */
--        tcg_gen_or_i32(ret, t0, t1);    /* ret = badc */
-+        tcg_gen_hrev32_i32(ret, arg);   /* ret = badc */
- 
-         tcg_gen_shri_i32(t0, ret, 16);  /*  t0 = ..ba */
-         tcg_gen_shli_i32(t1, ret, 16);  /*  t1 = dc.. */
-@@ -1102,6 +1097,28 @@ void tcg_gen_hswap_i32(TCGv_i32 ret, TCGv_i32 arg)
-     tcg_gen_rotli_i32(ret, arg, 16);
+diff --git a/target/arm/tcg/translate-a32.h b/target/arm/tcg/translate-a32.h
+index 0c8f408eea..6cc02c83b9 100644
+--- a/target/arm/tcg/translate-a32.h
++++ b/target/arm/tcg/translate-a32.h
+@@ -45,7 +45,6 @@ void gen_lookup_tb(DisasContext *s);
+ long vfp_reg_offset(bool dp, unsigned reg);
+ long neon_full_reg_offset(unsigned reg);
+ long neon_element_offset(int reg, int element, MemOp memop);
+-void gen_rev16(TCGv_i32 dest, TCGv_i32 var);
+ void clear_eci_state(DisasContext *s);
+ bool mve_eci_check(DisasContext *s);
+ void mve_update_eci(DisasContext *s);
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index 0e59b03ff9..9489dc0b3e 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -3528,7 +3528,7 @@ static bool trans_VREV16(DisasContext *s, arg_2misc *a)
+     if (a->size != 0) {
+         return false;
+     }
+-    return do_2misc(s, a, gen_rev16);
++    return do_2misc(s, a, tcg_gen_hrev32_i32);
  }
  
-+/*
-+ * hswap_i32: Byteswap each halfword within a 32-bit value.
-+ *
-+ * Byte pattern:  hswap_i32(abcd) -> badc
-+ */
-+void tcg_gen_hrev32_i32(TCGv_i32 ret, TCGv_i32 arg)
-+{
-+    TCGv_i32 mask = tcg_constant_i32(0x00ff00ff);
-+    TCGv_i32 t0 = tcg_temp_ebb_new_i32();
-+    TCGv_i32 t1 = tcg_temp_ebb_new_i32();
-+
-+                                        /* arg = abcd */
-+    tcg_gen_shri_i32(t0, arg, 8);       /*  t0 = .abc */
-+    tcg_gen_and_i32(t1, arg, mask);     /*  t1 = .b.d */
-+    tcg_gen_and_i32(t0, t0, mask);      /*  t0 = .a.c */
-+    tcg_gen_shli_i32(t1, t1, 8);        /*  t1 = b.d. */
-+    tcg_gen_or_i32(ret, t0, t1);        /* ret = badc */
-+
-+    tcg_temp_free_i32(t0);
-+    tcg_temp_free_i32(t1);
-+}
-+
- void tcg_gen_smin_i32(TCGv_i32 ret, TCGv_i32 a, TCGv_i32 b)
+ static bool trans_VCLS(DisasContext *s, arg_2misc *a)
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 39a42611c6..4ebf04f4de 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -416,18 +416,6 @@ static void gen_smul_dual(TCGv_i32 a, TCGv_i32 b)
+     tcg_gen_mov_i32(a, tmp1);
+ }
+ 
+-/* Byteswap each halfword.  */
+-void gen_rev16(TCGv_i32 dest, TCGv_i32 var)
+-{
+-    TCGv_i32 tmp = tcg_temp_new_i32();
+-    TCGv_i32 mask = tcg_constant_i32(0x00ff00ff);
+-    tcg_gen_shri_i32(tmp, var, 8);
+-    tcg_gen_and_i32(tmp, tmp, mask);
+-    tcg_gen_and_i32(var, var, mask);
+-    tcg_gen_shli_i32(var, var, 8);
+-    tcg_gen_or_i32(dest, var, tmp);
+-}
+-
+ /* Byteswap low halfword and sign extend.  */
+ static void gen_revsh(TCGv_i32 dest, TCGv_i32 var)
  {
-     tcg_gen_movcond_i32(TCG_COND_LT, ret, a, b, a, b);
+@@ -7578,7 +7566,7 @@ static bool trans_REV16(DisasContext *s, arg_rr *a)
+     if (!ENABLE_ARCH_6) {
+         return false;
+     }
+-    return op_rr(s, a, gen_rev16);
++    return op_rr(s, a, tcg_gen_hrev32_i32);
+ }
+ 
+ static bool trans_REVSH(DisasContext *s, arg_rr *a)
 -- 
 2.41.0
 
