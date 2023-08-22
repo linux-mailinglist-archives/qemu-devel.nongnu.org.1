@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F99783AC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE96C783AC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:21:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLgx-0007MG-0K; Tue, 22 Aug 2023 03:20:43 -0400
+	id 1qYLh4-0007ac-Av; Tue, 22 Aug 2023 03:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLgv-0007HT-F0
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:20:41 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLh1-0007Xs-Rx
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:20:47 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLgt-0004nN-00
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:20:41 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fed6c2a5cfso35448695e9.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:20:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLgz-0004qj-AE
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:20:47 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31c5cac3ae2so1015513f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:20:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688837; x=1693293637;
+ d=linaro.org; s=google; t=1692688843; x=1693293643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+BP3z9xxPaXPgNtP8/KZyJCiuXObaSTzuF1iDUtHzjk=;
- b=i6VJ3pfpx3d2eWYzgpTJqI6oujgCns3KiMAtVdxqmDedsyuQ2K7OUeslf8WBp7caAV
- yQ0Ps0yvBW+iRUT/kTf3VZXkXYD1IVYcbX9ZbbmGnJl+RmELD/ObD3RhMtYqz07frl0p
- W4PhCZDP0fT1344UQrbC31E9whNeNmriachTW1HkLr7FO/5EJo01r6FKKMFfmvMssrhW
- YFl2K1m3k8qNeiO8EFfnd7+c6tlAUi9H1Sa1Ax2BOD4MFf4umakZdznsreVEsFc21/8/
- G0SHVY/jz9OfuRqmRbtmmckxRSkjUoajnSdU7ZEvI+Akuf7Hp3BBEpyjQJLdxx72IGw1
- Qlzg==
+ bh=ONpA0UFQdSnkRLzqiVi2DjQGuL0JxDlhUKCdcQf7dH4=;
+ b=yaDIFFJAldzZTa5bsVNpRAc6ZCFtVdkTBmhlJ4OeNC0opQPAL42/pHyS9KdncTlGKV
+ IE5i5cr7lVb1saZxicUEn9mLjUQviKieWV7BGKCI+ZZzBgPE5z0dE6wGLQSvh7T9bSWx
+ s7t3qaUd/dWLogFc31ISwaoIcrXRlspX4w+srSwybnyqYO1NwBi0H5x3Anpq78kugaPN
+ f5sA6e/pf7T1VDLnCS1xc9YQ19h4v6Puw6jTa4KuwqiLhR1Hm1nV5CJPs0NE5IN2/mnl
+ mhjSjzkRBDgQzKCblUKuSCZ8+NHllaaWpLTtxqNfFMDJ3p4k1xVdbpp2u0VaxWOW7zhY
+ Mixg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688837; x=1693293637;
+ d=1e100.net; s=20221208; t=1692688843; x=1693293643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+BP3z9xxPaXPgNtP8/KZyJCiuXObaSTzuF1iDUtHzjk=;
- b=jZc4MN1qCT8+r0wvH+yDVvtLYWebFdQkIp1UMkgHiTToUaXT0B86EQo1r/3GnCzTHU
- enQ/tOG2Wh28bPs1DwrHng8CHzK3FCZeCBPuJs8K3dHpBOmzsP5rNT6cQXl2Pq5OYEz4
- Eiv+AWqEHjFHS2f4Njjf9l/carsxLvTQ+s0jRqxap7ub7f92D4pbhXwBQtQgwj7M/lTn
- U42bkwKi5FIKD+QYwKYjnNDWzJMqnIcOgOH2f8rXwX1iy2LZICgWYXuqaM9t2KT9qYwV
- cSDNCLALIeBY9x7Jaky2mx+5BQWF/wG9p9KtaIk0+ymmAdSiqboYaBriL1MCZz319JHZ
- 4SDA==
-X-Gm-Message-State: AOJu0YzPsGPUHtaeV3pIO1Gy81OUVzQ2vwDTdRLailHNGrScKv+MgKKz
- OME27vSOqGOspOFMnkQMu9MY0HAPWhmvpdyUYCMI1w==
-X-Google-Smtp-Source: AGHT+IFK2RkOeuw6g59wiP80ix4MFYhZFlO1yLyS6EcvtDNRFOgNpPK2ukxhrnUcla1IxYU2KB+vmA==
-X-Received: by 2002:a1c:7205:0:b0:3fc:5606:c243 with SMTP id
- n5-20020a1c7205000000b003fc5606c243mr6625296wmc.13.1692688837186; 
- Tue, 22 Aug 2023 00:20:37 -0700 (PDT)
+ bh=ONpA0UFQdSnkRLzqiVi2DjQGuL0JxDlhUKCdcQf7dH4=;
+ b=dDm+W+rRGRxDZKucyPEtu7I/VqekS0NhlbwNRCD4vMkikXWKjjijDs4lrWBeI7Rtto
+ SaHgNW8a6SZ0kEmfhjbhygPlWOgN/ngyyLs4UL07Y1UzcDWW1Qk5hrBb5VTzA0DjriEh
+ OEXqMcQFLZgg+kW2uDuLCrlH29bj+Eb+c149XEQXkHC5fV9WPx7IV2wWWjNOBsVgEINm
+ zgMNgvharpm08cXN2NxXYicFyzR3tOeR5gYM0VCkA71Ss0un35sGbpNR3o3eyAcwxoFI
+ BXwWyz30Hdpa2oz4WQu6jYVgAzYdvr4J7LSSjMfWSyc2NJXaCQ15VUJoX6Wokk+S1/Q0
+ Md8w==
+X-Gm-Message-State: AOJu0YzncNX9TCTgWOGg5xd+aIl0QgwJBcirEVpPFifWJrEg4wDesSRL
+ eBwMlUlXklpPoq4EhhHxT1aqODRj5Hdht5AftcezZg==
+X-Google-Smtp-Source: AGHT+IEeiGSlYMztqjUq8TlAY9dvOYpUz8Io50mlH17zWO+aWTOd3ilJInyXsCaoNVZIWdjAufeQRw==
+X-Received: by 2002:a5d:4531:0:b0:317:ed01:dc48 with SMTP id
+ j17-20020a5d4531000000b00317ed01dc48mr6518084wra.9.1692688843664; 
+ Tue, 22 Aug 2023 00:20:43 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- m25-20020a7bcb99000000b003fee7b67f67sm9792873wmi.31.2023.08.22.00.20.35
+ a1-20020a056000100100b003141a3c4353sm14933500wrx.30.2023.08.22.00.20.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:20:36 -0700 (PDT)
+ Tue, 22 Aug 2023 00:20:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Song Gao <gaosong@loongson.cn>
@@ -61,17 +61,18 @@ Cc: Jiajie Chen <c@jia.je>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Huacai Chen <chenhuacai@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RESEND v5 13/19] target/loongarch: Add LoongArch32 cpu la132
-Date: Tue, 22 Aug 2023 09:19:53 +0200
-Message-ID: <20230822071959.35620-4-philmd@linaro.org>
+Subject: [PATCH RESEND v5 14/19] hw/loongarch: Remove restriction of la464
+ cores in the virt machine
+Date: Tue, 22 Aug 2023 09:19:54 +0200
+Message-ID: <20230822071959.35620-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822071405.35386-1-philmd@linaro.org>
 References: <20230822071405.35386-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,70 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiajie Chen <c@jia.je>
+From: Song Gao <gaosong@loongson.cn>
 
-Add LoongArch32 cpu la132.
+Allow virt machine to be used with la132 instead of la464.
 
-Due to lack of public documentation of la132, it is currently a
-synthetic LoongArch32 cpu model. Details need to be added in the future.
-
-Signed-off-by: Jiajie Chen <c@jia.je>
+Co-authored-by: Jiajie Chen <c@jia.je>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230822032724.1353391-10-gaosong@loongson.cn>
+Message-ID: <20230822032724.1353391-11-gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ hw/loongarch/virt.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 67eb6c3135..d3c3e0d8a1 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -440,6 +440,35 @@ static void loongarch_la464_initfn(Object *obj)
-     env->CSR_ASID = FIELD_DP64(0, CSR_ASID, ASIDBITS, 0xa);
- }
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index e19b042ce8..af15bf5aaa 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -798,11 +798,6 @@ static void loongarch_init(MachineState *machine)
+         cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
+     }
  
-+static void loongarch_la132_initfn(Object *obj)
-+{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-+    CPULoongArchState *env = &cpu->env;
-+
-+    int i;
-+
-+    for (i = 0; i < 21; i++) {
-+        env->cpucfg[i] = 0x0;
-+    }
-+
-+    cpu->dtb_compatible = "loongarch,Loongson-1C103";
-+    env->cpucfg[0] = 0x148042;  /* PRID */
-+
-+    uint32_t data = 0;
-+    data = FIELD_DP32(data, CPUCFG1, ARCH, 1); /* LA32 */
-+    data = FIELD_DP32(data, CPUCFG1, PGMMU, 1);
-+    data = FIELD_DP32(data, CPUCFG1, IOCSR, 1);
-+    data = FIELD_DP32(data, CPUCFG1, PALEN, 0x1f); /* 32 bits */
-+    data = FIELD_DP32(data, CPUCFG1, VALEN, 0x1f); /* 32 bits */
-+    data = FIELD_DP32(data, CPUCFG1, UAL, 1);
-+    data = FIELD_DP32(data, CPUCFG1, RI, 0);
-+    data = FIELD_DP32(data, CPUCFG1, EP, 0);
-+    data = FIELD_DP32(data, CPUCFG1, RPLV, 0);
-+    data = FIELD_DP32(data, CPUCFG1, HP, 1);
-+    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
-+    env->cpucfg[1] = data;
-+}
-+
- static void loongarch_cpu_list_entry(gpointer data, gpointer user_data)
- {
-     const char *typename = object_class_get_name(OBJECT_CLASS(data));
-@@ -787,6 +816,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
-         .class_init = loongarch64_cpu_class_init,
-     },
-     DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
-+    DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
- };
- 
- DEFINE_TYPES(loongarch_cpu_type_infos)
+-    if (!strstr(cpu_model, "la464")) {
+-        error_report("LoongArch/TCG needs cpu type la464");
+-        exit(1);
+-    }
+-
+     if (ram_size < 1 * GiB) {
+         error_report("ram_size must be greater than 1G.");
+         exit(1);
 -- 
 2.41.0
 
