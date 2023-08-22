@@ -2,72 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533E5784415
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 16:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0FB784432
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 16:29:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYSLR-0006iA-Cj; Tue, 22 Aug 2023 10:26:57 -0400
+	id 1qYSNe-0007jD-5H; Tue, 22 Aug 2023 10:29:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qYSLD-0006ho-TZ; Tue, 22 Aug 2023 10:26:45 -0400
-Received: from m1328.mail.163.com ([220.181.13.28])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>)
- id 1qYSL9-0008Kk-Cp; Tue, 22 Aug 2023 10:26:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
- Message-ID; bh=bw9gG4tBzDOfnCYU1ircyhh7SyZHUOqLSD4tiHq897M=; b=l
- BGpRfW2cL6vFKyvP7GIoVJnpgMidmALPOMzz5VehJruP/DTgh14r/W5GQiPUiHUt
- p3VCQtgz/YHdCi5/IXR2M0yun59wvAw9NU2fapI7hRVIScVUtwY7XAOJCF/2yckj
- ihMskJx0lKaHhwHO0Mpe9Wb1Zd/qr4IkHpbZxuOnwE=
-Received: from logoerthiner1$163.com ( [42.84.233.3] ) by
- ajax-webmail-wmsvr28 (Coremail) ; Tue, 22 Aug 2023 22:26:08 +0800 (CST)
-X-Originating-IP: [42.84.233.3]
-Date: Tue, 22 Aug 2023 22:26:08 +0800 (CST)
-From: ThinerLogoer  <logoerthiner1@163.com>
-To: "David Hildenbrand" <david@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- "Paolo Bonzini" <pbonzini@redhat.com>, "Peter Xu" <peterx@redhat.com>, 
- "Igor Mammedov" <imammedo@redhat.com>, 
- =?GBK?Q?Philippe_Mathieu-Daud=A8=A6?= <philmd@linaro.org>, 
- =?GBK?Q?Daniel_P_=2E_Berrang=A8=A6?= <berrange@redhat.com>, 
- "Stefan Hajnoczi" <stefanha@redhat.com>, 
- "Elena Ufimtseva" <elena.ufimtseva@oracle.com>, 
- "Jagannathan Raman" <jag.raman@oracle.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, "Ani Sinha" <anisinha@redhat.com>, 
- "Xiao Guangrong" <xiaoguangrong.eric@gmail.com>, 
- "Daniel Henrique Barboza" <danielhb413@gmail.com>, 
- "Greg Kurz" <groug@kaod.org>, "Eric Blake" <eblake@redhat.com>, 
- "Markus Armbruster" <armbru@redhat.com>, 
- "Eduardo Habkost" <eduardo@habkost.net>
-Subject: Re:[PATCH v2 3/9] backends/hostmem-file: Add "rom" property to
- support VM templating with R/O files
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <20230822114504.239505-4-david@redhat.com>
-References: <20230822114504.239505-1-david@redhat.com>
- <20230822114504.239505-4-david@redhat.com>
-X-NTES-SC: AL_QuySAPuau0st7iibbOkXnk4Shuc2XMu4u/gu34JTP5E0lSnV9yYMUlRMPnjb0duGBDGcmzOwbjZ05d9gUIJoZrqKZb9WvVgCJJcE+Ah1sXq6
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYSNc-0007ic-Bn
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:29:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYSNZ-0000GK-Dc
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:29:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692714548;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Oo0qQMP+EpYcaK0x6LYo/3scrNwDZqWhIrmx2SDwrB8=;
+ b=XcWHrxZhB3PhH5bR84/4bgFnntjI9t5dndHAWR+zzPTw+tTbI9QdGZlcRCZbsW5CcE+MbC
+ D9Eih6dn0j6KI0qjYBEPCkJAQaodu8uTRr5HY1IMhlGXLnHybzxq+DnnOavjl/9l0DU6Nb
+ bObcgh5P1S73oQEOWnZo/RLNpr3vg4E=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-XOXgsO0kM2yEuhvuwmJtaw-1; Tue, 22 Aug 2023 10:29:06 -0400
+X-MC-Unique: XOXgsO0kM2yEuhvuwmJtaw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2b8405aace3so50338591fa.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 07:29:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692714545; x=1693319345;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :references:cc:to:content-language:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Oo0qQMP+EpYcaK0x6LYo/3scrNwDZqWhIrmx2SDwrB8=;
+ b=Vj+ohavdDoA/bgax0SHs1JTVapiZehIPusWndybHHZwogrdU9fafcmfQeW3gU5ey8b
+ kEvECuje7Q5RYRYyjTHy1Kk9qW0Z+Fokspi7NVIbm3wlk1GAglBpB6Knb82+ap7Vt3/w
+ Nlh16ev9YF18h9ScKuCXdRGnlNPlci7qX2TARpXpjNqlCbtbJ+P/Mlx9UE+UdhFB2/bY
+ 9uKFOgHYtQAA/zF/JPtFb1yVuOy6qaZfYuvXvePIZlrQz8WAncukWvCVxP1mJARQO4xB
+ 4FKQMTNAzVde4lx6QKqgP+XXLtUaMLmppunDdOZoxjg2HOquzdOZ+P35N8ytMOMqqg+z
+ MOBQ==
+X-Gm-Message-State: AOJu0YwPY9gi7P6IzQviOWoy28DktWo57lLzhK2fRVPNxMnynIuflKII
+ B9WDhPMWogYmSRy+9rt1JEIcAhQLo32Oph4u/JsA6e1wOtV9glcpjNYiXaUCsFiV+Ouw0DSms0H
+ xQY27ZCWZTqXUI3k=
+X-Received: by 2002:a2e:b053:0:b0:2b9:6810:b333 with SMTP id
+ d19-20020a2eb053000000b002b96810b333mr6891275ljl.14.1692714544833; 
+ Tue, 22 Aug 2023 07:29:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHbtdV1Z2oYexwVe8mpbyzXTeUz0WQ5wiHT8u+gk/LvXpSBjPcLrFisAk3pJfWzuqTvvZdCw==
+X-Received: by 2002:a2e:b053:0:b0:2b9:6810:b333 with SMTP id
+ d19-20020a2eb053000000b002b96810b333mr6891263ljl.14.1692714544356; 
+ Tue, 22 Aug 2023 07:29:04 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c706:7400:83da:ebad:ba7f:c97c?
+ (p200300cbc706740083daebadba7fc97c.dip0.t-ipconnect.de.
+ [2003:cb:c706:7400:83da:ebad:ba7f:c97c])
+ by smtp.gmail.com with ESMTPSA id
+ b15-20020a05600c11cf00b003fe215e4492sm16116605wmi.4.2023.08.22.07.29.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 07:29:03 -0700 (PDT)
+Message-ID: <437ee67b-d3d6-906a-7ee1-d798d3f77643@redhat.com>
+Date: Tue, 22 Aug 2023 16:29:03 +0200
 MIME-Version: 1.0
-Message-ID: <5537a603.478c.18a1da37f4a.Coremail.logoerthiner1@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: HMGowACnM9uBxeRky5AMAA--.59120W
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/1tbiKRrTnlXl67Z4jAACsl
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-Received-SPF: pass client-ip=220.181.13.28; envelope-from=logoerthiner1@163.com;
- helo=m1328.mail.163.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+ Daniel Verkamp <dverkamp@chromium.org>
+Cc: virtio-comment@lists.oasis-open.org,
+ virtualization@lists.linux-foundation.org, qemu-devel@nongnu.org,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ Cornelia Huck <cohuck@redhat.com>
+References: <CABVzXAke4LRt4=S4FsFTFf_WPrAhe1dukoLZto6t6R13kgjw0Q@mail.gmail.com>
+ <20230822134011.GB727224@fedora>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [virtio-comment] virtio queue numbering and optional queues
+In-Reply-To: <20230822134011.GB727224@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.767, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,179 +109,230 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGVsbG8sCgpBdCAyMDIzLTA4LTIyIDE5OjQ0OjUxLCAiRGF2aWQgSGlsZGVuYnJhbmQiIDxkYXZp
-ZEByZWRoYXQuY29tPiB3cm90ZToKPkZvciBub3csICJzaGFyZT1vZmYscmVhZG9ubHk9b24iIHdv
-dWxkIGFsd2F5cyByZXN1bHQgaW4gdXMgb3BlbmluZyB0aGUKPmZpbGUgUi9PIGFuZCBtbWFwJ2lu
-ZyB0aGUgb3BlbmVkIGZpbGUgTUFQX1BSSVZBVEUgUi9PIC0tIGVmZmVjdGl2ZWx5Cj50dXJuaW5n
-IGl0IGludG8gUk9NLgo+Cj5Fc3BlY2lhbGx5IGZvciBWTSB0ZW1wbGF0aW5nLCAic2hhcmU9b2Zm
-IiBpcyBhIGNvbW1vbiB1c2UgY2FzZS4gSG93ZXZlciwKPnRoYXQgdXNlIGNhc2UgaXMgaW1wb3Nz
-aWJsZSB3aXRoIGZpbGVzIHRoYXQgbGFjayB3cml0ZSBwZXJtaXNzaW9ucywKPmJlY2F1c2UgInNo
-YXJlPW9mZixyZWFkb25seT1vbiIgd2lsbCBub3QgZ2l2ZSB1cyB3cml0YWJsZSBSQU0uCj4KPlRo
-ZSBzb2xlIHVzZXIgb2YgUk9NIHZpYSBtZW1vcnktYmFja2VuZC1maWxlIGFyZSBSL08gTlZESU1N
-cywgYnV0IGFzIHdlCj5oYXZlIHVzZXJzIChLYXRhIENvbnRhaW5lcnMpIHRoYXQgcmVseSBvbiB0
-aGUgZXhpc3RpbmcgYmVoYXZpb3IgLS0KPm1hbGljaW91cyBWTXMgc2hvdWxkIG5vdCBiZSBhYmxl
-IHRvIGNvbnN1bWUgQ09XIG1lbW9yeSBmb3IgUi9PIE5WRElNTXMgLS0KPndlIGNhbm5vdCBjaGFu
-Z2UgdGhlIHNlbWFudGljcyBvZiAic2hhcmU9b2ZmLHJlYWRvbmx5PW9uIgo+Cj5TbyBsZXQncyBh
-ZGQgYSBuZXcgInJvbSIgcHJvcGVydHkgd2l0aCBvbi9vZmYvYXV0byB2YWx1ZXMuICJhdXRvIiBp
-cwo+dGhlIGRlZmF1bHQgYW5kIHdoYXQgbW9zdCBwZW9wbGUgd2lsbCB1c2U6IGZvciBoaXN0b3Jp
-Y2FsIHJlYXNvbnMsIHRvIG5vdAo+Y2hhbmdlIHRoZSBvbGQgc2VtYW50aWNzLCBpdCBkZWZhdWx0
-cyB0byB0aGUgdmFsdWUgb2YgdGhlICJyZWFkb25seSIKPnByb3BlcnR5Lgo+Cj5Gb3IgVk0gdGVt
-cGxhdGluZywgb25lIGNhbiBub3cgdXNlOgo+ICAgIC1vYmplY3QgbWVtb3J5LWJhY2tlbmQtZmls
-ZSxzaGFyZT1vZmYscmVhZG9ubHk9b24scm9tPW9mZiwuLi4KPgo+QnV0IHdlJ2xsIGRpc2FsbG93
-Ogo+ICAgIC1vYmplY3QgbWVtb3J5LWJhY2tlbmQtZmlsZSxzaGFyZT1vbixyZWFkb25seT1vbixy
-b209b2ZmLC4uLgo+YmVjYXVzZSB3ZSB3b3VsZCBvdGhlcndpc2UgZ2V0IGFuIGVycm9yIHdoZW4g
-dHJ5aW5nIHRvIG1tYXAgdGhlIFIvTyBmaWxlCj5zaGFyZWQgYW5kIHdyaXRhYmxlLiBBbiBleHBs
-aWNpdCBlcnJvciBtZXNzYWdlIGlzIGNsZWFuZXIuCj4KPldlIHdpbGwgYWxzbyBkaXNhbGxvdyBm
-b3Igbm93Ogo+ICAgIC1vYmplY3QgbWVtb3J5LWJhY2tlbmQtZmlsZSxzaGFyZT1vZmYscmVhZG9u
-bHk9b2ZmLHJvbT1vbiwuLi4KPiAgICAtb2JqZWN0IG1lbW9yeS1iYWNrZW5kLWZpbGUsc2hhcmU9
-b24scmVhZG9ubHk9b2ZmLHJvbT1vbiwuLi4KPkl0J3Mgbm90IGhhcm1mdWwsIGJ1dCBhbHNvIG5v
-dCByZWFsbHkgcmVxdWlyZWQgZm9yIG5vdy4KPgo+QWx0ZXJuYXRpdmVzIHRoYXQgd2VyZSBhYmFu
-ZG9uZWQ6Cj4qIE1ha2UgInVuYXJtZWQ9b24iIGZvciB0aGUgTlZESU1NIHNldCB0aGUgbWVtb3J5
-IHJlZ2lvbiBjb250YWluZXIKPiAgcmVhZG9ubHkuIFdlIHdvdWxkIHN0aWxsIHNlZSBhIGNoYW5n
-ZSBvZiBST00tPlJBTSBhbmQgcG9zc2libHkgcnVuCj4gIGludG8gbWVtc2xvdCBsaW1pdHMgd2l0
-aCB2aG9zdC11c2VyLiBGdXJ0aGVyLCB0aGVyZSBtaWdodCBiZSB1c2UgY2FzZXMKPiAgZm9yICJ1
-bmFybWVkPW9uIiB0aGF0IHNob3VsZCBzdGlsbCBhbGxvdyB3cml0aW5nIHRvIHRoYXQgbWVtb3J5
-Cj4gICh0ZW1wb3JhcnkgZmlsZXMsIHN5c3RlbSBSQU0sIC4uLikuCj4qIEFkZCBhIG5ldyAicmVh
-ZG9ubHk9b24vb2ZmL2F1dG8iIHBhcmFtZXRlciBmb3IgTlZESU1Ncy4gU2ltaWxhciBpc3N1ZXMK
-PiAgYXMgd2l0aCAidW5hcm1lZD1vbiIuCj4qIE1ha2UgInJlYWRvbmx5IiBjb25zdW1lICJvbi9v
-ZmYvZmlsZSIgaW5zdGVhZCBvZiBiZWluZyBhICdib29sJyB0eXBlLgo+ICBUaGlzIHdvdWxkIHNs
-aWdodGx5IGNoYW5nZXMgdGhlIGJlaGF2aW9yIG9mIHRoZSAicmVhZG9ubHkiIHBhcmFtZXRlcjoK
-PiAgdmFsdWVzIGxpa2UgdHJ1ZS9mYWxzZSAoYXMgYWNjZXB0ZWQgYnkgYSAnYm9vbCd0eXBlKSB3
-b3VsZCBubyBsb25nZXIgYmUKPiAgYWNjZXB0ZWQuCj4KPlNpZ25lZC1vZmYtYnk6IERhdmlkIEhp
-bGRlbmJyYW5kIDxkYXZpZEByZWRoYXQuY29tPgo+LS0tCj4gYmFja2VuZHMvaG9zdG1lbS1maWxl
-LmMgfCA1OSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLQo+IHFhcGkv
-cW9tLmpzb24gICAgICAgICAgIHwgIDYgKysrKy0KPiBxZW11LW9wdGlvbnMuaHggICAgICAgICB8
-IDEwICsrKysrKy0KPiAzIGZpbGVzIGNoYW5nZWQsIDcyIGluc2VydGlvbnMoKyksIDMgZGVsZXRp
-b25zKC0pCj4KPmRpZmYgLS1naXQgYS9iYWNrZW5kcy9ob3N0bWVtLWZpbGUuYyBiL2JhY2tlbmRz
-L2hvc3RtZW0tZmlsZS5jCj5pbmRleCBlZjJkNTUzM2FmLi4zNjFkNGE4MTAzIDEwMDY0NAo+LS0t
-IGEvYmFja2VuZHMvaG9zdG1lbS1maWxlLmMKPisrKyBiL2JhY2tlbmRzL2hvc3RtZW0tZmlsZS5j
-Cj5AQCAtMTgsNiArMTgsOCBAQAo+ICNpbmNsdWRlICJzeXNlbXUvaG9zdG1lbS5oIgo+ICNpbmNs
-dWRlICJxb20vb2JqZWN0X2ludGVyZmFjZXMuaCIKPiAjaW5jbHVkZSAicW9tL29iamVjdC5oIgo+
-KyNpbmNsdWRlICJxYXBpL3Zpc2l0b3IuaCIKPisjaW5jbHVkZSAicWFwaS9xYXBpLXZpc2l0LWNv
-bW1vbi5oIgo+IAo+IE9CSkVDVF9ERUNMQVJFX1NJTVBMRV9UWVBFKEhvc3RNZW1vcnlCYWNrZW5k
-RmlsZSwgTUVNT1JZX0JBQ0tFTkRfRklMRSkKPiAKPkBAIC0zMSw2ICszMyw3IEBAIHN0cnVjdCBI
-b3N0TWVtb3J5QmFja2VuZEZpbGUgewo+ICAgICBib29sIGRpc2NhcmRfZGF0YTsKPiAgICAgYm9v
-bCBpc19wbWVtOwo+ICAgICBib29sIHJlYWRvbmx5Owo+KyAgICBPbk9mZkF1dG8gcm9tOwo+IH07
-Cj4gCj4gc3RhdGljIHZvaWQKPkBAIC01Myw5ICs1NiwzMyBAQCBmaWxlX2JhY2tlbmRfbWVtb3J5
-X2FsbG9jKEhvc3RNZW1vcnlCYWNrZW5kICpiYWNrZW5kLCBFcnJvciAqKmVycnApCj4gICAgICAg
-ICByZXR1cm47Cj4gICAgIH0KPiAKPisgICAgc3dpdGNoIChmYi0+cm9tKSB7Cj4rICAgIGNhc2Ug
-T05fT0ZGX0FVVE9fQVVUTzoKPisgICAgICAgIC8qIFRyYWRpdGlvbmFsbHksIG9wZW5pbmcgdGhl
-IGZpbGUgcmVhZG9ubHkgYWx3YXlzIHJlc3VsdGVkIGluIFJPTS4gKi8KPisgICAgICAgIGZiLT5y
-b20gPSBmYi0+cmVhZG9ubHkgPyBPTl9PRkZfQVVUT19PTiA6IE9OX09GRl9BVVRPX09GRjsKPisg
-ICAgICAgIGJyZWFrOwo+KyAgICBjYXNlIE9OX09GRl9BVVRPX09OOgo+KyAgICAgICAgaWYgKCFm
-Yi0+cmVhZG9ubHkpIHsKPisgICAgICAgICAgICBlcnJvcl9zZXRnKGVycnAsICJwcm9wZXJ0eSAn
-cm9tJyA9ICdvbicgaXMgbm90IHN1cHBvcnRlZCB3aXRoIgo+KyAgICAgICAgICAgICAgICAgICAg
-ICAgIiAncmVhZG9ubHknID0gJ29mZiciKTsKPisgICAgICAgICAgICByZXR1cm47Cj4rICAgICAg
-ICB9Cj4rICAgICAgICBicmVhazsKPisgICAgY2FzZSBPTl9PRkZfQVVUT19PRkY6Cj4rICAgICAg
-ICBpZiAoZmItPnJlYWRvbmx5ICYmIGJhY2tlbmQtPnNoYXJlKSB7Cj4rICAgICAgICAgICAgZXJy
-b3Jfc2V0ZyhlcnJwLCAicHJvcGVydHkgJ3JvbScgPSAnb2ZmJyBpcyBpbmNvbXBhdGlibGUgd2l0
-aCIKPisgICAgICAgICAgICAgICAgICAgICAgICIgJ3JlYWRvbmx5JyA9ICdvbicgYW5kICdzaGFy
-ZScgPSAnb24nIik7Cj4rICAgICAgICAgICAgcmV0dXJuOwo+KyAgICAgICAgfQo+KyAgICAgICAg
-YnJlYWs7Cj4rICAgIGRlZmF1bHQ6Cj4rICAgICAgICBhc3NlcnQoZmFsc2UpOwo+KyAgICB9Cj4r
-Cj4gICAgIG5hbWUgPSBob3N0X21lbW9yeV9iYWNrZW5kX2dldF9uYW1lKGJhY2tlbmQpOwo+ICAg
-ICByYW1fZmxhZ3MgPSBiYWNrZW5kLT5zaGFyZSA/IFJBTV9TSEFSRUQgOiAwOwo+LSAgICByYW1f
-ZmxhZ3MgfD0gZmItPnJlYWRvbmx5ID8gUkFNX1JFQURPTkxZIHwgUkFNX1JFQURPTkxZX0ZEIDog
-MDsKPisgICAgcmFtX2ZsYWdzIHw9IGZiLT5yZWFkb25seSA/IFJBTV9SRUFET05MWV9GRCA6IDA7
-Cj4rICAgIHJhbV9mbGFncyB8PSBmYi0+cm9tID09IE9OX09GRl9BVVRPX09OID8gUkFNX1JFQURP
-TkxZIDogMDsKPiAgICAgcmFtX2ZsYWdzIHw9IGJhY2tlbmQtPnJlc2VydmUgPyAwIDogUkFNX05P
-UkVTRVJWRTsKPiAgICAgcmFtX2ZsYWdzIHw9IGZiLT5pc19wbWVtID8gUkFNX1BNRU0gOiAwOwo+
-ICAgICByYW1fZmxhZ3MgfD0gUkFNX05BTUVEX0ZJTEU7Cj5AQCAtMjAxLDYgKzIyOCwzMiBAQCBz
-dGF0aWMgdm9pZCBmaWxlX21lbW9yeV9iYWNrZW5kX3NldF9yZWFkb25seShPYmplY3QgKm9iaiwg
-Ym9vbCB2YWx1ZSwKPiAgICAgZmItPnJlYWRvbmx5ID0gdmFsdWU7Cj4gfQo+IAo+K3N0YXRpYyB2
-b2lkIGZpbGVfbWVtb3J5X2JhY2tlbmRfZ2V0X3JvbShPYmplY3QgKm9iaiwgVmlzaXRvciAqdiwK
-PisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqbmFt
-ZSwgdm9pZCAqb3BhcXVlLAo+KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBFcnJvciAqKmVycnApCj4rewo+KyAgICBIb3N0TWVtb3J5QmFja2VuZEZpbGUgKmZiID0gTUVN
-T1JZX0JBQ0tFTkRfRklMRShvYmopOwo+KyAgICBPbk9mZkF1dG8gcm9tID0gZmItPnJvbTsKPisK
-PisgICAgdmlzaXRfdHlwZV9Pbk9mZkF1dG8odiwgbmFtZSwgJnJvbSwgZXJycCk7Cj4rfQo+Kwo+
-K3N0YXRpYyB2b2lkIGZpbGVfbWVtb3J5X2JhY2tlbmRfc2V0X3JvbShPYmplY3QgKm9iaiwgVmlz
-aXRvciAqdiwKPisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qg
-Y2hhciAqbmFtZSwgdm9pZCAqb3BhcXVlLAo+KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBFcnJvciAqKmVycnApCj4rewo+KyAgICBIb3N0TWVtb3J5QmFja2VuZCAqYmFj
-a2VuZCA9IE1FTU9SWV9CQUNLRU5EKG9iaik7Cj4rICAgIEhvc3RNZW1vcnlCYWNrZW5kRmlsZSAq
-ZmIgPSBNRU1PUllfQkFDS0VORF9GSUxFKG9iaik7Cj4rCj4rICAgIGlmIChob3N0X21lbW9yeV9i
-YWNrZW5kX21yX2luaXRlZChiYWNrZW5kKSkgewo+KyAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAi
-Y2Fubm90IGNoYW5nZSBwcm9wZXJ0eSAnJXMnIG9mICVzLiIsIG5hbWUsCj4rICAgICAgICAgICAg
-ICAgICAgIG9iamVjdF9nZXRfdHlwZW5hbWUob2JqKSk7Cj4rICAgICAgICByZXR1cm47Cj4rICAg
-IH0KPisKPisgICAgdmlzaXRfdHlwZV9Pbk9mZkF1dG8odiwgbmFtZSwgJmZiLT5yb20sIGVycnAp
-Owo+K30KPisKPiBzdGF0aWMgdm9pZCBmaWxlX2JhY2tlbmRfdW5wYXJlbnQoT2JqZWN0ICpvYmop
-Cj4gewo+ICAgICBIb3N0TWVtb3J5QmFja2VuZCAqYmFja2VuZCA9IE1FTU9SWV9CQUNLRU5EKG9i
-aik7Cj5AQCAtMjQzLDYgKzI5NiwxMCBAQCBmaWxlX2JhY2tlbmRfY2xhc3NfaW5pdChPYmplY3RD
-bGFzcyAqb2MsIHZvaWQgKmRhdGEpCj4gICAgIG9iamVjdF9jbGFzc19wcm9wZXJ0eV9hZGRfYm9v
-bChvYywgInJlYWRvbmx5IiwKPiAgICAgICAgIGZpbGVfbWVtb3J5X2JhY2tlbmRfZ2V0X3JlYWRv
-bmx5LAo+ICAgICAgICAgZmlsZV9tZW1vcnlfYmFja2VuZF9zZXRfcmVhZG9ubHkpOwo+KyAgICBv
-YmplY3RfY2xhc3NfcHJvcGVydHlfYWRkKG9jLCAicm9tIiwgIk9uT2ZmQXV0byIsCj4rICAgICAg
-ICBmaWxlX21lbW9yeV9iYWNrZW5kX2dldF9yb20sIGZpbGVfbWVtb3J5X2JhY2tlbmRfc2V0X3Jv
-bSwgTlVMTCwgTlVMTCk7Cj4rICAgIG9iamVjdF9jbGFzc19wcm9wZXJ0eV9zZXRfZGVzY3JpcHRp
-b24ob2MsICJyb20iLAo+KyAgICAgICAgIldoZXRoZXIgdG8gY3JlYXRlIFJlYWQgT25seSBNZW1v
-cnkgKFJPTSkiKTsKPiB9Cj4gCj4gc3RhdGljIHZvaWQgZmlsZV9iYWNrZW5kX2luc3RhbmNlX2Zp
-bmFsaXplKE9iamVjdCAqbykKPmRpZmYgLS1naXQgYS9xYXBpL3FvbS5qc29uIGIvcWFwaS9xb20u
-anNvbgo+aW5kZXggZmEzZTg4YzhlNi4uMGNmODNjNmYzOSAxMDA2NDQKPi0tLSBhL3FhcGkvcW9t
-Lmpzb24KPisrKyBiL3FhcGkvcW9tLmpzb24KPkBAIC02NjgsNiArNjY4LDkgQEAKPiAjIEByZWFk
-b25seTogaWYgdHJ1ZSwgdGhlIGJhY2tpbmcgZmlsZSBpcyBvcGVuZWQgcmVhZC1vbmx5OyBpZiBm
-YWxzZSwKPiAjICAgICBpdCBpcyBvcGVuZWQgcmVhZC13cml0ZS4gIChkZWZhdWx0OiBmYWxzZSkK
-PiAjCj4rIyBAcm9tOiB3aGV0aGVyIHRvIGNyZWF0ZSBSZWFkIE9ubHkgTWVtb3J5IChST00pLiAg
-SWYgc2V0IHRvICdhdXRvJywgaXQKPisjICAgICAgIGRlZmF1bHRzIHRvIHRoZSB2YWx1ZSBvZiBA
-cmVhZG9ubHkuICAoZGVmYXVsdDogYXV0bywgc2luY2UgOC4yKQo+KyMKPiAjIFNpbmNlOiAyLjEK
-PiAjIwo+IHsgJ3N0cnVjdCc6ICdNZW1vcnlCYWNrZW5kRmlsZVByb3BlcnRpZXMnLAo+QEAgLTY3
-Nyw3ICs2ODAsOCBAQAo+ICAgICAgICAgICAgICcqZGlzY2FyZC1kYXRhJzogJ2Jvb2wnLAo+ICAg
-ICAgICAgICAgICdtZW0tcGF0aCc6ICdzdHInLAo+ICAgICAgICAgICAgICcqcG1lbSc6IHsgJ3R5
-cGUnOiAnYm9vbCcsICdpZic6ICdDT05GSUdfTElCUE1FTScgfSwKPi0gICAgICAgICAgICAnKnJl
-YWRvbmx5JzogJ2Jvb2wnIH0gfQo+KyAgICAgICAgICAgICcqcmVhZG9ubHknOiAnYm9vbCcsCj4r
-ICAgICAgICAgICAgJypyb20nOiAnT25PZmZBdXRvJyB9IH0KPiAKPiAjIwo+ICMgQE1lbW9yeUJh
-Y2tlbmRNZW1mZFByb3BlcnRpZXM6Cj5kaWZmIC0tZ2l0IGEvcWVtdS1vcHRpb25zLmh4IGIvcWVt
-dS1vcHRpb25zLmh4Cj5pbmRleCAyOWI5OGMzZDRjLi4wM2NlMGIwYTMwIDEwMDY0NAo+LS0tIGEv
-cWVtdS1vcHRpb25zLmh4Cj4rKysgYi9xZW11LW9wdGlvbnMuaHgKPkBAIC00OTc2LDcgKzQ5NzYs
-NyBAQCBTUlNUCj4gICAgIHRoZXkgYXJlIHNwZWNpZmllZC4gTm90ZSB0aGF0IHRoZSAnaWQnIHBy
-b3BlcnR5IG11c3QgYmUgc2V0LiBUaGVzZQo+ICAgICBvYmplY3RzIGFyZSBwbGFjZWQgaW4gdGhl
-ICcvb2JqZWN0cycgcGF0aC4KPiAKPi0gICAgYGAtb2JqZWN0IG1lbW9yeS1iYWNrZW5kLWZpbGUs
-aWQ9aWQsc2l6ZT1zaXplLG1lbS1wYXRoPWRpcixzaGFyZT1vbnxvZmYsZGlzY2FyZC1kYXRhPW9u
-fG9mZixtZXJnZT1vbnxvZmYsZHVtcD1vbnxvZmYscHJlYWxsb2M9b258b2ZmLGhvc3Qtbm9kZXM9
-aG9zdC1ub2Rlcyxwb2xpY3k9ZGVmYXVsdHxwcmVmZXJyZWR8YmluZHxpbnRlcmxlYXZlLGFsaWdu
-PWFsaWduLG9mZnNldD1vZmZzZXQscmVhZG9ubHk9b258b2ZmYGAKPisgICAgYGAtb2JqZWN0IG1l
-bW9yeS1iYWNrZW5kLWZpbGUsaWQ9aWQsc2l6ZT1zaXplLG1lbS1wYXRoPWRpcixzaGFyZT1vbnxv
-ZmYsZGlzY2FyZC1kYXRhPW9ufG9mZixtZXJnZT1vbnxvZmYsZHVtcD1vbnxvZmYscHJlYWxsb2M9
-b258b2ZmLGhvc3Qtbm9kZXM9aG9zdC1ub2Rlcyxwb2xpY3k9ZGVmYXVsdHxwcmVmZXJyZWR8Ymlu
-ZHxpbnRlcmxlYXZlLGFsaWduPWFsaWduLG9mZnNldD1vZmZzZXQscmVhZG9ubHk9b258b2ZmLHJv
-bT1vbnxvZmZ8YXV0b2BgCj4gICAgICAgICBDcmVhdGVzIGEgbWVtb3J5IGZpbGUgYmFja2VuZCBv
-YmplY3QsIHdoaWNoIGNhbiBiZSB1c2VkIHRvIGJhY2sKPiAgICAgICAgIHRoZSBndWVzdCBSQU0g
-d2l0aCBodWdlIHBhZ2VzLgo+IAo+QEAgLTUwNjYsNiArNTA2NiwxNCBAQCBTUlNUCj4gICAgICAg
-ICBUaGUgYGByZWFkb25seWBgIG9wdGlvbiBzcGVjaWZpZXMgd2hldGhlciB0aGUgYmFja2luZyBm
-aWxlIGlzIG9wZW5lZAo+ICAgICAgICAgcmVhZC1vbmx5IG9yIHJlYWQtd3JpdGUgKGRlZmF1bHQp
-Lgo+IAo+KyAgICAgICAgVGhlIGBgcm9tYGAgb3B0aW9uIHNwZWNpZmllcyB3aGV0aGVyIHRvIGNy
-ZWF0ZSBSZWFkIE9ubHkgTWVtb3J5IChST00pCj4rICAgICAgICB0aGF0IGNhbm5vdCBiZSBtb2Rp
-ZmllZCBieSB0aGUgVk0uIElmIHNldCB0byBgYG9uYGAsIHRoZSBWTSBjYW5ub3QKPisgICAgICAg
-IG1vZGlmeSB0aGUgbWVtb3J5LiBJZiBzZXQgdG8gYGBvZmZgYCwgdGhlIFZNIGNhbiBtb2RpZnkg
-dGhlIG1lbW9yeS4KPisgICAgICAgIElmIHNldCB0byBgYGF1dG9gYCAoZGVmYXVsdCksIHRoZSB2
-YWx1ZSBvZiB0aGUgYGByZWFkb25seWBgIHByb3BlcnR5Cj4rICAgICAgICBpcyB1c2VkLiBUaGlz
-IG9wdGlvbiBpcyBwcmltYXJpbHkgaGVscGZ1bCBmb3IgVk0gdGVtcGxhdGluZywgd2hlcmUgd2UK
-PisgICAgICAgIHdhbnQgdG8gb3BlbiBhIGZpbGUgcmVhZG9ubHkgKGBgcmVhZG9ubHk9b25gYCkg
-YW5kIGFsbG93IHByaXZhdGUKPisgICAgICAgIG1vZGlmaWNhdGlvbnMgb2YgdGhlIG1lbW9yeSBi
-eSB0aGUgVk0gKGBgc2hhcmU9b2ZmYGAsIGBgcm9tPW9mZmBgKS4KPisKPiAgICAgYGAtb2JqZWN0
-IG1lbW9yeS1iYWNrZW5kLXJhbSxpZD1pZCxtZXJnZT1vbnxvZmYsZHVtcD1vbnxvZmYsc2hhcmU9
-b258b2ZmLHByZWFsbG9jPW9ufG9mZixzaXplPXNpemUsaG9zdC1ub2Rlcz1ob3N0LW5vZGVzLHBv
-bGljeT1kZWZhdWx0fHByZWZlcnJlZHxiaW5kfGludGVybGVhdmVgYAo+ICAgICAgICAgQ3JlYXRl
-cyBhIG1lbW9yeSBiYWNrZW5kIG9iamVjdCwgd2hpY2ggY2FuIGJlIHVzZWQgdG8gYmFjayB0aGUK
-PiAgICAgICAgIGd1ZXN0IFJBTS4gTWVtb3J5IGJhY2tlbmQgb2JqZWN0cyBvZmZlciBtb3JlIGNv
-bnRyb2wgdGhhbiB0aGUKCkluIG9uZSB3b3JkLCBJJ2Qgc3VnZ2VzdCBhZHZlcnRpc2luZyB0aGUg
-ZXhpc3RlbmNlIG9mICJyb20iIG9wdGlvbiBtb3JlIGludmFzaXZlbHksIHdoZW5ldmVyCnByaXZh
-dGUgZmlsZSBtYXBwaW5nIGlzIHVzZWQuCgpJTUhPIHlvdSBzaG91bGQgcHJvYmFibHkgYmUgbW9y
-ZSBpbnZhc2l2ZSBoZXJlIHRvIHdhcm4gdW5jb25kaXRpb25hbGx5IHdoZW4KdGhlIG1lbW9yeSBi
-YWNrZW5kIGZpbGUgaXMgZ29pbmcgdG8gYmUgb3BlbmVkIHJlYWR3cml0ZSBidXQgaXMgbWFwcGVk
-IG5vbiBzaGFyZWQuCgpJIGFzIGEgdXNlciBmaW5kIHRoZSBwYXRjaCBzZXJpZXMgaW5kZWVkIHdv
-cmsgZnVuY3Rpb25hbGx5IHdoZW4gSSBhbSBhd2FyZSBvZiB0aGUgInJvbSIKb3B0aW9uIC0gYnV0
-IHdoYXQgaWYgSSBhbSBub3QgYXdhcmUsIHRoZSBvdXRjb21lIGlzIHN0aWxsIHRoYXQgcWVtdSB0
-cmllZAp0byBvcGVuIHRoZSBmaWxlIHJlYWR3cml0ZSBldmVuIHdoZW4gaXQgaXMgZ29pbmcgdG8g
-YmUgbWFwcGVkIHByaXZhdGUuCgpXaGVuIHRoZSBmaWxlIGlzIHJlYWRvbmx5LCB0aGUgZXJyb3Ig
-bWVzc2FnZSBpczoKYGBgCnFlbXUtc3lzdGVtLXg4Nl82NDogY2FuJ3Qgb3BlbiBiYWNraW5nIHN0
-b3JlIHBjLnJhbSBmb3IgZ3Vlc3QgUkFNOiBQZXJtaXNzaW9uIGRlbmllZApgYGAKClRoaXMgc2hv
-dWxkIGJlIHByb2JhYmx5IGhlbHBmdWwgaWYgcWVtdSBmb3VuZCB0aGF0IHRoZSBmaWxlIGV4aXN0
-cyBhcyBhIHJlZ3VsYXIgZmlsZSBhbmQKaXMgbWFwcGVkIHByaXZhdGUsIHRvIHNheSBzb21ldGhp
-bmcgbGlrZQoKYGBgCnFlbXUtc3lzdGVtLXg4Nl82NDogY2FuJ3Qgb3BlbiBiYWNraW5nIHN0b3Jl
-IHBjLnJhbSBmb3IgZ3Vlc3QgUkFNOiBQZXJtaXNzaW9uIGRlbmllZAp0aXA6IG1hcHBpbmcgaXMg
-cHJpdmF0ZSBhbmQgcmFtIGZpbGUgaXMgcHJvYmFibHkgcmVhZG9ubHksIG1heWJlIHlvdSBzaG91
-bGQgYXBwZW5kICJyZWFkb25seT1vbixyb209b2ZmIgp0byAiLW9iamVjdCBtZW1vcnktYmFja2Vu
-ZC1maWxlLC4uLiIgb3B0aW9uIGxpc3QuIHNlZSBkb2N1bWVudGF0aW9uIHh4eCBmb3IgZGV0YWls
-cwpgYGAKCnRvIGFkdmVydGlzZSB0aGUgInJvbSIgb3B0aW9uLgoKLS0KClJlZ2FyZHMsCgpsb2dv
-ZXJ0aGluZXIK
+On 22.08.23 15:40, Stefan Hajnoczi wrote:
+> On Mon, Aug 21, 2023 at 03:18:50PM -0700, Daniel Verkamp wrote:
+>> Hello virtio folks,
+> 
+> Hi Daniel,
+> I have CCed those involved in the free page hint and page reporting
+> features.
+> 
+> Stefan
+> 
+>>
+>> I noticed a mismatch between the way the specification defines
+>> device-specific virtqueue indexes and the way device and driver
+>> implementers have interpreted the specification. As a practical example,
+>> consider the traditional memory balloon device [1]. The first two queues
+>> (indexes 0 and 1) are available as part of the baseline device, but the
+>> rest of the queues are tied to feature bits.
+>>
+>> Section 5.5.2, "Virtqueues", gives a list that appears to be a mapping from
+>> queue index to queue name/function, defining queue index 3 as free_page_vq
+>> and index 4 as reporting_vq, and declaring that "free_page_vq only exists
+>> if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set" and "reporting_vq only exists if
+>> VIRTIO_BALLOON_F_PAGE_REPORTING is set." This wording is a bit vague, but I
+>> assume "is set" means "is negotiated" (not just "advertised by the
+>> device").
+
+Staring at QEMU: the queues are added when the virtio-balloon device is
+*created*. Queues are added based on feature configuration, if they are
+part of the device feature set.
+
+That should translate to "is advertised", not "is negotiated".
+
+The queue ordering is as follows:
+
+* inflate queue, baseline device
+* deflate queue, baseline device
+* driver memory statistics, VIRTIO_BALLOON_F_STATS_VQ
+* free page hinting, VIRTIO_BALLOON_F_FREE_PAGE_HINT
+* free page reporting, VIRTIO_BALLOON_F_REPORTING
+
+QEMU always supports the first 3, so they use number 0-2. The other two
+can be configured for the device.
+
+So the queue indices vary based on actual feature presence.
+
+>> Also presumably "exists" means something like "may only be used
+>> by the driver if the feature bit is negotiated" and "should be ignored by
+>> the device if the feature bit is not negotiated", although it would be nice
+>> to have a proper definition in the spec somewhere.
+>>
+>> Section 5.5.3, "Feature bits", gives definitions of the feature bits, with
+>> similar descriptions of the relationship between the feature bits and
+>> virtqueue availability, although the wording is slightly different
+>> ("present" rather than "exists"). No dependency between feature bits is
+>> defined, so it seems like it should be valid for a device or driver to
+>> support or accept one of the higher-numbered features while not supporting
+>> a lower-numbered one.
+
+Yes, that's my understanding.
+
+>>
+>>
+>> Notably, there is no mention of queue index assignments changing based on
+>> negotiated features in either of these sections. Hence a reader can only
+>> assume that the queue index assignments are fixed (i.e. stats_vq will
+>> always be vq index 4 if F_STATS_VQ is negotiated, regardless of any other
+>> feature bits).
+
+And that does not seem to be the case. At least QEMU assigns them sequentially,
+based on actually configured features for the device.
+
+If I read the kernel code correctly (drivers/virtio/virtio_balloon.c:init_vqs)
+it also behaves that way: if the device has a certain feature
+"virtio_has_feature", it gets the next index. Otherwise, the next index goes
+to another feature:
+
+	/*
+	 * Inflateq and deflateq are used unconditionally. The names[]
+	 * will be NULL if the related feature is not enabled, which will
+	 * cause no allocation for the corresponding virtqueue in find_vqs.
+	 */
+	callbacks[VIRTIO_BALLOON_VQ_INFLATE] = balloon_ack;
+	names[VIRTIO_BALLOON_VQ_INFLATE] = "inflate";
+	callbacks[VIRTIO_BALLOON_VQ_DEFLATE] = balloon_ack;
+	names[VIRTIO_BALLOON_VQ_DEFLATE] = "deflate";
+	callbacks[VIRTIO_BALLOON_VQ_STATS] = NULL;
+	names[VIRTIO_BALLOON_VQ_STATS] = NULL;
+	callbacks[VIRTIO_BALLOON_VQ_FREE_PAGE] = NULL;
+	names[VIRTIO_BALLOON_VQ_FREE_PAGE] = NULL;
+	names[VIRTIO_BALLOON_VQ_REPORTING] = NULL;
+
+
+	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_STATS_VQ)) {
+		names[VIRTIO_BALLOON_VQ_STATS] = "stats";
+		callbacks[VIRTIO_BALLOON_VQ_STATS] = stats_request;
+	}
+
+	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT)) {
+		names[VIRTIO_BALLOON_VQ_FREE_PAGE] = "free_page_vq";
+		callbacks[VIRTIO_BALLOON_VQ_FREE_PAGE] = NULL;
+	}
+
+	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
+		names[VIRTIO_BALLOON_VQ_REPORTING] = "reporting_vq";
+		callbacks[VIRTIO_BALLOON_VQ_REPORTING] = balloon_ack;
+	}
+
+	err = virtio_find_vqs(vb->vdev, VIRTIO_BALLOON_VQ_MAX, vqs,
+			      callbacks, names, NULL);
+	if (err)
+		return err;
+
+>>
+>> Now consider a scenario where VIRTIO_BALLOON_F_STATS_VQ and
+>> VIRTIO_BALLOON_F_PAGE_REPORTING are negotiated but
+>> VIRTIO_BALLOON_F_FREE_PAGE_HINT is not (perhaps the device supports all of
+>> the defined features but the driver only wants to use reporting_vq, not
+>> free_page_vq). In this case, what queue index should be used by the driver
+>> when enabling reporting_vq? My reading of the specification is that the
+>> reporting_vq is always queue index 4, independent of whether
+>> VIRTIO_BALLOON_F_STATS_VQ or VIRTIO_BALLOON_F_FREE_PAGE_HINT are
+>> negotiated, but this contradicts existing device and driver
+>> implementations, which will use queue index 3 (the next one after stats_vq
+>> = 2) as reporting_vq in this case.
+
+Then the specification really needs updating :)
+
+>>
+>> The qemu virtio-ballon device [2] assigns the next-highest unused queue
+>> index when calling virtio_add_queue(), and in the scenario presented above,
+>> free_page_vq will not be added since F_STATS_VQ is not negotiated, so
+>> reporting_vq will be assigned queue index 3, rather than 4. (Additionally,
+>> qemu always adds the stats_vq regardless of negotiated features, but that's
+>> irrelevant in this case since we are assuming the STATS_VQ feature is
+>> negotiated.)
+>>
+>> The Linux virtio driver code originally seemed to use the correct (by my
+>> reading) indexes, but it was changed to match the layout used by qemu in a
+>> 2019 commit ("virtio_pci: use queue idx instead of array idx to set up the
+>> vq") [3] - in other words, it will now also expect queue index 3 to be
+>> reporting_vq in the scenario laid out above.
+
+Note that at the time of this commit, there was no support for "free page reporting".
+
+         callbacks[VIRTIO_BALLOON_VQ_INFLATE] = balloon_ack;
+         names[VIRTIO_BALLOON_VQ_INFLATE] = "inflate";
+         callbacks[VIRTIO_BALLOON_VQ_DEFLATE] = balloon_ack;
+         names[VIRTIO_BALLOON_VQ_DEFLATE] = "deflate";
+         names[VIRTIO_BALLOON_VQ_STATS] = NULL;
+         names[VIRTIO_BALLOON_VQ_FREE_PAGE] = NULL;
+
+         if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_STATS_VQ)) {
+                 names[VIRTIO_BALLOON_VQ_STATS] = "stats";
+                 callbacks[VIRTIO_BALLOON_VQ_STATS] = stats_request;
+         }
+
+         if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT)) {
+                 names[VIRTIO_BALLOON_VQ_FREE_PAGE] = "free_page_vq";
+                 callbacks[VIRTIO_BALLOON_VQ_FREE_PAGE] = NULL;
+         }
+
+And as QEMU always sets VIRTIO_BALLOON_F_STATS_VQ, that one always gets id=2.
+
+Consequently, VIRTIO_BALLOON_F_FREE_PAGE_HINT, if around, gets id=3.
+
+As we didn't support VIRTIO_BALLOON_F_REPORTING, it doesn't matter which id it gets.
+
+But as you note, once we have different implementations and more feature variability,
+it's a mess.
+
+A device that implements VIRTIO_BALLOON_F_FREE_PAGE_HINT but not VIRTIO_BALLOON_F_STATS_VQ
+might not work correctly with either old or new QEMU.
+
+Maybe it needs to be documented that any device that implements either
+VIRTIO_BALLOON_F_FREE_PAGE_HINT or VIRTIO_BALLOON_F_REPORTING *must* also implement
+VIRTIO_BALLOON_F_STATS_VQ, so old+new Linux drivers would continue working.
+
+>>
+>> I'm not sure how to resolve the mismatch between the specification and
+>> actual implementation behavior. The simplest change would probably be to
+>> rewrite the specification to drop the explicit queue indexes in section
+>> 5.5.2 and add some wording about how queues are numbered based on
+>> negotiated feature bits (this would need to be applied to other device
+
+Yes.
+
+>> types that have specified queue indexes as well). However, this would also
+>> technically be an incompatible change of the specification. On the other
+>> hand, changing the device and driver implementations to match the
+>> specification would be even more challenging, since it would be an
+>> incompatible change in actual practice, not just a change of the spec to
+>> match consensus implementation behavior.
+
+Changing drivers/devices is pretty much impossible.
+
+So we should document the queue assignment better, and maybe the implication
+of requiring VIRTIO_BALLOON_F_STATS_VQ when any new features are implemented.
+
+Does that make sense?
+
+>>
+>>
+>> Perhaps drivers could add a quirk to detect old versions of the qemu device
+>> and use the old behavior, while enabling the correct behavior only for
+>> other device vendors and newer qemu device revisions, and the qemu device
+>> could add an opt-in feature to enable the correct behavior that users would
+>> need to enable only when they know they have a sufficiently new driver with
+>> the fix.
+>>
+>>
+>> Or maybe there could be a new feature bit that would opt into following the
+>> spec-defined queue indexes (VIRTIO_F_VERSION_2?) and some new wording to
+>> require devices to use the old behavior when that bit is not negotiated,
+>> but that also feels less than ideal to me.
+>>
+>> Any thoughts on how to proceed with this situation? Is my reading of the
+>> specification just wrong?
+
+I think you raised an important point. We should try documenting reality in
+the specification.
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
