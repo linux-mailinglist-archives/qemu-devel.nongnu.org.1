@@ -2,74 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239C6783B45
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 497EA783B6F
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 10:10:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYMG3-0000kr-9a; Tue, 22 Aug 2023 03:56:59 -0400
+	id 1qYMRy-0003zN-L2; Tue, 22 Aug 2023 04:09:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qYMFx-0000ke-0k
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:56:53 -0400
-Received: from mgamail.intel.com ([134.134.136.126])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qYMRv-0003zA-GV
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 04:09:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qYMFt-0005ui-AM
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:56:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692691009; x=1724227009;
- h=message-id:date:mime-version:from:subject:to:cc:
- references:in-reply-to;
- bh=7MPteGdMS7MANubr57+ll2bTF97bmDmWP7x6m1CSr8c=;
- b=Vey3//IwjYv3qXMd4ZZTnWgc5eo73+qjqcwwFtI4G36KI3Y/ZnfLT/Ra
- I7wNXgj5SRjI6+u5NzCp1zh5U70nOv0ELEU+z+Qn6dpeEbAWEDXr65Gjq
- dIj2KJXfvg17nCBu+oxk/S0g9xbC/7UH2ftcurYauv8Akl1+3qWrTpqC3
- z6eFYVRRyQ+oxkRQe3o07I+zWvyLJ1j+Ubx+zNWayiAobFU0rnH0j8GQl
- i+UWuZjo4qDY1+7ZxFaXvt+3d1yrxu+i6JscqKMHrLOWNcQ6RadRZ6O9m
- E/a2UjnwZpKYdEOAtsthHM7E9BrkndwF6J6z+9Ju/qe+xFXOcEVVkPjvH g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="358803113"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
- d="scan'208,217";a="358803113"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2023 00:56:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="826233818"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
- d="scan'208,217";a="826233818"
-Received: from qianwen-mobl1.ccr.corp.intel.com (HELO [10.93.26.225])
- ([10.93.26.225])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2023 00:56:23 -0700
-Content-Type: multipart/alternative;
- boundary="------------37QJYBUDynT1iPOP7FDsgu1d"
-Message-ID: <f04add44-03c3-654b-8761-fd9f470eb053@intel.com>
-Date: Tue, 22 Aug 2023 15:56:21 +0800
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qYMRr-0000ba-0q
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 04:09:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692691749;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oVOPZl3atlhm3hlLR4TThBygV2FXoc7Et/Em48+Vkgg=;
+ b=WvQD6a+xjLqPlAczAbge3hQAupFZI/84tzSWKIMQj8b61RFPPQiQEJI3nc9twv4/vXEh2g
+ ob8zbFhyLX84uB9zS8zOcGWn1ivqFbiffEXYXNdXqt5g/yZDLTfW2dXjS05BBX7A6CrV6l
+ n+hXTsIrK3jI+Qy0iSN3MNGLsYkwoiM=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-489-Sjy-mpaHOEqqIn1VZ5w7Kg-1; Tue, 22 Aug 2023 04:09:08 -0400
+X-MC-Unique: Sjy-mpaHOEqqIn1VZ5w7Kg-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-d745094c496so4783097276.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 01:09:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692691747; x=1693296547;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oVOPZl3atlhm3hlLR4TThBygV2FXoc7Et/Em48+Vkgg=;
+ b=ki5+imHUxuNVRTewM5muwMlTA5Ma945RWBrw8jMh0o4maRYgYt92Xbci7TJXH6giYM
+ KikgcsmqRT6V2+ZQDirlV9t+Cb5QXbCI9xDe+DNbXNCN6jpc13VP2eDj1b0enhNBRd1a
+ qSHjFG1qpgXt/cenOVtC7CWlY1yndvXEoh1f0VXNn1AUPgq4w+Ip50k2f33IN2NXH3hZ
+ KoKBgJ/rDoxrLzdanU0fck90IJ4Cn9BPJ4iF+0wPetUrNVA/JiL9f7oalyBh6bgC4IzY
+ VIV+pjy4fGdRWsw1cdSgtkf5RrTHkAr08KvwjKSjoSamnXwjHG1t0pibqHSYMSfXdvl4
+ 2/Uw==
+X-Gm-Message-State: AOJu0YzSPipwTgVvUWx1eR5ZbAWypSYWeu6jgqf8Lb4gSk8KxsxNOn6g
+ SxWAc7cQL+KEY/P5Bl60234AwI+lIAf2eYQUULyVjBQu9c8Y1p5Tv4v724ouw++f3QeTFxPfwSN
+ 3+Pw2w0PisPHxY2ZVAsXf+jpVNMOiSq0=
+X-Received: by 2002:a25:804e:0:b0:d6d:6003:37f5 with SMTP id
+ a14-20020a25804e000000b00d6d600337f5mr8649054ybn.57.1692691747464; 
+ Tue, 22 Aug 2023 01:09:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+57bnn8rhFknth0eN32xBXFdg3zaMFcD32ysVLtLgtdLu4D/UiGFi5pleWuKqbm5cZo60160ZSu8JPGFegMg=
+X-Received: by 2002:a25:804e:0:b0:d6d:6003:37f5 with SMTP id
+ a14-20020a25804e000000b00d6d600337f5mr8649028ybn.57.1692691747137; Tue, 22
+ Aug 2023 01:09:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-From: "Wen, Qian" <qian.wen@intel.com>
-Subject: Re: [PATCH v3 0/2] Fix overflow of the max number of IDs for logic
- processor and core
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
-Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com, zhao1.liu@intel.com,
- pbonzini@redhat.com, richard.henderson@linaro.org, babu.moger@amd.com
-References: <20230816080658.3562730-1-qian.wen@intel.com>
- <20230817193319.GA3637892@ls.amr.corp.intel.com>
-Content-Language: en-US
-In-Reply-To: <20230817193319.GA3637892@ls.amr.corp.intel.com>
-Received-SPF: pass client-ip=134.134.136.126; envelope-from=qian.wen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230810153611.3410882-1-eperezma@redhat.com>
+ <20230810153611.3410882-5-eperezma@redhat.com>
+ <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
+In-Reply-To: <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 22 Aug 2023 10:08:31 +0200
+Message-ID: <CAJaqyWcoB0kbeepk+HX=b75VjhYg8pv60kHPvMx0XijVgMrmgA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] vdpa: move vhost_vdpa_set_vrings_ready to the
+ caller
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com, 
+ Parav Pandit <parav@mellanox.com>, Gautam Dawar <gdawar@xilinx.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Cindy Lu <lulu@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Hawkins Jiawei <yin31149@gmail.com>, Shannon Nelson <snelson@pensando.io>,
+ Lei Yang <leiyang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, NICE_REPLY_A=-3.374, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,167 +103,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------37QJYBUDynT1iPOP7FDsgu1d
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-On 8/18/2023 3:33 AM, Isaku Yamahata wrote:
-> On Wed, Aug 16, 2023 at 04:06:56PM +0800,
-> Qian Wen <qian.wen@intel.com> wrote:
+On Mon, Aug 14, 2023 at 8:57=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
 >
->> CPUID.1.EBX[23:16]: Maximum number of addressable IDs for logical
->> processors in this physical package.
->> CPUID.4:EAX[31:26]: Maximum number of addressable IDs for processor cores
->> in the physical package.
->>
->> The current qemu code doesn't limit the value written to these two fields.
->> If the guest has a huge number of cores, APs (application processor) will
->> fail to bring up and the wrong info will be reported.
->> According to HW behavior, setting max value written to CPUID.1.EBX[23:16]
->> to 255, and CPUID.4:EAX[31:26] to 63.
->>
->> ---
->> Changes v2 -> v3:
->>   - Add patch 2.
->>   - Revise the commit message and comment to be clearer.
->>   - Using MIN() for limitation.
->> Changes v1 -> v2:
->>   - Revise the commit message and comment to more clearer.
->>   - Rebased to v8.1.0-rc2.
->>
->> Qian Wen (2):
->>   target/i386: Avoid cpu number overflow in legacy topology
->>   target/i386: Avoid overflow of the cache parameter enumerated by leaf 4
->>
->>  target/i386/cpu.c | 8 +++++---
->>  1 file changed, 5 insertions(+), 3 deletions(-)
->>
->> base-commit: 0d52116fd82cdd1f4a88837336af5b6290c364a4
->> -- 
->> 2.25.1
->>
-> The patch itself looks good. Can we add test cases?
-> We have some in qemu/tests/unit/test-x86-cpuid.c.
+> On Thu, Aug 10, 2023 at 11:36=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@red=
+hat.com> wrote:
+> >
+> > Doing that way allows CVQ to be enabled before the dataplane vqs,
+> > restoring the state as MQ or MAC addresses properly in the case of a
+> > migration.
+> >
+>
+> A typo in the subject, should be vhost_vdpa_set_vring_ready.
+>
+> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> > ---
+> >  hw/virtio/vdpa-dev.c   |  3 +++
+> >  hw/virtio/vhost-vdpa.c |  3 ---
+> >  net/vhost-vdpa.c       | 57 +++++++++++++++++++++++++++++-------------
+> >  3 files changed, 42 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+> > index 363b625243..f22d5d5bc0 100644
+> > --- a/hw/virtio/vdpa-dev.c
+> > +++ b/hw/virtio/vdpa-dev.c
+> > @@ -255,6 +255,9 @@ static int vhost_vdpa_device_start(VirtIODevice *vd=
+ev, Error **errp)
+> >          error_setg_errno(errp, -ret, "Error starting vhost");
+> >          goto err_guest_notifiers;
+> >      }
+> > +    for (i =3D 0; i < s->dev.nvqs; ++i) {
+> > +        vhost_vdpa_set_vring_ready(&s->vdpa, i);
+> > +    }
+> >      s->started =3D true;
+> >
+> >      /*
+> > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> > index 0d9975b5b5..8ca2e3800c 100644
+> > --- a/hw/virtio/vhost-vdpa.c
+> > +++ b/hw/virtio/vhost-vdpa.c
+> > @@ -1297,9 +1297,6 @@ static int vhost_vdpa_dev_start(struct vhost_dev =
+*dev, bool started)
+> >          if (unlikely(!ok)) {
+> >              return -1;
+> >          }
+> > -        for (int i =3D 0; i < dev->nvqs; ++i) {
+> > -            vhost_vdpa_set_vring_ready(v, dev->vq_index + i);
+> > -        }
+> >      } else {
+> >          vhost_vdpa_suspend(dev);
+> >          vhost_vdpa_svqs_stop(dev);
+> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > index 9251351b4b..3bf60f9431 100644
+> > --- a/net/vhost-vdpa.c
+> > +++ b/net/vhost-vdpa.c
+> > @@ -371,6 +371,22 @@ static int vhost_vdpa_net_data_start(NetClientStat=
+e *nc)
+> >      return 0;
+> >  }
+> >
+> > +static int vhost_vdpa_net_data_load(NetClientState *nc)
+> > +{
+> > +    VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> > +    struct vhost_vdpa *v =3D &s->vhost_vdpa;
+> > +    bool has_cvq =3D v->dev->vq_index_end % 2;
+> > +
+> > +    if (has_cvq) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    for (int i =3D 0; i < v->dev->nvqs; ++i) {
+> > +        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> >  static void vhost_vdpa_net_client_stop(NetClientState *nc)
+> >  {
+> >      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> > @@ -393,6 +409,7 @@ static NetClientInfo net_vhost_vdpa_info =3D {
+> >          .size =3D sizeof(VhostVDPAState),
+> >          .receive =3D vhost_vdpa_receive,
+> >          .start =3D vhost_vdpa_net_data_start,
+> > +        .load =3D vhost_vdpa_net_data_load,
+>
+> This deserve an independent patch?
+>
 
+Ok so I misread your reply.
 
-Hi Isaku, thanks for your comments!
+An independent patch would just add a stub vhost_vdpa_net_data_load,
+since it's its only purpose. I can add that to the patch message in
+the next version.
 
-I take a look, the test-x86-cpuid.c has some tests for topology functions, e.g., apicid_smt/core/die_width, apicid_core/die/pkg_offset, x86_apicid_from_cpu_idx...
+Thanks!
 
-Do you mean adding another test for function cpu_x86_cpuid() like below? If so, it seems that some effort is required to instantiate CPUX86State for input of cpu_x86_cpuid, but the result of this test case is obvious. So, is it necessary to add this test?
+> Thanks
+>
+> >          .stop =3D vhost_vdpa_net_client_stop,
+> >          .cleanup =3D vhost_vdpa_cleanup,
+> >          .has_vnet_hdr =3D vhost_vdpa_has_vnet_hdr,
+> > @@ -974,26 +991,30 @@ static int vhost_vdpa_net_cvq_load(NetClientState=
+ *nc)
+> >
+> >      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
+> >
+> > -    if (!v->shadow_vqs_enabled) {
+> > -        return 0;
+> > -    }
+> > +    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
+> >
+> > -    n =3D VIRTIO_NET(v->dev->vdev);
+> > -    r =3D vhost_vdpa_net_load_mac(s, n);
+> > -    if (unlikely(r < 0)) {
+> > -        return r;
+> > -    }
+> > -    r =3D vhost_vdpa_net_load_mq(s, n);
+> > -    if (unlikely(r)) {
+> > -        return r;
+> > -    }
+> > -    r =3D vhost_vdpa_net_load_offloads(s, n);
+> > -    if (unlikely(r)) {
+> > -        return r;
+> > +    if (v->shadow_vqs_enabled) {
+> > +        n =3D VIRTIO_NET(v->dev->vdev);
+> > +        r =3D vhost_vdpa_net_load_mac(s, n);
+> > +        if (unlikely(r < 0)) {
+> > +            return r;
+> > +        }
+> > +        r =3D vhost_vdpa_net_load_mq(s, n);
+> > +        if (unlikely(r)) {
+> > +            return r;
+> > +        }
+> > +        r =3D vhost_vdpa_net_load_offloads(s, n);
+> > +        if (unlikely(r)) {
+> > +            return r;
+> > +        }
+> > +        r =3D vhost_vdpa_net_load_rx(s, n);
+> > +        if (unlikely(r)) {
+> > +            return r;
+> > +        }
+> >      }
+> > -    r =3D vhost_vdpa_net_load_rx(s, n);
+> > -    if (unlikely(r)) {
+> > -        return r;
+> > +
+> > +    for (int i =3D 0; i < v->dev->vq_index; ++i) {
+> > +        vhost_vdpa_set_vring_ready(v, i);
+> >      }
+> >
+> >      return 0;
+> > --
+> > 2.39.3
+> >
+>
 
-+    uint32_t unused, eax, ebx;
-+    /* CPUID.1.EBX[23:16]: Maximum number of addressable IDs for logical
-+       processors in this physical package.
-+    */
-+    cpu_x86_cpuid(env, 1, 0, &unused, &ebx, &unused, &unused);
-+    g_assert_cmpuint(ebx & 0xFF0000, ==, 0xFF0000);
-+
-+    /* CPUID.4:EAX[31:26]: Maximum number of addressable IDs for processor
-+       cores in the physical package.
-+    */
-+    cpu_x86_cpuid(env, 4, 0, &eax, &unused, &unused, &unused);
-+    g_assert_cmpuint(ebx & 0xFC000000, ==, 0xFC000000);
-
-
-Thanks,
-Qian
-
---------------37QJYBUDynT1iPOP7FDsgu1d
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<html data-lt-installed="true">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body style="padding-bottom: 1px;">
-    <div class="moz-cite-prefix">On 8/18/2023 3:33 AM, Isaku Yamahata
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20230817193319.GA3637892@ls.amr.corp.intel.com">
-      <pre class="moz-quote-pre" wrap="">On Wed, Aug 16, 2023 at 04:06:56PM +0800,
-Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a> wrote:
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">CPUID.1.EBX[23:16]: Maximum number of addressable IDs for logical
-processors in this physical package.
-CPUID.4:EAX[31:26]: Maximum number of addressable IDs for processor cores
-in the physical package.
-
-The current qemu code doesn't limit the value written to these two fields.
-If the guest has a huge number of cores, APs (application processor) will
-fail to bring up and the wrong info will be reported.
-According to HW behavior, setting max value written to CPUID.1.EBX[23:16]
-to 255, and CPUID.4:EAX[31:26] to 63.
-
----
-Changes v2 -&gt; v3:
-  - Add patch 2.
-  - Revise the commit message and comment to be clearer.
-  - Using MIN() for limitation.
-Changes v1 -&gt; v2:
-  - Revise the commit message and comment to more clearer.
-  - Rebased to v8.1.0-rc2.
-
-Qian Wen (2):
-  target/i386: Avoid cpu number overflow in legacy topology
-  target/i386: Avoid overflow of the cache parameter enumerated by leaf 4
-
- target/i386/cpu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-base-commit: 0d52116fd82cdd1f4a88837336af5b6290c364a4
--- 
-2.25.1
-
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">The patch itself looks good. Can we add test cases?
-We have some in qemu/tests/unit/test-x86-cpuid.c.</pre>
-    </blockquote>
-    <p><br>
-    </p>
-    <p>Hi Isaku, thanks for your comments!<br>
-      <br>
-      I take a look, the test-x86-cpuid.c has some tests for topology
-      functions, e.g., apicid_smt/core/die_width,
-      apicid_core/die/pkg_offset, x86_apicid_from_cpu_idx...<br>
-      <br>
-      Do you mean adding another test for function cpu_x86_cpuid() like
-      below? If so, it seems that some effort is required to instantiate
-      CPUX86State for input of cpu_x86_cpuid, but the result of this
-      test case is obvious. So, is it necessary to add this test?<br>
-      <br>
-      +    uint32_t unused, eax, ebx;<br>
-      +    /* CPUID.1.EBX[23:16]: Maximum number of addressable IDs for
-      logical<br>
-      +       processors in this physical package.<br>
-      +    */<br>
-      +    cpu_x86_cpuid(env, 1, 0, &amp;unused, &amp;ebx, &amp;unused,
-      &amp;unused);<br>
-      +    g_assert_cmpuint(ebx &amp; 0xFF0000, ==, 0xFF0000);<br>
-      +<br>
-      +    /* CPUID.4:EAX[31:26]: Maximum number of addressable IDs for
-      processor<br>
-      +       cores in the physical package.<br>
-      +    */<br>
-      +    cpu_x86_cpuid(env, 4, 0, &amp;eax, &amp;unused, &amp;unused,
-      &amp;unused);<br>
-      +    g_assert_cmpuint(ebx &amp; 0xFC000000, ==, 0xFC000000);<br>
-    </p>
-    <p><br>
-      Thanks,<br>
-      Qian<br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:20230817193319.GA3637892@ls.amr.corp.intel.com"> </blockquote>
-    <lt-container></lt-container>
-  </body>
-</html>
-
---------------37QJYBUDynT1iPOP7FDsgu1d--
 
