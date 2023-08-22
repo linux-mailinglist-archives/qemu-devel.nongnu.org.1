@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C996678467B
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C9C784682
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:05:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTqe-0003nH-SX; Tue, 22 Aug 2023 12:03:16 -0400
+	id 1qYTs9-00087r-EL; Tue, 22 Aug 2023 12:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYTqc-0003UK-HK
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:03:14 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qYTs7-00087c-6J
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:04:47 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYTqW-0005qT-4y
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:03:10 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bbc87ded50so30400025ad.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:03:07 -0700 (PDT)
+ id 1qYTs4-00062G-W4
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:04:46 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68a3082c771so1993291b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:04:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692720187; x=1693324987;
+ d=linaro.org; s=google; t=1692720282; x=1693325082;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Nbc7dpVmsRe0mHKdlO5+Hp0AJ2tK6csvA7zud2+Ri0o=;
- b=ugIWYT7Es9oRHBr83U0dGSK7RE7U+1D553gkeyJVf5/zIUKyiVB9AthC+uZfGKj9ZV
- 0Ijy3xXS9TOp7iRpwzBrSN44tn8JelviqJ49d7ig4qMQ2mxcGe3HuN5D68kO6BKCOb+d
- QV2RFreBl8KjwETu8/moZQWv7C+hHLRqjsmXFuHnj+XNBzX4POUGHOjqRWOZcCEk7Gsb
- 1Y4ra0vgnbRp3MJbYVRjMXG1X9QvADMV588CdA07pPBEjJlpMcB5Kk58t17BVdAQKuRM
- ltPWPE/0ytI/MIm3FBKEFhfxfB6WgKzQZy6CSl1nm6sjA7FcH6Z5AL+eFy2ouOZyNxVx
- wRxw==
+ bh=dfDgGRxWetl9W0JrxxSDzG1xu85JY7wFY6ujE5Yphx8=;
+ b=KeExDsFJl9dgc476IRkDauEMyIHWcZLLH07fNvr4/vc2XDr+Sk8A5yWsQe+8Oq9NQD
+ OQAJGGuEdMe0Z7KW1ELEQGut2i6oSX9+UFxO1JOt1322K0yylHfBWouLWKtbR0uVj7QX
+ gy5z243G/4MWV53jVzzBgd2rcwuM1g00nCXIOWI/IJ2tNqSx5ej8L3hvHAgZSzwsI9dy
+ gez+cz0GIB0EBP4zgszPQibYkypLhd5vD+9A8xdQfEAK9PZnkBuHtTQSVk6+MbgLtNkK
+ Wk5fQZHf7sZpB4AsxlrzrTSgx0dr/kuUgWxxchtusCzj5lhBrbAOCmikUvcxxR/J5EzM
+ t/5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692720187; x=1693324987;
+ d=1e100.net; s=20221208; t=1692720282; x=1693325082;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Nbc7dpVmsRe0mHKdlO5+Hp0AJ2tK6csvA7zud2+Ri0o=;
- b=Te3XvyOHHqZ5hWfeF1zS2XhBHMRXZ9lFyzr7AvxbFV0uAQgiuhYHuaOL3QYdzKk4/t
- GoIRtCqENeIhKO5h+SaqoYUHCNFP2NcKB/X9QdPnsRbBx+Ej4MnTM/K/xQKuznLJiRRu
- YDaQhsPjscfW3hffyFnPxlta2lCGFyeSimO/sHEhdR9U1WW/kFr1gFl9ORkmsXTIGtRK
- TcXgTEYwWJyw9d/dbkWrhaWWMLkSbabWTeT0UqFtlKo+OTYyvHFDIulYZ5riqH5b33Wt
- 7mMY/Bnu3aA/uc7bPkbo7R1g+cHCMSyLIZOea2URqHEOB3O00zaPZAxc4kKkN0yz8Vw7
- ODGQ==
-X-Gm-Message-State: AOJu0Yz8zeeh9arAGFma/HsPN4NYspRivG314s/dlL59lW2WUhvsXhM2
- aE1ecFOLjynJ445WSVmRBoQh2B/LBvAlBoA7FK8=
-X-Google-Smtp-Source: AGHT+IEefeVr1GezJeUaxQtrvduO7rWFBvU7hPoDYcKV70uhKT39UXrjZhyVqOgfKqDYJbxSpCk/rA==
-X-Received: by 2002:a17:902:dac1:b0:1a6:74f6:fa92 with SMTP id
- q1-20020a170902dac100b001a674f6fa92mr10224045plx.19.1692720186729; 
- Tue, 22 Aug 2023 09:03:06 -0700 (PDT)
+ bh=dfDgGRxWetl9W0JrxxSDzG1xu85JY7wFY6ujE5Yphx8=;
+ b=Cq92cjS8KKBDwkpAxf5paIX+t6vZNJNU+Idq7s1NGOQc8JbvhiH+/lG3+ZHEPAk1Ff
+ YTnSLpscIds5Fqs911AcjFesVPxmZayXS5OWuP0oNUPOYaouxBKSsEaSEwuCi1hmMWam
+ Exmyz/wSe8cQeeqxfgKmKIUh63ZpuvkLj296DAHdPosgetNk9T/9+5prTEv1FFrkeWjV
+ M0qp8najfS/Sm7gmUDcSgF7zvYC/r48lUR54ih+YGqMGBTNXbxOzWkR+/tn7Q/X+mefL
+ gXURt6k131zGyTXBpvno9Rzm2qlv4vjcZtthKtpBpO+IiTW5SR5Rl6b0gJA4guU92NNk
+ 9NBQ==
+X-Gm-Message-State: AOJu0YwK7VsfitlnZoNcq4Dyr5v5L2qZrMIZG9Ye9ou2kScs05vNsAxF
+ xNaSfpdbVdGgYydUvDzYwTlrtASARR0C3+7ZRxc=
+X-Google-Smtp-Source: AGHT+IEuZlDc97Fb6ntu8MlIiNXAjPyI9uUFZC2KzQYv/DW0+ntgn1wFZkNIH2MVU1wAp0aJVObmPg==
+X-Received: by 2002:a05:6a00:18a2:b0:68a:6734:b018 with SMTP id
+ x34-20020a056a0018a200b0068a6734b018mr4737554pfh.15.1692720282598; 
+ Tue, 22 Aug 2023 09:04:42 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
  ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- x21-20020a170902ea9500b001bc39aa63ebsm9225862plb.121.2023.08.22.09.03.06
+ f7-20020aa78b07000000b00686edf28c22sm7911423pfd.87.2023.08.22.09.04.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 09:03:06 -0700 (PDT)
-Message-ID: <9de8370f-be08-af68-a41c-229c9f61d0ec@linaro.org>
-Date: Tue, 22 Aug 2023 09:03:04 -0700
+ Tue, 22 Aug 2023 09:04:42 -0700 (PDT)
+Message-ID: <df6e8477-0a5b-aa60-b053-ea991bc82e40@linaro.org>
+Date: Tue, 22 Aug 2023 09:04:40 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 5/7] tcg/tcg-op: Document wswap() byte pattern
+Subject: Re: [PATCH 4/7] tcg/tcg-op: Document hswap() byte pattern
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20230822093712.38922-1-philmd@linaro.org>
- <20230822093712.38922-6-philmd@linaro.org>
+ <20230822093712.38922-5-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230822093712.38922-6-philmd@linaro.org>
+In-Reply-To: <20230822093712.38922-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -99,16 +99,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/22/23 02:37, Philippe Mathieu-Daudé wrote:
-> Document wswap_i64(), added in commit 46be8425ff
-> ("tcg: Implement tcg_gen_{h,w}swap_{i32,i64}").
+> Document hswap_i32() and hswap_i64(), added in commit
+> 46be8425ff ("tcg: Implement tcg_gen_{h,w}swap_{i32,i64}").
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   docs/devel/tcg-ops.rst | 4 ++++
->   tcg/tcg-op.c           | 5 +++++
->   2 files changed, 9 insertions(+)
+>   docs/devel/tcg-ops.rst |  4 ++++
+>   tcg/tcg-op.c           | 26 +++++++++++++++++++-------
+>   2 files changed, 23 insertions(+), 7 deletions(-)
+> 
+> diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
+> index 6a166c5665..d9364effd2 100644
+> --- a/docs/devel/tcg-ops.rst
+> +++ b/docs/devel/tcg-ops.rst
+> @@ -486,6 +486,10 @@ Misc
+>            into 32-bit output *t0*.  Depending on the host, this may be a simple shift,
+>            or may require additional canonicalization.
+>   
+> +   * - hswap_i32/i64 *t0*, *t1*
+> +
+> +     - | Swap 16-bit halfwords within a 32/64-bit value.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+hswap is not a tcg opcode, so this is incorrect.
+
+This falls into the part of TCG that Peter has mentioned many times: we have opcode 
+documentation, but no separate translator front end documentation.
+
 
 r~
 
