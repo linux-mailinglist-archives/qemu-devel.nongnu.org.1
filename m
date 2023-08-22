@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18FC78469F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 293F47846A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:14:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTyY-0003Z5-HB; Tue, 22 Aug 2023 12:11:26 -0400
+	id 1qYU0o-0005Oh-Jm; Tue, 22 Aug 2023 12:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYTyX-0003Yo-DO
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:11:25 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYTyU-0007vf-R1
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:11:25 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31c615eb6feso710326f8f.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692720681; x=1693325481;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fYXOxCO8GCfJ+uJeY+lM2xEQWVhSlqX7B6CBlP/rDRw=;
- b=k6njMkkDDgSKtykAiW2sykCWDPGt4ZOWHGn+6pHzR7EZB+3R6gveFge3obp6bhsxEh
- QpnkhOTnoc7saRf0V9pvs2cjniV4Dr8bxuNmK8mJLsK1RrIXRYwqEs+O/VE6BhiE0EPq
- pG5X7AuT/glrKVY09mOSZxqpfdhfTpK5IOhd/HQt3Ut7KcaX150ZlppnQHHRWkSmEb43
- hpqHzSD47oqDzSs8z5SrgiyvhhruY/fwAZTTzuLBnWAuYYuzarGL4bWS9vLEeNjuwpBz
- kyzQeHbiXXKMZnS6DR9TDZc4PfhvlAk0PWMK9ckOmrKGMf41GENt7AEv1uQQxMr/Q/DH
- 1ZKw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYU0m-0005Mz-D4
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:13:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYU0j-0008KJ-Ge
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:13:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692720819;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ODSgnTlXPRjb++f0tFvoo5ruAz/4ONPqSLiE7Oabybc=;
+ b=TFMvxzzmoMniGfEkMdvf1PQGtIb/oT+lbLTgIVZwGH+VtahjHbQGFHzuVZOnKfUrHdxjGZ
+ oCnHTLslSwQhulxwxWnrFpUWSFvRRk7ex7KIzaIAJZYT5PaRElOzJE4W6S/LPdSIJPvGPI
+ +rbBAaWzVbZJH3lzRxWDXG8ygFMyHvQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-360-7QVbU-i8OPO-BDwrwpNiqA-1; Tue, 22 Aug 2023 12:13:37 -0400
+X-MC-Unique: 7QVbU-i8OPO-BDwrwpNiqA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fe57d0e11eso30462685e9.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:13:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692720681; x=1693325481;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20221208; t=1692720816; x=1693325616;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fYXOxCO8GCfJ+uJeY+lM2xEQWVhSlqX7B6CBlP/rDRw=;
- b=OOQZD64H31xt20NcxfSD/rmO0GCVBljv3NRM86e4OsgxtcAROD972PUgR9FGnvtVQt
- zM89EhlgqvAHeVrO0PUvCGd/+T9tqr2qLMyi/j4EgFvL9+g5nVP+HR2EXdPFflSLRiSj
- ktlNkEXz6pVRRM7NuM01N2gLt9lxUdk94uDcD5axqV7n6P3IY2phiBe4D8LTF8rSuS+t
- BdFIx75YEW+DXXM1J7N5/Ai7hOfUSswBTOTqRDNsfFX6vPHKw1vXBam4fyzfUFG6/k57
- tNl5/fb/tSv0zO3g/6vN5W6GAXHb/Wol7vdpUR9P9xJwU974gUBaJuy9Xc+9yBTBC2v1
- dM6Q==
-X-Gm-Message-State: AOJu0Yx+P1jDzJkGKhKeacsvQcZ+LsGCcX/HwXf5pdRqEdwF+smgrypc
- 7v+ZEXa2UMOgotWTS5I/r7dzmybzGX9NzquvlJHcig==
-X-Google-Smtp-Source: AGHT+IGe5ZiEHDsp66p8sD7i0Bd9o+kBffg9WgIXN22aFtC3D3t/6QrFOsOyAmupdqhX+Df3IVgjQQ==
-X-Received: by 2002:a5d:4389:0:b0:306:46c4:d313 with SMTP id
- i9-20020a5d4389000000b0030646c4d313mr6435045wrq.28.1692720681057; 
- Tue, 22 Aug 2023 09:11:21 -0700 (PDT)
-Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
- b4-20020adff904000000b003197c7d08ddsm16289194wrr.71.2023.08.22.09.11.18
+ bh=ODSgnTlXPRjb++f0tFvoo5ruAz/4ONPqSLiE7Oabybc=;
+ b=ho3A/OjhjxlDGfnSCCRAQHY6x1T3apooMs3gmmANicmr08tD8jTPGXp56uxea9GIom
+ Js85Rb+PKyK7SZEuIr48KXxTic362i8Oj7JLVCetP8tp67zunlfX/c7MDwOgxwsfZavG
+ 3Xadv6s7nnPSP0Fj2HXno8b/43Q9xQjROX9O8CqDc090I/PLWWlJEp6jobhrBW5p8FVy
+ x+nKE432G94L2YTTJ1S0ulGn3nCE5L7zT9P5Cwyn4ARS648jA62mUG0SNZOKTEWxqJfa
+ XfLVvVxdjvESQw6hFxS08x763QsmKEUvdsNUKQhOIprUoAX/3UQx5B2E6UZD6+wRh3LD
+ a05A==
+X-Gm-Message-State: AOJu0Yy6J5bfRCB62HsLTzjUF9dwD2b7pT0NqicMcakNMtrSWAkUFMLU
+ ioQSoI2U62HGUT6Q/Xq5d5vhI+3NM4a9HcLVv24ecmNGLMwxV9wh10Gj9PDFrOKr0L2aiZii2jT
+ EH7uhINsMgR9Rso4nOsKTuJQMQg==
+X-Received: by 2002:a1c:4b09:0:b0:3fe:d1b9:7ea8 with SMTP id
+ y9-20020a1c4b09000000b003fed1b97ea8mr8138789wma.28.1692720816393; 
+ Tue, 22 Aug 2023 09:13:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE+Pp1ZDn8GmIr2zFcGNtnUtIF7N4k9KdPOzLpbTEOcsg9F+8SQTPrmR3j9MtGwJyGtAFvqGg==
+X-Received: by 2002:a1c:4b09:0:b0:3fe:d1b9:7ea8 with SMTP id
+ y9-20020a1c4b09000000b003fed1b97ea8mr8138773wma.28.1692720815995; 
+ Tue, 22 Aug 2023 09:13:35 -0700 (PDT)
+Received: from [192.168.8.100] (tmo-099-195.customers.d1-online.com.
+ [80.187.99.195]) by smtp.gmail.com with ESMTPSA id
+ z26-20020a1c4c1a000000b003fed1ba0b8esm15342945wmf.8.2023.08.22.09.13.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 09:11:20 -0700 (PDT)
-Message-ID: <9ad24cdc-adf4-0a38-9362-e46c559fae7d@linaro.org>
-Date: Tue, 22 Aug 2023 18:11:17 +0200
+ Tue, 22 Aug 2023 09:13:35 -0700 (PDT)
+Message-ID: <b311bb8e-d2c0-ced9-b5d3-05558abaa800@redhat.com>
+Date: Tue, 22 Aug 2023 18:13:33 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 11/12] target/loongarch: Use generic hrev64_i32() in
- REVB.2H opcode
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH] docs/style: permit inline loop variables
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>, Greg Kurz
- <groug@kaod.org>, Aurelien Jarno <aurelien@aurel32.net>,
- qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Nicholas Piggin <npiggin@gmail.com>, Xiaojuan Yang
- <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org
-References: <20230822124042.54739-1-philmd@linaro.org>
- <20230822125221.55046-1-philmd@linaro.org>
- <1ea2097b-fb72-29c4-622a-79f96f69c2c1@linaro.org>
-In-Reply-To: <1ea2097b-fb72-29c4-622a-79f96f69c2c1@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>
+References: <20230822155004.1158931-1-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230822155004.1158931-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.767, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,43 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/8/23 15:30, Philippe Mathieu-Daudé wrote:
-> On 22/8/23 14:52, Philippe Mathieu-Daudé wrote:
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/loongarch/insn_trans/trans_bit.c.inc | 15 +--------------
->>   1 file changed, 1 insertion(+), 14 deletions(-)
->>
->> diff --git a/target/loongarch/insn_trans/trans_bit.c.inc 
->> b/target/loongarch/insn_trans/trans_bit.c.inc
->> index c04806dc21..9d564a0999 100644
->> --- a/target/loongarch/insn_trans/trans_bit.c.inc
->> +++ b/target/loongarch/insn_trans/trans_bit.c.inc
->> @@ -111,19 +111,6 @@ static void gen_revb_2w(TCGv dest, TCGv src1)
->>       tcg_gen_rotri_i64(dest, dest, 32);
->>   }
->> -static void gen_revb_2h(TCGv dest, TCGv src1)
->> -{
->> -    TCGv mask = tcg_constant_tl(0x00FF00FF);
->> -    TCGv t0 = tcg_temp_new();
->> -    TCGv t1 = tcg_temp_new();
->> -
->> -    tcg_gen_shri_tl(t0, src1, 8);
->> -    tcg_gen_and_tl(t0, t0, mask);
->> -    tcg_gen_and_tl(t1, src1, mask);
->> -    tcg_gen_shli_tl(t1, t1, 8);
+On 22/08/2023 17.50, Alex Bennée wrote:
+> I've already wasted enough of my time debugging aliased variables in
+> deeply nested loops. While not scattering variable declarations around
+> is a good aim I think we can make an exception for stuff used inside a
+> loop.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   docs/devel/style.rst | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+> index 3cfcdeb9cd..2f68b50079 100644
+> --- a/docs/devel/style.rst
+> +++ b/docs/devel/style.rst
+> @@ -204,7 +204,14 @@ Declarations
+>   
+>   Mixed declarations (interleaving statements and declarations within
+>   blocks) are generally not allowed; declarations should be at the beginning
+> -of blocks.
+> +of blocks. To avoid accidental re-use it is permissible to declare
+> +loop variables inside for loops:
+> +
+> +.. code-block:: c
+> +
+> +    for (int i = 0; i < ARRAY_SIZE(thing); i++) {
+> +        /* do something loopy */
+> +    }
 
-Looking at 
-https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#_revb_2h4h2wd
-the sign extension is missing, so the next line:
-
->> -    tcg_gen_or_tl(dest, t0, t1);
-
-should be replaced by smth like:
-
-         tcg_gen_or_tl(t0, t0, t1);
-         tcg_gen_ext32s_tl(dest, t0);
-
->> -}
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
