@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF56678483A
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 19:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEA878483D
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 19:11:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYUt1-0005HY-B3; Tue, 22 Aug 2023 13:09:47 -0400
+	id 1qYUuD-000669-Do; Tue, 22 Aug 2023 13:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYUsq-0005FU-Tn
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:09:39 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qYUtv-00063R-EY
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:10:46 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYUso-0003yi-DW
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:09:36 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-68a3e943762so2450331b3a.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 10:09:33 -0700 (PDT)
+ id 1qYUtt-0004I4-9h
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:10:43 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-56b0c5a140dso1944907a12.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 10:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692724172; x=1693328972;
+ d=linaro.org; s=google; t=1692724240; x=1693329040;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lVQ1pMXFPuIB8HiaNBzhQ9EaswKbgf5p8mTnIZnNsmc=;
- b=GzTu1xc2dNbsbYBc95SH1tMhxjIKSeD7dIYObxm/dQ0U+I6Sgs7Upx+aQIgj7VNBOx
- kmXRWqaG+jBrGPmPpfhnOgVgLWYWLH+arEDfMo8UtQry/fSwVlqcYIJoIIU0UwPR3arj
- +7PFsPiDS5NG7USBbVb9o3WiJHd2+sbW3VUtYX2+bRKQpl9Zc9aRz1oYB48wnJ52lBJG
- DjmLNCgvRTm/GjlXYdqFjdgAj6R0l6xtZQqnaPEf3ygRcdP8C8y/PJh3pjniA4Bv+EHd
- gdAUCizsvMOia1tTKgJHWEy45tAWkSSe3i3ETyhj3xpSE1GBdB1frIC52IPIokXcf9hU
- L1JQ==
+ bh=Za8c4+5RrtvZHY7iLQRfGk7Xp7HIKUtWW4qpYHy4zas=;
+ b=CLZVv1xFme5rivBjo5lLdrz8HQh1lcnALL+yAlJzb/Gv2onbsjw7O4MUqKO5g3WLx2
+ wISs0Hyvf/01HCyJa10db5qLuMmcXd4VXMNCexh4IP8XHEka5TcoNoBjaG5eS9KiRxPB
+ ymc4Sh+QP9KklJfQeLfnCh8vxp4+CIfW4TCt401FOOwhOdL9JQN9z4lFkq7neB9xyHjU
+ wIO73W08PoIw7siGnxrR8mOcYh2hHvOlf4pXgGdrJ8hUCY/1WeAHe0ISdm9TbDbk4DHq
+ tYZkOe9QVpivyMZLLNf0KxRzSBOlKBqrMYhrIqAB1XetLGt5ml3DM9eDee/mkVUT6IwT
+ m+oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692724172; x=1693328972;
+ d=1e100.net; s=20221208; t=1692724240; x=1693329040;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lVQ1pMXFPuIB8HiaNBzhQ9EaswKbgf5p8mTnIZnNsmc=;
- b=AQo+tcJh1hcyeL+81qbJ3Bfpucao8bhLf+zuSK6Bss4da1iVr637pwpbJSuRUT8dlP
- DTqoizY5GaPOa+gNiJClyuz3eIAfD1N+veyCb1R+TJFKJRDrKv0bT5GlSLLIL3R6S9Ec
- asbSVeqRbP5eTJgE+R5GJ1s3hfqhPw8UrBy6ZT5IltcQXvjG6LGszvrlmjPq+DGyrWx3
- cyN3A+nuDV7QFak5k+Hy+ZIrGFQyA6Pcb1XKm9WZXmEbcCY0BBX/Qhfr0T/Gy6+GX88N
- KSY/KrhSYOnqaexre62oMp1qLihSmPegI08P5hMTJWftxdvZhXW9Z5ZeEpK6KmPIIIka
- R3sw==
-X-Gm-Message-State: AOJu0YyVTjnGb+DvttneUPZDlEqInweIC3Gj22Hblosqkb4mJni5UA52
- KyC2jzcOiReq/HlRmDPQEjWEYA==
-X-Google-Smtp-Source: AGHT+IHknYPXl9qI1L8n78aHGbo2zVbvqbAdXXZNoJrDJs6RHyEQ2opYZdjLYzQ1gRMsBOKhSiZljQ==
-X-Received: by 2002:a05:6a20:1585:b0:136:e26b:6401 with SMTP id
- h5-20020a056a20158500b00136e26b6401mr13830082pzj.16.1692724172526; 
- Tue, 22 Aug 2023 10:09:32 -0700 (PDT)
+ bh=Za8c4+5RrtvZHY7iLQRfGk7Xp7HIKUtWW4qpYHy4zas=;
+ b=MIF6c4Jaor4rS0ELy7vaB9BJE9S0Fyz7TlrH8VdOew2u58OMP3/z18RL2TS/7zMbOx
+ gMzGtOJiDzCVR+AWVoygbCLIbgc+VqKftTYAlq52qv6zgUnmV8VTmbAs/HA8/edXmqFA
+ XQe0nONf2XgnE9QEorf/gP5TEVPMTc8gE47NKovKm2Wg/Gen8qTY/s4i/wkogHAS+RkH
+ 6oulwGhUh1LG8ztM6dDKxnSE8LmakmwIh75H61IdO9bXyBAWWbuNsJ9lWOU1hwUiX+h1
+ Zh+OFEVdw6jBc0S5kbqlwkt9otriOLTq258yaXLF5StSGQa6iq0A0T7dd7tlqN5Rq7tB
+ jQdg==
+X-Gm-Message-State: AOJu0YyUTd4PftcnjYa+r9AF2Vd8tRFdRdDt9wITEGgC0vehzxX9tkNz
+ G0WbznD5yyCe05qhayI2mW9ZtdsnbgR8PZ5Ld20=
+X-Google-Smtp-Source: AGHT+IESYSa/FJTRIogTIIZENryHnDuHQZCAvmqngTUC8tAe57Pv+PihVZy+d1ezgCI8wN9BLXvbPQ==
+X-Received: by 2002:a17:90b:4a02:b0:26d:17e0:2f3d with SMTP id
+ kk2-20020a17090b4a0200b0026d17e02f3dmr8881624pjb.44.1692724239904; 
+ Tue, 22 Aug 2023 10:10:39 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
  ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- c7-20020aa78c07000000b0064fde7ae1ffsm4652269pfd.38.2023.08.22.10.09.31
+ 28-20020a17090a019c00b00263d3448141sm8789563pjc.8.2023.08.22.10.10.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 10:09:32 -0700 (PDT)
-Message-ID: <50ec5299-6c01-aa68-14d7-86ab9351cbc5@linaro.org>
-Date: Tue, 22 Aug 2023 10:09:30 -0700
+ Tue, 22 Aug 2023 10:10:39 -0700 (PDT)
+Message-ID: <e9e86484-d70b-1075-a412-1040e9ad9d10@linaro.org>
+Date: Tue, 22 Aug 2023 10:10:37 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC PATCH] target/loongarch: Sign-extend REVB.2H result
+Subject: Re: [PATCH] tcg: Prohibit incomplete extr[lh]_i64_i32() implementation
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
-References: <20230822164750.72497-1-philmd@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20230822165101.72695-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230822164750.72497-1-philmd@linaro.org>
+In-Reply-To: <20230822165101.72695-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -96,43 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/23 09:47, Philippe Mathieu-Daudé wrote:
-> Per [*]:
+On 8/22/23 09:51, Philippe Mathieu-Daudé wrote:
+> extrl_i64_i32() and extrh_i64_i32() work in pair. Backends
+> can not implement one without the other. Enforce that
+> assumption.
 > 
->    The REVB.2H instruction performs [...] and write the 32-bit
->    intermediate result sign extended to the general register 'rd'.
-> 
-> Add the missing sign extension.
-> 
-> [*] https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#_revb_2h4h2wd
-> 
-> Fixes: ad08cb3f97 ("target/loongarch: Add fixed point bit instruction translation")
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-> RFC: Totally untested, only noticed during code review.
-> ---
->   target/loongarch/insn_trans/trans_bit.c.inc | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   include/tcg/tcg.h | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
-> diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/insn_trans/trans_bit.c.inc
-> index 25b4d7858b..a98c46d8cb 100644
-> --- a/target/loongarch/insn_trans/trans_bit.c.inc
-> +++ b/target/loongarch/insn_trans/trans_bit.c.inc
-> @@ -121,7 +121,8 @@ static void gen_revb_2h(TCGv dest, TCGv src1)
->       tcg_gen_and_tl(t0, t0, mask);
->       tcg_gen_and_tl(t1, src1, mask);
->       tcg_gen_shli_tl(t1, t1, 8);
-> -    tcg_gen_or_tl(dest, t0, t1);
-> +    tcg_gen_or_tl(t0, t0, t1);
-> +    tcg_gen_ext32s_tl(dest, t0);
->   }
+> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+> index 0875971719..a6f51130aa 100644
+> --- a/include/tcg/tcg.h
+> +++ b/include/tcg/tcg.h
+> @@ -172,6 +172,9 @@ typedef uint64_t TCGRegSet;
+>   #define TCG_TARGET_HAS_v256             0
+>   #endif
+>   
+> +QEMU_BUILD_BUG_MSG(TCG_TARGET_HAS_extrl_i64_i32 != TCG_TARGET_HAS_extrh_i64_i32,
+> +                   "Both extrl_i64_i32()/extrh_i64_i32() must exist");
 
-Nack.  This is handled via EXT_SIGN in
-
-TRANS(revb_2h, gen_rr, EXT_NONE, EXT_SIGN, gen_revb_2h)
-
+Just rename them so they're the same symbol.
 
 
 r~
-
 
