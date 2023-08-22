@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584F6783AB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE48783AC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:20:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLcm-00050n-30; Tue, 22 Aug 2023 03:16:24 -0400
+	id 1qYLgd-0006xj-F0; Tue, 22 Aug 2023 03:20:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLcf-0004r0-3d
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:16:18 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLgW-0006xY-04
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:20:16 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLca-0003S9-Tg
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:16:16 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fe24dd8898so40053815e9.2
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:16:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLgS-0004cY-74
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:20:14 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-31aeee69de0so2341457f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:20:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688571; x=1693293371;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ppgiTDo9CBIUYONGHjb2ceEiPZgD+DqVFKBZUdEts/g=;
- b=DtJnalGNembHfQjyHup10ZQEGE7bFAZviXKxQ6t9xLFSF8lGAja9DxY/AV2XsyinC2
- j5dLIQKBy5futpqa70o/ZhvD3RVhF4mtihi6NmCXOySRkOgFCM5C7S83fzJpX/sXNWc3
- b6IdCX9dYdu/sz9BUtBAe2/QIgNLNI1uJUaTNe8gYWT14t1iq1zZxO87gcvzhYjBHOoY
- k3v61aFGq8fk+6sUX4CQSFmenu52s0hVJiC83s3liyIjAHHL/jgvTR0jDenfemEW/yz7
- WnFOej71Fzh8arMl2KlqfVhnQdDGxf12vxXw7P51dYpTSa36+8A+YBJQv2/PBip6tTT+
- tyTw==
+ d=linaro.org; s=google; t=1692688810; x=1693293610;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MhjR1Tf2TeBu860wg/l8a21u7QsD4djihIlF5A0hbsE=;
+ b=TxFtfTqfzuP86TULQjBP9Fc9LyCmXjZfx39IvEUzYF/HziXdHqK7ZTJAlKSF+W1YF9
+ 6hi+MwW63lcpE4iwjOvfE9eCrEGOREHnAP7z8zboMW0TdwzZc4uto1doQ1Kr1KeDplfV
+ LjZlQCRu3bMrSjLgghLC9hc9Vu4wLRD3wljyjrL/ynVILJbTe7AsERNOHpwpbDmqxbUU
+ XGD9DjFYDdGEwIh2d7nmwmTAQFpREB5ZvCCm5yc0YmSeeh1g4FWtDYd6iKnsC/G2FABL
+ Crdkb2vl8casZLfuWfofEEsEn0FxyizV1DwroDbtgTvZUGdXlC9z+ww9JqUyKPU9g0ox
+ AzlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688571; x=1693293371;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ppgiTDo9CBIUYONGHjb2ceEiPZgD+DqVFKBZUdEts/g=;
- b=gnxUjbSU2jCDcwSckdBP8f/szLXmWd7TqL6rqAa42jEu3oXAyu+ik1TBaslyExlYbo
- kd8LPpu8iXmep6AvkwBY/bHF3JpaqF/m0eU4LuyUp9gAFNwzq8z7sLlw630VlvNZ6Qko
- 5vt/Zrg2uP2Bq45Fydj6KbpPEg5gx4HDMw3CB79TPQBUQS+bbGyfBwAtncqz9jvBd+6f
- +8EwV2s4+jf1s9E9mGJJWS/K1AzWCqAX2TeM7CuhE0F/lCkStrbm75smrgjynIyJVEyn
- MAZUopFB9VsNqHzm0Z6SsW33LNU+RcK1T/FNt6YWIOMwTwNvoF+On5x+9/S2b30iVBBw
- u2VQ==
-X-Gm-Message-State: AOJu0YwnUYKMJtIb3iND509a4mXvLsHRqsF95Z6yNY1moO4YPEKt6u4I
- M1Bwm9cAj5HexasmHxX/xgvotp030n92pO1pe1Io/A==
-X-Google-Smtp-Source: AGHT+IF98KiT7o4L5je0N8qgzGnrnAp7Fdfd4zmN5631iAN0Ia2LhWJUW4awktghpzSbkL0FLibF0g==
-X-Received: by 2002:a1c:7510:0:b0:3fb:c9f4:150e with SMTP id
- o16-20020a1c7510000000b003fbc9f4150emr7128778wmc.14.1692688570713; 
- Tue, 22 Aug 2023 00:16:10 -0700 (PDT)
-Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
- u1-20020a7bcb01000000b003fefcbe7fa8sm56702wmj.28.2023.08.22.00.16.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 00:16:09 -0700 (PDT)
-Message-ID: <153460f1-582c-4e0e-0e73-1b2d89daf540@linaro.org>
-Date: Tue, 22 Aug 2023 09:15:59 +0200
+ d=1e100.net; s=20221208; t=1692688810; x=1693293610;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MhjR1Tf2TeBu860wg/l8a21u7QsD4djihIlF5A0hbsE=;
+ b=MsXcaud7dl8lSLFCSJxm8d7OUZSR2gaOgEsZ4MtHz3duC9eWi+1Jkg450q8raP/lUM
+ VvU0iNVqwUTA9a6W+d0ZFRC+Ezu4AiLrTf8SqB5ZAXkDy0Xvv8/Md/b3glkOZxV6vanp
+ S8GYhYna9GPek6R+tO5c3K1k5MDhiKPV/KpKuBzMj8V0F+0HkK5wzIG/fI0iIvIXshMN
+ fJff700r88bsL3V6YAXvonyQyF2aYcyUh5yZlXCbEZXfpjxBCInR5w2TIJWxokcdyY0t
+ X93hspfiL9/0djQh4gNpAV5DwIO0ja9aUcFPxK/lUERz5sCbog63wsGoaUHm5z214qAu
+ lTUw==
+X-Gm-Message-State: AOJu0YyDdy3q/mXuVB4DDpBJMFKkQ/Dnnr8wy2d5OFLbI6gMpFlR5ger
+ MxiOgsONSdvJhZAAySTtuvP9fxJnV/xJ6xi9wkMLkg==
+X-Google-Smtp-Source: AGHT+IFm/EP6qixCmXFmWKRXAMOFRCsyKPoR8cwPVdOYqM6fnYSlCX+8acyytu5D5IV9hcUpY2HrZw==
+X-Received: by 2002:adf:fed1:0:b0:317:5b5f:2328 with SMTP id
+ q17-20020adffed1000000b003175b5f2328mr6828132wrs.24.1692688810034; 
+ Tue, 22 Aug 2023 00:20:10 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.214.4])
+ by smtp.gmail.com with ESMTPSA id
+ g18-20020a5d5552000000b003142ea7a661sm14807924wrw.21.2023.08.22.00.20.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 22 Aug 2023 00:20:09 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org,
+	Song Gao <gaosong@loongson.cn>
+Cc: Jiajie Chen <c@jia.je>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Huacai Chen <chenhuacai@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH RESEND v5 10/19] target/loongarch: Sign extend results in VA32
+ mode
+Date: Tue, 22 Aug 2023 09:19:50 +0200
+Message-ID: <20230822071959.35620-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230822071405.35386-1-philmd@linaro.org>
+References: <20230822071405.35386-1-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v5 00/19] Based-on:
- https://patchew.org/QEMU/20230821125959.28666-1-philmd@linaro.org/
-Content-Language: en-US
-To: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230822071013.34884-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230822071013.34884-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,8 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/8/23 09:09, Philippe Mathieu-Daudé wrote:
-> (all series reviewed, for Song Gao to pick whichever v4/v5 is preferred)
+From: Jiajie Chen <c@jia.je>
 
-Incorrect subject, and SMTP failure, so disregard (will resend).
+In VA32 mode, BL, JIRL and PC* instructions should sign-extend the low
+32 bit result to 64 bits.
+
+Signed-off-by: Jiajie Chen <c@jia.je>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230822032724.1353391-7-gaosong@loongson.cn>
+---
+ target/loongarch/translate.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+index 9a23ec786d..de7c1c5d1f 100644
+--- a/target/loongarch/translate.c
++++ b/target/loongarch/translate.c
+@@ -238,6 +238,9 @@ static TCGv make_address_i(DisasContext *ctx, TCGv base, target_long ofs)
+ 
+ static uint64_t make_address_pc(DisasContext *ctx, uint64_t addr)
+ {
++    if (ctx->va32) {
++        addr = (int32_t)addr;
++    }
+     return addr;
+ }
+ 
+-- 
+2.41.0
+
 
