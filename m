@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D855783AAE
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 584F6783AB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:16:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLc7-0002Aj-L5; Tue, 22 Aug 2023 03:15:43 -0400
+	id 1qYLcm-00050n-30; Tue, 22 Aug 2023 03:16:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLbf-0001xU-2r
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:15:18 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLcf-0004r0-3d
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:16:18 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLbY-0002z9-Kf
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:15:13 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3198d2745feso3708511f8f.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:15:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLca-0003S9-Tg
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:16:16 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fe24dd8898so40053815e9.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:16:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688507; x=1693293307;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7qFzQwheFK9AxDde5uR4/WWTrinK6kAcK+JYbJLTxP0=;
- b=O9nEF4u4uoo56fvng+xawxfBrUhZUIIZRcPUf1moFrXLegGrb+lDEywVYNd8PbKffL
- lR3CE3G3L52MuWomCbCdKkPj76vuA1tT8+XYv3YtVp85VXXKp6ZPCpdnXFWbeAghkAvL
- aV2rV7alU+FQNFhk0TB16v9NrnvneRgQCl93htcdCMBItDWOJqSvzZT3FQhrtOxMv/Fr
- H/RWlWPrx6S+u82h82PmqBGRYqIUA/leXdoy98YhcDfQOncDUsQYhdBKl2s6UYKGXtWA
- XEWxcTA/cLiWF5qKVp7yTp5wHMyhvAEId6JuhheIR5R2W8n5Bb3GrAXqUdTQRBD24UJO
- sDfg==
+ d=linaro.org; s=google; t=1692688571; x=1693293371;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ppgiTDo9CBIUYONGHjb2ceEiPZgD+DqVFKBZUdEts/g=;
+ b=DtJnalGNembHfQjyHup10ZQEGE7bFAZviXKxQ6t9xLFSF8lGAja9DxY/AV2XsyinC2
+ j5dLIQKBy5futpqa70o/ZhvD3RVhF4mtihi6NmCXOySRkOgFCM5C7S83fzJpX/sXNWc3
+ b6IdCX9dYdu/sz9BUtBAe2/QIgNLNI1uJUaTNe8gYWT14t1iq1zZxO87gcvzhYjBHOoY
+ k3v61aFGq8fk+6sUX4CQSFmenu52s0hVJiC83s3liyIjAHHL/jgvTR0jDenfemEW/yz7
+ WnFOej71Fzh8arMl2KlqfVhnQdDGxf12vxXw7P51dYpTSa36+8A+YBJQv2/PBip6tTT+
+ tyTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688507; x=1693293307;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7qFzQwheFK9AxDde5uR4/WWTrinK6kAcK+JYbJLTxP0=;
- b=bLKPxtxJRZQ3Jh4InZSr8iMw0BUKal94WlfFF6xW4ZKziDbiD+9gTFElM/0sjYAI5I
- HGD00EYBveLrXFIYKxqigjN3wN4tl3QntEhrLPWqSr0rukW3mrh9Ul6MUhGU+Z7Klg6H
- VYZsi6niDpGtyDlfS7rup1chTUP5aRvIatC31Z1Gkj1Z/1EbmXrL71E7XuCppcR/Mp+1
- n2nptdTDT28zaAgN2l4yMHr9lm4A+5TmX4r9E/cvYAd5ssedP/pR0d1iiDN2twLIs6KG
- hl6jCFReJ9qfyKKZEU/tCSeqieDiZtPUuEQnUda7KXXRCZOisFau2FtaO2hLuGKN34A8
- oIMQ==
-X-Gm-Message-State: AOJu0YzER3hPk3rs/VDbmom779sjU8A8IuuPWbXsnG3SqOVJhjk1ZyLP
- L3GOXrNiAycd3iTliLZYrVV4S/paJzkXNMxHb07TKQ==
-X-Google-Smtp-Source: AGHT+IHWhHUhVishsdT8GlUQdmDT1c1tASu8ExThVlIldr66ni0mjEPryi0f9qw0pXXjD3wRX2Xu0A==
-X-Received: by 2002:a5d:408b:0:b0:31a:d1c3:97ca with SMTP id
- o11-20020a5d408b000000b0031ad1c397camr6230133wrp.20.1692688506834; 
- Tue, 22 Aug 2023 00:15:06 -0700 (PDT)
-Received: from localhost.localdomain ([37.19.214.4])
- by smtp.gmail.com with ESMTPSA id
- j16-20020a056000125000b00317e6f06e22sm14942867wrx.77.2023.08.22.00.15.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:15:06 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Song Gao <gaosong@loongson.cn>
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RESEND v5 09/19] target/loongarch: Truncate high 32 bits of
- address in VA32 mode
-Date: Tue, 22 Aug 2023 09:13:55 +0200
-Message-ID: <20230822071405.35386-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230822071405.35386-1-philmd@linaro.org>
-References: <20230822071405.35386-1-philmd@linaro.org>
+ d=1e100.net; s=20221208; t=1692688571; x=1693293371;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ppgiTDo9CBIUYONGHjb2ceEiPZgD+DqVFKBZUdEts/g=;
+ b=gnxUjbSU2jCDcwSckdBP8f/szLXmWd7TqL6rqAa42jEu3oXAyu+ik1TBaslyExlYbo
+ kd8LPpu8iXmep6AvkwBY/bHF3JpaqF/m0eU4LuyUp9gAFNwzq8z7sLlw630VlvNZ6Qko
+ 5vt/Zrg2uP2Bq45Fydj6KbpPEg5gx4HDMw3CB79TPQBUQS+bbGyfBwAtncqz9jvBd+6f
+ +8EwV2s4+jf1s9E9mGJJWS/K1AzWCqAX2TeM7CuhE0F/lCkStrbm75smrgjynIyJVEyn
+ MAZUopFB9VsNqHzm0Z6SsW33LNU+RcK1T/FNt6YWIOMwTwNvoF+On5x+9/S2b30iVBBw
+ u2VQ==
+X-Gm-Message-State: AOJu0YwnUYKMJtIb3iND509a4mXvLsHRqsF95Z6yNY1moO4YPEKt6u4I
+ M1Bwm9cAj5HexasmHxX/xgvotp030n92pO1pe1Io/A==
+X-Google-Smtp-Source: AGHT+IF98KiT7o4L5je0N8qgzGnrnAp7Fdfd4zmN5631iAN0Ia2LhWJUW4awktghpzSbkL0FLibF0g==
+X-Received: by 2002:a1c:7510:0:b0:3fb:c9f4:150e with SMTP id
+ o16-20020a1c7510000000b003fbc9f4150emr7128778wmc.14.1692688570713; 
+ Tue, 22 Aug 2023 00:16:10 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ u1-20020a7bcb01000000b003fefcbe7fa8sm56702wmj.28.2023.08.22.00.16.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 00:16:09 -0700 (PDT)
+Message-ID: <153460f1-582c-4e0e-0e73-1b2d89daf540@linaro.org>
+Date: Tue, 22 Aug 2023 09:15:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v5 00/19] Based-on:
+ https://patchew.org/QEMU/20230821125959.28666-1-philmd@linaro.org/
+Content-Language: en-US
+To: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230822071013.34884-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230822071013.34884-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,85 +93,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiajie Chen <c@jia.je>
+On 22/8/23 09:09, Philippe Mathieu-Daudé wrote:
+> (all series reviewed, for Song Gao to pick whichever v4/v5 is preferred)
 
-When running in VA32 mode(!LA64 or VA32L[1-3] matching PLV), virtual
-address is truncated to 32 bits before address mapping.
-
-Signed-off-by: Jiajie Chen <c@jia.je>
-Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230822032724.1353391-6-gaosong@loongson.cn>
----
- target/loongarch/cpu.h       |  6 +++++-
- target/loongarch/translate.c | 16 +++++++++++++++-
- 2 files changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index e1562695e8..25a0ef7e41 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -445,7 +445,11 @@ static inline bool is_va32(CPULoongArchState *env)
- 
- static inline void set_pc(CPULoongArchState *env, uint64_t value)
- {
--    env->pc = value;
-+    if (is_va32(env)) {
-+        env->pc = (uint32_t)value;
-+    } else {
-+        env->pc = value;
-+    }
- }
- 
- /*
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index 8b26555a27..9a23ec786d 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -86,6 +86,10 @@ void generate_exception(DisasContext *ctx, int excp)
- 
- static inline void gen_goto_tb(DisasContext *ctx, int n, target_ulong dest)
- {
-+    if (ctx->va32) {
-+        dest = (uint32_t) dest;
-+    }
-+
-     if (translator_use_goto_tb(&ctx->base, dest)) {
-         tcg_gen_goto_tb(n);
-         tcg_gen_movi_tl(cpu_pc, dest);
-@@ -212,11 +216,17 @@ static TCGv make_address_x(DisasContext *ctx, TCGv base, TCGv addend)
- {
-     TCGv temp = NULL;
- 
--    if (addend) {
-+    if (addend || ctx->va32) {
-         temp = tcg_temp_new();
-+    }
-+    if (addend) {
-         tcg_gen_add_tl(temp, base, addend);
-         base = temp;
-     }
-+    if (ctx->va32) {
-+        tcg_gen_ext32u_tl(temp, base);
-+        base = temp;
-+    }
-     return base;
- }
- 
-@@ -262,6 +272,10 @@ static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     }
- 
-     ctx->base.pc_next += 4;
-+
-+    if (ctx->va32) {
-+        ctx->base.pc_next = (uint32_t)ctx->base.pc_next;
-+    }
- }
- 
- static void loongarch_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
--- 
-2.41.0
-
+Incorrect subject, and SMTP failure, so disregard (will resend).
 
