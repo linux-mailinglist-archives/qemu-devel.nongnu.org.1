@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC2E7841C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC58C7841CB
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:17:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYREm-00081i-2u; Tue, 22 Aug 2023 09:16:00 -0400
+	id 1qYRFf-0000JK-1m; Tue, 22 Aug 2023 09:16:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qYREe-0007nE-J4; Tue, 22 Aug 2023 09:15:57 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1qYRFI-00008o-Rg; Tue, 22 Aug 2023 09:16:42 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qYREc-00009y-9W; Tue, 22 Aug 2023 09:15:52 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-570f0cb0c1eso597935eaf.0; 
- Tue, 22 Aug 2023 06:15:49 -0700 (PDT)
+ id 1qYRFG-0000TI-HK; Tue, 22 Aug 2023 09:16:32 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-570b6e1a413so1715359eaf.3; 
+ Tue, 22 Aug 2023 06:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692710148; x=1693314948;
+ d=gmail.com; s=20221208; t=1692710188; x=1693314988;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D578SCMYgOtKbu1Ia1cvBrYGpAVvaYSuQBja3HEtZwY=;
- b=SoxNDE0Sv3lQSc/AQXHYE+d6ecpxGtG73/99nsXEv3co0siEEyHa4D1XF3f956r2VJ
- sVZjTbuHKQWJ82rzlyn8ETOxTAHOJTq1pMFjrsr8Xhi9brZ1BiFz0YwAYC0sPPwx37I/
- aQyyA+WHQ1ri1ilszX0sFjHoTYQSqQ/CvXdkVy+86NA78MrC738QDPkr27GwV2SYyDWP
- lzH43Nlar3QL5FVloQt4VfE250YEayAcMf6ipNmsNUgUjTdcGptyXKl2LDfn6txfDkeG
- YDKtalI+bRd8tZzcA/NPEeS1LxP2ivQyPYy5nhoNfHYkRKbHIKPhS9jzujIy3xJAE3g5
- 4a/Q==
+ bh=zMx8PhyPKpZUd/+PfW7Ab9VKVAtMFXTkGEB+x/bifeg=;
+ b=lVJT6cVbigfU2Z4fpWz5EvW+gkwWi2fqM7zIoFGhcnVzhwEEZlLm8ZhnTACrxpRInD
+ WQIPch569glXUF9+//xEhcYaYIBO64tURB+fMkYm+qtQX4M7ldvJjEA+Nyn83Yc/X6Z0
+ mkRbOVdUF4QBYZXxi5QEJ3yUsU2Urg85DPZPW9XYJUDNJC0bOwR9VpgcVLkAOe4FoiNi
+ ywSut6PHg6io3y5SjfljGDJ/OzGqF/bDdhALTMP+tsi7bUtg5XRyYj92tIk8Xx1ZCtf1
+ +13XyB1bXYlCJQHlxRZX8JcK0kV7yn66ev/5dg+wp3REgA1RBK6hJZyFowJMTP1BcHkt
+ Y7tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692710148; x=1693314948;
+ d=1e100.net; s=20221208; t=1692710188; x=1693314988;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D578SCMYgOtKbu1Ia1cvBrYGpAVvaYSuQBja3HEtZwY=;
- b=J/e/Zg4G3IoJN/ipJm9OVLZI2PHvPIKSbBBxlEAANJGLwkJTpwRzwqpdkhHF6Eo4z0
- FBgsZuPXqqyFaz+oPxpLK/KMqAfAr+JBJboJ96ax/OdbNxkTZ0GPrbS1VxcybzglIlyt
- 0it0uABGjvi7o/bAaWRvT3lMVfaPjf9gZ8tuHBHi2323kKO+0kqsOz5X+mj7HcxiVzxF
- EPaB79mYIiWQiZrkPS1QwAJS0JvjRdWrP8GSs9mSu5qrHIj9qRrs99FLWfshjrpAfQT7
- kJaS2xKFYniUaSTfXjOFDR1fslB/Aq7jLPVBAPP15HI5QGWYG6mKmns2HRdwUJR4GN5r
- p9Ng==
-X-Gm-Message-State: AOJu0YzHPxzJ1DO6QTd5aR9s0/iL2zdbFNJVFZ7jaMnWTwHy+LKdSxGh
- i3MHIYM8h9gNLCNdYa8ZKVw2Yxsa5TKAqj1A66Y=
-X-Google-Smtp-Source: AGHT+IGpXhvJ/1YSr/888OHpL1PUif7Bgn6eq1LlGXlyjSQiMwkbV+rbRCBkEndSXwb7WUNXwHH6/mGzsWN7IuzFfCI=
-X-Received: by 2002:a4a:d2d2:0:b0:570:c8fa:4ad7 with SMTP id
- j18-20020a4ad2d2000000b00570c8fa4ad7mr5487849oos.1.1692710148319; Tue, 22 Aug
- 2023 06:15:48 -0700 (PDT)
+ bh=zMx8PhyPKpZUd/+PfW7Ab9VKVAtMFXTkGEB+x/bifeg=;
+ b=FHEY+pJdX0py7RgOC6AK6YbQHptdCK+GLHsAt/aDlRNSt0TQKfRFmV58bnpOkK0eyk
+ kuDFUSCqb5h12/EJfUtwFD8i0ktXsBP2tDvVfp5mj0p85hkJtCbzT80OEoZ4okbvFbQW
+ QhCxPW8uUzVxiHgFIk+wG3zT6j+WuCRLVeZQ1qD0yEueugUVtJO3/+zbSLOVN/FWWe/2
+ kK1+tt1B8PjNez9aMb98iULbO3BduN0rdUVfQz4uwOjZvFzndoCIQfpwmmTSagWBrTDd
+ RaoHM4JIHyKjb17ZXL1b3w3K1SiaQgZbmfXrOAU9cm4Zbu/Z7wPI+gGI9nBwxm2MJVoB
+ /dlw==
+X-Gm-Message-State: AOJu0YyD9WBWvOVOegpEkfAxEoD83OGxpAoDWpV1C2jSdsEmSjj8rOES
+ Rja0wHVLJKJIDfw1YwCWfb1JkUuiXlf3F1iM7Kc=
+X-Google-Smtp-Source: AGHT+IFapqjb5K/AJSL9eAvoOtvowy6/5Spt/EN36SvbYdd3pY+seTCrwfponVr0IgZUtljbJWg+mxMW/PpevLKZhHg=
+X-Received: by 2002:a4a:301e:0:b0:56c:7c3b:1c21 with SMTP id
+ q30-20020a4a301e000000b0056c7c3b1c21mr8335407oof.0.1692710188071; Tue, 22 Aug
+ 2023 06:16:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230822075612.36460-1-philmd@linaro.org>
-In-Reply-To: <20230822075612.36460-1-philmd@linaro.org>
+References: <20230822125716.55295-1-philmd@linaro.org>
+In-Reply-To: <20230822125716.55295-1-philmd@linaro.org>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 22 Aug 2023 09:15:36 -0400
-Message-ID: <CAJSP0QWkM7__n_9DhFBczrX-qt6+tWHZx0qE_yY5B_zUmLN4ow@mail.gmail.com>
-Subject: Re: [PATCH] docs/about/license: Update LICENSE URL
+Date: Tue, 22 Aug 2023 09:16:16 -0400
+Message-ID: <CAJSP0QUKO9WsiZY8OYD-httbcrxPsR6qsH63pAzFNrXCa4TE+g@mail.gmail.com>
+Subject: Re: [PATCH v2] docs/about/license: Update LICENSE URL
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-stable@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
  =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,20 +87,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 22 Aug 2023 at 03:57, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+On Tue, 22 Aug 2023 at 08:57, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
 > In early 2021 (see commit 2ad784339e "docs: update README to use
 > GitLab repo URLs") almost all of the code base was converted to
 > point to GitLab instead of git.qemu.org. During 2023, git.qemu.org
-> switched from a git mirror to a http redirect to GitLab (see [*]).
+> switched from a git mirror to a http redirect to GitLab (see [1]).
 >
-> Update the LICENSE URL to match its previous content.
+> Update the LICENSE URL to match its previous content, displaying
+> the file raw content similarly to gitweb 'blob_plain' format ([2]).
 >
-> [*] https://lore.kernel.org/qemu-devel/CABgObfZu3mFc8tM20K-yXdt7F-7eV-uKZ=
+> [1] https://lore.kernel.org/qemu-devel/CABgObfZu3mFc8tM20K-yXdt7F-7eV-uKZ=
 N4sKDarSeu7DYoRbA@mail.gmail.com/
+> [2] https://git-scm.com/docs/gitweb#Documentation/gitweb.txt-blobplain
 >
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> v2: Drop '&ref_type=3Dheads' (danpb)
 > ---
 >  docs/about/license.rst | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
