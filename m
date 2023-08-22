@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4387839E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 08:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCA07839EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 08:28:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYKrS-0000YK-E5; Tue, 22 Aug 2023 02:27:31 -0400
+	id 1qYKsU-00019l-Tb; Tue, 22 Aug 2023 02:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYKrC-0000Xm-OA
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:27:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYKr7-0000pG-Ec
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:27:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692685628;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2W9ezE/fsgCEQT0hmrMoiDLXeYnSl+yE0Xw4I5bIhLo=;
- b=cZWU801cajw2WnFIqxJiXx8dfR/+WPA5yOD30aLeQuniZFBosrQFB26Stviez8QxpGj09t
- ce0T3N4x7ZLPCCIQGVI8xwtokM4UaapX/+pU+imHZo7FpC9RQ8V8XexMB3hI1p1pLvkxda
- uj2gBzcJhDXqGOktnrFtWMFSyrkjbXo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-210-m6UzmOWIPn2WcEFiy6fIjQ-1; Tue, 22 Aug 2023 02:27:02 -0400
-X-MC-Unique: m6UzmOWIPn2WcEFiy6fIjQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77189185A791;
- Tue, 22 Aug 2023 06:27:01 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5060D2166B26;
- Tue, 22 Aug 2023 06:27:01 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4E03221E690D; Tue, 22 Aug 2023 08:27:00 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,  "Michael S. Tsirkin"
- <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Igor
- Mammedov <imammedo@redhat.com>,  Ani Sinha <anisinha@redhat.com>,  Peter
- Xu <peterx@redhat.com>,  David Hildenbrand <david@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Cornelia Huck
- <cohuck@redhat.com>,
- Eric Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,  qemu-devel@nongnu.org,
- kvm@vger.kernel.org,  Eduardo Habkost <eduardo@habkost.net>,  Laszlo
- Ersek <lersek@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,
- erdemaktas@google.com,  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v2 15/58] i386/tdx: Add property sept-ve-disable for
- tdx-guest object
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-16-xiaoyao.li@intel.com>
- <ZOMnf8n8BksktlGg@redhat.com>
-Date: Tue, 22 Aug 2023 08:27:00 +0200
-In-Reply-To: <ZOMnf8n8BksktlGg@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Mon, 21 Aug 2023 09:59:43 +0100")
-Message-ID: <877cpn7ft7.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYKsC-00013V-2i
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:28:20 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYKs8-0000wE-AE
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:28:15 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fee5ddc334so15724145e9.1
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 23:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692685689; x=1693290489;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DcOmhX0UxImlx6JRWL0lqNFcdjPz8w1x8hhLYwR9o/k=;
+ b=iI0RU52hw3lmY9LDuvz5dGegFfFDZv1+DkCY3TYSgDTEThb75ikPjEiW/AxO8oakMg
+ N2WNkMGubcf9o2d/vX4lHyih4RbJTxpZKHIXQGAHTwxFibMqibU1xQkZnxsuh3udRP/n
+ NjuVb+paF2b4Pn4zfz0Z29frLUFfPnfyWMDAnvNh0Ge3Y+05C3ak555gfcaoii/Eb9+D
+ 626DGr/TGnaRTI1akOfmxIOQE2YDY42Yei7eig7guzYm/MqyoJr6bcGBar5exvJZ807s
+ +d4N1a5guCLnAHNJRYWyPBWUAlrLYYDYfc9a35jVVjgtE4zWUQjXIzup2eObxHrURSlu
+ LrJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692685689; x=1693290489;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DcOmhX0UxImlx6JRWL0lqNFcdjPz8w1x8hhLYwR9o/k=;
+ b=VdP6yxx5EsSvXE+nQYM06z6p0mODgDDZdNBfF0OtWYznWUEUqFc5LxxlJgdFBOHiKt
+ YxM6x97Q1xl8mw/zjNzp2DV1m/3jrJavM8rV+FmbFpj0UmeANh1ibadTyqye0d+YwatB
+ qDEGwCSdYhQpxmBsk+Me8/9IZkRa+B4TbABDoeVZxyNjG2N27Q+JquFhmImmCs/EEhRr
+ 6dpL32w3uSVPxC9D5p+G7tzaTgaUt5KAu1iMwdi3AkTWCnyR4i0llVaZMcShXKJ+ZL/I
+ /pnh4I3rwQSdoZgjPo1zbEJ/wfYwNiv0t4ajIN+PkZQ6czkyyzQl0ivlMorYuxURhVFi
+ irtw==
+X-Gm-Message-State: AOJu0Yy3k3lNtdGLaJMfqRTVr184SOvyCnMnquCcfQPjEV0Ef83C1Rlh
+ CDnMCt/awxGuGtHzPp0xk5VJoA==
+X-Google-Smtp-Source: AGHT+IGtc/IMDmDOAMSS6BbmVOK33brl60wvuU6lELg3bdE5TSIjLdLkh1IiDamBnBQijbbCzXgU8Q==
+X-Received: by 2002:a7b:c459:0:b0:3fa:aeac:e978 with SMTP id
+ l25-20020a7bc459000000b003faaeace978mr6499974wmi.0.1692685689268; 
+ Mon, 21 Aug 2023 23:28:09 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ s5-20020adff805000000b003143cb109d5sm14699699wrp.14.2023.08.21.23.28.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 21 Aug 2023 23:28:08 -0700 (PDT)
+Message-ID: <543fa35c-e8ad-2648-edaf-420f8b4722e8@linaro.org>
+Date: Tue, 22 Aug 2023 08:28:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v4 8/9] targer/arm: Inform helpers whether a PAC
+ instruction is 'combined'
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Aaron Lindsay <aaron@os.amperecomputing.com>
+References: <20230822042530.1026751-1-richard.henderson@linaro.org>
+ <20230822042530.1026751-9-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230822042530.1026751-9-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,69 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 22/8/23 06:25, Richard Henderson wrote:
+> From: Aaron Lindsay <aaron@os.amperecomputing.com>
+> 
+> An instruction is a 'combined' Pointer Authentication instruction
+> if it does something in addition to PAC -- for instance, branching
+> to or loading an address from the authenticated pointer.
+> 
+> Knowing whether a PAC operation is 'combined' is needed to
+> implement FEAT_FPACCOMBINE.
+> 
+> Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-Id: <20230609172324.982888-7-aaron@os.amperecomputing.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/arm/tcg/helper-a64.h    |  4 ++
+>   target/arm/tcg/pauth_helper.c  | 71 +++++++++++++++++++++++++++-------
+>   target/arm/tcg/translate-a64.c | 12 +++---
+>   3 files changed, 68 insertions(+), 19 deletions(-)
 
-> On Fri, Aug 18, 2023 at 05:49:58AM -0400, Xiaoyao Li wrote:
->> Bit 28 of TD attribute, named SEPT_VE_DISABLE. When set to 1, it disables
->> EPT violation conversion to #VE on guest TD access of PENDING pages.
->>=20
->> Some guest OS (e.g., Linux TD guest) may require this bit as 1.
->> Otherwise refuse to boot.
->>=20
->> Add sept-ve-disable property for tdx-guest object, for user to configure
->> this bit.
->>=20
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
->> ---
->>  qapi/qom.json         |  4 +++-
->>  target/i386/kvm/tdx.c | 24 ++++++++++++++++++++++++
->>  2 files changed, 27 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/qapi/qom.json b/qapi/qom.json
->> index 2ca7ce7c0da5..cc08b9a98df9 100644
->> --- a/qapi/qom.json
->> +++ b/qapi/qom.json
->> @@ -871,10 +871,12 @@
->>  #
->>  # Properties for tdx-guest objects.
->>  #
->> +# @sept-ve-disable: bit 28 of TD attributes (default: 0)
->
-> This description isn't very useful as it forces the user to go off and
-> read the TDX specification to find out what bit 28 means. You've got a
-
-Seconded.
-
-> more useful description in the commit message, so please use that
-> in the docs too. eg something like this
->
->   @sept-ve-disable: toggle bit 28 of TD attributes to control disabling
->                     of EPT violation conversion to #VE on guest
->                     TD access of PENDING pages. Some guest OS (e.g.
->                     Linux TD guest) may require this set, otherwise
->                     they refuse to boot.
-
-But please format like
-
-# @sept-ve-disable: toggle bit 28 of TD attributes to control disabling
-#     of EPT violation conversion to #VE on guest TD access of PENDING
-#     pages.  Some guest OS (e.g. Linux TD guest) may require this to
-#     be set, otherwise they refuse to boot.
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
->> +#
->>  # Since: 8.2
->>  ##
->>  { 'struct': 'TdxGuestProperties',
->> -  'data': { }}
->> +  'data': { '*sept-ve-disable': 'bool' } }
->>=20=20
->>  ##
->>  # @ThreadContextProperties:
-
-[...]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
