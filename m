@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460F1783E88
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930AD783FE1
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 13:46:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYP9i-0006S3-O8; Tue, 22 Aug 2023 07:02:38 -0400
+	id 1qYPow-0003Un-Va; Tue, 22 Aug 2023 07:45:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYP9T-0006N4-Ti
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:02:29 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qYPon-0003UF-Cc
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:06 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYP9P-0003OY-0w
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:02:22 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fef5809999so11877005e9.2
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 04:02:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qYPoi-00066V-M7
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 07:45:04 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51cff235226so9043032a12.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 04:44:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692702137; x=1693306937;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1692704698; x=1693309498;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LEM3PfJxI/aPPc1i3tV/XEA6n73WFfBj06/t4sKpaao=;
- b=nBsXcbcvOtoGhumKewU1elFD1KRIs/anotvQ08PGmWuTeqEJwCThrSWGBHVsmkHgBe
- /uEE/7TDC969ZHn3s1Gc21FVS7h/JtJGeQAWzGNJBcM18g52OoZueTz2urGBMVZ5nz4w
- aU0a1Fj+OyQXHD3Brej6Z+eo6RsTYC1dVzu2IZjkCfbp9opMEN+9GuTfoVFlAbeLkpQq
- 73NWKWrADLFikStDJGdMmE4yO9AmIsnwAdPH24cl9+IG+/lLwrfK3RSPfo/NfGhp+anj
- E9FHVoXnimo8ZsXFG9o6NrLiKki+0NC7ZcPVl9PoKy5GSjJLQYiTwUDy1cpSIwWbeqM8
- YBmA==
+ bh=NrQ0nn/R+ah4RfL4YqoGKD8z4L73n4KEcrCq0geYfv0=;
+ b=Ni0IT5CW+haVBHOuKiICtnG5pAUT8jfczPf/ScQX80Z952HQWBBtWUKVeWssCCNwt8
+ /rRrtLKNeteXofO+FxOqWzYVr5VHyEswK0xXdu0AaeWwnIgHlevgSPAQZys0misY4E1s
+ B35Q73qYOretcZypL9m9Oseahh0tlrwAy5XeOk61CqA7IIzTrI5V8bi31Do/6/4a2HQz
+ 3APwRGrFBhiKWTf6uIzLEO+sd7AwnmSpSIqRrKwVhsUXpZ1pvpj/DEAgMLddYucbSAfp
+ upaG8Lx9LHv86jssCcorJkr9Br7d5g0SFiFMPSc+aMzew9qLQ3A9yjNWYC/doOxgdrRb
+ K20Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692702137; x=1693306937;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1692704698; x=1693309498;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LEM3PfJxI/aPPc1i3tV/XEA6n73WFfBj06/t4sKpaao=;
- b=aPe2dgQigykqF9BGEbU2TlFDRqRWzNOC2rEUxkS9vPYbm71HxKpBpqi7pZlCqToBYm
- L/aXKD0uZszyNinEZIlpjF0t2FFU3POsnnvROsbMnq6P6EztZfiN8k4gDwTMYJ0naN3N
- r8CShSM6dAa62Zeo0wZ9Aa1R1752DityVLW61zZTKTcvJu7L9u8mriE0IhQGzyiDFhcV
- RC/gsynL+aHiLiexx6F9BRrv7PeklnlI9if5CZTA0Rhs07tkK5Iw1ZGPAdahgTGGYAMX
- +nNYbs8V/kF0cjP+jlvEpnT9JMqEZQoGRsFJIzLSEESyPU75TjCrZp5ZrFdp2PLmK1tn
- u3yA==
-X-Gm-Message-State: AOJu0Yw0GEkacBigUY8qKuFJ15o2ql639IYZrloxHyzACYre6kKWN7ft
- M9YWLGm2otoKLyyIHdSIZmV4tflhxxi00ojzM/2wcA==
-X-Google-Smtp-Source: AGHT+IH78J9CJh6arRxgwqdUliOdq3ljgj9ofuS3RJMKaYbZ/eDXQPayjQOz2QsotixUgr6QqrXdDg==
-X-Received: by 2002:a1c:770b:0:b0:3fe:2109:b9ff with SMTP id
- t11-20020a1c770b000000b003fe2109b9ffmr6993689wmi.0.1692702137029; 
- Tue, 22 Aug 2023 04:02:17 -0700 (PDT)
-Received: from localhost.localdomain ([37.19.214.4])
- by smtp.gmail.com with ESMTPSA id
- z26-20020a1c4c1a000000b003fed1ba0b8esm14604106wmf.8.2023.08.22.04.02.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 04:02:16 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>
-Subject: [PATCH 6/6] target/loongarch: Use hswap_i64() in REVH.D opcode
-Date: Tue, 22 Aug 2023 13:01:29 +0200
-Message-ID: <20230822110129.41022-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230822110129.41022-1-philmd@linaro.org>
-References: <20230822110129.41022-1-philmd@linaro.org>
+ bh=NrQ0nn/R+ah4RfL4YqoGKD8z4L73n4KEcrCq0geYfv0=;
+ b=RbYCxC+X1so+qCePj4jiyOk8XuVI2g/9NQbir1Y+IInzwjj1sB9wGqaXqdEY1L9O5Q
+ XxveNvJL1QKQDHYSNSarbVUxJwOW/O5hOD9VwlhPs0T/wlaY1+7ZZLdymbplEWajhwy2
+ x1rk3d/mlBZDb2jyqd5s11nirMhPk1irFPY8+aEYirLaMfua9/rWJrstU36tKETxUeUL
+ XgJYPJPVEE40SCoA4m1FCj+elM5aGTXn9k00tggL9B+uhsJclIdPNpadrcjJLdgmbnII
+ mAm7b8vXsoetFsXOty6SB83yGhD6PJVVRlbOIs43dnN/ezVHX9EtUpY7rO8/1/xs5E4H
+ 2/GA==
+X-Gm-Message-State: AOJu0Yy2cW4C8cCMvC5qZWkFf2Jp7NIfk1xRVTQg8mBD8Hc+Dl3bDDAW
+ jyojfofYUDrnT6TOSBy+pfP4Z5sGEHB7RAgIYlNS4w==
+X-Google-Smtp-Source: AGHT+IGOMUZV3gAogPQHeNs57R2pbxmapHl2TOmjngnAuz9wZikQrLPQ7eoKfEofE7G/cVDEvARILfMiAAdM9muVATs=
+X-Received: by 2002:a05:6402:348b:b0:522:ab20:368a with SMTP id
+ v11-20020a056402348b00b00522ab20368amr10369244edc.13.1692704697794; Tue, 22
+ Aug 2023 04:44:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+References: <20230822110129.41022-1-philmd@linaro.org>
+ <20230822110129.41022-3-philmd@linaro.org>
+In-Reply-To: <20230822110129.41022-3-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 22 Aug 2023 12:44:46 +0100
+Message-ID: <CAFEAcA-36XE-9ikSp0F4EMUKysz=ms2JyLCc8GOWcgJq3sb=hw@mail.gmail.com>
+Subject: Re: [PATCH 2/6] target/cris: Use hswap_i32() in SWAPW opcode
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>, 
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Song Gao <gaosong@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,50 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 46be8425ff ("tcg: Implement tcg_gen_{h,w}swap_{i32,i64}")
-introduced the generic hswap_i32(). Use it instead of open-coding
-it as gen_revh_d().
+On Tue, 22 Aug 2023 at 12:01, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Commit 46be8425ff ("tcg: Implement tcg_gen_{h,w}swap_{i32,i64}")
+> introduced the generic hswap_i32(). Use it instead of open-coding
+> it as t_gen_swapw().
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  target/cris/translate.c         | 14 +-------------
+>  target/cris/translate_v10.c.inc |  2 +-
+>  2 files changed, 2 insertions(+), 14 deletions(-)
+>
+> diff --git a/target/cris/translate.c b/target/cris/translate.c
+> index 42103b5558..925ed2c6f6 100644
+> --- a/target/cris/translate.c
+> +++ b/target/cris/translate.c
+> @@ -399,18 +399,6 @@ static inline void t_gen_swapb(TCGv d, TCGv s)
+>      tcg_gen_or_tl(d, d, t);
+>  }
+>
+> -/* Swap the halfwords of the s operand.  */
+> -static inline void t_gen_swapw(TCGv d, TCGv s)
+> -{
+> -    TCGv t;
+> -    /* d and s refer the same object.  */
+> -    t =3D tcg_temp_new();
+> -    tcg_gen_mov_tl(t, s);
+> -    tcg_gen_shli_tl(d, t, 16);
+> -    tcg_gen_shri_tl(t, t, 16);
+> -    tcg_gen_or_tl(d, d, t);
+> -}
+> -
+>  /*
+>   * Reverse the bits within each byte.
+>   *
+> @@ -1675,7 +1663,7 @@ static int dec_swap_r(CPUCRISState *env, DisasConte=
+xt *dc)
+>          tcg_gen_not_tl(t0, t0);
+>      }
+>      if (dc->op2 & 4) {
+> -        t_gen_swapw(t0, t0);
+> +        tcg_gen_hswap_i32(t0, t0);
+>      }
+>      if (dc->op2 & 2) {
+>          t_gen_swapb(t0, t0);
+> diff --git a/target/cris/translate_v10.c.inc b/target/cris/translate_v10.=
+c.inc
+> index b7b0517982..0ff15769ec 100644
+> --- a/target/cris/translate_v10.c.inc
+> +++ b/target/cris/translate_v10.c.inc
+> @@ -506,7 +506,7 @@ static void dec10_reg_swap(DisasContext *dc)
+>      if (dc->dst & 8)
+>          tcg_gen_not_tl(t0, t0);
+>      if (dc->dst & 4)
+> -        t_gen_swapw(t0, t0);
+> +        tcg_gen_hswap_i32(t0, t0);
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/loongarch/insn_trans/trans_bit.c.inc | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+Both these are operating on TCGv, not TCGv_i32, so I think this
+should be tcg_gen_hswap_tl(). (Compare the tcg_gen_not_tl()
+calls.)
 
-diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/insn_trans/trans_bit.c.inc
-index 25b4d7858b..95b4ee5bc8 100644
---- a/target/loongarch/insn_trans/trans_bit.c.inc
-+++ b/target/loongarch/insn_trans/trans_bit.c.inc
-@@ -150,20 +150,6 @@ static void gen_revh_2w(TCGv dest, TCGv src1)
-     tcg_gen_or_i64(dest, t1, t0);
- }
- 
--static void gen_revh_d(TCGv dest, TCGv src1)
--{
--    TCGv t0 = tcg_temp_new();
--    TCGv t1 = tcg_temp_new();
--    TCGv mask = tcg_constant_tl(0x0000FFFF0000FFFFULL);
--
--    tcg_gen_shri_tl(t1, src1, 16);
--    tcg_gen_and_tl(t1, t1, mask);
--    tcg_gen_and_tl(t0, src1, mask);
--    tcg_gen_shli_tl(t0, t0, 16);
--    tcg_gen_or_tl(t0, t0, t1);
--    tcg_gen_rotri_tl(dest, t0, 32);
--}
--
- static void gen_maskeqz(TCGv dest, TCGv src1, TCGv src2)
- {
-     TCGv zero = tcg_constant_tl(0);
-@@ -193,7 +179,7 @@ TRANS(revb_4h, gen_rr, EXT_NONE, EXT_NONE, gen_revb_4h)
- TRANS(revb_2w, gen_rr, EXT_NONE, EXT_NONE, gen_revb_2w)
- TRANS(revb_d, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_bswap64_i64)
- TRANS(revh_2w, gen_rr, EXT_NONE, EXT_NONE, gen_revh_2w)
--TRANS(revh_d, gen_rr, EXT_NONE, EXT_NONE, gen_revh_d)
-+TRANS(revh_d, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_hswap_i64)
- TRANS(bitrev_4b, gen_rr, EXT_ZERO, EXT_SIGN, gen_helper_bitswap)
- TRANS(bitrev_8b, gen_rr, EXT_NONE, EXT_NONE, gen_helper_bitswap)
- TRANS(bitrev_w, gen_rr, EXT_NONE, EXT_SIGN, gen_helper_bitrev_w)
--- 
-2.41.0
+>      if (dc->dst & 2)
+>          t_gen_swapb(t0, t0);
+>      if (dc->dst & 1)
 
+thanks
+-- PMM
 
