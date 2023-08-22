@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B510784949
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 20:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CEA784950
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 20:15:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYVqz-0002Mi-JM; Tue, 22 Aug 2023 14:11:45 -0400
+	id 1qYVuL-0003Hu-BF; Tue, 22 Aug 2023 14:15:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYVqw-0002MM-PD
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:11:42 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1qYVuF-0003Hm-Ab
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:15:08 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYVqt-0000oi-Qi
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:11:41 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-68a36dc1422so1979612b3a.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 11:11:39 -0700 (PDT)
+ id 1qYVuC-0001J0-Rx
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:15:07 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bf3a2f44ffso35015065ad.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 11:15:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692727898; x=1693332698;
+ d=linaro.org; s=google; t=1692728103; x=1693332903;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kBcTsNbSwGBxMrHN3XwPjjyx1Jrk8uUoo3l31SBaSF0=;
- b=b6mFpRxIqo2tje+DplLWIT4NvjVF2k03XfjotKXRWMCtwmVWLjdvwQekw2ZTUZ4rJN
- cvION/t/LbX5zAgjfhwzMg4nXWWYym+N8zNgjjxOiYeAtuJhmQlwBYuBzZxGsy084lHM
- FDalfYWeR9Kow+iKv8pPB9ONF9xLqfnGdoI/FShWIFCM8TyYH/kjcE2AneJtq4nFr9Te
- 7x1BBUG0E4ngruEoUXMn4wST2Rqk0IOMd32FfpYol4mlKi7vgpwIdhWUFM2o2HAivhpX
- hIdh2zKgpsohN/dyHxNKI47N8hcpk1SmvUgR9lP1zL4JqRvSqTQz/wGumaFN4EaPvJBp
- x9LA==
+ bh=XF1AUpyCcaXoU3ikKfREKpJ98dJjM+9lvfDG/KEEXbo=;
+ b=ItzDWbyDh7lgyuTpakvMQuaV19pCowRtSr2XeYev6CW97ixkQTeg6M1SV2v4ujE/ya
+ +oM/5gihMXyUctGeQfTdDNXOOH1Ki8UJsWCgZ4hNRH+dm7eRJFWKuVZ2ShpnlgVXxKyf
+ FhrruurmJmsuSB1iRhqOZJSVfQfxXW3sUYvCHJjYVkP1XIt4SE9h5/ivwE6nkcvjnWXv
+ IuPeDRGeuQARJFfjz4XZKydGx6Ddt7yPtepBZ1zDruRoaHJsFTRCQ9YMlXM8EUHNnQdq
+ cGOSryIe6B0C4ZkK10AV9Tm8k6ExzdhLrYzoraxJS9LQljGSjKBExLOG0Tp3O4z1aOi9
+ h6qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692727898; x=1693332698;
+ d=1e100.net; s=20221208; t=1692728103; x=1693332903;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kBcTsNbSwGBxMrHN3XwPjjyx1Jrk8uUoo3l31SBaSF0=;
- b=l97ykQq1Ey+eKqQl6OD+TpnlLSre7FjygeYi3WhGiNTTfbe3zTTVL2sSTcOtx9AlDS
- cCwnDHy4QLYVajKQbB/7i7vQkRFmotLX1dWua7AxPdVEPTis8j4zpJiinwARLoSICDAw
- Tp1bpLXQWgC8rVI0p7BiiBSDCoBzOfhbzxGScs0szADDd0rmySrYI6ENyyq8wWR7u5HV
- GSCOUEJ8TVMQ2Ld6xwo49RPe3QO+w2vRFNA1jkASKdCcINoat98c5C/cOlI8N2DL8fkt
- QnMicrQQT90XWrSNlw5/8JBl29/mTojT9Wq5v6e/SLe8sts+E3uu4FRhVGgicZphu3jS
- LemQ==
-X-Gm-Message-State: AOJu0Ywo786izRl2ljNKSKpp/DRT5eJuEG4o4+Z1zUMM7jUsXj/WB60v
- 83x4sfrQ8ZJsPRYaKSpu5cLmcg==
-X-Google-Smtp-Source: AGHT+IH1o02ydbascIX9g5W5PIOFQO3T4hJOTtvdxQL8AW4XpSzIsod1z0JCSn8ncm54yUTrHqkoXQ==
-X-Received: by 2002:a05:6a00:1a53:b0:668:69fa:f78f with SMTP id
- h19-20020a056a001a5300b0066869faf78fmr8764269pfv.1.1692727898451; 
- Tue, 22 Aug 2023 11:11:38 -0700 (PDT)
+ bh=XF1AUpyCcaXoU3ikKfREKpJ98dJjM+9lvfDG/KEEXbo=;
+ b=aXv1wsQfFiaPwXU6PbEp5/0n4QePaTVDmbE1yA7Lhw1EfPhKk/cahO9y+iGhgISZ+O
+ /TfBIuG4k6XTOWQtSUFTp0qsBgTJ6xDhaksaS++NnwlLZavJd/7vXwac8FgLUZU9+olg
+ mIfPLu0qwWAV4k0bpOqi7izs/7Ddigb98UiKuVxDQ/CIfDaLPucRO8JHLlTYTnZbbxjK
+ QyZ5lg6t7dTmNH26q9vpJAGos+6jkpE5NtT98rRGALchmXrE4fIT9NCmuogkzQWdEYbf
+ 5B+xla2eoBDJev1aL0g2LEyDB9rawgGpHqRKioN0DfGefjXhCbRe2U9/6aQ+5f2rFKt7
+ vPhg==
+X-Gm-Message-State: AOJu0YwtaDyOY4guXW+h9i+SFT7X3gjWaCFHvFmq0KPsVu+cyUY+hkch
+ vDJdb+gV06aMZbW0s698JLzUN2RBcLKZlMoTMD8=
+X-Google-Smtp-Source: AGHT+IGLK5sXq9NdA576p/www1ahiGeB28iRgtg8G1dx6K6lFtnVnSLCWyXSMdN6vyeREJ2QoLc7ww==
+X-Received: by 2002:a17:902:684c:b0:1bd:c6ca:e0db with SMTP id
+ f12-20020a170902684c00b001bdc6cae0dbmr11166118pln.37.1692728102730; 
+ Tue, 22 Aug 2023 11:15:02 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
  ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a63b64a000000b0055387ffef10sm7372623pgt.24.2023.08.22.11.11.37
+ i13-20020a17090332cd00b001bf5e24b2a8sm6895533plr.174.2023.08.22.11.15.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 11:11:37 -0700 (PDT)
-Message-ID: <c7dbf551-f833-c5e3-302e-fcea2d411bb5@linaro.org>
-Date: Tue, 22 Aug 2023 11:11:36 -0700
+ Tue, 22 Aug 2023 11:15:02 -0700 (PDT)
+Message-ID: <a363d744-52cf-3993-73b7-6bafc6b0f58e@linaro.org>
+Date: Tue, 22 Aug 2023 11:15:00 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 21/22] Implement shmat(2) and shmdt(2)
+Subject: Re: [PATCH for-8.2] target/m68k: Use tcg_gen_deposit_i32 in
+ gen_partset_reg
 Content-Language: en-US
-To: Warner Losh <imp@bsdimp.com>
-Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org,
- Stacey Son <sson@freebsd.org>
-References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-22-kariem.taha2.7@gmail.com>
- <eb0506c6-f9bd-5a1f-870b-b6d07dd337ea@linaro.org>
- <CANCZdfrmw6c9kxFTUrWegaU78SHBjqVMEHuO8VVsPN=7hGQb0Q@mail.gmail.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: laurent@vivier.eu
+References: <20230813155425.341598-1-richard.henderson@linaro.org>
+ <bab2e366-d821-3ca1-ed2a-a46f3f2a1afd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CANCZdfrmw6c9kxFTUrWegaU78SHBjqVMEHuO8VVsPN=7hGQb0Q@mail.gmail.com>
+In-Reply-To: <bab2e366-d821-3ca1-ed2a-a46f3f2a1afd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -99,25 +98,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/23 11:03, Warner Losh wrote:
->     Hmm, bug with linux-user as well, because here we should re-establish the reserved_va
->     reservation.
+On 8/16/23 02:45, Philippe Mathieu-Daudé wrote:
+> On 13/8/23 17:54, Richard Henderson wrote:
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/m68k/translate.c | 11 ++---------
+>>   1 file changed, 2 insertions(+), 9 deletions(-)
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
 > 
-> ... of the shared memory region we just detached? Right?
 
-Correct.
-
-On a related note, on FreeBSD is there any practical difference between
-
-     PROT_NONE, MAP_ANON
-and
-     PROT_NONE, MAP_GUARD
-
-for large memory regions?
-
-I ask since FreeBSD doesn't have MAP_NORESERVE, which Linux uses to avoid allocation of 
-gigabytes.
+Queued to tcg-next.
 
 
 r~
