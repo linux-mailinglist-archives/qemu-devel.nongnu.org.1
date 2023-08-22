@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888C1784667
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 17:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A704C78466C
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 17:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTku-0007z8-9K; Tue, 22 Aug 2023 11:57:20 -0400
+	id 1qYTll-00009J-T4; Tue, 22 Aug 2023 11:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qYTks-0007yv-Cb
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:57:18 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qYTlk-00008t-75
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:58:12 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qYTkp-0004aa-Uv
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:57:18 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4ff882397ecso7084305e87.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 08:57:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qYTli-0004hv-2w
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:58:11 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1bf078d5fb7so30548215ad.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 08:58:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692719834; x=1693324634;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5FPN0cPZcNaLRtOH4pLvChHbk3zVlrh0C1HqcEYX5ko=;
- b=PjE2cV0lPcLaP6ZnnsnNcjpIvOCyOqAr03SiZoqMpxyxb/4Rj29H4Hkf8Bl0I1Hj8O
- takAMfeNSPEcV9uqR1GBwecSKAkgHoaQtxwGXtamk0cQiEC0Lss8frMQE+mBqSka5skf
- QRscAI/CFFy8yR7U8IujjrjKQWClT5cxdpFhJ9urbKMRhWL78TN7UdT7W7nfJx27IZrp
- E5XemsXX7bILVA8ua/0DCI2ktls+3WIiAnHY0ktOkjw2pVm9ErSMT1l2szPFmgOY1ovi
- TowdA4jSo/2o4ygckT209aMcYlBCyoJTtkmbI4rJhei1cXwarKrfBea9be1KJENyAoeR
- EOYw==
+ d=linaro.org; s=google; t=1692719889; x=1693324689;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=m5yA9C6p63mRvyRVmh0V9kVMOn0ZV4uNQ/sMmflzaNA=;
+ b=IaTmTV4b4tpTCNeCYEptZHCE+f2DAayx9CTzU+wupU+QUvnk5iC/5i4F80vu3hk1Oc
+ 04dXOXk0TEhuMxVKhyDpoZMIJ9mCVWk64ah2rElxLBrUDtdHRI1Ms7X788Pa5IkUtOEj
+ h2KW89CvpNLHrX1LWR8b+bWh2Mzl4eMmNXhc4RKIVEaz8EfGcCOXzwzR6uyoLPykQcUY
+ hwQKACVGaHSUwr1w4XG9u0M8E/rey6/6xAXL0hsdNr/WkcsVm4h0ZQ0lAZV0U0qphkgH
+ 8plIXe/fP0iy713A6Whf8XsDujkD+PHvP44CA9hNzK5MG2vcIJyNUiCE+3otYYz3DdKY
+ 2wmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692719834; x=1693324634;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5FPN0cPZcNaLRtOH4pLvChHbk3zVlrh0C1HqcEYX5ko=;
- b=NLKZo6gHp4AOFRUml7vNJbqLYqiQku1q5ay4tQWDooccGbYWWmuimzUPffxIlZ8dWb
- ROwV3SifOxEDm97nz/Vd6sAPgiuFXrcqapd5Rlkf//GOcHKNOVOWmyZPhR+NTy7G4oA5
- 78T0McynQwmnYoMvIAV+5UMdIpBQbMgd9IPwyGycNnBn/e8ZKbfK9ULi+ZTmY2jFtlNV
- un5zL+BWqSX9XMZEeTJK0mRvPBk83/sdGLXGwLwPdW2fMJ//8z63gbiWKsejApany3G6
- 6ApP7bX9VcYDPH89vPllC3AUO4tzegjeSZbmrkrz+tWz9qBy+oGfLRfAQfkmiKDibDeG
- JV1w==
-X-Gm-Message-State: AOJu0YxFjWvE18fagRnXGUM2+TeQ+J225/hUfF8Cj+R20nMQJYR+tNun
- WyWRmosyG8+HUaa+L4AexaVWQaAP4cxqtLQ7hU+9Kw==
-X-Google-Smtp-Source: AGHT+IELu0IWpniK9Ext9q2cYlvjDEfkluLdIEF4ZldFkIOC0QXD7H20cAYLqVBzEuILiD1BsjV1eIid6309dzsctl8=
-X-Received: by 2002:ac2:4f16:0:b0:4fd:f84f:83c1 with SMTP id
- k22-20020ac24f16000000b004fdf84f83c1mr7890847lfr.64.1692719833616; Tue, 22
- Aug 2023 08:57:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692719889; x=1693324689;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m5yA9C6p63mRvyRVmh0V9kVMOn0ZV4uNQ/sMmflzaNA=;
+ b=eKgaj4XUtvcQ/zdXbPV9QksUrz0tuC89Zhe9o83oIMYR4c+pBeuz2kWHCEGIrkWlaZ
+ OTsA7LWdM1bD4nRsAX/vM7DTgXf/nL0dopeU8ii/PlwJ9mevZqDUG+Mla6VsaPsNOvzq
+ pLT/3XLIGsx2/2GWWZ0LkMS1eio9juW+G3y1vitQd8IBUEpwFNwpHzi/G4iU5elAm9G1
+ bZR+UcjCg7+PfD/neEpFp4ii7Mwc584Z38GMcWoZ4fMNXhAgFRLs1XOJHPSyT+BiU0Tk
+ fi8nDqQaiHJIeRhSzPr4N5PBDk/jaLj0Rrp2lyV5fSaCN31K3jbGRFYIFa8YQKip5QLq
+ Uycg==
+X-Gm-Message-State: AOJu0YwpM6AGcopO8LlHg7IhlGS8fWMqZoNVWtzGPxya6GzWx5oIUh+d
+ x+RPo7rDewHXaj743inL7vggFQ==
+X-Google-Smtp-Source: AGHT+IGHh5eD15c435hJkaxcCG/9USuPulpPr1obdqmdCPiV/IS7T1KmPNoBJAuYD4b5uvrF43b2iw==
+X-Received: by 2002:a17:902:d486:b0:1bf:25d7:6fc1 with SMTP id
+ c6-20020a170902d48600b001bf25d76fc1mr9316089plg.35.1692719888704; 
+ Tue, 22 Aug 2023 08:58:08 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
+ ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
+ by smtp.gmail.com with ESMTPSA id
+ u1-20020a170902e80100b001b51b3e84cesm9196589plg.166.2023.08.22.08.58.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 08:58:08 -0700 (PDT)
+Message-ID: <c538a498-05e4-23ed-328e-7355436f6c7a@linaro.org>
+Date: Tue, 22 Aug 2023 08:58:06 -0700
 MIME-Version: 1.0
-References: <20230822155004.1158931-1-alex.bennee@linaro.org>
-In-Reply-To: <20230822155004.1158931-1-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 22 Aug 2023 16:57:02 +0100
-Message-ID: <CAFEAcA8_tqboXDen6OPY-AeZ3BY7p3vYMeG77YQJ=cKA_GRMaQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] docs/style: permit inline loop variables
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Juan Quintela <quintela@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/7] tcg/tcg-op: Document bswap16() byte pattern
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230822093712.38922-1-philmd@linaro.org>
+ <20230822093712.38922-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230822093712.38922-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,17 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 22 Aug 2023 at 16:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
-> I've already wasted enough of my time debugging aliased variables in
-> deeply nested loops.
+On 8/22/23 02:37, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   tcg/tcg-op.c | 48 ++++++++++++++++++++++++++++++++----------------
+>   1 file changed, 32 insertions(+), 16 deletions(-)
+> 
+> diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+> index 7aadb37756..f164ddc95e 100644
+> --- a/tcg/tcg-op.c
+> +++ b/tcg/tcg-op.c
+> @@ -1021,6 +1021,13 @@ void tcg_gen_ext16u_i32(TCGv_i32 ret, TCGv_i32 arg)
+>       }
+>   }
+>   
+> +/*
+> + * bswap16_i32: 16-bit byte swap on the low bits of a 32-bit value.
+> + *
+> + * Byte pattern:  bswap16_i32(xxab) -> ..ba             (TCG_BSWAP_OZ)
+> + *                bswap16_i32(xxab) -> ssba             (TCG_BSWAP_OS)
+> + *                bswap16_i32(xxab) -> xxba
+> + */
 
-In theory we could try to enable -Wshadow and deal with
-all the existing cases of aliasing, which would then
-allow us to turn it into an error and catch your bugs :-)
+Don't forget TCG_BSWAP_IZ, which means the input is already zero-extended.
+Which makes
 
-Anyway, I think declaration-in-for-loop is OK and we
-already have quite a lot of instances of it.
+> +                                            /* arg = xxab */
+> +        tcg_gen_shri_i32(t0, arg, 8);       /*  t0 = .xxa */
 
--- PMM
+this
+
+>           if (!(flags & TCG_BSWAP_IZ)) {
+> -            tcg_gen_ext8u_i32(t0, t0);
+> +            tcg_gen_ext8u_i32(t0, t0);      /*  t0 = ...a */
+>           }
+>   
+>           if (flags & TCG_BSWAP_OS) {
+> -            tcg_gen_shli_i32(t1, arg, 24);
+> -            tcg_gen_sari_i32(t1, t1, 16);
+> +            tcg_gen_shli_i32(t1, arg, 24);  /*  t1 = b... */
+> +            tcg_gen_sari_i32(t1, t1, 16);   /*  t1 = ssb. */
+>           } else if (flags & TCG_BSWAP_OZ) {
+> -            tcg_gen_ext8u_i32(t1, arg);
+> -            tcg_gen_shli_i32(t1, t1, 8);
+> +            tcg_gen_ext8u_i32(t1, arg);     /*  t1 = ...b */
+> +            tcg_gen_shli_i32(t1, t1, 8);    /*  t1 = ..b. */
+>           } else {
+> -            tcg_gen_shli_i32(t1, arg, 8);
+> +            tcg_gen_shli_i32(t1, arg, 8);   /*  t1 = xab. */
+
+and this slightly inaccurate.
+
+>           }
+>   
+> -        tcg_gen_or_i32(ret, t0, t1);
+> +        tcg_gen_or_i32(ret, t0, t1);        /* ret = ssba */
+
+This one is just confusing, since each of the three cases above have different outputs.
+
+
+r~
+
+
+
+
+r~
 
