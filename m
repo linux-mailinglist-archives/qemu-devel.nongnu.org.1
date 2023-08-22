@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1DF783AC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4700783AC6
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLhq-0008Sb-CX; Tue, 22 Aug 2023 03:21:38 -0400
+	id 1qYLhq-0000I1-R2; Tue, 22 Aug 2023 03:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLhR-0008Hm-Cs
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:21:14 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLhT-0008JO-LY
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:21:18 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLhL-0004vI-KL
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:21:12 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fee8b78097so22832705e9.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:20:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLhL-0004vp-Md
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:21:15 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-31963263938so3679920f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:21:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688856; x=1693293656;
+ d=linaro.org; s=google; t=1692688862; x=1693293662;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=whZhTEDPMBELkFvMwjXWXlrIichDByDyvyD7joRcNmA=;
- b=pu0t1jQgh7SGDf97nWrMoezLrknqeQzfIuFj0qufwXJjLT4wOaO19V7FDy+WitoPiT
- aN56btRnn8kVQhtR5/xC8MhvP2E2PnNWY5ZiGsYg7+B73S5xZJKsrDFeofvunIrmQ283
- utma7MAxJe6wAuLUxrZFftPu9RCMK31xh+T81l1Vc/0jJpm1GvgSsWkilZJdgeOxhe7w
- Tle8PoT2U093OWGoVYxR568c0DyMgYiBDwhpWQxYasDBzau2jhLxAUv6aLh9Svr4XoZu
- Ww5GKxELu76Jn6/QSHb684bcWclT8p+JjAmi07V2VLbXMS68Px3ronV4C88Oy6lsQ/h+
- 9V6A==
+ bh=GAyHO/pa2jDR5RbcTcrgjo8SGOZ1fzlP8kfH4UEF2HY=;
+ b=RxUnpz6zon7HNhh58yEi69pIo/wnYgh92zY4slEwXXUWzMSQT4GEW+45nkPcXTEG3r
+ 8vIUdzFx8Ij04ln/J4XewqdoM+7ZrsKX9B+MdOXv2CPZfa4fGbId+ANawFNY/PG4prP3
+ Bxn2TdSpwQbpxiTyANidrD5w6ARDIcjybHgRQhdRPsHgqPDmNL0+lONdpMqey2xx0xfA
+ BK/J/YWugFZStOYAkF6CugUXphgIyHihVeIsy2wFk9YAWIJA3RfXVZUIiP6El2cy5xqy
+ A+mt4TmyhcJEqkgY3FmkczyC7bW9EdAAoEpbyF8hFy5MHjLWpPOVWTZ9Df0zb01ni3FZ
+ nBwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688856; x=1693293656;
+ d=1e100.net; s=20221208; t=1692688862; x=1693293662;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=whZhTEDPMBELkFvMwjXWXlrIichDByDyvyD7joRcNmA=;
- b=jt+VzfmEbno2L7J+KT0pHkFCMEg4kK/8vvmNABMkPKtrFzkaNzLvBd7zdSUwDmRlF3
- Fhv3xS4xoQGlnpspkC2CpWLCdwxrWCP768I34tGwyythgaS+UXJFvDSQAhf/EOVOSlCD
- 7HhnzEKUw2Dff/Tgj9xsPesisAhRmGIf76mq5Z6PXX++UnI0v9uViesYkVirS5txuD3/
- kbHzLM1MXjTbcvx88utV8UMZHaDujcunWLJ4KP/6BymvZM2cKBf9bGDfcCVJnEwu6ZVv
- 62FxI+/Q+8Kpm5a3QXi/dvmGh+e73RGTRt9cdSoJvLbJHzlQprKxvwRWDvlOs9WtnhSo
- gwKQ==
-X-Gm-Message-State: AOJu0YyxVPTpkPY73pRxm10Mf1oInV/fcqLDbGceA7mJDXXhfo7Z+5ii
- pAmE+OuSXZz/oA+h/TuRyaISUbq0G19g9fZa1vrqPg==
-X-Google-Smtp-Source: AGHT+IGD3zQKYEskr4//JCEo8EqfJxQESzU/w2+2HjP1/8rSDJXJjK0CNFaADULuTnDWafSZmD1o1A==
-X-Received: by 2002:a05:600c:d8:b0:3fe:e812:4709 with SMTP id
- u24-20020a05600c00d800b003fee8124709mr5585408wmm.12.1692688855889; 
- Tue, 22 Aug 2023 00:20:55 -0700 (PDT)
+ bh=GAyHO/pa2jDR5RbcTcrgjo8SGOZ1fzlP8kfH4UEF2HY=;
+ b=f97GnkAXVHBe561OS8D0GHGduWMjTzLl9C3cXB5XKSiqD5pGQoBbRfaV67c3o4BwtC
+ LU5pbC04A3kt82vCJb/Kvz+1g0vQNvorgf6iUVYEwQQWgw0YHAhOeb9hI3ZKW0KKNpRm
+ C8ySepO5YwpO/98W/B+5xS2YeiekzRgYb0Mr3ho8Bx7cy/DEfuAuXL7dEWOjlDapA1k/
+ 2xEG+5NEGAy+F8nF/OavO2vh6cz24dOdGqWHsunfLUjSYZFvWF+XHKNgK0bW8lVbnYK7
+ tIqjTs4HSZWDFqyBUlaapx9YUUhEnPuJ+Wu75lq6QMMX3G3/I/Kc1W8DbIXd8LWNT9GC
+ xnRQ==
+X-Gm-Message-State: AOJu0Yy0Ouq0cnXdGK47voGFid6fMQKmBub7rPV52ZVadI2V3jgEdHaC
+ 2XM3AGR/Rxqs5VqtuvBYztR6A50fcCp/k4lIb38XHw==
+X-Google-Smtp-Source: AGHT+IFfKngRWgyVg+F3aPCX4Z2BZJ1Ep/oTD+rNMlX3RgxB+lL7syg7uIYmTg3X8RJUiGPG2EUONw==
+X-Received: by 2002:a5d:560a:0:b0:314:3b02:a8a8 with SMTP id
+ l10-20020a5d560a000000b003143b02a8a8mr5702430wrv.55.1692688862416; 
+ Tue, 22 Aug 2023 00:21:02 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- a19-20020a5d4573000000b003143add4396sm14855820wrc.22.2023.08.22.00.20.54
+ z1-20020adfd0c1000000b003143c9beeaesm14871841wrh.44.2023.08.22.00.21.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:20:55 -0700 (PDT)
+ Tue, 22 Aug 2023 00:21:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Song Gao <gaosong@loongson.cn>
 Cc: Jiajie Chen <c@jia.je>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Huacai Chen <chenhuacai@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH RESEND v5 16/19] target/loongarch: Add avail_LSPW to check
- LSPW instructions
-Date: Tue, 22 Aug 2023 09:19:56 +0200
-Message-ID: <20230822071959.35620-7-philmd@linaro.org>
+Subject: [PATCH RESEND v5 17/19] target/loongarch: Add avail_LAM to check
+ atomic instructions
+Date: Tue, 22 Aug 2023 09:19:57 +0200
+Message-ID: <20230822071959.35620-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822071405.35386-1-philmd@linaro.org>
 References: <20230822071405.35386-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,50 +97,104 @@ From: Song Gao <gaosong@loongson.cn>
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20230822032724.1353391-13-gaosong@loongson.cn>
+Message-ID: <20230822032724.1353391-14-gaosong@loongson.cn>
 ---
- target/loongarch/translate.h                       | 1 +
- target/loongarch/insn_trans/trans_privileged.c.inc | 8 ++++++++
- 2 files changed, 9 insertions(+)
+ target/loongarch/translate.h                  |  1 +
+ .../loongarch/insn_trans/trans_atomic.c.inc   | 72 +++++++++----------
+ 2 files changed, 37 insertions(+), 36 deletions(-)
 
 diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
-index 0f244cd83b..f0d7b82932 100644
+index f0d7b82932..faf4ce87f9 100644
 --- a/target/loongarch/translate.h
 +++ b/target/loongarch/translate.h
-@@ -20,6 +20,7 @@
- #define avail_FP(C)    (FIELD_EX32((C)->cpucfg2, CPUCFG2, FP))
+@@ -21,6 +21,7 @@
  #define avail_FP_SP(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, FP_SP))
  #define avail_FP_DP(C) (FIELD_EX32((C)->cpucfg2, CPUCFG2, FP_DP))
-+#define avail_LSPW(C)  (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSPW))
+ #define avail_LSPW(C)  (FIELD_EX32((C)->cpucfg2, CPUCFG2, LSPW))
++#define avail_LAM(C)   (FIELD_EX32((C)->cpucfg2, CPUCFG2, LAM))
  
  /*
   * If an operation is being performed on less than TARGET_LONG_BITS,
-diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/insn_trans/trans_privileged.c.inc
-index 684ff547a7..099cd871f0 100644
---- a/target/loongarch/insn_trans/trans_privileged.c.inc
-+++ b/target/loongarch/insn_trans/trans_privileged.c.inc
-@@ -437,6 +437,10 @@ static bool trans_ldpte(DisasContext *ctx, arg_ldpte *a)
-     TCGv_i32 mem_idx = tcg_constant_i32(ctx->mem_idx);
-     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
- 
-+    if (!avail_LSPW(ctx)) {
-+        return true;
-+    }
-+
-     if (check_plv(ctx)) {
-         return false;
-     }
-@@ -450,6 +454,10 @@ static bool trans_lddir(DisasContext *ctx, arg_lddir *a)
-     TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
- 
-+    if (!avail_LSPW(ctx)) {
-+        return true;
-+    }
-+
-     if (check_plv(ctx)) {
-         return false;
-     }
+diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
+index 194818d74d..40085190f6 100644
+--- a/target/loongarch/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/insn_trans/trans_atomic.c.inc
+@@ -73,39 +73,39 @@ TRANS(ll_w, ALL, gen_ll, MO_TESL)
+ TRANS(sc_w, ALL, gen_sc, MO_TESL)
+ TRANS(ll_d, 64, gen_ll, MO_TEUQ)
+ TRANS(sc_d, 64, gen_sc, MO_TEUQ)
+-TRANS(amswap_w, 64, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
+-TRANS(amswap_d, 64, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
+-TRANS(amadd_w, 64, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
+-TRANS(amadd_d, 64, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
+-TRANS(amand_w, 64, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
+-TRANS(amand_d, 64, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
+-TRANS(amor_w, 64, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
+-TRANS(amor_d, 64, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
+-TRANS(amxor_w, 64, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
+-TRANS(amxor_d, 64, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
+-TRANS(ammax_w, 64, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
+-TRANS(ammax_d, 64, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
+-TRANS(ammin_w, 64, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
+-TRANS(ammin_d, 64, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
+-TRANS(ammax_wu, 64, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
+-TRANS(ammax_du, 64, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
+-TRANS(ammin_wu, 64, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
+-TRANS(ammin_du, 64, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
+-TRANS(amswap_db_w, 64, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
+-TRANS(amswap_db_d, 64, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
+-TRANS(amadd_db_w, 64, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
+-TRANS(amadd_db_d, 64, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
+-TRANS(amand_db_w, 64, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
+-TRANS(amand_db_d, 64, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
+-TRANS(amor_db_w, 64, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
+-TRANS(amor_db_d, 64, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
+-TRANS(amxor_db_w, 64, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
+-TRANS(amxor_db_d, 64, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
+-TRANS(ammax_db_w, 64, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
+-TRANS(ammax_db_d, 64, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
+-TRANS(ammin_db_w, 64, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
+-TRANS(ammin_db_d, 64, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
+-TRANS(ammax_db_wu, 64, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
+-TRANS(ammax_db_du, 64, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
+-TRANS(ammin_db_wu, 64, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
+-TRANS(ammin_db_du, 64, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
++TRANS(amswap_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
++TRANS(amswap_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
++TRANS(amadd_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
++TRANS(amadd_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
++TRANS(amand_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
++TRANS(amand_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
++TRANS(amor_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
++TRANS(amor_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
++TRANS(amxor_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
++TRANS(amxor_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
++TRANS(ammax_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
++TRANS(ammax_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
++TRANS(ammin_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
++TRANS(ammin_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
++TRANS(ammax_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
++TRANS(ammax_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
++TRANS(ammin_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
++TRANS(ammin_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
++TRANS(amswap_db_w, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
++TRANS(amswap_db_d, LAM, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
++TRANS(amadd_db_w, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
++TRANS(amadd_db_d, LAM, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
++TRANS(amand_db_w, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
++TRANS(amand_db_d, LAM, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
++TRANS(amor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
++TRANS(amor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
++TRANS(amxor_db_w, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
++TRANS(amxor_db_d, LAM, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
++TRANS(ammax_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
++TRANS(ammax_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
++TRANS(ammin_db_w, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
++TRANS(ammin_db_d, LAM, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
++TRANS(ammax_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
++TRANS(ammax_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
++TRANS(ammin_db_wu, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
++TRANS(ammin_db_du, LAM, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
 -- 
 2.41.0
 
