@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326F3783A71
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CB9783A7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:11:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLXC-0002D5-RU; Tue, 22 Aug 2023 03:10:38 -0400
+	id 1qYLXH-0002ED-0b; Tue, 22 Aug 2023 03:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLX8-0002CB-IB
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:34 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXE-0002E1-CY
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:40 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLX6-0002Cn-3m
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:34 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-317c3ac7339so3651833f8f.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXC-0002H0-20
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:40 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3159d5e409dso3251458f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688230; x=1693293030;
+ d=linaro.org; s=google; t=1692688236; x=1693293036;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zxHqKmOyuuNOftyTGwcwCJthKGUr1Tn3UywBr6PkJwE=;
- b=krITlh8T942g2eMS96hHB/szGA6NVhLUhSRHGN2v0bOeNGKsagALclrPPAoRo1gwto
- 1nrhaSrIOSieU0B7nZWzmIQsCwxadDVNg6/6lnWuU4SHYqZU3vyJTOBaDo/O0P0cdpiU
- DnI1EGrFRnwgVn0w4ZfpOfm8D4mvQKMDItL7/TrByBRX8A76YSPG4upsffUtBj4JL/SX
- DbN4cruT7NJuZoJraUF1r+rUP9JAGJwR8Gb2c9RG/kzDJkFUl6gF2p92LipsH9PDYfS9
- N332W2xIIVvl3rmwq9xxCyZZe6n25ukhDS6QhA2Z4hpSs5JgxLXTudee74HgqPeANcqg
- e8WQ==
+ bh=3rrV84vf0KvDLl6SX1WoOdtWUazfK9wKjoL6Oup5qkU=;
+ b=o0DJEZ3ZbcILe/mUyXV8pLMc89CYUZgNN0pVKfss1GbALAGuDWym5TId9QjU1/6apg
+ 0Wt7e0xoBmX1zg3eWbTgDb5lErKwUuOq2ebySYPcrf8/Sg3+iKIdD5i8jSartWLtam0I
+ KVYM0UyhXG5P0hiUJU+zcx1cXinMK8v9aLEjv7ALMk1bR/a6DTzYwpcEH1yvr35byaSV
+ HyUdGHcZlvY5Ler158XU7XMci1m7OxMTQl87uUGdtRtg9n/+7Q8KHw6NC35AZ8is+xhv
+ 3FuXvtiogxx3K4fTXYWudbufew0EKKhXyAJiVR7atUBS+ZWSEDNTb6dh1JviIhTnqCwu
+ q3Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688230; x=1693293030;
+ d=1e100.net; s=20221208; t=1692688236; x=1693293036;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zxHqKmOyuuNOftyTGwcwCJthKGUr1Tn3UywBr6PkJwE=;
- b=ex3lI8iYFcf5PMAQxxRjvMcyzvn4ql/W/JT1jsyTmHoyzFhaA2i3Y+Tjhyvg5SDJFi
- qiW/4hsDVif7yJm0YMQQj2nUuulslxmyVCZDR8yw2ZVPs10Dy+jinJUgVtx4xEcb22JE
- aJM1zZPVIDdCiN7dnPDG4w1jQxeSgPi3euJDV9gXZX7Yl/1qBu6qbJ1OAE7y/R0RSNv3
- LzStx34Qh3zRNMw8Pc+tXQG9yucEAPCniwPCpxozSi6whP8inChb91j3VB0WSFnH3DwB
- CA6xIMG38oif5FIK9MH8YFG1CsFvxP6RekxZQQhg6bqO7qatuVXJwO/hdEbfYvqMQkeb
- lIqA==
-X-Gm-Message-State: AOJu0YzIVwYRajLnbFMsq88iv6s9gkFz0hnytObuW47W9l2tJdIABA1m
- o+yoVQ9Kt2Mc7e/rDW0cjRuIFIudrctTGVg3EufbiA==
-X-Google-Smtp-Source: AGHT+IGq9ikwmVVMuHgJjcNT6lmWXG+OPSan5BLuEd/udsApT6N+WtJWj6yQyR3ppT3FKu6Xi7XzYA==
-X-Received: by 2002:a5d:5910:0:b0:319:7d83:7ace with SMTP id
- v16-20020a5d5910000000b003197d837acemr6615919wrd.35.1692688229921; 
- Tue, 22 Aug 2023 00:10:29 -0700 (PDT)
+ bh=3rrV84vf0KvDLl6SX1WoOdtWUazfK9wKjoL6Oup5qkU=;
+ b=h0jLOqqpN5z04MBYaW8IN5RAA5KPiKqHi7h1WjD5TEAr0g/vmusrwj0R3TulVTNQw5
+ +1faT/WVDc8RCsc8UjYnj9Pr44dM6R/l1bhi6+heecTezY+8I3rTITFRphy+4/Ki+Gog
+ DjBdI5LKkb26l7RqVtP2uJ1IB7RsNgKBn1xin3SRh+Sfa39gsS2XljehhGiLfkDmvqRW
+ aYrNiF88vPbWghddKe8WoE6uIABVmVDOYFzaLKDrnSflPlczaGGXHGQSmOJQCvX65lFL
+ O1fNwKA/UAe29RCgRb5F5pz5O4Ad4jwE4oOxlTuflodP3KkqEfI/g0727xxQFczMuddu
+ uE0Q==
+X-Gm-Message-State: AOJu0YxQJfa1KM3+DAwzm8IAqpxQZ+Jj4QxxNcy1YK4cxN/t6ofsHH5F
+ eiLHAIc1jJDXNVyY1LF87uLLt0RvuxQwq6a0tfLAfQ==
+X-Google-Smtp-Source: AGHT+IGC63g8Iuh2EyKSzG9m4TEBb+gZXn5b3mibAuzt6qjlSPR/8JESgd2sjVJEinH6S1n7US2aCQ==
+X-Received: by 2002:a5d:50cf:0:b0:316:fc03:3c66 with SMTP id
+ f15-20020a5d50cf000000b00316fc033c66mr9299388wrt.3.1692688236252; 
+ Tue, 22 Aug 2023 00:10:36 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- w14-20020adfec4e000000b003180822cf8fsm15095146wrn.1.2023.08.22.00.10.28
+ r11-20020a5d4e4b000000b00317b063590fsm14876710wrt.55.2023.08.22.00.10.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:10:29 -0700 (PDT)
+ Tue, 22 Aug 2023 00:10:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Song Gao <gaosong@loongson.cn>
 Cc: Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 02/19] target/loongarch: Support LoongArch32 DMW
-Date: Tue, 22 Aug 2023 09:09:55 +0200
-Message-ID: <20230822071013.34884-3-philmd@linaro.org>
+Subject: [PATCH v5 03/19] target/loongarch: Support LoongArch32 VPPN
+Date: Tue, 22 Aug 2023 09:09:56 +0200
+Message-ID: <20230822071013.34884-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822071013.34884-1-philmd@linaro.org>
 References: <20230822071013.34884-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,83 +94,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jiajie Chen <c@jia.je>
 
-LA32 uses a different encoding for CSR.DMW and a new direct mapping
-mechanism.
+VPPN of TLBEHI/TLBREHI is limited to 19 bits in LA32.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20230822032724.1353391-3-gaosong@loongson.cn>
+Message-ID: <20230822032724.1353391-4-gaosong@loongson.cn>
 ---
- target/loongarch/cpu-csr.h    |  7 +++----
- target/loongarch/tlb_helper.c | 26 +++++++++++++++++++++++---
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ target/loongarch/cpu-csr.h    |  6 ++++--
+ target/loongarch/tlb_helper.c | 23 ++++++++++++++++++-----
+ 2 files changed, 22 insertions(+), 7 deletions(-)
 
 diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-index 48ed2e0632..b93f99a9ef 100644
+index b93f99a9ef..c59d7a9fcb 100644
 --- a/target/loongarch/cpu-csr.h
 +++ b/target/loongarch/cpu-csr.h
-@@ -188,10 +188,9 @@ FIELD(CSR_DMW, PLV1, 1, 1)
- FIELD(CSR_DMW, PLV2, 2, 1)
- FIELD(CSR_DMW, PLV3, 3, 1)
- FIELD(CSR_DMW, MAT, 4, 2)
--FIELD(CSR_DMW, VSEG, 60, 4)
--
--#define dmw_va2pa(va) \
--    (va & MAKE_64BIT_MASK(0, TARGET_VIRT_ADDR_SPACE_BITS))
-+FIELD(CSR_DMW_32, PSEG, 25, 3)
-+FIELD(CSR_DMW_32, VSEG, 29, 3)
-+FIELD(CSR_DMW_64, VSEG, 60, 4)
+@@ -57,7 +57,8 @@ FIELD(CSR_TLBIDX, PS, 24, 6)
+ FIELD(CSR_TLBIDX, NE, 31, 1)
  
- /* Debug CSRs */
- #define LOONGARCH_CSR_DBG            0x500 /* debug config */
+ #define LOONGARCH_CSR_TLBEHI         0x11 /* TLB EntryHi */
+-FIELD(CSR_TLBEHI, VPPN, 13, 35)
++FIELD(CSR_TLBEHI_32, VPPN, 13, 19)
++FIELD(CSR_TLBEHI_64, VPPN, 13, 35)
+ 
+ #define LOONGARCH_CSR_TLBELO0        0x12 /* TLB EntryLo0 */
+ #define LOONGARCH_CSR_TLBELO1        0x13 /* TLB EntryLo1 */
+@@ -164,7 +165,8 @@ FIELD(CSR_TLBRERA, PC, 2, 62)
+ #define LOONGARCH_CSR_TLBRELO1       0x8d /* TLB refill entrylo1 */
+ #define LOONGARCH_CSR_TLBREHI        0x8e /* TLB refill entryhi */
+ FIELD(CSR_TLBREHI, PS, 0, 6)
+-FIELD(CSR_TLBREHI, VPPN, 13, 35)
++FIELD(CSR_TLBREHI_32, VPPN, 13, 19)
++FIELD(CSR_TLBREHI_64, VPPN, 13, 35)
+ #define LOONGARCH_CSR_TLBRPRMD       0x8f /* TLB refill mode info */
+ FIELD(CSR_TLBRPRMD, PPLV, 0, 2)
+ FIELD(CSR_TLBRPRMD, PIE, 2, 1)
 diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-index cef10e2257..1f8e7911c7 100644
+index 1f8e7911c7..c8b8b0497f 100644
 --- a/target/loongarch/tlb_helper.c
 +++ b/target/loongarch/tlb_helper.c
-@@ -173,6 +173,18 @@ static int loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
-     return TLBRET_NOMATCH;
- }
+@@ -300,8 +300,13 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
  
-+static hwaddr dmw_va2pa(CPULoongArchState *env, target_ulong va,
-+                        target_ulong dmw)
-+{
-+    if (is_la64(env)) {
-+        return va & TARGET_VIRT_MASK;
-+    } else {
-+        uint32_t pseg = FIELD_EX32(dmw, CSR_DMW_32, PSEG);
-+        return (va & MAKE_64BIT_MASK(0, R_CSR_DMW_32_VSEG_SHIFT)) | \
-+            (pseg << R_CSR_DMW_32_VSEG_SHIFT);
-+    }
-+}
-+
- static int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-                                 int *prot, target_ulong address,
-                                 MMUAccessType access_type, int mmu_idx)
-@@ -192,12 +204,20 @@ static int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-     }
- 
-     plv = kernel_mode | (user_mode << R_CSR_DMW_PLV3_SHIFT);
--    base_v = address >> R_CSR_DMW_VSEG_SHIFT;
-+    if (is_la64(env)) {
-+        base_v = address >> R_CSR_DMW_64_VSEG_SHIFT;
-+    } else {
-+        base_v = address >> R_CSR_DMW_32_VSEG_SHIFT;
-+    }
-     /* Check direct map window */
-     for (int i = 0; i < 4; i++) {
--        base_c = FIELD_EX64(env->CSR_DMW[i], CSR_DMW, VSEG);
+     if (tlb_error == TLBRET_NOMATCH) {
+         env->CSR_TLBRBADV = address;
+-        env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN,
+-                                      extract64(address, 13, 35));
 +        if (is_la64(env)) {
-+            base_c = FIELD_EX64(env->CSR_DMW[i], CSR_DMW_64, VSEG);
++            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_64,
++                                        VPPN, extract64(address, 13, 35));
 +        } else {
-+            base_c = FIELD_EX64(env->CSR_DMW[i], CSR_DMW_32, VSEG);
++            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_32,
++                                        VPPN, extract64(address, 13, 19));
 +        }
-         if ((plv & env->CSR_DMW[i]) && (base_c == base_v)) {
--            *physical = dmw_va2pa(address);
-+            *physical = dmw_va2pa(env, address, env->CSR_DMW[i]);
-             *prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
-             return TLBRET_MATCH;
-         }
+     } else {
+         if (!FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
+             env->CSR_BADV = address;
+@@ -366,12 +371,20 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
+ 
+     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+         csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
+-        csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN);
++        if (is_la64(env)) {
++            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
++        } else {
++            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
++        }
+         lo0 = env->CSR_TLBRELO0;
+         lo1 = env->CSR_TLBRELO1;
+     } else {
+         csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
+-        csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI, VPPN);
++        if (is_la64(env)) {
++            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
++        } else {
++            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
++        }
+         lo0 = env->CSR_TLBELO0;
+         lo1 = env->CSR_TLBELO1;
+     }
+@@ -491,7 +504,7 @@ void helper_tlbfill(CPULoongArchState *env)
+ 
+     if (pagesize == stlb_ps) {
+         /* Only write into STLB bits [47:13] */
+-        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_VPPN_SHIFT);
++        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
+ 
+         /* Choose one set ramdomly */
+         set = get_random_tlb(0, 7);
 -- 
 2.41.0
 
