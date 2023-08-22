@@ -2,62 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726FB7840C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 14:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C35C78410A
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 14:42:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYQTX-0001Rt-SF; Tue, 22 Aug 2023 08:27:11 -0400
+	id 1qYQgx-0006H8-Ni; Tue, 22 Aug 2023 08:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1qYQTD-0001Qy-B7
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:26:54 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1qYQT9-0002Rs-ML
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:26:50 -0400
-Received: from loongson.cn (unknown [10.2.9.158])
- by gateway (Coremail) with SMTP id _____8AxCPJ6qeRkEOkaAA--.55030S3;
- Tue, 22 Aug 2023 20:26:36 +0800 (CST)
-Received: from kvm-1-158.loongson.cn (unknown [10.2.9.158])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cx7yN6qeRk1UhgAA--.63623S2; 
- Tue, 22 Aug 2023 20:26:34 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH] target/loongarch: cpu: Implement get_arch_id callback
-Date: Tue, 22 Aug 2023 20:26:34 +0800
-Message-Id: <20230822122634.1435006-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.27.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQgo-0006Eu-HX
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:40:57 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQgl-0005Tv-Sq
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:40:54 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3feddbb670cso31553555e9.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 05:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692708048; x=1693312848;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u8Ncu8aR3h9eMD8scGzi1n3AJbGQYzVdDS6hz26+JPk=;
+ b=NF3/NnBqtM3teswifD6fa3hcHPneD1HhvqQpaLmWGojJnKrQn1HY5lz+I0z1WI0AWp
+ 7+Qlshl5m95u1vi9StXBqznx/BFqzBr26r18dHbbXGH70IpEx51Frn3hcl+Z+UXaPVXS
+ rWqYewYClt1P6981XuXwxekFN2OWDQwQh/KbbztLTMDyqI4t0XChFHtWUMPtOCwv0ZVa
+ C3RpkczLngV7517x95aVMh2mrnaA9aXbfjAj/I2MAFswVbY25gPjdLR9f4aYcJFvwUYy
+ IUOrl/iAQHvcbmMEzUcI4agfHdgQTA9f8olSnC6ynZ4IC60nJ0j5f8dF1CbGuOSvnXAz
+ RiEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692708048; x=1693312848;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u8Ncu8aR3h9eMD8scGzi1n3AJbGQYzVdDS6hz26+JPk=;
+ b=PyITw8unjPB6E4vbKPJU9U/FcQknpFgz2rDOotswc0HNbl7LU1jqpyIb0Qr3X9CsLB
+ cUQcELsvO7ESS9b6+/52B8X4Q0xRI2lhJ3YnUIarKwXFkEiGSWTR12NUhjC4raQ/5ZTa
+ gdWoPFILqLOJFtT/bMAWqSG55Bez9YpKgTubOLkARKxYB6NZzC5lyrb4CowsJ0VmCS+t
+ ROwyGZco6gCuUvPueNG85dBugMwZTOUjBfRSFS8LWqWXu5FBSZuQrMPqhkU/h62rajw4
+ uwzvKX1/7qbLAJkH8DjF/tBoTeKIxfcq3GBAw3bpwds6ERwNcAG8RUE43swQilpUS/HI
+ kAtg==
+X-Gm-Message-State: AOJu0Yxo9hKBiyZ52xErgGWBEn8bj2uhlsF4allmu4qyg38Y5ff1vhKA
+ PEiPzyX+GaTjBDx1x+D1MIQMqmGMh1Y/MIt5vVgpbQ==
+X-Google-Smtp-Source: AGHT+IHTQSu/OSYD3zeda/IeT9Ylwcc42fD2Pwyye1FfedxYaapLjxByC2JwosoDAOvAFanbaTHeVA==
+X-Received: by 2002:a05:600c:2349:b0:3fe:18be:76f8 with SMTP id
+ 9-20020a05600c234900b003fe18be76f8mr7377654wmq.38.1692708047726; 
+ Tue, 22 Aug 2023 05:40:47 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.214.4])
+ by smtp.gmail.com with ESMTPSA id
+ x26-20020a1c7c1a000000b003fc16ee2864sm15541120wmc.48.2023.08.22.05.40.44
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 22 Aug 2023 05:40:47 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Greg Kurz <groug@kaod.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org
+Subject: [PATCH 00/12] tcg: Factor hrev{32,64}_{i32,i64,tl} out
+Date: Tue, 22 Aug 2023 14:40:30 +0200
+Message-ID: <20230822124042.54739-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cx7yN6qeRk1UhgAA--.63623S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CFyxur1kWFyrKw1DAF15ZFc_yoW8trWkpr
- ZrZF1qya18G39xJ3ykJa45Xrn8Wr17Wr42qa1xKrWfCFsrXry8XF4vy34qvF98Ca48WFy2
- qF1rA3W5XF48XabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUkYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
- 0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
- 7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcV
- C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF
- 04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
- CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,70 +101,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the callback for getting the architecture-dependent CPU
-ID, the cpu ID is physical id described in ACPI MADT table, this
-will be used for cpu hotplug.
+This series factor the "byteswap each halfword within a
+32/64-bit value" code duplication as generic helpers.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Change-Id: I53bcfb9f4279e491f33e8b99a9102534ad53409e
----
- hw/loongarch/virt.c    | 2 ++
- target/loongarch/cpu.c | 8 ++++++++
- target/loongarch/cpu.h | 1 +
- 3 files changed, 11 insertions(+)
+Modulo the documentation added, there is a good negative
+diff-stat, so I believe this is a win from a maintainance
+point of view.
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index e19b042ce8..6f6b577749 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -815,6 +815,8 @@ static void loongarch_init(MachineState *machine)
-         cpu = cpu_create(machine->cpu_type);
-         cpu->cpu_index = i;
-         machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
-+        lacpu = LOONGARCH_CPU(cpu);
-+        lacpu->phy_id = machine->possible_cpus->cpus[i].arch_id;
-     }
-     fdt_add_cpu_nodes(lams);
- 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index ad93ecac92..7be3769672 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -690,6 +690,13 @@ static struct TCGCPUOps loongarch_tcg_ops = {
- static const struct SysemuCPUOps loongarch_sysemu_ops = {
-     .get_phys_page_debug = loongarch_cpu_get_phys_page_debug,
- };
-+
-+static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
-+{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-+
-+    return cpu->phy_id;
-+}
- #endif
- 
- static gchar *loongarch_gdb_arch_name(CPUState *cs)
-@@ -715,6 +722,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-     cc->set_pc = loongarch_cpu_set_pc;
-     cc->get_pc = loongarch_cpu_get_pc;
- #ifndef CONFIG_USER_ONLY
-+    cc->get_arch_id = loongarch_cpu_get_arch_id;
-     dc->vmsd = &vmstate_loongarch_cpu;
-     cc->sysemu_ops = &loongarch_sysemu_ops;
- #endif
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index fa371ca8ba..033081593c 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -371,6 +371,7 @@ struct ArchCPU {
-     CPUNegativeOffsetState neg;
-     CPULoongArchState env;
-     QEMUTimer timer;
-+    uint32_t  phy_id;
- 
-     /* 'compatible' string for this CPU for Linux device trees */
-     const char *dtb_compatible;
+I used "hrev" to follow the other bswap/hswap/rev helpers
+but it isn't very descriptive, so any better name suggestion
+is welcomed.
+(In particular because there are other patterns I'd like to
+factor out and then naming is getting worse, such 'wrev').
+
+Philippe Mathieu-Daudé (12):
+  tcg/tcg-op: Factor tcg_gen_hrev32_i32() out
+  target/arm: Use generic hrev32_i32() in ARM REV16 and VREV16 opcodes
+  target/cris: Use generic hrev32_i32() in SWAPB opcode
+  target/rx: Use generic hrev32_i32() in REVW opcode
+  tcg/tcg-op: Factor tcg_gen_hrev64_i64() out
+  target/mips: Use generic hrev64_i64() in DSBH opcode
+  target/ppc: Use generic hrev64_i64() in BRH / BSWAP16x8 opcodes
+  target/loongarch: Use generic hrev64_i64() in REVB.4H opcode
+  tcg/tcg-op: Add tcg_gen_hrev32_i64() and tcg_gen_hrev_i64()
+  target/arm: Use generic hrev_i64() in Aarch64 REV16 opcode
+  target/loongarch: Use generic hrev64_i32() in REVB.2H opcode
+  target/mips: Use generic hrev32_tl() in WSBH opcode
+
+ docs/devel/tcg-ops.rst                      | 10 +++
+ include/tcg/tcg-op-common.h                 |  4 +
+ include/tcg/tcg-op.h                        |  2 +
+ target/arm/tcg/translate-a32.h              |  1 -
+ target/arm/tcg/translate-a64.c              | 11 +--
+ target/arm/tcg/translate-neon.c             |  2 +-
+ target/arm/tcg/translate.c                  | 14 +---
+ target/cris/translate.c                     | 20 +----
+ target/mips/tcg/translate.c                 | 24 +-----
+ target/ppc/translate.c                      | 10 +--
+ target/rx/translate.c                       |  8 +-
+ tcg/tcg-op.c                                | 81 ++++++++++++++++++---
+ target/cris/translate_v10.c.inc             |  2 +-
+ target/loongarch/insn_trans/trans_bit.c.inc | 30 +-------
+ target/ppc/translate/vsx-impl.c.inc         | 19 +----
+ 15 files changed, 99 insertions(+), 139 deletions(-)
+
 -- 
-2.27.0
+2.41.0
 
 
