@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A902C783A4C
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341CB783A66
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:10:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLSg-0000RC-Ki; Tue, 22 Aug 2023 03:05:58 -0400
+	id 1qYLWz-00028M-3w; Tue, 22 Aug 2023 03:10:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLSc-0000R3-Qo
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:05:54 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLWw-000274-Cz
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:22 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLSa-0000hK-B0
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:05:54 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2bba6fc4339so64558711fa.2
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:05:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLWt-0001vB-Gc
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:21 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fe1e1142caso41085435e9.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692687949; x=1693292749;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Jz+sv7XtS2cnByhLN0sB9A8nkMbZWwyWq5pSZdAUCvc=;
- b=bb6P2WHmdazKl5KNyjvgqKtbaChX9P7xZkAcpsC9IoY8TZ5SQmcgAegdU+YoT6LnfX
- G9j29+aBTiHr4dJx38hm/xn3qdHjDftJ5/mlXpd7Q76qEfnqdRbL4yiIfkeYzJRH1WFy
- 2JX+xZNB3bE9t5CIRNLC2JBM1dz8rdDKOw/IwStshTFKcw4Gu2uYxnhKjLA5gFiLuJ0X
- 2hX2zV6riPbJINgWGwu3FbiEZ0pEdQr/Ui+GyWGp5TmACrtEa0e8bN5pQ9Q6wEiiYlB2
- fgWfUfD2RWYGcIvv6BoWCJBPY+vmEjO4wRfj71ZSo34rXWAFrQJGi7cQMBa7khIA5NiC
- lspg==
+ d=linaro.org; s=google; t=1692688217; x=1693293017;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z4zgAXTYE81eKryd8EEg3T25AM2J+pN7VJ77zhTZKjk=;
+ b=iOGi83QklKbSWNsyecZUYCiQRPifFyjQLpqpAz75el8112/vj/GbTQgo3vQX4dx3wC
+ AYYyLZ0zuQQvgqmG6Ex4ylJ9rshTzD2TWI9BUTqtCxqCc1tkijb+gZY9lM99DEsPL0AY
+ DJSnfzihTWT8nhsGY8y1lSOuXfMk/qyyc72vg0JTHpVxUlX/segHsGMXQNyniw3XDlzN
+ hSaRoW00Mm04vDwOraXNsij2pNbhIi5sCzHxc7oO+gMLvWLFgidkAjojRImcgIcN16uQ
+ tU//nBa1eUiQl2Z+qn7HNByzFlWFx3O0t1VdV9BgUQYuiKqoZEt5uUj9/EKO6Y3pWKmk
+ Vexw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692687949; x=1693292749;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jz+sv7XtS2cnByhLN0sB9A8nkMbZWwyWq5pSZdAUCvc=;
- b=axGSctZ8mTf7ev9Ec/+MDlkKuwnPWjqp8HVkcNqwIz3alNDfskHpmswHmRtg/t6z4m
- aDigDPYpUojEfrPMg6OcWYW2gnekMqDPt1ctpaMCNafJKArUGRie6VeJQYxo06OCSjQt
- oldn+iEgS1R93AnBUteOVxWMFQ0ynsLz3xMPuR6MQCnuQYHQXsAB2gKRJD0fDEYpGVfw
- sWOSZoLkItQXtfnTfd5a+c+MfQR0w8N7BalGvG3bg0ssXYL59xDZiGG4D0e4C/Jum2cM
- KcExg/N8LU6MuLpRRwPiq+h6xEblBqoAP/Y1/XgRkG4MF9cRdr5j8zfYi3Ij0NXOxyw1
- rJcw==
-X-Gm-Message-State: AOJu0YzoSc9KOl0uQ4jZAe2fiI3X5m3W8qPYnKyl5s7Aa5sZV4Eyrc6V
- xi9vksqHPYGZi16JVtFxF00R0g==
-X-Google-Smtp-Source: AGHT+IEISFFCNLDQTGi8fiG6+3lSYP6ZWtLP8Bx/zMSg6YJpkym8/6yaEabA+H3kIejnFxART9kBeA==
-X-Received: by 2002:a2e:9b8a:0:b0:2b9:581d:73bb with SMTP id
- z10-20020a2e9b8a000000b002b9581d73bbmr6026743lji.26.1692687949686; 
- Tue, 22 Aug 2023 00:05:49 -0700 (PDT)
-Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
- k15-20020a7bc40f000000b003feef9a6cb2sm6812842wmi.28.2023.08.22.00.05.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 00:05:49 -0700 (PDT)
-Message-ID: <5990383e-e3f9-1377-3f52-f41395007346@linaro.org>
-Date: Tue, 22 Aug 2023 09:05:46 +0200
+ d=1e100.net; s=20221208; t=1692688217; x=1693293017;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Z4zgAXTYE81eKryd8EEg3T25AM2J+pN7VJ77zhTZKjk=;
+ b=l8aYKMEUjbud5E9Nf21jensYizaRsBMM0VTclgQpvWq1iBR/83n5RI0+2TkXLahG3D
+ Bl0Crakj1gEQWpEBgaVSiU51n7PT0/+FVZI42PHD2/xcPHJdgsjX4malghobSFe2Uwkb
+ oOsC3dQ0DenoJ0Paf09jFBgRIbkA0lO5fRFzjuRgTYwQcAgT6WCMPolHmtiMwt7g+O0t
+ fm6HqILLMrgPKCVd3JfxBE7uW0ukhKVmojfmTUXk1DeCZzpb/OXY/vjXGE6U7aBOx1qR
+ Lt5mRjWQgjGMXc4IOjfwxTYie/m9to58X5wlRbAXzKqjQcmM+D7rOkxcL2NIklfUNgMY
+ AoFA==
+X-Gm-Message-State: AOJu0YykEzPP716TFEkLtAwaO7++jqSIP6ZH2OjS7u4X67vGysFQwULZ
+ oj32en1ouVBaioPVP9P4b1nVLf20sFt6rLYENg7R8Q==
+X-Google-Smtp-Source: AGHT+IEM3korHTN1cK6yTc39JnGqT/IDeJ2AXRyoC3GXlZM+Z8elEaBlVTSoy0bcl2cOIpPlFPHAfA==
+X-Received: by 2002:a1c:7918:0:b0:3fe:fac5:ec52 with SMTP id
+ l24-20020a1c7918000000b003fefac5ec52mr522787wme.41.1692688216650; 
+ Tue, 22 Aug 2023 00:10:16 -0700 (PDT)
+Received: from localhost.localdomain ([37.19.214.4])
+ by smtp.gmail.com with ESMTPSA id
+ m7-20020a5d6247000000b003195504c754sm14858141wrv.31.2023.08.22.00.10.15
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 22 Aug 2023 00:10:16 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org,
+	Song Gao <gaosong@loongson.cn>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 00/19] Based-on:
+ https://patchew.org/QEMU/20230821125959.28666-1-philmd@linaro.org/
+Date: Tue, 22 Aug 2023 09:09:53 +0200
+Message-ID: <20230822071013.34884-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v4 06/15] target/loongarch: Sign extend results in VA32
- mode
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, c@jia.je, maobibo@loongson.cn,
- yangxiaojuan@loongson.cn, yijun@loongson.cn, shenjinyang@loongson.cn
-References: <20230822032724.1353391-1-gaosong@loongson.cn>
- <20230822032724.1353391-7-gaosong@loongson.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230822032724.1353391-7-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,21 +91,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/8/23 05:27, Song Gao wrote:
-> From: Jiajie Chen <c@jia.je>
-> 
-> In VA32 mode, BL, JIRL and PC* instructions should sign-extend the low
-> 32 bit result to 64 bits.
-> 
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/translate.c                   | 8 ++++++++
->   target/loongarch/insn_trans/trans_arith.c.inc  | 2 +-
->   target/loongarch/insn_trans/trans_branch.c.inc | 4 ++--
->   3 files changed, 11 insertions(+), 3 deletions(-)
+(all series reviewed, for Song Gao to pick whichever v4/v5 is preferred)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi,
+
+This series adds some checks before translating instructions
+
+This includes:
+
+CPUCFG[1].IOCSR
+
+CPUCFG[2].FP
+CPUCFG[2].FP_SP
+CPUCFG[2].FP_DP
+CPUCFG[2].LSPW
+CPUCFG[2].LAM
+CPUCFG[2].LSX
+
+V5:
+- Split 2 patches, extracting helpers
+- R-b
+
+V4:
+- Rebase;
+- Split patch 'Add LoongArch32 cpu la132' in two patch; (PMD)
+- Remove unrelated cpucfgX;(PMD)
+- R-b.
+
+V3:
+- Rebase;
+- The la32 instructions following Table 2 at [2].
+
+V2:
+- Add a check parameter to the TRANS macro.
+- remove TRANS_64.
+- Add avail_ALL/64/FP/FP_SP/FP_DP/LSPW/LAM/LSX/IOCSR
+  to check instructions.
+
+[1]: https://patchew.org/QEMU/20230809083258.1787464-1-c@jia.je/
+[2]: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#overview-of-basic-integer-instructions
+
+Jiajie Chen (11):
+  target/loongarch: Support LoongArch32 TLB entry
+  target/loongarch: Support LoongArch32 DMW
+  target/loongarch: Support LoongArch32 VPPN
+  target/loongarch: Add LA64 & VA32 to DisasContext
+  target/loongarch: Extract make_address_x() helper
+  target/loongarch: Extract make_address_i() helper
+  target/loongarch: Extract make_address_pc() helper
+  target/loongarch: Extract set_pc() helper
+  target/loongarch: Truncate high 32 bits of address in VA32 mode
+  target/loongarch: Sign extend results in VA32 mode
+  target/loongarch: Add LoongArch32 cpu la132
+
+Song Gao (8):
+  target/loongarch: Add a check parameter to the TRANS macro
+  target/loongarch: Add avail_64 to check la64-only instructions
+  hw/loongarch: Remove restriction of la464 cores in the virt machine
+  target/loongarch: Add avail_FP/FP_SP/FP_DP to check fpu instructions
+  target/loongarch: Add avail_LSPW to check LSPW instructions
+  target/loongarch: Add avail_LAM to check atomic instructions
+  target/loongarch: Add avail_LSX to check LSX instructions
+  target/loongarch: Add avail_IOCSR to check iocsr instructions
+
+ target/loongarch/cpu-csr.h                    |   22 +-
+ target/loongarch/cpu.h                        |   22 +
+ target/loongarch/translate.h                  |   19 +-
+ hw/loongarch/virt.c                           |    5 -
+ target/loongarch/cpu.c                        |   46 +-
+ target/loongarch/gdbstub.c                    |    2 +-
+ target/loongarch/op_helper.c                  |    4 +-
+ target/loongarch/tlb_helper.c                 |   66 +-
+ target/loongarch/translate.c                  |   46 +
+ target/loongarch/insn_trans/trans_arith.c.inc |   98 +-
+ .../loongarch/insn_trans/trans_atomic.c.inc   |   85 +-
+ target/loongarch/insn_trans/trans_bit.c.inc   |   56 +-
+ .../loongarch/insn_trans/trans_branch.c.inc   |   27 +-
+ target/loongarch/insn_trans/trans_extra.c.inc |   24 +-
+ .../loongarch/insn_trans/trans_farith.c.inc   |   96 +-
+ target/loongarch/insn_trans/trans_fcmp.c.inc  |    8 +
+ target/loongarch/insn_trans/trans_fcnv.c.inc  |   56 +-
+ .../loongarch/insn_trans/trans_fmemory.c.inc  |   62 +-
+ target/loongarch/insn_trans/trans_fmov.c.inc  |   52 +-
+ target/loongarch/insn_trans/trans_lsx.c.inc   | 1434 +++++++++--------
+ .../loongarch/insn_trans/trans_memory.c.inc   |  118 +-
+ .../insn_trans/trans_privileged.c.inc         |   24 +-
+ target/loongarch/insn_trans/trans_shift.c.inc |   34 +-
+ 23 files changed, 1386 insertions(+), 1020 deletions(-)
+
+-- 
+2.41.0
 
 
