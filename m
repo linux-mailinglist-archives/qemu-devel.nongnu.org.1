@@ -2,56 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DF678429D
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2C27842A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:59:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYRsN-0002zm-V7; Tue, 22 Aug 2023 09:56:55 -0400
+	id 1qYRu5-0003tM-Bl; Tue, 22 Aug 2023 09:58:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1qYRs7-0002yQ-1P
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:56:39 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1qYRs4-0001ZO-G3
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:56:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=4H6fA1oQeAH1EsfK7udq9VUvpmss/oGOMd2BF338m88=; b=U2dQTu8BshOxiK8LWUhm9yxrTp
- Lk69C6feyoTAm5yKSx964Vm/qAW4dcpu7+AkBAiMoGDgQT8wZGxnQTHOEY6pDAx/kUTj5BkBhnEQZ
- OnAgqeifRfBsZ/SLQtFWpMu+SsQS952C9myTJTjJ+HQy1sKFWmAOaQAgMG3D9yxx/K5lU9YhF8yIF
- XtjR6yt6Lngnk77uC166444DETxAqNgu/Yy9rACJduuCtKxfm+pqWi3bO6ed/JmucSMnRwnyKcbcZ
- gqyNgD/QcXtoNk/sG/vBJRwuoZobzE5J/2A60djDYygy0d486mKGl8nilRtzjywCjUS/LWXAzSz5R
- 7M8arKi4aAcPVZq97lWLBBWxQzHUQBA4W7D3Y81Rb6nUaYmz1bC+v/lafGdGXEEACX+5LOwQKyswO
- vXpG0iQTPCbA9X8YgLoWNSUGaQyEESpB9mdzsV48FS1DFPWweE10WC2jdmTJEUQZ4lCaUKWG4uha0
- I+/q1L2vgSCt/Apsfouu6ykFyiufPyj5ilZk8bQqeuw9DH75m1ntivEEZUrH+Y2oD5Ba7EvqyszIF
- W8ziFhQ02SKFJ392LCDYT8cYv7c3LD6bOYynT+/n5reymYDTUAfu2Honc+q54bNVxH2H3wGQWSWjC
- zcw9CJ7ZyrUdW8rY2t6n4CJsZ3E5ZzldlAz20t4XY=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] audio/jackaudio: Avoid dynamic stack allocation in
- qjack_process()
-Date: Tue, 22 Aug 2023 15:56:31 +0200
-Message-ID: <1702669.g6eAV7DQBD@silver>
-In-Reply-To: <20230818155846.1651287-3-peter.maydell@linaro.org>
-References: <20230818155846.1651287-1-peter.maydell@linaro.org>
- <20230818155846.1651287-3-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qYRtw-0003rP-Vb
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:58:34 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qYRtt-0001v5-3d
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:58:31 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51cff235226so9334385a12.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 06:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692712707; x=1693317507;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wlu5M5RBd16vhzLD3u1SSlP7zoHfQUuIUN4OxwJY5Os=;
+ b=etMu0dTr9WE7/h7nQxLUGEJLdXAg/o5aBeDEuXMcEDzO4ptuRvLkBMs8KvriPhNAWs
+ SPs63ELHsgaDD48TKwL3o7vWB34VFK7uf25BoJHZfHp7FH95rCsj2j/o/rFk/G8HgCGq
+ kZdaR0ESDryArsyElSJwMT6YENcpKnKxYO6jFdFSOUAq37fLIEtCsrNFdQw/mSU/F93N
+ Q6sZsKu0pVkroeM9Y35ALWCxyUvHi3fcjRg+AnT0R2iKMTqF2emL8SMmYPnViyIbXlCf
+ nlOjohf3szM9OcGhu9JHVkjoHtgRATW1uf50PEaAzecxtLmp1l3Kyf/L/LQ5fSmizK99
+ VGOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692712707; x=1693317507;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wlu5M5RBd16vhzLD3u1SSlP7zoHfQUuIUN4OxwJY5Os=;
+ b=NgbUNqCm7nG6GwiikBz/MQVbDeQbeDl80G6s/KGtjDoztLj52Nv+qpS+vkXXRv76Yh
+ RlX1Z64jFFT6h7jZdTSPlJEdT7gnLm5NI6HuoIM6uheW9lRRmP9Qg9JI9GkfEH3ee6Zr
+ 15VTHnhtWyC3uGOMMy0ycFkTfDtDGMOue3izQua9jLkjKXkjqJiRecXGhEbULave/RL0
+ ytKn1XcVvCX1edom9zJZfnRHVInfshAMvQooaYQzTAzlrscVLurvBOtx5j/qEewdR0/y
+ V57k4fSsUxmTnC9H0mRUeb6XScI876av4c3534I2fvka3j7i2VVsLSRLLNnDHVqTfAmI
+ 9jpw==
+X-Gm-Message-State: AOJu0Ywwv4xZkWxHEsYD5XkE3yTm7X6hVGt/TCt78XiZRkHn5mITV6E9
+ h5Fr23J1axSopR2rLwzpUW/Q0gnex1/bLL0I5yz04w==
+X-Google-Smtp-Source: AGHT+IG3ee+fPBHMSLbNMefm3v2nQKZXG9Bw4PgAORIa1502a/FWZMvmGDGo8K6XVont+0xIRwis0RapEVXy+9YCVnA=
+X-Received: by 2002:a05:6402:274b:b0:522:c226:34ea with SMTP id
+ z11-20020a056402274b00b00522c22634eamr12481314edd.7.1692712706848; Tue, 22
+ Aug 2023 06:58:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+References: <20230822093712.38922-1-philmd@linaro.org>
+ <87zg2jgphi.fsf@linaro.org>
+In-Reply-To: <87zg2jgphi.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 22 Aug 2023 14:58:15 +0100
+Message-ID: <CAFEAcA8+aHGRb4SeU0sReNegbeO0L2pXgj7JkXHBuxRJ9bRnyQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] tcg: Document *swap/deposit helpers
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,99 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Friday, August 18, 2023 5:58:46 PM CEST Peter Maydell wrote:
-> Avoid a dynamic stack allocation in qjack_process().  Since this
-> function is a JACK process callback, we are not permitted to malloc()
-> here, so we allocate a working buffer in qjack_client_init() instead.
-> 
-> The codebase has very few VLAs, and if we can get rid of them all we
-> can make the compiler error on new additions.  This is a defensive
-> measure against security bugs where an on-stack dynamic allocation
-> isn't correctly size-checked (e.g.  CVE-2021-3527).
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> This feels like we ought to be able to say "we know there are at most
-> X channels, so allocate an array of size X on the stack", but I
-> couldn't find anything in the audio subsystem from a quick look that
-> set an obvious bound on the number of channels.  Is there some
-> straightforward constant MAX_CHANNELS somewhere?
-> ---
+On Tue, 22 Aug 2023 at 14:46, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+>
+> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>
+> > While reviewing a recent patch from Richard optimizing
+> > deposit() [*] I ended looking at the *swap friends, taking
+> > some notes, which then evolved to proper documentation.
+> >
+> > [*]
+> > https://lore.kernel.org/qemu-devel/20230816145547.477974-3-richard.hend=
+erson@linaro.org/
+>
+> We already have some documentation in tcg.rst:
+>
+>    * - bswap16_i32/i64 *t0*, *t1*, *flags*
+>
+>      - | 16 bit byte swap on the low bits of a 32/64 bit input.
+>        |
+>        | If *flags* & ``TCG_BSWAP_IZ``, then *t1* is known to be zero-ext=
+ended from bit 15.
+>        | If *flags* & ``TCG_BSWAP_OZ``, then *t0* will be zero-extended f=
+rom bit 15.
+>        | If *flags* & ``TCG_BSWAP_OS``, then *t0* will be sign-extended f=
+rom bit 15.
+>        |
+>        | If neither ``TCG_BSWAP_OZ`` nor ``TCG_BSWAP_OS`` are set, then t=
+he bits of *t0* above bit 15 may contain any value.
+>
+>    * - bswap32_i64 *t0*, *t1*, *flags*
+>
+>      - | 32 bit byte swap on a 64-bit value.  The flags are the same as f=
+or bswap16,
+>          except they apply from bit 31 instead of bit 15.
+>
+>    * - bswap32_i32 *t0*, *t1*, *flags*
+>
+>        bswap64_i64 *t0*, *t1*, *flags*
+>
+>      - | 32/64 bit byte swap. The flags are ignored, but still present
+>          for consistency with the other bswap opcodes.
+>
+> In an ideal world we could generate kdoc from the source file and
+> include it in the rest of the tcg docs. I'm not sure if it worth the
+> churn though? Richard?
 
-The JACK API doesn't have an official limit on "ports", but AFAICS in QEMU
-there is a limit of max. 16 audio channels for audio frontends.
+I do think it would be useful to have documentation of the
+set of APIs you use as a writer of a TCG frontend. This is
+often not exactly the same as the TCG IR opcodes. (Similarly
+what you have to do as a backend isn't exactly the same,
+but the documentation need is less pressing because fewer
+people need to work on the backends.)
 
-The QEMU `channels` CL option is apparently not limited ATM, but it might make
-sense to limit that option to 16 channels as well. I mean anything beyond 16th
-channel was a dead channel anyway, right?
-
-Probably a separate battle field though:
-
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-
->  audio/jackaudio.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/audio/jackaudio.c b/audio/jackaudio.c
-> index 7cb2a49f971..e1eaa3477dc 100644
-> --- a/audio/jackaudio.c
-> +++ b/audio/jackaudio.c
-> @@ -70,6 +70,9 @@ typedef struct QJackClient {
->      int             buffersize;
->      jack_port_t   **port;
->      QJackBuffer     fifo;
-> +
-> +    /* Used as workspace by qjack_process() */
-> +    float **process_buffers;
->  }
->  QJackClient;
->  
-> @@ -267,22 +270,21 @@ static int qjack_process(jack_nframes_t nframes, void *arg)
->      }
->  
->      /* get the buffers for the ports */
-> -    float *buffers[c->nchannels];
->      for (int i = 0; i < c->nchannels; ++i) {
-> -        buffers[i] = jack_port_get_buffer(c->port[i], nframes);
-> +        c->process_buffers[i] = jack_port_get_buffer(c->port[i], nframes);
->      }
->  
->      if (c->out) {
->          if (likely(c->enabled)) {
-> -            qjack_buffer_read_l(&c->fifo, buffers, nframes);
-> +            qjack_buffer_read_l(&c->fifo, c->process_buffers, nframes);
->          } else {
->              for (int i = 0; i < c->nchannels; ++i) {
-> -                memset(buffers[i], 0, nframes * sizeof(float));
-> +                memset(c->process_buffers[i], 0, nframes * sizeof(float));
->              }
->          }
->      } else {
->          if (likely(c->enabled)) {
-> -            qjack_buffer_write_l(&c->fifo, buffers, nframes);
-> +            qjack_buffer_write_l(&c->fifo, c->process_buffers, nframes);
->          }
->      }
->  
-> @@ -448,6 +450,9 @@ static int qjack_client_init(QJackClient *c)
->            jack_get_client_name(c->client));
->      }
->  
-> +    /* Allocate working buffer for process callback */
-> +    c->process_buffers = g_new(float *, c->nchannels);
-> +
->      jack_set_process_callback(c->client, qjack_process , c);
->      jack_set_port_registration_callback(c->client, qjack_port_registration, c);
->      jack_set_xrun_callback(c->client, qjack_xrun, c);
-> @@ -579,6 +584,7 @@ static void qjack_client_fini_locked(QJackClient *c)
->  
->          qjack_buffer_free(&c->fifo);
->          g_free(c->port);
-> +        g_free(c->process_buffers);
->  
->          c->state = QJACK_STATE_DISCONNECTED;
->          /* fallthrough */
-> 
-
-
+thanks
+-- PMM
 
