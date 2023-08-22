@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3FA783AB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996D8783AA8
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLbR-0001GK-6j; Tue, 22 Aug 2023 03:15:01 -0400
+	id 1qYLbZ-0001Yl-Fj; Tue, 22 Aug 2023 03:15:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLbO-0001Dg-6Z
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:14:58 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLbV-0001P9-P2
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:15:05 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLbL-0002wi-QE
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:14:57 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fef34c33d6so13457755e9.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:14:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLbS-0002xb-M8
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:15:05 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31c3726cc45so1966848f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:15:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688494; x=1693293294;
+ d=linaro.org; s=google; t=1692688500; x=1693293300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ac7pv2kpb0ajeFGbtJ3onoCTyP2ZNqDH1hhRLbCbPbE=;
- b=t7hWtp1XXtA92hEauBLXvL4NRLQtopFBPefeCNXAmepOE4/nZ4nHlSipRrBuhQ/3cu
- jkySjBR3gOweCCw+oxLQhuWQy8JB6szAmII9I91+DseISbmTquTFPA4GItcQo7z+r/Of
- ib2ndPoDlN87CvpavmvBVIHRqBw0n8HVPFATt/0qBdTFJJkTgKsonyCU+fffTmcemKVy
- yBPeflCb2GNKEtnVKuzsh60L6zORQK9CE54KdVh5vLyWsVssd2wLx7veNaeQL2/C/V7D
- qf5c2meGSllAzJFrV/BtlhS3j0dpzSEv2svztPmaz7dv3d3ZbadLnBphNhtEeNcDEjOs
- vc3g==
+ bh=33DmERFUsYdjL3Dz9aMKxeBhsxHS9Ddy+t/2WnyHXOg=;
+ b=x2zqfScVQOrpTc5S5O3uqic6Rn3AoSvtmbwzSnUk8ihH26moiU4Lizi7H4qUzptJJH
+ TJ+FwUEf1QE8FCqvolnRcBgxtljRX02cEKrdylJ1KQ6sRcZ6MPD3RmLP27MwxkJhc82A
+ sl2Q+DiYFX08wDrvW0IfXTkOuX3f7DoOtoWJgmukB1fM4Xq30yH0rNYsITyV0lpFOwPu
+ KHUhZj36LtSeGgcLXcQMpeGXmrOU2DW1B0eN6p1US71BmIC3tnkL5sBgVsCZknug+COS
+ hoPKDN/z06f230t8zpN3VmsV2bxibGopqQpkgHVSaQ2ElQT5tYh33quLW/KHqbFWqCaj
+ 9dvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688494; x=1693293294;
+ d=1e100.net; s=20221208; t=1692688500; x=1693293300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ac7pv2kpb0ajeFGbtJ3onoCTyP2ZNqDH1hhRLbCbPbE=;
- b=PPLUAS6ova86Aww9rHmNA8wLZeDrMKwgs4E8+8PB9Me1nsgdMBBY9hTvYwECiwtoGe
- nrBSwkW3UejMn0MkHf3TG/mUnuAvFUjpAyNhFqUkUkhbXlrmFVmIJDVEY08UVtkoFuCX
- wwOWUaHn7LqDlG1bcuPqAVDsFNxj0zDhvlpAXeVnj+Nz70yU4QtmVcxQZGvRs88bZ3aG
- Z54asr1Y/8jsjGntXFqYzqrV5mWesrGjSFMzV4cns0sEuACdfA0S1SlBoHabYHaUlQtb
- jGzOaywGjicA/tnJUYFqOmLL6mwPFn2WjSEGe7WURaSayOjgYk7oocdx8Hz++1eeHniV
- 7xBA==
-X-Gm-Message-State: AOJu0YxMa360lKgPG0dBjCmyevwLXmivsGuU+jjjeEgEbZzj4zAUCN/m
- wVOxCUT6VC4acx7QlJLfaTZa0YpS9AONzGHgw/UZrA==
-X-Google-Smtp-Source: AGHT+IEtSkEv+Go9/eD/LdLQkuOnttC6r3S510KRzEZynkgTY1PfFZtmikmtyZIhqCgyZhq8czFw+g==
-X-Received: by 2002:a05:600c:210b:b0:3fe:ef5b:bb6 with SMTP id
- u11-20020a05600c210b00b003feef5b0bb6mr4233930wml.35.1692688492733; 
- Tue, 22 Aug 2023 00:14:52 -0700 (PDT)
+ bh=33DmERFUsYdjL3Dz9aMKxeBhsxHS9Ddy+t/2WnyHXOg=;
+ b=fDdQzbw3izBG0jN6JoDUh9TPz7IWWzhyqMQj5PVhvXkPGPE4r+V/b6wg0uVxueGlne
+ m01Xr2fpFO72+h7aExGhORu5hBJC87yAO6C0wgm6gFI3z8L3yvSr4gaupAyLrP8qF3NU
+ ceUzf3sAT14wjbrGsvdK+Iwcp5l2DJtO96ShiKLNbB0GgPq9UHoxomfxx4CuIGUSUH5G
+ 8cQr0ZSGBQ+a+dIL23OCvtU0O5pUyg2BkpdWiRUGIA87SV8FsIVacghyqN5h48aSdwLe
+ 9Pq8C2HrfNw89cDIPVG9rNNewsD/gnMK/2J90EGVVk0WMSKnh68iSyvRj1vx22MohB9X
+ 6ZeA==
+X-Gm-Message-State: AOJu0YwtFvfe6klQqlGXQ3KJ4JZoNjmvB33vVwf51Jss+/g5Xa8DON6K
+ UMPmSBe33Hlb0YjrtUoHmQJ5vDL+Wwga7LcVfGOrbA==
+X-Google-Smtp-Source: AGHT+IFV6PigOYYcnd5LHtBhWbA/hhUMfmoLMzVIZWYKL91fMBqAnyR344rv/964vTX0lss+YBgrGw==
+X-Received: by 2002:adf:fe86:0:b0:31c:6525:770d with SMTP id
+ l6-20020adffe86000000b0031c6525770dmr68580wrr.1.1692688500582; 
+ Tue, 22 Aug 2023 00:15:00 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- a19-20020a05600c225300b003fee83ae4a3sm9452540wmm.9.2023.08.22.00.14.51
+ x4-20020adff0c4000000b003180fdf5589sm15093474wro.6.2023.08.22.00.14.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:14:52 -0700 (PDT)
+ Tue, 22 Aug 2023 00:15:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Song Gao <gaosong@loongson.cn>
@@ -61,18 +61,17 @@ Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH RESEND v5 07/19] target/loongarch: Extract make_address_pc()
- helper
-Date: Tue, 22 Aug 2023 09:13:53 +0200
-Message-ID: <20230822071405.35386-8-philmd@linaro.org>
+Subject: [PATCH RESEND v5 08/19] target/loongarch: Extract set_pc() helper
+Date: Tue, 22 Aug 2023 09:13:54 +0200
+Message-ID: <20230822071405.35386-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822071405.35386-1-philmd@linaro.org>
 References: <20230822071405.35386-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,69 +97,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Jiajie Chen <c@jia.je>
 
 Signed-off-by: Jiajie Chen <c@jia.je>
+Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230822032724.1353391-7-gaosong@loongson.cn>
+Message-ID: <20230822032724.1353391-6-gaosong@loongson.cn>
 [PMD: Extract helper from bigger patch]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/translate.c                   | 5 +++++
- target/loongarch/insn_trans/trans_arith.c.inc  | 2 +-
- target/loongarch/insn_trans/trans_branch.c.inc | 4 ++--
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ target/loongarch/cpu.h       |  5 +++++
+ target/loongarch/cpu.c       | 16 ++++++++--------
+ target/loongarch/gdbstub.c   |  2 +-
+ target/loongarch/op_helper.c |  4 ++--
+ 4 files changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index acc54d7587..8b26555a27 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -226,6 +226,11 @@ static TCGv make_address_i(DisasContext *ctx, TCGv base, target_long ofs)
-     return make_address_x(ctx, base, addend);
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 72109095e4..e1562695e8 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -443,6 +443,11 @@ static inline bool is_va32(CPULoongArchState *env)
+     return va32;
  }
  
-+static uint64_t make_address_pc(DisasContext *ctx, uint64_t addr)
++static inline void set_pc(CPULoongArchState *env, uint64_t value)
 +{
-+    return addr;
++    env->pc = value;
 +}
 +
- #include "decode-insns.c.inc"
- #include "insn_trans/trans_arith.c.inc"
- #include "insn_trans/trans_shift.c.inc"
-diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/insn_trans/trans_arith.c.inc
-index 43d6cf261d..2aea4e41d5 100644
---- a/target/loongarch/insn_trans/trans_arith.c.inc
-+++ b/target/loongarch/insn_trans/trans_arith.c.inc
-@@ -72,7 +72,7 @@ static bool gen_pc(DisasContext *ctx, arg_r_i *a,
-                    target_ulong (*func)(target_ulong, int))
- {
-     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
--    target_ulong addr = func(ctx->base.pc_next, a->imm);
-+    target_ulong addr = make_address_pc(ctx, func(ctx->base.pc_next, a->imm));
+ /*
+  * LoongArch CPUs hardware flags.
+  */
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 822f2a72e5..67eb6c3135 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -81,7 +81,7 @@ static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
  
-     tcg_gen_movi_tl(dest, addr);
-     gen_set_gpr(a->rd, dest, EXT_NONE);
-diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/insn_trans/trans_branch.c.inc
-index 3ad34bcc05..2e35572cea 100644
---- a/target/loongarch/insn_trans/trans_branch.c.inc
-+++ b/target/loongarch/insn_trans/trans_branch.c.inc
-@@ -12,7 +12,7 @@ static bool trans_b(DisasContext *ctx, arg_b *a)
+-    env->pc = value;
++    set_pc(env, value);
+ }
  
- static bool trans_bl(DisasContext *ctx, arg_bl *a)
- {
--    tcg_gen_movi_tl(cpu_gpr[1], ctx->base.pc_next + 4);
-+    tcg_gen_movi_tl(cpu_gpr[1], make_address_pc(ctx, ctx->base.pc_next + 4));
-     gen_goto_tb(ctx, 0, ctx->base.pc_next + a->offs);
-     ctx->base.is_jmp = DISAS_NORETURN;
-     return true;
-@@ -25,7 +25,7 @@ static bool trans_jirl(DisasContext *ctx, arg_jirl *a)
+ static vaddr loongarch_cpu_get_pc(CPUState *cs)
+@@ -168,7 +168,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+     set_DERA:
+         env->CSR_DERA = env->pc;
+         env->CSR_DBG = FIELD_DP64(env->CSR_DBG, CSR_DBG, DST, 1);
+-        env->pc = env->CSR_EENTRY + 0x480;
++        set_pc(env, env->CSR_EENTRY + 0x480);
+         break;
+     case EXCCODE_INT:
+         if (FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
+@@ -249,7 +249,8 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
  
-     TCGv addr = make_address_i(ctx, src1, a->imm);
-     tcg_gen_mov_tl(cpu_pc, addr);
--    tcg_gen_movi_tl(dest, ctx->base.pc_next + 4);
-+    tcg_gen_movi_tl(dest, make_address_pc(ctx, ctx->base.pc_next + 4));
-     gen_set_gpr(a->rd, dest, EXT_NONE);
-     tcg_gen_lookup_and_goto_ptr();
-     ctx->base.is_jmp = DISAS_NORETURN;
+         /* Find the highest-priority interrupt. */
+         vector = 31 - clz32(pending);
+-        env->pc = env->CSR_EENTRY + (EXCCODE_EXTERNAL_INT + vector) * vec_size;
++        set_pc(env, env->CSR_EENTRY + \
++               (EXCCODE_EXTERNAL_INT + vector) * vec_size);
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s: PC " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+                       " cause %d\n" "    A " TARGET_FMT_lx " D "
+@@ -260,10 +261,9 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+                       env->CSR_ECFG, env->CSR_ESTAT);
+     } else {
+         if (tlbfill) {
+-            env->pc = env->CSR_TLBRENTRY;
++            set_pc(env, env->CSR_TLBRENTRY);
+         } else {
+-            env->pc = env->CSR_EENTRY;
+-            env->pc += EXCODE_MCODE(cause) * vec_size;
++            set_pc(env, env->CSR_EENTRY + EXCODE_MCODE(cause) * vec_size);
+         }
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s: PC " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+@@ -324,7 +324,7 @@ static void loongarch_cpu_synchronize_from_tb(CPUState *cs,
+     CPULoongArchState *env = &cpu->env;
+ 
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    env->pc = tb->pc;
++    set_pc(env, tb->pc);
+ }
+ 
+ static void loongarch_restore_state_to_opc(CPUState *cs,
+@@ -334,7 +334,7 @@ static void loongarch_restore_state_to_opc(CPUState *cs,
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
+ 
+-    env->pc = data[0];
++    set_pc(env, data[0]);
+ }
+ #endif /* CONFIG_TCG */
+ 
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index a462e25737..e20b20f99b 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -77,7 +77,7 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         env->gpr[n] = tmp;
+         length = read_length;
+     } else if (n == 33) {
+-        env->pc = tmp;
++        set_pc(env, tmp);
+         length = read_length;
+     }
+     return length;
+diff --git a/target/loongarch/op_helper.c b/target/loongarch/op_helper.c
+index 60335a05e2..cf84f20aba 100644
+--- a/target/loongarch/op_helper.c
++++ b/target/loongarch/op_helper.c
+@@ -114,14 +114,14 @@ void helper_ertn(CPULoongArchState *env)
+         env->CSR_TLBRERA = FIELD_DP64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR, 0);
+         env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DA, 0);
+         env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, PG, 1);
+-        env->pc = env->CSR_TLBRERA;
++        set_pc(env, env->CSR_TLBRERA);
+         qemu_log_mask(CPU_LOG_INT, "%s: TLBRERA " TARGET_FMT_lx "\n",
+                       __func__, env->CSR_TLBRERA);
+     } else {
+         csr_pplv = FIELD_EX64(env->CSR_PRMD, CSR_PRMD, PPLV);
+         csr_pie = FIELD_EX64(env->CSR_PRMD, CSR_PRMD, PIE);
+ 
+-        env->pc = env->CSR_ERA;
++        set_pc(env, env->CSR_ERA);
+         qemu_log_mask(CPU_LOG_INT, "%s: ERA " TARGET_FMT_lx "\n",
+                       __func__, env->CSR_ERA);
+     }
 -- 
 2.41.0
 
