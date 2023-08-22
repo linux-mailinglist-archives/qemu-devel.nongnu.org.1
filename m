@@ -2,56 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5DF7838E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 06:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849BE7838E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 06:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYJGO-0007nz-CI; Tue, 22 Aug 2023 00:45:13 -0400
+	id 1qYJKY-0000TU-2d; Tue, 22 Aug 2023 00:49:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qYJG9-0007nd-FL; Tue, 22 Aug 2023 00:44:54 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qYJG5-0003sF-Qz; Tue, 22 Aug 2023 00:44:53 -0400
-Received: from [192.168.8.104] (unknown [94.25.229.58])
- by mail.ispras.ru (Postfix) with ESMTPSA id 0302C40F1DE7;
- Tue, 22 Aug 2023 04:44:43 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 0302C40F1DE7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1692679484;
- bh=O1Jcusp8Y+DpZlGSVbB0ZHFXEJAMXP/uXU9PLtXkCmw=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=Dj9j8O8o5UrbtFJ2EJnmorna3DcnveZnZP/gzQs4/FESYZx3hWMdAGgmLnomwZJau
- yp5OzkRfK4nSBnxa4zxhyenqmpwmENoDN7gPSvL1mCHbl3Aq8CKEDZVy7rm62BsnoU
- S0SAj7UXCiE5LDZjQMOoP0jC5OmnM87xb94QFMIY=
-Message-ID: <48d32058-dd1b-a2ed-42f2-e21c099bc0e3@ispras.ru>
-Date: Tue, 22 Aug 2023 07:44:43 +0300
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qYJKS-0000T6-RT
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 00:49:20 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qYJKO-0004Zw-7T
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 00:49:20 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99bcf2de59cso519860866b.0
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 21:47:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692679631; x=1693284431;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ySsWaGuEY5YQfBNQz+8tDooPdWk58ZSNeKqVjUSiT2Q=;
+ b=wBAza1yFaInlqNl1kPZH6u1DHkr3fjI+Ba1u8w9JCDGtjd05nSR/Ty6FuHlDIgwe+L
+ TQ9gw2KE5P5iDBiWouDgmVCdpBIJeyil5HzbfxurYUtS/H+H0v30hP9YY4pg0e5BZ1i9
+ 8cOxC4g2auIKBxg6Qmv9vCzGPf5ZHZOQ1to6gUfOaVJwcNcYX79pCsj0oV+08ZmQTxf9
+ Ig5pI8+/kWxNzMZ96jRewwFSjjzri7tNbsxKR4aPYSLela0xIBLXoKOpxzd6CF3u8XrE
+ SoovfLh4RxWMtiNpFtq0PLqwbWTPJb16jbDkubVeGb9KZuT8ubF1TyyJN2QB4BkqYxmg
+ GmIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692679631; x=1693284431;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ySsWaGuEY5YQfBNQz+8tDooPdWk58ZSNeKqVjUSiT2Q=;
+ b=WNZPD6md+QRv0HGe7vGet5VOFOVx+C35jaLJgNCsuYZt8j/SB8klkXj4QyhLRwImrF
+ +48VeOqGOJWmHIxVFzditcw5c7hVHC1866Egjad3CknVGy7e38on+rNccKnlT+Gyctfa
+ nQAlRBh2RCPI6wN2UtvLa/bJLxdETZUeQixD1yaOWXz9lFyMboMJAa1Cw8ElESZYJB6m
+ F9Vgi8Bq3StfR+IwdKIkAKReG0nOM+qn9jNwOZ2IIWNvzss7Kcd6NEkr2H7HNDLLKR+5
+ nnB1lPGymrBKngwYgRqrIZJKK26qnpk6Udq6JzqsrJ4bqCMy6siYh5rAHYiLHhNnhXHe
+ POWA==
+X-Gm-Message-State: AOJu0YxMZMZKNROHqRYlXoEjrFznRCyYq+0cmEDIxPokEJ4zY+KWMNe5
+ m0NVLJf62EYb/lnTq4/0wJXk8vkKAeoifSGZbcZT9A==
+X-Google-Smtp-Source: AGHT+IGLffajbCzbfvL+xLCLmW0TsFTCbpyQnPT1VXNVuXKY2UB6ofUs3/ZKleKHuIh6eDVdz0t+/8HJ6eFM4SUhKZg=
+X-Received: by 2002:a17:906:73da:b0:98d:5ae2:f1c with SMTP id
+ n26-20020a17090673da00b0098d5ae20f1cmr6526269ejl.34.1692679630491; Mon, 21
+ Aug 2023 21:47:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC v2 PATCH] record-replay: support SMP target machine
-To: Nicholas Piggin <npiggin@gmail.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230811014700.39172-1-npiggin@gmail.com>
-Content-Language: en-US
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230811014700.39172-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230804052954.2918915-1-fengli@smartx.com>
+ <20230804052954.2918915-3-fengli@smartx.com>
+ <C026BA6F-63E7-4BE8-8FC0-69372A14FFAB@nutanix.com>
+ <844CBDD0-E0A9-4097-904E-5CD74C2884AD@smartx.com>
+ <87o7j0egve.fsf@pond.sub.org>
+In-Reply-To: <87o7j0egve.fsf@pond.sub.org>
+From: Li Feng <fengli@smartx.com>
+Date: Tue, 22 Aug 2023 12:47:59 +0800
+Message-ID: <CAHckoCxNS_FHUtMcaV0PdV+gPOC0Ffg+fhx3rVDatseknAmuiA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] vhost: Add Error parameter to
+ vhost_scsi_common_start()
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="00000000000018263706037bb04f"
+Received-SPF: none client-ip=2a00:1450:4864:20::62e;
+ envelope-from=fengli@smartx.com; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,292 +89,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.08.2023 04:47, Nicholas Piggin wrote:
-> RR CPU switching is driven by timers and events so it is deterministic
-> like everything else. Record a CPU switch event and use that to drive
-> the CPU switch on replay.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> This is still in RFC phase because so far I've only really testd ppc
-> pseries, and only with patches that are not yet upstream (but posted
-> to list).
-> 
-> It works with smp 2, can step, reverse-step, reverse-continue, etc.
-> throughout a Linux boot.
+--00000000000018263706037bb04f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I still didn't have time to test it, but here are some comments.
+On 21 Aug 2023, at 8:09 PM, Markus Armbruster <armbru@redhat.com> wrote:
 
-> 
-> One issue is reverse-step on one gdb thread (vCPU) only steps back one
-> icount, so if another thread is currently running then it is that one
-> which goes back one instruction and the selected thread doesn't move. I
-> would call this a separate issue from the record-replay mechanism, which
-> is in the replay-debugging policy. I think we could record in each vCPU
-> an icount of the last instruction it executed before switching, then
-> reverse step for that vCPU could replay to there. I think that's not so
-> important yet until this mechanism is solid. But if you test and rsi is
-> not going backwards, then check your other threads.
-> 
-> Thanks,
-> Nick
-> 
-> 
->   accel/tcg/tcg-accel-ops-icount.c |  9 +++-
->   accel/tcg/tcg-accel-ops-rr.c     | 73 +++++++++++++++++++++++++++++---
->   include/exec/replay-core.h       |  3 ++
->   replay/replay-internal.h         |  1 +
->   replay/replay.c                  | 34 ++++++++++++++-
->   scripts/replay-dump.py           |  5 +++
->   softmmu/vl.c                     |  4 --
->   7 files changed, 115 insertions(+), 14 deletions(-)
-> 
-> diff --git a/accel/tcg/tcg-accel-ops-icount.c b/accel/tcg/tcg-accel-ops-icount.c
-> index 3d2cfbbc97..c26782a56a 100644
-> --- a/accel/tcg/tcg-accel-ops-icount.c
-> +++ b/accel/tcg/tcg-accel-ops-icount.c
-> @@ -93,10 +93,15 @@ void icount_handle_deadline(void)
->   int64_t icount_percpu_budget(int cpu_count)
->   {
->       int64_t limit = icount_get_limit();
-> -    int64_t timeslice = limit / cpu_count;
-> +    int64_t timeslice;
->   
-> -    if (timeslice == 0) {
-> +    if (replay_mode == REPLAY_MODE_PLAY) {
->           timeslice = limit;
-> +    } else {
-> +        timeslice = limit / cpu_count;
-> +        if (timeslice == 0) {
-> +            timeslice = limit;
-> +        }
->       }
->   
->       return timeslice;
-> diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-> index 212d6f8df4..ce040a687e 100644
-> --- a/accel/tcg/tcg-accel-ops-rr.c
-> +++ b/accel/tcg/tcg-accel-ops-rr.c
-> @@ -27,6 +27,7 @@
->   #include "qemu/lockable.h"
->   #include "sysemu/tcg.h"
->   #include "sysemu/replay.h"
-> +#include "sysemu/reset.h"
->   #include "sysemu/cpu-timers.h"
->   #include "qemu/main-loop.h"
->   #include "qemu/notify.h"
-> @@ -61,6 +62,22 @@ void rr_kick_vcpu_thread(CPUState *unused)
->   
->   static QEMUTimer *rr_kick_vcpu_timer;
->   static CPUState *rr_current_cpu;
-> +static CPUState *rr_next_cpu;
-> +static CPUState *rr_last_cpu;
-> +
-> +/*
-> + * Reset the vCPU scheduler to the initial state.
-> + */
-> +static void record_replay_reset(void *param)
-> +{
-> +    if (rr_kick_vcpu_timer) {
-> +        timer_del(rr_kick_vcpu_timer);
-> +    }
-> +    g_assert(!rr_current_cpu);
-> +    rr_next_cpu = NULL;
-> +    rr_last_cpu = first_cpu;
-> +    current_cpu = NULL;
-> +}
->   
->   static inline int64_t rr_next_kick_time(void)
->   {
-> @@ -184,6 +201,8 @@ static void *rr_cpu_thread_fn(void *arg)
->       Notifier force_rcu;
->       CPUState *cpu = arg;
->   
-> +    qemu_register_reset(record_replay_reset, NULL);
-> +
->       assert(tcg_enabled());
->       rcu_register_thread();
->       force_rcu.notify = rr_force_rcu;
-> @@ -238,14 +257,20 @@ static void *rr_cpu_thread_fn(void *arg)
->               cpu_budget = icount_percpu_budget(cpu_count);
->           }
->   
-> +        if (!rr_next_cpu) {
-> +            qatomic_set_mb(&rr_next_cpu, first_cpu);
-> +        }
-> +        cpu = rr_next_cpu;
-> +
-> +        if (cpu != rr_last_cpu) {
-> +            replay_switch_cpu();
-> +            qatomic_set_mb(&rr_last_cpu, cpu);
-> +        }
-> +
->           rr_start_kick_timer();
->   
->           replay_mutex_unlock();
->   
-> -        if (!cpu) {
-> -            cpu = first_cpu;
-> -        }
-> -
->           while (cpu && cpu_work_list_empty(cpu) && !cpu->exit_request) {
->               /* Store rr_current_cpu before evaluating cpu_can_run().  */
->               qatomic_set_mb(&rr_current_cpu, cpu);
-> @@ -284,7 +309,34 @@ static void *rr_cpu_thread_fn(void *arg)
->                   break;
->               }
->   
-> -            cpu = CPU_NEXT(cpu);
-> +            if (replay_mode == REPLAY_MODE_NONE) {
-> +                cpu = CPU_NEXT(cpu);
-> +            } else if (replay_mode == REPLAY_MODE_RECORD) {
-> +                /*
-> +                 * Exit the loop immediately so CPU switch events can be
-> +                 * recorded. This may be able to be improved to record
-> +                 * switch events here.
-> +                 */
-> +                cpu = CPU_NEXT(cpu);
-> +                break;
-> +            } else if (replay_mode == REPLAY_MODE_PLAY) {
-> +                /*
-> +                 * Play can exit from tcg_cpus_exec at different times than
-> +                 * record, because icount budget is set to next non-insn
-> +                 * event which could be an exception or something that
-> +                 * tcg_cpus_exec can process internally if icount limit was
-> +                 * not reached. So we don't necessarily switch CPU here,
-> +		 * only if there is a switch in the trace.
-> +                 */
-> +                qemu_mutex_unlock_iothread();
-> +                replay_mutex_lock();
-> +                qemu_mutex_lock_iothread();
-> +                if (replay_has_switch_cpu()) {
-> +                    cpu = CPU_NEXT(cpu);
-> +                }
-> +                replay_mutex_unlock();
-> +                break;
-> +            }
->           } /* while (cpu && !cpu->exit_request).. */
->   
->           /* Does not need a memory barrier because a spurious wakeup is okay.  */
-> @@ -294,9 +346,9 @@ static void *rr_cpu_thread_fn(void *arg)
->               qatomic_set_mb(&cpu->exit_request, 0);
->           }
->   
-> -        if (all_cpu_threads_idle()) {
-> -            rr_stop_kick_timer();
-> +        qatomic_set(&rr_next_cpu, cpu);
+Li Feng <fengli@smartx.com> writes:
 
-This does not seem to be in the mainline.
+2023=E5=B9=B48=E6=9C=8814=E6=97=A5 =E4=B8=8B=E5=8D=888:11=EF=BC=8CRaphael N=
+orwitz <raphael.norwitz@nutanix.com> =E5=86=99=E9=81=93=EF=BC=9A
 
->   
-> +        if (all_cpu_threads_idle()) {
->               if (icount_enabled()) {
->                   /*
->   		 * When all cpus are sleeping (e.g in WFI), to avoid a deadlock
-> @@ -304,6 +356,13 @@ static void *rr_cpu_thread_fn(void *arg)
->                    * timer.
->                    */
->                   qemu_notify_event();
-> +            } else {
-> +                /*
-> +                 * icount timer won't expire when not executing instructions
-> +                 * so no need to stop it. Avoiding restarts is also important
-> +                 * for record-replay to avoid clock events.
-> +                 */
-> +                rr_stop_kick_timer();
->               }
->           }
->   
-> diff --git a/include/exec/replay-core.h b/include/exec/replay-core.h
-> index 244c77acce..543c129a1d 100644
-> --- a/include/exec/replay-core.h
-> +++ b/include/exec/replay-core.h
-> @@ -52,6 +52,9 @@ void replay_gdb_attached(void);
->   
->   /* Interrupts and exceptions */
->   
-> +bool replay_switch_cpu(void);
-> +bool replay_has_switch_cpu(void);
-> +
->   /* Called by exception handler to write or read exception processing events */
->   bool replay_exception(void);
->   /*
-> diff --git a/replay/replay-internal.h b/replay/replay-internal.h
-> index b6836354ac..95849e7461 100644
-> --- a/replay/replay-internal.h
-> +++ b/replay/replay-internal.h
-> @@ -58,6 +58,7 @@ enum ReplayEvents {
->       /* some of greater codes are reserved for checkpoints */
->       EVENT_CHECKPOINT,
->       EVENT_CHECKPOINT_LAST = EVENT_CHECKPOINT + CHECKPOINT_COUNT - 1,
-> +    EVENT_SWITCH_CPU,
->       /* end of log event */
->       EVENT_END,
->       EVENT_COUNT
-> diff --git a/replay/replay.c b/replay/replay.c
-> index 0f7d766efe..e2d77ab644 100644
-> --- a/replay/replay.c
-> +++ b/replay/replay.c
-> @@ -98,9 +98,41 @@ void replay_account_executed_instructions(void)
->       }
->   }
->   
-> -bool replay_exception(void)
-> +bool replay_switch_cpu(void)
-> +{
-> +    if (replay_mode == REPLAY_MODE_RECORD) {
-> +        g_assert(replay_mutex_locked());
-> +        replay_save_instructions();
-> +        replay_put_event(EVENT_SWITCH_CPU);
-> +        return true;
-> +    } else if (replay_mode == REPLAY_MODE_PLAY) {
-> +        bool res = replay_has_switch_cpu();
-> +        if (res) {
-> +            replay_finish_event();
-> +        } else {
-> +            g_assert_not_reached();
-> +        }
-> +        return res;
-> +    }
-> +
-> +    return true;
-> +}
-> +
-> +bool replay_has_switch_cpu(void)
+Thanks for the cleanup! A few comments.
 
-Is this function really needed?
+On Aug 4, 2023, at 1:29 AM, Li Feng <fengli@smartx.com> wrote:
 
->   {
-> +    bool res = false;
-> +    if (replay_mode == REPLAY_MODE_PLAY) {
-> +        g_assert(replay_mutex_locked());
-> +        replay_account_executed_instructions();
-> +        res = replay_next_event_is(EVENT_SWITCH_CPU);
-> +    }
-> +
-> +    return res;
-> +}
->   
-> +
-> +bool replay_exception(void)
-> +{
->       if (replay_mode == REPLAY_MODE_RECORD) {
->           g_assert(replay_mutex_locked());
->           replay_save_instructions();
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index b0b96f67fa..946b22d1de 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -1869,10 +1869,6 @@ static void qemu_apply_machine_options(QDict *qdict)
->           /* fall back to the -kernel/-append */
->           semihosting_arg_fallback(current_machine->kernel_filename, current_machine->kernel_cmdline);
->       }
-> -
-> -    if (current_machine->smp.cpus > 1) {
-> -        replay_add_blocker("smp");
-> -    }
->   }
->   
->   static void qemu_create_early_backends(void)
+Add a Error parameter to report the real error, like vhost-user-blk.
 
+Signed-off-by: Li Feng <fengli@smartx.com>
+---
+hw/scsi/vhost-scsi-common.c           | 17 ++++++++++-------
+hw/scsi/vhost-scsi.c                  |  5 +++--
+hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
+include/hw/virtio/vhost-scsi-common.h |  2 +-
+4 files changed, 22 insertions(+), 16 deletions(-)
+
+diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
+index a61cd0e907..392587dfb5 100644
+--- a/hw/scsi/vhost-scsi-common.c
++++ b/hw/scsi/vhost-scsi-common.c
+@@ -16,6 +16,7 @@
+*/
+
+#include "qemu/osdep.h"
++#include "qapi/error.h"
+#include "qemu/error-report.h"
+#include "qemu/module.h"
+#include "hw/virtio/vhost.h"
+@@ -25,7 +26,7 @@
+#include "hw/virtio/virtio-access.h"
+#include "hw/fw-path-provider.h"
+
+-int vhost_scsi_common_start(VHostSCSICommon *vsc)
++int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
+{
+int ret, i;
+VirtIODevice *vdev =3D VIRTIO_DEVICE(vsc);
+@@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+VirtIOSCSICommon *vs =3D (VirtIOSCSICommon *)vsc;
+
+if (!k->set_guest_notifiers) {
+-        error_report("binding does not support guest notifiers");
++        error_setg(errp, "binding does not support guest notifiers");
+    return -ENOSYS;
+}
+
+ret =3D vhost_dev_enable_notifiers(&vsc->dev, vdev);
+if (ret < 0) {
++        error_setg_errno(errp, -ret, "Error enabling host notifiers");
+    return ret;
+}
+
+ret =3D k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
+if (ret < 0) {
+-        error_report("Error binding guest notifier");
++        error_setg_errno(errp, -ret, "Error binding guest notifier");
+    goto err_host_notifiers;
+}
+
+@@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+
+ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
+if (ret < 0) {
+-        error_report("Error setting inflight format: %d", -ret);
+
+
+Curious why you=E2=80=99re adding the error value to the string. Isn=E2=80=
+=99t it redundant
+since we pass it in as the second param?
+
++        error_setg_errno(errp, -ret, "Error setting inflight format: %d",
+-ret);
+
+
+I don=E2=80=99t understand. Here I put the error message in errp, where is
+redundant?
+
+
+The error message will come out like
+
+ Error setting inflight format: 22: Invalid argument
+
+You need to drop ": %d".
+
+Two remarks:
+
+1. The #1 reason for bad error messages is neglecting to *test* them.
+
+2. Printing errno as a number is needlessly unfriendly to users.
+
+[...]
+
+Understood! Very thanks, I will fix it in the v2.
+
+--00000000000018263706037bb04f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"auto" style=3D"line-break:after-white-space"><=
+div><br><br><blockquote type=3D"cite">On 21 Aug 2023, at 8:09 PM, Markus Ar=
+mbruster &lt;<a href=3D"mailto:armbru@redhat.com" target=3D"_blank">armbru@=
+redhat.com</a>&gt; wrote:<br><br>Li Feng &lt;<a href=3D"mailto:fengli@smart=
+x.com" target=3D"_blank">fengli@smartx.com</a>&gt; writes:<br><br><blockquo=
+te type=3D"cite"><blockquote type=3D"cite">2023=E5=B9=B48=E6=9C=8814=E6=97=
+=A5 =E4=B8=8B=E5=8D=888:11=EF=BC=8CRaphael Norwitz &lt;<a href=3D"mailto:ra=
+phael.norwitz@nutanix.com" target=3D"_blank">raphael.norwitz@nutanix.com</a=
+>&gt; =E5=86=99=E9=81=93=EF=BC=9A<br><br>Thanks for the cleanup! A few comm=
+ents.<br><br><blockquote type=3D"cite">On Aug 4, 2023, at 1:29 AM, Li Feng =
+&lt;<a href=3D"mailto:fengli@smartx.com" target=3D"_blank">fengli@smartx.co=
+m</a>&gt; wrote:<br><br>Add a Error parameter to report the real error, lik=
+e vhost-user-blk.<br><br>Signed-off-by: Li Feng &lt;<a href=3D"mailto:fengl=
+i@smartx.com" target=3D"_blank">fengli@smartx.com</a>&gt;<br>---<br>hw/scsi=
+/vhost-scsi-common.c =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0| 17 ++++++++++-------<br>hw/scsi/vhost-scsi.c =C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0| =C2=A05 +++--<br>hw/scsi/vhost-user-scsi.c =C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0| 14 ++++++++------<br>incl=
+ude/hw/virtio/vhost-scsi-common.h | =C2=A02 +-<br>4 files changed, 22 inser=
+tions(+), 16 deletions(-)<br><br>diff --git a/hw/scsi/vhost-scsi-common.c b=
+/hw/scsi/vhost-scsi-common.c<br>index a61cd0e907..392587dfb5 100644<br>--- =
+a/hw/scsi/vhost-scsi-common.c<br>+++ b/hw/scsi/vhost-scsi-common.c<br>@@ -1=
+6,6 +16,7 @@<br>*/<br><br>#include &quot;qemu/osdep.h&quot;<br>+#include &q=
+uot;qapi/error.h&quot;<br>#include &quot;qemu/error-report.h&quot;<br>#incl=
+ude &quot;qemu/module.h&quot;<br>#include &quot;hw/virtio/vhost.h&quot;<br>=
+@@ -25,7 +26,7 @@<br>#include &quot;hw/virtio/virtio-access.h&quot;<br>#inc=
+lude &quot;hw/fw-path-provider.h&quot;<br><br>-int vhost_scsi_common_start(=
+VHostSCSICommon *vsc)<br>+int vhost_scsi_common_start(VHostSCSICommon *vsc,=
+ Error **errp)<br>{<br> int ret, i;<br> VirtIODevice *vdev =3D VIRTIO_DEVIC=
+E(vsc);<br>@@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon =
+*vsc)<br> VirtIOSCSICommon *vs =3D (VirtIOSCSICommon *)vsc;<br><br> if (!k-=
+&gt;set_guest_notifiers) {<br>- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0e=
+rror_report(&quot;binding does not support guest notifiers&quot;);<br>+ =C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0error_setg(errp, &quot;binding does =
+not support guest notifiers&quot;);<br> =C2=A0=C2=A0=C2=A0=C2=A0return -ENO=
+SYS;<br> }<br><br> ret =3D vhost_dev_enable_notifiers(&amp;vsc-&gt;dev, vde=
+v);<br> if (ret &lt; 0) {<br>+ =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0er=
+ror_setg_errno(errp, -ret, &quot;Error enabling host notifiers&quot;);<br> =
+=C2=A0=C2=A0=C2=A0=C2=A0return ret;<br> }<br><br> ret =3D k-&gt;set_guest_n=
+otifiers(qbus-&gt;parent, vsc-&gt;dev.nvqs, true);<br> if (ret &lt; 0) {<br=
+>- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0error_report(&quot;Error bindi=
+ng guest notifier&quot;);<br>+ =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0er=
+ror_setg_errno(errp, -ret, &quot;Error binding guest notifier&quot;);<br> =
+=C2=A0=C2=A0=C2=A0=C2=A0goto err_host_notifiers;<br> }<br><br>@@ -54,7 +56,=
+7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)<br><br> ret =3D vhos=
+t_dev_prepare_inflight(&amp;vsc-&gt;dev, vdev);<br> if (ret &lt; 0) {<br>- =
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0error_report(&quot;Error setting =
+inflight format: %d&quot;, -ret);<br></blockquote><br>Curious why you=E2=80=
+=99re adding the error value to the string. Isn=E2=80=99t it redundant sinc=
+e we pass it in as the second param?<br><br><blockquote type=3D"cite">+ =C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0error_setg_errno(errp, -ret, &quot;E=
+rror setting inflight format: %d&quot;, -ret);<br></blockquote></blockquote=
+><br>I don=E2=80=99t understand. Here I put the error message in errp, wher=
+e is redundant?<br></blockquote><br>The error message will come out like<br=
+><br> =C2=A0Error setting inflight format: 22: Invalid argument<br><br>You =
+need to drop &quot;: %d&quot;.<br><br>Two remarks:<br><br>1. The #1 reason =
+for bad error messages is neglecting to *test* them.<br><br>2. Printing err=
+no as a number is needlessly unfriendly to users.<br><br>[...]<br><br></blo=
+ckquote>Understood! Very thanks, I will fix it in the v2.<br><br></div></di=
+v></div>
+
+--00000000000018263706037bb04f--
 
