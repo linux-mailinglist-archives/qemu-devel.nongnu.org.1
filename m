@@ -2,104 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31E678422B
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025FC784245
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYRXo-0003YJ-87; Tue, 22 Aug 2023 09:35:40 -0400
+	id 1qYRcP-0005ge-KN; Tue, 22 Aug 2023 09:40:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYRXk-0003WR-LD
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:35:37 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYRcM-0005gJ-Q5
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:40:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYRXg-0005nz-AZ
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:35:34 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYRcK-0006bu-0x
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:40:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692711331;
+ s=mimecast20190719; t=1692711618;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RgKPvRRwfeeUsCV5D4yCx2xKiH3CGl17h7UGMTmqI9U=;
- b=LBMK+SF/sFVgDueZi7zQZR0CMxUGNDP5Lailo7CL30d8+jzR5s/AxxDApZet14D9hJ6+Pf
- DGdjyCqC0pa74C12COplHDZM3sr0JbOj86Y5HVO8zA4GbXuTqhQm9wCdNljqFmqA9VFNc5
- ojO6qpY/pgHwv50+DVPXm6I7S9BLwZc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-h1YC-eOrOlCEsDjGLG8hcA-1; Tue, 22 Aug 2023 09:35:29 -0400
-X-MC-Unique: h1YC-eOrOlCEsDjGLG8hcA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30e3ee8a42eso2656056f8f.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 06:35:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692711328; x=1693316128;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RgKPvRRwfeeUsCV5D4yCx2xKiH3CGl17h7UGMTmqI9U=;
- b=Ogn5H+QDXffGHPNSqVUdtJuET+JeS3as+D0QA7qCmWG0qYV2xrOfzdoE/xvYGeA7Tv
- SyDMzBxXpAMFsPMpg5WyqTBaL3mo0Th05WnlDOT3lU1+hbaIxTgFWp8LxeJivWcomMrv
- SYJLRnwdrg7G62hOofsE0GnGhHh1H8nCGPezjrrVsRZ2Hh9j1kQ39+dgLWGf2kBvs4FK
- Cufkb5w2yj4QpL//GBhFRwy93nTQXBTXM9jp7hZSPs7ZS1LUGY2Pe2chbAg1uGCF1X5j
- OnpIaNLjqOhi43eR+LpIVrxvPtfMxdUmTbuqnkYVg3mmK6j+i2rdzw1hYNvJrQtrL+tZ
- 83rQ==
-X-Gm-Message-State: AOJu0Yzveyt5YXIsD+lW4G1ELBFpogDbVYR2up4mXzTdNAhFYQ9x/Ivk
- Ht8JFJ5XJvYhChB3/owGsnM5l0HR644IPNkIl5+gMzb5yjxALbVdE1vo+J0LzSm/ZQvDl1WTpyy
- XA+Ouu2aYlOz/mlNqNPhix5k=
-X-Received: by 2002:a5d:568f:0:b0:317:e5ec:8767 with SMTP id
- f15-20020a5d568f000000b00317e5ec8767mr6789815wrv.21.1692711328120; 
- Tue, 22 Aug 2023 06:35:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuyJCju050siYmtq4+aa91ziG9fgr76mTavkNoPFs7Por61bm9436j4INnPtSvoaxdNi6u6Q==
-X-Received: by 2002:a5d:568f:0:b0:317:e5ec:8767 with SMTP id
- f15-20020a5d568f000000b00317e5ec8767mr6789800wrv.21.1692711327701; 
- Tue, 22 Aug 2023 06:35:27 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c706:7400:83da:ebad:ba7f:c97c?
- (p200300cbc706740083daebadba7fc97c.dip0.t-ipconnect.de.
- [2003:cb:c706:7400:83da:ebad:ba7f:c97c])
- by smtp.gmail.com with ESMTPSA id
- k14-20020a5d628e000000b00317eee26bf0sm15930545wru.69.2023.08.22.06.35.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 06:35:27 -0700 (PDT)
-Message-ID: <b7e23f8e-d84b-326a-7817-875bdf1b9dc9@redhat.com>
-Date: Tue, 22 Aug 2023 15:35:26 +0200
+ bh=xllcJciTJwkjZIlhV6UjbTwuh0nErD/MF676N4GEx7U=;
+ b=b14qLt2DiW7tuJa4mi8AkzfSNaz7g68R5rO0+5B5X37FzbGsWWzqahGtUv2Ao+y0Ttxy7y
+ CXQcv/W8O4zq+zxmgcLaV9efs2O3zyjAPlcS7fAw0pZNSnvJovIjg8yHweAkHQR28+A++g
+ PCNGCsesIKXOh/kXYUnl/8rMAYG0KKw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-137-Pp5xutw2OVq7pwRhPtQgcw-1; Tue, 22 Aug 2023 09:40:14 -0400
+X-MC-Unique: Pp5xutw2OVq7pwRhPtQgcw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 293DF856F67;
+ Tue, 22 Aug 2023 13:40:14 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.69])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A25CB40D2843;
+ Tue, 22 Aug 2023 13:40:13 +0000 (UTC)
+Date: Tue, 22 Aug 2023 09:40:11 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Daniel Verkamp <dverkamp@chromium.org>
+Cc: virtio-comment@lists.oasis-open.org,
+ virtualization@lists.linux-foundation.org, qemu-devel@nongnu.org,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+Subject: Re: [virtio-comment] virtio queue numbering and optional queues
+Message-ID: <20230822134011.GB727224@fedora>
+References: <CABVzXAke4LRt4=S4FsFTFf_WPrAhe1dukoLZto6t6R13kgjw0Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Content-Language: en-US
-To: ThinerLogoer <logoerthiner1@163.com>, Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
- <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com> <ZNOti1OKN79t68jP@x1n>
- <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
- <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
- <ZNVVmxuQAsSEHqZq@x1n>
- <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
- <ZNZGSON+yDFod2AZ@x1n>
- <2337d9f.16d6.189e8682901.Coremail.logoerthiner1@163.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <2337d9f.16d6.189e8682901.Coremail.logoerthiner1@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="NsB0Om6PIIbwq28o"
+Content-Disposition: inline
+In-Reply-To: <CABVzXAke4LRt4=S4FsFTFf_WPrAhe1dukoLZto6t6R13kgjw0Q@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.767, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,117 +81,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.08.23 08:21, ThinerLogoer wrote:
-> At 2023-08-11 22:31:36, "Peter Xu" <peterx@redhat.com> wrote:
->> On Fri, Aug 11, 2023 at 01:49:52PM +0800, ThinerLogoer wrote:
->>> At 2023-08-11 05:24:43, "Peter Xu" <peterx@redhat.com> wrote:
->>>> On Fri, Aug 11, 2023 at 01:06:12AM +0800, ThinerLogoer wrote:
->>>>>> I think we have the following options (there might be more)
->>>>>>
->>>>>> 1) This patch.
->>>>>>
->>>>>> 2) New flag for memory-backend-file. We already have "readonly" and
->>>>>> "share=". I'm having a hard time coming up with a good name that really
->>>>>> describes the subtle difference.
->>>>>>
->>>>>> 3) Glue behavior to the QEMU machine
->>>>>>
->>>>>
->>>>> 4) '-deny-private-discard' argv, or environment variable, or both
->>>>
->>>> I'd personally vote for (2).  How about "fdperm"?  To describe when we want
->>>> to use different rw permissions on the file (besides the access permission
->>>> of the memory we already provided with "readonly"=XXX).  IIUC the only sane
->>>> value will be ro/rw/default, where "default" should just use the same rw
->>>> permission as the memory ("readonly"=XXX).
->>>>
->>>> Would that be relatively clean and also work in this use case?
->>>>
->>>> (the other thing I'd wish we don't have that fallback is, as long as we
->>>> have any of that "fallback" we'll need to be compatible with it since
->>>> then, and for ever...)
->>>
->>> If it must be (2), I would vote (2) + (4), with (4) adjust the default behavior of said `fdperm`.
->>> Mainly because (private+discard) is itself not a good practice and (4) serves
->>> as a good tool to help catch existing (private+discard) problems.
->>>
->>> Actually (readonly+private) is more reasonable than (private+discard), so I
->>> want at least one room for a default (readonly+private) behavior.
->>
->> Just for purely discussion purpose: I think maybe someday private+discard
->> could work.  IIUC what we're missing is an syscall interface to install a
->> zero page for a MAP_PRIVATE, atomically freeing what's underneath: it seems
->> either punching a hole or DONTNEED won't suffice here.  It'll just be
->> another problem when having zero page involved in file mappings at least.
->>
->>>
->>> Also in my case I kind of have to use "-mem-path" despite it being considered
->>> to be close to deprecated. Only with this I can avoid knowledge of memory
->>> backend before migration. Actually there seems to be no equivalent working after-migration
->>> setup of "-object memory-backend-file,... -machine q35,mem=..." that can match
->>> before-migration setup of "-machine q35" (specifying nothing). Therefore
->>> I must make a plan and choose a migration method BEFORE I boot the
->>> machine and prepare to migrate, reducing the operation freedom.
->>> Considering that, I have to use "-mem-path" which keeps the freedom but
->>> has no configurable argument and I have to rely on default config.
->>>
->>> Are there any "-object memory-backend-file..." setup equivalent to "-machine q35"
->>> that can migrate from and to each other? If there is, I want to try it out.
->>> By the way "-object memory-backend-file,id=pc.ram" has just been killed by an earlier
->>> commit.
->>
->> I'm actually not familiar enough on the interfaces here, but I just checked
->> up the man page; would this work for you, together with option (2)?
->>
->>         memory-backend='id'
->>                 An alternative to legacy -mem-path and mem-prealloc options.  Allows to use a memory backend as main RAM.
->>
->>                 For example:
->>
->>                 -object memory-backend-file,id=pc.ram,size=512M,mem-path=/hugetlbfs,prealloc=on,share=on
->>                 -machine memory-backend=pc.ram
->>                 -m 512M
->>
-> 
-> Wait ... I thought it should not work but it did work today. How bad am I at reading
-> the correct part of documentation ...
-> 
-> '-machine q35 -m 512M' is equivalent to '-object
-> memory-backend-file,id=pc.ram,size=512M
-> -machine q35,memory-backend=pc.ram',
-> the latter works, and the two mentioned setup can be
-> migrated from one to another.
-> 
-> What I was consistently trying was '-object
-> memory-backend-file,id=pc.ram,size=512M -machine q35', and qemu raises an error
-> for this in a recent update:
-> 
-> ```
-> qemu-system-x86_64: object name 'pc.ram' is reserved for the default RAM backend, it can't be used for any other purposes. Change the object's 'id' to something else
-> ```
-> 
-> This error is misleading. Actually in this case, the error report message should be more
-> close to:
-> ```
-> object name 'pc.ram' is reserved for the default RAM backend, it can't
-> be used for any other purposes. Change the object's 'id' to something
-> else, or append "memory-backend=pc.ram" to -machine arguments
-> ```
 
-What about:
+--NsB0Om6PIIbwq28o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-$ ./build/qemu-system-x86_64 -object 
-memory-backend-file,id=pc.ram,size=512M,mem-path=tmp -machine q35
-qemu-system-x86_64: object name 'pc.ram' is reserved for the default RAM 
-backend, it can't be used for any other purposes. Change the object's 
-'id' to something else or disable automatic creation of the default RAM 
-backend by setting the 'memory-backend' machine property
+On Mon, Aug 21, 2023 at 03:18:50PM -0700, Daniel Verkamp wrote:
+> Hello virtio folks,
 
-?
+Hi Daniel,
+I have CCed those involved in the free page hint and page reporting
+features.
 
--- 
-Cheers,
+Stefan
 
-David / dhildenb
+>=20
+> I noticed a mismatch between the way the specification defines
+> device-specific virtqueue indexes and the way device and driver
+> implementers have interpreted the specification. As a practical example,
+> consider the traditional memory balloon device [1]. The first two queues
+> (indexes 0 and 1) are available as part of the baseline device, but the
+> rest of the queues are tied to feature bits.
+>=20
+> Section 5.5.2, "Virtqueues", gives a list that appears to be a mapping fr=
+om
+> queue index to queue name/function, defining queue index 3 as free_page_vq
+> and index 4 as reporting_vq, and declaring that "free_page_vq only exists
+> if VIRTIO_BALLOON_F_FREE_PAGE_HINT is set" and "reporting_vq only exists =
+if
+> VIRTIO_BALLOON_F_PAGE_REPORTING is set." This wording is a bit vague, but=
+ I
+> assume "is set" means "is negotiated" (not just "advertised by the
+> device"). Also presumably "exists" means something like "may only be used
+> by the driver if the feature bit is negotiated" and "should be ignored by
+> the device if the feature bit is not negotiated", although it would be ni=
+ce
+> to have a proper definition in the spec somewhere.
+>=20
+> Section 5.5.3, "Feature bits", gives definitions of the feature bits, with
+> similar descriptions of the relationship between the feature bits and
+> virtqueue availability, although the wording is slightly different
+> ("present" rather than "exists"). No dependency between feature bits is
+> defined, so it seems like it should be valid for a device or driver to
+> support or accept one of the higher-numbered features while not supporting
+> a lower-numbered one.
+>=20
+>=20
+> Notably, there is no mention of queue index assignments changing based on
+> negotiated features in either of these sections. Hence a reader can only
+> assume that the queue index assignments are fixed (i.e. stats_vq will
+> always be vq index 4 if F_STATS_VQ is negotiated, regardless of any other
+> feature bits).
+>=20
+> Now consider a scenario where VIRTIO_BALLOON_F_STATS_VQ and
+> VIRTIO_BALLOON_F_PAGE_REPORTING are negotiated but
+> VIRTIO_BALLOON_F_FREE_PAGE_HINT is not (perhaps the device supports all of
+> the defined features but the driver only wants to use reporting_vq, not
+> free_page_vq). In this case, what queue index should be used by the driver
+> when enabling reporting_vq? My reading of the specification is that the
+> reporting_vq is always queue index 4, independent of whether
+> VIRTIO_BALLOON_F_STATS_VQ or VIRTIO_BALLOON_F_FREE_PAGE_HINT are
+> negotiated, but this contradicts existing device and driver
+> implementations, which will use queue index 3 (the next one after stats_vq
+> =3D 2) as reporting_vq in this case.
+>=20
+> The qemu virtio-ballon device [2] assigns the next-highest unused queue
+> index when calling virtio_add_queue(), and in the scenario presented abov=
+e,
+> free_page_vq will not be added since F_STATS_VQ is not negotiated, so
+> reporting_vq will be assigned queue index 3, rather than 4. (Additionally,
+> qemu always adds the stats_vq regardless of negotiated features, but that=
+'s
+> irrelevant in this case since we are assuming the STATS_VQ feature is
+> negotiated.)
+>=20
+> The Linux virtio driver code originally seemed to use the correct (by my
+> reading) indexes, but it was changed to match the layout used by qemu in a
+> 2019 commit ("virtio_pci: use queue idx instead of array idx to set up the
+> vq") [3] - in other words, it will now also expect queue index 3 to be
+> reporting_vq in the scenario laid out above.
+>=20
+> I'm not sure how to resolve the mismatch between the specification and
+> actual implementation behavior. The simplest change would probably be to
+> rewrite the specification to drop the explicit queue indexes in section
+> 5.5.2 and add some wording about how queues are numbered based on
+> negotiated feature bits (this would need to be applied to other device
+> types that have specified queue indexes as well). However, this would also
+> technically be an incompatible change of the specification. On the other
+> hand, changing the device and driver implementations to match the
+> specification would be even more challenging, since it would be an
+> incompatible change in actual practice, not just a change of the spec to
+> match consensus implementation behavior.
+>=20
+>=20
+> Perhaps drivers could add a quirk to detect old versions of the qemu devi=
+ce
+> and use the old behavior, while enabling the correct behavior only for
+> other device vendors and newer qemu device revisions, and the qemu device
+> could add an opt-in feature to enable the correct behavior that users wou=
+ld
+> need to enable only when they know they have a sufficiently new driver wi=
+th
+> the fix.
+>=20
+>=20
+> Or maybe there could be a new feature bit that would opt into following t=
+he
+> spec-defined queue indexes (VIRTIO_F_VERSION_2?) and some new wording to
+> require devices to use the old behavior when that bit is not negotiated,
+> but that also feels less than ideal to me.
+>=20
+> Any thoughts on how to proceed with this situation? Is my reading of the
+> specification just wrong?
+>=20
+> Thanks,
+>=20
+> -- Daniel
+>=20
+> [1]:
+> https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.ht=
+ml#x1-3160002
+>=20
+> [2]:
+> https://github.com/qemu/qemu/blob/f33c74576425fac2cbb0725229895fe096df426=
+1/hw/virtio/virtio-balloon.c#L879-L897
+>=20
+> [3]:
+> https://github.com/torvalds/linux/commit/ddbeac07a39a81d82331a312d0578fab=
+94fccbf1
+
+--NsB0Om6PIIbwq28o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTkursACgkQnKSrs4Gr
+c8hY+Af/WebgXTM8+0jDCtOkr9ErLVrpWkHrmPJvRYq+/CZQGt/OxKZk65L4hNZm
+N6POPg0QW57+SN3z4EDAedrUI4g5muy/PxLxKU6e+1G4oIIZOaMK6dvZ6Ef/bMfE
+gaOcqAXWxsQgWbDmsRotEidmJ1Gak0R4WHwWUm549eGSFvgP1Cn7P77PeGwGSnIL
+7k0yLX80514vq7iycJmUeUIb7H0lCkMoL49r0vzZO1tMvmwxp4FvuA60GwXsYn6E
+QM80FTm/XB6qoPSnatQZsuwima8EZZewFaVsYjX33Zo++7CA0LzsHCJaOUjxCBOK
+MBEJPFeyGd3uN+tdlppzDz48erQ4mw==
+=o3yW
+-----END PGP SIGNATURE-----
+
+--NsB0Om6PIIbwq28o--
 
 
