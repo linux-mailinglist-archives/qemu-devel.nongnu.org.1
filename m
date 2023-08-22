@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497EA783B6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 10:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 514E6783BA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 10:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYMRy-0003zN-L2; Tue, 22 Aug 2023 04:09:18 -0400
+	id 1qYMcV-0005gn-Ve; Tue, 22 Aug 2023 04:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qYMRv-0003zA-GV
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 04:09:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qYMcT-0005gL-6d
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 04:20:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qYMRr-0000ba-0q
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 04:09:13 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qYMcP-0002i6-6o
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 04:20:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692691749;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1692692404;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oVOPZl3atlhm3hlLR4TThBygV2FXoc7Et/Em48+Vkgg=;
- b=WvQD6a+xjLqPlAczAbge3hQAupFZI/84tzSWKIMQj8b61RFPPQiQEJI3nc9twv4/vXEh2g
- ob8zbFhyLX84uB9zS8zOcGWn1ivqFbiffEXYXNdXqt5g/yZDLTfW2dXjS05BBX7A6CrV6l
- n+hXTsIrK3jI+Qy0iSN3MNGLsYkwoiM=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-Sjy-mpaHOEqqIn1VZ5w7Kg-1; Tue, 22 Aug 2023 04:09:08 -0400
-X-MC-Unique: Sjy-mpaHOEqqIn1VZ5w7Kg-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-d745094c496so4783097276.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 01:09:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692691747; x=1693296547;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oVOPZl3atlhm3hlLR4TThBygV2FXoc7Et/Em48+Vkgg=;
- b=ki5+imHUxuNVRTewM5muwMlTA5Ma945RWBrw8jMh0o4maRYgYt92Xbci7TJXH6giYM
- KikgcsmqRT6V2+ZQDirlV9t+Cb5QXbCI9xDe+DNbXNCN6jpc13VP2eDj1b0enhNBRd1a
- qSHjFG1qpgXt/cenOVtC7CWlY1yndvXEoh1f0VXNn1AUPgq4w+Ip50k2f33IN2NXH3hZ
- KoKBgJ/rDoxrLzdanU0fck90IJ4Cn9BPJ4iF+0wPetUrNVA/JiL9f7oalyBh6bgC4IzY
- VIV+pjy4fGdRWsw1cdSgtkf5RrTHkAr08KvwjKSjoSamnXwjHG1t0pibqHSYMSfXdvl4
- 2/Uw==
-X-Gm-Message-State: AOJu0YzSPipwTgVvUWx1eR5ZbAWypSYWeu6jgqf8Lb4gSk8KxsxNOn6g
- SxWAc7cQL+KEY/P5Bl60234AwI+lIAf2eYQUULyVjBQu9c8Y1p5Tv4v724ouw++f3QeTFxPfwSN
- 3+Pw2w0PisPHxY2ZVAsXf+jpVNMOiSq0=
-X-Received: by 2002:a25:804e:0:b0:d6d:6003:37f5 with SMTP id
- a14-20020a25804e000000b00d6d600337f5mr8649054ybn.57.1692691747464; 
- Tue, 22 Aug 2023 01:09:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+57bnn8rhFknth0eN32xBXFdg3zaMFcD32ysVLtLgtdLu4D/UiGFi5pleWuKqbm5cZo60160ZSu8JPGFegMg=
-X-Received: by 2002:a25:804e:0:b0:d6d:6003:37f5 with SMTP id
- a14-20020a25804e000000b00d6d600337f5mr8649028ybn.57.1692691747137; Tue, 22
- Aug 2023 01:09:07 -0700 (PDT)
+ bh=agB6Opzb6rPqaDWBwKZ/5qpL5CbpESEPdnuQeYUz9NM=;
+ b=BuRTbQ5qowCPKoz9SqcIwRC+c9Xn83eEHUY6IILWfOMXCUcyWgyehasu1EoLNAGTBUeL3c
+ V05sers4Ttx2CRmkUxSlmLGSyeHtgX7Lf7k6DQLgt6IALjjTbwShzkRzaJBirUiCpG9VZ/
+ YChQbDKV0/0/pa957Xp2hTQi7psw3No=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-652-lh7E7-x2MCOTsUUBb6SUfA-1; Tue, 22 Aug 2023 04:20:00 -0400
+X-MC-Unique: lh7E7-x2MCOTsUUBb6SUfA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 952813C11A04;
+ Tue, 22 Aug 2023 08:19:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.87])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DC4812166B26;
+ Tue, 22 Aug 2023 08:19:56 +0000 (UTC)
+Date: Tue, 22 Aug 2023 09:19:54 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Eduardo Habkost <eduardo@habkost.net>,
+ Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+Subject: Re: [PATCH v2 06/58] i386/tdx: Get tdx_capabilities via
+ KVM_TDX_CAPABILITIES
+Message-ID: <ZORvqthhRG+38OlC@redhat.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-7-xiaoyao.li@intel.com>
+ <ZOMkYvm9vsQs8sas@redhat.com>
+ <226923bc-755c-f4db-a381-f00088c6614e@intel.com>
 MIME-Version: 1.0
-References: <20230810153611.3410882-1-eperezma@redhat.com>
- <20230810153611.3410882-5-eperezma@redhat.com>
- <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
-In-Reply-To: <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 22 Aug 2023 10:08:31 +0200
-Message-ID: <CAJaqyWcoB0kbeepk+HX=b75VjhYg8pv60kHPvMx0XijVgMrmgA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] vdpa: move vhost_vdpa_set_vrings_ready to the
- caller
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com, 
- Parav Pandit <parav@mellanox.com>, Gautam Dawar <gdawar@xilinx.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cindy Lu <lulu@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
- Stefano Garzarella <sgarzare@redhat.com>, 
- Hawkins Jiawei <yin31149@gmail.com>, Shannon Nelson <snelson@pensando.io>,
- Lei Yang <leiyang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <226923bc-755c-f4db-a381-f00088c6614e@intel.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,162 +97,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 14, 2023 at 8:57=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Thu, Aug 10, 2023 at 11:36=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@red=
-hat.com> wrote:
-> >
-> > Doing that way allows CVQ to be enabled before the dataplane vqs,
-> > restoring the state as MQ or MAC addresses properly in the case of a
-> > migration.
-> >
->
-> A typo in the subject, should be vhost_vdpa_set_vring_ready.
->
-> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > ---
-> >  hw/virtio/vdpa-dev.c   |  3 +++
-> >  hw/virtio/vhost-vdpa.c |  3 ---
-> >  net/vhost-vdpa.c       | 57 +++++++++++++++++++++++++++++-------------
-> >  3 files changed, 42 insertions(+), 21 deletions(-)
-> >
-> > diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-> > index 363b625243..f22d5d5bc0 100644
-> > --- a/hw/virtio/vdpa-dev.c
-> > +++ b/hw/virtio/vdpa-dev.c
-> > @@ -255,6 +255,9 @@ static int vhost_vdpa_device_start(VirtIODevice *vd=
-ev, Error **errp)
-> >          error_setg_errno(errp, -ret, "Error starting vhost");
-> >          goto err_guest_notifiers;
-> >      }
-> > +    for (i =3D 0; i < s->dev.nvqs; ++i) {
-> > +        vhost_vdpa_set_vring_ready(&s->vdpa, i);
-> > +    }
-> >      s->started =3D true;
-> >
-> >      /*
-> > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> > index 0d9975b5b5..8ca2e3800c 100644
-> > --- a/hw/virtio/vhost-vdpa.c
-> > +++ b/hw/virtio/vhost-vdpa.c
-> > @@ -1297,9 +1297,6 @@ static int vhost_vdpa_dev_start(struct vhost_dev =
-*dev, bool started)
-> >          if (unlikely(!ok)) {
-> >              return -1;
-> >          }
-> > -        for (int i =3D 0; i < dev->nvqs; ++i) {
-> > -            vhost_vdpa_set_vring_ready(v, dev->vq_index + i);
-> > -        }
-> >      } else {
-> >          vhost_vdpa_suspend(dev);
-> >          vhost_vdpa_svqs_stop(dev);
-> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > index 9251351b4b..3bf60f9431 100644
-> > --- a/net/vhost-vdpa.c
-> > +++ b/net/vhost-vdpa.c
-> > @@ -371,6 +371,22 @@ static int vhost_vdpa_net_data_start(NetClientStat=
-e *nc)
-> >      return 0;
-> >  }
-> >
-> > +static int vhost_vdpa_net_data_load(NetClientState *nc)
-> > +{
-> > +    VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> > +    struct vhost_vdpa *v =3D &s->vhost_vdpa;
-> > +    bool has_cvq =3D v->dev->vq_index_end % 2;
-> > +
-> > +    if (has_cvq) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    for (int i =3D 0; i < v->dev->nvqs; ++i) {
-> > +        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-> > +    }
-> > +    return 0;
-> > +}
-> > +
-> >  static void vhost_vdpa_net_client_stop(NetClientState *nc)
-> >  {
-> >      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> > @@ -393,6 +409,7 @@ static NetClientInfo net_vhost_vdpa_info =3D {
-> >          .size =3D sizeof(VhostVDPAState),
-> >          .receive =3D vhost_vdpa_receive,
-> >          .start =3D vhost_vdpa_net_data_start,
-> > +        .load =3D vhost_vdpa_net_data_load,
->
-> This deserve an independent patch?
->
+On Tue, Aug 22, 2023 at 03:31:44PM +0800, Xiaoyao Li wrote:
+> On 8/21/2023 4:46 PM, Daniel P. Berrangé wrote:
+> > On Fri, Aug 18, 2023 at 05:49:49AM -0400, Xiaoyao Li wrote:
+> > > KVM provides TDX capabilities via sub command KVM_TDX_CAPABILITIES of
+> > > IOCTL(KVM_MEMORY_ENCRYPT_OP). Get the capabilities when initializing
+> > > TDX context. It will be used to validate user's setting later.
+> > > 
+> > > Since there is no interface reporting how many cpuid configs contains in
+> > > KVM_TDX_CAPABILITIES, QEMU chooses to try starting with a known number
+> > > and abort when it exceeds KVM_MAX_CPUID_ENTRIES.
+> > > 
+> > > Besides, introduce the interfaces to invoke TDX "ioctls" at different
+> > > scope (KVM, VM and VCPU) in preparation.
+> > > 
+> > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > ---
+> > > changes from v1:
+> > >    - Make the error message more clear;
+> > > 
+> > > changes from RFC v4:
+> > >    - start from nr_cpuid_configs = 6 for the loop;
+> > >    - stop the loop when nr_cpuid_configs exceeds KVM_MAX_CPUID_ENTRIES;
+> > > ---
+> > >   target/i386/kvm/kvm.c      |  2 -
+> > >   target/i386/kvm/kvm_i386.h |  2 +
+> > >   target/i386/kvm/tdx.c      | 93 ++++++++++++++++++++++++++++++++++++++
+> > >   3 files changed, 95 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > > index d6b988d6c2d1..ec5c07bffd38 100644
+> > > --- a/target/i386/kvm/kvm.c
+> > > +++ b/target/i386/kvm/kvm.c
+> > > @@ -1751,8 +1751,6 @@ static int hyperv_init_vcpu(X86CPU *cpu)
+> > >   static Error *invtsc_mig_blocker;
+> > > -#define KVM_MAX_CPUID_ENTRIES  100
+> > > -
+> > >   static void kvm_init_xsave(CPUX86State *env)
+> > >   {
+> > >       if (has_xsave2) {
+> > > diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+> > > index ea3a5b174ac0..769eadbba56c 100644
+> > > --- a/target/i386/kvm/kvm_i386.h
+> > > +++ b/target/i386/kvm/kvm_i386.h
+> > > @@ -13,6 +13,8 @@
+> > >   #include "sysemu/kvm.h"
+> > > +#define KVM_MAX_CPUID_ENTRIES  100
+> > > +
+> > >   #define kvm_apic_in_kernel() (kvm_irqchip_in_kernel())
+> > >   #ifdef CONFIG_KVM
+> > > diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+> > > index 77e33ae01147..255c47a2a553 100644
+> > > --- a/target/i386/kvm/tdx.c
+> > > +++ b/target/i386/kvm/tdx.c
+> > > @@ -12,14 +12,107 @@
+> > >    */
+> > >   #include "qemu/osdep.h"
+> > > +#include "qemu/error-report.h"
+> > >   #include "qapi/error.h"
+> > >   #include "qom/object_interfaces.h"
+> > > +#include "sysemu/kvm.h"
+> > >   #include "hw/i386/x86.h"
+> > > +#include "kvm_i386.h"
+> > >   #include "tdx.h"
+> > > +static struct kvm_tdx_capabilities *tdx_caps;
+> > > +
+> > > +enum tdx_ioctl_level{
+> > > +    TDX_PLATFORM_IOCTL,
+> > > +    TDX_VM_IOCTL,
+> > > +    TDX_VCPU_IOCTL,
+> > > +};
+> > > +
+> > > +static int __tdx_ioctl(void *state, enum tdx_ioctl_level level, int cmd_id,
+> > > +                        __u32 flags, void *data)
+> > 
+> > Names with an initial double underscore are reserved for us by the
+> > platform implementation, so shouldn't be used in userspace app
+> > code.
+> 
+> How about tdx_ioctl_internal() ?
 
-Ok so I misread your reply.
+Sure, that's fine.
 
-An independent patch would just add a stub vhost_vdpa_net_data_load,
-since it's its only purpose. I can add that to the patch message in
-the next version.
-
-Thanks!
-
-> Thanks
->
-> >          .stop =3D vhost_vdpa_net_client_stop,
-> >          .cleanup =3D vhost_vdpa_cleanup,
-> >          .has_vnet_hdr =3D vhost_vdpa_has_vnet_hdr,
-> > @@ -974,26 +991,30 @@ static int vhost_vdpa_net_cvq_load(NetClientState=
- *nc)
-> >
-> >      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
-> >
-> > -    if (!v->shadow_vqs_enabled) {
-> > -        return 0;
-> > -    }
-> > +    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-> >
-> > -    n =3D VIRTIO_NET(v->dev->vdev);
-> > -    r =3D vhost_vdpa_net_load_mac(s, n);
-> > -    if (unlikely(r < 0)) {
-> > -        return r;
-> > -    }
-> > -    r =3D vhost_vdpa_net_load_mq(s, n);
-> > -    if (unlikely(r)) {
-> > -        return r;
-> > -    }
-> > -    r =3D vhost_vdpa_net_load_offloads(s, n);
-> > -    if (unlikely(r)) {
-> > -        return r;
-> > +    if (v->shadow_vqs_enabled) {
-> > +        n =3D VIRTIO_NET(v->dev->vdev);
-> > +        r =3D vhost_vdpa_net_load_mac(s, n);
-> > +        if (unlikely(r < 0)) {
-> > +            return r;
-> > +        }
-> > +        r =3D vhost_vdpa_net_load_mq(s, n);
-> > +        if (unlikely(r)) {
-> > +            return r;
-> > +        }
-> > +        r =3D vhost_vdpa_net_load_offloads(s, n);
-> > +        if (unlikely(r)) {
-> > +            return r;
-> > +        }
-> > +        r =3D vhost_vdpa_net_load_rx(s, n);
-> > +        if (unlikely(r)) {
-> > +            return r;
-> > +        }
-> >      }
-> > -    r =3D vhost_vdpa_net_load_rx(s, n);
-> > -    if (unlikely(r)) {
-> > -        return r;
-> > +
-> > +    for (int i =3D 0; i < v->dev->vq_index; ++i) {
-> > +        vhost_vdpa_set_vring_ready(v, i);
-> >      }
-> >
-> >      return 0;
-> > --
-> > 2.39.3
-> >
->
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
