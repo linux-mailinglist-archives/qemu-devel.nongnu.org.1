@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31207783D02
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 11:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1D5783D0B
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 11:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYNpB-0000SI-8j; Tue, 22 Aug 2023 05:37:21 -0400
+	id 1qYNpG-0000TN-IS; Tue, 22 Aug 2023 05:37:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYNpA-0000Rb-0i
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 05:37:20 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYNpF-0000TF-Je
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 05:37:25 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYNp7-0001ea-MS
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 05:37:19 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fbd33a57b6so40567595e9.2
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 02:37:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYNpD-0001et-8H
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 05:37:25 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-31c5cac3ae2so1112722f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 02:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692697035; x=1693301835;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=By2scDfpsI642sRWhvtzZHy47CDzblUOx5DkV3YceXA=;
- b=hMeUjkTMIdskm+csKGgDGceGsjJeUULW9/ft7jhExtaeG+FHM/H3eeUe9u/TGVpDcU
- LTSnoHdtWn2LhCn8SEr5gf8nD61L5SCrZ3/pK2fnpNzNm6K9+zaCdtbLUnKX5MklUQD+
- D1LrWeluYOdZ0Podg8tZq9w4k0CDjUsDWvtI/K70PLL3D5SnVFj0vpe3jtSyxAOs1q3T
- e8ltAiI7lg7xcAwvqswICnPnH7z09qYNSbTWyiHTqhbM2R9cztnEbeI3EFUqmVV2c2m5
- VbcWNJnwjDzPesMCB0j5beq9yTHiZfMTYCLupC7qljw14H8Q19WPQ7T5vepEaP22mFX/
- T7lg==
+ d=linaro.org; s=google; t=1692697041; x=1693301841;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZJPKVO+xaCar/pzXI7lGpOGhrynSj4d9rgRqF1K4Bw0=;
+ b=uI5rO9kSQBwwmw9FQAmlyduqYoGGLMMoSbQ5vcdSzDUBi/VJ2zae+9j0RRaBvGgVwo
+ FSdY1oXCtoOk9fUkMrSU7CEjFGKC/2hemT6i9gcSwaPIje4WI/T9TABpYUuk5vbK+xYt
+ xgdUTrzTbRIa/Tz3ac2K99YFlP2RjI91SHFfa+3PV/TUSFHRrpKjV1TQwy0jAz3/Hcig
+ rnzD6Fq20pSm5DYOhz8rlmu82axsadA7mAbDVE64bXMb9Jh71lH/bmiboVNhJrPCwo6d
+ 2c6ejzwmsSJ1MKCJZfuGnfHVOIxCt7ii3ExWXNPDpd+5GAOHdIBXxhPhgIJ1rmaxKR0u
+ U56Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692697035; x=1693301835;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=By2scDfpsI642sRWhvtzZHy47CDzblUOx5DkV3YceXA=;
- b=e60EBrhTQfkEMr8DmBTunOGy0oD2uNBa8d7d+PapgIiUAm5FGklTrFL4P6vkBx6F0w
- v6LYIxklXgwKCuWjr/RbskOr0Jiq89d7XAVOg4ub6tl2skSDA2ceVHNb2WAAaoPKh+U2
- AL0OEAhTipLXlsaROWxYIg03bU1FjNcONlZvi2mXUhDDQIH0AEIHSyekrq1nAqVIgeKX
- bmFO/t8cUGCYVSyRltb3SVtvXWZvR4x5FoSuq+QgiE6XihcDeHzbePrV5sFHl56gnj/l
- w4vzICpJlTr1QK9DEnlEzauf+UdjlJgQS79wLCj8BVNQ6snqb5r32k+T3ZsBOFQtJqr5
- woYg==
-X-Gm-Message-State: AOJu0YxSD6mdyhZP/iaBoNoP/gb+8h4wL27CE2yZGqdrN/2ZigbF1y7C
- 1rXZ4VNPu+Dn8T8EiYoZUT+wOdI8nFfy+w3dJis4sw==
-X-Google-Smtp-Source: AGHT+IG6PwOjzGuied8QRhomfilX9xb/5HaLXRmpn9s9sHAgW4zXrKa+Xc2mGOUnnq1pacopF13SLg==
-X-Received: by 2002:a1c:f711:0:b0:3fe:173e:4a34 with SMTP id
- v17-20020a1cf711000000b003fe173e4a34mr6785970wmh.40.1692697035461; 
- Tue, 22 Aug 2023 02:37:15 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692697041; x=1693301841;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZJPKVO+xaCar/pzXI7lGpOGhrynSj4d9rgRqF1K4Bw0=;
+ b=W3tq74RNMAvK2wAHcN8zsFO4+j+aJWj23G/YNeg32S8i/r6DIDwL0UVlUb0mbXlf9X
+ KsSi2tHC+pJEjX7mVAnOwDV68iGM6nNv1x3pBVvQTTWuJPyhCxyHgvLvYOH2XZRJaZ5q
+ lTTUL5Bxn89syp+PuzO7VPD1lAY9ccXYNLbw9Nz5ySWgT8xCd73Gk8OcMHIzJmhWW1+O
+ bgqx5tFp3B6iEPTk5HNZ4vtsFAzBlf612+NR7kAYmFdfARFXLkwsa2aWBaZ8azfTBt/p
+ ntcSoaWFKKn0v25/rEX3S1gdLAUC200J84iTw6L60deqAwq09H9YpSBg8YXqUCPZ8qga
+ oZkQ==
+X-Gm-Message-State: AOJu0Yx/2tDpFU2tgq1QgaMjs8dDS53eLs5H/hRxSHIRbzPxgS8dS5Fg
+ Mu+sSMIS6g6NGR/i+fkjcuURFmNDzfbc0g6vH9Et1A==
+X-Google-Smtp-Source: AGHT+IGMvMtFAjj6eDI7jtvmy35uXCChJ2QnmtTI+jsbWgHcfbGDJ3U/aEC7sET6NEuan8sddl3CQQ==
+X-Received: by 2002:adf:ec8a:0:b0:319:790e:3bc5 with SMTP id
+ z10-20020adfec8a000000b00319790e3bc5mr6561589wrn.41.1692697041498; 
+ Tue, 22 Aug 2023 02:37:21 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- k9-20020a05600c0b4900b003fbd9e390e1sm18884536wmr.47.2023.08.22.02.37.14
+ z1-20020adfd0c1000000b003143c9beeaesm15257485wrh.44.2023.08.22.02.37.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 02:37:14 -0700 (PDT)
+ Tue, 22 Aug 2023 02:37:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/7] tcg: Document *swap/deposit helpers
-Date: Tue, 22 Aug 2023 11:37:05 +0200
-Message-ID: <20230822093712.38922-1-philmd@linaro.org>
+Subject: [PATCH 1/7] tcg/tcg-op: Document bswap16() byte pattern
+Date: Tue, 22 Aug 2023 11:37:06 +0200
+Message-ID: <20230822093712.38922-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230822093712.38922-1-philmd@linaro.org>
+References: <20230822093712.38922-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,26 +93,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While reviewing a recent patch from Richard optimizing
-deposit() [*] I ended looking at the *swap friends, taking
-some notes, which then evolved to proper documentation.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tcg/tcg-op.c | 48 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
-[*] https://lore.kernel.org/qemu-devel/20230816145547.477974-3-richard.henderson@linaro.org/
-
-Philippe Mathieu-Daudé (7):
-  tcg/tcg-op: Document bswap16() byte pattern
-  tcg/tcg-op: Document bswap32() byte pattern
-  tcg/tcg-op: Document bswap64() byte pattern
-  tcg/tcg-op: Document hswap() byte pattern
-  tcg/tcg-op: Document wswap() byte pattern
-  tcg/tcg-op: Document deposit_z()
-  target/cris: Fix a typo in gen_swapr()
-
- docs/devel/tcg-ops.rst  | 12 ++++++
- target/cris/translate.c | 20 +++++----
- tcg/tcg-op.c            | 96 +++++++++++++++++++++++++++++++----------
- 3 files changed, 96 insertions(+), 32 deletions(-)
-
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 7aadb37756..f164ddc95e 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -1021,6 +1021,13 @@ void tcg_gen_ext16u_i32(TCGv_i32 ret, TCGv_i32 arg)
+     }
+ }
+ 
++/*
++ * bswap16_i32: 16-bit byte swap on the low bits of a 32-bit value.
++ *
++ * Byte pattern:  bswap16_i32(xxab) -> ..ba             (TCG_BSWAP_OZ)
++ *                bswap16_i32(xxab) -> ssba             (TCG_BSWAP_OS)
++ *                bswap16_i32(xxab) -> xxba
++ */
+ void tcg_gen_bswap16_i32(TCGv_i32 ret, TCGv_i32 arg, int flags)
+ {
+     /* Only one extension flag may be present. */
+@@ -1032,22 +1039,23 @@ void tcg_gen_bswap16_i32(TCGv_i32 ret, TCGv_i32 arg, int flags)
+         TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+         TCGv_i32 t1 = tcg_temp_ebb_new_i32();
+ 
+-        tcg_gen_shri_i32(t0, arg, 8);
++                                            /* arg = xxab */
++        tcg_gen_shri_i32(t0, arg, 8);       /*  t0 = .xxa */
+         if (!(flags & TCG_BSWAP_IZ)) {
+-            tcg_gen_ext8u_i32(t0, t0);
++            tcg_gen_ext8u_i32(t0, t0);      /*  t0 = ...a */
+         }
+ 
+         if (flags & TCG_BSWAP_OS) {
+-            tcg_gen_shli_i32(t1, arg, 24);
+-            tcg_gen_sari_i32(t1, t1, 16);
++            tcg_gen_shli_i32(t1, arg, 24);  /*  t1 = b... */
++            tcg_gen_sari_i32(t1, t1, 16);   /*  t1 = ssb. */
+         } else if (flags & TCG_BSWAP_OZ) {
+-            tcg_gen_ext8u_i32(t1, arg);
+-            tcg_gen_shli_i32(t1, t1, 8);
++            tcg_gen_ext8u_i32(t1, arg);     /*  t1 = ...b */
++            tcg_gen_shli_i32(t1, t1, 8);    /*  t1 = ..b. */
+         } else {
+-            tcg_gen_shli_i32(t1, arg, 8);
++            tcg_gen_shli_i32(t1, arg, 8);   /*  t1 = xab. */
+         }
+ 
+-        tcg_gen_or_i32(ret, t0, t1);
++        tcg_gen_or_i32(ret, t0, t1);        /* ret = ssba */
+         tcg_temp_free_i32(t0);
+         tcg_temp_free_i32(t1);
+     }
+@@ -1721,6 +1729,13 @@ void tcg_gen_ext32u_i64(TCGv_i64 ret, TCGv_i64 arg)
+     }
+ }
+ 
++/*
++ * bswap16_i64: 16-bit byte swap on the low bits of a 64-bit value.
++ *
++ * Byte pattern:  bswap16_i32(xxxxxxab) -> ......ba     (TCG_BSWAP_OZ)
++ *                bswap16_i32(xxxxxxab) -> ssssssba     (TCG_BSWAP_OS)
++ *                bswap16_i32(xxxxxxab) -> xxxxxxba
++ */
+ void tcg_gen_bswap16_i64(TCGv_i64 ret, TCGv_i64 arg, int flags)
+ {
+     /* Only one extension flag may be present. */
+@@ -1739,22 +1754,23 @@ void tcg_gen_bswap16_i64(TCGv_i64 ret, TCGv_i64 arg, int flags)
+         TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+         TCGv_i64 t1 = tcg_temp_ebb_new_i64();
+ 
+-        tcg_gen_shri_i64(t0, arg, 8);
++                                            /* arg = xxxxxxab */
++        tcg_gen_shri_i64(t0, arg, 8);       /*  t0 = .xxxxxxa */
+         if (!(flags & TCG_BSWAP_IZ)) {
+-            tcg_gen_ext8u_i64(t0, t0);
++            tcg_gen_ext8u_i64(t0, t0);      /*  t0 = .......a */
+         }
+ 
+         if (flags & TCG_BSWAP_OS) {
+-            tcg_gen_shli_i64(t1, arg, 56);
+-            tcg_gen_sari_i64(t1, t1, 48);
++            tcg_gen_shli_i64(t1, arg, 56);  /*  t1 = b....... */
++            tcg_gen_sari_i64(t1, t1, 48);   /*  t1 = ssssssb. */
+         } else if (flags & TCG_BSWAP_OZ) {
+-            tcg_gen_ext8u_i64(t1, arg);
+-            tcg_gen_shli_i64(t1, t1, 8);
++            tcg_gen_ext8u_i64(t1, arg);     /*  t1 = .......b */
++            tcg_gen_shli_i64(t1, t1, 8);    /*  t1 = ......b. */
+         } else {
+-            tcg_gen_shli_i64(t1, arg, 8);
++            tcg_gen_shli_i64(t1, arg, 8);   /*  t1 = xxxxxxb. */
+         }
+ 
+-        tcg_gen_or_i64(ret, t0, t1);
++        tcg_gen_or_i64(ret, t0, t1);        /* ret = ssssssba */
+         tcg_temp_free_i64(t0);
+         tcg_temp_free_i64(t1);
+     }
 -- 
 2.41.0
 
