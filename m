@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E6D783B0C
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C68783B1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:47:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLxM-0002vy-SY; Tue, 22 Aug 2023 03:37:40 -0400
+	id 1qYM5U-000605-0F; Tue, 22 Aug 2023 03:46:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLxL-0002vg-LR
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:37:39 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYM5P-0005xp-Ed
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:45:59 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLxI-0000JP-QE
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:37:39 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fef4b063a7so11914745e9.2
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:37:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYM5N-0002Uu-7R
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:45:59 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3197808bb08so3881108f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:45:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692689855; x=1693294655;
+ d=linaro.org; s=google; t=1692690355; x=1693295155;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qjBIfH3w4YRPuWAe3flPlEk95k+tugzb06i2ZiaqZJs=;
- b=QQqOGTJErnCu+41Vwj11HzAnqwBzc5yYRZaBMsfhjTIOWpPswtev+FKBxKbeeS2UC2
- LLtnRpEo9VCrOEhCogaLkqQvVG98xiSunn8Sm541edr08i1YXKS9m5ww4noEJvIvH5f7
- np9kyR1qRWddAamHgvWCtTpbIWiM/lUimyu2UloZhD9Q/ELj2Wdqt+4SAbdsi1kL0Yqz
- TTg90zEr+4msBwKmJsNwwKLjlT/A7gRZI7cEFDXrYSfYwx7OIsGsS8pjMHzGGK+8t1OH
- bLxaFZvswojUbrkDB0OVN4SL89nziZr1lcAO6l2vbTMXU1BmjsP5ups7Uxj5OZh0aYBm
- FGxg==
+ bh=8fTtoMijkfQ2y3NnW9ovldBgQ1WStZ+VByhh5UVnrtg=;
+ b=O7+LDml3aijGTRaAdvvWe1nbGcbnHlmvxo5b944f55gnk9CiOtp1+Sa4JvgfCW1p4X
+ Yu+UfZx2u/tnUWYYGF6zjpxew5t44yHirX9+Xx/ClzABnVqJQORjhfWWT5UX3wrCcUJ3
+ fvfy/YYTnsDFT2xE9HiAz+SQMmiOo9tHfwK4HBqbnU+qhlHBdcqUZ3BTD/6KfjT2PUv1
+ 2deqBvnTBGg8LG7zbwlTr+yd2qeYrXo0sh0lZ8NygDzsza0u3yt7ukc113SKbLhBdcMZ
+ t6Je2z2yTqpqJl/1loQtHuuz4Eht4RR+6dPpGl5HuBAhru7JW6ArQEd3fqyNj9800YyY
+ C4/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692689855; x=1693294655;
+ d=1e100.net; s=20221208; t=1692690355; x=1693295155;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qjBIfH3w4YRPuWAe3flPlEk95k+tugzb06i2ZiaqZJs=;
- b=FIG7gX1xeAxfuQW448kMvymt29zWW/AerNE9OhtFusp/p7gbDmgmp2ebkYG/CB3mHp
- CHTySMf1/q7iLhFsfmf+iFEL+Ca9XGuRLyZ2iv6rwsFEgleXfx7qGt7R/60k55c0jrn6
- z/uW9EJoeDJeUewpYHWN6E6MVq5uZ+Gv8Hq7yVobGjVs99oBY37Fr4PZ8uxerps+Xtub
- WH1XRa/UrM4/DbRpzohXYt0Lprpaj/J9vFpFXYA9k2D14L7zum3s3bTguP+WB7cPKoA+
- u4S3GaHYJPa5TJVGd14UpeF+qJ0KFJLdTKjoxwphZ5MG7bjA0GrrSI8mOLCs8PqFzyRt
- zFSQ==
-X-Gm-Message-State: AOJu0YxL/tGi7IcVwJ50VMiFrzAoMNWgbiDgFiK26S6d56h6NDcRFhkC
- AN5LSod9C8MmgubgAe0MNXAFGg==
-X-Google-Smtp-Source: AGHT+IHFbva73u3yNMELXs5MfjZ6O5mj+B7TlHbrYyYI/6q7A/DMckUL0qVE4YzOG49DhER6ItxGjA==
-X-Received: by 2002:a7b:cd06:0:b0:3fe:4548:188d with SMTP id
- f6-20020a7bcd06000000b003fe4548188dmr6352315wmj.7.1692689854747; 
- Tue, 22 Aug 2023 00:37:34 -0700 (PDT)
+ bh=8fTtoMijkfQ2y3NnW9ovldBgQ1WStZ+VByhh5UVnrtg=;
+ b=ZSXFsqTPEM47UV02STHUFp3UccMypOyAtYQ6riSbj1ZLB+VNrpWp8rAP+6Fo8sfrRf
+ DMGIQRtgLbGyY5kRcdhOCsv4h3UXcLk8SXFDWUOnMivQDWdUokBHYqa6KLrgVM0BV5J5
+ bTLW9vxS3QBiUcCTocjZsU3XlbqYbPuhxhtebbtUWOvjJt1v+LrZuFzWLv43bU60po7l
+ sA/DDMnsG3CWLT6NwXIxQteT3GoYCaCov9hWFkUOoSK5gCABwt79DU4WizFuCBNvTLm8
+ 9DepBreQO7LMFrD928mTJ6BjDipNy0/XJrt6h3eVZfKHVtXjjBuyIRspwYIMujl1Btg/
+ xQcQ==
+X-Gm-Message-State: AOJu0YziY8TtUxZcoIzKeZRvyf7ncODdMwhdNS+InbQl0R6XB9Ukns7G
+ U+YTvEZaFF8iLYmFLhWi8HXW9g==
+X-Google-Smtp-Source: AGHT+IFlbuO/fT1h46QlWINDrwTxanc+d3XBBGYhKaxYOAGaKwm+dFxrWpdibSVgdHGb6aAJDLz67Q==
+X-Received: by 2002:a5d:42ca:0:b0:31a:d8c0:cb8b with SMTP id
+ t10-20020a5d42ca000000b0031ad8c0cb8bmr7641518wrr.25.1692690355362; 
+ Tue, 22 Aug 2023 00:45:55 -0700 (PDT)
 Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
- w3-20020a05600c014300b003fe0a0e03fcsm18435165wmm.12.2023.08.22.00.37.32
+ h11-20020a5d548b000000b00317e77106dbsm15071899wrv.48.2023.08.22.00.45.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 00:37:34 -0700 (PDT)
-Message-ID: <7999d76e-d30a-d364-336b-4d4bd8a5ec4f@linaro.org>
-Date: Tue, 22 Aug 2023 09:37:31 +0200
+ Tue, 22 Aug 2023 00:45:55 -0700 (PDT)
+Message-ID: <2d228d92-9cb8-4ff6-49fc-4ecf0d494e1a@linaro.org>
+Date: Tue, 22 Aug 2023 09:45:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v10 6/9] gfxstream + rutabaga: add initial support for
- gfxstream
+Subject: Re: [PATCH v10 9/9] docs/system: add basic virtio-gpu documentation
 Content-Language: en-US
 To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com, kraxel@redhat.com, akihiko.odaki@gmail.com,
  ray.huang@amd.com, alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is,
  ernunes@redhat.com, manos.pitsidianakis@linaro.org
 References: <20230822000025.501-1-gurchetansingh@chromium.org>
- <20230822000025.501-6-gurchetansingh@chromium.org>
+ <20230822000025.501-9-gurchetansingh@chromium.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230822000025.501-6-gurchetansingh@chromium.org>
+In-Reply-To: <20230822000025.501-9-gurchetansingh@chromium.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -54
 X-Spam_score: -5.5
 X-Spam_bar: -----
@@ -95,60 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
 On 22/8/23 02:00, Gurchetan Singh wrote:
-> This adds initial support for gfxstream and cross-domain.  Both
-> features rely on virtio-gpu blob resources and context types, which
-> are also implemented in this patch.
-[...]
-
->   hw/display/virtio-gpu-pci-rutabaga.c |   48 ++
->   hw/display/virtio-gpu-rutabaga.c     | 1119 ++++++++++++++++++++++++++
->   hw/display/virtio-vga-rutabaga.c     |   51 ++
->   3 files changed, 1218 insertions(+)
->   create mode 100644 hw/display/virtio-gpu-pci-rutabaga.c
->   create mode 100644 hw/display/virtio-gpu-rutabaga.c
->   create mode 100644 hw/display/virtio-vga-rutabaga.c
+> This adds basic documentation for virtio-gpu.
 > 
-> diff --git a/hw/display/virtio-gpu-pci-rutabaga.c b/hw/display/virtio-gpu-pci-rutabaga.c
+> Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> Tested-by: Alyssa Ross <hi@alyssa.is>
+> Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+
+>   docs/system/device-emulation.rst   |   1 +
+>   docs/system/devices/virtio-gpu.rst | 112 +++++++++++++++++++++++++++++
+>   2 files changed, 113 insertions(+)
+>   create mode 100644 docs/system/devices/virtio-gpu.rst
+
+
+> diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
 > new file mode 100644
-> index 0000000000..c71173d8ca
+> index 0000000000..2b3eb536f9
 > --- /dev/null
-> +++ b/hw/display/virtio-gpu-pci-rutabaga.c
-> @@ -0,0 +1,48 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +++ b/docs/system/devices/virtio-gpu.rst
+> @@ -0,0 +1,112 @@
+> +..
+> +   SPDX-License-Identifier: GPL-2.0
 
-QEMU expects contributions to be GPL-2.0-or-later, see ./LICENSE:
+Can this be GPL-2.0-or-later?
 
-    As of July 2013, contributions under version 2 of the GNU General
-    Public License (and no later version) are only accepted for the
-    following files or directories: bsd-user/, linux-user/, hw/vfio/,
-    hw/xen/xen_pt*.
-
-Also, per 
-https://qemu-project.gitlab.io/qemu/devel/style.html#comment-style:
-
-   We use traditional C-style /* */ comments and avoid // comments.
-
-(You can use ./scripts/checkpatch.pl to check your patches style).
-
-> diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
-> new file mode 100644
-> index 0000000000..bcb3885f1f
-> --- /dev/null
-> +++ b/hw/display/virtio-gpu-rutabaga.c
-> @@ -0,0 +1,1119 @@
-> +// SPDX-License-Identifier: GPL-2.0
-
-
-> diff --git a/hw/display/virtio-vga-rutabaga.c b/hw/display/virtio-vga-rutabaga.c
-> new file mode 100644
-> index 0000000000..2b2ffed8a6
-> --- /dev/null
-> +++ b/hw/display/virtio-vga-rutabaga.c
-> @@ -0,0 +1,51 @@
-> +// SPDX-License-Identifier: GPL-2.0
-
+> +virtio-gpu
+> +==========
+> +
+> +This document explains the setup and usage of the virtio-gpu device.
+> +The virtio-gpu device paravirtualizes the GPU and display controller.
 
 
