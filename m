@@ -2,70 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6990784AA0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 21:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07109784AC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 21:46:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYXFQ-0001UT-60; Tue, 22 Aug 2023 15:41:04 -0400
+	id 1qYXJs-0002cu-AG; Tue, 22 Aug 2023 15:45:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qYXFO-0001Tw-KT
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 15:41:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qYXJI-0002YR-7Q; Tue, 22 Aug 2023 15:45:09 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qYXFL-0006cX-0Y
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 15:41:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692733256;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=br2wln4ONcOSHVrSNZHrzANY2w61bzWjpZg8kCKn/J0=;
- b=Q4X657uEvi8Vyo/8V3fRmbuJYtbwrfNN0GzJILS4XzinS41ucpwee8vHhcRpD40oEMgBV6
- JCAyc0k6DPjAvrB7jTbEr/8QMEcC9OU4yEjCiLI/5qhhUf8YZhTMUbjZQJWQuKiW0JB0O6
- lcwxl+dsr/vK13McflaJdyRSEWqfmTg=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-266-tc11BpOoOkCY-8sjKM66YQ-1; Tue, 22 Aug 2023 15:40:52 -0400
-X-MC-Unique: tc11BpOoOkCY-8sjKM66YQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 149563814942;
- Tue, 22 Aug 2023 19:40:52 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9F7E9C15BAE;
- Tue, 22 Aug 2023 19:40:51 +0000 (UTC)
-Date: Tue, 22 Aug 2023 15:40:50 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, eblake@redhat.com, eesposit@redhat.com,
- pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
-Subject: Re: [PATCH 21/21] block: Mark bdrv_add/del_child() and caller
- GRAPH_WRLOCK
-Message-ID: <20230822194050.GX727224@fedora>
-References: <20230817125020.208339-1-kwolf@redhat.com>
- <20230817125020.208339-22-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qYXJE-0007ix-HJ; Tue, 22 Aug 2023 15:45:03 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 4F8441C2AC;
+ Tue, 22 Aug 2023 22:45:13 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id B2C8B21188;
+ Tue, 22 Aug 2023 22:44:55 +0300 (MSK)
+Message-ID: <7d3b6b1f-c1ef-c1fa-ec85-98fcb26d96ff@tls.msk.ru>
+Date: Tue, 22 Aug 2023 22:44:55 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="hZGHJ1x/UUL0hQTZ"
-Content-Disposition: inline
-In-Reply-To: <20230817125020.208339-22-kwolf@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 0/9] Replace remaining target_ulong in system-mode accel
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: timothee.cocault@gmail.com, richard.henderson@linaro.org, anjo@rev.ng
+Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
+References: <00e9e08eae1004ef67fe8dca3aaf5043e6863faa.camel@gmail.com>
+ <f78e864b-6166-f4ea-5700-053df6764400@tls.msk.ru>
+In-Reply-To: <f78e864b-6166-f4ea-5700-053df6764400@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -86
+X-Spam_score: -8.7
+X-Spam_bar: --------
+X-Spam_report: (-8.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,43 +60,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+22.08.2023 22:33, Michael Tokarev wrote:
+> 22.08.2023 22:02, timothee.cocault@gmail.com wrote:
+>> Hi,
+>>
+>> Maybe its too late for the 8.1 window, but I noticed that this patchset
+>> fixes a segfault in qemu-system-ppc (and other 32 bits archs ?) introduced by
+>> commit fb2c53c.
+>> Therefore maybe it would be relevant to get merge it before 8.2.
+> 
+> It's definitely too later for 8.1.0 (which has been tagged earlier today,
+> and it has been too later at -rc4 already).  But it's not too late for
+> 8.1.1 stable series, so a fix can be applied to stable-8.1 (Cc'ing
+> qemu-stable@).
+> 
+> It seems I can reproduce the crash.
 
---hZGHJ1x/UUL0hQTZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The sigsegv (reported testcase) seems to be fixed by commit 7/9:
 
-On Thu, Aug 17, 2023 at 02:50:20PM +0200, Kevin Wolf wrote:
-> The functions read the parents list in the generic block layer, so we
-> need to hold the graph lock already there. The BlockDriver
-> implementations actually modify the graph, so it has to be a writer
-> lock.
->=20
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  include/block/block-global-state.h |  8 +++++---
->  include/block/block_int-common.h   |  9 +++++----
->  block/quorum.c                     | 23 ++++++-----------------
->  blockdev.c                         | 17 +++++++++++------
->  4 files changed, 27 insertions(+), 30 deletions(-)
+Author: Anton Johansson via <qemu-devel@nongnu.org>
+Date:   Mon Aug 7 17:57:04 2023 +0200
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+     include/exec: Widen tlb_hit/tlb_hit_page()
 
---hZGHJ1x/UUL0hQTZ
-Content-Type: application/pgp-signature; name="signature.asc"
+     tlb_addr is changed from target_ulong to uint64_t to match the type of
+     a CPUTLBEntry value, and the addressed is changed to vaddr.
 
------BEGIN PGP SIGNATURE-----
+     Signed-off-by: Anton Johansson <anjo@rev.ng>
+     Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTlD0IACgkQnKSrs4Gr
-c8i+rAgAo05Op9FsLS9Ypq3uWdKk7CCyRFQb1jBdmMwpo9Xl0GW7cMg4Gv8vjn1N
-Eb+QPb8eDqEERxmKfAN2GOz5sPUrsch9+wQzqpVDV0dQE/pBXwmrPKq+drbkEhfd
-UapTpg0yQAuHK6E6q68HTCN3z5/37BNlSybupdekKPQG97gsgW+KqdG9rlKMZSD+
-wteolDlqDpV+V3nYqgyTOUD+BYJDGsBon89/f7nJOYXxfad11dVBWu0TyFuXAZjS
-63hL7NkvvbYsW6zQvIAqPJgVbLqwZOC8+7Fk9oc7tF+Ed7B7nCd6QnCG+7rg84gy
-Qu0FXqT0eN83FbYtXpokV27+EK225Q==
-=5+fB
------END PGP SIGNATURE-----
-
---hZGHJ1x/UUL0hQTZ--
-
+/mjt
 
