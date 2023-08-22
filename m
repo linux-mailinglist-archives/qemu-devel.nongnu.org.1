@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEEA878483D
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 19:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9473F78484D
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 19:16:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYUuD-000669-Do; Tue, 22 Aug 2023 13:11:01 -0400
+	id 1qYUyo-0000Au-Jf; Tue, 22 Aug 2023 13:15:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYUtv-00063R-EY
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:10:46 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
+ id 1qYUyl-000091-RG
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:15:44 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYUtt-0004I4-9h
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:10:43 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-56b0c5a140dso1944907a12.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 10:10:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
+ id 1qYUyh-0005Ea-Hx
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:15:41 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99c353a395cso630650666b.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 10:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692724240; x=1693329040;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Za8c4+5RrtvZHY7iLQRfGk7Xp7HIKUtWW4qpYHy4zas=;
- b=CLZVv1xFme5rivBjo5lLdrz8HQh1lcnALL+yAlJzb/Gv2onbsjw7O4MUqKO5g3WLx2
- wISs0Hyvf/01HCyJa10db5qLuMmcXd4VXMNCexh4IP8XHEka5TcoNoBjaG5eS9KiRxPB
- ymc4Sh+QP9KklJfQeLfnCh8vxp4+CIfW4TCt401FOOwhOdL9JQN9z4lFkq7neB9xyHjU
- wIO73W08PoIw7siGnxrR8mOcYh2hHvOlf4pXgGdrJ8hUCY/1WeAHe0ISdm9TbDbk4DHq
- tYZkOe9QVpivyMZLLNf0KxRzSBOlKBqrMYhrIqAB1XetLGt5ml3DM9eDee/mkVUT6IwT
- m+oQ==
+ d=gmail.com; s=20221208; t=1692724537; x=1693329337;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=rCcFHxGUdVGJQiSiHP74vFw25wdWzrnB87QlfWwzTK0=;
+ b=YKFjKIuTG5hKBFZLIxZi5oillpi046XjGpC3plpJTe2FOEHkJDheLlrx5LV8HJKS7i
+ GAVfrx3NluPK1gKvlu3oe4e7Bla6OiD7VNbWNX3mB2Sg7Nvj61U57P7c2JTr+3406EDa
+ VtlC4vc4+sMjx2tsOqOLlnMWLVrU/6PK3zVjwhxvSMp4RmvIjf2BSkTKejk7mPM+EIOo
+ cBWoLn+4Mw8BBD8fuc2tUMhbad3xeR11C3My/QaTJoUd1aNhCaHWqVeLfy+q7ubEQ1Mm
+ 8y3WVVeXauPbVY3Q35bRxYXB8cZkrTLnRP5m+bEcFtoPc0iXgyfzRIuho1uk4pSV953c
+ GAGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692724240; x=1693329040;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Za8c4+5RrtvZHY7iLQRfGk7Xp7HIKUtWW4qpYHy4zas=;
- b=MIF6c4Jaor4rS0ELy7vaB9BJE9S0Fyz7TlrH8VdOew2u58OMP3/z18RL2TS/7zMbOx
- gMzGtOJiDzCVR+AWVoygbCLIbgc+VqKftTYAlq52qv6zgUnmV8VTmbAs/HA8/edXmqFA
- XQe0nONf2XgnE9QEorf/gP5TEVPMTc8gE47NKovKm2Wg/Gen8qTY/s4i/wkogHAS+RkH
- 6oulwGhUh1LG8ztM6dDKxnSE8LmakmwIh75H61IdO9bXyBAWWbuNsJ9lWOU1hwUiX+h1
- Zh+OFEVdw6jBc0S5kbqlwkt9otriOLTq258yaXLF5StSGQa6iq0A0T7dd7tlqN5Rq7tB
- jQdg==
-X-Gm-Message-State: AOJu0YyUTd4PftcnjYa+r9AF2Vd8tRFdRdDt9wITEGgC0vehzxX9tkNz
- G0WbznD5yyCe05qhayI2mW9ZtdsnbgR8PZ5Ld20=
-X-Google-Smtp-Source: AGHT+IESYSa/FJTRIogTIIZENryHnDuHQZCAvmqngTUC8tAe57Pv+PihVZy+d1ezgCI8wN9BLXvbPQ==
-X-Received: by 2002:a17:90b:4a02:b0:26d:17e0:2f3d with SMTP id
- kk2-20020a17090b4a0200b0026d17e02f3dmr8881624pjb.44.1692724239904; 
- Tue, 22 Aug 2023 10:10:39 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
- ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
- by smtp.gmail.com with ESMTPSA id
- 28-20020a17090a019c00b00263d3448141sm8789563pjc.8.2023.08.22.10.10.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 10:10:39 -0700 (PDT)
-Message-ID: <e9e86484-d70b-1075-a412-1040e9ad9d10@linaro.org>
-Date: Tue, 22 Aug 2023 10:10:37 -0700
+ d=1e100.net; s=20221208; t=1692724537; x=1693329337;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rCcFHxGUdVGJQiSiHP74vFw25wdWzrnB87QlfWwzTK0=;
+ b=Ku/HK+mD5J3bDU/7YgbayL1m4s1Qsrdx0AKwiI5SbscXO6qBhUTKxC2nLY47h7dKR1
+ 26cc7BLkEkuiTryViQ/YVpGutV0ObOMSRkP69BIno9vTzq+9xIQYQLhHMwAiZclAqbO9
+ sqUEjHy82N5ursWK4LENc0WI33JmcHkpFpGZlCI/mTx/0sB2pSEyvg1pFTDMEiv/YQQP
+ Rq6xusfo8kc5ueIFAqtAErIP+i1jSiOOF5bq/yYBgmrPWn8EYexeVv5chO7y8VjG9Kok
+ SrVOzNPHzkfQtYlqVACfmUSOvWx5MBhRnKjcMWyvNcDIiKrT7tIuEkeLxrA4KRRMLVeu
+ 2hBA==
+X-Gm-Message-State: AOJu0YzDn2j1uHtZTLOuas58M1ipzrVbLhK0cFgMktqbiJW/9Q3Pi3MH
+ QElp1hQkqiDIkScLpNnfRu8yvD+gdWc5MCdGFUbrQs6l
+X-Google-Smtp-Source: AGHT+IFcz8EeHrWPeR+UIWZIeSlc+DWQPKAndCHIot6dLxNQX7JjQB4ZUvOjilkuLHFYvgARaHiGvVdV/+iMceeMQ0I=
+X-Received: by 2002:a17:906:73da:b0:994:569b:61b8 with SMTP id
+ n26-20020a17090673da00b00994569b61b8mr7375705ejl.58.1692724537402; Tue, 22
+ Aug 2023 10:15:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] tcg: Prohibit incomplete extr[lh]_i64_i32() implementation
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <20230822165101.72695-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230822165101.72695-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
+References: <cover.1687278381.git.jupham125@gmail.com>
+ <0b4adb4f-7a66-47a9-bb47-7c73a164a327@perard>
+In-Reply-To: <0b4adb4f-7a66-47a9-bb47-7c73a164a327@perard>
+From: Joel Upham <jupham125@gmail.com>
+Date: Tue, 22 Aug 2023 13:15:26 -0400
+Message-ID: <CADPhr0ns=_O=jqj72x16YdWgrAbpzJNssyexwYkiUjAavySd-A@mail.gmail.com>
+Subject: Re: [PATCH v1 00/23] Q35 support for Xen
+To: Anthony PERARD <anthony.perard@citrix.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000c129800603862418"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=jupham125@gmail.com; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,29 +86,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/23 09:51, Philippe Mathieu-Daudé wrote:
-> extrl_i64_i32() and extrh_i64_i32() work in pair. Backends
-> can not implement one without the other. Enforce that
-> assumption.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/tcg/tcg.h | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-> index 0875971719..a6f51130aa 100644
-> --- a/include/tcg/tcg.h
-> +++ b/include/tcg/tcg.h
-> @@ -172,6 +172,9 @@ typedef uint64_t TCGRegSet;
->   #define TCG_TARGET_HAS_v256             0
->   #endif
->   
-> +QEMU_BUILD_BUG_MSG(TCG_TARGET_HAS_extrl_i64_i32 != TCG_TARGET_HAS_extrh_i64_i32,
-> +                   "Both extrl_i64_i32()/extrh_i64_i32() must exist");
+--000000000000c129800603862418
+Content-Type: text/plain; charset="UTF-8"
 
-Just rename them so they're the same symbol.
+I was doing this for work and at the moment got pulled off to work on some
+things for our release. Most of these patches will exist as they are,
+except for Xen wanting to handle the PCIe PT code a bit differently. XC-PNG
+is also working on getting patches for q35 and I have been sharing my code
+with them, so I am hoping progress is moving forward on the Xen side. I
+wish I could work on this full time to get everything as it needs to be
+soon.
 
+-Joel
 
-r~
+On Tue, Aug 22, 2023 at 10:18 AM Anthony PERARD <anthony.perard@citrix.com>
+wrote:
+
+> Hi Joel,
+>
+> We had a design session about Q35 support during Xen Summit, and I think
+> the result of it is that some more changes are going to be needed,
+> right?
+>
+> So, is it worth it for me to spend some time on review this patch series
+> in its current form, or should I wait until the next revision? And same
+> question for the xen toolstack side.
+>
+> Cheers,
+>
+> --
+> Anthony PERARD
+>
+
+--000000000000c129800603862418
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto">I was doing this for work and at the moment got pulled of=
+f to work on some things for our release. Most of these patches will exist =
+as they are, except for Xen wanting to handle the PCIe PT code a bit differ=
+ently. XC-PNG is also working on getting patches for q35 and I have been sh=
+aring my code with them, so I am hoping progress is moving forward on the X=
+en side. I wish I could work on this full time to get everything as it need=
+s to be soon.=C2=A0</div><div dir=3D"auto"><br></div><div dir=3D"auto">-Joe=
+l</div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_=
+attr">On Tue, Aug 22, 2023 at 10:18 AM Anthony PERARD &lt;<a href=3D"mailto=
+:anthony.perard@citrix.com">anthony.perard@citrix.com</a>&gt; wrote:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
+:1px #ccc solid;padding-left:1ex">Hi Joel,<br>
+<br>
+We had a design session about Q35 support during Xen Summit, and I think<br=
+>
+the result of it is that some more changes are going to be needed,<br>
+right?<br>
+<br>
+So, is it worth it for me to spend some time on review this patch series<br=
+>
+in its current form, or should I wait until the next revision? And same<br>
+question for the xen toolstack side.<br>
+<br>
+Cheers,<br>
+<br>
+-- <br>
+Anthony PERARD<br>
+</blockquote></div></div>
+
+--000000000000c129800603862418--
 
