@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A2B783A70
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:11:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB3A783A7D
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:11:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLXU-0002ve-7H; Tue, 22 Aug 2023 03:10:56 -0400
+	id 1qYLY1-0003Bl-H2; Tue, 22 Aug 2023 03:11:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXR-0002pI-Ke
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:53 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXY-0002zM-84
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:11:05 -0400
 Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXO-0002Nf-TH
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:53 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLXV-0002Oh-Bd
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:10:59 -0400
 Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fee17aebc8so27873885e9.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:50 -0700 (PDT)
+ 5b1f17b1804b1-3feef504ccbso19123055e9.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 00:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692688249; x=1693293049;
+ d=linaro.org; s=google; t=1692688256; x=1693293056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V161z4Ei7sDtuZQE5rhbvAPYD0+mOubaYtO5GaVSVj4=;
- b=fOfCWHCpsxEKHx0zbI0dYeY07m6DdxH4ZgYfHA6jYzOMrgSQI1Rjg7WxkSmXOQ1foM
- pFfPzlIXiLl1xCCmxKPIWbPbPOUnX/OBZDZVZ7omdtkQjI5JZpnT9OWn50QK6RLZpMLL
- NuQaLhXPLDydP/rXQdwHgmKwCwzGWGDyUFpqM9gfE1sLLaviydvKT3/nD9z5MfRU8hDk
- mFHjyVE71Y3BIp4HufJihhsfngkgmS/FQDi5KJ79ytnN0l/pfwQHwR2Gc188NNTJamsh
- SFx8wj3XMRVkaZQh0lAB+rRLhBlg7Ht/TPBBoWcUnfttceUvWG/aWI4jKJOScLGdamN6
- 8aLQ==
+ bh=fvQZedijPtJ34ELRwqSS7RfwCk60jvhcOCv1VkYXcvk=;
+ b=gCTVVogpCHk7m/jexss5Prvsk4+BnfVR/S3cPnxREuxQy89Oyg9RioJLZYA80eavwd
+ 1LMq6C6pbilFnNtEHR7gQ0CmeMVQnF+2sNQ7ZXu8eVCUS5n8oj0/DimFl1HLyAgwLoA5
+ l8nHsfXq/iB3NT4rVOE4hRhQiJNGmBP1zVcOn/Ca1U92q3nbGYO8OfI789S92g3kgg0B
+ AAUhsL1fiPJV0kvLQOLtUrMAy7gN0+dzVk3Od75paCusTG57togM+joildzHnYqmumHy
+ ANAF+vpFJPOW5jN20siU46gtmaeRZN7x3X7t2Gp9NoQ/d6/wv3vb+mOJ26ZijJxcbIty
+ YTXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692688249; x=1693293049;
+ d=1e100.net; s=20221208; t=1692688256; x=1693293056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V161z4Ei7sDtuZQE5rhbvAPYD0+mOubaYtO5GaVSVj4=;
- b=cwcpj5YUaDlOmOsIDnTraCBITTjEN6RR9Krw3bCFH6BY48d9+4gkOvaJaHZzv+NsHJ
- ntcBCwzBVrQ96es9QpEuzUNc0+YLHNC6vCJqx60jrvuJ11kh706VR0EKjSVU6hL/0Urz
- ly/Gj/25ohs2PtWHIwAUImShwZlBzpoFCKGb0v/fm0USWvOUE//zUnF3H5NWH1S5ifgl
- mSUxZk09jNTaWixbSvnrDyyr0tvjbdpJUiL/1iv6VJGSqMxmAjVuU0FIVL2p2k1bCf20
- Uh2GsJEzTTVPQnOIXEvSTm+qvsBMmz8ExXcYMWfFseVUuaKqvSGGYNkXy4Z1NKV2UUjB
- Zpww==
-X-Gm-Message-State: AOJu0Yxb0sqh5Y5oGCT85aoMWqqAHUabgqQad/dSp2INztJBNnj0agTx
- np0PSopdm4ha9lM0wtCiKA5/SzafuPy3b3JKRZTazA==
-X-Google-Smtp-Source: AGHT+IGT3ra8sF3abC+qGyZS5VYUvM168Ga6XXMjwPZLkbXiPmMID/9l97o0DVC4MPGFNyU2jUI75g==
-X-Received: by 2002:a05:600c:214a:b0:3fc:a8:dc3c with SMTP id
- v10-20020a05600c214a00b003fc00a8dc3cmr7172541wml.37.1692688249319; 
- Tue, 22 Aug 2023 00:10:49 -0700 (PDT)
+ bh=fvQZedijPtJ34ELRwqSS7RfwCk60jvhcOCv1VkYXcvk=;
+ b=XsvTj8weR4428Yqk6mW3z6JYChScGdw0KjxsljsNs780dzEmnDCD5q2f3+qdwQAcIr
+ PK0saEsG3H2TCXn/8YJvfOXHREyZt0pyWpdyHItylfAIazZbCqz1DFh6iLRjcFUt2Jiz
+ xCyxyM0CfUqy3n76saE9NuKO2kd5jvtbu1qVzZHjs/R04irjRt9HQI8RucDrGTKx+xx1
+ 0mdQZqi/ln4DQJw8mQa3+QU16a3PI+Y02zChUzREul6MKTmHHnbbOo+BBIOyDWiPVeFp
+ zbLO/xUg3ynOxYeywAedrbNu9MK1Nc/+Er6zfAnSIauDjrKgwcITfdI7HYqra3Zcvmup
+ 7pEw==
+X-Gm-Message-State: AOJu0YzXO8B2GtAxAbuzMtLd343MMj8Gg+Jux1PNmglC0UsfrCXVHfP8
+ iRM6tcQ3oeg/nJlB/+kkgvE45vo3bNRXvVrWclBBkQ==
+X-Google-Smtp-Source: AGHT+IHhYxRgROw+XiJPR3kg0/R51r2bhND2lyKq6A6bkF2Im3DJSeOgoGZzCHultghhYxSukFogig==
+X-Received: by 2002:a1c:7907:0:b0:3fe:1bef:4034 with SMTP id
+ l7-20020a1c7907000000b003fe1bef4034mr7305924wme.37.1692688255756; 
+ Tue, 22 Aug 2023 00:10:55 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- z10-20020a1c4c0a000000b003fef5402d2dsm3081718wmf.8.2023.08.22.00.10.47
+ x20-20020a05600c2a5400b003fef60005b5sm2505947wme.9.2023.08.22.00.10.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 00:10:48 -0700 (PDT)
+ Tue, 22 Aug 2023 00:10:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Song Gao <gaosong@loongson.cn>
@@ -61,9 +61,9 @@ Cc: Huacai Chen <chenhuacai@loongson.cn>, Jiajie Chen <c@jia.je>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 05/19] target/loongarch: Extract make_address_x() helper
-Date: Tue, 22 Aug 2023 09:09:58 +0200
-Message-ID: <20230822071013.34884-6-philmd@linaro.org>
+Subject: [PATCH v5 06/19] target/loongarch: Extract make_address_i() helper
+Date: Tue, 22 Aug 2023 09:09:59 +0200
+Message-ID: <20230822071013.34884-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822071013.34884-1-philmd@linaro.org>
 References: <20230822071013.34884-1-philmd@linaro.org>
@@ -105,164 +105,278 @@ Message-ID: <20230822032724.1353391-6-gaosong@loongson.cn>
 [PMD: Extract helper from bigger patch]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/translate.c                   | 12 ++++++++++++
- .../loongarch/insn_trans/trans_fmemory.c.inc   | 18 ++++++------------
- target/loongarch/insn_trans/trans_lsx.c.inc    |  6 ++----
- target/loongarch/insn_trans/trans_memory.c.inc |  6 ++----
- 4 files changed, 22 insertions(+), 20 deletions(-)
+ target/loongarch/translate.c                  |  6 ++++
+ .../loongarch/insn_trans/trans_atomic.c.inc   |  5 +--
+ .../loongarch/insn_trans/trans_branch.c.inc   |  3 +-
+ .../loongarch/insn_trans/trans_fmemory.c.inc  | 12 ++-----
+ target/loongarch/insn_trans/trans_lsx.c.inc   | 32 +++++--------------
+ .../loongarch/insn_trans/trans_memory.c.inc   | 28 +++++-----------
+ 6 files changed, 29 insertions(+), 57 deletions(-)
 
 diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index ac847745df..a68a979a55 100644
+index a68a979a55..acc54d7587 100644
 --- a/target/loongarch/translate.c
 +++ b/target/loongarch/translate.c
-@@ -208,6 +208,18 @@ static void set_fpr(int reg_num, TCGv val)
-                    offsetof(CPULoongArchState, fpr[reg_num].vreg.D(0)));
+@@ -220,6 +220,12 @@ static TCGv make_address_x(DisasContext *ctx, TCGv base, TCGv addend)
+     return base;
  }
  
-+static TCGv make_address_x(DisasContext *ctx, TCGv base, TCGv addend)
++static TCGv make_address_i(DisasContext *ctx, TCGv base, target_long ofs)
 +{
-+    TCGv temp = NULL;
-+
-+    if (addend) {
-+        temp = tcg_temp_new();
-+        tcg_gen_add_tl(temp, base, addend);
-+        base = temp;
-+    }
-+    return base;
++    TCGv addend = ofs ? tcg_constant_tl(ofs) : NULL;
++    return make_address_x(ctx, base, addend);
 +}
 +
  #include "decode-insns.c.inc"
  #include "insn_trans/trans_arith.c.inc"
  #include "insn_trans/trans_shift.c.inc"
+diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
+index 612709f2a7..fbc081448d 100644
+--- a/target/loongarch/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/insn_trans/trans_atomic.c.inc
+@@ -7,9 +7,8 @@ static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+ {
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+-    TCGv t0 = tcg_temp_new();
++    TCGv t0 = make_address_i(ctx, src1, a->imm);
+ 
+-    tcg_gen_addi_tl(t0, src1, a->imm);
+     tcg_gen_qemu_ld_i64(dest, t0, ctx->mem_idx, mop);
+     tcg_gen_st_tl(t0, cpu_env, offsetof(CPULoongArchState, lladdr));
+     tcg_gen_st_tl(dest, cpu_env, offsetof(CPULoongArchState, llval));
+@@ -62,6 +61,8 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+         return false;
+     }
+ 
++    addr = make_address_i(ctx, addr, 0);
++
+     func(dest, addr, val, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/insn_trans/trans_branch.c.inc
+index a860f7e733..3ad34bcc05 100644
+--- a/target/loongarch/insn_trans/trans_branch.c.inc
++++ b/target/loongarch/insn_trans/trans_branch.c.inc
+@@ -23,7 +23,8 @@ static bool trans_jirl(DisasContext *ctx, arg_jirl *a)
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    tcg_gen_addi_tl(cpu_pc, src1, a->imm);
++    TCGv addr = make_address_i(ctx, src1, a->imm);
++    tcg_gen_mov_tl(cpu_pc, addr);
+     tcg_gen_movi_tl(dest, ctx->base.pc_next + 4);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+     tcg_gen_lookup_and_goto_ptr();
 diff --git a/target/loongarch/insn_trans/trans_fmemory.c.inc b/target/loongarch/insn_trans/trans_fmemory.c.inc
-index 91c09fb6d9..88ad209338 100644
+index 88ad209338..bd3aba2c49 100644
 --- a/target/loongarch/insn_trans/trans_fmemory.c.inc
 +++ b/target/loongarch/insn_trans/trans_fmemory.c.inc
-@@ -57,8 +57,7 @@ static bool gen_floadx(DisasContext *ctx, arg_frr *a, MemOp mop)
+@@ -17,11 +17,7 @@ static bool gen_fload_i(DisasContext *ctx, arg_fr_i *a, MemOp mop)
  
      CHECK_FPE;
  
--    addr = tcg_temp_new();
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
      tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
      maybe_nanbox_load(dest, mop);
-     set_fpr(a->fd, dest);
-@@ -75,8 +74,7 @@ static bool gen_fstorex(DisasContext *ctx, arg_frr *a, MemOp mop)
+@@ -37,11 +33,7 @@ static bool gen_fstore_i(DisasContext *ctx, arg_fr_i *a, MemOp mop)
  
      CHECK_FPE;
  
--    addr = tcg_temp_new();
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
-     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
  
-     return true;
-@@ -91,9 +89,8 @@ static bool gen_fload_gt(DisasContext *ctx, arg_frr *a, MemOp mop)
+     tcg_gen_qemu_st_tl(src, addr, ctx->mem_idx, mop);
  
-     CHECK_FPE;
- 
--    addr = tcg_temp_new();
-     gen_helper_asrtgt_d(cpu_env, src1, src2);
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     maybe_nanbox_load(dest, mop);
-     set_fpr(a->fd, dest);
-@@ -110,9 +107,8 @@ static bool gen_fstore_gt(DisasContext *ctx, arg_frr *a, MemOp mop)
- 
-     CHECK_FPE;
- 
--    addr = tcg_temp_new();
-     gen_helper_asrtgt_d(cpu_env, src1, src2);
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
-     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
- 
-     return true;
-@@ -127,9 +123,8 @@ static bool gen_fload_le(DisasContext *ctx, arg_frr *a, MemOp mop)
- 
-     CHECK_FPE;
- 
--    addr = tcg_temp_new();
-     gen_helper_asrtle_d(cpu_env, src1, src2);
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     maybe_nanbox_load(dest, mop);
-     set_fpr(a->fd, dest);
-@@ -146,9 +141,8 @@ static bool gen_fstore_le(DisasContext *ctx, arg_frr *a, MemOp mop)
- 
-     CHECK_FPE;
- 
--    addr = tcg_temp_new();
-     gen_helper_asrtle_d(cpu_env, src1, src2);
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
-     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
- 
-     return true;
 diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
-index 68779daff6..875cb7d51d 100644
+index 875cb7d51d..50153d6d0b 100644
 --- a/target/loongarch/insn_trans/trans_lsx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lsx.c.inc
-@@ -4315,14 +4315,13 @@ static bool trans_vldx(DisasContext *ctx, arg_vrr *a)
+@@ -4255,7 +4255,7 @@ TRANS(vextrins_d, gen_vv_i, gen_helper_vextrins_d)
  
-     CHECK_SXE;
+ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
+ {
+-    TCGv addr, temp;
++    TCGv addr;
+     TCGv_i64 rl, rh;
+     TCGv_i128 val;
  
--    addr = tcg_temp_new();
-     src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     src2 = gpr_src(ctx, a->rk, EXT_NONE);
-     val = tcg_temp_new_i128();
+@@ -4266,11 +4266,7 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
      rl = tcg_temp_new_i64();
      rh = tcg_temp_new_i64();
  
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
+-    if (a->imm) {
+-        temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
      tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
      tcg_gen_extr_i128_i64(rl, rh, val);
-     set_vreg64(rh, a->vd, 1);
-@@ -4339,14 +4338,13 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
+@@ -4282,7 +4278,7 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
  
-     CHECK_SXE;
+ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
+ {
+-    TCGv addr, temp;
++    TCGv addr;
+     TCGv_i128 val;
+     TCGv_i64 ah, al;
  
--    addr = tcg_temp_new();
-     src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     src2 = gpr_src(ctx, a->rk, EXT_NONE);
-     val = tcg_temp_new_i128();
+@@ -4293,11 +4289,7 @@ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
      ah = tcg_temp_new_i64();
      al = tcg_temp_new_i64();
  
--    tcg_gen_add_tl(addr, src1, src2);
-+    addr = make_address_x(ctx, src1, src2);
+-    if (a->imm) {
+-        temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
      get_vreg64(ah, a->vd, 1);
      get_vreg64(al, a->vd, 0);
-     tcg_gen_concat_i64_i128(val, al, ah);
+@@ -4356,7 +4348,7 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
+ #define VLDREPL(NAME, MO)                                                 \
+ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
+ {                                                                         \
+-    TCGv addr, temp;                                                      \
++    TCGv addr;                                                            \
+     TCGv_i64 val;                                                         \
+                                                                           \
+     CHECK_SXE;                                                            \
+@@ -4364,11 +4356,7 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
+     addr = gpr_src(ctx, a->rj, EXT_NONE);                                 \
+     val = tcg_temp_new_i64();                                             \
+                                                                           \
+-    if (a->imm) {                                                         \
+-        temp = tcg_temp_new();                                            \
+-        tcg_gen_addi_tl(temp, addr, a->imm);                              \
+-        addr = temp;                                                      \
+-    }                                                                     \
++    addr = make_address_i(ctx, addr, a->imm);                             \
+                                                                           \
+     tcg_gen_qemu_ld_i64(val, addr, ctx->mem_idx, MO);                     \
+     tcg_gen_gvec_dup_i64(MO, vec_full_offset(a->vd), 16, ctx->vl/8, val); \
+@@ -4384,7 +4372,7 @@ VLDREPL(vldrepl_d, MO_64)
+ #define VSTELM(NAME, MO, E)                                                  \
+ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
+ {                                                                            \
+-    TCGv addr, temp;                                                         \
++    TCGv addr;                                                               \
+     TCGv_i64 val;                                                            \
+                                                                              \
+     CHECK_SXE;                                                               \
+@@ -4392,11 +4380,7 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
+     addr = gpr_src(ctx, a->rj, EXT_NONE);                                    \
+     val = tcg_temp_new_i64();                                                \
+                                                                              \
+-    if (a->imm) {                                                            \
+-        temp = tcg_temp_new();                                               \
+-        tcg_gen_addi_tl(temp, addr, a->imm);                                 \
+-        addr = temp;                                                         \
+-    }                                                                        \
++    addr = make_address_i(ctx, addr, a->imm);                                \
+                                                                              \
+     tcg_gen_ld_i64(val, cpu_env,                                             \
+                    offsetof(CPULoongArchState, fpr[a->vd].vreg.E(a->imm2))); \
 diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
-index 75cfdf59ad..ccebd0a4e0 100644
+index ccebd0a4e0..88953f0ab0 100644
 --- a/target/loongarch/insn_trans/trans_memory.c.inc
 +++ b/target/loongarch/insn_trans/trans_memory.c.inc
-@@ -39,9 +39,8 @@ static bool gen_loadx(DisasContext *ctx, arg_rrr *a, MemOp mop)
+@@ -8,11 +8,7 @@ static bool gen_load(DisasContext *ctx, arg_rr_i *a, MemOp mop)
      TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
-     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
--    TCGv addr = tcg_temp_new();
-+    TCGv addr = make_address_x(ctx, src1, src2);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
  
--    tcg_gen_add_tl(addr, src1, src2);
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
      tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
      gen_set_gpr(a->rd, dest, EXT_NONE);
- 
-@@ -53,9 +52,8 @@ static bool gen_storex(DisasContext *ctx, arg_rrr *a, MemOp mop)
+@@ -24,11 +20,7 @@ static bool gen_store(DisasContext *ctx, arg_rr_i *a, MemOp mop)
      TCGv data = gpr_src(ctx, a->rd, EXT_NONE);
-     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
--    TCGv addr = tcg_temp_new();
-+    TCGv addr = make_address_x(ctx, src1, src2);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
  
--    tcg_gen_add_tl(addr, src1, src2);
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
      tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
+     return true;
+@@ -66,6 +58,7 @@ static bool gen_load_gt(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
  
+     gen_helper_asrtgt_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_ld_tl(dest, src1, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+@@ -79,6 +72,7 @@ static bool gen_load_le(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtle_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_ld_tl(dest, src1, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+@@ -92,6 +86,7 @@ static bool gen_store_gt(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtgt_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_st_tl(data, src1, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -104,6 +99,7 @@ static bool gen_store_le(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtle_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_st_tl(data, src1, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -131,11 +127,7 @@ static bool gen_ldptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+@@ -147,11 +139,7 @@ static bool gen_stptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv data = gpr_src(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
      return true;
 -- 
 2.41.0
