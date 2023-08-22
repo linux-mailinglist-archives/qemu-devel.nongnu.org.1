@@ -2,94 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5A978420E
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 513C978420F
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:28:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYRQB-0006Gd-14; Tue, 22 Aug 2023 09:27:47 -0400
+	id 1qYRQL-0006ce-Oq; Tue, 22 Aug 2023 09:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYRQ8-0006Dz-SM
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:27:44 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYRQ6-0003rf-Lc
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:27:44 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b9f0b7af65so69045491fa.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 06:27:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692710860; x=1693315660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ozuFv8lCpy0mpEsPtSSvgbJVAb/9yHPf0N0cz/ES51c=;
- b=UUrC/xxCCPm9U9Ld1yAZwZJRupcTvSxYfOazlG4SZzW+EARBzjqDVbg3y23JyhLE7/
- rIu9scH6CSPauHK6rfoK5Hg+M4T1wsmSP0tpCtbvWathe+Wr8M0twjUM/AyN/WXWnh2x
- 0kNfP90O+ydOSVh1q41w4jimLzTL+mC58JOqmXjySnxz8RsX3VPrLcGMuvyw65xkhed1
- SC4OdZXYfQuy9KKWEPhA+j92ki8Ndve4RyT8qbiVWIDxnEFf3UWC4JFmmaTerBO9+IyD
- eMSdlvMgMb3q6q1QW6xWvrRMo4i370oBOJaMm8csYdKNam1pUGDx+Ks4ZfesF16ZLK1i
- 1haw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692710860; x=1693315660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ozuFv8lCpy0mpEsPtSSvgbJVAb/9yHPf0N0cz/ES51c=;
- b=DTZU+cTga1WXPceaRtGruAR9tp+G9v3D5de1X3XKVMBHiM2Cxy2+CGpaV/oU8zKRLJ
- 6phdbYDtGQLiFMGD1eszx/lBnzMECkvT+XG0DwY+8tl2+zL8ikZVHjnvfxIsTVH2qbDN
- AysN4sNlmCli4l80Gjmu2oLF9lh4RHyL1f9cfupANCj5TUqqFyoF7Z0U4bZQnlLu9oEI
- r6erUxAnHsDBMOs4y3be+Y78KrU/WTEHIYyrPuFWLVQN8xS45bZzWIgcL1bJAMw7lyXD
- U2obUduc+SCRqsMXaDPtfamzKRu+NZdk0GDUdrzAFUjOeryIl+6M8MKys3cd3SmeTvr2
- s9Pg==
-X-Gm-Message-State: AOJu0YwT0hGP4A8Krfuy8YHRCWN8UvbGvL9oT106wF8z/pRlXIx6ZRzz
- +/PitR3Z4LZqbRq5zzgXUVhQDmmdCM2l2kjWCdZ7Bw==
-X-Google-Smtp-Source: AGHT+IGwaHrhBgopgoH/K0yv23tp2mqEtPP38scbmlrxX1CoBHZ2m/H2yXax8NkCsx7y+oWcrZ02sA==
-X-Received: by 2002:a2e:4952:0:b0:2b8:39e4:2e2c with SMTP id
- b18-20020a2e4952000000b002b839e42e2cmr6696000ljd.1.1692710860254; 
- Tue, 22 Aug 2023 06:27:40 -0700 (PDT)
-Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
- h13-20020a05600c260d00b003fefd46df47sm846555wma.29.2023.08.22.06.27.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 06:27:39 -0700 (PDT)
-Message-ID: <072819ba-18d9-ef0a-ed23-0d08c2536299@linaro.org>
-Date: Tue, 22 Aug 2023 15:27:36 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYRQJ-0006aD-82
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:27:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYRQG-0003sq-Sr
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:27:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692710872;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=E9o7H94etu7JWY7Q+ZJIsMV0C8D46s248ZHLN6wXok0=;
+ b=TqeK+iUopIiuMUvmiaFeSaK38l6ZxOwvsg8bP3PmIq96vLm+tmi7HScEPF6dTWWbO3vsOF
+ zGW13C8+y+MYbdmV7kQTc85NHVP+jJRNXl8HKFhTsJEtThCfAdas9CWtVjmUxlkbqb6Ykd
+ 4BYpOadHhOheIVtI1HnMdWzpG+adJ+0=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-299-4aHABKqsN7ymaY9GhFXqIA-1; Tue, 22 Aug 2023 09:27:47 -0400
+X-MC-Unique: 4aHABKqsN7ymaY9GhFXqIA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F24173C0DDAC;
+ Tue, 22 Aug 2023 13:27:46 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B0BF6140E970;
+ Tue, 22 Aug 2023 13:27:46 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A759421E690D; Tue, 22 Aug 2023 15:27:45 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org,  qemu-ppc@nongnu.org,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Peter Xu <peterx@redhat.com>,  Igor Mammedov
+ <imammedo@redhat.com>,  Thiner Logoer <logoerthiner1@163.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Elena
+ Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Ani Sinha
+ <anisinha@redhat.com>,  Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,  Greg Kurz
+ <groug@kaod.org>,  Eric Blake <eblake@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>
+Subject: Re: [PATCH v2 3/9] backends/hostmem-file: Add "rom" property to
+ support VM templating with R/O files
+References: <20230822114504.239505-1-david@redhat.com>
+ <20230822114504.239505-4-david@redhat.com>
+Date: Tue, 22 Aug 2023 15:27:45 +0200
+In-Reply-To: <20230822114504.239505-4-david@redhat.com> (David Hildenbrand's
+ message of "Tue, 22 Aug 2023 13:44:51 +0200")
+Message-ID: <87v8d72omm.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 03/12] target/cris: Use generic hrev32_i32() in SWAPB
- opcode
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>, Greg Kurz
- <groug@kaod.org>, Aurelien Jarno <aurelien@aurel32.net>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Nicholas Piggin <npiggin@gmail.com>, Xiaojuan Yang
- <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org
-References: <20230822124042.54739-1-philmd@linaro.org>
- <20230822124042.54739-4-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230822124042.54739-4-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,51 +91,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/8/23 14:40, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/cris/translate.c         | 20 +-------------------
->   target/cris/translate_v10.c.inc |  2 +-
->   2 files changed, 2 insertions(+), 20 deletions(-)
-> 
-> diff --git a/target/cris/translate.c b/target/cris/translate.c
-> index 925ed2c6f6..00bbe6c645 100644
-> --- a/target/cris/translate.c
-> +++ b/target/cris/translate.c
-> @@ -381,24 +381,6 @@ static inline void t_gen_subx_carry(DisasContext *dc, TCGv d)
->       }
->   }
->   
-> -/* Swap the two bytes within each half word of the s operand.
-> -   T0 = ((T0 << 8) & 0xff00ff00) | ((T0 >> 8) & 0x00ff00ff)  */
-> -static inline void t_gen_swapb(TCGv d, TCGv s)
-> -{
-> -    TCGv t, org_s;
-> -
-> -    t = tcg_temp_new();
-> -    org_s = tcg_temp_new();
-> -
-> -    /* d and s may refer to the same object.  */
-> -    tcg_gen_mov_tl(org_s, s);
-> -    tcg_gen_shli_tl(t, org_s, 8);
-> -    tcg_gen_andi_tl(d, t, 0xff00ff00);
-> -    tcg_gen_shri_tl(t, org_s, 8);
-> -    tcg_gen_andi_tl(t, t, 0x00ff00ff);
-> -    tcg_gen_or_tl(d, d, t);
-> -}
-> -
->   /*
->    * Reverse the bits within each byte.
->    *
-> @@ -1666,7 +1648,7 @@ static int dec_swap_r(CPUCRISState *env, DisasContext *dc)
->           tcg_gen_hswap_i32(t0, t0);
->       }
->       if (dc->op2 & 2) {
-> -        t_gen_swapb(t0, t0);
-> +        tcg_gen_hrev32_i32(t0, t0);
+David Hildenbrand <david@redhat.com> writes:
 
-Here we should use tcg_gen_hrev32_tl (added later in this series).
+> For now, "share=off,readonly=on" would always result in us opening the
+> file R/O and mmap'ing the opened file MAP_PRIVATE R/O -- effectively
+> turning it into ROM.
+>
+> Especially for VM templating, "share=off" is a common use case. However,
+> that use case is impossible with files that lack write permissions,
+> because "share=off,readonly=on" will not give us writable RAM.
+>
+> The sole user of ROM via memory-backend-file are R/O NVDIMMs, but as we
+> have users (Kata Containers) that rely on the existing behavior --
+> malicious VMs should not be able to consume COW memory for R/O NVDIMMs --
+> we cannot change the semantics of "share=off,readonly=on"
+>
+> So let's add a new "rom" property with on/off/auto values. "auto" is
+> the default and what most people will use: for historical reasons, to not
+> change the old semantics, it defaults to the value of the "readonly"
+> property.
+>
+> For VM templating, one can now use:
+>     -object memory-backend-file,share=off,readonly=on,rom=off,...
+>
+> But we'll disallow:
+>     -object memory-backend-file,share=on,readonly=on,rom=off,...
+> because we would otherwise get an error when trying to mmap the R/O file
+> shared and writable. An explicit error message is cleaner.
+>
+> We will also disallow for now:
+>     -object memory-backend-file,share=off,readonly=off,rom=on,...
+>     -object memory-backend-file,share=on,readonly=off,rom=on,...
+> It's not harmful, but also not really required for now.
+>
+> Alternatives that were abandoned:
+> * Make "unarmed=on" for the NVDIMM set the memory region container
+>   readonly. We would still see a change of ROM->RAM and possibly run
+>   into memslot limits with vhost-user. Further, there might be use cases
+>   for "unarmed=on" that should still allow writing to that memory
+>   (temporary files, system RAM, ...).
+> * Add a new "readonly=on/off/auto" parameter for NVDIMMs. Similar issues
+>   as with "unarmed=on".
+> * Make "readonly" consume "on/off/file" instead of being a 'bool' type.
+>   This would slightly changes the behavior of the "readonly" parameter:
+>   values like true/false (as accepted by a 'bool'type) would no longer be
+>   accepted.
+>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
->       }
+[...]
+
+>  static void file_backend_instance_finalize(Object *o)
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index fa3e88c8e6..0cf83c6f39 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -668,6 +668,9 @@
+>  # @readonly: if true, the backing file is opened read-only; if false,
+>  #     it is opened read-write.  (default: false)
+>  #
+> +# @rom: whether to create Read Only Memory (ROM).  If set to 'auto', it
+> +#       defaults to the value of @readonly.  (default: auto, since 8.2)
+> +#
+>  # Since: 2.1
+>  ##
+
+The commit message discusses how @readonly, @rom and @share interact.
+The doc comments don't, and users have to guess.
+
+I can see two ways to help users:
+
+1. Describe their interaction in full, so users can understand how to
+get from them what they need.
+
+2. Provide suitable guidance on how to use them.
+
+>  { 'struct': 'MemoryBackendFileProperties',
+> @@ -677,7 +680,8 @@
+>              '*discard-data': 'bool',
+>              'mem-path': 'str',
+>              '*pmem': { 'type': 'bool', 'if': 'CONFIG_LIBPMEM' },
+> -            '*readonly': 'bool' } }
+> +            '*readonly': 'bool',
+> +            '*rom': 'OnOffAuto' } }
+>  ##
+>  # @MemoryBackendMemfdProperties:
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 29b98c3d4c..03ce0b0a30 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4976,7 +4976,7 @@ SRST
+>      they are specified. Note that the 'id' property must be set. These
+>      objects are placed in the '/objects' path.
+>  
+> -    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off``
+> +    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off,rom=on|off|auto``
+>          Creates a memory file backend object, which can be used to back
+>          the guest RAM with huge pages.
+>  
+> @@ -5066,6 +5066,14 @@ SRST
+>          The ``readonly`` option specifies whether the backing file is opened
+>          read-only or read-write (default).
+>  
+> +        The ``rom`` option specifies whether to create Read Only Memory (ROM)
+> +        that cannot be modified by the VM. If set to ``on``, the VM cannot
+> +        modify the memory. If set to ``off``, the VM can modify the memory.
+> +        If set to ``auto`` (default), the value of the ``readonly`` property
+> +        is used. This option is primarily helpful for VM templating, where we
+> +        want to open a file readonly (``readonly=on``) and allow private
+> +        modifications of the memory by the VM (``share=off``, ``rom=off``).
+> +
+
+Here, you provide some guidance.
+
+>      ``-object memory-backend-ram,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
+>          Creates a memory backend object, which can be used to back the
+>          guest RAM. Memory backend objects offer more control than the
 
 
