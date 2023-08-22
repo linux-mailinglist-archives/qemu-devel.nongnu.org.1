@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EA9783AE9
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2332B783AF1
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 09:32:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLq7-0005bp-To; Tue, 22 Aug 2023 03:30:14 -0400
+	id 1qYLpv-0005aO-Uz; Tue, 22 Aug 2023 03:30:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qYLpv-0005aT-Kr
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:29:59 -0400
+ id 1qYLpt-0005ZB-4H
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:29:57 -0400
 Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qYLpt-0006Xv-3e
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:29:59 -0400
+ id 1qYLpq-0006XO-Bj
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 03:29:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692689397; x=1724225397;
+ t=1692689394; x=1724225394;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9Rrhag1iF1R36pfHA2u5a0Dq0T7osuYFAC6JG8f89y8=;
- b=R0teADzbgPU1IJHc6aRrkKugBCZRxp+xWMQ2yigCt8xEF1pjgjcxUN5c
- AoBgT9OheDU4A0s8S63hQSD6H2z1jpA0I0+bzr67++QUe4Z715Noxfsyu
- CVLEcIfFHR2delBz3R1eINTeCy8KXfvaF1XPO4sgqz/zWuCQFtSHlRjDM
- yKFZ0uw7fdbkXzCjky1nCIN6gqXoU1c15TnyM29qkKrQQ1vCjSzVk8Zqp
- UgdGh/IfNEPQ81OlkZS0RZbYNYoCKBvqH9VgCNvnZp69L9EchaV12Vsvq
- jOweB7jD4PkpGcBPzSJkmUu3KzdPOTG8RH/2YQVgqPFJR/rFX8YwCWaB/ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="437721786"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; d="scan'208";a="437721786"
+ bh=PVRuLt02WMM11u89aqiq5phWxZsW3LYwM6qdkVNQNnU=;
+ b=cCA77phkewA3H/gB+xfbsQLZdPGdNNIRQhgDlNfMO5qj8aWuW/6wg+bf
+ Q6Df/yGCQT8DQRD+Hvk1yryxiDachx3qvpNO6tS+1+S/0yi8QTifIBhY1
+ q2kMDGIwCfbAYarTuLNDsGaxoUbeiVK46Mo+xyhicVDR2sEK4w+o4wuNY
+ EcRJW87PC04P3uyraGWrd8DcX0xnkNyxt9rhd6AElZE/K/TBb9aevfdQF
+ dK/6nPMUNhXdzGF+8foazE3ZtEsLAC+u8/3+e5SY7sD0q/BiBzQ0yljCA
+ cvh9xVgA1/emBlNDtlPNwmfLdkNt2FZXWzLW9GXqv9K169lGHwNjoFGXX Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="437721789"
+X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; d="scan'208";a="437721789"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2023 00:29:42 -0700
+ 22 Aug 2023 00:29:43 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="850502019"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; d="scan'208";a="850502019"
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="850502042"
+X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; d="scan'208";a="850502042"
 Received: from vmmteam.bj.intel.com ([10.240.192.110])
- by fmsmga002.fm.intel.com with ESMTP; 22 Aug 2023 00:29:38 -0700
+ by fmsmga002.fm.intel.com with ESMTP; 22 Aug 2023 00:29:40 -0700
 From: Jing Liu <jing2.liu@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, pbonzini@redhat.com,
  kevin.tian@intel.com, reinette.chatre@intel.com, jing2.liu@intel.com,
  jing2.liu@linux.intel.com
-Subject: [PATCH v1 1/4] vfio/pci: detect the support of dynamic MSI-X
- allocation
-Date: Tue, 22 Aug 2023 03:29:24 -0400
-Message-Id: <20230822072927.224803-2-jing2.liu@intel.com>
+Subject: [PATCH v1 2/4] vfio/pci: enable vector on dynamic MSI-X allocation
+Date: Tue, 22 Aug 2023 03:29:25 -0400
+Message-Id: <20230822072927.224803-3-jing2.liu@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230822072927.224803-1-jing2.liu@intel.com>
 References: <20230822072927.224803-1-jing2.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=134.134.136.31; envelope-from=jing2.liu@intel.com;
  helo=mgamail.intel.com
@@ -79,93 +77,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kernel provides the guidance of dynamic MSI-X allocation support of
-passthrough device, by clearing the VFIO_IRQ_INFO_NORESIZE flag to
-guide user space.
+The vector_use callback is used to enable vector that is unmasked in
+guest. The kernel used to only support static MSI-X allocation. When
+allocating a new interrupt using "static MSI-X allocation" kernels,
+Qemu first disables all previously allocated vectors and then
+re-allocates all including the new one. The nr_vectors of VFIOPCIDevice
+indicates that all vectors from 0 to nr_vectors are allocated (and may
+be enabled), which is used to to loop all the possibly used vectors
+When, e.g., disabling MSI-X interrupts.
 
-Fetch the flags from host to determine if dynamic MSI-X allocation is
-supported.
+Extend the vector_use function to support dynamic MSI-X allocation when
+host supports the capability. Qemu therefore can individually allocate
+and enable a new interrupt without affecting others or causing interrupts
+lost during runtime.
 
-Originally-by: Reinette Chatre <reinette.chatre@intel.com>
+Utilize nr_vectors to calculate the upper bound of enabled vectors in
+dynamic MSI-X allocation mode since looping all msix_entries_nr is not
+efficient and unnecessary.
+
 Signed-off-by: Jing Liu <jing2.liu@intel.com>
+Tested-by: Reinette Chatre <reinette.chatre@intel.com>
 ---
 Changes since RFC v1:
-- Filter the dynamic MSI-X allocation flag and store as a bool type.
-  (Alex)
-- Move the detection to vfio_msix_early_setup(). (Alex)
-- Report error of getting irq info and remove the trace of failure
-  case. (Alex, Cédric)
+- Test vdev->msix->noresize to identify the allocation mode. (Alex)
+- Move defer_kvm_irq_routing test out and update nr_vectors in a
+  common place before vfio_enable_vectors(). (Alex)
+- Revise the comments. (Alex)
 ---
- hw/vfio/pci.c        | 15 +++++++++++++--
- hw/vfio/pci.h        |  1 +
- hw/vfio/trace-events |  2 +-
- 3 files changed, 15 insertions(+), 3 deletions(-)
+ hw/vfio/pci.c | 44 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index a205c6b1130f..8a3b34f3c196 100644
+index 8a3b34f3c196..31f36d68bb19 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -1493,7 +1493,9 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
-     uint8_t pos;
-     uint16_t ctrl;
-     uint32_t table, pba;
--    int fd = vdev->vbasedev.fd;
-+    int ret, fd = vdev->vbasedev.fd;
-+    struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info),
-+                                      .index = VFIO_PCI_MSIX_IRQ_INDEX };
-     VFIOMSIXInfo *msix;
+@@ -470,6 +470,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+     VFIOMSIVector *vector;
+     int ret;
++    int old_nr_vecs = vdev->nr_vectors;
  
-     pos = pci_find_capability(&vdev->pdev, PCI_CAP_ID_MSIX);
-@@ -1530,6 +1532,14 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
-     msix->pba_offset = pba & ~PCI_MSIX_FLAGS_BIRMASK;
-     msix->entries = (ctrl & PCI_MSIX_FLAGS_QSIZE) + 1;
+     trace_vfio_msix_vector_do_use(vdev->vbasedev.name, nr);
  
-+    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_IRQ_INFO, &irq_info);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "failed to get MSI-X irq info");
-+        return;
-+    }
-+
-+    msix->noresize = !!(irq_info.flags & VFIO_IRQ_INFO_NORESIZE);
-+
-     /*
-      * Test the size of the pba_offset variable and catch if it extends outside
-      * of the specified BAR. If it is the case, we need to apply a hardware
-@@ -1562,7 +1572,8 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+@@ -512,33 +513,42 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
      }
  
-     trace_vfio_msix_early_setup(vdev->vbasedev.name, pos, msix->table_bar,
--                                msix->table_offset, msix->entries);
-+                                msix->table_offset, msix->entries,
-+                                msix->noresize);
-     vdev->msix = msix;
+     /*
+-     * We don't want to have the host allocate all possible MSI vectors
+-     * for a device if they're not in use, so we shutdown and incrementally
+-     * increase them as needed.
++     * When dynamic allocation is not supported, we don't want to have the
++     * host allocate all possible MSI vectors for a device if they're not
++     * in use, so we shutdown and incrementally increase them as needed.
++     * nr_vectors represents the total number of vectors allocated.
++     *
++     * When dynamic allocation is supported, let the host only allocate
++     * and enable a vector when it is in use in guest. nr_vectors represents
++     * the upper bound of vectors being enabled (but not all of the ranges
++     * is allocated or enabled).
+      */
+     if (vdev->nr_vectors < nr + 1) {
+         vdev->nr_vectors = nr + 1;
+-        if (!vdev->defer_kvm_irq_routing) {
++    }
++
++    if (!vdev->defer_kvm_irq_routing) {
++        if (vdev->msix->noresize && (old_nr_vecs < nr + 1)) {
+             vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+             ret = vfio_enable_vectors(vdev, true);
+             if (ret) {
+                 error_report("vfio: failed to enable vectors, %d", ret);
+             }
+-        }
+-    } else {
+-        Error *err = NULL;
+-        int32_t fd;
+-
+-        if (vector->virq >= 0) {
+-            fd = event_notifier_get_fd(&vector->kvm_interrupt);
+         } else {
+-            fd = event_notifier_get_fd(&vector->interrupt);
+-        }
++            Error *err = NULL;
++            int32_t fd;
  
-     vfio_pci_fixup_msix_region(vdev);
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index a2771b9ff3cc..0717574d79e9 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -113,6 +113,7 @@ typedef struct VFIOMSIXInfo {
-     uint32_t table_offset;
-     uint32_t pba_offset;
-     unsigned long *pending;
-+    bool noresize;
- } VFIOMSIXInfo;
+-        if (vfio_set_irq_signaling(&vdev->vbasedev,
+-                                     VFIO_PCI_MSIX_IRQ_INDEX, nr,
+-                                     VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+-            error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
++            if (vector->virq >= 0) {
++                fd = event_notifier_get_fd(&vector->kvm_interrupt);
++            } else {
++                fd = event_notifier_get_fd(&vector->interrupt);
++            }
++
++            if (vfio_set_irq_signaling(&vdev->vbasedev,
++                                       VFIO_PCI_MSIX_IRQ_INDEX, nr,
++                                       VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
++                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
++            }
+         }
+     }
  
- #define TYPE_VFIO_PCI "vfio-pci"
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index ee7509e68e4f..6de5d9ba8e46 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -27,7 +27,7 @@ vfio_vga_read(uint64_t addr, int size, uint64_t data) " (0x%"PRIx64", %d) = 0x%"
- vfio_pci_read_config(const char *name, int addr, int len, int val) " (%s, @0x%x, len=0x%x) 0x%x"
- vfio_pci_write_config(const char *name, int addr, int val, int len) " (%s, @0x%x, 0x%x, len=0x%x)"
- vfio_msi_setup(const char *name, int pos) "%s PCI MSI CAP @0x%x"
--vfio_msix_early_setup(const char *name, int pos, int table_bar, int offset, int entries) "%s PCI MSI-X CAP @0x%x, BAR %d, offset 0x%x, entries %d"
-+vfio_msix_early_setup(const char *name, int pos, int table_bar, int offset, int entries, bool noresize) "%s PCI MSI-X CAP @0x%x, BAR %d, offset 0x%x, entries %d, noresize %d"
- vfio_check_pcie_flr(const char *name) "%s Supports FLR via PCIe cap"
- vfio_check_pm_reset(const char *name) "%s Supports PM reset"
- vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
 -- 
 2.27.0
 
