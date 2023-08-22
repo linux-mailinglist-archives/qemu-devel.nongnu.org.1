@@ -2,87 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CEA784950
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 20:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B20478495A
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 20:21:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYVuL-0003Hu-BF; Tue, 22 Aug 2023 14:15:13 -0400
+	id 1qYVzx-0004dV-Qj; Tue, 22 Aug 2023 14:21:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYVuF-0003Hm-Ab
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:15:08 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYVuC-0001J0-Rx
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:15:07 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bf3a2f44ffso35015065ad.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 11:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692728103; x=1693332903;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XF1AUpyCcaXoU3ikKfREKpJ98dJjM+9lvfDG/KEEXbo=;
- b=ItzDWbyDh7lgyuTpakvMQuaV19pCowRtSr2XeYev6CW97ixkQTeg6M1SV2v4ujE/ya
- +oM/5gihMXyUctGeQfTdDNXOOH1Ki8UJsWCgZ4hNRH+dm7eRJFWKuVZ2ShpnlgVXxKyf
- FhrruurmJmsuSB1iRhqOZJSVfQfxXW3sUYvCHJjYVkP1XIt4SE9h5/ivwE6nkcvjnWXv
- IuPeDRGeuQARJFfjz4XZKydGx6Ddt7yPtepBZ1zDruRoaHJsFTRCQ9YMlXM8EUHNnQdq
- cGOSryIe6B0C4ZkK10AV9Tm8k6ExzdhLrYzoraxJS9LQljGSjKBExLOG0Tp3O4z1aOi9
- h6qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692728103; x=1693332903;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XF1AUpyCcaXoU3ikKfREKpJ98dJjM+9lvfDG/KEEXbo=;
- b=aXv1wsQfFiaPwXU6PbEp5/0n4QePaTVDmbE1yA7Lhw1EfPhKk/cahO9y+iGhgISZ+O
- /TfBIuG4k6XTOWQtSUFTp0qsBgTJ6xDhaksaS++NnwlLZavJd/7vXwac8FgLUZU9+olg
- mIfPLu0qwWAV4k0bpOqi7izs/7Ddigb98UiKuVxDQ/CIfDaLPucRO8JHLlTYTnZbbxjK
- QyZ5lg6t7dTmNH26q9vpJAGos+6jkpE5NtT98rRGALchmXrE4fIT9NCmuogkzQWdEYbf
- 5B+xla2eoBDJev1aL0g2LEyDB9rawgGpHqRKioN0DfGefjXhCbRe2U9/6aQ+5f2rFKt7
- vPhg==
-X-Gm-Message-State: AOJu0YwtaDyOY4guXW+h9i+SFT7X3gjWaCFHvFmq0KPsVu+cyUY+hkch
- vDJdb+gV06aMZbW0s698JLzUN2RBcLKZlMoTMD8=
-X-Google-Smtp-Source: AGHT+IGLK5sXq9NdA576p/www1ahiGeB28iRgtg8G1dx6K6lFtnVnSLCWyXSMdN6vyeREJ2QoLc7ww==
-X-Received: by 2002:a17:902:684c:b0:1bd:c6ca:e0db with SMTP id
- f12-20020a170902684c00b001bdc6cae0dbmr11166118pln.37.1692728102730; 
- Tue, 22 Aug 2023 11:15:02 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
- ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
- by smtp.gmail.com with ESMTPSA id
- i13-20020a17090332cd00b001bf5e24b2a8sm6895533plr.174.2023.08.22.11.15.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Aug 2023 11:15:02 -0700 (PDT)
-Message-ID: <a363d744-52cf-3993-73b7-6bafc6b0f58e@linaro.org>
-Date: Tue, 22 Aug 2023 11:15:00 -0700
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYVzg-0004bW-Nu
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:20:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYVzc-0002wz-KL
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 14:20:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692728439;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uz4mTpWJCFf+zsl/d28coWttwsaeODoHR1I/5hZ2Cl4=;
+ b=VHc2M2BwqmAwgQrIxklATMcPJYnKMTOUPRUjcJdgr7QXfb8l/+14HGAyee2sSGnyJYGWjT
+ 7JtS12HTvnAxnhdwz1DmwKBfdl5q7mojOdDuqlRYWAgsK+Gw3sMwBMLJIN9UOr70YHHGTN
+ 34/7ySwQrXQPI+pv9LES6URJD6LSmQ0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-396-5SCg6gnSPs69Cwvfc1g9hA-1; Tue, 22 Aug 2023 14:20:37 -0400
+X-MC-Unique: 5SCg6gnSPs69Cwvfc1g9hA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74F5485CBE6;
+ Tue, 22 Aug 2023 18:20:37 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.69])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DDE644A9004;
+ Tue, 22 Aug 2023 18:20:36 +0000 (UTC)
+Date: Tue, 22 Aug 2023 14:20:35 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, eblake@redhat.com, eesposit@redhat.com,
+ pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
+Subject: Re: [PATCH 00/21] Graph locking part 4 (node management)
+Message-ID: <20230822182035.GC727224@fedora>
+References: <20230817125020.208339-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2] target/m68k: Use tcg_gen_deposit_i32 in
- gen_partset_reg
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: laurent@vivier.eu
-References: <20230813155425.341598-1-richard.henderson@linaro.org>
- <bab2e366-d821-3ca1-ed2a-a46f3f2a1afd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <bab2e366-d821-3ca1-ed2a-a46f3f2a1afd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="v+1VXga1ZYzaIzg7"
+Content-Disposition: inline
+In-Reply-To: <20230817125020.208339-1-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,19 +79,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/23 02:45, Philippe Mathieu-Daudé wrote:
-> On 13/8/23 17:54, Richard Henderson wrote:
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/m68k/translate.c | 11 ++---------
->>   1 file changed, 2 insertions(+), 9 deletions(-)
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> 
 
-Queued to tcg-next.
+--v+1VXga1ZYzaIzg7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Aug 17, 2023 at 02:49:59PM +0200, Kevin Wolf wrote:
+> The previous parts of the graph locking changes focussed mostly on the
+> BlockDriver side and taking reader locks while performing I/O. This
+> series focusses more on the functions managing the graph structure, i.e
+> adding, removing and replacing nodes and updating their permissions.
+>=20
+> Many of these places actually need to take the writer lock to avoid
+> readers seeing an inconsistent half-updated graph state. Therefore
+> taking the writer lock is now pushed down from the very low-level
+> function bdrv_replace_child_noperm() into its more high level callers.
 
-r~
+The word "down" confuses me. It seems like the direction is up instead
+of down and the scope of the lock is increasing rather than decreasing.
+But I haven't read the actual patches yet...
+
+>=20
+> Kevin Wolf (21):
+>   block: Remove unused BlockReopenQueueEntry.perms_checked
+>   preallocate: Factor out preallocate_truncate_to_real_size()
+>   preallocate: Don't poll during permission updates
+>   block: Take AioContext lock for bdrv_append() more consistently
+>   block: Introduce bdrv_schedule_unref()
+>   block-coroutine-wrapper: Add no_co_wrapper_bdrv_wrlock functions
+>   block-coroutine-wrapper: Allow arbitrary parameter names
+>   block: Mark bdrv_replace_child_noperm() GRAPH_WRLOCK
+>   block: Mark bdrv_replace_child_tran() GRAPH_WRLOCK
+>   block: Mark bdrv_attach_child_common() GRAPH_WRLOCK
+>   block: Call transaction callbacks with lock held
+>   block: Mark bdrv_attach_child() GRAPH_WRLOCK
+>   block: Mark bdrv_parent_perms_conflict() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_get_cumulative_perm() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_child_perm() GRAPH_RDLOCK
+>   block: Mark bdrv_parent_cb_change_media() GRAPH_RDLOCK
+>   block: Take graph rdlock in bdrv_drop_intermediate()
+>   block: Take graph rdlock in bdrv_change_aio_context()
+>   block: Mark bdrv_root_unref_child() GRAPH_WRLOCK
+>   block: Mark bdrv_unref_child() GRAPH_WRLOCK
+>   block: Mark bdrv_add/del_child() and caller GRAPH_WRLOCK
+>=20
+>  include/block/block-common.h                |   4 +
+>  include/block/block-global-state.h          |  30 +-
+>  include/block/block_int-common.h            |  34 +-
+>  include/block/block_int-global-state.h      |  14 +-
+>  include/sysemu/block-backend-global-state.h |   4 +-
+>  block.c                                     | 340 ++++++++++++++------
+>  block/blklogwrites.c                        |   4 +
+>  block/blkverify.c                           |   2 +
+>  block/block-backend.c                       |  29 +-
+>  block/copy-before-write.c                   |  10 +-
+>  block/crypto.c                              |   6 +-
+>  block/graph-lock.c                          |  23 +-
+>  block/mirror.c                              |   8 +
+>  block/preallocate.c                         | 133 +++++---
+>  block/qcow2.c                               |   4 +-
+>  block/quorum.c                              |  23 +-
+>  block/replication.c                         |   9 +
+>  block/snapshot.c                            |   2 +
+>  block/stream.c                              |  20 +-
+>  block/vmdk.c                                |  13 +
+>  blockdev.c                                  |  23 +-
+>  blockjob.c                                  |   2 +
+>  tests/unit/test-bdrv-drain.c                |  23 +-
+>  tests/unit/test-bdrv-graph-mod.c            |  20 ++
+>  tests/unit/test-block-iothread.c            |   3 +
+>  scripts/block-coroutine-wrapper.py          |  18 +-
+>  tests/qemu-iotests/051.pc.out               |   6 +-
+>  27 files changed, 580 insertions(+), 227 deletions(-)
+>=20
+> --=20
+> 2.41.0
+>=20
+
+--v+1VXga1ZYzaIzg7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTk/HMACgkQnKSrs4Gr
+c8i8Hgf/S8w8Rs1R/7+QScPFpmc73EoiXhzX4fV+K8na3tbqbZ+gUxVIVMm45Mok
+c9VyAahC7i+ICr3jQQlEF02LGd/h1x12m86hVaUPmoiKftAfYHE7eaRHM6cWrnJv
+0NRAbVV2VL6I2QhCvfo2PgtFlHdegSX0d7W5XguEFSO4R46hA+2PLBSaLZpHA0yg
+rWXZAfo2eRm1IW1f4bCwItRSbiEhOXTsuibKqlaWU4bV4YI6fIgZe5e7fpsU6vNv
+lgrTqC5/MmZ30x/F55ZehYF5ig/dZvJTsIXJI7V7Tf1E18MjD/aRwNXc5pL8RGzR
+guQQpKqqr9cQ3SKxJYT0DmSJFDY1hA==
+=BY4v
+-----END PGP SIGNATURE-----
+
+--v+1VXga1ZYzaIzg7--
+
 
