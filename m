@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D557784B80
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D345784B81
 	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 22:35:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYY51-0002dD-W9; Tue, 22 Aug 2023 16:34:24 -0400
+	id 1qYY52-0002dk-VK; Tue, 22 Aug 2023 16:34:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYY4z-0002bF-C2
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 16:34:21 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qYY50-0002c8-HG
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 16:34:22 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYY4x-0005EA-0x
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 16:34:21 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bee82fad0fso31914915ad.2
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 13:34:18 -0700 (PDT)
+ id 1qYY4x-0005EH-Pm
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 16:34:22 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-68a42d06d02so1933384b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 13:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692736457; x=1693341257;
+ d=linaro.org; s=google; t=1692736458; x=1693341258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dcsO2dVLbPUl+GizLMpXodQLIxyTwrwgsESLGfn+SH8=;
- b=VLZUFW0puMsbd5bEY4Jg2KILmem0iqqISnxTFNRXVTPGqFgmCli0q03YRfVJKAsMHH
- ktpNrL6fBoIOuQrj62rOb0TgrlT3N7+NJU+hZSs7Qlf8IlJLyfhjbgDRa2EZxhlJertR
- 5K0J/JS6dqz+aojWgPW6kLW4ByNQlI7k1HR+QRE/J99vDxbLyc5uwHnFhtr8Ca6M2n64
- /HSsRKd5PKS8w4xfTux0az6O8TgIeOBBS3BdFhKtSNeHnvWv6it1E3fCvqVqDd1AW3M6
- BP2U0DikWSlwb3GoMKJcIT2ZJLMMFKi+5YLKa49bzO2vak9+TAlYmCRymO6xXsdP4hxt
- 7cWA==
+ bh=rQp++5N0yIEsVmUaGN89LifNvR6oAeooLY4sPs12hmU=;
+ b=yVWdYHiN0iMeyApJ2LM+nQ5ob8Nt3TpoIIJkbrHw43x5aXzcKBB21Shw4GowNq5Jif
+ 6i1gTv13B5vbH0ZUrgiF3L2TZYm6o93cku8O81OKdk26C8P/n3PEOx2EpMQCKSRxlhgb
+ SEH6IRb8GfAx0bxkZn0GeKkac8u7vRk9kUx1ntXdNQ+mepfPTO2dz4oN3BdizwO3vbKO
+ VEFGgKkbOAeWO7MCqhfdx32ucsltKN91vdBK29GgRlZAxQMeOVyaGqRprCAyMY/K1sYx
+ fLDAfF92JszHFh2n6F72lXU/Lh6vYLM+NNu7Otanxuuc41n5sb8BuZxWvcqB+vTAUno4
+ KdUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692736457; x=1693341257;
+ d=1e100.net; s=20221208; t=1692736458; x=1693341258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dcsO2dVLbPUl+GizLMpXodQLIxyTwrwgsESLGfn+SH8=;
- b=UpE97oomXayjV2KhBuX//lmika8xKqNvhCMHjw6Vq/2MmJPWDhJmFhAqcmFBIVma3d
- LMYMMeFQ5uOjx9IKPkFgW8PNQeD48hzYc21kOuAZqlLOcpylDdz9o4guWBVOQ0J5mq00
- mpyc6HvVgSRFskzdSEkv9jAnZVk2hORM0pGF70Hiop/ghcTqpUbDj58NbcM2ooKZQx/+
- 8drVb8uFDO5I5QhkJwm3rbpiXXatNhbqPb/zMAKJa8ZTFKVxx4BsWd6kJRztV3o67t+a
- fbuWCNF5dSRjKUPgbWweUtf1mdb88hLvbKul/XO6/9gJwbvd3LgRGp0m/b6WNTD5DzCF
- Ducg==
-X-Gm-Message-State: AOJu0Yw01fffsG93pGAapYJOYc3qUTpsj8xksobwKjEFFDFZCexqnC3i
- sKpX0HKPNngz7PPKBYKEF+eXGBULBtDKt+ibw4Q=
-X-Google-Smtp-Source: AGHT+IFDMhMe/74JyadU5Bv2WCqqyeq9KJZdivNwlA5cBAvpbVDhsWFS/8d1mGSrj4Qra+J0EE7X+A==
-X-Received: by 2002:a17:902:ab54:b0:1bc:2bd:8523 with SMTP id
- ij20-20020a170902ab5400b001bc02bd8523mr7431103plb.24.1692736457507; 
- Tue, 22 Aug 2023 13:34:17 -0700 (PDT)
+ bh=rQp++5N0yIEsVmUaGN89LifNvR6oAeooLY4sPs12hmU=;
+ b=SINlxV/N8rid9kN3qS9GSIsDwNSxqlRGaj7Cs0+UHswH9TTJ8zS76Z/gfZAzvvvXrs
+ 62ae+6+EOsx/anqC27+WSo1mOGG+QmxB7K06XcH+9acSbvu3/29xXgjbF0RAEg+qJylG
+ JBrfFYZrQTlbBVBDAJ6PZUgPkWcWO6aMFTXh0BPWN1GDevJuTqeOS2fW99nRmgsgTuzf
+ Lq83pg86aD8tJa7o6Wf1cN2MIzxPFvLmvjhzIj9DsVsSSyUCEnJZCxuFXpvIwCg27tsC
+ JpfMUmUq7HGOMygk6OrXzcvftQucAyuo/ncVRcT19qI5C8DpuoaHvkwmh05xRgPA2ToE
+ YxqQ==
+X-Gm-Message-State: AOJu0Yw5bhEaklGCUuEcsdDF1G0h63svHvSSC3R/aKLwsAFJdFsYGB9z
+ AmLT8FFE4poM6fTOnPyXCWLNUOc+jYYovd2ElR8=
+X-Google-Smtp-Source: AGHT+IGhuNqrNjV8ArTwUbqS20Djdin7FgFsC22hOZrUk7/Qcs4B7AzuBPSrc8JhydcMZ2g+XDQEbg==
+X-Received: by 2002:a05:6a20:dc94:b0:140:4563:2243 with SMTP id
+ ky20-20020a056a20dc9400b0014045632243mr7025205pzb.50.1692736458230; 
+ Tue, 22 Aug 2023 13:34:18 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- i25-20020a633c59000000b00564aee22f33sm8311823pgn.14.2023.08.22.13.34.16
+ i25-20020a633c59000000b00564aee22f33sm8311823pgn.14.2023.08.22.13.34.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 22 Aug 2023 13:34:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v3 1/3] linux-user: Split out die_with_signal
-Date: Tue, 22 Aug 2023 13:34:13 -0700
-Message-Id: <20230822203415.1184491-2-richard.henderson@linaro.org>
+Subject: [PATCH v3 2/3] linux-user: Exit not abort in die_with_backtrace
+Date: Tue, 22 Aug 2023 13:34:14 -0700
+Message-Id: <20230822203415.1184491-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230822203415.1184491-1-richard.henderson@linaro.org>
 References: <20230822203415.1184491-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,91 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because we trap so many signals for use by the guest,
-we have to take extra steps to exit properly.
+This line is supposed to be unreachable, but if we're going to
+have it at all, SIGABRT via abort() is subject to the same signal
+peril that created this function in the first place.
+
+We can _exit immediately without peril.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/signal.c | 52 ++++++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 24 deletions(-)
+ linux-user/signal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 748a98f3e5..e1cd111a1b 100644
+index e1cd111a1b..57fbf2f58b 100644
 --- a/linux-user/signal.c
 +++ b/linux-user/signal.c
-@@ -694,6 +694,33 @@ void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
- }
+@@ -718,7 +718,7 @@ void die_with_signal(int sig)
+     sigsuspend(&act.sa_mask);
  
- /* abort execution with signal */
-+static G_NORETURN
-+void die_with_signal(int sig)
-+{
-+    struct sigaction act = {
-+        .sa_handler = SIG_DFL,
-+    };
-+
-+    /*
-+     * The proper exit code for dying from an uncaught signal is -<signal>.
-+     * The kernel doesn't allow exit() or _exit() to pass a negative value.
-+     * To get the proper exit code we need to actually die from an uncaught
-+     * signal.  Here the default signal handler is installed, we send
-+     * the signal and we wait for it to arrive.
-+     */
-+    sigfillset(&act.sa_mask);
-+    sigaction(sig, &act, NULL);
-+
-+    kill(getpid(), sig);
-+
-+    /* Make sure the signal isn't masked (reusing the mask inside of act). */
-+    sigdelset(&act.sa_mask, sig);
-+    sigsuspend(&act.sa_mask);
-+
-+    /* unreachable */
-+    abort();
-+}
-+
- static G_NORETURN
- void dump_core_and_abort(CPUArchState *cpu_env, int target_sig)
- {
-@@ -701,7 +728,6 @@ void dump_core_and_abort(CPUArchState *cpu_env, int target_sig)
-     CPUArchState *env = cpu->env_ptr;
-     TaskState *ts = (TaskState *)cpu->opaque;
-     int host_sig, core_dumped = 0;
--    struct sigaction act;
- 
-     host_sig = target_to_host_signal(target_sig);
-     trace_user_dump_core_and_abort(env, target_sig, host_sig);
-@@ -725,29 +751,7 @@ void dump_core_and_abort(CPUArchState *cpu_env, int target_sig)
-     }
- 
-     preexit_cleanup(cpu_env, 128 + target_sig);
--
--    /* The proper exit code for dying from an uncaught signal is
--     * -<signal>.  The kernel doesn't allow exit() or _exit() to pass
--     * a negative value.  To get the proper exit code we need to
--     * actually die from an uncaught signal.  Here the default signal
--     * handler is installed, we send ourself a signal and we wait for
--     * it to arrive. */
--    sigfillset(&act.sa_mask);
--    act.sa_handler = SIG_DFL;
--    act.sa_flags = 0;
--    sigaction(host_sig, &act, NULL);
--
--    /* For some reason raise(host_sig) doesn't send the signal when
--     * statically linked on x86-64. */
--    kill(getpid(), host_sig);
--
--    /* Make sure the signal isn't masked (just reuse the mask inside
--    of act) */
--    sigdelset(&act.sa_mask, host_sig);
--    sigsuspend(&act.sa_mask);
--
--    /* unreachable */
+     /* unreachable */
 -    abort();
-+    die_with_signal(host_sig);
++    _exit(EXIT_FAILURE);
  }
  
- /* queue a signal so that it will be send to the virtual CPU as soon
+ static G_NORETURN
 -- 
 2.34.1
 
