@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD04784824
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 19:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E4E784826
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 19:03:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYUlq-0008Qj-E3; Tue, 22 Aug 2023 13:02:22 -0400
+	id 1qYUlt-00008s-3s; Tue, 22 Aug 2023 13:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYUlm-0008Mf-9e
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:02:18 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1qYUlo-0008Oe-8F
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:02:20 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYUli-0002KM-J6
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:02:17 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-56b2e689968so1412523a12.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 10:02:14 -0700 (PDT)
+ id 1qYUlk-0002Kq-1O
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 13:02:20 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68a1af910e0so2182574b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 10:02:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692723733; x=1693328533;
+ d=linaro.org; s=google; t=1692723734; x=1693328534;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dyMnZPF0lJjltNxI1ShT7iDXd4Rf74ljeip+pJOFsn0=;
- b=dit81IQtr9lfNtbpySaog6AF/9oRIkx9V7RygsWQidvLYVLi9fnigzpNP4lu1CUD5Y
- vjDm3cjTQAMzrUCjLSTSKKWpMq46MPpAWAWzhAChI0MB3f/V5nJRivZh2ys2VI2HC66S
- UTr6ugff/0eDFDDJlFhflP1fYGfGr4/DmOYirn2X7Js8cpHI9FoqJGhdpuxU1gp3mm3m
- by2BueWZPZjweDmjYAytIG6BRaUEfO7YgWJydE8CZKaMv9DUBx+qbe7FjnuqHKZkqquc
- yA6n/HWAXWLfbolW674rVaE6eRPB4TRn/eWvqREfKZOgTvkCySG7Dq8Q6UNAMFghVRx2
- zicg==
+ bh=WtbxWpkqRs8uhBP9ntrNj0PDPLSc0E50BaiAIV/fKrE=;
+ b=pxAWm1bhjnUv47l+4NiL/g0E8FPIh8B7RFTGlGDQAOLjCP0Cvv8IBPmduyHQJC3vn1
+ bKgjUHx0n/J+Q3BJabLrwvezQPUm3yF7c1WcPagV6d7r250tqNW5eCc37dFretT8O2Wx
+ JLlTIzvkI5qWBYgb4GiBBRXiQZwwY18On3PYSkFgtJAW//xR+jFBxXU3HBQkbWWn61Hm
+ MO9UYwf4NBaHWsHxU0R8pzmsjXtZAWS9ALwFiVzdH501Auur+lrs0MbnRk4sBQeP9DBd
+ Y1fEXHdnHavYJrp1vw46jI1ugMQ+mTnPR6bnGn1DHzFtywBtOZRkms5vhWoXNOZvmLnU
+ c4hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692723733; x=1693328533;
+ d=1e100.net; s=20221208; t=1692723734; x=1693328534;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dyMnZPF0lJjltNxI1ShT7iDXd4Rf74ljeip+pJOFsn0=;
- b=fh3Caxbx48hppg27p1jl0I39npd+GtORQ79k5EjYOsFOImYS+Gb9jDPbeskiYFmGat
- CWf0+t3X7EpjX3ke+oLAuX32ZOD2/rGQvJ8bLLA6Oq7295frzHbyaenRiRvfRMBaUMSY
- cavGHiUR8ZY7Iaw5zrVhE2Z/L1wExzrgf+Vxj3ANvg/+MdqEyN7hppmVyJHSUY6miqaX
- fMBI0hUcwYzwKU+EZJp7y0y3mbPp/6xJLPXHg4YaXI3W6s0+78GnkFhpGz7HWijncbz8
- v7Q+KxX8+M6tqMI/AR3vsr/VkDYupSd1t5DaoZv6vObYkcXhDlXhpTphHe9v/62OqgGC
- oQgQ==
-X-Gm-Message-State: AOJu0Ywut+Z5twE9GUG/HiP8B8W1iBpUSN+9NiQI+EtsH+TQHWgNBEGC
- Xvo+FfmMsOHGJO+89SGadb2EBkunA0e6BIW/PWk=
-X-Google-Smtp-Source: AGHT+IFwVWd2NXKc1hR0xqNWZZxnWw5etzjFJtVofHOFj9Rq2qxmfi32s5+e6DXxwfliywQwRqjUxQ==
-X-Received: by 2002:a17:90b:1d06:b0:26d:b12:8383 with SMTP id
- on6-20020a17090b1d0600b0026d0b128383mr7476481pjb.8.1692723732847; 
- Tue, 22 Aug 2023 10:02:12 -0700 (PDT)
+ bh=WtbxWpkqRs8uhBP9ntrNj0PDPLSc0E50BaiAIV/fKrE=;
+ b=QaVCph3ExmkmX5rIJkYQ50gfVfEHSLYwKMaBD6z1hcxFZZat7ombRn16tHFa/nCm7k
+ BovE0J9GjbUMN4yNGiTbgC4dVdgaIWj42+x4HOe0Ks8pz7Z+/OZXUFM+6BsE6iQHGZSZ
+ 5Gny9oNcVpG7gv98y8ti8tC6dqTjhHrR0ckEsYzlIgjQ5jgfeoPE+AdvjdsCPE5DHM5I
+ N7rV8ThOv/+rdsbAG0nfidIWk7kq17Av6umXtfjNShNROH2EQki7GqFAz3MLpZsG6D2v
+ fYOgsrPUtxMhI6F+P5U/jVA0bBc1jH/PCGpiglwNiymvAQvkl3MdCmNZqyUuq2YqHk1T
+ E96w==
+X-Gm-Message-State: AOJu0YytxXswwTw9bv/MIF0vFkwzg40N4yy5QdlAleeeAcASK97im6Fy
+ unCU84A70q+1F1b/PyRCmjFK44nT0DuaR1o/rpw=
+X-Google-Smtp-Source: AGHT+IHeJBztbYQIrkoB+uCz6JDrez/Cyin6MKp5CkcMoXU+chQ8sgo9jTWo99VSLHuwF4o3mn0BIQ==
+X-Received: by 2002:a17:90a:854c:b0:26d:1201:a8c4 with SMTP id
+ a12-20020a17090a854c00b0026d1201a8c4mr7659567pjw.13.1692723733890; 
+ Tue, 22 Aug 2023 10:02:13 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- 27-20020a17090a031b00b00264040322desm8761121pje.40.2023.08.22.10.02.12
+ 27-20020a17090a031b00b00264040322desm8761121pje.40.2023.08.22.10.02.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Aug 2023 10:02:12 -0700 (PDT)
+ Tue, 22 Aug 2023 10:02:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 2/3] linux-user/aarch64: Fix normal SIGILL si_code
-Date: Tue, 22 Aug 2023 10:02:08 -0700
-Message-Id: <20230822170209.1130173-3-richard.henderson@linaro.org>
+Subject: [PATCH 3/3] linux-user/aarch64: Add ESR signal frame for PACFAIL
+Date: Tue, 22 Aug 2023 10:02:09 -0700
+Message-Id: <20230822170209.1130173-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230822170209.1130173-1-richard.henderson@linaro.org>
 References: <20230822170209.1130173-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,26 +91,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most illegal instructions use ILL_ILLOPC.
+The PACFAIL fault uses ILL_ILLOPN and includes ESR.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/cpu_loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/aarch64/cpu_loop.c |  7 ++++++-
+ linux-user/aarch64/signal.c   |  6 ++++++
+ tests/tcg/aarch64/pauth-2.c   | 25 ++++++++++++++++++++++++-
+ 3 files changed, 36 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index 2e2f7cf218..22c9789326 100644
+index 22c9789326..5af17e8724 100644
 --- a/linux-user/aarch64/cpu_loop.c
 +++ b/linux-user/aarch64/cpu_loop.c
-@@ -110,7 +110,7 @@ void cpu_loop(CPUARMState *env)
+@@ -110,7 +110,12 @@ void cpu_loop(CPUARMState *env)
              /* just indicate that signals should be handled asap */
              break;
          case EXCP_UDEF:
--            force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPN, env->pc);
-+            force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->pc);
+-            force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->pc);
++            /* See kernel's do_el0_fpac, and our need_save_esr(). */
++            if (syn_get_ec(env->exception.syndrome) == EC_PACFAIL) {
++                force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPN, env->pc);
++            } else {
++                force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->pc);
++            }
              break;
          case EXCP_PREFETCH_ABORT:
          case EXCP_DATA_ABORT:
+diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+index b2280fa9e3..bcdd796cc2 100644
+--- a/linux-user/aarch64/signal.c
++++ b/linux-user/aarch64/signal.c
+@@ -582,6 +582,7 @@ static bool need_save_esr(target_siginfo_t *info, CPUARMState *env)
+ {
+     int sig = info->si_signo;
+     int type = info->si_code >> 16;
++    int code = info->si_code & 0xffff;
+ 
+     if (type != QEMU_SI_FAULT) {
+         return false;
+@@ -592,6 +593,11 @@ static bool need_save_esr(target_siginfo_t *info, CPUARMState *env)
+         return true;
+     }
+ 
++    /* See arch/arm64/kernel/traps.c, do_el0_fpac, and our cpu_loop(). */
++    if (sig == TARGET_SIGILL && code == TARGET_ILL_ILLOPN) {
++        return true;
++    }
++
+     return false;
+ }
+ 
+diff --git a/tests/tcg/aarch64/pauth-2.c b/tests/tcg/aarch64/pauth-2.c
+index d498d7dd8b..62b39af3d0 100644
+--- a/tests/tcg/aarch64/pauth-2.c
++++ b/tests/tcg/aarch64/pauth-2.c
+@@ -4,14 +4,37 @@
+ #include <assert.h>
+ #include <sys/auxv.h>
+ 
++static inline struct _aarch64_ctx *first_ctx(ucontext_t *uc)
++{
++    return (struct _aarch64_ctx *)&uc->uc_mcontext.__reserved;
++}
++
++static inline struct _aarch64_ctx *next_ctx(struct _aarch64_ctx *hdr)
++{
++    return (struct _aarch64_ctx *)((char *)hdr + hdr->size);
++}
++
+ static void sigill(int sig, siginfo_t *info, void *vuc)
+ {
+     ucontext_t *uc = vuc;
+-    uint64_t test;
++    struct _aarch64_ctx *hdr;
++    struct esr_context *ec;
++    uint64_t test, esr;
+ 
+     /* There is only one insn below that is allowed to fault. */
+     asm volatile("adr %0, auth2_insn" : "=r"(test));
+     assert(test == uc->uc_mcontext.pc);
++
++    /* Find the esr_context. */
++    for (hdr = first_ctx(uc); hdr->magic != ESR_MAGIC; hdr = next_ctx(hdr)) {
++        assert(hdr->magic != 0);
++    }
++
++    ec = (struct esr_context *)hdr;
++    esr = ec->esr;
++
++    assert((esr >> 26) == 0x1c); /* EC_PACFAIL */
++    assert((esr & 3) == 2);      /* AUTDA: data=1 key=0 */
+     exit(0);
+ }
+ 
 -- 
 2.34.1
 
