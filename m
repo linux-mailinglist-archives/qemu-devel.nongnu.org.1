@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2D67843D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 16:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D287843E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 16:22:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYSDh-000406-EL; Tue, 22 Aug 2023 10:18:57 -0400
+	id 1qYSGv-0004wg-4Y; Tue, 22 Aug 2023 10:22:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1qYSDe-0003zi-Mm
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:18:54 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1qYSDb-0006pU-VZ
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:18:54 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31c615eb6feso609179f8f.3
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 07:18:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1692713930; x=1693318730;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=q27+LWN1bNyyzovD2YQut2GgRuRs31gDmmY/cO3TRyc=;
- b=VIiLD/mCV6XtOkjpZbX7OMblP++lK/rWS9RvV3fk1AANmQDPNBTvjMNcfIvgN43XxU
- /nokuC7YO4hR+aa/a8h9eorVYMU0AW8etxmoydrxvXuxBchvlVxn17qt6ldxqXX3SiCA
- hPT/qHOCaiIYNT/JDUcEKCcihjBnWCY6BQzUw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692713930; x=1693318730;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q27+LWN1bNyyzovD2YQut2GgRuRs31gDmmY/cO3TRyc=;
- b=OWgxVyvKPkwxmHvf49Yf41O5wBwzWvxo0s1+crsIuA3/lNjxWrpt6sQg/ddEfIOFsn
- o4FwEnolJwvjqWJ9s0BRXne4LJTS2w5ZDEON91Fgrm4zpdx1o+ICb8h7WniOy+7bhpsz
- BPXt4RqeMiemS2lJQ+gR6VItVs4j8MG1KFDDHJ7IhE49ZATPyMqyek1/91Btqdn5eYC5
- mO8nOXVjCbaGSd1g1I3VEpv5V5drI42TVO2t2ykCY1Q103vZFnKLPtwI4jafxOAA157R
- VywzulY2r5nw6fzw6UlRri1nD278cJJCyD2P8U+PNLybrHhcEyFbTpYQSsVUKf/0raRB
- eKvA==
-X-Gm-Message-State: AOJu0YzPKRkasgWkU/xbtYSpgIRUFqgdSw/MeNwaVkTr1BDPRkkZ+YH7
- 5GIEl+mn/fay4xwqP6CbJmwTBg==
-X-Google-Smtp-Source: AGHT+IGD2krpO9tou6EsuN8mDGTEMKpOkvflOcTgQvgTIst5+SYhX/oAjMiHNXFsHGy11QAcnBtu9Q==
-X-Received: by 2002:a5d:6949:0:b0:319:7471:2965 with SMTP id
- r9-20020a5d6949000000b0031974712965mr7471099wrw.21.1692713929864; 
- Tue, 22 Aug 2023 07:18:49 -0700 (PDT)
-Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
- [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
- a14-20020adff7ce000000b0030fd03e3d25sm16095358wrq.75.2023.08.22.07.18.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Aug 2023 07:18:49 -0700 (PDT)
-Date: Tue, 22 Aug 2023 15:18:49 +0100
-From: Anthony PERARD <anthony.perard@citrix.com>
-To: Joel Upham <jupham125@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v1 00/23] Q35 support for Xen
-Message-ID: <0b4adb4f-7a66-47a9-bb47-7c73a164a327@perard>
-References: <cover.1687278381.git.jupham125@gmail.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qYSGn-0004wU-PE
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:22:09 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qYSGl-0007bC-CX
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:22:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692714127; x=1724250127;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=ZvC+9MIG9rk+1jRXFoIjKvMMJNC7DAOZAeaeh5aL7hU=;
+ b=P+3M1mDEFXYIzQZTQl78oJ/dNz6cS2Q1KicoFC/5Bwc78n8CpRJfFP5A
+ cL7KODLTn3H4GG7ejeUjo1BtB60ByfrBzZQ+XRJPvQaoPgF9e7b2kcsNy
+ 1PWUCh3pP1DrwWz9V3B9Uosez/pogyHDb918Hfa1fW4oZJdH0MCqXUS+I
+ KqZisXo/Jpy0G0kZKbnOXPuaT0DqyU/KIoTijBhbLkNQ76+wXdqHQqVe+
+ dFdJ2kSMx+4cTS2nK9CypNJXR2DQrC0vAK1uFGmzuE5DZv39UEfCR1iv0
+ rvuQYQQl8z9Kfo8JDRi+vx3lM7NChTJ4hO0AC5jFPsUYPbgDpfTyfEq+q Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="460259070"
+X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; d="scan'208";a="460259070"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Aug 2023 07:22:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="686064058"
+X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; d="scan'208";a="686064058"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77])
+ ([10.93.6.77])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Aug 2023 07:21:53 -0700
+Message-ID: <0a2b2d58-63ac-3764-a4d2-c777d565b61e@intel.com>
+Date: Tue, 22 Aug 2023 22:21:48 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1687278381.git.jupham125@gmail.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=anthony.perard@cloud.com; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 18/58] i386/tdx: Validate TD attributes
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-19-xiaoyao.li@intel.com>
+ <ZOMrd6f0URDYp/0r@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZOMrd6f0URDYp/0r@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,18 +96,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joel,
+On 8/21/2023 5:16 PM, Daniel P. Berrangé wrote:
+> On Fri, Aug 18, 2023 at 05:50:01AM -0400, Xiaoyao Li wrote:
+>> Validate TD attributes with tdx_caps that fixed-0 bits must be zero and
+>> fixed-1 bits must be set.
+>>
+>> Besides, sanity check the attribute bits that have not been supported by
+>> QEMU yet. e.g., debug bit, it will be allowed in the future when debug
+>> TD support lands in QEMU.
+>>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+>> ---
+>>   target/i386/kvm/tdx.c | 27 +++++++++++++++++++++++++--
+>>   1 file changed, 25 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>> index 629abd267da8..73da15377ec3 100644
+>> --- a/target/i386/kvm/tdx.c
+>> +++ b/target/i386/kvm/tdx.c
+>> @@ -32,6 +32,7 @@
+>>                                        (1U << KVM_FEATURE_PV_SCHED_YIELD) | \
+>>                                        (1U << KVM_FEATURE_MSI_EXT_DEST_ID))
+>>   
+>> +#define TDX_TD_ATTRIBUTES_DEBUG             BIT_ULL(0)
+>>   #define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
+>>   #define TDX_TD_ATTRIBUTES_PKS               BIT_ULL(30)
+>>   #define TDX_TD_ATTRIBUTES_PERFMON           BIT_ULL(63)
+>> @@ -462,13 +463,32 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
+>>       return 0;
+>>   }
+>>   
+>> -static void setup_td_guest_attributes(X86CPU *x86cpu)
+>> +static int tdx_validate_attributes(TdxGuest *tdx)
+>> +{
+>> +    if (((tdx->attributes & tdx_caps->attrs_fixed0) | tdx_caps->attrs_fixed1) !=
+>> +        tdx->attributes) {
+>> +            error_report("Invalid attributes 0x%lx for TDX VM (fixed0 0x%llx, fixed1 0x%llx)",
+>> +                          tdx->attributes, tdx_caps->attrs_fixed0, tdx_caps->attrs_fixed1);
+>> +            return -EINVAL;
+>> +    }
+>> +
+>> +    if (tdx->attributes & TDX_TD_ATTRIBUTES_DEBUG) {
+>> +        error_report("Current QEMU doesn't support attributes.debug[bit 0] for TDX VM");
+>> +        return -EINVAL;
+>> +    }
+> 
+> Use error_setg() in both cases, passing in a 'Error **errp' object,
+> and 'return -1' instead of returning an errno value.
 
-We had a design session about Q35 support during Xen Summit, and I think
-the result of it is that some more changes are going to be needed,
-right?
+Will do it in next version.
 
-So, is it worth it for me to spend some time on review this patch series
-in its current form, or should I wait until the next revision? And same
-question for the xen toolstack side.
+thanks!
 
-Cheers,
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int setup_td_guest_attributes(X86CPU *x86cpu)
+>>   {
+>>       CPUX86State *env = &x86cpu->env;
+>>   
+>>       tdx_guest->attributes |= (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS) ?
+>>                                TDX_TD_ATTRIBUTES_PKS : 0;
+>>       tdx_guest->attributes |= x86cpu->enable_pmu ? TDX_TD_ATTRIBUTES_PERFMON : 0;
+>> +
+>> +    return tdx_validate_attributes(tdx_guest);
+> 
+> Pass along "errp" into this
+> 
+>>   }
+>>   
+>>   int tdx_pre_create_vcpu(CPUState *cpu)
+>> @@ -493,7 +513,10 @@ int tdx_pre_create_vcpu(CPUState *cpu)
+> 
+> In an earlier patch I suggested adding 'Error **errp' to this method...
+> 
+>>           goto out_free;
+>>       }
+>>   
+>> -    setup_td_guest_attributes(x86cpu);
+>> +    r = setup_td_guest_attributes(x86cpu);
+> 
+> ...it can also be passed into this method
+> 
+>> +    if (r) {
+>> +        goto out;
+>> +    }
+>>   
+>>       init_vm->cpuid.nent = kvm_x86_arch_cpuid(env, init_vm->cpuid.entries, 0);
+>>       init_vm->attributes = tdx_guest->attributes;
+>> -- 
+>> 2.34.1
+>>
+> 
+> With regards,
+> Daniel
 
--- 
-Anthony PERARD
 
