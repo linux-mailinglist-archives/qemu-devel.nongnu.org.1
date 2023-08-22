@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2C27842A5
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 15:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42997842CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 16:03:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYRu5-0003tM-Bl; Tue, 22 Aug 2023 09:58:41 -0400
+	id 1qYRxa-0006BY-VV; Tue, 22 Aug 2023 10:02:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qYRtw-0003rP-Vb
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:58:34 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYRxX-0006AU-Nh
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:02:15 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qYRtt-0001v5-3d
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 09:58:31 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so9334385a12.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 06:58:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYRxU-0002pc-IV
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 10:02:15 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fee51329feso19095415e9.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 07:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692712707; x=1693317507;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wlu5M5RBd16vhzLD3u1SSlP7zoHfQUuIUN4OxwJY5Os=;
- b=etMu0dTr9WE7/h7nQxLUGEJLdXAg/o5aBeDEuXMcEDzO4ptuRvLkBMs8KvriPhNAWs
- SPs63ELHsgaDD48TKwL3o7vWB34VFK7uf25BoJHZfHp7FH95rCsj2j/o/rFk/G8HgCGq
- kZdaR0ESDryArsyElSJwMT6YENcpKnKxYO6jFdFSOUAq37fLIEtCsrNFdQw/mSU/F93N
- Q6sZsKu0pVkroeM9Y35ALWCxyUvHi3fcjRg+AnT0R2iKMTqF2emL8SMmYPnViyIbXlCf
- nlOjohf3szM9OcGhu9JHVkjoHtgRATW1uf50PEaAzecxtLmp1l3Kyf/L/LQ5fSmizK99
- VGOw==
+ d=linaro.org; s=google; t=1692712930; x=1693317730;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pmrh/JYby1gOJhbqUseCVLB+diM8gTd+bJFNxULNKno=;
+ b=qYCCeMtV4DdSfADYrTgJih+l9LbwFtnimAaCWUSfgDXtNXSSckvsHlq/Hq+T2vzxat
+ 1l2ShQNBzSoxc7xRmzjwCyiUQxtdl7i8bSq7kIvcWN8lvvDJlWedmzCV4aLqgezENt+R
+ TlfHR72++OLmJ6DMhEj7d51QInIbP0820Y0xC0e060rXIH+gRkNkm40hhJwx5Ha2z6GM
+ NdAM+hSGxHtORD9z3rCgn+zF7wLD4sZzoLXek3R9/bZPMVobjMVRY2BX9V0FlHSVyNi5
+ i5MnDX6GYTYNljD2wlggCmQB8NRg/k/3IK7kBPlx74D8liz56O5UzccUpCxsSvGMLY/4
+ giJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692712707; x=1693317507;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wlu5M5RBd16vhzLD3u1SSlP7zoHfQUuIUN4OxwJY5Os=;
- b=NgbUNqCm7nG6GwiikBz/MQVbDeQbeDl80G6s/KGtjDoztLj52Nv+qpS+vkXXRv76Yh
- RlX1Z64jFFT6h7jZdTSPlJEdT7gnLm5NI6HuoIM6uheW9lRRmP9Qg9JI9GkfEH3ee6Zr
- 15VTHnhtWyC3uGOMMy0ycFkTfDtDGMOue3izQua9jLkjKXkjqJiRecXGhEbULave/RL0
- ytKn1XcVvCX1edom9zJZfnRHVInfshAMvQooaYQzTAzlrscVLurvBOtx5j/qEewdR0/y
- V57k4fSsUxmTnC9H0mRUeb6XScI876av4c3534I2fvka3j7i2VVsLSRLLNnDHVqTfAmI
- 9jpw==
-X-Gm-Message-State: AOJu0Ywwv4xZkWxHEsYD5XkE3yTm7X6hVGt/TCt78XiZRkHn5mITV6E9
- h5Fr23J1axSopR2rLwzpUW/Q0gnex1/bLL0I5yz04w==
-X-Google-Smtp-Source: AGHT+IG3ee+fPBHMSLbNMefm3v2nQKZXG9Bw4PgAORIa1502a/FWZMvmGDGo8K6XVont+0xIRwis0RapEVXy+9YCVnA=
-X-Received: by 2002:a05:6402:274b:b0:522:c226:34ea with SMTP id
- z11-20020a056402274b00b00522c22634eamr12481314edd.7.1692712706848; Tue, 22
- Aug 2023 06:58:26 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692712930; x=1693317730;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pmrh/JYby1gOJhbqUseCVLB+diM8gTd+bJFNxULNKno=;
+ b=lBx6hYh+8FTJ0rs56SlL2wPsNiezOabNPNFe3Y5vPyncHoLXrLj7JouW55T1YkDgNQ
+ zNNBVVrB8jeJSmeaJAFsiodzN7O3m9dkH712r90Rg+sk+hAJk5jwdYEju+rnHdN+DgLF
+ QB+vBhGCjDaSXPVvyu2NEufw6j36MPfns3wYSLgo3MEhPz1h3rt1tOfbBCc+u25FUwRL
+ /I0OkEf9c02v4J2+3rCuO16j34kUOMdJasBmY2MfxWDoeFnZag6DOze4542JU1xSHB06
+ krEJn+uQDJF7y9AOz5eVjzsXyr8RNxw94GXB9XzCdhcTq4fpIotiX/iTdrVVQsGQB+J8
+ pOLQ==
+X-Gm-Message-State: AOJu0YzcX/BwdPS1X/Rh7J81ZfKN+6D2kD+dbhoJC1BpNgx770QE2BSB
+ 9qGhRCFcXE+h/V1sb/7eSmjrh0zntTAE15cX9JYmvw==
+X-Google-Smtp-Source: AGHT+IHEBDerflUxZLEJYMfWVc3DTsATG/jcvqnAZKucrSCmDMM7zMtG4ZIqM3hvWqMBRFnrQsO+nA==
+X-Received: by 2002:a05:600c:1da1:b0:3fe:3389:122f with SMTP id
+ p33-20020a05600c1da100b003fe3389122fmr7022527wms.1.1692712930322; 
+ Tue, 22 Aug 2023 07:02:10 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ a19-20020a05600c225300b003fee83ae4a3sm10512101wmm.9.2023.08.22.07.02.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 07:02:09 -0700 (PDT)
+Message-ID: <bbdf0c7b-8cf2-872a-88bb-26117753e41a@linaro.org>
+Date: Tue, 22 Aug 2023 16:02:05 +0200
 MIME-Version: 1.0
-References: <20230822093712.38922-1-philmd@linaro.org>
- <87zg2jgphi.fsf@linaro.org>
-In-Reply-To: <87zg2jgphi.fsf@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 22 Aug 2023 14:58:15 +0100
-Message-ID: <CAFEAcA8+aHGRb4SeU0sReNegbeO0L2pXgj7JkXHBuxRJ9bRnyQ@mail.gmail.com>
-Subject: Re: [PATCH 0/7] tcg: Document *swap/deposit helpers
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 08/12] target/loongarch: Use generic hrev64_i64() in
+ REVB.4H opcode
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Greg Kurz
+ <groug@kaod.org>, Aurelien Jarno <aurelien@aurel32.net>,
+ qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-arm@nongnu.org
+References: <20230822124042.54739-1-philmd@linaro.org>
+ <20230822125122.54991-1-philmd@linaro.org>
+ <8d7b2863-c5e1-4222-3011-1d58157b62a8@linaro.org>
+In-Reply-To: <8d7b2863-c5e1-4222-3011-1d58157b62a8@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,60 +105,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 22 Aug 2023 at 14:46, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
->
-> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
->
-> > While reviewing a recent patch from Richard optimizing
-> > deposit() [*] I ended looking at the *swap friends, taking
-> > some notes, which then evolved to proper documentation.
-> >
-> > [*]
-> > https://lore.kernel.org/qemu-devel/20230816145547.477974-3-richard.hend=
-erson@linaro.org/
->
-> We already have some documentation in tcg.rst:
->
->    * - bswap16_i32/i64 *t0*, *t1*, *flags*
->
->      - | 16 bit byte swap on the low bits of a 32/64 bit input.
->        |
->        | If *flags* & ``TCG_BSWAP_IZ``, then *t1* is known to be zero-ext=
-ended from bit 15.
->        | If *flags* & ``TCG_BSWAP_OZ``, then *t0* will be zero-extended f=
-rom bit 15.
->        | If *flags* & ``TCG_BSWAP_OS``, then *t0* will be sign-extended f=
-rom bit 15.
->        |
->        | If neither ``TCG_BSWAP_OZ`` nor ``TCG_BSWAP_OS`` are set, then t=
-he bits of *t0* above bit 15 may contain any value.
->
->    * - bswap32_i64 *t0*, *t1*, *flags*
->
->      - | 32 bit byte swap on a 64-bit value.  The flags are the same as f=
-or bswap16,
->          except they apply from bit 31 instead of bit 15.
->
->    * - bswap32_i32 *t0*, *t1*, *flags*
->
->        bswap64_i64 *t0*, *t1*, *flags*
->
->      - | 32/64 bit byte swap. The flags are ignored, but still present
->          for consistency with the other bswap opcodes.
->
-> In an ideal world we could generate kdoc from the source file and
-> include it in the rest of the tcg docs. I'm not sure if it worth the
-> churn though? Richard?
+On 22/8/23 15:28, Philippe Mathieu-Daudé wrote:
+> On 22/8/23 14:51, Philippe Mathieu-Daudé wrote:
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/loongarch/insn_trans/trans_bit.c.inc | 15 +--------------
+>>   1 file changed, 1 insertion(+), 14 deletions(-)
+>>
+>> diff --git a/target/loongarch/insn_trans/trans_bit.c.inc 
+>> b/target/loongarch/insn_trans/trans_bit.c.inc
+>> index 95b4ee5bc8..c04806dc21 100644
+>> --- a/target/loongarch/insn_trans/trans_bit.c.inc
+>> +++ b/target/loongarch/insn_trans/trans_bit.c.inc
+>> @@ -124,19 +124,6 @@ static void gen_revb_2h(TCGv dest, TCGv src1)
+>>       tcg_gen_or_tl(dest, t0, t1);
+>>   }
+>> -static void gen_revb_4h(TCGv dest, TCGv src1)
+>> -{
+>> -    TCGv mask = tcg_constant_tl(0x00FF00FF00FF00FFULL);
+>> -    TCGv t0 = tcg_temp_new();
+>> -    TCGv t1 = tcg_temp_new();
+>> -
+>> -    tcg_gen_shri_tl(t0, src1, 8);
+>> -    tcg_gen_and_tl(t0, t0, mask);
+>> -    tcg_gen_and_tl(t1, src1, mask);
+>> -    tcg_gen_shli_tl(t1, t1, 8);
+>> -    tcg_gen_or_tl(dest, t0, t1);
+>> -}
+>> -
+>>   static void gen_revh_2w(TCGv dest, TCGv src1)
+>>   {
+>>       TCGv_i64 t0 = tcg_temp_new_i64();
+>> @@ -175,7 +162,7 @@ TRANS(clz_d, gen_rr, EXT_NONE, EXT_NONE, gen_clz_d)
+>>   TRANS(cto_d, gen_rr, EXT_NONE, EXT_NONE, gen_cto_d)
+>>   TRANS(ctz_d, gen_rr, EXT_NONE, EXT_NONE, gen_ctz_d)
+>>   TRANS(revb_2h, gen_rr, EXT_NONE, EXT_SIGN, gen_revb_2h)
+>> -TRANS(revb_4h, gen_rr, EXT_NONE, EXT_NONE, gen_revb_4h)
+>> +TRANS(revb_4h, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_hrev64_i64)
+> 
+> We should use tcg_gen_hrev64_tl() instead.
 
-I do think it would be useful to have documentation of the
-set of APIs you use as a writer of a TCG frontend. This is
-often not exactly the same as the TCG IR opcodes. (Similarly
-what you have to do as a backend isn't exactly the same,
-but the documentation need is less pressing because fewer
-people need to work on the backends.)
+Although due to the 0x00FF00FF00FF00FFULL constant it
+seems gen_revb_4h() really expects i64 registers...
+(see gen_revh_2w which uses TCGv_i64).
 
-thanks
--- PMM
+I suppose gen_revb_4h() ended that way as a copy/paste of
+gen_revb_2h().
 
