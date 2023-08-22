@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6510784609
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 17:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D5C78463E
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 17:51:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTZi-0004xY-5q; Tue, 22 Aug 2023 11:45:46 -0400
+	id 1qYTe6-0006Ig-33; Tue, 22 Aug 2023 11:50:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qYTZd-0004xD-RG
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:45:43 -0400
-Received: from mgamail.intel.com ([192.55.52.93])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qYTZa-00016y-RP
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:45:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692719138; x=1724255138;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=5v6aCju/1g5fNSmLz1BLj1E+RPrUqsxUNIS0WONK45U=;
- b=SVx3JXvpv8rMSoCtOgo8BycMhkrcQ6Et5Rgu4ySJ8dZvNEuNBNVKEVR8
- nh0OCX4LE7pYraMdX6yzLxaTa0kBgQh/9Qj1tdvrle8WgL8KLVoknieTa
- YUXwN533CzKaDH6sOo8QL+bmi9rTIc2uzeOmVRMq+T9+3U8uT0+3L1/jc
- c9awtMx+MamnpSjUexEyrfByyBFuVftfVvF6zeICxdGpzGm75RH+iJmEg
- DImtMWf6xVLATTnraPNrEZffUNju/2wOWr7Trl5QiA/aBXtOvx99Qnbj4
- ac4i/inePi6A7+E9gib8QPQBTAOsxCwblwAI9L+3xB4zOiBnKHFEdGbfk g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="371335826"
-X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; d="scan'208";a="371335826"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2023 08:45:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="859961159"
-X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; d="scan'208";a="859961159"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77])
- ([10.93.6.77])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2023 08:45:12 -0700
-Message-ID: <fa401024-2a19-229b-932e-d3541c763422@intel.com>
-Date: Tue, 22 Aug 2023 23:45:08 +0800
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qYTe4-0006IH-91
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:50:16 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qYTe2-0002LT-3M
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:50:16 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31adc5c899fso4302813f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 08:50:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692719412; x=1693324212;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ty+MUkk4NoppjREySXRnsnBpbVPnIcQrATnyM/78euY=;
+ b=OljoUuv/8zK0BBV+H8uPSYrDt7AhB6bnmyNCoSXSNSOmLdKLNXGpMDVys7XXdsNhTz
+ gK8Qt03Zfby+ISpvkJ8HqZWIW2R5kpUXCoen8tUQfYc8xsD3jfPZVO3+yvJNGdWwJvQr
+ bZODCsUcIUod2nnB8G0W3vAhkXhMoykI5Gu83ueNG4i/pNeX7B2tuPfz0hCGwUDbEj5+
+ Yvkex9ZlY6rRc8j2z9jzzdkgEWiUHIDsslrQQoSMgqEFrChXaiATcbiJ7ANhDx2fsR2g
+ 2Slc+nL6Uk8FB1kIgEMRxd4x386/MysnrjqqnSqwJMGUfWxn856ppvf6tPkRCZI7nNwz
+ QqWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692719412; x=1693324212;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ty+MUkk4NoppjREySXRnsnBpbVPnIcQrATnyM/78euY=;
+ b=OGY4hJhfEF9+MwqjjiTiHGiwm4RJNr+njio7y0RrzoLtv9VtWv9GAuB3OcVSKhUzI2
+ shX6g1kZVEsmLtcvlTEbr01Jt/zAg02JDI4znc/h7y/UkmS2eeeaDkYtKsLTgW4MEpyL
+ KaDHZM0tbMKeWaFbY30uIrsSq+QhU15MTZ2OuFvnBU+uv8NLCRxGu3HQ2WqUdi5YFGit
+ 0+naLh6UHjApwjTZUVP6ki+L/6vSxQbeTXA6MducOw6Mi1Wrax3MkPxZMHkxFSgepPF5
+ X1c45wvBmkwmfOSqa8EtRGmcQ78V7GlgVmIIlvgM4aji7P3d0nj3jV3OEgDibBHRsOZe
+ sUsg==
+X-Gm-Message-State: AOJu0Yy6hzXlSc45zbaNA2GCkNzhZ/ydE6duLECmS7JbTDo0/yv1yn3h
+ jHr/qHe4jFzocfxR5MQtIzV+sQ==
+X-Google-Smtp-Source: AGHT+IEiSlfytEc+dEdzuAtqPPCycVcHP6dwWtcFzjYugFkJWZia3ekjjyMc3xx3v7mlG+jdjPEccw==
+X-Received: by 2002:a5d:6a43:0:b0:317:f7b0:85f with SMTP id
+ t3-20020a5d6a43000000b00317f7b0085fmr7166588wrw.33.1692719412194; 
+ Tue, 22 Aug 2023 08:50:12 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ q8-20020a5d5748000000b003196e992567sm16091082wrw.115.2023.08.22.08.50.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Aug 2023 08:50:11 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 69FB61FFBB;
+ Tue, 22 Aug 2023 16:50:11 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>
+Subject: [RFC PATCH] docs/style: permit inline loop variables
+Date: Tue, 22 Aug 2023 16:50:04 +0100
+Message-Id: <20230822155004.1158931-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 32/58] i386/tdx: Track RAM entries for TDX VM
-Content-Language: en-US
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
- erdemaktas@google.com, Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-33-xiaoyao.li@intel.com>
- <20230821234052.GD3642077@ls.amr.corp.intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20230821234052.GD3642077@ls.amr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.767,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,33 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/2023 7:40 AM, Isaku Yamahata wrote:
-> On Fri, Aug 18, 2023 at 05:50:15AM -0400,
-> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-> 
->> diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
->> index e9d2888162ce..9b3c427766ef 100644
->> --- a/target/i386/kvm/tdx.h
->> +++ b/target/i386/kvm/tdx.h
->> @@ -15,6 +15,17 @@ typedef struct TdxGuestClass {
->>       ConfidentialGuestSupportClass parent_class;
->>   } TdxGuestClass;
->>   
->> +enum TdxRamType{
->> +    TDX_RAM_UNACCEPTED,
->> +    TDX_RAM_ADDED,
->> +};
->> +
->> +typedef struct TdxRamEntry {
->> +    uint64_t address;
->> +    uint64_t length;
->> +    uint32_t type;
-> 
-> nitpick: enum TdxRamType. and related function arguments.
-> 
+I've already wasted enough of my time debugging aliased variables in
+deeply nested loops. While not scattering variable declarations around
+is a good aim I think we can make an exception for stuff used inside a
+loop.
 
-Will do it.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ docs/devel/style.rst | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Thanks!
+diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+index 3cfcdeb9cd..2f68b50079 100644
+--- a/docs/devel/style.rst
++++ b/docs/devel/style.rst
+@@ -204,7 +204,14 @@ Declarations
+ 
+ Mixed declarations (interleaving statements and declarations within
+ blocks) are generally not allowed; declarations should be at the beginning
+-of blocks.
++of blocks. To avoid accidental re-use it is permissible to declare
++loop variables inside for loops:
++
++.. code-block:: c
++
++    for (int i = 0; i < ARRAY_SIZE(thing); i++) {
++        /* do something loopy */
++    }
+ 
+ Every now and then, an exception is made for declarations inside a
+ #ifdef or #ifndef block: if the code looks nicer, such declarations can
+-- 
+2.39.2
 
 
