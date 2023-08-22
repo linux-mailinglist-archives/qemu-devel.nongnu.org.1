@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2E7783A2F
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 08:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB50783A36
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 08:56:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYLFq-00059r-RP; Tue, 22 Aug 2023 02:52:42 -0400
+	id 1qYLJI-0006FI-Nm; Tue, 22 Aug 2023 02:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYLFo-00059g-R9
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:52:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYLFm-0006G2-Nf
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:52:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692687157;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2k/uh5+xwoeOwQb5IgC8XG0uPFEtbKXJYGueazSUtCM=;
- b=QFRGC4M/pnmtelq7p57L5ji9OewQAk1eHFBSXArqxe5u1rdpidamSXWwKRz/bw03zLy03l
- 8n+BnkM1zRCSYyRVePTZDDPQ03h7dG6LeSWnmYfvsuNBbzP3zPVS70S/TCl+LOkAUg3+Vf
- MWMBgB9DboapADYfDKmIhB5S/MXVy4o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-634-yQD1D_vCOR-wUCbrptey2w-1; Tue, 22 Aug 2023 02:52:32 -0400
-X-MC-Unique: yQD1D_vCOR-wUCbrptey2w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E782101A53C;
- Tue, 22 Aug 2023 06:52:31 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 63C5A40C206F;
- Tue, 22 Aug 2023 06:52:31 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4787821E690D; Tue, 22 Aug 2023 08:52:30 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Igor Mammedov
- <imammedo@redhat.com>,  Ani Sinha <anisinha@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  David Hildenbrand <david@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Cornelia Huck <cohuck@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,  Gerd
- Hoffmann <kraxel@redhat.com>,  qemu-devel@nongnu.org,
- kvm@vger.kernel.org,  Eduardo Habkost <eduardo@habkost.net>,  Laszlo
- Ersek <lersek@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,
- erdemaktas@google.com,  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v2 41/58] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-42-xiaoyao.li@intel.com>
-Date: Tue, 22 Aug 2023 08:52:30 +0200
-In-Reply-To: <20230818095041.1973309-42-xiaoyao.li@intel.com> (Xiaoyao Li's
- message of "Fri, 18 Aug 2023 05:50:24 -0400")
-Message-ID: <87wmxn6029.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLJH-0006FA-3x
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:56:15 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYLJE-00074Z-Us
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 02:56:14 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe12baec61so41569345e9.2
+ for <qemu-devel@nongnu.org>; Mon, 21 Aug 2023 23:56:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692687370; x=1693292170;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9tAn08org2kv6oAgYDAWTvHv3hRHNTLfE2o1ynw7EQg=;
+ b=bcfU1gPtIm3m588bt2mZdonHieatz4HvJXTFq9jhFqjkvktD9yaSQg/qxz9VnojOii
+ vnvs0cOouJIlzHApu6bdV9JZ3nAkn0+hH1ixN/BsqGKcD+hScGMSkf18uWI3noSjBMzo
+ LOmoklgiVnqUOTboOeKcC4CSEc4c26/er9AIRkoWZT3O5lJYTYVoVGO63WXm0YAlPT0Q
+ Leg9PvZyj9lPVy4VQCHh8D5fl892l0JnE84Jq5hACE95XryekRyWXb0Fpwo+xwqzHhHB
+ 3RxloXoHrIMoe5ERCCOqKcF3kW8GSdC8+V1RK7JUjFHeeZTO61EL9+2Ujdh/t1F9uhTq
+ +qog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692687370; x=1693292170;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9tAn08org2kv6oAgYDAWTvHv3hRHNTLfE2o1ynw7EQg=;
+ b=lhRgJeohfWwVYQAoBBoY0GiTgvHSeawzZ0Aq4jFonRd+SiN7mzWxyaJE0ANCfiitlr
+ 1s2GHQoh093by2l94mTYxISO10uJteznzoNw21QvbjLuVTcSYUxhUlGv7JOgmJyAnFps
+ DZgclVMJdmMTsi+Kyw10AWOoIOAABoELc6xEVqkye7dfT+zYqX//kwkAxHeg676z22Yx
+ QB83HEU1ZuQ+S2CNdz3QQBeGZIV+xc7Z/CGUSCMbre363zU5VvMh/i0nww1Vsnf7/ucW
+ XANXpMBorr+Kh6iXk2KXf/bp57t2MQF0W37az5PVtB+ztXSc+hVuZ+YMHi3EBiMwOct3
+ Rcuw==
+X-Gm-Message-State: AOJu0YyGWIuAUOerU1WijIFPJOE6B9Q95V4YqGQMZj5Ytzdi/C+qkPfg
+ 3JHWTLgPsV/gSfhS+SnTBZsecQ==
+X-Google-Smtp-Source: AGHT+IHivFMZHCSzHtbKxWP3KCIKHpMUGtEl4tRIizJkdAyAhiefNF56DqNdS9zr5w1EKqjyUv4Z/w==
+X-Received: by 2002:a05:6000:1363:b0:31a:ea9f:1aa6 with SMTP id
+ q3-20020a056000136300b0031aea9f1aa6mr6593419wrz.47.1692687370659; 
+ Mon, 21 Aug 2023 23:56:10 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ e1-20020adff341000000b003177f57e79esm14758659wrp.88.2023.08.21.23.56.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 21 Aug 2023 23:56:10 -0700 (PDT)
+Message-ID: <8a37fa1d-e967-30be-1cb0-bcb0c8196792@linaro.org>
+Date: Tue, 22 Aug 2023 08:56:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v4 09/15] target/loongarch: Add LoongArch32 cpu la132
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, c@jia.je, maobibo@loongson.cn,
+ yangxiaojuan@loongson.cn, yijun@loongson.cn, shenjinyang@loongson.cn
+References: <20230822032724.1353391-1-gaosong@loongson.cn>
+ <20230822032724.1353391-10-gaosong@loongson.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230822032724.1353391-10-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.374,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,59 +93,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
-
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
->
-> For GetQuote, delegate a request to Quote Generation Service.  Add property
-> of address of quote generation server and On request, connect to the
-> server, read request buffer from shared guest memory, send the request
-> buffer to the server and store the response into shared guest memory and
-> notify TD guest by interrupt.
->
-> "quote-generation-service" is a property to specify Quote Generation
-> Service(QGS) in qemu socket address format.  The examples of the supported
-> format are "vsock:2:1234", "unix:/run/qgs", "localhost:1234".
->
-> command line example:
->   qemu-system-x86_64 \
->     -object 'tdx-guest,id=tdx0,quote-generation-service=localhost:1234' \
->     -machine confidential-guest-support=tdx0
->
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+On 22/8/23 05:27, Song Gao wrote:
+> From: Jiajie Chen <c@jia.je>
+> 
+> Add LoongArch32 cpu la132.
+> 
+> Due to lack of public documentation of la132, it is currently a
+> synthetic LoongArch32 cpu model. Details need to be added in the future.
+> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->  qapi/qom.json         |   5 +-
->  target/i386/kvm/tdx.c | 380 ++++++++++++++++++++++++++++++++++++++++++
->  target/i386/kvm/tdx.h |   7 +
->  3 files changed, 391 insertions(+), 1 deletion(-)
->
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 87c1d440f331..37139949d761 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -879,13 +879,16 @@
->  #
->  # @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
->  #
-> +# @quote-generation-service: socket address for Quote Generation Service(QGS)
-> +#
->  # Since: 8.2
->  ##
->  { 'struct': 'TdxGuestProperties',
->    'data': { '*sept-ve-disable': 'bool',
->              '*mrconfigid': 'str',
->              '*mrowner': 'str',
-> -            '*mrownerconfig': 'str' } }
-> +            '*mrownerconfig': 'str',
-> +            '*quote-generation-service': 'str' } }
+>   target/loongarch/cpu.c | 30 ++++++++++++++++++++++++++++++
 
-Why not type SocketAddress?
+Thanks for splitting the hw/ patch out, ...
 
->  
->  ##
->  # @ThreadContextProperties:
+>   1 file changed, 30 insertions(+)
+> 
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index 67eb6c3135..d3c3e0d8a1 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -440,6 +440,35 @@ static void loongarch_la464_initfn(Object *obj)
+>       env->CSR_ASID = FIELD_DP64(0, CSR_ASID, ASIDBITS, 0xa);
+>   }
+>   
+> +static void loongarch_la132_initfn(Object *obj)
+> +{
+> +    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+> +    CPULoongArchState *env = &cpu->env;
+> +
+> +    int i;
+> +
+> +    for (i = 0; i < 21; i++) {
+> +        env->cpucfg[i] = 0x0;
+> +    }
+> +
+> +    cpu->dtb_compatible = "loongarch,Loongson-1C103";
+> +    env->cpucfg[0] = 0x148042;  /* PRID */
 
-[...]
+... and filling the PRid register.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
