@@ -2,63 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8FB7847A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBC37847A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 18:32:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYUHU-0002GN-P0; Tue, 22 Aug 2023 12:31:00 -0400
+	id 1qYUIR-0003D2-0u; Tue, 22 Aug 2023 12:31:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYUH7-0002Ec-UV
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:30:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYUH4-0003o2-5S
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:30:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692721832;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Rr1n7B3MlvcrdGLG6dgtsyVZYtZjkwyk6kXzDXGa68M=;
- b=UWOdPseUjs+lnUO7TDKYYMPijyEwAx1nAkgBu7WiqShtk0ESshbZM7z91A0l3nsyX9BFMW
- psGcUHBF/uGW0+Tsz9LKez1cW4vKm8piPh2lQUgGbk2CItVurSU+efqzRN1BoeQciXxBMo
- pOQt5poLZdjKYgsi6K+f6bZpDYoIlOg=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-414-Cipn30zNO1WHfJRHDwjKow-1; Tue, 22 Aug 2023 12:30:28 -0400
-X-MC-Unique: Cipn30zNO1WHfJRHDwjKow-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 763BC3C0FC8B;
- Tue, 22 Aug 2023 16:30:28 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.177])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 510DA64661;
- Tue, 22 Aug 2023 16:30:27 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH] tests/qtest/usb-hcd-xhci-test: Check availability of devices
- before using them
-Date: Tue, 22 Aug 2023 18:30:24 +0200
-Message-Id: <20230822163024.61529-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYUIP-0003Cp-Ez
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:31:57 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYUIN-00041l-8b
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 12:31:57 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-31c3df710bdso2201684f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 09:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692721913; x=1693326713;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3wbawRQ3OaSsz6WrInodZ42QFgCgOUhUCYeU5IWIRx4=;
+ b=SroFX7xcGRJLOQDlWwcFjWiA5PxxZRKrZAjwRpYVRSRhQoI4V48Lb7Yb4HLaUBKrd/
+ 1yqEPhraOyHZxxDcArjH5iNi7a4DXkD0WDwzYc0rqSjISr8emdylp3Nak1BLSfFsziN+
+ 5k3coMcucnOGHU7Jx3vr0sXTdHuYb1ra9xuo6omI4ZX4vpqJMQQK8SSXpVjSaDvIyGEW
+ LuzGL4KwdtHEdNZ+AFU9yvqkFcl/hYvKzn4HDB9U3FGYiltnzVRc/tnTZGtCrfo1pwUR
+ nAM170+W9zE8UjF31+JHHvyuv7f7Z1Uo8YG4GnlR8Kcz6rIPu9z0cWCusteF35VOlhHX
+ qToA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692721913; x=1693326713;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3wbawRQ3OaSsz6WrInodZ42QFgCgOUhUCYeU5IWIRx4=;
+ b=DY+H2Zw998W0BQBAETwSnruciIP+BJKn8l+X/UWGYx/InwtrGhdwcsszN7LTardpxt
+ 6qkBeTN0OXxZ0fhbknaZbFxUVspRzHFQisHL9m1oICSelO2yb9hwFVWTXsLcija4BiVU
+ ziVI2jEimTiF6UOeAaEWVwylyF5/32HSGIuJ0afauzZPNCn38v38lxdUNPqcKlT0vBT+
+ rQUYQqlYBmSm68e7OLQh3eqM5hXNSjaR49wfYuqwAoLIhRbV2mEvM1SK1U4E2xIC3XvH
+ LJRPkKxDyb0X8QEhtItGL4Ef0rA0NaFowPK2LpnuLX+LStYPi34kyUZOkag8IBG0RnxH
+ FP3g==
+X-Gm-Message-State: AOJu0YxxKvjICYd3fVZNQnOCCD7Xcrx7U+W83oYv/vdFezWxyS2HkCSa
+ HTjiGdika+1supuJxekG4xQqXXFN6Y+pFdgdmGwGWQ==
+X-Google-Smtp-Source: AGHT+IHwqh7mqHl0HHSZExmIvbINghiFBjHu5ck+HRlsB34kLW0xwxUZYi8H5WxKhRc1xHJR9dteZg==
+X-Received: by 2002:adf:f80b:0:b0:317:df82:2868 with SMTP id
+ s11-20020adff80b000000b00317df822868mr7704144wrp.26.1692721913571; 
+ Tue, 22 Aug 2023 09:31:53 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ z1-20020adfd0c1000000b003143c9beeaesm16304630wrh.44.2023.08.22.09.31.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 09:31:53 -0700 (PDT)
+Message-ID: <2a954d90-1489-3c35-0105-0135f42ebf9e@linaro.org>
+Date: Tue, 22 Aug 2023 18:31:50 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [RFC PATCH] docs/style: permit inline loop variables
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Juan Quintela <quintela@redhat.com>
+References: <20230822155004.1158931-1-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230822155004.1158931-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,34 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "usb-uas" and "usb-ccid" might not be compiled into the QEMU binary,
-so let's better check first whether they are available.
+On 22/8/23 17:50, Alex Bennée wrote:
+> I've already wasted enough of my time debugging aliased variables in
+> deeply nested loops. While not scattering variable declarations around
+> is a good aim I think we can make an exception for stuff used inside a
+> loop.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   docs/devel/style.rst | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+> index 3cfcdeb9cd..2f68b50079 100644
+> --- a/docs/devel/style.rst
+> +++ b/docs/devel/style.rst
+> @@ -204,7 +204,14 @@ Declarations
+>   
+>   Mixed declarations (interleaving statements and declarations within
+>   blocks) are generally not allowed; declarations should be at the beginning
+> -of blocks.
+> +of blocks. To avoid accidental re-use it is permissible to declare
+> +loop variables inside for loops:
+> +
+> +.. code-block:: c
+> +
+> +    for (int i = 0; i < ARRAY_SIZE(thing); i++) {
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/qtest/usb-hcd-xhci-test.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ARRAY_SIZE() -> sizeof() -> size_t -> unsigned.
 
-diff --git a/tests/qtest/usb-hcd-xhci-test.c b/tests/qtest/usb-hcd-xhci-test.c
-index 10ef9d2a91..80bc039446 100644
---- a/tests/qtest/usb-hcd-xhci-test.c
-+++ b/tests/qtest/usb-hcd-xhci-test.c
-@@ -56,8 +56,12 @@ int main(int argc, char **argv)
- 
-     qtest_add_func("/xhci/pci/init", test_xhci_init);
-     qtest_add_func("/xhci/pci/hotplug", test_xhci_hotplug);
--    qtest_add_func("/xhci/pci/hotplug/usb-uas", test_usb_uas_hotplug);
--    qtest_add_func("/xhci/pci/hotplug/usb-ccid", test_usb_ccid_hotplug);
-+    if (qtest_has_device("usb-uas")) {
-+        qtest_add_func("/xhci/pci/hotplug/usb-uas", test_usb_uas_hotplug);
-+    }
-+    if (qtest_has_device("usb-ccid")) {
-+        qtest_add_func("/xhci/pci/hotplug/usb-ccid", test_usb_ccid_hotplug);
-+    }
- 
-     qtest_start("-device nec-usb-xhci,id=xhci"
-                 " -drive id=drive0,if=none,file=null-co://,"
--- 
-2.39.3
+Is it a good example to use 'int' here?
+
+Otherwise, glad to declare variables in loops!
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +        /* do something loopy */
+> +    }
+>   
+>   Every now and then, an exception is made for declarations inside a
+>   #ifdef or #ifndef block: if the code looks nicer, such declarations can
 
 
