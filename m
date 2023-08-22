@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F5578415D
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 14:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E20784160
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 14:58:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYQxU-0004Lj-6A; Tue, 22 Aug 2023 08:58:08 -0400
+	id 1qYQxa-0004ZH-Vc; Tue, 22 Aug 2023 08:58:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQxQ-0004HS-No
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:58:04 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQxY-0004Ww-Qf
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:58:12 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQxM-0003Rt-Qb
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:58:04 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fe4cdb72b9so42516835e9.0
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 05:58:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYQxV-0003Ti-Be
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 08:58:12 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-31c4d5bd69cso1892528f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 05:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692709079; x=1693313879;
+ d=linaro.org; s=google; t=1692709087; x=1693313887;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pHBA30PSCUnBRne2oNj9oNGhYXtpgOXc/MJu68ppsA8=;
- b=G2Gy0yMoT0DkNP8xD2JzjgaNH0X8wtgfafL8lDh8T8kPEJCV7eHDS7VB3wcI8EKff1
- gy6y9Q2By7tDkMlfZH/SjypJchmOuOAqYvCEUklIAzpKoTmHDEk9wGt0vVrBHOueEFFV
- 8F/zEUyR/LE6r2xc7D/vNkfmbSrjGYA2gEmYPfbXAyp2abQqrEXfXscIOMD21v8XnyW4
- Ga8zcTnxn1iSNkfz3hhWaMd3mTOSfgoA5HN7BB72qTknto4wupucc2aqdu2GzDuUyPTv
- XtWeJNSPkuMD1gfB/yYOQk4rB2ZPKKZBSDkWCdVcvzFyrp2NEY+hyQ3DPN3MVcdF+Cam
- cPOQ==
+ bh=HoqVbo91wPVgF5r48rM5Dy0YT51miWRNDAkstIMzJy4=;
+ b=x84rpRuUKtihEm90d8RKSO3l2JCiyV88QdRZioX4EdIG1VliKN3Se4EAiebdlsOnUx
+ uTJc8j8TYNpzC4CPse1uxEF82ygg7nI8KTAJKfviHBRDntg54AQPgah3HBDOcNqvH5Rs
+ HLU9zSSL7oiI74ft2yihnnwZEYRpLaLOtWSLSm9/qBwnONXostSNNeWXrVd2i2SU6FKI
+ hTFftd2RoNSr1wVj8YU/SSSGyvc9OKyZ+W7G2xpWaggDzTFsFPYE23TViB2uV25It298
+ Xifcelv/XLziQqYDKyfEffmKcjj1sHcA0xaVnFDPRtLKtr9a6Hfm3cm0J6xXorruT6AE
+ h9Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692709079; x=1693313879;
+ d=1e100.net; s=20221208; t=1692709087; x=1693313887;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pHBA30PSCUnBRne2oNj9oNGhYXtpgOXc/MJu68ppsA8=;
- b=eCo8KJAn/9WJsBzlJbxRiv+OC4GZjWIV45m2PLxry+Fa/Pl+AqFpYQANTPSr04a4N9
- E5D2Q8HuSu09jjiSUmTfAjaxS1RpZvAnEzEcLEI9DtpZlQbr3IRy0wr8HLhPk+6MJnir
- ro9d18nfW4ptvWzjgZmg7Mlpltlic0qpa/gsevb0DAm1ZIh1ty+WGRCR2QcqeHrM7lOz
- CX5bOYJCHjSpu/FBNOPnA4NGnZ+r87wzLWUVbRU81bLNrDndFf8Zvf2lljgm8qBRDyrx
- 4UNerpD63KuMT3gFBHesNVC7WNkPAiGW2nm2HLG6zrVGwt2DMniGUg42dZUIOYpQ03gG
- zavQ==
-X-Gm-Message-State: AOJu0YxnU2iQhbnBTy6l5S+TPyWhnk+GOvhukdxpQPUbn3OdZgSMeVvP
- yHXGyfwLm5quSvl417W2ezBpWjpQQORda5xGDoBO0Q==
-X-Google-Smtp-Source: AGHT+IFgfMuvk+8hHVZhZ0sBG+3IoM5LC+cqghN7zamhwQ5Gy8no9ql043z0jNALw/gV1KEA2a6XFQ==
-X-Received: by 2002:a7b:cb41:0:b0:3fe:1f93:8cf4 with SMTP id
- v1-20020a7bcb41000000b003fe1f938cf4mr7508972wmj.8.1692709078966; 
- Tue, 22 Aug 2023 05:57:58 -0700 (PDT)
+ bh=HoqVbo91wPVgF5r48rM5Dy0YT51miWRNDAkstIMzJy4=;
+ b=Ccoukn17+qD39w0Ft1HIdCkL85osjPBpLTUG+Z2ad1kzX/9lJ/Bni7Bt2fJw5cPcg9
+ BI6bNRK6NhGCbBnW2auf+P/GpZo8d1xyAe8ry9jTlM4jNgrT6Vi3lxzRioB+FjEdKEy1
+ 5PMS1sw/VJ6udQx8j64tIFD3Zm9J8SASx1eHQU/mrNCDtCkybaz4P1tya+oSVsJwNT+P
+ M1umM+Fnnf00jDbemhBYugZDcMmyDojRwNQv67jc4UBlW0F0shcUGT6p9QkpM8tk70bX
+ uCoMmmv+y5DwADqHt1f2GKOUuixhr6M/PMLFT6GvslRhgdB0EI/njfeysEtRzppZZ58T
+ DsHw==
+X-Gm-Message-State: AOJu0YxYB13jfg77GuWHXpUVqdbD1LFAQ1vVPAUNDXtoz7Va1wcL7zDQ
+ OJz0GQFD/dGbq90xDzwA9WKW15GB2gHZShPHcUco7A==
+X-Google-Smtp-Source: AGHT+IGxO1Ypid1Vj6SZW4PVOM/kHL7inRHfC4X4YcLDq4XWS0j00izoaA8eHNJs9dp4QAp0EBCYow==
+X-Received: by 2002:a5d:4586:0:b0:31a:dbe0:ca7d with SMTP id
+ p6-20020a5d4586000000b0031adbe0ca7dmr6637694wrq.8.1692709087351; 
+ Tue, 22 Aug 2023 05:58:07 -0700 (PDT)
 Received: from localhost.localdomain ([37.19.214.4])
  by smtp.gmail.com with ESMTPSA id
- z9-20020a7bc7c9000000b003fef57e64c4sm3780056wmk.25.2023.08.22.05.57.56
+ 19-20020a05600c249300b003fe2f3a89d4sm15855430wms.7.2023.08.22.05.58.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 22 Aug 2023 05:57:58 -0700 (PDT)
+ Tue, 22 Aug 2023 05:58:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>,
@@ -71,17 +71,17 @@ Cc: Song Gao <gaosong@loongson.cn>,
  Nicholas Piggin <npiggin@gmail.com>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 06/12] target/mips: Use generic hrev64_i64() in DSBH opcode
-Date: Tue, 22 Aug 2023 14:57:51 +0200
-Message-ID: <20230822125752.55328-1-philmd@linaro.org>
+Subject: [PATCH 12/12] target/mips: Use generic hrev32_tl() in WSBH opcode
+Date: Tue, 22 Aug 2023 14:57:52 +0200
+Message-ID: <20230822125752.55328-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230822124042.54739-1-philmd@linaro.org>
 References: <20230822124042.54739-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,31 +106,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/translate.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ target/mips/tcg/translate.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 4f34ea9b6a..08ee745a6d 100644
+index 08ee745a6d..822b932262 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -4936,16 +4936,7 @@ static void gen_bshfl(DisasContext *ctx, uint32_t op2, int rt, int rd)
-         break;
- #if defined(TARGET_MIPS64)
-     case OPC_DSBH:
+@@ -4916,17 +4916,8 @@ static void gen_bshfl(DisasContext *ctx, uint32_t op2, int rt, int rd)
+     gen_load_gpr(t0, rt);
+     switch (op2) {
+     case OPC_WSBH:
 -        {
 -            TCGv t1 = tcg_temp_new();
--            TCGv t2 = tcg_constant_tl(0x00FF00FF00FF00FFULL);
+-            TCGv t2 = tcg_constant_tl(0x00FF00FF);
 -
 -            tcg_gen_shri_tl(t1, t0, 8);
 -            tcg_gen_and_tl(t1, t1, t2);
 -            tcg_gen_and_tl(t0, t0, t2);
 -            tcg_gen_shli_tl(t0, t0, 8);
--            tcg_gen_or_tl(cpu_gpr[rd], t0, t1);
+-            tcg_gen_or_tl(t0, t0, t1);
+-            tcg_gen_ext32s_tl(cpu_gpr[rd], t0);
 -        }
-+        tcg_gen_hrev64_i64(cpu_gpr[rd], t0);
++        tcg_gen_hrev32_tl(t0, t0);
++        tcg_gen_ext32s_tl(cpu_gpr[rd], t0);
          break;
-     case OPC_DSHD:
-         tcg_gen_hswap_i64(cpu_gpr[rd], t0);
+     case OPC_SEB:
+         tcg_gen_ext8s_tl(cpu_gpr[rd], t0);
 -- 
 2.41.0
 
