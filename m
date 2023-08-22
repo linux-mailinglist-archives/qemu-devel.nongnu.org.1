@@ -2,51 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E9E784568
-	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 17:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 560FF7845B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 22 Aug 2023 17:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYTE7-0003zT-JN; Tue, 22 Aug 2023 11:23:27 -0400
+	id 1qYTRj-0000DB-EI; Tue, 22 Aug 2023 11:37:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qYTE4-0003yx-MR; Tue, 22 Aug 2023 11:23:24 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qYTE0-0003nV-Ak; Tue, 22 Aug 2023 11:23:24 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RVY0245VBz6J6xl;
- Tue, 22 Aug 2023 23:18:42 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 22 Aug
- 2023 16:23:04 +0100
-Date: Tue, 22 Aug 2023 16:23:03 +0100
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-CC: qemu-arm <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: CXL Namespaces of ACPI disappearing in Qemu demo
-Message-ID: <20230822162303.00007def@Huawei.com>
-In-Reply-To: <2023081118312729037834@phytium.com.cn>
-References: <2023061615433049315231@phytium.com.cn>
- <2023081118312729037834@phytium.com.cn>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qYTRh-0000CX-9Z
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:37:29 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qYTRd-0007hJ-Eq
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 11:37:28 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-68a3cae6d94so2448076b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 08:37:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692718643; x=1693323443;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=M534qQaEc9m5jA3K9/U30AvUN+6T2Qs53I2CCwZsWbk=;
+ b=rVURhJnt1xL48uxnRHIXVc5vvPMg6PbNYzWMmUwXltThuQjV1mo+v/wLzHDM9uFCjC
+ yOA23fQFjpDr0z9FdeDJwXdVDUHSCNXIraXl20TBIL/ebabZh39E2ZYGx/7HTH2Lcclq
+ VsgZBiuEFwU3NQhdc9cvZA+ezAt7K6IYWw9nxStlLU6Kr880mVAp3dnYfMtjWoRTQo34
+ MFsnJKmRCvFb+5XtAVlwCmMHSBG6nu0JbziEQ90Qq36MASwXSekr62WEjkv3WN84h+Cm
+ Y580L+kKJdgffzyQLBfbEPpdpSOP3Rz4Jmxc5+Rb1qA7+5dN9+1tTZC0jzaijLk25RE+
+ puhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692718643; x=1693323443;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=M534qQaEc9m5jA3K9/U30AvUN+6T2Qs53I2CCwZsWbk=;
+ b=PTmJEk9m7+bjI5EvPb/dN8IR3qBNbfhcyIX8dIajedmkWIGbozNs0socKbvPy5cSMy
+ nLhDFBKcCDHK6mX7BkyEFjeJPyeJMzOQfha5LZnPIeHCexYIiQwEYQYJ0NPI2mzuJAWC
+ QAhJamQIaBZyH3ocxImVW3A8ceZPMAg+/ci3kCDaEv2dEsQKRkwwiUKqiGnGqkEBJwrg
+ gNaFlMN+stODfAI5Gq8ZEwpzHKr27cEuZ4iZyi+jsi1PLXhEHG4sgsqfj0DDuUxmTjis
+ XydaetVKOSd9gCRSe2fM+rNyfTc4/wLgKyBQxQokWl2EICKSNMys8XPknVllTolxk5jA
+ wNJA==
+X-Gm-Message-State: AOJu0YxWvvEXOPfFPjwE9JSg5BDyfbk+mwOboiJOAyBK3S9JMjxynwB9
+ eoAUW/f4uZDQdY+QnBKM1j1NDA==
+X-Google-Smtp-Source: AGHT+IF5CxcgQw8RA2OVCMID+iIhfqfXHL1jFaK49zuTAkJ6VWFZ5l2wMVTr63L/Rya4OBdEoq+eQg==
+X-Received: by 2002:a05:6a00:150a:b0:68a:6d1a:b812 with SMTP id
+ q10-20020a056a00150a00b0068a6d1ab812mr2592100pfu.9.1692718643291; 
+ Tue, 22 Aug 2023 08:37:23 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:4e3c:f4a4:b92a:b5ab?
+ ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
+ by smtp.gmail.com with ESMTPSA id
+ y4-20020aa78544000000b006862b2a6b0dsm8153833pfn.15.2023.08.22.08.37.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Aug 2023 08:37:22 -0700 (PDT)
+Message-ID: <6b2a9e7c-0a79-4a05-fdbd-0a6d4e23d454@linaro.org>
+Date: Tue, 22 Aug 2023 08:37:21 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 00/12] tcg: Factor hrev{32,64}_{i32,i64,tl} out
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20230822124042.54739-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230822124042.54739-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,73 +92,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Aug 2023 18:31:28 +0800
-Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
-
-> Hi, 
-> On 2023-08-10 21:56,  jonathan.cameron wrote:
->  
-> So took a look at your issue - be it on the cxl-2023-08-07 branch rebased on qemu/master
-> from today (side effect of looking at the segfault that was stopping me getting to this).
->  
-> For me at least the branch does create an ACPI0017 DSDT entry and an ACPI0016 one
-> and all the CXL devices turn up in /sys/bus/cxl/devices as expected.
->  
+On 8/22/23 05:40, Philippe Mathieu-Daudé wrote:
+> This series factor the "byteswap each halfword within a
+> 32/64-bit value" code duplication as generic helpers.
 > 
-> Oh, thanks for your guidance. It works so now I can get  ACPI0017 & ACPI0016 information in DSDT.   : )
+> Modulo the documentation added, there is a good negative
+> diff-stat, so I believe this is a win from a maintainance
+> point of view.
 > 
-> By the way,  I found that if we add a pcie root port which create the same bus number as we assigned to pxb-cxl, 
-> the enumeration of cxl and pcie would be different from what we expected.  In this case,  we cannot find 
-> CXL devices in /sys/bus/cxl/devices. 
+> I used "hrev" to follow the other bswap/hswap/rev helpers
+> but it isn't very descriptive, so any better name suggestion
+> is welcomed.
+> (In particular because there are other patterns I'd like to
+> factor out and then naming is getting worse, such 'wrev').'
 
-So this seems to be a case of shooting ourselves in the foot, but not catching the nonsensical configuration
-(as you observer later! :)
-pxb-pcie complains if you try and add two at the same bus number, but that doesn't protect against overlapping
-ranges because they aren't known until after enumeration (which is done by the bios - and I guess the bios
-doesn't sanity check for this insanity).  Qemu could take another look when it builds the ACPI tables a
-second time though.
+I applaud the code factor, but the names are poor.
 
-Looking at edk2 logs I can see it is happily populating the root bus 1 on my arm64 setup and that it
-observes there are no subordinate buses available for the main PCIe bus (0) that QEMU is creating by
-default. The _CRS entries look correct but the kernel ignores them it seems. 
+The "h" does not match the size of the elements being swapped, which is "b".  The "32" 
+is... what, the total count of bits modified?
 
-It is very much not a valid configuration so there is no reason the kernel should cope with it.
+Naming is hard, and I'm not sure what's best.
 
-Maybe it's worth considering some hardening code?
+We have bswap32_i32, bswap32_i64, bswap64_i64.
+
+Perhaps bswap16x2_i32, bswap16x4_i64, bswap16xN_tl, to indicate that we're bswaping 16-bit 
+quantities, and "xN" to indicate that multiple 16-bit quantities are being swapped.
+
+ From your subjects, it would appear we don't need bswap16x2_i64, with the upper 32-bits 
+zero/signed/undefined.  But if we did, we should provide a flags argument of TCG_BSWAP_*.
+
+That then extends to hswap32x2_i64 to swap halfwords within multiple words for mips DSHW 
+et al.
 
 
-> 
-> According to my test, the error happened in 
-> "devm_cxl_register_pci_bus()"  of  "add_host_bridge_uport" in  "cxl_acpi_probe".
-> Actually,  in above case, the incorrect enumeration of pcie will also occur with pxb-pcie except for pxb-cxl, 
-> hence I guess the kernel did not deal with such case and users just need to avoid it if they need a correct
-> enumeration result.
-
-Agreed - Protecting against ever corner case of impossible configuration is tricky to
-do.
-
-> 
-> My qemu script (which will cause the incorrect enumeration):
-> qemu-system-x86_64 \
-> -M q35,nvdimm=on,cxl=on \
-> -m 4G,maxmem=8G,slots=8 \
-> -smp 1 \
-> -object memory-backend-file,id=cxl-mem1,share=on,mem-path=./memfile/cxltest3.raw,size=256M \
-> -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=./memfile/lsa3.raw,size=256M \
-> -device ioh3420,bus=pcie.0,id=root_port1,chassis=0,slot=1,addr=04 \
-> -device qemu-xhci,bus=root_port1 \
-> -device pxb-cxl,bus_nr=1,bus=pcie.0,id=cxl.1 \
-> -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-> -device cxl-type3,bus=root_port13,memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem0 \
-> -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G \
-> ......
-> 
-> Many thanks
-> Yuquan
-
+r~
 
