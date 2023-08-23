@@ -2,69 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAD1784DEB
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 02:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1226D784DD9
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 02:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYbws-0005VC-Sd; Tue, 22 Aug 2023 20:42:15 -0400
+	id 1qYbnF-00025v-Dt; Tue, 22 Aug 2023 20:32:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <matti.schulze@fau.de>)
- id 1qYU5H-0006SX-PP; Tue, 22 Aug 2023 12:18:24 -0400
-Received: from mx-rz-2.rrze.uni-erlangen.de ([131.188.11.21])
+ (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
+ id 1qYbnA-00025T-L9
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 20:32:12 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <matti.schulze@fau.de>)
- id 1qYU5E-0000mo-QQ; Tue, 22 Aug 2023 12:18:23 -0400
-Received: from mx-exchlnx-2.rrze.uni-erlangen.de
- (mx-exchlnx-2.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::38])
- by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTP id 4RVZJc6xbGzPkgY;
- Tue, 22 Aug 2023 18:18:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
- t=1692721088; bh=nHZncDhWFspyyeL0N/xG42/s4zc5JzxVERn3GfM9rko=;
- h=From:To:CC:Subject:Date:From:To:CC:Subject;
- b=Ukysc5rvmxMqkXZIzeNZUaidV3iW9QS204kMpvfv9G5tzy3UhqxlzRo6eMmmiIqnh
- Bi1QIgPEm2LWKAYCT31JBtSgQ/jY6cPIkCQ6PFrc464TQPNznWAQX5T0v5VvF+AyyA
- D+k2+YFFtfNoXZf1zIkFNV8HXZSZmSouuy7ST+owBw/qimoqJNm2sl+4rRhiBsOwPL
- b0funS/G4ZrEwbfj9YF190ccoQrVf5tSfW2cVQDuriBDJ9YWa/HuNIMYjz0vspoI6W
- afOxtPNnVjLqloEdJ8tB7TURW+eu4TJb8P3APR308LrIR8Xbu1Y2OZ3O/jJbtt07GP
- 1DgHz/535PV7g==
-X-Virus-Scanned: amavisd-new at boeck4.rrze.uni-erlangen.de (RRZE)
-X-RRZE-Flag: Not-Spam
-Received: from mbx5.exch.uni-erlangen.de (mbx5.exch.uni-erlangen.de
- [10.15.8.47])
- by mx-exchlnx-2.rrze.uni-erlangen.de (Postfix) with ESMTP id 4RVZJZ08RzzPjml; 
- Tue, 22 Aug 2023 18:18:06 +0200 (CEST)
-Received: from matti-21ah00hxge.pool.uni-erlangen.de (10.20.39.215) by
- mbx5.exch.uni-erlangen.de (10.15.8.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.23; Tue, 22 Aug 2023 18:18:05 +0200
-From: Matti Schulze <matti.schulze@fau.de>
-To: <qemu-devel@nongnu.org>
-CC: <peter.maydell@linaro.org>, <qemu-arm@nongnu.org>, Matti Schulze
- <matti.schulze@fau.de>
-Subject: [PATCH] target/arm: Fix bug in memory translation for executable
- Realm memory pages
-Date: Tue, 22 Aug 2023 18:17:55 +0200
-Message-ID: <20230822161755.1225779-1-matti.schulze@fau.de>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
+ id 1qYbn6-0001Cr-KA
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 20:32:11 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37MMEAsr022762; Wed, 23 Aug 2023 00:31:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=A1aQ0BUtb9CNWUi3FzDhWhKY/pCD2GDHvuy8XeElZd8=;
+ b=qgwTFih+EKRmQRuRNAC00Oxc25aHq752QhGG5fvEKk8NV0M9aelqo6Ogvl+KCW9BfZ+D
+ Cf9OtSJiCXO/2Ebt7v7mwRrVdt3XfVwaZYjfAgrzsD5CRkbOVu0C3Mm0VWxhRjJ4X6KC
+ RqY2zq24vx0+i+tm2UVVmBeoL0FC0yQdfoqYPJWBo4IP+oaheZWBVVAO0o6Os6BESap5
+ ul4HmJR2vQmkHWeoK2gMlsncSyYdML3giuTt0UjOxEZ1Rf+Gk2LNHqvNdsxaels5870r
+ QH2W91s0ZjahsqSZpyWiRsdf6BN1abIbPpFYuWQh+BsimC7YY2rWwLFUtIny0BPdM+TA Gg== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sn20cgp27-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 23 Aug 2023 00:31:51 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 37N0Lqar035899; Wed, 23 Aug 2023 00:31:50 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2103.outbound.protection.outlook.com [104.47.58.103])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3sn1ymcbtu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 23 Aug 2023 00:31:50 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Yy8nCv63GpTNfm1FnQ/kgCwnVFMn6+Ok03gFAb3AI0TTPBlhRHiDuCwIvV/x8SvY6gZQNRa3hMMxoxqzxj4kbNB/BgXRJyanr8LHLYEW691FneisL1t/9GLKmMtgqQ+3Kpz0lQahvHlnbhV/RUUgb5LC+RQPH5udH/wMx8DUUQNyZDBwE7SQ5nD7yxEuzRSr+PpNhfT8+TQYzjfs/73gb35+4eJLeFsjVt1T++JKu9iVaLUZ4X+UusW/Rlg6PTt8ZVbb+PCn1L8XwB7tAEz1egBoVmjBoQOtqQBbAAIcQyKoliDZcT6f2sNT8s0Ss+UOLIgaHZLYahp5LU2T5btNzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A1aQ0BUtb9CNWUi3FzDhWhKY/pCD2GDHvuy8XeElZd8=;
+ b=nWjruGaSpdOruL/qKw0+0Kkl7IUw4jIzzX7fNDQwk6vWEiWsQxjXDGG3S+m+BwOmgAs1cIU4Tp3uKhI7ZBtqLw3yRn2vZ2G6Yfw9zV8fOSUVdAdZNJvNlNAlrev3KNA1c0/BJq3EiMZSss2afuFVBcyOJ5SGEq23Lvj/QEBMqVrfB6+Qtdo1MJgdDoIYbJsZZQZaMhW9a7+56ToJ2d2SRwr3cNFSkVU4IFrr0b92IImoxrcq+/VSEL99IBslj+5zfOdzYfI59KZKNEa38cgnS0H0peUYMxhqI1cswXo5gKJc/iwXO7I8mN7UZePhqrvJOZgc0noDAQxFxFqQdUrgjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A1aQ0BUtb9CNWUi3FzDhWhKY/pCD2GDHvuy8XeElZd8=;
+ b=ODCd6XXUP3V497litnrATfuVYh3nGS0Kye5D/yUyNlZdjR+qyn7bWbsD/3sjVs51+rYVGMC1taadbcACpRqZMAL4LR/TW3jVEqdA2NbWYjqVNJagg4bpfeQgstTBd/jUbsLkcmGcc3Y0Sz0WHo7K3ZKtdVmfHdx4b09Xp10D5ZA=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by CO1PR10MB4580.namprd10.prod.outlook.com (2603:10b6:303:98::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.25; Wed, 23 Aug
+ 2023 00:31:48 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::35e3:7e4c:72b2:cf74]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::35e3:7e4c:72b2:cf74%7]) with mapi id 15.20.6699.025; Wed, 23 Aug 2023
+ 00:31:48 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
+ joao.m.martins@oracle.com, Richard Henderson
+ <richard.henderson@linaro.org>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
+ format when necessary
+In-Reply-To: <87edl4d9wi.fsf@oracle.com>
+References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
+ <20230717163855.7383-3-stephen.s.brennan@oracle.com>
+ <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
+ <87edl4d9wi.fsf@oracle.com>
+Date: Tue, 22 Aug 2023 17:31:46 -0700
+Message-ID: <87fs4aha4t.fsf@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR03CA0299.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::34) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.20.39.215]
-X-ClientProxiedBy: mbx3.exch.uni-erlangen.de (10.15.8.45) To
- mbx5.exch.uni-erlangen.de (10.15.8.47)
-Received-SPF: pass client-ip=131.188.11.21; envelope-from=matti.schulze@fau.de;
- helo=mx-rz-2.rrze.uni-erlangen.de
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|CO1PR10MB4580:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0890025e-29b7-411b-3da5-08dba3705613
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: X8pVoe/pW60x2jO3fE4VdBQQtFxdD+wzF7kjQemR1jTBMMHxpzXT7OweMp5CSUzgMShcmYXVqWqJc4E05DXNQ2dbfbuFKcO44HhRNpdggcdCZhXjFrUQqEjBoE95S8M0f9Nm+dsd9fzfNV8LiK1JwJjfGN6VdZ6gjfGY7HdlVP2pS08BO3h7akp6EyMOFPVK70WI51H5Hcw9C1wxcvsSgNTmX/weELTDWP1soRhBI2yhQ19P7HVtwS/twNBwNo0M3vXolD5Me8RuDkPw0xXvCyt0pUDML8fsK1ytL/EHvFrSx08N8Y9/bYjdnHXgCsGv4Yxc5R5rGSXkQqJMX0WvQLTUy4fhvioba3peviqzTM83KV4WX0MsWE/vmwIAjVukZUJz6g++MEEfgQnZM3mmW3Mz8Kki0wUG7bDYvz2gpMzDKqOEOwR+DiOOy5uMm/YhI1bITMTsc8r9PveFg9eqVqSbn/vjM/kUvUk2LoupZH5F0kK0bgdZYaD/Bn3VEnxfQoCIrfVgD2+h/wPtZGBGfl/sKm2QUT9/pVn+Gm0v31wep7Hln1Z0XwWXj6Hnil5h
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(396003)(39860400002)(346002)(376002)(136003)(451199024)(1800799009)(186009)(83380400001)(478600001)(6506007)(6486002)(2616005)(6512007)(66899024)(4326008)(5660300002)(2906002)(66556008)(54906003)(38100700002)(41300700001)(66476007)(316002)(6916009)(66946007)(8936002)(36756003)(8676002)(86362001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VzkycmlsTDRUaGRBYm4xZ1NOaW9CWXdYaitJU25jRkUwRTVKRFN0b0F4bTJF?=
+ =?utf-8?B?SnV6SnRKRTR1U2RPamYzcDhnOE5zZE5TbkRFOHlZUXFLem5saU82SGEvTWNR?=
+ =?utf-8?B?dkhLNm1FWDlWWkhYNEFSUTVqb2ZhcVdjdkk4ZVBhcHIzRnJTYWpNckFOTjFW?=
+ =?utf-8?B?M0IwOG54ZWxTSkpXNG5lY1ZrUW5rNDNvRkZERzc0YndicCtzakFGbmtDcDNh?=
+ =?utf-8?B?VUp2UksrNTFETmdnMlB1NUg1ZlNtQnlOdXFEY2lVdkRwdW1BLzIveEMwOWcz?=
+ =?utf-8?B?M1E4UnZvd2U0cmxIZXBKWlJPc0dma1poN29OSGc4bWFodU9scU5QNFM5N28x?=
+ =?utf-8?B?MUtDRTNrYUliQ0NYelVaZ0dRNTl5MXFNbVdFM0NwTitYck5ObC9paGR3dXhI?=
+ =?utf-8?B?K292ZWZTUSs2Mk1DaXI1dlYzTGh5UFpXaHM2OWsxVkVzU2I1SGh6V1g4eWJz?=
+ =?utf-8?B?MHI0RW5QQmNIakNPVGlWaDFLZ1FOY0c5Ly94VEtpNzhvbm84bEZoR2JleEk5?=
+ =?utf-8?B?RDhvajg4M0FReUtpenc2emNjZHhlSmZQdndTQndWRlJxV21kYzBHK2wrcENM?=
+ =?utf-8?B?ejdocWh0a0V0VHZwb3hMeEJ4a3hzUkYvczEvdkNyU3BKakZwa0RZTTZGUUxp?=
+ =?utf-8?B?eUlPVnV1NVJLcVYyYmxEaWcvT2lhUWc3d1VoekJ6N0xxcEFYQjF6Q1JHSGUy?=
+ =?utf-8?B?c0RGRTQyZ2htSFJReGU1UDlpUStKVWhlQzdMWGFoS09iTENsdytualFjNzV1?=
+ =?utf-8?B?THdMREJjZkJIWnIySlFOQkZmb1FJYWxxWS8vci9IMU5qQ1VWeWFURko4RGpC?=
+ =?utf-8?B?SXJtVUgzQUVMcHNRQlhoNlB1VFBtdXUyb3hHZ1dJZHRHVFZxeGRIL3hwcUNz?=
+ =?utf-8?B?TGx5cE1xcG5SV1JZRVVCVzNDQkJPd0oyMXpkaEtXWXBTYUo3d2wwTHBIeWh2?=
+ =?utf-8?B?S3FmV1JwRHZ3NkdMalBhMHg0UzdFaFhiKzVOR2lBaTJTNDNjWEFXeVo0S2Nk?=
+ =?utf-8?B?K0RlVXhrSGREWGVXeWViN0lkRUpubkNEOWo4dnF4M1FPMDBHemZ4b3A3dFNl?=
+ =?utf-8?B?alYxZVNES3ZtaGgzZFZyVGJYREsrc1VlT28zNWsxdzVKYXJsVGF6TDViaG01?=
+ =?utf-8?B?eEZpUUZLOTdOYmhqVDcrbVBQSkZlZ0NPZngwbFBVdVlteFJCTXBXYWR0VVhq?=
+ =?utf-8?B?MDlsME96ME14QWt2TjcrcGVuYUx2QytaT1daUDBEYmVrUUFkeTB2UnJTM3Ry?=
+ =?utf-8?B?YlZTNTN1NW9EK1R1ejRzWkRPcG4yU1RRd1l1L0tGN1RQUzVyd0tsZEhKa2tp?=
+ =?utf-8?B?a1l3WDZNSWRtSnpqMXV6NGFIdGJNTEhBQVJkQ01XSVd4SW4wbXd4aUR5UUhh?=
+ =?utf-8?B?L29QRlRhQ1M3MDc1bU5pR1c2Z2s1RU9SYUdRWG55Y3RZLzk5QVVLaEVkZlVl?=
+ =?utf-8?B?eExOd3Nnd0NFUm9DQzRsQk43eS9MMUZKNVhZamdYY3VXN2l5K29FVUJld2k2?=
+ =?utf-8?B?WnZZSUhvZDA0K09xeGtya1FLb2l5aDN1UTNNOVQzaE0yMFFhWFBoSzFCc0pQ?=
+ =?utf-8?B?dXc0VDdnTjI2SnpjRTR2M2l0SVZDK0JyMis0a3dENHhjOE4xMnk4SGJ2Rzk5?=
+ =?utf-8?B?aldabnNlaDVwelNKM2JpMUVsNytwLzQwVEFuYlJDd2dDWlVVcjRBd0lLRC9E?=
+ =?utf-8?B?WGtjdWppc0Y3QWF6bTJQaFVyL3FhNkhLOHkwc1lNVlF2MENVYkhYOEJzd09I?=
+ =?utf-8?B?L3hPZ3JMbUF2Z01nWWduQlJHVVFsVDU2aGgwSzFBaWFKOC9kbU9TckkyMjlP?=
+ =?utf-8?B?cUErY3RubnhtOGlpSlpOWk90b2dkbW11QUJXZVZjWWlWWkZoMU5FQVl5ZFNu?=
+ =?utf-8?B?T0JEcUdOa1ZzN0UrbTJ6d2w1MDVobnUzTEUvcnFNUFZPZUdxQ2hxWjNVeFlM?=
+ =?utf-8?B?SWZoQXJuSng1RXlVb2tOMEVBZ0l0R0gyM25JeDduWGlrckpqZ2lsSUE5NlJx?=
+ =?utf-8?B?ZUxSTWxWVzV1NmR0OU1ZayszNlozSmdaeCs0dGg3V1IxQlFRY1FxOUNnbDNP?=
+ =?utf-8?B?NmNxRmhyZnZLNlZlUUhWbmNZVThUWUZXcWRPaTNBU25wMUJtcE5qekRyOG4v?=
+ =?utf-8?B?aFIxV0RoS2t0RjYwZzBtQVZ4U3VOTmUwbTZacWtlSE94NjBDY21PNURuWlBL?=
+ =?utf-8?Q?7IZnGjFKK/6nNbXUs1virfSyNtpnoiuQE6EyX7XYEJkf?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: uV5qWlSdIMQS4noLwujM363SPRrBvYlf8H5cLXonCV9PrgQw663wfvR4YS5PhBQJYTqXe4UxpVXXYh4pzKVjY94f5hfJrs59fQaWuuRS96oS9Fbnltc5CKv5nIgCQR+D330B67GIiH2FP6jNAyES12AtjkmjhPI1ISlMexNR2lrKHE6JiQ2VPTAH0RQqVkrHmz4wbYs1Xn7+JxkNvshQerVl8cYKzrY7Q1sqxu4aMRokcRHlAgmP1OGglnrA93tGylmrhM3mWYvzAFsUaWJu45fiAhN9MTPLTViryPFxA8i7LR9OyjKa1pUvItHyXd5TUIlbn84wDm/zmat5FPLsqcMEVW5tIc8AufmNe/8kZWN0dj0xBUuxxKlnoE28EhLCYlGYXxBC+G9urYnMoBKBbVRA/foMtJpK65bmQG9umZL6mxR4jLmcroRGchI4jo6hZcHyH6crreE2sZd34rY6jQnHx2mRlm+zgLX1IRiB/TZ6I1VB2ADN8C+cHTz/Gvw+FXmraa97b90ZgBQOKWkt9uqhzSzDSyxxcDRsGM5PDjl5MDRHJ+rqcXtlwKxDzWbaJeEckLQtH2hZGAE5J9LAdE4S+LI3R324CoQt2REWw/A2L9oARgyRcEeOAUVgFEWvg7q60RHOkM2Y1EpKk1kdbRy5tAwoSI0mlHrV4SQ8I2Vi+qMD8+I2ODqqEgbSgv7U/fCazAVAT+V6MnR5Hztta8+NVldBQPdgc2iqZMj8E12Y785blZMLSpy4wpDiVXsmbeYvC3HKs9ufDb3yRKZzFUuGDPiK0SHJLoG2JJ38lbVB20chEG+cNXZbaRit7WgnHAipKfS+QYCHVi/lyGfs1Xav8uwwC8HvlnlDNP2sggjeFWGvdjPkzLzrln0XbcGF
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0890025e-29b7-411b-3da5-08dba3705613
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 00:31:48.0737 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PtJOTp3mTJ7C6p3tvaGCx79FzlnrXKiR1I15Agcxe8QC5iCw9SxcDZDu3ImnCs0cxeUTLA1L7oYwTMNnyWx1+Qey2xzChAZXQxo21ZUyzOA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4580
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-22_22,2023-08-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0
+ adultscore=0 suspectscore=0 mlxscore=0 spamscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308230003
+X-Proofpoint-ORIG-GUID: 4MVZtUECQiADyEuONMU3ha9FEnLdS3Q9
+X-Proofpoint-GUID: 4MVZtUECQiADyEuONMU3ha9FEnLdS3Q9
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=stephen.s.brennan@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 22 Aug 2023 20:42:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,130 +185,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch fixes a bug in the memory translation for target/arm.
-If in realm space, e.g., R-EL2 executing code from an executable 
-memory page currently results in a level 3 permission fault. 
-As we cannot access secure memory from an insecure space, 
-QEMU checks on each memory translation if the in_space is secure va 
-!ptw->in_secure. 
-If this is the case we always set the NS bit in the memory attributes
-to prevent ever reading secure memory from an insecure space.
-This collides with FEAT_RME, since if the system is in realm space,
-!ptw->in_secure also applies, and thus QEMU sets the NS bit, 
-meaning that the memory will be translated into insecure space.
-Fetching the instruction from this memory space leads to a fault, 
-as you cannot execute NS instructions from a realm context.
-To fix this we introduce the ptw->in_realm variable mirroring the
-behavior for in_secure and only set the NS bit if both do not apply.
+Stephen Brennan <stephen.s.brennan@oracle.com> writes:
+> Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
+>> I am a bit reluctant to change the dump format by default. But since the
+>> flatten format is more "complicated" than the "normal" format, perhaps w=
+e
+>> can assume all users will handle it.
+>>
+>> The change is probably late for 8.1 though..
+>
+> Thank you for your review and testing!
+>
+> I totally understand the concern about making the change by default. I
+> do believe that nobody should notice too much because the normal format
+> should be easier to work with, and more broadly compatible. I don't know
+> of any tool which deals with the flattened format that can't handle the
+> normal format, except for "makedumpfile -R" itself.
+>
+> If it's a blocker, I can go ahead and add a new flag to the command to
+> enable the behavior. However there are a few good justifications not to
+> add a new flag. I think it's going to be difficult to explain the
+> difference between the two formats in documentation, as the
+> implementation of the formats is a bit "into the weeds". The libvirt API
+> also specifies each format separately (kdump-zlib, kdump-lzo,
+> kdump-snappy) and so adding several new options there would be
+> unfortunate for end-users as well.
+>
+> At the end of the day, it's your judgment call, and I'll implement it
+> how you prefer.
 
-Signed-off-by: Matti Schulze <matti.schulze@fau.de>
----
- target/arm/cpu.h |  6 ++++++
- target/arm/ptw.c | 17 +++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+I just wanted to check back on this to clarify the next step. Are you
+satisfied with this and waiting to apply it until the right time? Or
+would you prefer me to send a new version making this opt-in?
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 88e5accda6..ff7f8f511d 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -2436,6 +2436,12 @@ static inline bool arm_space_is_secure(ARMSecuritySpace space)
-     return space == ARMSS_Secure || space == ARMSS_Root;
- }
- 
-+/* Return true if @space is Realm space */
-+static inline bool arm_space_is_realm(ARMSecuritySpace space)
-+{
-+    return space == ARMSS_Realm;
-+}
-+
- /* Return the ARMSecuritySpace for @secure, assuming !RME or EL[0-2]. */
- static inline ARMSecuritySpace arm_secure_to_space(bool secure)
- {
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 8f94100c61..db1b5a7fbd 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -58,6 +58,13 @@ typedef struct S1Translate {
-      * this field is updated accordingly.
-      */
-     bool in_secure;
-+    /*
-+     * in_realm: whether the translation regime is Realm
-+     * This is always requal to arm_space_in_realm(in_space).
-+     * If a Realm ptw is "downgraded" to a NonSecure by an NSTable bit
-+     * this field is updated accordingly.
-+     */
-+    bool in_realm;
-     /*
-      * in_debug: is this a QEMU debug access (gdbstub, etc)? Debug
-      * accesses will not update the guest page table access flags
-@@ -535,6 +542,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
-             .in_mmu_idx = s2_mmu_idx,
-             .in_ptw_idx = ptw_idx_for_stage_2(env, s2_mmu_idx),
-             .in_secure = arm_space_is_secure(s2_space),
-+            .in_realm = arm_space_is_realm(s2_space),
-             .in_space = s2_space,
-             .in_debug = true,
-         };
-@@ -724,7 +732,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-             fi->s2addr = ptw->out_virt;
-             fi->stage2 = true;
-             fi->s1ptw = true;
--            fi->s1ns = !ptw->in_secure;
-+            fi->s1ns = !ptw->in_secure && !ptw->in_realm;
-             return 0;
-         }
- 
-@@ -1767,6 +1775,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         QEMU_BUILD_BUG_ON(ARMMMUIdx_Stage2_S + 1 != ARMMMUIdx_Stage2);
-         ptw->in_ptw_idx += 1;
-         ptw->in_secure = false;
-+        ptw->in_realm = false;
-         ptw->in_space = ARMSS_NonSecure;
-     }
- 
-@@ -1872,7 +1881,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-      */
-     attrs = new_descriptor & (MAKE_64BIT_MASK(2, 10) | MAKE_64BIT_MASK(50, 14));
-     if (!regime_is_stage2(mmu_idx)) {
--        attrs |= !ptw->in_secure << 5; /* NS */
-+        attrs |= (!ptw->in_secure && !ptw->in_realm) << 5; /* NS */
-         if (!param.hpd) {
-             attrs |= extract64(tableattrs, 0, 2) << 53;     /* XN, PXN */
-             /*
-@@ -3139,6 +3148,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     ptw->in_mmu_idx = ipa_secure ? ARMMMUIdx_Stage2_S : ARMMMUIdx_Stage2;
-     ptw->in_secure = ipa_secure;
-     ptw->in_space = ipa_space;
-+    ptw->in_realm = arm_space_is_realm(ipa_space);
-     ptw->in_ptw_idx = ptw_idx_for_stage_2(env, ptw->in_mmu_idx);
- 
-     /*
-@@ -3371,6 +3381,7 @@ bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
-     S1Translate ptw = {
-         .in_mmu_idx = mmu_idx,
-         .in_secure = is_secure,
-+        .in_realm = false,
-         .in_space = arm_secure_to_space(is_secure),
-     };
-     return get_phys_addr_gpc(env, &ptw, address, access_type, result, fi);
-@@ -3443,6 +3454,7 @@ bool get_phys_addr(CPUARMState *env, target_ulong address,
- 
-     ptw.in_space = ss;
-     ptw.in_secure = arm_space_is_secure(ss);
-+    ptw.in_realm = arm_space_is_realm(ss);
-     return get_phys_addr_gpc(env, &ptw, address, access_type, result, fi);
- }
- 
-@@ -3457,6 +3469,7 @@ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr,
-         .in_mmu_idx = mmu_idx,
-         .in_space = ss,
-         .in_secure = arm_space_is_secure(ss),
-+        .in_realm = arm_space_is_realm(ss),
-         .in_debug = true,
-     };
-     GetPhysAddrResult res = {};
--- 
-2.41.0
-
+Thanks,
+Stephen
 
