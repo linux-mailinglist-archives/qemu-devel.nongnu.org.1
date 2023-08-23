@@ -2,50 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74008785731
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD25785711
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:47:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYmJN-0001Wh-II; Wed, 23 Aug 2023 07:46:10 -0400
+	id 1qYmJT-0001XY-LB; Wed, 23 Aug 2023 07:46:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJJ-0001UM-VM
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJJ-0001UW-Vl
  for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJF-0001RL-IR
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJF-0001S7-IC
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692791157;
+ s=mimecast20190719; t=1692791159;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JztBJHrVZPoEyd5VVRxoKMhYvt0vf53/BnHzwP12uxE=;
- b=PVOJ4XA73Jzo5Gcpo7V5KZ5fUoQxLFHm5B0TyuUvKaOZGC/A1MPdhqAxNEtKkUl7y5YUcn
- zqsCzoHEKIHcBN/0Aob5lXVT68dlXqZaaTP3KRxHhsZqzQreHvTIT/SlUey8IQi7GFgXoX
- BPn9AcekfDdT91mqL2GnppGa2OuZcRA=
+ bh=Wnhh4a3kG3JL9XAwRzomI8TrtI7tvty0j3sbL7SKKWo=;
+ b=DnchnfF/7P6P/NNSBo9LA99KJFvVjeYdNEZRythGB7zQDD+mROkDZWuTl7gS7KzRdB6p8W
+ BsyDkxxthoDrYWbLjIaXLCbaTfG+CI9QUn1GDKbaDNMDNCb6MJJHVJc/wmN7vHGX90I3Cl
+ 0creS6Hhq5AJLoqi7o7HmNsS1GhE/pc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-401-DsGcyLNFP1mruuuEMkQ7Ww-1; Wed, 23 Aug 2023 07:45:54 -0400
-X-MC-Unique: DsGcyLNFP1mruuuEMkQ7Ww-1
+ us-mta-1--9Dk0TaJM2SJdM3z023C6Q-1; Wed, 23 Aug 2023 07:45:56 -0400
+X-MC-Unique: -9Dk0TaJM2SJdM3z023C6Q-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E4E6185A7A5;
- Wed, 23 Aug 2023 11:45:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E66D68D40A4;
+ Wed, 23 Aug 2023 11:45:55 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7F75EC15BAE;
- Wed, 23 Aug 2023 11:45:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A2861C15BB8;
+ Wed, 23 Aug 2023 11:45:54 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 05/12] tests/tcg/s390x: Test VSTL
-Date: Wed, 23 Aug 2023 13:45:37 +0200
-Message-Id: <20230823114544.216520-6-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 06/12] target/s390x: Use a 16-bit immediate in VREP
+Date: Wed, 23 Aug 2023 13:45:38 +0200
+Message-Id: <20230823114544.216520-7-thuth@redhat.com>
 In-Reply-To: <20230823114544.216520-1-thuth@redhat.com>
 References: <20230823114544.216520-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -77,72 +79,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Add a small test to prevent regressions.
+Unlike most other instructions that contain an immediate element index,
+VREP's one is 16-bit, and not 4-bit. The code uses only 8 bits, so
+using, e.g., 0x101 does not lead to a specification exception.
 
+Fix by checking all 16 bits.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 28d08731b1d8 ("s390x/tcg: Implement VECTOR REPLICATE")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230804235624.263260-2-iii@linux.ibm.com>
+Message-Id: <20230807163459.849766-1-iii@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/tcg/s390x/vstl.c          | 37 +++++++++++++++++++++++++++++++++
- tests/tcg/s390x/Makefile.target |  1 +
- 2 files changed, 38 insertions(+)
- create mode 100644 tests/tcg/s390x/vstl.c
+ target/s390x/tcg/translate_vx.c.inc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/tcg/s390x/vstl.c b/tests/tcg/s390x/vstl.c
-new file mode 100644
-index 0000000000..bece952c7e
---- /dev/null
-+++ b/tests/tcg/s390x/vstl.c
-@@ -0,0 +1,37 @@
-+/*
-+ * Test the VSTL instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include "vx.h"
-+
-+static inline void vstl(S390Vector *v1, void *db2, size_t r3)
-+{
-+    asm("vstl %[v1],%[r3],%[db2]"
-+        : [db2] "=Q" (*(char *)db2)
-+        : [v1] "v" (v1->v), [r3] "r" (r3)
-+        : "memory");
-+}
-+
-+int main(void)
-+{
-+    uint64_t buf[3] = {0x1122334455667788ULL, 0x99aabbccddeeffULL,
-+                       0x5a5a5a5a5a5a5a5aULL};
-+    S390Vector v = {.d[0] = 0x1234567887654321ULL,
-+                    .d[1] = 0x9abcdef00fedcba9ULL};
-+
-+    vstl(&v, buf, 0);
-+    assert(buf[0] == 0x1222334455667788ULL);
-+
-+    vstl(&v, buf, 1);
-+    assert(buf[0] == 0x1234334455667788ULL);
-+
-+    vstl(&v, buf, -1);
-+    assert(buf[0] == 0x1234567887654321ULL);
-+    assert(buf[1] == 0x9abcdef00fedcba9ULL);
-+    assert(buf[2] == 0x5a5a5a5a5a5a5a5aULL);
-+
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 1fc9809907..e280c8c280 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -59,6 +59,7 @@ Z13_TESTS=vistr
- Z13_TESTS+=lcbb
- Z13_TESTS+=locfhr
- Z13_TESTS+=vcksm
-+Z13_TESTS+=vstl
- $(Z13_TESTS): CFLAGS+=-march=z13 -O2
- TESTS+=$(Z13_TESTS)
+diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
+index b5d07d5ec5..ec94d39df0 100644
+--- a/target/s390x/tcg/translate_vx.c.inc
++++ b/target/s390x/tcg/translate_vx.c.inc
+@@ -57,7 +57,7 @@
+ #define FPF_LONG        3
+ #define FPF_EXT         4
  
+-static inline bool valid_vec_element(uint8_t enr, MemOp es)
++static inline bool valid_vec_element(uint16_t enr, MemOp es)
+ {
+     return !(enr & ~(NUM_VEC_ELEMENTS(es) - 1));
+ }
+@@ -964,7 +964,7 @@ static DisasJumpType op_vpdi(DisasContext *s, DisasOps *o)
+ 
+ static DisasJumpType op_vrep(DisasContext *s, DisasOps *o)
+ {
+-    const uint8_t enr = get_field(s, i2);
++    const uint16_t enr = get_field(s, i2);
+     const uint8_t es = get_field(s, m4);
+ 
+     if (es > ES_64 || !valid_vec_element(enr, es)) {
 -- 
 2.39.3
 
