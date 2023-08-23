@@ -2,150 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F35D785E80
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141FA785E89
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:28:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYra7-0001sM-O2; Wed, 23 Aug 2023 13:23:47 -0400
+	id 1qYre6-0002ps-Ss; Wed, 23 Aug 2023 13:27:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1qYra6-0001rv-06
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:23:46 -0400
-Received: from mail-co1nam11on2049.outbound.protection.outlook.com
- ([40.107.220.49] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1qYra2-0004ar-Ii
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:23:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=izC75KxaMOXX0dR0L3NzzKvxUy07wkco6ZZH/dhQRdBDsFSSe8oS9hFXL2Ov8+Khzwo7ouijz0LWNVhvqXc6ZMlEx7tx1dvu+rZ+lHu5SaYmPlvoEVsuoBZfAEzb8KptqTaxTwxc3MrFnql1+4v3VJZG2jJ2u4+FgrZNmrXjVv/seWCSopcFk5PeXS3MXbGrZSTe7F94F5OtnE4I7KdBZbgJHHUArVSPWKd/aTt2MmtXKYJ1QqmS0a5jxFOQqiXlsptBMTUTyHh6L+Hj5MPsx6uWartyVX9Ms8Vr6YRuk7ueudmQOjg6oNgTOK/+Yej8JJsIj5uGwLZAPAX8TGm2hA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EKjGRInXQCvwoVxEbz/uFf3T2GQP3Dy+ZYzfmlBwO1w=;
- b=Bq+JaTruWAni/TClVQDIfRx8OqRx/M4Gu3wd9eLuJM42PhIQOfH7RmA27CFmEmt0+w/fTnC7h/7SANysfZrXrCjBOho/2qiSdmErppsP5yjgVmQWXKfqF5+4tb/Hiw5PcCQ8+jfjudDItV6cVwsPUiZyPZZcyo8ieFzf3jFTISSNWzSGrZA2/aLsx5OtfPBYWyq9UA4CNCLcQ5WpxrvZNuImuRMRsqUPUd3sMYXACLJXp1XQz8iXedREJaApKi0RCakFTlVUvx75FKYsrEHJbgds4vjwHyfTsf8vpOsrEx24iA+vbCYgj6MUSP/uakRyC1ldiwzpMJrth+mu4jJDbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EKjGRInXQCvwoVxEbz/uFf3T2GQP3Dy+ZYzfmlBwO1w=;
- b=Es57pr6XU5o2nmXn5u9sg89lXsWwATzF8+FMT4W/9YYRkqUkml9Atp///Dw35NTPYwad6BozykgxmlRNsR3lsWeMF0aPuSD1QI92n6TPe8TP9ijy2m0JviXvj/i3hJUAT3AjnXm6x+SNxDQCRkhkjyzbrOTYKoEpovLTPrv45Y4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
- by BY5PR12MB4936.namprd12.prod.outlook.com (2603:10b6:a03:1d4::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.26; Wed, 23 Aug
- 2023 17:18:33 +0000
-Received: from MW3PR12MB4553.namprd12.prod.outlook.com
- ([fe80::fbfe:ec9c:b106:437e]) by MW3PR12MB4553.namprd12.prod.outlook.com
- ([fe80::fbfe:ec9c:b106:437e%5]) with mapi id 15.20.6699.026; Wed, 23 Aug 2023
- 17:18:33 +0000
-Message-ID: <1eb2e3e7-87e0-9d8f-0eb1-da5888c2f6cc@amd.com>
-Date: Wed, 23 Aug 2023 12:18:30 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
- CPUID[4]
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Wei Wang <wei.w.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-15-zhao1.liu@linux.intel.com>
- <19ba8210-3e11-a36f-3b26-52cbe40042b1@amd.com>
- <3f7510f2-20f3-93df-72b3-01cfa687f554@amd.com>
- <ZMzJaElw/T5caQU+@liuzhao-OptiPlex-7080>
- <5947274f-e29d-cb76-3325-5dc75f205eeb@amd.com>
- <ZNnkR+G6PvE2q77E@liuzhao-OptiPlex-7080>
- <4615221c-407c-1542-56c8-a9557a5800b2@amd.com>
- <ZN8fw0CU+j/dOvBy@liuzhao-OptiPlex-7080>
-From: "Moger, Babu" <babu.moger@amd.com>
-In-Reply-To: <ZN8fw0CU+j/dOvBy@liuzhao-OptiPlex-7080>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DS7PR07CA0012.namprd07.prod.outlook.com
- (2603:10b6:5:3af::20) To MW3PR12MB4553.namprd12.prod.outlook.com
- (2603:10b6:303:2c::19)
+ (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qYre5-0002pk-JZ
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:27:53 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qYrdz-0005KE-Du
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:27:50 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-31771bb4869so5249458f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 10:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20221208; t=1692811664; x=1693416464;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3HVZlighhbdAt2+k8psWTUoYclNfefaHHKE7NVuFHH4=;
+ b=G34nAXt596bUHnMUCFPojkuT6kQreAGLvS8Bl5oX5j1BKdPn69+jNDoWFEhsxjLXyc
+ jY5adaCK5JFQUqjjXdNJRkwCySeCNfK6EthfSyth1ACylkTZxr2FWmZ60hs9flsBbHLG
+ j7mp+bMroLsolfhKvTkm2+7Xue2O+6ICi6WOeKsmj/SZq/70lLj/RMjgv8kPFG5Ss2/Y
+ dTdjAfthBPXm22HZkAHe6EJQL7iBoJ/LcV2aBgYWGO/RQKTWjFrcdM5xYje/60fIFpRM
+ br8AB7gUvm8kWCccW7znkjrdw6KKPC5jn1SRtL3i4z6qsPG0DZLO7JfP36W6JPZdFt4U
+ lzhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692811664; x=1693416464;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3HVZlighhbdAt2+k8psWTUoYclNfefaHHKE7NVuFHH4=;
+ b=Kxs/+YodgPEhVeaXg3ST8+nJ+n72nf00hCugBeGMVErHy9fbQTA4Y8iBRbnMryvKHb
+ 8oEj/3leAFlYG741hEnpz67nKdii+ztiPHcQ94TSQaSFssd+Hg79V0zncgvx9OT72usw
+ BNqNioJBp1RexZGCk6edKiHMAupVuBjpFto+vupNlgN4BrUlfY3xfLP6VkIaUmJOLtBt
+ 77ILcc+R90JPvWwejqOd2s/VEgSnHAtrrGFZET63QiTrOuEcmP7xL9TV5TpgdaNDc4+f
+ C+5N+noTIt166cv2O47XaXsxpAliQwP2djTsiDXIwUcsaRIfGtogf2oitH9w6+W3chCb
+ dQ8A==
+X-Gm-Message-State: AOJu0YwQd0tiwwBrFvFfmZTUYn10+ZL2WQSum2uM9TDA/chsjWBY062G
+ +DJgeYaNr32+jlGCnBH8j0dJGBVrk6afOYXO7jFLdQ==
+X-Google-Smtp-Source: AGHT+IEe6MieqIk/+Ll4jcvdDxK1gKaAvcT5jl/GZ6K0XWCHDupF8P1erpKjmhAbBpM9rbOqioDAP1K92OJUIbcHihw=
+X-Received: by 2002:adf:fd44:0:b0:315:9676:c360 with SMTP id
+ h4-20020adffd44000000b003159676c360mr8612518wrs.25.1692811664277; Wed, 23 Aug
+ 2023 10:27:44 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|BY5PR12MB4936:EE_
-X-MS-Office365-Filtering-Correlation-Id: 713dfef7-7548-4d6e-a9fe-08dba3fcfa56
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lN+6BOx0PVpXZWYvH+M/eUJtiaJrVI56DhujiwwiXDjdAKs4qk9qaXQeKUCGw7oynu0tv9f4qHVAo1DX1hz5k7fX8An2n3zscDMgQm7mF3+CEI5SOfxHXQdrr3p7/Z7eEF+tdn+z2mtiUTBu/UTVgkRIlZ9hShTfkDcHy+beZaOa1Bps3rNF7Mo1jcudzGHnCJv0q2XQIJXE54RetuJ7j8mdreKZ4c/k7XdksT6ckCyrHn7T2QAnbVobJxCbeGdtw2E1DIl+J43ZbacFQhpgH6HVeuwD96a/Wjr/4mJ65QmiPeTdO1sFVMGvkf3eD4XBE0z7Tk7AqM25oY/WfBDIARHCHYxN4TiguBHCDiAKMPe8xsiUXjWXRUadSvN5to78GAKoxgxC6RyNYdnYR2nwqBwBle0zZX8Wyd/dFjUxjT5TMN2ZpjwW1rWox0BCoXS5c75U96qPQhuE7aB5wlMGTaa4d1TflXv4Zep1ufEJtj//2UO+4zHNm5ZaIjGpZOeFkbxFJvtyB11/El6WrZH3UuFZuX3lwgW6KXc0gfjFJJ+sn8xHVNnNSVy2i3q3GwdluNnzIFAYshM5G16CTImTEzKyghRrGagabD/tivTjPhCIj5oVm89s42b1gBH+2aGZbb6Q5f7oU9Cg8oLgudT62w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(136003)(366004)(396003)(376002)(346002)(1800799009)(186009)(451199024)(3450700001)(83380400001)(2906002)(38100700002)(86362001)(36756003)(31696002)(41300700001)(6512007)(66476007)(54906003)(66556008)(66946007)(6506007)(6486002)(6916009)(316002)(53546011)(2616005)(4326008)(8936002)(8676002)(966005)(478600001)(31686004)(26005)(7416002)(5660300002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZmwyaTUvQUxNWTRnTVNYRUlZUWwrMnc5c2FBVG5qQzNvU3NmTzRJdWg1amZO?=
- =?utf-8?B?VitpTG9tTmt2c2ExUWJDMm9tbGRlMHVYUlBCRDZvd3hTREhVL1BNTExZV3NX?=
- =?utf-8?B?SVRxV1NrT2Npa3Q3SlZJU1NwMmRwNFBXbmxYTjQ2SVFPZmpwc0tHdHBpc3Zh?=
- =?utf-8?B?TnV3alY1cVBXbWhrR1ByRE80YzR5TzZjSWsva2QzWGFCeExhZVIxdEphczhJ?=
- =?utf-8?B?aVdGaHM0ZHBTYkZTclZvUHQyS0g4cHJwb2pzRmJQeFl5alhqNHc0Q1IvT0NZ?=
- =?utf-8?B?MDloSnNzV3YxVDBSK3FERk1tVXVmYUJsQzI0Y1VhQmN1TmxuNEpYL01jck9X?=
- =?utf-8?B?dDdWSHhSVnpINGdET0lQbFFjSnpqalduZ0c0RitHU05pdmFhUlhMZDRHRTdO?=
- =?utf-8?B?TEF2L3BVZGpoZ0wrRis1REtaQ21WcE1raTI3aVVGTHpTVVdqbHBzYTRPcnE5?=
- =?utf-8?B?aklVSldoUCtTR1pQc0ZOdFNmMkxrRDJXSEZLTXYyMkltaktYNXFKMGttUU4v?=
- =?utf-8?B?V0E1QmlYVGxLQzdIL2dEamROL0swTHM2R0hscU5LUC9hMVh1MEFRODBnSnRY?=
- =?utf-8?B?UVY2VTBRZ2FYb1ZuOUN1dHE3bHByWUlPTUtCRVZDWm9BcDFiMDJFRlJyYkVz?=
- =?utf-8?B?NXFHaElDaytiYlRDVkZYNjlRWWZHRXNxb2xYY3VWSTVraCtLTFpJaVRtaGZB?=
- =?utf-8?B?R1lGTlpiWHVTOWdQaWxYM1hBWCtRZEdqbzYrTHhIWWxYcmVnNkxjMkZlUGl2?=
- =?utf-8?B?UG1XMTBwbTBINmw4eXpwdXNwWnBKVUI1ZFpUQlpxeitweUlwTmdSSzRORGNP?=
- =?utf-8?B?OFRPenhOVmZqRG9wc2pBd0lzb1JVY2oxVjRYbjZPc01iUmVteDJLbUk1VHJE?=
- =?utf-8?B?V2dQWkE1SDJIWmVqR25CSDJlNDU1RUhWS3RvOEp6Y09uODBtVVRsNTgrU0Ns?=
- =?utf-8?B?SEpkYXNuQkZMb1RZSW00c2s5UEkxWU42WmV2UWc2UFhSTnRUR3F2VnpEdTBH?=
- =?utf-8?B?WGswWGhTSXMzNFZ4aWlOaUZSMVNkYlBDL2tGTzIxSXpqZG83SVJEZmRYbjNs?=
- =?utf-8?B?dS9NbGV1WEZBb2RsVk5TQTQzQ0VvNmF1TkQ1blNjaitid3VsR3V3QnFHd0wr?=
- =?utf-8?B?ZXIveE9haStYZGo4K2NKNWl4QTV4dnRJVUdwRXZRYmMyMnNJMTdyVGJXMnpR?=
- =?utf-8?B?MkpHUmNxMzNUREZ0OVYxWWtQaHRKTy9TdjZXT2t0Y2dnbWk0Sy9DREJvcDR5?=
- =?utf-8?B?QzVBMVdrUS9WYVpJdXpWbGEyRmo1Rm1FSzNXMFh2ME8rczlyeXRwSkhNdEZI?=
- =?utf-8?B?bXVheTM4STExU0xvM0ZER1NnRU02T0JMVkhTc3JXOG1RalJIaGZ5VjdWM0Yw?=
- =?utf-8?B?WDloTG13cmFEWEtBUFlpNGprSUFtZ3oxOW5qR2xoYnJRTEQ0UEU4dk4rMGpr?=
- =?utf-8?B?TXRFS0R1ampiVXlWUHIrb2E0K3NVL08ydFhNN045Qk9QK1JjSXJGUG0zMFZP?=
- =?utf-8?B?R09SQ2FJTnVsRTE0aHBVL3RoU1IyeGdJbmhBeXZ4RTRmSVdNa1d5Y2lPYlAy?=
- =?utf-8?B?R1NtaEw2ZUtoUG9UU3lSN1pYSWhNYzVkWnF5V3JSc1FiMDREZ1hWM2Eyendk?=
- =?utf-8?B?YkNpMlhDd2pIQktDeEhWS1BqK1FLajZoS08wVUdKcXJ2bjRweHF2b0ljVFpW?=
- =?utf-8?B?V1dGSUZoWkdWVzVGZHU3V1dGYUVNSDdJNzAxTlI0Nm11NEtETWpMZ2ZteTBP?=
- =?utf-8?B?cTVTZkRxenhGK0FBTnhWaFI2YkFvOFJzMENWTi9FZ2Y4K29PQXRVMVArZzk3?=
- =?utf-8?B?VzgxV0hXeko3U2ErM2FqQm1hakdsZlM5emxHVHpBMTVIMUdDY3lhR2JpU3U2?=
- =?utf-8?B?SEs2NGhJZTNjaW41SDVoN0JSZlluaXJETkFKMnpNZmgvWW1sU3ZQSHFTMHlV?=
- =?utf-8?B?enoxeVBKY1ZVK3o1THRGT052Z1M4azFkNEdCMzFNOUttRzVJakUxdzNnUXFM?=
- =?utf-8?B?YlBPbnJJc0NKR1Jwdk5RbDJRQTNURCt2Y2MzdzBMZURCMmxsK0dQSUVIZk5O?=
- =?utf-8?B?a05kU25lbkhpWFlhaVc2RWlEZjRmV2hINmF3ejBrRDEwZkdzMk5RN1hsRUpi?=
- =?utf-8?Q?aeGM=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 713dfef7-7548-4d6e-a9fe-08dba3fcfa56
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 17:18:33.2084 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jW5SoBNy5w7qZ59fV9bY1DzFbBGaoErs8Iijx1wkVr6Ok2WNlC03CkVFOGgix/jC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4936
-Received-SPF: softfail client-ip=40.107.220.49;
- envelope-from=Babu.Moger@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
+ <20230626114916.45355529@mobian.usb.local>
+ <20230626100819.vtkuuvzg376hktk2@begin>
+ <CAJt6XFpDwuim-FF7a5MMibQvJa1YJ=X165n43XEtQaF4356r9w@mail.gmail.com>
+ <20230720145415.w7s3ystkrf5gc66y@begin>
+ <CAJt6XFosqX8xH_QWX1xZmHPg7vYB8r=m+ERgxQtKzhYT4W0urg@mail.gmail.com>
+In-Reply-To: <CAJt6XFosqX8xH_QWX1xZmHPg7vYB8r=m+ERgxQtKzhYT4W0urg@mail.gmail.com>
+From: Felix Wu <flwu@google.com>
+Date: Wed, 23 Aug 2023 10:27:33 -0700
+Message-ID: <CAJt6XFqW4zUvWy6=3WZihkmbp6N-RVczR+5kpLtpxDtLXUBAXQ@mail.gmail.com>
+Subject: Re: Tips for local testing guestfwd
+To: Samuel Thibault <samuel.thibault@gnu.org>
+Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org, 
+ Jason Wang <jasowang@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000ec598606039a6d6e"
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=flwu@google.com; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.684, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,122 +86,251 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhao,
+--000000000000ec598606039a6d6e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/18/23 02:37, Zhao Liu wrote:
-> Hi Babu,
-> 
-> On Mon, Aug 14, 2023 at 11:03:53AM -0500, Moger, Babu wrote:
->> Date: Mon, 14 Aug 2023 11:03:53 -0500
->> From: "Moger, Babu" <babu.moger@amd.com>
->> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
->>  CPUID[4]
+Update on debugging this thing (already updated
+https://gitlab.com/qemu-project/qemu/-/issues/1835):
+I saw that `tcp_chr_free_connection` was called after the first response
+being successfully sent:
+```
+
+slirp_guestfwd_write guestfwd_write: size 80tcp_chr_write
+tcp_chr_write: s->state:2tcp_chr_write tcp_chr_write:
+len:80qemu_chr_write_parameter len: 80 // tracking
+qemu_chr_writeqemu_chr_write_res len: 80 // same
+thingtcp_chr_free_connection tcp_chr_free_connection: state: 2,
+changing it to disconnecttcp_chr_change_state tcp_chr_change_state:
+state: 2, next state: 0 // state 2=3D=3Dconnected, 0=3D=3Ddisconnected.
+
+```
+And after that, the state of `SocketChardev` remained disconnected, and
+when the 2nd request came in, the `tcp_chr_write` dropped it directly.
+Maybe this state machine should be reset after every connection? Not sure.
+
+On Thu, Aug 17, 2023 at 11:58=E2=80=AFAM Felix Wu <flwu@google.com> wrote:
+
+> Hi Samuel,
+>
+> Thanks for the clarification! I missed the email so didn't reply in time,
+> but was able to figure it out.
+>
+> Hi everyone,
+> IPv6 guestfwd works in my local test but it has a weird bug: if you send
+> two requests, the first one gets the correct response, but the second one
+> gets stuck.
+> I am using a simple http server for this test, and just noticed this bug
+> also exists in IPv4 guestfwd. I've documented it in
+> https://gitlab.com/qemu-project/qemu/-/issues/1835.
+>
+> Just want to check if anyone has seen the same issue before.
+>
+> Thanks! Felix
+>
+> On Thu, Jul 20, 2023 at 7:54=E2=80=AFAM Samuel Thibault <samuel.thibault@=
+gnu.org>
+> wrote:
+>
+>> Hello,
 >>
->> Hi Zhao,
+>> Felix Wu, le mar. 18 juil. 2023 18:12:16 -0700, a ecrit:
+>> > 02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (lookin=
+g
+>> into packet
+>> > dump provided by QEMU invocation)
 >>
+>> Which packet dump?
 >>
->> On 8/14/23 03:22, Zhao Liu wrote:
->>> Hi Babu,
->>>
->>> On Fri, Aug 04, 2023 at 10:48:29AM -0500, Moger, Babu wrote:
->>>> Date: Fri, 4 Aug 2023 10:48:29 -0500
->>>> From: "Moger, Babu" <babu.moger@amd.com>
->>>> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
->>>>  CPUID[4]
->>>>
->>>> Hi Zhao,
->>>>
->>>> On 8/4/23 04:48, Zhao Liu wrote:
->>>>> Hi Babu,
->>>>>
->>>>> On Thu, Aug 03, 2023 at 11:41:40AM -0500, Moger, Babu wrote:
->>>>>> Date: Thu, 3 Aug 2023 11:41:40 -0500
->>>>>> From: "Moger, Babu" <babu.moger@amd.com>
->>>>>> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
->>>>>>  CPUID[4]
->>>>>>
->>>>>> Hi Zhao,
->>>>>>
->>>>>> On 8/2/23 18:49, Moger, Babu wrote:
->>>>>>> Hi Zhao,
->>>>>>>
->>>>>>> Hitting this error after this patch.
->>>>>>>
->>>>>>> ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code should
->>>>>>> not be reached
->>>>>>> Bail out! ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code
->>>>>>> should not be reached
->>>>>>> Aborted (core dumped)
->>>>>>>
->>>>>>> Looks like share_level for all the caches for AMD is not initialized.
->>>>>
->>>>> I missed these change when I rebase. Sorry for that.
->>>>>
->>>>> BTW, could I ask a question? From a previous discussion[1], I understand
->>>>> that the cache info is used to show the correct cache information in
->>>>> new machine. And from [2], the wrong cache info may cause "compatibility
->>>>> issues".
->>>>>
->>>>> Is this "compatibility issues" AMD specific? I'm not sure if Intel should
->>>>> update the cache info like that. thanks!
->>>>
->>>> I was going to comment about that. Good that you asked me.
->>>>
->>>> Compatibility is qemu requirement.  Otherwise the migrations will fail.
->>>>
->>>> Any changes in the topology is going to cause migration problems.
->>>
->>> Could you please educate me more about the details of the "migration
->>> problem"?
->>>
->>> I didn't understand why it was causing the problem and wasn't sure if I
->>> was missing any cases.
->>>
+>> > I added multiple prints inside slirp and confirmed the ipv6 version of
+>> [1] was
+>> > reached.
+>> > in tcp_output function [2], I got following print:
+>> > qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D
+>> > fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190
+>> > qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105, p=
+ort
+>> =3D 54322
+>> > It looks like there should be something being sent back to the guest,
 >>
->> I am not an expert on migration but I test VM migration sometimes.
->> Here are some guidelines.
->> https://developers.redhat.com/blog/2015/03/24/live-migrating-qemu-kvm-virtual-machines
-> 
-> Thanks for the material!
-> 
+>> That's what it is.
 >>
->> When you migrate a VM to newer qemu using the same CPU type, migration
->> should work seamless. That means list of CPU features should be compatible
->> when you move to newer qemu version with CPU type.
-> 
-> I see. This patches set adds the "-smp cluster" command and the
-> "x-l2-cache-topo" command. Migration requires that the target and
+>> > unless my understanding of tcp_output is wrong.
+>>
+>> It looks so.
+>>
+>> > To understand the datapath of guestfwd better, I have the following
+>> questions:
+>> > 1. What's the meaning of tcp_input and tcp_output? My guess is the
+>> following
+>> > graph, but I would like to confirm.
+>>
+>> No, tcp_input is for packets that come from the guest, and tcp_output is
+>> for packets that are send to the guest. So it's like that:
+>>
+>> >         tcp_input    write_cb          host send()
+>> > QEMU --------> slirp -----------> QEMU --------------------> host
+>> >     <--------        <---------         <-----------------
+>> >          tcp_output  slirp_socket_recv    host recv()
+>>
+>> > 2. I don't see port 6655 in the above process. How does slirp know 665=
+5
+>> is the
+>> > port that needs to be visited on the host side?
+>>
+>> Slirp itself *doesn't* know that port. The guestfwd piece just calls the
+>> SlirpWriteCb when it has data coming from the guest. See the
+>> documentation:
+>>
+>> /* Set up port forwarding between a port in the guest network and a
+>>  * callback that will receive the data coming from the port */
+>> SLIRP_EXPORT
+>> int slirp_add_guestfwd(Slirp *slirp, SlirpWriteCb write_cb, void *opaque=
+,
+>>                        struct in_addr *guest_addr, int guest_port);
+>>
+>> and
+>>
+>> /* This is called by the application for a guestfwd, to provide the data
+>> to be
+>>  * sent on the forwarded port */
+>> SLIRP_EXPORT
+>> void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int
+>> guest_port,
+>>                        const uint8_t *buf, int size);
+>>
+>> Samuel
+>>
+>
 
-Shouldn't the command x-l2-cache-topo disabled by default? (For example
-look at hw/i386/pc.c the property x-migrate-smi-count).
+--000000000000ec598606039a6d6e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It will be enabled when user passes "-cpu x-l2-cache-topo=[core|cluster]".
-Current code enables it by default as far I can see.
+<div dir=3D"ltr">Update on debugging=C2=A0this thing (already updated=C2=A0=
+<a rel=3D"nofollow noreferrer noopener" href=3D"https://gitlab.com/qemu-pro=
+ject/qemu/-/issues/1835" target=3D"_blank">https://gitlab.com/qemu-project/=
+qemu/-/issues/1835</a>):<div>I saw that `tcp_chr_free_connection` was calle=
+d after the first response being successfully sent:</div><div>```</div><div=
+><pre class=3D"gmail-code gmail-highlight" lang=3D"plaintext"><span lang=3D=
+"plaintext" class=3D"gmail-line" id=3D"gmail-LC1">slirp_guestfwd_write gues=
+tfwd_write: size 80</span>
+<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC2">tcp_chr_writ=
+e tcp_chr_write: s-&gt;state:2</span>
+<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC3">tcp_chr_writ=
+e tcp_chr_write: len:80</span>
+<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC4">qemu_chr_wri=
+te_parameter len: 80 // tracking qemu_chr_write</span>
+<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC5">qemu_chr_wri=
+te_res len: 80 // same thing</span>
+<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC6">tcp_chr_free=
+_connection tcp_chr_free_connection: state: 2, changing it to disconnect</s=
+pan>
+<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC7">tcp_chr_chan=
+ge_state tcp_chr_change_state: state: 2, next state: 0 // state 2=3D=3Dconn=
+ected, 0=3D=3Ddisconnected.</span>
+</pre></div><div>```</div><div>And after that, the state of `SocketChardev`=
+ remained disconnected, and when the 2nd request came in, the `tcp_chr_writ=
+e` dropped it directly.</div><div>Maybe this state machine should be reset =
+after every connection? Not sure.</div></div><br><div class=3D"gmail_quote"=
+><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 17, 2023 at 11:58=E2=80=
+=AFAM Felix Wu &lt;<a href=3D"mailto:flwu@google.com">flwu@google.com</a>&g=
+t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div d=
+ir=3D"ltr">Hi Samuel,<div><br></div><div>Thanks for the clarification! I mi=
+ssed the email so didn&#39;t reply in time, but was able to figure it out.<=
+/div><div><br></div><div>Hi everyone,</div><div>IPv6 guestfwd works in my l=
+ocal test but it has a weird bug: if you send two requests, the first one g=
+ets the correct response, but the second one gets stuck.</div><div>I am usi=
+ng a simple http server for this test, and just noticed this bug also=C2=A0=
+exists in=C2=A0IPv4 guestfwd. I&#39;ve documented it in=C2=A0<a rel=3D"nofo=
+llow noreferrer noopener" href=3D"https://gitlab.com/qemu-project/qemu/-/is=
+sues/1835" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/issues/=
+1835</a>.</div><div><br></div><div>Just want to check if anyone has seen th=
+e same issue before.</div><div><br></div><div>Thanks! Felix</div></div><br>=
+<div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Ju=
+l 20, 2023 at 7:54=E2=80=AFAM Samuel Thibault &lt;<a href=3D"mailto:samuel.=
+thibault@gnu.org" target=3D"_blank">samuel.thibault@gnu.org</a>&gt; wrote:<=
+br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hello,<br>
+<br>
+Felix Wu, le mar. 18 juil. 2023 18:12:16 -0700, a ecrit:<br>
+&gt; 02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (lookin=
+g into packet<br>
+&gt; dump provided by QEMU invocation)<br>
+<br>
+Which packet dump?<br>
+<br>
+&gt; I added multiple prints inside slirp and confirmed the ipv6 version of=
+ [1] was<br>
+&gt; reached.<br>
+&gt; in tcp_output function [2], I got following print:<br>
+&gt; qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D<br>
+&gt; fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190<br>
+&gt; qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105, p=
+ort =3D 54322<br>
+&gt; It looks like there should be something being sent back to the guest,<=
+br>
+<br>
+That&#39;s what it is.<br>
+<br>
+&gt; unless my understanding of tcp_output is wrong.<br>
+<br>
+It looks so.<br>
+<br>
+&gt; To understand the datapath of guestfwd better, I have the following qu=
+estions:<br>
+&gt; 1. What&#39;s the meaning of tcp_input and tcp_output? My guess is the=
+ following<br>
+&gt; graph, but I would like to confirm.<br>
+<br>
+No, tcp_input is for packets that come from the guest, and tcp_output is<br=
+>
+for packets that are send to the guest. So it&#39;s like that:<br>
+<br>
+&gt; =C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0tcp_input=C2=A0 =C2=A0 write_cb=C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 host send()<br>
+&gt; QEMU --------&gt; slirp -----------&gt; QEMU --------------------&gt; =
+host<br>
+&gt; =C2=A0 =C2=A0 &lt;-------- =C2=A0=C2=A0 =C2=A0 =C2=A0 &lt;---------=C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;-----------------<br>
+&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tcp_output =C2=A0slirp_socket_recv=
+=C2=A0 =C2=A0 host recv()<br>
+<br>
+&gt; 2.=C2=A0I don&#39;t see port 6655 in the above=C2=A0process. How does =
+slirp know 6655 is the<br>
+&gt; port that needs to be visited on the host side?<br>
+<br>
+Slirp itself *doesn&#39;t* know that port. The guestfwd piece just calls th=
+e<br>
+SlirpWriteCb when it has data coming from the guest. See the<br>
+documentation:<br>
+<br>
+/* Set up port forwarding between a port in the guest network and a<br>
+=C2=A0* callback that will receive the data coming from the port */<br>
+SLIRP_EXPORT<br>
+int slirp_add_guestfwd(Slirp *slirp, SlirpWriteCb write_cb, void *opaque,<b=
+r>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0struct in_addr *guest_addr, int guest_port);<br>
+<br>
+and <br>
+<br>
+/* This is called by the application for a guestfwd, to provide the data to=
+ be<br>
+=C2=A0* sent on the forwarded port */<br>
+SLIRP_EXPORT<br>
+void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int guest_p=
+ort,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0const uint8_t *buf, int size);<br>
+<br>
+Samuel<br>
+</blockquote></div>
+</blockquote></div>
 
-> source VM command lines are the same, so the new commands ensure that
-> the migration is consistent.
-> 
-> But this patch set also includes some topology fixes (nr_cores fix and
-> l1 cache topology fix) and encoding change (use APIC ID offset to encode
-> addressable ids), these changes would affect migration and may cause
-> CPUID change for VM view. Thus if this patch set is accepted, these
-> changes also need to be pushed into stable versions. Do you agree?
-
-Yes. That sounds right.
-
-> 
-> And about cache info for different CPU generations, migration usually
-> happens on the same CPU type, and Intel uses the same default cache
-> info for all CPU types. With the consistent cache info, migration is
-> also Ok. So if we don't care about the specific cache info in the VM,
-> it's okay to use the same default cache info for all CPU types. Right?
-
-I am not sure about this. Please run migration tests to be sure.
--- 
-Thanks
-Babu Moger
+--000000000000ec598606039a6d6e--
 
