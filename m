@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF41785C3E
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 17:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 121F5785C3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 17:37:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYpsl-00022j-OO; Wed, 23 Aug 2023 11:34:55 -0400
+	id 1qYpsz-0002Hx-U5; Wed, 23 Aug 2023 11:35:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYpsQ-0001wg-I1
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:34:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYpsV-0001wz-9v
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:34:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYpsO-0007zC-Lv
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:34:34 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYpsR-0007zw-TY
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:34:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692804872;
+ s=mimecast20190719; t=1692804875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+avBoJlPY2QA1l0z1rA0IKiYjyv5cmykuGuOlOZllow=;
- b=VhA6ObtIVV4hK+mqCHAn+00gZiGjRDJKL1ylJ3akmO01wiha0U76zf4i4jR8D0haSJOJcw
- tKgD1S+DLw9zFmIT1UceKMsd2/Hy8ZjetNLi2nQ2KmBWuSMv2I9OqQ7QHrKQokwB/39rvQ
- V7kPrUmTBizCoxZkCMEmLD6l3tsBcMI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-394-3r_YfNurPwWoVIN1UOWSzg-1; Wed, 23 Aug 2023 11:34:28 -0400
-X-MC-Unique: 3r_YfNurPwWoVIN1UOWSzg-1
+ bh=wOd7zFpQSipVkQaSUcZss+T9Cg0l5e6skiyqv1IOvlA=;
+ b=DRqyCYq1LDHhfrRElxx/4001+i7TyQ69AgkhT3m/ft02lw7dhCqlOoC6AQIkAc7hMUqB90
+ 2Ps+sAE6GCBKv3c+uHMAm1HkDqmaV4NH+lLcNaBapV2TBPzGt8d503M6+NPE+NCIwPloRs
+ dd3J19PxOBu0qpP69OwWta/9TXSNYqU=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-439-ZHtVveJkNFGIwLo9kfpcZw-1; Wed, 23 Aug 2023 11:34:31 -0400
+X-MC-Unique: ZHtVveJkNFGIwLo9kfpcZw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB1A6853065;
- Wed, 23 Aug 2023 15:34:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E6780381C163;
+ Wed, 23 Aug 2023 15:34:30 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F2E351121314;
- Wed, 23 Aug 2023 15:34:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 11B3B1121314;
+ Wed, 23 Aug 2023 15:34:27 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
@@ -56,16 +56,16 @@ Cc: qemu-ppc@nongnu.org, David Hildenbrand <david@redhat.com>,
  Greg Kurz <groug@kaod.org>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v3 04/11] softmmu/physmem: Remap with proper protection in
- qemu_ram_remap()
-Date: Wed, 23 Aug 2023 17:34:04 +0200
-Message-ID: <20230823153412.832081-5-david@redhat.com>
+Subject: [PATCH v3 05/11] softmmu/physmem: Bail out early in
+ ram_block_discard_range() with readonly files
+Date: Wed, 23 Aug 2023 17:34:05 +0200
+Message-ID: <20230823153412.832081-6-david@redhat.com>
 In-Reply-To: <20230823153412.832081-1-david@redhat.com>
 References: <20230823153412.832081-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,45 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's remap with the proper protection that we can derive from
-RAM_READONLY.
+fallocate() will fail, let's print a nicer error message.
 
+Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- softmmu/physmem.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ softmmu/physmem.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 6add537b2a..c09eda6303 100644
+index c09eda6303..32d641754b 100644
 --- a/softmmu/physmem.c
 +++ b/softmmu/physmem.c
-@@ -2070,6 +2070,7 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
-     ram_addr_t offset;
-     int flags;
-     void *area, *vaddr;
-+    int prot;
- 
-     RAMBLOCK_FOREACH(block) {
-         offset = addr - block->offset;
-@@ -2084,13 +2085,14 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
-                 flags |= block->flags & RAM_SHARED ?
-                          MAP_SHARED : MAP_PRIVATE;
-                 flags |= block->flags & RAM_NORESERVE ? MAP_NORESERVE : 0;
-+                prot = PROT_READ;
-+                prot |= block->flags & RAM_READONLY ? 0 : PROT_WRITE;
-                 if (block->fd >= 0) {
--                    area = mmap(vaddr, length, PROT_READ | PROT_WRITE,
--                                flags, block->fd, offset + block->fd_offset);
-+                    area = mmap(vaddr, length, prot, flags, block->fd,
-+                                offset + block->fd_offset);
-                 } else {
-                     flags |= MAP_ANONYMOUS;
--                    area = mmap(vaddr, length, PROT_READ | PROT_WRITE,
--                                flags, -1, 0);
-+                    area = mmap(vaddr, length, prot, flags, -1, 0);
-                 }
-                 if (area != vaddr) {
-                     error_report("Could not remap addr: "
+@@ -3457,6 +3457,16 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+              * so a userfault will trigger.
+              */
+ #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
++            /*
++             * fallocate() will fail with readonly files. Let's print a
++             * proper error message.
++             */
++            if (rb->flags & RAM_READONLY_FD) {
++                error_report("ram_block_discard_range: Discarding RAM"
++                             " with readonly files is not supported");
++                goto err;
++
++            }
+             /*
+              * We'll discard data from the actual file, even though we only
+              * have a MAP_PRIVATE mapping, possibly messing with other
 -- 
 2.41.0
 
