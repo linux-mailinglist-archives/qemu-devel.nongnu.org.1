@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF91478587D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 15:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99A07858C5
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 15:16:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYnYW-0006kv-Rk; Wed, 23 Aug 2023 09:05:52 -0400
+	id 1qYnhO-000192-31; Wed, 23 Aug 2023 09:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qYnYU-0006kP-BK
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:05:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qYnYS-00032L-Qe
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:05:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692795947;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gVCDFsUxyk8XXQBe7ncGEuR9XeB7t7U/NzM8nL1TNYY=;
- b=ftpyIS4U8Bg2/5PNfcFzWY7af+euha0kww7RFxyyJR5IPEiWNHIdc6nuXXCD8eQR5WFuVq
- zO6tY3Aloy6yW8lP4xHb3sRajxmDWWKeqooRnfWfpfz8ajrQJnSnorU/oEXOFowbg+DVbp
- iPoay25pgCLiJsEwo1SDvm0tNNslsMQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-508-MZfN6inmPfWOAKhYPkzc4Q-1; Wed, 23 Aug 2023 09:05:42 -0400
-X-MC-Unique: MZfN6inmPfWOAKhYPkzc4Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F1D2857A84;
- Wed, 23 Aug 2023 13:05:42 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.108])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CA30F1121314;
- Wed, 23 Aug 2023 13:05:41 +0000 (UTC)
-Date: Wed, 23 Aug 2023 09:05:40 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v2] docs/about/license: Update LICENSE URL
-Message-ID: <20230823130540.GA830132@fedora>
-References: <20230822125716.55295-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYnhE-00018E-Ga
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:14:52 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYnhB-0005BK-L1
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:14:51 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-99c1c66876aso744190266b.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 06:14:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692796487; x=1693401287;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/MnCdS9A/UvZeuzDB0yy4EYxPNv3DR7lwYkFK4+8Uhs=;
+ b=nb+rqMaAHGOBsFrVMSu4n99Kdb/nQKmeIrz8Tbc8E9DIARTzW6dcnu4Cr7vg0jC6GH
+ 1mzLNfxp/Jrf39yjX5rUziQdr78Spj0NbZ7Oqyvdsd0sMyHzP4QaUVjHzyNOnHHKauPp
+ Qkk73jFTmtmxJh+h0aJJwvQt9dcfYjgvI1BVqLD9kYZbBib7ciTRHFI4HKut29DNtK1s
+ 27oLR4lad+V/zzLSOCq2VHyjro66pnbcIfMBiuJ/KrjroJRAG2uy57jd00krt178jjcj
+ EyeUpFkIWN5TEYo0rkthB39lnY0NGVkfY8oLc2d+H6MyK90hmSZrjtx5sLJI/+5y4M15
+ /mFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692796487; x=1693401287;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/MnCdS9A/UvZeuzDB0yy4EYxPNv3DR7lwYkFK4+8Uhs=;
+ b=ftzCX8sxkQldDccXJ1HEVo16OW7kToBhbbrOURtsle5QAUiMOybJg04bV9MnC6mMZd
+ Amh1OUOxD69Qgs9jZSbL7IfJzlkqzbIjPxhi105mK/8fXBA5tVIMptbVR9j1e1BGDxkE
+ ARZvow52JCOc3wsNEND4eQVEDFy/+XEQ7MWygs4SNG80GXLIhq6Ly905tuXu+HxoHQdb
+ QFCNQKB/x1bV19V2JB8zc5qvrUEfYyukBpWkBcHAXFTTtSzeN14GNt4rcpOfqXq643bg
+ 5+pzYaxe1fNPdS3fZj33ABZgqAQTCafrfeoPjrq8J1dLqmW0D9I3LdeMT1nB8ujt43KV
+ KnGA==
+X-Gm-Message-State: AOJu0YwQkYKuzUsA6S90IZSWjM/27AKCyUBgAqpzD/kS18O6lT6+vYqU
+ flo8OhXhec6GvfeQ9OwRxGSnHw==
+X-Google-Smtp-Source: AGHT+IHXWJFzynT4VP3msOsvFmj6b/m9g7KR7ehnJzwNmEToJv+Yt0sF22JYvZKmreQF+59N3n60fQ==
+X-Received: by 2002:a17:907:a0c7:b0:99d:ddae:f75e with SMTP id
+ hw7-20020a170907a0c700b0099dddaef75emr7670760ejc.57.1692796487383; 
+ Wed, 23 Aug 2023 06:14:47 -0700 (PDT)
+Received: from [192.168.69.115] (gsv95-h03-176-172-10-165.dsl.sta.abo.bbox.fr.
+ [176.172.10.165]) by smtp.gmail.com with ESMTPSA id
+ k15-20020a1709063fcf00b00977eec7b7e8sm9815030ejj.68.2023.08.23.06.14.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Aug 2023 06:14:46 -0700 (PDT)
+Message-ID: <6d4f5e8c-82ae-4396-3c4e-fe0bfd721341@linaro.org>
+Date: Wed, 23 Aug 2023 15:14:45 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="tPiDFxacdIzM9Iq8"
-Content-Disposition: inline
-In-Reply-To: <20230822125716.55295-1-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 2/7] tcg/tcg-op: Document bswap32() byte pattern
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230822093712.38922-1-philmd@linaro.org>
+ <20230822093712.38922-3-philmd@linaro.org>
+ <fd59f5e2-c125-6d12-cbd5-a12e3aca37ce@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <fd59f5e2-c125-6d12-cbd5-a12e3aca37ce@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.684,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,52 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 22/8/23 18:00, Richard Henderson wrote:
+> On 8/22/23 02:37, Philippe Mathieu-Daudé wrote:
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   tcg/tcg-op.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
 
---tPiDFxacdIzM9Iq8
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 22, 2023 at 02:57:16PM +0200, Philippe Mathieu-Daud=E9 wrote:
-> In early 2021 (see commit 2ad784339e "docs: update README to use
-> GitLab repo URLs") almost all of the code base was converted to
-> point to GitLab instead of git.qemu.org. During 2023, git.qemu.org
-> switched from a git mirror to a http redirect to GitLab (see [1]).
->=20
-> Update the LICENSE URL to match its previous content, displaying
-> the file raw content similarly to gitweb 'blob_plain' format ([2]).
->=20
-> [1] https://lore.kernel.org/qemu-devel/CABgObfZu3mFc8tM20K-yXdt7F-7eV-uKZ=
-N4sKDarSeu7DYoRbA@mail.gmail.com/
-> [2] https://git-scm.com/docs/gitweb#Documentation/gitweb.txt-blobplain
->=20
-> Reviewed-by: Daniel P. Berrang=E9 <berrange@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> ---
-> v2: Drop '&ref_type=3Dheads' (danpb)
-> ---
->  docs/about/license.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>> +/*
+>> + * bswap32_i64: 32-bit byte swap on the low bits of a 64-bit value.
+>> + *
+>> + * Byte pattern:  bswap32_i64(xxxxabcd) -> ....dcba     (TCG_BSWAP_OZ)
+>> + *                bswap32_i64(xxxxabcd) -> ssssdcba     (TCG_BSWAP_OS)
+>> + *                bswap32_i64(xxxxabcd) -> xxxxdcba
+>> + */
+> 
+> Again, TCG_BSWAP_IZ.
 
-Thanks, applied to my staging tree.
+Whether TCG_BSWAP_IZ is set or not doesn't change the result, at the
+end we have:
 
-Stefan
-
---tPiDFxacdIzM9Iq8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTmBCQACgkQnKSrs4Gr
-c8iy/gf8C/Td6wLU3HaBfasZPsCcEHNR9EZsn5s5LyRkCFi+jnyHTZ8oa2+p9hoF
-oRXCpl43wU3GxKCxm4Fv0qywlHfD7EgABK+D0L6ZtnDK+RAclmxtRY+QCNaHcxc2
-tAYIStc/JJDCx9iCS7UH+fRe0S0ijSh+Ferf/TFoWAKVRMT4dvnFEhwlIdVtMb6V
-anLUxoMSkY5PGovRIyy7uLLSgiGu0dd+0LivfnfYgcuVF7mrbaXS0Op2pChkzp0M
-KlFN58SiI7ReiSBjA1yIAMseq4S3KXiugUZZB4pEXTeG0FZS0JilM2PfhLTlYYCY
-Ukx9z0HJUsj1ZF8ROPV6cFCbKwHVyw==
-=GitM
------END PGP SIGNATURE-----
-
---tPiDFxacdIzM9Iq8--
-
+   bswap32_i64(xxxxabcd) -> ....dcba     (TCG_BSWAP_OS not set)
+   bswap32_i64(xxxxabcd) -> ssssdcba     (TCG_BSWAP_OS set)
 
