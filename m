@@ -2,94 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24848785151
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 09:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0845578517B
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 09:28:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYi5G-0001eb-Gb; Wed, 23 Aug 2023 03:15:18 -0400
+	id 1qYiH0-0003LI-1z; Wed, 23 Aug 2023 03:27:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qYi51-0001dW-8r; Wed, 23 Aug 2023 03:15:04 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qYiGt-0003Kk-Vt
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 03:27:20 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qYi4w-0005B2-T8; Wed, 23 Aug 2023 03:15:02 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.nyi.internal (Postfix) with ESMTP id 2D0925C00AE;
- Wed, 23 Aug 2023 03:14:54 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Wed, 23 Aug 2023 03:14:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1692774894; x=
- 1692861294; bh=tDaXdUCcLgRpubr3uxxX1TmP+7guwXxhEyD9EcHjBEM=; b=R
- ukyjHuvReQKmsyfr8NbUqY7VFAq0Xu8HPd7OiUlIQa8k5ctqwb0YUhA2gvOgXKbW
- eaTxfABMslIt7t9aQ790eRM+KzAvIg51+YEVqXmmv3SEBa0lqeMPDxMHxHdcZx1l
- Ewek1BBXh0X6W4bVbZJckjunCmdaomYLW124m+gMNBbDRY9F53SvNLg47vsKNKcP
- cpdqgCXpXTUO2v/9FNauyeJDoVFlgneUXrlFPz1yd3x52tDi823TysHfpsuq0Vh8
- /GBj1AlvPgXF5lrEPSG+dDD8yOR1ZvD9GZkFOxSTm3StlogjBL6qgIOa4BUn+9mx
- b20WhjeMtr1nMtimaHYIg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; t=1692774894; x=1692861294; bh=tDaXdUCcLgRpu
- br3uxxX1TmP+7guwXxhEyD9EcHjBEM=; b=fnEQrNLz1tIY4ZXJZu70+33fYAyKa
- h/Cpznk7VmCUiYewQh/Z3ws85RBpVSwc2nc9Yezgcmxi3L/CGynNF69BJqZzB7aV
- cnBXLBuh5PuPu5aoqo2e5kKQ781R8lf7A9GlsMrYjmxJpOKocY/qL2UvCxkAyfMV
- mhyOgC2EhVEYDZJM3O2H+RcdhvAS8q7S/tIp0/Ms8K+dnP6EX+Ptgn+I9iZQftfm
- v4pdpdxVgAwsvjDlSljyLxa13S8+rtvzNa0tHcT/AcEa9cG5ySPWRO3AKxZpEf2V
- e+Ih8ujstiTJ1gQjBuddwhb4mCEWMbph1iKwkGgKzi2r/R1tEGwc5CTVA==
-X-ME-Sender: <xms:7bHlZG005vOQJeEM_z6IoU3kVF7O7dSDiWN9OvROQWaoUaL6-Eqxqg>
- <xme:7bHlZJFckM77U1nJYBIyyg97MgQahiCqrXQy5wRxrE8yb4RsthUNBfTels9TmmwXU
- --Wp47GHhzHwU1dYu0>
-X-ME-Received: <xmr:7bHlZO4HrrF7cOigxp2QzOWtqJ2yJfZp1WaGuaNJZeUXXeRnabGStag9Xjn2c2EY0eRSrQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvfedgtdehucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghu
- shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepffduvdfhheejudfgieejueeileegveduvdelhfekhffgteetffdtvdekveei
- leefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
- dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:7bHlZH2ghPrS-aLk5TxEH5VIWsysW6Mb5BoZE-UeyhhDQZeZGRLXRQ>
- <xmx:7bHlZJFnKGgomm4YpZ9cYpW8zIwMxue2BPldrKTID13xwq03wqYDzQ>
- <xmx:7bHlZA_70l7u5SdgWZ7y2RSy8-lZkWThg5paAf1mGs1twnJ5HUPWzQ>
- <xmx:7rHlZPbHxoimGdg4StwkHETFC1_oBTJwCARV-HEEUB7EkzYws3Tpvw>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Aug 2023 03:14:51 -0400 (EDT)
-Date: Wed, 23 Aug 2023 09:14:49 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 03/11] hw/misc: add a toy i2c echo device
-Message-ID: <ZOWx6ZovM4Z-eKDX@cormorant.local>
-References: <20230301165619.2171090-1-clg@kaod.org>
- <20230301165619.2171090-4-clg@kaod.org>
- <ad8588fd-7839-2fdc-45c7-bb2b5917ea65@redhat.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qYiGr-0007Qv-Hb
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 03:27:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692775637; x=1724311637;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=LBXTYANtONjYsEHm3f+upjKiDNW0J9OQ8YriJ7CuYFU=;
+ b=mP7b2l/z4JBqh740dUOcRaDlkFAMqTSfjXFwDq6j/3TknXIM07ZC0xQ7
+ 5HC0UhSgdoPg/d1d/kXvUO7QGA8PraicLFnAVbr6/kIgw3Dq9mWU6In+Q
+ ar2hpbYkbk69PC1U8IKMZaVeVdLmgPNsUI16+YJE8jBxjjvr8Q3PRchY8
+ wVZiHU+86/1Izt26FrFbw/4u4Ju3whuNzSdpK9q/kCFiBK7+HARYdPi9o
+ BKQVlhx0TSHq1CsLoS/5nx5tCRII0LE9t4MgpW5gH6N9FxAh+a/LKxL9d
+ v0FuDUjdDYvxuPvt+jnMKdKkZ1d1ndpxZW6DKiFPeI12vCkn1h5hPItIb g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="460457791"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="460457791"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2023 00:27:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="713475381"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="713475381"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77])
+ ([10.93.6.77])
+ by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2023 00:27:06 -0700
+Message-ID: <a94957f6-cde2-c5ac-0391-d1df245dc25f@intel.com>
+Date: Wed, 23 Aug 2023 15:27:03 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="UpGtQ6tHXiiGzhRN"
-Content-Disposition: inline
-In-Reply-To: <ad8588fd-7839-2fdc-45c7-bb2b5917ea65@redhat.com>
-Received-SPF: pass client-ip=66.111.4.27; envelope-from=its@irrelevant.dk;
- helo=out3-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 02/58] i386: Introduce tdx-guest object
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-3-xiaoyao.li@intel.com> <87bkez7g0g.fsf@pond.sub.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <87bkez7g0g.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,94 +95,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/22/2023 2:22 PM, Markus Armbruster wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+> 
+>> Introduce tdx-guest object which implements the interface of
+>> CONFIDENTIAL_GUEST_SUPPORT, and will be used to create TDX VMs (TDs) by
+>>
+>>    qemu -machine ...,confidential-guest-support=tdx0	\
+>>         -object tdx-guset,id=tdx0
+> 
+> Typo: tdx-guest
 
---UpGtQ6tHXiiGzhRN
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Will fix it.
 
-On Aug 22 19:20, Thomas Huth wrote:
-> On 01/03/2023 17.56, C=C3=A9dric Le Goater wrote:
-> > From: Klaus Jensen <k.jensen@samsung.com>
-> >=20
-> > Add an example I2C device to demonstrate how a slave may master the bus
-> > and send data asynchronously to another slave.
-> >=20
-> > The device will echo whatever it is sent to the device identified by the
-> > first byte received.
-> >=20
-> > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-> > [ clg: integrated fixes :
-> >    https://lore.kernel.org/qemu-devel/Y3yMKAhOkYGtnkOp@cormorant.local/=
- ]
-> > Message-Id: <20220601210831.67259-7-its@irrelevant.dk>
-> > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> > ---
-> >   hw/misc/i2c-echo.c  | 156 ++++++++++++++++++++++++++++++++++++++++++++
-> >   hw/misc/meson.build |   2 +
-> >   2 files changed, 158 insertions(+)
-> >   create mode 100644 hw/misc/i2c-echo.c
-> >=20
-> > diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
-> > new file mode 100644
-> > index 0000000000..5705ab5d73
-> > --- /dev/null
-> > +++ b/hw/misc/i2c-echo.c
-> > @@ -0,0 +1,156 @@
-> > +#include "qemu/osdep.h"
-> > +#include "qemu/timer.h"
-> > +#include "qemu/main-loop.h"
-> > +#include "block/aio.h"
-> > +#include "hw/i2c/i2c.h"
->=20
->  Hi Klaus,
->=20
-> I've got two questions with regards to this new devices:
->=20
-> 1) The file lacks a license statement (and a short comment at the beginni=
-ng
-> what it is all about). Could you maybe provide a follow up patch with a
-> proper header comment that includes a license and a short description abo=
-ut
-> the device?
->=20
-> 2) Why is it in hw/misc/ and not in hw/i2c/ ?
->=20
-> I think we should also have a proper Kconfig switch for this device, so we
-> can disable it with --without-default-devices, what do you think?
->=20
->  Thomas
->=20
->=20
+>> It has only one property 'attributes' with fixed value 0 and not
+>> configurable so far.
+> 
+> This must refer to TdxGuest member @attributes.
+> 
+> "Property" suggests QOM property, which @attributes isn't, at least not
+> in this patch.  Will it become a QOM property later in this series?
 
-Hi Thomas,
+At least not in this series. Maybe in the future there is request to 
+directly configure the whole attributes via QOM property, but none from now.
 
-1) My apologies, I'll add the proper GPL license comment.
+I will change the description of it to avoid confusion.
 
-2) It's an example of using the asynchronous i2c send API. It's not a
-"real" device, its more like the edu-device. A proper note in the file
-should make this clear.
+> Hmm, @attributes appears to remain unused until PATCH 14.  Recommend to
+> delay its addition until then.
 
-I'll send a patch to fix this up!
+IMHO, it's not suitable to introduce it in patch 14. Using a separate 
+patch seems unnecessary. I'll leave it in this patch unless strong 
+objection on it.
+
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+>> ---
+>> changes from RFC-V4
+>> - make @attributes not user-settable
+>> ---
+>>   configs/devices/i386-softmmu/default.mak |  1 +
+>>   hw/i386/Kconfig                          |  5 +++
+>>   qapi/qom.json                            | 12 +++++++
+>>   target/i386/kvm/meson.build              |  2 ++
+>>   target/i386/kvm/tdx.c                    | 40 ++++++++++++++++++++++++
+>>   target/i386/kvm/tdx.h                    | 19 +++++++++++
+>>   6 files changed, 79 insertions(+)
+>>   create mode 100644 target/i386/kvm/tdx.c
+>>   create mode 100644 target/i386/kvm/tdx.h
+>>
+>> diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/i386-softmmu/default.mak
+>> index 598c6646dfc0..9b5ec59d65b0 100644
+>> --- a/configs/devices/i386-softmmu/default.mak
+>> +++ b/configs/devices/i386-softmmu/default.mak
+>> @@ -18,6 +18,7 @@
+>>   #CONFIG_QXL=n
+>>   #CONFIG_SEV=n
+>>   #CONFIG_SGA=n
+>> +#CONFIG_TDX=n
+>>   #CONFIG_TEST_DEVICES=n
+>>   #CONFIG_TPM_CRB=n
+>>   #CONFIG_TPM_TIS_ISA=n
+>> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+>> index 9051083c1e78..929f6c3f0e85 100644
+>> --- a/hw/i386/Kconfig
+>> +++ b/hw/i386/Kconfig
+>> @@ -10,6 +10,10 @@ config SGX
+>>       bool
+>>       depends on KVM
+>>   
+>> +config TDX
+>> +    bool
+>> +    depends on KVM
+>> +
+>>   config PC
+>>       bool
+>>       imply APPLESMC
+>> @@ -26,6 +30,7 @@ config PC
+>>       imply QXL
+>>       imply SEV
+>>       imply SGX
+>> +    imply TDX
+>>       imply TEST_DEVICES
+>>       imply TPM_CRB
+>>       imply TPM_TIS_ISA
+>> diff --git a/qapi/qom.json b/qapi/qom.json
+>> index e0b2044e3d20..2ca7ce7c0da5 100644
+>> --- a/qapi/qom.json
+>> +++ b/qapi/qom.json
+>> @@ -866,6 +866,16 @@
+>>               'reduced-phys-bits': 'uint32',
+>>               '*kernel-hashes': 'bool' } }
+>>   
+>> +##
+>> +# @TdxGuestProperties:
+>> +#
+>> +# Properties for tdx-guest objects.
+>> +#
+>> +# Since: 8.2
+>> +##
+>> +{ 'struct': 'TdxGuestProperties',
+>> +  'data': { }}
+>> +
+>>   ##
+>>   # @ThreadContextProperties:
+>>   #
+>> @@ -944,6 +954,7 @@
+>>       'sev-guest',
+>>       'thread-context',
+>>       's390-pv-guest',
+>> +    'tdx-guest',
+>>       'throttle-group',
+>>       'tls-creds-anon',
+>>       'tls-creds-psk',
+>> @@ -1010,6 +1021,7 @@
+>>         'secret_keyring':             { 'type': 'SecretKeyringProperties',
+>>                                         'if': 'CONFIG_SECRET_KEYRING' },
+>>         'sev-guest':                  'SevGuestProperties',
+>> +      'tdx-guest':                  'TdxGuestProperties',
+>>         'thread-context':             'ThreadContextProperties',
+>>         'throttle-group':             'ThrottleGroupProperties',
+>>         'tls-creds-anon':             'TlsCredsAnonProperties',
+> 
+> Actually useful only when CONFIG_TDX is on, but can't make it
+> conditional here, as CONFIG_TDX is poisoned.
+
+In fact, I just followed what SEV did.
+
+To me, it looks OK to make it conditional on CONFIG_TDX. Could you 
+please elaborate "but can't make it conditional here, as CONFIG_TDX is 
+poisoned." ?
 
 
-Thanks,
-Klaus
+>> diff --git a/target/i386/kvm/meson.build b/target/i386/kvm/meson.build
+>> index 40fbde96cac6..21ab03fe1349 100644
+>> --- a/target/i386/kvm/meson.build
+>> +++ b/target/i386/kvm/meson.build
+>> @@ -11,6 +11,8 @@ i386_softmmu_kvm_ss.add(when: 'CONFIG_XEN_EMU', if_true: files('xen-emu.c'))
+>>   
+>>   i386_softmmu_kvm_ss.add(when: 'CONFIG_SEV', if_false: files('sev-stub.c'))
+>>   
+>> +i386_softmmu_kvm_ss.add(when: 'CONFIG_TDX', if_true: files('tdx.c'))
+>> +
+>>   i386_system_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'), if_false: files('hyperv-stub.c'))
+>>   
+>>   i386_system_ss.add_all(when: 'CONFIG_KVM', if_true: i386_softmmu_kvm_ss)
+>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>> new file mode 100644
+>> index 000000000000..d3792d4a3d56
+>> --- /dev/null
+>> +++ b/target/i386/kvm/tdx.c
+>> @@ -0,0 +1,40 @@
+>> +/*
+>> + * QEMU TDX support
+>> + *
+>> + * Copyright Intel
+>> + *
+>> + * Author:
+>> + *      Xiaoyao Li <xiaoyao.li@intel.com>
+>> + *
+>> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+>> + * See the COPYING file in the top-level directory
+>> + *
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qom/object_interfaces.h"
+>> +
+>> +#include "tdx.h"
+>> +
+>> +/* tdx guest */
+>> +OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
+>> +                                   tdx_guest,
+>> +                                   TDX_GUEST,
+>> +                                   CONFIDENTIAL_GUEST_SUPPORT,
+>> +                                   { TYPE_USER_CREATABLE },
+>> +                                   { NULL })
+>> +
+>> +static void tdx_guest_init(Object *obj)
+>> +{
+>> +    TdxGuest *tdx = TDX_GUEST(obj);
+>> +
+>> +    tdx->attributes = 0;
+>> +}
+>> +
+>> +static void tdx_guest_finalize(Object *obj)
+>> +{
+>> +}
+>> +
+>> +static void tdx_guest_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +}
+>> diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
+>> new file mode 100644
+>> index 000000000000..415aeb5af746
+>> --- /dev/null
+>> +++ b/target/i386/kvm/tdx.h
+>> @@ -0,0 +1,19 @@
+>> +#ifndef QEMU_I386_TDX_H
+>> +#define QEMU_I386_TDX_H
+>> +
+>> +#include "exec/confidential-guest-support.h"
+>> +
+>> +#define TYPE_TDX_GUEST "tdx-guest"
+>> +#define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
+>> +
+>> +typedef struct TdxGuestClass {
+>> +    ConfidentialGuestSupportClass parent_class;
+>> +} TdxGuestClass;
+>> +
+>> +typedef struct TdxGuest {
+>> +    ConfidentialGuestSupport parent_obj;
+>> +
+>> +    uint64_t attributes;    /* TD attributes */
+>> +} TdxGuest;
+>> +
+>> +#endif /* QEMU_I386_TDX_H */
+> 
+> QAPI schema
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 
---UpGtQ6tHXiiGzhRN
-Content-Type: application/pgp-signature; name="signature.asc"
+Thank you!
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTlsekACgkQTeGvMW1P
-Demjxgf9FejbyVZz9B1CupYMsWsXsGyxGa/oe5f14yY3GnSb58G5KagZttYGKBa1
-U8ulqXKgLcou/1AWVynukCqu18VA0MvmS6nQFYHt06Lz6zuRWYYQhaHWQtlsAW+G
-63wUp5ba2N1XdhltjpDbndbDh9OSSAwdIoH+YW1kPy/VUbqP39fBOm296ZxLh6yA
-sC8zjHdsJcpolIaphuiYFhBOO22MXtNUj2+OSYiuvcgeBLBTpuS5xoWNOvn8DbFg
-/qNy8hf2Jrfhfh1U8Kuw1P+JVqo3DVQWI4v1ihbkq50Q0y5piDROSKeY9Ja+Kl7B
-+fYYqgxNI1o4PQ68OV/WidUYWKBTLw==
-=uisn
------END PGP SIGNATURE-----
-
---UpGtQ6tHXiiGzhRN--
 
