@@ -2,79 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D59785127
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 09:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24848785151
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 09:16:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYhy4-0006uR-1x; Wed, 23 Aug 2023 03:07:52 -0400
+	id 1qYi5G-0001eb-Gb; Wed, 23 Aug 2023 03:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qYhxw-0006l1-NJ
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 03:07:44 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qYhxu-0004BH-6U
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 03:07:43 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fee769fcc3so34554465e9.2
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 00:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1692774460; x=1693379260;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yyn+AiDtQ3Hy+Ma8ZvsngF4jC5rWKanopYp2FMK3k0Y=;
- b=STnq6cNw7gxT/JEGsvDJxFtZxL5rxe8odq5CFnI2B9AwyK9lT6XqThSxqVvlTar84s
- wacGLkZ1sjvQLwjfhGT67HOtkTfipH7fD9USG/TuE82uzkPTc+kfwcj8F+KR9RJhuMh5
- JdOxCUVkOKoItgiGAOsjvqbgnh9Aozkny7xJr4MdYY+FtRJD2y2M4O2gwle8MmaLSsfj
- Lmk4vxYsB5zsqfR5fzrxoRlfYAM6HufE/VSIzncoWl+fMxhoxVfIK70G9Y6Y2qk1zAAt
- CJ2rvzT95GjIz7A0GquYVWkLt4H+oR08bWU96xgGqT/oDPaPPBp3Lu66JN8XPBRb8L51
- +xDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692774460; x=1693379260;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yyn+AiDtQ3Hy+Ma8ZvsngF4jC5rWKanopYp2FMK3k0Y=;
- b=T4+WBbMXGJqMMWbBXqaQ5f6tDr4hQ/u64LetcThyO4Yr1zPC7n1pN/vAQbBRgE+z0q
- xtzWLCH6rHDyH1bC7hFCnwLpPgOpctteC0/ViafuljRk3W7+V82opfWHwxHmoA87ha3W
- E/9dJYwiJ360d9mugPL4Uxi9uHxWBGdjoc2a7z2RI/JLkwUZHhsS6O+klHPOaN5sCyqn
- 6tVO+g0ABEOxzT3daSJ++BvdL//jgC6FzwAJUC0tEFfegQxQHyKeQunZT3rgeRsIxw3k
- y1jAhnYVTu/Ez/culsHorF5fnq2f07NXE9a0FvkBQ5eC0z6CQ+BbQH90k9oQpY6I0LFW
- vkMQ==
-X-Gm-Message-State: AOJu0YyABPet+p8yx6CG+TFBmoRrPMFUiOM1cUyHy9L6BHWPLHStLP8K
- OCt5ClzZBj1SQr5qRuzkvJYquRSquEQ/jdWsARc=
-X-Google-Smtp-Source: AGHT+IEodKnO8s5kjTfbhns2xVuRnYu8jqBl4hnnmLBIa//LVPsMBU6atS7OpUmXBbqczJYeV4wWRA==
-X-Received: by 2002:a05:600c:b42:b0:3fe:d780:4f7a with SMTP id
- k2-20020a05600c0b4200b003fed7804f7amr9109813wmr.3.1692774459979; 
- Wed, 23 Aug 2023 00:07:39 -0700 (PDT)
-Received: from chigot-Dell.home ([2a01:cb15:8123:8100:d434:6b1d:751:97d0])
- by smtp.gmail.com with ESMTPSA id
- 15-20020a05600c028f00b003fee8793911sm11887739wmk.44.2023.08.23.00.07.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 00:07:39 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, peter.maydell@linaro.org,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH v2 3/3] gdbstub: replace exit(0) with proper shutdown
-Date: Wed, 23 Aug 2023 09:07:35 +0200
-Message-Id: <20230823070735.363197-1-chigot@adacore.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qYi51-0001dW-8r; Wed, 23 Aug 2023 03:15:04 -0400
+Received: from out3-smtp.messagingengine.com ([66.111.4.27])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qYi4w-0005B2-T8; Wed, 23 Aug 2023 03:15:02 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id 2D0925C00AE;
+ Wed, 23 Aug 2023 03:14:54 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Wed, 23 Aug 2023 03:14:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1692774894; x=
+ 1692861294; bh=tDaXdUCcLgRpubr3uxxX1TmP+7guwXxhEyD9EcHjBEM=; b=R
+ ukyjHuvReQKmsyfr8NbUqY7VFAq0Xu8HPd7OiUlIQa8k5ctqwb0YUhA2gvOgXKbW
+ eaTxfABMslIt7t9aQ790eRM+KzAvIg51+YEVqXmmv3SEBa0lqeMPDxMHxHdcZx1l
+ Ewek1BBXh0X6W4bVbZJckjunCmdaomYLW124m+gMNBbDRY9F53SvNLg47vsKNKcP
+ cpdqgCXpXTUO2v/9FNauyeJDoVFlgneUXrlFPz1yd3x52tDi823TysHfpsuq0Vh8
+ /GBj1AlvPgXF5lrEPSG+dDD8yOR1ZvD9GZkFOxSTm3StlogjBL6qgIOa4BUn+9mx
+ b20WhjeMtr1nMtimaHYIg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1692774894; x=1692861294; bh=tDaXdUCcLgRpu
+ br3uxxX1TmP+7guwXxhEyD9EcHjBEM=; b=fnEQrNLz1tIY4ZXJZu70+33fYAyKa
+ h/Cpznk7VmCUiYewQh/Z3ws85RBpVSwc2nc9Yezgcmxi3L/CGynNF69BJqZzB7aV
+ cnBXLBuh5PuPu5aoqo2e5kKQ781R8lf7A9GlsMrYjmxJpOKocY/qL2UvCxkAyfMV
+ mhyOgC2EhVEYDZJM3O2H+RcdhvAS8q7S/tIp0/Ms8K+dnP6EX+Ptgn+I9iZQftfm
+ v4pdpdxVgAwsvjDlSljyLxa13S8+rtvzNa0tHcT/AcEa9cG5ySPWRO3AKxZpEf2V
+ e+Ih8ujstiTJ1gQjBuddwhb4mCEWMbph1iKwkGgKzi2r/R1tEGwc5CTVA==
+X-ME-Sender: <xms:7bHlZG005vOQJeEM_z6IoU3kVF7O7dSDiWN9OvROQWaoUaL6-Eqxqg>
+ <xme:7bHlZJFckM77U1nJYBIyyg97MgQahiCqrXQy5wRxrE8yb4RsthUNBfTels9TmmwXU
+ --Wp47GHhzHwU1dYu0>
+X-ME-Received: <xmr:7bHlZO4HrrF7cOigxp2QzOWtqJ2yJfZp1WaGuaNJZeUXXeRnabGStag9Xjn2c2EY0eRSrQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvfedgtdehucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghu
+ shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
+ htvghrnhepffduvdfhheejudfgieejueeileegveduvdelhfekhffgteetffdtvdekveei
+ leefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+ dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:7bHlZH2ghPrS-aLk5TxEH5VIWsysW6Mb5BoZE-UeyhhDQZeZGRLXRQ>
+ <xmx:7bHlZJFnKGgomm4YpZ9cYpW8zIwMxue2BPldrKTID13xwq03wqYDzQ>
+ <xmx:7bHlZA_70l7u5SdgWZ7y2RSy8-lZkWThg5paAf1mGs1twnJ5HUPWzQ>
+ <xmx:7rHlZPbHxoimGdg4StwkHETFC1_oBTJwCARV-HEEUB7EkzYws3Tpvw>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Aug 2023 03:14:51 -0400 (EDT)
+Date: Wed, 23 Aug 2023 09:14:49 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Klaus Jensen <k.jensen@samsung.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 03/11] hw/misc: add a toy i2c echo device
+Message-ID: <ZOWx6ZovM4Z-eKDX@cormorant.local>
+References: <20230301165619.2171090-1-clg@kaod.org>
+ <20230301165619.2171090-4-clg@kaod.org>
+ <ad8588fd-7839-2fdc-45c7-bb2b5917ea65@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="UpGtQ6tHXiiGzhRN"
+Content-Disposition: inline
+In-Reply-To: <ad8588fd-7839-2fdc-45c7-bb2b5917ea65@redhat.com>
+Received-SPF: pass client-ip=66.111.4.27; envelope-from=its@irrelevant.dk;
+ helo=out3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,76 +106,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replaces the exit(0) call by a shutdown request, ensuring a proper
-cleanup of Qemu. Otherwise, some connections could be broken without
-being correctly flushed.
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
----
- gdbstub/gdbstub.c |  3 +--
- gdbstub/softmmu.c | 13 +++++++++++++
- gdbstub/user.c    |  2 ++
- 3 files changed, 16 insertions(+), 2 deletions(-)
+--UpGtQ6tHXiiGzhRN
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 5f28d5cf57..358eed1935 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1298,7 +1298,6 @@ static void handle_v_kill(GArray *params, void *user_ctx)
-     gdb_put_packet("OK");
-     error_report("QEMU: Terminated via GDBstub");
-     gdb_exit(0);
--    exit(0);
- }
- 
- static const GdbCmdParseEntry gdb_v_commands_table[] = {
-@@ -1818,7 +1817,7 @@ static int gdb_handle_packet(const char *line_buf)
-         /* Kill the target */
-         error_report("QEMU: Terminated via GDBstub");
-         gdb_exit(0);
--        exit(0);
-+        break;
-     case 'D':
-         {
-             static const GdbCmdParseEntry detach_cmd_desc = {
-diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-index f509b7285d..fa9b09537d 100644
---- a/gdbstub/softmmu.c
-+++ b/gdbstub/softmmu.c
-@@ -434,6 +434,19 @@ void gdb_exit(int code)
-     }
- 
-     qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
-+
-+    /*
-+     * Shutdown request is a clean way to stop the QEMU, compared
-+     * to a direct call to exit(). But we can't pass the exit code
-+     * through it so avoid doing that when it can matter.
-+     * As this function is also called during the cleanup process,
-+     * avoid sending the request if one is already set.
-+     */
-+    if (code) {
-+        exit(code);
-+    } else if (!qemu_shutdown_requested_get()) {
-+        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-+    }
- }
- 
- /*
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 5b375be1d9..f3d97d621f 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -113,6 +113,8 @@ void gdb_exit(int code)
-         gdb_put_packet(buf);
-         gdbserver_state.allow_stop_reply = false;
-     }
-+
-+    exit(code);
- }
- 
- int gdb_handlesig(CPUState *cpu, int sig)
--- 
-2.25.1
+On Aug 22 19:20, Thomas Huth wrote:
+> On 01/03/2023 17.56, C=C3=A9dric Le Goater wrote:
+> > From: Klaus Jensen <k.jensen@samsung.com>
+> >=20
+> > Add an example I2C device to demonstrate how a slave may master the bus
+> > and send data asynchronously to another slave.
+> >=20
+> > The device will echo whatever it is sent to the device identified by the
+> > first byte received.
+> >=20
+> > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> > [ clg: integrated fixes :
+> >    https://lore.kernel.org/qemu-devel/Y3yMKAhOkYGtnkOp@cormorant.local/=
+ ]
+> > Message-Id: <20220601210831.67259-7-its@irrelevant.dk>
+> > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> > ---
+> >   hw/misc/i2c-echo.c  | 156 ++++++++++++++++++++++++++++++++++++++++++++
+> >   hw/misc/meson.build |   2 +
+> >   2 files changed, 158 insertions(+)
+> >   create mode 100644 hw/misc/i2c-echo.c
+> >=20
+> > diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
+> > new file mode 100644
+> > index 0000000000..5705ab5d73
+> > --- /dev/null
+> > +++ b/hw/misc/i2c-echo.c
+> > @@ -0,0 +1,156 @@
+> > +#include "qemu/osdep.h"
+> > +#include "qemu/timer.h"
+> > +#include "qemu/main-loop.h"
+> > +#include "block/aio.h"
+> > +#include "hw/i2c/i2c.h"
+>=20
+>  Hi Klaus,
+>=20
+> I've got two questions with regards to this new devices:
+>=20
+> 1) The file lacks a license statement (and a short comment at the beginni=
+ng
+> what it is all about). Could you maybe provide a follow up patch with a
+> proper header comment that includes a license and a short description abo=
+ut
+> the device?
+>=20
+> 2) Why is it in hw/misc/ and not in hw/i2c/ ?
+>=20
+> I think we should also have a proper Kconfig switch for this device, so we
+> can disable it with --without-default-devices, what do you think?
+>=20
+>  Thomas
+>=20
+>=20
 
+Hi Thomas,
+
+1) My apologies, I'll add the proper GPL license comment.
+
+2) It's an example of using the asynchronous i2c send API. It's not a
+"real" device, its more like the edu-device. A proper note in the file
+should make this clear.
+
+I'll send a patch to fix this up!
+
+
+Thanks,
+Klaus
+
+--UpGtQ6tHXiiGzhRN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTlsekACgkQTeGvMW1P
+Demjxgf9FejbyVZz9B1CupYMsWsXsGyxGa/oe5f14yY3GnSb58G5KagZttYGKBa1
+U8ulqXKgLcou/1AWVynukCqu18VA0MvmS6nQFYHt06Lz6zuRWYYQhaHWQtlsAW+G
+63wUp5ba2N1XdhltjpDbndbDh9OSSAwdIoH+YW1kPy/VUbqP39fBOm296ZxLh6yA
+sC8zjHdsJcpolIaphuiYFhBOO22MXtNUj2+OSYiuvcgeBLBTpuS5xoWNOvn8DbFg
+/qNy8hf2Jrfhfh1U8Kuw1P+JVqo3DVQWI4v1ihbkq50Q0y5piDROSKeY9Ja+Kl7B
++fYYqgxNI1o4PQ68OV/WidUYWKBTLw==
+=uisn
+-----END PGP SIGNATURE-----
+
+--UpGtQ6tHXiiGzhRN--
 
