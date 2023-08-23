@@ -2,54 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B35785794
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 14:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8BC7857D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 14:21:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYmfj-00051x-3g; Wed, 23 Aug 2023 08:09:15 -0400
+	id 1qYmpv-0007rL-Tr; Wed, 23 Aug 2023 08:19:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+3e2b8733669f2ff7871f+7304+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qYmfd-00051p-CO
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:09:09 -0400
+ id 1qYmpk-0007r6-AP
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:19:37 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+3e2b8733669f2ff7871f+7304+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qYmfa-000636-Qa
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:09:09 -0400
+ id 1qYmph-0008TA-6T
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:19:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=msvj1XbDjvm8T1Oh6eFSuvrxhQU2Ledkj6WjVmdHv2g=; b=D8Rgtn9yY9zQs3YAmofwxKByeS
- 241JHk/i+6twwKVUuZr87hLZumX8DO6V4huQa58PWvuAO8v82WnAPMuKzEj4SaVpi2M8bTOAIuiT8
- rm5gJ873tr4GJsqi0JL9++Ma9APqqrhLz0IZ8v6r0xqN6ZBPGpmNUasLrnNNLCfxz0Kkh40kDUFg1
- LeIEoj1KX/38hy4m2IuOXs+mELCpvsKSFpJf9DFHo/28MJtv70zFIK23mhM6H2FpCKky8N7NtmkZ0
- 0D3I8Yw9m5bUhm6Q+OdozOtmCp+fXJFOZy+afh9GeV4eVALDHXuZrA3nm4WRAfntDVi5VZMY3OeSm
- vL54qC3w==;
-Received: from 54-240-197-231.amazon.com ([54.240.197.231]
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+ From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=4CcfEOVa4buxHgdu/wiyoSqwecLusPPUmTOMhiK4xJk=; b=PuFKXl+TPbZjqu5f25QtvGnKcL
+ lCCLl4JwqMTei7prjdRb3w1sXejx+wHPMOquntOGzfcuHw+FaPH7AJG86MAbSJeiyZZFhZ1Q53BA+
+ 7oU7sXNKHgFp55Un6U7rKbt8WFzwfjh+5zXI1gY6gNOEN52dKENkWad+04fq3iFcdxEBronx32178
+ 9KvzDOJJ3TgaZJ9v+3YBEY6VIOpyn1N2TOzDvvVEVwh2bcgxhDlju/3iRow16QBVVzuLkgYL9NU1U
+ rrV6qM5TM8yi8w/iSjBjFFXfYLqMsMGq1Cp1Divojd+tMbad5uGUkFRdNQgTxDkk03Q+jmxFPFrEF
+ 0H4dU/dw==;
+Received: from 54-240-197-239.amazon.com ([54.240.197.239]
  helo=edge-infra-2.e-lhr50.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qYmfW-004iVE-T6; Wed, 23 Aug 2023 12:09:03 +0000
-Message-ID: <75c5b1ad9e1195f17bcf568f1f664154cbbb3a23.camel@infradead.org>
-Subject: Re: [RFC PATCH post-8.1] hw/xen: Clean up event channel 'type_val'
- handling to use union
+ id 1qYmpc-004lCE-8X; Wed, 23 Aug 2023 12:19:28 +0000
+Message-ID: <fe04778810550788d2bc39cb7342d85c19a7eaec.camel@infradead.org>
+Subject: [PATCH v2] hw/xen: Clean up event channel 'type_val' handling to
+ use union
 From: David Woodhouse <dwmw2@infradead.org>
 To: paul@xen.org, qemu-devel <qemu-devel@nongnu.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
  <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, 
  "Michael S. Tsirkin"
  <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Date: Wed, 23 Aug 2023 13:09:02 +0100
-In-Reply-To: <23529a16-3a7e-287a-4da8-eebf53d5a95d@xen.org>
-References: <2d5e23d21fdbd148d9b0d9e4c00145217c4ddd17.camel@infradead.org>
- <23529a16-3a7e-287a-4da8-eebf53d5a95d@xen.org>
+Date: Wed, 23 Aug 2023 13:19:27 +0100
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-rzyr9vd8iGFnykE1wTf+"
+ boundary="=-bGdTSQWnISVzLeINSaHb"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -80,29 +77,462 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-rzyr9vd8iGFnykE1wTf+
+--=-bGdTSQWnISVzLeINSaHb
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2023-08-14 at 13:31 +0100, Paul Durrant wrote:
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint16_t pirq;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint16_t virq;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uin=
-t16_t port:15;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uin=
-t16_t to_qemu:1; /* Only two targets; qemu or loopback */
->=20
-> I'd have switch the sense and called this 'loopback'... since it's the=
+From: David Woodhouse <dwmw@amazon.co.uk>
+
+A previous implementation of this stuff used a 64-bit field for all of
+the port information (vcpu/type/type_val) and did atomic exchanges on
+them. When I implemented that in Qemu I regretted my life choices and
+just kept it simple with locking instead.
+
+So there's no need for the XenEvtchnPort to be so simplistic. We can
+use a union for the pirq/virq/interdomain information, which lets us
+keep a separate bit for the 'remote domain' in interdomain ports. A
+single bit is enough since the only possible targets are loopback or
+qemu itself.
+
+So now we can ditch PORT_INFO_TYPEVAL_REMOTE_QEMU and the horrid
+manual masking, although the in-memory representation is identical
+so there's no change in the saved state ABI.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+---
+v2: Minor cosmetic nits from Paul's review, completely remove the
+    definition of PORT_INFO_TYPEVAL_REMOTE_QEMU and _PORT_MASK.
+
+ hw/i386/kvm/xen_evtchn.c | 151 ++++++++++++++++++---------------------
+ 1 file changed, 70 insertions(+), 81 deletions(-)
+
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index a731738411..4df973022c 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -58,7 +58,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(XenEvtchnState, XEN_EVTCHN)
+ typedef struct XenEvtchnPort {
+     uint32_t vcpu;      /* Xen/ACPI vcpu_id */
+     uint16_t type;      /* EVTCHNSTAT_xxxx */
+-    uint16_t type_val;  /* pirq# / virq# / remote port according to type *=
+/
++    union {
++        uint16_t val;  /* raw value for serialization etc. */
++        uint16_t pirq;
++        uint16_t virq;
++        struct {
++            uint16_t port:15;
++            uint16_t to_qemu:1; /* Only two targets; qemu or loopback */
++        } interdomain;
++    } u;
+ } XenEvtchnPort;
 =20
-> more unlikely case.
+ /* 32-bit compatibility definitions, also used natively in 32-bit build */
+@@ -105,14 +113,6 @@ struct xenevtchn_handle {
+     int fd;
+ };
+=20
+-/*
+- * For unbound/interdomain ports there are only two possible remote
+- * domains; self and QEMU. Use a single high bit in type_val for that,
+- * and the low bits for the remote port number (or 0 for unbound).
+- */
+-#define PORT_INFO_TYPEVAL_REMOTE_QEMU           0x8000
+-#define PORT_INFO_TYPEVAL_REMOTE_PORT_MASK      0x7FFF
+-
+ /*
+  * These 'emuirq' values are used by Xen in the LM stream... and yes, I am
+  * insane enough to think about guest-transparent live migration from actu=
+al
+@@ -210,16 +210,16 @@ static int xen_evtchn_post_load(void *opaque, int ver=
+sion_id)
+         XenEvtchnPort *p =3D &s->port_table[i];
+=20
+         if (p->type =3D=3D EVTCHNSTAT_pirq) {
+-            assert(p->type_val);
+-            assert(p->type_val < s->nr_pirqs);
++            assert(p->u.pirq);
++            assert(p->u.pirq < s->nr_pirqs);
+=20
+             /*
+              * Set the gsi to IRQ_UNBOUND; it may be changed to an actual
+              * GSI# below, or to IRQ_MSI_EMU when the MSI table snooping
+              * catches up with it.
+              */
+-            s->pirq[p->type_val].gsi =3D IRQ_UNBOUND;
+-            s->pirq[p->type_val].port =3D i;
++            s->pirq[p->u.pirq].gsi =3D IRQ_UNBOUND;
++            s->pirq[p->u.pirq].port =3D i;
+         }
+     }
+     /* Rebuild s->pirq[].gsi mapping */
+@@ -243,7 +243,7 @@ static const VMStateDescription xen_evtchn_port_vmstate=
+ =3D {
+     .fields =3D (VMStateField[]) {
+         VMSTATE_UINT32(vcpu, XenEvtchnPort),
+         VMSTATE_UINT16(type, XenEvtchnPort),
+-        VMSTATE_UINT16(type_val, XenEvtchnPort),
++        VMSTATE_UINT16(u.val, XenEvtchnPort),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -599,14 +599,13 @@ static void unbind_backend_ports(XenEvtchnState *s)
+=20
+     for (i =3D 1; i < s->nr_ports; i++) {
+         p =3D &s->port_table[i];
+-        if (p->type =3D=3D EVTCHNSTAT_interdomain &&
+-            (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU)) {
+-            evtchn_port_t be_port =3D p->type_val & PORT_INFO_TYPEVAL_REMO=
+TE_PORT_MASK;
++        if (p->type =3D=3D EVTCHNSTAT_interdomain && p->u.interdomain.to_q=
+emu) {
++            evtchn_port_t be_port =3D p->u.interdomain.port;
+=20
+             if (s->be_handles[be_port]) {
+                 /* This part will be overwritten on the load anyway. */
+                 p->type =3D EVTCHNSTAT_unbound;
+-                p->type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
++                p->u.interdomain.port =3D 0;
+=20
+                 /* Leave the backend port open and unbound too. */
+                 if (kvm_xen_has_cap(EVTCHN_SEND)) {
+@@ -644,30 +643,22 @@ int xen_evtchn_status_op(struct evtchn_status *status=
+)
+=20
+     switch (p->type) {
+     case EVTCHNSTAT_unbound:
+-        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
+-            status->u.unbound.dom =3D DOMID_QEMU;
+-        } else {
+-            status->u.unbound.dom =3D xen_domid;
+-        }
++        status->u.unbound.dom =3D p->u.interdomain.to_qemu ? DOMID_QEMU
++                                                         : xen_domid;
+         break;
+=20
+     case EVTCHNSTAT_interdomain:
+-        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
+-            status->u.interdomain.dom =3D DOMID_QEMU;
+-        } else {
+-            status->u.interdomain.dom =3D xen_domid;
+-        }
+-
+-        status->u.interdomain.port =3D p->type_val &
+-            PORT_INFO_TYPEVAL_REMOTE_PORT_MASK;
++        status->u.interdomain.dom =3D p->u.interdomain.to_qemu ? DOMID_QEM=
+U
++                                                             : xen_domid;
++        status->u.interdomain.port =3D p->u.interdomain.port;
+         break;
+=20
+     case EVTCHNSTAT_pirq:
+-        status->u.pirq =3D p->type_val;
++        status->u.pirq =3D p->u.pirq;
+         break;
+=20
+     case EVTCHNSTAT_virq:
+-        status->u.virq =3D p->type_val;
++        status->u.virq =3D p->u.virq;
+         break;
+     }
+=20
+@@ -983,7 +974,7 @@ static int clear_port_pending(XenEvtchnState *s, evtchn=
+_port_t port)
+ static void free_port(XenEvtchnState *s, evtchn_port_t port)
+ {
+     s->port_table[port].type =3D EVTCHNSTAT_closed;
+-    s->port_table[port].type_val =3D 0;
++    s->port_table[port].u.val =3D 0;
+     s->port_table[port].vcpu =3D 0;
+=20
+     if (s->nr_ports =3D=3D port + 1) {
+@@ -1006,7 +997,7 @@ static int allocate_port(XenEvtchnState *s, uint32_t v=
+cpu, uint16_t type,
+         if (s->port_table[p].type =3D=3D EVTCHNSTAT_closed) {
+             s->port_table[p].vcpu =3D vcpu;
+             s->port_table[p].type =3D type;
+-            s->port_table[p].type_val =3D val;
++            s->port_table[p].u.val =3D val;
+=20
+             *port =3D p;
+=20
+@@ -1047,15 +1038,15 @@ static int close_port(XenEvtchnState *s, evtchn_por=
+t_t port,
+         return -ENOENT;
+=20
+     case EVTCHNSTAT_pirq:
+-        s->pirq[p->type_val].port =3D 0;
+-        if (s->pirq[p->type_val].is_translated) {
++        s->pirq[p->u.pirq].port =3D 0;
++        if (s->pirq[p->u.pirq].is_translated) {
+             *flush_kvm_routes =3D true;
+         }
+         break;
+=20
+     case EVTCHNSTAT_virq:
+-        kvm_xen_set_vcpu_virq(virq_is_global(p->type_val) ? 0 : p->vcpu,
+-                              p->type_val, 0);
++        kvm_xen_set_vcpu_virq(virq_is_global(p->u.virq) ? 0 : p->vcpu,
++                              p->u.virq, 0);
+         break;
+=20
+     case EVTCHNSTAT_ipi:
+@@ -1065,8 +1056,8 @@ static int close_port(XenEvtchnState *s, evtchn_port_=
+t port,
+         break;
+=20
+     case EVTCHNSTAT_interdomain:
+-        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
+-            uint16_t be_port =3D p->type_val & ~PORT_INFO_TYPEVAL_REMOTE_Q=
+EMU;
++        if (p->u.interdomain.to_qemu) {
++            uint16_t be_port =3D p->u.interdomain.port;
+             struct xenevtchn_handle *xc =3D s->be_handles[be_port];
+             if (xc) {
+                 if (kvm_xen_has_cap(EVTCHN_SEND)) {
+@@ -1076,14 +1067,15 @@ static int close_port(XenEvtchnState *s, evtchn_por=
+t_t port,
+             }
+         } else {
+             /* Loopback interdomain */
+-            XenEvtchnPort *rp =3D &s->port_table[p->type_val];
+-            if (!valid_port(p->type_val) || rp->type_val !=3D port ||
++            XenEvtchnPort *rp =3D &s->port_table[p->u.interdomain.port];
++            if (!valid_port(p->u.interdomain.port) ||
++                rp->u.interdomain.port !=3D port ||
+                 rp->type !=3D EVTCHNSTAT_interdomain) {
+                 error_report("Inconsistent state for interdomain unbind");
+             } else {
+                 /* Set the other end back to unbound */
+                 rp->type =3D EVTCHNSTAT_unbound;
+-                rp->type_val =3D 0;
++                rp->u.interdomain.port =3D 0;
+             }
+         }
+         break;
+@@ -1207,7 +1199,7 @@ int xen_evtchn_bind_vcpu_op(struct evtchn_bind_vcpu *=
+vcpu)
+     if (p->type =3D=3D EVTCHNSTAT_interdomain ||
+         p->type =3D=3D EVTCHNSTAT_unbound ||
+         p->type =3D=3D EVTCHNSTAT_pirq ||
+-        (p->type =3D=3D EVTCHNSTAT_virq && virq_is_global(p->type_val))) {
++        (p->type =3D=3D EVTCHNSTAT_virq && virq_is_global(p->u.virq))) {
+         /*
+          * unmask_port() with do_unmask=3D=3Dfalse will just raise the eve=
+nt
+          * on the new vCPU if the port was already pending.
+@@ -1352,19 +1344,15 @@ int xen_evtchn_bind_ipi_op(struct evtchn_bind_ipi *=
+ipi)
+ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdo=
+main)
+ {
+     XenEvtchnState *s =3D xen_evtchn_singleton;
+-    uint16_t type_val;
+     int ret;
+=20
+     if (!s) {
+         return -ENOTSUP;
+     }
+=20
+-    if (interdomain->remote_dom =3D=3D DOMID_QEMU) {
+-        type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
+-    } else if (interdomain->remote_dom =3D=3D DOMID_SELF ||
+-               interdomain->remote_dom =3D=3D xen_domid) {
+-        type_val =3D 0;
+-    } else {
++    if (interdomain->remote_dom !=3D DOMID_QEMU &&
++        interdomain->remote_dom !=3D DOMID_SELF &&
++        interdomain->remote_dom !=3D xen_domid) {
+         return -ESRCH;
+     }
+=20
+@@ -1375,8 +1363,8 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind=
+_interdomain *interdomain)
+     qemu_mutex_lock(&s->port_lock);
+=20
+     /* The newly allocated port starts out as unbound */
+-    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, type_val,
+-                        &interdomain->local_port);
++    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, 0, &interdomain->local=
+_port);
++
+     if (ret) {
+         goto out;
+     }
+@@ -1401,7 +1389,8 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind=
+_interdomain *interdomain)
+             assign_kernel_eventfd(lp->type, xc->guest_port, xc->fd);
+         }
+         lp->type =3D EVTCHNSTAT_interdomain;
+-        lp->type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU | interdomain->remo=
+te_port;
++        lp->u.interdomain.to_qemu =3D 1;
++        lp->u.interdomain.port =3D interdomain->remote_port;
+         ret =3D 0;
+     } else {
+         /* Loopback */
+@@ -1409,19 +1398,18 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bi=
+nd_interdomain *interdomain)
+         XenEvtchnPort *lp =3D &s->port_table[interdomain->local_port];
+=20
+         /*
+-         * The 'remote' port for loopback must be an unbound port allocate=
+d for
+-         * communication with the local domain (as indicated by rp->type_v=
+al
+-         * being zero, not PORT_INFO_TYPEVAL_REMOTE_QEMU), and must *not* =
+be
+-         * the port that was just allocated for the local end.
++         * The 'remote' port for loopback must be an unbound port allocate=
+d
++         * for communication with the local domain, and must *not* be the
++         * port that was just allocated for the local end.
+          */
+         if (interdomain->local_port !=3D interdomain->remote_port &&
+-            rp->type =3D=3D EVTCHNSTAT_unbound && rp->type_val =3D=3D 0) {
++            rp->type =3D=3D EVTCHNSTAT_unbound && !rp->u.interdomain.to_qe=
+mu) {
+=20
+             rp->type =3D EVTCHNSTAT_interdomain;
+-            rp->type_val =3D interdomain->local_port;
++            rp->u.interdomain.port =3D interdomain->local_port;
+=20
+             lp->type =3D EVTCHNSTAT_interdomain;
+-            lp->type_val =3D interdomain->remote_port;
++            lp->u.interdomain.port =3D interdomain->remote_port;
+         } else {
+             ret =3D -EINVAL;
+         }
+@@ -1440,7 +1428,6 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind=
+_interdomain *interdomain)
+ int xen_evtchn_alloc_unbound_op(struct evtchn_alloc_unbound *alloc)
+ {
+     XenEvtchnState *s =3D xen_evtchn_singleton;
+-    uint16_t type_val;
+     int ret;
+=20
+     if (!s) {
+@@ -1451,18 +1438,20 @@ int xen_evtchn_alloc_unbound_op(struct evtchn_alloc=
+_unbound *alloc)
+         return -ESRCH;
+     }
+=20
+-    if (alloc->remote_dom =3D=3D DOMID_QEMU) {
+-        type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
+-    } else if (alloc->remote_dom =3D=3D DOMID_SELF ||
+-               alloc->remote_dom =3D=3D xen_domid) {
+-        type_val =3D 0;
+-    } else {
++    if (alloc->remote_dom !=3D DOMID_QEMU &&
++        alloc->remote_dom !=3D DOMID_SELF &&
++        alloc->remote_dom !=3D xen_domid) {
+         return -EPERM;
+     }
+=20
+     qemu_mutex_lock(&s->port_lock);
+=20
+-    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, type_val, &alloc->port=
+);
++    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, 0, &alloc->port);
++
++    if (!ret && alloc->remote_dom =3D=3D DOMID_QEMU) {
++        XenEvtchnPort *p =3D &s->port_table[alloc->port];
++        p->u.interdomain.to_qemu =3D 1;
++    }
+=20
+     qemu_mutex_unlock(&s->port_lock);
+=20
+@@ -1489,12 +1478,12 @@ int xen_evtchn_send_op(struct evtchn_send *send)
+=20
+     switch (p->type) {
+     case EVTCHNSTAT_interdomain:
+-        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
++        if (p->u.interdomain.to_qemu) {
+             /*
+              * This is an event from the guest to qemu itself, which is
+              * serving as the driver domain.
+              */
+-            uint16_t be_port =3D p->type_val & ~PORT_INFO_TYPEVAL_REMOTE_Q=
+EMU;
++            uint16_t be_port =3D p->u.interdomain.port;
+             struct xenevtchn_handle *xc =3D s->be_handles[be_port];
+             if (xc) {
+                 eventfd_write(xc->fd, 1);
+@@ -1504,7 +1493,7 @@ int xen_evtchn_send_op(struct evtchn_send *send)
+             }
+         } else {
+             /* Loopback interdomain ports; just a complex IPI */
+-            set_port_pending(s, p->type_val);
++            set_port_pending(s, p->u.interdomain.port);
+         }
+         break;
+=20
+@@ -1546,8 +1535,7 @@ int xen_evtchn_set_port(uint16_t port)
+=20
+     /* QEMU has no business sending to anything but these */
+     if (p->type =3D=3D EVTCHNSTAT_virq ||
+-        (p->type =3D=3D EVTCHNSTAT_interdomain &&
+-         (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU))) {
++        (p->type =3D=3D EVTCHNSTAT_interdomain && p->u.interdomain.to_qemu=
+)) {
+         set_port_pending(s, port);
+         ret =3D 0;
+     }
+@@ -2057,7 +2045,7 @@ int xen_be_evtchn_bind_interdomain(struct xenevtchn_h=
+andle *xc, uint32_t domid,
+     switch (gp->type) {
+     case EVTCHNSTAT_interdomain:
+         /* Allow rebinding after migration, preserve port # if possible */
+-        be_port =3D gp->type_val & ~PORT_INFO_TYPEVAL_REMOTE_QEMU;
++        be_port =3D gp->u.interdomain.port;
+         assert(be_port !=3D 0);
+         if (!s->be_handles[be_port]) {
+             s->be_handles[be_port] =3D xc;
+@@ -2078,7 +2066,8 @@ int xen_be_evtchn_bind_interdomain(struct xenevtchn_h=
+andle *xc, uint32_t domid,
+         }
+=20
+         gp->type =3D EVTCHNSTAT_interdomain;
+-        gp->type_val =3D be_port | PORT_INFO_TYPEVAL_REMOTE_QEMU;
++        gp->u.interdomain.to_qemu =3D 1;
++        gp->u.interdomain.port =3D be_port;
+         xc->guest_port =3D guest_port;
+         if (kvm_xen_has_cap(EVTCHN_SEND)) {
+             assign_kernel_eventfd(gp->type, guest_port, xc->fd);
+@@ -2123,7 +2112,7 @@ int xen_be_evtchn_unbind(struct xenevtchn_handle *xc,=
+ evtchn_port_t port)
+         /* This should never *not* be true */
+         if (gp->type =3D=3D EVTCHNSTAT_interdomain) {
+             gp->type =3D EVTCHNSTAT_unbound;
+-            gp->type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
++            gp->u.interdomain.port =3D 0;
+         }
+=20
+         if (kvm_xen_has_cap(EVTCHN_SEND)) {
+@@ -2277,11 +2266,11 @@ EvtchnInfoList *qmp_xen_event_list(Error **errp)
+=20
+         info->type =3D p->type;
+         if (p->type =3D=3D EVTCHNSTAT_interdomain) {
+-            info->remote_domain =3D g_strdup((p->type_val & PORT_INFO_TYPE=
+VAL_REMOTE_QEMU) ?
++            info->remote_domain =3D g_strdup(p->u.interdomain.to_qemu ?
+                                            "qemu" : "loopback");
+-            info->target =3D p->type_val & PORT_INFO_TYPEVAL_REMOTE_PORT_M=
+ASK;
++            info->target =3D p->u.interdomain.port;
+         } else {
+-            info->target =3D p->type_val;
++            info->target =3D p->u.val; /* pirq# or virq# */
+         }
+         info->vcpu =3D p->vcpu;
+         info->pending =3D test_bit(i, pending);
+--=20
+2.34.1
 
-Meh, got half way through doing that and remembered why I didn't do it
-the first time. It's not binary-compatible with serialized state from
-before, which used the flag in 1<<15 manually.
 
---=-rzyr9vd8iGFnykE1wTf+
+
+--=-bGdTSQWnISVzLeINSaHb
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -194,25 +624,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODIzMTIwOTAyWjAvBgkqhkiG9w0BCQQxIgQga8Dk4hAu
-TLCZXHKkeSoIxRPCVrDqRGWYkLCUUHCe/Qswgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODIzMTIxOTI3WjAvBgkqhkiG9w0BCQQxIgQghr5fvCSK
+t+3IZiC/9RMOXcMedhMycEvAWWepLNoe0jAwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAXTDaPg4l2p/WBGHm2V1rN6H82PUkqWzPX
-0nbGmBhtw9KpeS86J6maDPC8WDR3BFWo73M4hJkjl+Vdm6bRmr8m4esLGE09NGId3svmbzP+Xw/Q
-zTU6r7dQQT8I6hlhT3lUHLH4b6gr9TaKySIdaw2GQ3XpiN+nWA4OCkDDk8qSS7HhJG46WsRvX0b/
-W48nuMUIY01WhdR43TFBqake1l33AMBfXhigMiynofVNYffZIsX54LykIm3YlqMn6ls3Pl5S0R3b
-KtMkh959+I9fWt2QGMj/xtW+gJJJ5Xk2+M+YIOagEYhrfakCtlQwsmH6P4xGFkHD9CJgs4bE5qA2
-GuCuY1sb0M6/O1ggMt9Sm0DaN5UUOXk56hyyY/BydfOWHNrw7ZPep6grQ0wTo+dBBRGhDowdGbBx
-wdOo+q3+kIV/sm+ozqAKxo58ipFSK3oHHoPvXdsH0DZCnMN5PCoEpzhjn3t6zxgdjUz+3wQBkP+Q
-TScrs2jHWq61V8NhM2ujNdazJfpn7Cru7/ykuRmOiCYPjL2y8mXeXoKI3TGwhdHyNqL6sbrZ4S5e
-ECsUECEBkAZtXFfrUK831otRyfa8e8u6aat01ZycvCB8RkxpaQE/6749i4f2ZDqvXk546/ruPPCn
-ICLS0QyJp+Sxu51nhYhMDD93b4IunK86rdUnv05kCwAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgA3DfUe0c1uDAYajTert+BzuiMpABjI1b53
+XMMT2unCvAVsl/YYg1Do6nUZ/N29Lbfws1kqIrbKHjkTqvSsq1r7NC78jW+tJX50O68IviE1N3cX
+Czzx6jKwQqJwFwUHq7plHHXSXL5Rj8QNplh6wfYc08sb82+0Y2S31FopeuyrJ2kjBm+6+LkHh/lP
+Y7T0oQbC2lkyOT1OrevHx5zyplJOUlPmwOy/fuzdoJXo+OW8JqtTdRA4jYBQtOPcpAvseirnZEha
+8t3ViYmgcSz2AoFryfcknUJZvt03hdQyT0/zrb6EvDEmmCF8zZsJSoGy1jT1LxLENj+sws/5Sdhq
+Irh5S+UWg9kR9z9jj71Huh6lHkWoIstsDbaNgZOr1gtRcGGETPTftbkoaIXj33HQKgfqPFJNaZ3Y
+NM4r4yGvAZqkiVM5X+Xqs/nrnJvOBIXEvy/0xh+JQUtPyJMimPfhi766LsLlTbS+K7sCtQiX8JfL
+282az41g9PETAkS7ny9VU0pYtjvHQEvLdpB50qzoTtJAD0HXQiYpftMO2RLVx1EvYX+/yI26YU1D
+bOSujrhu50wiCb6AS6CW4PM+dH/SnuMyN9cLYeS/ksILElfgWO8lW6y1gUhxZUKjCW6ShMzRHB9R
+2tW+w8aPus7U4xXfNb4mTIssh/IsQmEUaNvca5VbbwAAAAAAAA==
 
 
---=-rzyr9vd8iGFnykE1wTf+--
+--=-bGdTSQWnISVzLeINSaHb--
 
