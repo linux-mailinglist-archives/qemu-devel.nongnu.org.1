@@ -2,94 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47FB78542A
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4523478546C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:41:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYkDo-0001cA-0T; Wed, 23 Aug 2023 05:32:16 -0400
+	id 1qYkLS-0000Du-4P; Wed, 23 Aug 2023 05:40:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYkDY-0001Wp-Cb
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:32:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYkDW-0007W0-CS
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:31:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692783117;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2bGjQ4va+sX2Ui3XJ6x7VjjJZsFAHEWdQpde31c9SP0=;
- b=AbCSUm+DJzfsYPn3T/K2IkYDGx1S4ZaQ1HFqtfA8RAbxt5N4tFU5/qAvb1VheStsii8JW7
- Y61n2EU6kLZb2PhxwBV5YuZsyqi5l25Isg3whSyYMrO3l/m6yKDynox8GvL8TCtRepsn/+
- MUMzITdlqoaZxOmWRm0iIfndKCfl+sE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-6LfkbDwFPzGsElZphfwUMA-1; Wed, 23 Aug 2023 05:31:55 -0400
-X-MC-Unique: 6LfkbDwFPzGsElZphfwUMA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31c5cc5537dso1135327f8f.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 02:31:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qYkLC-0000Cq-Th; Wed, 23 Aug 2023 05:39:55 -0400
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qYkLA-0000CH-K2; Wed, 23 Aug 2023 05:39:54 -0400
+Received: by mail-ua1-x932.google.com with SMTP id
+ a1e0cc1a2514c-79ddb7fae73so1389073241.3; 
+ Wed, 23 Aug 2023 02:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692783590; x=1693388390;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3TW8sHLlQfIFnuvPvTy7XQ76IwAXju7cnuNI1015O+A=;
+ b=BW/3PlJCNYRK+gbtcilHgRz5yZuMG+DKKRysTmz/wq22tGx4HH1DtzUmX520xL2enF
+ a4UHqo3sthTFy6/knr8a6idQXSrtITTqF6pI3EjjFPS1KvPTdyibIhyrDF+UlJUJ9wsK
+ /z81pSPn+rwjXJ6bgch/WB1K0q/QKOeLK97KqZMXFX7dmb46mnyoEt3OKIRd50Pm/v+6
+ DP/V4FOax+/woAt64dwWOPG52xuNi0FbAV9tYUhrfvdraA6VfhPEaRDREyKHyozmX7Kn
+ UhUDk5eqGoa4Srzh9w6OWHh9NUtlLSBgd32JnmeqDSWRNj+WIPW64SwTh00d4eDUZtjd
+ cuQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692783114; x=1693387914;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2bGjQ4va+sX2Ui3XJ6x7VjjJZsFAHEWdQpde31c9SP0=;
- b=ToXoH6f6thf4u02F3jXldm85HomG+xLCDTWxEMnBv84CUjfNpNTxIaVOBYNrIRZfqA
- AYcynkIBp6/+naUWD6FDBhm5F2/Gv4cst/wHlqO0Q/oGU96kc2VIWf4lGux0phVUBZRI
- otx7sx9jVG9/sp6/ElfFcaWNWTjHRADSELLGACX3OCahG0ZzSw3LD1P8iX2QBbxVvIb9
- NK8KNUR2R6yku5cbHZz0Et7mS3Xq87zjQwXviekCY6jOLx8v0xXYQnPbGUvkMg7GszGC
- Kkdr7PRmZXh4+Y8Rlmi1nDVm8mSizPRJBZAX8vPJvO//jRokmAZYwCErv/dvzpqbSt96
- Pquw==
-X-Gm-Message-State: AOJu0Ywz21NWmJzeDnAH+zPqSuo3EDV3V/UQpEdZuGRx1B7VFFJM5FyO
- P16AxkTm0BmAj99DhFdg8QIV2YVGxvixYdpbQXDuVyKp/yiDcH1T1vQx6RclHKNdzGJ9rO8EXti
- PZH+dN82pyIamcuI=
-X-Received: by 2002:a5d:6148:0:b0:313:e2e3:d431 with SMTP id
- y8-20020a5d6148000000b00313e2e3d431mr8694828wrt.12.1692783114640; 
- Wed, 23 Aug 2023 02:31:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4amnVZi2tn4TZD/i44IlCDR7pa2p/XjsejBHwYbkWiq5Yrp6A2v3DpwbUXSdFDtUtl12fVw==
-X-Received: by 2002:a5d:6148:0:b0:313:e2e3:d431 with SMTP id
- y8-20020a5d6148000000b00313e2e3d431mr8694808wrt.12.1692783114277; 
- Wed, 23 Aug 2023 02:31:54 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-177-178.web.vodafone.de.
- [109.43.177.178]) by smtp.gmail.com with ESMTPSA id
- y26-20020a7bcd9a000000b003fef19bb55csm1095973wmj.34.2023.08.23.02.31.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 02:31:53 -0700 (PDT)
-Message-ID: <8d63f53b-99eb-5c7a-ceae-8a5848c29753@redhat.com>
-Date: Wed, 23 Aug 2023 11:31:51 +0200
+ d=1e100.net; s=20221208; t=1692783590; x=1693388390;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3TW8sHLlQfIFnuvPvTy7XQ76IwAXju7cnuNI1015O+A=;
+ b=ZgSEZmd4e9TTfF34+WR3RNj1YrJ715sFbI5nT+q61m0ipBu3ssyeJC7yp4BgBjDWCr
+ 6SzV16LswTZbJSdZfOzqGzJZDsR7K98+l41amngjrKJze46al/sEmtPwUMnuy/oUVJ+Y
+ D2cGBZuOD53m4j79nJ/hP2VvCRy2yhleKX60b2v1IsLqzggNjUgRcQjgbRxAM8aUKCFG
+ Zj9Xba+5kZyFilcEoPPs5UYW+zyxdXjZhuidy856uW//yRoIKFkbHjizBO4ycH6/8A3w
+ 0OoTCRogVsn1/gelOkBnTI9TE84ibrv21T0jnc4W9VuyHc4IH4Dx42tUdeZGq9NsiUhE
+ 5gKA==
+X-Gm-Message-State: AOJu0YwJgCL7FCYMIGqcg6yhMIQFGRsyRk1GxP3q78iQlKAfG9fZM0co
+ LIxeyCZGkQMGvRT7O2g/87xjssqwPHN6t4aFU6w=
+X-Google-Smtp-Source: AGHT+IFlrzw+rQhrya4KKH2oM9Soc8IJZkcOcOBuHgt+1s0qwJqb2OM2g2w0z5s2H3/CcX/Rj0WV8DuYp6rlb727e4c=
+X-Received: by 2002:a67:de98:0:b0:44d:5435:a3e with SMTP id
+ r24-20020a67de98000000b0044d54350a3emr5870235vsk.9.1692783590217; Wed, 23 Aug
+ 2023 02:39:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/2] hw/misc/i2c-echo: add copyright/license note
-Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@aj.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Klaus Jensen <k.jensen@samsung.com>
-References: <20230823-i2c-echo-fixes-v2-0-ff404db1bf99@samsung.com>
- <20230823-i2c-echo-fixes-v2-1-ff404db1bf99@samsung.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230823-i2c-echo-fixes-v2-1-ff404db1bf99@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.767, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20230815195741.8325-1-richard.henderson@linaro.org>
+ <20230815195741.8325-6-richard.henderson@linaro.org>
+In-Reply-To: <20230815195741.8325-6-richard.henderson@linaro.org>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Wed, 23 Aug 2023 19:39:38 +1000
+Message-ID: <CACzsE9rXZdXuEBqcF-fBwmBiMzavCJ7czWufT+tzwf4teNe9uw@mail.gmail.com>
+Subject: Re: [PATCH v3 05/14] tcg/ppc: Use ADDPCIS in tcg_out_tb_start
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000956d0a060393e4b1"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
+ envelope-from=jniethe5@gmail.com; helo=mail-ua1-x932.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,36 +84,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/08/2023 11.01, Klaus Jensen wrote:
-> From: Klaus Jensen <k.jensen@samsung.com>
-> 
-> Add missing copyright and license notice. Also add a short description
-> of the device.
-> 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+--000000000000956d0a060393e4b1
+Content-Type: text/plain; charset="UTF-8"
+
+On Wed, 16 Aug 2023, 5:57 am Richard Henderson, <
+richard.henderson@linaro.org> wrote:
+
+> With ISA v3.0, we can use ADDPCIS instead of BCL+MFLR to load NIP.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/misc/i2c-echo.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
-> index 5705ab5d7349..8ee03cb5632b 100644
-> --- a/hw/misc/i2c-echo.c
-> +++ b/hw/misc/i2c-echo.c
-> @@ -1,3 +1,11 @@
-> +/*
-> + * Example I2C device using asynchronous I2C send.
-> + *
-> + * Copyright (C) 2023 Samsung Electronics Co., Ltd. All Rights Reserved.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+>  tcg/ppc/tcg-target.c.inc | 25 ++++++++++++++++++++++---
+>  1 file changed, 22 insertions(+), 3 deletions(-)
+>
+> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+> index 19004fa568..36b4f61236 100644
+> --- a/tcg/ppc/tcg-target.c.inc
+> +++ b/tcg/ppc/tcg-target.c.inc
+> @@ -362,6 +362,7 @@ static bool tcg_target_const_match(int64_t val,
+> TCGType type, int ct)
+>  #define CRNAND XO19(225)
+>  #define CROR   XO19(449)
+>  #define CRNOR  XO19( 33)
+> +#define ADDPCIS XO19( 2)
+>
+>  #define EXTSB  XO31(954)
+>  #define EXTSH  XO31(922)
+> @@ -854,6 +855,19 @@ static inline void tcg_out_sari64(TCGContext *s,
+> TCGReg dst, TCGReg src, int c)
+>      tcg_out32(s, SRADI | RA(dst) | RS(src) | SH(c & 0x1f) | ((c >> 4) &
+> 2));
+>  }
+>
+> +static void tcg_out_addpcis(TCGContext *s, TCGReg dst, intptr_t imm)
+> +{
+> +    int d0, d1, d2;
 > +
->   #include "qemu/osdep.h"
->   #include "qemu/timer.h"
->   #include "qemu/main-loop.h"
-> 
+> +    tcg_debug_assert((imm & 0xffff) == 0);
+> +    tcg_debug_assert(imm == (int32_t)imm);
+> +
+>
 
-Thanks!
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I think you need imm >>= 16 here.
+Without that the next patch in the series crashes.
 
++    d2 = imm & 1;
+> +    d1 = (imm >> 1) & 0x1f;
+> +    d0 = (imm >> 6) & 0x3ff;
+> +    tcg_out32(s, ADDPCIS | RT(dst) | (d1 << 16) | (d0 << 6) | d2);
+> +}
+> +
+>  static void tcg_out_bswap16(TCGContext *s, TCGReg dst, TCGReg src, int
+> flags)
+>  {
+>      TCGReg tmp = dst == src ? TCG_REG_R0 : dst;
+> @@ -2489,9 +2503,14 @@ static void tcg_out_tb_start(TCGContext *s)
+>  {
+>      /* Load TCG_REG_TB. */
+>      if (USE_REG_TB) {
+> -        /* bcl 20,31,$+4 (preferred form for getting nia) */
+> -        tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0x4 | LK);
+> -        tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);
+> +        if (have_isa_3_00) {
+> +            /* lnia REG_TB */
+> +            tcg_out_addpcis(s, TCG_REG_TB, 0);
+> +        } else {
+> +            /* bcl 20,31,$+4 (preferred form for getting nia) */
+> +            tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0x4 | LK);
+> +            tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);
+> +        }
+>      }
+>  }
+>
+> --
+> 2.34.1
+>
+>
+
+--000000000000956d0a060393e4b1
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, 16 Aug 2023, 5:57 am Richard Henderson, &lt;<a=
+ href=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org<=
+/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
+ 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">With ISA v3.0, we ca=
+n use ADDPCIS instead of BCL+MFLR to load NIP.<br>
+<br>
+Signed-off-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@li=
+naro.org" target=3D"_blank" rel=3D"noreferrer">richard.henderson@linaro.org=
+</a>&gt;<br>
+---<br>
+=C2=A0tcg/ppc/tcg-target.c.inc | 25 ++++++++++++++++++++++---<br>
+=C2=A01 file changed, 22 insertions(+), 3 deletions(-)<br>
+<br>
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc<br>
+index 19004fa568..36b4f61236 100644<br>
+--- a/tcg/ppc/tcg-target.c.inc<br>
++++ b/tcg/ppc/tcg-target.c.inc<br>
+@@ -362,6 +362,7 @@ static bool tcg_target_const_match(int64_t val, TCGType=
+ type, int ct)<br>
+=C2=A0#define CRNAND XO19(225)<br>
+=C2=A0#define CROR=C2=A0 =C2=A0XO19(449)<br>
+=C2=A0#define CRNOR=C2=A0 XO19( 33)<br>
++#define ADDPCIS XO19( 2)<br>
+<br>
+=C2=A0#define EXTSB=C2=A0 XO31(954)<br>
+=C2=A0#define EXTSH=C2=A0 XO31(922)<br>
+@@ -854,6 +855,19 @@ static inline void tcg_out_sari64(TCGContext *s, TCGRe=
+g dst, TCGReg src, int c)<br>
+=C2=A0 =C2=A0 =C2=A0tcg_out32(s, SRADI | RA(dst) | RS(src) | SH(c &amp; 0x1=
+f) | ((c &gt;&gt; 4) &amp; 2));<br>
+=C2=A0}<br>
+<br>
++static void tcg_out_addpcis(TCGContext *s, TCGReg dst, intptr_t imm)<br>
++{<br>
++=C2=A0 =C2=A0 int d0, d1, d2;<br>
++<br>
++=C2=A0 =C2=A0 tcg_debug_assert((imm &amp; 0xffff) =3D=3D 0);<br>
++=C2=A0 =C2=A0 tcg_debug_assert(imm =3D=3D (int32_t)imm);<br>
++<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto"=
+>I think you need imm &gt;&gt;=3D 16 here.</div><div dir=3D"auto">Without t=
+hat the next patch in the series crashes.=C2=A0</div><div dir=3D"auto"><br>=
+</div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gma=
+il_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-lef=
+t:1ex">
++=C2=A0 =C2=A0 d2 =3D imm &amp; 1;<br>
++=C2=A0 =C2=A0 d1 =3D (imm &gt;&gt; 1) &amp; 0x1f;<br>
++=C2=A0 =C2=A0 d0 =3D (imm &gt;&gt; 6) &amp; 0x3ff;<br>
++=C2=A0 =C2=A0 tcg_out32(s, ADDPCIS | RT(dst) | (d1 &lt;&lt; 16) | (d0 &lt;=
+&lt; 6) | d2);<br>
++}<br>
++<br>
+=C2=A0static void tcg_out_bswap16(TCGContext *s, TCGReg dst, TCGReg src, in=
+t flags)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0TCGReg tmp =3D dst =3D=3D src ? TCG_REG_R0 : dst;<br>
+@@ -2489,9 +2503,14 @@ static void tcg_out_tb_start(TCGContext *s)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0/* Load TCG_REG_TB. */<br>
+=C2=A0 =C2=A0 =C2=A0if (USE_REG_TB) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* bcl 20,31,$+4 (preferred form for getting n=
+ia) */<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0=
+x4 | LK);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (have_isa_3_00) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* lnia REG_TB */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_out_addpcis(s, TCG_REG_TB, 0=
+);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* bcl 20,31,$+4 (preferred form=
+ for getting nia) */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_out32(s, BC | BO_ALWAYS | BI=
+(7, CR_SO) | 0x4 | LK);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_out32(s, MFSPR | RT(TCG_REG_=
+TB) | LR);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0}<br>
+<br>
+-- <br>
+2.34.1<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000956d0a060393e4b1--
 
