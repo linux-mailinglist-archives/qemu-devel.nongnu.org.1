@@ -2,75 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B9578504A
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 08:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F217850A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 08:28:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYguP-0003AL-TE; Wed, 23 Aug 2023 02:00:01 -0400
+	id 1qYhKP-0004Wl-4a; Wed, 23 Aug 2023 02:26:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYguM-000374-6n
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:59:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYhKJ-0004WN-JF
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 02:26:47 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYguK-0000Y1-0q
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:59:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692770394;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zMRjCZcsMn4oHCIdLdsGS2R1sBG+QeWOHf3LMBSHfF4=;
- b=R904JsrRQ7JCYeyj2rMZEqX3Ldf+zcJ69CJ+lv+RXCBhHGA9QN7dR5Pkl0Lh/BjtjOxCfy
- 1uwYkuFLGITc5Zy1YoiBrz+x0xAfnEQNyQHAvkmsagJlukmbL/O+WkTxxO6gtafAzM6Dqt
- at3+NPJntdAJWCgqKQMfZ87uiYGQk+U=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-654-ZcsuXqSyMqaPnWCtDXGdwg-1; Wed, 23 Aug 2023 01:59:50 -0400
-X-MC-Unique: ZcsuXqSyMqaPnWCtDXGdwg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7CD4B28EA6FD;
- Wed, 23 Aug 2023 05:59:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5D4B240C2073;
- Wed, 23 Aug 2023 05:59:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5710221E690D; Wed, 23 Aug 2023 07:59:49 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Juan Quintela
- <quintela@redhat.com>
-Subject: Re: [RFC PATCH] docs/style: permit inline loop variables
-References: <20230822155004.1158931-1-alex.bennee@linaro.org>
- <CAFEAcA8_tqboXDen6OPY-AeZ3BY7p3vYMeG77YQJ=cKA_GRMaQ@mail.gmail.com>
-Date: Wed, 23 Aug 2023 07:59:49 +0200
-In-Reply-To: <CAFEAcA8_tqboXDen6OPY-AeZ3BY7p3vYMeG77YQJ=cKA_GRMaQ@mail.gmail.com>
- (Peter Maydell's message of "Tue, 22 Aug 2023 16:57:02 +0100")
-Message-ID: <87jztmz4bu.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYhKH-0005A8-UX
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 02:26:47 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C40761C3E6
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 09:26:59 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 61E402126D
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 09:26:41 +0300 (MSK)
+Message-ID: <2c59728b-004c-d81c-eb45-cede21cf246b@tls.msk.ru>
+Date: Wed, 23 Aug 2023 09:26:41 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2 00/24] tree-wide spelling fixes
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+References: <20230823055155.1917375-1-mjt@tls.msk.ru>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230823055155.1917375-1-mjt@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -86
+X-Spam_score: -8.7
+X-Spam_bar: --------
+X-Spam_report: (-8.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.767,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,24 +58,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+This is interesting.
 
-> On Tue, 22 Aug 2023 at 16:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->> I've already wasted enough of my time debugging aliased variables in
->> deeply nested loops.
->
-> In theory we could try to enable -Wshadow and deal with
-> all the existing cases of aliasing, which would then
-> allow us to turn it into an error and catch your bugs :-)
+So, I forgot to remove old, already sent patches from the work dir
+(usually I remove whole thing but didn't do that now).  So I had
+2 patch series in the same dir, one old already sent and applied,
+and one new.  And did git send-email series/* - which obviously
+included both.
 
-In practice, a quick compile with -Wshadow -Wno-error=3Dshadow coughs up
-almost 6000 warnings.  There are duplicates since we compile many files
-multiple times, so I piped through sort -u | wc -l, and got about 1200.
+But the fun part is the References: headers and hence threading.
 
-> Anyway, I think declaration-in-for-loop is OK and we
-> already have quite a lot of instances of it.
+I used git format-patch --cover-letter $since-commit.  Git created the
+cover letter with Message-Id 20230823055155.1917375-1-mjt@tls.msk.ru.
+And used this Id in References: header of the *first* patch.
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
+But in all subsequent patches 2..24, it used *another* ID in the
+References: header, the one taken from the *old* cover letter,
+which it replaced when generating the new cover.
 
+Obviously I did not edit the messages, did not specify anything
+more fancy besides --cover-letter, - the only issue was that I
+had another 4-file patch series in the same dir.
+
+This smells like an.. interesting bug in git.. :)
+
+/mjt
 
