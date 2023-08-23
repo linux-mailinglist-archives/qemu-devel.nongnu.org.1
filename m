@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1BB7850F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 08:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A8C7850FB
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 08:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYhlQ-00049b-Uk; Wed, 23 Aug 2023 02:54:49 -0400
+	id 1qYhlS-0004As-Dy; Wed, 23 Aug 2023 02:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYhks-00044X-Ec
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 02:54:14 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYhku-00044h-8F
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 02:54:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYhkp-000162-S0
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 02:54:14 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYhks-00016s-BQ
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 02:54:15 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E33381C401
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 09:54:20 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 29F4D1C402
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 09:54:21 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0DE57212A3;
+ by tsrv.corpit.ru (Postfix) with SMTP id 28A3B212A4;
  Wed, 23 Aug 2023 09:54:01 +0300 (MSK)
-Received: (nullmailer pid 1919454 invoked by uid 1000);
+Received: (nullmailer pid 1919457 invoked by uid 1000);
  Wed, 23 Aug 2023 06:54:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 07/24] i386: spelling fixes
-Date: Wed, 23 Aug 2023 09:53:18 +0300
-Message-Id: <20230823065335.1919380-6-mjt@tls.msk.ru>
+Subject: [PATCH 08/24] mips: spelling fixes
+Date: Wed, 23 Aug 2023 09:53:19 +0300
+Message-Id: <20230823065335.1919380-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230823055155.1917375-1-mjt@tls.msk.ru>
 References: <20230823055155.1917375-1-mjt@tls.msk.ru>
@@ -59,307 +59,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- host/include/i386/host/cpuinfo.h | 2 +-
- hw/i386/acpi-build.c             | 4 ++--
- hw/i386/amd_iommu.c              | 4 ++--
- hw/i386/intel_iommu.c            | 4 ++--
- hw/i386/kvm/xen_xenstore.c       | 2 +-
- hw/i386/kvm/xenstore_impl.c      | 2 +-
- hw/i386/pc.c                     | 4 ++--
- include/hw/i386/topology.h       | 2 +-
- target/i386/cpu.c                | 4 ++--
- target/i386/cpu.h                | 4 ++--
- target/i386/hax/hax-interface.h  | 4 ++--
- target/i386/hax/hax-windows.c    | 2 +-
- target/i386/kvm/kvm.c            | 4 ++--
- target/i386/kvm/xen-emu.c        | 2 +-
- target/i386/machine.c            | 4 ++--
- target/i386/tcg/translate.c      | 8 ++++----
- tests/tcg/i386/system/boot.S     | 2 +-
- tests/tcg/i386/x86.csv           | 2 +-
- 18 files changed, 30 insertions(+), 30 deletions(-)
+ hw/mips/malta.c                 |  2 +-
+ target/mips/cpu-defs.c.inc      |  2 +-
+ target/mips/tcg/msa_helper.c    | 12 ++++++------
+ target/mips/tcg/mxu_translate.c |  6 +++---
+ 4 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 073d0a426f..6e46939132 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -1,5 +1,5 @@
+diff --git a/hw/mips/malta.c b/hw/mips/malta.c
+index f9618fa5f5..16e9c4773f 100644
+--- a/hw/mips/malta.c
++++ b/hw/mips/malta.c
+@@ -628,5 +628,5 @@ static void bl_setup_gt64120_jump_kernel(void **p, uint64_t run_addr,
+     };
+ 
+-    /* Bus endianess is always reversed */
++    /* Bus endianness is always reversed */
+ #if TARGET_BIG_ENDIAN
+ #define cpu_to_gt32(x) (x)
+diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
+index 03185d9aa0..c0c389c59a 100644
+--- a/target/mips/cpu-defs.c.inc
++++ b/target/mips/cpu-defs.c.inc
+@@ -1046,5 +1046,5 @@ static void mvp_init(CPUMIPSState *env)
+     }
+ 
+-    /* MVPConf1 implemented, TLB sharable, no gating storage support,
++    /* MVPConf1 implemented, TLB shareable, no gating storage support,
+        programmable cache partitioning implemented, number of allocatable
+        and shareable TLB entries, MVP has allocatable TCs, 2 VPEs
+diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
+index 29b31d70fe..6e93a19a93 100644
+--- a/target/mips/tcg/msa_helper.c
++++ b/target/mips/tcg/msa_helper.c
+@@ -803,7 +803,7 @@ void helper_msa_bset_d(CPUMIPSState *env, uint32_t wd, uint32_t ws, uint32_t wt)
+  * | HADD_S.W      | Vector Signed Horizontal Add (word)                      |
+  * | HADD_S.D      | Vector Signed Horizontal Add (doubleword)                |
+- * | HADD_U.H      | Vector Unigned Horizontal Add (halfword)                 |
+- * | HADD_U.W      | Vector Unigned Horizontal Add (word)                     |
+- * | HADD_U.D      | Vector Unigned Horizontal Add (doubleword)               |
++ * | HADD_U.H      | Vector Unsigned Horizontal Add (halfword)                |
++ * | HADD_U.W      | Vector Unsigned Horizontal Add (word)                    |
++ * | HADD_U.D      | Vector Unsigned Horizontal Add (doubleword)              |
+  * +---------------+----------------------------------------------------------+
+  */
+@@ -3452,7 +3452,7 @@ void helper_msa_mulv_d(CPUMIPSState *env,
+  * | HSUB_S.W      | Vector Signed Horizontal Subtract (word)                 |
+  * | HSUB_S.D      | Vector Signed Horizontal Subtract (doubleword)           |
+- * | HSUB_U.H      | Vector Unigned Horizontal Subtract (halfword)            |
+- * | HSUB_U.W      | Vector Unigned Horizontal Subtract (word)                |
+- * | HSUB_U.D      | Vector Unigned Horizontal Subtract (doubleword)          |
++ * | HSUB_U.H      | Vector Unsigned Horizontal Subtract (halfword)           |
++ * | HSUB_U.W      | Vector Unsigned Horizontal Subtract (word)               |
++ * | HSUB_U.D      | Vector Unsigned Horizontal Subtract (doubleword)         |
+  * | SUBS_S.B      | Vector Signed Saturated Subtract (of Signed) (byte)      |
+  * | SUBS_S.H      | Vector Signed Saturated Subtract (of Signed) (halfword)  |
+diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
+index e662acd5df..cfcd8ac9bc 100644
+--- a/target/mips/tcg/mxu_translate.c
++++ b/target/mips/tcg/mxu_translate.c
+@@ -2978,5 +2978,5 @@ static void gen_mxu_Q8ADD(DisasContext *ctx)
+  *    to 16-bit and put results as packed 16-bit data
+  *    into XRa and XRd.
+- *    aptn2 manages action add or subract of pairs of data.
++ *    aptn2 manages action add or subtract of pairs of data.
+  *
+  *  Q8ACCE XRa, XRb, XRc, XRd, aptn2
+@@ -2985,5 +2985,5 @@ static void gen_mxu_Q8ADD(DisasContext *ctx)
+  *    to 16-bit and accumulate results as packed 16-bit data
+  *    into XRa and XRd.
+- *    aptn2 manages action add or subract of pairs of data.
++ *    aptn2 manages action add or subtract of pairs of data.
+  */
+ static void gen_mxu_q8adde(DisasContext *ctx, bool accumulate)
+@@ -4057,5 +4057,5 @@ static void gen_mxu_s32sfl(DisasContext *ctx)
  /*
-  * SPDX-License-Identifier: GPL-2.0-or-later
-- * Host specific cpu indentification for x86.
-+ * Host specific cpu identification for x86.
+  *  Q8SAD XRa, XRd, XRb, XRc
+- *    Typical SAD opration for motion estimation.
++ *    Typical SAD operation for motion estimation.
   */
- 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index bb12b0ad43..1afcef5937 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -780,5 +780,5 @@ static Aml *initialize_route(Aml *route, const char *link_name,
-  * Returns an array of 128 routes, one for each device,
-  * based on device location.
-- * The main goal is to equaly distribute the interrupts
-+ * The main goal is to equally distribute the interrupts
-  * over the 4 existing ACPI links (works only for i440fx).
-  * The hash function is  (slot + pin) & 3 -> "LNK[D|A|B|C]".
-@@ -2080,5 +2080,5 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
- 
- /*
-- * Insert DMAR scope for PCI bridges and endpoint devcie
-+ * Insert DMAR scope for PCI bridges and endpoint device
-  */
- static void
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9c77304438..c98a3c6e11 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -260,5 +260,5 @@ static void amdvi_log_command_error(AMDVIState *s, hwaddr addr)
-             PCI_STATUS_SIG_TARGET_ABORT);
- }
--/* log an illegal comand event
-+/* log an illegal command event
-  *   @addr : address of illegal command
-  */
-@@ -768,5 +768,5 @@ static void amdvi_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-     case AMDVI_MMIO_COMMAND_BASE:
-         amdvi_mmio_reg_write(s, size, val, addr);
--        /* FIXME - make sure System Software has finished writing incase
-+        /* FIXME - make sure System Software has finished writing in case
-          * it writes in chucks less than 8 bytes in a robust way.As for
-          * now, this hacks works for the linux driver
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 3ca71df369..6b3fe12428 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -53,5 +53,5 @@
- /*
-  * PCI bus number (or SID) is not reliable since the device is usaully
-- * initalized before guest can configure the PCI bridge
-+ * initialized before guest can configure the PCI bridge
-  * (SECONDARY_BUS_NUMBER).
-  */
-@@ -1695,5 +1695,5 @@ static bool vtd_switch_address_space(VTDAddressSpace *as)
-      *
-      * We enable per as memory region (iommu_ir_fault) for catching
--     * the tranlsation for interrupt range through PASID + PT.
-+     * the translation for interrupt range through PASID + PT.
-      */
-     if (pt && as->pasid != PCI_NO_PASID) {
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index 133d89e953..660d0b72f9 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -1157,5 +1157,5 @@ static unsigned int copy_to_ring(XenXenstoreState *s, uint8_t *ptr,
-     /*
-      * This matches the barrier in copy_to_ring() (or the guest's
--     * equivalent) betweem writing the data to the ring and updating
-+     * equivalent) between writing the data to the ring and updating
-      * rsp_prod. It protects against the pathological case (which
-      * again I think never happened except on Alpha) where our
-diff --git a/hw/i386/kvm/xenstore_impl.c b/hw/i386/kvm/xenstore_impl.c
-index d9732b567e..1d134a6866 100644
---- a/hw/i386/kvm/xenstore_impl.c
-+++ b/hw/i386/kvm/xenstore_impl.c
-@@ -1437,5 +1437,5 @@ static void save_node(gpointer key, gpointer value, gpointer opaque)
-      * If we already wrote this node, refer to the previous copy.
-      * There's no rename/move in XenStore, so all we need to find
--     * it is the tx_id of the transation in which it exists. Which
-+     * it is the tx_id of the transaction in which it exists. Which
-      * may be the root tx.
-      */
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 3109d5e0e0..405db3aef9 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -434,5 +434,5 @@ static uint64_t ioport80_read(void *opaque, hwaddr addr, unsigned size)
- }
- 
--/* MSDOS compatibility mode FPU exception support */
-+/* MS-DOS compatibility mode FPU exception support */
- static void ioportF0_write(void *opaque, hwaddr addr, uint64_t data,
-                            unsigned size)
-@@ -1753,5 +1753,5 @@ static void pc_machine_set_max_fw_size(Object *obj, Visitor *v,
-         error_setg(errp,
-                    "User specified max allowed firmware size %" PRIu64 " is "
--                   "greater than 16MiB. If combined firwmare size exceeds "
-+                   "greater than 16MiB. If combined firmware size exceeds "
-                    "16MiB the system may not boot, or experience intermittent"
-                    "stability issues.",
-diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-index 81573f6cfd..380cb27ded 100644
---- a/include/hw/i386/topology.h
-+++ b/include/hw/i386/topology.h
-@@ -32,5 +32,5 @@
-  * This code should be compatible with AMD's "Extended Method" described at:
-  *   AMD CPUID Specification (Publication #25481)
-- *   Section 3: Multiple Core Calcuation
-+ *   Section 3: Multiple Core Calculation
-  * as long as:
-  *  nr_threads is set to 1;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 97ad229d8b..fd2afd4b3c 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5337,5 +5337,5 @@ static const char *x86_cpu_feature_name(FeatureWord w, int bitnr)
- }
- 
--/* Compatibily hack to maintain legacy +-feat semantic,
-+/* Compatibility hack to maintain legacy +-feat semantic,
-  * where +-feat overwrites any feature set by
-  * feat=on|feat even if the later is parsed after +-feat
-@@ -6301,5 +6301,5 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-              * commit 412a3c41(e.g., CentOS 6), the ebx's value always == 0
-              * even through guest update xcr0, this will crash some legacy guest
--             * (e.g., CentOS 6), So set ebx == ecx to workaroud it.
-+             * (e.g., CentOS 6), So set ebx == ecx to workaround it.
-              */
-             *ebx = kvm_enabled() ? *ecx : xsave_area_size(env->xcr0, false);
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e0771a1043..b3fbcae52f 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -729,5 +729,5 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_EXT2_3DNOW   (1U << 31)
- 
--/* CPUID[8000_0001].EDX bits that are aliase of CPUID[1].EDX bits on AMD CPUs */
-+/* CPUID[8000_0001].EDX bits that are aliases of CPUID[1].EDX bits on AMD CPUs */
- #define CPUID_EXT2_AMD_ALIASES (CPUID_EXT2_FPU | CPUID_EXT2_VME | \
-                                 CPUID_EXT2_DE | CPUID_EXT2_PSE | \
-@@ -2069,5 +2069,5 @@ hwaddr x86_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
- int cpu_get_pic_interrupt(CPUX86State *s);
- 
--/* MSDOS compatibility mode FPU exception support */
-+/* MS-DOS compatibility mode FPU exception support */
- void x86_register_ferr_irq(qemu_irq irq);
- void fpu_check_raise_ferr_irq(CPUX86State *s);
-diff --git a/target/i386/hax/hax-interface.h b/target/i386/hax/hax-interface.h
-index 537ae084e9..edef4fdf5d 100644
---- a/target/i386/hax/hax-interface.h
-+++ b/target/i386/hax/hax-interface.h
-@@ -239,5 +239,5 @@ enum exit_status {
-     /* HALT from guest */
-     HAX_EXIT_HLT,
--    /* Reboot request, like because of tripple fault in guest */
-+    /* Reboot request, like because of triple fault in guest */
-     HAX_EXIT_STATECHANGE,
-     /* the vcpu is now only paused when destroy, so simply return to hax */
-@@ -296,5 +296,5 @@ struct hax_qemu_version {
- } __attribute__ ((__packed__));
- 
--/* The mac specfic interface to qemu, mostly is ioctl related */
-+/* The mac specific interface to qemu, mostly is ioctl related */
- struct hax_tunnel_info {
-     uint64_t va;
-diff --git a/target/i386/hax/hax-windows.c b/target/i386/hax/hax-windows.c
-index 4bf6cc08d2..58cf3f1a9f 100644
---- a/target/i386/hax/hax-windows.c
-+++ b/target/i386/hax/hax-windows.c
-@@ -175,5 +175,5 @@ int hax_mod_version(struct hax_state *hax, struct hax_module_version *version)
-         err = GetLastError();
-         if (err == ERROR_INSUFFICIENT_BUFFER || err == ERROR_MORE_DATA) {
--            fprintf(stderr, "hax module verion is too long to hold.\n");
-+            fprintf(stderr, "hax module version is too long to hold.\n");
-         }
-         fprintf(stderr, "Failed to get Hax module version:%lu\n", err);
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index ebfaf3d24c..9d18d3336f 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4725,5 +4725,5 @@ int kvm_arch_put_registers(CPUState *cpu, int level)
-      * Put MSR_IA32_FEATURE_CONTROL first, this ensures the VM gets out of VMX
-      * root operation upon vCPU reset. kvm_put_msr_feature_control() should also
--     * preceed kvm_put_nested_state() when 'real' nested state is set.
-+     * proceed kvm_put_nested_state() when 'real' nested state is set.
-      */
-     if (level >= KVM_PUT_RESET_STATE) {
-@@ -5651,5 +5651,5 @@ int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
- 
-             /*
--             * Handled untranslated compatibilty format interrupt with
-+             * Handled untranslated compatibility format interrupt with
-              * extended destination ID in the low bits 11-5. */
-             dst.address = kvm_swizzle_msi_ext_dest_id(dst.address);
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index a8146115f0..76348f9d5d 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -1034,5 +1034,5 @@ static int do_set_periodic_timer(CPUState *target, uint64_t period_ns)
- #define MICROSECS(_us)  ((int64_t)((_us) * 1000ULL))
- #define STIME_MAX ((time_t)((int64_t)~0ull >> 1))
--/* Chosen so (NOW() + delta) wont overflow without an uptime of 200 years */
-+/* Chosen so (NOW() + delta) won't overflow without an uptime of 200 years */
- #define STIME_DELTA_MAX ((int64_t)((uint64_t)~0ull >> 2))
- 
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index c7ac8084b2..a1041ef828 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -283,10 +283,10 @@ static int cpu_pre_save(void *opaque)
-      * should not be set yet in the respective vCPU register.
-      * Thus, in case an exception is pending, it is
--     * important to save the exception payload seperately.
-+     * important to save the exception payload separately.
-      *
-      * Therefore, if an exception is not in a pending state
-      * or vCPU is not in guest-mode, it is not important to
-      * distinguish between a pending and injected exception
--     * and we don't need to store seperately the exception payload.
-+     * and we don't need to store separately the exception payload.
-      *
-      * In order to preserve better backwards-compatible migration,
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 90c7b32f36..c1ab3efba9 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -1070,5 +1070,5 @@ static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
- 
- /* perform a conditional store into register 'reg' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranted not to be used. */
-+   value 'b'. In the fast case, T0 is guaranteed not to be used. */
- static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
- {
-@@ -1203,5 +1203,5 @@ static inline void gen_compute_eflags_c(DisasContext *s, TCGv reg)
- 
- /* generate a conditional jump to label 'l1' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranted not to be used. */
-+   value 'b'. In the fast case, T0 is guaranteed not to be used. */
- static inline void gen_jcc1_noeob(DisasContext *s, int b, TCGLabel *l1)
- {
-@@ -1220,5 +1220,5 @@ static inline void gen_jcc1_noeob(DisasContext *s, int b, TCGLabel *l1)
- 
- /* Generate a conditional jump to label 'l1' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranted not to be used.
-+   value 'b'. In the fast case, T0 is guaranteed not to be used.
-    A translation block must end soon.  */
- static inline void gen_jcc1(DisasContext *s, int b, TCGLabel *l1)
-@@ -5352,5 +5352,5 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             switch (op) {
-             case 0: /* bt */
--                /* Needs no atomic ops; we surpressed the normal
-+                /* Needs no atomic ops; we suppressed the normal
-                    memory load for LOCK above so do it now.  */
-                 gen_op_ld_v(s, ot, s->T0, s->A0);
-diff --git a/tests/tcg/i386/system/boot.S b/tests/tcg/i386/system/boot.S
-index 794c2cb0ad..9e8920cbfe 100644
---- a/tests/tcg/i386/system/boot.S
-+++ b/tests/tcg/i386/system/boot.S
-@@ -72,5 +72,5 @@ _start:
- 
-         /*
--         * Don't worry about stack frame, assume everthing
-+         * Don't worry about stack frame, assume everything
-          * is garbage when we return, we won't need it.
-          */
-diff --git a/tests/tcg/i386/x86.csv b/tests/tcg/i386/x86.csv
-index c43bf42dd3..5c0f628e35 100644
---- a/tests/tcg/i386/x86.csv
-+++ b/tests/tcg/i386/x86.csv
-@@ -20,5 +20,5 @@
- # 4. The instruction encoding. For example, "C1 /4 ib".
- #
--# 5. The validity of the instruction in 32-bit (aka compatiblity, legacy) mode.
-+# 5. The validity of the instruction in 32-bit (aka compatibility, legacy) mode.
- #
- # 6. The validity of the instruction in 64-bit mode.
+ static void gen_mxu_q8sad(DisasContext *ctx)
 -- 
 2.39.2
 
