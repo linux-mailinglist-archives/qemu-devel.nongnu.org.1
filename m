@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8BC7857D6
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 14:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 904C27857DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 14:24:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYmpv-0007rL-Tr; Wed, 23 Aug 2023 08:19:48 -0400
+	id 1qYmto-0000l4-AM; Wed, 23 Aug 2023 08:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+3e2b8733669f2ff7871f+7304+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qYmpk-0007r6-AP
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:19:37 -0400
+ id 1qYmtk-0000kp-Vu
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:23:45 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+3e2b8733669f2ff7871f+7304+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qYmph-0008TA-6T
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:19:36 -0400
+ id 1qYmth-0000ul-Id
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:23:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
- From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:To:From:
+ Subject:Message-ID:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
  Content-Description:In-Reply-To:References;
- bh=4CcfEOVa4buxHgdu/wiyoSqwecLusPPUmTOMhiK4xJk=; b=PuFKXl+TPbZjqu5f25QtvGnKcL
- lCCLl4JwqMTei7prjdRb3w1sXejx+wHPMOquntOGzfcuHw+FaPH7AJG86MAbSJeiyZZFhZ1Q53BA+
- 7oU7sXNKHgFp55Un6U7rKbt8WFzwfjh+5zXI1gY6gNOEN52dKENkWad+04fq3iFcdxEBronx32178
- 9KvzDOJJ3TgaZJ9v+3YBEY6VIOpyn1N2TOzDvvVEVwh2bcgxhDlju/3iRow16QBVVzuLkgYL9NU1U
- rrV6qM5TM8yi8w/iSjBjFFXfYLqMsMGq1Cp1Divojd+tMbad5uGUkFRdNQgTxDkk03Q+jmxFPFrEF
- 0H4dU/dw==;
-Received: from 54-240-197-239.amazon.com ([54.240.197.239]
+ bh=w3fkejXyxhWiEwlDtHkqZh71sa5A6ZH1y8811aVYEiI=; b=RdVQ4cIG1/Go1B9R7ST/Hi3DIC
+ M89kAIe/t1V9exYday+pTl2007ZBTmwAHFpvVzqXp0mcxwP26R6MmiaXfLVWeAiwveUT99qorWztu
+ CR5cg6VP757puyeC1vYit9J2WKhpmf8ETAa3xyqMnTu0cp/dGAOBDm/+Tr2gMkwc6eUX4ZR4rC/ig
+ vNJPj03DaeF7tMVup4QbmmoSzqV21pmIhcxaMC4SKQilm8RYWcERq+IlS786IWHtUwPY+7s4YC3pk
+ sm7pNVUc3oCcvLIUVKOJ7LPyi+Q/rz2df04p0s4V7VASoOzoUQ37+5xihJyf0RQRJn7qIvaB6j/al
+ 0BWw47WQ==;
+Received: from 54-240-197-231.amazon.com ([54.240.197.231]
  helo=edge-infra-2.e-lhr50.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qYmpc-004lCE-8X; Wed, 23 Aug 2023 12:19:28 +0000
-Message-ID: <fe04778810550788d2bc39cb7342d85c19a7eaec.camel@infradead.org>
-Subject: [PATCH v2] hw/xen: Clean up event channel 'type_val' handling to
- use union
+ id 1qYmtS-004nbO-Ma; Wed, 23 Aug 2023 12:23:26 +0000
+Message-ID: <31bbfc9041690449d3ac891f4431ec82174ee1b4.camel@infradead.org>
+Subject: [PATCH v2] intel-iommu: Report interrupt remapping faults, fix
+ return value
 From: David Woodhouse <dwmw2@infradead.org>
-To: paul@xen.org, qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, 
- "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Date: Wed, 23 Aug 2023 13:19:27 +0100
+To: Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  qemu-devel
+ <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>
+Date: Wed, 23 Aug 2023 13:23:25 +0100
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-bGdTSQWnISVzLeINSaHb"
+ boundary="=-irXX3gk0HRoIbPmmCsoL"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -77,462 +77,399 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-bGdTSQWnISVzLeINSaHb
+--=-irXX3gk0HRoIbPmmCsoL
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-A previous implementation of this stuff used a 64-bit field for all of
-the port information (vcpu/type/type_val) and did atomic exchanges on
-them. When I implemented that in Qemu I regretted my life choices and
-just kept it simple with locking instead.
+A generic X86IOMMUClass->int_remap function should not return VT-d
+specific values; fix it to return 0 if the interrupt was successfully
+translated or -EINVAL if not.
 
-So there's no need for the XenEvtchnPort to be so simplistic. We can
-use a union for the pirq/virq/interdomain information, which lets us
-keep a separate bit for the 'remote domain' in interdomain ports. A
-single bit is enough since the only possible targets are loopback or
-qemu itself.
+The VTD_FR_IR_xxx values are supposed to be used to actually raise
+faults through the fault reporting mechanism, so do that instead for
+the case where the IRQ is actually being injected.
 
-So now we can ditch PORT_INFO_TYPEVAL_REMOTE_QEMU and the horrid
-manual masking, although the in-memory representation is identical
-so there's no change in the saved state ABI.
+There is more work to be done here, as pretranslations for the KVM IRQ
+routing table can't fault; an untranslatable IRQ should be handled in
+userspace and the fault raised only when the IRQ actually happens (if
+indeed the IRTE is still not valid at that time). But we can work on
+that later; we can at least raise faults for the direct case.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
-v2: Minor cosmetic nits from Paul's review, completely remove the
-    definition of PORT_INFO_TYPEVAL_REMOTE_QEMU and _PORT_MASK.
+v2: Fix indentation and one missing return value change.
 
- hw/i386/kvm/xen_evtchn.c | 151 ++++++++++++++++++---------------------
- 1 file changed, 70 insertions(+), 81 deletions(-)
+ hw/i386/intel_iommu.c          | 150 ++++++++++++++++++++++-----------
+ hw/i386/intel_iommu_internal.h |   1 +
+ 2 files changed, 103 insertions(+), 48 deletions(-)
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index a731738411..4df973022c 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -58,7 +58,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(XenEvtchnState, XEN_EVTCHN)
- typedef struct XenEvtchnPort {
-     uint32_t vcpu;      /* Xen/ACPI vcpu_id */
-     uint16_t type;      /* EVTCHNSTAT_xxxx */
--    uint16_t type_val;  /* pirq# / virq# / remote port according to type *=
-/
-+    union {
-+        uint16_t val;  /* raw value for serialization etc. */
-+        uint16_t pirq;
-+        uint16_t virq;
-+        struct {
-+            uint16_t port:15;
-+            uint16_t to_qemu:1; /* Only two targets; qemu or loopback */
-+        } interdomain;
-+    } u;
- } XenEvtchnPort;
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 3ca71df369..66f65e8d2a 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -469,21 +469,12 @@ static void vtd_set_frcd_and_update_ppf(IntelIOMMUSta=
+te *s, uint16_t index)
 =20
- /* 32-bit compatibility definitions, also used natively in 32-bit build */
-@@ -105,14 +113,6 @@ struct xenevtchn_handle {
-     int fd;
- };
+ /* Must not update F field now, should be done later */
+ static void vtd_record_frcd(IntelIOMMUState *s, uint16_t index,
+-                            uint16_t source_id, hwaddr addr,
+-                            VTDFaultReason fault, bool is_write,
+-                            bool is_pasid, uint32_t pasid)
++                            uint64_t hi, uint64_t lo)
+ {
+-    uint64_t hi =3D 0, lo;
+     hwaddr frcd_reg_addr =3D DMAR_FRCD_REG_OFFSET + (((uint64_t)index) << =
+4);
 =20
--/*
-- * For unbound/interdomain ports there are only two possible remote
-- * domains; self and QEMU. Use a single high bit in type_val for that,
-- * and the low bits for the remote port number (or 0 for unbound).
-- */
--#define PORT_INFO_TYPEVAL_REMOTE_QEMU           0x8000
--#define PORT_INFO_TYPEVAL_REMOTE_PORT_MASK      0x7FFF
+     assert(index < DMAR_FRCD_REG_NR);
+=20
+-    lo =3D VTD_FRCD_FI(addr);
+-    hi =3D VTD_FRCD_SID(source_id) | VTD_FRCD_FR(fault) |
+-         VTD_FRCD_PV(pasid) | VTD_FRCD_PP(is_pasid);
+-    if (!is_write) {
+-        hi |=3D VTD_FRCD_T;
+-    }
+     vtd_set_quad_raw(s, frcd_reg_addr, lo);
+     vtd_set_quad_raw(s, frcd_reg_addr + 8, hi);
+=20
+@@ -509,17 +500,11 @@ static bool vtd_try_collapse_fault(IntelIOMMUState *s=
+, uint16_t source_id)
+ }
+=20
+ /* Log and report an DMAR (address translation) fault to software */
+-static void vtd_report_dmar_fault(IntelIOMMUState *s, uint16_t source_id,
+-                                  hwaddr addr, VTDFaultReason fault,
+-                                  bool is_write, bool is_pasid,
+-                                  uint32_t pasid)
++static void vtd_report_frcd_fault(IntelIOMMUState *s, uint64_t source_id,
++                                  uint64_t hi, uint64_t lo)
+ {
+     uint32_t fsts_reg =3D vtd_get_long_raw(s, DMAR_FSTS_REG);
+=20
+-    assert(fault < VTD_FR_MAX);
 -
- /*
-  * These 'emuirq' values are used by Xen in the LM stream... and yes, I am
-  * insane enough to think about guest-transparent live migration from actu=
-al
-@@ -210,16 +210,16 @@ static int xen_evtchn_post_load(void *opaque, int ver=
-sion_id)
-         XenEvtchnPort *p =3D &s->port_table[i];
-=20
-         if (p->type =3D=3D EVTCHNSTAT_pirq) {
--            assert(p->type_val);
--            assert(p->type_val < s->nr_pirqs);
-+            assert(p->u.pirq);
-+            assert(p->u.pirq < s->nr_pirqs);
-=20
-             /*
-              * Set the gsi to IRQ_UNBOUND; it may be changed to an actual
-              * GSI# below, or to IRQ_MSI_EMU when the MSI table snooping
-              * catches up with it.
-              */
--            s->pirq[p->type_val].gsi =3D IRQ_UNBOUND;
--            s->pirq[p->type_val].port =3D i;
-+            s->pirq[p->u.pirq].gsi =3D IRQ_UNBOUND;
-+            s->pirq[p->u.pirq].port =3D i;
-         }
-     }
-     /* Rebuild s->pirq[].gsi mapping */
-@@ -243,7 +243,7 @@ static const VMStateDescription xen_evtchn_port_vmstate=
- =3D {
-     .fields =3D (VMStateField[]) {
-         VMSTATE_UINT32(vcpu, XenEvtchnPort),
-         VMSTATE_UINT16(type, XenEvtchnPort),
--        VMSTATE_UINT16(type_val, XenEvtchnPort),
-+        VMSTATE_UINT16(u.val, XenEvtchnPort),
-         VMSTATE_END_OF_LIST()
-     }
- };
-@@ -599,14 +599,13 @@ static void unbind_backend_ports(XenEvtchnState *s)
-=20
-     for (i =3D 1; i < s->nr_ports; i++) {
-         p =3D &s->port_table[i];
--        if (p->type =3D=3D EVTCHNSTAT_interdomain &&
--            (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU)) {
--            evtchn_port_t be_port =3D p->type_val & PORT_INFO_TYPEVAL_REMO=
-TE_PORT_MASK;
-+        if (p->type =3D=3D EVTCHNSTAT_interdomain && p->u.interdomain.to_q=
-emu) {
-+            evtchn_port_t be_port =3D p->u.interdomain.port;
-=20
-             if (s->be_handles[be_port]) {
-                 /* This part will be overwritten on the load anyway. */
-                 p->type =3D EVTCHNSTAT_unbound;
--                p->type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
-+                p->u.interdomain.port =3D 0;
-=20
-                 /* Leave the backend port open and unbound too. */
-                 if (kvm_xen_has_cap(EVTCHN_SEND)) {
-@@ -644,30 +643,22 @@ int xen_evtchn_status_op(struct evtchn_status *status=
-)
-=20
-     switch (p->type) {
-     case EVTCHNSTAT_unbound:
--        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
--            status->u.unbound.dom =3D DOMID_QEMU;
--        } else {
--            status->u.unbound.dom =3D xen_domid;
--        }
-+        status->u.unbound.dom =3D p->u.interdomain.to_qemu ? DOMID_QEMU
-+                                                         : xen_domid;
-         break;
-=20
-     case EVTCHNSTAT_interdomain:
--        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
--            status->u.interdomain.dom =3D DOMID_QEMU;
--        } else {
--            status->u.interdomain.dom =3D xen_domid;
--        }
+-    trace_vtd_dmar_fault(source_id, fault, addr, is_write);
 -
--        status->u.interdomain.port =3D p->type_val &
--            PORT_INFO_TYPEVAL_REMOTE_PORT_MASK;
-+        status->u.interdomain.dom =3D p->u.interdomain.to_qemu ? DOMID_QEM=
-U
-+                                                             : xen_domid;
-+        status->u.interdomain.port =3D p->u.interdomain.port;
-         break;
-=20
-     case EVTCHNSTAT_pirq:
--        status->u.pirq =3D p->type_val;
-+        status->u.pirq =3D p->u.pirq;
-         break;
-=20
-     case EVTCHNSTAT_virq:
--        status->u.virq =3D p->type_val;
-+        status->u.virq =3D p->u.virq;
-         break;
+     if (fsts_reg & VTD_FSTS_PFO) {
+         error_report_once("New fault is not recorded due to "
+                           "Primary Fault Overflow");
+@@ -539,8 +524,7 @@ static void vtd_report_dmar_fault(IntelIOMMUState *s, u=
+int16_t source_id,
+         return;
      }
 =20
-@@ -983,7 +974,7 @@ static int clear_port_pending(XenEvtchnState *s, evtchn=
-_port_t port)
- static void free_port(XenEvtchnState *s, evtchn_port_t port)
- {
-     s->port_table[port].type =3D EVTCHNSTAT_closed;
--    s->port_table[port].type_val =3D 0;
-+    s->port_table[port].u.val =3D 0;
-     s->port_table[port].vcpu =3D 0;
+-    vtd_record_frcd(s, s->next_frcd_reg, source_id, addr, fault,
+-                    is_write, is_pasid, pasid);
++    vtd_record_frcd(s, s->next_frcd_reg, hi, lo);
 =20
-     if (s->nr_ports =3D=3D port + 1) {
-@@ -1006,7 +997,7 @@ static int allocate_port(XenEvtchnState *s, uint32_t v=
-cpu, uint16_t type,
-         if (s->port_table[p].type =3D=3D EVTCHNSTAT_closed) {
-             s->port_table[p].vcpu =3D vcpu;
-             s->port_table[p].type =3D type;
--            s->port_table[p].type_val =3D val;
-+            s->port_table[p].u.val =3D val;
-=20
-             *port =3D p;
-=20
-@@ -1047,15 +1038,15 @@ static int close_port(XenEvtchnState *s, evtchn_por=
-t_t port,
-         return -ENOENT;
-=20
-     case EVTCHNSTAT_pirq:
--        s->pirq[p->type_val].port =3D 0;
--        if (s->pirq[p->type_val].is_translated) {
-+        s->pirq[p->u.pirq].port =3D 0;
-+        if (s->pirq[p->u.pirq].is_translated) {
-             *flush_kvm_routes =3D true;
-         }
-         break;
-=20
-     case EVTCHNSTAT_virq:
--        kvm_xen_set_vcpu_virq(virq_is_global(p->type_val) ? 0 : p->vcpu,
--                              p->type_val, 0);
-+        kvm_xen_set_vcpu_virq(virq_is_global(p->u.virq) ? 0 : p->vcpu,
-+                              p->u.virq, 0);
-         break;
-=20
-     case EVTCHNSTAT_ipi:
-@@ -1065,8 +1056,8 @@ static int close_port(XenEvtchnState *s, evtchn_port_=
-t port,
-         break;
-=20
-     case EVTCHNSTAT_interdomain:
--        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
--            uint16_t be_port =3D p->type_val & ~PORT_INFO_TYPEVAL_REMOTE_Q=
-EMU;
-+        if (p->u.interdomain.to_qemu) {
-+            uint16_t be_port =3D p->u.interdomain.port;
-             struct xenevtchn_handle *xc =3D s->be_handles[be_port];
-             if (xc) {
-                 if (kvm_xen_has_cap(EVTCHN_SEND)) {
-@@ -1076,14 +1067,15 @@ static int close_port(XenEvtchnState *s, evtchn_por=
-t_t port,
-             }
-         } else {
-             /* Loopback interdomain */
--            XenEvtchnPort *rp =3D &s->port_table[p->type_val];
--            if (!valid_port(p->type_val) || rp->type_val !=3D port ||
-+            XenEvtchnPort *rp =3D &s->port_table[p->u.interdomain.port];
-+            if (!valid_port(p->u.interdomain.port) ||
-+                rp->u.interdomain.port !=3D port ||
-                 rp->type !=3D EVTCHNSTAT_interdomain) {
-                 error_report("Inconsistent state for interdomain unbind");
-             } else {
-                 /* Set the other end back to unbound */
-                 rp->type =3D EVTCHNSTAT_unbound;
--                rp->type_val =3D 0;
-+                rp->u.interdomain.port =3D 0;
-             }
-         }
-         break;
-@@ -1207,7 +1199,7 @@ int xen_evtchn_bind_vcpu_op(struct evtchn_bind_vcpu *=
-vcpu)
-     if (p->type =3D=3D EVTCHNSTAT_interdomain ||
-         p->type =3D=3D EVTCHNSTAT_unbound ||
-         p->type =3D=3D EVTCHNSTAT_pirq ||
--        (p->type =3D=3D EVTCHNSTAT_virq && virq_is_global(p->type_val))) {
-+        (p->type =3D=3D EVTCHNSTAT_virq && virq_is_global(p->u.virq))) {
-         /*
-          * unmask_port() with do_unmask=3D=3Dfalse will just raise the eve=
-nt
-          * on the new vCPU if the port was already pending.
-@@ -1352,19 +1344,15 @@ int xen_evtchn_bind_ipi_op(struct evtchn_bind_ipi *=
-ipi)
- int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdo=
-main)
- {
-     XenEvtchnState *s =3D xen_evtchn_singleton;
--    uint16_t type_val;
-     int ret;
-=20
-     if (!s) {
-         return -ENOTSUP;
+     if (fsts_reg & VTD_FSTS_PPF) {
+         error_report_once("There are pending faults already, "
+@@ -565,6 +549,40 @@ static void vtd_report_dmar_fault(IntelIOMMUState *s, =
+uint16_t source_id,
      }
+ }
 =20
--    if (interdomain->remote_dom =3D=3D DOMID_QEMU) {
--        type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
--    } else if (interdomain->remote_dom =3D=3D DOMID_SELF ||
--               interdomain->remote_dom =3D=3D xen_domid) {
--        type_val =3D 0;
--    } else {
-+    if (interdomain->remote_dom !=3D DOMID_QEMU &&
-+        interdomain->remote_dom !=3D DOMID_SELF &&
-+        interdomain->remote_dom !=3D xen_domid) {
-         return -ESRCH;
-     }
-=20
-@@ -1375,8 +1363,8 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind=
-_interdomain *interdomain)
-     qemu_mutex_lock(&s->port_lock);
-=20
-     /* The newly allocated port starts out as unbound */
--    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, type_val,
--                        &interdomain->local_port);
-+    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, 0, &interdomain->local=
-_port);
++/* Log and report an DMAR (address translation) fault to software */
++static void vtd_report_dmar_fault(IntelIOMMUState *s, uint16_t source_id,
++                                  hwaddr addr, VTDFaultReason fault,
++                                  bool is_write, bool is_pasid,
++                                  uint32_t pasid)
++{
++    uint64_t hi, lo;
 +
-     if (ret) {
-         goto out;
-     }
-@@ -1401,7 +1389,8 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind=
-_interdomain *interdomain)
-             assign_kernel_eventfd(lp->type, xc->guest_port, xc->fd);
-         }
-         lp->type =3D EVTCHNSTAT_interdomain;
--        lp->type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU | interdomain->remo=
-te_port;
-+        lp->u.interdomain.to_qemu =3D 1;
-+        lp->u.interdomain.port =3D interdomain->remote_port;
-         ret =3D 0;
-     } else {
-         /* Loopback */
-@@ -1409,19 +1398,18 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bi=
-nd_interdomain *interdomain)
-         XenEvtchnPort *lp =3D &s->port_table[interdomain->local_port];
-=20
-         /*
--         * The 'remote' port for loopback must be an unbound port allocate=
-d for
--         * communication with the local domain (as indicated by rp->type_v=
-al
--         * being zero, not PORT_INFO_TYPEVAL_REMOTE_QEMU), and must *not* =
-be
--         * the port that was just allocated for the local end.
-+         * The 'remote' port for loopback must be an unbound port allocate=
-d
-+         * for communication with the local domain, and must *not* be the
-+         * port that was just allocated for the local end.
-          */
-         if (interdomain->local_port !=3D interdomain->remote_port &&
--            rp->type =3D=3D EVTCHNSTAT_unbound && rp->type_val =3D=3D 0) {
-+            rp->type =3D=3D EVTCHNSTAT_unbound && !rp->u.interdomain.to_qe=
-mu) {
-=20
-             rp->type =3D EVTCHNSTAT_interdomain;
--            rp->type_val =3D interdomain->local_port;
-+            rp->u.interdomain.port =3D interdomain->local_port;
-=20
-             lp->type =3D EVTCHNSTAT_interdomain;
--            lp->type_val =3D interdomain->remote_port;
-+            lp->u.interdomain.port =3D interdomain->remote_port;
-         } else {
-             ret =3D -EINVAL;
-         }
-@@ -1440,7 +1428,6 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind=
-_interdomain *interdomain)
- int xen_evtchn_alloc_unbound_op(struct evtchn_alloc_unbound *alloc)
- {
-     XenEvtchnState *s =3D xen_evtchn_singleton;
--    uint16_t type_val;
-     int ret;
-=20
-     if (!s) {
-@@ -1451,18 +1438,20 @@ int xen_evtchn_alloc_unbound_op(struct evtchn_alloc=
-_unbound *alloc)
-         return -ESRCH;
-     }
-=20
--    if (alloc->remote_dom =3D=3D DOMID_QEMU) {
--        type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
--    } else if (alloc->remote_dom =3D=3D DOMID_SELF ||
--               alloc->remote_dom =3D=3D xen_domid) {
--        type_val =3D 0;
--    } else {
-+    if (alloc->remote_dom !=3D DOMID_QEMU &&
-+        alloc->remote_dom !=3D DOMID_SELF &&
-+        alloc->remote_dom !=3D xen_domid) {
-         return -EPERM;
-     }
-=20
-     qemu_mutex_lock(&s->port_lock);
-=20
--    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, type_val, &alloc->port=
-);
-+    ret =3D allocate_port(s, 0, EVTCHNSTAT_unbound, 0, &alloc->port);
++    assert(fault < VTD_FR_MAX);
 +
-+    if (!ret && alloc->remote_dom =3D=3D DOMID_QEMU) {
-+        XenEvtchnPort *p =3D &s->port_table[alloc->port];
-+        p->u.interdomain.to_qemu =3D 1;
++    trace_vtd_dmar_fault(source_id, fault, addr, is_write);
++
++    lo =3D VTD_FRCD_FI(addr);
++    hi =3D VTD_FRCD_SID(source_id) | VTD_FRCD_FR(fault) |
++         VTD_FRCD_PV(pasid) | VTD_FRCD_PP(is_pasid);
++    if (!is_write) {
++        hi |=3D VTD_FRCD_T;
 +    }
++
++    vtd_report_frcd_fault(s, source_id, hi, lo);
++}
++
++
++static void vtd_report_ir_fault(IntelIOMMUState *s, uint64_t source_id,
++                                VTDFaultReason fault, uint16_t index)
++{
++    uint64_t hi, lo;
++
++    lo =3D VTD_FRCD_IR_IDX(index);
++    hi =3D VTD_FRCD_SID(source_id) | VTD_FRCD_FR(fault);
++
++    vtd_report_frcd_fault(s, source_id, hi, lo);
++}
++
+ /* Handle Invalidation Queue Errors of queued invalidation interface error
+  * conditions.
+  */
+@@ -3305,8 +3323,9 @@ static Property vtd_properties[] =3D {
+ };
 =20
-     qemu_mutex_unlock(&s->port_lock);
-=20
-@@ -1489,12 +1478,12 @@ int xen_evtchn_send_op(struct evtchn_send *send)
-=20
-     switch (p->type) {
-     case EVTCHNSTAT_interdomain:
--        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
-+        if (p->u.interdomain.to_qemu) {
-             /*
-              * This is an event from the guest to qemu itself, which is
-              * serving as the driver domain.
-              */
--            uint16_t be_port =3D p->type_val & ~PORT_INFO_TYPEVAL_REMOTE_Q=
-EMU;
-+            uint16_t be_port =3D p->u.interdomain.port;
-             struct xenevtchn_handle *xc =3D s->be_handles[be_port];
-             if (xc) {
-                 eventfd_write(xc->fd, 1);
-@@ -1504,7 +1493,7 @@ int xen_evtchn_send_op(struct evtchn_send *send)
-             }
-         } else {
-             /* Loopback interdomain ports; just a complex IPI */
--            set_port_pending(s, p->type_val);
-+            set_port_pending(s, p->u.interdomain.port);
-         }
-         break;
-=20
-@@ -1546,8 +1535,7 @@ int xen_evtchn_set_port(uint16_t port)
-=20
-     /* QEMU has no business sending to anything but these */
-     if (p->type =3D=3D EVTCHNSTAT_virq ||
--        (p->type =3D=3D EVTCHNSTAT_interdomain &&
--         (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU))) {
-+        (p->type =3D=3D EVTCHNSTAT_interdomain && p->u.interdomain.to_qemu=
-)) {
-         set_port_pending(s, port);
-         ret =3D 0;
+ /* Read IRTE entry with specific index */
+-static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
+-                        VTD_IR_TableEntry *entry, uint16_t sid)
++static bool vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
++                         VTD_IR_TableEntry *entry, uint16_t sid,
++                         bool do_fault)
+ {
+     static const uint16_t vtd_svt_mask[VTD_SQ_MAX] =3D \
+         {0xffff, 0xfffb, 0xfff9, 0xfff8};
+@@ -3317,7 +3336,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint=
+16_t index,
+     if (index >=3D iommu->intr_size) {
+         error_report_once("%s: index too large: ind=3D0x%x",
+                           __func__, index);
+-        return -VTD_FR_IR_INDEX_OVER;
++        if (do_fault) {
++            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_INDEX_OVER, index);
++        }
++        return false;
      }
-@@ -2057,7 +2045,7 @@ int xen_be_evtchn_bind_interdomain(struct xenevtchn_h=
-andle *xc, uint32_t domid,
-     switch (gp->type) {
-     case EVTCHNSTAT_interdomain:
-         /* Allow rebinding after migration, preserve port # if possible */
--        be_port =3D gp->type_val & ~PORT_INFO_TYPEVAL_REMOTE_QEMU;
-+        be_port =3D gp->u.interdomain.port;
-         assert(be_port !=3D 0);
-         if (!s->be_handles[be_port]) {
-             s->be_handles[be_port] =3D xc;
-@@ -2078,7 +2066,8 @@ int xen_be_evtchn_bind_interdomain(struct xenevtchn_h=
-andle *xc, uint32_t domid,
-         }
 =20
-         gp->type =3D EVTCHNSTAT_interdomain;
--        gp->type_val =3D be_port | PORT_INFO_TYPEVAL_REMOTE_QEMU;
-+        gp->u.interdomain.to_qemu =3D 1;
-+        gp->u.interdomain.port =3D be_port;
-         xc->guest_port =3D guest_port;
-         if (kvm_xen_has_cap(EVTCHN_SEND)) {
-             assign_kernel_eventfd(gp->type, guest_port, xc->fd);
-@@ -2123,7 +2112,7 @@ int xen_be_evtchn_unbind(struct xenevtchn_handle *xc,=
- evtchn_port_t port)
-         /* This should never *not* be true */
-         if (gp->type =3D=3D EVTCHNSTAT_interdomain) {
-             gp->type =3D EVTCHNSTAT_unbound;
--            gp->type_val =3D PORT_INFO_TYPEVAL_REMOTE_QEMU;
-+            gp->u.interdomain.port =3D 0;
-         }
+     addr =3D iommu->intr_root + index * sizeof(*entry);
+@@ -3325,7 +3347,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint=
+16_t index,
+                         entry, sizeof(*entry), MEMTXATTRS_UNSPECIFIED)) {
+         error_report_once("%s: read failed: ind=3D0x%x addr=3D0x%" PRIx64,
+                           __func__, index, addr);
+-        return -VTD_FR_IR_ROOT_INVAL;
++        if (do_fault) {
++            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_ROOT_INVAL, index);
++        }
++        return false;
+     }
 =20
-         if (kvm_xen_has_cap(EVTCHN_SEND)) {
-@@ -2277,11 +2266,11 @@ EvtchnInfoList *qmp_xen_event_list(Error **errp)
+     entry->data[0] =3D le64_to_cpu(entry->data[0]);
+@@ -3333,11 +3358,24 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uin=
+t16_t index,
 =20
-         info->type =3D p->type;
-         if (p->type =3D=3D EVTCHNSTAT_interdomain) {
--            info->remote_domain =3D g_strdup((p->type_val & PORT_INFO_TYPE=
-VAL_REMOTE_QEMU) ?
-+            info->remote_domain =3D g_strdup(p->u.interdomain.to_qemu ?
-                                            "qemu" : "loopback");
--            info->target =3D p->type_val & PORT_INFO_TYPEVAL_REMOTE_PORT_M=
-ASK;
-+            info->target =3D p->u.interdomain.port;
-         } else {
--            info->target =3D p->type_val;
-+            info->target =3D p->u.val; /* pirq# or virq# */
+     trace_vtd_ir_irte_get(index, entry->data[1], entry->data[0]);
+=20
++	/*
++	 * The remaining potential fault conditions are "qualified" by the
++	 * Fault Processing Disable bit in the IRTE. Even "not present".
++	 * So just clear the do_fault flag if PFD is set, which will
++	 * prevent faults being raised.
++	 */
++	if (entry->irte.fault_disable) {
++		do_fault =3D false;
++    }
++
+     if (!entry->irte.present) {
+         error_report_once("%s: detected non-present IRTE "
+                           "(index=3D%u, high=3D0x%" PRIx64 ", low=3D0x%" P=
+RIx64 ")",
+                           __func__, index, entry->data[1], entry->data[0])=
+;
+-        return -VTD_FR_IR_ENTRY_P;
++        if (do_fault) {
++            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_ENTRY_P, index);
++        }
++        return false;
+     }
+=20
+     if (entry->irte.__reserved_0 || entry->irte.__reserved_1 ||
+@@ -3345,7 +3383,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint=
+16_t index,
+         error_report_once("%s: detected non-zero reserved IRTE "
+                           "(index=3D%u, high=3D0x%" PRIx64 ", low=3D0x%" P=
+RIx64 ")",
+                           __func__, index, entry->data[1], entry->data[0])=
+;
+-        return -VTD_FR_IR_IRTE_RSVD;
++        if (do_fault) {
++            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_IRTE_RSVD, index);
++        }
++        return false;
+     }
+=20
+     if (sid !=3D X86_IOMMU_SID_INVALID) {
+@@ -3361,7 +3402,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint=
+16_t index,
+                 error_report_once("%s: invalid IRTE SID "
+                                   "(index=3D%u, sid=3D%u, source_id=3D%u)"=
+,
+                                   __func__, index, sid, source_id);
+-                return -VTD_FR_IR_SID_ERR;
++                if (do_fault) {
++                    vtd_report_ir_fault(iommu, sid, VTD_FR_IR_SID_ERR, ind=
+ex);
++                }
++                return false;
+             }
+             break;
+=20
+@@ -3373,7 +3417,10 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint=
+16_t index,
+                 error_report_once("%s: invalid SVT_BUS "
+                                   "(index=3D%u, bus=3D%u, min=3D%u, max=3D=
+%u)",
+                                   __func__, index, bus, bus_min, bus_max);
+-                return -VTD_FR_IR_SID_ERR;
++                if (do_fault) {
++                    vtd_report_ir_fault(iommu, sid, VTD_FR_IR_SID_ERR, ind=
+ex);
++                }
++                return false;
+             }
+             break;
+=20
+@@ -3382,23 +3429,24 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uin=
+t16_t index,
+                               "(index=3D%u, type=3D%d)", __func__,
+                               index, entry->irte.sid_vtype);
+             /* Take this as verification failure. */
+-            return -VTD_FR_IR_SID_ERR;
++            if (do_fault) {
++                vtd_report_ir_fault(iommu, sid, VTD_FR_IR_SID_ERR, index);
++            }
++            return false;
          }
-         info->vcpu =3D p->vcpu;
-         info->pending =3D test_bit(i, pending);
+     }
+=20
+-    return 0;
++    return true;
+ }
+=20
+ /* Fetch IRQ information of specific IR index */
+-static int vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
+-                             X86IOMMUIrq *irq, uint16_t sid)
++static bool vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
++                              X86IOMMUIrq *irq, uint16_t sid, bool do_faul=
+t)
+ {
+     VTD_IR_TableEntry irte =3D {};
+-    int ret =3D 0;
+=20
+-    ret =3D vtd_irte_get(iommu, index, &irte, sid);
+-    if (ret) {
+-        return ret;
++    if (!vtd_irte_get(iommu, index, &irte, sid, do_fault)) {
++        return false;
+     }
+=20
+     irq->trigger_mode =3D irte.irte.trigger_mode;
+@@ -3417,16 +3465,15 @@ static int vtd_remap_irq_get(IntelIOMMUState *iommu=
+, uint16_t index,
+     trace_vtd_ir_remap(index, irq->trigger_mode, irq->vector,
+                        irq->delivery_mode, irq->dest, irq->dest_mode);
+=20
+-    return 0;
++    return true;
+ }
+=20
+ /* Interrupt remapping for MSI/MSI-X entry */
+ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
+                                    MSIMessage *origin,
+                                    MSIMessage *translated,
+-                                   uint16_t sid)
++                                   uint16_t sid, bool do_fault)
+ {
+-    int ret =3D 0;
+     VTD_IR_MSIAddress addr;
+     uint16_t index;
+     X86IOMMUIrq irq =3D {};
+@@ -3443,14 +3490,20 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState =
+*iommu,
+     if (origin->address & VTD_MSI_ADDR_HI_MASK) {
+         error_report_once("%s: MSI address high 32 bits non-zero detected:=
+ "
+                           "address=3D0x%" PRIx64, __func__, origin->addres=
+s);
+-        return -VTD_FR_IR_REQ_RSVD;
++        if (do_fault) {
++            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_RSVD, 0);
++        }
++        return -EINVAL;
+     }
+=20
+     addr.data =3D origin->address & VTD_MSI_ADDR_LO_MASK;
+     if (addr.addr.__head !=3D 0xfee) {
+         error_report_once("%s: MSI address low 32 bit invalid: 0x%" PRIx32=
+,
+                           __func__, addr.data);
+-        return -VTD_FR_IR_REQ_RSVD;
++        if (do_fault) {
++            vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_RSVD, 0);
++        }
++        return -EINVAL;
+     }
+=20
+     /* This is compatible mode. */
+@@ -3469,9 +3522,8 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *i=
+ommu,
+         index +=3D origin->data & VTD_IR_MSI_DATA_SUBHANDLE;
+     }
+=20
+-    ret =3D vtd_remap_irq_get(iommu, index, &irq, sid);
+-    if (ret) {
+-        return ret;
++    if (!vtd_remap_irq_get(iommu, index, &irq, sid, do_fault)) {
++        return -EINVAL;
+     }
+=20
+     if (addr.addr.sub_valid) {
+@@ -3481,7 +3533,10 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *=
+iommu,
+                               "(sid=3D%u, address=3D0x%" PRIx64
+                               ", data=3D0x%" PRIx32 ")",
+                               __func__, sid, origin->address, origin->data=
+);
+-            return -VTD_FR_IR_REQ_RSVD;
++            if (do_fault) {
++                vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_RSVD, 0);
++            }
++            return -EINVAL;
+         }
+     } else {
+         uint8_t vector =3D origin->data & 0xff;
+@@ -3521,7 +3576,7 @@ static int vtd_int_remap(X86IOMMUState *iommu, MSIMes=
+sage *src,
+                          MSIMessage *dst, uint16_t sid)
+ {
+     return vtd_interrupt_remap_msi(INTEL_IOMMU_DEVICE(iommu),
+-                                   src, dst, sid);
++                                   src, dst, sid, false);
+ }
+=20
+ static MemTxResult vtd_mem_ir_read(void *opaque, hwaddr addr,
+@@ -3547,9 +3602,8 @@ static MemTxResult vtd_mem_ir_write(void *opaque, hwa=
+ddr addr,
+         sid =3D attrs.requester_id;
+     }
+=20
+-    ret =3D vtd_interrupt_remap_msi(opaque, &from, &to, sid);
++    ret =3D vtd_interrupt_remap_msi(opaque, &from, &to, sid, true);
+     if (ret) {
+-        /* TODO: report error */
+         /* Drop this interrupt */
+         return MEMTX_ERROR;
+     }
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.=
+h
+index e1450c5cfe..f8cf99bddf 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -268,6 +268,7 @@
+ #define VTD_FRCD_FI(val)        ((val) & ~0xfffULL)
+ #define VTD_FRCD_PV(val)        (((val) & 0xffffULL) << 40)
+ #define VTD_FRCD_PP(val)        (((val) & 0x1) << 31)
++#define VTD_FRCD_IR_IDX(val)    (((val) & 0xffffULL) << 48)
+=20
+ /* DMA Remapping Fault Conditions */
+ typedef enum VTDFaultReason {
 --=20
 2.34.1
 
 
 
---=-bGdTSQWnISVzLeINSaHb
+--=-irXX3gk0HRoIbPmmCsoL
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -624,25 +561,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODIzMTIxOTI3WjAvBgkqhkiG9w0BCQQxIgQghr5fvCSK
-t+3IZiC/9RMOXcMedhMycEvAWWepLNoe0jAwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODIzMTIyMzI1WjAvBgkqhkiG9w0BCQQxIgQga6/Dn/Zb
+QgZQsZ7mgV5+rRYLFPAOFE22Z0hFQDt3Gtcwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgA3DfUe0c1uDAYajTert+BzuiMpABjI1b53
-XMMT2unCvAVsl/YYg1Do6nUZ/N29Lbfws1kqIrbKHjkTqvSsq1r7NC78jW+tJX50O68IviE1N3cX
-Czzx6jKwQqJwFwUHq7plHHXSXL5Rj8QNplh6wfYc08sb82+0Y2S31FopeuyrJ2kjBm+6+LkHh/lP
-Y7T0oQbC2lkyOT1OrevHx5zyplJOUlPmwOy/fuzdoJXo+OW8JqtTdRA4jYBQtOPcpAvseirnZEha
-8t3ViYmgcSz2AoFryfcknUJZvt03hdQyT0/zrb6EvDEmmCF8zZsJSoGy1jT1LxLENj+sws/5Sdhq
-Irh5S+UWg9kR9z9jj71Huh6lHkWoIstsDbaNgZOr1gtRcGGETPTftbkoaIXj33HQKgfqPFJNaZ3Y
-NM4r4yGvAZqkiVM5X+Xqs/nrnJvOBIXEvy/0xh+JQUtPyJMimPfhi766LsLlTbS+K7sCtQiX8JfL
-282az41g9PETAkS7ny9VU0pYtjvHQEvLdpB50qzoTtJAD0HXQiYpftMO2RLVx1EvYX+/yI26YU1D
-bOSujrhu50wiCb6AS6CW4PM+dH/SnuMyN9cLYeS/ksILElfgWO8lW6y1gUhxZUKjCW6ShMzRHB9R
-2tW+w8aPus7U4xXfNb4mTIssh/IsQmEUaNvca5VbbwAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCIvSuvBlspuor6HEhPPU6sgw8JDon+IyHW
+MgVufGuvraKl2KKM+npWjv0Ngbbqa4fXUoxuTybGL/9yi56hhqnePCHMfPIz7uL1KVQhfxoAKq7Y
+7D7FGiYLHwdRKDUaZN/lNu/Perr9Z0HHhq0mxVSxGTIBg/FPzFN24004N+QNzgj0u5Z95ifJC5hN
+cItkgalHtoLKXd4a0OUmAJZ/VhCdIPOwS1OsmaGDT5QhjGU/q0P1DAuTgDbs7F0YqzuNcDIT5fTy
+2upvAF81iu761+hoVKtjH6ym1G5MS6hLBpB2P0/giXAhhqFGJQ5mZYJnR5GwlBNmBMuV7uB5lHyF
+DG/dFS746gc62WyCxBmWvj7vsz0nmAQXRqIDxpB8/A4lyVsBrI4EQ31S1AbI/dnleDUagsRMR4m3
+/7HZ1enulJ0AMaZSu2U8TdQTw8743J+F+HoeTzY2ilK+3LgizVFMxUL2T81MjD7AQiNvF5HL5KBm
++34dmub1zjHmb56Ss4gvQfvfiKqiiZMNUzZ+qI5iFPCKaDg1krKjqo4tutRihdqAqV990vFpRuu4
+9HS4Tjk4yhFuVOFvNxulL5Xbi508CyqQLYJnLkRjsTs2S55YAv9S14p4qoo5XFdqANMILpUj7RMB
++Ie+qymPav5dub5l5yuMEUe2pw6RBV9ey49RLxBA6AAAAAAAAA==
 
 
---=-bGdTSQWnISVzLeINSaHb--
+--=-irXX3gk0HRoIbPmmCsoL--
 
