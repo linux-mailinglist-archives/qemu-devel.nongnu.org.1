@@ -2,77 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF54785AFB
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9CB785B06
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:47:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYp3n-00037Z-VX; Wed, 23 Aug 2023 10:42:16 -0400
+	id 1qYp7r-0004Dk-9T; Wed, 23 Aug 2023 10:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qYp3T-00036u-IX
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:41:55 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qYp3R-0004j6-Sz
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:41:55 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-570c36ec14bso2310354eaf.2
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 07:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692801711; x=1693406511;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Jha2v+ZMs1dIHdJTsMyu5PZqo8ox2cafr9qOk8hvLmE=;
- b=adpHHLJL/NZu2lq4UzdcfNzwJtdDhlHRD2XavAgiLaqLoWYMT/i/2dwwa7hlNATCOy
- VIMPsYn8QKLRLV+AN7aPVDKOFOv4aIuw5J3lmqj9fI89viyi92T86rKM32F1sjwfuxso
- H/xf5FpzqcnJM+8bbEXpLjckSzo72Ch89gNKzO5TZIirHlEsYeDuMlAw1T1/S5Lgsgun
- CT4QN9qDPweVcmkQqKh8YroZ1ODvGyNUKWvolT/gibMlBA8Z5U1d9Cwn7/TmLJpoDnwA
- 0VjHARoB116sHuUTCzMu23S8ATrq0pcfD1W3F6sl7JvF938CepnPFnRbROfOwBWqVN2Z
- rrbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692801711; x=1693406511;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Jha2v+ZMs1dIHdJTsMyu5PZqo8ox2cafr9qOk8hvLmE=;
- b=dIZ3JjrnFXf0g6NXpTbcA9oCexarmO7dRYGOwfgf5i9ISBsL4069AkqocHBtteCsse
- yUR9tm8Kzf4CsnxVL7PaP3gN9H4Uiml9TVNWFCwA5RBrlABcS/F8wsg6paYckjtZr/ux
- oAeRcaK4HM+piVoF+SHhtJK0wJWRP5/SYW7RqsnIS+BOS7t61/3G0eBj2xIgDteQU3HA
- Nt9460sHrCCVFdVP7PFr644T3aqDBwmNvUEpFmOVzCMeLNA4475cleiHu4wFcg7Zf71P
- KO8ZxN0i+Yc9aeXE9JAPQyRUA4mYUI59oY4TIqiNUuWCn6RT9wEtYX8gbybkpHLMcVM4
- XTqw==
-X-Gm-Message-State: AOJu0YzuxGYrMpVKMw0i0BwmOT++7R9CdJn3SYcqwxjYwHlonYN3bWIi
- TeAxnB7vjKYXvQw9u1R9bndsFwAKFmPblyglo9s=
-X-Google-Smtp-Source: AGHT+IHWMgB8ahhCmQe4kD8Ac8iTbSe4qihQWzKvqXswo9aUVsYMrYhp9iiEXaOBBli+KVOORusFQk4SI316JUbciuI=
-X-Received: by 2002:a4a:3515:0:b0:570:be00:5e14 with SMTP id
- l21-20020a4a3515000000b00570be005e14mr10318349ooa.8.1692801711539; Wed, 23
- Aug 2023 07:41:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYp7M-0004Bq-NW
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:45:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYp7L-0005XK-3D
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:45:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692801948;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZlZhQyJeNMfBrn9DoGBQIM6RZ8cn0FE4Ix9IhhfKPVU=;
+ b=XsAfQwI0bUnakrmcQJVT1AxFFWvyEjeVFGFpEglGiuA/coTlnlRvfWVFw/l/a/bw/l9HvV
+ bqUwB07+M8okymnVOjqRaHtGox7B0IZkXm0Q2RhyJ8RNcXQVbEHmeehfaiTHFzXOz3GeR3
+ L2zhimbKFQ3X94lbp95o9iS0w/xmxrg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-665-8GvZ52PgPXGoJvfNyTuhEA-1; Wed, 23 Aug 2023 10:45:42 -0400
+X-MC-Unique: 8GvZ52PgPXGoJvfNyTuhEA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FF0E853072;
+ Wed, 23 Aug 2023 14:45:42 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.36])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9B588492C14;
+ Wed, 23 Aug 2023 14:45:40 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
+ Ed Maste <emaste@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>
+Subject: [PATCH] .gitlab-ci.d/cirrus.yml: Update FreeBSD to v13.2
+Date: Wed, 23 Aug 2023 16:45:33 +0200
+Message-Id: <20230823144533.230477-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <CAJSP0QU7gp1OjmrGhV1Y4jLRF0DYQAG=vn7LTS8SOa0eADW70Q@mail.gmail.com>
- <CAAAx-8KKesRCK1-4-1Yx=SvsmMgxBZKLaCZXPZkKk4vyDkEOVg@mail.gmail.com>
-In-Reply-To: <CAAAx-8KKesRCK1-4-1Yx=SvsmMgxBZKLaCZXPZkKk4vyDkEOVg@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 23 Aug 2023 10:41:39 -0400
-Message-ID: <CAJSP0QVsStbxhxRJZjNhfEcXbUUaL1d-Qq1g9QtpH762R3CE6Q@mail.gmail.com>
-Subject: Re: NVMe ZNS last zone size
-To: Sam Li <faithilikerun@gmail.com>
-Cc: Klaus Jensen <k.jensen@samsung.com>, qemu-devel <qemu-devel@nongnu.org>, 
- Val Adler <spantamd@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc33.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,52 +76,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 23 Aug 2023 at 10:24, Sam Li <faithilikerun@gmail.com> wrote:
->
-> Hi Stefan,
->
-> Stefan Hajnoczi <stefanha@gmail.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8823=
-=E6=97=A5=E5=91=A8=E4=B8=89 21:26=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > Hi Sam and Klaus,
-> > Val is adding nvme-io_uring ZNS support to libblkio
-> > (https://gitlab.com/libblkio/libblkio/-/merge_requests/221) and asked
-> > how to test the size of the last zone when the namespace's total size
-> > is not a multiple of the zone size.
->
-> I think a zone report operation can do the trick. Given zone configs,
-> the size of last zone should be [size - (nr_zones - 1) * zone_size].
-> Reporting last zone on such devices tells whether the value is
-> correct.
+The FreeBSD CI job started to fail due to linking problems ... time
+to update to the latest version to get this fixed.
 
-In nvme_ns_zoned_check_calc_geometry() the number of zones is rounded down:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ .gitlab-ci.d/cirrus.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  ns->num_zones =3D le64_to_cpu(ns->id_ns.nsze) / ns->zone_size;
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index 1507c928e5..41d64d6680 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -50,7 +50,7 @@ x64-freebsd-13-build:
+     NAME: freebsd-13
+     CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
+     CIRRUS_VM_IMAGE_SELECTOR: image_family
+-    CIRRUS_VM_IMAGE_NAME: freebsd-13-1
++    CIRRUS_VM_IMAGE_NAME: freebsd-13-2
+     CIRRUS_VM_CPUS: 8
+     CIRRUS_VM_RAM: 8G
+     UPDATE_COMMAND: pkg update; pkg upgrade -y
+-- 
+2.39.3
 
-Afterwards nsze is recalculated as follows:
-
-  ns->id_ns.nsze =3D cpu_to_le64(ns->num_zones * ns->zone_size);
-
-I interpret this to mean that when the namespace's total size is not a
-multiple of the zone size, then the last part will be ignored and not
-exposed as a zone.
-
->
-> >
-> > My understanding is that the zoned storage model allows the last zone
-> > to be smaller than the zone size in this case. However, the NVMe ZNS
-> > emulation code in QEMU makes all zones a multiple of the zone size. I
-> > think QEMU cannot be used for this test case at the moment.
-> >
-> > Are there any plans to allow the last zone to have a different size?
-> > Maybe Sam's qcow2 work will allow this?
->
-> Yes, the zone report in qcow2 allows smaller last zone.
-> Please let me know if there is any problem.
-
-Great. Val can try your qcow2 patches and see if that allows her to
-test last zone size !=3D zone_size.
-
-Thanks,
-Stefan
 
