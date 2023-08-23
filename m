@@ -2,81 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D731785EB8
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B2F785F03
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:57:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYrl8-0006Uj-Qb; Wed, 23 Aug 2023 13:35:10 -0400
+	id 1qYs5Q-0004qX-EZ; Wed, 23 Aug 2023 13:56:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYrl6-0006UN-6p
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:35:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qYs5A-0004q7-MD
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:55:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYrl3-0006um-Q3
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:35:07 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qYs58-0002Ei-S5
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:55:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692812104;
+ s=mimecast20190719; t=1692813348;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+YVHqnz3FTArQET5lACU1cgStpJqX/7wZhqdEB19Luo=;
- b=Qc12nvVSEpsRXDo8tYCQYvEOzufHhOmiAty1i/nDPVpQBLEt7UXgHqeb+whpt8aVccpo2R
- 1B2A7eb3IxDJvw+ZEh6Fub2cOsRy0aWts7jaEr3CyYH1joV9qeaARDwLgjRk1axCe/XWTE
- niCF8GFs6OsKTDppFeGjW9FkrnULU/k=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-zB06J9uTM1WH6NMpoU1bnw-1; Wed, 23 Aug 2023 13:35:01 -0400
-X-MC-Unique: zB06J9uTM1WH6NMpoU1bnw-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-44d54127328so215735137.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 10:35:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692812101; x=1693416901;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+YVHqnz3FTArQET5lACU1cgStpJqX/7wZhqdEB19Luo=;
- b=GjtpiAXP28wZxOBuL1uDUgvBT9Anxvp3zCnIQvnP0hpY0KnxRi/Y83N0F5fTf6I+/y
- svvMZEbVg+2CDN41hfo6vvWZxDbkONuOL50ZekmHLLdP/B9TLj1bnz5oij6cHIPPyF/8
- nvKhlUMAR1ZsDO0pDM2oIdFSGoBbpuqoGTnRjr+P4fDCS7UMuCcRrTvSpNgWBUVWwxNX
- DMJRfdGw/0zb0bjJZArzlWutyIEjYi51NxFYkXng4/u5HhYniGgxcAq2+bkGMEC4EOMc
- PgeAUOvILC8nsPSXns/DKUMuOCiVKq7D4NxmkJBL2CrIhB1pmEJLGViuw9XEA9hX1qEJ
- oKOw==
-X-Gm-Message-State: AOJu0YwpXTmA+unrHw/No6jFcIYS3qH0NiNR2b4E19y3f+FhRsVoVOTR
- apc8/meteMSYguL72kX8N0XFLLc5d5L5FWifHW90QLH0lepgh7XtNEIF77vtLyxF8O1q1FzgSRl
- Hn1J7Gs3nvHxuGg4=
-X-Received: by 2002:a67:d08a:0:b0:443:5da9:457e with SMTP id
- s10-20020a67d08a000000b004435da9457emr9196633vsi.0.1692812100802; 
- Wed, 23 Aug 2023 10:35:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtDenzLGZn5mwuCmaUAsiBI+cj/qXfWG5CffitmurjAXypby5LuWjE0Rwo0ppAx+i0Gk3zVg==
-X-Received: by 2002:a67:d08a:0:b0:443:5da9:457e with SMTP id
- s10-20020a67d08a000000b004435da9457emr9196613vsi.0.1692812100445; 
- Wed, 23 Aug 2023 10:35:00 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a3-20020a0cca83000000b0064910f273aesm4563056qvk.146.2023.08.23.10.34.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 10:35:00 -0700 (PDT)
-Date: Wed, 23 Aug 2023 13:34:57 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mattias Nissler <mnissler@rivosinc.com>
-Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, stefanha@redhat.com,
- Jagannathan Raman <jag.raman@oracle.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [PATCH v2 1/4] softmmu: Support concurrent bounce buffers
-Message-ID: <ZOZDQVgboMaiZ4x6@x1n>
-References: <20230823092905.2259418-1-mnissler@rivosinc.com>
- <20230823092905.2259418-2-mnissler@rivosinc.com>
+ bh=MLIs8Cx20YpCO9jsIYZZYYS3hwhYZvPyGjkGiNFcibk=;
+ b=Q91NrAjTVKCbNKu6+YtOoX0+fymgvJV6XN8bNMH2Coe1ZR8SR3JYgwhO3J81IEDsAUY2WN
+ blbHUTswdPbVfvvOaQYb7RxwuMpcGXQz68ip5WibOKF8IMK7z/8Wti2XbA1JmNeFmX9qMB
+ 2xaPdDNv+MGpQNBIug+L+RGGKIyYVLQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-107-U057pLz_O9m-Qw1OMaSBdQ-1; Wed, 23 Aug 2023 13:55:47 -0400
+X-MC-Unique: U057pLz_O9m-Qw1OMaSBdQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF99D8D40A1;
+ Wed, 23 Aug 2023 17:55:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 99FD4C15BAE;
+ Wed, 23 Aug 2023 17:55:46 +0000 (UTC)
+Date: Wed, 23 Aug 2023 12:55:44 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 22/24] tests/: spelling fixes
+Message-ID: <xu3di33awphpggqem25ebfasbveyyvb35fznf4b46xjgxiucv4@nawbmm3tgxqp>
+References: <cover.1691405748.git.mjt@tls.msk.ru>
+ <20230823055155.1917375-23-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230823092905.2259418-2-mnissler@rivosinc.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230823055155.1917375-23-mjt@tls.msk.ru>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,300 +77,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 23, 2023 at 02:29:02AM -0700, Mattias Nissler wrote:
-> When DMA memory can't be directly accessed, as is the case when
-> running the device model in a separate process without shareable DMA
-> file descriptors, bounce buffering is used.
-> 
-> It is not uncommon for device models to request mapping of several DMA
-> regions at the same time. Examples include:
->  * net devices, e.g. when transmitting a packet that is split across
->    several TX descriptors (observed with igb)
->  * USB host controllers, when handling a packet with multiple data TRBs
->    (observed with xhci)
-> 
-> Previously, qemu only provided a single bounce buffer and would fail DMA
-> map requests while the buffer was already in use. In turn, this would
-> cause DMA failures that ultimately manifest as hardware errors from the
-> guest perspective.
-> 
-> This change allocates DMA bounce buffers dynamically instead of
-> supporting only a single buffer. Thus, multiple DMA mappings work
-> correctly also when RAM can't be mmap()-ed.
-> 
-> The total bounce buffer allocation size is limited by a new command line
-> parameter. The default is 4096 bytes to match the previous maximum
-> buffer size. It is expected that suitable limits will vary quite a bit
-> in practice depending on device models and workloads.
-> 
-> Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+On Wed, Aug 23, 2023 at 08:51:53AM +0300, Michael Tokarev wrote:
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->  include/sysemu/sysemu.h |  2 +
->  qemu-options.hx         | 27 +++++++++++++
->  softmmu/globals.c       |  1 +
->  softmmu/physmem.c       | 84 +++++++++++++++++++++++------------------
->  softmmu/vl.c            |  6 +++
->  5 files changed, 83 insertions(+), 37 deletions(-)
-> 
-> diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
-> index 25be2a692e..c5dc93cb53 100644
-> --- a/include/sysemu/sysemu.h
-> +++ b/include/sysemu/sysemu.h
-> @@ -61,6 +61,8 @@ extern int nb_option_roms;
->  extern const char *prom_envs[MAX_PROM_ENVS];
->  extern unsigned int nb_prom_envs;
->  
-> +extern uint64_t max_bounce_buffer_size;
-> +
->  /* serial ports */
->  
->  /* Return the Chardev for serial port i, or NULL if none */
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 29b98c3d4c..6071794237 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -4959,6 +4959,33 @@ SRST
->  ERST
->  #endif
->  
-> +DEF("max-bounce-buffer-size", HAS_ARG,
-> +    QEMU_OPTION_max_bounce_buffer_size,
-> +    "-max-bounce-buffer-size size\n"
-> +    "                DMA bounce buffer size limit in bytes (default=4096)\n",
-> +    QEMU_ARCH_ALL)
-> +SRST
-> +``-max-bounce-buffer-size size``
-> +    Set the limit in bytes for DMA bounce buffer allocations.
-> +
-> +    DMA bounce buffers are used when device models request memory-mapped access
-> +    to memory regions that can't be directly mapped by the qemu process, so the
-> +    memory must read or written to a temporary local buffer for the device
-> +    model to work with. This is the case e.g. for I/O memory regions, and when
-> +    running in multi-process mode without shared access to memory.
-> +
-> +    Whether bounce buffering is necessary depends heavily on the device model
-> +    implementation. Some devices use explicit DMA read and write operations
-> +    which do not require bounce buffers. Some devices, notably storage, will
-> +    retry a failed DMA map request after bounce buffer space becomes available
-> +    again. Most other devices will bail when encountering map request failures,
-> +    which will typically appear to the guest as a hardware error.
-> +
-> +    Suitable bounce buffer size values depend on the workload and guest
-> +    configuration. A few kilobytes up to a few megabytes are common sizes
-> +    encountered in practice.
 
-Does it mean that the default 4K size can still easily fail with some
-device setup?
+> +++ b/tests/qemu-iotests/298
+> @@ -142,5 +142,5 @@ class TestTruncate(iotests.QMPTestCase):
+>  
+>          # Probably we'll want preallocate filter to keep align to cluster when
+> -        # shrink preallocation, so, ignore small differece
+> +        # shrink preallocation, so, ignore small difference
 
-IIUC the whole point of limit here is to make sure the allocation is still
-bounded, while 4K itself is not a hard limit. Making it bigger would be,
-IMHO, nice if it should work with known configs which used to be broken.
+The sentence as a whole still comes across awkwardly; maybe shorten and reword to:
 
-> +ERST
-> +
->  DEFHEADING()
->  
->  DEFHEADING(Generic object creation:)
-> diff --git a/softmmu/globals.c b/softmmu/globals.c
-> index e83b5428d1..d3cc010717 100644
-> --- a/softmmu/globals.c
-> +++ b/softmmu/globals.c
-> @@ -54,6 +54,7 @@ const char *prom_envs[MAX_PROM_ENVS];
->  uint8_t *boot_splash_filedata;
->  int only_migratable; /* turn it off unless user states otherwise */
->  int icount_align_option;
-> +uint64_t max_bounce_buffer_size = 4096;
->  
->  /* The bytes in qemu_uuid are in the order specified by RFC4122, _not_ in the
->   * little-endian "wire format" described in the SMBIOS 2.6 specification.
-> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> index 3df73542e1..9f0fec0c8e 100644
-> --- a/softmmu/physmem.c
-> +++ b/softmmu/physmem.c
-> @@ -50,6 +50,7 @@
->  #include "sysemu/dma.h"
->  #include "sysemu/hostmem.h"
->  #include "sysemu/hw_accel.h"
-> +#include "sysemu/sysemu.h"
->  #include "sysemu/xen-mapcache.h"
->  #include "trace/trace-root.h"
->  
-> @@ -2904,13 +2905,12 @@ void cpu_flush_icache_range(hwaddr start, hwaddr len)
->  
->  typedef struct {
->      MemoryRegion *mr;
-> -    void *buffer;
->      hwaddr addr;
-> -    hwaddr len;
-> -    bool in_use;
-> +    size_t len;
-> +    uint8_t buffer[];
->  } BounceBuffer;
->  
-> -static BounceBuffer bounce;
-> +static size_t bounce_buffer_size;
->  
->  typedef struct MapClient {
->      QEMUBH *bh;
-> @@ -2945,9 +2945,9 @@ void cpu_register_map_client(QEMUBH *bh)
->      qemu_mutex_lock(&map_client_list_lock);
->      client->bh = bh;
->      QLIST_INSERT_HEAD(&map_client_list, client, link);
-> -    /* Write map_client_list before reading in_use.  */
-> +    /* Write map_client_list before reading bounce_buffer_size.  */
->      smp_mb();
-> -    if (!qatomic_read(&bounce.in_use)) {
-> +    if (qatomic_read(&bounce_buffer_size) < max_bounce_buffer_size) {
->          cpu_notify_map_clients_locked();
->      }
->      qemu_mutex_unlock(&map_client_list_lock);
-> @@ -3076,31 +3076,35 @@ void *address_space_map(AddressSpace *as,
->      RCU_READ_LOCK_GUARD();
->      fv = address_space_to_flatview(as);
->      mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
-> +    memory_region_ref(mr);
->  
->      if (!memory_access_is_direct(mr, is_write)) {
-> -        if (qatomic_xchg(&bounce.in_use, true)) {
-> +        size_t size = qatomic_add_fetch(&bounce_buffer_size, l);
-> +        if (size > max_bounce_buffer_size) {
-> +            size_t excess = size - max_bounce_buffer_size;
-> +            l -= excess;
-> +            qatomic_sub(&bounce_buffer_size, excess);
-> +        }
-> +
-> +        if (l == 0) {
->              *plen = 0;
->              return NULL;
->          }
-> -        /* Avoid unbounded allocations */
-> -        l = MIN(l, TARGET_PAGE_SIZE);
-> -        bounce.buffer = qemu_memalign(TARGET_PAGE_SIZE, l);
-> -        bounce.addr = addr;
-> -        bounce.len = l;
->  
-> -        memory_region_ref(mr);
-> -        bounce.mr = mr;
-> +        BounceBuffer *bounce = g_malloc(l + sizeof(BounceBuffer));
+The preallocate filter may keep cluster alignment when shrinking, so
+ignore small differences
 
-Maybe g_malloc0() would be better?
+> +++ b/tests/qtest/fuzz/generic_fuzz.c
+> @@ -847,7 +847,7 @@ static void generic_pre_fuzz(QTestState *s)
+>   *
+>   * This function attempts to produce an input that:
+> - * Ouptut: maps a device's BARs, set up three DMA patterns, triggers
+> + * Output: maps a device's BARs, set up three DMA patterns, triggers
+>   *          functionality A device, replaces the DMA patterns with a single
+> - *          patten, and triggers device functionality B.
+> + *          pattern, and triggers device functionality B.
 
-I just checked that we had target page aligned allocations since the 1st
-day (commit 6d16c2f88f2a).  I didn't find any clue showing why it was done
-like that, but I do have worry on whether any existing caller that may
-implicitly relying on an address that is target page aligned.  But maybe
-not a major issue; I didn't see anything rely on that yet.
+As long as you're touching neighboring lines,
 
-> +        bounce->mr = mr;
-> +        bounce->addr = addr;
-> +        bounce->len = l;
-> +
->          if (!is_write) {
->              flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
-> -                               bounce.buffer, l);
-> +                          bounce->buffer, l);
->          }
->  
->          *plen = l;
-> -        return bounce.buffer;
-> +        return bounce->buffer;
->      }
->  
-> -
-> -    memory_region_ref(mr);
->      *plen = flatview_extend_translation(fv, addr, len, mr, xlat,
->                                          l, is_write, attrs);
->      fuzz_dma_read_cb(addr, *plen, mr);
-> @@ -3114,31 +3118,37 @@ void *address_space_map(AddressSpace *as,
->  void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
->                           bool is_write, hwaddr access_len)
->  {
-> -    if (buffer != bounce.buffer) {
-> -        MemoryRegion *mr;
-> -        ram_addr_t addr1;
-> +    MemoryRegion *mr;
-> +    ram_addr_t addr1;
-> +
-> +    mr = memory_region_from_host(buffer, &addr1);
-> +    if (mr == NULL) {
-> +        /*
-> +         * Must be a bounce buffer (unless the caller passed a pointer which
-> +         * wasn't returned by address_space_map, which is illegal).
+s/functionality A device/device functionality A/
 
-Is it possible to still have some kind of sanity check to make sure it's a
-bounce buffer passed in, just in case of a caller bug?  Or, the failure can
-be weird..
+> +++ b/tests/unit/test-throttle.c
+> @@ -136,5 +136,5 @@ static void test_compute_wait(void)
+>          g_assert(double_cmp(bkt.level, (i + 1) * (bkt.max - bkt.avg) / 10));
+>          /* We can do bursts for the 2 seconds we have configured in
+> -         * burst_length. We have 100 extra miliseconds of burst
+> +         * burst_length. We have 100 extra milliseconds of burst
+>           * because bkt.level has been leaking during this time.
+>           * After that, we have to wait. */
+> @@ -380,5 +380,5 @@ static void test_is_valid(void)
+>      /* zero are valids */
+>      test_is_valid_for_value(0, true);
+> -    /* positives numers are valids */
+> +    /* positives numbers are valids */
 
-> +         */
-> +        BounceBuffer *bounce = container_of(buffer, BounceBuffer, buffer);
->  
-> -        mr = memory_region_from_host(buffer, &addr1);
-> -        assert(mr != NULL);
->          if (is_write) {
-> -            invalidate_and_set_dirty(mr, addr1, access_len);
-> -        }
-> -        if (xen_enabled()) {
-> -            xen_invalidate_map_cache_entry(buffer);
-> +            address_space_write(as, bounce->addr, MEMTXATTRS_UNSPECIFIED,
-> +                                bounce->buffer, access_len);
->          }
-> -        memory_region_unref(mr);
-> +
-> +        memory_region_unref(bounce->mr);
-> +        qatomic_sub(&bounce_buffer_size, bounce->len);
-> +        /* Write bounce_buffer_size before reading map_client_list. */
-> +        smp_mb();
-> +        cpu_notify_map_clients();
-> +        g_free(bounce);
->          return;
->      }
-> +
-> +    if (xen_enabled()) {
-> +        xen_invalidate_map_cache_entry(buffer);
-> +    }
->      if (is_write) {
-> -        address_space_write(as, bounce.addr, MEMTXATTRS_UNSPECIFIED,
-> -                            bounce.buffer, access_len);
-> -    }
-> -    qemu_vfree(bounce.buffer);
-> -    bounce.buffer = NULL;
-> -    memory_region_unref(bounce.mr);
-> -    /* Clear in_use before reading map_client_list.  */
-> -    qatomic_set_mb(&bounce.in_use, false);
-> -    cpu_notify_map_clients();
-> +        invalidate_and_set_dirty(mr, addr1, access_len);
-> +    }
->  }
->  
->  void *cpu_physical_memory_map(hwaddr addr,
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index b0b96f67fa..dbe52f5ea1 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -3469,6 +3469,12 @@ void qemu_init(int argc, char **argv)
->                  exit(1);
->  #endif
->                  break;
-> +            case QEMU_OPTION_max_bounce_buffer_size:
-> +                if (qemu_strtosz(optarg, NULL, &max_bounce_buffer_size) < 0) {
-> +                    error_report("invalid -max-ounce-buffer-size value");
-> +                    exit(1);
-> +                }
-> +                break;
+Multiple grammar errors in this function.  Should be:
 
-PS: I had a vague memory that we do not recommend adding more qemu cmdline
-options, but I don't know enough on the plan to say anything real.
+/* negative numbers are invalid */
+/* zero is valid */
+/* positive numbers are valid */
 
->              case QEMU_OPTION_object:
->                  object_option_parse(optarg);
->                  break;
-> -- 
-> 2.34.1
-> 
 
-Thanks,
+All other changes in this patch look good.  With additional tweaks,
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
 -- 
-Peter Xu
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
