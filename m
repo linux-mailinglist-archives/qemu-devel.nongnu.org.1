@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8445F78615C
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 22:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7B2786163
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 22:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYuOi-0000JD-K1; Wed, 23 Aug 2023 16:24:12 -0400
+	id 1qYuOe-0008TV-1F; Wed, 23 Aug 2023 16:24:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYuOV-0008L8-A8
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:23:59 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qYuOV-0008L9-AZ
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:24:00 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYuON-0005Ty-Uj
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:23:57 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c06f6f98c0so28090595ad.3
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:23:37 -0700 (PDT)
+ id 1qYuOK-0005U2-Tx
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:23:54 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bc0d39b52cso41167065ad.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692822216; x=1693427016;
+ d=linaro.org; s=google; t=1692822217; x=1693427017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lPTy0zFcuTzFVoJv9IKIJHnsjTn7YyrriC1uBaddXZM=;
- b=SxsqY1RVerrh9rkA6vKVTtHzbPKxg8v7UvjxExXpbJ8Pi9uEq2Z5eeycLBLmw0Uuw9
- Ei0gS273OWFr/WShVSayZHPQnhpVU/eFM11YbKLJp98MRni9bbcr3RrotbbvZbnOMreD
- WC11QlLxmDHBncXtwqpLKLFgYsm8rViMrwmFWXpAX/kXKpPBoSD0koOwj4WGtZIF6/gI
- fiGcVVfIY2neBFYh6k6SxWOp1B3Q+HHh/E2o0ySyvHFfwVwq+rtlQfMiBhktdz7z5pzx
- 98p85sbXaTiEBNebWjnbO3C7bSB2I9+R2iItzP5KOCCirduaTJD+bzomP+f21Ub1n7rO
- zBNw==
+ bh=Sx0epkogYDT5CuB/Oub20dQ94By4bi1YJwfsT53fmL8=;
+ b=qVXGHT32KGoNLNcX+9X/4IPhjGqiluSnvf8NBdexwJv4AtHQkO17tRfbMd1wqaCLC/
+ cePOu+xjbVa8SvQLYZFm4X5X+puXBRKxM2lcNpVZDEIMM8JXAUFlH9KbnmAsaVVz6GmQ
+ 68DMUd8jZqGolEGLUp/FHEsKqS3Ym+1EYf0uOmUlOFP+dg3iVjNATIXb7QyFzHSI/yBw
+ AECpNCFv6gwIILzE1kl/kWD6QRM5t1m47VjWhNm3nFGMk3Tc1DrXd2IHNa+t8RUv5AHp
+ 4hcd230GcLHh04dwshlbx5DbNDCaJEEL5rcSh2+v0hRKx6oQGisVdKK4RZ/+oPQoNTE+
+ aYIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692822216; x=1693427016;
+ d=1e100.net; s=20221208; t=1692822217; x=1693427017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lPTy0zFcuTzFVoJv9IKIJHnsjTn7YyrriC1uBaddXZM=;
- b=fkL0qdxOWtpUyiRs7IjbjxioZAzyVBPq9fEq2qJ1ups2/wFHU3S49Tb6bmGCfQLTNf
- uLxSMlkVmdFNZt8B6BRllmwBY+VRLOAPaxU0COMIvtTHzZwkO3k9e5E6ewjjsvDCq+lS
- 5Za10z7RBB4WzdbeJjEq+Io0S+Bt23HCBJFTDyxZzP48KrcPk/sj6riL/mJTZvZWD8Dp
- NoxrYxFbRhggqfoPzdF+r3MRC4pmRAVbeO9N2RAs651ysARX9bLtVuUcGdscRyI0OX/C
- vulfIda0OjPL6z1mmtKXUw9mhq8V7+szuQMSQ4w0SAYxQ76tNl5ohb8Nohvj+v3lhVtE
- 4hnA==
-X-Gm-Message-State: AOJu0YwWTlBXy/KOfxkOnefdMjIa9Sg6HIHkoZ1y28sLhFNN8pyAn5gG
- ax8kD8bJAuOKOBBEDWTHFCInO+skn35b5lpbKQI=
-X-Google-Smtp-Source: AGHT+IE8j0tR9XiVnvZa7fh0EiMKBK0I4J0rzC4O1ZETpRy8GXngv0J5OE6p0AN+l7UAgsuP6n3iLA==
-X-Received: by 2002:a17:902:e881:b0:1b9:e091:8037 with SMTP id
- w1-20020a170902e88100b001b9e0918037mr16872898plg.30.1692822216499; 
- Wed, 23 Aug 2023 13:23:36 -0700 (PDT)
+ bh=Sx0epkogYDT5CuB/Oub20dQ94By4bi1YJwfsT53fmL8=;
+ b=RlxNcj4+37JRITUnXeNf7pxkbiSETyb6HHgmdaHeswfozG/A/t6lRXb+RO7rDSHOND
+ GSHQFU8jK36XHfR+49dIKTNPrzOxJHtoyUw4fQEis3kF/aVDJjo5KTxAaBB+y9l0kPJz
+ uVER8wdoZ0wU11XZCvQwYI70iJSVAQfd05YWovph83/gbcnRin60nEIOaJnlpA3T+1sE
+ 3B8egnVrYmHkesDbiY+iewzf0fGCAFF/qCk5PSPt1GtSht5SoJ6XdrwRGWP10jmskeu/
+ xztUD1xopD0bgV2YQVr0445eiZScAcXHcpBp3oKE/79y2r53Jn6HyIGB1/iOWVaYZnK/
+ B8Dg==
+X-Gm-Message-State: AOJu0YxiZPO3TDXE4GXkFJfKxpJxkTGD019XeqeUFTNWz9p9x3CEcRTl
+ Z1FPUx2lRsC9XSEbr/arEUpiH9BwVMZ4VubJzv0=
+X-Google-Smtp-Source: AGHT+IFYgGbEnphxRv4I3/E5TlBTeTrfLyH3nOb4YP714Ko+YtCjxmoE/eSZq5OmGG8EkoKpfmLI3A==
+X-Received: by 2002:a17:903:234a:b0:1c0:8a05:f356 with SMTP id
+ c10-20020a170903234a00b001c08a05f356mr7771903plh.54.1692822217532; 
+ Wed, 23 Aug 2023 13:23:37 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
  by smtp.gmail.com with ESMTPSA id
- iz22-20020a170902ef9600b001b9da42cd7dsm11418641plb.279.2023.08.23.13.23.35
+ iz22-20020a170902ef9600b001b9da42cd7dsm11418641plb.279.2023.08.23.13.23.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 13:23:36 -0700 (PDT)
+ Wed, 23 Aug 2023 13:23:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 09/48] accel/tcg: Update run_on_cpu_data static assert
-Date: Wed, 23 Aug 2023 13:22:47 -0700
-Message-Id: <20230823202326.1353645-10-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 10/48] target/m68k: Use tcg_gen_deposit_i32 in gen_partset_reg
+Date: Wed, 23 Aug 2023 13:22:48 -0700
+Message-Id: <20230823202326.1353645-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230823202326.1353645-1-richard.henderson@linaro.org>
 References: <20230823202326.1353645-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,35 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson via <qemu-devel@nongnu.org>
-
-As we are now using vaddr for representing guest addresses, update the
-static assert to check that vaddr fits in the run_on_cpu_data union.
-
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230807155706.9580-10-anjo@rev.ng>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/m68k/translate.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index bd2cf4b0be..c643d66190 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -74,8 +74,9 @@
-     } while (0)
- 
- /* run_on_cpu_data.target_ptr should always be big enough for a
-- * target_ulong even on 32 bit builds */
--QEMU_BUILD_BUG_ON(sizeof(target_ulong) > sizeof(run_on_cpu_data));
-+ * vaddr even on 32 bit builds
-+ */
-+QEMU_BUILD_BUG_ON(sizeof(vaddr) > sizeof(run_on_cpu_data));
- 
- /* We currently can't handle more than 16 bits in the MMUIDX bitmask.
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index e07161d76f..d08e823b6c 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -697,19 +697,12 @@ static inline int ext_opsize(int ext, int pos)
   */
+ static void gen_partset_reg(int opsize, TCGv reg, TCGv val)
+ {
+-    TCGv tmp;
+     switch (opsize) {
+     case OS_BYTE:
+-        tcg_gen_andi_i32(reg, reg, 0xffffff00);
+-        tmp = tcg_temp_new();
+-        tcg_gen_ext8u_i32(tmp, val);
+-        tcg_gen_or_i32(reg, reg, tmp);
++        tcg_gen_deposit_i32(reg, reg, val, 0, 8);
+         break;
+     case OS_WORD:
+-        tcg_gen_andi_i32(reg, reg, 0xffff0000);
+-        tmp = tcg_temp_new();
+-        tcg_gen_ext16u_i32(tmp, val);
+-        tcg_gen_or_i32(reg, reg, tmp);
++        tcg_gen_deposit_i32(reg, reg, val, 0, 16);
+         break;
+     case OS_LONG:
+     case OS_SINGLE:
 -- 
 2.34.1
 
