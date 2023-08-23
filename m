@@ -2,110 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6604A78520D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 09:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FF6785241
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 10:06:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYig3-00056V-8s; Wed, 23 Aug 2023 03:53:19 -0400
+	id 1qYira-0003Sg-Lh; Wed, 23 Aug 2023 04:05:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alloc.young@outlook.com>)
- id 1qYig1-00056G-5X
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 03:53:17 -0400
-Received: from mail-mw2nam12olkn2101.outbound.protection.outlook.com
- ([40.92.23.101] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alloc.young@outlook.com>)
- id 1qYifz-0003M4-Fe
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 03:53:16 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h41yL08CCeflWldJioptZiWXWJl88dKNSMTQ/kHRojVnCfy5GquVJSYFPy3tnYHdqqoLdqbeozAmbHF3C42vjIQm2fLyszNacCYa69HbNYyct8ki6esrvLHyjWVj64hnJV8tC1sJneFaI/RT5DKrUu0PGwZe8awsbWJ0N8W6Tz3/K4hhYlbgCE02xmiBf8/LrqDp7qMOT4dnaevE7SVm6WvkFyVG1hx1uocF4ctl5Viy04bwXU8aN7myXmgHEMktP/v3UpkWWCnes+oiaMqWYKKcjbWU5V640/iuSG+pNm6jslIG9Yw9eM7XQXDUQfCWsW7roDv2V7Bb+bVLRj32JQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J0Q7J/M7ey85pPTYjez15dkk3S+TTUYLLiL3nbWoetU=;
- b=b9mJbfnmr/c9PUtGZSJCJ9AoyO2UZb6tpUxjWDmkHi4N1ta1rsQhxrfPaBSabCAbu3iEX9FnZx7ci3/dRBXgIEitj28NkLyu+ia8Y1sQuLWry7+AuEyf4WgBqBH1sOLWhqcvg8ahPBw8QiOgd/SJCzX4TkIBuWg53HShGwHAnQ6dQAMYR1TEBHOVc4xU0nm/gA2nfrQnb1a4DLHRGGclpPHfad159oqp9pWUEc/JPykWnFq2DYiFgR6j2EDDvlF0hLvW4+pDa9fsjVBo/3GWqMwdCjODjsnmyY9nwMArLiQ6FMQgi99z0kkGaFxtQu1BtfG/eB23LYK6WdKhbpZdPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J0Q7J/M7ey85pPTYjez15dkk3S+TTUYLLiL3nbWoetU=;
- b=vSGAv1Mb8yFzjghnZRt8FP75t9vY1jHUsmWcOJDfuRnjrmjgpBMWBQVDIcAddTqWesmp0kKEoAXv6cPs2KHfGDuiRELvF72Ho9w7NVcuFzzFCDoSC/AFW8s3A+OdFb3PM2llhn7CZ0yHSG8HBygcE3dY+oDUECL8dJkxmA7YED1jH/rLKloED1CPnq50boa2D/jpmnyZ2+M7psq+326w5EpK/v4vit/T/FbiQfrqJiERlYUOzUkmTM8pVYqAS+faFpq0Ve5s9ZAA5C0WKbyuSt/cqKKXNnuR+q9DG2yi2ukWbZHSFWVcAqUkOGv78/ON3/UxpPkvOg/dpcHRj5U67g==
-Received: from SA1PR11MB6760.namprd11.prod.outlook.com (2603:10b6:806:25f::14)
- by DM6PR11MB4545.namprd11.prod.outlook.com (2603:10b6:5:2ae::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.25; Wed, 23 Aug
- 2023 07:48:11 +0000
-Received: from SA1PR11MB6760.namprd11.prod.outlook.com
- ([fe80::df85:2db:d56b:38bf]) by SA1PR11MB6760.namprd11.prod.outlook.com
- ([fe80::df85:2db:d56b:38bf%5]) with mapi id 15.20.6699.020; Wed, 23 Aug 2023
- 07:48:11 +0000
-From: alloc.young@outlook.com
-To: yong.huang@smartx.com
-Cc: qemu-devel@nongnu.org,
-	"alloc.young" <alloc.young@outlook.com>
-Subject: [PATCH] softmmu: Fix dirtylimit memory leak
-Date: Wed, 23 Aug 2023 15:47:49 +0800
-Message-ID: <SA1PR11MB67606FB284BF14ED9F11D436F51CA@SA1PR11MB6760.namprd11.prod.outlook.com>
-X-Mailer: git-send-email 2.39.3
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [epE9m1drZsaGMCkYg+V+DKdW/uAK/bCUvSTsR0tQ2Mc=]
-X-ClientProxiedBy: SG2PR02CA0102.apcprd02.prod.outlook.com
- (2603:1096:4:92::18) To SA1PR11MB6760.namprd11.prod.outlook.com
- (2603:10b6:806:25f::14)
-X-Microsoft-Original-Message-ID: <20230823074749.1077266-1-alloc.young@outlook.com>
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qYirY-0003SM-Tm
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:05:12 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qYirW-0005UK-NZ
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:05:12 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2bcb54226e7so39004011fa.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 01:05:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1692777908; x=1693382708;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=i0gUa3ZYdo8MdUnTzZIgFbaTq3wmGkpHQ9opv/AfAP8=;
+ b=dCiofPyDIQhyEgq1Y54N0t7/PV/39OBLh9dFU1nRL9or241QujMZY2CSEoiGn7JmzQ
+ w/ZukxDWc+s9gk/KhpsRpxzApGCxPOIdD9tjYeBOwO4xO4pDtxqBmS2QdUK8ojHz92bZ
+ feJcPX0Cl+2XgLeqAQLlKTzzGn2tLVIr97k9aoE3yNR2f+nLm17cs2lLlJPDbo7RUDT/
+ 8CF3JA/Y/5cwU2EeNmlRhrzlLIMH6EuoYrrepBBRWYKiKv40NIxFTUnQ2DTbYTIXqeEq
+ m0i3g/WrvMuxW/WKMhastLsvJPv7XdGL+qB07cuCRmVTXkwzhSZAOyS2s8kP9fjg04o+
+ W2xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692777908; x=1693382708;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=i0gUa3ZYdo8MdUnTzZIgFbaTq3wmGkpHQ9opv/AfAP8=;
+ b=LbH+cRcSDiKeh5Sm+fEKkENHPvPYkSct/6uuviNVAQ4ObnF1+q1EA4K1E3ncnziLHO
+ dz/vnBPLqDInXcqxlnA6R6vVIALfI/Y9lGl2eGK5glEu2L5a37IFQ2YCooGkfUzulGG2
+ HX9g9xqp0bcPqyrXXzVWo1Kfjn+E+Y7SBZtT65h4TV1rqE8E1xgEZpleLTm6Fg+Xlp4T
+ SVMqAS9kZc/9ZP/VyDVESAm19bt8yiS9gjhJG0G7hdyw/O7d376gxKBBj0bDCdeKMv+0
+ CohLBqBfugu7wiUXO/uHO8nYfShHob2h78qyjf88ypTLjsPIdefWBO3IxjZGcFdkinmk
+ CbzQ==
+X-Gm-Message-State: AOJu0YzNP5kDuOjo0KS8lgc74PiZnMYpzKwPbE4EPSBJ5OePFJ+rJ8kk
+ 47Bv0NbB6A3PBg8Mi6uVVWGQVdqV6dpSNLxl+0Tu1Q==
+X-Google-Smtp-Source: AGHT+IHaGGYnIwX1OZ/bZtugn4KL17lHFP61f8Tzmg0s3+0L3+CkyeQDHtwIpJKtyp6YDKbS03sA9pvEs1SIw9Pu+BE=
+X-Received: by 2002:a2e:914e:0:b0:2bc:bc6f:e296 with SMTP id
+ q14-20020a2e914e000000b002bcbc6fe296mr4040773ljg.13.1692777907555; Wed, 23
+ Aug 2023 01:05:07 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6760:EE_|DM6PR11MB4545:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4268d9c9-8ecf-4986-181b-08dba3ad4c56
-X-MS-Exchange-SLBlob-MailProps: CLk2x5OX5VYpZfGexXE2DFe1mddf6nrYlu1/Cim2Hz1RgJKtX2OZYGJvSbC1kXN5M5KV51RXBeFtZWxR//vfU1ERFNXm+TkWkWxOLNnfzYDfRPEdJhe2Rb6oOt5c+2fhx5YWUfq3lpGGO7Ase+kWubNQgTXsoO0F+NPSUzSdDlxb2nPdjlGS1kVqZERhjWwL5ZOrynvk5/rKs6ig/9rAWWf/gumWjBsp5vOvf6VunB8acnjzeNe/wfgfOqd3SpSjToGmR4waps/XQIqHYvblK+13wY4YSvfi8MBHM196wKdOSldlVzlybThRIfjes63FKWbVfkFJREfFtdkoJBoARqV4Jyxd6IzcS6hBFc0NFeI4voN80DBnv69HqUVQY8qo5L28zy5iNuf3pcuZslQxmW/aiJJoTXbXePnqYdliqZ5Es2hDc9QDTZItLjK2UkP7DbMN+rnecXVWfmeL8R1R7eF2GhK0pt0Qio2QfKZCQTpMrpXoUAujJ2/emw4Gti3Y0njD+oJQ98hR3r+swzM0+DpbGux3xPv9FP2mfQQaUCJNY5zmkMw3tsXtg/hyYnOXTQFEAehGFXeXTt+8QJjcTaH3w0vx0giLdYh/F/WlfoOpSVHF0zsjAlAiXGQS7tXusgUNyAWfTZNA06Hay5iAUyXej54I+xKeKx+0s7NbJW2Qne0jWPaiA4WMMU8fcn2Ouk1rt3WavZJlI+1VyUJ7DQ==
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sN5xSqwsVX/MRtqXabVe8zebHUjdecLVSfeHWBdiZvzxthjEAY+NtE0jZXbyx715VsllkLbEfaaF+dWymsU7A0MAKiKutSpAwSMy0oAGNVjPLcrzpe6sz0uLWIkhAp51Qzd7RyGTF8OKHO0ZsxyW80LtHGXMLJxBzZD+D0Gm47pmETwmiK5isBlEtmwG82OuzH4GSb/8uIPDzOiEKQX72cBJwHXUgz5W5i4NjdqdANQIJnY+eN5EdSI0Rs8yUmTMmhkafzx4g04DbJwm/se8hoBwyci0LhI9VYqOPsxSybrurkrvM9xzotTkgHa4L+vc3IGCFHR88LM8Eb2/5hMQ5z/pZcEQQCpU17U9U7V3mw+kl71PBU5VqOtTsyK0v4z8ch3yihfr6Kb+U05MXCnCurucdneTiD85ZEfbBrFTDqUWPH77vjjWDhhBdRLT5ToE+yj0hjOzIWxLhKsAX2Ko58aw/ABETg0AkXOnRKT9pJcqsMI3UaD4HIonJ/Ybr3dwgcoqEVF9Nt4tEMU7kTHX8w96YgvjJGe6o3+dnmd806WDFIC3k08W6P3+wnO0+kgfD9lif1HKql/o9gbeak/lFIsH2uRzPu+RJF9USWFdbeQnPIunenpnRvHLEWFaHqAC
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?h63qqjQh7FIonZCBVS2oHz5VAk4Q2yDhxFitb/jSH5UTtUkekUgxtiULkKl2?=
- =?us-ascii?Q?78M+NMBJMTyaWu8WdsylNB/Xug+ULFsyyK6SeiQhBseVDzOvyeortlodLAQr?=
- =?us-ascii?Q?FwjUTETLOjE73ASdMEwVN6nNoE65QWUBIUuKEnQO1MIrIddA9I907dJACQrg?=
- =?us-ascii?Q?htJOw1xQFUAx1uZyRRfU5mDuFlaM7Zz7jVOhBHAkkQtlfE0Blul3Pc4TkdZ2?=
- =?us-ascii?Q?57vaIDvUh1XASp7A1ETrhDGRH6lac4DxtUBcgvUX25ORc2IMZ6+FjC+uhuKP?=
- =?us-ascii?Q?rGaZY2uObD/VcMtArOwLvG1eAXAlZJPrIsPFEw6UWNZtT4unQzbJUILUH8Ft?=
- =?us-ascii?Q?LMZbVdIzintO8O1jUgN9/mKunIQGow5KaPs2FUeityAtW+1t8e72y/iw/kYK?=
- =?us-ascii?Q?8h/6efLKWz1wWE9Pv6BrItwGAo08zyRu+y8Y6CPkckibxFVqJBl8Wv2g3R6n?=
- =?us-ascii?Q?x5GsWvkBewgcgE/MeKK/P25WWw+p2QOQdkCvyDHp/11AESoEHE+FuLVRb5pa?=
- =?us-ascii?Q?fgi1QTJqUUAagwi206mtoxI35hG934LQIvj0AhFHTQ79kTx2G/Qf2csCt6lW?=
- =?us-ascii?Q?TbaP5k1swpexpwwgjhcomhdeud5KCipdOH1yVHPQQtzmPUb8LGS9zhStMPeF?=
- =?us-ascii?Q?ZMgAZgEFAgDGom46zcn/xQqRIJ3+9vNFDeciR7LnKDQURRJcOT0mFEXgam4i?=
- =?us-ascii?Q?GhKTsecJ4qgTfked0AITzUkaIORD4VlbAPbEcTbTHjXUpMglXP1Pb5EUIaUk?=
- =?us-ascii?Q?o+fXqJ/K6riQoSzMBzLKjNJp3PCab4OTJWoLmx0WFCP/uDAxGe08FLssmEH8?=
- =?us-ascii?Q?zOduTlcYygJnDxDh9VgStCFBZVTCeuv4uDZhDIgXuoMVS7bKMNe6ZaC3KmDJ?=
- =?us-ascii?Q?pIrXOl7C3YqZ6VfgICVTV/hkbEjqOm+H0kBLN/94qF+VqEqPNWjlekCWWYWt?=
- =?us-ascii?Q?4hNNNd3GPHkNpIobcfGLgNMr3ZHSBdLSKucQh9Apqx1jDJRVpw+NkooR1Bwy?=
- =?us-ascii?Q?OnGbdjjXNAFwz1NAbZ55ZdN88ViYRd0O2QR0fQ4IpSBtcfwYhOeZByv9ciN7?=
- =?us-ascii?Q?n6D6T8FKwcRzsfFbj+qsoll+h+oJNqaJmfSjEx+V/CHVwT3CLE9yE6YQ0NWm?=
- =?us-ascii?Q?F9rCwAnab5UYKYjHvlzndjsuBXY79P/jERLZ3JIDa/nlIs84uSQIqt0xk5uw?=
- =?us-ascii?Q?+lEsDqb0tO0v51777YhAIMNBs0uuAfD0AG6OvxLW4T4hXrEuoX7e1s3tEb8?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4268d9c9-8ecf-4986-181b-08dba3ad4c56
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6760.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 07:48:11.2416 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4545
-Received-SPF: pass client-ip=40.92.23.101;
- envelope-from=alloc.young@outlook.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+References: <20230728082502.26439-1-jason.chien@sifive.com>
+ <20230728082502.26439-2-jason.chien@sifive.com>
+ <CAKmqyKMX=Q3+kdaKAJrQHeya7ctnyt0HSt=NUQWUAOj9JEPZ8g@mail.gmail.com>
+ <CADr__8rmCu9F2ktxYGtZfUeD_z+pNVa4KKsZ8XvxxVGmMJfrcw@mail.gmail.com>
+ <CAKmqyKPCyx0fbiBzFDACDPHGYAdkjBJgcqHCVPFx0ETzRYpk3Q@mail.gmail.com>
+In-Reply-To: <CAKmqyKPCyx0fbiBzFDACDPHGYAdkjBJgcqHCVPFx0ETzRYpk3Q@mail.gmail.com>
+From: Jason Chien <jason.chien@sifive.com>
+Date: Wed, 23 Aug 2023 16:04:55 +0800
+Message-ID: <CADr__8oe0BP7vXLddwZYijkiogC6BgnRk_5hx0YzfBkWuwEqaQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] hw/intc: Make rtc variable names consistent
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Anup Patel <apatel@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Andrew Jones <ajones@ventanamicro.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Type: multipart/alternative; boundary="000000000000dd348306039291db"
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=jason.chien@sifive.com; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,93 +92,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "alloc.young" <alloc.young@outlook.com>
+--000000000000dd348306039291db
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix memory leak in hmp_info_vcpu_dirty_limit,use g_autoptr
-handle memory deallocation, alse use g_free to match g_malloc
-&& g_new functions.
+Thanks for the update.
 
-Signed-off-by: alloc.young <alloc.young@outlook.com>
----
- softmmu/dirtylimit.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+On Tue, Aug 22, 2023 at 1:53=E2=80=AFAM Alistair Francis <alistair23@gmail.=
+com>
+wrote:
 
-diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index 3c275ee55b..fa959d7743 100644
---- a/softmmu/dirtylimit.c
-+++ b/softmmu/dirtylimit.c
-@@ -100,7 +100,7 @@ static void vcpu_dirty_rate_stat_collect(void)
-             stat.rates[i].dirty_rate;
-     }
- 
--    free(stat.rates);
-+    g_free(stat.rates);
- }
- 
- static void *vcpu_dirty_rate_stat_thread(void *opaque)
-@@ -171,10 +171,10 @@ void vcpu_dirty_rate_stat_initialize(void)
- 
- void vcpu_dirty_rate_stat_finalize(void)
- {
--    free(vcpu_dirty_rate_stat->stat.rates);
-+    g_free(vcpu_dirty_rate_stat->stat.rates);
-     vcpu_dirty_rate_stat->stat.rates = NULL;
- 
--    free(vcpu_dirty_rate_stat);
-+    g_free(vcpu_dirty_rate_stat);
-     vcpu_dirty_rate_stat = NULL;
- }
- 
-@@ -220,10 +220,10 @@ void dirtylimit_state_initialize(void)
- 
- void dirtylimit_state_finalize(void)
- {
--    free(dirtylimit_state->states);
-+    g_free(dirtylimit_state->states);
-     dirtylimit_state->states = NULL;
- 
--    free(dirtylimit_state);
-+    g_free(dirtylimit_state);
-     dirtylimit_state = NULL;
- 
-     trace_dirtylimit_state_finalize();
-@@ -653,7 +653,8 @@ struct DirtyLimitInfoList *qmp_query_vcpu_dirty_limit(Error **errp)
- 
- void hmp_info_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
- {
--    DirtyLimitInfoList *limit, *head, *info = NULL;
-+    DirtyLimitInfoList *info;
-+    g_autoptr(DirtyLimitInfoList) head = NULL;
-     Error *err = NULL;
- 
-     if (!dirtylimit_in_service()) {
-@@ -661,20 +662,17 @@ void hmp_info_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
-         return;
-     }
- 
--    info = qmp_query_vcpu_dirty_limit(&err);
-+    head = qmp_query_vcpu_dirty_limit(&err);
-     if (err) {
-         hmp_handle_error(mon, err);
-         return;
-     }
- 
--    head = info;
--    for (limit = head; limit != NULL; limit = limit->next) {
-+    for (info = head; info != NULL; info = info->next) {
-         monitor_printf(mon, "vcpu[%"PRIi64"], limit rate %"PRIi64 " (MB/s),"
-                             " current rate %"PRIi64 " (MB/s)\n",
--                            limit->value->cpu_index,
--                            limit->value->limit_rate,
--                            limit->value->current_rate);
-+                            info->value->cpu_index,
-+                            info->value->limit_rate,
-+                            info->value->current_rate);
-     }
--
--    g_free(info);
- }
--- 
-2.39.3
+> On Mon, Aug 21, 2023 at 12:15=E2=80=AFPM Jason Chien <jason.chien@sifive.=
+com>
+> wrote:
+> >
+> > Ping.
+>
+> This has been applied to the RISC-V tree. It will go in after the QEMU
+> release freeze is over (probably a week or two).
+>
+> Alistair
+>
+> >
+> > On Fri, Aug 11, 2023 at 2:25=E2=80=AFAM Alistair Francis <alistair23@gm=
+ail.com>
+> wrote:
+> >>
+> >> On Fri, Jul 28, 2023 at 4:57=E2=80=AFAM Jason Chien <jason.chien@sifiv=
+e.com>
+> wrote:
+> >> >
+> >> > The variables whose values are given by cpu_riscv_read_rtc() should
+> be named
+> >> > "rtc". The variables whose value are given by cpu_riscv_read_rtc_raw=
+()
+> >> > should be named "rtc_r".
+> >> >
+> >> > Signed-off-by: Jason Chien <jason.chien@sifive.com>
+> >>
+> >> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> >>
+> >> Alistair
+> >>
+> >> > ---
+> >> >  hw/intc/riscv_aclint.c | 6 +++---
+> >> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >> >
+> >> > diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+> >> > index bf77e29a70..25cf7a5d9d 100644
+> >> > --- a/hw/intc/riscv_aclint.c
+> >> > +++ b/hw/intc/riscv_aclint.c
+> >> > @@ -64,13 +64,13 @@ static void
+> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
+> >> >      uint64_t next;
+> >> >      uint64_t diff;
+> >> >
+> >> > -    uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);
+> >> > +    uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);
+> >> >
+> >> >      /* Compute the relative hartid w.r.t the socket */
+> >> >      hartid =3D hartid - mtimer->hartid_base;
+> >> >
+> >> >      mtimer->timecmp[hartid] =3D value;
+> >> > -    if (mtimer->timecmp[hartid] <=3D rtc_r) {
+> >> > +    if (mtimer->timecmp[hartid] <=3D rtc) {
+> >> >          /*
+> >> >           * If we're setting an MTIMECMP value in the "past",
+> >> >           * immediately raise the timer interrupt
+> >> > @@ -81,7 +81,7 @@ static void
+> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
+> >> >
+> >> >      /* otherwise, set up the future timer interrupt */
+> >> >      qemu_irq_lower(mtimer->timer_irqs[hartid]);
+> >> > -    diff =3D mtimer->timecmp[hartid] - rtc_r;
+> >> > +    diff =3D mtimer->timecmp[hartid] - rtc;
+> >> >      /* back to ns (note args switched in muldiv64) */
+> >> >      uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PER_SECOND,
+> timebase_freq);
+> >> >
+> >> > --
+> >> > 2.17.1
+> >> >
+> >> >
+>
 
+--000000000000dd348306039291db
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Thanks for the update.=C2=A0<br></div><br><div class=3D"gm=
+ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 22, 2023 at 1:=
+53=E2=80=AFAM Alistair Francis &lt;<a href=3D"mailto:alistair23@gmail.com">=
+alistair23@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">On Mon, Aug 21, 2023 at 12:15=E2=80=AFPM Jason Chien &l=
+t;<a href=3D"mailto:jason.chien@sifive.com" target=3D"_blank">jason.chien@s=
+ifive.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Ping.<br>
+<br>
+This has been applied to the RISC-V tree. It will go in after the QEMU<br>
+release freeze is over (probably a week or two).<br>
+<br>
+Alistair<br>
+<br>
+&gt;<br>
+&gt; On Fri, Aug 11, 2023 at 2:25=E2=80=AFAM Alistair Francis &lt;<a href=
+=3D"mailto:alistair23@gmail.com" target=3D"_blank">alistair23@gmail.com</a>=
+&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; On Fri, Jul 28, 2023 at 4:57=E2=80=AFAM Jason Chien &lt;<a href=3D=
+"mailto:jason.chien@sifive.com" target=3D"_blank">jason.chien@sifive.com</a=
+>&gt; wrote:<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; The variables whose values are given by cpu_riscv_read_rtc() =
+should be named<br>
+&gt;&gt; &gt; &quot;rtc&quot;. The variables whose value are given by cpu_r=
+iscv_read_rtc_raw()<br>
+&gt;&gt; &gt; should be named &quot;rtc_r&quot;.<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@=
+sifive.com" target=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
+&gt;&gt;<br>
+&gt;&gt; Reviewed-by: Alistair Francis &lt;<a href=3D"mailto:alistair.franc=
+is@wdc.com" target=3D"_blank">alistair.francis@wdc.com</a>&gt;<br>
+&gt;&gt;<br>
+&gt;&gt; Alistair<br>
+&gt;&gt;<br>
+&gt;&gt; &gt; ---<br>
+&gt;&gt; &gt;=C2=A0 hw/intc/riscv_aclint.c | 6 +++---<br>
+&gt;&gt; &gt;=C2=A0 1 file changed, 3 insertions(+), 3 deletions(-)<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c<=
+br>
+&gt;&gt; &gt; index bf77e29a70..25cf7a5d9d 100644<br>
+&gt;&gt; &gt; --- a/hw/intc/riscv_aclint.c<br>
+&gt;&gt; &gt; +++ b/hw/intc/riscv_aclint.c<br>
+&gt;&gt; &gt; @@ -64,13 +64,13 @@ static void riscv_aclint_mtimer_write_tim=
+ecmp(RISCVAclintMTimerState *mtimer,<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 uint64_t next;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 uint64_t diff;<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; -=C2=A0 =C2=A0 uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);=
+<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);<b=
+r>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 /* Compute the relative hartid w.r.t the =
+socket */<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 hartid =3D hartid - mtimer-&gt;hartid_bas=
+e;<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 mtimer-&gt;timecmp[hartid] =3D value;<br>
+&gt;&gt; &gt; -=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc_r) =
+{<br>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc) {<=
+br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* If we&#39;re settin=
+g an MTIMECMP value in the &quot;past&quot;,<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* immediately raise t=
+he timer interrupt<br>
+&gt;&gt; &gt; @@ -81,7 +81,7 @@ static void riscv_aclint_mtimer_write_timec=
+mp(RISCVAclintMTimerState *mtimer,<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 /* otherwise, set up the future timer int=
+errupt */<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 qemu_irq_lower(mtimer-&gt;timer_irqs[hart=
+id]);<br>
+&gt;&gt; &gt; -=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc_r;<b=
+r>
+&gt;&gt; &gt; +=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc;<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 /* back to ns (note args switched in muld=
+iv64) */<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0 uint64_t ns_diff =3D muldiv64(diff, NANOS=
+ECONDS_PER_SECOND, timebase_freq);<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; --<br>
+&gt;&gt; &gt; 2.17.1<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;<br>
+</blockquote></div>
+
+--000000000000dd348306039291db--
 
