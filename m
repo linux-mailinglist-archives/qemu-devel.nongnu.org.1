@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0AC784FEF
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 07:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDA0784FED
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 07:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYgEI-0004wb-0Z; Wed, 23 Aug 2023 01:16:30 -0400
+	id 1qYgEJ-0004xW-Up; Wed, 23 Aug 2023 01:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYgEE-0004vd-R4
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:16:26 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qYgEG-0004wS-Ie
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:16:28 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYgEC-0000sv-Iw
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:16:26 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bdca7cc28dso41695865ad.1
- for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 22:16:24 -0700 (PDT)
+ id 1qYgEE-0000t9-0z
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:16:28 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bc0d39b52cso34956655ad.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 22:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692767783; x=1693372583;
+ d=linaro.org; s=google; t=1692767784; x=1693372584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QVZ8TmDLEIACLc9a/Qe1Sv9+EQSNfIXJRPDML0Xg9Mk=;
- b=sQoq9fdjunWJscF2evV197uTf6fpJAOQAd/XpXpW8JheP8cbgKKlKRT+CQ+XEzXr8x
- R3I7U4vS25V4dEb24jAn40P5QoK7H4+bgkAwrbZN0auuxFxS4hXa1btg1IkyD5mZN03e
- x5mwEYGtbRXVWsLdKNz7B0hN2DhgLCNsX5Il2noTkmXYi179NMfpIXypuNitno3Zykrp
- gWI2vw+a3OyDgYzV3yLmMlW3+IsGHYkFGI3Svg2+B5t6xValivcQ+3DhQGXtO03s0SmB
- biNcIqWugYIIjvKHJnVDwqK/mJkdS4dXrJYPXEhY3d4iQhUKLdFbtBcG1VKA9mQ51TT4
- v9wA==
+ bh=TV1TciBhkf4DHVRrzToQTqKckAEQKZ4+I2kgg1P7TXM=;
+ b=RxAJjeNLloBT6VR1NWFt/G/gTCHKVA7TdGYmAHhP7lrZj8DU9Zyfdl0OYlhi7B2Zaf
+ BLSWDgnrQTj5PJDWjz4nKwHLFlXwEV9k4OTUUunW4xWJOChf796NNzOOOOIK8bSsvN2O
+ od36PHx0+vVx/72QNxWr7jk0UvBOn3jK3nXRfKzI1JGExjT+Mg1D9FXRuZGFsueqhETD
+ sKMOX1kY4+nDABnLPNYRjw77qa6f1+gok170wSeYKBkNUsWQDlXjpwweELgW3LdyB3PW
+ dCY1KPaG3ytiD3c17tDjpJ9xeHMHIxXR/vY+U4cJZDCWk9FaB4jiBoneexf0z/2LYBlp
+ nrxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692767783; x=1693372583;
+ d=1e100.net; s=20221208; t=1692767784; x=1693372584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QVZ8TmDLEIACLc9a/Qe1Sv9+EQSNfIXJRPDML0Xg9Mk=;
- b=PUBdCw8lNwxpfCjqY7meiGD8cD/3oUwKi19sEVottozlyPcsJmnorzp71En3e4LV0L
- Ct1urwjw5ppUJFq2Fnz7jxDJ+o641l5XLKVzY4f9unvTTIWO0ZKND2hYIncn2diWbCOv
- /0RyckPIm15CULwOy4xE28RK9I0TsOAvjTqhXCsh6J05OWGoT4/cpf/SdCCTf7H2N6wh
- +nHNyvTA59nl3DiKm1d6Yl1rHL/14x97O7HW5VfzIrvaWKHFav8ySU+9m2ZAcmN9dtuo
- 6Ad7Ayd3bJWrVpnCF5bZNFrRaK4Fbva1OuyWbWwCFQMClJfRt4k9gJoywVSch6MsY2kx
- qj/g==
-X-Gm-Message-State: AOJu0YygWZskfsEv8xO+BARCfT3DpkRqkbNEKHV7ZtljhzSEROUpjWYC
- 53KYLyySdOUvf7Nq0F1fwrMq9Bt4sAeztQA7+DE=
-X-Google-Smtp-Source: AGHT+IEPjHFjKhagvCE9Uu/227fkQhVgsYpRggL0lf6S61jPaefnEHIq6DDR1Skv0GjDGL9DeR7+6w==
-X-Received: by 2002:a17:903:1108:b0:1bc:1b01:8961 with SMTP id
- n8-20020a170903110800b001bc1b018961mr13766450plh.1.1692767783217; 
- Tue, 22 Aug 2023 22:16:23 -0700 (PDT)
+ bh=TV1TciBhkf4DHVRrzToQTqKckAEQKZ4+I2kgg1P7TXM=;
+ b=k2Q+UVktQIMReu0f6R4IhpKerBOZs4OJ+WTysM1VuS7Fsvt/JNw4yCyXbq3gROLKAB
+ Sjet91H16J3VkYfwFceBRlTSIZ2VbXurc7H6RzN6ENRE0MeC/0V0kJd/Zm4qmSt8400x
+ ebkTshsJ0ICMvE6xgwat5PYODHUEs3F3q/bANS51PWiFkdYuyws6iz/b2cz0Fpuf0o4y
+ AWab5VTTAt62QGMGaw1V5PoKB8zq7eme+ED8QR1x7ozzZFERjzBy5AGefUbajKFPSgED
+ obuw8jTBY7WhBrxM7qH+RdzOAQRdMVDTji7qyx7Qst7U9TcWL0VpZhoJKFxAnMrGcKQd
+ MItg==
+X-Gm-Message-State: AOJu0Yw4st8gcMSpK95wQWot9Ztkcg5M5pSQGLnyC5iLlPthQZS3fhsq
+ gMeRDZg93Eos74OHLhLZAqiX/6IVw4WW9IM9uys=
+X-Google-Smtp-Source: AGHT+IHh87DunGp0C41L5wcgeASrjmcDluc6P4AZIkHHyVBO6B+teC5ioPDX856Lpe/Ieb9hAUPWYQ==
+X-Received: by 2002:a17:903:4cd:b0:1bf:4185:ed1c with SMTP id
+ jm13-20020a17090304cd00b001bf4185ed1cmr8172600plb.43.1692767784368; 
+ Tue, 22 Aug 2023 22:16:24 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:4e3c:f4a4:b92a:b5ab])
  by smtp.gmail.com with ESMTPSA id
- 5-20020a170902c24500b001bf044dc1a6sm9969402plg.39.2023.08.22.22.16.22
+ 5-20020a170902c24500b001bf044dc1a6sm9969402plg.39.2023.08.22.22.16.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Aug 2023 22:16:22 -0700 (PDT)
+ Tue, 22 Aug 2023 22:16:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v4 05/10] linux-user: Only register handlers for
- core_dump_signal by default
-Date: Tue, 22 Aug 2023 22:16:10 -0700
-Message-Id: <20230823051615.1297706-6-richard.henderson@linaro.org>
+Subject: [PATCH v4 06/10] linux-user: Map unsupported signals to an
+ out-of-bounds value
+Date: Tue, 22 Aug 2023 22:16:11 -0700
+Message-Id: <20230823051615.1297706-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230823051615.1297706-1-richard.henderson@linaro.org>
 References: <20230823051615.1297706-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,103 +92,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The set of fatal signals is really immaterial.  If one arrives,
-and is unhandled, then the qemu process dies and the parent gets
-the correct signal.
-
-It is only for those signals which we would like to perform a
-guest core dump instead of a host core dump that we need to catch.
+Do not return a valid signal number in one domain
+when given an invalid signal number in the other domain.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/signal.c | 43 ++++++++++++++-----------------------------
- 1 file changed, 14 insertions(+), 29 deletions(-)
+ linux-user/signal.c | 72 ++++++++++++++++++++++++---------------------
+ 1 file changed, 38 insertions(+), 34 deletions(-)
 
 diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 529fea8bba..73f40699ad 100644
+index 73f40699ad..9d16e3c8c5 100644
 --- a/linux-user/signal.c
 +++ b/linux-user/signal.c
-@@ -489,26 +489,6 @@ void target_to_host_siginfo(siginfo_t *info, const target_siginfo_t *tinfo)
-     info->si_value.sival_ptr = (void *)(long)sival_ptr;
- }
+@@ -45,9 +45,8 @@ abi_ulong default_sigreturn;
+ abi_ulong default_rt_sigreturn;
  
--static int fatal_signal (int sig)
--{
--    switch (sig) {
--    case TARGET_SIGCHLD:
--    case TARGET_SIGURG:
--    case TARGET_SIGWINCH:
--        /* Ignored by default.  */
--        return 0;
--    case TARGET_SIGCONT:
--    case TARGET_SIGSTOP:
--    case TARGET_SIGTSTP:
--    case TARGET_SIGTTIN:
--    case TARGET_SIGTTOU:
--        /* Job control signals.  */
--        return 0;
--    default:
--        return 1;
--    }
--}
--
- /* returns 1 if given signal should dump core if not handled */
- static int core_dump_signal(int sig)
+ /*
+- * System includes define _NSIG as SIGRTMAX + 1,
+- * but qemu (like the kernel) defines TARGET_NSIG as TARGET_SIGRTMAX
+- * and the first signal is SIGHUP defined as 1
++ * System includes define _NSIG as SIGRTMAX + 1, but qemu (like the kernel)
++ * defines TARGET_NSIG as TARGET_SIGRTMAX and the first signal is 1.
+  * Signal number 0 is reserved for use as kill(pid, 0), to test whether
+  * a process exists without sending it a signal.
+  */
+@@ -58,7 +57,6 @@ static uint8_t host_to_target_signal_table[_NSIG] = {
+ #define MAKE_SIG_ENTRY(sig)     [sig] = TARGET_##sig,
+         MAKE_SIGNAL_LIST
+ #undef MAKE_SIG_ENTRY
+-    /* next signals stay the same */
+ };
+ 
+ static uint8_t target_to_host_signal_table[TARGET_NSIG + 1];
+@@ -66,18 +64,24 @@ static uint8_t target_to_host_signal_table[TARGET_NSIG + 1];
+ /* valid sig is between 1 and _NSIG - 1 */
+ int host_to_target_signal(int sig)
  {
-@@ -608,8 +588,9 @@ void signal_init(void)
-            SIGSEGV and SIGBUS, to detect exceptions.  We can not just
-            trap all signals because it affects syscall interrupt
-            behavior.  But do trap all default-fatal signals.  */
--        if (fatal_signal (i))
-+        if (core_dump_signal(i)) {
-             sigaction(host_sig, &act, NULL);
-+        }
+-    if (sig < 1 || sig >= _NSIG) {
++    if (sig < 1) {
+         return sig;
      }
++    if (sig >= _NSIG) {
++        return TARGET_NSIG + 1;
++    }
+     return host_to_target_signal_table[sig];
  }
  
-@@ -999,7 +980,6 @@ int do_sigaction(int sig, const struct target_sigaction *act,
-                  struct target_sigaction *oact, abi_ulong ka_restorer)
+ /* valid sig is between 1 and TARGET_NSIG */
+ int target_to_host_signal(int sig)
  {
-     struct target_sigaction *k;
--    struct sigaction act1;
-     int host_sig;
-     int ret = 0;
+-    if (sig < 1 || sig > TARGET_NSIG) {
++    if (sig < 1) {
+         return sig;
+     }
++    if (sig > TARGET_NSIG) {
++        return _NSIG;
++    }
+     return target_to_host_signal_table[sig];
+ }
  
-@@ -1059,22 +1039,27 @@ int do_sigaction(int sig, const struct target_sigaction *act,
-             return 0;
+@@ -508,48 +512,48 @@ static int core_dump_signal(int sig)
+ 
+ static void signal_table_init(void)
+ {
+-    int host_sig, target_sig, count;
++    int hsig, tsig, count;
+ 
+     /*
+      * Signals are supported starting from TARGET_SIGRTMIN and going up
+-     * until we run out of host realtime signals.
+-     * glibc at least uses only the lower 2 rt signals and probably
+-     * nobody's using the upper ones.
+-     * it's why SIGRTMIN (34) is generally greater than __SIGRTMIN (32)
+-     * To fix this properly we need to do manual signal delivery multiplexed
+-     * over a single host signal.
++     * until we run out of host realtime signals.  Glibc uses the lower 2
++     * RT signals and (hopefully) nobody uses the upper ones.
++     * This is why SIGRTMIN (34) is generally greater than __SIGRTMIN (32).
++     * To fix this properly we would need to do manual signal delivery
++     * multiplexed over a single host signal.
+      * Attempts for configure "missing" signals via sigaction will be
+      * silently ignored.
+      */
+-    for (host_sig = SIGRTMIN; host_sig <= SIGRTMAX; host_sig++) {
+-        target_sig = host_sig - SIGRTMIN + TARGET_SIGRTMIN;
+-        if (target_sig <= TARGET_NSIG) {
+-            host_to_target_signal_table[host_sig] = target_sig;
++    for (hsig = SIGRTMIN; hsig <= SIGRTMAX; hsig++) {
++        tsig = hsig - SIGRTMIN + TARGET_SIGRTMIN;
++        if (tsig <= TARGET_NSIG) {
++            host_to_target_signal_table[hsig] = tsig;
          }
-         if (host_sig != SIGSEGV && host_sig != SIGBUS) {
-+            struct sigaction act1;
+     }
+ 
+-    /* generate signal conversion tables */
+-    for (target_sig = 1; target_sig <= TARGET_NSIG; target_sig++) {
+-        target_to_host_signal_table[target_sig] = _NSIG; /* poison */
+-    }
+-    for (host_sig = 1; host_sig < _NSIG; host_sig++) {
+-        if (host_to_target_signal_table[host_sig] == 0) {
+-            host_to_target_signal_table[host_sig] = host_sig;
+-        }
+-        target_sig = host_to_target_signal_table[host_sig];
+-        if (target_sig <= TARGET_NSIG) {
+-            target_to_host_signal_table[target_sig] = host_sig;
++    /* Invert the mapping that has already been assigned. */
++    for (hsig = 1; hsig < _NSIG; hsig++) {
++        tsig = host_to_target_signal_table[hsig];
++        if (tsig) {
++            assert(target_to_host_signal_table[tsig] == 0);
++            target_to_host_signal_table[tsig] = hsig;
+         }
+     }
+ 
+-    if (trace_event_get_state_backends(TRACE_SIGNAL_TABLE_INIT)) {
+-        for (target_sig = 1, count = 0; target_sig <= TARGET_NSIG; target_sig++) {
+-            if (target_to_host_signal_table[target_sig] == _NSIG) {
+-                count++;
+-            }
++    /* Map everything else out-of-bounds. */
++    for (hsig = 1; hsig < _NSIG; hsig++) {
++        if (host_to_target_signal_table[hsig] == 0) {
++            host_to_target_signal_table[hsig] = TARGET_NSIG + 1;
+         }
+-        trace_signal_table_init(count);
+     }
++    for (count = 0, tsig = 1; tsig <= TARGET_NSIG; tsig++) {
++        if (target_to_host_signal_table[tsig] == 0) {
++            target_to_host_signal_table[tsig] = _NSIG;
++            count++;
++        }
++    }
 +
-             sigfillset(&act1.sa_mask);
-             act1.sa_flags = SA_SIGINFO;
--            if (k->sa_flags & TARGET_SA_RESTART)
--                act1.sa_flags |= SA_RESTART;
--            /* NOTE: it is important to update the host kernel signal
--               ignore state to avoid getting unexpected interrupted
--               syscalls */
-             if (k->_sa_handler == TARGET_SIG_IGN) {
-+                /*
-+                 * It is important to update the host kernel signal ignore
-+                 * state to avoid getting unexpected interrupted syscalls.
-+                 */
-                 act1.sa_sigaction = (void *)SIG_IGN;
-             } else if (k->_sa_handler == TARGET_SIG_DFL) {
--                if (fatal_signal (sig))
-+                if (core_dump_signal(sig)) {
-                     act1.sa_sigaction = host_signal_handler;
--                else
-+                } else {
-                     act1.sa_sigaction = (void *)SIG_DFL;
-+                }
-             } else {
-                 act1.sa_sigaction = host_signal_handler;
-+                if (k->sa_flags & TARGET_SA_RESTART) {
-+                    act1.sa_flags |= SA_RESTART;
-+                }
-             }
-             ret = sigaction(host_sig, &act1, NULL);
-         }
++    trace_signal_table_init(count);
+ }
+ 
+ void signal_init(void)
 -- 
 2.34.1
 
