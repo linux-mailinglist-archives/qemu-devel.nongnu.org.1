@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BCC7853ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF97853FE
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:29:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYkAE-0003Uc-8l; Wed, 23 Aug 2023 05:28:34 -0400
+	id 1qYkB9-000537-HF; Wed, 23 Aug 2023 05:29:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qYkAD-0003UN-0h
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:28:33 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ id 1qYkB6-0004xc-Q4
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:29:28 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qYkAB-0006VF-9X
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:28:32 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3a412653335so3996861b6e.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 02:28:30 -0700 (PDT)
+ id 1qYkB4-0006YF-W4
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:29:28 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68a68d23f51so1688541b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 02:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1692782909; x=1693387709; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CG9aJRjhkpfqqrUU/55WKlKsJgdOWxcnikkKVH0GVA8=;
- b=FldyiyOdNuQjTm0re5fQDEb7Q3FtI+j1wHclJqRx0jaYT530BYLikynJryIEVS8YHV
- 18PB1O5ELgBbTIU9J+Utnz1fW7TR6AzUx79BcK7cRIYblG05yG6xSgSJjFzjDJK7UjrB
- NsZPB2ET+30xhEyRscEA3OkXvoMk3wx4azeSn8Bnu0Dkfr9/cap5Zgaqrr+xmRyn8udZ
- YdHZJmJWjWdddW9pDpdFj/eg1+OiTnrJX/01EDV5ifdYfme26C70B0zSQhW4voeHG1hp
- DMBAUT15sl3vb1x1OvNQuaPAtzrnB1Z7sDbhTDrs0lADg5FYbcufAauS/riB7AyU202S
- fjcw==
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1692782965; x=1693387765; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uO1W2dHGD6sHE/KMmXIEouDaKZk6Dh4aLT0Yhz5H8HM=;
+ b=lqNvYEVumTf4nkNS/xvuKzHq/lS/dfMVmG7dccS+E4TCvW9BH8llISaF4yBvas5InE
+ f6VLSE9/QWqY6FM6+wfQ+wbWr/5WVRvR3Kou3vEEOOzuaBxUzsdcozr+mYN5c7yiK6mH
+ S4ncqRr4dhNpGzUKO/oPNt7otj+8eGueYQnD4MrIpPq2DhfeEQyxgE6fWvDo+Ba9boLn
+ ZdnLTiNojTZjTmCvVOxAwVl35fgc6oO49Zl5UZQIu+NIGQpsD0nT80l1SdroTYJ1xOm3
+ ww9JK+xjFGALv07X2i8kjOWgRuX86AQjuukjfNv9NnZWYtOxdG5TmumKf2l21hb6aY7M
+ 0fNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692782909; x=1693387709;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CG9aJRjhkpfqqrUU/55WKlKsJgdOWxcnikkKVH0GVA8=;
- b=ItPdV5XtSyQswCd29TlwOPLGoNn/GBV8ds7dXVk+CQVGIxJnH0whcePW54N74jeRlb
- 3DIIZiQW9zJVKPT+PyZuvA/w18TZMGFU3IwwZRPFLTT6sNBqDMnJCjwXyaqztPSBhQxg
- ZFir6dVmOQUUp2a5QFkgMOq3xbLQrwHKnQ8KWEb/sR1XIhbSIJ81OH49kpS3nYQJX8PP
- k6uk0zxoyq3XtogT9GwliHEmNG8ccburQIRDcdEnBv8FhtfhsSzqCDa0kvLGd8fIkqUh
- Q0DQVOAaWqTtKUSShW6b0b6sQs/Q48jHqJ619+Zc/qOhlKIoQN67a+tRaLtkJPFjtA26
- OEkg==
-X-Gm-Message-State: AOJu0Yx0+n0n59z/eB5iobGlNWv+7dtGI21lSlW7ZCgozkXaAyP4gHVO
- PKThhJqj0O8VaqqN44uV/V7LR8PvHhCU5fjyyCl4bQ==
-X-Google-Smtp-Source: AGHT+IEl3Bfh6/N7lcjxHvgT9zwCXmY5R/7Qm+tFIf4QOSh0bwDstNo/CZVGSTDejGEdA5NrVCWxR/oJ+093f74j274=
-X-Received: by 2002:a05:6808:1997:b0:39c:93ba:cb92 with SMTP id
- bj23-20020a056808199700b0039c93bacb92mr16828278oib.8.1692782909621; Wed, 23
- Aug 2023 02:28:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230704080628.852525-1-mnissler@rivosinc.com>
- <20230704080628.852525-4-mnissler@rivosinc.com>
- <20230720183206.GD210977@fedora>
-In-Reply-To: <20230720183206.GD210977@fedora>
+ d=1e100.net; s=20221208; t=1692782965; x=1693387765;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uO1W2dHGD6sHE/KMmXIEouDaKZk6Dh4aLT0Yhz5H8HM=;
+ b=V4BMs0HZ2iB0GF+hDSNGajHSLLsf6l538943rAwmyfr3nVzYWNBGfeL8b3oWMak6a5
+ k9RgkdliiEWZcmapMOhSeZm1V4x2wXQh4YFbw7GkR1WXL0IqmrLwOJFOAp7pFaT7+fzO
+ jkdZIsvFnzud9qf+5FC4mi8egWCvnEnYq7mJ8VUs2oBx2vp/op0F0qx7SwGjU6AePr9V
+ iSn+FKQewE+xyjn9bh+wrUIDxKxLj9s9dwSXzcZaEwQ2HTRf7FhVHg3c0inBItcSxUzZ
+ njrl+YhYpCcKGp9ebvAxUDcuZsW9bu0Tvo9aYLpc2nOSGP8Am0pAILGURYTVjzOOFBuO
+ pWtA==
+X-Gm-Message-State: AOJu0Yy+2MBm6pcsH4DjApJf1ksZ97PIypGLZ/hramxJH+3dFwjDAeeG
+ EtRjFVfVsyqwSYdSFY5O+1nzkLZOqpBcEwsHBvU=
+X-Google-Smtp-Source: AGHT+IGbVxEENFh+eGiy5AanNpxGEBr1eQ5vqykW3VaMeVt+4SDAOhtpfS3dQgwGZwB3wz+on3QNdg==
+X-Received: by 2002:a05:6a00:2303:b0:689:efec:fc76 with SMTP id
+ h3-20020a056a00230300b00689efecfc76mr14298644pfh.18.1692782965096; 
+ Wed, 23 Aug 2023 02:29:25 -0700 (PDT)
+Received: from mnissler.ba.rivosinc.com ([66.220.2.162])
+ by smtp.gmail.com with ESMTPSA id
+ c10-20020aa78c0a000000b006875df4773fsm1169462pfd.163.2023.08.23.02.29.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Aug 2023 02:29:24 -0700 (PDT)
 From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Wed, 23 Aug 2023 11:28:18 +0200
-Message-ID: <CAGNS4TZYo_o7gUcWUjLCNQzUwJbFu6mcShQ_qhrSX9u4XbE7iA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] vfio-user: Message-based DMA support
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
+To: qemu-devel@nongnu.org
+Cc: john.levon@nutanix.com, stefanha@redhat.com,
  Jagannathan Raman <jag.raman@oracle.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- David Hildenbrand <david@redhat.com>, john.levon@nutanix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=mnissler@rivosinc.com; helo=mail-oi1-x22b.google.com
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Mattias Nissler <mnissler@rivosinc.com>
+Subject: [PATCH v2 0/4] Support message-based DMA in vfio-user server
+Date: Wed, 23 Aug 2023 02:29:01 -0700
+Message-Id: <20230823092905.2259418-1-mnissler@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,82 +93,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 20, 2023 at 8:32=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.co=
-m> wrote:
->
-> On Tue, Jul 04, 2023 at 01:06:27AM -0700, Mattias Nissler wrote:
-> > Wire up support for DMA for the case where the vfio-user client does no=
-t
-> > provide mmap()-able file descriptors, but DMA requests must be performe=
-d
-> > via the VFIO-user protocol. This installs an indirect memory region,
-> > which already works for pci_dma_{read,write}, and pci_dma_map works
-> > thanks to the existing DMA bounce buffering support.
-> >
-> > Note that while simple scenarios work with this patch, there's a known
-> > race condition in libvfio-user that will mess up the communication
-> > channel: https://github.com/nutanix/libvfio-user/issues/279 I intend to
-> > contribute a fix for this problem, see discussion on the github issue
-> > for more details.
-> >
-> > Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-> > ---
-> >  hw/remote/vfio-user-obj.c | 62 ++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 55 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-> > index 8b10c32a3c..9799580c77 100644
-> > --- a/hw/remote/vfio-user-obj.c
-> > +++ b/hw/remote/vfio-user-obj.c
-> > @@ -300,6 +300,53 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vf=
-u_ctx, char * const buf,
-> >      return count;
-> >  }
-> >
-> > +static MemTxResult vfu_dma_read(void *opaque, hwaddr addr, uint64_t *v=
-al,
-> > +                                unsigned size, MemTxAttrs attrs)
-> > +{
-> > +    MemoryRegion *region =3D opaque;
-> > +    VfuObject *o =3D VFU_OBJECT(region->owner);
-> > +
-> > +    dma_sg_t *sg =3D alloca(dma_sg_size());
-> > +    vfu_dma_addr_t vfu_addr =3D (vfu_dma_addr_t)(region->addr + addr);
-> > +    if (vfu_addr_to_sgl(o->vfu_ctx, vfu_addr, size, sg, 1, PROT_READ) =
-< 0 ||
-> > +        vfu_sgl_read(o->vfu_ctx, sg, 1, val) !=3D 0) {
->
-> Does this work on big-endian host CPUs? It looks like reading 0x12345678
-> into uint64_t val would result in *val =3D 0x12345678xxxxxxxx instead of
-> 0x12345678.
+This series adds basic support for message-based DMA in qemu's vfio-user
+server. This is useful for cases where the client does not provide file
+descriptors for accessing system memory via memory mappings. My motivating use
+case is to hook up device models as PCIe endpoints to a hardware design. This
+works by bridging the PCIe transaction layer to vfio-user, and the endpoint
+does not access memory directly, but sends memory requests TLPs to the hardware
+design in order to perform DMA.
 
-Ah, good catch, thanks! Confirmed as an issue using a cross-compiled
-s390x qemu binary. I will fix this by using ld/st helpers.
+Note that there is some more work required on top of this series to get
+message-based DMA to really work well:
 
+* libvfio-user has a long-standing issue where socket communication gets messed
+  up when messages are sent from both ends at the same time. See
+  https://github.com/nutanix/libvfio-user/issues/279 for more details. I've
+  been engaging there and a fix is in review.
 
+* qemu currently breaks down DMA accesses into chunks of size 8 bytes at
+  maximum, each of which will be handled in a separate vfio-user DMA request
+  message. This is quite terrible for large DMA accesses, such as when nvme
+  reads and writes page-sized blocks for example. Thus, I would like to improve
+  qemu to be able to perform larger accesses, at least for indirect memory
+  regions. I have something working locally, but since this will likely result
+  in more involved surgery and discussion, I am leaving this to be addressed in
+  a separate patch.
 
+Changes from v1:
 
->
-> > +        return MEMTX_ERROR;
-> > +    }
-> > +
-> > +    return MEMTX_OK;
-> > +}
-> > +
-> > +static MemTxResult vfu_dma_write(void *opaque, hwaddr addr, uint64_t v=
-al,
-> > +                                 unsigned size, MemTxAttrs attrs)
-> > +{
-> > +    MemoryRegion *region =3D opaque;
-> > +    VfuObject *o =3D VFU_OBJECT(region->owner);
-> > +
-> > +    dma_sg_t *sg =3D alloca(dma_sg_size());
-> > +    vfu_dma_addr_t vfu_addr =3D (vfu_dma_addr_t)(region->addr + addr);
-> > +    if (vfu_addr_to_sgl(o->vfu_ctx, vfu_addr, size, sg, 1, PROT_WRITE)=
- < 0 ||
-> > +        vfu_sgl_write(o->vfu_ctx, sg, 1, &val) !=3D 0)  {
->
-> Same potential endianness issue here.
->
-> Stefan
+* Address Stefan's review comments. In particular, enforce an allocation limit
+  and don't drop the map client callbacks given that map requests can fail when
+  hitting size limits.
+
+* libvfio-user version bump now included in the series.
+
+* Tested as well on big-endian s390x. This uncovered another byte order issue
+  in vfio-user server code that I've included a fix for.
+
+Mattias Nissler (4):
+  softmmu: Support concurrent bounce buffers
+  Update subprojects/libvfio-user
+  vfio-user: Message-based DMA support
+  vfio-user: Fix config space access byte order
+
+ hw/remote/trace-events        |  2 +
+ hw/remote/vfio-user-obj.c     | 88 +++++++++++++++++++++++++++++++----
+ include/sysemu/sysemu.h       |  2 +
+ qemu-options.hx               | 27 +++++++++++
+ softmmu/globals.c             |  1 +
+ softmmu/physmem.c             | 84 ++++++++++++++++++---------------
+ softmmu/vl.c                  |  6 +++
+ subprojects/libvfio-user.wrap |  2 +-
+ 8 files changed, 165 insertions(+), 47 deletions(-)
+
+-- 
+2.34.1
+
 
