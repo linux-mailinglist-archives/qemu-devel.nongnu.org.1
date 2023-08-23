@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360D67853C2
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BAF7853C4
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:23:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYk4B-0005OZ-QU; Wed, 23 Aug 2023 05:22:19 -0400
+	id 1qYk4C-0005Pj-Cm; Wed, 23 Aug 2023 05:22:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qYk45-0005Nl-GH; Wed, 23 Aug 2023 05:22:13 -0400
+ id 1qYk46-0005Nu-Fn; Wed, 23 Aug 2023 05:22:14 -0400
 Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qYk43-0005LJ-02; Wed, 23 Aug 2023 05:22:13 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id 32E905C00DE;
- Wed, 23 Aug 2023 05:22:09 -0400 (EDT)
+ id 1qYk44-0005LT-R3; Wed, 23 Aug 2023 05:22:14 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id 719165C0150;
+ Wed, 23 Aug 2023 05:22:11 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Wed, 23 Aug 2023 05:22:09 -0400
+ by compute2.internal (MEProxy); Wed, 23 Aug 2023 05:22:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:message-id:mime-version
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1692782529; x=
- 1692868929; bh=20ITenHY9SaVI3QeBxMfm7q3tEtFSLMhSrUzH5wzjLg=; b=t
- M7QgqdG1eJmW65s+ookcd1WS23RB+TkP2WBWleDFKJxlCfkG4tZ/SO1gHLtuSAMn
- rTDLFUqUt8N+ioBcF9x6oHI4Xw2DDa9FMrRgj2zjDxg2KrG8xuez101RTp0r0mzV
- xeWz6dAvCMVsl1Bon7yoUP0P6ql1ZXqiIlPJrP7nMnWCSB9TaTtbi0tKqJarSINZ
- DvolUL/wXGUtxs2l2Zpta1Kgcx99vYOQjx3qKigbjNNymxEYor1r9tkGKTkHE40f
- PKu4vydpb+kzBLJEsMEDfOcU8NszGoJHCDXGUmLIqbUzh7RqMNlj3fOZgTOZXbqv
- Xyd7wQRu/yXLhii46idPw==
+ :date:date:from:from:in-reply-to:in-reply-to:message-id
+ :mime-version:references:reply-to:sender:subject:subject:to:to;
+ s=fm3; t=1692782531; x=1692868931; bh=TxT5FJBQFAQKhqwk36E64LI9W
+ 142sBokm3Pek9uHubI=; b=BY8CmMLBDvJi+xC2oxjFoJdzG+zzr/HxLhqR4m+Hz
+ s/GcKuk2sTSfXlnQ6VQQq6fTZN4Bpg/WlGzJlckW3YwpiRhhYpXg8VSO1QWDzbld
+ ZHviN0sAh/yQs+ulOuiba53v6W0ye0RTrQ83fyNLYfJWNBPSmd0xJJOBt+VcM595
+ y0/MDrOeiLenPZ+AB1SugoZEhm4vNJWEUcCArQ0pgyLYwNfMrDhoqcc3TzDXpUwX
+ K0csfxGzm2Sgj6nYWwXyNFAE7NTexLfd9H5aF2YQcMJzGNr/k2Dit6GSTsjIYUQf
+ 2l0DLTz6ml8prWZN3Z0Rvk90EiRdrz3PYblX8YleuQ+sw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm1; t=1692782529; x=1692868929; bh=2
- 0ITenHY9SaVI3QeBxMfm7q3tEtFSLMhSrUzH5wzjLg=; b=cEYteBL8uXjJt3PBo
- YsNeQyFDIc/3aZUyo1Wo+h4ih8AlopfJC4Niwo9h7wTtKhogXV/rxbr0i4gJgnMQ
- hHYONgDGB1wAOTUWFuzNqlReTXZc7dAUFrXsz0M/046DnNlQvKDgYn+Vjm+dh4Id
- EpcsbwQTt5fpIeaIu5sPOz0Hbr9J0DxaLCuiThWiExaY18nes5yugnYU6OxXNsh6
- QMW7klb7tXKSL3yUGZ6CcjVPktsLt6sUoo1Q7m1/bYI2hvbLpjeyHEmDwvbgh880
- yrRRqhcpRm+ruPAHWC3TyBJCQHhNBoAJ5BC4Nxl5AGGv6qqYzwp1fLip/qgcy8PD
- 5ZVBw==
-X-ME-Sender: <xms:v8_lZC-mHUKGGtIu4O24Df5Q2wn4Ji-bsFCYW0R_LTvdSR56JrGFgA>
- <xme:v8_lZCsYOAfZlTPHm0i5Yih1GtD0KmcyetRdaXKr5W4eqj7biSeylv--6xM7z-8j6
- 7kxdjAB89L3wM7Gvo0>
-X-ME-Received: <xmr:v8_lZIBEnQFMTcmBonSkSiJ8qIDp0BXG3NsQjEtgbcdI20tn3FYkezXDv8zOu22b4AsihJJcf3a7P-0QvY__L8Zrk1u_lQ390o52abluha3nExDVEoIoGbBSojC0GJLrEaspDXjw1u9LUr_NEA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgudegucetufdoteggodetrfdotf
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+ 1692782531; x=1692868931; bh=TxT5FJBQFAQKhqwk36E64LI9W142sBokm3P
+ ek9uHubI=; b=UzgxsjbtkbfMBPxp5d2pRG+zfcn3ZUzdjnPjJsPDZADPDpWAEbn
+ W/JblNd1WdLHJ2h9XenWgv8fnkh8AXMSDrb9dVBpdteebOpoPKRRRBrspMZ1aDiz
+ spn6D+W8GnueOzSB3NWh4Se43AdBCVE/NhVukLNbovbuX715An3nHHjaLqek/b7A
+ DzV38oxCHNwYVKHdPrOG+mLs6CPwZ4tYowuXSLipWpNtLD919CWXkr7QbooVM9j6
+ haksXPXrcYvyARNdsxZfEnC3dH0CtmgdjxIOG0sN9WNmwB7jY0e8v3XKgRDia76D
+ 7La6i4kb+B2HIe33JCYZvIPIEinx3YboNkQ==
+X-ME-Sender: <xms:w8_lZDae76XnVe-c_5Yi7_UCw-Q8A5uzohETSD5xPbHsabk-NrFxSg>
+ <xme:w8_lZCb96OQlgdpTYXDBXTSwwa4_bMgmVdRm0aheA02-hS4EbXIU1wi64D_S0eP9b
+ ZzJFsJu5lxPNRnJnqw>
+X-ME-Received: <xmr:w8_lZF9FDBX0mHzSinBjw7N-0WY40D4x1uHjg0tUedXRLenZnz-beQZGuYnxAVt01RaOpV0ktY0C4tRvrAygGwz97jYrs41sOgnzxaek7-emz07HRWjL40Jc3kMHC20I8Jq68cCMDkc2MNlkVQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgudehucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpeduffduheffffeihfeuleekgfejkeefkeegheetheegiefgudetudevieejgeff
- leenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
- enucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:v8_lZKeWZGbQEMdAbr73wNywOiCuvvuDPNOARCT5YhSXPkOMhKXk4w>
- <xmx:v8_lZHPzZeiTKCtupxcEovtWB3DOazFNh2bm_gGKSvQuQ6ZcOJPjxQ>
- <xmx:v8_lZEmWDDXwnIylybliPw4uCau5yyDA77gPdjL4b6DOvzEKroaUSA>
- <xmx:wc_lZFvtEaqeYKzcqa1VpTlvr6tSeZItTJLy2R9eCW4r4Yl5EWXvxA>
+ cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmlhgr
+ uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
+ htthgvrhhnpeekiedvtdeuhefffedutdelfeekhfeitddtudevgefgffeiteevfffhhefg
+ gefhffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:w8_lZJpPBJcVYvIBeX14OrsBd0OoAUemwVSmES6n3nAnC3g5Hm-2QQ>
+ <xmx:w8_lZOoEllaCGx2MFBLVA9he2D9a6fBwJmem2T6hfbX19EPWAdomEg>
+ <xmx:w8_lZPTv6JoqBK6sP9x-wUyASc35ZR0YJ5CVPMct1_EDwtt1YEvKFw>
+ <xmx:w8_lZD7xNuAonlSLt5zQsK_Y4nnHmXvA-8oGiuW0m2kYoyufWhXbTQ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Aug 2023 05:22:05 -0400 (EDT)
+ 23 Aug 2023 05:22:09 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
-Subject: [PATCH v4 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management
- interface model
-Date: Wed, 23 Aug 2023 11:21:57 +0200
-Message-Id: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
+Date: Wed, 23 Aug 2023 11:21:58 +0200
+Subject: [PATCH v4 1/3] hw/i2c: add smbus pec utility function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALbP5WQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyTHQUlJIzE
- vPSU3UzU4B8JSMDI2MDCyMj3bzcTN1Mo2TdFAsDk9QU06RU81QzJaDqgqLUtMwKsEnRsbW1AA2
- 4YLRZAAAA
+Message-Id: <20230823-nmi-i2c-v4-1-2b0f86e5be25@samsung.com>
+References: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
+In-Reply-To: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
 To: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>, 
  Keith Busch <kbusch@kernel.org>
@@ -85,16 +83,16 @@ Cc: Lior Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
  qemu-arm@nongnu.org, qemu-block@nongnu.org, 
  Klaus Jensen <k.jensen@samsung.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3795; i=k.jensen@samsung.com; 
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=k.jensen@samsung.com; 
  h=from:subject:message-id;
- bh=rBAEmt0JsBGp/GN3Q5V2cSgy3EXakcIYEMcJk82QxDQ=; 
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlz73/tVI8B9iob50DMlkUASZE8IKKtAFYz
- Y6d2Ap32txyY4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5c+9AAoJEE3hrzFt
- Tw3pSLIIAL6QAZJEgRawiTkBTJqOZgSW/nk6hx/EdHbHnrNRdV+lpCU1oM+TaY6jhhHiQCSpbUI
- 95mGpY5sZdnG2W6wMiLRgrjWuFCtync2w1DqJ22pDg62J2mijYFYdFpPwh/bc0T8W69fdgx+YDk
- Pe95H4L9s4y6dkdYRN8Cqg4TMhhEdk+l355QO0A66HPMIjhnIh9fUVoGZAcWU4ZE41hhP5+Qcr9
- SEUzI/1FtUfpzmFvXX6KW0GTBXoeGxPv0PdSCNtLWuAw1nEafSL3Z2VEsjaUCrGrWRltDD9CNPg
- o4swDFz7ks3XJZXVjHwDQgUWZ6uWSqVp7AgICI+BJu+rfXYJbDzz6aYF
+ bh=8bL+r5gcnCGchv7l1z4cPWVJYm8QL5SGL7mTA0JWL9M=; 
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlz72X3EqVSWHVNHaYNKunrslH55pb9mDC0
+ DAhFmxXJGXOXIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5c+9AAoJEE3hrzFt
+ Tw3pCWAIAJrw11uJZod/3DespK3JYZkQEZKLTplG591PlPqYEnHqxSBjTkIw7+q/awzfHlLFxWH
+ pgpJm4Z+UwLzDzfwj7MCG3PPnB9spfOU2W4vDuky7Qre/SX6s4hS11CMUWZhyv98f7uoAPeiCIl
+ 2PJqEQX0kliTMmK6nQbjd16CxPb75dmbOuwuiPDlk24Pyk5hjopb1rxWiRC8mzCYEORz7W4AsDY
+ 9Kc0/8VZ0Ld2atUcdgKjZOvp4QchN/TSrAaE/f4zztu61Atc6HdYFNCMl6MG6Xv1V0rVUfLcsut
+ ABFNeJ+qMWsnnSecqXy9AaKl3DZslm8QfpapH56s0m8JWzaYSEDR4q2u
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Received-SPF: pass client-ip=66.111.4.25; envelope-from=its@irrelevant.dk;
@@ -121,113 +119,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds a generic MCTP endpoint model that other devices may derive
-from.
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Also included is a very basic implementation of an NVMe-MI device,
-supporting only a small subset of the required commands.
-
-Since this all relies on i2c target mode, this can currently only be
-used with an SoC that includes the Aspeed I2C controller.
-
-The easiest way to get up and running with this, is to grab my buildroot
-overlay[1] (aspeed_ast2600evb_nmi_defconfig). It includes modified a
-modified dts as well as a couple of required packages.
-
-QEMU can then be launched along these lines:
-
-  qemu-system-arm \
-    -nographic \
-    -M ast2600-evb \
-    -kernel output/images/zImage \
-    -initrd output/images/rootfs.cpio \
-    -dtb output/images/aspeed-ast2600-evb-nmi.dtb \
-    -nic user,hostfwd=tcp::2222-:22 \
-    -device nmi-i2c,address=0x3a \
-    -serial mon:stdio
-
-From within the booted system,
-
-  mctp addr add 8 dev mctpi2c15
-  mctp link set mctpi2c15 up
-  mctp route add 9 via mctpi2c15
-  mctp neigh add 9 dev mctpi2c15 lladdr 0x3a
-  mi-mctp 1 9 info
-
-Comments are very welcome!
-
-  [1]: https://github.com/birkelund/hwtests/tree/main/br2-external
-
-Changes since v3
-~~~~~~~~~~~~~~~~
-
-  - Inlined the POLY define in the crc8 function (Philippe)
-  - Changed a bunch of fields to use registerfields.h
-
-  - From Jonathan:
-    + Added references to specs defining the structures.
-
-  - From Corey:
-    + Reworked the buffer handling (again) ;)
-      Derived devices can now never write into the mctp core buffers. Instead,
-      the mctp core will request a buffer pointer and copy from there.
-      Internally, within the mctp core, writes to internal buffers are also
-      checked.
-
-Changes since v2
-~~~~~~~~~~~~~~~~
-
-  - Applied a bunch of feedback from Jonathan:
-    + Moved a lot of internally used structs out of the include headers
-      and into the source files.
-    + Added spec references in various places
-    + Split the patch for i2c_smbus_pec() into its own
-    + Fix a compile error (and bug) in nmi-i2c.c.
-
-  - From Corey:
-    + Reworked the buffer handling. The deriving devices now returns a
-      pointer to their own buffer that the mctp core copies into.
-    + Added a couple of extra debugging trace events.
-
-Changes since v1
-~~~~~~~~~~~~~~~~
-
-  - Fix SPDX-License tag for hw/nvme/nmi-i2c.c (Philippe)
-  - Add some asserts to verify buffer indices (by request from Corey).
-  - Drop short packets that could result in underflow (Corey)
-  - Move i2c_smbus_pec() to smbus common code (Corey)
-  - A couple of logic fixes (patch from Jeremy squashed in)
-  - Added a patch to handle messages with dest eid 0 (Matt)
-    Maybe squash this as well.
+Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
+message.
 
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
-Klaus Jensen (3):
-      hw/i2c: add smbus pec utility function
-      hw/i2c: add mctp core
-      hw/nvme: add nvme management interface model
+ hw/i2c/smbus_master.c         | 26 ++++++++++++++++++++++++++
+ include/hw/i2c/smbus_master.h |  2 ++
+ 2 files changed, 28 insertions(+)
 
- MAINTAINERS                   |   7 +
- hw/arm/Kconfig                |   1 +
- hw/i2c/Kconfig                |   4 +
- hw/i2c/mctp.c                 | 428 ++++++++++++++++++++++++++++++++++++++++++
- hw/i2c/meson.build            |   1 +
- hw/i2c/smbus_master.c         |  26 +++
- hw/i2c/trace-events           |  13 ++
- hw/nvme/Kconfig               |   4 +
- hw/nvme/meson.build           |   1 +
- hw/nvme/nmi-i2c.c             | 418 +++++++++++++++++++++++++++++++++++++++++
- hw/nvme/trace-events          |   6 +
- include/hw/i2c/mctp.h         | 127 +++++++++++++
- include/hw/i2c/smbus_master.h |   2 +
- include/net/mctp.h            |  35 ++++
- 14 files changed, 1073 insertions(+)
----
-base-commit: b0dd9a7d6dd15a6898e9c585b521e6bec79b25aa
-change-id: 20230822-nmi-i2c-d804ed5be7e6
+diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
+index 6a53c34e70b7..01a8e4700222 100644
+--- a/hw/i2c/smbus_master.c
++++ b/hw/i2c/smbus_master.c
+@@ -15,6 +15,32 @@
+ #include "hw/i2c/i2c.h"
+ #include "hw/i2c/smbus_master.h"
+ 
++static uint8_t crc8(uint16_t data)
++{
++    int i;
++
++    for (i = 0; i < 8; i++) {
++        if (data & 0x8000) {
++            data ^= 0x1070U << 3;
++        }
++
++        data <<= 1;
++    }
++
++    return (uint8_t)(data >> 8);
++}
++
++uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len)
++{
++    int i;
++
++    for (i = 0; i < len; i++) {
++        crc = crc8((crc ^ buf[i]) << 8);
++    }
++
++    return crc;
++}
++
+ /* Master device commands.  */
+ int smbus_quick_command(I2CBus *bus, uint8_t addr, int read)
+ {
+diff --git a/include/hw/i2c/smbus_master.h b/include/hw/i2c/smbus_master.h
+index bb13bc423c22..d90f81767d86 100644
+--- a/include/hw/i2c/smbus_master.h
++++ b/include/hw/i2c/smbus_master.h
+@@ -27,6 +27,8 @@
+ 
+ #include "hw/i2c/i2c.h"
+ 
++uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len);
++
+ /* Master device commands.  */
+ int smbus_quick_command(I2CBus *bus, uint8_t addr, int read);
+ int smbus_receive_byte(I2CBus *bus, uint8_t addr);
 
-Best regards,
 -- 
-Klaus Jensen <k.jensen@samsung.com>
+2.42.0
 
 
