@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8547D785286
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 10:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF88A785285
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 10:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYj1A-0005Ci-AY; Wed, 23 Aug 2023 04:15:08 -0400
+	id 1qYj18-0005C8-72; Wed, 23 Aug 2023 04:15:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYj16-0005Bf-8O
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:15:04 -0400
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYj14-0005BV-SR
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:15:02 -0400
 Received: from out3-smtp.messagingengine.com ([66.111.4.27])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYj12-0007KG-Pf
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:15:03 -0400
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYj12-0007Kc-VE
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:15:02 -0400
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id D1D5A5C00C9;
- Wed, 23 Aug 2023 04:14:58 -0400 (EDT)
+ by mailout.nyi.internal (Postfix) with ESMTP id 7A0165C011B;
+ Wed, 23 Aug 2023 04:15:00 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Wed, 23 Aug 2023 04:14:58 -0400
+ by compute2.internal (MEProxy); Wed, 23 Aug 2023 04:15:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:content-type
  :date:date:from:from:in-reply-to:in-reply-to:message-id
  :mime-version:references:reply-to:sender:subject:subject:to:to;
- s=fm3; t=1692778498; x=1692864898; bh=RCqOBsIHjHZMA8PalYDvZxs4f
- tUwtAoCXBOYmGnaIP4=; b=WQJuookFC4jfjjlrwGpLs3976qA2xXxoWdPqpgOZ+
- BXHti5aqNDkfSGG0WLvnkqGP/Mu/lBTCLd4Yys6+Yrfsn3ShlY3kaw1ztJ4ZAZxG
- GP6ZbhBptBfl/KGqfJXL5xjGV4vI0HIxG4xT0ZMQKjY9XDRQzTOtmhu+3ROHo8gX
- QNtbAl2ZbvidTetbQ+7x6tCRSftcpPXhKVBOzQ7bzvTmZNcQqZj3V6irGgTen1AH
- sxQd6pYVBovfOAyIz9VepQkw3szd71ZrP13/h8fzRHAvzkuUrUma0t0vMrvLiXXH
- Iy7T3KOOMI0EKpyIopzZSqEvUkwZrWdWYD5tQJya8g+8g==
+ s=fm3; t=1692778500; x=1692864900; bh=jhwNyHyRRRG9aluKIDJ/n0qde
+ iNlyRVnmYvsSGpCycw=; b=I41gAF0LeTKWtPU9KkewVWW1ODpDtGJ7lgrjE02ty
+ MpySUfS9i5mtQtPNoCCI8bMktT+xDpQxXSQOwrvw3BMkqRD0Zjy2+gGgOjgx+5S0
+ ndOS6xzCFqLQ6oAMryLSwN4v86Eu0XR7s+JZ4GAZ4pWzN/1+U77XnQj25f64YXVD
+ O7LbcZ3bsy0vkagTs19AZlsQCNRhjR2FQtY/CEJmAg86EGLHsZPGPcnd7D+gelIg
+ IZBdAtgLvk0xANtpgzIDJgBssTbAi8ZLtIqsKuRPdoJOY396oWxDJyGOxQoCW8Sk
+ +GnDMd+LI1UGzW5FmD3YtDbyLzcxE/rtJLkpIDEo1aMQA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:sender:subject:subject:to:to:x-me-proxy
  :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1692778498; x=1692864898; bh=RCqOBsIHjHZMA8PalYDvZxs4ftUwtAoCXBO
- YmGnaIP4=; b=KYat+LJKU8liXemvdpixnxf64BvN09wfb74YALOQT8DKqjTEcaU
- ZMPQXiHH4UkE8LhVC1rh834TngK4cnpWcyIpNQgOaBeiKPc9OuNEWJ/2ZhewdOEs
- UzSwOk6jJbwrT00c2v2YEyeK+w8rp8FarQIPQBtRn+TGzihOEeKnvkaq+YxZKd5X
- rno9usNgquGLBOz2xEQ+fN8vMn89v9fyY6Kqdb/zYChrlhr8JX0XU3wZPFOPXNuG
- lsBU/O3Tdrh8Zby64Dslx+FfrqWN8bnmKZ9ETd/eFHVRAlNRvPV8oV79StPTMcNO
- kgNGtK7afV3Ymn4XqEIkY9nfbZ9R0IZEVbg==
-X-ME-Sender: <xms:AsDlZPHaVlhIW-0_PeVgqnMslDcFwMyQDj6Uy8RRU_C27bfFAKlWqQ>
- <xme:AsDlZMXa0cE_13BbX2m75vgqdca_fbj_MjtM0MNtrktolXBR2K93n7_2EQpqGVKgm
- v36TsbQ3p_qj5wD7_c>
-X-ME-Received: <xmr:AsDlZBJ844uwk7cNc_MyJZV4AE1wJKCRnc2ndOow_FvFRn9pCOam2XLPQR5mkLznB0zQkLRsjJR1d3IT8ciA7AQf8I5zgIaVzUiN0Gh3dQla6jk3SzluztFNnL54gYOruA45nd1hqwswMZWkoQ>
+ 1692778500; x=1692864900; bh=jhwNyHyRRRG9aluKIDJ/n0qdeiNlyRVnmYv
+ sSGpCycw=; b=rRbIcP0Z1qDKHc20g8+MGjy3IND2o71cmUrEcgjRDHhdArqY+aI
+ ui/00BY0sAkNLEHhqRl3sbDoIMz5ArfChXPryCMmXJ7Q0dZTqZU5++63H+EXd7xg
+ Q1JRzHDsVnPZSUM1GKXLAFnV96RUhj1tFwNfOwI1dHtM3PYBKK+mbOmc+n0tP4eK
+ 5NVEh8SNt4aPbjLgmdje4O/1DXeJmpBJXKCfSl7lfq74wSzA/1jBOzN1H/z5uFOb
+ 7AOmj9ZlgZpoH0QXknrQfIjd+6sSdThGGIoGGHfCnI/i6anMqWQQTb8Scm3i5F3a
+ nrPuW1bcv9NzKcKx8fNGChb7H/kK6K3rK8w==
+X-ME-Sender: <xms:BMDlZJe8ATPRpRX-kDxr0_uLvdCm0ecRs8c60VFOnpUL9PC1E5GzSg>
+ <xme:BMDlZHMSV1wDus-8zLa9Ga7w7tmfYtOxdkI0_7PVTy5ZgLdFHC9ZLZYuv-hJTLLeC
+ 3Gaff2SIeIN8q_SoYQ>
+X-ME-Received: <xmr:BMDlZCiFCj-6NTX-tWGXXDFzrJViG2m83eGgsc2jFS8m-g2ueRWTMvm5cAAE4QM2eTk8hEQeGjPXt6MYeCdG3E72Wipc1qk_PaohMfU34oJrULSy93-JUyLBgC4pyEd6vfzJCRkTkuJofiZGOw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgtdduucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
  cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmlhgr
  uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
  htthgvrhhnpeekiedvtdeuhefffedutdelfeekhfeitddtudevgefgffeiteevfffhhefg
- gefhffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ gefhffenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpe
  hithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:AsDlZNFrzzJfyh6OittBFX_A5uMzM3OKkkBEmBaWUPkiL8v-yLAR-w>
- <xmx:AsDlZFVyHtwsobW5nFX108tkMdZsu3odTM_WTOOuxldx-CzI0x29Vw>
- <xmx:AsDlZIOo8bAb0Cr1AEf8rGfxz0nNeNZmIuuvJ2zPflAcuMmXwtXFpg>
- <xmx:AsDlZBqNkXv-hrakslOfVhY-A-d13qbd9bX49IRHnmqecN2_mKBVQw>
+X-ME-Proxy: <xmx:BMDlZC8O4ADtVb1nrB8wI8fWDjiEETIpUBEzXa3AAA6VlST9NxVaDQ>
+ <xmx:BMDlZFsIvL0gtxWxIhAYvNiKVkTJPsyOJ96NtOs7EQDpae_yGEqmBg>
+ <xmx:BMDlZBHtW9e6C3GCxireOzIWdCFqESgHCSGHtWjSFNjj7V4UctCgyA>
+ <xmx:BMDlZLAHhaTY94QumOR6fY-UbeKGUYkK279UKyttJg6_oET4xQEe5Q>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Aug 2023 04:14:57 -0400 (EDT)
+ 23 Aug 2023 04:14:58 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
-Date: Wed, 23 Aug 2023 10:14:41 +0200
-Subject: [PATCH 1/2] hw/misc/i2c-echo: add copyright/license note
+Date: Wed, 23 Aug 2023 10:14:42 +0200
+Subject: [PATCH 2/2] hw/misc/Kconfig: add switch for i2c-echo
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230823-i2c-echo-fixes-v1-1-ccc05a6028f0@samsung.com>
+Message-Id: <20230823-i2c-echo-fixes-v1-2-ccc05a6028f0@samsung.com>
 References: <20230823-i2c-echo-fixes-v1-0-ccc05a6028f0@samsung.com>
 In-Reply-To: <20230823-i2c-echo-fixes-v1-0-ccc05a6028f0@samsung.com>
 To: Thomas Huth <thuth@redhat.com>
@@ -81,15 +81,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Klaus Jensen <its@irrelevant.dk>, Klaus Jensen <k.jensen@samsung.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=765; i=k.jensen@samsung.com;
- h=from:subject:message-id; bh=LZETYbn1C3Rfwlmbw2Fej8c1UyHcvkZtJb/63qF7A00=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlv/54TvgAksASuqTw0e+r0YB721KmfGe2c
- MKEtdGblGPxZ4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5b/+AAoJEE3hrzFt
- Tw3pMwUIAIBraSkUhhtHVQ+z1rPKzfEJ+szW4LyB08nvCthW/q3eUxe3BJpqj+SWhDLlBj3lC7T
- b/HyaMnwurTlcQfcaW3HCVhWJ95w9/GOUYAMpzathSr0VoQkvBx8bGTKQPp10IcXu1ale7G6sh7
- L0PeNHIE49sRvO/kZBiomcesK4rBiDeJppyOkx5dm+XHfrsGizsIfb9HV7gYq8dhlWsvhkeOvp2
- GksXZonDW5m3/GWS2CMCJmrqvhFPk0gh26KBkpqBMdxlHUIdgNN2Yv01j5p+aQKzvn7IAZXy9nY
- cBmmQKievOENiP3yfdo9pNDYE1h995guOwU2U6Pil1d8WqHCllXBYLHd
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1117; i=k.jensen@samsung.com; 
+ h=from:subject:message-id;
+ bh=AcC97RiaqAaF4qr7Ep5XurAhP+6NlkkcpwaIx5o6ssg=; 
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlv/4sI+ufH/UgsT+loUA3HlHPTxSRp8jat
+ IMjZW4mnhx4ZYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5b/+AAoJEE3hrzFt
+ Tw3p1XkIAKlbExVyx/0oVb0x+lObGZdN0qju2D31lreIXRBkOnII6/AbqA+YDLlpWC5LlpqFeK4
+ KyIksbtFbTq/JgxuziFRbn20ZtKfv9OdMfqKmpJlPPe6yfJqADXKnYuFHpBNtNc29675HMYMo3w
+ JPcBfqRWojCXu41kl39WPbb4QtMeq4P2S6t557+dRt+uj2u5UaRFzfHHUyklz7C12/W6kAxYy/U
+ J92KoeNPUcbqHZWzCc3WXTeCXWCjLnkEdSuG+Clw3Dr6WNN5FEcxIZh2VLzJhQIe+wknyYts4kX
+ guvRFSFHiyt130acV8SkY3O6GX+V9vs+qZ8ehGrKcRegO31ZPZqBZqkY
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Received-SPF: pass client-ip=66.111.4.27; envelope-from=its@irrelevant.dk;
@@ -118,32 +119,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-Add missing copyright and license notice. Also add a short description
-of the device.
+Associate i2c-echo with TEST_DEVICES and add a dependency on I2C.
 
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/misc/i2c-echo.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/misc/Kconfig     | 5 +++++
+ hw/misc/meson.build | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
-index 5705ab5d7349..5ae3d0817ead 100644
---- a/hw/misc/i2c-echo.c
-+++ b/hw/misc/i2c-echo.c
-@@ -1,3 +1,13 @@
-+/*
-+ * Example I2C device using asynchronous I2C send.
-+ *
-+ * Copyright (C) 2023 Samsung Electronics Co., Ltd. All Rights Reserved.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2.  See
-+ * the COPYING file in the top-level directory.
-+ *
-+ */
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 6996d265e4c5..9ec7a40f973a 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -34,6 +34,11 @@ config PCA9552
+     bool
+     depends on I2C
+ 
++config I2C_ECHO
++    bool
++    default y if TEST_DEVICES
++    depends on I2C
 +
- #include "qemu/osdep.h"
- #include "qemu/timer.h"
- #include "qemu/main-loop.h"
+ config PL310
+     bool
+ 
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 892f8b91c572..fbea23f8b27f 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -132,7 +132,7 @@ system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_rng.c'))
+ 
+ system_ss.add(when: 'CONFIG_GRLIB', if_true: files('grlib_ahb_apb_pnp.c'))
+ 
+-system_ss.add(when: 'CONFIG_I2C', if_true: files('i2c-echo.c'))
++system_ss.add(when: 'CONFIG_I2C_ECHO', if_true: files('i2c-echo.c'))
+ 
+ specific_ss.add(when: 'CONFIG_AVR_POWER', if_true: files('avr_power.c'))
+ 
 
 -- 
 2.42.0
