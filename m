@@ -2,69 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B613B784E3F
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 03:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91702784F3E
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 05:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYclF-0006XT-KT; Tue, 22 Aug 2023 21:34:17 -0400
+	id 1qYeUz-0007jT-Fi; Tue, 22 Aug 2023 23:25:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1qYclC-0006XG-Tf
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 21:34:14 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1qYcl9-0003Ke-Pn
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 21:34:14 -0400
-Received: from loongson.cn (unknown [10.20.42.170])
- by gateway (Coremail) with SMTP id _____8Dxl+gOYuVkshAbAA--.19159S3;
- Wed, 23 Aug 2023 09:34:07 +0800 (CST)
-Received: from [10.20.42.170] (unknown [10.20.42.170])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxjiMOYuVkKNlgAA--.64922S3; 
- Wed, 23 Aug 2023 09:34:06 +0800 (CST)
-Message-ID: <ed6b1c13-8186-0030-d13e-c2c9a6f4b180@loongson.cn>
-Date: Wed, 23 Aug 2023 09:34:06 +0800
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1qYeUv-0007j7-Jz
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 23:25:33 -0400
+Received: from mail-mw2nam10on2047.outbound.protection.outlook.com
+ ([40.107.94.47] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1qYeUs-0006Zk-SA
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 23:25:33 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kvVQnmf0G404ZeqVuQbkYoPP45N03ZcaWsAXLi4MjvbN1zm0opLKTQpPEpZjWEU82J77xy4boSaHPKzgwxwSgO2luY3mhpO0bnSSQ+PbnTqmkYEAElV9nNWk8Suuudo1kpKx4l2zAjX9HLc3/yDaqI0X/EwkqFXFKSM+IEvLXidJIg/RubudP1A0M6EKlEOqgbyErbOYUADVyQb0OeYD1N9EiPCjpZPxABo2KoRZaaONtCx0f+zjGAp1FgsCQUoBZvTRux7HDO6XnOHBBWsIILnYYN0MY7lErRV3gKmhXB9C1XKml7RNtMUOZ1VCIzUY3ZVi84IRNlDKSXjbwY5OhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jCqiUmBPenTpgY9tsW476KC8mk7QvSzNYVG46UOxTNM=;
+ b=VU9C/cKnf/jm7qQVrU1WqEfNE00N99ocMlAGvxwq/lBR/so4f/rIUdv4L3lhWZy++t+/bp5fbJVetljKUUEtx26+7rC16OGnO43xhZFALw/MyoveYIJxcWjCR4VPsN+Puo0aY/sXvG/JDwGzTDe0xo3hsakKzshbtMSmZu2w4qf8xA7UYEGYEMMiL/2nfx/ZeiNQFWrgWQ8DmIsZhzgSz1yUVB40+D9bnxE5OdJTncQeVgs9vgio4sX7KVV7NlSQ2UGGZLLBj1pZfw1YgQ6X8vLl4Sv6bawB2QT5cmKsN0jZcNdvOtTwLtLvfhm3iL5fXF0QOZRvUYF4X8zmGS26gw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jCqiUmBPenTpgY9tsW476KC8mk7QvSzNYVG46UOxTNM=;
+ b=oNganvyuk2XdG/U/tbnQbIWnIRWws6SQzO2G+jv9RKmEYGakKXm6/oFJ337mKYyUXpR5WjeBVn9zfN5Rj7sBAKG8gcBlfH0men6TC4LhXOaVbts+V52KZV/0k7awh3lZG+wwIJh28f1x3fg5upyzt/QkOODG+VCfhO5mhADriKc=
+Received: from BYAPR11CA0047.namprd11.prod.outlook.com (2603:10b6:a03:80::24)
+ by DM4PR12MB6301.namprd12.prod.outlook.com (2603:10b6:8:a5::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.26; Wed, 23 Aug
+ 2023 03:20:24 +0000
+Received: from MWH0EPF000989E6.namprd02.prod.outlook.com
+ (2603:10b6:a03:80:cafe::e2) by BYAPR11CA0047.outlook.office365.com
+ (2603:10b6:a03:80::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20 via Frontend
+ Transport; Wed, 23 Aug 2023 03:20:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000989E6.mail.protection.outlook.com (10.167.241.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6699.15 via Frontend Transport; Wed, 23 Aug 2023 03:20:23 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 22 Aug
+ 2023 22:20:22 -0500
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/loongarch: cpu: Implement get_arch_id callback
-Content-Language: en-US
-To: gaosong <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20230822122634.1435006-1-maobibo@loongson.cn>
- <39216ec0-25b1-888d-ad91-0499c96e65fe@loongson.cn>
-From: bibo mao <maobibo@loongson.cn>
-In-Reply-To: <39216ec0-25b1-888d-ad91-0499c96e65fe@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxjiMOYuVkKNlgAA--.64922S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCr18Kr18Cw43Jw48KF48GrX_yoW5Ar1kpr
- 97ZFyUAry8GrZ3G3y8J345XFyDXr17Gw42q3WxKFyxCF4DXr10qr48Xryq9Fn8Aw48GF12
- qF1rZF17ZF47XFcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.767,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Subject: [ANNOUNCE] QEMU 8.1.0 is now available
+From: Michael Roth <michael.roth@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Richard Henderson <richard.henderson@linaro.org>
+Date: Tue, 22 Aug 2023 22:20:06 -0500
+Message-ID: <169276080629.2012937.11174907503008398998@amd.com>
+User-Agent: alot/0.9
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989E6:EE_|DM4PR12MB6301:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2b05afc-d672-471d-ca19-08dba387e369
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ONs9pwrAxsea0MnHxuw8cTqUImS9siNVCh9eRAZpW3zZkyZq3X4ZV6uTqZqfMdQpIxjdpY6qTZMX7I0cNh3RoUvGwehfseMlJcnPVkKpvbDWNhxlpNZhe6+DRXMchVglJeJxuDw5Taw1YFO+0kd5F9AdK9VQ+tiN2Ho9zR0G+M5X9tM7gm1M7kVOsxtNXepuLe7Av7Lq99aVCgevirFJORJQJ/1lc6QgGu3nh/cNfjt0Md0AUIXXBSmejWhDFklyZ8OabafQ3AGnGTVQGu3S6uyYkrN8F9rgJDW4yCbeJvOppGOJvNJHkFN11pVXJ80PVAGx7bmbFW65S2smcKWUU86JUsVDlpTbcn0pCpNQ7MAnJeFvEhlwxjE+ATiWJEmfACYySEbanSuWgEpy5QqmdDPvtfhD9vHgYo7QNogkd6oBTWZMqSAW4vdMv57l3d2pGJCZlhunqBk/PRu7vceCxa7qdh1Sbwc14OiWNZQxMBJ6XTRejq38F74v2aF1lZf056dG+p9RMVHeScER02HFbs70wfXy7PwH7sYb0erwILgsrOIBDiq62TWLnFxMsR+VQcAUZ2KX6sTws74rZESkSPZ2F6LlmsPehxp8D+pAwTCSPRwwomc9iZ3jTeHYK/sLOmvwUr3XKXnkiiTB8pbgZC0a4gb2Aa7hxDiNplxR5EKJ/j/VdZSQJaPmhJ33R23zMJ0r2QnxfkOQ5bt5r/ww2El9nrFFDuA+CHnMCfNzc3yMaeyIKIBNu4gdl1WHsH7WLbCTQTxgd+ZKJcFjgR9oqmzG3HsU61Zc9CPRHatCEMI=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(376002)(136003)(396003)(39860400002)(346002)(1800799009)(186009)(451199024)(82310400011)(40470700004)(46966006)(36840700001)(86362001)(40460700003)(36756003)(40480700001)(44832011)(26005)(5660300002)(2616005)(16526019)(336012)(426003)(4326008)(8936002)(8676002)(47076005)(2906002)(83380400001)(478600001)(966005)(70206006)(70586007)(316002)(6916009)(41300700001)(6666004)(356005)(82740400003)(81166007)(36860700001)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 03:20:23.2924 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2b05afc-d672-471d-ca19-08dba387e369
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989E6.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6301
+Received-SPF: softfail client-ip=40.107.94.47;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,84 +118,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello,
 
+On behalf of the QEMU Team, I'd like to announce the availability of
+the QEMU 8.1.0 release. This release contains 2900+ commits from 250
+authors.
 
-在 2023/8/23 09:14, gaosong 写道:
-> 在 2023/8/22 下午8:26, Bibo Mao 写道:
->> Implement the callback for getting the architecture-dependent CPU
->> ID, the cpu ID is physical id described in ACPI MADT table, this
->> will be used for cpu hotplug.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> Change-Id: I53bcfb9f4279e491f33e8b99a9102534ad53409e
->> ---
-> 
-> Drop Chang-Id.
-sure, will fix in next version.
+You can grab the tarball from our download page here:
 
-Regards
-Bibo Mao
-> 
-> Otherwise
-> Reviewed-by: Song Gao <gaosong@loongson.cn>
-> 
-> Thanks.
-> Song Gao
-> 
->>   hw/loongarch/virt.c    | 2 ++
->>   target/loongarch/cpu.c | 8 ++++++++
->>   target/loongarch/cpu.h | 1 +
->>   3 files changed, 11 insertions(+)
->>
->> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->> index e19b042ce8..6f6b577749 100644
->> --- a/hw/loongarch/virt.c
->> +++ b/hw/loongarch/virt.c
->> @@ -815,6 +815,8 @@ static void loongarch_init(MachineState *machine)
->>           cpu = cpu_create(machine->cpu_type);
->>           cpu->cpu_index = i;
->>           machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
->> +        lacpu = LOONGARCH_CPU(cpu);
->> +        lacpu->phy_id = machine->possible_cpus->cpus[i].arch_id;
->>       }
->>       fdt_add_cpu_nodes(lams);
->>   diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
->> index ad93ecac92..7be3769672 100644
->> --- a/target/loongarch/cpu.c
->> +++ b/target/loongarch/cpu.c
->> @@ -690,6 +690,13 @@ static struct TCGCPUOps loongarch_tcg_ops = {
->>   static const struct SysemuCPUOps loongarch_sysemu_ops = {
->>       .get_phys_page_debug = loongarch_cpu_get_phys_page_debug,
->>   };
->> +
->> +static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
->> +{
->> +    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
->> +
->> +    return cpu->phy_id;
->> +}
->>   #endif
->>     static gchar *loongarch_gdb_arch_name(CPUState *cs)
->> @@ -715,6 +722,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
->>       cc->set_pc = loongarch_cpu_set_pc;
->>       cc->get_pc = loongarch_cpu_get_pc;
->>   #ifndef CONFIG_USER_ONLY
->> +    cc->get_arch_id = loongarch_cpu_get_arch_id;
->>       dc->vmsd = &vmstate_loongarch_cpu;
->>       cc->sysemu_ops = &loongarch_sysemu_ops;
->>   #endif
->> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
->> index fa371ca8ba..033081593c 100644
->> --- a/target/loongarch/cpu.h
->> +++ b/target/loongarch/cpu.h
->> @@ -371,6 +371,7 @@ struct ArchCPU {
->>       CPUNegativeOffsetState neg;
->>       CPULoongArchState env;
->>       QEMUTimer timer;
->> +    uint32_t  phy_id;
->>         /* 'compatible' string for this CPU for Linux device trees */
->>       const char *dtb_compatible;
->>
-> 
+  https://www.qemu.org/download/#source
 
+The full list of changes are available at:
+
+  https://wiki.qemu.org/ChangeLog/8.1
+
+Highlights include:
+
+ * VFIO: improved live migration support, no longer an experimental feature
+ * GTK GUI now supports multi-touch events
+ * ARM, PowerPC, and RISC-V can now use AES acceleration on host processor
+ * PCIe: new QMP commands to inject CXL General Media events, DRAM events a=
+nd
+   Memory Module events
+
+ * ARM: KVM VMs on a host which supports MTE (the Memory Tagging Extension)
+   can now use MTE in the guest
+ * ARM: emulation support for bpim2u (Banana Pi BPI-M2 Ultra) board and
+   neoverse-v1 (Cortex Neoverse-V1) CPU
+ * ARM: new architectural feature support for: FEAT_PAN3 (SCTLR_ELx.EPAN),
+   FEAT_LSE2 (Large System Extensions v2), and experimental support for
+   FEAT_RME (Realm Management Extensions)
+ * Hexagon: new instruction support for v68/v73 scalar, and v68/v69 HVX
+ * Hexagon: gdbstub support for HVX
+ * MIPS: emulation support for Ingenic XBurstR1/XBurstR2 CPUs, and MXU
+   instructions
+ * PowerPC: TCG SMT support, allowing pseries and powernv to run with up to=
+ 8
+   threads per core
+ * PowerPC: emulation support for Power9 DD2.2 CPU model, and perf sampling
+   support for POWER CPUs
+ * RISC-V: ISA extension support for BF16/Zfa, and disassembly support
+   for Zcm*/Z*inx/XVentanaCondOps/Xthead
+ * RISC-V: CPU emulation support for Veyron V1
+ * RISC-V: numerous KVM/emulation fixes and enhancements=20
+ * s390: instruction emulation fixes for LDER, LCBB, LOCFHR, MXDB, MXDBR,
+   EPSW, MDEB, MDEBR, MVCRL, LRA, CKSM, CLM, ICM, MC, STIDP, EXECUTE, and
+   CLGEBR(A)
+ * SPARC: updated target/sparc to use tcg_gen_lookup_and_goto_ptr() for
+   improved performance
+ * Tricore: emulation support for TC37x CPU that supports ISA v1.6.2
+   instructions
+ * Tricore: instruction emulation of POPCNT.W, LHA, CRC32L.W, CRC32.B,
+   SHUFFLE, SYSCALL, and DISABLE
+ * x86: CPU model support for GraniteRapids
+
+ * and lots more...
+
+Thank you to everyone involved!
 
