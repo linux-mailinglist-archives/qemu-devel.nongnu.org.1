@@ -2,83 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E0C785A2C
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E80785A42
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:19:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYocx-0002y6-Bt; Wed, 23 Aug 2023 10:14:31 -0400
+	id 1qYogS-0006BR-5O; Wed, 23 Aug 2023 10:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qYocH-0002Gh-Q9
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:13:50 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qYocG-00086u-9b
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:13:49 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3179ed1dfbbso5142782f8f.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 07:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692800026; x=1693404826;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AtgSJyYHVZdit42TVhGOM+9HQMEfY6ul5cvMvgaD4Y4=;
- b=DiNxwpC+PSjULGloFPYrylGd+8lrQ03Tem27TO7KmB2eV1yDB4LoYTy+bErjYstuXd
- y5evS2wDTxwxrCN1lKaWKBTbRz69MTnRpVmryh3hfCaa2676dLR5QTmUSR9vDV9QcaMF
- 1B00zRO93eRqZ1wsUCULE30XKikmxwsDU9siRw8NXUsJjpPp/U14dvo2FQtKLd8xwIXk
- kQr3dqOpTAbk2IbjgQFgQxs9cVeBhu/Vtce+B9RC8hhf556EfuZlokk8cE/UMAjgrX+o
- /rJT7Kfq/QqfGCBRqI+uaxCqIaBgCI9Mj6A6MgNM8JcsYu+Ex9J+FyRWo2DvOPwtI+3W
- MkaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692800026; x=1693404826;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:to:from:user-agent:references:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AtgSJyYHVZdit42TVhGOM+9HQMEfY6ul5cvMvgaD4Y4=;
- b=L+9owSx4OH6amQsb4XvR4eCWQgmzMp7HRWN0Eu1JAQDEq7oV8N/YGxnBhv1l7Ugh+p
- GSN881m7/CJ+z4NUIdU8EQ2bquWm90KKscGmhUMTw7r+kHwh/Asi+HLuFGTwwpqCbcMi
- LovyXLHou1zpDn4Eem1x7/SXoTn6XVAS0tnMXa8jyeOPNdzbPyMN/0sF7bIC+9KeIMwD
- w2YjOaVPeotX0hJBsIELhZWo35H5QKfMBvBNvAIjdfB2H1LqsOQkr5G8oclyC3dcAqvz
- GYWTQN/3AAJAUOKZEGDG7mdpcjH/C5pYB8zpokCs/ZUjxycfiUDdwQddMl8DOwdrgHzC
- JLmA==
-X-Gm-Message-State: AOJu0YxmhqHmdVptKpCYDKESRlp4XB3dAbPrgngfaJASmcYibuFr5WLI
- K90e5P5s7mjbS4tDidznQaNz3HpDgbXcmr8WVM4=
-X-Google-Smtp-Source: AGHT+IEW1STHlvKhn1Ncmcg3LzArDPVui6QSJkvq6DIKF7GIjf1Ze8ps00TulwOn1QZJrQHH18x7lQ==
-X-Received: by 2002:adf:fed1:0:b0:319:7421:fde with SMTP id
- q17-20020adffed1000000b0031974210fdemr10111399wrs.32.1692800026161; 
- Wed, 23 Aug 2023 07:13:46 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- a3-20020a5d4d43000000b00319779ee691sm19128224wru.28.2023.08.23.07.13.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 07:13:45 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 6AACA1FFBB;
- Wed, 23 Aug 2023 15:13:45 +0100 (BST)
-References: <20230823055155.1917375-1-mjt@tls.msk.ru>
- <20230823065335.1919380-20-mjt@tls.msk.ru>
-User-agent: mu4e 1.11.14; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: [PATCH 21/24] scripts/: spelling fixes
-Date: Wed, 23 Aug 2023 15:13:42 +0100
-In-reply-to: <20230823065335.1919380-20-mjt@tls.msk.ru>
-Message-ID: <87il95hmna.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qYogD-00068N-KB
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:17:53 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qYogC-0000OK-7l
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:17:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=MGwUQus6T47Sod6QWn0LpTVooThdVAU0+RQhWKBZSn0=; b=N47KUyF2b8yg7rxxJD+ceFI2nI
+ 6Lf2YKa3zT5k6WmxDMOhKm022Hk3BbdxtoT4wll+CipDyq99MzxKGCQRQgPzOfjgkcy2rksdnrx8r
+ JuzLY2fLKaKeZUSZIXwDO1FKxWQXv7bOWnADp/dGyw9P0DkBYjuluI2xHOhM23gd3XgjvUFbuDBxn
+ t524dPjVp63EBZE7FSgaMQ1BtQxZ+ejJVWJdiA3zkmi3k1Le3y8NnLnItk8xxVlr4CRxh3OuzTMRK
+ m+3jIb7M9ml7RWOwV9urV/TPZE0jZrum/8qD3kFJiT4lH9FIhWoutejH8T6K0Rv1pA+gg/nPqRU29
+ zp6ayaeNPwWvXBN5Vh0qRUl4HKccRHV1nwXsCswe8mHCvtrYYz0uPOsSKmapGXMVnVwGC+tFEf1mE
+ Jsn/KUgLhcAKWDj7pmF2+HZyovyttRBqHr4JkSBQ9wN4MyKziLSzI5OuoCiKS/MkKUGHoMkTT2YA4
+ Zc9AzK7gKo//xejT9c+fWYbF7+L8eXV87X4fCcK5EYk21DE34uZ41QJDQWPcpH3qNNSYjO/Xg2yrT
+ Pz1sDAP/ZURHr01ry0qAdhAQy0PUVcIQtXMolyBQc9XqDenY2PlXrREUv05RJ59G7c1hpK8SVKlLR
+ yu2/MJte9yHtLBQFjAifbMwprFFVQWEjvrMoHvgN0=;
+Received: from host81-158-188-207.range81-158.btcentralplus.com
+ ([81.158.188.207] helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qYofc-0008IQ-B9; Wed, 23 Aug 2023 15:17:20 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: qemu-devel@nongnu.org,
+	philmd@linaro.org
+Date: Wed, 23 Aug 2023 15:17:40 +0100
+Message-Id: <20230823141740.35974-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 81.158.188.207
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH] docs/devel/tcg-ops: fix missing newlines in "Host vector
+ operations" section
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,14 +76,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This unintentionally causes the mov_vec, ld_vec and st_vec operations to appear
+on the same line.
 
-Michael Tokarev <mjt@tls.msk.ru> writes:
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ docs/devel/tcg-ops.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
+index 6a166c5665..4bbd6db2c6 100644
+--- a/docs/devel/tcg-ops.rst
++++ b/docs/devel/tcg-ops.rst
+@@ -712,7 +712,9 @@ E.g. VECL = 1 -> 64 << 1 -> v128, and VECE = 2 -> 1 << 2 -> i32.
+ .. list-table::
+ 
+    * - mov_vec *v0*, *v1*
++
+        ld_vec *v0*, *t1*
++
+        st_vec *v0*, *t1*
+ 
+      - | Move, load and store.
+-- 
+2.39.2
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
