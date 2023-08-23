@@ -2,83 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FFD7862C6
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 23:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6001786412
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 01:46:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYvoB-00084k-NR; Wed, 23 Aug 2023 17:54:35 -0400
+	id 1qYxXM-0004Id-7K; Wed, 23 Aug 2023 19:45:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYvo9-00084c-DK
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 17:54:33 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYvo7-0005Oz-QH
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 17:54:33 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-525bd0b2b48so7855274a12.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 14:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692827670; x=1693432470;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Er9KnW95FBCtMJXzoPK0iMklSmP+yTVDMMSe+HTc/eQ=;
- b=LKtWMY+4OGHSWMZ4Yi9z5IWSm4AV0lhB9EEWA5smNRF3mLtszQTufL+BBS0CxyQNRk
- GaqZh5U47DB6x3elnMx7QXEYYVGxa80k44/Zp0iJOQeNbned+yq4REgnYplNRA8lY5hG
- fJzbcyYyYbl9vjNt0hJRF4r/0cfJEuzJsupkhTE3QDTHoPa27Xgj1tlX5HNTOuS7pK49
- pQkIgeUHxMVr2HFNc4af2fFeqVyOi0qIzU3a2r2y2pW1oui2U09lc1W1ok/zmcY9eb9l
- 0RxZVrgxSf8egmYDlKsIQ4knnojh9us+0GdkYaFf9ZWLt4xvPja7kXfGnLTxhaphPJ8v
- 3Rhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692827670; x=1693432470;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Er9KnW95FBCtMJXzoPK0iMklSmP+yTVDMMSe+HTc/eQ=;
- b=H2n5FSPtIcFcTmu4IjaHbPCR8A/nWW5A8as+iF/U11svF5Ee7kbC3a42w/k44dFttq
- kE1MTZUW0EZxU6EFJSWhSuez9A9k/8/1CFlF4pbViZdtoPs2eArMN7/9voRO/hQ4eM78
- JtfiTQYNgSKFkLPGbS1BdL+GXjurw5cUcynOU16Isd678oWzSrbbFBqbgJoSRJqD0AVK
- abB5a928LYbKir3jsGGuLUFWYqgx+I+aV9Sw7Kp725OzlZCe0tznXNiOdyzp9Fd6W8h1
- 3mXJrcCITGcmpExwML0y0j8TGuv7YjOw9YDD4ooeHR7pucpII/fGw2H5sUC+lI6xIS8s
- Ej1A==
-X-Gm-Message-State: AOJu0YwUzWr+naQzIglFGLEP14KdgUNUL2Mq6AyuQsPZgx8Fx5xyu8pD
- dC55quY5Xj3dsr4blFJQwDoNpg==
-X-Google-Smtp-Source: AGHT+IFWfAtFFQ+h1OQvCNSv2N1XpemjcvxOlllaPm94Q13pvxgCccnDgUROirO/0hD2V2Yq27n1Yw==
-X-Received: by 2002:a05:6402:2051:b0:523:cbc0:8d2d with SMTP id
- bc17-20020a056402205100b00523cbc08d2dmr9914501edb.18.1692827669641; 
- Wed, 23 Aug 2023 14:54:29 -0700 (PDT)
-Received: from [192.168.69.115] (gsv95-h03-176-172-10-165.dsl.sta.abo.bbox.fr.
- [176.172.10.165]) by smtp.gmail.com with ESMTPSA id
- t11-20020a056402020b00b005236b47116asm9818437edv.70.2023.08.23.14.54.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 14:54:29 -0700 (PDT)
-Message-ID: <b9c01aca-ccb1-0128-7c23-ba75c03b82e2@linaro.org>
-Date: Wed, 23 Aug 2023 23:54:27 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYxXH-0004H3-3u
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 19:45:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYxXD-00029H-7B
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 19:45:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692834310;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5IgvdU8P8bdFMTCVwwKFEf9XQd+pJh5+9Oafmz4pOvA=;
+ b=H6cj8amrGqyfaH4eq8Po+UCgDIIUuhvCqC+AYXF45HknJCH7mXxd9BBTVkgx8L/akyn1il
+ Fpdt2zwdsVtR4FI7keEmLVk7zb0lNFluamvD5cTJRBu63zS971+elAG+M6HxJstYCUBEdv
+ qs0RsXwMyitnM0I6i4/5fa6Dk/3Cwtc=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-400-t6us1s3VPPq0rzfMXlzAoQ-1; Wed, 23 Aug 2023 19:45:08 -0400
+X-MC-Unique: t6us1s3VPPq0rzfMXlzAoQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35DB01C06901
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 23:45:08 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.7])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C088E2166B26;
+ Wed, 23 Aug 2023 23:45:07 +0000 (UTC)
+Date: Wed, 23 Aug 2023 12:34:40 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 00/12] First batch of s390x patches for QEMU 8.2
+Message-ID: <20230823163440.GA851545@fedora>
+References: <20230823114544.216520-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 0/8] tcg: Document *swap* helper implementations
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230823145542.79633-1-philmd@linaro.org>
- <8e791b52-b30e-fe8a-8195-617a05d31d21@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <8e791b52-b30e-fe8a-8195-617a05d31d21@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.684,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="3DahHZjfStcE137F"
+Content-Disposition: inline
+In-Reply-To: <20230823114544.216520-1-thuth@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,22 +79,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/8/23 20:46, Richard Henderson wrote:
-> On 8/23/23 07:55, Philippe Mathieu-Daudé wrote:
->> Philippe Mathieu-Daudé (8):
->>    tcg/tcg-op: Document bswap16_i32() byte pattern
->>    tcg/tcg-op: Document bswap16_i64() byte pattern
->>    tcg/tcg-op: Document bswap32_i32() byte pattern
->>    tcg/tcg-op: Document bswap32_i64() byte pattern
->>    tcg/tcg-op: Document bswap64_i64() byte pattern
->>    tcg/tcg-op: Document hswap_i32/64() byte pattern
->>    tcg/tcg-op: Document wswap_i64() byte pattern
->>    target/cris: Fix a typo in gen_swapr()
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> and queued to tcg-next with a few tweaks.
 
-Thanks!
+--3DahHZjfStcE137F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 23, 2023 at 01:45:32PM +0200, Thomas Huth wrote:
+> The following changes since commit b0dd9a7d6dd15a6898e9c585b521e6bec79b25=
+aa:
+>=20
+>   Open 8.2 development tree (2023-08-22 07:14:07 -0700)
+>=20
+> are available in the Git repository at:
+>=20
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2023-08-23
+>=20
+> for you to fetch changes up to 6c49f685d30ffe81cfa47da2c258904ad28ac368:
+>=20
+>   tests/tcg/s390x: Test VSTRS (2023-08-23 12:07:30 +0200)
+
+Hi Thomas,
+Please take a look at the following ubuntu-20.04-s390x-all CI failure:
+https://gitlab.com/qemu-project/qemu/-/jobs/4931341536
+
+Stefan
+
+--3DahHZjfStcE137F
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTmNR8ACgkQnKSrs4Gr
+c8g+rggAkRBc8g2u4hoQD5sI5V4mqjLYO3RKTCtKwK1ng0VSgYnsO0OFlLw5YMcd
+cGvoMfFXnrQG7yeIY/UDhbgzjrhnPGOqpNmoVnkvMITKCGIkLLzoeEXzu69Nenrl
+RbgaLVv04t1hOkwwYzpbY+gOcEHaC1seK1erfuK6Ge0pU8qX6MC4vL9cz8T0LeHh
+2mwCoqvkrzO4NvEnJgdeKLleBb54JRG/H/qt/n4U98vFPoW1NWfxWFh5C3BTvgeX
+EOSBdcgUphEpaNDJ8vwXdXF2Npf9A9uldn0GnYv790a54mNlXPZDfGJQm8kWERVm
+eA7XYfeDAN/vQ7+QYLoZ0z243PTk/Q==
+=7BgG
+-----END PGP SIGNATURE-----
+
+--3DahHZjfStcE137F--
 
 
