@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078BE785B45
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6890B785B44
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:57:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYpI0-0006zd-QS; Wed, 23 Aug 2023 10:56:56 -0400
+	id 1qYpI1-00070H-KR; Wed, 23 Aug 2023 10:56:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYpHn-0006xB-Fb
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:56:44 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYpHu-0006zh-Ov
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:56:51 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYpHb-0007er-MD
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:56:34 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-5007f3d3235so5530102e87.2
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 07:56:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qYpHr-0007fQ-DT
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:56:49 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-99bc9e3cbf1so1174565966b.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 07:56:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692802589; x=1693407389;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XE9v7foDNFxPe4946YxN3Nb7epPtd1r5RF+iq2i5yko=;
- b=eH7VO7+5mrkMBwbWOKoh9s5AiAsIzxYq6AqBb1KHNr0fEmOl0EdTtQKW8axPreSGK1
- GhQXkX/8zJBCRjImRlnkcyg6lhJg5X0ziTTuwc8X2kDTbKnbBiqImlc3WJPjW211qGha
- HpovdJyEjf/N5ur6aWAXh3cm7udQr/SIl2HhjQwzSl2WZ4eIEB8Lt0n6snBQPlBoNw9T
- j9OxZlDsgzdSOcCU1bPlIEH8IdVROfvXvyCMVoiK/ovnRAv++9Q7fnOctV1Q6f9fnHxX
- IJOzU0xq14xEDMUbCxmX/JetiPxWRGpI6rm4lqei5qbvXgLmkjDbNj5BHmq1FxBEyCXz
- UsBA==
+ d=linaro.org; s=google; t=1692802604; x=1693407404;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Skxjv4S52TkZMfWTg8KjkXb8vUy9V7KmAADdam5qwCk=;
+ b=Ogj+yjx+JqJugGRxDJY2vtSfAqOK9AfNyacI/WKPOZh9fAqzO4cKyuTjzIpBIQhYal
+ qE9aFbtmErREgAXoDWyxRx1zo36oqTl9Vqq/PtI78doNiivf6tZsVfUr7689Qs4xaFOG
+ dlSr9pardPG6+0TkFEJs87IgCkd6GjDF6TbpWv2DzQkOuxvJO2sLfl8AclyIs90+pCU8
+ 2SMzYYF7x7fQIBf5QZ1570Hvr3clPiF3KESR66eVcdxvogMn2reh+Qb7C2J0ZhW4jdtf
+ m51aM5aHHRPrKP2udlkQIMFKyX8HN7CfEg5kCt3DWb7AkmVNVRI696Ca0Yh7f0w1wlMm
+ 6zhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692802589; x=1693407389;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XE9v7foDNFxPe4946YxN3Nb7epPtd1r5RF+iq2i5yko=;
- b=Df135+WrWSLWb69tFVAMz9Xgb5wp1+xU406uFyqVK/wvkYAnyqX7DVQlHsGlt2R80Q
- ThKjJHhG+pl16xCIw06HXOLIFJPZqmf+B6VXTH4op0sC5rN2FyUNGIu3Unj0bnx6AsTD
- rGv7YbC7u26I409sk3fJrW5owW7vZ5btEOP/p2SPVbHYC9UJEE0AjguxWHXcWCN8oOjG
- cl1lPOVK+NFRxyRWxza98KTrARMoV3XRQJX2FE7MVDC/WeAlYAUPJn02WWo+mMiCnX0S
- UDY7dkfWZd2gowVRvB4SmEu/ILHEe0sFMl6IUQoALf87N9BquiL9zgwdhxvWmxtwaw0q
- s65A==
-X-Gm-Message-State: AOJu0YxinHmfm/pQuRblBHLKrNNTOfJVvXnQvdWq7Hz5ftBs4yeHp/w6
- 6Wqr15Z/01Qsei89icty9fD9d5KksvwTdRgeiIwIEA==
-X-Google-Smtp-Source: AGHT+IEkUhsmL5Bp7KF38u7f30H3Fhe/jrskoe6hcSt9njMpa60+9BNgeXHy1Qy0HBZ4L8hxyeMl6A==
-X-Received: by 2002:a05:6512:3d0e:b0:500:91c1:9642 with SMTP id
- d14-20020a0565123d0e00b0050091c19642mr3569483lfv.21.1692802589598; 
- Wed, 23 Aug 2023 07:56:29 -0700 (PDT)
-Received: from m1x-phil.lan (gsv95-h03-176-172-10-165.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20221208; t=1692802604; x=1693407404;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Skxjv4S52TkZMfWTg8KjkXb8vUy9V7KmAADdam5qwCk=;
+ b=UoIPEE2xZ67XLg6ZX6i0jGTOr4WXIHWnVcriZe4GxpbOF1n2iIueLkm5YTCwsCPXAf
+ qoq175LYYrwEOPIi//cfkOWAokKbOO+slziqyCYE/7kn3ZNdGypxSc7vNW2yZx8zcQES
+ Ycx7+hb3c8CbHJSuIQye3/u/EQNPtDyslf12yPMb0Iz513eOk4bbb1gYk/DEaViTpU1F
+ jyhKMHQg6rrw/yVKciw+sDXr2w5cnZHGE0UNTaj/mNcMDLLJ77LpOvW/tC5WeALvrljL
+ IaxVF2/AxXd48cT+RDIL4H4lZ2Vio7E/nNziGuEb4B89joqtzu/akQvfFVLOo/FLYlVX
+ tzSA==
+X-Gm-Message-State: AOJu0YwjvQpYTFfI0bOxJWVumyTvPkaqTDeCbby2S6qIaGFZu576IGag
+ 218iSlggxchhk3oU9GDzv6YLlqy/r05ZlnWgqcE1KQ==
+X-Google-Smtp-Source: AGHT+IGxMVkdECOx+T6wJQEOYtujFzxN4l01IqP/vWtDUulx8H3L2phH5UvI4u/wW9xKDkX1nC/gRg==
+X-Received: by 2002:a17:907:9717:b0:99d:ae3:80a3 with SMTP id
+ jg23-20020a170907971700b0099d0ae380a3mr14620831ejc.0.1692802603970; 
+ Wed, 23 Aug 2023 07:56:43 -0700 (PDT)
+Received: from [192.168.69.115] (gsv95-h03-176-172-10-165.dsl.sta.abo.bbox.fr.
  [176.172.10.165]) by smtp.gmail.com with ESMTPSA id
- h2-20020a170906828200b00977cad140a8sm9839290ejx.218.2023.08.23.07.56.28
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 23 Aug 2023 07:56:29 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 8/8] target/cris: Fix a typo in gen_swapr()
-Date: Wed, 23 Aug 2023 16:55:42 +0200
-Message-ID: <20230823145542.79633-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230823145542.79633-1-philmd@linaro.org>
-References: <20230823145542.79633-1-philmd@linaro.org>
+ c17-20020a1709060fd100b0098ce63e36e9sm10047556ejk.16.2023.08.23.07.56.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Aug 2023 07:56:43 -0700 (PDT)
+Message-ID: <494b3e93-5dd1-bf18-56d0-a247483f38b6@linaro.org>
+Date: Wed, 23 Aug 2023 16:56:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH] docs/devel/tcg-ops: fix missing newlines in "Host vector
+ operations" section
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230823141740.35974-1-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230823141740.35974-1-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.684,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,43 +92,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/cris/translate.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+On 23/8/23 16:17, Mark Cave-Ayland wrote:
+> This unintentionally causes the mov_vec, ld_vec and st_vec operations to appear
+> on the same line.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   docs/devel/tcg-ops.rst | 2 ++
+>   1 file changed, 2 insertions(+)
 
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index 0b3d724281..42103b5558 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -411,15 +411,17 @@ static inline void t_gen_swapw(TCGv d, TCGv s)
-     tcg_gen_or_tl(d, d, t);
- }
- 
--/* Reverse the within each byte.
--   T0 = (((T0 << 7) & 0x80808080) |
--   ((T0 << 5) & 0x40404040) |
--   ((T0 << 3) & 0x20202020) |
--   ((T0 << 1) & 0x10101010) |
--   ((T0 >> 1) & 0x08080808) |
--   ((T0 >> 3) & 0x04040404) |
--   ((T0 >> 5) & 0x02020202) |
--   ((T0 >> 7) & 0x01010101));
-+/*
-+ * Reverse the bits within each byte.
-+ *
-+ *  T0 = ((T0 << 7) & 0x80808080)
-+ *     | ((T0 << 5) & 0x40404040)
-+ *     | ((T0 << 3) & 0x20202020)
-+ *     | ((T0 << 1) & 0x10101010)
-+ *     | ((T0 >> 1) & 0x08080808)
-+ *     | ((T0 >> 3) & 0x04040404)
-+ *     | ((T0 >> 5) & 0x02020202)
-+ *     | ((T0 >> 7) & 0x01010101);
-  */
- static void t_gen_swapr(TCGv d, TCGv s)
- {
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
