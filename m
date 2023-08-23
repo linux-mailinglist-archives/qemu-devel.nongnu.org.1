@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B1B785F3B
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 20:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58460785F73
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 20:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYsGR-0004nF-7e; Wed, 23 Aug 2023 14:07:31 -0400
+	id 1qYsPD-0007Al-H8; Wed, 23 Aug 2023 14:16:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qYsGJ-0004n6-6D
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 14:07:23 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qYsPA-0007AZ-MQ
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 14:16:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qYsGG-0004Xz-JQ
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 14:07:21 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qYsP9-0005wQ-0Y
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 14:16:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692814038;
+ s=mimecast20190719; t=1692814589;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=tf2Ie+DWIQIAevyeSjlBDmNqpNSvonw73Qvdoyg/S8c=;
- b=F1gIkassRBMoaUiGzpfH/F9TgBXvtdHO6oPmhsNDiztN7aidRYM0o3ByP0Cxlk6rDhVhvZ
- E6g1UKHoX9a8icA1dHZlmZ4L+uWNk7sOwZXqBeP2NAWG17XFQfi2D3IQ5k9slOh8oVlmRP
- eXshytMk41v+b9EhS6OpmhE644D2C8g=
+ bh=MSbn94R4Nf06SYVp1A4XK3G9xbwHfI/YfR+/5DdBMwo=;
+ b=YeVQTs/wu/tUx3Lkhu0eiWlRbklseR4Tsgbx8mcHCqWgUpDxczyjHFl7tptJy9ZLzT/JWr
+ 5ZD/o/jV6zGTPLr/yptjDPVegwh/0Qmy8xz5mhbJanLk3iTQimYpAzFi8RyqY+7ivkmvFp
+ K21VpS8EbUV30wWf7y6c5MFw7DB7cH4=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-228-33OGpHzpNuiLhLNMA0IOLg-1; Wed, 23 Aug 2023 14:07:15 -0400
-X-MC-Unique: 33OGpHzpNuiLhLNMA0IOLg-1
+ us-mta-518-uJs1kwgPMAmUFWTgdcSF4g-1; Wed, 23 Aug 2023 14:16:28 -0400
+X-MC-Unique: uJs1kwgPMAmUFWTgdcSF4g-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0725B1C0724D;
- Wed, 23 Aug 2023 18:07:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B54E81C25A6D;
+ Wed, 23 Aug 2023 18:16:27 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AAA15140E950;
- Wed, 23 Aug 2023 18:07:14 +0000 (UTC)
-Date: Wed, 23 Aug 2023 13:07:13 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 73225140E950;
+ Wed, 23 Aug 2023 18:16:27 +0000 (UTC)
+Date: Wed, 23 Aug 2023 13:16:25 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 23/24] qga/: spelling fixes
-Message-ID: <m7vx4v4hka2remj3skhrscv54papotcaidf6kpylvlaxtr35dg@exrv3lsmjnwr>
-References: <cover.1691405748.git.mjt@tls.msk.ru>
- <20230823055155.1917375-24-mjt@tls.msk.ru>
+Subject: Re: [PATCH 01/24] block: spelling fixes
+Message-ID: <nlrfdbkmxgpp6kppjks4maua4p74mdikcuqwwmrr2ck7jl6jxj@zsxw477tkenp>
+References: <20230823055155.1917375-1-mjt@tls.msk.ru>
+ <20230823055155.1917375-2-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230823055155.1917375-24-mjt@tls.msk.ru>
+In-Reply-To: <20230823055155.1917375-2-mjt@tls.msk.ru>
 User-Agent: NeoMutt/20230517
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
@@ -77,16 +77,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 23, 2023 at 08:51:54AM +0300, Michael Tokarev wrote:
+On Wed, Aug 23, 2023 at 08:51:29AM +0300, Michael Tokarev wrote:
 > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->  qga/channel-posix.c       | 2 +-
->  qga/commands-posix-ssh.c  | 2 +-
->  qga/commands-posix.c      | 2 +-
->  qga/commands-win32.c      | 4 ++--
->  qga/main.c                | 2 +-
->  qga/vss-win32/install.cpp | 4 ++--
->  6 files changed, 8 insertions(+), 8 deletions(-)
+>  block.c                              | 2 +-
+>  block/block-copy.c                   | 4 ++--
+>  block/export/vduse-blk.c             | 2 +-
+>  block/export/vhost-user-blk-server.c | 2 +-
+>  block/export/vhost-user-blk-server.h | 2 +-
+>  block/file-posix.c                   | 8 ++++----
+>  block/graph-lock.c                   | 2 +-
+>  block/io.c                           | 2 +-
+>  block/linux-aio.c                    | 2 +-
+>  block/mirror.c                       | 2 +-
+>  block/qcow2-refcount.c               | 2 +-
+>  block/vhdx.c                         | 2 +-
+>  block/vhdx.h                         | 4 ++--
+>  13 files changed, 18 insertions(+), 18 deletions(-)
+> 
 
 Reviewed-by: Eric Blake <eblake@redhat.com>
 
