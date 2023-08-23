@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95255785A55
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F88785A58
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:23:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYokj-00078V-Q3; Wed, 23 Aug 2023 10:22:33 -0400
+	id 1qYokn-00079C-Lr; Wed, 23 Aug 2023 10:22:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qYokh-00077l-HL; Wed, 23 Aug 2023 10:22:31 -0400
+ id 1qYokg-00077Y-R3; Wed, 23 Aug 2023 10:22:30 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qYokf-0001Vc-GB; Wed, 23 Aug 2023 10:22:31 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1qYokf-0001VY-8k; Wed, 23 Aug 2023 10:22:30 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37NE79ko021249; Wed, 23 Aug 2023 14:22:28 GMT
+ 37NELAFm021854; Wed, 23 Aug 2023 14:22:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=BW+/dmQ93TZtSpYnvU9mqfiNp++z63Q+0a9Ft9mz0iM=;
- b=Qc/7M1+f1pH8rX6c1B4SZkeC1iaZRKysFTdcIBFBSZCaHO9TzwK/U+fSmxSPSjyIHYw0
- 4s0zRsO4FaQjFjI8pOMWThyLj34OPvenM133J5svbKze+NzjHQtigAc0iI9vaxoznlDW
- 65sM/f7FldwW/5yznm9WpOCpkbvG16DdFoJnL1bpqOQmF818dF07F9aYJsYpPN2KRyeg
- uvcRE5cnoCjxorEtOs8ycg125ego2t9Gf+08wNMRKbelFSKM8HqxE1T0P2EbvrkD7k4B
- EJm9oH8j3LAH4DmVj4/6VJT2+r137naZM0PlvI7W59b5ZT/5mkaXGA4XQUF4Ja1lHoXW pw== 
+ bh=rZwX6/RiuQfLIVkgVAB3/92+Xrnh+UNsR+t4WrWVxos=;
+ b=pJwgWyga54iMDfzBRX7Oe79AVVEwHd8gbBRtIj5/gW782X5F9aPyhFD1vJEjEoM2o4Zj
+ BWOdaOkm3AX0XNTMyTskPliAHFTq+1lAwLyvciBHEwFwcxos6ORxGv/a9SgFxJtSf3lA
+ AFFWu7MgOihQNcDomYL9OxtV4y+pUf9+/LzDHYJpM7U15qjVs4CqD+wR7ksR4AItYLko
+ P0gnTKXL/GmLf8LMFXA99KiBIBZbO0hUqSGx55IKmp7TxGrj57eVJtFtk8WgzLC25qNJ
+ mu7VxuQxNgbGm/kKj/EaCnjkBt14tqs9UVYz/piE7Sg5Dq5pUbZeqqDxiopJZQ7od3bZ Og== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snk0y1k5g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Aug 2023 14:22:27 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NEM8DD009729;
- Wed, 23 Aug 2023 14:22:26 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snk0y1k44-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs8r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 23 Aug 2023 14:22:26 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37NC7cl5018223; Wed, 23 Aug 2023 14:22:24 GMT
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NE2UHS009163;
+ Wed, 23 Aug 2023 14:22:26 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs6y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Aug 2023 14:22:26 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37NCB5SL020096; Wed, 23 Aug 2023 14:22:24 GMT
 Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sn21sexut-1
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sn22aex5w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 23 Aug 2023 14:22:24 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
  by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37NEMLiP13894296
+ 37NEMLj113894302
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 23 Aug 2023 14:22:21 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FD8A2004B;
+ by IMSVA (Postfix) with ESMTP id A7E7E20049;
  Wed, 23 Aug 2023 14:22:21 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D20212004D;
- Wed, 23 Aug 2023 14:22:20 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4EE3C2004F;
+ Wed, 23 Aug 2023 14:22:21 +0000 (GMT)
 Received: from a46lp73.lnxne.boe (unknown [9.152.108.100])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 23 Aug 2023 14:22:20 +0000 (GMT)
+ Wed, 23 Aug 2023 14:22:21 +0000 (GMT)
 From: Steffen Eiden <seiden@linux.ibm.com>
 To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 Cc: Janosch Frank <frankja@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>, Michael Mueller <mimu@linux.ibm.com>,
  Marc Hartmayer <mhartmay@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH v4 3/5] NOTFORMERGE update linux-headers/asm-s390/kvm.h
-Date: Wed, 23 Aug 2023 16:22:17 +0200
-Message-ID: <20230823142219.1046522-4-seiden@linux.ibm.com>
+Subject: [PATCH v4 4/5] target/s390x/kvm: Refactor AP functionalities
+Date: Wed, 23 Aug 2023 16:22:18 +0200
+Message-ID: <20230823142219.1046522-5-seiden@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230823142219.1046522-1-seiden@linux.ibm.com>
 References: <20230823142219.1046522-1-seiden@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: BtDYiZ09D5aNwfzodWpzRgmqKUKWxGo0
-X-Proofpoint-GUID: dKrJ9x23u5RcpmRAeuPpHAQ27K3qtHuM
+X-Proofpoint-ORIG-GUID: hb0OxnBwYDnn-zQDV5i4irIdJojuyJIe
+X-Proofpoint-GUID: 3MOgpeHj3wVIXIaVVB7BPf6gAgfIBf0L
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-23_09,2023-08-22_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- mlxlogscore=999 impostorscore=0 clxscore=1015 phishscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308230128
+ adultscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015
+ mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2308230128
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=seiden@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -113,40 +113,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Likely to be included in Linux 6.{6,7}
+kvm_s390_set_attr() is a misleading name as it only sets attributes for
+the KVM_S390_VM_CRYPTO group. Therefore, rename it to
+kvm_s390_set_crypto_attr().
 
+Add new functions ap_available() and ap_enabled() to avoid code
+duplication later.
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
 Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 ---
- linux-headers/asm-s390/kvm.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ target/s390x/kvm/kvm.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/linux-headers/asm-s390/kvm.h b/linux-headers/asm-s390/kvm.h
-index e2afd95420..023a2763a9 100644
---- a/linux-headers/asm-s390/kvm.h
-+++ b/linux-headers/asm-s390/kvm.h
-@@ -159,6 +159,22 @@ struct kvm_s390_vm_cpu_subfunc {
- 	__u8 reserved[1728];
- };
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index a9e5880349..a7e2cdf668 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -250,7 +250,7 @@ static void kvm_s390_enable_cmma(void)
+     trace_kvm_enable_cmma(rc);
+ }
  
-+#define KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST	6
-+#define KVM_S390_VM_CPU_MACHINE_UV_FEAT_GUEST	7
+-static void kvm_s390_set_attr(uint64_t attr)
++static void kvm_s390_set_crypto_attr(uint64_t attr)
+ {
+     struct kvm_device_attr attribute = {
+         .group = KVM_S390_VM_CRYPTO,
+@@ -275,7 +275,7 @@ static void kvm_s390_init_aes_kw(void)
+     }
+ 
+     if (kvm_vm_check_attr(kvm_state, KVM_S390_VM_CRYPTO, attr)) {
+-            kvm_s390_set_attr(attr);
++            kvm_s390_set_crypto_attr(attr);
+     }
+ }
+ 
+@@ -289,7 +289,7 @@ static void kvm_s390_init_dea_kw(void)
+     }
+ 
+     if (kvm_vm_check_attr(kvm_state, KVM_S390_VM_CRYPTO, attr)) {
+-            kvm_s390_set_attr(attr);
++            kvm_s390_set_crypto_attr(attr);
+     }
+ }
+ 
+@@ -2296,6 +2296,17 @@ static int configure_cpu_subfunc(const S390FeatBitmap features)
+     return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attr);
+ }
+ 
++static bool ap_available(void)
++{
++    return kvm_vm_check_attr(kvm_state, KVM_S390_VM_CRYPTO,
++                             KVM_S390_VM_CRYPTO_ENABLE_APIE);
++}
 +
-+#define KVM_S390_VM_CPU_UV_FEAT_NR_BITS	64
-+struct kvm_s390_vm_cpu_uv_feat {
-+	union {
-+		struct {
-+			__u64 : 4;
-+			__u64 ap : 1;		/* bit 4 */
-+			__u64 ap_intr : 1;	/* bit 5 */
-+			__u64 : 58;
-+		};
-+		__u64 feat;
-+	};
-+};
++static bool ap_enabled(const S390FeatBitmap features)
++{
++    return test_bit(S390_FEAT_AP, features);
++}
 +
- /* kvm attributes for crypto */
- #define KVM_S390_VM_CRYPTO_ENABLE_AES_KW	0
- #define KVM_S390_VM_CRYPTO_ENABLE_DEA_KW	1
+ static int kvm_to_feat[][2] = {
+     { KVM_S390_VM_CPU_FEAT_ESOP, S390_FEAT_ESOP },
+     { KVM_S390_VM_CPU_FEAT_SIEF2, S390_FEAT_SIE_F2 },
+@@ -2475,8 +2486,7 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+         return;
+     }
+     /* for now, we can only provide the AP feature with HW support */
+-    if (kvm_vm_check_attr(kvm_state, KVM_S390_VM_CRYPTO,
+-        KVM_S390_VM_CRYPTO_ENABLE_APIE)) {
++    if (ap_available()) {
+         set_bit(S390_FEAT_AP, model->features);
+     }
+ 
+@@ -2502,7 +2512,7 @@ static void kvm_s390_configure_apie(bool interpret)
+                                 KVM_S390_VM_CRYPTO_DISABLE_APIE;
+ 
+     if (kvm_vm_check_attr(kvm_state, KVM_S390_VM_CRYPTO, attr)) {
+-        kvm_s390_set_attr(attr);
++        kvm_s390_set_crypto_attr(attr);
+     }
+ }
+ 
+@@ -2556,7 +2566,7 @@ void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
+         kvm_s390_enable_cmma();
+     }
+ 
+-    if (test_bit(S390_FEAT_AP, model->features)) {
++    if (ap_enabled(model->features)) {
+         kvm_s390_configure_apie(true);
+     }
+ }
 -- 
 2.41.0
 
