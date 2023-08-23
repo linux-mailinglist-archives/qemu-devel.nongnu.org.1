@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADE6785A54
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8EA785A63
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:24:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYokm-00078v-R1; Wed, 23 Aug 2023 10:22:36 -0400
+	id 1qYomQ-0000x2-0M; Wed, 23 Aug 2023 10:24:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qYokg-00077N-ES; Wed, 23 Aug 2023 10:22:30 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qYom4-0000SS-AQ; Wed, 23 Aug 2023 10:23:57 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qYoke-0001Ty-G6; Wed, 23 Aug 2023 10:22:30 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1qYom2-0001dj-Ja; Wed, 23 Aug 2023 10:23:56 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37NE2Ah9007855; Wed, 23 Aug 2023 14:22:24 GMT
+ 37NEL9Nw010779; Wed, 23 Aug 2023 14:23:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=q3KGJ1KXBTXIwlIegJ1Fo3epuA2BBKWyAFOWRGDcV7c=;
- b=men1Ued3vX/gZXKStRwHYGdwtR8TAFy/4PqIoljLEPv6EoahoneVRj/DCq53Rw4t9wXi
- Fww0AEibc/8bKlmu9oDmTnw0VNd5zbrpkXZQeax6Q8iaPDxk6aLvkcKbVX2TGuT5pbnF
- U7AOgji8crw5F+Tif9VjAYNOGFJjNmmSJ4MD7oC5+p4C1u1XLa45XUi2Fan2SYwx27Ui
- 6uRUovxmgCB4zyTMAR5MGGFfHYK+uUG2HTnTyd8ZvTzY7sVoHdR6SmByvjBzrhC1Pef7
- JGi1yuE/8orvidHYRjcuz9HvB//fcLDWg3e616gKp4DLAsnD+SD1CHq/a8afpiouOlOz lg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=0KVbz4/DGnsWj4pcZhwv+ZrtkOat8QgDlgxfF4vH4TM=;
+ b=AC+9QxgaQsoPcbUWixfzRuAPk9xNkLxE2KOKgjYveU1L2h+8r5jnkyEEBllJDWg0nO+M
+ b2f+WWNpkMLStECwgx/N4TGxV7//2lRtb1SCBqb+BzsqKYw/P1v8CbvZyvLM5u/LCduv
+ w7qJPEYCL8ShIgptqoGPN8Vcf+9Im1IOsB+603hlbV3FSy6uyGmNxvJkFGNSG3SHena5
+ GaiGKAhWb9plDxEef3tFYST0z/MN3DlRFS0142vWKaPY8gaUhgjq1ZYtXDAS+bHmTUJd
+ fmW2WWwiNSGB8slI+fdU/sFK9Mf/7A84+AL34F6DQVkm4zpTuN7QVmEeTvlSal2sy/nd +g== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs6e-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkfbgvua-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Aug 2023 14:22:24 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NEM17H026403;
- Wed, 23 Aug 2023 14:22:23 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs5c-1
+ Wed, 23 Aug 2023 14:23:50 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NELY1U016395;
+ Wed, 23 Aug 2023 14:23:14 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkfbgs10-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Aug 2023 14:23:14 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37NCCtLB027316; Wed, 23 Aug 2023 14:22:23 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn20seyha-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 23 Aug 2023 14:22:23 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37NC974I018278; Wed, 23 Aug 2023 14:22:22 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sn21sexum-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Aug 2023 14:22:22 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37NEMJlc16974390
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37NEMKVY28639828
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 23 Aug 2023 14:22:20 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D50DF2006C;
- Wed, 23 Aug 2023 14:22:19 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5202120065;
+ Wed, 23 Aug 2023 14:22:20 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7B11920065;
+ by IMSVA (Postfix) with ESMTP id E38AE20071;
  Wed, 23 Aug 2023 14:22:19 +0000 (GMT)
 Received: from a46lp73.lnxne.boe (unknown [9.152.108.100])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -68,27 +69,28 @@ Cc: Janosch Frank <frankja@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>, Michael Mueller <mimu@linux.ibm.com>,
  Marc Hartmayer <mhartmay@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH v4 0/5] s390: Enable AP instructions for pv-guests
-Date: Wed, 23 Aug 2023 16:22:14 +0200
-Message-ID: <20230823142219.1046522-1-seiden@linux.ibm.com>
+Subject: [PATCH v4 1/5] s390x/ap: fix missing subsystem reset registration
+Date: Wed, 23 Aug 2023 16:22:15 +0200
+Message-ID: <20230823142219.1046522-2-seiden@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mX7P5V3DefELnpHspkMlrJ4uzLzOf2pc
-X-Proofpoint-GUID: y8oYNDfh4D9k-caACJAQvZNyfXuJftNV
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20230823142219.1046522-1-seiden@linux.ibm.com>
+References: <20230823142219.1046522-1-seiden@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: X7Gk25DePMOFqmX6kRC7yGO9ACudlbmy
+X-Proofpoint-GUID: PuJuKIhjSwZeEYbx8-t3RRxewPyfG28F
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-23_09,2023-08-22_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 phishscore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015
- mlxlogscore=632 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2308230128
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=seiden@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ mlxlogscore=999 bulkscore=0
+ phishscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 malwarescore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308230128
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=seiden@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -111,61 +113,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series enables general QEMU support for AP pass-through for Secure
-Execution guests (pv-guests).
+From: Janosch Frank <frankja@linux.ibm.com>
 
-To enable AP-PT on pv-guests QEMU has to turn on the corresponding bits
-in the KVM CPU-model[1] if the CPU firmware supports it. However, it
-only makes sense to turn on AP-PT if the QEMU user enabled (general) AP
-for that guest.
+A subsystem reset contains a reset of AP resources which has been
+missing.  Adding the AP bridge to the list of device types that need
+reset fixes this issue.
 
-See: https://lore.kernel.org/linux-s390/c29750cc-fc64-2805-f583-c7be247de02e@linux.ibm.com/T/#t
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
+Reviewed-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Fixes: a51b3153 ("s390x/ap: base Adjunct Processor (AP) object model")
+---
+ hw/s390x/s390-virtio-ccw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The series consists of five patches:
- 1/2) fixes from Janosch for AP handling
- 3) update kvm-s390 header for this series (NOTFORMERGE)
- 4) small cleanup for kvm_s390_set_attr()
-    refactor code to add ap_available() and ap_enabled()
- 5) Add UV_CALL CPU model enablement
-
-since v3:
-  - nitfixes (Thomas)
-  - r-b from Michael&Thomas
-
-since v2:
-  - add fixes for AP from Janosch
-  - rename *UV_CALL* to UV_FEAT_GUEST (Janosch)
-  - early return on some functions (Janosch)
-  - add r-b from Michael (Patch 4)
-  - mark linux header update as NOTFORMERGE
-
-since v1:
-
-- removed the new features from the default gen16 model
-- updated KVM-headers to match KVM series v3 [1]
-- applied review comments from Thomas
-
-
-Steffen
-
-Janosch Frank (2):
-  s390x/ap: fix missing subsystem reset registration
-  s390x: switch pv and subsystem reset ordering on reboot
-
-Steffen Eiden (3):
-  NOTFORMERGE update linux-headers/asm-s390/kvm.h
-  target/s390x/kvm: Refactor AP functionalities
-  target/s390x: AP-passthrough for PV guests
-
- hw/s390x/s390-virtio-ccw.c          |  7 ++-
- linux-headers/asm-s390/kvm.h        | 16 +++++
- target/s390x/cpu_features.h         |  1 +
- target/s390x/cpu_features_def.h.inc |  4 ++
- target/s390x/cpu_models.c           |  2 +
- target/s390x/gen-features.c         |  2 +
- target/s390x/kvm/kvm.c              | 94 ++++++++++++++++++++++++++---
- 7 files changed, 116 insertions(+), 10 deletions(-)
-
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 4516d73ff5..4b36c9970e 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -109,6 +109,7 @@ static const char *const reset_dev_types[] = {
+     "s390-flic",
+     "diag288",
+     TYPE_S390_PCI_HOST_BRIDGE,
++    TYPE_AP_BRIDGE,
+ };
+ 
+ static void subsystem_reset(void)
 -- 
 2.41.0
 
