@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C296B786183
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 22:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8FF78618D
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 22:28:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYuRd-0005Kd-IJ; Wed, 23 Aug 2023 16:27:13 -0400
+	id 1qYuRf-0005UI-03; Wed, 23 Aug 2023 16:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYuRY-000585-KC
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:27:08 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qYuRZ-0005AO-PH
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:27:10 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYuRX-0006CV-1Y
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:27:08 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-68bec3a81c4so171784b3a.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:27:06 -0700 (PDT)
+ id 1qYuRY-0006Ch-1G
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:27:09 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68becf931d0so188803b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:27:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692822425; x=1693427225;
+ d=linaro.org; s=google; t=1692822426; x=1693427226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ahCrP7F2MvJ32qfYW6+qoIFl/wcJc9b7HEfMWV5oPEg=;
- b=qj5IpEH1pErP5EWF+BI1fooJDeVbxRhhGtQ3TwMe1w8tfYwSHZ46aTTA9JhmCZTQ5y
- XqVBtmeeJIbvy2TuUmsWSu9zsTUk9tNQf2fbbsFiVHNAx1uVwjqX/sPycmz9MKLBmkgN
- +NxLkKlt2hZi7gw/+gBhgyC4vSOSX7KK2xjsx0uJN5iuvQUIapIbbqfqQU8gUPv+AAiZ
- yxv1/o0QV4zWPF2bpdrN1xLe7VUS4a/eVl4mCDeCsXIuqalXdJZfK9FhpqSjhE431xsk
- I13S+HzllAgQI5RGyk+XoPb+8uMyUcb0arSg0T5SVmmz/QI8RK6KKju1L34HZshFeHLN
- F7AA==
+ bh=mSK1FwATZQ2r2xwm25ea0QEMJ0jlampktK+qTGiEiAc=;
+ b=eXbRWb0JNqbCvHsuyQy5sZUHiSnqmKdTq0OuFkEi8oaLXbcMK0BWKEqW/Q8ypk+IHM
+ Umi/llkZiMdszFLNHRJbTWgmPX/dew9pCE5m4PWG+OnYQQN+NadNEBp3gOnAVb1pL0Bd
+ qX1VfpfnWwgRbWhfqtn0PEVFe6ivJ18NSV5av4qRV+/1ZYCnQSGeKC+vGL6WVzQziBnK
+ yS2RoqXILT35DUMVOf2RU5yGaIUf0yq2cWSLAwXRVmxdiTJVorJDULf6lhrihaTiQ4Yq
+ rgTJdK5A86F7589V6ZEEY0p1ViEIoZ8umpMDrqpzJ0o+SaUY4QIFvaYQzNo0QU6tG1NO
+ YD+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692822425; x=1693427225;
+ d=1e100.net; s=20221208; t=1692822426; x=1693427226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ahCrP7F2MvJ32qfYW6+qoIFl/wcJc9b7HEfMWV5oPEg=;
- b=M1W/8YfouO7k/R+hKNEiesx7/+G2qTz2A9taV+Mcr0aGr9sc37YJoisLKtrcvu8GZ+
- OMgwSd5Ze86tlCAq5XTmhjPCXe9+Ib5/d7ZV/rxY5ppdecpOfMqx8ZsYLL5bR4Cm7PKH
- alEMTZVbhyJLgIwGBwGCzxuIJE4kAn5oGGTTEGqZL8UYegIMbcoBr/LVybvjFmPKYcTv
- W70l5RejKoDZzzF6PvUmR98kjFGWP33Rmq7tdazspXH0nxpGn1kY4NKSPwBAyp55BsSR
- QlLSOYrgL/ezw+Yss13tM47qaxPercqjbZosJ3s/Zji8Ry7MmfhHuMXTp1y7kngPBbsZ
- +6IA==
-X-Gm-Message-State: AOJu0YwzI3utzthr7zNspyhLqbJJM4XveVKcYNA5toj8kuxQon7Y6GhG
- Bqaa9AES9LjdaTzCZ/CO7tSTR/JHDwC7flKD9Qw=
-X-Google-Smtp-Source: AGHT+IHCgHmF8y2lUPlRAjg3xR7GF1nehGND7SkAvL80DhKTL14FbiTOCXmRPG3LBH0nZzbnQhnb3A==
-X-Received: by 2002:a05:6a00:17aa:b0:68b:a137:373d with SMTP id
- s42-20020a056a0017aa00b0068ba137373dmr7197957pfg.17.1692822425614; 
- Wed, 23 Aug 2023 13:27:05 -0700 (PDT)
+ bh=mSK1FwATZQ2r2xwm25ea0QEMJ0jlampktK+qTGiEiAc=;
+ b=YRZyrYULZzZqQh5z6w9I4SV7rifEiFj/8b1ArcZNmxAn4ywye0To9tQdgWKBYMgapO
+ QMJE1cV/gqiFry7gNdjdlyc+cwjNefnmbHsqEKfKmSmMAS5ruFu/lTuW4Wi7YVvcsIZz
+ AlbQ07m+328OcbOBGeFagvBoGq1IuEkcEZvkwkcW6ekcQmbDbruB+VdG0NEEle+HmuT3
+ /wL29/7c8VHBaCj5/MlusiQYXAi8t6d2kmDOtrwauQPXpDSGMqHoAs2USQwkaz1B1FlA
+ 1jn/R8jXCFmrr5UDLuYyWjJAEFvxTfnZobgSBK72cwME55GY2ICl2x6pBOJIox9RZNbr
+ Gt0w==
+X-Gm-Message-State: AOJu0Yz4tS1mViqY5sOlhpjjaol4sbDGNT0KztGSGeqeE1DjjFqyZnMi
+ xvvOXGUZMApmeW21yhy5XSkzFC7Oq7CN+A9vRG4=
+X-Google-Smtp-Source: AGHT+IE/eldWKw++bRBguuq+KFYRZjlWYxfJTEyiIfGnfEnyg+UUjMB9YowE4SnM2AyO09C5dBYTPg==
+X-Received: by 2002:a05:6a20:12d1:b0:148:2f62:c47f with SMTP id
+ v17-20020a056a2012d100b001482f62c47fmr13427996pzg.41.1692822426651; 
+ Wed, 23 Aug 2023 13:27:06 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
  by smtp.gmail.com with ESMTPSA id
- j25-20020aa783d9000000b006873aa079aasm10117871pfn.171.2023.08.23.13.27.04
+ j25-20020aa783d9000000b006873aa079aasm10117871pfn.171.2023.08.23.13.27.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 13:27:05 -0700 (PDT)
+ Wed, 23 Aug 2023 13:27:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 41/48] tcg/tcg-op: Document bswap32_i32() byte pattern
-Date: Wed, 23 Aug 2023 13:23:19 -0700
-Message-Id: <20230823202326.1353645-42-richard.henderson@linaro.org>
+Subject: [PULL 42/48] tcg/tcg-op: Document bswap32_i64() byte pattern
+Date: Wed, 23 Aug 2023 13:23:20 -0700
+Message-Id: <20230823202326.1353645-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230823202326.1353645-1-richard.henderson@linaro.org>
 References: <20230823202326.1353645-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,28 +95,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230823145542.79633-4-philmd@linaro.org>
+Message-Id: <20230823145542.79633-5-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg-op.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tcg/tcg-op.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 88c7c60ffe..ed0ab218a1 100644
+index ed0ab218a1..b56ae748b8 100644
 --- a/tcg/tcg-op.c
 +++ b/tcg/tcg-op.c
-@@ -1078,6 +1078,11 @@ void tcg_gen_bswap16_i32(TCGv_i32 ret, TCGv_i32 arg, int flags)
+@@ -1822,6 +1822,14 @@ void tcg_gen_bswap16_i64(TCGv_i64 ret, TCGv_i64 arg, int flags)
      }
  }
  
 +/*
-+ * bswap32_i32: 32-bit byte swap on a 32-bit value.
++ * bswap32_i64: 32-bit byte swap on the low bits of a 64-bit value.
 + *
-+ * Byte pattern: abcd -> dcba
++ * Byte pattern: xxxxabcd -> yyyydcba
++ *
++ * With TCG_BSWAP_IZ, x == zero, else undefined.
++ * With TCG_BSWAP_OZ, y == zero, with TCG_BSWAP_OS y == sign, else undefined.
 + */
- void tcg_gen_bswap32_i32(TCGv_i32 ret, TCGv_i32 arg)
+ void tcg_gen_bswap32_i64(TCGv_i64 ret, TCGv_i64 arg, int flags)
  {
-     if (TCG_TARGET_HAS_bswap32_i32) {
+     /* Only one extension flag may be present. */
+@@ -1855,7 +1863,8 @@ void tcg_gen_bswap32_i64(TCGv_i64 ret, TCGv_i64 arg, int flags)
+         } else {
+             tcg_gen_shri_i64(t1, t1, 32);   /*  t1 = ....dc.. */
+         }
+-        tcg_gen_or_i64(ret, t0, t1);        /* ret = ssssdcba */
++        tcg_gen_or_i64(ret, t0, t1);        /* ret = ssssdcba (OS) */
++                                            /*       ....dcba (else) */
+ 
+         tcg_temp_free_i64(t0);
+         tcg_temp_free_i64(t1);
 -- 
 2.34.1
 
