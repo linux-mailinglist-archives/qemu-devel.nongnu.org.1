@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A97F7853EC
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BCC7853ED
 	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:29:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYkA5-0003S8-85; Wed, 23 Aug 2023 05:28:25 -0400
+	id 1qYkAE-0003Uc-8l; Wed, 23 Aug 2023 05:28:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qYkA2-0003Rq-98
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:28:23 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1qYkAD-0003UN-0h
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:28:33 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qYk9z-0006Up-Qt
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:28:21 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-1c4c6717e61so3946842fac.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 02:28:19 -0700 (PDT)
+ id 1qYkAB-0006VF-9X
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:28:32 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3a412653335so3996861b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 02:28:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1692782898; x=1693387698; 
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1692782909; x=1693387709; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pvu9A/A2NjGyJyii7eWAhAkB7X/TTBQG+o8MzYu9Bes=;
- b=GK54xKhm1CWuK7CYCGnPTKDbw8OZbOS3p2RDSldc8d/r+0WIsSXNNIF9GplbhbbCcm
- 8WJqcadQXG9Mo2h6nR2Q+2U3eFiwuPnd/hZ2oLxEZ+BNDGX0sl5e9RVLjlebQxgZWYNc
- x6vofdYigN4QswbLFzSliCdJTrKHgakbuPvRdCvxDB2IDZA/oLbcvpJ4bniHpPcTGUPA
- o+kbEhv0N6MzuNFpTSvwa0GXOYlAzfr7RGX+0d3gcFdSXlWXOoYUkGHkluWWj+OkuTHm
- RSOBuaX+Dtyvog4tJ1Cx1Fm9EHkAhI06ts8w9CsDEAAk1FMj1xKcGDNGnaC0wTLIvtuj
- VVPw==
+ bh=CG9aJRjhkpfqqrUU/55WKlKsJgdOWxcnikkKVH0GVA8=;
+ b=FldyiyOdNuQjTm0re5fQDEb7Q3FtI+j1wHclJqRx0jaYT530BYLikynJryIEVS8YHV
+ 18PB1O5ELgBbTIU9J+Utnz1fW7TR6AzUx79BcK7cRIYblG05yG6xSgSJjFzjDJK7UjrB
+ NsZPB2ET+30xhEyRscEA3OkXvoMk3wx4azeSn8Bnu0Dkfr9/cap5Zgaqrr+xmRyn8udZ
+ YdHZJmJWjWdddW9pDpdFj/eg1+OiTnrJX/01EDV5ifdYfme26C70B0zSQhW4voeHG1hp
+ DMBAUT15sl3vb1x1OvNQuaPAtzrnB1Z7sDbhTDrs0lADg5FYbcufAauS/riB7AyU202S
+ fjcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692782898; x=1693387698;
+ d=1e100.net; s=20221208; t=1692782909; x=1693387709;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pvu9A/A2NjGyJyii7eWAhAkB7X/TTBQG+o8MzYu9Bes=;
- b=IZ7abfqc+UFPBibsJ9wMcJBKHFGfyqFrtKpY7vIeDuVc0WRIxQi5By9wlS3wTBeHX/
- oumqFeksKcD/JGPy4AxrSHsrKwO37BVtqPML5ANtmU1NQq5sWe1NwxfWRy+54FTofnnr
- E1ZYIFJxFm32saBNcSUH+/AAw4LasuBvtGWU/l5F+d3/PIINjZAmYm9EEmKsy52G6C4+
- 8xxHptE4dfPKZUfapWIFW8IjQp6dD5cwsPGajKgSRntQpapQ2SfHgsnl5yqtTEpCPsH/
- TMjrw9wKllnDuEFlWgQdUeDf8O7xJUiqNzikSKrk8T9l8n2saW6A/QyuTXcseD+4G6KX
- 6lSg==
-X-Gm-Message-State: AOJu0Yy9kDFBrXR7kUzKjybEMjdFz4rhaCCfCostFzJLYH01LYF9Valq
- Mdd7OfRid5MAyjkQ8WKs2b7HtCp17swvfb2l7t4PyQ==
-X-Google-Smtp-Source: AGHT+IFjtpvo41rk3pVYw5/wVF9UbsLy9jpiXQRvNyAIyoRKNUs4XBt8JSC2/Z4eMgB6kFUzHHfZ9A6h2DH5epkfvdE=
-X-Received: by 2002:a05:6870:4692:b0:1bb:933b:e6da with SMTP id
- a18-20020a056870469200b001bb933be6damr17067004oap.27.1692782898011; Wed, 23
- Aug 2023 02:28:18 -0700 (PDT)
+ bh=CG9aJRjhkpfqqrUU/55WKlKsJgdOWxcnikkKVH0GVA8=;
+ b=ItPdV5XtSyQswCd29TlwOPLGoNn/GBV8ds7dXVk+CQVGIxJnH0whcePW54N74jeRlb
+ 3DIIZiQW9zJVKPT+PyZuvA/w18TZMGFU3IwwZRPFLTT6sNBqDMnJCjwXyaqztPSBhQxg
+ ZFir6dVmOQUUp2a5QFkgMOq3xbLQrwHKnQ8KWEb/sR1XIhbSIJ81OH49kpS3nYQJX8PP
+ k6uk0zxoyq3XtogT9GwliHEmNG8ccburQIRDcdEnBv8FhtfhsSzqCDa0kvLGd8fIkqUh
+ Q0DQVOAaWqTtKUSShW6b0b6sQs/Q48jHqJ619+Zc/qOhlKIoQN67a+tRaLtkJPFjtA26
+ OEkg==
+X-Gm-Message-State: AOJu0Yx0+n0n59z/eB5iobGlNWv+7dtGI21lSlW7ZCgozkXaAyP4gHVO
+ PKThhJqj0O8VaqqN44uV/V7LR8PvHhCU5fjyyCl4bQ==
+X-Google-Smtp-Source: AGHT+IEl3Bfh6/N7lcjxHvgT9zwCXmY5R/7Qm+tFIf4QOSh0bwDstNo/CZVGSTDejGEdA5NrVCWxR/oJ+093f74j274=
+X-Received: by 2002:a05:6808:1997:b0:39c:93ba:cb92 with SMTP id
+ bj23-20020a056808199700b0039c93bacb92mr16828278oib.8.1692782909621; Wed, 23
+ Aug 2023 02:28:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230704080628.852525-1-mnissler@rivosinc.com>
- <20230704080628.852525-3-mnissler@rivosinc.com>
- <20230720181402.GB210977@fedora>
-In-Reply-To: <20230720181402.GB210977@fedora>
+ <20230704080628.852525-4-mnissler@rivosinc.com>
+ <20230720183206.GD210977@fedora>
+In-Reply-To: <20230720183206.GD210977@fedora>
 From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Wed, 23 Aug 2023 11:28:07 +0200
-Message-ID: <CAGNS4TZMmyV1rpFCjp1YVBD7_KrEYUQcGwgVeyi-HmJusOMzxQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] softmmu: Remove DMA unmap notification callback
+Date: Wed, 23 Aug 2023 11:28:18 +0200
+Message-ID: <CAGNS4TZYo_o7gUcWUjLCNQzUwJbFu6mcShQ_qhrSX9u4XbE7iA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] vfio-user: Message-based DMA support
 To: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: qemu-devel@nongnu.org, Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
  Jagannathan Raman <jag.raman@oracle.com>,
@@ -68,8 +68,8 @@ Cc: qemu-devel@nongnu.org, Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  David Hildenbrand <david@redhat.com>, john.levon@nutanix.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=mnissler@rivosinc.com; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=mnissler@rivosinc.com; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,227 +91,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 20, 2023 at 8:14=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.co=
+On Thu, Jul 20, 2023 at 8:32=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.co=
 m> wrote:
 >
-> On Tue, Jul 04, 2023 at 01:06:26AM -0700, Mattias Nissler wrote:
-> > According to old commit messages, this was introduced to retry a DMA
-> > operation at a later point in case the single bounce buffer is found to
-> > be busy. This was never used widely - only the dma-helpers code made us=
-e
-> > of it, but there are other device models that use multiple DMA mappings
-> > (concurrently) and just failed.
+> On Tue, Jul 04, 2023 at 01:06:27AM -0700, Mattias Nissler wrote:
+> > Wire up support for DMA for the case where the vfio-user client does no=
+t
+> > provide mmap()-able file descriptors, but DMA requests must be performe=
+d
+> > via the VFIO-user protocol. This installs an indirect memory region,
+> > which already works for pci_dma_{read,write}, and pci_dma_map works
+> > thanks to the existing DMA bounce buffering support.
 > >
-> > After the improvement to support multiple concurrent bounce buffers,
-> > the condition the notification callback allowed to work around no
-> > longer exists, so we can just remove the logic and simplify the code.
+> > Note that while simple scenarios work with this patch, there's a known
+> > race condition in libvfio-user that will mess up the communication
+> > channel: https://github.com/nutanix/libvfio-user/issues/279 I intend to
+> > contribute a fix for this problem, see discussion on the github issue
+> > for more details.
 > >
 > > Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
 > > ---
-> >  softmmu/dma-helpers.c | 28 -----------------
-> >  softmmu/physmem.c     | 71 -------------------------------------------
-> >  2 files changed, 99 deletions(-)
->
-> I'm not sure if it will be possible to remove this once a limit is
-> placed bounce buffer space.
-
-I investigated this in detail and concluded that you're right
-unfortunately. In particular, after I found that Linux likes to use
-megabyte-sided DMA buffers with xhci-attached USB storage, I don't
-think it's realistic to set a reasonable fixed limit that accommodates
-most workloads in practice.
-
-
-
-
-
-
->
+> >  hw/remote/vfio-user-obj.c | 62 ++++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 55 insertions(+), 7 deletions(-)
 > >
-> > diff --git a/softmmu/dma-helpers.c b/softmmu/dma-helpers.c
-> > index 2463964805..d05d226f11 100644
-> > --- a/softmmu/dma-helpers.c
-> > +++ b/softmmu/dma-helpers.c
-> > @@ -68,23 +68,10 @@ typedef struct {
-> >      int sg_cur_index;
-> >      dma_addr_t sg_cur_byte;
-> >      QEMUIOVector iov;
-> > -    QEMUBH *bh;
-> >      DMAIOFunc *io_func;
-> >      void *io_func_opaque;
-> >  } DMAAIOCB;
-> >
-> > -static void dma_blk_cb(void *opaque, int ret);
-> > -
-> > -static void reschedule_dma(void *opaque)
-> > -{
-> > -    DMAAIOCB *dbs =3D (DMAAIOCB *)opaque;
-> > -
-> > -    assert(!dbs->acb && dbs->bh);
-> > -    qemu_bh_delete(dbs->bh);
-> > -    dbs->bh =3D NULL;
-> > -    dma_blk_cb(dbs, 0);
-> > -}
-> > -
-> >  static void dma_blk_unmap(DMAAIOCB *dbs)
-> >  {
-> >      int i;
-> > @@ -101,7 +88,6 @@ static void dma_complete(DMAAIOCB *dbs, int ret)
-> >  {
-> >      trace_dma_complete(dbs, ret, dbs->common.cb);
-> >
-> > -    assert(!dbs->acb && !dbs->bh);
-> >      dma_blk_unmap(dbs);
-> >      if (dbs->common.cb) {
-> >          dbs->common.cb(dbs->common.opaque, ret);
-> > @@ -164,13 +150,6 @@ static void dma_blk_cb(void *opaque, int ret)
-> >          }
-> >      }
-> >
-> > -    if (dbs->iov.size =3D=3D 0) {
-> > -        trace_dma_map_wait(dbs);
-> > -        dbs->bh =3D aio_bh_new(ctx, reschedule_dma, dbs);
-> > -        cpu_register_map_client(dbs->bh);
-> > -        goto out;
-> > -    }
-> > -
-> >      if (!QEMU_IS_ALIGNED(dbs->iov.size, dbs->align)) {
-> >          qemu_iovec_discard_back(&dbs->iov,
-> >                                  QEMU_ALIGN_DOWN(dbs->iov.size, dbs->al=
-ign));
-> > @@ -189,18 +168,12 @@ static void dma_aio_cancel(BlockAIOCB *acb)
-> >
-> >      trace_dma_aio_cancel(dbs);
-> >
-> > -    assert(!(dbs->acb && dbs->bh));
-> >      if (dbs->acb) {
-> >          /* This will invoke dma_blk_cb.  */
-> >          blk_aio_cancel_async(dbs->acb);
-> >          return;
-> >      }
-> >
-> > -    if (dbs->bh) {
-> > -        cpu_unregister_map_client(dbs->bh);
-> > -        qemu_bh_delete(dbs->bh);
-> > -        dbs->bh =3D NULL;
-> > -    }
-> >      if (dbs->common.cb) {
-> >          dbs->common.cb(dbs->common.opaque, -ECANCELED);
-> >      }
-> > @@ -239,7 +212,6 @@ BlockAIOCB *dma_blk_io(AioContext *ctx,
-> >      dbs->dir =3D dir;
-> >      dbs->io_func =3D io_func;
-> >      dbs->io_func_opaque =3D io_func_opaque;
-> > -    dbs->bh =3D NULL;
-> >      qemu_iovec_init(&dbs->iov, sg->nsg);
-> >      dma_blk_cb(dbs, 0);
-> >      return &dbs->common;
-> > diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> > index 56130b5a1d..2b4123c127 100644
-> > --- a/softmmu/physmem.c
-> > +++ b/softmmu/physmem.c
-> > @@ -2908,49 +2908,6 @@ typedef struct {
-> >      uint8_t buffer[];
-> >  } BounceBuffer;
-> >
-> > -static size_t bounce_buffers_in_use;
-> > -
-> > -typedef struct MapClient {
-> > -    QEMUBH *bh;
-> > -    QLIST_ENTRY(MapClient) link;
-> > -} MapClient;
-> > -
-> > -QemuMutex map_client_list_lock;
-> > -static QLIST_HEAD(, MapClient) map_client_list
-> > -    =3D QLIST_HEAD_INITIALIZER(map_client_list);
-> > -
-> > -static void cpu_unregister_map_client_do(MapClient *client)
-> > -{
-> > -    QLIST_REMOVE(client, link);
-> > -    g_free(client);
-> > -}
-> > -
-> > -static void cpu_notify_map_clients_locked(void)
-> > -{
-> > -    MapClient *client;
-> > -
-> > -    while (!QLIST_EMPTY(&map_client_list)) {
-> > -        client =3D QLIST_FIRST(&map_client_list);
-> > -        qemu_bh_schedule(client->bh);
-> > -        cpu_unregister_map_client_do(client);
-> > -    }
-> > -}
-> > -
-> > -void cpu_register_map_client(QEMUBH *bh)
-> > -{
-> > -    MapClient *client =3D g_malloc(sizeof(*client));
-> > -
-> > -    qemu_mutex_lock(&map_client_list_lock);
-> > -    client->bh =3D bh;
-> > -    QLIST_INSERT_HEAD(&map_client_list, client, link);
-> > -    /* Write map_client_list before reading in_use.  */
-> > -    smp_mb();
-> > -    if (qatomic_read(&bounce_buffers_in_use)) {
-> > -        cpu_notify_map_clients_locked();
-> > -    }
-> > -    qemu_mutex_unlock(&map_client_list_lock);
-> > -}
-> > -
-> >  void cpu_exec_init_all(void)
-> >  {
-> >      qemu_mutex_init(&ram_list.mutex);
-> > @@ -2964,28 +2921,6 @@ void cpu_exec_init_all(void)
-> >      finalize_target_page_bits();
-> >      io_mem_init();
-> >      memory_map_init();
-> > -    qemu_mutex_init(&map_client_list_lock);
-> > -}
-> > -
-> > -void cpu_unregister_map_client(QEMUBH *bh)
-> > -{
-> > -    MapClient *client;
-> > -
-> > -    qemu_mutex_lock(&map_client_list_lock);
-> > -    QLIST_FOREACH(client, &map_client_list, link) {
-> > -        if (client->bh =3D=3D bh) {
-> > -            cpu_unregister_map_client_do(client);
-> > -            break;
-> > -        }
-> > -    }
-> > -    qemu_mutex_unlock(&map_client_list_lock);
-> > -}
-> > -
-> > -static void cpu_notify_map_clients(void)
-> > -{
-> > -    qemu_mutex_lock(&map_client_list_lock);
-> > -    cpu_notify_map_clients_locked();
-> > -    qemu_mutex_unlock(&map_client_list_lock);
+> > diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+> > index 8b10c32a3c..9799580c77 100644
+> > --- a/hw/remote/vfio-user-obj.c
+> > +++ b/hw/remote/vfio-user-obj.c
+> > @@ -300,6 +300,53 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vf=
+u_ctx, char * const buf,
+> >      return count;
 > >  }
 > >
-> >  static bool flatview_access_valid(FlatView *fv, hwaddr addr, hwaddr le=
-n,
-> > @@ -3077,8 +3012,6 @@ void *address_space_map(AddressSpace *as,
-> >      memory_region_ref(mr);
-> >
-> >      if (!memory_access_is_direct(mr, is_write)) {
-> > -        qatomic_inc_fetch(&bounce_buffers_in_use);
-> > -
-> >          BounceBuffer *bounce =3D g_malloc(l + sizeof(BounceBuffer));
-> >          bounce->addr =3D addr;
-> >          bounce->mr =3D mr;
-> > @@ -3122,10 +3055,6 @@ void address_space_unmap(AddressSpace *as, void =
-*buffer, hwaddr len,
-> >          }
-> >          memory_region_unref(bounce->mr);
-> >          g_free(bounce);
-> > -
-> > -        if (qatomic_dec_fetch(&bounce_buffers_in_use) =3D=3D 1) {
-> > -            cpu_notify_map_clients();
-> > -        }
-> >          return;
-> >      }
-> >
-> > --
-> > 2.34.1
-> >
+> > +static MemTxResult vfu_dma_read(void *opaque, hwaddr addr, uint64_t *v=
+al,
+> > +                                unsigned size, MemTxAttrs attrs)
+> > +{
+> > +    MemoryRegion *region =3D opaque;
+> > +    VfuObject *o =3D VFU_OBJECT(region->owner);
+> > +
+> > +    dma_sg_t *sg =3D alloca(dma_sg_size());
+> > +    vfu_dma_addr_t vfu_addr =3D (vfu_dma_addr_t)(region->addr + addr);
+> > +    if (vfu_addr_to_sgl(o->vfu_ctx, vfu_addr, size, sg, 1, PROT_READ) =
+< 0 ||
+> > +        vfu_sgl_read(o->vfu_ctx, sg, 1, val) !=3D 0) {
+>
+> Does this work on big-endian host CPUs? It looks like reading 0x12345678
+> into uint64_t val would result in *val =3D 0x12345678xxxxxxxx instead of
+> 0x12345678.
+
+Ah, good catch, thanks! Confirmed as an issue using a cross-compiled
+s390x qemu binary. I will fix this by using ld/st helpers.
+
+
+
+
+>
+> > +        return MEMTX_ERROR;
+> > +    }
+> > +
+> > +    return MEMTX_OK;
+> > +}
+> > +
+> > +static MemTxResult vfu_dma_write(void *opaque, hwaddr addr, uint64_t v=
+al,
+> > +                                 unsigned size, MemTxAttrs attrs)
+> > +{
+> > +    MemoryRegion *region =3D opaque;
+> > +    VfuObject *o =3D VFU_OBJECT(region->owner);
+> > +
+> > +    dma_sg_t *sg =3D alloca(dma_sg_size());
+> > +    vfu_dma_addr_t vfu_addr =3D (vfu_dma_addr_t)(region->addr + addr);
+> > +    if (vfu_addr_to_sgl(o->vfu_ctx, vfu_addr, size, sg, 1, PROT_WRITE)=
+ < 0 ||
+> > +        vfu_sgl_write(o->vfu_ctx, sg, 1, &val) !=3D 0)  {
+>
+> Same potential endianness issue here.
+>
+> Stefan
 
