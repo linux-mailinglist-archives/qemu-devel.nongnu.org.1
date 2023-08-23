@@ -2,78 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141FA785E89
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D731785EB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:36:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYre6-0002ps-Ss; Wed, 23 Aug 2023 13:27:54 -0400
+	id 1qYrl8-0006Uj-Qb; Wed, 23 Aug 2023 13:35:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qYre5-0002pk-JZ
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:27:53 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qYrdz-0005KE-Du
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:27:50 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-31771bb4869so5249458f8f.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 10:27:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1692811664; x=1693416464;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3HVZlighhbdAt2+k8psWTUoYclNfefaHHKE7NVuFHH4=;
- b=G34nAXt596bUHnMUCFPojkuT6kQreAGLvS8Bl5oX5j1BKdPn69+jNDoWFEhsxjLXyc
- jY5adaCK5JFQUqjjXdNJRkwCySeCNfK6EthfSyth1ACylkTZxr2FWmZ60hs9flsBbHLG
- j7mp+bMroLsolfhKvTkm2+7Xue2O+6ICi6WOeKsmj/SZq/70lLj/RMjgv8kPFG5Ss2/Y
- dTdjAfthBPXm22HZkAHe6EJQL7iBoJ/LcV2aBgYWGO/RQKTWjFrcdM5xYje/60fIFpRM
- br8AB7gUvm8kWCccW7znkjrdw6KKPC5jn1SRtL3i4z6qsPG0DZLO7JfP36W6JPZdFt4U
- lzhg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYrl6-0006UN-6p
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:35:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYrl3-0006um-Q3
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:35:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692812104;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+YVHqnz3FTArQET5lACU1cgStpJqX/7wZhqdEB19Luo=;
+ b=Qc12nvVSEpsRXDo8tYCQYvEOzufHhOmiAty1i/nDPVpQBLEt7UXgHqeb+whpt8aVccpo2R
+ 1B2A7eb3IxDJvw+ZEh6Fub2cOsRy0aWts7jaEr3CyYH1joV9qeaARDwLgjRk1axCe/XWTE
+ niCF8GFs6OsKTDppFeGjW9FkrnULU/k=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-zB06J9uTM1WH6NMpoU1bnw-1; Wed, 23 Aug 2023 13:35:01 -0400
+X-MC-Unique: zB06J9uTM1WH6NMpoU1bnw-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-44d54127328so215735137.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 10:35:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692811664; x=1693416464;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3HVZlighhbdAt2+k8psWTUoYclNfefaHHKE7NVuFHH4=;
- b=Kxs/+YodgPEhVeaXg3ST8+nJ+n72nf00hCugBeGMVErHy9fbQTA4Y8iBRbnMryvKHb
- 8oEj/3leAFlYG741hEnpz67nKdii+ztiPHcQ94TSQaSFssd+Hg79V0zncgvx9OT72usw
- BNqNioJBp1RexZGCk6edKiHMAupVuBjpFto+vupNlgN4BrUlfY3xfLP6VkIaUmJOLtBt
- 77ILcc+R90JPvWwejqOd2s/VEgSnHAtrrGFZET63QiTrOuEcmP7xL9TV5TpgdaNDc4+f
- C+5N+noTIt166cv2O47XaXsxpAliQwP2djTsiDXIwUcsaRIfGtogf2oitH9w6+W3chCb
- dQ8A==
-X-Gm-Message-State: AOJu0YwQd0tiwwBrFvFfmZTUYn10+ZL2WQSum2uM9TDA/chsjWBY062G
- +DJgeYaNr32+jlGCnBH8j0dJGBVrk6afOYXO7jFLdQ==
-X-Google-Smtp-Source: AGHT+IEe6MieqIk/+Ll4jcvdDxK1gKaAvcT5jl/GZ6K0XWCHDupF8P1erpKjmhAbBpM9rbOqioDAP1K92OJUIbcHihw=
-X-Received: by 2002:adf:fd44:0:b0:315:9676:c360 with SMTP id
- h4-20020adffd44000000b003159676c360mr8612518wrs.25.1692811664277; Wed, 23 Aug
- 2023 10:27:44 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692812101; x=1693416901;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+YVHqnz3FTArQET5lACU1cgStpJqX/7wZhqdEB19Luo=;
+ b=GjtpiAXP28wZxOBuL1uDUgvBT9Anxvp3zCnIQvnP0hpY0KnxRi/Y83N0F5fTf6I+/y
+ svvMZEbVg+2CDN41hfo6vvWZxDbkONuOL50ZekmHLLdP/B9TLj1bnz5oij6cHIPPyF/8
+ nvKhlUMAR1ZsDO0pDM2oIdFSGoBbpuqoGTnRjr+P4fDCS7UMuCcRrTvSpNgWBUVWwxNX
+ DMJRfdGw/0zb0bjJZArzlWutyIEjYi51NxFYkXng4/u5HhYniGgxcAq2+bkGMEC4EOMc
+ PgeAUOvILC8nsPSXns/DKUMuOCiVKq7D4NxmkJBL2CrIhB1pmEJLGViuw9XEA9hX1qEJ
+ oKOw==
+X-Gm-Message-State: AOJu0YwpXTmA+unrHw/No6jFcIYS3qH0NiNR2b4E19y3f+FhRsVoVOTR
+ apc8/meteMSYguL72kX8N0XFLLc5d5L5FWifHW90QLH0lepgh7XtNEIF77vtLyxF8O1q1FzgSRl
+ Hn1J7Gs3nvHxuGg4=
+X-Received: by 2002:a67:d08a:0:b0:443:5da9:457e with SMTP id
+ s10-20020a67d08a000000b004435da9457emr9196633vsi.0.1692812100802; 
+ Wed, 23 Aug 2023 10:35:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtDenzLGZn5mwuCmaUAsiBI+cj/qXfWG5CffitmurjAXypby5LuWjE0Rwo0ppAx+i0Gk3zVg==
+X-Received: by 2002:a67:d08a:0:b0:443:5da9:457e with SMTP id
+ s10-20020a67d08a000000b004435da9457emr9196613vsi.0.1692812100445; 
+ Wed, 23 Aug 2023 10:35:00 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ a3-20020a0cca83000000b0064910f273aesm4563056qvk.146.2023.08.23.10.34.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Aug 2023 10:35:00 -0700 (PDT)
+Date: Wed, 23 Aug 2023 13:34:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, stefanha@redhat.com,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [PATCH v2 1/4] softmmu: Support concurrent bounce buffers
+Message-ID: <ZOZDQVgboMaiZ4x6@x1n>
+References: <20230823092905.2259418-1-mnissler@rivosinc.com>
+ <20230823092905.2259418-2-mnissler@rivosinc.com>
 MIME-Version: 1.0
-References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
- <20230626114916.45355529@mobian.usb.local>
- <20230626100819.vtkuuvzg376hktk2@begin>
- <CAJt6XFpDwuim-FF7a5MMibQvJa1YJ=X165n43XEtQaF4356r9w@mail.gmail.com>
- <20230720145415.w7s3ystkrf5gc66y@begin>
- <CAJt6XFosqX8xH_QWX1xZmHPg7vYB8r=m+ERgxQtKzhYT4W0urg@mail.gmail.com>
-In-Reply-To: <CAJt6XFosqX8xH_QWX1xZmHPg7vYB8r=m+ERgxQtKzhYT4W0urg@mail.gmail.com>
-From: Felix Wu <flwu@google.com>
-Date: Wed, 23 Aug 2023 10:27:33 -0700
-Message-ID: <CAJt6XFqW4zUvWy6=3WZihkmbp6N-RVczR+5kpLtpxDtLXUBAXQ@mail.gmail.com>
-Subject: Re: Tips for local testing guestfwd
-To: Samuel Thibault <samuel.thibault@gnu.org>
-Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org, 
- Jason Wang <jasowang@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000ec598606039a6d6e"
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=flwu@google.com; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230823092905.2259418-2-mnissler@rivosinc.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,248 +100,300 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ec598606039a6d6e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Aug 23, 2023 at 02:29:02AM -0700, Mattias Nissler wrote:
+> When DMA memory can't be directly accessed, as is the case when
+> running the device model in a separate process without shareable DMA
+> file descriptors, bounce buffering is used.
+> 
+> It is not uncommon for device models to request mapping of several DMA
+> regions at the same time. Examples include:
+>  * net devices, e.g. when transmitting a packet that is split across
+>    several TX descriptors (observed with igb)
+>  * USB host controllers, when handling a packet with multiple data TRBs
+>    (observed with xhci)
+> 
+> Previously, qemu only provided a single bounce buffer and would fail DMA
+> map requests while the buffer was already in use. In turn, this would
+> cause DMA failures that ultimately manifest as hardware errors from the
+> guest perspective.
+> 
+> This change allocates DMA bounce buffers dynamically instead of
+> supporting only a single buffer. Thus, multiple DMA mappings work
+> correctly also when RAM can't be mmap()-ed.
+> 
+> The total bounce buffer allocation size is limited by a new command line
+> parameter. The default is 4096 bytes to match the previous maximum
+> buffer size. It is expected that suitable limits will vary quite a bit
+> in practice depending on device models and workloads.
+> 
+> Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+> ---
+>  include/sysemu/sysemu.h |  2 +
+>  qemu-options.hx         | 27 +++++++++++++
+>  softmmu/globals.c       |  1 +
+>  softmmu/physmem.c       | 84 +++++++++++++++++++++++------------------
+>  softmmu/vl.c            |  6 +++
+>  5 files changed, 83 insertions(+), 37 deletions(-)
+> 
+> diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
+> index 25be2a692e..c5dc93cb53 100644
+> --- a/include/sysemu/sysemu.h
+> +++ b/include/sysemu/sysemu.h
+> @@ -61,6 +61,8 @@ extern int nb_option_roms;
+>  extern const char *prom_envs[MAX_PROM_ENVS];
+>  extern unsigned int nb_prom_envs;
+>  
+> +extern uint64_t max_bounce_buffer_size;
+> +
+>  /* serial ports */
+>  
+>  /* Return the Chardev for serial port i, or NULL if none */
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 29b98c3d4c..6071794237 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4959,6 +4959,33 @@ SRST
+>  ERST
+>  #endif
+>  
+> +DEF("max-bounce-buffer-size", HAS_ARG,
+> +    QEMU_OPTION_max_bounce_buffer_size,
+> +    "-max-bounce-buffer-size size\n"
+> +    "                DMA bounce buffer size limit in bytes (default=4096)\n",
+> +    QEMU_ARCH_ALL)
+> +SRST
+> +``-max-bounce-buffer-size size``
+> +    Set the limit in bytes for DMA bounce buffer allocations.
+> +
+> +    DMA bounce buffers are used when device models request memory-mapped access
+> +    to memory regions that can't be directly mapped by the qemu process, so the
+> +    memory must read or written to a temporary local buffer for the device
+> +    model to work with. This is the case e.g. for I/O memory regions, and when
+> +    running in multi-process mode without shared access to memory.
+> +
+> +    Whether bounce buffering is necessary depends heavily on the device model
+> +    implementation. Some devices use explicit DMA read and write operations
+> +    which do not require bounce buffers. Some devices, notably storage, will
+> +    retry a failed DMA map request after bounce buffer space becomes available
+> +    again. Most other devices will bail when encountering map request failures,
+> +    which will typically appear to the guest as a hardware error.
+> +
+> +    Suitable bounce buffer size values depend on the workload and guest
+> +    configuration. A few kilobytes up to a few megabytes are common sizes
+> +    encountered in practice.
 
-Update on debugging this thing (already updated
-https://gitlab.com/qemu-project/qemu/-/issues/1835):
-I saw that `tcp_chr_free_connection` was called after the first response
-being successfully sent:
-```
+Does it mean that the default 4K size can still easily fail with some
+device setup?
 
-slirp_guestfwd_write guestfwd_write: size 80tcp_chr_write
-tcp_chr_write: s->state:2tcp_chr_write tcp_chr_write:
-len:80qemu_chr_write_parameter len: 80 // tracking
-qemu_chr_writeqemu_chr_write_res len: 80 // same
-thingtcp_chr_free_connection tcp_chr_free_connection: state: 2,
-changing it to disconnecttcp_chr_change_state tcp_chr_change_state:
-state: 2, next state: 0 // state 2=3D=3Dconnected, 0=3D=3Ddisconnected.
+IIUC the whole point of limit here is to make sure the allocation is still
+bounded, while 4K itself is not a hard limit. Making it bigger would be,
+IMHO, nice if it should work with known configs which used to be broken.
 
-```
-And after that, the state of `SocketChardev` remained disconnected, and
-when the 2nd request came in, the `tcp_chr_write` dropped it directly.
-Maybe this state machine should be reset after every connection? Not sure.
+> +ERST
+> +
+>  DEFHEADING()
+>  
+>  DEFHEADING(Generic object creation:)
+> diff --git a/softmmu/globals.c b/softmmu/globals.c
+> index e83b5428d1..d3cc010717 100644
+> --- a/softmmu/globals.c
+> +++ b/softmmu/globals.c
+> @@ -54,6 +54,7 @@ const char *prom_envs[MAX_PROM_ENVS];
+>  uint8_t *boot_splash_filedata;
+>  int only_migratable; /* turn it off unless user states otherwise */
+>  int icount_align_option;
+> +uint64_t max_bounce_buffer_size = 4096;
+>  
+>  /* The bytes in qemu_uuid are in the order specified by RFC4122, _not_ in the
+>   * little-endian "wire format" described in the SMBIOS 2.6 specification.
+> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+> index 3df73542e1..9f0fec0c8e 100644
+> --- a/softmmu/physmem.c
+> +++ b/softmmu/physmem.c
+> @@ -50,6 +50,7 @@
+>  #include "sysemu/dma.h"
+>  #include "sysemu/hostmem.h"
+>  #include "sysemu/hw_accel.h"
+> +#include "sysemu/sysemu.h"
+>  #include "sysemu/xen-mapcache.h"
+>  #include "trace/trace-root.h"
+>  
+> @@ -2904,13 +2905,12 @@ void cpu_flush_icache_range(hwaddr start, hwaddr len)
+>  
+>  typedef struct {
+>      MemoryRegion *mr;
+> -    void *buffer;
+>      hwaddr addr;
+> -    hwaddr len;
+> -    bool in_use;
+> +    size_t len;
+> +    uint8_t buffer[];
+>  } BounceBuffer;
+>  
+> -static BounceBuffer bounce;
+> +static size_t bounce_buffer_size;
+>  
+>  typedef struct MapClient {
+>      QEMUBH *bh;
+> @@ -2945,9 +2945,9 @@ void cpu_register_map_client(QEMUBH *bh)
+>      qemu_mutex_lock(&map_client_list_lock);
+>      client->bh = bh;
+>      QLIST_INSERT_HEAD(&map_client_list, client, link);
+> -    /* Write map_client_list before reading in_use.  */
+> +    /* Write map_client_list before reading bounce_buffer_size.  */
+>      smp_mb();
+> -    if (!qatomic_read(&bounce.in_use)) {
+> +    if (qatomic_read(&bounce_buffer_size) < max_bounce_buffer_size) {
+>          cpu_notify_map_clients_locked();
+>      }
+>      qemu_mutex_unlock(&map_client_list_lock);
+> @@ -3076,31 +3076,35 @@ void *address_space_map(AddressSpace *as,
+>      RCU_READ_LOCK_GUARD();
+>      fv = address_space_to_flatview(as);
+>      mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
+> +    memory_region_ref(mr);
+>  
+>      if (!memory_access_is_direct(mr, is_write)) {
+> -        if (qatomic_xchg(&bounce.in_use, true)) {
+> +        size_t size = qatomic_add_fetch(&bounce_buffer_size, l);
+> +        if (size > max_bounce_buffer_size) {
+> +            size_t excess = size - max_bounce_buffer_size;
+> +            l -= excess;
+> +            qatomic_sub(&bounce_buffer_size, excess);
+> +        }
+> +
+> +        if (l == 0) {
+>              *plen = 0;
+>              return NULL;
+>          }
+> -        /* Avoid unbounded allocations */
+> -        l = MIN(l, TARGET_PAGE_SIZE);
+> -        bounce.buffer = qemu_memalign(TARGET_PAGE_SIZE, l);
+> -        bounce.addr = addr;
+> -        bounce.len = l;
+>  
+> -        memory_region_ref(mr);
+> -        bounce.mr = mr;
+> +        BounceBuffer *bounce = g_malloc(l + sizeof(BounceBuffer));
 
-On Thu, Aug 17, 2023 at 11:58=E2=80=AFAM Felix Wu <flwu@google.com> wrote:
+Maybe g_malloc0() would be better?
 
-> Hi Samuel,
->
-> Thanks for the clarification! I missed the email so didn't reply in time,
-> but was able to figure it out.
->
-> Hi everyone,
-> IPv6 guestfwd works in my local test but it has a weird bug: if you send
-> two requests, the first one gets the correct response, but the second one
-> gets stuck.
-> I am using a simple http server for this test, and just noticed this bug
-> also exists in IPv4 guestfwd. I've documented it in
-> https://gitlab.com/qemu-project/qemu/-/issues/1835.
->
-> Just want to check if anyone has seen the same issue before.
->
-> Thanks! Felix
->
-> On Thu, Jul 20, 2023 at 7:54=E2=80=AFAM Samuel Thibault <samuel.thibault@=
-gnu.org>
-> wrote:
->
->> Hello,
->>
->> Felix Wu, le mar. 18 juil. 2023 18:12:16 -0700, a ecrit:
->> > 02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (lookin=
-g
->> into packet
->> > dump provided by QEMU invocation)
->>
->> Which packet dump?
->>
->> > I added multiple prints inside slirp and confirmed the ipv6 version of
->> [1] was
->> > reached.
->> > in tcp_output function [2], I got following print:
->> > qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D
->> > fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190
->> > qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105, p=
-ort
->> =3D 54322
->> > It looks like there should be something being sent back to the guest,
->>
->> That's what it is.
->>
->> > unless my understanding of tcp_output is wrong.
->>
->> It looks so.
->>
->> > To understand the datapath of guestfwd better, I have the following
->> questions:
->> > 1. What's the meaning of tcp_input and tcp_output? My guess is the
->> following
->> > graph, but I would like to confirm.
->>
->> No, tcp_input is for packets that come from the guest, and tcp_output is
->> for packets that are send to the guest. So it's like that:
->>
->> >         tcp_input    write_cb          host send()
->> > QEMU --------> slirp -----------> QEMU --------------------> host
->> >     <--------        <---------         <-----------------
->> >          tcp_output  slirp_socket_recv    host recv()
->>
->> > 2. I don't see port 6655 in the above process. How does slirp know 665=
-5
->> is the
->> > port that needs to be visited on the host side?
->>
->> Slirp itself *doesn't* know that port. The guestfwd piece just calls the
->> SlirpWriteCb when it has data coming from the guest. See the
->> documentation:
->>
->> /* Set up port forwarding between a port in the guest network and a
->>  * callback that will receive the data coming from the port */
->> SLIRP_EXPORT
->> int slirp_add_guestfwd(Slirp *slirp, SlirpWriteCb write_cb, void *opaque=
-,
->>                        struct in_addr *guest_addr, int guest_port);
->>
->> and
->>
->> /* This is called by the application for a guestfwd, to provide the data
->> to be
->>  * sent on the forwarded port */
->> SLIRP_EXPORT
->> void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int
->> guest_port,
->>                        const uint8_t *buf, int size);
->>
->> Samuel
->>
->
+I just checked that we had target page aligned allocations since the 1st
+day (commit 6d16c2f88f2a).  I didn't find any clue showing why it was done
+like that, but I do have worry on whether any existing caller that may
+implicitly relying on an address that is target page aligned.  But maybe
+not a major issue; I didn't see anything rely on that yet.
 
---000000000000ec598606039a6d6e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> +        bounce->mr = mr;
+> +        bounce->addr = addr;
+> +        bounce->len = l;
+> +
+>          if (!is_write) {
+>              flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
+> -                               bounce.buffer, l);
+> +                          bounce->buffer, l);
+>          }
+>  
+>          *plen = l;
+> -        return bounce.buffer;
+> +        return bounce->buffer;
+>      }
+>  
+> -
+> -    memory_region_ref(mr);
+>      *plen = flatview_extend_translation(fv, addr, len, mr, xlat,
+>                                          l, is_write, attrs);
+>      fuzz_dma_read_cb(addr, *plen, mr);
+> @@ -3114,31 +3118,37 @@ void *address_space_map(AddressSpace *as,
+>  void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+>                           bool is_write, hwaddr access_len)
+>  {
+> -    if (buffer != bounce.buffer) {
+> -        MemoryRegion *mr;
+> -        ram_addr_t addr1;
+> +    MemoryRegion *mr;
+> +    ram_addr_t addr1;
+> +
+> +    mr = memory_region_from_host(buffer, &addr1);
+> +    if (mr == NULL) {
+> +        /*
+> +         * Must be a bounce buffer (unless the caller passed a pointer which
+> +         * wasn't returned by address_space_map, which is illegal).
 
-<div dir=3D"ltr">Update on debugging=C2=A0this thing (already updated=C2=A0=
-<a rel=3D"nofollow noreferrer noopener" href=3D"https://gitlab.com/qemu-pro=
-ject/qemu/-/issues/1835" target=3D"_blank">https://gitlab.com/qemu-project/=
-qemu/-/issues/1835</a>):<div>I saw that `tcp_chr_free_connection` was calle=
-d after the first response being successfully sent:</div><div>```</div><div=
-><pre class=3D"gmail-code gmail-highlight" lang=3D"plaintext"><span lang=3D=
-"plaintext" class=3D"gmail-line" id=3D"gmail-LC1">slirp_guestfwd_write gues=
-tfwd_write: size 80</span>
-<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC2">tcp_chr_writ=
-e tcp_chr_write: s-&gt;state:2</span>
-<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC3">tcp_chr_writ=
-e tcp_chr_write: len:80</span>
-<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC4">qemu_chr_wri=
-te_parameter len: 80 // tracking qemu_chr_write</span>
-<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC5">qemu_chr_wri=
-te_res len: 80 // same thing</span>
-<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC6">tcp_chr_free=
-_connection tcp_chr_free_connection: state: 2, changing it to disconnect</s=
-pan>
-<span lang=3D"plaintext" class=3D"gmail-line" id=3D"gmail-LC7">tcp_chr_chan=
-ge_state tcp_chr_change_state: state: 2, next state: 0 // state 2=3D=3Dconn=
-ected, 0=3D=3Ddisconnected.</span>
-</pre></div><div>```</div><div>And after that, the state of `SocketChardev`=
- remained disconnected, and when the 2nd request came in, the `tcp_chr_writ=
-e` dropped it directly.</div><div>Maybe this state machine should be reset =
-after every connection? Not sure.</div></div><br><div class=3D"gmail_quote"=
-><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 17, 2023 at 11:58=E2=80=
-=AFAM Felix Wu &lt;<a href=3D"mailto:flwu@google.com">flwu@google.com</a>&g=
-t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
-x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div d=
-ir=3D"ltr">Hi Samuel,<div><br></div><div>Thanks for the clarification! I mi=
-ssed the email so didn&#39;t reply in time, but was able to figure it out.<=
-/div><div><br></div><div>Hi everyone,</div><div>IPv6 guestfwd works in my l=
-ocal test but it has a weird bug: if you send two requests, the first one g=
-ets the correct response, but the second one gets stuck.</div><div>I am usi=
-ng a simple http server for this test, and just noticed this bug also=C2=A0=
-exists in=C2=A0IPv4 guestfwd. I&#39;ve documented it in=C2=A0<a rel=3D"nofo=
-llow noreferrer noopener" href=3D"https://gitlab.com/qemu-project/qemu/-/is=
-sues/1835" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/issues/=
-1835</a>.</div><div><br></div><div>Just want to check if anyone has seen th=
-e same issue before.</div><div><br></div><div>Thanks! Felix</div></div><br>=
-<div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Ju=
-l 20, 2023 at 7:54=E2=80=AFAM Samuel Thibault &lt;<a href=3D"mailto:samuel.=
-thibault@gnu.org" target=3D"_blank">samuel.thibault@gnu.org</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hello,<br>
-<br>
-Felix Wu, le mar. 18 juil. 2023 18:12:16 -0700, a ecrit:<br>
-&gt; 02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (lookin=
-g into packet<br>
-&gt; dump provided by QEMU invocation)<br>
-<br>
-Which packet dump?<br>
-<br>
-&gt; I added multiple prints inside slirp and confirmed the ipv6 version of=
- [1] was<br>
-&gt; reached.<br>
-&gt; in tcp_output function [2], I got following print:<br>
-&gt; qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D<br>
-&gt; fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190<br>
-&gt; qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105, p=
-ort =3D 54322<br>
-&gt; It looks like there should be something being sent back to the guest,<=
-br>
-<br>
-That&#39;s what it is.<br>
-<br>
-&gt; unless my understanding of tcp_output is wrong.<br>
-<br>
-It looks so.<br>
-<br>
-&gt; To understand the datapath of guestfwd better, I have the following qu=
-estions:<br>
-&gt; 1. What&#39;s the meaning of tcp_input and tcp_output? My guess is the=
- following<br>
-&gt; graph, but I would like to confirm.<br>
-<br>
-No, tcp_input is for packets that come from the guest, and tcp_output is<br=
->
-for packets that are send to the guest. So it&#39;s like that:<br>
-<br>
-&gt; =C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0tcp_input=C2=A0 =C2=A0 write_cb=C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 host send()<br>
-&gt; QEMU --------&gt; slirp -----------&gt; QEMU --------------------&gt; =
-host<br>
-&gt; =C2=A0 =C2=A0 &lt;-------- =C2=A0=C2=A0 =C2=A0 =C2=A0 &lt;---------=C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;-----------------<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tcp_output =C2=A0slirp_socket_recv=
-=C2=A0 =C2=A0 host recv()<br>
-<br>
-&gt; 2.=C2=A0I don&#39;t see port 6655 in the above=C2=A0process. How does =
-slirp know 6655 is the<br>
-&gt; port that needs to be visited on the host side?<br>
-<br>
-Slirp itself *doesn&#39;t* know that port. The guestfwd piece just calls th=
-e<br>
-SlirpWriteCb when it has data coming from the guest. See the<br>
-documentation:<br>
-<br>
-/* Set up port forwarding between a port in the guest network and a<br>
-=C2=A0* callback that will receive the data coming from the port */<br>
-SLIRP_EXPORT<br>
-int slirp_add_guestfwd(Slirp *slirp, SlirpWriteCb write_cb, void *opaque,<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0struct in_addr *guest_addr, int guest_port);<br>
-<br>
-and <br>
-<br>
-/* This is called by the application for a guestfwd, to provide the data to=
- be<br>
-=C2=A0* sent on the forwarded port */<br>
-SLIRP_EXPORT<br>
-void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int guest_p=
-ort,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0const uint8_t *buf, int size);<br>
-<br>
-Samuel<br>
-</blockquote></div>
-</blockquote></div>
+Is it possible to still have some kind of sanity check to make sure it's a
+bounce buffer passed in, just in case of a caller bug?  Or, the failure can
+be weird..
 
---000000000000ec598606039a6d6e--
+> +         */
+> +        BounceBuffer *bounce = container_of(buffer, BounceBuffer, buffer);
+>  
+> -        mr = memory_region_from_host(buffer, &addr1);
+> -        assert(mr != NULL);
+>          if (is_write) {
+> -            invalidate_and_set_dirty(mr, addr1, access_len);
+> -        }
+> -        if (xen_enabled()) {
+> -            xen_invalidate_map_cache_entry(buffer);
+> +            address_space_write(as, bounce->addr, MEMTXATTRS_UNSPECIFIED,
+> +                                bounce->buffer, access_len);
+>          }
+> -        memory_region_unref(mr);
+> +
+> +        memory_region_unref(bounce->mr);
+> +        qatomic_sub(&bounce_buffer_size, bounce->len);
+> +        /* Write bounce_buffer_size before reading map_client_list. */
+> +        smp_mb();
+> +        cpu_notify_map_clients();
+> +        g_free(bounce);
+>          return;
+>      }
+> +
+> +    if (xen_enabled()) {
+> +        xen_invalidate_map_cache_entry(buffer);
+> +    }
+>      if (is_write) {
+> -        address_space_write(as, bounce.addr, MEMTXATTRS_UNSPECIFIED,
+> -                            bounce.buffer, access_len);
+> -    }
+> -    qemu_vfree(bounce.buffer);
+> -    bounce.buffer = NULL;
+> -    memory_region_unref(bounce.mr);
+> -    /* Clear in_use before reading map_client_list.  */
+> -    qatomic_set_mb(&bounce.in_use, false);
+> -    cpu_notify_map_clients();
+> +        invalidate_and_set_dirty(mr, addr1, access_len);
+> +    }
+>  }
+>  
+>  void *cpu_physical_memory_map(hwaddr addr,
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..dbe52f5ea1 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -3469,6 +3469,12 @@ void qemu_init(int argc, char **argv)
+>                  exit(1);
+>  #endif
+>                  break;
+> +            case QEMU_OPTION_max_bounce_buffer_size:
+> +                if (qemu_strtosz(optarg, NULL, &max_bounce_buffer_size) < 0) {
+> +                    error_report("invalid -max-ounce-buffer-size value");
+> +                    exit(1);
+> +                }
+> +                break;
+
+PS: I had a vague memory that we do not recommend adding more qemu cmdline
+options, but I don't know enough on the plan to say anything real.
+
+>              case QEMU_OPTION_object:
+>                  object_option_parse(optarg);
+>                  break;
+> -- 
+> 2.34.1
+> 
+
+Thanks,
+
+-- 
+Peter Xu
+
 
