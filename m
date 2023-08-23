@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F69785910
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 15:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6216B785924
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 15:27:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYnm7-0004HG-TW; Wed, 23 Aug 2023 09:19:56 -0400
+	id 1qYnsS-0006ZA-0f; Wed, 23 Aug 2023 09:26:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qYnlO-0003bQ-VB
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:19:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qYnlN-00064a-0b
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:19:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692796748;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=plTC7yTjZthsM1nfjZYHxy3WoZfL956lXZZZ19fg0oc=;
- b=c7y7KS39cIBaB/0qetqQBSfxC9o1I2aAwGy7nP7K6qHZ1LBey1pO6ZYScPmfxXDOKYpyCb
- amM0NyJHI/jRXDJHi+okAMT0lvnZF3Bg6LnVfLOdk5EWa0oYrOG1LammqwOB1gTQFCHcNx
- wLJlf44Tc5v/v/hk/Ate+KSHpPlSe44=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-640-0Idb0elMOvmT2hvdcNXbzw-1; Wed, 23 Aug 2023 09:19:06 -0400
-X-MC-Unique: 0Idb0elMOvmT2hvdcNXbzw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8866101A53C
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:19:04 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.108])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5824B2026D2B;
- Wed, 23 Aug 2023 13:19:04 +0000 (UTC)
-Date: Wed, 23 Aug 2023 09:19:02 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PULL 00/12] First batch of s390x patches for QEMU 8.2
-Message-ID: <20230823131902.GA832730@fedora>
-References: <20230823114544.216520-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qYnsQ-0006Z2-Cv
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:26:26 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qYnsO-0007MR-UT
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 09:26:26 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-570deae2594so1715461eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 06:26:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692797183; x=1693401983;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=gfjJ7BoqxloGhSkJ1OWsvwOE/lMWbdoTdULRiJhAzXc=;
+ b=dRC9bdIEz63Hpx6+OxKD1x3q2x1RIQ8Bx0NGcRkqQi8fryFs/XJv0m//ngJLRuQlvU
+ iWgbVUIusiUbOFpTGctWDa63BsSlclWZZuV+Y8qe7oCb8dLG1usdn3VAX2wcDU51nBwD
+ cEGAaVddkXUIjW3X3u0umMnSQNW/pqyuwL+1xgKQJm+isSI6/tuQg7ma/ItokHItTKA4
+ 46NQzH0PAHQkj5/A6gUiB6sWPmitVHmH5ujNDAnwNuU76iUVLLB5LZD1T52S/f+RN+Td
+ UfzwS0q2wXwNL+J+WEy6DEp3UzzAiAQFnuvamd/sRMqvmlDAHUWIVnBZPic8PmhxrltL
+ FU7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692797183; x=1693401983;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gfjJ7BoqxloGhSkJ1OWsvwOE/lMWbdoTdULRiJhAzXc=;
+ b=P74w94gI5aQ1cT9T269zWuH+qvpUaNyt6BiEwc1450Di9eVbs2eZYh4jWs2d33wyhk
+ 9JPRxag0lP0LOPQWNMIic81w0sHeJN6RYfg33e9FYmEpU+RKoOjIgh4JjB3Sks/TqGnQ
+ mRlaF4FE9uTwEr6svBO9786nCJR8bKGNELXeIhTha9NRsmtkyTPU/XCNX2Wx5ITxEJGB
+ BdFO01ISpirakBnNaKsKGl0GU+3sfIhvUkPICd5a00f3RNdzrz5FjBTCIxDYIGtkms9K
+ XbAzU25O8qCoav7N5ut2vRE+S0fZUQZECSbOEpGMP6XnNLdieqYi9LCR7+IuqQesgrmx
+ FgKQ==
+X-Gm-Message-State: AOJu0Yzz7cNcoJq+h5MVjCfIOVoMmBx0KFvwUkdZ3CBGvSyajsJuKHxk
+ eb13eyj0nYPbPxHFixJ9clTeewdFFB8nolbrZ2A=
+X-Google-Smtp-Source: AGHT+IGFwHSPyhiT6qmKSnkV14FuitN8M6i0K4QOJmoykdf618MFyj/VpWM70w58DMHGyXyXMZI7jKIH1XWM7a9/Rak=
+X-Received: by 2002:a4a:3515:0:b0:570:be00:5e14 with SMTP id
+ l21-20020a4a3515000000b00570be005e14mr10107382ooa.8.1692797183233; Wed, 23
+ Aug 2023 06:26:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="v85tQFm36dof35Pl"
-Content-Disposition: inline
-In-Reply-To: <20230823114544.216520-1-thuth@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 23 Aug 2023 09:26:10 -0400
+Message-ID: <CAJSP0QU7gp1OjmrGhV1Y4jLRF0DYQAG=vn7LTS8SOa0eADW70Q@mail.gmail.com>
+Subject: NVMe ZNS last zone size
+To: olc <faithilikerun@gmail.com>, Klaus Jensen <k.jensen@samsung.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Val Adler <spantamd@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,30 +81,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Sam and Klaus,
+Val is adding nvme-io_uring ZNS support to libblkio
+(https://gitlab.com/libblkio/libblkio/-/merge_requests/221) and asked
+how to test the size of the last zone when the namespace's total size
+is not a multiple of the zone size.
 
---v85tQFm36dof35Pl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+My understanding is that the zoned storage model allows the last zone
+to be smaller than the zone size in this case. However, the NVMe ZNS
+emulation code in QEMU makes all zones a multiple of the zone size. I
+think QEMU cannot be used for this test case at the moment.
 
-Applied, thanks.
+Are there any plans to allow the last zone to have a different size?
+Maybe Sam's qcow2 work will allow this?
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---v85tQFm36dof35Pl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTmB0YACgkQnKSrs4Gr
-c8iuVAf/dZm38S+kSemZrBJxb2dMvddq75h5XcxNgGx7VRUDIOqPMy1m37dQQqsm
-EmaeEZv1VXDXMAu+t9oWeHvD9Ar2TUQJQnCtR6DUeeA6Cfaq5cq/PCYOVwVP/7kO
-h/M/k0TGtZJ+t63efnHektUD/moBMoXAYkphywk2vHk/kJOtA7TD4JZdL1aVbNtH
-kKctSX5UV9/8ULUl0um5GCzTutHNPBQiTylick7i93sS+b7rDL7YFgNlimmKegvA
-VTXFLPQkiNtE2AhG0QPC4ABPFhx0+DShIghy2Ggbw8moHSMDREIivA6NWpKJpajG
-S4u/0CyprLptgeQSmiVQJhkXXpOVkw==
-=aG5h
------END PGP SIGNATURE-----
-
---v85tQFm36dof35Pl--
-
+Thanks,
+Stefan
 
