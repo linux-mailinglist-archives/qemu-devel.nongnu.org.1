@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F3C785CBF
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 17:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA48785D43
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 18:29:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYqCq-0003cK-S7; Wed, 23 Aug 2023 11:55:41 -0400
+	id 1qYqiS-00069w-PO; Wed, 23 Aug 2023 12:28:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYqBP-0003Xh-7R
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:54:11 -0400
+ id 1qYqhq-0005t8-Nb
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:27:42 -0400
 Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYqBN-0003Wr-CD
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:54:10 -0400
+ id 1qYqho-0001bT-Un
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:27:42 -0400
 Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3a7d4030621so3511770b6e.3
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 08:54:08 -0700 (PDT)
+ 5614622812f47-3a76d882052so4122893b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 09:27:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692806047; x=1693410847;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1692808059; x=1693412859;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Mbo9xthiYpyiuX8HpVhTCj5ZDtbPzcTo+dOqtUXbZvs=;
- b=R8sN/6knwFQjiJ8+RkhqKUvGCP8YbhDJs54RRJGxQgALnVci7ATAd/daaHkksxXHgo
- rq8fNzXA7NVdR05Q4a8QNFAhvMiSmyV2vBqmnbBlOdfkBtKIjLQ2stj3UDXDh+dOF+nA
- fIFCn2Bve2jTDHPhOBVFaZ81DfFD6ouwFrj3bM0fTp5EcFdO9d+BHkXmcLKXjaNWtuH1
- 7iNuiEyIvp38cd9G2cwAarf8Qx7vC5/I4eumZLyveBescjpHyB0CPtFv6U5ViOp3Ajkx
- munLZtytWfrtxjRBiwXyKe1kxkcYYCB2SDQgiN0W5jANbl72mcOMdOEO0JuHIkKRW6jE
- yLvw==
+ bh=LoP8KSE0qfOqKDqt1vymjZj6csZ/6Kob92W38ohPloY=;
+ b=DW+VimbM/7ewZLljqfMTtUrVmBd8JnhWrbNZujnt2gqTJTm3zvVq1CtkcROZ40s2Og
+ 4GLnTQq7+9J3WzsdMJMkH0Fdusgty87OyG4RioXV0CljAVQceQZuUxMQ+5lI1d4BF/bS
+ PqXk8veLMDyE6OEDdiP8nn5HC/lto3zDA4O3LFJPpzZ/Dstaf9PUtKNNa/kskt4iJfgX
+ lHQHEypUAECWzHpPO2UJDfif9d4P1iZUgVr+kVkWlG463FYbig4ocmcqgjihCzBfq3hQ
+ Y31cgnLBkQIutLAiBrx1gNHtttC8B97U0O0mqoKbjFirq3ry9Sj+oBNNj4EzZOmks0e7
+ VpAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692806047; x=1693410847;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1692808059; x=1693412859;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Mbo9xthiYpyiuX8HpVhTCj5ZDtbPzcTo+dOqtUXbZvs=;
- b=j5rIlRqEkc0HC22+IF7G52poW3ojOeJNC9rbuLpodmbLDwYPAM4ZCuY40SWOO0DrIS
- 0wx5EkhUrpQjTIs+bIogPRSNeLymr3lYJ2x02+kFvWJ3nTWfqRtT6ADwYSmAbfRN9l26
- zvHjaoKNiaVR17Nh14kRh1e9w4YPUDc0nL53hwEQHRDFhpDXv51d/NUdh75057wcX7a6
- xPLZ/WcNwVCECw9AFbCehVgTEYPJ9Fedeo4Ph1n2W4PD+wHvIOxKfOOuUFcjoapzDuA6
- chorUxhvlFwDB0dYvvKziYJKONO34W75r6lnGmqI0urTQt49Hnw1xPCoh0XqqgEUkfV/
- s6tw==
-X-Gm-Message-State: AOJu0YxWpG+YXyQkDqyH5ja1FDiPaE3i0coSEtOCKzGpAaeWHRQIqCXG
- rZ+BV2ToiEYvK9RUWTZ1iFtGzQ==
-X-Google-Smtp-Source: AGHT+IGU9mAFGosVeb5/Dcf1wGPgDq1fQsOdwHkWHSN7XwZGl2GzTUVPx3MuFkOYA23BjKrQ1hyACQ==
-X-Received: by 2002:a05:6808:5d1:b0:3a7:48d2:fc82 with SMTP id
- d17-20020a05680805d100b003a748d2fc82mr11805490oij.38.1692806047612; 
- Wed, 23 Aug 2023 08:54:07 -0700 (PDT)
+ bh=LoP8KSE0qfOqKDqt1vymjZj6csZ/6Kob92W38ohPloY=;
+ b=LfxIYq6bPQyaXwtp9vh4K83wiX/+/EQPlH0jPiKrwnM5Rw0z3OM+z7X8hJmXvcJlTG
+ OqlGYeFN/jyoH8JRse5EsAquNq+GTB9Aq9totAK/isqMaTlZ5Vh5WpzE3a+mft6o+mvY
+ 3lLs2sNSYrBYm5UI0f03qvtbnQbswJFYxoaIKv/Wnrz649xt0/n/qZHYa/xOoL9ZeRbF
+ Z9E/c6xeprEvfqZLGUjCsVgqMFGPfKeZtyQz5DO73FpdWEJMlQ+YFPyXL/ikEhc8APKN
+ Dg9JI0oGxsKIPvESPBToQzh3T+0rnfq6us1omjv0C6EhVBRprKoZXd5zs8WWuAGJNf6k
+ axqQ==
+X-Gm-Message-State: AOJu0YyLijYpU0dRgrWy/CXEWr69l/l5kICYTe5pJb5qIldwnv9dTsfc
+ 9AyjYaYwsLBb9bvOckG6KSZDkQ==
+X-Google-Smtp-Source: AGHT+IG4SlRMqCLOqDDWbJyRiwbhyLlcpxl1WN0uSIfrCnNpn0U742p9Bl8bm6m+hXvhNco2s46L6w==
+X-Received: by 2002:a05:6808:de6:b0:3a7:3792:5b8a with SMTP id
+ g38-20020a0568080de600b003a737925b8amr13622016oic.18.1692808059350; 
+ Wed, 23 Aug 2023 09:27:39 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:72f0:1ea7:85d2:141e?
  ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
  by smtp.gmail.com with ESMTPSA id
- r5-20020a638f45000000b00528db73ed70sm9839306pgn.3.2023.08.23.08.54.06
+ w29-20020a63935d000000b00563df2ba23bsm9875038pgm.50.2023.08.23.09.27.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 08:54:07 -0700 (PDT)
-Message-ID: <9c1329b2-83f4-c9e1-6a64-7d78c0cfef55@linaro.org>
-Date: Wed, 23 Aug 2023 08:54:04 -0700
+ Wed, 23 Aug 2023 09:27:38 -0700 (PDT)
+Message-ID: <59a970fb-ad7b-d30b-1290-7b167bec0226@linaro.org>
+Date: Wed, 23 Aug 2023 09:27:36 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 2/7] tcg/tcg-op: Document bswap32() byte pattern
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230822093712.38922-1-philmd@linaro.org>
- <20230822093712.38922-3-philmd@linaro.org>
- <fd59f5e2-c125-6d12-cbd5-a12e3aca37ce@linaro.org>
- <6d4f5e8c-82ae-4396-3c4e-fe0bfd721341@linaro.org>
+Subject: Re: Failing avocado tests in CI (was: Re: [PULL 00/24] tcg +
+ linux-user queue for 8.1-rc3)
 Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+References: <20230806033715.244648-1-richard.henderson@linaro.org>
+ <772eb951-8a43-902b-3737-e52b44f7dcdb@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <6d4f5e8c-82ae-4396-3c4e-fe0bfd721341@linaro.org>
+In-Reply-To: <772eb951-8a43-902b-3737-e52b44f7dcdb@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
@@ -100,32 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/23/23 06:14, Philippe Mathieu-Daudé wrote:
-> On 22/8/23 18:00, Richard Henderson wrote:
->> On 8/22/23 02:37, Philippe Mathieu-Daudé wrote:
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   tcg/tcg-op.c | 12 ++++++++++++
->>>   1 file changed, 12 insertions(+)
-> 
-> 
->>> +/*
->>> + * bswap32_i64: 32-bit byte swap on the low bits of a 64-bit value.
->>> + *
->>> + * Byte pattern:  bswap32_i64(xxxxabcd) -> ....dcba     (TCG_BSWAP_OZ)
->>> + *                bswap32_i64(xxxxabcd) -> ssssdcba     (TCG_BSWAP_OS)
->>> + *                bswap32_i64(xxxxabcd) -> xxxxdcba
->>> + */
+On 8/23/23 06:04, Thomas Huth wrote:
+> On 06/08/2023 05.36, Richard Henderson wrote:
+>> The following changes since commit 6db03ccc7f4ca33c99debaac290066f4500a2dfb:
 >>
->> Again, TCG_BSWAP_IZ.
+>>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-08-04 
+>> 14:47:00 -0700)
+>>
+>> are available in the Git repository at:
+>>
+>>    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230805
+>>
+>> for you to fetch changes up to 843246699425adfb6b81f927c16c9c6249b51e1d:
+>>
+>>    linux-user/elfload: Set V in ELF_HWCAP for RISC-V (2023-08-05 18:17:20 +0000)
+>>
+>> ----------------------------------------------------------------
+>> accel/tcg: Do not issue misaligned i/o
+>> accel/tcg: Call save_iotlb_data from io_readx
+>> gdbstub: use 0 ("any process") on packets with no PID
+>> linux-user: Fixes for MAP_FIXED_NOREPLACE
+>> linux-user: Fixes for brk
+>> linux-user: Adjust task_unmapped_base for reserved_va
+>> linux-user: Use ELF_ET_DYN_BASE for ET_DYN with interpreter
+>> linux-user: Remove host != guest page size workarounds in brk and image load
+>> linux-user: Set V in ELF_HWCAP for RISC-V
+>> *-user: Remove last_brk as unused
 > 
-> Whether TCG_BSWAP_IZ is set or not doesn't change the result, at the
-> end we have:
+>   Hi Richard,
 > 
->    bswap32_i64(xxxxabcd) -> ....dcba     (TCG_BSWAP_OS not set)
->    bswap32_i64(xxxxabcd) -> ssssdcba     (TCG_BSWAP_OS set)
+> I noticed that we currently have two failing Avocado jobs in our CI, avocado-system-centos 
+> and avocado-system-opensuse, where the boot_linux.py:BootLinuxX8664.test_pc_i440fx_tcg and 
+> the boot_linux.py:BootLinuxX8664.test_pc_q35_tcg are now apparently crashing. If I've got 
+> the history right, it started with your pull request here, in the preceeding one from 
+> Paolo, everything is still green:
+> 
+>   https://gitlab.com/qemu-project/qemu/-/pipelines/956543770
+> 
+> But here the jobs started failing:
+> 
+>   https://gitlab.com/qemu-project/qemu/-/pipelines/957458385
+> 
+> Could you please have a look?
 
-It changes the input: not 'x' but '.'.
+It's some sort of timing issue, which sometimes goes away when re-run.  I was re-running 
+tests *a lot* in order to get them to go green while running the 8.1 release.
+
+For instance, with very little added except for your s390x pull, the same 
+BootLinuxX8664.test_pc_i440fx_tcg test passes:
+
+https://gitlab.com/qemu-project/qemu/-/jobs/4931341744#L136
+
+In the failing i44fx_tcg test, you can even see it's a timing issue:
+
+https://qemu-project.gitlab.io/-/qemu/-/jobs/4813804725/artifacts/build/tests/results/latest/test-results/02-tests_avocado_boot_linux.py_BootLinuxX8664.test_pc_i440fx_tcg/debug.log
+
+23:42:30 DEBUG| [   61.003328] Sending NMI from CPU 0 to CPUs 1:
+23:42:30 DEBUG| [   61.007829] INFO: NMI handler (nmi_cpu_backtrace_handler) took too long 
+to run: 2.622 msecs
+23:42:30 DEBUG| [   61.003328] NMI backtrace for cpu 1 skipped: idling at 
+native_safe_halt+0xe/0x10
+23:42:30 DEBUG| [   61.003328] rcu: rcu_sched kthread starved for 60002 jiffies! g-963 
+f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=1
+23:42:30 DEBUG| [   61.003328] rcu: RCU grace-period kthread stack dump:
+23:42:30 DEBUG| [   61.003328] rcu_sched       I    0    10      2 0x80004000
+23:42:30 DEBUG| [   61.003328] Call Trace:
+23:42:30 DEBUG| [   61.003328]  ? __schedule+0x29f/0x680
+...
 
 
 r~
