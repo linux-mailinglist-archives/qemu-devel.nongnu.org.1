@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCD8785CB4
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 17:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F3C785CBF
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 17:56:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYqA0-0002Dx-8c; Wed, 23 Aug 2023 11:52:44 -0400
+	id 1qYqCq-0003cK-S7; Wed, 23 Aug 2023 11:55:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYq9T-00024o-KN
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:52:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYq9R-00038T-Po
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:52:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692805928;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CRRyQ5MRv8xdAFpPkZ/ocBuYccF1xtbfQoCm6L6AMVA=;
- b=dbbN/K+R0PfIGjkx+hDgTq6CRJsdI+hOhORWx3yJUG4m99sX+1ZGYbfRaZiEKIlDEs+ZwU
- bUZF/UFcqs06LG8E7GkcPJufytgdF5u88DI4pCkGX1k6KGQEQT5SPLGAh376e+ShFmtEVR
- 5pZqSnQBJH8PPbTagaRO6d6se4jHBNM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-HiUGQdv2OtyTk7Oz-_e64g-1; Wed, 23 Aug 2023 11:52:07 -0400
-X-MC-Unique: HiUGQdv2OtyTk7Oz-_e64g-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-64f54ababd1so3473866d6.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 08:52:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qYqBP-0003Xh-7R
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:54:11 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qYqBN-0003Wr-CD
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 11:54:10 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3a7d4030621so3511770b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 08:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692806047; x=1693410847;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Mbo9xthiYpyiuX8HpVhTCj5ZDtbPzcTo+dOqtUXbZvs=;
+ b=R8sN/6knwFQjiJ8+RkhqKUvGCP8YbhDJs54RRJGxQgALnVci7ATAd/daaHkksxXHgo
+ rq8fNzXA7NVdR05Q4a8QNFAhvMiSmyV2vBqmnbBlOdfkBtKIjLQ2stj3UDXDh+dOF+nA
+ fIFCn2Bve2jTDHPhOBVFaZ81DfFD6ouwFrj3bM0fTp5EcFdO9d+BHkXmcLKXjaNWtuH1
+ 7iNuiEyIvp38cd9G2cwAarf8Qx7vC5/I4eumZLyveBescjpHyB0CPtFv6U5ViOp3Ajkx
+ munLZtytWfrtxjRBiwXyKe1kxkcYYCB2SDQgiN0W5jANbl72mcOMdOEO0JuHIkKRW6jE
+ yLvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692805926; x=1693410726;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1692806047; x=1693410847;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CRRyQ5MRv8xdAFpPkZ/ocBuYccF1xtbfQoCm6L6AMVA=;
- b=PaemmMfOWoQDiRvL8k1G98HnYKNbWZDB5eRJeVCFSO6N34VNj1E8pwBLNq6BN/mPeP
- DLO+BnSmIaJ1nrAh2URBsMF/128f95IiqRJLofbqkum+m4mWZNbtR+orps1otgOOJB1w
- ARFetDSKawaYjrHKP7/bqjXwt8i5LzT5zGie5uSxB3/+11pQD8Ofs5IyYOTBNoWkKBR3
- BWo/AwIowNLIxV1xiU40LL9jMs7CHw0nC2gy8o64KiEhHYB4nt9qXW18jie6AEHoYJQP
- v333Xu7HidHMgfZ1rcX5q6kq3lFniQmEQkHG15OGLA+TXx4icsNKS6PRxRcV7Eh+aUiH
- gIkA==
-X-Gm-Message-State: AOJu0YwN87i5jWo6fKHwSRaQ5XyIjblZSU8/FabGCljObbt66s6kEw4o
- BOpAZC8DnijfCwreK+fN0p4fEueC+O/6v1MK+qH4ZSbzjdYLjcDxpEaV1bIABu34E2mNEJe2kOD
- mFIwSBdAx0xElP/4=
-X-Received: by 2002:a05:6214:4111:b0:621:65de:f60c with SMTP id
- kc17-20020a056214411100b0062165def60cmr14993766qvb.3.1692805926527; 
- Wed, 23 Aug 2023 08:52:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHblVM0hL/S5SXx9bXKJcod4NZdtnM3567eMzv2tnOfUb+uPIk4qsVCue0ciVrK79dJ8PFHvQ==
-X-Received: by 2002:a05:6214:4111:b0:621:65de:f60c with SMTP id
- kc17-20020a056214411100b0062165def60cmr14993750qvb.3.1692805926199; 
- Wed, 23 Aug 2023 08:52:06 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- o9-20020a0ccb09000000b0063d20fa8341sm4612050qvk.8.2023.08.23.08.52.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 08:52:05 -0700 (PDT)
-Date: Wed, 23 Aug 2023 11:52:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH for-8.2 3/4] migration/qapi: Replace
- @MigrateSetParameters with @MigrationParameters
-Message-ID: <ZOYrIhps4AL9ZyTx@x1n>
-References: <20230814221947.353093-1-peterx@redhat.com>
- <20230814221947.353093-4-peterx@redhat.com>
- <871qftx532.fsf@pond.sub.org>
+ bh=Mbo9xthiYpyiuX8HpVhTCj5ZDtbPzcTo+dOqtUXbZvs=;
+ b=j5rIlRqEkc0HC22+IF7G52poW3ojOeJNC9rbuLpodmbLDwYPAM4ZCuY40SWOO0DrIS
+ 0wx5EkhUrpQjTIs+bIogPRSNeLymr3lYJ2x02+kFvWJ3nTWfqRtT6ADwYSmAbfRN9l26
+ zvHjaoKNiaVR17Nh14kRh1e9w4YPUDc0nL53hwEQHRDFhpDXv51d/NUdh75057wcX7a6
+ xPLZ/WcNwVCECw9AFbCehVgTEYPJ9Fedeo4Ph1n2W4PD+wHvIOxKfOOuUFcjoapzDuA6
+ chorUxhvlFwDB0dYvvKziYJKONO34W75r6lnGmqI0urTQt49Hnw1xPCoh0XqqgEUkfV/
+ s6tw==
+X-Gm-Message-State: AOJu0YxWpG+YXyQkDqyH5ja1FDiPaE3i0coSEtOCKzGpAaeWHRQIqCXG
+ rZ+BV2ToiEYvK9RUWTZ1iFtGzQ==
+X-Google-Smtp-Source: AGHT+IGU9mAFGosVeb5/Dcf1wGPgDq1fQsOdwHkWHSN7XwZGl2GzTUVPx3MuFkOYA23BjKrQ1hyACQ==
+X-Received: by 2002:a05:6808:5d1:b0:3a7:48d2:fc82 with SMTP id
+ d17-20020a05680805d100b003a748d2fc82mr11805490oij.38.1692806047612; 
+ Wed, 23 Aug 2023 08:54:07 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:72f0:1ea7:85d2:141e?
+ ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
+ by smtp.gmail.com with ESMTPSA id
+ r5-20020a638f45000000b00528db73ed70sm9839306pgn.3.2023.08.23.08.54.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Aug 2023 08:54:07 -0700 (PDT)
+Message-ID: <9c1329b2-83f4-c9e1-6a64-7d78c0cfef55@linaro.org>
+Date: Wed, 23 Aug 2023 08:54:04 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/7] tcg/tcg-op: Document bswap32() byte pattern
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230822093712.38922-1-philmd@linaro.org>
+ <20230822093712.38922-3-philmd@linaro.org>
+ <fd59f5e2-c125-6d12-cbd5-a12e3aca37ce@linaro.org>
+ <6d4f5e8c-82ae-4396-3c4e-fe0bfd721341@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <6d4f5e8c-82ae-4396-3c4e-fe0bfd721341@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <871qftx532.fsf@pond.sub.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.684,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,105 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 23, 2023 at 03:26:25PM +0200, Markus Armbruster wrote:
-> Peter Xu <peterx@redhat.com> writes:
+On 8/23/23 06:14, Philippe Mathieu-Daudé wrote:
+> On 22/8/23 18:00, Richard Henderson wrote:
+>> On 8/22/23 02:37, Philippe Mathieu-Daudé wrote:
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   tcg/tcg-op.c | 12 ++++++++++++
+>>>   1 file changed, 12 insertions(+)
 > 
-> > These two structs are mostly identical besides some fields (quote from
-> > Daniel P. Berrangé in his reply):
-> >
-> >   1c1
-> >   < { 'struct': 'MigrationParameters',
-> >   ---
-> >   > { 'struct': 'MigrateSetParameters',
-> >   14,16c14,16
-> >   <             '*tls-creds': 'str',
-> >   <             '*tls-hostname': 'str',
-> >   <             '*tls-authz': 'str',
-> >   ---
-> >   >             '*tls-creds': 'StrOrNull',
-> >   >             '*tls-hostname': 'StrOrNull',
-> >   >             '*tls-authz': 'StrOrNull',
-> >
-> > Here the difference is @MigrateSetParameters object would allow 'null'
-> > values for any tls-* fields passed in.
-> >
-> > Markus used to describe why it happened to be StrOrNull, and also his
-> > concern on having a pure "str" type to be problematic as the reset
-> > indicator in the commit 01fa559826 ("migration: Use JSON null instead of ""
-> > to reset parameter to default").  There, "null" is introduced for the tls
-> > fields even though being treated as "" (empty string) internally to match
-> > the code.
 > 
-> Suggest
+>>> +/*
+>>> + * bswap32_i64: 32-bit byte swap on the low bits of a 64-bit value.
+>>> + *
+>>> + * Byte pattern:  bswap32_i64(xxxxabcd) -> ....dcba     (TCG_BSWAP_OZ)
+>>> + *                bswap32_i64(xxxxabcd) -> ssssdcba     (TCG_BSWAP_OS)
+>>> + *                bswap32_i64(xxxxabcd) -> xxxxdcba
+>>> + */
+>>
+>> Again, TCG_BSWAP_IZ.
 > 
->   migration/qapi: Replace @MigrateSetParameters with @MigrationParameters
+> Whether TCG_BSWAP_IZ is set or not doesn't change the result, at the
+> end we have:
 > 
->   migrate-set-parameters sets migration parameters, and
->   query-migrate-parameters gets them.  Unsurprisingly, the former's
->   argument type MigrateSetParameters is quite close to the latter's
->   return type MigrationParameters.  The differences are subtle:
-> 
->   1. Since migrate-set-parameters supports setting selected parameters,
->      its arguments must all be optional (so you can omit the ones you
->      don't want to change).  query-migrate-parameters results are also
->      all optional, but almost all of them are in fact always present.
-> 
->   2. For parameters @tls_creds, @tls_hostname, @tls_authz,
->      migrate-set-parameters interprets special value "" as "reset to
->      default".  Works, because "" is semantically invalid.  Not a
->      general solution, because a semantically invalid value need not
->      exist.  Markus added a general solution in commit 01fa559826
->      ("migration: Use JSON null instead of "" to reset parameter to
->      default").  This involved changing the type from 'str' to
->      'StrOrNull'.
-> 
->   3. When parameter @block-bitmap-mapping has not been set,
->      query-migrate-parameters does not return it (absent optional
->      member).  Clean (but undocumented).  When parameters @tls_creds,
->      @tls_hostname, @tls_authz have not been set, it returns the
->      semantically invalid value "".  Not so clean (and just as
->      undocumented).
-> 
-> Items 2. and 3. need fact-checking.
+>    bswap32_i64(xxxxabcd) -> ....dcba     (TCG_BSWAP_OS not set)
+>    bswap32_i64(xxxxabcd) -> ssssdcba     (TCG_BSWAP_OS set)
 
-For 2: "reset to default" is correct, assuming the default is not enabling
-TLS.  Or perhaps we can also say "TLS disabled" to be clear?
+It changes the input: not 'x' but '.'.
 
-Currently in the code we rely on the string non-null (of tls-creds) to
-detect whether tls is enabled in general for migration:
 
-bool migrate_tls(void)
-{
-    MigrationState *s = migrate_get_current();
-
-    return s->parameters.tls_creds && *s->parameters.tls_creds;
-}
-
-Definitely not as clean (which I agree..), but we probably need to keep it
-working anyway.
-
-> 
-> > Here to deduplicate the two objects, logically it'll be safe only if we use
-> > "StrOrNull" to replace "str" type, not vice versa.  However we may face
-> > difficulty using StrOrNull as part of MigrationState.parameters [1] when
-> > replacing existing @MigrationParameters to use StrOrNull.  With the fact
-> > that nobody seems to be using "null" for tls-* fields (see the long
-> > standing qemu crash bug on tls-authz when "null" was passed in), let's use
-> > "str" to represent both objects.
-> 
-> "May face difficulty" is insufficiently strong to justify such
-> incompatible change.
-> 
-> I'll have a look at the difficulties you mentioned in [1].  If we can
-> overcome them with reasonable effort, we can and should avoid the
-> compatibility break.  If we can't, we add proper rationale here.
-
-Thanks, Markus.  Just in case of anything helpful, I've pushed the other
-version here:
-
-https://github.com/xzpeter/qemu/tree/mig-param-dedup-strornull
-
--- 
-Peter Xu
-
+r~
 
