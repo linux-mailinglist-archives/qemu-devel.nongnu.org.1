@@ -2,68 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651ED784E13
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 03:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04616784E2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 03:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYcRr-0005Hx-P1; Tue, 22 Aug 2023 21:14:16 -0400
+	id 1qYcd6-0006uy-3U; Tue, 22 Aug 2023 21:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qYcRo-0005Ha-GK
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 21:14:12 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qYcRl-00084o-9k
- for qemu-devel@nongnu.org; Tue, 22 Aug 2023 21:14:12 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxIvBZXeVkvg8bAA--.54507S3;
- Wed, 23 Aug 2023 09:14:03 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxfSNYXeVknNRgAA--.57148S3; 
- Wed, 23 Aug 2023 09:14:01 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: cpu: Implement get_arch_id callback
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20230822122634.1435006-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <39216ec0-25b1-888d-ad91-0499c96e65fe@loongson.cn>
-Date: Wed, 23 Aug 2023 09:14:00 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qYcd3-0006tk-Hm
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 21:25:49 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qYcd0-00026L-9L
+ for qemu-devel@nongnu.org; Tue, 22 Aug 2023 21:25:49 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-1c4d67f493bso3753041fac.2
+ for <qemu-devel@nongnu.org>; Tue, 22 Aug 2023 18:25:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1692753944; x=1693358744;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tj52fB48WKxx1+s8M/1bUAz7eQMsaiJoe9zD5jZGUsA=;
+ b=Fc1dVh049KYqJr2ga52zZXIaTe140sx5Dne0+IT81EvcPoy9xux44cdWA2jvaRJPJR
+ jmAPagDw0B17chKvERnwIugScaSJ0OMjYsl1nNUyZn5HDPEYjqVSRjm7ra19UvBxCNrd
+ oGVpQd6lJgj1S2g6+hDMnnjSw4c655vNhSJMM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692753944; x=1693358744;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tj52fB48WKxx1+s8M/1bUAz7eQMsaiJoe9zD5jZGUsA=;
+ b=dFKL2uD/3Rv+vENilwtDaic/+1QFFcJq/VsY7PxH5j6rwp2Rnt7aqnZu/CTpgAKfOP
+ IyNmjE/c5opcfjMr5djWoHaB+IO43jfKGXuNqSqqzo4f4FXh80S39M91BoaorjGFh5Ol
+ TSABLewSO/L3Toqhv7BgxeNtwXPxGFhZ46P8VcYWPQAY+Hlfv5DHOu/XwVRD5sgHO4IA
+ NjLKNXLP4itF/xhldnYZ+KczRlDtwElkma+oYzuidkMKXRqgBj7eS14EHDVVfIu+h137
+ PCzaw2tGDK1pT+lKiFBo+2n/v39MN3cwwt07mKJyOnDy0qbw8Xhyy3euFGPYNHZEtwHp
+ 7nwQ==
+X-Gm-Message-State: AOJu0Yzec7JruKYK6tcJut+VLxwshSfJgC6uCqRKeaK3x3NOmgairCoZ
+ ExjbrHd5FZwXXzD6ESHL0W2g98YLyOUjWOvQtDM=
+X-Google-Smtp-Source: AGHT+IHWzRiVOOW5KIb7waPjEKCutOIjEVAtDrTwlnwu2hYwgoYSMH8pNTUiUzQZXE8NTiT7q1oM/A==
+X-Received: by 2002:a05:6870:b30a:b0:1b0:68f7:da8 with SMTP id
+ a10-20020a056870b30a00b001b068f70da8mr13719705oao.12.1692753944156; 
+ Tue, 22 Aug 2023 18:25:44 -0700 (PDT)
+Received: from gurchetansingh0.mtv.corp.google.com
+ ([2620:15c:a7:2:a483:9c7e:d68:4057])
+ by smtp.gmail.com with ESMTPSA id
+ fa14-20020a17090af0ce00b00263ba6a248bsm10291409pjb.1.2023.08.22.18.25.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Aug 2023 18:25:43 -0700 (PDT)
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, akihiko.odaki@gmail.com, ray.huang@amd.com,
+ alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is,
+ ernunes@redhat.com, manos.pitsidianakis@linaro.org, philmd@linaro.org
+Subject: [PATCH v11 0/9] rutabaga_gfx + gfxstream
+Date: Tue, 22 Aug 2023 18:25:32 -0700
+Message-Id: <20230823012541.485-1-gurchetansingh@chromium.org>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-In-Reply-To: <20230822122634.1435006-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxfSNYXeVknNRgAA--.57148S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7WrWrGFyDJFy3XF17tr4rtFc_yoW5Jr1Dpr
- ZruF1qka18JrZxJa97Ja45Xr1DXr17Wr42qa1xKryxCFs8Xry8XF1vy3sFvF98uay8GF12
- qF1Fk3W5XF48X3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.767, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-oa1-x33.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,79 +89,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/8/22 ÏÂÎç8:26, Bibo Mao Ð´µÀ:
-> Implement the callback for getting the architecture-dependent CPU
-> ID, the cpu ID is physical id described in ACPI MADT table, this
-> will be used for cpu hotplug.
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> Change-Id: I53bcfb9f4279e491f33e8b99a9102534ad53409e
-> ---
+From: Gurchetan Singh <gurchetansingh@google.com>
 
-Drop Chang-Id.
+Changes since v10:
+- Licensing and comment fixes
 
-Otherwise
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+- Official "release commits" issued for rutabaga_gfx_ffi,
+  gfxstream, aemu-base.  For example, see crrev.com/c/4778941
 
-Thanks.
-Song Gao
+- The release commits can make packaging easier, though once
+  again all known users will likely just build from sources
+  anyways
 
->   hw/loongarch/virt.c    | 2 ++
->   target/loongarch/cpu.c | 8 ++++++++
->   target/loongarch/cpu.h | 1 +
->   3 files changed, 11 insertions(+)
-> 
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index e19b042ce8..6f6b577749 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -815,6 +815,8 @@ static void loongarch_init(MachineState *machine)
->           cpu = cpu_create(machine->cpu_type);
->           cpu->cpu_index = i;
->           machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
-> +        lacpu = LOONGARCH_CPU(cpu);
-> +        lacpu->phy_id = machine->possible_cpus->cpus[i].arch_id;
->       }
->       fdt_add_cpu_nodes(lams);
->   
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index ad93ecac92..7be3769672 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -690,6 +690,13 @@ static struct TCGCPUOps loongarch_tcg_ops = {
->   static const struct SysemuCPUOps loongarch_sysemu_ops = {
->       .get_phys_page_debug = loongarch_cpu_get_phys_page_debug,
->   };
-> +
-> +static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
-> +{
-> +    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-> +
-> +    return cpu->phy_id;
-> +}
->   #endif
->   
->   static gchar *loongarch_gdb_arch_name(CPUState *cs)
-> @@ -715,6 +722,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
->       cc->set_pc = loongarch_cpu_set_pc;
->       cc->get_pc = loongarch_cpu_get_pc;
->   #ifndef CONFIG_USER_ONLY
-> +    cc->get_arch_id = loongarch_cpu_get_arch_id;
->       dc->vmsd = &vmstate_loongarch_cpu;
->       cc->sysemu_ops = &loongarch_sysemu_ops;
->   #endif
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index fa371ca8ba..033081593c 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -371,6 +371,7 @@ struct ArchCPU {
->       CPUNegativeOffsetState neg;
->       CPULoongArchState env;
->       QEMUTimer timer;
-> +    uint32_t  phy_id;
->   
->       /* 'compatible' string for this CPU for Linux device trees */
->       const char *dtb_compatible;
-> 
+How to build both rutabaga and gfxstream guest/host libs:
+
+https://crosvm.dev/book/appendix/rutabaga_gfx.html
+
+Branch containing this patch series:
+
+https://gitlab.freedesktop.org/gurchetansingh/qemu-gfxstream/-/commits/qemu-gfxstream-v11
+
+Antonio Caggiano (2):
+  virtio-gpu: CONTEXT_INIT feature
+  virtio-gpu: blob prep
+
+Dr. David Alan Gilbert (1):
+  virtio: Add shared memory capability
+
+Gerd Hoffmann (1):
+  virtio-gpu: hostmem
+
+Gurchetan Singh (5):
+  gfxstream + rutabaga prep: added need defintions, fields, and options
+  gfxstream + rutabaga: add initial support for gfxstream
+  gfxstream + rutabaga: meson support
+  gfxstream + rutabaga: enable rutabaga
+  docs/system: add basic virtio-gpu documentation
+
+ docs/system/device-emulation.rst     |    1 +
+ docs/system/devices/virtio-gpu.rst   |  112 +++
+ hw/display/meson.build               |   22 +
+ hw/display/virtio-gpu-base.c         |    6 +-
+ hw/display/virtio-gpu-pci-rutabaga.c |   50 ++
+ hw/display/virtio-gpu-pci.c          |   14 +
+ hw/display/virtio-gpu-rutabaga.c     | 1121 ++++++++++++++++++++++++++
+ hw/display/virtio-gpu.c              |   16 +-
+ hw/display/virtio-vga-rutabaga.c     |   53 ++
+ hw/display/virtio-vga.c              |   33 +-
+ hw/virtio/virtio-pci.c               |   18 +
+ include/hw/virtio/virtio-gpu-bswap.h |   18 +
+ include/hw/virtio/virtio-gpu.h       |   41 +
+ include/hw/virtio/virtio-pci.h       |    4 +
+ meson.build                          |    7 +
+ meson_options.txt                    |    2 +
+ scripts/meson-buildoptions.sh        |    3 +
+ softmmu/qdev-monitor.c               |    3 +
+ softmmu/vl.c                         |    1 +
+ 19 files changed, 1506 insertions(+), 19 deletions(-)
+ create mode 100644 docs/system/devices/virtio-gpu.rst
+ create mode 100644 hw/display/virtio-gpu-pci-rutabaga.c
+ create mode 100644 hw/display/virtio-gpu-rutabaga.c
+ create mode 100644 hw/display/virtio-vga-rutabaga.c
+
+-- 
+2.42.0.rc1.204.g551eb34607-goog
 
 
