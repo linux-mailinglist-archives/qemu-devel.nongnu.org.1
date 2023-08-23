@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4652786150
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 22:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06280786154
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 22:22:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYuMq-0005cj-HI; Wed, 23 Aug 2023 16:22:16 -0400
+	id 1qYuMz-0005wL-AI; Wed, 23 Aug 2023 16:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYuMo-0005bm-EK
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:22:14 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYuMx-0005nM-1w
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:22:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYuMm-0005EA-Va
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:22:14 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qYuMv-0005FG-KQ
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 16:22:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692822132;
+ s=mimecast20190719; t=1692822141;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=5+tzMgDM9lpHko7ykZ540VsS7RJ3PTo9MvbBMHpxUes=;
- b=IPV7ZH2UlnI5/t4wcjgVeCkRCqIDiKuZLiHt4WRZCtbaWjjN6GU8V37zGhdNGiIkTlqAGp
- KOoW0kzha7sb8Gzg5ijbn0Yq1+HhijlI0qxa2hnbcK0vg2JIy762QEhuH22AiMbuj9ED4I
- XJbIl03fdGqRusjwzFGVacSbUqpQKtE=
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
- [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g4R2ahnxtehW79MVxpyfS53s2T7FU3KxpkpGvpPoogc=;
+ b=VhhtB/0cHYchtGOJSEgQ1r6U4IWRkLcV4xqL4MvoXMXulmF6P+cpxtYbXtNmY8LPMUeM94
+ V/tedKG5Wg1mLv493xxdOBEnBi71soPzb7CuveFO+HRRUMBsgZPdFw6SJAKW3VMLNdAUnh
+ H5L1nwAtNYs6+Zds2GHlRlvdn/2BDOI=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-195-l0oYYLrkPD-7QO3Zyfj2Ow-1; Wed, 23 Aug 2023 16:22:10 -0400
-X-MC-Unique: l0oYYLrkPD-7QO3Zyfj2Ow-1
-Received: by mail-oa1-f70.google.com with SMTP id
- 586e51a60fabf-1c8d3bfbdbfso924754fac.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:22:10 -0700 (PDT)
+ us-mta-659-iQcIJEW5MVmRC-XondYeQg-1; Wed, 23 Aug 2023 16:22:19 -0400
+X-MC-Unique: iQcIJEW5MVmRC-XondYeQg-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-64f54ababd1so4123566d6.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 13:22:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692822129; x=1693426929;
+ d=1e100.net; s=20221208; t=1692822139; x=1693426939;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5+tzMgDM9lpHko7ykZ540VsS7RJ3PTo9MvbBMHpxUes=;
- b=YXJCHXiYZHJXojZgn2ko3pecZe1S2t861RwdYLOQHnQptfxzWDhOyUnHAC6BxPt4+r
- 9QjIE5ON/L3Gl9N8m79we8iYA0dAfNi1BaEWhpiQSdI880eutYtbxoMIGDjksmNbE6X5
- CBfMqoB6xLFYNPNJKyXT6aD9aLsfUIaOiKomQMCSB6VbYU/yCS8WnqYThFzw2zV7uS+L
- 3IEK/d5zcfI0jU3Lz1oxIVia3IQKG6I8NvfoBibxNp1TO/E30k6Eo6yZKf0daehlCQ4G
- VDk2V1HeKD/h6Mbr4P6Cd+NJ/oAnS6WOCoH4xm7j7thG+stk84MVZyxWr+iFoDAaiFBS
- xL+w==
-X-Gm-Message-State: AOJu0YxWK3XQ/pdVc26BWCLAL3SU8FY+pMvAuLHfpJ93J3XH1LU/WgfE
- zokL9ZgzHRCTu6Bww180JAAQSlu4qQJDfPnAeO4RpFltiizuiaDt/YAsSb9hldY1u3tL8e+IjJb
- MJkc8VBnj6P0YKy4=
-X-Received: by 2002:a05:6871:5223:b0:1bf:fe4f:db58 with SMTP id
- ht35-20020a056871522300b001bffe4fdb58mr17051242oac.5.1692822129447; 
- Wed, 23 Aug 2023 13:22:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTO/fpFfDit1uDHaQ2yM4/696GTKtNTMydz64X6vbNCN3SEQUYrw1LQLodo/N2/6BYrcvdQQ==
-X-Received: by 2002:a05:6871:5223:b0:1bf:fe4f:db58 with SMTP id
- ht35-20020a056871522300b001bffe4fdb58mr17051232oac.5.1692822129119; 
- Wed, 23 Aug 2023 13:22:09 -0700 (PDT)
+ bh=g4R2ahnxtehW79MVxpyfS53s2T7FU3KxpkpGvpPoogc=;
+ b=W5DbyAPaosdybEXt96uRYnEDo+Mek1l23pl9L810D5OIWBmVkJx68gZG8S859CijzY
+ oN4qxK6C9qykNQpeKWYNdc9j7Hh8ugtzFJo7haX6bbbvPH8zTKHo54JqO3r7xSXfQ/ca
+ kiZAeZqHjT7gKOiuZPGcF+DOUyjwwCAP5cV4y8eh5PSLzy8be2tkL2ruSoRJfArDfQfH
+ LgehDOehsOYDArjqZ5vibCcOInOA1tnj896XsHEXYrDBYkwPs+zubSrk2F2MjFokX8Vr
+ nHh1v5W+3356iqbhlkEmne391/MYDEi/5V+VYaIbm/RB9wNPEp/kwJH6Hr0ZXJyUfSZS
+ 44OA==
+X-Gm-Message-State: AOJu0Yx+fZGW84i8ZpXGqGbQy2B7bojZOMxtB8mQNiKxkA4xD+4pBrS9
+ /XPwNV9SU5Bn//SFg3D1LwkTkCwcPCaIq60VeUiAiXVxA5BFEo22XNLPKzrD0yenYj4JaY4SW1q
+ AO4i1x5hnSD7VPrY=
+X-Received: by 2002:a05:6214:5098:b0:63d:2a0b:3f91 with SMTP id
+ kk24-20020a056214509800b0063d2a0b3f91mr15635127qvb.2.1692822139359; 
+ Wed, 23 Aug 2023 13:22:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGfM/9duN1Jeo41iBLNbtDb/SVem0ISq2HH96zJVha+Cqn59panYHKZtloa/aXclafvxkwFmA==
+X-Received: by 2002:a05:6214:5098:b0:63d:2a0b:3f91 with SMTP id
+ kk24-20020a056214509800b0063d2a0b3f91mr15635103qvb.2.1692822139129; 
+ Wed, 23 Aug 2023 13:22:19 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- z9-20020a0cf009000000b0064bdd4239f3sm4407196qvk.126.2023.08.23.13.22.07
+ g25-20020a0caad9000000b0063d5c9de720sm448453qvb.80.2023.08.23.13.22.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 13:22:08 -0700 (PDT)
-Date: Wed, 23 Aug 2023 16:22:06 -0400
+ Wed, 23 Aug 2023 13:22:18 -0700 (PDT)
+Date: Wed, 23 Aug 2023 16:22:16 -0400
 From: Peter Xu <peterx@redhat.com>
 To: David Hildenbrand <david@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
@@ -77,15 +77,15 @@ Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Greg Kurz <groug@kaod.org>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v3 06/11] softmmu/physmem: Fail creation of new files in
- file_ram_open() with readonly=true
-Message-ID: <ZOZqbn6uQQVExx9e@x1n>
+Subject: Re: [PATCH v3 07/11] softmmu/physmem: Never return directories from
+ file_ram_open()
+Message-ID: <ZOZqeBInVdNpGZEo@x1n>
 References: <20230823153412.832081-1-david@redhat.com>
- <20230823153412.832081-7-david@redhat.com>
+ <20230823153412.832081-8-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230823153412.832081-7-david@redhat.com>
+In-Reply-To: <20230823153412.832081-8-david@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -110,39 +110,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 23, 2023 at 05:34:06PM +0200, David Hildenbrand wrote:
-> Currently, if a file does not exist yet, file_ram_open() will create new
-> empty file and open it writable. However, it even does that when
-> readonly=true was specified.
+On Wed, Aug 23, 2023 at 05:34:07PM +0200, David Hildenbrand wrote:
+> open() does not fail on directories when opening them readonly (O_RDONLY).
 > 
-> Specifying O_RDONLY instead to create a new readonly file would
-> theoretically work, however, ftruncate() will refuse to resize the new
-> empty file and we'll get a warning:
->     ftruncate: Invalid argument
-> And later eventually more problems when actually mmap'ing that file and
-> accessing it.
+> Currently, we succeed opening such directories and fail later during
+> mmap(), resulting in a misleading error message.
 > 
-> If someone intends to let QEMU open+mmap a file read-only, better
-> create+resize+fill that file ahead of time outside of QEMU context.
-> 
-> We'll now fail with:
-> ./qemu-system-x86_64 \
+> $ ./qemu-system-x86_64 \
 >     -object memory-backend-file,id=ram0,mem-path=tmp,readonly=true,size=1g
-> qemu-system-x86_64: can't open backing store tmp for guest RAM: No such file or directory
+>  qemu-system-x86_64: unable to map backing store for guest RAM: No such device
 > 
-> All use cases of readonly files (R/O NVDIMMs, VM templating) work on
-> existing files, so silently creating new files might just hide user
-> errors when accidentally specifying a non-existent file.
+> To identify directories and handle them accordingly in file_ram_open()
+> also when readonly=true was specified, detect if we just opened a directory
+> using fstat() instead. Then, fail file_ram_open() right away, similarly
+> to how we now fail if the file does not exist and we want to open the
+> file readonly.
+> 
+> With this change, we get a nicer error message:
+>  qemu-system-x86_64: can't open backing store tmp for guest RAM: Is a directory
 > 
 > Note that the only memory-backend-file will end up calling
 > memory_region_init_ram_from_file() -> qemu_ram_alloc_from_file() ->
 > file_ram_open().
 > 
-> Move error reporting to the single caller.
-> 
+> Reported-by: Thiner Logoer <logoerthiner1@163.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
 -- 
 Peter Xu
