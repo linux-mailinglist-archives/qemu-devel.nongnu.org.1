@@ -2,107 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB85E785800
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 14:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C208778580B
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 14:50:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYnDK-0002Cm-Fk; Wed, 23 Aug 2023 08:43:58 -0400
+	id 1qYnIJ-0004V7-IO; Wed, 23 Aug 2023 08:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYnDI-0002CG-8t
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:43:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qYnID-0004UC-Me; Wed, 23 Aug 2023 08:49:01 -0400
+Received: from mail-db3eur04on0703.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0c::703]
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qYnDG-000601-44
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 08:43:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692794633;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=G7lBOr7Z9ztssPGrJXGWNMWDnIWX7JELVGTIhaGVRwY=;
- b=ebDFEr+GD5XKJRRR52jONZ0w4B/2bkhSYJ1aWxk8RnnNXXFHUGeobPROWEMOAoa6MQQR0i
- whCf05IgXwEyPaxJBzbW5IgYGvRK3r0aF/83zLKxFkPfT3MNz/X5yT5/+4Cbk3OmhKaFtg
- a8H+r8W6XU/Mzmd/Yi8DNUQ10czayfo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-nidIQvHFOwqQvk0Lsx8bUw-1; Wed, 23 Aug 2023 08:43:51 -0400
-X-MC-Unique: nidIQvHFOwqQvk0Lsx8bUw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe517ca810so37745095e9.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 05:43:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692794630; x=1693399430;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=G7lBOr7Z9ztssPGrJXGWNMWDnIWX7JELVGTIhaGVRwY=;
- b=JJkoT7WwtRrL9Dl3176zcNA5clZrrp7TaQy8ftO+0oJ4ZPk7kS4s1YRSyRV9Q5dXQU
- Pt2aN69Y9DuI+Cp3wGno9Vlk6VQN4WRHGvxabPgfZhh2d2vcVVtR0xs2weu4S/U9J84q
- 2wwJau4qtQLdu8dUdubyBEFkslFYio5w9IrR1d/1YeFrLF0tTv9rARSZQpsGpldLyUF8
- 6DXyCT+sOg7qcyLOju/WXt236KXNLXhssu3F/aFx9Pfu3eMZ0zLCaRrAxZInjJ5whOfB
- h9yo0m78ICAeGdaVezDcTrNb8d7dj7uvQia6JR/pCZxvciD0WOtMmMgkgiYSciUNp+BT
- w4yQ==
-X-Gm-Message-State: AOJu0Yz3wpizeqxyMuufosqCAyiGhzunqnURjT2kTz8CX9haL2KB8UZj
- NXQUap/XKrfQZCEcLD1qotv7K8TcXV5ODu3Moda5oteAmYIKs6hwi0AiyhPo/YafxfaSUtsfQUy
- bVV4tCy5pCaaf//c=
-X-Received: by 2002:a5d:42ca:0:b0:319:6d03:13ae with SMTP id
- t10-20020a5d42ca000000b003196d0313aemr10183074wrr.55.1692794630375; 
- Wed, 23 Aug 2023 05:43:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOBBW5xDKG5cVlkHwKJtZIGQO0x0QhaA98Jw2TPsQssHhDYBFJcdZ1XKjM1kMzrgP/JZpx0w==
-X-Received: by 2002:a5d:42ca:0:b0:319:6d03:13ae with SMTP id
- t10-20020a5d42ca000000b003196d0313aemr10183040wrr.55.1692794629884; 
- Wed, 23 Aug 2023 05:43:49 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70c:e700:4d5c:81e2:253e:e397?
- (p200300cbc70ce7004d5c81e2253ee397.dip0.t-ipconnect.de.
- [2003:cb:c70c:e700:4d5c:81e2:253e:e397])
- by smtp.gmail.com with ESMTPSA id
- n16-20020a5d4850000000b003179b3fd837sm18992374wrs.33.2023.08.23.05.43.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 05:43:49 -0700 (PDT)
-Message-ID: <049b3601-5d57-d772-8365-a3e9bf9f03bc@redhat.com>
-Date: Wed, 23 Aug 2023 14:43:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qYnIA-0007GB-Oz; Wed, 23 Aug 2023 08:49:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jY/ngcRAUDQWhF4jkUTGyAAlT3nhLlT0ZT0M+fYkBAZ+Kp9TXKeR90RSY/8ouFK3PT9YuGDA/UFYkfhIj1NJHWl067uasJC22SutdDDbDPlIjGOIbMItBz34mR73n88T6jkd3ppmMMpoXPYPiqyhwGJDpL5tyDZUJTRZ/TuXUoiBk8rur9GD7XQ2j1/4aXYYaoFK4/d0kQNz2ZBrc21IUvmgHDJcuvBRmk3Zk89CtcGpQ9j8A2PQlnPf5R6UH8RyA5yyLXVCXVopNzA/brDXZGMxCehwpPP1UKGtddvHeMI1iJV0ShIKIXxd2GNtBBTQSYWsFg9P2Qi7fXHbfm5Tsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=epBz33GulD9x3g8eRCH/VnmxEvwmcdBkmbYGqcuZFag=;
+ b=fhz/GqQkvpI4AGSq+6xVpYDsjNlhpPR9OG8CFJmSDKF2JA4UWFFes8QCT7Jf5eWLcEKv+PEwgINSlaAa1tfI6Vefqn/M5wmrKdyVmIxHiJ1e0DZ6CLc2sFictTJPJL3NOXn+nEkchZGCWIXLC1tg5qv2MJPG1JbnmfjeguQzxjFBAkTzHke2GfN19Y3AY9qv6tP1cZLVRgMGmqdiqjFGZYwkG+dl1ilYviaMGOhxw0DlJ0W1MI3rlX6eSvdWRkD9rOjvfrib3DyXfNCrYwH8uO7iq/ONOwcMpijTrG8tBGCsk6ZD0UIkzmexAwWMipNiuxnBm41RhHbOTsZ6gt9eew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=epBz33GulD9x3g8eRCH/VnmxEvwmcdBkmbYGqcuZFag=;
+ b=oKuCg2QVLOnuds7HfbfqV53FKdtbgxyGHu22+yNQxl3rv5mnPXWRW6kvidmfCfhEYbN47C2FioMWglyHCmmiIJGFK0b97AiANwn2Rj4JAM/R2EkeS7P74OJOxzWu7hbL6fhU39GyS+ralWM4mLxoeQzmCVesX+OXDN9n294WqfQgPO+1Q/5VGgYjLWQDp7JvmYSudMra+o9YO2np5oR1FkmJjUFCqU1iWCQVMMW0T+Q2uK/QRGo1vh8zsImrEFX2wFjJ59NxCnB5W7Q9zjCfqlll1UGJ8pMw9gq7pUAoBFSqJvd4pAhwbQSVPfYjwumVgpVftenLOzCyKMPfJlMm7Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AM4PR08MB2932.eurprd08.prod.outlook.com (2603:10a6:205:e::33)
+ by DU2PR08MB7343.eurprd08.prod.outlook.com (2603:10a6:10:2f2::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Wed, 23 Aug
+ 2023 12:48:51 +0000
+Received: from AM4PR08MB2932.eurprd08.prod.outlook.com
+ ([fe80::6ffb:db00:bd2f:bcac]) by AM4PR08MB2932.eurprd08.prod.outlook.com
+ ([fe80::6ffb:db00:bd2f:bcac%7]) with mapi id 15.20.6699.022; Wed, 23 Aug 2023
+ 12:48:51 +0000
+Message-ID: <3ea51ea2-0138-4a0e-92f0-175d8ad7540e@virtuozzo.com>
+Date: Wed, 23 Aug 2023 15:50:55 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] block: align CoR requests to subclusters
 Content-Language: en-US
-To: ThinerLogoer <logoerthiner1@163.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230822114504.239505-1-david@redhat.com>
- <20230822114504.239505-4-david@redhat.com>
- <5537a603.478c.18a1da37f4a.Coremail.logoerthiner1@163.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v2 3/9] backends/hostmem-file: Add "rom" property to
- support VM templating with R/O files
-In-Reply-To: <5537a603.478c.18a1da37f4a.Coremail.logoerthiner1@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.684, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org, qemu-devel@nongnu.org,
+ kwolf@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
+ eblake@redhat.com, den@openvz.org, stefanha@redhat.com, fam@euphon.net
+References: <20230711172553.234055-1-andrey.drobyshev@virtuozzo.com>
+ <c49fd209-9a6a-9e0d-752f-30a5178d855b@virtuozzo.com>
+ <85e0a9bb-8e8f-e414-70ad-528e45a803e4@virtuozzo.com>
+ <60354ae2-d394-49b8-8289-787b4e02e2a6@virtuozzo.com>
+ <577e81f0-1479-41b2-9e97-ad6678cf7216@virtuozzo.com>
+ <CAFn=p-bz35mcXgG81Dk70u4u8A8cqERot2=fJjYAcweThE0fVQ@mail.gmail.com>
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <CAFn=p-bz35mcXgG81Dk70u4u8A8cqERot2=fJjYAcweThE0fVQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR2P281CA0123.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9d::16) To AM4PR08MB2932.eurprd08.prod.outlook.com
+ (2603:10a6:205:e::33)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PR08MB2932:EE_|DU2PR08MB7343:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd886742-9968-4ee1-cdc1-08dba3d74cfe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: CTnzGl9NpnJTw0OruVIs3A0iJs1aIcvall432qxbpLN/wntlk9BA9hOv8ej6BPQ+Dao0pJP+JWLLrQOTW/Zrrq1/EqkD6wgiz0QIAJXaRHe9sT3C0PriLxva5J7bu0mw6Wj/umj8fn4GhBQgRGUYr/rFXcCRUQwW8Kag7m88LDAj/jStnX/gh7LtmMGCAWllBP6CXxKN+CcSGYYsbsHIJ0bBuMK8UQtxpGj/5PDdRt3oW8Gqq01l/tSym10TFnm6/+QZMY+gYyUZSMb/AEyPn5FFksTQDXCGJrFlHydlciextm++fj7Vuft29v2rR76Z9IhIKsokh1nW8E9jEaRJOTtvDj2zuvhM4k2/iVx/X3Opw3s1W27cN9yCmSprD6SXk9Bc7M9pjgl42KhNets2TkddCbBYQIr/tY4GEutKQodfzG9C+5+xEXIKRofpQVM8e/ugSNO6BBKoozNHqJjajzHgf0qyM9dtYrmb67bTC4cuELjzh1NqzGRjPF5Reb5Is7joujF3ACbQDDfjup1gRHCLt99f2zm1qrLIBw5EnvAubp4gHDw2yAne+QaXRaeq6LfJ4N4UBbcF2zpQ+GPGVKkdbXSY6jm5ocXNIScc4o9i0HcLlv5V1EB6OlYzWNfagMEYLls85LkQyfHeTQqmFQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM4PR08MB2932.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(396003)(366004)(376002)(39840400004)(346002)(1800799009)(186009)(451199024)(6916009)(66476007)(66946007)(6512007)(316002)(66556008)(8676002)(8936002)(2616005)(966005)(4326008)(36756003)(41300700001)(478600001)(38100700002)(6506007)(53546011)(6486002)(83380400001)(7416002)(2906002)(31686004)(31696002)(86362001)(44832011)(5660300002)(26005)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OUt6R2pZeWpYNU5VSS8xS29lazUwcE10Tm9QYnkxODBGWm1SRnF3YmpQSUxU?=
+ =?utf-8?B?RUo5dXVxQkRiTi84WnNGWlduMVIvWXRLNExYSmg0VHpFQis5Rm85Y2pJVUJy?=
+ =?utf-8?B?K0J2WDBPbmYyOEp3b1FhQXBzNGdRY1kvTVk0QStyekpDZGh3ZUgzck1RNjU2?=
+ =?utf-8?B?S3orRWFQcGNtVHBHK2pPMHVhODN5TCtBQ3A2d0lTT3BzVzA2RDRSR1ordFAv?=
+ =?utf-8?B?ZUs2VXNsQWk0UGlWVEN2OFphOFlDeC9VTnhPZyt3ZnpRTEI3NWE2ajQ2cU9Y?=
+ =?utf-8?B?eG8rYnNaeHZFa1VOclZuOGtWT0NITDR3eGZpOERqQWJxMDBzaFRja2p6YVZq?=
+ =?utf-8?B?dnVqeWkycVg5ZDNUWGM3U0FwMlc5RlBFSnZMUnU4VnYvVktMWHl4WnNsSjBC?=
+ =?utf-8?B?VTN1bk5Lb2doZFdjRkNIQllaSEpTSEhnWVRKZGgzazN3WXFEUkQ2cTl5cXdH?=
+ =?utf-8?B?WTRzcHEybGFISHF3TzJpRnRyNXp1RFVORndWdTFLQ0VYOUxLdWMva2hkUHFM?=
+ =?utf-8?B?dk9mREFzWGpxUndVSnVsSHB6YmZWTFBOdisxdnh1cnVyVkV0N2g1UnZEb3J6?=
+ =?utf-8?B?Rm9qdWZEaE9BNHBOeGh4SEdyRENHb3BxblVEdGNPK2ZjOFlRZHd2R2ZGUUZo?=
+ =?utf-8?B?djF6eTJMeEw0Y2V0ZlpQWG80cWw1cnNHMGZJZG9PZW5NcjQ3MW9kVzJveE1W?=
+ =?utf-8?B?MU8yRngwbDV2UVU4R1VLSXAzUHVmVEgxT2ZBKzh3TDRzQWJvbk1FV2E0ckUr?=
+ =?utf-8?B?ek8yMVRJVzRDYzlBdVpxRm1rQm1QSWlkUXk0S0lHVU9wYWRGbU14b0VGYnYv?=
+ =?utf-8?B?WGpWcXdaS2FMUTYxc2dONlg5MHFGRHpuY040elc2RzNDQjFvdi9WOU1Yd0Fv?=
+ =?utf-8?B?RWFmZkFsQ3lybDRuaWpOVGlORGljbDkyUk9XSFFqMnB2K2dnVHdPQWUwOWtH?=
+ =?utf-8?B?RzMxcks4RXlrM2dwcnAybDBpeFhjZDF0RmhFdWN6R0RMZFBabGYzMWx4cXBl?=
+ =?utf-8?B?bUFCYnQ3eG9KcHpjWHdLV2RMdzlNdFJ0SiticnNqUnFDYUZsVGFqMklKdXdU?=
+ =?utf-8?B?b1NkR2JTTlMybE81dlhFdzZqSGZZSDNtMStqRFBLTEVKa1FmKytZZzh4ZWZl?=
+ =?utf-8?B?MlVLQjRvRjlkQlc1bGZrQ3RKak9QajB0Uk4vRUlVa3huZStCalkvM3VtTlpB?=
+ =?utf-8?B?K2kxaEhvQ1NLa0pCVkM1WTY2YmdqRHRHNVkxTTVjb2lhemZpaXJQOWdUMk9N?=
+ =?utf-8?B?NFRXeENUQXdxVkRXMGRDdlJCMHNaVHBGZGFTNUdBWWxPeGFxdTY5Nk5xd21l?=
+ =?utf-8?B?aU5xTFhITlRKb2xvT2xrWDEzTnViRmtnbk1KZ1BIVUx1d2lRVnNmUlBUTmE1?=
+ =?utf-8?B?WjhBOC9RMTRrUTNZa2E0Q1gycHN3TEIrbXFYeHlkb2p6U1d1M2h4SnJmOTMw?=
+ =?utf-8?B?RlVJNFFDQldqN3R2aHUyWWhhdThxUklYWGpGdDN0bWRhQmJEeDIxQm5OcmRV?=
+ =?utf-8?B?Q1lMOTRjcUtHdldwcW1UUHZVVFpqRjVOWUpVdGgvRXdEQitYZUJYZlF1eE80?=
+ =?utf-8?B?a0pDQ2xYTllDYm1PdVNsOXl4WUZsQWt2dk5GdHRqM1o0WmZVK05EMHdobjMw?=
+ =?utf-8?B?RG9YUU1nSkREZEpjVUdGd1ZTMDAvNEg5b2JyUloxRVRPSjR0ay83L0NabzlI?=
+ =?utf-8?B?RzFXQTZEd01uODNwQlN3RDVqdSsrS2lwdlNIWmlHMTNTWG9DK2dLL3dVR2Jm?=
+ =?utf-8?B?a1gyZHIyN3AwK0dpZjdrQW82dWVyZXdjSjlmUzlNbkpFUFk0eUl0d0lGRTgz?=
+ =?utf-8?B?aWVVRG0xQWxFdndGMVQzVEdmQXcrRzZqZ2hkQjE4T3N6ZkErOEVxSStJTWVZ?=
+ =?utf-8?B?WWIwenRxQkZ4TTFXR2VBV0tLc2pvT3JNUk1WOWUrRkxlRjU2cTVjNkVoUTNQ?=
+ =?utf-8?B?aEE2N0FvOEpVWGhBQk45TjFnODM5VGh2TGpwNmNncFM1cWpGOUl0T09SdDlY?=
+ =?utf-8?B?NzI4QXJpVG1MRGpmdDh0NW51c1Q1V3JQcngyMHBzN2gvMnRCZXExVS8vTTlj?=
+ =?utf-8?B?dGtNc3ZuQzVaaUt1SUZlaWc0bHBveUpBQW82RkVvMDRsVzNFeGNVNXBHMXB5?=
+ =?utf-8?B?T1JYNVlmOHViMUxYTlFvcEp2bm9nRS9yNVAyVTBzQUxWcUFqVzc1VzRzVnd5?=
+ =?utf-8?Q?yvgxWDBzpG2ZQux3QEC3kWE=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd886742-9968-4ee1-cdc1-08dba3d74cfe
+X-MS-Exchange-CrossTenant-AuthSource: AM4PR08MB2932.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 12:48:50.9889 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BciBHqLbMFHreMwY7KrVKCtXCdEcvZLkTBHlGS9Ne5a8Q4KXMa4ZppqjCNdvCDRUtTrlAssMxhghNKdNnGV3pmxGzChdhXrGJPWtsElun8E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB7343
+Received-SPF: pass client-ip=2a01:111:f400:fe0c::703;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,254 +150,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.08.23 16:26, ThinerLogoer wrote:
-> Hello,
+On 8/22/23 22:58, John Snow wrote:
+> On Tue, Aug 22, 2023 at 1:33 PM Andrey Drobyshev
+> <andrey.drobyshev@virtuozzo.com> wrote:
+>>
+>> On 8/16/23 12:22, Andrey Drobyshev wrote:
+>>> On 7/31/23 17:51, Andrey Drobyshev wrote:
+>>>> On 7/24/23 16:11, Andrey Drobyshev wrote:
+>>>>> On 7/11/23 20:25, Andrey Drobyshev wrote:
+>>>>>> v1 --> v2:
+>>>>>>  * Fixed line indentation;
+>>>>>>  * Fixed wording in a comment;
+>>>>>>  * Added R-b.
+>>>>>>
+>>>>>> v1: https://lists.nongnu.org/archive/html/qemu-block/2023-06/msg00606.html
+>>>>>>
+>>>>>> Andrey Drobyshev (3):
+>>>>>>   block: add subcluster_size field to BlockDriverInfo
+>>>>>>   block/io: align requests to subcluster_size
+>>>>>>   tests/qemu-iotests/197: add testcase for CoR with subclusters
+>>>>>>
+>>>>>>  block.c                      |  7 +++++
+>>>>>>  block/io.c                   | 50 ++++++++++++++++++------------------
+>>>>>>  block/mirror.c               |  8 +++---
+>>>>>>  block/qcow2.c                |  1 +
+>>>>>>  include/block/block-common.h |  5 ++++
+>>>>>>  include/block/block-io.h     |  8 +++---
+>>>>>>  tests/qemu-iotests/197       | 29 +++++++++++++++++++++
+>>>>>>  tests/qemu-iotests/197.out   | 24 +++++++++++++++++
+>>>>>>  8 files changed, 99 insertions(+), 33 deletions(-)
+>>>>>>
+>>>>>
+>>>>> Ping
+>>>>
+>>>> Another ping
+>>>
+>>> Yet another friendly ping
+>>
+>> One more friendly ping
 > 
-> At 2023-08-22 19:44:51, "David Hildenbrand" <david@redhat.com> wrote:
->> For now, "share=off,readonly=on" would always result in us opening the
->> file R/O and mmap'ing the opened file MAP_PRIVATE R/O -- effectively
->> turning it into ROM.
->>
->> Especially for VM templating, "share=off" is a common use case. However,
->> that use case is impossible with files that lack write permissions,
->> because "share=off,readonly=on" will not give us writable RAM.
->>
->> The sole user of ROM via memory-backend-file are R/O NVDIMMs, but as we
->> have users (Kata Containers) that rely on the existing behavior --
->> malicious VMs should not be able to consume COW memory for R/O NVDIMMs --
->> we cannot change the semantics of "share=off,readonly=on"
->>
->> So let's add a new "rom" property with on/off/auto values. "auto" is
->> the default and what most people will use: for historical reasons, to not
->> change the old semantics, it defaults to the value of the "readonly"
->> property.
->>
->> For VM templating, one can now use:
->>     -object memory-backend-file,share=off,readonly=on,rom=off,...
->>
->> But we'll disallow:
->>     -object memory-backend-file,share=on,readonly=on,rom=off,...
->> because we would otherwise get an error when trying to mmap the R/O file
->> shared and writable. An explicit error message is cleaner.
->>
->> We will also disallow for now:
->>     -object memory-backend-file,share=off,readonly=off,rom=on,...
->>     -object memory-backend-file,share=on,readonly=off,rom=on,...
->> It's not harmful, but also not really required for now.
->>
->> Alternatives that were abandoned:
->> * Make "unarmed=on" for the NVDIMM set the memory region container
->>   readonly. We would still see a change of ROM->RAM and possibly run
->>   into memslot limits with vhost-user. Further, there might be use cases
->>   for "unarmed=on" that should still allow writing to that memory
->>   (temporary files, system RAM, ...).
->> * Add a new "readonly=on/off/auto" parameter for NVDIMMs. Similar issues
->>   as with "unarmed=on".
->> * Make "readonly" consume "on/off/file" instead of being a 'bool' type.
->>   This would slightly changes the behavior of the "readonly" parameter:
->>   values like true/false (as accepted by a 'bool'type) would no longer be
->>   accepted.
->>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->> backends/hostmem-file.c | 59 ++++++++++++++++++++++++++++++++++++++++-
->> qapi/qom.json           |  6 ++++-
->> qemu-options.hx         | 10 ++++++-
->> 3 files changed, 72 insertions(+), 3 deletions(-)
->>
->> diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
->> index ef2d5533af..361d4a8103 100644
->> --- a/backends/hostmem-file.c
->> +++ b/backends/hostmem-file.c
->> @@ -18,6 +18,8 @@
->> #include "sysemu/hostmem.h"
->> #include "qom/object_interfaces.h"
->> #include "qom/object.h"
->> +#include "qapi/visitor.h"
->> +#include "qapi/qapi-visit-common.h"
->>
->> OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendFile, MEMORY_BACKEND_FILE)
->>
->> @@ -31,6 +33,7 @@ struct HostMemoryBackendFile {
->>      bool discard_data;
->>      bool is_pmem;
->>      bool readonly;
->> +    OnOffAuto rom;
->> };
->>
->> static void
->> @@ -53,9 +56,33 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
->>          return;
->>      }
->>
->> +    switch (fb->rom) {
->> +    case ON_OFF_AUTO_AUTO:
->> +        /* Traditionally, opening the file readonly always resulted in ROM. */
->> +        fb->rom = fb->readonly ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
->> +        break;
->> +    case ON_OFF_AUTO_ON:
->> +        if (!fb->readonly) {
->> +            error_setg(errp, "property 'rom' = 'on' is not supported with"
->> +                       " 'readonly' = 'off'");
->> +            return;
->> +        }
->> +        break;
->> +    case ON_OFF_AUTO_OFF:
->> +        if (fb->readonly && backend->share) {
->> +            error_setg(errp, "property 'rom' = 'off' is incompatible with"
->> +                       " 'readonly' = 'on' and 'share' = 'on'");
->> +            return;
->> +        }
->> +        break;
->> +    default:
->> +        assert(false);
->> +    }
->> +
->>      name = host_memory_backend_get_name(backend);
->>      ram_flags = backend->share ? RAM_SHARED : 0;
->> -    ram_flags |= fb->readonly ? RAM_READONLY | RAM_READONLY_FD : 0;
->> +    ram_flags |= fb->readonly ? RAM_READONLY_FD : 0;
->> +    ram_flags |= fb->rom == ON_OFF_AUTO_ON ? RAM_READONLY : 0;
->>      ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
->>      ram_flags |= fb->is_pmem ? RAM_PMEM : 0;
->>      ram_flags |= RAM_NAMED_FILE;
->> @@ -201,6 +228,32 @@ static void file_memory_backend_set_readonly(Object *obj, bool value,
->>      fb->readonly = value;
->> }
->>
->> +static void file_memory_backend_get_rom(Object *obj, Visitor *v,
->> +                                        const char *name, void *opaque,
->> +                                        Error **errp)
->> +{
->> +    HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(obj);
->> +    OnOffAuto rom = fb->rom;
->> +
->> +    visit_type_OnOffAuto(v, name, &rom, errp);
->> +}
->> +
->> +static void file_memory_backend_set_rom(Object *obj, Visitor *v,
->> +                                        const char *name, void *opaque,
->> +                                        Error **errp)
->> +{
->> +    HostMemoryBackend *backend = MEMORY_BACKEND(obj);
->> +    HostMemoryBackendFile *fb = MEMORY_BACKEND_FILE(obj);
->> +
->> +    if (host_memory_backend_mr_inited(backend)) {
->> +        error_setg(errp, "cannot change property '%s' of %s.", name,
->> +                   object_get_typename(obj));
->> +        return;
->> +    }
->> +
->> +    visit_type_OnOffAuto(v, name, &fb->rom, errp);
->> +}
->> +
->> static void file_backend_unparent(Object *obj)
->> {
->>      HostMemoryBackend *backend = MEMORY_BACKEND(obj);
->> @@ -243,6 +296,10 @@ file_backend_class_init(ObjectClass *oc, void *data)
->>      object_class_property_add_bool(oc, "readonly",
->>          file_memory_backend_get_readonly,
->>          file_memory_backend_set_readonly);
->> +    object_class_property_add(oc, "rom", "OnOffAuto",
->> +        file_memory_backend_get_rom, file_memory_backend_set_rom, NULL, NULL);
->> +    object_class_property_set_description(oc, "rom",
->> +        "Whether to create Read Only Memory (ROM)");
->> }
->>
->> static void file_backend_instance_finalize(Object *o)
->> diff --git a/qapi/qom.json b/qapi/qom.json
->> index fa3e88c8e6..0cf83c6f39 100644
->> --- a/qapi/qom.json
->> +++ b/qapi/qom.json
->> @@ -668,6 +668,9 @@
->> # @readonly: if true, the backing file is opened read-only; if false,
->> #     it is opened read-write.  (default: false)
->> #
->> +# @rom: whether to create Read Only Memory (ROM).  If set to 'auto', it
->> +#       defaults to the value of @readonly.  (default: auto, since 8.2)
->> +#
->> # Since: 2.1
->> ##
->> { 'struct': 'MemoryBackendFileProperties',
->> @@ -677,7 +680,8 @@
->>              '*discard-data': 'bool',
->>              'mem-path': 'str',
->>              '*pmem': { 'type': 'bool', 'if': 'CONFIG_LIBPMEM' },
->> -            '*readonly': 'bool' } }
->> +            '*readonly': 'bool',
->> +            '*rom': 'OnOffAuto' } }
->>
->> ##
->> # @MemoryBackendMemfdProperties:
->> diff --git a/qemu-options.hx b/qemu-options.hx
->> index 29b98c3d4c..03ce0b0a30 100644
->> --- a/qemu-options.hx
->> +++ b/qemu-options.hx
->> @@ -4976,7 +4976,7 @@ SRST
->>      they are specified. Note that the 'id' property must be set. These
->>      objects are placed in the '/objects' path.
->>
->> -    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off``
->> +    ``-object memory-backend-file,id=id,size=size,mem-path=dir,share=on|off,discard-data=on|off,merge=on|off,dump=on|off,prealloc=on|off,host-nodes=host-nodes,policy=default|preferred|bind|interleave,align=align,offset=offset,readonly=on|off,rom=on|off|auto``
->>          Creates a memory file backend object, which can be used to back
->>          the guest RAM with huge pages.
->>
->> @@ -5066,6 +5066,14 @@ SRST
->>          The ``readonly`` option specifies whether the backing file is opened
->>          read-only or read-write (default).
->>
->> +        The ``rom`` option specifies whether to create Read Only Memory (ROM)
->> +        that cannot be modified by the VM. If set to ``on``, the VM cannot
->> +        modify the memory. If set to ``off``, the VM can modify the memory.
->> +        If set to ``auto`` (default), the value of the ``readonly`` property
->> +        is used. This option is primarily helpful for VM templating, where we
->> +        want to open a file readonly (``readonly=on``) and allow private
->> +        modifications of the memory by the VM (``share=off``, ``rom=off``).
->> +
->>      ``-object memory-backend-ram,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
->>          Creates a memory backend object, which can be used to back the
->>          guest RAM. Memory backend objects offer more control than the
+> Looks like Stefan gave you an R-B for the series; do we just need an
+> ACK by the block maintainers at this point or is there someone
+> specific you're hoping will review this?
 > 
-> In one word, I'd suggest advertising the existence of "rom" option more invasively, whenever
-> private file mapping is used.
+> --js
 > 
-> IMHO you should probably be more invasive here to warn unconditionally when
-> the memory backend file is going to be opened readwrite but is mapped non shared.
 
-As Daniel said, we should not add new warnings for sane use cases. But we can indeed give a hint when opening the file failed, see below.
+Hi John,
 
-> 
-> I as a user find the patch series indeed work functionally when I am aware of the "rom"
-> option - but what if I am not aware, the outcome is still that qemu tried
-> to open the file readwrite even when it is going to be mapped private.
+I figure a maintainer's R-b doesn't imply the patches being merged into
+the tree.  Hence I'm waiting for the notice that they actually are merged.
 
-Yes, the implicit "readonly=off" is active in any case, and we cannot change that due to existing users unfortunately.
+Please let me know if the process should be different.
 
-> 
-> When the file is readonly, the error message is:
-> ```
-> qemu-system-x86_64: can't open backing store pc.ram for guest RAM: Permission denied
-> ```
-> 
-> This should be probably helpful if qemu found that the file exists as a regular file and
-> is mapped private, to say something like
-> 
-> ```
-> qemu-system-x86_64: can't open backing store pc.ram for guest RAM: Permission denied
-> tip: mapping is private and ram file is probably readonly, maybe you should append "readonly=on,rom=off"
-> to "-object memory-backend-file,..." option list. see documentation xxx for details
-> ```
-
-What about the following, if we can indeed open the file R/O and we're dealing witha  private mapping:
-
-qemu-system-x86_64: can't open backing store tmp-file for guest RAM: Permission denied
-Consider opening the backing store read-only using '-object memory-backend-file,readonly=on,rom=off,...' (see "VM templating" documentation)
-
-?
-
--- 
-Cheers,
-
-David / dhildenb
-
+Andrey
 
