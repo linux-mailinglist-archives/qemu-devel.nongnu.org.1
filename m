@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D616785021
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 07:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0E7785027
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 07:54:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYgnG-0001Ry-HU; Wed, 23 Aug 2023 01:52:38 -0400
+	id 1qYgnI-0001Sb-H9; Wed, 23 Aug 2023 01:52:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYgn7-0001QF-EP
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYgn8-0001QU-2Y
  for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:52:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYgn3-0007KT-5d
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qYgn3-0007Kh-Th
  for qemu-devel@nongnu.org; Wed, 23 Aug 2023 01:52:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E00041C391
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 08:52:19 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1E8EC1C392
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 08:52:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7DD3221239;
+ by tsrv.corpit.ru (Postfix) with SMTP id B428F2123A;
  Wed, 23 Aug 2023 08:52:01 +0300 (MSK)
-Received: (nullmailer pid 1917465 invoked by uid 1000);
+Received: (nullmailer pid 1917468 invoked by uid 1000);
  Wed, 23 Aug 2023 05:52:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 04/24] util: spelling fixes
-Date: Wed, 23 Aug 2023 08:51:35 +0300
-Message-Id: <20230823055155.1917375-5-mjt@tls.msk.ru>
+Subject: [PATCH 05/24] tcg: spelling fixes
+Date: Wed, 23 Aug 2023 08:51:36 +0300
+Message-Id: <20230823055155.1917375-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1691405748.git.mjt@tls.msk.ru>
 References: <cover.1691405748.git.mjt@tls.msk.ru>
@@ -59,118 +59,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- util/cpuinfo-aarch64.c | 4 ++--
- util/cpuinfo-i386.c    | 4 ++--
- util/cpuinfo-ppc.c     | 2 +-
- util/main-loop.c       | 2 +-
- util/oslib-posix.c     | 2 +-
- util/qdist.c           | 2 +-
- util/qemu-sockets.c    | 2 +-
- util/rcu.c             | 2 +-
- 8 files changed, 10 insertions(+), 10 deletions(-)
+ tcg/aarch64/tcg-target.c.inc | 2 +-
+ tcg/arm/tcg-target.c.inc     | 4 ++--
+ tcg/riscv/tcg-target.c.inc   | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
-index ababc39550..7d39f47e3b 100644
---- a/util/cpuinfo-aarch64.c
-+++ b/util/cpuinfo-aarch64.c
-@@ -1,5 +1,5 @@
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 35ca80cd56..5471523f4c 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -3087,5 +3087,5 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     /*
+      * Note that XZR cannot be encoded in the address base register slot,
+-     * as that actaully encodes SP.  Depending on the guest, we may need
++     * as that actually encodes SP.  Depending on the guest, we may need
+      * to zero-extend the guest address via the address index register slot,
+      * therefore we need to load even a zero guest base into a register.
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 83e286088f..3a14f52c51 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1217,5 +1217,5 @@ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+     case TCG_COND_GTU:
+     case TCG_COND_GEU:
+-        /* We perform a conditional comparision.  If the high half is
++        /* We perform a conditional comparison.  If the high half is
+            equal, then overwrite the flags with the comparison of the
+            low half.  The resulting flags cover the whole.  */
+@@ -1251,5 +1251,5 @@ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
  /*
-  * SPDX-License-Identifier: GPL-2.0-or-later
-- * Host specific cpu indentification for AArch64.
-+ * Host specific cpu identification for AArch64.
+  * Note that TCGReg references Q-registers.
+- * Q-regno = 2 * D-regno, so shift left by 1 whlie inserting.
++ * Q-regno = 2 * D-regno, so shift left by 1 while inserting.
   */
+ static uint32_t encode_vd(TCGReg rd)
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index eeaeb6b6e3..e9e5968823 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -70,5 +70,5 @@ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+ static const int tcg_target_reg_alloc_order[] = {
+     /* Call saved registers */
+-    /* TCG_REG_S0 reservered for TCG_AREG0 */
++    /* TCG_REG_S0 reserved for TCG_AREG0 */
+     TCG_REG_S1,
+     TCG_REG_S2,
+@@ -261,5 +261,5 @@ typedef enum {
+     OPC_ADD_UW = 0x0800003b,
  
-@@ -34,5 +34,5 @@ static bool sysctl_for_bool(const char *name)
-      * We might in the future ask for properties not present in older kernels,
-      * but we're only asking about static properties, all of which should be
--     * 'int'.  So we shouln't see ENOMEM (val too small), or any of the other
-+     * 'int'.  So we shouldn't see ENOMEM (val too small), or any of the other
-      * more exotic errors.
-      */
-diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index 3a7b7e0ad1..b2ed65bb10 100644
---- a/util/cpuinfo-i386.c
-+++ b/util/cpuinfo-i386.c
-@@ -1,5 +1,5 @@
- /*
-  * SPDX-License-Identifier: GPL-2.0-or-later
-- * Host specific cpu indentification for x86.
-+ * Host specific cpu identification for x86.
-  */
- 
-@@ -75,5 +75,5 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-                  *
-                  * AMD has provided an even stronger guarantee that processors
--                 * with AVX provide 16-byte atomicity for all cachable,
-+                 * with AVX provide 16-byte atomicity for all cacheable,
-                  * naturally aligned single loads and stores, e.g. MOVDQU.
-                  *
-diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
-index 7212afa45d..1ea3db0ac8 100644
---- a/util/cpuinfo-ppc.c
-+++ b/util/cpuinfo-ppc.c
-@@ -1,5 +1,5 @@
- /*
-  * SPDX-License-Identifier: GPL-2.0-or-later
-- * Host specific cpu indentification for ppc.
-+ * Host specific cpu identification for ppc.
-  */
- 
-diff --git a/util/main-loop.c b/util/main-loop.c
-index 014c795916..797b640c41 100644
---- a/util/main-loop.c
-+++ b/util/main-loop.c
-@@ -48,5 +48,5 @@
- /*
-  * Disable CFI checks.
-- * We are going to call a signal hander directly. Such handler may or may not
-+ * We are going to call a signal handler directly. Such handler may or may not
-  * have been defined in our binary, so there's no guarantee that the pointer
-  * used to set the handler is a cfi-valid pointer. Since the handlers are
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 760390b31e..4d583da7ce 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -672,5 +672,5 @@ void qemu_free_stack(void *stack, size_t sz)
- /*
-  * Disable CFI checks.
-- * We are going to call a signal hander directly. Such handler may or may not
-+ * We are going to call a signal handler directly. Such handler may or may not
-  * have been defined in our binary, so there's no guarantee that the pointer
-  * used to set the handler is a cfi-valid pointer. Since the handlers are
-diff --git a/util/qdist.c b/util/qdist.c
-index 5f75e24c29..ef3566b03a 100644
---- a/util/qdist.c
-+++ b/util/qdist.c
-@@ -211,5 +211,5 @@ void qdist_bin__internal(struct qdist *to, const struct qdist *from, size_t n)
-         /*
-          * To avoid double-counting we capture [left, right) ranges, except for
--         * the righmost bin, which captures a [left, right] range.
-+         * the rightmost bin, which captures a [left, right] range.
-          */
-         while (j < from->n && (from->entries[j].x < right || i == n - 1)) {
-diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
-index 892d33f5e6..83e84b1186 100644
---- a/util/qemu-sockets.c
-+++ b/util/qemu-sockets.c
-@@ -930,5 +930,5 @@ static int unix_listen_saddr(UnixSocketAddress *saddr,
-     if (pathbuf != NULL) {
-         /*
--         * This dummy fd usage silences the mktemp() unsecure warning.
-+         * This dummy fd usage silences the mktemp() insecure warning.
-          * Using mkstemp() doesn't make things more secure here
-          * though.  bind() complains about existing files, so we have
-diff --git a/util/rcu.c b/util/rcu.c
-index 30a7e22026..e587bcc483 100644
---- a/util/rcu.c
-+++ b/util/rcu.c
-@@ -356,5 +356,5 @@ void drain_call_rcu(void)
-      * Note that since we have only one global queue of the RCU callbacks,
-      * we also end up waiting for most of RCU callbacks that were registered
--     * on the other threads, but this is a side effect that shoudn't be
-+     * on the other threads, but this is a side effect that shouldn't be
-      * assumed.
-      */
+-    /* Zbb: Bit manipulation extension, basic bit manipulaton */
++    /* Zbb: Bit manipulation extension, basic bit manipulation */
+     OPC_ANDN   = 0x40007033,
+     OPC_CLZ    = 0x60001013,
 -- 
 2.39.2
 
