@@ -2,93 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DCA7854ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 12:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7643178566C
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:08:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYknK-0003Cy-9N; Wed, 23 Aug 2023 06:08:58 -0400
+	id 1qYli8-0002Ot-0P; Wed, 23 Aug 2023 07:07:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYknI-0003CX-IS
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 06:08:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qYli4-0002Of-KK
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:07:36 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYknG-0006kr-Q6
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 06:08:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692785334;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=URAi5UC86x22wWgB0+fl4Nms9wMVCGCOmmZ26x82uMk=;
- b=dOSKAwcbhpMZKOZh82AO4Y9c1pX1+Sm+TfPlVRwmUGLln6C7L6DlqBmaPgmYLhItWXnqwF
- 9EOaaCz9ShBI0haFa0NCdm0Gq3KjMCio6DVyVbDyUs+RoVTy1/yDZQXYs4Z0sM1/IMLvgL
- LgS2OCdwqhiP5UxSMkPaTCLNkbWRkiY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-gZEV48mbOQGmESnP9u2FsA-1; Wed, 23 Aug 2023 06:08:52 -0400
-X-MC-Unique: gZEV48mbOQGmESnP9u2FsA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3feb93ba681so37379625e9.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 03:08:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692785331; x=1693390131;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=URAi5UC86x22wWgB0+fl4Nms9wMVCGCOmmZ26x82uMk=;
- b=E2QQONJHPBBilKchpMkW2+8CfOS+JDc1zl6qinAO0y+SdPHPF0nQDtASHTOevHfH8e
- Oqd4mNVQu3+rN5FWNpYmZj8Ai5cayprGAIFix3BcrhZuX8qnSazsMas7FR4eaxuUKfhi
- RQUPCmtbKeqcN6wMUiwPH+87Vj1KtPEWjBhpKWPA12rPbaHGH6Tg2Ld+OnS2gXeh7QCW
- nLkB/p2+N91eixp67vGYcfHAQ9ldUp1p58Rp6m/ejm4GMdm2nexOQ4s42VxwBKyTyFDv
- dJHWkFxJzidxpbWlramVLHFoSYhmaGb3hKxIDHLtTeX3v8Vm6x6yMENrEbnjR0CaEFJo
- Vl6w==
-X-Gm-Message-State: AOJu0YxYynof6rryEfCb6PHIq5WgitjaUI0y7atvAwGgnAgwhSAVHX/j
- wLFzpGCtixXfYpFNdrqvtrUf5cPCcX2VRuKEr3DggoWOjc22+C6Qhfc9GTpDcSuVcN4Gh1jlQ1q
- +RaaPP49B9zDjAE4=
-X-Received: by 2002:a05:600c:2807:b0:3fe:111a:d1d9 with SMTP id
- m7-20020a05600c280700b003fe111ad1d9mr9064358wmb.25.1692785331715; 
- Wed, 23 Aug 2023 03:08:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpTDX7Jqt84UTIRqSO0skW7iMWL+I1hxe2Rq1q7B3LX4H0RadOgbGHtBctWiPnw0jaLSvdGQ==
-X-Received: by 2002:a05:600c:2807:b0:3fe:111a:d1d9 with SMTP id
- m7-20020a05600c280700b003fe111ad1d9mr9064345wmb.25.1692785331463; 
- Wed, 23 Aug 2023 03:08:51 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-177-178.web.vodafone.de.
- [109.43.177.178]) by smtp.gmail.com with ESMTPSA id
- h13-20020a05600c260d00b003fefd46df47sm3205989wma.29.2023.08.23.03.08.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 03:08:50 -0700 (PDT)
-Message-ID: <259cc575-36a7-42b7-3d76-1867a0111200@redhat.com>
-Date: Wed, 23 Aug 2023 12:08:49 +0200
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qYli2-0002IE-8D
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:07:36 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id E5BFC5C019A;
+ Wed, 23 Aug 2023 07:07:30 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute2.internal (MEProxy); Wed, 23 Aug 2023 07:07:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:sender
+ :subject:subject:to:to; s=fm3; t=1692788850; x=1692875250; bh=Yi
+ NfpJ7Pfr9DtgxCnfY26Pa0Rw9qklJPF4j6MXhHIR4=; b=AxNepES5+bIp+R+Z64
+ lCTWp11JMDGEzPekvPtfRNgamCsGiq77bNz4vR7Y40HQ5wE8kO8Pwfj4cAPBuPRS
+ vrix95NYHoRKabfL6icbT7kG+Jp8hh0g0B4iVPVR5JNBhhMC1y8vYc1zoF0tWH+y
+ KjRrwC4xPCZHWXH0oVyM03lX+w586ebIViTQPCbgPjboyyWNhz7yj5pixABvaZKl
+ csx2yN6d55DBrQtyibVRjTnQa2U0LSFFBtazQQJS2yvs4xBivifDcAcbifJfTjjM
+ igidcQ1tjFHw8tsc6il7jsG6rRpNnQem2mS1LO7ZMhdP+GO/LTN11U1IVk4FNDaO
+ Dnxw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1692788850; x=1692875250; bh=YiNfpJ7Pfr9Dt
+ gxCnfY26Pa0Rw9qklJPF4j6MXhHIR4=; b=foiWlLugTh2nyIN7f0HlS2dW4EFM6
+ iHD1oYHVhrBDhUWtvNblWKEb7+v85lYtNOc99x259BjGWGTqyI79EVZMxsRSwIJj
+ BauOjDk413BwXo4B3jSDrxjpQfdR/LMsOBofHHTllikvu+b8ymZ13+OKxfGsllfx
+ BW7QhnuaxWSZw4WGpOp8j8FpiJyW29S5ROwLiE1mmXRPhqmWocU7thmSQQVuFU2S
+ vakfodFN2oczKICohk1U32zXx6RL/yIIwmyU7q+fRDYrmVidQrnqfVJCtBUl4XsA
+ BpQi00ODsiZI9uNR5shWprF1cV/4mdbuN8g8WjFPya3HmuEbxy5DjUyhg==
+X-ME-Sender: <xms:cujlZLNK_DeF5EFZEng_H7xx_OoRFWNw3QsP0xei3wYqkn8GUL3eYg>
+ <xme:cujlZF-8guC507qvcCF-wYw42fVNMESSlbzeh052do9uT0a-XKK3nl6nLHdVmLBZ0
+ aWJoPdekQ7_OusJZg>
+X-ME-Received: <xmr:cujlZKTm2w1gDptQiP9mOyxWlJSPB8g7DVgEs7OPHgOqRCYCs6FlX4xwrHCxEqWa9D439Br6V6r6azwELMs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgfeeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefujghffffkgggtsehgtderredttddtnecuhfhrohhmpeetlhihshhs
+ rgcutfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpefgtd
+ egieeiffeiieelueekveejvdeviefgveegvedvgeehtddvffejjeeuudduhfenucffohhm
+ rghinheptghrrhgvvhdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+ epmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhish
+X-ME-Proxy: <xmx:cujlZPv365OEGacopHpTipO8UkLFFCfdm2Gdo6aFqBeXw5_Gb2-0BQ>
+ <xmx:cujlZDfc630LgSvWj75pdBC5yK3x9C96g7HRELs-B9wltNsNx9Fnpg>
+ <xmx:cujlZL3J4LrzBk089KgiZs-3H_uDyjCkKbMs_0Dh77c9kmKjt-Ou2A>
+ <xmx:cujlZCzAoXbu8iZ2eadvEqZfH4NORvV397Mo4DoRDvIeXWzfRWLuTw>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Aug 2023 07:07:30 -0400 (EDT)
+Received: by x220.qyliss.net (Postfix, from userid 1000)
+ id 3B2947FE0; Wed, 23 Aug 2023 11:07:28 +0000 (UTC)
+From: Alyssa Ross <hi@alyssa.is>
+To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, akihiko.odaki@gmail.com, ray.huang@amd.com,
+ alex.bennee@linaro.org, shentey@gmail.com, ernunes@redhat.com,
+ manos.pitsidianakis@linaro.org, philmd@linaro.org
+Subject: Re: [PATCH v11 0/9] rutabaga_gfx + gfxstream
+In-Reply-To: <20230823012541.485-1-gurchetansingh@chromium.org>
+References: <20230823012541.485-1-gurchetansingh@chromium.org>
+Date: Wed, 23 Aug 2023 11:07:26 +0000
+Message-ID: <87a5uiyq35.fsf@alyssa.is>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] docs/about/license: Update LICENSE URL
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20230822125716.55295-1-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230822125716.55295-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.767, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=66.111.4.25; envelope-from=hi@alyssa.is;
+ helo=out1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,37 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/08/2023 14.57, Philippe Mathieu-Daudé wrote:
-> In early 2021 (see commit 2ad784339e "docs: update README to use
-> GitLab repo URLs") almost all of the code base was converted to
-> point to GitLab instead of git.qemu.org. During 2023, git.qemu.org
-> switched from a git mirror to a http redirect to GitLab (see [1]).
-> 
-> Update the LICENSE URL to match its previous content, displaying
-> the file raw content similarly to gitweb 'blob_plain' format ([2]).
-> 
-> [1] https://lore.kernel.org/qemu-devel/CABgObfZu3mFc8tM20K-yXdt7F-7eV-uKZN4sKDarSeu7DYoRbA@mail.gmail.com/
-> [2] https://git-scm.com/docs/gitweb#Documentation/gitweb.txt-blobplain
-> 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> v2: Drop '&ref_type=heads' (danpb)
-> ---
->   docs/about/license.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/docs/about/license.rst b/docs/about/license.rst
-> index cde3d2d25d..303c55d61b 100644
-> --- a/docs/about/license.rst
-> +++ b/docs/about/license.rst
-> @@ -8,4 +8,4 @@ QEMU is a trademark of Fabrice Bellard.
->   QEMU is released under the `GNU General Public
->   License <https://www.gnu.org/licenses/gpl-2.0.txt>`__, version 2. Parts
->   of QEMU have specific licenses, see file
-> -`LICENSE <https://git.qemu.org/?p=qemu.git;a=blob_plain;f=LICENSE>`__.
-> +`LICENSE <https://gitlab.com/qemu-project/qemu/-/raw/master/LICENSE>`__.
+--=-=-=
+Content-Type: text/plain
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Gurchetan Singh <gurchetansingh@chromium.org> writes:
 
+> - Official "release commits" issued for rutabaga_gfx_ffi,
+>   gfxstream, aemu-base.  For example, see crrev.com/c/4778941
+>
+> - The release commits can make packaging easier, though once
+>   again all known users will likely just build from sources
+>   anyways
+
+It's a small thing, but could there be actual tags, rather than just
+blessed commits?  It'd just make them easier to find, and save a bit of
+time in review for packages.
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmTl6G4ACgkQ+dvtSFmy
+ccCUjg//UHB0zYcsuEal1otdQpRSmkfcOniBdSM+pvnMUFEfTf2t6obmc8n5HV1a
+Y+kuMvHz7G6+QApL6+4FjUrrrdpZ1vjqT15gxqSZRuubUcbq8RV/4QfFCK3FaVFK
+GkDke9OWKQWYEZi2sqmD/av8AMN2poP7ga9husznP9S8ASwOEbl27pArouNTNt03
+A6i5PZ1pbAqgePRD7ixJqrmR1XaVY/SWF7zzmzBoIz8dEeCNmkFcLpRUCmZCmIZw
+MSwWsQj7u0sDSW7ZnJjZaQStkWX0/zFYxmtmfDEL+iaxUkSqNBMomp573mOv7uCu
+luZmXkNrCpeFwhnYQt6ggh0TDvEkP32SSakceohgD6yhn9oAX9BOvvdjFPXf1j5Z
+I0XcpChml80pOO8eDen7FR5HDNcEEIMF1po7+e+PMJD1C5lDfwAgUjTw80TGXkNa
+wJr0cfbnbt6F6tH1DgXdohKtYvsfMFXI0yR7seB19DxZ3hHn3gtbkgeS+gRbIJNe
+DMr/EGJe/tofS4pNmJ3mJCDpLQn8cMAwPIbiAcSY7mir0bUQdQJn83Ce49ehbXSj
+wLUx7/ckKgiWc3yNhU6/Fy92srNWNlCewDHPDgHi0b5jMn2zmMzSFyIuLMog5YNq
+eJtsbxX/KERGK3PKzwOmlKLHWHbDgiEfEVOksLUvEPPK4fle3Lg=
+=S7mW
+-----END PGP SIGNATURE-----
+--=-=-=--
 
