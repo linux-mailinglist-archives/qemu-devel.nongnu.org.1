@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9D97853C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3897853C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:23:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYk4m-0005Rf-6d; Wed, 23 Aug 2023 05:22:56 -0400
+	id 1qYk4D-0005Q3-8i; Wed, 23 Aug 2023 05:22:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qYk49-0005Ob-O3; Wed, 23 Aug 2023 05:22:18 -0400
+ id 1qYk4B-0005P7-5u; Wed, 23 Aug 2023 05:22:19 -0400
 Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qYk46-0005Lh-VA; Wed, 23 Aug 2023 05:22:17 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id 9BB585C0126;
- Wed, 23 Aug 2023 05:22:13 -0400 (EDT)
+ id 1qYk48-0005M3-U7; Wed, 23 Aug 2023 05:22:18 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id D8B825C0172;
+ Wed, 23 Aug 2023 05:22:15 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Wed, 23 Aug 2023 05:22:13 -0400
+ by compute2.internal (MEProxy); Wed, 23 Aug 2023 05:22:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:content-type
  :date:date:from:from:in-reply-to:in-reply-to:message-id
  :mime-version:references:reply-to:sender:subject:subject:to:to;
- s=fm3; t=1692782533; x=1692868933; bh=oQ5tLI/HlkpXUtfGL/EeQZnYR
- NOMiNvpQ9IqKdxx/H4=; b=L3P4Nr3a78b97CSMZdmadX384JqDqHSCf1UTH43qH
- ZV17FtadzK72yFrYSecMrDlrdxRAE2qF8avqnHqBiJvLlTtVILGkh5VAju5MprUD
- Nc3XvUMRoGZgA9ndlwUKBO3x4cbXGrfYRvask2Kcp+rUpWSRAkTnX2uUXysdBCkd
- XwLiyxsDExau5BYYWVdrZzIBjRApfiOoOPsqbiOP7bZmsNkT8xolJRsn8RmFu4qo
- O1P/SFTyLAknsdIuGl4mRuLLGSfnMmYiWLtzrmKrEzwmkjQGcROrccf0pnSdXI8d
- +76sCW9wfUQBYwrJTmp/ZsVR0RN2FCaPiHnuohcBDMKpw==
+ s=fm3; t=1692782535; x=1692868935; bh=7glaXVaoAMls38G1n3rfWgwmY
+ uCkgcrj52R7D8xj+IA=; b=vxFxee+Sm3AWV0j26j2uUH2LuvtWuBveBXSePK6GW
+ QcgWEpeuqEyloLQgquh/bR+Qa/FFPcZ1E9c2DMlLgePsv5BkcQMPFhttfPcyGYr9
+ Gh0Y2SxvpMtCxHNEh5I/P69pzIfBHc0dBgk3XbpNyHT8hI3fLfuTYjOUNNki2HJ4
+ J65M5qHF8U+2XNhaMCtFCyYZYRr/TX4//nty6s1FfrnnX2gMjmyfBm+URjFFwj1F
+ iIZ34dMf6Y6ll/7w55gW85+IKs3afczZ3q0yNHAo7Vz98EtyVsvzqwAaRlT64Er6
+ uqtqpofs/vzjQVh13s2TEbpMyRRXaY6pdlrqTC1xGGULQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:sender:subject:subject:to:to:x-me-proxy
  :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1692782533; x=1692868933; bh=oQ5tLI/HlkpXUtfGL/EeQZnYRNOMiNvpQ9I
- qKdxx/H4=; b=nTYz+B01kt6dsKdeBu4kl61i2LK8D1vsAaZkvaKYXbKNVMdoXP9
- WU5oKeEfXN8aLEh/nRlKZEDelTe0QxHn0rknAEfU2ggElW0tohII8YXoXcWvRRKR
- KN705pN8VRsME99CP6Nm0/ZtGFKia+zN++f1ijM8d1ZTgxn/VWPW12M5l68n4oiY
- BdatZaWsFkRHX7ByukSI823BLaVTvkampyAVz7utrlGXk982+muJUH4QOnhrIhbM
- soZ/g9fwG5aMwBKgtKGUY1Xy08TmaKnc91yZZ0zuUxuZakochLFuIHV/K1HZ58PH
- Vzq/t/gW5UkaCC/vYYWOUQVCT90qYGKTyeg==
-X-ME-Sender: <xms:xc_lZEsvMJRSPdOSG9957Zxi4eCBvdj9OC4ZJ7Uc9i3ZFdyZp0ghWA>
- <xme:xc_lZBehG07dKxjmUB1xx_N9h6LDXwWvajA7Uem8284WonjPm5bB_kVdv3TGZtQs1
- j5Irzo7blvY1zeVu7E>
-X-ME-Received: <xmr:xc_lZPyYEn-skXJqy_yIEsoomKgJMoXpDVeaRIJZlXyeaAc7ECf0k6Si8fxKKQ6qhIPSh7hLE4piEbOfh_iwrR7KRJZ-avrZ89kRt1tlttHgcxgHxSf9T_9LzjGTYwwhyQfwRwdxUi35GS2Rmg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgudegucetufdoteggodetrfdotf
+ 1692782535; x=1692868935; bh=7glaXVaoAMls38G1n3rfWgwmYuCkgcrj52R
+ 7D8xj+IA=; b=gTtxM1HTSgEYkOHvSFHq+9Ka7mYBu2KDBJrqt68nj31ZWTep9pI
+ 7zxhCFAy61IIruYYYAP80kVKCuKensqFkV0VYYGl9F05EwKqKBw83U0r/CXsluCd
+ 6RRRBFN6Ln6cdh2fiiq7MDFVEfchJdSNruvB6RPQo/EvHd1PuLEIWSKZkkF419N8
+ kW7R5B9sW24+vHb57LTJMfbpgWufl1wWqr7ymMEq5fnSUAKl/3Gkh+nKarMMAIAt
+ JhU1wzchgatLXz3u1elJaIZHIUL8kQ/SpIVKFzb+mI5pe6lqfC8okEGA5yDhcetI
+ ktm6lK1sUc6F+inLu/ud7NGIslnuQvZaC1Q==
+X-ME-Sender: <xms:x8_lZDE5dp-vRXYWxQNFmxmpfXnC7Zn5hxH8Jb6HLTdlwCcMYTTd5A>
+ <xme:x8_lZAV82pv-oWWqCn_uNZ7zu-GPQ9eZg0eAzbDZ1dzKcFHKwI36wwKF-jEw62qYJ
+ hkNYvcC6Vsog1VpcJ8>
+X-ME-Received: <xmr:x8_lZFKkb0mWA_jO2iaHN8cP26bHYS2zzIYo1rlX6rLDtSY1buYb_ettgribqRR34iX5xGuTGL0WsUaA7YSV76WFXkrcb9D_Tt6FxTHlyCun_XhFpUy7gDz9c5gS_CtWp0deF4ZBogms3WmLTQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgudehucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephfffufggtgfgkfhfjgfvvefosehtkeertdertdejnecuhfhrohhmpefmlhgr
+ cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmlhgr
  uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
- htthgvrhhnpeekhfdtgeeluedtveekteevjedvvdegvedthedvudelgfegkeekvddtgfet
- geetieenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
- eptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgu
- kh
-X-ME-Proxy: <xmx:xc_lZHP3kKUb9zy63u_htHm_TcLGjgCFQSyVIcp9OMgzXAgGg2yIxw>
- <xmx:xc_lZE9yUtEI0DhqKkVyMHc0fll2W8aeMlaZhLr0_oUhVDi_ybuowQ>
- <xmx:xc_lZPVBiJYVjQuwRfI0RQXaEZfyNzXe0rxv5DMoY-3_lNv_gpyokQ>
- <xmx:xc_lZOeJO5b6ICxEfneL2FEHRv6f9QiNlgS7DhKkoTEsreLhDRZNbQ>
+ htthgvrhhnpeekiedvtdeuhefffedutdelfeekhfeitddtudevgefgffeiteevfffhhefg
+ gefhffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:x8_lZBEPpm45okovtsS4ispnKD6PZBEjKw6kT-eTytuIOcKcv5w0mQ>
+ <xmx:x8_lZJV0LSweCpDq_14lkspHZ-Xme4kupFqy4NEu50ZCHKjqN0C3cA>
+ <xmx:x8_lZMMdW9YC2s-XFy9UKF-HqDXza-igcG962E8NYTbJTigwoKBA-w>
+ <xmx:x8_lZOWYmVMreNk4su_SVAR5SkpmDbW--nqoT77VRrHgOrDMDMD4Uw>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Aug 2023 05:22:11 -0400 (EDT)
+ 23 Aug 2023 05:22:13 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
-Date: Wed, 23 Aug 2023 11:21:59 +0200
-Subject: [PATCH v4 2/3] hw/i2c: add mctp core
+Date: Wed, 23 Aug 2023 11:22:00 +0200
+Subject: [PATCH v4 3/3] hw/nvme: add nvme management interface model
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20230823-nmi-i2c-v4-2-2b0f86e5be25@samsung.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230823-nmi-i2c-v4-3-2b0f86e5be25@samsung.com>
 References: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
 In-Reply-To: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
 To: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -84,16 +83,16 @@ Cc: Lior Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
  qemu-arm@nongnu.org, qemu-block@nongnu.org, 
  Klaus Jensen <k.jensen@samsung.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=21569; i=k.jensen@samsung.com; 
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13194; i=k.jensen@samsung.com; 
  h=from:subject:message-id;
- bh=w7Nc5wPN5iMxl7zUj7ITVgwqLQtYtu6G6Fao8CeHpVk=; 
- b=owJ4nAFsAZP+kA0DAAoBTeGvMW1PDekByyZiAGTlz70pPJcubhQFjQR6fTfROzHpEWer3bbcm
- o1O4V5bv/q8D4kBMgQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5c+9AAoJEE3hrzFt
- Tw3pNu4H+OVswiZ7R0tBE4xucUM3o+qBwwYQApR/Q4AqMBqV+6ndDPKOAlMNHNBJzzoPGJfBj9l
- Gc7nOoXP9YLNtabrkcckxdMr1Dt6Fm2OB2clH0Yz+JgGbKOWjdmG9bQofS0AUS6lQ3Mc0+NT8r2
- WrUUmIRHuySfVQf4WteVyPdzoRcHXDgjaE9pKfbTk4VNhtjT0PSEvryMKvlise1vUdEnBi3R6Eh
- 4zOSqQQIJPN0Z8Gx7uUeeQlypc0qHGOMX1cMgJgcsWtSbQD5N2zra8o6D3mFxSvh4UDIuYyNEWW
- 38aRE1j+1KNAOfOySJvRPI9H1TNHUEG00Zzbewsus2ypmFfZW8igp/8=
+ bh=mernA+RE3iSkd5we3CxZxEqWGX2CATOsesxQakE+F/s=; 
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlz71eui3jzGkzKK8I9Lqnq5b7TSEmuwTXs
+ Rq1f+Z5VkH1ookBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5c+9AAoJEE3hrzFt
+ Tw3pJS0H/jOTN80SWgxR0y40e/ciKmzONCQnLnkzI1/Em6yso6cT5LXwZyx7DIWQP8IiLKdRKHj
+ tWZyxIh6yoVIaXd/eHfMEk9Rlc+zTw28GdXYdJcEA8wZtymiCNKLPL1CPqKOaR8OTYxz/hK4HIv
+ f4aCWnkbPGKp9XK0sFBPlttF29vZXXdlPgBmvVJJLTUBzxcJIa6ml7TYT8uoeRvf1214AGqOfXa
+ n23q6+GU5EcER/0jz5JwC+xYVF6ErIfOcKiQ5zsfgI6lf02THbuqlpXwCVl5wg1SE/DJGXGwcuO
+ Z3cKlTw6Uj7BwNpz2ImRrZfiPeRAQPkNSep3jZ1hOu4wLFuM1cOzdaht
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Received-SPF: pass client-ip=66.111.4.25; envelope-from=its@irrelevant.dk;
@@ -122,718 +121,479 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-Add an abstract MCTP over I2C endpoint model. This implements MCTP
-control message handling as well as handling the actual I2C transport
-(packetization).
+Add the 'nmi-i2c' device that emulates an NVMe Management Interface
+controller.
 
-Devices are intended to derive from this and implement the class
-methods.
+Initial support is very basic (Read NMI DS, Configuration Get).
 
-Parts of this implementation is inspired by code[1] previously posted by
-Jonathan Cameron.
-
-Squashed a fix[2] from Matt Johnston.
-
-  [1]: https://lore.kernel.org/qemu-devel/20220520170128.4436-1-Jonathan.Cameron@huawei.com/
-  [2]: https://lore.kernel.org/qemu-devel/20221121080445.GA29062@codeconstruct.com.au/
+This is based on previously posted code by Padmakar Kalghatgi, Arun
+Kumar Agasar and Saurav Kumar.
 
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- MAINTAINERS           |   7 +
- hw/arm/Kconfig        |   1 +
- hw/i2c/Kconfig        |   4 +
- hw/i2c/mctp.c         | 428 ++++++++++++++++++++++++++++++++++++++++++++++++++
- hw/i2c/meson.build    |   1 +
- hw/i2c/trace-events   |  13 ++
- include/hw/i2c/mctp.h | 127 +++++++++++++++
- include/net/mctp.h    |  35 +++++
- 8 files changed, 616 insertions(+)
+ hw/nvme/Kconfig      |   4 +
+ hw/nvme/meson.build  |   1 +
+ hw/nvme/nmi-i2c.c    | 418 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ hw/nvme/trace-events |   6 +
+ 4 files changed, 429 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6111b6b4d928..8ca71167607d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3395,6 +3395,13 @@ F: tests/qtest/adm1272-test.c
- F: tests/qtest/max34451-test.c
- F: tests/qtest/isl_pmbus_vr-test.c
- 
-+MCTP I2C Transport
-+M: Klaus Jensen <k.jensen@samsung.com>
-+S: Maintained
-+F: hw/i2c/mctp.c
-+F: include/hw/i2c/mctp.h
-+F: include/net/mctp.h
-+
- Firmware schema specifications
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7e6834844051..5bcb1e0e8a6f 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -541,6 +541,7 @@ config ASPEED_SOC
-     select DS1338
-     select FTGMAC100
-     select I2C
-+    select I2C_MCTP
-     select DPS310
-     select PCA9552
-     select SERIAL
-diff --git a/hw/i2c/Kconfig b/hw/i2c/Kconfig
-index 14886b35dac2..2b2a50b83d1e 100644
---- a/hw/i2c/Kconfig
-+++ b/hw/i2c/Kconfig
-@@ -6,6 +6,10 @@ config I2C_DEVICES
-     # to any board's i2c bus
+diff --git a/hw/nvme/Kconfig b/hw/nvme/Kconfig
+index 8ac90942e55e..1d89a4f4ecea 100644
+--- a/hw/nvme/Kconfig
++++ b/hw/nvme/Kconfig
+@@ -2,3 +2,7 @@ config NVME_PCI
      bool
- 
-+config I2C_MCTP
+     default y if PCI_DEVICES
+     depends on PCI
++
++config NVME_NMI_I2C
 +    bool
-+    select I2C
-+
- config SMBUS
-     bool
-     select I2C
-diff --git a/hw/i2c/mctp.c b/hw/i2c/mctp.c
++    default y if I2C_MCTP
+diff --git a/hw/nvme/meson.build b/hw/nvme/meson.build
+index 1a6a2ca2f307..7bc85f31c149 100644
+--- a/hw/nvme/meson.build
++++ b/hw/nvme/meson.build
+@@ -1 +1,2 @@
+ system_ss.add(when: 'CONFIG_NVME_PCI', if_true: files('ctrl.c', 'dif.c', 'ns.c', 'subsys.c'))
++system_ss.add(when: 'CONFIG_NVME_NMI_I2C', if_true: files('nmi-i2c.c'))
+diff --git a/hw/nvme/nmi-i2c.c b/hw/nvme/nmi-i2c.c
 new file mode 100644
-index 000000000000..217073d62435
+index 000000000000..9040ba28a87c
 --- /dev/null
-+++ b/hw/i2c/mctp.c
-@@ -0,0 +1,428 @@
++++ b/hw/nvme/nmi-i2c.c
+@@ -0,0 +1,418 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
 + * SPDX-FileCopyrightText: Copyright (c) 2023 Samsung Electronics Co., Ltd.
++ *
++ * SPDX-FileContributor: Padmakar Kalghatgi <p.kalghatgi@samsung.com>
++ * SPDX-FileContributor: Arun Kumar Agasar <arun.kka@samsung.com>
++ * SPDX-FileContributor: Saurav Kumar <saurav.29@partner.samsung.com>
 + * SPDX-FileContributor: Klaus Jensen <k.jensen@samsung.com>
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qemu/main-loop.h"
-+
-+#include "hw/qdev-properties.h"
++#include "qemu/crc32c.h"
++#include "hw/registerfields.h"
 +#include "hw/i2c/i2c.h"
-+#include "hw/i2c/smbus_master.h"
 +#include "hw/i2c/mctp.h"
 +#include "net/mctp.h"
-+
 +#include "trace.h"
 +
-+/* DSP0237 1.2.0, Figure 1 */
-+typedef struct MCTPI2CPacketHeader {
-+    uint8_t dest;
-+#define MCTP_I2C_COMMAND_CODE 0xf
-+    uint8_t command_code;
-+    uint8_t byte_count;
-+    uint8_t source;
-+} MCTPI2CPacketHeader;
++#define NMI_MAX_MESSAGE_LENGTH 4224
 +
-+typedef struct MCTPI2CPacket {
-+    MCTPI2CPacketHeader i2c;
-+    MCTPPacket          mctp;
-+} MCTPI2CPacket;
++#define TYPE_NMI_I2C_DEVICE "nmi-i2c"
++OBJECT_DECLARE_SIMPLE_TYPE(NMIDevice, NMI_I2C_DEVICE)
 +
-+#define i2c_mctp_payload_offset offsetof(MCTPI2CPacket, mctp.payload)
-+#define i2c_mctp_payload(buf) (buf + i2c_mctp_payload_offset)
++typedef struct NMIDevice {
++    MCTPI2CEndpoint mctp;
 +
-+/* DSP0236 1.3.0, Figure 20 */
-+typedef struct MCTPControlMessage {
-+#define MCTP_MESSAGE_TYPE_CONTROL 0x0
-+    uint8_t type;
-+#define MCTP_CONTROL_FLAGS_RQ               (1 << 7)
-+#define MCTP_CONTROL_FLAGS_D                (1 << 6)
-+    uint8_t flags;
-+    uint8_t command_code;
-+    uint8_t data[];
-+} MCTPControlMessage;
++    uint8_t buffer[NMI_MAX_MESSAGE_LENGTH];
++    uint8_t scratch[NMI_MAX_MESSAGE_LENGTH];
 +
-+enum MCTPControlCommandCodes {
-+    MCTP_CONTROL_SET_EID                    = 0x01,
-+    MCTP_CONTROL_GET_EID                    = 0x02,
-+    MCTP_CONTROL_GET_VERSION                = 0x04,
-+    MCTP_CONTROL_GET_MESSAGE_TYPE_SUPPORT   = 0x05,
-+};
++    size_t  len;
++    int64_t pos;
++} NMIDevice;
 +
-+#define MCTP_CONTROL_ERROR_UNSUPPORTED_CMD 0x5
++FIELD(NMI_MCTPD, MT, 0, 7)
++FIELD(NMI_MCTPD, IC, 7, 1)
 +
-+#define i2c_mctp_control_data_offset \
-+    (i2c_mctp_payload_offset + offsetof(MCTPControlMessage, data))
-+#define i2c_mctp_control_data(buf) (buf + i2c_mctp_control_data_offset)
++#define NMI_MCTPD_MT_NMI 0x4
++#define NMI_MCTPD_IC_ENABLED 0x1
 +
-+/**
-+ * The byte count field in the SMBUS Block Write containers the number of bytes
-+ * *following* the field itself.
-+ *
-+ * This is at least 5.
-+ *
-+ * 1 byte for the MCTP/I2C piggy-backed I2C source address in addition to the
-+ * size of the MCTP transport/packet header.
-+ */
-+#define MCTP_I2C_BYTE_COUNT_OFFSET (sizeof(MCTPPacketHeader) + 1)
++FIELD(NMI_NMP, ROR, 7, 1)
++FIELD(NMI_NMP, NMIMT, 3, 4)
 +
-+void i2c_mctp_schedule_send(MCTPI2CEndpoint *mctp)
++#define NMI_NMP_NMIMT_NVME_MI 0x1
++#define NMI_NMP_NMIMT_NVME_ADMIN 0x2
++
++typedef struct NMIMessage {
++    uint8_t mctpd;
++    uint8_t nmp;
++    uint8_t rsvd2[2];
++    uint8_t payload[]; /* includes the Message Integrity Check */
++} NMIMessage;
++
++typedef struct NMIRequest {
++   uint8_t opc;
++   uint8_t rsvd1[3];
++   uint32_t dw0;
++   uint32_t dw1;
++   uint32_t mic;
++} NMIRequest;
++
++typedef enum NMIReadDSType {
++    NMI_CMD_READ_NMI_DS_SUBSYSTEM       = 0x0,
++    NMI_CMD_READ_NMI_DS_PORTS           = 0x1,
++    NMI_CMD_READ_NMI_DS_CTRL_LIST       = 0x2,
++    NMI_CMD_READ_NMI_DS_CTRL_INFO       = 0x3,
++    NMI_CMD_READ_NMI_DS_OPT_CMD_SUPPORT = 0x4,
++    NMI_CMD_READ_NMI_DS_MEB_CMD_SUPPORT = 0x5,
++} NMIReadDSType;
++
++#define NMI_STATUS_INVALID_PARAMETER 0x4
++
++static void nmi_set_parameter_error(NMIDevice *nmi, uint8_t bit, uint16_t byte)
 +{
-+    I2CBus *i2c = I2C_BUS(qdev_get_parent_bus(DEVICE(mctp)));
-+
-+    mctp->tx.state = I2C_MCTP_STATE_TX_START_SEND;
-+
-+    i2c_bus_master(i2c, mctp->tx.bh);
-+}
-+
-+static void i2c_mctp_tx(void *opaque)
-+{
-+    DeviceState *dev = DEVICE(opaque);
-+    I2CBus *i2c = I2C_BUS(qdev_get_parent_bus(dev));
-+    I2CSlave *slave = I2C_SLAVE(dev);
-+    MCTPI2CEndpoint *mctp = MCTP_I2C_ENDPOINT(dev);
-+    MCTPI2CEndpointClass *mc = MCTP_I2C_ENDPOINT_GET_CLASS(mctp);
-+    MCTPI2CPacket *pkt = (MCTPI2CPacket *)mctp->buffer;
-+    uint8_t flags = 0;
-+
-+    switch (mctp->tx.state) {
-+    case I2C_MCTP_STATE_TX_SEND_BYTE:
-+        if (mctp->pos < mctp->len) {
-+            uint8_t byte = mctp->buffer[mctp->pos];
-+
-+            trace_i2c_mctp_tx_send_byte(mctp->pos, byte);
-+
-+            /* send next byte */
-+            i2c_send_async(i2c, byte);
-+
-+            mctp->pos++;
-+
-+            break;
-+        }
-+
-+        /* packet sent */
-+        i2c_end_transfer(i2c);
-+
-+        /* end of any control data */
-+        mctp->len = 0;
-+
-+        /* fall through */
-+
-+    case I2C_MCTP_STATE_TX_START_SEND:
-+        if (mctp->tx.is_control) {
-+            /* packet payload is already in buffer; max 1 packet */
-+            flags = FIELD_DP8(flags, MCTP_H_FLAGS, SOM, 1);
-+            flags = FIELD_DP8(flags, MCTP_H_FLAGS, EOM, 1);
-+        } else {
-+            const uint8_t *payload;
-+
-+            /* get message bytes from derived device */
-+            mctp->len = mc->get_buf(mctp, &payload, I2C_MCTP_MAXMTU, &flags);
-+            assert(mctp->len <= I2C_MCTP_MAXMTU);
-+
-+            memcpy(pkt->mctp.payload, payload, mctp->len);
-+        }
-+
-+        if (!mctp->len) {
-+            trace_i2c_mctp_tx_done();
-+
-+            /* no more packets needed; release the bus */
-+            i2c_bus_release(i2c);
-+
-+            mctp->state = I2C_MCTP_STATE_IDLE;
-+            mctp->tx.is_control = false;
-+
-+            break;
-+        }
-+
-+        mctp->state = I2C_MCTP_STATE_TX;
-+
-+        pkt->i2c = (MCTPI2CPacketHeader) {
-+            .dest = mctp->tx.addr << 1,
-+            .command_code = MCTP_I2C_COMMAND_CODE,
-+            .byte_count = MCTP_I2C_BYTE_COUNT_OFFSET + mctp->len,
-+
-+            /* DSP0237 1.2.0, Figure 1 */
-+            .source = slave->address << 1 | 0x1,
-+        };
-+
-+        pkt->mctp.hdr = (MCTPPacketHeader) {
-+            .version = 0x1,
-+            .eid.dest = mctp->tx.eid,
-+            .eid.source = mctp->my_eid,
-+            .flags = flags,
-+        };
-+
-+        pkt->mctp.hdr.flags = FIELD_DP8(pkt->mctp.hdr.flags, MCTP_H_FLAGS,
-+                                        PKTSEQ, mctp->tx.pktseq++);
-+        pkt->mctp.hdr.flags = FIELD_DP8(pkt->mctp.hdr.flags, MCTP_H_FLAGS, TAG,
-+                                        mctp->tx.tag);
-+
-+        mctp->len += sizeof(MCTPI2CPacket);
-+        assert(mctp->len < I2C_MCTP_MAX_LENGTH);
-+
-+        mctp->buffer[mctp->len] = i2c_smbus_pec(0, mctp->buffer, mctp->len);
-+        mctp->len++;
-+
-+        trace_i2c_mctp_tx_start_send(mctp->len);
-+
-+        i2c_start_send_async(i2c, pkt->i2c.dest >> 1);
-+
-+        /* already "sent" the destination slave address */
-+        mctp->pos = 1;
-+
-+        mctp->tx.state = I2C_MCTP_STATE_TX_SEND_BYTE;
-+
-+        break;
-+    }
-+}
-+
-+static void i2c_mctp_set_control_data(MCTPI2CEndpoint *mctp, const void * buf,
-+                                      size_t len)
-+{
-+    assert(i2c_mctp_control_data_offset < I2C_MCTP_MAX_LENGTH - len);
-+    memcpy(i2c_mctp_control_data(mctp->buffer), buf, len);
-+
-+    assert(mctp->len < I2C_MCTP_MAX_LENGTH - len);
-+    mctp->len += len;
-+}
-+
-+static void i2c_mctp_handle_control_set_eid(MCTPI2CEndpoint *mctp, uint8_t eid)
-+{
-+    mctp->my_eid = eid;
-+
-+    uint8_t buf[] = {
-+        0x0, 0x0, eid, 0x0,
++    /* NVM Express Management Interface 1.2c, Figure 30 */
++    struct resp {
++        uint8_t  status;
++        uint8_t  bit;
++        uint16_t byte;
 +    };
 +
-+    i2c_mctp_set_control_data(mctp, buf, sizeof(buf));
++    struct resp *buf = (struct resp *)(nmi->scratch + nmi->pos);
++
++    buf->status = NMI_STATUS_INVALID_PARAMETER;
++    buf->bit = bit & 0x3;
++    buf->byte = byte;
++
++    nmi->pos += sizeof(struct resp);
 +}
 +
-+static void i2c_mctp_handle_control_get_eid(MCTPI2CEndpoint *mctp)
++static void nmi_set_error(NMIDevice *nmi, uint8_t status)
 +{
-+    uint8_t buf[] = {
-+        0x0, mctp->my_eid, 0x0, 0x0,
-+    };
++    uint8_t buf[4] = {};
 +
-+    i2c_mctp_set_control_data(mctp, buf, sizeof(buf));
++    buf[0] = status;
++
++    memcpy(nmi->scratch + nmi->pos, buf, 4);
++    nmi->pos += 4;
 +}
 +
-+static void i2c_mctp_handle_control_get_version(MCTPI2CEndpoint *mctp)
++static void nmi_handle_mi_read_nmi_ds(NMIDevice *nmi, NMIRequest *request)
 +{
-+    uint8_t buf[] = {
-+        0x0, 0x1, 0x0, 0x1, 0x3, 0x1,
-+    };
++    I2CSlave *i2c = I2C_SLAVE(nmi);
 +
-+    i2c_mctp_set_control_data(mctp, buf, sizeof(buf));
-+}
-+
-+static void i2c_mctp_handle_get_message_type_support(MCTPI2CEndpoint *mctp)
-+{
-+    MCTPI2CEndpointClass *mc = MCTP_I2C_ENDPOINT_GET_CLASS(mctp);
-+    const uint8_t *types;
++    uint32_t dw0 = le32_to_cpu(request->dw0);
++    uint8_t dtyp = (dw0 >> 24) & 0xf;
++    uint8_t *buf;
 +    size_t len;
 +
-+    len = mc->get_types(mctp, &types);
-+    assert(mctp->len <= MCTP_BASELINE_MTU - len);
++    trace_nmi_handle_mi_read_nmi_ds(dtyp);
 +
-+    i2c_mctp_set_control_data(mctp, types, len);
-+}
++    static uint8_t nmi_ds_subsystem[36] = {
++        0x00,       /* success */
++        0x20, 0x00, /* response data length */
++        0x00,       /* reserved */
++        0x00,       /* number of ports */
++        0x01,       /* major version */
++        0x01,       /* minor version */
++    };
 +
-+static void i2c_mctp_handle_control(MCTPI2CEndpoint *mctp)
-+{
-+    MCTPControlMessage *msg = (MCTPControlMessage *)i2c_mctp_payload(mctp->buffer);
++    /* cannot be static since we need to patch in the i2c address */
++    uint8_t nmi_ds_ports[36] = {
++        0x00,       /* success */
++        0x20, 0x00, /* response data length */
++        0x00,       /* reserved */
++        0x02,       /* port type (smbus) */
++        0x00,       /* reserved */
++        0x40, 0x00, /* maximum mctp transission unit size (64 bytes) */
++        0x00, 0x00, 0x00, 0x00, /* management endpoint buffer size */
++        0x00,       /* vpd i2c address */
++        0x00,       /* vpd i2c frequency */
++        0x00,       /* management endpoint i2c address */
++        0x01,       /* management endpoint i2c frequency */
++        0x00,       /* nvme basic management command NOT supported */
++    };
 +
-+    /* clear Rq/D */
-+    msg->flags &= ~(MCTP_CONTROL_FLAGS_RQ | MCTP_CONTROL_FLAGS_D);
++    /**
++     * Controller Information is zeroed, since there are no associated
++     * controllers at this point.
++     */
++    static uint8_t nmi_ds_ctrl[36] = {};
 +
-+    mctp->len = sizeof(MCTPControlMessage);
++    /**
++     * For the Controller List, Optionally Supported Command List and
++     * Management Endpoint Buffer Supported Command List data structures.
++     *
++     * The Controller List data structure is defined in the NVM Express Base
++     * Specification, revision 2.0b, Figure 134.
++     */
++    static uint8_t nmi_ds_empty[6] = {
++        0x00,       /* success */
++        0x02,       /* response data length */
++        0x00, 0x00, /* reserved */
++        0x00, 0x00, /* number of entries (zero) */
++    };
 +
-+    trace_i2c_mctp_handle_control(msg->command_code);
++    switch (dtyp) {
++    case NMI_CMD_READ_NMI_DS_SUBSYSTEM:
++        len = sizeof(nmi_ds_subsystem);
++        buf = nmi_ds_subsystem;
 +
-+    switch (msg->command_code) {
-+    case MCTP_CONTROL_SET_EID:
-+        i2c_mctp_handle_control_set_eid(mctp, msg->data[1]);
 +        break;
 +
-+    case MCTP_CONTROL_GET_EID:
-+        i2c_mctp_handle_control_get_eid(mctp);
++    case NMI_CMD_READ_NMI_DS_PORTS:
++        len = sizeof(nmi_ds_ports);
++        buf = nmi_ds_ports;
++
++        /* patch in the i2c address of the endpoint */
++        buf[14] = i2c->address;
++
 +        break;
 +
-+    case MCTP_CONTROL_GET_VERSION:
-+        i2c_mctp_handle_control_get_version(mctp);
++    case NMI_CMD_READ_NMI_DS_CTRL_INFO:
++        len = sizeof(nmi_ds_ctrl);
++        buf = nmi_ds_ctrl;
++
 +        break;
 +
-+    case MCTP_CONTROL_GET_MESSAGE_TYPE_SUPPORT:
-+        i2c_mctp_handle_get_message_type_support(mctp);
++    case NMI_CMD_READ_NMI_DS_CTRL_LIST:
++    case NMI_CMD_READ_NMI_DS_OPT_CMD_SUPPORT:
++    case NMI_CMD_READ_NMI_DS_MEB_CMD_SUPPORT:
++        len = sizeof(nmi_ds_empty);
++        buf = nmi_ds_empty;
++
 +        break;
 +
 +    default:
-+        trace_i2c_mctp_unhandled_control(msg->command_code);
++        nmi_set_parameter_error(nmi, offsetof(NMIRequest, dw0) + 4, 0);
 +
-+        msg->data[0] = MCTP_CONTROL_ERROR_UNSUPPORTED_CMD;
-+        mctp->len++;
++        return;
++    }
++
++    memcpy(nmi->scratch + nmi->pos, buf, len);
++    nmi->pos += len;
++}
++
++enum {
++    NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ                = 0x1,
++    NMI_CMD_CONFIGURATION_GET_HEALTH_STATUS_CHANGE      = 0x2,
++    NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT    = 0x3,
++};
++
++static void nmi_handle_mi_config_get(NMIDevice *nmi, NMIRequest *request)
++{
++    uint32_t dw0 = le32_to_cpu(request->dw0);
++    uint8_t identifier = dw0 & 0xff;
++    uint8_t *buf;
++
++    static uint8_t smbus_freq[4] = {
++        0x00,               /* success */
++        0x01, 0x00, 0x00,   /* 100 kHz */
++    };
++
++    static uint8_t mtu[4] = {
++        0x00,       /* success */
++        0x40, 0x00, /* 64 */
++        0x00,       /* reserved */
++    };
++
++    trace_nmi_handle_mi_config_get(identifier);
++
++    switch (identifier) {
++    case NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ:
++        buf = smbus_freq;
++        break;
++
++    case NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT:
++        buf = mtu;
++        break;
++
++    default:
++        nmi_set_parameter_error(nmi, 0x0, offsetof(NMIRequest, dw0));
++        return;
++    }
++
++    memcpy(nmi->scratch + nmi->pos, buf, 4);
++    nmi->pos += 4;
++}
++
++enum {
++    NMI_CMD_READ_NMI_DS         = 0x0,
++    NMI_CMD_CONFIGURATION_GET   = 0x4,
++};
++
++static void nmi_handle_mi(NMIDevice *nmi, NMIMessage *msg)
++{
++    NMIRequest *request = (NMIRequest *)msg->payload;
++
++    trace_nmi_handle_mi(request->opc);
++
++    switch (request->opc) {
++    case NMI_CMD_READ_NMI_DS:
++        nmi_handle_mi_read_nmi_ds(nmi, request);
++        break;
++
++    case NMI_CMD_CONFIGURATION_GET:
++        nmi_handle_mi_config_get(nmi, request);
++        break;
++
++    default:
++        nmi_set_parameter_error(nmi, 0x0, 0x0);
++        fprintf(stderr, "nmi command 0x%x not handled\n", request->opc);
++
++        break;
++    }
++}
++
++static void nmi_reset(MCTPI2CEndpoint *mctp)
++{
++    NMIDevice *nmi = NMI_I2C_DEVICE(mctp);
++    nmi->len = 0;
++}
++
++static void nmi_handle(MCTPI2CEndpoint *mctp)
++{
++    NMIDevice *nmi = NMI_I2C_DEVICE(mctp);
++    NMIMessage *msg = (NMIMessage *)nmi->buffer;
++    uint32_t crc;
++    uint8_t nmimt;
++
++    uint8_t buf[] = {
++        msg->mctpd,
++        FIELD_DP8(msg->nmp, NMI_NMP, ROR, 1),
++        0x0, 0x0,
++    };
++
++    if (FIELD_EX8(msg->mctpd, NMI_MCTPD, MT) != NMI_MCTPD_MT_NMI) {
++        goto drop;
++    }
++
++    if (FIELD_EX8(msg->mctpd, NMI_MCTPD, IC) != NMI_MCTPD_IC_ENABLED) {
++        goto drop;
++    }
++
++    memcpy(nmi->scratch, buf, sizeof(buf));
++    nmi->pos = sizeof(buf);
++
++    nmimt = FIELD_EX8(msg->nmp, NMI_NMP, NMIMT);
++
++    trace_nmi_handle_msg(nmimt);
++
++    switch (nmimt) {
++    case NMI_NMP_NMIMT_NVME_MI:
++        nmi_handle_mi(nmi, msg);
++        break;
++
++    default:
++        fprintf(stderr, "nmi message type 0x%x not handled\n", nmimt);
++
++        nmi_set_error(nmi, 0x3);
 +
 +        break;
 +    }
 +
-+    assert(mctp->len <= MCTP_BASELINE_MTU);
++    /* add message integrity check */
++    memset(nmi->scratch + nmi->pos, 0x0, sizeof(crc));
++
++    crc = crc32c(0xffffffff, nmi->scratch, nmi->pos);
++    memcpy(nmi->scratch + nmi->pos, &crc, sizeof(crc));
++
++    nmi->len = nmi->pos + sizeof(crc);
++    nmi->pos = 0;
 +
 +    i2c_mctp_schedule_send(mctp);
++
++    return;
++
++drop:
++    nmi_reset(mctp);
 +}
 +
-+static int i2c_mctp_event_cb(I2CSlave *i2c, enum i2c_event event)
++static size_t nmi_get_buf(MCTPI2CEndpoint *mctp, const uint8_t **buf,
++                          size_t maxlen, uint8_t *mctp_flags)
 +{
-+    MCTPI2CEndpoint *mctp = MCTP_I2C_ENDPOINT(i2c);
-+    MCTPI2CEndpointClass *mc = MCTP_I2C_ENDPOINT_GET_CLASS(mctp);
-+    MCTPI2CPacket *pkt = (MCTPI2CPacket *)mctp->buffer;
-+    size_t payload_len;
-+    uint8_t pec, pktseq, msgtype;
++    NMIDevice *nmi = NMI_I2C_DEVICE(mctp);
++    size_t len;
 +
-+    switch (event) {
-+    case I2C_START_SEND:
-+        if (mctp->state == I2C_MCTP_STATE_IDLE) {
-+            mctp->state = I2C_MCTP_STATE_RX_STARTED;
-+        } else if (mctp->state != I2C_MCTP_STATE_RX) {
-+            return -1;
-+        }
++    len = MIN(maxlen, nmi->len - nmi->pos);
 +
-+        /* the i2c core eats the slave address, so put it back in */
-+        pkt->i2c.dest = i2c->address << 1;
-+        mctp->len = 1;
-+
++    if (len == 0) {
 +        return 0;
++    }
 +
-+    case I2C_FINISH:
-+        if (mctp->len < sizeof(MCTPI2CPacket) + 1) {
-+            trace_i2c_mctp_drop_short_packet(mctp->len);
-+            goto drop;
-+        }
++    if (nmi->pos == 0) {
++        *mctp_flags = FIELD_DP8(*mctp_flags, MCTP_H_FLAGS, SOM, 1);
++    }
 +
-+        payload_len = mctp->len - (1 + offsetof(MCTPI2CPacket, mctp.payload));
++    *buf = nmi->scratch + nmi->pos;
++    nmi->pos += len;
 +
-+        if (pkt->i2c.byte_count + 3 != mctp->len - 1) {
-+            trace_i2c_mctp_drop_invalid_length(pkt->i2c.byte_count + 3,
-+                                               mctp->len - 1);
-+            goto drop;
-+        }
++    if (nmi->pos == nmi->len) {
++        *mctp_flags = FIELD_DP8(*mctp_flags, MCTP_H_FLAGS, EOM, 1);
 +
-+        pec = i2c_smbus_pec(0, mctp->buffer, mctp->len - 1);
-+        if (mctp->buffer[mctp->len - 1] != pec) {
-+            trace_i2c_mctp_drop_invalid_pec(mctp->buffer[mctp->len - 1], pec);
-+            goto drop;
-+        }
++        nmi->pos = nmi->len = 0;
++    }
 +
-+        if (!(pkt->mctp.hdr.eid.dest == mctp->my_eid ||
-+              pkt->mctp.hdr.eid.dest == 0)) {
-+            trace_i2c_mctp_drop_invalid_eid(pkt->mctp.hdr.eid.dest,
-+                                            mctp->my_eid);
-+            goto drop;
-+        }
++    return len;
++}
 +
-+        pktseq = FIELD_EX8(pkt->mctp.hdr.flags, MCTP_H_FLAGS, PKTSEQ);
++static int nmi_put_buf(MCTPI2CEndpoint *mctp, uint8_t *buf, size_t len)
++{
++    NMIDevice *nmi = NMI_I2C_DEVICE(mctp);
 +
-+        if (FIELD_EX8(pkt->mctp.hdr.flags, MCTP_H_FLAGS, SOM)) {
-+            mctp->tx.is_control = false;
-+
-+            if (mctp->state == I2C_MCTP_STATE_RX) {
-+                mc->reset(mctp);
-+            }
-+
-+            mctp->state = I2C_MCTP_STATE_RX;
-+
-+            mctp->tx.addr = pkt->i2c.source >> 1;
-+            mctp->tx.eid = pkt->mctp.hdr.eid.source;
-+            mctp->tx.tag = FIELD_EX8(pkt->mctp.hdr.flags, MCTP_H_FLAGS, TAG);
-+            mctp->tx.pktseq = pktseq;
-+
-+            msgtype = FIELD_EX8(pkt->mctp.payload[0], MCTP_MESSAGE_H, TYPE);
-+
-+            if (msgtype == MCTP_MESSAGE_TYPE_CONTROL) {
-+                mctp->tx.is_control = true;
-+
-+                i2c_mctp_handle_control(mctp);
-+
-+                return 0;
-+            }
-+        } else if (mctp->state == I2C_MCTP_STATE_RX_STARTED) {
-+            trace_i2c_mctp_drop_expected_som();
-+            goto drop;
-+        } else if (pktseq != (++mctp->tx.pktseq & 0x3)) {
-+            trace_i2c_mctp_drop_invalid_pktseq(pktseq, mctp->tx.pktseq & 0x3);
-+            goto drop;
-+        }
-+
-+        mc->put_buf(mctp, i2c_mctp_payload(mctp->buffer), payload_len);
-+
-+        if (FIELD_EX8(pkt->mctp.hdr.flags, MCTP_H_FLAGS, EOM)) {
-+            mc->handle(mctp);
-+            mctp->state = I2C_MCTP_STATE_WAIT_TX;
-+        }
-+
-+        return 0;
-+
-+    default:
++    if (nmi->len + len > NMI_MAX_MESSAGE_LENGTH) {
 +        return -1;
 +    }
 +
-+drop:
-+    mc->reset(mctp);
-+
-+    mctp->state = I2C_MCTP_STATE_IDLE;
++    memcpy(nmi->buffer + nmi->len, buf, len);
++    nmi->len += len;
 +
 +    return 0;
 +}
 +
-+static int i2c_mctp_send_cb(I2CSlave *i2c, uint8_t data)
++static size_t nmi_get_types(MCTPI2CEndpoint *mctp, const uint8_t **data)
 +{
-+    MCTPI2CEndpoint *mctp = MCTP_I2C_ENDPOINT(i2c);
++    /**
++     * DSP0236 1.3.0, Table 19.
++     *
++     * This only includes message types that are supported *in addition* to the
++     * MCTP control message type.
++     */
++    static const uint8_t buf[] = {
++        0x0,                /* success */
++        0x1,                /* number of message types in list (supported) */
++        NMI_MCTPD_MT_NMI,
++    };
 +
-+    if (mctp->len < I2C_MCTP_MAX_LENGTH) {
-+        mctp->buffer[mctp->len++] = data;
-+        return 0;
-+    }
++    *data = buf;
 +
-+    return -1;
++    return sizeof(buf);
 +}
 +
-+static void i2c_mctp_instance_init(Object *obj)
++static void nvme_mi_class_init(ObjectClass *oc, void *data)
 +{
-+    MCTPI2CEndpoint *mctp = MCTP_I2C_ENDPOINT(obj);
++    MCTPI2CEndpointClass *mc = MCTP_I2C_ENDPOINT_CLASS(oc);
 +
-+    mctp->tx.bh = qemu_bh_new(i2c_mctp_tx, mctp);
++    mc->get_types = nmi_get_types;
++
++    mc->get_buf = nmi_get_buf;
++    mc->put_buf = nmi_put_buf;
++
++    mc->handle = nmi_handle;
++    mc->reset = nmi_reset;
 +}
 +
-+static Property mctp_i2c_props[] = {
-+    DEFINE_PROP_UINT8("eid", MCTPI2CEndpoint, my_eid, 0x9),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void i2c_mctp_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+    I2CSlaveClass *k = I2C_SLAVE_CLASS(oc);
-+
-+    k->event = i2c_mctp_event_cb;
-+    k->send = i2c_mctp_send_cb;
-+
-+    device_class_set_props(dc, mctp_i2c_props);
-+}
-+
-+static const TypeInfo i2c_mctp_info = {
-+    .name = TYPE_MCTP_I2C_ENDPOINT,
-+    .parent = TYPE_I2C_SLAVE,
-+    .abstract = true,
-+    .instance_init = i2c_mctp_instance_init,
-+    .instance_size = sizeof(MCTPI2CEndpoint),
-+    .class_init = i2c_mctp_class_init,
-+    .class_size = sizeof(MCTPI2CEndpointClass),
++static const TypeInfo nvme_mi = {
++    .name = TYPE_NMI_I2C_DEVICE,
++    .parent = TYPE_MCTP_I2C_ENDPOINT,
++    .instance_size = sizeof(NMIDevice),
++    .class_init = nvme_mi_class_init,
 +};
 +
 +static void register_types(void)
 +{
-+    type_register_static(&i2c_mctp_info);
++    type_register_static(&nvme_mi);
 +}
 +
-+type_init(register_types)
-diff --git a/hw/i2c/meson.build b/hw/i2c/meson.build
-index b58bc167dbcd..c4bddc4f5024 100644
---- a/hw/i2c/meson.build
-+++ b/hw/i2c/meson.build
-@@ -1,5 +1,6 @@
- i2c_ss = ss.source_set()
- i2c_ss.add(when: 'CONFIG_I2C', if_true: files('core.c'))
-+i2c_ss.add(when: 'CONFIG_I2C_MCTP', if_true: files('mctp.c'))
- i2c_ss.add(when: 'CONFIG_SMBUS', if_true: files('smbus_slave.c', 'smbus_master.c'))
- i2c_ss.add(when: 'CONFIG_ACPI_SMBUS', if_true: files('pm_smbus.c'))
- i2c_ss.add(when: 'CONFIG_ACPI_ICH9', if_true: files('smbus_ich9.c'))
-diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
-index d7b1e25858b1..5a5c64b2652a 100644
---- a/hw/i2c/trace-events
-+++ b/hw/i2c/trace-events
-@@ -45,3 +45,16 @@ npcm7xx_smbus_recv_fifo(const char *id, uint8_t received, uint8_t expected) "%s
- 
- pca954x_write_bytes(uint8_t value) "PCA954X write data: 0x%02x"
- pca954x_read_data(uint8_t value) "PCA954X read data: 0x%02x"
++type_init(register_types);
+diff --git a/hw/nvme/trace-events b/hw/nvme/trace-events
+index 3a67680c6ad1..41e2c540dcf2 100644
+--- a/hw/nvme/trace-events
++++ b/hw/nvme/trace-events
+@@ -216,3 +216,9 @@ pci_nvme_ub_db_wr_invalid_sq(uint32_t qid) "submission queue doorbell write for
+ pci_nvme_ub_db_wr_invalid_sqtail(uint32_t qid, uint16_t new_tail) "submission queue doorbell write value beyond queue size, sqid=%"PRIu32", new_head=%"PRIu16", ignoring"
+ pci_nvme_ub_unknown_css_value(void) "unknown value in cc.css field"
+ pci_nvme_ub_too_many_mappings(void) "too many prp/sgl mappings"
 +
-+# mctp.c
-+i2c_mctp_tx_start_send(size_t len) "len %zu"
-+i2c_mctp_tx_send_byte(size_t pos, uint8_t byte) "pos %zu byte 0x%"PRIx8""
-+i2c_mctp_tx_done(void) "packet sent"
-+i2c_mctp_handle_control(uint8_t command) "command 0x%"PRIx8""
-+i2c_mctp_unhandled_control(uint8_t command) "command 0x%"PRIx8""
-+i2c_mctp_drop_invalid_length(unsigned byte_count, size_t expected) "byte_count %u expected %zu"
-+i2c_mctp_drop_invalid_pec(uint8_t pec, uint8_t expected) "pec 0x%"PRIx8" expected 0x%"PRIx8""
-+i2c_mctp_drop_invalid_eid(uint8_t eid, uint8_t expected) "eid 0x%"PRIx8" expected 0x%"PRIx8""
-+i2c_mctp_drop_invalid_pktseq(uint8_t pktseq, uint8_t expected) "pktseq 0x%"PRIx8" expected 0x%"PRIx8""
-+i2c_mctp_drop_short_packet(size_t len) "len %zu"
-+i2c_mctp_drop_expected_som(void) ""
-diff --git a/include/hw/i2c/mctp.h b/include/hw/i2c/mctp.h
-new file mode 100644
-index 000000000000..fccbf249cdbe
---- /dev/null
-+++ b/include/hw/i2c/mctp.h
-@@ -0,0 +1,127 @@
-+#ifndef QEMU_I2C_MCTP_H
-+#define QEMU_I2C_MCTP_H
-+
-+#include "qom/object.h"
-+#include "hw/qdev-core.h"
-+
-+#define TYPE_MCTP_I2C_ENDPOINT "mctp-i2c-endpoint"
-+OBJECT_DECLARE_TYPE(MCTPI2CEndpoint, MCTPI2CEndpointClass, MCTP_I2C_ENDPOINT)
-+
-+struct MCTPI2CEndpointClass {
-+    I2CSlaveClass parent_class;
-+
-+    /**
-+     *
-+     * put_buf() - receive incoming message fragment
-+     *
-+     * Must returns 0 for succes or -1 for error.
-+     */
-+    int (*put_buf)(MCTPI2CEndpoint *mctp, uint8_t *buf, size_t len);
-+
-+    /**
-+     * get_buf() - provide pointer to message fragment
-+     *
-+     * Called by the mctp subsystem to request a pointer to the next message
-+     * fragment. The implementation must advance its internal position such
-+     * that successive calls returns the next fragments.
-+     *
-+     * Must return the number of bytes available.
-+     */
-+    size_t (*get_buf)(MCTPI2CEndpoint *mctp, const uint8_t **buf,
-+                      size_t maxlen, uint8_t *mctp_flags);
-+
-+    /**
-+     * handle() - handle an MCTP message
-+     *
-+     * Called by the mctp subsystem when a full message has been delivered and
-+     * may be parsed and processed.
-+     */
-+    void (*handle)(MCTPI2CEndpoint *mctp);
-+
-+    /**
-+     * reset() - reset internal state
-+     *
-+     * Called by the mctp subsystem in the event of some transport error.
-+     * Implementation must reset its internal state and drop any fragments
-+     * previously receieved.
-+     */
-+    void (*reset)(MCTPI2CEndpoint *mctp);
-+
-+    /**
-+     * get_types() - provide supported mctp message types
-+     *
-+     * Must provide a buffer with a full MCTP supported message types payload
-+     * (i.e. `0x0(SUCCESS),0x1(COUNT),0x4(NMI)`).
-+     *
-+     * Returns the size of the response.
-+     */
-+    size_t (*get_types)(MCTPI2CEndpoint *mctp, const uint8_t **data);
-+};
-+
-+/*
-+ * Maximum value of the SMBus Block Write "Byte Count" field (8 bits).
-+ *
-+ * This is the count of bytes that follow the Byte Count field and up to, but
-+ * not including, the PEC byte.
-+ */
-+#define I2C_MCTP_MAXBLOCK 255
-+
-+/*
-+ * Maximum Transmission Unit under I2C.
-+ *
-+ * This is for the MCTP Packet Payload (255, subtracting the 4 byte MCTP Packet
-+ * Header or the 1 byte MCTP/I2C piggy-backed source address).
-+ */
-+#define I2C_MCTP_MAXMTU (I2C_MCTP_MAXBLOCK - (sizeof(MCTPPacketHeader) + 1))
-+
-+/*
-+ * Maximum length of an MCTP/I2C packet.
-+ *
-+ * This is the sum of the three I2C header bytes (Destination target address,
-+ * Command Code and Byte Count), the maximum number of bytes in a message (255)
-+ * and the 1 byte Packet Error Code.
-+ */
-+#define I2C_MCTP_MAX_LENGTH (3 + I2C_MCTP_MAXBLOCK + 1)
-+
-+typedef enum {
-+    I2C_MCTP_STATE_IDLE,
-+    I2C_MCTP_STATE_RX_STARTED,
-+    I2C_MCTP_STATE_RX,
-+    I2C_MCTP_STATE_WAIT_TX,
-+    I2C_MCTP_STATE_TX,
-+} MCTPState;
-+
-+typedef enum {
-+    I2C_MCTP_STATE_TX_START_SEND,
-+    I2C_MCTP_STATE_TX_SEND_BYTE,
-+} MCTPTxState;
-+
-+typedef struct MCTPI2CEndpoint {
-+    I2CSlave parent_obj;
-+    I2CBus *i2c;
-+
-+    MCTPState state;
-+
-+    /* mctp endpoint identifier */
-+    uint8_t my_eid;
-+
-+    uint8_t buffer[I2C_MCTP_MAX_LENGTH];
-+    uint64_t pos;
-+    size_t len;
-+
-+    struct {
-+        MCTPTxState state;
-+        bool is_control;
-+
-+        uint8_t eid;
-+        uint8_t addr;
-+        uint8_t pktseq;
-+        uint8_t tag;
-+
-+        QEMUBH *bh;
-+    } tx;
-+} MCTPI2CEndpoint;
-+
-+void i2c_mctp_schedule_send(MCTPI2CEndpoint *mctp);
-+
-+#endif /* QEMU_I2C_MCTP_H */
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-new file mode 100644
-index 000000000000..5d26d855dba0
---- /dev/null
-+++ b/include/net/mctp.h
-@@ -0,0 +1,35 @@
-+#ifndef QEMU_MCTP_H
-+#define QEMU_MCTP_H
-+
-+#include "hw/registerfields.h"
-+
-+/* DSP0236 1.3.0, Section 8.3.1 */
-+#define MCTP_BASELINE_MTU 64
-+
-+/* DSP0236 1.3.0, Table 1, Message body */
-+FIELD(MCTP_MESSAGE_H, TYPE, 0, 7)
-+FIELD(MCTP_MESSAGE_H, IC,   7, 1)
-+
-+/* DSP0236 1.3.0, Table 1, MCTP transport header */
-+FIELD(MCTP_H_FLAGS, TAG,    0, 3);
-+FIELD(MCTP_H_FLAGS, TO,     3, 1);
-+FIELD(MCTP_H_FLAGS, PKTSEQ, 4, 2);
-+FIELD(MCTP_H_FLAGS, EOM,    6, 1);
-+FIELD(MCTP_H_FLAGS, SOM,    7, 1);
-+
-+/* DSP0236 1.3.0, Figure 4 */
-+typedef struct MCTPPacketHeader {
-+    uint8_t version;
-+    struct {
-+        uint8_t dest;
-+        uint8_t source;
-+    } eid;
-+    uint8_t flags;
-+} MCTPPacketHeader;
-+
-+typedef struct MCTPPacket {
-+    MCTPPacketHeader hdr;
-+    uint8_t          payload[];
-+} MCTPPacket;
-+
-+#endif /* QEMU_MCTP_H */
++# nmi-i2c
++nmi_handle_mi_read_nmi_ds(uint8_t dtyp) "dtyp 0x%"PRIx8""
++nmi_handle_mi_config_get(uint8_t identifier) "identifier 0x%"PRIx8""
++nmi_handle_mi(uint8_t opc) "opc 0x%"PRIx8""
++nmi_handle_msg(uint8_t nmint) "nmint 0x%"PRIx8""
 
 -- 
 2.42.0
