@@ -2,74 +2,182 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A4C78569B
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F907856B1
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:23:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYlpO-0006QW-Q1; Wed, 23 Aug 2023 07:15:10 -0400
+	id 1qYlxL-0007m9-QQ; Wed, 23 Aug 2023 07:23:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYlpM-0006Oe-3s
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:15:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYlxI-0007lh-Nv
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:23:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qYlpJ-00045z-4m
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:15:07 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qYlxG-0005et-8A
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:23:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692789302;
+ s=mimecast20190719; t=1692789797;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Qmmvp+YGxgpgaXsqa3fvEWCbGNwivYNkTQGkc5KmHVo=;
- b=U8NmK3JFTgawRLYv7t9KWhcuOTpbv9gA1KNYJ2N0T9HJQ2cdHV6gwK042hYQcYqlu23xLl
- 2f09yzCmu47g7Ewz98uaTN7WCeu+j2aXvVZhWFCnaOU30favvcRL8ISqkMbP2oIL62eRAH
- NqjOkTmf9RTrUpkRqOip6gNuN/7hQ7g=
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=bfmTzlAhWGe03UxTmi+10qIsSNFoMPavdP6wO+SkjcM=;
+ b=Efs3Z1p1nQ8BgB7/UzO74d27joE5SL251F0+ppg163dd/I6U/hd8PNnghk2DXJRLWZ6XZG
+ Q0LNvPnPEvPXKYMeEB8h15Dp2SyAP8hcUckIxoJgwEj2BOjD1o1hzYTfFnw/brIitEgjvK
+ z0QerUat+PD7tRYyHkSUI3SquRKfiXk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-617-4r2N1Os8M166plyxb1F4sw-1; Wed, 23 Aug 2023 07:14:56 -0400
-X-MC-Unique: 4r2N1Os8M166plyxb1F4sw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-170-RCy3YWL5M_m3h4q_PlTVCg-1; Wed, 23 Aug 2023 07:23:14 -0400
+X-MC-Unique: RCy3YWL5M_m3h4q_PlTVCg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF6C4185A791;
- Wed, 23 Aug 2023 11:14:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 836402026D76;
- Wed, 23 Aug 2023 11:14:55 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7D84F21E690D; Wed, 23 Aug 2023 13:14:54 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Igor Mammedov
- <imammedo@redhat.com>,  Ani Sinha <anisinha@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  David Hildenbrand <david@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Cornelia Huck <cohuck@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,  Gerd
- Hoffmann <kraxel@redhat.com>,  qemu-devel@nongnu.org,
- kvm@vger.kernel.org,  Eduardo Habkost <eduardo@habkost.net>,  Laszlo
- Ersek <lersek@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,
- erdemaktas@google.com,  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v2 02/58] i386: Introduce tdx-guest object
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-3-xiaoyao.li@intel.com>
- <87bkez7g0g.fsf@pond.sub.org>
- <a94957f6-cde2-c5ac-0391-d1df245dc25f@intel.com>
-Date: Wed, 23 Aug 2023 13:14:54 +0200
-In-Reply-To: <a94957f6-cde2-c5ac-0391-d1df245dc25f@intel.com> (Xiaoyao Li's
- message of "Wed, 23 Aug 2023 15:27:03 +0800")
-Message-ID: <87h6oqxb69.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC20D8D40AB;
+ Wed, 23 Aug 2023 11:23:11 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.108])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C5A5840D2839;
+ Wed, 23 Aug 2023 11:23:00 +0000 (UTC)
+Date: Wed, 23 Aug 2023 07:22:59 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Aarushi Mehta <mehta.aaru20@gmail.com>,
+ Ahmed Karaman <ahmedkhaledkaraman@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Alberto Garcia <berto@igalia.com>, Alessandro Di Federico <ale@rev.ng>,
+ Alexander Bulekov <alxndr@bu.edu>, Alexander Graf <agraf@csgraf.de>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Anton Johansson <anjo@rev.ng>,
+ Antony Pavlov <antonynpavlov@gmail.com>,
+ Anup Patel <anup.patel@wdc.com>, Ari Sundholm <ari@tuxera.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Bin Meng <bin.meng@windriver.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Brad Smith <brad@comstyle.com>, Brian Cain <bcain@quicinc.com>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Chris Browy <cbrowy@avery-design.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Christoph Muellner <christoph.muellner@vrull.eu>,
+ Cleber Rosa <crosa@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Corey Minyard <cminyard@mvista.com>,
+ Corey Minyard <minyard@acm.org>, Cornelia Huck <cohuck@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>, "Denis V. Lunev" <den@openvz.org>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Ed Maste <emaste@freebsd.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Eric Auger <eric.auger@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Fabien Chouteau <chouteau@adacore.com>, Fam Zheng <fam@euphon.net>,
+ Felipe Balbi <balbi@kernel.org>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Francisco Iglesias <francisco.iglesias@xilinx.com>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Gonglei <arei.gonglei@huawei.com>, Greg Kurz <groug@kaod.org>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Hanna Reitz <hreitz@redhat.com>,
+ Hannes Reinecke <hare@suse.com>, Hao Wu <wuhaotsh@google.com>,
+ =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>,
+ Hongren Zheng <i@zenithal.me>, Huacai Chen <chenhuacai@kernel.org>,
+ Huai-Cheng Kuo <hchkuo@avery-design.com.tw>,
+ Hyman Huang <yong.huang@smartx.com>, Igor Mammedov <imammedo@redhat.com>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, Ilya Dryomov <idryomov@gmail.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Jason Herne <jjherne@linux.ibm.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Jeff Cody <codyprime@gmail.com>, Jia Liu <proljc@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>, Jiri Slaby <jslaby@suse.cz>,
+ Joel Stanley <joel@jms.id.au>, John Snow <jsnow@redhat.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Kevin Wolf <kwolf@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, Laurent Vivier <lvivier@redhat.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Li-Wen Hsu <lwhsu@freebsd.org>, Li Zhijian <lizhijian@fujitsu.com>,
+ Luc Michel <luc@lmichel.fr>, Luigi Rizzo <rizzo@iet.unipi.it>,
+ Lukas Straub <lukasstraub2@web.de>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Markus Armbruster <armbru@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Michael Rolnik <mrolnik@gmail.com>, Michael Roth <michael.roth@amd.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Patrick Venture <venture@google.com>,
+ Paul Burton <paulburton@kernel.org>, Paul Durrant <paul@xen.org>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>, Peter Lieven <pl@kamp.de>,
+ Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Richard W.M. Jones" <rjones@redhat.com>,
+ Riku Voipio <riku.voipio@iki.fi>, Rob Herring <robh@kernel.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, Ryo ONODERA <ryoon@netbsd.org>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Sergio Lopez <slp@redhat.com>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Song Gao <gaosong@loongson.cn>, Stafford Horne <shorne@gmail.com>,
+ Stefan Berger <stefanb@linux.ibm.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, Stefan Weil <sw@weilnetz.de>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Su Hang <suhang16@mails.ucas.ac.cn>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Sven Schnelle <svens@stackframe.org>,
+ Thomas Huth <huth@tuxfamily.org>, Thomas Huth <thuth@redhat.com>,
+ Titus Rwantare <titusr@google.com>, Tony Krowiak <akrowiak@linux.ibm.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Vijai Kumar K <vijai@behindbytes.com>,
+ Vikram Garhwal <fnu.vikram@xilinx.com>,
+ Vikram Garhwal <vikram.garhwal@amd.com>,
+ Viktor Prutyanov <viktor.prutyanov@phystech.edu>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ WANG Xuerui <git@xen0n.name>, Warner Losh <imp@bsdimp.com>,
+ Wen Congyang <wencongyang2@huawei.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Xie Changlong <xiechanglong.d@gmail.com>,
+ Xie Yongji <xieyongji@bytedance.com>, Yonggang Luo <luoyonggang@gmail.com>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Zhang Chen <chen.zhang@intel.com>,
+ zhenwei pi <pizhenwei@bytedance.com>
+Subject: Starting the QEMU 8.2 release cycle
+Message-ID: <20230823112259.GA820132@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Ad70x3oXfpjYzo1s"
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,146 +201,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-> On 8/22/2023 2:22 PM, Markus Armbruster wrote:
->> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->> 
->>> Introduce tdx-guest object which implements the interface of
->>> CONFIDENTIAL_GUEST_SUPPORT, and will be used to create TDX VMs (TDs) by
->>>
->>>    qemu -machine ...,confidential-guest-support=tdx0	\
->>>         -object tdx-guset,id=tdx0
->>
->> Typo: tdx-guest
->
-> Will fix it.
->
->>> It has only one property 'attributes' with fixed value 0 and not
->>> configurable so far.
->>
->> This must refer to TdxGuest member @attributes.
->> "Property" suggests QOM property, which @attributes isn't, at least not
->> in this patch.  Will it become a QOM property later in this series?
->
-> At least not in this series. Maybe in the future there is request to directly configure the whole attributes via QOM property, but none from now.
->
-> I will change the description of it to avoid confusion.
->
->> Hmm, @attributes appears to remain unused until PATCH 14.  Recommend to
->> delay its addition until then.
->
-> IMHO, it's not suitable to introduce it in patch 14. Using a separate patch seems unnecessary. I'll leave it in this patch unless strong objection on it.
+--Ad70x3oXfpjYzo1s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Not worth arguing about.
+Hi,
+The QEMU 8.2 release cycle has begun. I am merging qemu.git pull
+requests for this release. You do not need to CC me on pull requests
+because I am monitoring qemu-devel.
 
->>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
->>> ---
->>> changes from RFC-V4
->>> - make @attributes not user-settable
->>> ---
->>>   configs/devices/i386-softmmu/default.mak |  1 +
->>>   hw/i386/Kconfig                          |  5 +++
->>>   qapi/qom.json                            | 12 +++++++
->>>   target/i386/kvm/meson.build              |  2 ++
->>>   target/i386/kvm/tdx.c                    | 40 ++++++++++++++++++++++++
->>>   target/i386/kvm/tdx.h                    | 19 +++++++++++
->>>   6 files changed, 79 insertions(+)
->>>   create mode 100644 target/i386/kvm/tdx.c
->>>   create mode 100644 target/i386/kvm/tdx.h
->>>
->>> diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/i386-softmmu/default.mak
->>> index 598c6646dfc0..9b5ec59d65b0 100644
->>> --- a/configs/devices/i386-softmmu/default.mak
->>> +++ b/configs/devices/i386-softmmu/default.mak
->>> @@ -18,6 +18,7 @@
->>>   #CONFIG_QXL=n
->>>   #CONFIG_SEV=n
->>>   #CONFIG_SGA=n
->>> +#CONFIG_TDX=n
->>>   #CONFIG_TEST_DEVICES=n
->>>   #CONFIG_TPM_CRB=n
->>>   #CONFIG_TPM_TIS_ISA=n
->>> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
->>> index 9051083c1e78..929f6c3f0e85 100644
->>> --- a/hw/i386/Kconfig
->>> +++ b/hw/i386/Kconfig
->>> @@ -10,6 +10,10 @@ config SGX
->>>       bool
->>>       depends on KVM
->>>   +config TDX
->>> +    bool
->>> +    depends on KVM
->>> +
->>>   config PC
->>>       bool
->>>       imply APPLESMC
->>> @@ -26,6 +30,7 @@ config PC
->>>       imply QXL
->>>       imply SEV
->>>       imply SGX
->>> +    imply TDX
->>>       imply TEST_DEVICES
->>>       imply TPM_CRB
->>>       imply TPM_TIS_ISA
->>> diff --git a/qapi/qom.json b/qapi/qom.json
->>> index e0b2044e3d20..2ca7ce7c0da5 100644
->>> --- a/qapi/qom.json
->>> +++ b/qapi/qom.json
->>> @@ -866,6 +866,16 @@
->>>               'reduced-phys-bits': 'uint32',
->>>               '*kernel-hashes': 'bool' } }
->>>   +##
->>> +# @TdxGuestProperties:
->>> +#
->>> +# Properties for tdx-guest objects.
->>> +#
->>> +# Since: 8.2
->>> +##
->>> +{ 'struct': 'TdxGuestProperties',
->>> +  'data': { }}
->>> +
->>>   ##
->>>   # @ThreadContextProperties:
->>>   #
->>> @@ -944,6 +954,7 @@
->>>       'sev-guest',
->>>       'thread-context',
->>>       's390-pv-guest',
->>> +    'tdx-guest',
->>>       'throttle-group',
->>>       'tls-creds-anon',
->>>       'tls-creds-psk',
->>> @@ -1010,6 +1021,7 @@
->>>         'secret_keyring':             { 'type': 'SecretKeyringProperties',
->>>                                         'if': 'CONFIG_SECRET_KEYRING' },
->>>         'sev-guest':                  'SevGuestProperties',
->>> +      'tdx-guest':                  'TdxGuestProperties',
->>>         'thread-context':             'ThreadContextProperties',
->>>         'throttle-group':             'ThrottleGroupProperties',
->>>         'tls-creds-anon':             'TlsCredsAnonProperties',
->>
->> Actually useful only when CONFIG_TDX is on, but can't make it
->> conditional here, as CONFIG_TDX is poisoned.
->
-> In fact, I just followed what SEV did.
+The proposed schedule is as follows:
 
-Yup.
+2023-08-22 	Beginning of development phase
+2023-11-14 	Soft feature freeze. Only bug fixes after this point. All feature changes must be already in a sub maintainer tree and all pull requests from submaintainers must have been sent to the list by this date.
+2023-11-21 	Hard feature freeze. Tag rc0
+2023-11-28 	Tag rc1
+2023-12-05 	Tag rc2
+2023-12-12 	Tag rc3
+2023-12-19 	Release; or tag rc4 if needed
+2023-12-26 	Release if we needed an rc4
 
-> To me, it looks OK to make it conditional on CONFIG_TDX. Could you please elaborate "but can't make it conditional here, as CONFIG_TDX is poisoned." ?
+Please let me know if these dates are inconvenient. I may adjust the
+last date depending on my availability at the end of 2023.
 
-CONFIG_TDX is one of the macros that can only be used in
-target-dependent code.  Enforced by config-poison.h's
+Add the following milestone to issues that need to be tracked for this
+release:
+https://gitlab.com/qemu-project/qemu/-/milestones/10
 
-    #pragma GCC poison CONFIG_TDX
+You can update the changelog here:
+https://wiki.qemu.org/ChangeLog/8.2
 
-The code generated from qom.json is target-independent.
+The release schedule is here:
+https://wiki.qemu.org/Planning/8.2
 
-To use 'if': 'CONFIG_TDX', we'd have to move the definition to a
-target-dependent QAPI module, say qom-machine.json.  Sadly, that's more
-trouble than it's worth.
+Thanks,
+Stefan
 
-[...]
+--Ad70x3oXfpjYzo1s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTl7BMACgkQnKSrs4Gr
+c8iqWQf/RdTmkfoFvsFugU9VPa9J5udGfjtvRyeWTc1EeIB/s0nYb27gOC/UslIm
+vFGC+uileb8OEeDIp2rZ68Nx38tx9fCy4G4pNjO7RblRSp28xgoS7zOUHsUfpt2K
+ntP4uZAPrH+Pn0BuefTZ3JMYaqNtipAWWKq4yr3aFh5GVakYKRV6YJWzr5PbGPSO
+6eJX2PNt+nsPfdbT0dq4ncf//6OMTuvoswlVca62lwUNOO0UcHiBSGAbWZzqqu0l
+uQyr2QKNSePr3v5/V/mSnH3O0B/lv+uF+07d4IoJN/MGnIQLTwIRLvwSq83WGmAS
+LB42g0nU7W4uUzDdl5Qy2Leuw3dCpQ==
+=Cv0s
+-----END PGP SIGNATURE-----
+
+--Ad70x3oXfpjYzo1s--
 
 
