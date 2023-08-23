@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A388785E00
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9433A785E07
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:03:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYrCf-0008ML-Gw; Wed, 23 Aug 2023 12:59:33 -0400
+	id 1qYrFj-0001SO-Sw; Wed, 23 Aug 2023 13:02:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qYrCc-0008Lw-07
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:59:30 -0400
+ id 1qYrFg-0001Qr-Sj
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:02:41 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qYrCY-0008Ht-Rs
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:59:29 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RWC4k1FDMz67XMQ;
- Thu, 24 Aug 2023 00:55:02 +0800 (CST)
+ id 1qYrFe-0000Oq-QX
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 13:02:40 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RWC8L0C0fz6K6Kp;
+ Thu, 24 Aug 2023 00:58:10 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
- 2023 17:59:11 +0100
-Date: Wed, 23 Aug 2023 17:59:10 +0100
-To: Shreyas Shah <shreyas.shah@elastics.cloud>
-CC: Maverickk 78 <maverickk1778@gmail.com>, Jonathan Cameron via
- <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>
+ 2023 18:02:35 +0100
+Date: Wed, 23 Aug 2023 18:02:34 +0100
+To: Maverickk 78 <maverickk1778@gmail.com>
+CC: Jonathan Cameron via <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
 Subject: Re: CXL volatile memory is not listed
-Message-ID: <20230823175910.00001b81@Huawei.com>
-In-Reply-To: <IA1PR12MB6236E18350FFCB8916E32E86E81BA@IA1PR12MB6236.namprd12.prod.outlook.com>
+Message-ID: <20230823180234.00005fa2@Huawei.com>
+In-Reply-To: <CALfBBTsMLP8_eTfmFt5mB+ywF1D0WTR7m=PBqUVzhhvcwC+zYA@mail.gmail.com>
 References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
  <20230810113512.00000516@Huawei.com>
  <CALfBBTud4Y7qxKB8nkZ5Lo5sQs-7-F9Rkso+iQGvLO07VyRcDA@mail.gmail.com>
  <20230811145458.000029c7@Huawei.com>
  <CALfBBTsMLP8_eTfmFt5mB+ywF1D0WTR7m=PBqUVzhhvcwC+zYA@mail.gmail.com>
- <IA1PR12MB6236E18350FFCB8916E32E86E81BA@IA1PR12MB6236.namprd12.prod.outlook.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -73,33 +70,9 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 18 Aug 2023 11:30:55 +0000
-Shreyas Shah <shreyas.shah@elastics.cloud> wrote:
+On Fri, 18 Aug 2023 10:48:35 +0530
+Maverickk 78 <maverickk1778@gmail.com> wrote:
 
-> Once the cxl memory is online, how does Operating system know whether to malloc in the cxl memory or socket attached DDR memory?
-
-If you've brought the memory up as 'normal memory' via kmem rather than the other dax options
-then it'll be a separate NUMA node.  Hence you can control allocations using same tools
-used on multiple numa node systems.
-
-Jonathan
-
-> 
-> 
-> 
-> [https://static1.squarespace.com/static/60dbbd6d597c966b91a3b27b/t/6104415e6177af1589fb05e4/1627668830393/elastics-cloud-logo-120.png]<https://www.elastics.cloud/>
-> Shreyas Shah
-> Founder, CTO and Chief Scientist, Elastics.cloud, Inc.
-> 1730 North First Street, 5th Floor, San Jose, CA 95112
-> t: 408 476 3100<tel:408%20476%203100> | e: email: shreyas.shah@elastics.cloud
-> 
-> ________________________________
-> From: Maverickk 78 <maverickk1778@gmail.com>
-> Sent: Thursday, August 17, 2023 10:18 PM
-> To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Jonathan Cameron via <qemu-devel@nongnu.org>; linux-cxl@vger.kernel.org <linux-cxl@vger.kernel.org>
-> Subject: Re: CXL volatile memory is not listed
-> 
 > Hi Jonathan,
 > 
 > The use case of CXL switch will always need some sort of management
@@ -117,6 +90,22 @@ Jonathan
 > 
 > 
 > Is my understanding correct?
+
+It's possible that a particular set of systems work on the basis
+of the FM (BMC) in a memory appliance etc having already set up the
+memory before the hosts using it are booted.  This would be done for
+legacy systems / unaware operating systems for instances.
+In those cases the BIOS could enumerate and configure everything present
+when it starts and provide that info the the OS running on the host as
+EFI (and/or e820) and SRAT etc.
+
+If doing more dynamic memory pooling, I'd expect the OS to do all the
+hard work.  Note a common case in real systems is likely to be Multi Head
+devices for memory pooling, but they also require configuration before the
+memory is available to the host, so the points above are the same.
+
+Jonathan
+
 > 
 > 
 > 
@@ -219,6 +208,5 @@ Jonathan
 > > > > > Is there any documentation/blog listed?  
 > > > >  
 > >  
-> 
 
 
