@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E466C78571D
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA757854D2
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 12:04:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYmJs-0001de-Hi; Wed, 23 Aug 2023 07:46:40 -0400
+	id 1qYki3-0007t5-Su; Wed, 23 Aug 2023 06:03:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qYmJm-0001bw-TI
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:35 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qYki2-0007rX-6X
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 06:03:30 -0400
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qYmJk-0001YN-O3
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:34 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fef34c33d6so25096985e9.3
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 04:46:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qYki0-0005pU-A5
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 06:03:29 -0400
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4103aa6229cso30040851cf.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 03:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692791190; x=1693395990;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:to:from:user-agent:references:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1692785007; x=1693389807;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P5Tacoi9kvhag9w/ND+9i87igMma+Ied+EW5Hzqu6BE=;
- b=WNx2k14bB7JmMmQ9/Mklm0IGZXf3ktZ25dbcPng4S/HsspAIdufE0Xe/gvf46WY+BV
- cOvNZuCaZ5SB45OyJYoI0HTDFwcvFvt4G0fB2HKgQRMbosMwgEIJ+tho5X6j5Rb0t/Sp
- d+I9aIdQFX/px5yyMrVkNpRi2YIU6/1f9wBqdHA/tv72AwNCm5gMIcxg1Eb7j+4SHivB
- iHO4ZkW5XpuVpXkH3HCKnUuOafxhKeWKYv0cwDP1/ZawlS8YtOBwYCfprA4WFr/ULQLg
- xVkOpmrNula/oOnEP65XKnbeflcGWVeQIgP/IL8w/DReluL7M6bF4KGe53967BQb8SWx
- T2Qg==
+ bh=iutk+1bfukUXy3bF772sqNmgSjd3Lsyp4QlTkRqxTE4=;
+ b=KmAbtopwcVVtLryLiLflyh0MmoU8gVfeuZFqepY7uwCvgW7XOUxCCm4UFys3NUajly
+ lDe2xLtZB1xhBfcM6nqQVrZzSBb9kALPypThag0zrVUoLyrwNVc/iW5Y3yQ2dE7A9Aig
+ 5kcr6xTfQiloFR9scUl+Gu8SyOIr2HU+2Iyf4qhQ9QYJCd/4tLUfN21V4/nfsPe8ja79
+ Y+aVjbblH95apmndrqZEytqC30dqokdl6a0dQV8tZxgcIe2DR2DigMlD+IZ0Ry3ZOVZP
+ h3YQq6BaEiObiK/jTPG8opBSb6GlKX19kENcn+1at4nR+ua8PKhJ//gDHpaz2CWhEa6J
+ PaMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692791190; x=1693395990;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:to:from:user-agent:references:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1692785007; x=1693389807;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P5Tacoi9kvhag9w/ND+9i87igMma+Ied+EW5Hzqu6BE=;
- b=OmkaycvQRIBHwjw5ERp28YEn2Fd71lx9aEqjbZGcnl09Bs5croqEF+91g885P8+cOc
- 8eO/tpsiHepSK1bPLgh2GuVjDmxYVKD8zk7foZVNG+8sHVoIZCbu2pJG5HTB/VcbjgRB
- ud3AnPRkpqHh/xgJ7cun3JLRhDHT3e7CN/spl8ZZ95VFCvOeIJZJI1/0SfPLE55K4T70
- uDy70FaJ6dnKEj1cOwmAu7RBleQ9xsheBlvBISTwS2NQAcxAM8MhB1jicQ7waBWP9Ntn
- cTU0Tyi3JbwA29pXD1WjI7OnvIME/XTST0dHAZ+aFlNa8fzd4ro0wKvAAFakU7aefDRg
- Xnag==
-X-Gm-Message-State: AOJu0YxmNLhDpYzy+IcD4DMPvo1+l6XHmDRoWqa9mnCPYgU2c5GgGBu3
- 69yO4t9gobRfYubByGAUFeSZUtAIkaWcC2CH1tA=
-X-Google-Smtp-Source: AGHT+IFWDMXc/aKb3xCPuLaZT0SXORHGY/MSjhTe3dORdEJuMhkZkgL1u1EBAttrT+VARYHx0P1BAQ==
-X-Received: by 2002:a7b:c8d0:0:b0:3fb:a917:b769 with SMTP id
- f16-20020a7bc8d0000000b003fba917b769mr9407671wml.21.1692791190116; 
- Wed, 23 Aug 2023 04:46:30 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- 15-20020a05600c028f00b003fee8793911sm12667529wmk.44.2023.08.23.04.46.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 04:46:29 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 5F2311FFBB;
- Wed, 23 Aug 2023 12:46:29 +0100 (BST)
-References: <20230823055155.1917375-1-mjt@tls.msk.ru>
- <20230823065335.1919380-5-mjt@tls.msk.ru>
-User-agent: mu4e 1.11.14; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: [PATCH 06/24] docs: spelling fixes
-Date: Wed, 23 Aug 2023 09:30:26 +0100
-In-reply-to: <20230823065335.1919380-5-mjt@tls.msk.ru>
-Message-ID: <87r0nugewa.fsf@linaro.org>
+ bh=iutk+1bfukUXy3bF772sqNmgSjd3Lsyp4QlTkRqxTE4=;
+ b=egSWOASvmCpeUuRMgdyB5uC019gF6fnbRX7aSI1hgHfwWAhntn+1zeowRU9AEM70M6
+ 3qd1mKvkRS931wKO+xnYt31/yz6213vBs1G2XYu6b1/FHbpD7CXZVOBw2qN+gMJNnI0W
+ nV+STJ1Yg+RwT7cTi/7I+XFZXGZsSH4SELBWO1gnb4KKkNC0BhuzFK/92dpvYSavzL9l
+ 5Z6J/fJys/NQ250mEdWkArgoNCsF3PXQy9dxXSGwkRG+urgo3NJ/6fM16PS4atgDTsrO
+ PDcWP8/83Q48oix8JEePjAz7iqRVsYL183D4RMR++iJ4BFitYQjfm6fqG7jrQfd3vCZi
+ Z5og==
+X-Gm-Message-State: AOJu0Yyd+Jd27+BPA/ERQ3OnThuJ3dFPKfB2W5GkZm4q2zSZhxXXsBY2
+ W4HQVs0Ocl9Hg3uv+XZFLq5fB5gXhczT3v+1Zk0=
+X-Google-Smtp-Source: AGHT+IG1h9rZ9dHmLFlMQ5hWtrR1QINBHGRG/Nk1f5QUXdeaOqC9UZrEzwQ9ngJ3TvZmM0Jw8laxklVimlmrkUDTDZA=
+X-Received: by 2002:a05:622a:19a2:b0:411:d31b:9864 with SMTP id
+ u34-20020a05622a19a200b00411d31b9864mr836433qtc.4.1692785006852; Wed, 23 Aug
+ 2023 03:03:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
+ <20230717163855.7383-3-stephen.s.brennan@oracle.com>
+ <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
+ <87edl4d9wi.fsf@oracle.com> <87fs4aha4t.fsf@oracle.com>
+In-Reply-To: <87fs4aha4t.fsf@oracle.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 23 Aug 2023 14:03:15 +0400
+Message-ID: <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
+Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened format
+ when necessary
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, 
+ joao.m.martins@oracle.com, Richard Henderson <richard.henderson@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +92,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
-Michael Tokarev <mjt@tls.msk.ru> writes:
-
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
->  docs/devel/qapi-code-gen.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Aug 23, 2023 at 4:31=E2=80=AFAM Stephen Brennan
+<stephen.s.brennan@oracle.com> wrote:
 >
-> diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
-> index 7f78183cd4..b0852da97b 100644
-> --- a/docs/devel/qapi-code-gen.rst
-> +++ b/docs/devel/qapi-code-gen.rst
-> @@ -1368,5 +1368,5 @@ anymore, optional return or event data members that=
- can't be sent
->  anymore, and return or event data member (enumeration) values that
->  can't be sent anymore makes no difference to clients, except for
-> -introspection.  The latter can conceivably confuse clients, so tread
-> +introspection.  The latter can conceivably confuse clients, so treat
->  carefully.
+> Stephen Brennan <stephen.s.brennan@oracle.com> writes:
+> > Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
+> >> I am a bit reluctant to change the dump format by default. But since t=
+he
+> >> flatten format is more "complicated" than the "normal" format, perhaps=
+ we
+> >> can assume all users will handle it.
+> >>
+> >> The change is probably late for 8.1 though..
+> >
+> > Thank you for your review and testing!
+> >
+> > I totally understand the concern about making the change by default. I
+> > do believe that nobody should notice too much because the normal format
+> > should be easier to work with, and more broadly compatible. I don't kno=
+w
+> > of any tool which deals with the flattened format that can't handle the
+> > normal format, except for "makedumpfile -R" itself.
+> >
+> > If it's a blocker, I can go ahead and add a new flag to the command to
+> > enable the behavior. However there are a few good justifications not to
+> > add a new flag. I think it's going to be difficult to explain the
+> > difference between the two formats in documentation, as the
+> > implementation of the formats is a bit "into the weeds". The libvirt AP=
+I
+> > also specifies each format separately (kdump-zlib, kdump-lzo,
+> > kdump-snappy) and so adding several new options there would be
+> > unfortunate for end-users as well.
+> >
+> > At the end of the day, it's your judgment call, and I'll implement it
+> > how you prefer.
+>
+> I just wanted to check back on this to clarify the next step. Are you
+> satisfied with this and waiting to apply it until the right time? Or
+> would you prefer me to send a new version making this opt-in?
+>
 
-I guess this is a cultural idiom because "tread carefully" is a common
-phrase in British English at least. For example:
+Nobody seems to raise concerns. If it would be just me, I would change
+it. But we should rather be safe, so let's make it this opt-in please.
 
-  Investors need to tread carefully, as irrational exuberance has a
-  habit of eclipsing common sense in the world of tech.
+
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Marc-Andr=C3=A9 Lureau
 
