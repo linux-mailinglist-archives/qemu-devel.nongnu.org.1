@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57B378570F
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73161785719
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 13:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYmJn-0001a6-Dp; Wed, 23 Aug 2023 07:46:35 -0400
+	id 1qYmJl-0001Zj-0A; Wed, 23 Aug 2023 07:46:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJO-0001Xa-Gi
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJM-0001WB-GB
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJL-0001Vt-94
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYmJK-0001Vc-S4
  for qemu-devel@nongnu.org; Wed, 23 Aug 2023 07:46:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1692791166;
@@ -22,32 +22,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CyV1ROp1edt5ej0qkoEODn89anDkzeeYo0FXYSVmjQo=;
- b=g0D3SOpzzppr6tSYiNuJ8s1dlwif1n04lKimn/lmmjAwWPI3UfpFggX5nWOjkret65kgQ7
- d/XxQYa4U2sYfZpFQJjcmNtVcAIg/lS9fKh3yWvhIkr7TtxDn38C5B/jEfDTtip/XaInTW
- IPhmiZL2C+MgAJvk0Ynsy2SDRkkx5aw=
+ bh=ZKzgd+PwDSw1IXSdBOzJq70FmczDucXQ+0ZBaWhhhDk=;
+ b=GNW8Q9bnLJw6tmbM8cjdZRpAaQkOTLbMyZH5KBV1d43UqmGQCKTBLEQoidQE9tICAtVKci
+ ljg7ZKMhY8eEDFKvX4/1na9fk3NY5kO3lYpiY1UiVQeq7je3QPOKTkF+V2QOrpq8+JLtjx
+ lX1CtTbfIxgiIOLjSCssUbC5IOE8xkQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-413-6YeW00rGOserFY4OF5G7ig-1; Wed, 23 Aug 2023 07:46:03 -0400
-X-MC-Unique: 6YeW00rGOserFY4OF5G7ig-1
+ us-mta-475-5ZiGSViMOQWpIIGrqFLK-w-1; Wed, 23 Aug 2023 07:46:04 -0400
+X-MC-Unique: 5ZiGSViMOQWpIIGrqFLK-w-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F626800CAE;
- Wed, 23 Aug 2023 11:46:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2936B857A84;
+ Wed, 23 Aug 2023 11:46:04 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E788BC15BAE;
- Wed, 23 Aug 2023 11:46:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6B4C7C15BAE;
+ Wed, 23 Aug 2023 11:46:03 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org,
- Claudio Fontana <cfontana@suse.de>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 11/12] target/s390x: Fix the "ignored match" case in VSTRS
-Date: Wed, 23 Aug 2023 13:45:43 +0200
-Message-Id: <20230823114544.216520-12-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 12/12] tests/tcg/s390x: Test VSTRS
+Date: Wed, 23 Aug 2023 13:45:44 +0200
+Message-Id: <20230823114544.216520-13-thuth@redhat.com>
 In-Reply-To: <20230823114544.216520-1-thuth@redhat.com>
 References: <20230823114544.216520-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,118 +77,123 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Currently the emulation of VSTRS recognizes partial matches in presence
-of \0 in the haystack, which, according to PoP, is not correct:
+Add a small test to prevent regressions.
 
-    If the ZS flag is one and a zero byte was detected
-    in the second operand, then there can not be a
-    partial match ...
-
-Add a check for this. While at it, fold a number of explicitly handled
-special cases into the generic logic.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Claudio Fontana <cfontana@suse.de>
-Closes: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00633.html
-Fixes: 1d706f314191 ("target/s390x: vxeh2: vector string search")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230804233748.218935-3-iii@linux.ibm.com>
-Tested-by: Claudio Fontana <cfontana@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20230804233748.218935-4-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/tcg/vec_string_helper.c | 54 +++++++++-------------------
- 1 file changed, 17 insertions(+), 37 deletions(-)
+ tests/tcg/s390x/vxeh2_vstrs.c   | 88 +++++++++++++++++++++++++++++++++
+ tests/tcg/s390x/Makefile.target |  1 +
+ 2 files changed, 89 insertions(+)
+ create mode 100644 tests/tcg/s390x/vxeh2_vstrs.c
 
-diff --git a/target/s390x/tcg/vec_string_helper.c b/target/s390x/tcg/vec_string_helper.c
-index 9b85becdfb..a19f429768 100644
---- a/target/s390x/tcg/vec_string_helper.c
-+++ b/target/s390x/tcg/vec_string_helper.c
-@@ -474,9 +474,9 @@ DEF_VSTRC_CC_RT_HELPER(32)
- static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
-                  const S390Vector *v4, uint8_t es, bool zs)
- {
--    int substr_elen, substr_0, str_elen, i, j, k, cc;
-+    int substr_elen, i, j, k, cc;
-     int nelem = 16 >> es;
--    bool eos = false;
-+    int str_leftmost_0;
- 
-     substr_elen = s390_vec_read_element8(v4, 7) >> es;
- 
-@@ -498,47 +498,20 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
-     }
- 
-     /* If ZS, look for eos in the searched string. */
-+    str_leftmost_0 = nelem;
-     if (zs) {
-         for (k = 0; k < nelem; k++) {
-             if (s390_vec_read_element(v2, k, es) == 0) {
--                eos = true;
-+                str_leftmost_0 = k;
-                 break;
-             }
-         }
--        str_elen = k;
--    } else {
--        str_elen = nelem;
-     }
- 
--    substr_0 = s390_vec_read_element(v3, 0, es);
--
--    for (k = 0; ; k++) {
--        for (; k < str_elen; k++) {
--            if (s390_vec_read_element(v2, k, es) == substr_0) {
--                break;
--            }
--        }
--
--        /* If we reached the end of the string, no match. */
--        if (k == str_elen) {
--            cc = eos; /* no match (with or without zero char) */
--            goto done;
--        }
--
--        /* If the substring is only one char, match. */
--        if (substr_elen == 1) {
--            cc = 2; /* full match */
--            goto done;
--        }
--
--        /* If the match begins at the last char, we have a partial match. */
--        if (k == str_elen - 1) {
--            cc = 3; /* partial match */
--            goto done;
--        }
--
-+    cc = str_leftmost_0 == nelem ? 0 : 1;  /* No match. */
-+    for (k = 0; k < nelem; k++) {
-         i = MIN(nelem, k + substr_elen);
--        for (j = k + 1; j < i; j++) {
-+        for (j = k; j < i; j++) {
-             uint32_t e2 = s390_vec_read_element(v2, j, es);
-             uint32_t e3 = s390_vec_read_element(v3, j - k, es);
-             if (e2 != e3) {
-@@ -546,9 +519,16 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
-             }
-         }
-         if (j == i) {
--            /* Matched up until "end". */
--            cc = i - k == substr_elen ? 2 : 3; /* full or partial match */
--            goto done;
-+            /* All elements matched. */
-+            if (k > str_leftmost_0) {
-+                cc = 1;  /* Ignored match. */
-+                k = nelem;
-+            } else if (i - k == substr_elen) {
-+                cc = 2;  /* Full match. */
-+            } else {
-+                cc = 3;  /* Partial match. */
-+            }
-+            break;
-         }
-     }
- 
+diff --git a/tests/tcg/s390x/vxeh2_vstrs.c b/tests/tcg/s390x/vxeh2_vstrs.c
+new file mode 100644
+index 0000000000..313ec1d728
+--- /dev/null
++++ b/tests/tcg/s390x/vxeh2_vstrs.c
+@@ -0,0 +1,88 @@
++/*
++ * Test the VSTRS instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include "vx.h"
++
++static inline __attribute__((__always_inline__)) int
++vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
++      const S390Vector *v4, const uint8_t m5, const uint8_t m6)
++{
++    int cc;
++
++    asm("vstrs %[v1],%[v2],%[v3],%[v4],%[m5],%[m6]\n"
++        "ipm %[cc]"
++        : [v1] "=v" (v1->v)
++        , [cc] "=r" (cc)
++        : [v2] "v" (v2->v)
++        , [v3] "v" (v3->v)
++        , [v4] "v" (v4->v)
++        , [m5] "i" (m5)
++        , [m6]  "i" (m6)
++        : "cc");
++
++    return (cc >> 28) & 3;
++}
++
++static void test_ignored_match(void)
++{
++    S390Vector v1;
++    S390Vector v2 = {.d[0] = 0x222000205e410000ULL, .d[1] = 0};
++    S390Vector v3 = {.d[0] = 0x205e410000000000ULL, .d[1] = 0};
++    S390Vector v4 = {.d[0] = 3, .d[1] = 0};
++
++    assert(vstrs(&v1, &v2, &v3, &v4, 0, 2) == 1);
++    assert(v1.d[0] == 16);
++    assert(v1.d[1] == 0);
++}
++
++static void test_empty_needle(void)
++{
++    S390Vector v1;
++    S390Vector v2 = {.d[0] = 0x5300000000000000ULL, .d[1] = 0};
++    S390Vector v3 = {.d[0] = 0, .d[1] = 0};
++    S390Vector v4 = {.d[0] = 0, .d[1] = 0};
++
++    assert(vstrs(&v1, &v2, &v3, &v4, 0, 0) == 2);
++    assert(v1.d[0] == 0);
++    assert(v1.d[1] == 0);
++}
++
++static void test_max_length(void)
++{
++    S390Vector v1;
++    S390Vector v2 = {.d[0] = 0x1122334455667700ULL, .d[1] = 0};
++    S390Vector v3 = {.d[0] = 0, .d[1] = 0};
++    S390Vector v4 = {.d[0] = 16, .d[1] = 0};
++
++    assert(vstrs(&v1, &v2, &v3, &v4, 0, 0) == 3);
++    assert(v1.d[0] == 7);
++    assert(v1.d[1] == 0);
++}
++
++static void test_no_match(void)
++{
++    S390Vector v1;
++    S390Vector v2 = {.d[0] = 0xffffff000fffff00ULL, .d[1] = 0x82b};
++    S390Vector v3 = {.d[0] = 0xfffffffeffffffffULL,
++                     .d[1] = 0xffffffff00000000ULL};
++    S390Vector v4 = {.d[0] = 11, .d[1] = 0};
++
++    assert(vstrs(&v1, &v2, &v3, &v4, 0, 2) == 1);
++    assert(v1.d[0] == 16);
++    assert(v1.d[1] == 0);
++}
++
++int main(void)
++{
++    test_ignored_match();
++    test_empty_needle();
++    test_max_length();
++    test_no_match();
++    return EXIT_SUCCESS;
++}
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index a6062b5c07..9c0e70c6ca 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -75,6 +75,7 @@ ifneq ($(CROSS_CC_HAS_Z15),)
+ Z15_TESTS=vxeh2_vs
+ Z15_TESTS+=vxeh2_vcvt
+ Z15_TESTS+=vxeh2_vlstr
++Z15_TESTS+=vxeh2_vstrs
+ $(Z15_TESTS): CFLAGS+=-march=z15 -O2
+ TESTS+=$(Z15_TESTS)
+ endif
 -- 
 2.39.3
 
