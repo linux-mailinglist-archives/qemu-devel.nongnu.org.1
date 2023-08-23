@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4CE785368
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7B578536A
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 11:03:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYjkw-0006u3-PN; Wed, 23 Aug 2023 05:02:27 -0400
+	id 1qYjlE-00072O-In; Wed, 23 Aug 2023 05:02:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYjkf-0006lB-Ow
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:02:11 -0400
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYjkj-0006lu-RV
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:02:15 -0400
 Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYjkc-0001gn-I2
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:02:09 -0400
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qYjke-0001hG-Cb
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 05:02:10 -0400
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.nyi.internal (Postfix) with ESMTP id 360715C00DC;
- Wed, 23 Aug 2023 05:02:05 -0400 (EDT)
+ by mailout.nyi.internal (Postfix) with ESMTP id D32545C00BC;
+ Wed, 23 Aug 2023 05:02:06 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Wed, 23 Aug 2023 05:02:05 -0400
+ by compute6.internal (MEProxy); Wed, 23 Aug 2023 05:02:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:message-id:mime-version
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1692781325; x=
- 1692867725; bh=R5ooKiIuylaaowGGgydLdGlhTaLyjGKEEseXK53c8u4=; b=j
- QXm6oN+0/DxvnJ57dQa4oKcJW/iNnzqx29xlr8Qe/cbD9J0Qh+k0fGRiscXvF7fu
- XAih7JRs+jTbhnLaoop4AVe/DuqKpXmzovZxznMmrP1/c4VqMEZMPp/OgV1uB/GY
- h1VmwX4W2dRdqU1b+l7M+aNXTo8NG9TGYE4ZeeXN09uKbhlgnbcnYfuZZl0VTXvn
- 8KEoodtxIiTXmtEV1ssVLIIyiayfybD0YWYO406AYohHFm/5xWaV4c9OTo2iTA8t
- Y59ySMQFakbdCbTkI94npGLV5M8Oil0AVWHAEL/06gXS6I9M64e2fsbP8wYTIadz
- xxrL/0KuUrSjsTQLxUKaw==
+ :date:date:from:from:in-reply-to:in-reply-to:message-id
+ :mime-version:references:reply-to:sender:subject:subject:to:to;
+ s=fm3; t=1692781326; x=1692867726; bh=SWryM8qJbSZUbBEaPcvF4vOpv
+ h+S9bV29xIlr2wRCEI=; b=u5gWEm5AtlhJ+79q9lj00Jpjr6Mgf9sxBkWS7Tbyi
+ hVcMpitAuDrXPwBEpXIp6QFTMnPmXAgsCv1G7EcX3Jwufu2nLlHkOqwfDgWE3BDj
+ wAjkxHQfWeVKxPrgHPw/L52RmyFqTw/79dRQbjDtZOUVX3LJE/GwgsL1uuP3eYdy
+ 3HK3Yt5rmO6McY80qOtj85Swg+1fKXGT4eEsPcWTIjr5Hg1DllD3TrzeJ+r3NPEw
+ +p1RTSO/NQKoEU6CKISmu3gERNiAQDdQ5DGqDQmI3ujZw4fh28bjpQnDNxSE1QF+
+ P/ku/leEQQayeIgdyDPhaHZ8T9bSmq09/c85IAUUx/SJg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm1; t=1692781325; x=1692867725; bh=R
- 5ooKiIuylaaowGGgydLdGlhTaLyjGKEEseXK53c8u4=; b=jq/6VeDkD6fg0fJPH
- 54X3b7Dyg3Yu+8XMfn7iO+PE+JSLzlVtBaQBqYyVyOlAhHnW0I8TNe4C6kInYV6G
- Z+6kyjBlmngXDIt/BY7S9ysxF6pMRHI6kpN1xqbpwvYu4HH9FY6WyRdXTl8KXc6r
- QPLtFvdVuXiowAjg8nPAmZUFboh7Rbx4Z/YD4vkcXf/LaNlZq5k2dYNMlKM5jrUG
- h4FLFFNLJG0nUzPbR0ey0963YZeQgJeBgN21/K85Nph9A99RpYsYMb83Hesh3uNZ
- JXlkxPOARi/aluHObPixCmq0wNH6vVQBwseNMOZe+rj94pzcMYzrJrTpMh5KidME
- 3FLCg==
-X-ME-Sender: <xms:C8vlZNJRX0ko7vxE3910G149ILryJhvrJh7U7Nx6tw6Dx0NM80JMfg>
- <xme:C8vlZJKeprJpzB2sOVEMQVvnfWdKo8RkZlOSi_dQtiauNquyHjY9P1jv6X_iJAyRu
- 1kID0nIj7CO3UlI0Iw>
-X-ME-Received: <xmr:C8vlZFsIYYUEHLCZiA5xGjRswRgLgeJamRDKzqr8i5a0ngk4FW13XEsMkFgBiBj1DNVWUhWmdyUQP1rgKDsBWmGXZks1gG8q_D1vskusqFdMVbeOXmaEpb6ueWyV_sSIcg_Wfjf-d4iJ_xxZ8Q>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+ 1692781326; x=1692867726; bh=SWryM8qJbSZUbBEaPcvF4vOpvh+S9bV29xI
+ lr2wRCEI=; b=QP8A5wVuGdouMxFhc//TEHXOMo5yaLGXVp138iS5mnOAnOy55Uk
+ PIMWu8yaKXlce062jjsTEKS8RbLRJh7xsCCBWmVN47htIAUbvnGtK3sKT2Al4CVW
+ FQpafBRXT/srw886KKtbQ8pfUmtD/zxsASLwyjNkQDV7Pn/fQYyLs//AeJPnKMFK
+ A67BSuBoIPfBRmUJFWCa0SgDp64TzvBoNX9TkUxMg26T6Vx7S13/L4EHPCC1Ddzc
+ 8Wk8H1OkxRtTrqzRRylOUrwv9T7ofP2IJAMazSaeEwQa+q5bU+IFifHq38TibPAX
+ Tv5mu67m8Yg/tceVk4xcXQyG7gG5ngcQIZQ==
+X-ME-Sender: <xms:DsvlZMBoUpVHOnZN5O2fNnOOn4G2c6hjJZvls-cTl-130wl3LWJVPw>
+ <xme:DsvlZOg1KfczVVPHWIrc1Hbg9PBW9wTRB-WJlVyvrtFipcuXMGkwBurWSQ6hMMEFL
+ rJCUC5XnA3vV6cYF8M>
+X-ME-Received: <xmr:DsvlZPm7OhxLzTDbOSf6Rx237yVHyWQUARBb4N9IVkJ6owt2iIodnHu-js2Aerg0BVdMzid7DG6Il1XDc60o5RKAVNv2bMUQAw1_85-xwiaLMGgFFgyhtQWkuLavamnGoFNdqSBUxKpTk915BA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgedgudduucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpeffjeevleekgeevveevudetieeiieehveffffegtefgjeevjeehledvteffkedt
- ffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
- enucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:C8vlZOa8mdrGzUOeBbjq3n4ubxsCmKYMzrwMOd1ZxmJj4bW5DcDh7A>
- <xmx:C8vlZEbWdwddWP95aIHSk39EIScH-Eo5fW3PrcpAxSew3zaQkBJ7uA>
- <xmx:C8vlZCC895U5sEKFPdpISgjunWyWrZ79gkmWfhBSj6Cp52f4KRTi0w>
- <xmx:DcvlZKO9nsCOyY6DwqL33evfIySyvt3n6orP7DRWLo1r-tyceZyPnQ>
+ cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmlhgr
+ uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
+ htthgvrhhnpeekiedvtdeuhefffedutdelfeekhfeitddtudevgefgffeiteevfffhhefg
+ gefhffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:DsvlZCwrU0YWrM9B8T7Bbo7U_OT85S58P9YFC1V80wXJp2zHY-kadw>
+ <xmx:DsvlZBSuBttBVxCspymoD2oBbYq0mUGROnjToYZIE9V0PcSwcjguIA>
+ <xmx:DsvlZNaylJUIkGLrQus_0v2R8KsAPUBaTs4KYixOJ4MwLa_vPUpo7Q>
+ <xmx:DsvlZMGU5GSF17Rz9m9Gh75F-vrpCXviQit5z7V5712aVHv_5JwlHQ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Aug 2023 05:02:02 -0400 (EDT)
+ 23 Aug 2023 05:02:05 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
-Subject: [PATCH v2 0/2] hw/misc: small fixes for i2c-echo
-Date: Wed, 23 Aug 2023 11:01:44 +0200
-Message-Id: <20230823-i2c-echo-fixes-v2-0-ff404db1bf99@samsung.com>
+Date: Wed, 23 Aug 2023 11:01:45 +0200
+Subject: [PATCH v2 1/2] hw/misc/i2c-echo: add copyright/license note
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPjK5WQC/3WMQQ6CQAxFr0K6tqYMjgFX3sOwgFqgCxgzVaIhc
- 3dH9i7f/3lvA5OoYnApNoiyqmlYMrhDATx1yyio98zgyFVUuwrVMQpPAQd9i2Fz8kz9QL7pPWT
- pEWU/snNrM09qzxA/e38tf+vf1FoiITOT787k6oGu1s32WsYjhxnalNIXc2KuUK4AAAA=
+Message-Id: <20230823-i2c-echo-fixes-v2-1-ff404db1bf99@samsung.com>
+References: <20230823-i2c-echo-fixes-v2-0-ff404db1bf99@samsung.com>
+In-Reply-To: <20230823-i2c-echo-fixes-v2-0-ff404db1bf99@samsung.com>
 To: Thomas Huth <thuth@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
  Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>, 
@@ -82,15 +81,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Klaus Jensen <its@irrelevant.dk>, Klaus Jensen <k.jensen@samsung.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=712; i=k.jensen@samsung.com;
- h=from:subject:message-id; bh=zYYjriKQVobzQtdt8AIJPXlI5gUqeSQUBeFOrtq3gyY=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlywk6FJYtfM51ocGx45gI+rpncfjrqZPyp
- 3ZkcLacinCxs4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5csJAAoJEE3hrzFt
- Tw3peyAIAJgQkIyym2DFK6Wr1Q/8E15eLaZQdzRNGFmdpOPxOTX1s9tLGp3FobIKeeHATpE87ya
- lecWJajXzpB2zhwg2kL8lW03sASoxjxxKl9TTd3d1pfQTvCeMaIcoa+2M1x1WO4F6kfH0AZWcY/
- YsfGtnV3iWfH+Or1EKT87KL1z7k0E0M4Slf+5L4yO3bQ8zWIy4PLMCY409d4sJo7fpj+zn+hnzF
- t1loNyfuuEb8jRaemkyWkUh5nOzL4xKP7zKLLxqJJEeQCGOnZYdxf5dioVS+4eajkUEjW32IkCm
- KZ2eiiDHnRJNmoHeznXW8o4gXDXZzZsyKzDoFgVTjyQ16UlKZyENRafV
+X-Developer-Signature: v=1; a=openpgp-sha256; l=678; i=k.jensen@samsung.com;
+ h=from:subject:message-id; bh=8znLwL+kaz9D8g+Wg+lXO/+Bz8SVXSWIO3uRmjQ7FlE=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTlywrcZ9MoXRmZVa5rWtAOThEaOTOKLRgKv
+ 0MKr/Eqr6A1IokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk5csKAAoJEE3hrzFt
+ Tw3pqCkH/3918BrWVjNacKUFGYgo4pEbX+uvlkqwSNGTe+lVM5XUhxXHrTVgk4s6w3t2Nzs0FLv
+ P1Bgd8E51ek0yiSq7NnIiOrMxOFwoK3jmv6XjXDXxhebapZgHk+3MCaQMjbcw26tP/D3Luli5nR
+ 3IopBed1yA4v3+cOWBF5WR031SOe1w5prJJ8cAvNkR4LzQtXoYGksCKKujWEB6VY2fTCuN/DlM9
+ +irzPL4jScj+3NYsE4Floguk0uG11Vu72iiNS50c+kO6wSyYSnIrzuKwR4aZQMc9q3tYNsWtYsf
+ 0UKP10mUCD1O0Py1KfrUYMzY4hz4M2uSflz5o2EccLnP2bmY5rEKk6mE
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Received-SPF: pass client-ip=66.111.4.25; envelope-from=its@irrelevant.dk;
@@ -117,29 +116,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add missing copyright/license note and add a Kconfig entry.
+From: Klaus Jensen <k.jensen@samsung.com>
+
+Add missing copyright and license notice. Also add a short description
+of the device.
 
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
-Changes in v2:
-- Use SPDX for license note (Thomas)
-- Link to v1: https://lore.kernel.org/r/20230823-i2c-echo-fixes-v1-0-ccc05a6028f0@samsung.com
+ hw/misc/i2c-echo.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
----
-Klaus Jensen (2):
-      hw/misc/i2c-echo: add copyright/license note
-      hw/misc/Kconfig: add switch for i2c-echo
+diff --git a/hw/misc/i2c-echo.c b/hw/misc/i2c-echo.c
+index 5705ab5d7349..8ee03cb5632b 100644
+--- a/hw/misc/i2c-echo.c
++++ b/hw/misc/i2c-echo.c
+@@ -1,3 +1,11 @@
++/*
++ * Example I2C device using asynchronous I2C send.
++ *
++ * Copyright (C) 2023 Samsung Electronics Co., Ltd. All Rights Reserved.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
+ #include "qemu/osdep.h"
+ #include "qemu/timer.h"
+ #include "qemu/main-loop.h"
 
- hw/misc/Kconfig     | 5 +++++
- hw/misc/i2c-echo.c  | 8 ++++++++
- hw/misc/meson.build | 2 +-
- 3 files changed, 14 insertions(+), 1 deletion(-)
----
-base-commit: b0dd9a7d6dd15a6898e9c585b521e6bec79b25aa
-change-id: 20230823-i2c-echo-fixes-945c0bf059b5
-
-Best regards,
 -- 
-Klaus Jensen <k.jensen@samsung.com>
+2.42.0
 
 
