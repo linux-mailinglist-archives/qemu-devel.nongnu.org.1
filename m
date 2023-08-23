@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987AD7852EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 10:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24C8785309
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 10:49:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYjSC-0006qK-In; Wed, 23 Aug 2023 04:43:04 -0400
+	id 1qYjY1-0001Ku-Kj; Wed, 23 Aug 2023 04:49:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYjS2-0006pl-LQ
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:42:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qYjRz-0005XS-9D
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:42:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692780170;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0j1upsoJ3MjaVVepHUOU5G1PlXgElap/JdZphv6nsRc=;
- b=YH0yzgglTLnk5p1FjvziV8/XRHxLPigDN+u4jJAQL+UN0FZ/xmcBNuxmLCCzhO2pPnLxMp
- 6LNsDNLUyZO0DmSoy9M+VVSCqYU+/XNABM6MkJ/QBp9wNEv7YyQAyelRTm0Cq9t+cyaS/J
- rUIgnOctQXdkp+70Rf++VME8syrOFzU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-WxLJfeVSNT2HTrc_w-k3eQ-1; Wed, 23 Aug 2023 04:42:48 -0400
-X-MC-Unique: WxLJfeVSNT2HTrc_w-k3eQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fe1cdf2024so34393065e9.3
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 01:42:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qYjXz-0001Ke-Qn
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:49:03 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qYjXy-0006vN-Bi
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 04:49:03 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2b9f0b7af65so82188631fa.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 01:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692780540; x=1693385340;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=LDsbp4ClE1P8vJ2wU9I0mjHqJBzoLoct160R14/b3yA=;
+ b=BBXG0KxzGt5TRKWWDXAoaG4w4rifjno3OhvSx2C15VbdkwQhe29E2PxQUR/XOKV7HV
+ F1xuOBbpj1cwyPhrtXVQylr+XapkGnqEKQS6K6yQzzcZfcz2kCIVSw82RGY2jAzuyd16
+ xTEd770WhBXU6HTH3y5VoKcXoqPs9PSejsgx0inaiwTz1QlLipw0uYfnnmviA7eo5g7Y
+ fL10fyiMINJagNFH1nROOD5rCnrcl105L1wqHX7jQNZ6yUdYIc3wXJApfBy78pNPcXjr
+ RZQD7Olj1WIsPcsekJAjkkrtkeV2GHtG3KMzhzXg9sqq754VtZpawtPV5sf7TtEpM9cu
+ mOww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692780167; x=1693384967;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0j1upsoJ3MjaVVepHUOU5G1PlXgElap/JdZphv6nsRc=;
- b=kFd38GnC+I1/QIpr8bRRC8ph3G2bg0wEI6RHVHMuvZOZv8DIYf0Pp4HfNJhNcjWXcn
- 6aznujK8cESuxlW+UR6hA33nU76msvvMpRCL0Aqpnh6nHrf5gdRsNvukSPMH/okZLMHi
- qlowsl5rM2Rv3zo3JY0EhqsDONNwQKVhDjUng6g7Vcr/Br9QRKAoTyoKvYoWQR2J9xRW
- p3M9j35LGgyLtonK8511d5hZtr2+Ox/Q5B6ZJNq+/TpPyCBHFGArApDIzRLz1Mh4NbEI
- t2QsOwhSslKBlrmFzOtdfwwN0OCBUJJr0cR/ROPMgcQfOV/ap15V6oCD6F+7eO2eTjL1
- 2ESg==
-X-Gm-Message-State: AOJu0YxvLqta0USCW50L1hdbwk9K/Ta2ZZWwYAo+NIBSSuxIJYEqCrPH
- 864m0buD1dy6aBcVEYBTHTMucrrXrF+IhmteG5DfY2RC2UBdEwm3L5YK1r7N9rBGdn0Va4RmFSN
- q3IFQ7YNd6lqkj/E=
-X-Received: by 2002:a7b:ce06:0:b0:3fb:ffa8:6d78 with SMTP id
- m6-20020a7bce06000000b003fbffa86d78mr9316970wmc.36.1692780166957; 
- Wed, 23 Aug 2023 01:42:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCq+1Xg9mOuBUPy09XKrn9d4nBpIVwmHJYqx7iiN2h27v/NTvvOvjGK5iqs9/rCKlPHrGafw==
-X-Received: by 2002:a7b:ce06:0:b0:3fb:ffa8:6d78 with SMTP id
- m6-20020a7bce06000000b003fbffa86d78mr9316958wmc.36.1692780166704; 
- Wed, 23 Aug 2023 01:42:46 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-177-178.web.vodafone.de.
- [109.43.177.178]) by smtp.gmail.com with ESMTPSA id
- k15-20020a7bc40f000000b003feef9a6cb2sm9920498wmi.28.2023.08.23.01.42.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 01:42:46 -0700 (PDT)
-Message-ID: <0b87399c-a444-7743-dc1f-3e9520d17937@redhat.com>
-Date: Wed, 23 Aug 2023 10:42:44 +0200
+ d=1e100.net; s=20221208; t=1692780540; x=1693385340;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LDsbp4ClE1P8vJ2wU9I0mjHqJBzoLoct160R14/b3yA=;
+ b=joCqhMMKNwcD7SRVHVVX9v0vgot8p92NfTHCg62ZXcGLKsfN/UEjkEMgxyrJLfMFcq
+ A9+ILfjWI5A7C3/KjeWxzY9vlu3Kdtqdxa+Us77KDQqhBgzX7Y6LOLPZh5/hFQLv/QE9
+ wQtYO5sj21EUrSpn9A8cmkVGIsoGPy+r3tTzPAIjiF+SRjKdyIRiGsaSi3n1TfbIoYvP
+ d+aLEMr0uK2/ravLKsz8J5DVbBs14+GdoAsUoy0TgFDsiLcESpgW2qhaQ74L2d5EBJC0
+ 0gztz3B7PHhzmkNnvC+XQ5rEudgsnrhcYSK/j7KnvVZFJ89QCefWBTODGgTyKEbHRHD9
+ uDDw==
+X-Gm-Message-State: AOJu0YwCOxeIl/RXbD8rDosxX7iKGedCrmrsuWAUuRBIi24j+AZmpMvQ
+ gMb2mB2SPePx7kyAEqPih+QKgA==
+X-Google-Smtp-Source: AGHT+IH2l+6je8Oq2sLwfnf5w5lapOaNuqCjLLh9GVy1GppRYD24iSs/ud6tlUzxM8SZXxuBA35tVQ==
+X-Received: by 2002:a2e:4952:0:b0:2b8:39e4:2e2c with SMTP id
+ b18-20020a2e4952000000b002b839e42e2cmr8304381ljd.1.1692780540164; 
+ Wed, 23 Aug 2023 01:49:00 -0700 (PDT)
+Received: from meli.delivery (adsl-200.109.242.225.tellas.gr.
+ [109.242.225.200]) by smtp.gmail.com with ESMTPSA id
+ f23-20020a7bcd17000000b003fe4e1c5bcfsm453479wmj.0.2023.08.23.01.48.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Aug 2023 01:48:59 -0700 (PDT)
+Date: Wed, 23 Aug 2023 11:42:55 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "ichael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
+ "K=?UTF-8?B?xZE=?= v=?UTF-8?B?w6E=?= g=?UTF-8?B?w7M=?= ,
+ Zolt=?UTF-8?B?w6E=?= n" <DirtY.iCE.hu@gmail.com>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
+Subject: Re: [PATCH v7 10/12] virtio-sound: implement audio output (TX)
+User-Agent: meli 0.7.3
+References: <cover.1692731646.git.manos.pitsidianakis@linaro.org>
+ <fc270670926ec0ada64ef62172a2698bafa6f88e.1692731646.git.manos.pitsidianakis@linaro.org>
+ <75a3c938-f8c1-36b7-2914-34fb7677dcb0@linaro.org>
+In-Reply-To: <75a3c938-f8c1-36b7-2914-34fb7677dcb0@linaro.org>
+Message-ID: <zu5tl.jerkcd652a2@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] meson: Use subprocess.check_output()
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>
-References: <20230812091111.13411-1-akihiko.odaki@daynix.com>
- <1415ac82-0769-a25d-1dbd-c8382b9c52b2@redhat.com>
- <ee9258a8-ee82-90b8-1e2e-7d13b04a05b1@tls.msk.ru>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <ee9258a8-ee82-90b8-1e2e-7d13b04a05b1@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.767, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,26 +106,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/08/2023 10.36, Michael Tokarev wrote:
-> 23.08.2023 11:33, Thomas Huth wrote:
->> On 12/08/2023 11.11, Akihiko Odaki wrote:
->>> subprocess.check_output() is a more concise way to execute a subprocess
->>> here.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>> Based-on: <20230812061540.5398-1-akihiko.odaki@daynix.com>
->>> ("[PATCH] meson: Fix MESONINTROSPECT parsing")
->>
->> Since that other patch has never been merged, this patch here does not 
->> apply to master ... could you maybe respin it for the plain master branch?
-> 
-> Both patches should be applied, that one first, this one second.
-> I don't think it needs a respin, just a proper patch series.
+Hello Philippe,
 
-Ok, I'll try to pick both patches for my next pull request.
+On Wed, 23 Aug 2023 01:17, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>> +    trace_virtio_snd_handle_xfer();
+>
+>Maybe ...
+<- snip ->
+>... it is more useful displaying the callback stream index here?
+>
+>            trace_virtio_snd_handle_xfer(hdr.stream_id);
+>
 
-  Thomas
+Certainly, why not. This is an extremely noisy trace print by the way, I 
+was not sure whether to keep it or not. Printing it inside the for-loop 
+would potentially make it more noisy.
 
+Would you say this warrants a new patch series version? Otherwise I will 
+include it if other things come up as well.
 
+Manos
 
