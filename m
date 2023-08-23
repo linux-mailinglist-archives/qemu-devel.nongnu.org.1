@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7987785A5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95255785A55
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:23:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYolr-0008O5-Bh; Wed, 23 Aug 2023 10:23:43 -0400
+	id 1qYokj-00078V-Q3; Wed, 23 Aug 2023 10:22:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qYolf-00085f-5g; Wed, 23 Aug 2023 10:23:31 -0400
+ id 1qYokh-00077l-HL; Wed, 23 Aug 2023 10:22:31 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qYold-0001U3-5y; Wed, 23 Aug 2023 10:23:30 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1qYokf-0001Vc-GB; Wed, 23 Aug 2023 10:22:31 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37NEGKp5030907; Wed, 23 Aug 2023 14:22:26 GMT
+ 37NE79ko021249; Wed, 23 Aug 2023 14:22:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=O3zkzzHsolKlLpCgza+3jpRjeoAGloTwD1/e09vf3Oo=;
- b=bPVAKvX5OJBRNui/ML7zyNmdqUwOPEDPAvDkHTwhJCQ73hCluMHqZPfh/Dcwt94TIhnh
- /A0hIjcurNbj214Y26cVhuTqDEi0qk09AiegoIrUV6r6XIQ897yf8E+Pc0Afpc4FSP1a
- jZA+niSnwAaIhJNw3cQDN5Ud4eTlZL0B/ejulWuo7d/mAkFHQ5XpuEXaSaD/30D3uPxA
- Ovm11VsQunNpYQc/F0X5tLeYBU/N/8gJq4kb7D+mFG/9Zs7LFa/dn2yxdpjKALi+QCet
- fMIZ4BlxisT4b9EpcvEKA2/fqJyOnaI43jH/pI3kI8x3kz2FNs+3iGn9WM59nYpnrTxl jA== 
+ bh=BW+/dmQ93TZtSpYnvU9mqfiNp++z63Q+0a9Ft9mz0iM=;
+ b=Qc/7M1+f1pH8rX6c1B4SZkeC1iaZRKysFTdcIBFBSZCaHO9TzwK/U+fSmxSPSjyIHYw0
+ 4s0zRsO4FaQjFjI8pOMWThyLj34OPvenM133J5svbKze+NzjHQtigAc0iI9vaxoznlDW
+ 65sM/f7FldwW/5yznm9WpOCpkbvG16DdFoJnL1bpqOQmF818dF07F9aYJsYpPN2KRyeg
+ uvcRE5cnoCjxorEtOs8ycg125ego2t9Gf+08wNMRKbelFSKM8HqxE1T0P2EbvrkD7k4B
+ EJm9oH8j3LAH4DmVj4/6VJT2+r137naZM0PlvI7W59b5ZT/5mkaXGA4XQUF4Ja1lHoXW pw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs7n-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snk0y1k5g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Aug 2023 14:22:25 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NE3aWq016935;
- Wed, 23 Aug 2023 14:22:25 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs6q-1
+ Wed, 23 Aug 2023 14:22:27 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NEM8DD009729;
+ Wed, 23 Aug 2023 14:22:26 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snk0y1k44-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Aug 2023 14:22:25 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37NCCcXh004047; Wed, 23 Aug 2023 14:22:24 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn21rewum-1
+ Wed, 23 Aug 2023 14:22:26 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37NC7cl5018223; Wed, 23 Aug 2023 14:22:24 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sn21sexut-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Aug 2023 14:22:23 +0000
+ Wed, 23 Aug 2023 14:22:24 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37NEMKZI24314400
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37NEMLiP13894296
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Aug 2023 14:22:20 GMT
+ Wed, 23 Aug 2023 14:22:21 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3ABD20040;
- Wed, 23 Aug 2023 14:22:20 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3FD8A2004B;
+ Wed, 23 Aug 2023 14:22:21 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6007020075;
+ by IMSVA (Postfix) with ESMTP id D20212004D;
  Wed, 23 Aug 2023 14:22:20 +0000 (GMT)
 Received: from a46lp73.lnxne.boe (unknown [9.152.108.100])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -69,26 +69,26 @@ Cc: Janosch Frank <frankja@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  David Hildenbrand <david@redhat.com>, Michael Mueller <mimu@linux.ibm.com>,
  Marc Hartmayer <mhartmay@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH v4 2/5] s390x: switch pv and subsystem reset ordering on reboot
-Date: Wed, 23 Aug 2023 16:22:16 +0200
-Message-ID: <20230823142219.1046522-3-seiden@linux.ibm.com>
+Subject: [PATCH v4 3/5] NOTFORMERGE update linux-headers/asm-s390/kvm.h
+Date: Wed, 23 Aug 2023 16:22:17 +0200
+Message-ID: <20230823142219.1046522-4-seiden@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230823142219.1046522-1-seiden@linux.ibm.com>
 References: <20230823142219.1046522-1-seiden@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: m41pcsAxAy_-Uh-NtyhiVkPM561cllxJ
-X-Proofpoint-GUID: ipWDFhXA_y4bkFc7sDoN3SVOh1PKyc5L
+X-Proofpoint-ORIG-GUID: BtDYiZ09D5aNwfzodWpzRgmqKUKWxGo0
+X-Proofpoint-GUID: dKrJ9x23u5RcpmRAeuPpHAQ27K3qtHuM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-23_09,2023-08-22_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 phishscore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015
- mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2308230128
+ malwarescore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ mlxlogscore=999 impostorscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308230128
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=seiden@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -113,41 +113,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Janosch Frank <frankja@linux.ibm.com>
+Likely to be included in Linux 6.{6,7}
 
-Bound APQNs have to be reset before tearing down the secure config via
-s390_machine_unprotect(). Otherwise the Ultravisor will return a error
-code.
-
-So let's switch the ordering around to make that happen.
-
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ linux-headers/asm-s390/kvm.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 4b36c9970e..795dd53d68 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -442,13 +442,13 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
-     switch (reset_type) {
-     case S390_RESET_EXTERNAL:
-     case S390_RESET_REIPL:
-+        qemu_devices_reset(reason);
-+        s390_crypto_reset();
-+
-         if (s390_is_pv()) {
-             s390_machine_unprotect(ms);
-         }
+diff --git a/linux-headers/asm-s390/kvm.h b/linux-headers/asm-s390/kvm.h
+index e2afd95420..023a2763a9 100644
+--- a/linux-headers/asm-s390/kvm.h
++++ b/linux-headers/asm-s390/kvm.h
+@@ -159,6 +159,22 @@ struct kvm_s390_vm_cpu_subfunc {
+ 	__u8 reserved[1728];
+ };
  
--        qemu_devices_reset(reason);
--        s390_crypto_reset();
--
-         /* configure and start the ipl CPU only */
-         run_on_cpu(cs, s390_do_cpu_ipl, RUN_ON_CPU_NULL);
-         break;
++#define KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST	6
++#define KVM_S390_VM_CPU_MACHINE_UV_FEAT_GUEST	7
++
++#define KVM_S390_VM_CPU_UV_FEAT_NR_BITS	64
++struct kvm_s390_vm_cpu_uv_feat {
++	union {
++		struct {
++			__u64 : 4;
++			__u64 ap : 1;		/* bit 4 */
++			__u64 ap_intr : 1;	/* bit 5 */
++			__u64 : 58;
++		};
++		__u64 feat;
++	};
++};
++
+ /* kvm attributes for crypto */
+ #define KVM_S390_VM_CRYPTO_ENABLE_AES_KW	0
+ #define KVM_S390_VM_CRYPTO_ENABLE_DEA_KW	1
 -- 
 2.41.0
 
