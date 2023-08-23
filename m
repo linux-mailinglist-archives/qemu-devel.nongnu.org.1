@@ -2,64 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E80785A42
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EADE6785A54
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 16:23:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYogS-0006BR-5O; Wed, 23 Aug 2023 10:18:08 -0400
+	id 1qYokm-00078v-R1; Wed, 23 Aug 2023 10:22:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qYogD-00068N-KB
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:17:53 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
+ id 1qYokg-00077N-ES; Wed, 23 Aug 2023 10:22:30 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qYogC-0000OK-7l
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 10:17:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=MGwUQus6T47Sod6QWn0LpTVooThdVAU0+RQhWKBZSn0=; b=N47KUyF2b8yg7rxxJD+ceFI2nI
- 6Lf2YKa3zT5k6WmxDMOhKm022Hk3BbdxtoT4wll+CipDyq99MzxKGCQRQgPzOfjgkcy2rksdnrx8r
- JuzLY2fLKaKeZUSZIXwDO1FKxWQXv7bOWnADp/dGyw9P0DkBYjuluI2xHOhM23gd3XgjvUFbuDBxn
- t524dPjVp63EBZE7FSgaMQ1BtQxZ+ejJVWJdiA3zkmi3k1Le3y8NnLnItk8xxVlr4CRxh3OuzTMRK
- m+3jIb7M9ml7RWOwV9urV/TPZE0jZrum/8qD3kFJiT4lH9FIhWoutejH8T6K0Rv1pA+gg/nPqRU29
- zp6ayaeNPwWvXBN5Vh0qRUl4HKccRHV1nwXsCswe8mHCvtrYYz0uPOsSKmapGXMVnVwGC+tFEf1mE
- Jsn/KUgLhcAKWDj7pmF2+HZyovyttRBqHr4JkSBQ9wN4MyKziLSzI5OuoCiKS/MkKUGHoMkTT2YA4
- Zc9AzK7gKo//xejT9c+fWYbF7+L8eXV87X4fCcK5EYk21DE34uZ41QJDQWPcpH3qNNSYjO/Xg2yrT
- Pz1sDAP/ZURHr01ry0qAdhAQy0PUVcIQtXMolyBQc9XqDenY2PlXrREUv05RJ59G7c1hpK8SVKlLR
- yu2/MJte9yHtLBQFjAifbMwprFFVQWEjvrMoHvgN0=;
-Received: from host81-158-188-207.range81-158.btcentralplus.com
- ([81.158.188.207] helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qYofc-0008IQ-B9; Wed, 23 Aug 2023 15:17:20 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: qemu-devel@nongnu.org,
-	philmd@linaro.org
-Date: Wed, 23 Aug 2023 15:17:40 +0100
-Message-Id: <20230823141740.35974-1-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
+ id 1qYoke-0001Ty-G6; Wed, 23 Aug 2023 10:22:30 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37NE2Ah9007855; Wed, 23 Aug 2023 14:22:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=q3KGJ1KXBTXIwlIegJ1Fo3epuA2BBKWyAFOWRGDcV7c=;
+ b=men1Ued3vX/gZXKStRwHYGdwtR8TAFy/4PqIoljLEPv6EoahoneVRj/DCq53Rw4t9wXi
+ Fww0AEibc/8bKlmu9oDmTnw0VNd5zbrpkXZQeax6Q8iaPDxk6aLvkcKbVX2TGuT5pbnF
+ U7AOgji8crw5F+Tif9VjAYNOGFJjNmmSJ4MD7oC5+p4C1u1XLa45XUi2Fan2SYwx27Ui
+ 6uRUovxmgCB4zyTMAR5MGGFfHYK+uUG2HTnTyd8ZvTzY7sVoHdR6SmByvjBzrhC1Pef7
+ JGi1yuE/8orvidHYRjcuz9HvB//fcLDWg3e616gKp4DLAsnD+SD1CHq/a8afpiouOlOz lg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs6e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Aug 2023 14:22:24 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37NEM17H026403;
+ Wed, 23 Aug 2023 14:22:23 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3snkh5gs5c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Aug 2023 14:22:23 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37NC974I018278; Wed, 23 Aug 2023 14:22:22 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sn21sexum-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Aug 2023 14:22:22 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37NEMJlc16974390
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 23 Aug 2023 14:22:20 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D50DF2006C;
+ Wed, 23 Aug 2023 14:22:19 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B11920065;
+ Wed, 23 Aug 2023 14:22:19 +0000 (GMT)
+Received: from a46lp73.lnxne.boe (unknown [9.152.108.100])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 23 Aug 2023 14:22:19 +0000 (GMT)
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Cc: Janosch Frank <frankja@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Michael Mueller <mimu@linux.ibm.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: [PATCH v4 0/5] s390: Enable AP instructions for pv-guests
+Date: Wed, 23 Aug 2023 16:22:14 +0200
+Message-ID: <20230823142219.1046522-1-seiden@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mX7P5V3DefELnpHspkMlrJ4uzLzOf2pc
+X-Proofpoint-GUID: y8oYNDfh4D9k-caACJAQvZNyfXuJftNV
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 81.158.188.207
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH] docs/devel/tcg-ops: fix missing newlines in "Host vector
- operations" section
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-23_09,2023-08-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015
+ mlxlogscore=632 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2308230128
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=seiden@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,29 +111,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This unintentionally causes the mov_vec, ld_vec and st_vec operations to appear
-on the same line.
+This series enables general QEMU support for AP pass-through for Secure
+Execution guests (pv-guests).
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- docs/devel/tcg-ops.rst | 2 ++
- 1 file changed, 2 insertions(+)
+To enable AP-PT on pv-guests QEMU has to turn on the corresponding bits
+in the KVM CPU-model[1] if the CPU firmware supports it. However, it
+only makes sense to turn on AP-PT if the QEMU user enabled (general) AP
+for that guest.
 
-diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
-index 6a166c5665..4bbd6db2c6 100644
---- a/docs/devel/tcg-ops.rst
-+++ b/docs/devel/tcg-ops.rst
-@@ -712,7 +712,9 @@ E.g. VECL = 1 -> 64 << 1 -> v128, and VECE = 2 -> 1 << 2 -> i32.
- .. list-table::
- 
-    * - mov_vec *v0*, *v1*
-+
-        ld_vec *v0*, *t1*
-+
-        st_vec *v0*, *t1*
- 
-      - | Move, load and store.
+See: https://lore.kernel.org/linux-s390/c29750cc-fc64-2805-f583-c7be247de02e@linux.ibm.com/T/#t
+
+The series consists of five patches:
+ 1/2) fixes from Janosch for AP handling
+ 3) update kvm-s390 header for this series (NOTFORMERGE)
+ 4) small cleanup for kvm_s390_set_attr()
+    refactor code to add ap_available() and ap_enabled()
+ 5) Add UV_CALL CPU model enablement
+
+since v3:
+  - nitfixes (Thomas)
+  - r-b from Michael&Thomas
+
+since v2:
+  - add fixes for AP from Janosch
+  - rename *UV_CALL* to UV_FEAT_GUEST (Janosch)
+  - early return on some functions (Janosch)
+  - add r-b from Michael (Patch 4)
+  - mark linux header update as NOTFORMERGE
+
+since v1:
+
+- removed the new features from the default gen16 model
+- updated KVM-headers to match KVM series v3 [1]
+- applied review comments from Thomas
+
+
+Steffen
+
+Janosch Frank (2):
+  s390x/ap: fix missing subsystem reset registration
+  s390x: switch pv and subsystem reset ordering on reboot
+
+Steffen Eiden (3):
+  NOTFORMERGE update linux-headers/asm-s390/kvm.h
+  target/s390x/kvm: Refactor AP functionalities
+  target/s390x: AP-passthrough for PV guests
+
+ hw/s390x/s390-virtio-ccw.c          |  7 ++-
+ linux-headers/asm-s390/kvm.h        | 16 +++++
+ target/s390x/cpu_features.h         |  1 +
+ target/s390x/cpu_features_def.h.inc |  4 ++
+ target/s390x/cpu_models.c           |  2 +
+ target/s390x/gen-features.c         |  2 +
+ target/s390x/kvm/kvm.c              | 94 ++++++++++++++++++++++++++---
+ 7 files changed, 116 insertions(+), 10 deletions(-)
+
 -- 
-2.39.2
+2.41.0
 
 
