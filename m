@@ -2,85 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA48785D43
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 18:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A388785E00
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Aug 2023 19:00:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYqiS-00069w-PO; Wed, 23 Aug 2023 12:28:20 -0400
+	id 1qYrCf-0008ML-Gw; Wed, 23 Aug 2023 12:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYqhq-0005t8-Nb
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:27:42 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYqho-0001bT-Un
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:27:42 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3a76d882052so4122893b6e.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 09:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692808059; x=1693412859;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LoP8KSE0qfOqKDqt1vymjZj6csZ/6Kob92W38ohPloY=;
- b=DW+VimbM/7ewZLljqfMTtUrVmBd8JnhWrbNZujnt2gqTJTm3zvVq1CtkcROZ40s2Og
- 4GLnTQq7+9J3WzsdMJMkH0Fdusgty87OyG4RioXV0CljAVQceQZuUxMQ+5lI1d4BF/bS
- PqXk8veLMDyE6OEDdiP8nn5HC/lto3zDA4O3LFJPpzZ/Dstaf9PUtKNNa/kskt4iJfgX
- lHQHEypUAECWzHpPO2UJDfif9d4P1iZUgVr+kVkWlG463FYbig4ocmcqgjihCzBfq3hQ
- Y31cgnLBkQIutLAiBrx1gNHtttC8B97U0O0mqoKbjFirq3ry9Sj+oBNNj4EzZOmks0e7
- VpAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692808059; x=1693412859;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LoP8KSE0qfOqKDqt1vymjZj6csZ/6Kob92W38ohPloY=;
- b=LfxIYq6bPQyaXwtp9vh4K83wiX/+/EQPlH0jPiKrwnM5Rw0z3OM+z7X8hJmXvcJlTG
- OqlGYeFN/jyoH8JRse5EsAquNq+GTB9Aq9totAK/isqMaTlZ5Vh5WpzE3a+mft6o+mvY
- 3lLs2sNSYrBYm5UI0f03qvtbnQbswJFYxoaIKv/Wnrz649xt0/n/qZHYa/xOoL9ZeRbF
- Z9E/c6xeprEvfqZLGUjCsVgqMFGPfKeZtyQz5DO73FpdWEJMlQ+YFPyXL/ikEhc8APKN
- Dg9JI0oGxsKIPvESPBToQzh3T+0rnfq6us1omjv0C6EhVBRprKoZXd5zs8WWuAGJNf6k
- axqQ==
-X-Gm-Message-State: AOJu0YyLijYpU0dRgrWy/CXEWr69l/l5kICYTe5pJb5qIldwnv9dTsfc
- 9AyjYaYwsLBb9bvOckG6KSZDkQ==
-X-Google-Smtp-Source: AGHT+IG4SlRMqCLOqDDWbJyRiwbhyLlcpxl1WN0uSIfrCnNpn0U742p9Bl8bm6m+hXvhNco2s46L6w==
-X-Received: by 2002:a05:6808:de6:b0:3a7:3792:5b8a with SMTP id
- g38-20020a0568080de600b003a737925b8amr13622016oic.18.1692808059350; 
- Wed, 23 Aug 2023 09:27:39 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:72f0:1ea7:85d2:141e?
- ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
- by smtp.gmail.com with ESMTPSA id
- w29-20020a63935d000000b00563df2ba23bsm9875038pgm.50.2023.08.23.09.27.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Aug 2023 09:27:38 -0700 (PDT)
-Message-ID: <59a970fb-ad7b-d30b-1290-7b167bec0226@linaro.org>
-Date: Wed, 23 Aug 2023 09:27:36 -0700
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qYrCc-0008Lw-07
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:59:30 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qYrCY-0008Ht-Rs
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 12:59:29 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RWC4k1FDMz67XMQ;
+ Thu, 24 Aug 2023 00:55:02 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 23 Aug
+ 2023 17:59:11 +0100
+Date: Wed, 23 Aug 2023 17:59:10 +0100
+To: Shreyas Shah <shreyas.shah@elastics.cloud>
+CC: Maverickk 78 <maverickk1778@gmail.com>, Jonathan Cameron via
+ <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>
+Subject: Re: CXL volatile memory is not listed
+Message-ID: <20230823175910.00001b81@Huawei.com>
+In-Reply-To: <IA1PR12MB6236E18350FFCB8916E32E86E81BA@IA1PR12MB6236.namprd12.prod.outlook.com>
+References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+ <20230810113512.00000516@Huawei.com>
+ <CALfBBTud4Y7qxKB8nkZ5Lo5sQs-7-F9Rkso+iQGvLO07VyRcDA@mail.gmail.com>
+ <20230811145458.000029c7@Huawei.com>
+ <CALfBBTsMLP8_eTfmFt5mB+ywF1D0WTR7m=PBqUVzhhvcwC+zYA@mail.gmail.com>
+ <IA1PR12MB6236E18350FFCB8916E32E86E81BA@IA1PR12MB6236.namprd12.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Failing avocado tests in CI (was: Re: [PULL 00/24] tcg +
- linux-user queue for 8.1-rc3)
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230806033715.244648-1-richard.henderson@linaro.org>
- <772eb951-8a43-902b-3737-e52b44f7dcdb@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <772eb951-8a43-902b-3737-e52b44f7dcdb@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.684,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,77 +68,157 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/23/23 06:04, Thomas Huth wrote:
-> On 06/08/2023 05.36, Richard Henderson wrote:
->> The following changes since commit 6db03ccc7f4ca33c99debaac290066f4500a2dfb:
->>
->>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-08-04 
->> 14:47:00 -0700)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230805
->>
->> for you to fetch changes up to 843246699425adfb6b81f927c16c9c6249b51e1d:
->>
->>    linux-user/elfload: Set V in ELF_HWCAP for RISC-V (2023-08-05 18:17:20 +0000)
->>
->> ----------------------------------------------------------------
->> accel/tcg: Do not issue misaligned i/o
->> accel/tcg: Call save_iotlb_data from io_readx
->> gdbstub: use 0 ("any process") on packets with no PID
->> linux-user: Fixes for MAP_FIXED_NOREPLACE
->> linux-user: Fixes for brk
->> linux-user: Adjust task_unmapped_base for reserved_va
->> linux-user: Use ELF_ET_DYN_BASE for ET_DYN with interpreter
->> linux-user: Remove host != guest page size workarounds in brk and image load
->> linux-user: Set V in ELF_HWCAP for RISC-V
->> *-user: Remove last_brk as unused
+On Fri, 18 Aug 2023 11:30:55 +0000
+Shreyas Shah <shreyas.shah@elastics.cloud> wrote:
+
+> Once the cxl memory is online, how does Operating system know whether to malloc in the cxl memory or socket attached DDR memory?
+
+If you've brought the memory up as 'normal memory' via kmem rather than the other dax options
+then it'll be a separate NUMA node.  Hence you can control allocations using same tools
+used on multiple numa node systems.
+
+Jonathan
+
 > 
->   Hi Richard,
 > 
-> I noticed that we currently have two failing Avocado jobs in our CI, avocado-system-centos 
-> and avocado-system-opensuse, where the boot_linux.py:BootLinuxX8664.test_pc_i440fx_tcg and 
-> the boot_linux.py:BootLinuxX8664.test_pc_q35_tcg are now apparently crashing. If I've got 
-> the history right, it started with your pull request here, in the preceeding one from 
-> Paolo, everything is still green:
 > 
->   https://gitlab.com/qemu-project/qemu/-/pipelines/956543770
+> [https://static1.squarespace.com/static/60dbbd6d597c966b91a3b27b/t/6104415e6177af1589fb05e4/1627668830393/elastics-cloud-logo-120.png]<https://www.elastics.cloud/>
+> Shreyas Shah
+> Founder, CTO and Chief Scientist, Elastics.cloud, Inc.
+> 1730 North First Street, 5th Floor, San Jose, CA 95112
+> t: 408 476 3100<tel:408%20476%203100> | e: email: shreyas.shah@elastics.cloud
 > 
-> But here the jobs started failing:
+> ________________________________
+> From: Maverickk 78 <maverickk1778@gmail.com>
+> Sent: Thursday, August 17, 2023 10:18 PM
+> To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Jonathan Cameron via <qemu-devel@nongnu.org>; linux-cxl@vger.kernel.org <linux-cxl@vger.kernel.org>
+> Subject: Re: CXL volatile memory is not listed
 > 
->   https://gitlab.com/qemu-project/qemu/-/pipelines/957458385
+> Hi Jonathan,
 > 
-> Could you please have a look?
+> The use case of CXL switch will always need some sort of management
+> agent + FM configuring the available CXL memory connected.
+> 
+> In most cases it would be bmc controller configuring MLD/MHD's to
+> host, and in very rare scenarios it may be one of the host interacting
+> with FM firmware inside the switch which would do the trick.
+> 
+> Another use case is static hardcoding between CXL memory & host in
+> built in cxl switch
+> 
+> There is no scenario where one of the host BIOS can push the select
+> CXL memory to itself.
+> 
+> 
+> Is my understanding correct?
+> 
+> 
+> 
+> On Fri, 11 Aug 2023 at 19:25, Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Fri, 11 Aug 2023 08:04:26 +0530
+> > Maverickk 78 <maverickk1778@gmail.com> wrote:
+> >  
+> > > Jonathan,
+> > >  
+> > > > More generally for the flow that would bring the memory up as system ram
+> > > > you would typically need the bios to have done the CXL enumeration or
+> > > > a bunch of scripts in the kernel to have done it.  In general it can't
+> > > > be fully automated, because there are policy decisions to make on things like
+> > > > interleaving.  
+> > >
+> > > BIOS CXL enumeration? is CEDT not enough? or BIOS further needs to
+> > > create an entry
+> > > in the e820 table?  
+> > On intel platforms 'maybe' :)  I know how it works on those that just
+> > use the nice standard EFI tables - less familiar with the e820 stuff :)
+> >
+> > CEDT says where to find the the various bits of system related CXL stuff.
+> > Nothing in there on the configuration that should be used such as interleaving
+> > as that depends on what the administrator wants. Or on what the BIOS has
+> > decided the users should have.
+> >  
+> > >  
+> > > >
+> > > > I'm not aware of any open source BIOSs that do it yet.  So you have
+> > > > to rely on the same kernel paths as for persistent memory - manual configuration
+> > > > etc in the kernel.
+> > > >  
+> > > Manual works with "cxl create regiton"  :)  
+> > Great.
+> >
+> > Jonathan
+> >  
+> > >
+> > > On Thu, 10 Aug 2023 at 16:05, Jonathan Cameron
+> > > <Jonathan.Cameron@huawei.com> wrote:  
+> > > >
+> > > > On Wed, 9 Aug 2023 04:21:47 +0530
+> > > > Maverickk 78 <maverickk1778@gmail.com> wrote:
+> > > >  
+> > > > > Hello,
+> > > > >
+> > > > > I am running qemu-system-x86_64
+> > > > >
+> > > > > qemu-system-x86_64 --version
+> > > > > QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
+> > > > >  
+> > > > +Cc linux-cxl as the answer is more todo with linux than qemu.
+> > > >  
+> > > > > qemu-system-x86_64 \
+> > > > > -m 2G,slots=4,maxmem=4G \
+> > > > > -smp 4 \
+> > > > > -machine type=q35,accel=kvm,cxl=on \
+> > > > > -enable-kvm \
+> > > > > -nographic \
+> > > > > -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+> > > > > -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+> > > > > -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
+> > > > > -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
+> > > > > -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G  
+> > > >
+> > > > There are some problems upstream at the moment (probably not cxl related but
+> > > > I'm digging). So today I can't boot an x86 machine. (goody)
+> > > >
+> > > >
+> > > > More generally for the flow that would bring the memory up as system ram
+> > > > you would typically need the bios to have done the CXL enumeration or
+> > > > a bunch of scripts in the kernel to have done it.  In general it can't
+> > > > be fully automated, because there are policy decisions to make on things like
+> > > > interleaving.
+> > > >
+> > > > I'm not aware of any open source BIOSs that do it yet.  So you have
+> > > > to rely on the same kernel paths as for persistent memory - manual configuration
+> > > > etc in the kernel.
+> > > >
+> > > > There is support in ndctl for those enabling flows, so I'd look there
+> > > > for more information
+> > > >
+> > > > Jonathan
+> > > >
+> > > >  
+> > > > >
+> > > > >
+> > > > > I was expecting the CXL memory to be listed in "System Ram", the lsmem
+> > > > > shows only 2G memory which is System RAM, it's not listing the CXL
+> > > > > memory.
+> > > > >
+> > > > > Do I need to pass any particular parameter in the kernel command line?
+> > > > >
+> > > > > Is there any documentation available? I followed the inputs provided in
+> > > > >
+> > > > > https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
+> > > > >
+> > > > > Is there any documentation/blog listed?  
+> > > >  
+> >  
+> 
 
-It's some sort of timing issue, which sometimes goes away when re-run.  I was re-running 
-tests *a lot* in order to get them to go green while running the 8.1 release.
-
-For instance, with very little added except for your s390x pull, the same 
-BootLinuxX8664.test_pc_i440fx_tcg test passes:
-
-https://gitlab.com/qemu-project/qemu/-/jobs/4931341744#L136
-
-In the failing i44fx_tcg test, you can even see it's a timing issue:
-
-https://qemu-project.gitlab.io/-/qemu/-/jobs/4813804725/artifacts/build/tests/results/latest/test-results/02-tests_avocado_boot_linux.py_BootLinuxX8664.test_pc_i440fx_tcg/debug.log
-
-23:42:30 DEBUG| [   61.003328] Sending NMI from CPU 0 to CPUs 1:
-23:42:30 DEBUG| [   61.007829] INFO: NMI handler (nmi_cpu_backtrace_handler) took too long 
-to run: 2.622 msecs
-23:42:30 DEBUG| [   61.003328] NMI backtrace for cpu 1 skipped: idling at 
-native_safe_halt+0xe/0x10
-23:42:30 DEBUG| [   61.003328] rcu: rcu_sched kthread starved for 60002 jiffies! g-963 
-f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=1
-23:42:30 DEBUG| [   61.003328] rcu: RCU grace-period kthread stack dump:
-23:42:30 DEBUG| [   61.003328] rcu_sched       I    0    10      2 0x80004000
-23:42:30 DEBUG| [   61.003328] Call Trace:
-23:42:30 DEBUG| [   61.003328]  ? __schedule+0x29f/0x680
-...
-
-
-r~
 
