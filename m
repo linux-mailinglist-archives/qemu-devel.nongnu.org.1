@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AFA7875B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657867875B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:42:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDMu-0006Sh-2g; Thu, 24 Aug 2023 12:39:36 -0400
+	id 1qZDMq-0006QP-Am; Thu, 24 Aug 2023 12:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZDMr-0006RX-U0
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:33 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qZDMn-0006O8-SX
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:29 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZDMc-000886-G8
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:33 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31ad9155414so5933903f8f.3
+ id 1qZDMb-00087U-GD
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:29 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fed6c2a5cfso59323045e9.3
  for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692895157; x=1693499957;
+ d=linaro.org; s=google; t=1692895156; x=1693499956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9tGSqnEd6yAy1ahRBk/ob1qWehJYVA7fbTHLeHjb8QE=;
- b=zjAhkHWlHO6HSQPVSrOxMt0d3A4JGEQ/srQ1gvXzCwmZHdBVnkp3R7p1BImSqtxDx9
- lOV4bJcZYdCdXiQ27hwH/aGSq7pNLiSjikk7YHxtkQfEf3DBevvIjCIHfuxrtA3fV+fP
- McnMx/3wBgZybtEZq66G3aCMDdxRZ65AQDSafdqJO9rLATFCEiODkd8p+GSHKXckXJLm
- bzhCuzCrtJnGww7kUbYAj/wGkgIz6ObQzSjKV1ajW73Kq86o9ur/t6czwoHFFjbMH3T4
- Nb6z+Zp9ZOrjFkCJTSEC3KlvFV14SK7Wwp/OXzkBbhrqcXegQUcXERa8izpjtNF/Neh7
- iPyQ==
+ bh=M3HpoGymUAOECIzpXws+SoFW7NCUK3OvK2CLae4WjpQ=;
+ b=g1OWyylXHUniLRMmrogJ5c+EJkbvWWpazU6rgmjIIKnC0ENMBE5QYApg7ayL/QTvqP
+ CRAHdUMU4AheXY+wcDGpPPOOfPJp9GSIQZPwKM+pCwNCMb9d4vZD0MOdPTQYhUKLTJyJ
+ o04vKz/MJjvnmA+wpZpa2q/oB5a3oe4+a1MPR048yV+o08IIllVkcWXEkq2s3YkJ6YTr
+ gkcadQJxkOZ39Xoco4pplQqemoKHZUEIdoDZZQN50kdqaBdWgMO+D4Ml9Q2xuIQHJpGi
+ jp6Rh0y8SUOuFw9vytPt0MAAeBVJdv8BqdxsqIOe1n350FgWkrErRRKxM6k6GKL7JPvL
+ JHPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692895157; x=1693499957;
+ d=1e100.net; s=20221208; t=1692895156; x=1693499956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9tGSqnEd6yAy1ahRBk/ob1qWehJYVA7fbTHLeHjb8QE=;
- b=ekZeAs55fhCf5m0SnQ3mVwvr1WvctAfX2e2rlDV8X7pZTPJfFDo6j1p6zrZr5bV8T5
- eb6N4KF7uvPqRpp9xSFpAW4/3ZSqPVzEr9zN94IUI5BNhtzpZ1dDlzZx18bDpNNZCtev
- /6l3BIjHtVpywFAbAAg7xDt5q80Ssy4ROLtDy+GDmY9sZtUdMGKZf9eVPUXaHtOnrpHf
- myb7uw+oC2lPpuC9Q9QdeEkNBP1S0XM/c/jyvqBiqVgGUiwlgj9fTiQqeqXU1llkc/E5
- +Cx81l+WFciyRBJcRoGmLLMLvOxn9hFs/+qoyRzhY2+MLP8baam3GRpwYI9SK5LguewI
- wLpw==
-X-Gm-Message-State: AOJu0Yxx/vgz3YCghndNNBGidw+51dsDNqkB/x1dAW4g1V2dNFN4fnV9
- 6nBTZ/veSI7ugKzI8WPL9tEM+Q==
-X-Google-Smtp-Source: AGHT+IHgY+gH03B7Dk8mgyAdo9FxadzHNlyGN7bddlzYhvvnBcj4HfxNLPgl+p40MjJ0M5Wf3eeT1Q==
-X-Received: by 2002:adf:e48c:0:b0:319:6753:8104 with SMTP id
- i12-20020adfe48c000000b0031967538104mr12417845wrm.47.1692895156859; 
- Thu, 24 Aug 2023 09:39:16 -0700 (PDT)
+ bh=M3HpoGymUAOECIzpXws+SoFW7NCUK3OvK2CLae4WjpQ=;
+ b=Ei9OZaLSslZMFUTaAwSulAjwuGYRcCqdLdds2j7o1hwlKdaTBRvLcv+HKeHmv9Inj2
+ uRA0Vh3ZcIZ3JBANG3KbVd7a3NM4Iukg1dQtVF4pwj9HzVw54NyEf3iEs45C/sw6ApHM
+ PaIbK1a+X4idx06w7/xc9E1fTOAO3dwle6Hwm66Rw1EWHMOCkTM3/AfQq29LfJyTHxau
+ Zzrh4MbxfDtvRn7Gfl8Djc33OGdCL/4ScKoyeRTsRPlGskreCZ23WBWFAdU9COcPD6N7
+ nzbjjKpnq5CHCH9AX5v5Nc6ydzqClPddE8X86NwYVqn05MoNm10zwRI8g8+bOoSkIz2L
+ wj7A==
+X-Gm-Message-State: AOJu0YyR+iIZcMG+z28K4wU60iDCzVQijqhVt+TxmCi86lQo0kPqEy7r
+ JCeL6mJFgIq7GFRIGmNALFWFhA==
+X-Google-Smtp-Source: AGHT+IFrKtMSWx+uF1j+/YmPA90KQnL/2RkaBo7ne8fODjZdgErheH8IrlmxCnAY0zm1NO4LJWNA7w==
+X-Received: by 2002:a05:600c:2291:b0:3f9:b8df:26ae with SMTP id
+ 17-20020a05600c229100b003f9b8df26aemr12135286wmf.34.1692895155856; 
+ Thu, 24 Aug 2023 09:39:15 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- t7-20020a5d49c7000000b00317ab75748bsm22491189wrs.49.2023.08.24.09.39.12
+ u2-20020a05600c00c200b003fe17901fcdsm3091345wmm.32.2023.08.24.09.39.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Aug 2023 09:39:14 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 152E01FFC2;
+ by zen.linaroharston (Postfix) with ESMTP id 35BC01FFC3;
  Thu, 24 Aug 2023 17:39:11 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -76,18 +76,20 @@ Cc: Beraldo Leal <bleal@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  David Hildenbrand <david@redhat.com>, Greg Kurz <groug@kaod.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 07/12] tests/tcg: clean-up gdb confirm/pagination settings
-Date: Thu, 24 Aug 2023 17:39:05 +0100
-Message-Id: <20230824163910.1737079-8-alex.bennee@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Matheus Branco Borella <dark.ryu.550@gmail.com>
+Subject: [PATCH v2 08/12] gdbstub: fixes cases where wrong threads were
+ reported to GDB on SIGINT
+Date: Thu, 24 Aug 2023 17:39:06 +0100
+Message-Id: <20230824163910.1737079-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230824163910.1737079-1-alex.bennee@linaro.org>
 References: <20230824163910.1737079-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,172 +112,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can do this all in the run-test.py script so remove the extraneous
-bits from the individual tests which got copied from the original
-non-CI gdb tests.
+From: Matheus Branco Borella <dark.ryu.550@gmail.com>
 
+This fix is implemented by having the vCont handler set the value of
+`gdbserver_state.c_cpu` if any threads are to be resumed. The specific
+CPU picked is arbitrarily from the ones to be resumed, but it should
+be okay, as all GDB cares about is that it is a resumed thread.
+
+Signed-off-by: Matheus Branco Borella <dark.ryu.550@gmail.com>
+Message-Id: <20230804182633.47300-2-dark.ryu.550@gmail.com>
+[AJB: style and whitespace fixes]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/guest-debug/run-test.py                         | 2 ++
- tests/tcg/aarch64/gdbstub/test-sve-ioctl.py           | 3 ---
- tests/tcg/aarch64/gdbstub/test-sve.py                 | 3 ---
- tests/tcg/multiarch/gdbstub/memory.py                 | 3 ---
- tests/tcg/multiarch/gdbstub/sha1.py                   | 4 ----
- tests/tcg/multiarch/gdbstub/test-proc-mappings.py     | 4 ----
- tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py   | 4 ----
- tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py | 4 ----
- tests/tcg/s390x/gdbstub/test-signals-s390x.py         | 4 ----
- tests/tcg/s390x/gdbstub/test-svc.py                   | 4 ----
- 10 files changed, 2 insertions(+), 33 deletions(-)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1725
 
-diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index a032e01f79..b13b27d4b1 100755
---- a/tests/guest-debug/run-test.py
-+++ b/tests/guest-debug/run-test.py
-@@ -83,6 +83,8 @@ def log(output, msg):
-         gdb_cmd += " %s" % (args.gdb_args)
-     # run quietly and ignore .gdbinit
-     gdb_cmd += " -q -n -batch"
-+    # disable pagination
-+    gdb_cmd += " -ex 'set pagination off'"
-     # disable prompts in case of crash
-     gdb_cmd += " -ex 'set confirm off'"
-     # connect to remote
-diff --git a/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py b/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
-index b9ef169c1a..ee8d467e59 100644
---- a/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
-+++ b/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
-@@ -76,9 +76,6 @@ def run_test():
-     exit(0)
+---
+v2
+  - fix up some whitespace
+---
+ gdbstub/gdbstub.c                             | 29 ++++++
+ tests/tcg/multiarch/system/interrupt.c        | 28 ++++++
+ tests/tcg/multiarch/gdbstub/interrupt.py      | 97 +++++++++++++++++++
+ .../multiarch/system/Makefile.softmmu-target  | 12 ++-
+ 4 files changed, 164 insertions(+), 2 deletions(-)
+ create mode 100644 tests/tcg/multiarch/system/interrupt.c
+ create mode 100644 tests/tcg/multiarch/gdbstub/interrupt.py
+
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 5f28d5cf57..e7d48fa0d4 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -597,6 +597,15 @@ static int gdb_handle_vcont(const char *p)
+      *  or incorrect parameters passed.
+      */
+     res = 0;
++
++    /*
++     * target_count and last_target keep track of how many CPUs we are going to
++     * step or resume, and a pointer to the state structure of one of them,
++     * respectivelly
++     */
++    int target_count = 0;
++    CPUState *last_target = NULL;
++
+     while (*p) {
+         if (*p++ != ';') {
+             return -ENOTSUP;
+@@ -637,6 +646,9 @@ static int gdb_handle_vcont(const char *p)
+             while (cpu) {
+                 if (newstates[cpu->cpu_index] == 1) {
+                     newstates[cpu->cpu_index] = cur_action;
++
++                    target_count++;
++                    last_target = cpu;
+                 }
  
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
--
-     # Run the actual tests
-     run_test()
- except:
-diff --git a/tests/tcg/aarch64/gdbstub/test-sve.py b/tests/tcg/aarch64/gdbstub/test-sve.py
-index ef57c7412c..afd8ece98d 100644
---- a/tests/tcg/aarch64/gdbstub/test-sve.py
-+++ b/tests/tcg/aarch64/gdbstub/test-sve.py
-@@ -66,9 +66,6 @@ def run_test():
-     exit(0)
+                 cpu = gdb_next_attached_cpu(cpu);
+@@ -654,6 +666,9 @@ static int gdb_handle_vcont(const char *p)
+             while (cpu) {
+                 if (newstates[cpu->cpu_index] == 1) {
+                     newstates[cpu->cpu_index] = cur_action;
++
++                    target_count++;
++                    last_target = cpu;
+                 }
  
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
--
-     # Run the actual tests
-     run_test()
- except:
-diff --git a/tests/tcg/multiarch/gdbstub/memory.py b/tests/tcg/multiarch/gdbstub/memory.py
-index 67864ad902..dd25e72281 100644
---- a/tests/tcg/multiarch/gdbstub/memory.py
-+++ b/tests/tcg/multiarch/gdbstub/memory.py
-@@ -115,9 +115,6 @@ def run_test():
-     exit(0)
+                 cpu = gdb_next_cpu_in_process(cpu);
+@@ -671,11 +686,25 @@ static int gdb_handle_vcont(const char *p)
+             /* only use if no previous match occourred */
+             if (newstates[cpu->cpu_index] == 1) {
+                 newstates[cpu->cpu_index] = cur_action;
++
++                target_count++;
++                last_target = cpu;
+             }
+             break;
+         }
+     }
  
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
++    /*
++     * if we're about to resume a specific set of CPUs/threads, make it so that
++     * in case execution gets interrupted, we can send GDB a stop reply with a
++     * correct value. it doesn't really matter which CPU we tell GDB the signal
++     * happened in (VM pauses stop all of them anyway), so long as it is one of
++     * the ones we resumed/single stepped here.
++     */
++    if (target_count > 0) {
++        gdbserver_state.c_cpu = last_target;
++    }
++
+     gdbserver_state.signal = signal;
+     gdb_continue_partial(newstates);
+     return res;
+diff --git a/tests/tcg/multiarch/system/interrupt.c b/tests/tcg/multiarch/system/interrupt.c
+new file mode 100644
+index 0000000000..98d4f2eff9
+--- /dev/null
++++ b/tests/tcg/multiarch/system/interrupt.c
+@@ -0,0 +1,28 @@
++/*
++ * External interruption test. This test is structured in such a way that it
++ * passes the cases that require it to exit, but we can make it enter an
++ * infinite loop from GDB.
++ *
++ * We don't have the benefit of libc, just builtin C primitives and
++ * whatever is in minilib.
++ */
++
++#include <minilib.h>
++
++void loop(void)
++{
++    do {
++        /*
++         * Loop forever. Just make sure the condition is always a constant
++         * expression, so that this loop is not UB, as per the C
++         * standard.
++         */
++    } while (1);
++}
++
++int main(void)
++{
++    return 0;
++}
++
++
+diff --git a/tests/tcg/multiarch/gdbstub/interrupt.py b/tests/tcg/multiarch/gdbstub/interrupt.py
+new file mode 100644
+index 0000000000..e222ac94c5
+--- /dev/null
++++ b/tests/tcg/multiarch/gdbstub/interrupt.py
+@@ -0,0 +1,97 @@
++from __future__ import print_function
++#
++# Test some of the softmmu debug features with the multiarch memory
++# test. It is a port of the original vmlinux focused test case but
++# using the "memory" test instead.
++#
++# This is launched via tests/guest-debug/run-test.py
++#
++
++import gdb
++import sys
++
++failcount = 0
++
++
++def report(cond, msg):
++    "Report success/fail of test"
++    if cond:
++        print("PASS: %s" % (msg))
++    else:
++        print("FAIL: %s" % (msg))
++        global failcount
++        failcount += 1
++
++
++def check_interrupt(thread):
++    """
++    Check that, if thread is resumed, we go back to the same thread when the
++    program gets interrupted.
++    """
++
++    # Switch to the thread we're going to be running the test in.
++    print("thread ", thread.num)
++    gdb.execute("thr %d" % thread.num)
++
++    # Enter the loop() function on this thread.
++    #
++    # While there are cleaner ways to do this, we want to minimize the number of
++    # side effects on the gdbstub's internal state, since those may mask bugs.
++    # Ideally, there should be no difference between what we're doing here and
++    # the program reaching the loop() function on its own.
++    #
++    # For this to be safe, we only need the prologue of loop() to not have
++    # instructions that may have problems with what we're doing here. We don't
++    # have to worry about anything else, as this function never returns.
++    gdb.execute("set $pc = loop")
++
++    # Continue and then interrupt the task.
++    gdb.post_event(lambda: gdb.execute("interrupt"))
++    gdb.execute("c")
++
++    # Check whether the thread we're in after the interruption is the same we
++    # ran continue from.
++    return (thread.num == gdb.selected_thread().num)
++
++
++def run_test():
++    """
++    Test if interrupting the code always lands us on the same thread when
++    running with scheduler-lock enabled.
++    """
++
++    gdb.execute("set scheduler-locking on")
++    for thread in gdb.selected_inferior().threads():
++        report(check_interrupt(thread),
++               "thread %d resumes correctly on interrupt" % thread.num)
++
++
++#
++# This runs as the script it sourced (via -x, via run-test.py)
++#
++try:
++    inferior = gdb.selected_inferior()
++    arch = inferior.architecture()
++    print("ATTACHED: %s" % arch.name())
++except (gdb.error, AttributeError):
++    print("SKIPPING (not connected)", file=sys.stderr)
++    exit(0)
++
++if gdb.parse_and_eval('$pc') == 0:
++    print("SKIP: PC not set")
++    exit(0)
++if len(gdb.selected_inferior().threads()) == 1:
++    print("SKIP: set to run on a single thread")
++    exit(0)
++
++try:
++    # Run the actual tests
++    run_test()
++except (gdb.error):
++    print("GDB Exception: %s" % (sys.exc_info()[0]))
++    failcount += 1
++    pass
++
++# Finally kill the inferior and exit gdb with a count of failures
++gdb.execute("kill")
++exit(failcount)
+diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+index a051d689d7..90810a32b2 100644
+--- a/tests/tcg/multiarch/system/Makefile.softmmu-target
++++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+@@ -27,7 +27,15 @@ run-gdbstub-memory: memory
+ 		"-monitor none -display none -chardev file$(COMMA)path=$<.out$(COMMA)id=output $(QEMU_OPTS)" \
+ 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/memory.py, \
+ 	softmmu gdbstub support)
 -
-     # Run the actual tests
-     run_test()
- except (gdb.error):
-diff --git a/tests/tcg/multiarch/gdbstub/sha1.py b/tests/tcg/multiarch/gdbstub/sha1.py
-index 423b720e6d..416728415f 100644
---- a/tests/tcg/multiarch/gdbstub/sha1.py
-+++ b/tests/tcg/multiarch/gdbstub/sha1.py
-@@ -73,10 +73,6 @@ def run_test():
-     exit(0)
++run-gdbstub-interrupt: interrupt
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(HAVE_GDB_BIN) \
++		--qemu $(QEMU) \
++		--output $<.gdb.out \
++		--qargs \
++		"-smp 2 -monitor none -display none -chardev file$(COMMA)path=$<.out$(COMMA)id=output $(QEMU_OPTS)" \
++		--bin $< --test $(MULTIARCH_SRC)/gdbstub/interrupt.py, \
++	softmmu gdbstub support)
+ run-gdbstub-untimely-packet: hello
+ 	$(call run-test, $@, $(GDB_SCRIPT) \
+ 		--gdb $(HAVE_GDB_BIN) \
+@@ -50,4 +58,4 @@ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "need working gdb")
+ endif
  
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
--    gdb.execute("set confirm off")
--
-     # Run the actual tests
-     run_test()
- except (gdb.error):
-diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-index 5e3e5a2fb7..04ec61d219 100644
---- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-+++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-@@ -51,10 +51,6 @@ def main():
-         exit(0)
- 
-     try:
--        # These are not very useful in scripts
--        gdb.execute("set pagination off")
--        gdb.execute("set confirm off")
--
-         # Run the actual tests
-         run_test()
-     except gdb.error:
-diff --git a/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py b/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
-index d91e8fdf19..926fa962b7 100644
---- a/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
-+++ b/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
-@@ -42,10 +42,6 @@ def run_test():
-     exit(0)
- 
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
--    gdb.execute("set confirm off")
--
-     # Run the actual tests
-     run_test()
- except (gdb.error):
-diff --git a/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py b/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
-index 798d508bc7..e57d2a8db8 100644
---- a/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
-+++ b/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
-@@ -45,10 +45,6 @@ def run_test():
-     exit(0)
- 
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
--    gdb.execute("set confirm off")
--
-     # Run the actual tests
-     run_test()
- except (gdb.error):
-diff --git a/tests/tcg/s390x/gdbstub/test-signals-s390x.py b/tests/tcg/s390x/gdbstub/test-signals-s390x.py
-index 80a284b475..ca2bbc0b03 100644
---- a/tests/tcg/s390x/gdbstub/test-signals-s390x.py
-+++ b/tests/tcg/s390x/gdbstub/test-signals-s390x.py
-@@ -61,10 +61,6 @@ def run_test():
-     exit(0)
- 
- try:
--    # These are not very useful in scripts
--    gdb.execute("set pagination off")
--    gdb.execute("set confirm off")
--
-     # Run the actual tests
-     run_test()
- except (gdb.error):
-diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
-index 18fad3f163..804705fede 100644
---- a/tests/tcg/s390x/gdbstub/test-svc.py
-+++ b/tests/tcg/s390x/gdbstub/test-svc.py
-@@ -49,10 +49,6 @@ def main():
-         exit(0)
- 
-     try:
--        # These are not very useful in scripts
--        gdb.execute("set pagination off")
--        gdb.execute("set confirm off")
--
-         # Run the actual tests
-         run_test()
-     except gdb.error:
+-MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-untimely-packet
++MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt run-gdbstub-untimely-packet
 -- 
 2.39.2
 
