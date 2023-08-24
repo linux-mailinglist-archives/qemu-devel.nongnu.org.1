@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FE9787635
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920F2787634
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:58:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDet-0004Zk-Gz; Thu, 24 Aug 2023 12:58:11 -0400
+	id 1qZDeW-0004Wa-CU; Thu, 24 Aug 2023 12:57:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qZDel-0004Yi-Fq; Thu, 24 Aug 2023 12:58:03 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZDeU-0004Vq-CJ
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:57:46 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qZDei-0003KI-8n; Thu, 24 Aug 2023 12:58:03 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5298e43bb67so231220a12.1; 
- Thu, 24 Aug 2023 09:57:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZDeR-0003Iv-HB
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:57:46 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b9338e4695so107089011fa.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692896278; x=1693501078;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9LCQ6p/zK0WLQgEjeOclvmAuDKSV4LeU9T5crgIsb50=;
- b=PX3P+1k+JS2yjV0TrOPXN2eMt+9xvL497rXfphXwR5PKiwTW85CkCl7ihSnqLyDsdq
- 7bd1BZ4/fwAXKEdUtMN5Q2wt14gY6IgCl/n3UGErKhUQA7Z065DmQDW2P5WZIARIUFB8
- K055WSpjk5/sgjjvPIiK1KP205AhEDUg4aRqmMqyZ59V3VV4Cc4pqpN4I+IOaOOQPU1n
- gWAjiFCrDTd956JNesSzrDAjMNiJGGP4Hj88+NHdsIuNu62ZXcnjEqMuJGtPT5ljyh37
- Q9sMUVg/Z1GF186dewOM7zAfrnTjTXnXjV/Mz67oP1OCgPqpN+O+NzNht3CrRF3yQufX
- L91g==
+ d=linaro.org; s=google; t=1692896261; x=1693501061;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6btm2bj7axX72krV93gy9BGEHB1Ne2PaEfLnWDePLQI=;
+ b=OCGZKtGUjmv5dysmUo9GNgnrfY6JWjn6xuNCIt4xh5nL7gDMKkbf4XSFeczipVelgX
+ LOu1uoZayQkT7muUU/0NJ6y3p/bekz8U26oULy8ffH25x9yI5lFuWsRc/e5SfrZFL7Gm
+ KRT/X2n78biO24zcXHJt37UjgjcsmSEm3kiKQjApQenwyfwdg59cQzsp2I2YherZUIHw
+ qF2p4BPfTK0Sda/Oufg+Goi4O+H3Re2/XZef4GyiktxCAOpTMxD4Hh8MjcBGLN8QMbGN
+ J9GVSz1GtJrNa9YDNczVNcP/dCfyO1mFuaFewCuGFNQ9F+jlhIvhdS0Fjb6SaL7NEzeT
+ sj4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692896278; x=1693501078;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9LCQ6p/zK0WLQgEjeOclvmAuDKSV4LeU9T5crgIsb50=;
- b=ZBVdMgnXbMOBWsBds8ifRevStXnPrA96ttpd79KL2TAO43IM+NrwkXsfgLAzJA/ISV
- aNFNZlBuljSaSRz1egVxRCE6qiOqjOxp92l7YLMoSFjdywhd6y0ZstBvaz7zXNMuFcV6
- aRivPgCqSigykMvK01+2ZnPXg0YcydCEsj8pa/qVJKVrg6x6Tg8kJSX8BSWzTtE0zYEj
- etx+svCEsgDl39N70L04IfOu791GK4QWB6jSpSdceklgZgqCEP4RKPWVxrru0hkJ7Ot0
- 24FBp6F4ZdWc0EUhayi2bHpXXlvUQleHn4Bu6fusOreKP6+RkjaBlCJRLc4/hT4YxyJk
- v3ig==
-X-Gm-Message-State: AOJu0YysvEDVcCTL47pxDNxNwwYS/Y2bfJBC6cP6O7XkMpSmB+CdrDT6
- XVxIdePaZR9PQvXJ1FF24JhKJHlMW9gU9+Quv8M=
-X-Google-Smtp-Source: AGHT+IHnPL+n5SJ0TxMxA54q2Yy8GTv8Bl5hQUGyZn7I4+6w9ob3XKI33tYu3YYJa26JRYkQNTpe8oLWBDr4Cg3sx9M=
-X-Received: by 2002:a05:6402:5109:b0:51e:4218:b91b with SMTP id
- m9-20020a056402510900b0051e4218b91bmr15673358edd.1.1692896277566; Thu, 24 Aug
- 2023 09:57:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230824155345.109765-1-hreitz@redhat.com>
- <20230824155345.109765-2-hreitz@redhat.com>
-In-Reply-To: <20230824155345.109765-2-hreitz@redhat.com>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Fri, 25 Aug 2023 00:57:28 +0800
-Message-ID: <CAAAx-8JDMj5YzEKYdtgnS0t6+TqPg=ruZkDNtvi4pHzkF29J5w@mail.gmail.com>
-Subject: Re: [PATCH 1/5] file-posix: Clear bs->bl.zoned on error
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ d=1e100.net; s=20221208; t=1692896261; x=1693501061;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6btm2bj7axX72krV93gy9BGEHB1Ne2PaEfLnWDePLQI=;
+ b=QgOp0/ugrAESj6yigDosUYgLAUNnxgfhvXynY+M/Vz1Gg2QtxvlVk37EbTW6Suh6zD
+ 8DiTzmovQXH1mLtvXf91a1LgK0Y0UPgVCcUcxQgry2kAkAGGgZN8+9K0mjQXe3dcn4ZA
+ WJDo3oLq7sctt8ro28LID1xeZB/eEGm7I6WFg2qhRgy6QsIn+7oqq9B8WiMWQ4Ay9Cb6
+ 34i+TiiCiVY6yyXVG0TngqXpA40rqnCVNw1OT7YwlAhlVx1oBAeBZmj/18BI9wF5JsbW
+ ujCjY2kBcsWEhVgkqxS9ipBwzAgI0is5sKS3+SV9q8L0NpVnR+EW8pQsVKcL0z6JTuxD
+ s1ug==
+X-Gm-Message-State: AOJu0YzbeiU14Qs+wQf2g993K1MHT4ti7I1iII+HXkXkHG5t5gQHdxyw
+ eV+splfSI0Mo+MvWQuam5PYGwufZX+09DdtOS6o=
+X-Google-Smtp-Source: AGHT+IEJWtZ+gpBDMEAZkTUBYEB+8hHHm9FrdffmhVz6nOirAgz+b7Rrj2uIruwpypct106xRVaBdQ==
+X-Received: by 2002:a2e:94c3:0:b0:2bc:b46b:686b with SMTP id
+ r3-20020a2e94c3000000b002bcb46b686bmr11777121ljh.34.1692896261447; 
+ Thu, 24 Aug 2023 09:57:41 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ z16-20020a1c4c10000000b003fe215e4492sm3173133wmf.4.2023.08.24.09.57.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Aug 2023 09:57:41 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x529.google.com
+Subject: [PATCH] hw/block/dataplane/virtio-block: Avoid dynamic stack
+ allocation
+Date: Thu, 24 Aug 2023 17:57:40 +0100
+Message-Id: <20230824165740.2653919-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,25 +90,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hanna Czenczek <hreitz@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8824=E6=97=
-=A5=E5=91=A8=E5=9B=9B 23:53=E5=86=99=E9=81=93=EF=BC=9A
->
-> bs->bl.zoned is what indicates whether the zone information is present
-> and valid; it is the only thing that raw_refresh_zoned_limits() sets if
-> CONFIG_BLKZONED is not defined, and it is also the only thing that it
-> sets if CONFIG_BLKZONED is defined, but there are no zones.
->
-> Make sure that it is always set to BLK_Z_NONE if there is an error
-> anywhere in raw_refresh_zoned_limits() so that we do not accidentally
-> announce zones while our information is incomplete or invalid.
->
-> This also fixes a memory leak in the last error path in
-> raw_refresh_zoned_limits().
->
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  block/file-posix.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
+Instead of using a variable length array in notify_guest_bh(), always
+use a fixed sized bitmap (this will be 128 bytes).  This means we
+need to avoid assuming that bitmap and the s->batch_notify_vqs bitmap
+are the same size; the neatest way to do this is to switch to using
+bitmap.h APIs to declare, copy and clear, because then we can specify
+the length in bits, exactly as we did when creating
+s->batch_notify_vqs with bitmap_new().
 
-Reviewed-by: Sam Li <faithilikerun@gmail.com>
+The codebase has very few VLAs, and if we can get rid of them all we
+can make the compiler error on new additions.  This is a defensive
+measure against security bugs where an on-stack dynamic allocation
+isn't correctly size-checked (e.g.  CVE-2021-3527).
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+In discussion on Philippe's attempt at getting rid of this VLA:
+https://patchew.org/QEMU/20210505211047.1496765-1-philmd@redhat.com/20210505211047.1496765-7-philmd@redhat.com/
+Stefan suggested getting rid of the local bitmap array entirely.
+But I don't know this code at all and have no idea of the
+implications (presumably there is a reason we have the local
+array rather than iterating directly on batch_notify_vqs),
+so I have opted for the more minimal change.
+
+Usual disclaimer: tested only with "make check" and
+"make check-avocado".
+---
+ hw/block/dataplane/virtio-blk.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
+index da36fcfd0b5..f31ec79d0b2 100644
+--- a/hw/block/dataplane/virtio-blk.c
++++ b/hw/block/dataplane/virtio-blk.c
+@@ -59,11 +59,16 @@ static void notify_guest_bh(void *opaque)
+ {
+     VirtIOBlockDataPlane *s = opaque;
+     unsigned nvqs = s->conf->num_queues;
+-    unsigned long bitmap[BITS_TO_LONGS(nvqs)];
++    DECLARE_BITMAP(bitmap, VIRTIO_QUEUE_MAX);
+     unsigned j;
+ 
+-    memcpy(bitmap, s->batch_notify_vqs, sizeof(bitmap));
+-    memset(s->batch_notify_vqs, 0, sizeof(bitmap));
++    /*
++     * Note that our local 'bitmap' is declared at a fixed
++     * worst case size, but s->batch_notify_vqs has only
++     * nvqs bits in it.
++     */
++    bitmap_copy(bitmap, s->batch_notify_vqs, nvqs);
++    bitmap_zero(s->batch_notify_vqs, nvqs);
+ 
+     for (j = 0; j < nvqs; j += BITS_PER_LONG) {
+         unsigned long bits = bitmap[j / BITS_PER_LONG];
+-- 
+2.34.1
+
 
