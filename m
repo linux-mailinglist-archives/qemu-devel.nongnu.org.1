@@ -2,83 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D21F7874E2
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB1B7874E6
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:09:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZCs9-0006k0-D7; Thu, 24 Aug 2023 12:07:49 -0400
+	id 1qZCtB-00082C-M3; Thu, 24 Aug 2023 12:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZCs6-0006jT-Lp
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:07:46 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZCsu-0007y0-Et
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:08:36 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZCs4-0002Mb-Cc
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:07:46 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4018af103bcso416235e9.1
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:07:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZCss-0002Vz-7P
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:08:36 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-52a250aa012so80142a12.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692893262; x=1693498062;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Emrzqv3sEGEN4OUrZcmvk9rFKvC9tmhzBGydaZIpnN0=;
- b=J/NhJkApb6ZSRP/KcU7a0s8mNJOb5zvDnMq62V592dgoQePhhom+dypxSf/jnofd+t
- ibqltJJEIX8vpvm3E4SXjf78qZ8tb7LXeBYPK7Kpb2OnUqui/+/vAc86MLgKJi6iM5E2
- S1GH3jBswM4BP03g77XmdHBd1AzHuK6QMyNw6AOZTfpR2UMoL9kaiE0uQFbBcGCCEGj1
- ZxxgNSeReuvbKD34ktvFhasCecyX4A2VbXq25zsi0PtGpoPzCcbutIzOib1Y5IYbEnVu
- qzwRnhUkPl7ObZCCGwlWFUnVO7xgGWchVr0u1JAUlwg/6Q9iWgiQAcWxUDHuSHoOu6F0
- weSQ==
+ d=linaro.org; s=google; t=1692893312; x=1693498112;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ys4b80d2SRQg2uZmeGFDRCRF5unfE2B5P91TIszpwp8=;
+ b=HJjxJ2ocyPWBL7Bx4Lc5NF5pLOoTC5r8RDHgNUt1wG7OJPzCPDCQzZ2zqzS/XUZ1pF
+ WWG0CvQZHijnESlh0RK6cxJFg3LAdvZq2RCqe8XJNSPN7TAxNS30bWSo+huBHDLo4aiX
+ 7jh0Rdlfn/IPp91uDjX8ANYhTn2MriYdaTe6wGeY/dBYbiM2pgMdiHqJKI35qWfI7CvV
+ UPISNuscjTbb4IwiEunPvLVSiJWD50NJxfEf0/3BnNwVCboVhNW8a8irYV8S0d1+qzdV
+ YpcT/fMxwndlYDv5R2Bqq9YjrkpOWZdNDBkzFydkCkYg/qCAPPEqwaJBdPoElvdUTfhm
+ H9IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692893262; x=1693498062;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Emrzqv3sEGEN4OUrZcmvk9rFKvC9tmhzBGydaZIpnN0=;
- b=Uu7LJwqBXNY8Pdhpaj1HpcV27UnJDEfW34a/ZYP7ZWGqQU/Ve2ZLEvyJHWdmm4EA/J
- B4cJBQW+Fiu/FWqRkeBV0LGHl4VahHQrflwGmGzVlNt0N50P+fAC5Q44c7KQEhTF22q7
- i3F6Dk3RahWJBIb7k+ipHr9rw1cd7Ge2OdEkPMMT/5G+gnHIEWUs+MCaT/d/3yNZtzSX
- UaM5FUpowpiSIH63a2APbELWv5NdplWB7097EuRRqrXvDuZIa+q2gPWxeooRlXjmZNaB
- VziS6BrVb1p5/dLyB6qrQBR0+5BbD867Q1hp/vJ2dfN8UzPFCi6x69L/x1Z8xOQrG01E
- 6YcA==
-X-Gm-Message-State: AOJu0YzuYhPAScoGSEdnnZ9MPeklFoMsuvxT5x4hrT0W5/OicwDv1m/i
- U3ximugzkNFlfW4x5tA9DOj75w==
-X-Google-Smtp-Source: AGHT+IHBt2qRB+sk2n3cYIiWr7ffUq4bKIluSd+7Li7a79jF+rJqoCKoSStbcHPC1mrqF+Z4lUGteA==
-X-Received: by 2002:a05:600c:1d1b:b0:3fe:d589:ed78 with SMTP id
- l27-20020a05600c1d1b00b003fed589ed78mr11262892wms.20.1692893262294; 
- Thu, 24 Aug 2023 09:07:42 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.238.90])
- by smtp.gmail.com with ESMTPSA id
- m24-20020a7bca58000000b00401b242e2e6sm911737wml.47.2023.08.24.09.07.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 09:07:41 -0700 (PDT)
-Message-ID: <1cb18092-0f85-0251-6604-d2ff20da72d8@linaro.org>
-Date: Thu, 24 Aug 2023 18:07:39 +0200
+ d=1e100.net; s=20221208; t=1692893312; x=1693498112;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ys4b80d2SRQg2uZmeGFDRCRF5unfE2B5P91TIszpwp8=;
+ b=haVPQLx0O/EZ5FNfuOCKbHsf3xEcYfsMO87PcqSUVyMB4GWub9LrJuUydkUBX9x274
+ EEvMvYIEHPZuq4hB3d5PhXnb93FVRE3m77DKA1HbQAkA77fQ4MUiNkJiwO93wccuHxrg
+ t14SMBzRcNqAxyDaQNpCaUbCLNMPnoYPuJffUrbqFIlf+OyrVTymEX56x0xY4jPzFh/k
+ LzveSNHN4aJ+ACJKv6hUGR5idRWaiSBZSIyQWbgc6WEOHnErjuPbKtQ43LMNusX4wyhy
+ Y6zbOo1orwE/C67p0BNEWJKzoMaWoKX6EvFaB8ZqjqTQmib3iXuMqv9YcUibXPuuJCpH
+ NmcQ==
+X-Gm-Message-State: AOJu0YxgbajX87I1FW5dM9fd8KxBepGVuAgGvl/0j3OYf+a/FKN/bzgN
+ TwZ2SrpURLLiLeWo81JvLUl8w5kajm9uc1pF2P0rDg==
+X-Google-Smtp-Source: AGHT+IG5DZQtgHqzm7OrSppiChmowugimm9LaYaxFRaHnth5ubk40F2e/Mf6QreycyyPH+6SmxrWUyvdQgPw8Qhq6V4=
+X-Received: by 2002:aa7:ca59:0:b0:51d:f5bd:5a88 with SMTP id
+ j25-20020aa7ca59000000b0051df5bd5a88mr11605256edt.38.1692893312647; Thu, 24
+ Aug 2023 09:08:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 1/4] hw/net/fsl_etsec/rings.c: Avoid variable length array
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Jiri Pirko <jiri@resnulli.us>, qemu-ppc@nongnu.org
-References: <20230824153224.2517486-1-peter.maydell@linaro.org>
- <20230824153224.2517486-2-peter.maydell@linaro.org>
- <663d4cd3-50d5-d5db-bd43-efc55fe6bbf0@linaro.org>
- <CAFEAcA-jswkb6JwPUMuBjvHFPo5YrAZMu5FBt7az_toVsQa=Jg@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-jswkb6JwPUMuBjvHFPo5YrAZMu5FBt7az_toVsQa=Jg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
+References: <20230811214031.171020-1-richard.henderson@linaro.org>
+ <20230811214031.171020-9-richard.henderson@linaro.org>
+In-Reply-To: <20230811214031.171020-9-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 17:08:21 +0100
+Message-ID: <CAFEAcA-Wbhf8tJgqbcHBvUS3uRB6B+0gWEXnp64JFtys2ogtgg@mail.gmail.com>
+Subject: Re: [PATCH v2 08/11] target/arm: Implement RMR_EL3 for neoverse-v1
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,76 +85,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 18:01, Peter Maydell wrote:
-> On Thu, 24 Aug 2023 at 16:47, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 24/8/23 17:32, Peter Maydell wrote:
->>> In fill_rx_bd() we create a variable length array of size
->>> etsec->rx_padding. In fact we know that this will never be
->>> larger than 64 bytes, because rx_padding is set in rx_init_frame()
->>> in a way that ensures it is only that large. Use a fixed sized
->>> array and assert that it is big enough.
->>>
->>> Since padd[] is now potentially rather larger than the actual
->>> padding required, adjust the memset() we do on it to match the
->>> size that we write with cpu_physical_memory_write(), rather than
->>> clearing the entire array.
->>>
->>> The codebase has very few VLAs, and if we can get rid of them all we
->>> can make the compiler error on new additions.  This is a defensive
->>> measure against security bugs where an on-stack dynamic allocation
->>> isn't correctly size-checked (e.g.  CVE-2021-3527).
->>>
->>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>> ---
->>>    hw/net/fsl_etsec/rings.c | 12 ++++++++++--
->>>    1 file changed, 10 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/hw/net/fsl_etsec/rings.c b/hw/net/fsl_etsec/rings.c
->>> index 788463f1b62..2f2f359f7a5 100644
->>> --- a/hw/net/fsl_etsec/rings.c
->>> +++ b/hw/net/fsl_etsec/rings.c
->>> @@ -372,6 +372,12 @@ void etsec_walk_tx_ring(eTSEC *etsec, int ring_nbr)
->>>        etsec->regs[TSTAT].value |= 1 << (31 - ring_nbr);
->>>    }
->>>
->>> +/*
->>> + * rx_init_frame() ensures we never do more padding than this
->>> + * (checksum plus minimum data packet size)
->>> + */
->>> +#define MAX_RX_PADDING 64
+On Fri, 11 Aug 2023 at 22:41, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/cpu64.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+> index b0cac05be6..0054bb6dfa 100644
+> --- a/target/arm/tcg/cpu64.c
+> +++ b/target/arm/tcg/cpu64.c
+> @@ -573,6 +573,18 @@ static const ARMCPRegInfo neoverse_v1_cp_reginfo[] = {
+>        .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
+>  };
+>
+> +/*
+> + * TODO: For a write with bit 1 set, do something with arm_reset_cpu().
+> + * In the meantime, "the bit is strictly a request", so we are in spec
+> + * just ignoring writes.
+> + */
+> +static const ARMCPRegInfo rmr_reginfo = {
+> +    .name = "RMR_EL3", .state = ARM_CP_STATE_AA64,
+> +    .opc0 = 3, .opc1 = 6, .crn = 12, .crm = 0, .opc2 = 2,
+> +    .access = PL3_RW, .type = ARM_CP_CONST,
+> +    .resetvalue = 1, /* [31:2] RES0, [1] reset 0, [0] RES1 */
+> +};
+> +
 
+This register is architectural (but optional), not
+implementation-specific. There's also an RMR_EL1 and RMR_EL2
+depending on which ELs are implemented. If we want to implement
+this we should do it in helper.c alongside RVBAR_EL1 (which
+has a similar "only the register for the highest EL exists"
+setup). But I'd be tempted to continue to ignore this, unless
+there's some firmware out there that really wants to see
+the register.
 
->> Maybe we can add this for clarity:
->>
->> @@ -468,6 +468,6 @@ static void rx_init_frame(eTSEC *etsec, const
->> uint8_t *buf, size_t size)
->>         * minimum MTU size bytes long (64)
->>         */
->> -    if (etsec->rx_buffer_len < 60) {
->> -        etsec->rx_padding += 60 - etsec->rx_buffer_len;
->> +    if (etsec->rx_padding + etsec->rx_buffer_len < MAX_RX_PADDING) {
->> +        etsec->rx_padding = MAX_RX_PADDING - etsec->rx_buffer_len;
->>        }
-> 
-> I think that's a more confusing way of putting it. What the
-> code is doing is "if the packet is too short, pad it to
-> the minimum-packet-length", and the clear way to express
-> that is "if (packet_len < max) add_more_padding;".
-> 
-> There is potential to use the constants ETH_ZLEN (60) and
-> ETH_FCS_LEN (4) instead of the hard-coded 60 and 4 currently
-> in the code, but I felt that was starting to wander a bit
-> out of scope of just getting rid of the VLA.
+PS: you don't want arm_reset_cpu(), since we know that we
+are running on the exact CPU we want to reset. cpu_reset()
+will do. (And I don't think we can implement "reset into
+AArch32" currently.)
 
-Right. So possibly:
-
-#define MAX_RX_PADDING (ETH_ZLEN + ETH_FCS_LEN)
-
-but 64 is clear enough.
-
-Thanks for the feedback.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+thanks
+-- PMM
 
