@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C5E7868F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DEA7868FC
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:55:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ5Ab-00074I-Uv; Thu, 24 Aug 2023 03:54:22 -0400
+	id 1qZ5BA-0007Mm-Jz; Thu, 24 Aug 2023 03:54:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZ5AZ-00073X-0E
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:54:19 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1qZ5B9-0007MS-AZ
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:54:55 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZ5AW-0007Eq-Ly
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:54:18 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-31c4d5bd69cso3522541f8f.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:54:16 -0700 (PDT)
+ id 1qZ5B7-0007Pa-5a
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:54:55 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31c3726cc45so3856703f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:54:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692863654; x=1693468454;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/+SWCWeMS2SVav6aA7YxrlYTBPZwPBaizY0TGZfUhvM=;
- b=HGgFeR97xoRCaPdgGyoqy8QKHuP5U9Twyi9Ra8zeKIGcQwVPBl0FtYSIPYaBtICHMD
- pUHhhwcgKJ1ewA07ZNG+vL06SjHzz8dYlO2dyr5Q8bICCXttHDwZLq+AgPdBF4lsHk2B
- O+RlTK0BYYat9gv09QKPJhkEzdzMddg5QJ2/Xo71nlep2g9E2/3dwAOI518UsllWZvM7
- PpP2K+74AS+rAIDI2vNpq16Th6+p98pAAEvwY8oTQjgicodEEw99gKu18AUuIAcPhuh4
- bxCL2x8A+CH9bIopmTBX8dRxL9sIt6L2wywLPuK7yKq5QiA+HzcN/bkJ5KRcI6EhMq3G
- L+1g==
+ d=linaro.org; s=google; t=1692863691; x=1693468491;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nvpMiF3JzMmnAqkZbMiSjG2h+Vm5dWjViEZ04nK06aE=;
+ b=WmQiso55Q3pZOCFjleLfrMpncgUqjRDM9U32AH9xc6g6XljfrBAlOebCr8okNCYtQD
+ XZMkEyprmOQAcjH3iBf8zJ4QOzvCNcwo9KaHgRRnTbZRZ5F65bcVBCfNjga1bRn/l4vb
+ q4I8pexmqBOR2nyLQfYeiWpPwMInzQP6mLADyJ0QXhn4IAxmKPTui7z1MZ05mo/sdymy
+ 3QPcsc4gmVga0ggauP486GIiMcyuR/HSj1jX1s3XrSNqaNm4yOCUZ1GRXm28fpOI0XmF
+ J/j0iOKRYJLwIwIJ/LmnEE6rZ2f7PbSSreRvYcTA2tkRnIqMVzHAIxLUYz2AFGH7MpEx
+ bl7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692863654; x=1693468454;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/+SWCWeMS2SVav6aA7YxrlYTBPZwPBaizY0TGZfUhvM=;
- b=mCgQbcQnAbiHsF4F15e/OwfvVuoyyJmzW+G40h1wVVqcssBQoja7klpZcwNWTyrMnV
- z+WD8D5OKfqKhhNjXcX5j6jN6qj4VjyY8uSYHRLlwJjzAJG/KYdfkIXclJCJaVKGDmBw
- wL8I73mQb8TWzgIf4O6qY+ZGdcAhtUaEkQWog8LQL/Vg6xnAlPm6kVp6lLo8918MP/RJ
- Zj93mZv/GzTNPnKNaPDNqEKyS24dVueFBg+Q+dcrB/9fkQVCtU9OacWAEhzhvUSNe1RM
- YzxnpgqQKmNnkkRV722GY4M3X/VXnswGRWxEVu32I6VPMR9toLadXV9yVbeObMN+ecDJ
- YPhw==
-X-Gm-Message-State: AOJu0Yyi9gMs1+m2fr3qzKq6+IebbCKEi5DoERwD/I35sOl7sYHy3uKr
- s8jlcvmf2cqCnzY8ltQ68o9evw==
-X-Google-Smtp-Source: AGHT+IGGUgrJk7BxVQ1ejuErPqxZkKtgktRD+6nviQX5bK7poBOUCP4o80Wsui7XJ/y9WkWwicJ/7A==
-X-Received: by 2002:adf:e990:0:b0:319:6d8a:75f8 with SMTP id
- h16-20020adfe990000000b003196d8a75f8mr12462990wrm.44.1692863654352; 
- Thu, 24 Aug 2023 00:54:14 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692863691; x=1693468491;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=nvpMiF3JzMmnAqkZbMiSjG2h+Vm5dWjViEZ04nK06aE=;
+ b=Q+5YEevU0yet3pwsQEl+6A/O2YRUB5o+9aE+2S0FTtQGzxFcwsdndPdfdyLNDO2QLb
+ bj8vtTFsBycpLwwVGO9ypTnwt7gCCrfFinvcF3NJ1Cfqv0YMG3GHqgk+LqUkmo2GyrnM
+ wAq61TQOs+/shsZiinQKZDDIoX7IK4rWJzvqjoDn5vR0zvH4dqdu6/7W+3z3TpC7O6Y/
+ poBEzocOKueWv+DKXZaLkGA9Z+XtBDSYqkzOYVCrjqxsg04kebyjw1igIKmNPPY0GHZH
+ v3yDNc8c+anmVqA1EFaF0yppDOo/sMRgr9XH3snxa27BWiFpdd0AIvCHadBFv1BrtXKP
+ yC9Q==
+X-Gm-Message-State: AOJu0YycEPZArvXTvrsxtrJWzBpJbpv3cZtXUsEP6YNlFaFeRGS8qo02
+ 5ReErg275IHMyZmX2wI9nR74B6MseywGRKMucbA=
+X-Google-Smtp-Source: AGHT+IHKyp5xYuDGCaYlKe+R0XVKQsRTt6iJAi4WahLkQRWqp7UK35nAd0EsMeDn0qvojjyrzpJ4Jg==
+X-Received: by 2002:a5d:560a:0:b0:317:58e4:e941 with SMTP id
+ l10-20020a5d560a000000b0031758e4e941mr11072793wrv.33.1692863691198; 
+ Thu, 24 Aug 2023 00:54:51 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- m14-20020adffe4e000000b00317b0155502sm21853730wrs.8.2023.08.24.00.54.14
+ u6-20020a5d5146000000b00315af025098sm21499901wrt.46.2023.08.24.00.54.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 00:54:14 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 89B661FFBB;
- Thu, 24 Aug 2023 08:54:13 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PATCH v2] target/arm: properly document FEAT_CRC32
-Date: Thu, 24 Aug 2023 08:54:06 +0100
-Message-Id: <20230824075406.1515566-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ Thu, 24 Aug 2023 00:54:50 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 75BC71FFBB;
+ Thu, 24 Aug 2023 08:54:50 +0100 (BST)
+References: <20230222110104.3996971-1-alex.bennee@linaro.org>
+ <CAFEAcA8YSsByEUkVK7gWM51eoLR4JZV3P_GDakc3NaLAw=QwSA@mail.gmail.com>
+User-agent: mu4e 1.11.14; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Subject: Re: [RFC PATCH] target/arm: properly document FEAT_CRC32
+Date: Thu, 24 Aug 2023 08:54:38 +0100
+In-reply-to: <CAFEAcA8YSsByEUkVK7gWM51eoLR4JZV3P_GDakc3NaLAw=QwSA@mail.gmail.com>
+Message-ID: <87a5ugho39.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,49 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a mandatory feature for Armv8.1 architectures but we don't
-state the feature clearly in our emulation list. Also include
-FEAT_CRC32 comment in aarch64_max_tcg_initfn for ease of grepping.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: qemu-stable@nongnu.org
-Message-Id: <20230222110104.3996971-1-alex.bennee@linaro.org>
+Peter Maydell <peter.maydell@linaro.org> writes:
 
----
-v2
-  - dropped the breakdown of setting ID registers in other CPU init fns
----
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu64.c        | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+> On Wed, 22 Feb 2023 at 11:01, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>> This is a mandatory feature for Armv8.1 architectures but we don't
+>> state the feature clearly in our emulation list. While checking verify
+>> our cortex-a76 model matches up with the current TRM by breaking out
+>> the long form isar into a more modern readable FIELD_DP code.
+>>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>>  docs/system/arm/emulation.rst |  1 +
+>>  target/arm/cpu64.c            | 29 ++++++++++++++++++++++++++---
+>>  target/arm/cpu_tcg.c          |  2 +-
+>>  3 files changed, 28 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.r=
+st
+>> index 2062d71261..2c4fde5eef 100644
+>> --- a/docs/system/arm/emulation.rst
+>> +++ b/docs/system/arm/emulation.rst
+>> @@ -14,6 +14,7 @@ the following architecture extensions:
+>>  - FEAT_BBM at level 2 (Translation table break-before-make levels)
+>>  - FEAT_BF16 (AArch64 BFloat16 instructions)
+>>  - FEAT_BTI (Branch Target Identification)
+>> +- FEAT_CRC32 (CRC32 instruction)
+>>  - FEAT_CSV2 (Cache speculation variant 2)
+>>  - FEAT_CSV2_1p1 (Cache speculation variant 2, version 1.1)
+>>  - FEAT_CSV2_1p2 (Cache speculation variant 2, version 1.2)
+>
+> Would you mind resubmitting a version of this patch that just
+> fixes this documentation error and doesn't also do the other
+> stuff that caused this patch to not get through code review?
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index bdafc68819..65d1f39f4b 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -14,6 +14,7 @@ the following architecture extensions:
- - FEAT_BBM at level 2 (Translation table break-before-make levels)
- - FEAT_BF16 (AArch64 BFloat16 instructions)
- - FEAT_BTI (Branch Target Identification)
-+- FEAT_CRC32 (CRC32 instruction)
- - FEAT_CSV2 (Cache speculation variant 2)
- - FEAT_CSV2_1p1 (Cache speculation variant 2, version 1.1)
- - FEAT_CSV2_1p2 (Cache speculation variant 2, version 1.2)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 8019f00bc3..1975253dea 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -743,7 +743,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR0, AES, 2);      /* FEAT_PMULL */
-     t = FIELD_DP64(t, ID_AA64ISAR0, SHA1, 1);     /* FEAT_SHA1 */
-     t = FIELD_DP64(t, ID_AA64ISAR0, SHA2, 2);     /* FEAT_SHA512 */
--    t = FIELD_DP64(t, ID_AA64ISAR0, CRC32, 1);
-+    t = FIELD_DP64(t, ID_AA64ISAR0, CRC32, 1);    /* FEAT_CRC32 */
-     t = FIELD_DP64(t, ID_AA64ISAR0, ATOMIC, 2);   /* FEAT_LSE */
-     t = FIELD_DP64(t, ID_AA64ISAR0, RDM, 1);      /* FEAT_RDM */
-     t = FIELD_DP64(t, ID_AA64ISAR0, SHA3, 1);     /* FEAT_SHA3 */
--- 
-2.39.2
+Sent 20230824075406.1515566-1-alex.bennee@linaro.org
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
