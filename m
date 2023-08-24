@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AEA786BCB
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 836DC786BBB
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:28:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6as-0006A9-RI; Thu, 24 Aug 2023 05:25:34 -0400
+	id 1qZ6al-0004zB-9R; Thu, 24 Aug 2023 05:25:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qZ6aH-0004CG-Bq
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:59 -0400
+ id 1qZ6aB-000430-VS
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:57 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qZ6aA-0003ib-9p
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:56 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qZ6a9-0003gt-5y
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:51 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Ax1fDFIedkgXkbAA--.56045S3;
+ by gateway (Coremail) with SMTP id _____8AxqOjFIedkh3kbAA--.20138S3;
  Thu, 24 Aug 2023 17:24:21 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxJ826IedkJjhiAA--.40637S23; 
+ AQAAf8DxJ826IedkJjhiAA--.40637S24; 
  Thu, 24 Aug 2023 17:24:21 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, richard.henderson@linaro.org, Jiajie Chen <c@jia.je>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 21/31] target/loongarch: Add LoongArch32 cpu la132
-Date: Thu, 24 Aug 2023 17:23:59 +0800
-Message-Id: <20230824092409.1492470-22-gaosong@loongson.cn>
+Subject: [PULL 22/31] hw/loongarch: Remove restriction of la464 cores in the
+ virt machine
+Date: Thu, 24 Aug 2023 17:24:00 +0800
+Message-Id: <20230824092409.1492470-23-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230824092409.1492470-1-gaosong@loongson.cn>
 References: <20230824092409.1492470-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S23
+X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S24
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,71 +65,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiajie Chen <c@jia.je>
+Allow virt machine to be used with la132 instead of la464.
 
-Add LoongArch32 cpu la132.
-
-Due to lack of public documentation of la132, it is currently a
-synthetic LoongArch32 cpu model. Details need to be added in the future.
-
-Signed-off-by: Jiajie Chen <c@jia.je>
+Co-authored-by: Jiajie Chen <c@jia.je>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230822032724.1353391-10-gaosong@loongson.cn>
-Message-Id: <20230822071959.35620-4-philmd@linaro.org>
+Message-ID: <20230822032724.1353391-11-gaosong@loongson.cn>
+Message-Id: <20230822071959.35620-5-philmd@linaro.org>
 ---
- target/loongarch/cpu.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ hw/loongarch/virt.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 67eb6c3135..d3c3e0d8a1 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -440,6 +440,35 @@ static void loongarch_la464_initfn(Object *obj)
-     env->CSR_ASID = FIELD_DP64(0, CSR_ASID, ASIDBITS, 0xa);
- }
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index e19b042ce8..af15bf5aaa 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -798,11 +798,6 @@ static void loongarch_init(MachineState *machine)
+         cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
+     }
  
-+static void loongarch_la132_initfn(Object *obj)
-+{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-+    CPULoongArchState *env = &cpu->env;
-+
-+    int i;
-+
-+    for (i = 0; i < 21; i++) {
-+        env->cpucfg[i] = 0x0;
-+    }
-+
-+    cpu->dtb_compatible = "loongarch,Loongson-1C103";
-+    env->cpucfg[0] = 0x148042;  /* PRID */
-+
-+    uint32_t data = 0;
-+    data = FIELD_DP32(data, CPUCFG1, ARCH, 1); /* LA32 */
-+    data = FIELD_DP32(data, CPUCFG1, PGMMU, 1);
-+    data = FIELD_DP32(data, CPUCFG1, IOCSR, 1);
-+    data = FIELD_DP32(data, CPUCFG1, PALEN, 0x1f); /* 32 bits */
-+    data = FIELD_DP32(data, CPUCFG1, VALEN, 0x1f); /* 32 bits */
-+    data = FIELD_DP32(data, CPUCFG1, UAL, 1);
-+    data = FIELD_DP32(data, CPUCFG1, RI, 0);
-+    data = FIELD_DP32(data, CPUCFG1, EP, 0);
-+    data = FIELD_DP32(data, CPUCFG1, RPLV, 0);
-+    data = FIELD_DP32(data, CPUCFG1, HP, 1);
-+    data = FIELD_DP32(data, CPUCFG1, IOCSR_BRD, 1);
-+    env->cpucfg[1] = data;
-+}
-+
- static void loongarch_cpu_list_entry(gpointer data, gpointer user_data)
- {
-     const char *typename = object_class_get_name(OBJECT_CLASS(data));
-@@ -787,6 +816,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
-         .class_init = loongarch64_cpu_class_init,
-     },
-     DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
-+    DEFINE_LOONGARCH_CPU_TYPE(32, "la132", loongarch_la132_initfn),
- };
- 
- DEFINE_TYPES(loongarch_cpu_type_infos)
+-    if (!strstr(cpu_model, "la464")) {
+-        error_report("LoongArch/TCG needs cpu type la464");
+-        exit(1);
+-    }
+-
+     if (ram_size < 1 * GiB) {
+         error_report("ram_size must be greater than 1G.");
+         exit(1);
 -- 
 2.39.1
 
