@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20132786465
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 03:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2573786464
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 03:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYykN-0000AM-OC; Wed, 23 Aug 2023 21:02:51 -0400
+	id 1qYykP-0000MX-DF; Wed, 23 Aug 2023 21:02:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYykI-00005f-5c
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 21:02:46 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1qYykK-00007s-D6
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 21:02:49 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYykF-0000QY-OP
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 21:02:45 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-68a3082c771so308910b3a.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 18:02:43 -0700 (PDT)
+ id 1qYykH-0000Qk-O0
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 21:02:48 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68a42d06d02so2925658b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 18:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692838962; x=1693443762;
+ d=linaro.org; s=google; t=1692838963; x=1693443763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4DWAv0bR3QBWPP10gPMl5GXU+szn3XnQPYnLcaRRAHU=;
- b=WNsMtT+Dl7h1fwXfuMFloPrYZBORVbvIgxnhVdjSjstjonL/yWgOMuFoZGpoHX0NND
- J7QXzH1OJnrR6/0Ca4fBvXJ0ehvn60ibk42oWNH86slV7r5sHZ3sDkCMTq+/GpfyEyhG
- KKq/xJqLOek/AHjMDHswg4YFIeHtL+VqvZyRT6xb4NxtPT0geR3b4aFEG4TTqU/YyCTj
- +7qTJG8WMMYRYxNeKJTGR6HxWpvEwI2cLp9jKsSssfZc6wFOmwc143fZgUlt/edmCWpi
- SQHEn9qdk4knYyqbPrJOwNCutplOsnqlb44xE9T1GvqboMtgofHRefhFF4qPSoQuidfh
- 9KPw==
+ bh=bpFeD6GHYH/QT6fcBbDbU7NqohK/EObQjIfv1Nj799s=;
+ b=PSDaL/MmIN+AY9Hzi8kCMAnwkAevsa6c3KsdPnMoZN3H1PTW4jQhw0QmMViLN7jY/+
+ UeciVBFeHEZdksbpFDXgD2BcuVXDvCw+QBDC3ye8rvJsJFstNXGPsMW9fU0TrLvq6PtQ
+ FFWcGBu7EKYJD3uRsbf0NNariLZP0dSF5at9ZbQnDfdXdadNdurYMZGF6pveF9Sr2zLQ
+ hwCIazn9LTMnOkidUntbz49iyu94K9C9qa76xsRNZUkO3ysXaRUhnERqE3+HCqxlnc5h
+ dAxttPFU5Xy8BUwhxLG0FvTc5Kt9be05+2wEEG8cCowmya5lnveBoOskfYa2X5dc3502
+ bM+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692838962; x=1693443762;
+ d=1e100.net; s=20221208; t=1692838963; x=1693443763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4DWAv0bR3QBWPP10gPMl5GXU+szn3XnQPYnLcaRRAHU=;
- b=UUwA36OJvQcb+GzcRKiVHldIT0HcSBJCE86SgWnkKLjeIh9G5DVRKXeXn7/E3piFDI
- aW129DbgPZT3JLYH3yUDEDY0G0nX7oodATLY4x6rc+vQKPnJAYhfOYufz8tN67A2XvfO
- 6gHQ611TvMAPqTdKT2CXAYJQV9wQGFxYytkxZwPdpP709OyAPeW05tdEybkPLryTCuXX
- s28VJXcwLei3oqTKsuHiCWT2Uc0T83WgNDdK3QS1zK6WYYL48/Dtnaal81obhf3WLhdW
- oub+CvBc8PhZO5symiMMcl3O3UnH1IRZrL447pQzNkZzw6FLZUt08rCBY51IQ7FbU1eY
- 28LQ==
-X-Gm-Message-State: AOJu0YzZDtdVKcg0aF1wq7CA9jewzxdSYJQcn7nYoYxLte2YaO4AghbT
- EbIhE52JLdOrtkYQGj5uT7V1je34Pscbl3WXLME=
-X-Google-Smtp-Source: AGHT+IH+BFd6Ik1Qv/vy/RAbvcd6Jd7wKZZc7fypQHkgyl6FPV7yjyG+TB5xPrrZfl4tZPHiIlRn/w==
-X-Received: by 2002:a05:6a00:2808:b0:68a:6e26:a918 with SMTP id
- bl8-20020a056a00280800b0068a6e26a918mr7996046pfb.8.1692838962388; 
- Wed, 23 Aug 2023 18:02:42 -0700 (PDT)
+ bh=bpFeD6GHYH/QT6fcBbDbU7NqohK/EObQjIfv1Nj799s=;
+ b=GLO6UhTJv8tfBVe/2cBnTBPaqH+sq2q1PBzLJ6Z0/7wAI8pjvo0Z0NqyKMiVEW6AEs
+ vQ/9/2wbKmJCV5BjO1qUVtx+rhHTf2OUZ/MKM88Kbm4fryNV2A/1I0y5w8s3rLzOmdvU
+ uf6/2ZndLOFDEMU7B2DXhLumqMKj7ZvdjtrXMZ0fQN2Ah0mdXNUFiwzNj029rFc9ffgu
+ CQ2VVWNXgPLVyXQG8CL7WXgGad4i7/jS/RnLlSe2anvLWuEh+/MKEKAIyJDlW968S7p8
+ CqINN8aRoRFGCuwfL0Upq5P0MHWqUWPFkCPixRvaN1m6Y1yeyK3KQOtgONuNKy5voNKI
+ 6lBw==
+X-Gm-Message-State: AOJu0YywcygEvkjyMRAUtR/1x0SLTIS2aiQ1Tyl/fbKxdwUXhB3wPMYE
+ AGV2w3lyLUz/dR3Re0RaQWTJdAf6Zuc2rspylXw=
+X-Google-Smtp-Source: AGHT+IGIe6J94Wo7Pa5w1q81LqTCuwqgGg3y0YSIyoZacoSckI8iPAEb8Q4ZmbHmF+p+FqEXR7bvZg==
+X-Received: by 2002:a05:6a20:3d85:b0:13f:9cee:ff2b with SMTP id
+ s5-20020a056a203d8500b0013f9ceeff2bmr14393425pzi.17.1692838963293; 
+ Wed, 23 Aug 2023 18:02:43 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
  by smtp.gmail.com with ESMTPSA id
- c10-20020aa78c0a000000b006875df4773fsm2050789pfd.163.2023.08.23.18.02.41
+ c10-20020aa78c0a000000b006875df4773fsm2050789pfd.163.2023.08.23.18.02.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 23 Aug 2023 18:02:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/13] util/selfmap: Use dev_t and ino_t in MapInfo
-Date: Wed, 23 Aug 2023 18:02:28 -0700
-Message-Id: <20230824010237.1379735-5-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>,
+	Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 05/13] linux-user: Use walk_memory_regions for open_self_maps
+Date: Wed, 23 Aug 2023 18:02:29 -0700
+Message-Id: <20230824010237.1379735-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824010237.1379735-1-richard.henderson@linaro.org>
 References: <20230824010237.1379735-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,112 +92,242 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use dev_t instead of a string, and ino_t instead of uint64_t.
-The latter is likely to be identical on modern systems but is
-more type-correct for usage.
+Replace the by-hand method of region identification with
+the official user-exec interface.  Cross-check the region
+provided to the callback with the interval tree from
+read_self_maps().
 
 Tested-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/selfmap.h |  4 ++--
- linux-user/syscall.c   |  6 ++++--
- util/selfmap.c         | 12 +++++++-----
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ linux-user/syscall.c | 192 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 115 insertions(+), 77 deletions(-)
 
-diff --git a/include/qemu/selfmap.h b/include/qemu/selfmap.h
-index 7d938945cb..1690a74f4b 100644
---- a/include/qemu/selfmap.h
-+++ b/include/qemu/selfmap.h
-@@ -20,10 +20,10 @@ typedef struct {
-     bool is_exec;
-     bool is_priv;
- 
-+    dev_t dev;
-+    ino_t inode;
-     uint64_t offset;
--    uint64_t inode;
-     const char *path;
--    char dev[];
- } MapInfo;
- 
- /**
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index faad3a56df..a562920a84 100644
+index a562920a84..0b91f996b7 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -8160,13 +8160,15 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
-             }
+@@ -8095,12 +8095,66 @@ static int open_self_cmdline(CPUArchState *cpu_env, int fd)
+     return 0;
+ }
  
-             count = dprintf(fd, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_ptr
--                            " %c%c%c%c %08" PRIx64 " %s %"PRId64,
-+                            " %c%c%c%c %08" PRIx64 " %02x:%02x %"PRId64,
-                             h2g(min), h2g(max - 1) + 1,
-                             (flags & PAGE_READ) ? 'r' : '-',
-                             (flags & PAGE_WRITE_ORG) ? 'w' : '-',
-                             (flags & PAGE_EXEC) ? 'x' : '-',
-                             e->is_priv ? 'p' : 's',
--                            (uint64_t) e->offset, e->dev, e->inode);
-+                            (uint64_t)e->offset,
-+                            major(e->dev), minor(e->dev),
-+                            (uint64_t)e->inode);
-             if (path) {
-                 dprintf(fd, "%*s%s\n", 73 - count, "", path);
-             } else {
-diff --git a/util/selfmap.c b/util/selfmap.c
-index 4db5b42651..483cb617e2 100644
---- a/util/selfmap.c
-+++ b/util/selfmap.c
-@@ -30,19 +30,21 @@ IntervalTreeRoot *read_self_maps(void)
+-static void show_smaps(int fd, unsigned long size)
+-{
+-    unsigned long page_size_kb = TARGET_PAGE_SIZE >> 10;
+-    unsigned long size_kb = size >> 10;
++struct open_self_maps_data {
++    TaskState *ts;
++    IntervalTreeRoot *host_maps;
++    int fd;
++    bool smaps;
++};
  
-         if (nfields > 4) {
-             uint64_t start, end, offset, inode;
-+            unsigned dev_maj, dev_min;
-             int errors = 0;
-             const char *p;
+-    dprintf(fd, "Size:                  %lu kB\n"
++/*
++ * Subroutine to output one line of /proc/self/maps,
++ * or one region of /proc/self/smaps.
++ */
++
++#ifdef TARGET_HPPA
++# define test_stack(S, E, L)  (E == L)
++#else
++# define test_stack(S, E, L)  (S == L)
++#endif
++
++static void open_self_maps_4(const struct open_self_maps_data *d,
++                             const MapInfo *mi, abi_ptr start,
++                             abi_ptr end, unsigned flags)
++{
++    const struct image_info *info = d->ts->info;
++    const char *path = mi->path;
++    uint64_t offset;
++    int fd = d->fd;
++    int count;
++
++    if (test_stack(start, end, info->stack_limit)) {
++        path = "[stack]";
++    }
++
++    /* Except null device (MAP_ANON), adjust offset for this fragment. */
++    offset = mi->offset;
++    if (mi->dev) {
++        uintptr_t hstart = (uintptr_t)g2h_untagged(start);
++        offset += hstart - mi->itree.start;
++    }
++
++    count = dprintf(fd, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_ptr
++                    " %c%c%c%c %08" PRIx64 " %02x:%02x %"PRId64,
++                    start, end,
++                    (flags & PAGE_READ) ? 'r' : '-',
++                    (flags & PAGE_WRITE_ORG) ? 'w' : '-',
++                    (flags & PAGE_EXEC) ? 'x' : '-',
++                    mi->is_priv ? 'p' : 's',
++                    offset, major(mi->dev), minor(mi->dev),
++                    (uint64_t)mi->inode);
++    if (path) {
++        dprintf(fd, "%*s%s\n", 73 - count, "", path);
++    } else {
++        dprintf(fd, "\n");
++    }
++
++    if (d->smaps) {
++        unsigned long size = end - start;
++        unsigned long page_size_kb = TARGET_PAGE_SIZE >> 10;
++        unsigned long size_kb = size >> 10;
++
++        dprintf(fd, "Size:                  %lu kB\n"
+                 "KernelPageSize:        %lu kB\n"
+                 "MMUPageSize:           %lu kB\n"
+                 "Rss:                   0 kB\n"
+@@ -8121,91 +8175,75 @@ static void show_smaps(int fd, unsigned long size)
+                 "Swap:                  0 kB\n"
+                 "SwapPss:               0 kB\n"
+                 "Locked:                0 kB\n"
+-                "THPeligible:    0\n", size_kb, page_size_kb, page_size_kb);
++                "THPeligible:    0\n"
++                "VmFlags:%s%s%s%s%s%s%s%s\n",
++                size_kb, page_size_kb, page_size_kb,
++                (flags & PAGE_READ) ? " rd" : "",
++                (flags & PAGE_WRITE_ORG) ? " wr" : "",
++                (flags & PAGE_EXEC) ? " ex" : "",
++                mi->is_priv ? "" : " sh",
++                (flags & PAGE_READ) ? " mr" : "",
++                (flags & PAGE_WRITE_ORG) ? " mw" : "",
++                (flags & PAGE_EXEC) ? " me" : "",
++                mi->is_priv ? "" : " ms");
++    }
+ }
  
-             errors |= qemu_strtou64(fields[0], &p, 16, &start);
-             errors |= qemu_strtou64(p + 1, NULL, 16, &end);
-             errors |= qemu_strtou64(fields[2], NULL, 16, &offset);
-+            errors |= qemu_strtoui(fields[3], &p, 16, &dev_maj);
-+            errors |= qemu_strtoui(p + 1, NULL, 16, &dev_min);
-             errors |= qemu_strtou64(fields[4], NULL, 10, &inode);
+-static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
++/*
++ * Callback for walk_memory_regions, when read_self_maps() fails.
++ * Proceed without the benefit of host /proc/self/maps cross-check.
++ */
++static int open_self_maps_3(void *opaque, target_ulong guest_start,
++                            target_ulong guest_end, unsigned long flags)
+ {
+-    CPUState *cpu = env_cpu(cpu_env);
+-    TaskState *ts = cpu->opaque;
+-    IntervalTreeRoot *map_info = read_self_maps();
+-    IntervalTreeNode *s;
+-    int count;
++    static const MapInfo mi = { .is_priv = true };
  
-             if (!errors) {
--                size_t dev_len, path_len;
-+                size_t path_len;
-                 MapInfo *e;
+-    for (s = interval_tree_iter_first(map_info, 0, -1); s;
+-         s = interval_tree_iter_next(s, 0, -1)) {
+-        MapInfo *e = container_of(s, MapInfo, itree);
++    open_self_maps_4(opaque, &mi, guest_start, guest_end, flags);
++    return 0;
++}
  
--                dev_len = strlen(fields[3]) + 1;
-                 if (nfields == 6) {
-                     p = fields[5];
-                     p += strspn(p, " ");
-@@ -52,11 +54,12 @@ IntervalTreeRoot *read_self_maps(void)
-                     path_len = 0;
-                 }
+-        if (h2g_valid(e->itree.start)) {
+-            unsigned long min = e->itree.start;
+-            unsigned long max = e->itree.last + 1;
+-            int flags = page_get_flags(h2g(min));
+-            const char *path;
++/*
++ * Callback for walk_memory_regions, when read_self_maps() succeeds.
++ */
++static int open_self_maps_2(void *opaque, target_ulong guest_start,
++                            target_ulong guest_end, unsigned long flags)
++{
++    const struct open_self_maps_data *d = opaque;
++    uintptr_t host_start = (uintptr_t)g2h_untagged(guest_start);
++    uintptr_t host_last = (uintptr_t)g2h_untagged(guest_end - 1);
  
--                e = g_malloc0(sizeof(*e) + dev_len + path_len);
-+                e = g_malloc0(sizeof(*e) + path_len);
+-            max = h2g_valid(max - 1) ?
+-                max : (uintptr_t) g2h_untagged(GUEST_ADDR_MAX) + 1;
++    while (1) {
++        IntervalTreeNode *n =
++            interval_tree_iter_first(d->host_maps, host_start, host_start);
++        MapInfo *mi = container_of(n, MapInfo, itree);
++        uintptr_t this_hlast = MIN(host_last, n->last);
++        target_ulong this_gend = h2g(this_hlast) + 1;
  
-                 e->itree.start = start;
-                 e->itree.last = end - 1;
-                 e->offset = offset;
-+                e->dev = makedev(dev_maj, dev_min);
-                 e->inode = inode;
+-            if (!page_check_range(h2g(min), max - min, flags)) {
+-                continue;
+-            }
++        open_self_maps_4(d, mi, guest_start, this_gend, flags);
  
-                 e->is_read  = fields[1][0] == 'r';
-@@ -64,9 +67,8 @@ IntervalTreeRoot *read_self_maps(void)
-                 e->is_exec  = fields[1][2] == 'x';
-                 e->is_priv  = fields[1][3] == 'p';
+-#ifdef TARGET_HPPA
+-            if (h2g(max) == ts->info->stack_limit) {
+-#else
+-            if (h2g(min) == ts->info->stack_limit) {
+-#endif
+-                path = "[stack]";
+-            } else {
+-                path = e->path;
+-            }
+-
+-            count = dprintf(fd, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_ptr
+-                            " %c%c%c%c %08" PRIx64 " %02x:%02x %"PRId64,
+-                            h2g(min), h2g(max - 1) + 1,
+-                            (flags & PAGE_READ) ? 'r' : '-',
+-                            (flags & PAGE_WRITE_ORG) ? 'w' : '-',
+-                            (flags & PAGE_EXEC) ? 'x' : '-',
+-                            e->is_priv ? 'p' : 's',
+-                            (uint64_t)e->offset,
+-                            major(e->dev), minor(e->dev),
+-                            (uint64_t)e->inode);
+-            if (path) {
+-                dprintf(fd, "%*s%s\n", 73 - count, "", path);
+-            } else {
+-                dprintf(fd, "\n");
+-            }
+-            if (smaps) {
+-                show_smaps(fd, max - min);
+-                dprintf(fd, "VmFlags:%s%s%s%s%s%s%s%s\n",
+-                        (flags & PAGE_READ) ? " rd" : "",
+-                        (flags & PAGE_WRITE_ORG) ? " wr" : "",
+-                        (flags & PAGE_EXEC) ? " ex" : "",
+-                        e->is_priv ? "" : " sh",
+-                        (flags & PAGE_READ) ? " mr" : "",
+-                        (flags & PAGE_WRITE_ORG) ? " mw" : "",
+-                        (flags & PAGE_EXEC) ? " me" : "",
+-                        e->is_priv ? "" : " ms");
+-            }
++        if (this_hlast == host_last) {
++            return 0;
+         }
++        host_start = this_hlast + 1;
++        guest_start = h2g(host_start);
+     }
++}
  
--                memcpy(e->dev, fields[3], dev_len);
-                 if (path_len) {
--                    e->path = memcpy(e->dev + dev_len, p, path_len);
-+                    e->path = memcpy(e + 1, p, path_len);
-                 }
+-    free_self_maps(map_info);
++static int open_self_maps_1(CPUArchState *env, int fd, bool smaps)
++{
++    struct open_self_maps_data d = {
++        .ts = env_cpu(env)->opaque,
++        .host_maps = read_self_maps(),
++        .fd = fd,
++        .smaps = smaps
++    };
  
-                 interval_tree_insert(&e->itree, root);
+-#ifdef TARGET_VSYSCALL_PAGE
+-    /*
+-     * We only support execution from the vsyscall page.
+-     * This is as if CONFIG_LEGACY_VSYSCALL_XONLY=y from v5.3.
+-     */
+-    count = dprintf(fd, TARGET_FMT_lx "-" TARGET_FMT_lx
+-                    " --xp 00000000 00:00 0",
+-                    TARGET_VSYSCALL_PAGE, TARGET_VSYSCALL_PAGE + TARGET_PAGE_SIZE);
+-    dprintf(fd, "%*s%s\n", 73 - count, "",  "[vsyscall]");
+-    if (smaps) {
+-        show_smaps(fd, TARGET_PAGE_SIZE);
+-        dprintf(fd, "VmFlags: ex\n");
++    if (d.host_maps) {
++        walk_memory_regions(&d, open_self_maps_2);
++        free_self_maps(d.host_maps);
++    } else {
++        walk_memory_regions(&d, open_self_maps_3);
+     }
+-#endif
+-
+     return 0;
+ }
+ 
 -- 
 2.34.1
 
