@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DEA7868FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C5F78690E
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:56:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ5BA-0007Mm-Jz; Thu, 24 Aug 2023 03:54:56 -0400
+	id 1qZ5C5-0000FX-UD; Thu, 24 Aug 2023 03:55:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZ5B9-0007MS-AZ
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:54:55 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZ5B7-0007Pa-5a
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:54:55 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31c3726cc45so3856703f8f.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:54:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692863691; x=1693468491;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nvpMiF3JzMmnAqkZbMiSjG2h+Vm5dWjViEZ04nK06aE=;
- b=WmQiso55Q3pZOCFjleLfrMpncgUqjRDM9U32AH9xc6g6XljfrBAlOebCr8okNCYtQD
- XZMkEyprmOQAcjH3iBf8zJ4QOzvCNcwo9KaHgRRnTbZRZ5F65bcVBCfNjga1bRn/l4vb
- q4I8pexmqBOR2nyLQfYeiWpPwMInzQP6mLADyJ0QXhn4IAxmKPTui7z1MZ05mo/sdymy
- 3QPcsc4gmVga0ggauP486GIiMcyuR/HSj1jX1s3XrSNqaNm4yOCUZ1GRXm28fpOI0XmF
- J/j0iOKRYJLwIwIJ/LmnEE6rZ2f7PbSSreRvYcTA2tkRnIqMVzHAIxLUYz2AFGH7MpEx
- bl7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692863691; x=1693468491;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=nvpMiF3JzMmnAqkZbMiSjG2h+Vm5dWjViEZ04nK06aE=;
- b=Q+5YEevU0yet3pwsQEl+6A/O2YRUB5o+9aE+2S0FTtQGzxFcwsdndPdfdyLNDO2QLb
- bj8vtTFsBycpLwwVGO9ypTnwt7gCCrfFinvcF3NJ1Cfqv0YMG3GHqgk+LqUkmo2GyrnM
- wAq61TQOs+/shsZiinQKZDDIoX7IK4rWJzvqjoDn5vR0zvH4dqdu6/7W+3z3TpC7O6Y/
- poBEzocOKueWv+DKXZaLkGA9Z+XtBDSYqkzOYVCrjqxsg04kebyjw1igIKmNPPY0GHZH
- v3yDNc8c+anmVqA1EFaF0yppDOo/sMRgr9XH3snxa27BWiFpdd0AIvCHadBFv1BrtXKP
- yC9Q==
-X-Gm-Message-State: AOJu0YycEPZArvXTvrsxtrJWzBpJbpv3cZtXUsEP6YNlFaFeRGS8qo02
- 5ReErg275IHMyZmX2wI9nR74B6MseywGRKMucbA=
-X-Google-Smtp-Source: AGHT+IHKyp5xYuDGCaYlKe+R0XVKQsRTt6iJAi4WahLkQRWqp7UK35nAd0EsMeDn0qvojjyrzpJ4Jg==
-X-Received: by 2002:a5d:560a:0:b0:317:58e4:e941 with SMTP id
- l10-20020a5d560a000000b0031758e4e941mr11072793wrv.33.1692863691198; 
- Thu, 24 Aug 2023 00:54:51 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- u6-20020a5d5146000000b00315af025098sm21499901wrt.46.2023.08.24.00.54.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 00:54:50 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 75BC71FFBB;
- Thu, 24 Aug 2023 08:54:50 +0100 (BST)
-References: <20230222110104.3996971-1-alex.bennee@linaro.org>
- <CAFEAcA8YSsByEUkVK7gWM51eoLR4JZV3P_GDakc3NaLAw=QwSA@mail.gmail.com>
-User-agent: mu4e 1.11.14; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Peter Maydell
- <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Subject: Re: [RFC PATCH] target/arm: properly document FEAT_CRC32
-Date: Thu, 24 Aug 2023 08:54:38 +0100
-In-reply-to: <CAFEAcA8YSsByEUkVK7gWM51eoLR4JZV3P_GDakc3NaLAw=QwSA@mail.gmail.com>
-Message-ID: <87a5ugho39.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qZ5C2-0000FC-2s
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:55:50 -0400
+Received: from mgamail.intel.com ([192.55.52.120])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qZ5Bx-000823-9i
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:55:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692863745; x=1724399745;
+ h=message-id:date:mime-version:subject:from:to:cc:
+ references:in-reply-to:content-transfer-encoding;
+ bh=zfT/KhKzo3z/OH6/SXYYDpwCJ6frnf7e+NMK432cYQw=;
+ b=BJkCuOLgFqs4d6c1Q4Go4xW8Afp7qgly76FnWzopArg6W8DeAbhSjw3a
+ RpAiLK9vJ/We97Iua4QYFCMcZd3v0JVZA4ngsxikBEFgq2E1KB92Cg9SC
+ 8TvyJGNyZlSdNpAHCr/DjxbNzG8bl1HLTorodqZK3Hmrphp3Nj0IrS6lO
+ 1osbmsJF7TjkDtfXpuGtp/1S/Y5cyO9/fzjjlXoId7Q4rzsZ+puIpRo2M
+ uA3x9bmGV8YUBCpd6Erw9lMAHwBbJkleqd1wMxKBVs+mJi2UjsMBEZqE1
+ VMmRwgo6AZrnskudF7bT66sSTE9yfIK8fHd/yOV0/Pg9Qur+chDEYy+91 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="373255949"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="373255949"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 00:55:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="740074273"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="740074273"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
+ ([10.93.16.81])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 00:55:35 -0700
+Message-ID: <bc2eba9a-7467-3a27-9d72-f7cc4745f338@intel.com>
+Date: Thu, 24 Aug 2023 15:55:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 33/58] headers: Add definitions from UEFI spec for
+ volumes, resources, etc...
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Isaku Yamahata <isaku.yamahata@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>, isaku.yamahata@intel.com
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-34-xiaoyao.li@intel.com>
+ <20230823194114.GE3642077@ls.amr.corp.intel.com>
+ <48444107-d240-059b-a231-cddb085e4adf@intel.com>
+In-Reply-To: <48444107-d240-059b-a231-cddb085e4adf@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.120; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-2.684,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,45 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Peter Maydell <peter.maydell@linaro.org> writes:
-
-> On Wed, 22 Feb 2023 at 11:01, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
+On 8/24/2023 3:50 PM, Xiaoyao Li wrote:
+> On 8/24/2023 3:41 AM, Isaku Yamahata wrote:
+>> On Fri, Aug 18, 2023 at 05:50:16AM -0400,
+>> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 >>
->> This is a mandatory feature for Armv8.1 architectures but we don't
->> state the feature clearly in our emulation list. While checking verify
->> our cortex-a76 model matches up with the current TRM by breaking out
->> the long form isar into a more modern readable FIELD_DP code.
+>>> Add UEFI definitions for literals, enums, structs, GUIDs, etc... that
+>>> will be used by TDX to build the UEFI Hand-Off Block (HOB) that is 
+>>> passed
+>>> to the Trusted Domain Virtual Firmware (TDVF).
+>>>
+>>> All values come from the UEFI specification and TDVF design guide. [1]
+>>>
+>>> Note, EFI_RESOURCE_MEMORY_UNACCEPTED will be added in future UEFI spec.
+>>>
+>>> [1] 
+>>> https://software.intel.com/content/dam/develop/external/us/en/documents/tdx-virtual-firmware-design-guide-rev-1.pdf
 >>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>  docs/system/arm/emulation.rst |  1 +
->>  target/arm/cpu64.c            | 29 ++++++++++++++++++++++++++---
->>  target/arm/cpu_tcg.c          |  2 +-
->>  3 files changed, 28 insertions(+), 4 deletions(-)
->>
->> diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.r=
-st
->> index 2062d71261..2c4fde5eef 100644
->> --- a/docs/system/arm/emulation.rst
->> +++ b/docs/system/arm/emulation.rst
->> @@ -14,6 +14,7 @@ the following architecture extensions:
->>  - FEAT_BBM at level 2 (Translation table break-before-make levels)
->>  - FEAT_BF16 (AArch64 BFloat16 instructions)
->>  - FEAT_BTI (Branch Target Identification)
->> +- FEAT_CRC32 (CRC32 instruction)
->>  - FEAT_CSV2 (Cache speculation variant 2)
->>  - FEAT_CSV2_1p1 (Cache speculation variant 2, version 1.1)
->>  - FEAT_CSV2_1p2 (Cache speculation variant 2, version 1.2)
->
-> Would you mind resubmitting a version of this patch that just
-> fixes this documentation error and doesn't also do the other
-> stuff that caused this patch to not get through code review?
+>> Nitpick: The specs [1] [2] include unaccepted memory.
+> 
+> EfiUnacceptedMemoryType shows in UEFI spec while 
+> EFI_RESOURCE_MEMORY_UNACCEPTED is still missing in PI spec.
+> 
+> https://github.com/tianocore/edk2/commit/00bbb1e584ec05547159f405cca383e8ba5e4ddb
 
-Sent 20230824075406.1515566-1-alex.bennee@linaro.org
+Sorry, I just find it shows in latest PI spec.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+https://uefi.org/sites/default/files/resources/UEFI_PI_Spec_1_8_March3.pdf
+
+>> [1] UEFI Specification Version 2.10 (released August 2022)
+>> [2] UEFI Platform Initialization Distribution Packaging Specification 
+>> Version 1.1)
+> 
+> 
+
 
