@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9A0786BDD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 873FF786C0A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:34:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6eR-0005kB-BO; Thu, 24 Aug 2023 05:29:15 -0400
+	id 1qZ6ep-0007rS-Si; Thu, 24 Aug 2023 05:29:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e9-00047c-Vz
+ id 1qZ6e9-00047Y-UX
  for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:59 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e4-0004ys-Q1
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:57 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31c63cd4ec2so2162027f8f.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:46 -0700 (PDT)
+ id 1qZ6e2-0004yz-TJ
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:55 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3110ab7110aso5754397f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692869325; x=1693474125;
+ d=linaro.org; s=google; t=1692869326; x=1693474126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cKwApaEBM2Ue+okvX0YIaC5zH+tiObfh8zC3y9f1bVw=;
- b=ZXeOvBzj5o9rxAUIHWTfu6L9RYHLeUmmSLPXlYlFZcoLQpc0u4GrZqc1hrF8T/lkem
- n+G/N6XnijZRnlSnXkPHy2vny1gAYCwCzGSwNJVd7mr6lDfnevTwwawfNCF22cPRBCJ1
- B/rzQ+ZrITTV9aWmoJgRBKqdrjTJqdrwJZQgxuzWLNSQV5esFb2H2AKsCf4a4h1UIGma
- 5/wxocMxd4zzRP4oYYOBwOshDs04RAU5IVkm52ww7V3W1EdMe50SA+se4JEvPXZng3I9
- BMTjur0K+9f5A3vRDHX9ebyBGPH3tq3dGS72VoofVpNhvKNAXUhUWC1YyclW9TkY9/cs
- TMdg==
+ :reply-to; bh=wK9zE1Lifmm6/8IKHW10U8rTZ3FDJYtigwQOzAGgaWs=;
+ b=WFqUOLsNCUUg6/arHsbf3t+zbnPOGovnegH8BywZTwQrcGHH1Rp4yUVln1GYo4YCcT
+ UUOpltTBDExWj6bV4Qgk0+2wE6axXLQONIbJsLOF3Q7p5GJjwVaLpLMm5dK6o1A2JIvr
+ pZkumAbQjXA+1m7QpMVbBj+NgtjC5jEfdC5LLpowSKdM9CxpYuGAlKmisGW8qibwhKTt
+ qk0VGzl3bEZ/vlKcUo6PEgA3QrCysFLa74YDJqFuDTYOQxFHAJscT4nUD1tw7LVLnYeR
+ mAi5LRyMWCsEHaL/MwE4l2FAfW86xGzegqvuFCNp4iOd9i6X7iYUhecQhGzkybSzr9tM
+ CuWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692869325; x=1693474125;
+ d=1e100.net; s=20221208; t=1692869326; x=1693474126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cKwApaEBM2Ue+okvX0YIaC5zH+tiObfh8zC3y9f1bVw=;
- b=KKbz1GNVfnSwV4IVDLGj+3ynQ2pVJ0Q7d+wzkYbwrYNMBzKsoaUd7TUNu5zyUUYFiu
- YmmA3Xtbh5vorQrrowoUowrSMXG4sXa2tjE+mw1rgoAbVJwUO8hMSKVlaai6j5071+PN
- MiDVD+xpcG6uWH+PyKcqIrErLyAoBu5nLtSoDMsvSII1oovAnAH8zulabV7ZfknG7nmT
- XnFYxME5r0bo8PRLwZmiMntRFJ6WzwJ4yPGwcVgUlDZdqptaGEg3W+Fv1WJR8DKYKhEC
- VeJKSmwGMcyS9DAGrAM12mRbW0AM2msmhg2HED5cEC9c+djhes2cZEAlM5eqd1snCQ0+
- oXsg==
-X-Gm-Message-State: AOJu0YytWwkGoRijFfj8pqUD+0xQI68q/n9Wzu+hcDEUgzwJGQre3xzS
- h8k4VbF8pG+RMJIWUlKIQD7DZYRTVhihJetQs5c=
-X-Google-Smtp-Source: AGHT+IF9J+qWgaWlOk5Di50WwPNlxu8OFVlSU5LJpFeiCgwmeNBPw0FKlV9ExUO3bquiHZ4RYa8uJg==
-X-Received: by 2002:a05:6000:401f:b0:319:7c14:b06b with SMTP id
- cp31-20020a056000401f00b003197c14b06bmr15732597wrb.47.1692869325416; 
+ bh=wK9zE1Lifmm6/8IKHW10U8rTZ3FDJYtigwQOzAGgaWs=;
+ b=luYy8EsXDW0Di3Em7T0sPFWGVhS0ZPAQ5AEktMDPC6gwHed9duVKUl3X8GO94XjNVy
+ oR5P7G1ZNqCxqoLXpqjz5qkzFwMSm5SHLPUerIInCbBSbNf/rFI+r49eQLrpbEK5V8LW
+ IFlwh37/g5qPV9WVw6nfE35JJe1oujsi3EDFi+gKi+mx9u5psKS0lvHB3hzd7EKv2M+S
+ ufz3HbI5eGthAnJVUNf7BG6J1katmaCuyhd790X431fZZMqi/DsZFw2S64umNLkwdN2h
+ IfWx0T3xJCeH/atokEtHcLk6cKGf+gMR6m4BVk/+4LV5K4MXbfQGuln71vnF3S5UYziw
+ eG+g==
+X-Gm-Message-State: AOJu0YwyVIKR/5jZAlQai8gcT7Mci8QmvYg3faZGDWwQfDyz7gS1q2jK
+ dvA0hO+K7dGjD2J7+JxOhWd4IaBdvvm71ROMnKo=
+X-Google-Smtp-Source: AGHT+IHj+FXn+IDHX0HvWVLTBvfSIameyCs9wmxRrS/nsZcu3SP7bq6DGLFu3tAn76tapz591eBCmA==
+X-Received: by 2002:a5d:6409:0:b0:319:70b3:d51a with SMTP id
+ z9-20020a5d6409000000b0031970b3d51amr11246232wru.7.1692869325886; 
  Thu, 24 Aug 2023 02:28:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 24 Aug 2023 02:28:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/35] target/arm/ptw: Set s1ns bit in fault info more
- consistently
-Date: Thu, 24 Aug 2023 10:28:16 +0100
-Message-Id: <20230824092836.2239644-16-peter.maydell@linaro.org>
+Subject: [PULL 16/35] target/arm/ptw: Pass ptw into get_phys_addr_pmsa*() and
+ get_phys_addr_disabled()
+Date: Thu, 24 Aug 2023 10:28:17 +0100
+Message-Id: <20230824092836.2239644-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
 References: <20230824092836.2239644-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,85 +91,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The s1ns bit in ARMMMUFaultInfo is documented as "true if
-we faulted on a non-secure IPA while in secure state". Both the
-places which look at this bit only do so after having confirmed
-that this is a stage 2 fault and we're dealing with Secure EL2,
-which leaves the ptw.c code free to set the bit to any random
-value in the other cases.
+In commit 6d2654ffacea813916176 we created the S1Translate struct and
+used it to plumb through various arguments that we were previously
+passing one-at-a-time to get_phys_addr_v5(), get_phys_addr_v6(), and
+get_phys_addr_lpae().  Extend that pattern to get_phys_addr_pmsav5(),
+get_phys_addr_pmsav7(), get_phys_addr_pmsav8() and
+get_phys_addr_disabled(), so that all the get_phys_addr_* functions
+we call from get_phys_addr_nogpc() take the S1Translate struct rather
+than the mmu_idx and is_secure bool.
 
-Instead of taking advantage of that freedom, consistently
-make the bit be set to false for the "not a stage 2 fault
-for Secure EL2" cases. This removes some cases where we
-were using an 'is_secure' boolean and leaving the reader
-guessing about whether that was the right thing for Realm
-and Root cases.
+(This refactoring is a prelude to having the called functions look
+at ptw->is_space rather than using an is_secure boolean.)
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230807141514.19075-4-peter.maydell@linaro.org
+Message-id: 20230807141514.19075-5-peter.maydell@linaro.org
 ---
- target/arm/ptw.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ target/arm/ptw.c | 57 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 36 insertions(+), 21 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index eb57ebd897b..67078ae3509 100644
+index 67078ae3509..a873fbe0239 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -514,6 +514,17 @@ static ARMSecuritySpace S2_security_space(ARMSecuritySpace s1_space,
-     }
- }
- 
-+static bool fault_s1ns(ARMSecuritySpace space, ARMMMUIdx s2_mmu_idx)
-+{
-+    /*
-+     * For stage 2 faults in Secure EL22, S1NS indicates
-+     * whether the faulting IPA is in the Secure or NonSecure
-+     * IPA space. For all other kinds of fault, it is false.
-+     */
-+    return space == ARMSS_Secure && regime_is_stage2(s2_mmu_idx)
-+        && s2_mmu_idx == ARMMMUIdx_Stage2_S;
-+}
-+
- /* Translate a S1 pagetable walk through S2 if needed.  */
- static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
-                              hwaddr addr, ARMMMUFaultInfo *fi)
-@@ -586,7 +597,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
-             fi->s2addr = addr;
-             fi->stage2 = true;
-             fi->s1ptw = true;
--            fi->s1ns = !is_secure;
-+            fi->s1ns = fault_s1ns(ptw->in_space, s2_mmu_idx);
-             return false;
-         }
-     }
-@@ -602,7 +613,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
-     fi->s2addr = addr;
-     fi->stage2 = regime_is_stage2(s2_mmu_idx);
-     fi->s1ptw = fi->stage2;
--    fi->s1ns = !is_secure;
-+    fi->s1ns = fault_s1ns(ptw->in_space, s2_mmu_idx);
-     return false;
- }
- 
-@@ -729,7 +740,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-             fi->s2addr = ptw->out_virt;
-             fi->stage2 = true;
-             fi->s1ptw = true;
--            fi->s1ns = !ptw->in_secure;
-+            fi->s1ns = fault_s1ns(ptw->in_space, ptw->in_ptw_idx);
-             return 0;
-         }
- 
-@@ -2030,7 +2041,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     fi->level = level;
-     /* Tag the error as S2 for failed S1 PTW at S2 or ordinary S2.  */
-     fi->stage2 = fi->s1ptw || regime_is_stage2(mmu_idx);
--    fi->s1ns = mmu_idx == ARMMMUIdx_Stage2;
-+    fi->s1ns = fault_s1ns(ptw->in_space, mmu_idx);
+@@ -2045,15 +2045,19 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
      return true;
  }
  
+-static bool get_phys_addr_pmsav5(CPUARMState *env, uint32_t address,
+-                                 MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                                 bool is_secure, GetPhysAddrResult *result,
++static bool get_phys_addr_pmsav5(CPUARMState *env,
++                                 S1Translate *ptw,
++                                 uint32_t address,
++                                 MMUAccessType access_type,
++                                 GetPhysAddrResult *result,
+                                  ARMMMUFaultInfo *fi)
+ {
+     int n;
+     uint32_t mask;
+     uint32_t base;
++    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
+     bool is_user = regime_is_user(env, mmu_idx);
++    bool is_secure = arm_space_is_secure(ptw->in_space);
+ 
+     if (regime_translation_disabled(env, mmu_idx, is_secure)) {
+         /* MPU disabled.  */
+@@ -2210,14 +2214,18 @@ static bool pmsav7_use_background_region(ARMCPU *cpu, ARMMMUIdx mmu_idx,
+     return regime_sctlr(env, mmu_idx) & SCTLR_BR;
+ }
+ 
+-static bool get_phys_addr_pmsav7(CPUARMState *env, uint32_t address,
+-                                 MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                                 bool secure, GetPhysAddrResult *result,
++static bool get_phys_addr_pmsav7(CPUARMState *env,
++                                 S1Translate *ptw,
++                                 uint32_t address,
++                                 MMUAccessType access_type,
++                                 GetPhysAddrResult *result,
+                                  ARMMMUFaultInfo *fi)
+ {
+     ARMCPU *cpu = env_archcpu(env);
+     int n;
++    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
+     bool is_user = regime_is_user(env, mmu_idx);
++    bool secure = arm_space_is_secure(ptw->in_space);
+ 
+     result->f.phys_addr = address;
+     result->f.lg_page_size = TARGET_PAGE_BITS;
+@@ -2736,12 +2744,16 @@ void v8m_security_lookup(CPUARMState *env, uint32_t address,
+     }
+ }
+ 
+-static bool get_phys_addr_pmsav8(CPUARMState *env, uint32_t address,
+-                                 MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                                 bool secure, GetPhysAddrResult *result,
++static bool get_phys_addr_pmsav8(CPUARMState *env,
++                                 S1Translate *ptw,
++                                 uint32_t address,
++                                 MMUAccessType access_type,
++                                 GetPhysAddrResult *result,
+                                  ARMMMUFaultInfo *fi)
+ {
+     V8M_SAttributes sattrs = {};
++    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
++    bool secure = arm_space_is_secure(ptw->in_space);
+     bool ret;
+ 
+     if (arm_feature(env, ARM_FEATURE_M_SECURITY)) {
+@@ -3045,12 +3057,15 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
+  * MMU disabled.  S1 addresses within aa64 translation regimes are
+  * still checked for bounds -- see AArch64.S1DisabledOutput().
+  */
+-static bool get_phys_addr_disabled(CPUARMState *env, target_ulong address,
++static bool get_phys_addr_disabled(CPUARMState *env,
++                                   S1Translate *ptw,
++                                   target_ulong address,
+                                    MMUAccessType access_type,
+-                                   ARMMMUIdx mmu_idx, bool is_secure,
+                                    GetPhysAddrResult *result,
+                                    ARMMMUFaultInfo *fi)
+ {
++    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
++    bool is_secure = arm_space_is_secure(ptw->in_space);
+     uint8_t memattr = 0x00;    /* Device nGnRnE */
+     uint8_t shareability = 0;  /* non-shareable */
+     int r_el;
+@@ -3252,8 +3267,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+     case ARMMMUIdx_Phys_Root:
+     case ARMMMUIdx_Phys_Realm:
+         /* Checking Phys early avoids special casing later vs regime_el. */
+-        return get_phys_addr_disabled(env, address, access_type, mmu_idx,
+-                                      is_secure, result, fi);
++        return get_phys_addr_disabled(env, ptw, address, access_type,
++                                      result, fi);
+ 
+     case ARMMMUIdx_Stage1_E0:
+     case ARMMMUIdx_Stage1_E1:
+@@ -3321,16 +3336,16 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+ 
+         if (arm_feature(env, ARM_FEATURE_V8)) {
+             /* PMSAv8 */
+-            ret = get_phys_addr_pmsav8(env, address, access_type, mmu_idx,
+-                                       is_secure, result, fi);
++            ret = get_phys_addr_pmsav8(env, ptw, address, access_type,
++                                       result, fi);
+         } else if (arm_feature(env, ARM_FEATURE_V7)) {
+             /* PMSAv7 */
+-            ret = get_phys_addr_pmsav7(env, address, access_type, mmu_idx,
+-                                       is_secure, result, fi);
++            ret = get_phys_addr_pmsav7(env, ptw, address, access_type,
++                                       result, fi);
+         } else {
+             /* Pre-v7 MPU */
+-            ret = get_phys_addr_pmsav5(env, address, access_type, mmu_idx,
+-                                       is_secure, result, fi);
++            ret = get_phys_addr_pmsav5(env, ptw, address, access_type,
++                                       result, fi);
+         }
+         qemu_log_mask(CPU_LOG_MMU, "PMSA MPU lookup for %s at 0x%08" PRIx32
+                       " mmu_idx %u -> %s (prot %c%c%c)\n",
+@@ -3348,8 +3363,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+     /* Definitely a real MMU, not an MPU */
+ 
+     if (regime_translation_disabled(env, mmu_idx, is_secure)) {
+-        return get_phys_addr_disabled(env, address, access_type, mmu_idx,
+-                                      is_secure, result, fi);
++        return get_phys_addr_disabled(env, ptw, address, access_type,
++                                      result, fi);
+     }
+ 
+     if (regime_using_lpae_format(env, mmu_idx)) {
 -- 
 2.34.1
 
