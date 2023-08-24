@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA944786BA1
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C1F786BA5
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6Zq-0003Q0-U1; Thu, 24 Aug 2023 05:24:30 -0400
+	id 1qZ6Zw-0003pw-Hq; Thu, 24 Aug 2023 05:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qZ6Zn-0003J4-QZ
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:27 -0400
+ id 1qZ6Zr-0003Z6-Ri
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qZ6Zj-0003Ir-Qo
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:27 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qZ6Zl-0003ME-KR
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:31 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxRui+IedkM3kbAA--.2719S3;
+ by gateway (Coremail) with SMTP id _____8AxTeu+IedkNnkbAA--.50812S3;
  Thu, 24 Aug 2023 17:24:14 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxJ826IedkJjhiAA--.40637S5; 
+ AQAAf8DxJ826IedkJjhiAA--.40637S6; 
  Thu, 24 Aug 2023 17:24:14 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, richard.henderson@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/31] target/loongarch: Fix loongarch_la464_initfn() misses
- setting LSPW
-Date: Thu, 24 Aug 2023 17:23:41 +0800
-Message-Id: <20230824092409.1492470-4-gaosong@loongson.cn>
+Subject: [PULL 04/31] target/loongarch: Introduce abstract TYPE_LOONGARCH64_CPU
+Date: Thu, 24 Aug 2023 17:23:42 +0800
+Message-Id: <20230824092409.1492470-5-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230824092409.1492470-1-gaosong@loongson.cn>
 References: <20230824092409.1492470-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S5
+X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S6
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,28 +64,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230817093121.1053890-11-gaosong@loongson.cn>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+In preparation of introducing TYPE_LOONGARCH32_CPU, introduce
+an abstract TYPE_LOONGARCH64_CPU.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230821125959.28666-4-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230821125959.28666-5-philmd@linaro.org>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/loongarch/cpu.c | 12 +++++++++---
+ target/loongarch/cpu.h |  1 +
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index dc617be36f..a1ebc20330 100644
+index a1ebc20330..34d6c5a31d 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -391,6 +391,7 @@ static void loongarch_la464_initfn(Object *obj)
-     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
-     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
-     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
-+    data = FIELD_DP32(data, CPUCFG2, LSPW, 1);
-     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
-     env->cpucfg[2] = data;
+@@ -734,9 +734,9 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+ #endif
+ }
  
+-#define DEFINE_LOONGARCH_CPU_TYPE(model, initfn) \
++#define DEFINE_LOONGARCH_CPU_TYPE(size, model, initfn) \
+     { \
+-        .parent = TYPE_LOONGARCH_CPU, \
++        .parent = TYPE_LOONGARCH##size##_CPU, \
+         .instance_init = initfn, \
+         .name = LOONGARCH_CPU_TYPE_NAME(model), \
+     }
+@@ -752,7 +752,13 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+         .class_size = sizeof(LoongArchCPUClass),
+         .class_init = loongarch_cpu_class_init,
+     },
+-    DEFINE_LOONGARCH_CPU_TYPE("la464", loongarch_la464_initfn),
++    {
++        .name = TYPE_LOONGARCH64_CPU,
++        .parent = TYPE_LOONGARCH_CPU,
++
++        .abstract = true,
++    },
++    DEFINE_LOONGARCH_CPU_TYPE(64, "la464", loongarch_la464_initfn),
+ };
+ 
+ DEFINE_TYPES(loongarch_cpu_type_infos)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index fa371ca8ba..c50b3a5ef3 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -377,6 +377,7 @@ struct ArchCPU {
+ };
+ 
+ #define TYPE_LOONGARCH_CPU "loongarch-cpu"
++#define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
+ 
+ OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
+                         LOONGARCH_CPU)
 -- 
 2.39.1
 
