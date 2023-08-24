@@ -2,80 +2,174 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7D37867F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6BE78683C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:23:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ4It-0003un-7g; Thu, 24 Aug 2023 02:58:51 -0400
+	id 1qZ4fY-000501-7M; Thu, 24 Aug 2023 03:22:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qZ4Ir-0003uL-3U
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 02:58:49 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qZ4Il-0004nq-Tu
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 02:58:47 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1c4f4d67f5bso4043875fac.0
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 23:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1692860322; x=1693465122; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GCTw3xxuKq919Gd8wMbWXgfdfxm6b75/GjO2B3rfbTg=;
- b=u71ZEzZr/WWjHvsSnb5kIyAV+9fxbYDUg7b5wTp2nZ6NM7gKEO33+V2XHZJ1V9yDDp
- FWqwKOeNZYgqVB+wWvUl9ahGy5DqJHkV+eX9iA2jzCZweGUTiSuKPBAsn16XRgdkVXMI
- kgS/uSA5wkJFj3i8ZhrxlfiZV/HnarnycmwcXUct5L7FV6pemVT9HohLpJNOskpgUC7B
- Bfxys5D7BWbu9kZbJCgJ4M713he2wmKREs6FYEDfk5NXvZBclmNDhd5foSbVdRfNd6os
- 8z2X4X33embb8gS5nPvNE+okru8hYJPS+hPoRxRhyc32fBgQGbWVXuKiiAabYS/AsuXs
- nkiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692860322; x=1693465122;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GCTw3xxuKq919Gd8wMbWXgfdfxm6b75/GjO2B3rfbTg=;
- b=h68mGbqcw9AX/vSo6LLr0spn6jL2pD9NiuqhpXE4fO254/ke0BlvS/VU1JbwJ7Tgds
- govdgBB9AhIoMl2abnZePBhV9tqRuwBfsCIHBFHYU0AFs1lv+4rHushSBoXFUBh67Ze3
- SxeooeaWk7W+jxjsOCDI3HbCCMB8ky+3EjFF+BiAmKaMwkD5yCoG6CBwtaZbNvJQutB4
- EG3NMOemZs3bULdpkx8iADsFuhioOXL9q6yuQU1Be6J+cPb0vpsUtfTF4HypDxqnvNh5
- MLbGwhtAzwffS5wICSq1hASKLdRtW4qy1ay2ubOi8h2i7tDfX1zG33zdic9HenNwtR7R
- RjVQ==
-X-Gm-Message-State: AOJu0YxjCCRflCjv6AHHgGPnmAy53LPgPWaLSizRRmqnSfB8PPammF5/
- tz74aERTRBlTCe6IAZDbWm33qiTP6hz/9TCmwDMDKg==
-X-Google-Smtp-Source: AGHT+IGu7puH7V3NIsKBZqnm3vH08LJhIfAmr/NnLvn+u9PxfwyTcymPRuUtqxF8d7Q73PJDYQT2qw83zMpIVoKmCx8=
-X-Received: by 2002:a05:6870:3928:b0:1c4:db12:8752 with SMTP id
- b40-20020a056870392800b001c4db128752mr14977985oap.35.1692860321953; Wed, 23
- Aug 2023 23:58:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230823092905.2259418-1-mnissler@rivosinc.com>
- <20230823092905.2259418-2-mnissler@rivosinc.com> <ZOZDQVgboMaiZ4x6@x1n>
- <CAGNS4TY2-scz3pu16tUF1bA-FEk+pe86QsgjW8L=qjidw5TqOQ@mail.gmail.com>
- <ZOZx7vMqFRfaIwSp@x1n>
-In-Reply-To: <ZOZx7vMqFRfaIwSp@x1n>
-From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Thu, 24 Aug 2023 08:58:30 +0200
-Message-ID: <CAGNS4TYOiXsuTP12+OL0NE3J_RYft12t6-v=RkTK+EqffO4Z2w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] softmmu: Support concurrent bounce buffers
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, stefanha@redhat.com, 
- Jagannathan Raman <jag.raman@oracle.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1qZ4fP-0004y3-Ca
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:22:09 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1qZ4fL-0000a8-Mg
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:22:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692861723; x=1724397723;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=VIjpgFJwc75poWxS4jyVdLFcK8gTj0mkb1S5BO4U9Uc=;
+ b=eyNNEXC7HU5P5VhF92Hh5XTFuWSmVLNhxyUAs9hSyR1DBQZiZOvCq9y0
+ 2HLEG3VJTD8Rc/tALBGSm2dM94NdvnxJjjK5MBjrFvKVtmFO2y6/fzWdw
+ qDeMWnztCRCV5Bspf72oHsK7+z/fh/Q5F1MPOcfV6M75gBAv7gQMq4oQX
+ eKnz6N0R+1KMj96smVb85r0po6bxd6u/Bc7pJj2r7HeAx3olWtehvpCc5
+ ivJfJ7zFpY9BbFaW2LooW4Jy86XkXktCPXk10v5Tn/qYwiY0ObepZNuXU
+ BM8SzCaAve/IA9SIun+iL6g8uP7d1Gx+rlRKM6FzXO1xHl2mWxXi0X3EX A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="460724107"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="460724107"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 00:22:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="730488520"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="730488520"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orsmga007.jf.intel.com with ESMTP; 24 Aug 2023 00:22:00 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 24 Aug 2023 00:22:00 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Thu, 24 Aug 2023 00:22:00 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.174)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Thu, 24 Aug 2023 00:21:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UayDwaudXm39VAVdRujtcagHPnAYvRCU3ds1h2/HnuZCcvJf5XdsrkoafgaH0ZWMZ9yP4LK6xvv8gRGNHr5WCjkrnSZglZW4gng3E9HmHGd5qJbkfYn6MzjXLMhIKzjbvwKHHsVfu0TWoq0YS+YzBIKmX1HcHmT62NstBbiV6ZuN9qEMJnO7hNSrHa8kEaR9MU4y3aC7B8jiNmwMNDtTuYk21IhWo8HGm8ekgaNt8MU+5fNg9qovn01nN+RBtfRaybdF5bjiz8CuXOaAviuMwbbFxnV7vvIwo9korAYnTqIQ3t3VGaZvDx/CtRYLRDC0qnapX5lhwax7zwQt+BAeeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iONsn+8OuR2ZmQjjjWG/kl+WwukTUDQJYXl6SUY3Pz0=;
+ b=NFqxzuPGS5uhCUg3KWiFa/0BHCSohLxAAHmegn27AteIhyfyIDvhHV7Pi1AzhF3h9YlD68xSCRteNghmfqOVtl/oid3OAJDKtAJQrS8x/9caaRYrw0DJWdPCF3aDqZus7DMmdw8CpZ8EG+qu4x2eQtk0Sc07nzX9GB6iUIyqlM0K/Q1MCNcaJw4rKblQzRCjhicxrDvoTByJJWJzBKiUPpoCFq6erEY2jbI/PYpkdT7fGHG5/oBS82DU7425L9sMhPC+lNJ/DBuwyPruFMLEHt3dk3wMEaDAqHbh6X+58u/Cz/yCzqWSgYsF00wTxuNpmw/KIoO7famNjxqT6ue5+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA2PR11MB5052.namprd11.prod.outlook.com (2603:10b6:806:fa::15)
+ by IA1PR11MB6292.namprd11.prod.outlook.com (2603:10b6:208:3e4::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Thu, 24 Aug
+ 2023 07:21:56 +0000
+Received: from SA2PR11MB5052.namprd11.prod.outlook.com
+ ([fe80::3f7:57fe:461d:83c2]) by SA2PR11MB5052.namprd11.prod.outlook.com
+ ([fe80::3f7:57fe:461d:83c2%4]) with mapi id 15.20.6699.026; Thu, 24 Aug 2023
+ 07:21:56 +0000
+Message-ID: <7629706c-0b7e-a8d5-ed52-21c6eeecd184@intel.com>
+Date: Thu, 24 Aug 2023 15:21:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 43/58] i386/tdx: setup a timer for the qio channel
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "Igor
+ Mammedov" <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, Peter Xu
+ <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>, Cornelia Huck
+ <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, Gerd Hoffmann
+ <kraxel@redhat.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, <erdemaktas@google.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-44-xiaoyao.li@intel.com>
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+In-Reply-To: <20230818095041.1973309-44-xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=mnissler@rivosinc.com; helo=mail-oa1-x2b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR01CA0011.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::6) To SA2PR11MB5052.namprd11.prod.outlook.com
+ (2603:10b6:806:fa::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PR11MB5052:EE_|IA1PR11MB6292:EE_
+X-MS-Office365-Filtering-Correlation-Id: e826564e-6f38-4c31-bde8-08dba472cb17
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Vmx3YJwoaNRND9SMwbabRX4TJVlRh9XPPe/WCrTV0jBhYVFdQxKYDqmNMTtFoZANxIMGZbN9UBZHyhoSflvDwuXdYntQh8aByksjGq62BqWu1fWWGhll6eW7mjFp3cy5sjJUJe/P15Z2SrE21aC/mXLfAsT5rCk3ZFaQ9eyYXdP48/Xaq27jwgknhnJZwnYXpxckPrsRidaK+XWYVmPzfvsf8Ny5a0jvcFPDm6PozYUAFRSexpnRWv6OX0JLX2btc5KPBAWDKTZELwPR+YNmRTmtycJujY3DTw3iAooqTI6Bdhs+y4h+ItjdYPzENt0cRixE0shTcCMIe6VzdAjUyOsjQA0xyzn0s0XvY6Ao1R6yz1A+cU0UzASkkKntdPjkpOgGKqno976bdKV9W1mmDMUJ6CvsBCMFW81GlBuDS9LWfd4X0q4wXR5oq8im0wnlgYSaM6dmsFuay/Gog6tSMEh5O+ee+H2YpnMTfLTEkIXMeIx69iAxrD+mX9ICEXKlNC2Hn+NLec9D4zSCO1NNo7PoQIxliRBo5zFpAuw8IDmDETZpv94ZX0fBj1B3QXnaHdlx2e/sAxsCbH3eGiq52qUNEq6UVXtUBUI/LTLGDW4LZdB3ivgwei8oXIEHLncFd4Wedz3xIhkr/NtjThUf9So8u2PD++sRk0XLqXH+zkw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA2PR11MB5052.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(366004)(376002)(346002)(136003)(396003)(186009)(1800799009)(451199024)(2616005)(5660300002)(4326008)(8676002)(8936002)(36756003)(83380400001)(7416002)(44832011)(26005)(921005)(6666004)(38100700002)(82960400001)(66946007)(66556008)(66476007)(54906003)(316002)(110136005)(478600001)(31686004)(53546011)(41300700001)(6512007)(2906002)(6506007)(86362001)(31696002)(6486002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dm9oSW5ESHZhNnNZOE1GRDhMcFp2MkpMejhocWVDRzJ5RVIrRUlDbndZb2xD?=
+ =?utf-8?B?S1pTQ1BlaUE3L3hxQ3dEQWpBYjF3aXZkQiswdlZYQTBpOXF6aHB3T0VLb3Ji?=
+ =?utf-8?B?QkZJeWhqVWdDelI0K0JFTzltNjBsTzVFSDNLbXVaVjZpOWRLdThXaDcyb0d2?=
+ =?utf-8?B?d1lCVVQ1NEZhWnF5bU5BbUk0cmZFNy9CTEcxeGY4Q2VYd0l5OUpqVVVIN2tW?=
+ =?utf-8?B?aEMyVlRoeU4yb01YTDVBMG11Z3Q2UVhGQkVWSjRRU293UmxoYXRra3pWSWN5?=
+ =?utf-8?B?eVRWWXdqMWJpNzZoeFptU0VlWndDUW9IMVQxa1NTZS9kMW9JeVlQVTdYeHNs?=
+ =?utf-8?B?VzZEOEJFbENJQzg1QjFQTUxTb05VWnNVdjkyUWVGZGFPRmZxSDkxL2lsUW1M?=
+ =?utf-8?B?Y2l3alRPRU9MMmlBNytDZkxBdVpPQ01qNVlvRWJaMlEwUUdxQnhTc3R6NWZU?=
+ =?utf-8?B?TktSQ0VaSE5HMG9HV2ZYTm5Ndk4rcjN5VEhpSTJVeWZ4T3JSelhKY0JXZm9H?=
+ =?utf-8?B?OFNYQ2NXOEZnVkhneElmOW5mM2ltZVFVNFZJUUVDaWUvczA3Y3JGdGhFTDBw?=
+ =?utf-8?B?WE5CNzRKVUJKRlBoblVidkFBWWw4dUQ0REhncjhhc2N2LzhRSEYzZ29qQjk0?=
+ =?utf-8?B?TDhZVUFTSTRhUzJNVXVaQXdoaXZzS0dzRk1MS3BVU0d6UTJieGpPeVZmNEhi?=
+ =?utf-8?B?R1pOSWpKNldJUlV5VTRxUlo1NWVjMVhNb0phUzcvbWlINWhkSG96Q25tekEv?=
+ =?utf-8?B?NVNjRTRLc2FTZDdFV21LSVQ3SW5EMk9KeVFkTVQ2KzlKQ1dsY2crOGVkcjcy?=
+ =?utf-8?B?bzlxUytRazZwaXc3WWtuZCtKbmI5SEhDRHJJVU9WS00zWTRtdTY1eFJGWTdo?=
+ =?utf-8?B?TVVCREN0WGVQcDF2WWE3MHY1anIrR2lwa1VlYUlnalVsRlJLWXFFZ1lRMFpP?=
+ =?utf-8?B?Z29oS1JzNzkwWWtxa09oY3hCeDh1YU96eXIrOHREZUJBQVpKb1hURklHcGxZ?=
+ =?utf-8?B?L3VnbHJNYWdVZ3lCK1Q5Nkx3ZVFXTTkrdi8vTllBYTZVSHhGa1BuYllrNXBO?=
+ =?utf-8?B?aFpQMHBIZjIvR0VmQ0VzNHR0ZXRkL1JuVHhwVno5aW1MMFNGQzBNTFRNM1FO?=
+ =?utf-8?B?dkhpaGZDdzUwUm9lOU1acDNUMmZxcVpyUURoZlE5MmhhOWVtY1g0RkpNejJk?=
+ =?utf-8?B?L3czWFJWVU5IdXA5OHR1cnA2NGZjeHZib1ozcjcwWi9vSis2NGpUZVpCTXM2?=
+ =?utf-8?B?TmJyQVFLb3NDTEpSVUd4cFJvUW91aFUvKy9DVGIrcXVDQlI1MWRqWHRkNWxT?=
+ =?utf-8?B?K2owNk1zM084c2ZFUXYxTG5xMDFqN01uUzFSeDVDUmdyRFgrbUxFTmJiTlpI?=
+ =?utf-8?B?MzVBVTlHSDNWdTZldE9tRWRyQW1CaGxWTm1CbURuWVpyUVVnZVNEaHdCdU5S?=
+ =?utf-8?B?dzRiaTJxS0tFSGhXYTROZXQrSHNuWXEyTWpyOWN6YWJlWTJwRVZERTRHT3Zx?=
+ =?utf-8?B?anBQV2lDbFNlTGpEMVNCNGJYbGNjcmRJM0xtVk5mSW5LR290aVkySzhmWlNw?=
+ =?utf-8?B?cDhlM1FZNWhqbHpUUGMydTVEcDZ4R25zaFl5aWZrbmgyaFRpekovN0xJdkpU?=
+ =?utf-8?B?c2hCQ3owR05vb0tabURKYXRrK2tiQWcvMFpiS2RvSkxmaHowcHhudWJ3Z3pP?=
+ =?utf-8?B?UmQybWJEMndvdGE4MDBLYUV0YWxDOWFsQVdLdGRKdlNXYnVCUjRwNUg0NUlr?=
+ =?utf-8?B?OTBMM2NySGhVTk9od1J6ZHBKdC9GaDNjOFRsQlBNL0V1TGNYVHJYeVFIQThC?=
+ =?utf-8?B?ZHFvZUZrMmZaaWswbEZUNkJjUjloNDBBZGM4bzJ1NmZjQVZjUzlWNFY3T0RI?=
+ =?utf-8?B?VDVtS0FGaFVqRmU2cUZtNDhaM201azhITEdDcHA2TUJEdVgvcXRMa1cxUk1o?=
+ =?utf-8?B?Qi9xcVVRUGpyU0hrUlZQbGNjN254TG5TR1dHT3RpQWJsWmRRdjBMT2kxakEr?=
+ =?utf-8?B?ZmxTaVJha2Y0U0dyUXdGUzJ6bll5ajlkcFBIcktYQkJxeC8vNkhONnJGanpP?=
+ =?utf-8?B?OUkvNk1yRmtPam9abldRVXREVGxzUHpwOFg3MjNwOGhWcVN5M3d1cDUxUU9R?=
+ =?utf-8?B?VjdSaEV5MnhQaGpDYjVMam5VOWVTVFpXVVRMbkpkNi9IaUEvaHgxWjlMQkdq?=
+ =?utf-8?B?Nnc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e826564e-6f38-4c31-bde8-08dba472cb17
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR11MB5052.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2023 07:21:56.2760 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lmKM+JowAgdDzZ9wtVBquwzF10MiN4VpXQNWKu/7I5dXoJUX0A0pN8NT9Xy90sQcIMPNj1XdI+pxOWQHx0YqBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6292
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=chenyi.qiang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-2.684, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,458 +186,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 23, 2023 at 10:54=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote=
-:
->
-> On Wed, Aug 23, 2023 at 10:08:08PM +0200, Mattias Nissler wrote:
-> > Peter, thanks for taking a look and providing feedback!
-> >
-> > On Wed, Aug 23, 2023 at 7:35=E2=80=AFPM Peter Xu <peterx@redhat.com> wr=
-ote:
-> > >
-> > > On Wed, Aug 23, 2023 at 02:29:02AM -0700, Mattias Nissler wrote:
-> > > > When DMA memory can't be directly accessed, as is the case when
-> > > > running the device model in a separate process without shareable DM=
-A
-> > > > file descriptors, bounce buffering is used.
-> > > >
-> > > > It is not uncommon for device models to request mapping of several =
-DMA
-> > > > regions at the same time. Examples include:
-> > > >  * net devices, e.g. when transmitting a packet that is split acros=
-s
-> > > >    several TX descriptors (observed with igb)
-> > > >  * USB host controllers, when handling a packet with multiple data =
-TRBs
-> > > >    (observed with xhci)
-> > > >
-> > > > Previously, qemu only provided a single bounce buffer and would fai=
-l DMA
-> > > > map requests while the buffer was already in use. In turn, this wou=
-ld
-> > > > cause DMA failures that ultimately manifest as hardware errors from=
- the
-> > > > guest perspective.
-> > > >
-> > > > This change allocates DMA bounce buffers dynamically instead of
-> > > > supporting only a single buffer. Thus, multiple DMA mappings work
-> > > > correctly also when RAM can't be mmap()-ed.
-> > > >
-> > > > The total bounce buffer allocation size is limited by a new command=
- line
-> > > > parameter. The default is 4096 bytes to match the previous maximum
-> > > > buffer size. It is expected that suitable limits will vary quite a =
-bit
-> > > > in practice depending on device models and workloads.
-> > > >
-> > > > Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-> > > > ---
-> > > >  include/sysemu/sysemu.h |  2 +
-> > > >  qemu-options.hx         | 27 +++++++++++++
-> > > >  softmmu/globals.c       |  1 +
-> > > >  softmmu/physmem.c       | 84 +++++++++++++++++++++++--------------=
-----
-> > > >  softmmu/vl.c            |  6 +++
-> > > >  5 files changed, 83 insertions(+), 37 deletions(-)
-> > > >
-> > > > diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
-> > > > index 25be2a692e..c5dc93cb53 100644
-> > > > --- a/include/sysemu/sysemu.h
-> > > > +++ b/include/sysemu/sysemu.h
-> > > > @@ -61,6 +61,8 @@ extern int nb_option_roms;
-> > > >  extern const char *prom_envs[MAX_PROM_ENVS];
-> > > >  extern unsigned int nb_prom_envs;
-> > > >
-> > > > +extern uint64_t max_bounce_buffer_size;
-> > > > +
-> > > >  /* serial ports */
-> > > >
-> > > >  /* Return the Chardev for serial port i, or NULL if none */
-> > > > diff --git a/qemu-options.hx b/qemu-options.hx
-> > > > index 29b98c3d4c..6071794237 100644
-> > > > --- a/qemu-options.hx
-> > > > +++ b/qemu-options.hx
-> > > > @@ -4959,6 +4959,33 @@ SRST
-> > > >  ERST
-> > > >  #endif
-> > > >
-> > > > +DEF("max-bounce-buffer-size", HAS_ARG,
-> > > > +    QEMU_OPTION_max_bounce_buffer_size,
-> > > > +    "-max-bounce-buffer-size size\n"
-> > > > +    "                DMA bounce buffer size limit in bytes (defaul=
-t=3D4096)\n",
-> > > > +    QEMU_ARCH_ALL)
-> > > > +SRST
-> > > > +``-max-bounce-buffer-size size``
-> > > > +    Set the limit in bytes for DMA bounce buffer allocations.
-> > > > +
-> > > > +    DMA bounce buffers are used when device models request memory-=
-mapped access
-> > > > +    to memory regions that can't be directly mapped by the qemu pr=
-ocess, so the
-> > > > +    memory must read or written to a temporary local buffer for th=
-e device
-> > > > +    model to work with. This is the case e.g. for I/O memory regio=
-ns, and when
-> > > > +    running in multi-process mode without shared access to memory.
-> > > > +
-> > > > +    Whether bounce buffering is necessary depends heavily on the d=
-evice model
-> > > > +    implementation. Some devices use explicit DMA read and write o=
-perations
-> > > > +    which do not require bounce buffers. Some devices, notably sto=
-rage, will
-> > > > +    retry a failed DMA map request after bounce buffer space becom=
-es available
-> > > > +    again. Most other devices will bail when encountering map requ=
-est failures,
-> > > > +    which will typically appear to the guest as a hardware error.
-> > > > +
-> > > > +    Suitable bounce buffer size values depend on the workload and =
-guest
-> > > > +    configuration. A few kilobytes up to a few megabytes are commo=
-n sizes
-> > > > +    encountered in practice.
-> > >
-> > > Does it mean that the default 4K size can still easily fail with some
-> > > device setup?
-> >
-> > Yes. The thing is that the respective device setup is pretty exotic,
-> > at least the only setup I'm aware of is multi-process with direct RAM
-> > access via shared file descriptors from the device process disabled
-> > (which hurts performance, so few people will run this setup). In
-> > theory, DMA to an I/O region of some sort would also run into the
-> > issue even in single process mode, but I'm not aware of such a
-> > situation. Looking at it from a historic perspective, note that the
-> > single-bounce-buffer restriction has been present since a decade, and
-> > thus the issue has been present for years (since multi-process is a
-> > thing), without it hurting anyone enough to get fixed. But don't get
-> > me wrong - I don't want to downplay anything and very much would like
-> > to see this fixed, but I want to be honest and put things into the
-> > right perspective.
-> >
-> > >
-> > > IIUC the whole point of limit here is to make sure the allocation is =
-still
-> > > bounded, while 4K itself is not a hard limit. Making it bigger would =
-be,
-> > > IMHO, nice if it should work with known configs which used to be brok=
-en.
-> >
-> > I'd be in favor of bumping the default. Networking should be fine with
-> > 64KB, but I've observed a default Linux + xhci + usb_storage setup to
-> > use up to 1MB of DMA buffers, we'd probably need to raise it
-> > considerably. Would 4MB still be acceptable? That wouldn't allow a
-> > single nefarious VM to stage a memory denial of service attack, but
-> > what if you're running many VMs?
->
-> Could wait and see whether there's any more comments from others.
-> Personally 4MB looks fine, as that's not a constant consumption per-vm, b=
-ut
-> a worst case limit (probably only when there is an attacker).
 
-OK, I'll take a note to change to 4MB for the next version of this
-series then, barring any objections from others.
 
-Note to self: Raising the limit will likely also accommodate the ide
-test's DMA buffer consumption, which means we'd be losing test
-coverage for the map client callback code path. I probably need to
-adjust the test or make a new one to make up for that.
+On 8/18/2023 5:50 PM, Xiaoyao Li wrote:
+> From: Chenyi Qiang <chenyi.qiang@intel.com>
+> 
+> To avoid no response from QGS server, setup a timer for the transaction. If
+> timeout, make it an error and interrupt guest. Define the threshold of time
+> to 30s at present, maybe change to other value if not appropriate.
+> 
+> Extract the common cleanup code to make it more clear.
+> 
+> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  target/i386/kvm/tdx.c | 151 ++++++++++++++++++++++++------------------
+>  1 file changed, 85 insertions(+), 66 deletions(-)
+> 
+> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+> index 3cb2163a0335..fa658ce1f2e4 100644
+> --- a/target/i386/kvm/tdx.c
+> +++ b/target/i386/kvm/tdx.c
+> @@ -1002,6 +1002,7 @@ struct tdx_get_quote_task {
+>      struct tdx_get_quote_header hdr;
+>      int event_notify_interrupt;
+>      QIOChannelSocket *ioc;
+> +    QEMUTimer timer;
+>  };
+>  
+>  struct x86_msi {
+> @@ -1084,13 +1085,48 @@ static void tdx_td_notify(struct tdx_get_quote_task *t)
+>      }
+>  }
+>  
+> +static void tdx_getquote_task_cleanup(struct tdx_get_quote_task *t, bool outlen_overflow)
+> +{
+> +    MachineState *ms;
+> +    TdxGuest *tdx;
+> +
+> +    if (t->hdr.error_code != cpu_to_le64(TDX_VP_GET_QUOTE_SUCCESS) && !outlen_overflow) {
+> +        t->hdr.out_len = cpu_to_le32(0);
+> +    }
+> +
+> +    /* Publish the response contents before marking this request completed. */
+> +    smp_wmb();
+> +    if (address_space_write(
+> +            &address_space_memory, t->gpa,
+> +            MEMTXATTRS_UNSPECIFIED, &t->hdr, sizeof(t->hdr)) != MEMTX_OK) {
+> +        error_report("TDX: failed to update GetQuote header.");
+> +    }
+> +    tdx_td_notify(t);
+> +
+> +    if (t->ioc->fd > 0) {
+> +        qemu_set_fd_handler(t->ioc->fd, NULL, NULL, NULL);
+> +    }
+> +    qio_channel_close(QIO_CHANNEL(t->ioc), NULL);
+> +    object_unref(OBJECT(t->ioc));
+> +    timer_del(&t->timer);
 
->
-> Multiple VM does can indeed make it worse, but it means the attacker will
-> need to attack all the VMs all success, and the sum up will be 4MB /
-> mem_size_average_vm in percentage, irrelevant of numbers; for ~4GB averag=
-e
-> VM size it's 0.1% memory, and even less if VM is larger - maybe not
-> something extremely scary even if happened.
->
-> >
-> > >
-> > > > +ERST
-> > > > +
-> > > >  DEFHEADING()
-> > > >
-> > > >  DEFHEADING(Generic object creation:)
-> > > > diff --git a/softmmu/globals.c b/softmmu/globals.c
-> > > > index e83b5428d1..d3cc010717 100644
-> > > > --- a/softmmu/globals.c
-> > > > +++ b/softmmu/globals.c
-> > > > @@ -54,6 +54,7 @@ const char *prom_envs[MAX_PROM_ENVS];
-> > > >  uint8_t *boot_splash_filedata;
-> > > >  int only_migratable; /* turn it off unless user states otherwise *=
-/
-> > > >  int icount_align_option;
-> > > > +uint64_t max_bounce_buffer_size =3D 4096;
-> > > >
-> > > >  /* The bytes in qemu_uuid are in the order specified by RFC4122, _=
-not_ in the
-> > > >   * little-endian "wire format" described in the SMBIOS 2.6 specifi=
-cation.
-> > > > diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> > > > index 3df73542e1..9f0fec0c8e 100644
-> > > > --- a/softmmu/physmem.c
-> > > > +++ b/softmmu/physmem.c
-> > > > @@ -50,6 +50,7 @@
-> > > >  #include "sysemu/dma.h"
-> > > >  #include "sysemu/hostmem.h"
-> > > >  #include "sysemu/hw_accel.h"
-> > > > +#include "sysemu/sysemu.h"
-> > > >  #include "sysemu/xen-mapcache.h"
-> > > >  #include "trace/trace-root.h"
-> > > >
-> > > > @@ -2904,13 +2905,12 @@ void cpu_flush_icache_range(hwaddr start, h=
-waddr len)
-> > > >
-> > > >  typedef struct {
-> > > >      MemoryRegion *mr;
-> > > > -    void *buffer;
-> > > >      hwaddr addr;
-> > > > -    hwaddr len;
-> > > > -    bool in_use;
-> > > > +    size_t len;
-> > > > +    uint8_t buffer[];
-> > > >  } BounceBuffer;
-> > > >
-> > > > -static BounceBuffer bounce;
-> > > > +static size_t bounce_buffer_size;
-> > > >
-> > > >  typedef struct MapClient {
-> > > >      QEMUBH *bh;
-> > > > @@ -2945,9 +2945,9 @@ void cpu_register_map_client(QEMUBH *bh)
-> > > >      qemu_mutex_lock(&map_client_list_lock);
-> > > >      client->bh =3D bh;
-> > > >      QLIST_INSERT_HEAD(&map_client_list, client, link);
-> > > > -    /* Write map_client_list before reading in_use.  */
-> > > > +    /* Write map_client_list before reading bounce_buffer_size.  *=
-/
-> > > >      smp_mb();
-> > > > -    if (!qatomic_read(&bounce.in_use)) {
-> > > > +    if (qatomic_read(&bounce_buffer_size) < max_bounce_buffer_size=
-) {
-> > > >          cpu_notify_map_clients_locked();
-> > > >      }
-> > > >      qemu_mutex_unlock(&map_client_list_lock);
-> > > > @@ -3076,31 +3076,35 @@ void *address_space_map(AddressSpace *as,
-> > > >      RCU_READ_LOCK_GUARD();
-> > > >      fv =3D address_space_to_flatview(as);
-> > > >      mr =3D flatview_translate(fv, addr, &xlat, &l, is_write, attrs=
-);
-> > > > +    memory_region_ref(mr);
-> > > >
-> > > >      if (!memory_access_is_direct(mr, is_write)) {
-> > > > -        if (qatomic_xchg(&bounce.in_use, true)) {
-> > > > +        size_t size =3D qatomic_add_fetch(&bounce_buffer_size, l);
-> > > > +        if (size > max_bounce_buffer_size) {
-> > > > +            size_t excess =3D size - max_bounce_buffer_size;
-> > > > +            l -=3D excess;
-> > > > +            qatomic_sub(&bounce_buffer_size, excess);
-> > > > +        }
-> > > > +
-> > > > +        if (l =3D=3D 0) {
-> > > >              *plen =3D 0;
-> > > >              return NULL;
-> > > >          }
-> > > > -        /* Avoid unbounded allocations */
-> > > > -        l =3D MIN(l, TARGET_PAGE_SIZE);
-> > > > -        bounce.buffer =3D qemu_memalign(TARGET_PAGE_SIZE, l);
-> > > > -        bounce.addr =3D addr;
-> > > > -        bounce.len =3D l;
-> > > >
-> > > > -        memory_region_ref(mr);
-> > > > -        bounce.mr =3D mr;
-> > > > +        BounceBuffer *bounce =3D g_malloc(l + sizeof(BounceBuffer)=
-);
-> > >
-> > > Maybe g_malloc0() would be better?
-> >
-> > Good point, will change.
-> >
-> > >
-> > > I just checked that we had target page aligned allocations since the =
-1st
-> > > day (commit 6d16c2f88f2a).  I didn't find any clue showing why it was=
- done
-> > > like that, but I do have worry on whether any existing caller that ma=
-y
-> > > implicitly relying on an address that is target page aligned.  But ma=
-ybe
-> > > not a major issue; I didn't see anything rely on that yet.
-> >
-> > I did go through the same exercise when noticing the page alignment
-> > and arrived at the same conclusion as you. That makes it two people
-> > thinking it's OK, so I feel like we should take the risk here, in
-> > particular given that we know this code path is already broken as is.
->
-> It'll be more important to see if any one person thinks it's not okay in
-> this case, though. :)
->
-> If we decide to take the risk, we should merge a patch like this in as
-> early stage as possible of the release.
+Xiaoyao, I guess you missed a bug fix patch here as t->timer could be
+uninitialized and then timer_del() will cause segv.
 
-Happy to do so.
+> +    g_free(t->out_data);
+> +    g_free(t);
+> +
+> +    /* Maintain the number of in-flight requests. */
+> +    ms = MACHINE(qdev_get_machine());
+> +    tdx = TDX_GUEST(ms->cgs);
+> +    qemu_mutex_lock(&tdx->lock);
+> +    tdx->quote_generation_num--;
+> +    qemu_mutex_unlock(&tdx->lock);
+> +}
+> +
 
-However, let me know if you rather want to retain page alignment.
-It'll complicate things though, as it'll likely lead to storing the
-metadata separate from the buffer allocation, probably using a hash
-table / tree / array (as you suggest below) to keep track of all
-allocated buffers and locate their metadata by address.
-
->
-> >
-> > >
-> > > > +        bounce->mr =3D mr;
-> > > > +        bounce->addr =3D addr;
-> > > > +        bounce->len =3D l;
-> > > > +
-> > > >          if (!is_write) {
-> > > >              flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
-> > > > -                               bounce.buffer, l);
-> > > > +                          bounce->buffer, l);
-> > > >          }
-> > > >
-> > > >          *plen =3D l;
-> > > > -        return bounce.buffer;
-> > > > +        return bounce->buffer;
-> > > >      }
-> > > >
-> > > > -
-> > > > -    memory_region_ref(mr);
-> > > >      *plen =3D flatview_extend_translation(fv, addr, len, mr, xlat,
-> > > >                                          l, is_write, attrs);
-> > > >      fuzz_dma_read_cb(addr, *plen, mr);
-> > > > @@ -3114,31 +3118,37 @@ void *address_space_map(AddressSpace *as,
-> > > >  void address_space_unmap(AddressSpace *as, void *buffer, hwaddr le=
-n,
-> > > >                           bool is_write, hwaddr access_len)
-> > > >  {
-> > > > -    if (buffer !=3D bounce.buffer) {
-> > > > -        MemoryRegion *mr;
-> > > > -        ram_addr_t addr1;
-> > > > +    MemoryRegion *mr;
-> > > > +    ram_addr_t addr1;
-> > > > +
-> > > > +    mr =3D memory_region_from_host(buffer, &addr1);
-> > > > +    if (mr =3D=3D NULL) {
-> > > > +        /*
-> > > > +         * Must be a bounce buffer (unless the caller passed a poi=
-nter which
-> > > > +         * wasn't returned by address_space_map, which is illegal)=
-.
-> > >
-> > > Is it possible to still have some kind of sanity check to make sure i=
-t's a
-> > > bounce buffer passed in, just in case of a caller bug?  Or, the failu=
-re can
-> > > be weird..
-> >
-> > I was contemplating putting a magic number as the first struct member
-> > as a best effort to detect invalid pointers and corruptions, but
-> > wasn't sure it's warranted. Since you ask, I'll make that change.
->
-> That'll be good, thanks.
->
-> I was thinking maybe we can also maintain all the mapped buffers just lik=
-e
-> before, either in a tree, or a sorted array; the array can be even easier
-> and static if the limit applied here will be "maximum number of bounce
-> buffer mapped" rather than "maximum bytes of bounce buffer mapped", but
-> this whole idea may already be over-complicated to worry on leaked buffer=
-s?
-> The magic number sounds good enough.
->
-> >
-> > >
-> > > > +         */
-> > > > +        BounceBuffer *bounce =3D container_of(buffer, BounceBuffer=
-, buffer);
-> > > >
-> > > > -        mr =3D memory_region_from_host(buffer, &addr1);
-> > > > -        assert(mr !=3D NULL);
-> > > >          if (is_write) {
-> > > > -            invalidate_and_set_dirty(mr, addr1, access_len);
-> > > > -        }
-> > > > -        if (xen_enabled()) {
-> > > > -            xen_invalidate_map_cache_entry(buffer);
-> > > > +            address_space_write(as, bounce->addr, MEMTXATTRS_UNSPE=
-CIFIED,
-> > > > +                                bounce->buffer, access_len);
-> > > >          }
-> > > > -        memory_region_unref(mr);
-> > > > +
-> > > > +        memory_region_unref(bounce->mr);
-> > > > +        qatomic_sub(&bounce_buffer_size, bounce->len);
-> > > > +        /* Write bounce_buffer_size before reading map_client_list=
-. */
-> > > > +        smp_mb();
-> > > > +        cpu_notify_map_clients();
-> > > > +        g_free(bounce);
-> > > >          return;
-> > > >      }
-> > > > +
-> > > > +    if (xen_enabled()) {
-> > > > +        xen_invalidate_map_cache_entry(buffer);
-> > > > +    }
-> > > >      if (is_write) {
-> > > > -        address_space_write(as, bounce.addr, MEMTXATTRS_UNSPECIFIE=
-D,
-> > > > -                            bounce.buffer, access_len);
-> > > > -    }
-> > > > -    qemu_vfree(bounce.buffer);
-> > > > -    bounce.buffer =3D NULL;
-> > > > -    memory_region_unref(bounce.mr);
-> > > > -    /* Clear in_use before reading map_client_list.  */
-> > > > -    qatomic_set_mb(&bounce.in_use, false);
-> > > > -    cpu_notify_map_clients();
-> > > > +        invalidate_and_set_dirty(mr, addr1, access_len);
-> > > > +    }
-> > > >  }
-> > > >
-> > > >  void *cpu_physical_memory_map(hwaddr addr,
-> > > > diff --git a/softmmu/vl.c b/softmmu/vl.c
-> > > > index b0b96f67fa..dbe52f5ea1 100644
-> > > > --- a/softmmu/vl.c
-> > > > +++ b/softmmu/vl.c
-> > > > @@ -3469,6 +3469,12 @@ void qemu_init(int argc, char **argv)
-> > > >                  exit(1);
-> > > >  #endif
-> > > >                  break;
-> > > > +            case QEMU_OPTION_max_bounce_buffer_size:
-> > > > +                if (qemu_strtosz(optarg, NULL, &max_bounce_buffer_=
-size) < 0) {
-> > > > +                    error_report("invalid -max-ounce-buffer-size v=
-alue");
-> > > > +                    exit(1);
-> > > > +                }
-> > > > +                break;
-> > >
-> > > PS: I had a vague memory that we do not recommend adding more qemu cm=
-dline
-> > > options, but I don't know enough on the plan to say anything real.
-> >
-> > I am aware of that, and I'm really not happy with the command line
-> > option myself. Consider the command line flag a straw man I put in to
-> > see whether any reviewers have better ideas :)
-> >
-> > More seriously, I actually did look around to see whether I can add
-> > the parameter to one of the existing option groupings somewhere, but
-> > neither do I have a suitable QOM object that I can attach the
-> > parameter to, nor did I find any global option groups that fits: this
-> > is not really memory configuration, and it's not really CPU
-> > configuration, it's more related to shared device model
-> > infrastructure... If you have a good idea for a home for this, I'm all
-> > ears.
->
-> No good & simple suggestion here, sorry.  We can keep the option there
-> until someone jumps in, then the better alternative could also come along=
-.
->
-> After all I expect if we can choose a sensible enough default value, this
-> new option shouldn't be used by anyone for real.
->
-> Thanks,
->
-> --
-> Peter Xu
->
 
