@@ -2,75 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF62787050
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 15:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FFB787074
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 15:40:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZASK-00020W-JB; Thu, 24 Aug 2023 09:33:00 -0400
+	id 1qZAYF-00064D-5m; Thu, 24 Aug 2023 09:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qZASG-0001rI-D3
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 09:32:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qZAY4-00062K-5V; Thu, 24 Aug 2023 09:38:58 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qZASE-0005P9-4P
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 09:32:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692883973;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Mxl3ii1xfts+9u1DjtJ56OigdGkKMlh9adCdvY0Sm0U=;
- b=PA9IaJEMYKQJ3hvYgVBqyyly70WZo41bbN4yEaofbVTbYmUKet3U57Xx7wqcPgMIVEKuzQ
- Tsfko5wkLwQA5Up6FacAQGJ2mvzKaCRXcpF9CpjzOzteNJSZdo5cqdoTlxnmRp8ChMHeZV
- UaLVvSrBFhvBezNnLX/vjJTYEsWEhaQ=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-53-tNdb-l2mM-CDZrNuF0COfw-1; Thu, 24 Aug 2023 09:32:48 -0400
-X-MC-Unique: tNdb-l2mM-CDZrNuF0COfw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D95421C09A46;
- Thu, 24 Aug 2023 13:32:47 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.213])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5F280492C13;
- Thu, 24 Aug 2023 13:32:47 +0000 (UTC)
-Date: Thu, 24 Aug 2023 09:32:45 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Mattias Nissler <mnissler@rivosinc.com>, qemu-devel@nongnu.org,
- john.levon@nutanix.com, Jagannathan Raman <jag.raman@oracle.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, armbru@redhat.com
-Subject: Re: [PATCH v2 1/4] softmmu: Support concurrent bounce buffers
-Message-ID: <20230824133245.GA1412804@fedora>
-References: <20230823092905.2259418-1-mnissler@rivosinc.com>
- <20230823092905.2259418-2-mnissler@rivosinc.com>
- <ZOZDQVgboMaiZ4x6@x1n>
- <CAGNS4TY2-scz3pu16tUF1bA-FEk+pe86QsgjW8L=qjidw5TqOQ@mail.gmail.com>
- <ZOZx7vMqFRfaIwSp@x1n>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qZAY1-0006Oe-L7; Thu, 24 Aug 2023 09:38:55 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1749C43C3D;
+ Thu, 24 Aug 2023 15:38:41 +0200 (CEST)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
+ srowe@mose.org.uk, mike.maslenkin@gmail.com, qemu-block@nongnu.org,
+ t.lamprecht@proxmox.com, a.lauterer@proxmox.com
+Subject: [PATCH 1/2] hw/ide: reset: cancel async DMA operation before reseting
+ state
+Date: Thu, 24 Aug 2023 15:38:30 +0200
+Message-Id: <20230824133831.617833-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="P64KNBm6ybtLlYDh"
-Content-Disposition: inline
-In-Reply-To: <ZOZx7vMqFRfaIwSp@x1n>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,90 +53,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+If there is a pending DMA operation during ide_bus_reset(), the fact
+that the IDEState is already reset before the operation is canceled
+can be problematic. In particular, ide_dma_cb() might be called and
+then use the reset IDEState which contains the signature after the
+reset. When used to construct the IO operation this leads to
+ide_get_sector() returning 0 and nsector being 1. This is particularly
+bad, because a write command will thus destroy the first sector which
+often contains a partition table or similar.
 
---P64KNBm6ybtLlYDh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Traces showing the unsolicited write happening with IDEState
+0x5595af6949d0 being used after reset:
 
-On Wed, Aug 23, 2023 at 04:54:06PM -0400, Peter Xu wrote:
-> On Wed, Aug 23, 2023 at 10:08:08PM +0200, Mattias Nissler wrote:
-> > On Wed, Aug 23, 2023 at 7:35=E2=80=AFPM Peter Xu <peterx@redhat.com> wr=
-ote:
-> > > On Wed, Aug 23, 2023 at 02:29:02AM -0700, Mattias Nissler wrote:
-> > > > diff --git a/softmmu/vl.c b/softmmu/vl.c
-> > > > index b0b96f67fa..dbe52f5ea1 100644
-> > > > --- a/softmmu/vl.c
-> > > > +++ b/softmmu/vl.c
-> > > > @@ -3469,6 +3469,12 @@ void qemu_init(int argc, char **argv)
-> > > >                  exit(1);
-> > > >  #endif
-> > > >                  break;
-> > > > +            case QEMU_OPTION_max_bounce_buffer_size:
-> > > > +                if (qemu_strtosz(optarg, NULL, &max_bounce_buffer_=
-size) < 0) {
-> > > > +                    error_report("invalid -max-ounce-buffer-size v=
-alue");
-> > > > +                    exit(1);
-> > > > +                }
-> > > > +                break;
-> > >
-> > > PS: I had a vague memory that we do not recommend adding more qemu cm=
-dline
-> > > options, but I don't know enough on the plan to say anything real.
-> >=20
-> > I am aware of that, and I'm really not happy with the command line
-> > option myself. Consider the command line flag a straw man I put in to
-> > see whether any reviewers have better ideas :)
-> >=20
-> > More seriously, I actually did look around to see whether I can add
-> > the parameter to one of the existing option groupings somewhere, but
-> > neither do I have a suitable QOM object that I can attach the
-> > parameter to, nor did I find any global option groups that fits: this
-> > is not really memory configuration, and it's not really CPU
-> > configuration, it's more related to shared device model
-> > infrastructure... If you have a good idea for a home for this, I'm all
-> > ears.
->=20
-> No good & simple suggestion here, sorry.  We can keep the option there
-> until someone jumps in, then the better alternative could also come along.
->=20
-> After all I expect if we can choose a sensible enough default value, this
-> new option shouldn't be used by anyone for real.
+> ahci_port_write ahci(0x5595af6923f0)[0]: port write [reg:PxSCTL] @ 0x2c: 0x00000300
+> ahci_reset_port ahci(0x5595af6923f0)[0]: reset port
+> ide_reset IDEstate 0x5595af6949d0
+> ide_reset IDEstate 0x5595af694da8
+> ide_bus_reset_aio aio_cancel
+> dma_aio_cancel dbs=0x7f64600089a0
+> dma_blk_cb dbs=0x7f64600089a0 ret=0
+> dma_complete dbs=0x7f64600089a0 ret=0 cb=0x5595acd40b30
+> ahci_populate_sglist ahci(0x5595af6923f0)[0]
+> ahci_dma_prepare_buf ahci(0x5595af6923f0)[0]: prepare buf limit=512 prepared=512
+> ide_dma_cb IDEState 0x5595af6949d0; sector_num=0 n=1 cmd=DMA WRITE
+> dma_blk_io dbs=0x7f6420802010 bs=0x5595ae2c6c30 offset=0 to_dev=1
+> dma_blk_cb dbs=0x7f6420802010 ret=0
 
-QEMU commits to stability in its external interfaces. Once the
-command-line option is added, it needs to be supported in the future or
-go through the deprecation process. I think we should agree on the
-command-line option now.
+> (gdb) p *qiov
+> $11 = {iov = 0x7f647c76d840, niov = 1, {{nalloc = 1, local_iov = {iov_base = 0x0,
+>       iov_len = 512}}, {__pad = "\001\000\000\000\000\000\000\000\000\000\000",
+>       size = 512}}}
+> (gdb) bt
+> #0  blk_aio_pwritev (blk=0x5595ae2c6c30, offset=0, qiov=0x7f6420802070, flags=0,
+>     cb=0x5595ace6f0b0 <dma_blk_cb>, opaque=0x7f6420802010)
+>     at ../block/block-backend.c:1682
+> #1  0x00005595ace6f185 in dma_blk_cb (opaque=0x7f6420802010, ret=<optimized out>)
+>     at ../softmmu/dma-helpers.c:179
+> #2  0x00005595ace6f778 in dma_blk_io (ctx=0x5595ae0609f0,
+>     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
+>     io_func=io_func@entry=0x5595ace6ee30 <dma_blk_write_io_func>,
+>     io_func_opaque=io_func_opaque@entry=0x5595ae2c6c30,
+>     cb=0x5595acd40b30 <ide_dma_cb>, opaque=0x5595af6949d0,
+>     dir=DMA_DIRECTION_TO_DEVICE) at ../softmmu/dma-helpers.c:244
+> #3  0x00005595ace6f90a in dma_blk_write (blk=0x5595ae2c6c30,
+>     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
+>     cb=cb@entry=0x5595acd40b30 <ide_dma_cb>, opaque=opaque@entry=0x5595af6949d0)
+>     at ../softmmu/dma-helpers.c:280
+> #4  0x00005595acd40e18 in ide_dma_cb (opaque=0x5595af6949d0, ret=<optimized out>)
+>     at ../hw/ide/core.c:953
+> #5  0x00005595ace6f319 in dma_complete (ret=0, dbs=0x7f64600089a0)
+>     at ../softmmu/dma-helpers.c:107
+> #6  dma_blk_cb (opaque=0x7f64600089a0, ret=0) at ../softmmu/dma-helpers.c:127
+> #7  0x00005595ad12227d in blk_aio_complete (acb=0x7f6460005b10)
+>     at ../block/block-backend.c:1527
+> #8  blk_aio_complete (acb=0x7f6460005b10) at ../block/block-backend.c:1524
+> #9  blk_aio_write_entry (opaque=0x7f6460005b10) at ../block/block-backend.c:1594
+> #10 0x00005595ad258cfb in coroutine_trampoline (i0=<optimized out>,
+>     i1=<optimized out>) at ../util/coroutine-ucontext.c:177
 
-Two ways to avoid the issue:
-1. Drop the command-line option until someone needs it.
-2. Make it an experimental option (with an "x-" prefix).
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+ hw/ide/core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-The closest to a proper solution that I found was adding it as a
--machine property. What bothers me is that if QEMU supports
-multi-machine emulation in a single process some day, then the property
-doesn't make sense since it's global rather than specific to a machine.
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index de48ff9f86..7e601a379a 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -2515,19 +2515,19 @@ static void ide_dummy_transfer_stop(IDEState *s)
+ 
+ void ide_bus_reset(IDEBus *bus)
+ {
+-    bus->unit = 0;
+-    bus->cmd = 0;
+-    ide_reset(&bus->ifs[0]);
+-    ide_reset(&bus->ifs[1]);
+-    ide_clear_hob(bus);
+-
+-    /* pending async DMA */
++    /* pending async DMA - needs the IDEState before it is reset */
+     if (bus->dma->aiocb) {
+         trace_ide_bus_reset_aio();
+         blk_aio_cancel(bus->dma->aiocb);
+         bus->dma->aiocb = NULL;
+     }
+ 
++    bus->unit = 0;
++    bus->cmd = 0;
++    ide_reset(&bus->ifs[0]);
++    ide_reset(&bus->ifs[1]);
++    ide_clear_hob(bus);
++
+     /* reset dma provider too */
+     if (bus->dma->ops->reset) {
+         bus->dma->ops->reset(bus->dma);
+-- 
+2.39.2
 
-CCing Markus Armbruster for ideas.
-
-Stefan
-
---P64KNBm6ybtLlYDh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTnW/0ACgkQnKSrs4Gr
-c8ivQAf/Xa27k8pOaeMCCTEdtON5fzw3Lq9AUNch4yKtPmYH0cRN5BMY/mx8HAx6
-Vo8Y+m5ahee7Fo8cY+TWRkj70QKWqB9Q961vdNJ8apjGHzrrcLcyvvvkA8f5Lvky
-WiW402UG3gX0OmP078clOA5/U7oz4FGQNM2oWOklQT4ZSbJ2n2Eih0btkzxwlcfh
-0TBy7SidPpv8Dys/5wNA+dwAPfx7+jw7o9MU9+xzrR6ec6Rjn4fiTUFbXjlBxU/e
-MvU00IEPMcKy15ua7S9VCwWn98xLXFrSjF7cnrxHGlH8EnUsZRs4JtOmt/ygO69B
-nnRQfB3/Ievs7xhXG7NJeSi3UjNwTQ==
-=FJNJ
------END PGP SIGNATURE-----
-
---P64KNBm6ybtLlYDh--
 
 
