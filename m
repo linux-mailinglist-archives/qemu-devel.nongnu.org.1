@@ -2,48 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6879578670D
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 07:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E3F786741
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 07:55:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ2iI-00013w-JA; Thu, 24 Aug 2023 01:16:58 -0400
+	id 1qZ3IY-0002YM-0E; Thu, 24 Aug 2023 01:54:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qZ2i1-000116-I4
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 01:16:43 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qZ3IW-0002Y9-GZ
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 01:54:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qZ2hx-0001dl-T6
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 01:16:41 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5F5BD1C7F5;
- Thu, 24 Aug 2023 08:16:44 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 38B46216A4;
- Thu, 24 Aug 2023 08:16:24 +0300 (MSK)
-Message-ID: <26ee7b25-c92d-ddca-5257-cfc12b54d18e@tls.msk.ru>
-Date: Thu, 24 Aug 2023 08:16:24 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] softmmu: Fix dirtylimit memory leak
-Content-Language: en-US
-To: alloc.young@outlook.com, yong.huang@smartx.com
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qZ3IS-0000Xp-EZ
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 01:54:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692856458;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jpgbh+1g4UlCGAndm6EgiOuGYQAZDsGP7BnVnoFa+wA=;
+ b=XC7/ClIyH4JYZ0qrJEjEEOl8zfzfxBBTVRCuD5CWP0uFEpLUFhJdCCP+7QFlekxCw/bAdn
+ i1tP3cT3W35mBYT/qTZnZOjGbYTJrEulHnKIr5K8n1KNT3omopipHWnFOXKppdWbsYaWao
+ Dv49l2rg3hCdd3p3ZtMMCq1NDqxcldc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-664-bvBV7N93O7GEUNv-LClPfQ-1; Thu, 24 Aug 2023 01:54:16 -0400
+X-MC-Unique: bvBV7N93O7GEUNv-LClPfQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13D9F185A791;
+ Thu, 24 Aug 2023 05:54:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CA1D2492C13;
+ Thu, 24 Aug 2023 05:54:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C524F21E690D; Thu, 24 Aug 2023 07:54:14 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Liu Jaloo <liu.jaloo@gmail.com>
 Cc: qemu-devel@nongnu.org
-References: <SA1PR11MB67606FB284BF14ED9F11D436F51CA@SA1PR11MB6760.namprd11.prod.outlook.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <SA1PR11MB67606FB284BF14ED9F11D436F51CA@SA1PR11MB6760.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.684,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Subject: Re: constructor vs. __constructor__
+References: <CAOYM0N261g8zrDKq2jQo4mriHEhNXWo-oXZ0LCryL+BmUX-h6g@mail.gmail.com>
+Date: Thu, 24 Aug 2023 07:54:14 +0200
+In-Reply-To: <CAOYM0N261g8zrDKq2jQo4mriHEhNXWo-oXZ0LCryL+BmUX-h6g@mail.gmail.com>
+ (Liu Jaloo's message of "Thu, 24 Aug 2023 11:24:00 +0800")
+Message-ID: <87jztlt27t.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,18 +80,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-23.08.2023 10:47, alloc.young@outlook.com wrote:
-> From: "alloc.young" <alloc.young@outlook.com>
-> 
-> Fix memory leak in hmp_info_vcpu_dirty_limit,use g_autoptr
-> handle memory deallocation, alse use g_free to match g_malloc
-> && g_new functions.
+Liu Jaloo <liu.jaloo@gmail.com> writes:
 
-"..use g_autoptr TO handle.." ("to" is missing).
-"alse" - I guess should be "Also".
+> What's the difference between  "__attribute__((constructor))" and
+> "__attribute__((__constructor__))" in qemu source?
 
-I think it is better to split this into two parts, one fixing
-the memleak and another converting to g_free().
+Reading the fine manual helps:
 
-/mjt
+    You may optionally specify attribute names with =E2=80=98__=E2=80=99 pr=
+eceding and
+    following the name.  This allows you to use them in header files
+    without being concerned about a possible macro of the same name. For
+    example, you may use the attribute name __noreturn__ instead of
+    noreturn.
+
+https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
+
 
