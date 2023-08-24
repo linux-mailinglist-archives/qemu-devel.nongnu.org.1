@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8631D787594
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A287875B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:42:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDMj-0006Je-A1; Thu, 24 Aug 2023 12:39:25 -0400
+	id 1qZDMt-0006ST-Bo; Thu, 24 Aug 2023 12:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZDMh-0006Ig-SH
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:23 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qZDMp-0006QE-LL
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:31 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZDMZ-00086f-O0
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:23 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-401b3ea0656so275785e9.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:39:15 -0700 (PDT)
+ id 1qZDMb-00087N-My
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:31 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fed6c2a5cfso59322985e9.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692895154; x=1693499954;
+ d=linaro.org; s=google; t=1692895156; x=1693499956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4GEwqqGD6lwuTZz4D+67GaWk3Ul1LFarK634KRjfE2c=;
- b=p180aKlfum3DESaYhDrgyP0wmOAlWSN27rTdi5+nLzAXoXEosYSqJfFbcPGFEPeoUo
- URf9e0s9TyhJLe6ZO2Ki/uISr92JxQOGoMZ0qSkL6m1n1xrp0XnHqk/tDhBUxrDW6cJ7
- sd+rWAMvmyaFUjoGlZsNGI6zDdWlbyrBHDZyXxGMF1AfveuPUBwLDzWc7lclbqsCVqsM
- eN/7WC47TQSH3WUr51CSg1ZNFhz+NAzPJxASPjig+JTSzgJEIIs7ELXO5QmbC6P9Xroq
- cz14D8P3GDTv7yFcHC9GHalq7OL6DLM+02n/W7u0y7ewjMXlbNeWOc1oQgC2vUPw7aRg
- b7gA==
+ bh=HWAw3yoUeeJNMPe6CX9phpQMFB1kiw2oQRZp+zWhjgY=;
+ b=NjeeNRAQKyfZZTTxD7SkJIUtlIAvv0OfHUufP1V7o2J2FKcwIZm77hXeahIIIAeiTW
+ yHwsYPUizZ0Zc9ICXOG5pi75oKa6MP2+OrYMqTTqS4vE1KUQPm102+BkOYIjn+OshKUy
+ Hf8/BnTEy/Fkyla4cst++Xe6tv95FBt7zk51Ol6pcedrYuMbEmIk1CpAA+zxycJqOUnL
+ hnbP+4A9a2VBjKBmDqjQlPTojkgqGbPCqSvRVG9+/ewWbB1aC12/9e2dh4GoHJ2ArxcM
+ TWAf3yoPl55Aray8HKIQLls8LGltxm8zFxfk3tJ05UtO63bvPlDGz62kWfF5LLTDwXxV
+ O+rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692895154; x=1693499954;
+ d=1e100.net; s=20221208; t=1692895156; x=1693499956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4GEwqqGD6lwuTZz4D+67GaWk3Ul1LFarK634KRjfE2c=;
- b=iGdLoxVkI5cLiutcpM3iODeSAtIo1EQ5toeplhCMNUGGRkzxV0Egy2M67auXDY7jBw
- bgo6c0GY110rS8UZpVA/lqEXjtaygFs+zoTP3ho+5Cz9cQS8QQDLS2r+1hY6asPty/Yb
- TADxYlIXWN+Wh+Cx3fMMbeXRU+KIQBlolCM0CftdYJmICxgKL+8KLR6Qm1o40Z47ayjK
- xX7OgR8tqMlZRz0OMSAOLpE6/bOpnK314/b8KhXVrRJZlMarX4zw8iPanfTq2E1WGAqB
- S3ArmMCrp8HwFTYC4PBqhCfJYmi09tPDgxm4aMt13AVQFjpDLckPm1jZvJUfmKJptBy3
- za8w==
-X-Gm-Message-State: AOJu0YyJzUe9ydQRfzg8vDcGsEjzmk7N+RhZbhF2PkEetqLRcnD1TJYw
- Vn81BWoPXFw4ECfZcOw7K6EqCw==
-X-Google-Smtp-Source: AGHT+IHVXmLkHsqk7rsfPrQfsxei49aGRrC+6J+UPz2jFzHnCmg/9leQKJPRA/hsx5m3NuRxnXYVIQ==
-X-Received: by 2002:a05:600c:b44:b0:3fb:a100:2581 with SMTP id
- k4-20020a05600c0b4400b003fba1002581mr13163314wmr.14.1692895154412; 
- Thu, 24 Aug 2023 09:39:14 -0700 (PDT)
+ bh=HWAw3yoUeeJNMPe6CX9phpQMFB1kiw2oQRZp+zWhjgY=;
+ b=h+Ijh6X9dYr6KDlzPBt6bJpphicye1KUv+oUgfSRJ/I/k+7Vsnb/hYi09Fbb+AlEnQ
+ 7OBLipdujkNKMWzXGAM973C0fc4KGRusxpl+/ADLEUrM4e1jAK2wHgJoQzkLa38pFJoM
+ QzKXnwNqcs3DTTUX99ZoZMYfKbqRRdmhyzIKxElGklBu8G0fmZqrGBry+EY2M+gQH3jc
+ tF1pjotp0T/s8je94Mv8YfR+NJ8HTcvv9Z7MFgWRctt2mo4tibmBJGxW6/rGTQP4zI0V
+ yeHa/+JhFNU9S5f+kf395j6/AJztS4pY129pj7RbPW71n4k7Ej+CPD7hFOUQ7kEFcyr1
+ mvdA==
+X-Gm-Message-State: AOJu0YxNzbfFt3v7olhRPLl6mu1hkIwMAMAENawTzgb0bof3KsBV7hxW
+ 8w9Xz6WHnu3ZBHozYerLmMy09Q==
+X-Google-Smtp-Source: AGHT+IGEMoLUbwKqVmUb5F7HMXQaP3fUSwZiazsKOfoNmjk++lv4N1feESW4NeechBguL+yc/iinVw==
+X-Received: by 2002:a1c:7907:0:b0:400:ce4f:f184 with SMTP id
+ l7-20020a1c7907000000b00400ce4ff184mr2845758wme.41.1692895155669; 
+ Thu, 24 Aug 2023 09:39:15 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c230c00b003fe24441e23sm3134878wmo.24.2023.08.24.09.39.12
+ v2-20020a1cf702000000b003fefca26c72sm3117952wmh.23.2023.08.24.09.39.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Aug 2023 09:39:13 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C22D31FFC0;
+ by zen.linaroharston (Postfix) with ESMTP id DA9F11FFC1;
  Thu, 24 Aug 2023 17:39:10 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,24 +77,24 @@ Cc: Beraldo Leal <bleal@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 05/12] .gitlab-ci.d/cirrus.yml: Update FreeBSD to v13.2
-Date: Thu, 24 Aug 2023 17:39:03 +0100
-Message-Id: <20230824163910.1737079-6-alex.bennee@linaro.org>
+Subject: [PATCH v2 06/12] tests: remove test-gdbstub.py
+Date: Thu, 24 Aug 2023 17:39:04 +0100
+Message-Id: <20230824163910.1737079-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230824163910.1737079-1-alex.bennee@linaro.org>
 References: <20230824163910.1737079-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,32 +110,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+This isn't directly called by our CI and because it doesn't run via
+our run-test.py script does things slightly differently. Lets remove
+it as we have plenty of working in-tree tests now for various aspects
+of gdbstub.
 
-The FreeBSD CI job started to fail due to linking problems ... time
-to update to the latest version to get this fixed.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230823144533.230477-1-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/cirrus.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/guest-debug/test-gdbstub.py | 177 ------------------------------
+ 1 file changed, 177 deletions(-)
+ delete mode 100644 tests/guest-debug/test-gdbstub.py
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 1507c928e5..41d64d6680 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -50,7 +50,7 @@ x64-freebsd-13-build:
-     NAME: freebsd-13
-     CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
-     CIRRUS_VM_IMAGE_SELECTOR: image_family
--    CIRRUS_VM_IMAGE_NAME: freebsd-13-1
-+    CIRRUS_VM_IMAGE_NAME: freebsd-13-2
-     CIRRUS_VM_CPUS: 8
-     CIRRUS_VM_RAM: 8G
-     UPDATE_COMMAND: pkg update; pkg upgrade -y
+diff --git a/tests/guest-debug/test-gdbstub.py b/tests/guest-debug/test-gdbstub.py
+deleted file mode 100644
+index 98a5df4d42..0000000000
+--- a/tests/guest-debug/test-gdbstub.py
++++ /dev/null
+@@ -1,177 +0,0 @@
+-#
+-# This script needs to be run on startup
+-# qemu -kernel ${KERNEL} -s -S
+-# and then:
+-# gdb ${KERNEL}.vmlinux -x ${QEMU_SRC}/tests/guest-debug/test-gdbstub.py
+-
+-import gdb
+-
+-failcount = 0
+-
+-
+-def report(cond, msg):
+-    "Report success/fail of test"
+-    if cond:
+-        print ("PASS: %s" % (msg))
+-    else:
+-        print ("FAIL: %s" % (msg))
+-        global failcount
+-        failcount += 1
+-
+-
+-def check_step():
+-    "Step an instruction, check it moved."
+-    start_pc = gdb.parse_and_eval('$pc')
+-    gdb.execute("si")
+-    end_pc = gdb.parse_and_eval('$pc')
+-
+-    return not (start_pc == end_pc)
+-
+-
+-def check_break(sym_name):
+-    "Setup breakpoint, continue and check we stopped."
+-    sym, ok = gdb.lookup_symbol(sym_name)
+-    bp = gdb.Breakpoint(sym_name)
+-
+-    gdb.execute("c")
+-
+-    # hopefully we came back
+-    end_pc = gdb.parse_and_eval('$pc')
+-    print ("%s == %s %d" % (end_pc, sym.value(), bp.hit_count))
+-    bp.delete()
+-
+-    # can we test we hit bp?
+-    return end_pc == sym.value()
+-
+-
+-# We need to do hbreak manually as the python interface doesn't export it
+-def check_hbreak(sym_name):
+-    "Setup hardware breakpoint, continue and check we stopped."
+-    sym, ok = gdb.lookup_symbol(sym_name)
+-    gdb.execute("hbreak %s" % (sym_name))
+-    gdb.execute("c")
+-
+-    # hopefully we came back
+-    end_pc = gdb.parse_and_eval('$pc')
+-    print ("%s == %s" % (end_pc, sym.value()))
+-
+-    if end_pc == sym.value():
+-        gdb.execute("d 1")
+-        return True
+-    else:
+-        return False
+-
+-
+-class WatchPoint(gdb.Breakpoint):
+-
+-    def get_wpstr(self, sym_name):
+-        "Setup sym and wp_str for given symbol."
+-        self.sym, ok = gdb.lookup_symbol(sym_name)
+-        wp_addr = gdb.parse_and_eval(sym_name).address
+-        self.wp_str = '*(%(type)s)(&%(address)s)' % dict(
+-            type = wp_addr.type, address = sym_name)
+-
+-        return(self.wp_str)
+-
+-    def __init__(self, sym_name, type):
+-        wp_str = self.get_wpstr(sym_name)
+-        super(WatchPoint, self).__init__(wp_str, gdb.BP_WATCHPOINT, type)
+-
+-    def stop(self):
+-        end_pc = gdb.parse_and_eval('$pc')
+-        print ("HIT WP @ %s" % (end_pc))
+-        return True
+-
+-
+-def do_one_watch(sym, wtype, text):
+-
+-    wp = WatchPoint(sym, wtype)
+-    gdb.execute("c")
+-    report_str = "%s for %s (%s)" % (text, sym, wp.sym.value())
+-
+-    if wp.hit_count > 0:
+-        report(True, report_str)
+-        wp.delete()
+-    else:
+-        report(False, report_str)
+-
+-
+-def check_watches(sym_name):
+-    "Watch a symbol for any access."
+-
+-    # Should hit for any read
+-    do_one_watch(sym_name, gdb.WP_ACCESS, "awatch")
+-
+-    # Again should hit for reads
+-    do_one_watch(sym_name, gdb.WP_READ, "rwatch")
+-
+-    # Finally when it is written
+-    do_one_watch(sym_name, gdb.WP_WRITE, "watch")
+-
+-
+-class CatchBreakpoint(gdb.Breakpoint):
+-    def __init__(self, sym_name):
+-        super(CatchBreakpoint, self).__init__(sym_name)
+-        self.sym, ok = gdb.lookup_symbol(sym_name)
+-
+-    def stop(self):
+-        end_pc = gdb.parse_and_eval('$pc')
+-        print ("CB: %s == %s" % (end_pc, self.sym.value()))
+-        if end_pc == self.sym.value():
+-            report(False, "Hit final catchpoint")
+-
+-
+-def run_test():
+-    "Run through the tests one by one"
+-
+-    print ("Checking we can step the first few instructions")
+-    step_ok = 0
+-    for i in range(3):
+-        if check_step():
+-            step_ok += 1
+-
+-    report(step_ok == 3, "single step in boot code")
+-
+-    print ("Checking HW breakpoint works")
+-    break_ok = check_hbreak("kernel_init")
+-    report(break_ok, "hbreak @ kernel_init")
+-
+-    # Can't set this up until we are in the kernel proper
+-    # if we make it to run_init_process we've over-run and
+-    # one of the tests failed
+-    print ("Setup catch-all for run_init_process")
+-    cbp = CatchBreakpoint("run_init_process")
+-    cpb2 = CatchBreakpoint("try_to_run_init_process")
+-
+-    print ("Checking Normal breakpoint works")
+-    break_ok = check_break("wait_for_completion")
+-    report(break_ok, "break @ wait_for_completion")
+-
+-    print ("Checking watchpoint works")
+-    check_watches("system_state")
+-
+-#
+-# This runs as the script it sourced (via -x)
+-#
+-
+-try:
+-    print ("Connecting to remote")
+-    gdb.execute("target remote localhost:1234")
+-
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
+-    gdb.execute("set confirm off")
+-
+-    # Run the actual tests
+-    run_test()
+-
+-except:
+-    print ("GDB Exception: %s" % (sys.exc_info()[0]))
+-    failcount += 1
+-    import code
+-    code.InteractiveConsole(locals=globals()).interact()
+-    raise
+-
+-# Finally kill the inferior and exit gdb with a count of failures
+-gdb.execute("kill")
+-exit(failcount)
 -- 
 2.39.2
 
