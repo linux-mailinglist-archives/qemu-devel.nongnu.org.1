@@ -2,58 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C5F78690E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A1A786A38
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 10:36:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ5C5-0000FX-UD; Thu, 24 Aug 2023 03:55:53 -0400
+	id 1qZ5o0-0004zJ-9N; Thu, 24 Aug 2023 04:35:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qZ5C2-0000FC-2s
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:55:50 -0400
-Received: from mgamail.intel.com ([192.55.52.120])
+ id 1qZ5nx-0004yw-R6
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:35:01 -0400
+Received: from mgamail.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qZ5Bx-000823-9i
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:55:49 -0400
+ id 1qZ5nt-0007LZ-92
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:35:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692863745; x=1724399745;
- h=message-id:date:mime-version:subject:from:to:cc:
- references:in-reply-to:content-transfer-encoding;
- bh=zfT/KhKzo3z/OH6/SXYYDpwCJ6frnf7e+NMK432cYQw=;
- b=BJkCuOLgFqs4d6c1Q4Go4xW8Afp7qgly76FnWzopArg6W8DeAbhSjw3a
- RpAiLK9vJ/We97Iua4QYFCMcZd3v0JVZA4ngsxikBEFgq2E1KB92Cg9SC
- 8TvyJGNyZlSdNpAHCr/DjxbNzG8bl1HLTorodqZK3Hmrphp3Nj0IrS6lO
- 1osbmsJF7TjkDtfXpuGtp/1S/Y5cyO9/fzjjlXoId7Q4rzsZ+puIpRo2M
- uA3x9bmGV8YUBCpd6Erw9lMAHwBbJkleqd1wMxKBVs+mJi2UjsMBEZqE1
- VMmRwgo6AZrnskudF7bT66sSTE9yfIK8fHd/yOV0/Pg9Qur+chDEYy+91 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="373255949"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="373255949"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2023 00:55:41 -0700
+ t=1692866097; x=1724402097;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=+YaBz0JbTkdfg50z18lO5jNRK2nQ1KYA+FqnKCx2caU=;
+ b=mrfECSKQHZvCi0slBFp4ybnI3qN2mAh32VBfbBrdL3CeQOlC6B26iL2s
+ Ud+LC7ZzCzs1z+UNeiTqj695UgHqVfECLU1zBOVleeReLeu2vCNupefmU
+ tZ65Qep0CpI6kQvi8b6W/m/S9UcraN/snAOKCHy6UOoLSOv5PMk0JamDm
+ Hgn7YK/gSXL9eLr2crIhNqgBs8nQ9FMATrqHWn7vfXMIQCKsZeazT+xA9
+ bspX3trklkkJIgdS08BMdjNOKs+CYYhajZEkil+Rgk+aqX9qygrLBBCCY
+ DjnOG8GKRZQ1CKblTAWyVGvtfC+/UkPDbAQUUrUVKltZU0NpRg4g1aYzv g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="359365472"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="359365472"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 01:34:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="740074273"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="740074273"
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="802465560"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="802465560"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
  ([10.93.16.81])
- by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2023 00:55:35 -0700
-Message-ID: <bc2eba9a-7467-3a27-9d72-f7cc4745f338@intel.com>
-Date: Thu, 24 Aug 2023 15:55:33 +0800
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 01:34:48 -0700
+Message-ID: <5db417d4-473c-06c4-d760-70516065aea5@intel.com>
+Date: Thu, 24 Aug 2023 16:34:45 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 33/58] headers: Add definitions from UEFI spec for
- volumes, resources, etc...
+Subject: Re: [PATCH v2 43/58] i386/tdx: setup a timer for the qio channel
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+To: Chenyi Qiang <chenyi.qiang@intel.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -62,28 +59,26 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
- Chenyi Qiang <chenyi.qiang@intel.com>, isaku.yamahata@intel.com
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com
 References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-34-xiaoyao.li@intel.com>
- <20230823194114.GE3642077@ls.amr.corp.intel.com>
- <48444107-d240-059b-a231-cddb085e4adf@intel.com>
-In-Reply-To: <48444107-d240-059b-a231-cddb085e4adf@intel.com>
+ <20230818095041.1973309-44-xiaoyao.li@intel.com>
+ <7629706c-0b7e-a8d5-ed52-21c6eeecd184@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <7629706c-0b7e-a8d5-ed52-21c6eeecd184@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.55.52.120; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=134.134.136.126;
+ envelope-from=xiaoyao.li@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-2.684,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,38 +94,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/24/2023 3:50 PM, Xiaoyao Li wrote:
-> On 8/24/2023 3:41 AM, Isaku Yamahata wrote:
->> On Fri, Aug 18, 2023 at 05:50:16AM -0400,
->> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+On 8/24/2023 3:21 PM, Chenyi Qiang wrote:
+> 
+> 
+> On 8/18/2023 5:50 PM, Xiaoyao Li wrote:
+>> From: Chenyi Qiang <chenyi.qiang@intel.com>
 >>
->>> Add UEFI definitions for literals, enums, structs, GUIDs, etc... that
->>> will be used by TDX to build the UEFI Hand-Off Block (HOB) that is 
->>> passed
->>> to the Trusted Domain Virtual Firmware (TDVF).
->>>
->>> All values come from the UEFI specification and TDVF design guide. [1]
->>>
->>> Note, EFI_RESOURCE_MEMORY_UNACCEPTED will be added in future UEFI spec.
->>>
->>> [1] 
->>> https://software.intel.com/content/dam/develop/external/us/en/documents/tdx-virtual-firmware-design-guide-rev-1.pdf
+>> To avoid no response from QGS server, setup a timer for the transaction. If
+>> timeout, make it an error and interrupt guest. Define the threshold of time
+>> to 30s at present, maybe change to other value if not appropriate.
 >>
->> Nitpick: The specs [1] [2] include unaccepted memory.
+>> Extract the common cleanup code to make it more clear.
+>>
+>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>>   target/i386/kvm/tdx.c | 151 ++++++++++++++++++++++++------------------
+>>   1 file changed, 85 insertions(+), 66 deletions(-)
+>>
+>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>> index 3cb2163a0335..fa658ce1f2e4 100644
+>> --- a/target/i386/kvm/tdx.c
+>> +++ b/target/i386/kvm/tdx.c
+>> @@ -1002,6 +1002,7 @@ struct tdx_get_quote_task {
+>>       struct tdx_get_quote_header hdr;
+>>       int event_notify_interrupt;
+>>       QIOChannelSocket *ioc;
+>> +    QEMUTimer timer;
+>>   };
+>>   
+>>   struct x86_msi {
+>> @@ -1084,13 +1085,48 @@ static void tdx_td_notify(struct tdx_get_quote_task *t)
+>>       }
+>>   }
+>>   
+>> +static void tdx_getquote_task_cleanup(struct tdx_get_quote_task *t, bool outlen_overflow)
+>> +{
+>> +    MachineState *ms;
+>> +    TdxGuest *tdx;
+>> +
+>> +    if (t->hdr.error_code != cpu_to_le64(TDX_VP_GET_QUOTE_SUCCESS) && !outlen_overflow) {
+>> +        t->hdr.out_len = cpu_to_le32(0);
+>> +    }
+>> +
+>> +    /* Publish the response contents before marking this request completed. */
+>> +    smp_wmb();
+>> +    if (address_space_write(
+>> +            &address_space_memory, t->gpa,
+>> +            MEMTXATTRS_UNSPECIFIED, &t->hdr, sizeof(t->hdr)) != MEMTX_OK) {
+>> +        error_report("TDX: failed to update GetQuote header.");
+>> +    }
+>> +    tdx_td_notify(t);
+>> +
+>> +    if (t->ioc->fd > 0) {
+>> +        qemu_set_fd_handler(t->ioc->fd, NULL, NULL, NULL);
+>> +    }
+>> +    qio_channel_close(QIO_CHANNEL(t->ioc), NULL);
+>> +    object_unref(OBJECT(t->ioc));
+>> +    timer_del(&t->timer);
 > 
-> EfiUnacceptedMemoryType shows in UEFI spec while 
-> EFI_RESOURCE_MEMORY_UNACCEPTED is still missing in PI spec.
-> 
-> https://github.com/tianocore/edk2/commit/00bbb1e584ec05547159f405cca383e8ba5e4ddb
+> Xiaoyao, I guess you missed a bug fix patch here as t->timer could be
+> uninitialized and then timer_del() will cause segv.
 
-Sorry, I just find it shows in latest PI spec.
+Thanks for the reminding.
+I'll update this patch to include the fix.
 
-https://uefi.org/sites/default/files/resources/UEFI_PI_Spec_1_8_March3.pdf
+Thanks,
+-Xiaoyao
 
->> [1] UEFI Specification Version 2.10 (released August 2022)
->> [2] UEFI Platform Initialization Distribution Packaging Specification 
->> Version 1.1)
-> 
+>> +    g_free(t->out_data);
+>> +    g_free(t);
+>> +
+>> +    /* Maintain the number of in-flight requests. */
+>> +    ms = MACHINE(qdev_get_machine());
+>> +    tdx = TDX_GUEST(ms->cgs);
+>> +    qemu_mutex_lock(&tdx->lock);
+>> +    tdx->quote_generation_num--;
+>> +    qemu_mutex_unlock(&tdx->lock);
+>> +}
+>> +
 > 
 
 
