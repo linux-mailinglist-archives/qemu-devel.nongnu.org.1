@@ -2,81 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6348787488
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B978C78748F
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:49:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZCYq-0006fP-6O; Thu, 24 Aug 2023 11:47:52 -0400
+	id 1qZCZz-0007M1-IM; Thu, 24 Aug 2023 11:49:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZCYm-0006eY-6P
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:47:48 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZCZu-0007Lp-FF
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:48:58 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZCYj-0006ez-Si
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:47:47 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31977ace1c8so6091051f8f.1
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:47:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZCZs-0006nM-C8
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:48:58 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5298e43bb67so82018a12.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692892064; x=1693496864;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=d7uTEaYhffoTdd19BViGveR+NpC3t/cRU3Ix58EgIAA=;
- b=B+xnLBu/Pkq6Yh4DBb+wiliuv6RIiLQ1z7Vj0wVOdYT3MNOycKkPTkN2rJYspE2Qor
- ln++MwJ9muDTYBnECK7wCuqhtyVjPFE6Q7yci/c8LFx68rApP6jIciCnaM5Ywqil/R8x
- YN3+WJp1xkWCoRTb3kSaIrpNlT/6SL9umTWR8UNnay5PPDSsViXF2KmG0FnHvG630eNP
- JcaK9lLSx60K7CFFmX7E9IiJ/QGUqrgjX/s9rnH/4/xVFssdHODd34J/amRj7Aoo/Cvt
- jj0vzA4ICsN88FCVdB4P3jepTBb+O7qT4jrGLwlwWrM9XKFnRO3oiXCtWS9jlgAvA38o
- zNUA==
+ d=linaro.org; s=google; t=1692892135; x=1693496935;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UDq8Dezpxvvt9e6JOVCWELUDSTQyD4yuLBza0seT8Uw=;
+ b=YclajRul6Wh7+jpqtflCtYYsCLv8mOWWY5CdkXv2axuzW/1XDH/XdYTQmf2vK3gl1+
+ oEJ4mfXLK1OrQCXaCGDaKOC/BTnIwJtXcH+cfR6x/zz2f7RzKRKEIBC0qNGyhgRD0KGK
+ Hl0TXBiI/HkXFyS4XiULmEH1S+XRq4H/7UKMEH6rXC8aOeD7hS/4qKev6rswG8fpphzU
+ MHnpF+M+KL+fhvPQ+COIlumfVEfw6RI0utwuOaTV2IsCxyltAsUX5xWSv4PtZYH7Xmey
+ 4i5CarlcK4caGx/z9RLZ6h3RudcDxrQUezRqEkA8kEgBbW/KkyOMxW5MDSwSzOHTNpVq
+ bSNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692892064; x=1693496864;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d7uTEaYhffoTdd19BViGveR+NpC3t/cRU3Ix58EgIAA=;
- b=QEw7qxbcASulefJr3bAS/MrjwmED/7AFubLu15vaLroLQ7jsh7BDIQy76HZ4FYvrt2
- oqAn+bsTbcMvhwfFaWFkH3ahm1q06eqyjJ0lMcCkPhQz2/AqvxuUXyrt9VSgZZMk+eme
- piKlcKqphCT9jxE5+gAmwwPkuJ02P6rkafozACaFjF61Xk6HzViX0N1is79yfLDuS5ht
- DcEhUpjQUvXGAV56vu+o2VYDz2/UtNPLI2ru8+uGrlG/SSVTCB+ztFFz0q956qC54l9D
- WMOyOb/9J2WKTJOnODT/nruh/2XCtnvCLCOkGeYPIH/8fz/QQEltq0cKfzbDLxUI/tJw
- DjkA==
-X-Gm-Message-State: AOJu0YzMoST/hBxSpQarmXdhSXxaeTWSxiC3Y4NoxIE876nsOp4Q0CKH
- QEygiWBSZ3EetVTiGYKft3gppg==
-X-Google-Smtp-Source: AGHT+IF0qjCq1GKVpImb4+2tvhePm2pYlA38uGoCHl/DludViqFR8jX0B8VHBIWY6symkz76wx6VDQ==
-X-Received: by 2002:adf:e50f:0:b0:317:5a99:4549 with SMTP id
- j15-20020adfe50f000000b003175a994549mr12582097wrm.0.1692892064053; 
- Thu, 24 Aug 2023 08:47:44 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.238.90])
- by smtp.gmail.com with ESMTPSA id
- i9-20020a05600011c900b0031c6581d55esm7661242wrx.91.2023.08.24.08.47.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 08:47:43 -0700 (PDT)
-Message-ID: <663d4cd3-50d5-d5db-bd43-efc55fe6bbf0@linaro.org>
-Date: Thu, 24 Aug 2023 17:47:41 +0200
+ d=1e100.net; s=20221208; t=1692892135; x=1693496935;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UDq8Dezpxvvt9e6JOVCWELUDSTQyD4yuLBza0seT8Uw=;
+ b=d49Qu3CUt0aPSEuyWDML3d6hyWyDz4RaE1ymzYIqDrp1+6koZZ1Qzu4v0NoTfnEWLv
+ +7vTaU7mfGws7y94ConUr+iYdbdl7x0Ns31E7xFFCoAS4k+ndAn/ywdvz7S2L4khKser
+ xJKlfLfDFbTMJLhmPomOakJl76DtTnz/MQFL5to/V8PzG46ljLWuVmDYoM/Jl70GgoWD
+ X3krRbs8NAdQjF9rK1aqC/Sr1ShKZU3QS8Z/MN/wanAzNLj+kW2ZAUJZYfPL1FMtSdtq
+ 3FlsvQ0zRSbgtHeeeK9No4ZBaYQhvvA6Gec27fYAiLO1A2pf6AHpVwoQaChH589GpWua
+ qsNA==
+X-Gm-Message-State: AOJu0YwJiKXFglpxF48/yCe/PSDgCpVaBbQXAO3bfmuG40PjrkUv2tXD
+ FlMXAES5t9xldGTX46mrJu18LBiXsB7pPboXK+7rJ8FkleKJqElE
+X-Google-Smtp-Source: AGHT+IEE6HggVPLrU6Si9T5/jGrrqlk+ZcVu6ktXdozCw8C2hT+ddmV7OQ43R0SHJfOh3gBamy98K0pTgDOvLuO5Z0Y=
+X-Received: by 2002:aa7:d952:0:b0:528:9284:61c6 with SMTP id
+ l18-20020aa7d952000000b00528928461c6mr20105992eds.0.1692892134855; Thu, 24
+ Aug 2023 08:48:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 1/4] hw/net/fsl_etsec/rings.c: Avoid variable length array
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
- qemu-ppc@nongnu.org
-References: <20230824153224.2517486-1-peter.maydell@linaro.org>
- <20230824153224.2517486-2-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230824153224.2517486-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
+References: <20230811214031.171020-1-richard.henderson@linaro.org>
+ <20230811214031.171020-6-richard.henderson@linaro.org>
+In-Reply-To: <20230811214031.171020-6-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 16:48:44 +0100
+Message-ID: <CAFEAcA-VYouvS2+wCbuS3YtTawPRW1OkXHQrxaa7xF23bVknXg@mail.gmail.com>
+Subject: Re: [PATCH v2 05/11] target/arm: Introduce make_ccsidr64
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,79 +85,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 17:32, Peter Maydell wrote:
-> In fill_rx_bd() we create a variable length array of size
-> etsec->rx_padding. In fact we know that this will never be
-> larger than 64 bytes, because rx_padding is set in rx_init_frame()
-> in a way that ensures it is only that large. Use a fixed sized
-> array and assert that it is big enough.
-> 
-> Since padd[] is now potentially rather larger than the actual
-> padding required, adjust the memset() we do on it to match the
-> size that we write with cpu_physical_memory_write(), rather than
-> clearing the entire array.
-> 
-> The codebase has very few VLAs, and if we can get rid of them all we
-> can make the compiler error on new additions.  This is a defensive
-> measure against security bugs where an on-stack dynamic allocation
-> isn't correctly size-checked (e.g.  CVE-2021-3527).
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+On Fri, 11 Aug 2023 at 22:41, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Do not hard-code the constants for Neoverse V1.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/net/fsl_etsec/rings.c | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/net/fsl_etsec/rings.c b/hw/net/fsl_etsec/rings.c
-> index 788463f1b62..2f2f359f7a5 100644
-> --- a/hw/net/fsl_etsec/rings.c
-> +++ b/hw/net/fsl_etsec/rings.c
-> @@ -372,6 +372,12 @@ void etsec_walk_tx_ring(eTSEC *etsec, int ring_nbr)
->       etsec->regs[TSTAT].value |= 1 << (31 - ring_nbr);
->   }
->   
-> +/*
-> + * rx_init_frame() ensures we never do more padding than this
-> + * (checksum plus minimum data packet size)
-> + */
-> +#define MAX_RX_PADDING 64
-> +
->   static void fill_rx_bd(eTSEC          *etsec,
->                          eTSEC_rxtx_bd  *bd,
->                          const uint8_t **buf,
-> @@ -380,9 +386,11 @@ static void fill_rx_bd(eTSEC          *etsec,
->       uint16_t to_write;
->       hwaddr   bufptr = bd->bufptr +
->           ((hwaddr)(etsec->regs[TBDBPH].value & 0xF) << 32);
-> -    uint8_t  padd[etsec->rx_padding];
-> +    uint8_t  padd[MAX_RX_PADDING];
->       uint8_t  rem;
->   
-> +    assert(etsec->rx_padding <= MAX_RX_PADDING);
-> +
->       RING_DEBUG("eTSEC fill Rx buffer @ 0x%016" HWADDR_PRIx
->                  " size:%zu(padding + crc:%u) + fcb:%u\n",
->                  bufptr, *size, etsec->rx_padding, etsec->rx_fcb_size);
-> @@ -426,7 +434,7 @@ static void fill_rx_bd(eTSEC          *etsec,
->           rem = MIN(etsec->regs[MRBLR].value - bd->length, etsec->rx_padding);
->   
->           if (rem > 0) {
-> -            memset(padd, 0x0, sizeof(padd));
-> +            memset(padd, 0x0, rem);
->               etsec->rx_padding -= rem;
->               *size             -= rem;
->               bd->length        += rem;
+>  target/arm/tcg/cpu64.c | 48 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 32 insertions(+), 16 deletions(-)
 
-Maybe we can add this for clarity:
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-@@ -468,6 +468,6 @@ static void rx_init_frame(eTSEC *etsec, const 
-uint8_t *buf, size_t size)
-       * minimum MTU size bytes long (64)
-       */
--    if (etsec->rx_buffer_len < 60) {
--        etsec->rx_padding += 60 - etsec->rx_buffer_len;
-+    if (etsec->rx_padding + etsec->rx_buffer_len < MAX_RX_PADDING) {
-+        etsec->rx_padding = MAX_RX_PADDING - etsec->rx_buffer_len;
-      }
-
-
+thanks
+-- PMM
 
