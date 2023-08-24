@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68337875F1
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A453978761D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:55:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDVU-0001k3-Mv; Thu, 24 Aug 2023 12:48:28 -0400
+	id 1qZDbO-0003S3-4Q; Thu, 24 Aug 2023 12:54:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZDVP-0001js-JG
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:48:23 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qZDbG-0003RE-8u; Thu, 24 Aug 2023 12:54:26 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZDVN-0001vC-7x
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:48:23 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31c79850df5so666449f8f.1
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:48:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qZDbE-0002ip-01; Thu, 24 Aug 2023 12:54:25 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-500913779f5so4660448e87.2; 
+ Thu, 24 Aug 2023 09:54:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692895699; x=1693500499;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iy7N/Rnqx9OMidqM6GTDKL4xclWQ6WwSF+w7lEnOsYw=;
- b=zX8nK2sH7KzOa0+ZZEtkw9zxoIeoyDUYfLF3D6Vkm3xld+NrqXd6ezB/1NS6mWuaxN
- 8+Kb2hPx1pfcKJ1caW6UlWnU7IY2+aXvKvjByh3xtsR7shFHeIGpguwLu9Xc3opjoK4R
- JhFlsNZTu9IxfH0VC2HvRAsHNemQQrPtDq/UM0E3ewXMy7U8nnUEdyg5SJrqdY+zjJHR
- xtII3JjCNrgBXWD4d1HRRAp262lJHinXYzvaHUFtwkbBHY6Ybz7I5EJa65TnmKsyTXUH
- hMZ7Ocq3JNOIF/5Qe+I+TQggHeAxxi308rUMi7dfGdh18MFJGzFOYL//W7AVEa9vtApr
- ZHsg==
+ d=gmail.com; s=20221208; t=1692896061; x=1693500861;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WMHvbuc2zY3isHaLJbx7XNfQkDZlZMB8BJIfCF7eZQQ=;
+ b=khq0+xYoW/AsGpCZ/QvIfrTLTWloVf4w5IHHLSJUzZFPXWEVuqDSZRJejIZqIdoA0O
+ TTpgqiXx52GrBggVNJH+P4IkgmAfxfe4SCtROy/ZsS6SXVz45hgt9KR0CecdTAamKZ/m
+ zg/pM/mL2DweUNLdg2l2QSMv0qucTNSd3zA9oWLV9UTtri2M5EvoFogHQiVhznKNlPnr
+ QPg+UKMPy52tiUvmavK+cJJpyWLbg2hOfWlyvHHs/+vkN03flpTJxYzRiGYEJ4bWAvTI
+ DjWtihSSNctOUD17f6SKd5PSTCUaK6eNxaF2++NlCqtO6xO8UKPxrMbr/nKvGWf5DaLr
+ 5sGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692895699; x=1693500499;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iy7N/Rnqx9OMidqM6GTDKL4xclWQ6WwSF+w7lEnOsYw=;
- b=MEc2UcUJRsQ4K/40VA6iWdCZwoQxctxuFAVnIw9CQDV0bWjHaGK7fa/fUX5o9ERR88
- 2enC+w+iS9naWsTn5pboFXMRl8XQEL+e5YS5mLPNF3vthqFoVNcJI4DCNbxVhrJ+20s/
- kUMcJenHsK/F3a4DIKPqXgIjVnUIaAELrJZ3bMud7+lgq5ZCsJ22ye+lskv5aaXTuX9/
- pg9xFscxS6jHeHtz9xgjikHlAs59QYNfZ6l4o0jq5+nY+lGDfIr6fU0fxaRsEj1s8vDm
- 7R/uVZt7Oy8McxjMkV1o20FKEVfRBL7yw2c+9UtfaR7Z38BQxkPTtG4G8uGMTTr3drh2
- I2ZA==
-X-Gm-Message-State: AOJu0YwoVkgGRo7Flwxgjy+5VgbmqpGrdKxVKU6jpIwUL0XWE188zAZX
- azDWPMCntfVjpB3nb7p+SdM6JfS+XQux/7ZxGlU=
-X-Google-Smtp-Source: AGHT+IELnjOi+bjRUzDaVyri23w/pmZ/1TwwQ92Xy2yoC+/9x13u+4vFSrD2/zwTfuwqzcVltEGKTA==
-X-Received: by 2002:adf:fe86:0:b0:31c:6525:770d with SMTP id
- l6-20020adffe86000000b0031c6525770dmr5356870wrr.1.1692895699401; 
- Thu, 24 Aug 2023 09:48:19 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- i14-20020a5d630e000000b0031980783d78sm22626598wru.54.2023.08.24.09.48.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 09:48:19 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH] hw/usb/hcd-xhci: Avoid variable-length array in
- xhci_get_port_bandwidth()
-Date: Thu, 24 Aug 2023 17:48:18 +0100
-Message-Id: <20230824164818.2652452-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20221208; t=1692896061; x=1693500861;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WMHvbuc2zY3isHaLJbx7XNfQkDZlZMB8BJIfCF7eZQQ=;
+ b=S2FrN3u/GGVlVSF7Tf/UAGmtv0mh0LOE11ZKuyKzOa19DVP4+lp45O12pKJgvIAZal
+ lnGXM1K9bm5l85OSrFiUR+7QNBaPMepIQgLUAqN16ONH2QnTFJL2TLvCqxiNxaewt/Oi
+ Xds9mOU2EVoh74kjrm0jPl2/o5xnUgkaElpC/QJjn1+SrFP/wTe/YvrAdbVKTxEuAotq
+ PWjo7FLe0J2IyL4WTPWDmpApZGF1t3LZtbqAX/Z5ZAofgMms6KYHit9/2pyLlqjrdnLp
+ jVpEW/c96nihxuBS03Y7b2IB2/T6dqVaDdHObbOILg/b8lx5lFt4P12E9wYdV3FRZWgm
+ XoaQ==
+X-Gm-Message-State: AOJu0YzN+x1mX0mv0+5xcmTspstvLsCCQXVn0kX0wKLI4sQKzpCQDcVc
+ 7ENOTuuFaDcMxhpNDy1Sy+mrBN1mge0ol7YBSM0lSRjpxYD6IZWR
+X-Google-Smtp-Source: AGHT+IEJc4rqEaTUTGY5zVZ2gQd4HwfcMgGr+wLvhLlpdbIwTrL7xWvQ4Fgwk7O0fs9njVIQYl55RxmZBUMEq+X7e88=
+X-Received: by 2002:a05:6512:3b28:b0:4fe:ecd:4959 with SMTP id
+ f40-20020a0565123b2800b004fe0ecd4959mr15062042lfv.32.1692896060047; Thu, 24
+ Aug 2023 09:54:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+References: <20230824155345.109765-1-hreitz@redhat.com>
+In-Reply-To: <20230824155345.109765-1-hreitz@redhat.com>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Fri, 25 Aug 2023 00:53:50 +0800
+Message-ID: <CAAAx-8LvtrD66Mj11EuUhNFTQM4_cFcEQpsi52TgAvtsez5U3g@mail.gmail.com>
+Subject: Re: [PATCH 0/5] file-posix: Clean up and fix zoned checks
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,56 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In xhci_get_port_bandwidth(), we use a variable-length array to
-construct the buffer to send back to the guest. Avoid the VLA
-by using dma_memory_set() to directly request the memory system
-to fill the guest memory with a string of '80's.
+Hi Hanna,
 
-The codebase has very few VLAs, and if we can get rid of them all we
-can make the compiler error on new additions.  This is a defensive
-measure against security bugs where an on-stack dynamic allocation
-isn't correctly size-checked (e.g.  CVE-2021-3527).
+Hanna Czenczek <hreitz@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8824=E6=97=
+=A5=E5=91=A8=E5=9B=9B 23:53=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi,
+>
+> As presented in [1] there is a bug in the zone code in raw_co_prw(),
+> specifically we don=E2=80=99t check whether there actually is zone inform=
+ation
+> before running code that assumes there is (and thus we run into a
+> division by zero).  This has now also been reported in [2].
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Use of dma_memory_set() is a suggestion from RTH from Philippe's
-original attempt.  If we ever do anything about the "use real
-values" TODO we'll need to do something else (eg heap-allocated
-array), but since we haven't done so since the code was written
-in 2012 it doesn't seem very likely we'll ever do so.
----
- hw/usb/hcd-xhci.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+Thanks for catching the bugs and your work.
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index b89b618ec21..324177ad5df 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -2434,7 +2434,6 @@ static void xhci_detach_slot(XHCIState *xhci, USBPort *uport)
- static TRBCCode xhci_get_port_bandwidth(XHCIState *xhci, uint64_t pctx)
- {
-     dma_addr_t ctx;
--    uint8_t bw_ctx[xhci->numports+1];
- 
-     DPRINTF("xhci_get_port_bandwidth()\n");
- 
-@@ -2442,11 +2441,10 @@ static TRBCCode xhci_get_port_bandwidth(XHCIState *xhci, uint64_t pctx)
- 
-     DPRINTF("xhci: bandwidth context at "DMA_ADDR_FMT"\n", ctx);
- 
--    /* TODO: actually implement real values here */
--    bw_ctx[0] = 0;
--    memset(&bw_ctx[1], 80, xhci->numports); /* 80% */
--    if (dma_memory_write(xhci->as, ctx, bw_ctx, sizeof(bw_ctx),
--                     MEMTXATTRS_UNSPECIFIED) != MEMTX_OK) {
-+    /* TODO: actually implement real values here. This is 80% for all ports. */
-+    if (stb_dma(xhci->as, ctx, 0, MEMTXATTRS_UNSPECIFIED) != MEMTX_OK ||
-+        dma_memory_set(xhci->as, ctx + 1, 80, xhci->numports,
-+                       MEMTXATTRS_UNSPECIFIED) != MEMTX_OK) {
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: DMA memory write failed!\n",
-                       __func__);
-         return CC_TRB_ERROR;
--- 
-2.34.1
+>
+> I believe the solution [1] is incomplete, though, which is why I=E2=80=99=
+m
+> sending this separate series: I don=E2=80=99t think checking bs->wps and/=
+or
+> bs->bl.zone_size to determine whether there is zone information is
+> right; for example, we do not have raw_refresh_zoned_limits() clear
+> those values if on a refresh, zone information were to disappear.
+>
+> It is also weird that we separate checking bs->wps and bs->bl.zone_size
+> at all; raw_refresh_zoned_limits() seems to intend to ensure that either
+> we have information with non-NULL bs->wps and non-zero bs->bl.zone_size,
+> or we don=E2=80=99t.
+>
+> I think we should have a single flag that tells whether we have valid
+> information or not, and it looks to me like bs->bl.zoned !=3D BLK_Z_NONE
+> is the condition that fits best.
 
+The former way only checks zone information when it is being used to
+avoid divide-by-zero or nullptr errors. Putting the error path with
+non-zoned model implies a zoned device must have non-zero zone size
+and allocated write pointers. Given that no other parts are changing
+the zone_size to 0 and free wps, It does simplify the code path.
+
+Thanks,
+Sam
 
