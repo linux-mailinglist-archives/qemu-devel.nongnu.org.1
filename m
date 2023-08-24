@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684EC786462
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 03:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20132786465
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 03:04:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYykL-00007e-L7; Wed, 23 Aug 2023 21:02:49 -0400
+	id 1qYykN-0000AM-OC; Wed, 23 Aug 2023 21:02:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYykI-00005e-1z
+ id 1qYykI-00005f-5c
  for qemu-devel@nongnu.org; Wed, 23 Aug 2023 21:02:46 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qYykE-0000QP-Vx
+ id 1qYykF-0000QY-OP
  for qemu-devel@nongnu.org; Wed, 23 Aug 2023 21:02:45 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-68bec436514so343575b3a.1
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 18:02:42 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-68a3082c771so308910b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 18:02:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692838961; x=1693443761;
+ d=linaro.org; s=google; t=1692838962; x=1693443762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yER8RLCvXGE4QY1NsvgxkMYXrHTMG4W+91MMUIhX/Po=;
- b=DMW0px2xfF8NLZkQ0gx+QLO5+qybrbI1WOpDIOTMUuuaerdh4r0WKxEHjiKuWgdcJ2
- leNrxdNuTR0X3yLQdnbgnXy0vbSircTHy9bqQTJcnpBUPPTfLb/cucIy26W7I+KDI2Px
- rkaGqEI0vnn9Yp+MFnK24VKQ0J/mkKGy+naSA0c5xatezKuoY6+J29xCkT987tbrWxID
- 3tSyefhMFJvLAxSllTMMgvPJ8u6o+5PPWemP9bVK3nfLE3RTgVNWtwtnFFjeUmSSzawu
- bMbt9jYxRUnTCjt0ZBa2f9T0aFZi50k4RuuiqFrFNCaISNJ5YOsQU1Fmf2BfJ2prODDd
- borQ==
+ bh=4DWAv0bR3QBWPP10gPMl5GXU+szn3XnQPYnLcaRRAHU=;
+ b=WNsMtT+Dl7h1fwXfuMFloPrYZBORVbvIgxnhVdjSjstjonL/yWgOMuFoZGpoHX0NND
+ J7QXzH1OJnrR6/0Ca4fBvXJ0ehvn60ibk42oWNH86slV7r5sHZ3sDkCMTq+/GpfyEyhG
+ KKq/xJqLOek/AHjMDHswg4YFIeHtL+VqvZyRT6xb4NxtPT0geR3b4aFEG4TTqU/YyCTj
+ +7qTJG8WMMYRYxNeKJTGR6HxWpvEwI2cLp9jKsSssfZc6wFOmwc143fZgUlt/edmCWpi
+ SQHEn9qdk4knYyqbPrJOwNCutplOsnqlb44xE9T1GvqboMtgofHRefhFF4qPSoQuidfh
+ 9KPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692838961; x=1693443761;
+ d=1e100.net; s=20221208; t=1692838962; x=1693443762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yER8RLCvXGE4QY1NsvgxkMYXrHTMG4W+91MMUIhX/Po=;
- b=I0mDGT5JlB/T62dDgR/cu/jqmySQUgWqI/X6OLuP3rNzksnot3ZBdAa7O/Xvi0dlbV
- cEBLgL0StUItanZRk63X5vdc5lp1QJSPqOW9Ltrfi0fWlXURFC/nIJn5kYGV3G9wNZoZ
- kziBU72bi7p9bKAGUoaz+/QtvdpKeLT7PnLp8B4lXiz7V/V7EFpsgLcgdbVL5maVYxOy
- ozESb4oGff4Fda9kH9D4IxeYn8qkGKI9rco7VqOQtjPQChlsQQqeV5bTCZUoPoejzSJb
- YBNlJ2j3gjVotcZpiCERy8/7MnnhBokP4nKJ0NO0m89W7v3FEG43538Abm7eisnzscCx
- aq+Q==
-X-Gm-Message-State: AOJu0Yx9XhazQS5J/8RnCmBNk9fQ2p9T/+ozQTXz8ikdZP0E9cgBQFLQ
- LT0zn8FAEEeqOGKmK3BrZwg4p1xw7qmLbH7HA0U=
-X-Google-Smtp-Source: AGHT+IGV4ec3zOJxYEEWBHhe5+2lYZE4HMOzvkTg5S++dPB1v0HDezsMPlwFsR9JVaA0R3lgAovc2Q==
-X-Received: by 2002:a05:6a21:81a3:b0:11e:7ced:3391 with SMTP id
- pd35-20020a056a2181a300b0011e7ced3391mr10662236pzb.43.1692838961681; 
- Wed, 23 Aug 2023 18:02:41 -0700 (PDT)
+ bh=4DWAv0bR3QBWPP10gPMl5GXU+szn3XnQPYnLcaRRAHU=;
+ b=UUwA36OJvQcb+GzcRKiVHldIT0HcSBJCE86SgWnkKLjeIh9G5DVRKXeXn7/E3piFDI
+ aW129DbgPZT3JLYH3yUDEDY0G0nX7oodATLY4x6rc+vQKPnJAYhfOYufz8tN67A2XvfO
+ 6gHQ611TvMAPqTdKT2CXAYJQV9wQGFxYytkxZwPdpP709OyAPeW05tdEybkPLryTCuXX
+ s28VJXcwLei3oqTKsuHiCWT2Uc0T83WgNDdK3QS1zK6WYYL48/Dtnaal81obhf3WLhdW
+ oub+CvBc8PhZO5symiMMcl3O3UnH1IRZrL447pQzNkZzw6FLZUt08rCBY51IQ7FbU1eY
+ 28LQ==
+X-Gm-Message-State: AOJu0YzZDtdVKcg0aF1wq7CA9jewzxdSYJQcn7nYoYxLte2YaO4AghbT
+ EbIhE52JLdOrtkYQGj5uT7V1je34Pscbl3WXLME=
+X-Google-Smtp-Source: AGHT+IH+BFd6Ik1Qv/vy/RAbvcd6Jd7wKZZc7fypQHkgyl6FPV7yjyG+TB5xPrrZfl4tZPHiIlRn/w==
+X-Received: by 2002:a05:6a00:2808:b0:68a:6e26:a918 with SMTP id
+ bl8-20020a056a00280800b0068a6e26a918mr7996046pfb.8.1692838962388; 
+ Wed, 23 Aug 2023 18:02:42 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:72f0:1ea7:85d2:141e])
  by smtp.gmail.com with ESMTPSA id
  c10-20020aa78c0a000000b006875df4773fsm2050789pfd.163.2023.08.23.18.02.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Aug 2023 18:02:41 -0700 (PDT)
+ Wed, 23 Aug 2023 18:02:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
-	Michael Cree <mcree@orcon.net.nz>
-Subject: [PATCH 03/13] linux-user: Emulate /proc/cpuinfo for Alpha
-Date: Wed, 23 Aug 2023 18:02:27 -0700
-Message-Id: <20230824010237.1379735-4-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 04/13] util/selfmap: Use dev_t and ino_t in MapInfo
+Date: Wed, 23 Aug 2023 18:02:28 -0700
+Message-Id: <20230824010237.1379735-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824010237.1379735-1-richard.henderson@linaro.org>
 References: <20230824010237.1379735-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,119 +93,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Use dev_t instead of a string, and ino_t instead of uint64_t.
+The latter is likely to be identical on modern systems but is
+more type-correct for usage.
 
-Add emulation for /proc/cpuinfo for the alpha architecture.
-
-alpha output example:
-
-(alpha-chroot)root@p100:/# cat /proc/cpuinfo
-cpu                     : Alpha
-cpu model               : ev67
-cpu variation           : 0
-cpu revision            : 0
-cpu serial number       : JA00000000
-system type             : QEMU
-system variation        : QEMU_v8.0.92
-system revision         : 0
-system serial number    : AY00000000
-cycle frequency [Hz]    : 250000000
-timer frequency [Hz]    : 250.00
-page size [bytes]       : 8192
-phys. address bits      : 44
-max. addr. space #      : 255
-BogoMIPS                : 2500.00
-platform string         : AlphaServer QEMU user-mode VM
-cpus detected           : 8
-cpus active             : 4
-cpu active mask         : 0000000000000095
-L1 Icache               : n/a
-L1 Dcache               : n/a
-L2 cache                : n/a
-L3 cache                : n/a
-
-Cc: Michael Cree <mcree@orcon.net.nz>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230803214450.647040-4-deller@gmx.de>
+Tested-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/alpha/target_proc.h | 68 +++++++++++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
+ include/qemu/selfmap.h |  4 ++--
+ linux-user/syscall.c   |  6 ++++--
+ util/selfmap.c         | 12 +++++++-----
+ 3 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
-index 43fe29ca72..dac37dffc9 100644
---- a/linux-user/alpha/target_proc.h
-+++ b/linux-user/alpha/target_proc.h
-@@ -1 +1,67 @@
--/* No target-specific /proc support */
-+/*
-+ * Alpha specific proc functions for linux-user
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef ALPHA_TARGET_PROC_H
-+#define ALPHA_TARGET_PROC_H
-+
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    int max_cpus = sysconf(_SC_NPROCESSORS_CONF);
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    unsigned long cpu_mask;
-+    char model[32];
-+    const char *p, *q;
-+    int t;
-+
-+    p = object_class_get_name(OBJECT_CLASS(CPU_GET_CLASS(env_cpu(cpu_env))));
-+    q = strchr(p, '-');
-+    t = q - p;
-+    assert(t < sizeof(model));
-+    memcpy(model, p, t);
-+    model[t] = 0;
-+
-+    t = sched_getaffinity(getpid(), sizeof(cpu_mask), (cpu_set_t *)&cpu_mask);
-+    if (t < 0) {
-+        if (num_cpus >= sizeof(cpu_mask) * 8) {
-+            cpu_mask = -1;
-+        } else {
-+            cpu_mask = (1UL << num_cpus) - 1;
-+        }
-+    }
-+
-+    dprintf(fd,
-+            "cpu\t\t\t: Alpha\n"
-+            "cpu model\t\t: %s\n"
-+            "cpu variation\t\t: 0\n"
-+            "cpu revision\t\t: 0\n"
-+            "cpu serial number\t: JA00000000\n"
-+            "system type\t\t: QEMU\n"
-+            "system variation\t: QEMU_v" QEMU_VERSION "\n"
-+            "system revision\t\t: 0\n"
-+            "system serial number\t: AY00000000\n"
-+            "cycle frequency [Hz]\t: 250000000\n"
-+            "timer frequency [Hz]\t: 250.00\n"
-+            "page size [bytes]\t: %d\n"
-+            "phys. address bits\t: %d\n"
-+            "max. addr. space #\t: 255\n"
-+            "BogoMIPS\t\t: 2500.00\n"
-+            "kernel unaligned acc\t: 0 (pc=0,va=0)\n"
-+            "user unaligned acc\t: 0 (pc=0,va=0)\n"
-+            "platform string\t\t: AlphaServer QEMU user-mode VM\n"
-+            "cpus detected\t\t: %d\n"
-+            "cpus active\t\t: %d\n"
-+            "cpu active mask\t\t: %016lx\n"
-+            "L1 Icache\t\t: n/a\n"
-+            "L1 Dcache\t\t: n/a\n"
-+            "L2 cache\t\t: n/a\n"
-+            "L3 cache\t\t: n/a\n",
-+            model, TARGET_PAGE_SIZE, TARGET_PHYS_ADDR_SPACE_BITS,
-+            max_cpus, num_cpus, cpu_mask);
-+
-+    return 0;
-+}
-+#define HAVE_ARCH_PROC_CPUINFO
-+
-+#endif /* ALPHA_TARGET_PROC_H */
+diff --git a/include/qemu/selfmap.h b/include/qemu/selfmap.h
+index 7d938945cb..1690a74f4b 100644
+--- a/include/qemu/selfmap.h
++++ b/include/qemu/selfmap.h
+@@ -20,10 +20,10 @@ typedef struct {
+     bool is_exec;
+     bool is_priv;
+ 
++    dev_t dev;
++    ino_t inode;
+     uint64_t offset;
+-    uint64_t inode;
+     const char *path;
+-    char dev[];
+ } MapInfo;
+ 
+ /**
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index faad3a56df..a562920a84 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8160,13 +8160,15 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
+             }
+ 
+             count = dprintf(fd, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_ptr
+-                            " %c%c%c%c %08" PRIx64 " %s %"PRId64,
++                            " %c%c%c%c %08" PRIx64 " %02x:%02x %"PRId64,
+                             h2g(min), h2g(max - 1) + 1,
+                             (flags & PAGE_READ) ? 'r' : '-',
+                             (flags & PAGE_WRITE_ORG) ? 'w' : '-',
+                             (flags & PAGE_EXEC) ? 'x' : '-',
+                             e->is_priv ? 'p' : 's',
+-                            (uint64_t) e->offset, e->dev, e->inode);
++                            (uint64_t)e->offset,
++                            major(e->dev), minor(e->dev),
++                            (uint64_t)e->inode);
+             if (path) {
+                 dprintf(fd, "%*s%s\n", 73 - count, "", path);
+             } else {
+diff --git a/util/selfmap.c b/util/selfmap.c
+index 4db5b42651..483cb617e2 100644
+--- a/util/selfmap.c
++++ b/util/selfmap.c
+@@ -30,19 +30,21 @@ IntervalTreeRoot *read_self_maps(void)
+ 
+         if (nfields > 4) {
+             uint64_t start, end, offset, inode;
++            unsigned dev_maj, dev_min;
+             int errors = 0;
+             const char *p;
+ 
+             errors |= qemu_strtou64(fields[0], &p, 16, &start);
+             errors |= qemu_strtou64(p + 1, NULL, 16, &end);
+             errors |= qemu_strtou64(fields[2], NULL, 16, &offset);
++            errors |= qemu_strtoui(fields[3], &p, 16, &dev_maj);
++            errors |= qemu_strtoui(p + 1, NULL, 16, &dev_min);
+             errors |= qemu_strtou64(fields[4], NULL, 10, &inode);
+ 
+             if (!errors) {
+-                size_t dev_len, path_len;
++                size_t path_len;
+                 MapInfo *e;
+ 
+-                dev_len = strlen(fields[3]) + 1;
+                 if (nfields == 6) {
+                     p = fields[5];
+                     p += strspn(p, " ");
+@@ -52,11 +54,12 @@ IntervalTreeRoot *read_self_maps(void)
+                     path_len = 0;
+                 }
+ 
+-                e = g_malloc0(sizeof(*e) + dev_len + path_len);
++                e = g_malloc0(sizeof(*e) + path_len);
+ 
+                 e->itree.start = start;
+                 e->itree.last = end - 1;
+                 e->offset = offset;
++                e->dev = makedev(dev_maj, dev_min);
+                 e->inode = inode;
+ 
+                 e->is_read  = fields[1][0] == 'r';
+@@ -64,9 +67,8 @@ IntervalTreeRoot *read_self_maps(void)
+                 e->is_exec  = fields[1][2] == 'x';
+                 e->is_priv  = fields[1][3] == 'p';
+ 
+-                memcpy(e->dev, fields[3], dev_len);
+                 if (path_len) {
+-                    e->path = memcpy(e->dev + dev_len, p, path_len);
++                    e->path = memcpy(e + 1, p, path_len);
+                 }
+ 
+                 interval_tree_insert(&e->itree, root);
 -- 
 2.34.1
 
