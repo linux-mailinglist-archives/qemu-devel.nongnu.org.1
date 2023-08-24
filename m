@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7667873BD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C067873C5
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:14:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZBy7-0006Uj-3L; Thu, 24 Aug 2023 11:09:55 -0400
+	id 1qZC17-000371-Fl; Thu, 24 Aug 2023 11:13:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZBy5-0006Td-CM
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:09:53 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZC0z-00036X-AN
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:12:56 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZBy3-0007e2-5y
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:09:53 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-317f1c480eeso5963557f8f.2
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:09:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZC0v-0008Qt-BY
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:12:52 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3ff5ddb4329so6566235e9.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:12:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692889789; x=1693494589;
+ d=linaro.org; s=google; t=1692889965; x=1693494765;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6gV6I3xfy/hyfKDidqkpk7fy5DI5Iz3O/ffqQXi+d2A=;
- b=lV/hz2C3k8xE0X4ZIkTcM07by1ZiQ10G17UtGwoXMCVmDEgjwDn6arEm6rpVFFV45A
- UoQF4x30LBv4KhAC0iwNCJ+uHUjcY/UvX0KRm1wg/h929xk69YgyrT3w//rLMvTWcaAy
- rBKnkBnvTh6lb6NGZCUVBJNY9rQbNdV4GVTcPuckoarsjtwj4gyT5OtXSrExKzbL0QVI
- yR+1xbsFax9+kuBcP1Ki0YKp8uQktXrRzZf+0vvaJH34lw8UwADV1tnJyD8MP8HgQfOa
- JrIRoXiPa5iun0yTWzrZa1BrOvgZy4rPyJAZhpP0bq30ksD2/g+BZhz2kCllKyhZ8YQA
- ksBg==
+ bh=G7+9BpK2fShduHjghA/ZKiihrZ2bWBIYEE13nJcm3R8=;
+ b=xvQM6gc7kcdfZAC6NwiAlDKiImRXnnMRn8fByIPep1LMJI+u/Ox0NDGzTV6Vo2CBjR
+ vzhjRVX1zZIyykjnFFQ+dNwBsMQQHPOMliirvbuoByJD55j8L2KnTww6F5RUedsqX79q
+ N+bSaYHmGKBzFRQc93lLQab2ER4JUWiZAy/un5QMl87ZsWWeoilLfv3Px1n7YIvjWjiW
+ 3lWmDbAo2BrlEEIY1p70L7zxBvIu3tYm51JMxDq09CbhBu6UubzU3bJHxsmaqI1o7ABE
+ jsz/IrTyePEfPcBiCxDCPUYNl6CcAgoS1maHs/1jQyO6eHP4/BT7LVX02yiCp55laRuQ
+ mbxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692889789; x=1693494589;
+ d=1e100.net; s=20221208; t=1692889965; x=1693494765;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6gV6I3xfy/hyfKDidqkpk7fy5DI5Iz3O/ffqQXi+d2A=;
- b=hE4gcnVvS7w71bs7HuteyYTLcIUc70Fh3rKxmeLbhcZb6Irv+FnjsEjPgJZoM0v4p4
- Ew8DQRPfTcPy6Z+uKFNPeFazSPkeF2ZExmIgqQhbBWCgXJKO7/AperbokoDJiGMFCWd/
- e6rPdoC8gp+kptbJtDU0wLS7dzXVjEaPRmmB64JvRWVnLTZaGDSkj/3Z/ifc9hLCQWRf
- 40DLUWEjVSfHz0C+TxsQayfKtJeNyL3pGwxLf1uvVQGaeaQnDIZQ+UsrxsZo3AEPGnKN
- +riW8jBdSW2kyBeAinAlVwFZuUifistn18tcR0PI8qHDv2zcAL7KUVPhB8iGElVggGJi
- mq6w==
-X-Gm-Message-State: AOJu0Yye7TBWzBbbt9REYr7xLJSHAmOKsaph6015bhK1baeKftHY+TJg
- fD5A87s6CnPeHMtER5dpapyFfgo/yOEy4xsBdWo=
-X-Google-Smtp-Source: AGHT+IFy5aHi1TJBsq6Q7W0oLcXZ5KPO5x2IM1840vZq2iFdJrDCJzxlmXpwQ44I1ARDPmSWLRWndw==
-X-Received: by 2002:a5d:4573:0:b0:313:ebf3:f817 with SMTP id
- a19-20020a5d4573000000b00313ebf3f817mr11728285wrc.22.1692889788989; 
- Thu, 24 Aug 2023 08:09:48 -0700 (PDT)
+ bh=G7+9BpK2fShduHjghA/ZKiihrZ2bWBIYEE13nJcm3R8=;
+ b=TdIgtA5l2VlqNxOpx8awRoQ/kcv2dLrP3mjzChsp/veUv+oUDHJOZ5aA4FeqGUxuVB
+ jmBWUY+vWfQKJyIRqEc58BKPuv4ILXxKR50wVRIgqFpLww9wp+l/Uc7hz4OBc9sU/Kg6
+ gOteNbwYKV5o7hlIDy4/LYbMrx7oRp29wsbcJpyEGMGw4Sm9C7BMnQ5v5VcnbKcqqjPd
+ BEXhJJgNidDGDC+ybeg3J1272bbqfVBbWO54qduPfEhhuGDVgf46CalGlY7P4N8p46Wx
+ jvVaFONnaiC8FnbHlgHMjyhWrmtejJ35OkQ2gT1malc/inw1wODi8xZ4fJOQFZ5ud1vt
+ xfzA==
+X-Gm-Message-State: AOJu0Yz2Xgn3YZFNE72Nm5HjoEdI5mjggprt1679IU6471lZjJkj1VWG
+ qqqmn7rXVFtiasTVYsl2jN+Pqkm2PU4rWY2HniI=
+X-Google-Smtp-Source: AGHT+IFa65U7ghR3RB/dgKsorvFMCsi02ps46/EwSCp7f+fgwGcinbEiA6xoOwOYDvsnf5QbMPWiOQ==
+X-Received: by 2002:adf:cd01:0:b0:316:f4b9:a952 with SMTP id
+ w1-20020adfcd01000000b00316f4b9a952mr14126142wrm.31.1692889965372; 
+ Thu, 24 Aug 2023 08:12:45 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.238.90])
  by smtp.gmail.com with ESMTPSA id
- w1-20020a5d6081000000b0031773e3cf46sm22335601wrt.61.2023.08.24.08.09.46
+ n4-20020a5d4204000000b0031c5dda3aedsm10273531wrq.95.2023.08.24.08.12.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 08:09:48 -0700 (PDT)
-Message-ID: <7a42f1f9-c492-f6ff-fd4d-2c84052835de@linaro.org>
-Date: Thu, 24 Aug 2023 17:09:46 +0200
+ Thu, 24 Aug 2023 08:12:45 -0700 (PDT)
+Message-ID: <26d1e42b-3522-7a8a-1529-1067186e81d5@linaro.org>
+Date: Thu, 24 Aug 2023 17:12:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [POC 2/2] add test exposing AHCI reset issue
+Subject: Re: [PATCH 3/3] target/i386: Fix duplicated feature name in FEAT_KVM
 Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
- srowe@mose.org.uk, mike.maslenkin@gmail.com, qemu-block@nongnu.org,
- t.lamprecht@proxmox.com, a.lauterer@proxmox.com
-References: <20230824133831.617833-1-f.ebner@proxmox.com>
- <20230824133831.617833-2-f.ebner@proxmox.com>
+To: Tim Wiederhake <twiederh@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20230824135710.343175-1-twiederh@redhat.com>
+ <20230824135710.343175-4-twiederh@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230824133831.617833-2-f.ebner@proxmox.com>
+In-Reply-To: <20230824135710.343175-4-twiederh@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
 X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,28 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 15:38, Fiona Ebner wrote:
-> Fails without the previous commit "hw/ide: reset: cancel async DMA
-> operation before reseting state".
+On 24/8/23 15:57, Tim Wiederhake wrote:
+> The mistake became apparent as there were two features with the same name
+> in this cpuid leaf. The names are now in line with the documentation from
+> https://kernel.org/doc/html/latest/virt/kvm/x86/cpuid.html
 > 
-> I haven't ever written such a test before, but I wanted something to
-> expose the problem more easily. It hardcodes the behavior that the
-> pending write actually is done during reset, which might not be ideal.
-> It could just check that the first sector is still intact instead.
-> 
-> If I should make this a proper test, I'd be happy about some guidance,
-> but not sure if required for such a specific one-off issue. After all,
-> a different variation of the bug might have written to some other
-> sector not covered by this test.
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+
+Fixes: 642258c6c7 ("kvm: add kvmclock to its second bit")
+?
+
+> Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
 > ---
->   tests/qtest/ahci-test.c | 81 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 81 insertions(+)
-
-Per our style, variables are allocated on function prologue,
-otherwise the test LGTM:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>   target/i386/cpu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 0b74d80371..ceb291f8a8 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -852,7 +852,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+>       [FEAT_KVM] = {
+>           .type = CPUID_FEATURE_WORD,
+>           .feat_names = {
+> -            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock",
+> +            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock2",
+>               "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-pv-unhalt",
+>               NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
+>               "kvm-poll-control", "kvm-pv-sched-yield", "kvm-asyncpf-int", "kvm-msi-ext-dest-id",
 
 
