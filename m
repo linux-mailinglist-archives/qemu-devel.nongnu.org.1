@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D475C786C15
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC1786BEA
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:31:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6ep-0007ys-TI; Thu, 24 Aug 2023 05:29:39 -0400
+	id 1qZ6et-0008A1-RN; Thu, 24 Aug 2023 05:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6eE-0004Yq-Rz
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:02 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qZ6eR-0006J0-0g
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:15 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e9-00052B-Mw
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:02 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fefe898f76so17947265e9.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:53 -0700 (PDT)
+ id 1qZ6e9-00052K-Ma
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:04 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-50087d47d4dso5003089e87.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692869332; x=1693474132;
+ d=linaro.org; s=google; t=1692869333; x=1693474133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Cb6ko/hJLTrWCjWa2FYGoqsOrH337RJKxsjYS/YCyLg=;
- b=oSp7Z3gnCh/SkfJLtwYBoW7IcfB74JHq89K8jnid/YT8TGU4B8MiquFsW5xBVqNR0I
- 88Eh+2W1WpwhPXbDK/nX1wKEqTfedaAyM6IRbv8iqnJQRUeOo/wjI+FaS9Tu3gRK9BQd
- bTpBZAyEneD9n/4dmxW+yAGTnUSyW8VRMr5+coWHOHXbZz4dhj13JV0KsZCrTIOdu8+Z
- 7DbZaRt2KABBWgfSRUqY3wwD+8wwUyi/eR9yuOHaLqsWeqOjv448RR4soqGKUfd0v3VN
- g5lwY4QM+VcCQk8feKxwJ5UeyLKYw/s3u896HGjDcVnc6vsmKNn+ZorukRO0j7s8mhHm
- J28w==
+ :reply-to; bh=uTX4YRTyx9A1VOe8timQgsrdDMp9ROpDmMh+CFnk4ac=;
+ b=nOoksceJDSfsir7JBdzwMru+4H9hdkv6LneRYWR8jGxsCvz9BVgRWIJk0NqoLsxwPV
+ 2xN16fxCZFAJUMm7greAWhVoniJXQNhI4l4gq8732zncALDGpaJfBzzD44eVw38wVdw/
+ IclLmfI/BHp5WJFlGDaTjLvB3ENiFnLRIEzFH8RPUznsz9GVhgUbMZ7AW9l7Wc6kIXPf
+ VqRKmxazTC//lxhVB9bBqPQ3Htn37H2dCOIMLyFkFtt7KYFtLfvgvQKaZwVCRh/jLTBW
+ OXhFIMOEECZCXUHZpdMNfkbAvzPe6nkvresAt32W9wsssSD7CRvCzZOvbB6hxX+nZMbq
+ 9kYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692869332; x=1693474132;
+ d=1e100.net; s=20221208; t=1692869333; x=1693474133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Cb6ko/hJLTrWCjWa2FYGoqsOrH337RJKxsjYS/YCyLg=;
- b=Q3W4r2I7sjG0Vae2gXgXhiUqLfbNthHO1AJfisvrsDPXgWv6DiDz0a9taA9dngbGkO
- h9geiNi5LByOtZaKT7/gJVcwZhEpV0xJABvJJMm4+uiGVN3xuo+Nb64IPY3qqlLM2NGu
- b66xmGbHP7wgf17sQpTKrkh01RzKVUIc2egkaPm9BGkLkgJyS10cljrsO4FZZ5/k8z75
- QG0cmE7CTV0EBpbEJX0JSG6v3nZ+aFPNa28A/cCXQ3GaX5/gxy4fvYoutmdKp2ZiqYjx
- wVXksNVOFem+Jz7HJGqp5cYz7JaJA4hwwEcqzdYl4HNusRaMg8bi3kw/8+PJ50qn4ZfZ
- zjDw==
-X-Gm-Message-State: AOJu0YzVD2kwM9EbWKGW9M/3aQhm0dPqyC5lyYoS0nhliJVngJ60LLUR
- yqGmwlEf12eR44URJAErfJjvK1X57YSzAAK80LM=
-X-Google-Smtp-Source: AGHT+IEqG5FfqcQTI0ddHdfVCU/XW9iD4x0UWM/L5TjigDd2PYa/3NHs5jyOa//WoDAqWMVeNt35Sw==
-X-Received: by 2002:a5d:6745:0:b0:31a:cc98:a39b with SMTP id
- l5-20020a5d6745000000b0031acc98a39bmr11124549wrw.40.1692869332343; 
+ bh=uTX4YRTyx9A1VOe8timQgsrdDMp9ROpDmMh+CFnk4ac=;
+ b=ltLxncS10eVQpBJr+Ytv0tFWSOABebLjQD/pDv+z1vk9HbBZxX3x3ZBR16RA1ezzdM
+ X9dQtuy7862IbxccoUpoiEJR5jNsIlOkC5ANzUuAhWmzfHQgKsUuX0WtcnOPNiIZiXoZ
+ XDtnEgiyO5wsG96xdb3CRwfx40Exf2CNIXWvsOP3mdzJnf1ZmoltKlVNMa50pxwm6OuH
+ NRPhoSKTwpnoQDzF4KaJMASg6yzwtprZm9kebmLkkSqMZYYw/aMDwCSJ7pSBh4A1sh71
+ 80UpYcxEj2mk7AjCdvCztX0c67ctwwPz2cFdZY8rHYWPzTKfVU4NiEbHSiFN9qfBc5QU
+ Pxng==
+X-Gm-Message-State: AOJu0Yzw6jV0PSB+1cYJUj7bTQ/31yskG7MPjXZ141XNHKNt+b0Arahw
+ rsyZ84Xi1HiN630mqPVWFwGBPvuKDj6sJ9yYOAU=
+X-Google-Smtp-Source: AGHT+IFKSrtA9nBRn8jjbpc0orkRuJO1rExCJCN9snlwdQnCr312KPmUeJzQedojy5f4WLkf67o3uw==
+X-Received: by 2002:a19:6705:0:b0:4ff:8729:555 with SMTP id
+ b5-20020a196705000000b004ff87290555mr9488572lfc.11.1692869332875; 
  Thu, 24 Aug 2023 02:28:52 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.51
+ s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 24 Aug 2023 02:28:52 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/35] target/arm: Skip granule protection checks for AT
+Subject: [PULL 31/35] target/arm: Pass security space rather than flag for AT
  instructions
-Date: Thu, 24 Aug 2023 10:28:31 +0100
-Message-Id: <20230824092836.2239644-31-peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 10:28:32 +0100
+Message-Id: <20230824092836.2239644-32-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
 References: <20230824092836.2239644-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,130 +93,208 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-GPC checks are not performed on the output address for AT instructions,
-as stated by ARM DDI 0487J in D8.12.2:
+At the moment we only handle Secure and Nonsecure security spaces for
+the AT instructions. Add support for Realm and Root.
 
-  When populating PAR_EL1 with the result of an address translation
-  instruction, granule protection checks are not performed on the final
-  output address of a successful translation.
+For AArch64, arm_security_space() gives the desired space. ARM DDI0487J
+says (R_NYXTL):
 
-Rename get_phys_addr_with_secure(), since it's only used to handle AT
-instructions.
+  If EL3 is implemented, then when an address translation instruction
+  that applies to an Exception level lower than EL3 is executed, the
+  Effective value of SCR_EL3.{NSE, NS} determines the target Security
+  state that the instruction applies to.
+
+For AArch32, some instructions can access NonSecure space from Secure,
+so we still need to pass the state explicitly to do_ats_write().
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230809123706.1842548-4-jean-philippe@linaro.org
+Message-id: 20230809123706.1842548-5-jean-philippe@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/internals.h | 25 ++++++++++++++-----------
- target/arm/helper.c    |  8 ++++++--
- target/arm/ptw.c       | 11 ++++++-----
- 3 files changed, 26 insertions(+), 18 deletions(-)
+ target/arm/internals.h | 18 +++++++++---------
+ target/arm/helper.c    | 27 ++++++++++++---------------
+ target/arm/ptw.c       | 12 ++++++------
+ 3 files changed, 27 insertions(+), 30 deletions(-)
 
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 0f01bc32a8a..fc90c364f77 100644
+index fc90c364f77..cf13bb94f59 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -1190,12 +1190,11 @@ typedef struct GetPhysAddrResult {
- } GetPhysAddrResult;
+@@ -1217,24 +1217,24 @@ bool get_phys_addr(CPUARMState *env, target_ulong address,
+     __attribute__((nonnull));
  
  /**
-- * get_phys_addr_with_secure: get the physical address for a virtual address
-+ * get_phys_addr: get the physical address for a virtual address
+- * get_phys_addr_with_secure_nogpc: get the physical address for a virtual
+- *                                  address
++ * get_phys_addr_with_space_nogpc: get the physical address for a virtual
++ *                                 address
   * @env: CPUARMState
   * @address: virtual address to get physical address for
   * @access_type: 0 for read, 1 for write, 2 for execute
   * @mmu_idx: MMU index indicating required translation regime
 - * @is_secure: security state for the access
++ * @space: security space for the access
   * @result: set on translation success.
   * @fi: set to fault info if the translation fails
   *
-@@ -1212,26 +1211,30 @@ typedef struct GetPhysAddrResult {
-  *  * for PSMAv5 based systems we don't bother to return a full FSR format
-  *    value.
+- * Similar to get_phys_addr, but use the given security regime and don't perform
++ * Similar to get_phys_addr, but use the given security space and don't perform
+  * a Granule Protection Check on the resulting address.
   */
--bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
--                               MMUAccessType access_type,
--                               ARMMMUIdx mmu_idx, bool is_secure,
--                               GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
-+bool get_phys_addr(CPUARMState *env, target_ulong address,
-+                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
-+                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
-     __attribute__((nonnull));
- 
- /**
-- * get_phys_addr: get the physical address for a virtual address
-+ * get_phys_addr_with_secure_nogpc: get the physical address for a virtual
-+ *                                  address
-  * @env: CPUARMState
-  * @address: virtual address to get physical address for
-  * @access_type: 0 for read, 1 for write, 2 for execute
-  * @mmu_idx: MMU index indicating required translation regime
-+ * @is_secure: security state for the access
-  * @result: set on translation success.
-  * @fi: set to fault info if the translation fails
-  *
-- * Similarly, but use the security regime of @mmu_idx.
-+ * Similar to get_phys_addr, but use the given security regime and don't perform
-+ * a Granule Protection Check on the resulting address.
-  */
--bool get_phys_addr(CPUARMState *env, target_ulong address,
--                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
--                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
-+bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
-+                                     MMUAccessType access_type,
-+                                     ARMMMUIdx mmu_idx, bool is_secure,
-+                                     GetPhysAddrResult *result,
-+                                     ARMMMUFaultInfo *fi)
+-bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
+-                                     MMUAccessType access_type,
+-                                     ARMMMUIdx mmu_idx, bool is_secure,
+-                                     GetPhysAddrResult *result,
+-                                     ARMMMUFaultInfo *fi)
++bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
++                                    MMUAccessType access_type,
++                                    ARMMMUIdx mmu_idx, ARMSecuritySpace space,
++                                    GetPhysAddrResult *result,
++                                    ARMMMUFaultInfo *fi)
      __attribute__((nonnull));
  
  bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 808f35218a2..e8a232a1f89 100644
+index e8a232a1f89..de639d40871 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -3365,8 +3365,12 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
-     ARMMMUFaultInfo fi = {};
-     GetPhysAddrResult res = {};
+@@ -3357,7 +3357,7 @@ static int par_el1_shareability(GetPhysAddrResult *res)
  
--    ret = get_phys_addr_with_secure(env, value, access_type, mmu_idx,
--                                    is_secure, &res, &fi);
-+    /*
-+     * I_MXTJT: Granule protection checks are not performed on the final address
-+     * of a successful translation.
-+     */
-+    ret = get_phys_addr_with_secure_nogpc(env, value, access_type, mmu_idx,
-+                                          is_secure, &res, &fi);
+ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+                              MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                             bool is_secure)
++                             ARMSecuritySpace ss)
+ {
+     bool ret;
+     uint64_t par64;
+@@ -3369,8 +3369,8 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+      * I_MXTJT: Granule protection checks are not performed on the final address
+      * of a successful translation.
+      */
+-    ret = get_phys_addr_with_secure_nogpc(env, value, access_type, mmu_idx,
+-                                          is_secure, &res, &fi);
++    ret = get_phys_addr_with_space_nogpc(env, value, access_type, mmu_idx, ss,
++                                         &res, &fi);
  
      /*
       * ATS operations only do S1 or S1+S2 translations, so we never
+@@ -3535,7 +3535,7 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+     uint64_t par64;
+     ARMMMUIdx mmu_idx;
+     int el = arm_current_el(env);
+-    bool secure = arm_is_secure_below_el3(env);
++    ARMSecuritySpace ss = arm_security_space(env);
+ 
+     switch (ri->opc2 & 6) {
+     case 0:
+@@ -3543,10 +3543,9 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+         switch (el) {
+         case 3:
+             mmu_idx = ARMMMUIdx_E3;
+-            secure = true;
+             break;
+         case 2:
+-            g_assert(!secure);  /* ARMv8.4-SecEL2 is 64-bit only */
++            g_assert(ss != ARMSS_Secure);  /* ARMv8.4-SecEL2 is 64-bit only */
+             /* fall through */
+         case 1:
+             if (ri->crm == 9 && (env->uncached_cpsr & CPSR_PAN)) {
+@@ -3564,10 +3563,9 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+         switch (el) {
+         case 3:
+             mmu_idx = ARMMMUIdx_E10_0;
+-            secure = true;
+             break;
+         case 2:
+-            g_assert(!secure);  /* ARMv8.4-SecEL2 is 64-bit only */
++            g_assert(ss != ARMSS_Secure);  /* ARMv8.4-SecEL2 is 64-bit only */
+             mmu_idx = ARMMMUIdx_Stage1_E0;
+             break;
+         case 1:
+@@ -3580,18 +3578,18 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
+     case 4:
+         /* stage 1+2 NonSecure PL1: ATS12NSOPR, ATS12NSOPW */
+         mmu_idx = ARMMMUIdx_E10_1;
+-        secure = false;
++        ss = ARMSS_NonSecure;
+         break;
+     case 6:
+         /* stage 1+2 NonSecure PL0: ATS12NSOUR, ATS12NSOUW */
+         mmu_idx = ARMMMUIdx_E10_0;
+-        secure = false;
++        ss = ARMSS_NonSecure;
+         break;
+     default:
+         g_assert_not_reached();
+     }
+ 
+-    par64 = do_ats_write(env, value, access_type, mmu_idx, secure);
++    par64 = do_ats_write(env, value, access_type, mmu_idx, ss);
+ 
+     A32_BANKED_CURRENT_REG_SET(env, par, par64);
+ #else
+@@ -3608,7 +3606,8 @@ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     uint64_t par64;
+ 
+     /* There is no SecureEL2 for AArch32. */
+-    par64 = do_ats_write(env, value, access_type, ARMMMUIdx_E2, false);
++    par64 = do_ats_write(env, value, access_type, ARMMMUIdx_E2,
++                         ARMSS_NonSecure);
+ 
+     A32_BANKED_CURRENT_REG_SET(env, par, par64);
+ #else
+@@ -3633,7 +3632,6 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+ #ifdef CONFIG_TCG
+     MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
+     ARMMMUIdx mmu_idx;
+-    int secure = arm_is_secure_below_el3(env);
+     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
+     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
+ 
+@@ -3653,7 +3651,6 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+             break;
+         case 6: /* AT S1E3R, AT S1E3W */
+             mmu_idx = ARMMMUIdx_E3;
+-            secure = true;
+             break;
+         default:
+             g_assert_not_reached();
+@@ -3673,7 +3670,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+     }
+ 
+     env->cp15.par_el[1] = do_ats_write(env, value, access_type,
+-                                       mmu_idx, secure);
++                                       mmu_idx, arm_security_space(env));
+ #else
+     /* Handled by hardware accelerator. */
+     g_assert_not_reached();
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 7a69968dd76..ca4de6e3999 100644
+index ca4de6e3999..bfbab26b9b4 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -3420,16 +3420,17 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+@@ -3420,15 +3420,15 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
      return false;
  }
  
--bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
--                               MMUAccessType access_type, ARMMMUIdx mmu_idx,
--                               bool is_secure, GetPhysAddrResult *result,
--                               ARMMMUFaultInfo *fi)
-+bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
-+                                     MMUAccessType access_type,
-+                                     ARMMMUIdx mmu_idx, bool is_secure,
-+                                     GetPhysAddrResult *result,
-+                                     ARMMMUFaultInfo *fi)
+-bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
+-                                     MMUAccessType access_type,
+-                                     ARMMMUIdx mmu_idx, bool is_secure,
+-                                     GetPhysAddrResult *result,
+-                                     ARMMMUFaultInfo *fi)
++bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
++                                    MMUAccessType access_type,
++                                    ARMMMUIdx mmu_idx, ARMSecuritySpace space,
++                                    GetPhysAddrResult *result,
++                                    ARMMMUFaultInfo *fi)
  {
      S1Translate ptw = {
          .in_mmu_idx = mmu_idx,
-         .in_space = arm_secure_to_space(is_secure),
+-        .in_space = arm_secure_to_space(is_secure),
++        .in_space = space,
      };
--    return get_phys_addr_gpc(env, &ptw, address, access_type, result, fi);
-+    return get_phys_addr_nogpc(env, &ptw, address, access_type, result, fi);
+     return get_phys_addr_nogpc(env, &ptw, address, access_type, result, fi);
  }
- 
- bool get_phys_addr(CPUARMState *env, target_ulong address,
 -- 
 2.34.1
 
