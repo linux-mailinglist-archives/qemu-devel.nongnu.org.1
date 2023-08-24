@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF567875AE
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FD6787596
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:40:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDMg-0006H8-Tv; Thu, 24 Aug 2023 12:39:22 -0400
+	id 1qZDMi-0006Iv-LC; Thu, 24 Aug 2023 12:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZDMe-0006E6-4N
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:20 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qZDMh-0006I3-0Y
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:23 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qZDMY-00085v-2S
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:19 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fef4b063a7so36126065e9.2
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:39:13 -0700 (PDT)
+ id 1qZDMZ-00086Z-MO
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:39:22 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-401b3ea0656so275735e9.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:39:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692895152; x=1693499952;
+ d=linaro.org; s=google; t=1692895154; x=1693499954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zI7JCT8Y6EDH1PV9qo6Yd/dGahx6z15mbByhoBXxgRQ=;
- b=qEO8Zy1eDblNs9NDuEk3OYQj9FygmlkTpm8uwb5aHOZiRO3kxNIHNPxqZgKAD7iujV
- P5HDYEbcIcbgDDF/1v4Dc0g09sXQHq9OUmInVVbKeo/o32yR5yIfjLk9MNCWpy7lVX6A
- PxwQ+iTaf2M2IPXVYjECAbwbOjE5tDwLZfYTy9wFsi4AU552xRE3ePzNpVzwrKLrzd/Z
- DUbrwfi81dlYmMhq4+j1bSvTPUIlboRpM+xRqdcWyOun4fFcbPAFHqr+bxXARln19fMi
- MYyXMm4CRKHjPK2kdMISGmex39tjoJU1Oimc0tx+gdqwYFecyohV4c8TwmWWH0GB+/Vj
- BnEQ==
+ bh=i4cgTwYKmgY5S8ywczpvEN/MK3kalEN3O1n5Lxh3nkA=;
+ b=N2FSmY4rJ/dqTSDHFZoCh/j6R16zlvPxpJMutkBiBOx1EIHIDkNms7NtFUsHnYtUBm
+ xN693Vhd0In8k2KfMsh7929DXQNee8hkJAOXvDdCjyXQG7ec+0AldHgQe541L4pVINHA
+ PPTh9hxez2WcgiV0qgCflK/X4QiSVWUfXG692Xa6zggnbf2JBhi7fTWk01VYdpNq97jF
+ OHezqSYmLv2FSgKaoPY1/7MlM3ed76WoqQLRyDQB+ifLUTo9XyOo9ia+fbMkIS4KHdGB
+ Nmgv/c+m2nS6WeuGbA0OKv06t5a769p/Oh2AbtTXri62UnLAK5bNkosQnLTEzzLVVTQU
+ /j5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692895152; x=1693499952;
+ d=1e100.net; s=20221208; t=1692895154; x=1693499954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zI7JCT8Y6EDH1PV9qo6Yd/dGahx6z15mbByhoBXxgRQ=;
- b=Yz5wFARx2naNqesn/RFkzJkafURnedGh2vYvb9LgVeAeXCaWR9dlaz7TszlmIXGme+
- ZGApvTxVVu2GPphwkoO39Fz7z89MPFTUNXMZ20hiJ9vLTiuHvs0cQ7Rj73c8O+nmEvnY
- 6wQuSHRJGC9Eoojc+LmR1wwPeMOU4St/lUVKHXkB9vJL2dRa8vMxGWiqLhE0wFgwUs0r
- 82Crxqix3hLu5cMmVwyfeCZD3qt2G+oFqpIlo8ddmJN3c48vDmCsXAJQIfHqQIUHz0Bl
- C61snltF0TC+5qLvTB0FrqnunWHARWUFJlLnNg9vdT8u0rIDoxQ6M7RYbae8M23jA+wX
- ycHQ==
-X-Gm-Message-State: AOJu0YyrzOCRnZowj+AZVIQjA1UY31rW7NaLno5cRtb1HhDXqPz3qKt7
- fgL82at22KVdM7gMFygZstDEtA==
-X-Google-Smtp-Source: AGHT+IEdb2Mu0HkvlMAz6j1D4/Dlvzip6d5JqDT6SsDNH2JNVMTpHCrsKDOaA4IW/3RuzDgQNl2baQ==
-X-Received: by 2002:a1c:7c04:0:b0:3fe:179a:9eef with SMTP id
- x4-20020a1c7c04000000b003fe179a9eefmr12104116wmc.40.1692895152521; 
- Thu, 24 Aug 2023 09:39:12 -0700 (PDT)
+ bh=i4cgTwYKmgY5S8ywczpvEN/MK3kalEN3O1n5Lxh3nkA=;
+ b=R4guuS36eQscv+2rMK2g67HG6RD6Gnpsbuv+KDLKYS1hJyi8Z8FUGJZVDVrltxanDF
+ MbrXij7D79tXw9wKoN4g1vE+AuJXqiYSRvyeHY+9SgrzyOEex5mlxER5WxLS6Sz4894Z
+ ivus0DpDXwiTpd1pgVx0QwOLSMoxy18ZDJZBLyOH1u3TmQmnIl4fPu2FGUtnx21THPWh
+ jWNhZuzXIl7qrkCWVbaEFMH4Zku8Zvef6CFt4GIei85yThmy7BNEJ5OSfRbuItRHf0Jq
+ E8I2r7IVxe7Fp5bFTaVjl/QNnjLeB1TW5/1azBQXCAPhkWIQSgOfTMs21OyEacc/y+ln
+ Bbvw==
+X-Gm-Message-State: AOJu0Yw4HcKd21K2g66PYVJqUhvP+Df2rmkXOoTt7Aj+FNevbL2VvxxU
+ A6tnJ9XeU63k78kIbifeqU1diw==
+X-Google-Smtp-Source: AGHT+IFpryiKJTULN+dhbV0bJ0wfsP4ywMZ10hr0bpIhbdwrvxB6tTQqgSBjKDfmbpVfonNVOtswhg==
+X-Received: by 2002:a5d:4403:0:b0:31a:d49a:38d with SMTP id
+ z3-20020a5d4403000000b0031ad49a038dmr12013904wrq.54.1692895154204; 
+ Thu, 24 Aug 2023 09:39:14 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- h11-20020a5d4fcb000000b003141e629cb6sm22495847wrw.101.2023.08.24.09.39.10
+ l6-20020adfe586000000b0031989784d96sm22889512wrm.76.2023.08.24.09.39.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 09:39:10 -0700 (PDT)
+ Thu, 24 Aug 2023 09:39:12 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 74B061FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id 90FB41FFBE;
  Thu, 24 Aug 2023 17:39:10 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,17 @@ Cc: Beraldo Leal <bleal@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 02/12] tests/docker: cleanup non-verbose output
-Date: Thu, 24 Aug 2023 17:39:00 +0100
-Message-Id: <20230824163910.1737079-3-alex.bennee@linaro.org>
+Subject: [PATCH v2 03/12] tests/tcg: remove quoting for info output
+Date: Thu, 24 Aug 2023 17:39:01 +0100
+Message-Id: <20230824163910.1737079-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230824163910.1737079-1-alex.bennee@linaro.org>
 References: <20230824163910.1737079-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,35 +110,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Even with --quiet docker will spam the sha256 to the console. Avoid
-this by redirecting stdout. While we are at it fix the name we echo
-which was broken during 0b1a649047 (tests/docker: use direct RUNC call
-to build containers).
+This avoids ugly multi-line wrapping for the test on non V=1 builds.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/docker/Makefile.include | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/tcg/aarch64/Makefile.target                  | 2 +-
+ tests/tcg/multiarch/system/Makefile.softmmu-target | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index 142e8605ee..dfabafab92 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -46,9 +46,9 @@ docker-image-%: $(DOCKER_FILES_DIR)/%.docker
- 		--build-arg BUILDKIT_INLINE_CACHE=1 	\
- 		$(if $(NOUSER),,			\
- 			--build-arg USER=$(USER)	\
--			--build-arg UID=$(UID))	\
--		-t qemu/$* - < $<, 			\
--		"BUILD", $1)
-+			--build-arg UID=$(UID))		\
-+		-t qemu/$* - < $< $(if $V,,> /dev/null),\
-+		"BUILD", $*)
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 681dfa077c..b77bbd9b3c 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -14,7 +14,7 @@ AARCH64_TESTS=fcvt pcalign-a64 lse2-fault
+ fcvt: LDFLAGS+=-lm
  
- # Special rule for debootstraped binfmt linux-user images
- docker-binfmt-image-debian-%: $(DOCKER_FILES_DIR)/debian-bootstrap.docker
+ run-fcvt: fcvt
+-	$(call run-test,$<,$(QEMU) $<, "$< on $(TARGET_NAME)")
++	$(call run-test,$<,$(QEMU) $<)
+ 	$(call diff-out,$<,$(AARCH64_SRC)/fcvt.ref)
+ 
+ config-cc.mak: Makefile
+diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
+index 7ba9053375..a051d689d7 100644
+--- a/tests/tcg/multiarch/system/Makefile.softmmu-target
++++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
+@@ -37,10 +37,10 @@ run-gdbstub-untimely-packet: hello
+ 		--qemu $(QEMU) \
+ 		--bin $< --qargs \
+ 		"-monitor none -display none -chardev file$(COMMA)path=untimely-packet.out$(COMMA)id=output $(QEMU_OPTS)", \
+-	"softmmu gdbstub untimely packets")
++	softmmu gdbstub untimely packets)
+ 	$(call quiet-command, \
+ 		(! grep -Fq 'Packet instead of Ack, ignoring it' untimely-packet.gdb.err), \
+-		"GREP", "file  untimely-packet.gdb.err")
++		"GREP", file untimely-packet.gdb.err)
+ else
+ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "no guest arch support")
 -- 
 2.39.2
 
