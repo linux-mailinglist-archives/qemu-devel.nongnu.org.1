@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DB5786859
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7EF786858
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:32:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ4nv-0000eq-Oq; Thu, 24 Aug 2023 03:30:57 -0400
+	id 1qZ4o3-0000pm-IB; Thu, 24 Aug 2023 03:31:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ4nJ-0000RS-MM
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ4nK-0000RT-E0
  for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:30:22 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ4nE-0001Y6-8Z
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:30:15 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bf7a6509deso27931185ad.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:28:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ4nE-0001YM-5t
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:30:16 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-68a6f6a66e1so1959059b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:28:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692862088; x=1693466888;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692862090; x=1693466890;
  h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
  :from:from:to:cc:subject:date:message-id:reply-to;
  bh=5Xk1t0f2poM7JoihgUljePfmXgf6B4GSHEfDAU97lk4=;
- b=23Shu0CzUfMz2FpYBWR0dmjY8UVPdXXHomPFXIbA5OOg2aYP5JpYFAuCCwxprRmcoa
- SP7od3p2MVr62VepPecct3+oqmdPjFfrH7F/7pmMaocqQyI4IDxHFY+NVWadsYfTgUJw
- hyDXdi5Y1ZMqvUMkSuvmOt6i/8oQsZq2M3tj9pnyvKcEmyCplRmcUgxCl9h22+nW53jx
- 2+d42dd5EqcfYnlklwkB8rP7DN2TmOsTGrmwtbpP6/nfSTCXlX7MzjzqiKbhApH4MhSm
- Q7GvbSyoHZZU1yrxcguyAZsD8DfXFFzenx8pPY54yoWzIBqZpRNt/tMiXN2xnly1P5GE
- 0AkA==
+ b=xcmzsniYvKYuoglbgZU6O0WrZ3GwigFhdcAYXinihgR+BXZHyxiPsETug50u1NuKTV
+ QOSMMhmN6eNNlgNUXX9TOMsUFDYixYWTi9JQpNCqxo7uUYy2wl1nxSV+19lypE10hkJ9
+ +tQAEXlNS2uJVd3TyRODxoJR4mouH02q8oe9kpQmmZHS/t6OnOBvh0akTnXCRgKW0Jm4
+ DJZzYMVuGC4MKcS2zwLvo2bZB7olXyZA2hdn1HPyNsyQoeOTqQV0plZTWMvxRW9VQHwF
+ HKUzuofWfg1hqUV4mcO7JFnfBAT6MlmEHwI/0c4H553VJNzQ86qagHfzssAQh9LoZ/WC
+ 0OUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692862088; x=1693466888;
+ d=1e100.net; s=20221208; t=1692862090; x=1693466890;
  h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
  bh=5Xk1t0f2poM7JoihgUljePfmXgf6B4GSHEfDAU97lk4=;
- b=SZKgaIxYt0v6HkQm4MZaxnIBjIPEkz+QQxt60shJkutBPZASCBlVrzjB6n5PjoqEEK
- Wgm+y2QFG4m3DIxNO5bDeX1jpKMyZhxM1bH2+7SsWcOfCmr4U43daJgtYEQyZNzKrcMj
- Wgb19f+kUktC8KOi2Gqjzt1iWm/Lvsf9V9cp4fcm8rokiheM4NwVLgKhYRTYY4Ch9WiC
- iBuKUi9Sb9SSM6l+qLVnqSwMIAFGoIXyUPHUieLXbPx8jJC4VfUgSZNL/3S/vW9vpr2f
- JTbZnPFKNj4RZGhfGnRd9hRiT0hrpyCRf8y89lDFeKyqya11SpMuKAShacn9bDpAgb0N
- 0swQ==
-X-Gm-Message-State: AOJu0YzZ58P6eTxa0w6otdwVwemJ+YwE2VlWqzbKFDSipcLslvQcj+UE
- Tn5Wz8/GRBQkUejJNb8H8dBqRQ==
-X-Google-Smtp-Source: AGHT+IGxQSHm8c2vkp5/AGIHziRNed3Lg8BU3SCE4CTzQHvYuouME+XMuY5JP7pxrxZW7MxohACglg==
-X-Received: by 2002:a17:903:228c:b0:1c0:a417:ccb2 with SMTP id
- b12-20020a170903228c00b001c0a417ccb2mr5286232plh.35.1692862087851; 
- Thu, 24 Aug 2023 00:28:07 -0700 (PDT)
+ b=ELZcQq+a9/GCu8dAQe5ZLEyLLILmjnHND0ZJUxixB23aCxmSFtRHzTu84vRp1rDJ+m
+ IWKfTw9w1qeSsVE1ouzkWGFlXjpJEXsnbAIesiXocMYszfzx7T+HLlPNVhRC9oblE9+r
+ aCnHVSAuJIg8faTCdIVA6DFWhCS3iG9EKKd9kB6f3dhCBcPymR3GhCGmvTsaw2joRM3m
+ zAmKNBYVMwrgesINCUcrDjdGDFlSg4dfr3xF0hrIWBVX29CjXwjS/pqPRh23H4AaoLmQ
+ I5AmlaszzndbWZYFChmEQVvx6/YM1UPu6AV4lPnPQWKutnQVGLlQnHZTddfqW764m8vL
+ riDg==
+X-Gm-Message-State: AOJu0YyHZDw82UDu1li+gbG0w1vBLoL2To+2umDKkavVHxRgKTEQS8yc
+ lcFmLLQxk4eAOhBf0+98xwf1Qw==
+X-Google-Smtp-Source: AGHT+IHzYgqs3czfHi9TUe+XjVxtymPLEuPraVXhzzefQN990N6MTWsYw621jQGlFwXhMX1kr/DaXA==
+X-Received: by 2002:a05:6a20:3948:b0:13f:8153:7e31 with SMTP id
+ r8-20020a056a20394800b0013f81537e31mr15094082pzg.20.1692862089204; 
+ Thu, 24 Aug 2023 00:28:09 -0700 (PDT)
 Received: from smtpclient.apple ([8.210.91.195])
  by smtp.gmail.com with ESMTPSA id
- jh20-20020a170903329400b001bdc2fdcf7esm12114400plb.129.2023.08.24.00.28.05
+ f9-20020a170902ce8900b001ae0a4b1d3fsm12029298plg.153.2023.08.24.00.28.07
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 24 Aug 2023 00:28:07 -0700 (PDT)
+ Thu, 24 Aug 2023 00:28:08 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
 Message-Id: <C6558A0B-3BF3-4AE1-8E73-0085FD82568B@smartx.com>
 Content-Type: multipart/alternative;
@@ -72,8 +72,8 @@ References: <20230804052954.2918915-1-fengli@smartx.com>
  <CAHckoCxZFe78ghhuxrxF-SzO4XHvAOry993f-rH+kFdK6OPE0w@mail.gmail.com>
  <EBB49CB4-E0AE-4131-9A66-0C50D06E60CB@nutanix.com>
 X-Mailer: Apple Mail (2.3731.700.6)
-Received-SPF: none client-ip=2607:f8b0:4864:20::634;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x634.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::429;
+ envelope-from=fengli@smartx.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: 14
 X-Spam_score: 1.4
 X-Spam_bar: +
