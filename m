@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0AB7874D2
+	by mail.lfdr.de (Postfix) with ESMTPS id 052687874D1
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZCmo-0000Ri-Ur; Thu, 24 Aug 2023 12:02:19 -0400
+	id 1qZCn1-00010Z-L2; Thu, 24 Aug 2023 12:02:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZCmV-0000MW-6P
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:02:01 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZCmx-0000wt-Uv
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:02:29 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZCmS-0001Aq-A8
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:01:58 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-52a4737a08fso56196a12.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:01:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZCmv-0001CR-OL
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:02:27 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-401b3ea0656so1038875e9.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692892914; x=1693497714;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1t4fZORILK3o88mS4JvL2E/7QM3GCNQLXZNmVOowh1U=;
- b=iG6Zjg8PPGWM1xXOw5K+RwPnuhj0910ceUqkDv1u3jy4jWV6VrcVsviC7yt7PZZfaM
- 5KDtaYET6Dy9KQhRPpCpVuofaaSwfCiBLOhmdivBz4clvcSI8F48YwXjlVM6LCNH/oDF
- OlvpMXEautQMT5n1OP9LM3rXuPgcsppar/hkXP+qaXP7jnz8mhxbRak9HQQpq+Lo3Tay
- w9JEPGoCV5LkyOmjD62kJr62xb2ERMquJA5qjatkmYBApAB9MMsUhLSjrJ6HSpzztEkw
- Q0tU+YfJHwtOoyUWSEukzoEFmVHBut0vBTXOPjUGmpQAtsPazuxSVOX7XTDH6Ob7t/rn
- LL5w==
+ d=linaro.org; s=google; t=1692892944; x=1693497744;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vWe9eS8eVZXO8P90ktu6f5qpHSoD/+PIq6FXrZKBQ3g=;
+ b=XMwRYmSFPjXhA1JCN1+IJCu0mFWB6sz7gQNJsVQMkcI8U3f6vdxP2VP79V6DhPqxle
+ 75f/yK+pfLXW9n88eLvLngdURcXMEEnb5Ty2+NiIyQgZf7IMYjZ4AokEMz5S1CzdzYc+
+ zcQBtz/OBAl73uqUBJ8F7lSJKPYgbiA7ps9Tt4SeGPU/mTEMFEB3T+JljCboC9hwlKto
+ LeZvo/WzaXwsY7HLTzqwIpCyt0L9t2TH4XY0WUXe7PCfHJW2ezGoDPuhjWBrprO0HtSd
+ +NuBDsaLWpHuRZWx0DZC3IwQ5P6CX8gG9ss3YfKiTL3GuZS37rgjZGESgML9qXb4/a5k
+ ScQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692892915; x=1693497715;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1t4fZORILK3o88mS4JvL2E/7QM3GCNQLXZNmVOowh1U=;
- b=St8IppLThUG3MR9atm4a7Bcueb4053p3UwAM/6EWS6QytSY2kXMHrIozfGxDDo8Ywm
- Kni7ZXYdt506MSSIb10UQVJNVGtw2ABs4DrrlT2boYROlWWZi/ReX2fz7Tbv1yzzsrRJ
- CJO/Jz0OFbda5eB45qEweIwUkEY4MiTyrUbuxHz7Ot1kMax0pufaLHt+xv0eJFGRRsQn
- /Z8NvO8fbjeS54ICZiH0W3Gd0+uOJjSopgAOJC7dOmgY8vdld8v00SDQLllfgtNebOy3
- ZcltzEPBMSysE0SxoM6fb21V205eabNGNCIcSwhF8XJWi5N878CKBNRJqt4WN0gGeJ4q
- Y84A==
-X-Gm-Message-State: AOJu0YwU5vGm+lwp8zikz0TeQrwkUdIoPm1DhKJW9XSLgIzg6NvpTIH9
- qrPQDqnAdf+DhpG07egaQEkYY+7+jtR9jiEOWpsGXg==
-X-Google-Smtp-Source: AGHT+IEjtj4GcBlSNKKtM2kN4rQ4NBbwTXMte4m9B8yCKlY+6xdr59J5LVs/E9THy9Y9Hl4tHCUpMm9AMfitKGDSMBY=
-X-Received: by 2002:a05:6402:1502:b0:52a:1d9c:83f2 with SMTP id
- f2-20020a056402150200b0052a1d9c83f2mr6427432edw.23.1692892914690; Thu, 24 Aug
- 2023 09:01:54 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692892944; x=1693497744;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vWe9eS8eVZXO8P90ktu6f5qpHSoD/+PIq6FXrZKBQ3g=;
+ b=jgpQUTxBIKycQTZWywz+L4DhcweyCtnG2KompQvKf4UgTkzPQv4GJIzL1B+Bf/DlXl
+ LtMuBVkcdyJy6TcID2GUY14uZsKoo95wb6emFYPP6eLuXTl3fJz9XqcGeCyLe8halmoG
+ mmwCOd3xJxrcLX29/PKwi0JIpZXrymzLRAN4l0eQyMjMcaou6rd93zxqSh/WkkYyrjlK
+ pLcHKeKoWYwclq50ODzgDREtb5UnRtBV/6vld3abmbdIthrMUMnebjl1dKvpbYFCrJXH
+ LStbXQY+f5IV6knFSaijKRaPO7RueePj/+Nro0On3wmnhPFuWsR4ctanjYgxJ4gHozMk
+ Pyng==
+X-Gm-Message-State: AOJu0YzHvrW+tUmb8H+K1djKHLYe1ulfaEGO9FZhYqOgx3Xql+QPGXD3
+ iyU1QtnBxI+Hi29RNUa96Aep4g==
+X-Google-Smtp-Source: AGHT+IGKMfpWHq4wkkvnwRzuVkoHdyR/X0xGgqdN1SJXn8hG6JzBm70Drw54HZfDD7U0DfTtmaPiOA==
+X-Received: by 2002:a1c:7412:0:b0:401:519:c9 with SMTP id
+ p18-20020a1c7412000000b00401051900c9mr2352531wmc.13.1692892944029; 
+ Thu, 24 Aug 2023 09:02:24 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.238.90])
+ by smtp.gmail.com with ESMTPSA id
+ x10-20020a05600c21ca00b003fef3180e7asm2985549wmj.44.2023.08.24.09.02.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Aug 2023 09:02:23 -0700 (PDT)
+Message-ID: <53f5a2e2-ed79-0dc1-9248-0ab5cd13f34f@linaro.org>
+Date: Thu, 24 Aug 2023 18:02:20 +0200
 MIME-Version: 1.0
-References: <20230824153224.2517486-1-peter.maydell@linaro.org>
- <20230824153224.2517486-2-peter.maydell@linaro.org>
- <663d4cd3-50d5-d5db-bd43-efc55fe6bbf0@linaro.org>
-In-Reply-To: <663d4cd3-50d5-d5db-bd43-efc55fe6bbf0@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 24 Aug 2023 17:01:42 +0100
-Message-ID: <CAFEAcA-jswkb6JwPUMuBjvHFPo5YrAZMu5FBt7az_toVsQa=Jg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] hw/net/fsl_etsec/rings.c: Avoid variable length array
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
- Jiri Pirko <jiri@resnulli.us>, qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 01/11] target/arm: Reduce dcz_blocksize to uint8_t
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20230811214031.171020-1-richard.henderson@linaro.org>
+ <20230811214031.171020-2-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230811214031.171020-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,95 +93,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 24 Aug 2023 at 16:47, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> On 24/8/23 17:32, Peter Maydell wrote:
-> > In fill_rx_bd() we create a variable length array of size
-> > etsec->rx_padding. In fact we know that this will never be
-> > larger than 64 bytes, because rx_padding is set in rx_init_frame()
-> > in a way that ensures it is only that large. Use a fixed sized
-> > array and assert that it is big enough.
-> >
-> > Since padd[] is now potentially rather larger than the actual
-> > padding required, adjust the memset() we do on it to match the
-> > size that we write with cpu_physical_memory_write(), rather than
-> > clearing the entire array.
-> >
-> > The codebase has very few VLAs, and if we can get rid of them all we
-> > can make the compiler error on new additions.  This is a defensive
-> > measure against security bugs where an on-stack dynamic allocation
-> > isn't correctly size-checked (e.g.  CVE-2021-3527).
-> >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >   hw/net/fsl_etsec/rings.c | 12 ++++++++++--
-> >   1 file changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/hw/net/fsl_etsec/rings.c b/hw/net/fsl_etsec/rings.c
-> > index 788463f1b62..2f2f359f7a5 100644
-> > --- a/hw/net/fsl_etsec/rings.c
-> > +++ b/hw/net/fsl_etsec/rings.c
-> > @@ -372,6 +372,12 @@ void etsec_walk_tx_ring(eTSEC *etsec, int ring_nbr=
-)
-> >       etsec->regs[TSTAT].value |=3D 1 << (31 - ring_nbr);
-> >   }
-> >
-> > +/*
-> > + * rx_init_frame() ensures we never do more padding than this
-> > + * (checksum plus minimum data packet size)
-> > + */
-> > +#define MAX_RX_PADDING 64
-> > +
-> >   static void fill_rx_bd(eTSEC          *etsec,
-> >                          eTSEC_rxtx_bd  *bd,
-> >                          const uint8_t **buf,
-> > @@ -380,9 +386,11 @@ static void fill_rx_bd(eTSEC          *etsec,
-> >       uint16_t to_write;
-> >       hwaddr   bufptr =3D bd->bufptr +
-> >           ((hwaddr)(etsec->regs[TBDBPH].value & 0xF) << 32);
-> > -    uint8_t  padd[etsec->rx_padding];
-> > +    uint8_t  padd[MAX_RX_PADDING];
-> >       uint8_t  rem;
-> >
-> > +    assert(etsec->rx_padding <=3D MAX_RX_PADDING);
-> > +
-> >       RING_DEBUG("eTSEC fill Rx buffer @ 0x%016" HWADDR_PRIx
-> >                  " size:%zu(padding + crc:%u) + fcb:%u\n",
-> >                  bufptr, *size, etsec->rx_padding, etsec->rx_fcb_size);
-> > @@ -426,7 +434,7 @@ static void fill_rx_bd(eTSEC          *etsec,
-> >           rem =3D MIN(etsec->regs[MRBLR].value - bd->length, etsec->rx_=
-padding);
-> >
-> >           if (rem > 0) {
-> > -            memset(padd, 0x0, sizeof(padd));
-> > +            memset(padd, 0x0, rem);
-> >               etsec->rx_padding -=3D rem;
-> >               *size             -=3D rem;
-> >               bd->length        +=3D rem;
->
-> Maybe we can add this for clarity:
->
-> @@ -468,6 +468,6 @@ static void rx_init_frame(eTSEC *etsec, const
-> uint8_t *buf, size_t size)
->        * minimum MTU size bytes long (64)
->        */
-> -    if (etsec->rx_buffer_len < 60) {
-> -        etsec->rx_padding +=3D 60 - etsec->rx_buffer_len;
-> +    if (etsec->rx_padding + etsec->rx_buffer_len < MAX_RX_PADDING) {
-> +        etsec->rx_padding =3D MAX_RX_PADDING - etsec->rx_buffer_len;
->       }
+On 11/8/23 23:40, Richard Henderson wrote:
+> This value is only 4 bits wide.
+> 
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/arm/cpu.h | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-I think that's a more confusing way of putting it. What the
-code is doing is "if the packet is too short, pad it to
-the minimum-packet-length", and the clear way to express
-that is "if (packet_len < max) add_more_padding;".
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-There is potential to use the constants ETH_ZLEN (60) and
-ETH_FCS_LEN (4) instead of the hard-coded 60 and 4 currently
-in the code, but I felt that was starting to wander a bit
-out of scope of just getting rid of the VLA.
 
-thanks
--- PMM
 
