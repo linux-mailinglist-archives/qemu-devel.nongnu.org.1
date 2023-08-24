@@ -2,116 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE84786F4C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 14:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5431E786F57
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 14:45:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ9dN-0003zf-Kf; Thu, 24 Aug 2023 08:40:21 -0400
+	id 1qZ9hC-0006Aq-ET; Thu, 24 Aug 2023 08:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qZ9dL-0003zI-S7
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:40:19 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZ9h8-00066E-Gn
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:44:15 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qZ9dJ-0002f9-9h
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:40:19 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-68a4bcf8a97so3351576b3a.1
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 05:40:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZ9h5-0003nZ-Kc
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:44:14 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31c5cac3ae2so3024420f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 05:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692880815; x=1693485615;
+ d=linaro.org; s=google; t=1692881050; x=1693485850;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=AlD0KkcoSMnm2QId2bF2QJsTp5aZ7edM05dvtgmHarY=;
- b=2GE06rscmgwtSEOK3aKHSpS4LRMu8rmUk/KZrP+bdvhnsQ5jwv+yCCBw+vTaIpyvJs
- eSAhPdT0etRUNmbGIwTrVaud5pnke26oC2rKhgP5XMuShYlROu6i5CWeJu9cKRMsh+HF
- LVDLTW5gvwTrqAhH3jSWbxgUefmepNpbAWqA5VL71QSPdG1brHBYiwg40/cAzEm6Bc+g
- /LU4VTojJSTe9lHX6MSuB7bMG9DTOZA/p7G1WiIdCL3k7SH9O3dokqlQ/F8bL8Gr3tIi
- 5jQI2PRDCpp2AyPaa9j3yh8mkwolEneLgQmXses061xbGAhHYpw6v/bfBLiTK5ChEbdk
- orNw==
+ bh=ZABzKcgIyiiTBAbagah8P6w9MrqGPaKlWQZ/GD3zX7I=;
+ b=nOfWTGdeZmS8aTCKP40/qiA7ktOwSHgudcMds4nZkaByTctoDC/DNjaMcPGrIgtUJc
+ TwbXfkqdaPtIZvS0x1VRZP6qw4LEVLWjtNG0Kq15MCm9Jda7gAJf/90dihefmfICFltm
+ uGNPl2gxczpeY61SKWwIpVyceiEZGx+IrcTAO14bf2jWgoOv1kj3yiIG6IPzEDqhgb5o
+ d/CzjST1bfVIKJwCkW+8+mwXvI1N46a5SUi4VKGsEL5ceA/KQimMqbxv0mNPJboKU2sA
+ HM4fQ4W/NKK4clRA/z+pJ5u0AJrc/L7MYfMqQQE0DrXx2QERPo7zFEP0F584LOn9lxZj
+ 9pNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692880815; x=1693485615;
+ d=1e100.net; s=20221208; t=1692881050; x=1693485850;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AlD0KkcoSMnm2QId2bF2QJsTp5aZ7edM05dvtgmHarY=;
- b=ETnTvOrjfkixG3CopzPvFis8MyBmUMgJHt42DSz+rgCkRvtmKgkHmKaJN2WHUTq1/z
- 1Ckt9dj71QCj9gs+7RRuu93Fucrfad8v6PcllwlxWfVskkLlNLvnYXVazJXabBxiUijp
- CTqarr+jyVkLULmr+YwG0KllZfKxKNDqKrDtHSpi50cDriRlSQDRyiT8IOEHo6/USmJS
- /ta+4gSGlyivazNxJAFQRS4TQZGszpLg7C/9Y3VGeESz6NhbXAST8YmttZFHYLEyjcBR
- GhB1Q+vkrMmPxVPiZP3kQjWCIn3gZ0Ha6mLS7WebuLp8ReeC8ho3gtzHyZp+iNgXWnDr
- lMuw==
-X-Gm-Message-State: AOJu0YyAOcU5NvGQz4gILbO3FCam3APm/BNLgzpLJ3WeUpGtC++36r7E
- yPpLqi/RhiQUN0P8s63GE+jBjA==
-X-Google-Smtp-Source: AGHT+IFjJ+DGBC6A5fjKq/d6Bq4vcJn2uJykLIl0SwHmvdO0JIAHD+Ws+6BTM2E5J1IvXoy2/jTbWQ==
-X-Received: by 2002:a17:90a:dc05:b0:268:a691:412f with SMTP id
- i5-20020a17090adc0500b00268a691412fmr11837891pjv.39.1692880815202; 
- Thu, 24 Aug 2023 05:40:15 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=ZABzKcgIyiiTBAbagah8P6w9MrqGPaKlWQZ/GD3zX7I=;
+ b=AGInx4u9e2/+FqmWlRlFDH45GLlzTLEWY5ZpDny56UcAq9X6ZV+O6IJHwZNygEhVDB
+ U1Aa3HPSL39qjpB1QMf49kirmR3QRbP+pmNikkl+VzX0NVtHPgAblCwGqvDHSWsDAnlM
+ r7lS6t/zcmYCkFVaQdWJt/Ud9f3jIncLK1KWMLvlAyR1a3HoxxkZcu3Xq7vYgwrCee33
+ ZKD2m7o3BGLi34ymIRKE45r5J0Z1GqZU0SJYpsxSFNZvlGDtg/M84pgTce+r7UTkFkAV
+ RK5pOZdaKipA7C9ZFjXHAJCZqt+XEVeU3eng3MnwjuhIwlVJA8Z2t6U0eaxmTz0PzP6U
+ VlBw==
+X-Gm-Message-State: AOJu0Yy7cgRSwRYWfImfE/Xvgwv/m+eewM1nn8SoeAp8U9u74ejH9kwT
+ pIrHLWznRWnhfvKIr3Xk+X/lGg==
+X-Google-Smtp-Source: AGHT+IEM0NfDosO39i3ykOaSbtynNVUc3JdTDh+pl75v0hIlMRwsMDs/ryu6lw3DwjCCOyv/m89FsA==
+X-Received: by 2002:adf:fd4e:0:b0:313:ef08:c83b with SMTP id
+ h14-20020adffd4e000000b00313ef08c83bmr10610886wrs.56.1692881049891; 
+ Thu, 24 Aug 2023 05:44:09 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.238.90])
  by smtp.gmail.com with ESMTPSA id
- y23-20020a17090a16d700b002680ef05c40sm1609373pje.55.2023.08.24.05.40.05
+ y17-20020adfe6d1000000b003176eab8868sm22124972wrm.82.2023.08.24.05.44.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 05:40:14 -0700 (PDT)
-Message-ID: <0a1b665c-31dd-4263-9f67-a75c8aa3fd7d@daynix.com>
-Date: Thu, 24 Aug 2023 21:40:04 +0900
+ Thu, 24 Aug 2023 05:44:09 -0700 (PDT)
+Message-ID: <556b1036-fa1c-f207-6ce6-a9cf22805e6c@linaro.org>
+Date: Thu, 24 Aug 2023 14:44:07 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/26] plugins: Allow to read registers
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PULL 1/2] hw/nvme: fix null pointer access in directive receive
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Rolnik
- <mrolnik@gmail.com>, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
- <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>
-References: <20230817053017.24207-1-akihiko.odaki@daynix.com>
- <87wmxkfwfo.fsf@linaro.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87wmxkfwfo.fsf@linaro.org>
+To: Klaus Jensen <its@irrelevant.dk>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
+ Jesper Wendel Devantier <j.devantier@samsung.com>
+References: <20230809133909.45818-4-its@irrelevant.dk>
+ <20230809133909.45818-5-its@irrelevant.dk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230809133909.45818-5-its@irrelevant.dk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,18 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/24 21:36, Alex Bennée wrote:
+On 9/8/23 15:39, Klaus Jensen wrote:
+> From: Klaus Jensen <k.jensen@samsung.com>
 > 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+> nvme_directive_receive() does not check if an endurance group has been
+> configured (set) prior to testing if flexible data placement is enabled
+> or not.
 > 
->> I and other people in the University of Tokyo, where I research processor
->> design, found TCG plugins are very useful for processor design
->> exploration.
+> Fix this.
 > 
-> This series didn't seem to complete getting to the mailing list. Can you
-> re-post or send the next iteration?
+> Cc: qemu-stable@nongnu.org
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1815
+> Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
+> Reviewed-by: Jesper Wendel Devantier <j.devantier@samsung.com>
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> ---
+>   hw/nvme/ctrl.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+> index d217ae91b506..e5b5c7034d2b 100644
+> --- a/hw/nvme/ctrl.c
+> +++ b/hw/nvme/ctrl.c
+> @@ -6900,7 +6900,7 @@ static uint16_t nvme_directive_receive(NvmeCtrl *n, NvmeRequest *req)
+>       case NVME_DIRECTIVE_IDENTIFY:
+>           switch (doper) {
+>           case NVME_DIRECTIVE_RETURN_PARAMS:
+> -            if (ns->endgrp->fdp.enabled) {
+> +            if (ns->endgrp && ns->endgrp->fdp.enabled) {
 
-I have resent this series and you can find it at:
-https://lore.kernel.org/qemu-devel/20230818033648.8326-1-akihiko.odaki@daynix.com/
+This patch fixes CVE-2023-40360 ("QEMU: NVMe: NULL pointer
+dereference in nvme_directive_receive"). Were you aware of
+the security implications?
+
+Too bad we hadn't committed "Fixes: CVE-2023-40360" as that
+would have helped downstream distributions cherry-picking
+security fixes ASAP, since our stable is not that frequent.
+At least the commit has the 'qemu-stable@nongnu.org' tag.
+
+>                   id.supported |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
+>                   id.enabled |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
+>                   id.persistent |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
+
 
