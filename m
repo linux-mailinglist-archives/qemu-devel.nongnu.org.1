@@ -2,80 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74160786450
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 02:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407F7786451
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 02:50:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qYyUH-0001c1-Mb; Wed, 23 Aug 2023 20:46:14 -0400
+	id 1qYyYS-0003Mf-Qa; Wed, 23 Aug 2023 20:50:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qYyUF-0001bE-TX
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 20:46:11 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qYyUD-0005UW-E8
- for qemu-devel@nongnu.org; Wed, 23 Aug 2023 20:46:11 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4ff9abf18f9so9545424e87.2
- for <qemu-devel@nongnu.org>; Wed, 23 Aug 2023 17:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692837967; x=1693442767;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5dbnTJp4sfEMMkLHBALWYRtovrkk4Vmgor09QC7kBrc=;
- b=EGKy37kT+K12vDRzIEczJcmYRih5Z63GPG6ZVPPX7qkzWY/oIf8sbEEC3natdW3e9J
- NH05c/wVofB5j3DOLZNc8dx3Z7eGiFafyFlt3l+qe21VKOM+U1gcehkQ8/6Bi3XLuUCe
- vaLfM7GGiiwFyFwjfO7a9ABNjFub31xFwM2Of7TQ8XhJJuyaL9eg9+FCa2rZ6fmOzpgh
- B2Pg4ZPLeUvcR4igBcgFTuFAvu9XhB8o+VElvOh4907SEA9B1J/0MFXMGKlpD1hpUFlE
- SN/Km2NKmso8QCCVc8OKANXA+k2i12dDFmS2OxQ3fO+5/9aipciR7a3zXYbUZJcAIJEA
- nUzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692837967; x=1693442767;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5dbnTJp4sfEMMkLHBALWYRtovrkk4Vmgor09QC7kBrc=;
- b=El88NlKChV/zsRODLcF/TZP+E9TdUHJHG4Q5ae08t/PSmGo2CCFchhNWCPlMlSnFSn
- j5SQvZS/WJ+EFELIuHAvPlTGt5JH1wfyYznyZi8xxfdO6eaw6o85V6BHJpRDcA0/syI4
- 3PYUdx0cG1EIaZugKBTDShRkj9ZXada05pZsomsppGEDvkBOSvrFkhbQwDTGsJwJ2au/
- 6c4TtgCri/i3ly0nFxwCd6TtJkdQ407jkz1gkS7yiZnGsStKIsojC5sdoQl2gdEhZ3+j
- UWxSSkMm0w/IDtgvj4WIiNO4K1JCgnktB07xqO4zBMVvjWPSGIFQNvRuVMswX+SZgMhd
- xHUg==
-X-Gm-Message-State: AOJu0YzdIEjTIOO5t/t9odm791+TrTfBjKXVNYUGlgaoFCCzpAxpdd7H
- G3jfEVnBUpUWvC0RyXpa0p9lYgNZnfeSTIzuPoQ=
-X-Google-Smtp-Source: AGHT+IHaa+EW3MP0NdRUCMqUoS3pVVW/D4fHGQg1VZWDJ1oKzydfmZIWnVu563ZNAscAVIvZ+I2c3a98O+170WKcM/8=
-X-Received: by 2002:a19:5f19:0:b0:4ff:9f8b:f7ff with SMTP id
- t25-20020a195f19000000b004ff9f8bf7ffmr8649558lfb.43.1692837966626; Wed, 23
- Aug 2023 17:46:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1qYyYN-0003MM-My
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 20:50:27 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1qYyYI-00069E-MU
+ for qemu-devel@nongnu.org; Wed, 23 Aug 2023 20:50:26 -0400
+Received: from loongson.cn (unknown [10.2.9.158])
+ by gateway (Coremail) with SMTP id _____8AxV_FDqeZkpFsbAA--.56352S3;
+ Thu, 24 Aug 2023 08:50:13 +0800 (CST)
+Received: from kvm-1-158.loongson.cn (unknown [10.2.9.158])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dx5sxCqeZkUtRhAA--.20702S2; 
+ Thu, 24 Aug 2023 08:50:11 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v2] target/loongarch: cpu: Implement get_arch_id callback
+Date: Thu, 24 Aug 2023 08:50:07 +0800
+Message-Id: <20230824005007.2000525-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <CAJSP0QU7gp1OjmrGhV1Y4jLRF0DYQAG=vn7LTS8SOa0eADW70Q@mail.gmail.com>
- <CAAAx-8KKesRCK1-4-1Yx=SvsmMgxBZKLaCZXPZkKk4vyDkEOVg@mail.gmail.com>
- <CAJSP0QVsStbxhxRJZjNhfEcXbUUaL1d-Qq1g9QtpH762R3CE6Q@mail.gmail.com>
- <CGME20230823145848eucas1p27f88a6af04a2919d618a844ee5375239@eucas1p2.samsung.com>
- <CAAAx-8+ugwD4a3NEs36afYREKpf8LPj1jUpLNrO7gFugdVs+fg@mail.gmail.com>
- <ZOZVi2FVAmj4qnXV@cormorant.local>
-In-Reply-To: <ZOZVi2FVAmj4qnXV@cormorant.local>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Thu, 24 Aug 2023 08:45:33 +0800
-Message-ID: <CAAAx-8K=pKi-42uGboLwWsjo=962AENoOL210cnW8O_ab1+5=Q@mail.gmail.com>
-Subject: Re: NVMe ZNS last zone size
-To: Klaus Jensen <k.jensen@samsung.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel <qemu-devel@nongnu.org>, 
- Val Adler <spantamd@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dx5sxCqeZkUtRhAA--.20702S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CFyxur1UZF1xWFyftF4xGrX_yoW8tFy8pr
+ W7ZF1DKa18JrZxJ3ykJa45Xrn8Wr17Wr42qa12krWSkFsrXry8XF1vy34qvF98Za4rGFy2
+ vF1rAa45XF48XabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+ Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+ 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0x
+ vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+ 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+ kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UE-erUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,56 +73,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Klaus Jensen <k.jensen@samsung.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8824=E6=
-=97=A5=E5=91=A8=E5=9B=9B 02:53=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Aug 23 22:58, Sam Li wrote:
-> > Stefan Hajnoczi <stefanha@gmail.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8823=
-=E6=97=A5=E5=91=A8=E4=B8=89 22:41=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > On Wed, 23 Aug 2023 at 10:24, Sam Li <faithilikerun@gmail.com> wrote:
-> > > >
-> > > > Hi Stefan,
-> > > >
-> > > > Stefan Hajnoczi <stefanha@gmail.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=
-=8823=E6=97=A5=E5=91=A8=E4=B8=89 21:26=E5=86=99=E9=81=93=EF=BC=9A
-> > > > >
-> > > > > Hi Sam and Klaus,
-> > > > > Val is adding nvme-io_uring ZNS support to libblkio
-> > > > > (https://gitlab.com/libblkio/libblkio/-/merge_requests/221) and a=
-sked
-> > > > > how to test the size of the last zone when the namespace's total =
-size
-> > > > > is not a multiple of the zone size.
-> > > >
-> > > > I think a zone report operation can do the trick. Given zone config=
-s,
-> > > > the size of last zone should be [size - (nr_zones - 1) * zone_size]=
-.
-> > > > Reporting last zone on such devices tells whether the value is
-> > > > correct.
-> > >
-> > > In nvme_ns_zoned_check_calc_geometry() the number of zones is rounded=
- down:
-> > >
-> > >   ns->num_zones =3D le64_to_cpu(ns->id_ns.nsze) / ns->zone_size;
-> > >
-> > > Afterwards nsze is recalculated as follows:
-> > >
-> > >   ns->id_ns.nsze =3D cpu_to_le64(ns->num_zones * ns->zone_size);
-> > >
-> > > I interpret this to mean that when the namespace's total size is not =
-a
-> > > multiple of the zone size, then the last part will be ignored and not
-> > > exposed as a zone.
-> >
-> > I see. Current ZNS emulation does not support this case.
-> >
->
-> NVMe Zoned Namespaces requires all zones to be the same size. The
-> "trailing zone" is a thing in SMR HDDs.
+Implement the callback for getting the architecture-dependent CPU
+ID, the cpu ID is physical id described in ACPI MADT table, this
+will be used for cpu hotplug.
 
-Thanks! Then qcow2 with ZNS should also ignore the trailing zone.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+---
 
-Sam
+v1->v2:
+ remove unuseful changeid.
+
+---
+ hw/loongarch/virt.c    | 2 ++
+ target/loongarch/cpu.c | 8 ++++++++
+ target/loongarch/cpu.h | 1 +
+ 3 files changed, 11 insertions(+)
+
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index e19b042ce8..6f6b577749 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -815,6 +815,8 @@ static void loongarch_init(MachineState *machine)
+         cpu = cpu_create(machine->cpu_type);
+         cpu->cpu_index = i;
+         machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
++        lacpu = LOONGARCH_CPU(cpu);
++        lacpu->phy_id = machine->possible_cpus->cpus[i].arch_id;
+     }
+     fdt_add_cpu_nodes(lams);
+ 
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index ad93ecac92..7be3769672 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -690,6 +690,13 @@ static struct TCGCPUOps loongarch_tcg_ops = {
+ static const struct SysemuCPUOps loongarch_sysemu_ops = {
+     .get_phys_page_debug = loongarch_cpu_get_phys_page_debug,
+ };
++
++static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
++{
++    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
++
++    return cpu->phy_id;
++}
+ #endif
+ 
+ static gchar *loongarch_gdb_arch_name(CPUState *cs)
+@@ -715,6 +722,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+     cc->set_pc = loongarch_cpu_set_pc;
+     cc->get_pc = loongarch_cpu_get_pc;
+ #ifndef CONFIG_USER_ONLY
++    cc->get_arch_id = loongarch_cpu_get_arch_id;
+     dc->vmsd = &vmstate_loongarch_cpu;
+     cc->sysemu_ops = &loongarch_sysemu_ops;
+ #endif
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index fa371ca8ba..033081593c 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -371,6 +371,7 @@ struct ArchCPU {
+     CPUNegativeOffsetState neg;
+     CPULoongArchState env;
+     QEMUTimer timer;
++    uint32_t  phy_id;
+ 
+     /* 'compatible' string for this CPU for Linux device trees */
+     const char *dtb_compatible;
+-- 
+2.27.0
+
 
