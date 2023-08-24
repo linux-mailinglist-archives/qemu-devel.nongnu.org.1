@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A060786BFD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B055B786BE2
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:30:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6em-0007UB-M5; Thu, 24 Aug 2023 05:29:38 -0400
+	id 1qZ6er-00083a-Bl; Thu, 24 Aug 2023 05:29:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6eC-0004HX-It
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:00 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qZ6e9-00047R-4F
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:59 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e9-0004yH-5f
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:00 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31c5327e5e8so412926f8f.1
+ id 1qZ6e1-0004yW-Ne
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:53 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4ff8f2630e3so10386526e87.1
  for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692869322; x=1693474122;
+ d=linaro.org; s=google; t=1692869323; x=1693474123;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Fvo37lHKSY4gbS092X7jXMhMWoKtNHO/9H2RjswZUW4=;
- b=V7P8LD+WS3+dYbcNuFQjUoWIIZs1+kLqUpvenkhb7EV6Jwlklm9oz+VRnWp0478iiZ
- QFVoGXFhgiXpavalkKZ983vNxHwzhyXfGSql3h0ijbAVnUCMOPfgbdSUtDmjy8tPjZRs
- 094Cn8UfEQr/3tRWEcC6fuuRqwOoR6+fdyPeaF3lypMLNOkn9F/aaofV/yT3MMfNdNY0
- POSb/2LXhbXqI8xEfpMm6RKHZALR+WPGNXbBgStE8zv5jIW2VsejY9FNck/x2VuxXi7K
- 6W5hKc2k7gEsiNKfI0A6WY2GPDfp3FsrYcvMMxzm0wc+SVOy2rXiOGXtBs8lwwgD1ZWz
- JpMw==
+ :reply-to; bh=rDBvn+8aP4FuM7R/tw2wMoRa69yeF0kW2DF1HQRjT0U=;
+ b=Uk3yZPrneVeCZefuFulG6pI7sV78J9QS6OYQ59as/SIS4zvALIJwW7TCwx6VgZmzfW
+ TaRQsOBeUOwvDanRQQFo6Hcn0rIxQadsqpRdOtrkPWYYwh3GrjtTdKgkUaHRE7KH3/UT
+ lZdqka5jqUrGVo2ZOK2uSTTGT+WfmgZxHulLIR8SqF9zDd2QEBrmSWvbNaKyTsSlkzY6
+ Zh+br9qpnAJae57Vtp6C2e4BTPjJdueGdMjXfkT0lfUkACkqN6IZdb/WR72r5tApgfWU
+ 2bihS0Wg/ontiAayNDxBrhQ9BI9KGzTM9laCzRYBKoovonlIo9bRtdB/2I6MAKFZ3QKg
+ TS4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692869322; x=1693474122;
+ d=1e100.net; s=20221208; t=1692869323; x=1693474123;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fvo37lHKSY4gbS092X7jXMhMWoKtNHO/9H2RjswZUW4=;
- b=D3ExfKRlHoR8PNPThLAaA1WHa0ceVoWcPt0e1Vhu7i6fGimC7EWVKEOJ5srxO9Ra6W
- N/SvkSj2JXgtCrBqgs8pLUPttl61S/JhhyQ+g/jrVs3q/DbCeDwAeuy5/x0ahc8xqnzj
- 6Z/8ev39MxD61G96aBD/+69xl7AmQjB5zE8PRImCWYKZR0dudOfuB9vLnNXc8kfBkeYK
- sTppt7qgT1hVG3iQbH7ZZf3HyoBF9iWK6Y2/uefTadTvTstXnIbJfe/sDpysv6rB4iHm
- wVyVvQaclz/Oja9KkPVSTe6Q14pEfsFU+91tyJyH+RDChBuJn4rYJfFs6FRiXzdOE70/
- U8nA==
-X-Gm-Message-State: AOJu0YyG95TXm2SsibgDxQIaL+PRm5wboYomvnA5k8U3+77qh9DPWSWf
- WeLUdLRADqk3NYlrYaNMhLgeLMvdZ6wFvpw+0lo=
-X-Google-Smtp-Source: AGHT+IGOkRXvoWjzfnxljjAF39JVGnOoeX+GlAaHiUwjJd0Hru97rzGnchFrtxpfmgr8hcNIGh6Cyg==
-X-Received: by 2002:adf:ff87:0:b0:319:747f:4eb7 with SMTP id
- j7-20020adfff87000000b00319747f4eb7mr13237704wrr.22.1692869322344; 
- Thu, 24 Aug 2023 02:28:42 -0700 (PDT)
+ bh=rDBvn+8aP4FuM7R/tw2wMoRa69yeF0kW2DF1HQRjT0U=;
+ b=aat0P1TA2kRfmb93pcHmkw/fLfZChSoTr22lY4zSbQ+rY/VEPkoXax0wTr7CiQfNJ3
+ XCDv125skv+Zmsb9cH6SQTnr86sLIqMkkwUx0KfUUFfOZMT3QaV1xoj/HOpU46yI0gW/
+ E2ubzHtbwKL108GGw6oe8VEiqbtyb4Xpq6mSmuo6/fDaHi9qUaJSg3GPj2K/y8hyw2NN
+ n6nnzVGRsTMa8OPcEGDrrvbjT0Yta8ZmIfBIYvwXZLC9PRuMFVM82q+fegXo8ztEeBeP
+ J6OpcI7nK90rQlAO3zL53qkDtM9ZmagAUMci/WuIPL/byoFE+FZJmZBLHO2F9ZYGGBr3
+ gAgw==
+X-Gm-Message-State: AOJu0YxRlSCmM9G9vXKGx4KU1HDAwWNa4jjwU1KBWE79uPwu07kXl8oi
+ CuLuYCtviThcgnh8XUa85Ay2mKoSg2xJsv2aeV4=
+X-Google-Smtp-Source: AGHT+IEXsE1HWFOThAP0vCO6Eyk9HhxVOS0evO5AX/JUOJwi9AUSu0EFdNUE52MaFrMyv8zv+oYdng==
+X-Received: by 2002:a05:6512:459:b0:500:9704:3c9 with SMTP id
+ y25-20020a056512045900b00500970403c9mr2512839lfk.26.1692869323008; 
+ Thu, 24 Aug 2023 02:28:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.42
@@ -58,17 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 24 Aug 2023 02:28:42 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/35] accel/kvm: Use negative KVM type for error propagation
-Date: Thu, 24 Aug 2023 10:28:11 +0100
-Message-Id: <20230824092836.2239644-11-peter.maydell@linaro.org>
+Subject: [PULL 11/35] accel/kvm: Free as when an error occurred
+Date: Thu, 24 Aug 2023 10:28:12 +0100
+Message-Id: <20230824092836.2239644-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
 References: <20230824092836.2239644-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,65 +92,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-On MIPS, kvm_arch_get_default_type() returns a negative value when an
-error occurred so handle the case. Also, let other machines return
-negative values when errors occur and declare returning a negative
-value as the correct way to propagate an error that happened when
-determining KVM type.
+An error may occur after s->as is allocated, for example if the
+KVM_CREATE_VM ioctl call fails.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230727073134.134102-5-akihiko.odaki@daynix.com
+Message-id: 20230727073134.134102-6-akihiko.odaki@daynix.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: tweaked commit message]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/kvm/kvm-all.c | 5 +++++
- hw/arm/virt.c       | 2 +-
- hw/ppc/spapr.c      | 2 +-
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ accel/kvm/kvm-all.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index b4723016379..3bac5aa678b 100644
+index 3bac5aa678b..ed30f4135b5 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2527,6 +2527,11 @@ static int kvm_init(MachineState *ms)
-         type = kvm_arch_get_default_type(ms);
+@@ -2765,6 +2765,7 @@ err:
+     if (s->fd != -1) {
+         close(s->fd);
      }
++    g_free(s->as);
+     g_free(s->memory_listener.slots);
  
-+    if (type < 0) {
-+        ret = -EINVAL;
-+        goto err;
-+    }
-+
-     do {
-         ret = kvm_ioctl(s, KVM_CREATE_VM, type);
-     } while (ret == -EINTR);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 7d9dbc26633..83c05f1b9f6 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2913,7 +2913,7 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
-                      "require an IPA range (%d bits) larger than "
-                      "the one supported by the host (%d bits)",
-                      requested_pa_size, max_vm_pa_size);
--        exit(1);
-+        return -1;
-     }
-     /*
-      * We return the requested PA log size, unless KVM only supports
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 1c8b8d57a70..e851f609198 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -3105,7 +3105,7 @@ static int spapr_kvm_type(MachineState *machine, const char *vm_type)
-     }
- 
-     error_report("Unknown kvm-type specified '%s'", vm_type);
--    exit(1);
-+    return -1;
- }
- 
- /*
+     return ret;
 -- 
 2.34.1
 
