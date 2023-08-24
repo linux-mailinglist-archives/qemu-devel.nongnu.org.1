@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B83E78744E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE023787481
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:46:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZCKM-0001dy-6u; Thu, 24 Aug 2023 11:32:54 -0400
+	id 1qZCWo-0004Uv-JU; Thu, 24 Aug 2023 11:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZCK2-0001RJ-B5
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:32:36 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qZCWl-0004UB-LB
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:45:44 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZCJx-0003Rk-FL
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:32:34 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fef56f7223so33549555e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:32:29 -0700 (PDT)
+ id 1qZCWj-0006NF-8U
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:45:43 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-5007616b756so7840299e87.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692891148; x=1693495948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2MJwmp/YT87omTafaKV+iKF01Q0/GZOVi91ih3V6Y9c=;
- b=snhFSuRqMgrk+13ZJHN5POLH8fH1pGmd60/+cLqKATpWWi37mSxz1N9rRa4cIEhCdm
- GFKth4UkfYUz1ELvzCwGR7J8nqNcNOPa0OpqRiKceERQb7suwZIdA/+rcg8htk2Xnj6+
- aqwMY66U1ItNfjxkJu5208iKIMKUk0tpliaOi8fH31lCSJVnCM8E8Y2rj/ROkUUAi01R
- Hu1MK3bcpF/A4zheNUOnYhSKPJkEYsPQM/1wDkDvoitip8H/3UR9mhbs+21Wqt+V51hT
- R/v7na6hE3DOvfnCr1RH1PMlxhFlXwPMUy4H5YPdAawxUCtu6XrRJPc/31fRBlfE+ZVT
- jCGw==
+ d=linaro.org; s=google; t=1692891939; x=1693496739;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=B0uYUo//zX7GRBs4+fMuPpd2fhUd8kvSIh02e5khGAs=;
+ b=zhPqjnMKFojQs+86L39UzMWgYGfL5/5r0Ms05DS9JyAF20YLHSoy8kgsLCx2h1iWAv
+ aS9m7MiwRSwk1WReZYVM+qSWSDhmeV/XhZ564BIEkx7B1fZTRw/M3pJlLSSgCVUunwhB
+ +YSLmO47RtQd/cOFsFKz/9aEsuD1GC2rXlO2n5DehMD6qIzDKfO0XDMexdz5EQmLCeRB
+ eGHf8DXpPzr7lfV6oKOwkz7r/yQZ5bSNzM+v2BU5eu8e1HGQe1ERbIQPXQxwl1a6lNXj
+ IcDtuzxmvHcEm665UD+SErP88IxdwGFRE9AE9HQn6kTVbVP+0Hj4t9+02m3aM90RBQs8
+ 9TOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692891148; x=1693495948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2MJwmp/YT87omTafaKV+iKF01Q0/GZOVi91ih3V6Y9c=;
- b=gUYr61zI9BK7e32cI+GjIGssSB9C77VYihLMc/KoSKN+krEswtqG7+RZ7F09k5FpPt
- x5g+C+ZIco7BQe5f7tSMebu4oKzVrsQBk3KM0mpijgRpJ1095v6xmQkH1aLozQqkjzBd
- 7EXy+Xfn/VnXysg7JnoqRBBV7T89lyZXmUwhg+1SIgFua9p0/H2tTcMVzcZyxB/MpTlG
- jhnjyNodvd4JW9eRpLn1clVVbrYmw+Q5LOm1/v1/Eq7fLsNfnI5Zi53Q6xaYJ8urjf7V
- BGxp1f+5nBonqM71pJxrAztJg6zhVecllFm6+zfo7aDfQImrMa8ehFc8oGh39AZlN0rW
- /fbg==
-X-Gm-Message-State: AOJu0YwVxdaXzUGQ7EEEB82u/9jI4eEv4sTxBN9XX88Bdc3Sr6IyDgUd
- aH/MqKs2tvSxt0xpNPaDUqlivZrMww9AvN/G8ZA=
-X-Google-Smtp-Source: AGHT+IFNNLkZZHC6rb+AQ/+JZ5irkYYaVhrtUF8eurKftzkzgydvgFyH9H0nUdzvMhB1nuTOtwB/UA==
-X-Received: by 2002:adf:e645:0:b0:31a:d90e:42cd with SMTP id
- b5-20020adfe645000000b0031ad90e42cdmr12474790wrn.35.1692891147894; 
- Thu, 24 Aug 2023 08:32:27 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- x4-20020adff0c4000000b003180fdf5589sm22918640wro.6.2023.08.24.08.32.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 08:32:27 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
- qemu-ppc@nongnu.org
-Subject: [PATCH 4/4] net/tap: Avoid variable-length array
-Date: Thu, 24 Aug 2023 16:32:24 +0100
-Message-Id: <20230824153224.2517486-5-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230824153224.2517486-1-peter.maydell@linaro.org>
-References: <20230824153224.2517486-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20221208; t=1692891939; x=1693496739;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=B0uYUo//zX7GRBs4+fMuPpd2fhUd8kvSIh02e5khGAs=;
+ b=UxHljTTWB2Tnhy/RP1I9P8BAUCm3ekQvrH8P1HgGp4Mf0Qu5wlJUxsQGcHrP5TUGSk
+ AFJo+FlPIyvJWNFn6mpqpJsr0Mi9djDUpLATzASeXKZZprvkYmHdswqn0yvCY03jce6L
+ AHRyYSKEWVv8y7Ntd4tWQpxWy3SuwKGn7yNNVtmc+Ynw4rJVgWdqePMt8ds2fbvobLjB
+ lZctGJ838Kba6ZSVP+KxDP8Hpn1DMVbWXPTYrFD+6I2gH47EKT0tn1CIsLxNxsnPk8r2
+ E8MrZLw0itTkMN9C/cKRKm3oUHtGsSkSgxuwg2GgDQofZ5/DXidKo6BF30JweW6D5lZ/
+ +QMQ==
+X-Gm-Message-State: AOJu0YwiQ9s+xWTglMdIhiM+jKfVV3dOS9D4GxIGSPE2dENmCP51X4oT
+ TfxT4+eS1poZVh7sPJan70LULaRltSkoRlccuYsyAQ==
+X-Google-Smtp-Source: AGHT+IE4YoRRijbeGOl02EG5im/VQ6U1pBddS2TguSANVB0elWubKXCzV+n7WRrLOTSTLJ0nCy/VuYw9nJUVVuTsi1o=
+X-Received: by 2002:a05:6512:1282:b0:4fe:6fc:1fc7 with SMTP id
+ u2-20020a056512128200b004fe06fc1fc7mr15456641lfs.27.1692891938569; Thu, 24
+ Aug 2023 08:45:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+References: <20230811214031.171020-1-richard.henderson@linaro.org>
+ <20230811214031.171020-4-richard.henderson@linaro.org>
+In-Reply-To: <20230811214031.171020-4-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 16:45:27 +0100
+Message-ID: <CAFEAcA-dDONiLWA_SwNx-zqGLf8d+-s_rqO62131wAirdH-kMg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] target/arm: Support more GM blocksizes
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,37 +85,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use a heap allocation instead of a variable length array in
-tap_receive_iov().
+On Fri, 11 Aug 2023 at 22:41, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Support all of the easy GM block sizes.
+> Use direct memory operations, since the pointers are aligned.
+>
+> While BS=2 (16 bytes, 1 tag) is a legal setting, that requires
+> an atomic store of one nibble.  This is not difficult, but there
+> is also no point in supporting it until required.
+>
+> Note that cortex-a710 sets GM blocksize to match its cacheline
+> size of 64 bytes.  I expect many implementations will also
+> match the cacheline, which makes 16 bytes very unlikely.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
 
-The codebase has very few VLAs, and if we can get rid of them all we
-can make the compiler error on new additions.  This is a defensive
-measure against security bugs where an on-stack dynamic allocation
-isn't correctly size-checked (e.g.  CVE-2021-3527).
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- net/tap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/tap.c b/net/tap.c
-index 1bf085d4228..34b1e3f0918 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -117,10 +117,11 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
- {
-     TAPState *s = DO_UPCAST(TAPState, nc, nc);
-     const struct iovec *iovp = iov;
--    struct iovec iov_copy[iovcnt + 1];
-+    g_autofree struct iovec *iov_copy = NULL;
-     struct virtio_net_hdr_mrg_rxbuf hdr = { };
- 
-     if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
-+        iov_copy = g_new(struct iovec, iovcnt + 1);
-         iov_copy[0].iov_base = &hdr;
-         iov_copy[0].iov_len =  s->host_vnet_hdr_len;
-         memcpy(&iov_copy[1], iov, iovcnt * sizeof(*iov));
--- 
-2.34.1
-
+thanks
+-- PMM
 
