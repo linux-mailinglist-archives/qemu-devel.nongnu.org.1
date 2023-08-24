@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B7C787CB7
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 03:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54089787CB5
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 03:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZLEU-0007Wt-3q; Thu, 24 Aug 2023 21:03:26 -0400
+	id 1qZLES-0007Vz-2K; Thu, 24 Aug 2023 21:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVZ-0002dw-TF
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVZ-0002dv-S7
  for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:49 -0400
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVX-0001fL-EI
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVX-0001fT-Dy
  for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 906576618D;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id E1BE263CAE;
+ Thu, 24 Aug 2023 21:04:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E1BC433C8;
  Thu, 24 Aug 2023 21:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10937C433C7;
- Thu, 24 Aug 2023 21:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1692911078;
- bh=wFABjGITAxyb2UWqOPzzjoyLyQifoC1dqaAO1lQSzt8=;
- h=From:To:Cc:Subject:Date:From;
- b=hgKgKkkP+j1fdVT3o2VbLcayDzEJABqtF7S3yeZWlRWR3lkMI1dcShjMMCp8B4JuR
- +MCqqy4/CbCRpvWfmOC/d8+Rr5VmK0Tg1Ve3+grFk/yHVvPM9rCVcZ95OTqmxKdlRH
- ZCfxDBVshoTdkN/lI4B5udm/cqyXtmKTvHGet33h/o72+y+XSfEj271eUxJKHgmCGM
- nFdgqh9TRTdB7PUmMLEsMmcCbFqmQrZGm8G0ejrtXcwv7ruxf/wX6bHHc5n5KEDQAa
- hq/ol8USWYUEg98hLKk3EoTbk5V20KMBZ+/57uwWIxFHh4tUXCNOo2GaNJNC3IjrXS
- 53nojGji+ZlDg==
+ s=k20201202; t=1692911079;
+ bh=W6BEb7EQIbRltudB7kn49iBM4xJcma5CKQeiyGLwgys=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=ZVWUq6Wcg/477pPJrxzTy5xuUyvF4JpgnVMr92WLVUt/5J4LslfnrtvJ2qwhm6Q4G
+ JT7WZ5LFDr5eBX6nuJ9hI0Sze8kW4I514lS0/8kpl8h4GkwNFXlW/W0UkkAKcHwhVB
+ KvY9YH9n+wwF879VqJ5sFx0RQoLRI2pYKgMAocUMacNMczy4SET4cQFFaTCXNe9o9K
+ xyPZTzRZHnr3aKurcCwb+YNw8MkCOI0emz/+n9wTDzwDsF/3lRD4eOpc7iOfbwrnJo
+ +ejyfwg80VmG3Jt6SFjGymsYF6d1qYMrLS61aBRdFLv90mAs5sQqOAp4wrKSHjSb5r
+ 9GuWbIXiLD9eQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 0/5] target/hppa: Clean up conversion from/to MMU index and
- priviledge level
-Date: Thu, 24 Aug 2023 23:04:29 +0200
-Message-ID: <20230824210434.151971-1-deller@kernel.org>
+Subject: [PATCH 1/5] target/hppa: Add missing PL1 and PL2 priviledge levels
+Date: Thu, 24 Aug 2023 23:04:30 +0200
+Message-ID: <20230824210434.151971-2-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230824210434.151971-1-deller@kernel.org>
+References: <20230824210434.151971-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2604:1380:4641:c500::1;
@@ -73,24 +73,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Make the conversion between priviledge level and QEMU MMU index
-consitent, and afterwards switch to MMU indices 11-15.
+The hppa CPU has 4 priviledge levels (0-3).
+Mention the missing PL1 and PL2 levels, although the Linux kernel
+uses only 0 (KERNEL) and 3 (USER). Not sure about HP-UX.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+---
+ target/hppa/cpu.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Helge Deller (5):
-  target/hppa: Add missing PL1 and PL2 priviledge levels
-  target/hppa: Add priviledge to MMU index conversion helpers
-  target/hppa: Do not use hardcoded value for tlb_flush_*()
-  target/hppa: Use privilege helper in hppa_get_physical_address()
-  target/hppa: Switch to use MMU indices 11-15
-
- target/hppa/cpu.h        | 19 +++++++++++++++----
- target/hppa/helper.c     |  2 +-
- target/hppa/mem_helper.c | 16 ++++++++--------
- target/hppa/translate.c  |  9 +++++----
- 4 files changed, 29 insertions(+), 17 deletions(-)
-
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 75c5c0ccf7..6c5b0e67c8 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -31,8 +31,11 @@
+ #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
+ 
+ #define MMU_KERNEL_IDX   0
++#define MMU_PL1_IDX      1
++#define MMU_PL2_IDX      2
+ #define MMU_USER_IDX     3
+ #define MMU_PHYS_IDX     4
++
+ #define TARGET_INSN_START_EXTRA_WORDS 1
+ 
+ /* Hardware exceptions, interrupts, faults, and traps.  */
 -- 
 2.41.0
 
