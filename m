@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54089787CB5
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F973787CB4
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 03:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZLES-0007Vz-2K; Thu, 24 Aug 2023 21:03:24 -0400
+	id 1qZLER-0007VJ-3x; Thu, 24 Aug 2023 21:03:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVZ-0002dv-S7
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:49 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVd-0002eH-5x
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:53 -0400
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVX-0001fT-Dy
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:49 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVa-0001fZ-Qf
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id E1BE263CAE;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 435CA66B82;
+ Thu, 24 Aug 2023 21:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82FEC433C7;
  Thu, 24 Aug 2023 21:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E1BC433C8;
- Thu, 24 Aug 2023 21:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1692911079;
- bh=W6BEb7EQIbRltudB7kn49iBM4xJcma5CKQeiyGLwgys=;
+ s=k20201202; t=1692911080;
+ bh=MzlPVVU7AGvkBU9+aA0DV7WUB33hdpwWVOQyUBUD9pc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ZVWUq6Wcg/477pPJrxzTy5xuUyvF4JpgnVMr92WLVUt/5J4LslfnrtvJ2qwhm6Q4G
- JT7WZ5LFDr5eBX6nuJ9hI0Sze8kW4I514lS0/8kpl8h4GkwNFXlW/W0UkkAKcHwhVB
- KvY9YH9n+wwF879VqJ5sFx0RQoLRI2pYKgMAocUMacNMczy4SET4cQFFaTCXNe9o9K
- xyPZTzRZHnr3aKurcCwb+YNw8MkCOI0emz/+n9wTDzwDsF/3lRD4eOpc7iOfbwrnJo
- +ejyfwg80VmG3Jt6SFjGymsYF6d1qYMrLS61aBRdFLv90mAs5sQqOAp4wrKSHjSb5r
- 9GuWbIXiLD9eQ==
+ b=WRKniMGgsQvSY1ZSsHcrZJ/8mtP0MkMOEtdkodB3hK7v+h6bHXpL4ORTMhzESdGhG
+ JX0HxTTbNylkoE5Wyd6zf2iTrv6vst1tDOMVbsi1CzxU+oPs8MAF2m/gr8Jaz68jQY
+ mcbXQbsb+80TiwdU91FsDCgFVg0tw3khIphrBW0Td7CA0GkjzZsoKjbbM5MWpda7FL
+ +SG1rtGft94Dr7mqtfmYlMp1XkRv32ZJEaCIIhwSaMy8oii1TDuJT/B1ZDawqhCEqi
+ qM3PlsAsIrIgNxNFc+NCiFQWeiqH1UBrBspdT8IJmb87MC98AG4cd1MEy8hoJ2wVmG
+ TYUs8xC6Xp01A==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 1/5] target/hppa: Add missing PL1 and PL2 priviledge levels
-Date: Thu, 24 Aug 2023 23:04:30 +0200
-Message-ID: <20230824210434.151971-2-deller@kernel.org>
+Subject: [PATCH 2/5] target/hppa: Add priviledge to MMU index conversion
+ helpers
+Date: Thu, 24 Aug 2023 23:04:31 +0200
+Message-ID: <20230824210434.151971-3-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230824210434.151971-1-deller@kernel.org>
 References: <20230824210434.151971-1-deller@kernel.org>
@@ -73,31 +74,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The hppa CPU has 4 priviledge levels (0-3).
-Mention the missing PL1 and PL2 levels, although the Linux kernel
-uses only 0 (KERNEL) and 3 (USER). Not sure about HP-UX.
+Add two macros which convert priviledge level to/from MMU index:
+
+- PRIV_TO_MMU_IDX(priv)
+    returns the MMU index for the given priviledge level
+
+- MMU_IDX_TO_PRIV(mmu_idx)
+    returns the corresponding priviledge level for this MMU index
+
+The introduction of those macros make the code easier to read and
+will help to improve performance in follow-up patch.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/cpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+ target/hppa/cpu.h       | 5 ++++-
+ target/hppa/translate.c | 9 +++++----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 75c5c0ccf7..6c5b0e67c8 100644
+index 6c5b0e67c8..50b513f0ea 100644
 --- a/target/hppa/cpu.h
 +++ b/target/hppa/cpu.h
-@@ -31,8 +31,11 @@
- #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
- 
- #define MMU_KERNEL_IDX   0
-+#define MMU_PL1_IDX      1
-+#define MMU_PL2_IDX      2
+@@ -36,6 +36,9 @@
  #define MMU_USER_IDX     3
  #define MMU_PHYS_IDX     4
+ 
++#define PRIV_TO_MMU_IDX(priv)    (priv)
++#define MMU_IDX_TO_PRIV(mmu_idx) (mmu_idx)
 +
  #define TARGET_INSN_START_EXTRA_WORDS 1
  
  /* Hardware exceptions, interrupts, faults, and traps.  */
+@@ -236,7 +239,7 @@ static inline int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
+     return MMU_USER_IDX;
+ #else
+     if (env->psw & (ifetch ? PSW_C : PSW_D)) {
+-        return env->iaoq_f & 3;
++        return PRIV_TO_MMU_IDX(env->iaoq_f & 3);
+     }
+     return MMU_PHYS_IDX;  /* mmu disabled */
+ #endif
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index d66fcb3e6a..e3af668252 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -4057,14 +4057,15 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->tb_flags = ctx->base.tb->flags;
+ 
+ #ifdef CONFIG_USER_ONLY
+-    ctx->privilege = MMU_USER_IDX;
++    ctx->privilege = MMU_IDX_TO_PRIV(MMU_USER_IDX);
+     ctx->mmu_idx = MMU_USER_IDX;
+-    ctx->iaoq_f = ctx->base.pc_first | MMU_USER_IDX;
+-    ctx->iaoq_b = ctx->base.tb->cs_base | MMU_USER_IDX;
++    ctx->iaoq_f = ctx->base.pc_first | ctx->privilege;
++    ctx->iaoq_b = ctx->base.tb->cs_base | ctx->privilege;
+     ctx->unalign = (ctx->tb_flags & TB_FLAG_UNALIGN ? MO_UNALN : MO_ALIGN);
+ #else
+     ctx->privilege = (ctx->tb_flags >> TB_FLAG_PRIV_SHIFT) & 3;
+-    ctx->mmu_idx = (ctx->tb_flags & PSW_D ? ctx->privilege : MMU_PHYS_IDX);
++    ctx->mmu_idx = (ctx->tb_flags & PSW_D ?
++                    PRIV_TO_MMU_IDX(ctx->privilege) : MMU_PHYS_IDX);
+ 
+     /* Recover the IAOQ values from the GVA + PRIV.  */
+     uint64_t cs_base = ctx->base.tb->cs_base;
 -- 
 2.41.0
 
