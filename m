@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D22787184
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 16:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 375B97871B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 16:36:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZBLr-0007yP-2C; Thu, 24 Aug 2023 10:30:23 -0400
+	id 1qZBMD-00006J-WA; Thu, 24 Aug 2023 10:30:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qZBLp-0007y0-3l
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:30:21 -0400
+ id 1qZBM9-0008Ur-R7
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:30:42 -0400
 Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qZBLm-0000Ew-Ns
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:30:20 -0400
+ id 1qZBM3-0000P7-IN
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:30:41 -0400
 Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-26fb8225268so1024770a91.1
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 07:30:18 -0700 (PDT)
+ 98e67ed59e1d1-26fe4997871so224706a91.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 07:30:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692887417; x=1693492217;
+ d=ventanamicro.com; s=google; t=1692887434; x=1693492234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7EEtzW/yDSwNYpHxOq+BMaImRS+4pnaLp19/AKav5UI=;
- b=d2IaI1B1MAwbGk+BH2VRO6gWZEs/fzQQjmCw7hUW3l3QlelOUkGGYxflRbq2+tusFF
- ggJk7F/duGxIOONyn5WdzAAEyH75gHAp3YTk08ZMVnoBz1YjEA4rVlyGqJFUwpBU+oZa
- 8s+Hm442eLZoQlmiow4xc/eYRQdr4z+CEfer9vryDJkivwCrszn6Q3qcUgz3BjYq2Nk8
- KZiY75M+V2pGA2dznalWKiqe8Qi+CmzWoYW8/8MTfC3glfFPbtMgD4cMVmGBX978wQJR
- YYzoiD4kWBMJw6LzAefg6txpIylTQLpbQwSgps/OMD0BIjGROkl1u0iaoREAPh4de7sw
- 27yQ==
+ bh=qP3Pkjbm6eW/U4aYn+Kgix5mmDk+c87xv3QAatzmioE=;
+ b=joTW2Ry1S5pspxRBqCYoliu/BmX+B9iA7CaGLH33LV2xzgyrq2e00jFz5IlcxvjM2g
+ TfS+ATDBWG+IiKMgJ5D5TxExfcxIF1A3yQeDSQwtU2p5uOXl+yALvP/Lyuelas6kaRN5
+ yoCuC+7vL2pWjelU7GAp1IxjX/y16OBAMUO+9ZpwipAbtZxZj1nGWALfyUpBJ+0Aly4/
+ ZuCmYBPPm/nm2k+ki3HfCG/4LBNC96DXEgaZhNEtxnebxEa8lxUHVxPrSPHtSOVw5EW1
+ tC34M9Um85KkNueX1XjI9QQE3dn+Cj3noBmlKqXiVLQrE21LHmMy1IWiWae9nwmNXoNx
+ aLrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692887417; x=1693492217;
+ d=1e100.net; s=20221208; t=1692887434; x=1693492234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7EEtzW/yDSwNYpHxOq+BMaImRS+4pnaLp19/AKav5UI=;
- b=ck99Qj11GILE253dfr1oVtKwY/71aKdfPNnGFnOqRxOOEABVE7coj/ZDLLoGGma1U1
- j4lS8aVabddp3i/SsXoP36xpBF2bd9ALVciQ3YoXwDX5y0hHH4+9m1FpqkkgvKnWEXy8
- 9mqTQSKYejermfJLRnSZD+KrsL6ouMzzZS8xGFcOKj6fid+I+a/JPZSkkMYN3+Ga2GLF
- bTZHaYqltcH2RG3/8zrAbByQCsQ6GR3aubmHT/nDGV0ildHAgVItoNxknQbHboJOTFvw
- GbXClflc4ISyGMdXFQxWBtpKZodtjhL6GZy203udhbaVTS2M6rTAdl1clkMxYWG5kIkE
- GtMw==
-X-Gm-Message-State: AOJu0YyHoUk4N8IJYdVWZggYBHvp4Tdthg2bME8viIqfeETwxGEcqeMU
- oKK52pbx2FZmLGGOg2vSO25vFQ==
-X-Google-Smtp-Source: AGHT+IH1o7o7JgLe7774veiOTQ8rBOuKWswv95QjvvktzIax06ElLjFm4nG/14FZP/kgwXnZ788ayA==
-X-Received: by 2002:a17:90a:854c:b0:26d:1201:a8c4 with SMTP id
- a12-20020a17090a854c00b0026d1201a8c4mr12961399pjw.13.1692887417408; 
- Thu, 24 Aug 2023 07:30:17 -0700 (PDT)
+ bh=qP3Pkjbm6eW/U4aYn+Kgix5mmDk+c87xv3QAatzmioE=;
+ b=i9iL1xuiSbmjqU3T6Aqdvs8QcZLyjPNZRgL6YEGA/RKboHN4VquVHq1uLxhrko4mvi
+ qq9kNdRXhZqA7KxJD/B69r/a/iG4+ByvA9o8YRlfhsNY0+iBnZXU4M5H/W1iCVo891Wd
+ gsVjokPGqOetBMp/hkR6ahAqAks6M20itqyre+7mpcAHHYB8UyFZ+mJyzzFaU38UZNZF
+ e7xRIcZ1ErKtTf6/F5Q3cTwucdGw/ROC+mM2kw8xN5T1EEGXnREmjZLSLVtKZeWz0sV8
+ ACYCm1Kxiujf4UUi5CMtiXlK7RHaFYP5Ai/apli+ZlVdTXH7NtGPv1H2/ASl74ifhF1I
+ hM1A==
+X-Gm-Message-State: AOJu0YwxF5eDCfaqkuc7R5wnIE27h0UjvT//7meO/DWAjApygs440uQW
+ 9xhgHZpbRdFOJ6WBUEHpDt5ouQ==
+X-Google-Smtp-Source: AGHT+IEflcAe5EI7tbIKADsmQo76QynTtgSuc+pAuxs49zVx+r3+YZQDem4pg3I3UC+7fkuV1BO3PQ==
+X-Received: by 2002:a17:90b:23c7:b0:26b:17ef:7365 with SMTP id
+ md7-20020a17090b23c700b0026b17ef7365mr10929749pjb.48.1692887434318; 
+ Thu, 24 Aug 2023 07:30:34 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.191.205])
  by smtp.gmail.com with ESMTPSA id
- n6-20020a17090a2bc600b00262fc3d911esm1666864pje.28.2023.08.24.07.30.09
+ n6-20020a17090a2bc600b00262fc3d911esm1666864pje.28.2023.08.24.07.30.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 07:30:14 -0700 (PDT)
+ Thu, 24 Aug 2023 07:30:24 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org,
@@ -75,10 +75,10 @@ Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v2 02/12] hw/arm/virt-acpi-build.c: Migrate virtio creation to
- common location
-Date: Thu, 24 Aug 2023 19:59:32 +0530
-Message-Id: <20230824142942.3983650-3-sunilvl@ventanamicro.com>
+Subject: [PATCH v2 03/12] hw/riscv: virt: Make few IMSIC macros and functions
+ public
+Date: Thu, 24 Aug 2023 19:59:33 +0530
+Message-Id: <20230824142942.3983650-4-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230824142942.3983650-1-sunilvl@ventanamicro.com>
 References: <20230824142942.3983650-1-sunilvl@ventanamicro.com>
@@ -92,7 +92,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,135 +108,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RISC-V also needs to create the virtio in DSDT in the same way as ARM. So,
-instead of duplicating the code, move this function to the device specific
-file which is common across architectures.
+Some macros and static function related to IMSIC are defined in virt.c.
+They are required in virt-acpi-build.c. So, make them public.
 
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/arm/virt-acpi-build.c        | 29 ++---------------------------
- hw/virtio/meson.build           |  1 +
- hw/virtio/virtio-acpi.c         | 28 ++++++++++++++++++++++++++++
- include/hw/virtio/virtio-acpi.h | 11 +++++++++++
- 4 files changed, 42 insertions(+), 27 deletions(-)
- create mode 100644 hw/virtio/virtio-acpi.c
- create mode 100644 include/hw/virtio/virtio-acpi.h
+ hw/riscv/virt.c         | 25 +------------------------
+ include/hw/riscv/virt.h | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+), 24 deletions(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index b8e725d953..69733f6663 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -58,6 +58,7 @@
- #include "migration/vmstate.h"
- #include "hw/acpi/ghes.h"
- #include "hw/acpi/viot.h"
-+#include "hw/virtio/virtio-acpi.h"
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 388e52a294..7b65a847e2 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -38,7 +38,6 @@
+ #include "kvm_riscv.h"
+ #include "hw/intc/riscv_aclint.h"
+ #include "hw/intc/riscv_aplic.h"
+-#include "hw/intc/riscv_imsic.h"
+ #include "hw/intc/sifive_plic.h"
+ #include "hw/misc/sifive_test.h"
+ #include "hw/platform-bus.h"
+@@ -54,28 +53,6 @@
+ #include "hw/acpi/aml-build.h"
+ #include "qapi/qapi-visit-common.h"
  
- #define ARM_SPI_BASE 32
- 
-@@ -118,32 +119,6 @@ static void acpi_dsdt_add_flash(Aml *scope, const MemMapEntry *flash_memmap)
-     aml_append(scope, dev);
+-/*
+- * The virt machine physical address space used by some of the devices
+- * namely ACLINT, PLIC, APLIC, and IMSIC depend on number of Sockets,
+- * number of CPUs, and number of IMSIC guest files.
+- *
+- * Various limits defined by VIRT_SOCKETS_MAX_BITS, VIRT_CPUS_MAX_BITS,
+- * and VIRT_IRQCHIP_MAX_GUESTS_BITS are tuned for maximum utilization
+- * of virt machine physical address space.
+- */
+-
+-#define VIRT_IMSIC_GROUP_MAX_SIZE      (1U << IMSIC_MMIO_GROUP_MIN_SHIFT)
+-#if VIRT_IMSIC_GROUP_MAX_SIZE < \
+-    IMSIC_GROUP_SIZE(VIRT_CPUS_MAX_BITS, VIRT_IRQCHIP_MAX_GUESTS_BITS)
+-#error "Can't accomodate single IMSIC group in address space"
+-#endif
+-
+-#define VIRT_IMSIC_MAX_SIZE            (VIRT_SOCKETS_MAX * \
+-                                        VIRT_IMSIC_GROUP_MAX_SIZE)
+-#if 0x4000000 < VIRT_IMSIC_MAX_SIZE
+-#error "Can't accomodate all IMSIC groups in address space"
+-#endif
+-
+ /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
+ static bool virt_use_kvm_aia(RISCVVirtState *s)
+ {
+@@ -512,7 +489,7 @@ static void create_fdt_socket_plic(RISCVVirtState *s,
+     g_free(plic_cells);
  }
  
--static void acpi_dsdt_add_virtio(Aml *scope,
--                                 const MemMapEntry *virtio_mmio_memmap,
--                                 uint32_t mmio_irq, int num)
--{
--    hwaddr base = virtio_mmio_memmap->base;
--    hwaddr size = virtio_mmio_memmap->size;
--    int i;
--
--    for (i = 0; i < num; i++) {
--        uint32_t irq = mmio_irq + i;
--        Aml *dev = aml_device("VR%02u", i);
--        aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
--        aml_append(dev, aml_name_decl("_UID", aml_int(i)));
--        aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
--
--        Aml *crs = aml_resource_template();
--        aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
--        aml_append(crs,
--                   aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
--                                 AML_EXCLUSIVE, &irq, 1));
--        aml_append(dev, aml_name_decl("_CRS", crs));
--        aml_append(scope, dev);
--        base += size;
--    }
--}
--
- static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
-                               uint32_t irq, VirtMachineState *vms)
+-static uint32_t imsic_num_bits(uint32_t count)
++uint32_t imsic_num_bits(uint32_t count)
  {
-@@ -850,7 +825,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
-     }
-     fw_cfg_acpi_dsdt_add(scope, &memmap[VIRT_FW_CFG]);
--    acpi_dsdt_add_virtio(scope, &memmap[VIRT_MMIO],
-+    virtio_acpi_dsdt_add(scope, &memmap[VIRT_MMIO],
-                     (irqmap[VIRT_MMIO] + ARM_SPI_BASE), NUM_VIRTIO_TRANSPORTS);
-     acpi_dsdt_add_pci(scope, memmap, irqmap[VIRT_PCIE] + ARM_SPI_BASE, vms);
-     if (vms->acpi_dev) {
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 13e7c6c272..3ae1242bcf 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -75,3 +75,4 @@ system_ss.add(when: 'CONFIG_ALL', if_true: files('virtio-stub.c'))
- system_ss.add(files('virtio-hmp-cmds.c'))
+     uint32_t ret = 0;
  
- specific_ss.add_all(when: 'CONFIG_VIRTIO', if_true: specific_virtio_ss)
-+system_ss.add(when: 'CONFIG_ACPI', if_true: files('virtio-acpi.c'))
-diff --git a/hw/virtio/virtio-acpi.c b/hw/virtio/virtio-acpi.c
-new file mode 100644
-index 0000000000..977499defd
---- /dev/null
-+++ b/hw/virtio/virtio-acpi.c
-@@ -0,0 +1,28 @@
-+#include "hw/virtio/virtio-acpi.h"
-+#include "hw/acpi/aml-build.h"
+diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+index e5c474b26e..5b03575ed3 100644
+--- a/include/hw/riscv/virt.h
++++ b/include/hw/riscv/virt.h
+@@ -23,6 +23,7 @@
+ #include "hw/riscv/riscv_hart.h"
+ #include "hw/sysbus.h"
+ #include "hw/block/flash.h"
++#include "hw/intc/riscv_imsic.h"
+ 
+ #define VIRT_CPUS_MAX_BITS             9
+ #define VIRT_CPUS_MAX                  (1 << VIRT_CPUS_MAX_BITS)
+@@ -127,4 +128,28 @@ enum {
+ 
+ bool virt_is_acpi_enabled(RISCVVirtState *s);
+ void virt_acpi_setup(RISCVVirtState *vms);
++uint32_t imsic_num_bits(uint32_t count);
 +
-+void virtio_acpi_dsdt_add(Aml *scope,
-+                          const MemMapEntry *virtio_mmio_memmap,
-+                          uint32_t mmio_irq, int num)
-+{
-+    hwaddr base = virtio_mmio_memmap->base;
-+    hwaddr size = virtio_mmio_memmap->size;
-+    int i;
++/*
++ * The virt machine physical address space used by some of the devices
++ * namely ACLINT, PLIC, APLIC, and IMSIC depend on number of Sockets,
++ * number of CPUs, and number of IMSIC guest files.
++ *
++ * Various limits defined by VIRT_SOCKETS_MAX_BITS, VIRT_CPUS_MAX_BITS,
++ * and VIRT_IRQCHIP_MAX_GUESTS_BITS are tuned for maximum utilization
++ * of virt machine physical address space.
++ */
 +
-+    for (i = 0; i < num; i++) {
-+        uint32_t irq = mmio_irq + i;
-+        Aml *dev = aml_device("VR%02u", i);
-+        aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
-+        aml_append(dev, aml_name_decl("_UID", aml_int(i)));
-+        aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
-+
-+        Aml *crs = aml_resource_template();
-+        aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
-+        aml_append(crs,
-+                   aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
-+                                 AML_EXCLUSIVE, &irq, 1));
-+        aml_append(dev, aml_name_decl("_CRS", crs));
-+        aml_append(scope, dev);
-+        base += size;
-+    }
-+}
-diff --git a/include/hw/virtio/virtio-acpi.h b/include/hw/virtio/virtio-acpi.h
-new file mode 100644
-index 0000000000..b8687b1b42
---- /dev/null
-+++ b/include/hw/virtio/virtio-acpi.h
-@@ -0,0 +1,11 @@
-+#ifndef VIRTIO_ACPI_H
-+#define VIRTIO_ACPI_H
-+
-+#include "qemu/osdep.h"
-+#include "exec/hwaddr.h"
-+
-+void virtio_acpi_dsdt_add(Aml *scope, const MemMapEntry *virtio_mmio_memmap,
-+                          uint32_t mmio_irq, int num);
-+
++#define VIRT_IMSIC_GROUP_MAX_SIZE      (1U << IMSIC_MMIO_GROUP_MIN_SHIFT)
++#if VIRT_IMSIC_GROUP_MAX_SIZE < \
++    IMSIC_GROUP_SIZE(VIRT_CPUS_MAX_BITS, VIRT_IRQCHIP_MAX_GUESTS_BITS)
++#error "Can't accomodate single IMSIC group in address space"
 +#endif
 +
++#define VIRT_IMSIC_MAX_SIZE            (VIRT_SOCKETS_MAX * \
++                                        VIRT_IMSIC_GROUP_MAX_SIZE)
++#if 0x4000000 < VIRT_IMSIC_MAX_SIZE
++#error "Can't accomodate all IMSIC groups in address space"
++#endif
++
+ #endif
 -- 
 2.39.2
 
