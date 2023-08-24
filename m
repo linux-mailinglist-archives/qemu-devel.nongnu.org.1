@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE023787481
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D04787483
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 17:46:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZCWo-0004Uv-JU; Thu, 24 Aug 2023 11:45:46 -0400
+	id 1qZCXf-00058x-57; Thu, 24 Aug 2023 11:46:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZCWl-0004UB-LB
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:45:44 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1qZCXZ-000570-ND
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:46:35 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZCWj-0006NF-8U
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:45:43 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5007616b756so7840299e87.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:45:40 -0700 (PDT)
+ id 1qZCXX-0006UH-I8
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 11:46:33 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-52683da3f5cso52898a12.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 08:46:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692891939; x=1693496739;
+ d=linaro.org; s=google; t=1692891990; x=1693496790;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=B0uYUo//zX7GRBs4+fMuPpd2fhUd8kvSIh02e5khGAs=;
- b=zhPqjnMKFojQs+86L39UzMWgYGfL5/5r0Ms05DS9JyAF20YLHSoy8kgsLCx2h1iWAv
- aS9m7MiwRSwk1WReZYVM+qSWSDhmeV/XhZ564BIEkx7B1fZTRw/M3pJlLSSgCVUunwhB
- +YSLmO47RtQd/cOFsFKz/9aEsuD1GC2rXlO2n5DehMD6qIzDKfO0XDMexdz5EQmLCeRB
- eGHf8DXpPzr7lfV6oKOwkz7r/yQZ5bSNzM+v2BU5eu8e1HGQe1ERbIQPXQxwl1a6lNXj
- IcDtuzxmvHcEm665UD+SErP88IxdwGFRE9AE9HQn6kTVbVP+0Hj4t9+02m3aM90RBQs8
- 9TOg==
+ bh=q4+VhaEXgXmTqoLvMnT0KLXbNrAjiK0HmCXQR6EejPs=;
+ b=d5rWY2C02fteoKQEjfM63Y/iL5yXLQuiQ181gDfv6xm6hq82llRhvRyaKq4CdMKcv/
+ D3qCkqsOH2cqMtxWgivopw0aqEuvHa0o94OgdphIkH/NEEVbCg27v3tXR8u0lwtjIp1v
+ SWa1GlmAbkautJhYKTYNVfo0oE96GmT/biW4VtqMe/ZB132S7CgdOnS8J2ZeWrB3nGgb
+ nLEMZx1ELwRwA6o074Nyw08cTkcurTB5iiigneddhNL27nBtbsrBiJehEq7efE9cS2l0
+ UsdGz3ITZt9epEZlXL5FMd1mfSjhF7PKutFS3tq0ClPhU2GcKrvmUhRMTWWxOEox7Dvm
+ jeJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692891939; x=1693496739;
+ d=1e100.net; s=20221208; t=1692891990; x=1693496790;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=B0uYUo//zX7GRBs4+fMuPpd2fhUd8kvSIh02e5khGAs=;
- b=UxHljTTWB2Tnhy/RP1I9P8BAUCm3ekQvrH8P1HgGp4Mf0Qu5wlJUxsQGcHrP5TUGSk
- AFJo+FlPIyvJWNFn6mpqpJsr0Mi9djDUpLATzASeXKZZprvkYmHdswqn0yvCY03jce6L
- AHRyYSKEWVv8y7Ntd4tWQpxWy3SuwKGn7yNNVtmc+Ynw4rJVgWdqePMt8ds2fbvobLjB
- lZctGJ838Kba6ZSVP+KxDP8Hpn1DMVbWXPTYrFD+6I2gH47EKT0tn1CIsLxNxsnPk8r2
- E8MrZLw0itTkMN9C/cKRKm3oUHtGsSkSgxuwg2GgDQofZ5/DXidKo6BF30JweW6D5lZ/
- +QMQ==
-X-Gm-Message-State: AOJu0YwiQ9s+xWTglMdIhiM+jKfVV3dOS9D4GxIGSPE2dENmCP51X4oT
- TfxT4+eS1poZVh7sPJan70LULaRltSkoRlccuYsyAQ==
-X-Google-Smtp-Source: AGHT+IE4YoRRijbeGOl02EG5im/VQ6U1pBddS2TguSANVB0elWubKXCzV+n7WRrLOTSTLJ0nCy/VuYw9nJUVVuTsi1o=
-X-Received: by 2002:a05:6512:1282:b0:4fe:6fc:1fc7 with SMTP id
- u2-20020a056512128200b004fe06fc1fc7mr15456641lfs.27.1692891938569; Thu, 24
- Aug 2023 08:45:38 -0700 (PDT)
+ bh=q4+VhaEXgXmTqoLvMnT0KLXbNrAjiK0HmCXQR6EejPs=;
+ b=GtzFP9ZwCvhxfGmgRaxIX22S0/DHnx4JGjbD0P99Np7fPMdzjZHcRae+zEnChabYIz
+ E9S8r41/UDWA8ymM/MThfQ69gkQa74uVTszaZ5nUU4LRcPM9bMTJTu1DvA4nG/ou6ox5
+ SqvP/xs65t0EAQrTNxL4TPpE27RhJ1lwE29BcoMG2vaPiRWelIiwWtey3Hg0mBu4uvY0
+ 8I6nk2ek1EYmZgEeF2s23FAzW+7mKRrb9onN9LfwZpwouCDP+sUhMdShYkUHWwSc0rGp
+ JQuQg6314OCPhNlAbOSV6q4GJwa1uscQY+9wMUU7KIPK/j0NGi2YBH3dKX4LgLlDM0fh
+ DfoA==
+X-Gm-Message-State: AOJu0YxZRI23kMK7XnD4y5Z7MAI2JzB98F8wBXkwwNJvEB2n6Ul7bkEL
+ P2fV1buZJ8GMzuMgb75BudSHt2WL1fZXQKwYJ3ZuPA==
+X-Google-Smtp-Source: AGHT+IEC5/OPSg2ZrUYAECcfdtD8bJRUpKbj6egGIwJLMhWfRJ5acR0AqA7RWjsb1oaQrWExIyxEHG+mHhwEp+gXVCU=
+X-Received: by 2002:a50:fa83:0:b0:525:7da7:af10 with SMTP id
+ w3-20020a50fa83000000b005257da7af10mr12646872edr.23.1692891989894; Thu, 24
+ Aug 2023 08:46:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230811214031.171020-1-richard.henderson@linaro.org>
- <20230811214031.171020-4-richard.henderson@linaro.org>
-In-Reply-To: <20230811214031.171020-4-richard.henderson@linaro.org>
+ <20230811214031.171020-5-richard.henderson@linaro.org>
+In-Reply-To: <20230811214031.171020-5-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 24 Aug 2023 16:45:27 +0100
-Message-ID: <CAFEAcA-dDONiLWA_SwNx-zqGLf8d+-s_rqO62131wAirdH-kMg@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] target/arm: Support more GM blocksizes
+Date: Thu, 24 Aug 2023 16:46:19 +0100
+Message-ID: <CAFEAcA9ks2dTKJQpfw6JwiBp7HVZ1r0ehQDQJQ0ZKXyFm80DmA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] target/arm: When tag memory is not present,
+ set MTE=1
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,19 +89,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, 11 Aug 2023 at 22:41, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Support all of the easy GM block sizes.
-> Use direct memory operations, since the pointers are aligned.
->
-> While BS=2 (16 bytes, 1 tag) is a legal setting, that requires
-> an atomic store of one nibble.  This is not difficult, but there
-> is also no point in supporting it until required.
->
-> Note that cortex-a710 sets GM blocksize to match its cacheline
-> size of 64 bytes.  I expect many implementations will also
-> match the cacheline, which makes 16 bytes very unlikely.
+> When the cpu support MTE, but the system does not, reduce cpu
+> support to user instructions at EL0 instead of completely
+> disabling MTE.  If we encounter a cpu implementation which does
+> something else, we can revisit this setting.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+> --
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
