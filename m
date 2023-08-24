@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD23478700A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 15:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC31786F01
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 14:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZAAj-0000Vn-5I; Thu, 24 Aug 2023 09:14:49 -0400
+	id 1qZ9Pm-0006sg-L9; Thu, 24 Aug 2023 08:26:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1qZ8I8-0005Mk-NH
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 07:14:20 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZ9Pk-0006sI-MF
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:26:16 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1qZ8I6-0002Gu-D9
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 07:14:20 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bf078d5f33so52459265ad.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 04:14:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZ9Pi-0008Jf-Gs
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:26:16 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-525bd0b2b48so8679842a12.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 05:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692875656; x=1693480456;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=oce7xfDfyTMN8VV3YKg3SNqws6mxx6AoApuBYAlhMpo=;
- b=qLV5Z1jhab4pUOFRtOI1wnsmeeHTStfEDg1QX4cKUKNuCH2NBNt0JT3GsVbHf4O/42
- 3K6QKy8zu7UmDzRckHl5lkGNjzKPKydCFz3IZiNCuNH7JpCV5WrxL2vNKRVybgrPZmkC
- cjImpb/CFZRECQ9nCgOR3s+VwLnJ1PEu8nvHgFYXEV7F0yIg479WS8sFUXK3cVql+upc
- 1ugOTAjG6GVWIFhSVpny4IKYvTxQv42WXK4SOD1kOLzcqKz4JqOMuLZjdbA0DTVh/zY2
- kdLbejvMxxJe93+S/TXlSRP3qZWqqeys9C2fqOslj0zE0iA/G3lZq8v61yKxRqFE6y+V
- 0/ZA==
+ d=linaro.org; s=google; t=1692879973; x=1693484773;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yQN0eW78L8WQuK3pLTXgbMsoof+AfXGkD26dkj5/jr8=;
+ b=etNZLLbh2vp/Y6eW1IKmycsmtrXSsHSUTRf5OnNeKXpbRKaD4+YM1CLs23Ij93PGoG
+ cmZ8nJZowL4UI3mqaQSuhSsfygJMqZgV5k/YU+rXhW/SBNBMQoAjvSFC+3N6+pwHSqC/
+ JXdlg1boJEc3YFwrQtKM5sw4m94c94Rwbln43jdoXShyZvKlk0hlPC5C7YvTMJWDUjZY
+ dCSYreurXReZyDL59riwqhmVhoFq9+7tGtxlTRa2dkZUG9ToO+ntcMf1yfdzE82zTK+p
+ n3nSj+Sxdwl3vh/drBTX1kfLzGMAdXn4l6eg/2H7APT/qd2m5pEo859ECZGxBs/rS3Da
+ c4OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692875656; x=1693480456;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oce7xfDfyTMN8VV3YKg3SNqws6mxx6AoApuBYAlhMpo=;
- b=DjGujLsr0d3Z3afljEZ4Xitg8u03/xCTC6JYGFfh7plL63zqWbkRgppaTLPXKG5bR3
- Y42b5ZyRmp2E0dd4ghm3DXEcUiMxmAIiCejp2/JWptOOEAL95HDFz9shvg3haWuOhxAl
- wqekbBSMfcUyb6Ho7LLwH4E82cl8FbGOkek3u64URkzFZDWYonSUBmnZgqw1jfOeqRx+
- LGIBuSqO9M5JHmUyBfec/H6rWcNVjdrvmmotE1mEZJZ7LnloAp2IavA8qs/jQmG7Jvsc
- cfpCV469LqBxTu8R9+Y3Rm3gxfXCTa09Nf4obekX2/baqNzOrDYOwe986MhWhGdhrAtf
- NBmQ==
-X-Gm-Message-State: AOJu0YwcGcV8tD0xXzNVayjjmNaepAejXFPv9R2QJpj/AZfoUjKJacuv
- I02fznJML8lnsYdQvlFCNYfGuQkpAnOrpA==
-X-Google-Smtp-Source: AGHT+IH8XcckUHIpfqtX2LBAdfd/Asg7xz4mmlKcgsa96ez4aLzQR1BgAhmNvs1zj9O7QepGEX6UvA==
-X-Received: by 2002:a17:903:1208:b0:1b6:6625:d3a8 with SMTP id
- l8-20020a170903120800b001b66625d3a8mr17477623plh.16.1692875656470; 
- Thu, 24 Aug 2023 04:14:16 -0700 (PDT)
-Received: from localhost.localdomain ([45.112.147.145])
- by smtp.gmail.com with ESMTPSA id
- z17-20020a170903019100b001bf846dd2ebsm7990869plg.303.2023.08.24.04.14.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 04:14:16 -0700 (PDT)
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
- Rayhan Faizel <rayhan.faizel@gmail.com>
-Subject: [PATCH] target/i386/tcg: Check for valid descriptor table before
- loading segment descriptor
-Date: Thu, 24 Aug 2023 16:16:38 +0530
-Message-ID: <20230824104637.216258-2-rayhan.faizel@gmail.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20221208; t=1692879973; x=1693484773;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yQN0eW78L8WQuK3pLTXgbMsoof+AfXGkD26dkj5/jr8=;
+ b=fGeK/a/18ZX0qv6TogXBqbFRWuOWOJQzcH59e9uvxD5FuCU8LFCXhkBMGpvQ0KFcib
+ A5XcqC0o6SAFZlDMNpUkYDirFw/y3xIe2aVB+seAY0VRB8m73nCg7ljvefTmzN37lvZ0
+ 0zjmDWejfamB/xuXdmYbV2nMYqhxCmZJoXRz2U16C9OB5uqcx7Kef5LfYYe2FnRmHdZF
+ f7zfwh2YGbFD5+6VYsQ2rRwGAepHa7Iwrugrh9+bJGVh0YEOQtJca4HH/XGdWOSq6OYu
+ zmkYA/ajE1OfWF9yUqGPQyUFqWBMWZ3JNpuGf8rNpRZ30oRY0gTnZK1mkG4OkO5m6dpf
+ uhaA==
+X-Gm-Message-State: AOJu0YxFPgT+C3RIh/oBscDnmfbfHUA/mE/4nsvAYeTYSHkZSfPWseHQ
+ nI04f+48ws4j5VGlnA3XAWar9enB4d+k3mRu8ANtgyKuVs/Y65BW
+X-Google-Smtp-Source: AGHT+IFYJDD+2+BMTI7dS7uvWEXrGCiEtHcFoMJXxEckgr+JelZWxLv1bz6GpSi9LXciw3yxFndFmI2r8gvEP86l9XA=
+X-Received: by 2002:a05:6402:398:b0:525:7091:124c with SMTP id
+ o24-20020a056402039800b005257091124cmr12205524edv.19.1692879972778; Thu, 24
+ Aug 2023 05:26:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=rayhan.faizel@gmail.com; helo=mail-pl1-x633.google.com
+References: <20230823055155.1917375-1-mjt@tls.msk.ru>
+ <20230823065335.1919380-15-mjt@tls.msk.ru>
+ <056b2e32-4443-bdb8-a9f4-5b08a5ef2b52@linaro.org>
+In-Reply-To: <056b2e32-4443-bdb8-a9f4-5b08a5ef2b52@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 13:26:01 +0100
+Message-ID: <CAFEAcA-=UQoGZxzMGa3kTaUSfmR9qfF4a3kh6x2wQOegN_EO5g@mail.gmail.com>
+Subject: Re: [PATCH 16/24] hw/display: spelling fixes
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 24 Aug 2023 09:14:47 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,34 +88,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LSL and LAR can cause segmentation faults in certain scenarios under QEMU. 
-This occurs particularly when the base of either GDT or LDT depending on 
-bit 2 of selector is NULL.
+On Thu, 24 Aug 2023 at 11:13, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 23/8/23 08:53, Michael Tokarev wrote:
+> > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> > ---
+> >   hw/display/bochs-display.c | 2 +-
+> >   hw/display/qxl.c           | 2 +-
+> >   hw/display/ssd0303.c       | 2 +-
+> >   hw/display/ssd0323.c       | 2 +-
+> >   hw/display/xlnx_dp.c       | 2 +-
+> >   5 files changed, 5 insertions(+), 5 deletions(-)
+>
+> >       /*
+> > -     * Get some data from the DPDMA and compute these datas.
+> > +     * Get some data from the DPDMA and compute these data.
+> >        * Then wait for QEMU's audio subsystem to call this callback.
+> >        */
+>
+> TIL 'data' is plural, thanks!
 
-On real CPU, invalid LSL/LAR does nothing besides clearing ZF.
+It *can* be the plural of 'datum', but 'data' is also a
+"mass noun" (the same way that 'butter' is always 'butter'
+and not '1 butter, 2 butters'). The OED has quotes for
+the mass-noun sense back as far as 1702, and in a computing
+context it is overwhelmingly the common use. Use of it in
+the plural in a comment in code is probably a mistake.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1376
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
----
- target/i386/tcg/seg_helper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I agree with mjt that it's unclear what was actually
+intended by this comment. My guess from the code is
+something like:
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index e8d19c65fd..4c36462162 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -78,6 +78,10 @@ static inline int load_segment_ra(CPUX86State *env, uint32_t *e1_ptr,
-     } else {
-         dt = &env->gdt;
-     }
-+    /* Check valid DT base before fetching segment descriptor*/
-+    if (!dt->base) {
-+        return -1;
-+    }
-     index = selector & ~7;
-     if ((index + 7) > dt->limit) {
-         return -1;
--- 
-2.41.0
+   /*
+    * Get the individual left and right audio streams from
+    * the DPDMA, and fill the output buffer with the
+    * combined stereo audio data adjusted by the volume
+    * controls.
+    * QEMU's audio subsystem will call this callback
+    * repeatedly; we return it the data from the output
+    * buffer until it is emptied, and then we will read
+    * data from the DPDMA again.
+    */
 
+and the following comment should be
+  /* Don't get more data until we've emptied the buffer */
+
+(or deleted as redundant with the expanded comment above.)
+
+-- PMM
 
