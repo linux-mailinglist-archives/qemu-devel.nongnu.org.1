@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E4E787239
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 16:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E72E678723C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 16:52:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZBeN-00047u-Pj; Thu, 24 Aug 2023 10:49:31 -0400
+	id 1qZBga-00063c-Rs; Thu, 24 Aug 2023 10:51:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZBeL-00047a-Ol
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:49:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZBeJ-00044W-GP
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:49:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692888566;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=67yDQtT1vqvJknJyj4xvkLBx/OrUEw9CUNo7nHn5wXA=;
- b=X3Uk2+2tbisG9sIMNC99vqFj1QNkLPiH0+yzaUPDCDud5owL4P4cVKOsHnCjs3ZVYi5nrr
- /RLBX39KRP08lQMwqZuInGnGTBngivinzubYnIS8jhO/BJnyhUJPphpbEvMm+ighOXV79O
- oAd/6bZSQun/cBJF/pDIFsYJki7tIvE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-488-N8UOvDLUMLGDAq6WrT53KQ-1; Thu, 24 Aug 2023 10:49:23 -0400
-X-MC-Unique: N8UOvDLUMLGDAq6WrT53KQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6C858D40AA;
- Thu, 24 Aug 2023 14:49:22 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.155])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3353640D283A;
- Thu, 24 Aug 2023 14:49:22 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id C3FD518003AB; Thu, 24 Aug 2023 16:49:20 +0200 (CEST)
-Date: Thu, 24 Aug 2023 16:49:20 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Alexander Graf <graf@amazon.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org, 
- qemu-block@nongnu.org, qemu-arm@nongnu.org, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <r.bolshakov@yadro.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 05/12] hw/virtio: Add support for apple virtio-blk
-Message-ID: <p37kgk5ictxyl453vqm6whbdsavr3ji4mww7r3vf33pd3kpjzc@5xnzyyn53whs>
-References: <20230614224038.86148-1-graf>
- <20230614225626.97734-1-graf@amazon.com>
- <ZIxMIyi1KY7Ku9Xm@redhat.com>
- <3c29312a-9d5a-4f05-8123-1591de6e7207@amazon.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qZBgY-00063F-6E
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:51:46 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qZBgV-0004UI-U7
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:51:45 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-56e9fcfcd69so3818684eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 07:51:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692888702; x=1693493502;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ECOin+S2PSLdDAnkXybR//GXan2XvMNjAz4oWxG4xr4=;
+ b=XWKNcnHeTbc9c7FWnzQ16e5wncN8u7dqtnYRKje27s95ZmtX8C60OeThk7DK/ZDp5k
+ dxlMswaM/rBpchkHA1Lo44zM23k5ALmO19PNJmoO/qDdZGgchZ3Laf6Aes3vDPpvcioS
+ 9p9XSdb9fbr0vyYPaziVeu9hEgo9XNKTbHwd4G0DOj8UQkSzFSEQCrCk6ktc3E249Lle
+ ZCUXo2vK9/Z29ZCns30qkl/0DKw2nWRG2nPCyoyc3ydQnvnNoEvTQ8gm/U/T4R0Ta8Yo
+ RBJxKo7zPLg7Nwmqz8R+iSPpprHdWzyudYNlDnEXU+Mzj3++NvHixld0a63wZ44J1eeQ
+ DPbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692888702; x=1693493502;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ECOin+S2PSLdDAnkXybR//GXan2XvMNjAz4oWxG4xr4=;
+ b=gQd7cWI4PpbGfZhNYIJYIt7dGDRvSnf0wUt51cyFlHMvRYmuQWKiPvz337sIkCc2zY
+ 4XlpIrEDWcLpCAXGpiyRnXe8+QSR5eFY7v911wBFwydf1675fXMn2tR0eOKOJT6WB+Rq
+ J1RpEFzB3O5Pmtf2yVMRKuSVhu3zTutMLbcQviAhE3p+a40/DS4m3bPVuyLz7PpZpRp7
+ bf029UwDlJhVKn7YPyOLyXjAEdpqixZ1r0Ak0ZfMTt2Cs0Bhrs9wSHlQ3n/E4kHr9M7S
+ cd1qMrd6CoEd/1jA0yIO2pq8q0V25Z+f44FrMigD6H2pjo7a8e12o5eOgE/NKUszuaUr
+ g/6Q==
+X-Gm-Message-State: AOJu0Yyqh9Ycc1Wc3kfr1ueFq4DV/dWyDJi8nd7DEYO1FrB7989b0J1/
+ GWTEurVOhfGxU0wRTJrMWekUhrCX9CECK0Y9Ebg=
+X-Google-Smtp-Source: AGHT+IH1uMD29lzP6l1J88a2udx6Jsn1kNSagUm8j/bXxJQDoZoQPhwiv7kZaVW3WUufZjQEkzEzpm0EEqDHfsDXw0A=
+X-Received: by 2002:a4a:6c49:0:b0:56c:a41c:f264 with SMTP id
+ u9-20020a4a6c49000000b0056ca41cf264mr2056506oof.8.1692888702177; Thu, 24 Aug
+ 2023 07:51:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c29312a-9d5a-4f05-8123-1591de6e7207@amazon.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230823114544.216520-1-thuth@redhat.com>
+ <20230823163440.GA851545@fedora>
+ <aee5829f-37a4-4169-1a70-8f9a40b4f45d@redhat.com>
+In-Reply-To: <aee5829f-37a4-4169-1a70-8f9a40b4f45d@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 24 Aug 2023 10:51:30 -0400
+Message-ID: <CAJSP0QXO1QQ=4UyLXg_=iyc9=uy1CdeL0fq8_95ewZiewU6XTw@mail.gmail.com>
+Subject: Re: [PULL 00/12] First batch of s390x patches for QEMU 8.2
+To: Thomas Huth <thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Christian Borntraeger <borntraeger@de.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,20 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 24, 2023 at 04:30:48PM +0200, Alexander Graf wrote:
+On Thu, 24 Aug 2023 at 02:53, Thomas Huth <thuth@redhat.com> wrote:
+>
+> On 23/08/2023 18.34, Stefan Hajnoczi wrote:
+> > On Wed, Aug 23, 2023 at 01:45:32PM +0200, Thomas Huth wrote:
+> >> The following changes since commit b0dd9a7d6dd15a6898e9c585b521e6bec79b25aa:
+> >>
+> >>    Open 8.2 development tree (2023-08-22 07:14:07 -0700)
+> >>
+> >> are available in the Git repository at:
+> >>
+> >>    https://gitlab.com/thuth/qemu.git tags/pull-request-2023-08-23
+> >>
+> >> for you to fetch changes up to 6c49f685d30ffe81cfa47da2c258904ad28ac368:
+> >>
+> >>    tests/tcg/s390x: Test VSTRS (2023-08-23 12:07:30 +0200)
+> >
+> > Hi Thomas,
+> > Please take a look at the following ubuntu-20.04-s390x-all CI failure:
+> > https://gitlab.com/qemu-project/qemu/-/jobs/4931341536
+>
+> It says: "TimeoutError: Timeout waiting for job to pause" ... could you
+> please check the load on that host? ... I think that s390x runner is known
+> for being too slow some times, so I assume that problem should go away if
+> you re-run the job when it is less loaded.
 
-> The best thing I could come up with was the QEMU internal qom property
-> x-apple-type. Happy to split them: Make the change of virtio-blk behavior
-> depend on the property and make all of the PCI device/vendor swapping depend
-> on a new class which then sets the x-apple-type.
+I ran it again and it timed out. I've merged the PR and assume the
+test is just flaky.
 
-Basically this, but there is no need to actually expose it as property,
-the xhci emulation does something simliar for nec-specific commands
-which work for '-device nec-usb-xhci' only.
-
-Use 'git grep nec_quirks' to find the places in qemu code.
-
-HTH,
-  Gerd
-
+Stefan
 
