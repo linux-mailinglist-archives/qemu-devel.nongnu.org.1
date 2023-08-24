@@ -2,52 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70A2787532
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA53D78757B
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:35:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZD7w-0001xH-I7; Thu, 24 Aug 2023 12:24:08 -0400
+	id 1qZDHS-0001pv-Sj; Thu, 24 Aug 2023 12:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qZD7s-0001wv-11
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:24:04 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qZD7k-00055x-UZ
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:24:00 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AB9441CAD8;
- Thu, 24 Aug 2023 19:24:14 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A83C5219C0;
- Thu, 24 Aug 2023 19:23:53 +0300 (MSK)
-Message-ID: <8eb65239-f29e-df5c-f0c0-abd97574254d@tls.msk.ru>
-Date: Thu, 24 Aug 2023 19:23:53 +0300
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZDHR-0001pl-Lv
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:33:57 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qZDHN-0007It-Sr
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 12:33:55 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-52a40cf952dso130204a12.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 09:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692894830; x=1693499630;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=m7MCdoA/Sw+ao0XXJ5JVG6jnb6akatdZTJnGZTxkQGU=;
+ b=kIIBdfbRlwQcjoz7LHfcBbpMW2TUZwgVeamTaJw1wG+VrMhNIcCsRD/pdNRsaBYzQI
+ U/jhxVF5zJkEBPFRobfrrFhpQAMStbdUUJo2a9tHw1NAflXbcYO7wN7MrltTWbwwM0K4
+ 06uBnY++NgQj3e92gDKrBZp3YHTn1uBu7IzbU7k11XMcGVVQ5u3d2mmlYfVtKl9YjcuI
+ GDM+PffObhWIgBSnjpIBv9YJ4CE1WAgri6rCMRfwwaCd78ksbP+qJIV0n+sVp6JfOcpg
+ 3NEAtZt517/qJpGgjsnmAb+vXOz5XW1cuLFHv4Ur3y5hgQfz3+RxC0OdWQZlicsl373n
+ SrXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692894830; x=1693499630;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m7MCdoA/Sw+ao0XXJ5JVG6jnb6akatdZTJnGZTxkQGU=;
+ b=emktCxRdI43stnsiFCX5NBEWGnglt+Eo9iru8jXrjN64rDe267nfcBrm72Sz5k2HrR
+ Ioy0WbUqH70plf0dprfmnkesLyfXQMJYlMHDjdqs7D8I/T2c4vyYGX1tVVfVj/OT+l/V
+ vhQq6p2BGhI9k1/jMhqQ3iofjGdDHb7n9xB1mE4YYMFPvV63lTZywtsQWZqUMNO/YGWo
+ n7B0m2byq+HVX2Rgwk6LhFapPtja5FSyQ/s99YkZEYHYxCBLxoeLFXVffTjNFIFQDqR5
+ hw99Abc66NWemLgxbpZHGFZI51uJ+jEA13MqZ9Inf1z9A5VFr3GbtTv2v44m56aQ+UEl
+ STRA==
+X-Gm-Message-State: AOJu0YzL+KEFFS+lWV1EaN/5WPa2FPYlplMG4FUII0wofD/xseJONSMN
+ rpIH2m+seow8ouk4Dtsg8jNDoKBQuD7+2GwQfslbk24sx/zJ3Ax9
+X-Google-Smtp-Source: AGHT+IGQ5FV7E0qS+4CX88SUsvf9GkO11DlfW20/xtrhVY00zIJMFs7Jo28ZD4wCHos0sbYtstuZ7xCmX3Lke5jpl5o=
+X-Received: by 2002:a05:6402:3447:b0:523:1004:1ca0 with SMTP id
+ l7-20020a056402344700b0052310041ca0mr15003317edc.5.1692894829911; Thu, 24 Aug
+ 2023 09:33:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: Failing avocado tests in CI (was: Re: [PULL 00/24] tcg +
- linux-user queue for 8.1-rc3)
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230806033715.244648-1-richard.henderson@linaro.org>
- <772eb951-8a43-902b-3737-e52b44f7dcdb@redhat.com>
- <59a970fb-ad7b-d30b-1290-7b167bec0226@linaro.org> <87sf88fobd.fsf@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <87sf88fobd.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -97
-X-Spam_score: -9.8
-X-Spam_bar: ---------
-X-Spam_report: (-9.8 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.919,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+References: <20230824140839.391585-1-frolov@swemel.ru>
+In-Reply-To: <20230824140839.391585-1-frolov@swemel.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 17:33:39 +0100
+Message-ID: <CAFEAcA-vbBOq12sKH6M2rH1shmZqowQ1jF3WdE9JbDUsy+G8VQ@mail.gmail.com>
+Subject: Re: [PATCH] fix leaks found wtih fuzzing
+To: Dmitry Frolov <frolov@swemel.ru>
+Cc: kraxel@redhat.com, marcandre.lureau@redhat.com, qemu-devel@nongnu.org, 
+ sdl.qemu@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,18 +85,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-24.08.2023 18:31, Alex Bennée wrote:
-..
-> which bisects to:
-> 
->    commit f7eaf9d702efdd02481d5f1c25f7d8e0ffb64c6e (HEAD, refs/bisect/bad)
->    Author: Richard Henderson <richard.henderson@linaro.org>
->    Date:   Tue Aug 1 10:46:03 2023 -0700
-> 
->        accel/tcg: Do not issue misaligned i/o
+On Thu, 24 Aug 2023 at 17:28, Dmitry Frolov <frolov@swemel.ru> wrote:
+>
+> Fuzzing causes thousands of identical crashes with message:
+> "AddressSanitizer: 3744 byte(s) leaked in 1 allocation(s)"
+>
+> Fixes: 060ab76356 ("gtk: don't exit early in case gtk init fails")
+>
+> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> ---
+>  ui/gtk.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index 8ba41c8f13..996ca7949d 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -2358,6 +2358,10 @@ static gboolean gtkinit;
+>
+>  static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+>  {
+> +    if (!gtkinit) {
+> +        fprintf(stderr, "gtk initialization failed\n");
+> +        exit(1);
+> +    }
+>      VirtualConsole *vc;
 
-It's not the first time something bisects to this commit.
-But I can't find other relevant cases right now..
+This breaks our rule against having variable declarations
+in the middle of code blocks. The variable declarations
+need to come first, before this code.
 
-/mjt
+More generally, I don't understand why this change is
+necessary. If gtkinit is false, we're going to call
+exit(), which will clean up all our allocations. The
+specific allocation of the GtkDisplayState can hardly
+be the only one that we still have allocated and
+are relying on the cleanup-on-exit for.
+
+>      GtkDisplayState *s = g_malloc0(sizeof(*s));
+> @@ -2365,10 +2369,6 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+>      GtkIconTheme *theme;
+>      char *dir;
+>
+> -    if (!gtkinit) {
+> -        fprintf(stderr, "gtk initialization failed\n");
+> -        exit(1);
+> -    }
+>      assert(opts->type == DISPLAY_TYPE_GTK);
+>      s->opts = opts;
+
+thanks
+-- PMM
 
