@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D305787CB2
+	by mail.lfdr.de (Postfix) with ESMTPS id 794FB787CB6
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 03:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZLES-0007WA-IH; Thu, 24 Aug 2023 21:03:24 -0400
+	id 1qZLEQ-0007UD-Gs; Thu, 24 Aug 2023 21:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVf-0002eo-30
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:55 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVd-0002eG-5x
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:53 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVc-0001fj-UW
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:54 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVa-0001gA-Qz
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id F23B866BEF;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 5960466A38;
+ Thu, 24 Aug 2023 21:04:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D84C433C7;
  Thu, 24 Aug 2023 21:04:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FA0C433CA;
- Thu, 24 Aug 2023 21:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1692911083;
- bh=j621srJL5S1qolYFP7yJm0kHV3+xYRZ7QQm0gbaERf0=;
+ s=k20201202; t=1692911084;
+ bh=jj6VCafdXtZ0ti0M1QbCs6Yx24ov6Jbm0/NprowIN2g=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SLw/gKfTOhLdKLdqQbud2sBMsZPbGVsq4UzcOjMxFleHUhjuP+M15GRcqvtM8t/JV
- ifmhnJ5RftApDnC1VQ0xa3PQyYKGQhq5LMVTMYbNIe2cqFlu2h0w/rqsoV057MNXRe
- Pmc+wJTIbCQGpaibhoVBMrVOD/5VbenET/kgD1OJOYs7cCTeDH0pt8kuWozkK8nSai
- EPbAtsy8gZBFKa/CeZHBY9Bawgp8zLpavpqk4N3iH29Apy+dXJRNm+VE+kJ7faYmQ5
- EZBmajUII/kVJXiFub7vy07YDJQ+Mzp59KHRCl/pNfWW1DhHCEL1z3qSKsEECquh1G
- OCfO4nzBI1xPw==
+ b=UaM//5KwuH+Rh6kzr/hB7VqTkvRK3hvsfs4PWRH96BjtHl/bA0srlBNataBpt4PX3
+ AIyYpxNIcYOgJBsoPq5ZYfiuSKDoaMtkRolt0JUWs2oPhceoTsNqVIqrC4UQfJ6H3A
+ QZalXoq1o5sQEZ0gCKqf5ASTrfNJxTyWxCQx4F76MVveFFmPYUVyrw3FjnW8LA7RwD
+ nAsUmCsgt8crDKR6ggBGdei2uHrW8qvsBOLFeLLynYZfPfj5V4+Rn8kd1AHO8keQ9o
+ WWQsYAas3s66uD9S9Q0nv8c9nVTMblcKflevJc+ggbBTgWYEaOMXM3x7c91Veqs74J
+ 2B6qaPOSZ2f8g==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 4/5] target/hppa: Use privilege helper in
- hppa_get_physical_address()
-Date: Thu, 24 Aug 2023 23:04:33 +0200
-Message-ID: <20230824210434.151971-5-deller@kernel.org>
+Subject: [PATCH 5/5] target/hppa: Switch to use MMU indices 11-15
+Date: Thu, 24 Aug 2023 23:04:34 +0200
+Message-ID: <20230824210434.151971-6-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230824210434.151971-1-deller@kernel.org>
 References: <20230824210434.151971-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Thu, 24 Aug 2023 21:03:17 -0400
@@ -74,40 +73,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Convert hppa_get_physical_address() to use the privilege helper macro.
+The MMU indices 9-15 will use shorter assembler instructions
+when run on a x86-64 host. So, switch over to those to get
+smaller code and maybe minimally faster emulation.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/mem_helper.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ target/hppa/cpu.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 6f04c101dd..66cf84a0d9 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -73,7 +73,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-                               int type, hwaddr *pphys, int *pprot)
- {
-     hwaddr phys;
--    int prot, r_prot, w_prot, x_prot;
-+    int prot, r_prot, w_prot, x_prot, mmu_priv;
-     hppa_tlb_entry *ent;
-     int ret = -1;
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 6623712644..fa13694dab 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -30,14 +30,14 @@
+    basis.  It's probably easier to fall back to a strong memory model.  */
+ #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
  
-@@ -97,9 +97,10 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-     phys = ent->pa + (addr & ~TARGET_PAGE_MASK);
+-#define MMU_KERNEL_IDX   0
+-#define MMU_PL1_IDX      1
+-#define MMU_PL2_IDX      2
+-#define MMU_USER_IDX     3
+-#define MMU_PHYS_IDX     4
+-
+-#define PRIV_TO_MMU_IDX(priv)    (priv)
+-#define MMU_IDX_TO_PRIV(mmu_idx) (mmu_idx)
++#define MMU_KERNEL_IDX   11
++#define MMU_PL1_IDX      12
++#define MMU_PL2_IDX      13
++#define MMU_USER_IDX     14
++#define MMU_PHYS_IDX     15
++
++#define PRIV_TO_MMU_IDX(priv)    (MMU_KERNEL_IDX + (priv))
++#define MMU_IDX_TO_PRIV(mmu_idx) ((mmu_idx) - MMU_KERNEL_IDX)
  
-     /* Map TLB access_rights field to QEMU protection.  */
--    r_prot = (mmu_idx <= ent->ar_pl1) * PAGE_READ;
--    w_prot = (mmu_idx <= ent->ar_pl2) * PAGE_WRITE;
--    x_prot = (ent->ar_pl2 <= mmu_idx && mmu_idx <= ent->ar_pl1) * PAGE_EXEC;
-+    mmu_priv = MMU_IDX_TO_PRIV(mmu_idx);
-+    r_prot = (mmu_priv <= ent->ar_pl1) * PAGE_READ;
-+    w_prot = (mmu_priv <= ent->ar_pl2) * PAGE_WRITE;
-+    x_prot = (ent->ar_pl2 <= mmu_priv && mmu_priv <= ent->ar_pl1) * PAGE_EXEC;
-     switch (ent->ar_type) {
-     case 0: /* read-only: data page */
-         prot = r_prot;
+ #define TARGET_INSN_START_EXTRA_WORDS 1
+ 
 -- 
 2.41.0
 
