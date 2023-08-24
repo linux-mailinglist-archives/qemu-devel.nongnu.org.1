@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873FF786C0A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8079786C01
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:33:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6ep-0007rS-Si; Thu, 24 Aug 2023 05:29:39 -0400
+	id 1qZ6eS-0006Kv-Cg; Thu, 24 Aug 2023 05:29:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e9-00047Y-UX
+ id 1qZ6e9-00047V-TP
  for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:59 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e2-0004yz-TJ
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:55 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3110ab7110aso5754397f8f.3
+ id 1qZ6e3-0004zl-Co
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:56 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4013454fa93so4926415e9.0
  for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1692869326; x=1693474126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wK9zE1Lifmm6/8IKHW10U8rTZ3FDJYtigwQOzAGgaWs=;
- b=WFqUOLsNCUUg6/arHsbf3t+zbnPOGovnegH8BywZTwQrcGHH1Rp4yUVln1GYo4YCcT
- UUOpltTBDExWj6bV4Qgk0+2wE6axXLQONIbJsLOF3Q7p5GJjwVaLpLMm5dK6o1A2JIvr
- pZkumAbQjXA+1m7QpMVbBj+NgtjC5jEfdC5LLpowSKdM9CxpYuGAlKmisGW8qibwhKTt
- qk0VGzl3bEZ/vlKcUo6PEgA3QrCysFLa74YDJqFuDTYOQxFHAJscT4nUD1tw7LVLnYeR
- mAi5LRyMWCsEHaL/MwE4l2FAfW86xGzegqvuFCNp4iOd9i6X7iYUhecQhGzkybSzr9tM
- CuWA==
+ :reply-to; bh=tytt/fOPhVvLsxVci+b5d34otV2ZT934LA/p/rF2PD4=;
+ b=SAnowIkp6q6oNMSJiwohmrsk6N+kRdEeRWWe9eFNvUXnAYen901gQVwf3mOYcwlbd3
+ jGhG6UIjBYu6Jvk6AIYA3bdunwA1K/fqvHO1k1QvcUhc0wO0OoMvWcqygH+daW3ve/8j
+ fX1NabE4SyldsGucj1dh+wsrxtVLH27x9UpBa95UKKwrhtXw0L42QUzEOFly7JxTy3g7
+ 4HjObZ7Sn5c9y0Wjm0TFkaHy3qz/pZpmfjyVHLB+6WRwExQNsWSHYCH4lz+aoYlmSU0E
+ SVdGLOwzNeVo331sj9HNy9P/TS84unfq7ZlLnsWW+T1qAgT73jxnj1DNroNBdaB0RxaV
+ 7mYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1692869326; x=1693474126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wK9zE1Lifmm6/8IKHW10U8rTZ3FDJYtigwQOzAGgaWs=;
- b=luYy8EsXDW0Di3Em7T0sPFWGVhS0ZPAQ5AEktMDPC6gwHed9duVKUl3X8GO94XjNVy
- oR5P7G1ZNqCxqoLXpqjz5qkzFwMSm5SHLPUerIInCbBSbNf/rFI+r49eQLrpbEK5V8LW
- IFlwh37/g5qPV9WVw6nfE35JJe1oujsi3EDFi+gKi+mx9u5psKS0lvHB3hzd7EKv2M+S
- ufz3HbI5eGthAnJVUNf7BG6J1katmaCuyhd790X431fZZMqi/DsZFw2S64umNLkwdN2h
- IfWx0T3xJCeH/atokEtHcLk6cKGf+gMR6m4BVk/+4LV5K4MXbfQGuln71vnF3S5UYziw
- eG+g==
-X-Gm-Message-State: AOJu0YwyVIKR/5jZAlQai8gcT7Mci8QmvYg3faZGDWwQfDyz7gS1q2jK
- dvA0hO+K7dGjD2J7+JxOhWd4IaBdvvm71ROMnKo=
-X-Google-Smtp-Source: AGHT+IHj+FXn+IDHX0HvWVLTBvfSIameyCs9wmxRrS/nsZcu3SP7bq6DGLFu3tAn76tapz591eBCmA==
-X-Received: by 2002:a5d:6409:0:b0:319:70b3:d51a with SMTP id
- z9-20020a5d6409000000b0031970b3d51amr11246232wru.7.1692869325886; 
- Thu, 24 Aug 2023 02:28:45 -0700 (PDT)
+ bh=tytt/fOPhVvLsxVci+b5d34otV2ZT934LA/p/rF2PD4=;
+ b=iPwhMyLC4RrPqlZ3P6whvedX1UpKHoq1c7tRdb7z2lERmxWcDme0NN5f6cdalTIzM7
+ pOmanhE0dnE/sVPaKLYrdX/X1ScBRD8NJYeNWLQCrAb7Bc+NZu0DN+V6NoG99qoAP7p9
+ 7xe0VJMiOU/YEGdX8HzzYRwseSr9FZbGCv+aJzPxiifciRkVkRHM/OBh41bZe6uVBaXb
+ ChKKUb2L72rVZWrttjnTpfbH2TKftt72A1xd22VKhFY/8Pr3XQZA3XLJMa7geCVh2EyT
+ znBMdSWET9Chae3fmcLWRAGrv2PxkiDmtCvykGWj3yHwjhaBlNjSqadHc4JbIOtPhly5
+ +sDg==
+X-Gm-Message-State: AOJu0Yww2xWLobA1YF1ZGfpW2x9cFe4aBsc7rEXWsfs6OVeEcfnhpBkU
+ yhYpKABvybEzeSN4l44TbAh+FxCJN8WtoRnbzGI=
+X-Google-Smtp-Source: AGHT+IEeyamXLhcgU49h3oNnNgjQVor5LmgWi/3tVQUxMEleztXVHYf96u5RNaaT/2QGjQj+scrdPA==
+X-Received: by 2002:a5d:618c:0:b0:314:21b:1ea2 with SMTP id
+ j12-20020a5d618c000000b00314021b1ea2mr11436301wru.39.1692869326443; 
+ Thu, 24 Aug 2023 02:28:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 02:28:45 -0700 (PDT)
+ Thu, 24 Aug 2023 02:28:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/35] target/arm/ptw: Pass ptw into get_phys_addr_pmsa*() and
- get_phys_addr_disabled()
-Date: Thu, 24 Aug 2023 10:28:17 +0100
-Message-Id: <20230824092836.2239644-17-peter.maydell@linaro.org>
+Subject: [PULL 17/35] target/arm/ptw: Pass ARMSecurityState to
+ regime_translation_disabled()
+Date: Thu, 24 Aug 2023 10:28:18 +0100
+Message-Id: <20230824092836.2239644-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
 References: <20230824092836.2239644-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,157 +91,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 6d2654ffacea813916176 we created the S1Translate struct and
-used it to plumb through various arguments that we were previously
-passing one-at-a-time to get_phys_addr_v5(), get_phys_addr_v6(), and
-get_phys_addr_lpae().  Extend that pattern to get_phys_addr_pmsav5(),
-get_phys_addr_pmsav7(), get_phys_addr_pmsav8() and
-get_phys_addr_disabled(), so that all the get_phys_addr_* functions
-we call from get_phys_addr_nogpc() take the S1Translate struct rather
-than the mmu_idx and is_secure bool.
-
-(This refactoring is a prelude to having the called functions look
-at ptw->is_space rather than using an is_secure boolean.)
+Plumb the ARMSecurityState through to regime_translation_disabled()
+rather than just a bool is_secure.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230807141514.19075-5-peter.maydell@linaro.org
+Message-id: 20230807141514.19075-6-peter.maydell@linaro.org
 ---
- target/arm/ptw.c | 57 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ target/arm/ptw.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 67078ae3509..a873fbe0239 100644
+index a873fbe0239..63dd8e3cbe1 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -2045,15 +2045,19 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     return true;
- }
+@@ -206,9 +206,10 @@ static uint64_t regime_ttbr(CPUARMState *env, ARMMMUIdx mmu_idx, int ttbrn)
  
--static bool get_phys_addr_pmsav5(CPUARMState *env, uint32_t address,
--                                 MMUAccessType access_type, ARMMMUIdx mmu_idx,
--                                 bool is_secure, GetPhysAddrResult *result,
-+static bool get_phys_addr_pmsav5(CPUARMState *env,
-+                                 S1Translate *ptw,
-+                                 uint32_t address,
-+                                 MMUAccessType access_type,
-+                                 GetPhysAddrResult *result,
-                                  ARMMMUFaultInfo *fi)
+ /* Return true if the specified stage of address translation is disabled */
+ static bool regime_translation_disabled(CPUARMState *env, ARMMMUIdx mmu_idx,
+-                                        bool is_secure)
++                                        ARMSecuritySpace space)
  {
-     int n;
-     uint32_t mask;
+     uint64_t hcr_el2;
++    bool is_secure = arm_space_is_secure(space);
+ 
+     if (arm_feature(env, ARM_FEATURE_M)) {
+         switch (env->v7m.mpu_ctrl[is_secure] &
+@@ -2057,9 +2058,8 @@ static bool get_phys_addr_pmsav5(CPUARMState *env,
      uint32_t base;
-+    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
+     ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
      bool is_user = regime_is_user(env, mmu_idx);
-+    bool is_secure = arm_space_is_secure(ptw->in_space);
+-    bool is_secure = arm_space_is_secure(ptw->in_space);
  
-     if (regime_translation_disabled(env, mmu_idx, is_secure)) {
+-    if (regime_translation_disabled(env, mmu_idx, is_secure)) {
++    if (regime_translation_disabled(env, mmu_idx, ptw->in_space)) {
          /* MPU disabled.  */
-@@ -2210,14 +2214,18 @@ static bool pmsav7_use_background_region(ARMCPU *cpu, ARMMMUIdx mmu_idx,
-     return regime_sctlr(env, mmu_idx) & SCTLR_BR;
- }
- 
--static bool get_phys_addr_pmsav7(CPUARMState *env, uint32_t address,
--                                 MMUAccessType access_type, ARMMMUIdx mmu_idx,
--                                 bool secure, GetPhysAddrResult *result,
-+static bool get_phys_addr_pmsav7(CPUARMState *env,
-+                                 S1Translate *ptw,
-+                                 uint32_t address,
-+                                 MMUAccessType access_type,
-+                                 GetPhysAddrResult *result,
-                                  ARMMMUFaultInfo *fi)
- {
-     ARMCPU *cpu = env_archcpu(env);
-     int n;
-+    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
-     bool is_user = regime_is_user(env, mmu_idx);
-+    bool secure = arm_space_is_secure(ptw->in_space);
- 
-     result->f.phys_addr = address;
+         result->f.phys_addr = address;
+         result->f.prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+@@ -2231,7 +2231,7 @@ static bool get_phys_addr_pmsav7(CPUARMState *env,
      result->f.lg_page_size = TARGET_PAGE_BITS;
-@@ -2736,12 +2744,16 @@ void v8m_security_lookup(CPUARMState *env, uint32_t address,
-     }
- }
+     result->f.prot = 0;
  
--static bool get_phys_addr_pmsav8(CPUARMState *env, uint32_t address,
--                                 MMUAccessType access_type, ARMMMUIdx mmu_idx,
--                                 bool secure, GetPhysAddrResult *result,
-+static bool get_phys_addr_pmsav8(CPUARMState *env,
-+                                 S1Translate *ptw,
-+                                 uint32_t address,
-+                                 MMUAccessType access_type,
-+                                 GetPhysAddrResult *result,
-                                  ARMMMUFaultInfo *fi)
- {
-     V8M_SAttributes sattrs = {};
-+    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
-+    bool secure = arm_space_is_secure(ptw->in_space);
-     bool ret;
- 
-     if (arm_feature(env, ARM_FEATURE_M_SECURITY)) {
-@@ -3045,12 +3057,15 @@ static ARMCacheAttrs combine_cacheattrs(uint64_t hcr,
-  * MMU disabled.  S1 addresses within aa64 translation regimes are
-  * still checked for bounds -- see AArch64.S1DisabledOutput().
-  */
--static bool get_phys_addr_disabled(CPUARMState *env, target_ulong address,
-+static bool get_phys_addr_disabled(CPUARMState *env,
-+                                   S1Translate *ptw,
-+                                   target_ulong address,
-                                    MMUAccessType access_type,
--                                   ARMMMUIdx mmu_idx, bool is_secure,
-                                    GetPhysAddrResult *result,
-                                    ARMMMUFaultInfo *fi)
- {
-+    ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
-+    bool is_secure = arm_space_is_secure(ptw->in_space);
-     uint8_t memattr = 0x00;    /* Device nGnRnE */
-     uint8_t shareability = 0;  /* non-shareable */
-     int r_el;
-@@ -3252,8 +3267,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
-     case ARMMMUIdx_Phys_Root:
-     case ARMMMUIdx_Phys_Realm:
-         /* Checking Phys early avoids special casing later vs regime_el. */
--        return get_phys_addr_disabled(env, address, access_type, mmu_idx,
--                                      is_secure, result, fi);
-+        return get_phys_addr_disabled(env, ptw, address, access_type,
-+                                      result, fi);
- 
-     case ARMMMUIdx_Stage1_E0:
-     case ARMMMUIdx_Stage1_E1:
-@@ -3321,16 +3336,16 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
- 
-         if (arm_feature(env, ARM_FEATURE_V8)) {
-             /* PMSAv8 */
--            ret = get_phys_addr_pmsav8(env, address, access_type, mmu_idx,
--                                       is_secure, result, fi);
-+            ret = get_phys_addr_pmsav8(env, ptw, address, access_type,
-+                                       result, fi);
-         } else if (arm_feature(env, ARM_FEATURE_V7)) {
-             /* PMSAv7 */
--            ret = get_phys_addr_pmsav7(env, address, access_type, mmu_idx,
--                                       is_secure, result, fi);
-+            ret = get_phys_addr_pmsav7(env, ptw, address, access_type,
-+                                       result, fi);
-         } else {
-             /* Pre-v7 MPU */
--            ret = get_phys_addr_pmsav5(env, address, access_type, mmu_idx,
--                                       is_secure, result, fi);
-+            ret = get_phys_addr_pmsav5(env, ptw, address, access_type,
-+                                       result, fi);
+-    if (regime_translation_disabled(env, mmu_idx, secure) ||
++    if (regime_translation_disabled(env, mmu_idx, ptw->in_space) ||
+         m_is_ppb_region(env, address)) {
+         /*
+          * MPU disabled or M profile PPB access: use default memory map.
+@@ -2475,7 +2475,8 @@ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
+      * are done in arm_v7m_load_vector(), which always does a direct
+      * read using address_space_ldl(), rather than going via this function.
+      */
+-    if (regime_translation_disabled(env, mmu_idx, secure)) { /* MPU disabled */
++    if (regime_translation_disabled(env, mmu_idx, arm_secure_to_space(secure))) {
++        /* MPU disabled */
+         hit = true;
+     } else if (m_is_ppb_region(env, address)) {
+         hit = true;
+@@ -3303,7 +3304,7 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+          */
+         ptw->in_mmu_idx = mmu_idx = s1_mmu_idx;
+         if (arm_feature(env, ARM_FEATURE_EL2) &&
+-            !regime_translation_disabled(env, ARMMMUIdx_Stage2, is_secure)) {
++            !regime_translation_disabled(env, ARMMMUIdx_Stage2, ptw->in_space)) {
+             return get_phys_addr_twostage(env, ptw, address, access_type,
+                                           result, fi);
          }
-         qemu_log_mask(CPU_LOG_MMU, "PMSA MPU lookup for %s at 0x%08" PRIx32
-                       " mmu_idx %u -> %s (prot %c%c%c)\n",
-@@ -3348,8 +3363,8 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+@@ -3362,7 +3363,7 @@ static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+ 
      /* Definitely a real MMU, not an MPU */
  
-     if (regime_translation_disabled(env, mmu_idx, is_secure)) {
--        return get_phys_addr_disabled(env, address, access_type, mmu_idx,
--                                      is_secure, result, fi);
-+        return get_phys_addr_disabled(env, ptw, address, access_type,
-+                                      result, fi);
+-    if (regime_translation_disabled(env, mmu_idx, is_secure)) {
++    if (regime_translation_disabled(env, mmu_idx, ptw->in_space)) {
+         return get_phys_addr_disabled(env, ptw, address, access_type,
+                                       result, fi);
      }
- 
-     if (regime_using_lpae_format(env, mmu_idx)) {
 -- 
 2.34.1
 
