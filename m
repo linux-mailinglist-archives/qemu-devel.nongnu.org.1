@@ -2,57 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D30786AD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 10:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FEE786ADF
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 10:59:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ69W-0006GQ-IJ; Thu, 24 Aug 2023 04:57:18 -0400
+	id 1qZ6AO-0007N6-Lf; Thu, 24 Aug 2023 04:58:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=uRq4=EJ=kaod.org=clg@ozlabs.org>)
- id 1qZ69V-0006GI-EP
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:57:17 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZ6AK-0007KO-LG
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:58:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=uRq4=EJ=kaod.org=clg@ozlabs.org>)
- id 1qZ69R-0003N7-4A
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:57:17 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RWcQr5zjCz4x0W;
- Thu, 24 Aug 2023 18:57:08 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZ6AH-0003iX-EL
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:58:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692867484;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4UjV1Cq9QGogUnc6vRlj5MB9o7TDRbjhsTAnWa5TKhA=;
+ b=CWm/0KVtKff2dGItZbHLFBHf+xROt/qP/d1yNDX0gg960dnhvxaHnRxY+mzfBERxQ7HGZQ
+ BzQFGDO5GYfhawFKOrz0AEORFNPiyuINky2oFcCxt4p8CPXJVccSHCA5PIWAh7/b4CQe7t
+ QaJGrkAYgF5eDz9MnhBrRqjqHHYREnU=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-577-69TlBFKjOw2oNyPhqo0hhA-1; Thu, 24 Aug 2023 04:57:58 -0400
+X-MC-Unique: 69TlBFKjOw2oNyPhqo0hhA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RWcQn5Qffz4wxn;
- Thu, 24 Aug 2023 18:57:05 +1000 (AEST)
-Message-ID: <85737b61-ac22-8381-eaef-27eba26307ec@kaod.org>
-Date: Thu, 24 Aug 2023 10:57:03 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28D571C09A46;
+ Thu, 24 Aug 2023 08:57:58 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.155])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EE2AC492C13;
+ Thu, 24 Aug 2023 08:57:57 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id AEF8518003AB; Thu, 24 Aug 2023 10:57:56 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: seabios@seabios.org
+Cc: qemu-devel@nongnu.org,
+	Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH v4 0/6] misc tweaks for kvm and the 64bit pci window
+Date: Thu, 24 Aug 2023 10:57:50 +0200
+Message-ID: <20230824085756.66732-1-kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 2/2] hw/misc/Kconfig: add switch for i2c-echo
-Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@aj.id.au>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Klaus Jensen <k.jensen@samsung.com>
-References: <20230823-i2c-echo-fixes-v2-0-ff404db1bf99@samsung.com>
- <20230823-i2c-echo-fixes-v2-2-ff404db1bf99@samsung.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230823-i2c-echo-fixes-v2-2-ff404db1bf99@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=uRq4=EJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-2.684, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,56 +76,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/23/23 11:01, Klaus Jensen wrote:
-> From: Klaus Jensen <k.jensen@samsung.com>
-> 
-> Associate i2c-echo with TEST_DEVICES and add a dependency on I2C.
-> 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+v4 changes:
+ - fix handling of 32bit memory bars.
+v3 changes:
+ - rename variables, use u8 for CPULongMode.
+v2 changes:
+ - e820 conflict fix
 
+Gerd Hoffmann (6):
+  better kvm detection
+  detect physical address space size
+  move 64bit pci window to end of address space
+  be less conservative with the 64bit pci io window
+  qemu: log reservations in fw_cfg e820 table
+  check for e820 conflict
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+ src/e820map.h     |  1 +
+ src/fw/paravirt.h |  2 ++
+ src/e820map.c     | 15 ++++++++
+ src/fw/paravirt.c | 89 +++++++++++++++++++++++++++++++++++++++++------
+ src/fw/pciinit.c  | 26 +++++++++++---
+ 5 files changed, 119 insertions(+), 14 deletions(-)
 
-Thanks,
-
-C.
-
-
-> ---
->   hw/misc/Kconfig     | 5 +++++
->   hw/misc/meson.build | 2 +-
->   2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-> index 6996d265e4c5..9ec7a40f973a 100644
-> --- a/hw/misc/Kconfig
-> +++ b/hw/misc/Kconfig
-> @@ -34,6 +34,11 @@ config PCA9552
->       bool
->       depends on I2C
->   
-> +config I2C_ECHO
-> +    bool
-> +    default y if TEST_DEVICES
-> +    depends on I2C
-> +
->   config PL310
->       bool
->   
-> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index 892f8b91c572..fbea23f8b27f 100644
-> --- a/hw/misc/meson.build
-> +++ b/hw/misc/meson.build
-> @@ -132,7 +132,7 @@ system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_rng.c'))
->   
->   system_ss.add(when: 'CONFIG_GRLIB', if_true: files('grlib_ahb_apb_pnp.c'))
->   
-> -system_ss.add(when: 'CONFIG_I2C', if_true: files('i2c-echo.c'))
-> +system_ss.add(when: 'CONFIG_I2C_ECHO', if_true: files('i2c-echo.c'))
->   
->   specific_ss.add(when: 'CONFIG_AVR_POWER', if_true: files('avr_power.c'))
->   
-> 
+-- 
+2.41.0
 
 
