@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE097786ADA
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 10:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 397A3786ADB
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 10:58:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6AL-0007Kq-7i; Thu, 24 Aug 2023 04:58:09 -0400
+	id 1qZ6AN-0007Mj-Hj; Thu, 24 Aug 2023 04:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZ6AI-0007IN-Qq
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:58:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZ6AJ-0007J5-9F
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:58:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZ6AE-0003hi-T7
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:58:06 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qZ6AF-0003i6-Nn
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 04:58:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692867481;
+ s=mimecast20190719; t=1692867483;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q5ciGi8+YCWcfxM0oo0hyNfFkpG3lCKNRIUnrSuHoVg=;
- b=S0m4lefhKpMB159EKfCXhQnooQpqr24WSdMc483jXc0AfsL3ngRfqU53SSWd2y3s0Am7/3
- KkrbrXeV36B7GxOMt3bh3uvJedR8+4qZAqqgHH1rSOHAwE9cgdXa6+md+GBvUh6GCw010f
- mNrqX9qKzRf42RnZJMaqJ8m/rbZm/MI=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-523-ogQXnQlbO56cuxVgwjYcyQ-1; Thu, 24 Aug 2023 04:57:59 -0400
-X-MC-Unique: ogQXnQlbO56cuxVgwjYcyQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=mFoz8pFygAnd8HjNAOMgarx4ONt0soHWY8cYtfArawE=;
+ b=AnPG0jIkkr1+3Lhsr6UNK96ORmSWJbgXCoRFlW57j9hAkcB0Ul2MVQl9EQqBSyWndUAt2C
+ VN9k+jBjH4DaUY0TvgvB1aATXfSq1jVzJdC4fHsP4tG69eVM3OQoRxFM0v2GG+4z0cFw9d
+ VzU0iH6DM4VpbdqEIjEAKD8SBynVleo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-472-OsqQBBlNPWmS3S9ngnxBjQ-1; Thu, 24 Aug 2023 04:58:01 -0400
+X-MC-Unique: OsqQBBlNPWmS3S9ngnxBjQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 953E73801F68;
- Thu, 24 Aug 2023 08:57:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D52978D40A1;
+ Thu, 24 Aug 2023 08:58:00 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.155])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 62C1E1121315;
- Thu, 24 Aug 2023 08:57:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A10492026D68;
+ Thu, 24 Aug 2023 08:58:00 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id BB2961800639; Thu, 24 Aug 2023 10:57:56 +0200 (CEST)
+ id BE864180063D; Thu, 24 Aug 2023 10:57:56 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: seabios@seabios.org
 Cc: qemu-devel@nongnu.org,
 	Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v4 3/6] move 64bit pci window to end of address space
-Date: Thu, 24 Aug 2023 10:57:53 +0200
-Message-ID: <20230824085756.66732-4-kraxel@redhat.com>
+Subject: [PATCH v4 4/6] be less conservative with the 64bit pci io window
+Date: Thu, 24 Aug 2023 10:57:54 +0200
+Message-ID: <20230824085756.66732-5-kraxel@redhat.com>
 In-Reply-To: <20230824085756.66732-1-kraxel@redhat.com>
 References: <20230824085756.66732-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,33 +78,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the size of the physical address space is known (PhysBits is not
-zero) move the 64bit pci io window to the end of the address space.
+Current seabios code will only enable and use the 64bit pci io window in
+case it runs out of space in the 32bit pci mmio window below 4G.
+
+This patch will also enable the 64bit pci io window when
+  (a) RAM above 4G is present, and
+  (b) the physical address space size is known, and
+  (c) seabios is running on a 64bit capable processor.
+
+This operates with the assumption that guests which are ok with memory
+above 4G most likely can handle mmio above 4G too.
+
+In case the 64bit pci io window is enabled also assign more memory to
+prefetchable pci bridge windows and the complete 64bit pci io window.
+
+The total mmio window size is 1/8 of the physical address space.
+Minimum bridge windows size is 1/256 of the total mmio window size.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- src/fw/pciinit.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ src/fw/pciinit.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/src/fw/pciinit.c b/src/fw/pciinit.c
-index badf13d3233b..0fcd2be598a2 100644
+index 0fcd2be598a2..b52bd1d5054b 100644
 --- a/src/fw/pciinit.c
 +++ b/src/fw/pciinit.c
-@@ -1128,6 +1128,14 @@ static void pci_bios_map_devices(struct pci_bus *busses)
-         r64_mem.base = le64_to_cpu(romfile_loadint("etc/reserved-memory-end", 0));
-         if (r64_mem.base < 0x100000000LL + RamSizeOver4G)
-             r64_mem.base = 0x100000000LL + RamSizeOver4G;
-+        if (CPUPhysBits) {
-+            u64 top = 1LL << CPUPhysBits;
-+            u64 size = (ALIGN(sum_mem, (1LL<<30)) +
-+                        ALIGN(sum_pref, (1LL<<30)));
-+            if (r64_mem.base < top - size) {
-+                r64_mem.base = top - size;
-+            }
-+        }
-         r64_mem.base = ALIGN(r64_mem.base, align_mem);
-         r64_mem.base = ALIGN(r64_mem.base, (1LL<<30));    // 1G hugepage
-         r64_pref.base = r64_mem.base + sum_mem;
+@@ -51,6 +51,7 @@ u64 pcimem_end     = BUILD_PCIMEM_END;
+ u64 pcimem64_start = BUILD_PCIMEM64_START;
+ u64 pcimem64_end   = BUILD_PCIMEM64_END;
+ u64 pci_io_low_end = 0xa000;
++u32 pci_use_64bit  = 0;
+ 
+ struct pci_region_entry {
+     struct pci_device *dev;
+@@ -960,10 +961,14 @@ static int pci_bios_check_devices(struct pci_bus *busses)
+             if (pci_region_align(&s->r[type]) > align)
+                  align = pci_region_align(&s->r[type]);
+             u64 sum = pci_region_sum(&s->r[type]);
++            int is64 = pci_bios_bridge_region_is64(&s->r[type],
++                                                   s->bus_dev, type);
+             int resource_optional = 0;
+             if (hotplug_support == HOTPLUG_PCIE)
+                 resource_optional = pcie_cap && (type == PCI_REGION_TYPE_IO);
+-            if (!sum && hotplug_support && !resource_optional)
++            if (hotplug_support && pci_use_64bit && is64 && (type == PCI_REGION_TYPE_PREFMEM))
++                align = (u64)1 << (CPUPhysBits - 11);
++            if (align > sum && hotplug_support && !resource_optional)
+                 sum = align; /* reserve min size for hot-plug */
+             if (size > sum) {
+                 dprintf(1, "PCI: QEMU resource reserve cap: "
+@@ -975,8 +980,6 @@ static int pci_bios_check_devices(struct pci_bus *busses)
+             } else {
+                 size = ALIGN(sum, align);
+             }
+-            int is64 = pci_bios_bridge_region_is64(&s->r[type],
+-                                            s->bus_dev, type);
+             // entry->bar is -1 if the entry represents a bridge region
+             struct pci_region_entry *entry = pci_region_create_entry(
+                 parent, s->bus_dev, -1, size, align, type, is64);
+@@ -1108,7 +1111,7 @@ static void pci_bios_map_devices(struct pci_bus *busses)
+         panic("PCI: out of I/O address space\n");
+ 
+     dprintf(1, "PCI: 32: %016llx - %016llx\n", pcimem_start, pcimem_end);
+-    if (pci_bios_init_root_regions_mem(busses)) {
++    if (pci_use_64bit || pci_bios_init_root_regions_mem(busses)) {
+         struct pci_region r64_mem, r64_pref;
+         r64_mem.list.first = NULL;
+         r64_pref.list.first = NULL;
+@@ -1132,6 +1135,8 @@ static void pci_bios_map_devices(struct pci_bus *busses)
+             u64 top = 1LL << CPUPhysBits;
+             u64 size = (ALIGN(sum_mem, (1LL<<30)) +
+                         ALIGN(sum_pref, (1LL<<30)));
++            if (pci_use_64bit)
++                size = ALIGN(size, (1LL<<(CPUPhysBits-3)));
+             if (r64_mem.base < top - size) {
+                 r64_mem.base = top - size;
+             }
+@@ -1174,6 +1179,9 @@ pci_setup(void)
+ 
+     dprintf(3, "pci setup\n");
+ 
++    if (CPUPhysBits >= 36 && CPULongMode && RamSizeOver4G)
++        pci_use_64bit = 1;
++
+     dprintf(1, "=== PCI bus & bridge init ===\n");
+     if (pci_probe_host() != 0) {
+         return;
 -- 
 2.41.0
 
