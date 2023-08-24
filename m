@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B38786C9F
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 12:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A76786D5E
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 13:04:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ7LD-0006Y4-EX; Thu, 24 Aug 2023 06:13:27 -0400
+	id 1qZ86o-0005tq-QY; Thu, 24 Aug 2023 07:02:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZ7L5-0006X2-SB
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 06:13:21 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZ7L3-0004y6-1w
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 06:13:19 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-4ff88239785so10138715e87.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 03:13:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692871995; x=1693476795;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/cY+H7y5+TIxMQbUkzqLPvcvmlCU/5P9XbZwTCsOoxs=;
- b=BK/5+tnSwTJizTXwOpZNQvitS6p7/psGt2n4rVRNg5MPPHsNt6IvgqcK+htudjRI9I
- h2nAuHH6vXo5kSXPG3fZ/pJ8Xbj1V/RX947zuLSdf981ER7tshYtS7EXobciHGHEXzxH
- UbdyDaqVQ6xFbmLsRsCljwdwIDCI9O/tqS1RrFXr9koqmdbxHqfb/+Y8+4sur95vmDh0
- bsXSh/TXNmjoxbGBIms2/Rw2MH0/1wGQR/0mmwWS2SEPz81boaED+9pVw9xnl0L5UP+G
- 2AtC/fwXXB51kIc9InA+LbTw/mWnCKe6etGcG17TR8EZ10nLZGgXcLeDl26MesSoRIDL
- O8Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692871995; x=1693476795;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/cY+H7y5+TIxMQbUkzqLPvcvmlCU/5P9XbZwTCsOoxs=;
- b=c+nemaI0M5FuKP0D34vdthb/UtjIPS753L4Mr5icOINgpoJYT5EV05kLYywg1gWcDh
- mFGRLS3w2+utAomoGEUFnc7f2aKhU63HLzCyPpcCtzvGE0hndVVz+Op6jgvW15p8lMM9
- 9/IA9hkRgexYyQYP+A9dijjuQU9vFF3tPq0b9KYz+xyaB0QQLp+32EuhOfCe0oF8th5/
- Iie98f+AHvlQcYMFJwm2BZcFlZMneRbrhg+eumoJVYPWNDEQkQQUGK2tLmsp/LA3vtSg
- G7eOGNzMrPXItqFlabNPTpDWQCgzEPPhSt9fy0dRgb2xmMkHh5ZCXo31172M25YBmNJ2
- nEIA==
-X-Gm-Message-State: AOJu0YzSIYc12ieqJtmVD9Gt225twYiP1sk1JW+0a7akBGHsg5wxucl6
- JJV0/TYXD1VWB1Z+/zh0AH/l5BTpaAlWN8IfTtU=
-X-Google-Smtp-Source: AGHT+IEi8PLPD2gNi291Ovo3OhZ0hTDxJ/3zjuWqmTkKpCgU9zeL3WPHCWMzUFVAh3YxUrh41X7FfA==
-X-Received: by 2002:ac2:4c82:0:b0:4fb:7675:1ff9 with SMTP id
- d2-20020ac24c82000000b004fb76751ff9mr8865055lfl.9.1692871995156; 
- Thu, 24 Aug 2023 03:13:15 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.238.90])
- by smtp.gmail.com with ESMTPSA id
- j16-20020a056000125000b00317e6f06e22sm21880620wrx.77.2023.08.24.03.13.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 03:13:14 -0700 (PDT)
-Message-ID: <69438c7a-2b93-321b-b10c-bf9c3f42dc5c@linaro.org>
-Date: Thu, 24 Aug 2023 12:13:13 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qZ861-0005RA-U2
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 07:01:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qZ85p-0007ZR-UP
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 07:01:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692874896;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kA8e60GN2+qeMkhMNHkSZ8yVgPWxvh+OvjgYOJ8aGS4=;
+ b=M+iWsTELemWViVD39FY1GDdbdRO1kJ+U7fpYNEMAlYBJMYe6gkm/4CSFIdlGZBYc/2DCvG
+ N9zX/4v2vzEh9EgV8ZtDHWaDqCvHUBMc6zgnav28apLzcZVT8nXEJEagbO4A70PZmHX+GX
+ I/DC+0RToFM3AE5J77vPeVACmJcyzvY=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-306-HJiTYoLyOiatOxRtDx5HIg-1; Thu, 24 Aug 2023 07:01:32 -0400
+X-MC-Unique: HJiTYoLyOiatOxRtDx5HIg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D72E038008B2;
+ Thu, 24 Aug 2023 11:01:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.67])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A7C1C1602E;
+ Thu, 24 Aug 2023 11:01:29 +0000 (UTC)
+Date: Thu, 24 Aug 2023 12:01:28 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
+ Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH 1/2] io: check there are no qio_channel_yield()
+ coroutines during ->finalize()
+Message-ID: <ZOc4iH7JFeqjx0NX@redhat.com>
+References: <20230823234504.1387239-1-stefanha@redhat.com>
+ <20230823234504.1387239-2-stefanha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 18/24] audio: spelling fixes
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-References: <20230823055155.1917375-1-mjt@tls.msk.ru>
- <20230823065335.1919380-17-mjt@tls.msk.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230823065335.1919380-17-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.684,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230823234504.1387239-2-stefanha@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,19 +86,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/8/23 08:53, Michael Tokarev wrote:
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+On Wed, Aug 23, 2023 at 07:45:03PM -0400, Stefan Hajnoczi wrote:
+> Callers must clean up their coroutines before calling
+> object_unref(OBJECT(ioc)) to prevent an fd handler leak. Add an
+> assertion to check this.
+> 
+> This patch is preparation for the fd handler changes that follow.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->   audio/mixeng.h            | 2 +-
->   hw/audio/fmopl.c          | 8 ++++----
->   hw/audio/fmopl.h          | 2 +-
->   hw/audio/gusemu_hal.c     | 4 ++--
->   hw/audio/intel-hda-defs.h | 4 ++--
->   5 files changed, 10 insertions(+), 10 deletions(-)
+>  io/channel.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
