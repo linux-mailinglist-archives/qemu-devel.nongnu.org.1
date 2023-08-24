@@ -2,70 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC31786F01
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 14:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D7F786F02
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 14:28:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ9Pm-0006sg-L9; Thu, 24 Aug 2023 08:26:18 -0400
+	id 1qZ9Qx-0007Z0-M3; Thu, 24 Aug 2023 08:27:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ9Pk-0006sI-MF
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:26:16 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qZ9Qr-0007Ya-HR
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:27:25 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ9Pi-0008Jf-Gs
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:26:16 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-525bd0b2b48so8679842a12.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 05:26:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qZ9Qn-0008Pn-TT
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 08:27:24 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2bb99fbaebdso102946121fa.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 05:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692879973; x=1693484773;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1692880039; x=1693484839;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yQN0eW78L8WQuK3pLTXgbMsoof+AfXGkD26dkj5/jr8=;
- b=etNZLLbh2vp/Y6eW1IKmycsmtrXSsHSUTRf5OnNeKXpbRKaD4+YM1CLs23Ij93PGoG
- cmZ8nJZowL4UI3mqaQSuhSsfygJMqZgV5k/YU+rXhW/SBNBMQoAjvSFC+3N6+pwHSqC/
- JXdlg1boJEc3YFwrQtKM5sw4m94c94Rwbln43jdoXShyZvKlk0hlPC5C7YvTMJWDUjZY
- dCSYreurXReZyDL59riwqhmVhoFq9+7tGtxlTRa2dkZUG9ToO+ntcMf1yfdzE82zTK+p
- n3nSj+Sxdwl3vh/drBTX1kfLzGMAdXn4l6eg/2H7APT/qd2m5pEo859ECZGxBs/rS3Da
- c4OQ==
+ bh=Tk0ZXvv1tOxBFZnQeSj9o/7GEAQKtjC6MZ86caYJwt8=;
+ b=oqbVL91FpeLgGmU3wbnTh+Tw7mVqhXFEEIPzEMI7oim5j6VQS8xJUtIqK6Ac/NufoH
+ vyVySCMg/EliuqLy1mVpDljkAThfeI2LQa/bTMwvPPAFGd0ZiYCUTBtIJcsPojoJpLFb
+ HMbtjUCTL/yIrbJblp4eeiv/uusTo7PNg7ltCloRFpMs6IlEnmAXLqsRVO4XzLpaxCA9
+ tlQgeCDXWfYgEfdy0tvq9Se/UFpUz95A/Ru07/p4QV6ErHHZYdnUhk8zn6XsFxmXCdQt
+ Z+mtlDAWUOUueNPe6+ljki37zbDbzpvbOllQHDJm22NJdXvNBrILJ6RXk3Mn3SdZtolR
+ oFuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692879973; x=1693484773;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yQN0eW78L8WQuK3pLTXgbMsoof+AfXGkD26dkj5/jr8=;
- b=fGeK/a/18ZX0qv6TogXBqbFRWuOWOJQzcH59e9uvxD5FuCU8LFCXhkBMGpvQ0KFcib
- A5XcqC0o6SAFZlDMNpUkYDirFw/y3xIe2aVB+seAY0VRB8m73nCg7ljvefTmzN37lvZ0
- 0zjmDWejfamB/xuXdmYbV2nMYqhxCmZJoXRz2U16C9OB5uqcx7Kef5LfYYe2FnRmHdZF
- f7zfwh2YGbFD5+6VYsQ2rRwGAepHa7Iwrugrh9+bJGVh0YEOQtJca4HH/XGdWOSq6OYu
- zmkYA/ajE1OfWF9yUqGPQyUFqWBMWZ3JNpuGf8rNpRZ30oRY0gTnZK1mkG4OkO5m6dpf
- uhaA==
-X-Gm-Message-State: AOJu0YxFPgT+C3RIh/oBscDnmfbfHUA/mE/4nsvAYeTYSHkZSfPWseHQ
- nI04f+48ws4j5VGlnA3XAWar9enB4d+k3mRu8ANtgyKuVs/Y65BW
-X-Google-Smtp-Source: AGHT+IFYJDD+2+BMTI7dS7uvWEXrGCiEtHcFoMJXxEckgr+JelZWxLv1bz6GpSi9LXciw3yxFndFmI2r8gvEP86l9XA=
-X-Received: by 2002:a05:6402:398:b0:525:7091:124c with SMTP id
- o24-20020a056402039800b005257091124cmr12205524edv.19.1692879972778; Thu, 24
- Aug 2023 05:26:12 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692880039; x=1693484839;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Tk0ZXvv1tOxBFZnQeSj9o/7GEAQKtjC6MZ86caYJwt8=;
+ b=i6w+6zWB1kMQBLFR+qHw86X9Ol0u+HhZm0CU9mzJX9hH7WRcVyHfXxPT0qw3vc1+52
+ orNM0W3tQpvOXDrqQEidpymWp9BecO839iMcuAUhW5ylUCp+Bdyup7VWj8r/mZBQVx/Z
+ cgXXj45PTNjdwUmh6dMptduG14fX9d0XTaQeplNRwIpsx5ioL8mkYY0NIFG/TRg3Mi9w
+ SBXlq1AX+IPsQoVkPS7C3oCscYWcuZhOr3FoZKjnb+/rWFxOyqSH7a1V2S6HlUkc/9mo
+ Kql5DVM0vR6cKi9JBR0P6IdHWWUepuKFf3wHmyqhm3BPHklP6l+S6QQqvwc60kIkNiNM
+ Avvg==
+X-Gm-Message-State: AOJu0YyJZZ7bMBrZq9qQ7kev+Qk/BcSbG1g5wXiVDmbihT0ZRjNGmOs1
+ JV+ufTyVTKi5HUWX5c+HbNmFoA==
+X-Google-Smtp-Source: AGHT+IGWp4xU0iD14LDS05HZOB1pSOgRzpcwpzbrGDKbnV3pdsb0KRVFDxydWgN0WlQu+DSsuIqqYg==
+X-Received: by 2002:a2e:3a11:0:b0:2bc:df66:5ff2 with SMTP id
+ h17-20020a2e3a11000000b002bcdf665ff2mr3722323lja.9.1692880039536; 
+ Thu, 24 Aug 2023 05:27:19 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ z22-20020a05600c221600b003fe1c332810sm2509208wml.33.2023.08.24.05.27.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Aug 2023 05:27:19 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 9952D1FFBB;
+ Thu, 24 Aug 2023 13:27:18 +0100 (BST)
+References: <20230823144533.230477-1-thuth@redhat.com>
+User-agent: mu4e 1.11.14; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, Thomas
+ Huth <thuth@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Warner Losh
+ <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>, Ed Maste
+ <emaste@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>
+Subject: Re: [PATCH] .gitlab-ci.d/cirrus.yml: Update FreeBSD to v13.2
+Date: Thu, 24 Aug 2023 13:27:13 +0100
+In-reply-to: <20230823144533.230477-1-thuth@redhat.com>
+Message-ID: <871qfshbh5.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230823055155.1917375-1-mjt@tls.msk.ru>
- <20230823065335.1919380-15-mjt@tls.msk.ru>
- <056b2e32-4443-bdb8-a9f4-5b08a5ef2b52@linaro.org>
-In-Reply-To: <056b2e32-4443-bdb8-a9f4-5b08a5ef2b52@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 24 Aug 2023 13:26:01 +0100
-Message-ID: <CAFEAcA-=UQoGZxzMGa3kTaUSfmR9qfF4a3kh6x2wQOegN_EO5g@mail.gmail.com>
-Subject: Re: [PATCH 16/24] hw/display: spelling fixes
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,53 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 24 Aug 2023 at 11:13, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> On 23/8/23 08:53, Michael Tokarev wrote:
-> > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> > ---
-> >   hw/display/bochs-display.c | 2 +-
-> >   hw/display/qxl.c           | 2 +-
-> >   hw/display/ssd0303.c       | 2 +-
-> >   hw/display/ssd0323.c       | 2 +-
-> >   hw/display/xlnx_dp.c       | 2 +-
-> >   5 files changed, 5 insertions(+), 5 deletions(-)
->
-> >       /*
-> > -     * Get some data from the DPDMA and compute these datas.
-> > +     * Get some data from the DPDMA and compute these data.
-> >        * Then wait for QEMU's audio subsystem to call this callback.
-> >        */
->
-> TIL 'data' is plural, thanks!
 
-It *can* be the plural of 'datum', but 'data' is also a
-"mass noun" (the same way that 'butter' is always 'butter'
-and not '1 butter, 2 butters'). The OED has quotes for
-the mass-noun sense back as far as 1702, and in a computing
-context it is overwhelmingly the common use. Use of it in
-the plural in a comment in code is probably a mistake.
+Thomas Huth <thuth@redhat.com> writes:
 
-I agree with mjt that it's unclear what was actually
-intended by this comment. My guess from the code is
-something like:
+> The FreeBSD CI job started to fail due to linking problems ... time
+> to update to the latest version to get this fixed.
 
-   /*
-    * Get the individual left and right audio streams from
-    * the DPDMA, and fill the output buffer with the
-    * combined stereo audio data adjusted by the volume
-    * controls.
-    * QEMU's audio subsystem will call this callback
-    * repeatedly; we return it the data from the output
-    * buffer until it is emptied, and then we will read
-    * data from the DPDMA again.
-    */
+Queued to testing/next, thanks.
 
-and the following comment should be
-  /* Don't get more data until we've emptied the buffer */
-
-(or deleted as redundant with the expanded comment above.)
-
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
