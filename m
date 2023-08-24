@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA65786BCE
+	by mail.lfdr.de (Postfix) with ESMTPS id 30891786BCF
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:29:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6at-0006HB-Aa; Thu, 24 Aug 2023 05:25:35 -0400
+	id 1qZ6bm-0003N1-Dk; Thu, 24 Aug 2023 05:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qZ6aM-0004Fy-Hc
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:25:10 -0400
+ id 1qZ6bT-0003Ep-Aa
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:26:11 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qZ6aH-0003jn-C8
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:25:01 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qZ6bO-0004D6-Gj
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:26:10 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxJvHIIedkn3kbAA--.56588S3;
+ by gateway (Coremail) with SMTP id _____8Bxd+jIIedko3kbAA--.20150S3;
  Thu, 24 Aug 2023 17:24:24 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxJ826IedkJjhiAA--.40637S31; 
+ AQAAf8DxJ826IedkJjhiAA--.40637S32; 
  Thu, 24 Aug 2023 17:24:24 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, richard.henderson@linaro.org,
- Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 29/31] hw/intc/loongarch_pch: fix edge triggered irq handling
-Date: Thu, 24 Aug 2023 17:24:07 +0800
-Message-Id: <20230824092409.1492470-30-gaosong@loongson.cn>
+Cc: stefanha@redhat.com, richard.henderson@linaro.org, Jiajie Chen <c@jia.je>
+Subject: [PULL 30/31] target/loongarch: Split fcc register to fcc0-7 in gdbstub
+Date: Thu, 24 Aug 2023 17:24:08 +0800
+Message-Id: <20230824092409.1492470-31-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230824092409.1492470-1-gaosong@loongson.cn>
 References: <20230824092409.1492470-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S31
+X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S32
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,51 +62,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Jiajie Chen <c@jia.je>
 
-For edge triggered irq, qemu_irq_pulse is used to inject irq. It will
-set irq with high level and low level soon to simluate pulse irq.
+Since GDB 13.1(GDB commit ea3352172), GDB LoongArch changed to use
+fcc0-7 instead of fcc register. This commit partially reverts commit
+2f149c759 (`target/loongarch: Update gdb_set_fpu() and gdb_get_fpu()`)
+to match the behavior of GDB.
 
-For edge triggered irq, irq is injected and set as pending at rising
-level, do not clear irq at lowering level. LoongArch pch interrupt will
-clear irq for lowering level irq, there will be problem. ACPI ged deivce
-is edge-triggered irq, it is used for cpu/memory hotplug.
+Note that it is a breaking change for GDB 13.0 or earlier, but it is
+also required for GDB 13.1 or later to work.
 
-This patch fixes memory hotplug issue on LoongArch virt machine.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20230707091557.1474790-1-maobibo@loongson.cn>
+Signed-off-by: Jiajie Chen <c@jia.je>
+Acked-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20230808054315.3391465-1-c@jia.je>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_pch_pic.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ gdb-xml/loongarch-fpu.xml  |  9 ++++++++-
+ target/loongarch/gdbstub.c | 16 +++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 9208fc4460..6aa4cadfa4 100644
---- a/hw/intc/loongarch_pch_pic.c
-+++ b/hw/intc/loongarch_pch_pic.c
-@@ -30,7 +30,11 @@ static void pch_pic_update_irq(LoongArchPCHPIC *s, uint64_t mask, int level)
-             qemu_set_irq(s->parent_irq[s->htmsi_vector[irq]], 1);
-         }
-     } else {
--        val = mask & s->intisr;
-+        /*
-+         * intirr means requested pending irq
-+         * do not clear pending irq for edge-triggered on lowering edge
-+         */
-+        val = mask & s->intisr & ~s->intirr;
-         if (val) {
-             irq = ctz64(val);
-             s->intisr &= ~MAKE_64BIT_MASK(irq, 1);
-@@ -51,6 +55,7 @@ static void pch_pic_irq_handler(void *opaque, int irq, int level)
-         /* Edge triggered */
-         if (level) {
-             if ((s->last_intirr & mask) == 0) {
-+                /* marked pending on a rising edge */
-                 s->intirr |= mask;
-             }
-             s->last_intirr |= mask;
+diff --git a/gdb-xml/loongarch-fpu.xml b/gdb-xml/loongarch-fpu.xml
+index 78e42cf5dd..e81e3382e7 100644
+--- a/gdb-xml/loongarch-fpu.xml
++++ b/gdb-xml/loongarch-fpu.xml
+@@ -45,6 +45,13 @@
+   <reg name="f29" bitsize="64" type="fputype" group="float"/>
+   <reg name="f30" bitsize="64" type="fputype" group="float"/>
+   <reg name="f31" bitsize="64" type="fputype" group="float"/>
+-  <reg name="fcc" bitsize="64" type="uint64" group="float"/>
++  <reg name="fcc0" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc1" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc2" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc3" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc4" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc5" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc6" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc7" bitsize="8" type="uint8" group="float"/>
+   <reg name="fcsr" bitsize="32" type="uint32" group="float"/>
+ </feature>
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index e20b20f99b..b09804b62f 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -88,10 +88,9 @@ static int loongarch_gdb_get_fpu(CPULoongArchState *env,
+ {
+     if (0 <= n && n < 32) {
+         return gdb_get_reg64(mem_buf, env->fpr[n].vreg.D(0));
+-    } else if (n == 32) {
+-        uint64_t val = read_fcc(env);
+-        return gdb_get_reg64(mem_buf, val);
+-    } else if (n == 33) {
++    } else if (32 <= n && n < 40) {
++        return gdb_get_reg8(mem_buf, env->cf[n - 32]);
++    } else if (n == 40) {
+         return gdb_get_reg32(mem_buf, env->fcsr0);
+     }
+     return 0;
+@@ -105,11 +104,10 @@ static int loongarch_gdb_set_fpu(CPULoongArchState *env,
+     if (0 <= n && n < 32) {
+         env->fpr[n].vreg.D(0) = ldq_p(mem_buf);
+         length = 8;
+-    } else if (n == 32) {
+-        uint64_t val = ldq_p(mem_buf);
+-        write_fcc(env, val);
+-        length = 8;
+-    } else if (n == 33) {
++    } else if (32 <= n && n < 40) {
++        env->cf[n - 32] = ldub_p(mem_buf);
++        length = 1;
++    } else if (n == 40) {
+         env->fcsr0 = ldl_p(mem_buf);
+         length = 4;
+     }
 -- 
 2.39.1
 
