@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC1786BEA
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA77786C03
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:33:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6et-0008A1-RN; Thu, 24 Aug 2023 05:29:43 -0400
+	id 1qZ6em-0007TC-Ly; Thu, 24 Aug 2023 05:29:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6eR-0006J0-0g
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:15 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1qZ6eD-0004Ri-On
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:01 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e9-00052K-Ma
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:04 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-50087d47d4dso5003089e87.1
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:54 -0700 (PDT)
+ id 1qZ6e9-00052Q-Ly
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:01 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fe32016bc8so60066285e9.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1692869333; x=1693474133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uTX4YRTyx9A1VOe8timQgsrdDMp9ROpDmMh+CFnk4ac=;
- b=nOoksceJDSfsir7JBdzwMru+4H9hdkv6LneRYWR8jGxsCvz9BVgRWIJk0NqoLsxwPV
- 2xN16fxCZFAJUMm7greAWhVoniJXQNhI4l4gq8732zncALDGpaJfBzzD44eVw38wVdw/
- IclLmfI/BHp5WJFlGDaTjLvB3ENiFnLRIEzFH8RPUznsz9GVhgUbMZ7AW9l7Wc6kIXPf
- VqRKmxazTC//lxhVB9bBqPQ3Htn37H2dCOIMLyFkFtt7KYFtLfvgvQKaZwVCRh/jLTBW
- OXhFIMOEECZCXUHZpdMNfkbAvzPe6nkvresAt32W9wsssSD7CRvCzZOvbB6hxX+nZMbq
- 9kYA==
+ :reply-to; bh=x4DDzWHFyDRlseI7znq+s9DyvjvZkarZQ2nXqeTK/2Q=;
+ b=at2qwn9C8fB7rCXSXFRq61QVRvBoAzzseNb2a79SKqQ1vRqzDdhBexr9zhEKUiIZb4
+ I/ROE3BWgfg7yeSc4anzdBZBwYFiW2CZ7A0oPj2D6OSgvmWX16i4PYykhd0GlFXU3B2H
+ b7BKuct6bvQXVo2MJhcQSu7u7hXAcwI3Bp8+cZHPIECrXSy3Mku6kgV5wpx+kPDSBVRk
+ ibKiZicEaMfWiAvqq2YPtziEi9iehJtfAugimh51AFvLk8LWva6NdZ1231OKKb45J8aH
+ mFGIgpiCqC2zpgkfPBf6JqIF9OsmcV/tO83pZD5s/V5Qsa5C+twl9OGKuXfJiYOW7Zrb
+ +LyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1692869333; x=1693474133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uTX4YRTyx9A1VOe8timQgsrdDMp9ROpDmMh+CFnk4ac=;
- b=ltLxncS10eVQpBJr+Ytv0tFWSOABebLjQD/pDv+z1vk9HbBZxX3x3ZBR16RA1ezzdM
- X9dQtuy7862IbxccoUpoiEJR5jNsIlOkC5ANzUuAhWmzfHQgKsUuX0WtcnOPNiIZiXoZ
- XDtnEgiyO5wsG96xdb3CRwfx40Exf2CNIXWvsOP3mdzJnf1ZmoltKlVNMa50pxwm6OuH
- NRPhoSKTwpnoQDzF4KaJMASg6yzwtprZm9kebmLkkSqMZYYw/aMDwCSJ7pSBh4A1sh71
- 80UpYcxEj2mk7AjCdvCztX0c67ctwwPz2cFdZY8rHYWPzTKfVU4NiEbHSiFN9qfBc5QU
- Pxng==
-X-Gm-Message-State: AOJu0Yzw6jV0PSB+1cYJUj7bTQ/31yskG7MPjXZ141XNHKNt+b0Arahw
- rsyZ84Xi1HiN630mqPVWFwGBPvuKDj6sJ9yYOAU=
-X-Google-Smtp-Source: AGHT+IFKSrtA9nBRn8jjbpc0orkRuJO1rExCJCN9snlwdQnCr312KPmUeJzQedojy5f4WLkf67o3uw==
-X-Received: by 2002:a19:6705:0:b0:4ff:8729:555 with SMTP id
- b5-20020a196705000000b004ff87290555mr9488572lfc.11.1692869332875; 
- Thu, 24 Aug 2023 02:28:52 -0700 (PDT)
+ bh=x4DDzWHFyDRlseI7znq+s9DyvjvZkarZQ2nXqeTK/2Q=;
+ b=ULImTacxxD6URZNenyHX9mzqHo1NL0bEzD72kPCSgjZtRs63DlQPDlv0tNl3S9K8nt
+ 5c3dYydYWhfRhgFeLwZWtaPb+IAtMNDu9z9a62pzhjzgHbMVKPiXtklR4T4a41XmGi6I
+ N8V4KjqRFmqSDSbuAXujtsiI7Qi0jmwIgMHZmlyBy/iYdjpyXZ9YCOSiStXA6a9q5wz7
+ 4TqdF2OWOkLb8VUmeyw/3DdTCp1DEW1XP1GwbGXHejsL3w8s7KFbz8qvoEsvl0O+fUwe
+ p416azT4Ty6ZoozTWobaF5GjB732ND9fqB0uvLC9wu9ztt5r2xGyNBvTtWxlSRSo7hbc
+ Jvjg==
+X-Gm-Message-State: AOJu0YwTt1jY7x1RrNGw93sUmQXTUlLdksiGMaddWuc40JH4rkxselkd
+ wt82wr7LwPhNw03USpfX7umJy+AolcENvKSFvYI=
+X-Google-Smtp-Source: AGHT+IFrPgwl1rQVU1NYMnohOiTS+3ewsNz5CWWqklOpBlWSKwYnmM2MkAbZi98PKYb0n7YQW6KkGw==
+X-Received: by 2002:a7b:c40b:0:b0:3fe:e77b:b2f4 with SMTP id
+ k11-20020a7bc40b000000b003fee77bb2f4mr11056613wmi.36.1692869333555; 
+ Thu, 24 Aug 2023 02:28:53 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.52
+ s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 02:28:52 -0700 (PDT)
+ Thu, 24 Aug 2023 02:28:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 31/35] target/arm: Pass security space rather than flag for AT
- instructions
-Date: Thu, 24 Aug 2023 10:28:32 +0100
-Message-Id: <20230824092836.2239644-32-peter.maydell@linaro.org>
+Subject: [PULL 32/35] target/arm/helper: Check SCR_EL3.{NSE,
+ NS} encoding for AT instructions
+Date: Thu, 24 Aug 2023 10:28:33 +0100
+Message-Id: <20230824092836.2239644-33-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
 References: <20230824092836.2239644-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,208 +93,117 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-At the moment we only handle Secure and Nonsecure security spaces for
-the AT instructions. Add support for Realm and Root.
+The AT instruction is UNDEFINED if the {NSE,NS} configuration is
+invalid. Add a function to check this on all AT instructions that apply
+to an EL lower than 3.
 
-For AArch64, arm_security_space() gives the desired space. ARM DDI0487J
-says (R_NYXTL):
-
-  If EL3 is implemented, then when an address translation instruction
-  that applies to an Exception level lower than EL3 is executed, the
-  Effective value of SCR_EL3.{NSE, NS} determines the target Security
-  state that the instruction applies to.
-
-For AArch32, some instructions can access NonSecure space from Secure,
-so we still need to pass the state explicitly to do_ats_write().
-
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230809123706.1842548-5-jean-philippe@linaro.org
+Message-id: 20230809123706.1842548-6-jean-philippe@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/internals.h | 18 +++++++++---------
- target/arm/helper.c    | 27 ++++++++++++---------------
- target/arm/ptw.c       | 12 ++++++------
- 3 files changed, 27 insertions(+), 30 deletions(-)
+ target/arm/helper.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index fc90c364f77..cf13bb94f59 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1217,24 +1217,24 @@ bool get_phys_addr(CPUARMState *env, target_ulong address,
-     __attribute__((nonnull));
- 
- /**
-- * get_phys_addr_with_secure_nogpc: get the physical address for a virtual
-- *                                  address
-+ * get_phys_addr_with_space_nogpc: get the physical address for a virtual
-+ *                                 address
-  * @env: CPUARMState
-  * @address: virtual address to get physical address for
-  * @access_type: 0 for read, 1 for write, 2 for execute
-  * @mmu_idx: MMU index indicating required translation regime
-- * @is_secure: security state for the access
-+ * @space: security space for the access
-  * @result: set on translation success.
-  * @fi: set to fault info if the translation fails
-  *
-- * Similar to get_phys_addr, but use the given security regime and don't perform
-+ * Similar to get_phys_addr, but use the given security space and don't perform
-  * a Granule Protection Check on the resulting address.
-  */
--bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
--                                     MMUAccessType access_type,
--                                     ARMMMUIdx mmu_idx, bool is_secure,
--                                     GetPhysAddrResult *result,
--                                     ARMMMUFaultInfo *fi)
-+bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
-+                                    MMUAccessType access_type,
-+                                    ARMMMUIdx mmu_idx, ARMSecuritySpace space,
-+                                    GetPhysAddrResult *result,
-+                                    ARMMMUFaultInfo *fi)
-     __attribute__((nonnull));
- 
- bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index e8a232a1f89..de639d40871 100644
+index de639d40871..b4618ee2b95 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -3357,7 +3357,7 @@ static int par_el1_shareability(GetPhysAddrResult *res)
- 
- static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
-                              MMUAccessType access_type, ARMMMUIdx mmu_idx,
--                             bool is_secure)
-+                             ARMSecuritySpace ss)
- {
-     bool ret;
-     uint64_t par64;
-@@ -3369,8 +3369,8 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
-      * I_MXTJT: Granule protection checks are not performed on the final address
-      * of a successful translation.
-      */
--    ret = get_phys_addr_with_secure_nogpc(env, value, access_type, mmu_idx,
--                                          is_secure, &res, &fi);
-+    ret = get_phys_addr_with_space_nogpc(env, value, access_type, mmu_idx, ss,
-+                                         &res, &fi);
- 
-     /*
-      * ATS operations only do S1 or S1+S2 translations, so we never
-@@ -3535,7 +3535,7 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-     uint64_t par64;
-     ARMMMUIdx mmu_idx;
-     int el = arm_current_el(env);
--    bool secure = arm_is_secure_below_el3(env);
-+    ARMSecuritySpace ss = arm_security_space(env);
- 
-     switch (ri->opc2 & 6) {
-     case 0:
-@@ -3543,10 +3543,9 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-         switch (el) {
-         case 3:
-             mmu_idx = ARMMMUIdx_E3;
--            secure = true;
-             break;
-         case 2:
--            g_assert(!secure);  /* ARMv8.4-SecEL2 is 64-bit only */
-+            g_assert(ss != ARMSS_Secure);  /* ARMv8.4-SecEL2 is 64-bit only */
-             /* fall through */
-         case 1:
-             if (ri->crm == 9 && (env->uncached_cpsr & CPSR_PAN)) {
-@@ -3564,10 +3563,9 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-         switch (el) {
-         case 3:
-             mmu_idx = ARMMMUIdx_E10_0;
--            secure = true;
-             break;
-         case 2:
--            g_assert(!secure);  /* ARMv8.4-SecEL2 is 64-bit only */
-+            g_assert(ss != ARMSS_Secure);  /* ARMv8.4-SecEL2 is 64-bit only */
-             mmu_idx = ARMMMUIdx_Stage1_E0;
-             break;
-         case 1:
-@@ -3580,18 +3578,18 @@ static void ats_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-     case 4:
-         /* stage 1+2 NonSecure PL1: ATS12NSOPR, ATS12NSOPW */
-         mmu_idx = ARMMMUIdx_E10_1;
--        secure = false;
-+        ss = ARMSS_NonSecure;
-         break;
-     case 6:
-         /* stage 1+2 NonSecure PL0: ATS12NSOUR, ATS12NSOUW */
-         mmu_idx = ARMMMUIdx_E10_0;
--        secure = false;
-+        ss = ARMSS_NonSecure;
-         break;
-     default:
-         g_assert_not_reached();
-     }
- 
--    par64 = do_ats_write(env, value, access_type, mmu_idx, secure);
-+    par64 = do_ats_write(env, value, access_type, mmu_idx, ss);
- 
-     A32_BANKED_CURRENT_REG_SET(env, par, par64);
- #else
-@@ -3608,7 +3606,8 @@ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     uint64_t par64;
- 
-     /* There is no SecureEL2 for AArch32. */
--    par64 = do_ats_write(env, value, access_type, ARMMMUIdx_E2, false);
-+    par64 = do_ats_write(env, value, access_type, ARMMMUIdx_E2,
-+                         ARMSS_NonSecure);
- 
-     A32_BANKED_CURRENT_REG_SET(env, par, par64);
- #else
-@@ -3633,7 +3632,6 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
- #ifdef CONFIG_TCG
-     MMUAccessType access_type = ri->opc2 & 1 ? MMU_DATA_STORE : MMU_DATA_LOAD;
-     ARMMMUIdx mmu_idx;
--    int secure = arm_is_secure_below_el3(env);
-     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
- 
-@@ -3653,7 +3651,6 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-             break;
-         case 6: /* AT S1E3R, AT S1E3W */
-             mmu_idx = ARMMMUIdx_E3;
--            secure = true;
-             break;
-         default:
-             g_assert_not_reached();
-@@ -3673,7 +3670,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-     }
- 
-     env->cp15.par_el[1] = do_ats_write(env, value, access_type,
--                                       mmu_idx, secure);
-+                                       mmu_idx, arm_security_space(env));
- #else
-     /* Handled by hardware accelerator. */
-     g_assert_not_reached();
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index ca4de6e3999..bfbab26b9b4 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -3420,15 +3420,15 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
-     return false;
+@@ -3616,6 +3616,22 @@ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+ #endif /* CONFIG_TCG */
  }
  
--bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
--                                     MMUAccessType access_type,
--                                     ARMMMUIdx mmu_idx, bool is_secure,
--                                     GetPhysAddrResult *result,
--                                     ARMMMUFaultInfo *fi)
-+bool get_phys_addr_with_space_nogpc(CPUARMState *env, target_ulong address,
-+                                    MMUAccessType access_type,
-+                                    ARMMMUIdx mmu_idx, ARMSecuritySpace space,
-+                                    GetPhysAddrResult *result,
-+                                    ARMMMUFaultInfo *fi)
++static CPAccessResult at_e012_access(CPUARMState *env, const ARMCPRegInfo *ri,
++                                     bool isread)
++{
++    /*
++     * R_NYXTL: instruction is UNDEFINED if it applies to an Exception level
++     * lower than EL3 and the combination SCR_EL3.{NSE,NS} is reserved. This can
++     * only happen when executing at EL3 because that combination also causes an
++     * illegal exception return. We don't need to check FEAT_RME either, because
++     * scr_write() ensures that the NSE bit is not set otherwise.
++     */
++    if ((env->cp15.scr_el3 & (SCR_NSE | SCR_NS)) == SCR_NSE) {
++        return CP_ACCESS_TRAP;
++    }
++    return CP_ACCESS_OK;
++}
++
+ static CPAccessResult at_s1e2_access(CPUARMState *env, const ARMCPRegInfo *ri,
+                                      bool isread)
  {
-     S1Translate ptw = {
-         .in_mmu_idx = mmu_idx,
--        .in_space = arm_secure_to_space(is_secure),
-+        .in_space = space,
-     };
-     return get_phys_addr_nogpc(env, &ptw, address, access_type, result, fi);
+@@ -3623,7 +3639,7 @@ static CPAccessResult at_s1e2_access(CPUARMState *env, const ARMCPRegInfo *ri,
+         !(env->cp15.scr_el3 & (SCR_NS | SCR_EEL2))) {
+         return CP_ACCESS_TRAP;
+     }
+-    return CP_ACCESS_OK;
++    return at_e012_access(env, ri, isread);
  }
+ 
+ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+@@ -5505,38 +5521,38 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
+       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 0,
+       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+       .fgt = FGT_ATS1E1R,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S1E1W", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 1,
+       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+       .fgt = FGT_ATS1E1W,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S1E0R", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 2,
+       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+       .fgt = FGT_ATS1E0R,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S1E0W", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 8, .opc2 = 3,
+       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+       .fgt = FGT_ATS1E0W,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S12E1R", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 7, .crm = 8, .opc2 = 4,
+       .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S12E1W", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 7, .crm = 8, .opc2 = 5,
+       .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S12E0R", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 7, .crm = 8, .opc2 = 6,
+       .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S12E0W", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 4, .crn = 7, .crm = 8, .opc2 = 7,
+       .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     /* AT S1E2* are elsewhere as they UNDEF from EL3 if EL2 is not present */
+     { .name = "AT_S1E3R", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 6, .crn = 7, .crm = 8, .opc2 = 0,
+@@ -8079,12 +8095,12 @@ static const ARMCPRegInfo ats1e1_reginfo[] = {
+       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 9, .opc2 = 0,
+       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+       .fgt = FGT_ATS1E1RP,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+     { .name = "AT_S1E1WP", .state = ARM_CP_STATE_AA64,
+       .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 9, .opc2 = 1,
+       .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
+       .fgt = FGT_ATS1E1WP,
+-      .writefn = ats_write64 },
++      .accessfn = at_e012_access, .writefn = ats_write64 },
+ };
+ 
+ static const ARMCPRegInfo ats1cp_reginfo[] = {
 -- 
 2.34.1
 
