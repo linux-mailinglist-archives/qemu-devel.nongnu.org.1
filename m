@@ -2,73 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596A7787109
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 16:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B06D787186
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 16:31:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZAxq-0001qd-6R; Thu, 24 Aug 2023 10:05:34 -0400
+	id 1qZBLe-0007qG-Hv; Thu, 24 Aug 2023 10:30:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qZAxn-0001of-CA
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:05:31 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1qZBLb-0007q2-TH
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:30:07 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qZAxl-00034J-2H
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:05:31 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-5711f6dff8cso877928eaf.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 07:05:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1qZBLX-0008Nz-2r
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 10:30:07 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1bdf4752c3cso42918895ad.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 07:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692885925; x=1693490725;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9TzXcsWXLqDk/WymJyiiY82ywS8U2nTO3Q3adXmtpJc=;
- b=J5dAGY3X3eE8Agy7Mhk0NZsAoLY2mGQALEvS5XJiVmt7ARcDLbg6QRIYoKsTIh+0FZ
- tI0QBUXRcoHcwKVBmPTRnnFnfacT2tVRJg+lME4Sen2G1BF27dCv1blP6SOMj5SsRbSD
- EIivSIDoQuLXtxjADLe6h/8M/6RnHYJ++Uis2JdLoq3DyaNz/wv3E7q0v47Hqi8ef7Dn
- N9q7XLchr70isFDzJMVkAu7ejCZpjXOmj08Xr/onLkGMB90FNBMo9vyKkkRBxvaThFyK
- CxHzm2WoCVyVaAu+4hx9sgjXsGbJlPJEDEgduaedO1MHfZB6ynU05Re6v1+Dyon118hB
- dHyA==
+ d=ventanamicro.com; s=google; t=1692887401; x=1693492201;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MF29GBhTNvUUmI0gukMZgybyAxbxiWyFk7P/UUSYLco=;
+ b=DMupJUrb1jLs+2bSPPXRxtOOLQTa8uU/E/JQMqTqmdXkHY8RHoMwoizqWsiVePod58
+ 4rrMGdk1pkFOXc5zt1f1Xb47rpMZ00EVJhB1iYXxPHSD1xyPO5zIBAkewmALtibo0B/v
+ 84PvcFCTx/WSyKFFf3l/h5gBoMEJsJYWUwJFwp1N+XbjUpNItEnMP2o8MDPuz34GFQJu
+ R0blRo5iTYiLxy4uVPWVOQRr7lxwqWhC2fmYS2gDesv7eTobvfqLpF0YqgvkU36bsbqm
+ ElA4essiBRaa+LcFAibldSsf7mfQG+JX2gsYjlJgrKoGAYTcQTktqexi0XWW6hdy6hcc
+ cu1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692885925; x=1693490725;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1692887401; x=1693492201;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=9TzXcsWXLqDk/WymJyiiY82ywS8U2nTO3Q3adXmtpJc=;
- b=ZuMrh0X1bjrO/M9SubNrgCStLJlOv9lrgfuTklgmcjGnL4dOqUgPFL/P/S3U/nzEcO
- GxQHQCQo6v/TMOFS8nDQnK9vLGy9Xd8fWc/QHLM9h0/aJBx8DysfCqCk1zt14wnTACVO
- IatwA6/3I309FpGz/PrxEZbLWt9PS5hebcpjfGOrvBRa16fDOuaYrxqCJ2AZyY8F6ymG
- BGaEmzOvDR4TMGPn5vZArhXMSLvP5Kn+zYZ+uzDe3/vEaI2FSs8mmRwkw7c8+DNGgaop
- 9HPUYWTPzg26vuu5fF6ySjYF4AZvLym0v3PAsF3lMzf3f11vK82I0ozGzZFht5ehwOUR
- XiIw==
-X-Gm-Message-State: AOJu0Yw9/15yL8d36nHXzGEtIOnVDjyyLtOns0LcUhMsRs0VzieKZziY
- D17qrpYRD4tHyQF2Yl/plGLlHOdeTvNg4ykHL3s=
-X-Google-Smtp-Source: AGHT+IG/fKpkNGMZXk/mDIzxPSO5aKtBpsRENQSZsutgs+6k9yqSMSTF0B4L2lUj3aXrAtLLGm88UH3PZ4wKh3m6nBU=
-X-Received: by 2002:a4a:919e:0:b0:571:1c44:c9bf with SMTP id
- d30-20020a4a919e000000b005711c44c9bfmr2361743ooh.4.1692885925238; Thu, 24 Aug
- 2023 07:05:25 -0700 (PDT)
+ bh=MF29GBhTNvUUmI0gukMZgybyAxbxiWyFk7P/UUSYLco=;
+ b=LroaNIDnYppZoewzI5Oi4jmu7UQXLikZOyG9NxwhGMAOkeoZLOPDWoXj9r8QZM7sp6
+ ysu5AyxhL3t9zmoSZQhPWi7YKjb6xvfs9xoyqrNFYjyMEVMR0mFQ4QqFfMS2sT5rCsWV
+ /KtdxEsOSwwhIzCezRANTAs1nGQ7vbuQqmy4mLG+G+QvaaWmTJSHtmfmznFxfsViukt6
+ Fq9moEU1eGtf8BN3UehCw7m8r0vqGEPcODbJJ+6shk20ha+F2UBO/BC1QdGFQ1+OVdov
+ 0LCGWcCLJk1TPKt+n0bQS+QqY6vwPrS8Ck1sPQJmCqJz2RT5JJf8rQKDvYjhS2NInhef
+ GxVw==
+X-Gm-Message-State: AOJu0YwRM+k7HUrUP/2fOjyeYB6zFQrj7UEiDU1eEgjhgU/tUT5IRlkM
+ j4o4H7qY6/PUasQv3RNDRNzpXg==
+X-Google-Smtp-Source: AGHT+IFnMQ18i/W8Q5TPzXMoaqzagKuV2rbEwt2KWuJZ3BP7/EF1BogcqyHBDUHjkITK2G2TqohWbw==
+X-Received: by 2002:a17:90a:e285:b0:268:c7fc:b771 with SMTP id
+ d5-20020a17090ae28500b00268c7fcb771mr11911928pjz.14.1692887400796; 
+ Thu, 24 Aug 2023 07:30:00 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.191.205])
+ by smtp.gmail.com with ESMTPSA id
+ n6-20020a17090a2bc600b00262fc3d911esm1666864pje.28.2023.08.24.07.29.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Aug 2023 07:29:58 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Anup Patel <apatel@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v2 00/12] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
+Date: Thu, 24 Aug 2023 19:59:30 +0530
+Message-Id: <20230824142942.3983650-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230823202326.1353645-1-richard.henderson@linaro.org>
-In-Reply-To: <20230823202326.1353645-1-richard.henderson@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 24 Aug 2023 10:05:11 -0400
-Message-ID: <CAJSP0QVkeKKPDqNmE58pUjbK7dHRvFbPL6cAgK0hyhYSccb9VA@mail.gmail.com>
-Subject: Re: [PULL 00/48] tcg patch queue
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,42 +104,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 23 Aug 2023 at 16:24, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> The following changes since commit b0dd9a7d6dd15a6898e9c585b521e6bec79b25aa:
->
->   Open 8.2 development tree (2023-08-22 07:14:07 -0700)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230823
->
-> for you to fetch changes up to 05e09d2a830a74d651ca6106e2002ec4f7b6997a:
->
->   tcg: spelling fixes (2023-08-23 13:20:47 -0700)
->
-> ----------------------------------------------------------------
-> accel/*: Widen pc/saved_insn for *_sw_breakpoint
-> accel/tcg: Replace remaining target_ulong in system-mode accel
-> tcg: spelling fixes
-> tcg: Document bswap, hswap, wswap byte patterns
-> tcg: Introduce negsetcond opcodes
-> tcg: Fold deposit with zero to and
-> tcg: Unify TCG_TARGET_HAS_extr[lh]_i64_i32
-> tcg/i386: Drop BYTEH deposits for 64-bit
-> tcg/i386: Allow immediate as input to deposit
-> target/*: Use tcg_gen_negsetcond_*
->
-> ----------------------------------------------------------------
-> Anton Johansson via (9):
+This series primarily enables external interrupt controllers (AIA and PLIC)
+in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
+MMU related information.
 
-Hi Richard,
-Please fix up the authorship information for Anton Johansson. The pull
-request has "Anton Johansson via <qemu-devel@nongnu.org>". I think the
-email address should be "Anton Johansson <anjo@rev.ng>".
+Below ECRs for these changes are approved by ASWG and will be
+available in next ACPI spec release.
 
-Thanks!
+1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
 
-Stefan
+First two patches in this series are to migrate a couple of functions from
+ARM architecture to common code so that RISC-V doesn't need to duplicate
+the same.
+
+The patch set is based on Alistair's riscv-to-apply.next branch.
+
+These changes are also available in  riscv_acpi_b2_v2 branch at:
+https://github.com/vlsunil/qemu/
+
+Changes since v1:
+	1) As per Igor's suggestion, migrated fw_cfg and virtio creation
+	   functions to device specific file instead of generic aml-build.c.
+	   Since ACPI is optional, new files are created and enabled for
+	   build only when CONFIG_ACPI is enabled.
+
+	2) As per Igor's suggestion, properties are added to the GPEX PCI
+	   host to indicate MMIO ranges. The platform fw can initialize
+	   these to appropriate values and the DSDT generator can fetch
+	   the information from the host bus itself. This makes the code
+	   generic instead of machine specific.
+
+	3) Added PLIC patch from Haibo.
+
+	4) Rebased to latest riscv-to-apply.next and added RB tags as
+	   appropriate.
+
+
+Sunil V L (12):
+  hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
+  hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
+  hw/riscv: virt: Make few IMSIC macros and functions public
+  hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
+  hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+  hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
+  hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
+  hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
+  hw/pci-host/gpex: Define properties for MMIO ranges
+  hw/riscv/virt: Update GPEX MMIO related properties
+  hw/riscv/virt-acpi-build.c: Add IO controllers and devices
+  hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+
+ hw/arm/virt-acpi-build.c        |  48 +----
+ hw/nvram/fw_cfg-acpi.c          |  17 ++
+ hw/nvram/meson.build            |   1 +
+ hw/pci-host/gpex-acpi.c         |  13 ++
+ hw/pci-host/gpex.c              |  12 ++
+ hw/riscv/Kconfig                |   1 +
+ hw/riscv/virt-acpi-build.c      | 342 +++++++++++++++++++++++++++++---
+ hw/riscv/virt.c                 |  72 +++----
+ hw/virtio/meson.build           |   1 +
+ hw/virtio/virtio-acpi.c         |  28 +++
+ include/hw/nvram/fw_cfg_acpi.h  |   9 +
+ include/hw/pci-host/gpex.h      |  28 ++-
+ include/hw/riscv/virt.h         |  26 +++
+ include/hw/virtio/virtio-acpi.h |  11 +
+ 14 files changed, 492 insertions(+), 117 deletions(-)
+ create mode 100644 hw/nvram/fw_cfg-acpi.c
+ create mode 100644 hw/virtio/virtio-acpi.c
+ create mode 100644 include/hw/nvram/fw_cfg_acpi.h
+ create mode 100644 include/hw/virtio/virtio-acpi.h
+
+-- 
+2.39.2
+
 
