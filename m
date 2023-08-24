@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A453978761D
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FE9787635
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 18:58:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDbO-0003S3-4Q; Thu, 24 Aug 2023 12:54:34 -0400
+	id 1qZDet-0004Zk-Gz; Thu, 24 Aug 2023 12:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qZDbG-0003RE-8u; Thu, 24 Aug 2023 12:54:26 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1qZDel-0004Yi-Fq; Thu, 24 Aug 2023 12:58:03 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qZDbE-0002ip-01; Thu, 24 Aug 2023 12:54:25 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-500913779f5so4660448e87.2; 
- Thu, 24 Aug 2023 09:54:22 -0700 (PDT)
+ id 1qZDei-0003KI-8n; Thu, 24 Aug 2023 12:58:03 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5298e43bb67so231220a12.1; 
+ Thu, 24 Aug 2023 09:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692896061; x=1693500861;
+ d=gmail.com; s=20221208; t=1692896278; x=1693501078;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WMHvbuc2zY3isHaLJbx7XNfQkDZlZMB8BJIfCF7eZQQ=;
- b=khq0+xYoW/AsGpCZ/QvIfrTLTWloVf4w5IHHLSJUzZFPXWEVuqDSZRJejIZqIdoA0O
- TTpgqiXx52GrBggVNJH+P4IkgmAfxfe4SCtROy/ZsS6SXVz45hgt9KR0CecdTAamKZ/m
- zg/pM/mL2DweUNLdg2l2QSMv0qucTNSd3zA9oWLV9UTtri2M5EvoFogHQiVhznKNlPnr
- QPg+UKMPy52tiUvmavK+cJJpyWLbg2hOfWlyvHHs/+vkN03flpTJxYzRiGYEJ4bWAvTI
- DjWtihSSNctOUD17f6SKd5PSTCUaK6eNxaF2++NlCqtO6xO8UKPxrMbr/nKvGWf5DaLr
- 5sGw==
+ bh=9LCQ6p/zK0WLQgEjeOclvmAuDKSV4LeU9T5crgIsb50=;
+ b=PX3P+1k+JS2yjV0TrOPXN2eMt+9xvL497rXfphXwR5PKiwTW85CkCl7ihSnqLyDsdq
+ 7bd1BZ4/fwAXKEdUtMN5Q2wt14gY6IgCl/n3UGErKhUQA7Z065DmQDW2P5WZIARIUFB8
+ K055WSpjk5/sgjjvPIiK1KP205AhEDUg4aRqmMqyZ59V3VV4Cc4pqpN4I+IOaOOQPU1n
+ gWAjiFCrDTd956JNesSzrDAjMNiJGGP4Hj88+NHdsIuNu62ZXcnjEqMuJGtPT5ljyh37
+ Q9sMUVg/Z1GF186dewOM7zAfrnTjTXnXjV/Mz67oP1OCgPqpN+O+NzNht3CrRF3yQufX
+ L91g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692896061; x=1693500861;
+ d=1e100.net; s=20221208; t=1692896278; x=1693501078;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WMHvbuc2zY3isHaLJbx7XNfQkDZlZMB8BJIfCF7eZQQ=;
- b=S2FrN3u/GGVlVSF7Tf/UAGmtv0mh0LOE11ZKuyKzOa19DVP4+lp45O12pKJgvIAZal
- lnGXM1K9bm5l85OSrFiUR+7QNBaPMepIQgLUAqN16ONH2QnTFJL2TLvCqxiNxaewt/Oi
- Xds9mOU2EVoh74kjrm0jPl2/o5xnUgkaElpC/QJjn1+SrFP/wTe/YvrAdbVKTxEuAotq
- PWjo7FLe0J2IyL4WTPWDmpApZGF1t3LZtbqAX/Z5ZAofgMms6KYHit9/2pyLlqjrdnLp
- jVpEW/c96nihxuBS03Y7b2IB2/T6dqVaDdHObbOILg/b8lx5lFt4P12E9wYdV3FRZWgm
- XoaQ==
-X-Gm-Message-State: AOJu0YzN+x1mX0mv0+5xcmTspstvLsCCQXVn0kX0wKLI4sQKzpCQDcVc
- 7ENOTuuFaDcMxhpNDy1Sy+mrBN1mge0ol7YBSM0lSRjpxYD6IZWR
-X-Google-Smtp-Source: AGHT+IEJc4rqEaTUTGY5zVZ2gQd4HwfcMgGr+wLvhLlpdbIwTrL7xWvQ4Fgwk7O0fs9njVIQYl55RxmZBUMEq+X7e88=
-X-Received: by 2002:a05:6512:3b28:b0:4fe:ecd:4959 with SMTP id
- f40-20020a0565123b2800b004fe0ecd4959mr15062042lfv.32.1692896060047; Thu, 24
- Aug 2023 09:54:20 -0700 (PDT)
+ bh=9LCQ6p/zK0WLQgEjeOclvmAuDKSV4LeU9T5crgIsb50=;
+ b=ZBVdMgnXbMOBWsBds8ifRevStXnPrA96ttpd79KL2TAO43IM+NrwkXsfgLAzJA/ISV
+ aNFNZlBuljSaSRz1egVxRCE6qiOqjOxp92l7YLMoSFjdywhd6y0ZstBvaz7zXNMuFcV6
+ aRivPgCqSigykMvK01+2ZnPXg0YcydCEsj8pa/qVJKVrg6x6Tg8kJSX8BSWzTtE0zYEj
+ etx+svCEsgDl39N70L04IfOu791GK4QWB6jSpSdceklgZgqCEP4RKPWVxrru0hkJ7Ot0
+ 24FBp6F4ZdWc0EUhayi2bHpXXlvUQleHn4Bu6fusOreKP6+RkjaBlCJRLc4/hT4YxyJk
+ v3ig==
+X-Gm-Message-State: AOJu0YysvEDVcCTL47pxDNxNwwYS/Y2bfJBC6cP6O7XkMpSmB+CdrDT6
+ XVxIdePaZR9PQvXJ1FF24JhKJHlMW9gU9+Quv8M=
+X-Google-Smtp-Source: AGHT+IHnPL+n5SJ0TxMxA54q2Yy8GTv8Bl5hQUGyZn7I4+6w9ob3XKI33tYu3YYJa26JRYkQNTpe8oLWBDr4Cg3sx9M=
+X-Received: by 2002:a05:6402:5109:b0:51e:4218:b91b with SMTP id
+ m9-20020a056402510900b0051e4218b91bmr15673358edd.1.1692896277566; Thu, 24 Aug
+ 2023 09:57:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230824155345.109765-1-hreitz@redhat.com>
-In-Reply-To: <20230824155345.109765-1-hreitz@redhat.com>
+ <20230824155345.109765-2-hreitz@redhat.com>
+In-Reply-To: <20230824155345.109765-2-hreitz@redhat.com>
 From: Sam Li <faithilikerun@gmail.com>
-Date: Fri, 25 Aug 2023 00:53:50 +0800
-Message-ID: <CAAAx-8LvtrD66Mj11EuUhNFTQM4_cFcEQpsi52TgAvtsez5U3g@mail.gmail.com>
-Subject: Re: [PATCH 0/5] file-posix: Clean up and fix zoned checks
+Date: Fri, 25 Aug 2023 00:57:28 +0800
+Message-ID: <CAAAx-8JDMj5YzEKYdtgnS0t6+TqPg=ruZkDNtvi4pHzkF29J5w@mail.gmail.com>
+Subject: Re: [PATCH 1/5] file-posix: Clear bs->bl.zoned on error
 To: Hanna Czenczek <hreitz@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
  Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,45 +86,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Hanna,
-
 Hanna Czenczek <hreitz@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8824=E6=97=
 =A5=E5=91=A8=E5=9B=9B 23:53=E5=86=99=E9=81=93=EF=BC=9A
 >
-> Hi,
+> bs->bl.zoned is what indicates whether the zone information is present
+> and valid; it is the only thing that raw_refresh_zoned_limits() sets if
+> CONFIG_BLKZONED is not defined, and it is also the only thing that it
+> sets if CONFIG_BLKZONED is defined, but there are no zones.
 >
-> As presented in [1] there is a bug in the zone code in raw_co_prw(),
-> specifically we don=E2=80=99t check whether there actually is zone inform=
-ation
-> before running code that assumes there is (and thus we run into a
-> division by zero).  This has now also been reported in [2].
-
-Thanks for catching the bugs and your work.
-
+> Make sure that it is always set to BLK_Z_NONE if there is an error
+> anywhere in raw_refresh_zoned_limits() so that we do not accidentally
+> announce zones while our information is incomplete or invalid.
 >
-> I believe the solution [1] is incomplete, though, which is why I=E2=80=99=
-m
-> sending this separate series: I don=E2=80=99t think checking bs->wps and/=
-or
-> bs->bl.zone_size to determine whether there is zone information is
-> right; for example, we do not have raw_refresh_zoned_limits() clear
-> those values if on a refresh, zone information were to disappear.
+> This also fixes a memory leak in the last error path in
+> raw_refresh_zoned_limits().
 >
-> It is also weird that we separate checking bs->wps and bs->bl.zone_size
-> at all; raw_refresh_zoned_limits() seems to intend to ensure that either
-> we have information with non-NULL bs->wps and non-zero bs->bl.zone_size,
-> or we don=E2=80=99t.
->
-> I think we should have a single flag that tells whether we have valid
-> information or not, and it looks to me like bs->bl.zoned !=3D BLK_Z_NONE
-> is the condition that fits best.
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  block/file-posix.c | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
 
-The former way only checks zone information when it is being used to
-avoid divide-by-zero or nullptr errors. Putting the error path with
-non-zoned model implies a zoned device must have non-zero zone size
-and allocated write pointers. Given that no other parts are changing
-the zone_size to 0 and free wps, It does simplify the code path.
-
-Thanks,
-Sam
+Reviewed-by: Sam Li <faithilikerun@gmail.com>
 
