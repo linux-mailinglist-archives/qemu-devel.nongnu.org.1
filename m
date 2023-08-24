@@ -2,75 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D83787649
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 19:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8569787651
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 19:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZDgB-0007qx-IR; Thu, 24 Aug 2023 12:59:31 -0400
+	id 1qZDiF-0002A0-S9; Thu, 24 Aug 2023 13:01:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qZDg9-0007op-66; Thu, 24 Aug 2023 12:59:29 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qZDg7-0003Ww-1t; Thu, 24 Aug 2023 12:59:28 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-522bd411679so181412a12.0; 
- Thu, 24 Aug 2023 09:59:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692896365; x=1693501165;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+nuoIijA4ltopeBj+rpbSG97puqKa2jt0jOgDepmqi4=;
- b=qekeie2NMZ71rb37tzy8X4LH6NqAvmg8hMjbejDmoZjZjCDuDqVG6Lrm0VkV9M61hE
- AYQARVwT6GqudjAAM8I1tqidX+OTXpF+mB8ls1Wh5W0l0lW9iNl4LKRHyOGGkdT8wraB
- ZPEL3mHTdXBdKbI9nawi2EQ0DIrUE4zHpG3z9+YnAtLpHgIGcPQuVBpvDlokUeg9nEA9
- +jr2Vh1vX6U6HNG5HqMZQfI8X6kAMWO1Anbu/k6rm3uQqyzpVW50YWE+Q7eFPpXsMeUN
- 5k/xjnIqi6ZSweuN5fdnBnP+O1nEb4uM75nF1oJ5y+48jzOhSbbkG+OhqERICaIGbOyr
- oiSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692896365; x=1693501165;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+nuoIijA4ltopeBj+rpbSG97puqKa2jt0jOgDepmqi4=;
- b=Fgiao/GDskY48Kp6Ikpgg28kCCKC8HmikrAwM1eYqX65JFV4F6eeWBMl3Mhgwwzk0T
- M1cyQ2acEl6gBLjmtCqjiHmMnxM4K9dG6i3jQJrpcgbZhfo4M89EfX4C/suCzNJQlktC
- P2mp8DmXWYyUuHw2d7MILwT71sfCmzNLQAuGB3d4o3uyfKriHmDSCyhcJGVqLmBnoJnf
- hvyO4jUxq/hCCYlBKNKpUqMCohVyydGNdieucPv+xLyUiyL3r3R88qy8NfiJ5G+L8CNA
- ony8wz1sIvnh4jJffTLGDA326Nql4Bk10AdKqg2GS4I4/IWPmA7WBGZaOKUAy4ku+KO4
- QUQA==
-X-Gm-Message-State: AOJu0Yypus1Z4mbtIu9kMhX3v1Ihu31INu82WLMfpyAE9y1H/EXylo83
- aqSzNEuUlAOaatjtw5PsxJlQwOIM6xfr5m/Xrj4=
-X-Google-Smtp-Source: AGHT+IFLnsd2kYV5LkxEzT/ZD/K8zTRgtwYgVeDeLs5huaeYcqqACPSIHl3m3FjL3eKHtbr++fRHgQHCRca2oJsfdQs=
-X-Received: by 2002:aa7:da53:0:b0:523:b37e:b83c with SMTP id
- w19-20020aa7da53000000b00523b37eb83cmr13432556eds.37.1692896364159; Thu, 24
- Aug 2023 09:59:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qZDh7-0001O1-WE
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 13:00:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qZDh3-0003qk-Il
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 13:00:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692896420;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zIHo4ozo6+ZOanxKnuZquIOQxzFcXHWkZ6fjdljRWco=;
+ b=Qhy70neXzvOHyZJuuLJGRYiPFoaVw36anM3xKSYmYJ7hMuRn+yDj7LBan5iploYEs7oOi8
+ jzPnARyoXVl7qXp26N8nkeFwlfpUO6MsEm3YVfM9qSBvbERKaT7mSsM9D/Vw0D7u5M/nxj
+ rdNQFf78ymjFZ2204Esxo9T2AmWGunE=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-130-VzLcZxukNZSEB1cyabfWHA-1; Thu, 24 Aug 2023 13:00:13 -0400
+X-MC-Unique: VzLcZxukNZSEB1cyabfWHA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DC092807D65;
+ Thu, 24 Aug 2023 17:00:13 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.213])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 15E4C40C2073;
+ Thu, 24 Aug 2023 17:00:12 +0000 (UTC)
+Date: Thu, 24 Aug 2023 13:00:11 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH] aio-posix: zero out io_uring sqe user_data
+Message-ID: <20230824170011.GA1689529@fedora>
+References: <20230426212639.82310-1-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20230824155345.109765-1-hreitz@redhat.com>
- <20230824155345.109765-3-hreitz@redhat.com>
-In-Reply-To: <20230824155345.109765-3-hreitz@redhat.com>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Fri, 25 Aug 2023 00:58:55 +0800
-Message-ID: <CAAAx-8LavGqdDKGnv07PPw6+fYf6a-UOiRvOO2ehP0=8W1U7pQ@mail.gmail.com>
-Subject: Re: [PATCH 2/5] file-posix: Check bs->bl.zoned for zone info
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x531.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="XaJm1GlTv1ruHL9X"
+Content-Disposition: inline
+In-Reply-To: <20230426212639.82310-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,20 +78,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hanna Czenczek <hreitz@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8824=E6=97=
-=A5=E5=91=A8=E5=9B=9B 23:53=E5=86=99=E9=81=93=EF=BC=9A
->
-> Instead of checking bs->wps or bs->bl.zone_size for whether zone
-> information is present, check bs->bl.zoned.  That is the flag that
-> raw_refresh_zoned_limits() reliably sets to indicate zone support.  If
-> it is set to something other than BLK_Z_NONE, other values and objects
-> like bs->wps and bs->bl.zone_size must be non-null/zero and valid; if it
-> is not, we cannot rely on their validity.
->
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  block/file-posix.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
 
-Reviewed-by: Sam Li <faithilikerun@gmail.com>
+--XaJm1GlTv1ruHL9X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Apr 26, 2023 at 05:26:39PM -0400, Stefan Hajnoczi wrote:
+> liburing does not clear sqe->user_data. We must do it ourselves to avoid
+> undefined behavior in process_cqe() when user_data is used.
+>=20
+> Note that fdmon-io_uring is currently disabled, so this is a latent bug
+> that does not affect users. Let's merge this fix now to make it easier
+> to enable fdmon-io_uring in the future (and I'm working on that).
+>=20
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  util/fdmon-io_uring.c | 2 ++
+>  1 file changed, 2 insertions(+)
+
+Thanks, applied to my block-next tree:
+https://gitlab.com/stefanha/qemu/commits/block-next
+
+Stefan
+
+--XaJm1GlTv1ruHL9X
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTnjJsACgkQnKSrs4Gr
+c8hN/wf+KM59T2lFLkKcYUJcOllgNn9cA4Gmhcl1Z3SysQ9XIFvFUbHwF/J/lVHK
+iSv+Qpwpal2EziYMpvEz0ArJYw//wMJ1bkLTsv87YMOYct9ICa9Z20BhoDRCVXoV
+OAis/U3lxfjlbPZUy+Lcg3ohvO45VtCYYbPe0K+tr94bmkG8QcrJkTTdyLRSZvYS
+fCQYBAQ7ncRMeVrHK6rgz8f6GZN91UANH8zcsbe7yjJG5fg/C2UqtN5d7EqrYGD8
+2TLz2DtfQzfThnil5cGn1AGfh963McVxTS14ZFHPnxJe3TpIY4iU2E+X9Mcf2YWR
+UKYEPgS4GFkHt4a+i9hM+bI8DJDVvw==
+=IJA7
+-----END PGP SIGNATURE-----
+
+--XaJm1GlTv1ruHL9X--
+
 
