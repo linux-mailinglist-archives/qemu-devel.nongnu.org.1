@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B73786BD4
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37247786C04
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:33:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6ec-0006ui-FZ; Thu, 24 Aug 2023 05:29:28 -0400
+	id 1qZ6ex-0000GV-Up; Thu, 24 Aug 2023 05:29:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6eA-00047u-Nw
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:59 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1qZ6eR-0006JD-Aw
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:15 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e3-00050c-Dc
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:28:58 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-31c4d5bd69cso3589459f8f.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:48 -0700 (PDT)
+ id 1qZ6eA-00050p-Ga
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:04 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31aeef88a55so4076400f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692869327; x=1693474127;
+ d=linaro.org; s=google; t=1692869328; x=1693474128;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=skc8U+gA9LdRonLIVM9I21EP6Eo0baS5zBeu/So/Jqk=;
- b=ws4YU8z9Gw/SMOoc17b7bM+UoQmxi2TNckfOUIVJNs0UtCdpKjXD0TbDzsoOVNNHhu
- AJUNY71NER2ifcTsBUnpJZWUsJoo+P1CAC1Wl1pDLCufjWGGZlu7FCZPEAovigufCx6o
- Bhvw1Ga5yOJsDBaBF10XmqoG+1SwU6fPBC7346j8fw8QjRBIWokJEjMuOv9goEJ6iOHF
- z9UwXMlvXi9V7JBZ6J7NXzdnH6LkPWCWndrY+XTApjeeTyU1zD6kYJzjHOSpBzcuWSSw
- RPobQDF/I2uJbzw8NANCpfkpnYx2C9v10Qpy5LqpydX+l95CmgAfTm+hZbUyEZVoOzu5
- Hhvw==
+ :reply-to; bh=gSt7Jf92i8R5HQEoB62ZPc6BWF+QtO19rPh3tNmtHqE=;
+ b=FdJjoiP1w0OiLRkmiIkt8l72VkQsvsAf2etHK5JdrFm5v9hKTKPhXmwigtps+mhhqE
+ FrHL7O/oGYnrQKJidUWWr0Su7fOzV54h+jLE0N4a6ReOIJ3bMra/U2GahKMZ7cg5NV31
+ BZeEKdyUyVgaMKn7C1Xh5u5GwDLiw4wG5Jp+VtccsjRzAGKw3JlwmxLEN3XHs+vgXftF
+ Zo2k7gWrjLTx6/7NsaEZhB1JDOfccpFsZ0MQWTIQ9Df/c+kkgv5YOV+T3F+3X6Ib1Lz7
+ ISZgQfC8czzoY7qFr1p587Si+BuFubZxTU48RfIabbIbjZABbXsuKdklrVWP/nNMxctS
+ yi/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692869327; x=1693474127;
+ d=1e100.net; s=20221208; t=1692869328; x=1693474128;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=skc8U+gA9LdRonLIVM9I21EP6Eo0baS5zBeu/So/Jqk=;
- b=B19YEwNLms+GcNMzFHv6tNBhopXKiChef9inHp/UeS4vrNRCdXyrRySzFgNrcSAUN9
- o6m9bsDMBpzzjADKxpFni6MeHwi6G1AoBbuUH6N88JjE94NYsA9JdJO3gOdyU89dcDxh
- /MBIQ0ey5dLHlFCfgB6MJhywRTVgmVSDt7FEXOlQGrhRJv06V6PgG1X8/9Y3l5NRzo2K
- UHh26koSjbvIoJ18VotUxD0baxye6j3dp8OGW8+X6RkkiS6l2p8MRhNWOsqihBxZLVFQ
- Ke3TEfiKa8EnIkJT+Izc6fKcRIdy27ld9dHGJ6uSy/+OYNew1bw24+VlJSy4J+EDPrrc
- ETZA==
-X-Gm-Message-State: AOJu0YxFjqpMUlRoqJs4+zOgsuWubD4BY0jBBkmsyPZgnv1LWGWWV8+T
- lKH9Zis5N9Gmpi2lQCaWDetMVBJJ0fH5vbb4U3o=
-X-Google-Smtp-Source: AGHT+IGyiHXIqEq3oak3f2/wc7UILQFA/T5pw9zyFR++Mfw/gZbQyhza0nE7yc2w9BrOi/6pkznVRw==
-X-Received: by 2002:a5d:45c6:0:b0:319:854a:9ea1 with SMTP id
- b6-20020a5d45c6000000b00319854a9ea1mr10702410wrs.15.1692869327481; 
+ bh=gSt7Jf92i8R5HQEoB62ZPc6BWF+QtO19rPh3tNmtHqE=;
+ b=K3KngI21WMxKssLD1HO7Zf58AV7rjYeSHzPySAwluObGZjmTbK6HJbvYnacZVb26fw
+ zfWQaDkZQt+nXNWKC/LH+FeNk78gteE504ahXYvs6nvVkzeWvDXK0X7kVa39FwJuQspe
+ EL1j8joEVaN4ZCiBv8BJwaL7Agv3vMhgSt/KpCfrLRcFs5HOcOuRopRB13h7Z7OsOGI5
+ 9E6+LNYNGJqfQujXs9LTf5/QIfahb6yGkJgN7Ir7WeTJlpH/o950VnCW2gi6G3+8zAmO
+ 6t/pwSnm+DJy8pvy3Z3RBVy1I1MDK/3P4tIg8tE31A8zgvBOBT2UnbWeenJtnQv7ygGp
+ llhg==
+X-Gm-Message-State: AOJu0YxQpGh9doMWmsic2JtvQ8H3mDifdXtVoUmdpz/s1QjC6HqGLshu
+ GF27LAMNOnY36QX+/P8I3dhfkW/KW2PMBsgaTmI=
+X-Google-Smtp-Source: AGHT+IHcbQzMUoVWTwUzP4yNOuPKTnA6rJl/lQtuiP/29vYM7uHvj+ztP2HrJV2Ipv4Lc9Q5IAuJJw==
+X-Received: by 2002:a5d:68cc:0:b0:319:8c35:37b with SMTP id
+ p12-20020a5d68cc000000b003198c35037bmr11419270wrw.7.1692869327896; 
  Thu, 24 Aug 2023 02:28:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 24 Aug 2023 02:28:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/35] target/arm: Pass an ARMSecuritySpace to
- arm_is_el2_enabled_secstate()
-Date: Thu, 24 Aug 2023 10:28:20 +0100
-Message-Id: <20230824092836.2239644-20-peter.maydell@linaro.org>
+Subject: [PULL 20/35] target/arm/ptw: Only fold in NSTable bit effects in
+ Secure state
+Date: Thu, 24 Aug 2023 10:28:21 +0100
+Message-Id: <20230824092836.2239644-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
 References: <20230824092836.2239644-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,68 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass an ARMSecuritySpace instead of a bool secure to
-arm_is_el2_enabled_secstate(). This doesn't change behaviour.
+When we do a translation in Secure state, the NSTable bits in table
+descriptors may downgrade us to NonSecure; we update ptw->in_secure
+and ptw->in_space accordingly.  We guard that check correctly with a
+conditional that means it's only applied for Secure stage 1
+translations.  However, later on in get_phys_addr_lpae() we fold the
+effects of the NSTable bits into the final descriptor attributes
+bits, and there we do it unconditionally regardless of the CPU state.
+That means that in Realm state (where in_secure is false) we will set
+bit 5 in attrs, and later use it to decide to output to non-secure
+space.
+
+We don't in fact need to do this folding in at all any more (since
+commit 2f1ff4e7b9f30c): if an NSTable bit was set then we have
+already set ptw->in_space to ARMSS_NonSecure, and in that situation
+we don't look at attrs bit 5.  The only thing we still need to deal
+with is the real NS bit in the final descriptor word, so we can just
+drop the code that ORed in the NSTable bit.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230807141514.19075-8-peter.maydell@linaro.org
+Message-id: 20230807141514.19075-9-peter.maydell@linaro.org
 ---
- target/arm/cpu.h    | 13 ++++++++-----
- target/arm/helper.c |  2 +-
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ target/arm/ptw.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index bcd65a63ca0..02bc8f0e8e0 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -2504,17 +2504,19 @@ static inline bool arm_is_secure(CPUARMState *env)
- 
- /*
-  * Return true if the current security state has AArch64 EL2 or AArch32 Hyp.
-- * This corresponds to the pseudocode EL2Enabled()
-+ * This corresponds to the pseudocode EL2Enabled().
-  */
--static inline bool arm_is_el2_enabled_secstate(CPUARMState *env, bool secure)
-+static inline bool arm_is_el2_enabled_secstate(CPUARMState *env,
-+                                               ARMSecuritySpace space)
- {
-+    assert(space != ARMSS_Root);
-     return arm_feature(env, ARM_FEATURE_EL2)
--           && (!secure || (env->cp15.scr_el3 & SCR_EEL2));
-+           && (space != ARMSS_Secure || (env->cp15.scr_el3 & SCR_EEL2));
- }
- 
- static inline bool arm_is_el2_enabled(CPUARMState *env)
- {
--    return arm_is_el2_enabled_secstate(env, arm_is_secure_below_el3(env));
-+    return arm_is_el2_enabled_secstate(env, arm_security_space_below_el3(env));
- }
- 
- #else
-@@ -2538,7 +2540,8 @@ static inline bool arm_is_secure(CPUARMState *env)
-     return false;
- }
- 
--static inline bool arm_is_el2_enabled_secstate(CPUARMState *env, bool secure)
-+static inline bool arm_is_el2_enabled_secstate(CPUARMState *env,
-+                                               ARMSecuritySpace space)
- {
-     return false;
- }
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 9862bc73b52..8290ca0aaad 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5778,7 +5778,7 @@ uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, ARMSecuritySpace space)
- 
-     assert(space != ARMSS_Root);
- 
--    if (!arm_is_el2_enabled_secstate(env, arm_space_is_secure(space))) {
-+    if (!arm_is_el2_enabled_secstate(env, space)) {
-         /*
-          * "This register has no effect if EL2 is not enabled in the
-          * current Security state".  This is ARMv8.4-SecEL2 speak for
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 4c60de753dd..6e736bacd77 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1886,11 +1886,10 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+      * Extract attributes from the (modified) descriptor, and apply
+      * table descriptors. Stage 2 table descriptors do not include
+      * any attribute fields. HPD disables all the table attributes
+-     * except NSTable.
++     * except NSTable (which we have already handled).
+      */
+     attrs = new_descriptor & (MAKE_64BIT_MASK(2, 10) | MAKE_64BIT_MASK(50, 14));
+     if (!regime_is_stage2(mmu_idx)) {
+-        attrs |= !ptw->in_secure << 5; /* NS */
+         if (!param.hpd) {
+             attrs |= extract64(tableattrs, 0, 2) << 53;     /* XN, PXN */
+             /*
 -- 
 2.34.1
 
