@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089FB786C14
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA6B786C1B
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:36:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6eu-0008GF-OT; Thu, 24 Aug 2023 05:29:44 -0400
+	id 1qZ6ig-0002Bu-Gq; Thu, 24 Aug 2023 05:33:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6eE-0004WZ-Hu
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:02 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qZ6id-00025M-9E
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:33:35 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6e9-00052c-MP
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:29:02 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40061928e5aso11356115e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:28:56 -0700 (PDT)
+ id 1qZ6ia-00065G-Vw
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:33:34 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2bc63e0d8cdso75200411fa.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692869335; x=1693474135;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Kf9yPg8uZfo9VqqhLVaMYdusDTk1ucSU7Tw3bTGKmGA=;
- b=uTn++InkXrsFkIq+qczpIaQ/r+S58a0KIbvGBsRkOGrlifp8izx4+y3YkryHa6DNxc
- cM1hFfNvS9/1mUQeFSriSIHXo+Pp5euUpg7D8WINJzW7LukbNZpJo1c4apx6bvhhPzLC
- +dlw7cubL9xRs3JLb1wgdsBhJzPLa0iRA6bcyzI4Ww1k3cOT9mR99mJmsvJCN61bGHlN
- 9O5RM1uGktt7F7ZIKfu1RCpVQRPYUqBRXcNe2sypXs+GTAmjBbESd30ZxxdYDcJOHvo6
- qY0zC70P7Z0vv/txwSytXOF/qkUtFzdDn+RxRpbJYb9N0kZ8/7VPBXFdtNjP+3LJDi4e
- ms2Q==
+ d=linaro.org; s=google; t=1692869611; x=1693474411;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3lZ9VRbcZKdi+pLte8HQ0JxPEQoQ5z15ofgWNnDnWew=;
+ b=p5a6OcwNVmy355Wzh7te3kx9s5FmoNg2HMEq8Acwja3xpR8cPAscagXnN3hjZdktOf
+ WphLEq+86P05YI86RDj6ESW1+uSQ1TEk4JYnp5mcJhVk4HoitPW4+noEvWgVzw3QH9qB
+ 9vLoUw1QBDUxq15zjJNWpQ3K4/RXDONaLeJ6v6bs7RBZLTgi2BTWAGFseBqOKyEF7czF
+ NX2472aY/TeSIoih1gnxhTtbhObsnQppIKuvjGutFxgPNLg1s7PP1u9rpvyRn9JEEIx+
+ M/JUFU16dV/3z2pBQH0Q3oFb5IOfrewWEk7NweoS8jPhnO2MXbz2GR9qXVRidONGqJtU
+ 9VNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692869335; x=1693474135;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1692869611; x=1693474411;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Kf9yPg8uZfo9VqqhLVaMYdusDTk1ucSU7Tw3bTGKmGA=;
- b=gZk7F6Ov022CLs66F5ZTiJmBjvpgRB14elcCLn4KYETKtrNg+v4rNNRj9G3B29hKox
- 4yr5ckPwxsaG5VQHaHHtAzjfdL5D4EMZsy5V9Pl/ZkWIfyzYDbw9MGFxGLyxz6pXD15P
- rtYFzz+FqQUn1Pno6U7lR0Dxk8c9cw4TLBOnx5/5RCOxEwUJqictgfRD0lGqX9vSprV4
- 4H+kfxh0/LPzlF95OMyMOW5uY0SgIRIK+RpszdEOu9pu2ViHbCbR3jCcPGI5FM2mXIV9
- SJaVTvHwEtcgEWomA7kOrRKvYMRgnSP006jsEJXhp6yGOkReJKG9zR37tVYs6qCMv468
- dHTA==
-X-Gm-Message-State: AOJu0YwJA32mtvCmL95MRgvPaKhJ+t5UtsYrizuhc6d/tTQAwnJ8zKxQ
- Q6olnz0cMqQ+J3aXPReDD0oH3qFTUR8THa4S9ks=
-X-Google-Smtp-Source: AGHT+IEeKUSBZTkK6J5L+Y8Km4frBQCL5/xrb8nlDbST+yBkfUeHsCF/wTyJPWZP+aAMHOP2VlGiog==
-X-Received: by 2002:a7b:c408:0:b0:401:aa8f:7565 with SMTP id
- k8-20020a7bc408000000b00401aa8f7565mr587689wmi.34.1692869334923; 
- Thu, 24 Aug 2023 02:28:54 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- s12-20020adfeccc000000b00317b5c8a4f1sm21844004wro.60.2023.08.24.02.28.54
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 02:28:54 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 35/35] target/arm: Fix 64-bit SSRA
-Date: Thu, 24 Aug 2023 10:28:36 +0100
-Message-Id: <20230824092836.2239644-36-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230824092836.2239644-1-peter.maydell@linaro.org>
-References: <20230824092836.2239644-1-peter.maydell@linaro.org>
+ bh=3lZ9VRbcZKdi+pLte8HQ0JxPEQoQ5z15ofgWNnDnWew=;
+ b=Okn1iYfPd2+Bxj4qXqBRfuUib07KptWJiKHwQr2W/9JqdDWlI0EBlKA4WSiGpwZl3V
+ vqUXxVdmcnPfOS7aZDTNZcZsVVZwFjoO/EN141i9KYtahAF6y0X1Msryi9+kWPsyx75j
+ jM4F+C+i/m73rkTekvFkVlI6GDmVRXjFgCry3JlAZ7X40Al9SR+R9kkCkVNCs0vMBR9c
+ ccvbkiGH9Doa63RICk1k6UHSI2GHDVKcWxa+7lKl/S96lVyem3bfMjbVLFVzJ+NaxOm2
+ LovIXS4dBdbwJ6DttYJuVehT4wpRlFB8DCK9YzEvx0fdHH0g3TWfjD7Mg8N45HJ0SBjt
+ 9Zlw==
+X-Gm-Message-State: AOJu0YzygcJf+1kZMkuUUjCwq9qIepd4AaTrq+6Cd311zACZEWiRVShX
+ HqshM7pFXoKzUbMyaaxjhTvbNxAtENGQxE0/xxGAPg==
+X-Google-Smtp-Source: AGHT+IG6wj2g7+HI7k6E43YXMLS0dVOzxeVspOa5rvnJBTFrC1m+65ybDvPfm3wX+jYJ+LOzEBJtLUS2i/dOGtR28zs=
+X-Received: by 2002:a05:6512:ac4:b0:4ff:8d7a:cb20 with SMTP id
+ n4-20020a0565120ac400b004ff8d7acb20mr13747233lfu.63.1692869611255; Thu, 24
+ Aug 2023 02:33:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+References: <CAOYM0N261g8zrDKq2jQo4mriHEhNXWo-oXZ0LCryL+BmUX-h6g@mail.gmail.com>
+ <87jztlt27t.fsf@pond.sub.org>
+In-Reply-To: <87jztlt27t.fsf@pond.sub.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 24 Aug 2023 10:33:20 +0100
+Message-ID: <CAFEAcA8QnXJF73C7c1Y=yVJbBQAK-uFm9DQDJZdugc24ybsk5g@mail.gmail.com>
+Subject: Re: constructor vs. __constructor__
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Liu Jaloo <liu.jaloo@gmail.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,35 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On Thu, 24 Aug 2023 at 06:55, Markus Armbruster <armbru@redhat.com> wrote:
+>
+> Liu Jaloo <liu.jaloo@gmail.com> writes:
+>
+> > What's the difference between  "__attribute__((constructor))" and
+> > "__attribute__((__constructor__))" in qemu source?
+>
+> Reading the fine manual helps:
+>
+>     You may optionally specify attribute names with =E2=80=98__=E2=80=99 =
+preceding and
+>     following the name.  This allows you to use them in header files
+>     without being concerned about a possible macro of the same name. For
+>     example, you may use the attribute name __noreturn__ instead of
+>     noreturn.
 
-Typo applied byte-wise shift instead of double-word shift.
+As usual in the QEMU sources, we are not particularly consistent
+about using one version compared to the other. However we
+mostly use the "__attribute__((foo))" form rather than
+"__attribute__((__foo__))" so if you're writing new code then
+prefer the former.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 631e565450c ("target/arm: Create gen_gvec_[us]sra")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1737
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230821022025.397682-1-richard.henderson@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/tcg/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We also have a handful of uses of "__attribute((foo))" and
+"__attribute((__foo__))". Definitely don't add more of those :-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index b71ac2d0d53..39541ecdf0a 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -3053,7 +3053,7 @@ void gen_gvec_ssra(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
-           .vece = MO_32 },
-         { .fni8 = gen_ssra64_i64,
-           .fniv = gen_ssra_vec,
--          .fno = gen_helper_gvec_ssra_b,
-+          .fno = gen_helper_gvec_ssra_d,
-           .prefer_i64 = TCG_TARGET_REG_BITS == 64,
-           .opt_opc = vecop_list,
-           .load_dest = true,
--- 
-2.34.1
-
+thanks
+-- PMM
 
