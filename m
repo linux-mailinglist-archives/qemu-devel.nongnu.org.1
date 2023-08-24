@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46247868DD
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC287868DE
 	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:45:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ50Q-0001ag-Ar; Thu, 24 Aug 2023 03:43:50 -0400
+	id 1qZ50R-0001ay-7h; Thu, 24 Aug 2023 03:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ50N-0001ZI-IS
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:43:47 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ50P-0001aL-Dc
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:43:49 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ50I-00048N-0c
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:43:47 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bf3a2f4528so48373895ad.2
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:41:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ50L-00048b-GV
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:43:49 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-68bed28818fso504787b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:41:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692862900; x=1693467700;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692862904; x=1693467704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ah+7NJjI2wmps4ellUI5NdP+x8wwsBqSV+DDR/0rhDg=;
- b=ByIBbNbsXq3E8CW72Y9e5ioEavn5XqecBk4KlE8am0JsfJxu9W7lW0IieIz8dvVZJe
- 7lrOUvi8CWs9oEzDOGdSZy18DGMq9byhI68F4bN94nldZql7x8ShzP/qf1F8I6OrOIKf
- tT5x/k4P3bsZUQqPqwfr/g84kE96i7eKlcssucjJ+1WhHGDMlhakfmEuFyxD9kUdghsv
- Y8K8WxAPJpw2AwntGvZlyCd/YWdJKi/LDbnoNuVeZP/VotEFfS5n5n9Cue20de/AkCZK
- LkRpkYW7wXAmnG6coC1V43YtR1MDE3cdH3fmP/5jSUXNWKwmYs49QvtWEDENlMjJT+A8
- W9Ow==
+ bh=DYhaBgdJtds96WYpoue74AAWuPp3SkCXlJzfVY0iv9Y=;
+ b=lK+kA2HlA7118vkn7V7DfttctFXeizIumameZQdjWPmlN5qRv5CI2RjRo00Ko2Yydg
+ stMz2ZHivFgv39vz/MQExnRUb7c5vn0vv9rXK164RKNjjrcSha17B4HlnZG/c8hP566n
+ YcWoeazKXWGyrWJa1BR2gBDB+jqK/W63ASyjVWazlst0dxamH5HuFiOn+5lTclXUCDRX
+ XNaowVsd+IpFq7/fICV9EQKCxMlb6grvY51g8lVBORNEgPSQlzGVieEo0tY+8ro7FE8o
+ 5G2s6BPUrBEfOl9QgrppvYDulNOt6W3O9NvAmNsVeP4XWhwG4ZTyBbq90A0w20ZPSRW1
+ MIeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692862900; x=1693467700;
+ d=1e100.net; s=20221208; t=1692862904; x=1693467704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ah+7NJjI2wmps4ellUI5NdP+x8wwsBqSV+DDR/0rhDg=;
- b=RYooQACmtb6e2x+ZoXMPrVfBEDYZ1v1I4PQ9EWknjrwtTJxrLdrQiPwGImqIQODPCO
- YZC2X+/kKmX2b449zRwL4x9LavLpmSVtlUpLHU7DEaA/7hdhYeEN1sTriGuXXvqoWaGv
- zBtUeHnxsRVx1EgoIzk8aQwIhNX1TFlH9LwqG+GjKYl4eUheuav0md3cgs+SMkq/zQX2
- bxLGrq5E/VDcfkHSW4Q7+XthTFp4XpjOe+UXOYgbGXOtem4W2/4LM3uTgm+D/4i55dMa
- 2MpredU8yoI2DP7Tm1BlTfG/PYNRfhHxloKdo49HysxBCSlKLcUDmY0bQNFtPHSYSwK7
- QoEw==
-X-Gm-Message-State: AOJu0Yy3RDTQbyR0qy2ooodVb5u4eavSJNtTHFLomOKeTnMQHyEsd0Xk
- AtgM8B5+mcPa0v/fdjhJqTjz6A==
-X-Google-Smtp-Source: AGHT+IHQ2Yng7smX9sT+/bUYPI2Iq9F4XlO0BYfI9zit4/Jang+7BfG787oLiDG2jtdowyxe73BjBg==
-X-Received: by 2002:a17:902:9b94:b0:1bc:16cf:fc30 with SMTP id
- y20-20020a1709029b9400b001bc16cffc30mr14327689plp.63.1692862900239; 
- Thu, 24 Aug 2023 00:41:40 -0700 (PDT)
+ bh=DYhaBgdJtds96WYpoue74AAWuPp3SkCXlJzfVY0iv9Y=;
+ b=Fd2ei9Ov6OHYM3lpSR1I+1qLU0AJ9DHPkVJgUS/9LxN3jjgJPQSvjxukMPOrdQPQ/s
+ BVMp8hgcIzVFMHfA3gWuXKOXHdI6NV0dFMS2D61MdACsojBK/qwb0QDhk5ujOUKzEoZg
+ DOU3kr7phN/bqUg7lPzRETk//nT9lSGWG+1qhZbFHfZLbvyYfUYbMQA4SrYH9I2PD2Ec
+ ofOBoYXif+bNHNf0uJb7D5LlXyhIZfRMdYwb87jLGy4xWxer5T8758+4aNEB/q2eWPO2
+ 9lp+qgkD5sfncJtKM4iPBdtM6TwFjxyneFpgQSHMGhSLuEtteRViIha62bzHYm264QWR
+ dBUg==
+X-Gm-Message-State: AOJu0YztM0mwxcRo2QA3vPw3Q3QrQVl0CQyh8YbnY6yahROJAyDjZB4h
+ fWg73HJnGmxOOiyPO1wDOQmbS9IJbhP5/R2EXiB56iLD
+X-Google-Smtp-Source: AGHT+IGL8v/p/tOm57uqbUI4mOnMmgUzdp2G7kXxVMBo1ITVln6FwLwmHFcjaz89qsSxmZtcpJ10Ig==
+X-Received: by 2002:a05:6a20:5524:b0:138:60e:9bb with SMTP id
+ ko36-20020a056a20552400b00138060e09bbmr10666200pzb.28.1692862903708; 
+ Thu, 24 Aug 2023 00:41:43 -0700 (PDT)
 Received: from 64217.gitgo.cc ([8.210.91.195])
  by smtp.gmail.com with ESMTPSA id
- jk8-20020a170903330800b001b672af624esm12070112plb.164.2023.08.24.00.41.36
+ jk8-20020a170903330800b001b672af624esm12070112plb.164.2023.08.24.00.41.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 00:41:39 -0700 (PDT)
+ Thu, 24 Aug 2023 00:41:43 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>,
  Raphael Norwitz <raphael.norwitz@nutanix.com>,
@@ -64,17 +64,17 @@ To: "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-block@nongnu.org (open list:Block layer core),
  qemu-devel@nongnu.org (open list:All patches CC here)
 Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v2 1/2] vhost-user: Fix lost reconnect
-Date: Thu, 24 Aug 2023 15:41:01 +0800
-Message-ID: <20230824074115.93897-2-fengli@smartx.com>
+Subject: [PATCH v2 2/2] vhost: Add Error parameter to vhost_scsi_common_start()
+Date: Thu, 24 Aug 2023 15:41:02 +0800
+Message-ID: <20230824074115.93897-3-fengli@smartx.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230824074115.93897-1-fengli@smartx.com>
 References: <20230804052954.2918915-1-fengli@smartx.com>
  <20230824074115.93897-1-fengli@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::429;
+ envelope-from=fengli@smartx.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: 14
 X-Spam_score: 1.4
 X-Spam_bar: +
@@ -96,130 +96,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the vhost-user is reconnecting to the backend, and if the vhost-user fails
-at the get_features in vhost_dev_init(), then the reconnect will fail
-and it will not be retriggered forever.
-
-The reason is:
-When the vhost-user fails at get_features, the vhost_dev_cleanup will be called
-immediately.
-
-vhost_dev_cleanup calls 'memset(hdev, 0, sizeof(struct vhost_dev))'.
-
-The reconnect path is:
-vhost_user_blk_event
-   vhost_user_async_close(.. vhost_user_blk_disconnect ..)
-     qemu_chr_fe_set_handlers <----- clear the notifier callback
-       schedule vhost_user_async_close_bh
-
-The vhost->vdev is null, so the vhost_user_blk_disconnect will not be
-called, then the event fd callback will not be reinstalled.
-
-All vhost-user devices have this issue, including vhost-user-blk/scsi.
-
-With this patch, if the vdev->vdev is null, the fd callback will still
-be reinstalled.
-
-Fixes: 71e076a07d ("hw/virtio: generalise CHR_EVENT_CLOSED handling")
+Add a Error parameter to report the real error, like vhost-user-blk.
 
 Signed-off-by: Li Feng <fengli@smartx.com>
 ---
- hw/block/vhost-user-blk.c      |  2 +-
- hw/scsi/vhost-user-scsi.c      |  3 ++-
- hw/virtio/vhost-user-gpio.c    |  2 +-
- hw/virtio/vhost-user.c         | 10 ++++++++--
- include/hw/virtio/vhost-user.h |  4 +++-
- 5 files changed, 15 insertions(+), 6 deletions(-)
+ hw/scsi/vhost-scsi-common.c           | 16 +++++++++-------
+ hw/scsi/vhost-scsi.c                  |  5 +++--
+ hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
+ include/hw/virtio/vhost-scsi-common.h |  2 +-
+ 4 files changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 3c69fa47d5..95c758200d 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -391,7 +391,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &s->chardev, &s->dev,
--                               vhost_user_blk_disconnect);
-+                               vhost_user_blk_disconnect, vhost_user_blk_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
+diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
+index a61cd0e907..4c8637045d 100644
+--- a/hw/scsi/vhost-scsi-common.c
++++ b/hw/scsi/vhost-scsi-common.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "hw/virtio/vhost.h"
+@@ -25,7 +26,7 @@
+ #include "hw/virtio/virtio-access.h"
+ #include "hw/fw-path-provider.h"
+ 
+-int vhost_scsi_common_start(VHostSCSICommon *vsc)
++int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
+ {
+     int ret, i;
+     VirtIODevice *vdev = VIRTIO_DEVICE(vsc);
+@@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+     VirtIOSCSICommon *vs = (VirtIOSCSICommon *)vsc;
+ 
+     if (!k->set_guest_notifiers) {
+-        error_report("binding does not support guest notifiers");
++        error_setg(errp, "binding does not support guest notifiers");
+         return -ENOSYS;
+     }
+ 
+     ret = vhost_dev_enable_notifiers(&vsc->dev, vdev);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "Error enabling host notifiers");
+         return ret;
+     }
+ 
+     ret = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
+     if (ret < 0) {
+-        error_report("Error binding guest notifier");
++        error_setg_errno(errp, -ret, "Error binding guest notifier");
+         goto err_host_notifiers;
+     }
+ 
+@@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+ 
+     ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
+     if (ret < 0) {
+-        error_report("Error setting inflight format: %d", -ret);
++        error_setg_errno(errp, -ret, "Error setting inflight format");
+         goto err_guest_notifiers;
+     }
+ 
+@@ -64,21 +66,21 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+                                         vs->conf.virtqueue_size,
+                                         vsc->inflight);
+             if (ret < 0) {
+-                error_report("Error getting inflight: %d", -ret);
++                error_setg_errno(errp, -ret, "Error getting inflight");
+                 goto err_guest_notifiers;
+             }
+         }
+ 
+         ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+         if (ret < 0) {
+-            error_report("Error setting inflight: %d", -ret);
++            error_setg_errno(errp, -ret, "Error setting inflight");
+             goto err_guest_notifiers;
+         }
+     }
+ 
+     ret = vhost_dev_start(&vsc->dev, vdev, true);
+     if (ret < 0) {
+-        error_report("Error start vhost dev");
++        error_setg_errno(errp, -ret, "Error starting vhost dev");
+         goto err_guest_notifiers;
+     }
+ 
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 443f67daa4..01a3ab4277 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -75,6 +75,7 @@ static int vhost_scsi_start(VHostSCSI *s)
+     int ret, abi_version;
+     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
+     const VhostOps *vhost_ops = vsc->dev.vhost_ops;
++    Error *local_err = NULL;
+ 
+     ret = vhost_ops->vhost_scsi_get_abi_version(&vsc->dev, &abi_version);
+     if (ret < 0) {
+@@ -88,14 +89,14 @@ static int vhost_scsi_start(VHostSCSI *s)
+         return -ENOSYS;
+     }
+ 
+-    ret = vhost_scsi_common_start(vsc);
++    ret = vhost_scsi_common_start(vsc, &local_err);
+     if (ret < 0) {
+         return ret;
+     }
+ 
+     ret = vhost_scsi_set_endpoint(s);
+     if (ret < 0) {
+-        error_report("Error setting vhost-scsi endpoint");
++        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
+         vhost_scsi_common_stop(vsc);
+     }
+ 
 diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index a7fa8e8df2..e931df9f5b 100644
+index e931df9f5b..62fc98bb1c 100644
 --- a/hw/scsi/vhost-user-scsi.c
 +++ b/hw/scsi/vhost-user-scsi.c
-@@ -236,7 +236,8 @@ static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
--                               vhost_user_scsi_disconnect);
-+                               vhost_user_scsi_disconnect,
-+                               vhost_user_scsi_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index d9979aa5db..04c2cc79f4 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -283,7 +283,7 @@ static void vu_gpio_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &gpio->chardev, &gpio->vhost_dev,
--                               vu_gpio_disconnect);
-+                               vu_gpio_disconnect, vu_gpio_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..9540766dd3 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -2643,6 +2643,7 @@ typedef struct {
-     DeviceState *dev;
-     CharBackend *cd;
-     struct vhost_dev *vhost;
-+    IOEventHandler *event_cb;
- } VhostAsyncCallback;
+@@ -43,12 +43,12 @@ enum VhostUserProtocolFeature {
+     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
+ };
  
- static void vhost_user_async_close_bh(void *opaque)
-@@ -2657,7 +2658,10 @@ static void vhost_user_async_close_bh(void *opaque)
-      */
-     if (vhost->vdev) {
-         data->cb(data->dev);
--    }
-+    } else if (data->event_cb) {
-+        qemu_chr_fe_set_handlers(data->cd, NULL, NULL, data->event_cb,
-+                                 NULL, data->dev, NULL, true);
-+   }
- 
-     g_free(data);
- }
-@@ -2669,7 +2673,9 @@ static void vhost_user_async_close_bh(void *opaque)
-  */
- void vhost_user_async_close(DeviceState *d,
-                             CharBackend *chardev, struct vhost_dev *vhost,
--                            vu_async_close_fn cb)
-+                            vu_async_close_fn cb,
-+                            IOEventHandler *event_cb
-+                            )
+-static int vhost_user_scsi_start(VHostUserSCSI *s)
++static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
  {
-     if (!runstate_check(RUN_STATE_SHUTDOWN)) {
-         /*
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..5fdc711d4e 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -84,6 +84,8 @@ typedef void (*vu_async_close_fn)(DeviceState *cb);
+     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
+     int ret;
  
- void vhost_user_async_close(DeviceState *d,
-                             CharBackend *chardev, struct vhost_dev *vhost,
--                            vu_async_close_fn cb);
-+                            vu_async_close_fn cb,
-+                            IOEventHandler *event_cb
-+                            );
+-    ret = vhost_scsi_common_start(vsc);
++    ret = vhost_scsi_common_start(vsc, errp);
+     s->started_vu = (ret < 0 ? false : true);
  
- #endif
+     return ret;
+@@ -73,6 +73,7 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
+     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
+     bool should_start = virtio_device_should_start(vdev, status);
++    Error *local_err = NULL;
+     int ret;
+ 
+     if (!s->connected) {
+@@ -84,9 +85,10 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+     }
+ 
+     if (should_start) {
+-        ret = vhost_user_scsi_start(s);
++        ret = vhost_user_scsi_start(s, &local_err);
+         if (ret < 0) {
+-            error_report("unable to start vhost-user-scsi: %s", strerror(-ret));
++            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
++                              strerror(-ret));
+             qemu_chr_fe_disconnect(&vs->conf.chardev);
+         }
+     } else {
+@@ -139,7 +141,7 @@ static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+      * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
+      * vhost here instead of waiting for .set_status().
+      */
+-    ret = vhost_user_scsi_start(s);
++    ret = vhost_user_scsi_start(s, &local_err);
+     if (ret < 0) {
+         error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
+         qemu_chr_fe_disconnect(&vs->conf.chardev);
+@@ -184,7 +186,7 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
+ 
+     /* restore vhost state */
+     if (virtio_device_started(vdev, vdev->status)) {
+-        ret = vhost_user_scsi_start(s);
++        ret = vhost_user_scsi_start(s, errp);
+         if (ret < 0) {
+             return ret;
+         }
+diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
+index 18f115527c..c5d2c09455 100644
+--- a/include/hw/virtio/vhost-scsi-common.h
++++ b/include/hw/virtio/vhost-scsi-common.h
+@@ -39,7 +39,7 @@ struct VHostSCSICommon {
+     struct vhost_inflight *inflight;
+ };
+ 
+-int vhost_scsi_common_start(VHostSCSICommon *vsc);
++int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
+ void vhost_scsi_common_stop(VHostSCSICommon *vsc);
+ char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
+                                         DeviceState *dev);
 -- 
 2.41.0
 
