@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC287868DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3728F7868E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 09:52:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ50R-0001ay-7h; Thu, 24 Aug 2023 03:43:51 -0400
+	id 1qZ57A-0004tA-J4; Thu, 24 Aug 2023 03:50:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ50P-0001aL-Dc
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:43:49 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qZ50L-00048b-GV
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:43:49 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-68bed28818fso504787b3a.2
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 00:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692862904; x=1693467704;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DYhaBgdJtds96WYpoue74AAWuPp3SkCXlJzfVY0iv9Y=;
- b=lK+kA2HlA7118vkn7V7DfttctFXeizIumameZQdjWPmlN5qRv5CI2RjRo00Ko2Yydg
- stMz2ZHivFgv39vz/MQExnRUb7c5vn0vv9rXK164RKNjjrcSha17B4HlnZG/c8hP566n
- YcWoeazKXWGyrWJa1BR2gBDB+jqK/W63ASyjVWazlst0dxamH5HuFiOn+5lTclXUCDRX
- XNaowVsd+IpFq7/fICV9EQKCxMlb6grvY51g8lVBORNEgPSQlzGVieEo0tY+8ro7FE8o
- 5G2s6BPUrBEfOl9QgrppvYDulNOt6W3O9NvAmNsVeP4XWhwG4ZTyBbq90A0w20ZPSRW1
- MIeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692862904; x=1693467704;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DYhaBgdJtds96WYpoue74AAWuPp3SkCXlJzfVY0iv9Y=;
- b=Fd2ei9Ov6OHYM3lpSR1I+1qLU0AJ9DHPkVJgUS/9LxN3jjgJPQSvjxukMPOrdQPQ/s
- BVMp8hgcIzVFMHfA3gWuXKOXHdI6NV0dFMS2D61MdACsojBK/qwb0QDhk5ujOUKzEoZg
- DOU3kr7phN/bqUg7lPzRETk//nT9lSGWG+1qhZbFHfZLbvyYfUYbMQA4SrYH9I2PD2Ec
- ofOBoYXif+bNHNf0uJb7D5LlXyhIZfRMdYwb87jLGy4xWxer5T8758+4aNEB/q2eWPO2
- 9lp+qgkD5sfncJtKM4iPBdtM6TwFjxyneFpgQSHMGhSLuEtteRViIha62bzHYm264QWR
- dBUg==
-X-Gm-Message-State: AOJu0YztM0mwxcRo2QA3vPw3Q3QrQVl0CQyh8YbnY6yahROJAyDjZB4h
- fWg73HJnGmxOOiyPO1wDOQmbS9IJbhP5/R2EXiB56iLD
-X-Google-Smtp-Source: AGHT+IGL8v/p/tOm57uqbUI4mOnMmgUzdp2G7kXxVMBo1ITVln6FwLwmHFcjaz89qsSxmZtcpJ10Ig==
-X-Received: by 2002:a05:6a20:5524:b0:138:60e:9bb with SMTP id
- ko36-20020a056a20552400b00138060e09bbmr10666200pzb.28.1692862903708; 
- Thu, 24 Aug 2023 00:41:43 -0700 (PDT)
-Received: from 64217.gitgo.cc ([8.210.91.195])
- by smtp.gmail.com with ESMTPSA id
- jk8-20020a170903330800b001b672af624esm12070112plb.164.2023.08.24.00.41.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Aug 2023 00:41:43 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v2 2/2] vhost: Add Error parameter to vhost_scsi_common_start()
-Date: Thu, 24 Aug 2023 15:41:02 +0800
-Message-ID: <20230824074115.93897-3-fengli@smartx.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230824074115.93897-1-fengli@smartx.com>
-References: <20230804052954.2918915-1-fengli@smartx.com>
- <20230824074115.93897-1-fengli@smartx.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qZ56m-0004pz-9a
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:50:24 -0400
+Received: from mgamail.intel.com ([134.134.136.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qZ56h-0006BK-UR
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 03:50:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692863419; x=1724399419;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=tCIikIPhcQYCsRzjrCmHh/ppXNZOuvNBYjiHui7HL80=;
+ b=TUUBh8BGwwtOIqfVjvH3PgRYvmBnI3TDCR7widqeJnF4OoAiDae3be/T
+ 3ugU0+F9nPC4nAgz/Xw0VKeusjUIpOrKrmSOaNBNxOTyCGwuuUWBlGcx9
+ LAeGR120q8UHXWZ8NooSLLf02VnqKf/4hhCQ1E05Z7y6vqNBcqbrEtCLt
+ 5EiATH/YueP6/kKYYxrjRqWL9OK02snNvaiJhTBze7QGfNNGga35W9c5k
+ 7x8owSPrAavPNXU5ZypwLzJaEGRJVhKbjSuHkDRQTK2jK9auo3qxKnmqy
+ 8Vp2rQ+lG0RR7oJxl+lQYZAbHVxVC4zVox44W2cUfLaVoRv14nqoY/+uJ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="377100563"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="377100563"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 00:50:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="736953081"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; d="scan'208";a="736953081"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
+ ([10.93.16.81])
+ by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2023 00:50:06 -0700
+Message-ID: <48444107-d240-059b-a231-cddb085e4adf@intel.com>
+Date: Thu, 24 Aug 2023 15:50:03 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: 14
-X-Spam_score: 1.4
-X-Spam_bar: +
-X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 33/58] headers: Add definitions from UEFI spec for
+ volumes, resources, etc...
+To: Isaku Yamahata <isaku.yamahata@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>, isaku.yamahata@intel.com
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-34-xiaoyao.li@intel.com>
+ <20230823194114.GE3642077@ls.amr.corp.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20230823194114.GE3642077@ls.amr.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-2.684,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,194 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a Error parameter to report the real error, like vhost-user-blk.
+On 8/24/2023 3:41 AM, Isaku Yamahata wrote:
+> On Fri, Aug 18, 2023 at 05:50:16AM -0400,
+> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+> 
+>> Add UEFI definitions for literals, enums, structs, GUIDs, etc... that
+>> will be used by TDX to build the UEFI Hand-Off Block (HOB) that is passed
+>> to the Trusted Domain Virtual Firmware (TDVF).
+>>
+>> All values come from the UEFI specification and TDVF design guide. [1]
+>>
+>> Note, EFI_RESOURCE_MEMORY_UNACCEPTED will be added in future UEFI spec.
+>>
+>> [1] https://software.intel.com/content/dam/develop/external/us/en/documents/tdx-virtual-firmware-design-guide-rev-1.pdf
+> 
+> Nitpick: The specs [1] [2] include unaccepted memory.
 
-Signed-off-by: Li Feng <fengli@smartx.com>
----
- hw/scsi/vhost-scsi-common.c           | 16 +++++++++-------
- hw/scsi/vhost-scsi.c                  |  5 +++--
- hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
- include/hw/virtio/vhost-scsi-common.h |  2 +-
- 4 files changed, 21 insertions(+), 16 deletions(-)
+EfiUnacceptedMemoryType shows in UEFI spec while 
+EFI_RESOURCE_MEMORY_UNACCEPTED is still missing in PI spec.
 
-diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-index a61cd0e907..4c8637045d 100644
---- a/hw/scsi/vhost-scsi-common.c
-+++ b/hw/scsi/vhost-scsi-common.c
-@@ -16,6 +16,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "hw/virtio/vhost.h"
-@@ -25,7 +26,7 @@
- #include "hw/virtio/virtio-access.h"
- #include "hw/fw-path-provider.h"
- 
--int vhost_scsi_common_start(VHostSCSICommon *vsc)
-+int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
- {
-     int ret, i;
-     VirtIODevice *vdev = VIRTIO_DEVICE(vsc);
-@@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
-     VirtIOSCSICommon *vs = (VirtIOSCSICommon *)vsc;
- 
-     if (!k->set_guest_notifiers) {
--        error_report("binding does not support guest notifiers");
-+        error_setg(errp, "binding does not support guest notifiers");
-         return -ENOSYS;
-     }
- 
-     ret = vhost_dev_enable_notifiers(&vsc->dev, vdev);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Error enabling host notifiers");
-         return ret;
-     }
- 
-     ret = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
-     if (ret < 0) {
--        error_report("Error binding guest notifier");
-+        error_setg_errno(errp, -ret, "Error binding guest notifier");
-         goto err_host_notifiers;
-     }
- 
-@@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
- 
-     ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
-     if (ret < 0) {
--        error_report("Error setting inflight format: %d", -ret);
-+        error_setg_errno(errp, -ret, "Error setting inflight format");
-         goto err_guest_notifiers;
-     }
- 
-@@ -64,21 +66,21 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
-                                         vs->conf.virtqueue_size,
-                                         vsc->inflight);
-             if (ret < 0) {
--                error_report("Error getting inflight: %d", -ret);
-+                error_setg_errno(errp, -ret, "Error getting inflight");
-                 goto err_guest_notifiers;
-             }
-         }
- 
-         ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
-         if (ret < 0) {
--            error_report("Error setting inflight: %d", -ret);
-+            error_setg_errno(errp, -ret, "Error setting inflight");
-             goto err_guest_notifiers;
-         }
-     }
- 
-     ret = vhost_dev_start(&vsc->dev, vdev, true);
-     if (ret < 0) {
--        error_report("Error start vhost dev");
-+        error_setg_errno(errp, -ret, "Error starting vhost dev");
-         goto err_guest_notifiers;
-     }
- 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 443f67daa4..01a3ab4277 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -75,6 +75,7 @@ static int vhost_scsi_start(VHostSCSI *s)
-     int ret, abi_version;
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-     const VhostOps *vhost_ops = vsc->dev.vhost_ops;
-+    Error *local_err = NULL;
- 
-     ret = vhost_ops->vhost_scsi_get_abi_version(&vsc->dev, &abi_version);
-     if (ret < 0) {
-@@ -88,14 +89,14 @@ static int vhost_scsi_start(VHostSCSI *s)
-         return -ENOSYS;
-     }
- 
--    ret = vhost_scsi_common_start(vsc);
-+    ret = vhost_scsi_common_start(vsc, &local_err);
-     if (ret < 0) {
-         return ret;
-     }
- 
-     ret = vhost_scsi_set_endpoint(s);
-     if (ret < 0) {
--        error_report("Error setting vhost-scsi endpoint");
-+        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
-         vhost_scsi_common_stop(vsc);
-     }
- 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index e931df9f5b..62fc98bb1c 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -43,12 +43,12 @@ enum VhostUserProtocolFeature {
-     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
- };
- 
--static int vhost_user_scsi_start(VHostUserSCSI *s)
-+static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
- {
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-     int ret;
- 
--    ret = vhost_scsi_common_start(vsc);
-+    ret = vhost_scsi_common_start(vsc, errp);
-     s->started_vu = (ret < 0 ? false : true);
- 
-     return ret;
-@@ -73,6 +73,7 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-     bool should_start = virtio_device_should_start(vdev, status);
-+    Error *local_err = NULL;
-     int ret;
- 
-     if (!s->connected) {
-@@ -84,9 +85,10 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     }
- 
-     if (should_start) {
--        ret = vhost_user_scsi_start(s);
-+        ret = vhost_user_scsi_start(s, &local_err);
-         if (ret < 0) {
--            error_report("unable to start vhost-user-scsi: %s", strerror(-ret));
-+            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
-+                              strerror(-ret));
-             qemu_chr_fe_disconnect(&vs->conf.chardev);
-         }
-     } else {
-@@ -139,7 +141,7 @@ static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-      * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
-      * vhost here instead of waiting for .set_status().
-      */
--    ret = vhost_user_scsi_start(s);
-+    ret = vhost_user_scsi_start(s, &local_err);
-     if (ret < 0) {
-         error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
-         qemu_chr_fe_disconnect(&vs->conf.chardev);
-@@ -184,7 +186,7 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
- 
-     /* restore vhost state */
-     if (virtio_device_started(vdev, vdev->status)) {
--        ret = vhost_user_scsi_start(s);
-+        ret = vhost_user_scsi_start(s, errp);
-         if (ret < 0) {
-             return ret;
-         }
-diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
-index 18f115527c..c5d2c09455 100644
---- a/include/hw/virtio/vhost-scsi-common.h
-+++ b/include/hw/virtio/vhost-scsi-common.h
-@@ -39,7 +39,7 @@ struct VHostSCSICommon {
-     struct vhost_inflight *inflight;
- };
- 
--int vhost_scsi_common_start(VHostSCSICommon *vsc);
-+int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
- void vhost_scsi_common_stop(VHostSCSICommon *vsc);
- char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
-                                         DeviceState *dev);
--- 
-2.41.0
+https://github.com/tianocore/edk2/commit/00bbb1e584ec05547159f405cca383e8ba5e4ddb
+
+> [1] UEFI Specification Version 2.10 (released August 2022)
+> [2] UEFI Platform Initialization Distribution Packaging Specification Version 1.1)
 
 
