@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA676786BA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F97786BCD
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:29:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6aj-0004p3-Tm; Thu, 24 Aug 2023 05:25:26 -0400
+	id 1qZ6am-0005FM-Uk; Thu, 24 Aug 2023 05:25:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qZ6a6-00041m-1Y
+ id 1qZ6a8-00042T-4g
  for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:53 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qZ6a1-0003Z2-UR
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:45 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qZ6a3-0003az-Fh
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:24:47 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxyerDIedkZXkbAA--.46670S3;
+ by gateway (Coremail) with SMTP id _____8DxRvHDIedkaHkbAA--.56130S3;
  Thu, 24 Aug 2023 17:24:19 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxJ826IedkJjhiAA--.40637S17; 
- Thu, 24 Aug 2023 17:24:18 +0800 (CST)
+ AQAAf8DxJ826IedkJjhiAA--.40637S18; 
+ Thu, 24 Aug 2023 17:24:19 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, richard.henderson@linaro.org, Jiajie Chen <c@jia.je>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/31] target/loongarch: Extract make_address_pc() helper
-Date: Thu, 24 Aug 2023 17:23:53 +0800
-Message-Id: <20230824092409.1492470-16-gaosong@loongson.cn>
+Subject: [PULL 16/31] target/loongarch: Extract set_pc() helper
+Date: Thu, 24 Aug 2023 17:23:54 +0800
+Message-Id: <20230824092409.1492470-17-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230824092409.1492470-1-gaosong@loongson.cn>
 References: <20230824092409.1492470-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S17
+X-CM-TRANSID: AQAAf8DxJ826IedkJjhiAA--.40637S18
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -67,70 +67,134 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Jiajie Chen <c@jia.je>
 
 Signed-off-by: Jiajie Chen <c@jia.je>
+Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230822032724.1353391-7-gaosong@loongson.cn>
+Message-ID: <20230822032724.1353391-6-gaosong@loongson.cn>
 [PMD: Extract helper from bigger patch]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230822071405.35386-8-philmd@linaro.org>
+Message-Id: <20230822071405.35386-9-philmd@linaro.org>
 ---
- target/loongarch/insn_trans/trans_arith.c.inc  | 2 +-
- target/loongarch/insn_trans/trans_branch.c.inc | 4 ++--
- target/loongarch/translate.c                   | 5 +++++
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ target/loongarch/cpu.c       | 16 ++++++++--------
+ target/loongarch/cpu.h       |  5 +++++
+ target/loongarch/gdbstub.c   |  2 +-
+ target/loongarch/op_helper.c |  4 ++--
+ 4 files changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/insn_trans/trans_arith.c.inc
-index 43d6cf261d..2aea4e41d5 100644
---- a/target/loongarch/insn_trans/trans_arith.c.inc
-+++ b/target/loongarch/insn_trans/trans_arith.c.inc
-@@ -72,7 +72,7 @@ static bool gen_pc(DisasContext *ctx, arg_r_i *a,
-                    target_ulong (*func)(target_ulong, int))
- {
-     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
--    target_ulong addr = func(ctx->base.pc_next, a->imm);
-+    target_ulong addr = make_address_pc(ctx, func(ctx->base.pc_next, a->imm));
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 822f2a72e5..67eb6c3135 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -81,7 +81,7 @@ static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
  
-     tcg_gen_movi_tl(dest, addr);
-     gen_set_gpr(a->rd, dest, EXT_NONE);
-diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/insn_trans/trans_branch.c.inc
-index 3ad34bcc05..2e35572cea 100644
---- a/target/loongarch/insn_trans/trans_branch.c.inc
-+++ b/target/loongarch/insn_trans/trans_branch.c.inc
-@@ -12,7 +12,7 @@ static bool trans_b(DisasContext *ctx, arg_b *a)
- 
- static bool trans_bl(DisasContext *ctx, arg_bl *a)
- {
--    tcg_gen_movi_tl(cpu_gpr[1], ctx->base.pc_next + 4);
-+    tcg_gen_movi_tl(cpu_gpr[1], make_address_pc(ctx, ctx->base.pc_next + 4));
-     gen_goto_tb(ctx, 0, ctx->base.pc_next + a->offs);
-     ctx->base.is_jmp = DISAS_NORETURN;
-     return true;
-@@ -25,7 +25,7 @@ static bool trans_jirl(DisasContext *ctx, arg_jirl *a)
- 
-     TCGv addr = make_address_i(ctx, src1, a->imm);
-     tcg_gen_mov_tl(cpu_pc, addr);
--    tcg_gen_movi_tl(dest, ctx->base.pc_next + 4);
-+    tcg_gen_movi_tl(dest, make_address_pc(ctx, ctx->base.pc_next + 4));
-     gen_set_gpr(a->rd, dest, EXT_NONE);
-     tcg_gen_lookup_and_goto_ptr();
-     ctx->base.is_jmp = DISAS_NORETURN;
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index acc54d7587..8b26555a27 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -226,6 +226,11 @@ static TCGv make_address_i(DisasContext *ctx, TCGv base, target_long ofs)
-     return make_address_x(ctx, base, addend);
+-    env->pc = value;
++    set_pc(env, value);
  }
  
-+static uint64_t make_address_pc(DisasContext *ctx, uint64_t addr)
+ static vaddr loongarch_cpu_get_pc(CPUState *cs)
+@@ -168,7 +168,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+     set_DERA:
+         env->CSR_DERA = env->pc;
+         env->CSR_DBG = FIELD_DP64(env->CSR_DBG, CSR_DBG, DST, 1);
+-        env->pc = env->CSR_EENTRY + 0x480;
++        set_pc(env, env->CSR_EENTRY + 0x480);
+         break;
+     case EXCCODE_INT:
+         if (FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
+@@ -249,7 +249,8 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+ 
+         /* Find the highest-priority interrupt. */
+         vector = 31 - clz32(pending);
+-        env->pc = env->CSR_EENTRY + (EXCCODE_EXTERNAL_INT + vector) * vec_size;
++        set_pc(env, env->CSR_EENTRY + \
++               (EXCCODE_EXTERNAL_INT + vector) * vec_size);
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s: PC " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+                       " cause %d\n" "    A " TARGET_FMT_lx " D "
+@@ -260,10 +261,9 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+                       env->CSR_ECFG, env->CSR_ESTAT);
+     } else {
+         if (tlbfill) {
+-            env->pc = env->CSR_TLBRENTRY;
++            set_pc(env, env->CSR_TLBRENTRY);
+         } else {
+-            env->pc = env->CSR_EENTRY;
+-            env->pc += EXCODE_MCODE(cause) * vec_size;
++            set_pc(env, env->CSR_EENTRY + EXCODE_MCODE(cause) * vec_size);
+         }
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s: PC " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+@@ -324,7 +324,7 @@ static void loongarch_cpu_synchronize_from_tb(CPUState *cs,
+     CPULoongArchState *env = &cpu->env;
+ 
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    env->pc = tb->pc;
++    set_pc(env, tb->pc);
+ }
+ 
+ static void loongarch_restore_state_to_opc(CPUState *cs,
+@@ -334,7 +334,7 @@ static void loongarch_restore_state_to_opc(CPUState *cs,
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
+ 
+-    env->pc = data[0];
++    set_pc(env, data[0]);
+ }
+ #endif /* CONFIG_TCG */
+ 
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 72109095e4..e1562695e8 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -443,6 +443,11 @@ static inline bool is_va32(CPULoongArchState *env)
+     return va32;
+ }
+ 
++static inline void set_pc(CPULoongArchState *env, uint64_t value)
 +{
-+    return addr;
++    env->pc = value;
 +}
 +
- #include "decode-insns.c.inc"
- #include "insn_trans/trans_arith.c.inc"
- #include "insn_trans/trans_shift.c.inc"
+ /*
+  * LoongArch CPUs hardware flags.
+  */
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index a462e25737..e20b20f99b 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -77,7 +77,7 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         env->gpr[n] = tmp;
+         length = read_length;
+     } else if (n == 33) {
+-        env->pc = tmp;
++        set_pc(env, tmp);
+         length = read_length;
+     }
+     return length;
+diff --git a/target/loongarch/op_helper.c b/target/loongarch/op_helper.c
+index 60335a05e2..cf84f20aba 100644
+--- a/target/loongarch/op_helper.c
++++ b/target/loongarch/op_helper.c
+@@ -114,14 +114,14 @@ void helper_ertn(CPULoongArchState *env)
+         env->CSR_TLBRERA = FIELD_DP64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR, 0);
+         env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DA, 0);
+         env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, PG, 1);
+-        env->pc = env->CSR_TLBRERA;
++        set_pc(env, env->CSR_TLBRERA);
+         qemu_log_mask(CPU_LOG_INT, "%s: TLBRERA " TARGET_FMT_lx "\n",
+                       __func__, env->CSR_TLBRERA);
+     } else {
+         csr_pplv = FIELD_EX64(env->CSR_PRMD, CSR_PRMD, PPLV);
+         csr_pie = FIELD_EX64(env->CSR_PRMD, CSR_PRMD, PIE);
+ 
+-        env->pc = env->CSR_ERA;
++        set_pc(env, env->CSR_ERA);
+         qemu_log_mask(CPU_LOG_INT, "%s: ERA " TARGET_FMT_lx "\n",
+                       __func__, env->CSR_ERA);
+     }
 -- 
 2.39.1
 
