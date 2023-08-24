@@ -2,76 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA6B786C1B
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C7D786C33
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Aug 2023 11:43:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZ6ig-0002Bu-Gq; Thu, 24 Aug 2023 05:33:38 -0400
+	id 1qZ6rD-0000EF-OX; Thu, 24 Aug 2023 05:42:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6id-00025M-9E
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:33:35 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qZ6ia-00065G-Vw
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:33:34 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2bc63e0d8cdso75200411fa.2
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 02:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692869611; x=1693474411;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3lZ9VRbcZKdi+pLte8HQ0JxPEQoQ5z15ofgWNnDnWew=;
- b=p5a6OcwNVmy355Wzh7te3kx9s5FmoNg2HMEq8Acwja3xpR8cPAscagXnN3hjZdktOf
- WphLEq+86P05YI86RDj6ESW1+uSQ1TEk4JYnp5mcJhVk4HoitPW4+noEvWgVzw3QH9qB
- 9vLoUw1QBDUxq15zjJNWpQ3K4/RXDONaLeJ6v6bs7RBZLTgi2BTWAGFseBqOKyEF7czF
- NX2472aY/TeSIoih1gnxhTtbhObsnQppIKuvjGutFxgPNLg1s7PP1u9rpvyRn9JEEIx+
- M/JUFU16dV/3z2pBQH0Q3oFb5IOfrewWEk7NweoS8jPhnO2MXbz2GR9qXVRidONGqJtU
- 9VNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692869611; x=1693474411;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3lZ9VRbcZKdi+pLte8HQ0JxPEQoQ5z15ofgWNnDnWew=;
- b=Okn1iYfPd2+Bxj4qXqBRfuUib07KptWJiKHwQr2W/9JqdDWlI0EBlKA4WSiGpwZl3V
- vqUXxVdmcnPfOS7aZDTNZcZsVVZwFjoO/EN141i9KYtahAF6y0X1Msryi9+kWPsyx75j
- jM4F+C+i/m73rkTekvFkVlI6GDmVRXjFgCry3JlAZ7X40Al9SR+R9kkCkVNCs0vMBR9c
- ccvbkiGH9Doa63RICk1k6UHSI2GHDVKcWxa+7lKl/S96lVyem3bfMjbVLFVzJ+NaxOm2
- LovIXS4dBdbwJ6DttYJuVehT4wpRlFB8DCK9YzEvx0fdHH0g3TWfjD7Mg8N45HJ0SBjt
- 9Zlw==
-X-Gm-Message-State: AOJu0YzygcJf+1kZMkuUUjCwq9qIepd4AaTrq+6Cd311zACZEWiRVShX
- HqshM7pFXoKzUbMyaaxjhTvbNxAtENGQxE0/xxGAPg==
-X-Google-Smtp-Source: AGHT+IG6wj2g7+HI7k6E43YXMLS0dVOzxeVspOa5rvnJBTFrC1m+65ybDvPfm3wX+jYJ+LOzEBJtLUS2i/dOGtR28zs=
-X-Received: by 2002:a05:6512:ac4:b0:4ff:8d7a:cb20 with SMTP id
- n4-20020a0565120ac400b004ff8d7acb20mr13747233lfu.63.1692869611255; Thu, 24
- Aug 2023 02:33:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qZ6r7-0000Cy-Iw
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:42:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qZ6r2-0007nM-I0
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 05:42:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692870135;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=fPqq38AXgkQboPcVp25qUUjyBIQhzkIroRGzqY6tK8o=;
+ b=BjHWVUBITFUsFJgxnmOT42RHwc/ntR9JwJZCYMJAZCo82nbWl7GOdvacX8IY//xkOSRjTL
+ 03mgNNLqBUg4WVAAc4ZfZyiVjkAe+Px1FUcDCe6fxOTdLrjsuQGkby9OUYr5j25/gzfNEc
+ 0L7lwjul1IvTBe12253RK6GWNckOU8s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-687-7vFW__TnPWOtvwOIZrbz2w-1; Thu, 24 Aug 2023 05:42:12 -0400
+X-MC-Unique: 7vFW__TnPWOtvwOIZrbz2w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 545A0853064;
+ Thu, 24 Aug 2023 09:42:12 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.175])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CD7454A9004;
+ Thu, 24 Aug 2023 09:42:10 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ antischmock@googlemail.com
+Subject: [PATCH] meson.build: Make keyutils independent from keyring
+Date: Thu, 24 Aug 2023 11:42:08 +0200
+Message-Id: <20230824094208.255279-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <CAOYM0N261g8zrDKq2jQo4mriHEhNXWo-oXZ0LCryL+BmUX-h6g@mail.gmail.com>
- <87jztlt27t.fsf@pond.sub.org>
-In-Reply-To: <87jztlt27t.fsf@pond.sub.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 24 Aug 2023 10:33:20 +0100
-Message-ID: <CAFEAcA8QnXJF73C7c1Y=yVJbBQAK-uFm9DQDJZdugc24ybsk5g@mail.gmail.com>
-Subject: Re: constructor vs. __constructor__
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Liu Jaloo <liu.jaloo@gmail.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,31 +76,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 24 Aug 2023 at 06:55, Markus Armbruster <armbru@redhat.com> wrote:
->
-> Liu Jaloo <liu.jaloo@gmail.com> writes:
->
-> > What's the difference between  "__attribute__((constructor))" and
-> > "__attribute__((__constructor__))" in qemu source?
->
-> Reading the fine manual helps:
->
->     You may optionally specify attribute names with =E2=80=98__=E2=80=99 =
-preceding and
->     following the name.  This allows you to use them in header files
->     without being concerned about a possible macro of the same name. For
->     example, you may use the attribute name __noreturn__ instead of
->     noreturn.
+Commit 0db0fbb5cf ("Add conditional dependency for libkeyutils")
+tried to provide a possibility for the user to disable keyutils
+if not required by makeing it depend on the keyring feature. This
+looked reasonable at a first glance (the unit test in tests/unit/
+needs both), but the condition in meson.build fails if the feature
+is meant to be detected automatically, and there is also another
+spot in backends/meson.build where keyutils is used independently
+from keyring. So let's remove the dependency on keyring again and
+introduce a proper meson build option instead.
 
-As usual in the QEMU sources, we are not particularly consistent
-about using one version compared to the other. However we
-mostly use the "__attribute__((foo))" form rather than
-"__attribute__((__foo__))" so if you're writing new code then
-prefer the former.
+Cc: qemu-stable@nongnu.org
+Fixes: 0db0fbb5cf ("Add conditional dependency for libkeyutils")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1842
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ meson.build                   | 6 ++++--
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 3 +++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-We also have a handful of uses of "__attribute((foo))" and
-"__attribute((__foo__))". Definitely don't add more of those :-)
+diff --git a/meson.build b/meson.build
+index 98e68ef0b1..5756148576 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1771,8 +1771,9 @@ if gnutls.found()
+                      method: 'pkg-config')
+ endif
+ keyutils = not_found
+-if get_option('keyring').enabled()
+-  keyutils = dependency('libkeyutils', required: false, method: 'pkg-config')
++if not get_option('libkeyutils').auto() or have_block
++  keyutils = dependency('libkeyutils', required: get_option('libkeyutils'),
++                        method: 'pkg-config')
+ endif
+ 
+ has_gettid = cc.has_function('gettid')
+@@ -4211,6 +4212,7 @@ endif
+ summary_info += {'AF_ALG support':    have_afalg}
+ summary_info += {'rng-none':          get_option('rng_none')}
+ summary_info += {'Linux keyring':     have_keyring}
++summary_info += {'Linux keyutils':    keyutils}
+ summary(summary_info, bool_yn: true, section: 'Crypto')
+ 
+ # UI
+diff --git a/meson_options.txt b/meson_options.txt
+index aaea5ddd77..ae6d8f469d 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -119,6 +119,8 @@ option('avx512bw', type: 'feature', value: 'auto',
+        description: 'AVX512BW optimizations')
+ option('keyring', type: 'feature', value: 'auto',
+        description: 'Linux keyring support')
++option('libkeyutils', type: 'feature', value: 'auto',
++       description: 'Linux keyutils support')
+ 
+ option('attr', type : 'feature', value : 'auto',
+        description: 'attr/xattr support')
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 9da3fe299b..d7020af175 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -120,6 +120,7 @@ meson_options_help() {
+   printf "%s\n" '  libdaxctl       libdaxctl support'
+   printf "%s\n" '  libdw           debuginfo support'
+   printf "%s\n" '  libiscsi        libiscsi userspace initiator'
++  printf "%s\n" '  libkeyutils     Linux keyutils support'
+   printf "%s\n" '  libnfs          libnfs block device driver'
+   printf "%s\n" '  libpmem         libpmem support'
+   printf "%s\n" '  libssh          ssh block device support'
+@@ -341,6 +342,8 @@ _meson_option_parse() {
+     --libexecdir=*) quote_sh "-Dlibexecdir=$2" ;;
+     --enable-libiscsi) printf "%s" -Dlibiscsi=enabled ;;
+     --disable-libiscsi) printf "%s" -Dlibiscsi=disabled ;;
++    --enable-libkeyutils) printf "%s" -Dlibkeyutils=enabled ;;
++    --disable-libkeyutils) printf "%s" -Dlibkeyutils=disabled ;;
+     --enable-libnfs) printf "%s" -Dlibnfs=enabled ;;
+     --disable-libnfs) printf "%s" -Dlibnfs=disabled ;;
+     --enable-libpmem) printf "%s" -Dlibpmem=enabled ;;
+-- 
+2.39.3
 
-thanks
--- PMM
 
