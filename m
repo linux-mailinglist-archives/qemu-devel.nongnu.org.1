@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF53D7880AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56C07880B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:14:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZQz8-0005Dd-W6; Fri, 25 Aug 2023 03:11:59 -0400
+	id 1qZR1I-0006NH-HV; Fri, 25 Aug 2023 03:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qZQz6-0005DR-CU
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:11:56 -0400
-Received: from out1-smtp.messagingengine.com ([66.111.4.25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qZQz2-0001r9-HB
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:11:56 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.nyi.internal (Postfix) with ESMTP id EF8265C025C;
- Fri, 25 Aug 2023 03:11:48 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute3.internal (MEProxy); Fri, 25 Aug 2023 03:11:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:sender
- :subject:subject:to:to; s=fm3; t=1692947508; x=1693033908; bh=6o
- n9q3lVlCyOn5S4oc/hAZl3BLN2bEfmSyuuXySfHEk=; b=O1TOu+QDsURyXr96va
- OUgcFdbj/uab6bZe/PH+wRkgb3nRUp2WZi6Lw10VJ2ClvlWas4MqzI3TRAgH1iTq
- z/8aUDDDHlc0LAMaIBebhOfS0TXSf42J+O6tg6Tx4uwKwNwPNA5MIv23O9JLHhsU
- N0wuYD68LZEoWONGDqQxTmbeVbO3/9HKCiP3R6ShQcxSj6tZ5kBoWHVD0i23xT+s
- RfGZWxHumrNJEa4yaEn8rTjvlWIi9y4+H4RtNQTxbH5iiDhrSoAWVO2XuTvSNRfl
- 5/upIiQtr0e1f/H1CYRvn7GmJTGmFQbNcfxmm1zMaG1SbEKuE6305vOzwzjU+mnd
- hZ4g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; t=1692947508; x=1693033908; bh=6on9q3lVlCyOn
- 5S4oc/hAZl3BLN2bEfmSyuuXySfHEk=; b=ArXpw8QxN3YfYQGRXHMs5h+1OVoTl
- W+DPyqhFHWFS1s/NbwpjbLZDqtgKKbzVYSqjNlblbTtOihJxgHsdRgOdt0zQHtdv
- K8YulKHN2cO5KbwpN2z5fnG4vF5bp48UJz7cRqOyfT4kwU3c6FC7AYGPbGmxqg2P
- RlbSgGpDkRP86vKCisLrYSQLYqqR8pJAe3MZIht6Ut1pefwY3emyuVG2fK9eJ4g9
- vPL4+zu+ZkwaPrVYruGNA1nCHt+ehVomDoLzc72+wrAMADQs3qiBpw0uUdsZRfFn
- FPSWSxW2mgxbeNSCi0Vi8nnjAJSqRq2uYhEnWWzp1hu4PBswYBGdwwg0A==
-X-ME-Sender: <xms:NFToZEwQi4kkiRd8Sllue21cHJOrtz4jhaIaNTcuM8j4dIZSkBAOHw>
- <xme:NFToZIRU4LZtjDNltq5KA9Fl8D1LYkkPiYS7CO3im2PvauxoNFgLn3B0xr0HdLOqi
- 6o-yBa8vhBYNL4hdQ>
-X-ME-Received: <xmr:NFToZGXsgsKLhTLMHLhjfWlwbYjMrum-vpED_DERRlLJKTpLrhMzmOVKaxesAEHfjaqTEfNV-kNFR8bGdVk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvjedgudduiecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefhvfevufgjfhffkfggtgesghdtreertddtjeenucfhrhhomheptehlhihs
- shgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepie
- elvefggefhieejfffhueelkeefleffgefgvdegfefhudejffdtfefhheejtdejnecuffho
- mhgrihhnpegtrhhrvghvrdgtohhmpdgtrhhoshhvmhdruggvvhenucevlhhushhtvghruf
- hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhish
-X-ME-Proxy: <xmx:NFToZCjRIDpXyb4ngpwQwK-Ap9uVKZnII9ohQtHr8WnFGfhNCdyuYw>
- <xmx:NFToZGDCBvk1MhNdOiumOTYwgQRaDcNSpln9IJTLxeD8q4adGOTFaw>
- <xmx:NFToZDKf6QtZIDsG20aV-O889sYT-W9VJZ8oSyyGN8P8oFQgtDcnFg>
- <xmx:NFToZC24iZ4Vw7TZU80JLix06Iq08czadJsRrxK0UTpbkyuvjXhLQg>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Aug 2023 03:11:48 -0400 (EDT)
-Received: by x220.qyliss.net (Postfix, from userid 1000)
- id B5294809C; Fri, 25 Aug 2023 07:11:45 +0000 (UTC)
-From: Alyssa Ross <hi@alyssa.is>
-To: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
- akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org,
- shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
- philmd@linaro.org
-Subject: Re: [PATCH v11 0/9] rutabaga_gfx + gfxstream
-In-Reply-To: <CAAfnVB=qW99pYK04g6ZdM+c8HLLmE5kwc_UWyJgRVSPnGB84=g@mail.gmail.com>
-References: <20230823012541.485-1-gurchetansingh@chromium.org>
- <87a5uiyq35.fsf@alyssa.is>
- <CAAfnVB=qW99pYK04g6ZdM+c8HLLmE5kwc_UWyJgRVSPnGB84=g@mail.gmail.com>
-Date: Fri, 25 Aug 2023 07:11:43 +0000
-Message-ID: <871qfriok0.fsf@alyssa.is>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZR1E-0006N5-6J
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:14:08 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZR1B-0001zz-VK
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:14:07 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-31ae6bf91a9so494887f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:14:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692947644; x=1693552444;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jyF/mCi3Gl+lUQjG9hc8gmB+iNyNh6mPSWDF+5z37Xo=;
+ b=Kr9EEUMuANbgwDzUvuQpUvqSbILOr0Vomk2ZJqO+E2BygTyKcsVWqgnZ3CpPSWiesp
+ kwr0v/GIZ6ZP63qNAOd9okXsqCWdTBYA3ViQ4EKoqwl4ruMGlG+qegfn9jFsQ4bJr6JB
+ aVDMOV1WpEHfJKu1RVIXZE/NmScUH3lJuMoa7k8I2i1bqjyHd30fBh7E6M0D8QQEr0MR
+ XKd2Ldi13mBRUTAMQgwD/6kmzUQe/FU6EpyYnH8F+IUHvQYaemJSbuHi4CjV8JeTmZ6I
+ 38TAqvLASKMy6qrSjsaAic1aG3YnN2AnbOHy902k6WPn+rWWyu1I/tpqxtV590frgJlr
+ Mulw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692947644; x=1693552444;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jyF/mCi3Gl+lUQjG9hc8gmB+iNyNh6mPSWDF+5z37Xo=;
+ b=RS2iRogtZgF6BVdyGT64uKfhLud/jPygynoctb1+wNh1x3TiiSL9ZUwYeq+MnLPTr4
+ EVXFEoo9e6CecbwgUee+7EgE5f3ElGALQ2cfDbYNSpOCnKAYRMz7QcYL1H/OjFxLCZVb
+ tQqTry/pXHzaYW/0u1lTNmOw+EO0FwuwJS0hD9226cI5Tp/MKgoR8U88PoQl3gzTZivo
+ zBBbZPsIsdQjZQpJjtqjbZD2W0YbI5qbr+G50Tg4CLwCS1lnSKHjGP2qqC9wXWAhGbnA
+ O0kuLK7oevABstf0HkO8/92lsLOiUeJ246zSgwOFiAwl8vGahk7NNgnj0dVN+OX87hpC
+ jVKw==
+X-Gm-Message-State: AOJu0Yye0lg+92gRZFHGyl9bZzldL1EHBffdtgZtUs0Oxf9tG3Qrdq7x
+ Ivnl6ic8zoZ7OOxP6ptymCGMNQ==
+X-Google-Smtp-Source: AGHT+IHnwpNCao6iDgNyCseIY6HJ4m2Np/wYj73KRQ2jH3ADVMkhsBpkff0Q8PAUEO3ZtW8sLM9adw==
+X-Received: by 2002:a5d:6f0e:0:b0:317:6681:e42a with SMTP id
+ ay14-20020a5d6f0e000000b003176681e42amr20718345wrb.9.1692947644352; 
+ Fri, 25 Aug 2023 00:14:04 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.69.26])
+ by smtp.gmail.com with ESMTPSA id
+ d15-20020a5d538f000000b0031ae8d86af4sm1332069wrv.103.2023.08.25.00.14.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Aug 2023 00:14:04 -0700 (PDT)
+Message-ID: <cac0f87b-8026-8e02-c6b3-a415af664f55@linaro.org>
+Date: Fri, 25 Aug 2023 09:14:02 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=66.111.4.25; envelope-from=hi@alyssa.is;
- helo=out1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 3/5] target/hppa: Do not use hardcoded value for
+ tlb_flush_*()
+Content-Language: en-US
+To: deller@kernel.org, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+References: <20230824210434.151971-1-deller@kernel.org>
+ <20230824210434.151971-4-deller@kernel.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230824210434.151971-4-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,69 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On 24/8/23 23:04, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> Avoid using hardcoded values when calling the tlb_flush*() functions.
+> Instead define the correct mask (HPPA_MMU_FLUSH_MASK) and use it.
+> Skip flushing the MMU for physical addresses.
 
-Gurchetan Singh <gurchetansingh@chromium.org> writes:
+Alternatively:
 
-> On Wed, Aug 23, 2023 at 4:07=E2=80=AFAM Alyssa Ross <hi@alyssa.is> wrote:
->
->> Gurchetan Singh <gurchetansingh@chromium.org> writes:
->>
->> > - Official "release commits" issued for rutabaga_gfx_ffi,
->> >   gfxstream, aemu-base.  For example, see crrev.com/c/4778941
->> >
->> > - The release commits can make packaging easier, though once
->> >   again all known users will likely just build from sources
->> >   anyways
->>
->> It's a small thing, but could there be actual tags, rather than just
->> blessed commits?  It'd just make them easier to find, and save a bit of
->> time in review for packages.
->>
->
-> I added:
->
-> https://crosvm.dev/book/appendix/rutabaga_gfx.html#latest-releases-for-po=
-tential-packaging
->
-> Tags are possible, but I want to clarify the use case before packaging.
-> Where are you thinking of packaging it for (Debian??)? Are you mostly
-> interested in Wayland passthrough (my guess) or gfxstream too?  Depending
-> your use case, we may be able to minimize the work involved.
+   Instead, define and use HPPA_MMU_FLUSH_MASK (keeping the current
+   behavior, which doesn't flush the physical address MMU).
 
-Packaging for Nixpkgs (where I already maintain what to my knowledge is
-the only crosvm distro package).  I'm personally mostly interested in
-Wayland passthroug, but I wouldn't be surprised if others are interested
-in gfxstream.  The packaging work is already done, I've just been
-holding off actually pushing the packages waiting for the stable
-releases.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>   target/hppa/cpu.h        | 5 +++++
+>   target/hppa/helper.c     | 2 +-
+>   target/hppa/mem_helper.c | 7 +++----
+>   3 files changed, 9 insertions(+), 5 deletions(-)
 
-The reason that tags would be useful is that it allows a reviewer of the
-package to see at a glance that the package is built from a stable
-release.  If it's just built from a commit hash, they have to go and
-verify that it's a stable release, which is mildly annoying and
-unconventional.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmToVC8ACgkQ+dvtSFmy
-ccDmpA/9EWqM31u5GydYNUnvw0/0LPGNTsAWFqfVMizxEq2ntlrYg9HpN92qbvcF
-ayZn/jxRrQ3fbxdCZ2jjTTdZ4lU6268iVSjr6R7ln1Q4iFENGmXj5bpXbG6lb88Q
-D8BK6XM2Bg1ogXLb7CVawoF4GnYKIQiPEk5xIIJd/VUnQoY3G/FOzBjZsTuFJC/n
-3CJoT+dUj3gWoH0PLlGaCOHivXkinYwDXYaAcanTxgDhR1QbvWqy+2BCuQzdd2C+
-U0lL7PxMHPgxgBl4W8wsl7xMftKbRhC+NTVGEegTNSxI3fi1NO6ucoiEGXQTuQQV
-zcgWqYqH2VJu+lMt7uHHqeHwOkuIVN6rxhFwSO/wwd9ARiE9Ol5RT4yJSAf6DSHA
-9dWvhJLQ5VgdykphCrEhsNGVqv8GvdFOZYJsZEa0oYjFRBbOhMJFFG5zS/u7787S
-tu47nj91fSPVbJx8LH7jLyd5YCtuHN9a7F6z+IXckeFUPVZZhDCqp0fXjPyfij71
-mkkTWWEA/0MClC22fHFGmEl7Uk2HlXXaBntj1VbmQHbWVfIoRJRdYer3uQtEaTAI
-AYZ11A/9hu0HvSUyAG5p2/dnmDOlJr9VTYbvkEpB9CPjvKeWYbAp7YrCwLvTv8ov
-KcfKyEKFL5q6OjCZBoP9mDCGPzmFmh7HfKh717Ns6nk7JO6y1bY=
-=2bpb
------END PGP SIGNATURE-----
---=-=-=--
 
