@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828A3788C23
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 17:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DC9788C41
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 17:15:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZYPA-00073b-GI; Fri, 25 Aug 2023 11:07:20 -0400
+	id 1qZYVs-0000QM-Q2; Fri, 25 Aug 2023 11:14:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qZYP7-00073P-OP
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:07:17 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qZYVp-0000QC-CI
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:14:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qZYP4-00043y-RH
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:07:16 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qZYVl-00056C-Mo
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:14:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692976030;
+ s=mimecast20190719; t=1692976448;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ywrCirixNM5RcryMBAwxvb9J29NJDCZ8ZD/AeJQdHRU=;
- b=UrRcNKGuYYfXzDGk+zct6BWubV6PMEcLRq9uvtpugwy/XooxRUcjSi4D82kMKPmMF2i0on
- itzWTLLMJLtNOUQ0/cEGb/WaOx1lkQkVuvrsGWXrukLKE54ZjaKFDQc95AkQhLhN0Bc0js
- HF3mnseslOFhowQRgeDCwKAppGWI40g=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Tunp69SOLVm0fOvag7etUUrPDVIyy7U6xEqw+3q+kGI=;
+ b=dd00Uiwut5VGEcWKN7wnsXi5xmuVPmmtqtNTByBer2itPUi/i20ZlScu25su+aQ/qwxi2S
+ hsM6VNqQawYavGgrjvAPzcx0wt9JtKurPaQYZY66xnu74N9qllpLuo2oGz7oGYaN2DuqaG
+ yGOuoYFUQOe1KXxZdw/1Upvx7uYlxS0=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-IaCKWHb9MEWcVjJemHGOEg-1; Fri, 25 Aug 2023 11:07:09 -0400
-X-MC-Unique: IaCKWHb9MEWcVjJemHGOEg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-76e1e6b1aa4so4837585a.1
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 08:07:07 -0700 (PDT)
+ us-mta-421-yQ__AgoWMgut92lbkmpMGg-1; Fri, 25 Aug 2023 11:14:06 -0400
+X-MC-Unique: yQ__AgoWMgut92lbkmpMGg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-521da4c99d4so926971a12.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 08:14:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692976027; x=1693580827;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ywrCirixNM5RcryMBAwxvb9J29NJDCZ8ZD/AeJQdHRU=;
- b=ZoQjnS1QMLv7NPee/kZSoKTfJxD8WQ2Ue1VC1/5ytzpNFxHvY+vALN6SUgOSEO1tcK
- i4qcE2vJ9I8VGPkGgVZe2xs1/LNsj3eMBWu8XyXOErurGm2TMIEoGtHtYSi2+W/UrVs9
- QqUKqNh8g/RFvNKJksmE4SOeNdDWZNdPP0k8BAbKXxbdo7B1cGN6133NeW/GOwpFzD7V
- wKJGpcFG39hFqJsXg2rYQFPbQh7XhGSRPfrwUctfgU8S/3jxpp5MrvRAANu6lY2A1md/
- IgrabpUgT9umDQLOIv9A2r5QvWsWeHI3t0CpCpNZOJLqUQOApMVm5OgFLcIWgzx0fTM/
- JFIA==
-X-Gm-Message-State: AOJu0Ywyhrfurp2Bl2Cdn00wzTvWFMud1/kZf74zpq85zYawLNufbz53
- i2lA3MSyp5g3aqe+W9SDnIf0ufT5xTuQ+roUdtU6NZZMhz1rHseZtH5NFTwMWmsPWtuxE5qKssk
- TTsWdH1voislUI0s=
-X-Received: by 2002:a05:620a:198a:b0:76c:b3a0:526e with SMTP id
- bm10-20020a05620a198a00b0076cb3a0526emr21667481qkb.6.1692976027315; 
- Fri, 25 Aug 2023 08:07:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/WuszH7ZCswgu6vfuhJINx9ALqLXKG8Y6DHhMPzpwbKFgFizUhQj6spgasypSXfQdSGEXIQ==
-X-Received: by 2002:a05:620a:198a:b0:76c:b3a0:526e with SMTP id
- bm10-20020a05620a198a00b0076cb3a0526emr21667459qkb.6.1692976027023; 
- Fri, 25 Aug 2023 08:07:07 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- o15-20020ae9f50f000000b007675c4b530fsm579608qkg.28.2023.08.25.08.07.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 08:07:06 -0700 (PDT)
-Date: Fri, 25 Aug 2023 11:07:05 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Subject: Re: [PATCH V3 00/10] fix migration of suspended runstate
-Message-ID: <ZOjDmf/o77puC+OW@x1n>
-References: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
- <ZN5lrPF9bY4acpvM@x1n>
- <f26b44e5-ef9a-60fc-1172-559ff5ea70de@oracle.com>
- <964c8871-174d-b94d-eb1c-a84f0882a351@oracle.com>
+ d=1e100.net; s=20221208; t=1692976445; x=1693581245;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Tunp69SOLVm0fOvag7etUUrPDVIyy7U6xEqw+3q+kGI=;
+ b=FLfL1eovHXC4fVZaBifTqYthAyviAQeKIoKwpteZDJgktKvSe2xNKGlRFe63ugOzMe
+ absKRS0/6recqNAVSV5qCsedu81NwifQsawriDUCifRBcVKeLNhpSt57IM8QWe9DgChq
+ VHV6Kw2dNeJRxy39g+F/9knOicZf2lIX1YuQtjhZzVs8vp67U5SKJIN8Y1RBIPaSNbxC
+ JgNAKDM6Ii2rffN3KhqqH71HEaGwPUrlLlb19ZzHLH2L7b0fPq3vfwksfwYjaOeWxI98
+ 06bzen45DzDA1zKDnB2vj/L7LffW/cs0ZvQi41yeex3Ttr3t21FKdDyqpLUI/dZVlU47
+ N0IA==
+X-Gm-Message-State: AOJu0YwoUS1xx8Vx5hJzr7cUWd3zdsnW6pKUNU3EPBzW+1H+YMdnqVAZ
+ HRF6CkcGoUrbx1TQCM2Bb55DkCHTDgeagQ3UtxcRsz7xBlVDXoqIWqewwYP0BjbEY6R9aO6fmRi
+ V9nI7kVrWe1Bu2J0=
+X-Received: by 2002:a17:906:5a5d:b0:9a1:edfd:73b2 with SMTP id
+ my29-20020a1709065a5d00b009a1edfd73b2mr6001877ejc.2.1692976445443; 
+ Fri, 25 Aug 2023 08:14:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFyX4oqoYjEdZfM5LG/3rUQTD0iWVipRiNFxSrP7/T4W2xJs2/Pn5eq6Q9r+eCoQRFHDYXGOw==
+X-Received: by 2002:a17:906:5a5d:b0:9a1:edfd:73b2 with SMTP id
+ my29-20020a1709065a5d00b009a1edfd73b2mr6001859ejc.2.1692976445128; 
+ Fri, 25 Aug 2023 08:14:05 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d70f:5ee0:6d7a:8486:6b83:8d37?
+ (p200300cfd70f5ee06d7a84866b838d37.dip0.t-ipconnect.de.
+ [2003:cf:d70f:5ee0:6d7a:8486:6b83:8d37])
+ by smtp.gmail.com with ESMTPSA id
+ g24-20020a170906395800b00993b381f808sm1058910eje.38.2023.08.25.08.14.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Aug 2023 08:14:04 -0700 (PDT)
+Message-ID: <d6d14b11-fcf3-7306-c421-3fe7328dc47a@redhat.com>
+Date: Fri, 25 Aug 2023 17:14:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <964c8871-174d-b94d-eb1c-a84f0882a351@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5/6] qemu-img: add compression option to rebase subcommand
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com
+References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
+ <20230601192836.598602-6-andrey.drobyshev@virtuozzo.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230601192836.598602-6-andrey.drobyshev@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.57, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,61 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 25, 2023 at 09:28:28AM -0400, Steven Sistare wrote:
-> On 8/24/2023 5:09 PM, Steven Sistare wrote:
-> > On 8/17/2023 2:23 PM, Peter Xu wrote:
-> >> On Mon, Aug 14, 2023 at 11:54:26AM -0700, Steve Sistare wrote:
-> >>> Migration of a guest in the suspended runstate is broken.  The incoming
-> >>> migration code automatically tries to wake the guest, which is wrong;
-> >>> the guest should end migration in the same runstate it started.  Further,
-> >>> for a restored snapshot, the automatic wakeup fails.  The runstate is
-> >>> RUNNING, but the guest is not.  See the commit messages for the details.
-> >>
-> >> Hi Steve,
-> >>
-> >> I drafted two small patches to show what I meant, on top of this series.
-> >> Before applying these two, one needs to revert patch 1 in this series.
-> >>
-> >> After applied, it should also pass all three new suspend tests.  We can
-> >> continue the discussion here based on the patches.
-> > 
-> > Your 2 patches look good.  I suggest we keep patch 1, and I squash patch 2
-> > into the other patches.
+On 01.06.23 21:28, Andrey Drobyshev via wrote:
+> If we rebase an image whose backing file has compressed clusters, we
+> might end up wasting disk space since the copied clusters are now
+> uncompressed.  In order to have better control over this, let's add
+> "--compress" option to the "qemu-img rebase" command.
+>
+> Note that this option affects only the clusters which are actually being
+> copied from the original backing file.  The clusters which were
+> uncompressed in the target image will remain so.
+>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>   docs/tools/qemu-img.rst |  6 ++++--
+>   qemu-img-cmds.hx        |  4 ++--
+>   qemu-img.c              | 19 +++++++++++++++++--
+>   3 files changed, 23 insertions(+), 6 deletions(-)
 
-Yes.  Feel free to reorganize / modify /.. the changes in whatever way you
-prefer in the final patchset.
+Interesting.  I was about to protest because we only really support 
+writing compressed clusters to new and empty images, so the qcow2 driver 
+does not allow overwriting existing clusters with compressed data.  But 
+by design we skip all clusters that are anything but unallocated in the 
+top image (i.e. the one we are going to write to), so this should indeed 
+work out well.
 
-> > 
-> > There is one more fix needed: on the sending side, if the state is suspended,
-> > then ticks must be disabled so the tick globals are updated before they are
-> > written to vmstate.  Otherwise, tick starts at 0 in the receiver when
-> > cpu_enable_ticks is called.
-> > 
-> > -------------------------------------------
-> > diff --git a/migration/migration.c b/migration/migration.c
-> [...]
-> > -------------------------------------------
-> 
-> This diff is just a rough draft.  I need to resume ticks if the migration
-> fails or is cancelled, and I am trying to push the logic into vm_stop,
-> vm_stop_force_state, and vm_start, and/or vm_prepare_start.
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-Yes this sounds better than hard code things into migration codes, thanks.
+> diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
+> index 15aeddc6d8..973a912dec 100644
+> --- a/docs/tools/qemu-img.rst
+> +++ b/docs/tools/qemu-img.rst
+> @@ -663,7 +663,7 @@ Command description:
+>   
+>     List, apply, create or delete snapshots in image *FILENAME*.
+>   
+> -.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] -b BACKING_FILE [-F BACKING_FMT] FILENAME
+> +.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-F BACKING_FMT] FILENAME
+>   
+>     Changes the backing file of an image. Only the formats ``qcow2`` and
+>     ``qed`` support changing the backing file.
+> @@ -690,7 +690,9 @@ Command description:
+>   
+>       In order to achieve this, any clusters that differ between
+>       *BACKING_FILE* and the old backing file of *FILENAME* are merged
+> -    into *FILENAME* before actually changing the backing file.
+> +    into *FILENAME* before actually changing the backing file. With ``-c``
 
-Maybe at least all the migration related code paths should always use
-vm_stop_force_state() (e.g. save_snapshot)?
+“With the ``-c`` option specified, [...]”
 
-At the meantime, AFAIU we should allow runstate_is_running() to return true
-even for suspended, matching current usages of vm_start() / vm_stop().  But
-again that can have risk of breaking existing users.
+> +    option specified, the clusters which are being merged (but not the
+> +    entire *FILENAME* image) are written in the compressed mode.
 
-I bet you may have a better grasp of what it should look like to solve the
-current "migrate suspended VM" problem at the minimum but hopefully still
-in a clean way, so I assume I'll just wait and see.
+“[...] are compressed when written.”
 
-Thanks,
-
--- 
-Peter Xu
+>       Note that the safe mode is an expensive operation, comparable to
+>       converting an image. It only works if the old backing file still
 
 
