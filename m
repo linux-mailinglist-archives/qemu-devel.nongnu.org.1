@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46ABA7881B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 10:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2C07881F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 10:24:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZRvi-00033T-FI; Fri, 25 Aug 2023 04:12:31 -0400
+	id 1qZS5t-0006x5-Ng; Fri, 25 Aug 2023 04:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qZRvZ-00032D-GG; Fri, 25 Aug 2023 04:12:22 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1qZS5r-0006we-VE; Fri, 25 Aug 2023 04:22:59 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qZRvX-0004mh-78; Fri, 25 Aug 2023 04:12:21 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-26934bc3059so1257854a91.1; 
- Fri, 25 Aug 2023 01:12:18 -0700 (PDT)
+ id 1qZS5n-0006wF-FF; Fri, 25 Aug 2023 04:22:59 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bee82fad0fso5509605ad.2; 
+ Fri, 25 Aug 2023 01:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692951137; x=1693555937;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20221208; t=1692951773; x=1693556573;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uwqaC+jBdI6czPFgR85mQckP4s4+552iOnCtWtNBqaE=;
- b=V3yJovPjSB+VJghIZlMh3NsQpDiWAyzwOdgk1u5K7IH4SdrS/lpbI2cB5yqbLKHHoq
- Hstvs8egRQYLZJ2kxfovRtdvOOi8TvvjpvdFTp5FL/44KwlWxnwr5M7byZvRTM+TEtGj
- YLIC/f2N3FMHWZR8vg4qUVQ44tPuLkQFO8+jV3hmjM/zuIqPXioudBbn85eCD7BGwpBn
- CkVzqSGLl4UkhbkGgRCjxBrusfLuU4wPgoiPSz6xC3lHMVOsoBC8HO2Po9T5AUrQzjm+
- dQ/ZWXcYWsIDugbthNk1px4bm6mCe3F57BatYgNkH4Oz59ky8d7wvyRmrJ1+aEDeR0O+
- mNuA==
+ bh=L1twLz0HPvzAjIroRmi3QEESpiAkFL7rV0W+vQb7/pE=;
+ b=BRqlnBQ4/yr2xX5x6+EvAscB1SUdJoK1zx84GyzJ/qXV2dNHIpt9V3GsQeanI4g7Eg
+ j7pcXMypL+nWDckuI/k7cY/lfQTnjufAr2PRf5l92la04X+iERB/kbVGLz0cEe4XZD7b
+ 6Ci+BNue5WfJzkQEzFErvJxv0SVlRgf1Hp4Z/sdQVKhqpUQB+dbJWzSXfQx6PUpUrsK6
+ o+W9nWqAUP0FwC8ltb7VEGFg8ixOV8NGWFRaoBZ9xkj15lohxJfijxyDcKCTqkcsJdIZ
+ +QFhxiTTFmtU2CxfrMalD5O5OTdGqYULFMIrHNt8xE3KF/1aIjmTgtbQOBrnCwNeDDlW
+ IHJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692951137; x=1693555937;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20221208; t=1692951773; x=1693556573;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=uwqaC+jBdI6czPFgR85mQckP4s4+552iOnCtWtNBqaE=;
- b=GS2cE5ihT+xn2u4c1Fv9O5ISqhGogrwD93aSz1dnymKy0N16BQz9GjhaRno+AdDos7
- EOrhqinunv55L+7zcEW/qERMDCh1jF77zUUcP7K/EbeBTHO+MbH/2cmQJsBpJCN154fl
- qJAcGEhiSNEjxaRo56kKaBq66xLoS+xkugvp/j7y7nli7B7+OuGzppO/82pnKBSnNPDF
- KVkry4gxz1VaGYGeorX+i63HFd3nV3xyxDaWHlRyqs97AtS0997hAziIjx9Qd9lWqF1r
- /6KMx6he14VOP0+9cWbAM4ikMzhE8oH61k0RyswphP3b+TYu3Rc4ncteTmO69k/3I8LH
- Q8DA==
-X-Gm-Message-State: AOJu0YzxyoMFgOhzJYOU81OQbvrBWvmX7E+ikozOHqrCAwk4m4Y/Lk0k
- Agb/P8PM+RXhQDlerxGbpGE=
-X-Google-Smtp-Source: AGHT+IFHNbB8F9BRr5zqoImOeg00sLBs3qQ7AKTooUfX6seNZ27Go0X9VMPQW6W1IRm0PKluVuX3PQ==
-X-Received: by 2002:a17:90b:4f48:b0:269:a96:981a with SMTP id
- pj8-20020a17090b4f4800b002690a96981amr26569293pjb.5.1692951137297; 
- Fri, 25 Aug 2023 01:12:17 -0700 (PDT)
+ bh=L1twLz0HPvzAjIroRmi3QEESpiAkFL7rV0W+vQb7/pE=;
+ b=gP8Hh8CfriNB0ZNFhSu6h2+aYonuvESOrcLShVGukhNnqMtfHfi5J6R8no1Tqbi43f
+ sBaLU9eALn719UTYarxtFQkD9Rn7aH6k4svmIARytw9V/UGXANRrPRZvqLTBfTvLKm2/
+ cYeC0Tg8lJdAxpH1ql+h3vVQVzpmWQWYdx70GdECABiiJd09//9P78lT8Lk9WIB3zL+C
+ Fh4gQ4AHCT5jzsABhjDklYp2r/FChIC7mjHOX2qpsxMXdMQsi/NLqPpaMHu9/g9Yonpu
+ RS18sL1s0LVt8KbCFn+jRas5QuX2FSzWxeuYoNsWMIdxWcpTvahk03zsCu0cBJjPXqxz
+ K4NA==
+X-Gm-Message-State: AOJu0YwWy1Z2InOEghdkOH9TMFSPZtgdQeiLrcjuwzyYHbm+mdacQvLZ
+ 8//krR/xquBPWx1Pddm3kBw=
+X-Google-Smtp-Source: AGHT+IFuf3ZKTS5Z/W9z6Pvv1Fnb9cCJLRJvGSCtm4P8WQAVeUHzm9PSfgp9hkrWtuE+H6QPakJEYg==
+X-Received: by 2002:a17:902:efd3:b0:1bc:2036:2219 with SMTP id
+ ja19-20020a170902efd300b001bc20362219mr12682843plb.41.1692951773036; 
+ Fri, 25 Aug 2023 01:22:53 -0700 (PDT)
 Received: from localhost ([1.146.69.243]) by smtp.gmail.com with ESMTPSA id
- a10-20020a170902900a00b001b850c9d7b3sm1023330plp.249.2023.08.25.01.12.15
+ x2-20020a170902ea8200b001bb97e51ab4sm1051616plb.98.2023.08.25.01.22.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 01:12:17 -0700 (PDT)
+ Fri, 25 Aug 2023 01:22:52 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Aug 2023 18:12:08 +1000
-Message-Id: <CV1H37J4R9QM.3FSAO1X6DSGQM@wheely>
-Cc: <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH] target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+Date: Fri, 25 Aug 2023 18:22:48 +1000
+Message-Id: <CV1HBDIQZEBS.3FH95D6WMLXV0@wheely>
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
+To: "Pavel Dovgalyuk" <pavel.dovgalyuk@ispras.ru>, "Pavel Dovgalyuk"
+ <pavel.dovgaluk@ispras.ru>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Richard Henderson"
+ <richard.henderson@linaro.org>, "Paolo Bonzini" <pbonzini@redhat.com>
+Subject: Re: [RFC v2 PATCH] record-replay: support SMP target machine
 X-Mailer: aerc 0.15.2
-References: <20230821025935.401914-1-richard.henderson@linaro.org>
-In-Reply-To: <20230821025935.401914-1-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
+References: <20230811014700.39172-1-npiggin@gmail.com>
+ <48d32058-dd1b-a2ed-42f2-e21c099bc0e3@ispras.ru>
+In-Reply-To: <48d32058-dd1b-a2ed-42f2-e21c099bc0e3@ispras.ru>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,30 +92,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon Aug 21, 2023 at 12:59 PM AEST, Richard Henderson wrote:
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1779
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-Should go to qemu-stable I would say? Thanks for fixing.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-
-> ---
->  target/ppc/cpu.c | 1 +
->  1 file changed, 1 insertion(+)
+On Tue Aug 22, 2023 at 2:44 PM AEST, Pavel Dovgalyuk wrote:
+> On 11.08.2023 04:47, Nicholas Piggin wrote:
+> > RR CPU switching is driven by timers and events so it is deterministic
+> > like everything else. Record a CPU switch event and use that to drive
+> > the CPU switch on replay.
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > This is still in RFC phase because so far I've only really testd ppc
+> > pseries, and only with patches that are not yet upstream (but posted
+> > to list).
+> >=20
+> > It works with smp 2, can step, reverse-step, reverse-continue, etc.
+> > throughout a Linux boot.
 >
-> diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
-> index 424f2e1741..48257f7225 100644
-> --- a/target/ppc/cpu.c
-> +++ b/target/ppc/cpu.c
-> @@ -59,6 +59,7 @@ void ppc_store_vscr(CPUPPCState *env, uint32_t vscr)
->      env->vscr_sat.u64[0] =3D vscr & (1u << VSCR_SAT);
->      env->vscr_sat.u64[1] =3D 0;
->      set_flush_to_zero((vscr >> VSCR_NJ) & 1, &env->vec_status);
-> +    set_flush_inputs_to_zero((vscr >> VSCR_NJ) & 1, &env->vec_status);
->  }
-> =20
->  uint32_t ppc_get_vscr(CPUPPCState *env)
+> I still didn't have time to test it, but here are some comments.
 
+That's okay, I got a little further, mainly adding vmstate to
+migrate it (otherwise we can only use the initial snapshot).
+
+Unless there is more interest, I will focus on getting ppc fixes
+upstream first. Let me know if you have more time to look, I can
+send you the latest.
+
+[snip]
+
+> > @@ -294,9 +346,9 @@ static void *rr_cpu_thread_fn(void *arg)
+> >               qatomic_set_mb(&cpu->exit_request, 0);
+> >           }
+> >  =20
+> > -        if (all_cpu_threads_idle()) {
+> > -            rr_stop_kick_timer();
+> > +        qatomic_set(&rr_next_cpu, cpu);
+>
+> This does not seem to be in the mainline.
+
+Sorry I meant to sqush that in or send it out. The kick timer
+init vs start needed to be moved to make it work.
+
+[snip]
+
+> > -bool replay_exception(void)
+> > +bool replay_switch_cpu(void)
+> > +{
+> > +    if (replay_mode =3D=3D REPLAY_MODE_RECORD) {
+> > +        g_assert(replay_mutex_locked());
+> > +        replay_save_instructions();
+> > +        replay_put_event(EVENT_SWITCH_CPU);
+> > +        return true;
+> > +    } else if (replay_mode =3D=3D REPLAY_MODE_PLAY) {
+> > +        bool res =3D replay_has_switch_cpu();
+> > +        if (res) {
+> > +            replay_finish_event();
+> > +        } else {
+> > +            g_assert_not_reached();
+> > +        }
+> > +        return res;
+> > +    }
+> > +
+> > +    return true;
+> > +}
+> > +
+> > +bool replay_has_switch_cpu(void)
+>
+> Is this function really needed?
+
+I found it was easier to fit in the way the CPU scheduling is done
+in rr.
+
+I think that main scheduling loop could be refactored a bit that
+could then avoid the need for this (e.g., a helper function to
+return the next CPU and all the selection code including rr is
+in there). But that became non-trivial and looks like the code is
+a bit delicate. I might try to tackle that afterwards.
+
+Thanks,
+Nick
 
