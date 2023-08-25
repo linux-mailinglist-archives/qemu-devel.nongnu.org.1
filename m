@@ -2,46 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2E9788067
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 08:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 023B778806B
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 08:58:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZQkc-00069p-BF; Fri, 25 Aug 2023 02:56:58 -0400
+	id 1qZQkb-00069K-CB; Fri, 25 Aug 2023 02:56:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkV-00067n-Bs
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:51 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkW-000688-P9
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:52 -0400
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkS-0007Xi-Eo
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:51 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkU-0007Y0-M3
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id AD31460B60;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 0762562D34;
+ Fri, 25 Aug 2023 06:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA8FC433C8;
  Fri, 25 Aug 2023 06:56:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFA6C433C9;
- Fri, 25 Aug 2023 06:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1692946607;
- bh=9CR1T6czPKxjHOKsQA8C1aZzTvs5rVZdGD/98ASPi0w=;
+ s=k20201202; t=1692946608;
+ bh=jj6VCafdXtZ0ti0M1QbCs6Yx24ov6Jbm0/NprowIN2g=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=rQ+cmR0aqhlNyQMjEGluH0htrErj6ao//yBsOmsoAm4JLIRUtL7oYlHSomo/L+PZx
- 6Qif+JgStYOlg/EyZjc0ZkAtka7AAvQRojTMM0YEcHpixRAxeKCPFo0JcdWqgKPlxn
- cC4bWIxcDD3PVXH+4YojqQB8Lg6zpGE9TCXwNFj6s1a5+OKvcDjj7Ls07cYqVtkDfL
- JkMMIa3dmBClp0Sxt0GwTckYu4LUIAhh+PioySMzfHab3xVRdc9VexGnmkJArJDnrA
- U6TmPxjolmYoR1NYEVrZHEEyIfFYcF90FJV3fjLDftVAx/Ls9pzoaLxQEsk4++vt8I
- HEtTvzoYq22JQ==
+ b=mGOve1omiZ3HtOKMYXTTl6mb0hsd5dhP1t4vm5VhCIto/6pZULS8jtLMjP0sdjaoM
+ eCuFBObkPS55kBSbq3zpOFgFCipPkaadNIp2dEVheWd/ipma+vdsv6PS7xfhCzO7wj
+ lGHQ7HDNQeLb3cghBjGLgsd8i/iEnm1jNvWFsOCGr93B3iLilQC/bvLTpqYdlh7muW
+ Oq7WICLYgjJQtnDSH5aqUQtJ6HfGrV7XeHQ2K6yRhAZhdmPGPBmpmOy7C4fLZYa3++
+ EXE4rnXslTITIFEDsrhYM20RM8wNf6sB5PCSFlJHAL17pfY1zu9TaC3xhvvIqbjcgo
+ 8eLR/kw9IdteQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 4/5] target/hppa: Use privilege helper in
- hppa_get_physical_address()
-Date: Fri, 25 Aug 2023 08:56:37 +0200
-Message-ID: <20230825065638.7262-5-deller@kernel.org>
+Subject: [PATCH v2 5/5] target/hppa: Switch to use MMU indices 11-15
+Date: Fri, 25 Aug 2023 08:56:38 +0200
+Message-ID: <20230825065638.7262-6-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230825065638.7262-1-deller@kernel.org>
 References: <20230825065638.7262-1-deller@kernel.org>
@@ -73,40 +72,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Convert hppa_get_physical_address() to use the privilege helper macro.
+The MMU indices 9-15 will use shorter assembler instructions
+when run on a x86-64 host. So, switch over to those to get
+smaller code and maybe minimally faster emulation.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/mem_helper.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ target/hppa/cpu.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 6f04c101dd..46c3dcaf15 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -73,7 +73,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-                               int type, hwaddr *pphys, int *pprot)
- {
-     hwaddr phys;
--    int prot, r_prot, w_prot, x_prot;
-+    int prot, r_prot, w_prot, x_prot, priv;
-     hppa_tlb_entry *ent;
-     int ret = -1;
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 6623712644..fa13694dab 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -30,14 +30,14 @@
+    basis.  It's probably easier to fall back to a strong memory model.  */
+ #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
  
-@@ -97,9 +97,10 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-     phys = ent->pa + (addr & ~TARGET_PAGE_MASK);
+-#define MMU_KERNEL_IDX   0
+-#define MMU_PL1_IDX      1
+-#define MMU_PL2_IDX      2
+-#define MMU_USER_IDX     3
+-#define MMU_PHYS_IDX     4
+-
+-#define PRIV_TO_MMU_IDX(priv)    (priv)
+-#define MMU_IDX_TO_PRIV(mmu_idx) (mmu_idx)
++#define MMU_KERNEL_IDX   11
++#define MMU_PL1_IDX      12
++#define MMU_PL2_IDX      13
++#define MMU_USER_IDX     14
++#define MMU_PHYS_IDX     15
++
++#define PRIV_TO_MMU_IDX(priv)    (MMU_KERNEL_IDX + (priv))
++#define MMU_IDX_TO_PRIV(mmu_idx) ((mmu_idx) - MMU_KERNEL_IDX)
  
-     /* Map TLB access_rights field to QEMU protection.  */
--    r_prot = (mmu_idx <= ent->ar_pl1) * PAGE_READ;
--    w_prot = (mmu_idx <= ent->ar_pl2) * PAGE_WRITE;
--    x_prot = (ent->ar_pl2 <= mmu_idx && mmu_idx <= ent->ar_pl1) * PAGE_EXEC;
-+    priv = MMU_IDX_TO_PRIV(mmu_idx);
-+    r_prot = (priv <= ent->ar_pl1) * PAGE_READ;
-+    w_prot = (priv <= ent->ar_pl2) * PAGE_WRITE;
-+    x_prot = (ent->ar_pl2 <= priv && priv <= ent->ar_pl1) * PAGE_EXEC;
-     switch (ent->ar_type) {
-     case 0: /* read-only: data page */
-         prot = r_prot;
+ #define TARGET_INSN_START_EXTRA_WORDS 1
+ 
 -- 
 2.41.0
 
