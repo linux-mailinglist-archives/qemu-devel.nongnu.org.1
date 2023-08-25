@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FD3788F40
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 21:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53959788F43
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 21:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZcTC-0006fh-9t; Fri, 25 Aug 2023 15:27:46 -0400
+	id 1qZcV9-0007Vl-Go; Fri, 25 Aug 2023 15:29:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qZcTA-0006fP-BW; Fri, 25 Aug 2023 15:27:44 -0400
+ id 1qZcV7-0007V8-OF; Fri, 25 Aug 2023 15:29:45 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qZcT7-0000QA-VL; Fri, 25 Aug 2023 15:27:44 -0400
+ id 1qZcV5-0000aY-GE; Fri, 25 Aug 2023 15:29:45 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qZcQK-00Fd8q-06;
- Fri, 25 Aug 2023 21:27:34 +0200
+ (envelope-from <den@openvz.org>) id 1qZcSK-00FdMR-00;
+ Fri, 25 Aug 2023 21:29:38 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, qemu-block@nongnu.org,
@@ -28,8 +28,8 @@ Cc: qemu-stable@nongnu.org, qemu-block@nongnu.org,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Hanna Reitz <hreitz@redhat.com>
 Subject: [PATCH vOther 1/1] qemu-nbd: Restore "qemu-nbd -v --fork" output
-Date: Fri, 25 Aug 2023 21:27:36 +0200
-Message-Id: <20230825192736.34800-1-den@openvz.org>
+Date: Fri, 25 Aug 2023 21:29:40 +0200
+Message-Id: <20230825192940.35364-1-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
