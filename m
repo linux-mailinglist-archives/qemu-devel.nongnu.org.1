@@ -2,105 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F408787DAE
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 04:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F28787DBE
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 04:34:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZMdP-0001Dt-Mh; Thu, 24 Aug 2023 22:33:15 -0400
+	id 1qZMeS-0001nn-JN; Thu, 24 Aug 2023 22:34:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alloc.young@outlook.com>)
- id 1qZMdN-0001De-DK
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 22:33:13 -0400
-Received: from mail-mw2nam12olkn20817.outbound.protection.outlook.com
- ([2a01:111:f400:fe5a::817]
+ id 1qZMeR-0001nB-1m
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 22:34:19 -0400
+Received: from mail-mw2nam12olkn20823.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5a::823]
  helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alloc.young@outlook.com>)
- id 1qZMdL-0001X6-6y
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 22:33:13 -0400
+ id 1qZMeO-0001aU-KO
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 22:34:18 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ole/bw7N/zkgqF97WLKUwnNMH5T30iAET55f2MZNmbAdqGWRtM/DBR9D7u6STNWjB7rmb5l/6F2SDlIlNU6skhSdJ0uX1Iz/pfitP1TIVJXVO4iqrqEaRhn0DGOEbmJxPXTH+ivZbORcyletRV1EDv23wzU+R9Dz57vq9vZcWw5u9qsGcIk8Vk4ymjKeKFq5JtVJeYinua1eJXO2bOA/afPx8G4KZpBN4m02GU2goYNFlE59P3ZpmEU2jfNxERImxcxzd5K9y9acqGHXqVYW+JxN42R5CEpCrLjmPuClQoKMv2jSzi3QUNHWpxxq5hiL04EAu4bGgDcC4MtqffZlCg==
+ b=g1qylwzI84ImAVZapYYRlnlMWiarNu+bPZYvyAc4Dy4pDS3enkd5vroNZZutvqyxFLCV+sYwjG7SNgyCOASTjG9ZvG8jTFMFo/2CSws96fEJtgMHMIbZYqXCbGYjl0fIHSKSgbi1Aq1heofFDRH4mhBis4NW6qENScR/zhc/z8f9zPPSgmnTwOlnzZcezXI3e2FHwGPqcCsuHC8AvuclspZvoWX0fQSkOJM92VRIK5tBNIiiO7myaD/AsZ3g7MsWARZ/A3jtuk30qfh2pDMsvcwfjPbnXJRCEJr8/AtG+xIoZbp6hQJS2V3NVVAHyQO2jam9YuAt6xlM4jSaiM6Yfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7+8SZMnIWVynuduy4NTpdNCFWUxetALixt7hCAfwXH4=;
- b=H848wte8efeASZCS1vVzImj/OJ+fUn/NabCRC5K5Z+XOWW7wEFFJzcxjFDTUdajig3ay3cyCDorskmsnieh6ai0eyA8S7usnEb0efakxxcj3xT9+aMW2zmO4mqtsrbmokCQTdi89drOihZBS4dZk7vhupfSAuTQAak9EOF5Jyky+cpptheMVNPdDhD+/t8J4ebQHwBinv9bG5Fv+CGu1sE5u0CyF4aXKsE3kfHZeZQoVt7rymwPaZikIs3nNHeigWnKGGWE7cc8UU9z6CsHiq20TqMwD5maSav0dRJuoSdCt4Px9STKhyIgHNMrQ+uwpgAxtLruXlCcRP9s5LY+UUA==
+ bh=uSfmnLunuA9AjVDvHjybVAS8mdwyvHyBlM/JEI4Jyy8=;
+ b=ZaGxe7S2gFpSefNhpoBtSx9yt1iaFSpsNkZSxLPmspmU3PEqAXj/XhnPaBYMyaFCxx0QUhfaiIkSbCcI0m3qhsueTEzbU7Tyco3RUQ4rj+UKHCLbH1PPDrsNt72lMft/m/ZO4bDWnZ9krq6NNZK/MV2j6vBI2oF2wfB6k4qS9x1/K1xw8w+nn8SH88s322gTnpMDKF+DGnuDrn8wFdKiSQ2bMugJx5H7iMj1DuGKjXoFtPT4qgTGB0DIvrdcKyA/SYfpbrmzv/ThJx4tofjK3LK2CuDY/Ybhhhi/oL8zfb+HxduLh/Tc42hx0JDQFySG96l7tmaqnET0k72Ij1XIQA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7+8SZMnIWVynuduy4NTpdNCFWUxetALixt7hCAfwXH4=;
- b=BzzAhkta1ypht5Pr6Par/u18ez3xkGWtiT8u0gTUEHHhQWceJTjnZXe7r4VT5FFqOmQoKzbEVxERFuCoerH1wEVzGWm95P31hDkGosmbHuNYRLbB2LZT5gpxpvmuPt7jvS1xFfwE8EZy59IAWxcQb4GmCvjw/Pm7atBeD9xsMqkeghBaYpcnwmzmcmGcCCblbmPWtL85smYYI9gJGVyoC8jNQIFOgBLRjrWPhd/DlGkNZS0nbY8V5etrt0RDwuZ6lPP97Oi8RZozdH1zwYRuiLRzzK98CfBYb3C21aij8eOgpEaW9nMbukmBBLtMeRtU0TMkt/BXgSzWKHZk2+oXxA==
+ bh=uSfmnLunuA9AjVDvHjybVAS8mdwyvHyBlM/JEI4Jyy8=;
+ b=k1C8y7KgBCC4qWsa6moSA4XFTVf/YuMSuPx/+itW//eJ4iJLshhpPY0yUcxQCJYhcINNMHR6u0Tv5h7ugWXee5iR1QE6LcvttCEIB39fD/HHaXtZQ+7ZK1eDShX0qFaLcAWA6D+TYTX31F/AMQjaeKmi9IHozrana9rB6XeS9nGGgzGRDRBrdSN1wu1eNyAWGqVHaZPZCvA1E4zvQn9ErxCpgYriK/Zm8W6J5Jz+QPp4YNuR0RETMp94yZJaD9YbaqgsYsNRDsLbTXAxwGxmvTA6nOwHTF9XNLyNcwPWH6k5Hr4Gwduf9sO9Io8BPPk+8VXo22hGHH1TINphGFl5tg==
 Received: from SA1PR11MB6760.namprd11.prod.outlook.com (2603:10b6:806:25f::14)
  by SJ2PR11MB8449.namprd11.prod.outlook.com (2603:10b6:a03:56f::14)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Fri, 25 Aug
- 2023 02:32:34 +0000
+ 2023 02:33:41 +0000
 Received: from SA1PR11MB6760.namprd11.prod.outlook.com
  ([fe80::df85:2db:d56b:38bf]) by SA1PR11MB6760.namprd11.prod.outlook.com
  ([fe80::df85:2db:d56b:38bf%5]) with mapi id 15.20.6699.027; Fri, 25 Aug 2023
- 02:32:34 +0000
+ 02:33:41 +0000
 From: alloc.young@outlook.com
 To: yong.huang@smartx.com
-Cc: mjt@tls.msk.ru, qemu-devel@nongnu.org,
- "alloc.young" <alloc.young@outlook.com>
-Subject: [PATCH v2 1/2] softmmu: Fix dirtylimit memory leak
-Date: Fri, 25 Aug 2023 10:31:20 +0800
-Message-ID: <SA1PR11MB6760B9AB7EAFBDAFB524ED06F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
+Cc: mjt@tls.msk.ru,
+	qemu-devel@nongnu.org,
+	alloc <alloc.young@outlook.com>
+Subject: [PATCH v2 2/2] softmmu/dirtylimit: Convert free to g_free
+Date: Fri, 25 Aug 2023 10:32:51 +0800
+Message-ID: <SA1PR11MB67604ECD85AFF34BEB3072F7F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <SA1PR11MB67609A76D397056973B406B1F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
 References: <SA1PR11MB67609A76D397056973B406B1F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-TMN: [BugqierZPbBCfGHXsIptqA2KDNEWoivvGo3e83nWrXk=]
-X-ClientProxiedBy: SI2P153CA0033.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::21) To SA1PR11MB6760.namprd11.prod.outlook.com
+X-TMN: [1GTWlVuUzMQ57fRBCYVY+Q1yPkq9Q2bIUm/D6H1dYkA=]
+X-ClientProxiedBy: TY1PR01CA0189.jpnprd01.prod.outlook.com (2603:1096:403::19)
+ To SA1PR11MB6760.namprd11.prod.outlook.com
  (2603:10b6:806:25f::14)
-X-Microsoft-Original-Message-ID: <2e796c56b3ec535817ded15577e9e0077c20f6aa.1692925847.git.alloc.young@outlook.com>
+X-Microsoft-Original-Message-ID: <4ea87d7b8c4565f36b6d27ad83ae8e042796f1c5.1692925847.git.alloc.young@outlook.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA1PR11MB6760:EE_|SJ2PR11MB8449:EE_
-X-MS-Office365-Filtering-Correlation-Id: f16f2d38-a7db-4932-649a-08dba51389e9
-X-MS-Exchange-SLBlob-MailProps: ScCmN3RHayGFyzKqG2j+JWu7TdfJHtreszRPvNKDxsAQXCPywoArShX/ID2wnzbypwrIbm46+wvhNanMGBRELyzisZ+hBQ2CvFhw9f1pQqD3kN6eiC5pTaClCBdoTFBDDZqtrHQ3uB3Wua9vHu9kzQkw2qoqlILfqulWdh1k/0bRjwGUwxozLPPQ+EGMVHnYD1Yzbbl8T8UMPzqtrF4I9reIqealgXEdh8wjgu7nCN5PMYRMHF2SUeqNMZdCQIbZjPCOcpLPufTmX6QcUc6g3vHrQMR4cUKIE0UEiWA+xpit0xNVcYC+MCoLdD0/Rbuz6EJcz5g6BbygeqlSEWnvwsuU3hZorG8Jc4kBe0UykLCOSCDrCVfdyjsNbMGKoxdivmKgM62CwbL27CVYLWVURh/b8WlvUEmRslLR/ycW2hQdUTHytwpGYJUqh1VBgdrnT4aBraByZVmrv5xE0/Ua2TjB4XE/AtWFRNe0uTVXhkvCp732jevhxHPg5oS7kVrh5GTLmnwRIBj6b6pZM7e77hSJh4b6K/OVHEfwBf/lLoZAOJDjPyp6FC3RrqdH9ysrLTs17NRYkNRi1ghyJfcm3A6CoFzjxk3GaqHWiU2iSefTk9mbQPT8VcnSg7kNloCphirkAQZrfIw6lb25qOQ8W6ViG3TBJUxdIysA7TIHTLV99uVCqg7tBjkEfydEXCQ0ck9uqKO+xo59JWSn3XoBTEtVFgjKLEKdYQpwm+cSxIE=
+X-MS-Office365-Filtering-Correlation-Id: 956cabdd-d9bb-40cc-3486-08dba513b22f
+X-MS-Exchange-SLBlob-MailProps: ScCmN3RHayEad0gv6pJaltsDtbd6NSVllMnjD0YIkdXJeo1MVtAQQhVoivno3uKqu2hVwGhI/835mixNDAl8ZMf2kC8FvPLFQP9yj8YPyc8aEHv+L7Dh++gHrueuIHLtLBUj3JGOAph8grVkA1oc5mi56SKv+gGA+jxoE/hAC+Yn2hqOi7UAcj0OLoieu6Ek+f+V5Xn/1U2p9zYYrvy1K/hfsgoQDxHbORQ99lMC0gdW5UG8OBOeTy3fTPvlfX31O3N8Fx6sx3LKirwbnneyQYrJQsTc7ynYyGQFh2CsIB+71UK8ITLOCOB22Fi+78+YuEgDBC6QShMsLRSm1RxVQxZBdpS3sx/GnO0Wreh+atLwGqzBw0sUv/7JrvxgDROLcvKft4yio85EoYpVzEKEQnOsB+h0gpNr65jWOp4hkv/HaxBpbovkcECBYq6qfycN9Qp1vlOkLHQ+nUaqnVbvqQ1uLsfPfO+1YdNhj+6FS1U+qphK6QypjmgniK7dBC9lC7UwMtRMrgsoz/MueqmxLkqnXXvtPtRm8/ZD79aEqOmDfPFTxaraP/r9ZfHWYCERMBOm1iXQzXnQ7PgDzjrrwpWjA6GHnILcmixi12S0HX8PYWlVuBFZlgoDFM1ChsVgtm+H53J4qeOfPXKjM4LxM6B7OW+ykrRS+LiKLrAcvol7oPJP+N8VQh2mIsPnLH9Syw19W8x9HZDD5xmoD5ncOWx9Ejk0dbGRxJdQwBpfwwQ=
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vlIFZ6h9n7oJW4wtVva1xQPqBUHOSE4k3WrZbUaMru49j7uixgVuwZQV0+bWHg8OYriQ3UaBXSQ6Vav8kEjAcPJdI4DcO55OMnb3/VQrohStEn3oKdG6a/wSPty+pqiRnRTVMdLeQuU9Dd54h64vz+izPc8sqXSUXk1HHndU1pdMWjrnCzLF7C3SzP1k1U9nVMBF9XQRT47TEWLS9b+3AQD1+PIdiS6lUZ2Tg1z6fc8rRQwnHR/Zp4HXbBFs3F4xUrh5s1nm5HePjjQpyaQQAfcjQg0i5keElovrJdPQPihW8Tmv32I6bGX77x0QohnrCj7GlrjVaC6Wst6G4pR40wNJGosAWgtuWEZPi5lLp/pVU7tGayNvMTfiZY8SViZekxvrbDqU+nr2hNkOLbIA/uoCU5Rztv3ona4RbyPhtZAWqjqWAIfHz6ruej8o2AsQraYIkzedFY5UUXJPPu288C5DXKfQUJjB95gYeP+8b5ZX65ro7pu/RjoIex5Yrr5hS9098iO0Gck12jFWhgIHnHijn4A/qzexGkF1ukewU9+1xLK+L6OZvTLT/rrafTOBodjVTJlT8o9qRlhmD2c201paqs6HHEEQeKGPFY0XJiuqAYX7r1S7DSMtAWGXsABT
+X-Microsoft-Antispam-Message-Info: 43TxdznQZ1FEcFye20HHtS0Ljx/mCypGfqEnHNaDSbudXir0icNMF5HjS8ZLWLyaKDpIA5LNPxBw3k80ZGxDTt+SgVROTsw9hFyniyn4i5AY2YopJp7hWmhH49v4qmjuOK5pFcNk4dCNYs5JArrbC4v5iDqvGgAAXHOmCsAr1odYSivAq3qkUubLqvBTMlfDLmT6k/pftxeokP4SxqvRviFO8/zXcedpxi087BLJ/KoReD4GooSIciJnkch1bBqJ+rZFjgt/qFW+XTqNowvmB9tVSje16zL+GogLuJ7hQpWvAWfl7YZPwdDh1Kej6gch4dmeReZ2htaikIK1oy0jAWAu5o17eR9fXgGjSsut39TyY2txFL3f7D0t0lKY8/6GH/CaStg6hq6OBs6Yort919nZj/C8eXsKYMQMN/ZIcGO06yXrmkbaxBGUwjRPfpvjNKWxjOm/I2AzfTLUb1Aib+7JbFb2YDZOCogOchVyM3Gp3b2R7okDWunM3LEM1SWqXag37nphgcTQJwvPQ1S8nyD0Z3A8CuXwwRSRV9rnnnVLMu5bEBzOyv57VW6zuXEwi5qFfuOO0abk1Oc0ENqCa3HkKl4sV4rAcHytFsKQQHlRu1P2YfTXvZS5ZxmvABYW
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?GY0Y4hI4/PsELA7DbwCrrQhDrOsNw1HkuASGKTvuaGc26qTw5kYRMX5TDWPr?=
- =?us-ascii?Q?QxS/UXWCJZqPMiYffOS+z8wZAKGqzAPDWwvd/TDTuBPwP3SczGdxhgfAyXkx?=
- =?us-ascii?Q?V06xykJhQ5s91t7LUK8hncC77OLghVPXnEl1YXsLyVRhykTOYcW4kjB52TAp?=
- =?us-ascii?Q?6BCDEeOzthCk6ozb496PSaLvmGRa2oHK0UWrTiQt0V0jsa0Br2S+wIRIlWfC?=
- =?us-ascii?Q?1uWynCn0rpQY10vyUli7JZ6mzhK5wxl22Il/R5/3BFZcifibHw1wYkhL+08N?=
- =?us-ascii?Q?NMrvbJnZo1EjEFx4jg4HC0zmJSQAyWVBd3Qbe6wgvXvjn17wPQ0j4EBL8z7k?=
- =?us-ascii?Q?DRd7swsh53XvoP3dPLLbJA34bndbru7M2pi36gMaTNNFryEsvbxRz1YjDt5k?=
- =?us-ascii?Q?wmROLWw2T+ufZZAitKpCJZdfVfoC23rpGc5txF5TzFJxbLzLtMEygMknM96g?=
- =?us-ascii?Q?C6mQ9RBdzpqEZUfMiMbEmMmFEgW7w/f0dn2ZGHjk9YyQVy8n1cSy0BNBIjTc?=
- =?us-ascii?Q?IoIrPIaYIOPiC4xWuUZTTD1PEKe+mLM2y7zngxOyMobHybNwMWL1yiR0sc7J?=
- =?us-ascii?Q?glwbfdAaE3Ksu3+lZ/Ei9YJ8G0FEdRhy7zoq5UVoDUuwV3ueY78aDHvvAh7j?=
- =?us-ascii?Q?+exIFtiVNyUCif86RC7fKfcEjqOJ0cBQs70UzUvZVxMWtKL97v8UnFhECez5?=
- =?us-ascii?Q?FPyD/S/RBDsDMeMBDJb3SPmlm3ndec48oM9UwqaRTonP9HSDwozjBqJvCgDg?=
- =?us-ascii?Q?GJaFTOCZtd/8rdadx4dmrF3tbnRVPyIxf+7NAtuoc104HyMa9NIevNTm60me?=
- =?us-ascii?Q?WKmktgrK/LrHOgDwhK7AeBlOjZaa8+oOAltE12NTML5ENa8lZct4BTzOH4Ik?=
- =?us-ascii?Q?c6Pf4QsWHrqaOxSzUwtscRx6V30SnDEQ/4K5in0l5PeuWxkITWpo+YactCCj?=
- =?us-ascii?Q?O7K6QDQ58lFRDKs3z88nf6z2IgJaRqPrplQcjwMpBivYKyMArH256JXD70mu?=
- =?us-ascii?Q?SaDI5a0XrRVqtfB+Cr5GpokaxvD/kmO3tedDNYkz/i+3GzlQ6trzn9U9ucp3?=
- =?us-ascii?Q?h38tj21yo7FaaXp34L2SZO2iv3g/7F5gBRwE4LrOx4LiGbw3//BBAYniI3YC?=
- =?us-ascii?Q?vZVCdgLu79YNoSYJ+CRwtkZt5I8LQLEIf6FC1n8qsKBATROwDLeITp0i/a6b?=
- =?us-ascii?Q?YmN+sbovqIq+YnK9EVieFSV35S/zXOwUWzcw9foARWyHudTRIC98S72pYJs?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qWFQForDixOKHNCwMJVmp9dHhcq5GRQhBwN4Mip3lePWW9mmZcIiP9+meFC0?=
+ =?us-ascii?Q?ZOvq/R04AhlGL6IB7kX9M/BkxTnoHval9h/xDqvGOY2VI2IC1uLXP5Kl7+vk?=
+ =?us-ascii?Q?kHMDS6Z9pU7Ybs/ka0qJKZdVlQIsQvYk2Ey50QyoR+sJtSCyDgvLyBpbKx9I?=
+ =?us-ascii?Q?XV8udpMvTxjVtCjro38F+FfYvpX9axK2p4QgtUfRjAa7/+ZUieFNVDdovAE/?=
+ =?us-ascii?Q?3MNb4RlvQuOvwhj8S3wO9btGpTsodDXi95VL3knMP5bZQeaO/xLEBsZnyqfy?=
+ =?us-ascii?Q?56hJLRNZYiEMMZfMtLnTHmMEPrLgT8krjlbxlHmb+mKyzKUqm8m2ArzYMC21?=
+ =?us-ascii?Q?iTqiLhp1g5sDam/lY3saxjbH6orCXeoZeWv+UZ9GuDIXCjZtjIsqi9as4f99?=
+ =?us-ascii?Q?DgOSO0OjPP7c1/wTbmy/I+MIi5BGkdxasoNkMF+8QS1jmjjSvD187lUOhUdO?=
+ =?us-ascii?Q?QDs/hKmR8ivNmWK/9x8683F9FJ36chJO6W/yx9SzMJeTOlrchEijyzwZ87DF?=
+ =?us-ascii?Q?Eet8DbyHRhA1OHrol+r6obbWKp5bxhy90xkgLn8Y5xfB4D5yxzqTq++U186s?=
+ =?us-ascii?Q?VgyXedEsdieSgFz9Lf9hHOxVm1KrVrYPqtKMPYREa512V2wT6hFcJ76T2Kyp?=
+ =?us-ascii?Q?nsK5NhNDqM6lXLIYapyhMfTQ0pUvP3pgzOQCNZpCc4Z1gcNbWIfsH9CiMnCO?=
+ =?us-ascii?Q?e95krw0zZwCgYOVCFvGIl2kSE3XWEMpk+kGshhl8R59L37XBpuXCt9A1wNVZ?=
+ =?us-ascii?Q?uWgf6b3tq+VKs5hMcIK1/zu9tuIKE+V5k/G4DerfogexY8BTRSDiZkyH5XWw?=
+ =?us-ascii?Q?g3j7hEX5QaNZSehKDC2+PHtfc8u099fifNRYnVWogePUpmwK+H52g1TOr5xG?=
+ =?us-ascii?Q?Nz8Nr990VvodqyeJ3NJIh602xPBL1O/YmL/YaIldKw2bRdhtY0XUTVfYKrLQ?=
+ =?us-ascii?Q?j/nHnWDpBuS8U1HF7gcVVXr+tK+guUZqAimVIPRLLQDYEVzh9uQGNeYcw3Rs?=
+ =?us-ascii?Q?5xgHuVcfoBzIyUGBBwQumXy10JvAARoho1TwEH3Fhl8aj81kR1Q+CABAuDGf?=
+ =?us-ascii?Q?+wNobAFhF2s7IkbPuPiQoH+0uegW/gsavPZnLj4u41gn1Y+Gh96cBVeuVWEd?=
+ =?us-ascii?Q?aLE/SpdWoFwT9Moqs1PzUlvjaEwvfzbFlkmcbbOQ/Z/ZNImM1RsoSa4DTaLN?=
+ =?us-ascii?Q?1uwTpfmDfM9jAqzHQX+4JDpS8JRCwMsCcIGiNoOjSn2YqSNKOQN/fN2La5w?=
  =?us-ascii?Q?=3D?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f16f2d38-a7db-4932-649a-08dba51389e9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 956cabdd-d9bb-40cc-3486-08dba513b22f
 X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6760.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 02:32:34.3274 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 02:33:41.8316 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8449
-Received-SPF: pass client-ip=2a01:111:f400:fe5a::817;
+Received-SPF: pass client-ip=2a01:111:f400:fe5a::823;
  envelope-from=alloc.young@outlook.com;
  helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
@@ -124,56 +125,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "alloc.young" <alloc.young@outlook.com>
+From: alloc <alloc.young@outlook.com>
 
-Fix memory leak in hmp_info_vcpu_dirty_limit,use g_autoptr
-to handle memory deallocation.
+Convert free to g_free to match g_new and g_malloc functions.
 
-Signed-off-by: alloc.young <alloc.young@outlook.com>
+Signed-off-by: alloc <alloc.young@outlook.com>
 ---
- softmmu/dirtylimit.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ softmmu/dirtylimit.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index 3c275ee55b..e3ff53b8fc 100644
+index e3ff53b8fc..fa959d7743 100644
 --- a/softmmu/dirtylimit.c
 +++ b/softmmu/dirtylimit.c
-@@ -653,7 +653,8 @@ struct DirtyLimitInfoList *qmp_query_vcpu_dirty_limit(Error **errp)
- 
- void hmp_info_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
- {
--    DirtyLimitInfoList *limit, *head, *info = NULL;
-+    DirtyLimitInfoList *info;
-+    g_autoptr(DirtyLimitInfoList) head = NULL;
-     Error *err = NULL;
- 
-     if (!dirtylimit_in_service()) {
-@@ -661,20 +662,17 @@ void hmp_info_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
-         return;
+@@ -100,7 +100,7 @@ static void vcpu_dirty_rate_stat_collect(void)
+             stat.rates[i].dirty_rate;
      }
  
--    info = qmp_query_vcpu_dirty_limit(&err);
-+    head = qmp_query_vcpu_dirty_limit(&err);
-     if (err) {
-         hmp_handle_error(mon, err);
-         return;
-     }
- 
--    head = info;
--    for (limit = head; limit != NULL; limit = limit->next) {
-+    for (info = head; info != NULL; info = info->next) {
-         monitor_printf(mon, "vcpu[%"PRIi64"], limit rate %"PRIi64 " (MB/s),"
-                             " current rate %"PRIi64 " (MB/s)\n",
--                            limit->value->cpu_index,
--                            limit->value->limit_rate,
--                            limit->value->current_rate);
-+                            info->value->cpu_index,
-+                            info->value->limit_rate,
-+                            info->value->current_rate);
-     }
--
--    g_free(info);
+-    free(stat.rates);
++    g_free(stat.rates);
  }
+ 
+ static void *vcpu_dirty_rate_stat_thread(void *opaque)
+@@ -171,10 +171,10 @@ void vcpu_dirty_rate_stat_initialize(void)
+ 
+ void vcpu_dirty_rate_stat_finalize(void)
+ {
+-    free(vcpu_dirty_rate_stat->stat.rates);
++    g_free(vcpu_dirty_rate_stat->stat.rates);
+     vcpu_dirty_rate_stat->stat.rates = NULL;
+ 
+-    free(vcpu_dirty_rate_stat);
++    g_free(vcpu_dirty_rate_stat);
+     vcpu_dirty_rate_stat = NULL;
+ }
+ 
+@@ -220,10 +220,10 @@ void dirtylimit_state_initialize(void)
+ 
+ void dirtylimit_state_finalize(void)
+ {
+-    free(dirtylimit_state->states);
++    g_free(dirtylimit_state->states);
+     dirtylimit_state->states = NULL;
+ 
+-    free(dirtylimit_state);
++    g_free(dirtylimit_state);
+     dirtylimit_state = NULL;
+ 
+     trace_dirtylimit_state_finalize();
 -- 
 2.39.3
 
