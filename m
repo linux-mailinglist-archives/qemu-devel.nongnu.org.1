@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DC0788158
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B1F78815B
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZRgy-0001e1-Im; Fri, 25 Aug 2023 03:57:16 -0400
+	id 1qZRhO-0001so-IC; Fri, 25 Aug 2023 03:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qZRgw-0001dj-BF; Fri, 25 Aug 2023 03:57:14 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ id 1qZRhM-0001sV-H3; Fri, 25 Aug 2023 03:57:40 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qZRgu-00024Z-4r; Fri, 25 Aug 2023 03:57:14 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2b9b50be31aso8472401fa.3; 
- Fri, 25 Aug 2023 00:57:11 -0700 (PDT)
+ id 1qZRhK-00027o-Ac; Fri, 25 Aug 2023 03:57:40 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-5008d16cc36so919168e87.2; 
+ Fri, 25 Aug 2023 00:57:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692950229; x=1693555029;
+ d=gmail.com; s=20221208; t=1692950255; x=1693555055;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=saeE748hguQnvRRlOHEeA4K4mKZcwDQK6XDGTasI0Io=;
- b=PCR6hwpB9knXenkUYf6BfMrvv46OxJcQ6xbbjbxSS03qxUGvO5d1nj3OKQXwjO+dGL
- 3jadR5kzngz+pVJEPZ5NzpDM/X6yW/eo2k8tnFXFeoLIM+FzPecpEiqJOptUGFxIMrFt
- 8+E16km7QM/3ohVgFvzb9iabHXPRKhIY0ZtaDX5szkmzCXr+2WbMp1INXpkJ7hf0G9IB
- K3rEHCYunvTacsPMH96gmdKiJpJ2VbOqmMyiTelmlJPBKS0KbcVSLhEy7uv9PmNQ1qqU
- Mt/mXdXoGjxHicpPtx12VzltkRRoVq1iTQ3sG8+n98Bo0oAWk2q+P39994oBeAD0xUHj
- iSjw==
+ bh=HTbvxrTgujyUc1hywZH9T9OGM3UOj1wjie6m5GrjsGU=;
+ b=IjgAcaAGmtFeMJI0scX6VWSVQAjMv7+15IrMD015QzKk9K5HJ7ItrrMb3BiArp1n1h
+ 3jPEx2Gmj5iPsH28ICkTDWSHCANov4NpRJQxNGWQHhBgrifq/19EoU8K4TkDQEeFHgy4
+ MbkkniMDNBtfCt3stZlc7tinv+uYViRNlSY868tAxauoSSCqaj0e2giFArS6H8qbQ9SB
+ DjlwwTRM/G3J5vAmTN90gePCaPjCp4MSuIcdp+RbLqph1z2x3D2g66V+Jb3LOZiIVqjg
+ YM7pT1m95PWsOflGa6yWVHYmJ74r8OwcJIom+4X9NLEOi1fuvINR3OS6F7fcpdTiMjvM
+ WZvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692950229; x=1693555029;
+ d=1e100.net; s=20221208; t=1692950255; x=1693555055;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=saeE748hguQnvRRlOHEeA4K4mKZcwDQK6XDGTasI0Io=;
- b=WE7rI4P74OUa1vWew+S8aEJ4SatAVhhUV7DSd+yxuL8iUddW9rDWaAOt7ahXYFSY31
- DZUCYEQ9ePwUsgZ4VQ1sXY7hxLBWSBNLMp3QeANv+733Fe77IOzjJ/Zv9qxgByWctrQc
- 0DcJm9wi3Nb9nr6NO6H6bBJ0CE7PcPWIOkG3z+Ed8EUALly+d2xlR7k8/FhMzG0z0i58
- OcNqg5JV4InlMV/uOV2lYDJrpJeL9vnmVCCC70ae1cDs7r4T83hVruffogevQabzfH1/
- KtPPtX17MRObVswzdSLQczG3INHq/y892D2KN5IVEjOaAL9nxyQ08uMKsL0W1jAoaW5w
- tMJQ==
-X-Gm-Message-State: AOJu0YzaTQ7vfA3ZFJFs4hJhYAFMmWOIkjhyqZ4IdSxmBrlgUy3njWHe
- jDhk8AaID37lPfgZ3CFAYY8=
-X-Google-Smtp-Source: AGHT+IGmzkJ9AiV7CR6aWousM027iunpFvIfKfokeIPrIuSBunH09uC8v9il5TJRjiVqVMRJB5z+2w==
-X-Received: by 2002:a05:6512:3d17:b0:4fe:c6c:ac95 with SMTP id
- d23-20020a0565123d1700b004fe0c6cac95mr15149788lfv.35.1692950229254; 
- Fri, 25 Aug 2023 00:57:09 -0700 (PDT)
+ bh=HTbvxrTgujyUc1hywZH9T9OGM3UOj1wjie6m5GrjsGU=;
+ b=bSbMVWdLbCn4wB/572HPaTuAjZggXA5Qa/lj+5IXmF8QqOnX9bi8ZDEpHTptGPZ8+0
+ P0cxPwISTcAGU8FjoRe1OsohcHMBTyX+K+Ti/cDV9ShEoKblYFMgRlsSMF8upr7CRB6w
+ HkYLHw3hEoIJ1XcdSD5yuA+WZeiisVNg/tQxwlht/n0JwVNJfNo7DGQRNCgSi6sOxp6R
+ zU4g73fyfhwqtfQFi1m3T55BNIdoP0avLTubhlS6OhM5k76IZNaVtsTwp9NtXqW4ihDC
+ ON9DGzp0ronIZk2Z0WA8RdQUOmxhNxMd4IwVLAJU8uFx11HAsIB31xQbcCznF9FHNDXy
+ plBg==
+X-Gm-Message-State: AOJu0YxDsLb3zgUG2g9kJt6OhcmFH5si4i729kYgQ/dYY6n0UPOpLS/6
+ O5RgWuJCrooN8eeXDlqQYyw=
+X-Google-Smtp-Source: AGHT+IEWYoqgRH7YbbR3/PLdUVlm2QnAoJ+nbccOrOSKL6p0iYEQd/rqpGHYn700nGi/aGGOnmznHQ==
+X-Received: by 2002:a05:6512:318a:b0:4fe:1d88:2c61 with SMTP id
+ i10-20020a056512318a00b004fe1d882c61mr16389339lfe.32.1692950255283; 
+ Fri, 25 Aug 2023 00:57:35 -0700 (PDT)
 Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
  by smtp.gmail.com with ESMTPSA id
- i11-20020a056512006b00b004fbad682ffesm193545lfo.88.2023.08.25.00.57.08
+ h12-20020a19700c000000b005009aa86582sm189391lfc.55.2023.08.25.00.57.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 00:57:09 -0700 (PDT)
-Date: Fri, 25 Aug 2023 09:57:07 +0200
+ Fri, 25 Aug 2023 00:57:34 -0700 (PDT)
+Date: Fri, 25 Aug 2023 09:57:33 +0200
 From: Francisco Iglesias <frasse.iglesias@gmail.com>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
  Jiri Pirko <jiri@resnulli.us>, qemu-ppc@nongnu.org
-Subject: Re: [PATCH 4/4] net/tap: Avoid variable-length array
-Message-ID: <20230825075707.GP6984@fralle-msi>
+Subject: Re: [PATCH 3/4] net/dump: Avoid variable length array
+Message-ID: <20230825075732.GQ6984@fralle-msi>
 References: <20230824153224.2517486-1-peter.maydell@linaro.org>
- <20230824153224.2517486-5-peter.maydell@linaro.org>
+ <20230824153224.2517486-4-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230824153224.2517486-5-peter.maydell@linaro.org>
+In-Reply-To: <20230824153224.2517486-4-peter.maydell@linaro.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -1020
 X-Spam_score: -102.1
 X-Spam_bar: ---------------------------------------------------
@@ -93,9 +93,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 Aug 24] Thu 16:32:24, Peter Maydell wrote:
-> Use a heap allocation instead of a variable length array in
-> tap_receive_iov().
+On [2023 Aug 24] Thu 16:32:23, Peter Maydell wrote:
+> Use a g_autofree heap allocation instead of a variable length
+> array in dump_receive_iov().
 > 
 > The codebase has very few VLAs, and if we can get rid of them all we
 > can make the compiler error on new additions.  This is a defensive
@@ -107,26 +107,22 @@ On [2023 Aug 24] Thu 16:32:24, Peter Maydell wrote:
 Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 
 > ---
->  net/tap.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  net/dump.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/net/tap.c b/net/tap.c
-> index 1bf085d4228..34b1e3f0918 100644
-> --- a/net/tap.c
-> +++ b/net/tap.c
-> @@ -117,10 +117,11 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
->  {
->      TAPState *s = DO_UPCAST(TAPState, nc, nc);
->      const struct iovec *iovp = iov;
-> -    struct iovec iov_copy[iovcnt + 1];
-> +    g_autofree struct iovec *iov_copy = NULL;
->      struct virtio_net_hdr_mrg_rxbuf hdr = { };
+> diff --git a/net/dump.c b/net/dump.c
+> index 7d05f16ca7a..16073f24582 100644
+> --- a/net/dump.c
+> +++ b/net/dump.c
+> @@ -68,7 +68,7 @@ static ssize_t dump_receive_iov(DumpState *s, const struct iovec *iov, int cnt,
+>      int64_t ts;
+>      int caplen;
+>      size_t size = iov_size(iov, cnt) - offset;
+> -    struct iovec dumpiov[cnt + 1];
+> +    g_autofree struct iovec *dumpiov = g_new(struct iovec, cnt + 1);
 >  
->      if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
-> +        iov_copy = g_new(struct iovec, iovcnt + 1);
->          iov_copy[0].iov_base = &hdr;
->          iov_copy[0].iov_len =  s->host_vnet_hdr_len;
->          memcpy(&iov_copy[1], iov, iovcnt * sizeof(*iov));
+>      /* Early return in case of previous error. */
+>      if (s->fd < 0) {
 > -- 
 > 2.34.1
 > 
