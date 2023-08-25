@@ -2,107 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7C27880FB
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FD7788104
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:39:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZRNW-00048G-1z; Fri, 25 Aug 2023 03:37:10 -0400
+	id 1qZRP6-00079S-8o; Fri, 25 Aug 2023 03:38:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qZRNT-00047n-Dz
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:37:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qZRNR-0006dN-6j
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:37:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692949023;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5u+5UB1yPzhwqHapJuzH2bAwocD05RZ8UuVQaOaePNk=;
- b=XtHW0Wz1ZRS8Y2YwRvBi+uKRM9eOEOPOX/KBpp7mUeAeZRYQdN0keRIE9VYKy4OmwEhSZD
- Dyo8jiyOHXg+kvdZV2i8Lck+7qYZm94pvyvyw9bT3nF/SD9OmsfJTVHyShar8jIMWuGuql
- fSOcEkreaCBLxVkb7UaPSru/oWNTtlM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-vwpgwRqLPtKbJtBKvtLXxQ-1; Fri, 25 Aug 2023 03:37:01 -0400
-X-MC-Unique: vwpgwRqLPtKbJtBKvtLXxQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fee703462dso5503325e9.2
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:37:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qZRP4-00070O-4i; Fri, 25 Aug 2023 03:38:46 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qZRP1-0006kt-RX; Fri, 25 Aug 2023 03:38:45 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68a440a8a20so596027b3a.3; 
+ Fri, 25 Aug 2023 00:38:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692949121; x=1693553921;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SlKNG7FuFzHEneUgzBD6cy+xvFnIDPBAozu/WWrCKG8=;
+ b=inM3w3yWbMeNy/3IuJwZTfMiYBojxXw2VWIlBraoT1Ln3X+8s6jNMveDHx/9VVPJHo
+ na0YHxOdQLY+/YesaWcwVRlw+wqAAKz6tsMQnN2RMA+21Olra1O3pr4YTrdaESJCNjZP
+ wkMPMAOfMMOSCI1+fXsLpnmxTdBaqWfdXRticDa4XSJCHuOYBPsXcr59hYYbhwLCOl/e
+ 1aYJ7juE158RDTu5wbsZInbXXe9bdHObY5cirxDQMiPgtGwWjnEQ44/bC6tqxPAphoqI
+ 0s5P/pKI7u0cC4xGzFCWKaLZGhfTwosceQiYSSedDIGfU6SR8hkeBkpq8BmgsY8i5E7C
+ B6Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692949020; x=1693553820;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5u+5UB1yPzhwqHapJuzH2bAwocD05RZ8UuVQaOaePNk=;
- b=daMJEZQp5zYCd/kDlxhX3WD0TVmjya8g+NO84IZyqaN0yLiXiPGOZ3lXuQZ4JY4deo
- eIjm60PEaNtD7EtzOI0mI/prCga7QuJ0pSCp5wheVoOZkWFFBflE/zZC1ZMIEHDLTMln
- /W+paUx5/+JLRgyncTnNTVQerkT8duz1U7rShk9zhSGGFFhkrmo+RSTnXWWVNPf5Zp0e
- cEXeSMvi0KDp5GVnUgLexZUUeIbyKfZBRgI6Nt3c33WfbohWLZzpCcU/DgkFHo7N475k
- CnnGlRGmBakNYlsZ/PG6XhGH18GQIrn0WFEFqycvSiieJiEAzFSnrvmOuUhQlBXxPkY2
- EzKg==
-X-Gm-Message-State: AOJu0YyhYIbYBaoSLevdzl5ur1PvqOail7j31ly11E+NZVnwwVS0IlOj
- /BV/RhxpCDMWGulLIZ4T6snce43Z6shCs/91r3EUAVzHFwJExOK5edJ0TrqBm/RyYEgdyvfSYSa
- m47gJAD32XDxsEog=
-X-Received: by 2002:adf:cf02:0:b0:317:6b0d:1b1 with SMTP id
- o2-20020adfcf02000000b003176b0d01b1mr13725154wrj.4.1692949020558; 
- Fri, 25 Aug 2023 00:37:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfk6XNN+JUzGmN+1JQsQI19VltMiZJW88NsXjFY/ULK4tKdfNl9AhU3U1vuJMZ5JpPNRNi9A==
-X-Received: by 2002:adf:cf02:0:b0:317:6b0d:1b1 with SMTP id
- o2-20020adfcf02000000b003176b0d01b1mr13725133wrj.4.1692949020175; 
- Fri, 25 Aug 2023 00:37:00 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70e:9200:ce93:b5e6:8aa9:65d4?
- (p200300cbc70e9200ce93b5e68aa965d4.dip0.t-ipconnect.de.
- [2003:cb:c70e:9200:ce93:b5e6:8aa9:65d4])
- by smtp.gmail.com with ESMTPSA id
- q9-20020adfea09000000b0031c5ee51638sm1391689wrm.109.2023.08.25.00.36.59
+ d=1e100.net; s=20221208; t=1692949121; x=1693553921;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=SlKNG7FuFzHEneUgzBD6cy+xvFnIDPBAozu/WWrCKG8=;
+ b=aOib9CadqwDYCNYMvKTt7SBPjQTOJQu85udq6vOfIzz/REydfsi0DgbTVv3VF7EVe4
+ WjwITKORTZHaozy/kloCyqwz8encs7LcM8vbZuAix4FRcKAfwkHbqeYiCr8oMXXdoBsI
+ d65VRvVZxovvv++5mvN54g5ZmkY2NV3a+/0PXLDlhqJfdB2IFrDEi445PiHFokcig3EL
+ yX7fJnNZ6QMS4VjcNxS/tpUyGZwJJzTyMDNwilZ4h7mPGdzCyJuORJ52BTZsW62zR8IB
+ ajF2tIj3+SbuVE5dS3sI/Yg7ncjJOuQx7ow/n0AgUGRkn54AHmLGoEDiCcRvZu/ukJBM
+ 5a3w==
+X-Gm-Message-State: AOJu0YxrT+n4efdfvjdth5EB+c9ucU5HBgMUGTgAXrwsMjRLhTMSrAEh
+ qgj0YiWdidiTrYid8KMEK5Y=
+X-Google-Smtp-Source: AGHT+IEtXhI4J+G7n2E0ve7iruBGgAcGCo/Gvs9ERHEXcDRe8D8C5P3Tgty/cNe9hYn/3tQ9j9uNcw==
+X-Received: by 2002:a05:6a00:190e:b0:68b:bf47:d7b0 with SMTP id
+ y14-20020a056a00190e00b0068bbf47d7b0mr8555979pfi.3.1692949121101; 
+ Fri, 25 Aug 2023 00:38:41 -0700 (PDT)
+Received: from localhost ([1.146.69.243]) by smtp.gmail.com with ESMTPSA id
+ e12-20020aa7824c000000b0068bc6a75848sm895227pfn.156.2023.08.25.00.38.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 00:36:59 -0700 (PDT)
-Message-ID: <e81b5069-e49a-cfb4-bea9-3c7ab6a358ca@redhat.com>
-Date: Fri, 25 Aug 2023 09:36:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: ThinerLogoer <logoerthiner1@163.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230823153412.832081-1-david@redhat.com>
- <20230823153412.832081-12-david@redhat.com>
- <209b4b8c.54bc.18a2b7b6f53.Coremail.logoerthiner1@163.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v3 11/11] machine: Improve error message when using
- default RAM backend id
-In-Reply-To: <209b4b8c.54bc.18a2b7b6f53.Coremail.logoerthiner1@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.919, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ Fri, 25 Aug 2023 00:38:40 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Aug 2023 17:38:31 +1000
+Message-Id: <CV1GDHA1R3DJ.1LZ6DG73V2VVU@wheely>
+Cc: "Song Gao" <gaosong@loongson.cn>, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, "Richard Henderson"
+ <richard.henderson@linaro.org>, "Greg Kurz" <groug@kaod.org>, "Aurelien
+ Jarno" <aurelien@aurel32.net>, <qemu-ppc@nongnu.org>, "Peter Maydell"
+ <peter.maydell@linaro.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>, "Aleksandar Rikalo"
+ <aleksandar.rikalo@syrmia.com>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ "David Gibson" <david@gibson.dropbear.id.au>, "Jiaxun Yang"
+ <jiaxun.yang@flygoat.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "Yoshinori Sato" <ysato@users.sourceforge.jp>, "Xiaojuan
+ Yang" <yangxiaojuan@loongson.cn>, <qemu-arm@nongnu.org>
+Subject: Re: [PATCH 07/12] target/ppc: Use generic hrev64_i64() in BRH /
+ BSWAP16x8 opcodes
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230822124042.54739-1-philmd@linaro.org>
+ <20230822125332.55086-1-philmd@linaro.org>
+In-Reply-To: <20230822125332.55086-1-philmd@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,76 +102,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.08.23 08:57, ThinerLogoer wrote:
-> Hello,
-> 
-> At 2023-08-23 23:34:11, "David Hildenbrand" <david@redhat.com> wrote:
->> For migration purposes, users might want to reuse the default RAM
->> backend id, but specify a different memory backend.
->>
->> For example, to reuse "pc.ram" on q35, one has to set
->>     -machine q35,memory-backend=pc.ram
->> Only then, can a memory backend with the id "pc.ram" be created
->> manually.
->>
->> Let's improve the error message.
->>
->> Unfortuantely, we cannot use error_append_hint(), because the caller
->> passes &error_fatal.
->>
->> Suggested-by: ThinerLogoer <logoerthiner1@163.com>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->> hw/core/machine.c | 4 +++-
->> 1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/core/machine.c b/hw/core/machine.c
->> index f0d35c6401..dbcd124d45 100644
->> --- a/hw/core/machine.c
->> +++ b/hw/core/machine.c
->> @@ -1382,7 +1382,9 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
->>                                   machine_class->default_ram_id)) {
->>              error_setg(errp, "object name '%s' is reserved for the default"
->>                  " RAM backend, it can't be used for any other purposes."
->> -                " Change the object's 'id' to something else",
->> +                " Change the object's 'id' to something else or disable"
->> +                " automatic creation of the default RAM backend by setting"
->> +                " the 'memory-backend' machine property",
->>                  machine_class->default_ram_id);
->>              return;
->>          }
-> 
-> I'd suggest a more explicit version:
-> 
->                  " Change the object's 'id' to something else or disable"
->                  " automatic creation of the default RAM backend by appending"
->                  "  'memory-backend={machine_class->default_ram_id}' in '-machine' arguments",
+On Tue Aug 22, 2023 at 10:53 PM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  target/ppc/translate.c              | 10 +---------
+>  target/ppc/translate/vsx-impl.c.inc | 19 ++-----------------
+>  2 files changed, 3 insertions(+), 26 deletions(-)
+>
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 74796ec7ba..91a9ec2d1c 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -6435,15 +6435,7 @@ static void gen_brw(DisasContext *ctx)
+>  /* brh */
+>  static void gen_brh(DisasContext *ctx)
+>  {
+> -    TCGv_i64 mask =3D tcg_constant_i64(0x00ff00ff00ff00ffull);
+> -    TCGv_i64 t1 =3D tcg_temp_new_i64();
+> -    TCGv_i64 t2 =3D tcg_temp_new_i64();
+> -
+> -    tcg_gen_shri_i64(t1, cpu_gpr[rS(ctx->opcode)], 8);
+> -    tcg_gen_and_i64(t2, t1, mask);
+> -    tcg_gen_and_i64(t1, cpu_gpr[rS(ctx->opcode)], mask);
+> -    tcg_gen_shli_i64(t1, t1, 8);
+> -    tcg_gen_or_i64(cpu_gpr[rA(ctx->opcode)], t1, t2);
+> +    tcg_gen_hrev64_i64(cpu_gpr[rA(ctx->opcode)], cpu_gpr[rS(ctx->opcode)=
+]);
+>  }
+>  #endif
+> =20
+> diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/v=
+sx-impl.c.inc
+> index 0f5b0056f1..639ab7f1bc 100644
+> --- a/target/ppc/translate/vsx-impl.c.inc
+> +++ b/target/ppc/translate/vsx-impl.c.inc
+> @@ -154,23 +154,8 @@ static void gen_lxvdsx(DisasContext *ctx)
+>  static void gen_bswap16x8(TCGv_i64 outh, TCGv_i64 outl,
+>                            TCGv_i64 inh, TCGv_i64 inl)
+>  {
+> -    TCGv_i64 mask =3D tcg_constant_i64(0x00FF00FF00FF00FF);
+> -    TCGv_i64 t0 =3D tcg_temp_new_i64();
+> -    TCGv_i64 t1 =3D tcg_temp_new_i64();
+> -
+> -    /* outh =3D ((inh & mask) << 8) | ((inh >> 8) & mask) */
+> -    tcg_gen_and_i64(t0, inh, mask);
+> -    tcg_gen_shli_i64(t0, t0, 8);
+> -    tcg_gen_shri_i64(t1, inh, 8);
+> -    tcg_gen_and_i64(t1, t1, mask);
+> -    tcg_gen_or_i64(outh, t0, t1);
+> -
+> -    /* outl =3D ((inl & mask) << 8) | ((inl >> 8) & mask) */
+> -    tcg_gen_and_i64(t0, inl, mask);
+> -    tcg_gen_shli_i64(t0, t0, 8);
+> -    tcg_gen_shri_i64(t1, inl, 8);
+> -    tcg_gen_and_i64(t1, t1, mask);
+> -    tcg_gen_or_i64(outl, t0, t1);
+> +    tcg_gen_hrev64_i64(outh, inh);
+> +    tcg_gen_hrev64_i64(outl, inl);
+>  }
+> =20
+>  static void gen_bswap32x4(TCGv_i64 outh, TCGv_i64 outl,
 
-
-Thanks, I'll do:
-
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index f0d35c6401..cd0fd6cdd1 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1382,8 +1382,10 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
-                                   machine_class->default_ram_id)) {
-              error_setg(errp, "object name '%s' is reserved for the default"
-                  " RAM backend, it can't be used for any other purposes."
--                " Change the object's 'id' to something else",
--                machine_class->default_ram_id);
-+                " Change the object's 'id' to something else or disable"
-+                " automatic creation of the default RAM backend by appending"
-+                " 'memory-backend=%s' in '-machine' arguments",
-+                machine_class->default_ram_id, machine_class->default_ram_id);
-              return;
-          }
-          if (!create_default_memdev(current_machine, mem_path, errp)) {
-
-
--- 
-Cheers,
-
-David / dhildenb
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 
