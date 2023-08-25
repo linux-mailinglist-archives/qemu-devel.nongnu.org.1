@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5255178882D
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D6978882C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:13:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZWZE-0001kO-Vu; Fri, 25 Aug 2023 09:09:37 -0400
+	id 1qZWZE-0001ju-Lu; Fri, 25 Aug 2023 09:09:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWZ8-0001h3-PM
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:31 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1qZWZA-0001ii-RF
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:34 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWZ4-0006xo-FY
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:29 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1c4cf775a14so544228fac.3
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:09:25 -0700 (PDT)
+ id 1qZWZ8-0006yK-HO
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:32 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1cca7cf6e01so551278fac.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:09:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692968964; x=1693573764;
+ d=ventanamicro.com; s=google; t=1692968968; x=1693573768;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uDur86/hFN6MunBpOuosMi+pkfy+1hOmhDQYc+du5ag=;
- b=SEq7c0LBB5k4Xsc016W7NScyNuHPhLJdQtwHa3O745/isRAq3bx1rjYdoVQNfcVUPv
- GPn1QbKn49RDc0MbxgapOpwO52k8ODXGQ5asR6Ho/pgSAHnYdMJgJdpfhaPP/3xAqqyF
- z0pzeA96SK/VT6BbrqhuT3Bjh4G2tY0dntCWVEyF/6nxrANc0nMVMEYGQvZlqv8Fi7CP
- wt3761tWLtGoQbY6ujT/udn2QStzTE4WcbNds/vy9QfF0Rg8hwwsCwhcw9US9KkjfKPy
- KeWejAz4J/U2o01GpiE80aW++b8uAORL+HWB9h3HtVzY+fJP5P+KKwm5Ze2EJTAeZHc4
- Z12Q==
+ bh=3vEnujRBMedK459fERI6xs0cZ9g5BeVCTK4ijylJEkY=;
+ b=A+Fs9Y1/agCDcKusjmIyP10O+UeloFbaemReY+0AD59NY9T8YRjvT8FBXA/HE+Y6Qr
+ 51Jafxdn+xKBu9YgmXAnKd8Dvu1I5CxYUwYkrcXHZNQ32Asfk7rotyZu2Qt9dZ/P+QhR
+ Cv2zoTktGlwPD8l1TCtd+kH3nX9K8rCglrIJSl/wvvxz4Li5nascOktL683G8iWHqj4c
+ 6m3uxh3DPvejhko3r7vZaGAfAr6taYgXJJVmSyRb+cr4LfsoQcr9+MRZearfie1tbKUP
+ 7iq4rKH2V+wMH9heoczXTtcuEuVa+k2Faw9PkFK+TfBZZYSW5ATV+O5vkE6qVK2+gp5j
+ omeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692968964; x=1693573764;
+ d=1e100.net; s=20221208; t=1692968968; x=1693573768;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uDur86/hFN6MunBpOuosMi+pkfy+1hOmhDQYc+du5ag=;
- b=kmne6Ol48AszXAsz/uaPT7awoxiZL/dANaNdE6ia8s+olE1HQapxYc2glRqqKy9amk
- c23EykRE3ELN76kGDa3UL+jtd2FcadJFmaoKlqgTiZAjjZT3s0dT18rMOwiZNr8/DThr
- f0pA0vtVKEhbKBQrlpCetGQc5ch7o6NyXj3gg2MpdQsQ87hJFKNHKDLZSxZzteBtg/Rp
- eIHE5wNc+SOwQDmMZb4um3mPOoVSl38+SUWjub3P85TPdrYEAGPoekD0lUg6HrEMcORc
- JXNwrykuv6tn88+Zbj1Lr8n37PhpMeM4IYWSN8QwxHeJ6NJt22tfefMxDJovreN4+L7p
- O7Yw==
-X-Gm-Message-State: AOJu0YxcGwb5s3L8kQ1Rzsu2kXkRPH3tBS1AY9qYB2eCZZ8G/AzhofXF
- PLODrVMQhINg2SiWDU0I5IDgb4/5so2o6zR+f4w=
-X-Google-Smtp-Source: AGHT+IFjTuPVc16WEUsZ6jj5wS2kUSankwKNCfBWC9+wq4+ltRgSOWBObAR1FdOh55VnearfLVOOBA==
-X-Received: by 2002:a05:6870:8188:b0:1cc:c744:d327 with SMTP id
- k8-20020a056870818800b001ccc744d327mr3230461oae.44.1692968964536; 
- Fri, 25 Aug 2023 06:09:24 -0700 (PDT)
+ bh=3vEnujRBMedK459fERI6xs0cZ9g5BeVCTK4ijylJEkY=;
+ b=Zzrf7LjCru41Tdovh41osV8Y4YkwI/IzoXk12lnTpkOGkE5hHhnz5ldqrZ3XBU/u9d
+ rSZMdBpslsoEqvVN5gJHaxH24MCQ/VLr1rHv2nCJGC4BLxXIQlEgoDOLFgze+5E12yen
+ VCa2/iV+Vzsw1kpgQkX/gtJ7FlYILoKZbhkxZMQcdvaxUjQLNgp8HmO5bUKPlavbog93
+ XQP5MvPiV3oKdclHXAq0tJOPfiPDVA8ZC4wNDeAUCUrzIHkMLYT+5wUFaKlZ5s7LbPWj
+ plS33/El3sFVqYRYIiP4RqsVNjt1hco+Xq5ceqDe6JPqt9DwPwheRK9Z0OS8bRCriUUY
+ gmSQ==
+X-Gm-Message-State: AOJu0Yyq7cC1kAXZHnTFzieG/9WEAAIOR7DL/EaCihA8t/N/SEN7QbRw
+ G4Ij+vpHCmS2s5RVTT3zFaQu2dk3Z6OW7jpaxlQ=
+X-Google-Smtp-Source: AGHT+IGfkw0mv/ZfcouqEipb0zWUqKhwEEPCwPJnvDNZb1gP5Wlft7KcGL8RP3AtLON3tyBCGWManQ==
+X-Received: by 2002:a05:6870:fb93:b0:1b5:688b:5c24 with SMTP id
+ kv19-20020a056870fb9300b001b5688b5c24mr3043648oab.32.1692968968051; 
+ Fri, 25 Aug 2023 06:09:28 -0700 (PDT)
 Received: from grind.. ([179.93.21.19]) by smtp.gmail.com with ESMTPSA id
- ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.09.21
+ ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.09.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 06:09:24 -0700 (PDT)
+ Fri, 25 Aug 2023 06:09:27 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 08/20] target/riscv: move 'host' CPU declaration to kvm.c
-Date: Fri, 25 Aug 2023 10:08:41 -0300
-Message-ID: <20230825130853.511782-9-dbarboza@ventanamicro.com>
+Subject: [PATCH 09/20] target/riscv/cpu.c: mark extensions arrays as 'const'
+Date: Fri, 25 Aug 2023 10:08:42 -0300
+Message-ID: <20230825130853.511782-10-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230825130853.511782-1-dbarboza@ventanamicro.com>
 References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,103 +92,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This CPU only exists if we're compiling with KVM so move it to the kvm
-specific file. While we're at it, change its class_init() to enable the
-user_extensions_flag class property, sparing us from having to execute
-riscv_cpu_add_user_properties() by hand and letting the post_init() hook
-do the work.
+We'll need to export these arrays to the accelerator classes in the next
+patches. Mark them as 'const' now to minimize changes in the future.
+
+Note that 'riscv_cpu_options' will also be exported, but can't be marked
+as 'const', because the properties are changed via
+qdev_property_add_static().
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 23 -----------------------
- target/riscv/kvm.c | 29 +++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+), 23 deletions(-)
+ target/riscv/cpu.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f67b782675..dbf81796d2 100644
+index dbf81796d2..4eda853f1d 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -655,19 +655,6 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
+@@ -1381,7 +1381,7 @@ typedef struct RISCVCPUMultiExtConfig {
+     {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
+      .enabled = _defval}
+ 
+-static RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
++static const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
+     MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
+@@ -1441,7 +1441,7 @@ static RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+-static RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
++static const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+     MULTI_EXT_CFG_BOOL("xtheadba", ext_xtheadba, false),
+     MULTI_EXT_CFG_BOOL("xtheadbb", ext_xtheadbb, false),
+     MULTI_EXT_CFG_BOOL("xtheadbs", ext_xtheadbs, false),
+@@ -1459,7 +1459,7 @@ static RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
+ };
+ 
+ /* These are experimental so mark with 'x-' */
+-static RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
++static const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+     MULTI_EXT_CFG_BOOL("x-zicond", ext_zicond, false),
+ 
+     /* ePMP 0.9.3 */
+@@ -1532,7 +1532,7 @@ static void cpu_get_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
  }
+ 
+ static void cpu_add_multi_ext_prop(Object *cpu_obj,
+-                                   RISCVCPUMultiExtConfig *multi_cfg)
++                                   const RISCVCPUMultiExtConfig *multi_cfg)
+ {
+     object_property_add(cpu_obj, multi_cfg->name, "bool",
+                         cpu_get_multi_ext_cfg,
+@@ -1568,9 +1568,11 @@ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
  #endif
  
--#if defined(CONFIG_KVM)
--static void riscv_host_cpu_init(Object *obj)
--{
--    CPURISCVState *env = &RISCV_CPU(obj)->env;
--#if defined(TARGET_RISCV32)
--    set_misa(env, MXL_RV32, 0);
--#elif defined(TARGET_RISCV64)
--    set_misa(env, MXL_RV64, 0);
--#endif
--    riscv_cpu_add_user_properties(obj);
--}
--#endif /* CONFIG_KVM */
--
- static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
+ static void riscv_cpu_add_multiext_prop_array(Object *obj,
+-                                              RISCVCPUMultiExtConfig *array)
++                                        const RISCVCPUMultiExtConfig *array)
  {
-     ObjectClass *oc;
-@@ -2000,13 +1987,6 @@ static void riscv_vendor_cpu_class_init(ObjectClass *c, void *data)
-     rcc->user_extension_properties = false;
+-    for (RISCVCPUMultiExtConfig *prop = array; prop && prop->name; prop++) {
++    const RISCVCPUMultiExtConfig *prop;
++
++    for (prop = array; prop && prop->name; prop++) {
+         cpu_add_multi_ext_prop(obj, prop);
+     }
+ }
+@@ -1594,9 +1596,11 @@ static void riscv_cpu_add_kvm_unavail_prop(Object *obj, const char *prop_name)
  }
  
--#define DEFINE_CPU(type_name, initfn)      \
--    {                                      \
--        .name = type_name,                 \
--        .parent = TYPE_RISCV_CPU,          \
--        .instance_init = initfn            \
--    }
--
- #define DEFINE_DYNAMIC_CPU(type_name, initfn) \
-     {                                         \
-         .name = type_name,                    \
-@@ -2047,9 +2027,6 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     },
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
--#if defined(CONFIG_KVM)
--    DEFINE_CPU(TYPE_RISCV_CPU_HOST,             riscv_host_cpu_init),
--#endif
- #if defined(TARGET_RISCV32)
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,   rv32_base_cpu_init),
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_IBEX,             rv32_ibex_cpu_init),
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 7c6dec05e3..59004caa8e 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -1217,3 +1217,32 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
- 
-     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
+ static void riscv_cpu_add_kvm_unavail_prop_array(Object *obj,
+-                                                 RISCVCPUMultiExtConfig *array)
++                                        const RISCVCPUMultiExtConfig *array)
+ {
+-    for (RISCVCPUMultiExtConfig *prop = array; prop && prop->name; prop++) {
++    const RISCVCPUMultiExtConfig *prop;
++
++    for (prop = array; prop && prop->name; prop++) {
+         riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
+     }
  }
-+
-+static void riscv_host_cpu_init(Object *obj)
-+{
-+    CPURISCVState *env = &RISCV_CPU(obj)->env;
-+
-+#if defined(TARGET_RISCV32)
-+    env->misa_mxl_max = env->misa_mxl = MXL_RV32;
-+#elif defined(TARGET_RISCV64)
-+    env->misa_mxl_max = env->misa_mxl = MXL_RV64;
-+#endif
-+}
-+
-+static void riscv_kvm_cpu_class_init(ObjectClass *c, void *data)
-+{
-+    RISCVCPUClass *rcc = RISCV_CPU_CLASS(c);
-+
-+    rcc->user_extension_properties = true;
-+}
-+
-+static const TypeInfo riscv_kvm_cpu_type_infos[] = {
-+    {
-+        .name = TYPE_RISCV_CPU_HOST,
-+        .parent = TYPE_RISCV_CPU,
-+        .instance_init = riscv_host_cpu_init,
-+        .class_init = riscv_kvm_cpu_class_init,
-+    }
-+};
-+
-+DEFINE_TYPES(riscv_kvm_cpu_type_infos)
+@@ -1659,7 +1663,7 @@ static void riscv_init_max_cpu_extensions(Object *obj)
+ {
+     RISCVCPU *cpu = RISCV_CPU(obj);
+     CPURISCVState *env = &cpu->env;
+-    RISCVCPUMultiExtConfig *prop;
++    const RISCVCPUMultiExtConfig *prop;
+ 
+     /* Enable RVG, RVJ and RVV that are disabled by default */
+     set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
 -- 
 2.41.0
 
