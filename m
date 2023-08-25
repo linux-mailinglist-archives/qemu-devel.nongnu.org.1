@@ -2,53 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CCE7886FE
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 14:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070A578870D
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 14:22:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZVlO-00018G-Ek; Fri, 25 Aug 2023 08:18:06 -0400
+	id 1qZVp2-000417-Qh; Fri, 25 Aug 2023 08:21:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qZVlL-000178-NB; Fri, 25 Aug 2023 08:18:03 -0400
-Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
+ (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
+ id 1qZVoT-0003vw-Mo; Fri, 25 Aug 2023 08:21:22 -0400
+Received: from relay3-d.mail.gandi.net ([2001:4b98:dc4:8::223])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qZVlH-0003rS-6N; Fri, 25 Aug 2023 08:18:03 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R861e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=15; SR=0;
- TI=SMTPD_---0VqXSP.6_1692965863; 
-Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VqXSP.6_1692965863) by smtp.aliyun-inc.com;
- Fri, 25 Aug 2023 20:17:44 +0800
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: Alistair.Francis@wdc.com, palmer@dabbelt.com, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- richard.henderson@linaro.org, pbonzini@redhat.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org,
- ajones@ventanamicro.com
-Subject: [RFC PATCH 3/3] softmmu/vl: Add qemu_cpu_opts QemuOptsList
-Date: Fri, 25 Aug 2023 20:16:51 +0800
-Message-Id: <20230825121651.1534-4-zhiwei_liu@linux.alibaba.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20230825121651.1534-1-zhiwei_liu@linux.alibaba.com>
-References: <20230825121651.1534-1-zhiwei_liu@linux.alibaba.com>
+ (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
+ id 1qZVoP-0004v8-Ib; Fri, 25 Aug 2023 08:21:17 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3C14460003;
+ Fri, 25 Aug 2023 12:21:06 +0000 (UTC)
+From: Jean-Christophe Dubois <jcd@tribudubois.net>
+To: qemu-arm@nongnu.org
+Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v4 0/6] Complete i.MX6UL and i.MX7 processor for bare metal
+ application.
+Date: Fri, 25 Aug 2023 14:20:50 +0200
+Message-Id: <cover.1692964891.git.jcd@tribudubois.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.111;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-111.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-GND-Sasl: jcd@tribudubois.net
+Received-SPF: pass client-ip=2001:4b98:dc4:8::223;
+ envelope-from=jcd@tribudubois.net; helo=relay3-d.mail.gandi.net
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,144 +53,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This make the cpu works the similar way like the -device option.
+This patch adds a few unimplemented TZ devices (TZASC and CSU) to
+i.MX6UL and i.MX7 processors to avoid bare metal application to
+experiment "bus error" when acccessing these devices.
 
-For device option,
-"""
-./qemu-system-riscv64 -device e1000,help
-e1000 options:
-  acpi-index=<uint32>    -  (default: 0)
-  addr=<int32>           - Slot and optional function number, example: 06.0 or 06 (default: -1)
-  autonegotiation=<bool> - on/off (default: true)
-  bootindex=<int32>
-  extra_mac_registers=<bool> - on/off (default: true)
-  failover_pair_id=<str>
-"""
+It also adds some internal memory segments (OCRAM) to the i.MX7 to
+allow bare metal application to use them.
 
-After this patch, the cpu can output its configurations,
-"""
-./qemu-system-riscv64 -cpu rv64,help
-Enable extension:
-	rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zba_zbb_zbc_zbs_sstc_svadu
-"""
+Last, it adds the SRC device to the i.MX7 processor to allow bare
+metal application to start the secondary Cortex-A7 core.
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- cpu.c                 |  2 +-
- include/hw/core/cpu.h | 11 +++++++++++
- softmmu/vl.c          | 35 +++++++++++++++++++++++++++++++++++
- 3 files changed, 47 insertions(+), 1 deletion(-)
+Note: When running Linux inside Qemu, the secondary core is started
+by calling PSCI API and Qemu is emulating PSCI without needing access
+to the SRC device. This is why Linux is using the 2 cores in Qemu
+even if the SRC is not implemented. This is not the case when running
+bare metal application (like u-boot itself) that do not rely on the
+PSCI service being available.
 
-diff --git a/cpu.c b/cpu.c
-index 03a313cd72..712bd02684 100644
---- a/cpu.c
-+++ b/cpu.c
-@@ -257,7 +257,7 @@ void cpu_exec_initfn(CPUState *cpu)
- #endif
- }
- 
--static const char *cpu_type_by_name(const char *cpu_model)
-+const char *cpu_type_by_name(const char *cpu_model)
- {
-     ObjectClass *oc;
-     const char *cpu_type;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index fdcbe87352..49d41afdfa 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -657,6 +657,17 @@ CPUState *cpu_create(const char *typename);
-  */
- const char *parse_cpu_option(const char *cpu_option);
- 
-+/**
-+ * cpu_type_by_name:
-+ * @cpu_model: The -cpu command line model name.
-+ *
-+ * Looks up type name by the -cpu command line model name
-+ *
-+ * Returns: type name of CPU or prints error and terminates process
-+ *          if an error occurred.
-+ */
-+const char *cpu_type_by_name(const char *cpu_model);
-+
- /**
-  * cpu_has_work:
-  * @cpu: The vCPU to check.
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index b0b96f67fa..bc30f3954d 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -218,6 +218,15 @@ static struct {
-     { .driver = "virtio-vga-gl",        .flag = &default_vga       },
- };
- 
-+static QemuOptsList qemu_cpu_opts = {
-+    .name = "cpu",
-+    .implied_opt_name = "cpu_model",
-+    .head = QTAILQ_HEAD_INITIALIZER(qemu_cpu_opts.head),
-+    .desc = {
-+        { /* end of list */ }
-+    },
-+};
-+
- static QemuOptsList qemu_rtc_opts = {
-     .name = "rtc",
-     .head = QTAILQ_HEAD_INITIALIZER(qemu_rtc_opts.head),
-@@ -1140,6 +1149,21 @@ static int parse_fw_cfg(void *opaque, QemuOpts *opts, Error **errp)
-     return 0;
- }
- 
-+static int cpu_help_func(void *opaque, QemuOpts *opts, Error **errp)
-+{
-+    const char *cpu_model, *cpu_type;
-+    cpu_model = qemu_opt_get(opts, "cpu_model");
-+    if (!cpu_model) {
-+        return 1;
-+    }
-+    if (!qemu_opt_has_help_opt(opts)) {
-+        return 0;
-+    }
-+    cpu_type = cpu_type_by_name(cpu_model);
-+    list_cpu_props((CPUState *)object_new(cpu_type));
-+    return 1;
-+}
-+
- static int device_help_func(void *opaque, QemuOpts *opts, Error **errp)
- {
-     return qdev_device_help(opts);
-@@ -2467,6 +2491,11 @@ static void qemu_process_help_options(void)
-         exit(0);
-     }
- 
-+    if (qemu_opts_foreach(qemu_find_opts("cpu"),
-+                          cpu_help_func, NULL, NULL)) {
-+        exit(0);
-+    }
-+
-     if (qemu_opts_foreach(qemu_find_opts("device"),
-                           device_help_func, NULL, NULL)) {
-         exit(0);
-@@ -2680,6 +2709,7 @@ void qemu_init(int argc, char **argv)
-     qemu_add_drive_opts(&bdrv_runtime_opts);
-     qemu_add_opts(&qemu_chardev_opts);
-     qemu_add_opts(&qemu_device_opts);
-+    qemu_add_opts(&qemu_cpu_opts);
-     qemu_add_opts(&qemu_netdev_opts);
-     qemu_add_opts(&qemu_nic_opts);
-     qemu_add_opts(&qemu_net_opts);
-@@ -2756,6 +2786,11 @@ void qemu_init(int argc, char **argv)
-             case QEMU_OPTION_cpu:
-                 /* hw initialization will check this */
-                 cpu_option = optarg;
-+                opts = qemu_opts_parse_noisily(qemu_find_opts("cpu"),
-+                                               optarg, true);
-+                if (!opts) {
-+                    exit(1);
-+                }
-                 break;
-             case QEMU_OPTION_hda:
-             case QEMU_OPTION_hdb:
+Changes since v3:
+* Add a specific patch to remove IOMUXC GPR device from i.MX6UL
+* remove unimplemented IOMUXC GPR device frome i.MX7D
+* move the initialisation of PWM devices 5 to 8 to 3rd patch
+* put the init of i.MX7d devices in previous order to ease review
+* Remove device memory size from header file when the device is actually
+  implemented in QEMU (the device implementation defines the memory
+  size it manages).
+
+Changes since v2:
+* use GiB, MiB, KiB constant defined in qemu/units.h after code review
+
+Changes since v1:
+* split the i.MX6UL patch into a refactor patch and an addon patch.
+* Split the i.MX7 patch into a refactor patch and an addon patch.
+* Fix SRC code after few comments in code review.
+
+Jean-Christophe Dubois (6):
+  Remove i.MX7 IOMUX GPR device from i.MX6UL
+  Refactor i.MX6UL processor code
+  Add i.MX6UL missing devices.
+  Refactor i.MX7 processor code
+  Add i.MX7 missing TZ devices and memory regions
+  Add i.MX7 SRC device implementation
+
+ hw/arm/fsl-imx6ul.c         | 174 ++++++++++++-------
+ hw/arm/fsl-imx7.c           | 201 +++++++++++++++++-----
+ hw/misc/imx7_src.c          | 276 +++++++++++++++++++++++++++++
+ hw/misc/meson.build         |   1 +
+ hw/misc/trace-events        |   4 +
+ include/hw/arm/fsl-imx6ul.h | 136 +++++++++++++--
+ include/hw/arm/fsl-imx7.h   | 334 +++++++++++++++++++++++++++---------
+ include/hw/misc/imx7_src.h  |  66 +++++++
+ 8 files changed, 995 insertions(+), 197 deletions(-)
+ create mode 100644 hw/misc/imx7_src.c
+ create mode 100644 include/hw/misc/imx7_src.h
+
 -- 
-2.17.1
+2.34.1
 
 
