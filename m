@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DC9788C41
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 17:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDE9788C4C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 17:18:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZYVs-0000QM-Q2; Fri, 25 Aug 2023 11:14:16 -0400
+	id 1qZYZ8-0004EE-Ph; Fri, 25 Aug 2023 11:17:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qZYVp-0000QC-CI
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:14:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qZYZ6-0004Dj-FA
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:17:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qZYVl-00056C-Mo
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:14:12 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qZYZ4-0005kj-Aw
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 11:17:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692976448;
+ s=mimecast20190719; t=1692976653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Tunp69SOLVm0fOvag7etUUrPDVIyy7U6xEqw+3q+kGI=;
- b=dd00Uiwut5VGEcWKN7wnsXi5xmuVPmmtqtNTByBer2itPUi/i20ZlScu25su+aQ/qwxi2S
- hsM6VNqQawYavGgrjvAPzcx0wt9JtKurPaQYZY66xnu74N9qllpLuo2oGz7oGYaN2DuqaG
- yGOuoYFUQOe1KXxZdw/1Upvx7uYlxS0=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KQPvDemxEkIykIRo5mbGKI2P/9AifCEUD29JgCwE+9o=;
+ b=ep1rkxxaAqpSZC3gs6Bm7TdgpdmG8eBgrbZ9o8mj+ktPQfo38+mtv5bUm8I4dwGQ9zrmO0
+ vFjqwnZXAOxa8NEXLXRc5zWiirQM7trCI8QKSBbHEAUCsLz4PHNA9B0szccXKdtdhKjSrQ
+ r1tl+LzUOmtc8yxMLyrJT7bkhk3fCKQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-yQ__AgoWMgut92lbkmpMGg-1; Fri, 25 Aug 2023 11:14:06 -0400
-X-MC-Unique: yQ__AgoWMgut92lbkmpMGg-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-521da4c99d4so926971a12.1
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 08:14:06 -0700 (PDT)
+ us-mta-240-dJeIzMS9OCKO0WYRdkgyHw-1; Fri, 25 Aug 2023 11:17:32 -0400
+X-MC-Unique: dJeIzMS9OCKO0WYRdkgyHw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94f7a2b21fdso77446666b.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 08:17:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692976445; x=1693581245;
+ d=1e100.net; s=20221208; t=1692976651; x=1693581451;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Tunp69SOLVm0fOvag7etUUrPDVIyy7U6xEqw+3q+kGI=;
- b=FLfL1eovHXC4fVZaBifTqYthAyviAQeKIoKwpteZDJgktKvSe2xNKGlRFe63ugOzMe
- absKRS0/6recqNAVSV5qCsedu81NwifQsawriDUCifRBcVKeLNhpSt57IM8QWe9DgChq
- VHV6Kw2dNeJRxy39g+F/9knOicZf2lIX1YuQtjhZzVs8vp67U5SKJIN8Y1RBIPaSNbxC
- JgNAKDM6Ii2rffN3KhqqH71HEaGwPUrlLlb19ZzHLH2L7b0fPq3vfwksfwYjaOeWxI98
- 06bzen45DzDA1zKDnB2vj/L7LffW/cs0ZvQi41yeex3Ttr3t21FKdDyqpLUI/dZVlU47
- N0IA==
-X-Gm-Message-State: AOJu0YwoUS1xx8Vx5hJzr7cUWd3zdsnW6pKUNU3EPBzW+1H+YMdnqVAZ
- HRF6CkcGoUrbx1TQCM2Bb55DkCHTDgeagQ3UtxcRsz7xBlVDXoqIWqewwYP0BjbEY6R9aO6fmRi
- V9nI7kVrWe1Bu2J0=
-X-Received: by 2002:a17:906:5a5d:b0:9a1:edfd:73b2 with SMTP id
- my29-20020a1709065a5d00b009a1edfd73b2mr6001877ejc.2.1692976445443; 
- Fri, 25 Aug 2023 08:14:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFyX4oqoYjEdZfM5LG/3rUQTD0iWVipRiNFxSrP7/T4W2xJs2/Pn5eq6Q9r+eCoQRFHDYXGOw==
-X-Received: by 2002:a17:906:5a5d:b0:9a1:edfd:73b2 with SMTP id
- my29-20020a1709065a5d00b009a1edfd73b2mr6001859ejc.2.1692976445128; 
- Fri, 25 Aug 2023 08:14:05 -0700 (PDT)
+ bh=KQPvDemxEkIykIRo5mbGKI2P/9AifCEUD29JgCwE+9o=;
+ b=OPnPeMjfjYgG/fR/bZYbeGUzX2VFYh/Pswltcxay+ePYCJJQ6+CBi5B5XoONLEZsZQ
+ 7Rio95M11ZGwUxyomXtCU6ynGSoHhrAycy3J9ym/JPaDqJMy+g0hZwDdlBWwrdf2qAzr
+ 0UP+OoMVy9iTNz8EnjzaSgC0yoQhFgg7unYeWKmGzjD7ZYRI2gk8b8CXGApnFZi+8tZl
+ w68pWVO7MfCx84UV6tYW7WdVnPDXlIb0cRv4lYcXBGMSM11M5f72FJSFFTBnZZnR97HA
+ K81ktuNVFvUjAtEA0GW6Ohot6OsWpelZzmWnMJHXGHdol5d4XdYkM1TtzrPcKyyP/HCl
+ nrrw==
+X-Gm-Message-State: AOJu0Yz+p7Sq5HinsZW8CPmFPGJCChD2ju+dkcdvCu3zIH7TQhKniD3W
+ bwK1N2Ch6rwlSY8gyT4pcPLYJSAir4v4nmPHo0fwYX3KMFtmujipdFrdei6Bb5H4ell2dQ/fpkW
+ HqVM0bAK4rkblW2I=
+X-Received: by 2002:a17:906:212:b0:9a1:bd86:3acc with SMTP id
+ 18-20020a170906021200b009a1bd863accmr7537617ejd.12.1692976651217; 
+ Fri, 25 Aug 2023 08:17:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZrC3hw3ACrk4EssOyRoscm780y0cpv0TS2TkexU9hCFbC5aNb3keIq+Ps7Did2qiDC4A72g==
+X-Received: by 2002:a17:906:212:b0:9a1:bd86:3acc with SMTP id
+ 18-20020a170906021200b009a1bd863accmr7537609ejd.12.1692976650933; 
+ Fri, 25 Aug 2023 08:17:30 -0700 (PDT)
 Received: from ?IPV6:2003:cf:d70f:5ee0:6d7a:8486:6b83:8d37?
  (p200300cfd70f5ee06d7a84866b838d37.dip0.t-ipconnect.de.
  [2003:cf:d70f:5ee0:6d7a:8486:6b83:8d37])
  by smtp.gmail.com with ESMTPSA id
- g24-20020a170906395800b00993b381f808sm1058910eje.38.2023.08.25.08.14.04
+ d14-20020a17090648ce00b0099cb349d570sm1040184ejt.185.2023.08.25.08.17.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 08:14:04 -0700 (PDT)
-Message-ID: <d6d14b11-fcf3-7306-c421-3fe7328dc47a@redhat.com>
-Date: Fri, 25 Aug 2023 17:14:03 +0200
+ Fri, 25 Aug 2023 08:17:30 -0700 (PDT)
+Message-ID: <68af1ff7-5a4d-85c6-f8e4-332f6932d136@redhat.com>
+Date: Fri, 25 Aug 2023 17:17:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 5/6] qemu-img: add compression option to rebase subcommand
+Subject: Re: [PATCH 6/6] iotests: add test 314 for "qemu-img rebase" with
+ compression
 Content-Language: en-US
 To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com
 References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
- <20230601192836.598602-6-andrey.drobyshev@virtuozzo.com>
+ <20230601192836.598602-7-andrey.drobyshev@virtuozzo.com>
 From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230601192836.598602-6-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20230601192836.598602-7-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
@@ -104,59 +105,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 01.06.23 21:28, Andrey Drobyshev via wrote:
-> If we rebase an image whose backing file has compressed clusters, we
-> might end up wasting disk space since the copied clusters are now
-> uncompressed.  In order to have better control over this, let's add
-> "--compress" option to the "qemu-img rebase" command.
+> The test cases considered so far:
 >
-> Note that this option affects only the clusters which are actually being
-> copied from the original backing file.  The clusters which were
-> uncompressed in the target image will remain so.
+> 1. Check that compression mode isn't compatible with "-f raw" (raw
+>     format doesn't support compression).
+> 2. Check that rebasing an image onto no backing file preserves the data
+>     and writes the copied clusters actually compressed.
+> 3. Same as 2, but with a raw backing file (i.e. the clusters copied from the
+>     backing are originally uncompressed -- we check they end up compressed
+>     after being merged).
+> 4. Remove a single delta from a backing chain, perform the same checks
+>     as in 2.
+> 5. Check that even when backing and overlay are initially uncompressed,
+>     copied clusters end up compressed when rebase with compression is
+>     performed.
 >
 > Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 > ---
->   docs/tools/qemu-img.rst |  6 ++++--
->   qemu-img-cmds.hx        |  4 ++--
->   qemu-img.c              | 19 +++++++++++++++++--
->   3 files changed, 23 insertions(+), 6 deletions(-)
-
-Interesting.  I was about to protest because we only really support 
-writing compressed clusters to new and empty images, so the qcow2 driver 
-does not allow overwriting existing clusters with compressed data.  But 
-by design we skip all clusters that are anything but unallocated in the 
-top image (i.e. the one we are going to write to), so this should indeed 
-work out well.
+>   tests/qemu-iotests/314     | 165 +++++++++++++++++++++++++++++++++++++
+>   tests/qemu-iotests/314.out |  75 +++++++++++++++++
+>   2 files changed, 240 insertions(+)
+>   create mode 100755 tests/qemu-iotests/314
+>   create mode 100644 tests/qemu-iotests/314.out
 
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-
-> diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
-> index 15aeddc6d8..973a912dec 100644
-> --- a/docs/tools/qemu-img.rst
-> +++ b/docs/tools/qemu-img.rst
-> @@ -663,7 +663,7 @@ Command description:
->   
->     List, apply, create or delete snapshots in image *FILENAME*.
->   
-> -.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] -b BACKING_FILE [-F BACKING_FMT] FILENAME
-> +.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-F BACKING_FMT] FILENAME
->   
->     Changes the backing file of an image. Only the formats ``qcow2`` and
->     ``qed`` support changing the backing file.
-> @@ -690,7 +690,9 @@ Command description:
->   
->       In order to achieve this, any clusters that differ between
->       *BACKING_FILE* and the old backing file of *FILENAME* are merged
-> -    into *FILENAME* before actually changing the backing file.
-> +    into *FILENAME* before actually changing the backing file. With ``-c``
-
-“With the ``-c`` option specified, [...]”
-
-> +    option specified, the clusters which are being merged (but not the
-> +    entire *FILENAME* image) are written in the compressed mode.
-
-“[...] are compressed when written.”
-
->       Note that the safe mode is an expensive operation, comparable to
->       converting an image. It only works if the old backing file still
 
 
