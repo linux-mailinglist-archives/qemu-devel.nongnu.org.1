@@ -2,64 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F78D78832F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 11:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3583778838C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 11:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZStK-0005aK-Ty; Fri, 25 Aug 2023 05:14:07 -0400
+	id 1qZT9M-0004xm-JQ; Fri, 25 Aug 2023 05:30:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qZStE-0005Z0-9Y; Fri, 25 Aug 2023 05:14:00 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1qZT92-0004o4-M6
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 05:30:20 -0400
+Received: from mx.swemel.ru ([95.143.211.150])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qZStB-0007vP-TJ; Fri, 25 Aug 2023 05:14:00 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 36E321CD9F;
- Fri, 25 Aug 2023 12:14:15 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id AD35D21BEB;
- Fri, 25 Aug 2023 12:13:52 +0300 (MSK)
-Message-ID: <1eb41c65-7557-49b2-8a3a-bd8459791a17@tls.msk.ru>
-Date: Fri, 25 Aug 2023 12:13:52 +0300
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1qZT8z-0002u7-B1
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 05:30:20 -0400
+From: Dmitry Frolov <frolov@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+ t=1692955811;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LGDF2n5hpKQfoKviutJ0zCz9Nk6TTrx7a0lndypGT8U=;
+ b=SareousgynlD/pm4xBIUERVAa2xJBP2CAYOFp3cVH7OEQqSxbKY/rCxPUx1WEjqf1IsC2Y
+ QKwncKtz10vmul2J0izqzUirkh51Bq1hKVVwAXIh+JU+Sk7NH/a3F+RjeMUKK5KDo4jVVr
+ uPNBG/f3Y3J1/h6Cp41rewE6ykgBMw0=
+To: kraxel@redhat.com,
+	marcandre.lureau@redhat.com,
+	qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org,
+	Dmitry Frolov <frolov@swemel.ru>
+Subject: [PATCH] fix leaks found wtih fuzzing
+Date: Fri, 25 Aug 2023 12:29:09 +0300
+Message-Id: <20230825092907.862583-1-frolov@swemel.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2 01/12] gitlab: enable ccache for many build jobs
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Beraldo Leal <bleal@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>,
- qemu-ppc@nongnu.org, David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-s390x@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-arm@nongnu.org,
- Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- David Hildenbrand <david@redhat.com>, Greg Kurz <groug@kaod.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <20230824163910.1737079-1-alex.bennee@linaro.org>
- <20230824163910.1737079-2-alex.bennee@linaro.org>
- <20abecb3-b330-0303-0f4a-b0b5d0cfade1@tls.msk.ru>
- <97490761-c138-d496-c59a-f71b86e57c3d@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <97490761-c138-d496-c59a-f71b86e57c3d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -97
-X-Spam_score: -9.8
-X-Spam_bar: ---------
-X-Spam_report: (-9.8 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.919,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=95.143.211.150; envelope-from=frolov@swemel.ru;
+ helo=mx.swemel.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,19 +59,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-25.08.2023 11:34, Philippe Mathieu-Daudé wrote:
-...
-> __FILE__ is used by assert() family, some DEBUG_PRINTF(), but mainly
-> by "qapi/error.h", so all error_setg*() calls.
-> 
-> This has been bugging me since quite some time, since if you build
-> the same QEMU in different paths (usually on different machines) then
-> the output doesn't match.
-> 
-> GCC 8 & Clang 10 provides -ffile-prefix-map, but
+It is true, that there is no problem during runtime
+from the first sight, because the memmory is lost just
+before qemu exits. Nevertheless, this change is necessary,
+because AddressSanitizer is not able to recognize this
+situation and produces crash-report (which is
+false-positive in fact). Lots of False-Positive warnings
+are davaluing problems, found with fuzzing, and thus the
+whole methodology of dynamic analysis.
+This patch eliminates such False-Positive reports,
+and makes every problem, found with fuzzing, more valuable.
 
-This option is automatically enabled on debian.  Still, ccache does
-not use the old cache contents when building in a different directory.
+Fixes: 060ab76356 ("gtk: don't exit early in case gtk init fails")
 
-/mjt
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+---
+v2: Moved declarations in the beginning.
+
+ ui/gtk.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 8ba41c8f13..23a78787df 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -2360,7 +2360,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+ {
+     VirtualConsole *vc;
+ 
+-    GtkDisplayState *s = g_malloc0(sizeof(*s));
++    GtkDisplayState *s;
+     GdkDisplay *window_display;
+     GtkIconTheme *theme;
+     char *dir;
+@@ -2372,6 +2372,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+     assert(opts->type == DISPLAY_TYPE_GTK);
+     s->opts = opts;
+ 
++    *s = g_malloc0(sizeof(*s));
+     theme = gtk_icon_theme_get_default();
+     dir = get_relocated_path(CONFIG_QEMU_ICONDIR);
+     gtk_icon_theme_prepend_search_path(theme, dir);
+-- 
+2.34.1
+
 
