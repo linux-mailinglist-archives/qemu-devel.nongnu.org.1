@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFB2788177
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 10:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C40C97881A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 10:10:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZRlw-0000qU-Sv; Fri, 25 Aug 2023 04:02:24 -0400
+	id 1qZRsg-0001Gu-IZ; Fri, 25 Aug 2023 04:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRlu-0000qF-1K
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 04:02:22 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRlq-0002yO-U8
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 04:02:20 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-99cce6f7de2so70975866b.3
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 01:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692950536; x=1693555336;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CHb5v+DInJIOp14PgvsbEY7CeggfleyyQ38+S/GuOoA=;
- b=sxr3/AJ3VkgHHDCUfc1FwKqGTF3U+PFefq+RFl+6vdFULF0LqQINIO3M/Gjsh9+SpL
- ueC/nZZflOIwLMJLw3WO0X3+QCgmbA823kleXT3ME3SinDsdTq0rU2rXKIuOnxseBlGg
- PtCZjeJG5AI/PTCMQSwAZlEyIrvBuw3xqhN+B4KYrOtFUIMZEwNYhtDaS3HQb7Qx33ml
- j6Y3/5fyOFm1soiIvSk5BnH7JppToGCSfZjMa+QcsKncHGPUuNQoGqB1lgCp5j21gqLM
- xRloT+s5kUPqwcZSobGwIMXlS74EjWewGK7anlAQ1lk+VF7P24vCv2TDn/hrg7cqveUk
- id+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692950536; x=1693555336;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CHb5v+DInJIOp14PgvsbEY7CeggfleyyQ38+S/GuOoA=;
- b=duBQSaPqmooo+hvkJw7ano2SB81v/Ai8siP5RoB5r8ioHc9xz9s5aXeq/4N0OgxyTi
- 5qVAsP+kK2WI3LwfREqhFeG7SjPQvyVh83DgtmMX4/B4/f440/KvIve4GAJnNDGwLCXO
- M/iuPjMzfV4mUq7mstKQuvpRMi83sO2z/Td92FvkrHd1HcanRmWUsDElMXMQgEnsD1OU
- 6Nq6hJClzfwKCiG+HToyu3dQp3CPMYsrCQZX5AhZTfnMFso/5EowxKA+wgckl+VfOElT
- CghyxIvkHwA3/7mFKdY7zVzZV27vQBQMcQemlprh7QoImhjJd9xRLp/2Taf2wzh/95Ao
- ktiA==
-X-Gm-Message-State: AOJu0YzJ1LeQKsKnLVfJChJDaad3PLXQYAXkRe2HqAhtOpGrBZaQqZrj
- 4jiv/hS6xXP5z9+b0ElTypPFZRVpP19KkqKtrAU=
-X-Google-Smtp-Source: AGHT+IGjcB5gPTYa1R2H8kXdtx0MscP2xxpZvqZv2NvxCpseujYc4fCscV65vAVgPQG4Kz+KOEh9fg==
-X-Received: by 2002:a17:906:5a55:b0:9a1:c00e:60cd with SMTP id
- my21-20020a1709065a5500b009a1c00e60cdmr7263877ejc.15.1692950536625; 
- Fri, 25 Aug 2023 01:02:16 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.69.26])
- by smtp.gmail.com with ESMTPSA id
- u22-20020a17090626d600b009a1fd22257fsm664113ejc.207.2023.08.25.01.02.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 01:02:16 -0700 (PDT)
-Message-ID: <e2bfcdb3-c057-7da5-8047-f6d7e1875c13@linaro.org>
-Date: Fri, 25 Aug 2023 10:02:13 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qZRse-0001Ek-FQ
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 04:09:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qZRsb-0004F4-VK
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 04:09:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692950956;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=erqCcj6MjZhniixHXB0uTHtAibJhM/PM2yhTJqWvVOI=;
+ b=R+ZRixSMcsa50VwnVS/iSEny/zmYzFSWrbCcvI1sI5CNqv1JFyRHkcMyLhEvRHEohY8LcQ
+ x4ZZ8vugt3TR7yYB5zbuy5GxDHyo6RZi3E1W44PnuHEAFjzDShtRdVg7N6URcjWKEagvOW
+ rrraQMxAHQhDBEP6v4ar1sFXJ8y7vRo=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-509-B7AGYNn5OlK7EsslP0ogmQ-1; Fri, 25 Aug 2023 04:09:14 -0400
+X-MC-Unique: B7AGYNn5OlK7EsslP0ogmQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A51DC3806713;
+ Fri, 25 Aug 2023 08:09:13 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.144])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EBEB2140E950;
+ Fri, 25 Aug 2023 08:09:11 +0000 (UTC)
+Date: Fri, 25 Aug 2023 09:09:09 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
+ Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH 2/2] io: follow coroutine AioContext in qio_channel_yield()
+Message-ID: <ZOhhpVJgNxMmAMEH@redhat.com>
+References: <20230823234504.1387239-1-stefanha@redhat.com>
+ <20230823234504.1387239-3-stefanha@redhat.com>
+ <ZOc+TXIwqs5PTiV/@redhat.com> <20230824182642.GA1698358@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH for-8.1] hw/usb/hcd-xhci-pci: Fail if user requested MSIX
- but it can't be used
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230719141733.35818-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230719141733.35818-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230824182642.GA1698358@fedora>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,51 +83,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping?
+On Thu, Aug 24, 2023 at 02:26:42PM -0400, Stefan Hajnoczi wrote:
+> I've done most of the audit necessary to understand which AioContext is
+> used where. The call graph is large because qio_channel_yield() is used
+> internally by qio_channel_readv_full_all_eof(),
+> qio_channel_writev_full_all(), and their variants. They would all need
+> a new AioContext argument.
 
-On 19/7/23 16:17, Philippe Mathieu-Daudé wrote:
-> Do not silently ignore the user request of using MSIX.
-> Remove the TODO. Coverity reported this as CID 1508725.
+Argh, I forgot about that usage. 
+
+> I think it's not worth passing AioContext explicitly everywhere since
+> this involves a lot of code changes and more verbosity to achieve what
+> we already have.
+
+Yeah, I agree with you.
+
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/usb/hcd-xhci-pci.c | 21 ++++++++++++++++-----
->   1 file changed, 16 insertions(+), 5 deletions(-)
+> However, If you think the QIOChannel API should pass AioContext
+> explicitly then I'll go ahead and make the changes.
 > 
-> diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-> index 643d4643e4..416656b78c 100644
-> --- a/hw/usb/hcd-xhci-pci.c
-> +++ b/hw/usb/hcd-xhci-pci.c
-> @@ -155,11 +155,22 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
->       }
->   
->       if (s->msix != ON_OFF_AUTO_OFF) {
-> -        /* TODO check for errors, and should fail when msix=on */
-> -        msix_init(dev, s->xhci.numintrs,
-> -                  &s->xhci.mem, 0, OFF_MSIX_TABLE,
-> -                  &s->xhci.mem, 0, OFF_MSIX_PBA,
-> -                  0x90, NULL);
-> +        ret = msix_init(dev, s->xhci.numintrs,
-> +                        &s->xhci.mem, 0, OFF_MSIX_TABLE,
-> +                        &s->xhci.mem, 0, OFF_MSIX_PBA,
-> +                        0x90, &err);
-> +        if (ret < 0) {
-> +            if (s->msi == ON_OFF_AUTO_ON) {
-> +                /* Can't satisfy user's explicit msi=on request, fail */
-> +                error_append_hint(&err, "You might have to use msi=auto"
-> +                                        " (default) or msi=off with this"
-> +                                        " machine type.\n");
-> +                error_propagate(errp, err);
-> +                return;
-> +            }
-> +            /* report that msix is not supported, but do not error out */
-> +            warn_report_err(err);
-> +        }
->       }
->       s->xhci.as = pci_get_address_space(dev);
->   }
+> Here is what I've explored so far:
+> 
+> qio_channel_readv_full_all_eof
+>   mpqemu_read - should be doable
+>   qio_channel_readv_all_eof
+>     qio_channel_read_all_eof
+>       multifd_recv_thread - NULL non-coroutine
+>     vu_message_read - coroutine AioContext
+>   qio_channel_readv_full_all
+>     hw/virtio/vhost-user.c:backend_read() - NULL non-coroutine
+>     qio_channel_readv_all
+>       nbd_co_receive_offset_data_payload - coroutine AioContext
+>       nbd_co_do_receive_one_chunk - coroutine AioContext
+>       qio_channel_read_all
+>         hw/virtio/vhost-user.c:backend_read() - NULL non-coroutine
+>         tpm_emulator_unix_tx_bufs - NULL non-coroutine
+>         nbd_read - ?
+>         zlib_recv_pages - NULL non-coroutine
+>         zstd_recv_pages - NULL non-coroutine
+>         multifd_initial_recv_packet - NULL non-coroutine
+>         nbd_opt_read - iohandler
+>         pr_manager_helper_read - NULL non-coroutine
+>         prh_read_request - coroutine AioContext
+>         prh_co_entry - coroutine AioContext
+>         char_socket_ping_pong - NULL non-coroutine
+>       nocomp_recv_pages - NULL non-coroutine
+>       test_io_thread_reader - NULL non-coroutine
+> qio_channel_writev_full_all
+>   mpqemu_msg_send - should be doable
+>   qio_channel_writev_all
+>     nbd_co_send_request - coroutine AioContext
+>     hw/virtio/vhost-user.c:backend_read() - NULL non-coroutine
+>     qio_channel_write_all
+>       tpm_emulator_unix_tx_bufs - NULL non-coroutine
+>       multifd_send_initial_packet - NULL non-coroutine
+>       multifd_send_thread - NULL non-coroutine
+>       nbd_write - ?
+>       prh_write_response - coroutine AioContext
+>       prh_co_entry - coroutine AioContext
+>       char_socket_ping_pong - NULL non-coroutine
+>       ppm_save - iohandler
+>     qemu_fflush - ?
+>     nbd_negotiate_send_meta_context - iohandler
+>     nbd/server.c:nbd_co_send_iov - cooroutine AioContext
+>     test_io_thread_writer - NULL non-coroutine
+>   multifd_send_thread - NULL non-coroutine
+> qemu_fill_buffer - ?
+> 
+> What do you think?
+> 
+> Stefan
+
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
