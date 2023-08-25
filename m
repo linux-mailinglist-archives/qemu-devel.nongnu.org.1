@@ -2,84 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E84787F41
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 07:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5E778806C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 08:58:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZPNK-0006IR-1J; Fri, 25 Aug 2023 01:28:50 -0400
+	id 1qZQkX-00067m-Hd; Fri, 25 Aug 2023 02:56:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vineetg@rivosinc.com>)
- id 1qZPND-0006I1-Pd
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 01:28:44 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vineetg@rivosinc.com>)
- id 1qZPN8-00084N-7z
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 01:28:40 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c06f6f98c0so5191625ad.3
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 22:28:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1692941315; x=1693546115; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rNf3HgIy7fXyNFm7MBMQLrjE6GXfwqdtwg3jc9DNb3Q=;
- b=Ga2ymCYWGlVDsI9FvaquoeYNdVQziRgPwjEpyeUuG5WI35i15mc8J+d4HL5/LAL+Zb
- xb03kjp1ikgPs2NUHKdIDIOBdS+Zqd6VsgTq3MdU8lmnIgqToL+FHFCByEo9XtC+Y+ep
- oj/prtOlMJuZ7K/RHlI9GTPnafgCGvMzccYvpci9hjlQCodOiHV3DS1NJMFGzaIAWHHA
- m8oEmWHIEBBQdMyFms6atLcP1F3QhGI9/Jj/dqeUIJTF5jA4Y+gL1oD08JZwdtqmiK4m
- qTiJlObWur0XCaBFdFe+A+WE7Rfct45C4hHpeQ+f7kgCTCULCJMG8liXkYFh9FQGbwwz
- bFDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692941315; x=1693546115;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rNf3HgIy7fXyNFm7MBMQLrjE6GXfwqdtwg3jc9DNb3Q=;
- b=R2cg3usbbCekpV/nCvFpsuG68J12mn83cuyZ9ud1+SEsh5xIxHIfWGemCEoJOnlfip
- xTYJ3ovYig9jPqqROblzbCEg3V+e6eCgNZPFzRdejFB7d53bJR5qMB35oC6Ar1dRDsvz
- NlczO/NaRu9gt88r2AuwTlt2r2jAYY2YEjECl2q/9aKAU+BtlC1pCstyfKtVSZiaHU5V
- dlt/XPy3BAGoblxoHDefyCG5MyGlOT/T52Vffeq3Ru+1Y6uPrqzh+fsYM/3877LUADpX
- gJpGASbxKw8zwZqpbl37KStVnuzC1WqNEpoXcer0EBKTKDNTLLfTKJlnIAXlz1dZBf9+
- 6TjA==
-X-Gm-Message-State: AOJu0YyIXemf/ySDymQzCx4fImFKoApD0UfOzCUnW7sFqzHMuCsM14vd
- JRLJmQSKQe9Sh0vaqcrFeSGKfw==
-X-Google-Smtp-Source: AGHT+IFwalHQ5pp6NmH1xxYawI5AHFY5I9/Vr879zq4ZA29EZbd7yCIr8yo/kQeaW/LOZZAERPza1Q==
-X-Received: by 2002:a17:902:ea0f:b0:1b8:1bac:3782 with SMTP id
- s15-20020a170902ea0f00b001b81bac3782mr20577054plg.6.1692941315115; 
- Thu, 24 Aug 2023 22:28:35 -0700 (PDT)
-Received: from [192.168.50.117] (c-98-210-197-24.hsd1.ca.comcast.net.
- [98.210.197.24]) by smtp.gmail.com with ESMTPSA id
- v11-20020a170902d68b00b001bba1475c92sm657548ply.113.2023.08.24.22.28.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 22:28:34 -0700 (PDT)
-Message-ID: <7d8e9cbe-50d7-9a69-f67a-9f890012b868@rivosinc.com>
-Date: Thu, 24 Aug 2023 22:28:33 -0700
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkQ-000673-U2
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:46 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkO-0007X0-2N
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:46 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 580CC60B60;
+ Fri, 25 Aug 2023 06:56:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC275C433C7;
+ Fri, 25 Aug 2023 06:56:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1692946601;
+ bh=yxAYGRGrwR+7vH7GrnMC/IVkMVXwW2O8D5xtMpb8PiE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=sTdTz02g0lSs7m0VLPWhnawCt1Y+WuIadYwqpMHiDTe9WgYDkm9R9zgVLa/brTdxf
+ i2g+zNnhCPklUVAxPuQ4KhZk1zNZ0n2UfwtcmxxodAgcXDB1RXsFiPb15UnrqtwxyI
+ K3aBjdUzFYebOqD6r4WxhVMDUPiObUxjwkAzJL0RL+/OqQEa9wMxP0+Kh+bL2kQoV9
+ vPEv6TsUT0zvupBYue0BcJNd1T1NaO7XClLtXPBMKI5+NyXWggbmWNXWx5KU42mV+5
+ eDF/LVzwB0CNesVq6RgCAaG9Q7BJwEoDbd4YdxkJnf/3X32NuIibN9w+cNHM9O3zR/
+ yDDBffhPoWRMA==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v2 0/5] target/hppa: Clean up conversion from/to MMU index and
+ privilege level
+Date: Fri, 25 Aug 2023 08:56:33 +0200
+Message-ID: <20230825065638.7262-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] riscv: zicond: make non-experimental
-Content-Language: en-US
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, kito.cheng@gmail.com,
- Jeff Law <jeffreyalaw@gmail.com>, Palmer Dabbelt <palmer@rivosinc.com>
-References: <20230808181715.436395-1-vineetg@rivosinc.com>
- <CAKmqyKPrrXqQRqqtRDi08hU5uNYB=0PxXBdxRVh81zmnRAauKw@mail.gmail.com>
-From: Vineet Gupta <vineetg@rivosinc.com>
-In-Reply-To: <CAKmqyKPrrXqQRqqtRDi08hU5uNYB=0PxXBdxRVh81zmnRAauKw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=vineetg@rivosinc.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-2.919, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,55 +70,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Helge Deller <deller@gmx.de>
 
+Make the conversion between privilege level and QEMU MMU index
+consitent, and afterwards switch to MMU indices 11-15.
 
-On 8/10/23 10:14, Alistair Francis wrote:
-> On Tue, Aug 8, 2023 at 2:18 PM Vineet Gupta <vineetg@rivosinc.com> wrote:
->> zicond is now codegen supported in both llvm and gcc.
->>
->> This change allows seamless enabling/testing of zicond in downstream
->> projects. e.g. currently riscv-gnu-toolchain parses elf attributes
->> to create a cmdline for qemu but fails short of enabling it because of
->> the "x-" prefix.
->>
->> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
->
-> Alistair
+v2:
+- no functional changes
+- just typo fixes in commit messages
+- branch rebased on v8.1.0 release
 
-Gentle ping to remind that this lands in some -next tree and not forgotten !
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Thx,
--Vineet
+Helge Deller (5):
+  target/hppa: Add missing PL1 and PL2 privilege levels
+  target/hppa: Add privilege to MMU index conversion helpers
+  target/hppa: Do not use hardcoded value for tlb_flush_*()
+  target/hppa: Use privilege helper in hppa_get_physical_address()
+  target/hppa: Switch to use MMU indices 11-15
 
->
->> ---
->>   target/riscv/cpu.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 6b93b04453c8..022bd9d01223 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -1816,6 +1816,7 @@ static Property riscv_cpu_extensions[] = {
->>       DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
->>       DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
->>       DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
->> +    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, false),
->>
->>       /* Vendor-specific custom extensions */
->>       DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
->> @@ -1832,7 +1833,6 @@ static Property riscv_cpu_extensions[] = {
->>       DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
->>
->>       /* These are experimental so mark with 'x-' */
->> -    DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
->>
->>       /* ePMP 0.9.3 */
->>       DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
->> --
->> 2.34.1
->>
->>
+ target/hppa/cpu.h        | 19 +++++++++++++++----
+ target/hppa/helper.c     |  2 +-
+ target/hppa/mem_helper.c | 16 ++++++++--------
+ target/hppa/translate.c  |  9 +++++----
+ 4 files changed, 29 insertions(+), 17 deletions(-)
+
+-- 
+2.41.0
 
 
