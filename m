@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90ADC788F2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 21:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C719788F31
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 21:10:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZc89-0002mX-7R; Fri, 25 Aug 2023 15:06:01 -0400
+	id 1qZcBP-0003Wt-2x; Fri, 25 Aug 2023 15:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qZc84-0002kg-3K
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 15:05:58 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1qZcBM-0003Wj-TL
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 15:09:20 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qZc81-0004tA-5l
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 15:05:55 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99c1f6f3884so154364166b.0
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 12:05:52 -0700 (PDT)
+ id 1qZcBK-0005eO-8I
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 15:09:20 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-52a3ff5f0abso1854920a12.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 12:09:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1692990351; x=1693595151;
+ d=chromium.org; s=google; t=1692990556; x=1693595356;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=WmQKvPomDCzJDdg0vtHTiK6TLnmc87ITLv4zW8xwXSQ=;
- b=KRv7bExBydHYpzMtS36+irEuJKy1HxQwn/jyGQ/an6XsQ0s/dp2yInhurlkml4ANwW
- jlkF1Sv0ndWjZiENb1hGCQk2ROBtZ5oODJeT6ApOaCJLeeOuhmWWZ8BSBB5oczmft90P
- iI3AmRfISKbEXryAnqac5e5EqoUaYLxAdmD6Y=
+ bh=riDa2zY+qpBu5viNHXSSocLlNuJ5IGeKJtACSjIro4A=;
+ b=oHPri8fA8j8fO/ffgcqktM7buUhQk0+pDG8Jo0ma1WuTpCuWoJamKHYWs7r/0U5fO2
+ vjTVtmkqhEcDZC02klQDllwG0mwTKpl0vbKc0aILwj5Rsi1f4wD4fcFzfuBlQfwini/l
+ j2pgBd5+A+x52tMWa5wWete5FubCdhKb82Pr4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692990351; x=1693595151;
+ d=1e100.net; s=20221208; t=1692990556; x=1693595356;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=WmQKvPomDCzJDdg0vtHTiK6TLnmc87ITLv4zW8xwXSQ=;
- b=PKj4EbKIR3sMHJmbKcDjOglPySPV2c9S2cTCZvBm3XuxPIa5NJlQG7Gmn6DumMER3c
- 1ZZjIWUw47PMbZw1o8WZ1RNFoOucnrg4nrHwGc7kOmYk/kgC9vdWpma+eNPIuLxF7k8G
- 5VS/NlspDw9CquG+pP6APwmtaXtslmPBikxNRY01U7YXsxmeiYjHQLxdFagdzm4Ct5E5
- MHIJ8gglyrgExJKcO39yyeMOhgD/k9Tiy9rApg1VJYb+f5UJTSgfSRO2BMWpaWpUq+eu
- quhRQOcbpTr3m0PeC7Fcpl9gQEU9pGEO5jOL1nG0YPg9xj4SFBC0qTaCdCkCMR0W5OVw
- OT3w==
-X-Gm-Message-State: AOJu0YxOJlP6wvOk2bbNUTeCJ6vvjYvsC9T5Cjj4okOfTrbi97aBbSUT
- 2Xubcm9Qvc1rZyyyPDZSJaX0DzDfsOgikFcfX5FgJQ==
-X-Google-Smtp-Source: AGHT+IGCl9h2yBf1f+LnEY8gJcbADKtjB1DEnejymFXYqlSpeJOIPIzgkkYPFwiX5rqy5v8MT+u1DQ==
-X-Received: by 2002:a17:906:aadb:b0:99d:fc31:242f with SMTP id
- kt27-20020a170906aadb00b0099dfc31242fmr15073700ejb.66.1692990350667; 
- Fri, 25 Aug 2023 12:05:50 -0700 (PDT)
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com.
- [209.85.208.54]) by smtp.gmail.com with ESMTPSA id
- f24-20020a1709067f9800b00977eec7b7e8sm1244080ejr.68.2023.08.25.12.05.50
+ bh=riDa2zY+qpBu5viNHXSSocLlNuJ5IGeKJtACSjIro4A=;
+ b=hxMWBPttbbGZm3VqOP2GvgDFEI5kJakR06EwR1hrQYhrhWD7B8k5SZNGtso3UszwO/
+ cQkTZLLQVAH+oKv7Vgn18bH5698hNa5R6pBJh80f2V6DVJRpPvPXhh+Ui7KMVtXgpQbm
+ cquSy4svbAbNIU0c7FqhIzvR/oMc9BHubfTOjjTaXf132fCxL/aC6BWzuDHx21nUMX5k
+ 70URZyI/c3sQnL27G6b0gmYIiYMhA9tTDQt2fuWRAAKAKAHkv5Z5wGOH17CAOxHLpfnj
+ Q1v2GIeNV1sKQGgmmBZLC3eLtFFJE/CR9Mv7LIntIafvW9X5Jm3wiiCZNKA1qq+Wy2/V
+ 7yTA==
+X-Gm-Message-State: AOJu0YwvIbWUzJJXFfCIzOpCBnl4Ol88jA6sWY+XaPPmCx/KnVOEGzO6
+ i8oQZkoyKIjiZ+Y4TmhvQv25yxqElKdE8t8nnEH51Q==
+X-Google-Smtp-Source: AGHT+IF1ogvbVSyXe4GwyEHcgQGyJss60Qh1vKkDWBEst2EFZBj79EgQq81WVei884bfkbjaANaHHA==
+X-Received: by 2002:aa7:d952:0:b0:523:ae0a:a447 with SMTP id
+ l18-20020aa7d952000000b00523ae0aa447mr15912490eds.13.1692990556443; 
+ Fri, 25 Aug 2023 12:09:16 -0700 (PDT)
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com.
+ [209.85.208.42]) by smtp.gmail.com with ESMTPSA id
+ y12-20020aa7cccc000000b0052a3c7c9e8bsm1277599edt.56.2023.08.25.12.09.15
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 12:05:50 -0700 (PDT)
-Received: by mail-ed1-f54.google.com with SMTP id
- 4fb4d7f45d1cf-5232ce75e26so2152a12.1
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 12:05:50 -0700 (PDT)
-X-Received: by 2002:a50:9b16:0:b0:519:7d2:e256 with SMTP id
- o22-20020a509b16000000b0051907d2e256mr44703edi.0.1692990349773; Fri, 25 Aug
- 2023 12:05:49 -0700 (PDT)
+ Fri, 25 Aug 2023 12:09:15 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id
+ 4fb4d7f45d1cf-529fa243739so2467a12.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 12:09:15 -0700 (PDT)
+X-Received: by 2002:a50:c051:0:b0:506:b280:4993 with SMTP id
+ u17-20020a50c051000000b00506b2804993mr53475edd.2.1692990554908; Fri, 25 Aug
+ 2023 12:09:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230823012541.485-1-gurchetansingh@chromium.org>
- <87a5uiyq35.fsf@alyssa.is>
- <CAAfnVB=qW99pYK04g6ZdM+c8HLLmE5kwc_UWyJgRVSPnGB84=g@mail.gmail.com>
- <871qfriok0.fsf@alyssa.is>
-In-Reply-To: <871qfriok0.fsf@alyssa.is>
+References: <20230824234046.499-1-gurchetansingh@chromium.org>
+ <20230824234046.499-9-gurchetansingh@chromium.org>
+ <f051c45d-5498-c34c-1a41-286af4dd4656@quicinc.com>
+In-Reply-To: <f051c45d-5498-c34c-1a41-286af4dd4656@quicinc.com>
 From: Gurchetan Singh <gurchetansingh@chromium.org>
-Date: Fri, 25 Aug 2023 12:05:37 -0700
-X-Gmail-Original-Message-ID: <CAAfnVBmxE4ThprAFuEj2khoX9LqxuVe02K7B-ps4g0r77vqmyg@mail.gmail.com>
-Message-ID: <CAAfnVBmxE4ThprAFuEj2khoX9LqxuVe02K7B-ps4g0r77vqmyg@mail.gmail.com>
-Subject: Re: [PATCH v11 0/9] rutabaga_gfx + gfxstream
-To: Alyssa Ross <hi@alyssa.is>
+Date: Fri, 25 Aug 2023 12:09:02 -0700
+X-Gmail-Original-Message-ID: <CAAfnVBkJsXe1X08pny9Z_tYuGVwTKi+oVwf=gtKQ9CMsopy_6Q@mail.gmail.com>
+Message-ID: <CAAfnVBkJsXe1X08pny9Z_tYuGVwTKi+oVwf=gtKQ9CMsopy_6Q@mail.gmail.com>
+Subject: Re: [PATCH v12 8/9] gfxstream + rutabaga: enable rutabaga
+To: Antonio Caggiano <quic_acaggian@quicinc.com>
 Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, 
  akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org, 
- shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org, 
- philmd@linaro.org
-Content-Type: multipart/alternative; boundary="00000000000068e8cc0603c408ad"
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=gurchetansingh@chromium.org; helo=mail-ej1-x634.google.com
+ shentey@gmail.com, hi@alyssa.is, ernunes@redhat.com, 
+ manos.pitsidianakis@linaro.org, philmd@linaro.org, 
+ mark.cave-ayland@ilande.co.uk
+Content-Type: multipart/alternative; boundary="000000000000a2d0e80603c4149c"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,145 +100,272 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000068e8cc0603c408ad
+--000000000000a2d0e80603c4149c
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 25, 2023 at 12:11=E2=80=AFAM Alyssa Ross <hi@alyssa.is> wrote:
+On Fri, Aug 25, 2023 at 6:55=E2=80=AFAM Antonio Caggiano <quic_acaggian@qui=
+cinc.com>
+wrote:
 
-> Gurchetan Singh <gurchetansingh@chromium.org> writes:
+> Hi Gurchetan,
 >
-> > On Wed, Aug 23, 2023 at 4:07=E2=80=AFAM Alyssa Ross <hi@alyssa.is> wrot=
-e:
-> >
-> >> Gurchetan Singh <gurchetansingh@chromium.org> writes:
-> >>
-> >> > - Official "release commits" issued for rutabaga_gfx_ffi,
-> >> >   gfxstream, aemu-base.  For example, see crrev.com/c/4778941
-> >> >
-> >> > - The release commits can make packaging easier, though once
-> >> >   again all known users will likely just build from sources
-> >> >   anyways
-> >>
-> >> It's a small thing, but could there be actual tags, rather than just
-> >> blessed commits?  It'd just make them easier to find, and save a bit o=
-f
-> >> time in review for packages.
-> >>
-> >
-> > I added:
-> >
-> >
-> https://crosvm.dev/book/appendix/rutabaga_gfx.html#latest-releases-for-po=
-tential-packaging
-> >
-> > Tags are possible, but I want to clarify the use case before packaging.
-> > Where are you thinking of packaging it for (Debian??)? Are you mostly
-> > interested in Wayland passthrough (my guess) or gfxstream too?  Dependi=
-ng
-> > your use case, we may be able to minimize the work involved.
+> Thank you for this series and for including some of my patches :)
 >
-> Packaging for Nixpkgs (where I already maintain what to my knowledge is
-> the only crosvm distro package).  I'm personally mostly interested in
-> Wayland passthroug, but I wouldn't be surprised if others are interested
-> in gfxstream.  The packaging work is already done, I've just been
-> holding off actually pushing the packages waiting for the stable
-> releases.
+> On 25/08/2023 01:40, Gurchetan Singh wrote:
+> > This change enables rutabaga to receive virtio-gpu-3d hypercalls
+> > when it is active.
+> >
+> > Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> > Tested-by: Alyssa Ross <hi@alyssa.is>
+> > Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> > Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> > ---
+> > v3: Whitespace fix (Akihiko)
+> > v9: reorder virtio_gpu_have_udmabuf() after checking if rutabaga
+> >      is enabled to avoid spurious warnings (Akihiko)
+> >
+> >   hw/display/virtio-gpu-base.c | 3 ++-
+> >   hw/display/virtio-gpu.c      | 5 +++--
+> >   softmmu/qdev-monitor.c       | 3 +++
+> >   softmmu/vl.c                 | 1 +
+> >   4 files changed, 9 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.=
+c
+> > index 4f2b0ba1f3..50c5373b65 100644
+> > --- a/hw/display/virtio-gpu-base.c
+> > +++ b/hw/display/virtio-gpu-base.c
+> > @@ -223,7 +223,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev,
+> uint64_t features,
+> >   {
+> >       VirtIOGPUBase *g =3D VIRTIO_GPU_BASE(vdev);
+> >
+> > -    if (virtio_gpu_virgl_enabled(g->conf)) {
+> > +    if (virtio_gpu_virgl_enabled(g->conf) ||
+> > +        virtio_gpu_rutabaga_enabled(g->conf)) {
+> >           features |=3D (1 << VIRTIO_GPU_F_VIRGL);
+> >       }
+> >       if (virtio_gpu_edid_enabled(g->conf)) {
+> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> > index 3e658f1fef..fe094addef 100644
+> > --- a/hw/display/virtio-gpu.c
+> > +++ b/hw/display/virtio-gpu.c
+> > @@ -1361,8 +1361,9 @@ void virtio_gpu_device_realize(DeviceState *qdev,
+> Error **errp)
+> >       VirtIOGPU *g =3D VIRTIO_GPU(qdev);
+> >
+> >       if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
+> > -        if (!virtio_gpu_have_udmabuf()) {
+> > -            error_setg(errp, "cannot enable blob resources without
+> udmabuf");
+> > +        if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
+> > +            !virtio_gpu_have_udmabuf()) {
+> > +            error_setg(errp, "need rutabaga or udmabuf for blob
+> resources");
 >
-> The reason that tags would be useful is that it allows a reviewer of the
-> package to see at a glance that the package is built from a stable
-> release.  If it's just built from a commit hash, they have to go and
-> verify that it's a stable release, which is mildly annoying and
-> unconventional.
+> Does that mean udmabuf is not required at all when using rutabaga?
+> How does rutabaga handle blob resources?
 >
 
-Understood.  Request to have gfxstream and AEMU v0.1.2 release tags made.
+It's not required, since it's a Linux-only thing.  Some use cases do prefer
+to use guest memory and we do have provisional support for that (see
+`handle` field of `rutabaga_resource_create_blob`).  Though more testing is
+required on the target platform, and likely virtio-gpu spec changes for a
+full-functional solution.
 
-For rutabaga_gfx_ffi, is the crates.io upload sufficient?
 
-https://crates.io/crates/rutabaga_gfx_ffi
 
-Debian, for example, treats crates.io as the source of truth and builds
-tooling around that.  I wonder if Nixpkgs as similar tooling around
-crates.io.
+>
+> >               return;
+> >           }
+> >
+> > diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+> > index 74f4e41338..1b8005ae55 100644
+> > --- a/softmmu/qdev-monitor.c
+> > +++ b/softmmu/qdev-monitor.c
+> > @@ -86,6 +86,9 @@ static const QDevAlias qdev_alias_table[] =3D {
+> >       { "virtio-gpu-pci", "virtio-gpu", QEMU_ARCH_VIRTIO_PCI },
+> >       { "virtio-gpu-gl-device", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_MMIO =
+},
+> >       { "virtio-gpu-gl-pci", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_PCI },
+> > +    { "virtio-gpu-rutabaga-device", "virtio-gpu-rutabaga",
+> > +      QEMU_ARCH_VIRTIO_MMIO },
+> > +    { "virtio-gpu-rutabaga-pci", "virtio-gpu-rutabaga",
+> QEMU_ARCH_VIRTIO_PCI },
+> >       { "virtio-input-host-device", "virtio-input-host",
+> QEMU_ARCH_VIRTIO_MMIO },
+> >       { "virtio-input-host-ccw", "virtio-input-host",
+> QEMU_ARCH_VIRTIO_CCW },
+> >       { "virtio-input-host-pci", "virtio-input-host",
+> QEMU_ARCH_VIRTIO_PCI },
+> > diff --git a/softmmu/vl.c b/softmmu/vl.c
+> > index b0b96f67fa..2f98eefdf3 100644
+> > --- a/softmmu/vl.c
+> > +++ b/softmmu/vl.c
+> > @@ -216,6 +216,7 @@ static struct {
+> >       { .driver =3D "ati-vga",              .flag =3D &default_vga     =
+  },
+> >       { .driver =3D "vhost-user-vga",       .flag =3D &default_vga     =
+  },
+> >       { .driver =3D "virtio-vga-gl",        .flag =3D &default_vga     =
+  },
+> > +    { .driver =3D "virtio-vga-rutabaga",  .flag =3D &default_vga      =
+ },
+> >   };
+> >
+> >   static QemuOptsList qemu_rtc_opts =3D {
+>
+> Patches 5 to 9:
+> Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+>
+> Cheers,
+> Antonio
+>
 
---00000000000068e8cc0603c408ad
+--000000000000a2d0e80603c4149c
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Aug 25, 2023 at 12:11=E2=80=
-=AFAM Alyssa Ross &lt;<a href=3D"mailto:hi@alyssa.is">hi@alyssa.is</a>&gt; =
-wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Gurchetan=
- Singh &lt;<a href=3D"mailto:gurchetansingh@chromium.org" target=3D"_blank"=
->gurchetansingh@chromium.org</a>&gt; writes:<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Aug 25, 2023 at 6:55=E2=80=AF=
+AM Antonio Caggiano &lt;<a href=3D"mailto:quic_acaggian@quicinc.com">quic_a=
+caggian@quicinc.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">Hi Gurchetan,<br>
 <br>
-&gt; On Wed, Aug 23, 2023 at 4:07=E2=80=AFAM Alyssa Ross &lt;<a href=3D"mai=
-lto:hi@alyssa.is" target=3D"_blank">hi@alyssa.is</a>&gt; wrote:<br>
-&gt;<br>
-&gt;&gt; Gurchetan Singh &lt;<a href=3D"mailto:gurchetansingh@chromium.org"=
- target=3D"_blank">gurchetansingh@chromium.org</a>&gt; writes:<br>
-&gt;&gt;<br>
-&gt;&gt; &gt; - Official &quot;release commits&quot; issued for rutabaga_gf=
-x_ffi,<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0gfxstream, aemu-base.=C2=A0 For example, see <a h=
-ref=3D"http://crrev.com/c/4778941" rel=3D"noreferrer" target=3D"_blank">crr=
-ev.com/c/4778941</a><br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; - The release commits can make packaging easier, though once<=
-br>
-&gt;&gt; &gt;=C2=A0 =C2=A0again all known users will likely just build from=
- sources<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0anyways<br>
-&gt;&gt;<br>
-&gt;&gt; It&#39;s a small thing, but could there be actual tags, rather tha=
-n just<br>
-&gt;&gt; blessed commits?=C2=A0 It&#39;d just make them easier to find, and=
- save a bit of<br>
-&gt;&gt; time in review for packages.<br>
-&gt;&gt;<br>
-&gt;<br>
-&gt; I added:<br>
-&gt;<br>
-&gt; <a href=3D"https://crosvm.dev/book/appendix/rutabaga_gfx.html#latest-r=
-eleases-for-potential-packaging" rel=3D"noreferrer" target=3D"_blank">https=
-://crosvm.dev/book/appendix/rutabaga_gfx.html#latest-releases-for-potential=
--packaging</a><br>
-&gt;<br>
-&gt; Tags are possible, but I want to clarify the use case before packaging=
-.<br>
-&gt; Where are you thinking of packaging it for (Debian??)? Are you mostly<=
-br>
-&gt; interested in Wayland passthrough (my guess) or gfxstream too?=C2=A0 D=
-epending<br>
-&gt; your use case, we may be able to minimize the work involved.<br>
+Thank you for this series and for including some of my patches :)<br>
 <br>
-Packaging for Nixpkgs (where I already maintain what to my knowledge is<br>
-the only crosvm distro package).=C2=A0 I&#39;m personally mostly interested=
- in<br>
-Wayland passthroug, but I wouldn&#39;t be surprised if others are intereste=
-d<br>
-in gfxstream.=C2=A0 The packaging work is already done, I&#39;ve just been<=
-br>
-holding off actually pushing the packages waiting for the stable<br>
-releases.<br>
+On 25/08/2023 01:40, Gurchetan Singh wrote:<br>
+&gt; This change enables rutabaga to receive virtio-gpu-3d hypercalls<br>
+&gt; when it is active.<br>
+&gt; <br>
+&gt; Signed-off-by: Gurchetan Singh &lt;<a href=3D"mailto:gurchetansingh@ch=
+romium.org" target=3D"_blank">gurchetansingh@chromium.org</a>&gt;<br>
+&gt; Tested-by: Alyssa Ross &lt;<a href=3D"mailto:hi@alyssa.is" target=3D"_=
+blank">hi@alyssa.is</a>&gt;<br>
+&gt; Tested-by: Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidi=
+anakis@linaro.org" target=3D"_blank">manos.pitsidianakis@linaro.org</a>&gt;=
 <br>
-The reason that tags would be useful is that it allows a reviewer of the<br=
+&gt; Reviewed-by: Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsi=
+dianakis@linaro.org" target=3D"_blank">manos.pitsidianakis@linaro.org</a>&g=
+t;<br>
+&gt; ---<br>
+&gt; v3: Whitespace fix (Akihiko)<br>
+&gt; v9: reorder virtio_gpu_have_udmabuf() after checking if rutabaga<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 is enabled to avoid spurious warnings (Akihiko)<br=
 >
-package to see at a glance that the package is built from a stable<br>
-release.=C2=A0 If it&#39;s just built from a commit hash, they have to go a=
-nd<br>
-verify that it&#39;s a stable release, which is mildly annoying and<br>
-unconventional.<br></blockquote><div><br></div><div>Understood.=C2=A0 Reque=
-st to have gfxstream and AEMU v0.1.2 release tags made.</div><div><br></div=
-><div>For rutabaga_gfx_ffi, is the <a href=3D"http://crates.io">crates.io</=
-a> upload sufficient?</div><div><br></div><div><a href=3D"https://crates.io=
-/crates/rutabaga_gfx_ffi">https://crates.io/crates/rutabaga_gfx_ffi</a><br>=
-</div><div><br></div><div>Debian, for example, treats <a href=3D"http://cra=
-tes.io">crates.io</a> as the source of truth and builds tooling around that=
-.=C2=A0 I wonder if Nixpkgs as similar tooling around=C2=A0<a href=3D"http:=
-//crates.io">crates.io</a>.</div><div>=C2=A0</div></div></div>
+&gt; <br>
+&gt;=C2=A0 =C2=A0hw/display/virtio-gpu-base.c | 3 ++-<br>
+&gt;=C2=A0 =C2=A0hw/display/virtio-gpu.c=C2=A0 =C2=A0 =C2=A0 | 5 +++--<br>
+&gt;=C2=A0 =C2=A0softmmu/qdev-monitor.c=C2=A0 =C2=A0 =C2=A0 =C2=A0| 3 +++<b=
+r>
+&gt;=C2=A0 =C2=A0softmmu/vl.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0| 1 +<br>
+&gt;=C2=A0 =C2=A04 files changed, 9 insertions(+), 3 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base=
+.c<br>
+&gt; index 4f2b0ba1f3..50c5373b65 100644<br>
+&gt; --- a/hw/display/virtio-gpu-base.c<br>
+&gt; +++ b/hw/display/virtio-gpu-base.c<br>
+&gt; @@ -223,7 +223,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, u=
+int64_t features,<br>
+&gt;=C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0VirtIOGPUBase *g =3D VIRTIO_GPU_BASE(vdev);<=
+br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; -=C2=A0 =C2=A0 if (virtio_gpu_virgl_enabled(g-&gt;conf)) {<br>
+&gt; +=C2=A0 =C2=A0 if (virtio_gpu_virgl_enabled(g-&gt;conf) ||<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_gpu_rutabaga_enabled(g-&gt;conf)) =
+{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0features |=3D (1 &lt;&lt; VIRT=
+IO_GPU_F_VIRGL);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (virtio_gpu_edid_enabled(g-&gt;conf)) {<b=
+r>
+&gt; diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c<br>
+&gt; index 3e658f1fef..fe094addef 100644<br>
+&gt; --- a/hw/display/virtio-gpu.c<br>
+&gt; +++ b/hw/display/virtio-gpu.c<br>
+&gt; @@ -1361,8 +1361,9 @@ void virtio_gpu_device_realize(DeviceState *qdev=
+, Error **errp)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0VirtIOGPU *g =3D VIRTIO_GPU(qdev);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (virtio_gpu_blob_enabled(g-&gt;parent_obj=
+.conf)) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!virtio_gpu_have_udmabuf()) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;cann=
+ot enable blob resources without udmabuf&quot;);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!virtio_gpu_rutabaga_enabled(g-&gt;pa=
+rent_obj.conf) &amp;&amp;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 !virtio_gpu_have_udmabuf())=
+ {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;need=
+ rutabaga or udmabuf for blob resources&quot;);<br>
+<br>
+Does that mean udmabuf is not required at all when using rutabaga?<br>
+How does rutabaga handle blob resources?<br></blockquote><div><br></div><di=
+v>It&#39;s not required, since it&#39;s a Linux-only thing.=C2=A0 Some use =
+cases do prefer to use guest memory and we do have provisional support for =
+that (see `handle` field of `rutabaga_resource_create_blob`).=C2=A0 Though =
+more testing is required on the target platform, and likely virtio-gpu spec=
+ changes for a full-functional solution.=C2=A0=C2=A0</div><div><br></div><d=
+iv>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c<br>
+&gt; index 74f4e41338..1b8005ae55 100644<br>
+&gt; --- a/softmmu/qdev-monitor.c<br>
+&gt; +++ b/softmmu/qdev-monitor.c<br>
+&gt; @@ -86,6 +86,9 @@ static const QDevAlias qdev_alias_table[] =3D {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ &quot;virtio-gpu-pci&quot;, &quot;virtio-g=
+pu&quot;, QEMU_ARCH_VIRTIO_PCI },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ &quot;virtio-gpu-gl-device&quot;, &quot;vi=
+rtio-gpu-gl&quot;, QEMU_ARCH_VIRTIO_MMIO },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ &quot;virtio-gpu-gl-pci&quot;, &quot;virti=
+o-gpu-gl&quot;, QEMU_ARCH_VIRTIO_PCI },<br>
+&gt; +=C2=A0 =C2=A0 { &quot;virtio-gpu-rutabaga-device&quot;, &quot;virtio-=
+gpu-rutabaga&quot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 QEMU_ARCH_VIRTIO_MMIO },<br>
+&gt; +=C2=A0 =C2=A0 { &quot;virtio-gpu-rutabaga-pci&quot;, &quot;virtio-gpu=
+-rutabaga&quot;, QEMU_ARCH_VIRTIO_PCI },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ &quot;virtio-input-host-device&quot;, &quo=
+t;virtio-input-host&quot;, QEMU_ARCH_VIRTIO_MMIO },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ &quot;virtio-input-host-ccw&quot;, &quot;v=
+irtio-input-host&quot;, QEMU_ARCH_VIRTIO_CCW },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ &quot;virtio-input-host-pci&quot;, &quot;v=
+irtio-input-host&quot;, QEMU_ARCH_VIRTIO_PCI },<br>
+&gt; diff --git a/softmmu/vl.c b/softmmu/vl.c<br>
+&gt; index b0b96f67fa..2f98eefdf3 100644<br>
+&gt; --- a/softmmu/vl.c<br>
+&gt; +++ b/softmmu/vl.c<br>
+&gt; @@ -216,6 +216,7 @@ static struct {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ .driver =3D &quot;ati-vga&quot;,=C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .flag =3D &amp;default_vga=C2=A0 =C2=
+=A0 =C2=A0 =C2=A0},<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ .driver =3D &quot;vhost-user-vga&quot;,=C2=
+=A0 =C2=A0 =C2=A0 =C2=A0.flag =3D &amp;default_vga=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0},<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{ .driver =3D &quot;virtio-vga-gl&quot;,=C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 .flag =3D &amp;default_vga=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0},<br>
+&gt; +=C2=A0 =C2=A0 { .driver =3D &quot;virtio-vga-rutabaga&quot;,=C2=A0 .f=
+lag =3D &amp;default_vga=C2=A0 =C2=A0 =C2=A0 =C2=A0},<br>
+&gt;=C2=A0 =C2=A0};<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0static QemuOptsList qemu_rtc_opts =3D {<br>
+<br>
+Patches 5 to 9:<br>
+Reviewed-by: Antonio Caggiano &lt;<a href=3D"mailto:quic_acaggian@quicinc.c=
+om" target=3D"_blank">quic_acaggian@quicinc.com</a>&gt;<br>
+<br>
+Cheers,<br>
+Antonio<br>
+</blockquote></div></div>
 
---00000000000068e8cc0603c408ad--
+--000000000000a2d0e80603c4149c--
 
