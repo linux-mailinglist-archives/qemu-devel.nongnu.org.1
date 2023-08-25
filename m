@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DCA788D09
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 18:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7C1788D0B
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 18:14:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZZRL-0008Me-E1; Fri, 25 Aug 2023 12:13:39 -0400
+	id 1qZZRo-0000BB-1E; Fri, 25 Aug 2023 12:14:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qZZRH-0008Lx-09
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 12:13:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qZZRk-000056-L5
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 12:14:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qZZRD-0007UT-GP
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 12:13:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qZZRi-0007XP-JJ
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 12:14:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692980009;
+ s=mimecast20190719; t=1692980041;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OLgA5GA1BS1SZQloMrD4D4Qd55Hj2TTaXj7bked/6OU=;
- b=cETqUxKZzcafcWEFsEW3dfxrEwUP6wfNUulABundxLDcvSXmm2sd6+I+bcOnWClzY+CjAc
- nULM+TaGCbTlbLZSDJ/BOipog8NXKbyKwgUuu7uSH9r7TQtBK75NwdtABpkDxzA0oeJE5F
- +U+9ocG+FuJVoNIXc/UFXTnE2QIcM4A=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XsOOUFAnpZF8VlU2nxxredNfBuPurRki8fXFH46a8J4=;
+ b=B7qr6eATKu9uu9yIOc2lQ6xk/euBe2EIzhvFX255BKp6rVPhZN0m8+gfe+9+XFumEAEmnn
+ EOmNKSonQph5lStAYwIQCChw+AN+ezD4GR2IQe/rPx1kJdezbLOywnvtcu84mdyU5C2BR1
+ 7zwhUBwLKGVIJtQyQZ6YJNnjX5sSWsg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-RvVKkr4mPFKvG8MevnkZdg-1; Fri, 25 Aug 2023 12:13:26 -0400
-X-MC-Unique: RvVKkr4mPFKvG8MevnkZdg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fbdf341934so8649215e9.3
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 09:13:26 -0700 (PDT)
+ us-mta-145-iXW5rzFaMveHWM7ufwyKlw-1; Fri, 25 Aug 2023 12:13:58 -0400
+X-MC-Unique: iXW5rzFaMveHWM7ufwyKlw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-315af0252c2so759755f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 09:13:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692980006; x=1693584806;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OLgA5GA1BS1SZQloMrD4D4Qd55Hj2TTaXj7bked/6OU=;
- b=iVAWFmzvNPXU94XX7NI5CKMs7FLsHjMZOfEF3kCdzWju2IdVAeQDxTLrePdBR5a5s1
- zLHh3O83Le/tqTEpCzh/brTpNqg2ld8QFFhD3GPd0OLcpgfdU1pIpGPNYMhVf9btAf4R
- LI0ljkvUG50l1pmZvR3z4e/s00sAiUrN62EQV2pu1P/daT5vRjYNxgTnS5K4D3z39bgk
- 7ygjpyAVLzYZDwKHFRsWsasx9IQxtn8kxP2jSPS3SOK125Sz/SNTRmZN8qSpYezVa/Tl
- wX5jWvfg1hsZV6QXfkFuk5DAxWKgMXnGn0vwSzAGHuzN7j1qiwWIZMogRWGSyILll5e1
- xlpg==
-X-Gm-Message-State: AOJu0YyF53A/Nhj+uA5vK77EjkcXNST41sjuMlLb1yy3PhvEz6paeG6y
- 0kKgHea47nTJ1zOXVmxCbyEgSPVDeZ70onW/VqVU3gTs4Lq7gihGU2wocdqENRxhKduH9bxSb9e
- aQTwyyHLRzxHYeo8=
-X-Received: by 2002:a05:600c:3653:b0:401:b0f2:88c1 with SMTP id
- y19-20020a05600c365300b00401b0f288c1mr3584994wmq.29.1692980005810; 
- Fri, 25 Aug 2023 09:13:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7ZGWgId/n8Ar+EPkYScVcuqpxdr74k7RnDAImmjwaVSK3oR5u2/8xTV85SLoqW5orhrSNxw==
-X-Received: by 2002:a05:600c:3653:b0:401:b0f2:88c1 with SMTP id
- y19-20020a05600c365300b00401b0f288c1mr3584983wmq.29.1692980005482; 
- Fri, 25 Aug 2023 09:13:25 -0700 (PDT)
-Received: from [192.168.178.136] (port-92-192-26-146.dynamic.as20676.net.
- [92.192.26.146]) by smtp.gmail.com with ESMTPSA id
- e14-20020adfef0e000000b00315af025098sm2612753wro.46.2023.08.25.09.13.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 09:13:24 -0700 (PDT)
-Message-ID: <31cfbe193fe6638510d310f3e2a3de6c5365006a.camel@redhat.com>
-Subject: Re: [PATCH 3/3] target/i386: Fix duplicated feature name in FEAT_KVM
-From: Tim Wiederhake <twiederh@redhat.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 25 Aug 2023 18:13:24 +0200
-In-Reply-To: <26d1e42b-3522-7a8a-1529-1067186e81d5@linaro.org>
-References: <20230824135710.343175-1-twiederh@redhat.com>
- <20230824135710.343175-4-twiederh@redhat.com>
- <26d1e42b-3522-7a8a-1529-1067186e81d5@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+ d=1e100.net; s=20221208; t=1692980037; x=1693584837;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XsOOUFAnpZF8VlU2nxxredNfBuPurRki8fXFH46a8J4=;
+ b=f6keJT6PNp/GwcY+y4LYy4gv73WfZyjPPA7kyaKW3IhI7gJIhCnHsanjjSBNQ3krmh
+ eKzJ9RI1xX6aVx3XEvWtE3MviBAnPg5LE1/+vjb+1UEZ3b+BQkyvTnnDhCyAgLBpuFLf
+ FY8DgX6SzELb9sUqvace2CV8H9BHIPBIgixkxCum0XIheE/eH+9WnaaEtoxnk2G1l8Km
+ hOGAy3dvr9ZOaLPwDLkQlDnId34shiwmaG0D8rg2/JboYwcoPVnJ5PDt838U6xz+ttOT
+ XBp9ASljB+xiFQ+wlhbzRt4Br4cTmZnJxiv2qTMC5+Yq6kWNM9Pq/2YpF9+w03d9Wqxs
+ qskA==
+X-Gm-Message-State: AOJu0YzFYu5LYsaChMcm+esRmFSwzjSO/ile0DbgO7hfDCNymVIzKciU
+ 0T5C0e9EWKOvuno45OyhH1X8+6ChLKSU7nJipCz7O03AyRomFVb3hXifY8afNDwEeWoEC62fAGF
+ DtkQz7+kIT7PG1oU=
+X-Received: by 2002:adf:e802:0:b0:317:e68d:f862 with SMTP id
+ o2-20020adfe802000000b00317e68df862mr15512852wrm.37.1692980037138; 
+ Fri, 25 Aug 2023 09:13:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFasDfYHvjI4F9KH3rGvaslFBp2qPP2Go9A6jeLI/Nw/aAa8Kila9x/Nf7FTPEfCNMROuP4RA==
+X-Received: by 2002:adf:e802:0:b0:317:e68d:f862 with SMTP id
+ o2-20020adfe802000000b00317e68df862mr15512842wrm.37.1692980036842; 
+ Fri, 25 Aug 2023 09:13:56 -0700 (PDT)
+Received: from [192.168.8.103] (tmo-099-164.customers.d1-online.com.
+ [80.187.99.164]) by smtp.gmail.com with ESMTPSA id
+ x3-20020a5d6503000000b00317c742ca9asm2584179wru.43.2023.08.25.09.13.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Aug 2023 09:13:56 -0700 (PDT)
+Message-ID: <2859aebf-f2a3-1c19-b5c3-efbd1ae14977@redhat.com>
+Date: Fri, 25 Aug 2023 18:13:54 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=twiederh@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] docs tests: Fix use of migrate_set_parameter
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, dave@treblig.org,
+ qemu-block@nongnu.org, berrange@redhat.com, dgilbert@redhat.com,
+ qemu-trivial@nongnu.org
+References: <20230825155923.1983141-1-armbru@redhat.com>
+ <20230825155923.1983141-2-armbru@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230825155923.1983141-2-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.57, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,48 +103,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-08-24 at 17:12 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> On 24/8/23 15:57, Tim Wiederhake wrote:
-> > The mistake became apparent as there were two features with the
-> > same name
-> > in this cpuid leaf. The names are now in line with the
-> > documentation from
-> > https://kernel.org/doc/html/latest/virt/kvm/x86/cpuid.html
-> >=20
->=20
-> Fixes: 642258c6c7 ("kvm: add kvmclock to its second bit")
-> ?
->=20
-Right, added that locally. Thanks!
+On 25/08/2023 17.59, Markus Armbruster wrote:
+> docs/multi-thread-compression.txt uses parameter names with
+> underscores instead of dashes.  Wrong since day one.
+> 
+> docs/rdma.txt, tests/qemu-iotests/181, and tests/qtest/test-hmp.c are
+> wrong the same way since commit cbde7be900d2 (v6.0.0).  Hard to see,
+> as test-hmp doesn't check whether the commands work, and iotest 181
+> appears to be unaffected.
+> 
+> Fixes: 263170e679df (docs: Add a doc about multiple thread compression)
+> Fixes: cbde7be900d2 (migrate: remove QMP/HMP commands for speed, downtime and cache size)
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
 
-> > Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
-> > ---
-> > =C2=A0 target/i386/cpu.c | 2 +-
-> > =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 0b74d80371..ceb291f8a8 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -852,7 +852,7 @@ FeatureWordInfo
-> > feature_word_info[FEATURE_WORDS] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [FEAT_KVM] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .type =3D CPUID_=
-FEATURE_WORD,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .feat_names =3D =
-{
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "kv=
-mclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock",
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "kv=
-mclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock2",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-
-> > pv-unhalt",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 "kvm-poll-control", "kvm-pv-sched-yield", "kvm-
-> > asyncpf-int", "kvm-msi-ext-dest-id",
->=20
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
