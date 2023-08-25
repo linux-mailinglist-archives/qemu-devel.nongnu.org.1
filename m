@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FD37880D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCAF7880DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:27:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZRCV-0002KB-W9; Fri, 25 Aug 2023 03:25:48 -0400
+	id 1qZRDm-0002dn-0K; Fri, 25 Aug 2023 03:27:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRCP-0002IW-Bf
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:25:41 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRD4-0002RX-AX
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:26:23 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRCM-0004Mu-I2
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:25:40 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-4ff9abf18f9so887553e87.2
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:25:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRD2-0004Qm-4N
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:26:22 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-52a0856b4fdso881400a12.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692948336; x=1693553136;
+ d=linaro.org; s=google; t=1692948378; x=1693553178;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Xz0R2t2eRhZYHrr1LB/v3IF7fgznOpylhFNIUsiaMrA=;
- b=hWALECmlo7Dj9IYJbWCmsvQBufERHs7UCQt9qEW6lnP5HvVDQKz4V6otXemUHKhNY0
- k2XR84cHpXrjCC4ngkJjnlZVL5BslaDj6B46U9ra1n+cEtYV3HgVCI3K1clShwUhhWFB
- 2N4zDWG1HkBbwytuL0LWzqVElzY8yrrI8B6HWKingjxkMRliI2kN8yIN5wzVb66+OyL3
- 7pBpAY9xes6Y1B3y0gWhqA0bRfeUlz6LBQnBBUfbFKPPjpswAs1r4CGnXhwSo9kR+raV
- rCwf0P+jopm/xzHzGNyni2u8GhVBgcmy6wT5u0XaaiQ1ybDhXn4B1NLuA65jXnPPZLSD
- Ourg==
+ bh=1x5iaUuIxvpqvb6RKgT45/hd4/Cfy8Q+3vcDPbxCl3A=;
+ b=w9VQuYLXXYL1hr7EANASsbxmZbWD0d/ESlSo0CTluvu0NOFzPpNp2Zkz3faNRW29ty
+ MOVM2lZeRWqcMEmhuK0Fr+RKTj1HR/LX45FpFAszOz8POxp/qyT34wVFLtGBBHjW7sYc
+ 5AOZ8wBFMOirxpZ/dCqTfNprQBt9pXkmcBC71ElEBX32ZBJ6ZZghwNs/S7cdT8u8p1AG
+ g+rPhvPL1vAyODi2RMP+LK2OjUQuR9pkp0ACNQX2wpbOUAKlpQYDvdSe5kPUbgxAT//5
+ 9zNvDcDnQT4L611G/CPFWPaYpEaZGgTcjztk8RERxZrehKJ9xU8SLoHmU0/MfDz4NHxf
+ ispw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692948336; x=1693553136;
+ d=1e100.net; s=20221208; t=1692948378; x=1693553178;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xz0R2t2eRhZYHrr1LB/v3IF7fgznOpylhFNIUsiaMrA=;
- b=fdTtiemZDRHZ1bgM5VCqgFm7maJ20yobY3fFMJlvYCIGhOOVvFXPYF3vAO7+2T0VnS
- 5B+fHtacOlrJupPelApVDEmFEVFT1RRRBclNWe/gm6ha7DdDFybftBMpFjQPZ2xLPCgY
- k/DNBn1Oo31efKD+V5f89HBxSOjB+iSWnkDbGnykNDBNQRwOLqgBjTsonmyiOpV10wdP
- VcCqmOPPJKFkYrnOlqJroHQF++6LWzuOhKC048CF+yORfQ4B8/+XHQAv/IZ5Zvp9Txsv
- pS/8wOYneNg8GuVfG+gUSHUkDew8bcNfXBBfVI6oYX0x/GWiINA+meQhMh+mg0oZP0um
- 1S6g==
-X-Gm-Message-State: AOJu0YzwbGQNbFGB5bdKzRuWYuRiKmNPsJM3izr2Ycr1mOA9Pjx7dayG
- zuOtXun6vl44f1YyGghR6k6q+g==
-X-Google-Smtp-Source: AGHT+IH+eneaPll9YzHo0YDjIXUjEWvsyCq7hdbBUmqji1p5uM0vVLUpHrYDrpd17lEvJcoN1fzMNA==
-X-Received: by 2002:ac2:5981:0:b0:500:9839:b13a with SMTP id
- w1-20020ac25981000000b005009839b13amr3762296lfn.66.1692948336088; 
- Fri, 25 Aug 2023 00:25:36 -0700 (PDT)
+ bh=1x5iaUuIxvpqvb6RKgT45/hd4/Cfy8Q+3vcDPbxCl3A=;
+ b=YUL9MkI3rPVslcDdMt27bOkhQs9CAo10elcxhMxiepOW/aHVTbTDCNRwZUL/uT3OfR
+ Lc8CsvUd+aIpQenEpOA2t821eOh2R1M1GEQO8KMFO5d3omXB4RddWyrgI0DX5dErg932
+ ZiWSCMcClJnzb01RxYtlpgIa6j79P3Y6txCnf9gNZHQThse4WO7Kcg1uX4/ztRlYnshv
+ tAw3VQpjO3lOnPo8//RQQZLahw85pmzag6E/QtBRizB8WS62p21iGNI+a15DjpjIdbf0
+ WipWN1loNRhqgn9Kqia0/t0mnCU4cXBwi/6lJPKH6lacpx/yQgBIazruB8DHlveeFCdO
+ 1EyA==
+X-Gm-Message-State: AOJu0YzmI0WAcTQooFdaxkfNuELZylAj6Gcb36porrFBc1LQsrKCEJHT
+ Q/KjgCxWzpC3PKssa27uEmWJ+w==
+X-Google-Smtp-Source: AGHT+IHLzz/vubpH5rEi1lbd9n83j1GAkiNO7EM2m6KPmqz1FopKRyp2q2AfNdnVs5UifpMLdrenzQ==
+X-Received: by 2002:a05:6402:6d2:b0:52a:1c3c:2ecf with SMTP id
+ n18-20020a05640206d200b0052a1c3c2ecfmr7749796edy.28.1692948378310; 
+ Fri, 25 Aug 2023 00:26:18 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.69.26])
  by smtp.gmail.com with ESMTPSA id
- p8-20020aa7d308000000b005288f0e547esm700150edq.55.2023.08.25.00.25.34
+ m12-20020a056402050c00b0051bed21a635sm697878edv.74.2023.08.25.00.26.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 00:25:35 -0700 (PDT)
-Message-ID: <1aae8aab-8f92-e30a-7b40-e090aecdcd8e@linaro.org>
-Date: Fri, 25 Aug 2023 09:25:33 +0200
+ Fri, 25 Aug 2023 00:26:17 -0700 (PDT)
+Message-ID: <431888d7-5ce5-109e-7cb3-8885afd961d5@linaro.org>
+Date: Fri, 25 Aug 2023 09:26:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 06/13] docs/devel: simplify the minimal checklist
+Subject: Re: [PATCH v2 2/2] softmmu/dirtylimit: Convert free to g_free
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: fam@euphon.net, berrange@redhat.com, f4bug@amsat.org,
- aurelien@aurel32.net, pbonzini@redhat.com, stefanha@redhat.com,
- crosa@redhat.com, Thomas Huth <thuth@redhat.com>
-References: <20221117172532.538149-1-alex.bennee@linaro.org>
- <20221117172532.538149-7-alex.bennee@linaro.org>
- <82434e83-d156-1a29-fb82-d6127162c185@linaro.org>
+To: alloc.young@outlook.com, yong.huang@smartx.com
+Cc: mjt@tls.msk.ru, qemu-devel@nongnu.org
+References: <SA1PR11MB67609A76D397056973B406B1F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
+ <SA1PR11MB67604ECD85AFF34BEB3072F7F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <82434e83-d156-1a29-fb82-d6127162c185@linaro.org>
+In-Reply-To: <SA1PR11MB67604ECD85AFF34BEB3072F7F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
@@ -97,43 +93,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping?
+On 25/8/23 04:32, alloc.young@outlook.com wrote:
+> From: alloc <alloc.young@outlook.com>
+> 
+> Convert free to g_free to match g_new and g_malloc functions.
+> 
+> Signed-off-by: alloc <alloc.young@outlook.com>
 
-On 5/7/23 13:44, Philippe Mathieu-Daudé wrote:
-> Hi Alex,
-> 
-> On 17/11/22 18:25, Alex Bennée wrote:
->> The bullet points are quite long and contain process tips. Move those
->> bits of the bullet to the relevant sections and link to them. Use a
->> table for nicer formatting of the checklist.
->>
->> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
->> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
->> Message-Id: <20221111145529.4020801-8-alex.bennee@linaro.org>
->> ---
->>   docs/devel/submitting-a-patch.rst | 75 ++++++++++++++++++++-----------
->>   1 file changed, 49 insertions(+), 26 deletions(-)
-> 
-> 
->> @@ -314,10 +320,12 @@ git repository to fetch the original commit.
->>   Patch emails must include a ``Signed-off-by:`` line
->>   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> -For more information see `SubmittingPatches 1.12
->> -<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__.
->> -This is vital or we will not be able to apply your patch! Please use
->> -your real name to sign a patch (not an alias or acronym).
-> 
-> Revisiting this patch, asking for some real name instead of alias
-> was at least helpful during patch review, we could address the
-> contributor by its name. Addressing an acronym is socially weird
-> (at least in my culture netiquette).
-> 
->> +Your patches **must** include a Signed-off-by: line. This is a hard
->> +requirement because it's how you say "I'm legally okay to contribute
->> +this and happy for it to go into QEMU". The process is modelled after
->> +the `Linux kernel
->> +<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__
->> +policy.
+Fixes: cc2b33eab0 ("softmmu/dirtylimit: Implement vCPU dirtyrate 
+calculation periodically")
+Fixes: baa609832e ("softmmu/dirtylimit: Implement virtual CPU throttle")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> ---
+>   softmmu/dirtylimit.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 
 
