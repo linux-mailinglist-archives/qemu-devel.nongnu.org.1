@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFFD7880BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FD37880D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZR2T-00074S-D3; Fri, 25 Aug 2023 03:15:25 -0400
+	id 1qZRCV-0002KB-W9; Fri, 25 Aug 2023 03:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZR2R-00073w-9q
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:15:23 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRCP-0002IW-Bf
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:25:41 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZR2P-0002HZ-49
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:15:23 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31977ace1c8so462586f8f.1
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:15:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZRCM-0004Mu-I2
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:25:40 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-4ff9abf18f9so887553e87.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:25:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692947719; x=1693552519;
+ d=linaro.org; s=google; t=1692948336; x=1693553136;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QIntS/pJMxAoTl14tAADVzHJX0FPqG3x0EMIW3png6o=;
- b=zVqXw4vln63u2nVWI1zs1mOMEBR3tvXkjs6Lgr+e2IflhP5OXkLvJrsE07NFrr2tUM
- YVY6SL5vOgiZUl1RwTITCvygrJb4f0DeReroscUUrajHz793+D1Chhcnay3VOkAvAE0m
- H08h+yCgdytQoXRiCRW7jbc9dQvSmVRgV7Or0WEaHnDEHjL8LPbOXomPGDUaUfgAUjiG
- dEIuXgmHdS4e3Je9ezrPc2Havx9GCGaynWDVXkqbNC0zHR4wIvHKWRsH8z4bxcBmkLrL
- rhTYGWxnlSBLwODmSOb0KGp+IGRR0UpvYqLvLipZpFWP1+Ju1Nmn524v+jkc4HB3XEeT
- iJdg==
+ bh=Xz0R2t2eRhZYHrr1LB/v3IF7fgznOpylhFNIUsiaMrA=;
+ b=hWALECmlo7Dj9IYJbWCmsvQBufERHs7UCQt9qEW6lnP5HvVDQKz4V6otXemUHKhNY0
+ k2XR84cHpXrjCC4ngkJjnlZVL5BslaDj6B46U9ra1n+cEtYV3HgVCI3K1clShwUhhWFB
+ 2N4zDWG1HkBbwytuL0LWzqVElzY8yrrI8B6HWKingjxkMRliI2kN8yIN5wzVb66+OyL3
+ 7pBpAY9xes6Y1B3y0gWhqA0bRfeUlz6LBQnBBUfbFKPPjpswAs1r4CGnXhwSo9kR+raV
+ rCwf0P+jopm/xzHzGNyni2u8GhVBgcmy6wT5u0XaaiQ1ybDhXn4B1NLuA65jXnPPZLSD
+ Ourg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692947719; x=1693552519;
+ d=1e100.net; s=20221208; t=1692948336; x=1693553136;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QIntS/pJMxAoTl14tAADVzHJX0FPqG3x0EMIW3png6o=;
- b=Pj7gUOq9yITTHvhgM3Zu1S3Fx21AXdgHJimfFPfdyuONkz0ShDX6bTLiK3F1WPKkcQ
- +B53QE6CA9OQGNHdWkYmcKPsdfQrsr1P4kObMdAgPFH4BpHGZA1p+z0hldhr3Bj81SMH
- oVD6zEhs9bruycBCjQb/jIxKwHkQDE7X+Y7LHjvh3RGA0d+80Ubcqf7opo8oPwNtRFv2
- Cyi7x/0Nq/2akfFhk2gcR8WwoyMNJdU6vTira0jeosMXzVqsOEgo4ml0D16FL3zax2VK
- AxCpKS8VI+ynf7La1EUwBkCMsVxRPkGE9kGY9l49OqiQVQGh0sgV69DBpIhsbyYkFjax
- oiiw==
-X-Gm-Message-State: AOJu0Yz2Civ612Yv+8Lv9e/khWEiWyjNTq4Ery2D/CJtodK31XghQCyo
- 0Zra5Apd5SjnfLH1iEBEzSE2RsEbVkkL4D9qGTQ=
-X-Google-Smtp-Source: AGHT+IFzn7PxIFZD0Fd4hb3wimJ9z1y+NGu5dzSPnniZIoZQZvTtiUGgq0IdmBPP/eD0fDPpve2dBQ==
-X-Received: by 2002:a5d:4041:0:b0:317:3f70:9dc4 with SMTP id
- w1-20020a5d4041000000b003173f709dc4mr13857883wrp.31.1692947719307; 
- Fri, 25 Aug 2023 00:15:19 -0700 (PDT)
+ bh=Xz0R2t2eRhZYHrr1LB/v3IF7fgznOpylhFNIUsiaMrA=;
+ b=fdTtiemZDRHZ1bgM5VCqgFm7maJ20yobY3fFMJlvYCIGhOOVvFXPYF3vAO7+2T0VnS
+ 5B+fHtacOlrJupPelApVDEmFEVFT1RRRBclNWe/gm6ha7DdDFybftBMpFjQPZ2xLPCgY
+ k/DNBn1Oo31efKD+V5f89HBxSOjB+iSWnkDbGnykNDBNQRwOLqgBjTsonmyiOpV10wdP
+ VcCqmOPPJKFkYrnOlqJroHQF++6LWzuOhKC048CF+yORfQ4B8/+XHQAv/IZ5Zvp9Txsv
+ pS/8wOYneNg8GuVfG+gUSHUkDew8bcNfXBBfVI6oYX0x/GWiINA+meQhMh+mg0oZP0um
+ 1S6g==
+X-Gm-Message-State: AOJu0YzwbGQNbFGB5bdKzRuWYuRiKmNPsJM3izr2Ycr1mOA9Pjx7dayG
+ zuOtXun6vl44f1YyGghR6k6q+g==
+X-Google-Smtp-Source: AGHT+IH+eneaPll9YzHo0YDjIXUjEWvsyCq7hdbBUmqji1p5uM0vVLUpHrYDrpd17lEvJcoN1fzMNA==
+X-Received: by 2002:ac2:5981:0:b0:500:9839:b13a with SMTP id
+ w1-20020ac25981000000b005009839b13amr3762296lfn.66.1692948336088; 
+ Fri, 25 Aug 2023 00:25:36 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.69.26])
  by smtp.gmail.com with ESMTPSA id
- h8-20020adffd48000000b00318147fd2d3sm1342637wrs.41.2023.08.25.00.15.18
+ p8-20020aa7d308000000b005288f0e547esm700150edq.55.2023.08.25.00.25.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 00:15:18 -0700 (PDT)
-Message-ID: <e35c0ddb-0f8c-e2ba-a8bc-573f3c9015e6@linaro.org>
-Date: Fri, 25 Aug 2023 09:15:17 +0200
+ Fri, 25 Aug 2023 00:25:35 -0700 (PDT)
+Message-ID: <1aae8aab-8f92-e30a-7b40-e090aecdcd8e@linaro.org>
+Date: Fri, 25 Aug 2023 09:25:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 4/5] target/hppa: Use privilege helper in
- hppa_get_physical_address()
+Subject: Re: [PATCH v3 06/13] docs/devel: simplify the minimal checklist
 Content-Language: en-US
-To: deller@kernel.org, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>
-References: <20230824210434.151971-1-deller@kernel.org>
- <20230824210434.151971-5-deller@kernel.org>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: fam@euphon.net, berrange@redhat.com, f4bug@amsat.org,
+ aurelien@aurel32.net, pbonzini@redhat.com, stefanha@redhat.com,
+ crosa@redhat.com, Thomas Huth <thuth@redhat.com>
+References: <20221117172532.538149-1-alex.bennee@linaro.org>
+ <20221117172532.538149-7-alex.bennee@linaro.org>
+ <82434e83-d156-1a29-fb82-d6127162c185@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230824210434.151971-5-deller@kernel.org>
+In-Reply-To: <82434e83-d156-1a29-fb82-d6127162c185@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
@@ -95,16 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 23:04, deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
-> 
-> Convert hppa_get_physical_address() to use the privilege helper macro.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
->   target/hppa/mem_helper.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
+Ping?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 5/7/23 13:44, Philippe Mathieu-Daudé wrote:
+> Hi Alex,
+> 
+> On 17/11/22 18:25, Alex Bennée wrote:
+>> The bullet points are quite long and contain process tips. Move those
+>> bits of the bullet to the relevant sections and link to them. Use a
+>> table for nicer formatting of the checklist.
+>>
+>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+>> Message-Id: <20221111145529.4020801-8-alex.bennee@linaro.org>
+>> ---
+>>   docs/devel/submitting-a-patch.rst | 75 ++++++++++++++++++++-----------
+>>   1 file changed, 49 insertions(+), 26 deletions(-)
+> 
+> 
+>> @@ -314,10 +320,12 @@ git repository to fetch the original commit.
+>>   Patch emails must include a ``Signed-off-by:`` line
+>>   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> -For more information see `SubmittingPatches 1.12
+>> -<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__.
+>> -This is vital or we will not be able to apply your patch! Please use
+>> -your real name to sign a patch (not an alias or acronym).
+> 
+> Revisiting this patch, asking for some real name instead of alias
+> was at least helpful during patch review, we could address the
+> contributor by its name. Addressing an acronym is socially weird
+> (at least in my culture netiquette).
+> 
+>> +Your patches **must** include a Signed-off-by: line. This is a hard
+>> +requirement because it's how you say "I'm legally okay to contribute
+>> +this and happy for it to go into QEMU". The process is modelled after
+>> +the `Linux kernel
+>> +<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__
+>> +policy.
 
 
