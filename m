@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B562F78855C
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 13:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AA97885E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 13:38:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZUdA-0005gN-BR; Fri, 25 Aug 2023 07:05:32 -0400
+	id 1qZV7L-00014H-Lt; Fri, 25 Aug 2023 07:36:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZUd5-0005fz-RY
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 07:05:28 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZV7H-00012c-SU
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 07:36:39 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZUd2-0005Rm-UN
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 07:05:27 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-99bc9e3cbf1so180724866b.0
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 04:05:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZV7E-00047Z-FK
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 07:36:38 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso618944f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 04:36:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692961523; x=1693566323;
+ d=linaro.org; s=google; t=1692963394; x=1693568194;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=mKzhajgUmzWCmbN4zmWsKdyU8U5tbak1I2rpnGxvJOE=;
- b=Zj0V6jearfoEFYzgVC8ROkEIPpbFRnd9UgzMWPwwoW/6ertMGYNCRcc8foiYfEZcp6
- k9QunguxCpAchXMoskR/wzBIJIP32000k15roLB+zH8b+hC9a9WpjH+84L/IO4onVPgB
- ujOwyrvaU/Jg+Qmo/edUnHyXP54+m78ltZZWKlavN4v7Hx6+PRkIt2pBzYBLQptFXXQ4
- muU0vFRPpzle+sfyOeJ1lIV/URMU4A42/wj319RwhRV3/v2ji2BP8V1LrMPkMkx0AiM0
- 4usWtRnU+S0+TKNAqMEHjAZtY8m2BFCEatAxFgFyiuA5zC/E8o+gISKzmu52sWrZggy3
- 6D4A==
+ bh=1KFbDqa7KTC9+seoswv8VJ3hVPmPN19uDYhxhL/KXMk=;
+ b=P6JXG00x0U+hvwovCuOVVt9X7DxqlCsC8/TLcWCIW0Ysar1W8fwbDbvFAMF28IBud6
+ 1mh7XV6WkHEFG0LUq5lO9xONHk/HfmEJ++IUhi8h+ZPIeAUbcU9pFkTD+3b3DkgYMuac
+ sph9o/7JbW1Jhdds3G3odGlBiGm4t+sJv7EHpsowCi3gfAWr8eJUEnUHp6UdWao1yWEK
+ VY4R/p5uX3PrjiAJ+6x3gxDmk/krrvZH0W2uTsR77exjsyhAI8li8FEhWUHi11lS7mzL
+ as7nJrmECfYj/W0RqK71E/h8DepRbXQ9KWmusdSAltM5JV6894EvOGPY5mFqhXSoyrZj
+ KpBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692961523; x=1693566323;
+ d=1e100.net; s=20221208; t=1692963394; x=1693568194;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mKzhajgUmzWCmbN4zmWsKdyU8U5tbak1I2rpnGxvJOE=;
- b=R1lm6oPAekT0AImUodp3HOGndpHWqu+RP7sIUMYC6DppPw7pmY0d7mk2g+APBnTOvP
- qvh5mFcOFiJvT2iebizmHa+RsiHiNdI1p2QaOQztQXQTfQv6RVCbpzbJFQmURLjo3Xcc
- WIJTF2Cc1GxM/mfTr1SrX69Idt7t9sm5U/AuLXf+N/E9kVeXnKKqs77LBY3Oo0mulsTf
- 9RB1aT1ou52VXgEQ5qdzyQbWVaiMGWYJP2up9cPNUUxfw1pD6jygCALEEpZPJVC1RDHo
- 6VzPTAAKaHT/wrSEpKcqPtQoVslLbiZGxo4pAnxBZw8Gz+VIufodBC3xzzzzkuOXWEjX
- 2CJw==
-X-Gm-Message-State: AOJu0YxY9XAT5lSklEtxNaM2m1itXhfGYX4vqHyao/m49lJNM6xtjGr4
- B35oY2SQMO2LkXQ7z087GvfLdg==
-X-Google-Smtp-Source: AGHT+IE7JB3KRoEDm/IiHYKXYQtv3cyQU6tc35PCDt3VDE3Zku5zKI8ftv2mJrcrMDcifxRZCm8tIA==
-X-Received: by 2002:a17:907:968c:b0:9a5:794f:f3c5 with SMTP id
- hd12-20020a170907968c00b009a5794ff3c5mr1317068ejc.6.1692961523116; 
- Fri, 25 Aug 2023 04:05:23 -0700 (PDT)
+ bh=1KFbDqa7KTC9+seoswv8VJ3hVPmPN19uDYhxhL/KXMk=;
+ b=hsxX0JVDvQtkJzbikeaA7dAjucVv0EjEZCl7x5oogsm2bEyXTDbawHhKDSmJR5+59P
+ LJse0wDpTRz16mC5ofcDshJx9P31/VKZjxgJpFbrrTjgdtdLkQM5iJ7njjTdaMcbql81
+ rOFTgqlOMYyQDOBoAo1coeU+ZlLU6Cp4zcyCFdDmnRknzycvWZ76BaPSQxRhso2S4Xq6
+ QQeC5TBJ817S5mkxOON01cPV3NrW6kLpJObdwfDJoAoIIj6kLmPy9c5/C+Xn8/T46We5
+ KgdPDdvk8ZiRsgaK5igYrGJ3WqKUBY26O6GeGpT5o8uEtVwcDmofScPNhzYNMJVGo9zm
+ pkNQ==
+X-Gm-Message-State: AOJu0YxMCmgjK7lGUF5UiY7Gy679RdA7tWr/Lu0T4lxOnykbF67zrFNS
+ xoNbhJZpq/q8PoUEnYYVnTTVKw==
+X-Google-Smtp-Source: AGHT+IF7rnqCBvtvaSxB3+arzlkRwu+N3IS68FkJCmpHw6Df9mv8zMeHHp31cHisNSkRolhAQPHOZw==
+X-Received: by 2002:a5d:498e:0:b0:317:50b7:2ce3 with SMTP id
+ r14-20020a5d498e000000b0031750b72ce3mr13702758wrq.51.1692963393754; 
+ Fri, 25 Aug 2023 04:36:33 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.69.26])
  by smtp.gmail.com with ESMTPSA id
- j26-20020a50ed1a000000b005257f90c976sm880582eds.3.2023.08.25.04.05.21
+ i15-20020a5d630f000000b0031989784d96sm1974734wru.76.2023.08.25.04.36.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 04:05:22 -0700 (PDT)
-Message-ID: <904eeaed-9caa-e8e5-73f3-927e134dbd54@linaro.org>
-Date: Fri, 25 Aug 2023 13:05:20 +0200
+ Fri, 25 Aug 2023 04:36:33 -0700 (PDT)
+Message-ID: <4781bd27-23a8-6ad8-ac1c-8e8369d14eba@linaro.org>
+Date: Fri, 25 Aug 2023 13:36:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
 Subject: Re: Failing avocado tests in CI (was: Re: [PULL 00/24] tcg +
  linux-user queue for 8.1-rc3)
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>
 References: <20230806033715.244648-1-richard.henderson@linaro.org>
  <772eb951-8a43-902b-3737-e52b44f7dcdb@redhat.com>
  <59a970fb-ad7b-d30b-1290-7b167bec0226@linaro.org> <87sf88fobd.fsf@linaro.org>
- <8eb65239-f29e-df5c-f0c0-abd97574254d@tls.msk.ru>
+ <5d1a0fcf-12a9-7b7a-7aa6-f4b5960a4d1e@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <8eb65239-f29e-df5c-f0c0-abd97574254d@tls.msk.ru>
+In-Reply-To: <5d1a0fcf-12a9-7b7a-7aa6-f4b5960a4d1e@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
 X-Spam_bar: ---
@@ -98,9 +98,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 18:23, Michael Tokarev wrote:
-> 24.08.2023 18:31, Alex Bennée wrote:
-> ..
+On 24/8/23 20:31, Richard Henderson wrote:
+> On 8/24/23 08:31, Alex Bennée wrote:
+>>> It's some sort of timing issue, which sometimes goes away when re-run.
+>>> I was re-running tests *a lot* in order to get them to go green while
+>>> running the 8.1 release.
+>>
+>> There is a definite regression point for the test_pc_q35 case:
+> 
+> Not exactly "definite" because it does vanish.
+> 
 >> which bisects to:
 >>
 >>    commit f7eaf9d702efdd02481d5f1c25f7d8e0ffb64c6e (HEAD, 
@@ -110,10 +117,7 @@ On 24/8/23 18:23, Michael Tokarev wrote:
 >>
 >>        accel/tcg: Do not issue misaligned i/o
 > 
-> It's not the first time something bisects to this commit.
-> But I can't find other relevant cases right now..
+> Well, since you can reproduce it, would you please debug it.
 
-This seems to be our "we don't model the ISA bus" friend again.
-
-TCG i/o DTRT for me.
+Not sure if that helps, but there is no failure when using -icount auto.
 
