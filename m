@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BC8788093
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7FC7880A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:10:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZQrg-0008BK-Pu; Fri, 25 Aug 2023 03:04:16 -0400
+	id 1qZQxP-0004Bg-MZ; Fri, 25 Aug 2023 03:10:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1qZQrX-00089A-8R
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:04:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1qZQrU-0000GW-S6
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:04:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692947042;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+u2a02W8/5bVMdqF3qJ1d3UfSgOkJ7WJ8oFN0Oxnotg=;
- b=Z5Clte467sXhWHrW08qgLKtHCT0Wa/XD48owqlASKGOxrTgNZyJL/4Xzzf1gfQa44f1Glx
- j15bf24f4e4tnesrTpjJKPGafJXawcPMLJUgYqSOghk/6d3v140luOnfYqE4TH1ahREJAA
- +gQyraeYzgr3dE2VSjuyvjoyBskvUAk=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-RTzHfmjdPlWc9AYH9PYqew-1; Fri, 25 Aug 2023 03:02:33 -0400
-X-MC-Unique: RTzHfmjdPlWc9AYH9PYqew-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4120af3b5b8so6417161cf.0
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:02:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZQxA-0004B3-Pl
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:09:56 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZQx7-0001LE-C1
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 03:09:56 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-52a1ce529fdso928091a12.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 00:09:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692947391; x=1693552191;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BE+jqnivCDTQWInIylniJfpMeWgD4PvJ7i0k0HlILsQ=;
+ b=so1EJwPd1iB6ki6UVWv/TiVMI0fOXgJMXBP0dqmeGSXzwsa7drnd90boejY805Opr/
+ C0TMmGQ5zJNJUjfbfllJhe/U0mMMwBgeYv8XE1GXtd/beTPMhh8ifaCb58qxxCU4qTPQ
+ 4dZnYUwMRVeXKhuN3D6BOivUP3gTuvPefppOC210A9ZI8ddY2esl7YDfSfieZaym6dSL
+ Qn9Ki1OBx2u4zwJiOZuaaRlIXkfYhfWP68UoaRZq3Jcd27ughdveGsu87W90SLqOHSnj
+ qf1tE3/jWuStEP3q9rhHjqxd9TXRb6OpuHnVIObcoKZhu1uO/MRJ1nHOy3hr9qItuhBU
+ cMGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692946952; x=1693551752;
+ d=1e100.net; s=20221208; t=1692947391; x=1693552191;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+u2a02W8/5bVMdqF3qJ1d3UfSgOkJ7WJ8oFN0Oxnotg=;
- b=YYleTORUopMv71RREOhvk6uCKmVpyTAbFe/yhl+rMGet7V1BtDTsQV6uDgjKKuo3Cf
- Hd6EZ+T9HMs4Wr1jM+swU5aQ6pqWM2MdIQdpstxAfemISdC+GEDUHO00/zs40OgMLaMu
- 2N+b7OVrJnbBp/4bpwcU0fPcLw3KhX5IRF3n5IlYgbOgJEkDi/Z+k5N+ZkxOBeRCE5IC
- 0CK1PTVvJdHBzFvpYxgxZ4Lbhk30xhrv2yG12NUHrFvGvrbvEhUxNW5lkdhD5JhPtR1r
- PfRE/+zh9jAw2lJWPpBYhkKRmg0OHmjSCZx+TLcVePfm1cvoIKjQK9MLao8QRmneDCHx
- Aj0A==
-X-Gm-Message-State: AOJu0Yzg10cFdc0jF93LmNQZO8WISLnj9q3x438tVNr78modqO36oLBt
- rrbdUPn+iT8skISThbA3pKydEMvSy9K6raGCl4QE8AMtH0a9wxHhO6QNtJAFmvcyHDAG2a7XxvF
- tppDtVYBPAaIpA/k=
-X-Received: by 2002:a05:622a:44:b0:402:3dbf:85fb with SMTP id
- y4-20020a05622a004400b004023dbf85fbmr23705131qtw.33.1692946952615; 
- Fri, 25 Aug 2023 00:02:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnjZARGP0Tieu7/UsLwHvG29rZFp++VQIb0xHnhyaAvbUtfbiNoFC9ZplHxjdj+bMJaWXU/g==
-X-Received: by 2002:a05:622a:44:b0:402:3dbf:85fb with SMTP id
- y4-20020a05622a004400b004023dbf85fbmr23705115qtw.33.1692946952339; 
- Fri, 25 Aug 2023 00:02:32 -0700 (PDT)
-Received: from [192.168.100.28] ([82.142.8.70])
+ bh=BE+jqnivCDTQWInIylniJfpMeWgD4PvJ7i0k0HlILsQ=;
+ b=QOt90GEJVoG8JMpztElKk6UdzFnGHzj22JmUfkdi+zT2+eDIdvChqB4ym5PLXpZ070
+ 4IOZVNvGXyqvxbZGhP2ef7/bHfbYzSaE/lVcaUevh/uwgggZMmVHbRQXjfZjPg67sApb
+ /Zsn+98DcKK6XcxGGc7XEKXScpq2Ohc1pCdtkSH4CnYXLZKlDXSEzD9ZfPcO5zRRilId
+ 5fmWEa+c9SHCSx6oKimGw7hCXzd2mKZXWaiEuAiG6Hzijy6BoTOtGRy9PPtPnxw4TIhT
+ DCRD2nke2vMXKl2MHhhm9BFLsNw98ZpSFJWbQJEvCj1rBg3ra0o1IhglhQzFzButnpGZ
+ x2Jg==
+X-Gm-Message-State: AOJu0Yyw5ZaWjp6aI0jifRcFvtfX6+Mhp59O1rovURoR2G9ZQIqSvIFk
+ Yo+nj4EMheTx4jdYzqeGBTDbxw==
+X-Google-Smtp-Source: AGHT+IFfQLYHUyGXwj4ZapRO5l69kyCSZatAegytxPgF0y35vxlM1ujXT68175yo/3NdvmooyaLJGg==
+X-Received: by 2002:a05:6402:3447:b0:523:1004:1ca0 with SMTP id
+ l7-20020a056402344700b0052310041ca0mr16366594edc.5.1692947391466; 
+ Fri, 25 Aug 2023 00:09:51 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.69.26])
  by smtp.gmail.com with ESMTPSA id
- hz9-20020a05622a678900b0040fd47985e6sm340694qtb.97.2023.08.25.00.02.30
+ l5-20020a056402124500b005222c6fb512sm686200edw.1.2023.08.25.00.09.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 00:02:31 -0700 (PDT)
-Message-ID: <72f2683a-0a98-d04f-f704-dccf248790b0@redhat.com>
-Date: Fri, 25 Aug 2023 09:02:29 +0200
+ Fri, 25 Aug 2023 00:09:51 -0700 (PDT)
+Message-ID: <21af41fe-6fe3-7449-c61d-5571abe3ce03@linaro.org>
+Date: Fri, 25 Aug 2023 09:09:49 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] tests/qtest/netdev-socket: Avoid variable-length array in
- inet_get_free_port_multiple()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 2/5] target/hppa: Add priviledge to MMU index conversion
+ helpers
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>
-References: <20230824164535.2652070-1-peter.maydell@linaro.org>
-From: Laurent Vivier <lvivier@redhat.com>
-In-Reply-To: <20230824164535.2652070-1-peter.maydell@linaro.org>
+To: deller@kernel.org, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+References: <20230824210434.151971-1-deller@kernel.org>
+ <20230824210434.151971-3-deller@kernel.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230824210434.151971-3-deller@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.919, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.919,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,35 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/24/23 18:45, Peter Maydell wrote:
-> We use a variable-length array in inet_get_free_port_multiple().
-> This is only test code called at the start of a test, so switch to a
-> heap allocation instead.
+On 24/8/23 23:04, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
 > 
-> The codebase has very few VLAs, and if we can get rid of them all we
-> can make the compiler error on new additions.  This is a defensive
-> measure against security bugs where an on-stack dynamic allocation
-> isn't correctly size-checked (e.g.  CVE-2021-3527).
+> Add two macros which convert priviledge level to/from MMU index:
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> - PRIV_TO_MMU_IDX(priv)
+>      returns the MMU index for the given priviledge level
+> 
+> - MMU_IDX_TO_PRIV(mmu_idx)
+>      returns the corresponding priviledge level for this MMU index
+> 
+> The introduction of those macros make the code easier to read and
+> will help to improve performance in follow-up patch.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
 > ---
->   tests/qtest/netdev-socket.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
-> index 097abc0230b..8eed54801f2 100644
-> --- a/tests/qtest/netdev-socket.c
-> +++ b/tests/qtest/netdev-socket.c
-> @@ -82,7 +82,7 @@ static int inet_get_free_port_socket_ipv6(int sock)
->   
->   static int inet_get_free_port_multiple(int nb, int *port, bool ipv6)
->   {
-> -    int sock[nb];
-> +    g_autofree int *sock = g_new(int, nb);
->       int i;
->   
->       for (i = 0; i < nb; i++) {
+>   target/hppa/cpu.h       | 5 ++++-
+>   target/hppa/translate.c | 9 +++++----
+>   2 files changed, 9 insertions(+), 5 deletions(-)
 
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
