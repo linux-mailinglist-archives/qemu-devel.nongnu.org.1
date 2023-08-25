@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC58787F1A
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 06:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B78787F19
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 06:53:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZOnq-00065J-06; Fri, 25 Aug 2023 00:52:10 -0400
+	id 1qZOob-0006II-BB; Fri, 25 Aug 2023 00:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZOng-00063Y-Sk
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 00:52:00 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZOoY-0006EF-Um
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 00:52:55 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZOne-0001Se-Dp
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 00:52:00 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-99c1c66876aso56591266b.2
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 21:51:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZOoW-0001e6-PS
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 00:52:54 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-52683b68c2fso794370a12.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 21:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692939116; x=1693543916;
+ d=linaro.org; s=google; t=1692939171; x=1693543971;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=sinzVZersKuY6HzvaMxLsZBIQQki0QdeX/7RSc+d2cY=;
- b=Iv1f8p6QbK4hpNCIzozv0B+KZarD/R5milDFztWj5HwDMZeXRyDbTS+4HjWD5kQ/Dn
- Putly+/W2y75mW4zrM7h6Gh+/Rx3/0ewGf3DV4f6YP9GoCELJu3M2vSjOqKfrQ0dIujv
- Xdva88D9lXI1N7XZ4b64KjUVjEFE66tsKFPaMrM0onSiAsbj/yPn+RGfsSXkn9NPvRT8
- 4MHyMv+X9ERIZa06ZvteGWxPpJmgODvtn+NoSNC7ZfdIZ1cX0v5UFykr930C5KYocOiA
- DHu0HTy9O4dVgl+3HtqXudZXJKmMVnKp3v4OAZ/C0lwn6XD/QeRnsqQXLbXWewWZFGh5
- UWxw==
+ bh=hbfzkN1qjTsE4T+Lt82/wSi6Q/yIxr1PTc3IIdoFbXI=;
+ b=M5fyec0iaoaQBqZw1WJhz7lwbFzRRCOfPqYdwufeVJG9XjMvcLPU4jNIbH700NB5V7
+ jXUMKAjetAQaiDWxDu2RvkgbrP+Mdy6gRbY4tYaADELYVqCbmixJCuMT0lfKjEJgHEW9
+ cIlFz5g8Kl7c91VzG04yhirbhp251lNi6Zjm4a0/W9bHgGEMaYNoCUsIei+gqjqSulUC
+ ny7qqFAdsxAAXTn3qAscavGWSlPjnGHSNs8cpwlkpZ5TKvMKAhm429D8uHUtqqWJB83V
+ iZxVFMW408sybRafKpC2KZ+1TndWxDboOvbwjZZSbas2P/FtRiQd/qpjF14DPNQImXD9
+ GF4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692939116; x=1693543916;
+ d=1e100.net; s=20221208; t=1692939171; x=1693543971;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sinzVZersKuY6HzvaMxLsZBIQQki0QdeX/7RSc+d2cY=;
- b=I5sy3aaWnMBi8XTMarn3TGhBCmeuIQeRKMZCqyiA08U7t46ZYq/pgJbsMexXhVU5yY
- og8hcRhZ0dpa1vRjhsej81BQbR6KzRMPo5T1UPRWqt1S6f2fMQOM0YuS/ZwqNfkCOCLX
- YEN5fGWfp17APhks4DzTdj0kVqWwtHcM4TwICvJmw+11lvJB7m2OmoDmK1KQ0ZFsR1sR
- bpJY7Y1Flh9c7c2b5c4ZaYAcg+DhKmHhRLbU6N1RSK6Yz22XbvB2Ua+6COx6DqxC35Vs
- uFze2WvslltdANMoHNl3y3uKrgICYEUyFkSK0b0tRtUUbjhDZ6wKa3bVPM5iTilM56W8
- /Eyg==
-X-Gm-Message-State: AOJu0YyfLK34zF9nZNmgu0GLJR6+yMUCrcWT3uBw95iA6eu/m8SSymnf
- gq8yXN1E67PpGs5czoAiTq1vBw==
-X-Google-Smtp-Source: AGHT+IFySpVvwrPTnZewZ2lOGN4jbK+AMsLnQHkparsVPF6q8hX6LeT7mkt0FqUnMkd69ws4y7G2Zw==
-X-Received: by 2002:a17:906:5346:b0:9a2:1ce5:1243 with SMTP id
- j6-20020a170906534600b009a21ce51243mr2872764ejo.60.1692939115657; 
- Thu, 24 Aug 2023 21:51:55 -0700 (PDT)
+ bh=hbfzkN1qjTsE4T+Lt82/wSi6Q/yIxr1PTc3IIdoFbXI=;
+ b=RyrNemks2NREZ2GfJ6EIOGVMXjvhzood8VitpJA/mWhJqcW5uAjXopTp7wGZFOAjfW
+ afZG0tlbPQmVf0YnL/6mK7/+G9e4dYH0ajiUgI1/G5VwotK919p6ZtYVCGuJm9E6qgi6
+ QQbhpMOcdcxhJqPHwO8A85xo4Jd88Ie+hRgcHlDBZvcogv4wr6E7t9BUf+w0TzuMAhia
+ RlNUaVtiKTwHrl061GXU0XphfjKVgU8AXQUyznZA0FlCspxasGjXq4jJolRDqrAwAdoj
+ MsJGLk8JGZCQgFBTeX+2VMxHT+Q7Usf4qwahwheiBr5Oueht5wo1pxehqJ1LP8Dxkvht
+ s5PQ==
+X-Gm-Message-State: AOJu0Yy6fNMZ59CCh3e9z4MXz5iUZUtW6UJZ13vdZZxP+HDEGuh2mdHs
+ Ij9cl2KFi0Qxi1vp6MXJoqlh0g==
+X-Google-Smtp-Source: AGHT+IFvyHQecnvbiq+X3vBJurcuKoggCnDqMGofWjr6tQypNLzBUAc0Wlrm3SilGFO373L+JAGncg==
+X-Received: by 2002:a05:6402:398:b0:523:2e30:aaee with SMTP id
+ o24-20020a056402039800b005232e30aaeemr12203214edv.32.1692939171195; 
+ Thu, 24 Aug 2023 21:52:51 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.69.26])
  by smtp.gmail.com with ESMTPSA id
- jj26-20020a170907985a00b00988e953a586sm492773ejc.61.2023.08.24.21.51.54
+ x11-20020aa7d6cb000000b0052284228e3bsm561290edr.8.2023.08.24.21.52.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 21:51:55 -0700 (PDT)
-Message-ID: <8ca8095a-993e-52c5-ddb1-77271cab111e@linaro.org>
-Date: Fri, 25 Aug 2023 06:51:53 +0200
+ Thu, 24 Aug 2023 21:52:50 -0700 (PDT)
+Message-ID: <f49f0020-c860-96be-0b18-dbcdcfe7a465@linaro.org>
+Date: Fri, 25 Aug 2023 06:52:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PULL 00/12] First batch of s390x patches for QEMU 8.2
+Subject: Re: [PATCH] tests/qtest/netdev-socket: Avoid variable-length array in
+ inet_get_free_port_multiple()
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>
-References: <20230823114544.216520-1-thuth@redhat.com>
- <20230823163440.GA851545@fedora>
- <aee5829f-37a4-4169-1a70-8f9a40b4f45d@redhat.com>
- <CAJSP0QXO1QQ=4UyLXg_=iyc9=uy1CdeL0fq8_95ewZiewU6XTw@mail.gmail.com>
- <e0b5f2d5-a489-a1b4-b630-987a2999a2b2@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+References: <20230824164535.2652070-1-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e0b5f2d5-a489-a1b4-b630-987a2999a2b2@redhat.com>
+In-Reply-To: <20230824164535.2652070-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
@@ -99,43 +93,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 18:10, Thomas Huth wrote:
-> On 24/08/2023 16.51, Stefan Hajnoczi wrote:
->> On Thu, 24 Aug 2023 at 02:53, Thomas Huth <thuth@redhat.com> wrote:
->>>
->>> On 23/08/2023 18.34, Stefan Hajnoczi wrote:
->>>> On Wed, Aug 23, 2023 at 01:45:32PM +0200, Thomas Huth wrote:
->>>>> The following changes since commit 
->>>>> b0dd9a7d6dd15a6898e9c585b521e6bec79b25aa:
->>>>>
->>>>>     Open 8.2 development tree (2023-08-22 07:14:07 -0700)
->>>>>
->>>>> are available in the Git repository at:
->>>>>
->>>>>     https://gitlab.com/thuth/qemu.git tags/pull-request-2023-08-23
->>>>>
->>>>> for you to fetch changes up to 
->>>>> 6c49f685d30ffe81cfa47da2c258904ad28ac368:
->>>>>
->>>>>     tests/tcg/s390x: Test VSTRS (2023-08-23 12:07:30 +0200)
->>>>
->>>> Hi Thomas,
->>>> Please take a look at the following ubuntu-20.04-s390x-all CI failure:
->>>> https://gitlab.com/qemu-project/qemu/-/jobs/4931341536
->>>
->>> It says: "TimeoutError: Timeout waiting for job to pause" ... could you
->>> please check the load on that host? ... I think that s390x runner is 
->>> known
->>> for being too slow some times, so I assume that problem should go 
->>> away if
->>> you re-run the job when it is less loaded.
->>
->> I ran it again and it timed out. I've merged the PR and assume the
->> test is just flaky.
+On 24/8/23 18:45, Peter Maydell wrote:
+> We use a variable-length array in inet_get_free_port_multiple().
+> This is only test code called at the start of a test, so switch to a
+> heap allocation instead.
 > 
-> I think someone needs to look at the runner to see whether there is 
-> still old stuff taking CPU time or something similar.
+> The codebase has very few VLAs, and if we can get rid of them all we
+> can make the compiler error on new additions.  This is a defensive
+> measure against security bugs where an on-stack dynamic allocation
+> isn't correctly size-checked (e.g.  CVE-2021-3527).
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   tests/qtest/netdev-socket.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Would reporting the runner load on failure help in some way?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
