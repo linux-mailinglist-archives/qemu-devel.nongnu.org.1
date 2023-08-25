@@ -2,85 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC987888ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089FD78893D
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:57:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZX9j-0006MX-Hd; Fri, 25 Aug 2023 09:47:19 -0400
+	id 1qZXHb-0000ra-E3; Fri, 25 Aug 2023 09:55:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZX9K-0006M4-Ac
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:46:54 -0400
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZX9H-0006gt-Rv
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:46:53 -0400
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3a751d2e6ecso684981b6e.0
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:46:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692971210; x=1693576010;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jx20pixflgyvDK8YaQtzR0YVsu1/I1hWFSlEFbsUCN4=;
- b=nRoms1wDisiX9ASGGFB5vpZhGHrQ5SC9H9Zkm0sN29mwp3LHMuYOwv43QErbrTYAyW
- Cp7JcoUCr7YFXTATFDceENzReMtUZYcEt1VvW3R1eyQjxq0QsALOSp6oZl2AvDAF3QyD
- iR/Ffoq2Pqzb+YhBwkzZ73XWJKMZ1xUg+A9eryop3GYDJwIoWyNd59Gm5LqgJblmFnMD
- UxLVHFIEWS3C/dJkknWcElbzaPUHMHdQtR8o5WSDLxiEwRlZDweCXtXiArxaEb0dtknK
- eFfl61Ck4Ej8HEi7zsMdo1UIGta2avY//v1vVSEwTPtgMay3vyrPs17p2XOPABxrQHJK
- gWug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692971210; x=1693576010;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jx20pixflgyvDK8YaQtzR0YVsu1/I1hWFSlEFbsUCN4=;
- b=SF3E8lZJ24E+n25Mio0vyjZgjElGOtZJubfdQSJBZLrvQyh4cjkd1X9OnNAkGzIIB9
- z3y13v2lWG6EeHQC5TcT1ddxSwzR0C/N6fTt2FY9OqGF5BNwaW4w6tRYrHA+ADO+IAv4
- q0KLiEAhlCZv/6BmuQ1bqk9yeRsF4jECvPRfRfqTNSGPIOcmkMNYY5FM/T9Tf9dNnCPE
- 7Dr+0BvInoxmSHGrHK7LlpGyjh5/7WO8Ni/2KJMaoJLxveB7KmA6H+S7NEyi4G3z/d2y
- NG7k2F3Rs+N8M+m/+WbAtr6yCtRQOOOHmYwD2YzflMZD/uGyXpM+vbmYnLHRGQw0WGZn
- 9lGw==
-X-Gm-Message-State: AOJu0YwEB22yBIqcYm6ItbdYcBVYeJ0C+QpCL0do9awBlfdDR3nQPtnX
- 7ieZSM0LpuCd0TYUQ6CdC2wGBA==
-X-Google-Smtp-Source: AGHT+IHpUiXXOM+AsxFG+ddtqALH7P7v/vfhJzHq4019jyenxXkFCTDCozD2XJsGEMES/xnb3uqp6Q==
-X-Received: by 2002:a05:6808:901:b0:3a7:82e8:8fd1 with SMTP id
- w1-20020a056808090100b003a782e88fd1mr2667347oih.20.1692971210551; 
- Fri, 25 Aug 2023 06:46:50 -0700 (PDT)
-Received: from [192.168.68.108] ([179.93.21.19])
- by smtp.gmail.com with ESMTPSA id
- bi25-20020a056808189900b003a48ed3564bsm732525oib.50.2023.08.25.06.46.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 06:46:50 -0700 (PDT)
-Message-ID: <18c74a22-c4bc-248e-eeef-3120959cf45a@ventanamicro.com>
-Date: Fri, 25 Aug 2023 10:46:45 -0300
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1qZXHW-0000rL-CA
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:55:22 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1qZXHS-00086b-Qg
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:55:21 -0400
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37PCG94w021171; Fri, 25 Aug 2023 13:54:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=oACcyQfhzRkgYywQKT2dnrSI2d0b+HWKyCYm/rpWPFI=;
+ b=h7DS17xOCGLtnxNfJGF3dPcATVu1HZrfz87Fl1KDQhAjCJXRqLXaxoRlvPu1TY2wx4+V
+ 6ZHUwXJfK5j8jKStif+hRPECkbt1dHtRtfUW67RR3jti7bhz9+k77XDuGHWp7+JbcXQV
+ 5t11rYJXBUHVxVZ4Ty8pxko4GxD/664mPGObNy0ZK/dc67XWMgnRs9U1z4EpzFmmXMrn
+ 36fi1rOK6PQl18DV3evOxVtCH0VZA5EP7362/g/2v+VgYjL+jMl5UmQWf4DLPnE2bMLi
+ piIafuDr00zFopJs0HfPo2kMdyp8b8W0XxB5PzD2S5zn9/phaSknUPDZ5Df1SnQw7loM yA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3spmn6122s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Aug 2023 13:54:53 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37PDsTbJ017519
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Aug 2023 13:54:29 GMT
+Received: from [10.111.137.100] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Fri, 25 Aug
+ 2023 06:54:26 -0700
+Message-ID: <f051c45d-5498-c34c-1a41-286af4dd4656@quicinc.com>
+Date: Fri, 25 Aug 2023 15:54:24 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 2/3] target/riscv: Add API list_cpu_props
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: Alistair.Francis@wdc.com, palmer@dabbelt.com, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- richard.henderson@linaro.org, pbonzini@redhat.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org, ajones@ventanamicro.com
-References: <20230825121651.1534-1-zhiwei_liu@linux.alibaba.com>
- <20230825121651.1534-3-zhiwei_liu@linux.alibaba.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 8/9] gfxstream + rutabaga: enable rutabaga
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230825121651.1534-3-zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Gurchetan Singh <gurchetansingh@chromium.org>, <qemu-devel@nongnu.org>
+CC: <marcandre.lureau@redhat.com>, <akihiko.odaki@gmail.com>,
+ <ray.huang@amd.com>, <alex.bennee@linaro.org>, <shentey@gmail.com>,
+ <hi@alyssa.is>, <ernunes@redhat.com>, <manos.pitsidianakis@linaro.org>,
+ <philmd@linaro.org>, <mark.cave-ayland@ilande.co.uk>
+References: <20230824234046.499-1-gurchetansingh@chromium.org>
+ <20230824234046.499-9-gurchetansingh@chromium.org>
+From: Antonio Caggiano <quic_acaggian@quicinc.com>
+In-Reply-To: <20230824234046.499-9-gurchetansingh@chromium.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.57,
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: XnGwLCsBN_Uo1vkkldPYHhjxZ_a36e8z
+X-Proofpoint-ORIG-GUID: XnGwLCsBN_Uo1vkkldPYHhjxZ_a36e8z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-25_12,2023-08-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ priorityscore=1501 spamscore=0 clxscore=1011 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 impostorscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308250123
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_acaggian@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,90 +103,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Gurchetan,
 
+Thank you for this series and for including some of my patches :)
 
-On 8/25/23 09:16, LIU Zhiwei wrote:
-> This API used for output current configuration for one specified CPU.
-> Currently only RISC-V frontend implements this API.
+On 25/08/2023 01:40, Gurchetan Singh wrote:
+> This change enables rutabaga to receive virtio-gpu-3d hypercalls
+> when it is active.
 > 
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> Tested-by: Alyssa Ross <hi@alyssa.is>
+> Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 > ---
->   cpu.c                     |  8 ++++++++
->   include/exec/cpu-common.h |  1 +
->   target/riscv/cpu.c        | 10 ++++++++++
->   target/riscv/cpu.h        |  2 ++
->   4 files changed, 21 insertions(+)
+> v3: Whitespace fix (Akihiko)
+> v9: reorder virtio_gpu_have_udmabuf() after checking if rutabaga
+>      is enabled to avoid spurious warnings (Akihiko)
 > 
-> diff --git a/cpu.c b/cpu.c
-> index e1a9239d0f..03a313cd72 100644
-> --- a/cpu.c
-> +++ b/cpu.c
-> @@ -299,6 +299,14 @@ void list_cpus(void)
->   #endif
->   }
->   
-> +void list_cpu_props(CPUState *cs)
-> +{
-> +    /* XXX: implement xxx_cpu_list_props for targets that still miss it */
-> +#if defined(cpu_list_props)
-> +    cpu_list_props(cs);
-> +#endif
-> +}
-> +
->   #if defined(CONFIG_USER_ONLY)
->   void tb_invalidate_phys_addr(hwaddr addr)
+>   hw/display/virtio-gpu-base.c | 3 ++-
+>   hw/display/virtio-gpu.c      | 5 +++--
+>   softmmu/qdev-monitor.c       | 3 +++
+>   softmmu/vl.c                 | 1 +
+>   4 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+> index 4f2b0ba1f3..50c5373b65 100644
+> --- a/hw/display/virtio-gpu-base.c
+> +++ b/hw/display/virtio-gpu-base.c
+> @@ -223,7 +223,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
 >   {
-> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-> index 87dc9a752c..b3160d9218 100644
-> --- a/include/exec/cpu-common.h
-> +++ b/include/exec/cpu-common.h
-> @@ -166,5 +166,6 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+>       VirtIOGPUBase *g = VIRTIO_GPU_BASE(vdev);
 >   
->   /* vl.c */
->   void list_cpus(void);
-> +void list_cpu_props(CPUState *);
+> -    if (virtio_gpu_virgl_enabled(g->conf)) {
+> +    if (virtio_gpu_virgl_enabled(g->conf) ||
+> +        virtio_gpu_rutabaga_enabled(g->conf)) {
+>           features |= (1 << VIRTIO_GPU_F_VIRGL);
+>       }
+>       if (virtio_gpu_edid_enabled(g->conf)) {
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index 3e658f1fef..fe094addef 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -1361,8 +1361,9 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+>       VirtIOGPU *g = VIRTIO_GPU(qdev);
 >   
->   #endif /* CPU_COMMON_H */
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 6b93b04453..3ea18de06f 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -2226,6 +2226,16 @@ void riscv_cpu_list(void)
->       g_slist_free(list);
->   }
->   
-> +void riscv_cpu_list_props(CPUState *cs)
-> +{
-> +    char *enabled_isa;
-> +
-> +    enabled_isa = riscv_isa_string(RISCV_CPU(cs));
-> +    qemu_printf("Enable extension:\n");
+>       if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
+> -        if (!virtio_gpu_have_udmabuf()) {
+> -            error_setg(errp, "cannot enable blob resources without udmabuf");
+> +        if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
+> +            !virtio_gpu_have_udmabuf()) {
+> +            error_setg(errp, "need rutabaga or udmabuf for blob resources");
 
-I suggest "Enabled extensions". LGTM otherwise.
+Does that mean udmabuf is not required at all when using rutabaga?
+How does rutabaga handle blob resources?
 
-Daniel
+>               return;
+>           }
+>   
+> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+> index 74f4e41338..1b8005ae55 100644
+> --- a/softmmu/qdev-monitor.c
+> +++ b/softmmu/qdev-monitor.c
+> @@ -86,6 +86,9 @@ static const QDevAlias qdev_alias_table[] = {
+>       { "virtio-gpu-pci", "virtio-gpu", QEMU_ARCH_VIRTIO_PCI },
+>       { "virtio-gpu-gl-device", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_MMIO },
+>       { "virtio-gpu-gl-pci", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_PCI },
+> +    { "virtio-gpu-rutabaga-device", "virtio-gpu-rutabaga",
+> +      QEMU_ARCH_VIRTIO_MMIO },
+> +    { "virtio-gpu-rutabaga-pci", "virtio-gpu-rutabaga", QEMU_ARCH_VIRTIO_PCI },
+>       { "virtio-input-host-device", "virtio-input-host", QEMU_ARCH_VIRTIO_MMIO },
+>       { "virtio-input-host-ccw", "virtio-input-host", QEMU_ARCH_VIRTIO_CCW },
+>       { "virtio-input-host-pci", "virtio-input-host", QEMU_ARCH_VIRTIO_PCI },
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..2f98eefdf3 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -216,6 +216,7 @@ static struct {
+>       { .driver = "ati-vga",              .flag = &default_vga       },
+>       { .driver = "vhost-user-vga",       .flag = &default_vga       },
+>       { .driver = "virtio-vga-gl",        .flag = &default_vga       },
+> +    { .driver = "virtio-vga-rutabaga",  .flag = &default_vga       },
+>   };
+>   
+>   static QemuOptsList qemu_rtc_opts = {
 
-> +    qemu_printf("\t%s\n", enabled_isa);
-> +    /* TODO: output all user configurable options and all possible extensions */
-> +}
-> +
->   #define DEFINE_CPU(type_name, initfn)      \
->       {                                      \
->           .name = type_name,                 \
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 6ea22e0eea..af1d47605b 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -443,9 +443,11 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->                           bool probe, uintptr_t retaddr);
->   char *riscv_isa_string(RISCVCPU *cpu);
->   void riscv_cpu_list(void);
-> +void riscv_cpu_list_props(CPUState *cs);
->   void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
->   
->   #define cpu_list riscv_cpu_list
-> +#define cpu_list_props riscv_cpu_list_props
->   #define cpu_mmu_index riscv_cpu_mmu_index
->   
->   #ifndef CONFIG_USER_ONLY
+Patches 5 to 9:
+Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+
+Cheers,
+Antonio
 
