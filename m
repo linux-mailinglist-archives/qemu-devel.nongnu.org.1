@@ -2,59 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023B778806B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 08:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D422788069
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 08:58:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZQkb-00069K-CB; Fri, 25 Aug 2023 02:56:57 -0400
+	id 1qZQlQ-0006Pr-8P; Fri, 25 Aug 2023 02:57:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkW-000688-P9
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:52 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZQkU-0007Y0-M3
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 02:56:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 0762562D34;
- Fri, 25 Aug 2023 06:56:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA8FC433C8;
- Fri, 25 Aug 2023 06:56:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1692946608;
- bh=jj6VCafdXtZ0ti0M1QbCs6Yx24ov6Jbm0/NprowIN2g=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=mGOve1omiZ3HtOKMYXTTl6mb0hsd5dhP1t4vm5VhCIto/6pZULS8jtLMjP0sdjaoM
- eCuFBObkPS55kBSbq3zpOFgFCipPkaadNIp2dEVheWd/ipma+vdsv6PS7xfhCzO7wj
- lGHQ7HDNQeLb3cghBjGLgsd8i/iEnm1jNvWFsOCGr93B3iLilQC/bvLTpqYdlh7muW
- Oq7WICLYgjJQtnDSH5aqUQtJ6HfGrV7XeHQ2K6yRhAZhdmPGPBmpmOy7C4fLZYa3++
- EXE4rnXslTITIFEDsrhYM20RM8wNf6sB5PCSFlJHAL17pfY1zu9TaC3xhvvIqbjcgo
- 8eLR/kw9IdteQ==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 5/5] target/hppa: Switch to use MMU indices 11-15
-Date: Fri, 25 Aug 2023 08:56:38 +0200
-Message-ID: <20230825065638.7262-6-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230825065638.7262-1-deller@kernel.org>
-References: <20230825065638.7262-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
+ id 1qZQlL-0006O8-Iz; Fri, 25 Aug 2023 02:57:43 -0400
+Received: from m13102.mail.163.com ([220.181.13.102])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <logoerthiner1@163.com>)
+ id 1qZQlH-0007kg-Ql; Fri, 25 Aug 2023 02:57:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+ Message-ID; bh=WBmppcMh++u7o298ODbTjDWtwFhGILnBCeJrucZrnZM=; b=p
+ tF/wvjnauetBqbFKygT7Nwb9rOmubVxJt/mstOZM8syJ/2qI88HuSMHrDGKZbAb2
+ LNuuQJd7XGWd7giXYW33X2tugjdO2LN72UdUfBR+nzAQMcgBdGbp2qX5hCoS/vh2
+ eFYZmSVu/ZAXhUxazEnACqkyPiDgLPk/jbjIaowhrU=
+Received: from logoerthiner1$163.com ( [42.84.232.6] ) by
+ ajax-webmail-wmsvr102 (Coremail) ; Fri, 25 Aug 2023 14:57:04 +0800 (CST)
+X-Originating-IP: [42.84.232.6]
+Date: Fri, 25 Aug 2023 14:57:04 +0800 (CST)
+From: ThinerLogoer  <logoerthiner1@163.com>
+To: "David Hildenbrand" <david@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Peter Xu" <peterx@redhat.com>, 
+ "Igor Mammedov" <imammedo@redhat.com>, 
+ =?GBK?Q?Philippe_Mathieu-Daud=A8=A6?= <philmd@linaro.org>, 
+ =?GBK?Q?Daniel_P_=2E_Berrang=A8=A6?= <berrange@redhat.com>, 
+ "Stefan Hajnoczi" <stefanha@redhat.com>, 
+ "Elena Ufimtseva" <elena.ufimtseva@oracle.com>, 
+ "Jagannathan Raman" <jag.raman@oracle.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, "Ani Sinha" <anisinha@redhat.com>, 
+ "Xiao Guangrong" <xiaoguangrong.eric@gmail.com>, 
+ "Daniel Henrique Barboza" <danielhb413@gmail.com>, 
+ "Greg Kurz" <groug@kaod.org>, "Eric Blake" <eblake@redhat.com>, 
+ "Markus Armbruster" <armbru@redhat.com>, 
+ "Eduardo Habkost" <eduardo@habkost.net>
+Subject: Re:[PATCH v3 11/11] machine: Improve error message when using
+ default RAM backend id
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 163com
+In-Reply-To: <20230823153412.832081-12-david@redhat.com>
+References: <20230823153412.832081-1-david@redhat.com>
+ <20230823153412.832081-12-david@redhat.com>
+X-NTES-SC: AL_QuySAPWfuU4p4iObYukXnk4Shuc2XMu4u/gu34JTP5E0kSv3yB8vb0FjLGTmyt+VLwOUjiaQWx912t9kUqpifYXAbrnYHy2AEcH1bSJ1Z/a5
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-ID: <209b4b8c.54bc.18a2b7b6f53.Coremail.logoerthiner1@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: ZsGowACnWi_AUOhky8saAA--.9698W
+X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBawDWnlet+ErxsgAAso
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Received-SPF: pass client-ip=220.181.13.102;
+ envelope-from=logoerthiner1@163.com; helo=m13102.mail.163.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,45 +83,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
-
-The MMU indices 9-15 will use shorter assembler instructions
-when run on a x86-64 host. So, switch over to those to get
-smaller code and maybe minimally faster emulation.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- target/hppa/cpu.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 6623712644..fa13694dab 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -30,14 +30,14 @@
-    basis.  It's probably easier to fall back to a strong memory model.  */
- #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
- 
--#define MMU_KERNEL_IDX   0
--#define MMU_PL1_IDX      1
--#define MMU_PL2_IDX      2
--#define MMU_USER_IDX     3
--#define MMU_PHYS_IDX     4
--
--#define PRIV_TO_MMU_IDX(priv)    (priv)
--#define MMU_IDX_TO_PRIV(mmu_idx) (mmu_idx)
-+#define MMU_KERNEL_IDX   11
-+#define MMU_PL1_IDX      12
-+#define MMU_PL2_IDX      13
-+#define MMU_USER_IDX     14
-+#define MMU_PHYS_IDX     15
-+
-+#define PRIV_TO_MMU_IDX(priv)    (MMU_KERNEL_IDX + (priv))
-+#define MMU_IDX_TO_PRIV(mmu_idx) ((mmu_idx) - MMU_KERNEL_IDX)
- 
- #define TARGET_INSN_START_EXTRA_WORDS 1
- 
--- 
-2.41.0
-
+SGVsbG8sCgpBdCAyMDIzLTA4LTIzIDIzOjM0OjExLCAiRGF2aWQgSGlsZGVuYnJhbmQiIDxkYXZp
+ZEByZWRoYXQuY29tPiB3cm90ZToKPkZvciBtaWdyYXRpb24gcHVycG9zZXMsIHVzZXJzIG1pZ2h0
+IHdhbnQgdG8gcmV1c2UgdGhlIGRlZmF1bHQgUkFNCj5iYWNrZW5kIGlkLCBidXQgc3BlY2lmeSBh
+IGRpZmZlcmVudCBtZW1vcnkgYmFja2VuZC4KPgo+Rm9yIGV4YW1wbGUsIHRvIHJldXNlICJwYy5y
+YW0iIG9uIHEzNSwgb25lIGhhcyB0byBzZXQKPiAgICAtbWFjaGluZSBxMzUsbWVtb3J5LWJhY2tl
+bmQ9cGMucmFtCj5Pbmx5IHRoZW4sIGNhbiBhIG1lbW9yeSBiYWNrZW5kIHdpdGggdGhlIGlkICJw
+Yy5yYW0iIGJlIGNyZWF0ZWQKPm1hbnVhbGx5Lgo+Cj5MZXQncyBpbXByb3ZlIHRoZSBlcnJvciBt
+ZXNzYWdlLgo+Cj5VbmZvcnR1YW50ZWx5LCB3ZSBjYW5ub3QgdXNlIGVycm9yX2FwcGVuZF9oaW50
+KCksIGJlY2F1c2UgdGhlIGNhbGxlcgo+cGFzc2VzICZlcnJvcl9mYXRhbC4KPgo+U3VnZ2VzdGVk
+LWJ5OiBUaGluZXJMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYzLmNvbT4KPlNpZ25lZC1vZmYtYnk6
+IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEByZWRoYXQuY29tPgo+LS0tCj4gaHcvY29yZS9tYWNo
+aW5lLmMgfCA0ICsrKy0KPiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0
+aW9uKC0pCj4KPmRpZmYgLS1naXQgYS9ody9jb3JlL21hY2hpbmUuYyBiL2h3L2NvcmUvbWFjaGlu
+ZS5jCj5pbmRleCBmMGQzNWM2NDAxLi5kYmNkMTI0ZDQ1IDEwMDY0NAo+LS0tIGEvaHcvY29yZS9t
+YWNoaW5lLmMKPisrKyBiL2h3L2NvcmUvbWFjaGluZS5jCj5AQCAtMTM4Miw3ICsxMzgyLDkgQEAg
+dm9pZCBtYWNoaW5lX3J1bl9ib2FyZF9pbml0KE1hY2hpbmVTdGF0ZSAqbWFjaGluZSwgY29uc3Qg
+Y2hhciAqbWVtX3BhdGgsIEVycm9yICoKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBtYWNoaW5lX2NsYXNzLT5kZWZhdWx0X3JhbV9pZCkpIHsKPiAgICAgICAgICAgICBlcnJvcl9z
+ZXRnKGVycnAsICJvYmplY3QgbmFtZSAnJXMnIGlzIHJlc2VydmVkIGZvciB0aGUgZGVmYXVsdCIK
+PiAgICAgICAgICAgICAgICAgIiBSQU0gYmFja2VuZCwgaXQgY2FuJ3QgYmUgdXNlZCBmb3IgYW55
+IG90aGVyIHB1cnBvc2VzLiIKPi0gICAgICAgICAgICAgICAgIiBDaGFuZ2UgdGhlIG9iamVjdCdz
+ICdpZCcgdG8gc29tZXRoaW5nIGVsc2UiLAo+KyAgICAgICAgICAgICAgICAiIENoYW5nZSB0aGUg
+b2JqZWN0J3MgJ2lkJyB0byBzb21ldGhpbmcgZWxzZSBvciBkaXNhYmxlIgo+KyAgICAgICAgICAg
+ICAgICAiIGF1dG9tYXRpYyBjcmVhdGlvbiBvZiB0aGUgZGVmYXVsdCBSQU0gYmFja2VuZCBieSBz
+ZXR0aW5nIgo+KyAgICAgICAgICAgICAgICAiIHRoZSAnbWVtb3J5LWJhY2tlbmQnIG1hY2hpbmUg
+cHJvcGVydHkiLAo+ICAgICAgICAgICAgICAgICBtYWNoaW5lX2NsYXNzLT5kZWZhdWx0X3JhbV9p
+ZCk7Cj4gICAgICAgICAgICAgcmV0dXJuOwo+ICAgICAgICAgfQoKSSdkIHN1Z2dlc3QgYSBtb3Jl
+IGV4cGxpY2l0IHZlcnNpb246CgogICAgICAgICAgICAgICAgIiBDaGFuZ2UgdGhlIG9iamVjdCdz
+ICdpZCcgdG8gc29tZXRoaW5nIGVsc2Ugb3IgZGlzYWJsZSIKICAgICAgICAgICAgICAgICIgYXV0
+b21hdGljIGNyZWF0aW9uIG9mIHRoZSBkZWZhdWx0IFJBTSBiYWNrZW5kIGJ5IGFwcGVuZGluZyIK
+ICAgICAgICAgICAgICAgICIgICdtZW1vcnktYmFja2VuZD17bWFjaGluZV9jbGFzcy0+ZGVmYXVs
+dF9yYW1faWR9JyBpbiAnLW1hY2hpbmUnIGFyZ3VtZW50cyIsCgpBbGwgb3RoZXIgcGF0Y2hlcyBh
+cmUgZ29vZCBvbiBteSBlbnZpcm9ubWVudCwgYXBwbGljYWJsZSBvbiA4LjEuMC4KCi0tCgpSZWdh
+cmRzLAoKbG9nb2VydGhpbmVy
 
