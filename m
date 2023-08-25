@@ -2,61 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794FB787CB6
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 03:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7784C787CC8
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 03:09:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZLEQ-0007UD-Gs; Thu, 24 Aug 2023 21:03:22 -0400
+	id 1qZLK2-00038f-4j; Thu, 24 Aug 2023 21:09:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVd-0002eG-5x
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:53 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qZHVa-0001gA-Qz
- for qemu-devel@nongnu.org; Thu, 24 Aug 2023 17:04:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 5960466A38;
- Thu, 24 Aug 2023 21:04:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D84C433C7;
- Thu, 24 Aug 2023 21:04:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1692911084;
- bh=jj6VCafdXtZ0ti0M1QbCs6Yx24ov6Jbm0/NprowIN2g=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UaM//5KwuH+Rh6kzr/hB7VqTkvRK3hvsfs4PWRH96BjtHl/bA0srlBNataBpt4PX3
- AIyYpxNIcYOgJBsoPq5ZYfiuSKDoaMtkRolt0JUWs2oPhceoTsNqVIqrC4UQfJ6H3A
- QZalXoq1o5sQEZ0gCKqf5ASTrfNJxTyWxCQx4F76MVveFFmPYUVyrw3FjnW8LA7RwD
- nAsUmCsgt8crDKR6ggBGdei2uHrW8qvsBOLFeLLynYZfPfj5V4+Rn8kd1AHO8keQ9o
- WWQsYAas3s66uD9S9Q0nv8c9nVTMblcKflevJc+ggbBTgWYEaOMXM3x7c91Veqs74J
- 2B6qaPOSZ2f8g==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH 5/5] target/hppa: Switch to use MMU indices 11-15
-Date: Thu, 24 Aug 2023 23:04:34 +0200
-Message-ID: <20230824210434.151971-6-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230824210434.151971-1-deller@kernel.org>
-References: <20230824210434.151971-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
+ id 1qZLJz-00038I-EX
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 21:09:07 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
+ id 1qZLJw-0003pQ-SU
+ for qemu-devel@nongnu.org; Thu, 24 Aug 2023 21:09:06 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b9a2033978so5598451fa.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 18:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692925743; x=1693530543;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=1reuS4IRhUUL0sKsCn3vVj+Dpqn4QuPwL+Nw/5z39HE=;
+ b=bkBbxB0MgTbW0ZO/T9/kjedkMYNn99bDuv5JSfcY0zePq6Fhw2D4dFf+G8U9xSR6EE
+ /Z4ah4Z37ptI3Mq461zRNY6Bn83GEwGHtsjrgW0FDJ56YJQ9QQ2TeR6tUzWMy8TgGlr3
+ JyHrZdCKwicxstOXuGavEJ04MKDBh5zubk3N7pDmpmTEMAHDHBpoSgbxy/h0qbzvdEYe
+ kb7rbGNYusOinIwZq7KFMxwk7oZBC2Pv38MfhlFta1+MmL2aR8UWhPue11y7AIWMRc6e
+ Mnd+c942mc5tAff7X6/EUEcGwWC1JyytoU0ZQGA1CLraan7GNrzU29PvA7vIzm36CnI6
+ JQyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692925743; x=1693530543;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1reuS4IRhUUL0sKsCn3vVj+Dpqn4QuPwL+Nw/5z39HE=;
+ b=E4AtRw3JaZKOx9uS628QEYARyadQKn1QDiehxJGfhIJGTIrNq1q9bENoso5JAJFORV
+ iFtWfrJvf7vn6grc98LRxWIZYl3LYM2Ajelbmul1mDS8igEHWnuwy6FTPBFh2tBVBxqf
+ OzHRwh06mfA0nRVD4FpenndUJUEy5z5MLeKb6OBU/aki1Xw9bePISgz8xDqiPJ+gQqDO
+ GyQy11UCgGclcg2dMa55mMJCY+OpJFHDb8CRVNQscW4vm4WaGV6TRPDGis61uekQyCIt
+ BUt31pYf5BWC31aLnGlqTMNV7+x9BHUgE9skUzy8ccTQg6urAflhYF/1tI7ibPqB6Iy5
+ J7Ug==
+X-Gm-Message-State: AOJu0Ywu8hWmbDBRXfbzcklQIjJTGmJ7q4ibD2ne7+NMngdqKJQv/EiG
+ 9/OWm8uWyJaqRksQLov8A6xvc2ew4l3VFfSq1w==
+X-Google-Smtp-Source: AGHT+IE0I6whpxAA2RqMs41ttit+sOXK9NuSQylr9GqSBBPjKGzUc1S8zWEXPuBYF5NSBMZnt+6oCPeq0NjZHpL15RA=
+X-Received: by 2002:a2e:9dcd:0:b0:2b6:e105:6174 with SMTP id
+ x13-20020a2e9dcd000000b002b6e1056174mr12897059ljj.47.1692925742713; Thu, 24
+ Aug 2023 18:09:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+References: <CAOYM0N261g8zrDKq2jQo4mriHEhNXWo-oXZ0LCryL+BmUX-h6g@mail.gmail.com>
+ <87jztlt27t.fsf@pond.sub.org>
+ <CAFEAcA8QnXJF73C7c1Y=yVJbBQAK-uFm9DQDJZdugc24ybsk5g@mail.gmail.com>
+In-Reply-To: <CAFEAcA8QnXJF73C7c1Y=yVJbBQAK-uFm9DQDJZdugc24ybsk5g@mail.gmail.com>
+From: Liu Jaloo <liu.jaloo@gmail.com>
+Date: Fri, 25 Aug 2023 09:09:01 +0800
+Message-ID: <CAOYM0N184NXQ5jK+fTE=nsb5sJ_dg3mV6ZT9d2zoVQbsPD0mog@mail.gmail.com>
+Subject: Re: constructor vs. __constructor__
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000008690350603b4fd94"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=liu.jaloo@gmail.com; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 24 Aug 2023 21:03:17 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,45 +86,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+--0000000000008690350603b4fd94
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The MMU indices 9-15 will use shorter assembler instructions
-when run on a x86-64 host. So, switch over to those to get
-smaller code and maybe minimally faster emulation.
+Thanks for your reply.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- target/hppa/cpu.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+On Thu, Aug 24, 2023 at 5:33=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
+.org>
+wrote:
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 6623712644..fa13694dab 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -30,14 +30,14 @@
-    basis.  It's probably easier to fall back to a strong memory model.  */
- #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
- 
--#define MMU_KERNEL_IDX   0
--#define MMU_PL1_IDX      1
--#define MMU_PL2_IDX      2
--#define MMU_USER_IDX     3
--#define MMU_PHYS_IDX     4
--
--#define PRIV_TO_MMU_IDX(priv)    (priv)
--#define MMU_IDX_TO_PRIV(mmu_idx) (mmu_idx)
-+#define MMU_KERNEL_IDX   11
-+#define MMU_PL1_IDX      12
-+#define MMU_PL2_IDX      13
-+#define MMU_USER_IDX     14
-+#define MMU_PHYS_IDX     15
-+
-+#define PRIV_TO_MMU_IDX(priv)    (MMU_KERNEL_IDX + (priv))
-+#define MMU_IDX_TO_PRIV(mmu_idx) ((mmu_idx) - MMU_KERNEL_IDX)
- 
- #define TARGET_INSN_START_EXTRA_WORDS 1
- 
--- 
-2.41.0
+> On Thu, 24 Aug 2023 at 06:55, Markus Armbruster <armbru@redhat.com> wrote=
+:
+> >
+> > Liu Jaloo <liu.jaloo@gmail.com> writes:
+> >
+> > > What's the difference between  "__attribute__((constructor))" and
+> > > "__attribute__((__constructor__))" in qemu source?
+> >
+> > Reading the fine manual helps:
+> >
+> >     You may optionally specify attribute names with =E2=80=98__=E2=80=
+=99 preceding and
+> >     following the name.  This allows you to use them in header files
+> >     without being concerned about a possible macro of the same name. Fo=
+r
+> >     example, you may use the attribute name __noreturn__ instead of
+> >     noreturn.
+>
+> As usual in the QEMU sources, we are not particularly consistent
+> about using one version compared to the other. However we
+> mostly use the "__attribute__((foo))" form rather than
+> "__attribute__((__foo__))" so if you're writing new code then
+> prefer the former.
+>
+> We also have a handful of uses of "__attribute((foo))" and
+> "__attribute((__foo__))". Definitely don't add more of those :-)
+>
+> thanks
+> -- PMM
+>
 
+--0000000000008690350603b4fd94
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Thanks for your reply.<br></div><br><div class=3D"gmail_qu=
+ote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 24, 2023 at 5:33=E2=
+=80=AFPM Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org">pete=
+r.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">On Thu, 24 Aug 2023 at 06:55, Markus Armbruster &lt;<a =
+href=3D"mailto:armbru@redhat.com" target=3D"_blank">armbru@redhat.com</a>&g=
+t; wrote:<br>
+&gt;<br>
+&gt; Liu Jaloo &lt;<a href=3D"mailto:liu.jaloo@gmail.com" target=3D"_blank"=
+>liu.jaloo@gmail.com</a>&gt; writes:<br>
+&gt;<br>
+&gt; &gt; What&#39;s the difference between=C2=A0 &quot;__attribute__((cons=
+tructor))&quot; and<br>
+&gt; &gt; &quot;__attribute__((__constructor__))&quot; in qemu source?<br>
+&gt;<br>
+&gt; Reading the fine manual helps:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0You may optionally specify attribute names with =E2=
+=80=98__=E2=80=99 preceding and<br>
+&gt;=C2=A0 =C2=A0 =C2=A0following the name.=C2=A0 This allows you to use th=
+em in header files<br>
+&gt;=C2=A0 =C2=A0 =C2=A0without being concerned about a possible macro of t=
+he same name. For<br>
+&gt;=C2=A0 =C2=A0 =C2=A0example, you may use the attribute name __noreturn_=
+_ instead of<br>
+&gt;=C2=A0 =C2=A0 =C2=A0noreturn.<br>
+<br>
+As usual in the QEMU sources, we are not particularly consistent<br>
+about using one version compared to the other. However we<br>
+mostly use the &quot;__attribute__((foo))&quot; form rather than<br>
+&quot;__attribute__((__foo__))&quot; so if you&#39;re writing new code then=
+<br>
+prefer the former.<br>
+<br>
+We also have a handful of uses of &quot;__attribute((foo))&quot; and<br>
+&quot;__attribute((__foo__))&quot;. Definitely don&#39;t add more of those =
+:-)<br>
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div>
+
+--0000000000008690350603b4fd94--
 
