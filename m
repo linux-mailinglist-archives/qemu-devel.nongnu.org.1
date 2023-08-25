@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DA4788828
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8132178881C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:11:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZWZH-0001mK-Lx; Fri, 25 Aug 2023 09:09:39 -0400
+	id 1qZWZJ-0001pP-9w; Fri, 25 Aug 2023 09:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWZF-0001kl-5H
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:37 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ id 1qZWZH-0001mX-BF
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:39 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWZA-0006yt-V8
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:36 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1c8d895a602so532586fac.2
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:09:32 -0700 (PDT)
+ id 1qZWZE-0006zV-7I
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:39 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-1c8be41e5efso516307fac.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:09:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692968971; x=1693573771;
+ d=ventanamicro.com; s=google; t=1692968975; x=1693573775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vAXA1WED3fOhcZjRb4XzzJLy/RP5EG0qca1sluUbxlM=;
- b=Y3FWTtqTFFK/k87Dtf2XcQjukNH6waO9wruDZRwkl01liz/9j94RHeD9mxE8Q7BE56
- 5xHMlreYKwAwd1taUhqErZW5pBOvbhytMjQQgcmRzrc1pkSWenRIH6hQMV8nUeF75AqN
- LjJfd9D4ON9QBArMejtOZ/1wtO8x89q3jssxoR7w4+/WE8Rz8fDdyeOViPA9WZKyaskY
- 21ks4kN8wco8I4ZdkMbhtHGgN6/36c4/f6jCHhNXJDqGl0hlJa1m8NeDalPZT4OrajTR
- ogg3l7GnNlV6igDxWnKh6TE6+J2gnWUNHyv0zom9SNjg/AeR+hquQ7i7rHPV3w6tUmY0
- ZUCw==
+ bh=MpmvM2jW32iQRPwS0jHByT9jcVKIdGa/GUIYBxdH0Xs=;
+ b=pY1FJFz3IaiSr9O9r/WrWq2TJ4GZIQx0hzXl8sOniHDY+keNthI4132qD9vQpXrdL7
+ XqEJ0g6lc56KOtozBrXNxUE7iicN9ul/xsSItouA8JmpR9dE8KLwixcjvSbCxmdeMRBy
+ +g37WZaObVvC8/mcMk4u1KMjuNoKvOu4g8iahpHUhFrRValWT/pXemyFx4ZrF9MgOiRl
+ oU+6jMFTkYyKryFtFM7W35k77AUBHD+KLWVGTETkt9gI10tRJxZAfNJ7hUvBrrWjQfRj
+ F0LYgEoNr7eJuoIL2Som5d4ukEO9nbYP5H5gIO9O5mAUM5CeaJ60zrpXA7STXQIEC6LG
+ njFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692968971; x=1693573771;
+ d=1e100.net; s=20221208; t=1692968975; x=1693573775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vAXA1WED3fOhcZjRb4XzzJLy/RP5EG0qca1sluUbxlM=;
- b=HiJ5JFZZ+8KWmKR5V9cRmJW/WakXTuu21FJZ4AJv7dtZ5RFf8jP3ICLvakpmQowBg7
- at6bhyGT0OGqzk9vGuZJpsV2fy8B81j5rSg+JkSBP7EVx+ijZWjJSvhF8vBstzWhmCXu
- clgmovGNfhC7dz8Scg2/gbAQSJz2KC+TAERxVXsZ2AV+ewVp1ziGtctVxuSesxd6JIZD
- WIlZqGKO/docwBR6F/TcXtcwq2QbTqJ+TQ+P43+rqafpCJTDNjEySnP9FTmiqZk1EYQS
- KLcEJJE91Aij1w7OktqnvE6mV4BGZMdqJ/Wul8rdOx+QTrT5mRuqaQB0FnD8pwsQuHon
- zNKQ==
-X-Gm-Message-State: AOJu0YzUXjyfB6XtedFktO3aTqO1AGzwbyNFz7wx4kciDGji9KAyv0sM
- otXZmCfkjyuxqQvEoVflPa5vU68Kn5gyyeftzWA=
-X-Google-Smtp-Source: AGHT+IHcBIC3nGvyJk3u1jM4kUftZgzi1aRQtPr0Yq9griqk+qlefEyaxC5zFRPOxR0p5IbOxOHWmg==
-X-Received: by 2002:a05:6870:e0c6:b0:1b0:2686:5b23 with SMTP id
- a6-20020a056870e0c600b001b026865b23mr2911409oab.51.1692968971602; 
- Fri, 25 Aug 2023 06:09:31 -0700 (PDT)
+ bh=MpmvM2jW32iQRPwS0jHByT9jcVKIdGa/GUIYBxdH0Xs=;
+ b=lyVInqXeCeCVslNcVfaYlkBRvSVOVJ2dROUEmPA3jRTt6jN6hpPNLE4k2wK+ozr8f5
+ /Pj7p3DM1UVuFhYd7TP9HZa7ZcThVXYwi4xrM/olubE1Stdbwmjs/5QyGqRKZ8lwRLmM
+ tYlKej8IQ4vV4fHjkNncx4lhnuvm91aFi4x6rPNGAORE6C9InAPh1503gudYm6H8w+OQ
+ 7Tx+wJFI36C5wy631N7Nw2H6T6EnUGszDbpIQeHpnz2YKSIZKCwLRD5xgi58u1vGIx69
+ kSK+7vI0lrmkUpjkLJCyWu6dfy7HPPrLvRk2ssYZZNDmNbgL7EbNYjHvRMisOGJAjqR3
+ ut8Q==
+X-Gm-Message-State: AOJu0YxQw8lWVB59UHcKIg8zWjzBaWK2ysyWP6qcThLZxKLAY50kEvLf
+ I9IHnID1dCZ4PgTj8+aYkuvOBTv+j7rV0n24UmA=
+X-Google-Smtp-Source: AGHT+IGLwdTJRLdBrUgCmwFLvvf8TY4GJC/C66qRX6TzKUU+sarGT/3HErPhc2bSdUbbNPrPpoVl7w==
+X-Received: by 2002:a05:6870:56a0:b0:1ba:df9e:f2e9 with SMTP id
+ p32-20020a05687056a000b001badf9ef2e9mr3078871oao.0.1692968974703; 
+ Fri, 25 Aug 2023 06:09:34 -0700 (PDT)
 Received: from grind.. ([179.93.21.19]) by smtp.gmail.com with ESMTPSA id
- ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.09.28
+ ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.09.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 06:09:31 -0700 (PDT)
+ Fri, 25 Aug 2023 06:09:34 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 10/20] target/riscv: move riscv_cpu_add_kvm_properties() to
- kvm.c
-Date: Fri, 25 Aug 2023 10:08:43 -0300
-Message-ID: <20230825130853.511782-11-dbarboza@ventanamicro.com>
+Subject: [PATCH 11/20] target/riscv: introduce KVM AccelCPUClass
+Date: Fri, 25 Aug 2023 10:08:44 -0300
+Message-ID: <20230825130853.511782-12-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230825130853.511782-1-dbarboza@ventanamicro.com>
 References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,162 +92,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll introduce the KVM accelerator class with a 'cpu_instance_init'
-implementation that is going to be invoked during the common
-riscv_cpu_post_init() (via accel_cpu_instance_init()). This
-instance_init will execute KVM exclusive code that TCG doesn't care
-about, such as adding KVM specific properties, initing registers using a
-KVM scratch CPU and so on.
+Add a KVM accelerator class like we did with TCG. The difference is
+that, at least for now, we won't be using a realize() implementation for
+this accelerator.
 
-The core of the forementioned cpu_instance_init impl is the current
-riscv_cpu_add_kvm_properties() that is being used by the common code via
-riscv_cpu_add_user_properties() in cpu.c. Move it to kvm.c, together
-will all the relevant artifacts, exporting and renaming it to
-kvm_riscv_cpu_add_kvm_properties() so cpu.c can keep using it for now.
+We'll start by assiging kvm_riscv_cpu_add_kvm_properties(), renamed to
+kvm_cpu_instance_init(), as a 'cpu_instance_init' implementation. Change
+riscv_cpu_post_init() to invoke accel_cpu_instance_init(), which will go
+through the 'cpu_instance_init' impl of the current acceleration (if
+available) and execute it. The end result is that the KVM initial setup,
+i.e. starting registers and adding its specific properties, will be done
+via this hook.
 
-To make this work we'll need to export riscv_cpu_extensions,
-riscv_cpu_vendor_exts and riscv_cpu_experimental_exts from cpu.c as
-well. The TCG accelerator will also need to access those in the near
-future so this export will benefit us in the long run.
+riscv_cpu_add_user_properties() is still being called via the common
+post_init() function, thus we still need the "if kvm then return" logic
+inside it for now. We'll deal with it when TCG accel class get its own
+'cpu_instance_init' implementation.
+
+riscv_add_satp_mode_properties() is now being exported from cpu.c since
+it's a common helper between KVM and TCG.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c       | 87 +++-------------------------------------
- target/riscv/cpu.h       | 14 +++++++
- target/riscv/kvm.c       | 66 +++++++++++++++++++++++++++++-
- target/riscv/kvm_riscv.h |  2 +-
- 4 files changed, 86 insertions(+), 83 deletions(-)
+ target/riscv/cpu.c       |  8 ++---
+ target/riscv/cpu.h       |  1 +
+ target/riscv/kvm.c       | 64 +++++++++++++++++++++++++++-------------
+ target/riscv/kvm_riscv.h |  1 -
+ 4 files changed, 49 insertions(+), 25 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4eda853f1d..58b0ef2af8 100644
+index 58b0ef2af8..04c6bfaeef 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1344,7 +1344,7 @@ static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-     MISA_CFG(RVG, false),
- };
+@@ -1112,7 +1112,7 @@ static void cpu_riscv_set_satp(Object *obj, Visitor *v, const char *name,
+     satp_map->init |= 1 << satp;
+ }
  
--static void riscv_cpu_add_misa_properties(Object *cpu_obj)
-+void riscv_cpu_add_misa_properties(Object *cpu_obj)
+-static void riscv_add_satp_mode_properties(Object *obj)
++void riscv_add_satp_mode_properties(Object *obj)
  {
-     int i;
+     RISCVCPU *cpu = RISCV_CPU(obj);
  
-@@ -1371,17 +1371,11 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+@@ -1199,6 +1199,8 @@ static void riscv_cpu_post_init(Object *obj)
+     RISCVCPU *cpu = RISCV_CPU(obj);
+     RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
+ 
++    accel_cpu_instance_init(CPU(obj));
++
+     if (rcc->user_extension_properties) {
+         riscv_cpu_add_user_properties(obj);
      }
- }
- 
--typedef struct RISCVCPUMultiExtConfig {
--    const char *name;
--    uint32_t offset;
--    bool enabled;
--} RISCVCPUMultiExtConfig;
--
- #define MULTI_EXT_CFG_BOOL(_name, _prop, _defval) \
-     {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
-      .enabled = _defval}
- 
--static const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-+const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Defaults for standard extensions */
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-     MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
-@@ -1441,7 +1435,7 @@ static const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
--static const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
-+const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
-     MULTI_EXT_CFG_BOOL("xtheadba", ext_xtheadba, false),
-     MULTI_EXT_CFG_BOOL("xtheadbb", ext_xtheadbb, false),
-     MULTI_EXT_CFG_BOOL("xtheadbs", ext_xtheadbs, false),
-@@ -1459,7 +1453,7 @@ static const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
- };
- 
- /* These are experimental so mark with 'x-' */
--static const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-+const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-zicond", ext_zicond, false),
- 
-     /* ePMP 0.9.3 */
-@@ -1487,7 +1481,7 @@ static const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
--static Property riscv_cpu_options[] = {
-+Property riscv_cpu_options[] = {
-     DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
- 
-     DEFINE_PROP_BOOL("mmu", RISCVCPU, cfg.mmu, true),
-@@ -1548,25 +1542,6 @@ static void cpu_add_multi_ext_prop(Object *cpu_obj,
-                            multi_cfg->enabled);
- }
- 
--#ifndef CONFIG_USER_ONLY
--static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
--                                    const char *name,
--                                    void *opaque, Error **errp)
--{
--    const char *propname = opaque;
--    bool value;
--
--    if (!visit_type_bool(v, name, &value, errp)) {
--        return;
--    }
--
--    if (value) {
--        error_setg(errp, "extension %s is not available with KVM",
--                   propname);
--    }
--}
--#endif
--
- static void riscv_cpu_add_multiext_prop_array(Object *obj,
-                                         const RISCVCPUMultiExtConfig *array)
+@@ -1561,12 +1563,10 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
+ static void riscv_cpu_add_user_properties(Object *obj)
  {
-@@ -1577,56 +1552,6 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
+ #ifndef CONFIG_USER_ONLY
+-    riscv_add_satp_mode_properties(obj);
+-
+     if (kvm_enabled()) {
+-        kvm_riscv_cpu_add_kvm_properties(obj);
+         return;
      }
++    riscv_add_satp_mode_properties(obj);
+ #endif
+ 
+     riscv_cpu_add_misa_properties(obj);
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index b9c4bea3f7..950c2301f2 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -726,6 +726,7 @@ extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
+ extern Property riscv_cpu_options[];
+ 
+ void riscv_cpu_add_misa_properties(Object *cpu_obj);
++void riscv_add_satp_mode_properties(Object *obj);
+ 
+ /* CSR function table */
+ extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 7e67121456..3c4fa43cee 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -31,6 +31,7 @@
+ #include "sysemu/kvm_int.h"
+ #include "cpu.h"
+ #include "trace.h"
++#include "hw/core/accel-cpu.h"
+ #include "hw/pci/pci.h"
+ #include "exec/memattrs.h"
+ #include "exec/address-spaces.h"
+@@ -1262,26 +1263,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
  }
  
--#ifndef CONFIG_USER_ONLY
--static void riscv_cpu_add_kvm_unavail_prop(Object *obj, const char *prop_name)
+-void kvm_riscv_cpu_add_kvm_properties(Object *obj)
 -{
--    /* Check if KVM created the property already */
--    if (object_property_find(obj, prop_name)) {
--        return;
--    }
--
--    /*
--     * Set the default to disabled for every extension
--     * unknown to KVM and error out if the user attempts
--     * to enable any of them.
--     */
--    object_property_add(obj, prop_name, "bool",
--                        NULL, cpu_set_cfg_unavailable,
--                        NULL, (void *)prop_name);
--}
--
--static void riscv_cpu_add_kvm_unavail_prop_array(Object *obj,
--                                        const RISCVCPUMultiExtConfig *array)
--{
--    const RISCVCPUMultiExtConfig *prop;
--
--    for (prop = array; prop && prop->name; prop++) {
--        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
--    }
--}
--
--static void riscv_cpu_add_kvm_properties(Object *obj)
--{
--    Property *prop;
 -    DeviceState *dev = DEVICE(obj);
 -
--    kvm_riscv_init_user_properties(obj);
+-    riscv_init_user_properties(obj);
 -    riscv_cpu_add_misa_properties(obj);
 -
 -    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_extensions);
 -    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_vendor_exts);
 -    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_exts);
 -
--    for (prop = riscv_cpu_options; prop && prop->name; prop++) {
+-    for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
 -        /* Check if KVM created the property already */
 -        if (object_property_find(obj, prop->name)) {
 -            continue;
@@ -256,125 +203,23 @@ index 4eda853f1d..58b0ef2af8 100644
 -        qdev_property_add_static(dev, prop);
 -    }
 -}
--#endif
 -
- /*
-  * Add CPU properties with user-facing flags.
-  *
-@@ -1639,7 +1564,7 @@ static void riscv_cpu_add_user_properties(Object *obj)
-     riscv_add_satp_mode_properties(obj);
- 
-     if (kvm_enabled()) {
--        riscv_cpu_add_kvm_properties(obj);
-+        kvm_riscv_cpu_add_kvm_properties(obj);
-         return;
-     }
- #endif
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 2ac00a0304..b9c4bea3f7 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -22,6 +22,7 @@
- 
- #include "hw/core/cpu.h"
- #include "hw/registerfields.h"
-+#include "hw/qdev-properties.h"
- #include "exec/cpu-defs.h"
- #include "qemu/cpu-float.h"
- #include "qom/object.h"
-@@ -713,6 +714,19 @@ bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset);
- int cpu_cfg_ext_get_min_version(uint32_t ext_offset);
- void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu);
- 
-+typedef struct RISCVCPUMultiExtConfig {
-+    const char *name;
-+    uint32_t offset;
-+    bool enabled;
-+} RISCVCPUMultiExtConfig;
-+
-+extern const RISCVCPUMultiExtConfig riscv_cpu_extensions[];
-+extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
-+extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
-+extern Property riscv_cpu_options[];
-+
-+void riscv_cpu_add_misa_properties(Object *cpu_obj);
-+
- /* CSR function table */
- extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
- 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 59004caa8e..7e67121456 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -338,6 +338,50 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
-     }
- }
- 
-+static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
-+                                    const char *name,
-+                                    void *opaque, Error **errp)
-+{
-+    const char *propname = opaque;
-+    bool value;
-+
-+    if (!visit_type_bool(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    if (value) {
-+        error_setg(errp, "extension %s is not available with KVM",
-+                   propname);
-+    }
-+}
-+
-+static void riscv_cpu_add_kvm_unavail_prop(Object *obj, const char *prop_name)
-+{
-+    /* Check if KVM created the property already */
-+    if (object_property_find(obj, prop_name)) {
-+        return;
-+    }
-+
-+    /*
-+     * Set the default to disabled for every extension
-+     * unknown to KVM and error out if the user attempts
-+     * to enable any of them.
-+     */
-+    object_property_add(obj, prop_name, "bool",
-+                        NULL, cpu_set_cfg_unavailable,
-+                        NULL, (void *)prop_name);
-+}
-+
-+static void riscv_cpu_add_kvm_unavail_prop_array(Object *obj,
-+                                        const RISCVCPUMultiExtConfig *array)
-+{
-+    const RISCVCPUMultiExtConfig *prop;
-+
-+    for (prop = array; prop && prop->name; prop++) {
-+        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
-+    }
-+}
-+
- static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+ static void riscv_host_cpu_init(Object *obj)
  {
-     int i;
-@@ -747,7 +791,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-     }
- }
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+@@ -1310,3 +1291,46 @@ static const TypeInfo riscv_kvm_cpu_type_infos[] = {
+ };
  
--void kvm_riscv_init_user_properties(Object *cpu_obj)
-+static void riscv_init_user_properties(Object *cpu_obj)
- {
-     RISCVCPU *cpu = RISCV_CPU(cpu_obj);
-     KVMScratchCPU kvmcpu;
-@@ -1218,6 +1262,26 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
- }
- 
-+void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+ DEFINE_TYPES(riscv_kvm_cpu_type_infos)
++
++static void kvm_cpu_instance_init(CPUState *cs)
 +{
++    Object *obj = OBJECT(RISCV_CPU(cs));
 +    DeviceState *dev = DEVICE(obj);
 +
 +    riscv_init_user_properties(obj);
++
++    riscv_add_satp_mode_properties(obj);
 +    riscv_cpu_add_misa_properties(obj);
 +
 +    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_extensions);
@@ -382,7 +227,7 @@ index 59004caa8e..7e67121456 100644
 +    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_exts);
 +
 +    for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
-+        /* Check if KVM created the property already */
++        /* Check if we have a specific KVM handler for the option */
 +        if (object_property_find(obj, prop->name)) {
 +            continue;
 +        }
@@ -390,19 +235,34 @@ index 59004caa8e..7e67121456 100644
 +    }
 +}
 +
- static void riscv_host_cpu_init(Object *obj)
- {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
++static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
++{
++    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
++
++    acc->cpu_instance_init = kvm_cpu_instance_init;
++}
++
++static const TypeInfo kvm_cpu_accel_type_info = {
++    .name = ACCEL_CPU_NAME("kvm"),
++
++    .parent = TYPE_ACCEL_CPU,
++    .class_init = kvm_cpu_accel_class_init,
++    .abstract = true,
++};
++static void kvm_cpu_accel_register_types(void)
++{
++    type_register_static(&kvm_cpu_accel_type_info);
++}
++type_init(kvm_cpu_accel_register_types);
 diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
-index 7d4b7c60e2..81e08b8359 100644
+index 81e08b8359..a0ea1a7505 100644
 --- a/target/riscv/kvm_riscv.h
 +++ b/target/riscv/kvm_riscv.h
-@@ -19,7 +19,7 @@
+@@ -19,7 +19,6 @@
  #ifndef QEMU_KVM_RISCV_H
  #define QEMU_KVM_RISCV_H
  
--void kvm_riscv_init_user_properties(Object *cpu_obj);
-+void kvm_riscv_cpu_add_kvm_properties(Object *obj);
+-void kvm_riscv_cpu_add_kvm_properties(Object *obj);
  void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
  void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
