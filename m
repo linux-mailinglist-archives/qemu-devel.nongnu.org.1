@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5A7788826
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E124788863
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:23:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZWZm-00027Z-Rg; Fri, 25 Aug 2023 09:10:10 -0400
+	id 1qZWlJ-0001hN-TF; Fri, 25 Aug 2023 09:22:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWZh-000263-6Q
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:10:05 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWZe-00076D-QR
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:10:04 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1c504386370so577513fac.1
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:10:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692969001; x=1693573801;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VuJMCp2LBSY6NnsD/ghs0+i3Nv5scvtnxYjJhkSRc9A=;
- b=L/EeK6kB7ifzk6kxkeDm2UswQNgoxpAemeSE5sIGgIHeUTTx1v+xthn19c7qjy/8ng
- 8Ug7yOsJK1m4q3nP6JSvE91UNTFTL3sBFq2ANeOoNYPXStLFTOFm92y8UtmuqqRMvdcK
- 2snllbFe0Py66f4xyBL4VDkBpCBAbxfBtvdBl4ttkYvSr/gs8VLxNk+eFGFrvVSejtgk
- CxY1apHxzyU6oOK4p+GW4TKZnsmuCrZfbRYdti+blyoAiD4ByF5TCeHa9zUtQ3BpMbOu
- xste/sK2/X3HO35Lk/FnyAr5YN9HhN02AVBI7m4lZIgTmtVdoPz9jwAqcdj99MEy6Dj8
- /rZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692969001; x=1693573801;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VuJMCp2LBSY6NnsD/ghs0+i3Nv5scvtnxYjJhkSRc9A=;
- b=gVHfBSJ8mMN/C2wVOXNB6n3FRbVFhxlDDNxzWpJY4e1Y+weLsvZN2zGbzIfoOXRJlV
- KsU9n7Dt8vXwFIQtCXvWF7zXgVb4kgmYj35TKv8duTA2UkhC99sigGOpUpbc4FWaZjiW
- 7sfFQV1Jp4HilVt67w7cI82h02b2LdTNfc2jCdIHFBHXB/sxKIWlW/UgDelqZ7YE+vmW
- 2ZhmfPEe2291REHICMQTl1xuKwv5ObyNafokDOMV4/Pw6MaggrV5881zPxQH9jEjHdMa
- AG2klEr/Vvjckc/DlDetpt2B3Hc5JltzCEUXwLLomuuH+YdHLPO/brWCj8+FLTb3apyF
- WJgg==
-X-Gm-Message-State: AOJu0YwkyTJd2yUi+xZm1ufjyOvtNoTTpcw8C4QtdJn/SDKLrUD1kSMM
- oYUxFb4wY9xFCfALK56rlySfdwRNxTWaOPif+VQ=
-X-Google-Smtp-Source: AGHT+IGBVISzsAmCtW8XNQxdL8ousSNEHvxf0R1yeoh0cH3FrS7jGlVVDgCNoMVFKRcHZbjtsltQLg==
-X-Received: by 2002:a05:6870:32d3:b0:1bb:a264:a7ba with SMTP id
- r19-20020a05687032d300b001bba264a7bamr2866476oac.56.1692969001005; 
- Fri, 25 Aug 2023 06:10:01 -0700 (PDT)
-Received: from grind.. ([179.93.21.19]) by smtp.gmail.com with ESMTPSA id
- ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.09.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 06:10:00 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qZWlH-0001h4-F8
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:22:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qZWlE-0001kC-4x
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:22:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692969719;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=v9bjxmKPhysP/t8AheQMYUtqlsKfLV8mBBXOArGtjDw=;
+ b=AtmRuY8krtnc2sj7H03c3IJ8heG1Hm6uZsW7RVk+6QwsWd/7zqmfqx+xyZB5lrDVm1Ca8c
+ lB4BHzu4VP/OE5Qgm+CIDH8Pw5NdlPcFrQ/ptYv+HmpOR/q8yN2SSLNzcaxV/T7WvK3Rjo
+ sUZAT5Fzao8fGhfiCHlt1FvCKQPgZPU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-14-ynizPyjAPBSfIWRMptUf-Q-1; Fri, 25 Aug 2023 09:21:55 -0400
+X-MC-Unique: ynizPyjAPBSfIWRMptUf-Q-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CA82A858EED;
+ Fri, 25 Aug 2023 13:21:54 +0000 (UTC)
+Received: from t14s.fritz.box (unknown [10.39.193.68])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E6607140E950;
+ Fri, 25 Aug 2023 13:21:50 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 20/20] target/riscv: add 'kvm_supported' class property
-Date: Fri, 25 Aug 2023 10:08:53 -0300
-Message-ID: <20230825130853.511782-21-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230825130853.511782-1-dbarboza@ventanamicro.com>
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
+Subject: [PATCH v2 00/16] virtio-mem: Expose device memory through multiple
+ memslots
+Date: Fri, 25 Aug 2023 15:21:33 +0200
+Message-ID: <20230825132149.366064-1-david@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2e.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,103 +87,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This follows the same idea of 'tcg_support' property added in the
-previous patch. Note that we're now implementing the 'cpu_realizefn' for
-the KVMAccel class since this verification is done in realize() time.
+Quoting from patch #14:
 
-Supporting vendor CPUs with KVM is not possible. We rely on the
-extension support of the KVM module running in the host, making it
-impossible to guarantee that a vendor CPU will have all the required
-extensions available. The only way to guarantee that a vendor CPU is KVM
-compatible is running KVM in a host that has the same vendor CPU, and
-for this case we already have the 'host' CPU type.
+    Having large virtio-mem devices that only expose little memory to a VM
+    is currently a problem: we map the whole sparse memory region into the
+    guest using a single memslot, resulting in one gigantic memslot in KVM.
+    KVM allocates metadata for the whole memslot, which can result in quite
+    some memory waste.
 
-We're better of declaring that all vendors CPUs are not KVM capable.
-After this patch, running KVM accel with a vendor CPU will produce an
-error like the following:
+    Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
+    1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
+    allocate metadata for that 1 TiB memslot: on x86, this implies allocating
+    a significant amount of memory for metadata:
 
-$ ./qemu-system-riscv64 -M virt,accel=kvm -cpu veyron-v1
-qemu-system-riscv64: 'veyron-v1' CPU is not compatible with KVM acceleration
+    (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
+        -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu-qom.h     |  1 +
- target/riscv/cpu.c         |  1 +
- target/riscv/kvm/kvm-cpu.c | 24 ++++++++++++++++++++++++
- 3 files changed, 26 insertions(+)
+        With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
+        allocated lazily when required for nested VMs
+    (2) gfn_track: 2 bytes per 4 KiB
+        -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
+    (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
+        -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
+    (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
+        -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index e86b76f9fe..32d9bb07b4 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -72,5 +72,6 @@ struct RISCVCPUClass {
- 
-     bool user_extension_properties;
-     bool tcg_supported;
-+    bool kvm_supported;
- };
- #endif /* RISCV_CPU_QOM_H */
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f749ea2a2e..73302bb72a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1646,6 +1646,7 @@ static void riscv_dynamic_cpu_class_init(ObjectClass *c, void *data)
- 
-     rcc->user_extension_properties = true;
-     rcc->tcg_supported = true;
-+    rcc->kvm_supported = true;
- }
- 
- static void riscv_vendor_cpu_class_init(ObjectClass *c, void *data)
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 501384924b..85f3b8c80e 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1289,6 +1289,7 @@ static void riscv_kvm_cpu_class_init(ObjectClass *c, void *data)
-     RISCVCPUClass *rcc = RISCV_CPU_CLASS(c);
- 
-     rcc->user_extension_properties = true;
-+    rcc->kvm_supported = true;
- }
- 
- static const TypeInfo riscv_kvm_cpu_type_infos[] = {
-@@ -1302,6 +1303,28 @@ static const TypeInfo riscv_kvm_cpu_type_infos[] = {
- 
- DEFINE_TYPES(riscv_kvm_cpu_type_infos)
- 
-+/*
-+ * We'll get here via the following path:
-+ *
-+ * riscv_cpu_realize()
-+ *   -> cpu_exec_realizefn()
-+ *      -> kvm_cpu_realizefn() (via accel_cpu_realizefn())
-+ */
-+static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
-+
-+    if (!rcc->kvm_supported) {
-+        g_autofree char *name = riscv_cpu_get_name(rcc);
-+        error_setg(errp, "'%s' CPU is not compatible with KVM acceleration",
-+                   name);
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- static void kvm_cpu_instance_init(CPUState *cs)
- {
-     Object *obj = OBJECT(RISCV_CPU(cs));
-@@ -1328,6 +1351,7 @@ static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
-     AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
- 
-     acc->cpu_instance_init = kvm_cpu_instance_init;
-+    acc->cpu_realizefn = kvm_cpu_realizefn;
- }
- 
- static const TypeInfo kvm_cpu_accel_type_info = {
+    So we primarily care about (1) and (2). The bad thing is, that the
+    memory consumption *doubles* once SMM is enabled, because we create the
+    memslot once for !SMM and once for SMM.
+
+    Having a 1 TiB memslot without the TDP MMU consumes around:
+    * With SMM: 5 GiB
+    * Without SMM: 2.5 GiB
+    Having a 1 TiB memslot with the TDP MMU consumes around:
+    * With SMM: 1 GiB
+    * Without SMM: 512 MiB
+
+    ... and that's really something we want to optimize, to be able to just
+    start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
+    that can grow very large (e.g., 1 TiB).
+
+    Consequently, using multiple memslots and only mapping the memslots we
+    really need can significantly reduce memory waste and speed up
+    memslot-related operations. Let's expose the sparse RAM memory region using
+    multiple memslots, mapping only the memslots we currently need into our
+    device memory region container.
+
+The hyper-v balloon driver has similar demands [1].
+
+For virtio-mem, this has to be turned manually on ("multiple-memslots=on"),
+due to the interaction with vhost (below).
+
+If we have less than 509 memslots available, we always default to a single
+memslot. Otherwise, we automatically decide how many memslots to use
+based on a simple heuristic (see patch #12), and try not to use more than
+256 memslots across all memory devices: our historical DIMM limit.
+
+As soon as any memory devices automatically decided on using more than
+one memslot, vhost devices that support less than 509 memslots (e.g.,
+currently most vhost-user devices like with virtiofsd) can no longer be
+plugged as a precaution.
+
+Quoting from patch #12:
+
+    Plugging vhost devices with less than 509 memslots available while we
+    have memory devices plugged that consume multiple memslots due to
+    automatic decisions can be problematic. Most configurations might just fail
+    due to "limit < used + reserved", however, it can also happen that these
+    memory devices would suddenly consume memslots that would actually be
+    required by other memslot consumers (boot, PCI BARs) later. Note that this
+    has always been sketchy with vhost devices that support only a small number
+    of memslots; but we don't want to make it any worse.So let's keep it simple
+    and simply reject plugging such vhost devices in such a configuration.
+
+    Eventually, all vhost devices that want to be fully compatible with such
+    memory devices should support a decent number of memslots (>= 509).
+
+
+The recommendation is to plug such vhost devices before the virtio-mem
+decides, or to not set "multiple-memslots=on". As soon as these devices
+support a reasonable number of memslots (>= 509), this will start working
+automatically.
+
+I run some tests on x86_64, now also including vfio tests. Seems to work
+as expected, even when multiple memslots are used.
+
+
+Patch #1 -- #3 are from [2] that were not picked up yet.
+
+Patch #4 -- #12 add handling of multiple memslots to memory devices
+
+Patch #13 -- #14 add "multiple-memslots=on" support to virtio-mem
+
+Patch #15 -- #16 make sure that virtio-mem memslots can be enabled/disable
+atomically
+
+
+v1 -> v2:
+* Include patches from [1]
+* A lot of code simplification and reorganization, too many to spell out
+* *don't* add a general soft-limit on memslots, to avoid warning in sane
+  setups
+* Simplify handling of vhost devices with a small number of memslots:
+  simply fail plugging them
+* "virtio-mem: Expose device memory via multiple memslots if enabled"
+ -> Fix one "is this the last memslot" check
+* Much more testing
+
+
+[1] https://lkml.kernel.org/r/cover.1689786474.git.maciej.szmigiero@oracle.com
+[2] https://lkml.kernel.org/r/20230523185915.540373-1-david@redhat.com
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Yanan Wang <wangyanan55@huawei.com>
+Cc: Michal Privoznik <mprivozn@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Cc: kvm@vger.kernel.org
+
+David Hildenbrand (16):
+  vhost: Rework memslot filtering and fix "used_memslot" tracking
+  vhost: Remove vhost_backend_can_merge() callback
+  softmmu/physmem: Fixup qemu_ram_block_from_host() documentation
+  kvm: Return number of free memslots
+  vhost: Return number of free memslots
+  memory-device: Support memory devices with multiple memslots
+  stubs: Rename qmp_memory_device.c to memory_device.c
+  memory-device: Track required and actually used memslots in
+    DeviceMemoryState
+  memory-device,vhost: Support memory devices that dynamically consume
+    memslots
+  kvm: Add stub for kvm_get_max_memslots()
+  vhost: Add vhost_get_max_memslots()
+  memory-device,vhost: Support automatic decision on the number of
+    memslots
+  memory: Clarify mapping requirements for RamDiscardManager
+  virtio-mem: Expose device memory via multiple memslots if enabled
+  memory,vhost: Allow for marking memory device memory regions
+    unmergeable
+  virtio-mem: Mark memslot alias memory regions unmergeable
+
+ MAINTAINERS                                   |   1 +
+ accel/kvm/kvm-all.c                           |  35 ++-
+ accel/stubs/kvm-stub.c                        |   9 +-
+ hw/mem/memory-device.c                        | 192 ++++++++++++-
+ hw/virtio/vhost-stub.c                        |   9 +-
+ hw/virtio/vhost-user.c                        |  21 +-
+ hw/virtio/vhost-vdpa.c                        |   1 -
+ hw/virtio/vhost.c                             | 103 +++++--
+ hw/virtio/virtio-mem-pci.c                    |  21 ++
+ hw/virtio/virtio-mem.c                        | 272 +++++++++++++++++-
+ include/exec/cpu-common.h                     |  15 +
+ include/exec/memory.h                         |  27 +-
+ include/hw/boards.h                           |  14 +-
+ include/hw/mem/memory-device.h                |  57 ++++
+ include/hw/virtio/vhost-backend.h             |   9 +-
+ include/hw/virtio/vhost.h                     |   3 +-
+ include/hw/virtio/virtio-mem.h                |  23 +-
+ include/sysemu/kvm.h                          |   4 +-
+ include/sysemu/kvm_int.h                      |   1 +
+ softmmu/memory.c                              |  35 ++-
+ softmmu/physmem.c                             |  17 --
+ .../{qmp_memory_device.c => memory_device.c}  |  10 +
+ stubs/meson.build                             |   2 +-
+ 23 files changed, 775 insertions(+), 106 deletions(-)
+ rename stubs/{qmp_memory_device.c => memory_device.c} (56%)
+
 -- 
 2.41.0
 
