@@ -2,82 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B1F78815B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6AA788160
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 09:59:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZRhO-0001so-IC; Fri, 25 Aug 2023 03:57:42 -0400
+	id 1qZRiR-0003gd-Dd; Fri, 25 Aug 2023 03:58:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qZRhM-0001sV-H3; Fri, 25 Aug 2023 03:57:40 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qZRiP-0003gN-Tw; Fri, 25 Aug 2023 03:58:45 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qZRhK-00027o-Ac; Fri, 25 Aug 2023 03:57:40 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-5008d16cc36so919168e87.2; 
- Fri, 25 Aug 2023 00:57:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qZRiN-0002Dd-OD; Fri, 25 Aug 2023 03:58:45 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bf48546ccfso5056505ad.2; 
+ Fri, 25 Aug 2023 00:58:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692950255; x=1693555055;
- h=user-agent:in-reply-to:content-disposition:mime-version:references
- :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1692950321; x=1693555121;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HTbvxrTgujyUc1hywZH9T9OGM3UOj1wjie6m5GrjsGU=;
- b=IjgAcaAGmtFeMJI0scX6VWSVQAjMv7+15IrMD015QzKk9K5HJ7ItrrMb3BiArp1n1h
- 3jPEx2Gmj5iPsH28ICkTDWSHCANov4NpRJQxNGWQHhBgrifq/19EoU8K4TkDQEeFHgy4
- MbkkniMDNBtfCt3stZlc7tinv+uYViRNlSY868tAxauoSSCqaj0e2giFArS6H8qbQ9SB
- DjlwwTRM/G3J5vAmTN90gePCaPjCp4MSuIcdp+RbLqph1z2x3D2g66V+Jb3LOZiIVqjg
- YM7pT1m95PWsOflGa6yWVHYmJ74r8OwcJIom+4X9NLEOi1fuvINR3OS6F7fcpdTiMjvM
- WZvg==
+ bh=2Ex5eUDLlGoTe6YDjrCyOFPB52kSWDwBSB4UinefOKU=;
+ b=Ufpuyw5ob/Y8nuem1RqwxRWo5ufA41YQP7nEt4CGxu/V5lbZoYym+nJfAgaGUBkRAt
+ nMQpBtQaPPakPafUACbEPWCyg4/TXrWD5TyZU7Mz9MBP7ntPULjsWxRBVkio1ZddzYue
+ OA/q9/JsS0diFvduNo4WDI6VdTl+v9LLEGH1JGTYoq8EhHR4/W74XPbqiN7TotdQEIO6
+ 0zd5SPaJHbZAPxuGTHK71EszVk3T2mqLFFkV9vyVbkojL2RzdRwLFyDHyFpPU9vPwS7S
+ tyelhXMn9Pzkipz0GZNNPFRXCLpyYBgOD8zZSPwhQ1i9u8P3IlNGClSy6R/BQ+Hp2Bzy
+ Nqpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692950255; x=1693555055;
- h=user-agent:in-reply-to:content-disposition:mime-version:references
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HTbvxrTgujyUc1hywZH9T9OGM3UOj1wjie6m5GrjsGU=;
- b=bSbMVWdLbCn4wB/572HPaTuAjZggXA5Qa/lj+5IXmF8QqOnX9bi8ZDEpHTptGPZ8+0
- P0cxPwISTcAGU8FjoRe1OsohcHMBTyX+K+Ti/cDV9ShEoKblYFMgRlsSMF8upr7CRB6w
- HkYLHw3hEoIJ1XcdSD5yuA+WZeiisVNg/tQxwlht/n0JwVNJfNo7DGQRNCgSi6sOxp6R
- zU4g73fyfhwqtfQFi1m3T55BNIdoP0avLTubhlS6OhM5k76IZNaVtsTwp9NtXqW4ihDC
- ON9DGzp0ronIZk2Z0WA8RdQUOmxhNxMd4IwVLAJU8uFx11HAsIB31xQbcCznF9FHNDXy
- plBg==
-X-Gm-Message-State: AOJu0YxDsLb3zgUG2g9kJt6OhcmFH5si4i729kYgQ/dYY6n0UPOpLS/6
- O5RgWuJCrooN8eeXDlqQYyw=
-X-Google-Smtp-Source: AGHT+IEWYoqgRH7YbbR3/PLdUVlm2QnAoJ+nbccOrOSKL6p0iYEQd/rqpGHYn700nGi/aGGOnmznHQ==
-X-Received: by 2002:a05:6512:318a:b0:4fe:1d88:2c61 with SMTP id
- i10-20020a056512318a00b004fe1d882c61mr16389339lfe.32.1692950255283; 
- Fri, 25 Aug 2023 00:57:35 -0700 (PDT)
-Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
- by smtp.gmail.com with ESMTPSA id
- h12-20020a19700c000000b005009aa86582sm189391lfc.55.2023.08.25.00.57.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 00:57:34 -0700 (PDT)
-Date: Fri, 25 Aug 2023 09:57:33 +0200
-From: Francisco Iglesias <frasse.iglesias@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Jiri Pirko <jiri@resnulli.us>, qemu-ppc@nongnu.org
-Subject: Re: [PATCH 3/4] net/dump: Avoid variable length array
-Message-ID: <20230825075732.GQ6984@fralle-msi>
-References: <20230824153224.2517486-1-peter.maydell@linaro.org>
- <20230824153224.2517486-4-peter.maydell@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824153224.2517486-4-peter.maydell@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -1020
-X-Spam_score: -102.1
-X-Spam_bar: ---------------------------------------------------
-X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ d=1e100.net; s=20221208; t=1692950321; x=1693555121;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=2Ex5eUDLlGoTe6YDjrCyOFPB52kSWDwBSB4UinefOKU=;
+ b=UxNl4jydyrAYU8Acu+P5cnxa/dP79Z3XlgCmcR4GjyVirAVaYkQa8IptHwhFLn6+aC
+ HeDgw07NQPIX3cuDvqKYLZiDQz7f755jMXASRmUngBRO0MKN6ONG36S6jFpL1vD50jyK
+ Ih0DpJAik41s/CALgGGXs7H+vRI83mVILMZtTXNoSOxdLQnsqxKedEhh69DlWydOI0Q+
+ l0Q9nLZ5D9XIacxG0DmAFj0k1DL/+42xZBh6Z0On1zGUxuIckEbbTu8Dp6NHAWiEqB6c
+ +JGT+mH5PiS9Xd3pE+ERQm2dn2excI5qE2+fEC8fx2iJyFJHiG3n6haPdYlyctLkZtLb
+ ez6Q==
+X-Gm-Message-State: AOJu0Yx76b/X5YjK58fcAa4BXcx0bOPXqffEnOHo4V0LrzrujQ28uqp5
+ 2PQv266mb1IrWEL8PswPQMc=
+X-Google-Smtp-Source: AGHT+IHgVIJIkBEZDIZx1Q0h+n+5URe2SGzm+lXSilbYG994c6D+0668EzeOjfPMGSUvOjrOY7hKjQ==
+X-Received: by 2002:a17:902:c155:b0:1bb:d280:5e0b with SMTP id
+ 21-20020a170902c15500b001bbd2805e0bmr14988495plj.18.1692950321047; 
+ Fri, 25 Aug 2023 00:58:41 -0700 (PDT)
+Received: from localhost ([1.146.69.243]) by smtp.gmail.com with ESMTPSA id
+ jj14-20020a170903048e00b001bbaf09ce15sm997183plb.152.2023.08.25.00.58.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Aug 2023 00:58:40 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Aug 2023 17:58:32 +1000
+Message-Id: <CV1GSSQY2ZP3.35GU250DO5E39@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>
+Cc: "Song Gao" <gaosong@loongson.cn>, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, "Richard Henderson"
+ <richard.henderson@linaro.org>, "Greg Kurz" <groug@kaod.org>, "Aurelien
+ Jarno" <aurelien@aurel32.net>, "Peter Maydell" <peter.maydell@linaro.org>,
+ <qemu-ppc@nongnu.org>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ "Aleksandar Rikalo" <aleksandar.rikalo@syrmia.com>, "Paolo Bonzini"
+ <pbonzini@redhat.com>, "David Gibson" <david@gibson.dropbear.id.au>,
+ "Jiaxun Yang" <jiaxun.yang@flygoat.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "Yoshinori Sato" <ysato@users.sourceforge.jp>, "Xiaojuan
+ Yang" <yangxiaojuan@loongson.cn>, <qemu-arm@nongnu.org>
+Subject: Re: [PATCH 00/12] tcg: Factor hrev{32,64}_{i32,i64,tl} out
+X-Mailer: aerc 0.15.2
+References: <20230822124042.54739-1-philmd@linaro.org>
+In-Reply-To: <20230822124042.54739-1-philmd@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_WELCOMELIST=-0.01,
- USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,38 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 Aug 24] Thu 16:32:23, Peter Maydell wrote:
-> Use a g_autofree heap allocation instead of a variable length
-> array in dump_receive_iov().
-> 
-> The codebase has very few VLAs, and if we can get rid of them all we
-> can make the compiler error on new additions.  This is a defensive
-> measure against security bugs where an on-stack dynamic allocation
-> isn't correctly size-checked (e.g.  CVE-2021-3527).
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+On Tue Aug 22, 2023 at 10:40 PM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
+> This series factor the "byteswap each halfword within a
+> 32/64-bit value" code duplication as generic helpers.
+>
+> Modulo the documentation added, there is a good negative
+> diff-stat, so I believe this is a win from a maintainance
+> point of view.
+>
+> I used "hrev" to follow the other bswap/hswap/rev helpers
+> but it isn't very descriptive, so any better name suggestion
+> is welcomed.
+> (In particular because there are other patterns I'd like to
+> factor out and then naming is getting worse, such 'wrev').
 
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
+I know bswap has alrady precedent, but you could drop the bit
+size when it matches the operand size, hrev_i64.
 
-> ---
->  net/dump.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/dump.c b/net/dump.c
-> index 7d05f16ca7a..16073f24582 100644
-> --- a/net/dump.c
-> +++ b/net/dump.c
-> @@ -68,7 +68,7 @@ static ssize_t dump_receive_iov(DumpState *s, const struct iovec *iov, int cnt,
->      int64_t ts;
->      int caplen;
->      size_t size = iov_size(iov, cnt) - offset;
-> -    struct iovec dumpiov[cnt + 1];
-> +    g_autofree struct iovec *dumpiov = g_new(struct iovec, cnt + 1);
->  
->      /* Early return in case of previous error. */
->      if (s->fd < 0) {
-> -- 
-> 2.34.1
-> 
-> 
+Could possibly also follow ppc and call it brevh, which tells
+you the units being swapped and the size they are swapped in.
+Then you could add brevw or hrevw etc. and it might be a bit
+less ambiguous.
+
+Looks like a nice cleanup though.
+
+Thanks,
+Nick
+
+>
+> Philippe Mathieu-Daud=C3=A9 (12):
+>   tcg/tcg-op: Factor tcg_gen_hrev32_i32() out
+>   target/arm: Use generic hrev32_i32() in ARM REV16 and VREV16 opcodes
+>   target/cris: Use generic hrev32_i32() in SWAPB opcode
+>   target/rx: Use generic hrev32_i32() in REVW opcode
+>   tcg/tcg-op: Factor tcg_gen_hrev64_i64() out
+>   target/mips: Use generic hrev64_i64() in DSBH opcode
+>   target/ppc: Use generic hrev64_i64() in BRH / BSWAP16x8 opcodes
+>   target/loongarch: Use generic hrev64_i64() in REVB.4H opcode
+>   tcg/tcg-op: Add tcg_gen_hrev32_i64() and tcg_gen_hrev_i64()
+>   target/arm: Use generic hrev_i64() in Aarch64 REV16 opcode
+>   target/loongarch: Use generic hrev64_i32() in REVB.2H opcode
+>   target/mips: Use generic hrev32_tl() in WSBH opcode
+>
+>  docs/devel/tcg-ops.rst                      | 10 +++
+>  include/tcg/tcg-op-common.h                 |  4 +
+>  include/tcg/tcg-op.h                        |  2 +
+>  target/arm/tcg/translate-a32.h              |  1 -
+>  target/arm/tcg/translate-a64.c              | 11 +--
+>  target/arm/tcg/translate-neon.c             |  2 +-
+>  target/arm/tcg/translate.c                  | 14 +---
+>  target/cris/translate.c                     | 20 +----
+>  target/mips/tcg/translate.c                 | 24 +-----
+>  target/ppc/translate.c                      | 10 +--
+>  target/rx/translate.c                       |  8 +-
+>  tcg/tcg-op.c                                | 81 ++++++++++++++++++---
+>  target/cris/translate_v10.c.inc             |  2 +-
+>  target/loongarch/insn_trans/trans_bit.c.inc | 30 +-------
+>  target/ppc/translate/vsx-impl.c.inc         | 19 +----
+>  15 files changed, 99 insertions(+), 139 deletions(-)
+
 
