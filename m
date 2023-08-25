@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76EC787F1F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 06:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9807787F25
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 07:09:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZOsP-0008IY-Sr; Fri, 25 Aug 2023 00:56:53 -0400
+	id 1qZP3A-0008SA-6h; Fri, 25 Aug 2023 01:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZOsF-0008I4-RK
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 00:56:43 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZP38-0008S0-Q5
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 01:07:58 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZOsD-0002dz-GT
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 00:56:43 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so1259755a12.0
- for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 21:56:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qZP36-0004RF-4x
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 01:07:58 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-522dd6b6438so811545a12.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Aug 2023 22:07:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692939399; x=1693544199;
+ d=linaro.org; s=google; t=1692940074; x=1693544874;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1PCcSXXWR5sctXDyOsSpVgHYUTsXh4kJwPeF4J0W3wk=;
- b=L+6dx2bQBthoxIv2p4k8vcfCafrbU2mYkDyqR/95/ySztV9A2dKudAceh4MsFa4zp4
- SzcWFYGkOfTToYUr3udEmc3NhtFr1xM9dRa9dstPowfN690qWnbE5Xu1uRyEHB64G9UN
- p4B5S/gVScRYeEGJU1rlv0x2XnvKOmszdnngTd7ihHS9vnf9VGZhC4R3FnaigcZV0+BP
- XIgnlh7p1aKEjYty1MDBansCYxAAEZI909bb3HVr4MpBTFXjg3dtP2F2qBCnGuIyHF7V
- J7RGkmJtlouVSXGTzs/HF22kBwlqVK4ioQ0DLkEid8KGHwJApTIb2bX6zQrIeNlEkI5X
- JMTg==
+ bh=s1pyyVHYYkiednLyqpEAXGnH5Lyuv62QgSvEwJ0x584=;
+ b=bHzvqtjuZoNTGBak/L2tSl6SiDnHI3tD2AU8V88nmvrKruJ6ev+tBUdU0x0+tcM+Dn
+ i/ujwFzAq3AXlxNJchGLpUXsBLmvjOmaCxOFprkMfnaL7n+XZkKaSs2WenDf5DuLWloc
+ Jhf0T54MX7jGlTIh0kpZR1Kxj1sesPYvpREOh871CQHu6gO4JHpgFGrHtXDa7Zen2PuV
+ G1dvKiFajfxgVmumw4Ljq4/uEQj4+IsHjx+K4yT7QVhddoXIsAHg/0ibRWIbHZp/7uHB
+ A3iSA1fHkd+MOxGbwWibss4Vi57WwgWoB1oIZdKk3ViXGFpAOZbk0bAGBqsHXI4snzys
+ qA3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692939399; x=1693544199;
+ d=1e100.net; s=20221208; t=1692940074; x=1693544874;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1PCcSXXWR5sctXDyOsSpVgHYUTsXh4kJwPeF4J0W3wk=;
- b=VLQmab/lwbcAIPwJSpxt/+wJzulVY5xPOxoqBvjZpml7wsrj25XgaggSy8hiDd0FHK
- 738QygBw5/D0X2H0oFNhymj7/kU+5Z8K7W66kGlNtQXUWv3YpsJZZhP2tinyKNoY220x
- OAyVgaEbeuqm8Mzb0UTl2oF3m7sH2fzA6PPxS5VBBUJpXO1cLyogsb9y586XOHV2bz95
- Hp0RyrQnc400H9MVAsRGLiypP4NBAhDET4EYU5SQixAV8lHS3zdKAkhalLyloBMsEDte
- VWMMoEFw6BZwPQ01ivCuMI9VRyfqFH7PvTenxxu3Zu6sz9l2TWYYP/5elh04sQEVZJoC
- 3qFQ==
-X-Gm-Message-State: AOJu0YyslXX5zJoq05WAHrRhu3UIf4jR9jvxxAa8C0opLN69OjOLLcOT
- 5y26v+VjOhKVqlrErOnbV8Z+PiHmZr0hNH68oWI=
-X-Google-Smtp-Source: AGHT+IGBgNJ3diw14/9xmSPSbQWLKxgLa9zpFOrtYPBTgXCLh/wIChtf1+8NlvcdLhlu7FSQLCcyFA==
-X-Received: by 2002:aa7:de8e:0:b0:522:582c:f427 with SMTP id
- j14-20020aa7de8e000000b00522582cf427mr20704391edv.14.1692939399312; 
- Thu, 24 Aug 2023 21:56:39 -0700 (PDT)
+ bh=s1pyyVHYYkiednLyqpEAXGnH5Lyuv62QgSvEwJ0x584=;
+ b=IgSLgRAFuEKwEybDdKZfrnaQoVhxW0uH3T69maRJsQQRJCAyJB51UY+kzcT6G3GG+1
+ zLYk5yNvU3s+tF3lI1iKkalGSyqh0HDu8B9MpBkvX2TEyeXiO9+vAFaVlLEnGKlWe3QK
+ YnX69gDGJNv6wGN01c7ljdY2Py3+EIKyKrZlD9ueuUdpjE75WPPCdCtHGhwBPUewZe1d
+ bYgyB0EYyTf79uy2e/BaXXJioGjT+0YFTLnLk187K1CiqdgfBL+em7PCKd81AtKhi+OO
+ uX4LQWscWMj7BhblCY/ciW7Uydwt8hy4qaZllM8IaGSetfukSvCtrgQHsI0R1g4j6vyW
+ o2rA==
+X-Gm-Message-State: AOJu0YxFaHYzphXwP54a3WSNjJb5UzcAjdCHtgleiFeeHE/Olyaok1Eu
+ uUnHD/8vcU8La+MK4vApIKMHMb/7tj9ZlEZwqjw=
+X-Google-Smtp-Source: AGHT+IGO3Tho4MieFSg2RlbwTBpYyyDpcFu7zF5MaLYjTh++rzKNve6YFE+M6cdQFdEPMH2dvbciww==
+X-Received: by 2002:aa7:d9d8:0:b0:525:734a:bf30 with SMTP id
+ v24-20020aa7d9d8000000b00525734abf30mr15870520eds.36.1692940074117; 
+ Thu, 24 Aug 2023 22:07:54 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.69.26])
  by smtp.gmail.com with ESMTPSA id
- c6-20020a056402120600b005232c051605sm563253edw.19.2023.08.24.21.56.38
+ a15-20020aa7cf0f000000b0052a023e9b5dsm567952edy.47.2023.08.24.22.07.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Aug 2023 21:56:38 -0700 (PDT)
-Message-ID: <53477102-19ad-70d3-18ff-28e4815d7e41@linaro.org>
-Date: Fri, 25 Aug 2023 06:56:36 +0200
+ Thu, 24 Aug 2023 22:07:53 -0700 (PDT)
+Message-ID: <848aaf42-6caa-71ee-3753-0d1bb3518b95@linaro.org>
+Date: Fri, 25 Aug 2023 07:07:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] hw/usb/hcd-xhci: Avoid variable-length array in
- xhci_get_port_bandwidth()
+Subject: Re: [PATCH v2] linux-user: ppoll: eliminate large alloca
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-References: <20230824164818.2652452-1-peter.maydell@linaro.org>
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20230824175102.2999098-1-mjt@tls.msk.ru>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230824164818.2652452-1-peter.maydell@linaro.org>
+In-Reply-To: <20230824175102.2999098-1-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -49
 X-Spam_score: -5.0
 X-Spam_bar: -----
@@ -93,29 +92,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/23 18:48, Peter Maydell wrote:
-> In xhci_get_port_bandwidth(), we use a variable-length array to
-> construct the buffer to send back to the guest. Avoid the VLA
-> by using dma_memory_set() to directly request the memory system
-> to fill the guest memory with a string of '80's.
+On 24/8/23 19:51, Michael Tokarev wrote:
+> do_ppoll() in linux-user/syscall.c uses alloca() to
+> allocate an array of struct pullfds on the stack.
+> The only upper boundary for number of entries for this
+> array is so that whole thing fits in INT_MAX. But this
+> is definitely too much for a stack allocation.  Use
+> heap allocation instead.
 > 
-> The codebase has very few VLAs, and if we can get rid of them all we
-> can make the compiler error on new additions.  This is a defensive
-> measure against security bugs where an on-stack dynamic allocation
-> isn't correctly size-checked (e.g.  CVE-2021-3527).
+> This, together with previous patch for getgroups(),
+> eliminates all large on-stack allocations from
+> qemu-user/syscall.c. What's left are actually small
+> ones.
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> While at it, also fix missing unlock_user() in two
+> places, and consolidate target_to_host_timespec*()
+> calls into time64?_timespec():_timespec64() construct.
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
-> Use of dma_memory_set() is a suggestion from RTH from Philippe's
-> original attempt.  If we ever do anything about the "use real
-> values" TODO we'll need to do something else (eg heap-allocated
-> array), but since we haven't done so since the code was written
-> in 2012 it doesn't seem very likely we'll ever do so.
-> ---
->   hw/usb/hcd-xhci.c | 10 ++++------
->   1 file changed, 4 insertions(+), 6 deletions(-)
+> v1: https://patchwork.ozlabs.org/project/qemu-devel/patch/20221216192220.2881898-1-mjt@msgid.tls.msk.ru/
+> v2: remove alloca() optimization for smaller number of fds
+> 
+>   linux-user/syscall.c | 45 ++++++++++++++++++++------------------------
+>   1 file changed, 20 insertions(+), 25 deletions(-)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 9353268cc1..e79594bcd5 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -1487,14 +1487,12 @@ static abi_long do_pselect6(abi_long arg1, abi_long arg2, abi_long arg3,
+>   static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>                            abi_long arg4, abi_long arg5, bool ppoll, bool time64)
+>   {
+> -    struct target_pollfd *target_pfd;
+> +    struct target_pollfd *target_pfd = NULL;
+>       unsigned int nfds = arg2;
+> -    struct pollfd *pfd;
+> +    struct pollfd *pfd = NULL;
+>       unsigned int i;
+>       abi_long ret;
+>   
+> -    pfd = NULL;
+> -    target_pfd = NULL;
+>       if (nfds) {
+>           if (nfds > (INT_MAX / sizeof(struct target_pollfd))) {
+>               return -TARGET_EINVAL;
+> @@ -1505,7 +1503,11 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>               return -TARGET_EFAULT;
+>           }
+>   
+> -        pfd = alloca(sizeof(struct pollfd) * nfds);
+> +        pfd = g_try_new(struct pollfd, nfds);
+> +        if (!pfd) {
+> +            ret = -TARGET_ENOMEM;
+> +            goto out;
+> +        }
+>           for (i = 0; i < nfds; i++) {
+>               pfd[i].fd = tswap32(target_pfd[i].fd);
+>               pfd[i].events = tswap16(target_pfd[i].events);
+> @@ -1516,16 +1518,11 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>           sigset_t *set = NULL;
+>   
+>           if (arg3) {
+> -            if (time64) {
+> -                if (target_to_host_timespec64(timeout_ts, arg3)) {
+> -                    unlock_user(target_pfd, arg1, 0);
 
-Thanks!
+So this changes unlock(sz=0) ...
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> -                    return -TARGET_EFAULT;
+> -                }
+> -            } else {
+> -                if (target_to_host_timespec(timeout_ts, arg3)) {
+> -                    unlock_user(target_pfd, arg1, 0);
+> -                    return -TARGET_EFAULT;
+> -                }
+> +            if (time64
+> +                ? target_to_host_timespec64(timeout_ts, arg3)
+> +                : target_to_host_timespec(timeout_ts, arg3)) {
+> +                ret = -TARGET_EFAULT;
+> +                goto out;
+
+... to unlock(sz=pollfd*nfds). Is that also part of your
+"While at it" comment?
+
+Having one patch for each logical change eases review /
+cherry-pick / backport.
+
+>               }
+>           } else {
+>               timeout_ts = NULL;
+> @@ -1534,8 +1531,7 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>           if (arg4) {
+>               ret = process_sigsuspend_mask(&set, arg4, arg5);
+>               if (ret != 0) {
+> -                unlock_user(target_pfd, arg1, 0);
+
+(Ditto)
+
+> -                return ret;
+> +                goto out;
+>               }
+>           }
+>   
+> @@ -1546,14 +1542,11 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>               finish_sigsuspend_mask(ret);
+>           }
+>           if (!is_error(ret) && arg3) {
+> -            if (time64) {
+> -                if (host_to_target_timespec64(arg3, timeout_ts)) {
+> -                    return -TARGET_EFAULT;
+> -                }
+> -            } else {
+> -                if (host_to_target_timespec(arg3, timeout_ts)) {
+> -                    return -TARGET_EFAULT;
+> -                }
+> +            if (time64
+> +                ? host_to_target_timespec64(arg3, timeout_ts)
+> +                : host_to_target_timespec(arg3, timeout_ts)) {
+> +                ret = -TARGET_EFAULT;
+> +                goto out;
+>               }
+>           }
+>       } else {
+> @@ -1576,6 +1569,8 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>               target_pfd[i].revents = tswap16(pfd[i].revents);
+>           }
+>       }
+> +out:
+> +    g_free(pfd);
+>       unlock_user(target_pfd, arg1, sizeof(struct target_pollfd) * nfds);
+>       return ret;
+>   }
+
 
