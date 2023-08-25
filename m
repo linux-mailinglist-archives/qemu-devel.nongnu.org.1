@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCE578881F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 796EA788820
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Aug 2023 15:11:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZWYk-0001YN-Cr; Fri, 25 Aug 2023 09:09:06 -0400
+	id 1qZWYp-0001Ze-A1; Fri, 25 Aug 2023 09:09:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWYi-0001Xx-I1
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:04 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ id 1qZWYn-0001Z8-Sr
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:09 -0400
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qZWYf-0006tA-Rm
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:04 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1c8d895a602so532202fac.2
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:09:01 -0700 (PDT)
+ id 1qZWYi-0006tR-IP
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 09:09:09 -0400
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6bd0c953fd9so642316a34.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 06:09:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692968940; x=1693573740;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rvYRF8za4flh/G+InmdjRqkOWx+mIw76qZndTZ8FOWw=;
- b=lC6l+1rc00VJLoccQjQ15AXsFZhdEoU85rZoHSdb7T2FTBZdw2DrQF3Hua4V4y3Q8k
- zCh9R0A0VWf2y8OdFTFXUR77W+/1j/0XLuY6Taw6y5NS6Qr+ZirgF3xCMcNMREquAoLf
- dq0fB2wlug0uI51qvxzhG7+AxVS2Gdk+e9+rGOGH1lEn72z8xIIVQHp55oGRJ5sbCXUw
- xY5r+dRb066xbxX/1IrYSyCL148doy3OPOvjUN1nCU6zAXA8fXPfNm4Mi1mV+I1Q9lUd
- xu+Ho7cGKGVYczPaKkK6QgeimsPulwQTqeypJ2Tw6VRq/YrEl/bI1OXqLlT9iuXnvNWB
- u+Vg==
+ d=ventanamicro.com; s=google; t=1692968943; x=1693573743;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JxG+3uZr4lIffQUAHe0FsNGnmKkbATOR7wE+qpGh0vY=;
+ b=Rpi8CxkpPjAhkjcsWsicWzXSksv2cYrkx15xKycm5KkvoIP3CxNfQzHGDOzgefEdIb
+ R2haAXgreE4DensLt92Nk1E55FJSSVY/JHpBWgJOoQpHPPuo2SAkCFZ1XchWMrWulJIN
+ jnxMUUTau3Qy44I2FTHfGXzJp2eRhEGj4++pVht4vLAgZkjPuNecLM7MeYqpWdOQsLcA
+ 4RH2i3UVdwk1fnQoL0dQ5om8bdB6m4dAVqy74FpFJO1w1oHOuRJOSPwOTHE5iinch/fz
+ iNN+hAnmJmr+baVDvZFRPae/2oUkNzXew7vq83LMcphZMP8zXo/LEYNouIr2Mqg+In0L
+ 9fhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692968940; x=1693573740;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rvYRF8za4flh/G+InmdjRqkOWx+mIw76qZndTZ8FOWw=;
- b=IFn2MGmLhHKuSft3ci8LIva6s1Z7MF84s0JN9z8zJ+J3MeOwDp4hpgnsqrXMkk1XFv
- pVB28GPkM9lL7an/0tZmi2P9vdTl6IA1AACUde5jIvThQFvmRa0oe12NN73CnJa/Flxe
- QJmn1FCN1KlOaaQBRRo0qtpusm+POkoN9dGReaoRjS+38hVbPwtz/XoFUa2lx/RiTTku
- NXmxaOwQgH63zq7QfjAg3Me2pJaCqX65L7Vqx52dPTX0kC9n1aOjs76Wc+zeczujD1N0
- nVrH791my/sIM0539RAieZ2F//E0jB9NFLaUlml6iznDvp8q73iUgKhM2aVIOi2oilSv
- 18yA==
-X-Gm-Message-State: AOJu0Yw4UxoU+e7E95ft74td1RxHxuN3aglmRsD1CaNUVRYER00Wqq/O
- VWEAXYFgFW1IWMy6NyLI8CdMm9chyjku1SjoL3U=
-X-Google-Smtp-Source: AGHT+IGG78IN1RfPh0cA/IgNp9Ou6rGUNvPMEYUwB/zA7GSdE6l+UBdjUuWubqjIYToOc1RSLiM4PA==
-X-Received: by 2002:a05:6871:586:b0:1be:e925:3dce with SMTP id
- u6-20020a056871058600b001bee9253dcemr3169843oan.7.1692968940119; 
- Fri, 25 Aug 2023 06:09:00 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692968943; x=1693573743;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JxG+3uZr4lIffQUAHe0FsNGnmKkbATOR7wE+qpGh0vY=;
+ b=lQVU5tjCTexnOg4pGyRoSKAstx6ebdNZGPE1acJB0EguxsYNM1bh/WdkY4AkVuBste
+ 7cMLbduvQbhITtjYo6+3OBuARXhKpEGwI3UOXGOHSj1foiH4+laMWUx8g1XlZolPzx2r
+ 4/c+CgLXcA1BY/Kmun7fFbvJrt+xSEcqXcgY4S+wzfXIJ+7eCoUBYXsSmvglrxVoWrwy
+ EuJu7F/heKLfTgd9KOiQNAzi95YEdmnAplSQAKd8s7k7tin4OGsuytkBJTFJKn8jom1l
+ CGdpPMYT3ZtpkRsDSBghoHYPV2qBA5kaNW1vLAN6Ku+pxxleGS5fS9vGWqIt1XZS8K/j
+ Xwdg==
+X-Gm-Message-State: AOJu0YyyJF4whw4nuFWP5oUWRCqtbftTwqSa9GKezR0SHT3HPdJZyZ/N
+ wrLmk+iOhCVTYCmpp0nNJn2gOZjYzStrptiPnmo=
+X-Google-Smtp-Source: AGHT+IFpWqkofSGr+xuIPh+iw9jbX6pJFCWxWxfzpIbC8ezC75RMDiuKtkuCnopJrd9mxM2B1ZrnGQ==
+X-Received: by 2002:a05:6870:8a1e:b0:1c8:c19d:61d2 with SMTP id
+ p30-20020a0568708a1e00b001c8c19d61d2mr3102516oaq.37.1692968943015; 
+ Fri, 25 Aug 2023 06:09:03 -0700 (PDT)
 Received: from grind.. ([179.93.21.19]) by smtp.gmail.com with ESMTPSA id
- ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.08.57
+ ds23-20020a0568705b1700b001c50fb56845sm966189oab.16.2023.08.25.06.09.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Aug 2023 06:08:59 -0700 (PDT)
+ Fri, 25 Aug 2023 06:09:02 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 00/20] riscv: split TCG/KVM accelerators from cpu.c
-Date: Fri, 25 Aug 2023 10:08:33 -0300
-Message-ID: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+Subject: [PATCH 01/20] target/riscv: introduce TCG AccelCPUClass
+Date: Fri, 25 Aug 2023 10:08:34 -0300
+Message-ID: <20230825130853.511782-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,99 +92,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: 20230824221440.484675-1-dbarboza@ventanamicro.com
-("[PATCH RESEND v8 00/20] riscv: 'max' CPU, detect user choice in TCG")
+target/riscv/cpu.c needs to handle all possible accelerators (TCG and
+KVM at this moment) during both init() and realize() time. This forces
+us to resort to a lot of "if tcg" and "if kvm" throughout the code,
+which isn't wrong, but can get cluttered over time. Splitting
+acceleration specific code from cpu.c to its own file will help to
+declutter the existing code and it will also make it easier to support
+KVM/TCG only builds in the future.
 
-Hi,
+We'll start by adding a new subdir called 'tcg' and a new file called
+'tcg-cpu.c'. This file will be used to introduce a new accelerator class
+for TCG acceleration in RISC-V, allowing us to center all TCG exclusive
+code in its file instead of using 'cpu.c' for everything. This design is
+inpired by the work Claudio Fontana did in x86 a few years ago in commit
+f5cc5a5c1 ("i386: split cpu accelerators from cpu.c, using
+AccelCPUClass").
 
-The idea of this work was hinted at during a review [1] where Phil
-mentioned that we should handle TCG specific constraints in
-AccelCPUClass::cpu_realizefn(). While working on that I came across
-the work done in x86 by Claudio Fontana in commit f5cc5a5c1 ("i386:
-split cpu accelerators from cpu.c, using AccelCPUClass"). The design
-implemented here is heavily inspired by Claudio's work.
+To avoid moving too much code at once we'll start by adding the new file
+and TCG AccelCPUClass declaration. The 'class_init' from the accel class
+will init 'tcg_ops', relieving the common riscv_cpu_class_init() from
+doing it.
 
-An AccelCPUClass is an abstraction used by all QEMU accelerators that
-are already streamlined in the init/realize process, doesn't matter if
-we use it or not. Using accel classes allow us to split accel-specific
-code from cpu.c into their own files, making easier to support
-accel-specific builds in the future. It also gives us a template to
-follow when adding new accelerators in the future.
+'riscv_tcg_ops' is being exported from 'cpu.c' for now to avoid having
+to deal with moving code and files around right now. We'll focus on
+decoupling the realize() logic first.
 
-The final goal, not entirely reached with this series, is to have cpu.c
-hosting only common code for all accelerators, in particular the code
-related to extensions support. We should declare extensions in cpu.c
-then go to each accelerator class and do what you want with it. We're
-not there yet due to how we rely on isa_edata_arr[] for both priv-spec
-checks (a tcg only thing) and provide the riscv,isa string (all
-accelerators). Trying to untangle priv-spec and isa_str is a fight for
-another day.
-
-You'll also notice that I didn't move all TCG related files to the 'tcg'
-subdir. The reason is that Phil already did that here [2]:
-
-"[PATCH 00/16] target/riscv: Allow building without TCG (KVM-only so far)"
-
-and I deliberately avoided colliding with what he did. Phil's series focus
-in splitting TCG includes and ifdefs in TCG specific files, while this
-series focus in decoupling accel-speciic logic inside cpu.c.
-
-The only behavior change implemented is in patch 20 where we block
-vendor CPUs from using KVM. Most of the time I'm just juggling code
-around to avoid breaking what we already have while trying to keep
-patches review-sane.
-
-No other behavior changes were intended with this series.
-
-[1] https://lore.kernel.org/qemu-riscv/3b93823c-3d12-0d67-b814-54a3922d027f@linaro.org/
-[2] https://lore.kernel.org/qemu-riscv/20230711121453.59138-1-philmd@linaro.org/
-
-
-Daniel Henrique Barboza (20):
-  target/riscv: introduce TCG AccelCPUClass
-  target/riscv: move riscv_cpu_realize_tcg() to TCG::cpu_realizefn()
-  target/riscv: move riscv_cpu_validate_set_extensions() to tcg-cpu.c
-  target/riscv: move riscv_tcg_ops to tcg-cpu.c
-  target/riscv/cpu.c: add 'user_extension_properties' class prop
-  target/riscv: add 'max_features' CPU flag
-  target/riscv/cpu.c: add .instance_post_init()
-  target/riscv: move 'host' CPU declaration to kvm.c
-  target/riscv/cpu.c: mark extensions arrays as 'const'
-  target/riscv: move riscv_cpu_add_kvm_properties() to kvm.c
-  target/riscv: introduce KVM AccelCPUClass
-  target/riscv: move KVM only files to kvm subdir
-  target/riscv/kvm: refactor kvm_riscv_init_user_properties()
-  target/riscv/kvm: do not use riscv_cpu_add_misa_properties()
-  target/riscv/tcg: introduce tcg_cpu_instance_init()
-  target/riscv/tcg: move riscv_cpu_add_misa_properties() to tcg-cpu.c
-  target/riscv/cpu.c: export isa_edata_arr[]
-  target/riscv/cpu: move priv spec functions to tcg-cpu.c
-  target/riscv: add 'tcg_supported' class property
-  target/riscv: add 'kvm_supported' class property
-
- hw/riscv/virt.c                       |   2 +-
- target/riscv/cpu-qom.h                |   5 +
- target/riscv/cpu.c                    | 999 ++------------------------
- target/riscv/cpu.h                    |  31 +-
- target/riscv/cpu_cfg.h                |   1 +
- target/riscv/csr.c                    |   1 +
- target/riscv/{kvm.c => kvm/kvm-cpu.c} | 153 +++-
- target/riscv/{ => kvm}/kvm-stub.c     |   0
- target/riscv/{ => kvm}/kvm_riscv.h    |   1 -
- target/riscv/kvm/meson.build          |   2 +
- target/riscv/meson.build              |   4 +-
- target/riscv/tcg/meson.build          |   2 +
- target/riscv/tcg/tcg-cpu.c            | 864 ++++++++++++++++++++++
- target/riscv/tcg/tcg-cpu.h            |  28 +
- 14 files changed, 1160 insertions(+), 933 deletions(-)
- rename target/riscv/{kvm.c => kvm/kvm-cpu.c} (89%)
- rename target/riscv/{ => kvm}/kvm-stub.c (100%)
- rename target/riscv/{ => kvm}/kvm_riscv.h (95%)
- create mode 100644 target/riscv/kvm/meson.build
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c           |  5 +---
+ target/riscv/cpu.h           |  4 +++
+ target/riscv/meson.build     |  2 ++
+ target/riscv/tcg/meson.build |  2 ++
+ target/riscv/tcg/tcg-cpu.c   | 57 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 66 insertions(+), 4 deletions(-)
  create mode 100644 target/riscv/tcg/meson.build
  create mode 100644 target/riscv/tcg/tcg-cpu.c
- create mode 100644 target/riscv/tcg/tcg-cpu.h
 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 21ebdbf084..38dcbc4dd2 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2275,9 +2275,7 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
+ };
+ #endif
+ 
+-#include "hw/core/tcg-cpu-ops.h"
+-
+-static const struct TCGCPUOps riscv_tcg_ops = {
++const struct TCGCPUOps riscv_tcg_ops = {
+     .initialize = riscv_translate_init,
+     .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
+     .restore_state_to_opc = riscv_restore_state_to_opc,
+@@ -2436,7 +2434,6 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+ #endif
+     cc->gdb_arch_name = riscv_gdb_arch_name;
+     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+-    cc->tcg_ops = &riscv_tcg_ops;
+ 
+     object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
+                               cpu_set_mvendorid, NULL, NULL);
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 577abcd724..b84b62f84e 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -707,6 +707,10 @@ enum riscv_pmu_event_idx {
+     RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS = 0x10021,
+ };
+ 
++/* Export tcg_ops until we move everything to tcg/tcg-cpu.c */
++#include "hw/core/tcg-cpu-ops.h"
++extern const struct TCGCPUOps riscv_tcg_ops;
++
+ /* CSR function table */
+ extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
+ 
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index 660078bda1..f0486183fa 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -38,5 +38,7 @@ riscv_system_ss.add(files(
+   'riscv-qmp-cmds.c',
+ ))
+ 
++subdir('tcg')
++
+ target_arch += {'riscv': riscv_ss}
+ target_softmmu_arch += {'riscv': riscv_system_ss}
+diff --git a/target/riscv/tcg/meson.build b/target/riscv/tcg/meson.build
+new file mode 100644
+index 0000000000..061df3d74a
+--- /dev/null
++++ b/target/riscv/tcg/meson.build
+@@ -0,0 +1,2 @@
++riscv_ss.add(when: 'CONFIG_TCG', if_true: files(
++  'tcg-cpu.c'))
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+new file mode 100644
+index 0000000000..1ad27a26aa
+--- /dev/null
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -0,0 +1,57 @@
++/*
++ * riscv TCG cpu class initialization
++ *
++ * Copyright (c) 2023 Ventana Micro Systems Inc.
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "qemu/accel.h"
++#include "hw/core/accel-cpu.h"
++
++static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
++{
++    /*
++     * All cpus use the same set of operations.
++     * riscv_tcg_ops is being imported from cpu.c for now.
++     */
++    cc->tcg_ops = &riscv_tcg_ops;
++}
++
++static void tcg_cpu_class_init(CPUClass *cc)
++{
++    cc->init_accel_cpu = tcg_cpu_init_ops;
++}
++
++static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
++{
++    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
++
++    acc->cpu_class_init = tcg_cpu_class_init;
++}
++
++static const TypeInfo tcg_cpu_accel_type_info = {
++    .name = ACCEL_CPU_NAME("tcg"),
++
++    .parent = TYPE_ACCEL_CPU,
++    .class_init = tcg_cpu_accel_class_init,
++    .abstract = true,
++};
++static void tcg_cpu_accel_register_types(void)
++{
++    type_register_static(&tcg_cpu_accel_type_info);
++}
++type_init(tcg_cpu_accel_register_types);
 -- 
 2.41.0
 
