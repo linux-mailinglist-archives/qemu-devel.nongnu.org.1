@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081F278931A
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Aug 2023 03:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA7378932D
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Aug 2023 03:52:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZiC9-0006Bz-IT; Fri, 25 Aug 2023 21:34:33 -0400
+	id 1qZiS7-0008M3-2X; Fri, 25 Aug 2023 21:51:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qZiC7-0006Bq-CA
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 21:34:31 -0400
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ id 1qZiS5-0008Lh-BJ
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 21:51:01 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qZiC4-0005T5-UA
- for qemu-devel@nongnu.org; Fri, 25 Aug 2023 21:34:31 -0400
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3a85b9c6ccdso1052649b6e.0
- for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 18:34:28 -0700 (PDT)
+ id 1qZiS2-00080t-V3
+ for qemu-devel@nongnu.org; Fri, 25 Aug 2023 21:51:01 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3a7d7df4e67so1035335b6e.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Aug 2023 18:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693013667; x=1693618467;
+ d=linaro.org; s=google; t=1693014657; x=1693619457;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0w76JrlVJ42SvfN1kPLXvToGhTOK+RcUVlNByr2I300=;
- b=hj0oetRit8MrGlLdUeHmXqinGtPvF6d9/0L7+59RJkZtAQA2qd5vp5C4fSXIh+xjEC
- AcjkprwWEXf0oHdHW0/s3vjUOBEzUIE/JSV/yxpEykD2zq6cFA7ThLcnBFzDhEwS1mM7
- sGQYtg14HQbgeyhBXYE4Se+bQOqr0M3Os5sGMX0hvG7vSEe0BB5dsROFO6cNMSt1DMLn
- 3msMN/+SIgLPX1+QjdPvSxGUunX6hvHvSYpxh0JugMwpP3SOl2uD7zUZOyEiCpiJMvzk
- FW3NfA4rBFYdxtopIZWEfrt/FBRPynzkfT4uCTklsWjZ1EOYOhlnSRAGLLVxxVZyAGIM
- 8blg==
+ bh=a6lr2dK5J7u6x1UPTAE7v1Frb33O5qPAAyMX6MursW8=;
+ b=oqpgPehQDSsXFxPTjG7cJA44odPC1vnSsCSwr12m5Ae/CQ4jwKOdaapogVZTfE6AIx
+ DLMm7MkKQig/7Q6WJDVuSAbGAKJreMMj3g1leBlAEtOCXM46fiVEf2Cu3bmDoU38sDDU
+ PaqJsQvDeB+reD1/S3lvxi8ai8IZvOFt6N+XYz5kY6R7UcboA0D0PfoZPYQo22qTXIEw
+ YdontCjEsYov1SAfbdgeQiSbOFfvv5n7bDOJNUV9DzEf8WRaVkrcFLR04ee3J+76emXp
+ Z51Qe6uAI1zSi8vJFJHAQtVQR37/n5lvsMGsf7A1eClCCVCtRfVXdlGqn1WHJmO50+M4
+ UwAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693013667; x=1693618467;
+ d=1e100.net; s=20221208; t=1693014657; x=1693619457;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0w76JrlVJ42SvfN1kPLXvToGhTOK+RcUVlNByr2I300=;
- b=Zr9hPpaiwRE0Y+6qmPFjkJQXNr7h3n7G3WzKaRTmZzYnI264DvtnDZ3rM85B9hOb+k
- 5Ssh72dPW1h/SXboBpLSjKwFEh8dH+03R2WYo+ItjT10S5mVUlyuHcpOjwa9n2KcKy8g
- T7ymXQeGgWO09E8UUoSl9o8dc9swNc+8pTcpvjHsukBNfghqZOlncWEpnSnxo/J20ECt
- nJQ6x3lHs3KLd7yh6bJPYX+9Wt3O7z+RIVztLHUqMtrmhOojkx5Q/X6wTO4vrdlJF6Hl
- CdDPpqQT/pkHG7X/YGeRaUFbzujBR+XSB3JCXxncK17EapTBPHsqUZkYhpkwx2hjefym
- gSNg==
-X-Gm-Message-State: AOJu0YwMqsYFKnkeyJpjWgl277oiwRNa3V/IGQCdlHGHikNBVt1pBRm7
- DnkLmmCB+r6rJAmofHcUyTjy4g==
-X-Google-Smtp-Source: AGHT+IGhw4izVzWp7SReWRV0IAxPUsWXZhh09qcOBw4u2hTd7GgJZAd/xbzTZFKtQGd4FuN04uGjyA==
-X-Received: by 2002:a05:6808:1a02:b0:3a7:4b9a:43c2 with SMTP id
- bk2-20020a0568081a0200b003a74b9a43c2mr5653191oib.13.1693013667335; 
- Fri, 25 Aug 2023 18:34:27 -0700 (PDT)
+ bh=a6lr2dK5J7u6x1UPTAE7v1Frb33O5qPAAyMX6MursW8=;
+ b=ewO4XHE1+whw2MUoYKTLOjzR/rc83Zgzn1MUagjTBIc/410dJ60AKsY7la7QEi6l6o
+ klBW2PiqDQ7CGRjlkOW1Vb4sZVRK46Jvz6MsC6466wrcX9WTBeqhX6NnOC42PbDCet1P
+ EUDvSyYzgZI52FfFmeMzARqT0XZcxRXfaVBYWO0Ou//JI4hNyu6+ezkqpegC4tI7cIWD
+ vJGMnd2xuxQgjTjhxU3mJezb1JrDJQ/DP4heFT7wi5zxeSndi5OZqWUK1KX0T9/Z6Plq
+ 4uxWvh+L2HiqaTrBx/S8RAGJHeRFbONmqH6URwJj2xltlSw5kag9cwazBNepxERuOpZX
+ zBIA==
+X-Gm-Message-State: AOJu0YwXJ2s3/btXafj/Ti4Gi+T3TCO2SYb+virg+IEtHx9f6wXJPZgh
+ cskagCR+6Bd12eclRgZzhxmrig==
+X-Google-Smtp-Source: AGHT+IED/eqBQCSwIaImDghheaGPGNHnycnhBVE/Pk55PJe8PS5yC6LFMps54kO50jIqw+gYsh9xcA==
+X-Received: by 2002:a05:6808:140b:b0:3a7:459d:61bf with SMTP id
+ w11-20020a056808140b00b003a7459d61bfmr5756251oiv.0.1693014657456; 
+ Fri, 25 Aug 2023 18:50:57 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- e6-20020aa78c46000000b0063f0068cf6csm2180394pfd.198.2023.08.25.18.34.26
+ i16-20020aa787d0000000b00682c864f35bsm2273611pfo.140.2023.08.25.18.50.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Aug 2023 18:34:26 -0700 (PDT)
-Message-ID: <11a7fa7b-aa2b-65e1-b2b2-25b0eefee012@linaro.org>
-Date: Fri, 25 Aug 2023 18:34:24 -0700
+ Fri, 25 Aug 2023 18:50:56 -0700 (PDT)
+Message-ID: <7a5adff2-cf6e-4c3a-95dc-787753258757@linaro.org>
+Date: Fri, 25 Aug 2023 18:50:54 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC v5 02/10] build: Implement libnative library and the build
- machinery for libnative
+Subject: Re: [RFC v5 04/10] linux-user: Implement native-bypass option support
 Content-Language: en-US
 To: Yeqi Fu <fufuyqqqqqq@gmail.com>, alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Riku Voipio <riku.voipio@iki.fi>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
 References: <20230825102009.1754699-1-fufuyqqqqqq@gmail.com>
- <20230825102009.1754699-3-fufuyqqqqqq@gmail.com>
+ <20230825102009.1754699-5-fufuyqqqqqq@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230825102009.1754699-3-fufuyqqqqqq@gmail.com>
+In-Reply-To: <20230825102009.1754699-5-fufuyqqqqqq@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x236.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
 X-Spam_bar: ---
@@ -98,160 +96,58 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/25/23 03:20, Yeqi Fu wrote:
-> This commit implements a shared library, where native functions are
-> rewritten as special instructions. At runtime, user programs load
-> the shared library, and special instructions are executed when
-> native functions are called.
-> 
-> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
-...
-> diff --git a/common-user/native/libnative.S b/common-user/native/libnative.S
-> new file mode 100644
-> index 0000000000..3692eaa3cf
-> --- /dev/null
-> +++ b/common-user/native/libnative.S
-> @@ -0,0 +1,69 @@
-> +#if defined(i386) || defined(x86_64)
-> +/*
-> + * An unused instruction is utilized to mark a native call.
-> + */
-> +#define __SPECIAL_INSTR .byte 0x0f, 0xff;
-> +#define __RET_INSTR ret;
+> +#if defined(CONFIG_NATIVE_CALL)
+> +    /* Set the library for native bypass  */
+> +    if (native_lib_path) {
+> +        if (g_file_test(native_lib_path, G_FILE_TEST_IS_REGULAR)) {
+> +            GString *lib = g_string_new(native_lib_path);
+> +            lib = g_string_prepend(lib, "LD_PRELOAD=");
+> +            if (envlist_appendenv(envlist, g_string_free(lib, false), ":")) {
+> +                fprintf(stderr,
+> +                    "failed to append the native library to environment.\n");
+> +                exit(EXIT_FAILURE);
+> +            }
+> +        } else {
+> +            fprintf(stderr, "native library %s does not exist.\n",
+> +                    native_lib_path);
+> +            exit(EXIT_FAILURE);
+> +        }
+> +    }
 > +#endif
-> +
-> +#if defined(arm) || defined(aarch64)
-> +/*
-> + * HLT is an invalid instruction for userspace programs,
-> + * and is used to mark a native call.
-> + */
-> +#define __SPECIAL_INSTR hlt 0xffff;
-> +#if defined(aarch64)
-> +#define __RET_INSTR ret;
-> +#else
-> +#define __RET_INSTR bx lr;
-> +#endif
-> +#endif
-> +
-> +
-> +#if defined(mips) || defined(mips64)
-> +/*
-> + * The syscall instruction contains 20 unused bits, which are typically
-> + * set to 0. These bits can be used to store non-zero data,
-> + * distinguishing them from a regular syscall instruction.
-> + */
-> +#define __SPECIAL_INSTR syscall 0xffff;
-> +#define __RET_INSTR jr $ra;
-> +#endif
-> +
-> +/* Symbols of native functions */
-> +.section .data
-> +sym_memset:  .asciz "memset"
-> +sym_memcpy:  .asciz "memcpy"
-> +sym_strncpy:  .asciz "strncpy"
-> +sym_memcmp:  .asciz "memcmp"
-> +sym_strncmp:  .asciz "strncmp"
-> +sym_strcpy:  .asciz "strcpy"
-> +sym_strcat:  .asciz "strcat"
-> +sym_strcmp:  .asciz "strcmp"
-> +
-> +.macro define_function name
-> +\name:
-> +#if defined(x86_64) || defined(aarch64)
-> +    __SPECIAL_INSTR
-> +    .quad sym_\name
-> +    __RET_INSTR
-> +#elif defined(mips64)
-> +.align 4
-> +    __SPECIAL_INSTR
-> +    .quad sym_\name
-> +    __RET_INSTR
-> +#elif defined(i386) || defined(mips) || defined(arm)
-> +    __SPECIAL_INSTR
-> +    .long sym_\name
-> +    __RET_INSTR
-> +#endif
-> +.endm
-> +
-> +define_function memcpy
-> +define_function strncpy
-> +define_function memset
-> +define_function memcmp
-> +define_function strncmp
-> +define_function strcpy
-> +define_function strcat
-> +define_function strcmp
 
-This cannot possibly work, since none of the symbols are marked .globl, and are therefore 
-not exported from your libnative.so.
+Here you append to the existing LD_PRELOAD.
 
-Furthermore, you placed your strings in .data, but then failed to change back to .text, so 
-none of the instructions are in an executable load segment.
+> +    /*
+> +     * An error may occur when executing execv, stating that the
+> +     * shared library from LD_PRELOAD cannot be preloaded on a
+> +     * different arch. So, we find LD_PRELOAD and remove it from
+> +     * envp before executing the execv.
+> +     */
+> +    if (native_bypass_enabled()) {
+> +        i = 0;
+> +        while (envp[i] != NULL) {
+> +            if (strncmp(envp[i], "LD_PRELOAD=", 11) == 0) {
+> +                for (int j = i; envp[j] != NULL; j++) {
+> +                    envp[j] = envp[j + 1];
+> +                }
+> +            } else {
+> +                i++;
+> +            }
+> +        }
+> +    }
 
-I conclude that your testing succeeded only because no library calls were replaced.
-This is not sufficient testing.
+Here you simply remove LD_PRELOAD entirely.
+At most you should only remove libnative.so.
 
-In review of previous versions, I have mentioned that the x86 UD0 instruction has more 
-bytes than simply 0x0f 0xff -- at minimum 3 -- and moreover can be used in the assembler 
-to produce pc-relative values.
+I'm not at all sure that you should be modifying the target environment at all.  It's ok 
+for simple testing, but it is definitely error prone.  There are a couple of different 
+solutions:
 
-We can clean up the assembly as follows.
+(1) Dynamically modify /etc/ld.so.preload, similar to how we handle various /proc files.
+
+(2) Merge libnative.so with vdso.so (and select one of two images depending on bypass 
+enabled).
 
 
 r~
-
-
------
-
-
-.macro special_instr sym
-#if defined(__i386__)
-         ud0     \sym-1f, %eax; 1:
-#elif defined(__x86_64__)
-         ud0     \sym(%rip), %eax
-#elif defined(__arm__) || defined(__aarch64__)
-         hlt     0xffff
-1:      .word   \sym - 1b
-#elif defined(__mips__)
-         syscall 0xffff
-1:      .word   \sym - 1b
-#else
-# error
-#endif
-.endm
-
-.macro ret_instr
-#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
-         ret
-#elif defined(__arm__)
-         bx	lr
-#elif defined(__mips__)
-         jr	$ra
-#else
-# error
-#endif
-.endm
-
-/* Symbols of native functions */
-
-.macro define_function name
-         .text
-\name:
-         special_instr 9f
-         ret_instr
-         .globl \name
-         .type \name, %function
-         .size \name, . - \name
-
-         .section .rodata
-9:      .asciz  "\name"
-.endm
-
-define_function memcmp
-define_function memcpy
-define_function memset
-define_function strcat
-define_function strcmp
-define_function strcpy
-define_function strncmp
-define_function strncpy
 
