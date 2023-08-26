@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D567897EB
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB757897EA
 	for <lists+qemu-devel@lfdr.de>; Sat, 26 Aug 2023 18:04:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZvkr-0006Xb-Cz; Sat, 26 Aug 2023 12:03:17 -0400
+	id 1qZvkt-0006YX-Ll; Sat, 26 Aug 2023 12:03:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qZvko-0006XI-L7
- for qemu-devel@nongnu.org; Sat, 26 Aug 2023 12:03:14 -0400
+ id 1qZvkq-0006Xa-CO
+ for qemu-devel@nongnu.org; Sat, 26 Aug 2023 12:03:16 -0400
 Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qZvkl-0007t3-VG
- for qemu-devel@nongnu.org; Sat, 26 Aug 2023 12:03:14 -0400
+ id 1qZvko-0007uh-0F
+ for qemu-devel@nongnu.org; Sat, 26 Aug 2023 12:03:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=PRwHxW2E/2oEnJkXNZC1X0+LsWKBChTR9cxnYbjXc2k=; b=shgj00TYq3nx+2VoLNI3D3y22u
- G+YpArwqpQZCAdKrViZkhRRjWRLH4XTzNdgXEPciXL4OILE4E137BQ8m8JukRNuln8mU1V4McNCyy
- UpFdfqKpal6ZDz7ATTDKheD4m+usFwLpnaiu3uWxPwD7PGwD0bDbYuTx0/B9a+XqR9fk=;
+ bh=wgJZqoNXP65Pw0SqzMzpebmwwenMTo1yITNH8dvQpTk=; b=iLw3CGcXkKdADl7uXAsoriFFpC
+ A3b6eVbT9g90wjmYYYjJl/yFl+Z/QXOAX5RJDP1FVNTWyu60q5f+RDxm4nGp//wVtYxLSNfQLVlo5
+ wgb+NgPOqJ2IF5ZY/9xiwMzDAqrFG25E8BWg8S8IlbWGu0Jti85twn04L70ZPeo+DCvc=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: anton.kochkov@proton.me,
 	kbastian@mail.uni-paderborn.de
-Subject: [PATCH 06/10] target/tricore: Implement hptof insn
-Date: Sat, 26 Aug 2023 18:02:38 +0200
-Message-ID: <20230826160242.312052-7-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 07/10] target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
+Date: Sat, 26 Aug 2023 18:02:39 +0200
+Message-ID: <20230826160242.312052-8-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
 References: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
@@ -70,147 +70,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1667
+we would crash if width was 0 for these insns, as tcg_gen_deposit() is
+undefined for that case. For TriCore, width = 0 is a mov from the src reg
+to the dst reg, so we special case this here.
+
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/fpu_helper.c               | 39 +++++++++++++++++++++++
- target/tricore/helper.h                   |  1 +
- target/tricore/translate.c                |  7 ++++
- target/tricore/tricore-opcodes.h          |  1 +
- tests/tcg/tricore/Makefile.softmmu-target |  1 +
- tests/tcg/tricore/asm/test_hptof.S        | 12 +++++++
- 6 files changed, 61 insertions(+)
- create mode 100644 tests/tcg/tricore/asm/test_hptof.S
+ target/tricore/translate.c          | 10 ++++++++--
+ tests/tcg/tricore/asm/macros.h      | 15 +++++++++++++++
+ tests/tcg/tricore/asm/test_insert.S |  9 +++++++++
+ 3 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/target/tricore/fpu_helper.c b/target/tricore/fpu_helper.c
-index 3db2341ac0..b91f872396 100644
---- a/target/tricore/fpu_helper.c
-+++ b/target/tricore/fpu_helper.c
-@@ -29,6 +29,8 @@
- #define MUL_NAN   0x7fc00002
- #define HP_NEG_INFINITY 0xfc00
- #define HP_POS_INFINITY 0x7c00
-+#define NEG_INFINITY 0xff800000
-+#define POS_INFINITY 0x7f800000
- #define FPU_FS PSW_USB_C
- #define FPU_FI PSW_USB_V
- #define FPU_FV PSW_USB_SV
-@@ -375,6 +377,43 @@ uint32_t helper_ftoi(CPUTriCoreState *env, uint32_t arg)
-     return (uint32_t)result;
- }
- 
-+uint32_t helper_hptof(CPUTriCoreState *env, uint32_t arg)
-+{
-+    float16 f_arg = make_float16(arg);
-+    uint32_t result = 0;
-+    int32_t flags = 0;
-+
-+    if (float16_is_any_nan(f_arg)) {
-+        if (float16_is_signaling_nan(f_arg, &env->fp_status)) {
-+            flags |= float_flag_invalid;
-+        }
-+        result = 0;
-+        result = float32_set_sign(result, f_arg >> 15);
-+        result = deposit32(result, 23, 8, 0xff);
-+        result = deposit32(result, 21, 2, extract32(f_arg, 8, 2));
-+        result = deposit32(result, 0, 8, extract32(f_arg, 0, 8));
-+    } else if (float16_is_infinity(f_arg)) {
-+        if (float16_is_neg(f_arg)) {
-+            result = NEG_INFINITY;
-+        } else {
-+            result = POS_INFINITY;
-+        }
-+    } else {
-+        set_flush_inputs_to_zero(0, &env->fp_status);
-+        result = float16_to_float32(f_arg, true, &env->fp_status);
-+        set_flush_inputs_to_zero(1, &env->fp_status);
-+        flags = f_get_excp_flags(env);
-+    }
-+
-+    if (flags) {
-+        f_update_psw_flags(env, flags);
-+    } else {
-+        env->FPU_FS = 0;
-+    }
-+
-+    return result;
-+}
-+
- uint32_t helper_ftohp(CPUTriCoreState *env, uint32_t arg)
- {
-     float32 f_arg = make_float32(arg);
-diff --git a/target/tricore/helper.h b/target/tricore/helper.h
-index dcc5a492b3..1d97d078b0 100644
---- a/target/tricore/helper.h
-+++ b/target/tricore/helper.h
-@@ -112,6 +112,7 @@ DEF_HELPER_3(fcmp, i32, env, i32, i32)
- DEF_HELPER_2(qseed, i32, env, i32)
- DEF_HELPER_2(ftoi, i32, env, i32)
- DEF_HELPER_2(ftohp, i32, env, i32)
-+DEF_HELPER_2(hptof, i32, env, i32)
- DEF_HELPER_2(itof, i32, env, i32)
- DEF_HELPER_2(utof, i32, env, i32)
- DEF_HELPER_2(ftoiz, i32, env, i32)
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index d94c273f89..4400d2c3cb 100644
+index 4400d2c3cb..d13f85c03a 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -6271,6 +6271,13 @@ static void decode_rr_divide(DisasContext *ctx)
-             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+@@ -5317,8 +5317,11 @@ static void decode_rcpw_insert(DisasContext *ctx)
          }
          break;
-+   case OPC2_32_RR_HPTOF:
-+        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            gen_helper_hptof(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-+        break;
-     case OPC2_32_RR_CMP_F:
-         gen_helper_fcmp(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1], cpu_gpr_d[r2]);
+     case OPC2_32_RCPW_INSERT:
++        /* tcg_gen_deposit_tl() does not handle the case of width = 0 */
++        if (width == 0) {
++            tcg_gen_mov_tl(cpu_gpr_d[r2], cpu_gpr_d[r1]);
+         /* if pos + width > 32 undefined result */
+-        if (pos + width <= 32) {
++        } else if (pos + width <= 32) {
+             temp = tcg_constant_i32(const4);
+             tcg_gen_deposit_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], temp, pos, width);
+         }
+@@ -6575,7 +6578,10 @@ static void decode_rrpw_extract_insert(DisasContext *ctx)
+ 
          break;
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index 29e655a667..60d2402b6e 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -1153,6 +1153,7 @@ enum {
-     OPC2_32_RR_CMP_F                             = 0x00,
-     OPC2_32_RR_FTOIZ                             = 0x13,
-     OPC2_32_RR_FTOHP                             = 0x25, /* 1.6.2 only */
-+    OPC2_32_RR_HPTOF                             = 0x24, /* 1.6.2 only */
-     OPC2_32_RR_FTOQ31                            = 0x11,
-     OPC2_32_RR_FTOQ31Z                           = 0x18,
-     OPC2_32_RR_FTOU                              = 0x12,
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index f4a27a83e4..afcf41a977 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -17,6 +17,7 @@ TESTS += test_fmul.asm.tst
- TESTS += test_ftohp.asm.tst
- TESTS += test_ftoi.asm.tst
- TESTS += test_ftou.asm.tst
-+TESTS += test_hptof.asm.tst
- TESTS += test_imask.asm.tst
- TESTS += test_insert.asm.tst
- TESTS += test_ld_bu.asm.tst
-diff --git a/tests/tcg/tricore/asm/test_hptof.S b/tests/tcg/tricore/asm/test_hptof.S
-new file mode 100644
-index 0000000000..8adc5e5273
---- /dev/null
-+++ b/tests/tcg/tricore/asm/test_hptof.S
-@@ -0,0 +1,12 @@
-+#include "macros.h"
-+.text
-+.global _start
-+_start:
-+    TEST_D_D(hptof, 1, 0xba190000, 0xcc0e90c8)
-+    TEST_D_D(hptof, 2, 0x3eaea000, 0x8be23575)
-+    TEST_D_D(hptof, 3, 0xc33b8000, 0xcc48d9dc)
-+    TEST_D_D(hptof, 4, 0x43e2a000, 0xaef95f15)
-+    TEST_D_D(hptof, 5, 0x3d55e000, 0x04932aaf)
+     case OPC2_32_RRPW_INSERT:
+-        if (pos + width <= 32) {
++        /* tcg_gen_deposit_tl() does not handle the case of width = 0 */
++        if (width == 0) {
++            tcg_gen_mov_tl(cpu_gpr_d[r3], cpu_gpr_d[r1]);
++        } else if (pos + width <= 32) {
+             tcg_gen_deposit_tl(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2],
+                                pos, width);
+         }
+diff --git a/tests/tcg/tricore/asm/macros.h b/tests/tcg/tricore/asm/macros.h
+index b5087b5c97..51f6191ef2 100644
+--- a/tests/tcg/tricore/asm/macros.h
++++ b/tests/tcg/tricore/asm/macros.h
+@@ -161,6 +161,21 @@ test_ ## num:                                                    \
+     insn DREG_CALC_RESULT, DREG_RS1, imm1, DREG_RS2, imm2;   \
+     )
+ 
++#define TEST_D_DDII(insn, num, result, rs1, rs2, imm1, imm2) \
++    TEST_CASE(num, DREG_CALC_RESULT, result,                 \
++    LI(DREG_RS1, rs1);                                       \
++    LI(DREG_RS2, rs2);                                       \
++    rstv;                                                    \
++    insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2, imm1, imm2;   \
++    )
 +
-+    TEST_PASSFAIL
++#define TEST_D_DIII(insn, num, result, rs1, imm1, imm2, imm3)\
++    TEST_CASE(num, DREG_CALC_RESULT, result,                 \
++    LI(DREG_RS1, rs1);                                       \
++    rstv;                                                    \
++    insn DREG_CALC_RESULT, DREG_RS1, imm1, imm2, imm3;       \
++    )
 +
+ #define TEST_E_ED(insn, num, res_hi, res_lo, rs1_hi, rs1_lo, rs2) \
+     TEST_CASE_E(num, res_lo, res_hi,                              \
+     LI(EREG_RS1_LO, rs1_lo);                                      \
+diff --git a/tests/tcg/tricore/asm/test_insert.S b/tests/tcg/tricore/asm/test_insert.S
+index d5fd2237e1..3978810121 100644
+--- a/tests/tcg/tricore/asm/test_insert.S
++++ b/tests/tcg/tricore/asm/test_insert.S
+@@ -6,4 +6,13 @@ _start:
+ #                 |     |      |            |       |     |    |
+     TEST_D_DIDI(insert, 1, 0x7fffffff, 0xffffffff, 0xa, 0x10, 0x8)
+ 
++#                insn num    result        rs1    imm1   imm2 imm3
++#                 |     |      |            |       |     |    |
++    TEST_D_DIII(insert, 2, 0xd38fe370, 0xd38fe370, 0x4, 0x4 , 0x0)
++    TEST_D_DIII(insert, 3, 0xd38fe374, 0xd38fe370, 0x4, 0x0 , 0x4)
++
++#                insn  num   result       rs1         rs2      pos  width
++#                 |     |      |           |           |        |    |
++    TEST_D_DDII(insert, 4, 0x03c1e53c, 0x03c1e53c, 0x45821385, 0x7 ,0x0)
++
+     TEST_PASSFAIL
 -- 
 2.41.0
 
