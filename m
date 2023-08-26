@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7A17897F4
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Aug 2023 18:06:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CD27897F2
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Aug 2023 18:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZvkm-0006W5-Iz; Sat, 26 Aug 2023 12:03:12 -0400
+	id 1qZvkn-0006WU-ES; Sat, 26 Aug 2023 12:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qZvkk-0006VK-Ii
+ id 1qZvkk-0006VI-I5
  for qemu-devel@nongnu.org; Sat, 26 Aug 2023 12:03:10 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qZvkf-0007rT-VE
+ id 1qZvkh-0007rl-Q6
  for qemu-devel@nongnu.org; Sat, 26 Aug 2023 12:03:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
@@ -24,17 +24,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=fqQ6rf0nLbQnP69fzZPdcH6SC8B40mrqqWRI1t0W3h0=; b=FhozM6VXUrgmAjVIzpW6Lt8Ex3
- F/KDy50y4TWzIrD/wRlYdBzNea1jtj09cmgfT8sRMT/l/zJJM1tC74XS+V2eBInkKjLT/VZ0tKob+
- ujkqUCfqBaLyTHeizjI/TIF2g7rNDWn5C/GO9J8a6TzUZnF1GQa8rtpBj/3R9qQ9ickw=;
+ bh=qGo5GIKJyTWM+SKqkeeYOyVPopfEOeIwORuqgoQ20lM=; b=gezky12lOwKW8dFYoz7oppaaxS
+ QnOJMXEHX/oC6rOOU7k4MGVIYKNuT619xHM529A5zIAd56TZjww//Z7pEgFu0QKVFT93Op+E88SPS
+ zcxWoE0rHrRU5bt12UX9YkO1FNuthMz7rMvZaqhQP1Ggw39MM0kEGKmp3EUfQyxObwE4=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: anton.kochkov@proton.me,
 	kbastian@mail.uni-paderborn.de
-Subject: [PATCH 02/10] target/tricore: Implement CRCN insn
-Date: Sat, 26 Aug 2023 18:02:34 +0200
-Message-ID: <20230826160242.312052-3-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 03/10] target/tricore: Correctly handle FPU RM from PSW
+Date: Sat, 26 Aug 2023 18:02:35 +0200
+Message-ID: <20230826160242.312052-4-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
 References: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
@@ -43,17 +43,19 @@ Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.8.26.155417, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.8.20.602000
+ AntiVirus-Data: 2023.8.26.602000
+X-Sophos-SenderHistory: ip=84.184.52.128, fs=17108995, da=180674847, mc=11,
+ sc=0, hc=11, sp=0, fso=17108995, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Received-SPF: pass client-ip=2001:638:502:c003::14;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,164 +72,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-reported in https://gitlab.com/qemu-project/qemu/-/issues/1667
+when we reconstructed PSW using psw_read(), we were trying to clear the
+cached USB bits out of env->PSW. The mask was wrong and we would clear
+PSW.RM as well.
+
+when we write the PSW using psw_write() we update the rounding modes in
+env->fp_status for softfloat. The order of bits used by TriCore is not
+the one used by softfloat.
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/helper.h                   |  1 +
- target/tricore/op_helper.c                | 66 +++++++++++++++++++++++
- target/tricore/translate.c                |  6 +++
- target/tricore/tricore-opcodes.h          |  1 +
- tests/tcg/tricore/Makefile.softmmu-target |  1 +
- tests/tcg/tricore/asm/test_crcn.S         |  9 ++++
- 6 files changed, 84 insertions(+)
- create mode 100644 tests/tcg/tricore/asm/test_crcn.S
+ target/tricore/helper.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/target/tricore/helper.h b/target/tricore/helper.h
-index 31d71eac7a..190645413a 100644
---- a/target/tricore/helper.h
-+++ b/target/tricore/helper.h
-@@ -134,6 +134,7 @@ DEF_HELPER_FLAGS_5(mulr_h, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32b, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_be, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_le, TCG_CALL_NO_RWG_SE, i32, i32, i32)
-+DEF_HELPER_FLAGS_3(crcn, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32)
- DEF_HELPER_FLAGS_2(shuffle, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- /* CSA */
- DEF_HELPER_2(call, void, env, i32)
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 89be1ed648..6445fd334b 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2308,6 +2308,72 @@ uint32_t helper_crc32_le(uint32_t arg0, uint32_t arg1)
-     return crc32(arg1, buf, 4);
- }
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index 6d076ac36f..e615c3d6d4 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -120,7 +120,21 @@ void tricore_cpu_list(void)
  
-+static uint32_t crc_div(uint32_t crc_in, uint32_t data, uint32_t gen,
-+                        uint32_t n, uint32_t m)
-+{
-+    uint32_t i;
-+
-+    data = data << n;
-+    data = deposit32(data, m, 32 - m, 0);
-+    for (i = 0; i < m; i++) {
-+
-+        if (crc_in & (1u << (n - 1))) {
-+            crc_in <<= 1;
-+            if (data & (1u << (m - 1))) {
-+                crc_in++;
-+            }
-+            crc_in ^= gen;
-+        } else {
-+            crc_in <<= 1;
-+            if (data & (1u << (m - 1))) {
-+                crc_in++;
-+            }
-+        }
-+        data <<= 1;
-+        data = deposit32(data, m, 32 - m, 0);
-+    }
-+
-+    return crc_in;
-+}
-+
-+uint32_t helper_crcn(uint32_t arg0, uint32_t arg1, uint32_t arg2)
-+{
-+    uint32_t crc_out, crc_in;
-+    uint32_t n = extract32(arg0, 12, 4) + 1;
-+    uint32_t gen = extract32(arg0, 16, n);
-+    uint32_t inv = extract32(arg0, 9, 1);
-+    uint32_t le = extract32(arg0, 8, 1);
-+    uint32_t m = extract32(arg0, 0, 3) + 1;
-+    uint32_t data = extract32(arg1, 0, m);
-+    uint32_t seed = extract32(arg2, 0, n);
-+
-+    if (le == 1) {
-+        if (m == 0) {
-+            data = 0;
-+        } else {
-+            data = revbit32(data) >> (32 - m);
-+        }
-+    }
-+
-+    if (inv == 1) {
-+        seed = ~seed;
-+    }
-+
-+    if (m > n) {
-+        crc_in = (data >> (m - n)) ^ seed;
-+    } else {
-+        crc_in = (data << (n - m)) ^ seed;
-+    }
-+
-+    crc_out = crc_div(crc_in, data, gen, n, m);
-+
-+    if (inv) {
-+        crc_out = ~crc_out;
-+    }
-+
-+    return deposit32(crc_out, n, 32 - n, 0);
-+}
-+
- uint32_t helper_shuffle(uint32_t arg0, uint32_t arg1)
+ void fpu_set_state(CPUTriCoreState *env)
  {
-     uint32_t resb;
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 1947733870..bb7dad75d6 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -6673,6 +6673,12 @@ static void decode_rrr_divide(DisasContext *ctx)
-         gen_helper_pack(cpu_gpr_d[r4], cpu_PSW_C, cpu_gpr_d[r3],
-                         cpu_gpr_d[r3+1], cpu_gpr_d[r1]);
-         break;
-+    case OPC2_32_RRR_CRCN:
-+        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            gen_helper_crcn(cpu_gpr_d[r4], cpu_gpr_d[r1], cpu_gpr_d[r2],
-+                            cpu_gpr_d[r3]);
-+        }
+-    set_float_rounding_mode(env->PSW & MASK_PSW_FPU_RM, &env->fp_status);
++    switch (extract32(env->PSW, 24, 2)) {
++    case 0:
++        set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
 +        break;
-     case OPC2_32_RRR_ADD_F:
-         gen_helper_fadd(cpu_gpr_d[r4], cpu_env, cpu_gpr_d[r1], cpu_gpr_d[r3]);
-         break;
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index bc62b73173..f070571665 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -1247,6 +1247,7 @@ enum {
-     OPC2_32_RRR_SUB_F                            = 0x03,
-     OPC2_32_RRR_MADD_F                           = 0x06,
-     OPC2_32_RRR_MSUB_F                           = 0x07,
-+    OPC2_32_RRR_CRCN                             = 0x01, /* 1.6.2 up */
- };
- /*
-  * RRR1 Format
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index f8fd207921..7a7d73a60c 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -9,6 +9,7 @@ CFLAGS = -mtc162 -c -I$(TESTS_PATH)
- TESTS += test_abs.asm.tst
- TESTS += test_bmerge.asm.tst
- TESTS += test_clz.asm.tst
-+TESTS += test_crcn.asm.tst
- TESTS += test_dextr.asm.tst
- TESTS += test_dvstep.asm.tst
- TESTS += test_fadd.asm.tst
-diff --git a/tests/tcg/tricore/asm/test_crcn.S b/tests/tcg/tricore/asm/test_crcn.S
-new file mode 100644
-index 0000000000..51a22722a3
---- /dev/null
-+++ b/tests/tcg/tricore/asm/test_crcn.S
-@@ -0,0 +1,9 @@
-+#include "macros.h"
-+.text
-+.global _start
-+_start:
-+#                insn num    result   rs1    rs2     rs3
-+#                 |     |      |      |       |       |
-+    TEST_D_DDD(crcn, 1, 0x00002bed, 0x0, 0xa10ddeed, 0x0)
++    case 1:
++        set_float_rounding_mode(float_round_up, &env->fp_status);
++        break;
++    case 2:
++        set_float_rounding_mode(float_round_down, &env->fp_status);
++        break;
++    case 3:
++        set_float_rounding_mode(float_round_to_zero, &env->fp_status);
++        break;
++    }
 +
-+    TEST_PASSFAIL
+     set_flush_inputs_to_zero(1, &env->fp_status);
+     set_flush_to_zero(1, &env->fp_status);
+     set_default_nan_mode(1, &env->fp_status);
+@@ -129,7 +143,7 @@ void fpu_set_state(CPUTriCoreState *env)
+ uint32_t psw_read(CPUTriCoreState *env)
+ {
+     /* clear all USB bits */
+-    env->PSW &= 0x6ffffff;
++    env->PSW &= 0x7ffffff;
+     /* now set them from the cache */
+     env->PSW |= ((env->PSW_USB_C != 0) << 31);
+     env->PSW |= ((env->PSW_USB_V   & (1 << 31))  >> 1);
 -- 
 2.41.0
 
