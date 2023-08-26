@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004EE7899DA
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 01:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E407899DB
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 01:25:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qa2dw-0000Rs-Ic; Sat, 26 Aug 2023 19:24:36 -0400
+	id 1qa2dx-0000Sg-3l; Sat, 26 Aug 2023 19:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qa2dj-0000RE-CV
+ id 1qa2dj-0000RF-CX
  for qemu-devel@nongnu.org; Sat, 26 Aug 2023 19:24:24 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qa2dg-00066E-Iu
- for qemu-devel@nongnu.org; Sat, 26 Aug 2023 19:24:22 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-68c0d4dbc7bso1376050b3a.2
- for <qemu-devel@nongnu.org>; Sat, 26 Aug 2023 16:24:19 -0700 (PDT)
+ id 1qa2dh-00066K-2i
+ for qemu-devel@nongnu.org; Sat, 26 Aug 2023 19:24:23 -0400
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3a7d4030621so1308286b6e.3
+ for <qemu-devel@nongnu.org>; Sat, 26 Aug 2023 16:24:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693092258; x=1693697058;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eehHozumwI8ErsQbkPO4g6WF7bsQGI9CHoJ/kmxPIfU=;
- b=T0DJfAGN0FiE9VdaKYGh+V+RpWLImS9gKb9FY+NKhrozJPzQuan9Jyfh7OI7YYRFe/
- CVYswtbjCRv50OPQLtlx8bViS5f88vofqYOGAsRcBy06npKA5rQjnM2N/OvptHV2zt1w
- aHYdu+3iVrqf9RsPeSXMRKHoT+K5jSJzrQM7B7hBCnqLVgGlXM4B6VLCADQvUsm98cT9
- adiib1fXwERvdCUlwM/tagyyNooTjZUM0sjwmdhxZxBV1wE54yhhub1FNxfI6h5RKAM5
- bD3L4zS0J5EdJ1RFH5MwgydaLH5bqU9Cjhd+SlkDpv4jSS77EvunKBz2fxiN0fxIOYR4
- ppjA==
+ d=linaro.org; s=google; t=1693092260; x=1693697060;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lAdtNsi8ueSm/FaTXl8r9wCJNZiral8qMJdVDfCEFMk=;
+ b=Bj7QkS7hD9216l11I3EMVFauRe9ao8eKIoZ4dWgTJlCkCMGOUHC/l9h7+sA8vtK5RQ
+ dmiumzA6SOYPk0/tBUZ0LIzL09B39pcjq+E8F02QgGGgx7Bmx4eAyaMxlIcn4O/50bd7
+ smVzm0gNsai3hWpV+nj6rQmziJbJ446R/V4J3MBrSgQu/yGaWLyl5qTnY5dD9rFJdeyV
+ RNvOI7q56azjBiA2GAfL5Ytu+DowT1Y3ZUID5Byk9bInJMvZ2gU323K1cGJoQ634LZ2l
+ FNC1CvJwSOJnsl97g42IAMW4xR9xRFNtsVirNRcXnNOG/7/TXPCqbrhe6wr3YfMwUX7X
+ 3BVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693092258; x=1693697058;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eehHozumwI8ErsQbkPO4g6WF7bsQGI9CHoJ/kmxPIfU=;
- b=QsTRlbRa1oPlfKMqUNJNaHdxLdkxbgf0womoDtm3PRXZRlazFU4QRW4joARRt7xImd
- kXnskN7e4fs5WOWhDc2ltfK18/rrJbZG+8Y6RWBan4jWY1Ininc+3BjxlIlnwyWO7AVx
- DdWNcsFv8UM1lcGtpdUNTa67WXXEcbDL7DL8es+vv8NHdt3haf0vUNlgKD392UJpN4Ya
- q+uH9L2qowbaTn0rLxtmq5b3+7FkdZB4QfkADC5COrdJVhFtI8ZvCw/5ZBdtjIWNP2UV
- 6tjqybvGYDPzypaU1u9ib343n+ARRsyUTAZTChdH+L6bC99viSE17Gt2KqFpAMw4pb/y
- SSlQ==
-X-Gm-Message-State: AOJu0YwDXcentNyJNd53CgeXmnVdHk5oL7nPFNW0S4mlNy6V5Sv5utUL
- VVow8JoReV4jPdVCKGBG1rhE4LJxlurLW7Dp7Rk=
-X-Google-Smtp-Source: AGHT+IFQMB/hexX6IcQEBfXdlXLosh61J6T3T9JoNxTYZh2ZM7N++IFnKPDecTYEwCQbDS3plVfnqQ==
-X-Received: by 2002:a05:6a00:39a3:b0:68c:479:b4f with SMTP id
- fi35-20020a056a0039a300b0068c04790b4fmr7064618pfb.33.1693092258328; 
- Sat, 26 Aug 2023 16:24:18 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693092260; x=1693697060;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lAdtNsi8ueSm/FaTXl8r9wCJNZiral8qMJdVDfCEFMk=;
+ b=S+EpyMcJLt8crxkCjKW4cD3NirNWJzLQphiZa+KhoP79qcJJo8Y7pYIqLZzdoBqSEu
+ gv1P0Tj8XWgvKACi+y6Pw5/J84nFJgnPWc2TS7cy7Uj23FdfCT5Ha702QFw/0DaiKEZK
+ Y/W1uvJ3QwGUJD1MDRHTSd1/SlWNUVIe7T67a1gDVgeU8LwhF7UXwzxMx5F0Zk3cQXuA
+ VqoHZ0kgbD8y0BFKzXbVmzXYEJo/ZBGOzz24dbyZTfnYHF3mit4kR+spu8r0sy+yvJ2j
+ KxfEWwzpgwM7KHzZhj0Y8Bqcc3CcwJoBSV3YHHTut5cdnXd7V0Je9HTIFdG84xlr580b
+ Rtdg==
+X-Gm-Message-State: AOJu0YxHsDUSA37sBpCAU9Nrn4YfYbZxbEU3k3IyZjEln9UfmusJSoAH
+ uJosSP8KwEWKLbLQv577YdAmVFxIWwWqRGUTHu4=
+X-Google-Smtp-Source: AGHT+IFGQSDjBPOivnu8wndlmSTUGralGMGA1QVHPYMriPmvBAhlCTbOOp+WMhkyRouPg+kYX3459g==
+X-Received: by 2002:a54:4f03:0:b0:3a8:443b:d87b with SMTP id
+ e3-20020a544f03000000b003a8443bd87bmr7235361oiy.34.1693092259406; 
+ Sat, 26 Aug 2023 16:24:19 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- u9-20020a63a909000000b005633311c70dsm4226472pge.32.2023.08.26.16.24.16
+ u9-20020a63a909000000b005633311c70dsm4226472pge.32.2023.08.26.16.24.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 26 Aug 2023 16:24:17 -0700 (PDT)
+ Sat, 26 Aug 2023 16:24:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	pbonzini@redhat.com,
 	alex.bennee@linaro.org
-Subject: [PATCH 0/3] softmmu: Use async_run_on_cpu in tcg_commit
-Date: Sat, 26 Aug 2023 16:24:12 -0700
-Message-Id: <20230826232415.80233-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/3] softmmu: Assert data in bounds in iotlb_to_section
+Date: Sat, 26 Aug 2023 16:24:13 -0700
+Message-Id: <20230826232415.80233-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230826232415.80233-1-richard.henderson@linaro.org>
+References: <20230826232415.80233-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,31 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This seems like something that simply hasn't been updated for MTTCG,
-since the last functional change appears to be:
+Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ softmmu/physmem.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-commit 79e2b9aeccedbfde762b05da662132c7fda292be
-Author: Paolo Bonzini <pbonzini@redhat.com>
-Date:   Wed Jan 21 12:09:14 2015 +0100
-
-    exec: RCUify AddressSpaceDispatch
-
-and the MTTCG work starts to appear in September 2015.
-
-
-r~
-
-
-Richard Henderson (3):
-  softmmu: Assert data in bounds in iotlb_to_section
-  softmmu: Use async_run_on_cpu in tcg_commit
-  softmmu: Remove cpu_reloading_memory_map as unused
-
- include/exec/cpu-common.h   |  1 -
- accel/tcg/cpu-exec-common.c | 30 ----------------------
- softmmu/physmem.c           | 50 +++++++++++++++++++++++++++----------
- 3 files changed, 37 insertions(+), 44 deletions(-)
-
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 3df73542e1..7597dc1c39 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -2413,9 +2413,15 @@ MemoryRegionSection *iotlb_to_section(CPUState *cpu,
+     int asidx = cpu_asidx_from_attrs(cpu, attrs);
+     CPUAddressSpace *cpuas = &cpu->cpu_ases[asidx];
+     AddressSpaceDispatch *d = qatomic_rcu_read(&cpuas->memory_dispatch);
+-    MemoryRegionSection *sections = d->map.sections;
++    int section_index = index & ~TARGET_PAGE_MASK;
++    MemoryRegionSection *ret;
+ 
+-    return &sections[index & ~TARGET_PAGE_MASK];
++    assert(section_index < d->map.sections_nb);
++    ret = d->map.sections + section_index;
++    assert(ret->mr);
++    assert(ret->mr->ops);
++
++    return ret;
+ }
+ 
+ static void io_mem_init(void)
 -- 
 2.34.1
 
