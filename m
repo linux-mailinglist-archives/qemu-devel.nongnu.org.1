@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2096E789899
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Aug 2023 20:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 004EE7899DA
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 01:25:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qZxhO-0007BW-FU; Sat, 26 Aug 2023 14:07:50 -0400
+	id 1qa2dw-0000Rs-Ic; Sat, 26 Aug 2023 19:24:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qZxhH-0007BE-Ep; Sat, 26 Aug 2023 14:07:44 -0400
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qa2dj-0000RE-CV
+ for qemu-devel@nongnu.org; Sat, 26 Aug 2023 19:24:24 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qZxhE-0005oG-HV; Sat, 26 Aug 2023 14:07:42 -0400
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-5922b96c5fcso23090977b3.0; 
- Sat, 26 Aug 2023 11:07:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qa2dg-00066E-Iu
+ for qemu-devel@nongnu.org; Sat, 26 Aug 2023 19:24:22 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68c0d4dbc7bso1376050b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 26 Aug 2023 16:24:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693073258; x=1693678058;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2DF51CMxuflnJb6K95gZn9dCPXtxU4OCDwBPvvSjzEg=;
- b=E/W7J8rIrf2z0KfrGkXpXl1DQW3XkKEoJpqEBayYF0RDRDsNp59J846zQ56wGCc08H
- L1OHAbR1boh4QpKpai8Mnect+EpSxMZEbOuom/h1a1zxtRgOxLRitFQD3A8qMAyp1qYq
- 8Z+3i1rZUxbxz7E2Vn+eTbelRRoK5QQn6E9xUsVKFfwfqbAxealYLv77s08oD9RkfSO+
- lQY66wybQFKkPf9wuMD+0r0qmqu++Rt5pHJmNg4js0pPa1X5WdJbJ8yx3TSPG9yTD4AN
- 830DM9IiOU7kEXKEm6JowmSjkDmKkNKOMB+3h0k8t4z/vHLuimSzsJe8fnXgGXN46rOV
- dNig==
+ d=linaro.org; s=google; t=1693092258; x=1693697058;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eehHozumwI8ErsQbkPO4g6WF7bsQGI9CHoJ/kmxPIfU=;
+ b=T0DJfAGN0FiE9VdaKYGh+V+RpWLImS9gKb9FY+NKhrozJPzQuan9Jyfh7OI7YYRFe/
+ CVYswtbjCRv50OPQLtlx8bViS5f88vofqYOGAsRcBy06npKA5rQjnM2N/OvptHV2zt1w
+ aHYdu+3iVrqf9RsPeSXMRKHoT+K5jSJzrQM7B7hBCnqLVgGlXM4B6VLCADQvUsm98cT9
+ adiib1fXwERvdCUlwM/tagyyNooTjZUM0sjwmdhxZxBV1wE54yhhub1FNxfI6h5RKAM5
+ bD3L4zS0J5EdJ1RFH5MwgydaLH5bqU9Cjhd+SlkDpv4jSS77EvunKBz2fxiN0fxIOYR4
+ ppjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693073258; x=1693678058;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2DF51CMxuflnJb6K95gZn9dCPXtxU4OCDwBPvvSjzEg=;
- b=alw3tHYcPc34SGRDeHu7BRGINi1YZks+mVKKfAU8f3aLmwzYUt5e3PdldZURB5D91w
- yV60cyBjeS7xE5mM34gHcXZa0XlpwsPhqBXwSLRZD7xtoPkxgLkHNmfQSjJJ4NCJKWxl
- FZrlB/H+EpHA9qOi3RdrQm5E0IQTetFIecQi5KvIz45/4/g5p7Td9IybcVCdqAaTmN+2
- z72Txtt6OKmK/2w7iDcG1f5BZOmquNMp3Hp/wBsRwyTDsVPCnEqKi1lZM9e/2Jxr0Qrz
- bgElUNglrGPfVDx4rom0Upfbu8/JTLoRP0Nn858+AkNqniAfPoHESRZy43unD5e8Msp5
- 0L3g==
-X-Gm-Message-State: AOJu0YzHEhDWyZ5fBkf73jYUvvmiZ0o+5nELdNfx0IE0Z1+g+5Ab8VcG
- LSmBwueo8j06wsP9X1eyZ7MX90rciigMJH1xmHo=
-X-Google-Smtp-Source: AGHT+IGX9U7EhqZRnH1oyCvPDlu83naVpZ185y5rT4XPrXGoo3M/kcSvQl5nFNEnS2YzMRzflXS5tjzjaEz4fkPfm/U=
-X-Received: by 2002:a81:4e86:0:b0:58d:70b4:233a with SMTP id
- c128-20020a814e86000000b0058d70b4233amr25070654ywb.37.1693073258462; Sat, 26
- Aug 2023 11:07:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693092258; x=1693697058;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eehHozumwI8ErsQbkPO4g6WF7bsQGI9CHoJ/kmxPIfU=;
+ b=QsTRlbRa1oPlfKMqUNJNaHdxLdkxbgf0womoDtm3PRXZRlazFU4QRW4joARRt7xImd
+ kXnskN7e4fs5WOWhDc2ltfK18/rrJbZG+8Y6RWBan4jWY1Ininc+3BjxlIlnwyWO7AVx
+ DdWNcsFv8UM1lcGtpdUNTa67WXXEcbDL7DL8es+vv8NHdt3haf0vUNlgKD392UJpN4Ya
+ q+uH9L2qowbaTn0rLxtmq5b3+7FkdZB4QfkADC5COrdJVhFtI8ZvCw/5ZBdtjIWNP2UV
+ 6tjqybvGYDPzypaU1u9ib343n+ARRsyUTAZTChdH+L6bC99viSE17Gt2KqFpAMw4pb/y
+ SSlQ==
+X-Gm-Message-State: AOJu0YwDXcentNyJNd53CgeXmnVdHk5oL7nPFNW0S4mlNy6V5Sv5utUL
+ VVow8JoReV4jPdVCKGBG1rhE4LJxlurLW7Dp7Rk=
+X-Google-Smtp-Source: AGHT+IFQMB/hexX6IcQEBfXdlXLosh61J6T3T9JoNxTYZh2ZM7N++IFnKPDecTYEwCQbDS3plVfnqQ==
+X-Received: by 2002:a05:6a00:39a3:b0:68c:479:b4f with SMTP id
+ fi35-20020a056a0039a300b0068c04790b4fmr7064618pfb.33.1693092258328; 
+ Sat, 26 Aug 2023 16:24:18 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ u9-20020a63a909000000b005633311c70dsm4226472pge.32.2023.08.26.16.24.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 26 Aug 2023 16:24:17 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org,
+	pbonzini@redhat.com,
+	alex.bennee@linaro.org
+Subject: [PATCH 0/3] softmmu: Use async_run_on_cpu in tcg_commit
+Date: Sat, 26 Aug 2023 16:24:12 -0700
+Message-Id: <20230826232415.80233-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <ad7e1294-f19f-5bea-e891-f6adbe323cd5@proxmox.com>
- <CAFn=p-ahLoVd3W2GaFp5EUFq5EOudz+bUkEk5DV+Z07AjHaHtg@mail.gmail.com>
- <d07bdbc1-065e-f8ec-2a44-ab141ffedd41@proxmox.com>
- <CAL77WPAdDyKFWP_Dqsz_xr7OCzHLTkw6VbYDMGobi8kek4e_8A@mail.gmail.com>
- <85488658-80df-f6ac-8a1d-51172148a436@proxmox.com>
- <CAL77WPDJaRBgCeBtVx6tZ6yxKTG6Z2SEk_oif4RCSSnUgOuURA@mail.gmail.com>
- <1f581666-cfe0-cb7e-bbb5-6097e03c76e2@proxmox.com>
- <fb142bbf-d1d4-2a7f-3a4c-b5c59059dc19@proxmox.com>
-In-Reply-To: <fb142bbf-d1d4-2a7f-3a4c-b5c59059dc19@proxmox.com>
-From: Mike Maslenkin <mike.maslenkin@gmail.com>
-Date: Sat, 26 Aug 2023 21:07:02 +0300
-Message-ID: <CAL77WPCD4pCfciDy9MHkRg7aqwpgHa2WdiDgbdKd5x3SeZ=B-A@mail.gmail.com>
-Subject: Re: Lost partition tables on ide-hd + ahci drive
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: John Snow <jsnow@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>, 
- "open list:Network Block Dev..." <qemu-block@nongnu.org>,
- Thomas Lamprecht <t.lamprecht@proxmox.com>, 
- Aaron Lauterer <a.lauterer@proxmox.com>, simon.rowe@nutanix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=mike.maslenkin@gmail.com; helo=mail-yw1-x112f.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,48 +90,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 23, 2023 at 12:17=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> =
-wrote:
->
-> Am 23.08.23 um 10:47 schrieb Fiona Ebner:
-> > Am 17.02.23 um 22:22 schrieb Mike Maslenkin:
-> >> I can not tell anything about dma-reentracy issues, but yes, i would
-> >> start to look at check_cmd() function call sequence.
-> >> The most interesting is why Sector Count =3D 1. I thought about race
-> >> with IDE reset where registers initialized with
-> >> value SATA_SIGNATURE_DISK =3D 0x00000101, but this means LBA=3D1 as we=
-ll...
-> >>
-> >
-> > You got it! Since we got another report (after half a year of nothing)
-> > and also because of Simon's mail, I gave it another shot too and was
-> > finally able to reproduce the issue (with our patched QEMU 8.0, but
-> > patches shouldn't affect IDE code). See below for the traces that
-> > confirm your theory. The reason the write goes to sector 0 and not 1 is
-> > because ide_dma_cb() uses sector_num =3D ide_get_sector(s); and that wi=
-ll
-> > evaluate to 0 after a reset.
-> >
-> > So the issue is indeed that ide_dma_cb can get called with an IDEState
-> > just after that state was reset. Can we somehow wait for pending
-> > requests before proceeding with the reset, or can we force an error
-> > return for callbacks that are still pending during reset?
-> >
->
-> I noticed that ide_bus_reset() does the reset first and then cancels the
-> aiocb. Maybe it's already enough to switch those around?
->
-> Best Regards,
-> Fiona
+This seems like something that simply hasn't been updated for MTTCG,
+since the last functional change appears to be:
 
-Great job! Patch looks good to me.
+commit 79e2b9aeccedbfde762b05da662132c7fda292be
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Wed Jan 21 12:09:14 2015 +0100
 
-Since the reason is known now, It can be easier to reproduce original
-case again, but with disabled NCQ.
-There is no command line argument, so it is required to rebuild qemu
-without announcing HOST_CAP_NCQ capability.
-I'd expect this greatly increase chances to catch original corruption.
+    exec: RCUify AddressSpaceDispatch
 
-Best Regards,
-Mike.
+and the MTTCG work starts to appear in September 2015.
+
+
+r~
+
+
+Richard Henderson (3):
+  softmmu: Assert data in bounds in iotlb_to_section
+  softmmu: Use async_run_on_cpu in tcg_commit
+  softmmu: Remove cpu_reloading_memory_map as unused
+
+ include/exec/cpu-common.h   |  1 -
+ accel/tcg/cpu-exec-common.c | 30 ----------------------
+ softmmu/physmem.c           | 50 +++++++++++++++++++++++++++----------
+ 3 files changed, 37 insertions(+), 44 deletions(-)
+
+-- 
+2.34.1
+
 
