@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB46478B940
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344C978B945
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:13:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiaZ-0006sf-4y; Mon, 28 Aug 2023 16:11:55 -0400
+	id 1qaiaX-0006Xr-9x; Mon, 28 Aug 2023 16:11:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiaG-0005i5-C9
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:37 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ id 1qaiaI-0005ko-88
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:39 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiaD-0007pa-Qt
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:36 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2bcb50e194dso55307631fa.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:11:33 -0700 (PDT)
+ id 1qaiaF-0007pr-N7
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:37 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99c1f6f3884so450098566b.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:11:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253492; x=1693858292;
+ d=gmail.com; s=20221208; t=1693253494; x=1693858294;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tlbKBSPmQsCPqGfy/9OfnhyDKKj90lt8zkXdT5ciTw0=;
- b=DAD28W+AbBmiGU0BMTvWOfoBqaEoRAdqRcFn6ZU5SmRdfVgR2MMSpR9/gzadH/fxP8
- bSo1ZBYyyj0fY1uQM7RsyXvsAcsPD19NBoAaswtIm9BlDJAc/mkUvVV+Tw92jtUyY6YA
- 6+8nqvd2pkLM2vwBCy2yutrqKJm+b5drRkFTfzqVL54NZypmuMp/IsTclkZZ77HM77GS
- wa7ZVAm7FmkR1XiduhJeGLZxXbTwwEBUrzFTr1cS7CvUItwpNnnMfW2JKRs9/bkW+YzZ
- RxFBh3Mn3IKKfadNPjcEwHxr6ggzKdjtyirc0Shdh7odSaA2Xd1x7pJvTI5MJ+zfhHOx
- 1aHA==
+ bh=HsIP+hLVoNZVL2chjKVfWZpIi2TdYp0OHNSsvbgsB80=;
+ b=ChbXbzonPEVsTEkLBYGEkF1Xg4WGV4xAlFbB3O9W+P4NCztD7QX40Rl9M3OQW2c9tl
+ 59D+NwgkifznG6CW0TzFOdEOpRq/bnyQz1+Jre4yk8YL1UkRxTblNIlBUkLUxvN4vh94
+ 4UozfiR+5EYod2P0voG+bGlXAowqitMpeZ0zHWmSE2o8+sRKRkhfKVGUhNJDQ2lsJpQi
+ PdJ2iGgBJpM1gusFxZEWfsrqiRxOlXz+JdyYIfJ4U0qMusYTcDamykpToJGTLBmiWXz+
+ DqoMQ9aaGzq5yfoLgd+5qSTu62g3/r8fjWGB/ZtjhUOjAwcAtk5VerdP4or/UwST2Eol
+ rQDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253492; x=1693858292;
+ d=1e100.net; s=20221208; t=1693253494; x=1693858294;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tlbKBSPmQsCPqGfy/9OfnhyDKKj90lt8zkXdT5ciTw0=;
- b=WHm+GKJRQJt7vZy1N8WlnyEQD4ER51VAPiPZk3x1hjTo7sHPu9aY8d9TwGQApdvKI6
- yc8wkrjgU7IKVnsNGciCz0Kx+cv8mbHCogBfS3rUCDNemix7r3tNi0me7OHunThEUzEL
- S2XL+wfu00J1nAx/GQilxqETKzGKttFQJ68oyJkqD8zq/J8wZM2d4Cl+VF86Vj5gYQW3
- hZzKjLvI7/2ZaicLD0ckMem2cY3/ank4n6btT8/kUEr4sN1S3QHSEgAhyriBN/v5ayzj
- QFyMFKLRSx97z0Bs4gBnmDI7VYOtUKS6qeiRbT++OwIxzUz3DozLZfJsEgNFt3QFzYXt
- 5vpw==
-X-Gm-Message-State: AOJu0YyUQ01TTdpFmzE2jJNU17Fjp7wz/rLt4ihiE44TL2PHiqlrjz1k
- 4F+BW7IncDzaPUKkx9y8ZLTtEAlTNbb3tQ==
-X-Google-Smtp-Source: AGHT+IHMiM1xu/cPJ8p7BUog3vLcrGpL4ck0SbMizkLra9VPIub4j3S3MBJTCM6/Z86vmfnjxBtZ4w==
-X-Received: by 2002:a05:651c:1056:b0:2bc:c830:4cbb with SMTP id
- x22-20020a05651c105600b002bcc8304cbbmr14668996ljm.45.1693253491679; 
- Mon, 28 Aug 2023 13:11:31 -0700 (PDT)
+ bh=HsIP+hLVoNZVL2chjKVfWZpIi2TdYp0OHNSsvbgsB80=;
+ b=OehPjsdguVhlvlGIkOiaTNg8NlHQ/nzx5yAMe9jgcf+7xNGlTfpg8E5gb7kDC4mwyt
+ saX3X9jONRzZK5ULL7Qbde0gijwhtr62COYneCfyR3KhzqZs+FM+1fnMWGzZCXar0a5b
+ gxgbIkDVaMrEQX3T4EG6qM6jCTk/giXrZOB0rQ+CZo/Lh5KTytE0dcNxS0Bh+GoqtAoR
+ mMXWdgfjnOIVwof1hqVE7nyqVJgcXWOHfGbF5L/uY5nCPcLBDfJU7VokDTynAsp6vZHp
+ 2+VU8yKp3s+aUuhD0Un/OBKN4z9Ox34EExLBOyUVnz1ofRU/Aa7/TiShOIRR/plqddTK
+ QPTw==
+X-Gm-Message-State: AOJu0YwhrrnPBVLS5V3giSeS9TVucXrcs1ibso0T3PXhNLdSySgvlJwO
+ ZSiGiBAUSuCfAkcNkeZg7nNWcYiu1IKZfw==
+X-Google-Smtp-Source: AGHT+IFeFoMjcafqbk55YiDYn6TED22FEdCIONZl5+Klj0zoqdlKfWMnfXBm0rA23J8ZPsnZgLPR7Q==
+X-Received: by 2002:a17:906:6b92:b0:969:93f2:259a with SMTP id
+ l18-20020a1709066b9200b0096993f2259amr19296928ejr.73.1693253494002; 
+ Mon, 28 Aug 2023 13:11:34 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.11.30
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.11.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:11:31 -0700 (PDT)
+ Mon, 28 Aug 2023 13:11:33 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 27/32] bsd-user: Implement wait4(2) and wait6(2) system calls.
-Date: Sun, 27 Aug 2023 17:57:41 +0200
-Message-Id: <20230827155746.84781-28-kariem.taha2.7@gmail.com>
+Subject: [PATCH 28/32] bsd-user: Implement setloginclass(2) and
+ getloginclass(2) system calls.
+Date: Sun, 27 Aug 2023 17:57:42 +0200
+Message-Id: <20230827155746.84781-29-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -98,132 +99,69 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-proc.h    | 75 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c | 14 +++++++
- 2 files changed, 89 insertions(+)
+ bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  8 ++++++++
+ 2 files changed, 40 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index 75ed39f8dd..544e45b3ef 100644
+index 544e45b3ef..7d26d09148 100644
 --- a/bsd-user/freebsd/os-proc.h
 +++ b/bsd-user/freebsd/os-proc.h
-@@ -30,6 +30,10 @@
- 
- #include "target_arch_cpu.h"
- 
-+pid_t safe_wait4(pid_t wpid, int *status, int options, struct rusage *rusage);
-+pid_t safe_wait6(idtype_t idtype, id_t id, int *status, int options,
-+    struct __wrusage *wrusage, siginfo_t *infop);
-+
- /* execve(2) */
- static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong argp,
-         abi_ulong envp)
-@@ -46,4 +50,75 @@ static inline abi_long do_freebsd_fexecve(abi_ulong path_or_fd, abi_ulong argp,
-     return freebsd_exec_common(path_or_fd, argp, envp, 1);
+@@ -121,4 +121,36 @@ static inline abi_long do_freebsd_wait6(void *cpu_env, abi_long idtype,
+     return ret;
  }
  
-+/* wait4(2) */
-+static inline abi_long do_freebsd_wait4(abi_long arg1, abi_ulong target_status,
-+        abi_long arg3, abi_ulong target_rusage)
++/* setloginclass(2) */
++static inline abi_long do_freebsd_setloginclass(abi_ulong arg1)
 +{
 +    abi_long ret;
-+    int status;
-+    struct rusage rusage, *rusage_ptr = NULL;
++    void *p;
 +
-+    if (target_rusage) {
-+        rusage_ptr = &rusage;
++    p = lock_user_string(arg1);
++    if (p == NULL) {
++        return -TARGET_EFAULT;
 +    }
-+    ret = get_errno(safe_wait4(arg1, &status, arg3, rusage_ptr));
-+    if (target_status != 0) {
-+        status = host_to_target_waitstatus(status);
-+        if (put_user_s32(status, target_status) != 0) {
-+            return -TARGET_EFAULT;
-+        }
-+    }
-+    if (target_rusage != 0) {
-+        host_to_target_rusage(target_rusage, &rusage);
-+    }
++    ret = get_errno(setloginclass(p));
++    unlock_user(p, arg1, 0);
++
 +    return ret;
 +}
 +
-+/* wait6(2) */
-+static inline abi_long do_freebsd_wait6(void *cpu_env, abi_long idtype, 
-+    abi_long id1, abi_long id2,
-+    abi_ulong target_status, abi_long options, abi_ulong target_wrusage,
-+	abi_ulong target_infop, abi_ulong pad1)
++/* getloginclass(2) */
++static inline abi_long do_freebsd_getloginclass(abi_ulong arg1, abi_ulong arg2)
 +{
 +    abi_long ret;
-+    int status;
-+    struct __wrusage wrusage, *wrusage_ptr = NULL;
-+    siginfo_t info;
 +    void *p;
 +
-+    if (regpairs_aligned(cpu_env) != 0) {
-+		/* printf("shifting args\n"); */
-+		/* 64-bit id is aligned, so shift all the arguments over by one */
-+		id1 = id2;
-+		id2 = target_status;
-+		target_status = options;
-+		options = target_wrusage;
-+		target_wrusage = target_infop;
-+		target_infop = pad1;
++    p = lock_user_string(arg1);
++    if (p == NULL) {
++        return -TARGET_EFAULT;
 +    }
++    ret = get_errno(getloginclass(p, arg2));
++    unlock_user(p, arg1, 0);
 +
-+    if (target_wrusage) {
-+        wrusage_ptr = &wrusage;
-+    }
-+    ret = get_errno(safe_wait6(idtype, target_arg64(id1, id2), &status, options, wrusage_ptr, &info));
-+    if (target_status != 0) {
-+        status = host_to_target_waitstatus(status);
-+        if (put_user_s32(status, target_status) != 0) {
-+            return -TARGET_EFAULT;
-+        }
-+    }
-+    if (target_wrusage != 0) {
-+        host_to_target_wrusage(target_wrusage, &wrusage);
-+    }
-+    if (target_infop != 0) {
-+        p = lock_user(VERIFY_WRITE, target_infop, sizeof(target_siginfo_t), 0);
-+        if (p == NULL) {
-+            return -TARGET_EFAULT;
-+        }
-+        host_to_target_siginfo(p, &info);
-+        unlock_user(p, target_infop, sizeof(target_siginfo_t));
-+    }
 +    return ret;
 +}
 +
  #endif /* BSD_USER_FREEBSD_OS_PROC_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 3f3ca96752..2775f89304 100644
+index 2775f89304..63e6c6d478 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -38,6 +38,12 @@
- 
- #include "os-proc.h"
- 
-+/* used in os-proc */
-+safe_syscall4(pid_t, wait4, pid_t, wpid, int *, status, int, options,
-+    struct rusage *, rusage);
-+safe_syscall6(pid_t, wait6, idtype_t, idtype, id_t, id, int *, status, int,
-+    options, struct __wrusage *, wrusage, siginfo_t *, infop);
-+
- /* I/O */
- safe_syscall3(int, open, const char *, path, int, flags, mode_t, mode);
- safe_syscall4(int, openat, int, fd, const char *, path, int, flags, mode_t,
-@@ -226,6 +232,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_fexecve(arg1, arg2, arg3);
+@@ -372,6 +372,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_ktrace(arg1, arg2, arg3, arg4);
          break;
  
-+    case TARGET_FREEBSD_NR_wait4: /* wait4(2) */
-+        ret = do_freebsd_wait4(arg1, arg2, arg3, arg4);
++    case TARGET_FREEBSD_NR_setloginclass: /* setloginclass(2) */
++        ret = do_freebsd_setloginclass(arg1);
 +        break;
 +
-+    case TARGET_FREEBSD_NR_wait6: /* wait6(2) */
-+        ret = do_freebsd_wait6(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
++    case TARGET_FREEBSD_NR_getloginclass: /* getloginclass(2) */
++        ret = do_freebsd_getloginclass(arg1, arg2);
 +        break;
 +
-     case TARGET_FREEBSD_NR_exit: /* exit(2) */
-         ret = do_bsd_exit(cpu_env, arg1);
+     case TARGET_FREEBSD_NR_utrace: /* utrace(2) */
+         ret = do_bsd_utrace(arg1, arg2);
          break;
 -- 
 2.40.0
