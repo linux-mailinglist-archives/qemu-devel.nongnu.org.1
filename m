@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C28578B91D
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8456678B93A
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiYl-000873-2p; Mon, 28 Aug 2023 16:10:03 -0400
+	id 1qaiYv-00087o-58; Mon, 28 Aug 2023 16:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYi-00086X-Pv
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:00 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ id 1qaiYn-00087U-8U
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:05 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYg-0007NA-AF
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:00 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2bcb50e194dso55285851fa.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:09:57 -0700 (PDT)
+ id 1qaiYl-0007Nn-3l
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:05 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9a2a4a5472dso779246066b.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:10:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253396; x=1693858196;
+ d=gmail.com; s=20221208; t=1693253401; x=1693858201;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lf4E6n27eQkUsjdF4nO89SKJQY0WwuuH7rr5VrB/ebI=;
- b=o1fZi32+prVPdO7T/litxi+4cxvwN7Py90zu9XcmWctwKneTTOPqHwb1Q6vkabnejY
- RVW5IUiq8L5B/07AZAauOw15eV9sal5T4S7GtjKSSziMQgd1L8L5hR8V0PpzH0Ldji+O
- 2toEGn2UFOkgXrylTWMyqsMp34vHSsfYtSsDYWCCnCQNyeMhdGh/6A+WithL5PA/ZXHp
- UoVeZOmBF3TJJ8WTX9sKrVliyQkx8K6CvoeL+f5Oj19bpon8ZF/KGyLFXXe2n+kTt8wz
- HT9sQ0127l39/MBzh/kWKg1aZWibdqjjSyAPbYF0uJedE0FD1PL3ElL+DzVqQ1E2h4SF
- qVYQ==
+ bh=D3DrY2drMITN1M+I93LgIZwfu7VR/2IaNaUCsMyK3Qs=;
+ b=ObadcteVjd/Re/6c0+rrcCOBhYMx6g323Vm1TlcarSnCZlSG4t8qm6NS9J8uw4nxUH
+ /ual7NkKDUmXNZVA6JlUnnjKH43sVZPc8mvCONTDj0F73bpAavosehJn67Ylq3fPtDC8
+ LC/lXb4GEp5QlRZfXCXZ9DCLGtwJvKEsmqtKAQsV47DLS9B/SNrlDUJc9Sj5zsHu56X/
+ XOM9a0leJpkLF7P4SOPF7PuxsQu/yDIjiy4AiV8uH/uDZWetK2p1N5LbeazRoVpQ0k9l
+ xv3prMDwS6zHUdkGUpGTwW5Vlr9nWzxoKfr6EML65dIcGTu0b1q9KRXwVxhWpTK9mZmo
+ /dQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253396; x=1693858196;
+ d=1e100.net; s=20221208; t=1693253401; x=1693858201;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lf4E6n27eQkUsjdF4nO89SKJQY0WwuuH7rr5VrB/ebI=;
- b=FoN17gFQ3BrMT8weKGcP0ygSvKQe4FKPDLMcJe6M6iUPvajeaxDNj+t/Lxw65jgfiG
- o9r2Z/uazeKF1bkKgsCq2AMVykN41v1oRecTYDtHR8SaaWkPMxZ52SmrNVKUxcXDTuv8
- a/mwFv/B/u6KXAJdXwQQdOdPRiYOQwNsOwLy28pphnDZAghDSnqG53BXBaOvbPn4POd+
- +xNEB21btfGxWsKNgQfqT05mJGAIXVf6DnNe8kYuGqzlpE0BbMDgc0lpEycb0UlWuLpY
- 5b/jSM7fZ/lRjKWi6Uv9CjAs9Xkt0ShVQATllG9GUg3G76KCS18428r59Iq5Lq76BRRO
- Nufw==
-X-Gm-Message-State: AOJu0Yzk0wKjyUfU5MSkIVhWOwRwVfUx0C8+AqdjbSceMbDyfLD6/yQx
- X6yiRkLYbBo7NtQNPvOH1BQ+UafvfmuX7w==
-X-Google-Smtp-Source: AGHT+IEowMzLfNzbq6UjnJxzJvdaMqouDlsCAbWsOBAebBQWXbbuNzgdoI1pMmF6zVP50sUQWlnH4A==
-X-Received: by 2002:a2e:8ecc:0:b0:2b5:bc27:d6eb with SMTP id
- e12-20020a2e8ecc000000b002b5bc27d6ebmr19665528ljl.8.1693253396260; 
- Mon, 28 Aug 2023 13:09:56 -0700 (PDT)
+ bh=D3DrY2drMITN1M+I93LgIZwfu7VR/2IaNaUCsMyK3Qs=;
+ b=gllpCEVXXYWzRGPTKOonsCN1r3hZ5kKgpt93Unhj+MdCFmO6lmk/De8lNo+3l/XFui
+ JTmQU+qU2I7LzJsh9dtTkrlxgLl5nlRXgZ0gTPcw79AWmgJCptM6byc625UPVK+5E6Od
+ YBjMTm3ojZdb2gev7QDJV3yvtj7EzB606R+WnumI5V5j1lxEndikxu6ezABDTwGcskKo
+ gb8UNHDusq7sb+i8E6Ku6vMweu915g26WVCNoKMfBwkT714iu4V7e417xZgxwDcX7YWT
+ lBPlUBnjaXGsm3kPU5VnTYU+KMZwCzxPiUTb0qJ+mO9AZTR9k/xje8/jzJgwaf127QUa
+ DV6Q==
+X-Gm-Message-State: AOJu0Ywp96XVTODJyjkyPb3Qr70aMrZko9kSH5yDDb8Vhm3mjLYw90ci
+ a9qr2FyfLydfda7vCLxaqOKcs0YHa5AVjw==
+X-Google-Smtp-Source: AGHT+IGNs6ERLdiW902NBvc+5SwYVlpnQ9tovL0gfpTT9i3ISTWmMI05VL6Z7VeQb5Xsv0/64ChEsg==
+X-Received: by 2002:a17:906:8a49:b0:9a5:c95b:45e3 with SMTP id
+ gx9-20020a1709068a4900b009a5c95b45e3mr109306ejc.26.1693253401416; 
+ Mon, 28 Aug 2023 13:10:01 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.09.54
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.09.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:09:55 -0700 (PDT)
+ Mon, 28 Aug 2023 13:10:01 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 07/32] bsd-user: Implement target_to_host_resource conversion
- function
-Date: Sun, 27 Aug 2023 17:57:21 +0200
-Message-Id: <20230827155746.84781-8-kariem.taha2.7@gmail.com>
+Subject: [PATCH 08/32] bsd-user: Implement target_to_host_rlim and
+ host_to_target_rlim conversion.
+Date: Sun, 27 Aug 2023 17:57:22 +0200
+Message-Id: <20230827155746.84781-9-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -99,97 +99,48 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-proc.c | 83 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
- create mode 100644 bsd-user/bsd-proc.c
+ bsd-user/bsd-proc.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
-new file mode 100644
-index 0000000000..ae2e636bb3
---- /dev/null
+index ae2e636bb3..12e43cfeca 100644
+--- a/bsd-user/bsd-proc.c
 +++ b/bsd-user/bsd-proc.c
-@@ -0,0 +1,83 @@
-+/*
-+ *  BSD process related system call helpers
-+ *
-+ *  Copyright (c) 2013-14 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include "qemu/osdep.h"
-+
-+#include <sys/param.h>
-+#include <sys/types.h>
-+#include <sys/cpuset.h>
-+#include <sys/resource.h>
-+#include <sys/wait.h>
-+
-+#include "qemu.h"
-+#include "qemu-bsd.h"
-+#include "signal-common.h"
-+
-+#include "bsd-proc.h"
-+
-+/*
-+ * resource/rusage conversion
-+ */
-+int target_to_host_resource(int code)
+@@ -81,3 +81,36 @@ int target_to_host_resource(int code)
+     }
+ }
+ 
++rlim_t target_to_host_rlim(abi_llong target_rlim)
 +{
++    abi_llong target_rlim_swap;
++    rlim_t result;
 +
-+    switch (code) {
-+    case TARGET_RLIMIT_AS:
-+        return RLIMIT_AS;
-+
-+    case TARGET_RLIMIT_CORE:
-+        return RLIMIT_CORE;
-+
-+    case TARGET_RLIMIT_CPU:
-+        return RLIMIT_CPU;
-+
-+    case TARGET_RLIMIT_DATA:
-+        return RLIMIT_DATA;
-+
-+    case TARGET_RLIMIT_FSIZE:
-+        return RLIMIT_FSIZE;
-+
-+    case TARGET_RLIMIT_MEMLOCK:
-+        return RLIMIT_MEMLOCK;
-+
-+    case TARGET_RLIMIT_NOFILE:
-+        return RLIMIT_NOFILE;
-+
-+    case TARGET_RLIMIT_NPROC:
-+        return RLIMIT_NPROC;
-+
-+    case TARGET_RLIMIT_RSS:
-+        return RLIMIT_RSS;
-+
-+    case TARGET_RLIMIT_SBSIZE:
-+        return RLIMIT_SBSIZE;
-+
-+    case TARGET_RLIMIT_STACK:
-+        return RLIMIT_STACK;
-+
-+    case TARGET_RLIMIT_SWAP:
-+        return RLIMIT_SWAP;
-+
-+    case TARGET_RLIMIT_NPTS:
-+        return RLIMIT_NPTS;
-+
-+    default:
-+        return code;
++    target_rlim_swap = tswap64(target_rlim);
++    if (target_rlim_swap == TARGET_RLIM_INFINITY) {
++        return RLIM_INFINITY;
 +    }
++
++    result = target_rlim_swap;
++    if (target_rlim_swap != (rlim_t)result) {
++        return RLIM_INFINITY;
++    }
++
++    return result;
++}
++
++abi_llong host_to_target_rlim(rlim_t rlim)
++{
++    abi_llong target_rlim_swap;
++    abi_llong result;
++
++    if (rlim == RLIM_INFINITY || rlim != (abi_llong)rlim) {
++        target_rlim_swap = TARGET_RLIM_INFINITY;
++    } else {
++        target_rlim_swap = rlim;
++    }
++    result = tswap64(target_rlim_swap);
++
++    return result;
 +}
 +
 -- 
