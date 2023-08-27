@@ -2,62 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39AAE78A033
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 18:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A0678A0FC
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 20:30:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaIkX-00078H-VH; Sun, 27 Aug 2023 12:36:29 -0400
+	id 1qaKWE-000704-80; Sun, 27 Aug 2023 14:29:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qaIkU-00075g-EP
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 12:36:26 -0400
-Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qaKWC-0006zI-9v
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 14:29:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qaIkR-0002pf-ED
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 12:36:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=GLvWC6CafNv88lP94aumoweEumMNkT5Npq/4NJXPnCk=; b=si1STBIJFBlqVqlXHCsDEGzZsj
- aggUCAoTroPR3Ur8W83uMRJHPJ8+EI+ZBHSYvV0SrhWx1dT5Zz2q07lp4NvgmIgvPAQ/A/P6EgVHU
- 5dtFnoLmMYbdBJshYsvA6iaf2S2TbJyEbXWyeRMpIwkDo2Zk3tdQteAZtYMA254k/iHQ=;
-Date: Sun, 27 Aug 2023 18:36:10 +0200
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, anton.kochkov@proton.me
-Subject: Re: [PATCH 04/10] target/tricore: Implement FTOU insn
-Message-ID: <aiwaftbattdfzjd4dr5hw62ux4spong5yjpi54b7te4ybq64ty@b5k42n7yhuck>
-References: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
- <20230826160242.312052-5-kbastian@mail.uni-paderborn.de>
- <f8f824f3-add2-a6ea-1e78-48aa9d1b6e56@linaro.org>
- <a5atencg3p7r5yad5ybg75c6clr6ofk24xm2j2yw2pct6wb6bs@5onnabp3kkyg>
- <58ad531d-82aa-d0fe-a830-a41f5b465cb1@linaro.org>
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qaKW9-0004Xg-Tn
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 14:29:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693160983;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=IDNTMLQYy80LbQiw/K80XEYeTnP9RO7F3JM5of2sNrI=;
+ b=I2S0mkp7QeAJCC94sx07QbqsvJi/kdQHZ06kJWGpBg9pksOdIo7iJNMA7KSQnWRdtt9P79
+ xoQOrzq7tvGLwtMfAyPlsMTWU6/sgRuRS4+7Gx7S70dDdLB2HPSDVqY/ALCRXtFrcwKQLB
+ 746jmmr/5s8jAJCK93Q9r8uOQCUhxvM=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-326-Fa0S1A7vOQqDSJdWYL4GXA-1; Sun, 27 Aug 2023 14:29:41 -0400
+X-MC-Unique: Fa0S1A7vOQqDSJdWYL4GXA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 136D91C0515B;
+ Sun, 27 Aug 2023 18:29:41 +0000 (UTC)
+Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.192.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7F9BE140E950;
+ Sun, 27 Aug 2023 18:29:39 +0000 (UTC)
+From: Laszlo Ersek <lersek@redhat.com>
+To: qemu-devel@nongnu.org,
+	lersek@redhat.com
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>,
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH 0/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE synchronously
+Date: Sun, 27 Aug 2023 20:29:30 +0200
+Message-Id: <20230827182937.146450-1-lersek@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <58ad531d-82aa-d0fe-a830-a41f5b465cb1@linaro.org>
-X-IMT-Source: Extern
-X-IMT-rspamd-score: 4
-X-IMT-Spam-Score: 0.0 ()
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.8.27.162716, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.8.27.602000
-X-Sophos-SenderHistory: ip=84.184.52.128, fs=17197386, da=180763238, mc=22,
- sc=0, hc=22, sp=0, fso=17197386, re=0, sd=0, hd=0
-X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
-Received-SPF: pass client-ip=2001:638:502:c003::15;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=shirlock.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,40 +78,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Aug 27, 2023 at 07:49:52AM -0700, Richard Henderson wrote:
-> On 8/27/23 04:07, Bastian Koppelmann wrote:
-> > On Sat, Aug 26, 2023 at 09:50:51PM -0700, Richard Henderson wrote:
-> > > On 8/26/23 09:02, Bastian Koppelmann wrote:
-> > > > +uint32_t helper_ftou(CPUTriCoreState *env, uint32_t arg)
-> > > > +{
-> > > > +    float32 f_arg = make_float32(arg);
-> > > > +    uint32_t result;
-> > > > +    int32_t flags = 0;
-> > > > +
-> > > > +    if (float32_is_any_nan(f_arg)) {
-> > > > +        result = 0;
-> > > > +        flags |= float_flag_invalid;
-> > > > +    } else if (float32_lt_quiet(f_arg, 0, &env->fp_status)) {
-> > > > +        result = 0;
-> > > > +        flags = float_flag_invalid;
-> > > > +    } else {
-> > > > +        result = float32_to_uint32(f_arg, &env->fp_status);
-> > > > +        flags = f_get_excp_flags(env);
-> > > > +    }
-> > > 
-> > > You should allow softfloat to diagnose the special cases, and negative -> 0
-> > > is standard behaviour.  Therefore:
-> > 
-> > You're right. However, there is one special case, negative -> 0 ought to raise
-> > float_flags_invalid.
-> 
-> https://gitlab.com/qemu-project/qemu/-/blob/master/fpu/softfloat-parts.c.inc?ref_type=heads#L1162
+VGhlIGxhc3QgcGF0Y2ggaW4gdGhlIHNlcmllcyBzdGF0ZXMgYW5kIGZpeGVzIHRoZSBwcm9ibGVt
+OyBwcmlvciBwYXRjaGVzCm9ubHkgcmVmYWN0b3IgdGhlIGNvZGUuCgpDYzogIk1pY2hhZWwgUy4g
+VHNpcmtpbiIgPG1zdEByZWRoYXQuY29tPiAoc3VwcG9ydGVyOnZob3N0KQpDYzogRXVnZW5pbyBQ
+ZXJleiBNYXJ0aW4gPGVwZXJlem1hQHJlZGhhdC5jb20+CkNjOiBHZXJtYW4gTWFnbGlvbmUgPGdt
+YWdsaW9uZUByZWRoYXQuY29tPgpDYzogTGl1IEppYW5nIDxnZXJyeUBsaW51eC5hbGliYWJhLmNv
+bT4KQ2M6IFNlcmdpbyBMb3BleiBQYXNjdWFsIDxzbHBAcmVkaGF0LmNvbT4KQ2M6IFN0ZWZhbm8g
+R2FyemFyZWxsYSA8c2dhcnphcmVAcmVkaGF0LmNvbT4KClRoYW5rcywKTGFzemxvCgpMYXN6bG8g
+RXJzZWsgKDcpOgogIHZob3N0LXVzZXI6IHN0cmlwIHN1cGVyZmx1b3VzIHdoaXRlc3BhY2UKICB2
+aG9zdC11c2VyOiB0aWdodGVuICJyZXBseV9zdXBwb3J0ZWQiIHNjb3BlIGluICJzZXRfdnJpbmdf
+YWRkciIKICB2aG9zdC11c2VyOiBmYWN0b3Igb3V0ICJ2aG9zdF91c2VyX3dyaXRlX21zZyIKICB2
+aG9zdC11c2VyOiBmbGF0dGVuICJlbmZvcmNlX3JlcGx5IiBpbnRvICJ2aG9zdF91c2VyX3dyaXRl
+X21zZyIKICB2aG9zdC11c2VyOiBob2lzdCAid3JpdGVfbXNnIiwgImdldF9mZWF0dXJlcyIsICJn
+ZXRfdTY0IgogIHZob3N0LXVzZXI6IGFsbG93ICJ2aG9zdF9zZXRfdnJpbmciIHRvIHdhaXQgZm9y
+IGEgcmVwbHkKICB2aG9zdC11c2VyOiBjYWxsIFZIT1NUX1VTRVJfU0VUX1ZSSU5HX0VOQUJMRSBz
+eW5jaHJvbm91c2x5CgogaHcvdmlydGlvL3Zob3N0LXVzZXIuYyB8IDIwMiArKysrKysrKystLS0t
+LS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDk0IGluc2VydGlvbnMoKyksIDEwOCBkZWxldGlvbnMo
+LSkKCgpiYXNlLWNvbW1pdDogNTBlN2E0MGFmMzcyZWU1OTMxYzk5ZWY3MzkwZjVkM2Q2ZmJmNmVj
+NAo=
 
-Lets say the exponent is negative and the sign is negative, then we raise
-float_flag_inexact and we never reach the code you mentioned here. However,
-TriCore HW raises float_flag_invalid as well in that case. This is what I'm
-catching with float32_lt_quiet() in the same manner as ftouz.
-
-Cheers,
-Bastian
 
