@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD31789FCF
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 16:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83B9789FD1
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 16:55:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaH7H-0001iH-ID; Sun, 27 Aug 2023 10:51:51 -0400
+	id 1qaHAK-0002Re-79; Sun, 27 Aug 2023 10:55:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qaH7F-0001hy-7K
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 10:51:49 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qaHAI-0002Q0-H6
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 10:54:58 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qaH7D-0001t1-1P
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 10:51:48 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-68a3e943762so2136506b3a.1
- for <qemu-devel@nongnu.org>; Sun, 27 Aug 2023 07:51:46 -0700 (PDT)
+ id 1qaHAG-0002LL-Fr
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 10:54:58 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-26f4bc74131so1544738a91.1
+ for <qemu-devel@nongnu.org>; Sun, 27 Aug 2023 07:54:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693147905; x=1693752705;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1693148095; x=1693752895;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZSCh7wV/J3Uuun5HaF+u63p4rU1eXdEmXmszkQfGLtw=;
- b=pMKxBUTQGROBhOlqI2Ggpw5gpMxRoIT6DwtFShSHH1eE2Ib69PQgrpv7iX63xxX8W3
- 6F/MNgHQfD7uF9BTAdcEdFzjgC+alzu+eOYIWq97MdpSCQlNqwE4CnYBs6R3sXW/gBF6
- HooZgwGkYD6k9MFDqWo5E6bUamHyVILZ47BcGKMybciJdc8U+gZ3nRqVkTBzZ94+FQh1
- +uFNoGc35dwNmqVESULfVRNsbhvoJdqpBRluglhxsQEZNbR8JVcaKq9Fh5i0XXpjhyDs
- kCIC+w7JnGkMSJT/4Os/pDWXmjD4Tmz3W+j1wgCz9X8cX/dWc7cC84/gy7aU7Hn6QEkO
- cSvQ==
+ bh=lqqf668Wa4rZez51Mz1hnOL3VcZYRvztpRqWPxuzqg0=;
+ b=j6d9JmeYC2zYr/xh7wZsgGGruJQH3Y6nhCudGAcgjLHsiUJm0smkkNuEeiUG2BesUC
+ ECsZiVeoNBUNQk6DdrXFZYLMp59TGE6vgz6Z/0OYSdExK+YgVRjcjv+1OJx7zBb4UouA
+ omc/PszJZlSAqpHClcZsydrUSfMDlIfcMo3tEDTChQfKWoq3wOJ9xun28SESGuOcqw6s
+ PAzYoAUWmbbcUQZAE547dGeILTxUsqR2pYzajMZEltXmyS+QzIgGtq1Pw6s8+gGdil75
+ PDDkDtNdGnbdRPYHAJ7OjraepKhDp6ahNX+FObd3M+Okm+A/jbEFCTmUAMV6wLhfprmB
+ eicw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693147905; x=1693752705;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1693148095; x=1693752895;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZSCh7wV/J3Uuun5HaF+u63p4rU1eXdEmXmszkQfGLtw=;
- b=Bgc65LoLbimK3clw8SFmpeXGn8CFGQ29/hfctZztgfttvMlN490El3XMFmJNw3I+vH
- g9qE0yHYuFpPnhwHgIr0d0vz8yyObnygGtHbQkPUBZ1p2IP9y3IRfYXzJSrUydSc2F+n
- dZ4cXGx2E51WREzyATjYteCSdFpvg6JAd+tNJiaW6r3MDYKNIAulyHrs80xQE9GvFl7x
- yKSYowa0kp9M5mJZASyO0wGwIm9SZBp08I/isiVv1JdAc+sPZmrPDz8DAETWnJIlh4ky
- 6/wcDNeG9CCuBPW90opzMXVOxGyu6DW8PqFTbAnqda3Z8vV5DvyO5uX2xdQDF5DBXYur
- x6+Q==
-X-Gm-Message-State: AOJu0YztJ4QBtbO8r6d2xGLCLK8ikF9PVkbHDUg0YSUyOUraHzzdaBZR
- Cgp7K/ZNjSyZaFBuad17AOGE1Q==
-X-Google-Smtp-Source: AGHT+IHUjDQQy+nS5H5WWCmRBBUS4VD5oxHfqOmlC0R7lVKDt6+GBYDWMNQVbnJwKsltldNbDr7J0Q==
-X-Received: by 2002:a05:6a00:600a:b0:68c:4ff1:3de9 with SMTP id
- fo10-20020a056a00600a00b0068c4ff13de9mr1227143pfb.17.1693147905289; 
- Sun, 27 Aug 2023 07:51:45 -0700 (PDT)
+ bh=lqqf668Wa4rZez51Mz1hnOL3VcZYRvztpRqWPxuzqg0=;
+ b=Sb9Fzmo0P3dvy9LYM1GZTR8OTHTvz4LEvqQ0qIv4Riz5Ryi9dBDH1v+ZjDBMbgF6de
+ H8sD51MCfQLCCz1Cxmh2xWO3wZP7A3dtTBbfbsaXST+xy7l5IOEcuaOCnhT0fahw5sM5
+ nqJL9mC9vMjGQJ5mtG1U6ac+CxS/1NJv67GsCHw/3+eALfvY5muT4tHDsF4v6aUGPdHW
+ Gn7Xp7+KPL9vc3xcWtoU+zc6vQz49T8iITUxfR/OZ3PYYpQvnHbHjw/zq5bxGDHR3kim
+ 2T7UabyBrkdxGn/Qd1nrPZ4GVjO/71I8gKZ9IEqgBfFrs/mBcLSFNl5Z1saauN1GJhck
+ Uvtg==
+X-Gm-Message-State: AOJu0YxE7CxV64t2N6WWN8SmNu4VOqcOo00BQaddgh6iSnNcgPbu8QX8
+ 8kIQtGPjIIPrVTHUtSSkEsKRckabVFku/yX/NsM=
+X-Google-Smtp-Source: AGHT+IFrvk6Bp65Jf3iuJpD2LDjggRv8JkLFEcc2foUmGJCDAvlD0lAvPNlFUOAP9ot2UoUEfllKyA==
+X-Received: by 2002:a17:90a:cb12:b0:26f:6f2a:a11 with SMTP id
+ z18-20020a17090acb1200b0026f6f2a0a11mr28330464pjt.12.1693148094999; 
+ Sun, 27 Aug 2023 07:54:54 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- m17-20020a637111000000b00563826c66eesm5390076pgc.61.2023.08.27.07.51.44
+ 13-20020a17090a030d00b002694da8a9cdsm5446644pje.48.2023.08.27.07.54.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 27 Aug 2023 07:51:44 -0700 (PDT)
-Message-ID: <ccde9364-bde5-f8db-320d-8dfe5d6ef51b@linaro.org>
-Date: Sun, 27 Aug 2023 07:51:42 -0700
+ Sun, 27 Aug 2023 07:54:54 -0700 (PDT)
+Message-ID: <2f239df2-5cdf-9eef-98af-b208d3ead39b@linaro.org>
+Date: Sun, 27 Aug 2023 07:54:51 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 05/10] target/tricore: Implement ftohp insn
+Subject: Re: [PATCH 2/3] softmmu: Use async_run_on_cpu in tcg_commit
 Content-Language: en-US
-To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Cc: qemu-devel@nongnu.org, anton.kochkov@proton.me
-References: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
- <20230826160242.312052-6-kbastian@mail.uni-paderborn.de>
- <5598bd01-6d2e-5661-8cb5-aa5a49b22ffd@linaro.org>
- <z2hqeuxwnmwuc7pxoogvxghk2ngs2oqdpms4n6iiqxwtpspsc6@qz6iu56qxv2d>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <z2hqeuxwnmwuc7pxoogvxghk2ngs2oqdpms4n6iiqxwtpspsc6@qz6iu56qxv2d>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, pbonzini@redhat.com, alex.bennee@linaro.org
+References: <20230826232415.80233-1-richard.henderson@linaro.org>
+ <20230826232415.80233-3-richard.henderson@linaro.org>
+In-Reply-To: <20230826232415.80233-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
@@ -97,52 +95,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/27/23 00:09, Bastian Koppelmann wrote:
-> On Sat, Aug 26, 2023 at 09:55:05PM -0700, Richard Henderson wrote:
->> On 8/26/23 09:02, Bastian Koppelmann wrote:
->>> +uint32_t helper_ftohp(CPUTriCoreState *env, uint32_t arg)
->>> +{
->>> +    float32 f_arg = make_float32(arg);
->>> +    uint32_t result = 0;
->>> +    int32_t flags = 0;
->>> +
->>> +    if (float32_is_infinity(f_arg)) {
->>> +        if (float32_is_neg(f_arg)) {
->>> +            return  HP_NEG_INFINITY;
->>> +        } else {
->>> +            return  HP_POS_INFINITY;
->>> +        }
->>> +    } else if (float32_is_any_nan(f_arg)) {
->>> +        if (float32_is_signaling_nan(f_arg, &env->fp_status)) {
->>> +            flags |= float_flag_invalid;
->>> +        }
->>> +        result = float16_set_sign(result, arg >> 31);
->>> +        result = deposit32(result, 10, 5, 0x1f);
->>> +        result = deposit32(result, 8, 2, extract32(arg, 21, 2));
->>> +        result = deposit32(result, 0, 8, extract32(arg, 0, 8));
->>> +        if (extract32(result, 0, 10) == 0) {
->>> +            result |= (1 << 8);
->>> +        }
->>> +    } else {
->>> +        set_flush_to_zero(0, &env->fp_status);
->>> +        result = float32_to_float16(f_arg, true, &env->fp_status);
->>> +        set_flush_to_zero(1, &env->fp_status);
->>> +        flags = f_get_excp_flags(env);
->>> +    }
->>
->> All of this is standard behaviour.  All you need is the final else case.
-> 
-> Unfortunately not quite. For NANs the top 2 and lower 8 output mantissa bits need to be
-> set to the top 2 and lower 8 input mantissa bits respectively. This behaviour is
-> unique to ftohp and hptof, so I don't think we should specialize it in
-> parts64_default_nan().
+On 8/26/23 16:24, Richard Henderson wrote:
+> +static void tcg_commit_cpu(CPUState *cpu, run_on_cpu_data data)
+> +{
+> +    CPUAddressSpace *cpuas = data.host_ptr;
+> +
+> +    cpuas->memory_dispatch = address_space_to_dispatch(cpuas->as);
+> +    tlb_flush(cpu);
+> +}
 
-Ah, whereas softfloat grabs the top 10 mantissa bits.
-This could use a comment to that effect.
-
-Certainly you don't need to special case infinity though.
+Question: do I need to take the iothread lock here, while re-generating the address space 
+dispatch?
 
 
 r~
-
 
