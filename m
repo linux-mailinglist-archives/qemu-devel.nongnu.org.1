@@ -2,83 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724C6789D2A
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F932789D29
 	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 13:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaDcM-0002em-JO; Sun, 27 Aug 2023 07:07:42 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1qaDcQ-00031W-Ex; Sun, 27 Aug 2023 07:07:46 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1qaDcK-0002ZW-T9
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 07:07:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qaDcM-0002if-MX
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 07:07:42 -0400
+Received: from nylar.uni-paderborn.de ([2001:638:502:c003::18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1qaDcH-0005PY-JI
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 07:07:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693134456;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zXfpdYKIYqW4Mc13sAQrMyTr+Dbh9oBP6jXDHpgQQyU=;
- b=ML0qJUuAjjGCes5ts6A7QfzR4LPP+nFeBieWpB578a79bewRESG2Ropqd/j/L7KpPYKarR
- EEqY9vRoveR2K/zlS9FkUYg3YmOTTGvLDb6uk3BmEFI6d4lsNXDEXdZxf/c6zcwxoJQcqt
- Sw/UJRVXb2yZoTX16KBp8BCRB9WDYfU=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-1ukUzH5sPwGGQN2JTofrDQ-1; Sun, 27 Aug 2023 07:07:33 -0400
-X-MC-Unique: 1ukUzH5sPwGGQN2JTofrDQ-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-44d4b63c84cso895262137.3
- for <qemu-devel@nongnu.org>; Sun, 27 Aug 2023 04:07:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693134452; x=1693739252;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zXfpdYKIYqW4Mc13sAQrMyTr+Dbh9oBP6jXDHpgQQyU=;
- b=Z3bPtgFX1mLnz3hZ9WsP5JeW+FipabIb4Q6udtGnwp65ZmhK2KZVtkFVNDRZHWqnYc
- itUvWGkHrekoESSUqBH699KV3pLLpT8czdEVHwcTwj+eeQyiO4dzeFUWrWbe4XfXt/io
- LM4B8UHjyvml9UtS3cMA5xHrnjfSbg+wwrhR51KTDMKP8z1FAYbd9cSxGuD0/fQsT6Va
- WA+GApPwkEOJg2vITs1pQ2uI/HCWy26Nh4U+OzxTPAr7gpsd2CeFeNqUhSl4DFbUtZ1O
- LOErfmjqkxWsfa3Y9ghW835cByZy2mF/PVS7RWk6jw6N2e8t+OXZMJLK2RHfKzQ2h8t1
- t/Sw==
-X-Gm-Message-State: AOJu0YwWRf5AN4XGA9iWs1xcHO1jsj8Za7n/EFfTWyImXIn1X/N0n5ul
- yN4ZrNnSCvPKYJmchzLkDrjBq7h8/vHG4mmNaHHzqoAbkizwxlTW3G0hAfJRkrUwTNe4/SY/eCd
- WvZjL2YUMOeO0NzMct3RCw56XTu9dSGL3ChZGqs69hA==
-X-Received: by 2002:a1f:de04:0:b0:48d:2e3d:2d57 with SMTP id
- v4-20020a1fde04000000b0048d2e3d2d57mr17792406vkg.4.1693134452624; 
- Sun, 27 Aug 2023 04:07:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETAl3cFaShN9+UTRCrzjw40ySqqIEUgbxgG0DmN1yPEjhPq3hQbZhmFtcwNxb7w5A/VKaJz+b4BXPH+RL2TsI=
-X-Received: by 2002:a1f:de04:0:b0:48d:2e3d:2d57 with SMTP id
- v4-20020a1fde04000000b0048d2e3d2d57mr17792398vkg.4.1693134452360; Sun, 27 Aug
- 2023 04:07:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qaDcI-0005PC-UI
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 07:07:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=r8N+M8x6fJA3XskjINAmiEXLmPyN+qJgayvLuXZvZxw=; b=a4ZSj/pS9e288/3IMGk4aXR4s9
+ UpgZHF7EZYIkYSuhXSDhGRjnmpzwjWN7pB8rM8IevdpiLSkfZwPR61sJqr6grP3kGEm5KrJUzjwkp
+ XJ/AtjhTLJAYvjfVCTDkd5+ELJNyby8yIJASfIQ1CEZJ15ExhELik41cJZFpt16VnHsw=;
+Date: Sun, 27 Aug 2023 13:07:29 +0200
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, anton.kochkov@proton.me
+Subject: Re: [PATCH 04/10] target/tricore: Implement FTOU insn
+Message-ID: <a5atencg3p7r5yad5ybg75c6clr6ofk24xm2j2yw2pct6wb6bs@5onnabp3kkyg>
+References: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
+ <20230826160242.312052-5-kbastian@mail.uni-paderborn.de>
+ <f8f824f3-add2-a6ea-1e78-48aa9d1b6e56@linaro.org>
 MIME-Version: 1.0
-References: <20220624143912.1234427-1-mcascell@redhat.com>
- <CAA8xKjXvhnAyHDH43xcg9_HRqNqf04QhTpcrB2s4ae1d_WWuxw@mail.gmail.com>
-In-Reply-To: <CAA8xKjXvhnAyHDH43xcg9_HRqNqf04QhTpcrB2s4ae1d_WWuxw@mail.gmail.com>
-From: Mauro Matteo Cascella <mcascell@redhat.com>
-Date: Sun, 27 Aug 2023 13:07:21 +0200
-Message-ID: <CAA8xKjVyqbJrkdL-DF0=DsDWFKOkJqqwUa-5kAyn8n+qp2u8iQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/net/rocker: avoid NULL pointer dereference in
- of_dpa_cmd_add_l2_flood
-To: qemu-devel@nongnu.org
-Cc: jiri@resnulli.us, jasowang@redhat.com, arayz_w@icloud.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8f824f3-add2-a6ea-1e78-48aa9d1b6e56@linaro.org>
+X-IMT-Source: Extern
+X-IMT-rspamd-score: 14
+X-IMT-Spam-Score: 0.0 ()
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.8.27.105717, AntiVirus-Engine: 6.0.2,
+ AntiVirus-Data: 2023.8.20.602000
+X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
+Received-SPF: pass client-ip=2001:638:502:c003::18;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=nylar.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,68 +70,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Aug 26, 2023 at 4:31=E2=80=AFPM Mauro Matteo Cascella
-<mcascell@redhat.com> wrote:
->
-> On Fri, Jun 24, 2022 at 4:40=E2=80=AFPM Mauro Matteo Cascella
-> <mcascell@redhat.com> wrote:
-> >
-> > rocker_tlv_parse_nested could return early because of no group ids in
-> > the group_tlvs. In such case tlvs is NULL; tlvs[i + 1] in the next
-> > for-loop will deref the NULL pointer.
-
-Looking at the code once again, tlvs is a pointer to a g_new0
-allocated memory, so I don't know how it can be NULL after
-rocker_tlv_parse_nested (unless g_new0 returns NULL in the first
-place). I do not recall the details of this bug. Arayz?
-
-> Someone somehow reserved a new CVE for this bug, published a few days
-> ago here: https://nvd.nist.gov/vuln/detail/CVE-2022-36648.
->
-> Not only is this not CVE worthy (rocker code does not fall under the
-> KVM virtualization use case [1]) but what's most concerning is that it
-> got a CVSS score of 10 :/
->
-> I'm going to dispute this CVE. Hopefully, it will be rejected soon. In
-> any case, can we get this patch merged?
->
-> [1] https://www.qemu.org/docs/master/system/security.html
->
-> Thanks,
->
-> > Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-> > Reported-by: <arayz_w@icloud.com>
-> > ---
-> >  hw/net/rocker/rocker_of_dpa.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/hw/net/rocker/rocker_of_dpa.c b/hw/net/rocker/rocker_of_dp=
-a.c
-> > index b3b8c5bb6d..1611b79227 100644
-> > --- a/hw/net/rocker/rocker_of_dpa.c
-> > +++ b/hw/net/rocker/rocker_of_dpa.c
-> > @@ -2039,6 +2039,11 @@ static int of_dpa_cmd_add_l2_flood(OfDpa *of_dpa=
-, OfDpaGroup *group,
-> >      rocker_tlv_parse_nested(tlvs, group->l2_flood.group_count,
-> >                              group_tlvs[ROCKER_TLV_OF_DPA_GROUP_IDS]);
-> >
-> > +    if (!tlvs) {
-> > +        err =3D -ROCKER_EINVAL;
-> > +        goto err_out;
-> > +    }
+On Sat, Aug 26, 2023 at 09:50:51PM -0700, Richard Henderson wrote:
+> On 8/26/23 09:02, Bastian Koppelmann wrote:
+> > +uint32_t helper_ftou(CPUTriCoreState *env, uint32_t arg)
+> > +{
+> > +    float32 f_arg = make_float32(arg);
+> > +    uint32_t result;
+> > +    int32_t flags = 0;
 > > +
-> >      for (i =3D 0; i < group->l2_flood.group_count; i++) {
-> >          group->l2_flood.group_ids[i] =3D rocker_tlv_get_le32(tlvs[i + =
-1]);
-> >      }
-> > --
-> > 2.35.3
-> >
->
+> > +    if (float32_is_any_nan(f_arg)) {
+> > +        result = 0;
+> > +        flags |= float_flag_invalid;
+> > +    } else if (float32_lt_quiet(f_arg, 0, &env->fp_status)) {
+> > +        result = 0;
+> > +        flags = float_flag_invalid;
+> > +    } else {
+> > +        result = float32_to_uint32(f_arg, &env->fp_status);
+> > +        flags = f_get_excp_flags(env);
+> > +    }
+> 
+> You should allow softfloat to diagnose the special cases, and negative -> 0
+> is standard behaviour.  Therefore:
 
---=20
-Mauro Matteo Cascella
-Red Hat Product Security
-PGP-Key ID: BB3410B0
+You're right. However, there is one special case, negative -> 0 ought to raise
+float_flags_invalid. All that has already been done for ftouz, so I will match
+that implementation.
 
+Cheers,
+Bastian
 
