@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047D578B924
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B3078B91C
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:11:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiYT-00083l-0b; Mon, 28 Aug 2023 16:09:45 -0400
+	id 1qaiYT-00083p-Nk; Mon, 28 Aug 2023 16:09:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYR-00083R-94
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:09:43 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ id 1qaiYS-00083d-4J
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:09:44 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYO-0007KH-UX
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:09:42 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-99c0cb7285fso479170766b.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:09:40 -0700 (PDT)
+ id 1qaiYP-0007KP-W4
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:09:43 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-4ff09632194so5829453e87.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253377; x=1693858177;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SNKmUNq8vjFrfmjeadE78lwpPLhzoJ8zvJyLtcQaD78=;
- b=LyxjGN7bNzdCEnDvXvstCB6bPxbgCW/vyM6JaHQ4GHUjUagxOkTMfH7Sz6C9GonR+X
- WFPe6T8lgcIBPwwN1AXo5VB13LHYpWKxujvzlJSU01R0ehGCiIN9SjEVylHQJswEvUGw
- zxi/CCrlraRMw8z3ryjea23HuYrs9Vfe16o+PrYW4rWK1qNbtaJ9oKNKZ0g/QUNQzDZa
- AsSUcSwLjfclPujffbjBdVS3OWUuLMWDqb+gSrtADX6mb3vzn5Lq8EveBKq8V9M8Zvcf
- Nv/WhAXF6jeqqka8k9ATMX7cwmpswsLadVYUyDfxjHez+50emUT8mySbEu50M1HvBg+j
- K0ew==
+ d=gmail.com; s=20221208; t=1693253380; x=1693858180;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dbhAj08KImMbc5WgMU+hBPHTP5Ms6a+YvM+aYhMORU8=;
+ b=La/9oz/c4RqUcF6ejn8c4GnWqJMVTQHvbQZxibT1WCREo9H0ubzq7wVw9AZg5XkaZ7
+ CRNDZgRjiIoXSCbUuVq+dI59IWAi21foQhHXs6r1aRPUqow8hlsZbonkrVm8uxMJOPMX
+ FDSBYyOVsBq8vLWL0jmHKcWJDxmy5GL7MCN1oT+JLH1vNVBwFwdyx3/ktUFZQJT1S/Nz
+ DCWrZISgQm7NeA1XA1FMsdwBE813leHK26UfrHq+ksEL55gGp7mXYlTWWjXoZ003/c5z
+ NJgqQ8SeGlLf3Q51a5GFPQqv1tOY/+8WqZCE/bVmJfpSHnagnvaVWm1ygkft8zcyrMx6
+ nHgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253377; x=1693858177;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SNKmUNq8vjFrfmjeadE78lwpPLhzoJ8zvJyLtcQaD78=;
- b=BkHB560BhcdkJAZBOD04lj02ehKlmvMCMZQNYtbwGSi/J8TQAkvKz92JpE3lbNa+0l
- i0e5MbkJrREKHHECdeyh7UoenEW1A470j/X/yl2qo9hpfhzYJ8yLcN8qok1F9o9j0jwZ
- siDV1DCcj9lwNr4W/fCOfzx1Z+XuwSH+Y8AfkPFS9UIl9qrLGXRoZw7BOSPfnEugBYXW
- pAgSifgZekVsiSV7ANCncNJVJwVEGoq+xvtmgaS36kLgwuNBbX4Tkr6ZWkmfkzTuOd0S
- CJrnVHnMuEnDZaoQIUjjIyyjwOFRtd5K9SBZdPlXoVN0HqAUExdeqbopdnlsJSMYZZbb
- KlUw==
-X-Gm-Message-State: AOJu0YwKRUMgcENTqs72E3+mAbHpfW26VnYAMxS0MvEa44pgaDuCN5Mb
- dNTxAvTxZaNmTbui78jp4UVrCaRqZ/XYdA==
-X-Google-Smtp-Source: AGHT+IHzbN6IbViaRVQ4rMnSiRh9BIZgrNzs53T4mQH+cejrTa1LozqyyaOBupbzwJNPI9M0icpxRQ==
-X-Received: by 2002:a17:907:7818:b0:99b:d075:18ba with SMTP id
- la24-20020a170907781800b0099bd07518bamr17596372ejc.56.1693253377128; 
- Mon, 28 Aug 2023 13:09:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693253380; x=1693858180;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dbhAj08KImMbc5WgMU+hBPHTP5Ms6a+YvM+aYhMORU8=;
+ b=UO90tP2UrZ6obw81TOj4kSWzyA1aW+/ScNvMHK9OFKxPD1dzw9VUGpIzCvaLvfmWOk
+ dP4kkQBv9D7gwhqG8jnihsSr13gOM7PS2ecJytH/sEkBeVuiwCEujvM0yyxqZkeSjUUR
+ 9vP3nRsI/wE/z9jrns/P/lsQGsm/Qv8eQGkvRE5hA+nIV9z7rBIIcnXiNAz1PJDGzvzx
+ cBK2LSaOJunGYRBF5jQsXOaM2L3iYQaOIDESQopQQvbqAQOBqURSM8l0grMlTUHLA+rP
+ r6NHJw2Zh/j912fnktGxXb4tFniTLpj16t4AjlgGbMKPsLZyQ/6pYr6vqYSN5WA8w9XQ
+ aDHQ==
+X-Gm-Message-State: AOJu0YxlEqjvTwCGnrP4EbkDs5ycep0H1mHTbIT+XDUULesv6V0dSwOK
+ KnHscMRWxM+SnIWiF9l5JV96asTMYEnGaw==
+X-Google-Smtp-Source: AGHT+IEGsjyuXD+mOUef1EmG3IL1w8WwYC6SiGoWRcJTtRMMnLVyoY+u93xQnU6RX30XUfglTnt4sg==
+X-Received: by 2002:ac2:4c07:0:b0:500:12c6:c915 with SMTP id
+ t7-20020ac24c07000000b0050012c6c915mr16308664lfq.67.1693253379523; 
+ Mon, 28 Aug 2023 13:09:39 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.09.34
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.09.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:09:36 -0700 (PDT)
+ Mon, 28 Aug 2023 13:09:39 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 00/32] bsd-user: Implement freebsd process related system
- calls.
-Date: Sun, 27 Aug 2023 17:57:14 +0200
-Message-Id: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
+Cc: imp@bsdimp.com, Kyle Evans <kevans@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH 01/32] bsd-user: define TARGET_RFSPAWN for rfork to use
+ vfork(2) semantics.
+Date: Sun, 27 Aug 2023 17:57:15 +0200
+Message-Id: <20230827155746.84781-2-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
+References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -92,72 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Kyle Evans <kevans@FreeBSD.org>
 
+Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+---
+ bsd-user/syscall_defs.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Karim Taha (1):
-  bsd-user: Add freebsd/os-proc.c to meson.build
-
-Kyle Evans (2):
-  bsd-user: define TARGET_RFSPAWN for rfork to use vfork(2) semantics.
-  bsd-user: Get number of cpus.
-
-Stacey Son (28):
-  bsd-user: Implement procctl(2) system call.
-  bsd-user: Implement host_to_target_siginfo.
-  bsd-user: Add freebsd_exec_common and do_freebsd_procctl to qemu.h.
-  bsd-user: add extern declarations for bsd-proc.c conversion functions
-  bsd-user: Implement target_to_host_resource conversion function
-  bsd-user: Implement target_to_host_rlim and host_to_target_rlim
-    conversion.
-  bsd-user: Implement host_to_target_rusage and host_to_target_wrusage.
-  bsd-user: Implement host_to_target_waitstatus conversion.
-  bsd-user: Implement getgroups(2) and setgroups(2) system calls.
-  bsd-user: Implement umask(2), setlogin(2) and getlogin(2)
-  bsd-user: Implement getrusage(2).
-  bsd-user: Implement getrlimit(2) and setrlimit(2)
-  bsd-user: Implement several get/set system calls:
-  bsd-user: Implement get/set[resuid/resgid/sid] and issetugid.
-  bsd-user: Add stubs for profil(2), ktrace(2), utrace(2) and ptrace(2).
-  bsd-user: Implement getpriority(2) and setpriority(2).
-  bsd-user: Implement get_filename_from_fd.
-  bsd-user: Implement freebsd_exec_common, used in implementing
-    execve/fexecve.
-  bsd-user: Implement t2h procctl control request commands and h2t
-    reaper status struct conversion.
-  bsd-user: Implement h2t reaper_pidinfo and h2t/t2h reaper_kill structs
-    conversion functions.
-  bsd-user: Implement procctl(2) system call.
-  bsd-user: Implement execve(2) and fexecve(2) system calls.
-  bsd-user: Implement wait4(2) and wait6(2) system calls.
-  bsd-user: Implement setloginclass(2) and getloginclass(2) system
-    calls.
-  bsd-user: Implement pdgetpid(2) and the undocumented setugid.
-  bsd-user: Implement fork(2) and vfork(2) system calls.
-  bsd-user: Implement rfork(2) system call.
-  bsd-user: Implement pdfork(2) system call.
-
-Warner Losh (1):
-  bsd-user: Add bsd-proc.c to meson.build
-
- bsd-user/bsd-proc.c           | 226 ++++++++++++++++
- bsd-user/bsd-proc.h           | 382 +++++++++++++++++++++++++++
- bsd-user/freebsd/meson.build  |   1 +
- bsd-user/freebsd/os-proc.c    | 467 ++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-proc.h    | 283 ++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c | 204 +++++++++++++++
- bsd-user/main.c               |   2 +-
- bsd-user/meson.build          |   6 +
- bsd-user/qemu-bsd.h           |  38 +++
- bsd-user/qemu.h               |   7 +
- bsd-user/signal-common.h      |   1 +
- bsd-user/signal.c             |   6 +
- bsd-user/syscall_defs.h       |  46 ++++
- 13 files changed, 1668 insertions(+), 1 deletion(-)
- create mode 100644 bsd-user/bsd-proc.c
- create mode 100644 bsd-user/freebsd/os-proc.c
- create mode 100644 bsd-user/freebsd/os-proc.h
- create mode 100644 bsd-user/qemu-bsd.h
-
+diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
+index e4825f2662..daf7f5637e 100644
+--- a/bsd-user/syscall_defs.h
++++ b/bsd-user/syscall_defs.h
+@@ -179,6 +179,10 @@ struct target_freebsd__wrusage {
+     struct target_freebsd_rusage wru_children;
+ };
+ 
++/* sys/unistd.h */
++/* user: vfork(2) semantics, clear signals */
++#define TARGET_RFSPAWN (1U << 31)
++
+ #define safe_syscall0(type, name) \
+ type safe_##name(void) \
+ { \
 -- 
 2.40.0
 
