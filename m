@@ -2,52 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D83789BB0
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 09:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4382789BBE
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 09:20:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qa9uM-0000lV-Qh; Sun, 27 Aug 2023 03:10:02 -0400
+	id 1qaA3F-0002nX-OY; Sun, 27 Aug 2023 03:19:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qa9uD-0000lD-D7
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 03:09:53 -0400
+ id 1qaA3C-0002ln-Pf
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 03:19:10 -0400
 Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qa9uA-0003Vu-1w
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 03:09:53 -0400
+ id 1qaA39-0004z2-ET
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 03:19:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rr/qfc9Tg+PQhoqoWZC+1s9H+//27yQPrWAI7kAd/CE=; b=FxyhdT/4h8VOMWDgWvTLQVwNDJ
- uQt942I7j4ijfog3n6bMytPLgn3GbWrqqsDxmIk47BJ2V2Rno53FVTAjksAnkT8YyaOm3PfPGriel
- YWb6kkuxrU/uGaFxy2DnsRQpAUVBwuFV3fcUUUMDUa1Au4gCfRp395SatSF0rgE/17YU=;
-Date: Sun, 27 Aug 2023 09:09:42 +0200
+ bh=zLkL/AHI9GZPzG6l3Q3u3fUSrzIH12DJmHNVjjmsR0k=; b=uLNQ8snFRl9/+p4Qfc75gvtNDu
+ JpFITkFxllA4RRDDwY1YRbPFJUsm73bJrr65fHTQvrq48925n0XHZc2yOQ8z7wVOfXc02Adb7BKgJ
+ DyhRfYl5mXE5Y/AAYHDuGSh5F2NXvT5Yms982YXjZO4Qv8qNbzdQvrJoJyUAb5k6ImLA=;
+Date: Sun, 27 Aug 2023 09:18:58 +0200
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, anton.kochkov@proton.me
-Subject: Re: [PATCH 05/10] target/tricore: Implement ftohp insn
-Message-ID: <z2hqeuxwnmwuc7pxoogvxghk2ngs2oqdpms4n6iiqxwtpspsc6@qz6iu56qxv2d>
+Subject: Re: [PATCH 08/10] target/tricore: Swap src and dst reg for RCRR_INSERT
+Message-ID: <ko2oihnjtflde4xrnljzbkehzkoljwps54q7r5tpft6v7v4rq7@f3fjd5ui7rtw>
 References: <20230826160242.312052-1-kbastian@mail.uni-paderborn.de>
- <20230826160242.312052-6-kbastian@mail.uni-paderborn.de>
- <5598bd01-6d2e-5661-8cb5-aa5a49b22ffd@linaro.org>
+ <20230826160242.312052-9-kbastian@mail.uni-paderborn.de>
+ <6a02b146-2b2e-8be1-e032-16671ef93a90@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5598bd01-6d2e-5661-8cb5-aa5a49b22ffd@linaro.org>
+In-Reply-To: <6a02b146-2b2e-8be1-e032-16671ef93a90@linaro.org>
 X-IMT-Source: Extern
 X-IMT-rspamd-score: 4
 X-IMT-Spam-Score: 0.0 ()
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.8.27.70017, AntiVirus-Engine: 6.0.2,
+ Antispam-Data: 2023.8.27.70617, AntiVirus-Engine: 6.0.2,
  AntiVirus-Data: 2023.8.20.602000
-X-Sophos-SenderHistory: ip=84.184.52.128, fs=17163396, da=180729248, mc=21,
- sc=0, hc=21, sp=0, fso=17163396, re=0, sd=0, hd=0
 X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
 Received-SPF: pass client-ip=2001:638:502:c003::15;
  envelope-from=kbastian@mail.uni-paderborn.de; helo=shirlock.uni-paderborn.de
@@ -72,44 +70,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Aug 26, 2023 at 09:55:05PM -0700, Richard Henderson wrote:
+On Sat, Aug 26, 2023 at 10:06:22PM -0700, Richard Henderson wrote:
 > On 8/26/23 09:02, Bastian Koppelmann wrote:
-> > +uint32_t helper_ftohp(CPUTriCoreState *env, uint32_t arg)
-> > +{
-> > +    float32 f_arg = make_float32(arg);
-> > +    uint32_t result = 0;
-> > +    int32_t flags = 0;
-> > +
-> > +    if (float32_is_infinity(f_arg)) {
-> > +        if (float32_is_neg(f_arg)) {
-> > +            return  HP_NEG_INFINITY;
-> > +        } else {
-> > +            return  HP_POS_INFINITY;
-> > +        }
-> > +    } else if (float32_is_any_nan(f_arg)) {
-> > +        if (float32_is_signaling_nan(f_arg, &env->fp_status)) {
-> > +            flags |= float_flag_invalid;
-> > +        }
-> > +        result = float16_set_sign(result, arg >> 31);
-> > +        result = deposit32(result, 10, 5, 0x1f);
-> > +        result = deposit32(result, 8, 2, extract32(arg, 21, 2));
-> > +        result = deposit32(result, 0, 8, extract32(arg, 0, 8));
-> > +        if (extract32(result, 0, 10) == 0) {
-> > +            result |= (1 << 8);
-> > +        }
-> > +    } else {
-> > +        set_flush_to_zero(0, &env->fp_status);
-> > +        result = float32_to_float16(f_arg, true, &env->fp_status);
-> > +        set_flush_to_zero(1, &env->fp_status);
-> > +        flags = f_get_excp_flags(env);
-> > +    }
+> > Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+> > ---
+> >   target/tricore/translate.c          | 8 ++++----
+> >   tests/tcg/tricore/asm/macros.h      | 9 +++++++++
+> >   tests/tcg/tricore/asm/test_insert.S | 5 +++++
+> >   3 files changed, 18 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+> > index d13f85c03a..a68660b326 100644
+> > --- a/target/tricore/translate.c
+> > +++ b/target/tricore/translate.c
+> > @@ -8225,12 +8225,12 @@ static void decode_32Bit_opc(DisasContext *ctx)
+> >           temp2 = tcg_temp_new(); /* width*/
+> >           temp3 = tcg_temp_new(); /* pos */
+> > -        CHECK_REG_PAIR(r3);
+> > +        CHECK_REG_PAIR(r2);
 > 
-> All of this is standard behaviour.  All you need is the final else case.
+> While it looks as if the end result is the same, it appears the macros used
+> just above are wrong.  The field definitions for RCRR on page 1-4 do not
+> match the field definitions for INSERT.RCRR on page 3-118.
 
-Unfortunately not quite. For NANs the top 2 and lower 8 output mantissa bits need to be
-set to the top 2 and lower 8 input mantissa bits respectively. This behaviour is
-unique to ftohp and hptof, so I don't think we should specialize it in
-parts64_default_nan().
+Looks correct to me. I guess it is confusing that RCRR on page 1-4 uses s1, s2,
+etc., and d for the reg names, while INSERT.RCRR on page 3-118 enumerates the reg
+names from a to d. So the "d" for dst from page 1-4 is not the same "d" on page
+3-118.
 
 Cheers,
 Bastian
