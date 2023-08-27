@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC09789CDB
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 12:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 724C6789D2A
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 13:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaCYa-0001Mn-HN; Sun, 27 Aug 2023 05:59:44 -0400
+	id 1qaDcM-0002em-JO; Sun, 27 Aug 2023 07:07:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qaCYZ-0001MR-1r
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 05:59:43 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qaCYW-0004PK-OZ
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 05:59:42 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2bcde83ce9fso34099861fa.1
- for <qemu-devel@nongnu.org>; Sun, 27 Aug 2023 02:59:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693130377; x=1693735177;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p+pHSRZnVyLWBgANdJc+RDlydoOk8kYURdKE3lykQXo=;
- b=N0AG6CQcRxaPDlr1cGgrNTUUm7UjjRm41GmS0C2DHDaGAh/7rg/UmZJLFkMqwCR3mp
- NGdPgmFiAHY36EBLPdVpaCrvwViREGkNLIHyqSEg5EasdYIOTv8q+af5DAp7el725TMG
- ylNCd3rs23EeOXD4raG+JDHrItowwJB4m5E68ToQyFhZaW+4ojfFd6SAzfVIYCvCWntt
- 4X2oEeXxFKyKV3vgGQNGN/1ILV73I9stiiGSyjfNr/KGeaGqpW1XGU9sy/QvSsXUN6Am
- v09sjcTcmgaIlxdOeZx0f6+LqHbJbAyq3ClyYkZh08I/Nu8ClIYMJQe08yslGPLlNQMb
- rpTQ==
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1qaDcK-0002ZW-T9
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 07:07:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1qaDcH-0005PY-JI
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 07:07:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693134456;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zXfpdYKIYqW4Mc13sAQrMyTr+Dbh9oBP6jXDHpgQQyU=;
+ b=ML0qJUuAjjGCes5ts6A7QfzR4LPP+nFeBieWpB578a79bewRESG2Ropqd/j/L7KpPYKarR
+ EEqY9vRoveR2K/zlS9FkUYg3YmOTTGvLDb6uk3BmEFI6d4lsNXDEXdZxf/c6zcwxoJQcqt
+ Sw/UJRVXb2yZoTX16KBp8BCRB9WDYfU=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-33-1ukUzH5sPwGGQN2JTofrDQ-1; Sun, 27 Aug 2023 07:07:33 -0400
+X-MC-Unique: 1ukUzH5sPwGGQN2JTofrDQ-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-44d4b63c84cso895262137.3
+ for <qemu-devel@nongnu.org>; Sun, 27 Aug 2023 04:07:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693130377; x=1693735177;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=p+pHSRZnVyLWBgANdJc+RDlydoOk8kYURdKE3lykQXo=;
- b=G9iBSreacreZr0F7xouJ0KP6KmKnaF7CUzMVTEP8axYFbzxpMTNCSkM+GQYShdynoJ
- 5ZIjLbQM97ghlpuLvuOS3zg46Qy4coCLe2iMJBI6v4yUNV9LPRJBIYJQdqhIO4Vtit45
- TmBE6F39RZiuFlb207elTugDvBh4p3qCNQVeUwe44KwRNjBxpr2GNPLMgXnysjPRvv/h
- ETvg7IYr8fzVNoxudjOY3Nxd5vTIUl5GhsiwUb8NAsDQa9GRvNMbNKHQEiyqzpg9g940
- uvLJ27UYrEeyC4fzBZtGr1G+4T9BdF8axeFzqr1/gjtbBWAhfvaeeWBbSLI5m6xlVWGh
- V7tg==
-X-Gm-Message-State: AOJu0Yw0qREu6kHl0qkkycm5MSJRhgY1k31ge28dkle5shL2gPbV244K
- XJQBaJZHSOcw80xnzErsP24zgP30i90Iuv3C8KU=
-X-Google-Smtp-Source: AGHT+IHzpDImEaj9EZ2ESLO0kr94i0oFdcrI99KrxL+JuSfMI9CT5GqukeDV1KaPgd6KmGDhyfbXqA==
-X-Received: by 2002:a2e:9185:0:b0:2bc:bb46:4fc7 with SMTP id
- f5-20020a2e9185000000b002bcbb464fc7mr14586726ljg.24.1693130377609; 
- Sun, 27 Aug 2023 02:59:37 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- k8-20020a7bc408000000b003fe23b10fdfsm10516167wmi.36.2023.08.27.02.59.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Aug 2023 02:59:37 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 03DDE1FFBB;
- Sun, 27 Aug 2023 10:59:37 +0100 (BST)
-References: <20230826232415.80233-1-richard.henderson@linaro.org>
- <20230826232415.80233-4-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.15; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, pbonzini@redhat.com
-Subject: Re: [PATCH 3/3] softmmu: Remove cpu_reloading_memory_map as unused
-Date: Sun, 27 Aug 2023 10:59:24 +0100
-In-reply-to: <20230826232415.80233-4-richard.henderson@linaro.org>
-Message-ID: <87sf844xh2.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1693134452; x=1693739252;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zXfpdYKIYqW4Mc13sAQrMyTr+Dbh9oBP6jXDHpgQQyU=;
+ b=Z3bPtgFX1mLnz3hZ9WsP5JeW+FipabIb4Q6udtGnwp65ZmhK2KZVtkFVNDRZHWqnYc
+ itUvWGkHrekoESSUqBH699KV3pLLpT8czdEVHwcTwj+eeQyiO4dzeFUWrWbe4XfXt/io
+ LM4B8UHjyvml9UtS3cMA5xHrnjfSbg+wwrhR51KTDMKP8z1FAYbd9cSxGuD0/fQsT6Va
+ WA+GApPwkEOJg2vITs1pQ2uI/HCWy26Nh4U+OzxTPAr7gpsd2CeFeNqUhSl4DFbUtZ1O
+ LOErfmjqkxWsfa3Y9ghW835cByZy2mF/PVS7RWk6jw6N2e8t+OXZMJLK2RHfKzQ2h8t1
+ t/Sw==
+X-Gm-Message-State: AOJu0YwWRf5AN4XGA9iWs1xcHO1jsj8Za7n/EFfTWyImXIn1X/N0n5ul
+ yN4ZrNnSCvPKYJmchzLkDrjBq7h8/vHG4mmNaHHzqoAbkizwxlTW3G0hAfJRkrUwTNe4/SY/eCd
+ WvZjL2YUMOeO0NzMct3RCw56XTu9dSGL3ChZGqs69hA==
+X-Received: by 2002:a1f:de04:0:b0:48d:2e3d:2d57 with SMTP id
+ v4-20020a1fde04000000b0048d2e3d2d57mr17792406vkg.4.1693134452624; 
+ Sun, 27 Aug 2023 04:07:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETAl3cFaShN9+UTRCrzjw40ySqqIEUgbxgG0DmN1yPEjhPq3hQbZhmFtcwNxb7w5A/VKaJz+b4BXPH+RL2TsI=
+X-Received: by 2002:a1f:de04:0:b0:48d:2e3d:2d57 with SMTP id
+ v4-20020a1fde04000000b0048d2e3d2d57mr17792398vkg.4.1693134452360; Sun, 27 Aug
+ 2023 04:07:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20220624143912.1234427-1-mcascell@redhat.com>
+ <CAA8xKjXvhnAyHDH43xcg9_HRqNqf04QhTpcrB2s4ae1d_WWuxw@mail.gmail.com>
+In-Reply-To: <CAA8xKjXvhnAyHDH43xcg9_HRqNqf04QhTpcrB2s4ae1d_WWuxw@mail.gmail.com>
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+Date: Sun, 27 Aug 2023 13:07:21 +0200
+Message-ID: <CAA8xKjVyqbJrkdL-DF0=DsDWFKOkJqqwUa-5kAyn8n+qp2u8iQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/net/rocker: avoid NULL pointer dereference in
+ of_dpa_cmd_add_l2_flood
+To: qemu-devel@nongnu.org
+Cc: jiri@resnulli.us, jasowang@redhat.com, arayz_w@icloud.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,84 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Richard Henderson <richard.henderson@linaro.org> writes:
-
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-This is just cleanup, I think it should be merged with 2/3
-
-> ---
->  include/exec/cpu-common.h   |  1 -
->  accel/tcg/cpu-exec-common.c | 30 ------------------------------
->  2 files changed, 31 deletions(-)
+On Sat, Aug 26, 2023 at 4:31=E2=80=AFPM Mauro Matteo Cascella
+<mcascell@redhat.com> wrote:
 >
-> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-> index 87dc9a752c..41788c0bdd 100644
-> --- a/include/exec/cpu-common.h
-> +++ b/include/exec/cpu-common.h
-> @@ -133,7 +133,6 @@ static inline void cpu_physical_memory_write(hwaddr a=
-ddr,
->  {
->      cpu_physical_memory_rw(addr, (void *)buf, len, true);
->  }
-> -void cpu_reloading_memory_map(void);
->  void *cpu_physical_memory_map(hwaddr addr,
->                                hwaddr *plen,
->                                bool is_write);
-> diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
-> index 9a5fabf625..7e35d7f4b5 100644
-> --- a/accel/tcg/cpu-exec-common.c
-> +++ b/accel/tcg/cpu-exec-common.c
-> @@ -33,36 +33,6 @@ void cpu_loop_exit_noexc(CPUState *cpu)
->      cpu_loop_exit(cpu);
->  }
->=20=20
-> -#if defined(CONFIG_SOFTMMU)
-> -void cpu_reloading_memory_map(void)
-> -{
-> -    if (qemu_in_vcpu_thread() && current_cpu->running) {
-> -        /* The guest can in theory prolong the RCU critical section as l=
-ong
-> -         * as it feels like. The major problem with this is that because=
- it
-> -         * can do multiple reconfigurations of the memory map within the
-> -         * critical section, we could potentially accumulate an unbounded
-> -         * collection of memory data structures awaiting reclamation.
-> -         *
-> -         * Because the only thing we're currently protecting with RCU is=
- the
-> -         * memory data structures, it's sufficient to break the critical=
- section
-> -         * in this callback, which we know will get called every time the
-> -         * memory map is rearranged.
-> -         *
-> -         * (If we add anything else in the system that uses RCU to prote=
-ct
-> -         * its data structures, we will need to implement some other mec=
-hanism
-> -         * to force TCG CPUs to exit the critical section, at which poin=
-t this
-> -         * part of this callback might become unnecessary.)
-> -         *
-> -         * This pair matches cpu_exec's rcu_read_lock()/rcu_read_unlock(=
-), which
-> -         * only protects cpu->as->dispatch. Since we know our caller is =
-about
-> -         * to reload it, it's safe to split the critical section.
-> -         */
-> -        rcu_read_unlock();
-> -        rcu_read_lock();
-> -    }
-> -}
-> -#endif
-> -
->  void cpu_loop_exit(CPUState *cpu)
->  {
->      /* Undo the setting in cpu_tb_exec.  */
+> On Fri, Jun 24, 2022 at 4:40=E2=80=AFPM Mauro Matteo Cascella
+> <mcascell@redhat.com> wrote:
+> >
+> > rocker_tlv_parse_nested could return early because of no group ids in
+> > the group_tlvs. In such case tlvs is NULL; tlvs[i + 1] in the next
+> > for-loop will deref the NULL pointer.
 
+Looking at the code once again, tlvs is a pointer to a g_new0
+allocated memory, so I don't know how it can be NULL after
+rocker_tlv_parse_nested (unless g_new0 returns NULL in the first
+place). I do not recall the details of this bug. Arayz?
+
+> Someone somehow reserved a new CVE for this bug, published a few days
+> ago here: https://nvd.nist.gov/vuln/detail/CVE-2022-36648.
+>
+> Not only is this not CVE worthy (rocker code does not fall under the
+> KVM virtualization use case [1]) but what's most concerning is that it
+> got a CVSS score of 10 :/
+>
+> I'm going to dispute this CVE. Hopefully, it will be rejected soon. In
+> any case, can we get this patch merged?
+>
+> [1] https://www.qemu.org/docs/master/system/security.html
+>
+> Thanks,
+>
+> > Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+> > Reported-by: <arayz_w@icloud.com>
+> > ---
+> >  hw/net/rocker/rocker_of_dpa.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/hw/net/rocker/rocker_of_dpa.c b/hw/net/rocker/rocker_of_dp=
+a.c
+> > index b3b8c5bb6d..1611b79227 100644
+> > --- a/hw/net/rocker/rocker_of_dpa.c
+> > +++ b/hw/net/rocker/rocker_of_dpa.c
+> > @@ -2039,6 +2039,11 @@ static int of_dpa_cmd_add_l2_flood(OfDpa *of_dpa=
+, OfDpaGroup *group,
+> >      rocker_tlv_parse_nested(tlvs, group->l2_flood.group_count,
+> >                              group_tlvs[ROCKER_TLV_OF_DPA_GROUP_IDS]);
+> >
+> > +    if (!tlvs) {
+> > +        err =3D -ROCKER_EINVAL;
+> > +        goto err_out;
+> > +    }
+> > +
+> >      for (i =3D 0; i < group->l2_flood.group_count; i++) {
+> >          group->l2_flood.group_ids[i] =3D rocker_tlv_get_le32(tlvs[i + =
+1]);
+> >      }
+> > --
+> > 2.35.3
+> >
+>
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Mauro Matteo Cascella
+Red Hat Product Security
+PGP-Key ID: BB3410B0
+
 
