@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D25078B934
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C28578B91D
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:11:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiYi-00086T-Lt; Mon, 28 Aug 2023 16:10:00 -0400
+	id 1qaiYl-000873-2p; Mon, 28 Aug 2023 16:10:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYf-00085w-L0
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:09:57 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1qaiYi-00086X-Pv
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:00 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYd-0007Mx-FP
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:09:57 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-99de884ad25so484487266b.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:09:55 -0700 (PDT)
+ id 1qaiYg-0007NA-AF
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:00 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2bcb50e194dso55285851fa.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:09:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253394; x=1693858194;
+ d=gmail.com; s=20221208; t=1693253396; x=1693858196;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4iSOxLEnRmlavXANl3gqOotvuJhzKvKKZdyP5X9HPaY=;
- b=fbi9+D+NbCwA4HiNy1AlK/6nW02NdzBv04mn1HMJ06MqrLWHXLgyEU3Mli0WFCMXql
- Tr2FoS1ba8DxwAAhT5tSdRTuXb+jMFjJkn+TtoFmI63gmzPHveRo+kZXX0Al/AVUpEz8
- 8QTxkMu3l5VB9KVZtvF+3KX7HunTMKBs+QjxBvbrxFW/T9oKy6jXws+bUYhmR+j8RrsI
- iRKLUq5/oxLfc1h+OT/YGOqYYIAEA8UI6s36COeMJ9WTdFA4CwUDbx8zdQYrXXHOC7iQ
- wr9EYMy+9JTtHm7JRD9mKh/FSxluyGJ9r6VpToDfgmEU7FKDAJ12xbJ5rdv2Kz7pPeg5
- LI0Q==
+ bh=Lf4E6n27eQkUsjdF4nO89SKJQY0WwuuH7rr5VrB/ebI=;
+ b=o1fZi32+prVPdO7T/litxi+4cxvwN7Py90zu9XcmWctwKneTTOPqHwb1Q6vkabnejY
+ RVW5IUiq8L5B/07AZAauOw15eV9sal5T4S7GtjKSSziMQgd1L8L5hR8V0PpzH0Ldji+O
+ 2toEGn2UFOkgXrylTWMyqsMp34vHSsfYtSsDYWCCnCQNyeMhdGh/6A+WithL5PA/ZXHp
+ UoVeZOmBF3TJJ8WTX9sKrVliyQkx8K6CvoeL+f5Oj19bpon8ZF/KGyLFXXe2n+kTt8wz
+ HT9sQ0127l39/MBzh/kWKg1aZWibdqjjSyAPbYF0uJedE0FD1PL3ElL+DzVqQ1E2h4SF
+ qVYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253394; x=1693858194;
+ d=1e100.net; s=20221208; t=1693253396; x=1693858196;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4iSOxLEnRmlavXANl3gqOotvuJhzKvKKZdyP5X9HPaY=;
- b=iO4RsHGs7ja7tDsoL4ClonyWlJ1hFGMPL1tlrakN5OOB3rr+ewsL3lh7SCLH6n95lr
- DATMUYmvQCiZen/29BTBzfrPgVi2cDTOxZNKzgGqaoXpRWZtqshq6XmK6AzCRJ2hXiE6
- FUmP7Dcj1j9yKqrbi7OH6YHhmDpnIF+EzL541negMlAlNlkJy5i+yqW+yMVX0NBn3ai8
- BcWecvSUkPOkyeInjhcwBxV631KLBKMdGFEkxFdJfGf+SEOzRWBVv/qIDN/YfSkZUvsv
- 5Fmb3d/FQqjH10ufN9wxaYIfzk7bjfNnUb8K/zeDHnhhg/hIn3LTiDvipt4cy3zPPQFY
- n6hw==
-X-Gm-Message-State: AOJu0Yx2B+9UtcfEqVlSxy59AkNwual3dVx5bwxSorvVpRzDSOKh7oz/
- vDUF0vKvzVXOeDnCgs5kjC2hCQguUCRfDQ==
-X-Google-Smtp-Source: AGHT+IEkmiREQG85IEJKqj+gwYuardZ3dDpryZ8jbw0QIw+ekvXjAtlRd0scRMLgTsQpeif0Jdf3hA==
-X-Received: by 2002:a17:906:cc18:b0:99b:f58d:1c49 with SMTP id
- ml24-20020a170906cc1800b0099bf58d1c49mr22079541ejb.53.1693253393875; 
- Mon, 28 Aug 2023 13:09:53 -0700 (PDT)
+ bh=Lf4E6n27eQkUsjdF4nO89SKJQY0WwuuH7rr5VrB/ebI=;
+ b=FoN17gFQ3BrMT8weKGcP0ygSvKQe4FKPDLMcJe6M6iUPvajeaxDNj+t/Lxw65jgfiG
+ o9r2Z/uazeKF1bkKgsCq2AMVykN41v1oRecTYDtHR8SaaWkPMxZ52SmrNVKUxcXDTuv8
+ a/mwFv/B/u6KXAJdXwQQdOdPRiYOQwNsOwLy28pphnDZAghDSnqG53BXBaOvbPn4POd+
+ +xNEB21btfGxWsKNgQfqT05mJGAIXVf6DnNe8kYuGqzlpE0BbMDgc0lpEycb0UlWuLpY
+ 5b/jSM7fZ/lRjKWi6Uv9CjAs9Xkt0ShVQATllG9GUg3G76KCS18428r59Iq5Lq76BRRO
+ Nufw==
+X-Gm-Message-State: AOJu0Yzk0wKjyUfU5MSkIVhWOwRwVfUx0C8+AqdjbSceMbDyfLD6/yQx
+ X6yiRkLYbBo7NtQNPvOH1BQ+UafvfmuX7w==
+X-Google-Smtp-Source: AGHT+IEowMzLfNzbq6UjnJxzJvdaMqouDlsCAbWsOBAebBQWXbbuNzgdoI1pMmF6zVP50sUQWlnH4A==
+X-Received: by 2002:a2e:8ecc:0:b0:2b5:bc27:d6eb with SMTP id
+ e12-20020a2e8ecc000000b002b5bc27d6ebmr19665528ljl.8.1693253396260; 
+ Mon, 28 Aug 2023 13:09:56 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.09.52
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.09.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:09:53 -0700 (PDT)
+ Mon, 28 Aug 2023 13:09:55 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 06/32] bsd-user: Add bsd-proc.c to meson.build
-Date: Sun, 27 Aug 2023 17:57:20 +0200
-Message-Id: <20230827155746.84781-7-kariem.taha2.7@gmail.com>
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH 07/32] bsd-user: Implement target_to_host_resource conversion
+ function
+Date: Sun, 27 Aug 2023 17:57:21 +0200
+Message-Id: <20230827155746.84781-8-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -93,54 +94,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+From: Stacey Son <sson@FreeBSD.org>
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-proc.h  | 4 ++++
- bsd-user/meson.build | 6 ++++++
- 2 files changed, 10 insertions(+)
+ bsd-user/bsd-proc.c | 83 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+ create mode 100644 bsd-user/bsd-proc.c
 
-diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-index a1061bffb8..048773a75d 100644
---- a/bsd-user/bsd-proc.h
-+++ b/bsd-user/bsd-proc.h
-@@ -22,6 +22,10 @@
- 
- #include <sys/resource.h>
- 
+diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
+new file mode 100644
+index 0000000000..ae2e636bb3
+--- /dev/null
++++ b/bsd-user/bsd-proc.c
+@@ -0,0 +1,83 @@
++/*
++ *  BSD process related system call helpers
++ *
++ *  Copyright (c) 2013-14 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++#include "qemu/osdep.h"
++
++#include <sys/param.h>
++#include <sys/types.h>
++#include <sys/cpuset.h>
++#include <sys/resource.h>
++#include <sys/wait.h>
++
++#include "qemu.h"
 +#include "qemu-bsd.h"
-+#include "gdbstub/syscalls.h"
-+#include "qemu/plugin.h"
++#include "signal-common.h"
 +
- /* exit(2) */
- static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
- {
-diff --git a/bsd-user/meson.build b/bsd-user/meson.build
-index 5243122fc5..b97fce1472 100644
---- a/bsd-user/meson.build
-+++ b/bsd-user/meson.build
-@@ -7,6 +7,7 @@ bsd_user_ss = ss.source_set()
- common_user_inc += include_directories('include')
- 
- bsd_user_ss.add(files(
-+  'bsd-proc.c',
-   'bsdload.c',
-   'elfload.c',
-   'main.c',
-@@ -16,6 +17,11 @@ bsd_user_ss.add(files(
-   'uaccess.c',
- ))
- 
-+elf = cc.find_library('elf', required: true)
-+procstat = cc.find_library('procstat', required: true)
-+kvm = cc.find_library('kvm', required: true)
-+bsd_user_ss.add(elf, procstat, kvm)
++#include "bsd-proc.h"
 +
- # Pull in the OS-specific build glue, if any
- subdir(targetos)
- 
++/*
++ * resource/rusage conversion
++ */
++int target_to_host_resource(int code)
++{
++
++    switch (code) {
++    case TARGET_RLIMIT_AS:
++        return RLIMIT_AS;
++
++    case TARGET_RLIMIT_CORE:
++        return RLIMIT_CORE;
++
++    case TARGET_RLIMIT_CPU:
++        return RLIMIT_CPU;
++
++    case TARGET_RLIMIT_DATA:
++        return RLIMIT_DATA;
++
++    case TARGET_RLIMIT_FSIZE:
++        return RLIMIT_FSIZE;
++
++    case TARGET_RLIMIT_MEMLOCK:
++        return RLIMIT_MEMLOCK;
++
++    case TARGET_RLIMIT_NOFILE:
++        return RLIMIT_NOFILE;
++
++    case TARGET_RLIMIT_NPROC:
++        return RLIMIT_NPROC;
++
++    case TARGET_RLIMIT_RSS:
++        return RLIMIT_RSS;
++
++    case TARGET_RLIMIT_SBSIZE:
++        return RLIMIT_SBSIZE;
++
++    case TARGET_RLIMIT_STACK:
++        return RLIMIT_STACK;
++
++    case TARGET_RLIMIT_SWAP:
++        return RLIMIT_SWAP;
++
++    case TARGET_RLIMIT_NPTS:
++        return RLIMIT_NPTS;
++
++    default:
++        return code;
++    }
++}
++
 -- 
 2.40.0
 
