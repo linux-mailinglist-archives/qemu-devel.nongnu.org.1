@@ -2,48 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1F5789FE3
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7F1789FE6
 	for <lists+qemu-devel@lfdr.de>; Sun, 27 Aug 2023 17:19:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaHWh-00086E-1f; Sun, 27 Aug 2023 11:18:07 -0400
+	id 1qaHWg-00084b-8B; Sun, 27 Aug 2023 11:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qaHWX-00084R-Us
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 11:17:58 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qaHWX-00084K-N9
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 11:17:57 -0400
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qaHWV-0006Lm-GP
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qaHWV-0006Lw-Gs
  for qemu-devel@nongnu.org; Sun, 27 Aug 2023 11:17:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id EE29760B45;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 8B8E260691;
+ Sun, 27 Aug 2023 15:17:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38EAC433C7;
  Sun, 27 Aug 2023 15:17:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35278C433C8;
- Sun, 27 Aug 2023 15:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1693149470;
- bh=t7djIhBxdxzBftR/8D2uF9d45AwL2exoVvZZTmdReus=;
- h=From:To:Cc:Subject:Date:From;
- b=iTR7wycpoQDbueaROUsbqMGxrxvFcTPX7QAmyy3PBDCicEtsaR8E3cF4xnKNMiQEu
- +oddI5hlkPGPf99yKQwYo+B0L6E9nYeBKiK82Xfp6+lJtQJAATP3/hXMOaAD1TYQ9W
- 7USuBsJsO8DS780e44xUStPNPLJbjNXkF5Tfjh5XmX7p16LEenZs8q9jWXuXlMjWig
- uIta/VHn8wVIDbc8P7NlmE7g8s4VYlwNsw8W4tLZ9T9EwoKK5RzbcxINoKdKgFDqRs
- F7KSIJjr9t+V8VSRXtVKYhBFLIqy5XwMoTNloGumUwTml1zzwavizmp1It3XQCN7zm
- NaVqam18r3k3g==
+ s=k20201202; t=1693149472;
+ bh=bf12EkYhs02Sea64Gguqzg5CpFkL3oXiSeHhMOzt/HM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=ipV/1VS8VJvBa2DgvoM2ZK5RR5r1ML4D2PfwrJXP4Aw5lEX07KCAfDJ/seUIswk+N
+ IfsVP2qzaQegVP9QKun4sGVzWwjnArrP/UKR4K6b8AbQ4W6e6XNKJ9yIqP3HVrCXVu
+ IXWj6edv9lwd+0FFoKeLCL5sMc2ibFjCuNelCc9CM4wmGCQUcBxFhj4RGxvrG9yMi2
+ /rMgyQp8ut98bx6aToh5+U3gTbpZVpATXd6wziyW/Jr8H7pDdl1jfGgonn1n7+81z/
+ 7BoEae1h8HBRoNxGTYg0zJ6/4qdmOskaSAWubHbcAQRstyQl7g/yqib9MMNJA7cKeq
+ Fs42Dgfjl9HCA==
 From: deller@kernel.org
 To: Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 0/5] Devel hppa priv cleanup2 patches
-Date: Sun, 27 Aug 2023 17:17:41 +0200
-Message-ID: <20230827151747.290653-1-deller@kernel.org>
+Cc: Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/5] target/hppa: Add missing PL1 and PL2 privilege levels
+Date: Sun, 27 Aug 2023 17:17:42 +0200
+Message-ID: <20230827151747.290653-2-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230827151747.290653-1-deller@kernel.org>
+References: <20230827151747.290653-1-deller@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
  helo=dfw.source.kernel.org
@@ -71,41 +74,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The following changes since commit 7e5a8bb22368b3555644cb2debd3df24592f3a21:
-
-  Update version for v8.1.0 release (2023-08-22 07:13:44 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/hdeller/qemu-hppa.git tags/devel-hppa-priv-cleanup2-pull-request
-
-for you to fetch changes up to 2ad04500543094bc83f5f13dbb099000f010e008:
-
-  target/hppa: Switch to use MMU indices 11-15 (2023-08-27 17:15:19 +0200)
-
-----------------------------------------------------------------
-target/hppa: Clean up conversion from/to MMU index and privilege level
-
-Make the conversion between privilege level and QEMU MMU index
-consistent, and afterwards switch to MMU indices 11-15.
+The hppa CPU has 4 privilege levels (0-3).
+Mention the missing PL1 and PL2 levels, although the Linux kernel
+uses only 0 (KERNEL) and 3 (USER). Not sure about HP-UX.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/hppa/cpu.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-----------------------------------------------------------------
-
-Helge Deller (5):
-  target/hppa: Add missing PL1 and PL2 privilege levels
-  target/hppa: Add privilege to MMU index conversion helpers
-  target/hppa: Do not use hardcoded value for tlb_flush_*()
-  target/hppa: Use privilege helper in hppa_get_physical_address()
-  target/hppa: Switch to use MMU indices 11-15
-
- target/hppa/cpu.h        | 19 +++++++++++++++----
- target/hppa/helper.c     |  2 +-
- target/hppa/mem_helper.c | 16 ++++++++--------
- target/hppa/translate.c  |  9 +++++----
- 4 files changed, 29 insertions(+), 17 deletions(-)
-
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 75c5c0ccf7..6c5b0e67c8 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -31,8 +31,11 @@
+ #define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
+ 
+ #define MMU_KERNEL_IDX   0
++#define MMU_PL1_IDX      1
++#define MMU_PL2_IDX      2
+ #define MMU_USER_IDX     3
+ #define MMU_PHYS_IDX     4
++
+ #define TARGET_INSN_START_EXTRA_WORDS 1
+ 
+ /* Hardware exceptions, interrupts, faults, and traps.  */
 -- 
 2.41.0
 
