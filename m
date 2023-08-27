@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8D878B923
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B9C78B931
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiZH-0000Hx-BL; Mon, 28 Aug 2023 16:10:35 -0400
+	id 1qaiZC-0008K2-W2; Mon, 28 Aug 2023 16:10:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYx-0008B6-7p
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:15 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1qaiYx-0008Ei-Tl
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:16 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYu-0007aC-2d
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:14 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-99bcf2de59cso479201366b.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:10:11 -0700 (PDT)
+ id 1qaiYv-0007aQ-LS
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:15 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-99c136ee106so467362466b.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:10:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253409; x=1693858209;
+ d=gmail.com; s=20221208; t=1693253411; x=1693858211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ndeNKsdGcTFoKqxXfBgmIgWoV6MfU8iaJxUoXl7FUgE=;
- b=Dz00dyfloFHYsiU6muXzypwa2AYnRwtNReGwl0DzjW1Alu33p5jXaWvLLhtGaSeIlK
- ki77EyW+CA1hhcB3rqqhtmA0TEO+TYnnuHJgTYathnXVpjRVbTQ11T8hFwfeS6AIWkp1
- UYdjkAa0xeWCNRA2F78dzAzT1BlfRvBVJc82W5Hk6eX+NM2YqVhWgQNAufAe2yKCeqMH
- xa1cvbbgQmnNEB2X5QyEqZdlWKgAHK5HcnH2WTPZavPPjhB+VlfE7B0i8OdmKt45k2gf
- EMjDIpxUUNKxb1XEKRMeQlReE9Iq4LSi28O5DIE6koZMA7Iequf3EZAMrjQn4WeuKYQP
- 6xVw==
+ bh=uXUwd7KLSf4xksoT9hSYDjHq1uy0u6BKwi1S++lsL2o=;
+ b=HWvH3HmErDnNrL9I/Wp3YTLHptNCr3Sl/xMeP2DIvwueQbz5imLGtL8RlrPnzQuAT7
+ GV/meGQMb7c4qLU4IvyX1kr/VRxYDQzSPYiw7fQvrAOd6/HJTmM6uV8oEZtRrTKkV3fI
+ mWfVJS99Dbr891AvC3hghaUz55ClyWMWzk8rwEK0QB2+8+JWmQD5I9+lRmlFYK0Z8mx0
+ KgYKvrRS8pHSpXWVDvj2Lu/Sfzstgs5dlJ4+XFzdsho/4R27IF8Oh4pIlfle/nvv9Kh5
+ 6i5047AhqvYL2vJVRyOI0xYoPyGGHfWo4BhHnIw59EOnpyCPuGgs6MhocT4JRlY2n8kc
+ Rwkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253409; x=1693858209;
+ d=1e100.net; s=20221208; t=1693253411; x=1693858211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ndeNKsdGcTFoKqxXfBgmIgWoV6MfU8iaJxUoXl7FUgE=;
- b=BbVogYp96p3ZWYS7ehCHC3FK7e32xgSUKBIr8zy2XfD4ScJt/yDqrERYsAsFomVtAZ
- 6DKo5y2nsTWCZh1pWje41h5c0TrN95R+xyxF4CoI8jorK+bd0x6RzK4bwjpw+ygbRC4y
- SsKM1r+Dho/OWMvGSVTku5mFqz+z6T74SxZ2RwW7VWBzZowFYX233kCTEoDN6gEaa+GJ
- 18fGNtGoFfoGgSs2wC/r6NIiqQj2A5HIevunyLlXMl2sG7gO7ecCucVPyy/fVJYd+Cg3
- YqYN4KqWfzk6DU6v0RZg4Fuu8pIqOaZi8puvv/l1XDLLd2F0H1imD0ksKgb5gqs5h2pO
- EADQ==
-X-Gm-Message-State: AOJu0YwSuIgETUCoXlOqTRF0P2RUH5KlJoD537ohk4N9lToiKoH3e3Kv
- uydX3k30fjcSfAU50PwDYan7HUFKWHA/2g==
-X-Google-Smtp-Source: AGHT+IHQ6eWd9yoGCwpIgf7FlpHny0+1t06KrQbZklfYRKZX+46zWPXeERrjEGRxHgaR6PtxwnxHCg==
-X-Received: by 2002:a17:906:2932:b0:99b:4ed4:5527 with SMTP id
- v18-20020a170906293200b0099b4ed45527mr19048258ejd.25.1693253409227; 
- Mon, 28 Aug 2023 13:10:09 -0700 (PDT)
+ bh=uXUwd7KLSf4xksoT9hSYDjHq1uy0u6BKwi1S++lsL2o=;
+ b=R80SpATwMr0r+nK+adTnrWQGKIArU+RmvKJiNVp6tFTrU25GBcCPxym5GRWNcFHVbl
+ aaIZALosTG5mDfE0Xmmnd0A3m36unWXocxVXvlxHAMd+6IhNswbONwVBB4xnI+XrsbX6
+ wfyu8JnlQN13yARpyiNeZBCHoz/arFmBG8++5AcBxZhW07SwTVa6Q95U0hw7ZlRg0X4t
+ ZDGlZZMKnLkfvEd8QqjtZ2CIBJ/VZwCXCsgzAW3vMBT/hQkHzPESVjlCCM396nVQRvrX
+ +QDRKDBDt3HXXygMIA8ptzqNbCa/VNyxVWsPt6N89Uj7L/nBtCnMXMyizHg5BF01ifbh
+ tJuQ==
+X-Gm-Message-State: AOJu0Yw05EEiOmL+d9O/Rp9NuXbGYXlRba6cXRVS/n/7tpXKKx/nGg89
+ JCoB7KyfIX9LTBZO4IGtpHS2W2z9ILEyDQ==
+X-Google-Smtp-Source: AGHT+IGQWz9vyORvyQ/H5HDxMmwd9Y5rXLPutJrGjnbEajWzlDEJyL3dXZKCAKE7sZNntIGNkSMllQ==
+X-Received: by 2002:a17:907:c299:b0:9a1:ff2f:28f1 with SMTP id
+ tk25-20020a170907c29900b009a1ff2f28f1mr11127426ejc.40.1693253411564; 
+ Mon, 28 Aug 2023 13:10:11 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.10.01
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.10.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:10:08 -0700 (PDT)
+ Mon, 28 Aug 2023 13:10:11 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 09/32] bsd-user: Implement host_to_target_rusage and
- host_to_target_wrusage.
-Date: Sun, 27 Aug 2023 17:57:23 +0200
-Message-Id: <20230827155746.84781-10-kariem.taha2.7@gmail.com>
+Subject: [PATCH 10/32] bsd-user: Implement host_to_target_waitstatus
+ conversion.
+Date: Sun, 27 Aug 2023 17:57:24 +0200
+Message-Id: <20230827155746.84781-11-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -99,69 +99,32 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-proc.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ bsd-user/bsd-proc.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
-index 12e43cfeca..8e6dd5e427 100644
+index 8e6dd5e427..49c0fb67d0 100644
 --- a/bsd-user/bsd-proc.c
 +++ b/bsd-user/bsd-proc.c
-@@ -114,3 +114,57 @@ abi_llong host_to_target_rlim(rlim_t rlim)
-     return result;
+@@ -168,3 +168,20 @@ abi_long host_to_target_wrusage(abi_ulong target_addr,
+     return 0;
  }
  
-+void h2g_rusage(const struct rusage *rusage,
-+                struct target_freebsd_rusage *target_rusage)
++/*
++ * wait status conversion.
++ *
++ * Map host to target signal numbers for the wait family of syscalls.
++ * Assume all other status bits are the same.
++ */
++int host_to_target_waitstatus(int status)
 +{
-+    __put_user(rusage->ru_utime.tv_sec, &target_rusage->ru_utime.tv_sec);
-+    __put_user(rusage->ru_utime.tv_usec, &target_rusage->ru_utime.tv_usec);
-+
-+    __put_user(rusage->ru_stime.tv_sec, &target_rusage->ru_stime.tv_sec);
-+    __put_user(rusage->ru_stime.tv_usec, &target_rusage->ru_stime.tv_usec);
-+
-+    __put_user(rusage->ru_maxrss, &target_rusage->ru_maxrss);
-+    __put_user(rusage->ru_idrss, &target_rusage->ru_idrss);
-+    __put_user(rusage->ru_idrss, &target_rusage->ru_idrss);
-+    __put_user(rusage->ru_isrss, &target_rusage->ru_isrss);
-+    __put_user(rusage->ru_minflt, &target_rusage->ru_minflt);
-+    __put_user(rusage->ru_majflt, &target_rusage->ru_majflt);
-+    __put_user(rusage->ru_nswap, &target_rusage->ru_nswap);
-+    __put_user(rusage->ru_inblock, &target_rusage->ru_inblock);
-+    __put_user(rusage->ru_oublock, &target_rusage->ru_oublock);
-+    __put_user(rusage->ru_msgsnd, &target_rusage->ru_msgsnd);
-+    __put_user(rusage->ru_msgrcv, &target_rusage->ru_msgrcv);
-+    __put_user(rusage->ru_nsignals, &target_rusage->ru_nsignals);
-+    __put_user(rusage->ru_nvcsw, &target_rusage->ru_nvcsw);
-+    __put_user(rusage->ru_nivcsw, &target_rusage->ru_nivcsw);
-+}
-+
-+abi_long host_to_target_rusage(abi_ulong target_addr,
-+        const struct rusage *rusage)
-+{
-+    struct target_freebsd_rusage *target_rusage;
-+
-+    if (!lock_user_struct(VERIFY_WRITE, target_rusage, target_addr, 0)) {
-+        return -TARGET_EFAULT;
++    if (WIFSIGNALED(status)) {
++        return host_to_target_signal(WTERMSIG(status)) | (status & ~0x7f);
 +    }
-+    h2g_rusage(rusage, target_rusage);
-+    unlock_user_struct(target_rusage, target_addr, 1);
-+
-+    return 0;
-+}
-+
-+abi_long host_to_target_wrusage(abi_ulong target_addr,
-+                                const struct __wrusage *wrusage)
-+{
-+    struct target_freebsd__wrusage *target_wrusage;
-+
-+    if (!lock_user_struct(VERIFY_WRITE, target_wrusage, target_addr, 0)) {
-+        return -TARGET_EFAULT;
++    if (WIFSTOPPED(status)) {
++        return (host_to_target_signal(WSTOPSIG(status)) << 8) | (status & 0xff);
 +    }
-+    h2g_rusage(&wrusage->wru_self, &target_wrusage->wru_self);
-+    h2g_rusage(&wrusage->wru_children, &target_wrusage->wru_children);
-+    unlock_user_struct(target_wrusage, target_addr, 1);
-+
-+    return 0;
++    return status;
 +}
 +
 -- 
