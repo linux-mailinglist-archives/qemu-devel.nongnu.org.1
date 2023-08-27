@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B9C78B931
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0AA78B92B
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:11:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiZC-0008K2-W2; Mon, 28 Aug 2023 16:10:31 -0400
+	id 1qaiZJ-0000Z3-Ag; Mon, 28 Aug 2023 16:10:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYx-0008Ei-Tl
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:16 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1qaiZ1-0008KT-Md
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:20 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiYv-0007aQ-LS
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:15 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-99c136ee106so467362466b.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:10:13 -0700 (PDT)
+ id 1qaiYy-0007ai-R8
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:10:18 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2bb9a063f26so55474641fa.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253411; x=1693858211;
+ d=gmail.com; s=20221208; t=1693253414; x=1693858214;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uXUwd7KLSf4xksoT9hSYDjHq1uy0u6BKwi1S++lsL2o=;
- b=HWvH3HmErDnNrL9I/Wp3YTLHptNCr3Sl/xMeP2DIvwueQbz5imLGtL8RlrPnzQuAT7
- GV/meGQMb7c4qLU4IvyX1kr/VRxYDQzSPYiw7fQvrAOd6/HJTmM6uV8oEZtRrTKkV3fI
- mWfVJS99Dbr891AvC3hghaUz55ClyWMWzk8rwEK0QB2+8+JWmQD5I9+lRmlFYK0Z8mx0
- KgYKvrRS8pHSpXWVDvj2Lu/Sfzstgs5dlJ4+XFzdsho/4R27IF8Oh4pIlfle/nvv9Kh5
- 6i5047AhqvYL2vJVRyOI0xYoPyGGHfWo4BhHnIw59EOnpyCPuGgs6MhocT4JRlY2n8kc
- Rwkg==
+ bh=F1kvUaujUbfIE3YRxf4HkJ0zNC+AtY4GwgRBRBxQqoc=;
+ b=EtmSxWzliP7HheTOeDyQkkMzdn/FbLvn732adSLDYnhZtiOSOWrnlZj/AuDlkoewoK
+ 0BIcDKdKbW5qcqS18htDNh+x30+FDcBLLtJQXt/QO4osy+da9rzKiwLvyRETTWO3CSyw
+ LHkedeUm8OQJiAqqSej3AhCd/bM17z9j+KetxfR5NQH+lexYlkeEY3rVd3iKcVSiDhBK
+ NU9ORGydzSAzls1Cq5DYNguF9QlfD5FWIRnnUZ1+TLjjgoiroaA79nz+GmB77xsHZ3D4
+ kadXbzejyVVItsDlMiDdxDhNIuH2u71VQE59ePDeeblB2j8vfforXHL2B96F0nldj4MJ
+ mFqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253411; x=1693858211;
+ d=1e100.net; s=20221208; t=1693253414; x=1693858214;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uXUwd7KLSf4xksoT9hSYDjHq1uy0u6BKwi1S++lsL2o=;
- b=R80SpATwMr0r+nK+adTnrWQGKIArU+RmvKJiNVp6tFTrU25GBcCPxym5GRWNcFHVbl
- aaIZALosTG5mDfE0Xmmnd0A3m36unWXocxVXvlxHAMd+6IhNswbONwVBB4xnI+XrsbX6
- wfyu8JnlQN13yARpyiNeZBCHoz/arFmBG8++5AcBxZhW07SwTVa6Q95U0hw7ZlRg0X4t
- ZDGlZZMKnLkfvEd8QqjtZ2CIBJ/VZwCXCsgzAW3vMBT/hQkHzPESVjlCCM396nVQRvrX
- +QDRKDBDt3HXXygMIA8ptzqNbCa/VNyxVWsPt6N89Uj7L/nBtCnMXMyizHg5BF01ifbh
- tJuQ==
-X-Gm-Message-State: AOJu0Yw05EEiOmL+d9O/Rp9NuXbGYXlRba6cXRVS/n/7tpXKKx/nGg89
- JCoB7KyfIX9LTBZO4IGtpHS2W2z9ILEyDQ==
-X-Google-Smtp-Source: AGHT+IGQWz9vyORvyQ/H5HDxMmwd9Y5rXLPutJrGjnbEajWzlDEJyL3dXZKCAKE7sZNntIGNkSMllQ==
-X-Received: by 2002:a17:907:c299:b0:9a1:ff2f:28f1 with SMTP id
- tk25-20020a170907c29900b009a1ff2f28f1mr11127426ejc.40.1693253411564; 
- Mon, 28 Aug 2023 13:10:11 -0700 (PDT)
+ bh=F1kvUaujUbfIE3YRxf4HkJ0zNC+AtY4GwgRBRBxQqoc=;
+ b=hYDEY6RxA3Vu3SbcfVWnFVMZylhWWGIjmuWqg858JLi4IwIH5euDdfZ4lT5b/2eWIH
+ o5ulCqY8vyUZ5h2Asq3NC87bLhezsm47kal6gJVbDhU+W//oGPx7s5JyNQx6iuvPYAbp
+ R85feoxZHDUivDKHHGs8gc0XNpubvoppERErqiird1aHjo3w77QkDHH8r18pu1rKxSyj
+ K9U7VXjhvh3BUYYWuWE0cXB3mjuOe9VjsqE1y3s/RwQVSecwe8aTk/RS7h+M5UzKYiW7
+ ebvoi7qodGLQc2vNplTbquPOjpddgF59q0HQBoUUD4SvzZxIVY4TsH+o3VeH9D5XZUGI
+ CJZw==
+X-Gm-Message-State: AOJu0YwxiDmz/Pwtrx424g6nwn4jQgwEYKcQir0udziaVjW4o3xbEDOM
+ shpV5GBwUx3cxeVcuasBvHmE0uuh6JtAag==
+X-Google-Smtp-Source: AGHT+IG6rqgeLpGqsUwW6kdrdReScPduqqNd0Zkxt9zZEgvysPminC1q2wO3eIo6fG+qFzIDgjXbww==
+X-Received: by 2002:a05:651c:104:b0:2bc:c326:54a2 with SMTP id
+ a4-20020a05651c010400b002bcc32654a2mr15434383ljb.50.1693253414017; 
+ Mon, 28 Aug 2023 13:10:14 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.10.09
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.10.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:10:11 -0700 (PDT)
+ Mon, 28 Aug 2023 13:10:13 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+Cc: imp@bsdimp.com, Kyle Evans <kevans@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 10/32] bsd-user: Implement host_to_target_waitstatus
- conversion.
-Date: Sun, 27 Aug 2023 17:57:24 +0200
-Message-Id: <20230827155746.84781-11-kariem.taha2.7@gmail.com>
+Subject: [PATCH 11/32] bsd-user: Get number of cpus.
+Date: Sun, 27 Aug 2023 17:57:25 +0200
+Message-Id: <20230827155746.84781-12-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -94,39 +93,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Kyle Evans <kevans@FreeBSD.org>
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-proc.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ bsd-user/bsd-proc.c | 39 +++++++++++++++++++++++++++++++++++++++
+ bsd-user/bsd-proc.h |  2 ++
+ 2 files changed, 41 insertions(+)
 
 diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
-index 8e6dd5e427..49c0fb67d0 100644
+index 49c0fb67d0..dd6bad6de3 100644
 --- a/bsd-user/bsd-proc.c
 +++ b/bsd-user/bsd-proc.c
-@@ -168,3 +168,20 @@ abi_long host_to_target_wrusage(abi_ulong target_addr,
-     return 0;
+@@ -185,3 +185,42 @@ int host_to_target_waitstatus(int status)
+     return status;
  }
  
-+/*
-+ * wait status conversion.
-+ *
-+ * Map host to target signal numbers for the wait family of syscalls.
-+ * Assume all other status bits are the same.
-+ */
-+int host_to_target_waitstatus(int status)
++int bsd_get_ncpu(void)
 +{
-+    if (WIFSIGNALED(status)) {
-+        return host_to_target_signal(WTERMSIG(status)) | (status & ~0x7f);
++    static int ncpu = -1;
++
++    if (ncpu != -1) {
++        return ncpu;
 +    }
-+    if (WIFSTOPPED(status)) {
-+        return (host_to_target_signal(WSTOPSIG(status)) << 8) | (status & 0xff);
++    if (ncpu == -1) {
++        cpuset_t mask;
++
++        CPU_ZERO(&mask);
++
++        if (cpuset_getaffinity(CPU_LEVEL_WHICH, CPU_WHICH_TID, -1, sizeof(mask),
++                               &mask) == 0) {
++            ncpu = CPU_COUNT(&mask);
++        }
 +    }
-+    return status;
++#ifdef _SC_NPROCESSORS_ONLN
++    if (ncpu == -1)
++        ncpu = sysconf(_SC_NPROCESSORS_ONLN);
++#endif
++#if defined(CTL_HW) && defined(HW_NCPU)
++    if (ncpu == -1) {
++        int mib[2] = {CTL_HW, HW_NCPU};
++        size_t sz;
++
++        sz = sizeof(ncpu);
++        if (sysctl(mib, 2, &ncpu, &sz, NULL, NULL) == -1) {
++            ncpu = -1;
++        }
++    }
++#endif
++    if (ncpu == -1) {
++        gemu_log("XXX Missing bsd_get_ncpu() implementation\n");
++        ncpu = 1;
++    }
++    return ncpu;
 +}
 +
+diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
+index 048773a75d..b6225e520e 100644
+--- a/bsd-user/bsd-proc.h
++++ b/bsd-user/bsd-proc.h
+@@ -26,6 +26,8 @@
+ #include "gdbstub/syscalls.h"
+ #include "qemu/plugin.h"
+ 
++int bsd_get_ncpu(void);
++
+ /* exit(2) */
+ static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
+ {
 -- 
 2.40.0
 
