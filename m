@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185BC78B943
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7247778B942
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiaL-0005cl-TZ; Mon, 28 Aug 2023 16:11:43 -0400
+	id 1qaiaW-0005y4-BB; Mon, 28 Aug 2023 16:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiaA-0005R9-Qr
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:30 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ id 1qaiaG-0005i6-Cv
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:37 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaia8-0007ov-Dh
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:30 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-99bcc0adab4so475719166b.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:11:28 -0700 (PDT)
+ id 1qaiaB-0007pN-Vp
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:36 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b9f0b7af65so53943021fa.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:11:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253486; x=1693858286;
+ d=gmail.com; s=20221208; t=1693253490; x=1693858290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RTmkbch1x0LOvGOCfdEY6bQHPYXVPXeFLnKoWA6XJJ4=;
- b=BZc3PxJN1VxBI0Nb1eyyBBK0w6WmcmK/arnWNXotA4j1WfelC78f1cDeMQiKZeMgUC
- roFWmlEjQWWZk4T3mdfBRWptCCFvmud3BuO0Y/uvv7eWIESatOB9HZ4iT51dyNlCqVF0
- kwoDIG5mv9wVnflhuAA5LKcR1GDsAVleZ3FlFksoY6aMz4Wr2cl/H1VdzAzWmouVq66c
- PZ9KWuXqjKMRTQFNFgRBME2I0TE7CR2GR+ux+27bctV6stDkL4Zu72JUB3M+GDJKd+Ti
- XQ03ByYx4K8KY6RsNYwLbsLsl+Li0n5ct9FeSObye0V5DBF8Wbwm75c5WtbAxIPPuo88
- 811A==
+ bh=bEN8JiRMi42PBjG91cv3MvhEwJ8nLtmK3KuWnVz9XHY=;
+ b=qOwH4hmf95pSL5weELYzdHWc35ZgKJNJqh+y5s+ighgBMRxHRG+kcoXFhfY7Soxeq5
+ 7YJRT2B4j1NVh1GoWYLDJTmtj+FBkaYVahVkif9XVGCQEhDynUmvgH1OYniHcxQv9WdO
+ k18jHfJ7DNYwqlmRD4AyC09cZT8a7Ih7k0fJpWXNvUKVJG5zvGbKJB8P7ygUAZ3xgSye
+ Jsqxbsih8W4PGt0mU/7QKKDdSOsjBqktYKXv3L/9RWZU/2r2o8IROdnqx55Maa78D/xG
+ jgLQywBWrycNm+kxrxueqy1SnQxMX/QfWPVDO2sGnKNUHA/1gW4dueOFhm6MGxdR1J5w
+ hXig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253486; x=1693858286;
+ d=1e100.net; s=20221208; t=1693253490; x=1693858290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RTmkbch1x0LOvGOCfdEY6bQHPYXVPXeFLnKoWA6XJJ4=;
- b=ZzCBhFrhOxZY7ky8Q1+PD+qY8aEC3Lngg6SPY26UP6IeHIv3UtfvSEm9HjUB8odDyJ
- xWb1GK/LryuBQr2hxHjXEwLZXSrFM2egNbyJh20K2s1hF5Y5rCHAZXVUszr6sRsH1dcX
- aRL8+4YG3SW7vubS3rZYXMCMsgSAt7JEg+R0YLBDSk9Pr3OQ3oH9vRAsbnlsbzRjijss
- wfOcS2SohXTY126K1EZFtIQqIRo1C86Ggo+DmvKyC4C7ang/lzo4VozZJM9IqH8Djumf
- z1n3zLeFn86qcr5ipcOzsYJR926cDu+3AmNzBCarfJy6TBD7iKwbenJyY38I8t9eJx9t
- 484w==
-X-Gm-Message-State: AOJu0YyxneoMiIag8rV90mNB/2NS5ApPoQLncRkXblT3YvCRAzhvrc52
- pVOv8KAbYBMVHc8QM1E/yW5/5d+5w2HWvw==
-X-Google-Smtp-Source: AGHT+IEkcv5XXMZ+kTZ2cnf+8uX2OKWGNrx0Mvf5PhaP63if7WrCXCwJr57YrqeGk1wSOQ9DpCH63A==
-X-Received: by 2002:a17:906:2215:b0:9a2:2635:daa9 with SMTP id
- s21-20020a170906221500b009a22635daa9mr9582962ejs.6.1693253486562; 
- Mon, 28 Aug 2023 13:11:26 -0700 (PDT)
+ bh=bEN8JiRMi42PBjG91cv3MvhEwJ8nLtmK3KuWnVz9XHY=;
+ b=eKqIsMmBNo3zHZJ5fbfL3ohcNJPDziKtCYmbE6jNpkgKyNWITCp4WdOT+5OO4UCzuy
+ rPsqnkIQ81O/4HnylRgr7erb88hJytTamKKvLFOz6ZMzduonSc49yNrjD/A1/ha9uga3
+ xuyX/xMwx8nSgpXJup+vsyqWkddWA7+VNMUyI/xPiO5xzXy2KbczBgn4znwT5dFwoItz
+ sfOfLJKdCPuGQwwWAYumvQWhnsLJyxl7gpXlKEL273KFqxbOU4oXgquBiFkz0x8Z6Sde
+ b2Ai7gfqRZ9pGHT6APi+LIdrA4nmkujj6EACTN8/jNfOJHIF5k2sZmlV3O3IvRxpJpRB
+ uYoQ==
+X-Gm-Message-State: AOJu0YyWlzGOo/Yzcgqd+VFgwvDD484KqsmxMmAQDzU0XGqoUVq3FDUf
+ 68xYpK4JgY+0SjmzXJwe58BO3/wN/8q2AQ==
+X-Google-Smtp-Source: AGHT+IENsScygEyWx6g7u6/CN8rdSs+9SOeX21jBFbVqTlxZ0DGbJH8W35cr6mur/MsMNfdX8nsU+Q==
+X-Received: by 2002:a05:651c:96:b0:2bc:c557:848a with SMTP id
+ 22-20020a05651c009600b002bcc557848amr14529880ljq.50.1693253489671; 
+ Mon, 28 Aug 2023 13:11:29 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.11.23
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.11.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:11:26 -0700 (PDT)
+ Mon, 28 Aug 2023 13:11:29 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 25/32] bsd-user: Implement procctl(2) system call.
-Date: Sun, 27 Aug 2023 17:57:39 +0200
-Message-Id: <20230827155746.84781-26-kariem.taha2.7@gmail.com>
+Subject: [PATCH 26/32] bsd-user: Implement execve(2) and fexecve(2) system
+ calls.
+Date: Sun, 27 Aug 2023 17:57:40 +0200
+Message-Id: <20230827155746.84781-27-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -98,146 +99,94 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-proc.c    | 114 ++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |   3 +
- 2 files changed, 117 insertions(+)
+ bsd-user/freebsd/os-proc.h    | 49 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 10 +++++++
+ 2 files changed, 59 insertions(+)
+ create mode 100644 bsd-user/freebsd/os-proc.h
 
-diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
-index a413109bc2..3e6903d8cd 100644
---- a/bsd-user/freebsd/os-proc.c
-+++ b/bsd-user/freebsd/os-proc.c
-@@ -351,3 +351,117 @@ h2t_procctl_reaper_pidinfo(struct procctl_reaper_pidinfo *host_pi,
-     return 0;
- }
- 
-+abi_long
-+do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2, abi_ulong arg3,
-+       abi_ulong arg4, abi_ulong arg5, abi_ulong arg6)
+diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
+new file mode 100644
+index 0000000000..75ed39f8dd
+--- /dev/null
++++ b/bsd-user/freebsd/os-proc.h
+@@ -0,0 +1,49 @@
++/*
++ *  process related system call shims and definitions
++ *
++ *  Copyright (c) 2013-14 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef BSD_USER_FREEBSD_OS_PROC_H
++#define BSD_USER_FREEBSD_OS_PROC_H
++
++#include <sys/param.h>
++#include <sys/procctl.h>
++#include <sys/signal.h>
++#include <sys/types.h>
++#include <sys/procdesc.h>
++#include <sys/wait.h>
++#include <unistd.h>
++
++#include "target_arch_cpu.h"
++
++/* execve(2) */
++static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong argp,
++        abi_ulong envp)
 +{
-+    abi_long error = 0, target_rp_pids;
-+    void *data;
-+    int host_cmd, flags;
-+    uint32_t u, target_rp_count;
-+    union {
-+        struct procctl_reaper_status rs;
-+        struct procctl_reaper_pids rp;
-+        struct procctl_reaper_kill rk;
-+    } host;
-+    struct target_procctl_reaper_pids *target_rp;
-+    id_t id; /* 64-bit */
-+    int target_cmd;
-+    abi_ulong target_arg;
 +
-+#if TARGET_ABI_BITS == 32
-+    /* See if we need to align the register pairs. */
-+    if (regpairs_aligned(cpu_env)) {
-+        id = (id_t)target_arg64(arg3, arg4);
-+        target_cmd = (int)arg5;
-+        target_arg = arg6;
-+    } else {
-+        id = (id_t)target_arg64(arg2, arg3);
-+        target_cmd = (int)arg4;
-+        target_arg = arg5;
-+    }
-+#else
-+    id = (id_t)arg2;
-+    target_cmd = (int)arg3;
-+    target_arg = arg4;
-+#endif
-+
-+    error = t2h_procctl_cmd(target_cmd, &host_cmd);
-+    if (error)
-+        return error;
-+
-+    switch (host_cmd) {
-+    case PROC_SPROTECT:
-+        data = &flags;
-+        break;
-+
-+    case PROC_REAP_ACQUIRE:
-+    case PROC_REAP_RELEASE:
-+        if (target_arg == 0)
-+            data = NULL;
-+        else
-+            error = -TARGET_EINVAL;
-+        break;
-+
-+    case PROC_REAP_STATUS:
-+        data = &host.rs;
-+        break;
-+
-+    case PROC_REAP_GETPIDS:
-+        if (!lock_user_struct(VERIFY_READ, target_rp, target_arg, 1)) {
-+            return -TARGET_EFAULT;
-+        }
-+        __get_user(target_rp_count, &target_rp->rp_count);
-+        __get_user(target_rp_pids, &target_rp->rp_pids);
-+        unlock_user_struct(target_rp, target_arg, 0);
-+        host.rp.rp_count = target_rp_count;
-+        /* XXX we should check target_rc_count to see if it is reasonable. */
-+        host.rp.rp_pids = alloca(target_rp_count *
-+                sizeof(struct procctl_reaper_pidinfo));
-+        if (host.rp.rp_pids == NULL)
-+            error = -TARGET_ENOMEM;
-+        else
-+            data = &host.rp;
-+        break;
-+
-+    case PROC_REAP_KILL:
-+        error = t2h_reaper_kill(target_arg, &host.rk);
-+        break;
-+    }
-+
-+    if (error)
-+        return error;
-+
-+    error = get_errno(procctl(idtype, id, host_cmd, data));
-+
-+    if (error)
-+        return error;
-+
-+    switch(host_cmd) {
-+    case PROC_SPROTECT:
-+        if (put_user_s32(flags, target_arg))
-+            return -TARGET_EFAULT;
-+        break;
-+
-+    case PROC_REAP_STATUS:
-+        error = h2t_reaper_status(&host.rs, target_arg);
-+        break;
-+
-+    case PROC_REAP_GETPIDS:
-+        /* copyout reaper pidinfo */
-+        for (u = 0; u < target_rp_count; u++) {
-+            error = h2t_procctl_reaper_pidinfo(&host.rp.rp_pids[u],
-+                    target_rp_pids +
-+                    (u * sizeof(struct target_procctl_reaper_pidinfo)));
-+            if (error)
-+                break;
-+        }
-+        break;
-+
-+    case PROC_REAP_KILL:
-+        error = h2t_reaper_kill(&host.rk, target_arg);
-+        break;
-+    }
-+
-+    return error;
++    return freebsd_exec_common(path_or_fd, argp, envp, 0);
 +}
++
++/* fexecve(2) */
++static inline abi_long do_freebsd_fexecve(abi_ulong path_or_fd, abi_ulong argp,
++        abi_ulong envp)
++{
++
++    return freebsd_exec_common(path_or_fd, argp, envp, 1);
++}
++
++#endif /* BSD_USER_FREEBSD_OS_PROC_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 0f25187d63..43f4561301 100644
+index 43f4561301..3f3ca96752 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -364,6 +364,9 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_setpriority(arg1, arg2, arg3);
-         break;
+@@ -36,6 +36,8 @@
+ #include "bsd-file.h"
+ #include "bsd-proc.h"
  
-+    case TARGET_FREEBSD_NR_procctl: /* procctl(2) */
-+        ret = do_freebsd_procctl(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6);
-+        break;
- 
++#include "os-proc.h"
++
+ /* I/O */
+ safe_syscall3(int, open, const char *, path, int, flags, mode_t, mode);
+ safe_syscall4(int, openat, int, fd, const char *, path, int, flags, mode_t,
+@@ -216,6 +218,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
          /*
-          * File system calls.
+          * process system calls
+          */
++    case TARGET_FREEBSD_NR_execve: /* execve(2) */
++        ret = do_freebsd_execve(arg1, arg2, arg3);
++        break;
++
++    case TARGET_FREEBSD_NR_fexecve: /* fexecve(2) */
++        ret = do_freebsd_fexecve(arg1, arg2, arg3);
++        break;
++
+     case TARGET_FREEBSD_NR_exit: /* exit(2) */
+         ret = do_bsd_exit(cpu_env, arg1);
+         break;
 -- 
 2.40.0
 
