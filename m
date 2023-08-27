@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7247778B942
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB46478B940
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:12:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaiaW-0005y4-BB; Mon, 28 Aug 2023 16:11:52 -0400
+	id 1qaiaZ-0006sf-4y; Mon, 28 Aug 2023 16:11:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiaG-0005i6-Cv
+ id 1qaiaG-0005i5-C9
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:37 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qaiaB-0007pN-Vp
+ id 1qaiaD-0007pa-Qt
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:11:36 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2b9f0b7af65so53943021fa.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:11:31 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2bcb50e194dso55307631fa.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 13:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693253490; x=1693858290;
+ d=gmail.com; s=20221208; t=1693253492; x=1693858292;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bEN8JiRMi42PBjG91cv3MvhEwJ8nLtmK3KuWnVz9XHY=;
- b=qOwH4hmf95pSL5weELYzdHWc35ZgKJNJqh+y5s+ighgBMRxHRG+kcoXFhfY7Soxeq5
- 7YJRT2B4j1NVh1GoWYLDJTmtj+FBkaYVahVkif9XVGCQEhDynUmvgH1OYniHcxQv9WdO
- k18jHfJ7DNYwqlmRD4AyC09cZT8a7Ih7k0fJpWXNvUKVJG5zvGbKJB8P7ygUAZ3xgSye
- Jsqxbsih8W4PGt0mU/7QKKDdSOsjBqktYKXv3L/9RWZU/2r2o8IROdnqx55Maa78D/xG
- jgLQywBWrycNm+kxrxueqy1SnQxMX/QfWPVDO2sGnKNUHA/1gW4dueOFhm6MGxdR1J5w
- hXig==
+ bh=tlbKBSPmQsCPqGfy/9OfnhyDKKj90lt8zkXdT5ciTw0=;
+ b=DAD28W+AbBmiGU0BMTvWOfoBqaEoRAdqRcFn6ZU5SmRdfVgR2MMSpR9/gzadH/fxP8
+ bSo1ZBYyyj0fY1uQM7RsyXvsAcsPD19NBoAaswtIm9BlDJAc/mkUvVV+Tw92jtUyY6YA
+ 6+8nqvd2pkLM2vwBCy2yutrqKJm+b5drRkFTfzqVL54NZypmuMp/IsTclkZZ77HM77GS
+ wa7ZVAm7FmkR1XiduhJeGLZxXbTwwEBUrzFTr1cS7CvUItwpNnnMfW2JKRs9/bkW+YzZ
+ RxFBh3Mn3IKKfadNPjcEwHxr6ggzKdjtyirc0Shdh7odSaA2Xd1x7pJvTI5MJ+zfhHOx
+ 1aHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693253490; x=1693858290;
+ d=1e100.net; s=20221208; t=1693253492; x=1693858292;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bEN8JiRMi42PBjG91cv3MvhEwJ8nLtmK3KuWnVz9XHY=;
- b=eKqIsMmBNo3zHZJ5fbfL3ohcNJPDziKtCYmbE6jNpkgKyNWITCp4WdOT+5OO4UCzuy
- rPsqnkIQ81O/4HnylRgr7erb88hJytTamKKvLFOz6ZMzduonSc49yNrjD/A1/ha9uga3
- xuyX/xMwx8nSgpXJup+vsyqWkddWA7+VNMUyI/xPiO5xzXy2KbczBgn4znwT5dFwoItz
- sfOfLJKdCPuGQwwWAYumvQWhnsLJyxl7gpXlKEL273KFqxbOU4oXgquBiFkz0x8Z6Sde
- b2Ai7gfqRZ9pGHT6APi+LIdrA4nmkujj6EACTN8/jNfOJHIF5k2sZmlV3O3IvRxpJpRB
- uYoQ==
-X-Gm-Message-State: AOJu0YyWlzGOo/Yzcgqd+VFgwvDD484KqsmxMmAQDzU0XGqoUVq3FDUf
- 68xYpK4JgY+0SjmzXJwe58BO3/wN/8q2AQ==
-X-Google-Smtp-Source: AGHT+IENsScygEyWx6g7u6/CN8rdSs+9SOeX21jBFbVqTlxZ0DGbJH8W35cr6mur/MsMNfdX8nsU+Q==
-X-Received: by 2002:a05:651c:96:b0:2bc:c557:848a with SMTP id
- 22-20020a05651c009600b002bcc557848amr14529880ljq.50.1693253489671; 
- Mon, 28 Aug 2023 13:11:29 -0700 (PDT)
+ bh=tlbKBSPmQsCPqGfy/9OfnhyDKKj90lt8zkXdT5ciTw0=;
+ b=WHm+GKJRQJt7vZy1N8WlnyEQD4ER51VAPiPZk3x1hjTo7sHPu9aY8d9TwGQApdvKI6
+ yc8wkrjgU7IKVnsNGciCz0Kx+cv8mbHCogBfS3rUCDNemix7r3tNi0me7OHunThEUzEL
+ S2XL+wfu00J1nAx/GQilxqETKzGKttFQJ68oyJkqD8zq/J8wZM2d4Cl+VF86Vj5gYQW3
+ hZzKjLvI7/2ZaicLD0ckMem2cY3/ank4n6btT8/kUEr4sN1S3QHSEgAhyriBN/v5ayzj
+ QFyMFKLRSx97z0Bs4gBnmDI7VYOtUKS6qeiRbT++OwIxzUz3DozLZfJsEgNFt3QFzYXt
+ 5vpw==
+X-Gm-Message-State: AOJu0YyUQ01TTdpFmzE2jJNU17Fjp7wz/rLt4ihiE44TL2PHiqlrjz1k
+ 4F+BW7IncDzaPUKkx9y8ZLTtEAlTNbb3tQ==
+X-Google-Smtp-Source: AGHT+IHMiM1xu/cPJ8p7BUog3vLcrGpL4ck0SbMizkLra9VPIub4j3S3MBJTCM6/Z86vmfnjxBtZ4w==
+X-Received: by 2002:a05:651c:1056:b0:2bc:c830:4cbb with SMTP id
+ x22-20020a05651c105600b002bcc8304cbbmr14668996ljm.45.1693253491679; 
+ Mon, 28 Aug 2023 13:11:31 -0700 (PDT)
 Received: from karim.my.domain ([102.60.177.41])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.11.27
+ y16-20020a1709064b1000b009929ab17be0sm5043666eju.162.2023.08.28.13.11.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 13:11:29 -0700 (PDT)
+ Mon, 28 Aug 2023 13:11:31 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 26/32] bsd-user: Implement execve(2) and fexecve(2) system
- calls.
-Date: Sun, 27 Aug 2023 17:57:40 +0200
-Message-Id: <20230827155746.84781-27-kariem.taha2.7@gmail.com>
+Subject: [PATCH 27/32] bsd-user: Implement wait4(2) and wait6(2) system calls.
+Date: Sun, 27 Aug 2023 17:57:41 +0200
+Message-Id: <20230827155746.84781-28-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -4
 X-Spam_score: -0.5
 X-Spam_bar: /
@@ -99,89 +98,128 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-proc.h    | 49 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c | 10 +++++++
- 2 files changed, 59 insertions(+)
- create mode 100644 bsd-user/freebsd/os-proc.h
+ bsd-user/freebsd/os-proc.h    | 75 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 14 +++++++
+ 2 files changed, 89 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-new file mode 100644
-index 0000000000..75ed39f8dd
---- /dev/null
+index 75ed39f8dd..544e45b3ef 100644
+--- a/bsd-user/freebsd/os-proc.h
 +++ b/bsd-user/freebsd/os-proc.h
-@@ -0,0 +1,49 @@
-+/*
-+ *  process related system call shims and definitions
-+ *
-+ *  Copyright (c) 2013-14 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
+@@ -30,6 +30,10 @@
+ 
+ #include "target_arch_cpu.h"
+ 
++pid_t safe_wait4(pid_t wpid, int *status, int options, struct rusage *rusage);
++pid_t safe_wait6(idtype_t idtype, id_t id, int *status, int options,
++    struct __wrusage *wrusage, siginfo_t *infop);
 +
-+#ifndef BSD_USER_FREEBSD_OS_PROC_H
-+#define BSD_USER_FREEBSD_OS_PROC_H
-+
-+#include <sys/param.h>
-+#include <sys/procctl.h>
-+#include <sys/signal.h>
-+#include <sys/types.h>
-+#include <sys/procdesc.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "target_arch_cpu.h"
-+
-+/* execve(2) */
-+static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong argp,
-+        abi_ulong envp)
+ /* execve(2) */
+ static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong argp,
+         abi_ulong envp)
+@@ -46,4 +50,75 @@ static inline abi_long do_freebsd_fexecve(abi_ulong path_or_fd, abi_ulong argp,
+     return freebsd_exec_common(path_or_fd, argp, envp, 1);
+ }
+ 
++/* wait4(2) */
++static inline abi_long do_freebsd_wait4(abi_long arg1, abi_ulong target_status,
++        abi_long arg3, abi_ulong target_rusage)
 +{
++    abi_long ret;
++    int status;
++    struct rusage rusage, *rusage_ptr = NULL;
 +
-+    return freebsd_exec_common(path_or_fd, argp, envp, 0);
++    if (target_rusage) {
++        rusage_ptr = &rusage;
++    }
++    ret = get_errno(safe_wait4(arg1, &status, arg3, rusage_ptr));
++    if (target_status != 0) {
++        status = host_to_target_waitstatus(status);
++        if (put_user_s32(status, target_status) != 0) {
++            return -TARGET_EFAULT;
++        }
++    }
++    if (target_rusage != 0) {
++        host_to_target_rusage(target_rusage, &rusage);
++    }
++    return ret;
 +}
 +
-+/* fexecve(2) */
-+static inline abi_long do_freebsd_fexecve(abi_ulong path_or_fd, abi_ulong argp,
-+        abi_ulong envp)
++/* wait6(2) */
++static inline abi_long do_freebsd_wait6(void *cpu_env, abi_long idtype, 
++    abi_long id1, abi_long id2,
++    abi_ulong target_status, abi_long options, abi_ulong target_wrusage,
++	abi_ulong target_infop, abi_ulong pad1)
 +{
++    abi_long ret;
++    int status;
++    struct __wrusage wrusage, *wrusage_ptr = NULL;
++    siginfo_t info;
++    void *p;
 +
-+    return freebsd_exec_common(path_or_fd, argp, envp, 1);
++    if (regpairs_aligned(cpu_env) != 0) {
++		/* printf("shifting args\n"); */
++		/* 64-bit id is aligned, so shift all the arguments over by one */
++		id1 = id2;
++		id2 = target_status;
++		target_status = options;
++		options = target_wrusage;
++		target_wrusage = target_infop;
++		target_infop = pad1;
++    }
++
++    if (target_wrusage) {
++        wrusage_ptr = &wrusage;
++    }
++    ret = get_errno(safe_wait6(idtype, target_arg64(id1, id2), &status, options, wrusage_ptr, &info));
++    if (target_status != 0) {
++        status = host_to_target_waitstatus(status);
++        if (put_user_s32(status, target_status) != 0) {
++            return -TARGET_EFAULT;
++        }
++    }
++    if (target_wrusage != 0) {
++        host_to_target_wrusage(target_wrusage, &wrusage);
++    }
++    if (target_infop != 0) {
++        p = lock_user(VERIFY_WRITE, target_infop, sizeof(target_siginfo_t), 0);
++        if (p == NULL) {
++            return -TARGET_EFAULT;
++        }
++        host_to_target_siginfo(p, &info);
++        unlock_user(p, target_infop, sizeof(target_siginfo_t));
++    }
++    return ret;
 +}
 +
-+#endif /* BSD_USER_FREEBSD_OS_PROC_H */
+ #endif /* BSD_USER_FREEBSD_OS_PROC_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 43f4561301..3f3ca96752 100644
+index 3f3ca96752..2775f89304 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -36,6 +36,8 @@
- #include "bsd-file.h"
- #include "bsd-proc.h"
+@@ -38,6 +38,12 @@
  
-+#include "os-proc.h"
+ #include "os-proc.h"
+ 
++/* used in os-proc */
++safe_syscall4(pid_t, wait4, pid_t, wpid, int *, status, int, options,
++    struct rusage *, rusage);
++safe_syscall6(pid_t, wait6, idtype_t, idtype, id_t, id, int *, status, int,
++    options, struct __wrusage *, wrusage, siginfo_t *, infop);
 +
  /* I/O */
  safe_syscall3(int, open, const char *, path, int, flags, mode_t, mode);
  safe_syscall4(int, openat, int, fd, const char *, path, int, flags, mode_t,
-@@ -216,6 +218,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         /*
-          * process system calls
-          */
-+    case TARGET_FREEBSD_NR_execve: /* execve(2) */
-+        ret = do_freebsd_execve(arg1, arg2, arg3);
+@@ -226,6 +232,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_freebsd_fexecve(arg1, arg2, arg3);
+         break;
+ 
++    case TARGET_FREEBSD_NR_wait4: /* wait4(2) */
++        ret = do_freebsd_wait4(arg1, arg2, arg3, arg4);
 +        break;
 +
-+    case TARGET_FREEBSD_NR_fexecve: /* fexecve(2) */
-+        ret = do_freebsd_fexecve(arg1, arg2, arg3);
++    case TARGET_FREEBSD_NR_wait6: /* wait6(2) */
++        ret = do_freebsd_wait6(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
 +        break;
 +
      case TARGET_FREEBSD_NR_exit: /* exit(2) */
