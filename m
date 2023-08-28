@@ -2,80 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F088F78B41A
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFED878B446
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:20:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qadtR-0007o4-OV; Mon, 28 Aug 2023 11:11:05 -0400
+	id 1qae1N-0002Aw-6y; Mon, 28 Aug 2023 11:19:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qadtF-0007df-D6; Mon, 28 Aug 2023 11:10:56 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qadt8-00049a-KT; Mon, 28 Aug 2023 11:10:51 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1bc8a2f71eeso18488435ad.0; 
- Mon, 28 Aug 2023 08:10:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693235444; x=1693840244;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tqtSghlbxC3KgBi6ayrqxRfXb6lezqlM8hX8ETLjBec=;
- b=Xw6y6mxgnmD2XG1J7sd8wd3cOxl1i+tMiDoojJ0OpeESgoIJYODfI3hKXp3b1gDwpH
- pBFg8XRQ+qTUjpAE2/yK0Fd7dUXpsVaWH4jUTD9fl5+GKmnIea52f/bVBRMyvLWL+zK4
- HubUkwcip2sVYWlW/oKc7qDDn+l2RYU5m74Tu41ZFhWaHyn3gn3QiUcP/zlP+ni2WWv2
- n6qKSYMVjcUs8VUsU/Doe/WTbE43cMk9Tg62/KLgHRdHyLMNTykR9+4ETXKBslxjnwTg
- 8wJnCfO6DJFnUqjzwSqLM1S+kjEKFr3vcKXGv+LimRNaIn0bhTWdG0PpkpQO5oEam64q
- MG9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693235444; x=1693840244;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tqtSghlbxC3KgBi6ayrqxRfXb6lezqlM8hX8ETLjBec=;
- b=Q9VDutMEfybkh3QN5X21c4ROhtFObor1aIHoFYCOHSeWmv838xHrLdrEygxeaytkRq
- cqNGtsowoSbn7rbKQdXTXO/QcQH99JQoS7EwdXTzHY4huEMkrarp92vAAQsbJm5jvTUD
- mvUkf1xEWrPtHOsWncaOwu2O9WFwNUtvwLD/TE32Eig14HzHj618vv96WTgYC0w1/d62
- UAk2JO0qpRkBGN4R7r7TRzbeSCxE6ypi2LJELo7Ff3Q+arKpvV8VSRnX3aSbsk667rGn
- Td4el8cISMPI7RNZTLXo70e6FNxIN8R8AgIn+nD2N4Ehyw3rwTt+9wZz7ZTY2eEfJRdU
- h6BA==
-X-Gm-Message-State: AOJu0YxVmYcRd3jEdxim5KU/nCO+2s2om5QMsHfzgF1EKkw1+tHKBTe7
- 6XiV3fWBiLyIJ1PcPXZ25hSv0OA/Hx265Tz6rmE=
-X-Google-Smtp-Source: AGHT+IGxngUq1dzQU/1R39apK2ojZ1TErNSIfmF/NTKg7fhZvPjMwlxwWq5RtJ2aJHGSG5275RYL9w==
-X-Received: by 2002:a17:902:d2c9:b0:1c0:b163:2cc3 with SMTP id
- n9-20020a170902d2c900b001c0b1632cc3mr12595484plc.52.1693235443876; 
- Mon, 28 Aug 2023 08:10:43 -0700 (PDT)
-Received: from fedlinux.. ([106.84.130.225]) by smtp.gmail.com with ESMTPSA id
- i19-20020a170902eb5300b001b8b26fa6c1sm7427456pli.115.2023.08.28.08.10.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 08:10:43 -0700 (PDT)
-From: Sam Li <faithilikerun@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, dmitry.fomichev@wdc.com,
- Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, hare@suse.de, qemu-block@nongnu.org,
- stefanha@redhat.com, dlemoal@kernel.org, Sam Li <faithilikerun@gmail.com>
-Subject: [PATCH v3 4/4] iotests: test the zoned format feature for qcow2 file
-Date: Mon, 28 Aug 2023 23:09:55 +0800
-Message-Id: <20230828150955.3481-5-faithilikerun@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230828150955.3481-1-faithilikerun@gmail.com>
-References: <20230828150955.3481-1-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qae1A-00025f-Q4
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:19:06 -0400
+Received: from mail-bn8nam04on2061d.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8d::61d]
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qae18-0006v5-0O
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:19:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RAe/3xbB7aKCqzvIL/X5Ru60uT7DSf9hF3MGfdzMTbMHb4FNI3+PlOzBBufoDZP9MYmUqRW1C2tBf5iA99Gc8BNeQChPGMa2K98Gw9Gj5gBzuFdgaenpnSV3d3zDEPJMZ57Vq5yu79YyouMSRPPwq2ZZ88i07MuM/MiP+oVbEdvp+kFX5sIN9mzrBMQOvxsSHXZPcl+WhnmBryL/eBG9PpSEKMOlsjXH+l65y81s0xstCIGPCC++6igS7y9pPAoTsSldeX3H7wYRTCudzuFSu7+U8rSlxchmzhC+BmGwXSCh/yvtWa2tAR+gaPsYFnxi8FPNb2oJ75hMx9IOuHrE+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bzdAXZt7/EXDuo/P7flbnh0I0+sdXcFyMVluWknmHFc=;
+ b=bpLOS7ze7hNSrtuzApV43b6I7sH99cKaeaM54BfsBrXMFZbG8VSMt7WAVQLkNDSrXt7vesZef5uAbdSclQZid48FOCSDKAoUVZ7Ag6Y1FeX5zl2wGY6GYr4Ot9Jv2q6tezHmnl2E/mYrbKWqQU1H+t5mDQcJALtCNqPd8WPyLB8/kHXVdCJifOBPoOVHqdfKYzxI3XA8lfq4PG4NuDMIFJrBE2aVk8sKjtP9NqGjdUG7ClXAUK62Rkdz8+g7tGwybH5j+hbmeGSbF8ROo9Wh4ZAXKq2eTrF5xOMIfUTV0vX65El+knu2WC4BOHbhcK44ROYvAfLE1rtw97+nzn11Jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bzdAXZt7/EXDuo/P7flbnh0I0+sdXcFyMVluWknmHFc=;
+ b=QLiYdAVER8rVliVEmuA0DLnVeiY0B1piMheg3UyksdWgdzAJ3G8soAQ+IvpFR0vqh4Z08QoKqzF+CSVKyHnUUOLNzGROHuG/w7/GTQMb2UfPHmev1o13v0BthZkfEOUF784xO5utuz0Qdge1hsUTP2LzCym1zhnSudpkL9MCf37cQGqV5vp2zHfLKpd/ufYYF1JpQo7t50lnU6o7sLkr0dseOC7var8A5Qx0Fq32StCkj2+Ks1TNyhJ/dmfexoazG8mh1V+q8Ekn6VIRhXFPYUVnK9AkPyB4O99Kbr+H45h+e2elI/6D8mvtgYllXomcMAceHq89KqMpq5jMWkxBKg==
+Received: from SJ0PR03CA0025.namprd03.prod.outlook.com (2603:10b6:a03:33a::30)
+ by DS0PR12MB8768.namprd12.prod.outlook.com (2603:10b6:8:14f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Mon, 28 Aug
+ 2023 15:18:57 +0000
+Received: from MWH0EPF000989EA.namprd02.prod.outlook.com
+ (2603:10b6:a03:33a:cafe::15) by SJ0PR03CA0025.outlook.office365.com
+ (2603:10b6:a03:33a::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35 via Frontend
+ Transport; Mon, 28 Aug 2023 15:18:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MWH0EPF000989EA.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.17 via Frontend Transport; Mon, 28 Aug 2023 15:18:56 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 28 Aug 2023
+ 08:18:45 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.37; Mon, 28 Aug 2023 08:18:45 -0700
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.182)
+ with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport;
+ Mon, 28 Aug 2023 08:18:43 -0700
+From: Avihai Horon <avihaih@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Yanghang Liu <yanghliu@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>
+Subject: [PATCH 0/6] vfio/migration: Block VFIO migration with postcopy and
+ background snapshot
+Date: Mon, 28 Aug 2023 18:18:36 +0300
+Message-ID: <20230828151842.11303-1-avihaih@nvidia.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=faithilikerun@gmail.com; helo=mail-pl1-x636.google.com
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989EA:EE_|DS0PR12MB8768:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72388d34-5097-4081-5c94-08dba7da18e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vBLf6easz0xCB/1Q1vgOaCviYKPe94xQt3n3otAUeVgtyukfNhKXM+2MlafNwo0XhURC5ywRebVExbCURCv6VJtNXeuyFtSmXtn+VCfyznbSM0gvOn+fKuKKwfMadE0yWjRlAYlTJ4Lxm+dyFyi/JArWWuJfS8Grwr7UjzZtrNdzf2E7oGY7aQ0oRsxOgOjnHeXuw1rVsJMklH79kVdbDn0qKrCLDoIbwlHFgyH+8ZSaDy1Ry3sPS4/DQTUY41u6CnQXAqBAmhOYXbgdQNiob4pnIm2SlcD8Li98HoqHH7lM9aPyydWVfrEnJ0NF1S0JClUIIZ/tM0ALo/NxEVe5Rh9Y+NNI3yi9jORwk5lV/bcvTNkaf7sW9z3iG+4eHKE1GZhMRygUNmY83ljTWLJHbDfdaLMkVmE9zF2pGFz/k6IMDHP/M+50cg0diRqR5Pmta1ptLQz3ciD+ChZoqYR4E5JMKDoxtUoAlUK070z1gKKE1HQBGYcw37ueGXeX9+uqrjbEsRINa0dbPLiVWdRXyGFn7Brhz7AKizyGyZs2qzb8ibJRgGeU45mhIvuQQmK1aawhugwPdZnuISg59cEuXSqRpWO2lt1CCfw5wJwwLmpHO7nEP3QFPZmOQ2wCQwjgbWpIFHBh+hqoehV78IDt+Dm6SavJ7X1/A+u637mzipOg7r+mTU4xMgbVLQqqfeVyGqqNzq0O/e56fF9U0LNcxRNoLTwPcNkZyUbWx3CUPdmSzS+Mp0BpjgGCgzAOHKbx3jzcTaOXwkQdrbjF+AwKmg==
+X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(396003)(39860400002)(136003)(346002)(376002)(451199024)(1800799009)(82310400011)(186009)(46966006)(40470700004)(36840700001)(8676002)(8936002)(4326008)(316002)(6916009)(2906002)(36756003)(54906003)(70206006)(70586007)(5660300002)(40460700003)(41300700001)(7696005)(36860700001)(426003)(2616005)(336012)(26005)(107886003)(1076003)(40480700001)(82740400003)(7636003)(356005)(478600001)(966005)(47076005)(83380400001)(86362001)(6666004);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2023 15:18:56.4931 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72388d34-5097-4081-5c94-08dba7da18e9
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989EA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8768
+Received-SPF: softfail client-ip=2a01:111:f400:7e8d::61d;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,306 +130,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The zoned format feature can be tested by:
-$ tests/qemu-iotests/check -qcow2 zoned-qcow2
+Hello,
 
-Signed-off-by: Sam Li <faithilikerun@gmail.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- tests/qemu-iotests/tests/zoned-qcow2     | 135 ++++++++++++++++++++++
- tests/qemu-iotests/tests/zoned-qcow2.out | 140 +++++++++++++++++++++++
- 2 files changed, 275 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
- create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
+Recently added VFIO migration is not compatible with some of the
+pre-existing migration features. This was overlooked and today these
+combinations are not blocked by QEMU. This series fixes it.
 
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2 b/tests/qemu-iotests/tests/zoned-qcow2
-new file mode 100755
-index 0000000000..7ec8b18860
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2
-@@ -0,0 +1,135 @@
-+#!/usr/bin/env bash
-+#
-+# Test zone management operations for qcow2 file.
-+#
-+
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+status=1 # failure is the default!
-+
-+file_name="zbc.qcow2"
-+_cleanup()
-+{
-+  _cleanup_test_img
-+  _rm_test_img "$file_name"
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ../common.rc
-+. ../common.filter
-+. ../common.qemu
-+
-+# This test only runs on Linux hosts with qcow2 image files.
-+_supported_fmt qcow2
-+_supported_proto file
-+_supported_os Linux
-+
-+echo
-+echo "=== Initial image setup ==="
-+echo
-+
-+$QEMU_IMG create -f qcow2 $file_name -o size=768M -o zone_size=64M \
-+-o zone_capacity=64M -o nr_conv_zones=0 -o max_append_sectors=131072 \
-+-o max_open_zones=0 -o max_active_zones=0 -o zone_model=1
-+
-+IMG="--image-opts -n driver=qcow2,file.driver=file,file.filename=$file_name"
-+QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT
-+
-+echo
-+echo "=== Testing a qcow2 img with zoned format ==="
-+echo
-+echo "case 1: test if one zone operation works"
-+
-+echo "(1) report zones[0]:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "report zones[0~9]:"
-+$QEMU_IO $IMG -c "zrp 0 10"
-+echo
-+echo "report the last zone:"
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2" # 0x2C000000 / 512 = 0x160000
-+echo
-+echo
-+echo "open zones[0]:"
-+$QEMU_IO $IMG -c "zo 0 0x4000000" # 0x4000000 / 512 = 0x20000
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "open zones[1]"
-+$QEMU_IO $IMG -c "zo 0x4000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "open the last zone"
-+$QEMU_IO $IMG -c "zo 0x2C000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2"
-+echo
-+echo
-+echo "close zones[0]"
-+$QEMU_IO $IMG -c "zc 0 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "close the last zone"
-+$QEMU_IO $IMG -c "zc 0x3e70000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x3e70000000 2"
-+echo
-+echo
-+echo "(4) finish zones[1]"
-+$QEMU_IO $IMG -c "zf 0x4000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo
-+echo "(5) reset zones[1]"
-+$QEMU_IO $IMG -c "zrs 0x4000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo
-+echo "(6) append write with (4k, 8k) data" # the physical block size of the device is 4096
-+$QEMU_IO $IMG -c "zrp 0 12"
-+echo "Append write zones[0] one time:"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "Append write zones[0] twice:"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "Append write zones[1] one time:"
-+$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "Append write zones[1] twice:"
-+$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "Reset all:"
-+$QEMU_IO $IMG -c "zrs 0 768M"
-+$QEMU_IO $IMG -c "zrp 0 12"
-+echo
-+echo
-+echo "case 2: test a sets of ops that works or not"
-+
-+echo "(1) append write (4k, 4k) and then write to full"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x1000"
-+echo "wrote (4k, 4k):"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x3ffd000"
-+echo "wrote to full:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo "Reset zones[0]:"
-+$QEMU_IO $IMG -c "zrs 0 64M"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+
-+echo "(2) write in zones[0], zones[3], zones[8], and then reset all"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x1000"
-+$QEMU_IO $IMG -c "zap -p 0xc000000 0x1000 0x1000"
-+$QEMU_IO $IMG -c "zap -p 0x20000000 0x1000 0x1000"
-+echo "wrote three zones:"
-+$QEMU_IO $IMG -c "zrp 0 12"
-+echo "Reset all:"
-+$QEMU_IO $IMG -c "zrs 0 768M"
-+$QEMU_IO $IMG -c "zrp 0 12"
-+
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2.out b/tests/qemu-iotests/tests/zoned-qcow2.out
-new file mode 100644
-index 0000000000..78f9c574c2
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2.out
-@@ -0,0 +1,140 @@
-+QA output created by zoned-qcow2
-+
-+=== Initial image setup ===
-+
-+Formatting 'zbc.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib zone_model=1 zone_size=67108864 zone_capacity=67108864 nr_conv_zones=0 max_append_sectors=131072 max_active_zones=0 max_open_zones=0 size=805306368 lazy_refcounts=off refcount_bits=16
-+
-+=== Testing a qcow2 img with zoned format ===
-+
-+case 1: test if one zone operation works
-+(1) report zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+
-+report zones[0~9]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+
-+report the last zone:
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+open zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:3, [type: 2]
-+
-+open zones[1]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:3, [type: 2]
-+
-+open the last zone
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type: 2]
-+
-+
-+close zones[0]
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-+
-+close the last zone
-+zone close failed: Input/output error
-+qemu-io: offset 268167020544 is equal to or greater than thedevice capacity 805306368
-+zone report failed: Invalid argument
-+
-+
-+(4) finish zones[1]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:14, [type: 2]
-+
-+
-+(5) reset zones[1]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+
-+
-+(6) append write with (4k, 8k) data
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type: 2]
-+Append write zones[0] one time:
-+After zap done, the append sector is 0x0
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x18, zcond:2, [type: 2]
-+
-+Append write zones[0] twice:
-+After zap done, the append sector is 0x18
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x30, zcond:2, [type: 2]
-+
-+Append write zones[1] one time:
-+After zap done, the append sector is 0x20000
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20018, zcond:2, [type: 2]
-+
-+Append write zones[1] twice:
-+After zap done, the append sector is 0x20018
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20030, zcond:2, [type: 2]
-+
-+Reset all:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+case 2: test a sets of ops that works or not
-+(1) append write (4k, 4k) and then write to full
-+After zap done, the append sector is 0x0
-+wrote (4k, 4k):
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x10, zcond:2, [type: 2]
-+After zap done, the append sector is 0x10
-+wrote to full:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x20000, zcond:14, [type: 2]
-+Reset zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+(2) write in zones[0], zones[3], zones[8], and then reset all
-+After zap done, the append sector is 0x0
-+After zap done, the append sector is 0x60000
-+After zap done, the append sector is 0x100000
-+wrote three zones:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x10, zcond:2, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60010, zcond:2, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100010, zcond:2, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+Reset all:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+*** done
+Postcopy migration:
+VFIO migration is not compatible with postcopy migration. A VFIO device
+in the destination can't handle page faults for pages that have not been
+sent yet. Doing such migration will cause the VM to crash in the
+destination.
+
+Background snapshot:
+Background snapshot allows creating a snapshot of the VM while it's
+running and keeping it small by not including dirty RAM pages.
+
+The way it works is by first stopping the VM, saving the non-iterable
+devices' state and then starting the VM and saving the RAM while write
+protecting it with UFFD. The resulting snapshot represents the VM state
+at snapshot start.
+
+VFIO migration is not compatible with background snapshot.
+First of all, VFIO device state is not even saved in background snapshot
+because only non-iterable device state is saved. But even if it was
+saved, after starting the VM, a VFIO device could dirty pages without it
+being detected by UFFD write protection. This would corrupt the
+snapshot, as the RAM in it would not represent the RAM at snapshot
+start.
+
+This series blocks these combinations explicitly:
+If a VFIO device is added when postcopy or background snapshot are on,
+a migration blocker will be added. If a VFIO device is present, setting
+postcopy or background snapshot capabilities will fail with an
+appropriate error message.
+
+Note that this series is based on the P2P series [1] sent a few weeks
+ago.
+
+Comments and suggestions will be greatly appreciated.
+
+Thanks.
+
+[1]
+https://lore.kernel.org/qemu-devel/20230802081449.2528-1-avihaih@nvidia.com/
+
+Avihai Horon (6):
+  migration: Add migration prefix to functions in target.c
+  vfio/migration: Fail adding device with enable-migration=on and
+    existing blocker
+  vfio/migration: Add vfio_migratable_devices_num()
+  vfio/migration: Change vfio_mig_active() semantics
+  vfio/migration: Block VFIO migration with postcopy migration
+  vfio/migration: Block VFIO migration with background snapshot
+
+ include/hw/vfio/vfio-common.h |   4 ++
+ migration/migration.h         |   7 +-
+ hw/vfio/common.c              | 120 +++++++++++++++++++++++++++++-----
+ hw/vfio/migration.c           |  12 ++++
+ migration/migration.c         |   6 +-
+ migration/options.c           |  26 ++++++++
+ migration/savevm.c            |   2 +-
+ migration/target.c            |  36 ++++++++--
+ 8 files changed, 187 insertions(+), 26 deletions(-)
+
 -- 
-2.40.1
+2.26.3
 
 
