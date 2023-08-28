@@ -2,88 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D1978A6CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 09:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8119E78A7AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 10:28:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaX1q-0006I2-Dy; Mon, 28 Aug 2023 03:51:18 -0400
+	id 1qaXb8-0007Tv-8D; Mon, 28 Aug 2023 04:27:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1qaX1Z-0006Gw-FW
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 03:51:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <alloc.young@outlook.com>)
+ id 1qaXay-0007Sl-Dl
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 04:27:37 -0400
+Received: from mail-dm6nam10olkn2081.outbound.protection.outlook.com
+ ([40.92.41.81] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1qaX1T-0006vK-KR
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 03:50:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693209053;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=m+IulFdLh/UZzWdmgJ3IY6iNTFVp22PU6qOD/YF8+Z8=;
- b=M++zzB1fZIFGD4gs8U0gMnX47qAYF/VQ+4SjgLl+T6xE4sPjobrodmCUrAezwViry9r0pf
- k/S3NTGCoTShI9ZM/jwqP/E3gqv/dzi7yGP4IpowZt0KA3DeC0/t1hPuZpowg6G5DFcrtJ
- mneCdVT1gotN76oqK5FIChK8uoNVUZU=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-O2oeY66RNlSSOmlHh7qcJg-1; Mon, 28 Aug 2023 03:50:45 -0400
-X-MC-Unique: O2oeY66RNlSSOmlHh7qcJg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-500777449e5so3321930e87.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 00:50:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693209044; x=1693813844;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=m+IulFdLh/UZzWdmgJ3IY6iNTFVp22PU6qOD/YF8+Z8=;
- b=YS/7FL07ThV7TGSpMKEzjsIx5C6aTOJRHIFxGfe/GFPgDhyUIbcrbYcI7qHhLgosOL
- jLD0KjZeIwrBQjO/WO7wN3MwTma2uF13+nhwj7xQwr1rUEsytDY13B3YA/zflawMFZIb
- 6wB3fzdPobChaKnJ9ukMjWEth6C8Y3vWZ7pGVnzUouiTG8yKQeG40gLhkXmsRfssF4Tu
- VxlAJmOH5nlyTmzbZZrZw+VGHz2ADUACMilQYVqXmQyiRlOnaWp4+RLdYKJ3fC/Woca+
- W4rX6n2XEMp0OEenDuxiMPPtSBruUTwGxZQEg6za5yKoiUcx/dMDAt49jqTvpsNVyapO
- KG6Q==
-X-Gm-Message-State: AOJu0Yw17x8A0ufoIIVt+RttplIHAtC+fOUGotO7hcP6bPSOHRRnpYNv
- sG/WOofJ42O3AD1KdWS97Ru/cgkgNA3fgpSXqmfVW67bpKYk0Kaw8k8QfHQNxCaLSC41CdjTDgk
- YFUrfJE5Vn96uRvGHMA7d+GmpFw9Kcok=
-X-Received: by 2002:ac2:4c82:0:b0:4fd:d92e:31ca with SMTP id
- d2-20020ac24c82000000b004fdd92e31camr16674831lfl.36.1693209044121; 
- Mon, 28 Aug 2023 00:50:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHsXZRzsra9/sZh0KEOTe9mrVGSpaLtVGHofgaGTy07T7Sxl4cvntbA6rYdhrwd7iDy722CAhzXretx704OwIw=
-X-Received: by 2002:ac2:4c82:0:b0:4fd:d92e:31ca with SMTP id
- d2-20020ac24c82000000b004fdd92e31camr16674818lfl.36.1693209043768; Mon, 28
- Aug 2023 00:50:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alloc.young@outlook.com>)
+ id 1qaXav-0004mI-1R
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 04:27:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HQ3MsGH7dxyFXvAnHFy25SUBlMfYjaFxcssH7uy/OoHtSY41poPLK9rVZlJh+BaBoBLotb8qVuxrYfvuN7kRbFsCIwZbXy1vNY2zRT2KH7dgW4EJoN1itL2EWf0/9+kZOcCTZEPUCjHcBCV+sBNwicem2W47DZQT+7nKuUf8iWw9u0nygP51RVG+hcvaSbuzL+cPFsUqUtIqV++bHDfd6EjISnaU4iog2DklRqaMUe/tVXgWFm//HoRn4PI2sQILyKJJv/rjBycfFW8un54MEkQSluY6T0L5OiYmSyXlh1w7PlG5TF8YfjHnqNMjypxSusio2wP9eZKH9LEYBE4o7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iHLbtrHS3JmLLeRIJcIqJKU02U/YbbCgPid0CBqYSW0=;
+ b=Z6zZIqlIFv8XCFV4sT3Ko/QbjRpJQVl6xVRtQV8WrqZeUngIL+F6+daKUHrR6fwhKAdLJ5MDl62ffo+/e1yeTvU2oonEiAx/2i39q/8o5/LUU+NkkbgtXrBFxclh+qL4vJU4NF03xJKN5RcfEwsAZimXIuEHIII3KKXXpWDkmPvgYKjvjhWePxTJzZQMKKd8pxeFmQw5ayM6WVJOy2/71MTg+BUBuItR6nBFFascz0uVZXFT4ZJ+hxf9sqR/tTxSxtjZ1uqc2ZO6/tkGf1QElRuJlbe+DcvZA46EVDz1Vde3Ez6vTQfAPOBuC5F9gAEae/JpUlTgiI2HHc+nGxtyHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iHLbtrHS3JmLLeRIJcIqJKU02U/YbbCgPid0CBqYSW0=;
+ b=cIx4MTYXUZ14EZB85Q8Fi306SJSyE6AfqSR5HinpizsJ9wR86SDRvQgwlfprfNRVxXEwlnLKe+T+4i7FcII24tIz/CXnScAJfGpaXjSS1/YbDnzUqir4+GSCyJQjkX/HgbwnQtSY/65mQ4Wg7jdPBSXWabf7Vbq2kbtB4tSoArk8D7D7Pb5QQj4PbkPFwmNL6PeNt1pXokn7/fSKNznvE1Vl51dC3qtJmRjdJtaCc1mqWhnFPjzAN+RYAEfMh0U5/QhLtTf3X/7MEbEXon98MXrw4JgY+PhVb15TAv/s5Zp7tvKZmum9T3G0tfnlGUDh2AYlo1oF3bpKasY25kePUg==
+Received: from SA1PR11MB6760.namprd11.prod.outlook.com (2603:10b6:806:25f::14)
+ by SA0PR11MB4605.namprd11.prod.outlook.com (2603:10b6:806:95::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Mon, 28 Aug
+ 2023 08:22:27 +0000
+Received: from SA1PR11MB6760.namprd11.prod.outlook.com
+ ([fe80::df85:2db:d56b:38bf]) by SA1PR11MB6760.namprd11.prod.outlook.com
+ ([fe80::df85:2db:d56b:38bf%5]) with mapi id 15.20.6699.034; Mon, 28 Aug 2023
+ 08:22:27 +0000
+From: alloc.young@outlook.com
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org, alloc <alloc.young@outlook.com>
+Subject: [PATCH] accel/kvm: Fix dirty reaper thread crash
+Date: Mon, 28 Aug 2023 16:22:04 +0800
+Message-ID: <SA1PR11MB67603CD7B742F50678EDDDF1F5E0A@SA1PR11MB6760.namprd11.prod.outlook.com>
+X-Mailer: git-send-email 2.39.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [9+DJXloxmERZguKQAUJsVjU3/588wANMEatKQszgLkA=]
+X-ClientProxiedBy: SG2PR03CA0091.apcprd03.prod.outlook.com
+ (2603:1096:4:7c::19) To SA1PR11MB6760.namprd11.prod.outlook.com
+ (2603:10b6:806:25f::14)
+X-Microsoft-Original-Message-ID: <20230828082204.1238103-1-alloc.young@outlook.com>
 MIME-Version: 1.0
-References: <20230802081449.2528-1-avihaih@nvidia.com>
-In-Reply-To: <20230802081449.2528-1-avihaih@nvidia.com>
-From: YangHang Liu <yanghliu@redhat.com>
-Date: Mon, 28 Aug 2023 15:50:32 +0800
-Message-ID: <CAGYh1E89zRRO==Q1g5m+MfgyYjX3dv3D=T0VQCYe3cZ9V4H0tw@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 v3 0/6] vfio/migration: Add P2P support for VFIO
- migration
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Joao Martins <joao.m.martins@oracle.com>, 
- Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Maor Gottlieb <maorg@nvidia.com>, 
- Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=yanghliu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6760:EE_|SA0PR11MB4605:EE_
+X-MS-Office365-Filtering-Correlation-Id: e16dc2b7-562e-465b-8d9a-08dba79fea40
+X-MS-Exchange-SLBlob-MailProps: 70qbaZjg4mvG1DVpcZ16y0G0e8zk20SA5z8eNdbbqXO8KZYrIiWQvvRs7zw+kNL+E0ugxk3BEyEKuBc2IpjhirY424Rdak3qwhljrEsghWX+cXR7xp+teEoITS2b1k+0X7xEp7d63G/lAoxdkGgWphlvAvQ3G8cql4N5Oi30RXs1Jh1Vqin7cQ/5ofCcSkWolaNhzcq0Ufh8ltl1d4V9sqQZNzaDXbFh0ehuiNW5HfI5DVZfgZHSA17uFWKlhV/hkzglp5I7cDW3S1wHrw3so38VQy1yPtWwDvvFNqNwCXEYGc5EoJmup4/lDN3U/dTxNGIm/nQUaZYrXWTXMbLmC10xGjxKbSWARJiD2i+HUDxKOYGOpj1d+D+Hz6ECrmdZX4Y70Zrq+pwy1N2JrdEzYhSOCmm9tDWiwpJyu0cj8F72c9TUhgRHpdvFd+Pl11mOf2L/v8Y/11KvXiKzsiDYTHi8EVWjWQQimdajaSHvSeLPyQxCBH1nfpEyJRiglQb9Tlq/9oHz/aPP86BKWKH8SlPT8rsKfsHxktobm2y5PEvAC2O2F5tNmFYQ36OVisaj2S0XBj6s6cmUMxrI1dE/dtTAcDqNhYq1myPyuEnx40in/mFGw5Q9NDKIS4jalJ8lIcRXsSYzkLrrUa5RsJO9sMUW+XRTQb2l2hHArcly8+BAbqWmgvV1hh179McAaX+OOEhjMZPPrfZ//MPtnZW+Ug8Qf6lR0EriuX82iTDgvnP3K1TDqQ4Sqg==
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: AMTonJCNuHfYCdizz74JdrF3QGIVBjYYtUT8qcgqtHhEOFPut+9TgksrTVQwJbMC4bpwWPUNhFcGsj+aYeeNcUr5P48XKMVynybqoifn86zVrIaHw8oDa49vlxCJaoMjyfX6rMP50kBGrJelHb9+yLj4XKRg4Szk890W6RrTk0hZdUibSa2tME4+0x67qHZGexneb/DJB71z98noobtzv7vzFMylbUu/ML95gZmvlIbfxz86+qRELS9/ithVBQvhi0LVRt+BiXS0Obi1bBFousiA8cGVbyGc/yHKRvIGmWZeTqW4xbK3tShXZUrOjQRxPJe6MnZ+xjqz6Cek1qBKIaIz81d2GE9zS8lJ0gI7agWXkOiGFFMEsVvDCwvyV8/FclpS0Gl1tFadnJDMqoUXinWsjz9ddfV8xxjSp5y96p1JANnYGe3G2gW1Q/D3qgJ7bvDDOJSGbXUNLkgQywttjNO+hpPNVi0t25W8peN7ri9WhHHWSf9lpeSf+SbvZAlZQGqVzMBcankzW7GmP9EoDAlfgzIcbieDTcn5SU4XYpYjS709MDllyt7VDJLNuxligIrrIzzkx3Ln4O8ZJ2TXQJtOIvH73yF2yQlVx8B7I946NKqkSa8Ezq4Y+lis1JIb
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Qc3+h/1PCOMTF8M2d55T8Fk4jLB+keCqg566JCHMfQg3eTImMSF1Wa58xwHV?=
+ =?us-ascii?Q?i2S/QBWzLg3yK7EW5XFJt26OwMuIlSQwboyEJ2VWZJaEOLl5ukYpKxv3yNct?=
+ =?us-ascii?Q?b+sikjckpv1rMJju5v/R80WjfR14NeonJLTwlLp/yREzy3pYkqHvQ7gtsEVH?=
+ =?us-ascii?Q?cuCA/0hqOpaTc6l6WzV0fjejDL9pppU/YDfAAtSoH2c3UljThq1Y4mePyz/v?=
+ =?us-ascii?Q?A7I8ys2tHqpsQCz4HApYa1Q9GN5EcnYh855d0tFY9ql9QlhTzfnOsYgHo2yB?=
+ =?us-ascii?Q?Q2pwfA1eC5AzMuXY1LaMBqAbpoznUK+luLOrLLHvB5eZ7KWHCvLB9XsaM57w?=
+ =?us-ascii?Q?S9nysKziR79Shw6UNbPCPweb8iS3wCY/TwdyhtIekZZ5KYo6p4fw6/Jeh8Fh?=
+ =?us-ascii?Q?uAyMJCeabsDt5nK6W2QTlb63do02y/FD8SKpmBN9G8eJORCLvXrTGBbnTiRY?=
+ =?us-ascii?Q?N6Btb9Wt7IqnhA+ZaljjnIJZsEcw/blWZqp+gGcP5ahnSzAwGkhveeatDEGb?=
+ =?us-ascii?Q?YsTc8IChpyYYK5VGxWii/j2Z24FFgBx2/j63paZ8hKaDOy3qo3aFNlmdjoGx?=
+ =?us-ascii?Q?gG5qfgtWqIfnQ+A/vnTY0XOQYw6r4JgBm3huFYTndn0qijX6aZILWvq7Kjnj?=
+ =?us-ascii?Q?MMp1SJNAjcS9zi8TC/XV/ZZpIQMo8Io5QZUY512jIRz6sGmSsNgHuzbTCitq?=
+ =?us-ascii?Q?CZR32YCxt4VafOICjFo2ZN0p8G7bJTiAEOFaBbA4mGa/U0Xe4oxvd1cYKDI6?=
+ =?us-ascii?Q?pKI+TpfMe84vqvp9yZwC7xJQ8/aYvGGKzyGjUnvJOVq0y0rCUNLu8fcbhmtU?=
+ =?us-ascii?Q?yjU4ITrD5YfuCKGI2983rVFAN9tBxkXq4a7k/PadjW/G8B+csP0ifhWWPsEm?=
+ =?us-ascii?Q?giue+YxN9JUo6K1762BFr7Q8UMPHiuRM3CylaD37VwIVIxMraQfsfiYB24jP?=
+ =?us-ascii?Q?MgdTUIOvFr9u2AeAVxDVqQk3NP0BUWwYtpXQF2QjqHhNE0N0CpC/NFXtNWkD?=
+ =?us-ascii?Q?q2TZpSBYPo5xKXx6f3b9YJcLNjcvdunr1cCRjCjS+NmpwfMsMplyyAW0qgCB?=
+ =?us-ascii?Q?8cf7DQRkkan6Y5etFionY3tFqZfEkusCB9Y0G0hriYtPc4w0EH94Q3GGMdHB?=
+ =?us-ascii?Q?Ngomt2lFh5qk/uqwtDpOY0o5eS8w4cAGH2uDQTHg2oGpKK3Ui/CatVqQyYdl?=
+ =?us-ascii?Q?+oZfpkZnFVq2nJ6ePcRIsyQLFOpEXEOOjmzfX8mRRDNrillzH/RdzpC00+M?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e16dc2b7-562e-465b-8d9a-08dba79fea40
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6760.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2023 08:22:27.8483 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4605
+Received-SPF: pass client-ip=40.92.41.81; envelope-from=alloc.young@outlook.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,101 +120,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test result of multiple Mellanox CX-7 VFs migration:  PASS
+From: alloc <alloc.young@outlook.com>
 
-[1] create two VFs and bind them to mlx5_vfio_pci driver
-[2] start a VM with two VFs
-[3] migrate the VM
-[4] check if the VM works well
+kvm_dirty_ring_reaper_init is called much early than vcpu creation,
+so it's possibe the reaper get a crash before vcpu mmap kvm_dirty_gfns.
+Add a machine done notifier to ensure dirty reaper get run after vcpu
+inited.
 
-Tested-by: YangHang Liu <yanghliu@redhat.com>
+Signed-off-by: alloc <alloc.young@outlook.com>
+---
+ accel/kvm/kvm-all.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Best Regards,
-YangHang Liu
-On Wed, Aug 2, 2023 at 4:16=E2=80=AFPM Avihai Horon <avihaih@nvidia.com> wr=
-ote:
->
-> Hi all,
->
-> The first patch in this series adds a small optimization to VFIO
-> migration by moving the STOP_COPY->STOP transition to
-> vfio_save_cleanup(). Testing with a ConnectX-7 VFIO device showed that
-> this can reduce downtime by up to 6%.
->
-> The rest of the series adds P2P support for VFIO migration.
->
-> VFIO migration uAPI defines an optional intermediate P2P quiescent
-> state. While in the P2P quiescent state, P2P DMA transactions cannot be
-> initiated by the device, but the device can respond to incoming ones.
-> Additionally, all outstanding P2P transactions are guaranteed to have
-> been completed by the time the device enters this state.
->
-> The purpose of this state is to support migration of multiple devices
-> that might do P2P transactions between themselves.
->
-> To implement P2P migration support, all the devices must be transitioned
-> to the P2P quiescent state before being stopped or started.
->
-> This behavior is achieved by adding an optional prepare callback to
-> VMChangeStateEntry. These callbacks are invoked before the main VM state
-> change callbacks, transitioning all the VFIO devices to the P2P state,
-> and only then are the main callbacks invoked, which stop or start the
-> devices.
->
-> This will allow migration of multiple VFIO devices if all of them
-> support P2P migration.
->
-> Thanks.
->
-> Changes from v2 [2]:
-> * Registered VFIO prepare callback only if P2P migration is supported by
->   the device. (Cedric)
-> * Added Cedric R-b tags to patches 2,3 and 6.
->
-> Changes from v1 [1]:
-> * Rebased on latest master branch.
-> * Renamed pre_change_cb to prepare_cb and adjusted relevant code
->   accordingly. (Cedric)
-> * Split VFIO vmstate change handler to two separate handlers, one for
->   prepare callback and another for main callback. (Cedric)
-> * Renamed vfio_should_block_multiple_devices_migration() to
->   vfio_multiple_devices_migration_is_supported() and reverted its logic
->   accordingly. (Cedric)
-> * Rephrased "that are doing P2P" to "that might do P2P" in docs and
->   commit message. (Jason)
-> * Added Cedric R-b tag to patch #4.
->
-> [1]
-> https://lore.kernel.org/qemu-devel/20230716081541.27900-1-avihaih@nvidia.=
-com/
->
-> [2]
-> https://lore.kernel.org/qemu-devel/20230731102521.15335-1-avihaih@nvidia.=
-com/
->
-> Avihai Horon (5):
->   vfio/migration: Move from STOP_COPY to STOP in vfio_save_cleanup()
->   sysemu: Add prepare callback to struct VMChangeStateEntry
->   qdev: Add qdev_add_vm_change_state_handler_full()
->   vfio/migration: Add P2P support for VFIO migration
->   vfio/migration: Allow migration of multiple P2P supporting devices
->
-> Joao Martins (1):
->   vfio/migration: Refactor PRE_COPY and RUNNING state checks
->
->  docs/devel/vfio-migration.rst     | 93 +++++++++++++++++++------------
->  include/hw/vfio/vfio-common.h     |  2 +
->  include/sysemu/runstate.h         |  7 +++
->  hw/core/vm-change-state-handler.c | 14 ++++-
->  hw/vfio/common.c                  | 50 +++++++++++++----
->  hw/vfio/migration.c               | 75 ++++++++++++++++++++-----
->  softmmu/runstate.c                | 40 +++++++++++++
->  hw/vfio/trace-events              |  1 +
->  8 files changed, 218 insertions(+), 64 deletions(-)
->
-> --
-> 2.26.3
->
->
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index d07f1ecbd3..5ae7e27a72 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -51,6 +51,7 @@
+ 
+ #include "hw/boards.h"
+ #include "sysemu/stats.h"
++#include "sysemu/sysemu.h"
+ 
+ /* This check must be after config-host.h is included */
+ #ifdef CONFIG_EVENTFD
+@@ -133,6 +134,8 @@ static QLIST_HEAD(, KVMResampleFd) kvm_resample_fd_list =
+ 
+ static QemuMutex kml_slots_lock;
+ 
++static Notifier dirty_ring_reaper_machine_done;
++
+ #define kvm_slots_lock()    qemu_mutex_lock(&kml_slots_lock)
+ #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+ 
+@@ -1454,8 +1457,9 @@ static void *kvm_dirty_ring_reaper_thread(void *data)
+     return NULL;
+ }
+ 
+-static void kvm_dirty_ring_reaper_init(KVMState *s)
++static void kvm_dirty_ring_reaper_init(Notifier *n, void *unused)
+ {
++    KVMState *s = kvm_state;
+     struct KVMDirtyRingReaper *r = &s->reaper;
+ 
+     qemu_thread_create(&r->reaper_thr, "kvm-reaper",
+@@ -2742,7 +2746,8 @@ static int kvm_init(MachineState *ms)
+     }
+ 
+     if (s->kvm_dirty_ring_size) {
+-        kvm_dirty_ring_reaper_init(s);
++        dirty_ring_reaper_machine_done.notify = kvm_dirty_ring_reaper_init;
++        qemu_add_machine_init_done_notifier(&dirty_ring_reaper_machine_done);
+     }
+ 
+     if (kvm_check_extension(kvm_state, KVM_CAP_BINARY_STATS_FD)) {
+-- 
+2.39.3
 
 
