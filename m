@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8B378BBBA
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D360D78BBBF
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:46:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalsO-0003uR-FJ; Mon, 28 Aug 2023 19:42:32 -0400
+	id 1qalsO-0003uP-GA; Mon, 28 Aug 2023 19:42:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qals7-0003oq-5e
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qals7-0003op-4w
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:15 -0400
-Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
+Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalru-0006lc-K3
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:04 -0400
-Received: by mail-il1-x136.google.com with SMTP id
- e9e14a558f8ab-34bae82b2ffso12430775ab.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:42:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrv-0006ln-Ir
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:05 -0400
+Received: by mail-il1-x12e.google.com with SMTP id
+ e9e14a558f8ab-34dea77cbe6so868265ab.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:42:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266121; x=1693870921;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266122; x=1693870922;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NkCIF/cz1CORecgJNpP6wmYIklfZQzDUYN6XXFugEHQ=;
- b=o5jOoKSlVrqNJIrdIhw5gEyIv8hv15MWfL7jQHMbEWe085SwbHLJNrjwofg4ZIXtbp
- E3XJf66S8bMbHX3npP4L3rvalJ/JmdXCgSPIbLj3N0IYliiMU7hSDBzW1bpotfrjYl/W
- PbppR6zgUDCtW/m3Zl89RxVljetpazFd8zjSv0IRD3jxfyerLFpBDouW2DoRQ31/3AyV
- kePPpqSw3htxoc0Yj7NJnO3FZMpR6WGrsVfvBxdiBlE4TeHKYoagWH6y+ad9dWZMrLKG
- hjIUYt1pmJp/cK4rvHRfsKY2EhzWjsrKjGZ99/JK7glqz8XN7ew9jM1ytklu1c9imQhw
- AmeQ==
+ bh=vEJ4yqkPcxV2O/9AHiCAR4WW/EWetmRbNI/78P0DXQM=;
+ b=oB4rcYZ90Hlw5DvYlo/Hsiutr4oX3YPVmKvokuXCqFJepWlesxElcAz5rlsmiGy9ZQ
+ p5Iy+hIyXqIIZ11Du5yFRM/yXQoRDgfaE9dWMmEXx/jYIlCzcrz8j2PVPYZuQN8GjN1Y
+ NvoQNUDpZ/FCMVwCQ0YV6iVV9OtWm5XCZMiFyWr9iX5ZsqKwuOnT9Cg64pXaGtCI7+ad
+ AZ6nB7X2H8kLRISxrfriJoGli2mfi/YKA+eyoUfRoHagrVwcaQ0pIkIUXuMH63vpoaWc
+ gaKkaf+coT1Eb+LdlE7JpjUvod6/jJUJ54alNrjhEy3Gfj2RgtuC5SkedpPBVN7VypHM
+ RzSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693266121; x=1693870921;
+ d=1e100.net; s=20221208; t=1693266122; x=1693870922;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NkCIF/cz1CORecgJNpP6wmYIklfZQzDUYN6XXFugEHQ=;
- b=RYcD+gg5r1yBjqy/m1/tpMvWuVxge0Ieu5CyJnwiBzEGoizX/l5a7C2voSDn44sgIQ
- kM/m6rbzqsZTLoMhjl6LixTObeR2mQJLd0taCK75V4QzFA1vw0sNHv92de6fn1030FBJ
- +LfuUHdZnDwPCFB6VlONgNhlNWDm3gsJFgGIkqWaTrBdgiYd4BlEEfzAY8Dgxb+Knxfy
- 9qgzjyY7B3cHdP7pkr852otRbKvP6RudjMjaQZBxd9owjvugcpy9j6H6J6mHkNU1mtUm
- c/XmDNoEXZKjNnLsA7HDghgepEMsedk00XJ+gMrpNmlEP3pCmqM6/7tn2OX//Ktl6fY/
- mUHQ==
-X-Gm-Message-State: AOJu0YyOSKznc7K2LUd2YpbKsOq5FMWbtUP1x9jetbvCy5lqwoINCzwD
- FJoVjcSSpoAf/aIDocOBws60+zlQWcCcjJapoD0=
-X-Google-Smtp-Source: AGHT+IFOFC+cD0M0EczcX+SpaF8frUmCm68JTBV3lhBInwYtExlSgHjRmJwPh95QuBO836ReBO8Fpw==
-X-Received: by 2002:a05:6e02:144f:b0:348:797d:a94e with SMTP id
- p15-20020a056e02144f00b00348797da94emr20692590ilo.2.1693266121323; 
- Mon, 28 Aug 2023 16:42:01 -0700 (PDT)
+ bh=vEJ4yqkPcxV2O/9AHiCAR4WW/EWetmRbNI/78P0DXQM=;
+ b=H8XvyD2UZu4cc/w0SCzgUUPRHBKnsQfqUd74fIP/DCpasb8cfRDVxY7+fdB05X+007
+ UNCwiKPVcBWAwZTKlgGIGxMIFKsDbdaPo7yiT2yivGOSh/oS9NadPevMbw5Kc4h4l6+F
+ FHLk43k74vi4xKK6jIAY4oBs5U9KVUzcfJ58CDs9PoAOwmLo65baat07ese0uSRQQe8Q
+ 3k+Esgdy6Qlcnhz6J6ZZEECEIiN9JQT6Su25p1ML1jEa7oR0Qz1JawE5d4V2ovCh4UV9
+ TTOCzZvspEx/aZilGBjeZrDUE63lrfTOYAiYLwjmyYX+EEUlweiTstbcH1hb6SOdUxXn
+ x3gA==
+X-Gm-Message-State: AOJu0YyNQ4Ml3fM91HXn1NTesUZQiWtlzrOANmQmebxq/F5KXbslXLqt
+ 3OLrRUAHdqWsfnNVuwgqoZ0V6sTyQsxP7U0vY+A=
+X-Google-Smtp-Source: AGHT+IHW8M083XZPgWZvYazEHB0XbclWznI0JRH7d8seInbyqIvbUSU4JOpULAOZzuc2fjDdc7dd4w==
+X-Received: by 2002:a05:6e02:dcc:b0:34c:c7c6:d8ed with SMTP id
+ l12-20020a056e020dcc00b0034cc7c6d8edmr15593946ilj.13.1693266122228; 
+ Mon, 28 Aug 2023 16:42:02 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.42.00
+ t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.42.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:42:00 -0700 (PDT)
+ Mon, 28 Aug 2023 16:42:01 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
@@ -61,16 +61,17 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Michal Meloun <mmel@FreeBSD.org>, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 25/36] bsd-user: Implement freebsd11 stat related syscalls
-Date: Mon, 28 Aug 2023 17:38:10 -0600
-Message-ID: <20230828233821.43074-26-imp@bsdimp.com>
+Subject: [PULL 26/36] bsd-user: Implement freebsd11 fstat and fhstat related
+ syscalls
+Date: Mon, 28 Aug 2023 17:38:11 -0600
+Message-ID: <20230828233821.43074-27-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::136;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x136.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::12e;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x12e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,9 +95,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michal Meloun <mmel@FreeBSD.org>
 
-Rename the following syscalls to the freebsd11 variant:
-do_freebsd_lstat -> do_freebsd11_lstat
-do_freebsd_stat -> do_freebsd11_stat
+Implement the freebsd11 variant of the following syscalls:
+fstat(2)
+fstatat(2)
+fhstat(2)
+fhstatfs(2)
 
 Co-authored-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
@@ -105,25 +108,126 @@ Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-stat.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ bsd-user/freebsd/os-stat.h | 78 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index 5d9323c7d1b..aef55c8bb53 100644
+index aef55c8bb53..2e0c7245dfd 100644
 --- a/bsd-user/freebsd/os-stat.h
 +++ b/bsd-user/freebsd/os-stat.h
-@@ -20,6 +20,11 @@
- #ifndef BSD_USER_FREEBSD_OS_STAT_H
- #define BSD_USER_FREEBSD_OS_STAT_H
- 
-+int freebsd11_stat(const char *path, struct freebsd11_stat *stat);
-+__sym_compat(stat, freebsd11_stat, FBSD_1.0);
-+int freebsd11_lstat(const char *path, struct freebsd11_stat *stat);
-+__sym_compat(lstat, freebsd11_lstat, FBSD_1.0);
+@@ -24,6 +24,17 @@ int freebsd11_stat(const char *path, struct freebsd11_stat *stat);
+ __sym_compat(stat, freebsd11_stat, FBSD_1.0);
+ int freebsd11_lstat(const char *path, struct freebsd11_stat *stat);
+ __sym_compat(lstat, freebsd11_lstat, FBSD_1.0);
++int freebsd11_fstat(int fd, struct freebsd11_stat *stat);
++__sym_compat(fstat, freebsd11_fstat, FBSD_1.0);
++int freebsd11_fstatat(int fd, const char *path, struct freebsd11_stat *stat,
++        int flag);
++__sym_compat(fstatat, freebsd11_fstatat, FBSD_1.1);
 +
++int freebsd11_fhstat(const fhandle_t *fhandle, struct freebsd11_stat *stat);
++__sym_compat(fhstat, freebsd11_fhstat, FBSD_1.0);
++int freebsd11_fhstatfs(const fhandle_t *fhandle, struct freebsd11_statfs * buf);
++__sym_compat(fhstatfs, freebsd11_fhstatfs, FBSD_1.0);
++int freebsd11_statfs(const char *path, struct freebsd11_statfs *buf);
+ 
  /* stat(2) */
  static inline abi_long do_freebsd11_stat(abi_long arg1, abi_long arg2)
+@@ -57,6 +68,19 @@ static inline abi_long do_freebsd11_lstat(abi_long arg1, abi_long arg2)
+     return ret;
+ }
+ 
++/* fstat(2) */
++static inline abi_long do_freebsd11_fstat(abi_long arg1, abi_long arg2)
++{
++    abi_long ret;
++    struct freebsd11_stat st;
++
++    ret = get_errno(freebsd11_fstat(arg1, &st));
++    if (!is_error(ret))  {
++        ret = h2t_freebsd11_stat(arg2, &st);
++    }
++    return ret;
++}
++
+ /* fstat(2) */
+ static inline abi_long do_freebsd_fstat(abi_long arg1, abi_long arg2)
  {
+@@ -70,6 +94,23 @@ static inline abi_long do_freebsd_fstat(abi_long arg1, abi_long arg2)
+     return ret;
+ }
+ 
++/* fstatat(2) */
++static inline abi_long do_freebsd11_fstatat(abi_long arg1, abi_long arg2,
++        abi_long arg3, abi_long arg4)
++{
++    abi_long ret;
++    void *p;
++    struct freebsd11_stat st;
++
++    LOCK_PATH(p, arg2);
++    ret = get_errno(freebsd11_fstatat(arg1, p, &st, arg4));
++    UNLOCK_PATH(p, arg2);
++    if (!is_error(ret) && arg3) {
++        ret = h2t_freebsd11_stat(arg3, &st);
++    }
++    return ret;
++}
++
+ /* fstatat(2) */
+ static inline abi_long do_freebsd_fstatat(abi_long arg1, abi_long arg2,
+         abi_long arg3, abi_long arg4)
+@@ -178,6 +219,24 @@ static inline abi_long do_freebsd_fhopen(abi_long arg1, abi_long arg2)
+     return get_errno(fhopen(&host_fh, arg2));
+ }
+ 
++/* fhstat(2) */
++static inline abi_long do_freebsd11_fhstat(abi_long arg1, abi_long arg2)
++{
++    abi_long ret;
++    fhandle_t host_fh;
++    struct freebsd11_stat host_sb;
++
++    ret = t2h_freebsd_fhandle(&host_fh, arg1);
++    if (is_error(ret)) {
++        return ret;
++    }
++    ret = get_errno(freebsd11_fhstat(&host_fh, &host_sb));
++    if (is_error(ret)) {
++        return ret;
++    }
++    return h2t_freebsd11_stat(arg2, &host_sb);
++}
++
+ /* fhstat(2) */
+ static inline abi_long do_freebsd_fhstat(abi_long arg1, abi_long arg2)
+ {
+@@ -196,6 +255,25 @@ static inline abi_long do_freebsd_fhstat(abi_long arg1, abi_long arg2)
+     return h2t_freebsd_stat(arg2, &host_sb);
+ }
+ 
++/* fhstatfs(2) */
++static inline abi_long do_freebsd11_fhstatfs(abi_ulong target_fhp_addr,
++        abi_ulong target_stfs_addr)
++{
++    abi_long ret;
++    fhandle_t host_fh;
++    struct freebsd11_statfs host_stfs;
++
++    ret = t2h_freebsd_fhandle(&host_fh, target_fhp_addr);
++    if (is_error(ret)) {
++        return ret;
++    }
++    ret = get_errno(freebsd11_fhstatfs(&host_fh, &host_stfs));
++    if (is_error(ret)) {
++        return ret;
++    }
++    return h2t_freebsd11_statfs(target_stfs_addr, &host_stfs);
++}
++
+ /* fhstatfs(2) */
+ static inline abi_long do_freebsd_fhstatfs(abi_ulong target_fhp_addr,
+         abi_ulong target_stfs_addr)
 -- 
 2.41.0
 
