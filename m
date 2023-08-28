@@ -2,79 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC50478AF5A
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 13:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A6878B119
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:54:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaar8-0005V3-KF; Mon, 28 Aug 2023 07:56:30 -0400
+	id 1qabid-00064h-Fb; Mon, 28 Aug 2023 08:51:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qaar4-0005Um-PO; Mon, 28 Aug 2023 07:56:27 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qaar2-0000RT-2l; Mon, 28 Aug 2023 07:56:26 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4ff882397ecso4689442e87.3; 
- Mon, 28 Aug 2023 04:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693223782; x=1693828582;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CGEeNflkyKEDpdmEc8hMy2V2FxZZTIXkzy4Ny61k+UM=;
- b=TkR5o34b5whqlFW/YN9FKzMMCJmDYbnUi2gsgWojUIC0G5H+8p+X5TX0KWLca8pHA1
- ABJkqXev1/lueRnQrH/PjSBGWRxFos9cfBBylutbP+qB2RSAEKz8cgKUEOPSky1RvJzV
- SxmIllSd1U0GZCZNyCD0QWj8ChQ8Bq3oyIrnYVbLKIA4EnGudmgX1oJfOxjZeq4M2zso
- 8l67vJFFYOpjywvTUbrTi8VKgtmFIqBqoMrssju++JGO1BulZLbig8Pr1Aq2uLidDlPv
- SXMQy6QmrGZjMnYmDMNLswprb6m3de2lhx0cWMb3TtCy07SdJZ/Y3x0CsmKTCoPY++y6
- jNkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693223782; x=1693828582;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CGEeNflkyKEDpdmEc8hMy2V2FxZZTIXkzy4Ny61k+UM=;
- b=SplApLICckPXgW2hQXCTz1bVDEb3sRV5l0IcmbgXuCjwHatGBv8LnEz+rlR4y+GPry
- LTvhPr4NfBmgnRJ6yUraB21EafP8XyXM0IEKJg6xexYTtFpNIEBPuTjRlItGTzTurlFE
- U6YFsgK+BoS98jLBS69lQymgU+Lpini/wbHy0xF8CTeh7KKkuDp5wniUJAaqgFEGXX3x
- alGvjdtbS+UCLo+46VmdlzJQM15D6wHwwCv9ue4PsWZfkNvRF1w8dUOHR0NhWYMl9rMN
- Bfy7eZvuChRjHdb5U76QkPB4sGW6BYvIcfRu7461hhM6NYV3SD4qWJtv7poalo5Ya2ca
- 9ftQ==
-X-Gm-Message-State: AOJu0YxUBs4fges1VA0yi71F14ZGJYHrYvFHPhNT1h2quiHqkBxOpqVe
- ShwfwcsqVCvcayXiq/bJjzaYRyxjlcz61CKmSjG/Ry8rewLakg==
-X-Google-Smtp-Source: AGHT+IFd8Ead/wCh0fOjijUA4/p+FV8lILJVSc3ljXnXgY9wTTI/c+HVwfCsggSsbstjUjXXzGRuQtpLrjulPx1uCG0=
-X-Received: by 2002:a05:6512:3084:b0:500:be57:ce53 with SMTP id
- z4-20020a056512308400b00500be57ce53mr543329lfd.42.1693223780967; Mon, 28 Aug
- 2023 04:56:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <elijah@elijahr.dev>)
+ id 1qaTO9-00036s-Rp
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 23:58:06 -0400
+Received: from mail-4323.proton.ch ([185.70.43.23])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <elijah@elijahr.dev>)
+ id 1qaTO6-0000di-39
+ for qemu-devel@nongnu.org; Sun, 27 Aug 2023 23:58:05 -0400
+Date: Mon, 28 Aug 2023 03:57:41 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elijahr.dev;
+ s=protonmail; t=1693195076; x=1693454276;
+ bh=5WAw7vc7bVtIXh8SSEFC+pwKbMR38nd1H83r2u2ce+Y=;
+ h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+ Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+ b=NnOgf89qowuWw+95wxL6SlWxrAQcPU+34Ayv/nkqZ3gw1jkn1b2honkUTvaXId+3L
+ fg4FStJGxW+4a0pHvfXmkMZDpNmte9i/vWv1KgnnVOmo//5fbhOyipip67cn8WFlc7
+ I4rYOu2MIQWOaljzcWYYyUopy29zpT5AOylkJg3HnNCEd7JJu/CxaYVXJ7HlRBVkTj
+ mVhPNAeAYNUdwaLqnnPbUNPTLyuYyoyyq+AmiY4prPk273Z+bADpr3EXU2b7lgObEB
+ YMu/VqGxbDFAZnMno5rhpgYKC3lnHSb4Jh8AP2e55X5GNncoYX/HcJX3Xg99apyeWH
+ JCWF2K9V6w1pA==
+To: qemu-devel@nongnu.org
+From: Elijah R <elijah@elijahr.dev>
+Cc: marcandre.lureau@redhat.com
+Subject: Help with QEMU DBUS display
+Message-ID: <61fa4ed6-e299-4b1c-a152-ace156059567@elijahr.dev>
+Feedback-ID: 75483513:user:proton
 MIME-Version: 1.0
-References: <20230814085802.61459-1-faithilikerun@gmail.com>
- <20230814085802.61459-4-faithilikerun@gmail.com>
- <20230822194814.GB37847@fedora>
-In-Reply-To: <20230822194814.GB37847@fedora>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Mon, 28 Aug 2023 19:55:52 +0800
-Message-ID: <CAAAx-8KQOBxt3S+nB0MNtOdG_8SZVg1HOud0hp65A+LXUrL-fw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] qcow2: add zoned emulation capability
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, hare@suse.de, Hanna Reitz <hreitz@redhat.com>, 
- dmitry.fomichev@wdc.com, qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- dlemoal@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg=pgp-sha256;
+ boundary="------93b2c7e499fd733b1533130ca1bfc455b2dbfb65a060e860f519af34c2e4edd2";
+ charset=utf-8
+Received-SPF: pass client-ip=185.70.43.23; envelope-from=elijah@elijahr.dev;
+ helo=mail-4323.proton.ch
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ MIME_HTML_MOSTLY=0.1, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 28 Aug 2023 08:51:42 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,195 +66,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8823=E6=
-=97=A5=E5=91=A8=E4=B8=89 03:48=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Aug 14, 2023 at 04:58:01PM +0800, Sam Li wrote:
-> > By adding zone operations and zoned metadata, the zoned emulation
-> > capability enables full emulation support of zoned device using
-> > a qcow2 file. The zoned device metadata includes zone type,
-> > zoned device state and write pointer of each zone, which is stored
-> > to an array of unsigned integers.
-> >
-> > Each zone of a zoned device makes state transitions following
-> > the zone state machine. The zone state machine mainly describes
-> > five states, IMPLICIT OPEN, EXPLICIT OPEN, FULL, EMPTY and CLOSED.
-> > READ ONLY and OFFLINE states will generally be affected by device
-> > internal events. The operations on zones cause corresponding state
-> > changing.
-> >
-> > Zoned devices have a limit on zone resources, which puts constraints on
-> > write operations into zones.
-> >
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> > ---
-> >  block/qcow2.c          | 676 ++++++++++++++++++++++++++++++++++++++++-
-> >  block/qcow2.h          |   2 +
-> >  docs/interop/qcow2.txt |   2 +
-> >  3 files changed, 678 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/block/qcow2.c b/block/qcow2.c
-> > index c1077c4a4a..5ccf79cbe7 100644
-> > --- a/block/qcow2.c
-> > +++ b/block/qcow2.c
-> > @@ -194,6 +194,164 @@ qcow2_extract_crypto_opts(QemuOpts *opts, const c=
-har *fmt, Error **errp)
-> >      return cryptoopts_qdict;
-> >  }
-> >
-> > +#define QCOW2_ZT_IS_CONV(wp)    (wp & 1ULL << 59)
-> > +
-> > +static inline int qcow2_get_wp(uint64_t wp)
-> > +{
-> > +    /* clear state and type information */
-> > +    return ((wp << 5) >> 5);
-> > +}
-> > +
-> > +static inline int qcow2_get_zs(uint64_t wp)
-> > +{
-> > +    return (wp >> 60);
-> > +}
-> > +
-> > +static inline void qcow2_set_wp(uint64_t *wp, BlockZoneState zs)
-> > +{
-> > +    uint64_t addr =3D qcow2_get_wp(*wp);
-> > +    addr |=3D ((uint64_t)zs << 60);
-> > +    *wp =3D addr;
-> > +}
-> > +
-> > +/*
-> > + * File wp tracking: reset zone, finish zone and append zone can
-> > + * change the value of write pointer. All zone operations will change
-> > + * the state of that/those zone.
-> > + * */
-> > +static inline void qcow2_wp_tracking_helper(int index, uint64_t wp) {
-> > +    /* format: operations, the wp. */
-> > +    printf("wps[%d]: 0x%x\n", index, qcow2_get_wp(wp)>>BDRV_SECTOR_BIT=
-S);
-> > +}
-> > +
-> > +/*
-> > + * Perform a state assignment and a flush operation that writes the ne=
-w wp
-> > + * value to the dedicated location of the disk file.
-> > + */
-> > +static int qcow2_write_wp_at(BlockDriverState *bs, uint64_t *wp,
-> > +                             uint32_t index, BlockZoneState zs) {
-> > +    BDRVQcow2State *s =3D bs->opaque;
-> > +    int ret;
-> > +
-> > +    qcow2_set_wp(wp, zs);
-> > +    ret =3D bdrv_pwrite(bs->file, s->zoned_header.zonedmeta_offset
-> > +        + sizeof(uint64_t) * index, sizeof(uint64_t), wp, 0);
-> > +
-> > +    if (ret < 0) {
-> > +        goto exit;
->
-> Should *wp be restored to its original value to undo the effect of
-> qcow2_set_wp()?
->
-> > +    }
-> > +    qcow2_wp_tracking_helper(index, *wp);
-> > +    return ret;
-> > +
-> > +exit:
-> > +    error_report("Failed to write metadata with file");
-> > +    return ret;
-> > +}
-> > +
-> > +static int qcow2_check_active(BlockDriverState *bs)
->
-> Please rename this to qcow2_check_active_zones() to avoid confusion with
-> other uses "active" in qcow2.
->
-> > +{
-> > +    BDRVQcow2State *s =3D bs->opaque;
-> > +
-> > +    if (!s->zoned_header.max_active_zones) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    if (s->nr_zones_exp_open + s->nr_zones_imp_open + s->nr_zones_clos=
-ed
-> > +        < s->zoned_header.max_active_zones) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    return -1;
-> > +}
->
-> (This function could return a bool instead of 0/-1 since it doesn't
-> really need an int.)
->
-> > +
-> > +static int qcow2_check_open(BlockDriverState *bs)
->
-> qcow2_check_open_zones() or, even better, qcow2_can_open_zone().
->
-> > +{
-> > +    BDRVQcow2State *s =3D bs->opaque;
-> > +    int ret;
-> > +
-> > +    if (!s->zoned_header.max_open_zones) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    if (s->nr_zones_exp_open + s->nr_zones_imp_open
-> > +        < s->zoned_header.max_open_zones) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    if(s->nr_zones_imp_open) {
-> > +        ret =3D qcow2_check_active(bs);
-> > +        if (ret =3D=3D 0) {
-> > +            /* TODO: it takes O(n) time complexity (n =3D nr_zones).
-> > +             * Optimizations required. */
->
-> One solution is to keep an implicitly open list. Then this operation is
-> O(1).
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------93b2c7e499fd733b1533130ca1bfc455b2dbfb65a060e860f519af34c2e4edd2
+Content-Type: multipart/mixed;
+ boundary=133217e072559dd71344fc5e81af3c0a5e5e553f618215fbc96800232641
+Message-ID: <61fa4ed6-e299-4b1c-a152-ace156059567@elijahr.dev>
+Date: Sun, 27 Aug 2023 23:57:40 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com
+From: Elijah R <elijah@elijahr.dev>
+Subject: Help with QEMU DBUS display
 
-Yes, I'll add this maybe in the v4.
+--133217e072559dd71344fc5e81af3c0a5e5e553f618215fbc96800232641
+Content-Type: multipart/alternative;
+ boundary="------------woCgTUtM07ICreHyQsxglV4B"
 
->
-> > +            /* close one implicitly open zones to make it available */
-> > +            for (int i =3D s->zoned_header.zone_nr_conv;
-> > +            i < bs->bl.nr_zones; ++i) {
-> > +                uint64_t *wp =3D &s->wps->wp[i];
-> > +                if (qcow2_get_zs(*wp) =3D=3D BLK_ZS_IOPEN) {
-> > +                    ret =3D qcow2_write_wp_at(bs, wp, i, BLK_ZS_CLOSED=
-);
->
-> I'm wondering if it's correct to store the zone state persistently in
-> the qcow2 file. If the guest or QEMU crashes, then zones will be left in
-> states like EOPEN. Since the guest software will have forgotten about
-> explicitly opened zones, the guest would need to recover zone states.
-> I'm not sure if existing software is designed to do that.
->
-> Damien: Should the zone state be persistent?
+--------------woCgTUtM07ICreHyQsxglV4B
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Pin?
+Hi!
 
->
-> > +                    if (ret < 0) {
-> > +                        return ret;
-> > +                    }
-> > +                    s->wps->wp[i] =3D *wp;
-> > +                    s->nr_zones_imp_open--;
-> > +                    s->nr_zones_closed++;
-> > +                    break;
-> > +                }
-> > +            }
-> > +            return 0;
->
-> This returns 0 if there are no IOPEN zones available. It needs to return
-> an error when there are not enough resources available.
->
-> > +        }
-> > +        return ret;
-> > +    }
-> > +
-> > +    return -1;
->
-> This function mixes 0/-1 with -errno return values. -1 is -EPERM, but I
-> think that's not what you want.
+I'm currently attempting to use qemu's DBUS display from within a go 
+application, using the godbus 
+<https://pkg.go.dev/github.com/godbus/dbus/v5> library. However, I'm 
+hitting some roadblocks, and this is probably because I'm a bit confused 
+about how qemu's peer-to-peer dbus connection works, and it's not 
+explained in the documentation.
+
+
+I invoke QEMU with the following argument
+
+-display dbus,p2p=yes
+
+and then connect to QMP through a separate UNIX socket. From my 
+understanding, I need to listen on the socket separately in the program, 
+and then pass qemu the file descriptor over QMP and run add_client.
+
+In the same program I listen to the socket, and start waiting for a 
+connection. Then, on another thread, get a file descriptor for the 
+socket by first dialing it. Here's my code for that
+
+sock, err := net.Dial("unix", "/tmp/qemudbus.sock")
+if err != nil {
+	return err
+}
+uc, ok := sock.(*net.UnixConn)
+if !ok {
+	return fmt.Errorf("Could not cast 
+Conn to UnixConn")
+}
+file, err := uc.File()
+
+I then pass this file descriptor to QEMU using QMP (I'm using 
+DigitalOcean's qmp library)
+
+res, err := mon.RunWithFile([]byte(`{"execute": "getfd", "arguments": {"fdname": "dbusmon"}}`), file)
+
+And add the dbus client:
+
+res, err = mon.Run([]byte(`{"execute": "add_client", "arguments": {"protocol": "@dbus-display", "fdname": "dbusmon"}}`))
+
+This seems to work fine, as I'm then (apparently) able to make a DBUS 
+connection with that socket without any error.
+
+However, when I then try to do anything with that connection (In this 
+case I'm attempting to introspect /org/qemu/Display1/VM), the call hangs 
+and never returns.
+
+node, err := introspect.Call(session.Object("org.qemu.Display1.VM", "/org/qemu/Display1/VM"))
+
+I'm not sure what's going wrong here, but I suspect I'm obtaining the 
+file descriptor wrong (am I supposed to dial the socket?) or I'm doing 
+things in the wrong order.
+
+Thanks in advance for any help.
+
+
+
+Regards,
+
+Elijah R
+
+--------------woCgTUtM07ICreHyQsxglV4B
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  </head>
+  <body>
+    <p>Hi!</p>
+    <p>I&#39;m currently attempting to use qemu&#39;s DBUS display from within a
+      go application, using the <a moz-do-not-send="true" href="https://pkg.go.dev/github.com/godbus/dbus/v5">godbus</a>
+      library. However, I&#39;m hitting some roadblocks, and this is
+      probably because I&#39;m a bit confused about how qemu&#39;s peer-to-peer
+      dbus connection works, and it&#39;s not explained in the
+      documentation.</p>
+    <p><br/>
+    </p>
+    <p>I invoke QEMU with the following argument</p>
+    <pre>-display dbus,p2p=yes
+</pre>
+    <p>and then connect to QMP through a separate UNIX socket. From my
+      understanding, I need to listen on the socket separately in the
+      program, and then pass qemu the file descriptor over QMP and run
+      add_client.<br/>
+    </p>
+    <p>In the same program I listen to the socket, and start waiting
+ for
+      a connection. Then, on another thread, get a file descriptor for
+      the socket by first dialing it. Here&#39;s my code for that</p>
+    <pre>sock, err := net.Dial(&#34;unix&#34;, &#34;/tmp/qemudbus.sock&#34;)
+if err != nil {
+	return err
+}
+uc, ok := sock.(*net.UnixConn)
+if !ok {
+	return fmt.Errorf(&#34;Could not cast Conn to UnixConn&#34;)
+}
+file, err := uc.File()
+</pre>
+    <p>I then pass this file descriptor to QEMU using QMP (I&#39;m using
+      DigitalOcean&#39;s qmp library)</p>
+    <pre>res, err := mon.RunWithFile([]byte(`{&#34;execute&#34;: &#34;getfd&#34;, &#34;arguments&#34;: {&#34;fdname&#34;: &#34;dbusmon&#34;}}`), file)
+</pre>
+    <p>And add the dbus client:</p>
+    <pre>res, err = mon.Run([]byte(`{&#34;execute&#34;: &#34;add_client&#34;, &#34;arguments&#34;: {&#34;protocol&#34;: &#34;@dbus-display&#34;, &#34;fdname&#34;: &#34;dbusmon&#34;}}`))
+
+</pre>
+    <p>This seems to work fine, as I&#39;m then (apparently) able to make a
+      DBUS connection with that so
+cket without any error. <br/>
+    </p>
+    <p>However, when I then try to do anything with that connection (In
+      this case I&#39;m attempting to introspect /org/qemu/Display1/VM), the
+      call hangs and never returns.</p>
+    <pre>node, err := introspect.Call(session.Object(&#34;org.qemu.Display1.VM&#34;, &#34;/org/qemu/Display1/VM&#34;))
+</pre>
+    <p>I&#39;m not sure what&#39;s going wrong here, but I suspect I&#39;m obtaining
+      the file descriptor wrong (am I supposed to dial the socket?) or
+      I&#39;m doing things in the wrong order.</p>
+    <p>Thanks in advance for any help.</p>
+    <p><br/>
+    </p>
+    <p>Regards,</p>
+    <p>Elijah R<br/>
+    </p>
+  
+
+</body></html>
+--------------woCgTUtM07ICreHyQsxglV4B--
+
+--133217e072559dd71344fc5e81af3c0a5e5e553f618215fbc96800232641
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+--133217e072559dd71344fc5e81af3c0a5e5e553f618215fbc96800232641
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; name="publickey - elijah@elijahr.dev -
+ a0a86704.asc"; filename="publickey - elijah@elijahr.dev - a0a86704.asc"
+Content-Type: application/pgp-keys; name="publickey - elijah@elijahr.dev -
+ a0a86704.asc"; filename="publickey - elijah@elijahr.dev - a0a86704.asc"
+
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCkNvbW1lbnQ6IGh0dHBzOi8vZ29w
+ZW5wZ3Aub3JnClZlcnNpb246IEdvcGVuUEdQIDIuNy4xCgp4ak1FWkdhbW5SWUpLd1lCQkFIYVJ3
+OEJBUWRBekFWa1FrNjdGQmE0cXhmdUJuSzF3MEpLdkpCQjBWdWtvaVgxCk9yeUR0bWZOSjJWc2FX
+cGhhRUJsYkdscVlXaHlMbVJsZGlBOFpXeHBhbUZvUUdWc2FXcGhhSEl1WkdWMlBzS00KQkJBV0Nn
+QStCWUprWnFhZEJBc0pCd2dKa0Zwa1gxVGJiTjNQQXhVSUNnUVdBQUlCQWhrQkFwc0RBaDRCRmlF
+RQpvS2huQk5tbVFQS2ZzTlpKV21SZlZOdHMzYzhBQUpPc0FRQ2UxNWdvMGF6ZUNtQUFjVWZ0YWRV
+a1VjOFQ2aGRTCmdSSHVqd1hXNXRsTWFBRCtMRFRCNVE2UVY1bDJqeGU0eWxTSkh5OHJWbHovclBR
+TUxtUzF5ejhWaUEzT09BUmsKWnFhZEVnb3JCZ0VFQVpkVkFRVUJBUWRBZjBUQjFVWEZMNG1tc01U
+Qys2ZlNlY1VRdHIrbTVEbVZ6NlNXTDdiVgpmMGNEQVFnSHduZ0VHQllJQUNvRmdtUm1wcDBKa0Zw
+a1gxVGJiTjNQQXBzTUZpRUVvS2huQk5tbVFQS2ZzTlpKCldtUmZWTnRzM2M4QUFMakxBUDkvN1hB
+MHkyYmt3YlZSZms3Qm9yTHRVVEgzU3BUdUZ3M2hJRkZwYXEvS2lBRUEKN1FkVmlGeDJTNDVJeWtt
+ZE1QeStnTFJOWUN3QXZBTHRTQk1nUEtDOElnST0KPU85UjEKLS0tLS1FTkQgUEdQIFBVQkxJQyBL
+RVkgQkxPQ0stLS0tLQ==
+--133217e072559dd71344fc5e81af3c0a5e5e553f618215fbc96800232641--
+
+--------93b2c7e499fd733b1533130ca1bfc455b2dbfb65a060e860f519af34c2e4edd2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wnUEARYIACcFAmTsGzQJkFpkX1TbbN3PFiEEoKhnBNmmQPKfsNZJWmRfVNts
+3c8AAIYUAPwLqieYWsZp6msgWzuQ5EZN0T5QI/4QfgWuNIfq1Y3+1AD+JnVp
+3iphoYNibxJFZkhFMLFYDoiRwpGQiLOwu/LygAo=
+=rcF8
+-----END PGP SIGNATURE-----
+
+
+--------93b2c7e499fd733b1533130ca1bfc455b2dbfb65a060e860f519af34c2e4edd2--
+
 
