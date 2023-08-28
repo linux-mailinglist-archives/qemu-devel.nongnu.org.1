@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74B178B7AF
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 20:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E501578B7B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 20:57:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qahP9-0000ql-0V; Mon, 28 Aug 2023 14:56:03 -0400
+	id 1qahP9-0000qu-Ke; Mon, 28 Aug 2023 14:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qahP3-0000oV-BB
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:55:57 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1qahP4-0000ot-7S
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:55:58 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qahP0-0002QW-R8
+ id 1qahP1-0002Qz-Ac
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:55:57 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-26d1a17ce06so1725245a91.0
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1c8d895a602so2016419fac.2
  for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 11:55:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693248953; x=1693853753;
+ d=linaro.org; s=google; t=1693248954; x=1693853754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=03eKjHBSqhHdZ2C0Bhm1xZE8o9z6xsoYmMLEvVPH1DU=;
- b=V+4+WRs+wA91WtdmjuCmZv3m/bypY/4YkVMNzRqFJ0UWrTlNPYFZDRyvJUfuvpKsBT
- OgYD76e5SRD9GHYXTBB7vvGE4ILru+OFnoBy+OW/7iEvOVRx0Z1AJJGMJ+lhFWgv4Ndk
- 7qhEpVoNb4R9eh7NIZrnqKJblISeg/hsjdgSFmBAfrRbmsRMwRaAfVMkkLZ2v4AITgW4
- 5HnK2DsdE2psAAPBqRuwqKGRwUH0HEHmoOkSBrDweiqB9XaPTgC2yPhF+5AgoEq0Tun8
- 83DzEgyFD5TOSVGxcDRG6UNRN5UQs0qA+gsnH1eeqcstD9xltohyhq7NaGUmdhieA5mT
- dDnQ==
+ bh=7K3agjAj/5Z9V2az8Pltf/TZABQcnS/GDuSWWPrto4M=;
+ b=FdiXYEtAuIOeWw0FEEU4pTlgXX6bL0Bucwv+mbpNY3N7olA45QBU3ycKPPhDlTqKYL
+ +LUCx6C2CRvewBDUnNccnmTafAnasLzTlyz6rGxRszJ52N/hZVE/GdPei/MhACYKPyst
+ NqFbMUI6nJXf21SaZO7UtZVBkiIeSQDpTfuwenfPw442F4NsV8J3euXN6oUYkfIm9ykA
+ JJOahdO0azAo75+T21ikOUxPBKx+/xwLfusSDYjyvG4U7iB38fwPBSn3wUbi//JB9tqk
+ 2Zxytxxyw8bB2kyOklbhhsVU0zoheysg9hCGX7rnfjL3fwj21k3blKQungl6rA9ywk4q
+ mWKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693248953; x=1693853753;
+ d=1e100.net; s=20221208; t=1693248954; x=1693853754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=03eKjHBSqhHdZ2C0Bhm1xZE8o9z6xsoYmMLEvVPH1DU=;
- b=P3nMveWNkQGdXqzmVSw7SHQstd5pA/wNi1hKh7A+eI/FqTgBh33S9VWeYuU7UaGoCB
- qnQfEnWwoR2G3ucmirFDRzO/bdiK+gmrrwojBqLdzfz+EpFCuxpMj8ZDuvubiCdsThke
- 1ne1Sv8Bs9GiqnQm7QSWy8hdYxFLeN2clvNHzSKqR8jz2fYHJifjk8S1w8e2DzxfMRD5
- WytNffWFJ1qrnsLRg6OLfSqLZSGJOw7Y1jvPRiMqAujqKKRNUgkKNaJIaZWN61HFGzKY
- ONraQCew9r0p0/oOyWbhow3FZudGJtPZvxw5mbfjRycW0brCnQb2P+jpYMeF0JdYOBPZ
- 9Cog==
-X-Gm-Message-State: AOJu0Yz/YJVQ1XguCqukDjo74mlZccv/iQ+l+lmHTEzvzWQxV2u1c/Qo
- YaI7b2vndJ96gGMqksII88EU844YJ5QGbDFh9Us=
-X-Google-Smtp-Source: AGHT+IEVOGjGCZAikiv2ZkLsXqzCZBOCeQXqKKjv7B7QXOwqeUfRjepT7HsuhqsB2stJkFqkbpIHkA==
-X-Received: by 2002:a17:90a:a389:b0:268:4314:2dc6 with SMTP id
- x9-20020a17090aa38900b0026843142dc6mr20076489pjp.37.1693248953198; 
- Mon, 28 Aug 2023 11:55:53 -0700 (PDT)
+ bh=7K3agjAj/5Z9V2az8Pltf/TZABQcnS/GDuSWWPrto4M=;
+ b=LVYMT0Me/Vc/0mDtZTs1Y1ojVZ9hu9Hmo81x/C34ngbnLi/MNG6/m2tZKFH06EG5e2
+ pInovv97vIr+v7sXKcxFd9K2OIMSpnqt6oiSvi3lnjVigzFgKwcbBFxjqsuFp9KmD5N/
+ BYzbyIi22gQeJPCkluJhI+ZGR7JGPmzdP84FP8pcLQx2sKot1UREieif7Bln5aoNaGnd
+ vveZXjJAKtbt2yGcka1NB7wPXm3phEF+891mebsTSAAgEWXUTTCauncNumUlrnqPEu90
+ r7VVMY57hEAQwRn6HYXgDYSAExub1VCgYt/fdhJsfXDmO0DLsRcRHp2s4IsTqGDH+4KC
+ 9WLg==
+X-Gm-Message-State: AOJu0YxCkqMsVQrvIrIZZVa0CQgm8sPrVU2WKK17jYFKG/OHC9B3i/lR
+ NBJEoXK7/wdqgNt8xWmUXPFNeSPjf6nqiugNNqQ=
+X-Google-Smtp-Source: AGHT+IFNQcdw+N0i3wGp7ws/X/WbgJBPFV9FeL0ytDt+qIUzIsIXP2dXFP4M0QNr39+a79IdQPPBzg==
+X-Received: by 2002:a05:6870:4706:b0:1c8:bfd1:ecc0 with SMTP id
+ b6-20020a056870470600b001c8bfd1ecc0mr12897140oaq.0.1693248954008; 
+ Mon, 28 Aug 2023 11:55:54 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- 4-20020a17090a190400b002680dfd368dsm7932835pjg.51.2023.08.28.11.55.52
+ 4-20020a17090a190400b002680dfd368dsm7932835pjg.51.2023.08.28.11.55.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 11:55:52 -0700 (PDT)
+ Mon, 28 Aug 2023 11:55:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org
-Subject: [PATCH 01/10] accel/tcg: Simplify tlb_plugin_lookup
-Date: Mon, 28 Aug 2023 11:55:41 -0700
-Message-Id: <20230828185550.573653-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/10] accel/tcg: Split out io_prepare and io_failed
+Date: Mon, 28 Aug 2023 11:55:42 -0700
+Message-Id: <20230828185550.573653-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230828185550.573653-1-richard.henderson@linaro.org>
 References: <20230828185550.573653-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,188 +90,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we defer address space update and tlb_flush until
-the next async_run_on_cpu, the plugin run at the end of the
-instruction no longer has to contend with a flushed tlb.
-Therefore, delete SavedIOTLB entirely.
-
-Properly return false from tlb_plugin_lookup when we do
-not have a tlb match.
-
-Fixes a bug in which SavedIOTLB had stale data, because
-there were multiple i/o accesses within a single insn.
+These are common code from io_readx and io_writex.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h   | 13 -------
- include/qemu/typedefs.h |  1 -
- accel/tcg/cputlb.c      | 79 ++++++++++++-----------------------------
- 3 files changed, 23 insertions(+), 70 deletions(-)
+ accel/tcg/cputlb.c | 77 +++++++++++++++++++++++++++-------------------
+ 1 file changed, 45 insertions(+), 32 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index fdcbe87352..20e4f64d72 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -227,17 +227,6 @@ struct CPUWatchpoint {
-     QTAILQ_ENTRY(CPUWatchpoint) entry;
- };
- 
--#ifdef CONFIG_PLUGIN
--/*
-- * For plugins we sometime need to save the resolved iotlb data before
-- * the memory regions get moved around  by io_writex.
-- */
--typedef struct SavedIOTLB {
--    MemoryRegionSection *section;
--    hwaddr mr_offset;
--} SavedIOTLB;
--#endif
--
- struct KVMState;
- struct kvm_run;
- 
-@@ -409,8 +398,6 @@ struct CPUState {
- 
- #ifdef CONFIG_PLUGIN
-     GArray *plugin_mem_cbs;
--    /* saved iotlb data from io_writex */
--    SavedIOTLB saved_iotlb;
- #endif
- 
-     /* TODO Move common fields from CPUArchState here. */
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 834b0e47a0..5abdbc3874 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -129,7 +129,6 @@ typedef struct QString QString;
- typedef struct RAMBlock RAMBlock;
- typedef struct Range Range;
- typedef struct ReservedRegion ReservedRegion;
--typedef struct SavedIOTLB SavedIOTLB;
- typedef struct SHPCDevice SHPCDevice;
- typedef struct SSIBus SSIBus;
- typedef struct TCGHelperInfo TCGHelperInfo;
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index c643d66190..fcf6ccebff 100644
+index fcf6ccebff..17987f74e5 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1364,21 +1364,6 @@ static inline void cpu_transaction_failed(CPUState *cpu, hwaddr physaddr,
+@@ -1264,7 +1264,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+      * (non-page-aligned) vaddr of the eventual memory access to get
+      * the MemoryRegion offset for the access. Note that the vaddr we
+      * subtract here is that of the page base, and not the same as the
+-     * vaddr we add back in io_readx()/io_writex()/get_page_addr_code().
++     * vaddr we add back in io_prepare()/get_page_addr_code().
+      */
+     desc->fulltlb[index] = *full;
+     full = &desc->fulltlb[index];
+@@ -1364,37 +1364,60 @@ static inline void cpu_transaction_failed(CPUState *cpu, hwaddr physaddr,
      }
  }
  
--/*
-- * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
-- * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
-- * because of the side effect of io_writex changing memory layout.
-- */
--static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
--                            hwaddr mr_offset)
--{
--#ifdef CONFIG_PLUGIN
--    SavedIOTLB *saved = &cs->saved_iotlb;
--    saved->section = section;
--    saved->mr_offset = mr_offset;
--#endif
--}
--
- static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
-                          int mmu_idx, vaddr addr, uintptr_t retaddr,
-                          MMUAccessType access_type, MemOp op)
-@@ -1398,12 +1383,6 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+-static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+-                         int mmu_idx, vaddr addr, uintptr_t retaddr,
+-                         MMUAccessType access_type, MemOp op)
++static MemoryRegionSection *
++io_prepare(hwaddr *out_offset, CPUArchState *env, hwaddr xlat,
++           MemTxAttrs attrs, vaddr addr, uintptr_t retaddr)
+ {
+     CPUState *cpu = env_cpu(env);
+-    hwaddr mr_offset;
+     MemoryRegionSection *section;
+-    MemoryRegion *mr;
+-    uint64_t val;
+-    MemTxResult r;
++    hwaddr mr_offset;
+ 
+-    section = iotlb_to_section(cpu, full->xlat_section, full->attrs);
+-    mr = section->mr;
+-    mr_offset = (full->xlat_section & TARGET_PAGE_MASK) + addr;
++    section = iotlb_to_section(cpu, xlat, attrs);
++    mr_offset = (xlat & TARGET_PAGE_MASK) + addr;
+     cpu->mem_io_pc = retaddr;
+     if (!cpu->can_do_io) {
          cpu_io_recompile(cpu, retaddr);
      }
  
--    /*
--     * The memory_region_dispatch may trigger a flush/resize
--     * so for plugins we save the iotlb_data just in case.
--     */
--    save_iotlb_data(cpu, section, mr_offset);
--
++    *out_offset = mr_offset;
++    return section;
++}
++
++static void io_failed(CPUArchState *env, CPUTLBEntryFull *full, vaddr addr,
++                      unsigned size, MMUAccessType access_type, int mmu_idx,
++                      MemTxResult response, uintptr_t retaddr,
++                      MemoryRegionSection *section, hwaddr mr_offset)
++{
++    hwaddr physaddr = (mr_offset +
++                       section->offset_within_address_space -
++                       section->offset_within_region);
++
++    cpu_transaction_failed(env_cpu(env), physaddr, addr, size, access_type,
++                           mmu_idx, full->attrs, response, retaddr);
++}
++
++static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
++                         int mmu_idx, vaddr addr, uintptr_t retaddr,
++                         MMUAccessType access_type, MemOp op)
++{
++    MemoryRegionSection *section;
++    hwaddr mr_offset;
++    MemoryRegion *mr;
++    MemTxResult r;
++    uint64_t val;
++
++    section = io_prepare(&mr_offset, env, full->xlat_section,
++                         full->attrs, addr, retaddr);
++    mr = section->mr;
++
      {
          QEMU_IOTHREAD_LOCK_GUARD();
          r = memory_region_dispatch_read(mr, mr_offset, &val, op, full->attrs);
-@@ -1438,12 +1417,6 @@ static void io_writex(CPUArchState *env, CPUTLBEntryFull *full,
      }
-     cpu->mem_io_pc = retaddr;
  
--    /*
--     * The memory_region_dispatch may trigger a flush/resize
--     * so for plugins we save the iotlb_data just in case.
--     */
--    save_iotlb_data(cpu, section, mr_offset);
+     if (r != MEMTX_OK) {
+-        hwaddr physaddr = mr_offset +
+-            section->offset_within_address_space -
+-            section->offset_within_region;
 -
+-        cpu_transaction_failed(cpu, physaddr, addr, memop_size(op), access_type,
+-                               mmu_idx, full->attrs, r, retaddr);
++        io_failed(env, full, addr, memop_size(op), access_type, mmu_idx,
++                  r, retaddr, section, mr_offset);
+     }
+     return val;
+ }
+@@ -1403,19 +1426,14 @@ static void io_writex(CPUArchState *env, CPUTLBEntryFull *full,
+                       int mmu_idx, uint64_t val, vaddr addr,
+                       uintptr_t retaddr, MemOp op)
+ {
+-    CPUState *cpu = env_cpu(env);
+-    hwaddr mr_offset;
+     MemoryRegionSection *section;
++    hwaddr mr_offset;
+     MemoryRegion *mr;
+     MemTxResult r;
+ 
+-    section = iotlb_to_section(cpu, full->xlat_section, full->attrs);
++    section = io_prepare(&mr_offset, env, full->xlat_section,
++                         full->attrs, addr, retaddr);
+     mr = section->mr;
+-    mr_offset = (full->xlat_section & TARGET_PAGE_MASK) + addr;
+-    if (!cpu->can_do_io) {
+-        cpu_io_recompile(cpu, retaddr);
+-    }
+-    cpu->mem_io_pc = retaddr;
+ 
      {
          QEMU_IOTHREAD_LOCK_GUARD();
-         r = memory_region_dispatch_write(mr, mr_offset, val, op, full->attrs);
-@@ -1726,45 +1699,39 @@ tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
-  * in the softmmu lookup code (or helper). We don't handle re-fills or
-  * checking the victim table. This is purely informational.
-  *
-- * This almost never fails as the memory access being instrumented
-- * should have just filled the TLB. The one corner case is io_writex
-- * which can cause TLB flushes and potential resizing of the TLBs
-- * losing the information we need. In those cases we need to recover
-- * data from a copy of the CPUTLBEntryFull. As long as this always occurs
-- * from the same thread (which a mem callback will be) this is safe.
-+ * The one corner case is i/o write, which can cause changes to the
-+ * address space.  Those changes, and the corresponding tlb flush,
-+ * should be delayed until the next TB, so even then this ought not fail.
-+ * But check, Just in Case.
-  */
--
- bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, int mmu_idx,
-                        bool is_store, struct qemu_plugin_hwaddr *data)
- {
-     CPUArchState *env = cpu->env_ptr;
-     CPUTLBEntry *tlbe = tlb_entry(env, mmu_idx, addr);
-     uintptr_t index = tlb_index(env, mmu_idx, addr);
--    uint64_t tlb_addr = is_store ? tlb_addr_write(tlbe) : tlbe->addr_read;
-+    MMUAccessType access_type = is_store ? MMU_DATA_STORE : MMU_DATA_LOAD;
-+    uint64_t tlb_addr = tlb_read_idx(tlbe, access_type);
- 
--    if (likely(tlb_hit(tlb_addr, addr))) {
--        /* We must have an iotlb entry for MMIO */
--        if (tlb_addr & TLB_MMIO) {
--            CPUTLBEntryFull *full;
--            full = &env_tlb(env)->d[mmu_idx].fulltlb[index];
--            data->is_io = true;
--            data->v.io.section =
--                iotlb_to_section(cpu, full->xlat_section, full->attrs);
--            data->v.io.offset = (full->xlat_section & TARGET_PAGE_MASK) + addr;
--        } else {
--            data->is_io = false;
--            data->v.ram.hostaddr = (void *)((uintptr_t)addr + tlbe->addend);
--        }
--        return true;
--    } else {
--        SavedIOTLB *saved = &cpu->saved_iotlb;
--        data->is_io = true;
--        data->v.io.section = saved->section;
--        data->v.io.offset = saved->mr_offset;
--        return true;
-+    if (unlikely(!tlb_hit(tlb_addr, addr))) {
-+        return false;
+@@ -1423,13 +1441,8 @@ static void io_writex(CPUArchState *env, CPUTLBEntryFull *full,
      }
--}
  
-+    /* We must have an iotlb entry for MMIO */
-+    if (tlb_addr & TLB_MMIO) {
-+        CPUTLBEntryFull *full = &env_tlb(env)->d[mmu_idx].fulltlb[index];
-+        hwaddr xlat = full->xlat_section;
-+
-+        data->is_io = true;
-+        data->v.io.offset = (xlat & TARGET_PAGE_MASK) + addr;
-+        data->v.io.section =
-+            iotlb_to_section(cpu, xlat & ~TARGET_PAGE_MASK, full->attrs);
-+    } else {
-+        data->is_io = false;
-+        data->v.ram.hostaddr = (void *)((uintptr_t)addr + tlbe->addend);
-+    }
-+    return true;
-+}
- #endif
+     if (r != MEMTX_OK) {
+-        hwaddr physaddr = mr_offset +
+-            section->offset_within_address_space -
+-            section->offset_within_region;
+-
+-        cpu_transaction_failed(cpu, physaddr, addr, memop_size(op),
+-                               MMU_DATA_STORE, mmu_idx, full->attrs, r,
+-                               retaddr);
++        io_failed(env, full, addr, memop_size(op), MMU_DATA_STORE, mmu_idx,
++                  r, retaddr, section, mr_offset);
+     }
+ }
  
- /*
 -- 
 2.34.1
 
