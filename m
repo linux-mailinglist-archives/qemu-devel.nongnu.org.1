@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E7378AF7B
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E18F78AF8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaazd-0000uO-JO; Mon, 28 Aug 2023 08:05:17 -0400
+	id 1qab0E-0001ev-16; Mon, 28 Aug 2023 08:05:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaayv-0000gg-Ex
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:04:41 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaazo-0001XE-DV
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:05:30 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaays-0002EO-Ec
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:04:33 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fee87dd251so29110075e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:04:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaazm-0002W3-3X
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:05:28 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-31aec0a1a8bso1943651f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:05:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693224268; x=1693829068;
+ d=linaro.org; s=google; t=1693224324; x=1693829124;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6ez5JVL0kdSz0DJjZsjSPYj75NgxJNgQOQoFuzjZ1Tw=;
- b=YTJjRZ8ugh5KwylHvd41WkB9PPl54uDKGN9V8hszTa+Udj9wdy7mXfB/XOi3kiuACT
- oDaKwZQLlX0JcP5SHbhu43kmQHEd0sOOdQkEkeLx8JrrF59LWRGTYzalEfyoY7yVxQxF
- Dte2De3NhRhjtaD+OaDKfi+JYaIpqlFkXEp51wzPhr5yfHuMJV2H5NkATjRKujc7WylN
- UEtTe4nCYwAbkP2zOyrULYlB6cN+/WVap1DM/NVn5D6xS0mYoIE3oU/bPIwZ/ujMUZNm
- Kn6QCIdtAy4oA3xvOcmFsnR463k83bQTYFc4fwY4Ps6h2YFQ0x/s0G/Ya/PbKw3Co7HR
- lg+w==
+ bh=VYb6YdNL2Mb1HKmR3pVDt0M/FrwlRf3Fq62JfswWuJ8=;
+ b=nIhokjdmguBv/9JjHv5D3Qd+7tsJqcCq2tyv+LdlBwZZ2hW6EDa+6pot5nLEoF8rLO
+ w/uf69ks9yJ80ck6hRBXHr7KWQtj+Tp3pCeB1Zp97lM57QYS4xktS3zIWjmAK3Ff1ibv
+ vAC8ylYREg/TyZ4KH/Gv9/rWP1PtjF7+WZoCV6zkbjYEEMuAdz1YdUNJCFFT0NnaRxon
+ pSt67dq2iQr5TuE6nPbsR5cvc5SuE/9kXCqDY4huNU7fmg66EBqerCoPcmVLaaRVkEry
+ AYhGbQrXmUGDel4OGPzvVsowwzwy0NbZFiYl90g3jmejpFyMwooI9on5yLXDVag6M8Jn
+ DVQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693224268; x=1693829068;
+ d=1e100.net; s=20221208; t=1693224324; x=1693829124;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6ez5JVL0kdSz0DJjZsjSPYj75NgxJNgQOQoFuzjZ1Tw=;
- b=gxWnuC21FAZCqtlHD2elfVN8JvipkatA1zC/5U+TLV5Y1P891GqYjwWF7lKjGTMqQa
- F7HPfxegfCBJTINNpKd+FYvLotsSjiDLa6Ia/d6BabZVPRPQnpFw98ycs3GalTZJ25fy
- u1kRsOosI+W4MCfQgBfjy3Jux/xg9po0IFPf9wqRbWlCWNgHYNfGxHMgGHLHN0uwGnMV
- L6QpS/V0N/H6vJgWVuDwJYF++QYOwM778zQ9Z1c1IO4k8h8bo4/47Z0XMjMHaDUpFHoj
- R0+wLOdR57GEaf8G3UyOUFQnZgnbVGGT8Bl1kO++I84onYmgwjulSaa2jq+g8I+J48kz
- /jtA==
-X-Gm-Message-State: AOJu0YxT11TrBY7gIKRCZx8dZFFaDvZoo++V+AE+iJ+Q/YgFrx2wza49
- RJ4JRbTWp1FDk7nUvdeVBydQ/4qIQqcm+OzY+Sk=
-X-Google-Smtp-Source: AGHT+IGuZyyCwmh6lI6fV1frCxEaCvJbx4n6J0lbWSBPTVdPoJQRlbX5hT42mT74HBjkBnc8n+pe9w==
-X-Received: by 2002:a05:600c:b42:b0:3fb:b34f:6cd6 with SMTP id
- k2-20020a05600c0b4200b003fbb34f6cd6mr19819594wmr.41.1693224268675; 
- Mon, 28 Aug 2023 05:04:28 -0700 (PDT)
+ bh=VYb6YdNL2Mb1HKmR3pVDt0M/FrwlRf3Fq62JfswWuJ8=;
+ b=V617ZyhYV+r2YlyfY/I4paooxiVTxG5OF8UFEwhgPd0ozwdqNHPHi4WFb2HanGHPVK
+ 0msdFHqHkCLU/jeJnwoSRF0nHRJ0dTsNgQzUvgZlmEqRCcgf7dDJABudcsrlNEtj2RtZ
+ oVmdmPDB6ymqsPtv5SrwKRAL7JmMB3y1XHUx1w+CIKWMbo8miFUAy3cUJAl02qnMBTVi
+ /j3QjCQcTiWeK8Dvx8BASdLZZXiTDV5tty5+7XMIwFWYhaqEWk7iP09pLckPwOLkCZPf
+ yPbHf6NoUF1vCKCjcS35SJ3Owmww1sU8Xd2zVQ6lnyqyqdXGPxrL7oDicu3EecftC2ZQ
+ gwSw==
+X-Gm-Message-State: AOJu0YzZLcfwHwmNvKomyN7hHg7UjadxZUF+V09Sy5RsrHe5gLxj8+2X
+ FR8dxYB11QdCVcEahk1gEYjY8w==
+X-Google-Smtp-Source: AGHT+IHcbgmWlgp+OSVvWXH3xMI74IX0/ckh9eErwfO68bk1kBMI4WLpZ90CLPWwcf6PQx8WougLEw==
+X-Received: by 2002:a5d:6605:0:b0:317:59ea:1c6b with SMTP id
+ n5-20020a5d6605000000b0031759ea1c6bmr16515934wru.35.1693224323947; 
+ Mon, 28 Aug 2023 05:05:23 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- i9-20020a05600c290900b003fe26244858sm13719819wmd.46.2023.08.28.05.04.27
+ d11-20020a056000114b00b0031c6dc684f8sm10416425wrx.20.2023.08.28.05.05.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 05:04:28 -0700 (PDT)
-Message-ID: <65a71168-b195-e9b5-bf62-3049af528bca@linaro.org>
-Date: Mon, 28 Aug 2023 14:04:26 +0200
+ Mon, 28 Aug 2023 05:05:23 -0700 (PDT)
+Message-ID: <ac32edc4-8c1d-bdc5-bf01-974a75a8d470@linaro.org>
+Date: Mon, 28 Aug 2023 14:05:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 4/8] hw/acpi/acpi_dev_interface: Remove now unused
- #include "hw/boards.h"
+Subject: Re: [PATCH 5/8] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
 Content-Language: en-US
 To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
@@ -71,13 +70,13 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
  Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>
 References: <20230828073609.5710-1-shentey@gmail.com>
- <20230828073609.5710-5-shentey@gmail.com>
+ <20230828073609.5710-6-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230828073609.5710-5-shentey@gmail.com>
+In-Reply-To: <20230828073609.5710-6-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -101,18 +100,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 28/8/23 09:36, Bernhard Beschow wrote:
-> The "hw/boards.h" is unused since the previous commit. Since its removal
-> requires include fixes in various unrelated files to keep the code compiling it
-> has been split in a dedicated commit.
+> Now that TYPE_ACPI_GED_X86 doesn't assign AcpiDeviceIfClass::madt_cpu any more
+> it is the same as TYPE_ACPI_GED.
 > 
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
->   hw/acpi/hmat.h                       | 3 ++-
->   include/hw/acpi/acpi_dev_interface.h | 1 -
->   hw/acpi/cpu.c                        | 1 +
->   hw/acpi/hmat.c                       | 1 +
->   hw/acpi/memory_hotplug.c             | 1 +
->   5 files changed, 5 insertions(+), 2 deletions(-)
+>   include/hw/acpi/generic_event_device.h |  2 --
+>   hw/i386/generic_event_device_x86.c     | 27 --------------------------
+>   hw/i386/microvm.c                      |  2 +-
+>   hw/i386/meson.build                    |  1 -
+>   4 files changed, 1 insertion(+), 31 deletions(-)
+>   delete mode 100644 hw/i386/generic_event_device_x86.c
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
