@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F46578AED1
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 13:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EA878AED2
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 13:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaaPX-0000Jj-N5; Mon, 28 Aug 2023 07:27:59 -0400
+	id 1qaaPY-0000Q5-Gy; Mon, 28 Aug 2023 07:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qaaP5-0008Le-4j
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:32 -0400
+ id 1qaaP4-0008LY-Op
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:33 -0400
 Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qaaOx-0002iO-F0
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:30 -0400
+ id 1qaaOy-0002ic-GL
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=v+1ePHu1naG2ZbixQaD86CkdpygclN/60Gx8AXSK6/M=; b=l8TfA/tTgT++7QuwgLCo1qO1c9
- +hAtN9m1eRxYIezhcdiIwafkVLFMn8mG+5u+7L0jiCj8HAaV9mlbKAva4fOrGt6uRP280t+AyN/gH
- 1WG5s8m09gasU5keG78Tc+lz1BR6eM3rf7wsL3Qu88llctdfx8c1+XwiMZphD28I2NWQ=;
+ bh=DdCWk9fEnfEvoveJv22sa+aRQNZMmCe8sqfVKGONakc=; b=hNzqSzsZnnGuo6xo3IYYVzj7bk
+ FZ0hmDpYI5DyYeWrGWvo+Iv9IkEG6UZdvVTqIcAQNfPXjomXfpS5lVxONF1BWDTQUGaWRFQUGz+GQ
+ 40xhJGhmINjaK+eC2zDMpWaxeJ27BZTWWN7qULgTF0uhwJ4wPpNL5HKDSsKFEFEHtBQs=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: anton.kochkov@proton.me, richard.henderson@linaro.org,
  kbastian@mail.uni-paderborn.de
-Subject: [PATCH v2 10/11] target/tricore: Replace cpu_*_code with translator_*
-Date: Mon, 28 Aug 2023 13:26:50 +0200
-Message-ID: <20230828112651.522058-11-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v2 11/11] target/tricore: Fix FTOUZ being ISA v1.3.1 up
+Date: Mon, 28 Aug 2023 13:26:51 +0200
+Message-ID: <20230828112651.522058-12-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
 References: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
@@ -73,40 +73,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ target/tricore/translate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 403533c564..cc2030be14 100644
+index cc2030be14..9770839749 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -8402,7 +8402,7 @@ static bool insn_crosses_page(CPUTriCoreState *env, DisasContext *ctx)
-      * 4 bytes from the page boundary, so we cross the page if the first
-      * 16 bits indicate that this is a 32 bit insn.
-      */
--    uint16_t insn = cpu_lduw_code(env, ctx->base.pc_next);
-+    uint16_t insn = translator_lduw(env, &ctx->base, ctx->base.pc_next);
- 
-     return !tricore_insn_is_16bit(insn);
- }
-@@ -8415,14 +8415,15 @@ static void tricore_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     uint16_t insn_lo;
-     bool is_16bit;
- 
--    insn_lo = cpu_lduw_code(env, ctx->base.pc_next);
-+    insn_lo = translator_lduw(env, &ctx->base, ctx->base.pc_next);
-     is_16bit = tricore_insn_is_16bit(insn_lo);
-     if (is_16bit) {
-         ctx->opcode = insn_lo;
-         ctx->pc_succ_insn = ctx->base.pc_next + 2;
-         decode_16Bit_opc(ctx);
-     } else {
--        uint32_t insn_hi = cpu_lduw_code(env, ctx->base.pc_next + 2);
-+        uint32_t insn_hi = translator_lduw(env, &ctx->base,
-+                                           ctx->base.pc_next + 2);
-         ctx->opcode = insn_hi << 16 | insn_lo;
-         ctx->pc_succ_insn = ctx->base.pc_next + 4;
-         decode_32Bit_opc(ctx);
+@@ -6294,7 +6294,11 @@ static void decode_rr_divide(DisasContext *ctx)
+         gen_helper_ftou(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
+         break;
+     case OPC2_32_RR_FTOUZ:
+-        gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        if (has_feature(ctx, TRICORE_FEATURE_131)) {
++            gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        } else {
++            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        }
+         break;
+     case OPC2_32_RR_UPDFL:
+         gen_helper_updfl(cpu_env, cpu_gpr_d[r1]);
 -- 
 2.41.0
 
