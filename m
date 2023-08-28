@@ -2,105 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B931178BA09
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 23:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8398778BA16
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 23:15:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qajYS-0000pj-LT; Mon, 28 Aug 2023 17:13:48 -0400
+	id 1qajZd-0001dF-3s; Mon, 28 Aug 2023 17:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qajYO-0000pT-F5; Mon, 28 Aug 2023 17:13:44 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qajZb-0001aO-5B
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:14:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qajYL-000231-5d; Mon, 28 Aug 2023 17:13:43 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37SKf6oN002944; Mon, 28 Aug 2023 21:13:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4uDvgMJ/N99UKaSPnjFAAAGk+jQ2jq5R3+otKSouK+4=;
- b=AfL8RMpRDY2tC4poddsdgDmkvxpzcy7PdqJ3jzor0sJiEjv6YbyZZDyxX9UZgb1ZQ2XI
- TCCS7cOxv4f6TTQj2/qzxBnVHfPO7L/sHtUjTS54oN3AGCMfmPLg++FzCwotEd1cD4Ks
- RZ/5lZYVc6LrMMaXtF0sGtxBeafS7sED4vIvuAeBz7mECBqzP/QJHt5vqzg7WOW69/JD
- 5SHweXJ3kYqTgN8g39dBJ+W8hGSdDOtnngxd+zggkg5t/5nIyEQLtaRh3TgX+/MiGWeA
- GbtvgixtDKCKqiWCqsolqIf7GRFTz7aO2PrEnPd0IRPcyNAZI7jrP4NP9lZcivecMU4F EA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr8q7gq8s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Aug 2023 21:13:24 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37SLBHAL007427;
- Mon, 28 Aug 2023 21:13:23 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr8q7gq76-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Aug 2023 21:13:23 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37SJAPFL014100; Mon, 28 Aug 2023 21:13:19 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqwxjnwc4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Aug 2023 21:13:19 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37SLDIRB42402202
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Aug 2023 21:13:18 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E871E58051;
- Mon, 28 Aug 2023 21:13:17 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7456F5805C;
- Mon, 28 Aug 2023 21:13:17 +0000 (GMT)
-Received: from [9.61.30.201] (unknown [9.61.30.201])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 28 Aug 2023 21:13:17 +0000 (GMT)
-Message-ID: <b1de4d8b-a8c1-488e-9d7b-62417dd40d59@linux.ibm.com>
-Date: Mon, 28 Aug 2023 16:13:17 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qajZY-0002BI-P1
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:14:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693257294;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Rq7PSbUr11gQTM/ENtvCiUm/1nWNc+sMGDEHxibfbrw=;
+ b=GfddkUIOnrB880I7OiY3fHG1WYcYnv6nrkqX/ucC7xHqLjIpFTfrc1cIRB7YM/3Ff45mcC
+ CyZw5PsbxzzHdqIMj198clkEcJoOSWZCjkstit+bOKleE1aSDfTWpaUtbdZuA+io1LhybM
+ LaxUvNT8tDGdud1cecsTklJ+pJ0K7qY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-475-PNR54DtANkGLt5SCImevLQ-1; Mon, 28 Aug 2023 17:14:51 -0400
+X-MC-Unique: PNR54DtANkGLt5SCImevLQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4F8685C70B;
+ Mon, 28 Aug 2023 21:14:50 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 38C56401051;
+ Mon, 28 Aug 2023 21:14:50 +0000 (UTC)
+Date: Mon, 28 Aug 2023 17:14:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: deller@kernel.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Helge Deller <deller@gmx.de>
+Subject: Re: [PULL 0/5] Devel hppa priv cleanup2 patches
+Message-ID: <20230828211448.GA70599@fedora>
+References: <20230827151747.290653-1-deller@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/7] Introduce model for IBM's FSP
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>
-Cc: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@aj.id.au, pbonzini@redhat.com, marcandre.lureau@redhat.com,
- berrange@redhat.com, thuth@redhat.com, philmd@linaro.org,
- qemu-arm@nongnu.org
-References: <20230825203046.3692467-1-ninad@linux.ibm.com>
- <CACPK8XeDo7USEw6_fMYHhcdpRJsKGzj1-N+cdMBMu1a2ub_PZQ@mail.gmail.com>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <CACPK8XeDo7USEw6_fMYHhcdpRJsKGzj1-N+cdMBMu1a2ub_PZQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1jQ0oIZ6OBVei_N87-AThDJ1dxMay9YC
-X-Proofpoint-ORIG-GUID: lTqYR89WUSHY4su1TzefUhNGyRDI8xNt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-28_18,2023-08-28_04,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- mlxlogscore=410 suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308280181
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="jWE/T3KZDLyjc4Nm"
+Content-Disposition: inline
+In-Reply-To: <20230827151747.290653-1-deller@kernel.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,25 +80,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joel,
 
-On 8/28/23 23:25, Joel Stanley wrote:
-> Hi Ninad,
->
-> On Fri, 25 Aug 2023 at 20:51, Ninad Palsule <ninad@linux.ibm.com> wrote:
->> Hello,
->>
->> Please review the patch-set.
->>
->> This is a first step towards introducing model for IBM's Flexible
->> Service Interface. The full functionality will be implemented over the
->> time.
-> You have a typo in the subject, I think you meant to write FSI instead of FSP.
+--jWE/T3KZDLyjc4Nm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Good catch. Fixed the typo.
+Applied, thanks.
 
-Thank you for the review.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
-Ninad
+--jWE/T3KZDLyjc4Nm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTtDkgACgkQnKSrs4Gr
+c8gquwf/UqLwlCbF45jagy/jRzktaE+t/nVWG71EZOOR5HN5VBTu4iOW5ecqoEvv
+lUf3bIipHvAywPsE7YVWXH6NPuSBoB6DFE3bN2v1HqC4coYSJv2yDNFr7F//1oNL
+ZpN7dDxODTiJy0Cb4Dw4hOPEcy7yIhDY11QRzWgmImvSMqKi9jfsdMZnQ96knpkJ
+Kc2/w+B3Ca6jc05erYIK2tVelg34IHdUqTBwN3kvB6CLIbLrKm8NgyHMBi7QVVyZ
+g8RhLNGgUyRw4eBZ1B5/OyWFOvDWi0fNsF1B7B3gjvD642GVjoA9vD2JstFSpUDo
+MA0Voyq+xPGYqQWQNhvCH8pys6tujg==
+=dYMA
+-----END PGP SIGNATURE-----
+
+--jWE/T3KZDLyjc4Nm--
 
 
