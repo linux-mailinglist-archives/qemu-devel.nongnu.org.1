@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E2778B676
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 19:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EFF78B690
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 19:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qag3o-0000bb-7N; Mon, 28 Aug 2023 13:29:56 -0400
+	id 1qag8x-0003Lt-M8; Mon, 28 Aug 2023 13:35:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qag3k-0000al-3M
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:29:52 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qag8u-0003Kf-VC
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:13 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qag3g-0000C1-Um
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:29:51 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso16303705ad.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 10:29:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qag8p-0001PJ-8c
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:12 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bdca7cc28dso27571655ad.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 10:33:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693243787; x=1693848587;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6sbBm8XlbDIJHNqtoqen6sBXyOk1jnfmJ/ryRQUWWfg=;
- b=T1NnCB2lFcPiE0vp++gAPkc7N3z6e3RB3jlj2KNBv9Dy3MC9fkrRk9Pha/AaWiXUFJ
- 80jR6miF/Wg6G5CkqAutgsKdJnzqyhqvBZ6dT1bZijKhq6hDhIzq9NYvWRUbYMnLgNa5
- GO2CiREnxq0bTKYmhpXHqMbu89tHVUWEQ1dY2OK2kwtVeYonmk70etvXh35ajwY96JnX
- fh615iST1mVIeABgsIoj4K9ovZkQuR5YMm7QMqi7gedY0LOUFQNjdRVgM6x2ils2ua1n
- 4JgGWrecfFCn0BX4D7VbD90ptjklcynuL4WQm+pnXsNb6FfCPdI+cx6O8cmKwHUgGg1E
- yuVQ==
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693243982; x=1693848782;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MeSndXLcE+tpDFI6uG2GHaNoY6UtaQAU5xj79zv3YqY=;
+ b=DscwPFnV0vxhZG0+n/QNiXRzTxpeZBfTqXLS8/5BG6naqqmPkTlH07cOhZlHnqBKro
+ xdLWBjrKTzKMYh4fGCSpee36uugnYyq8nyhBi4UqFQE+lq8fIGLmBm2EWUzuQFiw60tu
+ ja0rTZUCDVB1Nrje64FoNoheVAVYc8wZvNHrSwYRcduLd5Yecer3stnlf8pUqhsv3CX9
+ 06Z6gaVbZHjRoFXv90acGYXqA1+0s06OP1fmBzeTyba2vUk7E9bjeORdjjhkLTYFg6dR
+ KExOGGbXhKg0meTwh0MgA5EaLcqqDhyedFqemMD06jhuG3dw8khtledVEU6dxyQhdGYn
+ oWUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693243787; x=1693848587;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6sbBm8XlbDIJHNqtoqen6sBXyOk1jnfmJ/ryRQUWWfg=;
- b=ATccvs5EJcP7pSqmHxlZJ3dUpc5ULzEWNfwRCvQ+uueBBoQnkfqi997PsECr8sS8+H
- jSqLInoD/ofQIvxWx02A70b49qty1Tmd+pgvdblOG9T2IevHNixok4TYqD87hiez+nVY
- YqC4i+fNzrtNwf17dOTPhwuVPwfto7qJzbGrC475/g0H4N/Q6hkfUKGXWfXuFocJxsOc
- /qlAIDZIUBmbYUqJT552n18zXZGnlO/yjAqA5v+GWXJx67WRkYAgRDqK7ONfWolmFgQS
- 4OOmV8ybS503Z6ChGCpxHS8QDXOUNdnXrFP1zSDIKYPSgfhqq0+od72eQM+3XfujTSgz
- VKRA==
-X-Gm-Message-State: AOJu0YwywpGK4kM/F8SvKmc59cINSv5sPq2rwPWgdp9PixvkqvRcXsg8
- BspcaQ+FMDZZE/rYRZKSlOYXuwcWj9knR76Nea0=
-X-Google-Smtp-Source: AGHT+IH1GpkZDq6EfdD3cMSKfBiyMAdmXRR2mt7vg8pJi6RtzzMhNS9BtwjmU3OAK7NRxP8j70kbnQ==
-X-Received: by 2002:a17:902:dacd:b0:1c0:c86a:5425 with SMTP id
- q13-20020a170902dacd00b001c0c86a5425mr10255166plx.19.1693243787393; 
- Mon, 28 Aug 2023 10:29:47 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ d=1e100.net; s=20221208; t=1693243982; x=1693848782;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MeSndXLcE+tpDFI6uG2GHaNoY6UtaQAU5xj79zv3YqY=;
+ b=comKp0MHx51IJ5ZtpEwIlrXmd+3mlPjKg8NwUu/l/US/t8GdjAasNpRwvCTlabNLwD
+ JfKAbJ6XLnUdCov21FPEQrHsxa1qVJewaLbGrvtFw5W8mfMwZtRKZrbYaItilUpVMyQ/
+ qn+dihwBugA9qHTMh0vXgSGgqTHYGDNuC251U3yMuifCswdmCCbLLofOS1cdq3rToSwq
+ NZe4KwTZ5Lq6YLxjYUCbaqLS2MLJ/Ry5ndO30kSpQEkHxsbK3tXrem06qjVvSYInP0kR
+ EVXWsodayVCTERh8AOp+8TR1zi3r/d/u4XjCIMFD6DkYinxxvElO70EyXcRFAYHs/Op1
+ dgNQ==
+X-Gm-Message-State: AOJu0YzOVbPDffpolKmAsYWzPrM44o3JDPMmWknAflDgkf3JdLnYAhEC
+ zWVaSmo1qUv5bDqynZALt7Lj09eGLWxifeDVYXZPirfg
+X-Google-Smtp-Source: AGHT+IEB81K+9sSpSGtpoDwij1voyTZT0WFUZZukYe9Ceo7qelR6AH8V8MKyxiWRnaeNu4azgwDLzw==
+X-Received: by 2002:a17:902:bf47:b0:1bd:bdfb:58e9 with SMTP id
+ u7-20020a170902bf4700b001bdbdfb58e9mr23991134pls.40.1693243982638; 
+ Mon, 28 Aug 2023 10:33:02 -0700 (PDT)
+Received: from localhost.localdomain ([118.114.61.244])
  by smtp.gmail.com with ESMTPSA id
- g4-20020a170902868400b001bf2dcfe352sm7631662plo.234.2023.08.28.10.29.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 10:29:46 -0700 (PDT)
-Message-ID: <8d4941d2-77e3-f9de-302f-b3f9d14141dc@linaro.org>
-Date: Mon, 28 Aug 2023 10:29:44 -0700
+ je1-20020a170903264100b001b80d411e5bsm7669103plb.253.2023.08.28.10.33.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Aug 2023 10:33:02 -0700 (PDT)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Hyman Huang <yong.huang@smartx.com>
+Subject: [PULL 0/3] Dirty page rate and dirty page limit 20230829 patches 
+Date: Tue, 29 Aug 2023 01:32:49 +0800
+Message-Id: <cover.1693241678.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/11] Lower TCG vector ops to LSX
-Content-Language: en-US
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn
-References: <20230828152009.352048-1-c@jia.je>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230828152009.352048-1-c@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,42 +88,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 08:19, Jiajie Chen wrote:
-> This patch series allows qemu to utilize LSX instructions on LoongArch
-> machines to execute TCG vector ops.
-> 
-> Jiajie Chen (11):
->    tcg/loongarch64: Import LSX instructions
->    tcg/loongarch64: Lower basic tcg vec ops to LSX
->    tcg/loongarch64: Lower cmp_vec to vseq/vsle/vslt
->    tcg/loongarch64: Lower add/sub_vec to vadd/vsub
->    tcg/loongarch64: Lower vector bitwise operations
->    tcg/loongarch64: Lower neg_vec to vneg
->    tcg/loongarch64: Lower mul_vec to vmul
->    tcg/loongarch64: Lower vector min max ops
->    tcg/loongarch64: Lower vector saturated ops
->    tcg/loongarch64: Lower vector shift vector ops
->    tcg/loongarch64: Lower bitsel_vec to vbitsel
-> 
->   tcg/loongarch64/tcg-insn-defs.c.inc  | 6251 +++++++++++++++++++++++++-
->   tcg/loongarch64/tcg-target-con-set.h |    5 +
->   tcg/loongarch64/tcg-target-con-str.h |    1 +
->   tcg/loongarch64/tcg-target.c.inc     |  414 +-
->   tcg/loongarch64/tcg-target.h         |   37 +-
->   tcg/loongarch64/tcg-target.opc.h     |   12 +
->   6 files changed, 6601 insertions(+), 119 deletions(-)
->   create mode 100644 tcg/loongarch64/tcg-target.opc.h
+The following changes since commit 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
 
-Looks very good at a first pass.
+  Merge tag 'pull-target-arm-20230824' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24 10:08:33 -0400)
 
-We should probably improve tcg_gen_not_vec to try NOR.  This would support loongarch64, 
-and allow the special expansion in PPC and S390X to be removed.
+are available in the Git repository at:
 
-It would be good to support TCG_TARGET_HAS_shi_vec using VSLLI/VSRLI/VSRAI.
+  https://github.com/newfriday/qemu.git tags/dirtylimit-dirtyrate-fixes-pull-request
 
-It would be good to support TCG_TARGET_HAS_roti_vec and TCG_TARGET_HAS_rotv_vec.
+for you to fetch changes up to e424d9f7e749c84de4a6ce532981271db1c14b23:
 
+  migration/dirtyrate: Fix precision losses and g_usleep overshoot (2023-08-28 21:03:58 +0800)
+----------------------------------------------------------------
+Dirty page limit and dirty page rate PULL request
 
+Hi, this is the fix for dirty page limit and dirty page rate.
 
-r~
+Please ignore the previous PULL requests that accidentally failed
+to send and apply this patchset. :) 
+
+Thanks, Yong.
+----------------------------------------------------------------
+Andrei Gudkov (1):
+      migration/dirtyrate: Fix precision losses and g_usleep overshoot
+
+alloc.young (2):
+      softmmu: Fix dirtylimit memory leak
+      softmmu/dirtylimit: Convert free to g_free
+
+ migration/dirtyrate.c | 10 ++++++++--
+ softmmu/dirtylimit.c  | 26 ++++++++++++--------------
+ 2 files changed, 20 insertions(+), 16 deletions(-)
+
+-- 
+2.39.1
+
 
