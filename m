@@ -2,67 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07F278B9D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 22:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B931178BA09
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 23:15:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qajHa-0001c0-K6; Mon, 28 Aug 2023 16:56:22 -0400
+	id 1qajYS-0000pj-LT; Mon, 28 Aug 2023 17:13:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qajHY-0001aL-5Y
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:56:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qajYO-0000pT-F5; Mon, 28 Aug 2023 17:13:44 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qajHW-0007iY-1m
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 16:56:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693256177;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lI8dDoggjXbC7IKgRKzqAMt4wH14jYhHsLMZ4EFzAJs=;
- b=F5xJYy+FrhoOFNxZ21aBtiGXRtRG+NWzz5QCqpZtmlkXb9CxHlk4/GN4ClzU/LoQbJow5+
- YBPJcFsQYQUubqzZ9NGALxlCV0xvbOZ3a+3SUCJa4sBCKe4TevSf7uN84OtNsi8z6w0E9B
- CSfgLUHcu1nnidJW9kvV2NgjDUG01QM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-532-l9OnZGpAOmmA_UIhw03dTA-1; Mon, 28 Aug 2023 16:56:13 -0400
-X-MC-Unique: l9OnZGpAOmmA_UIhw03dTA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0295185A791;
- Mon, 28 Aug 2023 20:56:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2CDA7401051;
- Mon, 28 Aug 2023 20:56:12 +0000 (UTC)
-Date: Mon, 28 Aug 2023 15:56:10 -0500
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v5 04/17] nbd: Prepare for 64-bit request effect lengths
-Message-ID: <sykbzzvezliuxph6zi4oopirs2dwqpuo673ij3quldynd6fzsz@7rac7xngkwre>
-References: <20230810173646.17695-19-eblake@redhat.com>
- <20230810173646.17695-23-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qajYL-000231-5d; Mon, 28 Aug 2023 17:13:43 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37SKf6oN002944; Mon, 28 Aug 2023 21:13:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=4uDvgMJ/N99UKaSPnjFAAAGk+jQ2jq5R3+otKSouK+4=;
+ b=AfL8RMpRDY2tC4poddsdgDmkvxpzcy7PdqJ3jzor0sJiEjv6YbyZZDyxX9UZgb1ZQ2XI
+ TCCS7cOxv4f6TTQj2/qzxBnVHfPO7L/sHtUjTS54oN3AGCMfmPLg++FzCwotEd1cD4Ks
+ RZ/5lZYVc6LrMMaXtF0sGtxBeafS7sED4vIvuAeBz7mECBqzP/QJHt5vqzg7WOW69/JD
+ 5SHweXJ3kYqTgN8g39dBJ+W8hGSdDOtnngxd+zggkg5t/5nIyEQLtaRh3TgX+/MiGWeA
+ GbtvgixtDKCKqiWCqsolqIf7GRFTz7aO2PrEnPd0IRPcyNAZI7jrP4NP9lZcivecMU4F EA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr8q7gq8s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Aug 2023 21:13:24 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37SLBHAL007427;
+ Mon, 28 Aug 2023 21:13:23 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr8q7gq76-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Aug 2023 21:13:23 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37SJAPFL014100; Mon, 28 Aug 2023 21:13:19 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqwxjnwc4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Aug 2023 21:13:19 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37SLDIRB42402202
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 28 Aug 2023 21:13:18 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E871E58051;
+ Mon, 28 Aug 2023 21:13:17 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7456F5805C;
+ Mon, 28 Aug 2023 21:13:17 +0000 (GMT)
+Received: from [9.61.30.201] (unknown [9.61.30.201])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Aug 2023 21:13:17 +0000 (GMT)
+Message-ID: <b1de4d8b-a8c1-488e-9d7b-62417dd40d59@linux.ibm.com>
+Date: Mon, 28 Aug 2023 16:13:17 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230810173646.17695-23-eblake@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/7] Introduce model for IBM's FSP
+Content-Language: en-US
+To: Joel Stanley <joel@jms.id.au>
+Cc: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, pbonzini@redhat.com, marcandre.lureau@redhat.com,
+ berrange@redhat.com, thuth@redhat.com, philmd@linaro.org,
+ qemu-arm@nongnu.org
+References: <20230825203046.3692467-1-ninad@linux.ibm.com>
+ <CACPK8XeDo7USEw6_fMYHhcdpRJsKGzj1-N+cdMBMu1a2ub_PZQ@mail.gmail.com>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <CACPK8XeDo7USEw6_fMYHhcdpRJsKGzj1-N+cdMBMu1a2ub_PZQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1jQ0oIZ6OBVei_N87-AThDJ1dxMay9YC
+X-Proofpoint-ORIG-GUID: lTqYR89WUSHY4su1TzefUhNGyRDI8xNt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-28_18,2023-08-28_04,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ mlxlogscore=410 suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308280181
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,52 +116,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 10, 2023 at 12:36:51PM -0500, Eric Blake wrote:
-> Widen the length field of NBDRequest to 64-bits, although we can
-> assert that all current uses are still under 32 bits: either because
-> of NBD_MAX_BUFFER_SIZE which is even smaller (and where size_t can
-> still be appropriate, even on 32-bit platforms), or because nothing
-> ever puts us into NBD_MODE_EXTENDED yet (and while future patches will
-> allow larger transactions, the lengths in play here are still capped
-> at 32-bit).  Thus no semantic change.
-> 
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> ---
-> 
-> v5: tweak commit message, adjust a few more spots [Vladimir].
-> 
-> v4: split off enum changes to earlier patches [Vladimir]
-> ---
+Hi Joel,
 
-> +++ b/include/block/nbd.h
-> @@ -71,8 +71,8 @@ typedef enum NBDMode {
->   */
->  typedef struct NBDRequest {
->      uint64_t cookie;
-> -    uint64_t from;
-> -    uint32_t len;
-> +    uint64_t from;  /* Offset touched by the command */
-> +    uint64_t len;   /* Effect length; 32 bit limit without extended headers */
+On 8/28/23 23:25, Joel Stanley wrote:
+> Hi Ninad,
+>
+> On Fri, 25 Aug 2023 at 20:51, Ninad Palsule <ninad@linux.ibm.com> wrote:
+>> Hello,
+>>
+>> Please review the patch-set.
+>>
+>> This is a first step towards introducing model for IBM's Flexible
+>> Service Interface. The full functionality will be implemented over the
+>> time.
+> You have a typo in the subject, I think you meant to write FSI instead of FSP.
 
-Despite using unsigned types here...
+Good catch. Fixed the typo.
 
-> +++ b/nbd/server.c
-> @@ -1441,7 +1441,7 @@ static int coroutine_fn nbd_receive_request(NBDClient *client, NBDRequest *reque
->      request->type   = lduw_be_p(buf + 6);
->      request->cookie = ldq_be_p(buf + 8);
->      request->from   = ldq_be_p(buf + 16);
-> -    request->len    = ldl_be_p(buf + 24);
-> +    request->len    = ldl_be_p(buf + 24); /* widen 32 to 64 bits */
+Thank you for the review.
 
-...this code has a nasty bug in that ldl_be_p() returns int instead of
-an unsigned type, so it sign extends, breaking any client that
-requests a value larger than 2G but still less than 4G.  As there are
-still a few patches needing review, I'll go ahead and post a v6 with
-the obvious fix folded in.
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Ninad
 
 
