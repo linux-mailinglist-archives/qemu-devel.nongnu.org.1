@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF8278AC87
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 12:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6B178ACAA
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 12:42:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaZeo-0003RZ-Jn; Mon, 28 Aug 2023 06:39:42 -0400
+	id 1qaZh5-0001w8-68; Mon, 28 Aug 2023 06:42:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qaZeb-0003Of-2p
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 06:39:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qaZeX-00058R-2I
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 06:39:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693219164;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t5xDtDpdOBwZhBAew8Hu/OwGzF2f6d9EDmRfFAUzZmA=;
- b=DtZuOxAZ5k5DmxvHfI3/bIZrqBnMTP6zxCgXve5XA3lGBaFXaisHRnfYt1BHqD8tZxl1zq
- Jf06lSzYeXiEbGKNv2VowAkitnxNEZvRFDMyoU9wXhTyQYIiBR2GR1BsZcgV9Z/XZm3UAI
- RPBXvznOlw+heBbMIwJfYblsBPDpjHo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-0wh2XqtXOlWlZstkg4rkZQ-1; Mon, 28 Aug 2023 06:39:23 -0400
-X-MC-Unique: 0wh2XqtXOlWlZstkg4rkZQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4005f0a53c5so24860745e9.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 03:39:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qaZgc-0001S1-42; Mon, 28 Aug 2023 06:41:37 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qaZgV-0005g5-9j; Mon, 28 Aug 2023 06:41:31 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-52a4737a08fso3975761a12.3; 
+ Mon, 28 Aug 2023 03:41:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693219285; x=1693824085;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GypzuA3YD/OXvcQrFg816KNUCgucd6snbdNEWAStcWc=;
+ b=KgEmGTyOV+OhYMx8Fm4ro7ifxQJABXZBsKBeF/UzaVAV0Oa3VU46TAJcIw0WHvPGYk
+ yA7S+TiYXPftCKcnj0uzmnG6f7hVM7fXBjP1Dp45rl22DfSwF/iitq1AJmFYZRXcSpLi
+ NM+s9GxY7oQJp1rMoxcNqAsWxrl0BOodePUnv/LfC85Uv3v/lU0Y/y11rOFo3z3/a3Og
+ odu+so1UhebbEKtayWUKazgw+5JGvTapUUihh3CiyG04NttKked1Lm41KApyJXZWQaAd
+ syDBUdHXHyu3MtFkBrkAJY1/DLl7k0hBarWaiUDw2dYEg/ZI63lukAOuNe2szc89gpM7
+ GOSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693219161; x=1693823961;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1693219285; x=1693824085;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t5xDtDpdOBwZhBAew8Hu/OwGzF2f6d9EDmRfFAUzZmA=;
- b=JA1I30/a0RWQ+Mz4qvoRDdYBiiXVAaF8ufF9HBER6fA9aGshrELaQydlAbD1CDbeY6
- FSmbLQ6PFkDgWxaH5WP9tU3FGpRZHoQkiPx+9tUGMtjSk+VLEsZXZOWuK+VSKh0iKrGO
- v28mlQw49PiZ9ZpDGMeqnzydTLrAcLVu35/mXIPiRUT81fsjsQir9u+1GBFfOiO5CkDB
- VKUPlRci1tjsBcN7JzABnGd7Q2e0tVQG0h3sJuqON91b9XJKPTZMvfWJXSxSDTuUPPt/
- TrcgmJuimGfwdQQMdVZMub1gftP0x2p4vSc0G5Ufu1A3I0uBCD3gaIBQeC1jNGaofzOq
- uLXg==
-X-Gm-Message-State: AOJu0Yy6Ed+opLNhOhYZdshGzYEXnlLSZ68vPRbJwXs6LNF5gaCheyxW
- 5qoBGEOcaI+4/cZrXmAnENGnbXUh3oR++mCeXvJ03R5ECAdPxfAYpspd24/We2I2Y46Bk15swTv
- Gy1Pe+Gk70HZ1hx9jmQ708xjJVpdkzbsWDbi9OHkp8x1aTbZh4HLUw/20r8uCfc3za0D5Liyf6z
- Q=
-X-Received: by 2002:a7b:c34d:0:b0:3fe:2e0d:b715 with SMTP id
- l13-20020a7bc34d000000b003fe2e0db715mr19944004wmj.18.1693219161487; 
- Mon, 28 Aug 2023 03:39:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNXQVmp0cuvY4AA2YTA6peOmRbXulEf2axsmoQOGTmGFTyS80Bkzj1BfR3rF5zCRH1Ti5zog==
-X-Received: by 2002:a7b:c34d:0:b0:3fe:2e0d:b715 with SMTP id
- l13-20020a7bc34d000000b003fe2e0db715mr19943993wmj.18.1693219161167; 
- Mon, 28 Aug 2023 03:39:21 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- c12-20020a05600c0acc00b003fee6f027c7sm13444915wmr.19.2023.08.28.03.39.20
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 03:39:20 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PULL 14/14] configure: remove unnecessary mkdir -p
-Date: Mon, 28 Aug 2023 12:38:53 +0200
-Message-ID: <20230828103856.46031-15-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230828103856.46031-1-pbonzini@redhat.com>
-References: <20230828103856.46031-1-pbonzini@redhat.com>
+ bh=GypzuA3YD/OXvcQrFg816KNUCgucd6snbdNEWAStcWc=;
+ b=j/Qhbt/84WaS9BlBf0lOA5kZUflJ9yIX7hnvohuReSSEi/ydUhfMq5JHF4WnyKNF4b
+ pn5EKwfCpkLB3rpJGxYxT33TZIsv6a/xbuSNuGiNl+ZW2zy9jKT+vpPoHMQ2yVGviVzT
+ zjKoxasWWgj3yyK873ZOE6hNA1gEz4JQ9QU8Agj8Eo2ydLrMAnGwDCRcUCMQ4NLQkG1J
+ hUXlXuCohcGLDEPhSF1wMVKjOyvD400H8o56ng+Dx4i7mnfLyw0dmi0ek5lX6uUzAuYr
+ AQe6eZFnLw3p6Jw/GBap1cmPAmBeXvDEqRne2JzLaA/wDSVBvZtAX2k9VZXRN8ZDX0yc
+ O+tQ==
+X-Gm-Message-State: AOJu0YzbuHwpiKi1tpOz4vbwKq0Cs1II6Fg4c3XDeYG45oflkwA1/CtU
+ ciddytCWzMm7HjGs1NYi4vwd+zqtYPAeTODwFqE=
+X-Google-Smtp-Source: AGHT+IFC0NKFIkKGotFSqln1RHMYdJq5KqtRUq8p3ijGrEwXqHI6DFTahDyv23XQJXvkcLTgzXk+/b7AGUpZVf5aquQ=
+X-Received: by 2002:aa7:da18:0:b0:522:2782:537 with SMTP id
+ r24-20020aa7da18000000b0052227820537mr18869190eds.15.1693219284277; Mon, 28
+ Aug 2023 03:41:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230814085802.61459-1-faithilikerun@gmail.com>
+ <20230814085802.61459-3-faithilikerun@gmail.com>
+ <20230821133131.GA37847@fedora>
+ <CAAAx-8JL1ieece-noWNo3ZJ4fDD-x-Z4u+WOgsO4jnvpoqLqTw@mail.gmail.com>
+ <f1144d47-209d-c376-f179-1af2ad2d3f1b@kernel.org>
+ <CAAAx-8KHyTNDKL6FvAifZmH6LW46U5ccM+c=Rp0Hf=XpbErczg@mail.gmail.com>
+ <aeeeaf19-ce27-a3a2-7be0-9acbae24bb5e@kernel.org>
+In-Reply-To: <aeeeaf19-ce27-a3a2-7be0-9acbae24bb5e@kernel.org>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Mon, 28 Aug 2023 18:40:55 +0800
+Message-ID: <CAAAx-8+r7eowBMOsWDbFZ8PTN2+kSV7M+-tFStz3zenV53VAzg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] qcow2: add configurations for zoned format
+ extension
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, hare@suse.de,
+ Hanna Reitz <hreitz@redhat.com>, dmitry.fomichev@wdc.com, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,26 +94,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is already included in the symlink shell function.
+Damien Le Moal <dlemoal@kernel.org> =E4=BA=8E2023=E5=B9=B48=E6=9C=8828=E6=
+=97=A5=E5=91=A8=E4=B8=80 18:22=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On 8/28/23 19:18, Sam Li wrote:
+> > Damien Le Moal <dlemoal@kernel.org> =E4=BA=8E2023=E5=B9=B48=E6=9C=8828=
+=E6=97=A5=E5=91=A8=E4=B8=80 18:13=E5=86=99=E9=81=93=EF=BC=9A
+> >>
+> >> On 8/28/23 18:22, Sam Li wrote:
+> >>> Stefan Hajnoczi <stefanha@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=
+=8821=E6=97=A5=E5=91=A8=E4=B8=80 21:31=E5=86=99=E9=81=93=EF=BC=9A
+> >>>>
+> >>>> On Mon, Aug 14, 2023 at 04:58:00PM +0800, Sam Li wrote:
+> >>>>> diff --git a/block/qcow2.h b/block/qcow2.h
+> >>>>> index f789ce3ae0..3694c8d217 100644
+> >>>>> --- a/block/qcow2.h
+> >>>>> +++ b/block/qcow2.h
+> >>>>> @@ -236,6 +236,20 @@ typedef struct Qcow2CryptoHeaderExtension {
+> >>>>>      uint64_t length;
+> >>>>>  } QEMU_PACKED Qcow2CryptoHeaderExtension;
+> >>>>>
+> >>>>> +typedef struct Qcow2ZonedHeaderExtension {
+> >>>>> +    /* Zoned device attributes */
+> >>>>> +    uint8_t zoned_profile;
+> >>>>> +    uint8_t zoned;
+> >>>>> +    uint16_t reserved16;
+> >>>>> +    uint32_t zone_size;
+> >>>>> +    uint32_t zone_capacity;
+> >>>>
+> >>>> Should zone capacity be stored individually for each zone (alongside=
+ the
+> >>>> write pointer and other per zone metadata) instead of as a global va=
+lue
+> >>>> for all zones? My understanding is that NVMe ZNS does not have a glo=
+bal
+> >>>> value and each zone could have a different zone capacity value.
+> >>>
+> >>> Though zone capacity is per-zone attribute, it remains same for all
+> >>> zones in most cases. Referring to the NVMe ZNS spec, zone capacity
+> >>> changes associate to RESET_ZONE op when the variable zone capacity bi=
+t
+> >>> is '1'. It hasn't specifically tell what it is changed to. Current ZN=
+S
+> >>> emulation doesn't change zone capacity as well.
+> >>>
+> >>> If the Variable Zone Capacity bit is cleared to =E2=80=980=E2=80=99 i=
+n the Zone
+> >>> Operation Characteristics field in the Zoned
+> >>> Namespace Command Set specific Identify Namespace data structure, the=
+n
+> >>> this field does not change without a change to the format of the zone=
+d
+> >>> namespace.
+> >>>
+> >>> If the Variable Zone Capacity bit is set to =E2=80=981=E2=80=99 in th=
+e Zone Operation
+> >>> Characteristics field in the Zoned
+> >>> Namespace Command Set specific Identify Namespace data structure, the=
+n
+> >>> the zone capacity may
+> >>> change upon successful completion of a Zone Management Send command
+> >>> specifying the Zone Send
+> >>> Action of Reset Zone.
+> >>
+> >> Regardless of the variable zone capacity feature, zone capacity is per=
+ zone and
+> >> may be different between zones. That is why it is reported per zone in=
+ zone
+> >> report. The IO path code should not assume that the zone capacity is t=
+he same
+> >> for all zones.
+> >
+> > How is zone capacity changed, by devices or commands? Can you give
+> > some example please?
+>
+> If the device does not support variable zone capacity, the zone capacity =
+is
+> fixed at device manufacturing time and never changes. It is reported per =
+zone
+> and you have to make things work with whatever value you see. The user ca=
+nnot
+> change device zone capacity.
+>
+> For you qcow2 zoned image, the equivalent is to fix the zone capacity whe=
+n the
+> image is created and not allowing to change it. And for simplicity, the s=
+ame
+> zone capacity value can be used for all zones, so having the zone capacit=
+y
+> value in the header is OK.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 1 -
- 1 file changed, 1 deletion(-)
+Thanks!
 
-diff --git a/configure b/configure
-index 08bf24b689c..b9bd008592a 100755
---- a/configure
-+++ b/configure
-@@ -1775,7 +1775,6 @@ fi
- for target in $target_list; do
-     target_dir="$target"
-     target_name=$(echo $target | cut -d '-' -f 1)$EXESUF
--    mkdir -p "$target_dir"
-     case $target in
-         *-user) symlink "../qemu-$target_name" "$target_dir/qemu-$target_name" ;;
-         *) symlink "../qemu-system-$target_name" "$target_dir/qemu-system-$target_name" ;;
--- 
-2.41.0
-
+>
+> >
+> >>
+> >> For this particular case though, given that this is QCow2 emulation, l=
+imiting
+> >> ourselves to the same zone capacity for all zones is I think fine. But=
+ that
+> >> should be clearly stated somewhere may be...
+> >
+> > I see. The qcow2 documentaion can add that.
+> >
+> >>
+> >>>
+> >>>>
+> >>>>> +    uint32_t nr_zones;
+> >>>>
+> >>>> Is this field necessary since it can be derived from other image
+> >>>> options: nr_zones =3D DIV_ROUND_UP(total_length, zone_capacity)?
+> >>>
+> >>> It can be dropped. I added this for reducing duplication. Thanks!
+> >>
+> >> --
+> >> Damien Le Moal
+> >> Western Digital Research
+> >>
+>
+> --
+> Damien Le Moal
+> Western Digital Research
+>
 
