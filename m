@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A5578B7AC
+	by mail.lfdr.de (Postfix) with ESMTPS id 8391278B7AD
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 20:57:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qahP9-0000qm-Bc; Mon, 28 Aug 2023 14:56:03 -0400
+	id 1qahP9-0000r1-P8; Mon, 28 Aug 2023 14:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qahP7-0000po-9D
+ id 1qahP7-0000pr-D3
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:56:01 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qahP5-0002S2-3K
+ id 1qahP5-0002SC-9Q
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:56:01 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-26b44247123so2254482a91.2
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-268bc714ce0so3097399a91.0
  for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 11:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693248957; x=1693853757;
+ d=linaro.org; s=google; t=1693248958; x=1693853758;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zs4ouB+IX/j6ZyzVg7pnpseLfh71GLbrppugYTGLrDA=;
- b=lN7aAqolA/8tcvFHR0Zvln/tX1gsiAtzxgz8PfQaTFRmO4Q2G1WExradIaVLUIKdHL
- lnWGtKE0VB4kOMgeg5CMLaKdkUQ8q+sfyrG5hF6moKywqNAx4TaQQJTI15iSsVwFbG+7
- rIduSO6Jx2kCErACxo/K4oiuS8QRlBEnPOUKneSYWL1hMbeEmgFcsmnnbaxVU680J17n
- kOQuW+aGs19UGzBY2gSMA4jr0Fw87cgiLsDFPlOTUYJPTWlnItLcmW+dBfsn0bYuC+cO
- etuExAJEsDvP9ox0qw2WQ0QkRAy0/HSKy1945M4j/9yyN6/SoO4p97VSsT0hgmLMZBXA
- g3jQ==
+ bh=kes4dWAfnCF0sbsmuI+kEptn1hS/yp74fg4t9duR770=;
+ b=PVlt6LU7ElyNwkbZTuIdBKWHN+yZ6AbiKL44WN+tpuTzvnCE7I7CoIGJ56vbugw01Q
+ MX9ThoXSE2u0HkHbIJOGiTbabNx0NVFe3bv77/NJHQks6qAOdLc4vHJTHoicedeyyp7p
+ +qeTA/UiRchYgzr5zFpuVfxIROdOHKXvW5nfbxJOMlXw2L/7v6j9yQhPlZQQmWulQJIA
+ 3QQudAU2YgC/BL8+POFnEBIa3cTzFxvmUiUZBDsvDNUGzBQil9Tx0OakHg8mjvo51Q1i
+ aH7hVo86Uid02hMEue3P3tJMZVwSBio9idOU+EqjN1vspAiyjeRPtuPIoCAb6UQWMwIz
+ x+Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693248957; x=1693853757;
+ d=1e100.net; s=20221208; t=1693248958; x=1693853758;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zs4ouB+IX/j6ZyzVg7pnpseLfh71GLbrppugYTGLrDA=;
- b=V+U5b9noFalV2T2A32Y82ZdKVqrkFMa0GccHckzQ3u8FBtx7/NECWrtHtUPoy7rerV
- 19PZ7/6AsPhXZUlakNEQ2vn/g862kFfYYGGTg9Fnpe08393okogMxpKNgpE6tVEl0Ztq
- fhgdKb1d3c9H0tuvEHgulbILk1PkjEJ2be8eIEc+3gGDYnubezoHVXIOZXBcZZB/BD14
- nFU6xZ958zWHgAXaEOK70aKycVaqQ3e5kkOGGIfGMNDgRVotlUz6C5PMQR61h874Dw+f
- Ej7kbZa7S9IibVYTKYvxdY4JLbPIPK1hl4QotLX8jvJS65PQhlTq+4wl053P85Yh7yAG
- y46g==
-X-Gm-Message-State: AOJu0YzE1ZhzN9H+IRq35X0BO8nra1rDpX1ixLkmjZdLhxbbXFXJ3dUE
- trDiY1W/AgnUMU0hTfbEsePkKSZJhElt4BnxBC8=
-X-Google-Smtp-Source: AGHT+IFzDI2HViV8nPd3B9S2CPNog0xZI3BM1ZOSsFsSB/wuoj8HM+8LB3y/FihbQt+5NJgIwj9KeQ==
-X-Received: by 2002:a17:90b:4015:b0:262:e3aa:fd73 with SMTP id
- ie21-20020a17090b401500b00262e3aafd73mr25314055pjb.17.1693248957185; 
- Mon, 28 Aug 2023 11:55:57 -0700 (PDT)
+ bh=kes4dWAfnCF0sbsmuI+kEptn1hS/yp74fg4t9duR770=;
+ b=d37QsIAX1/RDrrpw5OdYKqxB+n95e5vV3OTDL4c7HEm4zqYbOBGVCELSIvLqnf5p2i
+ bXnum9WeTjf82MR98kQXLxb5nWHpmgmolnZgy389mj6P15mIST7xiUiNnmjuH0Tc13gK
+ 2HrdmZ4lzbmBsa61uLrnoimJDdIbEAsjxZAbNPdM0O5x+8AaU0p4eXJp/jxahxQyXJ8V
+ geQIO+ZcNEOsRdjD5QhsEXub6SUvTHutXvxFGGcriVU9t6YF8RUZ+xFmQBPYsB5goyrd
+ x5BAvgvtohM5MC5iMjPDvMMnvaId+U7WoTQSaWKQae5qonLgcb8J+R8PiHnomVNdLYy7
+ Mmaw==
+X-Gm-Message-State: AOJu0YxUaHmkfbny2W6HqPFQgSK16aoZMkdVDpD0KoNyxB9sj/60WJaD
+ odP3on/jOr4Nnt+AXtgdbmnD2cV35vk/vgg5P0I=
+X-Google-Smtp-Source: AGHT+IHQhAuWnC2xkH68grGmKg8HMs71amh8ABd5xowlhuTkGwZt/iiaYRjyBOKXIl7EAjAAfx8erA==
+X-Received: by 2002:a17:90a:d185:b0:268:808:8e82 with SMTP id
+ fu5-20020a17090ad18500b0026808088e82mr683519pjb.1.1693248958105; 
+ Mon, 28 Aug 2023 11:55:58 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- 4-20020a17090a190400b002680dfd368dsm7932835pjg.51.2023.08.28.11.55.56
+ 4-20020a17090a190400b002680dfd368dsm7932835pjg.51.2023.08.28.11.55.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 11:55:56 -0700 (PDT)
+ Mon, 28 Aug 2023 11:55:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org
-Subject: [PATCH 05/10] accel/tcg: Merge cpu_transaction_failed into io_failed
-Date: Mon, 28 Aug 2023 11:55:45 -0700
-Message-Id: <20230828185550.573653-6-richard.henderson@linaro.org>
+Subject: [PATCH 06/10] accel/tcg: Replace direct use of io_readx/io_writex in
+ do_{ld, st}_1
+Date: Mon, 28 Aug 2023 11:55:46 -0700
+Message-Id: <20230828185550.573653-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230828185550.573653-1-richard.henderson@linaro.org>
 References: <20230828185550.573653-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,65 +91,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Push computation down into the if statements to the point
-the data is used.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ accel/tcg/cputlb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index b1dc213675..d2e4c4459d 100644
+index d2e4c4459d..6a7f6bf701 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1347,23 +1347,6 @@ static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
-                                           mmu_idx, retaddr);
- }
- 
--static inline void cpu_transaction_failed(CPUState *cpu, hwaddr physaddr,
--                                          vaddr addr, unsigned size,
--                                          MMUAccessType access_type,
--                                          int mmu_idx, MemTxAttrs attrs,
--                                          MemTxResult response,
--                                          uintptr_t retaddr)
--{
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
--    if (!cpu->ignore_memory_transaction_failures &&
--        cc->tcg_ops->do_transaction_failed) {
--        cc->tcg_ops->do_transaction_failed(cpu, physaddr, addr, size,
--                                           access_type, mmu_idx, attrs,
--                                           response, retaddr);
--    }
--}
--
- static MemoryRegionSection *
- io_prepare(hwaddr *out_offset, CPUArchState *env, hwaddr xlat,
-            MemTxAttrs attrs, vaddr addr, uintptr_t retaddr)
-@@ -1387,9 +1370,19 @@ static void io_failed(CPUArchState *env, CPUTLBEntryFull *full, vaddr addr,
-                       unsigned size, MMUAccessType access_type, int mmu_idx,
-                       MemTxResult response, uintptr_t retaddr)
+@@ -2339,7 +2339,8 @@ static uint8_t do_ld_1(CPUArchState *env, MMULookupPageData *p, int mmu_idx,
+                        MMUAccessType type, uintptr_t ra)
  {
--    hwaddr physaddr = full->phys_addr | (addr & ~TARGET_PAGE_MASK);
--    cpu_transaction_failed(env_cpu(env), physaddr, addr, size, access_type,
--                           mmu_idx, full->attrs, response, retaddr);
-+    CPUState *cpu = env_cpu(env);
-+
-+    if (!cpu->ignore_memory_transaction_failures) {
-+        CPUClass *cc = CPU_GET_CLASS(cpu);
-+
-+        if (cc->tcg_ops->do_transaction_failed) {
-+            hwaddr physaddr = full->phys_addr | (addr & ~TARGET_PAGE_MASK);
-+
-+            cc->tcg_ops->do_transaction_failed(cpu, physaddr, addr, size,
-+                                               access_type, mmu_idx,
-+                                               full->attrs, response, retaddr);
-+        }
-+    }
- }
- 
- static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+     if (unlikely(p->flags & TLB_MMIO)) {
+-        return io_readx(env, p->full, mmu_idx, p->addr, ra, type, MO_UB);
++        QEMU_IOTHREAD_LOCK_GUARD();
++        return do_ld_mmio_beN(env, p->full, 0, p->addr, 1, mmu_idx, type, ra);
+     } else {
+         return *(uint8_t *)p->haddr;
+     }
+@@ -2854,7 +2855,8 @@ static void do_st_1(CPUArchState *env, MMULookupPageData *p, uint8_t val,
+                     int mmu_idx, uintptr_t ra)
+ {
+     if (unlikely(p->flags & TLB_MMIO)) {
+-        io_writex(env, p->full, mmu_idx, val, p->addr, ra, MO_UB);
++        QEMU_IOTHREAD_LOCK_GUARD();
++        do_st_mmio_leN(env, p->full, val, p->addr, 1, mmu_idx, ra);
+     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
+         /* nothing */
+     } else {
 -- 
 2.34.1
 
