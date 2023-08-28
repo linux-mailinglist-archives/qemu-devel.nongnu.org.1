@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E788078BA6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 23:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF55B78BAEB
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:16:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qak3z-0003WS-NT; Mon, 28 Aug 2023 17:46:23 -0400
+	id 1qakU7-0005oc-SB; Mon, 28 Aug 2023 18:13:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qak3w-0003N8-Su
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:46:20 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakU5-0005oM-Q2
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:21 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qak3s-0007ta-W2
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:46:20 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fee769fcc3so32033795e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 14:46:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakU3-000473-FW
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:21 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31aec0a1a8bso2326546f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:13:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693259175; x=1693863975;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Vev8ZAjyKG+2HXZWteSDR8WlT5SuJbNgd1ngCsTRYD4=;
- b=JqpWN9UYQhAJC9Uv5H57jhUDuxWGes70PgiRegZR6b0Ys5c28Xx99HoXNU44Gipxm0
- YnPG2Jx/8suFA3w+pX4qVOFQ1/0veqPdz+GCylALT6DqPJ/M8sxBup+n37rrLhKUUW2A
- bdBq9mNmuveuWQs5J3e6C537cOhxIZ/pS/uu7bwZYYwuVyGUV0ptdE9S0E4Pii+ZzTJF
- W/fTq6Gz0O3Wuq7BFjYWDWlJR+9f8ACS3DxIJoVVqfADif9z8u06TveU03L8TwF9Qfod
- fo9lwRe1erYCczy8JobZvtEm4Hq52gEZiKaaOlC8mgw+UaP95ks7imIVuI6f2BUfYs/L
- 43rQ==
+ d=linaro.org; s=google; t=1693260798; x=1693865598; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vvWgyMZBL8l+yzNWAXsAE0ELDVGdPtARPo+/gTAnl9M=;
+ b=VDbLRUPKwlJ5uXO+SMF7VvAfasHRVSjuFlVgjnAHjQhp8dW/53LSIgybfHKjMrgICE
+ X6zHLqwMNvD1RfyAUkg/5bcxiWlOlWZW3WAy7kAqgOYIlHF4URvaTUUgEPjR10QxfyfM
+ SCSec3yE+sydhD0pwZqAx1g2SwwcWykWHPac/w3wB44j/x5LbC9EfzDJ9PenbDG+8sN8
+ KSZ+mymBsf6E6aR/kB6+shVxeD7pFeDl2yMrix5bv5WhQLVCLeK7OqUXC9J1G/TnV5z6
+ gojtRcq81CXFQjxpW6rENtZ6WEVvD/YwLOV7BZPrmjZsltWgQOLtRmlAnWgYnE+D6lMh
+ /x/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693259175; x=1693863975;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Vev8ZAjyKG+2HXZWteSDR8WlT5SuJbNgd1ngCsTRYD4=;
- b=RRXXQ03GjpvYyBHHCcERAqWQF5BQ7nG1Q1aj4GAHEcHXFWfCGdqUgJSxelpAZm6ptA
- MmdXwQk9WXbMnb8PjfymN6utlYfsGJ5E+GzLLzxi3zzPlZGiEefCd053QYkdsZhML4X7
- 2QXn8QhIGVbPF7K5FPa7gdDnpU4+XRviOTjaUOqnIZo7C9aJwjo2we5E12aaY4Nxt+sc
- kyiEgVFL8n1j6i3DEwRJzuBIBMOZVIr07c4EgktMKb5PKY4RD+y08/K+pJ34TRujVQ3o
- OdL7F86St/TXFHIjzVYOz0k3iKKUQ2DEmeRJhF7bqYZJnAOVN7EoBR14gon5ss/jvUzP
- eIcQ==
-X-Gm-Message-State: AOJu0YzvmadaFOWbRJup5aQv2X/F1VcoFK1+T5Fu7eWny1k3xRCHvebn
- mV55RdIumvIM+ROt2RlzBR2tTA==
-X-Google-Smtp-Source: AGHT+IEc6dzpJAdiSq1mD+EQbPUWf7W1fZWzU5bVBHSH9Jvv1lwt7CC0g43IVBKQ+IOQxclEI+3VjA==
-X-Received: by 2002:a1c:771a:0:b0:401:bdf9:c336 with SMTP id
- t26-20020a1c771a000000b00401bdf9c336mr6073273wmi.27.1693259175733; 
- Mon, 28 Aug 2023 14:46:15 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.201.64])
+ d=1e100.net; s=20221208; t=1693260798; x=1693865598;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vvWgyMZBL8l+yzNWAXsAE0ELDVGdPtARPo+/gTAnl9M=;
+ b=G4BSQ9xIjwk+hw61yINukwNgGijHc8yfxSTMs65oy1cRtj4ISqrs+FHfSyAQUZmLCy
+ P3au1fQCToWnGCV+HMQNhv7UEtRziCXpkN+Ka0hH6HM8xEVT67T+EySzurTWenPvDUTi
+ LSyAoAYEBYDoXbYvBhFKJMqSH3EG/2Hjs+YGfWPqR2SY02eCaDapQmJaA3lspanDTE+n
+ vqTtu3BsnlagroWKuxGtXonrmlQnYClOau6PheiUl8xXFUvt/GIVaGC14Z+X3C7q0ezh
+ /TzXUtiGm05weZfUHl6aoIw5GK2Zg2FAUWQYJPK23G1uu/wHdgMwttmruj+kcJB9IJo+
+ 0iXw==
+X-Gm-Message-State: AOJu0YwTCUPyB6NeU7TipivY+Q5OfTjGfxOGJ1+gzEUi28jOH2OQz6DE
+ X7ucCtvyDVbwsrsfyX9yfR0eN1bYSuCXfOtbSSo=
+X-Google-Smtp-Source: AGHT+IFyCOjIkVRIYgh0jSEhMoQhD5qRFHJv8z+B9WFVgp7edId22Hi+m6spVat95NsoSebJgjMo7A==
+X-Received: by 2002:adf:f14c:0:b0:317:59ea:1c6b with SMTP id
+ y12-20020adff14c000000b0031759ea1c6bmr465012wro.35.1693260797825; 
+ Mon, 28 Aug 2023 15:13:17 -0700 (PDT)
+Received: from m1x-phil.lan ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- o21-20020a05600c379500b003ff3b964a9asm15207410wmr.39.2023.08.28.14.46.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 14:46:15 -0700 (PDT)
-Message-ID: <f2116163-bf23-0ab1-fd05-5489d6c579ed@linaro.org>
-Date: Mon, 28 Aug 2023 23:46:13 +0200
+ n23-20020a7bcbd7000000b003fef6881350sm12139194wmi.25.2023.08.28.15.13.16
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 28 Aug 2023 15:13:17 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/11] target/translate: Remove unused "exec/cpu_ldst.h" /
+ "qemu/main-loop.h"
+Date: Tue, 29 Aug 2023 00:13:03 +0200
+Message-ID: <20230828221314.18435-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 7/8] target/helper: Remove unnecessary 'qemu/main-loop.h'
- header
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org
-References: <20230828145545.81165-1-philmd@linaro.org>
- <20230828145545.81165-8-philmd@linaro.org>
- <37e187bd-a21e-f9a2-ec51-a114cb5083aa@linaro.org>
- <ac9fafb6-a751-1503-a5c8-f71c9909a6e2@linaro.org>
-In-Reply-To: <ac9fafb6-a751-1503-a5c8-f71c9909a6e2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,24 +90,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/8/23 23:45, Philippe Mathieu-Daudé wrote:
-> On 28/8/23 20:40, Richard Henderson wrote:
->> On 8/28/23 07:55, Philippe Mathieu-Daudé wrote:
->>> "qemu/main-loop.h" declares functions related to QEMU's
->>> main loop mutex, which these files don't access. Remove
->>> the unused "qemu/main-loop.h" header.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   target/riscv/pmu.h                   | 2 --
->>>   target/xtensa/mmu_helper.c           | 2 --
->>>   target/xtensa/op_helper.c            | 2 --
->>
->> At least these 3 files do two things.
-> 
-> I can compile these files adding '#error' in "qemu/main-loop.h".
+Yet another boring 'header cleanups' series :/
 
-Doh now I got it, I also remove "exec/cpu_ldst.h". Probably
-a failed rebase, sorry...
+Since v1:
+- Addressed Richard review comment
+- Added Richard R-b tag
+- 3 more patches around 'qemu/qatomic.h'
+
+Philippe Mathieu-Daudé (11):
+  target/ppc/pmu: Include missing 'qemu/timer.h' header
+  target/riscv/pmu: Restrict 'qemu/log.h' include to source
+  target/translate: Include missing 'exec/cpu_ldst.h' header
+  target/translate: Remove unnecessary 'exec/cpu_ldst.h' header
+  target/translate: Restrict 'exec/cpu_ldst.h' to user emulation
+  target/helpers: Remove unnecessary 'exec/cpu_ldst.h' header
+  target/helper: Remove unnecessary 'qemu/main-loop.h' header
+  target/mips: Remove unused headers in lcsr_helper.c
+  target/xtensa: Include missing 'qemu/atomic.h' header
+  qemu/processor: Remove unused 'qemu/atomic.h' header
+  exec/translation-block: Clean up includes
+
+ include/exec/exec-all.h              | 2 +-
+ include/exec/translation-block.h     | 6 +++---
+ include/qemu/processor.h             | 2 --
+ target/riscv/pmu.h                   | 3 ---
+ hw/xtensa/pic_cpu.c                  | 1 +
+ target/alpha/translate.c             | 1 -
+ target/arm/ptw.c                     | 1 -
+ target/avr/helper.c                  | 1 +
+ target/cris/op_helper.c              | 1 -
+ target/hexagon/translate.c           | 1 -
+ target/hppa/translate.c              | 1 -
+ target/i386/tcg/fpu_helper.c         | 1 +
+ target/i386/tcg/sysemu/excp_helper.c | 1 +
+ target/loongarch/cpu.c               | 1 +
+ target/loongarch/iocsr_helper.c      | 1 -
+ target/loongarch/op_helper.c         | 1 -
+ target/m68k/translate.c              | 1 -
+ target/microblaze/translate.c        | 1 -
+ target/mips/tcg/fpu_helper.c         | 1 -
+ target/mips/tcg/ldst_helper.c        | 1 +
+ target/mips/tcg/msa_helper.c         | 1 +
+ target/mips/tcg/sysemu/lcsr_helper.c | 5 -----
+ target/nios2/op_helper.c             | 1 -
+ target/nios2/translate.c             | 1 -
+ target/openrisc/translate.c          | 1 -
+ target/ppc/int_helper.c              | 1 -
+ target/ppc/machine.c                 | 1 -
+ target/ppc/mem_helper.c              | 1 -
+ target/ppc/mmu_common.c              | 1 -
+ target/ppc/mmu_helper.c              | 1 -
+ target/ppc/power8-pmu.c              | 2 +-
+ target/ppc/translate.c               | 2 --
+ target/riscv/csr.c                   | 1 -
+ target/riscv/m128_helper.c           | 1 -
+ target/riscv/op_helper.c             | 2 +-
+ target/riscv/pmu.c                   | 1 +
+ target/riscv/vector_helper.c         | 1 +
+ target/s390x/tcg/crypto_helper.c     | 1 -
+ target/s390x/tcg/excp_helper.c       | 1 -
+ target/s390x/tcg/fpu_helper.c        | 1 -
+ target/s390x/tcg/misc_helper.c       | 1 -
+ target/sh4/translate.c               | 1 -
+ target/sparc/translate.c             | 1 -
+ target/xtensa/dbg_helper.c           | 1 -
+ target/xtensa/exc_helper.c           | 1 +
+ target/xtensa/fpu_helper.c           | 1 -
+ target/xtensa/mmu_helper.c           | 2 --
+ target/xtensa/op_helper.c            | 3 +--
+ target/xtensa/win_helper.c           | 1 -
+ 49 files changed, 17 insertions(+), 51 deletions(-)
+
+-- 
+2.41.0
 
 
