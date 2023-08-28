@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D8678B68F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 19:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC4B78B70A
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 20:11:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qag9A-0003QW-KG; Mon, 28 Aug 2023 13:35:28 -0400
+	id 1qagg7-0006HK-H6; Mon, 28 Aug 2023 14:09:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qag98-0003QM-Cg
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:26 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qagg6-0006H6-1N
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:09:30 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qag96-0001ST-5Z
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:26 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bf3a2f4528so27243975ad.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 10:33:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qagg3-0001FK-OA
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 14:09:29 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1bdc19b782aso21249935ad.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 11:09:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693244003; x=1693848803;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SDbikvrJURYSUdco/ZqIPH9U7npc2uzsUXfdoZeozoM=;
- b=koIGeV20tEs7Y9Vc08lbJ705ATfotFH5KtkUMj4eoQRe4hdkgwoKqbRuxN9dzGa1RG
- A79n7cceWDbYuwHoeGO/dxxJgFAw3zWeqwXEjEbBBiOfvCs8LcDqOa2xm0GBDF1BbcnD
- nO8eBB5WnhCUB/C4I3NwBTxcaE39s4qZQPujr9uZlLnnFNPKdTAO3adnpe7eNrdBr/VT
- 0WNq3bP5YvEgRX16bQYt+78SfQnxqaHJuWdIo9HeE0/eGqF/C8GOU0/uiHXoji22OpLo
- lScwqmgV2Ifmq4PI+mOascjpnVCa9t7ck+mQYX/E3GHExF80TLuFhbzel80xwxWzTqJD
- iJ4A==
+ d=linaro.org; s=google; t=1693246166; x=1693850966;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TeYO3sjn9qzI34OPnmuGl1l7tSg3o4XVHS1muErXnfY=;
+ b=nh7XA/afF9qPMjtvm+yHWXpTSAS8PEAH3JQPKiQKiRC2Pi+a4Au+KNdIyJ/nqo3SFn
+ 5QKcY7vflpjXLjBYsPE3gL2swgcmwR50vsSEHi7ZYkB97n8m2nF3cLiDli49gpODdQK9
+ JYESyNYKn5/pD18lmt65tybtcbt1J2FS+PMatvx6bog/2SKiLN27QnEq1c/kyCZFNLeU
+ n0ba/LCxgU9toE2AfOfqtKBa2eMVGFGYEe8gqxpo2Pow3OHytr9ofL+mThiTfbEHC5TW
+ RJGgYAwNJKP2dpum8REN5Q9kCm6NCcTtQmZ13jj2kzS27hIhr2+Tt4aqQ6CPVkXUulUW
+ rI/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693244003; x=1693848803;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SDbikvrJURYSUdco/ZqIPH9U7npc2uzsUXfdoZeozoM=;
- b=HigglD7GMsrnrsGPr3ZXQpRZk1w6h7fpYVzIe5qaAZbykZ9uOOzu6+keuaXgNLi5Q7
- VWmplAvMV7ci2MbFSA3GIx3oQt+nlxCuK0hmwNPtY88qHeZT/ejURdWsNTH48JdIsw7d
- ztSWknC7UA9Fo86oVWla/zg+sBG6bbPhwaT+lcnAk6FHRkHCAIjWeJLuJCnIOF29KqwG
- 7FO2IZDL9AkfP0esfWd4lvFb6n7GhZKyD5W0ZsZM4XlDs5k/1nR4pwwONp72ItAZkMUp
- pg2949dp+hRjhzMwizIgrqRbaKL4Ere7PwgcBxW8xTrpQcq4JTZii5mD+X7x0suXE4tO
- EDJA==
-X-Gm-Message-State: AOJu0Yz6sRGQ1O2iw67p96kSapgX+cCYuIxIQMYFXXJ5Cx7AJ9HFCiu4
- SmB3tgfKA9T3JgBegihkXttPZ+WZ/RZCPfGRm5YOyyn9
-X-Google-Smtp-Source: AGHT+IGbtYj5W+rOtKyAd44fCEH8CQmRjbAe8EvvCh2BCaT0A6wnmnpPf2RYOMZkkBdAbKtiqDY9UQ==
-X-Received: by 2002:a17:902:9b94:b0:1bc:16cf:fc30 with SMTP id
- y20-20020a1709029b9400b001bc16cffc30mr25256345plp.63.1693244002676; 
- Mon, 28 Aug 2023 10:33:22 -0700 (PDT)
-Received: from localhost.localdomain ([118.114.61.244])
+ d=1e100.net; s=20221208; t=1693246166; x=1693850966;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TeYO3sjn9qzI34OPnmuGl1l7tSg3o4XVHS1muErXnfY=;
+ b=IfzI5/r1aqat1iFrv5hoc1C/SoMUdThI+WhWJhWTIWjIoAbdZizmuC7Hl4OsPKwNn7
+ +/q4fxA+gHnRDM6AUx2w4tPAxP685ZsfW6M25Yswf9zawRBwBQ//LlTRbRhbyxBSbwhT
+ K2MGDepYu2TsAhE42L+5ADOEH2CyCBKbaITCj5AOF49AZ7Tl66kuTiXhmB8acwqOkufR
+ FeLac59s7fQ0m/7CcxmnKXKRPitFE5PuJdjrnKZfK1K1zlH7Ut9fJeIrd/g1/aV/m8Ys
+ zrTWV2iuhYyEpMq2ipplXOyHMu/04aGhR2AQj9hogN3irl/OvnIYgv0laaQ7qfTpkB6S
+ PmEw==
+X-Gm-Message-State: AOJu0Yz+wy/5qMNsJkVrmnr/trgD9a+1AXKI8lS22ycrY5klIGHzAC9C
+ o+fCXmHr0JKMCt/1+LSIEZ/Hcg==
+X-Google-Smtp-Source: AGHT+IFHRPUshP0Zh4Xf2qICiqnqM2xNcUzJf+6pO15ZFfvdRH7sUdPdirOVd4eGiurHHKv3YRXp6g==
+X-Received: by 2002:a17:902:c945:b0:1b8:78e:7c1 with SMTP id
+ i5-20020a170902c94500b001b8078e07c1mr27881848pla.51.1693246165856; 
+ Mon, 28 Aug 2023 11:09:25 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- je1-20020a170903264100b001b80d411e5bsm7669103plb.253.2023.08.28.10.33.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 10:33:22 -0700 (PDT)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Andrei Gudkov <gudkov.andrei@huawei.com>,
- Hyman Huang <yong.huang@smartx.com>
-Subject: [PULL 3/3] migration/dirtyrate: Fix precision losses and g_usleep
- overshoot
-Date: Tue, 29 Aug 2023 01:32:52 +0800
-Message-Id: <e424d9f7e749c84de4a6ce532981271db1c14b23.1693241678.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1693241678.git.yong.huang@smartx.com>
-References: <cover.1693241678.git.yong.huang@smartx.com>
+ i12-20020a170902eb4c00b001bc35b14c99sm7663536pli.212.2023.08.28.11.09.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 28 Aug 2023 11:09:25 -0700 (PDT)
+Message-ID: <6726b8e1-bfa5-1e63-f3b2-48bbb821d88e@linaro.org>
+Date: Mon, 28 Aug 2023 11:09:23 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 02/11] target/tricore: Implement CRCN insn
+Content-Language: en-US
+To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-devel@nongnu.org
+Cc: anton.kochkov@proton.me
+References: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
+ <20230828112651.522058-3-kbastian@mail.uni-paderborn.de>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230828112651.522058-3-kbastian@mail.uni-paderborn.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,46 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrei Gudkov <gudkov.andrei@huawei.com>
+On 8/28/23 04:26, Bastian Koppelmann wrote:
+> reported inhttps://gitlab.com/qemu-project/qemu/-/issues/1667
+> 
+> Signed-off-by: Bastian Koppelmann<kbastian@mail.uni-paderborn.de>
+> ---
+> v1 -> v2:
+>      - Removed useless deposits in crc_div()
+>      - Replaced final deposit() with extract() in helper_crcn()
+>      - Add trap for CRCN insn if not feature_162
+> 
+>   target/tricore/helper.h                   |  1 +
+>   target/tricore/op_helper.c                | 63 +++++++++++++++++++++++
+>   target/tricore/translate.c                |  8 +++
+>   target/tricore/tricore-opcodes.h          |  1 +
+>   tests/tcg/tricore/Makefile.softmmu-target |  1 +
+>   tests/tcg/tricore/asm/test_crcn.S         |  9 ++++
+>   6 files changed, 83 insertions(+)
+>   create mode 100644 tests/tcg/tricore/asm/test_crcn.S
 
-Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
-Reviewed-by: Hyman Huang <yong.huang@smartx.com>
-Message-Id: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- migration/dirtyrate.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 84f1b0fb20..bccb3515e3 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -57,6 +57,8 @@ static int64_t dirty_stat_wait(int64_t msec, int64_t initial_time)
-         msec = current_time - initial_time;
-     } else {
-         g_usleep((msec + initial_time - current_time) * 1000);
-+        /* g_usleep may overshoot */
-+        msec = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - initial_time;
-     }
- 
-     return msec;
-@@ -77,9 +79,13 @@ static int64_t do_calculate_dirtyrate(DirtyPageRecord dirty_pages,
- {
-     uint64_t increased_dirty_pages =
-         dirty_pages.end_pages - dirty_pages.start_pages;
--    uint64_t memory_size_MiB = qemu_target_pages_to_MiB(increased_dirty_pages);
- 
--    return memory_size_MiB * 1000 / calc_time_ms;
-+    /*
-+     * multiply by 1000ms/s _before_ converting down to megabytes
-+     * to avoid losing precision
-+     */
-+    return qemu_target_pages_to_MiB(increased_dirty_pages * 1000) /
-+        calc_time_ms;
- }
- 
- void global_dirty_log_change(unsigned int flag, bool start)
--- 
-2.39.1
-
+r~
 
