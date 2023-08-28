@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7747B78A809
+	by mail.lfdr.de (Postfix) with ESMTPS id 8466578A80A
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 10:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaXtV-0006SC-PO; Mon, 28 Aug 2023 04:46:45 -0400
+	id 1qaXu5-0006ee-7R; Mon, 28 Aug 2023 04:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qaXtS-0006Rt-5O; Mon, 28 Aug 2023 04:46:42 -0400
-Received: from out30-124.freemail.mail.aliyun.com ([115.124.30.124])
+ id 1qaXu3-0006e0-HX; Mon, 28 Aug 2023 04:47:19 -0400
+Received: from out30-112.freemail.mail.aliyun.com ([115.124.30.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qaXtO-0008OY-GW; Mon, 28 Aug 2023 04:46:41 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R521e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046056;
+ id 1qaXtw-0000HR-TW; Mon, 28 Aug 2023 04:47:19 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
  MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=16; SR=0;
- TI=SMTPD_---0VqiO9wA_1693212384; 
+ TI=SMTPD_---0VqjBR7a_1693212416; 
 Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VqiO9wA_1693212384) by smtp.aliyun-inc.com;
- Mon, 28 Aug 2023 16:46:25 +0800
+ fp:SMTPD_---0VqjBR7a_1693212416) by smtp.aliyun-inc.com;
+ Mon, 28 Aug 2023 16:46:57 +0800
 From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 To: qemu-devel@nongnu.org
 Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
@@ -31,15 +31,17 @@ Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
  alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  qemu-riscv@nongnu.org
-Subject: [RFC PATCH v2 0/6] Add API for list cpu extensions
-Date: Mon, 28 Aug 2023 16:45:30 +0800
-Message-Id: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
+Subject: [RFC PATCH v2 1/6] cpu: Add new API cpu_type_by_name
+Date: Mon, 28 Aug 2023 16:45:31 +0800
+Message-Id: <20230828084536.231-2-zhiwei_liu@linux.alibaba.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
+References: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.124;
+Received-SPF: pass client-ip=115.124.30.112;
  envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-124.freemail.mail.aliyun.com
+ helo=out30-112.freemail.mail.aliyun.com
 X-Spam_score_int: -98
 X-Spam_score: -9.9
 X-Spam_bar: ---------
@@ -62,63 +64,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some times we want to know what is the really mean of one cpu option.
-For example, in RISC-V, we usually specify a cpu in this way:
--cpu rv64,v=on
+cpu_type_by_name is used to get the cpu type name from the command
+line -cpu.
 
-If we don't look into the source code, we can't get the ISA extensions
-of this -cpu command line.
+Currently it is only used by parse_cpu_option. In the next patch, it
+will be used by other cpu query functions.
 
-In this patch set, we add one list_cpu_props API for common cores. It
-will output the enabled ISA extensions.
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+---
+ cpu.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-In the near future, I will also list all possible user configurable
-options and all possible extensions for this cpu.
-
-In order to reuse the options parse code, I also add a QemuOptsList
-for cpu.
-
-After this patch, we can output the extensions for cpu,
-"""
-./qemu-system-riscv64 -cpu rv64,help
-Enabled extensions:
-    rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zba_zbb_zbc_zbs_sstc_svadu
-To get all configuable options for this cpu, use -device rv64-riscv-cpu,help
-"""
-
-
-v1->v2:
-
-1) Give a hint to use -device cpu,help for configualbe options on cpu
-2) Support list_cpu_props for linux user mode
-3) Add default to some properties to make -device cpu,help output better
-
-
-Todo:
-1) Fix Daniel comments on KVM and cpu option check
-2) Add support for other archs
-3) Move qdev help function from qdev-monitor to qdev-property
-
-LIU Zhiwei (6):
-  cpu: Add new API cpu_type_by_name
-  target/riscv: Add API list_cpu_props
-  softmmu/vl: Add qemu_cpu_opts QemuOptsList
-  target/riscv: Add default value for misa property
-  target/riscv: Add defalut value for string property
-  linux-user: Move qemu_cpu_opts to cpu.c
-
- cpu.c                        | 63 +++++++++++++++++++++++++++++-------
- hw/core/qdev-prop-internal.h |  2 ++
- hw/core/qdev-properties.c    |  7 ++++
- include/exec/cpu-common.h    |  3 ++
- include/hw/core/cpu.h        | 11 +++++++
- include/hw/qdev-properties.h |  8 +++++
- linux-user/main.c            | 10 ++++++
- softmmu/vl.c                 | 11 +++++++
- target/riscv/cpu.c           | 30 +++++++++++++----
- target/riscv/cpu.h           |  2 ++
- 10 files changed, 128 insertions(+), 19 deletions(-)
-
+diff --git a/cpu.c b/cpu.c
+index 1c948d1161..e1a9239d0f 100644
+--- a/cpu.c
++++ b/cpu.c
+@@ -257,28 +257,35 @@ void cpu_exec_initfn(CPUState *cpu)
+ #endif
+ }
+ 
+-const char *parse_cpu_option(const char *cpu_option)
++static const char *cpu_type_by_name(const char *cpu_model)
+ {
+     ObjectClass *oc;
+-    CPUClass *cc;
+-    gchar **model_pieces;
+     const char *cpu_type;
+ 
+-    model_pieces = g_strsplit(cpu_option, ",", 2);
+-    if (!model_pieces[0]) {
+-        error_report("-cpu option cannot be empty");
+-        exit(1);
+-    }
+ 
+-    oc = cpu_class_by_name(CPU_RESOLVING_TYPE, model_pieces[0]);
++    oc = cpu_class_by_name(CPU_RESOLVING_TYPE, cpu_model);
+     if (oc == NULL) {
+-        error_report("unable to find CPU model '%s'", model_pieces[0]);
+-        g_strfreev(model_pieces);
++        error_report("unable to find CPU model '%s'", cpu_model);
+         exit(EXIT_FAILURE);
+     }
+ 
+     cpu_type = object_class_get_name(oc);
+-    cc = CPU_CLASS(oc);
++    return cpu_type;
++}
++
++const char *parse_cpu_option(const char *cpu_option)
++{
++    const char *cpu_type;
++    CPUClass *cc;
++    gchar **model_pieces;
++
++    model_pieces = g_strsplit(cpu_option, ",", 2);
++    if (!model_pieces[0]) {
++        error_report("-cpu option cannot be empty");
++        exit(1);
++    }
++    cpu_type = cpu_type_by_name(model_pieces[0]);
++    cc = CPU_CLASS(object_class_by_name(cpu_type));
+     cc->parse_features(cpu_type, model_pieces[1], &error_fatal);
+     g_strfreev(model_pieces);
+     return cpu_type;
 -- 
 2.17.1
 
