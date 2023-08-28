@@ -2,52 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5C678B448
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A3878B455
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:22:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qae36-00071A-BH; Mon, 28 Aug 2023 11:21:04 -0400
+	id 1qae48-0002Y9-D6; Mon, 28 Aug 2023 11:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qae30-0006O2-2a
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:20:58 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qae3o-0002A0-KP
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:21:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qae2x-0007Rl-Ky
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:20:57 -0400
-Received: from ls3a6000.. (unknown [223.72.44.123])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id CF3FC440B7;
- Mon, 28 Aug 2023 15:20:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1693236054; bh=NxBLqTULLamK0FonZY8KFCpQz7nhSghYKFG9MBeL99k=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=N0u+CpTObYVn9ChrPcv3PX/G72y7FQZhUN1pHJiIx2DHgPb18iaoroEuRTr4dUCrk
- qscO0GbQ4OrAlz4tbKwHti8/RFmbLp8qcri3p0XGCPdVBM84T7Nf4uwFIPilq07n/u
- wQDThaaWjCn+3D/pvcGLRK2FXI1+dE4l77LrAMto=
-From: Jiajie Chen <c@jia.je>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, gaosong@loongson.cn, Jiajie Chen <c@jia.je>,
- WANG Xuerui <git@xen0n.name>
-Subject: [PATCH 11/11] tcg/loongarch64: Lower bitsel_vec to vbitsel
-Date: Mon, 28 Aug 2023 23:19:49 +0800
-Message-ID: <20230828152009.352048-12-c@jia.je>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828152009.352048-1-c@jia.je>
-References: <20230828152009.352048-1-c@jia.je>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qae3l-0007Vs-QB
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:21:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693236105;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZOGK6ogQU+3D0QE51A1HkpxAB8zXge8FYD1a9yFshLA=;
+ b=HUDr5h/0ejEmAq5Y7hi5Wkvtx8UwxORPUfGmMru7p8TSlN7fReERxgelDtBx3BL3MZN+9w
+ IQlemeIWe73kfwT8hhax4Oh6eyr7q/28rIqhStSlxmuAkzHfG6dUz7rZG1yX3e4nbkLkrk
+ 5QvXSyT5zaOYu90vIGju0W/nfNoLUQk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-567-0EC0Sg2pMwquMQQ8VwScEg-1; Mon, 28 Aug 2023 11:21:40 -0400
+X-MC-Unique: 0EC0Sg2pMwquMQQ8VwScEg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23F6E185A78B;
+ Mon, 28 Aug 2023 15:21:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0C4D72026D4B;
+ Mon, 28 Aug 2023 15:21:38 +0000 (UTC)
+Date: Mon, 28 Aug 2023 10:21:37 -0500
+From: Eric Blake <eblake@redhat.com>
+To: 20230825192940.35364-1-den@openvz.org
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, qemu-block@nongnu.org, 
+ "Denis V. Lunev" <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>
+Subject: Re: [PATCH vOther2 1/1] qemu-nbd: Restore "qemu-nbd -v --fork" output
+Message-ID: <pa2nh352u72sysgqsstwiytczumknwuczhnbrt5yahssolplwh@axdnqmkb2djs>
+References: <20230825200838.39994-1-den@openvz.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230825200838.39994-1-den@openvz.org>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,87 +79,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Jiajie Chen <c@jia.je>
----
- tcg/loongarch64/tcg-target-con-set.h |  1 +
- tcg/loongarch64/tcg-target.c.inc     | 11 ++++++++++-
- tcg/loongarch64/tcg-target.h         |  2 +-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+On Fri, Aug 25, 2023 at 10:08:38PM +0200, Denis V. Lunev wrote:
+> Closing stderr earlier is good for daemonized qemu-nbd under ssh
+> earlier, but breaks the case where -v is being used to track what is
+> happening in the server, as in iotest 233.
 
-diff --git a/tcg/loongarch64/tcg-target-con-set.h b/tcg/loongarch64/tcg-target-con-set.h
-index 9fce856012..0f709113f0 100644
---- a/tcg/loongarch64/tcg-target-con-set.h
-+++ b/tcg/loongarch64/tcg-target-con-set.h
-@@ -33,4 +33,5 @@ C_O1_I2(r, rZ, ri)
- C_O1_I2(r, rZ, rJ)
- C_O1_I2(r, rZ, rZ)
- C_O1_I2(w, w, w)
-+C_O1_I3(w, w, w, w)
- C_O1_I4(r, rZ, rJ, rZ, rZ)
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index caf2a7a563..14826fad5a 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1619,7 +1619,7 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-                            const int const_args[TCG_MAX_OP_ARGS])
- {
-     TCGType type = vecl + TCG_TYPE_V64;
--    TCGArg a0, a1, a2;
-+    TCGArg a0, a1, a2, a3;
-     TCGReg base;
-     TCGReg temp = TCG_REG_TMP0;
-     int32_t offset;
-@@ -1681,6 +1681,7 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-     a0 = args[0];
-     a1 = args[1];
-     a2 = args[2];
-+    a3 = args[3];
- 
-     /* Currently only supports V128 */
-     tcg_debug_assert(type == TCG_TYPE_V128);
-@@ -1790,6 +1791,10 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-     case INDEX_op_sarv_vec:
-         tcg_out32(s, encode_vdvjvk_insn(sarv_vec_insn[vece], a0, a1, a2));
-         break;
-+    case INDEX_op_bitsel_vec:
-+        /* vbitsel vd, vj, vk, va = bitsel_vec vd, va, vk, vj */
-+        tcg_out_opc_vbitsel_v(s, a0, a3, a2, a1);
-+        break;
-     case INDEX_op_dupm_vec:
-         tcg_out_dupm_vec(s, type, vece, a0, a1, a2);
-         break;
-@@ -1827,6 +1832,7 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-     case INDEX_op_shlv_vec:
-     case INDEX_op_shrv_vec:
-     case INDEX_op_sarv_vec:
-+    case INDEX_op_bitsel_vec:
-         return 1;
-     default:
-         return 0;
-@@ -2014,6 +2020,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_neg_vec:
-         return C_O1_I1(w, w);
- 
-+    case INDEX_op_bitsel_vec:
-+        return C_O1_I3(w, w, w, w);
-+
-     default:
-         g_assert_not_reached();
-     }
-diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index 771545b021..aafd770356 100644
---- a/tcg/loongarch64/tcg-target.h
-+++ b/tcg/loongarch64/tcg-target.h
-@@ -191,7 +191,7 @@ extern bool use_lsx_instructions;
- #define TCG_TARGET_HAS_rotv_vec         0
- #define TCG_TARGET_HAS_sat_vec          1
- #define TCG_TARGET_HAS_minmax_vec       1
--#define TCG_TARGET_HAS_bitsel_vec       0
-+#define TCG_TARGET_HAS_bitsel_vec       1
- #define TCG_TARGET_HAS_cmpsel_vec       0
- 
- #define TCG_TARGET_DEFAULT_MO (0)
+Keeping the iotest output unchanged is a nice effect, even if it
+requires a bit more code, so I'm leaning towards taking your patch.
+
+> 
+> When we know we are verbose, we should preserve original stderr and
+> restore it once the setup stage is done. This commit restores the
+> original behavior with -v option. In this case original output
+> inside the test is kept intact.
+> 
+> Reported-by: Kevin Wolf <kwolf@redhat.com>
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
+> CC: Eric Blake <eblake@redhat.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> CC: Hanna Reitz <hreitz@redhat.com>
+> CC: Mike Maslenkin <mike.maslenkin@gmail.com>
+> Fixes: 5c56dd27a2 ("qemu-nbd: fix regression with qemu-nbd --fork run over ssh")
+> ---
+> Changes from v1:
+> * fixed compilation with undefined HAVE_NBD_DEVICE, thanks to Mike Maslenkin
+
+> @@ -323,11 +324,14 @@ static void *nbd_client_thread(void *arg)
+>                  opts->device, srcpath);
+>      } else {
+>          /* Close stderr so that the qemu-nbd process exits.  */
+> -        if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
+> +        if (dup2(opts->stderr, STDERR_FILENO) < 0) {
+>              error_report("Could not set stderr to /dev/null: %s",
+
+Both my patch and yours have a slight inaccuracy here: when -v is in
+use, failure to dup2() is not a failure to set stderr to /dev/null.
+Maybe we can reword it as "Could not release pipe to parent: %s", as
+that is the other intentional side effect of the dup2()?
+
+>                           strerror(errno));
+>              exit(EXIT_FAILURE);
+>          }
+> +        if (opts->stderr != STDOUT_FILENO) {
+> +            close(opts->stderr);
+
+As long as we are checking dup2() for (unlikely) failure, we should
+probably be doing the same for close().
+
+> +        }
+>      }
+>  
+>      if (nbd_client(fd) < 0) {
+> @@ -589,9 +593,9 @@ int main(int argc, char **argv)
+>      const char *pid_file_name = NULL;
+>      const char *selinux_label = NULL;
+>      BlockExportOptions *export_opts;
+> -#if HAVE_NBD_DEVICE
+> -    struct NbdClientOpts opts;
+> -#endif
+> +    struct NbdClientOpts opts = {
+> +        .stderr = STDOUT_FILENO,
+> +    };
+>  
+>  #ifdef CONFIG_POSIX
+>      os_setup_early_signal_handling();
+> @@ -944,6 +948,15 @@ int main(int argc, char **argv)
+>  
+>              close(stderr_fd[0]);
+>  
+> +            /* Remember parent's stderr if we will be restoring it. */
+> +            if (verbose /* fork_process is set */) {
+> +                opts.stderr = dup(STDERR_FILENO);
+> +                if (opts.stderr < 0) {
+> +                    error_report("Could not dup stdedd: %s", strerror(errno));
+
+s/stdedd/stderr/
+
+> +                    exit(EXIT_FAILURE);
+> +                }
+> +            }
+> +
+>              ret = qemu_daemon(1, 0);
+>              saved_errno = errno;    /* dup2 will overwrite error below */
+>  
+> @@ -1152,6 +1165,7 @@ int main(int argc, char **argv)
+>              .device = device,
+>              .fork_process = fork_process,
+>              .verbose = verbose,
+> +            .stderr = STDOUT_FILENO,
+
+Huh. This looks redundant to pre-initializing .stderr above; but since
+it is using a struct assignment, we do have to provide it again to
+avoid the compiler setting unmentioned fields to zero-initialization.
+
+If we are going to unconditionally have opts in scope, even when not
+passing it to pthread_create(), maybe we could just directly assign to
+opts.device and drop the local variable device (and so forth), instead
+of first storing into device only to later copy it to opts.device.
+But that would make this patch bigger, so I'm not sure it is worth it.
+
+>          };
+>  
+>          ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
+> @@ -1180,11 +1194,14 @@ int main(int argc, char **argv)
+>      }
+>  
+>      if (fork_process) {
+> -        if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
+> +        if (dup2(opts.stderr, STDERR_FILENO) < 0) {
+>              error_report("Could not set stderr to /dev/null: %s",
+>                           strerror(errno));
+
+Another spot where the error message is not entirely accurate,
+
+>              exit(EXIT_FAILURE);
+>          }
+> +        if (opts.stderr != STDOUT_FILENO) {
+> +            close(opts.stderr);
+
+and another spot where we should be checking for close() failure.
+
+> +        }
+>      }
+>  
+>      state = RUNNING;
+> -- 
+> 2.34.1
+> 
+
 -- 
-2.42.0
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
