@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EFF78B690
+	by mail.lfdr.de (Postfix) with ESMTPS id 9408A78B691
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 19:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qag8x-0003Lt-M8; Mon, 28 Aug 2023 13:35:15 -0400
+	id 1qag91-0003Nd-9V; Mon, 28 Aug 2023 13:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qag8u-0003Kf-VC
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:13 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qag8y-0003NH-Vc
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:16 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qag8p-0001PJ-8c
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:12 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bdca7cc28dso27571655ad.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 10:33:03 -0700 (PDT)
+ id 1qag8w-0001Qf-Ra
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:35:16 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1c0db66af1bso16161225ad.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 10:33:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693243982; x=1693848782;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MeSndXLcE+tpDFI6uG2GHaNoY6UtaQAU5xj79zv3YqY=;
- b=DscwPFnV0vxhZG0+n/QNiXRzTxpeZBfTqXLS8/5BG6naqqmPkTlH07cOhZlHnqBKro
- xdLWBjrKTzKMYh4fGCSpee36uugnYyq8nyhBi4UqFQE+lq8fIGLmBm2EWUzuQFiw60tu
- ja0rTZUCDVB1Nrje64FoNoheVAVYc8wZvNHrSwYRcduLd5Yecer3stnlf8pUqhsv3CX9
- 06Z6gaVbZHjRoFXv90acGYXqA1+0s06OP1fmBzeTyba2vUk7E9bjeORdjjhkLTYFg6dR
- KExOGGbXhKg0meTwh0MgA5EaLcqqDhyedFqemMD06jhuG3dw8khtledVEU6dxyQhdGYn
- oWUQ==
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693243993; x=1693848793;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=J+M1b4oBXMxVhhUnSSd4fdMxTnS6/iN50/aUGAiSJHs=;
+ b=1V8z3HUO/OYYzwPipYwGRRvv/2quFoDQkkLZKZIQswm6R2XRVvkcY3mvwdeumHhqIN
+ vH9dIM6GbwfjDfPQRZwlvn5OhyaMHD7OoAeipEfjCNtMXeEd8sd5r8c3u5wup1aiE44I
+ QJMx9C8IeNWmwiAgOxFXy8MS25V0/1LfgBViVhcKySfIlHLEbZOKjl2hT407bqip73+R
+ GTHzrNsc93ypvChW3IW/MfKRI4bye7l1FXQREe/icJY6OxZhouva5LAUbhU/xYXW5wSo
+ 4W5FpQ9CshHRRypM5s6bxUOWMhj2ZyfbTIXPfmCrA1rQE7bKhZDCrBveHmhaicX5DzDn
+ 6gng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693243982; x=1693848782;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MeSndXLcE+tpDFI6uG2GHaNoY6UtaQAU5xj79zv3YqY=;
- b=comKp0MHx51IJ5ZtpEwIlrXmd+3mlPjKg8NwUu/l/US/t8GdjAasNpRwvCTlabNLwD
- JfKAbJ6XLnUdCov21FPEQrHsxa1qVJewaLbGrvtFw5W8mfMwZtRKZrbYaItilUpVMyQ/
- qn+dihwBugA9qHTMh0vXgSGgqTHYGDNuC251U3yMuifCswdmCCbLLofOS1cdq3rToSwq
- NZe4KwTZ5Lq6YLxjYUCbaqLS2MLJ/Ry5ndO30kSpQEkHxsbK3tXrem06qjVvSYInP0kR
- EVXWsodayVCTERh8AOp+8TR1zi3r/d/u4XjCIMFD6DkYinxxvElO70EyXcRFAYHs/Op1
- dgNQ==
-X-Gm-Message-State: AOJu0YzOVbPDffpolKmAsYWzPrM44o3JDPMmWknAflDgkf3JdLnYAhEC
- zWVaSmo1qUv5bDqynZALt7Lj09eGLWxifeDVYXZPirfg
-X-Google-Smtp-Source: AGHT+IEB81K+9sSpSGtpoDwij1voyTZT0WFUZZukYe9Ceo7qelR6AH8V8MKyxiWRnaeNu4azgwDLzw==
-X-Received: by 2002:a17:902:bf47:b0:1bd:bdfb:58e9 with SMTP id
- u7-20020a170902bf4700b001bdbdfb58e9mr23991134pls.40.1693243982638; 
- Mon, 28 Aug 2023 10:33:02 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693243993; x=1693848793;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J+M1b4oBXMxVhhUnSSd4fdMxTnS6/iN50/aUGAiSJHs=;
+ b=PTMQ0wbZNxWKpViDUCFjUussq4OmOpMLZLf29rcAJq7r2LoO13z+6/iuQIKNs3ipOo
+ +YPI/+wgrQSeem+1SLxeHkXQ53iMSrI49YMTtqO7h8x4U2fXnIhrcKPO4QIkbbsP0CTD
+ vUOalEBEnoMo2gI1xnIjPi2ikOL2vMiLoJ7eqOAW1MzvfS4vsDIJtNXsmxvrw3CVcyyv
+ jWePkVU0NJKiDcSw936N3NoKntCf/CQzozI1jPcQor5wX7/FKwpXTmPIB2syT4Fow3a6
+ y+vNLA+LZd8pOouguz9mNHBipdjgUVQ8qe9F58ZNTBjIPfl6XHw2A/sblFLf7MiINYor
+ J0vQ==
+X-Gm-Message-State: AOJu0YxLM5CaRWUeJFVa7xyKy28HS1+OP64e4Kv08gBpgjZc6mHLGiXB
+ Gvmr7M190zqv3xJSB5XEkzzt7++AoeahPM7lvHiymbGn
+X-Google-Smtp-Source: AGHT+IFkDrk8B+D591MPWAiRtm0wYFKQVso7gRlVMvRrL4lTksIGqatX3eUGcZh+vSxkO/AyREgjzw==
+X-Received: by 2002:a17:902:e546:b0:1b8:7fd7:e022 with SMTP id
+ n6-20020a170902e54600b001b87fd7e022mr24665923plf.28.1693243993514; 
+ Mon, 28 Aug 2023 10:33:13 -0700 (PDT)
 Received: from localhost.localdomain ([118.114.61.244])
  by smtp.gmail.com with ESMTPSA id
- je1-20020a170903264100b001b80d411e5bsm7669103plb.253.2023.08.28.10.33.00
+ je1-20020a170903264100b001b80d411e5bsm7669103plb.253.2023.08.28.10.33.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 10:33:02 -0700 (PDT)
+ Mon, 28 Aug 2023 10:33:13 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
-Cc: Hyman Huang <yong.huang@smartx.com>
-Subject: [PULL 0/3] Dirty page rate and dirty page limit 20230829 patches 
-Date: Tue, 29 Aug 2023 01:32:49 +0800
-Message-Id: <cover.1693241678.git.yong.huang@smartx.com>
+Cc: "alloc.young" <alloc.young@outlook.com>,
+ Hyman Huang <yong.huang@smartx.com>
+Subject: [PULL 1/3] softmmu: Fix dirtylimit memory leak
+Date: Tue, 29 Aug 2023 01:32:50 +0800
+Message-Id: <6d10290e8c25e8228657f6496aa0bb4342694fd4.1693241678.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <cover.1693241678.git.yong.huang@smartx.com>
+References: <cover.1693241678.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,38 +91,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
+From: "alloc.young" <alloc.young@outlook.com>
 
-  Merge tag 'pull-target-arm-20230824' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24 10:08:33 -0400)
+Fix memory leak in hmp_info_vcpu_dirty_limit,use g_autoptr
+to handle memory deallocation.
 
-are available in the Git repository at:
+Signed-off-by: alloc.young <alloc.young@outlook.com>
+Reviewed-by: Hyman Huang <yong.huang@smartx.com>
+Message-Id: <SA1PR11MB6760B9AB7EAFBDAFB524ED06F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+---
+ softmmu/dirtylimit.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-  https://github.com/newfriday/qemu.git tags/dirtylimit-dirtyrate-fixes-pull-request
-
-for you to fetch changes up to e424d9f7e749c84de4a6ce532981271db1c14b23:
-
-  migration/dirtyrate: Fix precision losses and g_usleep overshoot (2023-08-28 21:03:58 +0800)
-----------------------------------------------------------------
-Dirty page limit and dirty page rate PULL request
-
-Hi, this is the fix for dirty page limit and dirty page rate.
-
-Please ignore the previous PULL requests that accidentally failed
-to send and apply this patchset. :) 
-
-Thanks, Yong.
-----------------------------------------------------------------
-Andrei Gudkov (1):
-      migration/dirtyrate: Fix precision losses and g_usleep overshoot
-
-alloc.young (2):
-      softmmu: Fix dirtylimit memory leak
-      softmmu/dirtylimit: Convert free to g_free
-
- migration/dirtyrate.c | 10 ++++++++--
- softmmu/dirtylimit.c  | 26 ++++++++++++--------------
- 2 files changed, 20 insertions(+), 16 deletions(-)
-
+diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
+index 3c275ee55b..e3ff53b8fc 100644
+--- a/softmmu/dirtylimit.c
++++ b/softmmu/dirtylimit.c
+@@ -653,7 +653,8 @@ struct DirtyLimitInfoList *qmp_query_vcpu_dirty_limit(Error **errp)
+ 
+ void hmp_info_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
+ {
+-    DirtyLimitInfoList *limit, *head, *info = NULL;
++    DirtyLimitInfoList *info;
++    g_autoptr(DirtyLimitInfoList) head = NULL;
+     Error *err = NULL;
+ 
+     if (!dirtylimit_in_service()) {
+@@ -661,20 +662,17 @@ void hmp_info_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
+         return;
+     }
+ 
+-    info = qmp_query_vcpu_dirty_limit(&err);
++    head = qmp_query_vcpu_dirty_limit(&err);
+     if (err) {
+         hmp_handle_error(mon, err);
+         return;
+     }
+ 
+-    head = info;
+-    for (limit = head; limit != NULL; limit = limit->next) {
++    for (info = head; info != NULL; info = info->next) {
+         monitor_printf(mon, "vcpu[%"PRIi64"], limit rate %"PRIi64 " (MB/s),"
+                             " current rate %"PRIi64 " (MB/s)\n",
+-                            limit->value->cpu_index,
+-                            limit->value->limit_rate,
+-                            limit->value->current_rate);
++                            info->value->cpu_index,
++                            info->value->limit_rate,
++                            info->value->current_rate);
+     }
+-
+-    g_free(info);
+ }
 -- 
 2.39.1
 
