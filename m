@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7F878BBAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB4C78BBB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalrs-0003jc-DV; Mon, 28 Aug 2023 19:42:00 -0400
+	id 1qalrn-0003gm-6n; Mon, 28 Aug 2023 19:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrh-0003fH-1O
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalri-0003fI-5S
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:50 -0400
-Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrd-0006gW-OZ
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:47 -0400
-Received: by mail-il1-x130.google.com with SMTP id
- e9e14a558f8ab-34dec9c77d4so41965ab.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalre-0006hx-Vu
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:49 -0400
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-792623074edso111253839f.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266104; x=1693870904;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266105; x=1693870905;
+ darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/MXe0Iyo//h1yjS09UWr+6Zwt8J7dJYarzHsGGngDTo=;
- b=sUP81DMKiBJr/NgfNFdOrWyGlTi020p4kZgMx0GarefLBPt3/NXqUloJz8W3CpzyGz
- 0ZvJwBLib9gNdcTaXwzYb2klfvzu/LoKFkhB1t9qc/BlynLL/CwxJChRLUmfANaBKkEM
- KfKv0PQzVQgPihzx3v/dDFnBVTsIMYZUXneTpZrAKfIN3th8r6493JHrGkaolkH8td82
- T0Svi8kCFxmq5AqS+8MGjnBh7kI/uifcAiIywV3Usf0HtiBV/wZwntmphPslOpvVl+QJ
- NEK5Fci9oanQJOs60aEDOq4NfEpDCJywqnASfUBEm6TL5A/UlBNSU1cBEA9AlTZy4K7G
- YD2Q==
+ bh=mFUI7syWjtHkv1X7CZsv+GWXf+3QN5j9BYV4aIXY14I=;
+ b=CqDYtqjJrJTMVWSQGUUkCAonBBQDhGh/Wpf6Q0n37NzPopncUaKADzDBGUBRLnPpUs
+ uDjRjOrTH+YL/kMjhyMPuywwFP7Xc81BHMyJptm79Gsi07QB1Fnr0+MKCNwQWVm+pI4P
+ 8oLrlXxlSEl8EOyNBkK3Z8X9B4MGxplLmll8IG0QpFjgDrXlbpDADQTjbXMiP4UHhL9Z
+ Rt71STsykbKShVudKYl8M6x845D1kl0aXhpl5xQbvGLjI3Z7Ui2iLFOiZbio0em9sSfi
+ 4astNwN817+q73q02n/HTlALP56v3PJsCUVxTSGFc3ksc001RuOCDgj72VWso4QRYBgB
+ zgmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693266104; x=1693870904;
+ d=1e100.net; s=20221208; t=1693266105; x=1693870905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/MXe0Iyo//h1yjS09UWr+6Zwt8J7dJYarzHsGGngDTo=;
- b=WdxTN2eF0RC5tXRnUClnDPp380FjSL1/hRpuDiMBqDKdNJR9oFB+st8b2S6GAhmLkU
- +BGUnMPk7yYsHwQIxcv9M3DpGvQca8oTH8uS1/c7cB1acBl7J0cg9t4xeDE9UaW8S9gD
- 1mKzXRajq9xUyQ6bfPtPfagnVrNLPP4TLws4fE4mOIDkJPajfGDwgsx6HaHDsYZGXG7s
- zz8ZdbCAZrk2UP4olDxcOCh+HqSjDOeaK6FwxIWaGPv9EGzeYCwSFWFxzU/OLqOhtHSG
- 9cw2IbvMXLpaUA80wK+EVxcHLOkW1+KwAMaSPy8O/iMGf8KVts47yDmAn7jOVihshlDy
- 9vHw==
-X-Gm-Message-State: AOJu0YyPuatYKbbgtbBONgY0p+kUKoIKTgIC4GTgjsPx0x86dXxkau5J
- 2sAjZD5TBJFfeSMAupdPXQDmU701QSknHT9Fx3M=
-X-Google-Smtp-Source: AGHT+IHvhalmgzGkeG3gFagQY1T/HNYtX1OPOHUBE6BkxkYHsRKkxNWDFrPIZifk5Hr2+o/yNCIFdg==
-X-Received: by 2002:a92:cda6:0:b0:34c:dbeb:a2a7 with SMTP id
- g6-20020a92cda6000000b0034cdbeba2a7mr14444986ild.23.1693266104411; 
- Mon, 28 Aug 2023 16:41:44 -0700 (PDT)
+ bh=mFUI7syWjtHkv1X7CZsv+GWXf+3QN5j9BYV4aIXY14I=;
+ b=cpRsJ62VIRKyNyt5N2Yudqic+QwFYAgYsjXOqbAoY96iT6jz0FF6+h0GmdWk289cjq
+ kn9QYCM+BFSdK2Fpo9BckAo6iqkbypoRWYW6jNJNw6NiNgTUnRJf1HrafTv4jUxVtxxj
+ YCxNa4Gg1rwQhh7H91i+Ex9g+1uq5mGwgc0JIRo/S5WQBqnlybb/EJIFZAyB0jpax+Vn
+ xRMZxZ4UTazuFHw/72Vh5CKymKxsSHp4d3wOrKzYPoQdUATjcV5RUWvId717CFT4VM2A
+ fUGg7QdgI9+dFKdzjyGSe6Kxb84Hc/PX6iHtfRlE7Bve2zZfoZegSAsqJ1viDJpxKG8m
+ izpw==
+X-Gm-Message-State: AOJu0YwOp2YUR6+oUVJwjLUYXf/AqSOO0Cv1e9/R68IsjFpqxTOuRkXl
+ IAyVHtNb9wowOla5hDjYHpqRHMWwCAGHlFiSY/Y=
+X-Google-Smtp-Source: AGHT+IHxrsgKppXZod3TmlbfaDGvWE1C2qxTdt3tA500m0NezN1mgJSfUjXdyHN1sOC0/PDuyOA+3g==
+X-Received: by 2002:a05:6e02:148f:b0:348:b086:2c4b with SMTP id
+ n15-20020a056e02148f00b00348b0862c4bmr1292306ilk.9.1693266105345; 
+ Mon, 28 Aug 2023 16:41:45 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.43
+ t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:41:44 -0700 (PDT)
+ Mon, 28 Aug 2023 16:41:45 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
+ Stacey Son <sson@FreeBSD.org>, Michal Meloun <mmel@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 06/36] bsd-user;
- Update the definitions of __put_user and __get_user macros
-Date: Mon, 28 Aug 2023 17:37:51 -0600
-Message-ID: <20230828233821.43074-7-imp@bsdimp.com>
+Subject: [PULL 07/36] bsd-user: Declarations of h2t and t2h conversion
+ functions.
+Date: Mon, 28 Aug 2023 17:37:52 -0600
+Message-ID: <20230828233821.43074-8-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::130;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x130.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,145 +94,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use __builtin_choose_expr to avoid type promotion from ?:
-in __put_user_e and __get_user_e macros.
-Copied from linux-user/qemu.h, originally by Blue Swirl.
+From: Stacey Son <sson@FreeBSD.org>
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Declarations of functions that convert between host and target structs.
+
+Co-authored-by: Michal Meloun <mmel@FreeBSD.org>
+
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/qemu.h   | 81 ++++++++++++++++++++---------------------------
- bsd-user/signal.c |  5 +--
- 2 files changed, 35 insertions(+), 51 deletions(-)
+ bsd-user/freebsd/qemu-os.h | 50 ++++++++++++++++++++++++++++++++++++++
+ bsd-user/qemu.h            |  1 +
+ 2 files changed, 51 insertions(+)
+ create mode 100644 bsd-user/freebsd/qemu-os.h
 
+diff --git a/bsd-user/freebsd/qemu-os.h b/bsd-user/freebsd/qemu-os.h
+new file mode 100644
+index 00000000000..12adc50928c
+--- /dev/null
++++ b/bsd-user/freebsd/qemu-os.h
+@@ -0,0 +1,50 @@
++/*
++ *  FreeBSD conversion extern declarations
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef QEMU_OS_H
++#define QEMU_OS_H
++
++/* qemu/osdep.h pulls in the rest */
++
++#include <sys/acl.h>
++#include <sys/mount.h>
++#include <sys/timex.h>
++#include <sys/rtprio.h>
++#include <sys/select.h>
++#include <sys/socket.h>
++#include <netinet/in.h>
++
++struct freebsd11_stat;
++
++/* os-stat.c */
++abi_long h2t_freebsd11_stat(abi_ulong target_addr,
++        struct freebsd11_stat *host_st);
++abi_long h2t_freebsd11_nstat(abi_ulong target_addr,
++        struct freebsd11_stat *host_st);
++abi_long t2h_freebsd_fhandle(fhandle_t *host_fh, abi_ulong target_addr);
++abi_long h2t_freebsd_fhandle(abi_ulong target_addr, fhandle_t *host_fh);
++abi_long h2t_freebsd11_statfs(abi_ulong target_addr,
++    struct freebsd11_statfs *host_statfs);
++abi_long target_to_host_fcntl_cmd(int cmd);
++abi_long h2t_freebsd_stat(abi_ulong target_addr,
++        struct stat *host_st);
++abi_long h2t_freebsd_statfs(abi_ulong target_addr,
++    struct statfs *host_statfs);
++
++#endif /* QEMU_OS_H */
 diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 61501c321b0..ca791e18b22 100644
+index ca791e18b22..4cfd5c63371 100644
 --- a/bsd-user/qemu.h
 +++ b/bsd-user/qemu.h
-@@ -272,50 +272,37 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
-  * These are usually used to access struct data members once the struct has been
-  * locked - usually with lock_user_struct().
-  */
--#define __put_user(x, hptr)\
--({\
--    int size = sizeof(*hptr);\
--    switch (size) {\
--    case 1:\
--        *(uint8_t *)(hptr) = (uint8_t)(typeof(*hptr))(x);\
--        break;\
--    case 2:\
--        *(uint16_t *)(hptr) = tswap16((typeof(*hptr))(x));\
--        break;\
--    case 4:\
--        *(uint32_t *)(hptr) = tswap32((typeof(*hptr))(x));\
--        break;\
--    case 8:\
--        *(uint64_t *)(hptr) = tswap64((typeof(*hptr))(x));\
--        break;\
--    default:\
--        abort();\
--    } \
--    0;\
--})
-+#define __put_user_e(x, hptr, e)                                            \
-+    do {                                                                    \
-+        PRAGMA_DISABLE_PACKED_WARNING;                                      \
-+        (__builtin_choose_expr(sizeof(*(hptr)) == 1, stb_p,                 \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 2, stw_##e##_p,            \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 4, stl_##e##_p,            \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 8, stq_##e##_p, abort))))  \
-+            ((hptr), (x)), (void)0);                                        \
-+        PRAGMA_REENABLE_PACKED_WARNING;                                     \
-+    } while (0)
-+
-+#define __get_user_e(x, hptr, e)                                            \
-+    do {                                                                    \
-+        PRAGMA_DISABLE_PACKED_WARNING;                                      \
-+        ((x) = (typeof(*hptr))(                                             \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 1, ldub_p,                 \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 2, lduw_##e##_p,           \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 4, ldl_##e##_p,            \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 8, ldq_##e##_p, abort))))  \
-+            (hptr)), (void)0);                                              \
-+        PRAGMA_REENABLE_PACKED_WARNING;                                     \
-+    } while (0)
+@@ -38,6 +38,7 @@ extern char **environ;
+ #include "exec/gdbstub.h"
+ #include "qemu/clang-tsa.h"
  
--#define __get_user(x, hptr) \
--({\
--    int size = sizeof(*hptr);\
--    switch (size) {\
--    case 1:\
--        x = (typeof(*hptr))*(uint8_t *)(hptr);\
--        break;\
--    case 2:\
--        x = (typeof(*hptr))tswap16(*(uint16_t *)(hptr));\
--        break;\
--    case 4:\
--        x = (typeof(*hptr))tswap32(*(uint32_t *)(hptr));\
--        break;\
--    case 8:\
--        x = (typeof(*hptr))tswap64(*(uint64_t *)(hptr));\
--        break;\
--    default:\
--        x = 0;\
--        abort();\
--    } \
--    0;\
--})
-+
-+#if TARGET_BIG_ENDIAN
-+# define __put_user(x, hptr)  __put_user_e(x, hptr, be)
-+# define __get_user(x, hptr)  __get_user_e(x, hptr, be)
-+#else
-+# define __put_user(x, hptr)  __put_user_e(x, hptr, le)
-+# define __get_user(x, hptr)  __get_user_e(x, hptr, le)
-+#endif
- 
++#include "qemu-os.h"
  /*
-  * put_user()/get_user() take a guest address and check access
-@@ -328,10 +315,10 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
- ({                                                                      \
-     abi_ulong __gaddr = (gaddr);                                        \
-     target_type *__hptr;                                                \
--    abi_long __ret;                                                     \
-+    abi_long __ret = 0;                                                 \
-     __hptr = lock_user(VERIFY_WRITE, __gaddr, sizeof(target_type), 0);  \
-     if (__hptr) {                                                       \
--        __ret = __put_user((x), __hptr);                                \
-+        __put_user((x), __hptr);                                        \
-         unlock_user(__hptr, __gaddr, sizeof(target_type));              \
-     } else                                                              \
-         __ret = -TARGET_EFAULT;                                         \
-@@ -342,10 +329,10 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
- ({                                                                      \
-     abi_ulong __gaddr = (gaddr);                                        \
-     target_type *__hptr;                                                \
--    abi_long __ret;                                                     \
-+    abi_long __ret = 0;                                                 \
-     __hptr = lock_user(VERIFY_READ, __gaddr, sizeof(target_type), 1);   \
-     if (__hptr) {                                                       \
--        __ret = __get_user((x), __hptr);                                \
-+        __get_user((x), __hptr);                                        \
-         unlock_user(__hptr, __gaddr, 0);                                \
-     } else {                                                            \
-         (x) = 0;                                                        \
-diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-index f4e078ee1da..4db85a3485e 100644
---- a/bsd-user/signal.c
-+++ b/bsd-user/signal.c
-@@ -787,10 +787,7 @@ static int reset_signal_mask(target_ucontext_t *ucontext)
-     TaskState *ts = (TaskState *)thread_cpu->opaque;
- 
-     for (i = 0; i < TARGET_NSIG_WORDS; i++) {
--        if (__get_user(target_set.__bits[i],
--                    &ucontext->uc_sigmask.__bits[i])) {
--            return -TARGET_EFAULT;
--        }
-+        __get_user(target_set.__bits[i], &ucontext->uc_sigmask.__bits[i]);
-     }
-     target_to_host_sigset_internal(&blocked, &target_set);
-     ts->signal_mask = blocked;
+  * This struct is used to hold certain information about the image.  Basically,
+  * it replicates in user space what would be certain task_struct fields in the
 -- 
 2.41.0
 
