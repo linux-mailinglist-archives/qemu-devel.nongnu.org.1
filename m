@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B061978BB26
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D625878BB2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:50:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qal19-0006au-BW; Mon, 28 Aug 2023 18:47:31 -0400
+	id 1qal3b-0000FC-TZ; Mon, 28 Aug 2023 18:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qal14-0006OD-NZ
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:47:28 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qal3Z-0000Ep-Gb
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:50:01 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qal10-00024d-Li
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:47:26 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4018af103bcso23371925e9.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:47:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qal3X-0002OA-7x
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:50:01 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-31c6d17aec4so3160357f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:49:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693262840; x=1693867640;
+ d=linaro.org; s=google; t=1693262997; x=1693867797;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=o0kK2IUSaOA3DvE4RUtCE+29JaWS66Ls07PEuyaX/Gk=;
- b=FBdHob693bDrCEWAWTHHOLw0Z9kUXxN7BG4Kf91jYXVy1gyo6Xqu/L1VZPij7t10sB
- VBgqSYasQPWT9xlQKbBf7sww+3rWxJcvCx+KsyJx+VIe2Rh+xVtL8OgQUc1FYDqH7oI1
- AZ2kWAun19GnAk9ZaG+YAdUiEZpSB2+et4PFyhLn9LN55UyyM+DMucxF+YRVUW67/TK3
- QjRvteiTnRvWsF7igv7MvsrqMEcewif7r7IiomrzEj+wFZFdd21ba4ErJ9pkYPA8FBLA
- SmMLaL74TkZ6iAxrmoyJYkTVxRVtnfqUl+aVbD7u8fX1kLCsjolcO9ay52qz01uJ0vAP
- eC9Q==
+ bh=XFDUspoV1/Mj16fdEh9vaVHWbiuEgFkZxHG+xGtQeno=;
+ b=GjNPXUPzy/WII87i0opQupAuVZfU1Apd7tPwC8C496gguhMFEJahuFPACVv/VZM8lx
+ 4FfGL6vYI6AdzfNrzaRP2JJUdAGuNFKsluHeUHe8yq6I3bZI6VqyaXlQAWBfQhzivhnd
+ bloLwFG7pPPgPLDS2WXvKSpxWxTCP2/eYtuizrly4ehdAe5rDycOytz1XVvBKzqGGnnO
+ 1SoGvzDcuJGTp+4vESkIaz5V11+g83K4TaKxB9pehOsacRBpPkCHRAP9FB48LuCnty8E
+ Az1FUW50feR9fvCxHtFottZ/t1xNrqjYA3amW2R5jfrE1brEc/tK16m6mf7jJTCWJaDR
+ cMqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693262840; x=1693867640;
+ d=1e100.net; s=20221208; t=1693262997; x=1693867797;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o0kK2IUSaOA3DvE4RUtCE+29JaWS66Ls07PEuyaX/Gk=;
- b=ChkWK1PyBZVOF+D9lUBejNoLsBFj9jgz0oKZE9/Q6++TIccHkL8kfl/4b6sq7HqEV5
- 9GEL0fGPQLJxiIDv/dw8jRJ89AqW2/p1B3Gaq1Y1bHzcpubEVBd/KlaUQeg1Q3Bu6iPI
- JTMwdw9P90gj2Y112uJkGNDFXkGw61svgp+LCMLVbBOQrR4GBU5/EtcKWQMwtAxq1jYs
- 7lgeybAIQ5pvinbtfLrxXKWck5/xxzoGHe/Onja4cdr0fCN6oqNuJfzC1cpfE3fq34Io
- /AB8Ck/k7F1HxjxVPvvKMTFQzTsGp2nLuTVqAdPIbDsj6yOv4WXVeXQ29WCJz+dC334B
- 0Dxg==
-X-Gm-Message-State: AOJu0Yy3l4swAODYAhGt4kStfD0KCAEFGtZDTiSNODepN147IVvAraS/
- 1hwGQ7tAdnRve079ow6xbzNleA==
-X-Google-Smtp-Source: AGHT+IGYApIsL0PaIRqb9NvOgw8rA7SS5XrGTa8dhsJ5aSGt3X9mbKIjs6oa+rA4D0oqTJqUEV1jAg==
-X-Received: by 2002:a7b:c4c7:0:b0:3ff:516b:5c4c with SMTP id
- g7-20020a7bc4c7000000b003ff516b5c4cmr604808wmk.18.1693262840031; 
- Mon, 28 Aug 2023 15:47:20 -0700 (PDT)
+ bh=XFDUspoV1/Mj16fdEh9vaVHWbiuEgFkZxHG+xGtQeno=;
+ b=l6Dr463iPFoRyFy8TtpV7EcI+wuSK/1IRAbqcHdEHgRs3/LV0t5PS1LBTmnhrJQX0b
+ dIMcMaCsgQSf9tegnXfdWJimUSFZ/yM4r6+wvpUJujEHkJVrYNwzXNg7UPMkH2helwP6
+ 4JjxKzJhaQ9rrO8G510fSXn9ZYPR5qE1NQMapjKNyaG/5+g+uj+JQAP/z714J4X6Bpx/
+ qT22Z5stIdJHOR9Su09HJ4LkPr6f+Fc4yXL3VSkOdulYcfF+E2j6e3TnakkPoMWyVuvw
+ uzA7lRpLly81OyD9aP0nRe7XKPjFRecazFhFXqC/YzkdkKdPutICwas+KqC7yvuqbFyc
+ a1JQ==
+X-Gm-Message-State: AOJu0YyYIx+EwE+Fx7JFpz5lVSTqd7iVKVPiUpQ8DQDJR+qxXYorc2if
+ 3KzJw0iE7Idxi83Krv6BdYeDGA==
+X-Google-Smtp-Source: AGHT+IFix0Ni/X8chlqqnZSzB/I4GczCkq3vVIi5gnvLPCYHAxi9oB5AX10U5rslhwfACFn6iuxCKw==
+X-Received: by 2002:a5d:4146:0:b0:319:8444:939f with SMTP id
+ c6-20020a5d4146000000b003198444939fmr21711110wrq.32.1693262997615; 
+ Mon, 28 Aug 2023 15:49:57 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- 2-20020a05600c248200b003fee567235bsm14934730wms.1.2023.08.28.15.47.18
+ g5-20020a056000118500b00317b063590fsm11849948wrx.55.2023.08.28.15.49.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 15:47:19 -0700 (PDT)
-Message-ID: <2d117930-72d4-78a0-a139-a3f635b7ad7f@linaro.org>
-Date: Tue, 29 Aug 2023 00:47:17 +0200
+ Mon, 28 Aug 2023 15:49:57 -0700 (PDT)
+Message-ID: <1d0c927d-3b75-a307-cf05-a4236c7decf5@linaro.org>
+Date: Tue, 29 Aug 2023 00:49:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 4/7] vhost-user: flatten "enforce_reply" into
- "vhost_user_write_msg"
+Subject: Re: [PATCH 6/7] vhost-user: allow "vhost_set_vring" to wait for a
+ reply
 Content-Language: en-US
 To: Laszlo Ersek <lersek@redhat.com>, qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -69,13 +69,13 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Sergio Lopez Pascual <slp@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>
 References: <20230827182937.146450-1-lersek@redhat.com>
- <20230827182937.146450-5-lersek@redhat.com>
+ <20230827182937.146450-7-lersek@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230827182937.146450-5-lersek@redhat.com>
+In-Reply-To: <20230827182937.146450-7-lersek@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -99,10 +99,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/8/23 20:29, Laszlo Ersek wrote:
-> At this point, only "vhost_user_write_msg" calls "enforce_reply"; embed
-> the latter into the former.
+> The "vhost_set_vring" function already centralizes the common parts of
+> "vhost_user_set_vring_num", "vhost_user_set_vring_base" and
+> "vhost_user_set_vring_enable". We'll want to allow some of those callers
+> to wait for a reply.
 > 
-> This is purely refactoring -- no observable change.
+> Therefore, rebase "vhost_set_vring" from just "vhost_user_write" to
+> "vhost_user_write_msg", exposing the "wait_for_reply" parameter.
+> 
+> This is purely refactoring -- there is no observable change. That's
+> because:
+> 
+> - all three callers pass in "false" for "wait_for_reply", which disables
+>    all logic in "vhost_user_write_msg" except the call to
+>    "vhost_user_write";
+> 
+> - the fds=NULL and fd_num=0 arguments of the original "vhost_user_write"
+>    call inside "vhost_set_vring" are hard-coded within
+>    "vhost_user_write_msg".
 > 
 > Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
 > Cc: Eugenio Perez Martin <eperezma@redhat.com>
@@ -112,8 +126,8 @@ On 27/8/23 20:29, Laszlo Ersek wrote:
 > Cc: Stefano Garzarella <sgarzare@redhat.com>
 > Signed-off-by: Laszlo Ersek <lersek@redhat.com>
 > ---
->   hw/virtio/vhost-user.c | 32 ++++++++------------
->   1 file changed, 13 insertions(+), 19 deletions(-)
+>   hw/virtio/vhost-user.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
