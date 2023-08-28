@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E9B78AF75
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0D378AF77
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:05:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaax7-0008Bp-EY; Mon, 28 Aug 2023 08:02:41 -0400
+	id 1qaays-0000Uo-KG; Mon, 28 Aug 2023 08:04:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaax5-0008Bc-Ew
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:02:39 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaayJ-0000Im-1y
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:03:57 -0400
 Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaax3-0001wZ-6d
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:02:39 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaayG-00024M-Q6
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:03:54 -0400
 Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fef56f7248so29004185e9.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:02:36 -0700 (PDT)
+ 5b1f17b1804b1-3fbd33a57b6so28061495e9.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693224155; x=1693828955;
+ d=linaro.org; s=google; t=1693224225; x=1693829025;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JMx+qZwEch+GWzNF4uKtXIEKXRCJwOwAUz5z7lF6uaw=;
- b=asE0zwHp7bvjDW+8uXiNJ0P4JjnsSTSVceztjzNW8PoOSAKAuOTDzl0fyfLk9nMHjJ
- Cs/ENgPgl95XizR3oD3AHzSag2S9gF3xhGLL4voEdpHUNh55GIBPm/N7dNWvpks0nYWM
- /jsDai5v2AvByBdMFqxULb2xvJXKE6H3HtaQUQwOEYAsk7Z8/Fi1RB9qc1d1YkGM/diJ
- NlcL0psRSOs113D2IgosZqehFScsCkLrzd3TR9rem9Sh7k0U1ivk09xhX7xbvS8hn5pJ
- bYYqvyJUODlHwOmTMyC9g3+6jrMK3y1KZtJKMrEQ7ETRzOdqSvlq+CdVDqNpq0Cox8Re
- uOwA==
+ bh=RpXaOCor80C0wwQ56UOzzSMzMVli4wekjrzM8fH9G4w=;
+ b=Z6biGmeuS6b7D3SAeTNVlRn8fRDNheErRi3MOQB+pNYvaNT9CcUP1AMFLzHOOli93u
+ w61Xkr4oVYxydxEY4yh5Q18/YzUlal84b5O6bKebK3SbrGTVu07OQMgjlJdkZnSyH1Uu
+ Btt5F3TSleIdRqJucvyskP8gdo98Gubf2NX4Syv1VYkCyS9Cqg6lPAgQXRi6b0z1MKSA
+ iXBdxMLENYr0kG3hqx/pXdHF4Bk+C1jksUsgf7Z8yUjPrFpaYWj+GanMGYK1H9eq8fi4
+ oA0Lh3a2YJAiAGjNj3C2rQ+C/iNgqMZQJ4WpytxeSp/IqYdHtIRwAOfaO+J2guXwduzK
+ bpTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693224155; x=1693828955;
+ d=1e100.net; s=20221208; t=1693224225; x=1693829025;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JMx+qZwEch+GWzNF4uKtXIEKXRCJwOwAUz5z7lF6uaw=;
- b=DL8SNW4aGtlOV+qUew73AXf1zct96Nm1bODvreNCoz/06Z9F0C5BoiZl+4qsSjhXb9
- dmTd4A/vbN57Ait9MxBfFWxW4AbjADOgiv1CpeIQydlobZTgd3Dy/IryPS5shQcL/ShB
- Y67ran3hPhbOctd/tvYYJUObeEe3VCgCgfzzO+mx3wE0zCaulHxUsVswzf8MV+QdlytU
- ZVL8vuE2LE+8D4b8EB7BB2zLVU/4dY5QqFFVxpJqGyq9wMrZ6zyx6ArvGoXhOYQLFskM
- b/f5jfUkyq0F0noksN4dec92QgrlZ6U8Dj/Vjxy6az2eL3hekzRekl9z0V06i3Zyzh0g
- 1b2w==
-X-Gm-Message-State: AOJu0YxHyF5OnfsAdX6SMj+15Bz5sWQnuV9Y4eBcxfTa0fkDy4qa8vEv
- iNVusVz16YOQoubtYIMBtQbclQ==
-X-Google-Smtp-Source: AGHT+IFDvejJHJPBqTQvmJAGSgaROiHFklikPAA9GzY8tExJWxs/ddJyYhhf9u8hXu5FHPRD9GfP4w==
-X-Received: by 2002:a05:600c:211:b0:401:23fc:1f92 with SMTP id
- 17-20020a05600c021100b0040123fc1f92mr8809516wmi.25.1693224155199; 
- Mon, 28 Aug 2023 05:02:35 -0700 (PDT)
+ bh=RpXaOCor80C0wwQ56UOzzSMzMVli4wekjrzM8fH9G4w=;
+ b=GXfdb36if9IrWcdJz5xuo4j369EXvGMMeSJoxvwQPU0Au1lHsUai8fN07XoEZnznWh
+ acL37nJE/78RCaV14qlNJtqnBxmzI1oA1k7MpAoKmgw5Umlriv6IFGZBFFIodvmPZ5vj
+ V5SdS7P1y2+87NNZ/Pl57SZHSZv6mBtal4DFnuirbGd+SNfu7QB/Uq3yaFlCbo0uwXRw
+ F1CRCDnEj3K/u+ij+KbozADe/Y1dORVE6qkP8ebzo1N9QNUWEJXc874fe3F6UX4nVjuO
+ ZNdmihwqi+gy6XD6dmG2PFku9uoYm8eEVZAH52Kt3vtKVIqEiz7urdV+wypV55WAOrJw
+ yQ1g==
+X-Gm-Message-State: AOJu0Yz7mb+wGxbnNV8ZU22JA1U8CspK0KJdqT/l8Ho9yOLuHlkXI6DL
+ Y62mj6I00ewzhUaxtacJFF2qRA==
+X-Google-Smtp-Source: AGHT+IEe00PNlb9YhUSo8ipcSSzswk84/LkkXcsQjrYLuwXRnXVl1nl901/TZFBS+1D7xhAZLDvBDA==
+X-Received: by 2002:a05:600c:2211:b0:401:b705:ebea with SMTP id
+ z17-20020a05600c221100b00401b705ebeamr6682091wml.12.1693224224874; 
+ Mon, 28 Aug 2023 05:03:44 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- d15-20020a5d538f000000b0031ae8d86af4sm10342106wrv.103.2023.08.28.05.02.33
+ 12-20020a05600c028c00b003feef5b0bb7sm10577261wmk.40.2023.08.28.05.03.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 05:02:34 -0700 (PDT)
-Message-ID: <d5fd4be3-0c4f-701a-7d44-b898d2690e6e@linaro.org>
-Date: Mon, 28 Aug 2023 14:02:32 +0200
+ Mon, 28 Aug 2023 05:03:44 -0700 (PDT)
+Message-ID: <fd1f75d0-02b0-8fa3-705b-69095437a505@linaro.org>
+Date: Mon, 28 Aug 2023 14:03:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 2/8] hw/acpi/cpu: Have build_cpus_aml() take a
- build_madt_cpu_fn callback
+Subject: Re: [PATCH 3/8] hw/acpi/acpi_dev_interface: Remove now unused
+ madt_cpu virtual method
 Content-Language: en-US
 To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
@@ -71,9 +71,9 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
  Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>
 References: <20230828073609.5710-1-shentey@gmail.com>
- <20230828073609.5710-3-shentey@gmail.com>
+ <20230828073609.5710-4-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230828073609.5710-3-shentey@gmail.com>
+In-Reply-To: <20230828073609.5710-4-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::332;
@@ -101,26 +101,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 28/8/23 09:36, Bernhard Beschow wrote:
-> build_cpus_aml() is architecture independent but needs to create architecture-
-> specific CPU AML. So far this was achieved by using a virtual method from
-> TYPE_ACPI_DEVICE_IF. However, build_cpus_aml() would resolve this interface from
-> global (!) state. This makes it quite incomprehensible where this interface
-> comes from (TYPE_PIIX4_PM?, TYPE_ICH9_LPC_DEVICE?, TYPE_ACPI_GED_X86?) an can
-> lead to crashes when the generic code is ported to new architectures.
+> This virtual method was always set to the x86-specific pc_madt_cpu_entry(),
+> even in piix4 which is also used in MIPS. The previous changes use
+> pc_madt_cpu_entry() otherwise, so madt_cpu can be dropped.
 > 
-> So far, build_cpus_aml() is only called in architecture-specific code -- and
-> only in x86. We can therefore simply pass pc_madt_cpu_entry() as callback to
-> build_cpus_aml(). This is the same callback that would be used through
-> TYPE_ACPI_DEVICE_IF.
+> Since pc_madt_cpu_entry() is now only used in x86-specific code, the stub
+> in hw/acpi/acpi-x86-stub can be removed as well.
 > 
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
->   include/hw/acpi/cpu.h | 6 +++++-
->   hw/acpi/cpu.c         | 8 ++------
->   hw/i386/acpi-build.c  | 4 ++--
->   3 files changed, 9 insertions(+), 9 deletions(-)
-
-Nice cleanup.
+>   include/hw/acpi/acpi_dev_interface.h | 2 --
+>   hw/acpi/acpi-x86-stub.c              | 6 ------
+>   hw/acpi/piix4.c                      | 2 --
+>   hw/i386/generic_event_device_x86.c   | 9 ---------
+>   hw/isa/lpc_ich9.c                    | 1 -
+>   5 files changed, 20 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
