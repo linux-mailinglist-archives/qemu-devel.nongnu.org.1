@@ -2,54 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B320978B335
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 16:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCE678B36A
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 16:45:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qadIy-00046c-C9; Mon, 28 Aug 2023 10:33:24 -0400
+	id 1qadSj-0000Ie-D3; Mon, 28 Aug 2023 10:43:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org>)
- id 1qadIw-00045v-C5; Mon, 28 Aug 2023 10:33:22 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org>)
- id 1qadIt-0004ad-60; Mon, 28 Aug 2023 10:33:22 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZChn2sZJz4wy0;
- Tue, 29 Aug 2023 00:33:13 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZChj1bLDz4wxx;
- Tue, 29 Aug 2023 00:33:08 +1000 (AEST)
-Message-ID: <7930d670-8d1d-04a2-d8c8-83fa48b19681@kaod.org>
-Date: Mon, 28 Aug 2023 16:33:03 +0200
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qadSd-0000IA-Vz; Mon, 28 Aug 2023 10:43:24 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qadSa-0006pV-J4; Mon, 28 Aug 2023 10:43:23 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52a3ec08d93so4372487a12.2; 
+ Mon, 28 Aug 2023 07:43:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693233798; x=1693838598;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=w2lTL1rmvjjFiWwcN3NTcLRSlo+IgOioi6dTOia3i40=;
+ b=nr//QCPd1C1S0qFyhPnCbfCL67MM/IGfK99Zo2Esw0z+ZErAi0JzFc23ZcJXQrAYqx
+ uQevSmUtkE7dMjG0z3q9I2vLleL1ToGuWv70RdgOOwtEg+9CSr7K/5jzimz4760+Y5E/
+ //pHL/gLpt9tUvSTA1nM0/fFqqHSSQzHh2CqfRsa6W6sgh98a6rTFvFeRkd5v+YWVgYp
+ +abO7BlawBfhXmDJx1BUlwTfNj0q+QMt+tzO41n9w7ab4aV0A6gFjPuvjlIJ0SYI6Ccp
+ kaxDpidR0AqnFbWE9ImNid7YyMx+eqkAA1gya4FfE292FQoKk1TqQAsAr4rkCrOrxw6q
+ TGWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693233798; x=1693838598;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w2lTL1rmvjjFiWwcN3NTcLRSlo+IgOioi6dTOia3i40=;
+ b=H/WAcbySLMeT3GUv9WygH0GN04TrG2t1raP9IHMcwn+pDHQiQNRV+/KUKrcjn63jSe
+ 9/wFXqfS70wA7x/inR3uZXlfHLaLYkbj7B1WAQlj0qw5pGaD4IRHljFQkMHrbVvkaa+f
+ xtd5h3wlhVCMqARmqhO+0XqdNljMBHrDl/bl/g4lzR3lJgh47uvuGYINn9JAu0F/lvtU
+ WYjvOhaKJkZWz3BTCjyrA6xBEgyo8QFALJsFH8iOIGddJi5cltrbqHgNJPlsw+9alPiZ
+ NtfBHB5uZ0LwjBLr/EOq4JuyJWVSXhmE5vlTLiMbZWgshnwz5a8Gb8uPFGZ/yuUWgY0t
+ 1fSA==
+X-Gm-Message-State: AOJu0YzD7GMZ6RAaz/JMN9S3UVBaTB7lItiznZAQkDkGJUq/ijst5lD9
+ JZYRnGNNjEqN3d3OrqH0k5X/WaWjHlzM94VK9bc=
+X-Google-Smtp-Source: AGHT+IGYuQTqVL/f7FtWa81VlXEw6UOn+XJLkUu8ki847RwSHYsPrG0arezLKzhqqx920YYHKSS9jDR1Y2I+yuA7TVc=
+X-Received: by 2002:a50:fb9a:0:b0:523:364b:e6a9 with SMTP id
+ e26-20020a50fb9a000000b00523364be6a9mr18615102edq.38.1693233797696; Mon, 28
+ Aug 2023 07:43:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] tests/avocado/machine_aspeed.py: Update SDK images
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- Hang Yu <francis_yuu@stu.pku.edu.cn>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230828090101.74357-1-clg@kaod.org>
- <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-2.169, SPF_HELO_PASS=-0.001,
+References: <20230814085802.61459-1-faithilikerun@gmail.com>
+ <20230814085802.61459-3-faithilikerun@gmail.com>
+ <20230821133131.GA37847@fedora>
+In-Reply-To: <20230821133131.GA37847@fedora>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Mon, 28 Aug 2023 22:42:48 +0800
+Message-ID: <CAAAx-8KqJDMK7tYzea1WmreOq6EMQyp-LrgnOpcjOdg2vE15JA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] qcow2: add configurations for zoned format
+ extension
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, hare@suse.de, Hanna Reitz <hreitz@redhat.com>, 
+ dmitry.fomichev@wdc.com, qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ dlemoal@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,82 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 15:54, Joel Stanley wrote:
-> On Mon, 28 Aug 2023 at 09:01, Cédric Le Goater <clg@kaod.org> wrote:
->>
->> Switch to the latest v8.06 release which introduces interesting
->> changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
->> images instead of the default since QEMU tries to model The AST2600 A3
->> SoC.
-> 
-> Is there any value in testing both the old and the new images?
+Stefan Hajnoczi <stefanha@redhat.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8821=E6=
+=97=A5=E5=91=A8=E4=B8=80 21:31=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, Aug 14, 2023 at 04:58:00PM +0800, Sam Li wrote:
+> > diff --git a/block/qcow2.h b/block/qcow2.h
+> > index f789ce3ae0..3694c8d217 100644
+> > --- a/block/qcow2.h
+> > +++ b/block/qcow2.h
+> > @@ -236,6 +236,20 @@ typedef struct Qcow2CryptoHeaderExtension {
+> >      uint64_t length;
+> >  } QEMU_PACKED Qcow2CryptoHeaderExtension;
+> >
+> > +typedef struct Qcow2ZonedHeaderExtension {
+> > +    /* Zoned device attributes */
+> > +    uint8_t zoned_profile;
+> > +    uint8_t zoned;
+> > +    uint16_t reserved16;
+> > +    uint32_t zone_size;
+> > +    uint32_t zone_capacity;
+>
+> Should zone capacity be stored individually for each zone (alongside the
+> write pointer and other per zone metadata) instead of as a global value
+> for all zones? My understanding is that NVMe ZNS does not have a global
+> value and each zone could have a different zone capacity value.
+>
+> > +    uint32_t nr_zones;
+>
+> Is this field necessary since it can be derived from other image
+> options: nr_zones =3D DIV_ROUND_UP(total_length, zone_capacity)?
 
-For QEMU default tests, I think using the latest version of a test image
-is just fine, or we will end up with a very long avocado test run. That
-said we could make an exception when a HW feature is only activated in a
-specific version.
+Yes. The bs->total_sectors in refresh_limits is zero. Keeping a
+persistent nr_zones helps assigning right value instead of zero.
 
-I run pre-PR tests with more images (buildroot, mainline, sdk, openbmc,
-provided by other vendors) but only the SDK v08.X images have decent
-results. v07.02 and v04.05 have issues. It could be a software issue.
+The process is roughly like this:
+*_qcow2_create: calculate nr_zones and write it to zoned_header
+->  *_qcow2_update_header: update nr_zones
+    ->  *_qcow2_read_extensions: read nr_zones in zoned_header to
+Qcow2State and check if right (valid total size here)
+      -> *_refresh_limits(): set bl.nr_zones to zoned_header.nr_zones
 
-C.
-
-
-> 
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
-> 
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>
->>    Requires patches from Hang Yu [1]
->>
->>    [1] https://lore.kernel.org/qemu-devel/20230812065230.8839-1-francis_yuu@stu.pku.edu.cn/
->>
->>
->>   tests/avocado/machine_aspeed.py | 12 ++++++------
->>   1 file changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
->> index 724ee72c0208..90f1b7cb77a1 100644
->> --- a/tests/avocado/machine_aspeed.py
->> +++ b/tests/avocado/machine_aspeed.py
->> @@ -316,8 +316,8 @@ def test_arm_ast2500_evb_sdk(self):
->>           """
->>
->>           image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
->> -                     'download/v08.01/ast2500-default-obmc.tar.gz')
->> -        image_hash = ('5375f82b4c43a79427909342a1e18b4e48bd663e38466862145d27bb358796fd')
->> +                     'download/v08.06/ast2500-default-obmc.tar.gz')
->> +        image_hash = ('e1755f3cadff69190438c688d52dd0f0d399b70a1e14b1d3d5540fc4851d38ca')
->>           image_path = self.fetch_asset(image_url, asset_hash=image_hash,
->>                                         algorithm='sha256')
->>           archive.extract(image_path, self.workdir)
->> @@ -334,8 +334,8 @@ def test_arm_ast2600_evb_sdk(self):
->>           """
->>
->>           image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
->> -                     'download/v08.01/ast2600-default-obmc.tar.gz')
->> -        image_hash = ('f12ef15e8c1f03a214df3b91c814515c5e2b2f56119021398c1dbdd626817d15')
->> +                     'download/v08.06/ast2600-a2-obmc.tar.gz')
->> +        image_hash = ('9083506135f622d5e7351fcf7d4e1c7125cee5ba16141220c0ba88931f3681a4')
->>           image_path = self.fetch_asset(image_url, asset_hash=image_hash,
->>                                         algorithm='sha256')
->>           archive.extract(image_path, self.workdir)
->> @@ -345,8 +345,8 @@ def test_arm_ast2600_evb_sdk(self):
->>           self.vm.add_args('-device',
->>                            'ds1338,bus=aspeed.i2c.bus.5,address=0x32');
->>           self.do_test_arm_aspeed_sdk_start(
->> -            self.workdir + '/ast2600-default/image-bmc')
->> -        self.wait_for_console_pattern('nodistro.0 ast2600-default ttyS4')
->> +            self.workdir + '/ast2600-a2/image-bmc')
->> +        self.wait_for_console_pattern('nodistro.0 ast2600-a2 ttyS4')
->>
->>           self.ssh_connect('root', '0penBmc', False)
->>           self.ssh_command('dmesg -c > /dev/null')
->> --
->> 2.41.0
->>
-
+Sam
 
