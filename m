@@ -2,93 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B06978A3A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 02:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B91E78A47C
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 04:09:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaPlM-0006Cr-IQ; Sun, 27 Aug 2023 20:05:48 -0400
+	id 1qaRfW-0006Hk-Vl; Sun, 27 Aug 2023 22:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qaPl0-0006AC-0h
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 20:05:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qaRfU-0006HI-Bt; Sun, 27 Aug 2023 22:07:52 -0400
+Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qaPku-00016Q-P8
- for qemu-devel@nongnu.org; Sun, 27 Aug 2023 20:05:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693181119;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ibbxsoxCKoBvkUXcOjeA5GRQGxS837QbGPrgrI0q1/A=;
- b=FL4b0DLtE70anpbRysyKTTj+LSfdVgE8JYgPPO0pZICQuxzsAcrzVxn6MOb/amc/IObHlM
- Kq/oMOmwQ46qtV59fjHJc9nJx1RNIerhKxiZrDtPqnhnSkD7nQvABhjhdAHBhzt8Izr7/V
- ot7zxsqQF2n3V8Jsobb+nU6x9TvxBbg=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56--iAI571IPTOeUP-341SPCA-1; Sun, 27 Aug 2023 20:05:17 -0400
-X-MC-Unique: -iAI571IPTOeUP-341SPCA-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-d72f3290e6eso3269351276.3
- for <qemu-devel@nongnu.org>; Sun, 27 Aug 2023 17:05:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693181116; x=1693785916;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ibbxsoxCKoBvkUXcOjeA5GRQGxS837QbGPrgrI0q1/A=;
- b=O1jLIBW6eDIKJQg7A2NODeXnnUMob6iAwvzNW7sAspSL3gIECz6TrOR6yHXmD362h0
- 0Ien7g0VFST9DCBvaG32yh2H4QLlbylC+M0BKPXvC1eRqKDQywY7hD1sWgK8hEOWzIuU
- +mAItV0lWyBa5t9xpZBP3GOjfIjB4AfRo8TjtjQDN6rklKWjSt++EnX0fsJQ2de122Sj
- sIm8LvEM8H8aS81+NoIJZa22xdX7VgiBQbROZSeusuo1b6TFe1CvedZjAK4663pb+VGD
- ELhOrEefRbTR55kIwvsVL74VnXvRKL5eQZkZEctfADE4EYu9XnMtJjr478APoauqoEko
- M9rg==
-X-Gm-Message-State: AOJu0YxR5gDw42YF8H2HZxT+VkM59OB01v9Ffjq/OjltsP4G2L/KweDf
- u5s9u5OpF12NMziy1IXNaV0aCCeLPTdg0VW41p2ohExk/9kWR4OLpOmLVZUXjfbJyxNhuqLAjNA
- hSXUVt9AzfMGQIzg=
-X-Received: by 2002:a5b:c4d:0:b0:c6c:e4f4:2fb1 with SMTP id
- d13-20020a5b0c4d000000b00c6ce4f42fb1mr23159084ybr.3.1693181116680; 
- Sun, 27 Aug 2023 17:05:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzTGnH/D9yks8HrxCxd1C2qlL/9q/iUYvVS74r5N4bfJiUroHlQVt3omDGJuT4KA1Dop6X2Q==
-X-Received: by 2002:a5b:c4d:0:b0:c6c:e4f4:2fb1 with SMTP id
- d13-20020a5b0c4d000000b00c6ce4f42fb1mr23159074ybr.3.1693181116446; 
- Sun, 27 Aug 2023 17:05:16 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- g10-20020a63b14a000000b00566095dac12sm5920524pgp.19.2023.08.27.17.05.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 27 Aug 2023 17:05:15 -0700 (PDT)
-Message-ID: <4bd99ea8-46de-f66f-8e9e-aa981b26dc43@redhat.com>
-Date: Mon, 28 Aug 2023 10:05:10 +1000
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qaRfP-0005L4-Qc; Sun, 27 Aug 2023 22:07:52 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R291e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045168;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=14; SR=0;
+ TI=SMTPD_---0Vqdm55J_1693188451; 
+Received: from 30.221.109.39(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Vqdm55J_1693188451) by smtp.aliyun-inc.com;
+ Mon, 28 Aug 2023 10:07:32 +0800
+Message-ID: <452d6d06-2288-1a69-2cd9-4fdc234a3dba@linux.alibaba.com>
+Date: Mon, 28 Aug 2023 10:06:45 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] arm/kvm: Enable support for
- KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [RFC PATCH 3/3] softmmu/vl: Add qemu_cpu_opts QemuOptsList
 Content-Language: en-US
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: peter.maydell@linaro.org, ricarkol@google.com, kvm@vger.kernel.org,
- jonathan.cameron@huawei.com, linuxarm@huawei.com
-References: <20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, Alistair.Francis@wdc.com, palmer@dabbelt.com,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, richard.henderson@linaro.org, pbonzini@redhat.com,
+ bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
+ qemu-riscv@nongnu.org
+References: <20230825121651.1534-1-zhiwei_liu@linux.alibaba.com>
+ <20230825121651.1534-4-zhiwei_liu@linux.alibaba.com>
+ <20230825-b47b84e8d73575d79db91dab@orel>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20230825-b47b84e8d73575d79db91dab@orel>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.414, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.111;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-111.freemail.mail.aliyun.com
+X-Spam_score_int: -102
+X-Spam_score: -10.3
+X-Spam_bar: ----------
+X-Spam_report: (-10.3 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ NICE_REPLY_A=-0.414, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,64 +68,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Drew
 
-Hi Shameer,
+On 2023/8/25 23:58, Andrew Jones wrote:
+> On Fri, Aug 25, 2023 at 08:16:51PM +0800, LIU Zhiwei wrote:
+>> This make the cpu works the similar way like the -device option.
+>>
+>> For device option,
+>> """
+>> ./qemu-system-riscv64 -device e1000,help
+>> e1000 options:
+>>    acpi-index=<uint32>    -  (default: 0)
+>>    addr=<int32>           - Slot and optional function number, example: 06.0 or 06 (default: -1)
+>>    autonegotiation=<bool> - on/off (default: true)
+>>    bootindex=<int32>
+>>    extra_mac_registers=<bool> - on/off (default: true)
+>>    failover_pair_id=<str>
+>> """
+>>
+>> After this patch, the cpu can output its configurations,
+>> """
+>> ./qemu-system-riscv64 -cpu rv64,help
+>> Enable extension:
+>> 	rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zba_zbb_zbc_zbs_sstc_svadu
+>> """
+> I recommend we make it more similar to -device and list the properties
+> (not just extensions). Besides a listing being easier to read than the
+> isa string format, listing properties would also output, e.g.
+>
+>   cbom_blocksize=<uint16>    -  (default: 64)
+>
+> which would also be helpful.
 
-On 8/15/23 19:27, Shameer Kolothum wrote:
-> Now that we have Eager Page Split support added for ARM in the kernel,
-> enable it in Qemu. This adds,
->   -eager-split-size to -accel sub-options to set the eager page split chunk size.
->   -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
-> 
-> The chunk size specifies how many pages to break at a time, using a
-> single allocation. Bigger the chunk size, more pages need to be
-> allocated ahead of time.
-> 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
-> RFC v1: https://lore.kernel.org/qemu-devel/20230725150002.621-1-shameerali.kolothum.thodi@huawei.com/
->    -Updated qemu-options.hx with description
->    -Addressed review comments from Peter and Gavin(Thanks).
-> ---
->   include/sysemu/kvm_int.h |  1 +
->   qemu-options.hx          | 14 +++++++++
->   target/arm/kvm.c         | 62 ++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 77 insertions(+)
-> 
+I agree that we should add more outputs in cpu_list_props to aid the 
+understanding of the isa string output. And let users know what they 
+should explicitly added the -cpu command line.
 
-[...]
+I will refer to the -device option output. However, The -device option 
+is not enough for cpu model.
 
->   
-> +static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
-> +                                          const char *name, void *opaque,
-> +                                          Error **errp)
-> +{
-> +    KVMState *s = KVM_STATE(obj);
-> +    uint64_t value = s->kvm_eager_split_size;
-> +
-> +    visit_type_size(v, name, &value, errp);
-> +}
-> +
-> +static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
-> +                                          const char *name, void *opaque,
-> +                                          Error **errp)
-> +{
-> +    KVMState *s = KVM_STATE(obj);
-> +    uint64_t value;
-> +
-> +    if (s->fd != -1) {
-> +        error_setg(errp, "Cannot set properties after the accelerator has been initialized");
-> +        return;
-> +    }
-> +
+"""
 
-Errors spotted by './scripts/checkpatch.pl', as below:
+qemu-system-riscv64 -device rv64-riscv-cpu,zba=false,help
 
-ERROR: line over 90 characters
-#139: FILE: target/arm/kvm.c:1112:
-+        error_setg(errp, "Cannot set properties after the accelerator has been initialized");
+rv64-riscv-cpu options:
+   Zawrs=<bool>           -  (default: true)
+   Zfa=<bool>             -  (default: true)
+   Zfh=<bool>             -  (default: false)
+   Zfhmin=<bool>          -  (default: false)
+   Zicsr=<bool>           -  (default: true)
+   Zifencei=<bool>        -  (default: true)
+   Zihintpause=<bool>     -  (default: true)
+   Zve32f=<bool>          -  (default: false)
+   Zve64d=<bool>          -  (default: false)
+   Zve64f=<bool>          -  (default: false)
+   a=<bool>               - Atomic instructions
+   c=<bool>               - Compressed instructions
+   cbom_blocksize=<uint16> -  (default: 64)
+   cboz_blocksize=<uint16> -  (default: 64)
+   d=<bool>               - Double-precision float point
+
+   ...
+
+  unnamed-gpio-in[0]=<child<irq>>
+   unnamed-gpio-in[10]=<child<irq>>
+   unnamed-gpio-in[11]=<child<irq>>
+   unnamed-gpio-in[12]=<child<irq>>
+   unnamed-gpio-in[13]=<child<irq>>
+   unnamed-gpio-in[14]=<child<irq>>
+
+...
+
+memory=<link<memory-region>>
+
+...
+
+start-powered-off=<bool>
+
+...
+
+   v=<bool>               - Vector operations
+   vext_spec=<str>
+
+...
+
+   zba=<bool>             -  (default: true)
+   zbb=<bool>             -  (default: true)
+   zbc=<bool>             -  (default: true)
+   zbkb=<bool>            -  (default: false)
+
+...
+
+"""
+
+1) IMHO, unnamed-gpio-in and start-powered-off exposing to users is 
+meaningless.
+
+2) Option like v and vext_spec doesn't output the defalut value.
+
+3) The zba=false  in command line can't reflect  in the output.
+
+That is the reason  why I want to add a new API cpu_list_props.
 
 Thanks,
-Gavin
+Zhwei
 
+>
+> Thanks,
+> drew
+>
+>> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>> ---
+>>   cpu.c                 |  2 +-
+>>   include/hw/core/cpu.h | 11 +++++++++++
+>>   softmmu/vl.c          | 35 +++++++++++++++++++++++++++++++++++
+>>   3 files changed, 47 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/cpu.c b/cpu.c
+>> index 03a313cd72..712bd02684 100644
+>> --- a/cpu.c
+>> +++ b/cpu.c
+>> @@ -257,7 +257,7 @@ void cpu_exec_initfn(CPUState *cpu)
+>>   #endif
+>>   }
+>>   
+>> -static const char *cpu_type_by_name(const char *cpu_model)
+>> +const char *cpu_type_by_name(const char *cpu_model)
+>>   {
+>>       ObjectClass *oc;
+>>       const char *cpu_type;
+>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+>> index fdcbe87352..49d41afdfa 100644
+>> --- a/include/hw/core/cpu.h
+>> +++ b/include/hw/core/cpu.h
+>> @@ -657,6 +657,17 @@ CPUState *cpu_create(const char *typename);
+>>    */
+>>   const char *parse_cpu_option(const char *cpu_option);
+>>   
+>> +/**
+>> + * cpu_type_by_name:
+>> + * @cpu_model: The -cpu command line model name.
+>> + *
+>> + * Looks up type name by the -cpu command line model name
+>> + *
+>> + * Returns: type name of CPU or prints error and terminates process
+>> + *          if an error occurred.
+>> + */
+>> +const char *cpu_type_by_name(const char *cpu_model);
+>> +
+>>   /**
+>>    * cpu_has_work:
+>>    * @cpu: The vCPU to check.
+>> diff --git a/softmmu/vl.c b/softmmu/vl.c
+>> index b0b96f67fa..bc30f3954d 100644
+>> --- a/softmmu/vl.c
+>> +++ b/softmmu/vl.c
+>> @@ -218,6 +218,15 @@ static struct {
+>>       { .driver = "virtio-vga-gl",        .flag = &default_vga       },
+>>   };
+>>   
+>> +static QemuOptsList qemu_cpu_opts = {
+>> +    .name = "cpu",
+>> +    .implied_opt_name = "cpu_model",
+>> +    .head = QTAILQ_HEAD_INITIALIZER(qemu_cpu_opts.head),
+>> +    .desc = {
+>> +        { /* end of list */ }
+>> +    },
+>> +};
+>> +
+>>   static QemuOptsList qemu_rtc_opts = {
+>>       .name = "rtc",
+>>       .head = QTAILQ_HEAD_INITIALIZER(qemu_rtc_opts.head),
+>> @@ -1140,6 +1149,21 @@ static int parse_fw_cfg(void *opaque, QemuOpts *opts, Error **errp)
+>>       return 0;
+>>   }
+>>   
+>> +static int cpu_help_func(void *opaque, QemuOpts *opts, Error **errp)
+>> +{
+>> +    const char *cpu_model, *cpu_type;
+>> +    cpu_model = qemu_opt_get(opts, "cpu_model");
+>> +    if (!cpu_model) {
+>> +        return 1;
+>> +    }
+>> +    if (!qemu_opt_has_help_opt(opts)) {
+>> +        return 0;
+>> +    }
+>> +    cpu_type = cpu_type_by_name(cpu_model);
+>> +    list_cpu_props((CPUState *)object_new(cpu_type));
+>> +    return 1;
+>> +}
+>> +
+>>   static int device_help_func(void *opaque, QemuOpts *opts, Error **errp)
+>>   {
+>>       return qdev_device_help(opts);
+>> @@ -2467,6 +2491,11 @@ static void qemu_process_help_options(void)
+>>           exit(0);
+>>       }
+>>   
+>> +    if (qemu_opts_foreach(qemu_find_opts("cpu"),
+>> +                          cpu_help_func, NULL, NULL)) {
+>> +        exit(0);
+>> +    }
+>> +
+>>       if (qemu_opts_foreach(qemu_find_opts("device"),
+>>                             device_help_func, NULL, NULL)) {
+>>           exit(0);
+>> @@ -2680,6 +2709,7 @@ void qemu_init(int argc, char **argv)
+>>       qemu_add_drive_opts(&bdrv_runtime_opts);
+>>       qemu_add_opts(&qemu_chardev_opts);
+>>       qemu_add_opts(&qemu_device_opts);
+>> +    qemu_add_opts(&qemu_cpu_opts);
+>>       qemu_add_opts(&qemu_netdev_opts);
+>>       qemu_add_opts(&qemu_nic_opts);
+>>       qemu_add_opts(&qemu_net_opts);
+>> @@ -2756,6 +2786,11 @@ void qemu_init(int argc, char **argv)
+>>               case QEMU_OPTION_cpu:
+>>                   /* hw initialization will check this */
+>>                   cpu_option = optarg;
+>> +                opts = qemu_opts_parse_noisily(qemu_find_opts("cpu"),
+>> +                                               optarg, true);
+>> +                if (!opts) {
+>> +                    exit(1);
+>> +                }
+>>                   break;
+>>               case QEMU_OPTION_hda:
+>>               case QEMU_OPTION_hdb:
+>> -- 
+>> 2.17.1
+>>
 
