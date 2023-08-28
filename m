@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F94178B017
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5824F78B040
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:30:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qabKn-0003Q9-1r; Mon, 28 Aug 2023 08:27:09 -0400
+	id 1qabNM-0004Qh-9E; Mon, 28 Aug 2023 08:29:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qabKl-0003Pn-Hp
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:27:07 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qabNK-0004QS-MC
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:29:46 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qabKh-0007eW-1z
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:27:07 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6bcb15aa074so1753008a34.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:27:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qabNI-00081P-Fz
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:29:46 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40061928e5aso29263615e9.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:29:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693225621; x=1693830421;
+ d=linaro.org; s=google; t=1693225783; x=1693830583;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=H7NxiZR4++EfMQARBoQq4q/9eXCyxZgKbBrQQ80aYSA=;
- b=MC1shtUMeyihU3XUHdLCQRjGJVDLoPJQ9ZKu3w2jmBJzGccXPqlZVeKXeUXx/a6hjc
- gylqTLF1adYpzj+8IN6pKnId8IWTIUijRcYoDxONlEGJ9WIFyrxGmB3q3+Q41h10erEn
- tY1yZzC3sU6aiWK/exf7mAQotclATVvJqH/42CVd3nZmaarKhPLps1IHTLo8KvNyn7cJ
- An/u/AObRKcLCcbphTPEv1WH/0hfpRU0g30hr2DqsbjGI6AO7L6Fqgfn/xj1dzmIjnDA
- e6+9N2b+ORiKMeycFI6sAcG9QB5/piRIusbSy3TnKtpr32sJWBPFG+IC7eUFGYgiKFxm
- VWSA==
+ bh=Fm+LhOneseJKjCTd8Jbqjv3FFvyUGODXCCGQgoDG6o0=;
+ b=bvY7j3WINXbpYgbhMjgjJZbOuG1EadFMNko5Fw/0K2U6T3l8kBVewDhwhE139vEdbk
+ zCFzUxX9LBSEIGjTtzKREsGIcAKhHuy7yjwKdPMxeAiZQb2SKyLJAnVbzPIHykJ95Vpe
+ K8s6lTjnUO25XMBjUILjpQyHRDfYrq9iiN0CknEn1OW6V/0RUS3to8zSDv9ntwGfXcgz
+ Q8sZrK38f+GKxWt/PJ/FkqrqtLG8zhdmgsJEQ9dg+M1bhw8XCjzKyZDzZezk7I3NXgGI
+ 9eBOw50gbkokx0aFjPJOtEj05VkgmSPLGOkTdqfUuVK5W+gVUEhdVXusVdk3v/cPncU1
+ mLPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693225621; x=1693830421;
+ d=1e100.net; s=20221208; t=1693225783; x=1693830583;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H7NxiZR4++EfMQARBoQq4q/9eXCyxZgKbBrQQ80aYSA=;
- b=lju3GAAGN/Pt20bKoPBzVSLXDalaGoXV6Rp76Ri1ZEMGBcFx6sML378rg52RFwZ+Dr
- hl0GbGQXg3v6wVC5nayv5wYK4Bwo5NshAdrrTuEybsG14NHdqiJ5+uDQCsBRvfWpxn2e
- VHGaX+bazyU7TxZ5BTQeI8eh6OZU42bApcZCMGuiwXMoOc3pInHHi5xkHqSb1uKs1G5J
- s3HRWezcTDIGnyuYA3XymROdKa98FBUJpGnjLgaJAyONc4wpw6Q+JF2ltDz0gq4FXKcH
- uVkYZiabkAFCIpk4SEnLeSMNnFfeCJS24wIraRj/Wd595EVBAUShmuaVKqldKZgkTAF1
- lDPg==
-X-Gm-Message-State: AOJu0Yw7Ky17XNFN6L1/s7slQctwIkGdHHTPBFBRdensxsHQ/P8FqELI
- +4vwaEP8xJEXC1rMnKsbcUynpA==
-X-Google-Smtp-Source: AGHT+IFlgm8kQg8Qm/M++NO+J8D9+SBd88+BMLFhfme0hBXKdYI85D4nHsMYiFimLFRPIVG6WQQ8SQ==
-X-Received: by 2002:a05:6830:440f:b0:6bd:cb3c:d413 with SMTP id
- q15-20020a056830440f00b006bdcb3cd413mr6662174otv.4.1693225621389; 
- Mon, 28 Aug 2023 05:27:01 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
+ bh=Fm+LhOneseJKjCTd8Jbqjv3FFvyUGODXCCGQgoDG6o0=;
+ b=YWvE36PAllUsF7r6S64QC44luxo0n4Jzsp3VwzU90bYPB/l9iU4llWEDnf6WIxPyOj
+ qJIKmkk14yffbCr4FomjQbdt2zga/57YCCn+TroyPpYozhQESTB5VSZrq9tFP+XyaIME
+ n/bhibVv4fGa8HSYioj19S8RcGkIuuX5K8rPRH64D5lg31Vccc84oZdU8d/wszsFsxJb
+ sPkga5wKa11yGIXWyUMbtF/9qXqQyBLxNw7vO5LLYLSRwfz+z6+MRFA/vcSJ5GduHtrN
+ QAMQNTk66MlJ8N5uY52NkAkY937pF6Lcl2TikClOzSzOh59/pB5OV8Rlkl7bNyrWyxXv
+ bClQ==
+X-Gm-Message-State: AOJu0Yw30WSg3uSRIlNTu+JdRIH9Sqd8yRbpebaaj/2bChPN4vM1WvRM
+ kTZT1sKqTjy6JTpXe2wgGvoqQdCH2is+MxH9bAc=
+X-Google-Smtp-Source: AGHT+IHqU/DygJ2TPrz/uA0YolcK+xBNB/CvlUEtHmIk+foTHU+v5KJkJNvud6oHbk8VQq6qQemYVw==
+X-Received: by 2002:a7b:cc8c:0:b0:401:c52c:5ed9 with SMTP id
+ p12-20020a7bcc8c000000b00401c52c5ed9mr3570051wma.32.1693225782885; 
+ Mon, 28 Aug 2023 05:29:42 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- k24-20020a9d7618000000b006b9734b9fafsm3406064otl.13.2023.08.28.05.26.57
+ z12-20020a1c4c0c000000b003fed78b03b4sm10506971wmf.20.2023.08.28.05.29.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 05:27:01 -0700 (PDT)
-Message-ID: <ad99c802-968a-4791-0007-417980a05caf@ventanamicro.com>
-Date: Mon, 28 Aug 2023 09:26:54 -0300
+ Mon, 28 Aug 2023 05:29:42 -0700 (PDT)
+Message-ID: <bcd40311-d5b8-3f15-1b18-512e920d9907@linaro.org>
+Date: Mon, 28 Aug 2023 14:29:40 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v2 4/6] target/riscv: Add default value for misa
- property
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 08/11] target/tricore: Fix RCPW/RRPW_INSERT insns for
+ width = 0
 Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, pbonzini@redhat.com, berrange@redhat.com,
- richard.henderson@linaro.org, laurent@vivier.eu, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- qemu-riscv@nongnu.org
-References: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
- <20230828084536.231-5-zhiwei_liu@linux.alibaba.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230828084536.231-5-zhiwei_liu@linux.alibaba.com>
+To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-devel@nongnu.org
+Cc: anton.kochkov@proton.me, richard.henderson@linaro.org
+References: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
+ <20230828112651.522058-9-kbastian@mail.uni-paderborn.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230828112651.522058-9-kbastian@mail.uni-paderborn.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -100,62 +94,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 8/28/23 05:45, LIU Zhiwei wrote:
-> Before this patch,
-> "
-> qemu-system-riscv64 -device rv64-riscv-cpu,v=true,help
+On 28/8/23 13:26, Bastian Koppelmann wrote:
+> we would crash if width was 0 for these insns, as tcg_gen_deposit() is
+> undefined for that case. For TriCore, width = 0 is a mov from the src reg
+> to the dst reg, so we special case this here.
 > 
-> ...
-> v=<bool>               - Vector operations
-> ...
-> 
-> "
-> 
-> After this patch,
-> "
-> v=<bool>               - Vector operations (default: false)
-> "
-> 
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 > ---
+>   target/tricore/translate.c          | 10 ++++++++--
+>   tests/tcg/tricore/asm/macros.h      | 15 +++++++++++++++
+>   tests/tcg/tricore/asm/test_insert.S |  9 +++++++++
+>   3 files changed, 32 insertions(+), 2 deletions(-)
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->   target/riscv/cpu.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index c2f102fae1..38838cd2c0 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1728,6 +1728,7 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->       int i;
->   
->       for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
-> +        ObjectProperty *op;
->           RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
->           int bit = misa_cfg->misa_bit;
->   
-> @@ -1739,14 +1740,13 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->               continue;
->           }
->   
-> -        object_property_add(cpu_obj, misa_cfg->name, "bool",
-> -                            cpu_get_misa_ext_cfg,
-> -                            cpu_set_misa_ext_cfg,
-> -                            NULL, (void *)misa_cfg);
-> +        op = object_property_add(cpu_obj, misa_cfg->name, "bool",
-> +                                 cpu_get_misa_ext_cfg,
-> +                                 cpu_set_misa_ext_cfg,
-> +                                 NULL, (void *)misa_cfg);
->           object_property_set_description(cpu_obj, misa_cfg->name,
->                                           misa_cfg->description);
-> -        object_property_set_bool(cpu_obj, misa_cfg->name,
-> -                                 misa_cfg->enabled, NULL);
-> +        object_property_set_default_bool(op, misa_cfg->enabled);
->       }
->   }
->   
 
