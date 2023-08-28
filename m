@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B078BADF
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 790F478BAE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qakUb-00060o-O9; Mon, 28 Aug 2023 18:13:53 -0400
+	id 1qakUe-00062K-9y; Mon, 28 Aug 2023 18:13:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUW-0005yM-1P
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:48 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUc-00061N-8J
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:54 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUR-0004BD-LU
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:47 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-401d10e3e54so6481995e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:13:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUY-0004DY-8I
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:53 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a57b6so33519705e9.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:13:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693260822; x=1693865622;
+ d=linaro.org; s=google; t=1693260828; x=1693865628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IN4el0RliSrzkh7KHsSv/rXBGURrc4tnh8maqpcPsQs=;
- b=SoA0P07CJHcoBlo+OVKtKcmWcbeJo1xzdqqXYAbEldUmDBslirlyE15F+kOrbIhktr
- Gflu+46j1WuzxmYHOp1Mgl4mI2USNeEIhrrKTWMrXDslSm3wnooQbhJBsHb0QvQ9Cd6m
- zHRy75mKmNSCG6sy6Mbxsx+PP8+fGNqSV+bZ/1fBC1WzFpdiNtuJxcyP6Bzu8xWcMRDM
- iiZoi/HFdFMiLFPG58trqNbUiBWLSeDOTbJkHNNWxXwrGNr5ApCgnU3idCINPGrXk0h4
- 3/8XXlYVQo4YplvWath/3L4nWe98JcUCVOuVCoZXHu9x1FvVkEA7W9zA4rkV4lPlGs1k
- pH+g==
+ bh=STcIHwCIBIKUCaEpCEknsa0AU+E9EbnqQ4Grrl8BIeU=;
+ b=sx/Ti0MzB4D+mnn4vcd1ju1B/lQqGn8iyX9DEPQlsXmjszhY64zs96kVSsZcyC8fn6
+ NDU4Jgj/ZFceaAB7D8VQjXf/8+lZfjxWj/CmaN/dwUYLATGx87WYoO88S6kcdjSWpesu
+ Yn/bUCrFJdJ3GXaDZdkxlyoNZYGQa4MUZHQTxGw5h236QH4iqrjhZXrnGZGgxiYqeV2Z
+ 5V94rtejl6DY4ItCtOkT+YR2iz1pubOm5UjkSYSY35JsfX4O87ziYVM7iKd7a3MjlVT7
+ 5r8kwkLEgIsrxsvstfiA2EHVfPdra0J6enS0CFqXCOEUVbsLN3Qdv8iY+zmIx/VgmJl2
+ 5aCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693260822; x=1693865622;
+ d=1e100.net; s=20221208; t=1693260828; x=1693865628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IN4el0RliSrzkh7KHsSv/rXBGURrc4tnh8maqpcPsQs=;
- b=MR1egpFtjACM3JISIQYud31IiPQAmNqiHjtcnlN99GQvjY+gHqGg7F8MUBNARZb2Zo
- SkhwIrciXhW4Nl/nwHGNbP7rxXPpdmnKJaeH2OiBnZl45SiUsMH80WNKu0tAyIzRD6tL
- AEZSLehzEhbf13hzZ7zDS/Em+XUaM/xIsY/Vx94/VnkQ51SbddkHf2NaQaH8lvE9iEy1
- YQO36nOvEEaskiaTPNx86Xspkw+cudfjMsezX37Q21UeGrMRpizP5ucO+PwsS1nLRq3+
- uQBrRJoltJyzH7KOoaWphfcVfpDFf4oxdSfsd8L1QFpdXALpIsXLiqUOKfmQws5HxaGr
- JgAA==
-X-Gm-Message-State: AOJu0YyUO82iEuFpa5tx6/ISRLLazTA7JDN5qZJpatY0gSWQBRACvxzU
- izw0v2AI1oyRYuCZUIWeStS4Ax1aCOxhEQ1/UBw=
-X-Google-Smtp-Source: AGHT+IEqvZIiiwwYg0XXkYowBiYWiOGHnRZJ1b/6O+1rWqxKPxx3Q9uBxmEWRWhzNfO+y4uWu4ahcQ==
-X-Received: by 2002:adf:cd0e:0:b0:317:67bf:3376 with SMTP id
- w14-20020adfcd0e000000b0031767bf3376mr20406896wrm.57.1693260822226; 
- Mon, 28 Aug 2023 15:13:42 -0700 (PDT)
+ bh=STcIHwCIBIKUCaEpCEknsa0AU+E9EbnqQ4Grrl8BIeU=;
+ b=lM2JqZwhFJiiYevd0Bm4WYgoNZxf9FXLs5+XxbORYVoEffiosPqfnKRBALvf37HfQw
+ C/kzFjETf03zORASpyuMrwfbB4AL/OvR2UIkBVUA6HwYUPkxEeH/+yofKolb8zrFHMEd
+ VtpHagffkvyx8DtW1jW+lYoKkzd9CipNE9VUD+/tvrwskKdsaezwodab8OAu9mqYxiQw
+ tihVKEQTPVVveWJp2Um2SlUQWyoU8OyHeie5cNDF7PeduOunUGLIAJiw6vHVx5krbN3d
+ aJ8MatZ/Nib3hYzI2WMhtyKad9qSkcFwHdLl6Tf9kcWJyt66FB8irpViRd9S21KLCu/U
+ op4w==
+X-Gm-Message-State: AOJu0Yzbdezu/jet81HwQ5l5cdOUvizkcFCHPTCftpwkP6ozyAaG2GK1
+ JyeUrliN99qQVnknRvNFX8PExhC5cHf9PSehoIA=
+X-Google-Smtp-Source: AGHT+IE/tAFoSsquEvYWcpYmxVcv1YgIcYx6nr2FcYU7DyKfrj5kr6yBJ7DN7sXe47CAgXsufLvGJw==
+X-Received: by 2002:a7b:c4d3:0:b0:3fb:feb0:6f40 with SMTP id
+ g19-20020a7bc4d3000000b003fbfeb06f40mr21915514wmk.11.1693260828802; 
+ Mon, 28 Aug 2023 15:13:48 -0700 (PDT)
 Received: from m1x-phil.lan ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- y3-20020adfe6c3000000b0031c5ce91ad6sm11720207wrm.97.2023.08.28.15.13.40
+ z10-20020a7bc7ca000000b003fe1fe56202sm12031404wmk.33.2023.08.28.15.13.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 28 Aug 2023 15:13:41 -0700 (PDT)
+ Mon, 28 Aug 2023 15:13:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 04/11] target/translate: Remove unnecessary
- 'exec/cpu_ldst.h' header
-Date: Tue, 29 Aug 2023 00:13:07 +0200
-Message-ID: <20230828221314.18435-5-philmd@linaro.org>
+Subject: [PATCH v2 05/11] target/translate: Restrict 'exec/cpu_ldst.h' to user
+ emulation
+Date: Tue, 29 Aug 2023 00:13:08 +0200
+Message-ID: <20230828221314.18435-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828221314.18435-1-philmd@linaro.org>
 References: <20230828221314.18435-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,145 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All these files only access the translator_ld/st API declared
-in "exec/translator.h". The CPU ld/st API from declared in
-"exec/cpu_ldst.h" is not used, remove it.
+Only handle_sigsegv_accerr_write(), declared with user
+emulation, requires "exec/cpu_ldst.h" (for the abi_ptr
+typedef).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/alpha/translate.c      | 1 -
- target/hexagon/translate.c    | 1 -
- target/hppa/translate.c       | 1 -
- target/m68k/translate.c       | 1 -
- target/microblaze/translate.c | 1 -
- target/nios2/translate.c      | 1 -
- target/openrisc/translate.c   | 1 -
- target/ppc/translate.c        | 1 -
- target/sh4/translate.c        | 1 -
- target/sparc/translate.c      | 1 -
- 10 files changed, 10 deletions(-)
+ include/exec/exec-all.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 0839182a1f..9be912c50c 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -24,7 +24,6 @@
- #include "qemu/host-utils.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
--#include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 708339198e..c00254e4d5 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -23,7 +23,6 @@
- #include "exec/helper-gen.h"
- #include "exec/helper-proto.h"
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index d02517e95f..b2f5cd4c2a 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -21,7 +21,7 @@
+ #define EXEC_ALL_H
+ 
+ #include "cpu.h"
+-#ifdef CONFIG_TCG
++#if defined(CONFIG_USER_ONLY)
+ #include "exec/cpu_ldst.h"
+ #endif
  #include "exec/translation-block.h"
--#include "exec/cpu_ldst.h"
- #include "exec/log.h"
- #include "internal.h"
- #include "attribs.h"
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index e3af668252..c04dc15228 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -23,7 +23,6 @@
- #include "qemu/host-utils.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
--#include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 15b3701b8f..9e224fe796 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -25,7 +25,6 @@
- #include "tcg/tcg-op.h"
- #include "qemu/log.h"
- #include "qemu/qemu-print.h"
--#include "exec/cpu_ldst.h"
- #include "exec/translator.h"
- 
- #include "exec/helper-proto.h"
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 7e7f837c63..d02c16296a 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -24,7 +24,6 @@
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
- #include "exec/helper-proto.h"
--#include "exec/cpu_ldst.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
- #include "qemu/qemu-print.h"
-diff --git a/target/nios2/translate.c b/target/nios2/translate.c
-index 4264c7ec6b..dfc546d3bb 100644
---- a/target/nios2/translate.c
-+++ b/target/nios2/translate.c
-@@ -29,7 +29,6 @@
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/log.h"
--#include "exec/cpu_ldst.h"
- #include "exec/translator.h"
- #include "qemu/qemu-print.h"
- #include "semihosting/semihost.h"
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index 7c6f80daf1..d65758449f 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -26,7 +26,6 @@
- #include "qemu/log.h"
- #include "qemu/bitops.h"
- #include "qemu/qemu-print.h"
--#include "exec/cpu_ldst.h"
- #include "exec/translator.h"
- 
- #include "exec/helper-proto.h"
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 74796ec7ba..49b6a757b7 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -27,7 +27,6 @@
- #include "tcg/tcg-op-gvec.h"
- #include "qemu/host-utils.h"
- #include "qemu/main-loop.h"
--#include "exec/cpu_ldst.h"
- 
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 49c87d7a01..c1e590feb3 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -22,7 +22,6 @@
- #include "disas/disas.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
--#include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index fa80a91161..3bf0ab8135 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -25,7 +25,6 @@
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
- #include "tcg/tcg-op.h"
--#include "exec/cpu_ldst.h"
- 
- #include "exec/helper-gen.h"
- 
 -- 
 2.41.0
 
