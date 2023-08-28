@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBAA78B492
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C155678B4C0
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:50:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaeH0-0002EH-D7; Mon, 28 Aug 2023 11:35:26 -0400
+	id 1qaeTz-0005uy-W5; Mon, 28 Aug 2023 11:48:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qaeGx-0002Dv-QT
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:35:23 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaeTx-0005tw-19
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:48:49 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qaeGv-0001QR-67
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:35:23 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-6bca5d6dcedso2622686a34.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 08:35:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaeTu-000487-Hc
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:48:48 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-313e742a787so2105936f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 08:48:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693236920; x=1693841720;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1693237725; x=1693842525;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qpdUjmkx4SYMchRsBu1q7VqBWSPgpL5+vPbbRAqUrzQ=;
- b=GhX/aPh1RnW10+yS8sQClJs9NnRQg66WncEgctUNPogjL3GMOz5axzyw9FyVSnbuVj
- 2W6Mfa26SE9YIsZrm4tEPdYSwr4XpfHrIJLZnROWjFV9LvxoEhTgBL+5zcnvITpUZX54
- uF+SNPD4keSV936ozwmsWzECrEg9Pyn2zCHcLGxg20bYfOOC+V5WBRLhd+VxetZ4HEvr
- d/pXfqglM4nbJG1hNDzwBfCY9YQA7oNI6HjgAE3Sdym/qozwTb1l4K/SEWTSSYnP+Bfg
- CsYL4sJf964msJpJhuN0q/sWT2bnIfk87KspE+FesH45f4A0twFP6UOZGeb8uIW/Qj4H
- oiGw==
+ bh=yGkbhu7L5tIW2RuSrStsNpoDWicOkl4ffRZJpNln4sE=;
+ b=Uy7CMmu6mAMEIs57SdhggS/HonujQtX8LGa3O2gDp2R7nJTxKqI4wHn3Z9KCIfYUU6
+ iRS6fBxFZlL+0002I43W37AWheUA1/UJbjIcnwpVhaExODJPRPKE+mfYqakZs2AVbrZu
+ sWmAcAGLn/1YyAt95Uzpc5TjEh0AjpagEgRKJcTvwcN4bhe+oFwIi7kkAoOZO+4g6F+A
+ K0G+/Zakq5TBcQhRMv4o73J6p3ha95/ke2nB/4ujc123JKZ2gufGG31oLUSIM47QnKoM
+ qbG4tXrC7rTydqXEkNCU4ip/3699DqqqFpGQat08kKXzUiSYnvACux7pDyE/cEOtuFOG
+ /Yfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693236920; x=1693841720;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693237725; x=1693842525;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qpdUjmkx4SYMchRsBu1q7VqBWSPgpL5+vPbbRAqUrzQ=;
- b=Py03ko4jqfsRui3HYt1Xl1LPALWrXfcFWCxQRWlrL60lWF8JxNgXsmy/fQqIQ3Z8AB
- cdbcmZ9qFvHZx+iELaFludkfyNhbeVuC4oAEPbB82G3nUhljx4+og8HFVWc5MqqfNBW8
- i/YL88ixSq6X6No6ymepIS106ML2sQRcrYtO3IKIRxXORuWtnUb5OWmSrlxJ7OWqt21/
- KlgulBK2OuYhMKhQzuL1RY5HqjMdaTwx4rTQIiGfW8hTF0Z7gUwHD5WlnKCV43LBx8it
- drL7TBhBPlftPnj2sMQEwXpKbFUmXXY+bdWhkhuITaaFK++hfP9rquRPrTZMGyPReBHb
- Bsfg==
-X-Gm-Message-State: AOJu0Yz8yEBStcqiNIajPMUBynjjoKEguBk7w2wgqW8KE5LWR4QrRx36
- YYLfacOUkbG4tbt8sskJivBJqg==
-X-Google-Smtp-Source: AGHT+IExJiWvIRwVJmtoE2H/UL55375wycJNB/4RJusKKUztFsieR9sXgwtN2TwphB9bvY6mkw3QQg==
-X-Received: by 2002:a05:6830:e06:b0:6bc:fab5:e996 with SMTP id
- do6-20020a0568300e0600b006bcfab5e996mr13144820otb.31.1693236919922; 
- Mon, 28 Aug 2023 08:35:19 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
+ bh=yGkbhu7L5tIW2RuSrStsNpoDWicOkl4ffRZJpNln4sE=;
+ b=KrvuwxRZiagqjdUXTz8a0ut7CHp0/8gaWSoD+TNakOE4eyv+3y4Y1bagkvoXS3e2VR
+ tH/9xhXx7nnxK/nBbK9whomH6g0WYVnfkgnJZPvhgzLRz5G0jwnmraxUYK45mDo6bi7n
+ FZ16J4SBXv4rv3puuhCATX+lpyTbpF8KHg9Wqi7r0m5A6uv8Uhankd8O+A46Tak5igli
+ 632ibj9xqy9sTH5dhXgYC6WK1wsBvJ8MWUgeNcnASCQ9QYHdEJ2hnxtiflkb3TCL+W3i
+ IUq2FyslorHJRLzJhLqqquMK2rcKwYFRtN7qEzpbOV7uCMqc94xFIT24VL0Zq0mIE2o4
+ 3dhw==
+X-Gm-Message-State: AOJu0YwQAUfEDIbewIaeIRqebklo+j5rh+UbYTln6eITMJHpnNDp59m4
+ jUA9lRNwMoKiMFZjoW8gPMD1LA==
+X-Google-Smtp-Source: AGHT+IGIOkyPOnnRcNsKQGf40NbEmigr4TKrlTe79H8SqQYkQXl3jlLi+2JBIhJuxX0xDSQKdL5hjA==
+X-Received: by 2002:a5d:49cd:0:b0:317:5efa:c46a with SMTP id
+ t13-20020a5d49cd000000b003175efac46amr3451wrs.27.1693237724635; 
+ Mon, 28 Aug 2023 08:48:44 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- i26-20020a9d68da000000b006af7580c84csm3539484oto.60.2023.08.28.08.35.15
+ z8-20020adff1c8000000b0031c612146f1sm10749369wro.100.2023.08.28.08.48.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 08:35:19 -0700 (PDT)
-Message-ID: <84d2bb7c-aa4b-0965-1417-04b0f489683b@ventanamicro.com>
-Date: Mon, 28 Aug 2023 12:35:13 -0300
+ Mon, 28 Aug 2023 08:48:44 -0700 (PDT)
+Message-ID: <665924a0-dec5-cfe1-6d97-0021036b8723@linaro.org>
+Date: Mon, 28 Aug 2023 17:48:41 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v2 0/6] Add API for list cpu extensions
-To: Igor Mammedov <imammedo@redhat.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- philmd@linaro.org, wangyanan55@huawei.com, pbonzini@redhat.com,
- berrange@redhat.com, richard.henderson@linaro.org, laurent@vivier.eu,
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org,
- Jiri Denemark <jdenemar@redhat.com>, Tim Wiederhake <twiederh@redhat.com>
-References: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
- <20230828155828.561dc83e@imammedo.users.ipa.redhat.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 1/3] hw/mips/jazz: Remove the big_endian variable
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230828155828.561dc83e@imammedo.users.ipa.redhat.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-trivial@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230825175123.624114-1-thuth@redhat.com>
+ <20230825175123.624114-2-thuth@redhat.com>
+ <94cb7c35-39f7-0108-d623-78435a5e7fee@linaro.org>
+ <0b618261-b056-ff46-061c-7a0845e58ea9@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <0b618261-b056-ff46-061c-7a0845e58ea9@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -101,119 +98,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 8/28/23 10:58, Igor Mammedov wrote:
-> On Mon, 28 Aug 2023 16:45:30 +0800
-> LIU Zhiwei <zhiwei_liu@linux.alibaba.com> wrote:
+On 28/8/23 14:41, Thomas Huth wrote:
+> On 28/08/2023 14.19, Philippe Mathieu-Daudé wrote:
+>> Hi Thomas,
+>>
+>> On 25/8/23 19:51, Thomas Huth wrote:
+>>> There is an easier way to get a value that can be used to decide
+>>> whether the target is big endian or not: Simply use the
+>>> target_words_bigendian() function instead.
+>>>
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   hw/mips/jazz.c | 10 ++--------
+>>>   1 file changed, 2 insertions(+), 8 deletions(-)
+>>
+>>
+>>> @@ -157,12 +157,6 @@ static void mips_jazz_init(MachineState *machine,
+>>>           [JAZZ_PICA61] = {33333333, 4},
+>>>       };
+>>> -#if TARGET_BIG_ENDIAN
+>>> -    big_endian = 1;
+>>> -#else
+>>> -    big_endian = 0;
+>>> -#endif
+>>> -
+>>>       if (machine->ram_size > 256 * MiB) {
+>>>           error_report("RAM size more than 256Mb is not supported");
+>>>           exit(EXIT_FAILURE);
+>>> @@ -301,7 +295,7 @@ static void mips_jazz_init(MachineState *machine,
+>>>               dev = qdev_new("dp8393x");
+>>>               qdev_set_nic_properties(dev, nd);
+>>>               qdev_prop_set_uint8(dev, "it_shift", 2);
+>>> -            qdev_prop_set_bit(dev, "big_endian", big_endian > 0);
+>>> +            qdev_prop_set_bit(dev, "big_endian", 
+>>> target_words_bigendian());
+>>
+>> IIRC last time I tried that Peter pointed me at the documentation:
+>>
+>> /**
+>>   * target_words_bigendian:
+>>   * Returns true if the (default) endianness of the target is big endian,
+>>   * false otherwise. Note that in target-specific code, you can use
+>>   * TARGET_BIG_ENDIAN directly instead. On the other hand, common
+>>   * code should normally never need to know about the endianness of the
+>>   * target, so please do *not* use this function unless you know very
+>>   * well what you are doing!
+>>   */
+>>
+>> (Commit c95ac10340 "cpu: Provide a proper prototype for
+>>   target_words_bigendian() in a header")
+>>
+>> Should we update the comment?
 > 
->> Some times we want to know what is the really mean of one cpu option.
->> For example, in RISC-V, we usually specify a cpu in this way:
->> -cpu rv64,v=on
->>
->> If we don't look into the source code, we can't get the ISA extensions
->> of this -cpu command line.
->>
->> In this patch set, we add one list_cpu_props API for common cores. It
->> will output the enabled ISA extensions.
->>
->> In the near future, I will also list all possible user configurable
->> options and all possible extensions for this cpu.
->>
->> In order to reuse the options parse code, I also add a QemuOptsList
->> for cpu.
->>
->> After this patch, we can output the extensions for cpu,
->> """
->> ./qemu-system-riscv64 -cpu rv64,help
->> Enabled extensions:
->>      rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zba_zbb_zbc_zbs_sstc_svadu
-> 
-> It's not that easy to get features with values in general.
-> (many factors influence defaults, which may include:
->   * properties set and/or added at realize time
->   * defaults amended by machine type version
->   * defaults amended by -global CLI options
-> )
-> 
-> To do that consensus was to query features after CPU object is realized.
-> Typically that implies starting dummy QEMU with needed CPU model and
-> then using query-cpu-model-expansion command to get actual property values.
+> What would you change? My motivation here was mainly to decrease the 
+> size of the code - I think it's way more complicated via the #if + extra 
+> variable compared to simply calling target_words_bigendian(), isn't it? 
+> I think the diffstat says it all...
 
-FWIW I have a working prototype of the query-cpu-model-expansion for RISC-V.
-I'll send it to the ML when I'm done smoothing the rough edges (hopefully
-end of this week).
+Is the comment misleading then? Why not decrease the code
+size using target_words_bigendian() in all the similar cases?
 
+$ git grep -A4 'if TARGET_BIG_ENDIAN' hw/
 
->   
-> The task is solved by implementing query-cpu-model-expansion
-> command so that user (mainly management layer) could get defaults via QMP.
-> So if your goal is to get the given cpu defaults to mgmt layer
-> it is sufficient to implement query-cpu-model-expansion command for riscv.
-> (CC-ing libvirt folks to see if it picks up the command
-> automatically for every target or some more work would be needed
-> on their side as well)
-> 
-> PS:
-> no one cared about making -cpu name,help working till this moment
-> and certainly not for linux-user part.
-> 
-> To make this option work reliably it's would be necessary to make sure
-> that query-cpu-model-expansion work in user mode as well.
+hw/microblaze/boot.c:145:#if TARGET_BIG_ENDIAN
+hw/microblaze/boot.c-146-        big_endian = 1;
+hw/microblaze/boot.c-147-#endif
+--
+hw/mips/jazz.c:160:#if TARGET_BIG_ENDIAN
+hw/mips/jazz.c-161-    big_endian = 1;
+hw/mips/jazz.c-162-#else
+hw/mips/jazz.c-163-    big_endian = 0;
+hw/mips/jazz.c-164-#endif
+--
+hw/mips/malta.c:378:#if TARGET_BIG_ENDIAN
+hw/mips/malta.c-379-        val = 0x00000012;
+hw/mips/malta.c-380-#else
+hw/mips/malta.c-381-        val = 0x00000010;
+hw/mips/malta.c-382-#endif
+--
+hw/mips/malta.c:631:#if TARGET_BIG_ENDIAN
+hw/mips/malta.c-632-#define cpu_to_gt32(x) (x)
+hw/mips/malta.c-633-#else
+hw/mips/malta.c-634-#define cpu_to_gt32(x) bswap32(x)
+hw/mips/malta.c-635-#endif
+--
+hw/mips/malta.c:881:#if TARGET_BIG_ENDIAN
+hw/mips/malta.c-882-    big_endian = 1;
+hw/mips/malta.c-883-#else
+hw/mips/malta.c-884-    big_endian = 0;
+hw/mips/malta.c-885-#endif
+--
+hw/mips/malta.c:1147:#if TARGET_BIG_ENDIAN
+hw/mips/malta.c-1148-    be = 1;
+hw/mips/malta.c-1149-#else
+hw/mips/malta.c-1150-    be = 0;
+hw/mips/malta.c-1151-#endif
+--
+hw/mips/mipssim.c:67:#if TARGET_BIG_ENDIAN
+hw/mips/mipssim.c-68-    big_endian = 1;
+hw/mips/mipssim.c-69-#else
+hw/mips/mipssim.c-70-    big_endian = 0;
+hw/mips/mipssim.c-71-#endif
+--
+hw/nios2/boot.c:153:#if TARGET_BIG_ENDIAN
+hw/nios2/boot.c-154-        big_endian = 1;
+hw/nios2/boot.c-155-#endif
+--
+hw/xtensa/sim.c:99:#if TARGET_BIG_ENDIAN
+hw/xtensa/sim.c-100-    int big_endian = true;
+hw/xtensa/sim.c-101-#else
+hw/xtensa/sim.c-102-    int big_endian = false;
+hw/xtensa/sim.c-103-#endif
+--
+hw/xtensa/xtfpga.c:222:#if TARGET_BIG_ENDIAN
+hw/xtensa/xtfpga.c-223-    int be = 1;
+hw/xtensa/xtfpga.c-224-#else
+hw/xtensa/xtfpga.c-225-    int be = 0;
+hw/xtensa/xtfpga.c-226-#endif
 
-I can take a look into how much extra code we need to support
-query-cpu-model-expansion for user mode, but no promises. If it's too much
-work I'd rather implement the API as is (like ARM and x86 already does) and
-worry about supporting it for user-mode later.
+I'm just trying to be consistent. HW devices should be target
+agnostic, thus not use anything related to target endianness
+(TARGET_BIG_ENDIAN nor target_words_bigendian).
 
+Machines know about their target endianness, and can propagate
+that knowledge when creating their devices. Therefore using
+TARGET_BIG_ENDIAN / target_words_bigendian is accepted there.
+If TARGET_BIG_ENDIAN is too verbose, then let's use
+target_words_bigendian() in all machines. That said, if we
+use target_words_bigendian() in machine files, then some of
+these files can be moved from specific_ss[] to system_ss[].
 
-Thanks,
+So within hw/ I'd restrict target_words_bigendian() use to
+MachineClass::init() handlers, and prohibit TARGET_BIG_ENDIAN
+from hw/. Only use in softmmu/, target, *-user/. If we agree
+we can rewrite the comment, removing the "do *not* use this
+function unless you know very well what you are doing!" which
+is hard to interpret IMHO.
 
-Daniel
+Regards,
 
-
-> 
-> Also the timing when 'help' is processed should ensure that
-> machine is available/initialized (i.e. compat properties are in effect)
-> 
-> Once you have working query-cpu-model-expansion, your new -cpu foo,help handler
-> can translate json to human readable format that everyone would agree upon.
-> 
->> To get all configuable options for this cpu, use -device rv64-riscv-cpu,help
->> """
->>
->>
->> v1->v2:
->>
->> 1) Give a hint to use -device cpu,help for configualbe options on cpu
->> 2) Support list_cpu_props for linux user mode
->> 3) Add default to some properties to make -device cpu,help output better
->>
->>
->> Todo:
->> 1) Fix Daniel comments on KVM and cpu option check
->> 2) Add support for other archs
->> 3) Move qdev help function from qdev-monitor to qdev-property
->>
->> LIU Zhiwei (6):
->>    cpu: Add new API cpu_type_by_name
->>    target/riscv: Add API list_cpu_props
->>    softmmu/vl: Add qemu_cpu_opts QemuOptsList
->>    target/riscv: Add default value for misa property
->>    target/riscv: Add defalut value for string property
->>    linux-user: Move qemu_cpu_opts to cpu.c
->>
->>   cpu.c                        | 63 +++++++++++++++++++++++++++++-------
->>   hw/core/qdev-prop-internal.h |  2 ++
->>   hw/core/qdev-properties.c    |  7 ++++
->>   include/exec/cpu-common.h    |  3 ++
->>   include/hw/core/cpu.h        | 11 +++++++
->>   include/hw/qdev-properties.h |  8 +++++
->>   linux-user/main.c            | 10 ++++++
->>   softmmu/vl.c                 | 11 +++++++
->>   target/riscv/cpu.c           | 30 +++++++++++++----
->>   target/riscv/cpu.h           |  2 ++
->>   10 files changed, 128 insertions(+), 19 deletions(-)
->>
-> 
+Phil.
 
