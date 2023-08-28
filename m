@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B70F78B4C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA5A78B4DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:55:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaeVY-00076R-TN; Mon, 28 Aug 2023 11:50:28 -0400
+	id 1qaeZY-0000n5-Sb; Mon, 28 Aug 2023 11:54:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaeVX-00075T-33
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:50:27 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qaeZX-0000mT-7M
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:54:35 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaeVU-0004a6-Sv
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:50:26 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31c79850df5so2902595f8f.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 08:50:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qaeZV-0005Un-3K
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:54:34 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1c4f4d67f5bso2275739fac.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 08:54:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693237823; x=1693842623;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1693238071; x=1693842871;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fB13dQzoy/cyjXqKhkaGiJLy4e+dgduX7PEnLozQMuY=;
- b=toongC+agvNjLmLASDpACR1qbwdIUrGpziAya32zA2TcYtwmH6zax4i2p5LzNwpLcB
- Eq3a9FS4s3tSkc46k4opb1B5uvQSpRQMfiuOJztOa7WNr9FbT8s32lqOHJppZ3Z2jMIF
- rk72vSFg4IXf1x2zGMA2cDC1utKGFLVaT2+57Xsj2QqTLfTNMscEUQovOyI42mDLUBRR
- PfDkTqPWnGxnoaSCbo0cSF/8DFralV+U1VzY4dBc0COkcbZo1QVSLTdu76H6/mXtTsqR
- DhRBhFTpAPlu0MgyGdnuIxAmkNva5tKaxK1AUHOWhxv3OHwqtaGWeBxXsMmhklzWoZgA
- nKXw==
+ bh=1fbJtP16mBJ0wJXx2XG2R1WgNNjD6w/JtUyfEvcwhno=;
+ b=Fc43Uqu4yVV8ouwVosyQ+rH0QMnh9f556X16sZMISRQuvC9UJ2p/OHEni5DQfeyHWD
+ nKaPqNZy1ISmEwwGuRGN64tpCfHt/l+lntUyNOUFz1yiuu7k70rASC7J70r0w/E8mG0C
+ z0+er/Y7Njtd3K01zHc3y85KNkSreAys2onXLn6EG0a5xkSlh0PamIGzIxdb4DLAp2lJ
+ g00xaa2X1uOCtFKw/elW11IeAJ/cQCgYjc5y5X7Hh/obiqagtOfARPYxPA5KAP+x5Dr/
+ PuVfgj0CpYPjgO4p1k93Z89TNoSRIdqcgoFP8sQb4RljuIns2Dl78fDuwH8wmV4tmRT2
+ T2rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693237823; x=1693842623;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693238071; x=1693842871;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fB13dQzoy/cyjXqKhkaGiJLy4e+dgduX7PEnLozQMuY=;
- b=PGBQz9NK5lTmaaIdSxJ2Q0gXX820fdqT5bv+CVL1aK2ZvpC42MQcdMeKGl73nvpycM
- 7a3Cauze/9sxr1Lvkv6nuXdGfCjk0oIakXCa8j+TMNctiOB2cm+VDGTSAwUMa+aNopft
- YRX0xjseCnq/UBicNdRF/jsF1nGSFBrfstcLVJlrc6mucelcyRmWGkAUaBlEjfjv/o9X
- 5nm2QJC7dURRXb+99d/OM8o+EIdjEV/OBmso4J0PGPIhqMlq3iILHlt4eQ1vSXjNjjNf
- Wkbqs2VBOhvmuT5+cPxxwd35DZVg5AEvh+t7gF7iDkSfyasTx22eG2i29zcFcn/O5Ks8
- 1EiQ==
-X-Gm-Message-State: AOJu0YxCeugh8wZCzmKo4/rMDvovmvKTP4vrUczqit7m0O0sTeW3gRu7
- IoxUPf1YpRV6uAE7Bb69+tUkNg==
-X-Google-Smtp-Source: AGHT+IG/KFDDJbRJ0VbWC/a+8qye5c3VfHyanJkP3sZUUCRJWvnotdtbOvDD+HW0kz9tKti5bBqu+g==
-X-Received: by 2002:adf:f08b:0:b0:315:a32d:311f with SMTP id
- n11-20020adff08b000000b00315a32d311fmr20256934wro.14.1693237823243; 
- Mon, 28 Aug 2023 08:50:23 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.201.64])
+ bh=1fbJtP16mBJ0wJXx2XG2R1WgNNjD6w/JtUyfEvcwhno=;
+ b=YsMUnXSvRo6bSAqtKo2lRF1DOygImulCB9JDc67zqmMVOkKD2U2efuND1VuGODts2g
+ jcb1dC9ZVT5G0y6wHDFvF1TQhQUGtXbaD8S68sfn6G2vQLN9ze8m/MHObBaKngWXUSU/
+ PH41J846lWpb7/DeuvSBP4m+PrqfLXKfsX1sWYoPg4q67x77VZ/fGcAWXuPF9sjtW/yW
+ hXzDFDk8wfDZquYybvBQ4sagdZS06EfHM4xRrx2DK3L6WPiEkzuaCMhod/7iOp92awTE
+ 083lsyZ39coTqaC2rKmxBuYgjoxeo6Pbjfe00nkbChFRo9tZtX/esFQ05AZXuIk13Ila
+ 1G4g==
+X-Gm-Message-State: AOJu0YwPPDMdb91GkzLnwfwMWbIkDDeMqYtiRz+ypb9AKvzn5CXzJ6JL
+ 0Ctus77FL6whmorTL4xWBx53pg==
+X-Google-Smtp-Source: AGHT+IHy6wj80ZJ3QhZdcI2KRhFltaf2kzT4DQrj+Ej0z5rpA0s1c3hZ9hInyuE43i+oe2MB+E6zrA==
+X-Received: by 2002:a05:6870:c10f:b0:1bf:77e2:95cc with SMTP id
+ f15-20020a056870c10f00b001bf77e295ccmr12929266oad.17.1693238071171; 
+ Mon, 28 Aug 2023 08:54:31 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- w4-20020a5d6804000000b0031c77c010e1sm10813899wru.96.2023.08.28.08.50.21
+ 5-20020aa79245000000b0068bbd43a6e2sm7031078pfp.10.2023.08.28.08.54.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 08:50:22 -0700 (PDT)
-Message-ID: <eda0f3ba-d000-e3e0-0edb-cba9761a89bf@linaro.org>
-Date: Mon, 28 Aug 2023 17:50:20 +0200
+ Mon, 28 Aug 2023 08:54:30 -0700 (PDT)
+Message-ID: <67472f5c-f29f-991a-c4fa-0b42aa92898f@linaro.org>
+Date: Mon, 28 Aug 2023 08:54:28 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] tests/avocado/machine_aspeed.py: Update SDK images
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] linux-user/riscv: Add new extensions to hwprobe
+To: Robbin Ehn <rehn@rivosinc.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org
+References: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- Hang Yu <francis_yuu@stu.pku.edu.cn>
-References: <20230828090101.74357-1-clg@kaod.org>
- <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
- <7930d670-8d1d-04a2-d8c8-83fa48b19681@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <7930d670-8d1d-04a2-d8c8-83fa48b19681@kaod.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -97,29 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/8/23 16:33, Cédric Le Goater wrote:
-> On 8/28/23 15:54, Joel Stanley wrote:
->> On Mon, 28 Aug 2023 at 09:01, Cédric Le Goater <clg@kaod.org> wrote:
->>>
->>> Switch to the latest v8.06 release which introduces interesting
->>> changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
->>> images instead of the default since QEMU tries to model The AST2600 A3
->>> SoC.
->>
->> Is there any value in testing both the old and the new images?
+On 8/28/23 07:56, Robbin Ehn wrote:
+> This patch adds the new extensions in
+> linux 6.5 to the hwprobe syscall.
 > 
-> For QEMU default tests, I think using the latest version of a test image
-> is just fine, or we will end up with a very long avocado test run. That
-> said we could make an exception when a HW feature is only activated in a
-> specific version.
+> And fixes RVC check to OR with correct value.
+> The previous variable contains 0 therefore it
+> did work.
 > 
-> I run pre-PR tests with more images (buildroot, mainline, sdk, openbmc,
-> provided by other vendors) but only the SDK v08.X images have decent
-> results. v07.02 and v04.05 have issues. It could be a software issue.
+> Signed-off-by: Robbin Ehn<rehn@rivosinc.com>
+> ---
+>   linux-user/syscall.c | 14 +++++++++++++-
+>   1 file changed, 13 insertions(+), 1 deletion(-)
 
-I'd rather keep all tests committed in the repository, only having the
-latest one picked up by default. That way other developer can reproduce
-maintainers pre-PR suites.
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
-My 2 cents.
+
+r~
 
