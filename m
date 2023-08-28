@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AD778BBB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2078C78BBA8
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:44:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalsQ-0003uj-7O; Mon, 28 Aug 2023 19:42:34 -0400
+	id 1qalsP-0003ug-EU; Mon, 28 Aug 2023 19:42:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalsH-0003se-GP
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalsH-0003sj-IM
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:26 -0400
-Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qals6-0006qY-Up
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qals6-0006qf-Ud
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:19 -0400
-Received: by mail-io1-xd35.google.com with SMTP id
- ca18e2360f4ac-79241bb5807so136357039f.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:42:10 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-34992fd567bso9188965ab.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:42:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266130; x=1693870930;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fr2lJgWGvnGEd848mGunRkkes2I0QZce3Voahhm5Tb0=;
- b=bTqL6yN4gMgYrvIljZedJf0SZkfVhBgwW6zBxIGj0opSeXPgE5mZvxHc8zMImCf/X9
- G+ShVuyd6zR6V6Php2/9OXb+0asVCqw8be2c3Kx/wScjtI6HpMmkFxGy+11+l5KBk45R
- rnSq/dIrqrRAJc6SA0dyK1RbX98a0xBsLjPMHv9G7EmUwEciOh6R7PP87IL1CibVuX0Q
- dQ03U6Gkpja9m1HVhxOtlxwF5QBDFMj6JLUOSmUJKpSd3ocaGTQmjo7XG+pj34T+rSBD
- 379Cc7E6noziLrs1aLO/nMN2IzAgGuu/+sD3wdf0iey/9T/sAosCVWrVZRXTg5dWacA+
- woUQ==
+ bh=N2zpTl6+Qn2qxjehwfDJexIkEUjfkShWM5RDsL7uCz4=;
+ b=49d2Rgh8YfCfzCpfD6Cvi/6P3Ziw+Xrmhr6i7e0SolZ3ZJQyjypg7eMW+xfqItoTE2
+ jw9UASR7gL/gciwNnWl4sb8/UvqEivzWEQM4MP70xE4XNLga+/z9HdM/2sqRxZwr3qRG
+ kf7Do9nSdd4IooTInCSQDxt3MjZB+K65u01fvCCNJET9pDP2Fmtk5IJAb+rsZoTN8ZsF
+ AkwEuSAHPoy7J+uJx33RKYdQkoZjr+i3y59Hr7WWptz+1Bi6Xsc7SCQkbAWUowQCLf7R
+ L4rX8bKzvdemOcYXshYOnFAX9LAEJKPKM/aSSWsgLbfxkFesnRemzde4mSXuKnIngRkf
+ 2Ang==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1693266130; x=1693870930;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fr2lJgWGvnGEd848mGunRkkes2I0QZce3Voahhm5Tb0=;
- b=hEbonbRjRCwb3USDvBQt2S30YpaQiPcUd0dAXV9+d6xAevjJhpNXkJD3vn2jtPWkBK
- ioVYZ4oP/f98lzCM6P7L2FhHd2Nzv/7DdwcD/ibO5T8fMCHUMKRDDPzG6bvY9rcyInpW
- VO3B8J6AUR8HiDPPP+uwZiIE/z2BbN08PTfLxoRDyjw+7sMkxta3hGQ6l1tGREvFdOKg
- R9R9OPQ9mzaYK5qKPNfLy2Cpp0JpqLWaNcLneKWpBVsIjk/I4c/P34COrX3fyykDlhNP
- sOf+ntL6hUrXgNFJW+E0qFgogufUakhZH4h6qAke89ZdAkFcZg6M4k5iJDkh8HDr/EMg
- mpsA==
-X-Gm-Message-State: AOJu0Yx61irMlqSfrkqzvoALkFALdKSJMKsFxFu9wMs4lsCtB9ENizD4
- 3ZK4QLDMYrzUMBIKsbxwNiHn1LdDu1S7szUIl7c=
-X-Google-Smtp-Source: AGHT+IFF0Jo0ma4ELvDcvQQkA/atoyJoLsCwGpQMtN0ixiJU45a7AbnPFDNxE+A0N/CXPlg5O6Mmuw==
-X-Received: by 2002:a05:6e02:1a4f:b0:349:8811:fc51 with SMTP id
- u15-20020a056e021a4f00b003498811fc51mr20839630ilv.20.1693266129840; 
- Mon, 28 Aug 2023 16:42:09 -0700 (PDT)
+ bh=N2zpTl6+Qn2qxjehwfDJexIkEUjfkShWM5RDsL7uCz4=;
+ b=T3FSMq0CQczQK1ewg68kUqG3lgN+BoZB075c6z4RzMbkQxcNtfxrdVaHI1WbahnN1T
+ AP68fdgKmwCFWur7Txv0zyi4QE09q1omDokRW4uLRqw2oJw0+cyQKJH7lxrkPGs9FPQy
+ hud6mVYFlqSbE8oDv1TBsOv9eTLaKq05Toe0aTuPwe94iyhdnBS0h9s0ZIATTJ6pjda8
+ 0sHUoRbHgNhW6Z2WbKDhD0sUDUdE//yKW9fONqAjO0w6p0DmXLd1Os2wsDKzFrPByGai
+ NeAv0aie5S8YdUkNm3Y8vWqrNRSNkwEtkYR4mUzsT+6EjwOvSicT2GYC6kyfjP1NcDLN
+ 9orQ==
+X-Gm-Message-State: AOJu0Yz2CkeLBYWNXtMWqnoXv3bAcr5/KqQl7bG1Sgjzjamrq2Vz8scR
+ h+UsUELd8nxeFYLb4B1vCjoXjM0DC8uusdZYoSk=
+X-Google-Smtp-Source: AGHT+IHJhKFUzYSaMsrwRUwA+ZSF6AtwiP06z/5g/t6EH6I6jeTVhU/bfbvEzpHIbtcAd5MODL+jEg==
+X-Received: by 2002:a92:c547:0:b0:348:797d:169e with SMTP id
+ a7-20020a92c547000000b00348797d169emr1309505ilj.1.1693266130634; 
+ Mon, 28 Aug 2023 16:42:10 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
  t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.42.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:42:09 -0700 (PDT)
+ Mon, 28 Aug 2023 16:42:10 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
- Karim Taha <kariem.taha2.7@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 35/36] bsd-user: Add getdents and fcntl related system calls
-Date: Mon, 28 Aug 2023 17:38:20 -0600
-Message-ID: <20230828233821.43074-36-imp@bsdimp.com>
+Subject: [PULL 36/36] bsd-user: Add missing break after do_bsd_preadv
+Date: Mon, 28 Aug 2023 17:38:21 -0600
+Message-ID: <20230828233821.43074-37-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d35;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd35.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::134;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x134.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,48 +92,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add glue to call the following syscalls to the freebsd_syscall:
-
-freebsd11_getdents
-getdirentries
-freebsd11_getdirentries
-fcntl
+Without it, we'd call preadv, then write with weird parameters, which is
+clearly not ideal...
 
 Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: 770d8abae7 ("bsd-user/bsd-file.h: Meat of the write system calls")
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Message-Id: <20230820045419.89691-1-imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-syscall.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ bsd-user/freebsd/os-syscall.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 916a754bf8b..e9b1b663af4 100644
+index e9b1b663af4..fa60df529ef 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -576,6 +576,22 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_getfsstat(arg1, arg2, arg3);
-         break;
+@@ -240,6 +240,7 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
  
-+    case TARGET_FREEBSD_NR_freebsd11_getdents: /* getdents(2) */
-+        ret = do_freebsd11_getdents(arg1, arg2, arg3);
+     case TARGET_FREEBSD_NR_preadv: /* preadv(2) */
+         ret = do_bsd_preadv(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6);
 +        break;
-+
-+    case TARGET_FREEBSD_NR_getdirentries: /* getdirentries(2) */
-+        ret = do_freebsd_getdirentries(arg1, arg2, arg3, arg4);
-+        break;
-+
-+    case TARGET_FREEBSD_NR_freebsd11_getdirentries: /* getdirentries(2) */
-+        ret = do_freebsd11_getdirentries(arg1, arg2, arg3, arg4);
-+        break;
-+    case TARGET_FREEBSD_NR_fcntl: /* fcntl(2) */
-+        ret = do_freebsd_fcntl(arg1, arg2, arg3);
-+        break;
-+
-+
-         /*
-          * sys{ctl, arch, call}
-          */
+ 
+     case TARGET_FREEBSD_NR_write: /* write(2) */
+         ret = do_bsd_write(arg1, arg2, arg3);
 -- 
 2.41.0
 
