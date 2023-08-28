@@ -2,46 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E48278AECF
+	by mail.lfdr.de (Postfix) with ESMTPS id 341A578AECC
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 13:28:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaaOq-0008CP-Rk; Mon, 28 Aug 2023 07:27:17 -0400
+	id 1qaaOq-0008CF-R4; Mon, 28 Aug 2023 07:27:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qaaOl-0008B5-Ow
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:11 -0400
+ id 1qaaOg-00086D-3z
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:06 -0400
 Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qaaOd-0002eL-Dj
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:07 -0400
+ id 1qaaOd-0002eS-Ck
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 07:27:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=225rVGk1jhvMxS/vAB4OQwbiHMKqQL94gNQN8slSQ5U=; b=PzkprlX4f0gSxUQz2wnuHO4fs0
- 3rnvfRqDRmJ2JXGHqqdFVkOI3+1cWG1g2y96AGBILPTV6LcXOToxzM+ojyGdrxNZQsnH2Wn5jXG6X
- +x0eru/HF/j2C6FGM37l0RQjRuZSM/pORws2DXWJW1h0bjikWI1QCa+6SDJVGvdK8PQ4=;
+ :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=dGE9TeJOX796Bu006/g7Lvog0itUkw50AXldm4OHUTY=; b=N7col7WVbBwxVdN16+/LEJ7T9L
+ J/xczFjZH0teJdGWja+PHNhL4RCt+j3qqKNzxv33n60FHhNPLXEHgP62zc0/m0UHg5AZCV8b5Q6Ry
+ wYEBWWBtbleoKjcVok/hpe2wYi6kzqpKekYtdA+ExrncAoXy9Y/GrCzt3GbZd2jYAviU=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: anton.kochkov@proton.me, richard.henderson@linaro.org,
  kbastian@mail.uni-paderborn.de
-Subject: [PATCH v2 00/11] TriCore 1.6.2 insn and bugfixes
-Date: Mon, 28 Aug 2023 13:26:40 +0200
-Message-ID: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v2 01/11] tests/tcg/tricore: Bump cpu to tc37x
+Date: Mon, 28 Aug 2023 13:26:41 +0200
+Message-ID: <20230828112651.522058-2-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
+References: <20230828112651.522058-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-IMT-spamd-action: add header
+X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.8.28.111817, AntiVirus-Engine: 6.0.2,
  AntiVirus-Data: 2023.8.20.602000
+X-Sophos-SenderHistory: ip=84.184.52.128, fs=17265232, da=180831084, mc=24,
+ sc=0, hc=24, sp=0, fso=17265232, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -68,58 +72,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+we don't want to exclude ISA v1.6.2 insns from our tests.
 
-this series implements the insns reported in [1], as well as ftou. Also I fixed
-two bugs in the insert insn which I came across during testing.
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+---
+ tests/tcg/tricore/Makefile.softmmu-target | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cheers,
-Bastian
-
-[1] https://gitlab.com/qemu-project/qemu/-/issues/1667
-
-v1 -> v2:
-    - Removed useless deposits in crc_div()
-    - Replaced final deposit() with extract() in helper_crcn()
-    - Add trap if not feature_162 (CRCN)
-    - Removed special case for NAN input (FTOU)
-    - Clarified why we need arg < 0.0 special case (FTOU, FTOUZ)
-    - Removed special case for f_arg being infinity (ftohp, hptof)
-    - Clarified, why we need a special case for arg being NAN (ftohp, hptof)
-
-
-Bastian Koppelmann (11):
-  tests/tcg/tricore: Bump cpu to tc37x
-  target/tricore: Implement CRCN insn
-  target/tricore: Correctly handle FPU RM from PSW
-  target/tricore: Implement FTOU insn
-  target/tricore: Clarify special case for FTOUZ insn
-  target/tricore: Implement ftohp insn
-  target/tricore: Implement hptof insn
-  target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
-  target/tricore: Swap src and dst reg for RCRR_INSERT
-  target/tricore: Replace cpu_*_code with translator_*
-  target/tricore: Fix FTOUZ being ISA v1.3.1 up
-
- target/tricore/fpu_helper.c               | 111 ++++++++++++++++++++++
- target/tricore/helper.c                   |  19 +++-
- target/tricore/helper.h                   |   4 +
- target/tricore/op_helper.c                |  63 ++++++++++++
- target/tricore/translate.c                |  56 +++++++++--
- target/tricore/tricore-opcodes.h          |   3 +
- tests/tcg/tricore/Makefile.softmmu-target |   6 +-
- tests/tcg/tricore/asm/macros.h            |  24 +++++
- tests/tcg/tricore/asm/test_crcn.S         |   9 ++
- tests/tcg/tricore/asm/test_ftohp.S        |  14 +++
- tests/tcg/tricore/asm/test_ftou.S         |  12 +++
- tests/tcg/tricore/asm/test_hptof.S        |  12 +++
- tests/tcg/tricore/asm/test_insert.S       |  14 +++
- 13 files changed, 334 insertions(+), 13 deletions(-)
- create mode 100644 tests/tcg/tricore/asm/test_crcn.S
- create mode 100644 tests/tcg/tricore/asm/test_ftohp.S
- create mode 100644 tests/tcg/tricore/asm/test_ftou.S
- create mode 100644 tests/tcg/tricore/asm/test_hptof.S
-
+diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
+index aff7c1b580..f8fd207921 100644
+--- a/tests/tcg/tricore/Makefile.softmmu-target
++++ b/tests/tcg/tricore/Makefile.softmmu-target
+@@ -25,7 +25,7 @@ TESTS += test_muls.asm.tst
+ TESTS += test_boot_to_main.c.tst
+ TESTS += test_context_save_areas.c.tst
+ 
+-QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
++QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -kernel
+ 
+ %.pS: $(ASM_TESTS_PATH)/%.S
+ 	$(HOST_CC) -E -o $@ $<
 -- 
 2.41.0
 
