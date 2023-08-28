@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985D078AFF5
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4B478B005
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qabDN-0007gL-37; Mon, 28 Aug 2023 08:19:29 -0400
+	id 1qabHo-0001gG-5M; Mon, 28 Aug 2023 08:24:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qabDD-0007eN-EU
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:19:20 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qabDB-0005o0-0F
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:19:19 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31aeef88a55so2557397f8f.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:19:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693225155; x=1693829955;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1PS1sYWwJPisfkTKDmMlElL2VjDLJH1VesRll00RQx0=;
- b=hUImD3qUf+715S+3tkl7molYRbj77iUCPvUqy/MkrK5Sn4dVAKjBeeGTVeaS65GOdJ
- lnThrowZrVrL6g1ezI2o+LDOXpqLYbPDfJlmYa66rLebnFVBQG+gJcsvoe/0nEL73Wat
- RMXI2KY0PRZBFS4ccYVNixAefw42YgArlJkzrxV2XVMXZ6OUQk00IRkx7G7Kp+PSmOwg
- JS0zEc14MsGhKX7sn5kH/ORAYKaMILwcykOLzAYGBhOYD0Yr7ykXJflKYK5yrexytaPC
- OUZL1l0j2fqrn2P3ANSgzrSr5jEAZsYFoLDBxGXbak8GW55ZRM8kQyaeqW0bEyyOHyhE
- ejQQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qabHf-0001fv-SE
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:23:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qabHd-0006wZ-6u
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:23:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693225431;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/QsbftsTHlG7YkBTZeV3bE83PHsEXjMrzdBWeVri6KQ=;
+ b=DBcFLvj7UFXUP49caEJKjMt9FFcBITEExMmJI/7ktUmd4XcXDmBntG45idzb/j+fb0Wfiz
+ Y1hTNnmzzMcR4KKnN0ulA2czI+3VudVhZMXgt7Lz1lGP2PzJadILT/ULc9zalwr9YtSluG
+ dkd0RpEuFYFPtN9ek6r6noDmKyOinsk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-275-moIxKEIPMuGJeYL-vd3B5Q-1; Mon, 28 Aug 2023 08:23:50 -0400
+X-MC-Unique: moIxKEIPMuGJeYL-vd3B5Q-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fef3606d8cso25432665e9.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:23:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693225155; x=1693829955;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693225429; x=1693830229;
+ h=content-transfer-encoding:in-reply-to:subject:references:cc:to:from
+ :content-language:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1PS1sYWwJPisfkTKDmMlElL2VjDLJH1VesRll00RQx0=;
- b=OdSQpukeN2py/tGu3tbEDPk5QbYQ+NluBxp9eB3mTOyvWrTlhW1e5gsmlpqqWC9RSL
- jzYnk5eH5wS2eO47Cgdkr40BNpUmUmeYjmpD1/yC9Xt/5dm3uJrCdCTs2R8pOzcysT0C
- sQRdHr47VYlkEpHxC7uZedh5rRITUsfe9LX0z0/gUQXLvxLnf3OcihNpH+NHf36wicca
- +FuN342WDxfw4UZj1hRlYw4i31MrReaxgZkkDEI3TGB21CoU9CsFeCLX//g83l4rXCmz
- LrUoHH/+S0vqzDPLbr6w2+jN/h5tnLfgI9k6YvgL1fxDei0LibNhMlkaLtXgzoH4THRX
- Tl4A==
-X-Gm-Message-State: AOJu0YyMmfLO3/95oQ/H4WyIP99m5WLrmuwZhiQetHz0FbcrMag62Jzx
- CXeVNDhMg+22Of06xHRsb+JtXkIG7/VY8Jxjb+I=
-X-Google-Smtp-Source: AGHT+IFqiOGgYYsZXsUdKNhKByvhEPjc+6orQ5CDD5iefriDJXBZaz9qO/1W50tNZML0TBIfiC/D+Q==
-X-Received: by 2002:a5d:568f:0:b0:317:e5ec:8767 with SMTP id
- f15-20020a5d568f000000b00317e5ec8767mr18156714wrv.21.1693225154822; 
- Mon, 28 Aug 2023 05:19:14 -0700 (PDT)
-Received: from [192.168.69.115] ([176.164.201.64])
- by smtp.gmail.com with ESMTPSA id
- y6-20020adfd086000000b003179b3fd837sm10439618wrh.33.2023.08.28.05.19.13
+ bh=/QsbftsTHlG7YkBTZeV3bE83PHsEXjMrzdBWeVri6KQ=;
+ b=QQkWQ4W8uXotSzyQKinNRMNtFMP0AP7jI6gvV4ITsA3AmtOx8GpgJxD5nLqTOJKpEu
+ eGKElCvH11/+w6xX7vdqLt69iycQ1Wgv1YBnyY3agu64ZvSKnMY5bR61wgIW3pKCtId9
+ ykwJW1TunKhU8v/94u6/7d43ocK7b7hiiWTUs/7yU/5S0SHWBBdLTEBqoVZPt84MvURI
+ Z558BUh9pVl0exIwdtrX8d3Yxr4a17ZGIOlX2SeqPMJQMp/VpMeUBFcwIS58VgszguKA
+ 2vC9+m6syUAy4Bs7g6QmGjpcfpOiIw1VQi47ASv4MSwGZNd9EJ1QnXXKvFRAKS5eDPtR
+ I3UA==
+X-Gm-Message-State: AOJu0YyeCWbOG8wlE7znlqYRrtqsy16DwU61maUOMBzBrWqGyn4tktYO
+ tUN9MA4Yc6sxCr6Krfq1gw4lbgodcTGkJ1S85wLSICpj6ZlMPvQdh7gOQxwQsVwdG9FapX23Quj
+ NWPTDh9rZiTTs6Qw=
+X-Received: by 2002:adf:dc86:0:b0:317:3d6c:5b27 with SMTP id
+ r6-20020adfdc86000000b003173d6c5b27mr18600345wrj.46.1693225429090; 
+ Mon, 28 Aug 2023 05:23:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEgNVY/aPtlCf2ljfGPcO5c86Qf7n/DNWUjhLJFWAnUT3n+hUI1oWfc33Ffm5AV7jhTIwBsig==
+X-Received: by 2002:adf:dc86:0:b0:317:3d6c:5b27 with SMTP id
+ r6-20020adfdc86000000b003173d6c5b27mr18600328wrj.46.1693225428728; 
+ Mon, 28 Aug 2023 05:23:48 -0700 (PDT)
+Received: from [192.168.8.103] (tmo-098-91.customers.d1-online.com.
+ [80.187.98.91]) by smtp.gmail.com with ESMTPSA id
+ a12-20020adfe5cc000000b0030ada01ca78sm10450361wrn.10.2023.08.28.05.23.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 05:19:14 -0700 (PDT)
-Message-ID: <94cb7c35-39f7-0108-d623-78435a5e7fee@linaro.org>
-Date: Mon, 28 Aug 2023 14:19:12 +0200
+ Mon, 28 Aug 2023 05:23:48 -0700 (PDT)
+Message-ID: <d78959a7-bc55-1022-d524-60ff0994aa42@redhat.com>
+Date: Mon, 28 Aug 2023 14:23:45 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 1/3] hw/mips/jazz: Remove the big_endian variable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-trivial@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230825175123.624114-1-thuth@redhat.com>
- <20230825175123.624114-2-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230825175123.624114-2-thuth@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>,
+ Amaury Pouly <amaury.pouly@lowrisc.org>
+References: <20230816210743.1319018-1-thuth@redhat.com>
+ <ZN33W+LhAn2FrFDT@redhat.com>
+ <2bb2f8ac-43b4-9505-c163-d29964bf6a30@redhat.com>
+ <ZN4bTLsw1bwLBEEz@redhat.com>
+ <CAMxuvazrSy0Fi1rwj21RWmSWVPXDrFrcZ6266-EHcvgxTzFfeg@mail.gmail.com>
+ <a92823b2-6a95-3834-e33c-a7176c60ea2e@redhat.com>
+Subject: Re: [PATCH] chardev/char-pty: Avoid losing bytes when the other side
+ just (re-)connected
+In-Reply-To: <a92823b2-6a95-3834-e33c-a7176c60ea2e@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-2.169, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,53 +109,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas,
-
-On 25/8/23 19:51, Thomas Huth wrote:
-> There is an easier way to get a value that can be used to decide
-> whether the target is big endian or not: Simply use the
-> target_words_bigendian() function instead.
+On 17/08/2023 19.09, Thomas Huth wrote:
+> On 17/08/2023 15.47, Marc-André Lureau wrote:
+>> Hi
+>>
+>> On Thu, Aug 17, 2023 at 5:06 PM Daniel P. Berrangé <berrange@redhat.com> 
+>> wrote:
+>>>
+>>> On Thu, Aug 17, 2023 at 02:00:26PM +0200, Thomas Huth wrote:
+>>>> On 17/08/2023 12.32, Daniel P. Berrangé wrote:
+>>>>> On Wed, Aug 16, 2023 at 11:07:43PM +0200, Thomas Huth wrote:
+>>>>>> When starting a guest via libvirt with "virsh start --console ...",
+>>>>>> the first second of the console output is missing. This is especially
+>>>>>> annoying on s390x that only has a text console by default and no 
+>>>>>> graphical
+>>>>>> output - if the bios fails to boot here, the information about what went
+>>>>>> wrong is completely lost.
+>>>>>>
+>>>>>> One part of the problem (there is also some things to be done on the
+>>>>>> libvirt side) is that QEMU only checks with a 1 second timer whether
+>>>>>> the other side of the pty is already connected, so the first second of
+>>>>>> the console output is always lost.
+>>>>>>
+>>>>>> This likely used to work better in the past, since the code once checked
+>>>>>> for a re-connection during write, but this has been removed in commit
+>>>>>> f8278c7d74 ("char-pty: remove the check for connection on write") to 
+>>>>>> avoid
+>>>>>> some locking.
+>>>>>>
+>>>>>> To ease the situation here at least a little bit, let's check with 
+>>>>>> g_poll()
+>>>>>> whether we could send out the data anyway, even if the connection has not
+>>>>>> been marked as "connected" yet. The file descriptor is marked as 
+>>>>>> non-blocking
+>>>>>> anyway since commit fac6688a18 ("Do not hang on full PTY"), so this 
+>>>>>> should
+>>>>>> not cause any trouble if the other side is not ready for receiving yet.
+>>>>>>
+>>>>>> With this patch applied, I can now successfully see the bios output of
+>>>>>> a s390x guest when running it with "virsh start --console" (with a 
+>>>>>> patched
+>>>>>> version of virsh that fixes the remaining issues there, too).
+>>>>>>
+>>>>>> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+>>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>>>> ---
+>>>>>>    chardev/char-pty.c | 22 +++++++++++++++++++---
+>>>>>>    1 file changed, 19 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+>>>>>> index 4e5deac18a..fad12dfef3 100644
+>>>>>> --- a/chardev/char-pty.c
+>>>>>> +++ b/chardev/char-pty.c
+>>>>>> @@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chardev 
+>>>>>> *chr)
+>>>>>>    static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int 
+>>>>>> len)
+>>>>>>    {
+>>>>>>        PtyChardev *s = PTY_CHARDEV(chr);
+>>>>>> +    GPollFD pfd;
+>>>>>> +    int rc;
+>>>>>> -    if (!s->connected) {
+>>>>>> -        return len;
+>>>>>> +    if (s->connected) {
+>>>>>> +        return io_channel_send(s->ioc, buf, len);
+>>>>>>        }
+>>>>>> -    return io_channel_send(s->ioc, buf, len);
+>>>>>> +
+>>>>>> +    /*
+>>>>>> +     * The other side might already be re-connected, but the timer might
+>>>>>> +     * not have fired yet. So let's check here whether we can write 
+>>>>>> again:
+>>>>>> +     */
+>>>>>> +    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
+>>>>>> +    pfd.events = G_IO_OUT;
+>>>>>> +    pfd.revents = 0;
+>>>>>> +    rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
+>>>>>> +    g_assert(rc >= 0);
+>>>>>> +    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
+>>>>>
+>>>>> Should (can?) we call
+>>>>>
+>>>>>      pty_chr_state(chr, 1);
+>>>>>
+>>>>> here ?
+>>>>
+>>>> As far as I understood commit f8278c7d74c6 and f7ea2038bea04628, this is 
+>>>> not
+>>>> possible anymore since the lock has been removed.
+>>>>
+>>>>>> +        io_channel_send(s->ioc, buf, len);
+>>>>>
+>>>>> As it feels a little dirty to be sending data before setting the
+>>>>> 'connected == 1' and thus issuing the 'CHR_EVENT_OPENED' event
+>>>>
+>>>> I didn't find a really better solution so far. We could maybe introduce a
+>>>> buffer in the char-pty code and store the last second of guest output, but
+>>>> IMHO that's way more complex and thus somewhat ugly, too?
+>>>
+>>> The orignal commit f8278c7d74c6 said
+>>>
+>>> [quote]
+>>>      char-pty: remove the check for connection on write
+>>>
+>>>      This doesn't help much compared to the 1 second poll PTY
+>>>      timer. I can't think of a use case where this would help.
+>>> [/quote]
+>>>
+>>> We've now identified a use case where it is actually important.
+>>>
+>>> IOW, there's a justification to revert both f7ea2038bea04628 and
+>>> f8278c7d74c6, re-adding the locking and write update logic.
+>>
+>> Indeed. But isn't it possible to watch for IO_OUT and get rid of the timer?
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   hw/mips/jazz.c | 10 ++--------
->   1 file changed, 2 insertions(+), 8 deletions(-)
+> It might be possible - Marc Hartmayer just sent me a draft patch today that 
+> uses qio_channel_add_watch() and gets rid of the timer ... I'll do some 
+> experiments with that and send it out if it works reliably.
 
+I did quite a bunch of experiments with the code, but as far as I can see, 
+it's not so straight forward: IO_OUT keeps being enabled once IO_HUP occurs 
+since the kernel can still buffer some output before it de-asserts IO_OUT. 
+So there is no easy way to check for a re-connection without some kind of 
+regular polling, as far as I can see...
 
-> @@ -157,12 +157,6 @@ static void mips_jazz_init(MachineState *machine,
->           [JAZZ_PICA61] = {33333333, 4},
->       };
->   
-> -#if TARGET_BIG_ENDIAN
-> -    big_endian = 1;
-> -#else
-> -    big_endian = 0;
-> -#endif
-> -
->       if (machine->ram_size > 256 * MiB) {
->           error_report("RAM size more than 256Mb is not supported");
->           exit(EXIT_FAILURE);
-> @@ -301,7 +295,7 @@ static void mips_jazz_init(MachineState *machine,
->               dev = qdev_new("dp8393x");
->               qdev_set_nic_properties(dev, nd);
->               qdev_prop_set_uint8(dev, "it_shift", 2);
-> -            qdev_prop_set_bit(dev, "big_endian", big_endian > 0);
-> +            qdev_prop_set_bit(dev, "big_endian", target_words_bigendian());
+Well, maybe something like this might be possible: Add a watch for IO_HUP. 
+Once HUP occurs, don't signal CHR_EVENT_CLOSED yet, but set a flag variable 
+and in case the guest still writes something to the chardev and the flag is 
+true, we write the bytes to the pty one by one (to avoid locking in case the 
+buffer gets full) and check for IO_OUT via g_poll() after each write. Once 
+we see IO_OUT being gone, we can signal CHR_EVENT_CLOSED and add a watch for 
+IO_OUT being enabled again. Once that watch triggers, we know that the other 
+side re-connected and we can signal CHR_EVENT_OPENED and continue normally. 
+... sounds all quite complicated, is it worth the effort? What do you think?
 
-IIRC last time I tried that Peter pointed me at the documentation:
+  Thomas
 
-/**
-  * target_words_bigendian:
-  * Returns true if the (default) endianness of the target is big endian,
-  * false otherwise. Note that in target-specific code, you can use
-  * TARGET_BIG_ENDIAN directly instead. On the other hand, common
-  * code should normally never need to know about the endianness of the
-  * target, so please do *not* use this function unless you know very
-  * well what you are doing!
-  */
-
-(Commit c95ac10340 "cpu: Provide a proper prototype for
-  target_words_bigendian() in a header")
-
-Should we update the comment?
 
