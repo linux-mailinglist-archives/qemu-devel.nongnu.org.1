@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7CE78B252
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 15:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 299A978B267
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 15:59:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qachb-0005de-43; Mon, 28 Aug 2023 09:54:47 -0400
+	id 1qaclS-0006iP-DO; Mon, 28 Aug 2023 09:58:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qachX-0005dL-7E; Mon, 28 Aug 2023 09:54:43 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qachT-00048x-Ej; Mon, 28 Aug 2023 09:54:42 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-99357737980so415077966b.2; 
- Mon, 28 Aug 2023 06:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1693230877; x=1693835677;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZkuNOEu8z3nGdSdxiZcGzrZgMXnvKJUHQ+2W1hwOFhs=;
- b=SOEVcoHxGttpzoWg7Z3DRCCGwDFRchzw4M2wGnTyXuO8Kd1Pz5VL1Tz7eWwT2iq2vY
- /tgUFDedcJ+18T9XhNMHbd1ekAyuN/sJqCZbQkVJG2c3oXIzLLtXp7z8EKS77f0YouuS
- j7zalJdHiINKEuz9fRufzFWQCTDPIDziagVlE=
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qaclP-0006i9-Rx
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 09:58:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qaclN-00050c-AZ
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 09:58:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693231115;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jJdC36BRaylLOW71RKXrMymYWvs/dDFUOUvEIPTeyjE=;
+ b=TKmv86XNByZHvHut+9Qo7Mg2gUxrhHdlmGPybNqoCKr1U4X8Pdmdp2Pnid3OOwA/npihGp
+ SkSvvQlnY//Iv5uha/eiDdLh5UVQXUy/srKAJqNyNlJl0cXL4lr8H9upJ6hKWQb06Nn8WT
+ gmZZuczTTU/FFApv92AR3laPhR21SQ8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-93-bc9lyfjYOPqkyNNTw_KC0g-1; Mon, 28 Aug 2023 09:58:33 -0400
+X-MC-Unique: bc9lyfjYOPqkyNNTw_KC0g-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-94a34d3e5ebso270942166b.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 06:58:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693230877; x=1693835677;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1693231110; x=1693835910;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZkuNOEu8z3nGdSdxiZcGzrZgMXnvKJUHQ+2W1hwOFhs=;
- b=ZPFsmjB7fq5RW8TbDVwSbzD/HZDBzBq9kzDz6GMrlGnQTjf5mraaC49FI90AfsZcgI
- oXyoAA1eD3v3WCHkZKiZaBNMSqw3GzpAHoJ9UZRZU/5xom94+pVwDyZYir38alAV/SZg
- lFRFK/WvJZ24ARS60+SVA3YUtBx5Cm2eBC2kDDlyGh0jDs8fyqVJxc3OkDfDLspaAVNt
- tUvXHEel/lYmcoq9Q9LValXFbmIp8dovQaIjvCCxu10ZmGhcXmrVFFmeRHJ4vzQuT76I
- 0AfpwaVVnBGb1VLTLZylRXiPaANKOol1XXAmu8W+fYTcVTjzkbG2/0o22Jr5CMX57sVw
- YsUg==
-X-Gm-Message-State: AOJu0YzTMqSi0DijOgye4XH3qlldZSiy7nmT+YSXn8Xc684smvhydiSv
- eSaKahf42yyKlBeF6KoRQ8JFfS+5dDUdlXbKwo8=
-X-Google-Smtp-Source: AGHT+IEXnok7pOZE/8loV9jk4oPjOeGYPmznMbIFhHAw5/rb/hpD2QNVA8Kj7coItdkqswH/0aCsCKQNhFoKg1rdhUY=
-X-Received: by 2002:a17:906:5199:b0:9a1:b6e1:c2e with SMTP id
- y25-20020a170906519900b009a1b6e10c2emr15260954ejk.33.1693230877062; Mon, 28
- Aug 2023 06:54:37 -0700 (PDT)
+ bh=jJdC36BRaylLOW71RKXrMymYWvs/dDFUOUvEIPTeyjE=;
+ b=EUzBKMYWTALFV+kdN4JEogkwkH7zSOb0bHmlZ1alGJJaxSDqkR3D9qn515uP3tpV/g
+ HNXbMkfmK0xUbt2A7pfagISdwSbhGUN6dQMv+gXs8Ev+41rEl9eP21mtZuiYZH9Ufy8C
+ ht/Kx+Yq06gE8geirrYn+u9iQhcDDU9u+EEKL++nhLYOmIuT34Vgqrx5uuthX3gEUZe4
+ 540NEg9/aIapr6QjvTfVy+lVb/4bEVKvW4oIi/6MyHqj/O7qPvdMbTwUWVLAuzJXC3Y+
+ Q2CgJaQ3k8nhTMtSw1IZ4a0v9Jc2qHnP2cOR3Absi3R/JOy/mDRGKOfv6VC+qnIcIlag
+ 8kRw==
+X-Gm-Message-State: AOJu0YyzbT8HSW5dKzcCO2XTADSrh+309rikgL0xEIEfNlhdPIZhev/E
+ XaLEJOO7M1tv1DC0JRuU6YDYaTYsaQeZvIgiKN00v3YxLaVjMF7LAD+2Dk0dR75EMbT/L/p6ir/
+ rdQ+kr206PqgZpUc=
+X-Received: by 2002:a17:906:8a5a:b0:9a1:f415:7c24 with SMTP id
+ gx26-20020a1709068a5a00b009a1f4157c24mr9935973ejc.46.1693231110034; 
+ Mon, 28 Aug 2023 06:58:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEaGAwj7bDejyTCtQnRZyyi0WnohApTphmKTbG+wHRE8WwGwKIty3QKI9tDH4/G6wxTsOEFbg==
+X-Received: by 2002:a17:906:8a5a:b0:9a1:f415:7c24 with SMTP id
+ gx26-20020a1709068a5a00b009a1f4157c24mr9935952ejc.46.1693231109760; 
+ Mon, 28 Aug 2023 06:58:29 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ck17-20020a170906c45100b009a1a5a7ebacsm4651872ejb.201.2023.08.28.06.58.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Aug 2023 06:58:29 -0700 (PDT)
+Date: Mon, 28 Aug 2023 15:58:28 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, pbonzini@redhat.com,
+ berrange@redhat.com, richard.henderson@linaro.org, laurent@vivier.eu,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, qemu-riscv@nongnu.org,
+ Jiri Denemark <jdenemar@redhat.com>, Tim Wiederhake <twiederh@redhat.com>
+Subject: Re: [RFC PATCH v2 0/6] Add API for list cpu extensions
+Message-ID: <20230828155828.561dc83e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
+References: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230828090101.74357-1-clg@kaod.org>
-In-Reply-To: <20230828090101.74357-1-clg@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 28 Aug 2023 13:54:24 +0000
-Message-ID: <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
-Subject: Re: [PATCH] tests/avocado/machine_aspeed.py: Update SDK images
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
- Hang Yu <francis_yuu@stu.pku.edu.cn>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,79 +104,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 28 Aug 2023 at 09:01, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> Switch to the latest v8.06 release which introduces interesting
-> changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
-> images instead of the default since QEMU tries to model The AST2600 A3
-> SoC.
+On Mon, 28 Aug 2023 16:45:30 +0800
+LIU Zhiwei <zhiwei_liu@linux.alibaba.com> wrote:
 
-Is there any value in testing both the old and the new images?
+> Some times we want to know what is the really mean of one cpu option.
+> For example, in RISC-V, we usually specify a cpu in this way:
+> -cpu rv64,v=on
+> 
+> If we don't look into the source code, we can't get the ISA extensions
+> of this -cpu command line.
+> 
+> In this patch set, we add one list_cpu_props API for common cores. It
+> will output the enabled ISA extensions.
+> 
+> In the near future, I will also list all possible user configurable
+> options and all possible extensions for this cpu.
+> 
+> In order to reuse the options parse code, I also add a QemuOptsList
+> for cpu.
+> 
+> After this patch, we can output the extensions for cpu,
+> """
+> ./qemu-system-riscv64 -cpu rv64,help
+> Enabled extensions:
+>     rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zba_zbb_zbc_zbs_sstc_svadu
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
->
->   Requires patches from Hang Yu [1]
->
->   [1] https://lore.kernel.org/qemu-devel/20230812065230.8839-1-francis_yu=
-u@stu.pku.edu.cn/
->
->
->  tests/avocado/machine_aspeed.py | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspe=
-ed.py
-> index 724ee72c0208..90f1b7cb77a1 100644
-> --- a/tests/avocado/machine_aspeed.py
-> +++ b/tests/avocado/machine_aspeed.py
-> @@ -316,8 +316,8 @@ def test_arm_ast2500_evb_sdk(self):
->          """
->
->          image_url =3D ('https://github.com/AspeedTech-BMC/openbmc/releas=
-es/'
-> -                     'download/v08.01/ast2500-default-obmc.tar.gz')
-> -        image_hash =3D ('5375f82b4c43a79427909342a1e18b4e48bd663e3846686=
-2145d27bb358796fd')
-> +                     'download/v08.06/ast2500-default-obmc.tar.gz')
-> +        image_hash =3D ('e1755f3cadff69190438c688d52dd0f0d399b70a1e14b1d=
-3d5540fc4851d38ca')
->          image_path =3D self.fetch_asset(image_url, asset_hash=3Dimage_ha=
-sh,
->                                        algorithm=3D'sha256')
->          archive.extract(image_path, self.workdir)
-> @@ -334,8 +334,8 @@ def test_arm_ast2600_evb_sdk(self):
->          """
->
->          image_url =3D ('https://github.com/AspeedTech-BMC/openbmc/releas=
-es/'
-> -                     'download/v08.01/ast2600-default-obmc.tar.gz')
-> -        image_hash =3D ('f12ef15e8c1f03a214df3b91c814515c5e2b2f561190213=
-98c1dbdd626817d15')
-> +                     'download/v08.06/ast2600-a2-obmc.tar.gz')
-> +        image_hash =3D ('9083506135f622d5e7351fcf7d4e1c7125cee5ba1614122=
-0c0ba88931f3681a4')
->          image_path =3D self.fetch_asset(image_url, asset_hash=3Dimage_ha=
-sh,
->                                        algorithm=3D'sha256')
->          archive.extract(image_path, self.workdir)
-> @@ -345,8 +345,8 @@ def test_arm_ast2600_evb_sdk(self):
->          self.vm.add_args('-device',
->                           'ds1338,bus=3Daspeed.i2c.bus.5,address=3D0x32')=
-;
->          self.do_test_arm_aspeed_sdk_start(
-> -            self.workdir + '/ast2600-default/image-bmc')
-> -        self.wait_for_console_pattern('nodistro.0 ast2600-default ttyS4'=
+It's not that easy to get features with values in general.
+(many factors influence defaults, which may include:
+ * properties set and/or added at realize time
+ * defaults amended by machine type version
+ * defaults amended by -global CLI options
 )
-> +            self.workdir + '/ast2600-a2/image-bmc')
-> +        self.wait_for_console_pattern('nodistro.0 ast2600-a2 ttyS4')
->
->          self.ssh_connect('root', '0penBmc', False)
->          self.ssh_command('dmesg -c > /dev/null')
-> --
-> 2.41.0
->
+
+To do that consensus was to query features after CPU object is realized.
+Typically that implies starting dummy QEMU with needed CPU model and
+then using query-cpu-model-expansion command to get actual property values.
+ 
+The task is solved by implementing query-cpu-model-expansion
+command so that user (mainly management layer) could get defaults via QMP.
+So if your goal is to get the given cpu defaults to mgmt layer
+it is sufficient to implement query-cpu-model-expansion command for riscv.
+(CC-ing libvirt folks to see if it picks up the command
+automatically for every target or some more work would be needed
+on their side as well)
+
+PS:
+no one cared about making -cpu name,help working till this moment
+and certainly not for linux-user part.
+
+To make this option work reliably it's would be necessary to make sure
+that query-cpu-model-expansion work in user mode as well.
+
+Also the timing when 'help' is processed should ensure that
+machine is available/initialized (i.e. compat properties are in effect) 
+
+Once you have working query-cpu-model-expansion, your new -cpu foo,help handler
+can translate json to human readable format that everyone would agree upon.
+
+> To get all configuable options for this cpu, use -device rv64-riscv-cpu,help
+> """
+> 
+> 
+> v1->v2:
+> 
+> 1) Give a hint to use -device cpu,help for configualbe options on cpu
+> 2) Support list_cpu_props for linux user mode
+> 3) Add default to some properties to make -device cpu,help output better
+> 
+> 
+> Todo:
+> 1) Fix Daniel comments on KVM and cpu option check
+> 2) Add support for other archs
+> 3) Move qdev help function from qdev-monitor to qdev-property
+> 
+> LIU Zhiwei (6):
+>   cpu: Add new API cpu_type_by_name
+>   target/riscv: Add API list_cpu_props
+>   softmmu/vl: Add qemu_cpu_opts QemuOptsList
+>   target/riscv: Add default value for misa property
+>   target/riscv: Add defalut value for string property
+>   linux-user: Move qemu_cpu_opts to cpu.c
+> 
+>  cpu.c                        | 63 +++++++++++++++++++++++++++++-------
+>  hw/core/qdev-prop-internal.h |  2 ++
+>  hw/core/qdev-properties.c    |  7 ++++
+>  include/exec/cpu-common.h    |  3 ++
+>  include/hw/core/cpu.h        | 11 +++++++
+>  include/hw/qdev-properties.h |  8 +++++
+>  linux-user/main.c            | 10 ++++++
+>  softmmu/vl.c                 | 11 +++++++
+>  target/riscv/cpu.c           | 30 +++++++++++++----
+>  target/riscv/cpu.h           |  2 ++
+>  10 files changed, 128 insertions(+), 19 deletions(-)
+> 
+
 
