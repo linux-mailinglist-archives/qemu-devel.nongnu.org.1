@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559D878B450
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A1E78B44E
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:22:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qae2y-00060r-3A; Mon, 28 Aug 2023 11:20:56 -0400
+	id 1qae2x-00063Z-UH; Mon, 28 Aug 2023 11:20:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qae2s-0005f5-60
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:20:52 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qae2r-0005cm-F1
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:20:49 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qae2m-0007OA-Uw
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qae2m-0007P8-Ux
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:20:49 -0400
 Received: from ls3a6000.. (unknown [223.72.44.123])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 685D944124;
- Mon, 28 Aug 2023 15:20:30 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id EB10F4415D;
+ Mon, 28 Aug 2023 15:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1693236032; bh=m4fCfRcY+ZD3YQWV+3DekWHZE3b/HOsXWUJ+ArRnWI0=;
+ t=1693236034; bh=sjaFC7yAp+wHHwch5hvv3SYKafwoBB7+k+YrWWJuukE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=utpOSCz55HNtIuhw49yMr9vLI9X/aRF/vjSUgqgGTxdE+Te4NSaziirHVPRmpxAK6
- 3AmiNi4G+Twe5Ty5X4eDfra+/BtLBrNlS6vjPNYmxDI6HWU8KHZP+Ib04B3XMpzegZ
- 1Qg7541ul8EJOX2pg70pTZvN5WS7TAFtay9K2Hno=
+ b=vhyg2X94wlOXbD9/xJ5mOG1c7x1MLGcIeruVdLqeFfBJfrafL4Ma99qM0cndOebPl
+ b+q83Lww69B32eebPUfnhtUFBsHdQJ/VhMxZu541SECrUZ7nkwZaiZcvjWnKD7YkSU
+ 4n9t03yNGFkWjVMaif1Whh+76HROD7zQnUuOBs1Y=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, gaosong@loongson.cn, Jiajie Chen <c@jia.je>,
  WANG Xuerui <git@xen0n.name>
-Subject: [PATCH 02/11] tcg/loongarch64: Lower basic tcg vec ops to LSX
-Date: Mon, 28 Aug 2023 23:19:40 +0800
-Message-ID: <20230828152009.352048-3-c@jia.je>
+Subject: [PATCH 03/11] tcg/loongarch64: Lower cmp_vec to vseq/vsle/vslt
+Date: Mon, 28 Aug 2023 23:19:41 +0800
+Message-ID: <20230828152009.352048-4-c@jia.je>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828152009.352048-1-c@jia.je>
 References: <20230828152009.352048-1-c@jia.je>
@@ -63,422 +63,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LSX support on host cpu is detected via hwcap.
-
-Lower the following ops to LSX:
-
-- dup_vec
-- dupi_vec
-- dupm_vec
-- ld_vec
-- st_vec
-
 Signed-off-by: Jiajie Chen <c@jia.je>
 ---
- tcg/loongarch64/tcg-target-con-set.h |   2 +
- tcg/loongarch64/tcg-target-con-str.h |   1 +
- tcg/loongarch64/tcg-target.c.inc     | 223 ++++++++++++++++++++++++++-
- tcg/loongarch64/tcg-target.h         |  37 ++++-
- tcg/loongarch64/tcg-target.opc.h     |  12 ++
- 5 files changed, 273 insertions(+), 2 deletions(-)
- create mode 100644 tcg/loongarch64/tcg-target.opc.h
+ tcg/loongarch64/tcg-target-con-set.h |  1 +
+ tcg/loongarch64/tcg-target.c.inc     | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/tcg/loongarch64/tcg-target-con-set.h b/tcg/loongarch64/tcg-target-con-set.h
-index c2bde44613..37b3f80bf9 100644
+index 37b3f80bf9..e80fc7f3f7 100644
 --- a/tcg/loongarch64/tcg-target-con-set.h
 +++ b/tcg/loongarch64/tcg-target-con-set.h
-@@ -17,7 +17,9 @@
- C_O0_I1(r)
- C_O0_I2(rZ, r)
- C_O0_I2(rZ, rZ)
-+C_O0_I2(w, r)
- C_O1_I1(r, r)
-+C_O1_I1(w, r)
- C_O1_I2(r, r, rC)
- C_O1_I2(r, r, ri)
- C_O1_I2(r, r, rI)
-diff --git a/tcg/loongarch64/tcg-target-con-str.h b/tcg/loongarch64/tcg-target-con-str.h
-index 6e9ccca3ad..81b8d40278 100644
---- a/tcg/loongarch64/tcg-target-con-str.h
-+++ b/tcg/loongarch64/tcg-target-con-str.h
-@@ -14,6 +14,7 @@
-  * REGS(letter, register_mask)
-  */
- REGS('r', ALL_GENERAL_REGS)
-+REGS('w', ALL_VECTOR_REGS)
- 
- /*
-  * Define constraint letters for constants:
+@@ -31,4 +31,5 @@ C_O1_I2(r, 0, rZ)
+ C_O1_I2(r, rZ, ri)
+ C_O1_I2(r, rZ, rJ)
+ C_O1_I2(r, rZ, rZ)
++C_O1_I2(w, w, w)
+ C_O1_I4(r, rZ, rJ, rZ, rZ)
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index baf5fc3819..0f9427572c 100644
+index 0f9427572c..cc80e5fa20 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -32,6 +32,8 @@
- #include "../tcg-ldst.c.inc"
- #include <asm/hwcap.h>
+@@ -1624,6 +1624,15 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     TCGReg temp = TCG_REG_TMP0;
+     int32_t offset;
  
-+bool use_lsx_instructions;
++    static const LoongArchInsn cmp_vec_insn[16][4] = {
++        [TCG_COND_EQ] = {OPC_VSEQ_B, OPC_VSEQ_H, OPC_VSEQ_W, OPC_VSEQ_D},
++        [TCG_COND_LE] = {OPC_VSLE_B, OPC_VSLE_H, OPC_VSLE_W, OPC_VSLE_D},
++        [TCG_COND_LEU] = {OPC_VSLE_BU, OPC_VSLE_HU, OPC_VSLE_WU, OPC_VSLE_DU},
++        [TCG_COND_LT] = {OPC_VSLT_B, OPC_VSLT_H, OPC_VSLT_W, OPC_VSLT_D},
++        [TCG_COND_LTU] = {OPC_VSLT_BU, OPC_VSLT_HU, OPC_VSLT_WU, OPC_VSLT_DU},
++    };
++    LoongArchInsn insn;
 +
- #ifdef CONFIG_DEBUG_TCG
- static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
-     "zero",
-@@ -65,7 +67,39 @@ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
-     "s5",
-     "s6",
-     "s7",
--    "s8"
-+    "s8",
-+    "vr0",
-+    "vr1",
-+    "vr2",
-+    "vr3",
-+    "vr4",
-+    "vr5",
-+    "vr6",
-+    "vr7",
-+    "vr8",
-+    "vr9",
-+    "vr10",
-+    "vr11",
-+    "vr12",
-+    "vr13",
-+    "vr14",
-+    "vr15",
-+    "vr16",
-+    "vr17",
-+    "vr18",
-+    "vr19",
-+    "vr20",
-+    "vr21",
-+    "vr22",
-+    "vr23",
-+    "vr24",
-+    "vr25",
-+    "vr26",
-+    "vr27",
-+    "vr28",
-+    "vr29",
-+    "vr30",
-+    "vr31",
- };
- #endif
- 
-@@ -102,6 +136,15 @@ static const int tcg_target_reg_alloc_order[] = {
-     TCG_REG_A2,
-     TCG_REG_A1,
-     TCG_REG_A0,
-+
-+    /* Vector registers */
-+    TCG_REG_V0, TCG_REG_V1, TCG_REG_V2, TCG_REG_V3,
-+    TCG_REG_V4, TCG_REG_V5, TCG_REG_V6, TCG_REG_V7,
-+    TCG_REG_V8, TCG_REG_V9, TCG_REG_V10, TCG_REG_V11,
-+    TCG_REG_V12, TCG_REG_V13, TCG_REG_V14, TCG_REG_V15,
-+    TCG_REG_V16, TCG_REG_V17, TCG_REG_V18, TCG_REG_V19,
-+    TCG_REG_V20, TCG_REG_V21, TCG_REG_V22, TCG_REG_V23,
-+    /* V24 - V31 are caller-saved, and skipped.  */
- };
- 
- static const int tcg_target_call_iarg_regs[] = {
-@@ -135,6 +178,7 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
- #define TCG_CT_CONST_WSZ   0x2000
- 
- #define ALL_GENERAL_REGS   MAKE_64BIT_MASK(0, 32)
-+#define ALL_VECTOR_REGS    MAKE_64BIT_MASK(32, 32)
- 
- static inline tcg_target_long sextreg(tcg_target_long val, int pos, int len)
- {
-@@ -1486,6 +1530,159 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
-     }
- }
- 
-+static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
-+                            TCGReg rd, TCGReg rs)
-+{
-+    switch (vece) {
-+    case MO_8:
-+        tcg_out_opc_vreplgr2vr_b(s, rd, rs);
-+        break;
-+    case MO_16:
-+        tcg_out_opc_vreplgr2vr_h(s, rd, rs);
-+        break;
-+    case MO_32:
-+        tcg_out_opc_vreplgr2vr_w(s, rd, rs);
-+        break;
-+    case MO_64:
-+        tcg_out_opc_vreplgr2vr_d(s, rd, rs);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return true;
-+}
-+
-+static bool tcg_out_dupm_vec(TCGContext *s, TCGType type, unsigned vece,
-+                             TCGReg r, TCGReg base, intptr_t offset)
-+{
-+    /* Handle imm overflow and division (vldrepl.d imm is divided by 8) */
-+    if (offset < -0x800 || offset > 0x7ff || \
-+        (offset & ((1 << vece) - 1)) != 0) {
-+        tcg_out_addi(s, TCG_TYPE_I64, TCG_REG_TMP0, base, offset);
-+        base = TCG_REG_TMP0;
-+        offset = 0;
-+    }
-+    offset >>= vece;
-+
-+    switch (vece) {
-+    case MO_8:
-+        tcg_out_opc_vldrepl_b(s, r, base, offset);
-+        break;
-+    case MO_16:
-+        tcg_out_opc_vldrepl_h(s, r, base, offset);
-+        break;
-+    case MO_32:
-+        tcg_out_opc_vldrepl_w(s, r, base, offset);
-+        break;
-+    case MO_64:
-+        tcg_out_opc_vldrepl_d(s, r, base, offset);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return true;
-+}
-+
-+static void tcg_out_dupi_vec(TCGContext *s, TCGType type, unsigned vece,
-+                             TCGReg rd, int64_t v64)
-+{
-+    /* Try vldi if imm can fit */
-+    if (vece <= MO_32 && (-0x200 <= v64 && v64 <= 0x1FF)) {
-+        uint32_t imm = (vece << 10) | ((uint32_t)v64 & 0x3FF);
-+        tcg_out_opc_vldi(s, rd, imm);
-+        return;
-+    }
-+
-+    /* Fallback to vreplgr2vr */
-+    tcg_out_movi(s, type, TCG_REG_TMP0, v64);
-+    switch (vece) {
-+    case MO_8:
-+        tcg_out_opc_vreplgr2vr_b(s, rd, TCG_REG_TMP0);
-+        break;
-+    case MO_16:
-+        tcg_out_opc_vreplgr2vr_h(s, rd, TCG_REG_TMP0);
-+        break;
-+    case MO_32:
-+        tcg_out_opc_vreplgr2vr_w(s, rd, TCG_REG_TMP0);
-+        break;
-+    case MO_64:
-+        tcg_out_opc_vreplgr2vr_d(s, rd, TCG_REG_TMP0);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-+                           unsigned vecl, unsigned vece,
-+                           const TCGArg args[TCG_MAX_OP_ARGS],
-+                           const int const_args[TCG_MAX_OP_ARGS])
-+{
-+    TCGType type = vecl + TCG_TYPE_V64;
-+    TCGArg a0, a1, a2;
-+    TCGReg base;
-+    TCGReg temp = TCG_REG_TMP0;
-+    int32_t offset;
-+
-+    a0 = args[0];
-+    a1 = args[1];
-+    a2 = args[2];
-+
-+    /* Currently only supports V128 */
-+    tcg_debug_assert(type == TCG_TYPE_V128);
-+
-+    switch (opc) {
-+    case INDEX_op_st_vec:
-+        /* Try to fit vst imm */
-+        if (-0x800 <= a2 && a2 <= 0x7ff) {
-+            base = a1;
-+            offset = a2;
-+        } else {
-+            tcg_out_addi(s, TCG_TYPE_I64, temp, a1, a2);
-+            base = temp;
-+            offset = 0;
+     a0 = args[0];
+     a1 = args[1];
+     a2 = args[2];
+@@ -1656,6 +1665,18 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+         }
+         tcg_out_opc_vld(s, a0, base, offset);
+         break;
++    case INDEX_op_cmp_vec:
++        TCGCond cond = args[3];
++        insn = cmp_vec_insn[cond][vece];
++        if (insn == 0) {
++            TCGArg t;
++            t = a1, a1 = a2, a2 = t;
++            cond = tcg_swap_cond(cond);
++            insn = cmp_vec_insn[cond][vece];
++            tcg_debug_assert(insn != 0);
 +        }
-+        tcg_out_opc_vst(s, a0, base, offset);
++        tcg_out32(s, encode_vdvjvk_insn(insn, a0, a1, a2));
 +        break;
-+    case INDEX_op_ld_vec:
-+        /* Try to fit vld imm */
-+        if (-0x800 <= a2 && a2 <= 0x7ff) {
-+            base = a1;
-+            offset = a2;
-+        } else {
-+            tcg_out_addi(s, TCG_TYPE_I64, temp, a1, a2);
-+            base = temp;
-+            offset = 0;
-+        }
-+        tcg_out_opc_vld(s, a0, base, offset);
-+        break;
-+    case INDEX_op_dupm_vec:
-+        tcg_out_dupm_vec(s, type, vece, a0, a1, a2);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-+{
-+    switch (opc) {
-+    case INDEX_op_ld_vec:
-+    case INDEX_op_st_vec:
-+    case INDEX_op_dup_vec:
-+    case INDEX_op_dupm_vec:
-+        return 1;
-+    default:
-+        return 0;
-+    }
-+}
-+
-+void tcg_expand_vec_op(TCGOpcode opc, TCGType type, unsigned vece,
-+                       TCGArg a0, ...)
-+{
-+    g_assert_not_reached();
-+}
-+
- static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
- {
-     switch (op) {
-@@ -1627,6 +1824,14 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_movcond_i64:
-         return C_O1_I4(r, rZ, rJ, rZ, rZ);
+     case INDEX_op_dupm_vec:
+         tcg_out_dupm_vec(s, type, vece, a0, a1, a2);
+         break;
+@@ -1671,6 +1692,7 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
+     case INDEX_op_st_vec:
+     case INDEX_op_dup_vec:
+     case INDEX_op_dupm_vec:
++    case INDEX_op_cmp_vec:
+         return 1;
+     default:
+         return 0;
+@@ -1832,6 +1854,9 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_st_vec:
+         return C_O0_I2(w, r);
  
-+    case INDEX_op_ld_vec:
-+    case INDEX_op_dupm_vec:
-+    case INDEX_op_dup_vec:
-+        return C_O1_I1(w, r);
-+
-+    case INDEX_op_st_vec:
-+        return C_O0_I2(w, r);
++    case INDEX_op_cmp_vec:
++        return C_O1_I2(w, w, w);
 +
      default:
          g_assert_not_reached();
      }
-@@ -1708,6 +1913,10 @@ static void tcg_target_init(TCGContext *s)
-         exit(EXIT_FAILURE);
-     }
- 
-+    if (hwcap & HWCAP_LOONGARCH_LSX) {
-+        use_lsx_instructions = 1;
-+    }
-+
-     tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
-     tcg_target_available_regs[TCG_TYPE_I64] = ALL_GENERAL_REGS;
- 
-@@ -1723,6 +1932,18 @@ static void tcg_target_init(TCGContext *s)
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S8);
-     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S9);
- 
-+    if (use_lsx_instructions) {
-+        tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V24);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V25);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V26);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V27);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V28);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V29);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V30);
-+        tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V31);
-+    }
-+
-     s->reserved_regs = 0;
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_ZERO);
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_TMP0);
-diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index 26f1aab780..be9343ded9 100644
---- a/tcg/loongarch64/tcg-target.h
-+++ b/tcg/loongarch64/tcg-target.h
-@@ -30,7 +30,7 @@
- #define LOONGARCH_TCG_TARGET_H
- 
- #define TCG_TARGET_INSN_UNIT_SIZE 4
--#define TCG_TARGET_NB_REGS 32
-+#define TCG_TARGET_NB_REGS 64
- 
- #define MAX_CODE_GEN_BUFFER_SIZE  ((size_t)-1)
- 
-@@ -68,6 +68,15 @@ typedef enum {
-     TCG_REG_S7,
-     TCG_REG_S8,
- 
-+    TCG_REG_V0 = 32, TCG_REG_V1, TCG_REG_V2, TCG_REG_V3,
-+    TCG_REG_V4, TCG_REG_V5, TCG_REG_V6, TCG_REG_V7,
-+    TCG_REG_V8, TCG_REG_V9, TCG_REG_V10, TCG_REG_V11,
-+    TCG_REG_V12, TCG_REG_V13, TCG_REG_V14, TCG_REG_V15,
-+    TCG_REG_V16, TCG_REG_V17, TCG_REG_V18, TCG_REG_V19,
-+    TCG_REG_V20, TCG_REG_V21, TCG_REG_V22, TCG_REG_V23,
-+    TCG_REG_V24, TCG_REG_V25, TCG_REG_V26, TCG_REG_V27,
-+    TCG_REG_V28, TCG_REG_V29, TCG_REG_V30, TCG_REG_V31,
-+
-     /* aliases */
-     TCG_AREG0    = TCG_REG_S0,
-     TCG_REG_TMP0 = TCG_REG_T8,
-@@ -75,6 +84,8 @@ typedef enum {
-     TCG_REG_TMP2 = TCG_REG_T6,
- } TCGReg;
- 
-+extern bool use_lsx_instructions;
-+
- /* used for function call generation */
- #define TCG_REG_CALL_STACK              TCG_REG_SP
- #define TCG_TARGET_STACK_ALIGN          16
-@@ -159,6 +170,30 @@ typedef enum {
- #define TCG_TARGET_HAS_mulsh_i64        1
- #define TCG_TARGET_HAS_qemu_ldst_i128   0
- 
-+#define TCG_TARGET_HAS_v64              0
-+#define TCG_TARGET_HAS_v128             use_lsx_instructions
-+#define TCG_TARGET_HAS_v256             0
-+
-+#define TCG_TARGET_HAS_not_vec          0
-+#define TCG_TARGET_HAS_neg_vec          0
-+#define TCG_TARGET_HAS_abs_vec          0
-+#define TCG_TARGET_HAS_andc_vec         0
-+#define TCG_TARGET_HAS_orc_vec          0
-+#define TCG_TARGET_HAS_nand_vec         0
-+#define TCG_TARGET_HAS_nor_vec          0
-+#define TCG_TARGET_HAS_eqv_vec          0
-+#define TCG_TARGET_HAS_mul_vec          0
-+#define TCG_TARGET_HAS_shi_vec          0
-+#define TCG_TARGET_HAS_shs_vec          0
-+#define TCG_TARGET_HAS_shv_vec          0
-+#define TCG_TARGET_HAS_roti_vec         0
-+#define TCG_TARGET_HAS_rots_vec         0
-+#define TCG_TARGET_HAS_rotv_vec         0
-+#define TCG_TARGET_HAS_sat_vec          0
-+#define TCG_TARGET_HAS_minmax_vec       0
-+#define TCG_TARGET_HAS_bitsel_vec       0
-+#define TCG_TARGET_HAS_cmpsel_vec       0
-+
- #define TCG_TARGET_DEFAULT_MO (0)
- 
- #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/loongarch64/tcg-target.opc.h b/tcg/loongarch64/tcg-target.opc.h
-new file mode 100644
-index 0000000000..fd1a40b7fd
---- /dev/null
-+++ b/tcg/loongarch64/tcg-target.opc.h
-@@ -0,0 +1,12 @@
-+/*
-+ * Copyright (c) 2023 Jiajie Chen
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.
-+ *
-+ * See the COPYING file in the top-level directory for details.
-+ *
-+ * Target-specific opcodes for host vector expansion.  These will be
-+ * emitted by tcg_expand_vec_op.  For those familiar with GCC internals,
-+ * consider these to be UNSPEC with names.
-+ */
 -- 
 2.42.0
 
