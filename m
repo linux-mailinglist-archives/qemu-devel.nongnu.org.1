@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9B778BBBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E2078BBA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalrn-0003ha-QL; Mon, 28 Aug 2023 19:41:55 -0400
+	id 1qalrm-0003gk-Vb; Mon, 28 Aug 2023 19:41:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrf-0003fD-W6
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrg-0003fE-05
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:48 -0400
-Received: from mail-io1-xd2c.google.com ([2607:f8b0:4864:20::d2c])
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrc-0006gC-36
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrc-0006gH-Vt
  for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:47 -0400
-Received: by mail-io1-xd2c.google.com with SMTP id
- ca18e2360f4ac-79277cfc73bso143408639f.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:43 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-34bb72ffb1fso13414845ab.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266102; x=1693870902;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266103; x=1693870903;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vPIB6HdkWJYoYxy/vDMHclCeIpDJl74Je8/wClovGdA=;
- b=J1xPAnZtbivMxziqLnNbrjl140bVNANmqOdWpJT0PrXCfq2C2Bf9RqyoHlBjiCaP3M
- FCk0JDTHEvnMtsmpIkBqKTVEQX04vXmgg4TApHALdSNcbuSeIP4zLpG2P99XjlfrmGtc
- DfbcHPXJN0L9s2bVIZRR+tDsW7EtHbvkmM31mlAnNhx4N1k+22vF/iaGC3Q+q3a1OKJH
- rxQiSHAVbFqcJOV8amJ3dIwUDvPAMUj6QH2T9MzCOnBws86WiqETvJcB3nEvB+MTfoqz
- P3r0JYG29SZRV4frkZ8GDTulsIYn8Jcp0QI0aPZcmqy0QC6v+LW9rhbsIcY/7UxXaKQu
- a1qQ==
+ bh=nM7Uf06w0wMTd6N1re2AAxx7TTOheoegcX2ZAbmHQ9U=;
+ b=cxqRz7OTUKEN9CO5n0/7oJAnFZnB+zzx+AZeD3Fjs6pufaFKwsN1rKS+YhxFXnk0nH
+ qv3pw8lSd+o7262cnKQh+fAQaRh+eOFS0GRtesS8dTmlFzNh2n3mvqHlM4KKm45lhXM2
+ YlZlnt3ihBqwjzm/gqGtBFfjfCWDzA3LIZezr00Pxny9y5Ldx22Oqhei/7kfjdOEcCGl
+ GhR8mVTYj9SsSNW0nHoiMSK0Wu5I2J5P3V0OrG/Wl3AFkTlm2A4y1IlP4KSl+ZelBypV
+ 9owbdGOvwwKqicuH5cye2XsLgBmSC10ZclH9oi3anj7r9lLgDWGt9/i/+rEXQQXfBAOQ
+ AB9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693266102; x=1693870902;
+ d=1e100.net; s=20221208; t=1693266103; x=1693870903;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vPIB6HdkWJYoYxy/vDMHclCeIpDJl74Je8/wClovGdA=;
- b=asTMnVgkn2QpwY5X6iBM6kkmOX2u86g71BMRAzocWGt8aiUJ1zFQL6A9GrruL4TVnB
- Q1S/43OGZLmeoWFEG1WSrAICl5sFM1sC/nBv92ZtVMU1VxeTihDDw+WrwcQcyvHtOZMf
- 9bq83aG1GPBl20f4k5u8RxY1j19CQut88SjfyhpqlHY1cxSHOHAodAytrc7OeUVbQ4li
- 6iKo9nl3it0EUVOEN8JDctUYx33ri9OeziIKcOqQpiDWk0PRt2JvIbp6r+rqjZO6Hoc0
- cRHLZyZgtuWT2hFVn2nwcADMX8XMZHvR2yFJb079LzHTCrYUzazxHUN2gwS71IsK8nWN
- yg5g==
-X-Gm-Message-State: AOJu0YzR9+rE2n+bj/eue8ee0+5qOBAojA2C0uTg9mgx9NM4z9tcjO1c
- nXausLOYJ9G3YTxboA3qOx40v00cGQCWh2VrjWU=
-X-Google-Smtp-Source: AGHT+IF0OBd/VZ6gkWjjjd0jB0Zy6wuL36Lmb0VNx/KdQtD4eybWFaQhWerKuRF9dBpEwDCV0gSnbg==
-X-Received: by 2002:a05:6e02:12e2:b0:34c:ecc8:98e0 with SMTP id
- l2-20020a056e0212e200b0034cecc898e0mr7655968iln.11.1693266102343; 
- Mon, 28 Aug 2023 16:41:42 -0700 (PDT)
+ bh=nM7Uf06w0wMTd6N1re2AAxx7TTOheoegcX2ZAbmHQ9U=;
+ b=e1OC+im5exDXqKDNoLyF9MpMD6DW+vRE3pnJ3b91kLVS3RQDnaqunjF6cuPSQc+fkb
+ /EBxNRmyLVWMF7n7yjT89JghH0sRiv1C5sI1eKRs0pGPJ4pPr9I6u4F7yPvc+5DTXY8w
+ skqZb4EEl36llMDQFE/TadDbs+bequPJWlLgQnsJHoStLth2ORt5svkTXbL/dXCV4Mb6
+ mG+jV4XuPbT3jqHk7zQ4A/aLVjeOoyqEyzcxJlMNKckaWR8bC3cLE1DiihUouvSkq/pX
+ YCK6OFTouKxqtYKsF/BMjzcsY9MrqUEfwGhFQKL6VLFNuDoGele/2eG8vjFlkBHz2BtG
+ 7/iA==
+X-Gm-Message-State: AOJu0Yxe3ZYI8+oeb3+KohvIk2h22jckv42pO32feKJyn5fOBIJrd6Rh
+ fLi1la0FPx0oXD2y9P8k0WmPI2Ak3OLpWnp05Gg=
+X-Google-Smtp-Source: AGHT+IGaSMX4ldnm7pyU+qmMdi1DyJwNLjPcXxUBvOq8xNvthRoS+ZKdUBd77ojjowxinwwJK8PJIg==
+X-Received: by 2002:a05:6e02:1d96:b0:348:dba4:6418 with SMTP id
+ h22-20020a056e021d9600b00348dba46418mr20913100ila.6.1693266103606; 
+ Mon, 28 Aug 2023 16:41:43 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.41
+ t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 28 Aug 2023 16:41:42 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
- Karim Taha <kariem.taha2.7@gmail.com>,
+ Kyle Evans <kevans@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 04/36] bsd-user: Move _WANT_FREEBSD macros to
- include/qemu/osdep.h
-Date: Mon, 28 Aug 2023 17:37:49 -0600
-Message-ID: <20230828233821.43074-5-imp@bsdimp.com>
+Subject: [PULL 05/36] bsd-user: Disable clang warnings
+Date: Mon, 28 Aug 2023 17:37:50 -0600
+Message-ID: <20230828233821.43074-6-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d2c;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd2c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::134;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x134.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,64 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-move _WANT_FREEBSD macros from bsd-user/freebsd/os-syscall.c to
-include/qemu/osdep.h in order to pull some struct defintions needed
-later in the build.
+From: Kyle Evans <kevans@FreeBSD.org>
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Implement PRAGMA_DISABLE_PACKED_WARNING and
+PRAGMA_REENABLE_PACKED_WARNING macros in include/qemu/compiler.h.
+
+Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-syscall.c | 11 -----------
- include/qemu/osdep.h          | 13 +++++++++++++
- 2 files changed, 13 insertions(+), 11 deletions(-)
+ include/qemu/compiler.h | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index de36c4b71c6..2224a280ea2 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -17,17 +17,6 @@
-  *  You should have received a copy of the GNU General Public License
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
--
--/*
-- * We need the FreeBSD "legacy" definitions. Rust needs the FreeBSD 11 system
-- * calls since it doesn't use libc at all, so we have to emulate that despite
-- * FreeBSD 11 being EOL'd.
-- */
--#define _WANT_FREEBSD11_STAT
--#define _WANT_FREEBSD11_STATFS
--#define _WANT_FREEBSD11_DIRENT
--#define _WANT_KERNEL_ERRNO
--#define _WANT_SEMUN
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
- #include "qemu/path.h"
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 21ef8f16995..2cae135280c 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -88,6 +88,19 @@ QEMU_EXTERN_C int daemon(int, int);
- #define __USE_MINGW_ANSI_STDIO 1
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index a309f90c768..b0374425180 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -22,6 +22,36 @@
+ #define QEMU_EXTERN_C extern
  #endif
  
 +/*
-+ * We need the FreeBSD "legacy" definitions. Rust needs the FreeBSD 11 system
-+ * calls since it doesn't use libc at all, so we have to emulate that despite
-+ * FreeBSD 11 being EOL'd.
++ * Tricky points:
++ * - Use __builtin_choose_expr to avoid type promotion from ?:,
++ * - Invalid sizes result in a compile time error stemming from
++ *   the fact that abort has no parameters.
++ * - It's easier to use the endian-specific unaligned load/store
++ *   functions than host-endian unaligned load/store plus tswapN.
++ * - The pragmas are necessary only to silence a clang false-positive
++ *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
++ * - We have to disable -Wpragmas warnings to avoid a complaint about
++ *   an unknown warning type from older compilers that don't know about
++ *   -Waddress-of-packed-member.
++ * - gcc has bugs in its _Pragma() support in some versions, eg
++ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
++ *   include the warning-suppression pragmas for clang
 + */
-+#ifdef __FreeBSD__
-+#define _WANT_FREEBSD11_STAT
-+#define _WANT_FREEBSD11_STATFS
-+#define _WANT_FREEBSD11_DIRENT
-+#define _WANT_KERNEL_ERRNO
-+#define _WANT_SEMUN
++#ifdef __clang__
++#define PRAGMA_DISABLE_PACKED_WARNING                                   \
++    _Pragma("GCC diagnostic push");                                     \
++    _Pragma("GCC diagnostic ignored \"-Wpragmas\"");                    \
++    _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
++
++#define PRAGMA_REENABLE_PACKED_WARNING          \
++    _Pragma("GCC diagnostic pop")
++
++#else
++#define PRAGMA_DISABLE_PACKED_WARNING
++#define PRAGMA_REENABLE_PACKED_WARNING
 +#endif
 +
- #include <stdarg.h>
- #include <stddef.h>
- #include <stdbool.h>
+ #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+ # define QEMU_PACKED __attribute__((gcc_struct, packed))
+ #else
 -- 
 2.41.0
 
