@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D778BB9F
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1163C78BB99
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalri-0003fF-Si; Mon, 28 Aug 2023 19:41:51 -0400
+	id 1qalrk-0003gF-Sn; Mon, 28 Aug 2023 19:41:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrd-0003ej-5Q
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:45 -0400
-Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalre-0003ez-Ra
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:46 -0400
+Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalra-0006fy-9C
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:44 -0400
-Received: by mail-il1-x136.google.com with SMTP id
- e9e14a558f8ab-34ca22e3b3dso13246045ab.3
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalra-0006g4-9X
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:46 -0400
+Received: by mail-il1-x12c.google.com with SMTP id
+ e9e14a558f8ab-34baeb01942so13352005ab.1
  for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266100; x=1693870900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L31NhYGodpWvvaDs32s2seCPLO3ZQUAuBDXt6+3D/x4=;
- b=XLpK0xRYh5zayN88esiPy8ZhM3a0dNpYfSYEm4CQ3T3cS2xE+QW1XMw0Ooefh7ZWbP
- FjGblko855yig1U6I/xBFdwTu5O7uYhV1sROFdK0HS0YvSnAFr/OC6P6s5V1xL12+HlX
- EOrDnqkstOraYWz2Xjw6ACKmZXT3oS72cQc4lMT3T36v8RF9k173HSohcLnDF/NtZwcO
- TgxOgcaSLSuyDKHc3IWLPntmB46Bi4c/Wzp4qbMmvtvLWhaHDYzAxCuQ5U8rtMfrUISA
- r+9oYyJpnOdJE4MlGgdgOW25RcLbF0NI6eAE0UvPAXxX3nUPd8IZO7voGQPb+LTnhfuG
- vp8Q==
+ bh=Zx0CReD3MzsJrQdTZvfAbBcxOrXPzRZaiHnNU4KShl8=;
+ b=qNLMexHsuTaHdSA3NhJHbfkyQduVueTCWrEsSr12hsgPTRtbhrBlorYxHFbYY5GLeV
+ TfJUaTKweQx0ZbHU1zYQ8L77D8mefKJCeTBwyHOa3CECbdhn142Pp+yJiVcJ75U1+dfh
+ 7ug9rseB03QwHDeYPc6CTg2peA3nwISIdp5xq/0XawVpoVILKdv1nf1+gLHzFwVR5S4G
+ GGZ5pEOn1EQPYad/wIArxhnvlrpdYeBd0GfpdsmU3+bzP8jTXmiPFtuS6habwhPAS4eE
+ BoKJHCff3dsjQxE+Kx5ovuAtNHVq1C2Pw9K1PZtxrrzyEklXluOQtkoRGGBtijB1qRri
+ hChQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1693266100; x=1693870900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L31NhYGodpWvvaDs32s2seCPLO3ZQUAuBDXt6+3D/x4=;
- b=f4i2KyteYOKpYtxKkzMURaIXDrv311XNta0P+JxYD1JorYlQjssBU3S/6oX03wjF8l
- M6lU/y8BqxAhLdnOdvcSyPjQPQh73LTGCVAK4z/MHKb30dea6Upg4QMNPTjbr8JDO7c+
- qEy+i/ynwmpwD0eZmCbsk7pAUm0hGtcVA+ei5pTxUGwWIPyD7TJJGUHemIAFi/VBr4Jg
- RNkQi2Y4EQrj3hlSF83tgrx0qHfNIazoOOSuDhul1gINQBoE3bc3FSP/+eeW4XINhTWN
- W2NfCr0XQGlsmTmbnxOVIT+zrCfrRSMuXjRoRkitCHwcOAWi2n4StVQIapSWdIZCyzBb
- REJg==
-X-Gm-Message-State: AOJu0YwNqqk5AJ7nTwinZRTfmCLwKcz8gWf5qxDhIFJgOc8DoV3nWLf/
- rRwD8Pa6J4cq5tXGdhbUtgD3OBIofIFVmtva+/Y=
-X-Google-Smtp-Source: AGHT+IEKxxDmX5QscihMYZcQvgwwuw8ZgoVylbolAk9jZJ8cua56WKQhlZ/4mYI9LJSLGksTMVgVmw==
-X-Received: by 2002:a05:6e02:1084:b0:345:6ce1:d259 with SMTP id
- r4-20020a056e02108400b003456ce1d259mr16261620ilj.28.1693266099953; 
- Mon, 28 Aug 2023 16:41:39 -0700 (PDT)
+ bh=Zx0CReD3MzsJrQdTZvfAbBcxOrXPzRZaiHnNU4KShl8=;
+ b=F8cOi0IDr4sGAe+YnZ0J806oHxgoOeFcqsSpydHMXe/bLK1qwa4VJ6q7lZSh1FKLz7
+ Bgcxz6WLw7DXSfR74fArig29CqYCwsh3hdqGlXzjtauz7T3iTH9u0sEbKO4mP6zL9ZH2
+ mwf07Je01AZ6JzD5sufA0XnTW7gnbkCToIi43xswo8x7aYG+SJ7zfpClbr13YMiDl/0I
+ uvRzTVxB50ZcpNM4Kun3Tl5j4+B/eWT8o9IiQr7ESAi4OFxjAAJgkbbwnVPG6fbi7jla
+ 9Z/2bS9t5yomepiyimo/Ycc9cWRlvcsRvi7vH8NRZdMZVmJYq4tRUM9vqrn+BIVIBmsl
+ TE9g==
+X-Gm-Message-State: AOJu0Ywk97PNqx0MtZ2sIjUxcPz+uU+SEI+VrtgbtFojfpzyce70WA2X
+ Tx5sNG/Pln9iTs2KCuR15o/C/ZoCLGNOHQWGWus=
+X-Google-Smtp-Source: AGHT+IEkVvyNOLgaB0tjRIiZ2GfNIMOb54q7HETEgYh0Xkj4pl3Qem0wPX9Gq93FpKW/wAbz/aweeA==
+X-Received: by 2002:a05:6e02:1523:b0:345:787a:cb1c with SMTP id
+ i3-20020a056e02152300b00345787acb1cmr21402577ilu.6.1693266100699; 
+ Mon, 28 Aug 2023 16:41:40 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.39
+ t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:41:39 -0700 (PDT)
+ Mon, 28 Aug 2023 16:41:40 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/36] bsd-user: Remove ELF_START_MMAP and image_info.start_mmap
-Date: Mon, 28 Aug 2023 17:37:46 -0600
-Message-ID: <20230828233821.43074-2-imp@bsdimp.com>
+Subject: [PULL 02/36] bsd-user: Remove image_info.mmap
+Date: Mon, 28 Aug 2023 17:37:47 -0600
+Message-ID: <20230828233821.43074-3-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::136;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x136.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::12c;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x12c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,82 +94,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-The start_mmap value is write-only.
-Remove the field and the defines that populated it.
+This value is unused.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230818175736.144194-2-richard.henderson@linaro.org>
+Message-Id: <20230818175736.144194-3-richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/arm/target_arch_elf.h    | 1 -
- bsd-user/elfload.c                | 1 -
- bsd-user/i386/target_arch_elf.h   | 1 -
- bsd-user/qemu.h                   | 1 -
- bsd-user/x86_64/target_arch_elf.h | 1 -
- 5 files changed, 5 deletions(-)
+ bsd-user/elfload.c | 1 -
+ bsd-user/qemu.h    | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/bsd-user/arm/target_arch_elf.h b/bsd-user/arm/target_arch_elf.h
-index 935bce347fc..b1c0fd2b320 100644
---- a/bsd-user/arm/target_arch_elf.h
-+++ b/bsd-user/arm/target_arch_elf.h
-@@ -20,7 +20,6 @@
- #ifndef TARGET_ARCH_ELF_H
- #define TARGET_ARCH_ELF_H
- 
--#define ELF_START_MMAP 0x80000000
- #define ELF_ET_DYN_LOAD_ADDR    0x500000
- 
- #define elf_check_arch(x) ((x) == EM_ARM)
 diff --git a/bsd-user/elfload.c b/bsd-user/elfload.c
-index 1f650bdde85..38a3439d2cd 100644
+index 38a3439d2cd..2d39e59258e 100644
 --- a/bsd-user/elfload.c
 +++ b/bsd-user/elfload.c
 @@ -738,7 +738,6 @@ int load_elf_binary(struct bsd_binprm *bprm, struct target_pt_regs *regs,
      /* OK, This is the point of no return */
      info->end_data = 0;
      info->end_code = 0;
--    info->start_mmap = (abi_ulong)ELF_START_MMAP;
-     info->mmap = 0;
+-    info->mmap = 0;
      elf_entry = (abi_ulong) elf_ex.e_entry;
  
-diff --git a/bsd-user/i386/target_arch_elf.h b/bsd-user/i386/target_arch_elf.h
-index cbcd1f08e2f..4ac27b02e72 100644
---- a/bsd-user/i386/target_arch_elf.h
-+++ b/bsd-user/i386/target_arch_elf.h
-@@ -20,7 +20,6 @@
- #ifndef TARGET_ARCH_ELF_H
- #define TARGET_ARCH_ELF_H
- 
--#define ELF_START_MMAP 0x80000000
- #define ELF_ET_DYN_LOAD_ADDR    0x01001000
- #define elf_check_arch(x) (((x) == EM_386) || ((x) == EM_486))
- 
+     /* XXX Join this with PT_INTERP search? */
 diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 8f2d6a3c78b..178114b4234 100644
+index 178114b4234..898fe3e8b34 100644
 --- a/bsd-user/qemu.h
 +++ b/bsd-user/qemu.h
 @@ -52,7 +52,6 @@ struct image_info {
      abi_ulong end_data;
      abi_ulong start_brk;
      abi_ulong brk;
--    abi_ulong start_mmap;
-     abi_ulong mmap;
+-    abi_ulong mmap;
      abi_ulong rss;
      abi_ulong start_stack;
-diff --git a/bsd-user/x86_64/target_arch_elf.h b/bsd-user/x86_64/target_arch_elf.h
-index b2447118883..e51c2faf084 100644
---- a/bsd-user/x86_64/target_arch_elf.h
-+++ b/bsd-user/x86_64/target_arch_elf.h
-@@ -20,7 +20,6 @@
- #ifndef TARGET_ARCH_ELF_H
- #define TARGET_ARCH_ELF_H
- 
--#define ELF_START_MMAP 0x2aaaaab000ULL
- #define ELF_ET_DYN_LOAD_ADDR    0x01021000
- #define elf_check_arch(x) (((x) == ELF_ARCH))
- 
+     abi_ulong entry;
 -- 
 2.41.0
 
