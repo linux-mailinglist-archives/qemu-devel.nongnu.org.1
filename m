@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A4178BAE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B078BADF
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 00:14:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qakUa-0005yD-HV; Mon, 28 Aug 2023 18:13:52 -0400
+	id 1qakUb-00060o-O9; Mon, 28 Aug 2023 18:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUQ-0005wD-QD
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:44 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUW-0005yM-1P
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:48 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUM-0004AJ-4q
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:41 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31781e15a0cso3317375f8f.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:13:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qakUR-0004BD-LU
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 18:13:47 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-401d10e3e54so6481995e9.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 15:13:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693260816; x=1693865616;
+ d=linaro.org; s=google; t=1693260822; x=1693865622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ssBvu4DzmFM7P1c5RxQ8Yw61cUsLlr2cfwVX7OvTMhs=;
- b=FVfj+4+7zlv008OcnUNBIkugVojkXIRGj/MkyiPGUTDK7xGCW2UyrKjaDnrR4f7eDm
- AGpj0a6b+WCSv9bB4uMmBBHUGWJmJDGJ8O5ekawbUNI8FGpknM0N36SYFLjmReI2eAnE
- QLBIvYh59nvuWFEGVuMp3e+5x4e8TcZbtqDEJi4hC7xZhNqJCj7lHKdxVn7UfoZqHasU
- NIir8tV8KtjpuUjEi7sWlX+3Y293eDFi7G1Lh8Gq75kWUygx6IeWH0dPABqcDrFweRtb
- MwiGKPe+yJhhUu2epghQGPy/O+TZyMLYFVCnleONxhXgZ+w6o98SYYGxOUpQaNfIauem
- yuCA==
+ bh=IN4el0RliSrzkh7KHsSv/rXBGURrc4tnh8maqpcPsQs=;
+ b=SoA0P07CJHcoBlo+OVKtKcmWcbeJo1xzdqqXYAbEldUmDBslirlyE15F+kOrbIhktr
+ Gflu+46j1WuzxmYHOp1Mgl4mI2USNeEIhrrKTWMrXDslSm3wnooQbhJBsHb0QvQ9Cd6m
+ zHRy75mKmNSCG6sy6Mbxsx+PP8+fGNqSV+bZ/1fBC1WzFpdiNtuJxcyP6Bzu8xWcMRDM
+ iiZoi/HFdFMiLFPG58trqNbUiBWLSeDOTbJkHNNWxXwrGNr5ApCgnU3idCINPGrXk0h4
+ 3/8XXlYVQo4YplvWath/3L4nWe98JcUCVOuVCoZXHu9x1FvVkEA7W9zA4rkV4lPlGs1k
+ pH+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693260816; x=1693865616;
+ d=1e100.net; s=20221208; t=1693260822; x=1693865622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ssBvu4DzmFM7P1c5RxQ8Yw61cUsLlr2cfwVX7OvTMhs=;
- b=LVz2rZ6hyjvqlBWZomB8k3NvaEMYrHZCACu/KQDARvWSiDgqF4AO17V1x+ybjaNiYs
- bzhy28WITV1CFdsmMKUDa5woO7ZMFnbiNQzbCYc/2bhc5ilTYvDRVzscOlgzHUpF8ubo
- 0pqCEhL54nMz7M/Vr29aAAEA+8n6/4Rm7eI/PGt+9PfHdynAQyC4QlITTzuvfTHqkRRq
- QHnGoJqbsD0ik64IpJcVBx2RQsujOATTu1/OogRWCxqRnlYtZy0HlanafeVvhlQODk8r
- MXTalw1ZDn19uJ+q0Rh1MBq9tBMPg8+55xdlnR8f9nE+8KnPXUSym+d7DpvhlggOGRK3
- mpgg==
-X-Gm-Message-State: AOJu0YynV+tHeHqnNZNIngrmj4vhY1LQtpMscxmx4sHS0xZ4d+WlVPwt
- GwshvZjuNcaapCInM4VbDTva6I7QurJiEoQ//bA=
-X-Google-Smtp-Source: AGHT+IEMX81yHG83r7twz2cm0MfabEnkcFLiE1JM5uJ0uPdngXPcD/dyhNu9rFluY08BdsWStCEing==
-X-Received: by 2002:adf:ce82:0:b0:317:5f13:5c2f with SMTP id
- r2-20020adfce82000000b003175f135c2fmr18469381wrn.0.1693260816435; 
- Mon, 28 Aug 2023 15:13:36 -0700 (PDT)
+ bh=IN4el0RliSrzkh7KHsSv/rXBGURrc4tnh8maqpcPsQs=;
+ b=MR1egpFtjACM3JISIQYud31IiPQAmNqiHjtcnlN99GQvjY+gHqGg7F8MUBNARZb2Zo
+ SkhwIrciXhW4Nl/nwHGNbP7rxXPpdmnKJaeH2OiBnZl45SiUsMH80WNKu0tAyIzRD6tL
+ AEZSLehzEhbf13hzZ7zDS/Em+XUaM/xIsY/Vx94/VnkQ51SbddkHf2NaQaH8lvE9iEy1
+ YQO36nOvEEaskiaTPNx86Xspkw+cudfjMsezX37Q21UeGrMRpizP5ucO+PwsS1nLRq3+
+ uQBrRJoltJyzH7KOoaWphfcVfpDFf4oxdSfsd8L1QFpdXALpIsXLiqUOKfmQws5HxaGr
+ JgAA==
+X-Gm-Message-State: AOJu0YyUO82iEuFpa5tx6/ISRLLazTA7JDN5qZJpatY0gSWQBRACvxzU
+ izw0v2AI1oyRYuCZUIWeStS4Ax1aCOxhEQ1/UBw=
+X-Google-Smtp-Source: AGHT+IEqvZIiiwwYg0XXkYowBiYWiOGHnRZJ1b/6O+1rWqxKPxx3Q9uBxmEWRWhzNfO+y4uWu4ahcQ==
+X-Received: by 2002:adf:cd0e:0:b0:317:67bf:3376 with SMTP id
+ w14-20020adfcd0e000000b0031767bf3376mr20406896wrm.57.1693260822226; 
+ Mon, 28 Aug 2023 15:13:42 -0700 (PDT)
 Received: from m1x-phil.lan ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- f22-20020a5d58f6000000b0031981c500aasm11704824wrd.25.2023.08.28.15.13.34
+ y3-20020adfe6c3000000b0031c5ce91ad6sm11720207wrm.97.2023.08.28.15.13.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 28 Aug 2023 15:13:36 -0700 (PDT)
+ Mon, 28 Aug 2023 15:13:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 03/11] target/translate: Include missing 'exec/cpu_ldst.h'
- header
-Date: Tue, 29 Aug 2023 00:13:06 +0200
-Message-ID: <20230828221314.18435-4-philmd@linaro.org>
+Subject: [PATCH v2 04/11] target/translate: Remove unnecessary
+ 'exec/cpu_ldst.h' header
+Date: Tue, 29 Aug 2023 00:13:07 +0200
+Message-ID: <20230828221314.18435-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828221314.18435-1-philmd@linaro.org>
 References: <20230828221314.18435-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,117 +94,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All these files access the CPU LD/ST API declared in "exec/cpu_ldst.h".
+All these files only access the translator_ld/st API declared
+in "exec/translator.h". The CPU ld/st API from declared in
+"exec/cpu_ldst.h" is not used, remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/helper.c                  | 1 +
- target/i386/tcg/fpu_helper.c         | 1 +
- target/i386/tcg/sysemu/excp_helper.c | 1 +
- target/loongarch/cpu.c               | 1 +
- target/mips/tcg/ldst_helper.c        | 1 +
- target/mips/tcg/msa_helper.c         | 1 +
- target/riscv/op_helper.c             | 1 +
- target/riscv/vector_helper.c         | 1 +
- 8 files changed, 8 insertions(+)
+ target/alpha/translate.c      | 1 -
+ target/hexagon/translate.c    | 1 -
+ target/hppa/translate.c       | 1 -
+ target/m68k/translate.c       | 1 -
+ target/microblaze/translate.c | 1 -
+ target/nios2/translate.c      | 1 -
+ target/openrisc/translate.c   | 1 -
+ target/ppc/translate.c        | 1 -
+ target/sh4/translate.c        | 1 -
+ target/sparc/translate.c      | 1 -
+ 10 files changed, 10 deletions(-)
 
-diff --git a/target/avr/helper.c b/target/avr/helper.c
-index e6e7d51487..fdc9884ea0 100644
---- a/target/avr/helper.c
-+++ b/target/avr/helper.c
-@@ -24,6 +24,7 @@
- #include "cpu.h"
- #include "hw/core/tcg-cpu-ops.h"
+diff --git a/target/alpha/translate.c b/target/alpha/translate.c
+index 0839182a1f..9be912c50c 100644
+--- a/target/alpha/translate.c
++++ b/target/alpha/translate.c
+@@ -24,7 +24,6 @@
+ #include "qemu/host-utils.h"
  #include "exec/exec-all.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/address-spaces.h"
+ #include "tcg/tcg-op.h"
+-#include "exec/cpu_ldst.h"
  #include "exec/helper-proto.h"
- 
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 6f3741b635..4430d3d380 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -21,6 +21,7 @@
- #include <math.h>
- #include "cpu.h"
- #include "tcg-cpu.h"
-+#include "exec/cpu_ldst.h"
+ #include "exec/helper-gen.h"
+ #include "exec/translator.h"
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 708339198e..c00254e4d5 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -23,7 +23,6 @@
+ #include "exec/helper-gen.h"
  #include "exec/helper-proto.h"
- #include "fpu/softfloat.h"
- #include "fpu/softfloat-macros.h"
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index b5f0abffa3..226689a4f2 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -19,6 +19,7 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/exec-all.h"
- #include "tcg/helper-tcg.h"
- 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 27fc6e1f33..65f9320e34 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -11,6 +11,7 @@
- #include "qapi/error.h"
- #include "qemu/module.h"
- #include "sysemu/qtest.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/exec-all.h"
- #include "cpu.h"
- #include "internals.h"
-diff --git a/target/mips/tcg/ldst_helper.c b/target/mips/tcg/ldst_helper.c
-index c1a8380e34..97056d00a2 100644
---- a/target/mips/tcg/ldst_helper.c
-+++ b/target/mips/tcg/ldst_helper.c
-@@ -24,6 +24,7 @@
- #include "cpu.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/memop.h"
+ #include "exec/translation-block.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/log.h"
  #include "internal.h"
- 
-diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
-index 29b31d70fe..c8597b9e30 100644
---- a/target/mips/tcg/msa_helper.c
-+++ b/target/mips/tcg/msa_helper.c
-@@ -22,6 +22,7 @@
- #include "internal.h"
- #include "tcg/tcg.h"
+ #include "attribs.h"
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index e3af668252..c04dc15228 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -23,7 +23,6 @@
+ #include "qemu/host-utils.h"
  #include "exec/exec-all.h"
-+#include "exec/cpu_ldst.h"
+ #include "tcg/tcg-op.h"
+-#include "exec/cpu_ldst.h"
  #include "exec/helper-proto.h"
- #include "exec/memop.h"
- #include "fpu/softfloat.h"
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 9cdb9cdd06..7e2f1908ee 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -23,6 +23,7 @@
- #include "internals.h"
+ #include "exec/helper-gen.h"
+ #include "exec/translator.h"
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 15b3701b8f..9e224fe796 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -25,7 +25,6 @@
+ #include "tcg/tcg-op.h"
+ #include "qemu/log.h"
+ #include "qemu/qemu-print.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/translator.h"
+ 
+ #include "exec/helper-proto.h"
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index 7e7f837c63..d02c16296a 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -24,7 +24,6 @@
+ #include "exec/exec-all.h"
+ #include "tcg/tcg-op.h"
+ #include "exec/helper-proto.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/helper-gen.h"
+ #include "exec/translator.h"
+ #include "qemu/qemu-print.h"
+diff --git a/target/nios2/translate.c b/target/nios2/translate.c
+index 4264c7ec6b..dfc546d3bb 100644
+--- a/target/nios2/translate.c
++++ b/target/nios2/translate.c
+@@ -29,7 +29,6 @@
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
+ #include "exec/log.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/translator.h"
+ #include "qemu/qemu-print.h"
+ #include "semihosting/semihost.h"
+diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
+index 7c6f80daf1..d65758449f 100644
+--- a/target/openrisc/translate.c
++++ b/target/openrisc/translate.c
+@@ -26,7 +26,6 @@
+ #include "qemu/log.h"
+ #include "qemu/bitops.h"
+ #include "qemu/qemu-print.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/translator.h"
+ 
+ #include "exec/helper-proto.h"
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 74796ec7ba..49b6a757b7 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -27,7 +27,6 @@
+ #include "tcg/tcg-op-gvec.h"
+ #include "qemu/host-utils.h"
  #include "qemu/main-loop.h"
- #include "exec/exec-all.h"
-+#include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
+-#include "exec/cpu_ldst.h"
  
- /* Exceptions processing helpers */
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index bf7e0029a1..bc9e151aa9 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -22,6 +22,7 @@
- #include "cpu.h"
- #include "exec/memop.h"
- #include "exec/exec-all.h"
-+#include "exec/cpu_ldst.h"
  #include "exec/helper-proto.h"
- #include "fpu/softfloat.h"
- #include "tcg/tcg-gvec-desc.h"
+ #include "exec/helper-gen.h"
+diff --git a/target/sh4/translate.c b/target/sh4/translate.c
+index 49c87d7a01..c1e590feb3 100644
+--- a/target/sh4/translate.c
++++ b/target/sh4/translate.c
+@@ -22,7 +22,6 @@
+ #include "disas/disas.h"
+ #include "exec/exec-all.h"
+ #include "tcg/tcg-op.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
+ #include "exec/translator.h"
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index fa80a91161..3bf0ab8135 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -25,7 +25,6 @@
+ #include "exec/helper-proto.h"
+ #include "exec/exec-all.h"
+ #include "tcg/tcg-op.h"
+-#include "exec/cpu_ldst.h"
+ 
+ #include "exec/helper-gen.h"
+ 
 -- 
 2.41.0
 
