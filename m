@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B95578AFAB
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B325378AFBD
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 14:11:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qab3X-0003ZW-91; Mon, 28 Aug 2023 08:09:19 -0400
+	id 1qab4w-0004Lx-Rb; Mon, 28 Aug 2023 08:10:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qab3M-0003XI-Pf
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:09:08 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qab4q-0004K7-Vl
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:10:41 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qab3H-0003Rw-7i
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:09:07 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31ad779e6b3so2551586f8f.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:09:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qab4n-0003uu-1z
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 08:10:40 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fef56f7222so30123255e9.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 05:10:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693224541; x=1693829341;
+ d=linaro.org; s=google; t=1693224635; x=1693829435;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Gt3M6B2EsSg8OwS8wia8jHdklhXN7mBMIA7MC/+MDR0=;
- b=kxtLI+EWpotQE9drRJeF4nC3w+y616VSMYxVjALjGQpxNqpBdS1oKa/tZmFol63Ujn
- vucsPrOSMPW8orutnSHO4YkfZfqCTaNcpYWwjZxt/0z3xHmhQpnNIghT2XRQ1PJnSl5g
- rIO6ayIOz7kBVIBg/LdnkmknmgMaqugBcwprTrnx1rtPVA+Ss0VJ7e87kX7PBfuxh168
- qWlc5++hOKZc4EfNs38gar/qoahFpyj6LuC8DtLmgBIvJo6FOdJHaZCAxOkzM3jAeCZ3
- Z40voF0cQFflMo5529OiKxrCJu1Nm2czSJawCC1E27nIQ1HVUt/ydFqgdZtuSMOimrmN
- 8KDw==
+ bh=ZIqWbnYvYQGJhxHrs2hkMymk5ZhG+tpHyV3Ya/bbLZs=;
+ b=pqoANqR4pntSBGRdu0n3juSxkUozChe+14FcWxoOKLJS2edLj7cEY6743vnLdctTsP
+ wJp+RaUFLWLGmyALZIMKghyB6WfppRXsjmlA0R5z9Q7NfaG2aeiTcdw57nDzK+lQxkRD
+ oCjPi9uLXEsyd7RZP4V2jkFm7p/Az5Vpb/FBHNyYt8qYvMERTKqODiSwqerTM0YMCeHN
+ C5UZ/+lO/E6v+6dpz8ZnMZxmEL3BQ3ONjDDwAGwbyEopkxThmZ7x+ctJ+s065zumBF6+
+ +c9mFu0b5NvL0xkyzU4MiT6vgN/gg01tX6h2GdTb9JMChCLPpzDqD+3VYMHkPh7lORCh
+ 06lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693224541; x=1693829341;
+ d=1e100.net; s=20221208; t=1693224635; x=1693829435;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gt3M6B2EsSg8OwS8wia8jHdklhXN7mBMIA7MC/+MDR0=;
- b=VhJLQG0G11D0/atp5ccdzzcGTpdn7kklVn4KQJu6E9BGbsCqiRIERpR38Nk2sVulVq
- PZHnA4nAiVvmonGNol3/+jmgrhfvLk4whQgDyWIlJJIJ8ZosZhjBVWZPAXoFElG4lQ5i
- dsH9/9p8i0o/l+6mkwbKg+nCjxzWCeEe/my60PokSiyZUcfT6PTya3MQdtb7aMPtizRv
- yErpU5p8aWNI/tDPxVJ9Jk93QLxQP4UeBSiP4Hh+ty0q0lexdeTtL+nqSrGy9nxXmZ94
- wIGPORyRyx2W3yjEl5AIPt+f9KzFVvk81B9N/9drmzZTwTfBM/Y5QTIe8Q1E1fGc25SQ
- HhDg==
-X-Gm-Message-State: AOJu0YwiaqLPhBsuFZ//hi9pzQFBuEgoouKZdiIHssYKg25JU3USOKWr
- 8TciH2N2zaq6Q/s3XgerNUZrahSRn2S1K2YATbE=
-X-Google-Smtp-Source: AGHT+IE1QpvFqc9y6DHpH/RzSEWbnV4hXCSbwMZ4clmSddnr9XjoelIThrhDd3f6QZsdisAWJyLqog==
-X-Received: by 2002:a5d:6290:0:b0:317:51ff:c249 with SMTP id
- k16-20020a5d6290000000b0031751ffc249mr17999428wru.13.1693224541014; 
- Mon, 28 Aug 2023 05:09:01 -0700 (PDT)
+ bh=ZIqWbnYvYQGJhxHrs2hkMymk5ZhG+tpHyV3Ya/bbLZs=;
+ b=BjmBXAMNamQRwH6JasCCtIy85lscXSnzN165OFzVuuN134a8VUA+cQYiSNUjI2D6KS
+ yP1c/w500B0cRSYNmjhmd/fRADF8JAd/2yU4ljckHZzoxa29cLBNMLtAPbk7BUPBJRJI
+ AUcjXMQqyRTmUxfIH5AAsP+A/lRFgbXYW2/DV7LLP/BBF3KoenFlZIX19pCXA5UekFwc
+ VhllQisv2qTpxckrV5got7S3sVUz2PTTUnVflKoN3eSDhEh9dqkWYBisBwtGqzLJLmoQ
+ Qatw+HGi6FG01w6Bb/ib3Eb7Z1vSzyf1x1mdbAVRoqM6YT8DiVwjjydu1NV63b35na/r
+ gHlA==
+X-Gm-Message-State: AOJu0YwfZl/tJTuF1045QcBx54Wc7TRLctvccEuI8wbcYgPbPVwacequ
+ kYDSpdSch4ZWJY8BY2pRuJ6SZA==
+X-Google-Smtp-Source: AGHT+IE78WPHCqPEUWBMfT9joAPsIISQSOEoP4/WXHCoFf0tGjjY4znWSr4p5aw9wTT8ZcqI/ZXF2Q==
+X-Received: by 2002:a05:600c:b42:b0:3fe:db1b:8c39 with SMTP id
+ k2-20020a05600c0b4200b003fedb1b8c39mr19492898wmr.41.1693224635425; 
+ Mon, 28 Aug 2023 05:10:35 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- a14-20020a5d508e000000b0031ad2f9269dsm10385107wrt.40.2023.08.28.05.08.59
+ hn23-20020a05600ca39700b003fee8793911sm10567335wmb.44.2023.08.28.05.10.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 05:09:00 -0700 (PDT)
-Message-ID: <2b82a710-1d02-ec1f-c7b2-b9ebce77c496@linaro.org>
-Date: Mon, 28 Aug 2023 14:08:58 +0200
+ Mon, 28 Aug 2023 05:10:35 -0700 (PDT)
+Message-ID: <25ee9d8b-7c84-adcd-d026-43fa049d8083@linaro.org>
+Date: Mon, 28 Aug 2023 14:10:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 8/8] hw/acpi/core: Trace enable and status registers of
- GPE separately
+Subject: Re: [PATCH 6/8] hw/i386/acpi-build: Determine SMI command port just
+ once
 Content-Language: en-US
 To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
@@ -71,13 +71,13 @@ Cc: Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
  Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>
 References: <20230828073609.5710-1-shentey@gmail.com>
- <20230828073609.5710-9-shentey@gmail.com>
+ <20230828073609.5710-7-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230828073609.5710-9-shentey@gmail.com>
+In-Reply-To: <20230828073609.5710-7-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -101,34 +101,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 28/8/23 09:36, Bernhard Beschow wrote:
-> The bit positions of both registers are related. Tracing the registers
-> independently results in the same offsets across these registers which
-> eases debugging.
+> The SMI command port is currently hardcoded by means of the ACPI_PORT_SMI_CMD
+> macro. This hardcoding is Intel specific and doesn't match VIA, for example.
+> There is already the AcpiFadtData::smi_cmd attribute which is used when building
+> the FADT. Let's also use it when building the DSDT which confines SMI command
+> port determination to just one place. This allows it to become a property later,
+> thus resolving the Intel assumption.
 > 
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> Acked-by: Igor Mammedov <imammedo@redhat.com>
 > ---
->   hw/acpi/core.c       | 10 +++++++---
->   hw/acpi/trace-events |  6 ++++--
->   2 files changed, 11 insertions(+), 5 deletions(-)
-
-
-> diff --git a/hw/acpi/trace-events b/hw/acpi/trace-events
-> index 159937ddb9..d387adfb0b 100644
-> --- a/hw/acpi/trace-events
-> +++ b/hw/acpi/trace-events
-> @@ -18,8 +18,10 @@ mhp_acpi_pc_dimm_deleted(uint32_t slot) "slot[0x%"PRIx32"] pc-dimm deleted"
->   mhp_acpi_pc_dimm_delete_failed(uint32_t slot) "slot[0x%"PRIx32"] pc-dimm delete failed"
->   
->   # core.c
-> -acpi_gpe_ioport_readb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " ==> 0x%" PRIx8
-> -acpi_gpe_ioport_writeb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " <== 0x%" PRIx8
-> +acpi_gpe_sts_ioport_readb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " ==> 0x%" PRIx8
-> +acpi_gpe_en_ioport_readb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " ==> 0x%" PRIx8
-> +acpi_gpe_sts_ioport_writeb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " <== 0x%" PRIx8
-> +acpi_gpe_en_ioport_writeb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " <== 0x%" PRIx8
-
-0x%02 for val? Otherwise:
+>   hw/i386/acpi-build.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
