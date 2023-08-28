@@ -2,97 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE74C78B5C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 19:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 705D678B678
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 19:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qafb4-0000Et-7p; Mon, 28 Aug 2023 13:00:14 -0400
+	id 1qag3k-0000aM-VC; Mon, 28 Aug 2023 13:29:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qafb2-0000Db-Bh
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:00:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jiegec@aosc.io>) id 1qaffk-0002ea-2g
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:05:04 -0400
+Received: from relay3.mymailcheap.com ([217.182.66.161])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qafay-0002w6-Va
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:00:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693242007;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zOfN+WOS5rN7rWs79M3bBCXxEbNFso2E85Sacm74/9c=;
- b=DoyD1lXAPUulmNlAyKqVpJt4g/bJkYw9ba+CZoMAJxatph4hEbm/l9MTc5Iwis3MfU58Ac
- 4XNmrlCI9WqhC4NTgM2Pp2DYXsqvtb3Z4GYK6l/70pWHQ7W5OmkcqXM+5Ggm2fhV81g3Y0
- LYeXQpF/nXEHOgQMbFnBY747ov4QQPA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-BlX99CIpOTS5i9Xl4gZ04g-1; Mon, 28 Aug 2023 13:00:06 -0400
-X-MC-Unique: BlX99CIpOTS5i9Xl4gZ04g-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe5b94bd62so24815155e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 10:00:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693242005; x=1693846805;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zOfN+WOS5rN7rWs79M3bBCXxEbNFso2E85Sacm74/9c=;
- b=eVFJZfeusBLFc157hwtozYRcRGu5FvFbISzV366Z9ma0kU8lqAQaAW6C+9xTK4CMT9
- J/HEpmG2a1tYd6NLU7PD4iBnjsAyvGhi24peRbmOXeQI0kA0eJDNrgRQI39jyzT4thmn
- cWuQDgssiPU8WrsKBYTEWld5QbsSS8yZRtjJpgKwtLzKv/u6oyTHF+f3hDN9kZJ5hX5w
- weMkZVTL8JBwhn5QU1RDxGJSfnebXloa13DCo+6LRjxYmk9+t20B7iqTJpwaerJjGGUF
- 5eYJtiUp3dkqtZSRDG+yCGuxV58/adOQ0D+qo/EtA8nFiIdDc4O0Fp4U12EFn8Az7z53
- TrgQ==
-X-Gm-Message-State: AOJu0YxhdPrYpLo0b9FcXZXHc032zEFNrdCoQp5CkhRTmrAx5Zmrg3SX
- 1AyozPhCOXIYFTxv08eJLtcy9Re9rASr4CzERUpAJ4JDn8OI7qFdX4RDM9zMPPHTnvCPTK3ALHO
- zaASN0yLpzhGTpCk=
-X-Received: by 2002:a5d:6103:0:b0:317:6470:3271 with SMTP id
- v3-20020a5d6103000000b0031764703271mr20001531wrt.45.1693242005174; 
- Mon, 28 Aug 2023 10:00:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHsKEFdSF4ezhldaKGlvIQX+2r8QTwuuUegIABffXHP9BQFbwJYrfGz1FtV5SBXc2FpLqoXBw==
-X-Received: by 2002:a5d:6103:0:b0:317:6470:3271 with SMTP id
- v3-20020a5d6103000000b0031764703271mr20001516wrt.45.1693242004758; 
- Mon, 28 Aug 2023 10:00:04 -0700 (PDT)
-Received: from [192.168.8.103] (tmo-098-91.customers.d1-online.com.
- [80.187.98.91]) by smtp.gmail.com with ESMTPSA id
- q9-20020adfea09000000b0031c5ee51638sm11061262wrm.109.2023.08.28.10.00.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 10:00:04 -0700 (PDT)
-Message-ID: <15ba0f6c-d9a2-a351-6df5-c0b427f3066a@redhat.com>
-Date: Mon, 28 Aug 2023 19:00:01 +0200
+ (Exim 4.90_1) (envelope-from <jiegec@aosc.io>) id 1qafff-0003Tq-Rm
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 13:05:02 -0400
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+ by relay3.mymailcheap.com (Postfix) with ESMTPS id BEC593E988;
+ Mon, 28 Aug 2023 19:04:51 +0200 (CEST)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+ by nf1.mymailcheap.com (Postfix) with ESMTPSA id 8E87C40603;
+ Mon, 28 Aug 2023 17:04:51 +0000 (UTC)
+Received: from [192.168.1.3] (unknown [223.72.44.123])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail20.mymailcheap.com (Postfix) with ESMTPSA id 4E9D540696;
+ Mon, 28 Aug 2023 17:04:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+ t=1693242291; bh=ZxfIFvMZHE/RDfmT1nKISC28DmGdx3xM1WtDIG83J4w=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=bTus6sbs2POWRDUTyA+3sZCTr1K+mcY1F/35V2q6WXEjKY9TlhPoiHjSy/9/TXXhH
+ foLJrUL0lMG7o61Jl+s9gZpc8wu7eKJkeNiRWfaF9HpuwmO9lB/rGabHNrf0XenwOw
+ lb41elCPTQa0xV0PxOtaHU2dbVFvsgo9L/thnfKI=
+Message-ID: <65f6d07a-36c4-a65f-91be-d2fe2d978e75@aosc.io>
+Date: Tue, 29 Aug 2023 01:04:43 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 02/11] tcg/loongarch64: Lower basic tcg vec ops to LSX
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
- <hpoussin@reactos.org>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-trivial@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230825175123.624114-1-thuth@redhat.com>
- <20230825175123.624114-2-thuth@redhat.com>
- <94cb7c35-39f7-0108-d623-78435a5e7fee@linaro.org>
- <0b618261-b056-ff46-061c-7a0845e58ea9@redhat.com>
- <665924a0-dec5-cfe1-6d97-0021036b8723@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 1/3] hw/mips/jazz: Remove the big_endian variable
-In-Reply-To: <665924a0-dec5-cfe1-6d97-0021036b8723@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn, WANG Xuerui <git@xen0n.name>
+References: <20230828152009.352048-1-c@jia.je>
+ <20230828152009.352048-3-c@jia.je>
+ <692c49da-af4d-3913-cf82-726294a0d792@linaro.org>
+From: Jiajie Chen <jiegec@aosc.io>
+In-Reply-To: <692c49da-af4d-3913-cf82-726294a0d792@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Rspamd-Queue-Id: 8E87C40603
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Spamd-Result: default: False [-0.10 / 10.00]; MIME_GOOD(-0.10)[text/plain];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[];
+ ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; TO_DN_SOME(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCVD_TLS_ALL(0.00)[]
+X-Rspamd-Action: no action
+Received-SPF: permerror client-ip=217.182.66.161; envelope-from=jiegec@aosc.io;
+ helo=relay3.mymailcheap.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.169, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
+ SPF_HELO_PASS=-0.001, T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 28 Aug 2023 13:29:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,110 +86,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/08/2023 17.48, Philippe Mathieu-Daudé wrote:
-> On 28/8/23 14:41, Thomas Huth wrote:
->> On 28/08/2023 14.19, Philippe Mathieu-Daudé wrote:
->>> Hi Thomas,
->>>
->>> On 25/8/23 19:51, Thomas Huth wrote:
->>>> There is an easier way to get a value that can be used to decide
->>>> whether the target is big endian or not: Simply use the
->>>> target_words_bigendian() function instead.
->>>>
->>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>> ---
->>>>   hw/mips/jazz.c | 10 ++--------
->>>>   1 file changed, 2 insertions(+), 8 deletions(-)
->>>
->>>
->>>> @@ -157,12 +157,6 @@ static void mips_jazz_init(MachineState *machine,
->>>>           [JAZZ_PICA61] = {33333333, 4},
->>>>       };
->>>> -#if TARGET_BIG_ENDIAN
->>>> -    big_endian = 1;
->>>> -#else
->>>> -    big_endian = 0;
->>>> -#endif
->>>> -
->>>>       if (machine->ram_size > 256 * MiB) {
->>>>           error_report("RAM size more than 256Mb is not supported");
->>>>           exit(EXIT_FAILURE);
->>>> @@ -301,7 +295,7 @@ static void mips_jazz_init(MachineState *machine,
->>>>               dev = qdev_new("dp8393x");
->>>>               qdev_set_nic_properties(dev, nd);
->>>>               qdev_prop_set_uint8(dev, "it_shift", 2);
->>>> -            qdev_prop_set_bit(dev, "big_endian", big_endian > 0);
->>>> +            qdev_prop_set_bit(dev, "big_endian", 
->>>> target_words_bigendian());
->>>
->>> IIRC last time I tried that Peter pointed me at the documentation:
->>>
->>> /**
->>>   * target_words_bigendian:
->>>   * Returns true if the (default) endianness of the target is big endian,
->>>   * false otherwise. Note that in target-specific code, you can use
->>>   * TARGET_BIG_ENDIAN directly instead. On the other hand, common
->>>   * code should normally never need to know about the endianness of the
->>>   * target, so please do *not* use this function unless you know very
->>>   * well what you are doing!
->>>   */
->>>
->>> (Commit c95ac10340 "cpu: Provide a proper prototype for
->>>   target_words_bigendian() in a header")
->>>
->>> Should we update the comment?
->>
->> What would you change? My motivation here was mainly to decrease the size 
->> of the code - I think it's way more complicated via the #if + extra 
->> variable compared to simply calling target_words_bigendian(), isn't it? I 
->> think the diffstat says it all...
-> 
-> Is the comment misleading then? Why not decrease the code
-> size using target_words_bigendian() in all the similar cases?
-> 
-> $ git grep -A4 'if TARGET_BIG_ENDIAN' hw/
-> 
-> hw/microblaze/boot.c:145:#if TARGET_BIG_ENDIAN
-> hw/microblaze/boot.c-146-        big_endian = 1;
-> hw/microblaze/boot.c-147-#endif
-> -- 
-> hw/mips/jazz.c:160:#if TARGET_BIG_ENDIAN
-> hw/mips/jazz.c-161-    big_endian = 1;
-> hw/mips/jazz.c-162-#else
-> hw/mips/jazz.c-163-    big_endian = 0;
-> hw/mips/jazz.c-164-#endif
-> -- 
-> hw/mips/malta.c:378:#if TARGET_BIG_ENDIAN
-> hw/mips/malta.c-379-        val = 0x00000012;
-> hw/mips/malta.c-380-#else
-> hw/mips/malta.c-381-        val = 0x00000010;
-> hw/mips/malta.c-382-#endif
-> -- 
-> hw/mips/malta.c:631:#if TARGET_BIG_ENDIAN
-> hw/mips/malta.c-632-#define cpu_to_gt32(x) (x)
-> hw/mips/malta.c-633-#else
-> hw/mips/malta.c-634-#define cpu_to_gt32(x) bswap32(x)
-> hw/mips/malta.c-635-#endif
+There seems to some problem with the email server, try my another email 
+address to send this email.
 
-If it's just about a variable that gets initialized to 0 or 1, replacing it 
-with target_words_bigendian() certainly make a lot of sense. Not sure about 
-this spot in malta.c, though, this is a bit different since it declares a 
-macro instead.
 
-> So within hw/ I'd restrict target_words_bigendian() use to
-> MachineClass::init() handlers, and prohibit TARGET_BIG_ENDIAN
-> from hw/. Only use in softmmu/, target, *-user/. If we agree
-> we can rewrite the comment, removing the "do *not* use this
-> function unless you know very well what you are doing!" which
-> is hard to interpret IMHO.
+On 2023/8/29 00:57, Richard Henderson wrote:
+> On 8/28/23 08:19, Jiajie Chen wrote:
+>> +static void tcg_out_dupi_vec(TCGContext *s, TCGType type, unsigned 
+>> vece,
+>> +                             TCGReg rd, int64_t v64)
+>> +{
+>> +    /* Try vldi if imm can fit */
+>> +    if (vece <= MO_32 && (-0x200 <= v64 && v64 <= 0x1FF)) {
+>> +        uint32_t imm = (vece << 10) | ((uint32_t)v64 & 0x3FF);
+>> +        tcg_out_opc_vldi(s, rd, imm);
+>> +        return;
+>> +    }
+>
+> v64 has the value replicated across 64 bits.
+> In order to do the comparison above, you'll want
+>
+>     int64_t vale = sextract64(v64, 0, 8 << vece);
+>     if (-0x200 <= vale && vale <= 0x1ff)
+>         ...
+>
+> Since the only documentation for LSX is qemu's own translator code, 
+> why are you testing vece <= MO_32?  MO_64 should be available as 
+> well?  Or is there a bug in trans_vldi()?
 
-Ok, now I got you, I think. Yes, I agree we should update the comment to say 
-that it should not be used in *devices* (unless you know what you're doing, 
-e.g. in virtio code). I just also found the original discussion which was 
-about the same thoughts:
 
-  https://lists.nongnu.org/archive/html/qemu-devel/2018-10/msg00939.html
+Sorry, my mistake. I was messing MO_64 with bit 12 in vldi imm.
 
-  Thomas
 
+>
+> It might be nice to leave a to-do for vldi imm bit 12 set, for the 
+> patterns expanded by vldi_get_value().  In particular, mode == 9 is 
+> likely to be useful, and modes {1,2,3,5} are easy to test for.
+>
+
+Sure, I was thinking about the complexity of pattern matching on those 
+modes, and decided to skip the hard part in the first patch series.
+
+
+>
+>> +
+>> +    /* Fallback to vreplgr2vr */
+>> +    tcg_out_movi(s, type, TCG_REG_TMP0, v64);
+>
+> type is a vector type; you can't use it here.
+> Correct would be TCG_TYPE_I64.
+>
+> Better to load vale instead, since that will take fewer insns in 
+> tcg_out_movi.
+
+
+Sure.
+
+
+>
+>
+>> +static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+>> +                           unsigned vecl, unsigned vece,
+>> +                           const TCGArg args[TCG_MAX_OP_ARGS],
+>> +                           const int const_args[TCG_MAX_OP_ARGS])
+>> +{
+>> +    TCGType type = vecl + TCG_TYPE_V64;
+>> +    TCGArg a0, a1, a2;
+>> +    TCGReg base;
+>> +    TCGReg temp = TCG_REG_TMP0;
+>> +    int32_t offset;
+>> +
+>> +    a0 = args[0];
+>> +    a1 = args[1];
+>> +    a2 = args[2];
+>> +
+>> +    /* Currently only supports V128 */
+>> +    tcg_debug_assert(type == TCG_TYPE_V128);
+>> +
+>> +    switch (opc) {
+>> +    case INDEX_op_st_vec:
+>> +        /* Try to fit vst imm */
+>> +        if (-0x800 <= a2 && a2 <= 0x7ff) {
+>> +            base = a1;
+>> +            offset = a2;
+>> +        } else {
+>> +            tcg_out_addi(s, TCG_TYPE_I64, temp, a1, a2);
+>> +            base = temp;
+>> +            offset = 0;
+>> +        }
+>> +        tcg_out_opc_vst(s, a0, base, offset);
+>> +        break;
+>> +    case INDEX_op_ld_vec:
+>> +        /* Try to fit vld imm */
+>> +        if (-0x800 <= a2 && a2 <= 0x7ff) {
+>> +            base = a1;
+>> +            offset = a2;
+>> +        } else {
+>> +            tcg_out_addi(s, TCG_TYPE_I64, temp, a1, a2);
+>> +            base = temp;
+>> +            offset = 0;
+>> +        }
+>> +        tcg_out_opc_vld(s, a0, base, offset);
+>
+> tcg_out_addi has a hole in bits [15:12], and can take an extra insn if 
+> those bits are set.  Better to load the offset with tcg_out_movi and 
+> then use VLDX/VSTX instead of VLD/VST.
+
+
+Sure.
+
+
+>
+>> @@ -159,6 +170,30 @@ typedef enum {
+>>   #define TCG_TARGET_HAS_mulsh_i64        1
+>>   #define TCG_TARGET_HAS_qemu_ldst_i128   0
+>>   +#define TCG_TARGET_HAS_v64              0
+>> +#define TCG_TARGET_HAS_v128             use_lsx_instructions
+>> +#define TCG_TARGET_HAS_v256             0
+>
+> Perhaps reserve for a follow-up, but TCG_TARGET_HAS_v64 can easily be 
+> supported using the same instructions.
+>
+> The only difference is load/store, where you could use FLD.D/FST.D to 
+> load the lower 64-bits of the fp/vector register, or VLDREPL.D to load 
+> and initialize all bits and VSTELM.D to store the lower 64-bits.
+>
+> I tend to think the float insns are more flexible, having a larger 
+> displacement, and the availability of FLDX/FSTX as well.
+
+
+Sure.
+
+
+>
+>
+> r~
 
