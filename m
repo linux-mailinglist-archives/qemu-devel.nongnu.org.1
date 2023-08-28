@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDB378B889
+	by mail.lfdr.de (Postfix) with ESMTPS id 895D578B888
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 21:40:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qai4s-00065I-Nf; Mon, 28 Aug 2023 15:39:10 -0400
+	id 1qai5b-0006O8-Bx; Mon, 28 Aug 2023 15:39:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qai4q-00064t-Tr
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 15:39:08 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qai5a-0006Nu-1z
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 15:39:54 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qai4o-0001gH-R6
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 15:39:08 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bf6ea270b2so21441055ad.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 12:39:06 -0700 (PDT)
+ id 1qai5X-0001n6-Tt
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 15:39:53 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bf6ea270b2so21446705ad.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 12:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693251545; x=1693856345;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zIooUgTblWVCDshj70uQvPPMX4nHbJCLCcr1ZbtnLAg=;
- b=HB38fsBwh5oHGUa5di5mfEhk549Bu9nyvYecsXEzr+o6ErSNe/+etCVKA5zY/mQ3wG
- tzNz54uacHaOF5bKwRg3vKQth2har/yiip99hCFGJ1T2npqXDPoG3+lYqmpLyUByl3j2
- GA616B7GwsXAlyuNWNKMpeZOOe6RPYpCB+rc9Xg1j/BOQdGRaKTvIqY9WY8j6GDqdq1D
- Wd9gvzwqBHsl/G0e3ZNBeRV5PtOMwX1fEvEfaqf8vKAKLbUQ+Y/jDJuyCjUHg77/Pltp
- Ff2pMg3kA0bCd9qqwAjaCVCLjvXADMIgtCyE396NkHoWPSDa8inn84WUx0CLE1bgMf5/
- ryrA==
+ d=linaro.org; s=google; t=1693251590; x=1693856390;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=E7msnRk4yfcEdp2xPJQnHXl6mU2W+3e48Aa/Ps4Tp/0=;
+ b=TNeSewSiu1w62WeGFb1p9CHvAgBLJc16+o6QISMH0imal1SfTvPHvaPFonIplg5NE0
+ vzksmFkzUrO13LbbHb67UYt2kVVFG6BBygjNXiCqt4juggzNAfI9JNmqbiKoQe2l3RN2
+ 7my4iqdvVRTkmZ0d8hw/+zoCurEaQrlsq4RwSDlxCSU38N6JLzwWX2XlbZfUA9NYGehB
+ iE4OkE/52zZTGxBt8wMGWVR/gorYLfwvcafoK3ezRSOuXZOvwFlZLQ1XcY0jtTZ38z3D
+ KRzzvSUrYyHhhvoNRB9BqYOtbRMcjWxLsJuDjdK9a/OT9yKwoRwvsTFuKsH4b8WJVWY0
+ XsQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693251545; x=1693856345;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zIooUgTblWVCDshj70uQvPPMX4nHbJCLCcr1ZbtnLAg=;
- b=J2RfzuxfHbQVeWOW67U5OAWCif0WoQQ4U6NGIbAODLjdopydPqH0dZdmkGHnzS2mfb
- 3xpcUF9MxTP4idnzq1lDN9yOiF/QRGt0+6EC3ACePyGwxedG8mrsYKjPGYvOs9Kdayx5
- utAlzYsViu1BGgUOAURn6y5PFOr1+d/M859B5Fgd9TN5ptVwdaRyFyhay0ZBqtjXPNyg
- 2kAaUzTM/XvViDUcKcaLvfhrdO/38LNN8Fg8tYEKorWii6WkIzNFQITsGha/3Lh6OpE2
- RVmzW+9ubKv/i9Ihxso4wr92XZACXPADiUogvcAp/ETA0L+O8Aab2TPxCYXXdFrEXjxi
- 9n2Q==
-X-Gm-Message-State: AOJu0YzB41xLb3/O6B3poS07yZ+jG4sHKx7z1ZCsVKGc4k/O+lUTZO8E
- qIkh7mPKD2ywS7wCdp2q+JtWNQ==
-X-Google-Smtp-Source: AGHT+IHhL7h4rJaTrV/7AkP8N+RA3GilBDd7TASbeuFlR/os4AY6A6UVaMFUyfnAAnIAskd1nnb+Lw==
-X-Received: by 2002:a17:902:e751:b0:1c1:fc5c:b330 with SMTP id
- p17-20020a170902e75100b001c1fc5cb330mr227310plf.12.1693251545147; 
- Mon, 28 Aug 2023 12:39:05 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- i15-20020a17090332cf00b001a6d4ea7301sm7756338plr.251.2023.08.28.12.39.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 12:39:04 -0700 (PDT)
-Message-ID: <69d01734-d6bd-47e1-1dbb-2bdb26b32689@linaro.org>
-Date: Mon, 28 Aug 2023 12:39:02 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/11] Lower TCG vector ops to LSX
-Content-Language: en-US
+ d=1e100.net; s=20221208; t=1693251590; x=1693856390;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E7msnRk4yfcEdp2xPJQnHXl6mU2W+3e48Aa/Ps4Tp/0=;
+ b=XhottomZEiFheqJLufnLxeDZlha9NfWpJwy+rzVytH/LzsZyg2CF1uKiJ6uPkCQu1m
+ rpocOBW2Wo2LLx+Q1bNlgf3j3kBWFpat/z6ehBf9kKDoEk6S0OqySxFKOYlMbUfml89k
+ 7RZl4Btl5+7yo6IlUA8VNm42jbj4nR9mcq2hn/4kE8uBVfb6jQCSL359hEQGFRR+WnuU
+ 2wtsoCduJqxN63BQzSnA797PY4PdWwihqFt5wOCwboUf7/xI5bzWYuNFH4o79LZP9fFz
+ /G7G4YluuY/N0YIsaE0IvCwL53puLAcdbxYu5wZNKsqKhrv71BCfA421T+mo9RbCnCeR
+ xpWw==
+X-Gm-Message-State: AOJu0YwdBK8s47Qhg55oD09jFbCRfvdNQuPk/87Hkoo8aXyIMMbsGHHN
+ 4+Le0xJA1es9kUJegCs7e4PpkZJWm42K2/xOCvw=
+X-Google-Smtp-Source: AGHT+IHK71I1wjzj34XICWRBGMOpW1ZtGAXLYN7adUN+KpWJWynsHaHf17gEJ0ga4s2Mn1+ux85iGQ==
+X-Received: by 2002:a17:902:c70a:b0:1b8:a569:f980 with SMTP id
+ p10-20020a170902c70a00b001b8a569f980mr19398787plp.65.1693251590630; 
+ Mon, 28 Aug 2023 12:39:50 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ a18-20020a170902b59200b001b89045ff03sm7707313pls.233.2023.08.28.12.39.49
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Aug 2023 12:39:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn
-References: <20230828152009.352048-1-c@jia.je>
- <8d4941d2-77e3-f9de-302f-b3f9d14141dc@linaro.org>
-In-Reply-To: <8d4941d2-77e3-f9de-302f-b3f9d14141dc@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Subject: [PATCH] tcg: Remove vecop_list check from tcg_gen_not_vec
+Date: Mon, 28 Aug 2023 12:39:49 -0700
+Message-Id: <20230828193949.576198-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,17 +86,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 10:29, Richard Henderson wrote:
-> We should probably improve tcg_gen_not_vec to try NOR.  This would support loongarch64, 
-> and allow the special expansion in PPC and S390X to be removed.
+The not pattern is always available via generic expansion.
+See debug block in tcg_can_emit_vecop_list.
 
-Hmm, no.  The tcg optimizer does better when NOT is supported directly.
-There is a whole series of fold_*_to_not patterns.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/tcg-op-vec.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-It's what I get for looking at this for a long time.
+diff --git a/tcg/tcg-op-vec.c b/tcg/tcg-op-vec.c
+index ad8ee08a7e..094298bb27 100644
+--- a/tcg/tcg-op-vec.c
++++ b/tcg/tcg-op-vec.c
+@@ -391,12 +391,11 @@ static bool do_op2(unsigned vece, TCGv_vec r, TCGv_vec a, TCGOpcode opc)
+ 
+ void tcg_gen_not_vec(unsigned vece, TCGv_vec r, TCGv_vec a)
+ {
+-    const TCGOpcode *hold_list = tcg_swap_vecop_list(NULL);
+-
+-    if (!TCG_TARGET_HAS_not_vec || !do_op2(vece, r, a, INDEX_op_not_vec)) {
++    if (TCG_TARGET_HAS_not_vec) {
++        vec_gen_op2(INDEX_op_not_vec, 0, r, a);
++    } else {
+         tcg_gen_xor_vec(0, r, a, tcg_constant_vec_matching(r, 0, -1));
+     }
+-    tcg_swap_vecop_list(hold_list);
+ }
+ 
+ void tcg_gen_neg_vec(unsigned vece, TCGv_vec r, TCGv_vec a)
+-- 
+2.34.1
 
-Anyway, it would be good for LSX to expand NOT(x) via NOR(x,x).
-
-
-r~
 
