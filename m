@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6388778B547
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 18:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A441878B560
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 18:29:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaez7-0004U1-Vh; Mon, 28 Aug 2023 12:21:02 -0400
+	id 1qaf63-0007YT-49; Mon, 28 Aug 2023 12:28:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org>)
- id 1qaez6-0004Tb-Hw; Mon, 28 Aug 2023 12:21:00 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qaf61-0007YL-Et
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:28:09 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org>)
- id 1qaez2-0002eD-Hg; Mon, 28 Aug 2023 12:21:00 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZG4y6RPSz4wxy;
- Tue, 29 Aug 2023 02:20:50 +1000 (AEST)
+ id 1qaf5y-000431-Dq
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:28:09 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZGFF2lMxz4wd0;
+ Tue, 29 Aug 2023 02:28:01 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZG4s0r2Lz4wxQ;
- Tue, 29 Aug 2023 02:20:44 +1000 (AEST)
-Message-ID: <288159df-3136-5091-b083-7f32f9f2cedc@kaod.org>
-Date: Mon, 28 Aug 2023 18:20:40 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZGFC08HJz4wbP;
+ Tue, 29 Aug 2023 02:27:58 +1000 (AEST)
+Message-ID: <92eeb7a2-39d9-b725-3e38-f9ac91440b78@kaod.org>
+Date: Mon, 28 Aug 2023 18:27:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] tests/avocado/machine_aspeed.py: Update SDK images
+Subject: Re: [PATCH 00/32] hw/sd: eMMC support
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Joel Stanley <joel@jms.id.au>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- Hang Yu <francis_yuu@stu.pku.edu.cn>
-References: <20230828090101.74357-1-clg@kaod.org>
- <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
- <7930d670-8d1d-04a2-d8c8-83fa48b19681@kaod.org>
- <eda0f3ba-d000-e3e0-0edb-cba9761a89bf@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Lucien Murray-Pitts <lucienmp.qemu@gmail.com>
+References: <20230703132509.2474225-1-clg@kaod.org>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <eda0f3ba-d000-e3e0-0edb-cba9761a89bf@linaro.org>
+In-Reply-To: <20230703132509.2474225-1-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-2.169, SPF_HELO_PASS=-0.001,
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-2.169,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,35 +68,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 17:50, Philippe Mathieu-Daudé wrote:
-> On 28/8/23 16:33, Cédric Le Goater wrote:
->> On 8/28/23 15:54, Joel Stanley wrote:
->>> On Mon, 28 Aug 2023 at 09:01, Cédric Le Goater <clg@kaod.org> wrote:
->>>>
->>>> Switch to the latest v8.06 release which introduces interesting
->>>> changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
->>>> images instead of the default since QEMU tries to model The AST2600 A3
->>>> SoC.
->>>
->>> Is there any value in testing both the old and the new images?
->>
->> For QEMU default tests, I think using the latest version of a test image
->> is just fine, or we will end up with a very long avocado test run. That
->> said we could make an exception when a HW feature is only activated in a
->> specific version.
->>
->> I run pre-PR tests with more images (buildroot, mainline, sdk, openbmc,
->> provided by other vendors) but only the SDK v08.X images have decent
->> results. v07.02 and v04.05 have issues. It could be a software issue.
+Hello,
+
+On 7/3/23 15:24, Cédric Le Goater wrote:
+> Hello,
 > 
-> I'd rather keep all tests committed in the repository, only having the
-> latest one picked up by default. That way other developer can reproduce
-> maintainers pre-PR suites.
-I could add a few static images but not all. Most flash and eMMC images
-are generated on the fly for test purposes with the latest kernel
-(OpenBMC and mainline), U-Boot (OpenBMC and mainline), rootfs (OpenBMC
-and buildroot). This is a large zoo. PPC is similar.
+>    
+> This series adds an extension for a new eMMC device using the
+> framework Philippe put in place to support various SD implementations.
+> Previous discussion on the same topic:
+> 
+>    http://patchwork.ozlabs.org/project/qemu-devel/list/?series=250563
+>    https://lore.kernel.org/qemu-devel/20220318132824.1134400-1-clg@kaod.org/
+> 
+> patch 1-12
+>    - introduce SDProto structure
+>    - could be merged. They have been reviewed.
+>    
+> patch 13
+>    - adds a SPI variant model
+
+I plan to include 1-13 in the next aspeed PR.
+
+Thanks,
 
 C.
+
+>    
+> patch 14-27
+>    - adds eMMC support
+>    - need better commit logs
+>    
+> patch 28-32 (for later)
+> 
+>    - aspeed wiring
+> 
+> Please comment the core part, we can leave out the aspeed part for
+> now. I won't have much time to fix the issues unless it's about
+> compile and style issues. If someone is interested and could take
+> over the series, that would be nice.
+> 
+> Thanks,
+> 
+> C.
+> 
+> Cédric Le Goater (11):
+>    hw/sd: Introduce a "sd-card" SPI variant model
+>    hw/sd: Add emmc_cmd_SEND_OP_CMD() handler
+>    hw/sd: Add emmc_cmd_ALL_SEND_CID() handler
+>    hw/sd: Add emmc_cmd_SEND_RELATIVE_ADDR() handler
+>    hw/sd: Add emmc_cmd_APP_CMD() handler
+>    hw/sd: add emmc_cmd_SEND_TUNING_BLOCK() handler
+>    hw/sd: Add emmc_cmd_SEND_EXT_CSD() handler
+>    hw/sd: Fix SET_BLOCK_COUNT command argument
+>    hw/arm/aspeed: Add eMMC device
+>    hw/arm/aspeed: Load eMMC first boot area as a boot rom
+>    aspeed: Introduce a 'boot-emmc' property for AST2600 based machines
+> 
+> Joel Stanley (6):
+>    hw/sd: Add sd_cmd_SEND_TUNING_BLOCK() handler
+>    hw/sd: Support boot area in emmc image
+>    hw/sd: Subtract bootarea size from blk
+>    hw/sd: Add boot config support
+>    hw/arm/aspeed: Set boot device to emmc
+>    aspeed: Set bootconfig
+> 
+> Philippe Mathieu-Daudé (12):
+>    hw/sd: When card is in wrong state, log which state it is
+>    hw/sd: When card is in wrong state, log which spec version is used
+>    hw/sd: Move proto_name to SDProto structure
+>    hw/sd: Introduce sd_cmd_handler type
+>    hw/sd: Add sd_cmd_illegal() handler
+>    hw/sd: Add sd_cmd_unimplemented() handler
+>    hw/sd: Add sd_cmd_GO_IDLE_STATE() handler
+>    hw/sd: Add sd_cmd_SEND_OP_CMD() handler
+>    hw/sd: Add sd_cmd_ALL_SEND_CID() handler
+>    hw/sd: Add sd_cmd_SEND_RELATIVE_ADDR() handler
+>    hw/sd: Add sd_cmd_SET_BLOCK_COUNT() handler
+>    hw/sd: Basis for eMMC support
+> 
+> Sai Pavan Boddu (3):
+>    hw/sd: Add CMD21 tuning sequence
+>    hw/sd: Add mmc switch function support
+>    hw/sd: Update CMD1 definition for MMC
+> 
+>   docs/system/arm/aspeed.rst   |   2 +
+>   hw/sd/sdmmc-internal.h       |  97 +++++
+>   include/hw/arm/aspeed_soc.h  |   1 +
+>   include/hw/misc/aspeed_scu.h |   7 +
+>   include/hw/sd/sd.h           |  10 +
+>   hw/arm/aspeed.c              |  68 +++-
+>   hw/arm/aspeed_ast2600.c      |   1 +
+>   hw/arm/stellaris.c           |   3 +-
+>   hw/riscv/sifive_u.c          |   3 +-
+>   hw/sd/sd.c                   | 702 ++++++++++++++++++++++++++++-------
+>   hw/sd/sdmmc-internal.c       |   2 +-
+>   11 files changed, 748 insertions(+), 148 deletions(-)
+> 
 
 
