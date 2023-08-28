@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65DE78BBA3
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFE878BB9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalrt-0003lG-UY; Mon, 28 Aug 2023 19:42:01 -0400
+	id 1qals7-0003nj-FT; Mon, 28 Aug 2023 19:42:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrq-0003j9-PF
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:58 -0400
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrs-0003jw-82
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:00 -0400
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalro-0006k6-HP
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:58 -0400
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-34deab8010dso761795ab.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrp-0006kG-C3
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:59 -0400
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-34cc0ad6f61so13464405ab.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266115; x=1693870915;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266116; x=1693870916;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WFs67P4F2+8DZwkOjNHRiidMV7RJJmR/6f17KsE7NYA=;
- b=M5r+DFuzYZqZw0r8/WF5CMRXccpHYygwQYlvL4hzG8+pb6S+mWXAYKxvhmUbomvH/A
- rsaWEVh0QYiE8jdndPATI77GS6ILc+yGvLiMX0T3IyvWN7/olHziXKVoPmcB/HwXvQ+2
- iLbu026MbyjiXxgGqrsNT8fURdXDZ+zvrCqfgD+Hb7C/9a/LTn7dCqTpZ/A95Xe1l7Oc
- OOlCW3Kf8dDMt5I7swRjX9F0p+Pb+/sLD7gNZqPA2uw5Rdi++CJvLzV8Kx5ILqpGijpK
- vSeaa1Uub4Metb1a4fiXtXpcyM5G7Ofnz0vnDXFrugGAEtgIZimxUYGFBiTnIWUSLCwy
- RdRA==
+ bh=vNhh9+MBHOyqqlgYFbkX8f4P9c6wy/M5jr+0vrvfSDo=;
+ b=HcOtgRDvx1x8ZU5Y/BNaqubdpsQrx2DwfkcDXjHBHIal8uQwxzjo8nrk776QzLCtEx
+ FAFZJagMeHdp6twtqW1Boom4y39CTD1i7mBRsA8IY0xhvIsh/bNFd2vHZUoBwFfkCCdO
+ 0ErWSzPuZX4XygCl4PX3DWX5mdHM5jjo5fTCk/gaYDkgQ75XZPBs0Ax6U3Ws7GlGV7a9
+ yHupuZ++v4aFkM1evAI1UANkUDODlYRAZA6NfKuR8/0f7m0exmySc0oaXYRwjxyZVM+J
+ CKpqrmSBVUvrrDsw2/C+c/L+WAZPHkcKl3+QtX4iSi+oMcF/Rrml46zFF1zoZyq/xg6t
+ 6IFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693266115; x=1693870915;
+ d=1e100.net; s=20221208; t=1693266116; x=1693870916;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WFs67P4F2+8DZwkOjNHRiidMV7RJJmR/6f17KsE7NYA=;
- b=EjjjItgfJLBX2N8naGXUftoCLTja4TBtvQ+yHzfxklHQXNjXF29Lfuxnu9NCXRP2Px
- /On46cUCEzbOoW16QC5dRndJYqnOHG9lUEhHERh4Qx3uyh4KQ360K8BimF49sXR6pz8x
- OX7To1EvNB1m75xcBQclqrBHbq7/JkGvMH7id/ztACs100H3PWirWBjNk10rd7RpbDGU
- dxN6Qvb/XapqFnrfrYVIeTyI32xZX+ILjeGGBMIJHAK9VT0T1ThGKLOrG80C8Q8D2DU2
- wqXvuv4XYUu607JfWAxejgXyqm78ojXAIr12Q+ibw7xYUOGf7gHIwz2sRoesSi6/BFN1
- faAw==
-X-Gm-Message-State: AOJu0YyEStZDAKnteiZnnZLe7mH6jsDmtx3986MSSMCoaDXIpiBsBSrK
- nLEvqx4GrLGVFproPmbH4uMs+MMLuZKTSSXwbtA=
-X-Google-Smtp-Source: AGHT+IHH8g609/B719CGmTKCHMgPKgnRQPkHzw7keKKtDapYRSDs8eaOUTYLIPCjdPnrStOLCtfvXQ==
-X-Received: by 2002:a05:6e02:1b0d:b0:348:ba80:5a37 with SMTP id
- i13-20020a056e021b0d00b00348ba805a37mr21865958ilv.0.1693266114794; 
- Mon, 28 Aug 2023 16:41:54 -0700 (PDT)
+ bh=vNhh9+MBHOyqqlgYFbkX8f4P9c6wy/M5jr+0vrvfSDo=;
+ b=LWH1gBS7bk1YHhfV2c3Uu3Qk6o/rA3/tZFKB0gTpDVNS6gASKvPxq0csvPWoLCaQZO
+ OUfDcMx88nypWO/qfgVDgdG4pZYypSwvkT8XMpa00Zh01KLg9Bv/V8QS+Kh2C8bN2jCw
+ mPaRpW7UU0aUTOJMXcEmRcd0AodQRWcKSqoMPyMLyy4/veFgpRW7hwbi4fxMqZZhYhny
+ B2Tdhrimw0kxBXF4BXGIkGVp2oMF2bcgyANsPvhmv5yNHKzZG/291Icjf3Pc31o8Qs4U
+ CyH2MfeeLKsDb4ImhHTbSpWed0CnUJqzOotCvRA+jy3AmAkiFkudsCbDMu3e52NMsUXH
+ swWQ==
+X-Gm-Message-State: AOJu0YwMle2nJh2G93FyR7aTWndyb+NnK+ijBVqvnjzFaMrySoA5JSDs
+ 93nHD0dfKYTBQo2XPZPFo9KPYuPuh2VtWSbvjsA=
+X-Google-Smtp-Source: AGHT+IHPZz3R/crxK4s7CcqurxjWl8KABd+QYsly64Inec8nAnSsKSjszJLLFvsminUEX2PIA6oOKQ==
+X-Received: by 2002:a05:6e02:2198:b0:34c:e84b:4c5d with SMTP id
+ j24-20020a056e02219800b0034ce84b4c5dmr9961592ila.26.1693266115965; 
+ Mon, 28 Aug 2023 16:41:55 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
  t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:41:54 -0700 (PDT)
+ Mon, 28 Aug 2023 16:41:55 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
- Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>,
+ Michal Meloun <mmel@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 18/36] bsd-user: Implement target_to_host_fcntl_cmd
-Date: Mon, 28 Aug 2023 17:38:03 -0600
-Message-ID: <20230828233821.43074-19-imp@bsdimp.com>
+Subject: [PULL 19/36] bsd-uesr: Implement h2t_freebsd_stat and
+ h2t_freebsd_statfs functions
+Date: Mon, 28 Aug 2023 17:38:04 -0600
+Message-ID: <20230828233821.43074-20-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::12a;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x12a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::134;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x134.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,35 +92,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Michal Meloun <mmel@FreeBSD.org>
 
-Implement the stat conversion functions:
-target_to_host_fcntl_cmd
+They are the 64-bit variants of h2t_freebsd11_stat and
+h2t_freebsd11_statfs, respectively
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Michal Meloun <mmel@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-stat.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ bsd-user/freebsd/os-stat.c | 82 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-stat.c b/bsd-user/freebsd/os-stat.c
-index 9eb01bf6645..2ce235d5dae 100644
+index 2ce235d5dae..f0f9e609c3b 100644
 --- a/bsd-user/freebsd/os-stat.c
 +++ b/bsd-user/freebsd/os-stat.c
-@@ -170,3 +170,11 @@ abi_long h2t_freebsd11_statfs(abi_ulong target_addr,
+@@ -58,6 +58,50 @@ abi_long h2t_freebsd11_stat(abi_ulong target_addr,
      return 0;
  }
  
-+/*
-+ * fcntl cmd conversion
-+ */
-+abi_long target_to_host_fcntl_cmd(int cmd)
++abi_long h2t_freebsd_stat(abi_ulong target_addr,
++        struct stat *host_st)
 +{
-+    return cmd;
++    struct target_stat *target_st;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_st, target_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    memset(target_st, 0, sizeof(*target_st));
++    __put_user(host_st->st_dev, &target_st->st_dev);
++    __put_user(host_st->st_ino, &target_st->st_ino);
++    __put_user(host_st->st_nlink, &target_st->st_nlink);
++    __put_user(host_st->st_mode, &target_st->st_mode);
++    __put_user(host_st->st_uid, &target_st->st_uid);
++    __put_user(host_st->st_gid, &target_st->st_gid);
++    __put_user(host_st->st_rdev, &target_st->st_rdev);
++    __put_user(host_st->st_atim.tv_sec, &target_st->st_atim.tv_sec);
++    __put_user(host_st->st_atim.tv_nsec, &target_st->st_atim.tv_nsec);
++#ifdef TARGET_HAS_STAT_TIME_T_EXT
++/*    __put_user(host_st->st_mtim_ext, &target_st->st_mtim_ext); XXX */
++#endif
++    __put_user(host_st->st_mtim.tv_sec, &target_st->st_mtim.tv_sec);
++    __put_user(host_st->st_mtim.tv_nsec, &target_st->st_mtim.tv_nsec);
++#ifdef TARGET_HAS_STAT_TIME_T_EXT
++/*    __put_user(host_st->st_ctim_ext, &target_st->st_ctim_ext); XXX */
++#endif
++    __put_user(host_st->st_ctim.tv_sec, &target_st->st_ctim.tv_sec);
++    __put_user(host_st->st_ctim.tv_nsec, &target_st->st_ctim.tv_nsec);
++#ifdef TARGET_HAS_STAT_TIME_T_EXT
++/*    __put_user(host_st->st_birthtim_ext, &target_st->st_birthtim_ext); XXX */
++#endif
++    __put_user(host_st->st_birthtim.tv_sec, &target_st->st_birthtim.tv_sec);
++    __put_user(host_st->st_birthtim.tv_nsec, &target_st->st_birthtim.tv_nsec);
++
++    __put_user(host_st->st_size, &target_st->st_size);
++    __put_user(host_st->st_blocks, &target_st->st_blocks);
++    __put_user(host_st->st_blksize, &target_st->st_blksize);
++    __put_user(host_st->st_flags, &target_st->st_flags);
++    __put_user(host_st->st_gen, &target_st->st_gen);
++    unlock_user_struct(target_st, target_addr, 1);
++
++    return 0;
 +}
 +
+ abi_long h2t_freebsd11_nstat(abi_ulong target_addr,
+         struct freebsd11_stat *host_st)
+ {
+@@ -170,6 +214,44 @@ abi_long h2t_freebsd11_statfs(abi_ulong target_addr,
+     return 0;
+ }
+ 
++abi_long h2t_freebsd_statfs(abi_ulong target_addr,
++        struct statfs *host_statfs)
++{
++    struct target_statfs *target_statfs;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_statfs, target_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    __put_user(host_statfs->f_version, &target_statfs->f_version);
++    __put_user(host_statfs->f_type, &target_statfs->f_type);
++    __put_user(host_statfs->f_flags, &target_statfs->f_flags);
++    __put_user(host_statfs->f_bsize, &target_statfs->f_bsize);
++    __put_user(host_statfs->f_iosize, &target_statfs->f_iosize);
++    __put_user(host_statfs->f_blocks, &target_statfs->f_blocks);
++    __put_user(host_statfs->f_bfree, &target_statfs->f_bfree);
++    __put_user(host_statfs->f_bavail, &target_statfs->f_bavail);
++    __put_user(host_statfs->f_files, &target_statfs->f_files);
++    __put_user(host_statfs->f_ffree, &target_statfs->f_ffree);
++    __put_user(host_statfs->f_syncwrites, &target_statfs->f_syncwrites);
++    __put_user(host_statfs->f_asyncwrites, &target_statfs->f_asyncwrites);
++    __put_user(host_statfs->f_syncreads, &target_statfs->f_syncreads);
++    __put_user(host_statfs->f_asyncreads, &target_statfs->f_asyncreads);
++    /* uint64_t f_spare[10]; */
++    __put_user(host_statfs->f_namemax, &target_statfs->f_namemax);
++    __put_user(host_statfs->f_owner, &target_statfs->f_owner);
++    __put_user(host_statfs->f_fsid.val[0], &target_statfs->f_fsid.val[0]);
++    __put_user(host_statfs->f_fsid.val[1], &target_statfs->f_fsid.val[1]);
++    /* char f_charspace[80]; */
++    strncpy(target_statfs->f_fstypename, host_statfs->f_fstypename,
++        sizeof(target_statfs->f_fstypename));
++    strncpy(target_statfs->f_mntfromname, host_statfs->f_mntfromname,
++        sizeof(target_statfs->f_mntfromname));
++    strncpy(target_statfs->f_mntonname, host_statfs->f_mntonname,
++        sizeof(target_statfs->f_mntonname));
++    unlock_user_struct(target_statfs, target_addr, 1);
++    return 0;
++}
++
+ /*
+  * fcntl cmd conversion
+  */
 -- 
 2.41.0
 
