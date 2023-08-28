@@ -2,80 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944D678B33A
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 16:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B320978B335
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 16:34:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qadLM-0005Yo-M3; Mon, 28 Aug 2023 10:35:52 -0400
+	id 1qadIy-00046c-C9; Mon, 28 Aug 2023 10:33:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qadLK-0005UC-1p
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 10:35:50 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qadLE-0004f0-5u
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 10:35:48 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c1e128135aso4757205ad.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 07:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693233219; x=1693838019;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ar7ypxdjUtDNbAjjyZHCP3Rrujc+GK1GiPkUHsv5+t8=;
- b=WcL6bNelvp7T2l5eySAH3c2gHJK2V+ZP3NIgovopJPXLsU2a6nVPXNNLXDYbETijPS
- DPKzKoO9enxn/Mquut6cvpSaacLr8wdFYUn7DfR1X30NO1/WNvzT6FTont5oFVemF2JT
- mHExwvCgDsP5xhn8esQ0c86Pi5aSpUd5jQbMj57Xy1NWjR6fwzUkLECHQyDZWsAfDaM3
- 5SvH9lBKgUgxjKbXd5/McjQBqvfpoOQCUTSuYHR7EcP3zbSwe8NLdgea23RVVfH5EwvI
- PBH6bJApPCx8aXPs/x+jDeoLeRPbhtQMEqeS0ooTH8kyVeY1yghR0tmuU785Cv3YwUo9
- wlaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693233219; x=1693838019;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ar7ypxdjUtDNbAjjyZHCP3Rrujc+GK1GiPkUHsv5+t8=;
- b=Za++uYJBZqMvqM491WyKmklWwBcSL/luRoitwaF84SUzRt1zeze3jxVgJnGj8F1yLa
- wt994d52iaNpLT99UyJEwSIWYoToD6gEM/mb+PFwC2En/K2BAVZyGLp3n+UjOyXCj+sL
- SI6k++OrhKdHDNyWZ7BZXNwO0Ce1S/cbNcV8TSvLIBwey5ATZppQhJi8y3gXYa2OD01u
- EGvhuX4VPG3+K1CieGzsEOjQsUIXHYuO4oeFSdza0/h5IIRv2NDgh4CmfvMbs5hSdS56
- khacUDmx8Eqq5CWJSwPU05nFMI/KIr+Viloy9o4YisdDWTLi8CcyTdnKEnB3+59vUvtV
- nQng==
-X-Gm-Message-State: AOJu0Yx27YGpW9zvot2whjx90hw1NP5GjNixhtc658O0gMTFIupeJEsP
- I2MmG59a8zQbIhJkHF8QAPCkA6vIDLmSOvFGonecxdweWrI=
-X-Google-Smtp-Source: AGHT+IHwlONoe5XqrSHrAOvps0mn4C21p7RiDj5x4QyurJRVcOOP7GwLeaEQlN/zE87UW3HUZ6eeeA==
-X-Received: by 2002:a17:902:d2c9:b0:1c0:b163:2cc3 with SMTP id
- n9-20020a170902d2c900b001c0b1632cc3mr12487855plc.52.1693233218599; 
- Mon, 28 Aug 2023 07:33:38 -0700 (PDT)
-Received: from c74-1708-dev.zelin.local ([103.20.128.80])
- by smtp.gmail.com with ESMTPSA id
- 12-20020a170902c10c00b001bdc2fdcf7esm7453794pli.129.2023.08.28.07.33.36
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 28 Aug 2023 07:33:38 -0700 (PDT)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Andrei Gudkov <gudkov.andrei@huawei.com>,
- "alloc . young" <alloc.young@outlook.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [PULL 0/3] Dirty page rate and dirty page limit 20230828 patches 
-Date: Mon, 28 Aug 2023 22:32:54 +0800
-Message-Id: <cover.1693228686.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.11.0
+ (Exim 4.90_1) (envelope-from <SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org>)
+ id 1qadIw-00045v-C5; Mon, 28 Aug 2023 10:33:22 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org>)
+ id 1qadIt-0004ad-60; Mon, 28 Aug 2023 10:33:22 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZChn2sZJz4wy0;
+ Tue, 29 Aug 2023 00:33:13 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZChj1bLDz4wxx;
+ Tue, 29 Aug 2023 00:33:08 +1000 (AEST)
+Message-ID: <7930d670-8d1d-04a2-d8c8-83fa48b19681@kaod.org>
+Date: Mon, 28 Aug 2023 16:33:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] tests/avocado/machine_aspeed.py: Update SDK images
+Content-Language: en-US
+To: Joel Stanley <joel@jms.id.au>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Hang Yu <francis_yuu@stu.pku.edu.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230828090101.74357-1-clg@kaod.org>
+ <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CACPK8XfMn5PJaM9dBkck=jxhLuusJmGnAv_RE3Dp-kdezYM+-A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::636;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=DaUQ=EN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-2.169, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,41 +66,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman <yong.huang@smartx.com>
+On 8/28/23 15:54, Joel Stanley wrote:
+> On Mon, 28 Aug 2023 at 09:01, Cédric Le Goater <clg@kaod.org> wrote:
+>>
+>> Switch to the latest v8.06 release which introduces interesting
+>> changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
+>> images instead of the default since QEMU tries to model The AST2600 A3
+>> SoC.
+> 
+> Is there any value in testing both the old and the new images?
 
-The following changes since commit 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
+For QEMU default tests, I think using the latest version of a test image
+is just fine, or we will end up with a very long avocado test run. That
+said we could make an exception when a HW feature is only activated in a
+specific version.
 
-  Merge tag 'pull-target-arm-20230824' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24 10:08:33 -0400)
+I run pre-PR tests with more images (buildroot, mainline, sdk, openbmc,
+provided by other vendors) but only the SDK v08.X images have decent
+results. v07.02 and v04.05 have issues. It could be a software issue.
 
-are available in the git repository at:
+C.
 
-  https://github.com/newfriday/qemu.git tags/dirtylimit-dirtyrate-fixes-pull-request
 
-for you to fetch changes up to e424d9f7e749c84de4a6ce532981271db1c14b23:
-
-  migration/dirtyrate: Fix precision losses and g_usleep overshoot (2023-08-28 21:03:58 +0800)
-
-----------------------------------------------------------------
-Dirty page limit and dirty page rate PULL request
-
-Hi, this is the fix for dirty page limit and dirty page rate.
-
-Please apply.
-
-Thanks, Yong.
-----------------------------------------------------------------
-Andrei Gudkov (1):
-      migration/dirtyrate: Fix precision losses and g_usleep overshoot
-
-alloc.young (2):
-      softmmu: Fix dirtylimit memory leak
-      softmmu/dirtylimit: Convert free to g_free
-
- migration/dirtyrate.c | 10 ++++++++--
- softmmu/dirtylimit.c  | 26 ++++++++++++--------------
- 2 files changed, 20 insertions(+), 16 deletions(-)
-
--- 
-1.8.3.1
+> 
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> 
+>>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>
+>>    Requires patches from Hang Yu [1]
+>>
+>>    [1] https://lore.kernel.org/qemu-devel/20230812065230.8839-1-francis_yuu@stu.pku.edu.cn/
+>>
+>>
+>>   tests/avocado/machine_aspeed.py | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+>> index 724ee72c0208..90f1b7cb77a1 100644
+>> --- a/tests/avocado/machine_aspeed.py
+>> +++ b/tests/avocado/machine_aspeed.py
+>> @@ -316,8 +316,8 @@ def test_arm_ast2500_evb_sdk(self):
+>>           """
+>>
+>>           image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
+>> -                     'download/v08.01/ast2500-default-obmc.tar.gz')
+>> -        image_hash = ('5375f82b4c43a79427909342a1e18b4e48bd663e38466862145d27bb358796fd')
+>> +                     'download/v08.06/ast2500-default-obmc.tar.gz')
+>> +        image_hash = ('e1755f3cadff69190438c688d52dd0f0d399b70a1e14b1d3d5540fc4851d38ca')
+>>           image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+>>                                         algorithm='sha256')
+>>           archive.extract(image_path, self.workdir)
+>> @@ -334,8 +334,8 @@ def test_arm_ast2600_evb_sdk(self):
+>>           """
+>>
+>>           image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
+>> -                     'download/v08.01/ast2600-default-obmc.tar.gz')
+>> -        image_hash = ('f12ef15e8c1f03a214df3b91c814515c5e2b2f56119021398c1dbdd626817d15')
+>> +                     'download/v08.06/ast2600-a2-obmc.tar.gz')
+>> +        image_hash = ('9083506135f622d5e7351fcf7d4e1c7125cee5ba16141220c0ba88931f3681a4')
+>>           image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+>>                                         algorithm='sha256')
+>>           archive.extract(image_path, self.workdir)
+>> @@ -345,8 +345,8 @@ def test_arm_ast2600_evb_sdk(self):
+>>           self.vm.add_args('-device',
+>>                            'ds1338,bus=aspeed.i2c.bus.5,address=0x32');
+>>           self.do_test_arm_aspeed_sdk_start(
+>> -            self.workdir + '/ast2600-default/image-bmc')
+>> -        self.wait_for_console_pattern('nodistro.0 ast2600-default ttyS4')
+>> +            self.workdir + '/ast2600-a2/image-bmc')
+>> +        self.wait_for_console_pattern('nodistro.0 ast2600-a2 ttyS4')
+>>
+>>           self.ssh_connect('root', '0penBmc', False)
+>>           self.ssh_command('dmesg -c > /dev/null')
+>> --
+>> 2.41.0
+>>
 
 
