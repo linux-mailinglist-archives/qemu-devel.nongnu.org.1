@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFED878B446
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E2978B45B
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qae1N-0002Aw-6y; Mon, 28 Aug 2023 11:19:17 -0400
+	id 1qae69-0007Id-Mw; Mon, 28 Aug 2023 11:24:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qae1A-00025f-Q4
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:19:06 -0400
-Received: from mail-bn8nam04on2061d.outbound.protection.outlook.com
- ([2a01:111:f400:7e8d::61d]
- helo=NAM04-BN8-obe.outbound.protection.outlook.com)
+ id 1qae60-0007H0-8E
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:24:04 -0400
+Received: from mail-dm6nam12on2077.outbound.protection.outlook.com
+ ([40.107.243.77] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qae18-0006v5-0O
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:19:04 -0400
+ id 1qae5w-0007rp-Ho
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:24:04 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RAe/3xbB7aKCqzvIL/X5Ru60uT7DSf9hF3MGfdzMTbMHb4FNI3+PlOzBBufoDZP9MYmUqRW1C2tBf5iA99Gc8BNeQChPGMa2K98Gw9Gj5gBzuFdgaenpnSV3d3zDEPJMZ57Vq5yu79YyouMSRPPwq2ZZ88i07MuM/MiP+oVbEdvp+kFX5sIN9mzrBMQOvxsSHXZPcl+WhnmBryL/eBG9PpSEKMOlsjXH+l65y81s0xstCIGPCC++6igS7y9pPAoTsSldeX3H7wYRTCudzuFSu7+U8rSlxchmzhC+BmGwXSCh/yvtWa2tAR+gaPsYFnxi8FPNb2oJ75hMx9IOuHrE+g==
+ b=g3B7hmjuPeR/zbbodQ8wogQb/WBNd7iYzuWg/QkvOZhiVZYXVLi1GAokK6gOI3yRtbepWWWS1e2UlMxbbNYVYIEWAanaWmKCSFxxQUIHz3IKniwdw5auaFe9gYVRmWgmYTcz7iiqq/l2bhZW7G8O/V+h+5O92Sh9QilGaYRZMeUsEPt6l/NtnH++BpN5QLltdL5MO900ioUEBE1GtwgcgUv3hx4fUXb4aLXu15UOda5S1Tra/LwjK57vaMazxK/39yoB1E2FT9w0OCahHJx6d8xDKq6S4byLTsx5KfauhMmrzYpCDikDIKJK0DmSMBhu1p8Klle0gLvkYjVNDNOBDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bzdAXZt7/EXDuo/P7flbnh0I0+sdXcFyMVluWknmHFc=;
- b=bpLOS7ze7hNSrtuzApV43b6I7sH99cKaeaM54BfsBrXMFZbG8VSMt7WAVQLkNDSrXt7vesZef5uAbdSclQZid48FOCSDKAoUVZ7Ag6Y1FeX5zl2wGY6GYr4Ot9Jv2q6tezHmnl2E/mYrbKWqQU1H+t5mDQcJALtCNqPd8WPyLB8/kHXVdCJifOBPoOVHqdfKYzxI3XA8lfq4PG4NuDMIFJrBE2aVk8sKjtP9NqGjdUG7ClXAUK62Rkdz8+g7tGwybH5j+hbmeGSbF8ROo9Wh4ZAXKq2eTrF5xOMIfUTV0vX65El+knu2WC4BOHbhcK44ROYvAfLE1rtw97+nzn11Jw==
+ bh=3HcdPQkHk1jWmoUgP28yTld8g7ZvkZY6IvCwyw/irso=;
+ b=LssD9zuWROZEvV9SW/ZxjRCC6qCVroD9IMeYUA8hCT50hbUAUsFz194S25E2cv7hFfL/FEk7u7XjfgP7Iz4nThQlgKFnuWy5uJVp2ZvFGiK2Ukx61avUFzusy/FcsPioNJXWjVOuG7Yt/FCjKuC/YCUeH9dw5Xv7RCVVBtFheJwB/3ZQfxvzfNy2d6e53pRAXx9B32XgVxHdP1SPqYs7Ekwl/Pnp5RF+o0Gxrj4nhF8EMHW1nmIgYCDvwg+PwFUFZZOu+SU3RDCZ1O27syadL3G8tXjEIDUkn/NlueqfRU1/GYsu6MdYl68NdDB3WEMVbiFcFa/3HK+PJPcA12YphA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ 216.228.118.233) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bzdAXZt7/EXDuo/P7flbnh0I0+sdXcFyMVluWknmHFc=;
- b=QLiYdAVER8rVliVEmuA0DLnVeiY0B1piMheg3UyksdWgdzAJ3G8soAQ+IvpFR0vqh4Z08QoKqzF+CSVKyHnUUOLNzGROHuG/w7/GTQMb2UfPHmev1o13v0BthZkfEOUF784xO5utuz0Qdge1hsUTP2LzCym1zhnSudpkL9MCf37cQGqV5vp2zHfLKpd/ufYYF1JpQo7t50lnU6o7sLkr0dseOC7var8A5Qx0Fq32StCkj2+Ks1TNyhJ/dmfexoazG8mh1V+q8Ekn6VIRhXFPYUVnK9AkPyB4O99Kbr+H45h+e2elI/6D8mvtgYllXomcMAceHq89KqMpq5jMWkxBKg==
-Received: from SJ0PR03CA0025.namprd03.prod.outlook.com (2603:10b6:a03:33a::30)
- by DS0PR12MB8768.namprd12.prod.outlook.com (2603:10b6:8:14f::20) with
+ bh=3HcdPQkHk1jWmoUgP28yTld8g7ZvkZY6IvCwyw/irso=;
+ b=CuA2lEttUcQ8Td9XfZIl3ezjgFJMwJFdxJ8ztqi8e9UcZjkNqFdcN+KjAxFNnvcUy0748CUOjlFxfzFcF5C2qF012Pcc6ud7ehYW+JJ6qsu5+gOHFpt+eQpNFLWUvJfU0DkeyqvcOgVN4YeE0DVTLftV36xCbnpas3oIqio+4HNL8vTWvFDudCf5KSb1jdOjg3Pi/6wW4Ov8rqE6q5P62QOlnJ1CdLOSMqwzNb4/fuw/lhak6L3GvHKatjknaHxmzzrzoBruSo1nrUi2kgwzZxN0DuHFhhroVzsv4oK6vbr44ZcnSa475LB8/WnDVJ5sKdXu22bbl6QZdjRjZ04D/w==
+Received: from DS7PR06CA0021.namprd06.prod.outlook.com (2603:10b6:8:2a::23) by
+ SJ2PR12MB9211.namprd12.prod.outlook.com (2603:10b6:a03:55e::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Mon, 28 Aug
- 2023 15:18:57 +0000
-Received: from MWH0EPF000989EA.namprd02.prod.outlook.com
- (2603:10b6:a03:33a:cafe::15) by SJ0PR03CA0025.outlook.office365.com
- (2603:10b6:a03:33a::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Mon, 28 Aug
+ 2023 15:18:56 +0000
+Received: from CY4PEPF0000EE3A.namprd03.prod.outlook.com
+ (2603:10b6:8:2a:cafe::5d) by DS7PR06CA0021.outlook.office365.com
+ (2603:10b6:8:2a::23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35 via Frontend
- Transport; Mon, 28 Aug 2023 15:18:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ Transport; Mon, 28 Aug 2023 15:18:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- MWH0EPF000989EA.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CY4PEPF0000EE3A.mail.protection.outlook.com (10.167.242.14) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6745.17 via Frontend Transport; Mon, 28 Aug 2023 15:18:56 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.6745.16 via Frontend Transport; Mon, 28 Aug 2023 15:18:55 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 28 Aug 2023
- 08:18:45 -0700
+ 08:18:48 -0700
 Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.37; Mon, 28 Aug 2023 08:18:45 -0700
+ 15.2.986.37; Mon, 28 Aug 2023 08:18:47 -0700
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.182)
  with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport;
- Mon, 28 Aug 2023 08:18:43 -0700
+ Mon, 28 Aug 2023 08:18:45 -0700
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Alex Williamson <alex.williamson@redhat.com>,
@@ -75,46 +74,48 @@ CC: Alex Williamson <alex.williamson@redhat.com>,
  <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>, Yanghang Liu <yanghliu@redhat.com>, Avihai Horon
  <avihaih@nvidia.com>
-Subject: [PATCH 0/6] vfio/migration: Block VFIO migration with postcopy and
- background snapshot
-Date: Mon, 28 Aug 2023 18:18:36 +0300
-Message-ID: <20230828151842.11303-1-avihaih@nvidia.com>
+Subject: [PATCH 1/6] migration: Add migration prefix to functions in target.c
+Date: Mon, 28 Aug 2023 18:18:37 +0300
+Message-ID: <20230828151842.11303-2-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
+In-Reply-To: <20230828151842.11303-1-avihaih@nvidia.com>
+References: <20230828151842.11303-1-avihaih@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989EA:EE_|DS0PR12MB8768:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72388d34-5097-4081-5c94-08dba7da18e9
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3A:EE_|SJ2PR12MB9211:EE_
+X-MS-Office365-Filtering-Correlation-Id: efb84bc1-c231-4683-75d6-08dba7da1880
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vBLf6easz0xCB/1Q1vgOaCviYKPe94xQt3n3otAUeVgtyukfNhKXM+2MlafNwo0XhURC5ywRebVExbCURCv6VJtNXeuyFtSmXtn+VCfyznbSM0gvOn+fKuKKwfMadE0yWjRlAYlTJ4Lxm+dyFyi/JArWWuJfS8Grwr7UjzZtrNdzf2E7oGY7aQ0oRsxOgOjnHeXuw1rVsJMklH79kVdbDn0qKrCLDoIbwlHFgyH+8ZSaDy1Ry3sPS4/DQTUY41u6CnQXAqBAmhOYXbgdQNiob4pnIm2SlcD8Li98HoqHH7lM9aPyydWVfrEnJ0NF1S0JClUIIZ/tM0ALo/NxEVe5Rh9Y+NNI3yi9jORwk5lV/bcvTNkaf7sW9z3iG+4eHKE1GZhMRygUNmY83ljTWLJHbDfdaLMkVmE9zF2pGFz/k6IMDHP/M+50cg0diRqR5Pmta1ptLQz3ciD+ChZoqYR4E5JMKDoxtUoAlUK070z1gKKE1HQBGYcw37ueGXeX9+uqrjbEsRINa0dbPLiVWdRXyGFn7Brhz7AKizyGyZs2qzb8ibJRgGeU45mhIvuQQmK1aawhugwPdZnuISg59cEuXSqRpWO2lt1CCfw5wJwwLmpHO7nEP3QFPZmOQ2wCQwjgbWpIFHBh+hqoehV78IDt+Dm6SavJ7X1/A+u637mzipOg7r+mTU4xMgbVLQqqfeVyGqqNzq0O/e56fF9U0LNcxRNoLTwPcNkZyUbWx3CUPdmSzS+Mp0BpjgGCgzAOHKbx3jzcTaOXwkQdrbjF+AwKmg==
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(396003)(39860400002)(136003)(346002)(376002)(451199024)(1800799009)(82310400011)(186009)(46966006)(40470700004)(36840700001)(8676002)(8936002)(4326008)(316002)(6916009)(2906002)(36756003)(54906003)(70206006)(70586007)(5660300002)(40460700003)(41300700001)(7696005)(36860700001)(426003)(2616005)(336012)(26005)(107886003)(1076003)(40480700001)(82740400003)(7636003)(356005)(478600001)(966005)(47076005)(83380400001)(86362001)(6666004);
+X-Microsoft-Antispam-Message-Info: 2WVGeWWWg62djozyLSGVgObUGoXt2aYVLCbgJ3UHMBBFLyUZgbMDQtSyNvyRp0cgxvEesYuOB2nCG8W34Fmeva+IF2gY9DbbjKyhkBlEs8H9Nqx2itU3Q3p7e4wdC7tUM5/dEbcZPRLf0nGc5mqqZguxgFYEexwFUuWSt4cidNdIHT+9FG+8wWCWy9JRLKz8fkJgEuKEsdijn0LQGK6fZ5UQIDvvYc8/xYH2hcj/Vy/9vwh/s/hJZ+zvpjXP87RyrBv9ubP0illbWKDQEXc4FNG3dN0im/xNgNGhniAFoNrK6PzlcqaXKjNCJTxi7KKTJI6Bfw1SSdzAyPIeX/npxMlonfsAmQ++5YtSMuHMIHjoJeyl5bk2ab+wcQMt8tx5zesPlugzuwJrynSgekosyY9oVTkHssiZZjJ7hDK5nbazpe3xKh1T7K4RuzsKmMEM60Pl50iDOatK9bLfT99ThYU2+Ya9Bw4L1YYJ+olkeAgUWmtoKbDbXAcSUzox7OZ2uBgsOIXkbpx9TpE4VxBWYhJ1Qj6xoe3/e2Lzg4uZ3r4ZgWN8R1f7jrLMbU4cB+5IsdA/EQY5+lhcmzFsT29ooMZW4krvo8d1ZPgtQe4rn9F3Mb5bxp5qxxuayBSr6eglV0rkY+bLQr3pFNN/1pBhOD6PRxO2kGdGsu8IiuZHFgCkw+Bk1uPNE2kmrb+33shzfqGYgE7K+LRaXGhUpXUNcRNu6kNCJ1S6M22VJvmM5c9yjfVz1V3Wi9CyF8tYmk57
+X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(376002)(346002)(39860400002)(396003)(186009)(1800799009)(82310400011)(451199024)(36840700001)(46966006)(40470700004)(36860700001)(40460700003)(41300700001)(356005)(7636003)(82740400003)(6666004)(86362001)(83380400001)(478600001)(47076005)(2616005)(426003)(26005)(336012)(107886003)(1076003)(7696005)(40480700001)(70206006)(70586007)(36756003)(54906003)(6916009)(2906002)(316002)(5660300002)(8676002)(8936002)(4326008);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2023 15:18:56.4931 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72388d34-5097-4081-5c94-08dba7da18e9
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2023 15:18:55.7900 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: efb84bc1-c231-4683-75d6-08dba7da1880
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989EA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3A.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8768
-Received-SPF: softfail client-ip=2a01:111:f400:7e8d::61d;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9211
+Received-SPF: softfail client-ip=40.107.243.77;
  envelope-from=avihaih@nvidia.com;
- helo=NAM04-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, URG_BIZ=0.573 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,70 +131,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The functions in target.c are not static, yet they don't have a proper
+migration prefix. Add such prefix.
 
-Recently added VFIO migration is not compatible with some of the
-pre-existing migration features. This was overlooked and today these
-combinations are not blocked by QEMU. This series fixes it.
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+---
+ migration/migration.h | 4 ++--
+ migration/migration.c | 6 +++---
+ migration/savevm.c    | 2 +-
+ migration/target.c    | 8 ++++----
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-Postcopy migration:
-VFIO migration is not compatible with postcopy migration. A VFIO device
-in the destination can't handle page faults for pages that have not been
-sent yet. Doing such migration will cause the VM to crash in the
-destination.
-
-Background snapshot:
-Background snapshot allows creating a snapshot of the VM while it's
-running and keeping it small by not including dirty RAM pages.
-
-The way it works is by first stopping the VM, saving the non-iterable
-devices' state and then starting the VM and saving the RAM while write
-protecting it with UFFD. The resulting snapshot represents the VM state
-at snapshot start.
-
-VFIO migration is not compatible with background snapshot.
-First of all, VFIO device state is not even saved in background snapshot
-because only non-iterable device state is saved. But even if it was
-saved, after starting the VM, a VFIO device could dirty pages without it
-being detected by UFFD write protection. This would corrupt the
-snapshot, as the RAM in it would not represent the RAM at snapshot
-start.
-
-This series blocks these combinations explicitly:
-If a VFIO device is added when postcopy or background snapshot are on,
-a migration blocker will be added. If a VFIO device is present, setting
-postcopy or background snapshot capabilities will fail with an
-appropriate error message.
-
-Note that this series is based on the P2P series [1] sent a few weeks
-ago.
-
-Comments and suggestions will be greatly appreciated.
-
-Thanks.
-
-[1]
-https://lore.kernel.org/qemu-devel/20230802081449.2528-1-avihaih@nvidia.com/
-
-Avihai Horon (6):
-  migration: Add migration prefix to functions in target.c
-  vfio/migration: Fail adding device with enable-migration=on and
-    existing blocker
-  vfio/migration: Add vfio_migratable_devices_num()
-  vfio/migration: Change vfio_mig_active() semantics
-  vfio/migration: Block VFIO migration with postcopy migration
-  vfio/migration: Block VFIO migration with background snapshot
-
- include/hw/vfio/vfio-common.h |   4 ++
- migration/migration.h         |   7 +-
- hw/vfio/common.c              | 120 +++++++++++++++++++++++++++++-----
- hw/vfio/migration.c           |  12 ++++
- migration/migration.c         |   6 +-
- migration/options.c           |  26 ++++++++
- migration/savevm.c            |   2 +-
- migration/target.c            |  36 ++++++++--
- 8 files changed, 187 insertions(+), 26 deletions(-)
-
+diff --git a/migration/migration.h b/migration/migration.h
+index 6eea18db36..c5695de214 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -512,8 +512,8 @@ void migration_consume_urgent_request(void);
+ bool migration_rate_limit(void);
+ void migration_cancel(const Error *error);
+ 
+-void populate_vfio_info(MigrationInfo *info);
+-void reset_vfio_bytes_transferred(void);
++void migration_populate_vfio_info(MigrationInfo *info);
++void migration_reset_vfio_bytes_transferred(void);
+ void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
+ 
+ #endif
+diff --git a/migration/migration.c b/migration/migration.c
+index 5528acb65e..92866a8f49 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1039,7 +1039,7 @@ static void fill_source_migration_info(MigrationInfo *info)
+         populate_time_info(info, s);
+         populate_ram_info(info, s);
+         populate_disk_info(info);
+-        populate_vfio_info(info);
++        migration_populate_vfio_info(info);
+         break;
+     case MIGRATION_STATUS_COLO:
+         info->has_status = true;
+@@ -1048,7 +1048,7 @@ static void fill_source_migration_info(MigrationInfo *info)
+     case MIGRATION_STATUS_COMPLETED:
+         populate_time_info(info, s);
+         populate_ram_info(info, s);
+-        populate_vfio_info(info);
++        migration_populate_vfio_info(info);
+         break;
+     case MIGRATION_STATUS_FAILED:
+         info->has_status = true;
+@@ -1641,7 +1641,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+      */
+     memset(&mig_stats, 0, sizeof(mig_stats));
+     memset(&compression_counters, 0, sizeof(compression_counters));
+-    reset_vfio_bytes_transferred();
++    migration_reset_vfio_bytes_transferred();
+ 
+     return true;
+ }
+diff --git a/migration/savevm.c b/migration/savevm.c
+index a2cb8855e2..5bf8b59a7d 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1622,7 +1622,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+     migrate_init(ms);
+     memset(&mig_stats, 0, sizeof(mig_stats));
+     memset(&compression_counters, 0, sizeof(compression_counters));
+-    reset_vfio_bytes_transferred();
++    migration_reset_vfio_bytes_transferred();
+     ms->to_dst_file = f;
+ 
+     qemu_mutex_unlock_iothread();
+diff --git a/migration/target.c b/migration/target.c
+index f39c9a8d88..a6ffa9a5ce 100644
+--- a/migration/target.c
++++ b/migration/target.c
+@@ -15,7 +15,7 @@
+ #endif
+ 
+ #ifdef CONFIG_VFIO
+-void populate_vfio_info(MigrationInfo *info)
++void migration_populate_vfio_info(MigrationInfo *info)
+ {
+     if (vfio_mig_active()) {
+         info->vfio = g_malloc0(sizeof(*info->vfio));
+@@ -23,16 +23,16 @@ void populate_vfio_info(MigrationInfo *info)
+     }
+ }
+ 
+-void reset_vfio_bytes_transferred(void)
++void migration_reset_vfio_bytes_transferred(void)
+ {
+     vfio_reset_bytes_transferred();
+ }
+ #else
+-void populate_vfio_info(MigrationInfo *info)
++void migration_populate_vfio_info(MigrationInfo *info)
+ {
+ }
+ 
+-void reset_vfio_bytes_transferred(void)
++void migration_reset_vfio_bytes_transferred(void)
+ {
+ }
+ #endif
 -- 
 2.26.3
 
