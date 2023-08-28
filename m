@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2220D78A858
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 10:57:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7B178A85B
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 10:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaY2e-0006CF-6v; Mon, 28 Aug 2023 04:56:12 -0400
+	id 1qaY3p-0007DN-R9; Mon, 28 Aug 2023 04:57:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qaY2b-0006Bf-MH; Mon, 28 Aug 2023 04:56:09 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1qaY3o-0007Cv-DU; Mon, 28 Aug 2023 04:57:24 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qaY2X-0001ya-Jj; Mon, 28 Aug 2023 04:56:09 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99bf8e5ab39so377451366b.2; 
- Mon, 28 Aug 2023 01:56:04 -0700 (PDT)
+ id 1qaY3l-00026I-BY; Mon, 28 Aug 2023 04:57:24 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9a21b6d105cso373899466b.3; 
+ Mon, 28 Aug 2023 01:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1693212963; x=1693817763;
+ d=jms.id.au; s=google; t=1693213039; x=1693817839;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=asWxSAQ1TmGsVUGKJzfmHx6Lmf9fbAqV0Tqhc6Rb/vA=;
- b=bI3kx1B0aFIsO8HUfuTVXxn4b4Tr7juVcd1AKCLPIVU6HbuB3Bz57tfbRk4svqJGzw
- UDEVxoJ5rWs/1mpoPDfhSLR2R+6pZ0Yy/2vEi+9fETkVILzEzA5Ll9bvjikXdQ6DcJjE
- s42joUua2XcnbDbtSz9zmJF1JGLNvUseqb8v4=
+ bh=GQ0I6uIGHC7Qnb8kIAwMrscdXGuxZVuKdlhkTleK9WQ=;
+ b=CV7YwVPXsOvVRrmSsdL8PWQKwIEalNhxfjBdCXRZBPQ2UehIRHnAcbW577i8yPM0nG
+ LFeRxkDqzp7SRyYXvSC8gSIZ6WHpeyT0n33IR8gA5YmAJFi9o5eKRzYNEeR0kF4GrwzF
+ FUZqzFF2T+skuDCTfXEGkRo/4ij1xTXpb3uf0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693212963; x=1693817763;
+ d=1e100.net; s=20221208; t=1693213039; x=1693817839;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=asWxSAQ1TmGsVUGKJzfmHx6Lmf9fbAqV0Tqhc6Rb/vA=;
- b=S/IiREqoJBYmYuIN5lecmugRD2ua63p6YVxFadiCps58DbmgfT3N/rXQQM16GdvmHQ
- EJLKB/NWHAs92c2y+//9XbbNw1yRxPBlGgpTC8guc6ikOcUoGP2A5urUutvlt9XVnPgU
- xL8V79xZkTwnJKTTWu/zEWz6M8bHiRkB88GZ9Srlf8imNXxugxPjpVhzGWRhye0tkriL
- Am1TSeTUDH2ybGhoWUXnHEQMoThIH6lGdyN9kSO9uncsrPUP6Lps00Ci7WK+44hIV61u
- wP8YBAvGERnVfUfMJYQQGuH7b9LMl8pOYI0tBj9e069OZD4xF9nZVFpQ9Lvkzpt5vnt0
- bX2g==
-X-Gm-Message-State: AOJu0YxontvpBSDe+2ctZI7DL+ZlKYZl1ufmy9MFLnq6hnMFytH1GxVp
- Baho/1ed4aWbuIRCZd5S+bZnoqdnosyFTElL/y5RGsTQIpU=
-X-Google-Smtp-Source: AGHT+IHxMFxX1iP4Mft2R+y9NLRrY/FASnMZY9CUDmrIWO8maVDbNsASkJEAVQOErxM3dZy/KN+tju/pNxe7l681zhQ=
-X-Received: by 2002:a17:906:9be3:b0:992:3897:1985 with SMTP id
- de35-20020a1709069be300b0099238971985mr19378876ejc.43.1693212963499; Mon, 28
- Aug 2023 01:56:03 -0700 (PDT)
+ bh=GQ0I6uIGHC7Qnb8kIAwMrscdXGuxZVuKdlhkTleK9WQ=;
+ b=lQ4VOeoQAPSbA50+mxbGM3M84XJ8riNf0Y70NzfyuVpQjb1A0253pAeKVfHUdG1xAP
+ vDU87bH7xcKemItSKlHzyijlHfvawC8CcprZD9raLcIajMbDHqgj9kKAKWTAc36cxW5S
+ huVb4hdCKU9jhbhzHpquO7U2uJFuU8geQPmr60pKw6Aw3qlh4PDoUOB+gU0ozqjZFC84
+ CUfmOH7nhwqOlMpPnUzjPCMCPDL2SfNpX6r8ZJfqKU7R0Q84i57qTpk9DSiuW9OhGSaz
+ PIQ20FeyISOsCozamqXEf0BdK437Rl67xaiyWo3WXeq1QjWequHHmget14qqHhXrLHZs
+ +Xwg==
+X-Gm-Message-State: AOJu0YzZaHBitJHoEeGqSE/uMINXvaxGzrybPVGFwDuXrwSh+TbYAi4o
+ gaE6KNUyoJzwQQQZsJTWlv7+VmD3ydfvKSwZyuM=
+X-Google-Smtp-Source: AGHT+IE6aZe/kzhJGX/L72j4X4mRsEiTvJZz8QzmCJJpV8qFHXT69D/qwFn8x/sZHhuJBGMDbLSGmU3cYiw0ZO2TeXU=
+X-Received: by 2002:a17:906:32d2:b0:9a1:edb0:2a7f with SMTP id
+ k18-20020a17090632d200b009a1edb02a7fmr10264567ejk.6.1693213038713; Mon, 28
+ Aug 2023 01:57:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230825203046.3692467-1-ninad@linux.ibm.com>
- <20230825203046.3692467-7-ninad@linux.ibm.com>
-In-Reply-To: <20230825203046.3692467-7-ninad@linux.ibm.com>
+ <20230825203046.3692467-5-ninad@linux.ibm.com>
+In-Reply-To: <20230825203046.3692467-5-ninad@linux.ibm.com>
 From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 28 Aug 2023 08:55:52 +0000
-Message-ID: <CACPK8XdS5hCBb43QjhKaAjphqzK_S=0n3xOKXeNaOH39Bzb4nA@mail.gmail.com>
-Subject: Re: [PATCH v1 6/7] hw/fsi: Aspeed APB2OPB interface
+Date: Mon, 28 Aug 2023 08:57:07 +0000
+Message-ID: <CACPK8XeuAssMVRAtmU+7ssnzspmhxpjjUYuKynahRRgux8YueQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/7] hw/fsi: Introduce IBM's FSI
 To: Ninad Palsule <ninad@linux.ibm.com>
 Cc: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org, 
  andrew@aj.id.au, pbonzini@redhat.com, marcandre.lureau@redhat.com, 
  berrange@redhat.com, thuth@redhat.com, philmd@linaro.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -85,223 +85,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 25 Aug 2023 at 20:31, Ninad Palsule <ninad@linux.ibm.com> wrote:
+On Fri, 25 Aug 2023 at 20:44, Ninad Palsule <ninad@linux.ibm.com> wrote:
 >
 > This is a part of patchset where IBM's Flexible Service Interface is
 > introduced.
 >
-> An APB-to-OPB bridge enabling access to the OPB from the ARM core in
-> the AST2600. Hardware limitations prevent the OPB from being directly
-> mapped into APB, so all accesses are indirect through the bridge.
+> This commit models the FSI bus. CFAM is hanging out of FSI bus. The bus
+> is model such a way that it is embeded inside the FSI master which is a
+> bus controller.
+>
+> The FSI master: A controller in the platform service processor (e.g.
+> BMC) driving CFAM engine accesses into the POWER chip. At the
+> hardware level FSI is a bit-based protocol supporting synchronous and
+> DMA-driven accesses of engines in a CFAM.
 >
 > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
 > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 > Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+
 > ---
->  hw/arm/Kconfig                  |   1 +
->  hw/fsi/Kconfig                  |   4 +
->  hw/fsi/aspeed-apb2opb.c         | 346 ++++++++++++++++++++++++++++++++
->  hw/fsi/meson.build              |   1 +
->  hw/fsi/trace-events             |   2 +
->  hw/fsi/trace.h                  |   1 +
->  include/hw/fsi/aspeed-apb2opb.h |  32 +++
->  meson.build                     |   1 +
->  8 files changed, 388 insertions(+)
->  create mode 100644 hw/fsi/aspeed-apb2opb.c
->  create mode 100644 hw/fsi/trace-events
->  create mode 100644 hw/fsi/trace.h
->  create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+>  hw/fsi/cfam.c               |   1 +
+>  hw/fsi/fsi-master.c         | 203 ++++++++++++++++++++++++++++++++++++
+>  hw/fsi/fsi.c                |  54 ++++++++++
+>  hw/fsi/meson.build          |   2 +-
+>  include/hw/fsi/cfam.h       |   2 -
+>  include/hw/fsi/fsi-master.h |  30 ++++++
+>  include/hw/fsi/fsi.h        |  35 +++++++
+>  7 files changed, 324 insertions(+), 3 deletions(-)
+>  create mode 100644 hw/fsi/fsi-master.c
+>  create mode 100644 hw/fsi/fsi.c
+>  create mode 100644 include/hw/fsi/fsi-master.h
+>  create mode 100644 include/hw/fsi/fsi.h
 >
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 7e68348440..a6994cd9d7 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -589,6 +589,7 @@ config FSL_IMX7
->      select PCI_EXPRESS_DESIGNWARE
->      select SDHCI
->      select UNIMP
-> +    select APB2OPB_ASPEED
+> diff --git a/hw/fsi/cfam.c b/hw/fsi/cfam.c
+> index 19256050bd..12ce31cac4 100644
+> --- a/hw/fsi/cfam.c
+> +++ b/hw/fsi/cfam.c
+> @@ -12,6 +12,7 @@
 >
->  config ARM_SMMUV3
->      bool
-> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
-> index 560ce536db..fbb021658d 100644
-> --- a/hw/fsi/Kconfig
-> +++ b/hw/fsi/Kconfig
-> @@ -1,3 +1,7 @@
-> +config APB2OPB_ASPEED
-> +    bool
-> +    select OPB
-> +
->  config OPB
->      bool
->      select CFAM
-> diff --git a/hw/fsi/aspeed-apb2opb.c b/hw/fsi/aspeed-apb2opb.c
+>  #include "hw/fsi/bits.h"
+>  #include "hw/fsi/cfam.h"
+> +#include "hw/fsi/fsi.h"
+>  #include "hw/fsi/engine-scratchpad.h"
+>
+>  #include "hw/qdev-properties.h"
+> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
 > new file mode 100644
-> index 0000000000..bbc63f2eb3
+> index 0000000000..fe1693539a
 > --- /dev/null
-> +++ b/hw/fsi/aspeed-apb2opb.c
-> @@ -0,0 +1,346 @@
+> +++ b/hw/fsi/fsi-master.c
+> @@ -0,0 +1,203 @@
 > +/*
 > + * SPDX-License-Identifier: GPL-2.0-or-later
 > + * Copyright (C) 2023 IBM Corp.
 > + *
-> + * ASPEED APB-OPB FSI interface
+> + * IBM Flexible Service Interface master
 > + */
 > +
 > +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "qom/object.h"
+> +
 > +#include "qapi/error.h"
-> +#include "trace.h"
 > +
-> +#include "hw/fsi/aspeed-apb2opb.h"
-> +#include "hw/qdev-core.h"
+> +#include "qemu/log.h"
 > +
-> +#define TO_REG(x) (x >> 2)
-> +#define GENMASK(t, b) (((1ULL << ((t) + 1)) - 1) & ~((1ULL << (b)) - 1))
-
-We should put this in a common header.
-
+> +#include "hw/fsi/bits.h"
+> +#include "hw/fsi/fsi-master.h"
 > +
-> +#define APB2OPB_VERSION                    TO_REG(0x00)
-> +#define   APB2OPB_VERSION_VER              GENMASK(7, 0)
+> +#define TYPE_OP_BUS "opb"
 > +
-> +#define APB2OPB_TRIGGER                    TO_REG(0x04)
-> +#define   APB2OPB_TRIGGER_EN               BIT(0)
+> +#define TO_REG(x)                               ((x) >> 2)
 > +
-> +#define APB2OPB_CONTROL                    TO_REG(0x08)
-> +#define   APB2OPB_CONTROL_OFF              GENMASK(31, 13)
+> +#define FSI_MMODE                               TO_REG(0x000)
+> +#define   FSI_MMODE_IPOLL_DMA_EN                BE_BIT(0)
+> +#define   FSI_MMODE_HW_ERROR_RECOVERY_EN        BE_BIT(1)
+> +#define   FSI_MMODE_RELATIVE_ADDRESS_EN         BE_BIT(2)
+> +#define   FSI_MMODE_PARITY_CHECK_EN             BE_BIT(3)
+> +#define   FSI_MMODE_CLOCK_DIVIDER_0             BE_GENMASK(4, 13)
+> +#define   FSI_MMODE_CLOCK_DIVIDER_1             BE_GENMASK(14, 23)
+> +#define   FSI_MMODE_DEBUG_EN                    BE_BIT(24)
 > +
-> +#define APB2OPB_OPB2FSI                    TO_REG(0x0c)
-> +#define   APB2OPB_OPB2FSI_OFF              GENMASK(31, 22)
+> +#define FSI_MDELAY                              TO_REG(0x004)
+> +#define   FSI_MDELAY_ECHO_0                     BE_GENMASK(0, 3)
+> +#define   FSI_MDELAY_SEND_0                     BE_GENMASK(4, 7)
+> +#define   FSI_MDELAY_ECHO_1                     BE_GENMASK(8, 11)
+> +#define   FSI_MDELAY_SEND_1                     BE_GENMASK(12, 15)
 > +
-> +#define APB2OPB_OPB0_SEL                   TO_REG(0x10)
-> +#define APB2OPB_OPB1_SEL                   TO_REG(0x28)
-> +#define   APB2OPB_OPB_SEL_EN               BIT(0)
+> +#define FSI_MENP0                               TO_REG(0x010)
+> +#define FSI_MENP32                              TO_REG(0x014)
+> +#define FSI_MSENP0                              TO_REG(0x018)
+> +#define FSI_MLEVP0                              TO_REG(0x018)
+> +#define FSI_MSENP32                             TO_REG(0x01c)
+> +#define FSI_MLEVP32                             TO_REG(0x01c)
+> +#define FSI_MCENP0                              TO_REG(0x020)
+> +#define FSI_MREFP0                              TO_REG(0x020)
+> +#define FSI_MCENP32                             TO_REG(0x024)
+> +#define FSI_MREFP32                             TO_REG(0x024)
 > +
-> +#define APB2OPB_OPB0_MODE                  TO_REG(0x14)
-> +#define APB2OPB_OPB1_MODE                  TO_REG(0x2c)
-> +#define   APB2OPB_OPB_MODE_RD              BIT(0)
+> +#define FSI_MAEB                                TO_REG(0x070)
+> +#define   FSI_MAEB_ANY_CPU_ERROR                BE_BIT(0)
+> +#define   FSI_MAEB_ANY_DMA_ERROR                BE_GENMASK(1, 16)
+> +#define   FSI_MAEB_ANY_PARITY_ERROR             BE_BIT(17)
 > +
-> +#define APB2OPB_OPB0_XFER                  TO_REG(0x18)
-> +#define APB2OPB_OPB1_XFER                  TO_REG(0x30)
-> +#define   APB2OPB_OPB_XFER_FULL            BIT(1)
-> +#define   APB2OPB_OPB_XFER_HALF            BIT(0)
+> +#define FSI_MVER                                TO_REG(0x074)
+> +#define   FSI_MVER_VERSION                      BE_GENMASK(0, 7)
+> +#define   FSI_MVER_BRIDGES                      BE_GENMASK(8, 15)
+> +#define   FSI_MVER_PORTS                        BE_GENMASK(16, 23)
 > +
-> +#define APB2OPB_OPB0_ADDR                  TO_REG(0x1c)
-> +#define APB2OPB_OPB0_WRITE_DATA            TO_REG(0x20)
+> +#define FSI_MRESP0                              TO_REG(0x0d0)
+> +#define   FSI_MRESP0_RESET_PORT_GENERAL         BE_BIT(0)
+> +#define   FSI_MRESP0_RESET_PORT_ERROR           BE_BIT(1)
+> +#define   FSI_MRESP0_RESET_ALL_BRIDGES_GENERAL  BE_BIT(2)
+> +#define   FSI_MRESP0_RESET_ALL_PORTS_GENERAL    BE_BIT(3)
+> +#define   FSI_MRESP0_RESET_MASTER               BE_BIT(4)
+> +#define   FSI_MRESP0_RESET_PARITY_ERROR_LATCH   BE_BIT(5)
 > +
-> +#define APB2OPB_OPB1_DMA_EN                TO_REG(0x24)
-> +#define APB2OPB_OPB1_DMA_EN_3              BIT(3)
-> +#define APB2OPB_OPB1_DMA_EN_2              BIT(2)
-> +#define APB2OPB_OPB1_DMA_EN_1              BIT(1)
-> +#define APB2OPB_OPB1_DMA_EN_0              BIT(0)
+> +#define FSI_MRESB0                              TO_REG(0x1d0)
+> +#define   FSI_MRESB0_RESET_GENERAL              BE_BIT(0)
+> +#define   FSI_MRESB0_RESET_ERROR                BE_BIT(1)
+> +#define   FSI_MRESB0_SET_DMA_SUSPEND            BE_BIT(5)
+> +#define   FSI_MRESB0_CLEAR_DMA_SUSPEND          BE_BIT(6)
+> +#define   FSI_MRESB0_SET_DELAY_MEASURE          BE_BIT(7)
 > +
-> +#define APB2OPB_OPB1_ADDR                  TO_REG(0x34)
-> +#define APB2OPB_OPB1_WRITE_DATA                  TO_REG(0x38)
+> +#define FSI_MECTRL                              TO_REG(0x2e0)
+> +#define   FSI_MECTRL_TEST_PULSE                 BE_GENMASK(0, 7)
+> +#define   FSI_MECTRL_INHIBIT_PARITY_ERROR       BE_GENMASK(8, 15)
+> +#define   FSI_MECTRL_ENABLE_OPB_ERR_ACK         BE_BIT(16)
+> +#define   FSI_MECTRL_AUTO_TERMINATE             BE_BIT(17)
+> +#define   FSI_MECTRL_PORT_ERROR_FREEZE          BE_BIT(18)
 > +
-> +#define APB2OPB_OPB_CLK                    TO_REG(0x3c)
-> +#define   APB2OPB_OPB_CLK_SYNC             BIT(0)
-> +
-> +#define APB2OPB_IRQ_CLEAR                  TO_REG(0x40)
-> +#define   APB2OPB_IRQ_CLEAR_EN             BIT(0)
-> +
-> +#define APB2OPB_IRQ_MASK                   TO_REG(0x44)
-> +#define   APB2OPB_IRQ_MASK_OPB1_TX_ACK     BIT(17)
-> +#define   APB2OPB_IRQ_MASK_OPB0_TX_ACK     BIT(16)
-> +#define   APB2OPB_IRQ_MASK_CH3_TCONT       BIT(15)
-> +#define   APB2OPB_IRQ_MASK_CH2_TCONT       BIT(14)
-> +#define   APB2OPB_IRQ_MASK_CH1_TCONT       BIT(13)
-> +#define   APB2OPB_IRQ_MASK_CH0_TCONT       BIT(12)
-> +#define   APB2OPB_IRQ_MASK_CH3_FIFO_EMPTY  BIT(11)
-> +#define   APB2OPB_IRQ_MASK_CH2_FIFO_EMPTY  BIT(10)
-> +#define   APB2OPB_IRQ_MASK_CH1_FIFO_EMPTY  BIT(9)
-> +#define   APB2OPB_IRQ_MASK_CH0_FIFO_EMPTY  BIT(8)
-> +#define   APB2OPB_IRQ_MASK_CH3_FIFO_FULL   BIT(7)
-> +#define   APB2OPB_IRQ_MASK_CH2_FIFO_FULL   BIT(6)
-> +#define   APB2OPB_IRQ_MASK_CH1_FIFO_FULL   BIT(5)
-> +#define   APB2OPB_IRQ_MASK_CH0_FIFO_FULL   BIT(4)
-> +#define   APB2OPB_IRQ_MASK_CH3_DMA_EOT     BIT(3)
-> +#define   APB2OPB_IRQ_MASK_CH2_DMA_EOT     BIT(2)
-> +#define   APB2OPB_IRQ_MASK_CH1_DMA_EOT     BIT(1)
-> +#define   APB2OPB_IRQ_MASK_CH0_DMA_EOT     BIT(0)
-> +
-> +#define APB2OPB_IRQ_STS                    TO_REG(0x48)
-> +#define   APB2OPB_IRQ_STS_MASTER_ERROR     BIT(28)
-> +#define   APB2OPB_IRQ_STS_PORT_ERROR       BIT(27)
-> +#define   APB2OPB_IRQ_STS_HOTPLUG          BIT(26)
-> +#define   APB2OPB_IRQ_STS_SLAVE_7          BIT(25)
-> +#define   APB2OPB_IRQ_STS_SLAVE_6          BIT(24)
-> +#define   APB2OPB_IRQ_STS_SLAVE_5          BIT(23)
-> +#define   APB2OPB_IRQ_STS_SLAVE_4          BIT(22)
-> +#define   APB2OPB_IRQ_STS_SLAVE_3          BIT(21)
-> +#define   APB2OPB_IRQ_STS_SLAVE_2          BIT(20)
-> +#define   APB2OPB_IRQ_STS_SLAVE_1          BIT(19)
-> +#define   APB2OPB_IRQ_STS_SLAVE_0          BIT(18)
-> +#define   APB2OPB_IRQ_STS_OPB1_TX_ACK      BIT(17)
-> +#define   APB2OPB_IRQ_STS_OPB0_TX_ACK      BIT(16)
-> +#define   APB2OPB_IRQ_STS_CH3_TCONT        BIT(15)
-> +#define   APB2OPB_IRQ_STS_CH2_TCONT        BIT(14)
-> +#define   APB2OPB_IRQ_STS_CH1_TCONT        BIT(13)
-> +#define   APB2OPB_IRQ_STS_CH0_TCONT        BIT(12)
-> +#define   APB2OPB_IRQ_STS_CH3_FIFO_EMPTY   BIT(11)
-> +#define   APB2OPB_IRQ_STS_CH2_FIFO_EMPTY   BIT(10)
-> +#define   APB2OPB_IRQ_STS_CH1_FIFO_EMPTY   BIT(9)
-> +#define   APB2OPB_IRQ_STS_CH0_FIFO_EMPTY   BIT(8)
-> +#define   APB2OPB_IRQ_STS_CH3_FIFO_FULL    BIT(7)
-> +#define   APB2OPB_IRQ_STS_CH2_FIFO_FULL    BIT(6)
-> +#define   APB2OPB_IRQ_STS_CH1_FIFO_FULL    BIT(5)
-> +#define   APB2OPB_IRQ_STS_CH0_FIFO_FULL    BIT(4)
-> +#define   APB2OPB_IRQ_STS_CH3_DMA_EOT      BIT(3)
-> +#define   APB2OPB_IRQ_STS_CH2_DMA_EOT      BIT(2)
-> +#define   APB2OPB_IRQ_STS_CH1_DMA_EOT      BIT(1)
-> +#define   APB2OPB_IRQ_STS_CH0_DMA_EOT      BIT(0)
-> +
-> +#define APB2OPB_OPB0_WRITE_WORD_ENDIAN     TO_REG(0x4c)
-> +#define   APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE 0x0011101b
-> +#define APB2OPB_OPB0_WRITE_BYTE_ENDIAN     TO_REG(0x50)
-> +#define   APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE 0x0c330f3f
-> +#define APB2OPB_OPB1_WRITE_WORD_ENDIAN     TO_REG(0x54)
-> +#define APB2OPB_OPB1_WRITE_BYTE_ENDIAN     TO_REG(0x58)
-> +#define APB2OPB_OPB0_READ_BYTE_ENDIAN      TO_REG(0x5c)
-> +#define   APB2OPB_OPB0_READ_WORD_ENDIAN_BE  0x00030b1b
-> +#define APB2OPB_OPB1_READ_BYTE_ENDIAN      TO_REG(0x60)
-> +
-> +#define APB2OPB_RETRY                      TO_REG(0x64)
-> +#define   APB2OPB_RETRY_COUNTER            GENMASK(15, 0)
-> +
-> +#define APB2OPB_OPB0_STATUS                TO_REG(0x80)
-> +#define APB2OPB_OPB1_STATUS                TO_REG(0x8c)
-> +#define   APB2OPB_OPB_STATUS_TIMEOUT       BIT(4)
-> +#define   APB2OPB_OPB_STATUS_RETRY         BIT(3)
-> +#define   APB2OPB_OPB_STATUS_ERROR_ACK     BIT(2)
-> +#define   APB2OPB_OPB_STATUS_FW_ACK        BIT(1)
-> +#define   APB2OPB_OPB_STATUS_HW_ACK        BIT(0)
-> +
-> +#define APB2OPB_OPB0_READ_DATA         TO_REG(0x84)
-> +
-> +#define APB2OPB_OPB1_DMA_STATUS            TO_REG(0x88)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH3_EOT  BIT(7)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH2_EOT  BIT(6)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH1_EOT  BIT(5)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH0_EOT  BIT(4)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH3_REQ  BIT(3)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH2_REQ  BIT(2)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH1_REQ  BIT(1)
-> +#define   APB2OPB_OPB1_DMA_STATUS_CH0_REQ  BIT(0)
-> +
-> +#define APB2OPB_OPB1_READ_DATA         TO_REG(0x90)
-> +
-> +static uint64_t aspeed_apb2opb_read(void *opaque, hwaddr addr, unsigned =
-size)
+> +static uint64_t fsi_master_read(void *opaque, hwaddr addr, unsigned size=
+)
 > +{
-> +    AspeedAPB2OPBState *s =3D ASPEED_APB2OPB(opaque);
+> +    FSIMasterState *s =3D FSI_MASTER(opaque);
 > +
-> +    trace_aspeed_apb2opb_read(addr, size);
-> +
-> +    assert(!(addr & 3));
-> +    assert(size =3D=3D 4);
+> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=3D%d\n",
+> +                  __func__, addr, size);
 > +
 > +    if (addr + size > sizeof(s->regs)) {
 > +        qemu_log_mask(LOG_GUEST_ERROR,
@@ -314,16 +234,13 @@ size)
 > +    return s->regs[TO_REG(addr)];
 > +}
 > +
-> +static void aspeed_apb2opb_write(void *opaque, hwaddr addr, uint64_t dat=
-a,
-> +                                 unsigned size)
+> +static void fsi_master_write(void *opaque, hwaddr addr, uint64_t data,
+> +                             unsigned size)
 > +{
-> +    AspeedAPB2OPBState *s =3D ASPEED_APB2OPB(opaque);
+> +    FSIMasterState *s =3D FSI_MASTER(opaque);
 > +
-> +    trace_aspeed_apb2opb_write(addr, size, data);
-> +
-> +    assert(!(addr & 3));
-> +    assert(size =3D=3D 4);
+> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=3D%d "
+> +                  "value=3D%"PRIx64"\n", __func__, addr, size, data);
 > +
 > +    if (addr + size > sizeof(s->regs)) {
 > +        qemu_log_mask(LOG_GUEST_ERROR,
@@ -334,261 +251,264 @@ a,
 > +    }
 > +
 > +    switch (TO_REG(addr)) {
-> +    case APB2OPB_CONTROL:
-> +        opb_fsi_master_address(&s->opb[0], data & APB2OPB_CONTROL_OFF);
+> +    case FSI_MENP0:
+> +        s->regs[FSI_MENP0] =3D data;
 > +        break;
-> +    case APB2OPB_OPB2FSI:
-> +        opb_opb2fsi_address(&s->opb[0], data & APB2OPB_OPB2FSI_OFF);
+> +    case FSI_MENP32:
+> +        s->regs[FSI_MENP32] =3D data;
 > +        break;
-> +    case APB2OPB_OPB0_WRITE_WORD_ENDIAN:
-> +        if (data !=3D APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "%s: Bridge needs to be driven as BE (0x%x)\n"=
-,
-> +                          __func__, APB2OPB_OPB0_WRITE_WORD_ENDIAN_BE);
+> +    case FSI_MSENP0:
+> +        s->regs[FSI_MENP0] |=3D data;
+> +        break;
+> +    case FSI_MSENP32:
+> +        s->regs[FSI_MENP32] |=3D data;
+> +        break;
+> +    case FSI_MCENP0:
+> +        s->regs[FSI_MENP0] &=3D ~data;
+> +        break;
+> +    case FSI_MCENP32:
+> +        s->regs[FSI_MENP32] &=3D ~data;
+> +        break;
+> +    case FSI_MRESP0:
+> +        /* Perform necessary resets leave register 0 to indicate no erro=
+rs */
+> +        break;
+> +    case FSI_MRESB0:
+> +        if (data & FSI_MRESB0_RESET_GENERAL) {
+> +            device_cold_reset(DEVICE(opaque));
+> +        }
+> +        if (data & FSI_MRESB0_RESET_ERROR) {
+> +            /* FIXME: this seems dubious */
+> +            device_cold_reset(DEVICE(opaque));
 > +        }
 > +        break;
-> +    case APB2OPB_OPB0_WRITE_BYTE_ENDIAN:
-> +        if (data !=3D APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "%s: Bridge needs to be driven as BE (0x%x)\n"=
-,
-> +                          __func__, APB2OPB_OPB0_WRITE_BYTE_ENDIAN_BE);
-> +        }
-> +        break;
-> +    case APB2OPB_OPB0_READ_BYTE_ENDIAN:
-> +        if (data !=3D APB2OPB_OPB0_READ_WORD_ENDIAN_BE) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "%s: Bridge needs to be driven as BE (0x%x)\n"=
-,
-> +                          __func__, APB2OPB_OPB0_READ_WORD_ENDIAN_BE);
-> +        }
-> +        break;
-> +    case APB2OPB_TRIGGER:
-> +    {
-> +        uint32_t opb, op_mode, op_size, op_addr, op_data;
-> +
-> +        assert((s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) ^
-> +               (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN));
-> +
-> +        if (s->regs[APB2OPB_OPB0_SEL] & APB2OPB_OPB_SEL_EN) {
-> +            opb =3D 0;
-> +            op_mode =3D s->regs[APB2OPB_OPB0_MODE];
-> +            op_size =3D s->regs[APB2OPB_OPB0_XFER];
-> +            op_addr =3D s->regs[APB2OPB_OPB0_ADDR];
-> +            op_data =3D s->regs[APB2OPB_OPB0_WRITE_DATA];
-> +        } else if (s->regs[APB2OPB_OPB1_SEL] & APB2OPB_OPB_SEL_EN) {
-> +            opb =3D 1;
-> +            op_mode =3D s->regs[APB2OPB_OPB1_MODE];
-> +            op_size =3D s->regs[APB2OPB_OPB1_XFER];
-> +            op_addr =3D s->regs[APB2OPB_OPB1_ADDR];
-> +            op_data =3D s->regs[APB2OPB_OPB1_WRITE_DATA];
-> +        } else {
-> +            g_assert_not_reached();
-> +        }
-> +
-> +        if (op_size & ~(APB2OPB_OPB_XFER_HALF | APB2OPB_OPB_XFER_FULL)) =
-{
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "OPB transaction failed: Unrecognised access w=
-idth: %d\n",
-> +                          op_size);
-> +            return;
-> +        }
-> +
-> +        op_size +=3D 1;
-> +
-> +        if (op_mode & APB2OPB_OPB_MODE_RD) {
-> +            int index =3D opb ? APB2OPB_OPB1_READ_DATA
-> +                : APB2OPB_OPB0_READ_DATA;
-> +
-> +            switch (op_size) {
-> +            case 1:
-> +                s->regs[index] =3D opb_read8(&s->opb[opb], op_addr);
-> +                break;
-> +            case 2:
-> +                s->regs[index] =3D opb_read16(&s->opb[opb], op_addr);
-> +                break;
-> +            case 4:
-> +                s->regs[index] =3D opb_read32(&s->opb[opb], op_addr);
-> +                break;
-> +            default:
-> +                g_assert_not_reached(); /* should have bailed above */
-> +            }
-> +        } else {
-> +            /* FIXME: Endian swizzling */
-> +            switch (op_size) {
-> +            case 1:
-> +                opb_write8(&s->opb[opb], op_addr, op_data);
-> +                break;
-> +            case 2:
-> +                opb_write16(&s->opb[opb], op_addr, op_data);
-> +                break;
-> +            case 4:
-> +                opb_write32(&s->opb[opb], op_addr, op_data);
-> +                break;
-> +            default:
-> +                g_assert_not_reached(); /* should have bailed above */
-> +            }
-> +        }
-> +        s->regs[APB2OPB_IRQ_STS] |=3D opb ? APB2OPB_IRQ_STS_OPB1_TX_ACK
-> +            : APB2OPB_IRQ_STS_OPB0_TX_ACK;
-> +        break;
+> +    default:
+> +        s->regs[TO_REG(addr)] =3D data;
 > +    }
-> +    }
-> +
-> +    s->regs[TO_REG(addr)] =3D data;
 > +}
 > +
-> +static const struct MemoryRegionOps aspeed_apb2opb_ops =3D {
-> +    .read =3D aspeed_apb2opb_read,
-> +    .write =3D aspeed_apb2opb_write,
-> +    .endianness =3D DEVICE_LITTLE_ENDIAN,
+> +static const struct MemoryRegionOps fsi_master_ops =3D {
+> +    .read =3D fsi_master_read,
+> +    .write =3D fsi_master_write,
+> +    .endianness =3D DEVICE_BIG_ENDIAN,
 > +};
 > +
-> +static void aspeed_apb2opb_realize(DeviceState *dev, Error **errp)
+> +static void fsi_master_realize(DeviceState *dev, Error **errp)
 > +{
-> +    SysBusDevice *sbd =3D SYS_BUS_DEVICE(dev);
-> +    AspeedAPB2OPBState *s =3D ASPEED_APB2OPB(dev);
+> +    FSIMasterState *s =3D FSI_MASTER(dev);
+> +    Error *err =3D NULL;
 > +
-> +    qbus_init(&s->opb[0], sizeof(s->opb[0]), TYPE_OP_BUS,
-> +                        DEVICE(s), NULL);
-> +    qbus_init(&s->opb[1], sizeof(s->opb[1]), TYPE_OP_BUS,
-> +                        DEVICE(s), NULL);
+> +    qbus_init(&s->bus, sizeof(s->bus), TYPE_FSI_BUS, DEVICE(s), NULL);
 > +
-> +    sysbus_init_irq(sbd, &s->irq);
+> +    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_master_ops, s,
+> +                          TYPE_FSI_MASTER, 0x10000000);
+> +    memory_region_init(&s->opb2fsi, OBJECT(s), "fsi.opb2fsi", 0x10000000=
+);
 > +
-> +    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_apb2opb_ops, s,
-> +                          TYPE_ASPEED_APB2OPB, 0x1000);
-> +    sysbus_init_mmio(sbd, &s->iomem);
+> +    object_property_set_bool(OBJECT(&s->bus), "realized", true, &err);
+> +    if (err) {
+> +        error_propagate(errp, err);
+> +        return;
+> +    }
+> +
+> +    memory_region_add_subregion(&s->opb2fsi, 0, &s->bus.slave.mr);
 > +}
 > +
-> +static void aspeed_apb2opb_reset(DeviceState *dev)
+> +static void fsi_master_reset(DeviceState *dev)
 > +{
-> +    AspeedAPB2OPBState *s =3D ASPEED_APB2OPB(dev);
+> +    FSIMasterState *s =3D FSI_MASTER(dev);
 > +
-> +    memset(s->regs, 0, sizeof(s->regs));
-> +
-> +    s->regs[APB2OPB_VERSION] =3D 0x000000a1;
-> +    s->regs[APB2OPB_OPB0_WRITE_WORD_ENDIAN] =3D 0x0044eee4;
-> +    s->regs[APB2OPB_OPB0_WRITE_BYTE_ENDIAN] =3D 0x0055aaff;
-> +    s->regs[APB2OPB_OPB1_WRITE_WORD_ENDIAN] =3D 0x00117717;
-> +    s->regs[APB2OPB_OPB1_WRITE_BYTE_ENDIAN] =3D 0xffaa5500;
-> +    s->regs[APB2OPB_OPB0_READ_BYTE_ENDIAN] =3D 0x0044eee4;
-> +    s->regs[APB2OPB_OPB0_READ_BYTE_ENDIAN] =3D 0x00117717;
-
-Add a comment about the source of these magic numbers. I think this is
-the best reference we have:
-
-https://git.kernel.org/torvalds/c/5e5022995683539609b3904213b7d72ab71188b7
-
-I'm not sure if the reset values were taken from the hardware, or the
-kernel driver.
-
+> +    /* ASPEED default */
+> +    s->regs[FSI_MVER] =3D 0xe0050101;
 > +}
 > +
-> +static void aspeed_apb2opb_class_init(ObjectClass *klass, void *data)
+> +static void fsi_master_class_init(ObjectClass *klass, void *data)
 > +{
 > +    DeviceClass *dc =3D DEVICE_CLASS(klass);
 > +
-> +    dc->desc =3D "ASPEED APB2OPB Bridge";
-> +    dc->realize =3D aspeed_apb2opb_realize;
-> +    dc->reset =3D aspeed_apb2opb_reset;
+> +    dc->bus_type =3D TYPE_OP_BUS;
+> +    dc->desc =3D "FSI Master";
+> +    dc->realize =3D fsi_master_realize;
+> +    dc->reset =3D fsi_master_reset;
 > +}
 > +
-> +static const TypeInfo aspeed_apb2opb_info =3D {
-> +    .name =3D TYPE_ASPEED_APB2OPB,
-> +    .parent =3D TYPE_SYS_BUS_DEVICE,
-> +    .instance_size =3D sizeof(AspeedAPB2OPBState),
-> +    .class_init =3D aspeed_apb2opb_class_init,
+> +static const TypeInfo fsi_master_info =3D {
+> +    .name =3D TYPE_FSI_MASTER,
+> +    .parent =3D TYPE_DEVICE,
+> +    .instance_size =3D sizeof(FSIMasterState),
+> +    .class_init =3D fsi_master_class_init,
 > +};
 > +
-> +static void aspeed_apb2opb_register_types(void)
+> +static void fsi_register_types(void)
 > +{
-> +    type_register_static(&aspeed_apb2opb_info);
+> +    type_register_static(&fsi_master_info);
 > +}
 > +
-> +type_init(aspeed_apb2opb_register_types);
-> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-> index cab645f4ea..ce8b9555ce 100644
-> --- a/hw/fsi/meson.build
-> +++ b/hw/fsi/meson.build
-> @@ -3,3 +3,4 @@ system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: files('=
-engine-scratchpad.c'))
->  system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
->  system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c',=
-'fsi-slave.c'))
->  system_ss.add(when: 'CONFIG_OPB', if_true: files('opb.c'))
-> +system_ss.add(when: 'CONFIG_APB2OPB_ASPEED', if_true: files('aspeed-apb2=
-opb.c'))
-> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
+> +type_init(fsi_register_types);
+> diff --git a/hw/fsi/fsi.c b/hw/fsi/fsi.c
 > new file mode 100644
-> index 0000000000..c64245f7f6
+> index 0000000000..43f889fee9
 > --- /dev/null
-> +++ b/hw/fsi/trace-events
-> @@ -0,0 +1,2 @@
-> +aspeed_apb2opb_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=
-=3D%d"
-> +aspeed_apb2opb_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%"=
- PRIx64 " size=3D%d value=3D0x%"PRIx64
-> diff --git a/hw/fsi/trace.h b/hw/fsi/trace.h
-> new file mode 100644
-> index 0000000000..ee67c7fb04
-> --- /dev/null
-> +++ b/hw/fsi/trace.h
-> @@ -0,0 +1 @@
-> +#include "trace/trace-hw_fsi.h"
-> diff --git a/include/hw/fsi/aspeed-apb2opb.h b/include/hw/fsi/aspeed-apb2=
-opb.h
-> new file mode 100644
-> index 0000000000..4acc980e7d
-> --- /dev/null
-> +++ b/include/hw/fsi/aspeed-apb2opb.h
-> @@ -0,0 +1,32 @@
+> +++ b/hw/fsi/fsi.c
+> @@ -0,0 +1,54 @@
 > +/*
 > + * SPDX-License-Identifier: GPL-2.0-or-later
 > + * Copyright (C) 2023 IBM Corp.
 > + *
-> + * ASPEED APB2OPB Bridge
+> + * IBM Flexible Service Interface
 > + */
-> +#ifndef FSI_ASPEED_APB2OPB_H
-> +#define FSI_ASPEED_APB2OPB_H
+> +#include "qemu/osdep.h"
 > +
-> +#include "hw/sysbus.h"
-> +#include "hw/fsi/opb.h"
+> +#include "qapi/error.h"
 > +
-> +#define TYPE_ASPEED_APB2OPB "aspeed.apb2opb"
-> +#define ASPEED_APB2OPB(obj) \
-> +    OBJECT_CHECK(AspeedAPB2OPBState, (obj), TYPE_ASPEED_APB2OPB)
+> +#include "hw/fsi/fsi.h"
+> +#include "hw/fsi/cfam.h"
 > +
-> +#define ASPEED_APB2OPB_NR_REGS ((0xe8 >> 2) + 1)
+> +static void fsi_bus_realize(BusState *bus, Error **errp)
+> +{
+> +    FSIBus *s =3D FSI_BUS(bus);
+> +    Error *err =3D NULL;
 > +
-> +typedef struct AspeedAPB2OPBState {
-> +    /*< private >*/
-> +    SysBusDevice parent_obj;
+> +    /* FIXME: Should be realised elsewhere and added to the bus */
+> +    object_property_set_bool(OBJECT(&s->slave), "realized", true, &err);
+> +    if (err) {
+> +        error_propagate(errp, err);
+> +    }
+> +}
 > +
-> +    /*< public >*/
+> +static void fsi_bus_init(Object *o)
+> +{
+> +    FSIBus *s =3D FSI_BUS(o);
+> +
+> +    /* FIXME: Move this elsewhere */
+> +    object_initialize_child(o, TYPE_CFAM, &s->slave, TYPE_CFAM);
+> +    qdev_set_parent_bus(DEVICE(&s->slave), BUS(o), &error_abort);
+> +}
+> +
+> +static void fsi_bus_class_init(ObjectClass *klass, void *data)
+> +{
+> +    BusClass *bc =3D BUS_CLASS(klass);
+> +    bc->realize =3D fsi_bus_realize;
+> +}
+> +
+> +static const TypeInfo fsi_bus_info =3D {
+> +    .name =3D TYPE_FSI_BUS,
+> +    .parent =3D TYPE_BUS,
+> +    .instance_init =3D fsi_bus_init,
+> +    .instance_size =3D sizeof(FSIBus),
+> +    .class_init =3D fsi_bus_class_init,
+> +};
+> +
+> +static void fsi_bus_register_types(void)
+> +{
+> +    type_register_static(&fsi_bus_info);
+> +}
+> +
+> +type_init(fsi_bus_register_types);
+> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+> index 5600502b33..ca80d11cb9 100644
+> --- a/hw/fsi/meson.build
+> +++ b/hw/fsi/meson.build
+> @@ -1,4 +1,4 @@
+>  system_ss.add(when: 'CONFIG_LBUS', if_true: files('lbus.c'))
+>  system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: files('engine-scratchp=
+ad.c'))
+>  system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
+> -system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi-slave.c'))
+> +system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c',=
+'fsi-slave.c'))
+> diff --git a/include/hw/fsi/cfam.h b/include/hw/fsi/cfam.h
+> index af9f88cb22..83bd29b0c3 100644
+> --- a/include/hw/fsi/cfam.h
+> +++ b/include/hw/fsi/cfam.h
+> @@ -12,8 +12,6 @@
+>  #include "hw/fsi/fsi-slave.h"
+>  #include "hw/fsi/lbus.h"
+>
+> -#define TYPE_FSI_BUS "fsi.bus"
+> -
+>  #define TYPE_CFAM "cfam"
+>  #define CFAM(obj) OBJECT_CHECK(CFAMState, (obj), TYPE_CFAM)
+>
+> diff --git a/include/hw/fsi/fsi-master.h b/include/hw/fsi/fsi-master.h
+> new file mode 100644
+> index 0000000000..5341d4c873
+> --- /dev/null
+> +++ b/include/hw/fsi/fsi-master.h
+> @@ -0,0 +1,30 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2019 IBM Corp.
+> + *
+> + * IBM Flexible Service Interface Master
+> + */
+> +#ifndef FSI_FSI_MASTER_H
+> +#define FSI_FSI_MASTER_H
+> +
+> +#include "exec/memory.h"
+> +#include "hw/qdev-core.h"
+> +#include "hw/fsi/fsi.h"
+> +
+> +#define TYPE_FSI_MASTER "fsi.master"
+> +#define FSI_MASTER(obj) OBJECT_CHECK(FSIMasterState, (obj), TYPE_FSI_MAS=
+TER)
+> +
+> +#define FSI_MASTER_NR_REGS ((0x2e0 >> 2) + 1)
+> +
+> +typedef struct FSIMasterState {
+> +    DeviceState parent;
 > +    MemoryRegion iomem;
+> +    MemoryRegion opb2fsi;
 > +
-> +    uint32_t regs[ASPEED_APB2OPB_NR_REGS];
-> +    qemu_irq irq;
+> +    FSIBus bus;
 > +
-> +    OPBus opb[2];
-> +} AspeedAPB2OPBState;
+> +    uint32_t regs[FSI_MASTER_NR_REGS];
+> +} FSIMasterState;
 > +
-> +#endif /* FSI_ASPEED_APB2OPB_H */
-> diff --git a/meson.build b/meson.build
-> index 98e68ef0b1..1a722693a6 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3244,6 +3244,7 @@ if have_system
->      'hw/char',
->      'hw/display',
->      'hw/dma',
-> +    'hw/fsi',
->      'hw/hyperv',
->      'hw/i2c',
->      'hw/i386',
+> +
+> +#endif /* FSI_FSI_H */
+> diff --git a/include/hw/fsi/fsi.h b/include/hw/fsi/fsi.h
+> new file mode 100644
+> index 0000000000..e88c5432ad
+> --- /dev/null
+> +++ b/include/hw/fsi/fsi.h
+> @@ -0,0 +1,35 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM Flexible Service Interface
+> + */
+> +#ifndef FSI_FSI_H
+> +#define FSI_FSI_H
+> +
+> +#include "hw/qdev-core.h"
+> +
+> +/*
+> + * TODO: Maybe unwind this dependency with const links? Store a
+> + * pointer in FSIBus?
+> + */
+> +#include "hw/fsi/cfam.h"
+> +
+> +#define TYPE_FSI_BUS "fsi.bus"
+> +#define FSI_BUS(obj) OBJECT_CHECK(FSIBus, (obj), TYPE_FSI_BUS)
+> +#define FSI_BUS_CLASS(klass) \
+> +    OBJECT_CLASS_CHECK(FSIBusClass, (klass), TYPE_FSI_BUS)
+> +#define FSI_BUS_GET_CLASS(obj) \
+> +    OBJECT_GET_CLASS(FSIBusClass, (obj), TYPE_FSI_BUS)
+> +
+> +/* TODO: Figure out what's best with a point-to-point bus */
+> +typedef struct FSISlaveState FSISlaveState;
+> +
+> +typedef struct FSIBus {
+> +    BusState bus;
+> +
+> +    /* XXX: It's point-to-point, just instantiate the slave directly for=
+ now */
+> +    CFAMState slave;
+> +} FSIBus;
+> +
+> +#endif
 > --
 > 2.39.2
 >
