@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA5A78B4DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE93F78B527
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 18:13:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaeZY-0000n5-Sb; Mon, 28 Aug 2023 11:54:36 -0400
+	id 1qaeqC-0008Ql-0x; Mon, 28 Aug 2023 12:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qaeZX-0000mT-7M
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:54:35 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaeq9-0008QD-Lf
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:11:45 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qaeZV-0005Un-3K
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:54:34 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-1c4f4d67f5bso2275739fac.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 08:54:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qaeq7-0000r6-2F
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:11:45 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3ff1c397405so32879545e9.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 09:11:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693238071; x=1693842871;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1693239100; x=1693843900;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1fbJtP16mBJ0wJXx2XG2R1WgNNjD6w/JtUyfEvcwhno=;
- b=Fc43Uqu4yVV8ouwVosyQ+rH0QMnh9f556X16sZMISRQuvC9UJ2p/OHEni5DQfeyHWD
- nKaPqNZy1ISmEwwGuRGN64tpCfHt/l+lntUyNOUFz1yiuu7k70rASC7J70r0w/E8mG0C
- z0+er/Y7Njtd3K01zHc3y85KNkSreAys2onXLn6EG0a5xkSlh0PamIGzIxdb4DLAp2lJ
- g00xaa2X1uOCtFKw/elW11IeAJ/cQCgYjc5y5X7Hh/obiqagtOfARPYxPA5KAP+x5Dr/
- PuVfgj0CpYPjgO4p1k93Z89TNoSRIdqcgoFP8sQb4RljuIns2Dl78fDuwH8wmV4tmRT2
- T2rA==
+ bh=08PzhBscWwB3w7cD2WkicEwpu0p53gGJQxSqE96Z6QM=;
+ b=hMqfqrMLKaZVI70LjpgXlvqCW18shSnjJ5qwbGXrnifsvwf57hHNwjSBKjwPFS3Rtx
+ /HV2FEGdV7V0ptLL0XMDxaR0bYx+hop5Fdn9OA5xKaCu2wXv28o8B9QRLfp4IAAcHdtX
+ eX1b6zPN4irxzhAYI8dNIiqZDXHOcLjNBOHD4o4aBCd5uneyr1Eod4fUyrlMNQBg2PoM
+ Yu8bNWPylRQWFhWvAJNAsk61tISLAMPmzK8NFNHJKMMGLkl3L6Fcvhe9fRB4RSdnAz8K
+ vBmfDtjQGEIkx+ewSAJS4ycjg6QE1VhCNQCWLGy55LLf7ANGSNx2Zgk0x1SDpDHS5+H0
+ 37zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693238071; x=1693842871;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693239100; x=1693843900;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1fbJtP16mBJ0wJXx2XG2R1WgNNjD6w/JtUyfEvcwhno=;
- b=YsMUnXSvRo6bSAqtKo2lRF1DOygImulCB9JDc67zqmMVOkKD2U2efuND1VuGODts2g
- jcb1dC9ZVT5G0y6wHDFvF1TQhQUGtXbaD8S68sfn6G2vQLN9ze8m/MHObBaKngWXUSU/
- PH41J846lWpb7/DeuvSBP4m+PrqfLXKfsX1sWYoPg4q67x77VZ/fGcAWXuPF9sjtW/yW
- hXzDFDk8wfDZquYybvBQ4sagdZS06EfHM4xRrx2DK3L6WPiEkzuaCMhod/7iOp92awTE
- 083lsyZ39coTqaC2rKmxBuYgjoxeo6Pbjfe00nkbChFRo9tZtX/esFQ05AZXuIk13Ila
- 1G4g==
-X-Gm-Message-State: AOJu0YwPPDMdb91GkzLnwfwMWbIkDDeMqYtiRz+ypb9AKvzn5CXzJ6JL
- 0Ctus77FL6whmorTL4xWBx53pg==
-X-Google-Smtp-Source: AGHT+IHy6wj80ZJ3QhZdcI2KRhFltaf2kzT4DQrj+Ej0z5rpA0s1c3hZ9hInyuE43i+oe2MB+E6zrA==
-X-Received: by 2002:a05:6870:c10f:b0:1bf:77e2:95cc with SMTP id
- f15-20020a056870c10f00b001bf77e295ccmr12929266oad.17.1693238071171; 
- Mon, 28 Aug 2023 08:54:31 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ bh=08PzhBscWwB3w7cD2WkicEwpu0p53gGJQxSqE96Z6QM=;
+ b=NfM/I+aQ8dp2Rkj3rEdf0+4LvgomPfJko5rEmXsN+UACf8PzMK93gXJwwfwkGh2LZo
+ VyTn6+3Z2eH927o/g5RgKtus4uYJ+ge+I1xuiSvUsG7I8105MMp6Wo1pst5TJX3QQE3+
+ uMPYc5EL7QIG1r7VPCqgESL54fQjVpkfwBx7RJLx3pN8lJ1dU7jkqLNsf3TDgFRZsFBe
+ Hnq7IHEPXfBbZzRhiaE4xl7G2/2FdTUcYnQ1ahNzFVdczYPXtHBE8ZHha5WBvZcLdOIZ
+ YOYo8EuhwC36Q46xoTW6ee3pGRZa3/V8ONQwrdPThjkv/UQol0vElq3zqEPKyqHkguzT
+ MGrw==
+X-Gm-Message-State: AOJu0Yxgmncr0ytEIaBF+exJ0AAt+1XAiSEGWrQQwTyUE58NLcVQ+eK0
+ eLW3SVNAZTVvnfv8YPImBgrCGg==
+X-Google-Smtp-Source: AGHT+IEMvoqgZaGq+RwyzcGD/qr3abZbR+/HnKvPtmoLWLuQvxAN+gSanPVMni30C4jvSw0RqQduTw==
+X-Received: by 2002:a7b:cc86:0:b0:401:b2c7:34a4 with SMTP id
+ p6-20020a7bcc86000000b00401b2c734a4mr8444620wma.11.1693239100152; 
+ Mon, 28 Aug 2023 09:11:40 -0700 (PDT)
+Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- 5-20020aa79245000000b0068bbd43a6e2sm7031078pfp.10.2023.08.28.08.54.30
+ 25-20020a05600c22d900b00401c944b7adsm4627942wmg.26.2023.08.28.09.11.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 08:54:30 -0700 (PDT)
-Message-ID: <67472f5c-f29f-991a-c4fa-0b42aa92898f@linaro.org>
-Date: Mon, 28 Aug 2023 08:54:28 -0700
+ Mon, 28 Aug 2023 09:11:39 -0700 (PDT)
+Message-ID: <ef6a2f21-ebc2-44ae-ea5f-04f960c6d756@linaro.org>
+Date: Mon, 28 Aug 2023 18:11:37 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] linux-user/riscv: Add new extensions to hwprobe
-To: Robbin Ehn <rehn@rivosinc.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org
-References: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH] hw/net/rocker: avoid NULL pointer dereference in
+ of_dpa_cmd_add_l2_flood
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
+To: Mauro Matteo Cascella <mcascell@redhat.com>, qemu-devel@nongnu.org
+Cc: jiri@resnulli.us, jasowang@redhat.com, arayz_w@icloud.com
+References: <20220624143912.1234427-1-mcascell@redhat.com>
+ <CAA8xKjXvhnAyHDH43xcg9_HRqNqf04QhTpcrB2s4ae1d_WWuxw@mail.gmail.com>
+ <CAA8xKjVyqbJrkdL-DF0=DsDWFKOkJqqwUa-5kAyn8n+qp2u8iQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAA8xKjVyqbJrkdL-DF0=DsDWFKOkJqqwUa-5kAyn8n+qp2u8iQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -94,21 +95,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 07:56, Robbin Ehn wrote:
-> This patch adds the new extensions in
-> linux 6.5 to the hwprobe syscall.
+On 27/8/23 13:07, Mauro Matteo Cascella wrote:
+> On Sat, Aug 26, 2023 at 4:31 PM Mauro Matteo Cascella
+> <mcascell@redhat.com> wrote:
+>>
+>> On Fri, Jun 24, 2022 at 4:40 PM Mauro Matteo Cascella
+>> <mcascell@redhat.com> wrote:
+>>>
+>>> rocker_tlv_parse_nested could return early because of no group ids in
+>>> the group_tlvs. In such case tlvs is NULL; tlvs[i + 1] in the next
+>>> for-loop will deref the NULL pointer.
 > 
-> And fixes RVC check to OR with correct value.
-> The previous variable contains 0 therefore it
-> did work.
+> Looking at the code once again, tlvs is a pointer to a g_new0
+> allocated memory, so I don't know how it can be NULL after
+> rocker_tlv_parse_nested (unless g_new0 returns NULL in the first
+> place). I do not recall the details of this bug. Arayz?
+
+Per <glib.h>:
+
+   If any call to allocate memory using functions g_new(), g_new0(),
+   g_renew(), g_malloc(), g_malloc0(), g_malloc0_n(), g_realloc(), and
+   g_realloc_n() fails, the application is terminated. This also means
+   that there is no need to check if the call succeeded. On the other
+   hand, g_try_...() family of functions returns NULL on failure that
+   can be used as a check for unsuccessful memory allocation. The
+   application is not terminated in this case.
+
+
+group->l2_flood.group_count is a uint16_t, so up to UINT16_MAX = 0xffff.
+
+So:
+
+   tlvs = g_new0(RockerTlv *, group->l2_flood.group_count + 1);
+
+is at most an malloc(0x10000 * sizeof(void *)) = 0x80000 = 512 KiB.
+
+QEMU use way bigger heap allocations.
+
+I don't know the net/ subsystem enough to have an idea about how many
+concurrent packets can be processed by this device model, but I'd be
+surprised if this triggers a OOM.
+
+As usual, do you have a reproducer?
+
+>> Someone somehow reserved a new CVE for this bug, published a few days
+>> ago here: https://nvd.nist.gov/vuln/detail/CVE-2022-36648.
+>>
+>> Not only is this not CVE worthy (rocker code does not fall under the
+>> KVM virtualization use case [1]) but what's most concerning is that it
+>> got a CVSS score of 10 :/
+>>
+>> I'm going to dispute this CVE. Hopefully, it will be rejected soon. In
+>> any case, can we get this patch merged?
+>>
+>> [1] https://www.qemu.org/docs/master/system/security.html
+>>
+>> Thanks,
+>>
+>>> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+>>> Reported-by: <arayz_w@icloud.com>
+>>> ---
+>>>   hw/net/rocker/rocker_of_dpa.c | 5 +++++
+>>>   1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/hw/net/rocker/rocker_of_dpa.c b/hw/net/rocker/rocker_of_dpa.c
+>>> index b3b8c5bb6d..1611b79227 100644
+>>> --- a/hw/net/rocker/rocker_of_dpa.c
+>>> +++ b/hw/net/rocker/rocker_of_dpa.c
+>>> @@ -2039,6 +2039,11 @@ static int of_dpa_cmd_add_l2_flood(OfDpa *of_dpa, OfDpaGroup *group,
+>>>       rocker_tlv_parse_nested(tlvs, group->l2_flood.group_count,
+>>>                               group_tlvs[ROCKER_TLV_OF_DPA_GROUP_IDS]);
+>>>
+>>> +    if (!tlvs) {
+>>> +        err = -ROCKER_EINVAL;
+>>> +        goto err_out;
+>>> +    }
+>>> +
+>>>       for (i = 0; i < group->l2_flood.group_count; i++) {
+>>>           group->l2_flood.group_ids[i] = rocker_tlv_get_le32(tlvs[i + 1]);
+>>>       }
+>>> --
+>>> 2.35.3
+>>>
+>>
 > 
-> Signed-off-by: Robbin Ehn<rehn@rivosinc.com>
-> ---
->   linux-user/syscall.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
 
