@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E37378B599
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 18:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7AE78B59B
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 18:50:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qafQS-0000Ac-AC; Mon, 28 Aug 2023 12:49:16 -0400
+	id 1qafQV-0000Cx-Sm; Mon, 28 Aug 2023 12:49:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qafQP-0000AE-LT
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:49:13 -0400
+ id 1qafQT-0000Az-Qn
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:49:17 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qafQN-0000DT-Ax
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:49:13 -0400
+ id 1qafQR-0000Dj-6I
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 12:49:17 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1qafQG-0000hb-NG; Mon, 28 Aug 2023 18:49:04 +0200
+ id 1qafQM-0000i1-2w; Mon, 28 Aug 2023 18:49:10 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -35,10 +35,9 @@ Cc: "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  qemu-devel@nongnu.org
-Subject: [PATCH v7 6/7] qapi: Add HV_BALLOON_STATUS_REPORT event and its QMP
- query command
-Date: Mon, 28 Aug 2023 18:48:23 +0200
-Message-ID: <03f58582c27a729ab305f8337ca2d2b8034bdd3b.1693240836.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v7 7/7] hw/i386/pc: Support hv-balloon
+Date: Mon, 28 Aug 2023 18:48:24 +0200
+Message-ID: <9f11c6afb4271a31b6fe276931ecdf6923bf2877.1693240836.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1693240836.git.maciej.szmigiero@oracle.com>
 References: <cover.1693240836.git.maciej.szmigiero@oracle.com>
@@ -68,142 +67,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Used by the hv-balloon driver for (optional) guest memory status reports.
+Add the necessary plumbing for the hv-balloon driver to the PC machine.
 
+Co-developed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/hyperv/hv-balloon.c | 31 +++++++++++++++++++-
- monitor/monitor.c      |  1 +
- qapi/machine.json      | 64 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 95 insertions(+), 1 deletion(-)
+ hw/i386/Kconfig |  1 +
+ hw/i386/pc.c    | 22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index c384f23a3b5e..d3f24721248a 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -1099,7 +1099,36 @@ static void hv_balloon_handle_status_report(HvBalloon *balloon,
-     balloon->status_report.available *= HV_BALLOON_PAGE_SIZE;
-     balloon->status_report.received = true;
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index 9051083c1e78..349cf0d32fad 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -45,6 +45,7 @@ config PC
+     select ACPI_VMGENID
+     select VIRTIO_PMEM_SUPPORTED
+     select VIRTIO_MEM_SUPPORTED
++    select HV_BALLOON_SUPPORTED
  
--    /* report event */
-+    qapi_event_send_hv_balloon_status_report(balloon->status_report.committed,
-+                                             balloon->status_report.available);
-+}
-+
-+HvBalloonInfo *qmp_query_hv_balloon_status_report(Error **errp)
-+{
-+    HvBalloon *balloon;
-+    HvBalloonInfo *info;
-+
-+    balloon = HV_BALLOON(object_resolve_path_type("", TYPE_HV_BALLOON, NULL));
-+    if (!balloon) {
-+        error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
-+                  "no %s device present", TYPE_HV_BALLOON);
-+        return NULL;
-+    }
-+
-+    if (!balloon->status_report.enabled) {
-+        error_setg(errp, "guest memory status reporting not enabled");
-+        return NULL;
-+    }
-+
-+    if (!balloon->status_report.received) {
-+        error_setg(errp, "no guest memory status report received yet");
-+        return NULL;
-+    }
-+
-+    info = g_malloc0(sizeof(*info));
-+    info->committed = balloon->status_report.committed;
-+    info->available = balloon->status_report.available;
-+    return info;
+ config PC_PCI
+     bool
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 54838c0c411d..d979479cab5e 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -28,6 +28,7 @@
+ #include "hw/i386/pc.h"
+ #include "hw/char/serial.h"
+ #include "hw/char/parallel.h"
++#include "hw/hyperv/hv-balloon.h"
+ #include "hw/i386/topology.h"
+ #include "hw/i386/fw_cfg.h"
+ #include "hw/i386/vmport.h"
+@@ -93,6 +94,7 @@
+ #include "hw/i386/kvm/xen_evtchn.h"
+ #include "hw/i386/kvm/xen_gnttab.h"
+ #include "hw/i386/kvm/xen_xenstore.h"
++#include "hw/mem/memory-device.h"
+ #include "sysemu/replay.h"
+ #include "target/i386/cpu.h"
+ #include "e820_memory_layout.h"
+@@ -1494,6 +1496,21 @@ static void pc_memory_unplug(HotplugHandler *hotplug_dev,
+     error_propagate(errp, local_err);
  }
  
- static void hv_balloon_handle_unballoon_response(HvBalloon *balloon,
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index dc352f9e9d95..81513c642691 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -315,6 +315,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_HV_BALLOON_STATUS_REPORT] = { 1000 * SCALE_MS },
- };
++static void pc_hv_balloon_pre_plug(HotplugHandler *hotplug_dev,
++                                   DeviceState *dev, Error **errp)
++{
++    /* The vmbus handler has no hotplug handler; we should never end up here. */
++    g_assert(!dev->hotplugged);
++    memory_device_pre_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev), NULL,
++                           errp);
++}
++
++static void pc_hv_balloon_plug(HotplugHandler *hotplug_dev,
++                               DeviceState *dev, Error **errp)
++{
++    memory_device_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
++}
++
+ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+                                           DeviceState *dev, Error **errp)
+ {
+@@ -1524,6 +1541,8 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+             return;
+         }
+         pcms->iommu = dev;
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_HV_BALLOON)) {
++        pc_hv_balloon_pre_plug(hotplug_dev, dev, errp);
+     }
+ }
  
- /*
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 5ede977cf2bc..f592876964af 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1113,6 +1113,70 @@
- { 'event': 'BALLOON_CHANGE',
-   'data': { 'actual': 'int' } }
+@@ -1536,6 +1555,8 @@ static void pc_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+         x86_cpu_plug(hotplug_dev, dev, errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+         virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_HV_BALLOON)) {
++        pc_hv_balloon_plug(hotplug_dev, dev, errp);
+     }
+ }
  
-+##
-+# @HvBalloonInfo:
-+#
-+# hv-balloon guest-provided memory status information.
-+#
-+# @committed: the amount of memory in use inside the guest plus the
-+#     amount of the memory unusable inside the guest (ballooned out,
-+#     offline, etc.)
-+#
-+# @available: the amount of the memory inside the guest available for
-+#     new allocations ("free")
-+#
-+# Since: 8.2
-+##
-+{ 'struct': 'HvBalloonInfo', 'data': { 'committed': 'size', 'available': 'size' } }
-+
-+##
-+# @query-hv-balloon-status-report:
-+#
-+# Returns the hv-balloon driver data contained in the last received "STATUS"
-+# message from the guest.
-+#
-+# Returns:
-+# - @HvBalloonInfo on success
-+# - If no hv-balloon device is present, DeviceNotFound
-+# - If guest memory status reporting not enabled or no guest memory status
-+#     report received yet, GenericError
-+#
-+# Since: 8.2
-+#
-+# Example:
-+#
-+# -> { "execute": "query-hv-balloon-status-report" }
-+# <- { "return": {
-+#          "committed": 816640000,
-+#          "available": 3333054464
-+#       }
-+#    }
-+##
-+{ 'command': 'query-hv-balloon-status-report', 'returns': 'HvBalloonInfo' }
-+
-+##
-+# @HV_BALLOON_STATUS_REPORT:
-+#
-+# Emitted when the hv-balloon driver receives a "STATUS" message from
-+# the guest.
-+#
-+# @data - a @HvBalloonInfo equivalent to the one returned by the
-+#     'query-hv-balloon-status-report' command.
-+#
-+# Note: this event is rate-limited.
-+#
-+# Since: 8.2
-+#
-+# Example:
-+#
-+# <- { "event": "HV_BALLOON_STATUS_REPORT",
-+#      "data": { "committed": 816640000, "available": 3333054464 },
-+#      "timestamp": { "seconds": 1600295492, "microseconds": 661044 } }
-+#
-+##
-+{ 'event': 'HV_BALLOON_STATUS_REPORT',
-+  'data': 'HvBalloonInfo' }
-+
- ##
- # @MemoryInfo:
- #
+@@ -1577,6 +1598,7 @@ static HotplugHandler *pc_get_hotplug_handler(MachineState *machine,
+         object_dynamic_cast(OBJECT(dev), TYPE_CPU) ||
+         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI) ||
+         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI) ||
++        object_dynamic_cast(OBJECT(dev), TYPE_HV_BALLOON) ||
+         object_dynamic_cast(OBJECT(dev), TYPE_X86_IOMMU_DEVICE)) {
+         return HOTPLUG_HANDLER(machine);
+     }
 
