@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236EA78BB9A
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FE578BB9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalrz-0003nF-7w; Mon, 28 Aug 2023 19:42:07 -0400
+	id 1qals8-0003no-Iy; Mon, 28 Aug 2023 19:42:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalru-0003mb-NT
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:02 -0400
-Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrv-0003mo-A2
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:03 -0400
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrs-0006kw-Dt
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:02 -0400
-Received: by mail-il1-x133.google.com with SMTP id
- e9e14a558f8ab-34961362f67so11651665ab.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrt-0006lC-1C
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:03 -0400
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-34ccc0fca24so13757755ab.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266119; x=1693870919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BR5YhtuiGQc8+lAV/Cmy0fJIijItE+RF+CzfrwWn6Ik=;
- b=AR/PeWVdMiuGVgEn9kVUjDJ9TT7R9xXLWODTCSffqP9bAipleaPbQ5FJypviwUsxZE
- wdyJno9ANQtC+ad9nXS8YuQO955CoyRQiT/n7afeJK5KA48jmYBcoFtdr4goZSdSwWGf
- vcvqzmj/6q5nZkWQuFZMLDSA4QuVmnUw894C1Qr3CCeATQiq2erElYKhpQn2+785ixe0
- mVOOw6ylDvxK77/D4rGzWbZmHfO4zdIUvF82Wo1si03tWAxnlCnhZEHf2SLMx29k80WS
- u8/xlmkL1MRVPsUzMDMH5eqdMHqe56MY2Y+utosG68f7BLVpvgCwGOvV9W704/KAQVRO
- sTkA==
+ bh=zii+bXewDYitejvupsp9eZMnhHeSRtYNzFVqXQF7jis=;
+ b=izHmnwP/6KYpQmryTa9aECQdLjdfH61iEUQw6SWJPALn1zmKOGmleQKAOR4BmIBfao
+ zoLRaPxM2CcMIqE/NS6i9SFSCAeVYdTSMV4cNs2h1gzSenJaWOVf824D6yz8gD96O/Rm
+ 1inYSSZHLNvKYMCQkQXD2p0NPxXAhIVjvwiMXMsCbpmluDY1gpE8QF/9elHcZ3/KMD/B
+ q3Qhxp90Ky8q0rcCxTT8j2q/zkgb6CJaFN11LOLSNp1SMNxJPq9AjJmmpJ5nFPjzf1SG
+ cXhBxLcpzMjV3LXAJODICgIlLLHbrCImHjnEY6cgEF9MB3Re3qSSoRxDqG6y0d/D0LqQ
+ Sgmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1693266119; x=1693870919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BR5YhtuiGQc8+lAV/Cmy0fJIijItE+RF+CzfrwWn6Ik=;
- b=gZv7Dv7ZTpGLEcG/ZDWqPdRWFVTugfP77rrBJwfKQze0d4Wu11H0Kt2Ih76zzBoBDp
- /xzGBZ9P5NfN7KeocA1UUjeWREBERRXfTR0+b3k1soVO/PgtJTvImiUQthWcGFejJwpr
- NIinCo40H6iF3mO/X4OQjFaJ7zJjbVTtLbQkHUvLIFQjY9pUJ8Re0yoR5syZg5pFFLrW
- F909jPTu5RlJylFL04/2U2EatEN81WkYEA0OIPHK3A1Tq8u1t4+IdgyGt06wSpLwNwNN
- Vhlyl/b2KYdh3iacqCH5/MknRB+lh8a6VBqdtqoAhdv0uBLbduFjI53ROgq/XNekmYNp
- NjFw==
-X-Gm-Message-State: AOJu0YwKD+E6Trjasx4dTNW0oedNMJQmAgqOnpSw/5RwFHYIJJWPjSM7
- 1vjY5KplLRh9myExUNoG0SZjy0r3k4onmU+xvG4=
-X-Google-Smtp-Source: AGHT+IHJOV+/CohR5v8oBsh5dAU7BirkqhULbuVPJZWlNmd96PbswP/Hb8UQLWc3nS43GPyabBwg9A==
-X-Received: by 2002:a05:6e02:1102:b0:348:7f18:68be with SMTP id
- u2-20020a056e02110200b003487f1868bemr1080188ilk.4.1693266118840; 
- Mon, 28 Aug 2023 16:41:58 -0700 (PDT)
+ bh=zii+bXewDYitejvupsp9eZMnhHeSRtYNzFVqXQF7jis=;
+ b=QjDbxhHsPb5wG28OCTHSuo2uA4H2uMJHB9MW7NMPgBItsdyhnSQgcWI8VpY1PwVp6J
+ /z/9ygVnmHlbe081qZsP2L60n0e8PdpVIwvaUMxu6+PrkA6BoiKIWM9ehw3tHpvg40L0
+ fltr/jiNlMhjhCmg3PexbvOyhX359zH+kPhSk0g3pCobzffu5kaIqeQOWV0zHNMBQYMS
+ Xpa7FN7a+qGsIRsu1BubYQcKJsARCR9HT7H1pUUSEsGk9s1a9Weyz4VEoS9yO+fcts5C
+ eci6A1fi+r9QILfpOFqVsbztSANMq931fi7r5MTkmgWuh04LEbxOa82XTnC2y0WSmem1
+ nUdw==
+X-Gm-Message-State: AOJu0YyIMZj+ixcPou+g4aGJZSutoKrQHBA5RfHhBqLOK9NXtTQ9RSdX
+ dvM5tqCvnLZuzTfIeOoRhe4ElicGvE1uG6ODbX8=
+X-Google-Smtp-Source: AGHT+IHXn+ccytLG5BXJ7LNSRq8Gl9W51hs4IKLA+HIyFs8/Fe3h1IvlX+Ox1GSWSG9X3dLkfVBHKA==
+X-Received: by 2002:a05:6e02:1a4f:b0:34a:c751:28ca with SMTP id
+ u15-20020a056e021a4f00b0034ac75128camr22227033ilv.15.1693266119646; 
+ Mon, 28 Aug 2023 16:41:59 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.57
+ t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:41:58 -0700 (PDT)
+ Mon, 28 Aug 2023 16:41:59 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
  Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 22/36] bsd-user: Implement statfs related syscalls
-Date: Mon, 28 Aug 2023 17:38:07 -0600
-Message-ID: <20230828233821.43074-23-imp@bsdimp.com>
+Subject: [PULL 23/36] bsd-user: Implement getdents related syscalls
+Date: Mon, 28 Aug 2023 17:38:08 -0600
+Message-ID: <20230828233821.43074-24-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
 References: <20230828233821.43074-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::133;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x133.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x12f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,89 +94,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Stacey Son <sson@FreeBSD.org>
 
 Implement the following syscalls:
-statfs(2)
-fstatfs(2)
-getfsstat(2)
+getdents(2)
+getdirecentries(2)
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-stat.h | 69 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ bsd-user/freebsd/os-stat.h | 72 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index 935663c0713..9492c93c55a 100644
+index 9492c93c55a..7dc41cd0bfe 100644
 --- a/bsd-user/freebsd/os-stat.h
 +++ b/bsd-user/freebsd/os-stat.h
-@@ -210,4 +210,73 @@ static inline abi_long do_freebsd_fhstatfs(abi_ulong target_fhp_addr,
-     return h2t_freebsd_statfs(target_stfs_addr, &host_stfs);
+@@ -279,4 +279,76 @@ static inline abi_long do_freebsd_getfsstat(abi_ulong target_addr,
+     return ret;
  }
  
-+/* statfs(2) */
-+static inline abi_long do_freebsd_statfs(abi_long arg1, abi_long arg2)
++/* getdents(2) */
++static inline abi_long do_freebsd11_getdents(abi_long arg1,
++        abi_ulong arg2, abi_long nbytes)
 +{
 +    abi_long ret;
-+    void *p;
-+    struct statfs host_stfs;
++    struct freebsd11_dirent *dirp;
 +
-+    LOCK_PATH(p, arg1);
-+    ret = get_errno(statfs(path(p), &host_stfs));
-+    UNLOCK_PATH(p, arg1);
-+    if (is_error(ret)) {
-+        return ret;
++    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
++    if (dirp == NULL) {
++        return -TARGET_EFAULT;
 +    }
++    ret = get_errno(freebsd11_getdents(arg1, (char *)dirp, nbytes));
++    if (!is_error(ret)) {
++        struct freebsd11_dirent *de;
++        int len = ret;
++        int reclen;
 +
-+    return h2t_freebsd_statfs(arg2, &host_stfs);
++        de = dirp;
++        while (len > 0) {
++            reclen = de->d_reclen;
++            if (reclen > len) {
++                return -TARGET_EFAULT;
++            }
++            de->d_reclen = tswap16(reclen);
++            de->d_fileno = tswap32(de->d_fileno);
++            len -= reclen;
++        }
++    }
++    return ret;
 +}
 +
-+/* fstatfs(2) */
-+static inline abi_long do_freebsd_fstatfs(abi_long fd, abi_ulong target_addr)
++/* getdirecentries(2) */
++static inline abi_long do_freebsd_getdirentries(abi_long arg1,
++        abi_ulong arg2, abi_long nbytes, abi_ulong arg4)
 +{
 +    abi_long ret;
-+    struct statfs host_stfs;
++    struct dirent *dirp;
++    long basep;
 +
-+    ret = get_errno(fstatfs(fd, &host_stfs));
-+    if (is_error(ret)) {
-+        return ret;
++    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
++    if (dirp == NULL) {
++        return -TARGET_EFAULT;
 +    }
++    ret = get_errno(getdirentries(arg1, (char *)dirp, nbytes, &basep));
++    if (!is_error(ret)) {
++        struct dirent *de;
++        int len = ret;
++        int reclen;
 +
-+    return h2t_freebsd_statfs(target_addr, &host_stfs);
-+}
-+
-+/* getfsstat(2) */
-+static inline abi_long do_freebsd_getfsstat(abi_ulong target_addr,
-+        abi_long bufsize, abi_long flags)
-+{
-+    abi_long ret;
-+    struct statfs *host_stfs;
-+    int count;
-+    long host_bufsize;
-+
-+    count = bufsize / sizeof(struct target_statfs);
-+
-+    /* if user buffer is NULL then return number of mounted FS's */
-+    if (target_addr == 0 || count == 0) {
-+        return get_errno(freebsd11_getfsstat(NULL, 0, flags));
++        de = dirp;
++        while (len > 0) {
++            reclen = de->d_reclen;
++            if (reclen > len) {
++                return -TARGET_EFAULT;
++            }
++            de->d_fileno = tswap64(de->d_fileno);
++            de->d_off = tswap64(de->d_off);
++            de->d_reclen = tswap16(de->d_reclen);
++            de->d_namlen = tswap16(de->d_namlen);
++            len -= reclen;
++            de = (struct dirent *)((void *)de + reclen);
++        }
 +    }
-+
-+    /* XXX check count to be reasonable */
-+    host_bufsize = sizeof(struct statfs) * count;
-+    host_stfs = alloca(host_bufsize);
-+    if (!host_stfs) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    ret = count = get_errno(getfsstat(host_stfs, host_bufsize, flags));
-+    if (is_error(ret)) {
-+        return ret;
-+    }
-+
-+    while (count--) {
-+        if (h2t_freebsd_statfs((target_addr +
-+                        (count * sizeof(struct target_statfs))),
-+                    &host_stfs[count])) {
++    unlock_user(dirp, arg2, ret);
++    if (arg4) {
++        if (put_user(basep, arg4, abi_ulong)) {
 +            return -TARGET_EFAULT;
 +        }
 +    }
