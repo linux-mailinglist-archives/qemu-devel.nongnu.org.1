@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B6F78BA3F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 23:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F1678BA67
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 23:38:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qajlg-0006K6-MH; Mon, 28 Aug 2023 17:27:28 -0400
+	id 1qajux-000815-4B; Mon, 28 Aug 2023 17:37:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qajle-0006Jy-B6
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:27:26 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qajuu-00080o-1A
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:37:00 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qajlb-0004SO-Ii
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:27:25 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31781e15a0cso3288690f8f.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 14:27:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qajur-0006BS-Pv
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 17:36:59 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4018af1038cso35355445e9.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 14:36:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693258042; x=1693862842;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1693258616; x=1693863416;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9CbcvBS7jJO4ohUzTPG7fpfV8a2Wa/7fjkgRp4Yxgjk=;
- b=LoG2ucWch2bUjjYwbXveyttErGhmJ3NlD46iCTx+XUGiC9EyZAiyTi9HAiA68b3EgN
- QchZEtQ7NoR953lfgJTKRodDfSN5fdoXCf33xSi8QLgClSm5yJ818jg6IBT4MfDW1dwa
- wX+4WvstJM8fgXIt1EDN6LGDoqZdpe2Agjkj8LFgM8q0N7K4clRYM8wH8/bGG4IBRQ3C
- Fy5w1SLdU+TWI6TZ6xSAhW0SD5pwcX6w8UBNvX0T3Vf1NeJPzBmWE/NYWi9/XTeGXLRP
- ji1cDP1jidR2EtyhMyobErN89a60rEGTfJgQkAxVVcghzn50F6Ls9tP+lZ4yP3jt1+Gw
- JAsA==
+ bh=fKOHlCKw3QIyIK3ofhohySPZ/nSZC6HPnqaQwu1HJUw=;
+ b=R60w07avVe95zhcnF1ibMvmeobOYs5DPEFQq0UKYgExp3IpYhXXgF0RBEKHrnS8+o/
+ 3Cl0cGWkW6Z/hS3Z9jNU/RCW/wHr++XHCCfL4RFN96b2rOFmtRgYNmI4PH8WOsNF9Cg8
+ gcoHoUcUEgLzE11ZPJyGCVoXtB4j943djbVaoGPtdx2U8zt/3JYgvqWyzmWXux57SIm7
+ ORrT1OyxMb1ytTD3krlTwDsSlWxvFcdANP6/jzTHIp0aSIVYM1Mi+QcpzrA8lYzqX4vQ
+ 5zGhflrvYfdbPr64oUoyIbKAzrkbeC3UPC576GG0npEfgbXc+Z6+BVHnYExzOphBqCrG
+ 0/zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693258042; x=1693862842;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1693258616; x=1693863416;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9CbcvBS7jJO4ohUzTPG7fpfV8a2Wa/7fjkgRp4Yxgjk=;
- b=HCEbID99xt42Wno7K8YJIZsLnRkIP7dUk9kh83MXn0GGtZQ5oS/MJDGWV2GT8Qn0kn
- b3GQo/+7fRZDz1yaOj3Wz3J/LBHHspzwPbv+k0P8soV8ahqDJenlEpGQmyyfuPVfiQrO
- 7brF+Ru0CGH34zFTpIDdfmnjZ8p2XavVqYFZ53WKyK+qe5SC+dp135oEUSKbeuxSxaHa
- Qd0/DUdxoO8REy/cFWr7IFeAvSzQ54Q/I2Oi4IvQJT2ATvAKZzWE68p2wFUsaNCNF3cp
- UW2oMidoh8RotB/JH/OG3VKB7EkbyoU0eSAaE5/SrY1TOwrk9UeqgEJokL5UxCCFOZ/z
- 6aFQ==
-X-Gm-Message-State: AOJu0YyPBVBMSasQyN2Pu1bLRi4BmtVfigPU7XVC6EtycQ1UwR8GO9XP
- VrlPMX5JRJsETwsQFAhEinjiDQ==
-X-Google-Smtp-Source: AGHT+IGxTzyS24hsfdvsvSJ6rEH6F2UQGGhCe84fXU2yiXgfAVU3/Ev6PhEJoG1EcWs7+KPnJ0Kt8g==
-X-Received: by 2002:a5d:61c8:0:b0:313:f783:262b with SMTP id
- q8-20020a5d61c8000000b00313f783262bmr18680091wrv.26.1693258041775; 
- Mon, 28 Aug 2023 14:27:21 -0700 (PDT)
+ bh=fKOHlCKw3QIyIK3ofhohySPZ/nSZC6HPnqaQwu1HJUw=;
+ b=IS9Jh42ZKpsgXiQFK03E8Ii1MXlYvGeE8wlAoEDa59AU3ky3NWIqCBe9GaGEEX14A8
+ fo+0AR/bSuuNKFYpaItuXfb8S2jsVvMWWQ66HjhPMbvsTCu+Y0DgceGy/CeXfIUJ2kjO
+ GpDtEbSsOY2jwmbdBcljc0eyEu6zsgQk/W79u8kTB4i55zG9Sdz3rrOQHp+nqW2ZGVyU
+ qQQXOp6/pmhBE/RoauCfaRbiZ1Ao6WsAPcrsbD8N6drU8d73erXXx+wH+QZE6GqD/6Iz
+ ncOW/sOMLz/xW+BDoGlLL+/c3z2jrBfrpjoxKOvSl0sDn33dSCpoGs0alk8O9QFvzp1Z
+ NuNg==
+X-Gm-Message-State: AOJu0YymPedgphfGYP4QEG4decquxOCpe+HyJ7H9yTKYKJLA2UaoOO5M
+ O6mqdObq3ceMxeC4xCbSOxAqYw==
+X-Google-Smtp-Source: AGHT+IG0BsR3kTPEq8dehgWZY3cIK3xTbCR7MJDsINUWN9FELIpkB4a44qYUUMOlIE6RaSfWr4b3Ig==
+X-Received: by 2002:a05:600c:21d1:b0:401:906b:7e9d with SMTP id
+ x17-20020a05600c21d100b00401906b7e9dmr9812664wmj.18.1693258615172; 
+ Mon, 28 Aug 2023 14:36:55 -0700 (PDT)
 Received: from [192.168.69.115] ([176.164.201.64])
  by smtp.gmail.com with ESMTPSA id
- p18-20020a5d4e12000000b00317731a6e07sm11536378wrt.62.2023.08.28.14.27.18
+ k21-20020a05600c0b5500b003feea62440bsm11750476wmr.43.2023.08.28.14.36.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 14:27:21 -0700 (PDT)
-Message-ID: <4cc4b937-1fe3-8850-9c75-0c281ea8dc6f@linaro.org>
-Date: Mon, 28 Aug 2023 23:27:17 +0200
+ Mon, 28 Aug 2023 14:36:54 -0700 (PDT)
+Message-ID: <7e7ae799-8313-6874-5395-e0a45fa62e68@linaro.org>
+Date: Mon, 28 Aug 2023 23:36:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 05/10] accel/tcg: Merge cpu_transaction_failed into
- io_failed
+Subject: Re: [PATCH] tcg: Remove vecop_list check from tcg_gen_not_vec
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org
-References: <20230828185550.573653-1-richard.henderson@linaro.org>
- <20230828185550.573653-6-richard.henderson@linaro.org>
+References: <20230828193949.576198-1-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230828185550.573653-6-richard.henderson@linaro.org>
+In-Reply-To: <20230828193949.576198-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -94,14 +91,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/8/23 20:55, Richard Henderson wrote:
-> Push computation down into the if statements to the point
-> the data is used.
+On 28/8/23 21:39, Richard Henderson wrote:
+> The not pattern is always available via generic expansion.
+> See 
+
+commit 11978f6f58 ("tcg: Fix expansion of INDEX_op_not_vec") and the
+
+> debug block in tcg_can_emit_vecop_list.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   accel/tcg/cputlb.c | 33 +++++++++++++--------------------
->   1 file changed, 13 insertions(+), 20 deletions(-)
+>   tcg/tcg-op-vec.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
