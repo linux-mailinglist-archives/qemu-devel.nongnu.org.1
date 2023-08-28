@@ -2,103 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8934778BB4B
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB86C78BBA1
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:43:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalCZ-0006GJ-Bp; Mon, 28 Aug 2023 18:59:19 -0400
+	id 1qalri-0003fG-SH; Mon, 28 Aug 2023 19:41:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qalCK-0005kr-76; Mon, 28 Aug 2023 18:59:04 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qalCH-0004o8-I4; Mon, 28 Aug 2023 18:59:03 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37SLfwcO022405; Mon, 28 Aug 2023 22:58:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=RQPvTA/iOJaxCBZezGUyCX31rbnbeEbrZEa9tpfzoGQ=;
- b=hYRRExr3V6QDn7mVX9y3jW7BzFelbw0p5H9reKncdNf/2Kko1bZ5KKzo7Dz74v3wHGEF
- Yq4PAi2kPsmaPCvnk/67SDUplhVXW2e+brWeu5v7bRRGFkMxKCzSDkdKxIW1UKXBw1nt
- PJ5HqZaWGG+RWXwgSfTHQMFHcyn7j9ECNHRszQGzb2iNyIK0IqChZWijvEAk+DlejYgW
- iAAOmXcntKt4RK7CouIkWE949zcxEKIA9uxZq5YNcTuFecqw1sCn7hEzPtj395aOvFVY
- 3E/pEqdNGfrojPeQWasItUsiS+NJFRLvrWuzdQPndD0XR6sobQEXcjzvHiibkYbnw2hQ 1g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr8n5t5cq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Aug 2023 22:58:48 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37SMwlO4011379;
- Mon, 28 Aug 2023 22:58:47 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr8n5t5cd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Aug 2023 22:58:47 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37SLdiZq014103; Mon, 28 Aug 2023 22:58:47 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqwxjpehv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Aug 2023 22:58:47 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37SMwkFT2753178
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Aug 2023 22:58:46 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 932BF58057;
- Mon, 28 Aug 2023 22:58:46 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 566AB58059;
- Mon, 28 Aug 2023 22:58:46 +0000 (GMT)
-Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 28 Aug 2023 22:58:46 +0000 (GMT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@aj.id.au, joel@jms.id.au, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
-Subject: [PATCH v2 7/7] hw/arm: Hook up FSI module in AST2600
-Date: Mon, 28 Aug 2023 17:58:42 -0500
-Message-Id: <20230828225842.4045510-8-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230828225842.4045510-1-ninad@linux.ibm.com>
-References: <20230828225842.4045510-1-ninad@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalrd-0003ek-89
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:46 -0400
+Received: from mail-io1-xd2f.google.com ([2607:f8b0:4864:20::d2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalra-0006fv-9C
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:41:44 -0400
+Received: by mail-io1-xd2f.google.com with SMTP id
+ ca18e2360f4ac-79216d8e2cfso124957939f.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266099; x=1693870899;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ytFotB4zxgoQ1vGu1NiBucJbf1o9vQIasBiDr1QOAnI=;
+ b=5kB6ObKK2eza/c2RyWJ9gRUddkzAuhlN1osQZRFkDt9yQHNZERndpapgfKMHHzuguv
+ UQuv861k4quX8omGj80chjmIrh1F6TwEJC/uu8AtsR3E06g2MXTaY/Tm/VbuN7c2uCWK
+ rQ5MrLgOF2azSQQ0WKv0AjPWyPcuSva/H+bLOU/lZBpDXu1U4qSXSUD5qmD24G/26K1Q
+ tbE1/+S/jAfIBxhTURvliMwAy+54q+Y4rfKXoLuTG5Cnj8LNx3wPXSQqzrEDg6+yxKGd
+ 3KW5Ey0FqN2jZBdhXnYppPCgDQxY14Z+X62B+dGN7582J1TDT30zggi1bFgfwAO4RXkK
+ DsgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693266099; x=1693870899;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ytFotB4zxgoQ1vGu1NiBucJbf1o9vQIasBiDr1QOAnI=;
+ b=luhw6LGkhx/2uCAWIFgpenH0h2lijJfmps02XQIpCGSJqfo5Sg31v9WsgphO0tbhNq
+ 6/E/E9X+lbdHMi5a5km7o7ADw6kQB2HrAe1/d3Qc8QWK/ra78oNvXegfTbodDA/rK0sB
+ jr1B/kmKIBcKcZuDh+9bdMhCTsgYaeZiJJyhrThcCSPnuKG5uRD3zOxRX9IWX5X/T6Y+
+ MvLXQRLqLbOonkVuINW09f2GwkHuhk+Ov9Ne2zwy3WhUr/wAtk/WXsFt/2NQ4TlcAdvx
+ g1TruWN+7s3o/DAw3qKJ+L5QpWQ7cW/vH9lXNUWfxb+qPLmO+/y8mRGT11o66weI7p+r
+ oS1Q==
+X-Gm-Message-State: AOJu0Yz4WovV+9iy8MNEO+YRA/AghqmkHuz3nasq69asJ47omMj5mgNr
+ wqJG71lBH1JLacs/wmiY8REn9nPXafmsQ3jJEuI=
+X-Google-Smtp-Source: AGHT+IE69T7Ytiw7ciWPuC9d4Dqm8/xBbIxG4d3mgQAqVHFO7rbSMLwbyEIqSEtapjUx0VvthNzmbw==
+X-Received: by 2002:a05:6e02:ee7:b0:349:3c0:395d with SMTP id
+ j7-20020a056e020ee700b0034903c0395dmr16637382ilk.1.1693266099130; 
+ Mon, 28 Aug 2023 16:41:39 -0700 (PDT)
+Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
+ [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
+ t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.41.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Aug 2023 16:41:38 -0700 (PDT)
+From: Warner Losh <imp@bsdimp.com>
+To: qemu-devel@nongnu.org
+Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
+ Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>
+Subject: [PULL 00/36] 2023q3 bsd user patches
+Date: Mon, 28 Aug 2023 17:37:45 -0600
+Message-ID: <20230828233821.43074-1-imp@bsdimp.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: KhcKyRcC7Kmvxrbrcl0rgAsCLCxqDYIB
-X-Proofpoint-GUID: o53lIbw4q6YaEgvC_3jP1HQ1B_aDlcWc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-28_18,2023-08-28_04,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 mlxlogscore=718 malwarescore=0 clxscore=1015
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308280194
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2f;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,196 +87,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset introduces IBM's Flexible Service Interface(FSI).
+The following changes since commit 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
 
-Time for some fun with inter-processor buses. FSI allows a service
-processor access to the internal buses of a host POWER processor to
-perform configuration or debugging.
+  Merge tag 'pull-target-arm-20230824' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24 10:08:33 -0400)
 
-FSI has long existed in POWER processes and so comes with some baggage,
-including how it has been integrated into the ASPEED SoC.
+are available in the Git repository at:
 
-Working backwards from the POWER processor, the fundamental pieces of
-interest for the implementation are:
+  git@gitlab.com:bsdimp/qemu.git tags/2023q3-bsd-user-pull-request
 
-1. The Common FRU Access Macro (CFAM), an address space containing
-   various "engines" that drive accesses on buses internal and external
-   to the POWER chip. Examples include the SBEFIFO and I2C masters. The
-   engines hang off of an internal Local Bus (LBUS) which is described
-   by the CFAM configuration block.
+for you to fetch changes up to f51e7c41acb4b17d28fc74f9f10df50a4a65fbcc:
 
-2. The FSI slave: The slave is the terminal point of the FSI bus for
-   FSI symbols addressed to it. Slaves can be cascaded off of one
-   another. The slave's configuration registers appear in address space
-   of the CFAM to which it is attached.
+  bsd-user: Add missing break after do_bsd_preadv (2023-08-28 12:16:18 -0600)
 
-3. The FSI master: A controller in the platform service processor (e.g.
-   BMC) driving CFAM engine accesses into the POWER chip. At the
-   hardware level FSI is a bit-based protocol supporting synchronous and
-   DMA-driven accesses of engines in a CFAM.
+----------------------------------------------------------------
+Pull request for bsd-user 2023 Q3 (first batch)
 
-4. The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
-   POWER processors. This now makes an appearance in the ASPEED SoC due
-   to tight integration of the FSI master IP with the OPB, mainly the
-   existence of an MMIO-mapping of the CFAM address straight onto a
-   sub-region of the OPB address space.
+First batch of commits submitted by my GSoC student Karim Taha
 
-5. An APB-to-OPB bridge enabling access to the OPB from the ARM core in
-   the AST2600. Hardware limitations prevent the OPB from being directly
-   mapped into APB, so all accesses are indirect through the bridge.
+These implement	the stat, statfs, statfh and dirents system calls.
 
-The implementation appears as following in the qemu device tree:
+In addition, fix a missing break statment, and submit Richard Henderson's
+elf stat mmap cleansup.
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - https://gpgtools.org
 
-    (qemu) info qtree
-    bus: main-system-bus
-      type System
-      ...
-      dev: aspeed.apb2opb, id ""
-        gpio-out "sysbus-irq" 1
-        mmio 000000001e79b000/0000000000001000
-        bus: opb.1
-          type opb
-          dev: fsi.master, id ""
-            bus: fsi.bus.1
-              type fsi.bus
-              dev: cfam.config, id ""
-              dev: cfam, id ""
-                bus: lbus.1
-                  type lbus
-                  dev: scratchpad, id ""
-                    address = 0 (0x0)
-        bus: opb.0
-          type opb
-          dev: fsi.master, id ""
-            bus: fsi.bus.0
-              type fsi.bus
-              dev: cfam.config, id ""
-              dev: cfam, id ""
-                bus: lbus.0
-                  type lbus
-                  dev: scratchpad, id ""
-                    address = 0 (0x0)
+iQIzBAABCgAdFiEEIDX4lLAKo898zeG3bBzRKH2wEQAFAmTtL6EACgkQbBzRKH2w
+EQALHQ//WOoHYxpNS1hy+oYIAvjW0JOqz9gCSFR0d56mDBShm7WO/9FZA6eGAzYQ
+i5kBSVFwEBlM76K5vLTbRvCbCbAwlpAdMgI7HXValjspNhvu/66DNWmdil6GnXKu
+4QRaM/QGrobmYrNmf4SdgyjlMVH7wGyTrCTpXfvPfktZLAbQq7dCyNPTsOYXJP2V
+LASk8j2gyW6fDi3z1AxTNVfS7BJX6DWMhPhlvC/aUOLVVGgj9Hw9uxPaKXC1t47D
+bpZ+wJb4GMkcsmuiGJ40CXowjQ+M1lBrA4rN+lTMJNttZJ+TUYmizTFkYhX+B28h
+Q2JZy5eLXlsxxRByOkOwFczfDT6jlG4BlK4jmDOvKlrTPLaWIHjezztTavWIZDlU
+ce1oXQo3KEdWoa/QEsuxLeBbE+uZpu5+NqLeCk1cU4GPks8nbAcD7BGl6dDHKXM4
+8vCcOMZLwO+xi5Etgcf/MtTPMpSO0rD9fTq2VSdYX0H197mkOdyCDAXjfKPsBUIE
+VLAnCFfajMNRc5ITobEbz4GiMD/xy5s8eDZNeefG8lgySpl9XB2Lvw7SWDz1imsL
+nBgQH6RHznU65wEvVGtnCGMj5kIMbohY2AGR75iGkRdgR+t2zMjUIiaU/qivD+6z
+IEJ2jqDWqtQb81jFNrFzJlsim+GYRl0HcaEmyye2bgf5LHRSSNM=
+=ORJ7
+-----END PGP SIGNATURE-----
 
-The LBUS is modelled to maintain the qdev bus hierarchy and to take
-advantage of the object model to automatically generate the CFAM
-configuration block. The configuration block presents engines in the
-order they are attached to the CFAM's LBUS. Engine implementations
-should subclass the LBusDevice and set the 'config' member of
-LBusDeviceClass to match the engine's type.
+----------------------------------------------------------------
 
-CFAM designs offer a lot of flexibility, for instance it is possible for
-a CFAM to be simultaneously driven from multiple FSI links. The modeling
-is not so complete; it's assumed that each CFAM is attached to a single
-FSI slave (as a consequence the CFAM subclasses the FSI slave).
+Karim Taha (1):
+  bsd-user: Add os-stat.c to the build
 
-As for FSI, its symbols and wire-protocol are not modelled at all. This
-is not necessary to get FSI off the ground thanks to the mapping of the
-CFAM address space onto the OPB address space - the models follow this
-directly and map the CFAM memory region into the OPB's memory region.
-Future work includes supporting more advanced accesses that drive the
-FSI master directly rather than indirectly via the CFAM mapping, which
-will require implementing the FSI state machine and methods for each of
-the FSI symbols on the slave. Further down the track we can also look at
-supporting the bitbanged SoftFSI drivers in Linux by extending the FSI
-slave model to resolve sequences of GPIO IRQs into FSI symbols, and
-calling the associated symbol method on the slave to map the access onto
-the CFAM.
+Kyle Evans (2):
+  bsd-user: Disable clang warnings
+  bsd-user: Define safe_fcntl macro in bsd-user/syscall_defs.h
 
-Testing:
-    Tested by reading cfam config address 0 on rainier machine type.
+Michal Meloun (8):
+  bsd-user: Add struct target_stat to bsd-user/syscall_defs.h
+  bsd-user: Add struct target_statfs
+  bsd-uesr: Implement h2t_freebsd_stat and h2t_freebsd_statfs functions
+  bsd-user: Implement freebsd11 stat related syscalls
+  bsd-user: Implement freebsd11 fstat and fhstat related syscalls
+  bsd-user: Implement freebsd11 statfs related syscalls
+  bsd-user: Implement freebsd11 getdirents related syscalls
+  bsd-user: Implement freebsd11 netbsd stat related syscalls
 
-    root@p10bmc:~# pdbg -a getcfam 0x0
-    p0: 0x0 = 0xc0022d15
+Mikaël Urankar (1):
+  bsd-user: Implement do_freebsd_realpathat syscall
 
-Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
----
- hw/arm/aspeed_ast2600.c     | 19 +++++++++++++++++++
- include/hw/arm/aspeed_soc.h |  4 ++++
- 2 files changed, 23 insertions(+)
+Richard Henderson (3):
+  bsd-user: Remove ELF_START_MMAP and image_info.start_mmap
+  bsd-user: Remove image_info.mmap
+  bsd-user: Remove image_info.start_brk
 
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index a8b3a8065a..010c9cee8a 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -75,6 +75,8 @@ static const hwaddr aspeed_soc_ast2600_memmap[] = {
-     [ASPEED_DEV_UART12]    = 0x1E790600,
-     [ASPEED_DEV_UART13]    = 0x1E790700,
-     [ASPEED_DEV_VUART]     = 0x1E787000,
-+    [ASPEED_DEV_FSI1]      = 0x1E79B000,
-+    [ASPEED_DEV_FSI2]      = 0x1E79B100,
-     [ASPEED_DEV_I3C]       = 0x1E7A0000,
-     [ASPEED_DEV_SDRAM]     = 0x80000000,
- };
-@@ -132,6 +134,8 @@ static const int aspeed_soc_ast2600_irqmap[] = {
-     [ASPEED_DEV_ETH4]      = 33,
-     [ASPEED_DEV_KCS]       = 138,   /* 138 -> 142 */
-     [ASPEED_DEV_DP]        = 62,
-+    [ASPEED_DEV_FSI1]      = 100,
-+    [ASPEED_DEV_FSI2]      = 101,
-     [ASPEED_DEV_I3C]       = 102,   /* 102 -> 107 */
- };
- 
-@@ -262,6 +266,10 @@ static void aspeed_soc_ast2600_init(Object *obj)
-     object_initialize_child(obj, "emmc-boot-controller",
-                             &s->emmc_boot_controller,
-                             TYPE_UNIMPLEMENTED_DEVICE);
-+
-+    for (i = 0; i < ASPEED_FSI_NUM; i++) {
-+        object_initialize_child(obj, "fsi[*]", &s->fsi[i], TYPE_ASPEED_APB2OPB);
-+    }
- }
- 
- /*
-@@ -622,6 +630,17 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-         return;
-     }
-     aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sbc), 0, sc->memmap[ASPEED_DEV_SBC]);
-+
-+    /* FSI */
-+    for (i = 0; i < ASPEED_FSI_NUM; i++) {
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->fsi[i]), errp)) {
-+            return;
-+        }
-+        aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->fsi[i]), 0,
-+                        sc->memmap[ASPEED_DEV_FSI1 + i]);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->fsi[i]), 0,
-+                           aspeed_soc_get_irq(s, ASPEED_DEV_FSI1 + i));
-+    }
- }
- 
- static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 8adff70072..db3ba3abc7 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -36,6 +36,7 @@
- #include "hw/misc/aspeed_lpc.h"
- #include "hw/misc/unimp.h"
- #include "hw/misc/aspeed_peci.h"
-+#include "hw/fsi/aspeed-apb2opb.h"
- #include "hw/char/serial.h"
- 
- #define ASPEED_SPIS_NUM  2
-@@ -96,6 +97,7 @@ struct AspeedSoCState {
-     UnimplementedDeviceState udc;
-     UnimplementedDeviceState sgpiom;
-     UnimplementedDeviceState jtag[ASPEED_JTAG_NUM];
-+    AspeedAPB2OPBState fsi[2];
- };
- 
- #define TYPE_ASPEED_SOC "aspeed-soc"
-@@ -191,6 +193,8 @@ enum {
-     ASPEED_DEV_SGPIOM,
-     ASPEED_DEV_JTAG0,
-     ASPEED_DEV_JTAG1,
-+    ASPEED_DEV_FSI1,
-+    ASPEED_DEV_FSI2,
- };
- 
- #define ASPEED_SOC_SPI_BOOT_ADDR 0x0
+Stacey Son (13):
+  bsd-user: Declarations of h2t and t2h conversion functions.
+  bsd-user: Add struct target_freebsd11_stat to bsd-user/syscall_defs
+  bsd-user: Add structs target_freebsd11_{nstat,statfs}
+  bsd-user: Add struct target_freebsd_fhandle and fcntl flags
+  bsd-user: Implement h2t_freebsd11_stat h2t_freebsd_nstat
+  bsd-user: Implement h2t_freebsd_fhandle t2h_freebsd_fhandle
+  bsd-user: Implement h2t_freebds11_statfs
+  bsd-user: Implement target_to_host_fcntl_cmd
+  bsd-user: Implement stat related syscalls
+  bsd-user: Implement statfh related syscalls
+  bsd-user: Implement statfs related syscalls
+  bsd-user: Implement getdents related syscalls
+  bsd-user: Implement stat related syscalls
+
+Warner Losh (8):
+  bsd-user: Move _WANT_FREEBSD macros to include/qemu/osdep.h
+  bsd-user; Update the definitions of __put_user and __get_user macros
+  bsd-user: Rename target_freebsd_time_t to target_time_t
+  bsd-user: Add glue for the freebsd11_stat syscalls
+  bsd-user: Add glue for getfh and related syscalls
+  bsd-user: Add glue for statfs related system calls
+  bsd-user: Add getdents and fcntl related system calls
+  bsd-user: Add missing break after do_bsd_preadv
+
+ bsd-user/arm/target_arch_elf.h    |   1 -
+ bsd-user/elfload.c                |   4 +-
+ bsd-user/freebsd/meson.build      |   1 +
+ bsd-user/freebsd/os-stat.c        | 262 ++++++++++++
+ bsd-user/freebsd/os-stat.h        | 663 ++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c     | 122 +++++-
+ bsd-user/freebsd/qemu-os.h        |  50 +++
+ bsd-user/i386/target_arch_elf.h   |   1 -
+ bsd-user/main.c                   |   2 -
+ bsd-user/qemu.h                   |  85 ++--
+ bsd-user/signal.c                 |   5 +-
+ bsd-user/syscall_defs.h           | 221 +++++++++-
+ bsd-user/x86_64/target_arch_elf.h |   1 -
+ include/qemu/compiler.h           |  30 ++
+ include/qemu/osdep.h              |  13 +
+ 15 files changed, 1384 insertions(+), 77 deletions(-)
+ create mode 100644 bsd-user/freebsd/os-stat.c
+ create mode 100644 bsd-user/freebsd/os-stat.h
+ create mode 100644 bsd-user/freebsd/qemu-os.h
+
 -- 
-2.39.2
+2.41.0
 
 
