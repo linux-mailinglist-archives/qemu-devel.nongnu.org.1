@@ -2,68 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A3878B455
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBAA78B492
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Aug 2023 17:36:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qae48-0002Y9-D6; Mon, 28 Aug 2023 11:22:08 -0400
+	id 1qaeH0-0002EH-D7; Mon, 28 Aug 2023 11:35:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qae3o-0002A0-KP
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:21:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qae3l-0007Vs-QB
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:21:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693236105;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ZOGK6ogQU+3D0QE51A1HkpxAB8zXge8FYD1a9yFshLA=;
- b=HUDr5h/0ejEmAq5Y7hi5Wkvtx8UwxORPUfGmMru7p8TSlN7fReERxgelDtBx3BL3MZN+9w
- IQlemeIWe73kfwT8hhax4Oh6eyr7q/28rIqhStSlxmuAkzHfG6dUz7rZG1yX3e4nbkLkrk
- 5QvXSyT5zaOYu90vIGju0W/nfNoLUQk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-567-0EC0Sg2pMwquMQQ8VwScEg-1; Mon, 28 Aug 2023 11:21:40 -0400
-X-MC-Unique: 0EC0Sg2pMwquMQQ8VwScEg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23F6E185A78B;
- Mon, 28 Aug 2023 15:21:40 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0C4D72026D4B;
- Mon, 28 Aug 2023 15:21:38 +0000 (UTC)
-Date: Mon, 28 Aug 2023 10:21:37 -0500
-From: Eric Blake <eblake@redhat.com>
-To: 20230825192940.35364-1-den@openvz.org
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, qemu-block@nongnu.org, 
- "Denis V. Lunev" <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>
-Subject: Re: [PATCH vOther2 1/1] qemu-nbd: Restore "qemu-nbd -v --fork" output
-Message-ID: <pa2nh352u72sysgqsstwiytczumknwuczhnbrt5yahssolplwh@axdnqmkb2djs>
-References: <20230825200838.39994-1-den@openvz.org>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qaeGx-0002Dv-QT
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:35:23 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qaeGv-0001QR-67
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 11:35:23 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6bca5d6dcedso2622686a34.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 08:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693236920; x=1693841720;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qpdUjmkx4SYMchRsBu1q7VqBWSPgpL5+vPbbRAqUrzQ=;
+ b=GhX/aPh1RnW10+yS8sQClJs9NnRQg66WncEgctUNPogjL3GMOz5axzyw9FyVSnbuVj
+ 2W6Mfa26SE9YIsZrm4tEPdYSwr4XpfHrIJLZnROWjFV9LvxoEhTgBL+5zcnvITpUZX54
+ uF+SNPD4keSV936ozwmsWzECrEg9Pyn2zCHcLGxg20bYfOOC+V5WBRLhd+VxetZ4HEvr
+ d/pXfqglM4nbJG1hNDzwBfCY9YQA7oNI6HjgAE3Sdym/qozwTb1l4K/SEWTSSYnP+Bfg
+ CsYL4sJf964msJpJhuN0q/sWT2bnIfk87KspE+FesH45f4A0twFP6UOZGeb8uIW/Qj4H
+ oiGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693236920; x=1693841720;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qpdUjmkx4SYMchRsBu1q7VqBWSPgpL5+vPbbRAqUrzQ=;
+ b=Py03ko4jqfsRui3HYt1Xl1LPALWrXfcFWCxQRWlrL60lWF8JxNgXsmy/fQqIQ3Z8AB
+ cdbcmZ9qFvHZx+iELaFludkfyNhbeVuC4oAEPbB82G3nUhljx4+og8HFVWc5MqqfNBW8
+ i/YL88ixSq6X6No6ymepIS106ML2sQRcrYtO3IKIRxXORuWtnUb5OWmSrlxJ7OWqt21/
+ KlgulBK2OuYhMKhQzuL1RY5HqjMdaTwx4rTQIiGfW8hTF0Z7gUwHD5WlnKCV43LBx8it
+ drL7TBhBPlftPnj2sMQEwXpKbFUmXXY+bdWhkhuITaaFK++hfP9rquRPrTZMGyPReBHb
+ Bsfg==
+X-Gm-Message-State: AOJu0Yz8yEBStcqiNIajPMUBynjjoKEguBk7w2wgqW8KE5LWR4QrRx36
+ YYLfacOUkbG4tbt8sskJivBJqg==
+X-Google-Smtp-Source: AGHT+IExJiWvIRwVJmtoE2H/UL55375wycJNB/4RJusKKUztFsieR9sXgwtN2TwphB9bvY6mkw3QQg==
+X-Received: by 2002:a05:6830:e06:b0:6bc:fab5:e996 with SMTP id
+ do6-20020a0568300e0600b006bcfab5e996mr13144820otb.31.1693236919922; 
+ Mon, 28 Aug 2023 08:35:19 -0700 (PDT)
+Received: from [192.168.68.108] ([177.94.15.194])
+ by smtp.gmail.com with ESMTPSA id
+ i26-20020a9d68da000000b006af7580c84csm3539484oto.60.2023.08.28.08.35.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 28 Aug 2023 08:35:19 -0700 (PDT)
+Message-ID: <84d2bb7c-aa4b-0965-1417-04b0f489683b@ventanamicro.com>
+Date: Mon, 28 Aug 2023 12:35:13 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230825200838.39994-1-den@openvz.org>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH v2 0/6] Add API for list cpu extensions
+To: Igor Mammedov <imammedo@redhat.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, pbonzini@redhat.com,
+ berrange@redhat.com, richard.henderson@linaro.org, laurent@vivier.eu,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org,
+ Jiri Denemark <jdenemar@redhat.com>, Tim Wiederhake <twiederh@redhat.com>
+References: <20230828084536.231-1-zhiwei_liu@linux.alibaba.com>
+ <20230828155828.561dc83e@imammedo.users.ipa.redhat.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230828155828.561dc83e@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32f.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,137 +101,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 25, 2023 at 10:08:38PM +0200, Denis V. Lunev wrote:
-> Closing stderr earlier is good for daemonized qemu-nbd under ssh
-> earlier, but breaks the case where -v is being used to track what is
-> happening in the server, as in iotest 233.
 
-Keeping the iotest output unchanged is a nice effect, even if it
-requires a bit more code, so I'm leaning towards taking your patch.
+
+On 8/28/23 10:58, Igor Mammedov wrote:
+> On Mon, 28 Aug 2023 16:45:30 +0800
+> LIU Zhiwei <zhiwei_liu@linux.alibaba.com> wrote:
+> 
+>> Some times we want to know what is the really mean of one cpu option.
+>> For example, in RISC-V, we usually specify a cpu in this way:
+>> -cpu rv64,v=on
+>>
+>> If we don't look into the source code, we can't get the ISA extensions
+>> of this -cpu command line.
+>>
+>> In this patch set, we add one list_cpu_props API for common cores. It
+>> will output the enabled ISA extensions.
+>>
+>> In the near future, I will also list all possible user configurable
+>> options and all possible extensions for this cpu.
+>>
+>> In order to reuse the options parse code, I also add a QemuOptsList
+>> for cpu.
+>>
+>> After this patch, we can output the extensions for cpu,
+>> """
+>> ./qemu-system-riscv64 -cpu rv64,help
+>> Enabled extensions:
+>>      rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zba_zbb_zbc_zbs_sstc_svadu
+> 
+> It's not that easy to get features with values in general.
+> (many factors influence defaults, which may include:
+>   * properties set and/or added at realize time
+>   * defaults amended by machine type version
+>   * defaults amended by -global CLI options
+> )
+> 
+> To do that consensus was to query features after CPU object is realized.
+> Typically that implies starting dummy QEMU with needed CPU model and
+> then using query-cpu-model-expansion command to get actual property values.
+
+FWIW I have a working prototype of the query-cpu-model-expansion for RISC-V.
+I'll send it to the ML when I'm done smoothing the rough edges (hopefully
+end of this week).
+
+
+>   
+> The task is solved by implementing query-cpu-model-expansion
+> command so that user (mainly management layer) could get defaults via QMP.
+> So if your goal is to get the given cpu defaults to mgmt layer
+> it is sufficient to implement query-cpu-model-expansion command for riscv.
+> (CC-ing libvirt folks to see if it picks up the command
+> automatically for every target or some more work would be needed
+> on their side as well)
+> 
+> PS:
+> no one cared about making -cpu name,help working till this moment
+> and certainly not for linux-user part.
+> 
+> To make this option work reliably it's would be necessary to make sure
+> that query-cpu-model-expansion work in user mode as well.
+
+I can take a look into how much extra code we need to support
+query-cpu-model-expansion for user mode, but no promises. If it's too much
+work I'd rather implement the API as is (like ARM and x86 already does) and
+worry about supporting it for user-mode later.
+
+
+Thanks,
+
+Daniel
+
 
 > 
-> When we know we are verbose, we should preserve original stderr and
-> restore it once the setup stage is done. This commit restores the
-> original behavior with -v option. In this case original output
-> inside the test is kept intact.
+> Also the timing when 'help' is processed should ensure that
+> machine is available/initialized (i.e. compat properties are in effect)
 > 
-> Reported-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> CC: Eric Blake <eblake@redhat.com>
-> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> CC: Hanna Reitz <hreitz@redhat.com>
-> CC: Mike Maslenkin <mike.maslenkin@gmail.com>
-> Fixes: 5c56dd27a2 ("qemu-nbd: fix regression with qemu-nbd --fork run over ssh")
-> ---
-> Changes from v1:
-> * fixed compilation with undefined HAVE_NBD_DEVICE, thanks to Mike Maslenkin
-
-> @@ -323,11 +324,14 @@ static void *nbd_client_thread(void *arg)
->                  opts->device, srcpath);
->      } else {
->          /* Close stderr so that the qemu-nbd process exits.  */
-> -        if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
-> +        if (dup2(opts->stderr, STDERR_FILENO) < 0) {
->              error_report("Could not set stderr to /dev/null: %s",
-
-Both my patch and yours have a slight inaccuracy here: when -v is in
-use, failure to dup2() is not a failure to set stderr to /dev/null.
-Maybe we can reword it as "Could not release pipe to parent: %s", as
-that is the other intentional side effect of the dup2()?
-
->                           strerror(errno));
->              exit(EXIT_FAILURE);
->          }
-> +        if (opts->stderr != STDOUT_FILENO) {
-> +            close(opts->stderr);
-
-As long as we are checking dup2() for (unlikely) failure, we should
-probably be doing the same for close().
-
-> +        }
->      }
->  
->      if (nbd_client(fd) < 0) {
-> @@ -589,9 +593,9 @@ int main(int argc, char **argv)
->      const char *pid_file_name = NULL;
->      const char *selinux_label = NULL;
->      BlockExportOptions *export_opts;
-> -#if HAVE_NBD_DEVICE
-> -    struct NbdClientOpts opts;
-> -#endif
-> +    struct NbdClientOpts opts = {
-> +        .stderr = STDOUT_FILENO,
-> +    };
->  
->  #ifdef CONFIG_POSIX
->      os_setup_early_signal_handling();
-> @@ -944,6 +948,15 @@ int main(int argc, char **argv)
->  
->              close(stderr_fd[0]);
->  
-> +            /* Remember parent's stderr if we will be restoring it. */
-> +            if (verbose /* fork_process is set */) {
-> +                opts.stderr = dup(STDERR_FILENO);
-> +                if (opts.stderr < 0) {
-> +                    error_report("Could not dup stdedd: %s", strerror(errno));
-
-s/stdedd/stderr/
-
-> +                    exit(EXIT_FAILURE);
-> +                }
-> +            }
-> +
->              ret = qemu_daemon(1, 0);
->              saved_errno = errno;    /* dup2 will overwrite error below */
->  
-> @@ -1152,6 +1165,7 @@ int main(int argc, char **argv)
->              .device = device,
->              .fork_process = fork_process,
->              .verbose = verbose,
-> +            .stderr = STDOUT_FILENO,
-
-Huh. This looks redundant to pre-initializing .stderr above; but since
-it is using a struct assignment, we do have to provide it again to
-avoid the compiler setting unmentioned fields to zero-initialization.
-
-If we are going to unconditionally have opts in scope, even when not
-passing it to pthread_create(), maybe we could just directly assign to
-opts.device and drop the local variable device (and so forth), instead
-of first storing into device only to later copy it to opts.device.
-But that would make this patch bigger, so I'm not sure it is worth it.
-
->          };
->  
->          ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
-> @@ -1180,11 +1194,14 @@ int main(int argc, char **argv)
->      }
->  
->      if (fork_process) {
-> -        if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
-> +        if (dup2(opts.stderr, STDERR_FILENO) < 0) {
->              error_report("Could not set stderr to /dev/null: %s",
->                           strerror(errno));
-
-Another spot where the error message is not entirely accurate,
-
->              exit(EXIT_FAILURE);
->          }
-> +        if (opts.stderr != STDOUT_FILENO) {
-> +            close(opts.stderr);
-
-and another spot where we should be checking for close() failure.
-
-> +        }
->      }
->  
->      state = RUNNING;
-> -- 
-> 2.34.1
+> Once you have working query-cpu-model-expansion, your new -cpu foo,help handler
+> can translate json to human readable format that everyone would agree upon.
 > 
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+>> To get all configuable options for this cpu, use -device rv64-riscv-cpu,help
+>> """
+>>
+>>
+>> v1->v2:
+>>
+>> 1) Give a hint to use -device cpu,help for configualbe options on cpu
+>> 2) Support list_cpu_props for linux user mode
+>> 3) Add default to some properties to make -device cpu,help output better
+>>
+>>
+>> Todo:
+>> 1) Fix Daniel comments on KVM and cpu option check
+>> 2) Add support for other archs
+>> 3) Move qdev help function from qdev-monitor to qdev-property
+>>
+>> LIU Zhiwei (6):
+>>    cpu: Add new API cpu_type_by_name
+>>    target/riscv: Add API list_cpu_props
+>>    softmmu/vl: Add qemu_cpu_opts QemuOptsList
+>>    target/riscv: Add default value for misa property
+>>    target/riscv: Add defalut value for string property
+>>    linux-user: Move qemu_cpu_opts to cpu.c
+>>
+>>   cpu.c                        | 63 +++++++++++++++++++++++++++++-------
+>>   hw/core/qdev-prop-internal.h |  2 ++
+>>   hw/core/qdev-properties.c    |  7 ++++
+>>   include/exec/cpu-common.h    |  3 ++
+>>   include/hw/core/cpu.h        | 11 +++++++
+>>   include/hw/qdev-properties.h |  8 +++++
+>>   linux-user/main.c            | 10 ++++++
+>>   softmmu/vl.c                 | 11 +++++++
+>>   target/riscv/cpu.c           | 30 +++++++++++++----
+>>   target/riscv/cpu.h           |  2 ++
+>>   10 files changed, 128 insertions(+), 19 deletions(-)
+>>
+> 
 
