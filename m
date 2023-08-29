@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5CE78D042
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 958B978CFFC
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:10:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7n0-0000o4-E7; Tue, 29 Aug 2023 19:06:26 -0400
+	id 1qb7mz-0000mf-By; Tue, 29 Aug 2023 19:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qb3lR-0005OF-Gc
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:48:33 -0400
-Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb3if-0003OJ-M5
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:45:42 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qb3lO-0002nA-1m
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:48:32 -0400
-Received: by mail-il1-x131.google.com with SMTP id
- e9e14a558f8ab-34deefc2016so2521125ab.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 11:48:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb3id-0002Dd-BR
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:45:41 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68a42d06d02so3307542b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 11:45:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693334908; x=1693939708;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jRMdwRZVaHcJhDUF3R1tki83zY7wZVELi6/t8QmFp0I=;
- b=hpa1tJqtdk1c48KA6ZG8p8RzRl5cTvl5dhTc/U6azYFhLz/2yoYyqNB89j0hlQDxME
- as0680Q+dyVDlmHF4vMPOCylF8XHqRSAxgO8AsIxzaeAlTV2GFAXGtMAMyrQNhOGeF5w
- 8tDXg1kHx3gO9caV758Pv/ZhNZ+BNuOskzcFKfZ0wg69qVe/B4jFU5HBk5sBzT+BB9I8
- OflVCyUzStZDaHmgJrMb0egXHDNFcpJcaenHMtHAmNY71SGjvqEl5eClS6gbWLUg3/d1
- wEDxbyDHLe3hLwfwmoQYiVCvexByOWcbhwyt2gQqknIoR2lstmIxylK5tMrXjg4ltLDe
- O/aQ==
+ d=linaro.org; s=google; t=1693334738; x=1693939538; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gtDgq+/WYJ+b/sZ1SxnPIpaHqwGp+FLWx/NLiXyH16Y=;
+ b=UC8Mq/0qeQDmWBoKXcCN4LN7d1Wq7ZrEugIND538F1GjcWnIZlLTQqKCqhdnUjPSpN
+ FR9aVj/ymiR8ZWXPyXDNcGgXdgilNo229hUyi+zBm4oZxESbQ8BuyixCk3bOwzOy+bzL
+ ZH9ah/ay7gWf0sOTEly1M4GbE3AqAD+f7yx0BHTlHLV1MsqOMffUwlpZ5h/DemjBI7xY
+ iffnK9sImtS3KwgPRA3vqr/Ptl3BaDcfhdkVx0Mc5Z3DAY+KNtdGEXkhKszfrULZc5aO
+ aG86w+Z12h+Qzyp2LcbNA+B2roTozYqpMel/csXTHyZf3Hx0OTMEMUooinKm6JKO5eAZ
+ ATWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693334908; x=1693939708;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jRMdwRZVaHcJhDUF3R1tki83zY7wZVELi6/t8QmFp0I=;
- b=Q1azoSQscpdz/pRQLauOxswA1gDDy4wS/as5MsGpYH+45Crlb1LKmAuBVtdBBxbAyG
- qFqCgONOYRP1CAQ0RvMigwU/xdrx8nuP1eCK77CDG56HUl4aslFccAKCGtzspJB7S3We
- u6/Qa2yoWdk3bpYFTE8ZzoAFXd3kCfwsGvfhcBVvIQH7x3HvE+dRMZqVyhTHkv+Dmay2
- TvShojjfJdQ20mo4swjKkl3A9Ojdhjjlg+w3QeWyLzChboC4bKrFIclVs11pNwHSCMWn
- YnUUSWT+IbSQSa1cfy+1tSxIXfabKzL0fEuQHC5dxRXolIRSWNFrXsssYOa5AOGdzHCj
- cyvw==
-X-Gm-Message-State: AOJu0YzE6w0DPfnTvX+ec7bZsXDVGNoBTHLuFADT0lGCfXwu0/Gsy73Z
- e+tuHUkGo7VIUxcEUuUdvqPWrhc1tkHfvY1poLQ=
-X-Google-Smtp-Source: AGHT+IFWrvkqYWt8xE+TdVo9HBtDfZ257NbaVULH8RvstVPop/fHLxonWYBYUpU3PtRRazItc3xrzg==
-X-Received: by 2002:a05:6e02:1a21:b0:348:fe78:e9ed with SMTP id
- g1-20020a056e021a2100b00348fe78e9edmr269235ile.7.1693334907842; 
- Tue, 29 Aug 2023 11:48:27 -0700 (PDT)
-Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
- [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- h9-20020a02c729000000b0042b326ed1ebsm3394534jao.48.2023.08.29.11.48.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 11:48:27 -0700 (PDT)
-From: Warner Losh <imp@bsdimp.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Beraldo Leal <bleal@redhat.com>,
- Warner Losh <imp@bsdimp.com>
-Subject: [PATCH] linux-user: Move PRAGMA_DISABLE_PACKED_WARNING to compiler.h
-Date: Tue, 29 Aug 2023 12:45:09 -0600
-Message-ID: <20230829184509.54434-1-imp@bsdimp.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20221208; t=1693334738; x=1693939538;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gtDgq+/WYJ+b/sZ1SxnPIpaHqwGp+FLWx/NLiXyH16Y=;
+ b=IIwTjZaVyb+KatkLpt0o6aVDxtEDQa+8xyKe7e9tdc7EHj11GSVrhH3AYiqbMWw7Hu
+ hB52It1NWXYD5uwoCsV6hGZnNqLpFDUPlSCx8N2tf8aa+V2crouP/BcAPE3Tt/niMNil
+ JIN8dgw3YZMKhaQyhZ65NhxjALs/LPVn7GMdsJXJ/F1LwEWL2L8suXuHznHlNvFik06d
+ UYVbe/qScH3X4bQVUHRDqABDdsU8cuE9EYnt/BDPvgePTegh8/SGzlKUV9iYvFejyz/+
+ c8kKwJkh3I+S79U0NeV2HOR/xGRrdG6GrrssELdgYF1/MoIFzeSWcwGYMYc6QG//7Nz8
+ 6j0w==
+X-Gm-Message-State: AOJu0Yy8IRMVZD/nXDVHzCc4WbEccz6xekoB2ehdhk6PsHwXspQjJqKW
+ bJFcZGBXbFuOTMm2t25xMKTEQQ==
+X-Google-Smtp-Source: AGHT+IGqep4rrYsmNrGaqJCOg5US2cZcCGzsorDe0/GduTYb7/scc5vxXoGQWh7NC1QvYJeWrrDKYg==
+X-Received: by 2002:a05:6a20:2d6:b0:13a:ccb9:d5b7 with SMTP id
+ 22-20020a056a2002d600b0013accb9d5b7mr115620pzb.41.1693334737746; 
+ Tue, 29 Aug 2023 11:45:37 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ e8-20020a170902b78800b001b7ffca7dbcsm9640786pls.148.2023.08.29.11.45.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 11:45:37 -0700 (PDT)
+Message-ID: <94ae5eef-b0b0-e6d8-e319-0f453ad58a15@linaro.org>
+Date: Tue, 29 Aug 2023 11:45:35 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::131;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x131.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 04/10] configure: create native file with contents of
+ $host_cc
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230829082931.67601-1-pbonzini@redhat.com>
+ <20230829082931.67601-5-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230829082931.67601-5-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,78 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the slightly older version of this in include/qemu/compiler.h
-that was commit as part of bsd-user changes with the newer one from
-linux-user. bsd-user has no regreassions with this.
+On 8/29/23 01:29, Paolo Bonzini wrote:
+> The argument of --host-cc is not obeyed when cross compiling.  To avoid
+> this issue, place it in a configuration file and pass it to meson
+> with --native-file.
+> 
+> While at it, clarify that --host-cc is not obeyed anyway when_not_
+> cross compiling.
+> 
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> ---
+>   configure | 11 +++++++++--
+>   1 file changed, 9 insertions(+), 2 deletions(-)
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
----
- include/qemu/compiler.h  |  3 +--
- linux-user/qemu.h        | 26 --------------------------
- tests/lcitool/libvirt-ci |  2 +-
- 3 files changed, 2 insertions(+), 29 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index b0374425180..9496a65ea57 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -38,10 +38,9 @@
-  *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
-  *   include the warning-suppression pragmas for clang
-  */
--#ifdef __clang__
-+#if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
- #define PRAGMA_DISABLE_PACKED_WARNING                                   \
-     _Pragma("GCC diagnostic push");                                     \
--    _Pragma("GCC diagnostic ignored \"-Wpragmas\"");                    \
-     _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
- 
- #define PRAGMA_REENABLE_PACKED_WARNING          \
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 4f8b55e2fb0..12821e54d0a 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -193,32 +193,6 @@ static inline bool access_ok(CPUState *cpu, int type,
-    These are usually used to access struct data members once the struct has
-    been locked - usually with lock_user_struct.  */
- 
--/*
-- * Tricky points:
-- * - Use __builtin_choose_expr to avoid type promotion from ?:,
-- * - Invalid sizes result in a compile time error stemming from
-- *   the fact that abort has no parameters.
-- * - It's easier to use the endian-specific unaligned load/store
-- *   functions than host-endian unaligned load/store plus tswapN.
-- * - The pragmas are necessary only to silence a clang false-positive
-- *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
-- * - gcc has bugs in its _Pragma() support in some versions, eg
-- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
-- *   include the warning-suppression pragmas for clang
-- */
--#if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
--#define PRAGMA_DISABLE_PACKED_WARNING                                   \
--    _Pragma("GCC diagnostic push");                                     \
--    _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
--
--#define PRAGMA_REENABLE_PACKED_WARNING          \
--    _Pragma("GCC diagnostic pop")
--
--#else
--#define PRAGMA_DISABLE_PACKED_WARNING
--#define PRAGMA_REENABLE_PACKED_WARNING
--#endif
--
- #define __put_user_e(x, hptr, e)                                            \
-     do {                                                                    \
-         PRAGMA_DISABLE_PACKED_WARNING;                                      \
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index bbd55b4d18c..9bff3b763b5 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit bbd55b4d18cce8f89b5167675e434a6941315634
-+Subproject commit 9bff3b763b5531a1490e238bfbf77306dc3a6dbb
--- 
-2.41.0
-
+r~
 
