@@ -2,99 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290DC78C640
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D92478C643
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:40:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qayvx-0001JH-6k; Tue, 29 Aug 2023 09:39:05 -0400
+	id 1qaywj-0001zO-Kp; Tue, 29 Aug 2023 09:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qayvu-0001Iz-SM
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:39:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qaywh-0001uR-A4; Tue, 29 Aug 2023 09:39:51 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qayvs-0001t6-Ee
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:39:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693316339;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9MV5QN/nwwTwVGMgLxuZe9W17MTFllI2rrQb4dxnmNY=;
- b=LP8aOtomF60m2Egu7tjSq4bvlB/pHy1+KX+4ihMf/MTp08m/MjhYP0Q80IUO5of+Z4b1YG
- p0kbrrpyUEohpk92fEAOUKu7FWArA11/YR6+pYkXqoBGd1RdciwNG6M5YbJ+5ZDf3iyyU0
- rpKeWLswx4Sr+WaKfCpA1qH6fFPs9O4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-7qCjeDCvOMefIjzfVp_l-Q-1; Tue, 29 Aug 2023 09:38:57 -0400
-X-MC-Unique: 7qCjeDCvOMefIjzfVp_l-Q-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-401db2550e0so1365355e9.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:38:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693316337; x=1693921137;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9MV5QN/nwwTwVGMgLxuZe9W17MTFllI2rrQb4dxnmNY=;
- b=h9lkngklxCso7Ed30EhF6wYg0ynqspZQPp7cPpl1yPq98xhRWYPtfAxPFpT8/Z+3ni
- dsXnvWxKykumebA9SoXbKk5rDJlJxSU8pc95QvDloOnTx3TSEY9X+wVURRhAZpb8UAUI
- FNX6MG/Z3Y14v2J8XPRbivQr7Gu+MoDigF7RogaFg9q/iFiqrZ1Z4jCyOrxC+Zn1qLJI
- tzt625tQpFFXkcaWXX18YWdzn72GgrN5YuaQZamZuBPb/3uiu+3Kp1FzXKzldF+FF7XH
- pN80OCmzIGqjAPisuzdh4rsQDDsgCB4wx+xJ9g1mWIwP2Ri5xbO14yyyxq6yqz/Qb3/R
- syGA==
-X-Gm-Message-State: AOJu0YzA5m8Ebsjnjl1IvpjWoIH1UUf6l4nXWETFVp6+lVpPVhurrpsC
- H1r3cpjINChxfl3lludd03tvTsbm17l73FxYcjab5rUqLw4orZHra7FF4CeygHwwt3N/9ujJ0Jj
- IdqM27my23BFW7bc=
-X-Received: by 2002:a7b:c7c3:0:b0:3fe:795:712a with SMTP id
- z3-20020a7bc7c3000000b003fe0795712amr21742802wmk.27.1693316336832; 
- Tue, 29 Aug 2023 06:38:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPnYlijn90mwJ1IR9efPDX7yROmw4z1bwqw6nkv6v1OQIWNgadHk7M1C8DKoGIJKHTG0yWNw==
-X-Received: by 2002:a7b:c7c3:0:b0:3fe:795:712a with SMTP id
- z3-20020a7bc7c3000000b003fe0795712amr21742776wmk.27.1693316336486; 
- Tue, 29 Aug 2023 06:38:56 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-58.web.vodafone.de.
- [109.43.179.58]) by smtp.gmail.com with ESMTPSA id
- l12-20020a7bc44c000000b003fbc0a49b57sm14054470wmi.6.2023.08.29.06.38.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 06:38:55 -0700 (PDT)
-Message-ID: <6b0374d7-a950-8f11-caae-c80ac7fe7b3c@redhat.com>
-Date: Tue, 29 Aug 2023 15:38:53 +0200
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qaywd-0002At-DQ; Tue, 29 Aug 2023 09:39:51 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37TDbxAb009489; Tue, 29 Aug 2023 13:39:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ZybND9jMl8rRrhea433W0rcVzCOrgMbPA7TF7ZRIb44=;
+ b=jhiNu0FJOPKqIldqzFcm6HZKc/Mf0YqUXFSql5YPx6rIgMXN/BgoNYFsYUttt6o8Hfc7
+ 6o1T9mp3nTOeGo3ooHEK2p3mBob+0TzBpBAoqH0ezMr4tvyjmPb5FCJoVnIhD1QtTKxB
+ lKpP3X0BZLYyZLGemGrFsyW5dC2xgIAqMlVsY+giZKy4Wgr4Rgy7/udqw+iJE5aQFK2o
+ oU1M7BIGlOk6Xm9V/SkUqMKuRgAavKj3SIopZoNkQ2s55TOZUQLPEB5h8p/ZbAMW5/iw
+ xD4sRnaq6i+HBXMBZ4iw0lBeR+K61zfGw5KcMunlY3tpkWc1N+bXfqLPXkzWTTu9VEUP Jw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ssf7tmr34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Aug 2023 13:39:34 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37TDcAWm011133;
+ Tue, 29 Aug 2023 13:39:33 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ssf7tmr2n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Aug 2023 13:39:33 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37TBhBKq004891; Tue, 29 Aug 2023 13:39:32 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3squqsm2qf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Aug 2023 13:39:32 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37TDdW6B852590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 29 Aug 2023 13:39:32 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 496F15805A;
+ Tue, 29 Aug 2023 13:39:32 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B66F858051;
+ Tue, 29 Aug 2023 13:39:31 +0000 (GMT)
+Received: from [9.61.30.201] (unknown [9.61.30.201])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 29 Aug 2023 13:39:31 +0000 (GMT)
+Message-ID: <11681172-0fe9-4e1d-9f8f-03f57b0b09a2@linux.ibm.com>
+Date: Tue, 29 Aug 2023 08:39:31 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH-for-8.1] accel: Remove HAX accelerator
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/7] hw/fsi: Introduce IBM's cfam,fsi-slave
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- libvir-list@redhat.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Claudio Fontana <cfontana@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230623230837.4194-1-philmd@linaro.org>
- <94bbfa23-836c-5e8c-db3b-2b040f3326a6@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <94bbfa23-836c-5e8c-db3b-2b040f3326a6@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, clg@kaod.org,
+ peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ philmd@linaro.org
+Cc: qemu-arm@nongnu.org
+References: <20230825203046.3692467-1-ninad@linux.ibm.com>
+ <20230825203046.3692467-4-ninad@linux.ibm.com>
+ <e2a8e6eb-b9fd-8011-32c0-e5c310bf1135@redhat.com>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <e2a8e6eb-b9fd-8011-32c0-e5c310bf1135@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: SpHqt8-Go87KfVorTpymMN-P3pbyPQ1W
+X-Proofpoint-GUID: UsJL8G46y-o3nll84HguB6-reM0bxr7u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-29_11,2023-08-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ suspectscore=0 adultscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308290117
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,56 +117,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/06/2023 01.12, Philippe Mathieu-Daudé wrote:
-> On 24/6/23 01:08, Philippe Mathieu-Daudé wrote:
->> HAX is deprecated since commits 73741fda6c ("MAINTAINERS: Abort
->> HAXM maintenance") and 90c167a1da ("docs/about/deprecated: Mark
->> HAXM in QEMU as deprecated"), released in v8.0.0.
+Hello Thomas,
+
+On 8/28/23 21:03, Thomas Huth wrote:
+> On 25/08/2023 22.30, Ninad Palsule wrote:
+>> This is a part of patchset where IBM's Flexible Service Interface is
+>> introduced.
 >>
->> Per the QEMU deprecation policy, we shouldn't remove it before
->> QEMU release v8.2.0. However per the latest HAXM release (v7.8),
->> the latest QEMU supported is v7.2:
+>> The Common FRU Access Macro (CFAM), an address space containing
+>> various "engines" that drive accesses on busses internal and external
+>> to the POWER chip. Examples include the SBEFIFO and I2C masters. The
+>> engines hang off of an internal Local Bus (LBUS) which is described
+>> by the CFAM configuration block.
 >>
->>    Note: Up to this release, HAXM supports QEMU from 2.9.0 to 7.2.0.
+>> The FSI slave: The slave is the terminal point of the FSI bus for
+>> FSI symbols addressed to it. Slaves can be cascaded off of one
+>> another. The slave's configuration registers appear in address space
+>> of the CFAM to which it is attached.
 >>
->> (https://github.com/intel/haxm/releases/tag/v7.8.0)
->>
->> The next commit (https://github.com/intel/haxm/commit/da1b8ec072)
->> added:
->>
->>    HAXM v7.8.0 is our last release and we will not accept
->>    pull requests or respond to issues after this.
->>
->> As of commit b455ce4c2f, it became very hard to build and test
->> HAXM. Its previous maintainers made it clear they won't help.
->> It doesn't seem to be a very good use of QEMU maintainers to
->> spend their time in a dead project. Save our time by removing
->> this orphan zombie code before the QEMU v8.2 release.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
 >> ---
-> 
-> 
->> diff --git a/docs/about/removed-features.rst 
->> b/docs/about/removed-features.rst
->> index 5b258b446b..cc8a1e38a9 100644
->> --- a/docs/about/removed-features.rst
->> +++ b/docs/about/removed-features.rst
->> @@ -659,15 +659,18 @@ Use ``Icelake-Server`` instead.
->>   System accelerators
->>   -------------------
->> -Userspace local APIC with KVM (x86, removed 8.0)
->> +Userspace local APIC with KVM (x86, removed in 8.0)
->>   ''''''''''''''''''''''''''''''''''''''''''''''''
-> 
-> Oops I didn't mean to commit this line. The doc won't build with padding.
+> ...
+>> diff --git a/hw/fsi/cfam.c b/hw/fsi/cfam.c
+>> new file mode 100644
+>> index 0000000000..19256050bd
+>> --- /dev/null
+>> +++ b/hw/fsi/cfam.c
+>> @@ -0,0 +1,235 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * IBM Common FRU Access Macro
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +
+>> +#include "qapi/error.h"
+>> +#include "qemu/log.h"
+>> +
+>> +#include "hw/fsi/bits.h"
+>> +#include "hw/fsi/cfam.h"
+>> +#include "hw/fsi/engine-scratchpad.h"
+>> +
+>> +#include "hw/qdev-properties.h"
+>> +
+>> +#define TO_REG(x)                          ((x) >> 2)
+>> +
+>> +#define CFAM_ENGINE_CONFIG                  TO_REG(0x04)
+>> +
+>> +#define CFAM_CONFIG_CHIP_ID                TO_REG(0x00)
+>> +#define CFAM_CONFIG_CHIP_ID_P9             0xc0022d15
+>> +#define   CFAM_CONFIG_CHIP_ID_BREAK        0xc0de0000
+>> +
+>> +static uint64_t cfam_config_read(void *opaque, hwaddr addr, unsigned 
+>> size)
+>> +{
+>> +    CFAMConfig *config;
+>> +    CFAMState *cfam;
+>> +    LBusNode *node;
+>> +    int i;
+>> +
+>> +    config = CFAM_CONFIG(opaque);
+>> +    cfam = container_of(config, CFAMState, config);
+>> +
+>> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
+>> +                  __func__, addr, size);
+>> +
+>> +    assert(size == 4);
+>> +    assert(!(addr & 3));
+>> +
+>> +    switch (addr) {
+>> +    case 0x00:
+>> +        return CFAM_CONFIG_CHIP_ID_P9;
+>> +    case 0x04:
+>> +        return ENGINE_CONFIG_NEXT
+>> +            | 0x00010000                    /* slots */
+>> +            | 0x00001000                    /* version */
+>> +            | ENGINE_CONFIG_TYPE_PEEK   /* type */
+>> +            | 0x0000000c;                   /* crc */
+>> +    case 0x08:
+>> +        return ENGINE_CONFIG_NEXT
+>> +            | 0x00010000                    /* slots */
+>> +            | 0x00005000                    /* version */
+>> +            | ENGINE_CONFIG_TYPE_FSI    /* type */
+>> +            | 0x0000000a;                   /* crc */
+>> +        break;
+>> +    default:
+>> +        /* FIXME: Improve this */
+>> +        i = 0xc;
+>> +        QLIST_FOREACH(node, &cfam->lbus.devices, next) {
+>> +            if (i == addr) {
+>> +                return LBUS_DEVICE_GET_CLASS(node->ldev)->config;
+>> +            }
+>> +            i += size;
+>> +        }
+>> +
+>> +        if (i == addr) {
+>> +            return 0;
+>> +        }
+>> +
+>> +        return 0xc0de0000;
+>
+> Can you explain the magic number at least with a comment?
+Added comment for the magic number 0xc0de0000
+>
+> Maybe it would also make sense to add a qemu_log_mask(LOG_GUEST_ERROR, 
+> ...) or qemu_log_mask(LOG_UNIMP, ...) statement here?
+There is LOG_UNIMP most of the function. I added it in the reset function.
+>
+>  Thomas
+>
 
-  Hi Philippe,
+Thank you for the review.
 
-now that 8.1 has been released, could you please update your patch by 
-removing this bad hunk and by updating the commit description?
-
-  Thanks,
-   Thomas
+Ninad
 
 
