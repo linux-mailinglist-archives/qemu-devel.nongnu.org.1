@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16E678CFE5
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37F278D03C
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7ml-0000dp-Vp; Tue, 29 Aug 2023 19:06:12 -0400
+	id 1qb7nx-0001uF-97; Tue, 29 Aug 2023 19:07:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb6nR-0002R1-CV
+ id 1qb6nR-0002R0-CM
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 18:02:51 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb6nK-00049W-J9
+ id 1qb6nL-00049h-C4
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 18:02:47 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-68bed286169so4216993b3a.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 15:02:41 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3a88ef953adso3442793b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 15:02:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693346561; x=1693951361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693346562; x=1693951362; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Kee2mUckLTu0r5fI4Zox2tGZrq73NQtpZRaUibEwLSc=;
- b=NYnRP5kgztaNlnwcyCgcHQG+7Kf9dqNM2RU6nuI8jFAQEc6ZbfWK9l/RuzuvGHbbZ8
- fY3UvlySFCPAxQ8owMfc16ZlqYIdkmVDOZs6VTN4/U+SoOQNDRHoCCa9wiNB1b0wy4C8
- uxrHh26glr59o4jW0Sup64YkWB7QVeWloKz1btc1tFVeerAS3VcJXdSYFrjxdddPGMuu
- x37IwV1RuAH3n/I3Gzpw7r1tREW9Ob0FylBukklXjfudHTo0URwIvqE2xNHFqba/84iB
- hVDMbdwY5RwNzPFBVjfSv3troo1nMYWOPgqKP5+MyX3LMmaY7t8FPfc3APm/QKQn2tgM
- epEQ==
+ bh=eeodzQae6xgscra1MOigH7Kir+wMGq9VLUD6APjis3k=;
+ b=MpM4tcEAt6KKfGBWgeH9Kl7o0ROQVVsCLLCWhidU7dTQ4FY5D213QeDphznixmux89
+ GoJR9d1tt7ns5SAqTI+gwbwdm41l2SkphI97ttvkPTMcvgRIKm6KAcAwE//TiioPg7JZ
+ f9IQJ5yGymV8k1BStUTE9CcDBIsLrz6t9Q1kDGOxVzxajsXLp7NwxGaLthCpRSr73on5
+ MizGt3LzWwwy4b6dvzWfGjwQ0IJxGctelgwOovQB49P8IUVg56K5Z26oiYLraPzam+/Y
+ vYTlq0R4hzNFgIJGFgzhGfOxa5pWd9ilFuYJ3srHIpy9tW91qhQM78ajPvc2C29EPBE3
+ kNTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693346561; x=1693951361;
+ d=1e100.net; s=20221208; t=1693346562; x=1693951362;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Kee2mUckLTu0r5fI4Zox2tGZrq73NQtpZRaUibEwLSc=;
- b=jsCrgbIgGdyge8xNdBpajcuiuhgEgG5bTAXarKQ0WVvcoFenqhiWH+rn7L1EXpaDme
- 9+O8U8vDMdUj57KgxzT9SzQQY0G9wRdg8y0XtZmWn1i2wJH5+F9uBenCGVb5yB6NGsae
- a72zSdYYKFvTYEKhlqIJMYQ6JOrGTQXbspnm/sSLNI1XqkXfz86/K213SjkQot4Bn8V+
- 84BZ/DTCayQw84Gv1J/8ehDG9Thlvl836fFaBKRtb4bHj8V4BHZdfAWGaYB3r6TVoqWp
- DRFHCpYyqNUU/Uob+C/VWbVPB1TC1spjI1wURWaLfvv1QWPpk0If7tYZQCV2sajxpzZ0
- j7Kw==
-X-Gm-Message-State: AOJu0Yykg0o2V75hxdhJwh0uuHOlNg+0aW3u8O/5lCi2zZeVFNZ9hJo3
- 2BghY47qVC+UrV9Stp5tSsYKAmLuT3aoLy5hfbc=
-X-Google-Smtp-Source: AGHT+IGE0r81mPNxATsiulAv+zUirOuvtzw8Hqc04791kFA3YYhsEm24CL3xvxNq3BALktgEb0QiSg==
-X-Received: by 2002:a05:6a00:3903:b0:68c:3f2:6000 with SMTP id
- fh3-20020a056a00390300b0068c03f26000mr517468pfb.6.1693346560823; 
- Tue, 29 Aug 2023 15:02:40 -0700 (PDT)
+ bh=eeodzQae6xgscra1MOigH7Kir+wMGq9VLUD6APjis3k=;
+ b=F0TmykmYL/Rih+fn0ydsh4HQGiHJSLVQpWoqXSjzfym6tWtJ5WVWakFlIRtu2dE7TV
+ fTLTGzoINVtbHVG/7s6XBNNNdUYoSL6oxbygFRW4+QdcbSVROP6CpySQgtgC457GIda6
+ iUo6Xh3wj+HOZSVFomyR/1r84JFy/bv54i8ttlR0vxub49ouFXz3r4HTxuvwMLb3iK/p
+ ty/zU8Pcvfuc4hq7AnAPllc6XIChaCKdq0dzuaCbL+J0VI3xhv46znMIjOFDRR+NCoHN
+ 5SDhYr/QqeP1sdppVGDm3t/lVC/eg83RHLG4HOircAjnTrjFntBBTNNt5ffGpiLalI/V
+ 27Xw==
+X-Gm-Message-State: AOJu0YwmpyylPlJpCcMSiig9SAKyiT2peCJalSOx+IA5pcguLGYPsifv
+ zcqTargLgrTUOzQl8XF8Lh8C5wmnD6ciEtNfsPY=
+X-Google-Smtp-Source: AGHT+IGvB5vl2wY3mepkyCZo4rt/jGJZptxDN5k1wb52Q8VjdGQ0BtFAngzVl0R1qKJuXEBA0RTBmQ==
+X-Received: by 2002:a54:4413:0:b0:3a7:af4c:2406 with SMTP id
+ k19-20020a544413000000b003a7af4c2406mr304177oiw.44.1693346561762; 
+ Tue, 29 Aug 2023 15:02:41 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- b28-20020a63715c000000b0056606274e54sm9538196pgn.31.2023.08.29.15.02.40
+ b28-20020a63715c000000b0056606274e54sm9538196pgn.31.2023.08.29.15.02.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 15:02:40 -0700 (PDT)
+ Tue, 29 Aug 2023 15:02:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org,
 	laurent@vivier.eu
-Subject: [PATCH v5 11/20] linux-user/i386: Add vdso
-Date: Tue, 29 Aug 2023 15:02:19 -0700
-Message-Id: <20230829220228.928506-12-richard.henderson@linaro.org>
+Subject: [PATCH v5 12/20] linux-user/x86_64: Add vdso
+Date: Tue, 29 Aug 2023 15:02:20 -0700
+Message-Id: <20230829220228.928506-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230829220228.928506-1-richard.henderson@linaro.org>
 References: <20230829220228.928506-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,127 +91,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1267
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/i386/vdso-asmoffset.h |   6 ++
- linux-user/elfload.c             |  16 +++-
- linux-user/i386/signal.c         |  11 +++
- linux-user/i386/meson.build      |  24 ++++++
- linux-user/i386/vdso.S           | 143 +++++++++++++++++++++++++++++++
- linux-user/i386/vdso.ld          |  76 ++++++++++++++++
- linux-user/i386/vdso.so          | Bin 0 -> 2672 bytes
- 7 files changed, 274 insertions(+), 2 deletions(-)
- create mode 100644 linux-user/i386/vdso-asmoffset.h
- create mode 100644 linux-user/i386/vdso.S
- create mode 100644 linux-user/i386/vdso.ld
- create mode 100755 linux-user/i386/vdso.so
+ linux-user/elfload.c          |   4 +-
+ linux-user/x86_64/meson.build |  20 +++++++++
+ linux-user/x86_64/vdso.S      |  78 ++++++++++++++++++++++++++++++++++
+ linux-user/x86_64/vdso.ld     |  73 +++++++++++++++++++++++++++++++
+ linux-user/x86_64/vdso.so     | Bin 0 -> 2968 bytes
+ 5 files changed, 173 insertions(+), 2 deletions(-)
+ create mode 100644 linux-user/x86_64/vdso.S
+ create mode 100644 linux-user/x86_64/vdso.ld
+ create mode 100755 linux-user/x86_64/vdso.so
 
-diff --git a/linux-user/i386/vdso-asmoffset.h b/linux-user/i386/vdso-asmoffset.h
-new file mode 100644
-index 0000000000..4e5ee0dd49
---- /dev/null
-+++ b/linux-user/i386/vdso-asmoffset.h
-@@ -0,0 +1,6 @@
-+/*
-+ * offsetof(struct sigframe, sc.eip)
-+ * offsetof(struct rt_sigframe, uc.tuc_mcontext.eip)
-+ */
-+#define SIGFRAME_SIGCONTEXT_eip      64
-+#define RT_SIGFRAME_SIGCONTEXT_eip  220
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 2a6adebb4a..fb876ae30a 100644
+index fb876ae30a..b421f04675 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -309,12 +309,24 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
-     (*regs)[15] = tswapreg(env->regs[R_ESP]);
-     (*regs)[16] = tswapreg(env->segs[R_SS].selector & 0xffff);
- }
--#endif
-+
-+/*
-+ * i386 is the only target which supplies AT_SYSINFO for the vdso.
-+ * All others only supply AT_SYSINFO_EHDR.
-+ */
-+#define DLINFO_ARCH_ITEMS 1
-+#define ARCH_DLINFO       NEW_AUX_ENT(AT_SYSINFO, vdso_info->entry);
-+
-+#include "vdso.c.inc"
-+
-+#define vdso_image_info()    &vdso_image_info
-+
-+#endif /* TARGET_X86_64 */
+@@ -317,12 +317,12 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
+ #define DLINFO_ARCH_ITEMS 1
+ #define ARCH_DLINFO       NEW_AUX_ENT(AT_SYSINFO, vdso_info->entry);
  
++#endif /* TARGET_X86_64 */
++
+ #include "vdso.c.inc"
+ 
+ #define vdso_image_info()    &vdso_image_info
+ 
+-#endif /* TARGET_X86_64 */
+-
  #define USE_ELF_CORE_DUMP
  #define ELF_EXEC_PAGESIZE       4096
  
--#endif
-+#endif /* TARGET_I386 */
- 
- #ifdef TARGET_ARM
- 
-diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-index 60fa07d6f9..bc5d45302e 100644
---- a/linux-user/i386/signal.c
-+++ b/linux-user/i386/signal.c
-@@ -214,6 +214,17 @@ struct rt_sigframe {
- };
- #define TARGET_RT_SIGFRAME_FXSAVE_OFFSET (                                 \
-     offsetof(struct rt_sigframe, fpstate) + TARGET_FPSTATE_FXSAVE_OFFSET)
-+
-+/*
-+ * Verify that vdso-asmoffset.h constants match.
-+ */
-+#include "i386/vdso-asmoffset.h"
-+
-+QEMU_BUILD_BUG_ON(offsetof(struct sigframe, sc.eip)
-+                  != SIGFRAME_SIGCONTEXT_eip);
-+QEMU_BUILD_BUG_ON(offsetof(struct rt_sigframe, uc.tuc_mcontext.eip)
-+                  != RT_SIGFRAME_SIGCONTEXT_eip);
-+
- #else
- 
- struct rt_sigframe {
-diff --git a/linux-user/i386/meson.build b/linux-user/i386/meson.build
-index ee523019a5..d858bf1d77 100644
---- a/linux-user/i386/meson.build
-+++ b/linux-user/i386/meson.build
-@@ -3,3 +3,27 @@ syscall_nr_generators += {
-                     arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
-                     output: '@BASENAME@_nr.h')
+diff --git a/linux-user/x86_64/meson.build b/linux-user/x86_64/meson.build
+index 203af9a60c..6744563a11 100644
+--- a/linux-user/x86_64/meson.build
++++ b/linux-user/x86_64/meson.build
+@@ -3,3 +3,23 @@ syscall_nr_generators += {
+                       arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
+                       output: '@BASENAME@_nr.h')
  }
 +
 +vdso_so = custom_target(output: 'vdso.so',
 +                        input: files('vdso.S', 'vdso.ld'),
-+                        depend_files: files('vdso-asmoffset.h'),
 +                        command: [
 +                            build_vdso_cmd,
 +                            '-B', meson.project_build_root(),
 +                            '-C', meson.current_source_dir(),
-+                            '-T', 'i386-linux-user',
++                            '-T', 'x86_64-linux-user',
 +                            '-o', '@OUTPUT@',
-+	                    '--', '-m32', '-nostdlib', '-shared',
-+	                    '-Wl,-h,linux-gate.so.1',
++	                    '--', '-nostdlib', '-shared',
++	                    '-Wl,-h,linux-vdso.so.1',
 +                            '-Wl,--build-id=sha1',
 +                            '-Wl,--hash-style=both',
 +                            '-Wl,-T,@INPUT1@',
 +                            '@INPUT0@'
 +                        ])
 +
-+vdso_inc = gen_vdso.process(vdso_so, extra_args: [
-+                                '-s', '__kernel_sigreturn',
-+                                '-r', '__kernel_rt_sigreturn'
-+                            ])
++vdso_inc = gen_vdso.process(vdso_so)
 +
-+linux_user_ss.add(when: 'TARGET_I386', if_true: vdso_inc)
-diff --git a/linux-user/i386/vdso.S b/linux-user/i386/vdso.S
++linux_user_ss.add(when: 'TARGET_X86_64', if_true: vdso_inc)
+diff --git a/linux-user/x86_64/vdso.S b/linux-user/x86_64/vdso.S
 new file mode 100644
-index 0000000000..e7a1f333a1
+index 0000000000..47d16c00ab
 --- /dev/null
-+++ b/linux-user/i386/vdso.S
-@@ -0,0 +1,143 @@
++++ b/linux-user/x86_64/vdso.S
+@@ -0,0 +1,78 @@
 +/*
-+ * i386 linux replacement vdso.
++ * x86-64 linux replacement vdso.
 + *
 + * Copyright 2023 Linaro, Ltd.
 + *
@@ -219,7 +165,6 @@ index 0000000000..e7a1f333a1
 + */
 +
 +#include <asm/unistd.h>
-+#include "vdso-asmoffset.h"
 +
 +.macro endf name
 +	.globl	\name
@@ -227,167 +172,100 @@ index 0000000000..e7a1f333a1
 +	.size	\name, . - \name
 +.endm
 +
-+.macro vdso_syscall1 name, nr
-+\name:
-+	.cfi_startproc
-+	mov	%ebx, %edx
-+	.cfi_register %ebx, %edx
-+	mov	4(%esp), %ebx
-+	mov	$\nr, %eax
-+	int	$0x80
-+	mov	%edx, %ebx
-+	ret
-+	.cfi_endproc
-+endf	\name
++.macro weakalias name
++\name	= __vdso_\name
++	.weak	\name
 +.endm
 +
-+.macro vdso_syscall2 name, nr
-+\name:
-+	.cfi_startproc
-+	mov	%ebx, %edx
-+	.cfi_register %ebx, %edx
-+	mov	4(%esp), %ebx
-+	mov	8(%esp), %ecx
++.macro vdso_syscall name, nr
++__vdso_\name:
 +	mov	$\nr, %eax
-+	int	$0x80
-+	mov	%edx, %ebx
++	syscall
 +	ret
-+	.cfi_endproc
-+endf	\name
++endf	__vdso_\name
++weakalias \name
 +.endm
 +
-+.macro vdso_syscall3 name, nr
-+\name:
 +	.cfi_startproc
-+	push	%ebx
-+	.cfi_adjust_cfa_offset 4
-+	.cfi_rel_offset %ebx, 0
-+	mov	8(%esp), %ebx
-+	mov	12(%esp), %ecx
-+	mov	16(%esp), %edx
-+	mov	$\nr, %eax
-+	int	$0x80
-+	pop	%ebx
-+	.cfi_adjust_cfa_offset -4
-+	.cfi_restore %ebx
++
++vdso_syscall clock_gettime, __NR_clock_gettime
++vdso_syscall clock_getres, __NR_clock_getres
++vdso_syscall gettimeofday, __NR_gettimeofday
++vdso_syscall time, __NR_time
++
++__vdso_getcpu:
++	/*
++         * There is no syscall number for this allocated on x64.
++	 * We can handle this several ways:
++         *
++	 * (1) Invent a syscall number for use within qemu.
++         *     It should be easy enough to pick a number that
++         *     is well out of the way of the kernel numbers.
++         *
++         * (2) Force the emulated cpu to support the rdtscp insn,
++	 *     and initialize the TSC_AUX value the appropriate value.
++         *
++	 * (3) Pretend that we're always running on cpu 0.
++         *
++	 * This last is the one that's implemented here, with the
++	 * tiny bit of extra code to support rdtscp in place.
++         */
++	xor	%ecx, %ecx		/* rdtscp w/ tsc_aux = 0 */
++
++	/* if (cpu != NULL) *cpu = (ecx & 0xfff); */
++	test	%rdi, %rdi
++	jz	1f
++	mov	%ecx, %eax
++	and	$0xfff, %eax
++	mov	%eax, (%rdi)
++
++	/* if (node != NULL) *node = (ecx >> 12); */
++1:	test	%rsi, %rsi
++	jz	2f
++	shr	$12, %ecx
++	mov	%ecx, (%rsi)
++
++2:	xor	%eax, %eax
 +	ret
-+	.cfi_endproc
-+endf	\name
-+.endm
++endf	__vdso_getcpu
 +
-+__kernel_vsyscall:
-+	.cfi_startproc
-+	int	$0x80
-+	ret
-+	.cfi_endproc
-+endf	__kernel_vsyscall
-+
-+vdso_syscall2 __vdso_clock_gettime, __NR_clock_gettime
-+vdso_syscall2 __vdso_clock_gettime64, __NR_clock_gettime64
-+vdso_syscall2 __vdso_clock_getres, __NR_clock_getres
-+vdso_syscall2 __vdso_gettimeofday, __NR_gettimeofday
-+vdso_syscall1 __vdso_time, __NR_time
-+vdso_syscall3 __vdso_getcpu, __NR_gettimeofday
-+
-+/*
-+ * Signal return handlers.
-+ */
-+
-+	.cfi_startproc simple
-+	.cfi_signal_frame
-+
-+/*
-+ * For convenience, put the cfa just above eip in sigcontext, and count
-+ * offsets backward from there.  Re-compute the cfa in the two contexts
-+ * we have for signal unwinding.  This is far simpler than the
-+ * DW_CFA_expression form that the kernel uses, and is equally correct.
-+ */
-+
-+	.cfi_def_cfa	%esp, SIGFRAME_SIGCONTEXT_eip + 4
-+
-+	.cfi_offset	%eip, -4
-+			/* err, -8 */
-+			/* trapno, -12 */
-+	.cfi_offset	%eax, -16
-+	.cfi_offset	%ecx, -20
-+	.cfi_offset	%edx, -24
-+	.cfi_offset	%ebx, -28
-+	.cfi_offset	%esp, -32
-+	.cfi_offset	%ebp, -36
-+	.cfi_offset	%esi, -40
-+	.cfi_offset	%edi, -44
-+
-+/*
-+ * While this frame is marked as a signal frame, that only applies to how
-+ * the return address is handled for the outer frame.  The return address
-+ * that arrived here, from the inner frame, is not marked as a signal frame
-+ * and so the unwinder still tries to subtract 1 to examine the presumed
-+ * call insn.  Thus we must extend the unwind info to a nop before the start.
-+ */
-+	nop
-+
-+__kernel_sigreturn:
-+	popl	%eax	/* pop sig */
-+	.cfi_adjust_cfa_offset -4
-+	movl	$__NR_sigreturn, %eax
-+	int	$0x80
-+endf	__kernel_sigreturn
-+
-+	.cfi_def_cfa_offset RT_SIGFRAME_SIGCONTEXT_eip + 4
-+	nop
-+
-+__kernel_rt_sigreturn:
-+	movl	$__NR_rt_sigreturn, %eax
-+	int	$0x80
-+endf	__kernel_rt_sigreturn
++weakalias getcpu
 +
 +	.cfi_endproc
 +
-+/*
-+ * TODO: Add elf notes.  E.g.
-+ *
-+ * #include <linux/elfnote.h>
-+ * ELFNOTE_START(Linux, 0, "a")
-+ *   .long LINUX_VERSION_CODE
-+ * ELFNOTE_END
-+ *
-+ * but what version number would we set for QEMU?
-+ */
-diff --git a/linux-user/i386/vdso.ld b/linux-user/i386/vdso.ld
++/* TODO: Add elf note for LINUX_VERSION_CODE */
+diff --git a/linux-user/x86_64/vdso.ld b/linux-user/x86_64/vdso.ld
 new file mode 100644
-index 0000000000..326b7a8f98
+index 0000000000..ca6001cc3c
 --- /dev/null
-+++ b/linux-user/i386/vdso.ld
-@@ -0,0 +1,76 @@
++++ b/linux-user/x86_64/vdso.ld
+@@ -0,0 +1,73 @@
 +/*
-+ * Linker script for linux i386 replacement vdso.
++ * Linker script for linux x86-64 replacement vdso.
 + *
 + * Copyright 2023 Linaro, Ltd.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+ENTRY(__kernel_vsyscall)
-+
 +VERSION {
 +        LINUX_2.6 {
 +        global:
++                clock_gettime;
 +                __vdso_clock_gettime;
++                gettimeofday;
 +                __vdso_gettimeofday;
-+                __vdso_time;
-+                __vdso_clock_getres;
-+                __vdso_clock_gettime64;
++                getcpu;
 +                __vdso_getcpu;
-+        };
++                time;
++                __vdso_time;
++                clock_getres;
++                __vdso_clock_getres;
 +
-+        LINUX_2.5 {
-+        global:
-+                __kernel_vsyscall;
-+                __kernel_sigreturn;
-+                __kernel_rt_sigreturn;
 +        local: *;
 +        };
 +}
++
 +
 +PHDRS {
 +        phdr            PT_PHDR         FLAGS(4) PHDRS;
@@ -435,35 +313,31 @@ index 0000000000..326b7a8f98
 +
 +        .text           : { *(.text*) }         :load   =0x90909090
 +}
-diff --git a/linux-user/i386/vdso.so b/linux-user/i386/vdso.so
+diff --git a/linux-user/x86_64/vdso.so b/linux-user/x86_64/vdso.so
 new file mode 100755
-index 0000000000000000000000000000000000000000..bdece5dfcf8da036d013262d4e37208350283cfa
+index 0000000000000000000000000000000000000000..c873d6ea580b393825506d2ffbddcf9827d89e14
 GIT binary patch
-literal 2672
-zcmbtWU1%It6u#5lG_z^4ZB?X_C>9o5sxCF8QBlyONt?nZ)?|y73e)ZGba%;SR(597
-zjTXE8QIiHtY6YPbDhO>6s(mPS(FX(Z2Q`g?1xp_^KInr_=|f8&)b;yj=5}w=eGok1
-z%XiMX=brmB_ny0ldSlx(O%qZAA|PnR8-(ZpuhYGj4)L&P5F5p65f&@qVw=PV(21ar
-zS~fT!zaSUUNMnr<D?qmul%W%{|IXi?lnz58hBiXBldmd>Kqu7p`(Ouv?E|~S#J4vR
-z?eBj&+ji~rg~eZ!zf~VSJr_pXM}D8DFrl0ORPzVHn5LKmbB!e|qzOC^tO77~@mIB)
-zzl6kpgPDI3e2U8d6uIY2bq_`x0-wZWxDMLSfe$J6M%crOeHivUY<@1rr@`l7bI!EC
-z1WQ>fZdBic@iW@_P1t@f_$4LZXEGSfcpH2f?e~Kj&v`Zj+$T!NBlkb|jQhnHeiL+a
-z&lJb<kCS@_*v@tHJTOn=lluBDy{$|iW0~jDvC(tlyVi??Q=2p0KUP})m@B{A^3Fp?
-z#y5Ta$e&ZC6Ayg2)jAG+!^M53FpOcdV3|2%)E={wiChkz(UhGxlDT|x*hrg>lO18$
-z-OkRAyW9oSmOj5{et#-4CVgruv?pIJqQxKI&ZY~dQ!H3DSHUrA-dxrymL5+h95ZU?
-zqfdy~j)7gfjrM5g9c>HN9>C7<kIZ}NS==-4@5JK#YMzfafM=QF?WZPg6+aHhHu){t
-z#@l_<Z)3bX7g}rJnLgP3J~0HQz%PJH;3Rk&d;okNJPDowp8;P3e*#_ve+BLUI4(td
-zZBS?jb*;5I7#xS6XOVMV0Ql`GjNJ_U;OnA06ySNFpY!>?j(;zF-_-GQuCsOgock95
-z$CvrnLFHO513c5BE36+~5f2BEAVM30`47nj^o(oe;NgZND~~oF)87oe)%5l%caD!C
-zZUR`#4&CABw}%(BE9KdV>yxiUf|Id`UI}64SIQGVslJnSd`)$H14yd$t+Ysc2<dgC
-zZ=Q@t)>OQ(J+srhD+k<&>B<F{@o$-65V!Wyt>HxRj<L>q5)uze70i3T0nE36-;4MD
-zX|P(C`eCbeVGnF6>~F$Q>&)x0)jBo>TdiYfVXJlMbJ%KKV=Y$enlO4^9_Z@du@yHB
-zwchCMGqw$O_4gWmJ%e{HQ)lfOF0TyrZnl4$<)z$G>%HU>FE1lXy;xFj>Xa70cGRgB
-zZe?<tMbsV}aT5E$PQl}h)U3Q?ifC%gN{nQau7X$*O<ToiCShkhk5lkGqh`U*=B*`$
-zkrGieW9%;^Moc4<LZq}r)G<pAcKN?aE5cZ-d1tTskoO0sTmQ-H0oHh)quV~pVEQOL
-zf~-B80KOf}$M=_*fzCLdUB>YqcLID@7{~XU=z-4s6vh$lz%9JdjN|)G?1a8N?pfc*
-zIKKY`&zcmDP2m_-KOf(Hg0)2EV}IgBfWHx_^Y;P~hc5SkbEE79n459x?;V(~$T$m@
-zjElobxDGGOT`N`AK*n(#-do~0bSZKjGMDr(AZ`H$D-74d^xS8@>$IiJAn|o+fMq_`
-OKQ-<Y4#gXF;{FA}h_Ctp
+literal 2968
+zcmcgtO=w(I6uvKUOl$t7l}J=nY6?Lgol-PVEvcEL6HP)om@-1c>vZO|6VjQnGcRQ#
+zQlk(xE{v3}x(Eh$E+iYFJ0pdXxDr=E=&lLvMs(4vwBz~aoiCl-j=CuHBzL}hzkANP
+z=iPhmJs%H_3^h28p){If=E2CAex2B8q6WA=6OrF`(`KF&`Uz?MI&EW@IwS5;J<v5S
+zm3;u8M8ZDNbcEvu0jxKter?<dUgx>q_-2rSodh0=h5M8yR&|8~q9xUzjR(|@2weye
+zz8a;S7@IIXlUIKD#o1b1+rN5odUE>L=z;rh$dv40C`m=ye*;62d-p2^;2j+^>^@b*
+z{zK-lF(OZeV2X;(id~9-RYHGjYX7&6)!h7{<L?-V+C6T-xxH+fO-w(S=h!R!)55=J
+z@z1ONh{Zpn`Zga`ecR75)jw_d8B~3nM_M2rJI<`|o#xMqz%F@5M$pfwf5Z(rDGlFi
+z^EmbvX*g$?a37>=_DaLK@yv17h==zIwme4kF^2|U3rG4QL%vz2K73uCxOLI|+`aN!
+z$F-%z;-Tzk@6K<ve)YnqSIbKuJ^SrI{>$E*Jv}RD{ao_%it)TlnNq<^Unr!fz4Lw$
+zOy&HC$f92&rz(YWnba(~S{s>9e=uV%Oyy_Fufeq||4}nCJT{T^4!f^Qd<}K~WJ1Kz
+zzvUl)Z^gZPP8#nNzOg~(w`aa@<o(9^K%DNzqu`(ulXgfNgnG`03FDMIobHyUJzt9w
+zo+0?gnY<+pa{adav`21S-&8!KxE^A3Jw9Iv_AacwQfZf+Z;H=v2a%udwk)(oS8s^Q
+ze+lApB>FjYY9u^!IW^5APGzK1@7^HK>gD4>;p^R}arI;0o1?04=jpKWw!W)=?0Yt=
+zynUbER^IkMss3a7y}So_=McZ`$9S>#$BvH<4@j=b`|AzHy`jYM(LpaBOVlKlW^ujb
+z)P%J2ye6gV=6*G&ja!<{1*x-wK{3QEd-+1(8#gnXPvxf4)sE;I_k4cF&8AA(kO_(*
+zbIC83rV9C8121D-KkJ<<rgFZQ&4?yP#tr;(AUpEt(k(9Vj<7ELTixSId}la*Nji9E
+z@a{mEzeGvus<3|XJhjXlyz_X^xc;1Wh%eUIqf2|%IlLE07230&5^>idjF0yGj>9sy
+zEwzyLtiMFu4~T6avc|lrbF^o@CbB+LUq6S#>RVK)S)cWo$nWI(T!)Byg4)h8>pihg
+zSHk{7hu^QXIU^m!MEjk0M(-crN9uFmIL=%4U1~>sm5Pe?`en6ee(>HC`S#L{y??u6
+vr;^|o8ppUAv<ink<oeuK)I;vAba!M!1G>D!gdKbRPND1BpVH#|fA;?X5$6$T
 
 literal 0
 HcmV?d00001
