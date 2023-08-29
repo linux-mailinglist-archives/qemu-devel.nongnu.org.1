@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D519578C047
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 959BC78C049
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:31:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qau6q-0002nj-ON; Tue, 29 Aug 2023 04:30:00 -0400
+	id 1qau6o-0002la-Tf; Tue, 29 Aug 2023 04:29:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qau6h-0002fQ-50
+ id 1qau6h-0002fV-7w
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:29:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qau6c-0008Sa-I2
+ id 1qau6d-0008TB-P0
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:29:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693297785;
+ s=mimecast20190719; t=1693297787;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FauAQsYjXDlu9ZECvKkk/e1x+qBM0JTooSFiC+XHukk=;
- b=Rbq4wM51nnppdIGVcKJVNSzbeoCD3Mgs39J+06Pw75GLjXMbl6LLwobJ9aYTeHodna/fea
- q68t1+i/xjzkn3hRr5IJDQndP/OBqBsTbKbfsvojFTunAQRMvLHuAAeqTJwz0mGCbmoYJB
- 7AiYj4L+mBC7I1cxCiv4im0zIyI1VYQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WTWWyRaT75f8DRqj83gMtzait4DH3XGzdwX7f3Ycivs=;
+ b=XgFjOURYMoALKru/RMnUDbAsV1uy7JTQVN21+wD4YB9cbk0W5Yg1LDCVQVDZl1EJabevqD
+ orYaQo2gQWrV0zadT+WGMgpWfXKXmcfVVa2LOee3+ZcqTMxuwlL/YXisOeR8uzDJ3gU/L6
+ xl82nF5vYJGO06pSs08dq0CiX1usQuw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-nHx35vO6PlGG6KedVehM9w-1; Tue, 29 Aug 2023 04:29:43 -0400
-X-MC-Unique: nHx35vO6PlGG6KedVehM9w-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-313c930ee0eso2968102f8f.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:29:43 -0700 (PDT)
+ us-mta-412-KnFXfQ80PIO-hl1OFB_fPw-1; Tue, 29 Aug 2023 04:29:45 -0400
+X-MC-Unique: KnFXfQ80PIO-hl1OFB_fPw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fe5b94bd62so29394465e9.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:29:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693297782; x=1693902582;
+ d=1e100.net; s=20221208; t=1693297784; x=1693902584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FauAQsYjXDlu9ZECvKkk/e1x+qBM0JTooSFiC+XHukk=;
- b=ZsyKgs6GxAXlgXRDyJPVVPcyRU1H/B5s8N3IeE3pJKy/nPrilpzlbI5xod7vv2Kfab
- FhrkoGomZr5g0qbY2Mly+KiCKuwhNIEbHrmb+WZhqZrdXMz3smYPQtD8JXiyG3FcTmN2
- 4euCaKsnkKLG6tPwLtRuQwUw7iyjvjsNOi8eGmBpoff40V0oAEwLvBIWEY7/0BAf1pye
- wp47mjRYro5UtQcEv+hWS3TB+IbOGYhWvCdkSZME1X3QiTIZwDqgWTVdGSVui0cqjibl
- DqC5WWdJj3pyabzSeWAp+ClhwoSQL8ztK7dsPUhYzH0zm8Y2vCO74F6U3x6dxmLtSX0C
- Cr8w==
-X-Gm-Message-State: AOJu0YzEx07w7guW4581+3w2dcNdu4gYi4a5zVOTSPRhtWExWOxV9sLW
- Z88hHiOwqTWV6Luw+V4NkaxnQssLRPDmHi2sz+id0ibaK4+wTtrIyQy450eSAwp5ygyvdm4y7sT
- Kmi3H1i9BIBT+ytUK4mlYygtsRcs4u0cZeGTORBLBSgIMWrIXJr0AK9W8jkzUoH/HKLz1hfveSL
- k=
-X-Received: by 2002:a5d:4ace:0:b0:317:7441:1a4 with SMTP id
- y14-20020a5d4ace000000b00317744101a4mr20415517wrs.29.1693297782253; 
- Tue, 29 Aug 2023 01:29:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGAcG0qdxlCep6bWalsGGEEk+Z2/oaXdJbS+n0tvSNu30ljmkx8elMC2HW2127tJpVjsJby2Q==
-X-Received: by 2002:a5d:4ace:0:b0:317:7441:1a4 with SMTP id
- y14-20020a5d4ace000000b00317744101a4mr20415508wrs.29.1693297781906; 
- Tue, 29 Aug 2023 01:29:41 -0700 (PDT)
+ bh=WTWWyRaT75f8DRqj83gMtzait4DH3XGzdwX7f3Ycivs=;
+ b=kyi8kMxN8kEiPOU1wKgeaQOCIh/tR1zfdaK/vNzb2FPEalhRjR9/hi8f8u/U958Oyk
+ JtiZaCtOyPdEizdmwlUF0Qjtb1gty/vADT4j+vz6rYwvnNfID6Azjus763gO4DIIZmeL
+ oMPFow+UJRaEn+gfvRzbaZa3PuDOjeVg+750aHVUOlJTYaUJcu3TWY812TyUqYFucfRm
+ h4IySkzrwWjIN0p8R0yQmN/J+PXSyXNIw+JqfAf1ahNu92BLDhCh3EylysBtyx6Qn+Mh
+ ztThuy8sPrvb9nciuiyvki17uhUoMfdfLprxxs6ct33wP66QkVlvPEXCpNcOFbjPMz7u
+ 3LSw==
+X-Gm-Message-State: AOJu0YyO71gX6LptPNDqN/dimhy7RxQk8rqlNW1dBLijd0FB2nzPBvha
+ vTrBWvVEd6qGI1ul6L+3cu4H3nPKpzquHmMR4ymekYGRyKKjrM/HutEhKFAvpC8bIMlqLgnSHm4
+ RerPmRhj41w3yVF2gkIQF/OExeYN6w8Sz52ZAGoFsZO0xdcIC4YHofyhf5JtITdgrb2Doyd3YM7
+ w=
+X-Received: by 2002:a7b:cb41:0:b0:3fe:1b4e:c484 with SMTP id
+ v1-20020a7bcb41000000b003fe1b4ec484mr21025427wmj.5.1693297783914; 
+ Tue, 29 Aug 2023 01:29:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwhBGjj4wNUFiRl/+YOOlt3RXk2y20AelA9KydU78Uf3bON+O3fyt3qNsxiXxECYzkUe629g==
+X-Received: by 2002:a7b:cb41:0:b0:3fe:1b4e:c484 with SMTP id
+ v1-20020a7bcb41000000b003fe1b4ec484mr21025419wmj.5.1693297783560; 
+ Tue, 29 Aug 2023 01:29:43 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- v3-20020a5d43c3000000b003140fff4f75sm12898569wrr.17.2023.08.29.01.29.40
+ j14-20020adfea4e000000b003142ea7a661sm13042260wrn.21.2023.08.29.01.29.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 01:29:40 -0700 (PDT)
+ Tue, 29 Aug 2023 01:29:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 05/10] meson: compile bundled device trees
-Date: Tue, 29 Aug 2023 10:29:26 +0200
-Message-ID: <20230829082931.67601-6-pbonzini@redhat.com>
+Subject: [PATCH 06/10] contrib/plugins: use an independent makefile
+Date: Tue, 29 Aug 2023 10:29:27 +0200
+Message-ID: <20230829082931.67601-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230829082931.67601-1-pbonzini@redhat.com>
 References: <20230829082931.67601-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,84 +100,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If dtc is available, compile the .dts files in the pc-bios directory
-instead of using the precompiled binaries.
+The initial reason to write this patch was to remove the last use of
+CONFIG_DEBUG_TCG from the makefiles; the flags to use to build TCG
+plugins are unrelated to --enable-debug-tcg, and instead they should
+be the same as those used to build emulators (the plugins are not build
+via meson for demonstration reasons only).
+
+However, since contrib/plugins/Makefile is also the last case of doing
+a compilation job using config-host.mak, go a step further and make it
+use a completely separate configuration file, removing all references
+to compilers from the toplevel config-host.mak.  Clean up references to
+empty variables, and use .SECONDARY so that intermediate object files
+are not deleted.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- pc-bios/Makefile    | 19 -------------------
- pc-bios/meson.build | 25 +++++++++++++++++++++----
- 2 files changed, 21 insertions(+), 23 deletions(-)
- delete mode 100644 pc-bios/Makefile
+ configure                | 12 +++++++++---
+ contrib/plugins/Makefile | 18 +++++++++---------
+ 2 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/pc-bios/Makefile b/pc-bios/Makefile
-deleted file mode 100644
-index 315288df84e..00000000000
---- a/pc-bios/Makefile
-+++ /dev/null
-@@ -1,19 +0,0 @@
--#
--# NOTE: only compilable with x86 cross compile tools
--#
--include ../config-host.mak
--
--DEFINES=
--
--TARGETS=
--
--all: $(TARGETS)
--
--%.o: %.S
--	$(CC) $(DEFINES) -c -o $@ $<
--
--%.dtb: %.dts
--	dtc -I dts -O dtb -o $@ $<
--
--clean:
--	rm -f $(TARGETS) *.o *~
-diff --git a/pc-bios/meson.build b/pc-bios/meson.build
-index a7224ef4699..e67fa433a1b 100644
---- a/pc-bios/meson.build
-+++ b/pc-bios/meson.build
-@@ -57,10 +57,6 @@ blobs = [
-   'efi-e1000e.rom',
-   'efi-vmxnet3.rom',
-   'qemu-nsis.bmp',
--  'bamboo.dtb',
--  'canyonlands.dtb',
--  'petalogix-s3adsp1800.dtb',
--  'petalogix-ml605.dtb',
-   'multiboot.bin',
-   'multiboot_dma.bin',
-   'linuxboot.bin',
-@@ -84,6 +80,27 @@ blobs = [
-   'vof-nvram.bin',
- ]
+diff --git a/configure b/configure
+index b2bc1ff5f7b..4a7e7afb996 100755
+--- a/configure
++++ b/configure
+@@ -245,7 +245,7 @@ for opt do
+   esac
+ done
  
-+dtc = find_program('dtc', required: false)
-+foreach f : [
-+  'bamboo.dts',
-+  'canyonlands.dts',
-+  'petalogix-s3adsp1800.dts',
-+  'petalogix-ml605.dts',
-+]
-+  out = fs.replace_suffix(f, '.dtb')
-+  if dtc.found()
-+    custom_target(f,
-+        build_by_default: have_system,
-+        input: files(f),
-+        output: out,
-+        install: get_option('install_blobs'),
-+        install_dir: qemu_datadir,
-+        command: [ dtc, '-I', 'dts', '-O', 'dtb', '-o', '@OUTPUT@', '@INPUT0@' ])
-+  else
-+    blobs += out
-+  endif
-+endforeach
+-
++default_cflags='-O2 -g'
+ git_submodules_action="update"
+ git="git"
+ debug_tcg="no"
+@@ -768,6 +768,7 @@ for opt do
+       meson_option_parse --enable-debug-graph-lock ""
+       meson_option_parse --enable-debug-mutex ""
+       meson_option_add -Doptimization=0
++      default_cflags='-O0 -g'
+   ;;
+   --disable-tcg) tcg="disabled"
+                  plugins="no"
+@@ -1763,8 +1764,6 @@ echo "PYTHON=$python" >> $config_host_mak
+ echo "GENISOIMAGE=$genisoimage" >> $config_host_mak
+ echo "MESON=$meson" >> $config_host_mak
+ echo "NINJA=$ninja" >> $config_host_mak
+-echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
+-echo "CC=$cc" >> $config_host_mak
+ echo "EXESUF=$EXESUF" >> $config_host_mak
+ 
+ # use included Linux headers for KVM architectures
+@@ -1789,6 +1788,13 @@ if test "$ccache_cpp2" = "yes"; then
+   echo "export CCACHE_CPP2=y" >> $config_host_mak
+ fi
+ 
++# contrib/plugins configuration
++echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
++echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
++echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
++echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
++echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
 +
- if get_option('install_blobs')
-   install_data(blobs, install_dir: qemu_datadir)
- endif
+ # tests/tcg configuration
+ (config_host_mak=tests/tcg/config-host.mak
+ mkdir -p tests/tcg
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+index b2b9db9f51a..0751201bcb3 100644
+--- a/contrib/plugins/Makefile
++++ b/contrib/plugins/Makefile
+@@ -6,11 +6,11 @@
+ # programs that the main configure has already done for us.
+ #
+ 
+-BUILD_DIR := $(CURDIR)/../..
++include config-host.mak
+ 
+-include $(BUILD_DIR)/config-host.mak
++TOP_SRC_PATH = $(SRC_PATH)/../..
+ 
+-VPATH += $(SRC_PATH)/contrib/plugins
++VPATH += $(SRC_PATH)
+ 
+ NAMES :=
+ NAMES += execlog
+@@ -26,21 +26,21 @@ SONAMES := $(addsuffix .so,$(addprefix lib,$(NAMES)))
+ 
+ # The main QEMU uses Glib extensively so it's perfectly fine to use it
+ # in plugins (which many example do).
+-CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
+-CFLAGS += -fPIC -Wall
+-CFLAGS += $(if $(CONFIG_DEBUG_TCG), -ggdb -O0)
+-CFLAGS += -I$(SRC_PATH)/include/qemu
++PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
++PLUGIN_CFLAGS += -fPIC -Wall
++PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
+ 
+ all: $(SONAMES)
+ 
+ %.o: %.c
+-	$(CC) $(CFLAGS) -c -o $@ $<
++	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
+ 
+ lib%.so: %.o
+-	$(CC) -shared -Wl,-soname,$@ -o $@ $^ $(LDLIBS)
++	$(CC) -shared -Wl,-soname,$@ -o $@ $^
+ 
+ clean:
+ 	rm -f *.o *.so *.d
+ 	rm -Rf .libs
+ 
+ .PHONY: all clean
++.SECONDARY:
 -- 
 2.41.0
 
