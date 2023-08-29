@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1B178C9F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10AB78C9F6
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:54:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb1y0-0002qa-Jh; Tue, 29 Aug 2023 12:53:24 -0400
+	id 1qb1yP-0002rO-3R; Tue, 29 Aug 2023 12:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qb1xq-0002oZ-VE
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:53:14 -0400
+ id 1qb1xu-0002ps-GR
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:53:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qb1xo-0002zh-F7
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:53:14 -0400
+ id 1qb1xq-0002zv-Co
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:53:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693327991;
+ s=mimecast20190719; t=1693327993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kx+/IxthZgFSqxHugpKwjpq3kgNjgZILQXQCxotth7w=;
- b=elWScvfhFa9jKKs7pCAuR1EuMb27V9p5JfK0AL1+8HvWgcfTDi8lRRCgrA02vrn4nM7NS/
- EOCtAd9IcR8/MRz7jN4LSGPSsudEG1i67BmY2hADvw9M66ASUNjP9e5hfz07tklZXYhHhe
- mhbve419wqhDvwxQYvROG06S+DhFUsE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QxYaDWJwA3ZsqeqTvkgL7faOR43INvEVDPD5ENQy8I0=;
+ b=HCJrj5AhjF4UZkzqmXq5IfIT63CXn0aqXRor3oGr9KqhFuNKGnZ7kKf818JTV54BjwLJwA
+ MYMdUJkdCQT88cidMDpwvgMZvDflRUi8RjgAzvzFsRrXksCLIrzCsa/S4fe/RGb2vVr77u
+ cFc6iNQKNgmD33CyDSGd1rZTfBhQo/A=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-eJfArkDAPVqI0RiV_kYrWw-1; Tue, 29 Aug 2023 12:53:10 -0400
-X-MC-Unique: eJfArkDAPVqI0RiV_kYrWw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fef5403093so46945e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:53:09 -0700 (PDT)
+ us-mta-563-xtktc21oNsaEHq-0ogWcLw-1; Tue, 29 Aug 2023 12:53:11 -0400
+X-MC-Unique: xtktc21oNsaEHq-0ogWcLw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-401b8089339so28187135e9.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:53:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693327988; x=1693932788;
+ d=1e100.net; s=20221208; t=1693327990; x=1693932790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kx+/IxthZgFSqxHugpKwjpq3kgNjgZILQXQCxotth7w=;
- b=SS9q6cwGJl45Gqc1c2a5IMBapXhE2tOyQiOWgCu5V61Ijq097ArEfDwoF8YSZD9CY9
- 9yCwzxyJZ2fPvxF9Zuqxh6peywe9rbq+UNzKU3oFziWzRO1wYNAFevPkfo71N9AodB/6
- 5n2AKT8aSd+tA+v0ls8QPwa9KOep5K6YWbjFH62K03vZlqyXn/ET+92pQK3uybZIchgZ
- P7Wj3auP2o4mF3qFLmkHkkKp+gGk55MSfySBQV6t27X2jM+gB9b28nlmbgbmFm/oX/PL
- BKaue1sDqu0z156uWne/7mmiIoBoDh6pASk5ZHoSo83WVJLTectTKoUn3h7ze2nY4yIj
- Ssiw==
-X-Gm-Message-State: AOJu0YyIQetF1FyYvMON8mMz71VGvW2G1HEcWyCTLWLWU4aYsSq/HLI9
- VOM+xqh6Pyatgev/UuqtMBf88ZctuhTdFFxGRjXwA+a/6pWKDMnKJabIjufBnzuvYV+yDkT6kBV
- ik2Hq8ejrDVwEPtAp5lIX25TR8U8jav07dbweO10WImNvaPPfn8UQqMjVKRqqdhhN8sPL9ebstJ
- 0=
-X-Received: by 2002:a05:600c:1e06:b0:400:5962:6aa9 with SMTP id
- ay6-20020a05600c1e0600b0040059626aa9mr2499713wmb.11.1693327988209; 
- Tue, 29 Aug 2023 09:53:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGE1msqH428Q3JVgzqH/9FiNoZNM0bHPG3Z82e3Mmw8dgUlC6fxY7bVMRV5sc7yj9WkGfCheA==
-X-Received: by 2002:a05:600c:1e06:b0:400:5962:6aa9 with SMTP id
- ay6-20020a05600c1e0600b0040059626aa9mr2499695wmb.11.1693327987818; 
- Tue, 29 Aug 2023 09:53:07 -0700 (PDT)
+ bh=QxYaDWJwA3ZsqeqTvkgL7faOR43INvEVDPD5ENQy8I0=;
+ b=BZ7iaKJ8KcPXa0ZLCR5ztoDjd7fZj3lfZ0KjWIvDLCjsFwL21SYDrqqlCBkxJqEEQ6
+ faht7Tu+pFSx6fPu64p0dK2tyz88K/MWdDVwl7bJMcn5Qoc/YGeSX9g9JqrnPyN59Gyd
+ ur9qr5cIWY110XCTCrkcLLnM7SSqvqOE2ajxQAwtOgiHpC6iU2W5wLyu2isre4GYSTqw
+ QDN3cjrISQAPVEx197iY5fq5b3ZWilYXWwY7uT3Cqy5Ojyo6mI1FJXmD28GVI+pFXFu4
+ LlTvUwKDo2IXLLhI+PsB6xK2xzeIOE2UZK2ImUH3X9ELp5mime/Lr3six+HA9bWtbzSm
+ 0SvQ==
+X-Gm-Message-State: AOJu0YwMu/XlSUAY+mbCye7k6jkzcxHVuyjXDUzXkLxfwGrVwP1P2Drv
+ 1/W8nWJ1Ad80HLgwG5JEUi86fLk9EXyuTR7OK6nkEzbppaSNfh6ZvANFiRymYcIb/gUA1IoMaKy
+ 7FgUPZD28do7ngBqEr2eIQj9CT2iuWTJMs2VVleDWVbO5aMbWq2TlMIWoVxq8gq9dkwR8z22OHI
+ Y=
+X-Received: by 2002:a05:600c:255:b0:3fe:90f:8496 with SMTP id
+ 21-20020a05600c025500b003fe090f8496mr21794461wmj.1.1693327990087; 
+ Tue, 29 Aug 2023 09:53:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFWjQSQyVnZ8N3k23rtbbGYtyJTfnwZrtU9HuX7xLD28h0hBZokLrQ5s41175wYZ+1XyC1sA==
+X-Received: by 2002:a05:600c:255:b0:3fe:90f:8496 with SMTP id
+ 21-20020a05600c025500b003fe090f8496mr21794444wmj.1.1693327989667; 
+ Tue, 29 Aug 2023 09:53:09 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- z19-20020a7bc7d3000000b003fe2b6d64c8sm12036818wmk.21.2023.08.29.09.53.06
+ y24-20020a1c4b18000000b003fc01189b0dsm14399870wma.42.2023.08.29.09.53.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 09:53:06 -0700 (PDT)
+ Tue, 29 Aug 2023 09:53:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PATCH 1/2] target/i386: generalize operand size "ph" for use in
- CVTPS2PD
-Date: Tue, 29 Aug 2023 18:53:03 +0200
-Message-ID: <20230829165304.114948-2-pbonzini@redhat.com>
+Subject: [PATCH 2/2] target/i386: fix memory operand size for CVTPS2PD
+Date: Tue, 29 Aug 2023 18:53:04 +0200
+Message-ID: <20230829165304.114948-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230829165304.114948-1-pbonzini@redhat.com>
 References: <20230829165304.114948-1-pbonzini@redhat.com>
@@ -85,7 +84,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,62 +100,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CVTPS2PD only loads a half-register for memory, like CVTPH2PS.  It can
-reuse the "ph" packed half-precision size to load a half-register,
-but rename it to "xh" because it is now a variation of "x" (it is not
-used only for half-precision values).
+CVTPS2PD only loads a half-register for memory, unlike the other
+operations under 0x0F 0x5A.  "Unpack" the group into separate
+emission functions instead of using gen_unary_fp_sse.
 
 Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1377
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 6 +++---
- target/i386/tcg/decode-new.h     | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ target/i386/tcg/decode-new.c.inc | 14 ++++++++++++--
+ target/i386/tcg/emit.c.inc       | 30 +++++++++++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 7 deletions(-)
 
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 8f93a239ddb..43c39aad2aa 100644
+index 43c39aad2aa..0db19cda3b7 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -337,7 +337,7 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x07] = X86_OP_ENTRY3(PHSUBSW,   V,x,  H,x,   W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+@@ -805,10 +805,20 @@ static void decode_sse_unary(DisasContext *s, CPUX86State *env, X86OpEntry *entr
+     case 0x51: entry->gen = gen_VSQRT; break;
+     case 0x52: entry->gen = gen_VRSQRT; break;
+     case 0x53: entry->gen = gen_VRCP; break;
+-    case 0x5A: entry->gen = gen_VCVTfp2fp; break;
+     }
+ }
  
-     [0x10] = X86_OP_ENTRY2(PBLENDVB,  V,x,         W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
--    [0x13] = X86_OP_ENTRY2(VCVTPH2PS, V,x,         W,ph, vex11 cpuid(F16C) p_66),
-+    [0x13] = X86_OP_ENTRY2(VCVTPH2PS, V,x,         W,xh, vex11 cpuid(F16C) p_66),
-     [0x14] = X86_OP_ENTRY2(BLENDVPS,  V,x,         W,x,  vex4 cpuid(SSE41) p_66),
-     [0x15] = X86_OP_ENTRY2(BLENDVPD,  V,x,         W,x,  vex4 cpuid(SSE41) p_66),
-     /* Listed incorrectly as type 4 */
-@@ -565,7 +565,7 @@ static const X86OpEntry opcodes_0F3A[256] = {
-     [0x15] = X86_OP_ENTRY3(PEXTRW,     E,w,  V,dq, I,b,  vex5 cpuid(SSE41) zext0 p_66),
-     [0x16] = X86_OP_ENTRY3(PEXTR,      E,y,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
-     [0x17] = X86_OP_ENTRY3(VEXTRACTPS, E,d,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
--    [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,ph, V,x,  I,b,  vex11 cpuid(F16C) p_66),
-+    [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,xh, V,x,  I,b,  vex11 cpuid(F16C) p_66),
++static void decode_0F5A(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
++{
++    static const X86OpEntry opcodes_0F5A[4] = {
++        X86_OP_ENTRY2(VCVTPS2PD,  V,x,       W,xh, vex2),      /* VCVTPS2PD */
++        X86_OP_ENTRY2(VCVTPD2PS,  V,x,       W,x,  vex2),      /* VCVTPD2PS */
++        X86_OP_ENTRY3(VCVTSS2SD,  V,x,  H,x, W,x,  vex2_rep3), /* VCVTSS2SD */
++        X86_OP_ENTRY3(VCVTSD2SS,  V,x,  H,x, W,x,  vex2_rep3), /* VCVTSD2SS */
++    };
++    *entry = *decode_by_prefix(s, opcodes_0F5A);
++}
++
+ static void decode_0F5B(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
+ {
+     static const X86OpEntry opcodes_0F5B[4] = {
+@@ -891,7 +901,7 @@ static const X86OpEntry opcodes_0F[256] = {
  
-     [0x20] = X86_OP_ENTRY4(PINSRB,     V,dq, H,dq, E,b,  vex5 cpuid(SSE41) zext2 p_66),
-     [0x21] = X86_OP_GROUP0(VINSERTPS),
-@@ -1104,7 +1104,7 @@ static bool decode_op_size(DisasContext *s, X86OpEntry *e, X86OpSize size, MemOp
-         *ot = s->vex_l ? MO_256 : MO_128;
-         return true;
+     [0x58] = X86_OP_ENTRY3(VADD,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+     [0x59] = X86_OP_ENTRY3(VMUL,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+-    [0x5a] = X86_OP_GROUP3(sse_unary,  V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2), /* CVTPS2PD */
++    [0x5a] = X86_OP_GROUP0(0F5A),
+     [0x5b] = X86_OP_GROUP0(0F5B),
+     [0x5c] = X86_OP_ENTRY3(VSUB,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+     [0x5d] = X86_OP_ENTRY3(VMIN,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 4fe8dec4274..45a3e55cbfb 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -1914,12 +1914,22 @@ static void gen_VCOMI(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     set_cc_op(s, CC_OP_EFLAGS);
+ }
  
--    case X86_SIZE_ph: /* SSE/AVX packed half precision */
-+    case X86_SIZE_xh: /* SSE/AVX packed half register */
-         *ot = s->vex_l ? MO_128 : MO_64;
-         return true;
+-static void gen_VCVTfp2fp(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++static void gen_VCVTPD2PS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+-    gen_unary_fp_sse(s, env, decode,
+-                     gen_helper_cvtpd2ps_xmm, gen_helper_cvtps2pd_xmm,
+-                     gen_helper_cvtpd2ps_ymm, gen_helper_cvtps2pd_ymm,
+-                     gen_helper_cvtsd2ss, gen_helper_cvtss2sd);
++    if (s->vex_l) {
++        gen_helper_cvtpd2ps_ymm(cpu_env, OP_PTR0, OP_PTR2);
++    } else {
++        gen_helper_cvtpd2ps_xmm(cpu_env, OP_PTR0, OP_PTR2);
++    }
++}
++
++static void gen_VCVTPS2PD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    if (s->vex_l) {
++        gen_helper_cvtps2pd_ymm(cpu_env, OP_PTR0, OP_PTR2);
++    } else {
++        gen_helper_cvtps2pd_xmm(cpu_env, OP_PTR0, OP_PTR2);
++    }
+ }
  
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index cb6b8bcf678..a542ec16813 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -92,7 +92,7 @@ typedef enum X86OpSize {
-     /* Custom */
-     X86_SIZE_d64,
-     X86_SIZE_f64,
--    X86_SIZE_ph, /* SSE/AVX packed half precision */
-+    X86_SIZE_xh, /* SSE/AVX packed half register */
- } X86OpSize;
+ static void gen_VCVTPS2PH(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+@@ -1936,6 +1946,16 @@ static void gen_VCVTPS2PH(DisasContext *s, CPUX86State *env, X86DecodedInsn *dec
+     }
+ }
  
- typedef enum X86CPUIDFeature {
++static void gen_VCVTSD2SS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_cvtsd2ss(cpu_env, OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
++static void gen_VCVTSS2SD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_cvtss2sd(cpu_env, OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
+ static void gen_VCVTSI2Sx(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     int vec_len = vector_len(s, decode);
 -- 
 2.41.0
 
