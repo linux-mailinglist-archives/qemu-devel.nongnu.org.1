@@ -2,100 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB39778C351
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 13:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5542278C381
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 13:41:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qawv2-0003bB-Go; Tue, 29 Aug 2023 07:30:00 -0400
+	id 1qax4i-0008Gr-Ol; Tue, 29 Aug 2023 07:40:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qawuu-0003ZM-Fp
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:29:52 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qax4f-0008Fu-TF
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:39:57 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qawuq-0004k1-0c
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:29:52 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4018af1038cso40362955e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 04:29:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qax4W-0000N9-W9
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:39:53 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-500a8b2b73eso6212336e87.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 04:39:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693308586; x=1693913386;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9MksNfXoeieEr4wSGNuSO6rtZ9kgqhOEcMMHWPrH2Ug=;
- b=vhktvdlf3gpP3WGHTnTyGLNwdcH4/m/ezR4VRwclOdzIzzw4jG4oOSL0C/PZCmsFe4
- IegmBFDSBOjbQNppu63hNCxS2mko3gtRZgI3wvWopDYrnUxCV4+0zqqj9OB9eeRSvQYm
- xplraz8PIMD+mWXcezjyaAyEQvgqRbr22rvoudMlQ8pXVW1GHctqEu7mVrTgVxb8VBbw
- rYUDL2Pqc6vkOF67MTnjBCpp2xlb9/S7Rc53XSaEWT+33bjmYzqH565LEnsNUkw/a+qQ
- FzSdTjDlIdD+8VrcKMRzEfjetvP9tIFc3sprypLPb6fOSOrUXrM5YFedFuctO2Z0EUub
- U0og==
+ d=linaro.org; s=google; t=1693309181; x=1693913981;
+ h=content-transfer-encoding:cc:organization:subject:from:to
+ :content-language:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=idpYPs2gFiTnX8PBeKAykYbJTGbWSWsOs8ccLbmc+hw=;
+ b=scy5DQKsGxkileBbi/SSboPmS0xShD/rkNsd+cuuFWSM8oHKPLmJBcnm5XU9DxDwCU
+ aFDo9M8R1AECRGDlFSHjXfFoM0HFC7IhRFyBdGdS8KULVmOFGKHbqDZ6tCdh3l/Ky03/
+ hU/FN5ve+phkuIuMFjbukr5Bd8qzCrckTt8J606+AlmCu073YUMEpanuOMwQ4rjF223u
+ Tv1zke/2dyrewO+ubrjlETuxjGr0lUk+7jthPPigdUGPNGRmv9wgzOQIGjNQWPkF2bE2
+ W7ZRzgB3F9eNq7Gzi7utaAc2D5YTRbxgfTDjrN/icMFc3LKnfZ0QZYnsySac5RlZzXNe
+ zdUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693308586; x=1693913386;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693309181; x=1693913981;
+ h=content-transfer-encoding:cc:organization:subject:from:to
+ :content-language:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9MksNfXoeieEr4wSGNuSO6rtZ9kgqhOEcMMHWPrH2Ug=;
- b=epzkW2GCdiM7YlYaLfSt2Ge1QJiIpO17b6SaySulVtZ6qGPkTyHZGY5hvKg/AGuJc6
- DmxGdc1XXraIVpJr/zlTz24/c4EyEfNonDKthWhbAeJXSZ1hcscfVGZ40gcXOsfebp58
- VW2UaiE0EeKmEjf+ggVA5rboaGs/Sgno1zUMScZURnrtbsudaJmTabIwifeWfKZ+/w/i
- R+7wVs0Er6GxVyxXyM7LTVi5E2a6NlCURHnk17GuMYRBfHWZUCjF8nCxPBCn2sqW872y
- gqBeLk+AhZoeXfzVaK+9AYaCfthQBLh6UyWzPcElc1ZJkDbRymaeNr35JFOMlINUwnug
- AsZA==
-X-Gm-Message-State: AOJu0YxfhGMpxL3O7VjIy39hk01KFc0X8DGyZ3Zyx/MUrYMe5Nh0HKg+
- K7/6nc9suyUE3Vuwr7QzA8c7tg==
-X-Google-Smtp-Source: AGHT+IFKuINnZBnGh1wSq4dDXu5XQQlOLc2yIrqu5muMzFDM7T+3oxSy69D7t1K2xrbmoyTrrZR65g==
-X-Received: by 2002:a05:600c:144:b0:401:bf89:b013 with SMTP id
- w4-20020a05600c014400b00401bf89b013mr7205306wmm.19.1693308585895; 
- Tue, 29 Aug 2023 04:29:45 -0700 (PDT)
-Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
- [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
- q20-20020a7bce94000000b003fedcd02e2asm13682512wmj.35.2023.08.29.04.29.44
+ bh=idpYPs2gFiTnX8PBeKAykYbJTGbWSWsOs8ccLbmc+hw=;
+ b=ewoNyO3R8HMISBsyilDLR+gJf/3pi+b5xduKnVgNhOJRWu7442FKCCg/sK7eVO7+eZ
+ WBLXSwbxbrNbRFlVlVkAQX4UMvOJYr+ctagTwq2/FlV1rtxiDV4I9ag60ryiy1z53KCS
+ BCJjglvJbnSsAVUbcxuyYL/d8z9qXcfqBpY3GOKtJoSPUX6itWDB0PZ6DsDziER/xgTI
+ ikZTwYoaHjKtUFFLusHfxrYa4NzA8bvPaMcBy2Q4iQpF7wK4M7+gtx1qtY+8RbC/fnl8
+ wbPElPuPl8BZs8yjo3XBoswbl/6EohpMasa4JwE8uAJ6y37P87FZwzDFCHHy9bgf5Poa
+ 2XGw==
+X-Gm-Message-State: AOJu0YyVIS45cYN8mGPBnn8de1LpDhF75zBiufEWd6QjX17hFYJ6n7sa
+ b7OxvZCejQcgbJ1YRLctgK0URaggSxylMkCkzTAp/Q==
+X-Google-Smtp-Source: AGHT+IEziar3Kq56l0f7p1fR8/0qPqfhTZbUWqdEwSO4fO0vaaxISnnpX+x+CE5SHJ8cJnD6O+rhJg==
+X-Received: by 2002:a05:6512:33c5:b0:4f9:cd02:4af1 with SMTP id
+ d5-20020a05651233c500b004f9cd024af1mr22674118lfg.34.1693309179990; 
+ Tue, 29 Aug 2023 04:39:39 -0700 (PDT)
+Received: from [192.168.200.206] (83.11.188.80.ipv4.supernova.orange.pl.
+ [83.11.188.80]) by smtp.gmail.com with ESMTPSA id
+ u5-20020ac248a5000000b004fbd39b69adsm1926529lfg.199.2023.08.29.04.39.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 04:29:45 -0700 (PDT)
-Message-ID: <c16efe25-5559-fb0e-a89a-e9b7ffd1561b@linaro.org>
-Date: Tue, 29 Aug 2023 13:29:43 +0200
+ Tue, 29 Aug 2023 04:39:39 -0700 (PDT)
+Message-ID: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
+Date: Tue, 29 Aug 2023 13:39:38 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 11/11] machine: Improve error message when using
- default RAM backend id
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Cc: ThinerLogoer <logoerthiner1@163.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Daniel_P=2eBerrang=c3=a9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-References: <20230823153412.832081-1-david@redhat.com>
- <20230823153412.832081-12-david@redhat.com>
- <209b4b8c.54bc.18a2b7b6f53.Coremail.logoerthiner1@163.com>
- <e81b5069-e49a-cfb4-bea9-3c7ab6a358ca@redhat.com>
- <87msyfo5b0.fsf@pond.sub.org>
- <bd8f7f13-b982-6cf6-1ef7-16b4738b94ac@redhat.com>
- <87sf87momv.fsf@pond.sub.org>
- <d87ac218-0051-ad91-5867-d1bec9f4fda4@redhat.com>
- <78fd367f-740a-4b37-0faf-dd0cabae4bd6@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <78fd367f-740a-4b37-0faf-dd0cabae4bd6@redhat.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: pl-PL, en-GB, en-HK
+To: qemu-devel@nongnu.org
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
+Organization: Linaro
+Cc: Gowtham Siddarth <gowtham.siddarth@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,76 +92,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/8/23 12:10, David Hildenbrand wrote:
-> On 25.08.23 11:59, David Hildenbrand wrote:
->> On 25.08.23 11:56, Markus Armbruster wrote:
->>> David Hildenbrand <david@redhat.com> writes:
->>>
->>>> On 25.08.23 11:10, Markus Armbruster wrote:
->>>>> David Hildenbrand <david@redhat.com> writes:
->>>>>
->>>>>> On 25.08.23 08:57, ThinerLogoer wrote:
->>>>>>> Hello,
->>>>>>>
->>>>>>> At 2023-08-23 23:34:11, "David Hildenbrand" <david@redhat.com> 
->>>>>>> wrote:
->>>>>>>> For migration purposes, users might want to reuse the default RAM
->>>>>>>> backend id, but specify a different memory backend.
->>>>>>>>
->>>>>>>> For example, to reuse "pc.ram" on q35, one has to set
->>>>>>>>        -machine q35,memory-backend=pc.ram
->>>>>>>> Only then, can a memory backend with the id "pc.ram" be created
->>>>>>>> manually.
->>>>>>>>
->>>>>>>> Let's improve the error message.
->>>>>>>>
->>>>>>>> Unfortuantely, we cannot use error_append_hint(), because the 
->>>>>>>> caller
->>>>>>>> passes &error_fatal.
->>>>>>>>
->>>>>>>> Suggested-by: ThinerLogoer <logoerthiner1@163.com>
->>>>>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>>>>>>> ---
->>>>>>>> hw/core/machine.c | 4 +++-
->>>>>>>> 1 file changed, 3 insertions(+), 1 deletion(-)
+I am working on aarch64/sbsa-ref machine so people can have virtual
+machine to test their OS against something reminding standards compliant
+system.
+
+One of tools I use is BSA ACS (Base System Architecture - Architecture
+Compliance Suite) [1] written by Arm. It runs set of tests to check does
+system conforms to BSA specification.
+
+1. https://github.com/ARM-software/bsa-acs
 
 
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index f0d35c6401..09f40c7f07 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -1352,6 +1352,7 @@ out:
-> 
->   void machine_run_board_init(MachineState *machine, const char 
-> *mem_path, Error **errp)
->   {
-> +    ERRP_GUARD();
->       MachineClass *machine_class = MACHINE_GET_CLASS(machine);
->       ObjectClass *oc = object_class_by_name(machine->cpu_type);
->       CPUClass *cc;
-> @@ -1380,9 +1381,13 @@ void machine_run_board_init(MachineState 
-> *machine, const char *mem_path, Error *
->                  numa_uses_legacy_mem()) {
->           if (object_property_find(object_get_objects_root(),
->                                    machine_class->default_ram_id)) {
-> -            error_setg(errp, "object name '%s' is reserved for the 
-> default"
-> -                " RAM backend, it can't be used for any other purposes."
-> -                " Change the object's 'id' to something else",
-> +            error_setg(errp, "object's id '%s' is reserved for the 
-> default"
-> +                " RAM backend, it can't be used for any other purposes",
-> +                machine_class->default_ram_id);
-> +            error_append_hint(errp,
-> +                "Change the object's 'id' to something else or disable"
-> +                " automatic creation of the default RAM backend by 
-> setting"
-> +                " 'memory-backend=%s' with '-machine'.\n",
->                   machine_class->default_ram_id);
->               return;
->           }
+SBSA-ref goes better and better, yet still we have some issues. One of
+them is test 822 ("Check Type 1 config header rules") which fails on
+each PCIe root port device:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+BDF 0x400 : SLT attribute mismatch: 0xFF020100 instead of 0x20100
+BDF 0x500 : SLT attribute mismatch: 0xFF030300 instead of 0x30300
+BDF 0x600 : SLT attribute mismatch: 0xFF040400 instead of 0x40400
+
+I reported it as an issue [2] and got response that it may be QEMU
+fault. My pcie knowledge is not good enough to know where the problem is.
+
+2. https://github.com/ARM-software/bsa-acs/issues/193
 
 
+In the comment Gowtham Siddarth wrote:
+
+> Regarding the SLT (Secondary Latency Timer) register, the expected 
+> values align with the ACS specifications, registering as 0. However, 
+> a discrepancy arises in the register's attribute, intended to be set 
+> as Read-Only. Contrary to this intent, the bit field seems to 
+> function as> Read-Write. Ordinarily, when attempting to write to the 
+> register by configuring all bits to 1, the anticipated behaviour 
+> should involve rejecting the write operation, maintaining the value 
+> at 0 to uphold the register's designated Read-Only nature. However, 
+> in this scenario, the write action takes effect, leading to a 
+> transformation of the register's value to FFs. This anomaly could 
+> potentially stem from an issue within the emulator.
+
+Does someone know where the problem may be? And how to fix it?
 
