@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D205378C043
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D519578C047
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:31:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qau74-0002rm-GH; Tue, 29 Aug 2023 04:30:16 -0400
+	id 1qau6q-0002nj-ON; Tue, 29 Aug 2023 04:30:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qau6f-0002dc-7M
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:29:49 -0400
+ id 1qau6h-0002fQ-50
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:29:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qau6a-0008Rd-4P
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:29:48 -0400
+ id 1qau6c-0008Sa-I2
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:29:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693297783;
+ s=mimecast20190719; t=1693297785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=F+2YITt1ZYq7j1igsqUCB1nnRp6fLRIOelIupAjVtmo=;
- b=IaR9Rm4MjOI7FsHfZeHnSc+N1qS1eKruBBRMLQp+tnyhtRAudujcSGm6YS+ksSywRaB6Qo
- uIt8oZntRCRcdW7tweISxd0NKK95v7/jkeGs1s28DNK+YNdYF59Rhxa6nPE3y3m1r2lep1
- 53hG03YTmf4THlZJ9wphR8irCH0VxtQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FauAQsYjXDlu9ZECvKkk/e1x+qBM0JTooSFiC+XHukk=;
+ b=Rbq4wM51nnppdIGVcKJVNSzbeoCD3Mgs39J+06Pw75GLjXMbl6LLwobJ9aYTeHodna/fea
+ q68t1+i/xjzkn3hRr5IJDQndP/OBqBsTbKbfsvojFTunAQRMvLHuAAeqTJwz0mGCbmoYJB
+ 7AiYj4L+mBC7I1cxCiv4im0zIyI1VYQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-fZW6lMtSMtyjIM6vTp376Q-1; Tue, 29 Aug 2023 04:29:41 -0400
-X-MC-Unique: fZW6lMtSMtyjIM6vTp376Q-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-315af0252c2so2667625f8f.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:29:41 -0700 (PDT)
+ us-mta-365-nHx35vO6PlGG6KedVehM9w-1; Tue, 29 Aug 2023 04:29:43 -0400
+X-MC-Unique: nHx35vO6PlGG6KedVehM9w-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-313c930ee0eso2968102f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:29:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693297780; x=1693902580;
+ d=1e100.net; s=20221208; t=1693297782; x=1693902582;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F+2YITt1ZYq7j1igsqUCB1nnRp6fLRIOelIupAjVtmo=;
- b=dCk3B21bp6cOT1IyDX5AiGak69MqSENto+908200HNVBMOdwMlvtqPSKR/R0F/M4rD
- zAe3GWc1cYAKGVSgu98so93S8v4GEB8nKu+39jrEj9/sDLjjtiL6lJndZ8HS2Wp9uTYo
- i+fMJZnGSisqNljjpd1jE/IKQ09MOA93QDLnYQhyN3Q69kw9f7E01U5yj0qZv2+fqnnF
- ootr9HaL5xvFib8TbjVP6bLfcCV/J2Qh8yV3uN2YKRijNJ93+FvUPlfylJ6fOyqwHWe6
- Y06mWkASM2ndz2D3VgEHwiik2JQ+tONZy/nmq8O3xtJLS6nrV09Ry8iod6y2ajbnp1yn
- UVbA==
-X-Gm-Message-State: AOJu0YzjZ18Qp1RLzAk+IGa8eR7YgIQV4BKWVrFG0q3GeuxumwheFccI
- xCiVGPDVPMxJOkhvnhdk2rPr55CR9eHXbk0h25P3y8N3sfHPLSMrMoxE+kolCpHC6wdnbeJPF0d
- GCmt+vn9gstia0/HNfdFCAnIznnQp01UG1y59afXuy1Em08Hdvm5R5/R91PhkCQuJzkaM8tf3Oc
- 0=
-X-Received: by 2002:a05:6000:12d2:b0:317:58eb:1e33 with SMTP id
- l18-20020a05600012d200b0031758eb1e33mr21791140wrx.8.1693297780303; 
- Tue, 29 Aug 2023 01:29:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF16TgdGGqRGfH4AGXb0+AEWao7BRFwkqMCOzSCJiww53/YnYopfBFp/ygvBAbeuQn03On5iA==
-X-Received: by 2002:a05:6000:12d2:b0:317:58eb:1e33 with SMTP id
- l18-20020a05600012d200b0031758eb1e33mr21791132wrx.8.1693297780037; 
- Tue, 29 Aug 2023 01:29:40 -0700 (PDT)
+ bh=FauAQsYjXDlu9ZECvKkk/e1x+qBM0JTooSFiC+XHukk=;
+ b=ZsyKgs6GxAXlgXRDyJPVVPcyRU1H/B5s8N3IeE3pJKy/nPrilpzlbI5xod7vv2Kfab
+ FhrkoGomZr5g0qbY2Mly+KiCKuwhNIEbHrmb+WZhqZrdXMz3smYPQtD8JXiyG3FcTmN2
+ 4euCaKsnkKLG6tPwLtRuQwUw7iyjvjsNOi8eGmBpoff40V0oAEwLvBIWEY7/0BAf1pye
+ wp47mjRYro5UtQcEv+hWS3TB+IbOGYhWvCdkSZME1X3QiTIZwDqgWTVdGSVui0cqjibl
+ DqC5WWdJj3pyabzSeWAp+ClhwoSQL8ztK7dsPUhYzH0zm8Y2vCO74F6U3x6dxmLtSX0C
+ Cr8w==
+X-Gm-Message-State: AOJu0YzEx07w7guW4581+3w2dcNdu4gYi4a5zVOTSPRhtWExWOxV9sLW
+ Z88hHiOwqTWV6Luw+V4NkaxnQssLRPDmHi2sz+id0ibaK4+wTtrIyQy450eSAwp5ygyvdm4y7sT
+ Kmi3H1i9BIBT+ytUK4mlYygtsRcs4u0cZeGTORBLBSgIMWrIXJr0AK9W8jkzUoH/HKLz1hfveSL
+ k=
+X-Received: by 2002:a5d:4ace:0:b0:317:7441:1a4 with SMTP id
+ y14-20020a5d4ace000000b00317744101a4mr20415517wrs.29.1693297782253; 
+ Tue, 29 Aug 2023 01:29:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAcG0qdxlCep6bWalsGGEEk+Z2/oaXdJbS+n0tvSNu30ljmkx8elMC2HW2127tJpVjsJby2Q==
+X-Received: by 2002:a5d:4ace:0:b0:317:7441:1a4 with SMTP id
+ y14-20020a5d4ace000000b00317744101a4mr20415508wrs.29.1693297781906; 
+ Tue, 29 Aug 2023 01:29:41 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- o12-20020adfcf0c000000b0031ad2663ed0sm13007348wrj.66.2023.08.29.01.29.38
+ v3-20020a5d43c3000000b003140fff4f75sm12898569wrr.17.2023.08.29.01.29.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 01:29:38 -0700 (PDT)
+ Tue, 29 Aug 2023 01:29:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/10] configure: create native file with contents of $host_cc
-Date: Tue, 29 Aug 2023 10:29:25 +0200
-Message-ID: <20230829082931.67601-5-pbonzini@redhat.com>
+Subject: [PATCH 05/10] meson: compile bundled device trees
+Date: Tue, 29 Aug 2023 10:29:26 +0200
+Message-ID: <20230829082931.67601-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230829082931.67601-1-pbonzini@redhat.com>
 References: <20230829082931.67601-1-pbonzini@redhat.com>
@@ -100,54 +100,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The argument of --host-cc is not obeyed when cross compiling.  To avoid
-this issue, place it in a configuration file and pass it to meson
-with --native-file.
-
-While at it, clarify that --host-cc is not obeyed anyway when _not_
-cross compiling.
+If dtc is available, compile the .dts files in the pc-bios directory
+instead of using the precompiled binaries.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ pc-bios/Makefile    | 19 -------------------
+ pc-bios/meson.build | 25 +++++++++++++++++++++----
+ 2 files changed, 21 insertions(+), 23 deletions(-)
+ delete mode 100644 pc-bios/Makefile
 
-diff --git a/configure b/configure
-index 3423f008d5c..b2bc1ff5f7b 100755
---- a/configure
-+++ b/configure
-@@ -922,7 +922,7 @@ Advanced options (experts only):
-   --cross-prefix=PREFIX    use PREFIX for compile tools, PREFIX can be blank [$cross_prefix]
-   --cc=CC                  use C compiler CC [$cc]
-   --host-cc=CC             use C compiler CC [$host_cc] for code run at
--                           build time
-+                           build time when cross compiling
-   --cxx=CXX                use C++ compiler CXX [$cxx]
-   --objcc=OBJCC            use Objective-C compiler OBJCC [$objcc]
-   --extra-cflags=CFLAGS    append extra C compiler flags CFLAGS
-@@ -1886,7 +1886,6 @@ if test "$skip_meson" = no; then
-   echo "windres = [$(meson_quote $windres)]" >> $cross
-   echo "windmc = [$(meson_quote $windmc)]" >> $cross
-   if test "$cross_compile" = "yes"; then
--    cross_arg="--cross-file config-meson.cross"
-     echo "[host_machine]" >> $cross
-     echo "system = '$targetos'" >> $cross
-     case "$cpu" in
-@@ -1903,6 +1902,14 @@ if test "$skip_meson" = no; then
-     else
-         echo "endian = 'little'" >> $cross
-     fi
-+    cross_arg="--cross-file config-meson.cross"
+diff --git a/pc-bios/Makefile b/pc-bios/Makefile
+deleted file mode 100644
+index 315288df84e..00000000000
+--- a/pc-bios/Makefile
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#
+-# NOTE: only compilable with x86 cross compile tools
+-#
+-include ../config-host.mak
+-
+-DEFINES=
+-
+-TARGETS=
+-
+-all: $(TARGETS)
+-
+-%.o: %.S
+-	$(CC) $(DEFINES) -c -o $@ $<
+-
+-%.dtb: %.dts
+-	dtc -I dts -O dtb -o $@ $<
+-
+-clean:
+-	rm -f $(TARGETS) *.o *~
+diff --git a/pc-bios/meson.build b/pc-bios/meson.build
+index a7224ef4699..e67fa433a1b 100644
+--- a/pc-bios/meson.build
++++ b/pc-bios/meson.build
+@@ -57,10 +57,6 @@ blobs = [
+   'efi-e1000e.rom',
+   'efi-vmxnet3.rom',
+   'qemu-nsis.bmp',
+-  'bamboo.dtb',
+-  'canyonlands.dtb',
+-  'petalogix-s3adsp1800.dtb',
+-  'petalogix-ml605.dtb',
+   'multiboot.bin',
+   'multiboot_dma.bin',
+   'linuxboot.bin',
+@@ -84,6 +80,27 @@ blobs = [
+   'vof-nvram.bin',
+ ]
+ 
++dtc = find_program('dtc', required: false)
++foreach f : [
++  'bamboo.dts',
++  'canyonlands.dts',
++  'petalogix-s3adsp1800.dts',
++  'petalogix-ml605.dts',
++]
++  out = fs.replace_suffix(f, '.dtb')
++  if dtc.found()
++    custom_target(f,
++        build_by_default: have_system,
++        input: files(f),
++        output: out,
++        install: get_option('install_blobs'),
++        install_dir: qemu_datadir,
++        command: [ dtc, '-I', 'dts', '-O', 'dtb', '-o', '@OUTPUT@', '@INPUT0@' ])
++  else
++    blobs += out
++  endif
++endforeach
 +
-+    native="config-meson.native.new"
-+    echo "# Automatically generated by configure - do not modify" > $native
-+    echo "[binaries]" >> $native
-+    echo "c = [$(meson_quote $host_cc)]" >> $native
-+    mv $native config-meson.native
-+    cross_arg="$cross_arg --native-file config-meson.native"
-   else
-     cross_arg="--native-file config-meson.cross"
-   fi
+ if get_option('install_blobs')
+   install_data(blobs, install_dir: qemu_datadir)
+ endif
 -- 
 2.41.0
 
