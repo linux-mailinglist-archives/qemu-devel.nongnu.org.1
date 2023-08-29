@@ -2,85 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5741278C9D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D1878C9D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:44:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb1nH-0004Qm-K7; Tue, 29 Aug 2023 12:42:20 -0400
+	id 1qb1of-00059Z-IA; Tue, 29 Aug 2023 12:43:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb1nA-0004QA-09
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:42:12 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb1n6-0000gB-BT
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:42:11 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-401187f8071so12215e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:42:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693327325; x=1693932125;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=83e5koAilgLUolY7xNHwOlJBPOY3n9Ao6QkCqx1M4lY=;
- b=ffLQvOn9pYcbnPJU00VHjEQfWF0K5WJAZWnDGssUrjANQ+D+pjAkp+YEUFcU6bk3BQ
- NkFKOmz1qf3MYE1Zsgl0BRl6XVTs/2CRFIrv2rE+9vT+5O4jI908ajOkL2eAD4d1yWhG
- YxTbTCUj9L4eW5LwF3UZamPhAUqhEwkSjU3gCLTIlFBJWrna7Fk0kokEgjD86hasXEk4
- ffBzVroFDaSJhHfovxFstT2wvyUsfFUIxy26yl0Tj8fc6RPC2al5lanuufV/f1GEe6/1
- OmctkbreIms/+aE4WUaJlOr29xrAZ+9b6w4S69Uq32cJGeCj3pGiI869UbdjHx6EfFum
- MLlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693327325; x=1693932125;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=83e5koAilgLUolY7xNHwOlJBPOY3n9Ao6QkCqx1M4lY=;
- b=IGey5UjwlfTa3bvmz3WZqWNhvfbjuEe1gULaFopH+mdkbYtGG9pRfBVT3v/qjkRKvf
- V16070FsvteK/XwwPDpdisasNeHx7lV9FDoUSxhYL32mnS1TbLwE+MQ7ci/PnQ7lZYeq
- To2BC3Qt/WcW56BoucSQRn4B2DanizgeGR1GTBsKt0NuzcUe4aGJQpONMXKozxzNVJqD
- NVnUL7SJvdqXx5upuSRnlY8mx6eEVCrO6JZYeESCAsZQ8QRh5t1DmPlq0tmnclvEAlNa
- LVj9aOdXBBvoz0yYgyyF/lu40UzO7wK30+bwrUal2uZXdGwrY7id3RRA87IIkUBM5Ovf
- UtIQ==
-X-Gm-Message-State: AOJu0Yw7o8YwgOx0OxWLZa/XI3sqb13baPOWpwbhE0daeOnAgTnkE98n
- 0xQV2IEmclkX1HKvh9C45NUINA==
-X-Google-Smtp-Source: AGHT+IFbs5hwh8YmnMC8weJu1kVbl+L0ymFM4wue40PLd77D8kx/Fj33Masiy/uAescFrjuvQ5ZltQ==
-X-Received: by 2002:a1c:4c17:0:b0:3fe:da37:d59 with SMTP id
- z23-20020a1c4c17000000b003feda370d59mr2606769wmf.4.1693327324684; 
- Tue, 29 Aug 2023 09:42:04 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- 6-20020a05600c020600b003fc04d13242sm17755176wmi.0.2023.08.29.09.42.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 09:42:04 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E8C5A1FFBB;
- Tue, 29 Aug 2023 17:42:03 +0100 (BST)
-References: <20230829132948.51053-1-thuth@redhat.com>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-trivial@nongnu.org, qemu-block@nongnu.org, Markus Armbruster
- <armbru@redhat.com>, John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] qemu-options.hx: Rephrase the descriptions of the -hd*
- and -cdrom options
-Date: Tue, 29 Aug 2023 17:39:33 +0100
-In-reply-to: <20230829132948.51053-1-thuth@redhat.com>
-Message-ID: <87jztdu7fo.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
+ id 1qb1oX-0004w0-PV; Tue, 29 Aug 2023 12:43:37 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
+ id 1qb1oS-0000xL-U2; Tue, 29 Aug 2023 12:43:37 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZtXW57RHz4wxQ;
+ Wed, 30 Aug 2023 02:43:23 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZtXS2qt6z4wb0;
+ Wed, 30 Aug 2023 02:43:20 +1000 (AEST)
+Message-ID: <feb8c7a6-21ea-fb89-efea-d70d353d2a3e@kaod.org>
+Date: Tue, 29 Aug 2023 18:43:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 for-8.2 00/19] ppc: record-replay enablement and fixes
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230808042001.411094-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230808042001.411094-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=bkLz=EO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,79 +70,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello,
 
-Thomas Huth <thuth@redhat.com> writes:
+On 8/8/23 06:19, Nicholas Piggin wrote:
+> The patches in this series has been seen a few times in various
+> iterations.
+> 
+> There are two main pieces, some assorted small fixes and tests for
+> record-replay, plus a large set of decrementer fixes. I merged these
+> into one series rather than send decrementer fixes alone first, because
+> record-replay has been very good at uncovering timer problems, so it's
+> good to have those test cases in at the same time IMO.
+> 
+> Some of the fixes we might take to stable, but unclear which.
+> Decrementer fixes were a bit of a tangle so maybe we just leave those
+> alone since they work okay.
+> 
+> The decrementer is not emulated perfectly still. Underflow from -ve
+> to +ve is not implemented, for one. I started doing that but it's not
+> trivial so better stop here for now.
+> 
+> For record-replay, pseries is now quite solid with rr. Surely some
+> issues to iron out but it is becoming usable.
+> 
+> powernv record-replay has some known problems migrating edge-triggered
+> decrementer, and edge triggered msgsnd. Also it seems to get stuck in
+> xive init somewhere when replaying from checkpoint, so there is probably
+> some state in xive not being reset. But at least it runs the avocado
+> test and seems close to working, so I've added that test case so we
+> don't go backwards (ha!).
+> 
+> Other machine types might not be too far off if there is interest. I
+> found it quite difficult to find these problems though, reverse
+> debugging will sometimes just lock up, stop at wrong location, or abort
+> with wrong event. Difficult understand what went wrong. Worst case I had
+> to basically bisect the replay of the trace, and find the minimum length
+> of replay that hit the problem -- that sometimes would land near a
+> mtDEC or timer interrupt or similar.
+> 
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (19):
+>    ppc/vhyp: reset exception state when handling vhyp hcall
+>    ppc/vof: Fix missed fields in VOF cleanup
+>    hw/ppc/ppc.c: Tidy over-long lines
+>    hw/ppc: Introduce functions for conversion between timebase and
+>      nanoseconds
+>    host-utils: Add muldiv64_round_up
+>    hw/ppc: Round up the decrementer interval when converting to ns
+>    hw/ppc: Avoid decrementer rounding errors
+>    target/ppc: Sign-extend large decrementer to 64-bits
+>    hw/ppc: Always store the decrementer value
+>    target/ppc: Migrate DECR SPR
+>    hw/ppc: Reset timebase facilities on machine reset
+>    hw/ppc: Read time only once to perform decrementer write
+>    target/ppc: Fix CPU reservation migration for record-replay
+>    target/ppc: Fix timebase reset with record-replay
+>    spapr: Fix machine reset deadlock from replay-record
+>    spapr: Fix record-replay machine reset consuming too many events
+>    tests/avocado: boot ppc64 pseries replay-record test to Linux VFS
+>      mount
+>    tests/avocado: reverse-debugging cope with re-executing breakpoints
+>    tests/avocado: ppc64 reverse debugging tests for pseries and powernv
+> 
+>   hw/ppc/mac_oldworld.c              |   1 +
+>   hw/ppc/pegasos2.c                  |   1 +
+>   hw/ppc/pnv_core.c                  |   2 +
+>   hw/ppc/ppc.c                       | 236 +++++++++++++++++++----------
+>   hw/ppc/prep.c                      |   1 +
+>   hw/ppc/spapr.c                     |  32 +++-
+>   hw/ppc/spapr_cpu_core.c            |   2 +
+>   hw/ppc/vof.c                       |   2 +
+>   include/hw/ppc/ppc.h               |   3 +-
+>   include/hw/ppc/spapr.h             |   2 +
+>   include/qemu/host-utils.h          |  21 ++-
+>   target/ppc/compat.c                |  19 +++
+>   target/ppc/cpu.h                   |   3 +
+>   target/ppc/excp_helper.c           |   3 +
+>   target/ppc/machine.c               |  40 ++++-
+>   target/ppc/translate.c             |   4 +
+>   tests/avocado/replay_kernel.py     |   3 +-
+>   tests/avocado/reverse_debugging.py |  54 ++++++-
+>   18 files changed, 330 insertions(+), 99 deletions(-)
+> 
 
-> The current description says that these options will create a device
-> on the IDE bus, which is only true on x86. So rephrase these sentences
-> a little bit to speak of "default bus" instead.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  qemu-options.hx | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
->
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 29b98c3d4c..a7ce5f0f7a 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -1209,10 +1209,10 @@ SRST
->  ERST
->=20=20
->  DEF("hda", HAS_ARG, QEMU_OPTION_hda,
-> -    "-hda/-hdb file  use 'file' as IDE hard disk 0/1 image\n", QEMU_ARCH=
-_ALL)
-> +    "-hda/-hdb file  use 'file' as hard disk 0/1 image\n", QEMU_ARCH_ALL)
->  DEF("hdb", HAS_ARG, QEMU_OPTION_hdb, "", QEMU_ARCH_ALL)
->  DEF("hdc", HAS_ARG, QEMU_OPTION_hdc,
-> -    "-hdc/-hdd file  use 'file' as IDE hard disk 2/3 image\n", QEMU_ARCH=
-_ALL)
-> +    "-hdc/-hdd file  use 'file' as hard disk 2/3 image\n", QEMU_ARCH_ALL)
->  DEF("hdd", HAS_ARG, QEMU_OPTION_hdd, "", QEMU_ARCH_ALL)
->  SRST
->  ``-hda file``
-> @@ -1222,18 +1222,22 @@ SRST
->  ``-hdc file``
->    \=20
->  ``-hdd file``
-> -    Use file as hard disk 0, 1, 2 or 3 image (see the :ref:`disk images`
-> -    chapter in the System Emulation Users Guide).
-> +    Use file as hard disk 0, 1, 2 or 3 image on the default bus of the
-> +    emulated machine (this is for example the IDE bus on most x86 machin=
-es,
-> +    but it can also be SCSI, virtio or something else on other target
-> +    architectures). See al the :ref:`disk images` chapter in the
->  System
+I am preparing a PR with this series. It is time to take a look at it if you
+haven't already !
 
-See also?
+Thanks,
 
-> +    Emulation Users Guide.
->  ERST
->=20=20
->  DEF("cdrom", HAS_ARG, QEMU_OPTION_cdrom,
-> -    "-cdrom file     use 'file' as IDE cdrom image (cdrom is ide1 master=
-)\n",
-> +    "-cdrom file     use 'file' as CD-ROM image\n",
->      QEMU_ARCH_ALL)
->  SRST
->  ``-cdrom file``
-> -    Use file as CD-ROM image (you cannot use ``-hdc`` and ``-cdrom`` at
-> -    the same time). You can use the host CD-ROM by using ``/dev/cdrom``
-> -    as filename.
-> +    Use file as CD-ROM image on the default bus of the emulated machine
-> +    (which is IDE1 master on x86, so you cannot use ``-hdc`` and ``-cdro=
-m``
-> +    at the same time there). On systems that support it, you can use the
-> +    host CD-ROM by using ``/dev/cdrom`` as filename.
->  ERST
->=20=20
->  DEF("blockdev", HAS_ARG, QEMU_OPTION_blockdev,
-
-Otherwise:
-
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+C.
 
