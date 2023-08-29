@@ -2,140 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE9978C98A
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 203C878C9B4
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:34:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb1TA-00078L-6Z; Tue, 29 Aug 2023 12:21:32 -0400
+	id 1qb1e6-0001sY-FF; Tue, 29 Aug 2023 12:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qb1Sk-000774-IS
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:21:11 -0400
-Received: from mail-bn8nam12on20614.outbound.protection.outlook.com
- ([2a01:111:f400:fe5b::614]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qb1Se-0005bX-EZ
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:21:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HmfqPFfEctSnFoLymY3SgDuJJ6uB47h+SCW9DhiwGSlUwLtikIyI5SxsD/5St0E9U8EqtvkBniARwYD+0pOJWDseUEpG+YCqYnqUfGKOQ0s5ci+m6mKHaHpJ5kHKWsQCy3M3NqFjLrcyIq2KM4lA5hHy6YPccxZdrCaUoi4H56wxCizis/JfO3Nei00ekCHOp3SfQ81bDr03mNY5/jHyskq4ctcd7616jxxr5+1tbYCabwTuKF7pYWeW3WHd/LYao+AdxRdnRb53kanxMCK+ZdmXKh4hdnIklo7hLAArWefePb0OjO5PdOeY1H/EPwmzMINWY0QaFsqR61+tA+543w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8A+imjilwE1Zxm2tOFle+4Y5kW5nD3WwyXHzRzMxspg=;
- b=cYlxgxCk/rtK1wIOixurSNU6jWbRQALr2eTo6LN2evi1cPy9nn+7R8KrtqYmruyUuHVuRpVPtNXIzA55fJT4gPGBIUESEhZaB248VVH3mdptjy4mUcnzRdqOWptePmXfQ6QGc7L0NQ6hVOTJN7M7N8ySfIMJfT+eig8MG+lSqPGoAvHMKCLEa34XDJHk9OTQbh6nP9JlOWOxTXCeSm14ke9Vc0JYJGlJUKfTbJOoVrAkj/YoKIxFIFegXBWlDEj5TgzPTdWCzmfT+WExVv2UK5iKV4nWTpqE4MGQuHho4KbmkUkNxLfZx2J31C7eHcueabaSuZYS7YjkhGHB0j6FZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8A+imjilwE1Zxm2tOFle+4Y5kW5nD3WwyXHzRzMxspg=;
- b=rgNdypNHDBoGQIgQHuTh6zA2PqptOB+Zk7eigk0YpnUREnSn+jCafkuqfGJA+YiXfYIvM6x0K/nUZ8WZtmhhnTWU6YjQicfASgzTY6b5Xxh4+pefg5f+blETeLtnFeXR+zskxhdOn5QfiOxWlESnWiWOLJRs6QYcs+0DjNOV0+gRGAPhavgAASMCchHN3/1mzDINhgNoH2/AffYTFZ3nWdjAQU3/5cZUcTyA/yIuA8jFu3sDgK7aq1ey+gkePQIjUKId1kHp/pB6Mv8JVGMl7AxjbKAl4zHDxVu9UXdhGlwOTMHwXwqTv+CuEJ7CjOwVJSrubJ0quKIN9dgYeM24hA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Tue, 29 Aug
- 2023 16:20:55 +0000
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::42fd:b1c0:838c:5f96]) by DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::42fd:b1c0:838c:5f96%4]) with mapi id 15.20.6699.035; Tue, 29 Aug 2023
- 16:20:55 +0000
-Message-ID: <b54f3ca5-9236-84a8-1b1f-9365925fa458@nvidia.com>
-Date: Tue, 29 Aug 2023 19:20:47 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 5/6] vfio/migration: Block VFIO migration with postcopy
- migration
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Yanghang Liu <yanghliu@redhat.com>
-References: <20230828151842.11303-1-avihaih@nvidia.com>
- <20230828151842.11303-6-avihaih@nvidia.com> <ZO4GTnuqSORbvePL@x1n>
-From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <ZO4GTnuqSORbvePL@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1P195CA0048.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:5a::37) To DM6PR12MB5549.namprd12.prod.outlook.com
- (2603:10b6:5:209::13)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qb1dw-0001rl-Lr
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:32:43 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qb1dm-00078Z-2R
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:32:39 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-269304c135aso2940688a91.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693326625; x=1693931425;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=LBrf24xHbMu5zTODEDzyxPnE41m02WMUSig75xWEt4U=;
+ b=FWF7F8IlX2MG3U3uA6YEFesSjVvBwAxX4+MTCxzSQy93kbhmHymGp+E2uaqJxulBjv
+ nep/h+9bnEhTctfXdqnFmJAV+K48aXVoBhd86i51tbhAYf4bydDUfcPLKkqpQ+5o22wV
+ iaZ5vYkMwYYXmSeHMGDawLHWogAJUPYmnFhEEJjEPM8MG6t5hCvb8ivEQ3WOEo8tRKCM
+ +dIGpzFfRTx343hco+F8d0eC3Mx5OiTi+vjMSVo1jLa+N9SQ8K6fX5/dnLDhpEweKVV2
+ TmyLYnnreiOtiLrO0CNZeaHaWfMN/9pM59bt3Qdo+dx5qZ/joX3dQLOYjxd1Wy9wSK4s
+ AqRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693326625; x=1693931425;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LBrf24xHbMu5zTODEDzyxPnE41m02WMUSig75xWEt4U=;
+ b=HL/704n2RIPifqTd351uJbWxpmrgsfoqQVV618KF2waKKeDAFyaO7uVFxZ+OtweoLK
+ liQBGY48XgSRFSc/DWbr1dMRO1QtPb86YAMtZBkjackkR2DUm3vMHgktZIFJzLFahqbB
+ cJvLzeEssArDKjUKlcM+YnEygO7FGRlDOwgQ0VRAedHZthgcIXYJgQt2YHqs99Fd2hwY
+ OukKozAs1aNCsPfvSlQPvmjsp9/xM1stmWtGri8YphP5lnJTIqtZ1MQ/digQp1cUe6fZ
+ vKy9I0RuZ7zik/iBI3EU9QO9PJQ3Ey4KdC/nG8ScbWj1iXSrfF+zcwSiGW6sgEUFpJwQ
+ aFVA==
+X-Gm-Message-State: AOJu0YxyXIVTFZQ8eO8ugQEKz4QVWfP4TBVtrNoC+/MpZeUUn0VNljDq
+ EkrUBBlAuXjZagHYKEZV+WFhvM/p9Z+b/g+nk8vI/w==
+X-Google-Smtp-Source: AGHT+IFPoIjVQ75nOatvKUdaIZ4Z8RJ2rtBmAgNB5TvA8OZcy2rcPdqOx0mwgHuyfJMFeSlbjxuq6XOKcbA0xVvCUTQ=
+X-Received: by 2002:a17:90a:8a95:b0:268:b7a2:62e8 with SMTP id
+ x21-20020a17090a8a9500b00268b7a262e8mr27453328pjn.7.1693326625316; Tue, 29
+ Aug 2023 09:30:25 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|CH3PR12MB8659:EE_
-X-MS-Office365-Filtering-Correlation-Id: 695170de-0c84-4c04-d46b-08dba8abec08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ww6ld+xv87AFSYOGscgYhKRUolYfQdby52mAotnClA40HM/Xp0d6G2IA4ZcuFlLSZtKGzbJLCkIm8fe8w+/Ui5lfDNKHTK8qnOljII0tof4xrW/WAvrzvgjnZga1orz7RPawxrluvSIYvSrej1VyPu6ObpL7PRky2syjf6r15YUwG4jgWkOpDZ7ZozC5V1+sYQwwvx5oKRSGIYWNlx3jrhGH15XARHGrKmb68Q4BiwgCVgsN16gJ5RAKXI7gfp7jcmkR+FPbhKL297VWy5wXZULP7N+yf5x7HDVyxw5mg0qfOCxgPR0dZWy16RHEp9Lg29sqZRGEg78+SKD9gHbSlCfWRAcTuthfG2mRjpvK5l3jH12+IvV3JE1PqDkqhO8ut43jV60aKD2IcEeVSjR2YeLU2L+5cEeFuEFgbAqkFfDUbv0grUzYYLeAgddRFLEvsbZ0UFTJvqAC/M8r5IM0qn1tYxWdK/rbhSngXt/1I1DnnIQKBZxM5bv1EW0VYPw3p4t1oPpEk5S8ogxto1D2j7k8AfaagnWRWB85CYXI63QARbVuvZ3kjgYa4SyFDs+STrn17s0hPwp49++5MDFZdmajayKYgRwPGTY4C6lX/XuoemQ4Acbxq4K0dPc0B/B2Ox02N97oDolbrP3xfRzTNw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(366004)(376002)(39860400002)(396003)(136003)(186009)(451199024)(1800799009)(6512007)(6486002)(6506007)(6666004)(53546011)(478600001)(83380400001)(2906002)(26005)(54906003)(2616005)(6916009)(316002)(66476007)(8936002)(66946007)(41300700001)(66556008)(5660300002)(8676002)(4326008)(86362001)(36756003)(38100700002)(31696002)(31686004)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UWFBQU1RWWNYZVVXMkgzSzhOaysxV09VU3FRdmY0c3ZvRGw5VWlWMTdldnNk?=
- =?utf-8?B?a0UxNUMyQTl5SUxGdkVIamFoTisyTDMxekJxUDcrTzhMNDlWYUZsTFVvS25Z?=
- =?utf-8?B?VW45QzdreFh1RFRrNXQ4djA4SUhmU1FqdUpuUDVYV2lPTnpqNlVITUg2c1ZX?=
- =?utf-8?B?ekJpekhHOGt1dnloajVTNmpNQjNXRHJKK3p4SFdMMjZWTmp1T1BlOThZNTNu?=
- =?utf-8?B?NTZ6b1A4SmpVZGw5Wlp2NWtOTmVHN05TOS9ya3JwL0RHYzBvWFJCMUR2WXBy?=
- =?utf-8?B?RjA1djZrcWVnSHVXRDZ6aElOdEVuSUZFdnpvem15cy9Cbmg1d1I0TzFnOVZp?=
- =?utf-8?B?cFlrbnFWYW5OTlk2LzhvYWpTRWZONzJTT3VvL2pXUXc4MzBNNG5RSk1hSWR3?=
- =?utf-8?B?UzNKU3FaRzljNUV6bytadWl2emxOa24wNkZjTXo3bFRvbzlWeHY2SklsL2Y0?=
- =?utf-8?B?R3d0Y0RwR1RDVnNuZWsySWtYWDJYbkZheCtHRWJ6TFhKUDE1UWIzU0NWcnRl?=
- =?utf-8?B?YTU1NmFZVDVTWW40S3ljendqSzY0dnV0MHRUK2M0U3NlL2hlMW1oNXcvUlZx?=
- =?utf-8?B?cmZuaGtUZkVDakxFUkNqNXhzNTUzblFjK0Jkb2p6OTZ5ZVZIeXdTRHVuSVY5?=
- =?utf-8?B?N1BOQkJhUmFIWVFEbnFUbEw5RjdUbWN6SGtMVVg5NHQvWjhzWmZsc3hIOVV3?=
- =?utf-8?B?dDRwdkV3OUk0TmVkSEwvNGhmSXFjL1Fnekwyd2EwaWJFWjF2M2EzbkJkQUIy?=
- =?utf-8?B?RmI1ajNNUm5lSG1uVzQ1dzMxNWVKV1plY0VwN3lTN0ZOd0JHRjZKRFZRbDcz?=
- =?utf-8?B?VmN0OG5GQkdySzYwbWh1SjZiRy81VklJd0hQWGd4V2dzckZZT2k3a0ttMTVZ?=
- =?utf-8?B?OU4vT3R0TW1VY1IwQUpBZVdYVnBFV0htUEF1cmFmREQ0N0k2ZE9MVThMcXRa?=
- =?utf-8?B?bGRWNHRLeDBCTGZHQWlmMUErZzNZNTBWYXNTRTROZGM3Z2ZOcjgzdWhSVjU1?=
- =?utf-8?B?ZHdmbHI1TkVjeGJkcHdHSTZrNnZzZlNLMGhwV0tzQlcrUUNaVkF0SFgyZUtL?=
- =?utf-8?B?ZHhnV2ZrTzZXdWhvYkJZOHJlRUxTazNNWVlKdmt1MmxsQnUzSitKdkFpUlY2?=
- =?utf-8?B?TDdvRjBySDYzRWtobVJMNE1VNWovNUNUZ255akI5bE5hMXlXR1cwaUdkZ0xp?=
- =?utf-8?B?UGdtQmpFME9zaTk0b1FJaVBUbFczUmM3cEx2ZjNvNXlNa1lYQVE3UXVwbTMx?=
- =?utf-8?B?ZklhRDAwTWVvTWtINjZZRmFWdDRrZkFzRFIyWW84bld4N0JBSVY3MWlPay8w?=
- =?utf-8?B?Z2hrdTJUZkVwWEdzMW9Kak5mNkRSeXZpeXdUK2dKL3BMS09PQWJYRVhXRmht?=
- =?utf-8?B?Zmp6WlZMQ24yZk5lU2V3NlQwVkNTcjJSMStMZEgrRG9nN0hhL1lKMDFRNSs3?=
- =?utf-8?B?cElJWVlvQm9yRFVjbC9PdTVQTmMwT01mc0lLZ1dtWCtsWkZJeW56bjc5alhC?=
- =?utf-8?B?WEd3dG1YS3JIMkZwMi9LV05xazlYNHpJTWwvNU1ja1N2M1l0dGlxWTF4NlNB?=
- =?utf-8?B?NFl0WDJLeVp4ZHEzWXFyZnI5ZWx2SHk3N0wzTE9rUTB0OG85WHdpQ0xqSkZm?=
- =?utf-8?B?Q2ZSZncveVIwd2o4SWRPYS96TlE4ZGRrRURuYVEvTW9aOHM2RUlmbUlqNGJG?=
- =?utf-8?B?R2ZyR0xZVkdtZ1dpSEx6SjJXNExGMmxBa09vYmlVam9BNllLQk1sZ0o4WHRQ?=
- =?utf-8?B?SzZGQU8reU40VklxbWVadTVwZnF3eGZWQUVFdktzT0hVYTZLK25sS1h1aGVN?=
- =?utf-8?B?NmhkaWJxZWVhb1dUYnp3K2doZXRBWEtobmpNVVdya1VoYTVkUk55Zlg5UGI3?=
- =?utf-8?B?RThZOXpNSnYycnZwSnZhQ3daaFA2LzE1K2hVM1ZLMWJGQVNNaU12R1MvU1Rm?=
- =?utf-8?B?cnNhSlpuUVRYTVZXNUo4dzROcGJ1aTliKy9rUzBET0U0ZUZGYTJ6bU9xbHBh?=
- =?utf-8?B?c0loMzNERCsrejEwYnNvS0dUUThTRko4T3haNmFFUFdBSVRYTE0rNi9ZVW5U?=
- =?utf-8?B?eUp3UEpPOEYyLyt1VzlKT0ZQUldQZXhyU2dTKzlteExHWm40akdtRGZSUjJp?=
- =?utf-8?Q?pcauuX6T3f11Nd1UJafleqCmG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 695170de-0c84-4c04-d46b-08dba8abec08
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2023 16:20:55.8234 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y+a4yl/+PYFOISPQFVwNWCgsRBf97foQhfOBZmyeElFmJQFDU2LNViSMumEsuoVAQtfD3sucLv7OeSZD67XT+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8659
-Received-SPF: softfail client-ip=2a01:111:f400:fe5b::614;
- envelope-from=avihaih@nvidia.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.242, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <cover.1693228686.git.yong.huang@smartx.com>
+ <CAJSP0QXLticPp0DOS=7bYQf0R0MiYpRXYu_dCRE9JVUbZd2nsw@mail.gmail.com>
+In-Reply-To: <CAJSP0QXLticPp0DOS=7bYQf0R0MiYpRXYu_dCRE9JVUbZd2nsw@mail.gmail.com>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Wed, 30 Aug 2023 00:30:07 +0800
+Message-ID: <CAK9dgmai9Q0cSYudyM8PBb1AZyxcv6G6BTrRAeJL2EaaR8CNUg@mail.gmail.com>
+Subject: Re: [PULL 0/3] Dirty page rate and dirty page limit 20230828 patches
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Andrei Gudkov <gudkov.andrei@huawei.com>, 
+ "alloc . young" <alloc.young@outlook.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000fdb63206041253cf"
+Received-SPF: none client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,57 +86,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000fdb63206041253cf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 29/08/2023 17:53, Peter Xu wrote:
-> External email: Use caution opening links or attachments
+On Tue, Aug 29, 2023 at 4:01=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail.com=
+> wrote:
+
+> On Mon, 28 Aug 2023 at 10:36, Hyman Huang <yong.huang@smartx.com> wrote:
+> >
+> > From: Hyman <yong.huang@smartx.com>
+> >
+> > The following changes since commit
+> 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
+> >
+> >   Merge tag 'pull-target-arm-20230824' of
+> https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24
+> 10:08:33 -0400)
+> >
+> > are available in the git repository at:
+> >
+> >   https://github.com/newfriday/qemu.git
+> tags/dirtylimit-dirtyrate-fixes-pull-request
 >
+> Hi,
+> This is not a signed tag. Please use "git tag -s" so the tag is signed
+> with your GPG key.
 >
-> On Mon, Aug 28, 2023 at 06:18:41PM +0300, Avihai Horon wrote:
->> diff --git a/migration/options.c b/migration/options.c
->> index 1d1e1321b0..e201053563 100644
->> --- a/migration/options.c
->> +++ b/migration/options.c
->> @@ -499,6 +499,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->>               error_setg(errp, "Postcopy is not yet compatible with multifd");
->>               return false;
->>           }
->> +
->> +        if (migration_vfio_mig_active()) {
->> +            error_setg(errp, "Postcopy is not compatible with VFIO migration");
->> +            return false;
->> +        }
-> Hmm.. this will add yet another vfio hard-coded line into migration/..
+> I also noticed that this pull request email thread only has a cover
+> letter. Please also send the individual patches along with the pull
+> request email. This makes it easier for people to reply if they have
+> comments about a patch.
 >
-> What will happen if the vfio device is hot plugged after enabling
-> postcopy-ram here?
-
-In that case a migration blocker will be added.
-
+> After pushing a signed tag, please send the pull request again with
+> "PULL v2" in the subject line. Thanks!
 >
-> Is it possible to do it in a generic way?
 
-What comes to my mind is to let devices register a handler for a "caps 
-change" notification and allow them to object.
-But maybe that's a bit of an overkill.
+Sorry for not noticing this earlier and I have sent a pull request with
+"PULL"
+in the subject line instead of "PULL v3" that you mentioned above, please
+ping me if PULL request resending is required indeed.
 
+Yong
+
+
+> Thanks,
+> Stefan
 >
-> I was thinking the only unified place to do such check is when migration
-> starts, as long as we switch to SETUP all caps are locked and doesn't allow
-> any change until it finishes or fails.
+> >
+> > for you to fetch changes up to e424d9f7e749c84de4a6ce532981271db1c14b23=
+:
+> >
+> >   migration/dirtyrate: Fix precision losses and g_usleep overshoot
+> (2023-08-28 21:03:58 +0800)
+> >
+> > ----------------------------------------------------------------
+> > Dirty page limit and dirty page rate PULL request
+> >
+> > Hi, this is the fix for dirty page limit and dirty page rate.
+> >
+> > Please apply.
+> >
+> > Thanks, Yong.
+> > ----------------------------------------------------------------
+> > Andrei Gudkov (1):
+> >       migration/dirtyrate: Fix precision losses and g_usleep overshoot
+> >
+> > alloc.young (2):
+> >       softmmu: Fix dirtylimit memory leak
+> >       softmmu/dirtylimit: Convert free to g_free
+> >
+> >  migration/dirtyrate.c | 10 ++++++++--
+> >  softmmu/dirtylimit.c  | 26 ++++++++++++--------------
+> >  2 files changed, 20 insertions(+), 16 deletions(-)
+> >
+> > --
+> > 1.8.3.1
+> >
+> >
 >
-> So, can we do this check inside vfio_save_setup(), allow vfio_save_setup()
-> to fail the whole migration early?  For example, maybe we should have an
-> Error** passed in, then if it fails it calls migrate_set_error, so
-> reflected in query-migrate later too.
 
-Yes, I think this could work and it will simplify things because we 
-could also drop the VFIO migration blockers code.
-The downside is that the user will know migration is blocked only when 
-he tries to migrate, and migrate_caps_check() will not block setting 
-postcopy when a VFIO device is already attached.
-I don't have a strong opinion here, so if it's fine by you and everyone 
-else, I could change that to what you suggested.
 
-Thanks.
+--=20
+Best regards
 
+--000000000000fdb63206041253cf
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 29, 20=
+23 at 4:01=E2=80=AFAM Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@gmail.=
+com">stefanha@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-=
+style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">On Mon, 28=
+ Aug 2023 at 10:36, Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com=
+" target=3D"_blank">yong.huang@smartx.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; From: Hyman &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"_bl=
+ank">yong.huang@smartx.com</a>&gt;<br>
+&gt;<br>
+&gt; The following changes since commit 50e7a40af372ee5931c99ef7390f5d3d6fb=
+f6ec4:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0Merge tag &#39;pull-target-arm-20230824&#39; of <a href=3D=
+"https://git.linaro.org/people/pmaydell/qemu-arm" rel=3D"noreferrer" target=
+=3D"_blank">https://git.linaro.org/people/pmaydell/qemu-arm</a> into stagin=
+g (2023-08-24 10:08:33 -0400)<br>
+&gt;<br>
+&gt; are available in the git repository at:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0<a href=3D"https://github.com/newfriday/qemu.git" rel=3D"n=
+oreferrer" target=3D"_blank">https://github.com/newfriday/qemu.git</a> tags=
+/dirtylimit-dirtyrate-fixes-pull-request<br>
+<br>
+Hi,<br>
+This is not a signed tag. Please use &quot;git tag -s&quot; so the tag is s=
+igned<br>
+with your GPG key.<br>
+<br>
+I also noticed that this pull request email thread only has a cover<br>
+letter. Please also send the individual patches along with the pull<br>
+request email. This makes it easier for people to reply if they have<br>
+comments about a patch.<br>
+<br>
+After pushing a signed tag, please send the pull request again with<br>
+&quot;PULL v2&quot; in the subject line. Thanks!<br></blockquote><div><br><=
+/div><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&=
+quot;,sans-serif">Sorry for not noticing this earlier and I have sent a pul=
+l request with &quot;PULL&quot;</div><div><span style=3D"font-family:&quot;=
+comic sans ms&quot;,sans-serif">in the subject line instead of &quot;PULL v=
+3&quot;<span class=3D"gmail_default" style=3D"font-family:&quot;comic sans =
+ms&quot;,sans-serif"> that you mentioned=C2=A0above, please</span></span></=
+div><div><span style=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><=
+span class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;=
+,sans-serif">ping me if PULL request resending is required indeed.</span></=
+span></div><div><span style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
+erif"><span class=3D"gmail_default" style=3D"font-family:&quot;comic sans m=
+s&quot;,sans-serif"><br></span></span></div><div><span style=3D"font-family=
+:&quot;comic sans ms&quot;,sans-serif"><span class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Yong</span></span></d=
+iv><div><span style=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><s=
+pan class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,=
+sans-serif"><br></span></span></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;=
+border-left-color:rgb(204,204,204);padding-left:1ex">
+<br>
+Thanks,<br>
+Stefan<br>
+<br>
+&gt;<br>
+&gt; for you to fetch changes up to e424d9f7e749c84de4a6ce532981271db1c14b2=
+3:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0migration/dirtyrate: Fix precision losses and g_usleep ove=
+rshoot (2023-08-28 21:03:58 +0800)<br>
+&gt;<br>
+&gt; ----------------------------------------------------------------<br>
+&gt; Dirty page limit and dirty page rate PULL request<br>
+&gt;<br>
+&gt; Hi, this is the fix for dirty page limit and dirty page rate.<br>
+&gt;<br>
+&gt; Please apply.<br>
+&gt;<br>
+&gt; Thanks, Yong.<br>
+&gt; ----------------------------------------------------------------<br>
+&gt; Andrei Gudkov (1):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0migration/dirtyrate: Fix precision losses an=
+d g_usleep overshoot<br>
+&gt;<br>
+&gt; alloc.young (2):<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0softmmu: Fix dirtylimit memory leak<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0softmmu/dirtylimit: Convert free to g_free<b=
+r>
+&gt;<br>
+&gt;=C2=A0 migration/dirtyrate.c | 10 ++++++++--<br>
+&gt;=C2=A0 softmmu/dirtylimit.c=C2=A0 | 26 ++++++++++++--------------<br>
+&gt;=C2=A0 2 files changed, 20 insertions(+), 16 deletions(-)<br>
+&gt;<br>
+&gt; --<br>
+&gt; 1.8.3.1<br>
+&gt;<br>
+&gt;<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--000000000000fdb63206041253cf--
 
