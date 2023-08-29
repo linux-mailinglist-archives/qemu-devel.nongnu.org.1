@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3386978C0C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7755378C0C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:49:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qauOC-0007jx-Px; Tue, 29 Aug 2023 04:47:56 -0400
+	id 1qauOz-0008LW-JS; Tue, 29 Aug 2023 04:48:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qauO6-0007hu-UJ
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:47:52 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qauOr-0008Ka-R1
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:48:40 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qauO0-0007WC-Vo
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:47:48 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1c0bae4da38so27637725ad.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:47:44 -0700 (PDT)
+ id 1qauOm-0007lQ-Nl
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:48:37 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-26814e27a9eso2167008a91.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:48:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693298863; x=1693903663; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HzsiUfWpLVPHxp1Chkq4q1GCqb3d7nbeld0GV+M6y20=;
- b=Cv+O0dKRDpShpiyojJ4I4H3Kbtm5whJX/6NaPAp1+KEaKN6kYHyelCKIBfX2HYk4jh
- JuiDoNpaAPEglkiFQrSkMez6pwGX4dnhwQnwdtDPU26jLbI6KhazEjDuLAZDKf8QGGhs
- d+vZHvZp4kEV1t+hvrNZCYNZy69/1kVTY5yunWI6wSTTmSOYBg1uhID2bb1vp6e2GZSG
- BYWa6Qzl4ZsXFLd70HSzVRwMpltHkC2DbUStPkOBm/YH8q9UIxtOc5KCKc6fx+aN8itG
- fV+zEtTUhGn8DDB5uhCZ6PkHNPQIf9unnaoj4E4b8pD2W4P4nAptvBL3Lp1yTWx3m4I9
- MJjw==
+ d=gmail.com; s=20221208; t=1693298910; x=1693903710;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7A8bb42jd+n02BsnrgotugyR8FDt67yG4EBeqWrPXHM=;
+ b=BNH8pkY8AzYXfpkkQ5pMXf3lqexDHx0Pz+xWneUKknfWcgNJhWTJWxJY980Ctoxbm5
+ yfRMyLxZ6eN+DMOg3uEibA4swSV+QR8MWE1JVn57iNfbr/MfwOyjZUxHhugSNv7oJVr0
+ uG34B14dPwcURHC4GKhS9dcJ1rNOhspSmdZfUx+SfUqqBWyLRR430xoFZWPeOsXL/moS
+ xStxNm3cXtPwXqayYf/KqmsjfOnns6/IFxEeeYRNmFrQ6v4GCIMJNLpZHZZhWFv+Qu/y
+ MBeyxEGs4OLlf60ysKEHApkMWCFlacqGGx4D8YgHxneO3bJ4xxDRfWZT/i3sZEhNStE3
+ umLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693298863; x=1693903663;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HzsiUfWpLVPHxp1Chkq4q1GCqb3d7nbeld0GV+M6y20=;
- b=U988cFevt8ulaTlh6QAJBp4RAHeHab48qJrZhHNwz2/dQi2zO2NAv/eOf+lPk1Td5Q
- X4cbvSuzPzVxrv6duSGwHtz+Wt4baD5m7lrEbcvNOrcOl6i79X0D7DP9wZtXqVji4g2r
- rLN9iXDm3qZiPgPeQabt9BdKBV0lyTqoiEqJ5RBurwbXoy56GDfr0G88HZagjzXbQe7d
- xt176ItDpuD9A7ZgI75a6oi9kk+No2m/R+8B6FQblEK3uLFHIsPqjHRcITE7W9QX29tv
- 9nQzuB0GIkOhCH7jOEcnHP8yLiiII3+DXv+RHyub6jDIgy/mnDRSak4zlbRbe1SjeDLR
- UiYw==
-X-Gm-Message-State: AOJu0YxFEAkjSStaafB7928Sf+LcpwP4YqFxTrbzsnA2005ppmlXej5O
- 3RgENWt7SBJW3JI0zlQcuUQ=
-X-Google-Smtp-Source: AGHT+IHWgAZj/2Fy97N9H/y34XvHQmRJkZBsQOxdzMTTdFBnIv+xxZMYyQVx4ubVeEj/adrr/gybWw==
-X-Received: by 2002:a17:902:d2c1:b0:1c1:eb8b:799d with SMTP id
- n1-20020a170902d2c100b001c1eb8b799dmr2825798plc.21.1693298863044; 
- Tue, 29 Aug 2023 01:47:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693298910; x=1693903710;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7A8bb42jd+n02BsnrgotugyR8FDt67yG4EBeqWrPXHM=;
+ b=cekv6sTMkmyQWtcJB/VnF9FhK5c5C+BbnNvj4YBNHEGnkaOfoer4jqNNoilbBjrYqw
+ L1+tAwDhc6c473HT3ilXXfrD4P3Es+cZehqF0cO+8aubri23zanKSeC/8djSSGxv4D3o
+ Zt1GUYo0yey+BjEfykWQbOQMLgIMIx25mXOOQHf3KlUktpoOY4SWoaF+SSEhL6klraMg
+ kflm6JRRuOFd+2DNmuiBJRAJ1sn+mr0IHlVFSI9R04YsQ1XcmzJEeehXTT71nqItabPP
+ 2ESeYux2PfLv8rke07CZoBCouUpJN/VOoi23Iy3rNH76bQu/a2ZAwyLrMyrOAXGVbWu/
+ FmIg==
+X-Gm-Message-State: AOJu0Yzrcbq4tAOd6yGx9fSrZkJs1fXXcL4WsKhGcQVRZVma88BRUZbB
+ BiJdN2bNZJtwhEi6NHMMkdKqyLg0gdPb4J+h
+X-Google-Smtp-Source: AGHT+IGbaQ1y2JPC+W4mjzJ4LEda9xODHd5f2bvpczAUAvTdKE1EXBPGxbTVPCxe6Aw9eMdnzgGEMg==
+X-Received: by 2002:a17:90b:4a02:b0:26b:5205:525e with SMTP id
+ kk2-20020a17090b4a0200b0026b5205525emr19650903pjb.42.1693298909963; 
+ Tue, 29 Aug 2023 01:48:29 -0700 (PDT)
 Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- z1-20020a170903018100b001bdb167f6ebsm8848297plg.94.2023.08.29.01.47.41
+ mq3-20020a17090b380300b002682523653asm8410789pjb.49.2023.08.29.01.48.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 01:47:42 -0700 (PDT)
+ Tue, 29 Aug 2023 01:48:29 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -61,14 +62,16 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH v2 0/2] Vhost-vdpa Shadow Virtqueue Hash calculation Support
-Date: Tue, 29 Aug 2023 16:47:33 +0800
-Message-Id: <cover.1693297766.git.yin31149@gmail.com>
+Subject: [PATCH v2 1/2] vdpa: Restore hash calculation state
+Date: Tue, 29 Aug 2023 16:48:15 +0800
+Message-Id: <f5ffad10699001107022851e0560cb394039d6b0.1693297766.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1693297766.git.yin31149@gmail.com>
+References: <cover.1693297766.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=yin31149@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=yin31149@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -92,68 +95,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series enables shadowed CVQ to intercept
-VIRTIO_NET_CTRL_MQ_HASH_CONFIG command through shadowed CVQ,
-update the virtio NIC device model so qemu send it in a
-migration, and the restore of that Hash calculation state
-in the destination.
+This patch introduces vhost_vdpa_net_load_rss() to restore
+the hash calculation state at device's startup.
 
-Note that this patch should be based on
-patch "vdpa: Send all CVQ state load commands in parallel" at [1].
+Note that vhost_vdpa_net_load_rss() has `do_rss` argument,
+which allows future code to reuse this function to restore
+the receive-side scaling state when the VIRTIO_NET_F_RSS
+feature is enabled in SVQ. Currently, vhost_vdpa_net_load_rss()
+could only be invoked when `do_rss` is set to false.
 
-[1]. https://lore.kernel.org/all/cover.1693287885.git.yin31149@gmail.com/
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
+Question:
 
-TestStep
-========
-1. test the migration using vp-vdpa device
-  - For L0 guest, boot QEMU with two virtio-net-pci net device with
-`ctrl_vq`, `mq`, `hash` features on, command line like:
-	-netdev tap,...
-	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
-iommu_platform=on,mq=on,ctrl_vq=on,hash=on,guest_announce=off,
-indirect_desc=off,queue_reset=off,...
+It seems that virtio_net_handle_rss() currently does not restore the
+hash key length parsed from the CVQ command sent from the guest into
+n->rss_data and uses the maximum key length in other code.
 
-  - For L1 guest, apply the relative patch series and compile the
-source code, start QEMU with two vdpa device with svq mode on,
-enable the `ctrl_vq`, `mq`, `hash` features on, command line like:
-      -netdev type=vhost-vdpa,x-svq=true,...
-      -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
-hash=on,...
+So for `hash_key_length` field in VIRTIO_NET_CTRL_MQ_HASH_CONFIG command
+sent to device, is it okay to also use the maximum key length as its value?
+Or should we introduce the `hash_key_length` field in n->rss_data
+structure to record the key length from guest and use this value?
 
-  - For L2 source guest, run the following bash command:
-```bash
-#!/bin/sh
+ChangeLog:
 
-ethtool -K eth0 rxhash on
-```
-  - Gdb attach the destination VM and break at the
-vhost_vdpa_net_load_rss()
-
-  - Execute the live migration in L2 source monitor
-
-  - Result
-    * with this series, gdb can hit the breakpoint and continue
-the executing without triggering any error or warning.
-
-
-ChangeLog
-=========
 v2:
   - resolve conflict with updated patch
-"vdpa: Send all CVQ state load commands in parallel", move the
-`table` declaration at the beginning of the vhost_vdpa_net_load_rss()
-in patch
-"vdpa: Restore hash calculation state"
+"vdpa: Send all CVQ state load commands in parallel"
+  - move the `table` declaration at the beginning of the
+vhost_vdpa_net_load_rss()
 
-RFC: https://lore.kernel.org/all/cover.1691762906.git.yin31149@gmail.com/#t
+RFC: https://lore.kernel.org/all/a54ca70b12ebe2f3c391864e41241697ab1aba30.1691762906.git.yin31149@gmail.com/
 
-Hawkins Jiawei (2):
-  vdpa: Restore hash calculation state
-  vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
+ net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
- net/vhost-vdpa.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 818464b702..139bb79468 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -805,6 +805,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
+     return 0;
+ }
+ 
++static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
++                                   struct iovec *out_cursor,
++                                   struct iovec *in_cursor, bool do_rss)
++{
++    struct virtio_net_rss_config cfg;
++    ssize_t r;
++    g_autofree uint16_t *table = NULL;
++
++    /*
++     * According to VirtIO standard, "Initially the device has all hash
++     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
++     *
++     * Therefore, there is no need to send this CVQ command if the
++     * driver disable the all hash types, which aligns with
++     * the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (!n->rss_data.enabled ||
++        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
++        return 0;
++    }
++
++    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
++
++    /*
++     * According to VirtIO standard, "Field reserved MUST contain zeroes.
++     * It is defined to make the structure to match the layout of
++     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
++     *
++     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
++     * which corresponds the `reserved` field in
++     * struct virtio_net_hash_config.
++     */
++    memset(&cfg.indirection_table_mask, 0,
++           sizeof_field(struct virtio_net_hash_config, reserved));
++
++    table = g_malloc_n(n->rss_data.indirections_len,
++                       sizeof(n->rss_data.indirections_table[0]));
++    for (int i = 0; i < n->rss_data.indirections_len; ++i) {
++        table[i] = cpu_to_le16(n->rss_data.indirections_table[i]);
++    }
++
++    /*
++     * Consider that virtio_net_handle_rss() currently does not restore the
++     * hash key length parsed from the CVQ command sent from the guest into
++     * n->rss_data and uses the maximum key length in other code, so we also
++     * employthe the maxium key length here.
++     */
++    cfg.hash_key_length = sizeof(n->rss_data.key);
++
++    const struct iovec data[] = {
++        {
++            .iov_base = &cfg,
++            .iov_len = offsetof(struct virtio_net_rss_config,
++                                indirection_table),
++        }, {
++            .iov_base = table,
++            .iov_len = n->rss_data.indirections_len *
++                       sizeof(n->rss_data.indirections_table[0]),
++        }, {
++            .iov_base = &cfg.max_tx_vq,
++            .iov_len = offsetof(struct virtio_net_rss_config, hash_key_data) -
++                       offsetof(struct virtio_net_rss_config, max_tx_vq),
++        }, {
++            .iov_base = (void *)n->rss_data.key,
++            .iov_len = sizeof(n->rss_data.key),
++        }
++    };
++
++    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
++                                VIRTIO_NET_CTRL_MQ,
++                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
++                                data, ARRAY_SIZE(data));
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
++    return 0;
++}
++
+ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+                                   const VirtIONet *n,
+                                   struct iovec *out_cursor,
+@@ -830,6 +912,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+         return r;
+     }
+ 
++    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
++        return 0;
++    }
++
++    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
+     return 0;
+ }
+ 
 -- 
 2.25.1
 
