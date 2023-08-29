@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3641778CA20
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C711778CA2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:06:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb27L-0002dw-KZ; Tue, 29 Aug 2023 13:03:03 -0400
+	id 1qb28m-0003z1-Eq; Tue, 29 Aug 2023 13:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb27B-0002Th-4C
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:02:53 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qb28X-0003o2-Aa
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:04:21 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb276-000525-N8
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:02:51 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c0d5b16aacso27116625ad.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:02:46 -0700 (PDT)
+ id 1qb28R-0005LZ-V8
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:04:13 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-68bed2c786eso3220632b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693328565; x=1693933365;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aHirIWaDFAatgvDo4fYP79xIs5dz8DP+SlTM+t8FRU4=;
- b=Xo5IKTWHbHm9Zjk6fGreRtx4nQnxS98zt/IIIRsYXhzS447PbsjGMa3JaRe1WSNiOu
- +KBxqwvPvbn292Gi2DDmcZG9dIqUVUbEyz9QWeZ4qpszS9b5YJ9Koq5DnbkbxplPPMsb
- F+NytoHLrLv5QA1QmAkDQmIfGtDJPhaPepDJlPY0EeIuJxF5dO//9OVl+zUlmA2cWBnf
- MjJGIbthVrf5tn35M894ojMPSLuEPiZOf7IyfJq6LPbCtZA06LBiUekyjdSvXykVF4on
- jZDmcFE1ra4ddeO3Anm0oDtwjBz+JpjWN1DR7dtoUGic2ijlgHAbRb2DoejDF/Ve71xr
- gEpg==
+ d=linaro.org; s=google; t=1693328648; x=1693933448;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2C4kv/XC66CsYR3g7xIMxzmcYJIxg/OjU+sR3431jI0=;
+ b=j/Rifg7MHfMsJEEO5QhDHdvy8TJ9i8qelkXH4kru3WgMQmCg3sCQDaFqUuBcf95D2G
+ 1dFgcpEks+WW2vYaPHH9evU7AUmpUi1iHwMoR8vFhYIH/R+HJ607wYX1jT0fplnNFLJD
+ 3zrG1lyeKnY7Q/OSyA5UJ8f24G3qGbVO8geohDOZ/dK8LMX+5s5Q5d95FpZ7gBwBAaGu
+ Hr0wDiSmRdUQhvmh5JcXlgnW60CEIaodwhy0qhQWDjqeufSz5ECxUIzexvAU01de+tLy
+ 4jABkdKLtzFcVLQbjcGbf3m/p/8Gs2DpCl+oqLsjGD8kkPC3RzuP1qQ4VQBPM7+i9gjU
+ dYeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693328565; x=1693933365;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aHirIWaDFAatgvDo4fYP79xIs5dz8DP+SlTM+t8FRU4=;
- b=Tm3HSKGHut9Au5NEcGOBLvuJ1BKOBvdnC2plqhNEF0X6fd8uRrIIlwhYHzSKTO2vIx
- kIXRD204g7ztRTwP4A0dUq/1CR5MlwgDNvfZ3mPC7wIdY+09akMZq8vNM/0UfSMhtpQ5
- CDRKXDdX/oLr8qEYXViXBECGKMBbza0gma4aOzwrLo/PFcxuCHUg7L+hWl9wfS1B+dbI
- kf8KHCDlbVsInY3gSqQJ750p+2q80JuztKXwNy12ndV5qX1bf+dkz0vlOzSHnhwzexOY
- PDeYSSCoUjwr4tAY7MfjeUji/33We1MiXvrAgNgehF3X85BbrraiDj77l+jKmNUAuQ+C
- pSgw==
-X-Gm-Message-State: AOJu0Yze7W9vZogkM5I2FX3szIWpjm/wyujC9HbVX0Qr/TQ/IXZ6NOIa
- Aqdzb5rbz8JBTa3BsH0h7OeEM76RMYBTPl/ag8k=
-X-Google-Smtp-Source: AGHT+IHvDK7Tw2OZ+eK0uv6DDqioTME8yAzizJJwcJw+wqK8c2o+vFalFlw6+Z4MQdb1OhGgdTeWag==
-X-Received: by 2002:a17:90a:ca16:b0:263:fc45:4091 with SMTP id
- x22-20020a17090aca1600b00263fc454091mr22281687pjt.15.1693328564937; 
- Tue, 29 Aug 2023 10:02:44 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- cv2-20020a17090afd0200b00267b7c5d232sm10989645pjb.48.2023.08.29.10.02.44
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 10:02:44 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 4/4] tcg/sparc64: Disable TCG_TARGET_HAS_extr_i64_i32
-Date: Tue, 29 Aug 2023 10:02:40 -0700
-Message-Id: <20230829170240.765996-5-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230829170240.765996-1-richard.henderson@linaro.org>
-References: <20230829170240.765996-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1693328648; x=1693933448;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2C4kv/XC66CsYR3g7xIMxzmcYJIxg/OjU+sR3431jI0=;
+ b=lHIAZc3017AGssI8WGIfkvpPs6s1HszNloElg38XPC1kMxHk5G91Ce9rXFrt/YiFoz
+ h82atw+Og2cyz2YtsHj5eCd5k07fcjpzhK2YNL+GY/X2Coferio3Y4ee+fBBXTSwZMJz
+ v3/imuiv+lCD8uT49MJTn94CreuQIUfHRnOgqqJrQFbtDsg78QXbNZHhrDui8PA6PI2R
+ eei2yQw8/GOHkxXQLv8ifCzEs3OWgjolMcYAMRzwSJdjqjSQCYQGf/HU1sCMMCzVu2+D
+ zhkbGxLBiOohB5uDs6HEOli2F53xchEYVoXtVPrxNQW9OwlagKyXxInyGggiHSPpJjJn
+ lzcQ==
+X-Gm-Message-State: AOJu0YwyqNFLFYf1lGa+fR0RJfEQt7NzCBTtu2E6cTcrG639DCTQdrpO
+ dpqq4iHl7Tf7jtdhKLvqBKRZJs/RCp29zSYCCAI=
+X-Google-Smtp-Source: AGHT+IG0GrscatSQRy0FBBSBP5gEp2iQXHv/wqk7RNkgcruyAORHL8Cddh8ghufImTWiF84tR7D3Rw==
+X-Received: by 2002:a05:6a20:1596:b0:115:5ed5:34d3 with SMTP id
+ h22-20020a056a20159600b001155ed534d3mr28107554pzj.20.1693328648611; 
+ Tue, 29 Aug 2023 10:04:08 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ s17-20020a62e711000000b00682b299b6besm8695113pfh.70.2023.08.29.10.04.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 10:04:08 -0700 (PDT)
+Message-ID: <8158f004-e182-53cd-3da3-62a7144ae938@linaro.org>
+Date: Tue, 29 Aug 2023 10:04:06 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 01/11] target/ppc/pmu: Include missing 'qemu/timer.h'
+ header
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org
+References: <20230828221314.18435-1-philmd@linaro.org>
+ <20230828221314.18435-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230828221314.18435-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,74 +98,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since a59a29312660 ("tcg/sparc64: Remove sparc32plus constraints")
-we no longer distinguish registers with 32 vs 64 bits.
-Therefore we can remove support for the backend-specific
-type change opcodes.
+On 8/28/23 15:13, Philippe Mathieu-Daudé wrote:
+> Since commit c2eff582a3 ("target/ppc: PMU basic cycle count for
+> pseries TCG") pmu_update_cycles() uses QEMU_CLOCK_VIRTUAL and
+> calls qemu_clock_get_ns(), both defined in "qemu/timer.h".
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   target/ppc/power8-pmu.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/sparc64/tcg-target.h     |  2 +-
- tcg/sparc64/tcg-target.c.inc | 11 -----------
- 2 files changed, 1 insertion(+), 12 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/tcg/sparc64/tcg-target.h b/tcg/sparc64/tcg-target.h
-index 3d41c9659b..5cfc4b4679 100644
---- a/tcg/sparc64/tcg-target.h
-+++ b/tcg/sparc64/tcg-target.h
-@@ -115,7 +115,7 @@ extern bool use_vis3_instructions;
- #define TCG_TARGET_HAS_mulsh_i32        0
- #define TCG_TARGET_HAS_qemu_st8_i32     0
- 
--#define TCG_TARGET_HAS_extr_i64_i32     1
-+#define TCG_TARGET_HAS_extr_i64_i32     0
- #define TCG_TARGET_HAS_div_i64          1
- #define TCG_TARGET_HAS_rem_i64          0
- #define TCG_TARGET_HAS_rot_i64          0
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index f2a346a1bd..81a08bb6c5 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -529,11 +529,6 @@ static void tcg_out_extu_i32_i64(TCGContext *s, TCGReg rd, TCGReg rs)
-     tcg_out_ext32u(s, rd, rs);
- }
- 
--static void tcg_out_extrl_i64_i32(TCGContext *s, TCGReg rd, TCGReg rs)
--{
--    tcg_out_mov(s, TCG_TYPE_I32, rd, rs);
--}
--
- static bool tcg_out_xchg(TCGContext *s, TCGType type, TCGReg r1, TCGReg r2)
- {
-     return false;
-@@ -1444,9 +1439,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
-     case INDEX_op_divu_i64:
-         c = ARITH_UDIVX;
-         goto gen_arith;
--    case INDEX_op_extrh_i64_i32:
--        tcg_out_arithi(s, a0, a1, 32, SHIFT_SRLX);
--        break;
- 
-     case INDEX_op_brcond_i64:
-         tcg_out_brcond_i64(s, a2, a0, a1, const_args[1], arg_label(args[3]));
-@@ -1501,7 +1493,6 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
-     case INDEX_op_ext32u_i64:
-     case INDEX_op_ext_i32_i64:
-     case INDEX_op_extu_i32_i64:
--    case INDEX_op_extrl_i64_i32:
-     default:
-         g_assert_not_reached();
-     }
-@@ -1533,8 +1524,6 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_ext32u_i64:
-     case INDEX_op_ext_i32_i64:
-     case INDEX_op_extu_i32_i64:
--    case INDEX_op_extrl_i64_i32:
--    case INDEX_op_extrh_i64_i32:
-     case INDEX_op_qemu_ld_a32_i32:
-     case INDEX_op_qemu_ld_a64_i32:
-     case INDEX_op_qemu_ld_a32_i64:
--- 
-2.34.1
-
+r~
 
