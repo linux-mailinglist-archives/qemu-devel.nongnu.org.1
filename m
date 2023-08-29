@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F9378CA43
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D344578CA44
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb2Ct-0003Pa-BL; Tue, 29 Aug 2023 13:08:47 -0400
+	id 1qb2Cu-0003d1-Fi; Tue, 29 Aug 2023 13:08:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb2C8-0001zz-CL
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:08:03 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb2Bv-0006YL-OJ
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:07:55 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-56b0c5a140dso3027976a12.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693328860; x=1693933660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2DWe8xrxrAKaRgYVZbkCNn+0qtKDPiuD67ILvhzs1Ec=;
- b=ZTBuiAiqhnIB1R5HcOUJtPkDTg87CA9Gh+jMHyWbuV5x6hHzeSX0DjwI3z8V0A5/lw
- Hg7aOAcK1AnNKBQyASRq3MI3k+pBiIxyyGlKHzv/Z40oKD66zcL3KOGyAWjbnP4gSTR/
- EkkuMCx+iya6HJfem9tLmQlOu/mGLJNPI/EHWsmRFVW5omd5FB1zD9ZPX9gka2Rwv1Bg
- 2JMm6E9MQrrp7+vClKhTjngOGhsZ/7zy6xmp0MbPjzn7YonBjnM/ShcdFpoodUS78mF/
- T0bhwR/ikROigDTCoUaCzVatHigDNOgKMkUIW0e1DMxJ4eQNSfNoGf3xRHhGjL+fsrQ/
- yr6g==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qb2CD-00029e-Ba
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:08:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qb2C2-0006ZI-89
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:08:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693328870;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZsdwjJWnzcC4cYKgduf285KeubUrHe3kpDfHcWRgW7o=;
+ b=L5o/XgMHNkGbCqtgiG1Rwqw8fjwBiJAmydcffvo0T14G9sOt3MFQb5wHZKc2F0X/RrxJCF
+ 9ZFqOdRz1lX7r6LwhAPZoYoYhXBhzIaO8C/1m2+CVLxauRFhXS8REzcEjXMzVNjn/A3X7t
+ EmDnODGk6+Sx6JoUhF5Z8JsVnJI0E4I=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-qAQVR3aoMa-ad6scVs2qWw-1; Tue, 29 Aug 2023 13:07:48 -0400
+X-MC-Unique: qAQVR3aoMa-ad6scVs2qWw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-52a3e9c53e7so3742946a12.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:07:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693328860; x=1693933660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693328867; x=1693933667;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2DWe8xrxrAKaRgYVZbkCNn+0qtKDPiuD67ILvhzs1Ec=;
- b=Pf9EEyjQIBMhyVoq4ESXvXwBRK0eEvp7BtvtkzZi1yUXUY2dEQiR7e1CaQDfqsXac5
- dQZ6g8NAPkVEZB0EmuhxiCQHNVEq2f1VDH2jhBpMJl37DUPPW2FBVg9289UgozFfq2gB
- 1iR7b7sV2JpJeiDpg0bSbCO3t/pUXfTuIU/yCQzC1zJdmxSqlDCGNop/ddLBgmj8+wn2
- FHpbfRSQHmL+z3eXE3BLDX7InrfRZ53/7lVoiTCZkbZaO37vZ1sxNyF9oPmWHsgMMBmP
- htaETEzN5BJy8HeugMQKBflEv4z4DoxYWU3qKAUdQ14zWHvhCKc4dMyPePwYlGtbCKAi
- ycWg==
-X-Gm-Message-State: AOJu0YyRN52z3rZmB5XNxzuChVutoWzvy8V19QpPo0yVPGFjKKIJFebK
- 2Y+uVxyh0MJM0mq31rrcaEoU08nFTEdpu2J3Yfc=
-X-Google-Smtp-Source: AGHT+IHRh/3G141nH6nIh7WHBsaZxVjjaKGQruEG1Pt+93t3x9Vw50UwrdDFl1H5EjcCM7H5SnM41Q==
-X-Received: by 2002:a17:90a:318c:b0:26d:416a:b027 with SMTP id
- j12-20020a17090a318c00b0026d416ab027mr27954413pjb.31.1693328859987; 
- Tue, 29 Aug 2023 10:07:39 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- rj14-20020a17090b3e8e00b0026b30377c14sm9047231pjb.6.2023.08.29.10.07.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 10:07:39 -0700 (PDT)
-Message-ID: <fe32a49d-f898-4347-9844-679eaab3f07c@linaro.org>
-Date: Tue, 29 Aug 2023 10:07:37 -0700
+ bh=ZsdwjJWnzcC4cYKgduf285KeubUrHe3kpDfHcWRgW7o=;
+ b=dTyYsWd7v5FDwjW/6vzsP/P+1Hg1juZMa/xio28B0wbLc1MOa34t65vKlS5ZzUZu83
+ SlBQ7PmuS1wYNK20j+at+djF4/gQRRRvK5wAK3Kf72OaL6DV3UpIIUlay1TDBvWO+D3Z
+ h7PI3NTIVNuIV+gbWjnRTN1Ilv0bb/dAueGvQuZbYU88pS4hmV703rtAuSPtFes7KH8B
+ hBTr4OuhykUZXcQeRT/EU6UNhUYotpsKSUfwyW7PS2iC9LSksWRrVswNSSgUP+nYBPJn
+ taYzSGahO6S231are44AwQKAKzZ3Z7yD+WQlWx1UkpL7zROL8nhvKDstc860xPitTkP2
+ JLsw==
+X-Gm-Message-State: AOJu0Yyjwb65TWd3VWwxv1+W29/FthmK+OVFYX7gGedOnHt3YmGlAJuf
+ XFsBORxa7WZAy9ddEYvSBfkKnrDbcFEhySSFBAGXinFpI7hcX68YkT8cGfvDBBLBbzAYFWVaaQ1
+ 7RkXC6xYDJdjfxuM=
+X-Received: by 2002:aa7:c2cd:0:b0:526:9626:e37d with SMTP id
+ m13-20020aa7c2cd000000b005269626e37dmr20690207edp.37.1693328867153; 
+ Tue, 29 Aug 2023 10:07:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+miHfYERIK8IowSAuce+W7kxjob6E2i0R5RaIVY/ZLflhhXl111LIPHVdKYPQGI8obMv1tQ==
+X-Received: by 2002:aa7:c2cd:0:b0:526:9626:e37d with SMTP id
+ m13-20020aa7c2cd000000b005269626e37dmr20690195edp.37.1693328866760; 
+ Tue, 29 Aug 2023 10:07:46 -0700 (PDT)
+Received: from redhat.com ([2.55.167.22]) by smtp.gmail.com with ESMTPSA id
+ r6-20020aa7d146000000b0051dd19d6d6esm5899732edo.73.2023.08.29.10.07.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 10:07:46 -0700 (PDT)
+Date: Tue, 29 Aug 2023 13:07:43 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ qemu-devel@nongnu.org, Gowtham Siddarth <gowtham.siddarth@arm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
+Message-ID: <20230829130617-mutt-send-email-mst@kernel.org>
+References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
+ <CAFEAcA81xq_yEXYdtAXtkqcdR=MHagSNf5rXOtt+AwohMY_=BQ@mail.gmail.com>
+ <20230829093909-mutt-send-email-mst@kernel.org>
+ <43653986-c04f-0076-637b-9061f9702f77@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 11/11] exec/translation-block: Clean up includes
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20230828221314.18435-1-philmd@linaro.org>
- <20230828221314.18435-12-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230828221314.18435-12-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+In-Reply-To: <43653986-c04f-0076-637b-9061f9702f77@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,16 +102,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 15:13, Philippe Mathieu-Daudé wrote:
-> 'qemu/atomic.h' and 'exec/target_page.h' are not used.
-> 'qemu/interval-tree.h' is only required for user emulation.
+On Tue, Aug 29, 2023 at 04:04:27PM +0200, Philippe Mathieu-Daud� wrote:
+> On 29/8/23 15:48, Michael S. Tsirkin wrote:
+> > On Tue, Aug 29, 2023 at 02:14:51PM +0100, Peter Maydell wrote:
+> > > On Tue, 29 Aug 2023 at 12:40, Marcin Juszkiewicz
+> > > <marcin.juszkiewicz@linaro.org> wrote:
+> > > > 
+> > > > I am working on aarch64/sbsa-ref machine so people can have virtual
+> > > > machine to test their OS against something reminding standards compliant
+> > > > system.
+> > > > 
+> > > > One of tools I use is BSA ACS (Base System Architecture - Architecture
+> > > > Compliance Suite) [1] written by Arm. It runs set of tests to check does
+> > > > system conforms to BSA specification.
+> > > > 
+> > > > 1. https://github.com/ARM-software/bsa-acs
+> > > > 
+> > > > 
+> > > > SBSA-ref goes better and better, yet still we have some issues. One of
+> > > > them is test 822 ("Check Type 1 config header rules") which fails on
+> > > > each PCIe root port device:
+> > > > 
+> > > > BDF 0x400 : SLT attribute mismatch: 0xFF020100 instead of 0x20100
+> > > > BDF 0x500 : SLT attribute mismatch: 0xFF030300 instead of 0x30300
+> > > > BDF 0x600 : SLT attribute mismatch: 0xFF040400 instead of 0x40400
+> > > > 
+> > > > I reported it as an issue [2] and got response that it may be QEMU
+> > > > fault. My pcie knowledge is not good enough to know where the problem is.
+> > > > 
+> > > > 2. https://github.com/ARM-software/bsa-acs/issues/193
+> > > > 
+> > > > 
+> > > > In the comment Gowtham Siddarth wrote:
+> > > > 
+> > > > > Regarding the SLT (Secondary Latency Timer) register, the expected
+> > > > > values align with the ACS specifications, registering as 0. However,
+> > > > > a discrepancy arises in the register's attribute, intended to be set
+> > > > > as Read-Only. Contrary to this intent, the bit field seems to
+> > > > > function as> Read-Write. Ordinarily, when attempting to write to the
+> > > > > register by configuring all bits to 1, the anticipated behaviour
+> > > > > should involve rejecting the write operation, maintaining the value
+> > > > > at 0 to uphold the register's designated Read-Only nature. However,
+> > > > > in this scenario, the write action takes effect, leading to a
+> > > > > transformation of the register's value to FFs. This anomaly could
+> > > > > potentially stem from an issue within the emulator.
+> > > > 
+> > > > Does someone know where the problem may be? And how to fix it?
+> > > 
+> > > I don't know enough about PCI to be sure here, but it sounds like
+> > > what you're saying is happening is that the test case writes all-1s
+> > > to some PCI register for the root port device, and expects that where
+> > > some bits in it are defined in the spec as read-only they don't get set?
+> > > 
+> > > Which registers exactly is the test case trying to write in this way ?
+> > > 
+> > > I've cc'd the QEMU PCI maintainers.
+> > > 
+> > > thanks
+> > > -- PMM
+> > 
+> > 
+> > yes, this is a bug.
+> > 
+> > 
+> > static void pci_init_mask_bridge(PCIDevice *d)
+> > {
+> >      /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS and
+> >         PCI_SEC_LETENCY_TIMER */
+> >      memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 4);
+> > 
+> > 
+> > note there's a typo: PCI_SEC_LETENCY_TIMER should be
+> > PCI_SEC_LATENCY_TIMER.
+> > 
+> > But the express spec says:
+> > 	This register does not apply to PCI Express. It must be read-only and hardwired to 00h. For PCI Express to PCI/PCI-X
+> > 	Bridges, refer to the [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
+> > 
+> > 
+> > So, only for the pci express to pci express bridges, and only for new
+> > machine types, we need to override the mask to 0:
+> > 
+> > 	d->wmask[PCI_SEC_LATENCY_TIMER] = 0;
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Ah right. So smth like:
+> 
+> -- >8 --
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 881d774fb6..c73de617e0 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -1241,2 +1241,5 @@ static PCIDevice *do_pci_register_device(PCIDevice
+> *pci_dev,
+>          pci_init_mask_bridge(pci_dev);
+> +        if (pci_is_express(pci_dev)) {
+> +            pci_set_byte(d->wmask + PCI_SEC_LATENCY_TIMER, 0);
+> +        }
+>      }
 > ---
->   include/exec/translation-block.h | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> ?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-r~
+
+No - it depends on secondart bus type and only applies to bridges.
+Also we need compat machinery.
+Marcin could you pls test the following?
+
+
+diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+index ea54a81a15..5cd452115a 100644
+--- a/include/hw/pci/pci_bridge.h
++++ b/include/hw/pci/pci_bridge.h
+@@ -77,6 +77,9 @@ struct PCIBridge {
+ 
+     pci_map_irq_fn map_irq;
+     const char *bus_name;
++
++    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
++    bool pcie_writeable_slt_bug;
+ };
+ 
+ #define PCI_BRIDGE_DEV_PROP_CHASSIS_NR "chassis_nr"
+diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
+index e7b9345615..6a4e38856d 100644
+--- a/hw/pci/pci_bridge.c
++++ b/hw/pci/pci_bridge.c
+@@ -38,6 +38,7 @@
+ #include "qapi/error.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+ #include "hw/acpi/pci.h"
++#include "hw/qdev-properties.h"
+ 
+ /* PCI bridge subsystem vendor ID helper functions */
+ #define PCI_SSVID_SIZEOF        8
+@@ -385,6 +386,11 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
+     pci_bridge_region_init(br);
+     QLIST_INIT(&sec_bus->child);
+     QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
++
++    /* For express secondary buses, secondary latency timer is RO 0 */
++    if (pci_bus_is_express(sec_bus) && !br->pcie_writeable_slt_bug) {
++        dev->wmask[PCI_SEC_LATENCY_TIMER] = 0;
++    }
+ }
+ 
+ /* default qdev clean up function for PCI-to-PCI bridge */
+@@ -466,10 +472,18 @@ int pci_bridge_qemu_reserve_cap_init(PCIDevice *dev, int cap_offset,
+     return 0;
+ }
+ 
++static Property pci_bridge_properties[] = {
++    DEFINE_PROP_BOOL("x-pci-express-writeable-slt-bug", PCIBridge,
++                     pcie_writeable_slt_bug, false),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void pci_bridge_class_init(ObjectClass *klass, void *data)
+ {
+     AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
++    DeviceClass *k = DEVICE_CLASS(klass);
+ 
++    device_class_set_props(k, pci_bridge_properties);
+     adevc->build_dev_aml = build_pci_bridge_aml;
+ }
+ 
+
+
 
