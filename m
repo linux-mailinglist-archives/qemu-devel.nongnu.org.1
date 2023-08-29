@@ -2,75 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B44778C510
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774CE78C515
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:22:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qayeh-0003y7-Ex; Tue, 29 Aug 2023 09:21:15 -0400
+	id 1qayfS-0004Iv-B1; Tue, 29 Aug 2023 09:22:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayee-0003vk-VJ
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:21:12 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayeb-00031i-1k
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:21:12 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-50098cc8967so6904454e87.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:21:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693315267; x=1693920067;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pIaXhqvjX6xMFpNg8SHdTT6gdjOJPQH2OOxiQdoGFyE=;
- b=Q0KYQ+/8lKMhyTX6oKfoJq6/k17gRecXkn7MR9Vl/g+DIrxWpDNWktBM7z3Dv5WdKS
- aenijnPbjpWH7/0Fuj6yGLEg/dA6EMzfqVr+fE1YJNsMVE4SdJsWvDSqx2diklxR1sKa
- 2iIH2yBsCPK9O7yz7Wepc3zRO6kg9C5mvblALM0g8pqxc/SLl92wRRaX4wINBouOEP+2
- 2NDWLjMyaxJTjfWqhffSEFdzk6Kc1HI2qSLfEhvS7qRPftT5pjby7qtnPb+2RFGKnPt/
- z9Hm+ZGWuMMHQBqP6cwns+ndNp136YCaLviIj/EMhZ0UVzKkL68XLzMu150u9cNbvJBm
- o/Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693315267; x=1693920067;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pIaXhqvjX6xMFpNg8SHdTT6gdjOJPQH2OOxiQdoGFyE=;
- b=ak9Tyqbmr7bmvOkpQSwmRSFXqOuNt75peSQMbXOePrgFKLREtdqTvMD7lO9Bd6vvBK
- bYP7Y8DMmRt6VbcmY9OOrMi7SNJM8hQiogLdfPq7b0OlZeaECHMkv7k0tsBdkI37s6dL
- T76F8ctBwbiZgh2kw1ZK6LW8HRBQApRDHkQEGnQZycOfs+sWd9imxk0FurN6qQRSKd85
- UVpf5nXYrwn1fZpiCRDOzJBrs4ToSiJs8WiGrTs4AeE/4CNRgu8CxnThlr3Swz1BTA+s
- GY1YbHYddc6KWmhkcI6gIxebtH4dg6EPlPwM4DNBKvwUmhQJbj//4KYm22uODcuQcudt
- aHjg==
-X-Gm-Message-State: AOJu0Yxnev4JK2NiLG/vyPBA2/UEIu/Ape+JPLRao0qusDESCc/IClPq
- EjKlDy1F8pv4Z8iFbTlo6Pq0aCadwWsXVRdEKbP5BQ==
-X-Google-Smtp-Source: AGHT+IH/hrP8Vedz+JJVF83/9cwgXmz2qgarMo6K/vUwlOUiX6bhCoBCe6GWuGMffZoKtyeL16dGsorNRQkCrYcuCo4=
-X-Received: by 2002:a05:6512:3701:b0:500:b7dc:6c90 with SMTP id
- z1-20020a056512370100b00500b7dc6c90mr4198064lfr.36.1693315266838; Tue, 29 Aug
- 2023 06:21:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qayfO-0004H8-An; Tue, 29 Aug 2023 09:21:58 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qayfL-0003KX-F5; Tue, 29 Aug 2023 09:21:57 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37TD6wQZ024159; Tue, 29 Aug 2023 13:21:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=if/UmBRbHks8AhQkajFRWvHYh/7FmeO9jsi7m060SvI=;
+ b=fFdpa3+/OdaWJaYU4ScPrdtMqV/htABG9ii9564kIRj++Q5jeSzC+nlUFOwvp9/6+59l
+ 29aYdHZrZ+6vMgmdZDjHGQ/f6yJ+wakn4p1d07YSmO9AkeyGr6xhrQiccPKaWTZOS4Dh
+ FADjAB/gMxKOR5YHqdbq50gLH5J0pnluJGm53pToPckxa7PbYrnbCXQafb6TkBSZFA24
+ GjEHif3sv+KegHb9jy7HXvFd8RxfamBTQcpYAvY3OICkXBrvjGdJ1r9nHZMDeZWinbhY
+ 8NaSwYdLz/ZMuc7h8eWujCeqH4vuf0yl2RTjXO7bkJtwm2aW7tlsM8MEf1AS/rfjHtss kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr7vywgy3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Aug 2023 13:21:36 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37TDFjwN008005;
+ Tue, 29 Aug 2023 13:21:36 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sr7vywgxh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Aug 2023 13:21:36 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37TBwIge020514; Tue, 29 Aug 2023 13:21:34 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sqv3ybu3y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Aug 2023 13:21:34 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37TDLYAv4850210
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 29 Aug 2023 13:21:34 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 01BA65805C;
+ Tue, 29 Aug 2023 13:21:34 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E59C58051;
+ Tue, 29 Aug 2023 13:21:33 +0000 (GMT)
+Received: from [9.61.30.201] (unknown [9.61.30.201])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 29 Aug 2023 13:21:33 +0000 (GMT)
+Message-ID: <bce207e1-8a79-431f-9f87-665d234eed70@linux.ibm.com>
+Date: Tue, 29 Aug 2023 08:21:33 -0500
 MIME-Version: 1.0
-References: <20230822095156.39868-1-philmd@linaro.org>
-In-Reply-To: <20230822095156.39868-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 14:20:56 +0100
-Message-ID: <CAFEAcA8CWDg8cBjr_KJdTE2AvvdksU7jGhfHp5sdQU7FHbAb4w@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Use deposit_z() in BCF opcode
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/7] hw/fsi: Introduce IBM's scratchpad
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, clg@kaod.org,
+ peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ philmd@linaro.org
+Cc: qemu-arm@nongnu.org
+References: <20230825203046.3692467-1-ninad@linux.ibm.com>
+ <20230825203046.3692467-3-ninad@linux.ibm.com>
+ <6d153709-8099-7737-8fbd-3988a35af71a@redhat.com>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <6d153709-8099-7737-8fbd-3988a35af71a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: C1adgvMOD0_mAp78b_n-0d65gA-G7bTJ
+X-Proofpoint-GUID: b0adT_c0eyEuzCrzSqPoUbSX-j8mIvDn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-29_10,2023-08-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=576
+ priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2308290113
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,65 +117,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 22 Aug 2023 at 10:51, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+Hello Thomas,
+
+On 8/28/23 20:52, Thomas Huth wrote:
+> On 25/08/2023 22.30, Ninad Palsule wrote:
+>> This is a part of patchset where IBM's Flexible Service Interface is
+>> introduced.
+>>
+>> The LBUS device is embeded inside the scratchpad. The scratchpad
+>> provides a non-functional registers. There is a 1-1 relation between
+>> scratchpad and LBUS devices. Each LBUS device has 1K memory mapped in
+>> the LBUS.
+>>
+>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>> ---
+>>   hw/fsi/Kconfig                     |   4 ++
+>>   hw/fsi/engine-scratchpad.c         | 100 +++++++++++++++++++++++++++++
+>>   hw/fsi/meson.build                 |   1 +
+>>   include/hw/fsi/engine-scratchpad.h |  32 +++++++++
+>>   4 files changed, 137 insertions(+)
+>>   create mode 100644 hw/fsi/engine-scratchpad.c
+>>   create mode 100644 include/hw/fsi/engine-scratchpad.h
+>>
+>> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+>> index 687449e14e..2a9c49f2c9 100644
+>> --- a/hw/fsi/Kconfig
+>> +++ b/hw/fsi/Kconfig
+>> @@ -1,2 +1,6 @@
+>> +config SCRATCHPAD
+>> +    bool
+>> +    select LBUS
+>> +
+>>   config LBUS
+>>       bool
 >
-> When clearing a bitfield we don't need to lead the
+> The config names sound pretty generic ... could you maybe name them 
+> FSI_SCRATCHPAD and FSI_LBUS instead?
 
-"load" ?
+OK, I fixed it by adding the FSI prefix.
 
-> source register. Use deposit_z_i32() with the BFC
-> opcode to save a load_reg() call.
+Thank you for the review.
+
+Ninad
+
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/arm/tcg/translate.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  Thomas
 >
-> diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-> index b71ac2d0d5..1a6938d1b3 100644
-> --- a/target/arm/tcg/translate.c
-> +++ b/target/arm/tcg/translate.c
-> @@ -7255,7 +7255,7 @@ static bool trans_UBFX(DisasContext *s, arg_UBFX *a=
-)
->  static bool trans_BFCI(DisasContext *s, arg_BFCI *a)
->  {
->      int msb =3D a->msb, lsb =3D a->lsb;
-> -    TCGv_i32 t_in, t_rd;
-> +    TCGv_i32 t_rd;
->      int width;
 >
->      if (!ENABLE_ARCH_6T2) {
-> @@ -7268,15 +7268,14 @@ static bool trans_BFCI(DisasContext *s, arg_BFCI =
-*a)
->      }
->
->      width =3D msb + 1 - lsb;
-> +    t_rd =3D load_reg(s, a->rd);
->      if (a->rn =3D=3D 15) {
->          /* BFC */
-> -        t_in =3D tcg_constant_i32(0);
-> +        tcg_gen_deposit_z_i32(t_rd, t_rd, lsb, width);
->      } else {
->          /* BFI */
-> -        t_in =3D load_reg(s, a->rn);
-> +        tcg_gen_deposit_i32(t_rd, t_rd, load_reg(s, a->rn), lsb, width);
->      }
-> -    t_rd =3D load_reg(s, a->rd);
-> -    tcg_gen_deposit_i32(t_rd, t_rd, t_in, lsb, width);
->      store_reg(s, a->rd, t_rd);
->      return true;
-
-The comment says we are saving a load_reg() call, but the
-code change doesn't seem to do that. Before the change:
- * for BFC we call load_reg for rd
- * for BFI we call load_reg for rn and rd
-
-After the change:
- * for BFC we call load_reg for rd
- * for BFI we call load_reg for rn and rd
-
-So we're not saving any load_reg() calls as far as I can see ?
-
--- PMM
 
