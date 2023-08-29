@@ -2,91 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796E478C3C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 14:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866EB78C428
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 14:23:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaxVN-00041i-HH; Tue, 29 Aug 2023 08:07:33 -0400
+	id 1qaxjU-00088g-0k; Tue, 29 Aug 2023 08:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qaxVI-0003vk-92
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:07:28 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qaxVA-0004GK-M8
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:07:27 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37T6hwQa007774; Tue, 29 Aug 2023 12:07:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=Ati6T77JkmlMaUQWeRPqUh4vZwWGpMgdnQ8Gjl2TTtg=;
- b=RypfuMvEz+ZNNs7Kl56EeDWhOmaenZwBgxASsJq/LjlFVXYwtgEIIpWWtm1q7yWff1c3
- XyqD4RieS+QJ8WGgmJ8g1jP8Dlk7cnV+L/QbFzCSDPG/TceElXTiGp29cr/+BZ0gAoy7
- 8FzE9brR/D/UJsZgGOq4vp/NRbmONGOuUzuyV0SNsmmqVUJRuotovktpxSKoyBosmjwh
- pynZL3J2RbTLuUBTg3J/o+U5/V5y18xPUS36VkcrJd68G8hn/UAyp7nwvZl/5U+fdu7D
- 3Jv8B4BToTHyCpgdZ43YzqHH3bioevwmJ4Gpl2lSq2Xzpei3j3BeaBTCtfpjYdSptcqO ww== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sq9nyvr0s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 29 Aug 2023 12:07:18 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 37TB205Y023385; Tue, 29 Aug 2023 12:07:17 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3sr6hn00dg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 29 Aug 2023 12:07:17 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37TC7AIr030216;
- Tue, 29 Aug 2023 12:07:17 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-65-179-243.vpn.oracle.com
- [10.65.179.243])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3sr6hn008y-4; Tue, 29 Aug 2023 12:07:17 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qaxjO-00087j-Cq
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:22:03 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qaxjF-0001LA-FG
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:22:01 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6bf01bcb1aeso2137315a34.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 05:21:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693311711; x=1693916511;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5+hKm/hGHe1RwTMPtHep9ct1mBSIWHV32WOu9vzrmvM=;
+ b=RDmmgD8u3kHAN7JjVLfajGjeVtgWgNi6ZmUzSFD91wxr0phxgfdsylk/3LNzbnrv33
+ gYJmaDlwA3JwMmDufSOx7ELvng6LSLxCRMW7BdNoINCNkT9uG8ApKnx3UjpXVKh4M87H
+ kN+GSO/tuDA+vEcfcXvfbPi8SKr0Hwd9GUTcWQV5eZwE1dy0lAFTBzWP3m+YZzONuirD
+ IJDFJa1rg0eYKNx35aX+ctoe3ca8tGjkzxE7hPB2Mz+d71jV0yPNAaDd1y65cUPyod/V
+ 6grSwZVsey2RYWWKAJkLg0wfzFoTEXzwCt2RYZ9PeehEGBdN3eFs3QcZBPJKbTRR+7yL
+ Agiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693311711; x=1693916511;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5+hKm/hGHe1RwTMPtHep9ct1mBSIWHV32WOu9vzrmvM=;
+ b=I1M98UxJCbFG9+uYaXEGN/eEa2/tjnbGeddbx+IweOhIzWnua535sByb32qmMfy9Sk
+ sk7cICPkb1vH4vuPTVVP5xiS1UFFL4OQPdUbDZjZqtontcpzsxDhsGJdhkF0PxT2eOwZ
+ rOPspA+4adTGWzFtpr0lOE0NUPZZdOGv/A3IKknzRG65ZVPWoP2zD4IVVODEO8b6MtIN
+ uxk2HN8WhELFvLNVj51Y6TykZwDk/3jCoFSgZGPzdCbCL/uiUntWLqaxYRoDzFPLh2T8
+ clHOzQaxkFGi2NZlyUHsZVqVnRwKdxIehpKSJTZhm+7hVKy9HWzArKmamJRAGuFtK2HB
+ 5++Q==
+X-Gm-Message-State: AOJu0YzWUPDQhG5eMXNA7BwYOCysou1hRq7nCzDf1p6ewSwOrSCN0coq
+ PXw8zXsj1zsn3LvuUZC/9rkROk5uVKzewpsS37w=
+X-Google-Smtp-Source: AGHT+IFqtiiKklT2oPkTRTg5Djviv/b7uOX6h+MiMmukfQvgv7TQlYaQnKoW7JxXNQNK5n5aKZHA/A==
+X-Received: by 2002:a05:6870:64a0:b0:1b7:38d1:6f98 with SMTP id
+ cz32-20020a05687064a000b001b738d16f98mr15946477oab.38.1693311711636; 
+ Tue, 29 Aug 2023 05:21:51 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.194])
+ by smtp.gmail.com with ESMTPSA id
+ x7-20020a4a97c7000000b00573320e1241sm5079327ooi.14.2023.08.29.05.21.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 05:21:51 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
- boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
- viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net
-Subject: [PATCH v5 3/3] vhost-user: move VhostUserProtocolFeature definition
- to header file
-Date: Tue, 29 Aug 2023 08:07:07 -0400
-Message-Id: <20230829120707.1809548-4-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230829120707.1809548-1-jonah.palmer@oracle.com>
-References: <20230829120707.1809548-1-jonah.palmer@oracle.com>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH 0/2] riscv: fix --enable-debug in riscv-to-apply.next
+Date: Tue, 29 Aug 2023 09:21:42 -0300
+Message-ID: <20230829122144.464489-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_09,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 malwarescore=0
- bulkscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2308290105
-X-Proofpoint-ORIG-GUID: Pgoy5V1OTd3Ekd5dxsskYN3zYwHPx1Ck
-X-Proofpoint-GUID: Pgoy5V1OTd3Ekd5dxsskYN3zYwHPx1Ck
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,143 +91,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the definition of VhostUserProtocolFeature to
-include/hw/virtio/vhost-user.h.
+Hi,
 
-Remove previous definitions in hw/scsi/vhost-user-scsi.c,
-hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
+There is a couple of build problems that sneaked in riscv-to-apply.next
+in the KVM AIA patches. Here's a potential solution for them.
 
-Previously there were 3 separate definitions of this over 3 different
-files. Now only 1 definition of this will be present for these 3 files.
+Alistair, feel free to squash the fixes in the original commits since
+they're not yet on master.
 
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- hw/scsi/vhost-user-scsi.c      |  4 ----
- hw/virtio/vhost-user.c         | 21 ---------------------
- hw/virtio/virtio-qmp.c         | 22 +---------------------
- include/hw/virtio/vhost-user.h | 21 +++++++++++++++++++++
- 4 files changed, 22 insertions(+), 46 deletions(-)
+Cc: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index ee99b19e7a..df6b66cc1a 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -39,10 +39,6 @@ static const int user_feature_bits[] = {
-     VHOST_INVALID_FEATURE_BIT
- };
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--};
--
- static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..a096335921 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -56,27 +56,6 @@
-  */
- #define VHOST_USER_MAX_CONFIG_SIZE 256
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- #define VHOST_USER_PROTOCOL_FEATURE_MASK ((1 << VHOST_USER_PROTOCOL_F_MAX) - 1)
- 
- typedef enum VhostUserRequest {
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 3431711db5..1dd96ed20f 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -17,6 +17,7 @@
- #include "qapi/qapi-commands-qom.h"
- #include "qapi/qmp/qobject.h"
- #include "qapi/qmp/qjson.h"
-+#include "hw/virtio/vhost-user.h"
- 
- #include "standard-headers/linux/virtio_ids.h"
- #include "standard-headers/linux/vhost_types.h"
-@@ -37,27 +38,6 @@
- #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
-     { .virtio_bit = name, .feature_desc = desc }
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- /* Virtio transport features mapping */
- static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-     /* Virtio device transport features */
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..80e2b4a463 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -11,6 +11,27 @@
- #include "chardev/char-fe.h"
- #include "hw/virtio/virtio.h"
- 
-+enum VhostUserProtocolFeature {
-+    VHOST_USER_PROTOCOL_F_MQ = 0,
-+    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
-+    VHOST_USER_PROTOCOL_F_RARP = 2,
-+    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
-+    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
-+    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
-+    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
-+    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
-+    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
-+    VHOST_USER_PROTOCOL_F_CONFIG = 9,
-+    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
-+    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
-+    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
-+    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-+    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-+    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-+    VHOST_USER_PROTOCOL_F_STATUS = 16,
-+    VHOST_USER_PROTOCOL_F_MAX
-+};
-+
- /**
-  * VhostUserHostNotifier - notifier information for one queue
-  * @rcu: rcu_head for cleanup
+Daniel Henrique Barboza (2):
+  hw/intc/riscv_aplic.c fix non-KVM --enable-debug build
+  hw/riscv/virt.c: fix non-KVM --enable-debug build
+
+ hw/intc/riscv_aplic.c    |  2 ++
+ target/riscv/kvm_riscv.h | 10 ++++++++++
+ 2 files changed, 12 insertions(+)
+
 -- 
-2.39.3
+2.41.0
 
 
