@@ -2,83 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D97378C1F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 12:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 235DC78C240
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 12:20:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qavam-0004Hi-4s; Tue, 29 Aug 2023 06:05:00 -0400
+	id 1qavoE-0000ry-Rn; Tue, 29 Aug 2023 06:18:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qavah-0004HP-Gj
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:04:55 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qavab-0004OT-LK
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:04:54 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-500bb392ab7so2766096e87.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 03:04:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693303488; x=1693908288;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uZ2Ugt5ZCXTbHM44nf4Z5MQAwGJU0KST+aLDaP6Cgqw=;
- b=tfr6NuUPzBvKQmLjqHmZOX5V//pYl0ai5at2qX28O2zaq6oNJcNLAL4EEEhPbwwczj
- RrA6yiJ9kz3T7EvgZIsJIhWR2H41O35pW5La8t5gBF0uRsPH3ntdecT12yYwq2EtYyYG
- ubVWwaUqRJ4U/BZ+RnTAvYLWzgPG9opmDr9KLzTqExzW2/SvEKAQ5vPjQHbx/E35cPQ8
- 6ezhlmUs4X12s1IKL96MDYsVbNyW8eozuGNzu9d6mQBVpmRIKLo1B22RmQ9KJqQnR/kG
- t9qZs1Gu+cKp1BPiwFob8yyyZZQ/PYWJ7baJzjg2b1901MsPu/lQ24ZPB6jGZo5xXOUp
- EURA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693303488; x=1693908288;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uZ2Ugt5ZCXTbHM44nf4Z5MQAwGJU0KST+aLDaP6Cgqw=;
- b=P1vZh8SxJBZOz9k5fX3+VLPJbXuJ6WPUCyk8MN1jSFsQWgKNnZgPwhO1CBGDR7PccM
- HycZYf2O+NHhHNGQdUIVfurmvv8sznSK53ETlZOW9jtX5+M1JnIzSk/kcsiK2vB8SwYj
- jbakTdLBZwPjBPjcanLn8y1R/kQbf4feS8Fn2L8sIWNJVJ3a6qd8snLsrPz/cKofjXjR
- U4SjfT8tPWivuIu7CpoUFkwDy+eF+K6SQ/L8Is5XhZOlWiZml6/JEoiCJdj0IQ35KW+J
- OrJYBKe60PFBuxM/Gdcm7wVlnj9LiB1U3VsekXruZ5+j+hF7nwE4w4/z0Us8725lRoTp
- 5Mhg==
-X-Gm-Message-State: AOJu0YwbSVFh8WeWA41f0XEXzah4kztTyuKbkYdtMRNc42iYmM/glXlQ
- 7QqS3JqUPo7iEYK6P0RIP71hqg/1WJ/a3ftr+mFA0g==
-X-Google-Smtp-Source: AGHT+IHLXvUYeQDGxOO7FNK5y+qst7hHeA47UawenYD6WDhc1yx0HDphuhpfUA2OMRdSKLS69MB55e1jJsAJF7YKrAg=
-X-Received: by 2002:ac2:4e03:0:b0:4fe:19ef:8791 with SMTP id
- e3-20020ac24e03000000b004fe19ef8791mr20501980lfr.38.1693303487622; Tue, 29
- Aug 2023 03:04:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <BATV+3a9ed657c5c9a78d2ebc+7310+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qavoB-0000qo-0T
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:18:51 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+3a9ed657c5c9a78d2ebc+7310+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qavo3-0001SZ-Uv
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:18:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=Gy5eyIGCFHluCSVYb7Kg17gjSDjhMDsrcYiQNshGo2w=; b=HeAsOOR1ZRI3DEJQcLg4muyDE1
+ /dMmZOToTI3C/ehT87iDRtuKg9VZ8PXygN2PLLPqaaWXmnChHKsxHI5yw4Rxi0QIQ7eDf5ELzXRyo
+ 1rS94CMjhsrp2S7Z0GDq3re8j2tvEAqbXfyHhvyTVkAlw4J8U1mOKGdELhgjLg6AZs+oio/ZCCXxz
+ AFLy0He7/6c++sTh+ARdBGr0K4ztCmEEUKEL6uh/Dioo9Xv7ap0Vyx/8k78s/DchxSvf+NJtlT7oo
+ X1Ymk1vH5y7enkV0o10sq9XapX4HlXiPxUmtvhrGahGP3WJY6+dn0XRHPo/L1fScuN/X8wBaIImIW
+ E/teEDiA==;
+Received: from 54-240-197-239.amazon.com ([54.240.197.239]
+ helo=freeip.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qavnk-005yoB-N8; Tue, 29 Aug 2023 10:18:24 +0000
+Message-ID: <e31754530396548141e72e99d8d70470c2ea02df.camel@infradead.org>
+Subject: Re: [PATCH v1 01/23] pc/xen: Xen Q35 support: provide IRQ handling
+ for PCI devices
+From: David Woodhouse <dwmw2@infradead.org>
+To: Joel Upham <jupham125@gmail.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Date: Tue, 29 Aug 2023 11:18:20 +0100
+In-Reply-To: <1c547c5581ce6192b70c68f39de108cdb2c73f7e.1687278381.git.jupham125@gmail.com>
+References: <cover.1687278381.git.jupham125@gmail.com>
+ <1c547c5581ce6192b70c68f39de108cdb2c73f7e.1687278381.git.jupham125@gmail.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-PA4AD3XtdmnO4CPGUrzh"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-References: <20230825175123.624114-1-thuth@redhat.com>
- <20230825175123.624114-2-thuth@redhat.com>
- <94cb7c35-39f7-0108-d623-78435a5e7fee@linaro.org>
- <0b618261-b056-ff46-061c-7a0845e58ea9@redhat.com>
- <665924a0-dec5-cfe1-6d97-0021036b8723@linaro.org>
- <15ba0f6c-d9a2-a351-6df5-c0b427f3066a@redhat.com>
-In-Reply-To: <15ba0f6c-d9a2-a351-6df5-c0b427f3066a@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 11:04:36 +0100
-Message-ID: <CAFEAcA9qGvHW1JnDoLCpQUng_pQBw9Q7C3bKr-xrQ+ODrzrCpg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] hw/mips/jazz: Remove the big_endian variable
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+3a9ed657c5c9a78d2ebc+7310+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,102 +81,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 28 Aug 2023 at 18:00, Thomas Huth <thuth@redhat.com> wrote:
->
-> On 28/08/2023 17.48, Philippe Mathieu-Daud=C3=A9 wrote:
-> > On 28/8/23 14:41, Thomas Huth wrote:
-> >> On 28/08/2023 14.19, Philippe Mathieu-Daud=C3=A9 wrote:
-> >>> Hi Thomas,
-> >>>
-> >>> On 25/8/23 19:51, Thomas Huth wrote:
-> >>>> There is an easier way to get a value that can be used to decide
-> >>>> whether the target is big endian or not: Simply use the
-> >>>> target_words_bigendian() function instead.
-> >>>>
-> >>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> >>>> ---
-> >>>>   hw/mips/jazz.c | 10 ++--------
-> >>>>   1 file changed, 2 insertions(+), 8 deletions(-)
-> >>>
-> >>>
-> >>>> @@ -157,12 +157,6 @@ static void mips_jazz_init(MachineState *machin=
-e,
-> >>>>           [JAZZ_PICA61] =3D {33333333, 4},
-> >>>>       };
-> >>>> -#if TARGET_BIG_ENDIAN
-> >>>> -    big_endian =3D 1;
-> >>>> -#else
-> >>>> -    big_endian =3D 0;
-> >>>> -#endif
-> >>>> -
-> >>>>       if (machine->ram_size > 256 * MiB) {
-> >>>>           error_report("RAM size more than 256Mb is not supported");
-> >>>>           exit(EXIT_FAILURE);
-> >>>> @@ -301,7 +295,7 @@ static void mips_jazz_init(MachineState *machine=
-,
-> >>>>               dev =3D qdev_new("dp8393x");
-> >>>>               qdev_set_nic_properties(dev, nd);
-> >>>>               qdev_prop_set_uint8(dev, "it_shift", 2);
-> >>>> -            qdev_prop_set_bit(dev, "big_endian", big_endian > 0);
-> >>>> +            qdev_prop_set_bit(dev, "big_endian",
-> >>>> target_words_bigendian());
-> >>>
-> >>> IIRC last time I tried that Peter pointed me at the documentation:
-> >>>
-> >>> /**
-> >>>   * target_words_bigendian:
-> >>>   * Returns true if the (default) endianness of the target is big end=
-ian,
-> >>>   * false otherwise. Note that in target-specific code, you can use
-> >>>   * TARGET_BIG_ENDIAN directly instead. On the other hand, common
-> >>>   * code should normally never need to know about the endianness of t=
-he
-> >>>   * target, so please do *not* use this function unless you know very
-> >>>   * well what you are doing!
-> >>>   */
-> >>>
-> >>> (Commit c95ac10340 "cpu: Provide a proper prototype for
-> >>>   target_words_bigendian() in a header")
-> >>>
-> >>> Should we update the comment?
-> >>
-> >> What would you change? My motivation here was mainly to decrease the s=
-ize
-> >> of the code - I think it's way more complicated via the #if + extra
-> >> variable compared to simply calling target_words_bigendian(), isn't it=
-? I
-> >> think the diffstat says it all...
-> >
-> > Is the comment misleading then? Why not decrease the code
-> > size using target_words_bigendian() in all the similar cases?
 
-The idea of the comment is:
-(1) if you're in common code, then it's rather odd to want to
-know the endianness of the target
-(2) if you're not in common code you can use TARGET_BIG_ENDIAN
-directly, which will evaluate to the same thing as
-target_words_bigendian() but without doing the function call.
+--=-PA4AD3XtdmnO4CPGUrzh
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The function is only needed in the (currently) unusual case where
-you are in a compiled-once-for-all-targets source file but you
-still need to know the target endianness.
+On Tue, 2023-06-20 at 13:24 -0400, Joel Upham wrote:
+> The primary difference in PCI device IRQ management between Xen HVM and
+> QEMU is that Xen PCI IRQs are "device-centric" while QEMU PCI IRQs are
+> "chipset-centric". Namely, Xen uses PCI device BDF and INTx as coordinate=
+s
+> to assert IRQ while QEMU finds out to which chipset PIRQ the IRQ is route=
+d
+> through the hierarchy of PCI buses and manages IRQ assertion on chipset
+> side (as PIRQ inputs).
+>=20
+> Two callback functions are used for this purpose: .map_irq and .set_irq
+> (named after corresponding structure fields). Corresponding Xen-specific
+> callback functions are piix3_set_irq() and pci_slot_get_pirq(). In Xen
+> case these functions do not operate on pirq pin numbers. Instead, they us=
+e
+> a specific value to pass BDF/INTx information between .map_irq and
+> .set_irq -- PCI device devfn and INTx pin number are combined into
+> pseudo-PIRQ in pci_slot_get_pirq, which piix3_set_irq later decodes back
+> into devfn and INTx number for passing to *set_pci_intx_level() call.
+>=20
+> For Xen on Q35 this scheme is still applicable, with the exception that
+> function names are non-descriptive now and need to be renamed to show
+> their common i440/Q35 nature. Proposed new names are:
+>=20
+> xen_pci_slot_get_pirq --> xen_cmn_pci_slot_get_pirq
+> xen_piix3_set_irq=C2=A0=C2=A0=C2=A0=C2=A0 --> xen_cmn_set_irq
+>=20
+> Another IRQ-related difference between i440 and Q35 is the number of PIRQ
+> inputs and PIRQ routers (PCI IRQ links in terms of ACPI) available. i440
+> has 4 PCI interrupt links, while Q35 has 8 (PIRQA...PIRQH).
+> Currently Xen have support for only 4 PCI links, so we describe only 4 of
+> 8 PCI links in ACPI tables. Also, hvmloader disables PIRQ routing for
+> PIRQE..PIRQH by writing 80h into corresponding PIRQ[n]_ROUT registers.
+>=20
+> All this PCI interrupt routing stuff is largely an ancient legacy from PI=
+C
+> era. It's hardly worth to extend number of PCI links supported as we
+> normally deal with APIC mode and/or MSI interrupts.
+>=20
+> The only useful thing to do with PIRQE..PIRQH routing currently is to
+> check if guest actually attempts to use it for some reason (despite ACPI
+> PCI routing information provided). In this case, a warning is logged.
+>=20
+> Things have changed a bit in modern Qemu, and more changes to the IRQ
+> mapping had to be done inside the lpc_ich9 to write the irqs and setup
+> the mappings.
+>=20
+> Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
+> Signed-off-by: Joel Upham <jupham125@gmail.com>
 
-> If it's just about a variable that gets initialized to 0 or 1, replacing =
-it
-> with target_words_bigendian() certainly make a lot of sense. Not sure abo=
-ut
-> this spot in malta.c, though, this is a bit different since it declares a
-> macro instead.
+Please ensure you test Linux guests with attached/emulated PCI devices
+and (at least) the following command lines:
 
-You can use
-   qdev_prop_set_bit(dev, "big_endian", TARGET_BIG_ENDIAN);
+ =E2=80=A2 pci=3Dnomsi
+ =E2=80=A2 pci=3Dnomsi noapic
+ =E2=80=A2 xen_no_vector_callback pci=3Dnomsi noapic
+ =E2=80=A2 xen_no_vector_callback pci=3Dnomsi
 
-because the macro is always defined, to either 0 or 1.
+Obviously, with pci=3Dnomsi you're actually *using* PCI INTx, and force
+it not to use MSI.
 
-The reason to maybe rethink this would be for the purposes
-of getting board source files to compile-once, which it feels
-to me is still rather far away.
+With noapic you force it to use the i8259. The INTx should be routed to
+a *different* interrupt number on the i8259 than the I/O APIC.
+(I thought the IRQ should be asserted on both, but QEMU's
+ich9_route_intx_pin_to_irq() seems to route to the I/O APIC *only* if
+it's disabled in the i8259? Sadly, QEMU lacks a comment explaining if
+that's a faithful emulation of the ICH9, or if it's just a workaround
+for the fact that that function is only allowed one return value.)
 
-thanks
--- PMM
+This one has potential to be particularly entertaining because the
+guest may route INTx IRQs to PIRQ event channels. And I think those are
+supposed to use the I/O APIC pin numbering, *not* the PIC numbering. I
+*think* you get away with it because of the workaround discussed above.
+
+With xen_no_vector_callback you *also* use the emulated INTx of the Xen
+platform PCI device, for event channel callbacks. We want to test that
+via both the i8259 and the I/O APIC. And it also ensures that the INTx
+of the real PCI devices is handled via the PIC or I/OAPIC instead of
+letting the guest route them to PIRQs.
+
+
+
+
+
+--=-PA4AD3XtdmnO4CPGUrzh
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODI5MTAxODIwWjAvBgkqhkiG9w0BCQQxIgQg7s9Xqa5Y
+KKmXhdaf8Iad/qANS+qLanxg4rA+aCRW6Zcwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCA76OgqKmzxHI667nx9ILlCp5aDmr7FvXG
+18fx8OOeIltrozOnl1F2RcOwnltm2UZ7ad1Kqtw6v7qfCR2fjAfbfM23hFOWEUKrn2t4IZN7ts6i
+ytbwlj28mh2VxDhr0OUVbl2AuPGO7Qm7OOYhX+yDowOihsftxMrJ7ytFxZjMFYFsdJadX7caMHij
+wN0DaF0IQ9x8DnLTGReI6+KtwPqMB2KWT4AJptzroT6hsK9INvVJiwGOYHSxWRx1u/X56OqF+n3d
+ra2H4D5PLjN6+sX4dQTNmuHjlPH8rZmYSM1VtyTAxUxyilxyjt9OHZlhgzk14FTiPXbrBVVMvAYa
+3hlnAs44Z1Ci3m46173GzA+0e3rW5im97izqGU9UKfGp5s4lShGr9mrJvRSq3X64G6Aga6S0xcCu
+B2eZNB9VHXeYy8WPbVT+e6B0hv3UrKaDqYAXhqvptSrWJ3Gf5w8qzQLRSlgu4vmhp5ZKOypZ/p6X
+V0+JceP9Vr3HOX+u1/mEj7GQAAygX2FgdEfgubtaCHkSSg6xJlHNYc2Qw7y7iI+ScF5VKHRp7zPj
+wU8kgMio0llOPNjFYD73OsKMyWje43KhSnSkCaF89I5fq/NsuC9s8d5qmddLH6XTI3YOKJy4Ee4C
+bsusqKpaLzfGBTXqwGm5LWA9k/hg9oZkjXD5t/epQQAAAAAAAA==
+
+
+--=-PA4AD3XtdmnO4CPGUrzh--
 
