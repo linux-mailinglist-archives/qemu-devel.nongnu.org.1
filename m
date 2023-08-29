@@ -2,96 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A1578D075
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F9378D059
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nm-0001Bf-5i; Tue, 29 Aug 2023 19:07:14 -0400
+	id 1qb7n3-0000pg-QC; Tue, 29 Aug 2023 19:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb4Ry-0007cC-7A
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:32:30 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb4Rv-0002f2-PT
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:32:29 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31aeedbb264so4324794f8f.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:32:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693337546; x=1693942346; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7gonYvh68nIa/u69xzo2nJ01Nf1tslVtxCZ3XkTe1F4=;
- b=EoNVAcXwRJ44qNspjnqMIWyGZD5K4/5aG+7BzWd52sVtW8nUv7NOqRTQWNdYxEQ26y
- 7OA0UArCLSrHylVOKsS3nCfQRlLFFQ2FCgbJZNqVHfWPOTGFIf8xoi5D57o4OAvrePaH
- ybCXHv37DmVEun7JkAfjspPi3lAn3WbVf+pj/VtbGAJc1VkuOExMWyr6mXgMVQhxd9nJ
- gXC6ev24vwjN8L6OFbJJDTbQlLZOXVvAr40s9nsuFW9F02mFOGmYUu2VoVHN9iOYbkYW
- 48FrJqW+HCSHHvDJPRhhDPkgHki++CKTiNwWp7PNzFZ3HrYF77iK+90SvkkZ+GLF2ZRz
- 7bvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693337546; x=1693942346;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=7gonYvh68nIa/u69xzo2nJ01Nf1tslVtxCZ3XkTe1F4=;
- b=L2zzUabpX7aEJiyMwPwXEqyAPrnr1FUkm3n2f4/uyflWePgYG3HctLBIejkz8IPyhX
- p+DR5/57UuuDTFSL4yl6Ef7FcVgsUQFhYT7RhhDnha19r/GBfGlDTLCi12z3FXmbsLDU
- Osxv3DZXyR099JHSCbUJWQdbl1fVbEICwbbAAdYWr9hGVpk5LnPoVBqMgNg1AN300bd+
- OyqtoRTEveEsPrEBLnThB+f2rhLbMdixzr/nb1G9Dgur/+WzGs+LB+fpaDuV1DgsO7u7
- KXQ7Uk6NqNClBUqNd/Jd2SFmt1TjzCjauA3U+m+J+gGFX1ZbiQwWpgD+eZaHwDrPct76
- 9mIQ==
-X-Gm-Message-State: AOJu0YwisVgNX8IG9hBoxZ3Y2yeQ22lMyrOXdyKDES55uccHZDw0XK6E
- Sy/huPeWmVEMVHIUAb4Vy00EuQ==
-X-Google-Smtp-Source: AGHT+IH7b6tN/37nyzvPPU9ymbq5r+woxqEf+jiwEgsin1I9UOq9QfnVyEN166xecT6FJN7sPyHexA==
-X-Received: by 2002:a5d:4c92:0:b0:317:3c89:7f03 with SMTP id
- z18-20020a5d4c92000000b003173c897f03mr46938wrs.5.1693337546031; 
- Tue, 29 Aug 2023 12:32:26 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- y6-20020adfd086000000b003179b3fd837sm14613623wrh.33.2023.08.29.12.32.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 12:32:25 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 485111FFBB;
- Tue, 29 Aug 2023 20:32:25 +0100 (BST)
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <ff6f1320047826fa9260ab4c461873b2460cc350.1693252037.git.manos.pitsidianakis@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
- Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>, =?utf-8?B?S8WRdsOh?=
- =?utf-8?B?Z8OzLCBab2x0w6Fu?=
- <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v8 06/12] virtio-sound: handle
- VIRTIO_SND_R_PCM_{START,STOP}
-Date: Tue, 29 Aug 2023 20:32:21 +0100
-In-reply-to: <ff6f1320047826fa9260ab4c461873b2460cc350.1693252037.git.manos.pitsidianakis@linaro.org>
-Message-ID: <87y1htskza.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qb4SV-0007eS-Le
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:33:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qb4SS-0002nC-Ji
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:33:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693337579;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ib7nTQDxsil56sBr2GnFTm7+klt32n1Zr2vr1F36IsM=;
+ b=DQTJXNSGuCfmQLYwCBArXyjwlzUT/HpM7MgPHdMJpXCwwoBIQyhET7EMm78+A/X8Xk/OvP
+ 1cOMAYGSHPZ+AwUf3FX4b58Y7ylQm5vFb+c0mK5k7OF055leDIiwetvNkpW1deY6pZh7ty
+ kYS3fdR75QK4c/63vW+0bwBIy4iT/JM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-679-VfN9IAiiMB6xFgLhEhv8Tg-1; Tue, 29 Aug 2023 15:32:55 -0400
+X-MC-Unique: VfN9IAiiMB6xFgLhEhv8Tg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C04518022E4;
+ Tue, 29 Aug 2023 19:32:54 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 897C71121318;
+ Tue, 29 Aug 2023 19:32:53 +0000 (UTC)
+Date: Tue, 29 Aug 2023 14:32:46 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, farosas@suse.de,
+ kwolf@redhat.com, Peter Xu <peterx@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, 
+ Juan Quintela <quintela@redhat.com>, qemu-block@nongnu.org,
+ Coiby Xu <Coiby.Xu@gmail.com>, 
+ Fam Zheng <fam@euphon.net>, Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v2 4/4] io: follow coroutine AioContext in
+ qio_channel_yield()
+Message-ID: <z6rrcwlphydkdsg53sq66hv45ogdg47js6di6wl6ndxbibudci@cql6lnmzhvfk>
+References: <20230829160623.277411-1-stefanha@redhat.com>
+ <20230829160623.277411-5-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230829160623.277411-5-stefanha@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,23 +85,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Aug 29, 2023 at 12:06:22PM -0400, Stefan Hajnoczi wrote:
+> The ongoing QEMU multi-queue block layer effort makes it possible for multiple
+> threads to process I/O in parallel. The nbd block driver is not compatible with
+> the multi-queue block layer yet because QIOChannel cannot be used easily from
+> coroutines running in multiple threads. This series changes the QIOChannel API
+> to make that possible.
+> 
+> In the current API, calling qio_channel_attach_aio_context() sets the
+> AioContext where qio_channel_yield() installs an fd handler prior to yielding:
+> 
+>   qio_channel_attach_aio_context(ioc, my_ctx);
+>   ...
+>   qio_channel_yield(ioc); // my_ctx is used here
+>   ...
+>   qio_channel_detach_aio_context(ioc);
+> 
+> This API design has limitations: reading and writing must be done in the same
+> AioContext and moving between AioContexts involves a cumbersome sequence of API
+> calls that is not suitable for doing on a per-request basis.
+> 
+> There is no fundamental reason why a QIOChannel needs to run within the
+> same AioContext every time qio_channel_yield() is called. QIOChannel
+> only uses the AioContext while inside qio_channel_yield(). The rest of
+> the time, QIOChannel is independent of any AioContext.
+> 
+> In the new API, qio_channel_yield() queries the AioContext from the current
+> coroutine using qemu_coroutine_get_aio_context(). There is no need to
+> explicitly attach/detach AioContexts anymore and
+> qio_channel_attach_aio_context() and qio_channel_detach_aio_context() are gone.
+> One coroutine can read from the QIOChannel while another coroutine writes from
+> a different AioContext.
+> 
+> This API change allows the nbd block driver to use QIOChannel from any thread.
+> It's important to keep in mind that the block driver already synchronizes
+> QIOChannel access and ensures that two coroutines never read simultaneously or
+> write simultaneously.
+> 
+> This patch updates all users of qio_channel_attach_aio_context() to the
+> new API. Most conversions are simple, but vhost-user-server requires a
+> new qemu_coroutine_yield() call to quiesce the vu_client_trip()
+> coroutine when not attached to any AioContext.
+> 
+> While the API is has become simpler, there is one wart: QIOChannel has a
+> special case for the iohandler AioContext (used for handlers that must not run
+> in nested event loops). I didn't find an elegant way preserve that behavior, so
+> I added a new API called qio_channel_set_follow_coroutine_ctx(ioc, true|false)
+> for opting in to the new AioContext model. By default QIOChannel uses the
+> iohandler AioHandler. Code that formerly called
+> qio_channel_attach_aio_context() now calls
+> qio_channel_set_follow_coroutine_ctx(ioc, true) once after the QIOChannel is
+> created.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+> +++ b/include/io/channel-util.h
+> @@ -49,4 +49,27 @@
+>  QIOChannel *qio_channel_new_fd(int fd,
+>                                 Error **errp);
+>  
+> +/**
+> + * qio_channel_yield:
 
-Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+Wrong function name...
 
-> Handle the start and stop control messages for a stream_id. This request
-> does nothing at the moment except for replying to it. Audio playback
-> or capture will be started/stopped here in follow-up commits.
->
-> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9=
-c7b40a8e603f4da92471
-> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
-> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
-> Signed-off-by: Emmanouil Pitsidianakis
-> <manos.pitsidianakis@linaro.org>
+> + * @read_fd: the file descriptor for the read handler
+> + * @read_ctx: the AioContext for the read handler
+> + * @io_read: the read handler
+> + * @write_fd: the file descriptor for the write handler
+> + * @write_ctx: the AioContext for the write handler
+> + * @io_write: the write handler
+> + * @opaque: the opaque argument to the read and write handler
+> + *
+> + * Set the read and write handlers when @read_ctx and @write_ctx are non-NULL,
+> + * respectively. To leave a handler in its current state, pass a NULL
+> + * AioContext. To clear a handler, pass a non-NULL AioContext and a NULL
+> + * handler.
+> + */
+> +void qio_channel_util_set_aio_fd_handler(int read_fd,
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+...should be this.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> +                                         AioContext *read_ctx,
+> +                                         IOHandler *io_read,
+> +                                         int write_fd,
+> +                                         AioContext *write_ctx,
+> +                                         IOHandler *io_write,
+> +                                         void *opaque);
+> +
+>  #endif /* QIO_CHANNEL_UTIL_H */
+> diff --git a/include/io/channel.h b/include/io/channel.h
+> index 229bf36910..5f9dbaab65 100644
+> --- a/include/io/channel.h
+
+> +++ b/io/channel.c
+
+>  
+> -static void qio_channel_set_aio_fd_handlers(QIOChannel *ioc)
+> +static void coroutine_fn
+> +qio_channel_set_fd_handlers(QIOChannel *ioc, GIOCondition condition)
+>  {
+> -    IOHandler *rd_handler = NULL, *wr_handler = NULL;
+> +    AioContext *ctx = ioc->follow_coroutine_ctx ?
+> +        qemu_coroutine_get_aio_context(qemu_coroutine_self()) :
+> +        iohandler_get_aio_context();
+> +    AioContext *read_ctx = NULL;
+> +    IOHandler *io_read = NULL;
+> +    AioContext *write_ctx = NULL;
+> +    IOHandler *io_write = NULL;
+> +
+> +    if (condition == G_IO_IN) {
+> +        ioc->read_coroutine = qemu_coroutine_self();
+> +        ioc->read_ctx = ctx;
+> +        read_ctx = ctx;
+> +        io_read = qio_channel_restart_read;
+> +
+> +        /*
+> +         * Thread safety: if the other coroutine is set and its AioContext
+> +         * match ours, then there is mutual exclusion between read and write
+
+matches
+
+> +         * because they share a single thread and it's safe to set both read
+> +         * and write fd handlers here. If the AioContext does not match ours,
+> +         * then both threads may run in parallel but there is no shared state
+> +         * to worry about.
+> +         */
+> +        if (ioc->write_coroutine && ioc->write_ctx == ctx) {
+> +            write_ctx = ctx;
+> +            io_write = qio_channel_restart_write;
+> +        }
+> +    } else if (condition == G_IO_OUT) {
+> +        ioc->write_coroutine = qemu_coroutine_self();
+> +        ioc->write_ctx = ctx;
+> +        write_ctx = ctx;
+> +        io_write = qio_channel_restart_write;
+> +        if (ioc->read_coroutine && ioc->read_ctx == ctx) {
+> +            read_ctx = ctx;
+> +            io_read = qio_channel_restart_read;
+> +        }
+> +    } else {
+> +        abort();
+> +    }
+> +
+> +    qio_channel_set_aio_fd_handler(ioc, read_ctx, io_read,
+> +            write_ctx, io_write, ioc);
+> +}
+> +
+
+With those minor fixes,
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
+
 
