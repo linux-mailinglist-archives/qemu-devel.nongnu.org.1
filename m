@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7CA78D0CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E64D78D0CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:58:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb8V2-0004Tj-Eh; Tue, 29 Aug 2023 19:51:56 -0400
+	id 1qb8aL-00076H-KK; Tue, 29 Aug 2023 19:57:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qb8Uz-0004Sz-4i
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:51:53 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qb8aJ-000769-Ez
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:57:23 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qb8Uu-0007Du-Mp
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:51:52 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6bca5d6dcedso3807127a34.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 16:51:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qb8aG-00005Q-Mc
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:57:23 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-99bdeae1d0aso643658166b.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 16:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693353107; x=1693957907; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=u3PtC5OIS8AsjAGmhc4geSdk2PZS+Qc0+sZmTj3UG7g=;
- b=DbszGCjYOKb45beDIpUg/My0umSjahJPD6/uNhLPxBd4q7C0jdiHjgzqvSWM88Aaxy
- T4iwRMDrxx0FQjRU+dXzJAeLG7/xWACbn3CKTs/UHx2QIimMN5dkRB0qTv0cILUgESzy
- LzxSUR89czBalB3CH/zAs0Kjz4OsTlcBR+PUjKiWakCQqX7sspkr+PYZRL7cPq8F8W76
- uPPhj8wr3ONFuLJE1+9tQw5vXKjf/oDt1Ue3bJZf9BvOgfeNfUbuUxETZksivkd1zyGk
- 6VBInXpqq9OhnBMOS2YdeZFE0RA6CK8SO3COemxd05T1IRRKTrdQTs2iPhrOVqRaIw1Y
- 3AiA==
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693353438; x=1693958238;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zB75Gqp1ychGRGbOI9VkSNkVdszFe1pVJV3kCX/kEvU=;
+ b=IwIlN4uuJu8k0iiApos+lZGdy31aSJavV3vggGkw1LhQc8Oj0FsjEF0fRWmZ9RsaHJ
+ fSRVn3xDaWzSVB2X+9W+C2dxg2V8Qfwgs/qCAj8OPQfcPIMUJ1WAUGPyRuBkF9JqCvSy
+ YSevdfaGm5tmoHldXMomKuuJQiVMYdD+JkLbQXLorjw0AeaJ9o0YJhh0tLnoDJdGTrlP
+ OrRBgf6RZ/oc2kYBSGUsu4T0VMPmyBW9A/0WHI3wh3P26Ntt3uquPUeuI60P4XCWAh1Y
+ Idau9N/pHW03FVqY+JpDO4oEjc8T+6rQJfvfjwBtOdo61Td2xvu+Wz9UX6U/zCiyc9Qw
+ HFIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693353107; x=1693957907;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=u3PtC5OIS8AsjAGmhc4geSdk2PZS+Qc0+sZmTj3UG7g=;
- b=PJV6az7Sk2cnQLWT9VZeuRfZERhmHQ/RLnKu8Olbke6QCOEbu75e8zTqyrEtq/yKNH
- EMhdK6+TlOAt0KMNwYI4rOw4Z7g9zYIrMLO1mk3/gYYwxLaNLt5NsC1If8CIRgs2MQUz
- 4aRDJy40ecQaSIE96AFTfOjqEmcToShsgVttX9JYjbTUinJAwF+bdn/aJ19nGXIY1J5y
- tyazQeXfR3RvL7Tg+pZTMGbirt46oio59nsWF8pNcm7fZc1NRpVqe9Oi28kCEzpGwdrz
- /iOm5kHSWjqq30KbfqEQMHSImm2Y8gcWes2o6NwO2RGpQpLOsupGdlvPaNtlfDlWkUOl
- HGCA==
-X-Gm-Message-State: AOJu0YwYS+vZStA3h5ubs5IDV9UnBoELx/9MT7pssAwyv5qOhb3z7lTn
- tQc0+xRBqtJsL7RtOtdoXDdLJA==
-X-Google-Smtp-Source: AGHT+IHr65vht8gH3ZKFT2Oy1djt2xhSSA4LUH05PCiavRuCPZQBpLfRLZCDUZuYR6G+KnKEjbWqMw==
-X-Received: by 2002:a05:6870:c18b:b0:1c3:c43c:f740 with SMTP id
- h11-20020a056870c18b00b001c3c43cf740mr663081oad.15.1693353106705; 
- Tue, 29 Aug 2023 16:51:46 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
- by smtp.gmail.com with ESMTPSA id
- e2-20020a4a5502000000b005732cbd3298sm5808160oob.40.2023.08.29.16.51.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 16:51:46 -0700 (PDT)
-Message-ID: <40938464-2008-aff3-ffb7-37fbb16615d3@ventanamicro.com>
-Date: Tue, 29 Aug 2023 20:51:42 -0300
+ d=1e100.net; s=20221208; t=1693353438; x=1693958238;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zB75Gqp1ychGRGbOI9VkSNkVdszFe1pVJV3kCX/kEvU=;
+ b=FAJJubpVUt09z6kieEmgMHDmtcEB4kuHWsviDE9KGrrGkXuLltCoa40RwSHtrkT6EC
+ aPGH+p07hfUmnC2G+f+jlxO+Cjtgmx/69HAaBql7KQXLApd/P9OYKbs03oOeYMtOYYeW
+ BiZA1teS0813smtb1KEyVpQJAngHFu/KSEhMNF5AnOqRVcGVSmeAvQCoejdmY4Jk3uHO
+ PDMZf03R9XS0InFjc8eAHpPwpKLUdQN1/ZGqj9JFQPNKQkSH/wDKHo82JzOpPj6s6cHo
+ METsOg4nSIfYvmZkZPfjxfENpZYk3iNEN/CM5hdVYO3WMBJagpkr3WxiKDy6o9JFtc/4
+ 7fxw==
+X-Gm-Message-State: AOJu0YzTwLJoaQgIl3igOMNs9ekE6oaabT6f7PT8GLldrXkDCHD3B7Kk
+ t3aICtMw3Ou3IF981+J+Nd2cUw0vdJk6efw7Y5yOUw==
+X-Google-Smtp-Source: AGHT+IEil4w15GCC5OB9HA5HC0HegmRDQ/CeOxGfzqaSB4sSoU/cHEO8jlx+RJ4WMoU7WkrMk8nrV/Wc2j6coZ+4fcA=
+X-Received: by 2002:a17:906:105d:b0:9a1:b18f:77ff with SMTP id
+ j29-20020a170906105d00b009a1b18f77ffmr343523ejj.18.1693353437790; Tue, 29 Aug
+ 2023 16:57:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/2] hw/riscv/virt.c: fix non-KVM --enable-debug build
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-References: <20230829122144.464489-1-dbarboza@ventanamicro.com>
- <20230829122144.464489-3-dbarboza@ventanamicro.com>
- <c0089044-54d2-43ab-6b30-854a4fa3aa4f@linaro.org>
- <72de2f6a-5ede-40f4-5edc-a22d89587e4e@ventanamicro.com>
- <63d099a2-ac5e-1ce9-3663-10e317d7dc5a@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <63d099a2-ac5e-1ce9-3663-10e317d7dc5a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32d.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+References: <20230829184743.54557-1-imp@bsdimp.com>
+ <67903f3f-89b0-06c5-2b50-911682554c75@linaro.org>
+In-Reply-To: <67903f3f-89b0-06c5-2b50-911682554c75@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Tue, 29 Aug 2023 17:57:06 -0600
+Message-ID: <CANCZdfqfkAGh2TqYe8JGZYG52Y-=mABAggQx_7LmGZrYNa39Eg@mail.gmail.com>
+Subject: Re: [PATCH v2] linux-user: Move PRAGMA_DISABLE_PACKED_WARNING to
+ compiler.h
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+Content-Type: multipart/alternative; boundary="0000000000002396330604189212"
+Received-SPF: none client-ip=2a00:1450:4864:20::635;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, MIME_BOUND_DIGITS_15=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,113 +90,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--0000000000002396330604189212
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Aug 29, 2023 at 5:35=E2=80=AFPM Richard Henderson <
+richard.henderson@linaro.org> wrote:
 
-On 8/29/23 20:30, Richard Henderson wrote:
-> On 8/29/23 16:09, Daniel Henrique Barboza wrote:
->>> -- >8 --
->>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
->>> @@ -79,7 +79,9 @@
->>>   /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
->>>   static bool virt_use_kvm_aia(RISCVVirtState *s)
->>>   {
->>> -    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
->>> +    return kvm_enabled()
->>> +        && kvm_irqchip_in_kernel()
->>> +        && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
->>>   }
->>> ---
->>
->> It doesn't work. Same error:
->>
->> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
->> index 388e52a294..ac710006e7 100644
->> --- a/hw/riscv/virt.c
->> +++ b/hw/riscv/virt.c
->> @@ -79,7 +79,8 @@
->>   /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
->>   static bool virt_use_kvm_aia(RISCVVirtState *s)
->>   {
->> -    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
->> +    return kvm_enabled() &&
->> +           kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
->>   }
->>
->>   static const MemMapEntry virt_memmap[] = {
->> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
->> index 01be45cc69..7d4b7c60e2 100644
->> --- a/target/riscv/kvm_riscv.h
->> +++ b/target/riscv/kvm_riscv.h
->> @@ -22,19 +22,9 @@
->>   void kvm_riscv_init_user_properties(Object *cpu_obj);
->>   void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
->>   void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
->> -
->> -#ifdef CONFIG_KVM
->>   void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
->>                             uint64_t aia_irq_num, uint64_t aia_msi_num,
->>                             uint64_t aplic_base, uint64_t imsic_base,
->>                             uint64_t guest_num);
->> -#else
->> -static inline void kvm_riscv_aia_create(MachineState *machine,
->> -                                uint64_t group_shift, uint64_t aia_irq_num,
->> -                                uint64_t aia_msi_num, uint64_t aplic_base,
->> -                                uint64_t imsic_base, uint64_t guest_num) {
->> -    g_assert_not_reached();
->> -}
->> -#endif
->>
->>
->>
->> /usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
->> /home/danielhb/work/qemu/build/../hw/riscv/virt.c:1466: undefined reference to `kvm_riscv_aia_create'
->> collect2: error: ld returned 1 exit status
->>
->>
->> I'm no compiler expert by any means but it seems that the --enable-debug build does not strip things
->> out like the usual build does, e.g. it won't elide a 'if kvm_enabled()' block out by checking that
->> kvm_enabled() is always false.
-> 
-> The compiler certainly does eliminate 0 && foo(), even at -O0.
-> 
-> There must be something else going on.
-> Pointer to your tree?
+> On 8/29/23 11:47, Warner Losh wrote:
+> > Replace the slightly older version of this in include/qemu/compiler.h
+> > that was commit as part of bsd-user changes with the newer one from
+> > linux-user. bsd-user has no regreassions with this.
+> >
+> > Signed-off-by: Warner Losh <imp@bsdimp.com>
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
+> > diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+> > index bbd55b4d18c..9bff3b763b5 160000
+> > --- a/tests/lcitool/libvirt-ci
+> > +++ b/tests/lcitool/libvirt-ci
+> > @@ -1 +1 @@
+> > -Subproject commit bbd55b4d18cce8f89b5167675e434a6941315634
+> > +Subproject commit 9bff3b763b5531a1490e238bfbf77306dc3a6dbb
+>
+> Be careful about these.
+>
 
-It's this tree:
+Doh! how did I miss that... Oh, I only did the git submodule update on my
+blitz branch, but not also on the master branch before I created this. Nice
+catch.
 
-https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+My love for submodules... is not increasing. Do I need to fix that and send
+a v3?
 
+Warner
 
-Building using --enable-debug fails:
+--0000000000002396330604189212
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 29, 2023 at 5:35=E2=80=AF=
+PM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
+chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">On 8/29/23 11:47, Warner Losh wrote:<br>
+&gt; Replace the slightly older version of this in include/qemu/compiler.h<=
+br>
+&gt; that was commit as part of bsd-user changes with the newer one from<br=
+>
+&gt; linux-user. bsd-user has no regreassions with this.<br>
+&gt; <br>
+&gt; Signed-off-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" targe=
+t=3D"_blank">imp@bsdimp.com</a>&gt;<br>
+<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+<br>
+&gt; diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci<br>
+&gt; index bbd55b4d18c..9bff3b763b5 160000<br>
+&gt; --- a/tests/lcitool/libvirt-ci<br>
+&gt; +++ b/tests/lcitool/libvirt-ci<br>
+&gt; @@ -1 +1 @@<br>
+&gt; -Subproject commit bbd55b4d18cce8f89b5167675e434a6941315634<br>
+&gt; +Subproject commit 9bff3b763b5531a1490e238bfbf77306dc3a6dbb<br>
+<br>
+Be careful about these.<br></blockquote><div><br></div><div>Doh! how did I =
+miss that... Oh, I only did the git submodule update on my blitz branch, bu=
+t not also on the master branch before I created this. Nice catch.</div><di=
+v><br></div><div>My love for submodules... is not increasing. Do I need to =
+fix that and send a v3?</div><div><br></div><div>Warner=C2=A0</div></div></=
+div>
 
-[danielhb@grind build]$ ../configure --target-list=riscv64-softmmu --enable-debug && make -j
-(...)
-0.so /usr/lib64/libcairo-gobject.so /usr/lib64/libcairo.so /usr/lib64/libgdk_pixbuf-2.0.so /usr/lib64/libX11.so /usr/lib64/libvirglrenderer.so /usr/lib64/libcacard.so /usr/lib64/libusbredirparser.so /usr/lib64/libusb-1.0.so -lbrlapi @block.syms -lnuma /usr/lib64/liburing.so -lm /usr/lib64/libfuse3.so -lpthread /usr/lib64/iscsi/libiscsi.so -laio /usr/lib64/libcurl.so /usr/lib64/libnfs.so /usr/lib64/libssh.so -lrbd -lrados -lbz2 -lutil -Wl,--end-group
-/usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
-/home/danielhb/work/qemu/build/../hw/riscv/virt.c:1465: undefined reference to `kvm_riscv_aia_create'
-/usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_intc_riscv_aplic.c.o: in function `riscv_kvm_aplic_request':
-/home/danielhb/work/qemu/build/../hw/intc/riscv_aplic.c:486: undefined reference to `kvm_set_irq'
-collect2: error: ld returned 1 exit status
-
-Building without --enable-debug works. gitlab CI doesn't seem to care with it because it's all
-green with this tree.
-
-
-The commits that introduced these errors are listed in the 'Fixes' tag of patches 1 and 2.
-
-
-Thanks,
-
-Daniel
-
-
-
-
-
-
-
-
-> 
-> r~
+--0000000000002396330604189212--
 
