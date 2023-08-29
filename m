@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F50778D00D
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C52CC78D08F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7mz-0000mm-Im; Tue, 29 Aug 2023 19:06:25 -0400
+	id 1qb7n0-0000o2-6p; Tue, 29 Aug 2023 19:06:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qb3IA-0002ar-Fe
+ id 1qb3IA-0002bH-PW
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:18:18 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qb3I5-0003UP-Fj
+ id 1qb3I5-0003UR-Fk
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:18:18 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37THiq0T002175; Tue, 29 Aug 2023 18:18:08 GMT
+ 37THioqa025992; Tue, 29 Aug 2023 18:18:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id; s=corp-2023-03-30;
- bh=khkjCWzO3gQ+gBRTC+ojPsIRY8/B7LDc56MMVpWziPM=;
- b=QaIbVjvpdSIiX47qivKTd46mnGUZ0PbatooVAYIwtMG8cKquHsk3JnIdBzDf7ohJ124+
- x+IdSMLgfDJpZKhrTT/5AZbIF1IXo3Y7JgvkB2KdJTyDo8oE8EOIp50uSWzfnt83kcrc
- y00Dt9jmtXYKgfjy+tjg1Npq4O3E0qHuTogCgXTVltR/szv3Bs8Nt1/K9BvaQ1cAnhWY
- F+WjkYqmjiRRqPXrBvhtlwzzZ6HBPiFOfZQb47BwCNCr0JwuO3mQ3RSyZ7gwfAkCwrm7
- pV+O9uIDdtiHG2dkY7KGF9dBAU1ciV/3TApJGqmPCTl7q13YatFx66GTdr2UIHwAt8yD sg== 
+ subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
+ bh=QldYdQCuSfWnLDpGzc4j13m7wbuFMYdlmEh5gluOY8g=;
+ b=Lqu6nnvRGS76uqrdKdLDL0+O3WGUIXE9XlWs7JF9JR/BHctHjLmZN7tgiSLo6ZwXLedc
+ lYwArwblHhXrlUEM2fk1s/MFX4vfNrrvAuMDo317eTWRAnR1HV+IrlD89hd5mEr+xoYM
+ 0XPdiv+ajzh82k6X15ruKh72b8lyiW2CYWEl+h5HxXsPjoUpJ0hXPzXMwqgVOTvVz+yO
+ WBBonkSrTWHMF8YbI/uyLazrjJkxZhwtPY+2J0gKKOmnTkN2xghkSRpm6a6Kg3RJw8r9
+ 7U/djNGtfh3M7h/lhToGSimv99ry3SOMLX+TE0yizOt2aRVj/HJAMUrfT87rwC+MKgma hw== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sq9gcnn59-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sq9j4dqyt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 29 Aug 2023 18:18:08 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 37THBZlr024760; Tue, 29 Aug 2023 18:18:07 GMT
+ with ESMTP id 37THB2cl024804; Tue, 29 Aug 2023 18:18:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3sr6dnfwhb-1
+ 3sr6dnfwhr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 29 Aug 2023 18:18:07 +0000
+ Tue, 29 Aug 2023 18:18:08 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37TII6lo011911;
- Tue, 29 Aug 2023 18:18:06 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37TII6lq011911;
+ Tue, 29 Aug 2023 18:18:07 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3sr6dnfwgx-1; Tue, 29 Aug 2023 18:18:06 +0000
+ ESMTP id 3sr6dnfwgx-2; Tue, 29 Aug 2023 18:18:07 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 00/11] fix migration of suspended runstate
-Date: Tue, 29 Aug 2023 11:17:55 -0700
-Message-Id: <1693333086-392798-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 01/11] cpus: pass runstate to vm_prepare_start
+Date: Tue, 29 Aug 2023 11:17:56 -0700
+Message-Id: <1693333086-392798-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1693333086-392798-1-git-send-email-steven.sistare@oracle.com>
+References: <1693333086-392798-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-29_13,2023-08-29_01,2023-05-22_02
@@ -69,10 +71,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  suspectscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
  definitions=main-2308290158
-X-Proofpoint-ORIG-GUID: 6VPCLCvILPMt7ge2nYZm_Vot_i1cvMjZ
-X-Proofpoint-GUID: 6VPCLCvILPMt7ge2nYZm_Vot_i1cvMjZ
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: xAgmnt-6HXzXim7SOre9Z-I_LiY3wq-w
+X-Proofpoint-ORIG-GUID: xAgmnt-6HXzXim7SOre9Z-I_LiY3wq-w
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -95,61 +97,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration of a guest in the suspended runstate is broken.  The incoming
-migration code automatically tries to wake the guest, which is wrong;
-the guest should end migration in the same runstate it started.  Further,
-for a restored snapshot, the automatic wakeup fails.  The runstate is
-RUNNING, but the guest is not.  See the commit messages for the details.
+When a vm in the suspended state is migrated, we must call vm_prepare_start
+on the destination, so a later system_wakeup properly resumes the guest,
+when main_loop_should_exit callsresume_all_vcpus.  However, the runstate
+should remain suspended until system_wakeup is called, so allow the caller
+to pass the new state to vm_prepare_start, rather than assume the new state
+is RUN_STATE_RUNNING.  Modify vm state change handlers that check
+RUN_STATE_RUNNING to instead use the running parameter.
 
-Changes in V2:
-  * simplify "start on wakeup request"
-  * fix postcopy, snapshot, and background migration
-  * refactor fixes for each type of migration
-  * explicitly handled suspended events and runstate in tests
-  * add test for postcopy and background migration
+No functional change.
 
-Changes in V3:
-  * rebase to tip
-  * fix hang in new function migrate_wait_for_dirty_mem
+Suggested-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+---
+ backends/tpm/tpm_emulator.c | 2 +-
+ gdbstub/softmmu.c           | 2 +-
+ hw/usb/hcd-ehci.c           | 2 +-
+ hw/usb/redirect.c           | 2 +-
+ hw/xen/xen-hvm-common.c     | 2 +-
+ include/sysemu/runstate.h   | 3 ++-
+ softmmu/cpus.c              | 8 ++++----
+ 7 files changed, 11 insertions(+), 10 deletions(-)
 
-Changes in V4:
-  * rebase to tip
-  * add patch for vm_prepare_start (thanks Peter)
-  * add patch to preserve cpu ticks
-
-Steve Sistare (11):
-  cpus: pass runstate to vm_prepare_start
-  migration: preserve suspended runstate
-  migration: add runstate function
-  migration: preserve suspended for snapshot
-  migration: preserve suspended for bg_migration
-  migration: preserve cpu ticks if suspended
-  tests/qtest: migration events
-  tests/qtest: option to suspend during migration
-  tests/qtest: precopy migration with suspend
-  tests/qtest: postcopy migration with suspend
-  tests/qtest: background migration with suspend
-
- backends/tpm/tpm_emulator.c          |   2 +-
- gdbstub/softmmu.c                    |   2 +-
- hw/usb/hcd-ehci.c                    |   2 +-
- hw/usb/redirect.c                    |   2 +-
- hw/xen/xen-hvm-common.c              |   2 +-
- include/sysemu/runstate.h            |   3 +-
- migration/migration.c                |  49 +++++-----
- migration/migration.h                |   1 +
- migration/savevm.c                   |   9 +-
- softmmu/cpu-timers.c                 |  36 ++++++-
- softmmu/cpus.c                       |   8 +-
- softmmu/runstate.c                   |   3 +
- tests/migration/i386/Makefile        |   5 +-
- tests/migration/i386/a-b-bootblock.S |  51 +++++++++-
- tests/migration/i386/a-b-bootblock.h |  22 +++--
- tests/qtest/migration-helpers.c      |  27 ++----
- tests/qtest/migration-helpers.h      |   9 +-
- tests/qtest/migration-test.c         | 178 +++++++++++++++++++++++++++--------
- 18 files changed, 299 insertions(+), 112 deletions(-)
-
+diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+index 402a2d6..a8e559a 100644
+--- a/backends/tpm/tpm_emulator.c
++++ b/backends/tpm/tpm_emulator.c
+@@ -907,7 +907,7 @@ static void tpm_emulator_vm_state_change(void *opaque, bool running,
+ 
+     trace_tpm_emulator_vm_state_change(running, state);
+ 
+-    if (!running || state != RUN_STATE_RUNNING || !tpm_emu->relock_storage) {
++    if (!running || !tpm_emu->relock_storage) {
+         return;
+     }
+ 
+diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+index f509b72..a43e832 100644
+--- a/gdbstub/softmmu.c
++++ b/gdbstub/softmmu.c
+@@ -565,7 +565,7 @@ int gdb_continue_partial(char *newstates)
+             }
+         }
+ 
+-        if (vm_prepare_start(step_requested)) {
++        if (vm_prepare_start(step_requested, RUN_STATE_RUNNING)) {
+             return 0;
+         }
+ 
+diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
+index c930c60..e436f5c 100644
+--- a/hw/usb/hcd-ehci.c
++++ b/hw/usb/hcd-ehci.c
+@@ -2451,7 +2451,7 @@ static void usb_ehci_vm_state_change(void *opaque, bool running, RunState state)
+      * USB-devices which have async handled packages have a packet in the
+      * ep queue to match the completion with.
+      */
+-    if (state == RUN_STATE_RUNNING) {
++    if (running) {
+         ehci_advance_async_state(ehci);
+     }
+ 
+diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
+index 39fbaaa..1ec5909 100644
+--- a/hw/usb/redirect.c
++++ b/hw/usb/redirect.c
+@@ -1403,7 +1403,7 @@ static void usbredir_vm_state_change(void *priv, bool running, RunState state)
+ {
+     USBRedirDevice *dev = priv;
+ 
+-    if (state == RUN_STATE_RUNNING && dev->parser != NULL) {
++    if (running && dev->parser != NULL) {
+         usbredirparser_do_write(dev->parser); /* Flush any pending writes */
+     }
+ }
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 565dc39..47e6cb1 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -623,7 +623,7 @@ void xen_hvm_change_state_handler(void *opaque, bool running,
+ 
+     xen_set_ioreq_server_state(xen_domid,
+                                state->ioservid,
+-                               (rstate == RUN_STATE_RUNNING));
++                               running);
+ }
+ 
+ void xen_exit_notifier(Notifier *n, void *data)
+diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
+index 7beb29c..7d889ab 100644
+--- a/include/sysemu/runstate.h
++++ b/include/sysemu/runstate.h
+@@ -39,8 +39,9 @@ void vm_start(void);
+  * vm_prepare_start: Prepare for starting/resuming the VM
+  *
+  * @step_pending: whether any of the CPUs is about to be single-stepped by gdb
++ * @state: the vm state to setup
+  */
+-int vm_prepare_start(bool step_pending);
++int vm_prepare_start(bool step_pending, RunState state);
+ int vm_stop(RunState state);
+ int vm_stop_force_state(RunState state);
+ int vm_shutdown(void);
+diff --git a/softmmu/cpus.c b/softmmu/cpus.c
+index fed20ff..0a082d3 100644
+--- a/softmmu/cpus.c
++++ b/softmmu/cpus.c
+@@ -681,7 +681,7 @@ int vm_stop(RunState state)
+  * Returns -1 if the vCPUs are not to be restarted (e.g. if they are already
+  * running or in case of an error condition), 0 otherwise.
+  */
+-int vm_prepare_start(bool step_pending)
++int vm_prepare_start(bool step_pending, RunState state)
+ {
+     RunState requested;
+ 
+@@ -713,14 +713,14 @@ int vm_prepare_start(bool step_pending)
+     qapi_event_send_resume();
+ 
+     cpu_enable_ticks();
+-    runstate_set(RUN_STATE_RUNNING);
+-    vm_state_notify(1, RUN_STATE_RUNNING);
++    runstate_set(state);
++    vm_state_notify(1, state);
+     return 0;
+ }
+ 
+ void vm_start(void)
+ {
+-    if (!vm_prepare_start(false)) {
++    if (!vm_prepare_start(false, RUN_STATE_RUNNING)) {
+         resume_all_vcpus();
+     }
+ }
 -- 
 1.8.3.1
 
