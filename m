@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE38878C6D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 364BA78C6EE
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:09:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qazL4-0008BI-CI; Tue, 29 Aug 2023 10:05:02 -0400
+	id 1qazP8-0003tQ-Tz; Tue, 29 Aug 2023 10:09:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qazL2-000883-VC
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:05:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qazKx-0004Tl-I9
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:04:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693317892;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=d657rjV2Vq28eI0hdstj+Io7VFvBRdWBPSOewn+R/RY=;
- b=WbdIeiK6yiDl6MkaAAHQ4hysPX/U3QQ63o+M6z0weUHf8k+L6eJD93hm+IGDjZMai9EZ7Y
- XZfuoGYnwbVE0tZlzgXqLv6rGBe4WHC0EDOcSQHpdMS1JjO+3I3QsiZUdlNKvL3Nj5XErB
- OMy4/g3pbdMb9YTBBpzu+lhzPvHyNKI=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-n0kbrr9xOhuUEEbFWwTa3w-1; Tue, 29 Aug 2023 10:04:45 -0400
-X-MC-Unique: n0kbrr9xOhuUEEbFWwTa3w-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-63c9463c116so8569226d6.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:04:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qazOk-0003sL-Nz
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:08:54 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qazOh-0006OP-5r
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:08:50 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-52a4737a08fso5705077a12.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:08:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693318125; x=1693922925;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=FPKJXzcH+N2qfZUCo88vGLiMpG2dypyl4l+05+TWiXY=;
+ b=rEIzw3lJzY0ZMCg023DEucM5996RPKrmljRSqcpOVRks/+R87gM/QYFiLtkT7SIAPy
+ 7gVNLN+ok3CueU09WokbJc0VDQn0KQ50ZWvpMYf7LLlZNUfFK5F40JWkefcyLJbYvWYB
+ QSgwLeGnx0aYABiD4pvxF17x4pQbGRUaWKXG6QR7zNoedbqVT5bmJF0VGxewM17+wylx
+ hsa4rF7H4LDj5WPWUpgxK3bUWNvcrRc6las3z3GQlbGopOowilTyXwz3rDIB+TX1zDSJ
+ 5sr2M8v0g0w8HKeO4dixCqVcLXyXKO0vwm5evWtGN6fOEA2jAyIc/3YwiqlycN7LxyVK
+ 1hCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693317885; x=1693922685;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d657rjV2Vq28eI0hdstj+Io7VFvBRdWBPSOewn+R/RY=;
- b=Sc5Ohd89gUJs6t6n3zM9MfzLE0Dza+t2TW0/S+RZh9ZAViixT7zIHBvh3V+3XZSrBI
- fnMLL8qYr3o/ijDzWiIOhL+PlWep/i08my6nxkib380WHS4Q1K3TRR2vPbndpEzkPrMS
- gOB/1MOJWZpyFUcBRWWCDaQuIY2HXDrDk6xuwkvmO/ZYArOy/NXebXhULHAjpp/EDl0g
- /98gksGYjnxMz8yQ+1YORHWCRNT1w8zUjUcHlnkLwwB6I4GAvmqtWl/anQFWY+lm+EQC
- 5K6gfqSHgEUelnGMSNwnbkfcWksc0nfi48rzuAmMWQT+y143YbaW6l1x+aZ6EC98z2Gl
- LubQ==
-X-Gm-Message-State: AOJu0YzqumynydewxOjISuLbd5IDhtbA8Zb40FwQJzOh6Qoy2BSeCsKN
- YeCKMZy+irgEam1oOePUAfe+7Ub1Kqf5Ck7J41VkTIzdGmS4uVv1rRBadItXZk3xbP7GHRI9PoG
- 10XdgEC+7UJ9CAIo=
-X-Received: by 2002:a05:6214:d87:b0:62b:6c6f:b3e3 with SMTP id
- e7-20020a0562140d8700b0062b6c6fb3e3mr33589875qve.3.1693317884893; 
- Tue, 29 Aug 2023 07:04:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIFOqegIjr7uErA2n54/rc4W14ZwQ+jzAXW5kXaicYhGaFZdbRph+ZMCV5TVPvcfOx7NOqHQ==
-X-Received: by 2002:a05:6214:d87:b0:62b:6c6f:b3e3 with SMTP id
- e7-20020a0562140d8700b0062b6c6fb3e3mr33589846qve.3.1693317884616; 
- Tue, 29 Aug 2023 07:04:44 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- g18-20020a0ce4d2000000b0064f5d312babsm3385306qvm.46.2023.08.29.07.04.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 07:04:44 -0700 (PDT)
-Date: Tue, 29 Aug 2023 10:04:42 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Yanghang Liu <yanghliu@redhat.com>
-Subject: Re: [PATCH 1/6] migration: Add migration prefix to functions in
- target.c
-Message-ID: <ZO36+h2p/X/LCG5B@x1n>
-References: <20230828151842.11303-1-avihaih@nvidia.com>
- <20230828151842.11303-2-avihaih@nvidia.com>
+ d=1e100.net; s=20221208; t=1693318125; x=1693922925;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FPKJXzcH+N2qfZUCo88vGLiMpG2dypyl4l+05+TWiXY=;
+ b=Fs3PeykpFLe7D5n20juceYcSnf7z4St8+IZ0o6y+A0v7zA6x0WUEJkni7oV2ehMMgc
+ itNr2PHv9xuqewasw7NRxSmiieJuW5L88gXA78H75gSEpQrFdVCIxVP0Eags+q4VP3Dt
+ MVHHu8VObVdlrr1fK7Ot8Qw+Zr86ygyLToirFgtuHQe+xXiS21qx0FTDgY/fC1lsyPWD
+ cMTAXWJMw1v+DogiNRV29Bw+kCwAo1oH4XBQj/i2S62/ErJAzYu9ZJ2VbN47pXlchM8R
+ ty2owH1maCLKnLlqMIajJNDhc3NP5CtZohSAbZh6q+fXYEptd96ZINPF7+M3Ar3lZ91c
+ 0Vfw==
+X-Gm-Message-State: AOJu0YxKvxs0ECLTgElNSjUVEg7dAAo6rKdpTWzErxemgq6mDga2HJnQ
+ 0PNwGMlC1080ebgOgX1bGrgH9OQkT3x0r62GucxtfQ==
+X-Google-Smtp-Source: AGHT+IHi9a//mBv0QHsyrXq+gT0e7yo9vH04sh/zr1bZu6ptpCi/tpLG3oQDRsHbU35gR0+tGUpLyskKNc52H4AvreA=
+X-Received: by 2002:a05:6402:202a:b0:52a:47af:97a4 with SMTP id
+ ay10-20020a056402202a00b0052a47af97a4mr12290529edb.5.1693318125385; Tue, 29
+ Aug 2023 07:08:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230828151842.11303-2-avihaih@nvidia.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URG_BIZ=0.573 autolearn=no autolearn_force=no
+References: <cover.1692964891.git.jcd@tribudubois.net>
+In-Reply-To: <cover.1692964891.git.jcd@tribudubois.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 29 Aug 2023 15:08:34 +0100
+Message-ID: <CAFEAcA8_rL8pGbr_imDL2vX=UkphL9d1PXbWZN5Xmor9+Xtthg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/6] Complete i.MX6UL and i.MX7 processor for bare
+ metal application.
+To: Jean-Christophe Dubois <jcd@tribudubois.net>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,83 +85,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 28, 2023 at 06:18:37PM +0300, Avihai Horon wrote:
-> The functions in target.c are not static, yet they don't have a proper
-> migration prefix. Add such prefix.
-> 
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+On Fri, 25 Aug 2023 at 13:21, Jean-Christophe Dubois
+<jcd@tribudubois.net> wrote:
+>
+> This patch adds a few unimplemented TZ devices (TZASC and CSU) to
+> i.MX6UL and i.MX7 processors to avoid bare metal application to
+> experiment "bus error" when acccessing these devices.
+>
+> It also adds some internal memory segments (OCRAM) to the i.MX7 to
+> allow bare metal application to use them.
+>
+> Last, it adds the SRC device to the i.MX7 processor to allow bare
+> metal application to start the secondary Cortex-A7 core.
+>
+> Note: When running Linux inside Qemu, the secondary core is started
+> by calling PSCI API and Qemu is emulating PSCI without needing access
+> to the SRC device. This is why Linux is using the 2 cores in Qemu
+> even if the SRC is not implemented. This is not the case when running
+> bare metal application (like u-boot itself) that do not rely on the
+> PSCI service being available.
 
-No issue on the patch itself, but just noticed that we have hard-coded vfio
-calls in migration paths.. that's slightly unfortunate. :(
 
-> ---
->  migration/migration.h | 4 ++--
->  migration/migration.c | 6 +++---
->  migration/savevm.c    | 2 +-
->  migration/target.c    | 8 ++++----
->  4 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/migration/migration.h b/migration/migration.h
-> index 6eea18db36..c5695de214 100644
-> --- a/migration/migration.h
-> +++ b/migration/migration.h
-> @@ -512,8 +512,8 @@ void migration_consume_urgent_request(void);
->  bool migration_rate_limit(void);
->  void migration_cancel(const Error *error);
->  
-> -void populate_vfio_info(MigrationInfo *info);
-> -void reset_vfio_bytes_transferred(void);
-> +void migration_populate_vfio_info(MigrationInfo *info);
-> +void migration_reset_vfio_bytes_transferred(void);
->  void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
->  
->  #endif
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 5528acb65e..92866a8f49 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1039,7 +1039,7 @@ static void fill_source_migration_info(MigrationInfo *info)
->          populate_time_info(info, s);
->          populate_ram_info(info, s);
->          populate_disk_info(info);
-> -        populate_vfio_info(info);
-> +        migration_populate_vfio_info(info);
 
-(maybe in the future we should have SaveVMHandlers hooks for populating
- data for ram/disk/vfio/..., or some other way to not hard-code these)
+Applied to target-arm.next, thanks.
 
->          break;
->      case MIGRATION_STATUS_COLO:
->          info->has_status = true;
-> @@ -1048,7 +1048,7 @@ static void fill_source_migration_info(MigrationInfo *info)
->      case MIGRATION_STATUS_COMPLETED:
->          populate_time_info(info, s);
->          populate_ram_info(info, s);
-> -        populate_vfio_info(info);
-> +        migration_populate_vfio_info(info);
->          break;
->      case MIGRATION_STATUS_FAILED:
->          info->has_status = true;
-> @@ -1641,7 +1641,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
->       */
->      memset(&mig_stats, 0, sizeof(mig_stats));
->      memset(&compression_counters, 0, sizeof(compression_counters));
-> -    reset_vfio_bytes_transferred();
-> +    migration_reset_vfio_bytes_transferred();
-
-Could this already be done during vfio_save_setup(), to avoid calling an
-vfio function directly in migration.c?
-
-Again, not a request for this patchset, but more to see whether it'll work
-to be moved there.
-
-Thanks,
-
->  
->      return true;
->  }
-
--- 
-Peter Xu
-
+-- PMM
 
