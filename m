@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844DD78C324
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 13:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9EB78C32F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 13:19:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qawfL-0006Sy-TR; Tue, 29 Aug 2023 07:13:47 -0400
+	id 1qawjv-0008JP-Hw; Tue, 29 Aug 2023 07:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qawfF-0006Sb-Ka
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:13:41 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qawjt-0008Id-CE
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:18:29 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qawfD-0006ZI-GH
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:13:41 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fea0640d7aso40117935e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 04:13:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qawjp-0008Rj-JE
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:18:29 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fe32016bc8so37011985e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 04:18:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693307617; x=1693912417;
+ d=linaro.org; s=google; t=1693307904; x=1693912704;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KQUtbACy54l1VkQtejYEY+kC5qfbTPK4jnYfR0Rj3tI=;
- b=eNC0Qk3ND/FmADd43MwaJL+kvpGJeWjhapOIYhvZQNEQqUgCO75zhtXt8r/8OvAn/s
- Lc9HdeLrkzIob+ruJ/rX0T+d+yrLWeHlm9iyeZ/bFRma7eKXJryTChdCdaiNo8v0pnyn
- yU19RgXByCh744IBgbdiw8Tg2J21AOUFk6GU4QeFjV3a7tMfKuhI6AjP9UiXrlI3kGcq
- AY4iCi2Uz8wMofPy3PY9A0a4otnyMiFRJiBKBevUt0DnhiJ8KTtonXCtrRJ+Ok7G9SWV
- 4oZJV4g57LRop90TVIXN6f0ROg38IPzUmG9d1PPkvg340otnoaHAnsg+9mX30BDIp2rb
- geww==
+ bh=ebSnWThMNdFwbeh0aiVYqPHw1qvgtsVIqbhElbwLVkM=;
+ b=x9NwqTQB8N5YkaPdUhA82YTGBV9hrMwwvRt1JDUTbL3KJhes3qAowDaUNzuNO1IsDl
+ psSRtDH07PPTMLluJWaNfnLcbN459TFGTy+Zbh6/Z7SJBRKnpeRYx6eNUIY8cGPI85SN
+ WxSjt7MwitLAYlxapWo33MGcfgemnfb4PpL447NaUxnHgBYMftd+y586nrwdjLuoNiWA
+ 53C+cvFoeENFG2/ihagqoK9YJU+G28ZvS+zxmPfQqP+EPBQQV69cZ22Waq10D5PAN766
+ HRUlA1buLlok/67BcAnWsaMu/GFXpjWT9V9r/a2csyXMrQM+B2x6MxdFMFpKQxxkggN9
+ XD4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693307617; x=1693912417;
+ d=1e100.net; s=20221208; t=1693307904; x=1693912704;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KQUtbACy54l1VkQtejYEY+kC5qfbTPK4jnYfR0Rj3tI=;
- b=DqzA2BQfIMdwKhOGL2cOO/hQNYkstFrP6cFNyFwevaLRaB+Y7B3VrTlNDh2R600JYs
- I7buuIcAT7ye9aWf/wojzGgCDW7dtVg4GjYOILT9p1Q/SxSN4IZYvBgwFKYP4eVmEXZA
- vU+MWxd9zk2jt96C8DSlpg7Y06c5IXiDHUm1ACM8XDQAyuf9/Em8X5QKmUE3IjU5gsmX
- XJHa/tV1vFac2SF6pPXss2VljXulJp95fFzfeHl1zlxFOBuYBs8KQQKOT0/ubxPubP3t
- MSGMVgzrB60QBPplaSOwzaJRaTgC9zuyVpBd4RP4DJvaxGgFEVsBWzvK+blKC7cRqyb4
- H4qQ==
-X-Gm-Message-State: AOJu0YyylJcBzBdtg0Bic3hapWsI5j21uG27y1AWylN4eWKnJEcS71fu
- 3WjFhRiMKbP2UJMuC2e7f69t5A==
-X-Google-Smtp-Source: AGHT+IGyV5a6m/bLlMjkns8z0OuBuO1LpgpZglh3wmdFgx/McZmQ+EkeqLykyYe3DPX/mNuqCeTkMg==
-X-Received: by 2002:a1c:ed04:0:b0:3fa:9823:407 with SMTP id
- l4-20020a1ced04000000b003fa98230407mr21573134wmh.18.1693307617171; 
- Tue, 29 Aug 2023 04:13:37 -0700 (PDT)
+ bh=ebSnWThMNdFwbeh0aiVYqPHw1qvgtsVIqbhElbwLVkM=;
+ b=dOI0DZCXbFYBQNkuuvwmlxxVfDDsEVom5r7nfPJIaMjSldfqellWjUqkkhy4blYLTk
+ WojD2pB/Yu6PkGpuyR2z4Qchksr9W/p/zUjLE2JLGmXyY5ypWbARW6W8aVw2eIKKYur7
+ nJkmMLcIsxOtft0yLKY+WN+RN6HZSH2fh5GuzoSJCeyMZAT99tPxaR4ZMpi2yy+jMHHt
+ xgNw16koSggD6olflWLouqXioZltaCpis+0uz/yuV+eacLsHAitmXXCFX+xLN6KeVh99
+ Kfx3i0+TKfMTxGndejIGG/1qio1k9swDexRNqJrWxK7Bqdj9prW51Hno03Nugu6tXs9I
+ TcRQ==
+X-Gm-Message-State: AOJu0Yzbb4CHjtpEJMqPGrUDbqBFq7kzUAUvh2stuop1TcUkcPwwhkdX
+ ZcyoPSzd5jpbBMVcwIA3IGrgjg==
+X-Google-Smtp-Source: AGHT+IF2mkBL+XE2SJXn6+3C4idETiwFDz9TwV2KF+d/wTaXuxcFdqVaSA3Mzi0+OT/9fH78Dz2bbw==
+X-Received: by 2002:a05:600c:2307:b0:3fb:e189:3532 with SMTP id
+ 7-20020a05600c230700b003fbe1893532mr20646528wmo.20.1693307903816; 
+ Tue, 29 Aug 2023 04:18:23 -0700 (PDT)
 Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
  [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
- 21-20020a05600c231500b003fed4fa0c19sm16904145wmo.5.2023.08.29.04.13.35
+ 16-20020a05600c229000b003fff96bb62csm13633505wmf.16.2023.08.29.04.18.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 04:13:36 -0700 (PDT)
-Message-ID: <eb24f7da-19f7-a63d-7f15-c184f14f446f@linaro.org>
-Date: Tue, 29 Aug 2023 13:13:30 +0200
+ Tue, 29 Aug 2023 04:18:23 -0700 (PDT)
+Message-ID: <b3103564-c1ba-d9ae-2552-6905aa942053@linaro.org>
+Date: Tue, 29 Aug 2023 13:18:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 1/2] igb: Add a VF reset handler
+Subject: Re: [PATCH v3 04/11] softmmu/physmem: Remap with proper protection in
+ qemu_ram_remap()
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@redhat.com>
-References: <20230829090529.184438-1-clg@kaod.org>
- <20230829090529.184438-2-clg@kaod.org>
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Thiner Logoer <logoerthiner1@163.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20230823153412.832081-1-david@redhat.com>
+ <20230823153412.832081-5-david@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230829090529.184438-2-clg@kaod.org>
+In-Reply-To: <20230823153412.832081-5-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
 X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.169,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,27 +105,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/8/23 11:05, Cédric Le Goater wrote:
-> From: Cédric Le Goater <clg@redhat.com>
+On 23/8/23 17:34, David Hildenbrand wrote:
+> Let's remap with the proper protection that we can derive from
+> RAM_READONLY.
 > 
-> Export the igb_vf_reset() helper routine from the PF model to let the
-
-Preferably splitting in 2 patches to KISS,
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   softmmu/physmem.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> IGBVF model implement its own device reset.
-> 
-> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Suggested-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   hw/net/igb_common.h |  1 +
->   hw/net/igb_core.h   |  3 +++
->   hw/net/igb.c        |  6 ++++++
->   hw/net/igb_core.c   |  6 ++++--
->   hw/net/igbvf.c      | 10 ++++++++++
->   hw/net/trace-events |  1 +
->   6 files changed, 25 insertions(+), 2 deletions(-)
 
 
