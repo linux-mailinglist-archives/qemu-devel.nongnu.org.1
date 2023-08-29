@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CCC78D094
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 694DB78D030
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:18:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nr-0001ZI-Je; Tue, 29 Aug 2023 19:07:19 -0400
+	id 1qb7np-0001Z7-Tt; Tue, 29 Aug 2023 19:07:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb550-0004Yv-WA
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:12:51 -0400
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1qb59U-0006OE-TK
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:17:30 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb54y-0001Sd-RT
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:12:50 -0400
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3a86a0355dfso3293937b6e.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:12:48 -0700 (PDT)
+ id 1qb59P-00029I-HF
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:17:27 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1bf6ea270b2so30220845ad.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693339967; x=1693944767; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693340239; x=1693945039; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZkHtxYxtgz/j5KBlg8wbBUi7AN1SEjTUY8xUJ/fP18c=;
- b=I7Qzjdexgv8tF8xXo1dWwk3uWfv88lq1Gm0wo1HpQVeJ3VrH0fTlkelrqVe/YorqWU
- Hb/eGMvrRATlv88kS2mHU7v/n8zpgJtL6ldxRKlBvkfEWEdSVuhPVjRbCxKY1PZIkHtc
- QQXcUKqU4Se9/z2pXNZtRCYrzsChis4R0waszzum0VsNCa3NlUD6QnNmeQ93227Q+eW/
- cEVBq0ba9Dt76XUTev4BYkA/B9Ix/m7/oWhgwRcAE2Y22tdwuF4dk3+F6MaB5p8AQ8j2
- 3+yyjVGSjru8vBFiaK6rvWWM4A0DE4E1smJ8IZriHe7n5cGG8iGW70GkOX34pxKUYkze
- QH4g==
+ bh=t2G5p8UZ72Ji5VKPpsJ1h6cGzcUi+2WSVp3N33klaFM=;
+ b=bnQu3ztCy9ZJ/UumiP8HAJnfoHOZ9yUIrnVVwEqdZav9kuEvpijQ5zZdfG5hnYxVcz
+ hW5Pz3R4fCA3gjXvqkcZ/vQ+b58V10QQ/GJ8q0NlpPxLM8Ht/RfiHDIDyP8ct4xpkQkM
+ XosD1SxSAmghZZk1ekOvTloSqOVuBnrtm0K6vIyAky0prpUwlK2aBSEdCh09KkzKIb4s
+ /gi+tjBv2V27qV+ptV4MwbpE1sno1Ysq1GEymo4FvKk+CwXzEkNAoigHWuF5zOSgZSJW
+ 3z7Y4gO9vjW1hnvFSEGnVj9gXjeVSzf7qMD8zZ6LfsrK3qNP9j44uoS63lmMqFFvmiK3
+ zFhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693339967; x=1693944767;
+ d=1e100.net; s=20221208; t=1693340239; x=1693945039;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZkHtxYxtgz/j5KBlg8wbBUi7AN1SEjTUY8xUJ/fP18c=;
- b=DWx5DLXysxc37vCDGlPtgkyK82o1TeSfCAQocgla+Vg28EaMBPImRiQvAro7FPbUGY
- 9HRed0rNUfpDeXgNc05ng85hawaCNifuJZJ1sbxHp12NfADQPWuRlz/IYH5aNR/G1C9s
- 28NZhB+LJCf07BojQ1qgpjWPJDZg4j/ck/HtFrHC05S9fp+1L7CY+otAzMHWyI2GYfdS
- 4Dci1XJjjCMwSgDD3IMPanlQpJ4nco4gaX+fVWhOhq/HjMYlUfIHWnt0n+v4aF+1Gxp6
- 0vrY3m8ykg6amg9DdpW1f5zmpsKH8TdwVxiBwjKmnU0ZUIdZr7yVQ2bYfHYXs8MrJWK+
- PxEA==
-X-Gm-Message-State: AOJu0YwCwRLFIOxL7LKaWQQfCAbFvk78503ts7k4TIR312n13SbFT6CJ
- aYMELoitcOTRFV3Oaj3ou9rMvg==
-X-Google-Smtp-Source: AGHT+IEGZ/iDRUc9+/NhBi4cFO3Ypvit4umusnSzvMbv+ayoIw5eVCIaS4y94v4MMgrvbEU/17NhIQ==
-X-Received: by 2002:a05:6808:b18:b0:3a7:4cf6:f0cb with SMTP id
- s24-20020a0568080b1800b003a74cf6f0cbmr183354oij.21.1693339967636; 
- Tue, 29 Aug 2023 13:12:47 -0700 (PDT)
+ bh=t2G5p8UZ72Ji5VKPpsJ1h6cGzcUi+2WSVp3N33klaFM=;
+ b=jgYnellrWXD0xgFcEeAnvWDLYSprgg12yoqPh46oW1X/bKSFTwPPJN3VKoONJOPqDR
+ n0lm7sdYeoD2X0WizUujvoQ516uFiAbbIanawxf4KsT8yVRTfJ1VQM6Oe5MhRkINd+VD
+ 37bnncBR3EzljEivL4QE5sDMY3kyjTJSG0gdiw8+zXm5O4UfApDwjOz+vjfqxVgXyD7E
+ P9d93D2tf6UsWAEtHrrQSsE+ScZrVxVZ8BJtWTE+iZJ+cdxwS53g2oyz1BsHjq4+t5ze
+ wSSKS5yOcnbejeqEixJjXiuNXqQblB5RpTKW4ulzX5Ocu7C/FKhhMCDhNO9jOjtM+hof
+ QwWw==
+X-Gm-Message-State: AOJu0Yx2EcG92nPTM000uXXdM8Np5lQJrPMc6anAQpifLI2fBgUu5KKj
+ NB7uLueZVEpPQa6+AjjqO85pTehh8Ye7l0UkrF4=
+X-Google-Smtp-Source: AGHT+IElG8sTeEuwkRKQqYbvNWDrtCyCITshqyO27l3EMx7DyfP56hCO0tICR/sf5/daN+Jo78sieQ==
+X-Received: by 2002:a17:902:e5c1:b0:1bf:3c10:1d72 with SMTP id
+ u1-20020a170902e5c100b001bf3c101d72mr172505plf.66.1693340239251; 
+ Tue, 29 Aug 2023 13:17:19 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- y17-20020aa78051000000b0064d74808738sm8829804pfm.214.2023.08.29.13.12.46
+ iy4-20020a170903130400b001b016313b1dsm9781101plb.86.2023.08.29.13.17.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 13:12:47 -0700 (PDT)
-Message-ID: <20923e4e-23b3-4d80-f890-0ec7ce24b257@linaro.org>
-Date: Tue, 29 Aug 2023 13:12:45 -0700
+ Tue, 29 Aug 2023 13:17:18 -0700 (PDT)
+Message-ID: <b753bbef-4e73-5a89-eece-b57ac27780ff@linaro.org>
+Date: Tue, 29 Aug 2023 13:17:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 20/32] bsd-user: Add freebsd/os-proc.c to meson.build
+Subject: Re: [PATCH 21/32] bsd-user: Implement get_filename_from_fd.
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
- <20230827155746.84781-21-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-22-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230827155746.84781-21-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230827155746.84781-22-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -96,24 +96,71 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/27/23 08:57, Karim Taha wrote:
+> From: Stacey Son <sson@FreeBSD.org>
+> 
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->   bsd-user/freebsd/meson.build | 1 +
->   1 file changed, 1 insertion(+)
+>   bsd-user/freebsd/os-proc.c | 74 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 74 insertions(+)
+>   create mode 100644 bsd-user/freebsd/os-proc.c
 > 
-> diff --git a/bsd-user/freebsd/meson.build b/bsd-user/freebsd/meson.build
-> index f87c788e84..d169e31235 100644
-> --- a/bsd-user/freebsd/meson.build
-> +++ b/bsd-user/freebsd/meson.build
-> @@ -1,4 +1,5 @@
->   bsd_user_ss.add(files(
-> +  'os-proc.c',
->     'os-sys.c',
->     'os-syscall.c',
->   ))
+> diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
+> new file mode 100644
+> index 0000000000..5cd800e607
+> --- /dev/null
+> +++ b/bsd-user/freebsd/os-proc.c
+> @@ -0,0 +1,74 @@
+> +/*
+> + *  FreeBSD process related emulation code
+> + *
+> + *  Copyright (c) 2013-15 Stacey D. Son
+> + *
+> + *  This program is free software; you can redistribute it and/or modify
+> + *  it under the terms of the GNU General Public License as published by
+> + *  the Free Software Foundation; either version 2 of the License, or
+> + *  (at your option) any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *  GNU General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU General Public License
+> + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +#include "qemu/osdep.h"
+> +
+> +#include <sys/param.h>
+> +#include <sys/queue.h>
+> +#include <sys/sysctl.h>
+> +struct kinfo_proc;
+> +#include <libprocstat.h>
+> +
+> +#include "qemu.h"
+> +
+> +/*
+> + * Get the filename for the given file descriptor.
+> + * Note that this may return NULL (fail) if no longer cached in the kernel.
+> + */
+> +static char *
+> +get_filename_from_fd(pid_t pid, int fd, char *filename, size_t len)
+> +{
+> +    char *ret = NULL;
+> +    unsigned int cnt;
+> +    struct procstat *procstat = NULL;
+> +    struct kinfo_proc *kp = NULL;
+> +    struct filestat_list *head = NULL;
+> +    struct filestat *fst;
+> +
+> +    procstat = procstat_open_sysctl();
+> +    if (procstat == NULL)
+> +        goto out;
 
-This won't build -- won't configure -- without the file being present.
-Just merge into the next patch.
+Need braces.  Several checkpatch.pl errors.
+
+With those fixed,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
