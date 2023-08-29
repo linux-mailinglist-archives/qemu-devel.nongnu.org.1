@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC4678C678
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B69278C68B
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:59:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaz74-00026K-0D; Tue, 29 Aug 2023 09:50:34 -0400
+	id 1qazES-0003w9-MP; Tue, 29 Aug 2023 09:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qaz6q-00024l-DO
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:50:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qaz6n-0006iX-EB
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:50:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693317015;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=LfDGnwV1cUbrRDywFM9leTqtFP6qHJNCQuQjShj3LPU=;
- b=A5OaHY9LnWjiII7iJve55djbP8WIj3y7oP63zQRGr1rd3NFm9tH/BUK20mC2Ej3gAhRCna
- lLB3kuw+WALYtOJID5lifP3skHQlkDRV0/PqEUIDy0aoLiOTKtc/Y5dPBnUAHxzdEj972W
- wdXbw9jqxrSDkMqjC/KbVYdpTHZMdWQ=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-182-vLLdN7ZHMgev6ZpN4fSmCg-1; Tue, 29 Aug 2023 09:50:13 -0400
-X-MC-Unique: vLLdN7ZHMgev6ZpN4fSmCg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F11C9280BC40;
- Tue, 29 Aug 2023 13:50:11 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7A487C15BAE;
- Tue, 29 Aug 2023 13:50:11 +0000 (UTC)
-Date: Tue, 29 Aug 2023 09:50:09 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Warner Losh <imp@bsdimp.com>
-Cc: qemu-devel@nongnu.org, Reinoud Zandijk <reinoud@netbsd.org>,
- Warner Losh <imp@bsdimp.com>, Ryo ONODERA <ryoon@netbsd.org>,
- Kyle Evans <kevans@freebsd.org>
-Subject: Re: [PULL 00/36] 2023q3 bsd user patches
-Message-ID: <20230829135009.GA179554@fedora>
-References: <20230828233821.43074-1-imp@bsdimp.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qazEL-0003vU-UK
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:58:05 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qazEJ-0001Xu-5T
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:58:05 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fee5ddc23eso41404195e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:58:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693317480; x=1693922280;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dI48J8SoHimgplt2FnUKM3DtalYyZUKtKzKe95SXVD4=;
+ b=L4Lx234hk+1p1DHQG1US44IwzVCG7iek8QoN877HSyrl0E8zLOFVtIkrJYwWW0cKo1
+ OypNxonNo+AWzuIBtGd1iTcG1Q4SE0li5oIXH2a0zZRhgAsmyuqdBtf1cBbkGv0AcvhF
+ DATwDgXc6p2gvTPLkJLEJp2pxgk9XZE8+O7848TpwDIEAs7fJLjmy0XzJQ2Bqa7ys0KJ
+ FW5PLYlP1zGHYmrEIvND0SGtTWMYTykmUXvQb2HmFwynDolwgjeHvq+BzeoKoIrz0zDs
+ /afsQ8MjHzYLA+i1GM9THqhRlEHC3+bahjkpCkwwttqEkGRNl9JbpBsNw6tnEi9zMhOI
+ uADw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693317480; x=1693922280;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dI48J8SoHimgplt2FnUKM3DtalYyZUKtKzKe95SXVD4=;
+ b=iY9g2FQxQg9uH7wHH5UceDer4+HHDzHrFUBV4lCjybbyDdwghI9rUZzgDtidxsdcJZ
+ NWF/xgdq9buA/Tpsdix20N5j7Fb73Bzy/zCctj7TFFQNDCH9Sp17X5y9oTJ/8uBOgRfV
+ p5outYZlpgWkwk8oFmkp49GGarYok7INcUvucG0GrJgBIUfBLozVgXs49LsrA2xLnwLR
+ r6bfWgV5N9vNKFkPEvqfrvSUgefp3cIAUZLbua6Ojkz/3U5hMtXud6AxCg/EEUQ9+BzW
+ qfNbPqpctyI5ICHEIJuHDHUcU2yf/GpIx+QvovY3TVZq4SklVePWvwvoM8Sl+4imyKgE
+ dt6Q==
+X-Gm-Message-State: AOJu0YwySBannF3TCKXWB/Ea4JWm7Y2u+s1wL2T88A+GSMWE4VmMz9R6
+ /cuozm+IdCimC2KM6zKjuJm/fw==
+X-Google-Smtp-Source: AGHT+IEPrhkJsLTl4PDTL/kkZ6TmHQeV0okk2nT9iioYNd3xLdAOTIB4hJ6OZzrIL7fbTkmdUQv5LQ==
+X-Received: by 2002:a05:600c:364a:b0:401:4542:5ed8 with SMTP id
+ y10-20020a05600c364a00b0040145425ed8mr11109833wmq.0.1693317480415; 
+ Tue, 29 Aug 2023 06:58:00 -0700 (PDT)
+Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
+ [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
+ t16-20020a7bc3d0000000b00401c9228bf7sm7572955wmj.18.2023.08.29.06.57.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 06:58:00 -0700 (PDT)
+Message-ID: <c3c6bab4-27e6-8812-2dc5-3d22c1ef16a5@linaro.org>
+Date: Tue, 29 Aug 2023 15:57:58 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="L0wLH+SL22z3CBWz"
-Content-Disposition: inline
-In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: Gowtham Siddarth <gowtham.siddarth@arm.com>
+References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,39 +92,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 29/8/23 13:39, Marcin Juszkiewicz wrote:
+> I am working on aarch64/sbsa-ref machine so people can have virtual
+> machine to test their OS against something reminding standards compliant
+> system.
+> 
+> One of tools I use is BSA ACS (Base System Architecture - Architecture
+> Compliance Suite) [1] written by Arm. It runs set of tests to check does
+> system conforms to BSA specification.
+> 
+> 1. https://github.com/ARM-software/bsa-acs
+> 
+> 
+> SBSA-ref goes better and better, yet still we have some issues. One of
+> them is test 822 ("Check Type 1 config header rules") which fails on
+> each PCIe root port device:
+> 
+> BDF 0x400 : SLT attribute mismatch: 0xFF020100 instead of 0x20100
+> BDF 0x500 : SLT attribute mismatch: 0xFF030300 instead of 0x30300
+> BDF 0x600 : SLT attribute mismatch: 0xFF040400 instead of 0x40400
+> 
+> I reported it as an issue [2] and got response that it may be QEMU
+> fault. My pcie knowledge is not good enough to know where the problem is.
+> 
+> 2. https://github.com/ARM-software/bsa-acs/issues/193
+> 
+> 
+> In the comment Gowtham Siddarth wrote:
+> 
+>> Regarding the SLT (Secondary Latency Timer) register, the expected 
+>> values align with the ACS specifications, registering as 0. However, a 
+>> discrepancy arises in the register's attribute, intended to be set as 
+>> Read-Only. Contrary to this intent, the bit field seems to function 
+>> as> Read-Write. Ordinarily, when attempting to write to the register 
+>> by configuring all bits to 1, the anticipated behaviour should involve 
+>> rejecting the write operation, maintaining the value at 0 to uphold 
+>> the register's designated Read-Only nature. However, in this scenario, 
+>> the write action takes effect, leading to a transformation of the 
+>> register's value to FFs. This anomaly could potentially stem from an 
+>> issue within the emulator.
+> 
+> Does someone know where the problem may be? And how to fix it?
 
---L0wLH+SL22z3CBWz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Commit fb23162885 ("pci: initialize pci config headers depending it pci
+header type.") sets PCI_SEC_LATENCY_TIMER writable; it seems to be a
+mistake (and bsa-acs is doing the correct testing).
 
-Applied, thanks. In the future, please invoke git-request-pull(1) with
-the public HTTPS repo URL to make it easier for anyone to fetch the
-changes:
+Can you try this quick fix?
 
-> are available in the Git repository at:
->
->  git@gitlab.com:bsdimp/qemu.git tags/2023q3-bsd-user-pull-request
-   ^^^^^^^^^^^^^^
+-- >8 --
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 881d774fb6..e43aa0fb36 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -894,5 +895,4 @@ static void pci_init_mask_bridge(PCIDevice *d)
+  {
+-    /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS and
+-       PCI_SEC_LETENCY_TIMER */
+-    memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 4);
++    /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS */
++    memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 3);
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
-Thanks!
-
---L0wLH+SL22z3CBWz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTt95EACgkQnKSrs4Gr
-c8jNiAf/Wu41It8WaFblm/DvPWQnNpRLUyvVTMmEkzmOPy73vjSLdylbRI20vf23
-Gj0Xsyw3IiLKrKVo+KDDSdQyCpV8gvf5WCIHWNXvJRATTbvCxEW17QYO6MY0Ln++
-Gx2iHHCUjGAN2Wr9KTOEeiooxK2X1v6RvCWLLr2S/cQK/qDB2fM5l4sxJHtdryiT
-RP469GYrE3Dmtq7HeENXJ93PBXGo1u6yP/qh22HGJBHIA8bErQsJSv6JRLJqh5TS
-4SE03J/02zxnIXcCNkbJb8PQ986HwqIF+kXEQvZBk021QIvgIBqIAxarXD7sqkgo
-XEMT2CmQpyeXDScQFNOX7TK/mRQDSQ==
-=mklB
------END PGP SIGNATURE-----
-
---L0wLH+SL22z3CBWz--
+---
 
 
