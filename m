@@ -2,79 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8794378D033
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8578F78CFF5
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nc-0001BG-DM; Tue, 29 Aug 2023 19:07:05 -0400
+	id 1qb7oo-0002v3-NH; Tue, 29 Aug 2023 19:08:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qb4Of-0007Fu-EH
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:29:05 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qb4Qo-0007Rp-TN
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:31:23 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qb4Od-0001oI-5r
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:29:05 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99c4923195dso598019366b.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:29:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qb4Ql-0002VA-GY
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:31:17 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4018af103bcso996885e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693337341; x=1693942141;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=S7VrKV1zP/OP3NTeH3U/2rcoWCSYNx+ukNZCKG8r9SQ=;
- b=BR0hWhggo/1X6LmVbmAH0NAWvMCJZ6pqLIcg8dLvusPj0yBQtt22uT7F2WERtVNFGV
- pqVEn0rtQPHZZ20Xvmipbk/IrQQLPu20FMso7XJwS6NX8h6qz1pWjJf+43OFMEWNJZnU
- slkuwd8xYTiVZGAaJiI5nrlVoeTb205BZwAzRrAeGVc81ZgVSgegFNqYB0ne9QX7vSDT
- tA3b0lnRvsGejW63oF7WDEkG+T7OLkEHzyBfey0LWbfjDtIb1WZ4iaoDQvl5eAJFlysX
- WCa1P0Bmxfsty5lsbX9kvqBBNb8TiEqYUWIEXbQWiI5cgbOnw5xpV7yMNIY3yxdN494V
- L4sg==
+ d=linaro.org; s=google; t=1693337473; x=1693942273; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Rzo4+KDdgc9mvQf1jpCBy3kJyAMNQ9tWI7LM1Ny6mkE=;
+ b=fPCfT/rN6sbtFX4X1BAfoC80H4lL+lc4+qEw7yrS657xiUB3uNZKV8IkYNU04aaLzS
+ HpBBhqnfhzHOaaETNbA+fiNNxJQ8XrYV4lt8pzFhn0CC2DYbwcteBK8bQCRG9vgUg6N8
+ OxSXegu1+uj3VL4blIQCMre0ey9dfQ5i9IqzGI6JvPxIydJpeXlhxVoumSqcS/ubgZmm
+ /C2JGKfFVkFqrC181OlXlUGkU9i3U92MR8P/SrOYLsgcExOS3RbY2PMq2EjAhMguR6HL
+ IYtGi24db3XB/0M+T7cTf+TtKuDEvt2N6O1gIK+oVfumCrct1Mgju2VknLnT/0aRvMXe
+ foWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693337341; x=1693942141;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S7VrKV1zP/OP3NTeH3U/2rcoWCSYNx+ukNZCKG8r9SQ=;
- b=ir+iC3p9vPwGs7i//qsjgx1YmyJ2QQaaxEcjnGNgI5Gz+Ams6fNyRUGNvh2O5unFqz
- wkKwSfax9T2ZQjlGiAZ586CCE8WNvJqr2Guc4UquYI7/24MD8Dmoow0kFt4JJlzZi/zo
- AaqfrvnQbrCDtl2kRMRR3SfU6sdHgmr+qtg8+P9v/aPZGqcA7prE14THYes9AoNUZz6F
- LhKDj/Y/Im/W9ncOIJ25UJSstHR/w6ctvI+0XCyhbZUB1+JPAantXJ3zKkRiCvJT2zXI
- psGVXUIOTPOTQHzgne6ysqFfwJAsSoUaw7sa4BIBjusZh8x1FgBPjPW4m3mXGGQXwIqD
- 85WA==
-X-Gm-Message-State: AOJu0YwR/qb2w1n7oc0FibXgva/TiCCc/i8vntuXhOfI5siBv4wx+17q
- ZiHFHSbbKMTNfle8P0E82T+TRA==
-X-Google-Smtp-Source: AGHT+IHvuzY8l/uZlLZyw9li6pZ91ZFsvPwuntZXr5ShP+gI9fFebPMVFSrKoc407Vt8I/THRQ7WbQ==
-X-Received: by 2002:a17:906:ae81:b0:99d:f47b:854c with SMTP id
- md1-20020a170906ae8100b0099df47b854cmr20170704ejb.72.1693337341583; 
- Tue, 29 Aug 2023 12:29:01 -0700 (PDT)
-Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
- [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
- g24-20020a170906395800b0099cd1c0cb21sm6266420eje.129.2023.08.29.12.29.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 12:29:01 -0700 (PDT)
-Message-ID: <7b4fe44d-3241-5517-1a3c-8e183254e9b5@linaro.org>
-Date: Tue, 29 Aug 2023 21:28:57 +0200
+ d=1e100.net; s=20221208; t=1693337473; x=1693942273;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Rzo4+KDdgc9mvQf1jpCBy3kJyAMNQ9tWI7LM1Ny6mkE=;
+ b=Rf1PSBlQZHLXOD0D4j4QcWg+a7DxUZWl5uOnD56wb4xTSqmPJncQda1P18B/xnB0KX
+ rypvdIuNVE5yp8+LmuePnF4PWG6mig5vJERY+mZoOJCAn6apMFVAOduV0lf48uKIq4DQ
+ TWE2Rx1UxzZvS7pF16St9sZ8m26v1tsrvq+x4Yup2a/Pnldp5S+ajUE+OigygNuAsum0
+ UhKNm9ClcEf8iBy0mrOmnblPDUplRzIplvQoJ3x74N3lwWquoV/+XFZyKEGI1ihsmQ+m
+ /fyk0BZ1B+ynLq8EMRb3SwhYoKMEzP9gnvGcfO5fKyfuqqlSAlsaxLQg8rZSdbfnoFwa
+ HBTA==
+X-Gm-Message-State: AOJu0YyN2eBNv9ccLUfXAFLjgqgTvEoCe6A889V2Ol0htoruBFnTILGE
+ P/FlSfUyJg49djIp6PaJwRzOEw==
+X-Google-Smtp-Source: AGHT+IHZ5dl8wAHaPdumJKsV4XAe0cF7HeiFG31/NA3UCrHFBMwgt35/MjGTIzV9AOqf1o2vn5Cwcg==
+X-Received: by 2002:a05:600c:35c8:b0:401:609f:7f9a with SMTP id
+ r8-20020a05600c35c800b00401609f7f9amr2941792wmq.8.1693337473138; 
+ Tue, 29 Aug 2023 12:31:13 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ u11-20020a05600c210b00b003fe2b081661sm18038773wml.30.2023.08.29.12.31.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 12:31:12 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 38C1C1FFBB;
+ Tue, 29 Aug 2023 20:31:12 +0100 (BST)
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <974d88412dd4ee18ae35efdbec657fa558c13fbf.1693252037.git.manos.pitsidianakis@linaro.org>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
+ Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>, =?utf-8?B?S8WRdsOh?=
+ =?utf-8?B?Z8OzLCBab2x0w6Fu?=
+ <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH v8 05/12] virtio-sound: handle VIRTIO_SND_R_PCM_INFO
+ request
+Date: Tue, 29 Aug 2023 20:31:06 +0100
+In-reply-to: <974d88412dd4ee18ae35efdbec657fa558c13fbf.1693252037.git.manos.pitsidianakis@linaro.org>
+Message-ID: <873501tzlr.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] target/m68k: Add URL to semihosting spec
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-References: <20230801154451.3505492-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230801154451.3505492-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,16 +107,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/23 17:44, Peter Maydell wrote:
-> The spec for m68k semihosting is documented in the libgloss
-> sources. Add a comment with the URL for it, as we already
-> have for nios2 semihosting.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/m68k/m68k-semi.c | 4 ++++
->   1 file changed, 4 insertions(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 
+> Respond to the VIRTIO_SND_R_PCM_INFO control request with the parameters
+> of each requested PCM stream.
+>
+> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9=
+c7b40a8e603f4da92471
+> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
+> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
+> Signed-off-by: Emmanouil Pitsidianakis
+> <manos.pitsidianakis@linaro.org>
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
