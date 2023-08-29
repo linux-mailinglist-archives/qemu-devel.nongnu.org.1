@@ -2,84 +2,181 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C1C78BE18
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 07:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3F478BEF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 09:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qarhz-00058o-NK; Tue, 29 Aug 2023 01:56:11 -0400
+	id 1qasoX-0007il-NG; Tue, 29 Aug 2023 03:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qarhs-000580-Lt
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:56:07 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qarhk-0002l9-31
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:56:04 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bc8a2f71eeso23775285ad.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 22:55:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693288552; x=1693893352;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7dsgzwmViTn9/wS4VhlcvKq+IPKkq446pVF0AUIy9js=;
- b=jWWXnzncvNvOdG3bOlMtOHq0kzBN5tVAyqhg0Jj9YS6TysuzEUpmebtuc/9+O+jc4U
- ZCMxptn1XAGjXI31sc1gROrbcBiXufuh7pe/s//xtOFcfVyOWma9J+xzppIKUDUrbX66
- 07SsXS89/xyP9Lhl76TyCR/pe3q1bY6nbR7FYG0EAcjXcXX8PW0ITX/sJfhYraJWrXB2
- H2Bk2uckFn5X0NPHhpGV+5QUZUlebuOfH3EZDJ5H140XkI/IxX9JVyxfn+TEvlbU+vIq
- dNf41foJi9bQg7SmH4xADkbzodkWfGcMevMAV8RwXeAXsF1W/fEz6WfWFEDealljrwKk
- qI8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693288552; x=1693893352;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7dsgzwmViTn9/wS4VhlcvKq+IPKkq446pVF0AUIy9js=;
- b=IOkqdVMl3gB06jF99Ot6PW2PaEipywmXlMXVEePMy0Z+ZAE08npDyYe/x9YGX7Cqw0
- KkzsN2CKtSzKjlXbr4RUggc4os4jCTJMc+mXGclN3cn+GHxTvWE8pYthpSwATkl8VR3M
- VhZHgOB5kbq0+4axN610XRohlVbz+f8DUC9+6j0eEAG2ANhSYdCdHf6Z3BpvgtX3a0Hq
- MZAG+VHCu1X0+kA7BdMrDQByH2ACtorLoA7IQz+b8xYS/G9SrWkIvzHomXU55zeN2fcV
- 5VJ/5Iu+0DJIIqnbuwbbQvxuPx561MWIse8VXy+moCfdxZqeRN4gPL3P73Yu02i1832U
- b+lQ==
-X-Gm-Message-State: AOJu0YxxU85MDTQVOPxw6wocDWlS15EnlkTLGmZdB3P5I7At6/P3WjXZ
- A3dZmXsr9hDM/cXn5DbGFeo=
-X-Google-Smtp-Source: AGHT+IGZHjMpXFmJoHHr+SHT4wnIfgQQ9A8rShiepyo3QPaH7Ld9umjBt34GtZ6uaeFYDkQILPYbWw==
-X-Received: by 2002:a17:902:cec9:b0:1be:c879:6e71 with SMTP id
- d9-20020a170902cec900b001bec8796e71mr27357410plg.63.1693288551821; 
- Mon, 28 Aug 2023 22:55:51 -0700 (PDT)
-Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- ji18-20020a170903325200b001b9da8b4eb7sm8442002plb.35.2023.08.28.22.55.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 22:55:51 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org, yin31149@gmail.com, leiyang@redhat.com,
- 18801353760@163.com
-Subject: [PATCH v4 8/8] vdpa: Send cvq state load commands in parallel
-Date: Tue, 29 Aug 2023 13:54:50 +0800
-Message-Id: <f25fea0b0aed78bad2dd5744a4cc5538243672e6.1693287885.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1693287885.git.yin31149@gmail.com>
-References: <cover.1693287885.git.yin31149@gmail.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1qarL1-0000Oh-De
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:32:28 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1qarKv-000200-RI
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:32:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1693287141; x=1724823141;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=OmmER+nETRSqH3nknSIe3IGvaSJ61K6gMWZYiAnzPkQ=;
+ b=n21hXnC1M4MfsSxVWzrkp8J0Ruv9jb69vAA8sqwIStcH3EuHPO5DQZhk
+ B6nWLa/NOfkmfriCT+uNROsDI0qqf2swPKIEvw5LrhQgkQHvWx0IuJq35
+ sJJG6yWIZz0PjfBGiX3DEuAtJKtFsM0xEvzjQHD+wYTQV5vqy0gQHQTpV
+ m3GilVWWdE9SSdhW8keXSt1UxjSRuG/6Hzr+9RqMUE0x6lTmKV8rZajSe
+ d56sIA7X2/1efqOMkjVjnvRflszHBWyx3Fyc458ZFvGjH42WmCAfIYQq5
+ TcEbdVg1OhCfMBBfK5062ZumqZMVye8KIiVPCObtu5dHAh4EGfQsAZ3C8 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10816"; a="461645172"
+X-IronPort-AV: E=Sophos;i="6.02,208,1688454000"; d="scan'208";a="461645172"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2023 22:31:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10816"; a="808547919"
+X-IronPort-AV: E=Sophos;i="6.02,208,1688454000"; d="scan'208";a="808547919"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmsmga004.fm.intel.com with ESMTP; 28 Aug 2023 22:31:58 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 28 Aug 2023 22:31:58 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 28 Aug 2023 22:31:57 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 28 Aug 2023 22:31:57 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.44) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Mon, 28 Aug 2023 22:31:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CJ07wkIKyfNrlI9U1v2YMe4WgTp5oRtJNM63dqv1ZjYM9lTahKSmjzm32W15ci6MnVZf3Vol73v2LnNHVN7dxEtXwqVQfMFn+IY9G2GvDt0uHY/Ar0KNIWapTmVuJ9aqQLfNKGxkntUxwrCU5Re2mXr+AcQ6UqlpbFkhXvLIdg1rLvrXLBk39IBy9cLFYA7LJu+3uko9FZgOYSG6sTEHOdH4K1Bo0CCzFwthm+yCRNcPuig8K3fek16VhmLstfg5S4HqIvZt3LE1ardf7PXb94gEIJrlhvkCxd2cNJ6rwXsBzaufpRMMBt6E2SPNpDs5f21iib21g9UXz5nphEnHKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DW36UhFmaN0o7dc6BDGpAEF1xNW7sVveVdilNVhjdbs=;
+ b=EOHP9QNkA2Ab19j7nQ/3+6hdjkPqQ/cslyCGN9POTwJ/ijQewf3a/M2ki2Uzt+d6fTinit2j7z8Ipe39x28AIoHs7FxGLCsjX/JXcX0HR0KOnFD7sDRad8Z9YAECFkN+2Iw8txU16lgEK/lXgP3Ixd6lnuKHRvKPR9BZSjcIXVTJ7n6OUP443wnn2jGRNhl0J03tBbRNpOdohNZkwqFCAsHqtfDMmy8UM2Q174Ti5mXNTc/y62vdLCEO/O096rMCi2cQyyJBNNaYldmyKZjc9GQNmStjgffSw42WJUwVN6KJinQw0yT7gSew0mSER2aWpzAKJjxsGUW7HF4G9DM8lA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA2PR11MB5052.namprd11.prod.outlook.com (2603:10b6:806:fa::15)
+ by SA1PR11MB7131.namprd11.prod.outlook.com (2603:10b6:806:2b0::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Tue, 29 Aug
+ 2023 05:31:52 +0000
+Received: from SA2PR11MB5052.namprd11.prod.outlook.com
+ ([fe80::e0e8:f57f:3ef9:ae6]) by SA2PR11MB5052.namprd11.prod.outlook.com
+ ([fe80::e0e8:f57f:3ef9:ae6%4]) with mapi id 15.20.6699.034; Tue, 29 Aug 2023
+ 05:31:52 +0000
+Message-ID: <d6fbacab-d7e4-9992-438d-a8cb58e179ae@intel.com>
+Date: Tue, 29 Aug 2023 13:31:37 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 41/58] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>, "Markus
+ Armbruster" <armbru@redhat.com>
+CC: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "Igor
+ Mammedov" <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, Peter Xu
+ <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>, Cornelia Huck
+ <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, <erdemaktas@google.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-42-xiaoyao.li@intel.com>
+ <87wmxn6029.fsf@pond.sub.org> <ZORws2GWRwIGAaJE@redhat.com>
+Content-Language: en-US
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+In-Reply-To: <ZORws2GWRwIGAaJE@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=yin31149@gmail.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-ClientProxiedBy: SI2PR01CA0038.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::20) To SA2PR11MB5052.namprd11.prod.outlook.com
+ (2603:10b6:806:fa::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PR11MB5052:EE_|SA1PR11MB7131:EE_
+X-MS-Office365-Filtering-Correlation-Id: b12c717f-0064-498f-45bb-08dba8513fbf
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3OWOyskqhVHm/2d4JzeGYlEOITwY1AW6NcdY52UDWUpnmUD4D9hggvnxLon0gqXSoo6ax8brdshNkKd3TikTFVe0QawU14v84HtgWblcuV5dg4JkqVivC5CZoACw4xMUFbIHW08ONG9CCcKpMFNvxx1IW+JCHWlUwzDrnxL178NQoirzz9YZvlXS0pxH+81dkPqB4oGmA0wD4IdKn8ja3GROwFONbz/op9cuvdqf+GlTZM3FP1jMVznh8axn7eEUxD7OEvLBuV7u10pO7pZnpQfKgbuozfyuZT/zEWO+iJJXzf85F6lOBAAJXZGxtW9Fq62O6Pqyj4fm0Q/MAf0eu3EfkkLc/JVDgXLa1SLE211oZdDhEjB2z6W4bjvaSISuZz4/kkOYLFEuDXn5YW6E0JPX8S2sHM/Xqb/gctngv1ened24NwoFppDpuafQVR+5DNBzlnrvRCoVmv0faYSWqG5cWeMO2/LUUDcuGGoXScJdE3N/SWYWv/Vo96EWq+YI0woMCezUUHiI4loKkwqVVW82MjeI8LMq0/1bngWX7WaB5S4m7l1IyULVSQRQMlU7KC7W3fmeh0Byzm6vfaqY+nVRPfb+OzpKFHaLC1MnSok950uo2yrI1bJeQccpZOQMibTa86IYDawUYNuh0fraYg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA2PR11MB5052.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(346002)(396003)(366004)(136003)(376002)(451199024)(186009)(1800799009)(2616005)(26005)(478600001)(36756003)(53546011)(6486002)(6506007)(6666004)(6512007)(110136005)(82960400001)(66946007)(316002)(38100700002)(66556008)(66476007)(54906003)(41300700001)(83380400001)(31686004)(8936002)(44832011)(5660300002)(8676002)(4326008)(2906002)(86362001)(31696002)(7416002)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QzBiMW9iMlMvZnZuMFhtRjVsbWdaNzV4RHo0SUFvYk5nQ0hnQml0SVlYRDh5?=
+ =?utf-8?B?bjROdEVCOFdzTUdVSkQvRTJadXZySTFQRzdESURyQi9HQzg5clZmMkhiVTcy?=
+ =?utf-8?B?VXlqQ0hQbzJ3ci9TaWU4SnBBZkNxZ3RqTnA3NWhaOE1oVStqaFhKcmIwZmlI?=
+ =?utf-8?B?QWg4eklSV0NiZUcyemdRVy8yakh2VjZybC9JcXdNeUlxMGxqU3lvOWJNNEdV?=
+ =?utf-8?B?YTBqSUI4SjFvNzJxQ1RiYTd5TTlhOFlRRHpybElXWFJ1TEtJTUlIN0V0bWwr?=
+ =?utf-8?B?L0tyTlNtdFpGUUQybkQ1QmJBdFdIZTR5UU1uTGJkNXdRMWlpdmFYM3lPRzZo?=
+ =?utf-8?B?L1B1Ym5vZUFsTWNwbGE4RWRSWnBUZUxjN1lkRFFtNm5jQmlaajI2dU9xaEN6?=
+ =?utf-8?B?S1dhQVNkU0dTck83c3NHZ0VuM3VLeDB1Q0E5TVF4Yzd4eXNYQ3ZOdDNNZ3pw?=
+ =?utf-8?B?M2dhQjZOUU9URDY2T294NEtON2VTd3JEWWFaMSs0MlRZdmkvMEpQM1ZLSjFl?=
+ =?utf-8?B?aEN3MEFLMGVvcUVSN1pxY3h2dWlDWnpBWDVEb2N2SzhjQzFWNDg1RFFKbEh0?=
+ =?utf-8?B?eEd6eGZqR2lSL1JWbEYzeXdLaHdjS0F4bVRvRDAvenZML1V2YnlGR2ZHTzUz?=
+ =?utf-8?B?WkxRcTJJc2lyRTJZZ2IvSkNidmRJaHVlV2srWEZvTEVzb3UxVllqZWRTUlI3?=
+ =?utf-8?B?NFJOQ0ZGQ0lkSWJIbGN4d2c4OUd4MkZoalN4bnVzODg0TkZtWHVFSzY1V3Y4?=
+ =?utf-8?B?LzN4cmwvbE8rcVp2ekQxeWd4ZWZ2QWxyRE1BMEpnanhVMWd6WW1DazlXa3Bh?=
+ =?utf-8?B?aHl0ZVVKYVMySEZZOHJRTzVOUnFNY0tyOGpvUnZmV0dUOXZhTzVIbEVYVUxm?=
+ =?utf-8?B?ZEtHejVVTldLTVFkeWRoOEpoallJLzNleHZnU3FRT0xqYmJ2TmUxMld0WmNo?=
+ =?utf-8?B?akxOZmVLTnJYRVFDNmtlV0IrNzZQakhqZkRIK05IOGFjWHpobFNjd1FmdStt?=
+ =?utf-8?B?eStRaDkyWFpMM2pIdUN5NlRvRFo1cmdMNU9LWXd2RVJiUCtJb2RLK0ZwZ2t0?=
+ =?utf-8?B?UUdFdXJTZnExcUY5eUp2SnFlSndnZ2IrMGNQTFFIOXBjMFlVUmRBV3VsK0pF?=
+ =?utf-8?B?V05mMFBIMnc2bnoycGE4bUROMTBhT3drQzNVM0pJRTFFZGFvQjFZR2ZjWDNY?=
+ =?utf-8?B?aGlzenl3bWN3ZGNPZUxlZ0pSU1dnM2VNa0RtNG1xN09BQ3lSWTE4V3RDZzha?=
+ =?utf-8?B?bDg5RnovMndTTjFQdzB0OGxWSFMvUzMxVVg2c3RGOU1iWk9PdUlTWkFza2JX?=
+ =?utf-8?B?RlZhOWV6YUJkbndYRkVEQS9KYW9nQ05tVUhLcytuVmVMRVkrQysycFR5dkdU?=
+ =?utf-8?B?TW5wNHFQRy90VnhIaGh1TkJhZlBLeWY2WWh5RDNOUjd3NUZMaXFMcHhNOWw5?=
+ =?utf-8?B?ZkRCaElkcndldjRNbU42L3VqT0dDWmxidXVXVEgwVWJiMDhUalZlZGdYbkl6?=
+ =?utf-8?B?V2FNRjFHOXMrV010UnRITFRuWDUzdVRkaGQ3NjJydVB1V2tjcEM3aUVBZExr?=
+ =?utf-8?B?UzNWMGN0ZG54cDBVWGlzcE4zNkNoMWtHTDBPSnpSVnNheTcrTWJ1aExIZTE4?=
+ =?utf-8?B?emVLZHprWGlsVUZTSG41d0U2WU8zekhqK0V1Q2pmd2pzNUxrc0JDMmtnWWl2?=
+ =?utf-8?B?MFNzcWlVQUlwOFdYK2xoTFEwM1FOVUtHUXpvenptMXJNWGVHN2V3YW1Wc0RV?=
+ =?utf-8?B?Y0oxMkw5cHRJbjBWSXJSVUppQ2o4MEp5RWNraVVnUFZ2UTNIeldGYktIL3du?=
+ =?utf-8?B?b3doajZuK2VHelBHVXd1RDVqQldBclgydVZIUTk2WVJkbEdLdzBkQmNoTGJq?=
+ =?utf-8?B?RU9VNytnOWNZeThQQUFsVGcwcW5OakU5WkphS1lvWG8vcTdNa2pUbnBWUmNZ?=
+ =?utf-8?B?ZVFVR2M5NVlxMEJtN1pYUzh4MXVweTc3dzl2cmlGZm5FeHBYQ3htNXR0RFYv?=
+ =?utf-8?B?SS9aSWo4Zk1oYkc5Ri95Y0FpL05QRjNkYjRLTzNwcXZndm5SZituZGt2bnBh?=
+ =?utf-8?B?MWRzNEUwZGM5bDlaQTdXWUZEVUQ5bUMxK1YrcnMwN251VlR6TkQ0L3l2UUQr?=
+ =?utf-8?Q?0RgAe8aRboTkMYVyR/spNxwUf?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b12c717f-0064-498f-45bb-08dba8513fbf
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR11MB5052.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2023 05:31:52.1749 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eejcH8xwctDYWxiSL9hrLgA5KHazMD3T62f7nZvE558KSpKCM1eMVtkxkdNm1SBtqKwKQcBjcydWWUU4ZkB0HA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7131
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=chenyi.qiang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -65
+X-Spam_score: -6.6
+X-Spam_bar: ------
+X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-2.169, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 29 Aug 2023 03:06:50 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,285 +191,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch enables sending CVQ state load commands
-in parallel at device startup by following steps:
 
-  * Refactor vhost_vdpa_net_load_cmd() to iterate through
-the control commands shadow buffers. This allows different
-CVQ state load commands to use their own unique buffers.
 
-  * Delay the polling and checking of buffers until either
-the SVQ is full or control commands shadow buffers are full.
+On 8/22/2023 4:24 PM, Daniel P. Berrangé wrote:
+> On Tue, Aug 22, 2023 at 08:52:30AM +0200, Markus Armbruster wrote:
+>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>
+>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>
+>>> For GetQuote, delegate a request to Quote Generation Service.  Add property
+>>> of address of quote generation server and On request, connect to the
+>>> server, read request buffer from shared guest memory, send the request
+>>> buffer to the server and store the response into shared guest memory and
+>>> notify TD guest by interrupt.
+>>>
+>>> "quote-generation-service" is a property to specify Quote Generation
+>>> Service(QGS) in qemu socket address format.  The examples of the supported
+>>> format are "vsock:2:1234", "unix:/run/qgs", "localhost:1234".
+>>>
+>>> command line example:
+>>>   qemu-system-x86_64 \
+>>>     -object 'tdx-guest,id=tdx0,quote-generation-service=localhost:1234' \
+>>>     -machine confidential-guest-support=tdx0
+>>>
+>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>> ---
+>>>  qapi/qom.json         |   5 +-
+>>>  target/i386/kvm/tdx.c | 380 ++++++++++++++++++++++++++++++++++++++++++
+>>>  target/i386/kvm/tdx.h |   7 +
+>>>  3 files changed, 391 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>> index 87c1d440f331..37139949d761 100644
+>>> --- a/qapi/qom.json
+>>> +++ b/qapi/qom.json
+>>> @@ -879,13 +879,16 @@
+>>>  #
+>>>  # @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
+>>>  #
+>>> +# @quote-generation-service: socket address for Quote Generation Service(QGS)
+>>> +#
+>>>  # Since: 8.2
+>>>  ##
+>>>  { 'struct': 'TdxGuestProperties',
+>>>    'data': { '*sept-ve-disable': 'bool',
+>>>              '*mrconfigid': 'str',
+>>>              '*mrowner': 'str',
+>>> -            '*mrownerconfig': 'str' } }
+>>> +            '*mrownerconfig': 'str',
+>>> +            '*quote-generation-service': 'str' } }
+>>
+>> Why not type SocketAddress?
+> 
+> Yes, the code uses SocketAddress internally when it eventually
+> calls qio_channel_socket_connect_async(), so we should directly
+> use SocketAddress in the QAPI from the start.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
-v4:
-  - refactor argument `cmds_in_flight` to `len` for
-vhost_vdpa_net_svq_full()
-  - check the return value of vhost_vdpa_net_svq_poll()
-in vhost_vdpa_net_svq_flush() suggested by Eugenio
-  - use iov_size(), vhost_vdpa_net_load_cursor_reset()
-and iov_discard_front() to update the cursors instead of
-accessing it directly according to Eugenio
+Any benefit to directly use SocketAddress?
 
-v3: https://lore.kernel.org/all/3a002790e6c880af928c6470ecbf03e7c65a68bb.1689748694.git.yin31149@gmail.com/
+"quote-generation-service" here is optional, it seems not trivial to add
+and parse the SocketAddress type in QEMU command. After I change 'str'
+to 'SocketAddress' and specify the command like "-object
+tdx-guest,type=vsock,cid=2,port=1234...", it will report "invalid
+parameter cid".
 
- net/vhost-vdpa.c | 155 +++++++++++++++++++++++++++++------------------
- 1 file changed, 97 insertions(+), 58 deletions(-)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index a71e8c9090..818464b702 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -646,6 +646,31 @@ static void vhost_vdpa_net_load_cursor_reset(VhostVDPAState *s,
-     in_cursor->iov_len = vhost_vdpa_net_cvq_cmd_page_len();
- }
- 
-+/*
-+ * Poll SVQ for multiple pending control commands and check the device's ack.
-+ *
-+ * Caller should hold the BQL when invoking this function.
-+ *
-+ * @s: The VhostVDPAState
-+ * @len: The length of the pending status shadow buffer
-+ */
-+static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s, size_t len)
-+{
-+    /* Device uses a one-byte length ack for each control command */
-+    ssize_t dev_written = vhost_vdpa_net_svq_poll(s, len);
-+    if (unlikely(dev_written != len)) {
-+        return -EIO;
-+    }
-+
-+    /* check the device's ack */
-+    for (int i = 0; i < len; ++i) {
-+        if (s->status[i] != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
-+    }
-+    return 0;
-+}
-+
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                                        struct iovec *out_cursor,
-                                        struct iovec *in_cursor, uint8_t class,
-@@ -660,10 +685,30 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-            cmd_size = sizeof(ctrl) + data_size;
-     struct iovec out, in;
-     ssize_t r;
-+    unsigned dummy_cursor_iov_cnt;
- 
-     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
-+    if (vhost_vdpa_net_svq_available_slots(s) < 2 ||
-+        iov_size(out_cursor, 1) < cmd_size) {
-+        /*
-+         * It is time to flush all pending control commands if SVQ is full
-+         * or control commands shadow buffers are full.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor->iov_base -
-+                                     (void *)s->status);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-+
-+        vhost_vdpa_net_load_cursor_reset(s, out_cursor, in_cursor);
-+    }
-+
-     /* Each CVQ command has one out descriptor and one in descriptor */
-     assert(vhost_vdpa_net_svq_available_slots(s) >= 2);
-+    assert(iov_size(out_cursor, 1) >= cmd_size);
- 
-     /* Prepare the buffer for out descriptor for the device */
-     iov_copy(&out, 1, out_cursor, 1, 0, cmd_size);
-@@ -681,11 +726,13 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-         return r;
-     }
- 
--    /*
--     * We can poll here since we've had BQL from the time
--     * we sent the descriptor.
--     */
--    return vhost_vdpa_net_svq_poll(s, 1);
-+    /* iterate the cursors */
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&out_cursor, &dummy_cursor_iov_cnt, cmd_size);
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&in_cursor, &dummy_cursor_iov_cnt, sizeof(*s->status));
-+
-+    return 0;
- }
- 
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-@@ -697,15 +744,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_base = (void *)n->mac,
-             .iov_len = sizeof(n->mac),
-         };
--        ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_MAC,
--                                                  VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  &data, 1);
--        if (unlikely(dev_written < 0)) {
--            return dev_written;
--        }
--        if (*s->status != VIRTIO_NET_OK) {
--            return -EIO;
-+        ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                               VIRTIO_NET_CTRL_MAC,
-+                                               VIRTIO_NET_CTRL_MAC_ADDR_SET,
-+                                               &data, 1);
-+        if (unlikely(r < 0)) {
-+            return r;
-         }
-     }
- 
-@@ -750,15 +794,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_len = mul_macs_size,
-         },
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-                                 VIRTIO_NET_CTRL_MAC,
-                                 VIRTIO_NET_CTRL_MAC_TABLE_SET,
-                                 data, ARRAY_SIZE(data));
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -770,7 +811,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-                                   struct iovec *in_cursor)
- {
-     struct virtio_net_ctrl_mq mq;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
-         return 0;
-@@ -781,15 +822,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         .iov_base = &mq,
-         .iov_len = sizeof(mq),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_MQ,
--                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                   VIRTIO_NET_CTRL_MQ,
-+                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-+                                   &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -801,7 +839,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-                                         struct iovec *in_cursor)
- {
-     uint64_t offloads;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj,
-                                  VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-@@ -829,15 +867,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-         .iov_base = &offloads,
-         .iov_len = sizeof(offloads),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-+                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-+                                   &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -853,16 +888,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
-         .iov_base = &on,
-         .iov_len = sizeof(on),
-     };
--    ssize_t dev_written;
-+    ssize_t r;
- 
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_RX,
--                                          cmd, &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1019,15 +1050,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-         .iov_base = &vid,
-         .iov_len = sizeof(vid),
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_VLAN,
--                                                  VIRTIO_NET_CTRL_VLAN_ADD,
--                                                  &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (unlikely(*s->status != VIRTIO_NET_OK)) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                           VIRTIO_NET_CTRL_VLAN,
-+                                           VIRTIO_NET_CTRL_VLAN_ADD,
-+                                           &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1096,6 +1124,17 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-         return r;
-     }
- 
-+    /*
-+     * We need to poll and check all pending device's used buffers.
-+     *
-+     * We can poll here since we've had BQL from the time
-+     * we sent the descriptor.
-+     */
-+    r = vhost_vdpa_net_svq_flush(s, in_cursor.iov_base - (void *)s->status);
-+    if (unlikely(r)) {
-+        return r;
-+    }
-+
-     return 0;
- }
- 
--- 
-2.25.1
-
+> 
+> With regards,
+> Daniel
 
