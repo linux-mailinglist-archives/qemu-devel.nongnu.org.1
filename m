@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A787E78CA2D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA4178CA2E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:06:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb2AD-0005sl-Kj; Tue, 29 Aug 2023 13:06:05 -0400
+	id 1qb2AU-0006yY-Oi; Tue, 29 Aug 2023 13:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qb29X-0005Yh-5C
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:05:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qb2AJ-0006bv-9V
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:06:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qb29U-0005ez-5q
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:05:18 -0400
+ id 1qb2AG-0005wK-V7
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:06:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693328714;
+ s=mimecast20190719; t=1693328764;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LctdI6uVgsQDyYvE4iOTo/re9XP3QvJRgtHmr6CuuUQ=;
- b=OhAgCSLA8hnkPwaBoRJ26mVCnzjenAAUZzM7ES5VMEl3WcxSjKKnqN7v/qGfXeok3mrsuY
- faLVs5uXderI9lotqUtZjN8Vq6trJM3XDjtuMwOsnZeBpC0A7mVx5gzAYWL/ZicGneFkG7
- mn2uXhaAwsGZwodYvKNr7YqvaTcAk8k=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-483-TD7SIN6mOjGH_tkc9z06Bw-1; Tue, 29 Aug 2023 13:05:12 -0400
-X-MC-Unique: TD7SIN6mOjGH_tkc9z06Bw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=E71Y0jNfgDAWb7HX6+T6AhkkzoQV99x5bim9e6SciXo=;
+ b=IImaGt20oMSkONiLEgsvN3ThcV7Dw5GeL7GesUdG3GLBRLYbpUrhiqANIkP+UnRji8c6Kb
+ B5kqQZvCKTjbnDcbs6/i1oN5Ci7U+aDMhgYJt2Uuv3c7983DURAzBBO1ruatRh/o2iQnym
+ VMJFS9M9tlenv4NK+9hTS42wGm2WkSc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-178-dQl-Uqf_NmKbDp7Bmw6a0w-1; Tue, 29 Aug 2023 13:06:02 -0400
+X-MC-Unique: dQl-Uqf_NmKbDp7Bmw6a0w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B3832808E62
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 17:05:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2542D85CBE2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 17:06:02 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 22D0C2166B25;
- Tue, 29 Aug 2023 17:05:12 +0000 (UTC)
-Date: Tue, 29 Aug 2023 18:05:09 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AD1DE401E63;
+ Tue, 29 Aug 2023 17:06:01 +0000 (UTC)
+Date: Tue, 29 Aug 2023 18:05:59 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 07/10] meson: do not use config_host to pick tap
- implementations
-Message-ID: <ZO4lRXaMWG/WTwmf@redhat.com>
+Subject: Re: [PATCH 09/10] configure: remove $linux and $mingw32 variables
+Message-ID: <ZO4ld9ng34effjI/@redhat.com>
 References: <20230829082931.67601-1-pbonzini@redhat.com>
- <20230829082931.67601-8-pbonzini@redhat.com>
+ <20230829082931.67601-10-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230829082931.67601-8-pbonzini@redhat.com>
+In-Reply-To: <20230829082931.67601-10-pbonzini@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,14 +83,13 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 10:29:28AM +0200, Paolo Bonzini wrote:
-> The target OS is invariant and does not depend on the configuration, so move
-> away from config_host and just use unconditional rules in softmmu_ss.
+On Tue, Aug 29, 2023 at 10:29:30AM +0200, Paolo Bonzini wrote:
+> Just use $targetos always.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  net/meson.build | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
+>  configure | 18 ++++++------------
+>  1 file changed, 6 insertions(+), 12 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
