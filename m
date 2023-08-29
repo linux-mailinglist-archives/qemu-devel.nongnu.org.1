@@ -2,54 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880C578C7E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5E278C7ED
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:47:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qazz2-0002Zf-AL; Tue, 29 Aug 2023 10:46:21 -0400
+	id 1qazzp-0003G1-A3; Tue, 29 Aug 2023 10:47:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
- id 1qazyS-0002Z5-JH; Tue, 29 Aug 2023 10:45:45 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
- id 1qazyO-0004NL-Hr; Tue, 29 Aug 2023 10:45:44 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZqwY4FYwz4wxn;
- Wed, 30 Aug 2023 00:45:33 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZqwX09X7z4wd0;
- Wed, 30 Aug 2023 00:45:31 +1000 (AEST)
-Message-ID: <bc069058-28d0-3cba-2fb5-c5701049a5d9@kaod.org>
-Date: Tue, 29 Aug 2023 16:45:27 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qazzh-00039H-6H
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:47:04 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qazzW-0004yN-Fd
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:46:58 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcd4db4cbso1293902a12.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:46:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693320402; x=1693925202;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=aZUifF96SYNJfQU6ue3OBEDjkcdrguBJLAdhtiSxLOw=;
+ b=EWLFGPAEumDCW0i6h4uDTMmRq8uH65F3PniAIeHmMkhH509tbLfFTapX5U9fGGiZT/
+ bpEjlqhwdOpXjLaYqMQchladlBaQAbxAPrmvQWQaKY8Bc1EfetedzFtdNxUE8EE4PEyP
+ 1sNB3p9FsyEC0S6VzP/dySiW/6c5zrmeWkqSash/1yLlxmIBlKnZP5FIo3JeAZHR3pRI
+ wlrTlcHdVwiZ5bq/sKgSRh1+ZsIx1NxFTaqFrFkgsfg6+vNyCKcVqVZbzTxxZTtR9UxR
+ K2Ui9azR6VhQEreUO1W9wZtAdh61F/yN4TX67CKAWPYAU3+gCEPe8MdeOlNUzUG3U3/q
+ zVmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693320402; x=1693925202;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aZUifF96SYNJfQU6ue3OBEDjkcdrguBJLAdhtiSxLOw=;
+ b=cKXLk88ElFQIZBFKNPpFbA9UREHQeXH57DCfjsFSglR+Jgl6/VZHK5jonnDpNnwt6e
+ XVWYvyoDaLk9N4vbnvUBt3VfiAWrsoGLZdjqcw9jZfKE5Ay6mDCea+zJBYVmYdJRDrWG
+ npmTnO6LtUwMLF5k3AKRbT7CESfJXelL5PM0PUcPapxCS4AFPj9Cm6B7Rsg3nR99ttcJ
+ GH2YTPOwADhfecBdCuizagUWGRiSlcPd5sRoRKdwzky9JGwYAIw+yzbvsl5p9cG6STmr
+ dyXqnEhXyy+wqf6mMFOivun3nk1dHwLTGAR8jrRO2oeaIEDFjMBSCeh3WAY4CWjUbBOy
+ TTrw==
+X-Gm-Message-State: AOJu0YzLO2sWB3rXRAwZXZ788b3kMA0fCNKhG0bBekOjwBJwTSKJ3mwq
+ 2ajJCmYCJ8QNOLhdCkailoW6/m5tr2HYdR5eOH/6AA==
+X-Google-Smtp-Source: AGHT+IG2mPXrZuX9ccu0EuG6OS/6qMeoPJF1BcMhnDGgEGIfa3EafsK4b9XF5jXrHEDAcKTBda/FyBhL7T5qv0O41Vc=
+X-Received: by 2002:aa7:df89:0:b0:523:1ce9:1f41 with SMTP id
+ b9-20020aa7df89000000b005231ce91f41mr22084707edy.18.1693320402407; Tue, 29
+ Aug 2023 07:46:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 2/3] pnv/lpc: Hook up xscom region for P9/P10
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, Joel Stanley <joel@jms.id.au>,
- Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230808083445.4613-1-joel@jms.id.au>
- <20230808083445.4613-3-joel@jms.id.au>
- <61cf0069-e845-3a07-2a55-659594e886be@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <61cf0069-e845-3a07-2a55-659594e886be@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=bkLz=EO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+References: <20230822170209.1130173-1-richard.henderson@linaro.org>
+ <20230822170209.1130173-4-richard.henderson@linaro.org>
+In-Reply-To: <20230822170209.1130173-4-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 29 Aug 2023 15:46:31 +0100
+Message-ID: <CAFEAcA_5C8D+B1ad9RftcckknzS-WMC0o=t-zQKpzC7_9gfJ9g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] linux-user/aarch64: Add ESR signal frame for PACFAIL
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.242, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,88 +85,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 16:56, Frederic Barrat wrote:
-> Hello Joel,
-> 
-> So we're re-using the same xscom ops as on P8. A quick look at the definition of those 4 registers on P8 (0xb0020) and on P9/P10 (0x00090040) seem to show they are not the same though. Am i missing something?
+On Tue, 22 Aug 2023 at 18:02, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The PACFAIL fault uses ILL_ILLOPN and includes ESR.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  linux-user/aarch64/cpu_loop.c |  7 ++++++-
+>  linux-user/aarch64/signal.c   |  6 ++++++
+>  tests/tcg/aarch64/pauth-2.c   | 25 ++++++++++++++++++++++++-
+>  3 files changed, 36 insertions(+), 2 deletions(-)
+>
+> diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+> index 22c9789326..5af17e8724 100644
+> --- a/linux-user/aarch64/cpu_loop.c
+> +++ b/linux-user/aarch64/cpu_loop.c
+> @@ -110,7 +110,12 @@ void cpu_loop(CPUARMState *env)
+>              /* just indicate that signals should be handled asap */
+>              break;
+>          case EXCP_UDEF:
+> -            force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->pc);
+> +            /* See kernel's do_el0_fpac, and our need_save_esr(). */
+> +            if (syn_get_ec(env->exception.syndrome) == EC_PACFAIL) {
+> +                force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPN, env->pc);
+> +            } else {
+> +                force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPC, env->pc);
+> +            }
+>              break;
+>          case EXCP_PREFETCH_ABORT:
+>          case EXCP_DATA_ABORT:
+> diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+> index b2280fa9e3..bcdd796cc2 100644
+> --- a/linux-user/aarch64/signal.c
+> +++ b/linux-user/aarch64/signal.c
+> @@ -582,6 +582,7 @@ static bool need_save_esr(target_siginfo_t *info, CPUARMState *env)
+>  {
+>      int sig = info->si_signo;
+>      int type = info->si_code >> 16;
+> +    int code = info->si_code & 0xffff;
+>
+>      if (type != QEMU_SI_FAULT) {
+>          return false;
+> @@ -592,6 +593,11 @@ static bool need_save_esr(target_siginfo_t *info, CPUARMState *env)
+>          return true;
+>      }
+>
+> +    /* See arch/arm64/kernel/traps.c, do_el0_fpac, and our cpu_loop(). */
+> +    if (sig == TARGET_SIGILL && code == TARGET_ILL_ILLOPN) {
+> +        return true;
+> +    }
 
-Joel, are we ok ? Should we grab this patch ? or not.
+This works, but we'll need to do something else if the kernel adds
+some other fault later that is reported as ILLOPN but without
+an ESR record...
 
-Thanks,
+> +
+>      return false;
+>  }
 
-C.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-
-> 
->    Fred
-> 
-> 
-> On 08/08/2023 10:34, Joel Stanley wrote:
->>  From P9 on the LPC bus is memory mapped. However the xscom access still
->> is possible, so add it too.
->>
->> Signed-off-by: Joel Stanley <joel@jms.id.au>
->> ---
->>   include/hw/ppc/pnv_xscom.h | 6 ++++++
->>   hw/ppc/pnv.c               | 4 ++++
->>   hw/ppc/pnv_lpc.c           | 6 ++++++
->>   3 files changed, 16 insertions(+)
->>
->> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
->> index 9bc64635471e..42601bdf419d 100644
->> --- a/include/hw/ppc/pnv_xscom.h
->> +++ b/include/hw/ppc/pnv_xscom.h
->> @@ -96,6 +96,9 @@ struct PnvXScomInterfaceClass {
->>   #define PNV9_XSCOM_SBE_CTRL_BASE  0x00050008
->>   #define PNV9_XSCOM_SBE_CTRL_SIZE  0x1
->> +#define PNV9_XSCOM_LPC_BASE       0x00090040
->> +#define PNV9_XSCOM_LPC_SIZE       PNV_XSCOM_LPC_SIZE
->> +
->>   #define PNV9_XSCOM_SBE_MBOX_BASE  0x000D0050
->>   #define PNV9_XSCOM_SBE_MBOX_SIZE  0x16
->> @@ -155,6 +158,9 @@ struct PnvXScomInterfaceClass {
->>   #define PNV10_XSCOM_SBE_CTRL_BASE  PNV9_XSCOM_SBE_CTRL_BASE
->>   #define PNV10_XSCOM_SBE_CTRL_SIZE  PNV9_XSCOM_SBE_CTRL_SIZE
->> +#define PNV10_XSCOM_LPC_BASE       PNV9_XSCOM_LPC_BASE
->> +#define PNV10_XSCOM_LPC_SIZE       PNV9_XSCOM_LPC_SIZE
->> +
->>   #define PNV10_XSCOM_SBE_MBOX_BASE  PNV9_XSCOM_SBE_MBOX_BASE
->>   #define PNV10_XSCOM_SBE_MBOX_SIZE  PNV9_XSCOM_SBE_MBOX_SIZE
->> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
->> index afdaa25c2b26..a5db655b41b6 100644
->> --- a/hw/ppc/pnv.c
->> +++ b/hw/ppc/pnv.c
->> @@ -1566,6 +1566,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
->>       }
->>       memory_region_add_subregion(get_system_memory(), PNV9_LPCM_BASE(chip),
->>                                   &chip9->lpc.mmio_regs);
->> +    pnv_xscom_add_subregion(chip, PNV9_XSCOM_LPC_BASE,
->> +                            &chip9->lpc.xscom_regs);
->>       chip->fw_mr = &chip9->lpc.isa_fw;
->>       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
->> @@ -1785,6 +1787,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->>       }
->>       memory_region_add_subregion(get_system_memory(), PNV10_LPCM_BASE(chip),
->>                                   &chip10->lpc.mmio_regs);
->> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_LPC_BASE,
->> +                            &chip10->lpc.xscom_regs);
->>       chip->fw_mr = &chip10->lpc.isa_fw;
->>       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
->> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
->> index caf5e10a5f96..6c6a3134087f 100644
->> --- a/hw/ppc/pnv_lpc.c
->> +++ b/hw/ppc/pnv_lpc.c
->> @@ -666,6 +666,12 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
->>       /* P9 uses a MMIO region */
->>       memory_region_init_io(&lpc->mmio_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
->>                             lpc, "lpcm", PNV9_LPCM_SIZE);
->> +
->> +    /* but the XSCOM region still exists */
->> +    pnv_xscom_region_init(&lpc->xscom_regs, OBJECT(lpc),
->> +                          &pnv_lpc_xscom_ops, lpc, "xscom-lpc",
->> +                          PNV_XSCOM_LPC_SIZE);
->> +
->>   }
->>   static void pnv_lpc_power9_class_init(ObjectClass *klass, void *data)
-
+thanks
+-- PMM
 
