@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5542278C381
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 13:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E59878C39C
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 13:50:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qax4i-0008Gr-Ol; Tue, 29 Aug 2023 07:40:00 -0400
+	id 1qaxDp-0002VC-DJ; Tue, 29 Aug 2023 07:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qax4f-0008Fu-TF
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:39:57 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qax4W-0000N9-W9
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:39:53 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-500a8b2b73eso6212336e87.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 04:39:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693309181; x=1693913981;
- h=content-transfer-encoding:cc:organization:subject:from:to
- :content-language:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=idpYPs2gFiTnX8PBeKAykYbJTGbWSWsOs8ccLbmc+hw=;
- b=scy5DQKsGxkileBbi/SSboPmS0xShD/rkNsd+cuuFWSM8oHKPLmJBcnm5XU9DxDwCU
- aFDo9M8R1AECRGDlFSHjXfFoM0HFC7IhRFyBdGdS8KULVmOFGKHbqDZ6tCdh3l/Ky03/
- hU/FN5ve+phkuIuMFjbukr5Bd8qzCrckTt8J606+AlmCu073YUMEpanuOMwQ4rjF223u
- Tv1zke/2dyrewO+ubrjlETuxjGr0lUk+7jthPPigdUGPNGRmv9wgzOQIGjNQWPkF2bE2
- W7ZRzgB3F9eNq7Gzi7utaAc2D5YTRbxgfTDjrN/icMFc3LKnfZ0QZYnsySac5RlZzXNe
- zdUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693309181; x=1693913981;
- h=content-transfer-encoding:cc:organization:subject:from:to
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=idpYPs2gFiTnX8PBeKAykYbJTGbWSWsOs8ccLbmc+hw=;
- b=ewoNyO3R8HMISBsyilDLR+gJf/3pi+b5xduKnVgNhOJRWu7442FKCCg/sK7eVO7+eZ
- WBLXSwbxbrNbRFlVlVkAQX4UMvOJYr+ctagTwq2/FlV1rtxiDV4I9ag60ryiy1z53KCS
- BCJjglvJbnSsAVUbcxuyYL/d8z9qXcfqBpY3GOKtJoSPUX6itWDB0PZ6DsDziER/xgTI
- ikZTwYoaHjKtUFFLusHfxrYa4NzA8bvPaMcBy2Q4iQpF7wK4M7+gtx1qtY+8RbC/fnl8
- wbPElPuPl8BZs8yjo3XBoswbl/6EohpMasa4JwE8uAJ6y37P87FZwzDFCHHy9bgf5Poa
- 2XGw==
-X-Gm-Message-State: AOJu0YyVIS45cYN8mGPBnn8de1LpDhF75zBiufEWd6QjX17hFYJ6n7sa
- b7OxvZCejQcgbJ1YRLctgK0URaggSxylMkCkzTAp/Q==
-X-Google-Smtp-Source: AGHT+IEziar3Kq56l0f7p1fR8/0qPqfhTZbUWqdEwSO4fO0vaaxISnnpX+x+CE5SHJ8cJnD6O+rhJg==
-X-Received: by 2002:a05:6512:33c5:b0:4f9:cd02:4af1 with SMTP id
- d5-20020a05651233c500b004f9cd024af1mr22674118lfg.34.1693309179990; 
- Tue, 29 Aug 2023 04:39:39 -0700 (PDT)
-Received: from [192.168.200.206] (83.11.188.80.ipv4.supernova.orange.pl.
- [83.11.188.80]) by smtp.gmail.com with ESMTPSA id
- u5-20020ac248a5000000b004fbd39b69adsm1926529lfg.199.2023.08.29.04.39.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 04:39:39 -0700 (PDT)
-Message-ID: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
-Date: Tue, 29 Aug 2023 13:39:38 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qaxDh-0002Ui-SE
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:49:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qaxDd-0004Mg-BD
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 07:49:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693309752;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SH/JCDjl+MmT0z/kQiH4z/5LXmUfgXKAETeUfn1ds0A=;
+ b=a9mdiLVSr44GODB/HTeHSARshXts1S2XwOnVHwk0jDF05aPGDtj9ZNkZuA1L9mt6PuIMgk
+ XvjwJsxJ11Rrs7F0TtXeXVEK3ktWEOdXYcbOPGlKXzdE+lRURulZ+r1zZf31n5ZiB4huD1
+ V1TxZZ6Dk9gkeiNUsi4inJEKWlJgS3Q=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-428-oL4iRpVvNlelWzTSR0x4jg-1; Tue, 29 Aug 2023 07:49:10 -0400
+X-MC-Unique: oL4iRpVvNlelWzTSR0x4jg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 213D33C11C6E;
+ Tue, 29 Aug 2023 11:49:10 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1AAFF40C2070;
+ Tue, 29 Aug 2023 11:49:08 +0000 (UTC)
+Date: Tue, 29 Aug 2023 12:49:06 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 3/4] migration/qapi: Replace @MigrateSetParameters
+ with @MigrationParameters
+Message-ID: <ZO3bMgs83E+cFBcR@redhat.com>
+References: <20230825171517.1215317-1-peterx@redhat.com>
+ <20230825171517.1215317-4-peterx@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: pl-PL, en-GB, en-HK
-To: qemu-devel@nongnu.org
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
-Organization: Linaro
-Cc: Gowtham Siddarth <gowtham.siddarth@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x12b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230825171517.1215317-4-peterx@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,47 +82,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I am working on aarch64/sbsa-ref machine so people can have virtual
-machine to test their OS against something reminding standards compliant
-system.
+On Fri, Aug 25, 2023 at 01:15:16PM -0400, Peter Xu wrote:
+> Quotting from Markus in his replies:
+> 
+>   migrate-set-parameters sets migration parameters, and
+>   query-migrate-parameters gets them.  Unsurprisingly, the former's
+>   argument type MigrateSetParameters is quite close to the latter's
+>   return type MigrationParameters.  The differences are subtle:
+> 
+>   1. Since migrate-set-parameters supports setting selected parameters,
+>      its arguments must all be optional (so you can omit the ones you
+>      don't want to change).  query-migrate-parameters results are also
+>      all optional, but almost all of them are in fact always present.
+> 
+>   2. For parameters @tls_creds, @tls_hostname, @tls_authz,
+>      migrate-set-parameters interprets special value "" as "reset to
+>      default".  Works, because "" is semantically invalid.  Not a
+>      general solution, because a semantically invalid value need not
+>      exist.  Markus added a general solution in commit 01fa559826
+>      ("migration: Use JSON null instead of "" to reset parameter to
+>      default").  This involved changing the type from 'str' to
+>      'StrOrNull'.
+> 
+>   3. When parameter @block-bitmap-mapping has not been set,
+>      query-migrate-parameters does not return it (absent optional
+>      member).  Clean (but undocumented).  When parameters @tls_creds,
+>      @tls_hostname, @tls_authz have not been set, it returns the
+>      semantically invalid value "".  Not so clean (and just as
+>      undocumented).
+> 
+> Here to deduplicate the two objects: keep @MigrationParameters as the name
+> of object to use in both places, drop @MigrateSetParameters, at the
+> meantime switch types of @tls* fields from "str" to "StrOrNull" types.
+> 
+> I found that the TLS code wasn't so much relying on tls_* fields being
+> non-NULL at all.  Actually on the other way round: if we set tls_authz to
+> an empty string (NOTE: currently, migrate_init() missed initializing
+> tls_authz; also touched it up in this patch), we can already fail one of
+> the migration-test (tls/x509/default-host), as qauthz_is_allowed_by_id()
+> will assume tls_authz set even if tls_auths is an empty string.
+> 
+> It means we're actually relying on tls_* fields being NULL even if it's the
+> empty string.
+> 
+> Let's just make it a rule to return NULL for empty string on these fields
+> internally.  For that, when converting a StrOrNull into a char* (where we
+> introduced a helper here in this patch) we'll also make the empty string to
+> be NULL, to make it always work.  And it doesn't show any issue either when
+> applying that logic to both tls_creds and tls_hostname.
+> 
+> With above, we can safely change both migration_tls_client_create() and
+> migrate_tls() to not check the empty string too finally.. not needed
+> anymore.
+> 
+> Also, we can drop the hackish conversions in qmp_migrate_set_parameters()
+> where we want to make sure it's a QSTRING; it's not needed now.
+> 
+> This greatly deduplicates the code not only in qapi/migration.json, but
+> also in the generic migration code.
+> 
+> Markus helped greatly with this patch.  Besides a better commit
+> message (where I just "stole" from the reply), debugged and resolved a
+> double free, but also provided the StrOrNull property implementation to be
+> used in MigrationState object when switching tls_* fields to StrOrNull.
+> 
+> Co-developed-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  qapi/migration.json            | 191 +---------------------------
+>  include/hw/qdev-properties.h   |   3 +
+>  migration/options.h            |   3 +
+>  hw/core/qdev-properties.c      |  40 ++++++
+>  migration/migration-hmp-cmds.c |  20 +--
+>  migration/options.c            | 220 ++++++++++-----------------------
+>  migration/tls.c                |   3 +-
+>  7 files changed, 125 insertions(+), 355 deletions(-)
 
-One of tools I use is BSA ACS (Base System Architecture - Architecture
-Compliance Suite) [1] written by Arm. It runs set of tests to check does
-system conforms to BSA specification.
-
-1. https://github.com/ARM-software/bsa-acs
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
 
-SBSA-ref goes better and better, yet still we have some issues. One of
-them is test 822 ("Check Type 1 config header rules") which fails on
-each PCIe root port device:
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-BDF 0x400 : SLT attribute mismatch: 0xFF020100 instead of 0x20100
-BDF 0x500 : SLT attribute mismatch: 0xFF030300 instead of 0x30300
-BDF 0x600 : SLT attribute mismatch: 0xFF040400 instead of 0x40400
-
-I reported it as an issue [2] and got response that it may be QEMU
-fault. My pcie knowledge is not good enough to know where the problem is.
-
-2. https://github.com/ARM-software/bsa-acs/issues/193
-
-
-In the comment Gowtham Siddarth wrote:
-
-> Regarding the SLT (Secondary Latency Timer) register, the expected 
-> values align with the ACS specifications, registering as 0. However, 
-> a discrepancy arises in the register's attribute, intended to be set 
-> as Read-Only. Contrary to this intent, the bit field seems to 
-> function as> Read-Write. Ordinarily, when attempting to write to the 
-> register by configuring all bits to 1, the anticipated behaviour 
-> should involve rejecting the write operation, maintaining the value 
-> at 0 to uphold the register's designated Read-Only nature. However, 
-> in this scenario, the write action takes effect, leading to a 
-> transformation of the register's value to FFs. This anomaly could 
-> potentially stem from an issue within the emulator.
-
-Does someone know where the problem may be? And how to fix it?
 
