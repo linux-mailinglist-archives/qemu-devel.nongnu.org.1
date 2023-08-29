@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1EF978C245
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 12:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1DE78C24E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 12:26:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qavqS-0001cl-Qj; Tue, 29 Aug 2023 06:21:12 -0400
+	id 1qavuy-00039G-61; Tue, 29 Aug 2023 06:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qavqP-0001cA-Qv
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:21:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qavum-00037X-Dn
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:25:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qavqK-0002bl-RT
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:21:09 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qavud-0004Ji-3b
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:25:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693304463;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1693304726;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sAMWjbSOPuvDn7z+ePWQtmpTgZJNdwULGojBRusyUHc=;
- b=WIqdeYztBzsRnqNEZgV5MnPsYNsluNEVJmXDJFpBrIqjEp8dIqhyGb0DE+Jc2Wk+CFN65g
- +hqS9SGwE8SP0e1Sinq8CfpL+fxuqc9cbrlMfvgOkKK2ce/jaXUIoN6IZjbwXB3MJREvzg
- Wui3vD8MbwkLKweYkLO6y1hcb1RxPOY=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-2Q3S9OddMxuCB9_jtWILow-1; Tue, 29 Aug 2023 06:21:01 -0400
-X-MC-Unique: 2Q3S9OddMxuCB9_jtWILow-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99bcf6ae8e1so325308966b.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 03:21:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693304460; x=1693909260;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sAMWjbSOPuvDn7z+ePWQtmpTgZJNdwULGojBRusyUHc=;
- b=bhdc+/CajTjC2OzIJcy5fTddUdzC9PtdOlIqmng/Ec2aL7ECarKSemevFnv/Dwmk1o
- xxzMR8Ou3aZl7OPvNZNnwUn2J1bop+o9YY4f1B9k+gu0XdHM3iqm/A0kt73sBLzkoKhU
- Dwz5RntAQ+puwHaNa2GYybjQ07ArcZwgu33KP2yim1TEeDdIwRThEPjmG1r8od5VUpq5
- Roz2yICj3DUtpZFz3bgesxj04W/EPzQI57t15tNtUOvQXcy+rqXoD7NLDA8Y68E1EZYU
- H9308okyqCXyXRxblrpGifCHdpiPNj4Idqw7Ze8lkNlKUcdpnQcxQsecgKcYh7Sy1sO0
- vt8g==
-X-Gm-Message-State: AOJu0YwZ5kEK5vEsNux8D5CasWW0IsgwGBEjV+OMP9ks/xEaQ9crDm2l
- xwxM66UUyf5qKVEda6kvK7di8joPSPgmYY2YixkBobfibqdMdM30HFu0L23t9pDUBTrbHSFhAOB
- njFZ+GbXtp9iLXhATr9a0kR4=
-X-Received: by 2002:a17:907:c203:b0:9a5:b876:22e1 with SMTP id
- ti3-20020a170907c20300b009a5b87622e1mr2662190ejc.30.1693304459942; 
- Tue, 29 Aug 2023 03:20:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMj0+DUHQ1mJI07X3s8Bil9QXYwvlDztiB6SxLMb71DJiMydb5i89KWyDqpWg4pVTdxxSmlA==
-X-Received: by 2002:a17:907:c203:b0:9a5:b876:22e1 with SMTP id
- ti3-20020a170907c20300b009a5b87622e1mr2662175ejc.30.1693304459594; 
- Tue, 29 Aug 2023 03:20:59 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- n4-20020a170906688400b0099cf840527csm5724153ejr.153.2023.08.29.03.20.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 03:20:59 -0700 (PDT)
-Date: Tue, 29 Aug 2023 12:20:58 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
- <anisinha@redhat.com>
-Subject: Re: [PATCH] tests/qtest/bios-tables-test: Check for virtio-iommu
- device before using it
-Message-ID: <20230829122058.636c0c8f@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230822164948.65187-1-thuth@redhat.com>
-References: <20230822164948.65187-1-thuth@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ bh=Imf3oRto5d7iXBP5N0pbVoVSN8oKk5GrcXbKxL+4wY0=;
+ b=HML+5PNVNPbe1jFjcX2joIoALYqPLVRZvZ6rSC7jL9fz2DyaMs/lQ3PgWPD47dMOXKb/tr
+ zAePaKyad4cKsqHDG6Em2WaZYdQTJtlquqV55tbdw7jpzvDUv1d3WGQPNBGyVhxoNuB/gi
+ YrbZIYD7TtmJDR1qavO0W0vl6sYfbXQ=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-58-1UpNLowdOQGIaPenz8jVTA-1; Tue, 29 Aug 2023 06:25:23 -0400
+X-MC-Unique: 1UpNLowdOQGIaPenz8jVTA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7886338025E8;
+ Tue, 29 Aug 2023 10:25:22 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BA8AD40C2070;
+ Tue, 29 Aug 2023 10:25:19 +0000 (UTC)
+Date: Tue, 29 Aug 2023 11:25:17 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Chenyi Qiang <chenyi.qiang@intel.com>
+Cc: Markus Armbruster <armbru@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Eduardo Habkost <eduardo@habkost.net>,
+ Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com
+Subject: Re: [PATCH v2 41/58] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+Message-ID: <ZO3HjRp1pk5Qd51j@redhat.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-42-xiaoyao.li@intel.com>
+ <87wmxn6029.fsf@pond.sub.org> <ZORws2GWRwIGAaJE@redhat.com>
+ <d6fbacab-d7e4-9992-438d-a8cb58e179ae@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d6fbacab-d7e4-9992-438d-a8cb58e179ae@intel.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,49 +95,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 22 Aug 2023 18:49:48 +0200
-Thomas Huth <thuth@redhat.com> wrote:
-
-> The virtio-iommu device might be missing in the QEMU binary (e.g. in
-> downstream RHEL builds), so let's better check for its availability first
-> before using it.
+On Tue, Aug 29, 2023 at 01:31:37PM +0800, Chenyi Qiang wrote:
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-
-> ---
->  tests/qtest/bios-tables-test.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index 47ba20b957..dd06e6300a 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -2138,7 +2138,9 @@ int main(int argc, char *argv[])
->                  qtest_add_func("acpi/q35/core-count2",
->                                 test_acpi_q35_tcg_core_count2);
->              }
-> -            qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
-> +            if (qtest_has_device("virtio-iommu-pci")) {
-> +                qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
-> +            }
->  #ifdef CONFIG_POSIX
->              qtest_add_func("acpi/q35/cxl", test_acpi_q35_cxl);
->  #endif
-> @@ -2173,7 +2175,9 @@ int main(int argc, char *argv[])
->              qtest_add_func("acpi/virt/memhp", test_acpi_virt_tcg_memhp);
->              qtest_add_func("acpi/virt/pxb", test_acpi_virt_tcg_pxb);
->              qtest_add_func("acpi/virt/oem-fields", test_acpi_virt_oem_fields);
-> -            qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
-> +            if (qtest_has_device("virtio-iommu-pci")) {
-> +                qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
-> +            }
->          }
->      }
->      ret = g_test_run();
+> On 8/22/2023 4:24 PM, Daniel P. Berrangé wrote:
+> > On Tue, Aug 22, 2023 at 08:52:30AM +0200, Markus Armbruster wrote:
+> >> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+> >>
+> >>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> >>>
+> >>> For GetQuote, delegate a request to Quote Generation Service.  Add property
+> >>> of address of quote generation server and On request, connect to the
+> >>> server, read request buffer from shared guest memory, send the request
+> >>> buffer to the server and store the response into shared guest memory and
+> >>> notify TD guest by interrupt.
+> >>>
+> >>> "quote-generation-service" is a property to specify Quote Generation
+> >>> Service(QGS) in qemu socket address format.  The examples of the supported
+> >>> format are "vsock:2:1234", "unix:/run/qgs", "localhost:1234".
+> >>>
+> >>> command line example:
+> >>>   qemu-system-x86_64 \
+> >>>     -object 'tdx-guest,id=tdx0,quote-generation-service=localhost:1234' \
+> >>>     -machine confidential-guest-support=tdx0
+> >>>
+> >>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> >>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> >>> ---
+> >>>  qapi/qom.json         |   5 +-
+> >>>  target/i386/kvm/tdx.c | 380 ++++++++++++++++++++++++++++++++++++++++++
+> >>>  target/i386/kvm/tdx.h |   7 +
+> >>>  3 files changed, 391 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/qapi/qom.json b/qapi/qom.json
+> >>> index 87c1d440f331..37139949d761 100644
+> >>> --- a/qapi/qom.json
+> >>> +++ b/qapi/qom.json
+> >>> @@ -879,13 +879,16 @@
+> >>>  #
+> >>>  # @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
+> >>>  #
+> >>> +# @quote-generation-service: socket address for Quote Generation Service(QGS)
+> >>> +#
+> >>>  # Since: 8.2
+> >>>  ##
+> >>>  { 'struct': 'TdxGuestProperties',
+> >>>    'data': { '*sept-ve-disable': 'bool',
+> >>>              '*mrconfigid': 'str',
+> >>>              '*mrowner': 'str',
+> >>> -            '*mrownerconfig': 'str' } }
+> >>> +            '*mrownerconfig': 'str',
+> >>> +            '*quote-generation-service': 'str' } }
+> >>
+> >> Why not type SocketAddress?
+> > 
+> > Yes, the code uses SocketAddress internally when it eventually
+> > calls qio_channel_socket_connect_async(), so we should directly
+> > use SocketAddress in the QAPI from the start.
+> 
+> Any benefit to directly use SocketAddress?
+
+We don't want whatever code consumes the configuration to
+do a second level of parsing to convert the 'str' value
+into the 'SocketAddress' object it actually needs.
+
+QEMU has a long history of having a second round of ad-hoc
+parsing of configuration and we've found it to be a serious
+maintenence burden. Thus we strive to have everything
+represented in QAPI using the desired final type, and avoid
+the second round of parsing.
+
+> "quote-generation-service" here is optional, it seems not trivial to add
+> and parse the SocketAddress type in QEMU command. After I change 'str'
+> to 'SocketAddress' and specify the command like "-object
+> tdx-guest,type=vsock,cid=2,port=1234...", it will report "invalid
+> parameter cid".
+
+The -object parameter supports JSON syntax for this reason
+
+   -object '{"qom-type":"tdx-guest","quote-generation-service":{"type": "vsock", "cid":"2","port":"1234"}}'
+
+libvirt will always use the JSON syntax for -object with a new enough
+QEMU.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
