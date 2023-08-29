@@ -2,98 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF17978C983
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE9978C98A
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb1Np-00055H-80; Tue, 29 Aug 2023 12:16:01 -0400
+	id 1qb1TA-00078L-6Z; Tue, 29 Aug 2023 12:21:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb1Na-0004pi-J1
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:15:47 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb1NR-0004SD-5Y
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:15:46 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31427ddd3fbso4118071f8f.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:15:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693325735; x=1693930535;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=641GYd2IB2M0B+j3IAYf6vUTBtf44JLc2SkA+xJFKp0=;
- b=oc+Q4mYZf9/YHUG03PttxTVHFvT1xT2vGYHyCh4rrs60RwD91QqzQqpgRs0TKgw2S6
- MnVaPRftVh87nHiwrwh1O2JUbaPkskurVoQ5cf8uELspi4IhL/Hi/p0jtV3JFFyOeFCf
- fVU5RMgkX1BbMRb6onmgbcF2K/sA6/JkavA/R0Ah3zuuncVYW84CV1viVUQBQmbVVTdI
- JvRRbia7XjmUJmyJZZ5gc95XBiJ/9X6prrmYXRUXoxYWLAVudGtEoBYwXZ/9xXNAkQct
- zKNhXpBGjmfzTLjszj6j8Bqz74MacONsd+rb84kM3+UFejMp/fdP5GLzTpFOIdRlqFAh
- MX9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693325735; x=1693930535;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=641GYd2IB2M0B+j3IAYf6vUTBtf44JLc2SkA+xJFKp0=;
- b=GCypZo3QfYMsAHyZoQ9MgVaBrL98NBa7OPNEyjZ1NoJmZay9xJwUIxo0Tg0ZI6omzN
- w+tbmmDsS915TAqP+8YL9wCk5VPSGW0W0wY5q/NGDvFl6XqGhlJytiTdIIfFtwCdgUrd
- DTdVVdaOwv2udZJr3zJaL2TVSv4HuTiiZsof4kjisvzacOkfpRwMd9fSdMsMkvENYBEs
- qPpVbCEqx124PYDvvE9DaKNuG0D1A069osSqEJ/rT5YR3GQSzHwzXn3Yu5cFSSdaoGi0
- +nZp+Y1WjWkqkkGBxAnimSox/8WeAiOw0py5BTMMedkND/qhWzZfZAlP4lseKjjpnuox
- qbmg==
-X-Gm-Message-State: AOJu0Yztf31DWGdUtaF3Unl7OHJucWm8MxgZkebWyEaWhfIA2vEnu8Ez
- z6WPuk1xR6a9dXEfoUNjYjIzow==
-X-Google-Smtp-Source: AGHT+IHCS4JuoVmcRH+JpF9nY2Q+pHEFCE0vYYOfX0y1ZYzZMkGZdTpqIm+kz5yrJcEhOjf7LKBRFQ==
-X-Received: by 2002:adf:f9c4:0:b0:314:420c:5ef7 with SMTP id
- w4-20020adff9c4000000b00314420c5ef7mr21104043wrr.11.1693325734714; 
- Tue, 29 Aug 2023 09:15:34 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- d15-20020a5d538f000000b0031ae8d86af4sm14142002wrv.103.2023.08.29.09.15.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 09:15:33 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A8E3F1FFC5;
- Tue, 29 Aug 2023 17:15:29 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-arm@nongnu.org,
- Markus Armbruster <armbru@redhat.com>, qemu-ppc@nongnu.org,
- David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Juan Quintela <quintela@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>, Beraldo Leal <bleal@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 12/12] gdbstub: move comment for gdb_register_coprocessor
-Date: Tue, 29 Aug 2023 17:15:28 +0100
-Message-Id: <20230829161528.2707696-13-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230829161528.2707696-1-alex.bennee@linaro.org>
-References: <20230829161528.2707696-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qb1Sk-000774-IS
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:21:11 -0400
+Received: from mail-bn8nam12on20614.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5b::614]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qb1Se-0005bX-EZ
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:21:05 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HmfqPFfEctSnFoLymY3SgDuJJ6uB47h+SCW9DhiwGSlUwLtikIyI5SxsD/5St0E9U8EqtvkBniARwYD+0pOJWDseUEpG+YCqYnqUfGKOQ0s5ci+m6mKHaHpJ5kHKWsQCy3M3NqFjLrcyIq2KM4lA5hHy6YPccxZdrCaUoi4H56wxCizis/JfO3Nei00ekCHOp3SfQ81bDr03mNY5/jHyskq4ctcd7616jxxr5+1tbYCabwTuKF7pYWeW3WHd/LYao+AdxRdnRb53kanxMCK+ZdmXKh4hdnIklo7hLAArWefePb0OjO5PdOeY1H/EPwmzMINWY0QaFsqR61+tA+543w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8A+imjilwE1Zxm2tOFle+4Y5kW5nD3WwyXHzRzMxspg=;
+ b=cYlxgxCk/rtK1wIOixurSNU6jWbRQALr2eTo6LN2evi1cPy9nn+7R8KrtqYmruyUuHVuRpVPtNXIzA55fJT4gPGBIUESEhZaB248VVH3mdptjy4mUcnzRdqOWptePmXfQ6QGc7L0NQ6hVOTJN7M7N8ySfIMJfT+eig8MG+lSqPGoAvHMKCLEa34XDJHk9OTQbh6nP9JlOWOxTXCeSm14ke9Vc0JYJGlJUKfTbJOoVrAkj/YoKIxFIFegXBWlDEj5TgzPTdWCzmfT+WExVv2UK5iKV4nWTpqE4MGQuHho4KbmkUkNxLfZx2J31C7eHcueabaSuZYS7YjkhGHB0j6FZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8A+imjilwE1Zxm2tOFle+4Y5kW5nD3WwyXHzRzMxspg=;
+ b=rgNdypNHDBoGQIgQHuTh6zA2PqptOB+Zk7eigk0YpnUREnSn+jCafkuqfGJA+YiXfYIvM6x0K/nUZ8WZtmhhnTWU6YjQicfASgzTY6b5Xxh4+pefg5f+blETeLtnFeXR+zskxhdOn5QfiOxWlESnWiWOLJRs6QYcs+0DjNOV0+gRGAPhavgAASMCchHN3/1mzDINhgNoH2/AffYTFZ3nWdjAQU3/5cZUcTyA/yIuA8jFu3sDgK7aq1ey+gkePQIjUKId1kHp/pB6Mv8JVGMl7AxjbKAl4zHDxVu9UXdhGlwOTMHwXwqTv+CuEJ7CjOwVJSrubJ0quKIN9dgYeM24hA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Tue, 29 Aug
+ 2023 16:20:55 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::42fd:b1c0:838c:5f96]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::42fd:b1c0:838c:5f96%4]) with mapi id 15.20.6699.035; Tue, 29 Aug 2023
+ 16:20:55 +0000
+Message-ID: <b54f3ca5-9236-84a8-1b1f-9365925fa458@nvidia.com>
+Date: Tue, 29 Aug 2023 19:20:47 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 5/6] vfio/migration: Block VFIO migration with postcopy
+ migration
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Yanghang Liu <yanghliu@redhat.com>
+References: <20230828151842.11303-1-avihaih@nvidia.com>
+ <20230828151842.11303-6-avihaih@nvidia.com> <ZO4GTnuqSORbvePL@x1n>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <ZO4GTnuqSORbvePL@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1P195CA0048.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:802:5a::37) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|CH3PR12MB8659:EE_
+X-MS-Office365-Filtering-Correlation-Id: 695170de-0c84-4c04-d46b-08dba8abec08
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ww6ld+xv87AFSYOGscgYhKRUolYfQdby52mAotnClA40HM/Xp0d6G2IA4ZcuFlLSZtKGzbJLCkIm8fe8w+/Ui5lfDNKHTK8qnOljII0tof4xrW/WAvrzvgjnZga1orz7RPawxrluvSIYvSrej1VyPu6ObpL7PRky2syjf6r15YUwG4jgWkOpDZ7ZozC5V1+sYQwwvx5oKRSGIYWNlx3jrhGH15XARHGrKmb68Q4BiwgCVgsN16gJ5RAKXI7gfp7jcmkR+FPbhKL297VWy5wXZULP7N+yf5x7HDVyxw5mg0qfOCxgPR0dZWy16RHEp9Lg29sqZRGEg78+SKD9gHbSlCfWRAcTuthfG2mRjpvK5l3jH12+IvV3JE1PqDkqhO8ut43jV60aKD2IcEeVSjR2YeLU2L+5cEeFuEFgbAqkFfDUbv0grUzYYLeAgddRFLEvsbZ0UFTJvqAC/M8r5IM0qn1tYxWdK/rbhSngXt/1I1DnnIQKBZxM5bv1EW0VYPw3p4t1oPpEk5S8ogxto1D2j7k8AfaagnWRWB85CYXI63QARbVuvZ3kjgYa4SyFDs+STrn17s0hPwp49++5MDFZdmajayKYgRwPGTY4C6lX/XuoemQ4Acbxq4K0dPc0B/B2Ox02N97oDolbrP3xfRzTNw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(366004)(376002)(39860400002)(396003)(136003)(186009)(451199024)(1800799009)(6512007)(6486002)(6506007)(6666004)(53546011)(478600001)(83380400001)(2906002)(26005)(54906003)(2616005)(6916009)(316002)(66476007)(8936002)(66946007)(41300700001)(66556008)(5660300002)(8676002)(4326008)(86362001)(36756003)(38100700002)(31696002)(31686004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UWFBQU1RWWNYZVVXMkgzSzhOaysxV09VU3FRdmY0c3ZvRGw5VWlWMTdldnNk?=
+ =?utf-8?B?a0UxNUMyQTl5SUxGdkVIamFoTisyTDMxekJxUDcrTzhMNDlWYUZsTFVvS25Z?=
+ =?utf-8?B?VW45QzdreFh1RFRrNXQ4djA4SUhmU1FqdUpuUDVYV2lPTnpqNlVITUg2c1ZX?=
+ =?utf-8?B?ekJpekhHOGt1dnloajVTNmpNQjNXRHJKK3p4SFdMMjZWTmp1T1BlOThZNTNu?=
+ =?utf-8?B?NTZ6b1A4SmpVZGw5Wlp2NWtOTmVHN05TOS9ya3JwL0RHYzBvWFJCMUR2WXBy?=
+ =?utf-8?B?RjA1djZrcWVnSHVXRDZ6aElOdEVuSUZFdnpvem15cy9Cbmg1d1I0TzFnOVZp?=
+ =?utf-8?B?cFlrbnFWYW5OTlk2LzhvYWpTRWZONzJTT3VvL2pXUXc4MzBNNG5RSk1hSWR3?=
+ =?utf-8?B?UzNKU3FaRzljNUV6bytadWl2emxOa24wNkZjTXo3bFRvbzlWeHY2SklsL2Y0?=
+ =?utf-8?B?R3d0Y0RwR1RDVnNuZWsySWtYWDJYbkZheCtHRWJ6TFhKUDE1UWIzU0NWcnRl?=
+ =?utf-8?B?YTU1NmFZVDVTWW40S3ljendqSzY0dnV0MHRUK2M0U3NlL2hlMW1oNXcvUlZx?=
+ =?utf-8?B?cmZuaGtUZkVDakxFUkNqNXhzNTUzblFjK0Jkb2p6OTZ5ZVZIeXdTRHVuSVY5?=
+ =?utf-8?B?N1BOQkJhUmFIWVFEbnFUbEw5RjdUbWN6SGtMVVg5NHQvWjhzWmZsc3hIOVV3?=
+ =?utf-8?B?dDRwdkV3OUk0TmVkSEwvNGhmSXFjL1Fnekwyd2EwaWJFWjF2M2EzbkJkQUIy?=
+ =?utf-8?B?RmI1ajNNUm5lSG1uVzQ1dzMxNWVKV1plY0VwN3lTN0ZOd0JHRjZKRFZRbDcz?=
+ =?utf-8?B?VmN0OG5GQkdySzYwbWh1SjZiRy81VklJd0hQWGd4V2dzckZZT2k3a0ttMTVZ?=
+ =?utf-8?B?OU4vT3R0TW1VY1IwQUpBZVdYVnBFV0htUEF1cmFmREQ0N0k2ZE9MVThMcXRa?=
+ =?utf-8?B?bGRWNHRLeDBCTGZHQWlmMUErZzNZNTBWYXNTRTROZGM3Z2ZOcjgzdWhSVjU1?=
+ =?utf-8?B?ZHdmbHI1TkVjeGJkcHdHSTZrNnZzZlNLMGhwV0tzQlcrUUNaVkF0SFgyZUtL?=
+ =?utf-8?B?ZHhnV2ZrTzZXdWhvYkJZOHJlRUxTazNNWVlKdmt1MmxsQnUzSitKdkFpUlY2?=
+ =?utf-8?B?TDdvRjBySDYzRWtobVJMNE1VNWovNUNUZ255akI5bE5hMXlXR1cwaUdkZ0xp?=
+ =?utf-8?B?UGdtQmpFME9zaTk0b1FJaVBUbFczUmM3cEx2ZjNvNXlNa1lYQVE3UXVwbTMx?=
+ =?utf-8?B?ZklhRDAwTWVvTWtINjZZRmFWdDRrZkFzRFIyWW84bld4N0JBSVY3MWlPay8w?=
+ =?utf-8?B?Z2hrdTJUZkVwWEdzMW9Kak5mNkRSeXZpeXdUK2dKL3BMS09PQWJYRVhXRmht?=
+ =?utf-8?B?Zmp6WlZMQ24yZk5lU2V3NlQwVkNTcjJSMStMZEgrRG9nN0hhL1lKMDFRNSs3?=
+ =?utf-8?B?cElJWVlvQm9yRFVjbC9PdTVQTmMwT01mc0lLZ1dtWCtsWkZJeW56bjc5alhC?=
+ =?utf-8?B?WEd3dG1YS3JIMkZwMi9LV05xazlYNHpJTWwvNU1ja1N2M1l0dGlxWTF4NlNB?=
+ =?utf-8?B?NFl0WDJLeVp4ZHEzWXFyZnI5ZWx2SHk3N0wzTE9rUTB0OG85WHdpQ0xqSkZm?=
+ =?utf-8?B?Q2ZSZncveVIwd2o4SWRPYS96TlE4ZGRrRURuYVEvTW9aOHM2RUlmbUlqNGJG?=
+ =?utf-8?B?R2ZyR0xZVkdtZ1dpSEx6SjJXNExGMmxBa09vYmlVam9BNllLQk1sZ0o4WHRQ?=
+ =?utf-8?B?SzZGQU8reU40VklxbWVadTVwZnF3eGZWQUVFdktzT0hVYTZLK25sS1h1aGVN?=
+ =?utf-8?B?NmhkaWJxZWVhb1dUYnp3K2doZXRBWEtobmpNVVdya1VoYTVkUk55Zlg5UGI3?=
+ =?utf-8?B?RThZOXpNSnYycnZwSnZhQ3daaFA2LzE1K2hVM1ZLMWJGQVNNaU12R1MvU1Rm?=
+ =?utf-8?B?cnNhSlpuUVRYTVZXNUo4dzROcGJ1aTliKy9rUzBET0U0ZUZGYTJ6bU9xbHBh?=
+ =?utf-8?B?c0loMzNERCsrejEwYnNvS0dUUThTRko4T3haNmFFUFdBSVRYTE0rNi9ZVW5U?=
+ =?utf-8?B?eUp3UEpPOEYyLyt1VzlKT0ZQUldQZXhyU2dTKzlteExHWm40akdtRGZSUjJp?=
+ =?utf-8?Q?pcauuX6T3f11Nd1UJafleqCmG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 695170de-0c84-4c04-d46b-08dba8abec08
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2023 16:20:55.8234 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y+a4yl/+PYFOISPQFVwNWCgsRBf97foQhfOBZmyeElFmJQFDU2LNViSMumEsuoVAQtfD3sucLv7OeSZD67XT+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8659
+Received-SPF: softfail client-ip=2a01:111:f400:fe5b::614;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.242, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,56 +151,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use proper kdoc style comments for this API function.
 
-Message-Id: <20230824163910.1737079-13-alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- include/exec/gdbstub.h | 10 ++++++++++
- gdbstub/gdbstub.c      |  6 ------
- 2 files changed, 10 insertions(+), 6 deletions(-)
+On 29/08/2023 17:53, Peter Xu wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> On Mon, Aug 28, 2023 at 06:18:41PM +0300, Avihai Horon wrote:
+>> diff --git a/migration/options.c b/migration/options.c
+>> index 1d1e1321b0..e201053563 100644
+>> --- a/migration/options.c
+>> +++ b/migration/options.c
+>> @@ -499,6 +499,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+>>               error_setg(errp, "Postcopy is not yet compatible with multifd");
+>>               return false;
+>>           }
+>> +
+>> +        if (migration_vfio_mig_active()) {
+>> +            error_setg(errp, "Postcopy is not compatible with VFIO migration");
+>> +            return false;
+>> +        }
+> Hmm.. this will add yet another vfio hard-coded line into migration/..
+>
+> What will happen if the vfio device is hot plugged after enabling
+> postcopy-ram here?
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 0ee39cfdd1..16a139043f 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -14,6 +14,16 @@
- /* Get or set a register.  Returns the size of the register.  */
- typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
- typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
-+
-+/**
-+ * gdb_register_coprocessor() - register a supplemental set of registers
-+ * @cpu - the CPU associated with registers
-+ * @get_reg - get function (gdb reading)
-+ * @set_reg - set function (gdb modifying)
-+ * @num_regs - number of registers in set
-+ * @xml - xml name of set
-+ * @gpos - non-zero to append to "general" register set at @gpos
-+ */
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos);
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index fdebfe25ea..349d348c7b 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -456,12 +456,6 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-     return 0;
- }
- 
--/* Register a supplemental set of CPU registers.  If g_pos is nonzero it
--   specifies the first register number and these registers are included in
--   a standard "g" packet.  Direction is relative to gdb, i.e. get_reg is
--   gdb reading a CPU register, and set_reg is gdb modifying a CPU register.
-- */
--
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos)
--- 
-2.39.2
+In that case a migration blocker will be added.
+
+>
+> Is it possible to do it in a generic way?
+
+What comes to my mind is to let devices register a handler for a "caps 
+change" notification and allow them to object.
+But maybe that's a bit of an overkill.
+
+>
+> I was thinking the only unified place to do such check is when migration
+> starts, as long as we switch to SETUP all caps are locked and doesn't allow
+> any change until it finishes or fails.
+>
+> So, can we do this check inside vfio_save_setup(), allow vfio_save_setup()
+> to fail the whole migration early?  For example, maybe we should have an
+> Error** passed in, then if it fails it calls migrate_set_error, so
+> reflected in query-migrate later too.
+
+Yes, I think this could work and it will simplify things because we 
+could also drop the VFIO migration blockers code.
+The downside is that the user will know migration is blocked only when 
+he tries to migrate, and migrate_caps_check() will not block setting 
+postcopy when a VFIO device is already attached.
+I don't have a strong opinion here, so if it's fine by you and everyone 
+else, I could change that to what you suggested.
+
+Thanks.
 
 
