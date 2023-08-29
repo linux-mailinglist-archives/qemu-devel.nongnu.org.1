@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1672478D060
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 331F278CFF7
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:09:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nG-0000vK-9Z; Tue, 29 Aug 2023 19:06:42 -0400
+	id 1qb7n4-0000qh-Oe; Tue, 29 Aug 2023 19:06:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb4St-0007fx-Ja
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:33:29 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb4T6-0007kb-Ql
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:33:42 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb4Sq-0002oh-Qf
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:33:27 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31768ce2e81so3996511f8f.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:33:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb4T4-0002pU-1D
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:33:40 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bdbf10333bso37659485ad.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693337603; x=1693942403; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nDWlN4S/GpucdPmNTO7sMsLarljJzWSh8Wpk6jM3Ev8=;
- b=lhAfOJoVxh2uj86zPkJwqMqjLxMIvX1/vmRrQ/RNLdmsjR/04u+iKPa+VVn5DdNy2a
- xXgIE+1O3O/XV9xEXKnrHpSYrIfZmMriCYt08f8g7tEMQhmf+slp+heauIwX9DFgavRp
- puMVl8LVgT1gqzvZabxBAVJvhGu1T1Q++FZHVBPpA4fCJhCUVB6i6bspbZOSIex5M1gs
- hZkAzFOB7IXvXXWmrrT/5QiJ2lcj6bRsrXZ0m9Ma5GWdDM8Xqc3cPmOEzly5KgtQGYDg
- Yzs21C5Yi88vdFLwZJC0pZLUObjccVaDWBE697vPqQYUJIMd3Qr4zdAXziI/pK5zTZTX
- rDwA==
+ d=linaro.org; s=google; t=1693337614; x=1693942414; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uV/9uEyRUKpdVwHTpr43oW5Sg+3ITqtobdL1fUNdPMo=;
+ b=Hkm70mBArWKGbunuA2bgnJZzfQBo8caILek8CosrxWKO3ouD0LqsRnjtdV2bY5PZAs
+ UyBXLYB8OzOd9ZGR6q0lkyId9clWQpFHNnqxA/mcQ6QNarOOAX6ibD2DLfNsFcyl9V+M
+ V4joyGKmkeL7HXtrsGg2cB8r9igiVqCqeaIGLS26+AQ6NVodXzlQlr3ddfJSKx8pi5NV
+ HHHNvKGQdDLuQfNcJHBDKOBB5UmpG1ZBweADfJvoUwcxF5p/Epf0FR4ss7nxYt+TeEVs
+ /ECmk/b7lCrqadT/ifR6pU9jTX1Z2HQ+uUNtCwBCyRj2bulC/X5G9IZBvA/4hhHlLw/B
+ 49yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693337603; x=1693942403;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=nDWlN4S/GpucdPmNTO7sMsLarljJzWSh8Wpk6jM3Ev8=;
- b=fIv9HipjAFA3Rp0F3inpAJvCeKgiNN09Aik46zgkgBN5rrSi5KATzFxfqWIsIFefvB
- u1EvcKJ4tfYBt7UMNHapnt/q9rWqURDih65aDwhIWIGqL8SCspWMZJ854y1D8W6xBZB2
- TksQpSjrGdUr7TtkPRQ9tX5jPOtwn92GfQNvRb2SvWHauYkZJVoCYiQx0q2LzIN+6Y0d
- +rPOBYuN7XSko1W1hP0GVP7EpaFLO8H0cvovAVZj61qqA/FMgVg2QWTUFByZv9zhdI7I
- 5cqwb1BtaDOLMXBajRmQZCNegbHjaASuKVHBshaXXgixijVCwasZmP/hvgCyOkpZBWQo
- 7zhw==
-X-Gm-Message-State: AOJu0Yx7AciLomv9F6t+qmvUIZ5q5NflnW6BbfmrowsCWof48JfAEgId
- o8ZInFelu58GIp6MmapMGMR6oQ==
-X-Google-Smtp-Source: AGHT+IHdPntl2C8qHGbP6WHr67k5lXIICohlZelQetPZyvLFK/iuicgkvdurkYmHiqYAL1TCy36IUQ==
-X-Received: by 2002:adf:e686:0:b0:31a:e89a:df0a with SMTP id
- r6-20020adfe686000000b0031ae89adf0amr50419wrm.45.1693337603182; 
- Tue, 29 Aug 2023 12:33:23 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693337614; x=1693942414;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uV/9uEyRUKpdVwHTpr43oW5Sg+3ITqtobdL1fUNdPMo=;
+ b=IyfZ6Nskaj50bxQSwpvMHfo1hkZfsBKLtRs1vk2VdN5I6P31M6BgOOgB4JtZl+blKA
+ sVvYbdGjCJI2S4ZcgImBxEUyv2hEcwGfxRPMa6+COEqMiBlAlvd2vKfMyGzTsrAnYr/2
+ RJDWRUjAVdi439HhRo6TifglrH4QpfakAc3UjkEGW9tJ4JQ9OJRJN9wGVn37Sph5VasL
+ o92XHsNw3jBd8TFdoZrFXMhL3KqZoMdhzusT8tDunCn3P5KSZNWoWq/m6pNl4TSnpeIn
+ U4cvxj/bQs/GSIICmYFB2IAetPbG8SOCWtqlz9Skl54SfexX3G/i6g431sVshKDrnvkw
+ RoWw==
+X-Gm-Message-State: AOJu0Yw1X8J+cw+F3rQQlkhWBs2VXd4eElgToWON/Ka1X7CxG9frJmFp
+ e3awM4z9H+o7bWIruSUmY3xAiA==
+X-Google-Smtp-Source: AGHT+IHbCUFtno5+NpJvyFSNhGCb7AyCaOYcXKf8WmGoX7aUAnBEdX1KgiR568dNQWyL2BRxKssOsA==
+X-Received: by 2002:a17:902:b7c4:b0:1b7:fd82:973c with SMTP id
+ v4-20020a170902b7c400b001b7fd82973cmr33895plz.39.1693337614537; 
+ Tue, 29 Aug 2023 12:33:34 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- o5-20020a1c7505000000b003fee8502999sm17911215wmc.18.2023.08.29.12.33.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 12:33:22 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7201E1FFBB;
- Tue, 29 Aug 2023 20:33:22 +0100 (BST)
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <36ce5f4d63892e36f0ebd4cdb0660df75deda6bb.1693252037.git.manos.pitsidianakis@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
- Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>, =?utf-8?B?S8WRdsOh?=
- =?utf-8?B?Z8OzLCBab2x0w6Fu?=
- <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v8 08/12] virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
-Date: Tue, 29 Aug 2023 20:33:18 +0100
-In-reply-to: <36ce5f4d63892e36f0ebd4cdb0660df75deda6bb.1693252037.git.manos.pitsidianakis@linaro.org>
-Message-ID: <87pm35skxp.fsf@linaro.org>
+ iy4-20020a170903130400b001b016313b1dsm9745649plb.86.2023.08.29.12.33.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 12:33:34 -0700 (PDT)
+Message-ID: <95746225-14ff-efa7-4c88-f51c44198162@linaro.org>
+Date: Tue, 29 Aug 2023 12:33:32 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 07/32] bsd-user: Implement target_to_host_resource
+ conversion function
+Content-Language: en-US
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
+References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-8-kariem.taha2.7@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230827155746.84781-8-kariem.taha2.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,22 +96,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/27/23 08:57, Karim Taha wrote:
+> From: Stacey Son <sson@FreeBSD.org>
+> 
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> ---
+>   bsd-user/bsd-proc.c | 83 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 83 insertions(+)
+>   create mode 100644 bsd-user/bsd-proc.c
+> 
+> diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
+> new file mode 100644
+> index 0000000000..ae2e636bb3
+> --- /dev/null
+> +++ b/bsd-user/bsd-proc.c
+> @@ -0,0 +1,83 @@
+> +/*
+> + *  BSD process related system call helpers
+> + *
+> + *  Copyright (c) 2013-14 Stacey D. Son
+> + *
+> + *  This program is free software; you can redistribute it and/or modify
+> + *  it under the terms of the GNU General Public License as published by
+> + *  the Free Software Foundation; either version 2 of the License, or
+> + *  (at your option) any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *  GNU General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU General Public License
+> + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +#include "qemu/osdep.h"
+> +
+> +#include <sys/param.h>
+> +#include <sys/types.h>
+> +#include <sys/cpuset.h>
+> +#include <sys/resource.h>
+> +#include <sys/wait.h>
+> +
+> +#include "qemu.h"
+> +#include "qemu-bsd.h"
+> +#include "signal-common.h"
+> +
+> +#include "bsd-proc.h"
+> +
+> +/*
+> + * resource/rusage conversion
+> + */
+> +int target_to_host_resource(int code)
+> +{
 
-Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+This should be the identity function, correct?
 
-> Handles the PCM prepare control request. It initializes a PCM stream
-> when the guests asks for it.
->
-> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9=
-c7b40a8e603f4da92471
-> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
-> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
-> Signed-off-by: Emmanouil Pitsidianakis
-> <manos.pitsidianakis@linaro.org>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+r~
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> +
+> +    switch (code) {
+> +    case TARGET_RLIMIT_AS:
+> +        return RLIMIT_AS;
+> +
+> +    case TARGET_RLIMIT_CORE:
+> +        return RLIMIT_CORE;
+> +
+> +    case TARGET_RLIMIT_CPU:
+> +        return RLIMIT_CPU;
+> +
+> +    case TARGET_RLIMIT_DATA:
+> +        return RLIMIT_DATA;
+> +
+> +    case TARGET_RLIMIT_FSIZE:
+> +        return RLIMIT_FSIZE;
+> +
+> +    case TARGET_RLIMIT_MEMLOCK:
+> +        return RLIMIT_MEMLOCK;
+> +
+> +    case TARGET_RLIMIT_NOFILE:
+> +        return RLIMIT_NOFILE;
+> +
+> +    case TARGET_RLIMIT_NPROC:
+> +        return RLIMIT_NPROC;
+> +
+> +    case TARGET_RLIMIT_RSS:
+> +        return RLIMIT_RSS;
+> +
+> +    case TARGET_RLIMIT_SBSIZE:
+> +        return RLIMIT_SBSIZE;
+> +
+> +    case TARGET_RLIMIT_STACK:
+> +        return RLIMIT_STACK;
+> +
+> +    case TARGET_RLIMIT_SWAP:
+> +        return RLIMIT_SWAP;
+> +
+> +    case TARGET_RLIMIT_NPTS:
+> +        return RLIMIT_NPTS;
+> +
+> +    default:
+> +        return code;
+> +    }
+> +}
+> +
+
 
