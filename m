@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B59678C8A8
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53F578C8A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:33:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb0iK-00084w-N6; Tue, 29 Aug 2023 11:33:08 -0400
+	id 1qb0hq-00081p-2z; Tue, 29 Aug 2023 11:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qb0iI-00084h-7e
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:33:06 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qb0hl-00081d-Ik
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:32:35 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qb0iF-0006oc-Jr
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:33:05 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bdc19b782aso28542705ad.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:31:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qb0hi-0007JU-Pe
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:32:33 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-52a1ce529fdso6045422a12.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693323062; x=1693927862;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SDbikvrJURYSUdco/ZqIPH9U7npc2uzsUXfdoZeozoM=;
- b=hIcDyreBdh5KalomlxsGiS39drF7uTs5H/ThoL66/swHuLCTEyekXoquGaoZ+peerq
- JPihrwHqsrasDGFTjmnVZUxktgkIPJNYP3waM1mluj23owI6hPQKKK08U+BZXuEztiV8
- HhGtumdt7ko/wou62jbnNO1svCJrC1oEind3DJdQdNocZH+n+cLmDFea/iaYMYfLV3oF
- tbex60UMENcpQ6JsEgPiJMVZWMlV47t3G8C8YZu/Gagn7SZBbN9wFrQD7uyJZ/kleqsL
- X7o3pX91DmXnb6CPxzCtNuMffAqLX59QEXgkk2sbJGUDu/NpOa1vyWTDKSWOroSsQSEr
- KncA==
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693323148; x=1693927948;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iT9utkjxF4q6o661MYhqizcItFn94HoqldPBeYHMltI=;
+ b=1wZdFTrFvkjyR5/VZTF+cv8+oVCf1+zBNBh9WlHVp/3KTXDJHGe4yGTTffs+taesgz
+ 1RzyqnE15swD26kYoPBLVie3bLjVl23Qs1uR6s2GdFE/iQrZi2m7Z7Dm+4hcHasLgHHF
+ evOtNneh7dlsQqyaAtzpwzM2y+IUJjYB3Kn2UQv2nEXjyti/7KLgpcWsLtLQP4//ykEn
+ tFGMYQnHgfyzAJWNV05OTPCnO9Yu5JNO2V2A9YIxVFVAJIdeM64UUY6h0qiDItN3MMtS
+ p6J9B1SdzSnqujYl9GTWqojl4XwmWYqICfKXXOlKqJkcZeDgYZAx0rEjRgPevW23hZ07
+ iA5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693323062; x=1693927862;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SDbikvrJURYSUdco/ZqIPH9U7npc2uzsUXfdoZeozoM=;
- b=J2hYBTxdiIqo4SdKnOPYrIte/+Dsio2QU7zArEV5Axr/MfgPTlyto+aH4e1TAP+Eys
- zdmmQ/AuIa84MXwCCfSqncDJmDPLLvHdw7TuMlAjg5rhO8/dD65x/AeTIAiQDslvSvdN
- vdAbZ6JOiFNhENPgroy59oBt1wQicPB9ps7ZFcXAC+y6cjOiWVjZ3nDaYWJOqXfBCwF6
- mCulJrS3LKUqLKc8+MC6y0roZf9X9O3w18KhTEa2oz1e1d0kgp8ptxRYZ+mB0YP0L47f
- rDGZ8Sm7Wjvz+YDAL44KqbK54XWjZo4OHezMHtcC7ujVYJcP7mJihPA0D/mvN80yFEvm
- sBUg==
-X-Gm-Message-State: AOJu0Yx5B4MXM+BhdZynT7+lLOFlt2ttJ+IDJS5Mx/nXDZM+eXS4o4bd
- wsbD/9o5jDuJLQjccnLkZCnoL08W/vz3qVU0OQu/QTXN
-X-Google-Smtp-Source: AGHT+IFCKB4y9SxFeV10FWPTH5kksVmONjZYzoHhoIEWKWdmN5QupRAObIgmodGuNflk5adm0jitkw==
-X-Received: by 2002:a17:902:ce90:b0:1bf:3378:6808 with SMTP id
- f16-20020a170902ce9000b001bf33786808mr28169075plg.56.1693323061827; 
- Tue, 29 Aug 2023 08:31:01 -0700 (PDT)
-Received: from localhost.localdomain ([118.114.61.244])
- by smtp.gmail.com with ESMTPSA id
- c15-20020a170902d48f00b001bdc8a5e96csm9510282plg.169.2023.08.29.08.30.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 08:31:01 -0700 (PDT)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Andrei Gudkov <gudkov.andrei@huawei.com>,
- Hyman Huang <yong.huang@smartx.com>
-Subject: [PULL 3/3] migration/dirtyrate: Fix precision losses and g_usleep
- overshoot
-Date: Tue, 29 Aug 2023 23:29:50 +0800
-Message-Id: <e2ae6ed88de97b5594e64aaf2400ebabf48064ec.1693322363.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1693322363.git.yong.huang@smartx.com>
-References: <cover.1693322363.git.yong.huang@smartx.com>
+ d=1e100.net; s=20221208; t=1693323148; x=1693927948;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iT9utkjxF4q6o661MYhqizcItFn94HoqldPBeYHMltI=;
+ b=O59cL0AK7Tp9Wes1Mzh0TVf1Q93GpnxfZWF2DGUqZ8D+NjHF0dhq6YQlfFzWFzzNpU
+ KjRcufHrduiSTxo7dzNGwoOnzlr5LUw9wfpkp1nb7efcD9MT9UH3XrF4hhyoLjGmnk7g
+ YwO9D7sC7TIVtwJiptufqFQvUz8luOktiZJwv40GDWlHjWxIw2sR0G/s4fa9QqKKojZY
+ 0jtw3Fgxs+u32lWfAsD+4eNdhp3ni1nti9At8IERxhPy0lnrf/KIKnFmNJidnizhsG87
+ wTXUrrLPwPM6l0dq6JQ/DAUlj/lcGE5qdLMM+spOwEdlgFeW3IvASWoY9Xni9Y8U+bYB
+ 5Ceg==
+X-Gm-Message-State: AOJu0Yy8+7/Z/HyVTKYGCWehrb5oyw53UH7Oz/PMvY0EYuM2LO8TXRMn
+ qzr9Aabj7UJJo7RI8L+ndk5rqm+AOaNYJZLXh01eSA==
+X-Google-Smtp-Source: AGHT+IGJuDPuIe2oqWy4Wu6Jdv7hMNfz8zTOdWg7Aosiub2vi2i3QNM9dqZrcba/LWYhW5jNuV/U+e0InxxKKqfCCTI=
+X-Received: by 2002:a17:907:2709:b0:9a1:eb67:c0ce with SMTP id
+ w9-20020a170907270900b009a1eb67c0cemr14010128ejk.50.1693323148304; Tue, 29
+ Aug 2023 08:32:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::634;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x634.google.com
+References: <20230828233821.43074-1-imp@bsdimp.com>
+ <20230829135009.GA179554@fedora>
+In-Reply-To: <20230829135009.GA179554@fedora>
+From: Warner Losh <imp@bsdimp.com>
+Date: Tue, 29 Aug 2023 09:32:16 -0600
+Message-ID: <CANCZdfr-QvabpjzmUtkjXkzV6Q+QGSzk3w0RQqi9n6QCdgPZqQ@mail.gmail.com>
+Subject: Re: [PULL 00/36] 2023q3 bsd user patches
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Reinoud Zandijk <reinoud@netbsd.org>, 
+ Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000beb78906041184aa"
+Received-SPF: none client-ip=2a00:1450:4864:20::529;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,46 +84,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrei Gudkov <gudkov.andrei@huawei.com>
+--000000000000beb78906041184aa
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
-Reviewed-by: Hyman Huang <yong.huang@smartx.com>
-Message-Id: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- migration/dirtyrate.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+On Tue, Aug 29, 2023, 7:50 AM Stefan Hajnoczi <stefanha@redhat.com> wrote:
 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 84f1b0fb20..bccb3515e3 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -57,6 +57,8 @@ static int64_t dirty_stat_wait(int64_t msec, int64_t initial_time)
-         msec = current_time - initial_time;
-     } else {
-         g_usleep((msec + initial_time - current_time) * 1000);
-+        /* g_usleep may overshoot */
-+        msec = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - initial_time;
-     }
- 
-     return msec;
-@@ -77,9 +79,13 @@ static int64_t do_calculate_dirtyrate(DirtyPageRecord dirty_pages,
- {
-     uint64_t increased_dirty_pages =
-         dirty_pages.end_pages - dirty_pages.start_pages;
--    uint64_t memory_size_MiB = qemu_target_pages_to_MiB(increased_dirty_pages);
- 
--    return memory_size_MiB * 1000 / calc_time_ms;
-+    /*
-+     * multiply by 1000ms/s _before_ converting down to megabytes
-+     * to avoid losing precision
-+     */
-+    return qemu_target_pages_to_MiB(increased_dirty_pages * 1000) /
-+        calc_time_ms;
- }
- 
- void global_dirty_log_change(unsigned int flag, bool start)
--- 
-2.39.1
+> Applied, thanks. In the future, please invoke git-request-pull(1) with
+> the public HTTPS repo URL to make it easier for anyone to fetch the
+> changes:
+>
+> > are available in the Git repository at:
+> >
+> >  git@gitlab.com:bsdimp/qemu.git tags/2023q3-bsd-user-pull-request
+>    ^^^^^^^^^^^^^^
+>
 
+Will do. Sorry about that...
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any
+> user-visible changes.
+>
+
+Once the mmap branch lands... I'll update to include hello world working...
+soon I hope...
+
+Warner
+
+Thanks!
+>
+
+--000000000000beb78906041184aa
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, Aug 29, 2023, 7:50 AM Stefan Hajnoczi &lt;<a h=
+ref=3D"mailto:stefanha@redhat.com">stefanha@redhat.com</a>&gt; wrote:<br></=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-lef=
+t:1px #ccc solid;padding-left:1ex">Applied, thanks. In the future, please i=
+nvoke git-request-pull(1) with<br>
+the public HTTPS repo URL to make it easier for anyone to fetch the<br>
+changes:<br>
+<br>
+&gt; are available in the Git repository at:<br>
+&gt;<br>
+&gt;=C2=A0 git@gitlab.com:bsdimp/qemu.git tags/2023q3-bsd-user-pull-request=
+<br>
+=C2=A0 =C2=A0^^^^^^^^^^^^^^<br></blockquote></div></div><div dir=3D"auto"><=
+br></div><div dir=3D"auto">Will do. Sorry about that...=C2=A0</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
+id;padding-left:1ex">
+Please update the changelog at <a href=3D"https://wiki.qemu.org/ChangeLog/8=
+.2" rel=3D"noreferrer noreferrer" target=3D"_blank">https://wiki.qemu.org/C=
+hangeLog/8.2</a> for any user-visible changes.<br></blockquote></div></div>=
+<div dir=3D"auto"><br></div><div dir=3D"auto">Once the mmap branch lands...=
+ I&#39;ll update to include hello world working... soon I hope...</div><div=
+ dir=3D"auto"><br></div><div dir=3D"auto">Warner</div><div dir=3D"auto"><br=
+></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-le=
+ft:1ex">
+Thanks!<br>
+</blockquote></div></div></div>
+
+--000000000000beb78906041184aa--
 
