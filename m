@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6D978C8E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E46AC78C8EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:54:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb12A-0004Wy-R7; Tue, 29 Aug 2023 11:53:38 -0400
+	id 1qb12L-0004dT-HU; Tue, 29 Aug 2023 11:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qb124-0004Pt-KU
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:53:32 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qb12J-0004d7-S4
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:53:47 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qb120-0007M5-19
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:53:32 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-50043cf2e29so7063679e87.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:53:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qb12G-0007SX-Bf
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:53:47 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5298e43bb67so9438268a12.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:53:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693324406; x=1693929206;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1693324423; x=1693929223; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NPUupQhjPaZscIMuSsKoDXRu6UZtAAPe3Rb66X0uhb4=;
- b=zVrmFpwUKp9HPV15y93B4oadeW9RA4r+OjpXOQxqxfzJHCiwyFkvSwlAb1s95IOJda
- vV3ZGs2BwDxAJrsNyXtyR+t73rbcoV1UgBjFEWYceTqF0WgMOUhpiPcouRTPxfClINuy
- MO6rcoSBuxsq9DVwkaRyQi1AAmfaSpwkcJypzBRCQx0DYf+NFvXUbVMnxtU2XCxfenNA
- RmIyoXvA6UO4l3gPwkC+EHzNKSQpgtcXdNDXT8jnyIFlc11EL5EmUS/oJ2NzO2KAx1zk
- w/nHGj9G7FueQLsIoTMn44T5VQcql+EgMbU2YziNVFxEmKQlUNeBNlz1rhWa++I0RDcp
- NCTw==
+ bh=dFWvO2HSy4bQBUgPqx0FnbS5LqLLwLj4Qs4qOlhSbUs=;
+ b=cFRmt0isrKKo41jC4tqpbNJfq4aNEJZrrkrySGb/cFLIKrfV0L02cJWL6iBcBCgDMH
+ SrAnkzXnlI8FJhBD9kUa8fXJ8ziSwdVTleACJaap46NEuBQ+03ELzA05BvV7/6sbh2xM
+ p5Ude3WJMRCiJpjnW5KYcdopnXfOcuM2iqhV7AQVZQKWQAT4i2Qu+HwCZCYcu9NLATlU
+ uzigVEJyDwLCJpbf90ljGNOuVxLOFWACRWL+5UYPMWvI/BnNkcZm0jjlYhgD22jvP2Tm
+ w2oTUCkPDKrftjPDFZiyXW3nrmB/CyYQyOD6cdy/dnkN+oIeYu21IPKrZoBWAdbMNoUG
+ itsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693324406; x=1693929206;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693324423; x=1693929223;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NPUupQhjPaZscIMuSsKoDXRu6UZtAAPe3Rb66X0uhb4=;
- b=fVijKeZd5STx/8vcW1xvPO7fE30nZSD+GHzXSz98FkXAe7wbvB6r/0hoNtf4Xz4Gxg
- pWvCBo26308Pw4cNKezu9m802x86cDMepDl9jP0TkrDq+a13Uiz7wB7IT+cMEjbDvIQG
- jPWFfJE0QTePZlrrzKVkq/248o3roY6jcEGAS22HRc4MEGvAaOLXvpnXVLGjDTxBkJb+
- gXoD8FKY7YGrGSdc4CjGTXZMxOzl/JrOFft8JS4Ir+578ktaTkPZk38xuQT0REtjbKTR
- u2D1vluhuJP14ojNJSzBrTjoJHO7WjvT3IQ7bPq6KvxQKfvZBAziXpRIxuZPB7LWqVAc
- 4YzQ==
-X-Gm-Message-State: AOJu0YyDKkuz0jEd7FWEoJS53QMc8tu8CUiofvRvQ7QNTOVOuZHRjVgd
- KATY+y5qhgGY4MVZcEm4ATbp279I5x/57EQ723w=
-X-Google-Smtp-Source: AGHT+IGDaIeP6kNoO0BDl1wgH8ClajEv4jZTdZmyY7KDq1/GZgNEfgmRAdQIAs3UDBDTULjKgtdCYg==
-X-Received: by 2002:a05:6512:ea4:b0:4f8:7897:55e6 with SMTP id
- bi36-20020a0565120ea400b004f8789755e6mr25619892lfb.45.1693324405943; 
- Tue, 29 Aug 2023 08:53:25 -0700 (PDT)
-Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
- [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
- h12-20020aa7c94c000000b00528922bb53bsm5786887edt.76.2023.08.29.08.53.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 08:53:25 -0700 (PDT)
-Message-ID: <02cd3850-49f4-7a0c-7f92-2461582dabc1@linaro.org>
-Date: Tue, 29 Aug 2023 17:53:23 +0200
+ bh=dFWvO2HSy4bQBUgPqx0FnbS5LqLLwLj4Qs4qOlhSbUs=;
+ b=OZt2zMNuxUnFQZbBDhqCftvv9QQdmI0ktfW4IW7tvOhL/UEqcl4sukxahN3ifCv9iJ
+ yGLS2K+Dzta86xbdypPHMyOV8fr4guMuG1W2t6uLNPfPP3VC9XSU50lw+ip2tNUId2c6
+ hhsQB5PY2KJ0q38mhlste0KePlItXAJmC1B5dsfezhaVCih0NC2IdmKCTbGh433ggWu7
+ 7QAgRrJBROksBygep3ursSMmiRvt+rE/4EGZRyb6lXYkppHMyKHZVRRGHxsn/QkI7TJ+
+ 47tM0ajPHTJcJ7Ua7b5S0t1KIsV6Ess96HUSq3VYXFlj/GgKWKLiku1RF4z+22T+Q69p
+ goZg==
+X-Gm-Message-State: AOJu0Yy61cZbmCvmSMGFHrZcVHj/p+oZZOVRicJSnyrTMG3ulhRT3UG+
+ xucyy89CInpBR+RUtD4hu0YIWcvnPZ7XGmKnv9Epz4JrR1QjapH1
+X-Google-Smtp-Source: AGHT+IFl4XuIm6PDK3izyI44AgLyRAFH6gKZZLgYtSxU3YiG71ZEwCBvw7VXw3KtQX1aGBhVqFbmo2OznnbMECh6SDw=
+X-Received: by 2002:a05:6402:3514:b0:523:4e41:2a37 with SMTP id
+ b20-20020a056402351400b005234e412a37mr3650079edd.11.1693324422895; Tue, 29
+ Aug 2023 08:53:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] target/arm: Use deposit_z() in BCF opcode
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20230822095156.39868-1-philmd@linaro.org>
- <CAFEAcA8CWDg8cBjr_KJdTE2AvvdksU7jGhfHp5sdQU7FHbAb4w@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA8CWDg8cBjr_KJdTE2AvvdksU7jGhfHp5sdQU7FHbAb4w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+References: <20230724174335.2150499-1-peter.maydell@linaro.org>
+In-Reply-To: <20230724174335.2150499-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 29 Aug 2023 16:53:32 +0100
+Message-ID: <CAFEAcA-jjZHx-7-oCEu+2kMQ38J6=szkK1qrjmOi+gxAd5GOzg@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 0/3] arm: Use correct number of MPU regions on
+ mps2-tz boards
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,70 +83,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/8/23 15:20, Peter Maydell wrote:
-> On Tue, 22 Aug 2023 at 10:51, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> When clearing a bitfield we don't need to lead the
-> 
-> "load" ?
-> 
->> source register. Use deposit_z_i32() with the BFC
->> opcode to save a load_reg() call.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/arm/tcg/translate.c | 9 ++++-----
->>   1 file changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
->> index b71ac2d0d5..1a6938d1b3 100644
->> --- a/target/arm/tcg/translate.c
->> +++ b/target/arm/tcg/translate.c
->> @@ -7255,7 +7255,7 @@ static bool trans_UBFX(DisasContext *s, arg_UBFX *a)
->>   static bool trans_BFCI(DisasContext *s, arg_BFCI *a)
->>   {
->>       int msb = a->msb, lsb = a->lsb;
->> -    TCGv_i32 t_in, t_rd;
->> +    TCGv_i32 t_rd;
->>       int width;
->>
->>       if (!ENABLE_ARCH_6T2) {
->> @@ -7268,15 +7268,14 @@ static bool trans_BFCI(DisasContext *s, arg_BFCI *a)
->>       }
->>
->>       width = msb + 1 - lsb;
->> +    t_rd = load_reg(s, a->rd);
->>       if (a->rn == 15) {
->>           /* BFC */
->> -        t_in = tcg_constant_i32(0);
->> +        tcg_gen_deposit_z_i32(t_rd, t_rd, lsb, width);
->>       } else {
->>           /* BFI */
->> -        t_in = load_reg(s, a->rn);
->> +        tcg_gen_deposit_i32(t_rd, t_rd, load_reg(s, a->rn), lsb, width);
->>       }
->> -    t_rd = load_reg(s, a->rd);
->> -    tcg_gen_deposit_i32(t_rd, t_rd, t_in, lsb, width);
->>       store_reg(s, a->rd, t_rd);
->>       return true;
-> 
-> The comment says we are saving a load_reg() call, but the
-> code change doesn't seem to do that. Before the change:
->   * for BFC we call load_reg for rd
->   * for BFI we call load_reg for rn and rd
-> 
-> After the change:
->   * for BFC we call load_reg for rd
->   * for BFI we call load_reg for rn and rd
-> 
-> So we're not saving any load_reg() calls as far as I can see ?
+On Mon, 24 Jul 2023 at 18:43, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> This patchseries resolves issue
+> https://gitlab.com/qemu-project/qemu/-/issues/1772
+> which is a report that we don't implement the correct number of MPU
+> regions on our MPS2/MPS3 boards.  Ideally guest software ought not to
+> care since (a) it can find out the number of regions by looking at
+> the MPU_TYPE register and (b) if it wanted 8 MPU regions it can just
+> ignore the 8 extra ones.  However, Zephyr at least seems both to
+> hardcode this and to care.
+>
+> Patch 1 cleans up a bug in target/arm code that meant that we
+> were accidentally not exposing the pmsav7-dregion on v8M CPUs.
+>
+> Patches 2 and 3 then define properties on the armv7m object
+> and the ARMSSE SoC object, and have the mps2-tz.c board code
+> set the properties appropriately to match the config as
+> described for those FPGA images.
 
-Indeed you are right.
+Ping for review on patch 3, please ?
 
-The optimizations are in tcg_gen_deposit_z_i32() vs using
-tcg_gen_deposit_i32(). I'll reword the description.
-
-Thanks,
-
-Phil.
+thanks
+-- PMM
 
