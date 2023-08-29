@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE4C78C464
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 14:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1251178C489
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 14:54:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qay1y-0001o5-7y; Tue, 29 Aug 2023 08:41:14 -0400
+	id 1qayDG-0006fz-Hx; Tue, 29 Aug 2023 08:52:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qay1X-0001cA-Gi
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:40:49 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1qayD6-0006ad-CQ
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:52:44 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qay1L-0001Ii-9a
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:40:46 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52a1ce52ef4so5531831a12.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 05:40:34 -0700 (PDT)
+ id 1qayD1-0007Ht-Kw
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 08:52:42 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5256d74dab9so5758244a12.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 05:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693312833; x=1693917633;
+ d=linaro.org; s=google; t=1693313547; x=1693918347;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=R2kcJgH4Pi/piMNHEaiNUxack+bGqcgJmnt4gQZK4Ag=;
- b=WNva7s1pa+0HateKg0rIs8z/GepnYFxk4ecEWEjGqluA8UccXrM5SnIMkvKoBDKKId
- N933vV9aXDIy8wH+xdxuyNTjynauEt310nOxx9WEeAgR/gngsUnxn8gWaZb8EX3GbLrZ
- M1T590RfpaABdB53A4mac1nTk9wjIWcZVVS14mZxx01oy+YpTTKe57xcI5mP+Ba7H4/K
- cdJF4aeJXq2Rh6REaJMnjDOgaNH0h/CywRNm6fbhsYs9tFv6zZjuuB7T706A3O9z/mca
- cc2LO/uro52WPIPz75eiMQkp9d37PPZx1lPC6UnqpzztHK13QcaGpYzukPmtrvUmQA8E
- +5bA==
+ bh=ybN8uNSc5PZTJ6TLlLfRoGWfX9zbzqTmwNSDNk+P1Pg=;
+ b=uUZMwvG7q2+Q55ARgaikv4ykY81wCncu1KXyMXOHuQ2HSW2dKaBI+hWDjlNQr1LPz1
+ FLAv9gsryhahd73dS1HBXCk8MJN7/PDW8LX/gr4dEVRcGgxXLVXO2rvp23FH8T2fOuRZ
+ REwcmXSKSSjMHoiOJbIA8p0+sAfe1kjJf/Ur4WNrIoUHVg8SOyz2qLuC09UsGXjfZzo8
+ hVcE1qMr4IHc1yrUafpuiflLBuFAksRI+L4OjS8eVroi/FhjNuDYIIs0iEoVvWBxRvFS
+ jClNeYqjUtlyztU9zEaT408jvb6bGVRw7syPOvKf2BJoNZ8Sawc+l+8/6qxrNMU7UQpW
+ fN4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693312833; x=1693917633;
+ d=1e100.net; s=20221208; t=1693313547; x=1693918347;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=R2kcJgH4Pi/piMNHEaiNUxack+bGqcgJmnt4gQZK4Ag=;
- b=kH/fZZDkAqhdKrizpT7vPW8muPN/+8YmV0riSD6atQfd3rbshin5fT7SEwteJX5bDZ
- 1R+EWS7ZxS/2bDD1W9/JhEUO/19S8BlrBC+3LBIp3TrHhJUzOvIed3M5a63cyiNquts6
- KMh8bRlzu6N+7wmbfUxhDnbszRmasZljda4hppbkwgpZ/jNEuUzHn9pNe5+YwASRhabu
- xbGDaRvFqVmhvtqO0m5i2ABzsqPQSnerPkPXmwA5Eo9YQzCmfVq19WDv1GVo6kDRpav6
- 6aNfb/SsRNJJHTo7/Lrc+A4So8hCjAVSFNttY+L8J89A8xRdyqptX34nZSxg93H+mp+p
- I2mA==
-X-Gm-Message-State: AOJu0YygIvqq5qn1e9rLZWBBFk/ytSCrSEc0KnruLcrUNzySH3CIWY3T
- mYVhM8EoS+CRhGaYw5eXbO/P2+o/fqVvjZOkbnawww==
-X-Google-Smtp-Source: AGHT+IERiM1y+rcQQuagipSHqRWh1PK9hS31d5vhFG2ynwYL0riln6nC+1WiBpUVU80i3kWQPV0J05Adip8wh6s4iLU=
-X-Received: by 2002:aa7:df0e:0:b0:522:b112:6254 with SMTP id
- c14-20020aa7df0e000000b00522b1126254mr21255832edy.4.1693312833543; Tue, 29
- Aug 2023 05:40:33 -0700 (PDT)
+ bh=ybN8uNSc5PZTJ6TLlLfRoGWfX9zbzqTmwNSDNk+P1Pg=;
+ b=GggPl8kQwhpzJBXYSNasl3d/4lXw6M4KIdxxm9NsPynOiu4nJT+mNk3h/cKruL0OTu
+ TIgS3AlZpp0uG+sc8oeloe2hw8LxjOMSQi5JkqE9qNCC4EcQSYhyJk9m2mPzWqsOwnvE
+ GlppV9T8OkUAN4bqQUSBZu5zBPmAaIqCt7oD1JjeQRwm5ReELozjFa7PhxzFfY24aexQ
+ GDXm++8hNTYG87nXhWKWX1j7rr28Is8yIP/9glEVXpvcDsTIIrXj6Dzhm90oWsmCr+ii
+ 1hWbY5qb9nOXSRRKQLE5vKZOHbYJ9AlfMEz/NhTZIgjh9xdpcb+x8zhmhD7ZW9JyIEeN
+ wDJg==
+X-Gm-Message-State: AOJu0Yyb56Bkuj/BtJ5qmANisyM0XOGaeAnhG0gcVL6/vhgKWmGwlCYA
+ uQHsTG1W5qxK/gT1zqACOvp+kLMbqQnsJspw9IRC9Q==
+X-Google-Smtp-Source: AGHT+IF65IiPVdBYi8cCyecxKgwbTcTvExbMtp6LXoSibhpUmag/7G7Dkcpq+vuY0eNTmOw2trgmjXOhNQC1+nNai48=
+X-Received: by 2002:aa7:d6d3:0:b0:526:9c4:bc06 with SMTP id
+ x19-20020aa7d6d3000000b0052609c4bc06mr19559979edr.18.1693313546757; Tue, 29
+ Aug 2023 05:52:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230811214031.171020-1-richard.henderson@linaro.org>
-In-Reply-To: <20230811214031.171020-1-richard.henderson@linaro.org>
+References: <20230822042530.1026751-1-richard.henderson@linaro.org>
+ <20230822042530.1026751-2-richard.henderson@linaro.org>
+In-Reply-To: <20230822042530.1026751-2-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 13:40:22 +0100
-Message-ID: <CAFEAcA90ZDYLf8QRxoyoG5Q4m6UT2CpwV879SzaeubTv252SYw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] target/arm: Implement cortex-a710
+Date: Tue, 29 Aug 2023 13:52:15 +0100
+Message-ID: <CAFEAcA9qHW4-OGnsPnNHHhn+fda0Qri_8iqcNwkc-nhxqYiCYw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] tests/tcg/aarch64: Adjust pauth tests for FEAT_FPAC
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,26 +85,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Aug 2023 at 22:42, Richard Henderson
+On Tue, 22 Aug 2023 at 05:27, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> This is one of the first generation Armv9 cores, and gives us something
-> concrete to test in that area.  Notably, it supports MTE.
+> With FEAT_FPAC, AUT* instructions that fail authentication
+> do not produce an error value but instead fault.
 >
-> Changes for v2:
->   * Check GMBS during realize.
->   * Fix access checks for neoverse implementation registers.
->     Mostly just traps EL1/EL2 if EL2/EL3 enabled.
->   * Add make_ccsidr64 helper.
->   * Reduce MTE with no tag memory to MTE=1.
->   * Suppress FEAT_TRBE.
->   * Implement HPDS2 as a no-op.
->   * Rewrite a710 implementation registers; do try to share code with
->     neoverse, because the traps are different.  This of course solves
->     the renaming and renumbering issues too.
+> For pauth-2, install a signal handler and verify it gets called.
 >
+> For pauth-4 and pauth-5, we are explicitly testing the error value,
+> so there's nothing to test with FEAT_FPAC, so exit early.
+> Adjust the makefile to use -cpu neoverse-v1, which has FEAT_EPAC
+> but not FEAT_FPAC.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  tests/tcg/aarch64/pauth-2.c       | 61 +++++++++++++++++++++++++++----
+>  tests/tcg/aarch64/pauth-4.c       | 28 ++++++++++++--
+>  tests/tcg/aarch64/pauth-5.c       | 20 ++++++++++
+>  tests/tcg/aarch64/Makefile.target |  5 ++-
+>  4 files changed, 101 insertions(+), 13 deletions(-)
 
-I've applied patches 1-7, 9 and 10 to target-arm.next.
+
+>  int main()
+>  {
+> +    static const struct sigaction sa = {
+> +        .sa_sigaction = sigill,
+> +        .sa_flags = SA_SIGINFO
+> +    };
+> +    unsigned long isar1, isar2;
+> +
+> +    assert(getauxval(AT_HWCAP) & HWCAP_CPUID);
+> +
+> +    asm("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
+> +    asm("mrs %0, id_aa64isar2_el1" : "=r"(isar2));
+
+You need to use the S3_n_Cn_Cn_n encoding for
+ID_AA64ISAR2_EL1 in this test and the others,
+to avoid problems with older binutils. Compare
+how tests/tcg/aarch64/sysregs.c does it.
+
+> diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+> index 681dfa077c..780ab3f183 100644
+> --- a/tests/tcg/aarch64/Makefile.target
+> +++ b/tests/tcg/aarch64/Makefile.target
+> @@ -42,7 +42,10 @@ endif
+>  ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+>  AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
+>  pauth-%: CFLAGS += -march=armv8.3-a
+> -run-pauth-%: QEMU_OPTS += -cpu max
+> +run-pauth-1: QEMU_OPTS += -cpu max
+> +run-pauth-2: QEMU_OPTS += -cpu max
+> +run-pauth-4: QEMU_OPTS += -cpu neoverse-v1
+> +run-pauth-5: QEMU_OPTS += -cpu neoverse-v1
+
+Why do we need to specify neoverse-v1 here ? A comment
+would help.
+
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
