@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA8378C54D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D4978C54E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:29:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaylZ-0003fK-72; Tue, 29 Aug 2023 09:28:21 -0400
+	id 1qaym6-00043I-8d; Tue, 29 Aug 2023 09:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qaylD-0003eP-Uw
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:28:02 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1qaym3-0003vb-2x
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:28:51 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayl2-0005lh-TE
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:27:52 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-52a49a42353so6117207a12.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:27:48 -0700 (PDT)
+ id 1qaym0-00064b-6j
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:28:50 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52a39a1c4d5so5729718a12.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:28:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693315667; x=1693920467;
+ d=linaro.org; s=google; t=1693315727; x=1693920527;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=hdCr/xaknJMc1L+y1DfMYs+q0IfAPJxqGX0jNCojQXk=;
- b=X4NywOJrFgNOwjuz3ZYkxVcwkJV+C6witG6qysDkcHQn8Ceq4t0v+nEft6ylM0DAPv
- tERO/+d18hpG6AwqqPIa6ZK4J++ZEMkOPPoPXOPSgs5tIl6MvVzv+Lj+7RDeaAaMJbPi
- sOkabyA4WyGJoGeTL63aUiMvqoh4Q+0iM5faNF5pylooFsXIAxbHt7lpV1YBaoqC0+zL
- UFFrCFO8yCerp2HFP6ImQm9uCkpbgwI6kWeQk2bIFnz0BwksMOAPYS82o8zQ704wyOQU
- 0BeZOHEEMbXfbaVJ1SF1yAdUInBlXD0oQPEELMUKWp0qcuCdLmve7m743++ff36Df3XD
- qPWQ==
+ bh=Sx/bM7QdDkhgmgSr5gZET7B5Nu9MmQxxvRD9Yyke+5w=;
+ b=yAIwLpfqN5VZ6cI6B80Cjbk6a4GfB0KHGKLb2HnL/FsDaJHxMzBLM8n+brZ+ixwzfP
+ JJ/xY0DrpwNLkY3KtleFDkNhMVJnt7i4kTS6fAmMm2fFPFSVX1PXCxUgABoP14XABYOi
+ PZUyJGMTKFsK43EMdu2h5BGdcWA8eQErIOG1vs9eb2jzl7oukE0HZqrNJOVPdeic2odX
+ KsKYogL5a3okm1KfQLt4S0yo6ftfyTjotvtXLD6YK3su+wQPI2rvvV4CGMSX4FS0ysxh
+ 0MEitVPAZvAadKJKm0ubNW9z2Efr20gOe5qPv4HnlSn5haK17u57MATGl8Wf8mzkxKBZ
+ 7tDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693315667; x=1693920467;
+ d=1e100.net; s=20221208; t=1693315727; x=1693920527;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=hdCr/xaknJMc1L+y1DfMYs+q0IfAPJxqGX0jNCojQXk=;
- b=L8vTFbRf4xjFLLacG02v+2fr2ythMuL08sRzTSsdV4u1VFSD4uHKgXWZBB2f7TjtVv
- Cw5wE0vZhz+1AaFi8sWcCdKJOdnrlxBrnF2fbUWk+kH9L35ml8MdWDIfgjHLOGLD03sm
- oxBL1QvKodX6dobck1zANw3fFiIONQqaGivOwly3jUVc0LXs7t/J1NSgGL9ePJePIJg7
- XPJR2yxrAFM84GHTT4Y6XGn0pWHmeNXljDpCymMxoIUiLHQk2QCSbutyJowpNoNR/abR
- txRE4qBQqzl4fHwymLigTM1/SuH9mhcjRR47tHTUHLcMRrVKoO1unlAgh9Y00b8uRI0D
- cQAg==
-X-Gm-Message-State: AOJu0YzrlVxiy8Hgj08HjdnJo8Lx2WUcXwMXkwL2n5Xd7qEHfhwfiECQ
- WOQTRSldFSXufF2bD3i7neNMzPz0xKrk9JQfo5SXng==
-X-Google-Smtp-Source: AGHT+IHATJl8ERWdSfIG4kO+wpHEhNyydZcucDYaq4SGCW7CXYDHcKtYR1FnT7rXm0eJDzPisqCRlV1HIsYT6XcnMmc=
-X-Received: by 2002:aa7:c741:0:b0:525:73dd:4f71 with SMTP id
- c1-20020aa7c741000000b0052573dd4f71mr21510042eds.14.1693315667300; Tue, 29
- Aug 2023 06:27:47 -0700 (PDT)
+ bh=Sx/bM7QdDkhgmgSr5gZET7B5Nu9MmQxxvRD9Yyke+5w=;
+ b=XoI6WRoM2Ybrr2ut65f0oXR86MaUctEOfleQw8fFTiQ3qf/6WXuex/unY0HfcmzeSj
+ cBT2NSh7mrCOphP2Wg1v6sCSFQ+2xWp/9sN/F4/3B32sZ2fYR9K+FEoWLsJykcU7Pgoh
+ 3HNl1hdVFdChHTW3f26l04LE31aWMNW7mBQIRE8heUI8xjiWkmm+oK2gYqu77zbwkj3I
+ Y6xfg0B0L4lLR3cRyYRlh2HIkQYNPl9LYdJxokd/GWmB5GTPYdv3rqmqomk8/jEXPUv/
+ cQBsXHSzkm+Bx8G1KtMahpnFRY4mcGNTfVtMCje3lDsC5fSQHhZLrNDKaNR1ekty1+yr
+ c2fw==
+X-Gm-Message-State: AOJu0YxoplRYdktNn0bkN/rdDsxdphU4eLFBoK2AScVvt1mbz5rvM5GN
+ nIMsehEnMv3dxxLsDHW8tHuEgXhc+SLq+cnfJfnsegEuhTXFBzxO
+X-Google-Smtp-Source: AGHT+IFE2/XaFACj8pHDieqIBhEfpgtUsTz9IcFFUvuGMleCcjXxFfE4uL2xccsrjVlN2tb4ZDZ2WO8qhSu8/onug68=
+X-Received: by 2002:a05:6402:31ee:b0:523:4acb:7f41 with SMTP id
+ dy14-20020a05640231ee00b005234acb7f41mr20490615edb.14.1693315726997; Tue, 29
+ Aug 2023 06:28:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1692964891.git.jcd@tribudubois.net>
- <d579043fbd4e4b490370783fda43fc02c8e9be75.1692964892.git.jcd@tribudubois.net>
-In-Reply-To: <d579043fbd4e4b490370783fda43fc02c8e9be75.1692964892.git.jcd@tribudubois.net>
+ <59e195d33e4d486a8d131392acd46633c8c10ed7.1692964892.git.jcd@tribudubois.net>
+In-Reply-To: <59e195d33e4d486a8d131392acd46633c8c10ed7.1692964892.git.jcd@tribudubois.net>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 14:27:36 +0100
-Message-ID: <CAFEAcA8fnJSJ=xauxDv_GA0hHqtbt-ZfcX-g72ThiK-azRX6zQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] Refactor i.MX6UL processor code
+Date: Tue, 29 Aug 2023 14:28:36 +0100
+Message-ID: <CAFEAcA8LF3zzne9PuvV3H0j-w7BtfEG8B7pp8bkgEWi7aTZ_SQ@mail.gmail.com>
+Subject: Re: [PATCH v4 4/6] Refactor i.MX7 processor code
 To: Jean-Christophe Dubois <jcd@tribudubois.net>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,7 +88,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, 25 Aug 2023 at 13:22, Jean-Christophe Dubois
 <jcd@tribudubois.net> wrote:
 >
-> * Add Addr and size definition for most i.MX6UL devices in i.MX6UL header file.
+> * Add Addr and size definition for all i.MX7 devices in i.MX7 header file.
 > * Use those newly defined named constants whenever possible.
 > * Standardize the way we init a familly of unimplemented devices
 >   - SAI
@@ -97,7 +97,6 @@ On Fri, 25 Aug 2023 at 13:22, Jean-Christophe Dubois
 > * Add/rework few comments
 >
 > Signed-off-by: Jean-Christophe Dubois <jcd@tribudubois.net>
-> ---
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
