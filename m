@@ -2,84 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6CE78C600
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 290DC78C640
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:39:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qayr1-0008OJ-8Y; Tue, 29 Aug 2023 09:33:59 -0400
+	id 1qayvx-0001JH-6k; Tue, 29 Aug 2023 09:39:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qayqx-0008O1-TO
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:33:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qayvu-0001Iz-SM
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:39:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qayqu-0008IQ-9y
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:33:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qayvs-0001t6-Ee
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:39:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693316031;
+ s=mimecast20190719; t=1693316339;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=89ki7Yjm/ZcC+AOH/EJ+n0WwRq/Pa125lMzhJLNspe4=;
- b=K/3oo4yrEBJbGh9kIysrsy7uJ/2HOTI5coLXLvKzgUWeQPqjDtf81zuMTmQxwiNimN/2Tj
- BA6EqkBAajkv4Caj+H41EXv13N4WoWYhN5+1uQeVVsS2NsiQx9aIDl5ECumkIY88oYKh/4
- crXVDGVOEu2Ek2q5Uv7GfDOhLhTy1Xg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9MV5QN/nwwTwVGMgLxuZe9W17MTFllI2rrQb4dxnmNY=;
+ b=LP8aOtomF60m2Egu7tjSq4bvlB/pHy1+KX+4ihMf/MTp08m/MjhYP0Q80IUO5of+Z4b1YG
+ p0kbrrpyUEohpk92fEAOUKu7FWArA11/YR6+pYkXqoBGd1RdciwNG6M5YbJ+5ZDf3iyyU0
+ rpKeWLswx4Sr+WaKfCpA1qH6fFPs9O4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-D4lSUrzmOVa18CuOeYjwtA-1; Tue, 29 Aug 2023 09:33:49 -0400
-X-MC-Unique: D4lSUrzmOVa18CuOeYjwtA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31c89a09099so1739096f8f.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:33:49 -0700 (PDT)
+ us-mta-681-7qCjeDCvOMefIjzfVp_l-Q-1; Tue, 29 Aug 2023 09:38:57 -0400
+X-MC-Unique: 7qCjeDCvOMefIjzfVp_l-Q-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-401db2550e0so1365355e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:38:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693316028; x=1693920828;
+ d=1e100.net; s=20221208; t=1693316337; x=1693921137;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=89ki7Yjm/ZcC+AOH/EJ+n0WwRq/Pa125lMzhJLNspe4=;
- b=gobrWSjSXg7zmhBr4N3dXxOBZyjuo/DJ19WahW8vSoIqfJwDpkEsPKpQIyqUowuEmY
- 8rGytQXAQNOGheiR8Hz7iHHl7w/qLwk1BdKFg/2NDtWRoC0EojYVx1ojFDl62FHW/1uS
- Geg15YwN2cVlKNuGcgry/vnJow9gX1kRua2/m81IHV/zqELFqbcXhmWGWXALCEmweVXY
- TiiyPcy1b91e+Rxs37/S5owordMzLbimXa1em3UvFn255hbS6/kP5A/zF0+mKF1g6B4v
- wfMvM+BCq7UbL45VlxPNjhUpwmZdFKSEINuWvbixfEYjbT8uKbbMlRzQ7ln6ISpJLRju
- 4RTw==
-X-Gm-Message-State: AOJu0YyLK5mKT3BKKPEzlLa0dAOpvx8j2Dy20QfRONGEdjVNdggVd++L
- blEm3Pk9MGNQn7/rEztuD6RwZmkvgBRB5whsAUx1ppuYyspGioyVJTirhX9lAyrXZ1y7ldyG06I
- ffzFRgoA74y3lMYc=
-X-Received: by 2002:a5d:630e:0:b0:317:61af:d64a with SMTP id
- i14-20020a5d630e000000b0031761afd64amr21353243wru.3.1693316028584; 
- Tue, 29 Aug 2023 06:33:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3Hugb+tpUVppmgfhA0FOJKxVwaAFhTY0WG/F/9PXYH+ZPK6Yy9jlsp9yj6WnRM5/erNzbsw==
-X-Received: by 2002:a5d:630e:0:b0:317:61af:d64a with SMTP id
- i14-20020a5d630e000000b0031761afd64amr21353230wru.3.1693316028256; 
- Tue, 29 Aug 2023 06:33:48 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:530f:c053:4ab2:f786?
- ([2a01:e0a:9e2:9000:530f:c053:4ab2:f786])
- by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4205000000b00317ddccb0d1sm13792731wrq.24.2023.08.29.06.33.46
+ bh=9MV5QN/nwwTwVGMgLxuZe9W17MTFllI2rrQb4dxnmNY=;
+ b=h9lkngklxCso7Ed30EhF6wYg0ynqspZQPp7cPpl1yPq98xhRWYPtfAxPFpT8/Z+3ni
+ dsXnvWxKykumebA9SoXbKk5rDJlJxSU8pc95QvDloOnTx3TSEY9X+wVURRhAZpb8UAUI
+ FNX6MG/Z3Y14v2J8XPRbivQr7Gu+MoDigF7RogaFg9q/iFiqrZ1Z4jCyOrxC+Zn1qLJI
+ tzt625tQpFFXkcaWXX18YWdzn72GgrN5YuaQZamZuBPb/3uiu+3Kp1FzXKzldF+FF7XH
+ pN80OCmzIGqjAPisuzdh4rsQDDsgCB4wx+xJ9g1mWIwP2Ri5xbO14yyyxq6yqz/Qb3/R
+ syGA==
+X-Gm-Message-State: AOJu0YzA5m8Ebsjnjl1IvpjWoIH1UUf6l4nXWETFVp6+lVpPVhurrpsC
+ H1r3cpjINChxfl3lludd03tvTsbm17l73FxYcjab5rUqLw4orZHra7FF4CeygHwwt3N/9ujJ0Jj
+ IdqM27my23BFW7bc=
+X-Received: by 2002:a7b:c7c3:0:b0:3fe:795:712a with SMTP id
+ z3-20020a7bc7c3000000b003fe0795712amr21742802wmk.27.1693316336832; 
+ Tue, 29 Aug 2023 06:38:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPnYlijn90mwJ1IR9efPDX7yROmw4z1bwqw6nkv6v1OQIWNgadHk7M1C8DKoGIJKHTG0yWNw==
+X-Received: by 2002:a7b:c7c3:0:b0:3fe:795:712a with SMTP id
+ z3-20020a7bc7c3000000b003fe0795712amr21742776wmk.27.1693316336486; 
+ Tue, 29 Aug 2023 06:38:56 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-58.web.vodafone.de.
+ [109.43.179.58]) by smtp.gmail.com with ESMTPSA id
+ l12-20020a7bc44c000000b003fbc0a49b57sm14054470wmi.6.2023.08.29.06.38.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 06:33:47 -0700 (PDT)
-Message-ID: <76d4ad43-72ba-a3cb-1c6a-85575c2e0e29@redhat.com>
-Date: Tue, 29 Aug 2023 15:33:46 +0200
+ Tue, 29 Aug 2023 06:38:55 -0700 (PDT)
+Message-ID: <6b0374d7-a950-8f11-caae-c80ac7fe7b3c@redhat.com>
+Date: Tue, 29 Aug 2023 15:38:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/4] vfio/pci: detect the support of dynamic MSI-X
- allocation
+Subject: Re: [RFC PATCH-for-8.1] accel: Remove HAX accelerator
 Content-Language: en-US
-To: Jing Liu <jing2.liu@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, pbonzini@redhat.com, kevin.tian@intel.com,
- reinette.chatre@intel.com, jing2.liu@linux.intel.com
-References: <20230822072927.224803-1-jing2.liu@intel.com>
- <20230822072927.224803-2-jing2.liu@intel.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230822072927.224803-2-jing2.liu@intel.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ libvir-list@redhat.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Claudio Fontana <cfontana@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20230623230837.4194-1-philmd@linaro.org>
+ <94bbfa23-836c-5e8c-db3b-2b040f3326a6@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <94bbfa23-836c-5e8c-db3b-2b040f3326a6@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
@@ -104,110 +112,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Jing,
-
-On 8/22/23 09:29, Jing Liu wrote:
-> Kernel provides the guidance of dynamic MSI-X allocation support of
-> passthrough device, by clearing the VFIO_IRQ_INFO_NORESIZE flag to
-> guide user space.
+On 24/06/2023 01.12, Philippe Mathieu-Daudé wrote:
+> On 24/6/23 01:08, Philippe Mathieu-Daudé wrote:
+>> HAX is deprecated since commits 73741fda6c ("MAINTAINERS: Abort
+>> HAXM maintenance") and 90c167a1da ("docs/about/deprecated: Mark
+>> HAXM in QEMU as deprecated"), released in v8.0.0.
+>>
+>> Per the QEMU deprecation policy, we shouldn't remove it before
+>> QEMU release v8.2.0. However per the latest HAXM release (v7.8),
+>> the latest QEMU supported is v7.2:
+>>
+>>    Note: Up to this release, HAXM supports QEMU from 2.9.0 to 7.2.0.
+>>
+>> (https://github.com/intel/haxm/releases/tag/v7.8.0)
+>>
+>> The next commit (https://github.com/intel/haxm/commit/da1b8ec072)
+>> added:
+>>
+>>    HAXM v7.8.0 is our last release and we will not accept
+>>    pull requests or respond to issues after this.
+>>
+>> As of commit b455ce4c2f, it became very hard to build and test
+>> HAXM. Its previous maintainers made it clear they won't help.
+>> It doesn't seem to be a very good use of QEMU maintainers to
+>> spend their time in a dead project. Save our time by removing
+>> this orphan zombie code before the QEMU v8.2 release.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
 > 
-> Fetch the flags from host to determine if dynamic MSI-X allocation is
-> supported.
 > 
-> Originally-by: Reinette Chatre <reinette.chatre@intel.com>
-> Signed-off-by: Jing Liu <jing2.liu@intel.com>
-> ---
-> Changes since RFC v1:
-> - Filter the dynamic MSI-X allocation flag and store as a bool type.
->    (Alex)
-> - Move the detection to vfio_msix_early_setup(). (Alex)
-> - Report error of getting irq info and remove the trace of failure
->    case. (Alex, Cédric)
-> ---
->   hw/vfio/pci.c        | 15 +++++++++++++--
->   hw/vfio/pci.h        |  1 +
->   hw/vfio/trace-events |  2 +-
->   3 files changed, 15 insertions(+), 3 deletions(-)
+>> diff --git a/docs/about/removed-features.rst 
+>> b/docs/about/removed-features.rst
+>> index 5b258b446b..cc8a1e38a9 100644
+>> --- a/docs/about/removed-features.rst
+>> +++ b/docs/about/removed-features.rst
+>> @@ -659,15 +659,18 @@ Use ``Icelake-Server`` instead.
+>>   System accelerators
+>>   -------------------
+>> -Userspace local APIC with KVM (x86, removed 8.0)
+>> +Userspace local APIC with KVM (x86, removed in 8.0)
+>>   ''''''''''''''''''''''''''''''''''''''''''''''''
 > 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index a205c6b1130f..8a3b34f3c196 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -1493,7 +1493,9 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
->       uint8_t pos;
->       uint16_t ctrl;
->       uint32_t table, pba;
-> -    int fd = vdev->vbasedev.fd;
-> +    int ret, fd = vdev->vbasedev.fd;
-> +    struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info),
-> +                                      .index = VFIO_PCI_MSIX_IRQ_INDEX };
->       VFIOMSIXInfo *msix;
->   
->       pos = pci_find_capability(&vdev->pdev, PCI_CAP_ID_MSIX);
-> @@ -1530,6 +1532,14 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
->       msix->pba_offset = pba & ~PCI_MSIX_FLAGS_BIRMASK;
->       msix->entries = (ctrl & PCI_MSIX_FLAGS_QSIZE) + 1;
->   
-> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_IRQ_INFO, &irq_info);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret, "failed to get MSI-X irq info");
+> Oops I didn't mean to commit this line. The doc won't build with padding.
 
-Missing :
-             g_free(msix);
+  Hi Philippe,
 
+now that 8.1 has been released, could you please update your patch by 
+removing this bad hunk and by updating the commit description?
 
-With this fixed,
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-  
-> +        return;
-> +    }
-> +
-> +    msix->noresize = !!(irq_info.flags & VFIO_IRQ_INFO_NORESIZE);
-> +
->       /*
->        * Test the size of the pba_offset variable and catch if it extends outside
->        * of the specified BAR. If it is the case, we need to apply a hardware
-> @@ -1562,7 +1572,8 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
->       }
->   
->       trace_vfio_msix_early_setup(vdev->vbasedev.name, pos, msix->table_bar,
-> -                                msix->table_offset, msix->entries);
-> +                                msix->table_offset, msix->entries,
-> +                                msix->noresize);
->       vdev->msix = msix;
->   
->       vfio_pci_fixup_msix_region(vdev);
-> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-> index a2771b9ff3cc..0717574d79e9 100644
-> --- a/hw/vfio/pci.h
-> +++ b/hw/vfio/pci.h
-> @@ -113,6 +113,7 @@ typedef struct VFIOMSIXInfo {
->       uint32_t table_offset;
->       uint32_t pba_offset;
->       unsigned long *pending;
-> +    bool noresize;
->   } VFIOMSIXInfo;
->   
->   #define TYPE_VFIO_PCI "vfio-pci"
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index ee7509e68e4f..6de5d9ba8e46 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -27,7 +27,7 @@ vfio_vga_read(uint64_t addr, int size, uint64_t data) " (0x%"PRIx64", %d) = 0x%"
->   vfio_pci_read_config(const char *name, int addr, int len, int val) " (%s, @0x%x, len=0x%x) 0x%x"
->   vfio_pci_write_config(const char *name, int addr, int val, int len) " (%s, @0x%x, 0x%x, len=0x%x)"
->   vfio_msi_setup(const char *name, int pos) "%s PCI MSI CAP @0x%x"
-> -vfio_msix_early_setup(const char *name, int pos, int table_bar, int offset, int entries) "%s PCI MSI-X CAP @0x%x, BAR %d, offset 0x%x, entries %d"
-> +vfio_msix_early_setup(const char *name, int pos, int table_bar, int offset, int entries, bool noresize) "%s PCI MSI-X CAP @0x%x, BAR %d, offset 0x%x, entries %d, noresize %d"
->   vfio_check_pcie_flr(const char *name) "%s Supports FLR via PCIe cap"
->   vfio_check_pm_reset(const char *name) "%s Supports PM reset"
->   vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
+  Thanks,
+   Thomas
 
 
