@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4AB78D064
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D63F78D08E
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7n3-0000os-5I; Tue, 29 Aug 2023 19:06:29 -0400
+	id 1qb7o1-0001ux-8p; Tue, 29 Aug 2023 19:07:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb5tV-0005iZ-VQ
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:05:01 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qb62T-0000cA-UC
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:14:20 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb5tS-00027n-F5
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:05:01 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-26d1e5f2c35so3108420a91.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 14:04:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qb62Q-0004Bv-RO
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:14:17 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-99c1d03e124so632701466b.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 14:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693343097; x=1693947897; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gqNE4/JQUpb7CobD9wA6872guc9yXl/a0O63kdH0V80=;
- b=VKHdfBay8YIuosgtSeE8VPVl9icjFAUy6lm7ln+YoG7a7YoUBEmWxT9QwhFRDUgy9Y
- lHx0mtbkY1VJlIoyFeg6ug6Wu/hnHane3tgoU5bdyml6iyk86WHnFvIrmOZ6VG28Udx2
- iBJH7jeA81TJbkFE8YvbfB4BTYFRLM4xuEFjuMoy9tMiU8tlVD/teMzJrMxCPmwWM0z/
- WYTI6dz/7UOnqxNIvL//hwvQnKB0amsDGd5wU/yvGtZT4q+AclK4Avb/GSP8c/g3499U
- 1rTqlWKYBTKNN7O2jQxE5Aa1eGsf/WnM+gUQiQ19qI9ZMJ87XNJW0gODbcIT1Q+Cppwy
- Ym7A==
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693343652; x=1693948452;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=u6UPXPIoAhAVR22uu9vDmx+zm3ew0X6QqFlB6xZqMjA=;
+ b=iIjzSZFO39aRTZMXdo4qv/AUKU8MNck8rD3cB7oMbCFmJ+F73G7uo+5AeUaB+5zuGv
+ BpiPUa+f54iOn0hZXHY82P9CimysB1jUyw2ygEasbt9n/wWqvkPHEmkZpVBi+H/QHons
+ A90nb6+CFJemzvDyuRsnemJnY+1fog00TcVguqvJqQtqtcJJ9Q6k3YbdZar3RbmhmbBQ
+ JFdmLBu3YO9Kf0uX4pE7A2FjAUwIIomDqb3/FEW8nP1JMz8FJfYd+XvR9OuYviWu6IRG
+ vm0IbRR05vFhZ9A7xPXy/MIed41L7LtP3dp4hgTjPs2L6xEFCdDz00jAZ0RHcO0CkOYB
+ RxgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693343097; x=1693947897;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gqNE4/JQUpb7CobD9wA6872guc9yXl/a0O63kdH0V80=;
- b=jKGQX8xznHJGjMajt/aa5YJKoDWfybzaheUeqFYlPjhgvc2mZRtJCYN143/i0Yh09+
- o6wWmUnaq2dT/NQ9KIINe4bwt7uHGT4hRqPxHzRWd1nTL/JxKj99L2LvooKK6HafvtQB
- qA6MQzfTLzsDCePFC5HKsi/JTliMc/Ma3tTb+OfsyMEhhl7rlrVT1e2M0CWF8x28cYjj
- V84BEMC6BI2K1UyMCxVVl3wk9QzbWkXKBdyk4n3mQ3stGX9gYrQkN9BtF5vLzkzORpeS
- uEpHCa1Vre4szaDmPLO09bg92M/HZyxWw3PYWlN2/CdzojXEjT8T/8fHwLAIN/GHQMqm
- WMdA==
-X-Gm-Message-State: AOJu0Yycm2PA3UoKND4baa12mQy51Y4P+Z5WDrIvhKoW5++ugHGRJpj+
- wgsousWIZC//QxkBfddgBumTGg==
-X-Google-Smtp-Source: AGHT+IHW2zwTo+sW5ECW9TqMC8l2RITybQ5zDxa4XSFXz+QreCG8p3kPyeoqzserYd1W7NQ/YbFt2A==
-X-Received: by 2002:a17:90b:1b46:b0:25c:8b5e:814 with SMTP id
- nv6-20020a17090b1b4600b0025c8b5e0814mr349418pjb.44.1693343096891; 
- Tue, 29 Aug 2023 14:04:56 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- s2-20020a17090ad48200b0026d533216e5sm13277pju.46.2023.08.29.14.04.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 14:04:56 -0700 (PDT)
-Message-ID: <d82f93cc-db75-0956-805d-02aa813e4445@linaro.org>
-Date: Tue, 29 Aug 2023 14:04:54 -0700
+ d=1e100.net; s=20221208; t=1693343652; x=1693948452;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u6UPXPIoAhAVR22uu9vDmx+zm3ew0X6QqFlB6xZqMjA=;
+ b=bHh5oBred50N8N98t5W3s3WzbKrkDRH3pSthxQv6Fq40B8FdFCnPgOr3dQL3zhZSD0
+ sXgHTVrOTpaGalhXlV6I7Hxrno/cCqk9/vwa0p+qUaOBKPyETV5J48MImlPp00u5T8jU
+ pJO2ki8QhTI9lMPBd8LWHx7R5G4QFmKbPS3MM1sUJRk0+QXrpxKm0I0dYp4vI51HHOQP
+ mcdfrzmgBmSVh6Ci9Qa6GQ4Cf1f1c54m09EG63UvDEQ0TmcH2K9MpAEIeI8M3aMuhYIa
+ snnb3YovG4tfsYpDrJ9T0Q1h3JKA51AVHULRBXpZdBVSLhVYROIUhtXbo58NwOrGgCXw
+ XfTA==
+X-Gm-Message-State: AOJu0YxLZnSHXJ804wWlZDbdoaWGpz4Oh5rnXYJOXD4/Vrrpihfhjupo
+ 0YD6/cnd61LQlxLVWRbRbr3RYXJ8d774Aq6obnjKlA==
+X-Google-Smtp-Source: AGHT+IHq8ck0zK8dTOEchF1gOkJpn76T2/cbabQ9CbrMSJz3bOl9opT8pyAxlbjQHOTn5KYZxmGcDCt2+IoQcxtokuc=
+X-Received: by 2002:a17:906:1cf:b0:99d:ec81:df58 with SMTP id
+ 15-20020a17090601cf00b0099dec81df58mr138207ejj.19.1693343652336; Tue, 29 Aug
+ 2023 14:14:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 3/3] linux-user/aarch64: Add ESR signal frame for PACFAIL
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20230822170209.1130173-1-richard.henderson@linaro.org>
- <20230822170209.1130173-4-richard.henderson@linaro.org>
- <CAFEAcA_5C8D+B1ad9RftcckknzS-WMC0o=t-zQKpzC7_9gfJ9g@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA_5C8D+B1ad9RftcckknzS-WMC0o=t-zQKpzC7_9gfJ9g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-30-kariem.taha2.7@gmail.com>
+ <f2150b44-e20a-2bb2-4764-d0668497708e@linaro.org>
+In-Reply-To: <f2150b44-e20a-2bb2-4764-d0668497708e@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Tue, 29 Aug 2023 15:14:01 -0600
+Message-ID: <CANCZdfpTGsXCs6e2CiSfWfos7BRWg+hn-CMnkE2S_+NA9Scjqw@mail.gmail.com>
+Subject: Re: [PATCH 29/32] bsd-user: Implement pdgetpid(2) and the
+ undocumented setugid.
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org, 
+ Stacey Son <sson@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000e16a840604164ad4"
+Received-SPF: none client-ip=2a00:1450:4864:20::631;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,20 +86,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/23 07:46, Peter Maydell wrote:
->> +    /* See arch/arm64/kernel/traps.c, do_el0_fpac, and our cpu_loop(). */
->> +    if (sig == TARGET_SIGILL && code == TARGET_ILL_ILLOPN) {
->> +        return true;
->> +    }
-> 
-> This works, but we'll need to do something else if the kernel adds
-> some other fault later that is reported as ILLOPN but without
-> an ESR record...
+--000000000000e16a840604164ad4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yes.  I'm not happy about the separation in logic, but I can't think of a better way at 
-present.
+On Tue, Aug 29, 2023 at 2:36=E2=80=AFPM Richard Henderson <
+richard.henderson@linaro.org> wrote:
 
+> On 8/27/23 08:57, Karim Taha wrote:
+> > From: Stacey Son <sson@FreeBSD.org>
+> >
+> > Signed-off-by: Stacey Son <sson@FreeBSD.org>
+> > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> > ---
+> >   bsd-user/freebsd/os-proc.h    | 23 +++++++++++++++++++++++
+> >   bsd-user/freebsd/os-syscall.c |  8 ++++++++
+> >   2 files changed, 31 insertions(+)
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
+> > +/* undocumented __setugid */
+> > +static inline abi_long do_freebsd___setugid(abi_long arg1)
+> > +{
+> > +    return get_errno(__setugid(arg1));
+> > +}
+>
+> Given that this is
+>
+> #ifdef REGRESSION
+> ...
+> #else /* !REGRESSION */
+>          return (ENOSYS);
+> #endif /* REGRESSION */
+>
+> in current freebsd, we could probably just stub this out?
+>
 
-r~
+I agree...
 
+The REGRESSION kernel option exists only so that the
+tools/regression/security/proc_to_proc tests
+can run. this is an interesting set of tests, but hasn't been updated since
+2004, except for the
+usual 'churn' commits required by sweeps for new-compiler things, or
+project policy changes.
+So it's not even clear if this specific regression test is still
+interesting (though there are many
+other tests in the tree that are recent and under active development).
+
+So it's irrelevant to the bsd-user emulator, and returning ENOSYS will
+match perfectly what almost any
+kernel deployed will do.
+
+Warner
+
+--000000000000e16a840604164ad4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 29, 2023 at 2:36=E2=80=AF=
+PM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
+chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">On 8/27/23 08:57, Karim Taha wrote:<br>
+&gt; From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+&gt; <br>
+&gt; Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+&gt; Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.c=
+om" target=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 23 +++++++++++++=
+++++++++++<br>
+&gt;=C2=A0 =C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 ++++++++<br>
+&gt;=C2=A0 =C2=A02 files changed, 31 insertions(+)<br>
+<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+<br>
+&gt; +/* undocumented __setugid */<br>
+&gt; +static inline abi_long do_freebsd___setugid(abi_long arg1)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 return get_errno(__setugid(arg1));<br>
+&gt; +}<br>
+<br>
+Given that this is<br>
+<br>
+#ifdef REGRESSION<br>
+...<br>
+#else /* !REGRESSION */<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return (ENOSYS);<br>
+#endif /* REGRESSION */<br>
+<br>
+in current freebsd, we could probably just stub this out?<br></blockquote><=
+div><br></div><div>I agree...</div><div><br></div><div>The REGRESSION kerne=
+l option exists only so that the tools/regression/security/proc_to_proc tes=
+ts</div><div>can run. this is an interesting set of tests, but hasn&#39;t b=
+een updated since 2004, except for the</div><div>usual &#39;churn&#39; comm=
+its required by sweeps for new-compiler things, or project policy changes.<=
+/div><div>So it&#39;s not even clear if this specific regression test is st=
+ill interesting (though there are many</div><div>other tests in the tree th=
+at are recent and under active development).</div><div><br></div><div>So it=
+&#39;s irrelevant to the bsd-user emulator, and returning ENOSYS will match=
+ perfectly what almost any</div><div>kernel deployed will do.</div><div><br=
+></div><div>Warner</div></div></div>
+
+--000000000000e16a840604164ad4--
 
