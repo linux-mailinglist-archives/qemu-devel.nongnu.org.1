@@ -2,52 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F395B78C799
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B5978C7A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:35:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qazmE-0007un-MW; Tue, 29 Aug 2023 10:33:06 -0400
+	id 1qazmX-00080A-9y; Tue, 29 Aug 2023 10:33:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
- id 1qazmC-0007uA-Nz; Tue, 29 Aug 2023 10:33:04 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
- id 1qazm6-0007Vp-KY; Tue, 29 Aug 2023 10:33:04 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZqdy3lwDz4wy4;
- Wed, 30 Aug 2023 00:32:54 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZqdw0ZFrz4wd0;
- Wed, 30 Aug 2023 00:32:51 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 4/4] ppc/xive: Add support for the PC MMIOs
-Date: Tue, 29 Aug 2023 16:32:36 +0200
-Message-ID: <20230829143236.219348-5-clg@kaod.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230829143236.219348-1-clg@kaod.org>
-References: <20230829143236.219348-1-clg@kaod.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qazmV-0007zs-TE
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:33:23 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qazmT-0007fA-MC
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:33:23 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcd4db4e6so1292471a12.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:33:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693319600; x=1693924400;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5MNCHhKUaSJNWbhq7zqf40FNGZbOYQKxHkc3qTW4uug=;
+ b=ChN5Owfx7B1FOLTSrOKXD0qLppW3M1xruacD+9w7+EP+5cvz24GPE/IE/DsKO82AFt
+ n5w1uOmxKSRkquYxRYnBidqGcM3MOlw9CBxmLxSA3UfCZRMNG5OBDOfCkfBpaNnR4qBX
+ sD36mb3vVqX3vPY37p+XX+5xZlZIL8Z/X1zSRXqrPb5G+aUXFN0AJtgicFwU5GJEid1a
+ Hx6tnpGqJ1GL9a0YYTdH74v/keQlQGqk8FKK69GrmQGwYIelowyF9NoqjB9uz2Lt8PCJ
+ TAvdUg7x8o5S369x0TMG0WSEeuNzyl2EXJc9K7hotb3K+0Kjn2fIQ/nEwuZtOs/fmVgO
+ Agew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693319600; x=1693924400;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5MNCHhKUaSJNWbhq7zqf40FNGZbOYQKxHkc3qTW4uug=;
+ b=BxWdiHaPm+kSTA1qONyiDs32kiN3BKq3FcktVZUubJjQDIxAEfCh+7Tv0OGinKUstX
+ A1lcLj4Ia88egUKg9lNjvVSmxrgn9yK9FKXBSpMJIY9YJwHiLTvQioWwLWm9va+6W2eP
+ xyiw86uMV2xSD9hrd3UxcZvr4OuYk6PvIUfJJq7JOMveg45UGHawNRLkAK65xaFVr+iG
+ LvLL5kpujh2XdIWMod2GsquPoKvj7WSNoerx/I1HvgL7JXvyBVoOCki+g0Z8eJhZyxwm
+ /g43xU7UjqVP5QW2o/u7RLWwJEyUGW0MOuwo5/F17F5tE/EBgwqw0emL0TEiJt2uVI34
+ FaSA==
+X-Gm-Message-State: AOJu0YwhuXrVBpqAnutzh2hSX+AycYPJR30s1mg5YajKWA5YRY51/+mu
+ S3+C6T/YYRwI9d1LSUh9yqlSeQ==
+X-Google-Smtp-Source: AGHT+IHqkUUmc8lqtheoOUVpJIIMSt0ltxbxM52T15ZmMWwF5FptHJ/KxzonG/lis9cJDWHVZgtWAQ==
+X-Received: by 2002:aa7:cd50:0:b0:525:4471:6b5d with SMTP id
+ v16-20020aa7cd50000000b0052544716b5dmr21444068edw.19.1693319599807; 
+ Tue, 29 Aug 2023 07:33:19 -0700 (PDT)
+Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
+ [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
+ l20-20020aa7c3d4000000b0051e0be09297sm5735208edr.53.2023.08.29.07.33.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 07:33:19 -0700 (PDT)
+Message-ID: <68526bca-6054-510e-09fe-f73bf610b005@linaro.org>
+Date: Tue, 29 Aug 2023 16:33:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=bkLz=EO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 36/58] memory: Introduce memory_region_init_ram_gmem()
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-37-xiaoyao.li@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230818095041.1973309-37-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,153 +105,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The XIVE interrupt contoller maintains various fields on interrupt
-targets in a structure called NVT. Each unit has a NVT cache, backed
-by RAM.
+On 18/8/23 11:50, Xiaoyao Li wrote:
+> Introduce memory_region_init_ram_gmem() to allocate private gmem on the
+> MemoryRegion initialization. It's for the usercase of TDVF, which must
+> be private on TDX case.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>   include/exec/memory.h |  6 +++++
+>   softmmu/memory.c      | 52 +++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 58 insertions(+)
 
-When the NVT structure is not local (in RAM) to the chip, the XIVE
-interrupt controller forwards the memory operation to the owning chip
-using the PC MMIO region configured for this purpose. QEMU does not
-need to be so precise since software shouldn't perform any of these
-operations. The model implementation is simplified to return the RAM
-address of the NVT structure which is then used by pnv_xive_vst_write
-or read to perform the operation in RAM.
 
-Remove the last use of pnv_xive_get_remote().
+> diff --git a/softmmu/memory.c b/softmmu/memory.c
+> index af6aa3c1e3c9..ded44dcef1aa 100644
+> --- a/softmmu/memory.c
+> +++ b/softmmu/memory.c
+> @@ -25,6 +25,7 @@
+>   #include "qom/object.h"
+>   #include "trace.h"
+>   
+> +#include <linux/kvm.h>
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- hw/intc/pnv_xive.c | 84 ++++++++++++++++++++++++++--------------------
- 1 file changed, 48 insertions(+), 36 deletions(-)
+Unlikely to build on non-Linux hosts.
 
-diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-index aae5cb6f607b..9b10e905195a 100644
---- a/hw/intc/pnv_xive.c
-+++ b/hw/intc/pnv_xive.c
-@@ -84,28 +84,6 @@ static uint8_t pnv_xive_block_id(PnvXive *xive)
-     return blk;
- }
- 
--/*
-- * Remote access to controllers. HW uses MMIOs. For now, a simple scan
-- * of the chips is good enough.
-- *
-- * TODO: Block scope support
-- */
--static PnvXive *pnv_xive_get_remote(uint8_t blk)
--{
--    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
--    int i;
--
--    for (i = 0; i < pnv->num_chips; i++) {
--        Pnv9Chip *chip9 = PNV9_CHIP(pnv->chips[i]);
--        PnvXive *xive = &chip9->xive;
--
--        if (pnv_xive_block_id(xive) == blk) {
--            return xive;
--        }
--    }
--    return NULL;
--}
--
- /*
-  * VST accessors for SBE, EAT, ENDT, NVT
-  *
-@@ -209,6 +187,42 @@ static uint64_t pnv_xive_vst_addr_indirect(PnvXive *xive, uint32_t type,
-     return pnv_xive_vst_addr_direct(xive, type, vsd, (idx % vst_per_page));
- }
- 
-+/*
-+ * This is a simplified model of operation forwarding on a remote IC.
-+ *
-+ * A PC MMIO address is built to identify the NVT structure. The load
-+ * on the remote IC will return the address of the structure in RAM,
-+ * which will then be used by pnv_xive_vst_write/read to perform the
-+ * RAM operation.
-+ */
-+static uint64_t pnv_xive_vst_addr_remote(PnvXive *xive, uint32_t type,
-+                                         uint64_t vsd, uint8_t blk,
-+                                         uint32_t idx)
-+{
-+    const XiveVstInfo *info = &vst_infos[type];
-+    uint64_t remote_addr = vsd & VSD_ADDRESS_MASK;
-+    uint64_t vst_addr;
-+    MemTxResult result;
-+
-+    if (type != VST_TSEL_VPDT) {
-+        xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
-+                   info->name, blk, idx);
-+        return 0;
-+    }
-+
-+    remote_addr |= idx << xive->pc_shift;
-+
-+    vst_addr = address_space_ldq_be(&address_space_memory, remote_addr,
-+                                    MEMTXATTRS_UNSPECIFIED, &result);
-+    if (result != MEMTX_OK) {
-+        xive_error(xive, "VST: read failed at @0x%"  HWADDR_PRIx
-+                   " for NVT %x/%x\n", remote_addr, blk, idx);
-+        return 0;
-+    }
-+
-+    return vst_addr;
-+}
-+
- static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
-                                   uint32_t idx)
- {
-@@ -225,14 +239,7 @@ static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
- 
-     /* Remote VST access */
-     if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
--        if (type != VST_TSEL_VPDT) {
--            xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
--                       info->name, blk, idx);
--            return 0;
--        }
--        xive = pnv_xive_get_remote(blk);
--
--        return xive ? pnv_xive_vst_addr(xive, type, blk, idx) : 0;
-+        return pnv_xive_vst_addr_remote(xive, type, vsd, blk, idx);
-     }
- 
-     if (VSD_INDIRECT & vsd) {
-@@ -1785,16 +1792,20 @@ static const MemoryRegionOps pnv_xive_vc_ops = {
- };
- 
- /*
-- * Presenter Controller MMIO region. The Virtualization Controller
-- * updates the IPB in the NVT table when required. Not modeled.
-+ * Presenter Controller MMIO region. Points to the NVT sets.
-+ *
-+ * HW implements all possible mem ops to the underlying NVT structure
-+ * but QEMU does not need to be so precise. The model implementation
-+ * simply returns the RAM address of the NVT structure which is then
-+ * used by pnv_xive_vst_write/read to perform the RAM operation.
-  */
--static uint64_t pnv_xive_pc_read(void *opaque, hwaddr addr,
--                                 unsigned size)
-+static uint64_t pnv_xive_pc_read(void *opaque, hwaddr offset, unsigned size)
- {
-     PnvXive *xive = PNV_XIVE(opaque);
-+    uint32_t nvt_idx = offset >> xive->pc_shift;
-+    uint8_t blk = pnv_xive_block_id(xive); /* TODO: VDT -> block xlate */
- 
--    xive_error(xive, "PC: invalid read @%"HWADDR_PRIx, addr);
--    return -1;
-+    return pnv_xive_vst_addr(xive, VST_TSEL_VPDT, blk, nvt_idx);
- }
- 
- static void pnv_xive_pc_write(void *opaque, hwaddr addr,
-@@ -2016,6 +2027,7 @@ static void pnv_xive_realize(DeviceState *dev, Error **errp)
-     /* Presenter Controller MMIO region (not modeled) */
-     memory_region_init_io(&xive->pc_mmio, OBJECT(xive), &pnv_xive_pc_ops, xive,
-                           "xive-pc", PNV9_XIVE_PC_SIZE);
-+    xive->pc_mmio.disable_reentrancy_guard = true;
- 
-     /* Thread Interrupt Management Area (Direct) */
-     memory_region_init_io(&xive->tm_mmio, OBJECT(xive), &pnv_xive_tm_ops,
--- 
-2.41.0
+>   #include "exec/memory-internal.h"
+>   #include "exec/ram_addr.h"
+>   #include "sysemu/kvm.h"
 
 
