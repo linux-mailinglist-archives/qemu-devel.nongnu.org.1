@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364BA78C6EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F1E78C704
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:13:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qazP8-0003tQ-Tz; Tue, 29 Aug 2023 10:09:15 -0400
+	id 1qazSS-0005ok-47; Tue, 29 Aug 2023 10:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qazOk-0003sL-Nz
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:08:54 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qazS9-0005oC-VL
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:12:24 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qazOh-0006OP-5r
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:08:50 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-52a4737a08fso5705077a12.3
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:08:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qazS7-0007gG-Jh
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:12:21 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-4fe1b00fce2so7068251e87.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693318125; x=1693922925;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FPKJXzcH+N2qfZUCo88vGLiMpG2dypyl4l+05+TWiXY=;
- b=rEIzw3lJzY0ZMCg023DEucM5996RPKrmljRSqcpOVRks/+R87gM/QYFiLtkT7SIAPy
- 7gVNLN+ok3CueU09WokbJc0VDQn0KQ50ZWvpMYf7LLlZNUfFK5F40JWkefcyLJbYvWYB
- QSgwLeGnx0aYABiD4pvxF17x4pQbGRUaWKXG6QR7zNoedbqVT5bmJF0VGxewM17+wylx
- hsa4rF7H4LDj5WPWUpgxK3bUWNvcrRc6las3z3GQlbGopOowilTyXwz3rDIB+TX1zDSJ
- 5sr2M8v0g0w8HKeO4dixCqVcLXyXKO0vwm5evWtGN6fOEA2jAyIc/3YwiqlycN7LxyVK
- 1hCA==
+ d=linaro.org; s=google; t=1693318338; x=1693923138;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vRarZfBbzx3oK6hdkQ2sfQTB/pBosxOjdtdv8zUAkP8=;
+ b=OlyUN09K+OF2PCDvrmnxMcM/n3juYw96hKB9yeO6Y/ipnf1WSTSJiXaL+tmNW4GPzT
+ Uxhfqm2+BgdWPeSOfWKU52rnKo1unnKn8VrCHmRsygEn7mAfloqVGf8a/cVb8x2NNHsC
+ lcrD3oFxH8JarZ/5wmy6ojzG3SHInGSlu4dD0SsZegTQ6wTAImCzL4Q4DDFE1RnidmiM
+ 8YtTuUi1TbaYR/sRb/EpXvY3GdIxzF6GiirvFk1yegrGaalWXXcAuT6oPULUBNeA9Bm+
+ +PGRISFxbgFE1Ep577rm8iKls+noLWrvjLbxY+9A4RmC+K/gh4JHs8s4kV8kvsikIjKs
+ FOsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693318125; x=1693922925;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FPKJXzcH+N2qfZUCo88vGLiMpG2dypyl4l+05+TWiXY=;
- b=Fs3PeykpFLe7D5n20juceYcSnf7z4St8+IZ0o6y+A0v7zA6x0WUEJkni7oV2ehMMgc
- itNr2PHv9xuqewasw7NRxSmiieJuW5L88gXA78H75gSEpQrFdVCIxVP0Eags+q4VP3Dt
- MVHHu8VObVdlrr1fK7Ot8Qw+Zr86ygyLToirFgtuHQe+xXiS21qx0FTDgY/fC1lsyPWD
- cMTAXWJMw1v+DogiNRV29Bw+kCwAo1oH4XBQj/i2S62/ErJAzYu9ZJ2VbN47pXlchM8R
- ty2owH1maCLKnLlqMIajJNDhc3NP5CtZohSAbZh6q+fXYEptd96ZINPF7+M3Ar3lZ91c
- 0Vfw==
-X-Gm-Message-State: AOJu0YxKvxs0ECLTgElNSjUVEg7dAAo6rKdpTWzErxemgq6mDga2HJnQ
- 0PNwGMlC1080ebgOgX1bGrgH9OQkT3x0r62GucxtfQ==
-X-Google-Smtp-Source: AGHT+IHi9a//mBv0QHsyrXq+gT0e7yo9vH04sh/zr1bZu6ptpCi/tpLG3oQDRsHbU35gR0+tGUpLyskKNc52H4AvreA=
-X-Received: by 2002:a05:6402:202a:b0:52a:47af:97a4 with SMTP id
- ay10-20020a056402202a00b0052a47af97a4mr12290529edb.5.1693318125385; Tue, 29
- Aug 2023 07:08:45 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693318338; x=1693923138;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vRarZfBbzx3oK6hdkQ2sfQTB/pBosxOjdtdv8zUAkP8=;
+ b=UeqTe5bty0DBEY7xIfIVDgWsTt91ebCDTj3iSsRJmVfijeePTgemu59NhPiK26KjPL
+ CDa9WxaB9HMI7cErjzGZiYy5Whsp51KBFW8MB8m3vdEYs9w2pNHPPYXPqiLzSHX+B1Ou
+ Tysk6aHjzvPgch9sbQ1V3ZfiW0009K5SEHYg3KLo7LZYSL7kjxKzVP9eF021i3lNLmgJ
+ 95WpAUlL6EPSNsInYw8lAiknu2J/M1fA2WHO6x1FVTjpZ0xrwZtOzVHgYC0d0jFCAOp8
+ MaUEUGfk52dz4FQsDdkKYRILgawlB8Xch1Xud0CZI56/RdPlhjIJ9aYDykAR1NjKNJ4u
+ 78yA==
+X-Gm-Message-State: AOJu0YzbLrVbLeGqJvU1n/GqSXYhelkT16DLS/QCT+5XWBAxxTjHFaQX
+ 6VlrmVu4qi9omFbdGNbkP66r4g==
+X-Google-Smtp-Source: AGHT+IFvac749iBrbobgU5KTzrhhQtr3NI44/slLiE+kvdbsbQnluB5C6i02Zb8DbzOu8E+cnGn0mw==
+X-Received: by 2002:ac2:551d:0:b0:500:9a45:638 with SMTP id
+ j29-20020ac2551d000000b005009a450638mr10672479lfk.2.1693318337666; 
+ Tue, 29 Aug 2023 07:12:17 -0700 (PDT)
+Received: from [192.168.69.115] (sml13-h01-176-184-15-56.dsl.sta.abo.bbox.fr.
+ [176.184.15.56]) by smtp.gmail.com with ESMTPSA id
+ s1-20020aa7c541000000b0052333e5237esm5663954edr.88.2023.08.29.07.12.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 07:12:17 -0700 (PDT)
+Message-ID: <60864c2c-9012-a2c8-58de-956a47d80108@linaro.org>
+Date: Tue, 29 Aug 2023 16:12:15 +0200
 MIME-Version: 1.0
-References: <cover.1692964891.git.jcd@tribudubois.net>
-In-Reply-To: <cover.1692964891.git.jcd@tribudubois.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 15:08:34 +0100
-Message-ID: <CAFEAcA8_rL8pGbr_imDL2vX=UkphL9d1PXbWZN5Xmor9+Xtthg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/6] Complete i.MX6UL and i.MX7 processor for bare
- metal application.
-To: Jean-Christophe Dubois <jcd@tribudubois.net>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 1/4] migration/qmp: Fix crash on setting tls-authz with
+ null
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-stable@nongnu.org
+References: <20230825171517.1215317-1-peterx@redhat.com>
+ <20230825171517.1215317-2-peterx@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230825171517.1215317-2-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,29 +98,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 25 Aug 2023 at 13:21, Jean-Christophe Dubois
-<jcd@tribudubois.net> wrote:
->
-> This patch adds a few unimplemented TZ devices (TZASC and CSU) to
-> i.MX6UL and i.MX7 processors to avoid bare metal application to
-> experiment "bus error" when acccessing these devices.
->
-> It also adds some internal memory segments (OCRAM) to the i.MX7 to
-> allow bare metal application to use them.
->
-> Last, it adds the SRC device to the i.MX7 processor to allow bare
-> metal application to start the secondary Cortex-A7 core.
->
-> Note: When running Linux inside Qemu, the secondary core is started
-> by calling PSCI API and Qemu is emulating PSCI without needing access
-> to the SRC device. This is why Linux is using the 2 cores in Qemu
-> even if the SRC is not implemented. This is not the case when running
-> bare metal application (like u-boot itself) that do not rely on the
-> PSCI service being available.
+On 25/8/23 19:15, Peter Xu wrote:
+> QEMU will crash if anyone tries to set tls-authz (which is a type
+> StrOrNull) with 'null' value.  Fix it in the easy way by converting it to
+> qstring just like the other two tls parameters.
+> 
+> Cc: qemu-stable@nongnu.org # v4.0+
+> Fixes: d2f1d29b95 ("migration: add support for a "tls-authz" migration parameter")
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   migration/options.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-
-Applied to target-arm.next, thanks.
-
--- PMM
 
