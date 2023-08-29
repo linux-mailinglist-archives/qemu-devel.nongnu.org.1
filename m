@@ -2,80 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EADF78C250
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 12:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D0678C25C
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 12:36:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qavxR-000483-Uw; Tue, 29 Aug 2023 06:28:25 -0400
+	id 1qaw3n-0005tl-TW; Tue, 29 Aug 2023 06:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qavxQ-00047v-FD
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:28:24 -0400
+ id 1qaw3l-0005tY-4f
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:34:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qavxL-0005OO-Jj
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:28:24 -0400
+ id 1qaw3i-0007ki-5Z
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 06:34:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693304898;
+ s=mimecast20190719; t=1693305292;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1Ansp3Hjkbc6ROjIpMGRwpf5SEHqiAhx3ZomjWv7LQ8=;
- b=DCl3JfCGmuCSuqrut0z3D2ESwLUS8eo31WhJeAhxrHwFFAuXs15YBI9lAV90N5FGkGPg1N
- 3TSXuzNuFwPXaxZ39hAclxsjJ0CE4QxpCOgclQ7SHPEDrQ+1YY7DJ/GleOeZsVu+jICoQE
- cZe13y1rZ5sFZtiT5pk8wZvHVqHloWY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-217-Hwj9SWYpNG62EPjel7razw-1; Tue, 29 Aug 2023 06:28:15 -0400
-X-MC-Unique: Hwj9SWYpNG62EPjel7razw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=+LwsTJjFKnb2WcH55h/pW9tZmv7+qSHvl5gOfeAZ1Ig=;
+ b=OGDjP6eidl+gpo6O5qnGBZ+4HWzSQmeK9c67Xqid60NLiH0jxexFPjY+Eake6XMy+6iwKN
+ k/6lSPpIZuedGusqLKrXzAmfXraZ7FBJ4eFxbx9k1DGkpy4M26uRz/AOn6MTCEQbc+A1eq
+ 4IoJlGgh9/1xpnLjmoYW1Z84Eiuv14w=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-161-1gEgdCE8Pz-P3PPMYZA4zg-1; Tue, 29 Aug 2023 06:34:51 -0400
+X-MC-Unique: 1gEgdCE8Pz-P3PPMYZA4zg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3346585CBE7;
- Tue, 29 Aug 2023 10:28:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 01BFD1C05AF7
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:34:51 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 39DE8492C13;
- Tue, 29 Aug 2023 10:28:11 +0000 (UTC)
-Date: Tue, 29 Aug 2023 11:28:09 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8228E1121318;
+ Tue, 29 Aug 2023 10:34:50 +0000 (UTC)
+Date: Tue, 29 Aug 2023 11:34:48 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Eduardo Habkost <eduardo@habkost.net>,
- Laszlo Ersek <lersek@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v2 47/58] i386/tdx: Wire REPORT_FATAL_ERROR with
- GuestPanic facility
-Message-ID: <ZO3IOax8bF0NpgnU@redhat.com>
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-48-xiaoyao.li@intel.com>
- <ZOM1Qk4wjNczWEf2@redhat.com>
- <00b88ec1-675c-9384-3a93-16b15e666126@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 02/10] meson: update unsupported host/CPU messages
+Message-ID: <ZO3JyOmbfrLmD6pd@redhat.com>
+References: <20230829082931.67601-1-pbonzini@redhat.com>
+ <20230829082931.67601-3-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <00b88ec1-675c-9384-3a93-16b15e666126@intel.com>
+In-Reply-To: <20230829082931.67601-3-pbonzini@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -101,167 +80,100 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 28, 2023 at 09:14:41PM +0800, Xiaoyao Li wrote:
-> On 8/21/2023 5:58 PM, Daniel P. Berrangé wrote:
-> > On Fri, Aug 18, 2023 at 05:50:30AM -0400, Xiaoyao Li wrote:
-> > > Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > ---
-> > >   qapi/run-state.json   | 17 +++++++++++++--
-> > >   softmmu/runstate.c    | 49 +++++++++++++++++++++++++++++++++++++++++++
-> > >   target/i386/kvm/tdx.c | 24 ++++++++++++++++++++-
-> > >   3 files changed, 87 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/qapi/run-state.json b/qapi/run-state.json
-> > > index f216ba54ec4c..506bbe31541f 100644
-> > > --- a/qapi/run-state.json
-> > > +++ b/qapi/run-state.json
-> > > @@ -499,7 +499,7 @@
-> > >   # Since: 2.9
-> > >   ##
-> > >   { 'enum': 'GuestPanicInformationType',
-> > > -  'data': [ 'hyper-v', 's390' ] }
-> > > +  'data': [ 'hyper-v', 's390', 'tdx' ] }
+On Tue, Aug 29, 2023 at 10:29:23AM +0200, Paolo Bonzini wrote:
+> Unsupported CPU and OSes are not really going away, but the
+> project simply does not guarantee that they work.  Rephrase
+> the messages accordingly.  While at it, move the warning for
+> TCI performance at the end where it is more visible.
+
+I think I agree wrt to CPUs, but in the case of OS I think
+it is fairly accurate as-is.
+
+When we bump the minimum version of libraries we will not
+pay attention to unsupported OS, so it is entirely possible
+to bump to a version that means the ability to run on an
+OS goes away entirely (unless the user is willing to rebuild
+packages at newer versions).
+
+When writing #ifdefs for portability we also may explicitly
+delete #ifdefs from unsupported OS platforms  if we consider
+them obsolete enough. So again I think the ability to use an
+unsupported OS may indeed goaway entirely.
 
 > 
-> > > +#
-> > > +# Since: 8.2
-> > > +##
-> > > +{'struct': 'GuestPanicInformationTdx',
-> > > + 'data': {'error-code': 'uint64',
-> > > +          'gpa': 'uint64',
-> > > +          'message': 'str'}}
-> > > +
-> > >   ##
-> > >   # @MEMORY_FAILURE:
-> > >   #
-> > > diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-> > > index f3bd86281813..cab11484ed7e 100644
-> > > --- a/softmmu/runstate.c
-> > > +++ b/softmmu/runstate.c
-> > > @@ -518,7 +518,56 @@ void qemu_system_guest_panicked(GuestPanicInformation *info)
-> > >                             S390CrashReason_str(info->u.s390.reason),
-> > >                             info->u.s390.psw_mask,
-> > >                             info->u.s390.psw_addr);
-> > > +        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
-> > > +            char *buf = NULL;
-> > > +            bool printable = false;
-> > > +
-> > > +            /*
-> > > +             * Although message is defined as a json string, we shouldn't
-> > > +             * unconditionally treat it as is because the guest generated it and
-> > > +             * it's not necessarily trustable.
-> > > +             */
-> > > +            if (info->u.tdx.message) {
-> > > +                /* The caller guarantees the NUL-terminated string. */
-> > > +                int len = strlen(info->u.tdx.message);
-> > > +                int i;
-> > > +
-> > > +                printable = len > 0;
-> > > +                for (i = 0; i < len; i++) {
-> > > +                    if (!(0x20 <= info->u.tdx.message[i] &&
-> > > +                          info->u.tdx.message[i] <= 0x7e)) {
-> > > +                        printable = false;
-> > > +                        break;
-> > > +                    }
-> > > +                }
-> > > +
-> > > +                /* 3 = length of "%02x " */
-> > > +                buf = g_malloc(len * 3);
-> > > +                for (i = 0; i < len; i++) {
-> > > +                    if (info->u.tdx.message[i] == '\0') {
-> > > +                        break;
-> > > +                    } else {
-> > > +                        sprintf(buf + 3 * i, "%02x ", info->u.tdx.message[i]);
-> > > +                    }
-> > > +                }
-> > > +                if (i > 0)
-> > > +                    /* replace the last ' '(space) to NUL */
-> > > +                    buf[i * 3 - 1] = '\0';
-> > > +                else
-> > > +                    buf[0] = '\0';
-> > 
-> > You're building this escaped buffer but...
-> > 
-> > > +            }
-> > > +
-> > > +            qemu_log_mask(LOG_GUEST_ERROR,
-> > > +                          //" TDX report fatal error:\"%s\" %s",
-> > > +                          " TDX report fatal error:\"%s\""
-> > > +                          "error: 0x%016" PRIx64 " gpa page: 0x%016" PRIx64 "\n",
-> > > +                          printable ? info->u.tdx.message : "",
-> > > +                          //buf ? buf : "",
-> > 
-> > ...then not actually using it
-> > 
-> > Either delete the 'buf' code, or use it.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  meson.build | 38 +++++++++++++++++++++-----------------
+>  1 file changed, 21 insertions(+), 17 deletions(-)
 > 
-> Sorry for posting some internal testing version.
-> Does below look good to you?
+> diff --git a/meson.build b/meson.build
+> index 98e68ef0b1e..02b035a3808 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -678,9 +678,7 @@ endif
+>  tcg_arch = host_arch
+>  if get_option('tcg').allowed()
+>    if host_arch == 'unknown'
+> -    if get_option('tcg_interpreter')
+> -      warning('Unsupported CPU @0@, will use TCG with TCI (slow)'.format(cpu))
+> -    else
+> +    if not get_option('tcg_interpreter')
+>        error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
+>      endif
+>    elif get_option('tcg_interpreter')
+> @@ -4317,28 +4315,34 @@ summary_info += {'selinux':           selinux}
+>  summary_info += {'libdw':             libdw}
+>  summary(summary_info, bool_yn: true, section: 'Dependencies')
+>  
+> -if not supported_cpus.contains(cpu)
+> +if host_arch == 'unknown'
+>    message()
+> -  warning('SUPPORT FOR THIS HOST CPU WILL GO AWAY IN FUTURE RELEASES!')
+> +  warning('UNSUPPORTED HOST CPU')
+>    message()
+> -  message('CPU host architecture ' + cpu + ' support is not currently maintained.')
+> -  message('The QEMU project intends to remove support for this host CPU in')
+> -  message('a future release if nobody volunteers to maintain it and to')
+> -  message('provide a build host for our continuous integration setup.')
+> -  message('configure has succeeded and you can continue to build, but')
+> -  message('if you care about QEMU on this platform you should contact')
+> -  message('us upstream at qemu-devel@nongnu.org.')
+> +  message('Support for CPU host architecture ' + cpu + ' is not currently')
+> +  message('maintained. The QEMU project does not guarantee that QEMU will')
+> +  message('compile or work on this host CPU. You can help by volunteering')
+> +  message('to maintain it and providing a build host for our continuous.')
+> +  message('integration setup.')
+>  endif
+>  
+>  if not supported_oses.contains(targetos)
+>    message()
+> -  warning('WARNING: SUPPORT FOR THIS HOST OS WILL GO AWAY IN FUTURE RELEASES!')
+> +  warning('UNSUPPORTED HOST OS')
+> +  message()
+> +  message('Support for host OS ' + targetos + 'is not currently maintained.')
+> +  message('The QEMU project does not guarantee that QEMU will compile or')
+> +  message('work on this operating system. You can help by volunteering')
+> +  message('to maintain it and providing a build host for our continuous.')
+> +  message('integration setup.')
+> +endif
+> +
+> +if host_arch == 'unknown' or not supported_oses.contains(targetos)
+>    message()
+> -  message('Host OS ' + targetos + 'support is not currently maintained.')
+> -  message('The QEMU project intends to remove support for this host OS in')
+> -  message('a future release if nobody volunteers to maintain it and to')
+> -  message('provide a build host for our continuous integration setup.')
+>    message('configure has succeeded and you can continue to build, but')
+> +  if host_arch == 'unknown' and get_option('tcg').allowed() and target_dirs.length() > 0
+> +    message('QEMU will use a slow interpreter to emulate the target CPU;')
+> +  endif
+>    message('if you care about QEMU on this platform you should contact')
+>    message('us upstream at qemu-devel@nongnu.org.')
+>  endif
+> -- 
+> 2.41.0
 > 
-> @@ -518,7 +518,56 @@ void qemu_system_guest_panicked(GuestPanicInformation
-> *info)
->                            S390CrashReason_str(info->u.s390.reason),
->                            info->u.s390.psw_mask,
->                            info->u.s390.psw_addr);
-> +        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
-> +            bool printable = false;
-> +            char *buf = NULL;
-> +            int len = 0, i;
-> +
-> +            /*
-> +             * Although message is defined as a json string, we shouldn't
-> +             * unconditionally treat it as is because the guest generated
-> it and
-> +             * it's not necessarily trustable.
-> +             */
-> +            if (info->u.tdx.message) {
-> +                /* The caller guarantees the NUL-terminated string. */
-> +                len = strlen(info->u.tdx.message);
-> +
-> +                printable = len > 0;
-> +                for (i = 0; i < len; i++) {
-> +                    if (!(0x20 <= info->u.tdx.message[i] &&
-> +                          info->u.tdx.message[i] <= 0x7e)) {
-> +                        printable = false;
-> +                        break;
-> +                    }
-> +                }
-> +            }
-> +
-> +            if (!printable && len) {
-> +                /* 3 = length of "%02x " */
-> +                buf = g_malloc(len * 3);
-> +                for (i = 0; i < len; i++) {
-> +                    if (info->u.tdx.message[i] == '\0') {
-> +                        break;
-> +                    } else {
-> +                        sprintf(buf + 3 * i, "%02x ",
-> info->u.tdx.message[i]);
-> +                    }
-> +                }
-> +                if (i > 0)
-> +                    /* replace the last ' '(space) to NUL */
-> +                    buf[i * 3 - 1] = '\0';
-> +                else
-> +                    buf[0] = '\0';
-> +            }
-> +
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          " TDX guest reports fatal error:\"%s\""
-> +                          " error code: 0x%016" PRIx64 " gpa page: 0x%016"
-> PRIx64 "\n",
-> +                          printable ? info->u.tdx.message : buf,
-> +                          info->u.tdx.error_code,
-> +                          info->u.tdx.gpa);
-> +            g_free(buf);
->          }
-
-
-Ok that makes more sense now. BTW, probably a nice idea to create a
-separate helper method that santizes the guest provided JSON into
-the safe 'buf' string.
-
+> 
 
 With regards,
 Daniel
