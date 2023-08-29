@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5819E78CA2F
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFBE78CA3F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:08:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb2AX-0007OL-Nv; Tue, 29 Aug 2023 13:06:21 -0400
+	id 1qb2CF-0001qC-B8; Tue, 29 Aug 2023 13:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb2AU-0007CU-VY
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:06:19 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1qb2BC-0001W1-R8
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:07:02 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb2AS-00062m-40
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:06:18 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1bc63ef9959so35774945ad.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:06:15 -0700 (PDT)
+ id 1qb2B9-0006Qp-6A
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:07:02 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c09673b006so24143455ad.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693328775; x=1693933575;
+ d=linaro.org; s=google; t=1693328816; x=1693933616;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=56QDK0faAC92zLJdFo/FVduVNd5oSQKc+H52plpDONk=;
- b=HmEgMdot68CMkFz0BHfDX+rjSCwl0xC/ZdTPafjk97yHOV0OethyBDkVIr0Va+YBYF
- F/OY1BD2gQvNvsjTRuQzcImAMCRt3ZYPgzPv4RvXBpq7M9KhM7caQBkELd6uPyZC7UNL
- HoZb6CIwRlcJX3DQVIgEXE3uye2V1u4hxtQ77q6Slvlw0UJ9ZPa9jPy/NJdmMXLbWm6i
- DKeWF7sHfB6wDOSuP4mwDG1slEnsweiVrI8NbAZc0qx3etGnb8UIiDatbDxUXdvQ6hX7
- yfbrpa5irN1B8HuNBznZsMeDN50GopTW3qCavPMMgrjsWnR00+abeEkPE8WBRPYuGFjr
- 2bbw==
+ bh=EJC4Q2Dzht6beo+iKRy2G8JGKTP6kbfY7xvxXxJ8pEQ=;
+ b=melWkinxTKChj1PD0p3TEEAy6yR6thnnhXyd9u7hob/f0SvShyT2JawUXJgKcGHCLt
+ Qj8nTNxWfRyOUKIT7z/3JSeDg6Ury/n1lp6FznLVtYng2NHEy0K9ng8M68K1NxIEEXci
+ bV1n2jAbL56ehq0K1JGxhWSJNDHua6ckfGiNBvvjc013c6Yc9k/BKWlxzS7JkhaPw/nn
+ DkTvr6QxxAY9Z/Md9d51tT797UYysYjJu0NRq0vafmnlJtJ7eg37fvBNsDAM07cvc9sH
+ SxEkzcU5mtBhZZOZ1o6alVADwuVB0gnOSGek5esSug2ybSA3x1SrzcNbEmYpy3HZMxsX
+ CCXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693328775; x=1693933575;
+ d=1e100.net; s=20221208; t=1693328816; x=1693933616;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=56QDK0faAC92zLJdFo/FVduVNd5oSQKc+H52plpDONk=;
- b=Jtg3fJAOWuAYF96PYqOs05R93twAMp8mmI85JhMyoetYdvIn4hySgdgLdbZ6U/597r
- kZtQl6dNfao3rHUhPT24+kFcFtag38DnE6exFzNeVWL4VLtyxX9YJinHQY4r9BS+B8Kf
- lClXDwLuorRdXrP4J76HqEK886iC9tq/JqYHK1RNpNsnspP1dPBjgiFfCNHBvtosSLJb
- aEp/LDCvXbft1FZ9Npuwy3T+KA1msSp6zmZV376iQr4bIyTLScqNxui+aRH/HJX74Txj
- hbznwxwWBdiz/XQZjWuiZxJvkbkb7qSSDnnDz1n+cZkXvpIhl0B12madlkxdn45ezqVt
- IPUQ==
-X-Gm-Message-State: AOJu0YwtXlcuKin6lJWuCN2ogFpu89G8sQ+OpGam2ZX3Jf9F3xGSHnzG
- /zZjUmAHK7AIPS3reEGbDQLbqg==
-X-Google-Smtp-Source: AGHT+IG/m6z+euEEIeUWKL93JuvIYUBSVxKgIxFHEkdlnYhKJaxoF3jmFTcV/rxB+IeSJaBULdYVWg==
-X-Received: by 2002:a17:902:f54f:b0:1bc:7c69:925a with SMTP id
- h15-20020a170902f54f00b001bc7c69925amr36743809plf.33.1693328774699; 
- Tue, 29 Aug 2023 10:06:14 -0700 (PDT)
+ bh=EJC4Q2Dzht6beo+iKRy2G8JGKTP6kbfY7xvxXxJ8pEQ=;
+ b=POfQsyDgPryOjDg/t7rvgoon68ychLwggi7MoKKFO7+DaC3ncROyh3+OUPRtYbwkwh
+ RKv+j2xBBptOTlp5Gy69YTRrq7tUaCR4sZCywJ4JEsphM9AGfHvPNMgIpxhv8GCTxNZN
+ WCdaGyUCJBwIuZGVmHVAhmAvARVUS2mKoeG8dKJQdG4xbVleYoZfYCVJ59zUd6EeFA0j
+ JFf+DNZEe8i6I9tasTd7O/dkpZjo61ocBXWSu8BBO3GWR1Q3HTokQ4IseL1gbDxmfSN+
+ Gr6HViD7GDiaOlq5s9a91LIk8ZMBHxBsaNOvNOQANSR3iso8835NVL9zlzyB3DS5gMwk
+ NnnA==
+X-Gm-Message-State: AOJu0Yw+9si9ozYGBgPFfMihGsh5/8qVCJNApmungjFMOtwwnqQBGPGj
+ hK8QP+UJ1HfQk+CtReU0K2T6aQ==
+X-Google-Smtp-Source: AGHT+IFrJ5R2pA+5h+kS9QR6oxGw9+zwuT8bwE2crRQWHDR/ZhD58cPff4hfUsFu5tJbu/Bm3csYlQ==
+X-Received: by 2002:a17:902:e550:b0:1c2:5db:7f16 with SMTP id
+ n16-20020a170902e55000b001c205db7f16mr1730352plf.67.1693328816674; 
+ Tue, 29 Aug 2023 10:06:56 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- b1-20020a170902d50100b001bf52834696sm9618698plg.207.2023.08.29.10.06.13
+ e4-20020a170902d38400b001c1f161949fsm3769980pld.96.2023.08.29.10.06.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 10:06:14 -0700 (PDT)
-Message-ID: <3e93ab70-94f5-bd12-534b-20612a5466aa@linaro.org>
-Date: Tue, 29 Aug 2023 10:06:12 -0700
+ Tue, 29 Aug 2023 10:06:56 -0700 (PDT)
+Message-ID: <b4879b28-d038-5123-87e8-52f75aa0e12b@linaro.org>
+Date: Tue, 29 Aug 2023 10:06:54 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 07/11] target/helper: Remove unnecessary
- 'qemu/main-loop.h' header
+Subject: Re: [PATCH v2 09/11] target/xtensa: Include missing 'qemu/atomic.h'
+ header
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org
 References: <20230828221314.18435-1-philmd@linaro.org>
- <20230828221314.18435-8-philmd@linaro.org>
+ <20230828221314.18435-10-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230828221314.18435-8-philmd@linaro.org>
+In-Reply-To: <20230828221314.18435-10-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -7
 X-Spam_score: -0.8
 X-Spam_bar: /
@@ -99,36 +99,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/28/23 15:13, Philippe Mathieu-Daudé wrote:
-> "qemu/main-loop.h" declares functions related to QEMU's
-> main loop mutex, which these files don't access. Remove
-> the unused "qemu/main-loop.h" header.
+> Since commit fa92bd4af7 ("target/xtensa: fix access to
+> the INTERRUPT SR") these files use QEMU atomic API.
+> Explicit the header inclusion instead of relying on
+> implicit and indirect inclusion.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/riscv/pmu.h                   | 1 -
->   target/arm/ptw.c                     | 1 -
->   target/loongarch/iocsr_helper.c      | 1 -
->   target/loongarch/op_helper.c         | 1 -
->   target/mips/tcg/sysemu/lcsr_helper.c | 1 -
->   target/nios2/op_helper.c             | 1 -
->   target/ppc/int_helper.c              | 1 -
->   target/ppc/machine.c                 | 1 -
->   target/ppc/mem_helper.c              | 1 -
->   target/ppc/mmu_common.c              | 1 -
->   target/ppc/mmu_helper.c              | 1 -
->   target/ppc/power8-pmu.c              | 1 -
->   target/ppc/translate.c               | 1 -
->   target/riscv/csr.c                   | 1 -
->   target/riscv/m128_helper.c           | 1 -
->   target/riscv/op_helper.c             | 1 -
->   target/s390x/tcg/crypto_helper.c     | 1 -
->   target/s390x/tcg/misc_helper.c       | 1 -
->   target/xtensa/dbg_helper.c           | 1 -
->   target/xtensa/fpu_helper.c           | 1 -
->   target/xtensa/mmu_helper.c           | 1 -
->   target/xtensa/op_helper.c            | 1 -
->   target/xtensa/win_helper.c           | 1 -
->   23 files changed, 23 deletions(-)
+>   hw/xtensa/pic_cpu.c        | 1 +
+>   target/xtensa/exc_helper.c | 1 +
+>   target/xtensa/op_helper.c  | 1 +
+>   3 files changed, 3 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
