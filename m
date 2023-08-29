@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EDF78C87F
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56AB878C893
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:27:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb0YC-0004sf-TY; Tue, 29 Aug 2023 11:22:40 -0400
+	id 1qb0bk-0005wJ-W2; Tue, 29 Aug 2023 11:26:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb0YB-0004sX-Gd
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:22:39 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qb0bi-0005vj-KJ
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:26:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb0Y4-0003hi-PS
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:22:39 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qb0bf-00055Z-Rk
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:26:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693322550;
+ s=mimecast20190719; t=1693322770;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UlWemFggDX5d4f+pi2roibbsLFhidC4cpS7lZjZKDeo=;
- b=XuspBrxRwjgOK2t1hsbLF2zjTLL9Q5ZkIVoNOkPX46kjCOqmHhA97gsbbaKv8kxDzPu7qT
- 3A6jt3YQeKsc2IoJn6mCHXGT41zf+kQ90HjntDpPvVpx13W+xjdnkWtwkLjVxKfpmcXMzB
- jx3aKvONP1wihQcOqCu2MNv3IiCmzWw=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=CMuAafKXq3gse0UedUzJh/uxFnCA61JyJOs1yFqIgas=;
+ b=SluMMWqGg8sDkC9e9FiWcBC3KTQJGXeBxz4O9RYk6OnXfBFeyXmj6ewejD/8pLSN4PfPcf
+ sYNEF1snG+kqC/7JHdIb7leHdm2a54TLAReRVk94swdr2og0C3mr9r+5KblFOY1BwYprTi
+ mj7cA6pMZKXX2KOSAmN15Bd72jKtENE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-1blo0rbzPEe35-lw8I-dWw-1; Tue, 29 Aug 2023 11:22:20 -0400
-X-MC-Unique: 1blo0rbzPEe35-lw8I-dWw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-65174aca002so1272136d6.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:22:15 -0700 (PDT)
+ us-mta-516-4HX8gB8DOJOWY65ZBF7b3w-1; Tue, 29 Aug 2023 11:26:08 -0400
+X-MC-Unique: 4HX8gB8DOJOWY65ZBF7b3w-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fbdf341934so31896165e9.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:26:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693322535; x=1693927335;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UlWemFggDX5d4f+pi2roibbsLFhidC4cpS7lZjZKDeo=;
- b=Ks31GBouOZHsc6r+DefPc4j6sU0uEiCHlY+aiDzYrghprGONk2gbGNviVdXlkik0PL
- yftW//QqMIttjdamlp/cl9FP2t6rQsAH4M6Tb3cV+eXcIP04Pmx1pQ3KbkMojZ3NnPPv
- 4htg1Es16Bz4gKuM251MK58ZBPaQ/q6HJr0eeU+ljPszQJTNo4ZXZJJFy025+X68+eP8
- h0SL/Qzw03ROr85ka/0t76vZgLMe7l8Sjn/zGINBuLOouu6mwLFH63pV1XwkPnpbVoUm
- PE3Bp9ABr0oTz/J/dBgQvmLOfxWC84tkn2ItZ6fPtjdz6xdV1fTbrcWOTjUkCmKbydIp
- oX+g==
-X-Gm-Message-State: AOJu0YxDif7xirePll3/BNfD4QNTAExacQTHocS9vATPSrRk7Eg2kmzn
- 6lqVjZixT8JJGxI1AJ1GprGoJPNwPBWS7+uxRecPS+eqW41mBHkNP+7fQclJqf7sVLMVRNaK5Vz
- Ij9NUG6w/jB46K3h7M9af0o4=
-X-Received: by 2002:ad4:5ba4:0:b0:63c:f852:aa3a with SMTP id
- 4-20020ad45ba4000000b0063cf852aa3amr32355673qvq.4.1693322535240; 
- Tue, 29 Aug 2023 08:22:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqBo+1m+h6Efq9ulZevm4zmbPy6QT0IgYY41+T0LPiAklcA2IMRkIcc1d11OSpsEUlBwxcXQ==
-X-Received: by 2002:ad4:5ba4:0:b0:63c:f852:aa3a with SMTP id
- 4-20020ad45ba4000000b0063cf852aa3amr32355652qvq.4.1693322534985; 
- Tue, 29 Aug 2023 08:22:14 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- g8-20020a0cdf08000000b0064f73bd872fsm3420821qvl.134.2023.08.29.08.22.14
+ d=1e100.net; s=20221208; t=1693322767; x=1693927567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CMuAafKXq3gse0UedUzJh/uxFnCA61JyJOs1yFqIgas=;
+ b=NbZK6GvcHgexjf4wWpW4nvjKnx/rqB0sqFAKrcujxPz6s0bdfgEgUdN52zodWg4rGH
+ Eoxmb3Ei7bBSzMBa8DPmx1KeJMmk/KAuI/CsjL51sj097c1cUs7lLi9vo0zRYrt1E+9e
+ AR9HD7WzhJalS6tkP7Uz7QkfN4RxOyv/UaacU3bFPxmbdG3NxyfqX689eL3bqkIGgINp
+ a3FiaCSo1gRyDlwu7u+IpI3BKJxDNx8QETd+PWWjAOVRlclSTmCR6yAP7bdGi0n3uH4I
+ KANvZNklTdvmgcTjekIoqu9CPtVobzBDk1n2wEeLYLKKJ5oGqR2ZmZGfSHlH/sLcmDLL
+ OezA==
+X-Gm-Message-State: AOJu0Yy5VnECqe0KPCjUj5RTHRkIiV7EIOzm/qJRx5sHHhyK7oI0C5GE
+ km1nrqO7kqdaXKgYR2Cf3j75QwMuLV+1nGFD4X6Pe5NJk+zsacG+MWl/5zJ51C6Lhzl8zJLN56U
+ DAT3yvm/W29pQU6tthI7VGf7cjxVDP7ybniRkCVjhF7SfHV4q7wLarmhIG9shuPuABzvjCpsatu
+ c=
+X-Received: by 2002:adf:e645:0:b0:31a:d90e:42cd with SMTP id
+ b5-20020adfe645000000b0031ad90e42cdmr22103393wrn.35.1693322767034; 
+ Tue, 29 Aug 2023 08:26:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqIsEdNToOFQFbNDdhgvtQosr+FhRUX97Ta4NwQeP9yVUQBkrKUsSwohXd07gTVrP5s7uALw==
+X-Received: by 2002:adf:e645:0:b0:31a:d90e:42cd with SMTP id
+ b5-20020adfe645000000b0031ad90e42cdmr22103374wrn.35.1693322766535; 
+ Tue, 29 Aug 2023 08:26:06 -0700 (PDT)
+Received: from [192.168.1.174] ([151.48.237.81])
+ by smtp.gmail.com with ESMTPSA id
+ m15-20020adffe4f000000b003195504c754sm13997876wrs.31.2023.08.29.08.26.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 08:22:14 -0700 (PDT)
-Date: Tue, 29 Aug 2023 11:22:12 -0400
-From: Peter Xu <peterx@redhat.com>
-To: hongmianquan <hongmianquan@bytedance.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, david@redhat.com,
- philmd@linaro.org
-Subject: Re: [RESEND] memory: avoid updating ioeventfds for some address_space
-Message-ID: <ZO4NJKDsIGYWQz5j@x1n>
-References: <20230829022354.94149-1-hongmianquan@bytedance.com>
+ Tue, 29 Aug 2023 08:26:05 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] target/i386: raise FERR interrupt with iothread locked
+Date: Tue, 29 Aug 2023 17:25:55 +0200
+Message-ID: <20230829152604.101542-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230829022354.94149-1-hongmianquan@bytedance.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,7 +81,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,25 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hongmianquan,
+Otherwise tcg_handle_interrupt() triggers an assertion failure:
 
-On Tue, Aug 29, 2023 at 10:23:54AM +0800, hongmianquan wrote:
-> When updating ioeventfds, we need to iterate all address spaces,
-> but some address spaces do not register eventfd_add|del call when
-> memory_listener_register() and they do nothing when updating ioeventfds.
-> So we can skip these AS in address_space_update_ioeventfds().
-> 
-> The overhead of memory_region_transaction_commit() can be significantly
-> reduced. For example, a VM with 8 vhost net devices and each one has
-> 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
-> 
-> Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
+  #5  0x0000555555c97369 in tcg_handle_interrupt (cpu=0x555557434cb0, mask=2) at ../accel/tcg/tcg-accel-ops.c:83
+  #6  tcg_handle_interrupt (cpu=0x555557434cb0, mask=2) at ../accel/tcg/tcg-accel-ops.c:81
+  #7  0x0000555555b4d58b in pic_irq_request (opaque=<optimized out>, irq=<optimized out>, level=1) at ../hw/i386/x86.c:555
+  #8  0x0000555555b4f218 in gsi_handler (opaque=0x5555579423d0, n=13, level=1) at ../hw/i386/x86.c:611
+  #9  0x00007fffa42bde14 in code_gen_buffer ()
+  #10 0x0000555555c724bb in cpu_tb_exec (cpu=cpu@entry=0x555557434cb0, itb=<optimized out>, tb_exit=tb_exit@entry=0x7fffe9bfd658) at ../accel/tcg/cpu-exec.c:457
 
-Please feel free to take my R-b with the patch if the patch didn't change.
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1808
+Reported-by: NyanCatTW1 <https://gitlab.com/a0939712328>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/tcg/sysemu/fpu_helper.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks,
-
+diff --git a/target/i386/tcg/sysemu/fpu_helper.c b/target/i386/tcg/sysemu/fpu_helper.c
+index 1c3610da3b9..fd8cc72a026 100644
+--- a/target/i386/tcg/sysemu/fpu_helper.c
++++ b/target/i386/tcg/sysemu/fpu_helper.c
+@@ -31,7 +31,9 @@ void x86_register_ferr_irq(qemu_irq irq)
+ void fpu_check_raise_ferr_irq(CPUX86State *env)
+ {
+     if (ferr_irq && !(env->hflags2 & HF2_IGNNE_MASK)) {
++        qemu_mutex_lock_iothread();
+         qemu_irq_raise(ferr_irq);
++        qemu_mutex_unlock_iothread();
+         return;
+     }
+ }
 -- 
-Peter Xu
+2.41.0
 
 
