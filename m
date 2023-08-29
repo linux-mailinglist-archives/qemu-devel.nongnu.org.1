@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F8078D097
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 946F978D03E
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:20:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7n1-0000oT-VD; Tue, 29 Aug 2023 19:06:27 -0400
+	id 1qb7n5-0000rl-P9; Tue, 29 Aug 2023 19:06:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb4mD-0001dW-KH
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:53:26 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ id 1qb4pF-0001sy-9Y
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:56:33 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb4mA-0006A1-H1
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:53:24 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6bc9254a1baso3633321a34.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:53:20 -0700 (PDT)
+ id 1qb4pC-0007BL-En
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:56:32 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68a520dba33so3831733b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693338800; x=1693943600; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693338989; x=1693943789; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WCMltG0uZJJgvo3ueVAW7Dxtn1YUSOSTOsATDYSoCag=;
- b=O2oGtrXFX+aA0yz5EEXgHGenDgmdNdOzbOsvV/0+BscUi0vlZaj77rEConwKUUfMx7
- RSt6w7sC8P03QPzJAjslcQv4ZGDmosAjd78k2CTzd98jbk3tZVMHv3E04XwNCS+Us+pt
- R0WRHaoKBgwlWU7HYwxSDPvFhXnZezHvo+Vb5ak+R9+S4KrndS10cZB8JNTCsCyn+e/J
- QOo2xbVbFfLD5rm7PUCyu+UYOP6ojLaEDPui5luWzS8sBqpicTLg1jJWdyKjFHqC5G1I
- YgMHVyVzvqyRksOMT+d7L2f8NQRBvPDFavkIUKXMuL093ZIeHpR8hUsdRO/MCbilkdQo
- QMKw==
+ bh=6TaTigwwlzrDYYLLDRWxh4f2cLZdhBtvWyK060DquXs=;
+ b=KQjzSX4FlgRju/fBjJeYI/pB5YLcKZVdFVhZWC6KsWp99fWBYayCd/wYLBPPN5/ZG9
+ T4FhktWXW3gd+DQgO1+cnOvCL4FYb/CvB6sKOcOEPuELniHXf2N2bkJitd2vDJ/dycaW
+ h4lHMuqeEUlgLx68fuNh5qr105V7wEP5oocd3bT7QpdUB/ZNxBTZpP4p76Yue5FS+0Io
+ uin2wBvOpj2hAU3YLGrVzFl+5yzIQL6AvL8M7cmndEGacaqjiGaySPvh1oRayOoQLrLd
+ niKT5Nxo6s+q991QvG4cQpf3BHnVAYU3JZ8VtO7wLWzn8isTGD7S4Y/ajiXk0t9Zcv/M
+ nOzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693338800; x=1693943600;
+ d=1e100.net; s=20221208; t=1693338989; x=1693943789;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WCMltG0uZJJgvo3ueVAW7Dxtn1YUSOSTOsATDYSoCag=;
- b=NjAKKl8ehalIJsA03rzHzOhUuMiDRME+Vvg7yYpxeDEHsHOo+w392mGpG19t9lseR+
- fy+7xMaPqyhHjXp7wdv/NfD17TKlN9xKqn+jg+WeVkfX2ZhIWTz64aBc1Xn9LQvf6CPX
- ICMb3QPFFo6dvU2VrEA1TYSC1kyCyR5kBudLkIl94jRhlKadHsujZv5Flhuorow7jtqo
- nkbSix//cOVHHIPEPhloM22kmm1eb7NTVynYhCHGEUBoYBktfzNUgiIa9FMzse6dBKZQ
- hZSWJsg2hzpcXTdyaY4Q7dihyQSO6L5KqnbdsyRg8p2/rDIZWFxWVgg5XKiaYg9DCXn+
- tf7Q==
-X-Gm-Message-State: AOJu0Yw1hyYbMZO2xVagj0dbe5P1rH5ynp+ufoGOZdbneUVrlUJtVogi
- HAOVSVr2VnPI3J57aNJQoRwu9g==
-X-Google-Smtp-Source: AGHT+IFBCv/q9r7AHX64YP/dedyjamROBihK/XvBj96ibJkpAGpFjXdCNjrJfEdExGyGiTRBG1VSHg==
-X-Received: by 2002:a05:6870:610c:b0:1bb:4bad:ebce with SMTP id
- s12-20020a056870610c00b001bb4badebcemr194647oae.27.1693338799890; 
- Tue, 29 Aug 2023 12:53:19 -0700 (PDT)
+ bh=6TaTigwwlzrDYYLLDRWxh4f2cLZdhBtvWyK060DquXs=;
+ b=hRwfkKC6afV+hkEea5GegLUzreTm99TQZltsPt9Ey5SrKzKVZ8plOUOVpmM2sgQKN2
+ f/YSbzDjfBm1a6G5qkE2AyWiAEaGz7DxKbpw/hc8H/L+WZ29bdJ1HYPgQqP23KCh249K
+ q5ltq+/c15NUaRv03uT29/cibD+ywx2pABs23xdpG8MCQdihl4xzohitPasV1f1d9dhR
+ FRbwmJMoy/l5MDdhjISC7/DP1Wf58/2dl6zkwJQYPZ+g7grTnxfyXTDGVT7Ym1oadaIW
+ AZ7zCIn4zjlsnz53vI5AuUXViqHrb/YfBtA8jRx8pLvEEbAZjECPYew6D3XQGbW6kBWs
+ 7qwg==
+X-Gm-Message-State: AOJu0Yw9hNXyzBGyHT4Q8u1eQpwOYMCE1+3vAUDGwnwpvm5i8p0Iwl9+
+ obizQByO35HUCQ4ABB+xgqzYbp1kn/VTc7q5858=
+X-Google-Smtp-Source: AGHT+IHv9Bo6AMDVP7WVprzrhKeEAySh2bGk5pIeKL4ga0Uu2KYSxyinhsSgt/El55IMU65BuzpRHg==
+X-Received: by 2002:a05:6a20:8e26:b0:10f:be0:4dce with SMTP id
+ y38-20020a056a208e2600b0010f0be04dcemr423726pzj.8.1693338988874; 
+ Tue, 29 Aug 2023 12:56:28 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- 11-20020a17090a194b00b0026f3e396882sm11884590pjh.45.2023.08.29.12.53.19
+ e17-20020a62ee11000000b006889601aba4sm8721604pfi.210.2023.08.29.12.56.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 12:53:19 -0700 (PDT)
-Message-ID: <7dd423ed-9949-0850-5bd4-eaf9a2201187@linaro.org>
-Date: Tue, 29 Aug 2023 12:53:17 -0700
+ Tue, 29 Aug 2023 12:56:28 -0700 (PDT)
+Message-ID: <c5bf6016-ec3f-362a-fe8c-6aca53a3d60a@linaro.org>
+Date: Tue, 29 Aug 2023 12:56:26 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 12/32] bsd-user: Implement getgroups(2) and setgroups(2)
- system calls.
+Subject: Re: [PATCH 13/32] bsd-user: Implement umask(2), setlogin(2) and
+ getlogin(2)
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
- <20230827155746.84781-13-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-14-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230827155746.84781-13-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230827155746.84781-14-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -97,48 +97,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/27/23 08:57, Karim Taha wrote:
-> From: Stacey Son <sson@FreeBSD.org>
+> From: Stacey Son<sson@FreeBSD.org>
 > 
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> Signed-off-by: Stacey Son<sson@FreeBSD.org>
+> Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
 > ---
->   bsd-user/bsd-proc.h           | 44 +++++++++++++++++++++++++++++++++++
->   bsd-user/freebsd/os-syscall.c |  9 +++++++
->   2 files changed, 53 insertions(+)
-> 
-> diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-> index b6225e520e..ecd6a13c2d 100644
-> --- a/bsd-user/bsd-proc.h
-> +++ b/bsd-user/bsd-proc.h
-> @@ -41,4 +41,48 @@ static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
->       return 0;
->   }
->   
-> +/* getgroups(2) */
-> +static inline abi_long do_bsd_getgroups(abi_long gidsetsize, abi_long arg2)
-> +{
-> +    abi_long ret;
-> +    uint32_t *target_grouplist;
-> +    gid_t *grouplist;
-> +    int i;
-> +
-> +    grouplist = alloca(gidsetsize * sizeof(gid_t));
+>   bsd-user/bsd-proc.h           | 39 +++++++++++++++++++++++++++++++++++
+>   bsd-user/freebsd/os-syscall.c | 12 +++++++++++
+>   2 files changed, 51 insertions(+)
 
-Don't use alloca for items that are sized by the guest.
-
-Use g_autofree and g_try_new, failing with ENOMEM.
-
-> +/* setgroups(2) */
-> +static inline abi_long do_bsd_setgroups(abi_long gidsetsize, abi_long arg2)
-> +{
-> +    uint32_t *target_grouplist;
-> +    gid_t *grouplist;
-> +    int i;
-> +
-> +    grouplist = alloca(gidsetsize * sizeof(gid_t));
-
-Likewise.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
