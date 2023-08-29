@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB6C78D063
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF85378D096
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nu-0001lN-Bw; Tue, 29 Aug 2023 19:07:22 -0400
+	id 1qb7nv-0001pB-4f; Tue, 29 Aug 2023 19:07:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qb5ZN-0008JW-Qk
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:44:13 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qb5ZL-0006xt-Nb
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:44:13 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4fe15bfb1adso7607151e87.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693341850; x=1693946650; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=SNVkbyFCBk1eYmxROyDbG5wU7GD6JvrhJGxLhA8BnYQ=;
- b=WDRylMcXkgALfvf4EwAIoq9BwEhfDBVzATnhHl51OFKKKK2z6+psSKf28ta0Ty59aE
- 7O2mvXKjEcVn7ooEV+LodZtJwg+tEjSQNhuXpYrXN5Ydk8RmwvSyIuFAlCvZHFWIxJOC
- 9hGkjS4A48cN6/fXTA/mZCnCYKgvNu1utxdt6Q+Lw1rfQLgxqJYQ5AJAvBnLr7mEujTs
- w6e8N53ZQvyOMPMBnzfMqTkmDWwSaUq8r8qxG9yrU9YDea1GHiSv+bmKFQTzE4eJuHOc
- rxgw3q4LR79uo3R9M1jZGj9i6wPFYHWAkhZgAZ+FDvzE0+oJzHpoOPRtRMeUnAU5I+JA
- gsvg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qb5c1-0000Ep-RY
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:46:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qb5bx-0007Rm-H4
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:46:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693342012;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=u069NO16WAovdX6uXScjF018D+J+6wwITMqmSeb6se0=;
+ b=aFYIUu6XytfZu2hMSA8/RVYTktt7RTQar4ver56p5t9IK90SBAb/f1aYMIOLQxlN/JsfvD
+ fyVvB6lHyDePsnTaNai6ncCUA5JWMzuxfw0qoFxkbuzVoQT+EegWxmiINyZX/crWtwkhIM
+ dl/pGWu0A7vAz6sTc19yKL3tOSzCVVg=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-8xMw03aSPb6jBojNzrVeZw-1; Tue, 29 Aug 2023 16:46:49 -0400
+X-MC-Unique: 8xMw03aSPb6jBojNzrVeZw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-52a08d02c62so3791005a12.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:46:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693341850; x=1693946650;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SNVkbyFCBk1eYmxROyDbG5wU7GD6JvrhJGxLhA8BnYQ=;
- b=YP898d5Q9mpMJtjwTRk++iNjHBW9EoP+HBYtlDjsGhgu4MbBbmqEk7SHIyRQTf5Ho6
- r7CXS9eOZZhAMOrkI3ZCJhWvqNrULFnIZFB92YPkKRt/VHyeWI32gS8lKNZC9YOozpKK
- jmS4pcb3RsDa4EXFZO+IpRa02lWDSk143gUyZtwb48IRLt2YiWdDOLolrLgXiVOoEJ21
- zpjUeTrroEO98Tn6tgLtHKe4WioaAMRm4AKjov+GSAFz81BcBuRH/kOcOK9nyHGjddcF
- K2NhldrWecRP6pyvern/Vn9L0jUtKk17sqF2STWV59zq5A+tU+OYP8Hi9tV2yGjO/ru8
- VVAQ==
-X-Gm-Message-State: AOJu0YyQHB8rqQh/H9+orRD4UkbHom2cftoQAzPjAAx5oMesqc3L28xJ
- r5WnM21D1R4pJPFOzTta71phpA==
-X-Google-Smtp-Source: AGHT+IGl95YFMkiKnRO3xMlYwBOnE0MrDtaSIY/FXelQQNCsFl8++kHw2iOvexzBwrjIb9uMMkU+kw==
-X-Received: by 2002:a05:6512:368c:b0:500:aaea:1494 with SMTP id
- d12-20020a056512368c00b00500aaea1494mr40678lfs.41.1693341849777; 
- Tue, 29 Aug 2023 13:44:09 -0700 (PDT)
-Received: from [192.168.200.206] (83.11.188.80.ipv4.supernova.orange.pl.
- [83.11.188.80]) by smtp.gmail.com with ESMTPSA id
- j8-20020ac253a8000000b005009b979e3dsm2070657lfh.303.2023.08.29.13.44.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 13:44:09 -0700 (PDT)
-Message-ID: <fd3665ae-da56-9d86-ff91-b1efa107671b@linaro.org>
-Date: Tue, 29 Aug 2023 22:44:08 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
-Content-Language: pl-PL, en-GB, en-HK
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ d=1e100.net; s=20221208; t=1693342009; x=1693946809;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=u069NO16WAovdX6uXScjF018D+J+6wwITMqmSeb6se0=;
+ b=Mn8QWQ9HCBeiVTrwHmOQACKcGYFDdgBkFPmdNQTj4fCqyqoqcGDBgNHVr2doxCcqQg
+ VPv3ByOrV4DX4b43+sH56LunXoTcpPvjjb9crsNIHcLbWpjkxRlSL+kaDM/3O6ZsV8Zg
+ 6huTSQ89zuGmB4WYnLFmzULmC6qr6u0kUJLC2t+SSVtGU16T4oNT4l98R0NUAYBLmf54
+ b6ZrsomDbNH0xHg4JGd32/FzaiTQQz4JgxxfjZ0/IJ3J769w1GncFKdZi9t3JFnLeB4R
+ vvKfITyqtovZ6ESJRTiycw8ujSqXfIwpK5InlYmVD+fVSzbscwgsyMrFZ5SISrhbE/Bf
+ yKUg==
+X-Gm-Message-State: AOJu0Ywg0o38Ed9Krfrt8bMGaJp7Vtydu6q2D1oFf3NMq4sGgLMo1iTM
+ /6uf/UbW5jlIUmAVtvE/+cYvVvljMv0QazR5nTJmpKCH4A0qWT5BLsO3d6e/Vn+sjVZOZ35tSxE
+ lymn1jezMRLwh/H0=
+X-Received: by 2002:a17:906:5da5:b0:9a1:e8c0:7e2e with SMTP id
+ n5-20020a1709065da500b009a1e8c07e2emr110748ejv.14.1693342008853; 
+ Tue, 29 Aug 2023 13:46:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFneXcp9+Bc6gcDHsItGiDGgBRWa0KrpV1j2Ohfrq+8vMdDEp4v5w72+h3Yh6pbbCMHBBsh/g==
+X-Received: by 2002:a17:906:5da5:b0:9a1:e8c0:7e2e with SMTP id
+ n5-20020a1709065da500b009a1e8c07e2emr110736ejv.14.1693342008505; 
+ Tue, 29 Aug 2023 13:46:48 -0700 (PDT)
+Received: from redhat.com ([2.55.167.22]) by smtp.gmail.com with ESMTPSA id
+ k11-20020a1709063e0b00b009a1a653770bsm6303208eji.87.2023.08.29.13.46.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 13:46:47 -0700 (PDT)
+Date: Tue, 29 Aug 2023 16:46:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
  Gowtham Siddarth <gowtham.siddarth@arm.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
+Message-ID: <20230829164638-mutt-send-email-mst@kernel.org>
 References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
  <CAFEAcA81xq_yEXYdtAXtkqcdR=MHagSNf5rXOtt+AwohMY_=BQ@mail.gmail.com>
  <20230829093909-mutt-send-email-mst@kernel.org>
@@ -77,20 +78,21 @@ References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
  <20230829161732-mutt-send-email-mst@kernel.org>
  <601619fb-5f1e-4b93-3dd1-b415d0ee8979@linaro.org>
  <20230829163929-mutt-send-email-mst@kernel.org>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20230829163929-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <fd3665ae-da56-9d86-ff91-b1efa107671b@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x133.google.com
+In-Reply-To: <fd3665ae-da56-9d86-ff91-b1efa107671b@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,18 +108,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 29.08.2023 oÂ 22:40, Michael S. Tsirkin pisze:
->> It passes with sbsa-ref (which is not using QEMU versioning).
->>
->> Fails (as expected) when used new property for each pcie-root-port
->> (ignore line breaks):
->>
->> "-device pcie-root-port,
->>    x-pci-express-writeable-slt-bug=true,
->>    id=root30,chassis=30,slot=0"
+On Tue, Aug 29, 2023 at 10:44:08PM +0200, Marcin Juszkiewicz wrote:
+> W dniu 29.08.2023 o 22:40, Michael S. Tsirkin pisze:
+> > > It passes with sbsa-ref (which is not using QEMU versioning).
+> > > 
+> > > Fails (as expected) when used new property for each pcie-root-port
+> > > (ignore line breaks):
+> > > 
+> > > "-device pcie-root-port,
+> > >    x-pci-express-writeable-slt-bug=true,
+> > >    id=root30,chassis=30,slot=0"
+> > 
+> > could you also check with -machine pc-q35-8.1 instead of this
+> > property?
 > 
-> could you also check with -machine pc-q35-8.1 instead of this
-> property?
+> BSA ACS is AArch64 only.
 
-BSA ACS is AArch64 only.
+virt-8.1 then
+
 
