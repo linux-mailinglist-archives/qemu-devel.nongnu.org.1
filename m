@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508AD78D06C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA81C78D09F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:29:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb83k-0002rO-1o; Tue, 29 Aug 2023 19:23:44 -0400
+	id 1qb83n-0003Mt-Tg; Tue, 29 Aug 2023 19:23:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb83h-0002Xz-SD
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:23:41 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qb83k-00035T-K3
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:23:44 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb83f-0001Lh-4L
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:23:41 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c0c6d4d650so39268345ad.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 16:23:38 -0700 (PDT)
+ id 1qb83f-0001Ls-Gx
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 19:23:44 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-68a4bcf8a97so3226329b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 16:23:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693351417; x=1693956217; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Y4dMU2MqKObUooD8HDCDWw/oHlyWw4B/N3RU9lW80i4=;
- b=win5P34Jqvz28SdQazFc1ShNtCVztv1M/kxWfqKNAQKapaFn6724xPfLsocVqDBL1p
- UsatMJzMwe9IgHVzjaNl5FmrL/Z+0DPQl3k3CjXBhUgFsNUixMAd3DQ3TyXGAMiu4psA
- zXfHq/nQlleawCfAWd5+w4VlnXrrnmZo4egGwybRyGbt1g0MLaPQzSWSBSrX1J4ibS8R
- 4TZDmG8mQYFVJas5yYzFXD0OK9mNV+pr3UY6HSjWgbT/VzrnYGEyu1dVBawCsuS9cUxr
- ykkI1siBoomtv19p95qCtaYR2TTavdjNkZXEv4GAPQ8PSH8HvCMyIkmv3jHJ7Krwoinc
- MqxQ==
+ d=linaro.org; s=google; t=1693351418; x=1693956218; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GOQxCV2ZeNNpKDkyg+BAXzxnOS5aPcNG/SXJ9WibMEs=;
+ b=y4WCu8KIwponZSD6lMaiZw81ljVaXROBXBJD26OHL/SracIS+zrYw/7UBFygAL4TtD
+ iHDv1f8aJKepPLzBmbWRzDPy5gcgwTTt3Xo3PCfKLGnPpLTVhUpMD21kSbLqenHpAFxb
+ rvVe7HcNAl9eyFZbKH7qj2NYtfvEB8Jh4lUil0+gH+JNBVIBSTaX+AAZAvycQwfFN/E2
+ DXiPXu0BbeuuZLpq+m0RwXwnzcyGpf9eNHzZlhy8gfd2Mm2Oh3XW/wDcPpimOJpppW2N
+ 9OCyomXY437Ohk/hQO/aAs2tPn+fhkyJdd4vwtC0NbIsTiiurR9rtOieBKH8YEdMzwYm
+ fzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693351417; x=1693956217;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Y4dMU2MqKObUooD8HDCDWw/oHlyWw4B/N3RU9lW80i4=;
- b=dZlRPWFuv9rMi0KQq0HfbQP0tTqwy3YH119EhncfB6z8ozHp8CF5LxqiuhCy4POd3T
- 7hIenS1QTXGPjAvccXbUVoXIV9X/+t5NcAo1ApE5c2jkoc5eB5JyT7TcWPUKVOLcxgZh
- vV75cl7MHa4s91TiED9/bAH7Lgj//iDbRNSk9B7an5LWVbY5Gnly/Iv36H08EUAh4BkP
- SbpHAIIgpAx+JuFGsMqPicOYz9T014tpTtNbYQzdJ88aUx9L/u3cDLW0TXGFlPcrsi7P
- 5Dx5lPQ3vsX/eH1ecciyQOG7j8hAbu2ingDto2qJw+qXnUKlP6iRn6GFwZhGywo/unE3
- FwEw==
-X-Gm-Message-State: AOJu0YwADJ1zZnJZ1WRWfy9VCPY8Lw6Mntkqz9l8ngPt9jCgYa10t+vh
- AlAJsO6rE42HsZ6NEYQI+iPunXInEjkW4hlAHXM=
-X-Google-Smtp-Source: AGHT+IErCsCmlYm4pvFBKSoLReQA0dXe8dWuTdkNp68x+7WZqa1M4BwEApZdX2pGzskZEDygfvAQzw==
-X-Received: by 2002:a17:902:efc1:b0:1bc:2abb:4e98 with SMTP id
- ja1-20020a170902efc100b001bc2abb4e98mr472913plb.21.1693351417117; 
- Tue, 29 Aug 2023 16:23:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693351418; x=1693956218;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GOQxCV2ZeNNpKDkyg+BAXzxnOS5aPcNG/SXJ9WibMEs=;
+ b=HTq49fy692DVRqxUZCoXb8CSnAjg13heKZC7QlHbL7MG5B10tGMVJ8cDQIbEMcsGby
+ SrDGVYEs9lmTRsKrKC76Y1QHxnmQL0kqxJ/ANb03E/oQpP3QjMQLy/Puw+9o67HMDNr2
+ 8O87ptpzwQ0veEuZSarPtLiK0n40s3RHdS2KHzAsFIk0yYelzdbfbQ0780egEN0IEB8C
+ W/VT9Arc0H7AdExwek3NPpYSDe5+FDe+GwNb9H9HewtKYevmyiKUs9FOWhJg5ZEr/Tzg
+ 3g+Ujtl+lwds7ZkMQ+RRxKmZXJznEeiqBx1AJGGz00hKG85adau7bfVzq9gXxdrf2VO+
+ Da/w==
+X-Gm-Message-State: AOJu0YyIXuj3SePwIfAr/7BjAPnLvi8QhkTNAKx6QVqiH6lwhoLJRVcy
+ +d8BkMkgABoVQeDOFNah8GqyHULjje925Vujibo=
+X-Google-Smtp-Source: AGHT+IEraxh0BSW/LBYOXbzF+cEkOKlWrhXo68qK+XIJL8ZVxg1xvYAm9MuQ+lCXMN4PRuu8wMqPcw==
+X-Received: by 2002:a05:6a20:3954:b0:137:e595:830f with SMTP id
+ r20-20020a056a20395400b00137e595830fmr876263pzg.57.1693351418016; 
+ Tue, 29 Aug 2023 16:23:38 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- t9-20020a170902e84900b001b9dadf8bd2sm9829970plg.190.2023.08.29.16.23.36
+ t9-20020a170902e84900b001b9dadf8bd2sm9829970plg.190.2023.08.29.16.23.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 16:23:36 -0700 (PDT)
+ Tue, 29 Aug 2023 16:23:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: aaron@os.amperecomputing.com,
-	qemu-arm@nongnu.org
-Subject: [PATCH v5 00/12] Implement Most ARMv8.3 Pointer Authentication
- Features
-Date: Tue, 29 Aug 2023 16:23:23 -0700
-Message-Id: <20230829232335.965414-1-richard.henderson@linaro.org>
+Cc: aaron@os.amperecomputing.com, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v5 01/12] tests/tcg/aarch64: Adjust pauth tests for FEAT_FPAC
+Date: Tue, 29 Aug 2023 16:23:24 -0700
+Message-Id: <20230829232335.965414-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230829232335.965414-1-richard.henderson@linaro.org>
+References: <20230829232335.965414-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,57 +91,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes for v5:
-  * Updates for review.
-  * Include linux-user ESR changes.
+With FEAT_FPAC, AUT* instructions that fail authentication
+do not produce an error value but instead fault.
 
-Patch 10 is the only one without review.
+For pauth-2, install a signal handler and verify it gets called.
 
+For pauth-4 and pauth-5, we are explicitly testing the error value,
+so there's nothing to test with FEAT_FPAC, so exit early.
+Adjust the makefile to use -cpu neoverse-v1, which has FEAT_EPAC
+but not FEAT_FPAC.
 
-r~
-
-
-Aaron Lindsay (6):
-  target/arm: Add ID_AA64ISAR2_EL1
-  target/arm: Add feature detection for FEAT_Pauth2 and extensions
-  target/arm: Implement FEAT_EPAC
-  target/arm: Implement FEAT_Pauth2
-  targer/arm: Inform helpers whether a PAC instruction is 'combined'
-  target/arm: Implement FEAT_FPAC and FEAT_FPACCOMBINE
-
-Richard Henderson (6):
-  tests/tcg/aarch64: Adjust pauth tests for FEAT_FPAC
-  target/arm: Don't change pauth features when changing algorithm
-  target/arm: Implement FEAT_PACQARMA3
-  linux-user/aarch64: Add ESR signal frame for SIGSEGV, SIGBUS
-  linux-user/aarch64: Fix normal SIGILL si_code
-  linux-user/aarch64: Add ESR signal frame for PACFAIL
-
- docs/system/arm/cpu-features.rst  |  21 ++--
- docs/system/arm/emulation.rst     |   7 ++
- target/arm/cpu.h                  |  49 ++++++--
- target/arm/syndrome.h             |   7 ++
- target/arm/tcg/helper-a64.h       |   4 +
- tests/tcg/aarch64/pauth.h         |  23 ++++
- linux-user/aarch64/cpu_loop.c     |   7 +-
- linux-user/aarch64/signal.c       |  58 +++++++++-
- target/arm/arm-qmp-cmds.c         |   2 +-
- target/arm/cpu64.c                |  86 ++++++++++----
- target/arm/helper.c               |   4 +-
- target/arm/hvf/hvf.c              |   1 +
- target/arm/kvm64.c                |   2 +
- target/arm/tcg/cpu64.c            |   2 +
- target/arm/tcg/pauth_helper.c     | 180 ++++++++++++++++++++++++------
- target/arm/tcg/tlb_helper.c       |   8 +-
- target/arm/tcg/translate-a64.c    |  12 +-
- tests/qtest/arm-cpu-features.c    |  12 +-
- tests/tcg/aarch64/pauth-2.c       |  77 +++++++++++--
- tests/tcg/aarch64/pauth-4.c       |  18 ++-
- tests/tcg/aarch64/pauth-5.c       |  10 ++
- tests/tcg/aarch64/Makefile.target |   6 +-
- 22 files changed, 497 insertions(+), 99 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tests/tcg/aarch64/pauth.h         | 23 +++++++++++++
+ tests/tcg/aarch64/pauth-2.c       | 54 ++++++++++++++++++++++++++-----
+ tests/tcg/aarch64/pauth-4.c       | 18 ++++++++---
+ tests/tcg/aarch64/pauth-5.c       | 10 ++++++
+ tests/tcg/aarch64/Makefile.target |  6 +++-
+ 5 files changed, 98 insertions(+), 13 deletions(-)
  create mode 100644 tests/tcg/aarch64/pauth.h
 
+diff --git a/tests/tcg/aarch64/pauth.h b/tests/tcg/aarch64/pauth.h
+new file mode 100644
+index 0000000000..543b234437
+--- /dev/null
++++ b/tests/tcg/aarch64/pauth.h
+@@ -0,0 +1,23 @@
++/*
++ * Helper for pauth test case
++ *
++ * Copyright (c) 2023 Linaro Ltd
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <assert.h>
++#include <sys/auxv.h>
++
++static int get_pac_feature(void)
++{
++    unsigned long isar1, isar2;
++
++    assert(getauxval(AT_HWCAP) & HWCAP_CPUID);
++
++    asm("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
++    asm("mrs %0, S3_0_C0_C6_2" : "=r"(isar2));     /* id_aa64isar2_el1 */
++
++    return ((isar1 >> 4) & 0xf)   /* APA */
++         | ((isar1 >> 8) & 0xf)   /* API */
++         | ((isar2 >> 12) & 0xf); /* APA3 */
++}
+diff --git a/tests/tcg/aarch64/pauth-2.c b/tests/tcg/aarch64/pauth-2.c
+index 978652ede3..89ffdbf1df 100644
+--- a/tests/tcg/aarch64/pauth-2.c
++++ b/tests/tcg/aarch64/pauth-2.c
+@@ -1,5 +1,22 @@
+ #include <stdint.h>
++#include <signal.h>
++#include <stdlib.h>
+ #include <assert.h>
++#include "pauth.h"
++
++
++static void sigill(int sig, siginfo_t *info, void *vuc)
++{
++    ucontext_t *uc = vuc;
++    uint64_t test;
++
++    /* There is only one insn below that is allowed to fault. */
++    asm volatile("adr %0, auth2_insn" : "=r"(test));
++    assert(test == uc->uc_mcontext.pc);
++    exit(0);
++}
++
++static int pac_feature;
+ 
+ void do_test(uint64_t value)
+ {
+@@ -27,31 +44,52 @@ void do_test(uint64_t value)
+      * An invalid salt usually fails authorization, but again there
+      * is a chance of choosing another salt that works.
+      * Iterate until we find another salt which does fail.
++     *
++     * With FEAT_FPAC, this will SIGILL instead of producing a result.
+      */
+     for (salt2 = salt1 + 1; ; salt2++) {
+-        asm volatile("autda %0, %2" : "=r"(decode) : "0"(encode), "r"(salt2));
++        asm volatile("auth2_insn: autda %0, %2"
++                     : "=r"(decode) : "0"(encode), "r"(salt2));
+         if (decode != value) {
+             break;
+         }
+     }
+ 
++    assert(pac_feature < 4);  /* No FEAT_FPAC */
++
+     /* The VA bits, bit 55, and the TBI bits, should be unchanged.  */
+     assert(((decode ^ value) & 0xff80ffffffffffffull) == 0);
+ 
+     /*
+-     * Bits [54:53] are an error indicator based on the key used;
+-     * the DA key above is keynumber 0, so error == 0b01.  Otherwise
+-     * bit 55 of the original is sign-extended into the rest of the auth.
++     * Without FEAT_Pauth2, bits [54:53] are an error indicator based on
++     * the key used; the DA key above is keynumber 0, so error == 0b01.
++     * Otherwise, bit 55 of the original is sign-extended into the rest
++     * of the auth.
+      */
+-    if ((value >> 55) & 1) {
+-        assert(((decode >> 48) & 0xff) == 0b10111111);
+-    } else {
+-        assert(((decode >> 48) & 0xff) == 0b00100000);
++    if (pac_feature < 3) {
++        if ((value >> 55) & 1) {
++            assert(((decode >> 48) & 0xff) == 0b10111111);
++        } else {
++            assert(((decode >> 48) & 0xff) == 0b00100000);
++        }
+     }
+ }
+ 
+ int main()
+ {
++    static const struct sigaction sa = {
++        .sa_sigaction = sigill,
++        .sa_flags = SA_SIGINFO
++    };
++
++    pac_feature = get_pac_feature();
++    assert(pac_feature != 0);
++
++    if (pac_feature >= 4) {
++        /* FEAT_FPAC */
++        sigaction(SIGILL, &sa, NULL);
++    }
++
+     do_test(0);
+     do_test(0xda004acedeadbeefull);
+     return 0;
+diff --git a/tests/tcg/aarch64/pauth-4.c b/tests/tcg/aarch64/pauth-4.c
+index 24a639e36c..b254f413af 100644
+--- a/tests/tcg/aarch64/pauth-4.c
++++ b/tests/tcg/aarch64/pauth-4.c
+@@ -2,14 +2,24 @@
+ #include <assert.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include "pauth.h"
+ 
+ #define TESTS 1000
+ 
+ int main()
+ {
++    char base[TESTS];
+     int i, count = 0;
+     float perc;
+-    void *base = malloc(TESTS);
++    int pac_feature = get_pac_feature();
++
++    /*
++     * Exit if no PAuth or FEAT_FPAC, which will SIGILL on AUTIA failure
++     * rather than return an error for us to check below.
++     */
++    if (pac_feature == 0 || pac_feature >= 4) {
++        return 0;
++    }
+ 
+     for (i = 0; i < TESTS; i++) {
+         uintptr_t in, x, y;
+@@ -17,7 +27,7 @@ int main()
+         in = i + (uintptr_t) base;
+ 
+         asm("mov %0, %[in]\n\t"
+-            "pacia %0, sp\n\t"        /* sigill if pauth not supported */
++            "pacia %0, sp\n\t"
+             "eor %0, %0, #4\n\t"      /* corrupt single bit */
+             "mov %1, %0\n\t"
+             "autia %1, sp\n\t"        /* validate corrupted pointer */
+@@ -36,10 +46,10 @@ int main()
+         if (x != y) {
+             count++;
+         }
+-
+     }
++
+     perc = (float) count / (float) TESTS;
+-    printf("Checks Passed: %0.2f%%", perc * 100.0);
++    printf("Checks Passed: %0.2f%%\n", perc * 100.0);
+     assert(perc > 0.95);
+     return 0;
+ }
+diff --git a/tests/tcg/aarch64/pauth-5.c b/tests/tcg/aarch64/pauth-5.c
+index 67c257918b..ed8d5a926b 100644
+--- a/tests/tcg/aarch64/pauth-5.c
++++ b/tests/tcg/aarch64/pauth-5.c
+@@ -1,4 +1,5 @@
+ #include <assert.h>
++#include "pauth.h"
+ 
+ static int x;
+ 
+@@ -6,6 +7,15 @@ int main()
+ {
+     int *p0 = &x, *p1, *p2, *p3;
+     unsigned long salt = 0;
++    int pac_feature = get_pac_feature();
++
++    /*
++     * Exit if no PAuth or FEAT_FPAC, which will SIGILL on AUTDA failure
++     * rather than return an error for us to check below.
++     */
++    if (pac_feature == 0 || pac_feature >= 4) {
++        return 0;
++    }
+ 
+     /*
+      * With TBI enabled and a 48-bit VA, there are 7 bits of auth, and so
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 681dfa077c..1ee6309920 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -42,7 +42,11 @@ endif
+ ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+ AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
+ pauth-%: CFLAGS += -march=armv8.3-a
+-run-pauth-%: QEMU_OPTS += -cpu max
++run-pauth-1: QEMU_OPTS += -cpu max
++run-pauth-2: QEMU_OPTS += -cpu max
++# Choose a cpu with FEAT_Pauth but without FEAT_FPAC for pauth-[45].
++run-pauth-4: QEMU_OPTS += -cpu neoverse-v1
++run-pauth-5: QEMU_OPTS += -cpu neoverse-v1
+ endif
+ 
+ # BTI Tests
 -- 
 2.34.1
 
