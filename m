@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E772378BE16
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 07:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA9E78BE1C
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 07:58:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qarhZ-0004x6-Gh; Tue, 29 Aug 2023 01:55:45 -0400
+	id 1qarhm-00051R-9I; Tue, 29 Aug 2023 01:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qarhB-0004wX-BJ
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:55:23 -0400
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+ id 1qarhG-0004ws-7a
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:55:27 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qarh8-0002Xc-16
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:55:21 -0400
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-34b0f3b792dso14932025ab.3
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 22:55:16 -0700 (PDT)
+ id 1qarhB-0002ZM-Qk
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 01:55:26 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-26b41112708so2551537a91.3
+ for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 22:55:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693288515; x=1693893315;
+ d=gmail.com; s=20221208; t=1693288520; x=1693893320;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bW9X2gfDq+rHa1NbQsYZnS5A64KvEMz2YU5bZSkWvzE=;
- b=VWS3Z4UUWZ9cNv7E+oaVDpnxfJXQiHd3BgIVPgleqCLGIfbuyN+M02QsmTLyjBkKHq
- 2EqlXA3srqKpVUdsrU7tRmqiisyI8Nuf6r4nC7RMC9HByRM2Gz7eKUtPU4ybvhrHxlVa
- O5WfktGK2+Edy0uM4RhnqQVnNKR9rOT7TdBdacIu545qWx1ZO82Vx2k9wGZT9OI2tvWD
- b5Xra+xlXKarsCM+bp2FWYGzyAGb4SIusBgM5M0AMlPvQwmu2DRCOQo3+kyDKqKRxpCV
- N+/1uBXxAvwAmHmbmjLkycrw4WR80sMxRe/cgAWa8FiEKx1BJiHf4QWf8ig61hEX4JM1
- wZMA==
+ bh=EGqGjKW8GJyKckG6Bxbu9YLJZ6tT1uqiiMBtfQmiWrA=;
+ b=WTEmoohPyFE7PYs3Iblvwl2JOtijdVbniez45k/QCuj2PkXTfO1wro1oaBZ/MY5lQ0
+ Ki6RSXHcSZpjahDFfEFO/74zHd1md9tfpvYMcfx7dNzIe8kSRjZcfqd4HjMmGJTLjLU3
+ uZMPksDsdrZ7+GDlSF4kpQLijFd6b/mgZqQYF5tlZY4DJyeNqBfu6xgtDM/zj+usgviV
+ QmMa/R0Se5SiEoSfBUnapZrvVPOC2p5pg29EnPwu96N04bAq0lFfUrSjjQXHf9PlL4Kc
+ D6Nn6shlJ9E9qjL6/VyA74Kf3Qnb/UrpSmnxRm8BXjQmJw/VslQi0LQsTUwvWRMa7kny
+ LufA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693288515; x=1693893315;
+ d=1e100.net; s=20221208; t=1693288520; x=1693893320;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bW9X2gfDq+rHa1NbQsYZnS5A64KvEMz2YU5bZSkWvzE=;
- b=d63XtcdGJ1wsLpfbwytAdSzW1JMv+mfD+WxGvyGNKd22+LbHRrkQY28yPmII9xEbIG
- GXWSsGqAXRrn6RJbmmodHY+gtj+26bDgirfaDJ1tjU0/sO6sUTddecFh8iz8jCODAUCY
- PtSmRqjZCf+KOFn2wbYODDfq9tXHDB67nUDCMd+M9oa8wccvtFmzqAjeRF9MrEHT90Cb
- h4H1QMWK2MUajLnuIkKlvujaFxDRxplWZvRYzUSahGaIEe3Phqy5ftP+W7k3gNNuYLWn
- YhUuApjmtZOtVttAonONU73nxEPJCVmQNKR42D7XJbTsZOjSh1MLaFY/8PSskfsONqGP
- YvZw==
-X-Gm-Message-State: AOJu0YyeCiv1GcrSDLruBloMzKVM/GsvB9goxMfHa4Yjfi0YW3Pjgy9w
- 9Wx1ra4bpQGvOeT25bOHmqA=
-X-Google-Smtp-Source: AGHT+IH7+IhZETOX2Il9UxdMRppEQTVkjigAk8PfsLuk0lAniF/hUCH/CFdZZVecyVb8euttZLiJ2w==
-X-Received: by 2002:a05:6e02:1c89:b0:340:79ff:c1b6 with SMTP id
- w9-20020a056e021c8900b0034079ffc1b6mr23240631ill.4.1693288514960; 
- Mon, 28 Aug 2023 22:55:14 -0700 (PDT)
+ bh=EGqGjKW8GJyKckG6Bxbu9YLJZ6tT1uqiiMBtfQmiWrA=;
+ b=Es1Y/Yvy6Bdqq1ROhC43nvAEUeX/EU2a7xhYQOI3Vn+1B6CrPkDq3mJSFThgyURWsx
+ wcTPu6gDYR1RytWqdKGnJypMJT6U6sngcjS4lB8mecCbsYIkCXG7CbI4G6Nt9De+ZL3O
+ ITpZ+9ZNKUVFSLclEU7qdm4qksmVY35+GTtFq37NwqR2+1Yt50E/wOfkAeVUZqOKBsm3
+ kyUR25nuIf9IfzdcW7chWPQLCHgJ7+iwEZKfMsQmbMxq35ejh0AcymqttHopEDrzzMeb
+ wmVzBzOdiCIbdPtlGKuC256OBXfEglnv7+hWilEdS8PdfndBlqoGNYXpWhnYyp+pB8E2
+ ZIkg==
+X-Gm-Message-State: AOJu0YyHDnQ7t7zuvYhJsdJuP0QEv8Z2HCbi5I0kSnFrGQ6C6hUelaCv
+ 7vS6vkKf6IiBmLR6JzNL0SM=
+X-Google-Smtp-Source: AGHT+IGAG0LBK9pFPpdROa8m2VtIPG9l2mca4l0b6LVJ0q9c4JnyCqiTsdU6ZcSGsr3QmLEIQC3QfA==
+X-Received: by 2002:a17:90b:14d:b0:26d:17d6:399d with SMTP id
+ em13-20020a17090b014d00b0026d17d6399dmr26922805pjb.38.1693288519866; 
+ Mon, 28 Aug 2023 22:55:19 -0700 (PDT)
 Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- m185-20020a633fc2000000b005642314f05fsm8021175pga.1.2023.08.28.22.55.13
+ j23-20020a17090ae61700b002696aeb72e5sm10119770pjy.2.2023.08.28.22.55.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 22:55:14 -0700 (PDT)
+ Mon, 28 Aug 2023 22:55:19 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
 	eperezma@redhat.com
 Cc: qemu-devel@nongnu.org, yin31149@gmail.com, leiyang@redhat.com,
  18801353760@163.com
-Subject: [PATCH v4 1/8] vhost: Add count argument to vhost_svq_poll()
-Date: Tue, 29 Aug 2023 13:54:43 +0800
-Message-Id: <950b3bfcfc5d446168b9d6a249d554a013a691d4.1693287885.git.yin31149@gmail.com>
+Subject: [PATCH v4 2/8] vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+Date: Tue, 29 Aug 2023 13:54:44 +0800
+Message-Id: <5e090c2af922192f5897ba7072df4d9e4754e1e0.1693287885.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1693287885.git.yin31149@gmail.com>
 References: <cover.1693287885.git.yin31149@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
- envelope-from=yin31149@gmail.com; helo=mail-il1-x135.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=yin31149@gmail.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,110 +96,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Next patches in this series will no longer perform an
 immediate poll and check of the device's used buffers
-for each CVQ state load command. Instead, they will
-send CVQ state load commands in parallel by polling
-multiple pending buffers at once.
+for each CVQ state load command. Consequently, there
+will be multiple pending buffers in the shadow VirtQueue,
+making it a must for every control command to have its
+own buffer.
 
-To achieve this, this patch refactoring vhost_svq_poll()
-to accept a new argument `num`, which allows vhost_svq_poll()
-to wait for the device to use multiple elements,
-rather than polling for a single element.
+To achieve this, this patch refactor vhost_vdpa_net_cvq_add()
+to accept `struct iovec`, which eliminates the coupling of
+control commands to `s->cvq_cmd_out_buffer` and `s->status`,
+allowing them to use their own buffer.
 
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
 ---
 v4:
-  - refactor subject line suggested by Eugenio
+  - split `in` to `vdpa_in` and `model_in` instead of reusing `in`
+in vhost_vdpa_net_handle_ctrl_avail() suggested by Eugenio
 
-v3: https://lore.kernel.org/all/77c1d8b358644b49992e6dbca55a5c9e62c941a8.1689748694.git.yin31149@gmail.com/
+v3: https://lore.kernel.org/all/b1d473772ec4bcb254ab0d12430c9b1efe758606.1689748694.git.yin31149@gmail.com/
 
- hw/virtio/vhost-shadow-virtqueue.c | 36 ++++++++++++++++++------------
- hw/virtio/vhost-shadow-virtqueue.h |  2 +-
- net/vhost-vdpa.c                   |  2 +-
- 3 files changed, 24 insertions(+), 16 deletions(-)
+ net/vhost-vdpa.c | 39 ++++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index 49e5aed931..e731b1d2ea 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -514,29 +514,37 @@ static void vhost_svq_flush(VhostShadowVirtqueue *svq,
- }
- 
- /**
-- * Poll the SVQ for one device used buffer.
-+ * Poll the SVQ to wait for the device to use the specified number
-+ * of elements and return the total length written by the device.
-  *
-  * This function race with main event loop SVQ polling, so extra
-  * synchronization is needed.
-  *
-- * Return the length written by the device.
-+ * @svq: The svq
-+ * @num: The number of elements that need to be used
-  */
--size_t vhost_svq_poll(VhostShadowVirtqueue *svq)
-+size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num)
- {
--    int64_t start_us = g_get_monotonic_time();
--    uint32_t len = 0;
-+    size_t len = 0;
-+    uint32_t r;
- 
--    do {
--        if (vhost_svq_more_used(svq)) {
--            break;
--        }
-+    while (num--) {
-+        int64_t start_us = g_get_monotonic_time();
- 
--        if (unlikely(g_get_monotonic_time() - start_us > 10e6)) {
--            return 0;
--        }
--    } while (true);
-+        do {
-+            if (vhost_svq_more_used(svq)) {
-+                break;
-+            }
-+
-+            if (unlikely(g_get_monotonic_time() - start_us > 10e6)) {
-+                return len;
-+            }
-+        } while (true);
-+
-+        vhost_svq_get_buf(svq, &r);
-+        len += r;
-+    }
- 
--    vhost_svq_get_buf(svq, &len);
-     return len;
- }
- 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
-index 6efe051a70..5bce67837b 100644
---- a/hw/virtio/vhost-shadow-virtqueue.h
-+++ b/hw/virtio/vhost-shadow-virtqueue.h
-@@ -119,7 +119,7 @@ void vhost_svq_push_elem(VhostShadowVirtqueue *svq,
- int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
-                   size_t out_num, const struct iovec *in_sg, size_t in_num,
-                   VirtQueueElement *elem);
--size_t vhost_svq_poll(VhostShadowVirtqueue *svq);
-+size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num);
- 
- void vhost_svq_set_svq_kick_fd(VhostShadowVirtqueue *svq, int svq_kick_fd);
- void vhost_svq_set_svq_call_fd(VhostShadowVirtqueue *svq, int call_fd);
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 73e9063fa0..3acda8591a 100644
+index 3acda8591a..a875767ee9 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -625,7 +625,7 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
-      * descriptor. Also, we need to take the answer before SVQ pulls by itself,
-      * when BQL is released
-      */
--    return vhost_svq_poll(svq);
-+    return vhost_svq_poll(svq, 1);
+@@ -596,22 +596,14 @@ static void vhost_vdpa_net_cvq_stop(NetClientState *nc)
+     vhost_vdpa_net_client_stop(nc);
  }
  
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+-static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
+-                                      size_t in_len)
++static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s,
++                                    const struct iovec *out_sg, size_t out_num,
++                                    const struct iovec *in_sg, size_t in_num)
+ {
+-    /* Buffers for the device */
+-    const struct iovec out = {
+-        .iov_base = s->cvq_cmd_out_buffer,
+-        .iov_len = out_len,
+-    };
+-    const struct iovec in = {
+-        .iov_base = s->status,
+-        .iov_len = sizeof(virtio_net_ctrl_ack),
+-    };
+     VhostShadowVirtqueue *svq = g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
+     int r;
+ 
+-    r = vhost_svq_add(svq, &out, 1, &in, 1, NULL);
++    r = vhost_svq_add(svq, out_sg, out_num, in_sg, in_num, NULL);
+     if (unlikely(r != 0)) {
+         if (unlikely(r == -ENOSPC)) {
+             qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device queue\n",
+@@ -637,6 +629,15 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+         .cmd = cmd,
+     };
+     size_t data_size = iov_size(data_sg, data_num);
++    /* Buffers for the device */
++    const struct iovec out = {
++        .iov_base = s->cvq_cmd_out_buffer,
++        .iov_len = sizeof(ctrl) + data_size,
++    };
++    const struct iovec in = {
++        .iov_base = s->status,
++        .iov_len = sizeof(*s->status),
++    };
+ 
+     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
+ 
+@@ -647,8 +648,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+     iov_to_buf(data_sg, data_num, 0,
+                s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
+ 
+-    return vhost_vdpa_net_cvq_add(s, data_size + sizeof(ctrl),
+-                                  sizeof(virtio_net_ctrl_ack));
++    return vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
+ }
+ 
+ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
+@@ -1222,10 +1222,15 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+         .iov_base = s->cvq_cmd_out_buffer,
+     };
+     /* in buffer used for device model */
+-    const struct iovec in = {
++    const struct iovec model_in = {
+         .iov_base = &status,
+         .iov_len = sizeof(status),
+     };
++    /* in buffer used for vdpa device */
++    const struct iovec vdpa_in = {
++        .iov_base = s->status,
++        .iov_len = sizeof(*s->status),
++    };
+     ssize_t dev_written = -EINVAL;
+ 
+     out.iov_len = iov_to_buf(elem->out_sg, elem->out_num, 0,
+@@ -1259,7 +1264,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+             goto out;
+         }
+     } else {
+-        dev_written = vhost_vdpa_net_cvq_add(s, out.iov_len, sizeof(status));
++        dev_written = vhost_vdpa_net_cvq_add(s, &out, 1, &vdpa_in, 1);
+         if (unlikely(dev_written < 0)) {
+             goto out;
+         }
+@@ -1275,7 +1280,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+     }
+ 
+     status = VIRTIO_NET_ERR;
+-    virtio_net_handle_ctrl_iov(svq->vdev, &in, 1, &out, 1);
++    virtio_net_handle_ctrl_iov(svq->vdev, &model_in, 1, &out, 1);
+     if (status != VIRTIO_NET_OK) {
+         error_report("Bad CVQ processing in model");
+     }
 -- 
 2.25.1
 
