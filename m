@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE7778C4F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A66178C4F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qayYs-0001PC-C0; Tue, 29 Aug 2023 09:15:14 -0400
+	id 1qayZt-0002CA-1X; Tue, 29 Aug 2023 09:16:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayYn-0001On-4C
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:15:09 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qayZo-00028c-ED
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:16:12 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayYi-0008Sf-GC
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:15:08 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-52bca2e8563so1672716a12.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:15:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qayZj-0000V6-G6
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:16:11 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-1c4c7a83bcdso3141544fac.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:16:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693314902; x=1693919702;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=G/qv3k2eF25/yOYgVWXwm8JOy7V7q8aRWlizXRVfJj4=;
- b=yichn1eoduAB5wUFcl5OPZneR2FiSY+fh6XyAFZlyaa7pdNr3ymcuJyVHtDQPVj+gh
- cwKiRlEvZdT4+FHlSq5ZLmcSk1Fy2nCJouNxjH1n5a5/tLTONu2EJ4YzixNwI41TWwQN
- 7pKwPRLHqig+CEs3wHAgQwq/VmdYQT1Vy666CmL5465IzxR9Rpn1ZcLOKl6p+2WqQjjh
- 2lDJgZfxuG3CM2fQgzRC40zWvAB2LeAmaqzO6Zvmk7aZyx0Ce6dhsHUzBh5MtqSWtlEr
- +QqUztvj/XOlr01z+TlXye8nLZXTVsL1eNo3VSDIYMQINYOpzD28BNQQAoWx6Jyc2XdY
- /Z1g==
+ d=ventanamicro.com; s=google; t=1693314965; x=1693919765;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=x29g9NjIG8Vvnom/ZSmXbnn29dsJLv83xMLgsW7L9WA=;
+ b=XSJG7hBhj5fff+ZPpCJ0R391UBMKoJdoNMHzCJeRz+PBaAKPiIgEzRhKB5TdESd9Pv
+ u4/H3FpgsJVx+kMORICzPDKOtegaHD5MOFr2Cwjbua67/RIaBUEao0tiNjIB6JfPzQ2m
+ t4FGL4DENRr9NUoSxb9jdh1cT0pKG+N1BCLxNEB4rIJqPzC8urZJXljuJMWiHx4XYpVN
+ swdc4MgbQlBkn3Zm8rEK9JCVsrnZY/C+mG69BijUcOqYfAxVzE1sEjFYwMFq981boLPg
+ 4/41Vo6VtWfKSuB0IGZ4fYOtUqTZAHME7jRQjiY4WB8d5GjBh38tZcAKwC6T1dkh+lGT
+ ZX4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693314902; x=1693919702;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=G/qv3k2eF25/yOYgVWXwm8JOy7V7q8aRWlizXRVfJj4=;
- b=IpnA1BQbMfEVr1YXWVLTPnZ/abBkbHQgsF9qg3TbAC5jRvpoBNQ583ExNRfw/A9Mcg
- eGCoaPgYjAoQUTi44T33yiG8sfw34a/KZry3a7yfmDNFD7YdyasKjKkJ9giwB/ut57uj
- k5xr8n1jZUtCwuyeo6pEPbqDdEPP4bFB43LLQWEVNgqHKjMpju8ponptv/2YLaktZOwy
- LFJW36kdOIZt1zMFS0o/KTLfbcLVuqQc248+J/QpW+vTAzP3zPW9NpS9xxJ43Hwe0pWe
- dzEEK6Gqfd++Mf1gdl1kOiH1LDQm1W7PSLa9TChlS1WruNgbHweC3PXtCx/BLpJV7sHH
- jlUg==
-X-Gm-Message-State: AOJu0YyOKH2G+tLZlVq1+6oeA/UioULHsWhll9xZ8Wo/bPed9YLwMsiK
- NHJmqEIbhGo8HETYdI2kf3EM1k7tWugXwjNH/GC0HQ==
-X-Google-Smtp-Source: AGHT+IGkOhzA3ocqcpCK1Y38mGswx2lg8GteWbU40rsu+jzcTFdtdu8vVk2L5o9uWqd+Pr+km5O04ZyyoS7OmXD/zj4=
-X-Received: by 2002:a05:6402:b29:b0:523:aef9:3b7b with SMTP id
- bo9-20020a0564020b2900b00523aef93b7bmr22065489edb.4.1693314902681; Tue, 29
- Aug 2023 06:15:02 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693314965; x=1693919765;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=x29g9NjIG8Vvnom/ZSmXbnn29dsJLv83xMLgsW7L9WA=;
+ b=AcuJYR2CCfRUl+qP155ve/3uqbpaTmPHYq5gaM4LRvewvsRxHO7VQ3p/tKae7Z/xSP
+ Yn2Ml9y/9gb3hzNt2PZus4NgJZzqnF+bApseyyouAB2A67n3EqYalhusjf70dH9QJfS2
+ 7i4gjEfEn/p12cfgi1Wd/i7wx76LiB8xGxQmFy8JGKHDQfcIk1aBDiiuc4ND0i9jIZCp
+ kp+eCSayBdbA1CCL+0cJlQCGvXZFbeqzAgsXA/uqeLbA25jZ98BI7+gnLAeApp8bsbYW
+ +R0CaDx4op92owg1jrkS0Gl2Wjx8HYIYzCS27wDe03g5CC7LdsEenFqH0Ej9cBd4HnMj
+ /c/A==
+X-Gm-Message-State: AOJu0YyjTvsyVAUePNgr5cUdTj348bS+dInayqQIVQ12hTXmJCOFnLsf
+ Y2Gi+IhcYglccbnPGMM2l/6Giw==
+X-Google-Smtp-Source: AGHT+IFKkn4g0RS60OegR3VbZf0hkVuLTX5XSuYklz1V5FYvnDmgLYMY1jIkW11Gji06IICq9hX+Bg==
+X-Received: by 2002:a05:6871:553:b0:1c4:d735:38e9 with SMTP id
+ t19-20020a056871055300b001c4d73538e9mr14981792oal.57.1693314965650; 
+ Tue, 29 Aug 2023 06:16:05 -0700 (PDT)
+Received: from [192.168.68.108] ([177.94.15.194])
+ by smtp.gmail.com with ESMTPSA id
+ h5-20020a056870538500b001babd036460sm5475116oan.19.2023.08.29.06.16.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 06:16:05 -0700 (PDT)
+Message-ID: <f58ac06f-ec38-0814-748f-9ce2b36b644d@ventanamicro.com>
+Date: Tue, 29 Aug 2023 10:16:00 -0300
 MIME-Version: 1.0
-References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
-In-Reply-To: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 14:14:51 +0100
-Message-ID: <CAFEAcA81xq_yEXYdtAXtkqcdR=MHagSNf5rXOtt+AwohMY_=BQ@mail.gmail.com>
-Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: qemu-devel@nongnu.org, Gowtham Siddarth <gowtham.siddarth@arm.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 11/20] target/riscv: introduce KVM AccelCPUClass
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+ <20230825130853.511782-12-dbarboza@ventanamicro.com>
+ <ce33b3b2-564e-a8c5-dfc8-ae7f6644dc88@linaro.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <ce33b3b2-564e-a8c5-dfc8-ae7f6644dc88@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x29.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,59 +98,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 29 Aug 2023 at 12:40, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
->
-> I am working on aarch64/sbsa-ref machine so people can have virtual
-> machine to test their OS against something reminding standards compliant
-> system.
->
-> One of tools I use is BSA ACS (Base System Architecture - Architecture
-> Compliance Suite) [1] written by Arm. It runs set of tests to check does
-> system conforms to BSA specification.
->
-> 1. https://github.com/ARM-software/bsa-acs
->
->
-> SBSA-ref goes better and better, yet still we have some issues. One of
-> them is test 822 ("Check Type 1 config header rules") which fails on
-> each PCIe root port device:
->
-> BDF 0x400 : SLT attribute mismatch: 0xFF020100 instead of 0x20100
-> BDF 0x500 : SLT attribute mismatch: 0xFF030300 instead of 0x30300
-> BDF 0x600 : SLT attribute mismatch: 0xFF040400 instead of 0x40400
->
-> I reported it as an issue [2] and got response that it may be QEMU
-> fault. My pcie knowledge is not good enough to know where the problem is.
->
-> 2. https://github.com/ARM-software/bsa-acs/issues/193
->
->
-> In the comment Gowtham Siddarth wrote:
->
-> > Regarding the SLT (Secondary Latency Timer) register, the expected
-> > values align with the ACS specifications, registering as 0. However,
-> > a discrepancy arises in the register's attribute, intended to be set
-> > as Read-Only. Contrary to this intent, the bit field seems to
-> > function as> Read-Write. Ordinarily, when attempting to write to the
-> > register by configuring all bits to 1, the anticipated behaviour
-> > should involve rejecting the write operation, maintaining the value
-> > at 0 to uphold the register's designated Read-Only nature. However,
-> > in this scenario, the write action takes effect, leading to a
-> > transformation of the register's value to FFs. This anomaly could
-> > potentially stem from an issue within the emulator.
->
-> Does someone know where the problem may be? And how to fix it?
 
-I don't know enough about PCI to be sure here, but it sounds like
-what you're saying is happening is that the test case writes all-1s
-to some PCI register for the root port device, and expects that where
-some bits in it are defined in the spec as read-only they don't get set?
 
-Which registers exactly is the test case trying to write in this way ?
+On 8/28/23 13:38, Philippe Mathieu-Daudé wrote:
+> On 25/8/23 15:08, Daniel Henrique Barboza wrote:
+>> Add a KVM accelerator class like we did with TCG. The difference is
+>> that, at least for now, we won't be using a realize() implementation for
+>> this accelerator.
+>>
+>> We'll start by assiging kvm_riscv_cpu_add_kvm_properties(), renamed to
+>> kvm_cpu_instance_init(), as a 'cpu_instance_init' implementation. Change
+>> riscv_cpu_post_init() to invoke accel_cpu_instance_init(), which will go
+>> through the 'cpu_instance_init' impl of the current acceleration (if
+>> available) and execute it. The end result is that the KVM initial setup,
+>> i.e. starting registers and adding its specific properties, will be done
+>> via this hook.
+>>
+>> riscv_cpu_add_user_properties() is still being called via the common
+>> post_init() function, thus we still need the "if kvm then return" logic
+>> inside it for now. We'll deal with it when TCG accel class get its own
+>> 'cpu_instance_init' implementation.
+>>
+>> riscv_add_satp_mode_properties() is now being exported from cpu.c since
+>> it's a common helper between KVM and TCG.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c       |  8 ++---
+>>   target/riscv/cpu.h       |  1 +
+>>   target/riscv/kvm.c       | 64 +++++++++++++++++++++++++++-------------
+>>   target/riscv/kvm_riscv.h |  1 -
+>>   4 files changed, 49 insertions(+), 25 deletions(-)
+> 
+> 
+>> -static void riscv_add_satp_mode_properties(Object *obj)
+>> +void riscv_add_satp_mode_properties(Object *obj)
+>>   {
+>>       RISCVCPU *cpu = RISCV_CPU(obj);
+>> @@ -1199,6 +1199,8 @@ static void riscv_cpu_post_init(Object *obj)
+>>       RISCVCPU *cpu = RISCV_CPU(obj);
+>>       RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
+>> +    accel_cpu_instance_init(CPU(obj));
+>> +
+>>       if (rcc->user_extension_properties) {
+>>           riscv_cpu_add_user_properties(obj);
+>>       }
+>> @@ -1561,12 +1563,10 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
+>>   static void riscv_cpu_add_user_properties(Object *obj)
+>>   {
+>>   #ifndef CONFIG_USER_ONLY
+>> -    riscv_add_satp_mode_properties(obj);
+>> -
+>>       if (kvm_enabled()) {
+>> -        kvm_riscv_cpu_add_kvm_properties(obj);
+>>           return;
+>>       }
+> 
+> Maybe in a preliminary patch:
+> 
+> if (tcg_enabled()) {
+> 
+>> +    riscv_add_satp_mode_properties(obj);
+> 
+> }
+> 
+> then remove the 'if kvm_enabled' in this patch?
 
-I've cc'd the QEMU PCI maintainers.
+I'll add a preliminary patch to make kvm_riscv_cpu_add_kvm_properties() call
+riscv_add_satp_mode_properties() and change the order they're being called here
+(i.e. call kvm_riscv_cpu_add_kvm_properties() first). Then this patch can safely
+remove the 'if kvm_enabled' block as you suggested.
 
-thanks
--- PMM
+
+Thanks,
+
+Daniel
+
+
+> 
+>>   #endif
+> 
 
