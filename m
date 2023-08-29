@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1806378C0B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B70C78C0BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:47:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qauL0-00064s-Cr; Tue, 29 Aug 2023 04:44:38 -0400
+	id 1qauMr-0006yj-KN; Tue, 29 Aug 2023 04:46:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qauKt-000635-9E
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:44:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qauMp-0006yU-QK
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:46:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qauKr-00068L-6n
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:44:31 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qauMj-00076f-OM
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:46:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693298668;
+ s=mimecast20190719; t=1693298782;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2fw6R4aLpYaUGz33JitFXw8SYZiJy3kU2MndWcVgB1s=;
- b=VIzd5hTzuidY+oKQlKrG7apYuDd1A4OsAIM2mbhR/7pw9E1K7CkBUtrMeaorakk/Fi8Ei+
- tuLO7lkLZZJTiK120+kYawh5JnTy52AbmpmD8ju2cBv7Ar13t3E8u2SHcMqKCspbBTJFXo
- tWnOC4LLug5jiDWYkjFhEsv9pMS7/EM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Zl6YNOtPQc/5q9fjWL1VM/ODw3ja7xvsw3fr3/nSdt4=;
+ b=I8h+XstPrjA//9uEum9kskBqkXzxBeW13AOlBOInm0+mamfTTsNeQhpnUnHCxDI4oAIoVH
+ ASVxyEdpI9An2WTJvbVSdn4iglhYhFWHgwuuqM2buNRiWiafvGwUcRlwFtRHkRRYsS18on
+ 6ujIhOW5qOXc5L9cuiKGcBK8FtfnhjI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-zZW6QvydOV-d5hhaprBoQg-1; Tue, 29 Aug 2023 04:44:27 -0400
-X-MC-Unique: zZW6QvydOV-d5hhaprBoQg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-993d41cbc31so326489466b.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:44:26 -0700 (PDT)
+ us-mta-668-n1GF2etqN5a4v-Y1YARNbw-1; Tue, 29 Aug 2023 04:46:20 -0400
+X-MC-Unique: n1GF2etqN5a4v-Y1YARNbw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9a198d4d98aso303820066b.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:46:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693298665; x=1693903465;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693298779; x=1693903579;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2fw6R4aLpYaUGz33JitFXw8SYZiJy3kU2MndWcVgB1s=;
- b=B/xgSEohWuQMd4WctG3mCMCAWbXEb46SP4d2eEw0O9QGxMmedFvgJWfIZ2IOwtKtvZ
- 0s14QxuajOO9TT6BtGORmHoG+Yv6ZXMA+NnX3gUBPOSGEf99604Rg9ts7q+ipnSL3XvL
- k5kCahhs+opdgG9oBqUjnHPJyr+KJnjF1VtfjEosBKeA5kAabuv9naGOFzmj9yK9sAmJ
- nLI3IDaH93RyFEW5tk7K8hxD91lhjJYPn4JbeladJKBlBisfHVV7FMx55csRH543hWO+
- 7CKzHtv7uk3YcDrWxNNzHP/XyZLPLWBOh9hfk+kg2QeufJYoGza5rkMPC8XTxiU8T12f
- UFOw==
-X-Gm-Message-State: AOJu0Yw3Lm60ue3Jls1lOEs85cAPj5ReumojVTXdms/tj2Vmn/o1b1Gz
- LInIn8Tvu+kiAN2H7pX8L1dCUyGBwIc97dT+8hD8eNT0Fy1iVGyFaTw9NpfAD5iOLwLuYe+trdp
- 1/Bg8huuSOOYJs9rWftt7Q90=
-X-Received: by 2002:a17:907:75d8:b0:9a5:821e:1655 with SMTP id
- jl24-20020a17090775d800b009a5821e1655mr7533763ejc.71.1693298665688; 
- Tue, 29 Aug 2023 01:44:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBg1UL6PBG5KDsl1bLpXJ3sBxa0abJBzMCp8T4+FlGYd+vSkxWtw/W9CPheUR+gA0L6vczcA==
-X-Received: by 2002:a17:907:75d8:b0:9a5:821e:1655 with SMTP id
- jl24-20020a17090775d800b009a5821e1655mr7533749ejc.71.1693298665330; 
- Tue, 29 Aug 2023 01:44:25 -0700 (PDT)
+ bh=Zl6YNOtPQc/5q9fjWL1VM/ODw3ja7xvsw3fr3/nSdt4=;
+ b=fsSx6w65tx4AJdrYhSkGRd9Irzj1LmHgIUz1ZLMC7SzjL/DmPfoYJEy8izDsHUV9kn
+ lVk9o0ZWPebAnm5BFyl8lNt5lWaqujSYWJIN+7GyMU09NOp7pwQn6KwZXsHu9O6qAMqm
+ +0O+iOQI5xiQ58TkMsOJJGJw6RCVyqk8g4Gs744qTjho+L4smw7CTvjvNnQlvYl108vf
+ xWpBih4Xb6Pqa6QJf7mymjlKG8Qt3VU+Dul3O8JoWoS9Ey/uy23pZatUqWjrTs8G6wmf
+ OpquBTWPlel2qAaC+qeMOgpPYeoMV9W08UTJaOlSXKljx256+Wogl18Rfc9JECivW46g
+ ayfA==
+X-Gm-Message-State: AOJu0YxZl42S0F/bs1SP5lYX47R96KyqJvn6a6fhLWo+H6S6MUR9Iqnh
+ xPqk5NxOh20RMnKqCtWDEcPi2NOZK74O16cI9LYhFsKyQLsZIOnHCnfW0xocF5dhI89AATvfPaK
+ xfUkR4LjyOGG/9kM=
+X-Received: by 2002:a17:906:d14d:b0:9a5:8eab:49da with SMTP id
+ br13-20020a170906d14d00b009a58eab49damr6907551ejb.19.1693298779522; 
+ Tue, 29 Aug 2023 01:46:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwZA2OTqOH635+Jc4+FJwsPdHLhpQIqx7A1gr4Kneb+4B8q7mBYKsLJLB5YeJO+Bac8pYO1A==
+X-Received: by 2002:a17:906:d14d:b0:9a5:8eab:49da with SMTP id
+ br13-20020a170906d14d00b009a58eab49damr6907535ejb.19.1693298779159; 
+ Tue, 29 Aug 2023 01:46:19 -0700 (PDT)
 Received: from ?IPV6:2003:cf:d70f:5ee0:6d7a:8486:6b83:8d37?
  (p200300cfd70f5ee06d7a84866b838d37.dip0.t-ipconnect.de.
  [2003:cf:d70f:5ee0:6d7a:8486:6b83:8d37])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a1709063e5200b0099275c59bc9sm5743691eji.33.2023.08.29.01.44.24
+ gy25-20020a170906f25900b0098951bb4dc3sm5678407ejb.184.2023.08.29.01.46.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 01:44:24 -0700 (PDT)
-Message-ID: <a85cf501-28cc-1811-c48a-130c4f0fdd68@redhat.com>
-Date: Tue, 29 Aug 2023 10:44:23 +0200
+ Tue, 29 Aug 2023 01:46:18 -0700 (PDT)
+Message-ID: <32a9c17b-2020-d95a-27b0-af4a012e5a77@redhat.com>
+Date: Tue, 29 Aug 2023 10:46:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 3/6] qemu-img: rebase: use backing files' BlockBackend for
- buffer alignment
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com
-References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
- <20230601192836.598602-4-andrey.drobyshev@virtuozzo.com>
- <c348e12f-4667-3459-ef2c-86b514456132@redhat.com>
- <38eafe9c-e213-400c-8130-5b30539f5841@virtuozzo.com>
+Subject: Re: [PATCH v2 2/3] qemu-img: map: report compressed data blocks
 Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, fam@euphon.net,
+ eblake@redhat.com, vsementsov@yandex-team.ru, den@virtuozzo.com
+References: <20230706163047.128999-1-andrey.drobyshev@virtuozzo.com>
+ <20230706163047.128999-3-andrey.drobyshev@virtuozzo.com>
+ <ada340d8-8ac1-9817-6d58-0da60a601637@redhat.com>
+ <dd69ae0d-63e9-490e-ac59-4345841a78e5@virtuozzo.com>
 From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <38eafe9c-e213-400c-8130-5b30539f5841@virtuozzo.com>
+In-Reply-To: <dd69ae0d-63e9-490e-ac59-4345841a78e5@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
@@ -90,7 +90,7 @@ X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-2.169, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,43 +106,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29.08.23 09:06, Andrey Drobyshev wrote:
-> On 8/25/23 17:29, Hanna Czenczek wrote:
->> On 01.06.23 21:28, Andrey Drobyshev via wrote:
->>> Since commit bb1c05973cf ("qemu-img: Use qemu_blockalign"), buffers for
->>> the data read from the old and new backing files are aligned using
->>> BlockDriverState (or BlockBackend later on) referring to the target
->>> image.
->>> However, this isn't quite right, because target image is only being
->>> written to and has nothing to do with those buffers.  Let's fix that.
->> I don’t understand.  The write to the target image does use one of those
->> buffers (buf_old, specifically).
->>
->> This change is correct for buf_new/blk_new_backing, but for buf_old, in
->> theory, we need a buffer that fulfills both the alignment requirements
->> of blk and blk_old_backing.  (Not that this patch really makes the
->> situation worse for buf_old.)
->>
->> Hanna
->>
-> Hmm, you're right.  In which case the right thing to do would probably
-> be smth like:
+On 29.08.23 08:44, Andrey Drobyshev wrote:
+> On 8/25/23 17:14, Hanna Czenczek wrote:
+>> On 06.07.23 18:30, Andrey Drobyshev wrote:
+>>> Right now "qemu-img map" reports compressed blocks as containing data
+>>> but having no host offset.  This is not very informative.  Instead,
+>>> let's add another boolean field named "compressed" in case JSON output
+>>> mode is specified.  This is achieved by utilizing new allocation status
+>>> flag BDRV_BLOCK_COMPRESSED for bdrv_block_status().
+>>>
+>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>> ---
+>>>    qapi/block-core.json |  7 +++++--
+>>>    qemu-img.c           | 16 +++++++++++++---
+>>>    2 files changed, 18 insertions(+), 5 deletions(-)
+>> Patch 3 must be merged into this patch.  Every test must pass on every
+>> commit so we don’t break bisecting.
+> Agreed, should've figured that myself.
 >
->>           float local_progress = 0;
->>   
->> -        buf_old = blk_blockalign(blk, IO_BUF_SIZE);
->> -        buf_new = blk_blockalign(blk, IO_BUF_SIZE);
->> +        if (bdrv_opt_mem_align(blk_bs(blk)) >
->> +            bdrv_opt_mem_align(blk_bs(blk_old_backing))) {
->> +            buf_old = blk_blockalign(blk, IO_BUF_SIZE);
->> +        } else {
->> +            buf_old = blk_blockalign(blk_old_backing, IO_BUF_SIZE);
->> +        }
->> +        buf_new = blk_blockalign(blk_new_backing, IO_BUF_SIZE);
->>   
->>           size = blk_getlength(blk);
-> I'll include this in v2 if you don't have any objections.
+>>> diff --git a/qapi/block-core.json b/qapi/block-core.json
+>>> index 5dd5f7e4b0..b263d2cd30 100644
+>>> --- a/qapi/block-core.json
+>>> +++ b/qapi/block-core.json
+>>> @@ -409,6 +409,9 @@
+>>>    #
+>>>    # @zero: whether the virtual blocks read as zeroes
+>>>    #
+>>> +# @compressed: true indicates that data is stored compressed.  Optional,
+>>> +#     only valid for the formats whith support compression
+>> This is missing information for when this field was introduced (i.e. a
+>> “(since 8.2)”).
+> Noted.
+>
+>> I also wonder why this field is optional.  We have compression
+>> information even for formats that don’t support compression,
+>> specifically, nothing is compressed.  I would just make this field
+>> mandatory and print it always.  (A technical reason to do so is that
+>> this patch uses block_driver_can_compress() to figure out whether there
+>> is compression support; but that function only tells whether the driver
+>> can write compressed data.  Even if it cannot do that, the format may
+>> still support compression, and the driver may be able to read compressed
+>> data, just not write it.)
+>>
+> I figured that for the formats which surely can't support compression,
+> such as "raw", this information would simply be redundant.  AFAICT right
+> now the only drivers which can read compressed data are exactly the ones
+> which can write it: vmdk, qcow and qcow2.  But if we assume that this
+> might change, and that we'd better show the field value no matter what
+> (as we do with "zero" field) -- I'm OK with it.
 
-Looks good to me, thanks!
+It is indeed redundant, but as this is intended to be the 
+machine-readable output, I don’t mind the output becoming arguably 
+needlessly verbose.
 
 
