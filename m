@@ -2,57 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB4578C65E
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E2678C660
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:45:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qaz0x-0005l6-PJ; Tue, 29 Aug 2023 09:44:15 -0400
+	id 1qaz0y-0005o7-Se; Tue, 29 Aug 2023 09:44:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
- id 1qaz0k-0005g1-Vg; Tue, 29 Aug 2023 09:44:04 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
- id 1qaz0e-00045y-V1; Tue, 29 Aug 2023 09:44:02 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZpYL6ZQsz4wxn;
- Tue, 29 Aug 2023 23:43:50 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZpYH3DfVz4wb2;
- Tue, 29 Aug 2023 23:43:47 +1000 (AEST)
-Message-ID: <f6edea23-f11c-2119-ebaf-222d9f0813b6@kaod.org>
-Date: Tue, 29 Aug 2023 15:43:43 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qaz0v-0005hJ-8v
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:44:14 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qaz0p-00049U-7Y
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:44:11 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-1c50438636fso2892437fac.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:44:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693316645; x=1693921445;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=J2izwuknYEjjo1T8jxXvVGK0fYGRywKjs46mPfXCII0=;
+ b=fLyct7zalktrDkiSqzrvDtbg+oRsbybJ+2cy5JV+ArYF2ar8HcJI7Fm8s1zwvxcCZx
+ h8pykClZ4/7xLYYwzCZURljhbF6r5JCVuUE09qAeCp+mdNPx30v/GUhxcxJA6fUZjmT/
+ SJh3CnGdIG09fOo3D4pGHIhA3yHHU2BaeTUV7IKM3+NJ8HfrCT0TbmCHin6c5S4XIczL
+ u9Db6to8JBxgt1MRwo3DRTcqmblXmH/ZhmkDLyUkcIOs3/dJmM4ixm5c8PSPsWRLkoM1
+ cGKnpi9d1yf0ZzwieLu2orlQd6jz0asiM4WEeTXWG3qtEEH+ggymxNCXmRzy27ck/B8u
+ 4XDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693316645; x=1693921445;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=J2izwuknYEjjo1T8jxXvVGK0fYGRywKjs46mPfXCII0=;
+ b=d+igwoa2LxaXWUBBRizBGn2sk8O4uMH4IH+KNFVdU9QkxUEPVCjiC3y9IZxMYljEkf
+ Scq5H0zb//+gsx2uZYN62vPlUYLA6hheY0URk7eT7/8yZbl7jOZ0rwZVMCEDGMz3xFY6
+ 7U2uIl67kUmssvesrEqDCLC17qwWRg4jDFbllxv5yb5zQmj+VFQqbwX8ZO4GF9ElFBVe
+ voh1RCJYUvdmhJsu/ihy4f6U99bm+7vGvCOJ8SU8ThijWw6iHLGq+Zlleh+Y3cistjJF
+ vEvbscWEv8aq2Ccuh89ay5lNHbYwKiYgHUZPNe6aZu5l7Va3b+3/n/3e6L3f//4Mjtb5
+ 6Xnw==
+X-Gm-Message-State: AOJu0YySBwPNR7ZPui+x+kFWfgmqQpmKebNViogh3Zobi/iUee808eAj
+ j3G7yrvxXQA1LF2ICn2IzaVrgoEffCk8JXWscsI=
+X-Google-Smtp-Source: AGHT+IH6uA0/2j5mlKXNp5bpFdwW3GSB0P9qJsI4R8pd2XXPMNou944GWvNb3RAdEqPXagC+2OEzWU0Uj/r017fqYe0=
+X-Received: by 2002:a05:6870:9723:b0:1bf:9fa2:bf94 with SMTP id
+ n35-20020a056870972300b001bf9fa2bf94mr15982893oaq.5.1693316645494; Tue, 29
+ Aug 2023 06:44:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 3/7] hw/fsi: Introduce IBM's cfam,fsi-slave
-Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org, peter.maydell@linaro.org, andrew@aj.id.au,
- joel@jms.id.au, pbonzini@redhat.com, marcandre.lureau@redhat.com,
- berrange@redhat.com, philmd@linaro.org
-Cc: qemu-arm@nongnu.org
-References: <20230825203046.3692467-1-ninad@linux.ibm.com>
- <20230825203046.3692467-4-ninad@linux.ibm.com>
- <e2a8e6eb-b9fd-8011-32c0-e5c310bf1135@redhat.com>
- <11681172-0fe9-4e1d-9f8f-03f57b0b09a2@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <11681172-0fe9-4e1d-9f8f-03f57b0b09a2@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=bkLz=EO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+References: <20230828103856.46031-1-pbonzini@redhat.com>
+In-Reply-To: <20230828103856.46031-1-pbonzini@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 29 Aug 2023 09:43:53 -0400
+Message-ID: <CAJSP0QUKoDBqQ8yhMdxLS_qN=c0umYHi7YemeE3VLbR5MYF5xw@mail.gmail.com>
+Subject: Re: [PULL 00/14] Python, i386 changes for 2023-08-28
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.242, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,132 +84,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/23 15:39, Ninad Palsule wrote:
-> Hello Thomas,
-> 
-> On 8/28/23 21:03, Thomas Huth wrote:
->> On 25/08/2023 22.30, Ninad Palsule wrote:
->>> This is a part of patchset where IBM's Flexible Service Interface is
->>> introduced.
->>>
->>> The Common FRU Access Macro (CFAM), an address space containing
->>> various "engines" that drive accesses on busses internal and external
->>> to the POWER chip. Examples include the SBEFIFO and I2C masters. The
->>> engines hang off of an internal Local Bus (LBUS) which is described
->>> by the CFAM configuration block.
->>>
->>> The FSI slave: The slave is the terminal point of the FSI bus for
->>> FSI symbols addressed to it. Slaves can be cascaded off of one
->>> another. The slave's configuration registers appear in address space
->>> of the CFAM to which it is attached.
->>>
->>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->>> ---
->> ...
->>> diff --git a/hw/fsi/cfam.c b/hw/fsi/cfam.c
->>> new file mode 100644
->>> index 0000000000..19256050bd
->>> --- /dev/null
->>> +++ b/hw/fsi/cfam.c
->>> @@ -0,0 +1,235 @@
->>> +/*
->>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>> + * Copyright (C) 2023 IBM Corp.
->>> + *
->>> + * IBM Common FRU Access Macro
->>> + */
->>> +
->>> +#include "qemu/osdep.h"
->>> +
->>> +#include "qapi/error.h"
->>> +#include "qemu/log.h"
->>> +
->>> +#include "hw/fsi/bits.h"
->>> +#include "hw/fsi/cfam.h"
->>> +#include "hw/fsi/engine-scratchpad.h"
->>> +
->>> +#include "hw/qdev-properties.h"
->>> +
->>> +#define TO_REG(x)                          ((x) >> 2)
->>> +
->>> +#define CFAM_ENGINE_CONFIG                  TO_REG(0x04)
->>> +
->>> +#define CFAM_CONFIG_CHIP_ID                TO_REG(0x00)
->>> +#define CFAM_CONFIG_CHIP_ID_P9             0xc0022d15
->>> +#define   CFAM_CONFIG_CHIP_ID_BREAK        0xc0de0000
->>> +
->>> +static uint64_t cfam_config_read(void *opaque, hwaddr addr, unsigned size)
->>> +{
->>> +    CFAMConfig *config;
->>> +    CFAMState *cfam;
->>> +    LBusNode *node;
->>> +    int i;
->>> +
->>> +    config = CFAM_CONFIG(opaque);
->>> +    cfam = container_of(config, CFAMState, config);
->>> +
->>> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
->>> +                  __func__, addr, size);
->>> +
->>> +    assert(size == 4);
->>> +    assert(!(addr & 3));
->>> +
->>> +    switch (addr) {
->>> +    case 0x00:
->>> +        return CFAM_CONFIG_CHIP_ID_P9;
->>> +    case 0x04:
->>> +        return ENGINE_CONFIG_NEXT
->>> +            | 0x00010000                    /* slots */
->>> +            | 0x00001000                    /* version */
->>> +            | ENGINE_CONFIG_TYPE_PEEK   /* type */
->>> +            | 0x0000000c;                   /* crc */
->>> +    case 0x08:
->>> +        return ENGINE_CONFIG_NEXT
->>> +            | 0x00010000                    /* slots */
->>> +            | 0x00005000                    /* version */
->>> +            | ENGINE_CONFIG_TYPE_FSI    /* type */
->>> +            | 0x0000000a;                   /* crc */
->>> +        break;
->>> +    default:
->>> +        /* FIXME: Improve this */
->>> +        i = 0xc;
->>> +        QLIST_FOREACH(node, &cfam->lbus.devices, next) {
->>> +            if (i == addr) {
->>> +                return LBUS_DEVICE_GET_CLASS(node->ldev)->config;
->>> +            }
->>> +            i += size;
->>> +        }
->>> +
->>> +        if (i == addr) {
->>> +            return 0;
->>> +        }
->>> +
->>> +        return 0xc0de0000;
->>
->> Can you explain the magic number at least with a comment?
-> Added comment for the magic number 0xc0de0000
->>
->> Maybe it would also make sense to add a qemu_log_mask(LOG_GUEST_ERROR, ...) or qemu_log_mask(LOG_UNIMP, ...) statement here?
-> There is LOG_UNIMP most of the function. I added it in the reset function.
+Hi Paolo,
+I see a new test error that may have been introduced by this pull request:
+https://gitlab.com/qemu-project/qemu/-/jobs/4968468877#L131
 
-I took a quick look at the series and I think that all the
-qemu_log_mask(LOG_UNIMP, ..) as the one above should be replaced
-by trace events instead.
+AVOCADO Downloading avocado tests VM image for s390x
+Failed to load plugin from module "avocado.plugins.journal":
+ImportError("Module 'sqlite3' is not installed.\nUse:\n sudo zypper
+install python311\nto install it.") :
+File "/builds/qemu-project/qemu/build/pyvenv/lib64/python3.11/site-packages/avocado/core/extension_manager.py",
+line 63, in __init__
+plugin = ep.load()
+^^^^^^^^^
+File "/usr/lib/python3.11/site-packages/pkg_resources/__init__.py",
+line 2517, in load
+return self.resolve()
+^^^^^^^^^^^^^^
+File "/usr/lib/python3.11/site-packages/pkg_resources/__init__.py",
+line 2523, in resolve
+module = __import__(self.module_name, fromlist=['__name__'], level=0)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/builds/qemu-project/qemu/build/pyvenv/lib64/python3.11/site-packages/avocado/plugins/journal.py",
+line 19, in <module>
+import sqlite3
+File "/usr/lib64/python3.11/_import_failed/sqlite3.py", line 16, in <module>
 
-Thanks,
+Stefan
 
-C.
-
-
->>
->>  Thomas
->>
-> 
-> Thank you for the review.
-> 
-> Ninad
-> 
-
+On Mon, 28 Aug 2023 at 06:41, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> The following changes since commit 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
+>
+>   Merge tag 'pull-target-arm-20230824' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24 10:08:33 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+>
+> for you to fetch changes up to 29a8238510df27080b0ffa92c58400412ce19daa:
+>
+>   configure: remove unnecessary mkdir -p (2023-08-28 10:01:44 +0200)
+>
+> ----------------------------------------------------------------
+> * separate accepted and auto-installed versions of Python dependencies
+> * bump tricore container to Debian 11
+> * small configure cleanups
+>
+> ----------------------------------------------------------------
+> Ake Koomsin (1):
+>       target/i386: add support for VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE
+>
+> Paolo Bonzini (13):
+>       configure: fix and complete detection of tricore tools
+>       dockerfiles: bump tricore cross compiler container to Debian 11
+>       python: mkvenv: tweak the matching of --diagnose to depspecs
+>       python: mkvenv: introduce TOML-like representation of dependencies
+>       python: mkvenv: add ensuregroup command
+>       lcitool: bump libvirt-ci submodule and regenerate
+>       configure: never use PyPI for Meson
+>       python: use vendored tomli
+>       configure: switch to ensuregroup
+>       Revert "tests: Use separate virtual environment for avocado"
+>       tests/docker: add python3-tomli dependency to containers
+>       configure: fix container_hosts misspellings and duplications
+>       configure: remove unnecessary mkdir -p
+>
+>  .gitlab-ci.d/buildtest.yml                         |   6 +-
+>  .gitlab-ci.d/cirrus/freebsd-13.vars                |   2 +-
+>  .gitlab-ci.d/cirrus/macos-12.vars                  |   2 +-
+>  configure                                          |  31 +---
+>  docs/devel/acpi-bits.rst                           |   6 +-
+>  docs/devel/testing.rst                             |  14 +-
+>  python/scripts/mkvenv.py                           | 201 +++++++++++++++++++--
+>  python/scripts/vendor.py                           |   5 +-
+>  python/setup.cfg                                   |   6 +
+>  python/wheels/tomli-2.0.1-py3-none-any.whl         | Bin 0 -> 12757 bytes
+>  pythondeps.toml                                    |  32 ++++
+>  scripts/ci/org.centos/stream/8/x86_64/test-avocado |   4 +-
+>  scripts/device-crash-test                          |   2 +-
+>  target/i386/cpu.c                                  |   6 +-
+>  target/i386/cpu.h                                  |   1 +
+>  tests/Makefile.include                             |  19 +-
+>  tests/docker/dockerfiles/centos8.docker            |   3 +-
+>  .../dockerfiles/debian-all-test-cross.docker       |   7 +-
+>  tests/docker/dockerfiles/debian-amd64-cross.docker |   6 +-
+>  tests/docker/dockerfiles/debian-amd64.docker       |   4 +
+>  tests/docker/dockerfiles/debian-arm64-cross.docker |   6 +-
+>  tests/docker/dockerfiles/debian-armel-cross.docker |   6 +-
+>  tests/docker/dockerfiles/debian-armhf-cross.docker |   6 +-
+>  .../docker/dockerfiles/debian-hexagon-cross.docker |   6 +-
+>  .../dockerfiles/debian-mips64el-cross.docker       |   6 +-
+>  .../docker/dockerfiles/debian-mipsel-cross.docker  |   6 +-
+>  .../docker/dockerfiles/debian-ppc64el-cross.docker |   6 +-
+>  .../docker/dockerfiles/debian-riscv64-cross.docker |   2 +-
+>  tests/docker/dockerfiles/debian-s390x-cross.docker |   6 +-
+>  .../docker/dockerfiles/debian-tricore-cross.docker |   4 +-
+>  tests/docker/dockerfiles/fedora-i386-cross.docker  |   1 +
+>  tests/docker/dockerfiles/fedora-win32-cross.docker |   2 +-
+>  tests/docker/dockerfiles/fedora-win64-cross.docker |   2 +-
+>  tests/docker/dockerfiles/opensuse-leap.docker      |  22 +--
+>  tests/docker/dockerfiles/ubuntu2004.docker         |   4 +-
+>  tests/docker/dockerfiles/ubuntu2204.docker         |   1 +
+>  tests/lcitool/libvirt-ci                           |   2 +-
+>  tests/lcitool/mappings.yml                         |  28 ++-
+>  tests/lcitool/projects/qemu.yml                    |   3 +-
+>  tests/lcitool/targets/opensuse-leap-15.yml         |   4 +-
+>  tests/requirements.txt                             |   6 -
+>  tests/vm/Makefile.include                          |   2 +-
+>  tests/vm/generated/freebsd.json                    |   1 +
+>  43 files changed, 377 insertions(+), 112 deletions(-)
+>  create mode 100644 python/wheels/tomli-2.0.1-py3-none-any.whl
+>  create mode 100644 pythondeps.toml
+>  delete mode 100644 tests/requirements.txt
+> --
+> 2.41.0
+>
+>
 
