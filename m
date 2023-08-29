@@ -2,82 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA81A78D074
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F6178CFED
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:08:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7n1-0000oH-9z; Tue, 29 Aug 2023 19:06:27 -0400
+	id 1qb7nb-00019I-Kd; Tue, 29 Aug 2023 19:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb4Dl-0003KO-8V
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:17:49 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qb4N6-000791-Qm
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:27:28 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb4Di-00085y-7B
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:17:48 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-26b5e737191so2447159a91.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:17:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qb4N4-0001gg-DC
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 15:27:28 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-31aeee69de0so4065867f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 12:27:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693336665; x=1693941465; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l2kB6RN3B2cMZvIFbaaSFmexbu2C12QLRZjMSTZ3VhU=;
- b=NcDyOxx3kpr+MAKto/ADHE3bXmqYkZn1NdqRqe6Zbf3U9yKwAPI3fSn9SPnbFd1wn2
- TiZxkw19cA+ipBRd9h8A6Qe62Ndl8uJyqJQLlxBKWMUlBNZoZyhcTmJl/X/97akQFoby
- hdT5tiO0bMzGAE8hIe2Pl4FVHpLVjVA1NpwQBry/lN1aT+gHR9UyoWexAACE5IqTw4qU
- +WTDHV46556c8tMilSNCmY0zVv7BmiMoTNsz8Pj6pNwDCTHbSZ8uuD0vLwx+8XOY4q/c
- VLSQFwWnEJoIDMYla/BNUIhovKiiDElDi2u1CWsk53qnQjfWgLKoe536WVqK3vCiFTws
- KNTQ==
+ d=linaro.org; s=google; t=1693337244; x=1693942044; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VXSjBnuLNvhAknYHQ52EsMe5Kqh1jqoAklEikbb6BJw=;
+ b=uyU18uiuPt8b0jSypdjInOgyArJj2sdkv+qhyTzs+t14z10SgVner5cFY1SBr9M9Je
+ +qaUlN3ZxzMBlhYa6aPsOilZJf/s62CWv5fPGHI6Ax9GJhyGaygw69h9HgZZMm82icyr
+ z1Ys8kMDpIn+DsTlp4Af3Qxp5x9Zc0gKctnszq9nQymX9JpCZZrpkAIjW7Dx2ntlVRmM
+ 9rw7Urdo/2yQv3vII2CM8xanfmGayCHkMhyIC+UfzuvTJp/OzDzBLq1kdD6JsHpzS0Hz
+ +hlYoVKB0LwCvGesO2bPFIuELyW50ypFEQ7a23sabN9JYi+MIYHX/DSnYffMyCjxjzf1
+ Td0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693336665; x=1693941465;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l2kB6RN3B2cMZvIFbaaSFmexbu2C12QLRZjMSTZ3VhU=;
- b=NII3YzLGPqHd1eWEj+tuGzeuCTwzdZ1zB6yAkJzBbL0dVgZS4Mk+AY03DTMX1nqq7l
- +aPqLrQqZGvJ2uA2AQgHgh18KZtHacbI4SROhneVEp9vNudkjWX1db5AKd3TyqrM6hZ4
- IYZ/BH3n1+EQDvrHMmxWYlvyiZ4XaI1rBpfbQscG5rC+Y1BVLs1C6IeSpoWPj+8PAk7D
- NsSegdLBuiP0cGcYTNLDFG6LEioi01feH8t3+lGvvgI/deW0RmYBIiQF5HFJKLgmWViM
- GTzJK41K5YaihgEiwFqdw9XKkM7E/GenDkQCPbO3eB0pHbfb6R6MMd3YMohBHwvUcAO2
- wEaw==
-X-Gm-Message-State: AOJu0YykZh46GnboSqjoOd/OMXY62KhsIT7m73ljb1RHnWzMeuxVhB2z
- SsMT/oKcu95t2mQXMfp4LpJYm+12uwDiZe2Zln8=
-X-Google-Smtp-Source: AGHT+IEBw+OYqEAkcpNlup1j7n/qOO8/E7t2CRtWZc290oBBq2Cjry7TNYUyM3e/XVHBDrSgjXrlfw==
-X-Received: by 2002:a17:90b:1809:b0:26b:1081:a432 with SMTP id
- lw9-20020a17090b180900b0026b1081a432mr140900pjb.30.1693336664704; 
- Tue, 29 Aug 2023 12:17:44 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ d=1e100.net; s=20221208; t=1693337244; x=1693942044;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=VXSjBnuLNvhAknYHQ52EsMe5Kqh1jqoAklEikbb6BJw=;
+ b=WsxH21t0rB63vdr3h5zIFzK31eLrwTXqxXv+PRBpH1tilVPoiEpg/3bmgIsLmpZa50
+ LgEv7RELoauNBJlAjM/EYZ2NBqMU4CUrin0EzR3VQMwBGieYW3W1z6u7n3QTMYiSsz2l
+ k0q8YLgqHaoKf385sbryKUY4ojFBBlK+P2vADHeFVsqF4E+GGYIlgfvPMOhvsu8csBKh
+ wvq2/JGYnovb6vy3NSDB7D0HgCx25Im9PaxeWL92ttasiZERkW2JeOM3psy7fwQFfjo1
+ RGluF9gg9wU0EaZ0fJkDb0cQFjh8OxXEDljkf6VYsyg/2/hf/RodH9HznMwsTTMLNcUL
+ X0tg==
+X-Gm-Message-State: AOJu0YxEdyRB2vR9kDaYMEq0K75VpLsN1aYJ2Je5C7EQxLMnxk+hTL+M
+ qC6qDmvn1WLoJ0+gwsuQI76gfw==
+X-Google-Smtp-Source: AGHT+IEuOpzFqSRWNC390ZqAQVsz51DChL/wfPmdCtxl/P4x3CK3BUCrfF4sLOQue+h9gS/K+g/6yQ==
+X-Received: by 2002:adf:e390:0:b0:313:f5f8:a331 with SMTP id
+ e16-20020adfe390000000b00313f5f8a331mr56217wrm.34.1693337244199; 
+ Tue, 29 Aug 2023 12:27:24 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- x7-20020a17090ab00700b0026b6d0a68c5sm610399pjq.18.2023.08.29.12.17.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 12:17:43 -0700 (PDT)
-Message-ID: <0ba04d33-b3d9-75a4-d421-17d16fc2e2ac@linaro.org>
-Date: Tue, 29 Aug 2023 12:17:42 -0700
+ w4-20020adfde84000000b003143b14848dsm14535133wrl.102.2023.08.29.12.27.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 12:27:23 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 556291FFBB;
+ Tue, 29 Aug 2023 20:27:23 +0100 (BST)
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <6b3f8d8206d4ec73703ce100c0b08002391e0bae.1693252037.git.manos.pitsidianakis@linaro.org>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
+ Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>, =?utf-8?B?S8WRdsOh?=
+ =?utf-8?B?Z8OzLCBab2x0w6Fu?=
+ <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH v8 04/12] virtio-sound: set PCM stream parameters
+Date: Tue, 29 Aug 2023 20:27:18 +0100
+In-reply-to: <6b3f8d8206d4ec73703ce100c0b08002391e0bae.1693252037.git.manos.pitsidianakis@linaro.org>
+Message-ID: <877cpdtzs4.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 06/32] bsd-user: Add bsd-proc.c to meson.build
-Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com
-References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
- <20230827155746.84781-7-kariem.taha2.7@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230827155746.84781-7-kariem.taha2.7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,57 +106,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/27/23 08:57, Karim Taha wrote:
-> From: Warner Losh <imp@bsdimp.com>
-> 
-> Signed-off-by: Warner Losh <imp@bsdimp.com>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> ---
->   bsd-user/bsd-proc.h  | 4 ++++
->   bsd-user/meson.build | 6 ++++++
->   2 files changed, 10 insertions(+)
-> 
-> diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-> index a1061bffb8..048773a75d 100644
-> --- a/bsd-user/bsd-proc.h
-> +++ b/bsd-user/bsd-proc.h
-> @@ -22,6 +22,10 @@
->   
->   #include <sys/resource.h>
->   
-> +#include "qemu-bsd.h"
-> +#include "gdbstub/syscalls.h"
-> +#include "qemu/plugin.h"
-> +
->   /* exit(2) */
->   static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
->   {
-> diff --git a/bsd-user/meson.build b/bsd-user/meson.build
-> index 5243122fc5..b97fce1472 100644
-> --- a/bsd-user/meson.build
-> +++ b/bsd-user/meson.build
-> @@ -7,6 +7,7 @@ bsd_user_ss = ss.source_set()
->   common_user_inc += include_directories('include')
->   
->   bsd_user_ss.add(files(
-> +  'bsd-proc.c',
->     'bsdload.c',
->     'elfload.c',
->     'main.c',
-> @@ -16,6 +17,11 @@ bsd_user_ss.add(files(
->     'uaccess.c',
->   ))
 
-Ok so far.
+Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 
->   
-> +elf = cc.find_library('elf', required: true)
-> +procstat = cc.find_library('procstat', required: true)
-> +kvm = cc.find_library('kvm', required: true)
-> +bsd_user_ss.add(elf, procstat, kvm)
+> This commit sets the virtio-snd device's default PCM parameters in
+> virtio_snd_pcm_set_params_impl(). The same function will be used to set
+> parameters from the guest with VIRTIO_SND_R_PCM_SET_PARAMS in a
+> follow-up commit.
+>
+> PCM parameters describe the sound card parameters that the guest's
+> kernel sees as an ALSA device.
+>
+> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9=
+c7b40a8e603f4da92471
+> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
+> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
+> Signed-off-by: Emmanouil Pitsidianakis
+> <manos.pitsidianakis@linaro.org>
 
-What are these for?  Particularly kvm?
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-
-r~
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
