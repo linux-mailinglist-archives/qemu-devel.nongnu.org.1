@@ -2,99 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB0678BE65
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 08:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E5078BE67
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 08:28:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qasBo-0004w0-BW; Tue, 29 Aug 2023 02:27:00 -0400
+	id 1qasCn-0005gd-12; Tue, 29 Aug 2023 02:28:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qasBZ-0004tp-Ea
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 02:26:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qasBP-0006zO-23
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 02:26:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693290388;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=H+5bUJTOtjM61nZgfBKmHAMH2j9Tt5m4wgBbaF6JRfA=;
- b=A7B9i2/6Y6G5Zq6C68LUDKTgMzjR6VT6/rgXQSsRmdAlPrDL/QJnJ8FmqwVi9FpEQxoLPN
- v+kITPGf9rtgJ4VsSA5v+PeH6w1taR0InLAKjbb+fAaVk4RcL8xo1vx1ye4oJaHm8a7lJx
- XB6aVTAKnls58Tb2EWcvlQiEstqpIbM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-3J412AtSMSCAHgGpjmiYWg-1; Tue, 29 Aug 2023 02:26:27 -0400
-X-MC-Unique: 3J412AtSMSCAHgGpjmiYWg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4011f56165eso24655465e9.0
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 23:26:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qasCk-0005WP-6T; Tue, 29 Aug 2023 02:27:58 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qasCh-0007Os-Jo; Tue, 29 Aug 2023 02:27:57 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-50078e52537so6137494e87.1; 
+ Mon, 28 Aug 2023 23:27:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693290473; x=1693895273;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wHDqDHDStg7TRJUrS/6HYlfJMY3rJsAbBQ05FCnhSv0=;
+ b=bXMivHLx08R3cnmOTPpfNc0t4aODvjPr39ohHe+Eotg3+NGp50GNuDXw783U8JGqWB
+ POWB6ZUYersNdsGVxwet2vAlmz7LRNVCO8SBOaon/YIL39WN7eigePPZm0/rnAnWjyze
+ I13qq0BThM7TcnIeycNeO+qMCpAn6FEq8qmynAo0g0ijitC7xuDCJBsj/DXVTqO/qUPA
+ 6fuNrft4aqhp7osWor5hS7Gy+CltiHYxAqorrLkOUMHxrWHd1Vgz4uLcllzs4rJViOL9
+ ll9MKXPARp255bY60a3jG6YSsaUh+hHSSiSttQ9GVI1FMebyZss9iElK+qvB+njly5sx
+ b6Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693290386; x=1693895186;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H+5bUJTOtjM61nZgfBKmHAMH2j9Tt5m4wgBbaF6JRfA=;
- b=cOYjjuUGac3MT5eCVcvFKfH9QjccaLrs7siKYfrQQrBJK8G58y/NCsm0mtxdYteFVd
- u0gUfAWwvxIniCXcZ3NgzU56CcRR9f9vD+wHjm4wxJISo83m9CNXix3NBiA4YH6Y+r4W
- PiJZ0yqeDyQ9pfsaJsYW6TBGwVR+Uyi3eIyi3fwhUJVFhSvGEN+Vz6MVrh2w+Yk4Z8hP
- nAjMIOO20elWWDcsJ1I8oGZR3WVFvVbUprI7Mwhj4GCCoRfcxEZygTPSXwks4RCQyUJi
- 7036Z9J68SQbst66d7WqteyEGRFzgUiKpUCQTeg4EqvR2+ayuQgypmfz5VWE9ES9Oumh
- CtcA==
-X-Gm-Message-State: AOJu0Ywcwlwkff9KBNpJs1+3Amq4yGh8AqMqVuJcKzIzyMaijhbQeCwd
- pB1XhpRkahMCEqJ8mZ+xlaDeecJsijbSd2LUiVFCtvnzYy1pz6jAvblOiIlKkvaGdqwVfTLLzON
- 4QMZ0tJEzJswSMQo=
-X-Received: by 2002:adf:8b95:0:b0:317:59a6:6f68 with SMTP id
- o21-20020adf8b95000000b0031759a66f68mr1266255wra.0.1693290385817; 
- Mon, 28 Aug 2023 23:26:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOtt5PRYaY8JRITfUy0NeCLiotaEZiC6m5xcUHBMaLUzRyKE4wOwiLtleP4LxCt17N9t1LaA==
-X-Received: by 2002:adf:8b95:0:b0:317:59a6:6f68 with SMTP id
- o21-20020adf8b95000000b0031759a66f68mr1266239wra.0.1693290385433; 
- Mon, 28 Aug 2023 23:26:25 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:530f:c053:4ab2:f786?
- ([2a01:e0a:9e2:9000:530f:c053:4ab2:f786])
- by smtp.gmail.com with ESMTPSA id
- p14-20020a5d638e000000b0031971ab70c9sm12678087wru.73.2023.08.28.23.26.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Aug 2023 23:26:24 -0700 (PDT)
-Message-ID: <90ee54b6-e7b0-67d3-b627-b2c8b2066a3b@redhat.com>
-Date: Tue, 29 Aug 2023 08:26:23 +0200
+ d=1e100.net; s=20221208; t=1693290473; x=1693895273;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wHDqDHDStg7TRJUrS/6HYlfJMY3rJsAbBQ05FCnhSv0=;
+ b=UmFINFwkAV7u/g8dmIc6UH0r+QHEhDHG1V1hjY39ccYpuB8elPgUtRbaGHcishVHwM
+ qXFO7Znu932ZAE83inBdEpYL9TP/KAlnaUHgckh+mGunpI/6opdqoteR5ypv1nZHwdJW
+ 0nu4J4F+2mBeKdAO6brYVnMIGR4GHnabz9B0vxsnaa08GkDnM1NkyyI1LKv/GMjzmyBm
+ +JAkoMefroXy50NeaFCAN/r8TLLiOcJtqsDN9Sijx5w+eriC51ZKVNWa8CSCYa1fBTM5
+ nNf4rtsOHWEOGCTDlI7s8eN5nbVQtwJD60B1J+h03XyAj2YushdXKDeN5/9ldu1VQp4B
+ WXUg==
+X-Gm-Message-State: AOJu0Yz5qx+rxF9p1TZX4SKGeQMpxYCUABbSUEKvsnPTGJtlGRjWGlHS
+ WxkbouSfl+MTtMf0bvdgV1L2p5bktTP27h3TxOgKYKjSu83tSRc1lr4=
+X-Google-Smtp-Source: AGHT+IEMTNGOgoJIf2MNL5s+SHTmq1FwCO7ZzTWszjYUpClNPJFWECYueYnePyIWzuzvQq3fVV1T4YCi2j605bnLy6Q=
+X-Received: by 2002:a05:6512:104c:b0:500:b679:ad3b with SMTP id
+ c12-20020a056512104c00b00500b679ad3bmr5723866lfb.53.1693290471895; Mon, 28
+ Aug 2023 23:27:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2] target/s390x/kvm: Simplify the GPRs, ACRs, CRs
- and prefix synchronization code
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Nico Boehr <nrb@linux.ibm.com>
-References: <20230814190604.907982-1-thuth@redhat.com>
- <1b3db0fa-3d63-1f94-838d-cd75baf67431@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <1b3db0fa-3d63-1f94-838d-cd75baf67431@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.169, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20230814085802.61459-1-faithilikerun@gmail.com>
+ <20230814085802.61459-4-faithilikerun@gmail.com>
+ <20230822194814.GB37847@fedora>
+ <CAAAx-8KQOBxt3S+nB0MNtOdG_8SZVg1HOud0hp65A+LXUrL-fw@mail.gmail.com>
+ <4c167bfe-2b93-358d-8e13-9e4fc1016766@kernel.org>
+In-Reply-To: <4c167bfe-2b93-358d-8e13-9e4fc1016766@kernel.org>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Tue, 29 Aug 2023 14:27:20 +0800
+Message-ID: <CAAAx-8J3TUanrC+-tpTO+xYYXH031S2AeirNAkdDE7wtGrT63g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] qcow2: add zoned emulation capability
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, hare@suse.de,
+ Hanna Reitz <hreitz@redhat.com>, dmitry.fomichev@wdc.com, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=faithilikerun@gmail.com; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,238 +91,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Thomas,
+Damien Le Moal <dlemoal@kernel.org> =E4=BA=8E2023=E5=B9=B48=E6=9C=8829=E6=
+=97=A5=E5=91=A8=E4=BA=8C 14:06=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On 8/28/23 20:55, Sam Li wrote:
+> >>> +            /* close one implicitly open zones to make it available =
+*/
+> >>> +            for (int i =3D s->zoned_header.zone_nr_conv;
+> >>> +            i < bs->bl.nr_zones; ++i) {
+> >>> +                uint64_t *wp =3D &s->wps->wp[i];
+> >>> +                if (qcow2_get_zs(*wp) =3D=3D BLK_ZS_IOPEN) {
+> >>> +                    ret =3D qcow2_write_wp_at(bs, wp, i, BLK_ZS_CLOS=
+ED);
+> >>
+> >> I'm wondering if it's correct to store the zone state persistently in
+> >> the qcow2 file. If the guest or QEMU crashes, then zones will be left =
+in
+> >> states like EOPEN. Since the guest software will have forgotten about
+> >> explicitly opened zones, the guest would need to recover zone states.
+> >> I'm not sure if existing software is designed to do that.
+> >>
+> >> Damien: Should the zone state be persistent?
+>
+> Yes and no. Yes you need to preserve/maintain zone states but not as is.
+> With a real drive, if you power cycle the device, you get the following s=
+tates
+> changes:
+>
+>  Before         | After power cycle
+> ----------------+-------------------
+>  EMPTY          | EMPTY
+>  FULL           | FULL
+>  IMP. OPEN      | CLOSED
+>  EXP. OPEN      | CLOSED
+>  CLOSED         | CLOSED
+>  READ=3DONLY      | READ-ONLY
+>  OFFLINE        | OFFLINE
+>
+> So any open (implicit or explicit) zone will show up as closed after powe=
+r
+> cycle. That is, the number of "active" zones does not change.
+> For the qcow2 emulation, as long as you do not also emulate read-only and
+> offline zones, you actually do not need to save the zone state in the zon=
+e
+> metadata. On startup, you can infer the state from the zone write pointer=
+:
+>
+> zone wp =3D=3D zone start -> EMPTY
+> zone wp >=3D zone capacity -> FULL
+> zone wp > zone start -> CLOSED
+>
+> And make sure that all closed zones are counted as the initial number of =
+active
+> zones. The initial number of open zones will always be 0.
+>
+> So it is easy :)
 
-On 8/28/23 20:20, Thomas Huth wrote:
-> On 14/08/2023 21.06, Thomas Huth wrote:
->> KVM_SYNC_GPRS, KVM_SYNC_ACRS, KVM_SYNC_CRS and KVM_SYNC_PREFIX are
->> available since kernel 3.10. Since we already require at least kernel
->> 3.15 in the s390x KVM code, we can assume that the KVM_CAP_SYNC_REGS
->> sync code is always possible for these registers, and remove the
->> related checks and fallbacks via KVM_SET_REGS and KVM_GET_REGS.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   target/s390x/kvm/kvm.c | 119 ++++++++++++-----------------------------
->>   1 file changed, 34 insertions(+), 85 deletions(-)
-> 
-> Ping! Anybody any comments on this one?
+Thanks for the explanations!
 
+Read-only and offline are device internal events. Does qcow2 emulation
+need to emulate that?
 
-Only minor comments, see below.
+Current NVMe ZNS emulation in QEMU has a nvme_offline_zone() function.
+Does it suggest keeping the offline state persistent?
+https://github.com/qemu/qemu/blob/master/hw/nvme/ctrl.c#L3740
 
-> 
->   Thomas
-> 
->> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
->> index a9e5880349..ff415f7b30 100644
->> --- a/target/s390x/kvm/kvm.c
->> +++ b/target/s390x/kvm/kvm.c
->> @@ -148,7 +148,6 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
->>       KVM_CAP_LAST_INFO
->>   };
->> -static int cap_sync_regs;
->>   static int cap_async_pf;
->>   static int cap_mem_op;
->>   static int cap_mem_op_extension;
->> @@ -342,21 +341,28 @@ static void ccw_machine_class_foreach(ObjectClass *oc, void *opaque)
->>   int kvm_arch_init(MachineState *ms, KVMState *s)
->>   {
->> +    int required_caps[] = {
->> +        KVM_CAP_DEVICE_CTRL,
->> +        KVM_CAP_SYNC_REGS,
->> +    };
->> +
->> +    for (int i = 0; i < ARRAY_SIZE(required_caps); i++) {
->> +        if (!kvm_check_extension(s, required_caps[i])) {
->> +            error_report("KVM is missing capability #%d - "
->> +                         "please use kernel 3.15 or newer", required_caps[i]);
->> +            return -1;
->> +        }
->> +    }
->> +
->>       object_class_foreach(ccw_machine_class_foreach, TYPE_S390_CCW_MACHINE,
->>                            false, NULL);
->> -    if (!kvm_check_extension(kvm_state, KVM_CAP_DEVICE_CTRL)) {
->> -        error_report("KVM is missing capability KVM_CAP_DEVICE_CTRL - "
->> -                     "please use kernel 3.15 or newer");
->> -        return -1;
->> -    }
->>       if (!kvm_check_extension(s, KVM_CAP_S390_COW)) {
->>           error_report("KVM is missing capability KVM_CAP_S390_COW - "
->>                        "unsupported environment");
->>           return -1;
->>       }
->> -    cap_sync_regs = kvm_check_extension(s, KVM_CAP_SYNC_REGS);
->>       cap_async_pf = kvm_check_extension(s, KVM_CAP_ASYNC_PF);
->>       cap_mem_op = kvm_check_extension(s, KVM_CAP_S390_MEM_OP);
->>       cap_mem_op_extension = kvm_check_extension(s, KVM_CAP_S390_MEM_OP_EXTENSION);
-
-I would introduce a first patch for the changes above, checking the
-KVM capabilities, and a second for get/put register changes.
-
-
->> @@ -463,15 +469,15 @@ void kvm_s390_reset_vcpu_normal(S390CPU *cpu)
->>   static int can_sync_regs(CPUState *cs, int regs)
->>   {
->> -    return cap_sync_regs && (cs->kvm_run->kvm_valid_regs & regs) == regs;
->> +    return (cs->kvm_run->kvm_valid_regs & regs) == regs;
->>   }
->>   int kvm_arch_put_registers(CPUState *cs, int level)
->>   {
->> +    const int required_syncs = KVM_SYNC_GPRS | KVM_SYNC_ACRS |
->> +                               KVM_SYNC_CRS | KVM_SYNC_PREFIX;
-
-May be introduce a KVM_SYNC_s390_REQUIRED_FIELDS define for these fields,
-as we already have KVM_SYNC_S390_VALID_FIELDS.
-
->>       S390CPU *cpu = S390_CPU(cs);
->>       CPUS390XState *env = &cpu->env;
->> -    struct kvm_sregs sregs;
->> -    struct kvm_regs regs;
->>       struct kvm_fpu fpu = {};
->>       int r;
->>       int i;
->> @@ -480,21 +486,16 @@ int kvm_arch_put_registers(CPUState *cs, int level)
->>       cs->kvm_run->psw_addr = env->psw.addr;
->>       cs->kvm_run->psw_mask = env->psw.mask;
->> -    if (can_sync_regs(cs, KVM_SYNC_GPRS)) {
->> -        for (i = 0; i < 16; i++) {
->> -            cs->kvm_run->s.regs.gprs[i] = env->regs[i];
->> -            cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_GPRS;
->> -        }
->> -    } else {
->> -        for (i = 0; i < 16; i++) {
->> -            regs.gprs[i] = env->regs[i];
->> -        }
->> -        r = kvm_vcpu_ioctl(cs, KVM_SET_REGS, &regs);
->> -        if (r < 0) {
->> -            return r;
->> -        }
->> +    g_assert((cs->kvm_run->kvm_valid_regs & required_syncs) == required_syncs);
-
-this also is :
-
-           g_assert(can_sync_regs(cs, KVM_SYNC_s390_REQUIRED_FIELDS));
-
-the rest looks good.
-
-Thanks,
-
-C.
-
->> +    cs->kvm_run->kvm_dirty_regs |= required_syncs;
->> +    for (i = 0; i < 16; i++) {
->> +        cs->kvm_run->s.regs.gprs[i] = env->regs[i];
->> +        cs->kvm_run->s.regs.acrs[i] = env->aregs[i];
->> +        cs->kvm_run->s.regs.crs[i] = env->cregs[i];
->>       }
->> +    cs->kvm_run->s.regs.prefix = env->psa;
->> +
->>       if (can_sync_regs(cs, KVM_SYNC_VRS)) {
->>           for (i = 0; i < 32; i++) {
->>               cs->kvm_run->s.regs.vrs[i][0] = env->vregs[i][0];
->> @@ -572,25 +573,6 @@ int kvm_arch_put_registers(CPUState *cs, int level)
->>           }
->>       }
->> -    /* access registers and control registers*/
->> -    if (can_sync_regs(cs, KVM_SYNC_ACRS | KVM_SYNC_CRS)) {
->> -        for (i = 0; i < 16; i++) {
->> -            cs->kvm_run->s.regs.acrs[i] = env->aregs[i];
->> -            cs->kvm_run->s.regs.crs[i] = env->cregs[i];
->> -        }
->> -        cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_ACRS;
->> -        cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_CRS;
->> -    } else {
->> -        for (i = 0; i < 16; i++) {
->> -            sregs.acrs[i] = env->aregs[i];
->> -            sregs.crs[i] = env->cregs[i];
->> -        }
->> -        r = kvm_vcpu_ioctl(cs, KVM_SET_SREGS, &sregs);
->> -        if (r < 0) {
->> -            return r;
->> -        }
->> -    }
->> -
->>       if (can_sync_regs(cs, KVM_SYNC_GSCB)) {
->>           memcpy(cs->kvm_run->s.regs.gscb, env->gscb, 32);
->>           cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_GSCB;
->> @@ -612,22 +594,15 @@ int kvm_arch_put_registers(CPUState *cs, int level)
->>           cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_DIAG318;
->>       }
->> -    /* Finally the prefix */
->> -    if (can_sync_regs(cs, KVM_SYNC_PREFIX)) {
->> -        cs->kvm_run->s.regs.prefix = env->psa;
->> -        cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_PREFIX;
->> -    } else {
->> -        /* prefix is only supported via sync regs */
->> -    }
->>       return 0;
->>   }
->>   int kvm_arch_get_registers(CPUState *cs)
->>   {
->> +    const int required_syncs = KVM_SYNC_GPRS | KVM_SYNC_ACRS |
->> +                               KVM_SYNC_CRS | KVM_SYNC_PREFIX;
->>       S390CPU *cpu = S390_CPU(cs);
->>       CPUS390XState *env = &cpu->env;
->> -    struct kvm_sregs sregs;
->> -    struct kvm_regs regs;
->>       struct kvm_fpu fpu;
->>       int i, r;
->> @@ -635,37 +610,16 @@ int kvm_arch_get_registers(CPUState *cs)
->>       env->psw.addr = cs->kvm_run->psw_addr;
->>       env->psw.mask = cs->kvm_run->psw_mask;
->> -    /* the GPRS */
->> -    if (can_sync_regs(cs, KVM_SYNC_GPRS)) {
->> -        for (i = 0; i < 16; i++) {
->> -            env->regs[i] = cs->kvm_run->s.regs.gprs[i];
->> -        }
->> -    } else {
->> -        r = kvm_vcpu_ioctl(cs, KVM_GET_REGS, &regs);
->> -        if (r < 0) {
->> -            return r;
->> -        }
->> -         for (i = 0; i < 16; i++) {
->> -            env->regs[i] = regs.gprs[i];
->> -        }
->> +    /* the GPRS, ACRS and CRS */
->> +    g_assert((cs->kvm_run->kvm_valid_regs & required_syncs) == required_syncs);
->> +    for (i = 0; i < 16; i++) {
->> +        env->regs[i] = cs->kvm_run->s.regs.gprs[i];
->> +        env->aregs[i] = cs->kvm_run->s.regs.acrs[i];
->> +        env->cregs[i] = cs->kvm_run->s.regs.crs[i];
->>       }
->> -    /* The ACRS and CRS */
->> -    if (can_sync_regs(cs, KVM_SYNC_ACRS | KVM_SYNC_CRS)) {
->> -        for (i = 0; i < 16; i++) {
->> -            env->aregs[i] = cs->kvm_run->s.regs.acrs[i];
->> -            env->cregs[i] = cs->kvm_run->s.regs.crs[i];
->> -        }
->> -    } else {
->> -        r = kvm_vcpu_ioctl(cs, KVM_GET_SREGS, &sregs);
->> -        if (r < 0) {
->> -            return r;
->> -        }
->> -         for (i = 0; i < 16; i++) {
->> -            env->aregs[i] = sregs.acrs[i];
->> -            env->cregs[i] = sregs.crs[i];
->> -        }
->> -    }
->> +    /* The prefix */
->> +    env->psa = cs->kvm_run->s.regs.prefix;
->>       /* Floating point and vector registers */
->>       if (can_sync_regs(cs, KVM_SYNC_VRS)) {
->> @@ -690,11 +644,6 @@ int kvm_arch_get_registers(CPUState *cs)
->>           env->fpc = fpu.fpc;
->>       }
->> -    /* The prefix */
->> -    if (can_sync_regs(cs, KVM_SYNC_PREFIX)) {
->> -        env->psa = cs->kvm_run->s.regs.prefix;
->> -    }
->> -
->>       if (can_sync_regs(cs, KVM_SYNC_ARCH0)) {
->>           env->cputm = cs->kvm_run->s.regs.cputm;
->>           env->ckc = cs->kvm_run->s.regs.ckc;
-> 
-
+Sam
 
