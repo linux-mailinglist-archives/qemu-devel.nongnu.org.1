@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCB478C9D8
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EB578C9EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:51:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb1pv-0006da-KX; Tue, 29 Aug 2023 12:45:03 -0400
+	id 1qb1vS-0000o8-12; Tue, 29 Aug 2023 12:50:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qb1pj-0006XZ-2g
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:44:51 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb1vQ-0000nz-37
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:50:44 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qb1pg-0001Uj-CF
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:44:50 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2bcb50e194dso70659351fa.3
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:44:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb1vN-0002fq-Ls
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:50:43 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bf3a2f4528so36331385ad.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:50:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693327486; x=1693932286;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TgQwfMF9wRv3f5hpfe8wth4gls5dTBKkwZqRIZ0IVkE=;
- b=VCocjj0cIOVLE2+7jGHHORk4uaLBTHr6C1fN4ikyFmihYxHfJh1ZAdBaPAg2wcICgE
- fdx6OQsUqEHUOq+USvHZKCRAWC+whZhwAyeFd06anM2XDFu8dZ3CXRtU2HxO4mQ7GEF6
- s0Su7BJ8lBHSN4wAeQZNfwnSfgBdp+tOFIrrkIEqiD9butuD8VCPDqTjAavjCCChhF6J
- b7hPGhKWPFAlHsZO9+2FyJZyVb4mYWXSqTEkIoKW2ucdMe0BKiDaveoc8bl6LnmpNbw9
- UDr87ACG1hI3qD+tCgxjRBSpzQk/KV4Wq36uBs8M2rJAXWKZp0HA83AdfFUOb/3WdSKn
- 7puw==
+ d=linaro.org; s=google; t=1693327839; x=1693932639;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dlGPxNJs1rYJb4lGGefgNFLnY2Gy2Osh8nfAMBl8a2g=;
+ b=u4ZqePS+2eFTpm6aQ4/zTIvTlbBy1aGw9+tAN7cdMJTvVFgq2qEExPokst3mrRlgFH
+ WN80GwpbnJQ8qShdsJBmObtKuefLdTfjtETXicBnJrPJfLsE3m2gKxp+Qa04j2/4QF+J
+ g7uRVTEY4X9cbinnvTWg/VF8K08isPdjy1tzA4rSeCvMdG4vDkWRj5gmfDi6LEdoIdKR
+ xNeZ3QwA0iAP6OJxk3pT4f9JJ36xns8jLSd4b5qlQNZCQ8GgYlE/IO5Lea7F6ULgvjtr
+ 6L/3fsu4y8EdT4u7Q012ZBDDUooMof6iEkpTTtqvZsdVEoULNt6o1kKuzeGAulQh4+9Q
+ nw0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693327486; x=1693932286;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TgQwfMF9wRv3f5hpfe8wth4gls5dTBKkwZqRIZ0IVkE=;
- b=G0gjlLx5HAkmMJQQdUnCrO9E7tn7FL42ShaVc7Wciq8dppkoSbuhhVebzFWBxgv/0S
- ooQF35/oBFzVHzv5iFP49VakQkT4UQnP3dYWd0Nz7bKD7110xSWwgSMtLkvT3i5c5L4T
- pYbmkQ9AwmR3BoBi6eH2jeFz06YBxgVhLRxh7+QfxxVKLM/HYHCATvegg11ROsAhNhYK
- OhCnBBl9sI00lfpdLW5UD6R+3T/SpdSmZR6yjpF7I9Ca7er9fwvNab8136gryETVv2AH
- djA4C0nJ57QvZ2jzCzYgdl0vUkLVOhHdJrHSf62YHsoj2OsgKTeQOInRdyBGi6Bu8uB8
- 2j1Q==
-X-Gm-Message-State: AOJu0YwIbtpJjKQXvs7bFfJPA4ABDpe/tCf1CqznVBXBqKFf09S7eLGA
- 3aiqhxaY4phx6TRvbJyo3UBgA9qmRIYhCQoalKE/DA==
-X-Google-Smtp-Source: AGHT+IFYm/DOqO1kAa+fGtAxM7gACuz9ReHEG82uD1Dn0l71ML7I178UB1F9TllVLaccvOTp6uHFQg5qkdiT5a8bDa8=
-X-Received: by 2002:a05:6512:2307:b0:500:bddc:56d5 with SMTP id
- o7-20020a056512230700b00500bddc56d5mr3857063lfu.37.1693327486508; Tue, 29 Aug
- 2023 09:44:46 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693327839; x=1693932639;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dlGPxNJs1rYJb4lGGefgNFLnY2Gy2Osh8nfAMBl8a2g=;
+ b=ZhKzRP68Cuibwpzeg3CGfMG/TljEIG4X0GII5TtuZie4HGoe+nrzq7ELGY9wJam/zz
+ 1jjOpbVXvpIyRJk39qQ09rvYroqOKWD3YEYBIHK0lyWh1BSm63qGknL0dPEL//hifvTq
+ s3y9DpFmcChGA2WLxNGfzHSJ1pjvrbDjOCzSSO2fqEKaby4ORI08KMGODQ7kcJUWlHMJ
+ 0v97V8E+WdqApImsN+X/27sda+LIswPELB+lgcyFu5egfkwg19BfKkMN56Fh7Mu9rKHF
+ OvbepUYuudBbUHhJAbnTGblnvyI2hO+uM8S+eDgyKTI9RLE/O9+AWGffUJXhvjMJqngB
+ PHTQ==
+X-Gm-Message-State: AOJu0YxwPJSOeYnlDl9PSblXmkJyVIqqV8gh4IRIZTvATxb3aG9k+jPu
+ 9kj2sAS3Ct/8SV7RLHf5sJGLoMqNLrpbNSFjImM=
+X-Google-Smtp-Source: AGHT+IHsmWcfPyFO9MxkDjWhn6FDm4QdInv2gpLvJX64E8DQ2vITB7ZgGZFQ4wPzCkmxMruhyIGLNw==
+X-Received: by 2002:a17:902:d4c3:b0:1b8:987f:3f34 with SMTP id
+ o3-20020a170902d4c300b001b8987f3f34mr37092364plg.25.1693327838999; 
+ Tue, 29 Aug 2023 09:50:38 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ jd14-20020a170903260e00b001b03a1a3151sm9572892plb.70.2023.08.29.09.50.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 09:50:38 -0700 (PDT)
+Message-ID: <b0fd3765-af78-9c7b-02e4-bd6304a3d029@linaro.org>
+Date: Tue, 29 Aug 2023 09:50:36 -0700
 MIME-Version: 1.0
-References: <20230824183448.151738-1-francisco.iglesias@amd.com>
- <20230824183448.151738-6-francisco.iglesias@amd.com>
-In-Reply-To: <20230824183448.151738-6-francisco.iglesias@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 17:44:35 +0100
-Message-ID: <CAFEAcA_Es_sX4O-oqX9E49LTWUMDzv6sao2i3Fb-YCqg9M8WXA@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] hw/misc: Introduce a model of Xilinx Versal's
- CFRAME_REG
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 4/6] hw/virtio/vhost-vdpa: Use target-agnostic
+ qemu_target_page_mask()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20230710094931.84402-1-philmd@linaro.org>
+ <20230710094931.84402-5-philmd@linaro.org>
+ <e24e67e0-fd01-6374-3bb7-1a73a35b48da@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <e24e67e0-fd01-6374-3bb7-1a73a35b48da@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,161 +98,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 24 Aug 2023 at 19:35, Francisco Iglesias
-<francisco.iglesias@amd.com> wrote:
->
-> Introduce a model of Xilinx Versal's Configuration Frame controller
-> (CFRAME_REG).
->
-> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
+On 8/18/23 04:00, Philippe Mathieu-Daudé wrote:
+> ping?
+> 
+> On 10/7/23 11:49, Philippe Mathieu-Daudé wrote:
+>> Similarly to commit e414ed2c47 ("virtio-iommu: Use
+>> target-agnostic qemu_target_page_mask"), Replace the
+>> target-specific TARGET_PAGE_SIZE and TARGET_PAGE_MASK
+>> definitions by a call to the runtime qemu_target_page_size()
+>> helper which is target agnostic.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> +static void cfrm_fdri_post_write(RegisterInfo *reg, uint64_t val)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(reg->opaque);
-> +
-> +    if (s->row_configured && s->rowon && s->wcfg) {
-> +
-> +        if (fifo32_num_free(&s->new_f_data) >= N_WORDS_128BIT) {
-> +            fifo32_push(&s->new_f_data, s->regs[R_FDRI0]);
-> +            fifo32_push(&s->new_f_data, s->regs[R_FDRI1]);
-> +            fifo32_push(&s->new_f_data, s->regs[R_FDRI2]);
-> +            fifo32_push(&s->new_f_data, s->regs[R_FDRI3]);
-> +        }
-> +
-> +        if (fifo32_is_full(&s->new_f_data)) {
-> +            uint32_t addr = extract32(s->regs[R_FAR0], 0, 23);
-> +            XlnxCFrame *f = g_new(XlnxCFrame, 1);
-> +
-> +            memcpy(f->data, s->new_f_data.fifo.data, sizeof(f->data));
-
-This works, but it's going under the hood of the Fifo32 abstraction
-and makes the assumptions that (a) if you only push to the fifo
-and never pop then the data is going to be contiguous from the
-start of the fifo internal buffer and (b) that fifo32_push()
-pushes the bytes of the 32 bit value in little endian order.
-Those are both true at the moment, but fifo32 doesn't explicitly
-guarantee either of them...
-
-> +
-> +            g_tree_replace(s->cframes, GUINT_TO_POINTER(addr), f);
-> +
-> +            cframe_incr_far(s);
-> +
-> +            fifo32_reset(&s->new_f_data);
-> +        }
-> +    }
-> +}
-> +
-> +static void cfrm_readout_frames(XlnxVersalCFrameReg *s, uint32_t start_addr,
-> +                                uint32_t end_addr)
-> +{
-> +    for (uint32_t addr = start_addr; addr < end_addr; addr++) {
-> +        XlnxCFrame *f = g_tree_lookup(s->cframes, GUINT_TO_POINTER(addr));
-
-You don't need to g_tree_lookup() for every address. If
-you use g_tree_lookup_node() you get a GTreeNode* back,
-and you can then iterate through the tree from that point using
-g_tree_node_next(), something like this:
-
-     for (node = g_tree_lookup_node(s->cframes, GUINT_TO_POINTER(addr));
-          node && GPOINTER_TO_UINT(g_tree_node_key(node)) < end_addr;
-          node = g_tree_node_next(node)) {
-         XlnxCFrame *f = g_tree_node_value(node);  // definitely not NULL
-         /* Transmit the data */
-         for (int i = 0; i < FRAME_NUM_WORDS; i += 4) {
-             ... etc ...
-         }
-     }
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-
-> +
-> +        /* Transmit the data if a frame was found */
-> +        if (f) {
-> +            for (int i = 0; i < FRAME_NUM_WORDS; i += 4) {
-> +                XlnxCfiPacket pkt = {};
-> +
-> +                pkt.data[0] = f->data[i];
-> +                pkt.data[1] = f->data[i + 1];
-> +                pkt.data[2] = f->data[i + 2];
-> +                pkt.data[3] = f->data[i + 3];
-> +
-> +                if (s->cfg.cfu_fdro) {
-> +                    xlnx_cfi_transfer_packet(s->cfg.cfu_fdro, &pkt);
-> +                }
-> +            }
-> +        }
-> +    }
-> +}
+r~
 
 
-> +static void cframe_reg_reset_enter(Object *obj, ResetType type)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(obj);
-> +    unsigned int i;
-> +
-> +    for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
-> +        register_reset(&s->regs_info[i]);
-> +    }
-> +    memset(s->wfifo, 0, WFIFO_SZ * sizeof(uint32_t));
-> +    fifo32_reset(&s->new_f_data);
-> +
-> +    if (g_tree_height(s->cframes)) {
+>> ---
+>>   hw/virtio/vhost-vdpa.c | 26 +++++++++++++++-----------
+>>   1 file changed, 15 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+>> index a3dd7c712a..2717edf51d 100644
+>> --- a/hw/virtio/vhost-vdpa.c
+>> +++ b/hw/virtio/vhost-vdpa.c
+>> @@ -14,6 +14,7 @@
+>>   #include <linux/vfio.h>
+>>   #include <sys/eventfd.h>
+>>   #include <sys/ioctl.h>
+>> +#include "exec/target_page.h"
+>>   #include "hw/virtio/vhost.h"
+>>   #include "hw/virtio/vhost-backend.h"
+>>   #include "hw/virtio/virtio-net.h"
+>> @@ -23,7 +24,6 @@
+>>   #include "migration/blocker.h"
+>>   #include "qemu/cutils.h"
+>>   #include "qemu/main-loop.h"
+>> -#include "cpu.h"
+>>   #include "trace.h"
+>>   #include "qapi/error.h"
+>> @@ -313,9 +313,11 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+>>       Int128 llend, llsize;
+>>       void *vaddr;
+>>       int ret;
+>> +    int page_size = qemu_target_page_size();
+>> +    int page_mask = -page_size;
+>>       if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+>> -                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+>> +                                            v->iova_range.last, page_mask)) {
+>>           return;
+>>       }
+>>       if (memory_region_is_iommu(section->mr)) {
+>> @@ -323,14 +325,14 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+>>           return;
+>>       }
+>> -    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+>> -                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
+>> +    if (unlikely((section->offset_within_address_space & ~page_mask) !=
+>> +                 (section->offset_within_region & ~page_mask))) {
+>>           error_report("%s received unaligned region", __func__);
+>>           return;
+>>       }
+>> -    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
+>> -    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
+>> +    iova = ROUND_UP(section->offset_within_address_space, page_size);
+>> +    llend = vhost_vdpa_section_end(section, page_mask);
+>>       if (int128_ge(int128_make64(iova), llend)) {
+>>           return;
+>>       }
+>> @@ -396,23 +398,25 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+>>       hwaddr iova;
+>>       Int128 llend, llsize;
+>>       int ret;
+>> +    int page_size = qemu_target_page_size();
+>> +    int page_mask = -page_size;
+>>       if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+>> -                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+>> +                                            v->iova_range.last, page_mask)) {
+>>           return;
+>>       }
+>>       if (memory_region_is_iommu(section->mr)) {
+>>           vhost_vdpa_iommu_region_del(listener, section);
+>>       }
+>> -    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+>> -                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
+>> +    if (unlikely((section->offset_within_address_space & ~page_mask) !=
+>> +                 (section->offset_within_region & ~page_mask))) {
+>>           error_report("%s received unaligned region", __func__);
+>>           return;
+>>       }
+>> -    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
+>> -    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
+>> +    iova = ROUND_UP(section->offset_within_address_space, page_size);
+>> +    llend = vhost_vdpa_section_end(section, page_mask);
+>>       trace_vhost_vdpa_listener_region_del(v, iova,
+>>           int128_get64(int128_sub(llend, int128_one())));
+> 
 
-Calculating g_tree_height() requires walking the tree.
-Using g_tree_nnodes() is faster because that's just a field
-in the GTree struct.
-
-> +        g_tree_destroy(s->cframes);
-> +        s->cframes = g_tree_new_full((GCompareDataFunc)int_cmp, NULL,
-> +                                      NULL, (GDestroyNotify) g_free);
-
-Faster to do
-    /*
-     * Take a reference so when g_tree_destroy() unrefs it we keep the
-     * GTree and only destroy its contents. NB: when our minimum
-     * glib version is at least 2.70 we could use g_tree_remove_all().
-     */
-    g_tree_ref(s->cframes);
-    g_tree_destroy(s->cframes);
-
-> +    }
-> +}
-
-> +
-> +static void cframe_reg_init(Object *obj)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(obj);
-> +    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-> +    RegisterInfoArray *reg_array;
-> +
-> +    memory_region_init(&s->iomem, obj, TYPE_XLNX_VERSAL_CFRAME_REG,
-> +                       CFRAME_REG_R_MAX * 4);
-> +    reg_array =
-> +        register_init_block32(DEVICE(obj), cframe_reg_regs_info,
-> +                              ARRAY_SIZE(cframe_reg_regs_info),
-> +                              s->regs_info, s->regs,
-> +                              &cframe_reg_ops,
-> +                              XLNX_VERSAL_CFRAME_REG_ERR_DEBUG,
-> +                              CFRAME_REG_R_MAX * 4);
-> +    memory_region_add_subregion(&s->iomem,
-> +                                0x0,
-> +                                &reg_array->mem);
-> +    sysbus_init_mmio(sbd, &s->iomem);
-> +    memory_region_init_io(&s->iomem_fdri, obj, &cframe_reg_fdri_ops, s,
-> +                          TYPE_XLNX_VERSAL_CFRAME_REG "-fdri",
-> +                          KEYHOLE_STREAM_4K);
-> +    sysbus_init_mmio(sbd, &s->iomem_fdri);
-> +    sysbus_init_irq(sbd, &s->irq_cfrm_imr);
-> +
-> +    s->cframes = g_tree_new_full((GCompareDataFunc)int_cmp, NULL,
-> +                                  NULL, (GDestroyNotify) g_free);
-
-Stray space before 'g_free'.
-
-> +    fifo32_create(&s->new_f_data, FRAME_NUM_WORDS);
-> +}
-
-thanks
--- PMM
 
