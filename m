@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C34A78CA80
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6EA78CA83
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb2J1-0001wo-Jd; Tue, 29 Aug 2023 13:15:09 -0400
+	id 1qb2KU-0003dJ-Rn; Tue, 29 Aug 2023 13:16:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qb2It-0001mF-Ky
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:15:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qb2KH-0003d1-Bt
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:16:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qb2Ip-0007di-03
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:14:58 -0400
+ id 1qb2KE-00081z-Tp
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:16:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693329293;
+ s=mimecast20190719; t=1693329382;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4wmq0K4u01Zauh+2ueEm6Rm2MzAofrXi+CbNwBzhO5c=;
- b=egje2Xfak/whRWyCSUSOEqHQY39u3FieW9kX7c920jZZh/xb5UUGbxvRP1M3DlxnUZAG4p
- AInb8Is7zXS1ZZHVal5JCUNJH5vQiTkpZiNWKA2mqnctW5UlqmYjgAE/zkmBfZtlACmoTg
- fIrGPMpE9bw0qIQK5MwPPTnkUONnkbw=
+ bh=gmuNP5WmhsT5Vqt5eau46b/ENSHSgHdMgVAFM2pCW3M=;
+ b=R8856wJcvGLWo8s4JpRc0twSzxklqEbq86SxSKv08GnRx4J3CXUJL57EsNrJJO/LbYQX2F
+ xNEZv6A13uVR364sUTGpkDmOtJ7lK0KMFRxC5T1jy7OKw/Xeh5bjWueHGmkjuKxM5GKSQk
+ dDv+yKs66nqpA3Vr0dU0fvfDUiFpYVU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-583-7Onn7p4OMcKMA2aOPG2L2g-1; Tue, 29 Aug 2023 13:14:51 -0400
-X-MC-Unique: 7Onn7p4OMcKMA2aOPG2L2g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-582-Y-jvYn2RO6Wo8yyR7NAvBg-1; Tue, 29 Aug 2023 13:16:19 -0400
+X-MC-Unique: Y-jvYn2RO6Wo8yyR7NAvBg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8FEB8805AF6
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 17:14:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1368F806006
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 17:16:19 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 251AA1121318;
- Tue, 29 Aug 2023 17:14:51 +0000 (UTC)
-Date: Tue, 29 Aug 2023 18:14:49 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9210D2166B25;
+ Tue, 29 Aug 2023 17:16:18 +0000 (UTC)
+Date: Tue, 29 Aug 2023 18:16:16 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 01/10] meson: do not unnecessarily use cmake for
- dependencies
-Message-ID: <ZO4niU0f1XTN34yb@redhat.com>
+Subject: Re: [PATCH 06/10] contrib/plugins: use an independent makefile
+Message-ID: <ZO4n4BWt2+D7dZh+@redhat.com>
 References: <20230829082931.67601-1-pbonzini@redhat.com>
- <20230829082931.67601-2-pbonzini@redhat.com>
+ <20230829082931.67601-7-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230829082931.67601-2-pbonzini@redhat.com>
+In-Reply-To: <20230829082931.67601-7-pbonzini@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,18 +83,27 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 10:29:22AM +0200, Paolo Bonzini wrote:
-> Both gvnc and sysprof-capture come with pkg-config files, so specify
-> the method to find them.
+On Tue, Aug 29, 2023 at 10:29:27AM +0200, Paolo Bonzini wrote:
+> The initial reason to write this patch was to remove the last use of
+> CONFIG_DEBUG_TCG from the makefiles; the flags to use to build TCG
+> plugins are unrelated to --enable-debug-tcg, and instead they should
+> be the same as those used to build emulators (the plugins are not build
+> via meson for demonstration reasons only).
+> 
+> However, since contrib/plugins/Makefile is also the last case of doing
+> a compilation job using config-host.mak, go a step further and make it
+> use a completely separate configuration file, removing all references
+> to compilers from the toplevel config-host.mak.  Clean up references to
+> empty variables, and use .SECONDARY so that intermediate object files
+> are not deleted.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  tests/migration/meson.build | 2 +-
->  tests/qtest/meson.build     | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  configure                | 12 +++++++++---
+>  contrib/plugins/Makefile | 18 +++++++++---------
+>  2 files changed, 18 insertions(+), 12 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
 
 With regards,
 Daniel
