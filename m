@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2E778D057
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01B378D03D
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7p2-0003bU-O3; Tue, 29 Aug 2023 19:08:36 -0400
+	id 1qb7mq-0000h1-Dm; Tue, 29 Aug 2023 19:06:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb6nW-0002SI-48
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 18:02:54 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qb6nV-0002S4-Pm
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 18:02:53 -0400
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb6nQ-0004AP-VB
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 18:02:53 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-68a520dba33so3914700b3a.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 15:02:45 -0700 (PDT)
+ id 1qb6nQ-0004Ad-VV
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 18:02:52 -0400
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-7923ae72111so180923039f.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 15:02:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693346564; x=1693951364; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693346566; x=1693951366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I7HQy8Pf3V+6dbDojL94FaVgMwfQELi+RTDuhyeAeO4=;
- b=tAgT8QrRbQeD7o8jv5H6gLqrlfov22XPJtNZehW37Cf2+MHUeR+uqRIgTG2rw/Iw4L
- RYKynx5VmwcCC9fa73T4CObdX/N9nie+wrlIc+Fm8C51KWlrneeKMFDBmCkYuislS1v8
- VVrMEb2uwKCY7CaB+sABmBVQCt/ncmZeuvsS7NQfgROHgvJgjMX3lPQt3PPOVDkg8+sx
- OtHCSK9VbvjIUHSuUDhs/sPekSsKAhAmZFtFVl1f0VOezVLxkbvz/+1xPGUOL7bb4eYM
- Ci+2t+oYblfATOFwDoN7VOnkLGCpSsDodxs5EiH6oiH1ZOxQSVGa+t0SE6yMSPtFp+dn
- Yy/A==
+ bh=PALhtNLDTEQBplpEDAV9CBTQKyCRvnx9lwlRHrFIaiA=;
+ b=zyZrwRhpOkxWUpIyiGR84QasUF3iAXz7H7HFNOup5yghWqtbX1zzNu9m/IySEZF0cL
+ YvEqakECcyGLoVPBiNofPJYgXuG4NXvwDISIOzC4JrIk8auq8EuaAzPeNZzXlY1VDk0Q
+ WxIiYLQX4rvyD0SFQ/QihRTiKRCfJQgVv8l3B4r2vUV6q2plLrPLTasa/tOGQ5/RNoaV
+ BYOkjLLPAUWp7RoQAcxfUcKYWLGjllnuGZRK4gppRB/UYN4P1jK5Y23lQXrRrlP0jjgo
+ nst527nCwkvRAm2qlKDE63AtK7J55lwWOWdNzND3txUvEeMqz5kMY6HzCRZONzolaeK9
+ fS6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693346564; x=1693951364;
+ d=1e100.net; s=20221208; t=1693346566; x=1693951366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I7HQy8Pf3V+6dbDojL94FaVgMwfQELi+RTDuhyeAeO4=;
- b=lKbMnfB/mSaJdkkM3/jj7lyDl0hTieCJ6SHT7c0t3ItVeRmfGeJakARZop776BEQ6W
- DE7EBE+0XOLNHmISm7RMLNxpmohbkPpqA1oQDNj1J/x27TRRaQafSUMzjWYUDXjc59R+
- hR5aJVqcIjFjmnJxvk05xcSiGanj5wZAn9qS2HK1s+G83dKst1Rs71Bvn9VMGv0cicrE
- UICO7Waa0Knphacx65k7SDzkkP9Y+WAkqp8KjgeAfRbRRCldwkQ0ui02uIUg73CaHWJM
- jnxJEgaAaa8XGiYql4pDkxMHxWK57gVrZwyAEKg8ZYlmkxRBY7Zb/mtAv4Ovc0lLvRia
- 205Q==
-X-Gm-Message-State: AOJu0YxWdplY8wFD3FBzFpUpUpYkS0tXgMuy5sZQxSYdpg7ivdooamQq
- pJ928Nn+Mwr84uLE9OrS/hjFmvDqq4hu//lt8p0=
-X-Google-Smtp-Source: AGHT+IH1G5sWMPVWrSgDRpqJaDGGKhfsTwzKS01/EjcrF0JjXP0bQrXHqMy02wvGZz+yo74wdOwiAg==
-X-Received: by 2002:a05:6a20:9742:b0:11d:8a8f:655d with SMTP id
- hs2-20020a056a20974200b0011d8a8f655dmr573756pzc.4.1693346564174; 
- Tue, 29 Aug 2023 15:02:44 -0700 (PDT)
+ bh=PALhtNLDTEQBplpEDAV9CBTQKyCRvnx9lwlRHrFIaiA=;
+ b=QZF1890Zv7X2SbZ7xlqZ7q4h45ioVXicWIFDF2Dp3k8G81fXwf9ZWAfBEzdu1tRXiQ
+ wfaS2B9Pca5UeKXd2kFXqaep3hQ0A861qq2LcqezP4Nl5+uTIkzEvfaztv3WstyRpYRG
+ LzCIw/9VsP/Es+/Wsh98y+3WUue5v91kSygABAMqxG10mEBnizj7O0HkS1KD8IYp+OhL
+ dtvNUQ+JxzYYcajR4Gl1uKsmHQX85MexhyQEY4CFAKqOQtmrHm/2lZk7syspClB1u35l
+ VSJIweYwthKoR2oBgaOuyWW5EwACxY0fnsNNGRElKkVsXJAz0YNsOgf/Odwn/hDtXNaO
+ sonA==
+X-Gm-Message-State: AOJu0Yy0pdBDpNYcKT+zEDkvL0ID5uqt/EX8vZXmlqCGxdu+uhXBdVde
+ Aa/ojDXFyKHxcUm2WYZMGjKcl71eifTSinrfkgM=
+X-Google-Smtp-Source: AGHT+IHqgeQBV1NzhREUtrfHwYf3viORRCyuQ/I1tXFRRRvG2nhCtpmXD+HYn6Qm/49v3qjgubHDTw==
+X-Received: by 2002:a05:6602:1b14:b0:790:d813:2d38 with SMTP id
+ dk20-20020a0566021b1400b00790d8132d38mr614519iob.11.1693346565808; 
+ Tue, 29 Aug 2023 15:02:45 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- b28-20020a63715c000000b0056606274e54sm9538196pgn.31.2023.08.29.15.02.43
+ b28-20020a63715c000000b0056606274e54sm9538196pgn.31.2023.08.29.15.02.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 15:02:43 -0700 (PDT)
+ Tue, 29 Aug 2023 15:02:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org,
 	laurent@vivier.eu
-Subject: [PATCH v5 15/20] linux-user/hppa: Add vdso
-Date: Tue, 29 Aug 2023 15:02:23 -0700
-Message-Id: <20230829220228.928506-16-richard.henderson@linaro.org>
+Subject: [PATCH v5 16/20] linux-user/riscv: Add vdso
+Date: Tue, 29 Aug 2023 15:02:24 -0700
+Message-Id: <20230829220228.928506-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230829220228.928506-1-richard.henderson@linaro.org>
 References: <20230829220228.928506-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,339 +93,434 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/vdso-asmoffset.h |  12 +++
- linux-user/elfload.c             |   4 +
- linux-user/hppa/signal.c         |  24 +++--
- linux-user/hppa/meson.build      |  23 +++++
- linux-user/hppa/vdso.S           | 165 +++++++++++++++++++++++++++++++
- linux-user/hppa/vdso.ld          |  77 +++++++++++++++
- linux-user/hppa/vdso.so          | Bin 0 -> 2104 bytes
- 7 files changed, 295 insertions(+), 10 deletions(-)
- create mode 100644 linux-user/hppa/vdso-asmoffset.h
- create mode 100644 linux-user/hppa/vdso.S
- create mode 100644 linux-user/hppa/vdso.ld
- create mode 100755 linux-user/hppa/vdso.so
+ linux-user/riscv/vdso-asmoffset.h |   9 ++
+ linux-user/elfload.c              |   4 +
+ linux-user/riscv/signal.c         |   8 ++
+ linux-user/meson.build            |   1 +
+ linux-user/riscv/meson.build      |  30 +++++
+ linux-user/riscv/vdso-32.so       | Bin 0 -> 2888 bytes
+ linux-user/riscv/vdso-64.so       | Bin 0 -> 3840 bytes
+ linux-user/riscv/vdso.S           | 186 ++++++++++++++++++++++++++++++
+ linux-user/riscv/vdso.ld          |  74 ++++++++++++
+ 9 files changed, 312 insertions(+)
+ create mode 100644 linux-user/riscv/vdso-asmoffset.h
+ create mode 100644 linux-user/riscv/meson.build
+ create mode 100755 linux-user/riscv/vdso-32.so
+ create mode 100755 linux-user/riscv/vdso-64.so
+ create mode 100644 linux-user/riscv/vdso.S
+ create mode 100644 linux-user/riscv/vdso.ld
 
-diff --git a/linux-user/hppa/vdso-asmoffset.h b/linux-user/hppa/vdso-asmoffset.h
+diff --git a/linux-user/riscv/vdso-asmoffset.h b/linux-user/riscv/vdso-asmoffset.h
 new file mode 100644
-index 0000000000..c8b40c0332
+index 0000000000..123902ef61
 --- /dev/null
-+++ b/linux-user/hppa/vdso-asmoffset.h
-@@ -0,0 +1,12 @@
-+#define sizeof_rt_sigframe              584
-+#define offsetof_sigcontext             160
-+#define offsetof_sigcontext_gr          0x4
-+#define offsetof_sigcontext_fr          0x88
-+#define offsetof_sigcontext_iaoq        0x190
-+#define offsetof_sigcontext_sar         0x198
-+
-+/* arch/parisc/include/asm/rt_sigframe.h */
-+#define SIGFRAME                        64
-+#define FUNCTIONCALLFRAME               48
-+#define PARISC_RT_SIGFRAME_SIZE32 \
-+    (((sizeof_rt_sigframe) + FUNCTIONCALLFRAME + SIGFRAME) & -SIGFRAME)
++++ b/linux-user/riscv/vdso-asmoffset.h
+@@ -0,0 +1,9 @@
++#ifdef TARGET_ABI32
++# define sizeof_rt_sigframe     0x2b0
++# define offsetof_uc_mcontext   0x120
++# define offsetof_freg0         0x80
++#else
++# define sizeof_rt_sigframe     0x340
++# define offsetof_uc_mcontext   0x130
++# define offsetof_freg0         0x100
++#endif
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cd2ab4292c..eb22a17e0e 100644
+index eb22a17e0e..8f902bb427 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -1771,6 +1771,10 @@ static inline void init_thread(struct target_pt_regs *regs,
- #define STACK_GROWS_DOWN 0
- #define STACK_ALIGNMENT  64
+@@ -1733,8 +1733,10 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
  
-+#include "vdso.c.inc"
-+
+ #ifdef TARGET_RISCV32
+ #define ELF_CLASS ELFCLASS32
++#include "vdso-32.c.inc"
+ #else
+ #define ELF_CLASS ELFCLASS64
++#include "vdso-64.c.inc"
+ #endif
+ 
+ #define ELF_HWCAP get_elf_hwcap()
+@@ -1751,6 +1753,8 @@ static uint32_t get_elf_hwcap(void)
+ #undef MISA_BIT
+ }
+ 
 +#define vdso_image_info()    &vdso_image_info
 +
  static inline void init_thread(struct target_pt_regs *regs,
                                 struct image_info *infop)
  {
-diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
-index f253a15864..ada22556c1 100644
---- a/linux-user/hppa/signal.c
-+++ b/linux-user/hppa/signal.c
+diff --git a/linux-user/riscv/signal.c b/linux-user/riscv/signal.c
+index eaa168199a..5449c7618a 100644
+--- a/linux-user/riscv/signal.c
++++ b/linux-user/riscv/signal.c
 @@ -21,6 +21,7 @@
  #include "user-internals.h"
  #include "signal-common.h"
  #include "linux-user/trace.h"
 +#include "vdso-asmoffset.h"
  
- struct target_sigcontext {
-     abi_ulong sc_flags;
-@@ -47,6 +48,19 @@ struct target_rt_sigframe {
-     /* hidden location of upper halves of pa2.0 64-bit gregs */
+ /* Signal handler invocation must be transparent for the code being
+    interrupted. Complete CPU (hart) state is saved on entry and restored
+@@ -37,6 +38,8 @@ struct target_sigcontext {
+     uint32_t fcsr;
+ }; /* cf. riscv-linux:arch/riscv/include/uapi/asm/ptrace.h */
+ 
++QEMU_BUILD_BUG_ON(offsetof(struct target_sigcontext, fpr) != offsetof_freg0);
++
+ struct target_ucontext {
+     unsigned long uc_flags;
+     struct target_ucontext *uc_link;
+@@ -51,6 +54,11 @@ struct target_rt_sigframe {
+     struct target_ucontext uc;
  };
  
-+QEMU_BUILD_BUG_ON(sizeof(struct target_rt_sigframe) != sizeof_rt_sigframe);
-+QEMU_BUILD_BUG_ON(offsetof(struct target_rt_sigframe, uc.tuc_mcontext)
-+                  != offsetof_sigcontext);
-+QEMU_BUILD_BUG_ON(offsetof(struct target_sigcontext, sc_gr)
-+                  != offsetof_sigcontext_gr);
-+QEMU_BUILD_BUG_ON(offsetof(struct target_sigcontext, sc_fr)
-+                  != offsetof_sigcontext_fr);
-+QEMU_BUILD_BUG_ON(offsetof(struct target_sigcontext, sc_iaoq)
-+                  != offsetof_sigcontext_iaoq);
-+QEMU_BUILD_BUG_ON(offsetof(struct target_sigcontext, sc_sar)
-+                  != offsetof_sigcontext_sar);
++QEMU_BUILD_BUG_ON(sizeof(struct target_rt_sigframe)
++                  != sizeof_rt_sigframe);
++QEMU_BUILD_BUG_ON(offsetof(struct target_rt_sigframe, uc.uc_mcontext)
++                  != offsetof_uc_mcontext);
 +
-+
- static void setup_sigcontext(struct target_sigcontext *sc, CPUArchState *env)
+ static abi_ulong get_sigframe(struct target_sigaction *ka,
+                               CPURISCVState *regs, size_t framesize)
  {
-     int i;
-@@ -91,16 +105,6 @@ static void restore_sigcontext(CPUArchState *env, struct target_sigcontext *sc)
-     __get_user(env->cr[CR_SAR], &sc->sc_sar);
- }
- 
--#if TARGET_ABI_BITS == 32
--#define SIGFRAME                64
--#define FUNCTIONCALLFRAME       48
--#else
--#define SIGFRAME                128
--#define FUNCTIONCALLFRAME       96
--#endif
--#define PARISC_RT_SIGFRAME_SIZE32 \
--    ((sizeof(struct target_rt_sigframe) + FUNCTIONCALLFRAME + SIGFRAME) & -SIGFRAME)
--
- void setup_rt_frame(int sig, struct target_sigaction *ka,
-                     target_siginfo_t *info,
-                     target_sigset_t *set, CPUArchState *env)
-diff --git a/linux-user/hppa/meson.build b/linux-user/hppa/meson.build
-index 4709508a09..e13ea4e9ab 100644
---- a/linux-user/hppa/meson.build
-+++ b/linux-user/hppa/meson.build
-@@ -3,3 +3,26 @@ syscall_nr_generators += {
-                     arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
-                     output: '@BASENAME@_nr.h')
- }
-+
-+vdso_so = custom_target(output: 'vdso.so',
-+                        input: files('vdso.S', 'vdso.ld'),
-+                        depend_files: files('vdso-asmoffset.h'),
-+                        command: [
-+                            build_vdso_cmd,
-+                            '-B', meson.project_build_root(),
-+                            '-C', meson.current_source_dir(),
-+                            '-T', 'hppa-linux-user',
-+                            '-o', '@OUTPUT@',
-+	                    '--', '-nostdlib', '-shared',
-+	                    '-Wl,-h,linux-vdso32.so.1',
-+                            '-Wl,--build-id=sha1',
-+                            '-Wl,--hash-style=both',
-+                            '-Wl,-T,@INPUT1@',
-+                            '@INPUT0@'
-+                        ])
-+
-+vdso_inc = gen_vdso.process(vdso_so, extra_args: [
-+                                '-r', '__kernel_sigtramp_rt'
-+                            ])
-+
-+linux_user_ss.add(when: 'TARGET_HPPA', if_true: vdso_inc)
-diff --git a/linux-user/hppa/vdso.S b/linux-user/hppa/vdso.S
+diff --git a/linux-user/meson.build b/linux-user/meson.build
+index 1b265ed365..3aa967b27c 100644
+--- a/linux-user/meson.build
++++ b/linux-user/meson.build
+@@ -46,6 +46,7 @@ subdir('microblaze')
+ subdir('mips64')
+ subdir('mips')
+ subdir('ppc')
++subdir('riscv')
+ subdir('s390x')
+ subdir('sh4')
+ subdir('sparc')
+diff --git a/linux-user/riscv/meson.build b/linux-user/riscv/meson.build
 new file mode 100644
-index 0000000000..5be14d2f70
+index 0000000000..0a00cae9fd
 --- /dev/null
-+++ b/linux-user/hppa/vdso.S
-@@ -0,0 +1,165 @@
++++ b/linux-user/riscv/meson.build
+@@ -0,0 +1,30 @@
++vdso_cmd = [
++    build_vdso_cmd,
++    '-B', meson.project_build_root(),
++    '-C', meson.current_source_dir(),
++    '-T', 'riscv64-linux-user',
++    '-o', '@OUTPUT@',
++    '--',
++    '-nostdlib', '-shared', '-fpic',
++    '-Wl,-h,linux-vdso.so.1',
++    '-Wl,--build-id=sha1',
++    '-Wl,--hash-style=both',
++    '-Wl,-T,@INPUT1@',
++    '@INPUT0@'
++]
++
++vdso_32_so = custom_target(output: 'vdso-32.so',
++                           input: files('vdso.S', 'vdso.ld'),
++                           depend_files: files('vdso-asmoffset.h'),
++                           command: vdso_cmd + ['-mabi=ilp32d', '-march=rv32g'])
++
++vdso_64_so = custom_target(output: 'vdso-64.so',
++                           input: files('vdso.S', 'vdso.ld'),
++                           depend_files: files('vdso-asmoffset.h'),
++                           command: vdso_cmd + ['-mabi=lp64d', '-march=rv64g'])
++
++vdso_32_inc = gen_vdso.process(vdso_32_so, extra_args: ['-r', '__vdso_rt_sigreturn'])
++vdso_64_inc = gen_vdso.process(vdso_64_so, extra_args: ['-r', '__vdso_rt_sigreturn'])
++
++linux_user_ss.add(when: 'TARGET_RISCV32', if_true: vdso_32_inc)
++linux_user_ss.add(when: 'TARGET_RISCV64', if_true: vdso_64_inc)
+diff --git a/linux-user/riscv/vdso-32.so b/linux-user/riscv/vdso-32.so
+new file mode 100755
+index 0000000000000000000000000000000000000000..189e2f49e78f158cf49e6092edf7ece8cf7e8a25
+GIT binary patch
+literal 2888
+zcmb_eU2GIp6h5=d;!>e*DVSm#Q)tD8)XjFOgkaNj+iv-BX`4b7lsMh)Zo3=lZnHbv
+zKtn88L{tQ{1rbpTD59cPKoLbD(ZobwOnmZP<BKu=pbv`F@0*#sOtlX_c-n8zJwJ2i
+z-nr*~Gb7<ho2F@^#4W#yvg+ZS@QTcWu9r%gEj3aiK4{uEa0O$6d4yYJu-1ctEiJZY
+zjI~vL+bzr`Zlc2{;({telEM+#gsR{9oe@8Rn<!KxMyNRTRR?B@FF+h6WOaMD)NVO*
+z_^kKZ)kEKYIr2xx`Cl$9zC2Qlm;ta>D<<^Y^{LDbXfEp#G@rpF=2!%M0Js^z)U7o@
+z<FT1C2fuTHYg1F19^CLRXs+)k=m;n9KS&b`Lfn`wpY3T(dK2_~+<6(a7nA0EXzzwr
+zQX)T3^}wih#1}H?up=<b9CjmYpTp)JaT#1EHTRIu#wkcQg>&HZq;Sg2rzUufRx+n9
+zBt9Q)=9&HQMfv201A%14_`a!A7Y7zEI@ywLSorzTJ12V+qU%HPTt@Ft7)EL!k?D&^
+zw<}+4YbN%viu}u&P2`jh7sm$k%Ie#i&n5L#EE-D|%4ZEdm+H?ZjC?jNTT|)$w!3&+
+zKmO|^vbMc@lV0zyyBiaRxTgKF*R8+fmw%kco~r=ZR}}7*3%~i1?~53tsQuB(-S<?&
+z<}>mkaV2yTx)XXY^fmecihH<Av>lpOKF=krQwDqmum_~GxH67rW^Mprtx9OhxTSdg
+z1{7%0%ICT!J)WlcuHHv`MjzU}<*^6$Y<m2@y&IqCdb0DW_I;73*X>_(pzUDmGtJL7
+zjWv!p99ngF<#Q{J)IT3Q8hF8ftoFraFV(!fbfWcm^NFUDjjuGky6V)**H)aae?9m{
+z;7$LT+P9XyUGvV;$?A8PoUJ@}`}vCZZhOD%!mS@HxH$hq-$%ul=6+oCiTCnsbFRlQ
+zH$DrV9ZGDEN2(@(6CNqmwChzh$EDPx$(T2=D2Mpy5>4DyAsMaOC8Kv}8gg7QpT|||
+z>HITR;YO}VY4Og+b6<bzuA1mZoxJq#l*096-X62gn0IFp>oK44QjEvElV18l&G^Zt
+za<L)NxF4SE(DGm^I9R6-1P23pl%u}jU{H_qXE+thW$7PI^(E4=1QNLcGssoj=QcaS
+z;yt?D=E<;l#<JNBB27FX5T17m`HA8-*-3;vW!ctABwty!d7?z|j@xFb9;+;_=P9;$
+z)ygNkf$s`&vYf>))b7IW(4sxhUV&xL0>5zo$VZl_-Lx#mZ^4ipLeXHecLO$I&<?^T
+z&s$O?VGPvz8GlfPpvh-_&`!P@hVA6T{ji<<#XfWL-z01&Uw#JL$%hh)t=}A6p6K&u
+zq<Wj^t()6J>({o3-r3dB5^nA83hSVRdqb<k`o>UmB&>s3@Q%^LYxK6R(E6~xrnO7-
+z)sc?oP(<%&Yugass1hAiViVg;Y%~+uP3N#_d}UWE(4m9*3O<sjh(EV|z=-xj8(B*y
+z)hL}Y65@|<Pe%t*F>`=i=%^7De}6jfPeyY|%Wq^Y&rl+pOJ&m23_ULXL{jg|Mh6ml
+zGLB4TiQh<UGsJHmE`QW8vZ>y@0h0dDQjSb^H(Q<OiKqsYs1{rd2TuiC%K3d^oeb-}
+z!}k>5o9uSh<9nVsh_Si{>-hloC)=0x*q4O57hL9;b_2k+W<8!)f*hh+n>hr1zuVsk
+zJjX;6eE-aAwtWbj-y=NZ{0>pVIZ@UDQ+7R`dtyF(svfT=?g!MjNe_Yq=i*#1OyT)r
+zZC>O2{(@<WTDt*D<&i&#AM6||mG_99$35XWC3Z8x7L`XIN(?GLzZYAS0j<`n?x{k9
+q$h!h3d4}IMtjB#*-zylJ62L;gQ3kZCSAsF_TaY<uj>84(M&92P;-?}2
+
+literal 0
+HcmV?d00001
+
+diff --git a/linux-user/riscv/vdso-64.so b/linux-user/riscv/vdso-64.so
+new file mode 100755
+index 0000000000000000000000000000000000000000..3c3b3a8cc579649e5108402b706bf7f741efd2e4
+GIT binary patch
+literal 3840
+zcmc&%Z){Ul6hCieP{)QF3^Uxa3^Nr8G^Lqjk%hc&>o&BEW`j7R$)jt#wQ*~k_I247
+zB2(voWYYm6qJk)jf9oF<{Kq~RB_>8b>UWK3jL{hVV9<Had*_tbyGB3w!L!}>yZ8LL
+z_r7!Q{k_}0fnZmerh$kHeuc{|0G$o<6?SC_f)1^)6rVLvjR;`tY`bnlAuhz73A)+t
+z0!UNb2z5|GIuxDEiEx=>b2g<vL7bu`W%#7=&TvO6dRZ?h^9+4!Mk%hT-0Ef#Hrr|t
+zBwrFjDzn_LisCOwz9fXTSTH}(-Mb4m{&4D#+@;gYKK=e$!~ad=mM<FvU!VzA&;!M^
+z!HT2mc?v}N?XQKDRpE|#`k-@L(teQ=gTl)TGj<b}GuAPxIhXvf8Lm+LFD=;PU*z%r
+z<TeinKXdy6+ohlX16`QCdCr@RPs_FvDxrlFRmq0+tnXpH<Y5~1HSo&<yA@zJ)~KJT
+z;=h{px}p!Ven8Q0WqnA|%RZ**(;5)cTCp3}Y?1Y+`AW)ZEy$mc-j`yu>NPdG242#U
+zpSA9v*XR3Zyzzzu`xZ`~9bLQTL`Sl1^=C(}&kx4HFvg<UlrbDL&BSOdH53g`h%Pdc
+zirgudMaoPpD>@90q;t|58p&njMj{f9#0%YLOe32Z&cw`ICJ7^nWNv&T4eP=GO%UAH
+zyKBH`@oc&gCyY{7^k?fdd_(#>e(t9#I$sS~<m}M9m!U1U_qz(Rk<faQX!Wiw&4`qz
+zT6AnfY(fkn>J&%?g=q#{lYOA=(X{%iGD}D2=K>blKjgOo%XutKSV#`rK(YN8tZVg^
+zW%EnR^=a+yDeay;_l{4S_oeS2c_98^^r77k-|@)6zMYST_6KKrW;-9#A8(s$J<xK{
+zduYQG>kc<R*>t4gsk)=JPgg%v`K<d`=kfOE^b=d3Z+qdUldUgqeyQb@?`7{Ro>w=#
+zw*K{XZ(Nsee)F2Qn%-`Fr{VO~@7BF{)tTC}E8nmFV8w@(A60zpK1ch3=6eiFD;9Z&
+zIrnTu7Td#90CVo@WmKPYH!)6GwpF;{$iB+5<=y1tZ^uU_k&TRjM*Wp%#x}PkeCbWb
+zs4wj`!c-gbrF}+}9+QbkHbeT!#8505iJ_wxgZ@EWxER8-PB#~>uAGx%y$gi@iuH^6
+zfb1?PFYs%zKW0h}mBZk|)1#NvyP*{Cx$p!FUpl(MaVrYnonrlR=#hi%Ft{AN<xpck
+zRnDeWr|r9>1aH}EeVPB9fu;PfL<bG~QS(gupY&;kkbG8$i{C52{_}L;9CAC>OY!Rv
+z>WN=fzMN#e%HR80ukz?o)~h_7XT8ezpRiu#Z-_*~og>+}&y#}YaWFb>>-BHn)&WMS
+zZ%0R<b5~!$K)Slc-yJY^`rCs616dEh^G2Y@=<4%t4;Ve2ePDD4ceMM1#*VJ8{=iOg
+zbkH1=ZYicLMa0GYTEwN?Q-P`-tX$9$u>*Lr6QgE$5Yf!o7?)ZyWyZi0ok)g96A`O|
+zzKCHn44&a+&Jz!3<F?++*qX6eCYwkliyB50Jh8YjlnIZ<jCd41r3D@{Hg1B)A`eg4
+zG&708oQWTh|19;`1AXJ@dq*PtAxPZs6!kc-MI&u(*{-tx1-<-zu)d?{C-(*7RT8>S
+z&|OQ$7d{gFikwhnjuKDjiiFM)4I$&pxe*k9@+FbBAbrn>LS%foKME30lSuy(CwU<I
+z?|7G!_yP~IgHFLHYP_ulXlI+m3ttM#eN_B8ozjGxv9{nCUwBn;C40*FGLGP_Xs5fW
+zw1s~K<^9$C%LIsjXigHZ{!aL}{X=&UXT0#a;Eys8qvT)IcX7PXtMHwm%wPOv-K0H@
+z70gXq+Jf@?sY4WuYW|&bce>_zLdQ5U^nIW^ugt%Wo#oEzjHP;re^7j_7}W7=&@OB1
+QbiILp&>V6qv98Ad4M&HUy8r+H
+
+literal 0
+HcmV?d00001
+
+diff --git a/linux-user/riscv/vdso.S b/linux-user/riscv/vdso.S
+new file mode 100644
+index 0000000000..70a4f710db
+--- /dev/null
++++ b/linux-user/riscv/vdso.S
+@@ -0,0 +1,186 @@
 +/*
-+ * hppa linux kernel vdso replacement.
++ * RISC-V linux replacement vdso.
 + *
-+ * Copyright 2023 Linaro, Ltd.
++ * Copyright 2021 Linaro, Ltd.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
 +#include <asm/unistd.h>
++#include <asm/errno.h>
++
++#if __riscv_xlen == 32
++# define TARGET_ABI32
++#endif
 +#include "vdso-asmoffset.h"
 +
 +	.text
 +
++.macro endf name
++	.globl	\name
++	.type	\name, @function
++	.size	\name, . - \name
++.endm
++
++.macro raw_syscall nr
++	li	a7, \nr
++	ecall
++.endm
++
++.macro vdso_syscall name, nr
++\name:
++	raw_syscall \nr
++endf	\name
++.endm
++
++__vdso_gettimeofday:
++	.cfi_startproc
++#ifdef __NR_gettimeofday
++	raw_syscall __NR_gettimeofday
++	ret
++#else
++	/* No gettimeofday, fall back to clock_gettime64. */
++	beq	a1, zero, 1f
++	sw	zero, 0(a1)	/* tz->tz_minuteswest = 0 */
++	sw	zero, 4(a1)	/* tz->tz_dsttime = 0 */
++1:	addi	sp, sp, -32
++	.cfi_adjust_cfa_offset 32
++	sw	a0, 16(sp)	/* save tv */
++	mv	a0, sp
++	raw_syscall __NR_clock_gettime64
++	lw	t0, 0(sp)	/* timespec.tv_sec.low */
++	lw	t1, 4(sp)	/* timespec.tv_sec.high */
++	lw	t2, 8(sp)	/* timespec.tv_nsec.low */
++	lw	a1, 16(sp)	/* restore tv */
++	addi	sp, sp, 32
++	.cfi_adjust_cfa_offset -32
++	bne	a0, zero, 9f	/* syscall error? */
++	li	a0, -EOVERFLOW
++	bne	t1, zero, 9f	/* y2038? */
++	li	a0, 0
++	li	t3, 1000
++	divu	t2, t2, t3	/* nsec -> usec */
++	sw	t0, 0(a1)	/* tz->tv_sec */
++	sw	t2, 4(a1)	/* tz->tv_usec */
++9:	ret
++#endif
++	.cfi_endproc
++endf __vdso_gettimeofday
++
++	.cfi_startproc
++
++#ifdef __NR_clock_gettime
++vdso_syscall __vdso_clock_gettime, __NR_clock_gettime
++#else
++vdso_syscall __vdso_clock_gettime, __NR_clock_gettime64
++#endif
++
++#ifdef __NR_clock_getres
++vdso_syscall __vdso_clock_getres, __NR_clock_getres
++#else
++vdso_syscall __vdso_clock_getres, __NR_clock_getres_time64
++#endif
++
++vdso_syscall __vdso_getcpu, __NR_getcpu
++
++__vdso_flush_icache:
++	/* qemu does not need to flush the icache */
++	li	a0, 0
++	ret
++endf __vdso_flush_icache
++
++	.cfi_endproc
 +
 +/*
-+ * arch/parisc/kernel/vdso32/sigtramp.S:
-+ * Gdb expects the trampoline is on the stack and the pc is offset from
-+ * a 64-byte boundary by 0, 4 or 5 instructions. Since the vdso trampoline
-+ * is not on the stack, we need a new variant with different offsets and
-+ * data to tell gdb where to find the signal context on the stack.
-+ *
-+ * Here we put the offset to the context data at the start of the trampoline
-+ * region and offset the first trampoline by 2 instructions. Please do
-+ * not change the trampoline as the code in gdb depends on the following
-+ * instruction sequence exactly.
-+ */
-+
-+/* arch/parisc/kernel/asm-offsets.c */
-+#define SIGFRAME_CONTEXT_REGS32 \
-+    (offsetof_sigcontext - PARISC_RT_SIGFRAME_SIZE32)
-+
-+        .align	64
-+        .word	SIGFRAME_CONTEXT_REGS32
-+
-+/*
-+ * All that said, we can provide a proper unwind record, which means that
-+ * GDB should not actually need the offset magic.
-+ *
-+ * The return address that arrived here, from the inner frame, is
-+ * not marked as a signal frame and so the unwinder still tries to
-+ * subtract 1 to examine the presumed call insn.  Thus we must
-+ * extend the unwind info to a nop before the start.
++ * Start the unwind info at least one instruction before the signal
++ * trampoline, because the unwinder will assume we are returning
++ * after a call site.
 + */
 +
 +	.cfi_startproc simple
 +	.cfi_signal_frame
 +
-+	/* Compare pa32_fallback_frame_state from libgcc. */
++#define sizeof_reg	(__riscv_xlen / 4)
++#define sizeof_freg	8
++#define B_GR	(offsetof_uc_mcontext - sizeof_rt_sigframe)
++#define B_FR	(offsetof_uc_mcontext - sizeof_rt_sigframe + offsetof_freg0)
 +
-+	/*
-+	 * Place the CFA at the start of sigcontext for convenience.
-+	 * The previous CFA will be restored from the saved stack pointer.
-+	 */
-+	.cfi_def_cfa	30, -PARISC_RT_SIGFRAME_SIZE32 + offsetof_sigcontext
++	.cfi_def_cfa	2, sizeof_rt_sigframe
 +
-+	/* Record save offset of general registers. */
-+	.cfi_offset	1, offsetof_sigcontext_gr + 1 * 4
-+	.cfi_offset	2, offsetof_sigcontext_gr + 2 * 4
-+	.cfi_offset	3, offsetof_sigcontext_gr + 3 * 4
-+	.cfi_offset	4, offsetof_sigcontext_gr + 4 * 4
-+	.cfi_offset	5, offsetof_sigcontext_gr + 5 * 4
-+	.cfi_offset	6, offsetof_sigcontext_gr + 6 * 4
-+	.cfi_offset	7, offsetof_sigcontext_gr + 7 * 4
-+	.cfi_offset	8, offsetof_sigcontext_gr + 8 * 4
-+	.cfi_offset	9, offsetof_sigcontext_gr + 9 * 4
-+	.cfi_offset	10, offsetof_sigcontext_gr + 10 * 4
-+	.cfi_offset	11, offsetof_sigcontext_gr + 11 * 4
-+	.cfi_offset	12, offsetof_sigcontext_gr + 12 * 4
-+	.cfi_offset	13, offsetof_sigcontext_gr + 13 * 4
-+	.cfi_offset	14, offsetof_sigcontext_gr + 14 * 4
-+	.cfi_offset	15, offsetof_sigcontext_gr + 15 * 4
-+	.cfi_offset	16, offsetof_sigcontext_gr + 16 * 4
-+	.cfi_offset	17, offsetof_sigcontext_gr + 17 * 4
-+	.cfi_offset	18, offsetof_sigcontext_gr + 18 * 4
-+	.cfi_offset	19, offsetof_sigcontext_gr + 19 * 4
-+	.cfi_offset	20, offsetof_sigcontext_gr + 20 * 4
-+	.cfi_offset	21, offsetof_sigcontext_gr + 21 * 4
-+	.cfi_offset	22, offsetof_sigcontext_gr + 22 * 4
-+	.cfi_offset	23, offsetof_sigcontext_gr + 23 * 4
-+	.cfi_offset	24, offsetof_sigcontext_gr + 24 * 4
-+	.cfi_offset	25, offsetof_sigcontext_gr + 25 * 4
-+	.cfi_offset	26, offsetof_sigcontext_gr + 26 * 4
-+	.cfi_offset	27, offsetof_sigcontext_gr + 27 * 4
-+	.cfi_offset	28, offsetof_sigcontext_gr + 28 * 4
-+	.cfi_offset	29, offsetof_sigcontext_gr + 29 * 4
-+	.cfi_offset	30, offsetof_sigcontext_gr + 30 * 4
-+	.cfi_offset	31, offsetof_sigcontext_gr + 31 * 4
++	/* Return address */
++	.cfi_return_column 64
++	.cfi_offset	64, B_GR + 0			/* pc */
 +
-+	/* Record save offset of fp registers, left and right halves. */
-+	.cfi_offset	32, offsetof_sigcontext_fr + 4 * 8
-+	.cfi_offset	33, offsetof_sigcontext_fr + 4 * 8 + 4
-+	.cfi_offset	34, offsetof_sigcontext_fr + 5 * 8
-+	.cfi_offset	35, offsetof_sigcontext_fr + 5 * 8 + 4
-+	.cfi_offset	36, offsetof_sigcontext_fr + 6 * 8
-+	.cfi_offset	37, offsetof_sigcontext_fr + 6 * 8 + 4
-+	.cfi_offset	38, offsetof_sigcontext_fr + 7 * 8
-+	.cfi_offset	39, offsetof_sigcontext_fr + 7 * 8 + 4
-+	.cfi_offset	40, offsetof_sigcontext_fr + 8 * 8
-+	.cfi_offset	41, offsetof_sigcontext_fr + 8 * 8 + 4
-+	.cfi_offset	42, offsetof_sigcontext_fr + 9 * 8
-+	.cfi_offset	43, offsetof_sigcontext_fr + 9 * 8 + 4
-+	.cfi_offset	44, offsetof_sigcontext_fr + 10 * 8
-+	.cfi_offset	45, offsetof_sigcontext_fr + 10 * 8 + 4
-+	.cfi_offset	46, offsetof_sigcontext_fr + 11 * 8
-+	.cfi_offset	47, offsetof_sigcontext_fr + 11 * 8 + 4
-+	.cfi_offset	48, offsetof_sigcontext_fr + 12 * 8
-+	.cfi_offset	49, offsetof_sigcontext_fr + 12 * 8 + 4
-+	.cfi_offset	50, offsetof_sigcontext_fr + 13 * 8
-+	.cfi_offset	51, offsetof_sigcontext_fr + 13 * 8 + 4
-+	.cfi_offset	52, offsetof_sigcontext_fr + 14 * 8
-+	.cfi_offset	53, offsetof_sigcontext_fr + 14 * 8 + 4
-+	.cfi_offset	54, offsetof_sigcontext_fr + 15 * 8
-+	.cfi_offset	55, offsetof_sigcontext_fr + 15 * 8 + 4
-+	.cfi_offset	56, offsetof_sigcontext_fr + 16 * 8
-+	.cfi_offset	57, offsetof_sigcontext_fr + 16 * 8 + 4
-+	.cfi_offset	58, offsetof_sigcontext_fr + 17 * 8
-+	.cfi_offset	59, offsetof_sigcontext_fr + 17 * 8 + 4
-+	.cfi_offset	60, offsetof_sigcontext_fr + 18 * 8
-+	.cfi_offset	61, offsetof_sigcontext_fr + 18 * 8 + 4
-+	.cfi_offset	62, offsetof_sigcontext_fr + 19 * 8
-+	.cfi_offset	63, offsetof_sigcontext_fr + 19 * 8 + 4
-+	.cfi_offset	64, offsetof_sigcontext_fr + 20 * 8
-+	.cfi_offset	65, offsetof_sigcontext_fr + 20 * 8 + 4
-+	.cfi_offset	66, offsetof_sigcontext_fr + 21 * 8
-+	.cfi_offset	67, offsetof_sigcontext_fr + 21 * 8 + 4
-+	.cfi_offset	68, offsetof_sigcontext_fr + 22 * 8
-+	.cfi_offset	69, offsetof_sigcontext_fr + 22 * 8 + 4
-+	.cfi_offset	70, offsetof_sigcontext_fr + 23 * 8
-+	.cfi_offset	71, offsetof_sigcontext_fr + 23 * 8 + 4
-+	.cfi_offset	72, offsetof_sigcontext_fr + 24 * 8
-+	.cfi_offset	73, offsetof_sigcontext_fr + 24 * 8 + 4
-+	.cfi_offset	74, offsetof_sigcontext_fr + 25 * 8
-+	.cfi_offset	75, offsetof_sigcontext_fr + 25 * 8 + 4
-+	.cfi_offset	76, offsetof_sigcontext_fr + 26 * 8
-+	.cfi_offset	77, offsetof_sigcontext_fr + 26 * 8 + 4
-+	.cfi_offset	78, offsetof_sigcontext_fr + 27 * 8
-+	.cfi_offset	79, offsetof_sigcontext_fr + 27 * 8 + 4
-+	.cfi_offset	80, offsetof_sigcontext_fr + 28 * 8
-+	.cfi_offset	81, offsetof_sigcontext_fr + 28 * 8 + 4
-+	.cfi_offset	82, offsetof_sigcontext_fr + 29 * 8
-+	.cfi_offset	83, offsetof_sigcontext_fr + 29 * 8 + 4
-+	.cfi_offset	84, offsetof_sigcontext_fr + 30 * 8
-+	.cfi_offset	85, offsetof_sigcontext_fr + 30 * 8 + 4
-+	.cfi_offset	86, offsetof_sigcontext_fr + 31 * 8
-+	.cfi_offset	87, offsetof_sigcontext_fr + 31 * 8 + 4
++	/* Integer registers */
++	.cfi_offset	1, B_GR + 1 * sizeof_reg	/* r1 (ra) */
++	.cfi_offset	2, B_GR + 2 * sizeof_reg	/* r2 (sp) */
++	.cfi_offset	3, B_GR + 3 * sizeof_reg
++	.cfi_offset	4, B_GR + 4 * sizeof_reg
++	.cfi_offset	5, B_GR + 5 * sizeof_reg
++	.cfi_offset	6, B_GR + 6 * sizeof_reg
++	.cfi_offset	7, B_GR + 7 * sizeof_reg
++	.cfi_offset	8, B_GR + 8 * sizeof_reg
++	.cfi_offset	9, B_GR + 9 * sizeof_reg
++	.cfi_offset	10, B_GR + 10 * sizeof_reg
++	.cfi_offset	11, B_GR + 11 * sizeof_reg
++	.cfi_offset	12, B_GR + 12 * sizeof_reg
++	.cfi_offset	13, B_GR + 13 * sizeof_reg
++	.cfi_offset	14, B_GR + 14 * sizeof_reg
++	.cfi_offset	15, B_GR + 15 * sizeof_reg
++	.cfi_offset	16, B_GR + 16 * sizeof_reg
++	.cfi_offset	17, B_GR + 17 * sizeof_reg
++	.cfi_offset	18, B_GR + 18 * sizeof_reg
++	.cfi_offset	19, B_GR + 19 * sizeof_reg
++	.cfi_offset	20, B_GR + 20 * sizeof_reg
++	.cfi_offset	21, B_GR + 21 * sizeof_reg
++	.cfi_offset	22, B_GR + 22 * sizeof_reg
++	.cfi_offset	23, B_GR + 23 * sizeof_reg
++	.cfi_offset	24, B_GR + 24 * sizeof_reg
++	.cfi_offset	25, B_GR + 25 * sizeof_reg
++	.cfi_offset	26, B_GR + 26 * sizeof_reg
++	.cfi_offset	27, B_GR + 27 * sizeof_reg
++	.cfi_offset	28, B_GR + 28 * sizeof_reg
++	.cfi_offset	29, B_GR + 29 * sizeof_reg
++	.cfi_offset	30, B_GR + 30 * sizeof_reg
++	.cfi_offset	31, B_GR + 31 * sizeof_reg	/* r31 */
 +
-+	/* Record save offset of %sar */
-+	.cfi_offset	88, offsetof_sigcontext_sar
-+
-+	/* Record save offset of return address, iaoq[0]. */
-+	.cfi_return_column 89
-+	.cfi_offset	89, offsetof_sigcontext_iaoq
++	.cfi_offset	32, B_FR + 0			/* f0 */
++	.cfi_offset	33, B_FR + 1 * sizeof_freg	/* f1 */
++	.cfi_offset	34, B_FR + 2 * sizeof_freg
++	.cfi_offset	35, B_FR + 3 * sizeof_freg
++	.cfi_offset	36, B_FR + 4 * sizeof_freg
++	.cfi_offset	37, B_FR + 5 * sizeof_freg
++	.cfi_offset	38, B_FR + 6 * sizeof_freg
++	.cfi_offset	39, B_FR + 7 * sizeof_freg
++	.cfi_offset	40, B_FR + 8 * sizeof_freg
++	.cfi_offset	41, B_FR + 9 * sizeof_freg
++	.cfi_offset	42, B_FR + 10 * sizeof_freg
++	.cfi_offset	43, B_FR + 11 * sizeof_freg
++	.cfi_offset	44, B_FR + 12 * sizeof_freg
++	.cfi_offset	45, B_FR + 13 * sizeof_freg
++	.cfi_offset	46, B_FR + 14 * sizeof_freg
++	.cfi_offset	47, B_FR + 15 * sizeof_freg
++	.cfi_offset	48, B_FR + 16 * sizeof_freg
++	.cfi_offset	49, B_FR + 17 * sizeof_freg
++	.cfi_offset	50, B_FR + 18 * sizeof_freg
++	.cfi_offset	51, B_FR + 19 * sizeof_freg
++	.cfi_offset	52, B_FR + 20 * sizeof_freg
++	.cfi_offset	53, B_FR + 21 * sizeof_freg
++	.cfi_offset	54, B_FR + 22 * sizeof_freg
++	.cfi_offset	55, B_FR + 23 * sizeof_freg
++	.cfi_offset	56, B_FR + 24 * sizeof_freg
++	.cfi_offset	57, B_FR + 25 * sizeof_freg
++	.cfi_offset	58, B_FR + 26 * sizeof_freg
++	.cfi_offset	59, B_FR + 27 * sizeof_freg
++	.cfi_offset	60, B_FR + 28 * sizeof_freg
++	.cfi_offset	61, B_FR + 29 * sizeof_freg
++	.cfi_offset	62, B_FR + 30 * sizeof_freg
++	.cfi_offset	63, B_FR + 31 * sizeof_freg	/* f31 */
 +
 +	nop
 +
-+__kernel_sigtramp_rt:
-+	ldi	0, %r25
-+	ldi	__NR_rt_sigreturn, %r20
-+	be,l	0x100(%sr2, %r0), %sr0, %r31
-+	nop
++__vdso_rt_sigreturn:
++	raw_syscall __NR_rt_sigreturn
++endf __vdso_rt_sigreturn
 +
 +	.cfi_endproc
-+	.size	__kernel_sigtramp_rt, . - __kernel_sigtramp_rt
-+	.type	__kernel_sigtramp_rt, @function
-+	.globl	__kernel_sigtramp_rt
-diff --git a/linux-user/hppa/vdso.ld b/linux-user/hppa/vdso.ld
+diff --git a/linux-user/riscv/vdso.ld b/linux-user/riscv/vdso.ld
 new file mode 100644
-index 0000000000..b17ad974f3
+index 0000000000..aabe2b0ab3
 --- /dev/null
-+++ b/linux-user/hppa/vdso.ld
-@@ -0,0 +1,77 @@
++++ b/linux-user/riscv/vdso.ld
+@@ -0,0 +1,74 @@
 +/*
-+ * Linker script for linux hppa vdso.
++ * Linker script for linux riscv replacement vdso.
 + *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
++ * Copyright 2021 Linaro, Ltd.
 + *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
 +VERSION {
-+        /*
-+         * The kernel's vdso32.lds.S attempts to export
-+         *     __kernel_sigtramp_rt32
-+         *     __kernel_restart_syscall32
-+         * except that those symbols don't exist.  The actual symbols are
-+         *     __kernel_sigtramp_rt
-+         *     __kernel_restart_syscall
-+         * which means that nothing is exported at all.
-+         * QEMU handles syscall restart internally, so we don't
-+         * need to implement __kernel_restart_syscall at all.
-+         */
-+        LINUX_5.18 {
++        LINUX_4.15 {
++        global:
++                __vdso_rt_sigreturn;
++                __vdso_gettimeofday;
++                __vdso_clock_gettime;
++                __vdso_clock_getres;
++                __vdso_getcpu;
++                __vdso_flush_icache;
++
 +        local: *;
 +        };
 +}
@@ -435,23 +530,32 @@ index 0000000000..b17ad974f3
 +        phdr            PT_PHDR         FLAGS(4) PHDRS;
 +        load            PT_LOAD         FLAGS(7) FILEHDR PHDRS;
 +        dynamic         PT_DYNAMIC      FLAGS(4);
-+        note            PT_NOTE         FLAGS(4);
 +        eh_frame_hdr    PT_GNU_EH_FRAME;
++        note            PT_NOTE         FLAGS(4);
 +}
 +
 +SECTIONS {
++        /*
++         * We can't prelink to any address without knowing something about
++         * the virtual memory space of the host, since that leaks over into
++         * the available memory space of the guest.
++         */
 +        . = SIZEOF_HEADERS;
 +
-+        /* The following, including the FILEHDRS and PHDRS, are modified
-+           when we relocate the binary.  We want them to be initially
-+           writable for the relocation; we'll force them read-only after.  */
++        /*
++         * The following, including the FILEHDRS and PHDRS, are modified
++         * when we relocate the binary.  We want them to be initially
++         * writable for the relocation; we'll force them read-only after.
++         */
 +        .note           : { *(.note*) }         :load :note
 +        .dynamic        : { *(.dynamic) }       :load :dynamic
 +        .dynsym         : { *(.dynsym) }        :load
++        /*
++         * There ought not be any real read-write data.
++         * But since we manipulated the segment layout,
++         * we have to put these sections somewhere.
++         */
 +        .data           : {
-+                /* There ought not be any real read-write data.
-+                   But since we manipulated the segment layout,
-+                   we have to put these sections somewhere.  */
 +                *(.data*)
 +                *(.sdata*)
 +                *(.got.plt) *(.got)
@@ -461,7 +565,7 @@ index 0000000000..b17ad974f3
 +                *(.gnu.linkonce.b.*)
 +        }
 +
-+        .rodata         : { *(.rodata) }
++        .rodata         : { *(.rodata*) }
 +        .hash           : { *(.hash) }
 +        .gnu.hash       : { *(.gnu.hash) }
 +        .dynstr         : { *(.dynstr) }
@@ -471,38 +575,8 @@ index 0000000000..b17ad974f3
 +        .eh_frame_hdr   : { *(.eh_frame_hdr) }  :load :eh_frame_hdr
 +        .eh_frame       : { *(.eh_frame) }      :load
 +
-+        .text           : { *(.text*) }         :load
++        .text           : { *(.text*) }         :load   =0xd503201f
 +}
-diff --git a/linux-user/hppa/vdso.so b/linux-user/hppa/vdso.so
-new file mode 100755
-index 0000000000000000000000000000000000000000..e1ddd70c37e9eb6871c21d538dcce0a1e736a918
-GIT binary patch
-literal 2104
-zcmbtVTXR!Y6kaFkhEgcBP%l`hafWdil!Lv1RY03GNz;<1rD<u4mqRou?Lbo}Ntxn<
-z6hy2j;=SIj_j<pgs8u`u1|EIrgN{DxgO1|}@%#2U8(N>7>6(0JUG~~*U)EYXM<Vg4
-z<+J=^$S<oPTAtb<qRxu=Dx^UIqGY2~=<y{O$Jj+oK_*H(nE6mi{#h5YR1g5<1OA$a
-z3CM(*PkwG5Hb5ryc)IX&Cqgt{f>dFQ(BmGb?r%x-$mIFC+3xTU<+0?(1N%-~JGte|
-zwo#0&1h`Mkv8G3g7ybaBfv&)R1jiYzaqu#r23QVo^SCSe7yscgz|X_x1OE;7zacM{
-z)|dd5Qv4k<?}@~{^4{j(t<h=2zNONP7f%I_%E6)R=-B2%>HJ82ot+=CYbD;A=;?E|
-z+O@bm6U{<ItNi3nuEjfB2e@mvD_Uj0oF4PWz(nuQs`hV(%=>_s6$j@&=K!(p?Mg~X
-zNxxOSx@O|YQQtBD{UyiM14~XUeXw+5*+XR~mp{DXk@8b3A6<32;<3udS3j}l$*QL=
-zd;0Qcu9&>?*|pDI^?daU>t0;{Qq9X(zY>_*^y+o5UH|&#H|#gJymiCdwbOO))W6&C
-z-q!cGeQ@K4jUV0g@y(xX|8&P^J3qhW%&lKEeHlC(`l|Ws@Hdf}=(jE3#lCM<O>HW;
-zONHX9xm|@5D$=2%ovLNGigl^hq-yI{yLwc7k81B#i9XfQuR8at-M6W(+g0)o)qSVx
-zanzoDsyC(j22_8Vr_*Qt6`W`0eJzTL#S4K_@ijH9MKe`ddw-H+LR}U|=Qy2(>V?rY
-z1fBH)(sj*o{IovBFBJ9<$eQLCI%^7~`+_?Ao;v%3I{KO9);;u6S9h0zzRc5gxj|<y
-zfqc9>&Sy_i8rNTu72w>n-mm4>KjyI4HF5rW`17r(z$)~w!;~p-Ow|1nqfFBM<AnPY
-z!S>c>aU8q_P9)|;yMpZzCl>C4=|Coz%^Y;{L;DN4)bKq{t{_fJydxBhI~~zzGScmI
-z2Sf3Qv!HS8{Ndq3>MpVKg`CR=jg%cJWW-J%&ZdTk?$!c)!Bd5l*!#1i_FyVM=-LZ8
-z*K#P6%MXoY7bs3z?98AufIVfL!8AOLCUzk+R&dYvKfl%RW1g54)&;QvFy!T2u7QF1
-zMOrSt&AewX$GSF{-%SAXhIp(aT}uJz^keQAkM9EVqIJY$eh5<^kS@K|J0P>p7;oBz
-z?knzt#CSv_-q=6E={Ms-0?_~K7xHZML!Ihc<@;@jdnC0XUJ;yrc(-*8a~%^8c8*D}
-zdE;G`CSg6AJLMeG0KnLAF#k;p-Us8y>={4wf$jxe@351M-+hqjhn)DwT}TsjLrtFG
-t#WH69ET#p-{eR>C0pl?r>_u}nn&<FI0)`le#5wc)R6X?L9Pmi{{R?cl2WkKS
-
-literal 0
-HcmV?d00001
-
 -- 
 2.34.1
 
