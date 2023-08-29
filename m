@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B7E78C4B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C206F78C4DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:07:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qayKT-0001GC-Lf; Tue, 29 Aug 2023 09:00:21 -0400
+	id 1qayQB-00047n-6L; Tue, 29 Aug 2023 09:06:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayKP-0001Eo-Tw
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:00:17 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ id 1qayQ8-00046O-Gi
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:06:12 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qayKN-0002HT-Gi
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:00:17 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-500b6456c7eso3764992e87.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:00:15 -0700 (PDT)
+ id 1qayQ6-0004dB-9Y
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:06:12 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-52a3aa99bcdso6120260a12.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:06:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693314012; x=1693918812;
+ d=linaro.org; s=google; t=1693314368; x=1693919168;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vFuwD9dkL4dLJSAGJZT3K9IX8xDvGoBK18tts9Jgm48=;
- b=ve/6/tSHuPjmIb4wUV2jdaXsCGWUZ1Dys0iYAX+0zcjuYP8RSC/hlwRH4AoWWY4UNn
- Aej7Vgp0YJrlRuDLl9WfDqLm6nIEaCNeNMEkZjw5v3n2OOwMBvRvP30XqYPZms/NU7/j
- uHeyftQYJafmKBLMY5i5PT/d+mYhXh7P8hsEOeXySiq8vR+eOaHRmNLdmjFlCQKnWM8Z
- WLlgpdzQ6kchrFak9f++Htikjv58RFuZYlt6loDTpvou7iZ4wI7mrzh7hP0F3EOm+aJJ
- BBU8bbT07V48PBqev+1Q5H3q2a6c+jytiqXrlgp2qPD/VxQsJpG59F/C7EW1vhWkc6HI
- 0Itg==
+ bh=/d+IHKVhjyzzcBoT08+0UZkl6B6Df7hnsYgh7N4Kdto=;
+ b=gefUOHvVcNZyaKDBkur7fFWatjsLhZA0v/AIW5WptmtSj7qPvuQ98VjBr4lZnaknvJ
+ Ona6gZrR8EftXLjpoMjwnUOWyaMONL6+JNBb201663I8eG3Mx70J6HxByXkCf7y0ha/n
+ CrgSzG6IbxaTa8llfMEXH6ZH7iloj2WAlVPgSaeftGQOeC30ievNkDiqtBnA4C2glFnO
+ 4qgzFSpT/aAa8/hBfRU+0SRuXfEmaogGtBDV9qIhlc/mNSrLmJ1Mjx+pFctGEbbTEYhN
+ NBOkDw1I1amxMWJXlxXaw1tvBJV4re2GUtILsdVtgvRZLbCGezoXaFJHvDD/l9yeB/g1
+ /OAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693314012; x=1693918812;
+ d=1e100.net; s=20221208; t=1693314368; x=1693919168;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=vFuwD9dkL4dLJSAGJZT3K9IX8xDvGoBK18tts9Jgm48=;
- b=NTcWf1I4HK+tOsJzWY+5MQKllpBoXCAMAHgyNaZQIkO9Q1XMVQ+9OjdevNiw1eCCh0
- iG1g75nWd0qFTT72KvyDXkrgJRlPhLf8kXEdjz0IBoeJOsMy82tBVDFbDwnVedQa5Jam
- nqGdrXd1upV5KMhm+/IDEKFgCi+8McqYKbFps25uk40zVHF4GrDt9EL9wk4qCSFPlB58
- /RgRInWVS5+GmSm2/6YHcn+L8Bk231EVxXkfGqRgR5Yp1BMxZVvlDIT4BRAOD5NtFHDc
- X858KPeYO5gpilfdsaaToQbdc2E2EFyix51u/M3WiG6GW4l6YTe8RTLwfnEe/nzyiEZ9
- c3zA==
-X-Gm-Message-State: AOJu0YztjkfBWEXhljZ1g/NQXhHmAjEOEP5fkws3nYq1RIb1XRgrrUpx
- uiJFbt1Of3NWBzcy0ZVM5KbgFmbfWqpsBSAfVtJBzQbokX2zi6ck
-X-Google-Smtp-Source: AGHT+IEUSS4iU1WFASvZd3e1jAyWojPCe3VWJPPP11P044+rq2gTTdmGXWCSdqDK5Bp2W3gxtszEidlNCp26Vc9//rA=
-X-Received: by 2002:a05:6512:3151:b0:500:adc6:141d with SMTP id
- s17-20020a056512315100b00500adc6141dmr6570552lfi.45.1693314011526; Tue, 29
- Aug 2023 06:00:11 -0700 (PDT)
+ bh=/d+IHKVhjyzzcBoT08+0UZkl6B6Df7hnsYgh7N4Kdto=;
+ b=gBRHNUY36fh1VlXcrO1gQIkWIrNVZsiIxlzDrb92dacoW1eME5TIB/KhXcApvFKyxN
+ F1MjzKf2jdfKMUpCA/BZRgdL5ks+IEP36UdMTptAQerBD+L0fWgIDd+tqcZBhxg0NbJt
+ wrw3Qoz+YJMV9wtvJBIOZW8fhFmRuqCYdkxSdjlvaw/80rj1h1igZrEoMz8T0SUX4cFm
+ QH5g98fiVVom/c/jU9UZDRfw9vr/NmE88+jz4NXsKDaoJiP6YCYGQaE/JqBNZK6h5ult
+ yZ9QJRTTuTRpI0ViINdk9zLh/uz3iTBEZu/QpGj8JT71zNCEVphoJN6DKPGBxz0Jt45V
+ Rbpw==
+X-Gm-Message-State: AOJu0YxSiz1Pk2lkqhnG4jzfW1uLXjK4SittrX8rmhfnyuk3nS0vc5zC
+ 6T6nERPMw4b6gYrTJ8EzZ1eKnulHJkYc+2sz1H6K3g==
+X-Google-Smtp-Source: AGHT+IEkxR36PYfgHmirYQZRV1lMchCFYK7SYe0HSYJ5pZ7pHHdbFp9rnffQ7Vj+FGb71rNaSv3WtBlJCCOpB4LZ5fg=
+X-Received: by 2002:aa7:d34f:0:b0:525:4f15:d26e with SMTP id
+ m15-20020aa7d34f000000b005254f15d26emr20001733edr.32.1693314368534; Tue, 29
+ Aug 2023 06:06:08 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230822042530.1026751-1-richard.henderson@linaro.org>
- <20230822042530.1026751-4-richard.henderson@linaro.org>
-In-Reply-To: <20230822042530.1026751-4-richard.henderson@linaro.org>
+ <20230822042530.1026751-5-richard.henderson@linaro.org>
+In-Reply-To: <20230822042530.1026751-5-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 14:00:00 +0100
-Message-ID: <CAFEAcA9Wi-CU9uk_p4wze9OFQuHJdg_5zjYhOx2awsOOhNdA+A@mail.gmail.com>
-Subject: Re: [PATCH v4 3/9] target/arm: Add feature detection for FEAT_Pauth2
- and extensions
+Date: Tue, 29 Aug 2023 14:05:57 +0100
+Message-ID: <CAFEAcA_1YpcoDvsUgmLhD9c2U49c6coOO3X8ybuZ_cCzGC1wtA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/9] target/arm: Don't change pauth features when
+ changing algorithm
 To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Aaron Lindsay <aaron@os.amperecomputing.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,81 +89,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, 22 Aug 2023 at 05:27, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> From: Aaron Lindsay <aaron@os.amperecomputing.com>
+> We have cpu properties to adjust the pauth algorithm for the
+> purpose of speed of emulation.  Retain the set of pauth features
+> supported by the cpu even as the algorithm changes.
 >
-> Rename isar_feature_aa64_pauth_arch to isar_feature_aa64_pauth_qarma5
-> to distinguish the other architectural algorithm qarma3.
+> This already affects the neoverse-v1 cpu, which has FEAT_EPAC.
 >
-> Add ARMPauthFeature and isar_feature_pauth_feature to cover the
-> other pauth conditions.
->
-> Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
-> Message-Id: <20230609172324.982888-3-aaron@os.amperecomputing.com>
-> [rth: Add ARMPauthFeature and eliminate most other predicates]
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/cpu.h              | 49 +++++++++++++++++++++++++++++------
->  target/arm/tcg/pauth_helper.c |  2 +-
->  2 files changed, 42 insertions(+), 9 deletions(-)
->
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index fbdbf2df7f..e9fe268453 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -3794,28 +3794,61 @@ static inline bool isar_feature_aa64_fcma(const ARMISARegisters *id)
->      return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, FCMA) != 0;
->  }
->
-> +/*
-> + * These are the values from APA/API/APA3.
-> + *
-> + * They must be compared '>=', except EPAC should use '=='.
-> + * In the ARM pseudocode, EPAC is treated as not being implemented
-> + * by larger values.
-> + */
-
-Yeah, but we use PauthFeat_EPAC in exactly one place and
-deliberately in a way where it doesn't matter if we use >=...
-(I think the pseudocode would be clearer if it was adjusted
-to do the same, personally. This ID register field follows
-the standard ID scheme which means that increasing values
-are supersets, so the "only if equal" part is weird.)
-
-> +typedef enum {
-> +    PauthFeat_None         = 0,
-> +    PauthFeat_1            = 1,
-> +    PauthFeat_EPAC         = 2,
-> +    PauthFeat_2            = 3,
-> +    PauthFeat_FPAC         = 4,
-> +    PauthFeat_FPACCOMBINED = 5,
-> +} ARMPauthFeature;
-> +
-> +static inline ARMPauthFeature
-> +isar_feature_pauth_feature(const ARMISARegisters *id)
-> +{
-> +    /*
-> +     * Architecturally, only one of {APA,API,APA3} may be active (non-zero)
-> +     * and the other two must be zero.  Thus we may avoid conditionals.
-> +     */
-> +    return (FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, APA) |
-> +            FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, API) |
-> +            FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, APA3));
-> +}
-> +
->  static inline bool isar_feature_aa64_pauth(const ARMISARegisters *id)
->  {
->      /*
->       * Return true if any form of pauth is enabled, as this
->       * predicate controls migration of the 128-bit keys.
->       */
-> -    return (id->id_aa64isar1 &
-> -            (FIELD_DP64(0, ID_AA64ISAR1, APA, 0xf) |
-> -             FIELD_DP64(0, ID_AA64ISAR1, API, 0xf) |
-> -             FIELD_DP64(0, ID_AA64ISAR1, GPA, 0xf) |
-> -             FIELD_DP64(0, ID_AA64ISAR1, GPI, 0xf))) != 0;
-> +    return isar_feature_pauth_feature(id) != PauthFeat_None;
-
-Having said "must be compared >=" you then use a != comparison here :-)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
