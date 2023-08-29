@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4B178D068
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AF778D092
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nq-0001ZB-Pl; Tue, 29 Aug 2023 19:07:18 -0400
+	id 1qb7nr-0001ZH-Ez; Tue, 29 Aug 2023 19:07:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb5KS-0004UB-1h
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:28:48 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qb5Kz-0004f2-N0
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:29:21 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qb5KP-0004Av-Ig
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:28:47 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c0d0bf18d7so30049525ad.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:28:42 -0700 (PDT)
+ id 1qb5Kp-0004Bd-BH
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:29:17 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-68a520dba33so3854369b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693340921; x=1693945721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693340949; x=1693945749; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=AKJOC6I5SaJe95E+HItkl94xl24i0ygcJBTe03UPc6c=;
- b=IsrNoj/v8MQ62uJAjNVUTUgxrFkEylKEUufpDqEgvOYEhVeaFObeM+0q2/3guCfce4
- ZCH3BF8d3lDASqPuLLeyxlgQkQK6PZ8K2lVi4pLyo5Xnw81haRroUbDGsKhWt8XXYs0R
- 8naSLm2+/swNzRUvBnEcUIWdO/bKyYf3lPlgIc8aeL/vi6A98yGhef7ZnJ8fQxqrPZTS
- BQsgwq9NAeTqbyLc7YYFaMdPI3gpljbOWPIH1PRHSZYzvsNAeovWkYMQDk12Kja5cwwK
- sXN5elzfG3tpXjxSiAoDDbXJorBJaUTP9wfuwRIgJYiAFdnUMfVuQrV0Ql7qNfYtUUl3
- VcMQ==
+ bh=ZDnZCVjuDFmpFBSrLZvA/cIGQuXrZXEpEZrfYuW84Wg=;
+ b=DQPcaEbJPZYJgRHLZ8beVdCzKQ2oSQc1zgCysrtrpS0Vn6LONcCAXb1QtC/xe7zMHY
+ IBg4MQGP7tSGz4NBQlX5wlH7BFtxNWyPoc3+72M5UpF3PsynpCnhcEToVXm/yB/qLprp
+ V4w+pLxJKenszUw9vpq/IQ2tKG6ESvHMAKCLUuMQe6YhLa+aoBER9S8r465p8pW3xQiX
+ ZPvxe+d8nOUWj4oh8RNXiz7D9AcGaJcRo9ASM2iNKzQHnTgHBSSf3R+KXiQTojFJS7Bn
+ H4znYAuHnOpx2RSFPNa3SKd+yr6x+8pWle0w0DR6Io/2snfr9SV4ObL9BX4ySKU4DRby
+ VVEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693340921; x=1693945721;
+ d=1e100.net; s=20221208; t=1693340949; x=1693945749;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AKJOC6I5SaJe95E+HItkl94xl24i0ygcJBTe03UPc6c=;
- b=BLK4+kl5qXcngkunEB2gHPcsffRQYhZc6pjSnik4edzJtS/sN52MmfvwN2/IO1uLbZ
- lKlP7sD0B6Id7zYyYfaFx8FD7ufHIcAZoELEVwtsvZUvHm2jnUAg4q87fNTg2Wnwt3IY
- Lm+YFzNzPepG9y1hf1X6K+blLHJQk3pyOZVDkbX5tCcFmxST7bp5aFvAbGNbHHapJITD
- iuosiYWGMGlpgrgYwLrtsx1mT1Al23Sm3m33BSFT/izjqQeKRwN/UORYFzlq5z9MFEgH
- vQ87L8eC/UdSorSB8Tjl4Dih0yteklCcrOUlAOCNUl5H7N58/Z+XNf/zytCDT8zX2enI
- trtw==
-X-Gm-Message-State: AOJu0YzY1wsA6e/RIr8vloxxcV0+suLN7G1rWdQ04U+X5EfGQkjHB9gk
- b9/mAHtnL20drSRXQgFdR+pClw==
-X-Google-Smtp-Source: AGHT+IGvGViOl+chpwLRXTqH/AfPVPU2UYQK7cUFxceReTwA/70KtWL+HeuTMWCWdBlz3OzIrkISwg==
-X-Received: by 2002:a17:902:c947:b0:1bd:f314:7896 with SMTP id
- i7-20020a170902c94700b001bdf3147896mr251366pla.25.1693340920670; 
- Tue, 29 Aug 2023 13:28:40 -0700 (PDT)
+ bh=ZDnZCVjuDFmpFBSrLZvA/cIGQuXrZXEpEZrfYuW84Wg=;
+ b=g6qUdI5cELbz07K/ErLoVeWPBoPuv3F0sLlRqNUXOHL9glmmEMCqPuwnDrpgDDHuCj
+ KPbKnUz/G6Kul/tpO7aOhp6SDfxKqQ2dWTENqVVD9xJUlVWCsJjB4Yrk8MXsl+xqcRBN
+ cklSgS3ILvzZ43ljOXRhIyKSm31WDXu2h20Bm80yz51aoS/d1R25aFgFSlh9Bw4v+puI
+ eib7NctzHHw3gTG9rWvTsQ467DJVowL7NTMToBWMQVZLdDrMLtvlDdl1Pvbg+3J5pR0D
+ KuJdhvZgvR78kTusR13t/e2tVDmLGxZsn6yoeLgv5rvI5W3SJEHRJgx6gegdJS/x7k7I
+ FUzA==
+X-Gm-Message-State: AOJu0Yxxa03JvbXvFu0o8uCwFpFEygARgbAi+3ZWR78bl28SWfd9++8C
+ MvTHy0qVlm5j/VJspaLKerQNeQ==
+X-Google-Smtp-Source: AGHT+IFFSCwCfZMxvY5Q/ZiMPrI6RYoApQteOzvRLW2usYv3eTl8vBpfaEUUYamokbF7CbSvB649vw==
+X-Received: by 2002:a05:6a21:7746:b0:134:dc23:2994 with SMTP id
+ bc6-20020a056a21774600b00134dc232994mr422479pzc.31.1693340948876; 
+ Tue, 29 Aug 2023 13:29:08 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- h20-20020a170902f7d400b001b531e8a000sm9281405plw.157.2023.08.29.13.28.39
+ a16-20020aa780d0000000b006661562429fsm9136743pfn.97.2023.08.29.13.29.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 13:28:40 -0700 (PDT)
-Message-ID: <c9567536-237e-f587-2d1e-db38d6b6eb30@linaro.org>
-Date: Tue, 29 Aug 2023 13:28:38 -0700
+ Tue, 29 Aug 2023 13:29:08 -0700 (PDT)
+Message-ID: <0401b581-057d-7809-d62f-8fa018513c47@linaro.org>
+Date: Tue, 29 Aug 2023 13:29:06 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 22/32] bsd-user: Implement freebsd_exec_common, used in
- implementing execve/fexecve.
+Subject: Re: [PATCH 23/32] bsd-user: Implement t2h procctl control request
+ commands and h2t reaper status struct conversion.
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
- <20230827155746.84781-23-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-24-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230827155746.84781-23-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230827155746.84781-24-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -102,40 +102,25 @@ On 8/27/23 08:57, Karim Taha wrote:
 > Signed-off-by: Stacey Son<sson@FreeBSD.org>
 > Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
 > ---
->   bsd-user/freebsd/os-proc.c | 177 +++++++++++++++++++++++++++++++++++++
->   1 file changed, 177 insertions(+)
-
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-
-> +    if (do_fexec) {
-> +        if (((int)path_or_fd > 0 &&
-> +            is_target_elf_binary((int)path_or_fd)) == 1) {
-> +            char execpath[PATH_MAX];
+>   bsd-user/freebsd/os-proc.c | 52 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 52 insertions(+)
+> 
+> diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
+> index 396f258a64..f069472156 100644
+> --- a/bsd-user/freebsd/os-proc.c
+> +++ b/bsd-user/freebsd/os-proc.c
+> @@ -249,3 +249,55 @@ execve_end:
+>       return ret;
+>   }
+>   
+> +#include <sys/procctl.h>
 > +
-> +            /*
-> +             * The executable is an elf binary for the target
-> +             * arch.  execve() it using the emulator if we can
-> +             * determine the filename path from the fd.
-> +             */
-> +            if (get_filename_from_fd(getpid(), (int)path_or_fd, execpath,
-> +                        sizeof(execpath)) != NULL) {
-> +                memmove(qarg1 + 2, qarg1, (qargend-qarg1) * sizeof(*qarg1));
-> +		qarg1[1] = qarg1[0];
-> +		qarg1[0] = (char *)"-0";
-> +		qarg1 += 2;
-> +		qargend += 2;
-> +                *qarg1 = execpath;
-> +#ifndef DONT_INHERIT_INTERP_PREFIX
-> +                memmove(qarg1 + 2, qarg1, (qargend-qarg1) * sizeof(*qarg1));
-> +                *qarg1++ = (char *)"-L";
-> +                *qarg1++ = (char *)interp_prefix;
-> +#endif
+> +static abi_long
+> +t2h_procctl_cmd(int target_cmd, int *host_cmd)
+> +{
+> +
 
-I'm not especailly keen on the ifdef, but I'll let that go.
-
-As for get_filename_from_fd, perhaps it would be cleaner to add a command-line parameter 
-which would allow qemu to run from an open file descriptor?  Although perhaps that has 
-CLOEXEC implications too...
+Identity function?
 
 
 r~
