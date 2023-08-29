@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5AB78D0A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 571A278CFFA
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:09:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nv-0001qw-Fg; Tue, 29 Aug 2023 19:07:23 -0400
+	id 1qb7nT-00012S-Di; Tue, 29 Aug 2023 19:06:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb6U9-0006ME-Fo
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:42:54 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb6UC-0006Nb-CL
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:42:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb6U7-0000iE-1m
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:42:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb6U9-0000iW-BX
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 17:42:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693345370;
+ s=mimecast20190719; t=1693345371;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hrlS5gw7406y1NAmCuKbevjOhQ68l6+fK/m+TPY+7RE=;
- b=Bh1XEhhScdHSqrWsmhOZ8MLyjRvYCLbR3cWWLR58OGVPTpE26aYU4aRRfcPekldu70GF2Q
- AnJB2MQl9qLG912BFxbkQM0dHAzFoAiRA2zbuFQz0Rv3fKHGgtmUUlJf2cmy1ewuqc+JGF
- zugk5eBHzNmnknjYtJN44Hpa9zQTx/Q=
+ bh=zteSUqlE0a6VOFukitMAWaR/lKfpKDlrLDgCs8ahJek=;
+ b=eexQLTgtt/Ebb59dr+vOic8xOOdW8SfXIBQB1QFcjmC0dc3IGQLvlFw/uqXzSPVc5iEB7X
+ PkP5QDoDl0DW7Jq6MXxXgdh6kC8OkUK9MzxDeE/3/tncC2sLwMv1F8NoX7bGZWeiHRms7k
+ 3omgQPhJsGv/HVbS2c4LLZAG78vq1KU=
 Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
  [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-kZaT113-MACX8C7-H3bqSA-1; Tue, 29 Aug 2023 17:42:48 -0400
-X-MC-Unique: kZaT113-MACX8C7-H3bqSA-1
+ us-mta-541-INFzGFbWPVii9TVRj4ag3w-1; Tue, 29 Aug 2023 17:42:49 -0400
+X-MC-Unique: INFzGFbWPVii9TVRj4ag3w-1
 Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-411f4a7ddbdso14275511cf.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 14:42:48 -0700 (PDT)
+ d75a77b69052e-4122babcb87so7518421cf.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 14:42:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693345368; x=1693950168;
+ d=1e100.net; s=20221208; t=1693345369; x=1693950169;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hrlS5gw7406y1NAmCuKbevjOhQ68l6+fK/m+TPY+7RE=;
- b=fFGb9KPGxLkQkmhT2L1Le/1N12shx1Hr1n5Qd3mcD2W0qtaHSm+YanaYAhGc+nGEoO
- MYesVD/jSqTW3aQIPZXoxkOZhCWn5Df6FaO6Hsy3LiOAFFdGtFvmCbRYsulhfQ6rrPM5
- dKXJW8L6kX031qTTqgLKsBAnUjSOf4ASNDGCE6TPBtTR+pOVAqHHBrnr5Vl6hQYtyK4d
- 5UsUupPzEJrT+eXrXKTbGwl09cWFYKAnZHZKHes5Ngxdu2VoG2rwpSnyxKMfmCCcyrWU
- d0VqSOIcvhP1lwew2teZlVn3w3TfVxRytrSS/l+eaOWuSYA/VTBj9OrOEgbIWZO0YkKk
- iqLQ==
-X-Gm-Message-State: AOJu0YzJX+7vdDKAGZMclz9Dxa0QCksBE8Zy86dOjRdq0ju6OyZ1HJVR
- NnHK8bD/QHymuYVy7FE/LpdHBcSqj7O8e/ewbgz/II0CdvXxbjVA/elvDvOZSoih3j7YhXS3vyG
- wavija4hmiBeSZXY8fUlo4RpAzDstv9MlpBs0mgYKFHghKVSuarTtiheOVSnPUIeTr7rH0qr6
-X-Received: by 2002:a05:622a:1801:b0:40c:8ba5:33e0 with SMTP id
- t1-20020a05622a180100b0040c8ba533e0mr276299qtc.3.1693345367954; 
- Tue, 29 Aug 2023 14:42:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkuJ1ibV1nRksySKJp03jFYiDIosU7y7kVYn2+Lu503JIrQehtd+2uC/asbIizfknt9vTpPw==
-X-Received: by 2002:a05:622a:1801:b0:40c:8ba5:33e0 with SMTP id
- t1-20020a05622a180100b0040c8ba533e0mr276285qtc.3.1693345367592; 
- Tue, 29 Aug 2023 14:42:47 -0700 (PDT)
+ bh=zteSUqlE0a6VOFukitMAWaR/lKfpKDlrLDgCs8ahJek=;
+ b=Hdc+l7AJVcpaXaX42hwwwxvc2cUT3EcmvNgrTsYLC6geLATPOng1wUhwmFhLnpO6aZ
+ nebVCfR/3MFI8/43BaCSMX8BjT1hUtcsVmSEXg5h7S0EoucDrnCtdOFCOoMw0tqQwwkF
+ FDKRnlmZocCTQIh7OQdqRsZelTSVtvfyDLIac3hwBMJhEq1bNftjZvoYe4eHlmW6gp8g
+ DFXvuKdh0S5z9z/xuhH/lYVD3l1DU5q4m9oYv/Ndidv/UpARpTWqZXA8UhHdxCso6AmG
+ trZmGEOKxYoBFq5ELOj3VL2oxRIBjWu7kjEq7q0+iYavhdoJtiSepItHusOTDYrzIwnP
+ nukA==
+X-Gm-Message-State: AOJu0Yx79mBg79WmZjrRtu9AW/BZ38v1VGMiz7SK9zkSN5TpxjlIYi8K
+ 7jMWsV4jjYmrAHEof540frwYBGMcLfTTUm4HKUme/MnA+xxUjDYo9SrESPq8i0PbeABzwFJyhS0
+ K9VjCCLuExGX5bc2stdBWJiJuzVpQDIhQSbni37sb+yr6W6XajX4FXK0R3Q4IlopHRQMcQCw/
+X-Received: by 2002:a05:622a:1aa7:b0:410:88c6:cf22 with SMTP id
+ s39-20020a05622a1aa700b0041088c6cf22mr277769qtc.3.1693345369177; 
+ Tue, 29 Aug 2023 14:42:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEA0ftwYLI4iRLFR4mGW4VB7ycMR7YKIw6u4g6lJirVZ2y4Q4J+lxYIrougk2AwZ8XHdu3iEQ==
+X-Received: by 2002:a05:622a:1aa7:b0:410:88c6:cf22 with SMTP id
+ s39-20020a05622a1aa700b0041088c6cf22mr277741qtc.3.1693345368684; 
+ Tue, 29 Aug 2023 14:42:48 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- b18-20020ac86bd2000000b0040f8ac751a5sm3260343qtt.96.2023.08.29.14.42.46
+ b18-20020ac86bd2000000b0040f8ac751a5sm3260343qtt.96.2023.08.29.14.42.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 14:42:47 -0700 (PDT)
+ Tue, 29 Aug 2023 14:42:48 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Juan Quintela <quintela@redhat.com>
-Subject: [PATCH 8/9] migration: Add migration_rp_wait|kick()
-Date: Tue, 29 Aug 2023 17:42:34 -0400
-Message-ID: <20230829214235.69309-9-peterx@redhat.com>
+ Juan Quintela <quintela@redhat.com>, Xiaohui Li <xiaohli@redhat.com>
+Subject: [PATCH 9/9] migration/postcopy: Allow network to fail even during
+ recovery
+Date: Tue, 29 Aug 2023 17:42:35 -0400
+Message-ID: <20230829214235.69309-10-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230829214235.69309-1-peterx@redhat.com>
 References: <20230829214235.69309-1-peterx@redhat.com>
@@ -98,111 +99,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's just a simple wrapper for rp_sem on either wait() or kick(), make it
-even clearer on how it is used.  Prepared to be used even for other things.
+Normally the postcopy recover phase should only exist for a super short
+period, that's the duration when QEMU is trying to recover from an
+interrupted postcopy migration, during which handshake will be carried out
+for continuing the procedure with state changes from PAUSED -> RECOVER ->
+POSTCOPY_ACTIVE again.
 
+Here RECOVER phase should be super small, that happens right after the
+admin specified a new but working network link for QEMU to reconnect to
+dest QEMU.
+
+However there can still be case where the channel is broken in this small
+RECOVER window.
+
+If it happens, with current code there's no way the src QEMU can got kicked
+out of RECOVER stage. No way either to retry the recover in another channel
+when established.
+
+This patch allows the RECOVER phase to fail itself too - we're mostly
+ready, just some small things missing, e.g. properly kick the main
+migration thread out when sleeping on rp_sem when we found that we're at
+RECOVER stage.  When this happens, it fails the RECOVER itself, and
+rollback to PAUSED stage.  Then the user can retry another round of
+recovery.
+
+To make it even stronger, teach QMP command migrate-pause to explicitly
+kick src/dst QEMU out when needed, so even if for some reason the migration
+thread didn't got kicked out already by a failing rethrn-path thread, the
+admin can also kick it out.
+
+This will be an super, super corner case, but still try to cover that.
+
+One can try to test this with two proxy channels for migration:
+
+  (a) socat unix-listen:/tmp/src.sock,reuseaddr,fork tcp:localhost:10000
+  (b) socat tcp-listen:10000,reuseaddr,fork unix:/tmp/dst.sock
+
+So the migration channel will be:
+
+                      (a)          (b)
+  src -> /tmp/src.sock -> tcp:10000 -> /tmp/dst.sock -> dst
+
+Then to make QEMU hang at RECOVER stage, one can do below:
+
+  (1) stop the postcopy using QMP command postcopy-pause
+  (2) kill the 2nd proxy (b)
+  (3) try to recover the postcopy using /tmp/src.sock on src
+  (4) src QEMU will go into RECOVER stage but won't be able to continue
+      from there, because the channel is actually broken at (b)
+
+Before this patch, step (4) will make src QEMU stuck in RECOVER stage,
+without a way to kick the QEMU out or continue the postcopy again.  After
+this patch, (4) will quickly fail qemu and bounce back to PAUSED stage.
+
+Admin can also kick QEMU from (4) into PAUSED when needed using
+migrate-pause when needed.
+
+After bouncing back to PAUSED stage, one can recover again.
+
+Reported-by: Xiaohui Li <xiaohli@redhat.com>
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2111332
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.h | 15 +++++++++++++++
- migration/migration.c |  4 ++--
- migration/ram.c       | 16 +++++++---------
- 3 files changed, 24 insertions(+), 11 deletions(-)
+ migration/migration.h |  8 ++++--
+ migration/migration.c | 64 +++++++++++++++++++++++++++++++++++++++----
+ migration/ram.c       |  4 ++-
+ 3 files changed, 68 insertions(+), 8 deletions(-)
 
 diff --git a/migration/migration.h b/migration/migration.h
-index a5c95e4d43..b6de78dbdd 100644
+index b6de78dbdd..e86d9d098a 100644
 --- a/migration/migration.h
 +++ b/migration/migration.h
-@@ -304,6 +304,12 @@ struct MigrationState {
-          * be cleared in the rp_thread!
-          */
-         bool          rp_thread_created;
-+        /*
-+         * Used to synchonize between migration main thread and return path
-+         * thread.  The migration thread can wait() on this sem, while
-+         * other threads (e.g., return path thread) can kick it using a
-+         * post().
-+         */
-         QemuSemaphore rp_sem;
-         /*
-          * We post to this when we got one PONG from dest. So far it's an
-@@ -516,4 +522,13 @@ void populate_vfio_info(MigrationInfo *info);
+@@ -482,6 +482,7 @@ void migrate_init(MigrationState *s);
+ bool migration_is_blocked(Error **errp);
+ /* True if outgoing migration has entered postcopy phase */
+ bool migration_in_postcopy(void);
++bool migration_postcopy_is_alive(void);
+ MigrationState *migrate_get_current(void);
+ 
+ uint64_t ram_get_total_transferred_pages(void);
+@@ -522,8 +523,11 @@ void populate_vfio_info(MigrationInfo *info);
  void reset_vfio_bytes_transferred(void);
  void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
  
-+/* Migration thread waiting for return path thread. */
-+void migration_rp_wait(MigrationState *s);
+-/* Migration thread waiting for return path thread. */
+-void migration_rp_wait(MigrationState *s);
 +/*
-+ * Kick the migration thread waiting for return path messages.  NOTE: the
-+ * name can be slightly confusing (when read as "kick the rp thread"), just
-+ * to remember the target is always the migration thread.
++ * Migration thread waiting for return path thread.  Return non-zero if an
++ * error is detected.
 + */
-+void migration_rp_kick(MigrationState *s);
-+
- #endif
++int migration_rp_wait(MigrationState *s);
+ /*
+  * Kick the migration thread waiting for return path messages.  NOTE: the
+  * name can be slightly confusing (when read as "kick the rp thread"), just
 diff --git a/migration/migration.c b/migration/migration.c
-index 576e102319..3a5f324781 100644
+index 3a5f324781..85462ff1d7 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1835,7 +1835,7 @@ static int migrate_handle_rp_resume_ack(MigrationState *s,
-                       MIGRATION_STATUS_POSTCOPY_ACTIVE);
- 
-     /* Notify send thread that time to continue send pages */
--    qemu_sem_post(&s->rp_state.rp_sem);
-+    migration_rp_kick(s);
- 
-     return 0;
+@@ -1349,6 +1349,19 @@ bool migration_in_postcopy(void)
+     }
  }
-@@ -2503,7 +2503,7 @@ static int postcopy_resume_handshake(MigrationState *s)
+ 
++bool migration_postcopy_is_alive(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    switch (s->state) {
++    case MIGRATION_STATUS_POSTCOPY_ACTIVE:
++    case MIGRATION_STATUS_POSTCOPY_RECOVER:
++        return true;
++    default:
++        return false;
++    }
++}
++
+ bool migration_in_postcopy_after_devices(MigrationState *s)
+ {
+     return migration_in_postcopy() && s->postcopy_after_devices;
+@@ -1540,18 +1553,31 @@ void qmp_migrate_pause(Error **errp)
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     int ret;
+ 
+-    if (ms->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
++    if (migration_postcopy_is_alive()) {
+         /* Source side, during postcopy */
++        Error *error = NULL;
++
++        /* Tell the core migration that we're pausing */
++        error_setg(&error, "Postcopy migration is paused by the user");
++        migrate_set_error(ms, error);
++
+         qemu_mutex_lock(&ms->qemu_file_lock);
+         ret = qemu_file_shutdown(ms->to_dst_file);
+         qemu_mutex_unlock(&ms->qemu_file_lock);
+         if (ret) {
+             error_setg(errp, "Failed to pause source migration");
+         }
++
++        /*
++         * Kick the migration thread out of any waiting windows (on behalf
++         * of the rp thread).
++         */
++        migration_rp_kick(ms);
++
+         return;
+     }
+ 
+-    if (mis->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
++    if (migration_postcopy_is_alive()) {
+         ret = qemu_file_shutdown(mis->from_src_file);
+         if (ret) {
+             error_setg(errp, "Failed to pause destination migration");
+@@ -1560,7 +1586,7 @@ void qmp_migrate_pause(Error **errp)
+     }
+ 
+     error_setg(errp, "migrate-pause is currently only supported "
+-               "during postcopy-active state");
++               "during postcopy-active or postcopy-recover state");
+ }
+ 
+ bool migration_is_blocked(Error **errp)
+@@ -1742,9 +1768,21 @@ void qmp_migrate_continue(MigrationStatus state, Error **errp)
+     qemu_sem_post(&s->pause_sem);
+ }
+ 
+-void migration_rp_wait(MigrationState *s)
++int migration_rp_wait(MigrationState *s)
+ {
++    /* If migration has failure already, ignore the wait */
++    if (migrate_has_error(s)) {
++        return -1;
++    }
++
+     qemu_sem_wait(&s->rp_state.rp_sem);
++
++    /* After wait, double check that there's no failure */
++    if (migrate_has_error(s)) {
++        return -1;
++    }
++
++    return 0;
+ }
+ 
+ void migration_rp_kick(MigrationState *s)
+@@ -1798,6 +1836,20 @@ static bool postcopy_pause_return_path_thread(MigrationState *s)
+ {
+     trace_postcopy_pause_return_path();
+ 
++    if (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER) {
++        /*
++         * this will be extremely unlikely: that we got yet another network
++         * issue during recovering of the 1st network failure.. during this
++         * period the main migration thread can be waiting on rp_sem for
++         * this thread to sync with the other side.
++         *
++         * When this happens, explicitly kick the migration thread out of
++         * RECOVER stage and back to PAUSED, so the admin can try
++         * everything again.
++         */
++        migration_rp_kick(s);
++    }
++
+     qemu_sem_wait(&s->postcopy_pause_rp_sem);
+ 
+     trace_postcopy_pause_return_path_continued();
+@@ -2503,7 +2555,9 @@ static int postcopy_resume_handshake(MigrationState *s)
      qemu_savevm_send_postcopy_resume(s->to_dst_file);
  
      while (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER) {
--        qemu_sem_wait(&s->rp_state.rp_sem);
-+        migration_rp_wait(s);
+-        migration_rp_wait(s);
++        if (migration_rp_wait(s)) {
++            return -1;
++        }
      }
  
      if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
 diff --git a/migration/ram.c b/migration/ram.c
-index a9541c60b4..b5f6d65d84 100644
+index b5f6d65d84..199fd3e117 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -4157,7 +4157,7 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
+@@ -4157,7 +4157,9 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
  
      /* Wait until all the ramblocks' dirty bitmap synced */
      while (qatomic_read(&rs->postcopy_bmap_sync_requested)) {
--        qemu_sem_wait(&s->rp_state.rp_sem);
-+        migration_rp_wait(s);
+-        migration_rp_wait(s);
++        if (migration_rp_wait(s)) {
++            return -1;
++        }
      }
  
      trace_ram_dirty_bitmap_sync_complete();
-@@ -4165,11 +4165,6 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
-     return 0;
- }
- 
--static void ram_dirty_bitmap_reload_notify(MigrationState *s)
--{
--    qemu_sem_post(&s->rp_state.rp_sem);
--}
--
- /*
-  * Read the received bitmap, revert it as the initial dirty bitmap.
-  * This is only used when the postcopy migration is paused but wants
-@@ -4252,10 +4247,13 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
-     qatomic_dec(&rs->postcopy_bmap_sync_requested);
- 
-     /*
--     * We succeeded to sync bitmap for current ramblock. If this is
--     * the last one to sync, we need to notify the main send thread.
-+     * We succeeded to sync bitmap for current ramblock. Always kick the
-+     * migration thread to check whether all requested bitmaps are
-+     * reloaded.  NOTE: it's racy to only kick when requested==0, because
-+     * we don't know whether the migration thread may still be increasing
-+     * it.
-      */
--    ram_dirty_bitmap_reload_notify(s);
-+    migration_rp_kick(s);
- 
-     ret = 0;
- out:
 -- 
 2.41.0
 
