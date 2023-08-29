@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21CA78C974
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D5778C978
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 18:17:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb1Nh-0004pI-Iy; Tue, 29 Aug 2023 12:15:54 -0400
+	id 1qb1Nk-0004uk-0X; Tue, 29 Aug 2023 12:15:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb1NU-0004nG-Fx
+ id 1qb1NU-0004nH-G9
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:15:40 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qb1NM-0004OM-E9
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:15:39 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40078c4855fso42862305e9.3
+ id 1qb1NM-0004OH-DD
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 12:15:40 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fefe898f76so45071975e9.0
  for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 09:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693325731; x=1693930531;
+ d=linaro.org; s=google; t=1693325730; x=1693930530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i4cgTwYKmgY5S8ywczpvEN/MK3kalEN3O1n5Lxh3nkA=;
- b=DpwcIjKm/Se76BIRTXWEvwjIqhZbcgDN0FFtXqaYm9rkSU6rtYsTMUL7YyZRHtx3//
- Q5jSjKwbV/GRtd7wGWCB8mR8iH0pPcVIukQGRsUW3+pv0Hv0p0qrHXY8aNQDX7l7MRfi
- WDx8htSXGg4z5EQo/0wMfVPeiJb5l14PDywO1F2i5N043MlCQBYgnK2Z2oqz9Mb3K5/Q
- BrvaCu+lKdesyNMNfifaxXfz10UfhySEiXWW6xNh6LkHm+OeFXcECH1duZ4x/pEQYk+w
- jYERSJkXQUlbxUZ1t4UGbGBXgm00D9qAspAB93mHPLGgw5Uy4rg8Nb73zg7G3bMrGk93
- lVWg==
+ bh=iiC7cvPGqtDwu4nVf8eS+Cmc1lWchz2oWST+0j9UI/U=;
+ b=AxZnMkqnTdFfPhoc8pKiUmrB9AxxnzwWR+eetooDI0+GxpNyCaM0orLmp+0u2QMzmg
+ 7liHZyijK/5Gwrcie/qY3QrSTCgKGNuIkyvSpEI2BBGH/KEvzl+deEKTig4wxWa5UF6h
+ jD6YMbSm8qx1QlPx09Wp7YQqVUrD0BYvAjaOT1JTeTuEs3HwdYR6g2ramsSJawt0kTYL
+ 7XX7D0pvHBSW5pzVjgnciMe0RxJBiwaObjC8AkeTivWD+tYZlgE2KI5RK155hxbmppzq
+ A/h76wJ0GbrhPDlfR8eiTy3rmHmMhfIQupIgyCAFbjb3jzRznaCRUaOYf8LOwQRGR/qM
+ jLWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693325731; x=1693930531;
+ d=1e100.net; s=20221208; t=1693325730; x=1693930530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i4cgTwYKmgY5S8ywczpvEN/MK3kalEN3O1n5Lxh3nkA=;
- b=MqkRkmwuzfdXgP7sgk8+kdZCoHWt3xH+zKMDkJARtqyO+lInyNwxaOw6LJUyQoXFPz
- RbFkgRi6B7pa6YTnh13ELDHbfQgcK4Ctl6O8KfUIAIczf6Y8urxPVOMuOimy+t/c8xZv
- ESjGIohtHerUnCfAp7TaS0a+yRS32eUUfFm076q3/KX7whtM3hDPLK3S92n9bcvEZkTc
- E+kKGGXMsX1nZ6FirNv1J68epLZgU8MOtkQk51QOOdt+ipbjPyYITawLN+yoWoWb9wq8
- 0IupG75YksAC8uSCsN9PLGmrTkATNeCz+OP82oas9VVD2t+K9/aVdIazBFOBK9FMwvE5
- B58Q==
-X-Gm-Message-State: AOJu0YylVYfG1IMVZW7Y37lFPxj39rc8WxH9bgIfXhJRJR7kwzRztCyZ
- ZdMKlFN62pMLRf2mYNBnDmfnJA==
-X-Google-Smtp-Source: AGHT+IHrIyDmNCtrRpbpasUc+8f99zfhRd97Nv4lyUprL+BeGtXx5R3t+sqXNaF4Lc/rPCiXQp7Ggg==
-X-Received: by 2002:a1c:f304:0:b0:3fb:e4ce:cc65 with SMTP id
- q4-20020a1cf304000000b003fbe4cecc65mr21255098wmq.25.1693325730869; 
+ bh=iiC7cvPGqtDwu4nVf8eS+Cmc1lWchz2oWST+0j9UI/U=;
+ b=L4uyRdW4wIcHpkF1I/NlVv1qFo5Aj4z17kzazdAl1FT8tllffH4PymmWKQr9i6OL0q
+ xxDnDz3eRDQM/jreX2ZWB/u84TbCe+k3tTRgJX2YvckuPuZYlItfLZM4IEZJRf2AxRCD
+ htcMNYdB1ZJJNrEXoM1ZLg6QQovlJ/mhvq+uwFdlyNX/L7rqFYq5ReLzCJPKGeZRWokJ
+ eYu9SHycd0jdUblrMbmGve7gsy4MKTmZWLkKBskCrR8gCAthh6iABGfykq9aan2t7q2c
+ daGQs4wteuQq/BbZlwgNZSGrNAQGp+IOkbNZ+9V32Y8l2U+RZdYZrSNDl/mS2qO68SYx
+ 9KBg==
+X-Gm-Message-State: AOJu0YxLRICE26yNjjTQzj2uDwCbxcRmiy/BN5/qABzXbUBpjsl7C7gp
+ SraXGVRSi3dInBRna3K3Yat7rA==
+X-Google-Smtp-Source: AGHT+IF7UUc6/x2VJ3X2eskj0/McdSfyEB4xEBcpeDnHceEXs0kpCeLAzcslpKxllXd80+x+lFCvtA==
+X-Received: by 2002:a5d:6282:0:b0:31a:c6ef:5edc with SMTP id
+ k2-20020a5d6282000000b0031ac6ef5edcmr19002628wru.12.1693325730643; 
  Tue, 29 Aug 2023 09:15:30 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- 13-20020a05600c228d00b003fefd46df47sm17577554wmf.29.2023.08.29.09.15.28
+ l4-20020adff484000000b003197a4b0f68sm14357588wro.7.2023.08.29.09.15.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 29 Aug 2023 09:15:29 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 8F0CE1FFBE;
+ by zen.linaroharston (Postfix) with ESMTP id A70E91FFBF;
  Tue, 29 Aug 2023 17:15:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -76,18 +76,18 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>,
  Peter Maydell <peter.maydell@linaro.org>, Beraldo Leal <bleal@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v3 03/12] tests/tcg: remove quoting for info output
-Date: Tue, 29 Aug 2023 17:15:19 +0100
-Message-Id: <20230829161528.2707696-4-alex.bennee@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH v3 04/12] docs/style: permit inline loop variables
+Date: Tue, 29 Aug 2023 17:15:20 +0100
+Message-Id: <20230829161528.2707696-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230829161528.2707696-1-alex.bennee@linaro.org>
 References: <20230829161528.2707696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,44 +110,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This avoids ugly multi-line wrapping for the test on non V=1 builds.
+I've already wasted enough of my time debugging aliased variables in
+deeply nested loops. While not scattering variable declarations around
+is a good aim I think we can make an exception for stuff used inside a
+loop.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230822155004.1158931-1-alex.bennee@linaro.org>
 ---
- tests/tcg/aarch64/Makefile.target                  | 2 +-
- tests/tcg/multiarch/system/Makefile.softmmu-target | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ docs/devel/style.rst | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 681dfa077c..b77bbd9b3c 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -14,7 +14,7 @@ AARCH64_TESTS=fcvt pcalign-a64 lse2-fault
- fcvt: LDFLAGS+=-lm
+diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+index 3cfcdeb9cd..2f68b50079 100644
+--- a/docs/devel/style.rst
++++ b/docs/devel/style.rst
+@@ -204,7 +204,14 @@ Declarations
  
- run-fcvt: fcvt
--	$(call run-test,$<,$(QEMU) $<, "$< on $(TARGET_NAME)")
-+	$(call run-test,$<,$(QEMU) $<)
- 	$(call diff-out,$<,$(AARCH64_SRC)/fcvt.ref)
+ Mixed declarations (interleaving statements and declarations within
+ blocks) are generally not allowed; declarations should be at the beginning
+-of blocks.
++of blocks. To avoid accidental re-use it is permissible to declare
++loop variables inside for loops:
++
++.. code-block:: c
++
++    for (int i = 0; i < ARRAY_SIZE(thing); i++) {
++        /* do something loopy */
++    }
  
- config-cc.mak: Makefile
-diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
-index 7ba9053375..a051d689d7 100644
---- a/tests/tcg/multiarch/system/Makefile.softmmu-target
-+++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
-@@ -37,10 +37,10 @@ run-gdbstub-untimely-packet: hello
- 		--qemu $(QEMU) \
- 		--bin $< --qargs \
- 		"-monitor none -display none -chardev file$(COMMA)path=untimely-packet.out$(COMMA)id=output $(QEMU_OPTS)", \
--	"softmmu gdbstub untimely packets")
-+	softmmu gdbstub untimely packets)
- 	$(call quiet-command, \
- 		(! grep -Fq 'Packet instead of Ack, ignoring it' untimely-packet.gdb.err), \
--		"GREP", "file  untimely-packet.gdb.err")
-+		"GREP", file untimely-packet.gdb.err)
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "no guest arch support")
+ Every now and then, an exception is made for declarations inside a
+ #ifdef or #ifndef block: if the code looks nicer, such declarations can
 -- 
 2.39.2
 
