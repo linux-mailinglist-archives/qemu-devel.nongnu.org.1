@@ -2,85 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB3C78C7D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 880C578C7E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:47:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qazw9-0001OY-DR; Tue, 29 Aug 2023 10:43:21 -0400
+	id 1qazz2-0002Zf-AL; Tue, 29 Aug 2023 10:46:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qazw2-0001NW-Oq
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:43:16 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qazvz-0003NC-7A
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:43:14 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5007c8308c3so7117281e87.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693320188; x=1693924988;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=ljqmUbca8HfxbkjAgGpG/Z+/cibTftf84UwqjXuV+us=;
- b=XcxBPqDCRvVK/SMZLCJrjLC9eBL6gDRFCNf6O71SOkkPPNO8eHI+W9VagGfce6dr1J
- 7fbjEjDpwDqAdtR0Ajb6geP3pG7193lwhWtFJmIAVhpZud57vnUT06CMnoup4mihRslq
- btYTOMSxpRHJHmQnzM0pW8TyMOgqQiMMYlfR/AtFroVjd7ooiK+OVneqvrExyez7sewo
- Ejkdc45T424YegK9DKrG070vs8SfJQdrPRTLStZUGXA4opcjoaBgqDQLtNm8OhNr59lI
- /KtOcGHW0rxqkMZMD+/coOjWEKKieCwXh38IWpXHzyopLl9A5V7FvFzp6LBNBOK7UFuk
- C8aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693320188; x=1693924988;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ljqmUbca8HfxbkjAgGpG/Z+/cibTftf84UwqjXuV+us=;
- b=B4cSbIVllEAEnvMlJbhmLslAqSbRnHDrGjYs2lc4pBCTxf3V591wbpynHv0BYtT1nZ
- Ix9ttGuottz2gKrOQm1TtPb2OvTS0+WCCHRZUxjqlyNffDnnUF7AooWwJHsj0OcT9VzF
- AEBN79Fno4soRJMfD+DXetXAd3Gscr8bXWhCMr8j5ORRsOQQMIWYFm0sSG0xrcgBYpAt
- MtZRaqVJEI5/asmkTh4CtoeHjY0Al66SClvAnk6TVEfPbU+7luZyGhtFnKsg0nzbBVxB
- UBsZKabsj/QD9rbdkRHS2RFkjbP7JDFMegFqmILhwxMpkB7ZDKwExTqK1EngkZcZ4twR
- U7tg==
-X-Gm-Message-State: AOJu0YxFTLuw/BcpV+csLfbemZCDBHRcPpa8v6itRA/MI8lw/i9r4kPV
- VnEnSHIpecj0gyGvd72R+C4+UQ==
-X-Google-Smtp-Source: AGHT+IGB0fvgzuTUBz4U1iOcoTBT5USzSN9LsDT3fxCChLBTfjhElyy6gwvyWtqKC515FpdCGiLKzQ==
-X-Received: by 2002:ac2:4bc5:0:b0:500:b64a:ad15 with SMTP id
- o5-20020ac24bc5000000b00500b64aad15mr5399274lfq.52.1693320187992; 
- Tue, 29 Aug 2023 07:43:07 -0700 (PDT)
-Received: from [192.168.200.206] (83.11.188.80.ipv4.supernova.orange.pl.
- [83.11.188.80]) by smtp.gmail.com with ESMTPSA id
- b8-20020a170906194800b009920e9a3a73sm6040159eje.115.2023.08.29.07.43.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 07:43:07 -0700 (PDT)
-Message-ID: <9af58fd1-bef5-4499-fbbf-35f363bd2ca5@linaro.org>
-Date: Tue, 29 Aug 2023 16:43:06 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
+ id 1qazyS-0002Z5-JH; Tue, 29 Aug 2023 10:45:45 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=bkLz=EO=kaod.org=clg@ozlabs.org>)
+ id 1qazyO-0004NL-Hr; Tue, 29 Aug 2023 10:45:44 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RZqwY4FYwz4wxn;
+ Wed, 30 Aug 2023 00:45:33 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RZqwX09X7z4wd0;
+ Wed, 30 Aug 2023 00:45:31 +1000 (AEST)
+Message-ID: <bc069058-28d0-3cba-2fb5-c5701049a5d9@kaod.org>
+Date: Tue, 29 Aug 2023 16:45:27 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
-Content-Language: pl-PL, en-GB, en-HK
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Gowtham Siddarth <gowtham.siddarth@arm.com>
-References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
- <c3c6bab4-27e6-8812-2dc5-3d22c1ef16a5@linaro.org>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <c3c6bab4-27e6-8812-2dc5-3d22c1ef16a5@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 2/3] pnv/lpc: Hook up xscom region for P9/P10
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>, Joel Stanley <joel@jms.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230808083445.4613-1-joel@jms.id.au>
+ <20230808083445.4613-3-joel@jms.id.au>
+ <61cf0069-e845-3a07-2a55-659594e886be@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <61cf0069-e845-3a07-2a55-659594e886be@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=bkLz=EO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.242, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,31 +66,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 29.08.2023 o 15:57, Philippe Mathieu-Daudé pisze:
-> On 29/8/23 13:39, Marcin Juszkiewicz wrote:
-
->> Does someone know where the problem may be? And how to fix it?
+On 8/9/23 16:56, Frederic Barrat wrote:
+> Hello Joel,
 > 
-> Commit fb23162885 ("pci: initialize pci config headers depending it pci
-> header type.") sets PCI_SEC_LATENCY_TIMER writable; it seems to be a
-> mistake (and bsa-acs is doing the correct testing).
-> 
-> Can you try this quick fix?
-> 
-> -- >8 --
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 881d774fb6..e43aa0fb36 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -894,5 +895,4 @@ static void pci_init_mask_bridge(PCIDevice *d)
->   {
-> -    /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS and
-> -       PCI_SEC_LETENCY_TIMER */
-> -    memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 4);
-> +    /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS */
-> +    memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 3);
+> So we're re-using the same xscom ops as on P8. A quick look at the definition of those 4 registers on P8 (0xb0020) and on P9/P10 (0x00090040) seem to show they are not the same though. Am i missing something?
 
-It made test pass:
+Joel, are we ok ? Should we grab this patch ? or not.
 
-  822 : Check Type 1 config header rules           : Result:  PASS
+Thanks,
+
+C.
+
+
+> 
+>    Fred
+> 
+> 
+> On 08/08/2023 10:34, Joel Stanley wrote:
+>>  From P9 on the LPC bus is memory mapped. However the xscom access still
+>> is possible, so add it too.
+>>
+>> Signed-off-by: Joel Stanley <joel@jms.id.au>
+>> ---
+>>   include/hw/ppc/pnv_xscom.h | 6 ++++++
+>>   hw/ppc/pnv.c               | 4 ++++
+>>   hw/ppc/pnv_lpc.c           | 6 ++++++
+>>   3 files changed, 16 insertions(+)
+>>
+>> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+>> index 9bc64635471e..42601bdf419d 100644
+>> --- a/include/hw/ppc/pnv_xscom.h
+>> +++ b/include/hw/ppc/pnv_xscom.h
+>> @@ -96,6 +96,9 @@ struct PnvXScomInterfaceClass {
+>>   #define PNV9_XSCOM_SBE_CTRL_BASE  0x00050008
+>>   #define PNV9_XSCOM_SBE_CTRL_SIZE  0x1
+>> +#define PNV9_XSCOM_LPC_BASE       0x00090040
+>> +#define PNV9_XSCOM_LPC_SIZE       PNV_XSCOM_LPC_SIZE
+>> +
+>>   #define PNV9_XSCOM_SBE_MBOX_BASE  0x000D0050
+>>   #define PNV9_XSCOM_SBE_MBOX_SIZE  0x16
+>> @@ -155,6 +158,9 @@ struct PnvXScomInterfaceClass {
+>>   #define PNV10_XSCOM_SBE_CTRL_BASE  PNV9_XSCOM_SBE_CTRL_BASE
+>>   #define PNV10_XSCOM_SBE_CTRL_SIZE  PNV9_XSCOM_SBE_CTRL_SIZE
+>> +#define PNV10_XSCOM_LPC_BASE       PNV9_XSCOM_LPC_BASE
+>> +#define PNV10_XSCOM_LPC_SIZE       PNV9_XSCOM_LPC_SIZE
+>> +
+>>   #define PNV10_XSCOM_SBE_MBOX_BASE  PNV9_XSCOM_SBE_MBOX_BASE
+>>   #define PNV10_XSCOM_SBE_MBOX_SIZE  PNV9_XSCOM_SBE_MBOX_SIZE
+>> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+>> index afdaa25c2b26..a5db655b41b6 100644
+>> --- a/hw/ppc/pnv.c
+>> +++ b/hw/ppc/pnv.c
+>> @@ -1566,6 +1566,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+>>       }
+>>       memory_region_add_subregion(get_system_memory(), PNV9_LPCM_BASE(chip),
+>>                                   &chip9->lpc.mmio_regs);
+>> +    pnv_xscom_add_subregion(chip, PNV9_XSCOM_LPC_BASE,
+>> +                            &chip9->lpc.xscom_regs);
+>>       chip->fw_mr = &chip9->lpc.isa_fw;
+>>       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
+>> @@ -1785,6 +1787,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+>>       }
+>>       memory_region_add_subregion(get_system_memory(), PNV10_LPCM_BASE(chip),
+>>                                   &chip10->lpc.mmio_regs);
+>> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_LPC_BASE,
+>> +                            &chip10->lpc.xscom_regs);
+>>       chip->fw_mr = &chip10->lpc.isa_fw;
+>>       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
+>> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+>> index caf5e10a5f96..6c6a3134087f 100644
+>> --- a/hw/ppc/pnv_lpc.c
+>> +++ b/hw/ppc/pnv_lpc.c
+>> @@ -666,6 +666,12 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
+>>       /* P9 uses a MMIO region */
+>>       memory_region_init_io(&lpc->mmio_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
+>>                             lpc, "lpcm", PNV9_LPCM_SIZE);
+>> +
+>> +    /* but the XSCOM region still exists */
+>> +    pnv_xscom_region_init(&lpc->xscom_regs, OBJECT(lpc),
+>> +                          &pnv_lpc_xscom_ops, lpc, "xscom-lpc",
+>> +                          PNV_XSCOM_LPC_SIZE);
+>> +
+>>   }
+>>   static void pnv_lpc_power9_class_init(ObjectClass *klass, void *data)
+
 
