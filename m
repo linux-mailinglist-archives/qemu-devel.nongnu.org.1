@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30C078CB28
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 852BF78CB38
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb2R2-000096-PE; Tue, 29 Aug 2023 13:23:25 -0400
+	id 1qb2UG-00063q-9w; Tue, 29 Aug 2023 13:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qb2Ph-0006w5-GG
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:22:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qb2Pf-0000sX-6R
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:22:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693329717;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ga6qSUQdwzhmfn/lQ9lhh6t3Yiayp8nRSobjZ382ohU=;
- b=gROgx2c3EOjxsHEsirGFjKNkMoyuUAVRrDPKwzbmIWxN+kl5Y2aJLjW2AV7LQKg1VKeGZW
- G5JuTv5ZW49bInhfI74/OlUbegAP//UFauKdkRhDPp9FSqOEKkiEZaWKqST1LdlVdEjsrP
- cNeG8ozeUfPUS7WTVv701mzTkUAKUxI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-441-YmfE2IPvNmCZypKmC9lsVw-1; Tue, 29 Aug 2023 13:21:52 -0400
-X-MC-Unique: YmfE2IPvNmCZypKmC9lsVw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 56FC8800C78;
- Tue, 29 Aug 2023 17:21:43 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AC795492C13;
- Tue, 29 Aug 2023 17:21:42 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Fam Zheng <fam@euphon.net>, Peter Xu <peterx@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Jeuk Kim <jeuk20.kim@samsung.com>, qemu-block@nongnu.org,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
- Eric Blake <eblake@redhat.com>, "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL v2 8/8] tests/qemu-iotests/197: add testcase for CoR with
- subclusters
-Date: Tue, 29 Aug 2023 13:21:22 -0400
-Message-ID: <20230829172122.303592-9-stefanha@redhat.com>
-In-Reply-To: <20230829172122.303592-1-stefanha@redhat.com>
-References: <20230829172122.303592-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb2UA-00062x-Dh
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:26:38 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb2U7-0001Za-1z
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:26:37 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c0bae4da38so349155ad.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693329993; x=1693934793;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Lyv+D+KGyuTqw+YAmZ9qDtHxL9wczkbZBa4v+NA3PLo=;
+ b=r2NURfWJBWbcyEdktyan5AEXSYvjbzjN5NyJo2+QBLmMiaGem0kGumu2ZQmXG9bCi/
+ kEoty3bbmaXn6vXwPpjUjuNmVMzlTQAHH+3ZKR5jgGu7gA9eKBrhGevpSxZHa2oKcKb4
+ evNkXTGZmiN50E/+Ja7I3R2EThhMUXQSzBo4VR5ScxdVtsZMTSN99mjPoRve0435yrJt
+ VVdDxz/B+IVfXvGVwcSmAazgWdRf8IyZ0SNee5Uf6e1A/o/AH+DmLCXOAOJdzT5INKhO
+ WaOraxRO8jEcq0RJK8lKU9BGzFI60w5mFZVGj/4kdSBtI4D3KxEfxDAzsYzCJmQQgqvT
+ STVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693329993; x=1693934793;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Lyv+D+KGyuTqw+YAmZ9qDtHxL9wczkbZBa4v+NA3PLo=;
+ b=N6TGrcB6h8YgDOBQ2kcDWyMs2sWIbsH7d8ftc7ZpMFncmCahgOiEMV/EAjUsrIVoXi
+ k5YH+2yxFUXVriMtEBcMtaQUW30Cm1L8UnKQUiYQqyHAzde6bq9U6coF/10y64UPfUSr
+ d2gtRAl5US0LUaxnmFkez+a08tFJWOyZVGD6AQC0bk5S5YOw3PRFycIKE3YlH7xMOY4t
+ UzOjDxZWDnI+Ji/BCkT2FoeYILn02EBdnbsZ8LfwshT1itKuK/eFRft7KdnJSphX5meD
+ VzZMx1hHcmuO4DFFVr6U+aN2l2uBLISsfpCOI5dI7QuqbSPWPdgFZDigYtVb3VkO22oS
+ EDhQ==
+X-Gm-Message-State: AOJu0YwWaIpo2fcP9iNlBuEHBqBIqkQmG1piRqCC7s249IZ5hcmuxr24
+ N2Vj1icUdL4tDNzHaVEuSaDO5g==
+X-Google-Smtp-Source: AGHT+IH8IYv4MpyWZGTmXyur7BGpSZ8me80sPJDsO1NG6MccCFYh4Nf/3rLm61yZl6Va1Nl7/GyPrQ==
+X-Received: by 2002:a17:902:e881:b0:1c0:afda:7707 with SMTP id
+ w1-20020a170902e88100b001c0afda7707mr4413488plg.34.1693329993368; 
+ Tue, 29 Aug 2023 10:26:33 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ bd10-20020a170902830a00b001bc59cd718asm9520927plb.278.2023.08.29.10.26.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 10:26:32 -0700 (PDT)
+Message-ID: <cc27c688-ec22-7f7a-5e7e-f681176f7c60@linaro.org>
+Date: Tue, 29 Aug 2023 10:26:31 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 3/3] hw/arm: Set number of MPU regions correctly
+ for an505, an521, an524
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230724174335.2150499-1-peter.maydell@linaro.org>
+ <20230724174335.2150499-4-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230724174335.2150499-4-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,102 +96,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+On 7/24/23 10:43, Peter Maydell wrote:
+> The IoTKit, SSE200 and SSE300 all default to 8 MPU regions.  The
+> MPS2/MPS3 FPGA images don't override these except in the case of
+> AN547, which uses 16 MPU regions.
+> 
+> Define properties on the ARMSSE object for the MPU regions (using the
+> same names as the documented RTL configuration settings, and
+> following the pattern we already have for this device of using
+> all-caps names as the RTL does), and set them in the board code.
+> 
+> We don't actually need to override the default except on AN547,
+> but it's simpler code to have the board code set them always
+> rather than tracking which board subtypes want to set them to
+> a non-default value separately from what that value is.
+> 
+> Tho overall effect is that for mps2-an505, mps2-an521 and mps3-an524
+> we now correctly use 8 MPU regions, while mps3-an547 stays at its
+> current 16 regions.
+> 
+> It's possible some guest code wrongly depended on the previous
+> incorrectly modeled number of memory regions. (Such guest code
+> should ideally check the number of regions via the MPU_TYPE
+> register.) The old behaviour can be obtained with additional
+> -global arguments to QEMU:
+> 
+> For mps2-an521 and mps2-an524:
+>   -global sse-200.CPU0_MPU_NS=16 -global sse-200.CPU0_MPU_S=16 -global sse-200.CPU1_MPU_NS=16 -global sse-200.CPU1_MPU_S=16
+> 
+> For mps2-an505:
+>   -global sse-200.CPU0_MPU_NS=16 -global sse-200.CPU0_MPU_S=16
+> 
+> NB that the way the implementation allows this use of -global
+> is slightly fragile: if the board code explicitly sets the
+> properties on the sse-200 object, this overrides the -global
+> command line option. So we rely on:
+>   - the boards that need fixing all happen to use the SSE defaults
+>   - we can write the board code to only set the property if it
+>     is different from the default, rather than having all boards
+>     explicitly set the property
+>   - the board that does need to use a non-default value happens
+>     to need to set it to the same value (16) we previously used
+> This works, but there are some kinds of refactoring of the
+> mps2-tz.c code that would break the support for -global here.
+> 
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1772
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+> I'm not super-enthusiastic about the -global handling here, as you
+> may have guessed from the wording above, though it does avoid having
+> explicit back-compat code.  The other option for back-compat would be
+> to add an explicit board property to say "use the old values".
+> ---
+>   include/hw/arm/armsse.h |  5 +++++
+>   hw/arm/armsse.c         | 16 ++++++++++++++++
+>   hw/arm/mps2-tz.c        | 29 +++++++++++++++++++++++++++++
+>   3 files changed, 50 insertions(+)
 
-Add testcase which checks that allocations during copy-on-read are
-performed on the subcluster basis when subclusters are enabled in target
-image.
+Looks reasonable.  I can't think of any global properties that are better.
 
-This testcase also triggers the following assert with previous commit
-not being applied, so we check that as well:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Denis V. Lunev <den@openvz.org>
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230711172553.234055-4-andrey.drobyshev@virtuozzo.com>
----
- tests/qemu-iotests/197     | 29 +++++++++++++++++++++++++++++
- tests/qemu-iotests/197.out | 24 ++++++++++++++++++++++++
- 2 files changed, 53 insertions(+)
-
-diff --git a/tests/qemu-iotests/197 b/tests/qemu-iotests/197
-index a2547bc280..f07a9da136 100755
---- a/tests/qemu-iotests/197
-+++ b/tests/qemu-iotests/197
-@@ -122,6 +122,35 @@ $QEMU_IO -f qcow2 -C -c 'read 0 1024' "$TEST_WRAP" | _filter_qemu_io
- $QEMU_IO -f qcow2 -c map "$TEST_WRAP"
- _check_test_img
- 
-+echo
-+echo '=== Copy-on-read with subclusters ==='
-+echo
-+
-+# Create base and top images 64K (1 cluster) each.  Make subclusters enabled
-+# for the top image
-+_make_test_img 64K
-+IMGPROTO=file IMGFMT=qcow2 TEST_IMG_FILE="$TEST_WRAP" \
-+    _make_test_img --no-opts -o extended_l2=true -F "$IMGFMT" -b "$TEST_IMG" \
-+    64K | _filter_img_create
-+
-+$QEMU_IO -c "write -P 0xaa 0 64k" "$TEST_IMG" | _filter_qemu_io
-+
-+# Allocate individual subclusters in the top image, and not the whole cluster
-+$QEMU_IO -c "write -P 0xbb 28K 2K" -c "write -P 0xcc 34K 2K" "$TEST_WRAP" \
-+    | _filter_qemu_io
-+
-+# Only 2 subclusters should be allocated in the top image at this point
-+$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
-+
-+# Actual copy-on-read operation
-+$QEMU_IO -C -c "read -P 0xaa 30K 4K" "$TEST_WRAP" | _filter_qemu_io
-+
-+# And here we should have 4 subclusters allocated right in the middle of the
-+# top image. Make sure the whole cluster remains unallocated
-+$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
-+
-+_check_test_img
-+
- # success, all done
- echo '*** done'
- status=0
-diff --git a/tests/qemu-iotests/197.out b/tests/qemu-iotests/197.out
-index ad414c3b0e..8f34a30afe 100644
---- a/tests/qemu-iotests/197.out
-+++ b/tests/qemu-iotests/197.out
-@@ -31,4 +31,28 @@ read 1024/1024 bytes at offset 0
- 1 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- 1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
- No errors were found on the image.
-+
-+=== Copy-on-read with subclusters ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=65536
-+Formatting 'TEST_DIR/t.wrap.IMGFMT', fmt=IMGFMT size=65536 backing_file=TEST_DIR/t.IMGFMT backing_fmt=IMGFMT
-+wrote 65536/65536 bytes at offset 0
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 2048/2048 bytes at offset 28672
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 2048/2048 bytes at offset 34816
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Offset          Length          File
-+0               0x7000          TEST_DIR/t.IMGFMT
-+0x7000          0x800           TEST_DIR/t.wrap.IMGFMT
-+0x7800          0x1000          TEST_DIR/t.IMGFMT
-+0x8800          0x800           TEST_DIR/t.wrap.IMGFMT
-+0x9000          0x7000          TEST_DIR/t.IMGFMT
-+read 4096/4096 bytes at offset 30720
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Offset          Length          File
-+0               0x7000          TEST_DIR/t.IMGFMT
-+0x7000          0x2000          TEST_DIR/t.wrap.IMGFMT
-+0x9000          0x7000          TEST_DIR/t.IMGFMT
-+No errors were found on the image.
- *** done
--- 
-2.41.0
-
+r~
 
