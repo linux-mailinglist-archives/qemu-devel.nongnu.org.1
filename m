@@ -2,97 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF85378D096
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F318F78D07A
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 01:25:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb7nv-0001pB-4f; Tue, 29 Aug 2023 19:07:23 -0400
+	id 1qb7ns-0001aa-Ud; Tue, 29 Aug 2023 19:07:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qb5c1-0000Ep-RY
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:46:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qb5bx-0007Rm-H4
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:46:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693342012;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=u069NO16WAovdX6uXScjF018D+J+6wwITMqmSeb6se0=;
- b=aFYIUu6XytfZu2hMSA8/RVYTktt7RTQar4ver56p5t9IK90SBAb/f1aYMIOLQxlN/JsfvD
- fyVvB6lHyDePsnTaNai6ncCUA5JWMzuxfw0qoFxkbuzVoQT+EegWxmiINyZX/crWtwkhIM
- dl/pGWu0A7vAz6sTc19yKL3tOSzCVVg=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-8xMw03aSPb6jBojNzrVeZw-1; Tue, 29 Aug 2023 16:46:49 -0400
-X-MC-Unique: 8xMw03aSPb6jBojNzrVeZw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-52a08d02c62so3791005a12.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:46:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb5nA-0005BP-3M
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:58:28 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb5n7-0001Cf-Mf
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 16:58:27 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-68bee12e842so3374620b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 13:58:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693342704; x=1693947504; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Qf6ucjtJWAHMe/xIqW1IVPzwZ4LlL/t79pnH0003mO0=;
+ b=oc6jGc+JFDGPuFSZQVciyh4nlTkmYC+g5dZ4BNZjK353xFfbG0EZMAo8bRc8GwxYyL
+ EUt3nhJuSNEK+cc+Z2NKoVxyUtqEUONS+ZtGrfPoPvfFLILciLA/e3/9eEGm9OHWmT1A
+ 5qP5rQ2HiEl0L39Sio3AEqbUkphumrLzPEMJ/pQZdsKgoxY9EaYdBnz0MRdgU6lefIjd
+ GZre2nswWgZy5k4z/YnzMai0duHZMqdOXglSasR0idfYv07Rs049RJYIsRib40MG/he4
+ KHKJ+pbSqlY7uyouJgjxcwnjOCBLP9fyK39SdwQaMXfe7DUDX2P9aS0JrioQIB63uQt6
+ LhEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693342009; x=1693946809;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1693342704; x=1693947504;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=u069NO16WAovdX6uXScjF018D+J+6wwITMqmSeb6se0=;
- b=Mn8QWQ9HCBeiVTrwHmOQACKcGYFDdgBkFPmdNQTj4fCqyqoqcGDBgNHVr2doxCcqQg
- VPv3ByOrV4DX4b43+sH56LunXoTcpPvjjb9crsNIHcLbWpjkxRlSL+kaDM/3O6ZsV8Zg
- 6huTSQ89zuGmB4WYnLFmzULmC6qr6u0kUJLC2t+SSVtGU16T4oNT4l98R0NUAYBLmf54
- b6ZrsomDbNH0xHg4JGd32/FzaiTQQz4JgxxfjZ0/IJ3J769w1GncFKdZi9t3JFnLeB4R
- vvKfITyqtovZ6ESJRTiycw8ujSqXfIwpK5InlYmVD+fVSzbscwgsyMrFZ5SISrhbE/Bf
- yKUg==
-X-Gm-Message-State: AOJu0Ywg0o38Ed9Krfrt8bMGaJp7Vtydu6q2D1oFf3NMq4sGgLMo1iTM
- /6uf/UbW5jlIUmAVtvE/+cYvVvljMv0QazR5nTJmpKCH4A0qWT5BLsO3d6e/Vn+sjVZOZ35tSxE
- lymn1jezMRLwh/H0=
-X-Received: by 2002:a17:906:5da5:b0:9a1:e8c0:7e2e with SMTP id
- n5-20020a1709065da500b009a1e8c07e2emr110748ejv.14.1693342008853; 
- Tue, 29 Aug 2023 13:46:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFneXcp9+Bc6gcDHsItGiDGgBRWa0KrpV1j2Ohfrq+8vMdDEp4v5w72+h3Yh6pbbCMHBBsh/g==
-X-Received: by 2002:a17:906:5da5:b0:9a1:e8c0:7e2e with SMTP id
- n5-20020a1709065da500b009a1e8c07e2emr110736ejv.14.1693342008505; 
- Tue, 29 Aug 2023 13:46:48 -0700 (PDT)
-Received: from redhat.com ([2.55.167.22]) by smtp.gmail.com with ESMTPSA id
- k11-20020a1709063e0b00b009a1a653770bsm6303208eji.87.2023.08.29.13.46.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 13:46:47 -0700 (PDT)
-Date: Tue, 29 Aug 2023 16:46:45 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Gowtham Siddarth <gowtham.siddarth@arm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
-Message-ID: <20230829164638-mutt-send-email-mst@kernel.org>
-References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
- <CAFEAcA81xq_yEXYdtAXtkqcdR=MHagSNf5rXOtt+AwohMY_=BQ@mail.gmail.com>
- <20230829093909-mutt-send-email-mst@kernel.org>
- <43653986-c04f-0076-637b-9061f9702f77@linaro.org>
- <20230829130617-mutt-send-email-mst@kernel.org>
- <ff230439-5d76-1f50-a25a-1fd666c3f369@linaro.org>
- <20230829161732-mutt-send-email-mst@kernel.org>
- <601619fb-5f1e-4b93-3dd1-b415d0ee8979@linaro.org>
- <20230829163929-mutt-send-email-mst@kernel.org>
- <fd3665ae-da56-9d86-ff91-b1efa107671b@linaro.org>
+ bh=Qf6ucjtJWAHMe/xIqW1IVPzwZ4LlL/t79pnH0003mO0=;
+ b=F3QBdyJQPgVv5qzhO6gejgZ2FVm4IEo50RddUNGuWYdzTvShE9/Zfc6QhNtO58Qfav
+ 42f6LUz8MIkx70lE68KPnPy1qLADnKtkhNVKYFS2RMMAi40QopLQVNlfx3BVEU/uM2AA
+ 4Y1/yJwuH3u/05xZ5t1X0oy3q0t4qYblFlerPTBY3rAKZl1h4d2cictWIP2pXxpsg298
+ JEFAenD83/FfB9bYa7+nKa8EXo8hfmYlarS5YwKSv0r7GVExLcaXv8OGhMjn5Loj93Ek
+ 1grOJS2gFYLeBDZDUMB8BDrliLqFEESQBSSJBY5/5Tk9hHV+jkbE9O3MlHMw7JGXahJU
+ p+5g==
+X-Gm-Message-State: AOJu0Yxq1O2nbrH6Y13L5jWSvGXrb6KOMh46ZXPzGhLb8UvxOyVV8Uwa
+ pOf1bYfxcFA85pGR9fsyzvii0jMOozfM9Zk/M4k=
+X-Google-Smtp-Source: AGHT+IGKAqy35oJR57IA0ZVPoBzj2JHcwjgb6Yl4CrJEuchhJcRFyvEcevVBge8VKvd19mcBsqsH/g==
+X-Received: by 2002:a05:6a20:395:b0:137:3eba:b7fb with SMTP id
+ 21-20020a056a20039500b001373ebab7fbmr392687pzt.2.1693342704000; 
+ Tue, 29 Aug 2023 13:58:24 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ a14-20020a62bd0e000000b006875df4773fsm8810558pff.163.2023.08.29.13.58.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Aug 2023 13:58:23 -0700 (PDT)
+Message-ID: <02510730-72e8-9b0e-483c-048c7301328f@linaro.org>
+Date: Tue, 29 Aug 2023 13:58:21 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fd3665ae-da56-9d86-ff91-b1efa107671b@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 32/32] bsd-user: Implement pdfork(2) system call.
+Content-Language: en-US
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
+References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-33-kariem.taha2.7@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230827155746.84781-33-kariem.taha2.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,22 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 10:44:08PM +0200, Marcin Juszkiewicz wrote:
-> W dniu 29.08.2023 o 22:40, Michael S. Tsirkin pisze:
-> > > It passes with sbsa-ref (which is not using QEMU versioning).
-> > > 
-> > > Fails (as expected) when used new property for each pcie-root-port
-> > > (ignore line breaks):
-> > > 
-> > > "-device pcie-root-port,
-> > >    x-pci-express-writeable-slt-bug=true,
-> > >    id=root30,chassis=30,slot=0"
-> > 
-> > could you also check with -machine pc-q35-8.1 instead of this
-> > property?
+On 8/27/23 08:57, Karim Taha wrote:
+> From: Stacey Son <sson@FreeBSD.org>
 > 
-> BSA ACS is AArch64 only.
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> ---
+>   bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
+>   bsd-user/freebsd/os-syscall.c |  4 ++++
+>   2 files changed, 36 insertions(+)
+> 
+> diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
+> index 94824d737a..1eaba908a5 100644
+> --- a/bsd-user/freebsd/os-proc.h
+> +++ b/bsd-user/freebsd/os-proc.h
+> @@ -248,4 +248,36 @@ static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
+>   
+>   }
+>   
+> +/* pdfork(2) */
+> +static inline abi_long do_freebsd_pdfork(void *cpu_env, abi_ulong target_fdp,
+> +        abi_long flags)
+> +{
+> +    abi_long ret;
+> +    abi_ulong child_flag;
+> +    int fd;
+> +
+> +    fork_start();
+> +    ret = pdfork(&fd, flags);
+> +    if (ret == 0) {
+> +        /* child */
+> +        child_flag = 1;
+> +        target_cpu_clone_regs(cpu_env, 0);
+> +    } else {
+> +        /* parent */
+> +        child_flag = 0;
+> +    }
+> +    if (put_user_s32(fd, target_fdp)) {
+> +        return -TARGET_EFAULT;
+> +    }
 
-virt-8.1 then
+I *think* this copy belongs in the parent?  It's really hard to follow the path of new 
+process creation within the freebsd kernel.
 
+Anyway, the rest looks fine so I'll give an
+
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
