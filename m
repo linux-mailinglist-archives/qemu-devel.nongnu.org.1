@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CBE78CBB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 20:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698CE78CBAA
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 20:04:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb33g-0002Tf-Rq; Tue, 29 Aug 2023 14:03:23 -0400
+	id 1qb33y-0002UZ-Jr; Tue, 29 Aug 2023 14:03:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qb33Y-0002Qv-TH
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:03:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qb33V-0002QU-HS
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:03:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qb33S-0000Lh-DH
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:03:12 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qb33S-0000LX-84
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 14:03:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1693332185;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uvgZismpnDi9x3AVGlDBRJIF+JDyX5DFxz+BykyG6Zs=;
- b=ENHDA4rTseFCW4nPmxEWRXXnmollZKgVTz6fLXvuT+kaZiDtUoIgEUCvNdvMubYYZyz0IX
- WR5Tb1UxxOoecwWTuBM3dUf2wPwn/7G0zJ3rMAbLQ9RPMYFSG7RoPUdr394pbCrXsWcSSq
- kuFyUUjag++G0463jKxLf8Etxu8qW5k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-jbg8FRcKMYKjRuMld212XQ-1; Tue, 29 Aug 2023 14:02:59 -0400
-X-MC-Unique: jbg8FRcKMYKjRuMld212XQ-1
+ bh=Z/Ko4dl3nTfmWb97kCoLdnpvhPyMEZRAKtvme6nzFHQ=;
+ b=Hmvm4W4b9FWGLcyg+wNcwvJFlkTl5HQ7sFqu3FFqzT7YgvVasnoN2V5WYrqRNN0Ip0jaHP
+ hR3C2SCSjC8Ks7rypipqEda6d1C+kb5M+vAW15rbu3mldc9VZGvj2Vj9qWv3BK5e6tQrR+
+ QKYOLegxanQWS5yELNBfcpNtG6TK5ww=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-136-lg-U7Y-nMqirivgXUDh4fQ-1; Tue, 29 Aug 2023 14:03:01 -0400
+X-MC-Unique: lg-U7Y-nMqirivgXUDh4fQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C29A805F05;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B657328EC103;
  Tue, 29 Aug 2023 18:02:59 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E052F2026D4B;
- Tue, 29 Aug 2023 18:02:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 675162026D4B;
+ Tue, 29 Aug 2023 18:02:59 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org,
 	vsementsov@yandex-team.ru
-Subject: [PATCH v6 05/17] nbd/server: Refactor handling of command sanity
- checks
-Date: Tue, 29 Aug 2023 12:58:32 -0500
-Message-ID: <20230829175826.377251-24-eblake@redhat.com>
+Subject: [PATCH v6 06/17] nbd/server: Support a request payload
+Date: Tue, 29 Aug 2023 12:58:33 -0500
+Message-ID: <20230829175826.377251-25-eblake@redhat.com>
 In-Reply-To: <20230829175826.377251-19-eblake@redhat.com>
 References: <20230829175826.377251-19-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -62,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,186 +77,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Upcoming additions to support NBD 64-bit effect lengths will add a new
-command flag NBD_CMD_FLAG_PAYLOAD_LEN that needs to be considered in
-our sanity checks of the client's messages (that is, more than just
-CMD_WRITE have the potential to carry a client payload when extended
-headers are in effect).  But before we can start to support that, it
-is easier to first refactor the existing set of various if statements
-over open-coded combinations of request->type to instead be a single
-switch statement over all command types that sets witnesses, then
-straight-line processing based on the witnesses.  No semantic change
-is intended.
+Upcoming additions to support NBD 64-bit effect lengths allow for the
+possibility to distinguish between payload length (capped at 32M) and
+effect length (64 bits, although we generally assume 63 bits because
+of off_t limitations).  Without that extension, only the NBD_CMD_WRITE
+request has a payload; but with the extension, it makes sense to allow
+at least NBD_CMD_BLOCK_STATUS to have both a payload and effect length
+in a future patch (where the payload is a limited-size struct that in
+turn gives the real effect length as well as a subset of known ids for
+which status is requested).  Other future NBD commands may also have a
+request payload, so the 64-bit extension introduces a new
+NBD_CMD_FLAG_PAYLOAD_LEN that distinguishes between whether the header
+length is a payload length or an effect length, rather than
+hard-coding the decision based on the command; although a client
+should never send a command with a payload without the negotiation
+phase proving such extension is available, we are now able to
+gracefully fail unexpected client payloads while keeping the
+connection alive.  Note that we do not support the payload version of
+BLOCK_STATUS yet.
 
 Signed-off-by: Eric Blake <eblake@redhat.com>
 ---
 
-v5: new patch split out from v4 13/24 [Vladimir]
+v5: retitled from v4 13/24, rewrite on top of previous patch's switch
+statement [Vladimir]
+
+v4: less indentation on several 'if's [Vladimir]
 ---
- nbd/server.c | 118 ++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 74 insertions(+), 44 deletions(-)
+ nbd/server.c     | 33 ++++++++++++++++++++++++++++-----
+ nbd/trace-events |  1 +
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
 diff --git a/nbd/server.c b/nbd/server.c
-index e38a8f700a9..dd3ab59224c 100644
+index dd3ab59224c..adcfcdeacb7 100644
 --- a/nbd/server.c
 +++ b/nbd/server.c
-@@ -2329,11 +2329,16 @@ static int coroutine_fn nbd_co_send_bitmap(NBDClient *client,
-  * to the client (although the caller may still need to disconnect after
-  * reporting the error).
-  */
--static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *request,
-+static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
-+                                               NBDRequest *request,
+@@ -2334,7 +2334,8 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
                                                 Error **errp)
  {
      NBDClient *client = req->client;
--    int valid_flags;
-+    bool check_length = false;
-+    bool check_rofs = false;
-+    bool allocate_buffer = false;
-+    unsigned payload_len = 0;
-+    int valid_flags = NBD_CMD_FLAG_FUA;
-     int ret;
-
-     g_assert(qemu_in_coroutine());
-@@ -2345,55 +2350,88 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+-    bool check_length = false;
++    bool extended_with_payload;
++    bool check_length;
+     bool check_rofs = false;
+     bool allocate_buffer = false;
+     unsigned payload_len = 0;
+@@ -2350,6 +2351,9 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
 
      trace_nbd_co_receive_request_decode_type(request->cookie, request->type,
                                               nbd_cmd_lookup(request->type));
--
--    if (request->type != NBD_CMD_WRITE) {
--        /* No payload, we are ready to read the next request.  */
--        req->complete = true;
--    }
--
--    if (request->type == NBD_CMD_DISC) {
-+    switch (request->type) {
-+    case NBD_CMD_DISC:
++    check_length = extended_with_payload = client->mode >= NBD_MODE_EXTENDED &&
++        request->flags & NBD_CMD_FLAG_PAYLOAD_LEN;
++
+     switch (request->type) {
+     case NBD_CMD_DISC:
          /* Special case: we're going to disconnect without a reply,
-          * whether or not flags, from, or len are bogus */
-+        req->complete = true;
-         return -EIO;
--    }
+@@ -2366,6 +2370,14 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+         break;
 
--    if (request->type == NBD_CMD_READ || request->type == NBD_CMD_WRITE ||
--        request->type == NBD_CMD_CACHE)
--    {
--        if (request->len > NBD_MAX_BUFFER_SIZE) {
--            error_setg(errp, "len (%" PRIu64 ") is larger than max len (%u)",
--                       request->len, NBD_MAX_BUFFER_SIZE);
--            return -EINVAL;
-+    case NBD_CMD_READ:
-+        if (client->mode >= NBD_MODE_STRUCTURED) {
-+            valid_flags |= NBD_CMD_FLAG_DF;
-         }
-+        check_length = true;
-+        allocate_buffer = true;
-+        break;
-
--        if (request->type != NBD_CMD_CACHE) {
--            req->data = blk_try_blockalign(client->exp->common.blk,
--                                           request->len);
--            if (req->data == NULL) {
--                error_setg(errp, "No memory");
--                return -ENOMEM;
--            }
--        }
-+    case NBD_CMD_WRITE:
-+        payload_len = request->len;
-+        check_length = true;
-+        allocate_buffer = true;
-+        check_rofs = true;
-+        break;
-+
-+    case NBD_CMD_FLUSH:
-+        break;
-+
-+    case NBD_CMD_TRIM:
-+        check_rofs = true;
-+        break;
-+
-+    case NBD_CMD_CACHE:
-+        check_length = true;
-+        break;
-+
-+    case NBD_CMD_WRITE_ZEROES:
-+        valid_flags |= NBD_CMD_FLAG_NO_HOLE | NBD_CMD_FLAG_FAST_ZERO;
-+        check_rofs = true;
-+        break;
-+
-+    case NBD_CMD_BLOCK_STATUS:
-+        valid_flags |= NBD_CMD_FLAG_REQ_ONE;
-+        break;
-+
-+    default:
-+        /* Unrecognized, will fail later */
-+        ;
-     }
-
--    if (request->type == NBD_CMD_WRITE) {
--        assert(request->len <= NBD_MAX_BUFFER_SIZE);
--        if (nbd_read(client->ioc, req->data, request->len, "CMD_WRITE data",
--                     errp) < 0)
--        {
-+    /* Payload and buffer handling. */
-+    if (!payload_len) {
-+        req->complete = true;
-+    }
-+    if (check_length && request->len > NBD_MAX_BUFFER_SIZE) {
-+        /* READ, WRITE, CACHE */
-+        error_setg(errp, "len (%" PRIu64 ") is larger than max len (%u)",
-+                   request->len, NBD_MAX_BUFFER_SIZE);
-+        return -EINVAL;
-+    }
-+    if (allocate_buffer) {
-+        /* READ, WRITE */
-+        req->data = blk_try_blockalign(client->exp->common.blk,
-+                                       request->len);
-+        if (req->data == NULL) {
-+            error_setg(errp, "No memory");
-+            return -ENOMEM;
+     case NBD_CMD_WRITE:
++        if (client->mode >= NBD_MODE_EXTENDED) {
++            if (!extended_with_payload) {
++                /* The client is noncompliant. Trace it, but proceed. */
++                trace_nbd_co_receive_ext_payload_compliance(request->from,
++                                                            request->len);
++            }
++            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
 +        }
+         payload_len = request->len;
+         check_length = true;
+         allocate_buffer = true;
+@@ -2407,6 +2419,15 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+                    request->len, NBD_MAX_BUFFER_SIZE);
+         return -EINVAL;
+     }
++    if (extended_with_payload && !allocate_buffer) {
++        /*
++         * For now, we don't support payloads on other commands; but
++         * we can keep the connection alive by ignoring the payload.
++         */
++        assert(request->type != NBD_CMD_WRITE);
++        payload_len = request->len;
++        request->len = 0;
 +    }
-+    if (payload_len) {
-+        /* WRITE */
-+        assert(req->data);
-+        ret = nbd_read(client->ioc, req->data, payload_len,
-+                       "CMD_WRITE data", errp);
-+        if (ret < 0) {
+     if (allocate_buffer) {
+         /* READ, WRITE */
+         req->data = blk_try_blockalign(client->exp->common.blk,
+@@ -2417,10 +2438,12 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+         }
+     }
+     if (payload_len) {
+-        /* WRITE */
+-        assert(req->data);
+-        ret = nbd_read(client->ioc, req->data, payload_len,
+-                       "CMD_WRITE data", errp);
++        if (req->data) {
++            ret = nbd_read(client->ioc, req->data, payload_len,
++                           "CMD_WRITE data", errp);
++        } else {
++            ret = nbd_drop(client->ioc, payload_len, errp);
++        }
+         if (ret < 0) {
              return -EIO;
          }
-         req->complete = true;
--
-         trace_nbd_co_receive_request_payload_received(request->cookie,
--                                                      request->len);
-+                                                      payload_len);
-     }
+diff --git a/nbd/trace-events b/nbd/trace-events
+index f9dccfcfb44..c1a3227613f 100644
+--- a/nbd/trace-events
++++ b/nbd/trace-events
+@@ -71,6 +71,7 @@ nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t
+ nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
+ nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
+ nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
++nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
+ nbd_co_receive_align_compliance(const char *op, uint64_t from, uint64_t len, uint32_t align) "client sent non-compliant unaligned %s request: from=0x%" PRIx64 ", len=0x%" PRIx64 ", align=0x%" PRIx32
+ nbd_trip(void) "Reading request"
 
-     /* Sanity checks. */
--    if (client->exp->nbdflags & NBD_FLAG_READ_ONLY &&
--        (request->type == NBD_CMD_WRITE ||
--         request->type == NBD_CMD_WRITE_ZEROES ||
--         request->type == NBD_CMD_TRIM)) {
-+    if (client->exp->nbdflags & NBD_FLAG_READ_ONLY && check_rofs) {
-+        /* WRITE, TRIM, WRITE_ZEROES */
-         error_setg(errp, "Export is read-only");
-         return -EROFS;
-     }
-@@ -2416,14 +2454,6 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-                                               request->len,
-                                               client->check_align);
-     }
--    valid_flags = NBD_CMD_FLAG_FUA;
--    if (request->type == NBD_CMD_READ && client->mode >= NBD_MODE_STRUCTURED) {
--        valid_flags |= NBD_CMD_FLAG_DF;
--    } else if (request->type == NBD_CMD_WRITE_ZEROES) {
--        valid_flags |= NBD_CMD_FLAG_NO_HOLE | NBD_CMD_FLAG_FAST_ZERO;
--    } else if (request->type == NBD_CMD_BLOCK_STATUS) {
--        valid_flags |= NBD_CMD_FLAG_REQ_ONE;
--    }
-     if (request->flags & ~valid_flags) {
-         error_setg(errp, "unsupported flags for command %s (got 0x%x)",
-                    nbd_cmd_lookup(request->type), request->flags);
 -- 
 2.41.0
 
