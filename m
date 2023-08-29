@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E11778CA16
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C1F78CA21
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 19:04:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb266-0001OE-Bo; Tue, 29 Aug 2023 13:01:46 -0400
+	id 1qb27K-0002aF-KY; Tue, 29 Aug 2023 13:03:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qb25f-0001Hy-Al
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:01:21 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb278-0002Sz-3K
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:02:52 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qb25a-0004gI-TT
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:01:18 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-52a23227567so6170961a12.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:01:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qb274-00051w-1k
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 13:02:48 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-268bc714ce0so16045a91.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 10:02:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693328473; x=1693933273;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ufmLMVBpklAwhAYCHhvGs3XjWW0imP6z4Wf1zdANu7M=;
- b=nZwLsKXvK9eLrVKPY+RwZHmXRGaoMWS7+eH+PIOt81ftGHhPuocrOf9NmTC91DdwBk
- JcFstLAhoaZuSIdr3hScDKzgSI6nTLFZh4Jj521QbG839ozfqM7QQWvPBRix2PDjXmtW
- 70W3rfhclA/3nPyAb1qLZQBjKUJPxCZzM1cE/ZF+AY/ini3Zz5mQcUgTqzFcT5feNZkW
- zpevOwgPkBExqy1af6DzuRwSB8268rYHmogA1hTYIAwV/cvYcJwaVPupfZ4t9j4nLHPd
- yWGQ6NO34pXx+jNlXm+nQ2BJdQ1PXrFn2U8a6aQ2cYM+GGXqn2b6/Xgr9lwH6G1BNINE
- CWiA==
+ d=linaro.org; s=google; t=1693328564; x=1693933364;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ww92S7dxGZMhTCUXqzVQrznHGFDIFt354NfPx+CVV7s=;
+ b=pRMwpqy3/MJeZ4r6m88OSefXNY604JG6Z61t47RzOzr+rLEK6R4LZo2eF7xcz4tRrH
+ CPib5cFDSnieudxC8niQw3nHEf5k0yDKJHPkNAS5htJE0EzclNyTy98yyL0BYSuzY4ZF
+ iBBeNt6sjVA+sA/gWEVqqrolHT0KjJ/W6YOmF8acUosJ5xiGagHs37XfclqKDrYtL+vv
+ aMV1hougbcwRAslC7i0ye+E1lXnymcF48vLWW27FKNE4f+VY9B6r0LLzYutHSIUHJhVj
+ PAse64R0C44mb6IvUaLcvBGvrMHUVPVnoH7EZccA452B+oXGwImbDiwz+gqssGBCBJrS
+ ASOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693328473; x=1693933273;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ufmLMVBpklAwhAYCHhvGs3XjWW0imP6z4Wf1zdANu7M=;
- b=dj8sMUl1Y4rH2N+jW4gJUxtofvzFXFi1JMNa+NW0IezLXQZggKnyXgh7q8tm43OYqr
- wDF0ONhs+qHuqi6Qrd+zoY9tEADRBOWewavl3PFGELGM5bzTfuYgl68lKA2iJxaS9xTT
- hUcTtNt3Qtzaah4yxRpqKJQ3+MxPfjyasPH5l+SH1mPCUE+CazTgXH7WZciAdYcKc6sC
- hKMKNQ5ElseNTiSVBWh+efRrtTZA37RpywNiDtPs596ugcjbHGAVKqxzPirUF+FkWOQX
- 8H9PWyNASsBr9kyGs9G1jp+s7YszHIzQR3MrRcMQsSci7BjnXrvFshXKlmLcvZSyluUt
- h3NA==
-X-Gm-Message-State: AOJu0YyvIVp/EikW3x4HvKFezjCBSFzSE+oLnZG+ShXHx+QLp1M/HXUZ
- 7v6Cz6xP2mrA6tLgfoLwbeU1kCGgkpDU/gQWYnQuCw==
-X-Google-Smtp-Source: AGHT+IGHBi0XvJvc0Azk9paKZ0bpLN+YHLE611AOBRht9ef2AramAdnKm3xTSDFSW/cVnqbdXiCnYGAa5moXu/PoB1Q=
-X-Received: by 2002:aa7:df89:0:b0:525:644f:134b with SMTP id
- b9-20020aa7df89000000b00525644f134bmr22137394edy.25.1693328473403; Tue, 29
- Aug 2023 10:01:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693328564; x=1693933364;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ww92S7dxGZMhTCUXqzVQrznHGFDIFt354NfPx+CVV7s=;
+ b=LWjL8T87uP4yhUOnUypstOOgM4cQykRvFCL7siuzfll0cjxUYej9Vl0pR9kQ28sWHz
+ 7q1//1JK5fLOoV8ZQgWxeA8P2lzjxuEUsDM4I87VwEbc/XQJ0C+yk9/2i98dXYghnu5S
+ TsuHVEaiZGZrhTak8+LczprvQjLH09s7slHMUj78lQZQGYtRsAfcL7/F89gfujb/AWwU
+ p0sbaBK0MnVFnHPRp9NqB++plrAJ7iBwTUhwwGThcra/L2RYz9Z6UhzJHYbmuFnOMabk
+ vhuB9grN7C3YWvPq/0WM+WKE1nnMPI7SQNZcUwtoxJC+MhTybWfyA35zu1zh0lPZQp4T
+ nJvw==
+X-Gm-Message-State: AOJu0Yw2GxCYcWSngE3JfUFGRut3P7RHk8mqxzLriKDkb1oLgjuG3XGA
+ qGhnXgnogdl3D03XE9QlsbcXh3drdB6O7Ln2wd4=
+X-Google-Smtp-Source: AGHT+IFe1ShrH5sNsUs12yNmZNij05XG0HjJ49oqKurNLV1bMhU+bAynPJqM8zTUkjxdS1sCKZVUKw==
+X-Received: by 2002:a17:90a:b110:b0:26d:5094:13ea with SMTP id
+ z16-20020a17090ab11000b0026d509413eamr4288773pjq.0.1693328561489; 
+ Tue, 29 Aug 2023 10:02:41 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ cv2-20020a17090afd0200b00267b7c5d232sm10989645pjb.48.2023.08.29.10.02.40
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 10:02:41 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/4] tcg patch queue
+Date: Tue, 29 Aug 2023 10:02:36 -0700
+Message-Id: <20230829170240.765996-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230829152604.101542-1-pbonzini@redhat.com>
- <20000658-5398-f4d7-0659-1abc248adb84@linaro.org>
- <CABgObfY43KZdtk4BNG53rKUXZznNhRqe1BNd_0Ww5HxrN4VrcA@mail.gmail.com>
-In-Reply-To: <CABgObfY43KZdtk4BNG53rKUXZznNhRqe1BNd_0Ww5HxrN4VrcA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 29 Aug 2023 18:01:02 +0100
-Message-ID: <CAFEAcA9kFpybEByQi0+ZrcQRC7N2SE3R5u+68KP9n1GNTY4qxA@mail.gmail.com>
-Subject: Re: [PATCH] target/i386: raise FERR interrupt with iothread locked
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,70 +87,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 29 Aug 2023 at 17:59, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> On Tue, Aug 29, 2023 at 5:46=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-> <philmd@linaro.org> wrote:
-> >
-> > On 29/8/23 17:25, Paolo Bonzini wrote:
-> > > Otherwise tcg_handle_interrupt() triggers an assertion failure:
-> > >
-> > >    #5  0x0000555555c97369 in tcg_handle_interrupt (cpu=3D0x555557434c=
-b0, mask=3D2) at ../accel/tcg/tcg-accel-ops.c:83
-> > >    #6  tcg_handle_interrupt (cpu=3D0x555557434cb0, mask=3D2) at ../ac=
-cel/tcg/tcg-accel-ops.c:81
-> > >    #7  0x0000555555b4d58b in pic_irq_request (opaque=3D<optimized out=
->, irq=3D<optimized out>, level=3D1) at ../hw/i386/x86.c:555
-> > >    #8  0x0000555555b4f218 in gsi_handler (opaque=3D0x5555579423d0, n=
-=3D13, level=3D1) at ../hw/i386/x86.c:611
-> > >    #9  0x00007fffa42bde14 in code_gen_buffer ()
-> > >    #10 0x0000555555c724bb in cpu_tb_exec (cpu=3Dcpu@entry=3D0x5555574=
-34cb0, itb=3D<optimized out>, tb_exit=3Dtb_exit@entry=3D0x7fffe9bfd658) at =
-../accel/tcg/cpu-exec.c:457
-> > >
-> > > Cc: qemu-stable@nongnu.org
-> > > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1808
-> > > Reported-by: NyanCatTW1 <https://gitlab.com/a0939712328>
-> > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > > ---
-> > >   target/i386/tcg/sysemu/fpu_helper.c | 2 ++
-> > >   1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/target/i386/tcg/sysemu/fpu_helper.c b/target/i386/tcg/sy=
-semu/fpu_helper.c
-> > > index 1c3610da3b9..fd8cc72a026 100644
-> > > --- a/target/i386/tcg/sysemu/fpu_helper.c
-> > > +++ b/target/i386/tcg/sysemu/fpu_helper.c
-> > > @@ -31,7 +31,9 @@ void x86_register_ferr_irq(qemu_irq irq)
-> > >   void fpu_check_raise_ferr_irq(CPUX86State *env)
-> > >   {
-> > >       if (ferr_irq && !(env->hflags2 & HF2_IGNNE_MASK)) {
-> > > +        qemu_mutex_lock_iothread();
-> > >           qemu_irq_raise(ferr_irq);
-> > > +        qemu_mutex_unlock_iothread();
-> > >           return;
-> > >       }
-> > >   }
-> >
-> > OK, so:
-> >
-> > Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
-> Actually Richard has a better (though also slightly incomplete) patch
-> in the bug, so I'll send v2.
->
-> >   void cpu_set_ignne(void)
-> >   {
-> >       CPUX86State *env =3D &X86_CPU(first_cpu)->env;
-> > +
-> > +    g_assert(qemu_mutex_iothread_locked());
->
-> qemu_irq_lower() is fine because it doesn't result in a call to
-> tcg_handle_interrupt().
+The following changes since commit 813bac3d8d70d85cb7835f7945eb9eed84c2d8d0:
 
-It does potentially result in calling code in a device model
-that assumes that it is protected by the iothread lock,
-though...
+  Merge tag '2023q3-bsd-user-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-29 08:58:00 -0400)
 
--- PMM
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230829
+
+for you to fetch changes up to dad2f2f5afbaf58d6056f31dfd4b9edd0854b8ab:
+
+  tcg/sparc64: Disable TCG_TARGET_HAS_extr_i64_i32 (2023-08-29 09:57:39 -0700)
+
+----------------------------------------------------------------
+softmmu: Use async_run_on_cpu in tcg_commit
+tcg: Remove vecop_list check from tcg_gen_not_vec
+tcg/sparc64: Disable TCG_TARGET_HAS_extr_i64_i32
+
+----------------------------------------------------------------
+Richard Henderson (4):
+      softmmu: Assert data in bounds in iotlb_to_section
+      softmmu: Use async_run_on_cpu in tcg_commit
+      tcg: Remove vecop_list check from tcg_gen_not_vec
+      tcg/sparc64: Disable TCG_TARGET_HAS_extr_i64_i32
+
+ include/exec/cpu-common.h    |  1 -
+ tcg/sparc64/tcg-target.h     |  2 +-
+ accel/tcg/cpu-exec-common.c  | 30 --------------------------
+ softmmu/physmem.c            | 50 ++++++++++++++++++++++++++++++++------------
+ tcg/tcg-op-vec.c             |  7 +++----
+ tcg/sparc64/tcg-target.c.inc | 11 ----------
+ 6 files changed, 41 insertions(+), 60 deletions(-)
 
