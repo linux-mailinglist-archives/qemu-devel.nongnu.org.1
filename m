@@ -2,81 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2078C78BBA8
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 01:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885F478BC1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 02:25:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qalsP-0003ug-EU; Mon, 28 Aug 2023 19:42:33 -0400
+	id 1qamWo-0004kA-L6; Mon, 28 Aug 2023 20:24:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qalsH-0003sj-IM
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:26 -0400
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qals6-0006qf-Ud
- for qemu-devel@nongnu.org; Mon, 28 Aug 2023 19:42:19 -0400
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-34992fd567bso9188965ab.1
- for <qemu-devel@nongnu.org>; Mon, 28 Aug 2023 16:42:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693266130; x=1693870930;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=N2zpTl6+Qn2qxjehwfDJexIkEUjfkShWM5RDsL7uCz4=;
- b=49d2Rgh8YfCfzCpfD6Cvi/6P3Ziw+Xrmhr6i7e0SolZ3ZJQyjypg7eMW+xfqItoTE2
- jw9UASR7gL/gciwNnWl4sb8/UvqEivzWEQM4MP70xE4XNLga+/z9HdM/2sqRxZwr3qRG
- kf7Do9nSdd4IooTInCSQDxt3MjZB+K65u01fvCCNJET9pDP2Fmtk5IJAb+rsZoTN8ZsF
- AkwEuSAHPoy7J+uJx33RKYdQkoZjr+i3y59Hr7WWptz+1Bi6Xsc7SCQkbAWUowQCLf7R
- L4rX8bKzvdemOcYXshYOnFAX9LAEJKPKM/aSSWsgLbfxkFesnRemzde4mSXuKnIngRkf
- 2Ang==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693266130; x=1693870930;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=N2zpTl6+Qn2qxjehwfDJexIkEUjfkShWM5RDsL7uCz4=;
- b=T3FSMq0CQczQK1ewg68kUqG3lgN+BoZB075c6z4RzMbkQxcNtfxrdVaHI1WbahnN1T
- AP68fdgKmwCFWur7Txv0zyi4QE09q1omDokRW4uLRqw2oJw0+cyQKJH7lxrkPGs9FPQy
- hud6mVYFlqSbE8oDv1TBsOv9eTLaKq05Toe0aTuPwe94iyhdnBS0h9s0ZIATTJ6pjda8
- 0sHUoRbHgNhW6Z2WbKDhD0sUDUdE//yKW9fONqAjO0w6p0DmXLd1Os2wsDKzFrPByGai
- NeAv0aie5S8YdUkNm3Y8vWqrNRSNkwEtkYR4mUzsT+6EjwOvSicT2GYC6kyfjP1NcDLN
- 9orQ==
-X-Gm-Message-State: AOJu0Yz2CkeLBYWNXtMWqnoXv3bAcr5/KqQl7bG1Sgjzjamrq2Vz8scR
- h+UsUELd8nxeFYLb4B1vCjoXjM0DC8uusdZYoSk=
-X-Google-Smtp-Source: AGHT+IHJhKFUzYSaMsrwRUwA+ZSF6AtwiP06z/5g/t6EH6I6jeTVhU/bfbvEzpHIbtcAd5MODL+jEg==
-X-Received: by 2002:a92:c547:0:b0:348:797d:169e with SMTP id
- a7-20020a92c547000000b00348797d169emr1309505ilj.1.1693266130634; 
- Mon, 28 Aug 2023 16:42:10 -0700 (PDT)
-Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
- [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- t9-20020a056e02060900b0034b58dd5694sm2805491ils.15.2023.08.28.16.42.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Aug 2023 16:42:10 -0700 (PDT)
-From: Warner Losh <imp@bsdimp.com>
-To: qemu-devel@nongnu.org
-Cc: Reinoud Zandijk <reinoud@netbsd.org>, Warner Losh <imp@bsdimp.com>,
- Ryo ONODERA <ryoon@netbsd.org>, Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 36/36] bsd-user: Add missing break after do_bsd_preadv
-Date: Mon, 28 Aug 2023 17:38:21 -0600
-Message-ID: <20230828233821.43074-37-imp@bsdimp.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230828233821.43074-1-imp@bsdimp.com>
-References: <20230828233821.43074-1-imp@bsdimp.com>
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1qamWl-0004k2-A5
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 20:24:15 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1qamWi-0005Qa-Pz
+ for qemu-devel@nongnu.org; Mon, 28 Aug 2023 20:24:15 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id A4D3D62CBC;
+ Tue, 29 Aug 2023 00:24:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5DDC433C7;
+ Tue, 29 Aug 2023 00:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1693268649;
+ bh=MlpqsXl5WGMvG25wBmKwo8fvGjYImjzpF8ackHzpaPo=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=jF6BhOcXNQCrAAxPBw3AB42rbj9DmyjQH9WMDD3DdhrEdwA8pb2exqDHrYBF0qCbN
+ /OAR4eCqGQN7Qur0w7a30R58pu63aJBn+cdlWAbgSczwy0tVCy+xHM40NX4I4NBfea
+ fVsqQpCV4Q6LVVYrSuTcY4I/7OVYzLTwcQgo0WmRDfid7QH6WGnbRifq4yspFkRAjZ
+ wBgRgF46cgFZWwTPRO83jweGMB2yHJlKza+mMIeBaBWsue+6Q93caEwM6SvcH8QOGt
+ zCmmZB6M8dOfOHTgNi4U42G1lEdm2NHP54yLFOhLTveDzdIQVOeQhMdHg1Vi7L+kBg
+ hstMq7Acvty8Q==
+Date: Mon, 28 Aug 2023 17:24:06 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Vikram Garhwal <vikram.garhwal@amd.com>
+cc: qemu-devel@nongnu.org, sstabellini@kernel.org, 
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Subject: Re: [QEMU][PATCH v3 1/2] xen_arm: Create virtio-mmio devices during
+ initialization
+In-Reply-To: <20230825225326.9438-2-vikram.garhwal@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2308281723120.6458@ubuntu-linux-20-04-desktop>
+References: <20230825225326.9438-1-vikram.garhwal@amd.com>
+ <20230825225326.9438-2-vikram.garhwal@amd.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::134;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x134.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,31 +75,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Without it, we'd call preadv, then write with weird parameters, which is
-clearly not ideal...
+On Fri, 25 Aug 2023, Vikram Garhwal wrote:
+> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+> 
+> In order to use virtio backends we need to allocate virtio-mmio
+> parameters (irq and base) and register corresponding buses.
+> 
+> Use the constants defined in public header arch-arm.h to be
+> aligned with the toolstack. So the number of current supported
+> virtio-mmio devices is 10.
+> 
+> For the interrupts triggering use already existing on Arm
+> device-model hypercall.
+> 
+> The toolstack should then insert the same amount of device nodes
+> into guest device-tree.
+> 
+> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+> ---
+>  hw/arm/xen_arm.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+> 
+> diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
+> index 1d3e6d481a..d1e9f7b488 100644
+> --- a/hw/arm/xen_arm.c
+> +++ b/hw/arm/xen_arm.c
+> @@ -26,6 +26,7 @@
+>  #include "qapi/qapi-commands-migration.h"
+>  #include "qapi/visitor.h"
+>  #include "hw/boards.h"
+> +#include "hw/irq.h"
+>  #include "hw/sysbus.h"
+>  #include "sysemu/block-backend.h"
+>  #include "sysemu/tpm_backend.h"
+> @@ -59,6 +60,54 @@ struct XenArmState {
+>      } cfg;
+>  };
+>  
+> +/*
+> + * VIRTIO_MMIO_DEV_SIZE is imported from tools/libs/light/libxl_arm.c under Xen
+> + * repository.
+> + *
+> + * Origin: git://xenbits.xen.org/xen.git 2128143c114c
+> + */
+> +#define VIRTIO_MMIO_DEV_SIZE   0x200
+> +
+> +#define NR_VIRTIO_MMIO_DEVICES   \
+> +   (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
+> +
+> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41500
+> +static int xendevicemodel_set_irq_level(
+> +    xendevicemodel_handle *dmod, domid_t domid, uint32_t irq,
+> +    unsigned int level)
+> +{
+> +    return 0;
+> +}
+> +#endif
+> +
+> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
+> +#define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
+> +#define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
+> +#define GUEST_VIRTIO_MMIO_SPI_FIRST   33
+> +#define GUEST_VIRTIO_MMIO_SPI_LAST    43
+> +#endif
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Fixes: 770d8abae7 ("bsd-user/bsd-file.h: Meat of the write system calls")
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230820045419.89691-1-imp@bsdimp.com>
----
- bsd-user/freebsd/os-syscall.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks Vikram. Please move this compat definitions to
+include/hw/xen/xen_native.h
 
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index e9b1b663af4..fa60df529ef 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -240,6 +240,7 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
- 
-     case TARGET_FREEBSD_NR_preadv: /* preadv(2) */
-         ret = do_bsd_preadv(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6);
-+        break;
- 
-     case TARGET_FREEBSD_NR_write: /* write(2) */
-         ret = do_bsd_write(arg1, arg2, arg3);
--- 
-2.41.0
 
+> +static void xen_set_irq(void *opaque, int irq, int level)
+> +{
+> +    xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level);
+> +}
+> +
+> +static void xen_create_virtio_mmio_devices(XenArmState *xam)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < NR_VIRTIO_MMIO_DEVICES; i++) {
+> +        hwaddr base = GUEST_VIRTIO_MMIO_BASE + i * VIRTIO_MMIO_DEV_SIZE;
+> +        qemu_irq irq = qemu_allocate_irq(xen_set_irq, NULL,
+> +                                         GUEST_VIRTIO_MMIO_SPI_FIRST + i);
+> +
+> +        sysbus_create_simple("virtio-mmio", base, irq);
+> +
+> +        DPRINTF("Created virtio-mmio device %d: irq %d base 0x%lx\n",
+> +                i, GUEST_VIRTIO_MMIO_SPI_FIRST + i, base);
+> +    }
+> +}
+> +
+>  void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
+>  {
+>      hw_error("Invalid ioreq type 0x%x\n", req->type);
+> @@ -110,6 +159,8 @@ static void xen_arm_init(MachineState *machine)
+>  
+>      xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
+>  
+> +    xen_create_virtio_mmio_devices(xam);
+> +
+>  #ifdef CONFIG_TPM
+>      if (xam->cfg.tpm_base_addr) {
+>          xen_enable_tpm(xam);
+> -- 
+> 2.17.1
+> 
 
