@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186AB78C8A7
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B59678C8A8
 	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:33:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb0iE-00084C-8F; Tue, 29 Aug 2023 11:33:02 -0400
+	id 1qb0iK-00084w-N6; Tue, 29 Aug 2023 11:33:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qb0iB-00083p-Um
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:33:00 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qb0iI-00084h-7e
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:33:06 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qb0i9-0006mr-6T
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:32:59 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c1ff5b741cso6679845ad.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:30:56 -0700 (PDT)
+ id 1qb0iF-0006oc-Jr
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:33:05 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bdc19b782aso28542705ad.0
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:31:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693323056; x=1693927856;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693323062; x=1693927862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XppDKu9NZs7FVrVBX8oS7hGn8g76t1JDjeegSdQLlZc=;
- b=Q3QDoA/jfnA+6kHtZvZaePahJwNJQaXxbo2c6Y6hfkRVdo3fOGfL/vls6TyU0soort
- WdIwqx0Kc1VM05AuEIYoftB9EnBpqNDVIrRCaqy5DNxisiOasXatLeqiuPSt0FRJchlt
- EmvoCDftW2a6B5tGe/5zsy4+gPCVWdBN0QyCKwi+VAIYUg2HZGmXhhF6PDMXiqgFzy34
- oMKM0N4+wFVUVhqLlxAasE5HMwJ+GJI0FbMrfatpnjGGKHJ6laMcGGqQWSPjtNgCVrSe
- 0vpZZXyApAkWlVDN0ujGa88Vaxp9h9z+cmOjB/ECFIfxQ0wi1p0BBgOpMmCWLwk1CDuC
- zrCQ==
+ bh=SDbikvrJURYSUdco/ZqIPH9U7npc2uzsUXfdoZeozoM=;
+ b=hIcDyreBdh5KalomlxsGiS39drF7uTs5H/ThoL66/swHuLCTEyekXoquGaoZ+peerq
+ JPihrwHqsrasDGFTjmnVZUxktgkIPJNYP3waM1mluj23owI6hPQKKK08U+BZXuEztiV8
+ HhGtumdt7ko/wou62jbnNO1svCJrC1oEind3DJdQdNocZH+n+cLmDFea/iaYMYfLV3oF
+ tbex60UMENcpQ6JsEgPiJMVZWMlV47t3G8C8YZu/Gagn7SZBbN9wFrQD7uyJZ/kleqsL
+ X7o3pX91DmXnb6CPxzCtNuMffAqLX59QEXgkk2sbJGUDu/NpOa1vyWTDKSWOroSsQSEr
+ KncA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693323056; x=1693927856;
+ d=1e100.net; s=20221208; t=1693323062; x=1693927862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XppDKu9NZs7FVrVBX8oS7hGn8g76t1JDjeegSdQLlZc=;
- b=H/vw7xJd6k2y8iu5Fij/mVMJ/L/9z357rbXunkAuP90QcU/Reifr6jjxMV+aij+6s2
- lNQpnN1sS7ZyDncE4+YFMp226xiLT8rks7FRO0nc1LasMj0GphKMFscFyZxs+iASlQHB
- 8QbUQiEgjeSQBjp0BGHZ+6Isdr8PavFKatWFMgyHEHxb6+U87HOa5xkY+NLNK+b3hMuH
- zeGanQcL30eTxuEM2vInPox+Iljo3vSVNVgkbPDPGqcr8F1VvmaxXcz/GpmKZdX8qSZd
- KNH1wVTcsaSsJAOn3RMiBBjG0EGC5IRtaENsxyEgCnj5W3apgD9s+r1ziz4wuiVPYQqT
- HnFg==
-X-Gm-Message-State: AOJu0YzHfonZ47pfysxCe6sCRxnQGe2HBggHdXu7hiDuvc46D0nRlvE9
- 3zfM8d3FLBLwm2GNGWVolwB4zxZHnTyQjZPS+ykpE9eJ
-X-Google-Smtp-Source: AGHT+IEkhVgG0VABxKJQ+C1kpaa4afLdmcXC0lacb/kbT/qsoqWSXx3+bdyM8K2IhApfABrMlhuVmA==
-X-Received: by 2002:a17:902:e54f:b0:1bc:61d6:5fcc with SMTP id
- n15-20020a170902e54f00b001bc61d65fccmr37389267plf.51.1693323055810; 
- Tue, 29 Aug 2023 08:30:55 -0700 (PDT)
+ bh=SDbikvrJURYSUdco/ZqIPH9U7npc2uzsUXfdoZeozoM=;
+ b=J2hYBTxdiIqo4SdKnOPYrIte/+Dsio2QU7zArEV5Axr/MfgPTlyto+aH4e1TAP+Eys
+ zdmmQ/AuIa84MXwCCfSqncDJmDPLLvHdw7TuMlAjg5rhO8/dD65x/AeTIAiQDslvSvdN
+ vdAbZ6JOiFNhENPgroy59oBt1wQicPB9ps7ZFcXAC+y6cjOiWVjZ3nDaYWJOqXfBCwF6
+ mCulJrS3LKUqLKc8+MC6y0roZf9X9O3w18KhTEa2oz1e1d0kgp8ptxRYZ+mB0YP0L47f
+ rDGZ8Sm7Wjvz+YDAL44KqbK54XWjZo4OHezMHtcC7ujVYJcP7mJihPA0D/mvN80yFEvm
+ sBUg==
+X-Gm-Message-State: AOJu0Yx5B4MXM+BhdZynT7+lLOFlt2ttJ+IDJS5Mx/nXDZM+eXS4o4bd
+ wsbD/9o5jDuJLQjccnLkZCnoL08W/vz3qVU0OQu/QTXN
+X-Google-Smtp-Source: AGHT+IFCKB4y9SxFeV10FWPTH5kksVmONjZYzoHhoIEWKWdmN5QupRAObIgmodGuNflk5adm0jitkw==
+X-Received: by 2002:a17:902:ce90:b0:1bf:3378:6808 with SMTP id
+ f16-20020a170902ce9000b001bf33786808mr28169075plg.56.1693323061827; 
+ Tue, 29 Aug 2023 08:31:01 -0700 (PDT)
 Received: from localhost.localdomain ([118.114.61.244])
  by smtp.gmail.com with ESMTPSA id
- c15-20020a170902d48f00b001bdc8a5e96csm9510282plg.169.2023.08.29.08.30.49
+ c15-20020a170902d48f00b001bdc8a5e96csm9510282plg.169.2023.08.29.08.30.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 08:30:55 -0700 (PDT)
+ Tue, 29 Aug 2023 08:31:01 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
-Cc: "alloc.young" <alloc.young@outlook.com>,
- Hyman Huang <yong.huang@smartx.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/3] softmmu/dirtylimit: Convert free to g_free
-Date: Tue, 29 Aug 2023 23:29:49 +0800
-Message-Id: <e8a4f343e307ac382ab1921bb9d6d55e35d13e86.1693322363.git.yong.huang@smartx.com>
+Cc: Andrei Gudkov <gudkov.andrei@huawei.com>,
+ Hyman Huang <yong.huang@smartx.com>
+Subject: [PULL 3/3] migration/dirtyrate: Fix precision losses and g_usleep
+ overshoot
+Date: Tue, 29 Aug 2023 23:29:50 +0800
+Message-Id: <e2ae6ed88de97b5594e64aaf2400ebabf48064ec.1693322363.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1693322363.git.yong.huang@smartx.com>
 References: <cover.1693322363.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::634;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,60 +92,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "alloc.young" <alloc.young@outlook.com>
+From: Andrei Gudkov <gudkov.andrei@huawei.com>
 
-Convert free to g_free to match g_new and g_malloc functions.
-
-Fixes: cc2b33eab0 ("softmmu/dirtylimit: Implement vCPU dirtyrate calculation periodically")
-Fixes: baa609832e ("softmmu/dirtylimit: Implement virtual CPU throttle")
-Signed-off-by: alloc.young <alloc.young@outlook.com>
+Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
 Reviewed-by: Hyman Huang <yong.huang@smartx.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <SA1PR11MB67604ECD85AFF34BEB3072F7F5E3A@SA1PR11MB6760.namprd11.prod.outlook.com>
+Message-Id: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- softmmu/dirtylimit.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ migration/dirtyrate.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index e3ff53b8fc..fa959d7743 100644
---- a/softmmu/dirtylimit.c
-+++ b/softmmu/dirtylimit.c
-@@ -100,7 +100,7 @@ static void vcpu_dirty_rate_stat_collect(void)
-             stat.rates[i].dirty_rate;
+diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+index 84f1b0fb20..bccb3515e3 100644
+--- a/migration/dirtyrate.c
++++ b/migration/dirtyrate.c
+@@ -57,6 +57,8 @@ static int64_t dirty_stat_wait(int64_t msec, int64_t initial_time)
+         msec = current_time - initial_time;
+     } else {
+         g_usleep((msec + initial_time - current_time) * 1000);
++        /* g_usleep may overshoot */
++        msec = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - initial_time;
      }
  
--    free(stat.rates);
-+    g_free(stat.rates);
+     return msec;
+@@ -77,9 +79,13 @@ static int64_t do_calculate_dirtyrate(DirtyPageRecord dirty_pages,
+ {
+     uint64_t increased_dirty_pages =
+         dirty_pages.end_pages - dirty_pages.start_pages;
+-    uint64_t memory_size_MiB = qemu_target_pages_to_MiB(increased_dirty_pages);
+ 
+-    return memory_size_MiB * 1000 / calc_time_ms;
++    /*
++     * multiply by 1000ms/s _before_ converting down to megabytes
++     * to avoid losing precision
++     */
++    return qemu_target_pages_to_MiB(increased_dirty_pages * 1000) /
++        calc_time_ms;
  }
  
- static void *vcpu_dirty_rate_stat_thread(void *opaque)
-@@ -171,10 +171,10 @@ void vcpu_dirty_rate_stat_initialize(void)
- 
- void vcpu_dirty_rate_stat_finalize(void)
- {
--    free(vcpu_dirty_rate_stat->stat.rates);
-+    g_free(vcpu_dirty_rate_stat->stat.rates);
-     vcpu_dirty_rate_stat->stat.rates = NULL;
- 
--    free(vcpu_dirty_rate_stat);
-+    g_free(vcpu_dirty_rate_stat);
-     vcpu_dirty_rate_stat = NULL;
- }
- 
-@@ -220,10 +220,10 @@ void dirtylimit_state_initialize(void)
- 
- void dirtylimit_state_finalize(void)
- {
--    free(dirtylimit_state->states);
-+    g_free(dirtylimit_state->states);
-     dirtylimit_state->states = NULL;
- 
--    free(dirtylimit_state);
-+    g_free(dirtylimit_state);
-     dirtylimit_state = NULL;
- 
-     trace_dirtylimit_state_finalize();
+ void global_dirty_log_change(unsigned int flag, bool start)
 -- 
 2.39.1
 
