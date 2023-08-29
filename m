@@ -2,94 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC42E78C520
+	by mail.lfdr.de (Postfix) with ESMTPS id D141078C521
 	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 15:24:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qayhF-0006Jt-W2; Tue, 29 Aug 2023 09:23:54 -0400
+	id 1qayhS-0006VQ-Tw; Tue, 29 Aug 2023 09:24:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qayhB-0006JR-0o
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:23:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qayh7-0003u1-5M
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:23:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693315422;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=R5D5cutAGiZsqhSOjUndfRqcDmoqMtNse9eTkamIRC8=;
- b=cC2MY0BWHkqw0K98qz2PHl7cgGk3QphZrNVhyo1Bm2aQmGm4TSS6TWs0MPl4H2qlYkjkJG
- rFIwgmcKDsARTjdzR6wtelx2ZVy4v/ZSIHm0hVVIc9PafUT5CBYdLaarLu2FSqzXJOpZ9H
- Kvv2x2JYis+fnT2mm3nJSdHEP/dcrbo=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-8NKLTEO9OWiUVnU4s-36hA-1; Tue, 29 Aug 2023 09:23:40 -0400
-X-MC-Unique: 8NKLTEO9OWiUVnU4s-36hA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-500c1d15927so856339e87.3
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:23:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qayhQ-0006Ol-BY
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:24:04 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qayhN-00040z-KH
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 09:24:03 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52a1ce52ef4so5596378a12.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 06:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693315440; x=1693920240;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QOKP6BVOjMM6N7KawWSRFGn3umAy8kJ3B3bH2V5qpzU=;
+ b=tTOP45CdM5NUO/x2hzhqEzzfDxYIFaoGEGqunLRe8ZQ7s9twxpOqEWRYgTLT//Fedx
+ G5Qf1E0ZwJsC+lantV+/YDQxWTAo8B2fuWx5gwDwyB4AOZ7rR72yVeaftIxoEujMxcE5
+ yk/wrxareqZYRCCvAjiIlGNVzyfvELs43T8aNDg+rws3ttc8tvHEYvQGxpO20rAqagGB
+ 2QHEVESsNwI4eZNqo0HmEP7iNDCb/1Hspv2BAelkx2P/AYLAD9fJe5UuM4YX3QQQ1Sqk
+ d4biFqokSJBW/SGsjRtUniN+wg8UTCvxKaU8hmMj861RBqEqy1dd9i8R5LSSH/zUpKcK
+ SD4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693315418; x=1693920218;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R5D5cutAGiZsqhSOjUndfRqcDmoqMtNse9eTkamIRC8=;
- b=W/16pKOAefn8LPz8GBNnAlERTO6krb5d0xwenYpzJgDe3tYcDBvT+12dbzB2beetbr
- bVd5jNjfOKyhuMn89yKvcuYTqdDRF2beHqJqvWCD0VLmR/Y1L9O+7jJwP4LisJHvinBT
- FwzMCW/CS1i1L5SNinCLNIsAo1D9pT07tYYSAuBxlZ0cvSlCjI5BkxGIYiuizL8h4dn1
- JkMlessET+s4YWO8pb9v+lJGWWgSpEgpwkWBj/QqXth2ix4M5/VIiHlmR3L7FSAIVyn0
- kdcgJ7lcDaDbxaqZG21fOhYYLfwezyR1vU25Kr8gPun0DTNtpWpX6XWABHypzElzbX5b
- rV8w==
-X-Gm-Message-State: AOJu0Yy0PnghmH+aAgY15r06+hP4odfHVLaTa8rOheDnN8gu84vtbKZf
- cg46mNU0zIOwenwNyOxvljLDFcILTg0kCj+8W6hYbk26gSrejL9hTEvykOvK6E0hC5+vOaNqpge
- +FSx2h/1U4UIx9F4=
-X-Received: by 2002:a19:381d:0:b0:500:96fc:129d with SMTP id
- f29-20020a19381d000000b0050096fc129dmr10627221lfa.14.1693315418456; 
- Tue, 29 Aug 2023 06:23:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHPYfs9iGNgmbNP7LC57Zlkp6pbIuT1fvAYJlcgJFMygwmWVAVJ5BGYb9gxVzGpnCJMORlhPw==
-X-Received: by 2002:a19:381d:0:b0:500:96fc:129d with SMTP id
- f29-20020a19381d000000b0050096fc129dmr10627207lfa.14.1693315418048; 
- Tue, 29 Aug 2023 06:23:38 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:530f:c053:4ab2:f786?
- ([2a01:e0a:9e2:9000:530f:c053:4ab2:f786])
- by smtp.gmail.com with ESMTPSA id
- n15-20020a1c720f000000b003fed630f560sm13919579wmc.36.2023.08.29.06.23.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Aug 2023 06:23:37 -0700 (PDT)
-Message-ID: <3e8a7edc-8527-e10c-bf2a-73e01650edd1@redhat.com>
-Date: Tue, 29 Aug 2023 15:23:36 +0200
+ d=1e100.net; s=20221208; t=1693315440; x=1693920240;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QOKP6BVOjMM6N7KawWSRFGn3umAy8kJ3B3bH2V5qpzU=;
+ b=izywUahvR16jZ49wXTA67MnVD6NX7FZnmEsGuS+qGhy97bTkqaWtoIGAKNBZru5FTU
+ ni/fa1aYkTh8tXgG4g/O3ZS7WodpynbKipeEqttRPj2TV3rcNBdgrPc3h535hzg9yzw3
+ HP3/TTVN8jIEY5OVJedlHa2FU5QUiGKIZ6irdzwEhUeOIAc8UHxHKkj+dbMUgVfO8sDM
+ 8Q7jInUuuPfyNwl9s7pBCfE3eDZnUdgd0Y6977BW7qLlS2RJ8XVI5UXRT4yzCbKDg19A
+ uzDMUwiKB9FDF5+ufuUwXxGMr8MR8tKZbUtDYSVvWxh3TUzmnXCkPVjbnfleLNnpIT0C
+ yPKQ==
+X-Gm-Message-State: AOJu0YwmONrgwSv/s/VlgwQdkfs7gt+T1t6EOLtl/Wxb/aLtmHDJF0Fc
+ aehz6Pj+AI20lEPko1vpj9jPFQwSw59o03tvMn4xpA==
+X-Google-Smtp-Source: AGHT+IF9Bl1R+Jh43e/A//mGKCqNOK5TMgltniSD6tSfwG1O9UqZbFACNUZVJU4hBz74pWHXRoNa2xlijUKcksv7PjE=
+X-Received: by 2002:aa7:c741:0:b0:525:6661:dc90 with SMTP id
+ c1-20020aa7c741000000b005256661dc90mr19849027eds.25.1693315439975; Tue, 29
+ Aug 2023 06:23:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/6] vfio/migration: Fail adding device with
- enable-migration=on and existing blocker
-Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Yanghang Liu <yanghliu@redhat.com>
-References: <20230828151842.11303-1-avihaih@nvidia.com>
- <20230828151842.11303-3-avihaih@nvidia.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230828151842.11303-3-avihaih@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230824075406.1515566-1-alex.bennee@linaro.org>
+In-Reply-To: <20230824075406.1515566-1-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 29 Aug 2023 14:23:49 +0100
+Message-ID: <CAFEAcA-n7KVVLEUjYYkPMbLPVn+daXb4iDwe2H3x7KF+BeKt+w@mail.gmail.com>
+Subject: Re: [PATCH v2] target/arm: properly document FEAT_CRC32
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-stable@nongnu.org, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,57 +88,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/28/23 17:18, Avihai Horon wrote:
-> If a device with enable-migration=on is added and it causes a migration
-> blocker, adding the device should fail with a proper error.
-> 
-> This is not the case with multiple device migration blocker when the
-> blocker already exists. If the blocker already exists and a device with
-> enable-migration=on is added which causes a migration blocker, adding
-> the device will succeed.
-> 
-> Fix it by failing adding the device in such case.
-
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-
-> 
-> Fixes: 8bbcb64a71d8 ("vfio/migration: Make VFIO migration non-experimental")
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+On Thu, 24 Aug 2023 at 08:54, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> This is a mandatory feature for Armv8.1 architectures but we don't
+> state the feature clearly in our emulation list. Also include
+> FEAT_CRC32 comment in aarch64_max_tcg_initfn for ease of grepping.
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Cc: qemu-stable@nongnu.org
+> Message-Id: <20230222110104.3996971-1-alex.bennee@linaro.org>
+>
 > ---
->   hw/vfio/common.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 8a8d074e18..237101d038 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -394,8 +394,7 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
->   {
->       int ret;
->   
-> -    if (multiple_devices_migration_blocker ||
-> -        vfio_multiple_devices_migration_is_supported()) {
-> +    if (vfio_multiple_devices_migration_is_supported()) {
->           return 0;
->       }
->   
-> @@ -405,6 +404,10 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
->           return -EINVAL;
->       }
->   
-> +    if (multiple_devices_migration_blocker) {
-> +        return 0;
-> +    }
-> +
->       error_setg(&multiple_devices_migration_blocker,
->                  "Multiple VFIO devices migration is supported only if all of "
->                  "them support P2P migration");
+> v2
+>   - dropped the breakdown of setting ID registers in other CPU init fns
+> ---
+>  docs/system/arm/emulation.rst | 1 +
+>  target/arm/tcg/cpu64.c        | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rs=
+t
+> index bdafc68819..65d1f39f4b 100644
+> --- a/docs/system/arm/emulation.rst
+> +++ b/docs/system/arm/emulation.rst
+> @@ -14,6 +14,7 @@ the following architecture extensions:
+>  - FEAT_BBM at level 2 (Translation table break-before-make levels)
+>  - FEAT_BF16 (AArch64 BFloat16 instructions)
+>  - FEAT_BTI (Branch Target Identification)
+> +- FEAT_CRC32 (CRC32 instruction)
 
+Applied to target-arm.next, thanks. I pluralized "instructions"
+here to match the Arm ARM text.
+
+-- PMM
 
