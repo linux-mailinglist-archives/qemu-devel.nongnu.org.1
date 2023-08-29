@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EF678C80D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 16:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96EDF78C87F
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 17:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qb05o-0005xk-TZ; Tue, 29 Aug 2023 10:53:20 -0400
+	id 1qb0YC-0004sf-TY; Tue, 29 Aug 2023 11:22:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb05k-0005vu-TA
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:53:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb0YB-0004sX-Gd
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:22:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb05e-000834-Cb
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 10:53:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qb0Y4-0003hi-PS
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 11:22:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693320789;
+ s=mimecast20190719; t=1693322550;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=fBVFd+qoQt2TgRrisD2K6gmspq2o8c+asRoc9j1e1tw=;
- b=Svpthx6FZYQQULYFCfBL71sY34mt1p/FVXOLpWkw0SbCVln1RtA+29cGt2EesiYTL3hq2I
- auncRaMAY8EBroJAItcxXSHPOPfS2DGIANu+hyb6MueDSIJjVhQe8x02GzNuja4HkpE6Vo
- TCrWd8uh9tz5jszIgoyvNaS5VRkVnRA=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UlWemFggDX5d4f+pi2roibbsLFhidC4cpS7lZjZKDeo=;
+ b=XuspBrxRwjgOK2t1hsbLF2zjTLL9Q5ZkIVoNOkPX46kjCOqmHhA97gsbbaKv8kxDzPu7qT
+ 3A6jt3YQeKsc2IoJn6mCHXGT41zf+kQ90HjntDpPvVpx13W+xjdnkWtwkLjVxKfpmcXMzB
+ jx3aKvONP1wihQcOqCu2MNv3IiCmzWw=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-tlYrhEB0NASPHaJciKTmZg-1; Tue, 29 Aug 2023 10:53:07 -0400
-X-MC-Unique: tlYrhEB0NASPHaJciKTmZg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-63d2b88325bso8634296d6.1
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 07:53:05 -0700 (PDT)
+ us-mta-606-1blo0rbzPEe35-lw8I-dWw-1; Tue, 29 Aug 2023 11:22:20 -0400
+X-MC-Unique: 1blo0rbzPEe35-lw8I-dWw-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-65174aca002so1272136d6.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 08:22:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693320785; x=1693925585;
+ d=1e100.net; s=20221208; t=1693322535; x=1693927335;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fBVFd+qoQt2TgRrisD2K6gmspq2o8c+asRoc9j1e1tw=;
- b=RhkTCLHbZ/K00vm1a5iQA+ZlUPmTLvubG6wBOa3CRV77Er4RqLxI1CVdqPBvpRuwEu
- TxCfmcjA7aF33hxkFku9I92x4OXW8AAXvXk3KlxcgqOPdFm+VnGm7F9avVzJJqRJQ4Hv
- YxQ0UhOVPVYXV0WbhCwgjnjHieQ7PF1YJxGJvhlh45fk5tXoLXxv/8T+meH//HFySu35
- sOqBf3PbZxwyYn02xlDrOIG4jzUGRvwTzQ2adYHbTX0EJ7aUuJgQgg8uQREkqjITxlWz
- +Aykzj27qcvbQIgg5dEiDXIxCJKadLyGeX+aIqcpNO+GduSuhTd8znw8q+LVTK2/E4m7
- 2Wkg==
-X-Gm-Message-State: AOJu0YzecRLKC88ZZavziV7+rWcrMX7p4w95mZXEdEHI1BLBRUPN4/0f
- QimIioSgadF5VYOq2Nyf2hL55LV9ukvZLOPDze09ZdJM9JDnRczvVyHa1HKWPn4ruE/OTeIvRpb
- 1y638DGZzYMdrxtg=
-X-Received: by 2002:ad4:5dc9:0:b0:63f:89d3:bf21 with SMTP id
- m9-20020ad45dc9000000b0063f89d3bf21mr33141077qvh.5.1693320785164; 
- Tue, 29 Aug 2023 07:53:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgh1bnG5nfhh3EDaCJc5iu7qNWp016FgbR0eLJmT5wgN0w9DLKQuqN8TKHANEXtRnmVyS/Hg==
-X-Received: by 2002:ad4:5dc9:0:b0:63f:89d3:bf21 with SMTP id
- m9-20020ad45dc9000000b0063f89d3bf21mr33141060qvh.5.1693320784851; 
- Tue, 29 Aug 2023 07:53:04 -0700 (PDT)
+ bh=UlWemFggDX5d4f+pi2roibbsLFhidC4cpS7lZjZKDeo=;
+ b=Ks31GBouOZHsc6r+DefPc4j6sU0uEiCHlY+aiDzYrghprGONk2gbGNviVdXlkik0PL
+ yftW//QqMIttjdamlp/cl9FP2t6rQsAH4M6Tb3cV+eXcIP04Pmx1pQ3KbkMojZ3NnPPv
+ 4htg1Es16Bz4gKuM251MK58ZBPaQ/q6HJr0eeU+ljPszQJTNo4ZXZJJFy025+X68+eP8
+ h0SL/Qzw03ROr85ka/0t76vZgLMe7l8Sjn/zGINBuLOouu6mwLFH63pV1XwkPnpbVoUm
+ PE3Bp9ABr0oTz/J/dBgQvmLOfxWC84tkn2ItZ6fPtjdz6xdV1fTbrcWOTjUkCmKbydIp
+ oX+g==
+X-Gm-Message-State: AOJu0YxDif7xirePll3/BNfD4QNTAExacQTHocS9vATPSrRk7Eg2kmzn
+ 6lqVjZixT8JJGxI1AJ1GprGoJPNwPBWS7+uxRecPS+eqW41mBHkNP+7fQclJqf7sVLMVRNaK5Vz
+ Ij9NUG6w/jB46K3h7M9af0o4=
+X-Received: by 2002:ad4:5ba4:0:b0:63c:f852:aa3a with SMTP id
+ 4-20020ad45ba4000000b0063cf852aa3amr32355673qvq.4.1693322535240; 
+ Tue, 29 Aug 2023 08:22:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqBo+1m+h6Efq9ulZevm4zmbPy6QT0IgYY41+T0LPiAklcA2IMRkIcc1d11OSpsEUlBwxcXQ==
+X-Received: by 2002:ad4:5ba4:0:b0:63c:f852:aa3a with SMTP id
+ 4-20020ad45ba4000000b0063cf852aa3amr32355652qvq.4.1693322534985; 
+ Tue, 29 Aug 2023 08:22:14 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- p17-20020ae9f311000000b007677347e20asm3129694qkg.129.2023.08.29.07.53.04
+ g8-20020a0cdf08000000b0064f73bd872fsm3420821qvl.134.2023.08.29.08.22.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 07:53:04 -0700 (PDT)
-Date: Tue, 29 Aug 2023 10:53:02 -0400
+ Tue, 29 Aug 2023 08:22:14 -0700 (PDT)
+Date: Tue, 29 Aug 2023 11:22:12 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Yanghang Liu <yanghliu@redhat.com>
-Subject: Re: [PATCH 5/6] vfio/migration: Block VFIO migration with postcopy
- migration
-Message-ID: <ZO4GTnuqSORbvePL@x1n>
-References: <20230828151842.11303-1-avihaih@nvidia.com>
- <20230828151842.11303-6-avihaih@nvidia.com>
+To: hongmianquan <hongmianquan@bytedance.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, david@redhat.com,
+ philmd@linaro.org
+Subject: Re: [RESEND] memory: avoid updating ioeventfds for some address_space
+Message-ID: <ZO4NJKDsIGYWQz5j@x1n>
+References: <20230829022354.94149-1-hongmianquan@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230828151842.11303-6-avihaih@nvidia.com>
+In-Reply-To: <20230829022354.94149-1-hongmianquan@bytedance.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -100,45 +96,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 28, 2023 at 06:18:41PM +0300, Avihai Horon wrote:
-> diff --git a/migration/options.c b/migration/options.c
-> index 1d1e1321b0..e201053563 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -499,6 +499,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->              error_setg(errp, "Postcopy is not yet compatible with multifd");
->              return false;
->          }
-> +
-> +        if (migration_vfio_mig_active()) {
-> +            error_setg(errp, "Postcopy is not compatible with VFIO migration");
-> +            return false;
-> +        }
+Hongmianquan,
 
-Hmm.. this will add yet another vfio hard-coded line into migration/..
+On Tue, Aug 29, 2023 at 10:23:54AM +0800, hongmianquan wrote:
+> When updating ioeventfds, we need to iterate all address spaces,
+> but some address spaces do not register eventfd_add|del call when
+> memory_listener_register() and they do nothing when updating ioeventfds.
+> So we can skip these AS in address_space_update_ioeventfds().
+> 
+> The overhead of memory_region_transaction_commit() can be significantly
+> reduced. For example, a VM with 8 vhost net devices and each one has
+> 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
+> 
+> Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
 
-What will happen if the vfio device is hot plugged after enabling
-postcopy-ram here?
-
-Is it possible to do it in a generic way?
-
-I was thinking the only unified place to do such check is when migration
-starts, as long as we switch to SETUP all caps are locked and doesn't allow
-any change until it finishes or fails.
-
-So, can we do this check inside vfio_save_setup(), allow vfio_save_setup()
-to fail the whole migration early?  For example, maybe we should have an
-Error** passed in, then if it fails it calls migrate_set_error, so
-reflected in query-migrate later too.
+Please feel free to take my R-b with the patch if the patch didn't change.
 
 Thanks,
-
->      }
->  
->      if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
-> @@ -612,6 +617,16 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->      return true;
->  }
 
 -- 
 Peter Xu
