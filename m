@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E934C78C055
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D225178C0A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Aug 2023 10:41:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qauAq-0001zL-Ut; Tue, 29 Aug 2023 04:34:08 -0400
+	id 1qauH0-0003pk-5k; Tue, 29 Aug 2023 04:40:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
- id 1qauAn-0001y2-KW
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:34:07 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qauGu-0003n2-P9
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:40:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
- id 1qauAk-0001z2-R6
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:34:05 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qauGo-0004NB-KH
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 04:40:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693298041;
+ s=mimecast20190719; t=1693298417;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aXWjGzmDC32xRmgn1ivatB0RWpG4DACBOFGSi/skEqM=;
- b=b0C3ez1hwMN57P8nq7d/WMxjAmBsI68w27mGGyift1n1n9XmqdTTW+4m3FoSlSFbTkKMOE
- g8E8W9Q301L8DQeZ8GqQ9qsk+A1RPUTWzxNevssjOcNBH2Lb1ViI6ZSmxImDOCI+0aZWOA
- vUMF7/zuv7DMiS+i38eNnl0Y1O1WQ00=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=30TWRvtV0LzAFRH9ZKYnRNdavxd+YNNeR7JdSbUN4yA=;
+ b=eTDxNo+iJ6j1YvkxojFaXvsJwvQsGZSp1HhPye8B6KJ/21bVnNS+orVBRDDBtmhUcAEIlV
+ O8SoEa/UL+UsJgOsd/fvWuGfWipL8bqDeGsJXjQswFgOSnAXQLU3QmGUrQxgyh7wZF8jCL
+ fvMYHMaty0n11+dXY4zgvvYZVHeWFvQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-179-53ITeSHiPX28BdSxXBkp2Q-1; Tue, 29 Aug 2023 04:32:06 -0400
-X-MC-Unique: 53ITeSHiPX28BdSxXBkp2Q-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2bd1687c5d2so11774501fa.0
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:32:06 -0700 (PDT)
+ us-mta-523-7ReqlNndPoafalyDphOJGw-1; Tue, 29 Aug 2023 04:40:16 -0400
+X-MC-Unique: 7ReqlNndPoafalyDphOJGw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-31c5cc5537dso2528531f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 01:40:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693297925; x=1693902725;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aXWjGzmDC32xRmgn1ivatB0RWpG4DACBOFGSi/skEqM=;
- b=IGHahNPeoFdHHAKBWwiMC+TAjimc821j+ep3dRfS4GtcwU0Q0I/m06MWCQMtGM6t9c
- Juux3OiZlYO+K/Z4+Ni8Gqr5fIMZKQUC1os9/KoB40Pg83zcwZOHqXOhRzPzZ7s+GmbJ
- Mk4OHt0+8t+i3RMQlVye6UwMKMWZQipHh4bvkB/FWpjTHSEpIUuylXvfccVWtUi7CxwD
- c4SnIZ/pqDRz7lFACRbfmXvjDfm/5bbMr7dwp2n//9ljlUFmdbBCp+0v/xbvpRw7ZkPW
- q7UVeAVE0IahvRoXGMUZ0v8nT7dROHvp+/punZdMb2xuqnHS96YRCzdZxdgnfy0WzX5r
- 9Lkg==
-X-Gm-Message-State: AOJu0YxeuUH1gLaASORrLslQ4G98flOuGvfa02Z/SK+fbxYGcINRMeWU
- 8lcmta1/JRUIFKpwnMahuTvnBaYVEBoXjUN8nwci9aEMrM+C0NYeRN4hK8mCCoDbmo6gWoMcQHl
- I2qvTdsedJ6wiqhjZHIRkdUAIiKi2BOs=
-X-Received: by 2002:a2e:999a:0:b0:2bb:8bc1:db55 with SMTP id
- w26-20020a2e999a000000b002bb8bc1db55mr19342334lji.52.1693297925272; 
- Tue, 29 Aug 2023 01:32:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4tg3qSUue023fkl767evJtL1wFp3Oo6ZV8qs7AwqlULwQHFKhdIL2yBMY9xe/QvEo813S0Qx4nXJCw6t+UUk=
-X-Received: by 2002:a2e:999a:0:b0:2bb:8bc1:db55 with SMTP id
- w26-20020a2e999a000000b002bb8bc1db55mr19342303lji.52.1693297924811; Tue, 29
- Aug 2023 01:32:04 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693298414; x=1693903214;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=30TWRvtV0LzAFRH9ZKYnRNdavxd+YNNeR7JdSbUN4yA=;
+ b=fmXsADU5QSEhw5ht0nt345QJCK7W982fCo2D0ubsmAvt2z1DUQtEHGGrnnVeS5N3gK
+ I9uL8AgETMQP42BMCYGx/1VgMKOCTZLfZ2iLJuttA+zCLrg2Lq+W2CLKtDuqdeNPnlWR
+ ZiflbxOvgFBY81CXuEPTP/QEQLo659Cvom6Lporg0YGqf/4OiCQCCkyBIm3t9xtXztLW
+ pDNoOmPq4IP5zsUeCCwmacV+fF78fy9pNt5QBDkqYMo73hQqm3clifeq0Czcf3f89Ggy
+ RbW7oOijxXXl/uIALZP5Nti7qQ1W+0AzZAP6nRqHhORj3qXbJb6IsnRV8pFXzP7eNEPL
+ WSBw==
+X-Gm-Message-State: AOJu0YwOrCnQwG7Zf12hbE/1wNEQrVr/Lq+2vBePV6/aWQJIL4R8v0nk
+ v1nxzN9gnP1BJTvVQSLi9kwrI1w2YJ6wMp6Zx1Key/msoIFUSqY1ZCarQtMWi9xwQnmfXk/afBs
+ kVGM+BkxR8Oc2k8wxQ7kWCFpmh5DSoqgzP8CoBIn7aAAUmzNjc/3EkNs2m/FHsQzQPdHYu0zHus
+ s=
+X-Received: by 2002:a5d:6508:0:b0:317:558c:c15e with SMTP id
+ x8-20020a5d6508000000b00317558cc15emr1271746wru.27.1693298414688; 
+ Tue, 29 Aug 2023 01:40:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLHguTRViRBAFPGPiJcXMCPUzmoyb7eLaI627XMgT1W2T1mIUttWxdx+/9IfPPjyndeEn3JQ==
+X-Received: by 2002:a5d:6508:0:b0:317:558c:c15e with SMTP id
+ x8-20020a5d6508000000b00317558cc15emr1271736wru.27.1693298414296; 
+ Tue, 29 Aug 2023 01:40:14 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.gmail.com with ESMTPSA id
+ q8-20020a1cf308000000b003fe2de3f94fsm13174424wmq.12.2023.08.29.01.40.13
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Aug 2023 01:40:13 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] linux-user,
+ bsd-user: disable on unsupported host architectures
+Date: Tue, 29 Aug 2023 10:40:07 +0200
+Message-ID: <20230829084007.69019-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230823153412.832081-1-david@redhat.com>
- <20230823153412.832081-12-david@redhat.com>
-In-Reply-To: <20230823153412.832081-12-david@redhat.com>
-From: Mario Casquero <mcasquer@redhat.com>
-Date: Tue, 29 Aug 2023 10:31:53 +0200
-Message-ID: <CAMXpfWvNr9tjciWXYHCSdh=r0jae_hjFJoo_s2iAJvqND-5Q6Q@mail.gmail.com>
-Subject: Re: [PATCH v3 11/11] machine: Improve error message when using
- default RAM backend id
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Thiner Logoer <logoerthiner1@163.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
- Jagannathan Raman <jag.raman@oracle.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcasquer@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,7 +81,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,56 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series has been successfully tested by QE. Start a vm using
-pc.ram id but specifying a different memory-backend from the default
-one. Check the error message has been improved.
+Safe signal handling around system calls is mandatory for user-mode
+emulation, and requires a small piece of handwritten assembly code.
+So refuse to compile unless the common-user/host subdirectory exists
+for the host architecture that was detected or selected with --cpu.
 
-Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ configure | 40 +++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
 
-
-On Wed, Aug 23, 2023 at 5:38=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> For migration purposes, users might want to reuse the default RAM
-> backend id, but specify a different memory backend.
->
-> For example, to reuse "pc.ram" on q35, one has to set
->     -machine q35,memory-backend=3Dpc.ram
-> Only then, can a memory backend with the id "pc.ram" be created
-> manually.
->
-> Let's improve the error message.
->
-> Unfortuantely, we cannot use error_append_hint(), because the caller
-> passes &error_fatal.
->
-> Suggested-by: ThinerLogoer <logoerthiner1@163.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  hw/core/machine.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index f0d35c6401..dbcd124d45 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -1382,7 +1382,9 @@ void machine_run_board_init(MachineState *machine, =
-const char *mem_path, Error *
->                                   machine_class->default_ram_id)) {
->              error_setg(errp, "object name '%s' is reserved for the defau=
-lt"
->                  " RAM backend, it can't be used for any other purposes."
-> -                " Change the object's 'id' to something else",
-> +                " Change the object's 'id' to something else or disable"
-> +                " automatic creation of the default RAM backend by setti=
-ng"
-> +                " the 'memory-backend' machine property",
->                  machine_class->default_ram_id);
->              return;
->          }
-> --
-> 2.41.0
->
->
+diff --git a/configure b/configure
+index 40729a6d5f5..64d501ef710 100755
+--- a/configure
++++ b/configure
+@@ -856,30 +856,36 @@ fi
+ default_target_list=""
+ mak_wilds=""
+ 
+-if [ "$linux_user" != no ]; then
+-    if [ "$targetos" = linux ] && [ -n "$host_arch" ]; then
+-        linux_user=yes
+-    elif [ "$linux_user" = yes ]; then
+-        error_exit "linux-user not supported on this architecture"
++if [ -n "$host_arch" ] && [ -d "$source_path/common-user/host/$host_arch" ]; then
++    if [ "$linux_user" != no ]; then
++        if [ "$targetos" = linux ]; then
++            linux_user=yes
++        elif [ "$linux_user" = yes ]; then
++            error_exit "linux-user not supported on this architecture"
++        fi
++        if [ "$linux_user" = "yes" ]; then
++            mak_wilds="${mak_wilds} $source_path/configs/targets/*-linux-user.mak"
++        fi
+     fi
+-fi
+-if [ "$bsd_user" != no ]; then
+-    if [ "$bsd_user" = "" ]; then
+-        test $targetos = freebsd && bsd_user=yes
++    if [ "$bsd_user" != no ]; then
++        if [ "$bsd_user" = "" ]; then
++            test $targetos = freebsd && bsd_user=yes
++        fi
++        if [ "$bsd_user" = yes ] && ! [ -d "$source_path/bsd-user/$targetos" ]; then
++            error_exit "bsd-user not supported on this host OS"
++        fi
++        if [ "$bsd_user" = "yes" ]; then
++            mak_wilds="${mak_wilds} $source_path/configs/targets/*-bsd-user.mak"
++        fi
+     fi
+-    if [ "$bsd_user" = yes ] && ! [ -d "$source_path/bsd-user/$targetos" ]; then
+-        error_exit "bsd-user not supported on this host OS"
++else
++    if [ "$linux_user" = yes ] || [ "$bsd_user" = yes ]; then
++        error_exit "user mode emulation not supported on this architecture"
+     fi
+ fi
+ if [ "$softmmu" = "yes" ]; then
+     mak_wilds="${mak_wilds} $source_path/configs/targets/*-softmmu.mak"
+ fi
+-if [ "$linux_user" = "yes" ]; then
+-    mak_wilds="${mak_wilds} $source_path/configs/targets/*-linux-user.mak"
+-fi
+-if [ "$bsd_user" = "yes" ]; then
+-    mak_wilds="${mak_wilds} $source_path/configs/targets/*-bsd-user.mak"
+-fi
+ 
+ for config in $mak_wilds; do
+     target="$(basename "$config" .mak)"
+-- 
+2.41.0
 
 
