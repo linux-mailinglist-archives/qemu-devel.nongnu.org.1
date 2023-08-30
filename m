@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6443878D678
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF3278D67A
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:22:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbM3k-0002um-Ry; Wed, 30 Aug 2023 10:20:40 -0400
+	id 1qbM5P-0004So-S7; Wed, 30 Aug 2023 10:22:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbM3j-0002rI-Fl
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:20:39 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbM5D-0004R2-7L
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:22:13 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbM3g-000185-AP
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:20:39 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c0ecb9a075so24254265ad.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:20:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbM59-0001Rh-PN
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:22:09 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5007abb15e9so8856425e87.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:22:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693405235; x=1694010035; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1693405324; x=1694010124; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rt84GZR5Ctf50AaoeiIFW4q7OL0gBhY9G1b8FXHCBmE=;
- b=MT/nTFGho13rDdTq9NfKgElEDoU3+A6V9ph7yxssWzUFSrIr22jrYE/t+kHEWW5/4E
- pw5xfq0B6R7lpX2GkfeBcXu9C6EUg+P9adKP77Lr4fmYkBy3Ye/t4D9/FCADjviVIeCj
- 9ExGXaYqqfTWiQsnE/QqiJk1nTCNHYXbRgsMW8ALlsYKCgSRBmHm1e3wBeUP/m32s7YP
- jjmfDfv3WHEWCRLdg9r++bmO9Pm/8cVtonrLlKvCmu5P3l8A0EFiPriWndbqFhRsi8hn
- VNekbVF0gaPy+zD05X+UgCpiLly62R/jFRh51q3Cya9zmMhOLlJnyzbZDRfL26EtBzJF
- zT6g==
+ bh=OmJcXCe3INI88WWxZa1dg/gqWtejlf46vF//E1eZYiw=;
+ b=gGt+M76xvnnmplf96OuS0sf0c9oUM7Vw8FE1+CoAiJ7ZUw0sdcPs14ZBaxEtA4OXJO
+ 744vmoG6jbdcyk+pdQmwSEXs4OlZz83LSqUc0qifhbIcRqpEZlIH9RbpNkzvAP9KkRvQ
+ zjs4m6VR53fH74kKlebFrG3kkTeXrmAdRBUe/kyTRtDRz6l1hULR5FlnQyZnwt8U+IXS
+ jwr9uzexaNGOh10WpakRqJRi22/T8NEL//Pxh/JzLcvODVXvJXHzaUShuhNkcll4uKnF
+ jVIEyuj0L5IbXPYsSw08gDquMyGZRWqwpZEzFOJrm158QNwwnCGVZwLS5hgagVf4TeOU
+ eMQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693405235; x=1694010035;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1693405324; x=1694010124;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rt84GZR5Ctf50AaoeiIFW4q7OL0gBhY9G1b8FXHCBmE=;
- b=UAguv3lGddS/vOlrZGXTSsOwU76a2sxHSdbRC5X/O0nJoW2biA3BrXjt+9v7DsR4RW
- hEb//J4ER1paHcs2CVTT1EyVoaQjIR/IAZCBD3EJiXPMi8vhZE+y7JVJl4PxA99hp2MD
- GEeRDRnc5IbivJ0/t2LKFeenm4NmxEAB0RnNen9Eywq0ka6q5syKsTl2gxTDdlNlE/MJ
- iHHYM41nzl92/PD9FdvIDfpKSvD7FH9XpsasfukopbvhPoqBuNJPkHXtLFonRtRJIYV1
- PgAIfbEq8yZWUsBheEFV854ZaaIYCbiqeOFt9+u9SD/AdyyQeeIoCH0sAVY6tO22p3nC
- GJbQ==
-X-Gm-Message-State: AOJu0Yz+mFHvadrF0ttuP53u4WENv5yNo8SJ7bvb8+ETkECnJ1tEl4YP
- cRnwcjcV/FtMo3wDTrbu60h4OLcWkXyKOwmNvLI=
-X-Google-Smtp-Source: AGHT+IEDoojHtj8zw+RVtEGrB6g+9lNdzwa18iqPLg35unRfAsTVsgUL0PTMCB4+2rdCBpc5P+83zw==
-X-Received: by 2002:a17:903:24e:b0:1b8:a3a0:d9b3 with SMTP id
- j14-20020a170903024e00b001b8a3a0d9b3mr2229259plh.47.1693405234612; 
- Wed, 30 Aug 2023 07:20:34 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ bh=OmJcXCe3INI88WWxZa1dg/gqWtejlf46vF//E1eZYiw=;
+ b=b2zIywv0c+Gh9AZsUohZDNEuOyQK7KOphbgzmY1wc4gVHTr/QYXGPCH2FqFZ0GnGiy
+ HjZ+L9Db2nGdau9lzX8OjvVU7NjhbFEnieRBHf6gWhyP2KzZd8TNkFLViZLjbir/dDFB
+ MM4xeSe4fVjSGg7e0eLPPuhC2skke1J16spi5G0xuhHis37qwIcP8zwaf8eiHcCPj7r1
+ 6+PhnKAHkZuRmhECEPjYVuTfZ1PhznSjW19QQpl3ql7cbXMMVsCuOYCQwESKoKSBUIDx
+ /nNdHj+wsU/KOlLURauImwbeGBVJK7KH1TiaQYA+l1gW32/UhgIR2pLZPBEfykWOae6V
+ RWZw==
+X-Gm-Message-State: AOJu0YxpD00OqH+D4PXZVihUQZzgPKUTVwMq0V+hj3/IY3j8g7COg7Jg
+ 500aWqkHRxIlRJ2l5aqMr217KdiX0utDYeV6Sjk29KAR
+X-Google-Smtp-Source: AGHT+IFKUjXkXCh0rcxix6pUaY4JA+f3hKt6GvHjuFVylNqCRLNsuehbIqW7yb7sAqPZPfmemJ6WmQ==
+X-Received: by 2002:a05:6512:3b2b:b0:500:848a:80df with SMTP id
+ f43-20020a0565123b2b00b00500848a80dfmr1934286lfv.66.1693405324529; 
+ Wed, 30 Aug 2023 07:22:04 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.142.89])
  by smtp.gmail.com with ESMTPSA id
- c5-20020a170902d90500b001bf846dd2ebsm11046752plz.303.2023.08.30.07.20.33
+ 17-20020a170906059100b0098e16f8c198sm7315290ejn.18.2023.08.30.07.22.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 07:20:34 -0700 (PDT)
-Message-ID: <72ad459a-b67e-2683-55a0-56d4dc51df7a@linaro.org>
-Date: Wed, 30 Aug 2023 07:20:32 -0700
+ Wed, 30 Aug 2023 07:22:04 -0700 (PDT)
+Message-ID: <d703be2d-8131-58d4-2ed8-7104316a8e21@linaro.org>
+Date: Wed, 30 Aug 2023 16:22:02 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 04/48] target/loongarch: Add avail_LASX to check LASX
- instructions
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v5 08/20] linux-user: Load vdso image if available
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230830084902.2113960-1-gaosong@loongson.cn>
- <20230830084902.2113960-5-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230830084902.2113960-5-gaosong@loongson.cn>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, laurent@vivier.eu
+References: <20230829220228.928506-1-richard.henderson@linaro.org>
+ <20230829220228.928506-9-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230829220228.928506-9-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -95,13 +93,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 01:48, Song Gao wrote:
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
+Hi Richard,
+
+On 30/8/23 00:02, Richard Henderson wrote:
+> The vdso image will be pre-processed into a C data array, with
+> a simple list of relocations to perform, and identifying the
+> location of signal trampolines.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/loongarch/translate.h | 1 +
->   1 file changed, 1 insertion(+)
+>   linux-user/elfload.c | 87 +++++++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 78 insertions(+), 9 deletions(-)
+> 
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index f34fb64c0c..2a6adebb4a 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -33,6 +33,19 @@
+>   #undef ELF_ARCH
+>   #endif
+>   
+> +#ifndef TARGET_ARCH_HAS_SIGTRAMP_PAGE
+> +#define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I'd rather #error here so new targets are added with
+a clearly defined TARGET_ARCH_HAS_SIGTRAMP_PAGE.
 
-r~
+> +#endif
+> +
+> +typedef struct {
+> +    const uint8_t *image;
+> +    const uint32_t *relocs;
+> +    unsigned image_size;
+> +    unsigned reloc_count;
+> +    unsigned sigreturn_ofs;
+> +    unsigned rt_sigreturn_ofs;
+> +} VdsoImageInfo;
+> +
+>   #define ELF_OSABI   ELFOSABI_SYSV
+
+
+> +#ifndef vdso_image_info
+> +#define vdso_image_info()    NULL
+> +#endif
+> +
+> +static void load_elf_vdso(struct image_info *info, const VdsoImageInfo *vdso)
+> +{
+> +    ImageSource src;
+> +    struct elfhdr ehdr;
+> +    abi_ulong load_bias, load_addr;
+> +
+> +    src.fd = -1;
+> +    src.cache = vdso->image;
+> +    src.cache_size = vdso->image_size;
+> +
+> +    load_elf_image("<internal-vdso>", &src, info, &ehdr, NULL);
+> +    load_addr = info->load_addr;
+> +    load_bias = info->load_bias;
+> +
+> +    /*
+> +     * We need to relocate the VDSO image.  The one built into the kernel
+> +     * is built for a fixed address.  The one built for QEMU is not, since
+> +     * that requires close control of the guest address space.
+> +     * We pre-processed the image to locate all of the addresses that need
+> +     * to be updated.
+> +     */
+> +    for (unsigned i = 0, n = vdso->reloc_count; i < n; i++) {
+
+Do we really need 'n'?
+
+> +        abi_ulong *addr = g2h_untagged(load_addr + vdso->relocs[i]);
+> +        *addr = tswapal(tswapal(*addr) + load_bias);
+> +    }
+> +
+> +    /* Install signal trampolines, if present. */
+> +    if (vdso->sigreturn_ofs) {
+> +        default_sigreturn = load_addr + vdso->sigreturn_ofs;
+> +    }
+> +    if (vdso->rt_sigreturn_ofs) {
+> +        default_rt_sigreturn = load_addr + vdso->rt_sigreturn_ofs;
+> +    }
+> +
+> +    /* Remove write from VDSO segment. */
+> +    target_mprotect(info->start_data, info->end_data - info->start_data,
+> +                    PROT_READ | PROT_EXEC);
+> +}
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
