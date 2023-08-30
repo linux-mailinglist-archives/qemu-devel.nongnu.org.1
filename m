@@ -2,58 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF0078D36E
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 08:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3B278D370
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 08:57:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbF6o-0004Eq-6t; Wed, 30 Aug 2023 02:55:23 -0400
+	id 1qbF8p-00053E-AO; Wed, 30 Aug 2023 02:57:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=CWUu=EP=kaod.org=clg@ozlabs.org>)
- id 1qbF6i-0004EW-AF
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 02:55:16 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qbF8d-00052f-Fn; Wed, 30 Aug 2023 02:57:19 -0400
+Received: from wout2-smtp.messagingengine.com ([64.147.123.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=CWUu=EP=kaod.org=clg@ozlabs.org>)
- id 1qbF6f-00029Z-A1
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 02:55:16 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RbFR861pXz4wy7;
- Wed, 30 Aug 2023 16:55:00 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbFR504Fnz4wy4;
- Wed, 30 Aug 2023 16:54:56 +1000 (AEST)
-Message-ID: <037e85aa-9d0a-f398-25a4-f23991c8942b@kaod.org>
-Date: Wed, 30 Aug 2023 08:54:50 +0200
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qbF8Z-0002aE-OM; Wed, 30 Aug 2023 02:57:14 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id 9E5A832009E7;
+ Wed, 30 Aug 2023 02:57:06 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute1.internal (MEProxy); Wed, 30 Aug 2023 02:57:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1693378626; x=
+ 1693465026; bh=2PW1IHODsdKepyKRkqlqzfemGRV2SizP0LHSntgyniU=; b=o
+ GQK95cBrBHMvrmXP1nepkxMfDl5IqWDG6Yl3qNJMNBCKBBXviUw4jGYBo3qXWa3k
+ DKhJuOA5wVZjt2MPhWKoYCaLGJLvpiDCpe+QxOcUH7ohV6JjGSqymo/5WQonnyt5
+ 5HfHRuK+gMGw7t/hX/e10nbJOTNHNF2TFijpOUxIiym/RX85SvDkhjMcO1PwaERk
+ n/cQNbMSgvI22Cb7Q6beQ+r3mpuCdSUqTHIXcPDCGny04CpF5n5YhXwLEk2Yju8l
+ 3ADcj/KlpkPjqZMFlN0XfgFF79EpU3EKuzGX0Q3u7VeCsCH3AULTWAp/O8apEpqk
+ T9TkHCWmZieFql5juocHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1693378626; x=1693465026; bh=2PW1IHODsdKep
+ yKRkqlqzfemGRV2SizP0LHSntgyniU=; b=o8i/5nikN1Q7yocYeH/RcqPbaddY1
+ Hrh1/PW3M2r7d71AYhA7C5gRJkDsOfIhVY+C6Qslfx7O5K3Z7L8CVXnOGJt4OeY7
+ MkwZqiPQ+l2UJtnYCofBdsoRuetYhnuo4NldIy87VSZG2ujmGdVsPHkZZ1np/5lD
+ C8JROuaF5m5+gYae54gjcKHwX1s+Rdiy/vjag9BwnPta3bjMRT88CptLAI6+ocV7
+ 1tHiLUyLLMGLVS181SJtRHAy7uIZFhBCXw/Xd4w9N7sA52N6cTwcrje3HNd+UKlY
+ rTPAGhFHqEbXNSbd3MjkSAk5PGFQn0ELcrYcSNOwx0vHewMZ0G8M1vcsg==
+X-ME-Sender: <xms:QejuZI1B1xtUuLpio0cEEGo6e_qX0ILbUVZbMLp7yt8MIXJl7f7ghA>
+ <xme:QejuZDGzfTtaXCYtluD7VawbU2k_zgpLRiLt0syd5BQ977YRHyiPKEnMiWdorRyO_
+ 1O_uSSv_SotiLds470>
+X-ME-Received: <xmr:QejuZA6qD-qWHk9rHvC_d1eaW4yc-ZQSbFlgPkYPcDLw3kXaAC5FdeHvOUFPBFiZrsyzKMcaS3PVvzpQJ9Sducc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefjedguddufecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
+ uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
+ htthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteff
+ ffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:QejuZB1oP-mc4lKRLBi0eEPTI3Y8g-qT9OfnliwdqWQe7YQErxpb1A>
+ <xmx:QejuZLEmiaQfJ6E3qJYPm9jjlM3qqxIJOB51oAvZd6Glf5_t5zfygg>
+ <xmx:QejuZK8bO_Gg8U8IdO2bwnTvm8v704JhczCkJjvXSWNZCV45BdltEA>
+ <xmx:QujuZMPuqUFQzzH3ugL_YNo2o6SP9g18HyVPEIWuKb3QkR20dcZSZw>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 30 Aug 2023 02:57:04 -0400 (EDT)
+Date: Wed, 30 Aug 2023 08:56:52 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Subject: Re: [PATCH] kconfig: Add NVME to s390x machines
+Message-ID: <ZO7oNAmnOqKFGAQH@cormorant.local>
+References: <20230828150148.120031-1-clg@kaod.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: =?UTF-8?Q?Re=3a_=5bqemu=5d=3a_How_to_use_qemu_to_emulate_MCTP_Over_?=
- =?UTF-8?Q?SMBus_devices=ef=bc=9f?=
-Content-Language: en-US
-To: www <ouyangxuan10@163.com>, OpenBMC Maillist <openbmc@lists.ozlabs.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- QEMU Developers <qemu-devel@nongnu.org>, Klaus Jensen <its@irrelevant.dk>,
- Jeremy Kerr <jk@codeconstruct.com.au>
-References: <673a6186.280a.18a449e0da2.Coremail.ouyangxuan10@163.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <673a6186.280a.18a449e0da2.Coremail.ouyangxuan10@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=CWUu=EP=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DEAR_SOMETHING=1.973,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="nDWo+LSCHcAeTBtI"
+Content-Disposition: inline
+In-Reply-To: <20230828150148.120031-1-clg@kaod.org>
+Received-SPF: pass client-ip=64.147.123.25; envelope-from=its@irrelevant.dk;
+ helo=wout2-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,31 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Byron,
 
-On 8/30/23 06:05, www wrote:
-> Dear Sir，
-> 
-> I have a few questions for you to ask.
-> 1. According to my data collection, MCTP function should not be implemented in qemu.
-> I would like to ask you how to simulate MCTP Over SMBus devices？Or do we have a device program with similar functions for reference?
-> (The biggest problem with simulating MCTP Over SMBus devices is that there is a master-slave switch between request and response.
-> It requires the device to actively respond to the requestor, that is, the device initiates the reply.)
-> 
-> 2. Among the BMC functions, the communication between the BMC and the OS is a very important and basic function.
-> Is there a way to simulate the communication between BMC and OS to test device drivers and applications?
-> If we want to implement this feature, how do we go about it?
-> 
-> I am looking forward to your reply.
-> Byron
+--nDWo+LSCHcAeTBtI
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Initial support for MCTP over I2C is being discussed here :
+On Aug 28 17:01, C=C3=A9dric Le Goater wrote:
+> From: C=C3=A9dric Le Goater <clg@redhat.com>
+>=20
+> We recently had issues with nvme devices on big endian platforms.
+> Include their compilation on s390x to ease tests.
+>=20
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  hw/nvme/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/hw/nvme/Kconfig b/hw/nvme/Kconfig
+> index 8ac90942e55e..cfa2ab0f9d5a 100644
+> --- a/hw/nvme/Kconfig
+> +++ b/hw/nvme/Kconfig
+> @@ -1,4 +1,4 @@
+>  config NVME_PCI
+>      bool
+> -    default y if PCI_DEVICES
+> +    default y if PCI_DEVICES || PCIE_DEVICES
+>      depends on PCI
+> --=20
+> 2.41.0
+>=20
 
-   https://lore.kernel.org/qemu-devel/20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com/
+Acked-by: Klaus Jensen <k.jensen@samsung.com>
 
-This is not my domain of expertise. So I am adding a few people who could help.
+--nDWo+LSCHcAeTBtI
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
 
-C.
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTu6DMACgkQTeGvMW1P
+DelLOwf/RyfBRmuvviI0V69rMvQRWm4g8wSkD4xXMAIrugZrTK6VDlChpo03A0OE
+9ui9+3AaX6THhXla7C/zoJozUx69DzXV4NJnkW+WwgNn8k2yHSVSlLrPj+tZwVIY
+fGLSwNyaWAqjF2GaGLVwmiv71+XfL0f801/ybZ/lhb25VP1xZpXVZPRTvyuYMyeq
+pNeDcD+PR6hQhR5cflHzJvfHs6UjfV16XZZAc+UlQDLY4hNCtKEcY0n7v1HX8rNJ
+upoCB18ghwDY7qWqoaxTzSwNEPN/QEoZiZyMrQGqZQEGPw2AknT1e/k7eubL7U2e
+sFqEJ/z8QDRLKHhFFkEVXRr3dZnstw==
+=eCQp
+-----END PGP SIGNATURE-----
+
+--nDWo+LSCHcAeTBtI--
 
