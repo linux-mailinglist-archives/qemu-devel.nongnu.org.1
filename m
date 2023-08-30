@@ -2,59 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E502178D542
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 12:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DF778D54F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 12:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbIpo-0005qF-6f; Wed, 30 Aug 2023 06:54:04 -0400
+	id 1qbIpt-00063a-TS; Wed, 30 Aug 2023 06:54:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qbIpl-0005oi-PN
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 06:54:01 -0400
+ id 1qbIps-000629-JM
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 06:54:08 -0400
 Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qbIpi-0007jr-D1
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 06:54:01 -0400
+ id 1qbIpp-0007jy-Rd
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 06:54:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1693392838; x=1724928838;
+ t=1693392845; x=1724928845;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9LsIWNjXtA+GcRuyg+Ee7v8B3cKrH4OKtIZXbtf/DXo=;
- b=BMN5gV/A5in41V5C9dpYmq9oso9tarhTKl6/Cea8bC16oVaGgzecmwOp
- UHrQUU1PlzL+GouSlPldG52Z8LM5wBud4kJX4UyJMWJEL21HD6mafaT8n
- Z/b1wUSyhmOypTVhfcTxdDnjO36Wa8pjH9b6S99wIsboHMhkQQnaNoVp9
- ZLwt+ET9TgxDAKQ4Z/hzl1hP89tIRdBUeTUQCnr/xbeuSTuAsN7f+hao1
- Hbl0R2q2/WNWtKYN/LCn9BmPK9/h0TsWaa2JGZuTHuyvXzIa9NCEBv5KV
- piu1XFWAaNcSFuMi4oWEKV3xDCDm1Oe3H/fWrL2nJhrB1O1saGSCnfDKL Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="373016665"
-X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; d="scan'208";a="373016665"
+ bh=W3wp6+6pVnRTM7wP/U9b4HQwamgiP4qP/FnE9wLdssg=;
+ b=efEcxBbo+6zB5t2t+mBBINSim1r8t9z58+FWsTgF6rsgO9EzEbub6Lra
+ MoAn1/OcJeGWW5z6S6dbCfgWMnRlZlFfD7XhFex+F6Sm0mEi5tab9ZcoF
+ 3zsYRVkGOvjH1z6D7700pQPNdmkDawdDARe9hJ0viCrSiJ3LUzq8SzsEJ
+ hhSVP3MTB36vsLWoxj7ONlo61KL/p4ihptLR6xzY+NVr7y2ZTU0iTRF3W
+ mITVdMDr9za1nWg1MxYYFWgFSrVXE6mmAFNOZutO/tDLcaUDRBZDLUVfQ
+ hhVgoRS/G3gmE43tA0vcBg62GcMwuZjj6PUOIvGlOopox4Nj2m7/aLpP0 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="373016680"
+X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; d="scan'208";a="373016680"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2023 03:53:44 -0700
+ 30 Aug 2023 03:53:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="715866252"
-X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; d="scan'208";a="715866252"
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="715866261"
+X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; d="scan'208";a="715866261"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2023 03:53:39 -0700
+ 30 Aug 2023 03:53:44 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v1 16/22] backends/iommufd: Introduce the iommufd object
-Date: Wed, 30 Aug 2023 18:37:48 +0800
-Message-Id: <20230830103754.36461-17-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v1 17/22] util/char_dev: Add open_cdev()
+Date: Wed, 30 Aug 2023 18:37:49 +0800
+Message-Id: <20230830103754.36461-18-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230830103754.36461-1-zhenzhong.duan@intel.com>
 References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
@@ -84,523 +80,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Yi Liu <yi.l.liu@intel.com>
 
-Introduce an iommufd object which allows the interaction
-with the host /dev/iommu device.
+/dev/vfio/devices/vfioX may not exist. In that case it is still possible
+to open /dev/char/$major:$minor instead. Add helper function to abstract
+the cdev open.
 
-The /dev/iommu can have been already pre-opened outside of qemu,
-in which case the fd can be passed directly along with the
-iommufd object:
-
-This allows the iommufd object to be shared accross several
-subsystems (VFIO, VDPA, ...). For example, libvirt would open
-the /dev/iommu once.
-
-If no fd is passed along with the iommufd object, the /dev/iommu
-is opened by the qemu code.
-
-The CONFIG_IOMMUFD option must be set to compile this new object.
-
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- MAINTAINERS              |   7 +
- backends/Kconfig         |   4 +
- backends/iommufd.c       | 291 +++++++++++++++++++++++++++++++++++++++
- backends/meson.build     |   3 +
- backends/trace-events    |  13 ++
- include/sysemu/iommufd.h |  49 +++++++
- qapi/qom.json            |  18 ++-
- qemu-options.hx          |  13 ++
- 8 files changed, 397 insertions(+), 1 deletion(-)
- create mode 100644 backends/iommufd.c
- create mode 100644 include/sysemu/iommufd.h
+ MAINTAINERS             |  6 ++++
+ include/qemu/char_dev.h | 16 +++++++++++
+ util/chardev_open.c     | 61 +++++++++++++++++++++++++++++++++++++++++
+ util/meson.build        |  1 +
+ 4 files changed, 84 insertions(+)
+ create mode 100644 include/qemu/char_dev.h
+ create mode 100644 util/chardev_open.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 6111b6b4d9..04663fbb6f 100644
+index 04663fbb6f..74d18593fe 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2079,6 +2079,13 @@ F: hw/vfio/ap.c
- F: docs/system/s390x/vfio-ap.rst
- L: qemu-s390x@nongnu.org
+@@ -3372,6 +3372,12 @@ S: Maintained
+ F: include/qemu/iova-tree.h
+ F: util/iova-tree.c
  
-+iommufd
++cdev Open
 +M: Yi Liu <yi.l.liu@intel.com>
-+M: Eric Auger <eric.auger@redhat.com>
-+S: Supported
-+F: backends/iommufd.c
-+F: include/sysemu/iommufd.h
++S: Maintained
++F: include/qemu/char_dev.h
++F: util/chardev_open.c
 +
- vhost
- M: Michael S. Tsirkin <mst@redhat.com>
- S: Supported
-diff --git a/backends/Kconfig b/backends/Kconfig
-index f35abc1609..2cb23f62fa 100644
---- a/backends/Kconfig
-+++ b/backends/Kconfig
-@@ -1 +1,5 @@
- source tpm/Kconfig
-+
-+config IOMMUFD
-+    bool
-+    depends on VFIO
-diff --git a/backends/iommufd.c b/backends/iommufd.c
+ elf2dmp
+ M: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
+ S: Maintained
+diff --git a/include/qemu/char_dev.h b/include/qemu/char_dev.h
 new file mode 100644
-index 0000000000..07ea434424
+index 0000000000..6580d351c6
 --- /dev/null
-+++ b/backends/iommufd.c
-@@ -0,0 +1,291 @@
++++ b/include/qemu/char_dev.h
+@@ -0,0 +1,16 @@
 +/*
-+ * iommufd container backend
++ * QEMU Chardev Helper
 + *
 + * Copyright (C) 2023 Intel Corporation.
-+ * Copyright Red Hat, Inc. 2023
 + *
 + * Authors: Yi Liu <yi.l.liu@intel.com>
-+ *          Eric Auger <eric.auger@redhat.com>
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
++ * This work is licensed under the terms of the GNU GPL, version 2.  See
++ * the COPYING file in the top-level directory.
 + */
 +
-+#include "qemu/osdep.h"
-+#include "sysemu/iommufd.h"
-+#include "qapi/error.h"
-+#include "qapi/qmp/qerror.h"
-+#include "qemu/module.h"
-+#include "qom/object_interfaces.h"
-+#include "qemu/error-report.h"
-+#include "monitor/monitor.h"
-+#include "trace.h"
-+#include <sys/ioctl.h>
-+#include <linux/iommufd.h>
++#ifndef QEMU_CHARDEV_HELPERS_H
++#define QEMU_CHARDEV_HELPERS_H
 +
-+static void iommufd_backend_init(Object *obj)
-+{
-+    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-+
-+    be->fd = -1;
-+    be->users = 0;
-+    be->owned = true;
-+    qemu_mutex_init(&be->lock);
-+}
-+
-+static void iommufd_backend_finalize(Object *obj)
-+{
-+    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-+
-+    if (be->owned) {
-+        close(be->fd);
-+        be->fd = -1;
-+    }
-+}
-+
-+static void iommufd_backend_set_fd(Object *obj, const char *str, Error **errp)
-+{
-+    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
-+    int fd = -1;
-+
-+    fd = monitor_fd_param(monitor_cur(), str, errp);
-+    if (fd == -1) {
-+        error_prepend(errp, "Could not parse remote object fd %s:", str);
-+        return;
-+    }
-+    qemu_mutex_lock(&be->lock);
-+    be->fd = fd;
-+    be->owned = false;
-+    qemu_mutex_unlock(&be->lock);
-+    trace_iommu_backend_set_fd(be->fd);
-+}
-+
-+static void iommufd_backend_class_init(ObjectClass *oc, void *data)
-+{
-+    object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
-+}
-+
-+int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
-+{
-+    int fd, ret = 0;
-+
-+    qemu_mutex_lock(&be->lock);
-+    if (be->users == UINT32_MAX) {
-+        error_setg(errp, "too many connections");
-+        ret = -E2BIG;
-+        goto out;
-+    }
-+    if (be->owned && !be->users) {
-+        fd = qemu_open_old("/dev/iommu", O_RDWR);
-+        if (fd < 0) {
-+            error_setg_errno(errp, errno, "/dev/iommu opening failed");
-+            ret = fd;
-+            goto out;
-+        }
-+        be->fd = fd;
-+    }
-+    be->users++;
-+out:
-+    trace_iommufd_backend_connect(be->fd, be->owned,
-+                                  be->users, ret);
-+    qemu_mutex_unlock(&be->lock);
-+    return ret;
-+}
-+
-+void iommufd_backend_disconnect(IOMMUFDBackend *be)
-+{
-+    qemu_mutex_lock(&be->lock);
-+    if (!be->users) {
-+        goto out;
-+    }
-+    be->users--;
-+    if (!be->users && be->owned) {
-+        close(be->fd);
-+        be->fd = -1;
-+    }
-+out:
-+    trace_iommufd_backend_disconnect(be->fd, be->users);
-+    qemu_mutex_unlock(&be->lock);
-+}
-+
-+static int iommufd_backend_alloc_ioas(int fd, uint32_t *ioas)
-+{
-+    int ret;
-+    struct iommu_ioas_alloc alloc_data  = {
-+        .size = sizeof(alloc_data),
-+        .flags = 0,
-+    };
-+
-+    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
-+    if (ret) {
-+        error_report("Failed to allocate ioas %m");
-+    }
-+
-+    *ioas = alloc_data.out_ioas_id;
-+    trace_iommufd_backend_alloc_ioas(fd, *ioas, ret);
-+
-+    return ret;
-+}
-+
-+void iommufd_backend_free_id(int fd, uint32_t id)
-+{
-+    int ret;
-+    struct iommu_destroy des = {
-+        .size = sizeof(des),
-+        .id = id,
-+    };
-+
-+    ret = ioctl(fd, IOMMU_DESTROY, &des);
-+    trace_iommufd_backend_free_id(fd, id, ret);
-+    if (ret) {
-+        error_report("Failed to free id: %u %m", id);
-+    }
-+}
-+
-+int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id)
-+{
-+    int ret;
-+
-+    ret = iommufd_backend_alloc_ioas(be->fd, ioas_id);
-+    trace_iommufd_backend_get_ioas(be->fd, *ioas_id, ret);
-+    return ret;
-+}
-+
-+void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas)
-+{
-+    trace_iommufd_backend_put_ioas(be->fd, ioas);
-+    iommufd_backend_free_id(be->fd, ioas);
-+}
-+
-+int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas,
-+                              hwaddr iova, ram_addr_t size)
-+{
-+    int ret;
-+    struct iommu_ioas_unmap unmap = {
-+        .size = sizeof(unmap),
-+        .ioas_id = ioas,
-+        .iova = iova,
-+        .length = size,
-+    };
-+
-+    ret = ioctl(be->fd, IOMMU_IOAS_UNMAP, &unmap);
-+    trace_iommufd_backend_unmap_dma(be->fd, ioas, iova, size, ret);
-+    if (ret && errno == ENOENT) {
-+        ret = 0;
-+    }
-+    if (ret) {
-+        error_report("IOMMU_IOAS_UNMAP failed: %s", strerror(errno));
-+    }
-+    return !ret ? 0 : -errno;
-+}
-+
-+int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas, hwaddr iova,
-+                            ram_addr_t size, void *vaddr, bool readonly)
-+{
-+    int ret;
-+    struct iommu_ioas_map map = {
-+        .size = sizeof(map),
-+        .flags = IOMMU_IOAS_MAP_READABLE |
-+                 IOMMU_IOAS_MAP_FIXED_IOVA,
-+        .ioas_id = ioas,
-+        .__reserved = 0,
-+        .user_va = (int64_t)vaddr,
-+        .iova = iova,
-+        .length = size,
-+    };
-+
-+    if (!readonly) {
-+        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
-+    }
-+
-+    ret = ioctl(be->fd, IOMMU_IOAS_MAP, &map);
-+    trace_iommufd_backend_map_dma(be->fd, ioas, iova, size,
-+                                  vaddr, readonly, ret);
-+    if (ret) {
-+        error_report("IOMMU_IOAS_MAP failed: %s", strerror(errno));
-+    }
-+    return !ret ? 0 : -errno;
-+}
-+
-+int iommufd_backend_copy_dma(IOMMUFDBackend *be, uint32_t src_ioas,
-+                             uint32_t dst_ioas, hwaddr iova,
-+                             ram_addr_t size, bool readonly)
-+{
-+    int ret;
-+    struct iommu_ioas_copy copy = {
-+        .size = sizeof(copy),
-+        .flags = IOMMU_IOAS_MAP_READABLE |
-+                 IOMMU_IOAS_MAP_FIXED_IOVA,
-+        .dst_ioas_id = dst_ioas,
-+        .src_ioas_id = src_ioas,
-+        .length = size,
-+        .dst_iova = iova,
-+        .src_iova = iova,
-+    };
-+
-+    if (!readonly) {
-+        copy.flags |= IOMMU_IOAS_MAP_WRITEABLE;
-+    }
-+
-+    ret = ioctl(be->fd, IOMMU_IOAS_COPY, &copy);
-+    trace_iommufd_backend_copy_dma(be->fd, src_ioas, dst_ioas,
-+                                   iova, size, readonly, ret);
-+    if (ret) {
-+        error_report("IOMMU_IOAS_COPY failed: %s", strerror(errno));
-+    }
-+    return !ret ? 0 : -errno;
-+}
-+
-+int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
-+                               uint32_t pt_id, uint32_t *out_hwpt)
-+{
-+    int ret;
-+    struct iommu_hwpt_alloc alloc_hwpt = {
-+        .size = sizeof(struct iommu_hwpt_alloc),
-+        .flags = 0,
-+        .dev_id = dev_id,
-+        .pt_id = pt_id,
-+        .__reserved = 0,
-+    };
-+
-+    ret = ioctl(iommufd, IOMMU_HWPT_ALLOC, &alloc_hwpt);
-+    trace_iommufd_backend_alloc_hwpt(iommufd, dev_id, pt_id, ret);
-+
-+    if (ret) {
-+        error_report("IOMMU_HWPT_ALLOC failed: %s", strerror(errno));
-+    } else {
-+        *out_hwpt = alloc_hwpt.out_hwpt_id;
-+    }
-+    return !ret ? 0 : -errno;
-+}
-+
-+static const TypeInfo iommufd_backend_info = {
-+    .name = TYPE_IOMMUFD_BACKEND,
-+    .parent = TYPE_OBJECT,
-+    .instance_size = sizeof(IOMMUFDBackend),
-+    .instance_init = iommufd_backend_init,
-+    .instance_finalize = iommufd_backend_finalize,
-+    .class_size = sizeof(IOMMUFDBackendClass),
-+    .class_init = iommufd_backend_class_init,
-+    .interfaces = (InterfaceInfo[]) {
-+        { TYPE_USER_CREATABLE },
-+        { }
-+    }
-+};
-+
-+static void register_types(void)
-+{
-+    type_register_static(&iommufd_backend_info);
-+}
-+
-+type_init(register_types);
-diff --git a/backends/meson.build b/backends/meson.build
-index 914c7c4afb..29dc147c8e 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -20,6 +20,9 @@ if have_vhost_user
-   system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
- endif
- system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
-+if have_iommufd
-+  system_ss.add(files('iommufd.c'))
-+endif
- if have_vhost_user_crypto
-   system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
- endif
-diff --git a/backends/trace-events b/backends/trace-events
-index 652eb76a57..093e3eb1da 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -5,3 +5,16 @@ dbus_vmstate_pre_save(void)
- dbus_vmstate_post_load(int version_id) "version_id: %d"
- dbus_vmstate_loading(const char *id) "id: %s"
- dbus_vmstate_saving(const char *id) "id: %s"
-+
-+# iommufd.c
-+iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
-+iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
-+iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
-+iommufd_backend_get_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
-+iommufd_backend_put_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
-+iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
-+iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
-+iommufd_backend_copy_dma(int iommufd, uint32_t src_ioas, uint32_t dst_ioas, uint64_t iova, uint64_t size, bool readonly, int ret) " iommufd=%d src_ioas=%d dst_ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" readonly=%d (%d)"
-+iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
-+iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
-+iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u (%d)"
-diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
++int open_cdev(const char *devpath, dev_t cdev);
++#endif
+diff --git a/util/chardev_open.c b/util/chardev_open.c
 new file mode 100644
-index 0000000000..f3bd212170
+index 0000000000..d03e415131
 --- /dev/null
-+++ b/include/sysemu/iommufd.h
-@@ -0,0 +1,49 @@
-+#ifndef SYSEMU_IOMMUFD_H
-+#define SYSEMU_IOMMUFD_H
-+
-+#include "qom/object.h"
-+#include "qemu/thread.h"
-+#include "exec/hwaddr.h"
-+#include "exec/cpu-common.h"
-+
-+#define TYPE_IOMMUFD_BACKEND "iommufd"
-+OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass,
-+                    IOMMUFD_BACKEND)
-+#define IOMMUFD_BACKEND(obj) \
-+    OBJECT_CHECK(IOMMUFDBackend, (obj), TYPE_IOMMUFD_BACKEND)
-+#define IOMMUFD_BACKEND_GET_CLASS(obj) \
-+    OBJECT_GET_CLASS(IOMMUFDBackendClass, (obj), TYPE_IOMMUFD_BACKEND)
-+#define IOMMUFD_BACKEND_CLASS(klass) \
-+    OBJECT_CLASS_CHECK(IOMMUFDBackendClass, (klass), TYPE_IOMMUFD_BACKEND)
-+struct IOMMUFDBackendClass {
-+    ObjectClass parent_class;
-+};
-+
-+struct IOMMUFDBackend {
-+    Object parent;
-+
-+    /*< protected >*/
-+    int fd;            /* /dev/iommu file descriptor */
-+    bool owned;        /* is the /dev/iommu opened internally */
-+    QemuMutex lock;
-+    uint32_t users;
-+
-+    /*< public >*/
-+};
-+
-+int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
-+void iommufd_backend_disconnect(IOMMUFDBackend *be);
-+
-+int iommufd_backend_get_ioas(IOMMUFDBackend *be, uint32_t *ioas_id);
-+void iommufd_backend_put_ioas(IOMMUFDBackend *be, uint32_t ioas_id);
-+void iommufd_backend_free_id(int fd, uint32_t id);
-+int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas,
-+                              hwaddr iova, ram_addr_t size);
-+int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas, hwaddr iova,
-+                            ram_addr_t size, void *vaddr, bool readonly);
-+int iommufd_backend_copy_dma(IOMMUFDBackend *be, uint32_t src_ioas,
-+                             uint32_t dst_ioas, hwaddr iova,
-+                             ram_addr_t size, bool readonly);
-+int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
-+                               uint32_t pt_id, uint32_t *out_hwpt);
++++ b/util/chardev_open.c
+@@ -0,0 +1,61 @@
++/*
++ * Copyright (C) 2023 Intel Corporation.
++ * Copyright (c) 2019, Mellanox Technologies. All rights reserved.
++ *
++ * Authors: Yi Liu <yi.l.liu@intel.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.  See
++ * the COPYING file in the top-level directory.
++ *
++ * Copied from
++ * https://github.com/linux-rdma/rdma-core/blob/master/util/open_cdev.c
++ *
++ */
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
 +#endif
-diff --git a/qapi/qom.json b/qapi/qom.json
-index fa3e88c8e6..2646ac4cca 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -779,6 +779,18 @@
- { 'struct': 'VfioUserServerProperties',
-   'data': { 'socket': 'SocketAddress', 'device': 'str' } }
- 
-+##
-+# @IOMMUFDProperties:
-+#
-+# Properties for IOMMUFDbackend objects.
-+#
-+# fd: file descriptor name
-+#
-+# Since: 7.2
-+##
-+{ 'struct': 'IOMMUFDProperties',
-+        'data': { '*fd': 'str' } }
++#include "qemu/osdep.h"
++#include "qemu/char_dev.h"
 +
- ##
- # @RngProperties:
- #
-@@ -933,6 +945,8 @@
-     'qtest',
-     'rng-builtin',
-     'rng-egd',
-+    { 'name': 'iommufd',
-+      'if': 'CONFIG_IOMMUFD' },
-     { 'name': 'rng-random',
-       'if': 'CONFIG_POSIX' },
-     'secret',
-@@ -1014,7 +1028,9 @@
-       'tls-creds-x509':             'TlsCredsX509Properties',
-       'tls-cipher-suites':          'TlsCredsProperties',
-       'x-remote-object':            'RemoteObjectProperties',
--      'x-vfio-user-server':         'VfioUserServerProperties'
-+      'x-vfio-user-server':         'VfioUserServerProperties',
-+      'iommufd':                    { 'type': 'IOMMUFDProperties',
-+                                      'if': 'CONFIG_IOMMUFD' }
-   } }
- 
- ##
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 29b98c3d4c..827dd085ee 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5098,6 +5098,19 @@ SRST
- 
-         The ``share`` boolean option is on by default with memfd.
- 
-+#ifdef CONFIG_IOMMUFD
-+    ``-object iommufd,id=id[,fd=fd]``
-+        Creates an iommufd backend which allows control of DMA mapping
-+        through the /dev/iommu device.
++static int open_cdev_internal(const char *path, dev_t cdev)
++{
++    struct stat st;
++    int fd;
 +
-+        The ``id`` parameter is a unique ID which frontends (such as
-+        vfio-pci of vdpa) will use to connect withe the iommufd backend.
++    fd = qemu_open_old(path, O_RDWR);
++    if (fd == -1) {
++        return -1;
++    }
++    if (fstat(fd, &st) || !S_ISCHR(st.st_mode) ||
++        (cdev != 0 && st.st_rdev != cdev)) {
++        close(fd);
++        return -1;
++    }
++    return fd;
++}
 +
-+        The ``fd`` parameter is an optional pre-opened file descriptor
-+        resulting from /dev/iommu opening. Usually the iommufd is shared
-+        accross all subsystems, bringing the benefit of centralized
-+        reference counting.
-+#endif
-     ``-object rng-builtin,id=id``
-         Creates a random number generator backend which obtains entropy
-         from QEMU builtin functions. The ``id`` parameter is a unique ID
++static int open_cdev_robust(dev_t cdev)
++{
++    char *devpath;
++    int ret;
++
++    /*
++     * This assumes that udev is being used and is creating the /dev/char/
++     * symlinks.
++     */
++    devpath = g_strdup_printf("/dev/char/%u:%u", major(cdev), minor(cdev));
++    ret = open_cdev_internal(devpath, cdev);
++    g_free(devpath);
++    return ret;
++}
++
++int open_cdev(const char *devpath, dev_t cdev)
++{
++    int fd;
++
++    fd = open_cdev_internal(devpath, cdev);
++    if (fd == -1 && cdev != 0) {
++        return open_cdev_robust(cdev);
++    }
++    return fd;
++}
+diff --git a/util/meson.build b/util/meson.build
+index a375160286..d5313d858f 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -107,6 +107,7 @@ if have_block
+     util_ss.add(files('filemonitor-stub.c'))
+   endif
+   util_ss.add(when: 'CONFIG_LINUX', if_true: files('vfio-helpers.c'))
++  util_ss.add(when: 'CONFIG_LINUX', if_true: files('chardev_open.c'))
+ endif
+ 
+ if cpu == 'aarch64'
 -- 
 2.34.1
 
