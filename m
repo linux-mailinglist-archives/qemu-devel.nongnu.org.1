@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F046178D5AF
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3072B78D5A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:50:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbJi1-0003Zt-1s; Wed, 30 Aug 2023 07:50:05 -0400
+	id 1qbJi2-0003fp-2u; Wed, 30 Aug 2023 07:50:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbJhx-0003T2-8H
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qbJhy-0003X2-Kx
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbJhv-0003iz-0W
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:00 -0400
+ id 1qbJhw-0003jM-Is
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693396198;
+ s=mimecast20190719; t=1693396200;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ga6qSUQdwzhmfn/lQ9lhh6t3Yiayp8nRSobjZ382ohU=;
- b=SsVF7tZAtHz99Lh+WLZoxtdMafuNvbcAkpQSGBgZCwUvkrOs36UdlDaZqnC5Ws3h/HVMmF
- j2aKdnBvLToUM5cA9+kM8HH7gKfs3Z4l01fCSgs7XSOXFDzlm/ns0Yh3g+gvWsCKBWaXaD
- u0TmQA7v4HBhy2Gg5aNdoJrg6I01fgU=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-613-s8R2zKAEPTC61o899lSztQ-1; Wed, 30 Aug 2023 07:49:54 -0400
-X-MC-Unique: s8R2zKAEPTC61o899lSztQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=TTOlhnU8FQgncj4r5I4EbHjsKY1j8lGUXnUus2JhPoI=;
+ b=ZDjXYOBsUH175Obzzx8CmljKtMUM1M7bESxngyAID8D5AznYSgh2mveKoQQ9M/bBotFSIr
+ Uns/M5mJ0JNT5t72W/Hkn/zTBJ/QuDgRwuZZwWWtR5Q2GDt0Luk2/tfZyR4Cq8rP0DOLaY
+ c8h48hWc4MCttNmAqGsBYNr2KrvEE1s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-540-nAKD0yb5PEC7Sjq9YDoyyQ-1; Wed, 30 Aug 2023 07:49:56 -0400
+X-MC-Unique: nAKD0yb5PEC7Sjq9YDoyyQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87D1F381C166;
- Wed, 30 Aug 2023 11:49:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 64CF2858290;
+ Wed, 30 Aug 2023 11:49:55 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.236])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0095E40C6F4C;
- Wed, 30 Aug 2023 11:49:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D6F3EC15BB8;
+ Wed, 30 Aug 2023 11:49:54 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -56,19 +56,16 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Fam Zheng <fam@euphon.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
- Eric Blake <eblake@redhat.com>, "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL v3 4/5] tests/qemu-iotests/197: add testcase for CoR with
- subclusters
-Date: Wed, 30 Aug 2023 07:49:41 -0400
-Message-ID: <20230830114942.449060-5-stefanha@redhat.com>
+ Hanna Reitz <hreitz@redhat.com>
+Subject: [PULL v3 5/5] aio-posix: zero out io_uring sqe user_data
+Date: Wed, 30 Aug 2023 07:49:42 -0400
+Message-ID: <20230830114942.449060-6-stefanha@redhat.com>
 In-Reply-To: <20230830114942.449060-1-stefanha@redhat.com>
 References: <20230830114942.449060-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,101 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+liburing does not clear sqe->user_data. We must do it ourselves to avoid
+undefined behavior in process_cqe() when user_data is used.
 
-Add testcase which checks that allocations during copy-on-read are
-performed on the subcluster basis when subclusters are enabled in target
-image.
+Note that fdmon-io_uring is currently disabled, so this is a latent bug
+that does not affect users. Let's merge this fix now to make it easier
+to enable fdmon-io_uring in the future (and I'm working on that).
 
-This testcase also triggers the following assert with previous commit
-not being applied, so we check that as well:
-
-qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
-
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Denis V. Lunev <den@openvz.org>
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230711172553.234055-4-andrey.drobyshev@virtuozzo.com>
+Message-ID: <20230426212639.82310-1-stefanha@redhat.com>
 ---
- tests/qemu-iotests/197     | 29 +++++++++++++++++++++++++++++
- tests/qemu-iotests/197.out | 24 ++++++++++++++++++++++++
- 2 files changed, 53 insertions(+)
+ util/fdmon-io_uring.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/qemu-iotests/197 b/tests/qemu-iotests/197
-index a2547bc280..f07a9da136 100755
---- a/tests/qemu-iotests/197
-+++ b/tests/qemu-iotests/197
-@@ -122,6 +122,35 @@ $QEMU_IO -f qcow2 -C -c 'read 0 1024' "$TEST_WRAP" | _filter_qemu_io
- $QEMU_IO -f qcow2 -c map "$TEST_WRAP"
- _check_test_img
+diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
+index 17ec18b7bd..16054c5ede 100644
+--- a/util/fdmon-io_uring.c
++++ b/util/fdmon-io_uring.c
+@@ -184,6 +184,7 @@ static void add_poll_remove_sqe(AioContext *ctx, AioHandler *node)
+ #else
+     io_uring_prep_poll_remove(sqe, node);
+ #endif
++    io_uring_sqe_set_data(sqe, NULL);
+ }
  
-+echo
-+echo '=== Copy-on-read with subclusters ==='
-+echo
-+
-+# Create base and top images 64K (1 cluster) each.  Make subclusters enabled
-+# for the top image
-+_make_test_img 64K
-+IMGPROTO=file IMGFMT=qcow2 TEST_IMG_FILE="$TEST_WRAP" \
-+    _make_test_img --no-opts -o extended_l2=true -F "$IMGFMT" -b "$TEST_IMG" \
-+    64K | _filter_img_create
-+
-+$QEMU_IO -c "write -P 0xaa 0 64k" "$TEST_IMG" | _filter_qemu_io
-+
-+# Allocate individual subclusters in the top image, and not the whole cluster
-+$QEMU_IO -c "write -P 0xbb 28K 2K" -c "write -P 0xcc 34K 2K" "$TEST_WRAP" \
-+    | _filter_qemu_io
-+
-+# Only 2 subclusters should be allocated in the top image at this point
-+$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
-+
-+# Actual copy-on-read operation
-+$QEMU_IO -C -c "read -P 0xaa 30K 4K" "$TEST_WRAP" | _filter_qemu_io
-+
-+# And here we should have 4 subclusters allocated right in the middle of the
-+# top image. Make sure the whole cluster remains unallocated
-+$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
-+
-+_check_test_img
-+
- # success, all done
- echo '*** done'
- status=0
-diff --git a/tests/qemu-iotests/197.out b/tests/qemu-iotests/197.out
-index ad414c3b0e..8f34a30afe 100644
---- a/tests/qemu-iotests/197.out
-+++ b/tests/qemu-iotests/197.out
-@@ -31,4 +31,28 @@ read 1024/1024 bytes at offset 0
- 1 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- 1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
- No errors were found on the image.
-+
-+=== Copy-on-read with subclusters ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=65536
-+Formatting 'TEST_DIR/t.wrap.IMGFMT', fmt=IMGFMT size=65536 backing_file=TEST_DIR/t.IMGFMT backing_fmt=IMGFMT
-+wrote 65536/65536 bytes at offset 0
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 2048/2048 bytes at offset 28672
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 2048/2048 bytes at offset 34816
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Offset          Length          File
-+0               0x7000          TEST_DIR/t.IMGFMT
-+0x7000          0x800           TEST_DIR/t.wrap.IMGFMT
-+0x7800          0x1000          TEST_DIR/t.IMGFMT
-+0x8800          0x800           TEST_DIR/t.wrap.IMGFMT
-+0x9000          0x7000          TEST_DIR/t.IMGFMT
-+read 4096/4096 bytes at offset 30720
-+4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Offset          Length          File
-+0               0x7000          TEST_DIR/t.IMGFMT
-+0x7000          0x2000          TEST_DIR/t.wrap.IMGFMT
-+0x9000          0x7000          TEST_DIR/t.IMGFMT
-+No errors were found on the image.
- *** done
+ /* Add a timeout that self-cancels when another cqe becomes ready */
+@@ -197,6 +198,7 @@ static void add_timeout_sqe(AioContext *ctx, int64_t ns)
+ 
+     sqe = get_sqe(ctx);
+     io_uring_prep_timeout(sqe, &ts, 1, 0);
++    io_uring_sqe_set_data(sqe, NULL);
+ }
+ 
+ /* Add sqes from ctx->submit_list for submission */
 -- 
 2.41.0
 
