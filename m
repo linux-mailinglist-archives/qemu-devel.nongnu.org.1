@@ -2,66 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAAC78D5F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 14:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0209A78D5F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 14:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbKaV-0006T8-88; Wed, 30 Aug 2023 08:46:23 -0400
+	id 1qbKZA-0005To-6H; Wed, 30 Aug 2023 08:45:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qbKaR-0006SF-NR
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 08:46:19 -0400
-Received: from mgamail.intel.com ([134.134.136.100])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qbKZ8-0005TR-91
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 08:44:58 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qbKaN-0003ID-Po
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 08:46:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1693399576; x=1724935576;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KfvKdk7/QVGtzqMB1OGfioJPkDg9ahDUseBiM8CIC7o=;
- b=bOwfWwj488SuEoJgWfCc6DNMzmwze+IV9qSL1XLv7mPiEa95dPR2uX6R
- m4D7N1CAEvS+CiO92od08i5l4fT3gBa0X2jurw/H6P4N6eL6rzJ/0Dbpo
- 35KDmx7CnZS0YTP4WuMvEp4C+JivS9VMS0PsJrAedyUHwJlNlxI00hoJV
- xVg8jnGKH3E4C0e+6+qA8xQim4H8Fqs7/ybXzDK6wbP7icoeiaSxhnZwQ
- 5sar828GMbBRN7oRVuPQFBKagt00LyGwZaRWGqz1RtDEnoiGGusKUZuKZ
- zqAds+1kVLPUN4uYPltPGWxt8oDdLbvvskUD4q1V+/JfJFIcOpGIKlTS8 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="441996508"
-X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; d="scan'208";a="441996508"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2023 05:46:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="912781408"
-X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; d="scan'208";a="912781408"
-Received: from linux.bj.intel.com ([10.238.157.71])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2023 05:46:10 -0700
-Date: Wed, 30 Aug 2023 20:43:29 +0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com
-Subject: Re: [PATCH] target/i386: Add support for AMX-COMPLEX in CPUID
- enumeration
-Message-ID: <ZO85cXZrDq21vqHm@linux.bj.intel.com>
-References: <20230830074324.84059-1-tao1.su@linux.intel.com>
- <20230830104111.140711-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qbKZ4-0002QO-VS
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 08:44:58 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 47C4B7456AC;
+ Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 0C9557456AA; Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0A8987456A7;
+ Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
+Date: Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH_37=2F67=5D_ui=2Fconsole=3A_rename_vga?=
+ =?UTF-8?Q?=5F_functions_=E2=86=92_qemu=5Fconsole=5F?=
+In-Reply-To: <20230830093843.3531473-38-marcandre.lureau@redhat.com>
+Message-ID: <058a8394-afcd-614e-7848-e3897b2d76ab@eik.bme.hu>
+References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-38-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230830104111.140711-1-pbonzini@redhat.com>
-Received-SPF: none client-ip=134.134.136.100;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1001586873-1693399482=:10171"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,8 +62,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 12:41:11PM +0200, Paolo Bonzini wrote:
-> Queued, thanks.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Thanks Paolo!
+--3866299591-1001586873-1693399482=:10171
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Wed, 30 Aug 2023, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+Maybe refrain from using unicode arrow in Subject: as it may show up 
+wrongly with some fonts. Just write "replace ... with" or "rename ... to" 
+instead which is also more normal looking sentence than with an arrow.
+
+Regards,
+BALATON Zoltan
+
+> They are not specific to VGA. Let's use the object type name as prefix
+> instead, to avoid confusion.
+>
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+> ui/console.c | 25 ++++++++++++-------------
+> 1 file changed, 12 insertions(+), 13 deletions(-)
+>
+> diff --git a/ui/console.c b/ui/console.c
+> index 88e37eaff3..a157a5b31c 100644
+> --- a/ui/console.c
+> +++ b/ui/console.c
+> @@ -331,9 +331,8 @@ void graphic_hw_text_update(QemuConsole *con, console_ch_t *chardata)
+>     }
+> }
+>
+> -static void vga_fill_rect(QemuConsole *con,
+> -                          int posx, int posy, int width, int height,
+> -                          pixman_color_t color)
+> +static void qemu_console_fill_rect(QemuConsole *con, int posx, int posy,
+> +                                   int width, int height, pixman_color_t color)
+> {
+>     DisplaySurface *surface = qemu_console_surface(con);
+>     pixman_rectangle16_t rect = {
+> @@ -345,8 +344,8 @@ static void vga_fill_rect(QemuConsole *con,
+> }
+>
+> /* copy from (xs, ys) to (xd, yd) a rectangle of size (w, h) */
+> -static void vga_bitblt(QemuConsole *con,
+> -                       int xs, int ys, int xd, int yd, int w, int h)
+> +static void qemu_console_bitblt(QemuConsole *con,
+> +                                int xs, int ys, int xd, int yd, int w, int h)
+> {
+>     DisplaySurface *surface = qemu_console_surface(con);
+>
+> @@ -526,8 +525,8 @@ static void console_refresh(QemuTextConsole *s)
+>     s->text_y[1] = s->height - 1;
+>     s->cursor_invalidate = 1;
+>
+> -    vga_fill_rect(QEMU_CONSOLE(s), 0, 0, surface_width(surface), surface_height(surface),
+> -                  color_table_rgb[0][QEMU_COLOR_BLACK]);
+> +    qemu_console_fill_rect(QEMU_CONSOLE(s), 0, 0, surface_width(surface), surface_height(surface),
+> +                           color_table_rgb[0][QEMU_COLOR_BLACK]);
+>     y1 = s->y_displayed;
+>     for (y = 0; y < s->height; y++) {
+>         c = s->cells + y1 * s->width;
+> @@ -605,12 +604,12 @@ static void vc_put_lf(VCChardev *vc)
+>             s->text_x[1] = s->width - 1;
+>             s->text_y[1] = s->height - 1;
+>
+> -            vga_bitblt(QEMU_CONSOLE(s), 0, FONT_HEIGHT, 0, 0,
+> -                       s->width * FONT_WIDTH,
+> -                       (s->height - 1) * FONT_HEIGHT);
+> -            vga_fill_rect(QEMU_CONSOLE(s), 0, (s->height - 1) * FONT_HEIGHT,
+> -                          s->width * FONT_WIDTH, FONT_HEIGHT,
+> -                          color_table_rgb[0][TEXT_ATTRIBUTES_DEFAULT.bgcol]);
+> +            qemu_console_bitblt(QEMU_CONSOLE(s), 0, FONT_HEIGHT, 0, 0,
+> +                                s->width * FONT_WIDTH,
+> +                                (s->height - 1) * FONT_HEIGHT);
+> +            qemu_console_fill_rect(QEMU_CONSOLE(s), 0, (s->height - 1) * FONT_HEIGHT,
+> +                                   s->width * FONT_WIDTH, FONT_HEIGHT,
+> +                                   color_table_rgb[0][TEXT_ATTRIBUTES_DEFAULT.bgcol]);
+>             s->update_x0 = 0;
+>             s->update_y0 = 0;
+>             s->update_x1 = s->width * FONT_WIDTH;
+>
+--3866299591-1001586873-1693399482=:10171--
 
