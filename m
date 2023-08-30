@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808E478D6A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC41F78D6B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:55:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMYb-0000Sg-4R; Wed, 30 Aug 2023 10:52:33 -0400
+	id 1qbMaH-0001Az-MM; Wed, 30 Aug 2023 10:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qbMYZ-0000SW-1p
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:52:31 -0400
-Received: from mout.gmx.net ([212.227.17.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qbMYW-0000UC-8u
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:52:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1693407144; x=1694011944; i=deller@gmx.de;
- bh=P/PQL8CV2apvOg8uQVUS1u6uyHZK7omKWCQDjeG30v0=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=D1rU94ZeFK/Af46oJ7/BNzwHS1m3Xa/zd/beYJRM7W+K8vFraSXvp8cLukvxG573ll/bSWL
- gyG1RcbnzttArhwXsiLDqiqR5d4PK7DwbvhyQXre6mXrUU7dI4gKPtpLNewf2JOClCYsXKP+Z
- wK42IRkISRjTDnexkKEGFZkxfFK62AL3pxqRBzvWD6Y1tXMrCD7fO6XXoXIksL1kNYWzJxPi5
- KjGgqOeFt+477RX1JV5E2mnvroKS8DrFvX5rDM5ywSOT3a/ivzQGueZ+ApJfRXWq+GONGpo+/
- iGeMdzrQT8hNTFgRo+REITxjDgIaeb64tbjEPo0JPOGTgBYhG1Hw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.153.41]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSc1B-1q8SlF0Bc9-00SwX2; Wed, 30
- Aug 2023 16:52:24 +0200
-Message-ID: <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
-Date: Wed, 30 Aug 2023 16:52:23 +0200
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbMaD-00018o-Ai
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:13 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbMaA-0000jF-3T
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:13 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-31977ace1c8so4868598f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:54:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693407248; x=1694012048; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zxgkBb7DJJfjgi9PnSBvQheX29hpWVTyPV3mYxBd8Yk=;
+ b=KO/sg0Df9hE+IosGIqEAw7YuICclzbQ47EkvgtfQMAULx94A8+6xhVPpuDjwOOgjyW
+ SQr3OwvjdX5sPbn198H+HNSB0aalDd/dN4qt8rMslhN1nbfZ+MUOY1yjrZvO/MvMRU7K
+ wD2McbB6FK37fb08qqCE4EvwM0CdPlHW54XzT/Wk4wQK7ku1bvvr+J0cJVUky7X+vaBd
+ 4z/H+TaVJMrm3ZP5yUMXlkshsorMOImLdlEYDiaCsEHZbDrdZ9UsKypTN27AyLElplXK
+ rYRZcKBez+QM/k4PBH2AyGvLjLzEMeQ92rNO0Srh5kV3ACwZxNvnT2Vj9MyxhiTSPA4a
+ WvlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693407248; x=1694012048;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zxgkBb7DJJfjgi9PnSBvQheX29hpWVTyPV3mYxBd8Yk=;
+ b=DIBrSug6FLL5pqP+Yu6C5SKWTaY2WrpUh5ojU8Kf0lqzAI53Vone/DrsbxgqWmnsRE
+ p0oX5L8b+P7lV0+Z3XTKbhIIsxaHzqQYckwXVRPf8sIywkKbRz9mOZPy5ym2VvCgoB9U
+ 3JNlHxQPYVEjrUzWrmV8Y06Nu320sfNntQsvg7uIVLQvPuPt1Oz42vpZwj6e+QCLZ5uN
+ FSgKq/RGyvVdpuaqRfJGrLm9bMI1Iyl7fKTmkPD8h8KEyGedXnqbd8RycmGwfSJ9ODp1
+ 8/ARuTsNTVifbFRbR0SARC4EDdzFIPgx7x8FrDcnmCc0yFnovy5QM0u6ZXyC5wtZAvoa
+ +uuw==
+X-Gm-Message-State: AOJu0Yzwpgh6l8PrgAk4s4JR2319ZH6lLkmsjq5pQphr8UxVYW/73WhW
+ 7YfZxvlpKCV4v5VPnPDDkQSyGA==
+X-Google-Smtp-Source: AGHT+IHfk/nVoB3ZH7gsKUpSVneIILtsTunrJxEpeAaPbBGMLb2NOu/foWT3xflqUiZBsupybEVpjQ==
+X-Received: by 2002:a5d:6305:0:b0:30e:3caa:971b with SMTP id
+ i5-20020a5d6305000000b0030e3caa971bmr1714734wru.51.1693407248335; 
+ Wed, 30 Aug 2023 07:54:08 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n14-20020a5d51ce000000b0031ad5470f89sm16909153wrv.18.2023.08.30.07.54.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Aug 2023 07:54:08 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 9AF351FFBB;
+ Wed, 30 Aug 2023 15:54:07 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/12] testing and gdbstub updates
+Date: Wed, 30 Aug 2023 15:53:55 +0100
+Message-Id: <20230830145407.3064249-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5 00/20] linux-user: Implement VDSOs
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, laurent@vivier.eu
-References: <20230829220228.928506-1-richard.henderson@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20230829220228.928506-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rcU9Yz29CGi4UQt/+3kFUXtbC/vgVvfajobTNx/6M0mgMzO7FNy
- qY1Hp2tzdRnozDIUmryEjV1KR1bLityVYMYzhHKWQ2hiIaQlumY28RhjoyUjfJUbahat79+
- +VGt5O6dPCnR9kCPCJEPTMxDwmALXhEerHpxUgJ+XCbVfWPQ11nKuszV1d5J3b9SJbHX5Et
- XCDIMPodQyzXEvVdXnvXA==
-UI-OutboundReport: notjunk:1;M01:P0:QrhihjAQYTM=;Vc3ijCIqFaPFCZusoKJiaoMJcLB
- Qcp5wq2EQyssXvsQ/FpjRtOq1AnH0jhvEfO+QjxBWj/ZobuGzhfJXHfs2vSg/GRhn+7UDI5vi
- YaO/4CJ+Iln25lY3SdogxWsx2vS6vZXmIB+8shwEfSeqrYA0JQ5tBl+cCX2jO8B83GN2AbXVR
- dPl8BrN5/epB9yBnZfSPda2Cp1Q5zW1GDAiSoEDXbAPgP/+ScgUdZ937vsAQ7kwLTRu7docb+
- ySRJflgXVioOlCQjfA4ciA4Byrdv35zUv7lcarW5DcQJ4GzVF1QwBIUfxHJUIAIJFE0rICrMf
- tKgCrByvrGtag6oD6ACgf1QJKYG1gVV9zJLDvVn1VopEpdgUhA8ss25OxuqgRLWrio71NX/Rj
- f4uUnCRtCryKeIKp7U4makBUeFB0XziGa61Aoy5/FwQM02HnKO8XJAiuNTLgssOeDFkniuUOz
- NJO8qP8f6736gFWV/PPFd+3RSN7a/WwnTJpBvU0BrAOTx/EAcbiVu1Dxnn0qu2PUveJ3Hgg2u
- YdREv4kSJN9ITMMv/nhFFASXrArI+0SY4I4zeclrvjrxbQ4mo6AebQuHWMhb6HI4L0LG9/UI6
- GAF9e5e7iPw8YJTwGcuOlN214aTwBsTQZRMD07q3or06i+whimXSio4xUDvp2Kv7mpunZ20b0
- vYzWfJf9dRM5v8Rb081fSgGmy0yO38B7ZiYvI1zhlVcZEhMBQe2UzfrnVAC9x4aeJ8aqttRMN
- lu/9YHUcTbMMzKvqwQPZ5lUTNU7MF8B3ESEvkVi6HvRZRpkrzV/hEerrfSyczLUwyfsvdfG1f
- 4U1YbP9F27S8224QatQ7ENcOBW6Q6DnHkY5TRW7WmZATCqmYWtBDFnmwVd5hEp6FqNiVizUuB
- 1VJT2nM9F+11F37/ldI15O65Oe03+xDgnWB45C7W4cTbxW3tebl4J7a+bPEwDnXO752Vm3uAL
- yexpmw==
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,59 +92,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 00:02, Richard Henderson wrote:
-> Changes for v5:
->    * Integrated cross-compile, via new build-vdso.sh and meson rules.
->      However, keep the binaries in the tree for hosts which do not
->      have all of the cross-compile machinery.
->    * Update our loongarch64 docker image to avoid a binutils bug.
->
-> Just in case the list eats a binary:
->    https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
+The following changes since commit 813bac3d8d70d85cb7835f7945eb9eed84c2d8d0:
 
-I pulled that on top of git head, and ran into the build problem below.
-Do I miss something?
+  Merge tag '2023q3-bsd-user-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-29 08:58:00 -0400)
 
-Helge
+are available in the Git repository at:
 
-[62/1742] Generating linux-user/aarch64/vdso-be.so with a custom command
-FAILED: linux-user/aarch64/vdso-be.so
-/home/cvs/qemu/qemu/linux-user/build-vdso.sh -B /srv/_build -C /home/cvs/q=
-emu/qemu/linux-user/aarch64 -T aarch64-linux-user -o linux-user/aarch64/vd=
-so-be.so -- -nostdlib -shared -Wl,-h,linux-vdso.so.1 -Wl,--build-id=3Dsha1=
- -Wl,--hash-style=3Dboth -Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch6=
-4/vdso.ld ../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S -mbig-endian
-Error: short-name resolution enforced but cannot prompt without a TTY
-Traceback (most recent call last):
-   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 683, in <module=
->
-     sys.exit(main())
-              ^^^^^^
-   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 679, in main
-     return args.cmdobj.run(args, argv)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 657, in run
-     return Docker().run(cmd, False, quiet=3Dargs.quiet,
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 370, in run
-     ret =3D self._do_check(["run", "--rm", "--label",
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 247, in _do_che=
-ck
-     return subprocess.check_call(self._command + cmd, **kwargs)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   File "/usr/lib64/python3.11/subprocess.py", line 413, in check_call
-     raise CalledProcessError(retcode, cmd)
-subprocess.CalledProcessError: Command '['podman', 'run', '--rm', '--label=
-', 'com.qemu.instance.uuid=3De746f7e345ed420088a9cc30e884a7e8', '--userns=
-=3Dkeep-id', '-u', '1000', '-w', '/srv/_build', '-v', '/srv/_build:/srv/_b=
-uild:rw', '-v', '/home/cvs/qemu/qemu:/home/cvs/qemu/qemu:ro,z', 'qemu/debi=
-an-arm64-cross', 'aarch64-linux-gnu-gcc-10', '-o', 'linux-user/aarch64/vds=
-o-be.so', '-nostdlib', '-shared', '-Wl,-h,linux-vdso.so.1', '-Wl,--build-i=
-d=3Dsha1', '-Wl,--hash-style=3Dboth', '-Wl,-T,../../home/cvs/qemu/qemu/lin=
-ux-user/aarch64/vdso.ld', '../../home/cvs/qemu/qemu/linux-user/aarch64/vds=
-o.S', '-mbig-endian']' returned non-zero exit status 125.
-filter=3D--filter=3Dlabel=3Dcom.qemu.instance.uuid=3De746f7e345ed420088a9c=
-c30e884a7e8
+  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-300823-1
+
+for you to fetch changes up to 8dd7a4b3487ab93ff8fddc5f818942ff39d4550f:
+
+  gdbstub: move comment for gdb_register_coprocessor (2023-08-30 14:57:59 +0100)
+
+----------------------------------------------------------------
+testing and gdbstub updates:
+
+  - enable ccache for gitlab builds
+  - fix various test info leakages for non V=1
+  - update style to allow loop vars
+  - bump FreeBSD to v13.2
+  - clean-up gdbstub tests
+  - various gdbstub doc and refactorings
+
+----------------------------------------------------------------
+Alex Bennée (9):
+      tests/docker: cleanup non-verbose output
+      tests/tcg: remove quoting for info output
+      docs/style: permit inline loop variables
+      tests: remove test-gdbstub.py
+      tests/tcg: clean-up gdb confirm/pagination settings
+      gdbstub: remove unused user_ctx field
+      gdbstub: refactor get_feature_xml
+      gdbstub: replace global gdb_has_xml with a function
+      gdbstub: move comment for gdb_register_coprocessor
+
+Daniel P. Berrangé (1):
+      gitlab: enable ccache for many build jobs
+
+Matheus Branco Borella (1):
+      gdbstub: fixes cases where wrong threads were reported to GDB on SIGINT
+
+Thomas Huth (1):
+      .gitlab-ci.d/cirrus.yml: Update FreeBSD to v13.2
+
+ docs/devel/ci-jobs.rst.inc                         |   7 +
+ docs/devel/style.rst                               |   9 +-
+ gdbstub/internals.h                                |   3 +-
+ include/exec/gdbstub.h                             |  20 ++-
+ gdbstub/gdbstub.c                                  | 144 ++++++++++-------
+ gdbstub/softmmu.c                                  |   1 -
+ gdbstub/user.c                                     |   1 -
+ target/arm/gdbstub.c                               |   8 +-
+ target/ppc/gdbstub.c                               |   4 +-
+ tests/tcg/multiarch/system/interrupt.c             |  28 ++++
+ .gitlab-ci.d/buildtest-template.yml                |  11 ++
+ .gitlab-ci.d/cirrus.yml                            |   2 +-
+ .gitlab-ci.d/crossbuild-template.yml               |  26 +++
+ .gitlab-ci.d/windows.yml                           |  13 +-
+ tests/docker/Makefile.include                      |   6 +-
+ .../docker/dockerfiles/debian-hexagon-cross.docker |   9 +-
+ tests/guest-debug/run-test.py                      |   2 +
+ tests/guest-debug/test-gdbstub.py                  | 177 ---------------------
+ tests/tcg/aarch64/Makefile.target                  |   2 +-
+ tests/tcg/aarch64/gdbstub/test-sve-ioctl.py        |   3 -
+ tests/tcg/aarch64/gdbstub/test-sve.py              |   3 -
+ tests/tcg/multiarch/gdbstub/interrupt.py           |  97 +++++++++++
+ tests/tcg/multiarch/gdbstub/memory.py              |   3 -
+ tests/tcg/multiarch/gdbstub/sha1.py                |   4 -
+ tests/tcg/multiarch/gdbstub/test-proc-mappings.py  |   4 -
+ .../tcg/multiarch/gdbstub/test-qxfer-auxv-read.py  |   4 -
+ .../multiarch/gdbstub/test-thread-breakpoint.py    |   4 -
+ tests/tcg/multiarch/system/Makefile.softmmu-target |  16 +-
+ tests/tcg/s390x/gdbstub/test-signals-s390x.py      |   4 -
+ tests/tcg/s390x/gdbstub/test-svc.py                |   4 -
+ 30 files changed, 324 insertions(+), 295 deletions(-)
+ create mode 100644 tests/tcg/multiarch/system/interrupt.c
+ delete mode 100644 tests/guest-debug/test-gdbstub.py
+ create mode 100644 tests/tcg/multiarch/gdbstub/interrupt.py
+
+-- 
+2.39.2
 
 
