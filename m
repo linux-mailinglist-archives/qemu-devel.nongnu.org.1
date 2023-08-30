@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D9578D6CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0287378D6D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMkG-0006xI-Rl; Wed, 30 Aug 2023 11:04:36 -0400
+	id 1qbMkR-00074b-2k; Wed, 30 Aug 2023 11:04:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMkF-0006wN-B0
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:04:35 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbMkP-00073u-FN
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:04:45 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMkD-0003QI-5d
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:04:35 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-401c90ed2ecso34759515e9.0
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:04:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbMkN-0003Rm-8U
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:04:45 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31c3df710bdso4543089f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693407871; x=1694012671; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oc7KT6N5lE3Gybl5H49eKxklHPrKXvR5vp2cc4obBeU=;
- b=l1XqBg2xrKAVmSkz1mljtxE758ysG4LKsOWnl4NfzJaeOOtSi7ec3bV5sp33waGQUm
- 6mSqJlZOsZbu1e7JnziOnbxgmn3/4Jrkx/Id2Q+/kM+Z9TavvItpt1w8jMP/r01Wxk/z
- DRtv4YAthrsZEP+Z5WioBwnAxvf9TbLYm2vJ4TsZcDM519NuDurCT47REd3fqevBCNmn
- X1Y0MS39lMDjR7gzP2BHS+tBYHRHl4XQPvZ9NAcAPeXAts9/F3DE349G5v7MVssONXVv
- 75nRWRY6dZKwgaslCGbdDuU2PR++/BFy3kHbxLPOvTroPaWENVbB0IgSj52pnziBpRRZ
- vMqw==
+ d=linaro.org; s=google; t=1693407882; x=1694012682; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/r0wr0aqRF2FoJX6EniN6nRRKTmFdKaHmNsYHmdWLF4=;
+ b=mryhUgXf7HKDdRQ/qAiGddEKVMh7ucueuX56KhkyJcGa6WHH9/+LFuxSQn7Dvgv8hu
+ 37sD8UuTzrqML9inzsrf+81T6C6BQMll9WcNbdvXOfHh3+MlMe8SfIDOFXbkofxluH+0
+ 8UbdIDMYxsfkXTYdbTjYtAuDF382wH6epfWQkpe1aMGCtRpV/rwa/viXDfZrLkdBa/Y2
+ FZH2rd3zWnFwSePWwEQJuNUzvTkDh/L5FMrnMwSyZRV3mJrAvchWzuYwx5DpWyRxtx+o
+ G+uUFtOCdOuqUqjoOyvXJb5lUz/5d1EVXhPEY88Rdkid+8HXG/Dba2eNpgHRMC63E6gv
+ ofLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693407871; x=1694012671;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=oc7KT6N5lE3Gybl5H49eKxklHPrKXvR5vp2cc4obBeU=;
- b=RiDggEBmXiS7Kn2+orF1Qwwqj77bSKEBIGGWre4oAp4zaxAwBafPDUHesHnDNgEZpR
- LuHG2gMgzqoTxg2lPD6ddD7rgodaX3RP48WpClQaaoht8nKiZRMvRyCJbK8DEmrGk7YA
- 4IlqaiFTNHRniHytSEDGoObseWfMazRgSNjBJfA2V5crd+Vk5t9UC8Fh6jeaZZoq10jA
- ppOS3oFySvVeULebN8y7z6YchKtwUJEvEppMGSHtJL+acdwnh1wAYb5dSbw66tl0ZKeI
- c1p2GlMaWeXN/3ftzjGhJMujaNie7aGJ7VrwYEhWQkUCp1/kxL2GkQTC8Dd1/Ozzm11e
- yOUg==
-X-Gm-Message-State: AOJu0YwZeyCYSQ2LDaNNSOU0fMi4h/7JqTBHXdh1db4ZM+4/7CqT4eyy
- Jp0UDQtXWQN5EpUqCKWV85u2YQ==
-X-Google-Smtp-Source: AGHT+IGj88yrhbJeXObaOvZ0A6ky1r7fZQJFSBsTpJJ4T2QaQfxKxZt4uDdGT8UE9U78v8TDiCwtuw==
-X-Received: by 2002:a7b:cd94:0:b0:3fe:ba7:f200 with SMTP id
- y20-20020a7bcd94000000b003fe0ba7f200mr2259669wmj.20.1693407871697; 
- Wed, 30 Aug 2023 08:04:31 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693407882; x=1694012682;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/r0wr0aqRF2FoJX6EniN6nRRKTmFdKaHmNsYHmdWLF4=;
+ b=DeDC54IhDivvC6V+hPA1LXHZvbZv0HjKrcygO7rqIBuDytY54C9zwdc7TyTpa8LKLl
+ HMe2QbCx/+oFjy95r0I4tBrOgZv1A22N+1i+wZsH4ByAkkAjA5CnYY1HmRklgSt+qdAT
+ YXufFp6F626uCRju6UliviqMt5LsTc2Ul+iNM37ERjyep2klmMxWvAuYmHbNtlQ2oZjQ
+ n0ZLvsMeg64ryphIfPbfvsw+wTV6FQ5kYBfb0tg6QncaMXCpHu//MDKJEOPfHAQzAy1r
+ WMgQsap45+/RhnUuUI6DLBFZxaSfd6gVGaII+g9s2hhkItGGmi6FYSFKU80NKzIVmA/E
+ mWtA==
+X-Gm-Message-State: AOJu0YwixAokp1I5aSKohJLHnDON+iyqqYbCpAuEJttFjlTj517OqptF
+ o8a6oNkRiryRIYfFC+lAQDW7VA==
+X-Google-Smtp-Source: AGHT+IFkyCcPpszop1l4pVClObyA1rC0U4SC6ngBxW7gQieP61dF4LO4koImAidkYq7FcUm9kebabQ==
+X-Received: by 2002:adf:eec1:0:b0:314:1ce9:3c86 with SMTP id
+ a1-20020adfeec1000000b003141ce93c86mr2026630wrp.0.1693407881886; 
+ Wed, 30 Aug 2023 08:04:41 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.142.89])
  by smtp.gmail.com with ESMTPSA id
- z17-20020a7bc7d1000000b003fbdbd0a7desm2516801wmk.27.2023.08.30.08.04.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 08:04:31 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 144581FFBB;
- Wed, 30 Aug 2023 16:04:31 +0100 (BST)
-References: <20230818033648.8326-1-akihiko.odaki@daynix.com>
- <20230818033648.8326-23-akihiko.odaki@daynix.com>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Eduardo Habkost
- <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>
-Subject: Re: [PATCH RESEND v5 22/26] cpu: Call plugin hooks only when ready
-Date: Wed, 30 Aug 2023 16:04:27 +0100
-In-reply-to: <20230818033648.8326-23-akihiko.odaki@daynix.com>
-Message-ID: <87edjkr2ps.fsf@linaro.org>
+ y6-20020adfd086000000b003179b3fd837sm16913303wrh.33.2023.08.30.08.04.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Aug 2023 08:04:41 -0700 (PDT)
+Message-ID: <6c12069e-da31-9758-4972-7121ab5ffdee@linaro.org>
+Date: Wed, 30 Aug 2023 17:04:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 2/7] vhost-user: tighten "reply_supported" scope in
+ "set_vring_addr"
+Content-Language: en-US
+To: Laszlo Ersek <lersek@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>,
+ Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+References: <20230827182937.146450-1-lersek@redhat.com>
+ <20230827182937.146450-3-lersek@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230827182937.146450-3-lersek@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,19 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 27/8/23 20:29, Laszlo Ersek wrote:
+> In the vhost_user_set_vring_addr() function, we calculate
+> "reply_supported" unconditionally, even though we'll only need it if
+> "wait_for_reply" is also true.
+> 
+> Restrict the scope of "reply_supported" to the minimum.
+> 
+> This is purely refactoring -- no observable change.
+> 
+> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
+> Cc: Eugenio Perez Martin <eperezma@redhat.com>
+> Cc: German Maglione <gmaglione@redhat.com>
+> Cc: Liu Jiang <gerry@linux.alibaba.com>
+> Cc: Sergio Lopez Pascual <slp@redhat.com>
+> Cc: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> ---
+>   hw/virtio/vhost-user.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> The initialization and exit hooks will not affect the state of vCPU,
-> but they may depend on the state of vCPU. Therefore, it's better to
-> call plugin hooks after the vCPU state is fully initialized and before
-> it gets uninitialized.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
