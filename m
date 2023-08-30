@@ -2,95 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F29E78D689
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A5D78D690
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:33:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbM8A-0007Wj-LQ; Wed, 30 Aug 2023 10:25:14 -0400
+	id 1qbMEL-0001DZ-Pe; Wed, 30 Aug 2023 10:31:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qbM88-0007W1-9k
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:25:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qbM84-0002Db-Ou
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:25:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693405507;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nnL5IC3SlbufqkTxehF9hNASLQGY7QUpy1MW5xHYylY=;
- b=QdWo3X4RAPPMY6iCWAiz1+JXgHv3gxDh9ipnmYbPSZidO6zGceLePCRhSsVsDePCYLQCyj
- w5fvLZKKY5CTn4qgL41lPBZJvYzF98APf6MCGmbE4hTG0sCPB7PJOeqMuzRHO2ivbWyiRh
- LVVYToF5oQ2L1rAqAPd5vZ80u4p/T9M=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-py_0tHClMXObqL0xTFOeMw-1; Wed, 30 Aug 2023 10:25:05 -0400
-X-MC-Unique: py_0tHClMXObqL0xTFOeMw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-76dbd78082eso664445785a.0
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:25:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbMEH-0001D8-O2
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:31:34 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbMEE-00048C-HD
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:31:33 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4ff8f2630e3so8882532e87.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:31:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1693405887; x=1694010687;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=1/8L+KQjXewEpGptRQpFqP7VngHBDgm7jVBykJrXjQE=;
+ b=wqjouyVSvN/uaj+9PCAqeXIkQ8ZpwThNmUXByyy7GG0mHGqrkWPC2SErgfH4N2H7Qz
+ kuvPVdnDDX5SwG6W0WzenF+4os3r4/U28HW4aCRL4RanDCRWQdwlKJCiM0zA86FavRu7
+ i7UjqHCmaBwwwhmqyOaW/cqJwRmlzhhCLF075ZyhkJvRZbWZ9F63Q1m1IdrHzFiUbHt3
+ kjhezfRVHrNH/CqT31ri5m82QlaXzWJJpNLeMf9isJ1NvtiwOC0NCElp4e0hzrJ1cQhK
+ PtXq9ab0YY5uWyL7pKFPkXJBXDb8K06eVq6FKJmMJ79XuTpYcpc1ENQEZrpVHZJqRc5z
+ gHyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693405505; x=1694010305;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nnL5IC3SlbufqkTxehF9hNASLQGY7QUpy1MW5xHYylY=;
- b=F8SvgNGlyWiO4W99MJapKfXUBcHzRnPpTMxG2Eq/QKQx680Ays37SpXqK/y/ZBPQwu
- qH5de85N+lBZTLrO0AuZnqRw03KFTGhd663DNZRbFa1NuE4JnaD9jvGmgcDNKjYNtFqb
- cBQ/onTddmOEqhVqaE3XjNevf8JGofg+cF8DQxqqd/1lFcM9x6kHCZlydvrx8lJrblxr
- kkZD7LbOJ37a2IVcxcKpYBdsBY5KvQUqoDtjrzpaxW8VmbANJU6eWKNUjw0GOF210FCv
- 1oilk7KIEz+/P7bC/8697fCzxPnIfSH3vI/9I5vZMoA0WeH46he544QLYhgGKKoE6Wya
- IjwA==
-X-Gm-Message-State: AOJu0Yxhksd+jgVSRpAQvTPcsqyQuQPKV/iKcDtRdahAWLyN6fwx86OQ
- vtwuPSb9QV6kG/G2PwiIOB0cS6wTTDyRcuUcoGrEJItf9PpCl++27AFL0YriOt83n/ruHWkTSaQ
- ZfEljCKNgSo/8GM0=
-X-Received: by 2002:a05:620a:28c1:b0:765:7a1e:a456 with SMTP id
- l1-20020a05620a28c100b007657a1ea456mr2606304qkp.54.1693405504909; 
- Wed, 30 Aug 2023 07:25:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUlQBFWdFJKzK5T32SCqyy6YeqtRR/1Hs4nmA0Z/UCONpdupCQOc4ZszznX/G9uTDDfHJIQg==
-X-Received: by 2002:a05:620a:28c1:b0:765:7a1e:a456 with SMTP id
- l1-20020a05620a28c100b007657a1ea456mr2606284qkp.54.1693405504598; 
- Wed, 30 Aug 2023 07:25:04 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-57-51-114.retail.telecomitalia.it.
- [82.57.51.114]) by smtp.gmail.com with ESMTPSA id
- y3-20020a37e303000000b0076c8fd39407sm3529400qki.113.2023.08.30.07.25.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 07:25:03 -0700 (PDT)
-Date: Wed, 30 Aug 2023 16:24:59 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
- Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>, 
- Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
- synchronously
-Message-ID: <au2up22gchxq47mefu7hdpwt4owohq5u3s5sc3b2mfwffsjwzd@ls6h4qkcs7lv>
-References: <20230827182937.146450-1-lersek@redhat.com>
- <20230827182937.146450-8-lersek@redhat.com>
- <wi7txoigehny6xw5owzz4gt6ayrmxfwryc7cbgzc2ndcqkdbxs@7cnl4po6gf2g>
- <887f6d94-9bb4-a19d-f2f0-382a0433dc7c@redhat.com>
+ d=1e100.net; s=20221208; t=1693405887; x=1694010687;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1/8L+KQjXewEpGptRQpFqP7VngHBDgm7jVBykJrXjQE=;
+ b=T2dpBa+EJO7aMwpSFfinJtZ7/LHRR8ozq3nKdbRNZdLwTtfVFDKdaZPtsjTGra/6f1
+ xmqVW0ysfZfC5XoCyT1ZO+a/Xjfc8PuNy9z2l1bpSfhjmcakgLq7gkeM9oV0VnqSV3Bn
+ kf8TEPd5artCDwRH09AXzHhjFyYEMCl7Zni5KdxsEWZFm2oUlTk5AXBEjJVcZxP48ci1
+ r+IsFE69GXjoAZs5LZM9RouUYTAU7tosqzCkYXNMFaMW0tM699WyfBBlYZgbt4eACeZp
+ IqDV9Z18kE/EHNE/txmctbOIdW2K1x4K5frwG8eKiEb3gwI7EmVfM1i8Pf3JskSHyxS9
+ eC9Q==
+X-Gm-Message-State: AOJu0YwJ3aKRTAqz0C2sFITrRvZR/qr9G7yBqFFnOMvDvCwfcz6fLOyo
+ B0Hj8gi5HXqnnYvLj7wfw5Obw7svP2KQ+lb6f5Qw8np/9Z95/x8V
+X-Google-Smtp-Source: AGHT+IERLN9SAQNh5b0gM02n6567G+cfykIAHU4TmsxdiQlVZTuG4IgaDsws7BZikfzV5C8U9CRcWrjwdHQV7fxUEtI=
+X-Received: by 2002:ac2:54bb:0:b0:4fb:9168:1fce with SMTP id
+ w27-20020ac254bb000000b004fb91681fcemr1555422lfk.59.1693405887160; Wed, 30
+ Aug 2023 07:31:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <887f6d94-9bb4-a19d-f2f0-382a0433dc7c@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230830022205.57878-1-imp@bsdimp.com>
+ <CAJSP0QVnEswDVbvWU3Zv74L+19De+nTVmzueAP-Lg_zw4E1mtg@mail.gmail.com>
+ <bcc8770e-95e6-e259-3c0b-e18a2c41474b@redhat.com>
+In-Reply-To: <bcc8770e-95e6-e259-3c0b-e18a2c41474b@redhat.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Wed, 30 Aug 2023 08:31:15 -0600
+Message-ID: <CANCZdfqijpBfCJpv0QywMF3bd4Kow-3wyqs2ohT7w3tcYWOVZQ@mail.gmail.com>
+Subject: Re: [PULL 0/1] Quick fix patches
+To: Thomas Huth <thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>,
+ QEMU Developers <qemu-devel@nongnu.org>, 
+ Laurent Vivier <laurent@vivier.eu>, Beraldo Leal <bleal@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000005d824d060424c8f6"
+Received-SPF: none client-ip=2a00:1450:4864:20::12b;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,205 +89,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 11:26:41AM +0200, Laszlo Ersek wrote:
->On 8/30/23 10:39, Stefano Garzarella wrote:
->> On Sun, Aug 27, 2023 at 08:29:37PM +0200, Laszlo Ersek wrote:
->>> (1) The virtio-1.0 specification
->>> <http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html> writes:
->>
->> What about referring the latest spec available now (1.2)?
->
->I didn't want to do that because the OVMF guest driver was written
->against 1.0 (and the spec and the device are backwards compatible).
->
->But, I don't feel strongly about this; I'm OK updating the reference /
->quote to 1.2.
->
->>
->>>
->>>> 3     General Initialization And Device Operation
->>>> 3.1   Device Initialization
->>>> 3.1.1 Driver Requirements: Device Initialization
->>>>
->>>> [...]
->>>>
->>>> 7. Perform device-specific setup, including discovery of virtqueues for
->>>>    the device, optional per-bus setup, reading and possibly writing the
->>>>    device’s virtio configuration space, and population of virtqueues.
->>>>
->>>> 8. Set the DRIVER_OK status bit. At this point the device is “live”.
->>>
->>> and
->>>
->>>> 4         Virtio Transport Options
->>>> 4.1       Virtio Over PCI Bus
->>>> 4.1.4     Virtio Structure PCI Capabilities
->>>> 4.1.4.3   Common configuration structure layout
->>>> 4.1.4.3.2 Driver Requirements: Common configuration structure layout
->>>>
->>>> [...]
->>>>
->>>> The driver MUST configure the other virtqueue fields before enabling the
->>>> virtqueue with queue_enable.
->>>>
->>>> [...]
->>>
->>> These together mean that the following sub-sequence of steps is valid for
->>> a virtio-1.0 guest driver:
->>>
->>> (1.1) set "queue_enable" for the needed queues as the final part of
->>> device
->>> initialization step (7),
->>>
->>> (1.2) set DRIVER_OK in step (8),
->>>
->>> (1.3) immediately start sending virtio requests to the device.
->>>
->>> (2) When vhost-user is enabled, and the VHOST_USER_F_PROTOCOL_FEATURES
->>> special virtio feature is negotiated, then virtio rings start in disabled
->>> state, according to
->>> <https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#ring-states>.
->>> In this case, explicit VHOST_USER_SET_VRING_ENABLE messages are needed
->>> for
->>> enabling vrings.
->>>
->>> Therefore setting "queue_enable" from the guest (1.1) is a *control
->>> plane*
->>> operation, which travels from the guest through QEMU to the vhost-user
->>> backend, using a unix domain socket.
->>>
->>> Whereas sending a virtio request (1.3) is a *data plane* operation, which
->>> evades QEMU -- it travels from guest to the vhost-user backend via
->>> eventfd.
->>>
->>> This means that steps (1.1) and (1.3) travel through different channels,
->>> and their relative order can be reversed, as perceived by the vhost-user
->>> backend.
->>>
->>> That's exactly what happens when OVMF's virtiofs driver (VirtioFsDxe)
->>> runs
->>> against the Rust-language virtiofsd version 1.7.2. (Which uses version
->>> 0.10.1 of the vhost-user-backend crate, and version 0.8.1 of the vhost
->>> crate.)
->>>
->>> Namely, when VirtioFsDxe binds a virtiofs device, it goes through the
->>> device initialization steps (i.e., control plane operations), and
->>> immediately sends a FUSE_INIT request too (i.e., performs a data plane
->>> operation). In the Rust-language virtiofsd, this creates a race between
->>> two components that run *concurrently*, i.e., in different threads or
->>> processes:
->>>
->>> - Control plane, handling vhost-user protocol messages:
->>>
->>>  The "VhostUserSlaveReqHandlerMut::set_vring_enable" method
->>>  [crates/vhost-user-backend/src/handler.rs] handles
->>>  VHOST_USER_SET_VRING_ENABLE messages, and updates each vring's "enabled"
->>>  flag according to the message processed.
->>>
->>> - Data plane, handling virtio / FUSE requests:
->>>
->>>  The "VringEpollHandler::handle_event" method
->>>  [crates/vhost-user-backend/src/event_loop.rs] handles the incoming
->>>  virtio / FUSE request, consuming the virtio kick at the same time. If
->>>  the vring's "enabled" flag is set, the virtio / FUSE request is
->>>  processed genuinely. If the vring's "enabled" flag is clear, then the
->>>  virtio / FUSE request is discarded.
->>>
->>> Note that OVMF enables the queue *first*, and sends FUSE_INIT *second*.
->>> However, if the data plane processor in virtiofsd wins the race, then it
->>> sees the FUSE_INIT *before* the control plane processor took notice of
->>> VHOST_USER_SET_VRING_ENABLE and green-lit the queue for the data plane
->>> processor. Therefore the latter drops FUSE_INIT on the floor, and goes
->>> back to waiting for further virtio / FUSE requests with epoll_wait.
->>> Meanwhile OVMF is stuck waiting for the FUSET_INIT response -- a
->>> deadlock.
->>>
->>> The deadlock is not deterministic. OVMF hangs infrequently during first
->>> boot. However, OVMF hangs almost certainly during reboots from the UEFI
->>> shell.
->>>
->>> The race can be "reliably masked" by inserting a very small delay -- a
->>> single debug message -- at the top of "VringEpollHandler::handle_event",
->>> i.e., just before the data plane processor checks the "enabled" field of
->>> the vring. That delay suffices for the control plane processor to act
->>> upon
->>> VHOST_USER_SET_VRING_ENABLE.
->>>
->>> We can deterministically prevent the race in QEMU, by blocking OVMF
->>> inside
->>> step (1.1) -- i.e., in the write to the "queue_enable" register -- until
->>> VHOST_USER_SET_VRING_ENABLE actually *completes*. That way OVMF's VCPU
->>> cannot advance to the FUSE_INIT submission before virtiofsd's control
->>> plane processor takes notice of the queue being enabled.
->>>
->>> Wait for VHOST_USER_SET_VRING_ENABLE completion by:
->>>
->>> - setting the NEED_REPLY flag on VHOST_USER_SET_VRING_ENABLE, and waiting
->>>  for the reply, if the VHOST_USER_PROTOCOL_F_REPLY_ACK vhost-user feature
->>>  has been negotiated, or
->>>
->>> - performing a separate VHOST_USER_GET_FEATURES *exchange*, which
->>> requires
->>>  a backend response regardless of VHOST_USER_PROTOCOL_F_REPLY_ACK.
->>
->> Thanks for the excellent analysis (and fix of course!).
->>
->>>
->>> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
->>> Cc: Eugenio Perez Martin <eperezma@redhat.com>
->>> Cc: German Maglione <gmaglione@redhat.com>
->>> Cc: Liu Jiang <gerry@linux.alibaba.com>
->>> Cc: Sergio Lopez Pascual <slp@redhat.com>
->>> Cc: Stefano Garzarella <sgarzare@redhat.com>
->>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
->>> ---
->>> hw/virtio/vhost-user.c | 2 +-
->>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->>> index beb4b832245e..01e0ca90c538 100644
->>> --- a/hw/virtio/vhost-user.c
->>> +++ b/hw/virtio/vhost-user.c
->>> @@ -1235,7 +1235,7 @@ static int vhost_user_set_vring_enable(struct
->>> vhost_dev *dev, int enable)
->>>             .num   = enable,
->>>         };
->>>
->>
->> How about adding a small comment here summarizing the commit message in
->> a few lines?
->
->Right, I can do that!
->
->>
->> Should we cc stable for this fix?
->
->Hm, that didn't occur to me.
->
->AFAICT, the issue goes back to the introduction of
->VHOST_USER_SET_VRING_ENABLE, in commit 7263a0ad7899 ("vhost-user: add a
->new message to disable/enable a specific virt queue.", 2015-09-24) --
->part of release v2.5.0.
->
->What are the "live" stable branches at this time?
->
->Applying the series on top of v8.1.0 shouldn't be hard, as
->"hw/virtio/vhost-user.c" is identical between v8.1.0 and 50e7a40af372 (=
->the base commit of this series).
->
->Applying the series on top of v8.0.0 looks more messy, the file had seen
->significant changes between 8.0 and 8.1. I'd rather not attempt the
->backport (bunch of refactorings etc) to 8.0.
->
->If I just CC stable, what stable branch is going to be targeted?
+--0000000000005d824d060424c8f6
+Content-Type: text/plain; charset="UTF-8"
 
- From https://www.qemu.org/docs/master/devel/stable-process.html
-the target stable branch should be v8.1.x
+On Wed, Aug 30, 2023, 7:26 AM Thomas Huth <thuth@redhat.com> wrote:
 
-But since it is not a regression from 8.0, I agree with you not CCing
-it.
+> On 30/08/2023 15.16, Stefan Hajnoczi wrote:
+> > Hi,
+> > The patch introduces the following build failure:
+> >
+> > cc -m64 -mcx16 -Isubprojects/libvhost-user/libvhost-user.a.p
+> > -Isubprojects/libvhost-user -I../subprojects/libvhost-user
+> > -fdiagnostics-color=auto -Wall -Winvalid-pch -Werror -std=gnu99 -O2 -g
+> > -Wsign-compare -Wdeclaration-after-statement -Wstrict-aliasing
+> > -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+> > -fno-common -fwrapv -fPIE -pthread -D_GNU_SOURCE -MD -MQ
+> > subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -MF
+> > subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o.d -o
+> > subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -c
+> > ../subprojects/libvhost-user/libvhost-user.c
+> > In file included from ../subprojects/libvhost-user/include/atomic.h:18,
+> > from ../subprojects/libvhost-user/libvhost-user.c:53:
+> > ../subprojects/libvhost-user/include/compiler.h:38:40: error: missing
+> > binary operator before token "("
+> > 38 | #if defined(__clang__) &&
+> __has_warning("-Waddress-of-packed-member")
+> > | ^
+> >
+> > https://gitlab.com/qemu-project/qemu/-/jobs/4981576093
+>
+> IIRC older versions of GCC do not have __has_warning() yet, so if you want
+> to use this in compiler.h, you have to do it below the line in compiler.h
+> that adds this:
+>
+> #ifndef __has_warning
+> #define __has_warning(x) 0 /* compatibility with non-clang compilers */
+> #endif
+>
 
-Thanks,
-Stefano
+This already works for linux-user. If there are gcc versions that break,
+our current CI jobs don't show it. Why add complexity for unsupported gcc
+versions? And how do I know I got it right?
 
+I'm really starting to think the feedback 'move it to compilers.h' should
+have just been ignored... it's turning into a lot of my time to correct
+that I don't have when I'm also out of CI minutes to test with.
+
+Warner
+
+
+
+
+
+>   HTH,
+>    Thomas
+>
+>
+
+--0000000000005d824d060424c8f6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, Aug 30, 2023, 7:26 AM Thomas Huth &lt;<a href=
+=3D"mailto:thuth@redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #cc=
+c solid;padding-left:1ex">On 30/08/2023 15.16, Stefan Hajnoczi wrote:<br>
+&gt; Hi,<br>
+&gt; The patch introduces the following build failure:<br>
+&gt; <br>
+&gt; cc -m64 -mcx16 -Isubprojects/libvhost-user/libvhost-user.a.p<br>
+&gt; -Isubprojects/libvhost-user -I../subprojects/libvhost-user<br>
+&gt; -fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu99 -O=
+2 -g<br>
+&gt; -Wsign-compare -Wdeclaration-after-statement -Wstrict-aliasing<br>
+&gt; -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing<br>
+&gt; -fno-common -fwrapv -fPIE -pthread -D_GNU_SOURCE -MD -MQ<br>
+&gt; subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -MF<br>
+&gt; subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o.d -o<br>
+&gt; subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -c<br>
+&gt; ../subprojects/libvhost-user/libvhost-user.c<br>
+&gt; In file included from ../subprojects/libvhost-user/include/atomic.h:18=
+,<br>
+&gt; from ../subprojects/libvhost-user/libvhost-user.c:53:<br>
+&gt; ../subprojects/libvhost-user/include/compiler.h:38:40: error: missing<=
+br>
+&gt; binary operator before token &quot;(&quot;<br>
+&gt; 38 | #if defined(__clang__) &amp;&amp; __has_warning(&quot;-Waddress-o=
+f-packed-member&quot;)<br>
+&gt; | ^<br>
+&gt; <br>
+&gt; <a href=3D"https://gitlab.com/qemu-project/qemu/-/jobs/4981576093" rel=
+=3D"noreferrer noreferrer" target=3D"_blank">https://gitlab.com/qemu-projec=
+t/qemu/-/jobs/4981576093</a><br>
+<br>
+IIRC older versions of GCC do not have __has_warning() yet, so if you want =
+<br>
+to use this in compiler.h, you have to do it below the line in compiler.h <=
+br>
+that adds this:<br>
+<br>
+#ifndef __has_warning<br>
+#define __has_warning(x) 0 /* compatibility with non-clang compilers */<br>
+#endif<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">This already works for linux-user. If there are gcc versions that bre=
+ak, our current CI jobs don&#39;t show it. Why add complexity for unsupport=
+ed gcc versions? And how do I know I got it right?</div><div dir=3D"auto"><=
+br></div><div dir=3D"auto">I&#39;m really starting to think the feedback &#=
+39;move it to compilers.h&#39; should have just been ignored... it&#39;s tu=
+rning into a lot of my time to correct that I don&#39;t have when I&#39;m a=
+lso out of CI minutes to test with.</div><div dir=3D"auto"><br></div><div d=
+ir=3D"auto">Warner</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br><=
+/div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"au=
+to"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+=C2=A0 HTH,<br>
+=C2=A0 =C2=A0Thomas<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000005d824d060424c8f6--
 
