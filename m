@@ -2,88 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9339678D6C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8045D78D6C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:01:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMg8-0003Y4-GZ; Wed, 30 Aug 2023 11:00:20 -0400
+	id 1qbMgv-0004DW-HE; Wed, 30 Aug 2023 11:01:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMg4-0003Xn-9J
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:00:16 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qbMgt-0004D3-Un
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:01:07 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMfz-0002E6-PB
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:00:15 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-31c615eb6feso4786856f8f.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:00:11 -0700 (PDT)
+ id 1qbMgq-0002TP-1u
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:01:07 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-31781e15a0cso5054017f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:01:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693407610; x=1694012410; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693407662; x=1694012462; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/iSn/+nN1G0NOP7wm/QNt8uNHk4rJ74E0bfrkFLGaRc=;
- b=viOrQh/A7sgAx4rShxr5reluJ524zcj7YS8rYewqJotSubn8eMbS8ycFs7mfp6ZXhl
- c7u1PNS5AkRPUSiGvqIbXf9x1v2FgsMhikfO1efFmUKbCawCEFf375WDmgkGMphbSvMi
- FMlTt22jTSIkcWKKi5tD45GK1hBrs7kr1u9ZQ2QuxRZ9SXCg6idPncLVMdLrX2Z4KDQc
- LI1qSt92w82RHvWQV2i/G3NDkgQkE/3FFVH16WbKKsirL0yQs0tfM9aKpkpoDsw3wfPn
- /UqrPTlhQER0TMKJ5H9K9rlkotGYzcquACJNFlBP49MkwbGXCBKGOQRXsV0r+vekUhez
- DwDg==
+ bh=FOg8ihkf6ELEG0+P8qNh0Gi4lsiRRUWL+RyiTWoniz8=;
+ b=Q1W4qo+AKkAYLr8Wsgy1DrN147Ox+ezmxMxnlE0/JfnNfuEIQLQPE8c4g0tx8m6JRh
+ +dKAF3cNHiB5DMEwVt8/gIpz1J8OMVIF6DIHG+r9PoAKsHBpJppdtWrrw8Dhb8uJlJ7y
+ gjYunGGqz6JxvV39RPZeN6hEczDeJ0zEUXMrtzZvuGC7/hJCopfx/B9ViynTHsOj0qRo
+ aabhDnam96b/GoJwvU3ZWJv3ZNycRlf+Yy1EMER1ZwySLdqdzW/kd5az9MqTib8GXs4j
+ auL+wYoPu09R2m7YHW9l1jt++peWJAfzirII4Rt6LVwhp7qI+RG6kvdebZZ9WzPvmsMS
+ +iBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693407610; x=1694012410;
+ d=1e100.net; s=20221208; t=1693407662; x=1694012462;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=/iSn/+nN1G0NOP7wm/QNt8uNHk4rJ74E0bfrkFLGaRc=;
- b=FJ81soVmjznPxqmAhrk0eJce2EZMqiPvf4sdE7ymqcaoLkqkXqHrQCb4w4mDbEn8nd
- KqJHczTSDw/hJ4b+kcO3kdY4xHp8LPJ9FKhXioWwXPGvjE3S2nNYHutgN/GgI/8Rg3nb
- 5rSVpoCycCDIdBG5UnHdTgJkLwgxJGv51PVDgCFLqX5W9b+x23/0jYhuDbk6LHOOOGZE
- 61XJIn66Gymv3d62ys/570tuz37WSJF2XOP/t159fMGfXGg2Ir1knEkTf14bEZg24aCZ
- LV9O+NNINFF3HbPZm3LQhG2nlluxqp4T5okquHMWmTRrBazIKhdgRhQdbUzunqvCpHCA
- mOPg==
-X-Gm-Message-State: AOJu0Yx2rMZcvt8YZuL48kkjmH6FzsUsxNu7l8e28qwsRrLfdG1VQpxJ
- W94Y/Unn/v7IMmqPDNOJpl0xNGKM88bcrQRYqS8=
-X-Google-Smtp-Source: AGHT+IH5CJtImvHb8C9z5rdGptYE/4HA39ZfQaG4SVLMUouhTKsAl+i0kYRroHF5MyiBoxwctd3Z4A==
-X-Received: by 2002:a5d:54c8:0:b0:30f:c5b1:23ef with SMTP id
- x8-20020a5d54c8000000b0030fc5b123efmr2029482wrv.41.1693407609952; 
- Wed, 30 Aug 2023 08:00:09 -0700 (PDT)
+ bh=FOg8ihkf6ELEG0+P8qNh0Gi4lsiRRUWL+RyiTWoniz8=;
+ b=OSIYmOGq419ED9wj7qHLWhLBoV24aa4gb6h7Gqf7prFzcHy4VrhU01DFX1roYi5GzT
+ 6aKCq+32yMhWwncv9f5aVF7HrMcUSzs8kqpsfpz1mOQ0lRx27zVcizEYVLID77EoA12g
+ Imu8WMvckBLNp2Us+N8OaoN3h8aRTgds58B8yY1HoNDExqHqmxpAPyG53W9zyXeEWfmP
+ O6E9Z8VHgic5sz/XBInUtoFtvpM4jLMHXtZiTE5/sLTsdr0SdIGnjbmkolE+wCqeI+rP
+ 0M/Y1xq+h+Vw1N+xP6veuzSrbSEeRrZf60yzhkAPz0vK3LLdkIX1CyleD+he/e82jBts
+ 8PHg==
+X-Gm-Message-State: AOJu0Yw6AkBDemuIWXYLqXHX12RzcYonk7HTkrhj/bS3DTMZcPVavyE3
+ 5VMXecczB/FjQmVsbmAVNWnNLg==
+X-Google-Smtp-Source: AGHT+IHn4Os2d5uK5qlww1lMQFBLvf1l2sMer12tv4guIgRSoRtYy7TJalOIPk+IKvgN6xd0WpZX+A==
+X-Received: by 2002:a05:6000:114e:b0:31c:804b:5ec3 with SMTP id
+ d14-20020a056000114e00b0031c804b5ec3mr1770108wrx.67.1693407662063; 
+ Wed, 30 Aug 2023 08:01:02 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l1-20020a5d4101000000b0031c6ae19e27sm16773821wrp.99.2023.08.30.08.00.09
+ j14-20020adfea4e000000b003142ea7a661sm16947763wrn.21.2023.08.30.08.01.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 08:00:09 -0700 (PDT)
+ Wed, 30 Aug 2023 08:01:01 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0B3481FFBB;
- Wed, 30 Aug 2023 16:00:09 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 5165E1FFBB;
+ Wed, 30 Aug 2023 16:01:01 +0100 (BST)
 References: <20230818033648.8326-1-akihiko.odaki@daynix.com>
- <20230818033648.8326-13-akihiko.odaki@daynix.com>
+ <20230818033648.8326-14-akihiko.odaki@daynix.com>
 User-agent: mu4e 1.11.16; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
  <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
- =?utf-8?Q?Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH RESEND v5 12/26] gdbstub: Use GDBFeature for
- GDBRegisterState
-Date: Wed, 30 Aug 2023 15:59:21 +0100
-In-reply-to: <20230818033648.8326-13-akihiko.odaki@daynix.com>
-Message-ID: <87v8cwr2x2.fsf@linaro.org>
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>, Eduardo Habkost <eduardo@habkost.net>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Yanan Wang
+ <wangyanan55@huawei.com>, Peter Maydell <peter.maydell@linaro.org>, Song
+ Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, =?utf-8?Q?C=C3=A9dric?= Le
+ Goater
+ <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>, Greg Kurz
+ <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin
+ Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, Liu
+ Zhiwei <zhiwei_liu@linux.alibaba.com>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Ilya
+ Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Bastian
+ Koppelmann <kbastian@mail.uni-paderborn.de>, "open list:ARM TCG CPUs"
+ <qemu-arm@nongnu.org>, "open list:PowerPC TCG CPUs" <qemu-ppc@nongnu.org>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>, "open list:S390 TCG
+ CPUs" <qemu-s390x@nongnu.org>
+Subject: Re: [PATCH RESEND v5 13/26] hw/core/cpu: Return static value with
+ gdb_arch_name()
+Date: Wed, 30 Aug 2023 16:00:56 +0100
+In-reply-to: <20230818033648.8326-14-akihiko.odaki@daynix.com>
+Message-ID: <87r0nkr2vm.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,89 +119,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> Simplify GDBRegisterState by replacing num_regs and xml members with
-> one member that points to GDBFeature.
+> All implementations of gdb_arch_name() returns dynamic duplicates of
+> static strings. It's also unlikely that there will be an implementation
+> of gdb_arch_name() that returns a truly dynamic value due to the nature
+> of the function returning a well-known identifiers. Qualify the value
+> gdb_arch_name() with const and make all of its implementations return
+> static strings.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  gdbstub/gdbstub.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
->
-> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-> index b62002bc34..ee6b8b98c8 100644
-> --- a/gdbstub/gdbstub.c
-> +++ b/gdbstub/gdbstub.c
-> @@ -47,10 +47,9 @@
->=20=20
->  typedef struct GDBRegisterState {
->      int base_reg;
-> -    int num_regs;
->      gdb_get_reg_cb get_reg;
->      gdb_set_reg_cb set_reg;
-> -    const char *xml;
-> +    const GDBFeature *feature;
->      struct GDBRegisterState *next;
->  } GDBRegisterState;
->=20=20
-> @@ -390,7 +389,7 @@ static const char *get_feature_xml(const char *p, con=
-st char **newp,
->              pstrcat(buf, buf_sz, "\"/>");
->              for (r =3D cpu->gdb_regs; r; r =3D r->next) {
->                  pstrcat(buf, buf_sz, "<xi:include href=3D\"");
-> -                pstrcat(buf, buf_sz, r->xml);
-> +                pstrcat(buf, buf_sz, r->feature->xmlname);
->                  pstrcat(buf, buf_sz, "\"/>");
->              }
-
-I should note I've done some cleaning up of the XML code in the gdbstub
-so you'll probably want to re-base once the PR has gone in.
-
-
->              pstrcat(buf, buf_sz, "</target>");
-> @@ -497,7 +496,7 @@ static int gdb_read_register(CPUState *cpu, GByteArra=
-y *buf, int reg)
->      }
->=20=20
->      for (r =3D cpu->gdb_regs; r; r =3D r->next) {
-> -        if (r->base_reg <=3D reg && reg < r->base_reg + r->num_regs) {
-> +        if (r->base_reg <=3D reg && reg < r->base_reg + r->feature->num_=
-regs) {
->              return r->get_reg(env, buf, reg - r->base_reg);
->          }
->      }
-> @@ -515,7 +514,7 @@ static int gdb_write_register(CPUState *cpu, uint8_t =
-*mem_buf, int reg)
->      }
->=20=20
->      for (r =3D cpu->gdb_regs; r; r =3D r->next) {
-> -        if (r->base_reg <=3D reg && reg < r->base_reg + r->num_regs) {
-> +        if (r->base_reg <=3D reg && reg < r->base_reg + r->feature->num_=
-regs) {
->              return r->set_reg(env, mem_buf, reg - r->base_reg);
->          }
->      }
-> @@ -538,17 +537,16 @@ void gdb_register_coprocessor(CPUState *cpu,
->      p =3D &cpu->gdb_regs;
->      while (*p) {
->          /* Check for duplicates.  */
-> -        if (strcmp((*p)->xml, feature->xmlname) =3D=3D 0)
-> +        if ((*p)->feature =3D=3D feature)
->              return;
->          p =3D &(*p)->next;
->      }
->=20=20
->      s =3D g_new0(GDBRegisterState, 1);
->      s->base_reg =3D cpu->gdb_num_regs;
-> -    s->num_regs =3D feature->num_regs;
->      s->get_reg =3D get_reg;
->      s->set_reg =3D set_reg;
-> -    s->xml =3D feature->xml;
-> +    s->feature =3D feature;
->=20=20
->      /* Add to end of list.  */
->      cpu->gdb_num_regs +=3D feature->num_regs;
-
-Otherwise:
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
