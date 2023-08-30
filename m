@@ -2,57 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2107378D608
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FE378D60D
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:11:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbKsM-0005kF-H7; Wed, 30 Aug 2023 09:04:50 -0400
+	id 1qbKxU-0001ME-6f; Wed, 30 Aug 2023 09:10:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qbKsG-0005hC-AD; Wed, 30 Aug 2023 09:04:45 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qbKs9-0007Qj-EC; Wed, 30 Aug 2023 09:04:43 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbPWg5GjTz6K6V0;
- Wed, 30 Aug 2023 20:59:27 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 30 Aug
- 2023 14:04:15 +0100
-Date: Wed, 30 Aug 2023 14:04:14 +0100
-To: Klaus Jensen <its@irrelevant.dk>
-CC: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- Keith Busch <kbusch@kernel.org>, Lior Weintraub <liorw@pliops.com>, Jeremy
- Kerr <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>,
- Peter Delevoryas <peter@pjd.dev>, <qemu-devel@nongnu.org>,
- <qemu-arm@nongnu.org>, <qemu-block@nongnu.org>, "Klaus Jensen"
- <k.jensen@samsung.com>
-Subject: Re: [PATCH v4 1/3] hw/i2c: add smbus pec utility function
-Message-ID: <20230830140414.0000428b@Huawei.com>
-In-Reply-To: <20230823-nmi-i2c-v4-1-2b0f86e5be25@samsung.com>
-References: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
- <20230823-nmi-i2c-v4-1-2b0f86e5be25@samsung.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qbKxR-0001Ln-K8
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:10:05 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qbKxP-0000P0-27
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:10:05 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 4BC8E1F45F;
+ Wed, 30 Aug 2023 13:09:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1693400997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=avZcAc/KkOdXvapZZKqgTRvLBMkNUQrOw8aMPjikbP0=;
+ b=K1bet8MNZ8nNy+U4AgAuuocgGKJh2XVbo7FQio2RYTh9Ntoqh98igSPeBSizW7z4IZCBu9
+ xgChCG5MZ0OOT9OxIA5AH4TDIswjNJJ+JhqUQkW6KcWW97URFhgBhUc0C8aaV3bycBEDsa
+ M7cHmiTWH2mYcr70yJG95FhC8K3TNgU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1693400997;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=avZcAc/KkOdXvapZZKqgTRvLBMkNUQrOw8aMPjikbP0=;
+ b=d8YGIMWYkTz+nOSXwwabX02PPxLXTN4cE8neGs2DrdWUSXlUByf6uSy1Bo0XwL84zN+OWm
+ 9bJE2Fx23gyXCuCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F040613441;
+ Wed, 30 Aug 2023 13:09:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id bxYkOaQ/72SVXgAAMHmgww
+ (envelope-from <cfontana@suse.de>); Wed, 30 Aug 2023 13:09:56 +0000
+Message-ID: <2f5b9774-e089-3606-905a-8b991dcc5e87@suse.de>
+Date: Wed, 30 Aug 2023 15:09:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH V4 0/2] migration file URI
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>, Fabiano Rosas <farosas@suse.de>
+References: <1688135108-316997-1-git-send-email-steven.sistare@oracle.com>
+ <dba1e07d-6ebf-9329-7be7-4702ff5dc16d@suse.de>
+ <1290963e-9f63-fc70-6729-d355d247c2fd@linaro.org>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <1290963e-9f63-fc70-6729-d355d247c2fd@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,78 +89,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 23 Aug 2023 11:21:58 +0200
-Klaus Jensen <its@irrelevant.dk> wrote:
+On 8/22/23 15:25, Philippe Mathieu-Daudé wrote:
+> Hi Claudio,
+> 
+> On 22/8/23 14:00, Claudio Fontana wrote:
+>> Hello,
+>>
+>> this series is all reviewed,
+>>
+>> and is needed as a precondition for further work to improve dramatically the performance of virsh save, virsh restore
+>> when migrating to disk, can it be merged?
+> 
+> $ ./scripts/get_maintainer.pl -f migration/meson.build
+> Juan Quintela <quintela@redhat.com> (maintainer:Migration)
+> Peter Xu <peterx@redhat.com> (reviewer:Migration)
+> Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
+> qemu-devel@nongnu.org (open list:All patches CC here)
+> 
+> One maintainer, one single point of failure. When the
+> maintainer is busy or offline (vacations?) then everybody
+> is stuck.
+> 
+> This is usually solved by adding co-maintainers.
+> 
+> Juan, would you accept having co-maintainers helping you
+> dealing with the merge process? I'm not volunteering, but
+> this can be a good opportunity to make a formal request to
+> the community.
+> 
+> Regards,
+> 
+> Phil.
+> 
 
-> From: Klaus Jensen <k.jensen@samsung.com>
-> 
-> Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
-> message.
-> 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+Thanks Philippe,
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I would like to highlight to the QEMU community here how important this is for SUSE,
 
-> ---
->  hw/i2c/smbus_master.c         | 26 ++++++++++++++++++++++++++
->  include/hw/i2c/smbus_master.h |  2 ++
->  2 files changed, 28 insertions(+)
-> 
-> diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
-> index 6a53c34e70b7..01a8e4700222 100644
-> --- a/hw/i2c/smbus_master.c
-> +++ b/hw/i2c/smbus_master.c
-> @@ -15,6 +15,32 @@
->  #include "hw/i2c/i2c.h"
->  #include "hw/i2c/smbus_master.h"
->  
-> +static uint8_t crc8(uint16_t data)
-> +{
-> +    int i;
-> +
-> +    for (i = 0; i < 8; i++) {
-> +        if (data & 0x8000) {
-> +            data ^= 0x1070U << 3;
-> +        }
-> +
-> +        data <<= 1;
-> +    }
-> +
-> +    return (uint8_t)(data >> 8);
-> +}
-> +
-> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len)
-> +{
-> +    int i;
-> +
-> +    for (i = 0; i < len; i++) {
-> +        crc = crc8((crc ^ buf[i]) << 8);
-> +    }
-> +
-> +    return crc;
-> +}
-> +
->  /* Master device commands.  */
->  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read)
->  {
-> diff --git a/include/hw/i2c/smbus_master.h b/include/hw/i2c/smbus_master.h
-> index bb13bc423c22..d90f81767d86 100644
-> --- a/include/hw/i2c/smbus_master.h
-> +++ b/include/hw/i2c/smbus_master.h
-> @@ -27,6 +27,8 @@
->  
->  #include "hw/i2c/i2c.h"
->  
-> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len);
-> +
->  /* Master device commands.  */
->  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read);
->  int smbus_receive_byte(I2CBus *bus, uint8_t addr);
-> 
+to see progress for all the series in the migration area that are currently still waiting and competing for attention.
+
+The specific features and improvements we are developing or helping to review are a priority for us,
+and we are concerned about the rate of progress with the existing governance processes.
+
+Fabiano is investing a lot of his attention to this area, with features, bugfixes and reviews,
+but of course it is up to the community as a whole to address the issue so that reviewed work is merged.
+
+My attempt here is to make sure that it is recognized as a problem, so it can be hopefully be addressed by the community in a timely fashion,
+and we can all benefit from the already developed and reviewed work that is pending.
+
+Thanks!
+
+CLaudio
 
 
