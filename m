@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968A678D5A9
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FE078D5A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:50:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbJht-0003Pp-D2; Wed, 30 Aug 2023 07:49:57 -0400
+	id 1qbJhv-0003Rb-5s; Wed, 30 Aug 2023 07:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbJhr-0003Ms-8O
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:49:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qbJhs-0003PA-Dj
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:49:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbJho-0003ft-TZ
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:49:54 -0400
+ id 1qbJhp-0003gI-W0
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:49:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693396192;
+ s=mimecast20190719; t=1693396193;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2mrbL2L5n4dlKXoxPhQ4bdIS4/YMrsyeedolVZYfUKA=;
- b=izlz/w8zbNQ3rp1AJ9YWfHim/l9XlPIDMkysyEl0jbEB5VcJ9iWN+elSpjr7vlW6wtktGg
- RE+syFVq8dRL+MZ+m53CKVtN4NR4h6tL4MhHeogDoTr6IKSLAVfvHThP97Qt1aGRgfhtHM
- FnbqR/CCZfptaXgkS5tnk2eOCDRvz3Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-228-E8xyf0fpMY-PthX8a-0lKQ-1; Wed, 30 Aug 2023 07:49:47 -0400
-X-MC-Unique: E8xyf0fpMY-PthX8a-0lKQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=gKxF0jpSy2jpgUjoIwkX9hfmhlsS/bKIAWxJtzJQZrE=;
+ b=PdNrFSBrg7LahcneNdzj5Q/pj/5kWXQhVcbpv1vHW+HGwwH7vbjz9AtyyYlk4HszLdMtYw
+ uV8TqZwoSmjbRX29Rx1wLrqZ+cR6FmLgsF5NSUedTnXrMoYVoV7G3SyqiIecAX2VcZXlsH
+ /ilFH9YcY/pcDlaUHPW0rHBlcwdS1WU=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-367-E06kURzINPOnAd1oidh3hQ-1; Wed, 30 Aug 2023 07:49:50 -0400
+X-MC-Unique: E06kURzINPOnAd1oidh3hQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2068585CCE0;
- Wed, 30 Aug 2023 11:49:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F71A280D588;
+ Wed, 30 Aug 2023 11:49:49 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.236])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8AD88492C13;
- Wed, 30 Aug 2023 11:49:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 74A1540C6F4C;
+ Wed, 30 Aug 2023 11:49:48 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -56,17 +56,18 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Fam Zheng <fam@euphon.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL v3 1/5] block-migration: Ensure we don't crash during migration
- cleanup
-Date: Wed, 30 Aug 2023 07:49:38 -0400
-Message-ID: <20230830114942.449060-2-stefanha@redhat.com>
+ Hanna Reitz <hreitz@redhat.com>,
+ Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+ Eric Blake <eblake@redhat.com>, "Denis V . Lunev" <den@openvz.org>
+Subject: [PULL v3 2/5] block: add subcluster_size field to BlockDriverInfo
+Date: Wed, 30 Aug 2023 07:49:39 -0400
+Message-ID: <20230830114942.449060-3-stefanha@redhat.com>
 In-Reply-To: <20230830114942.449060-1-stefanha@redhat.com>
 References: <20230830114942.449060-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -90,70 +91,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-We can fail the blk_insert_bs() at init_blk_migration(), leaving the
-BlkMigDevState without a dirty_bitmap and BlockDriverState. Account
-for the possibly missing elements when doing cleanup.
+This is going to be used in the subsequent commit as requests alignment
+(in particular, during copy-on-read).  This value only makes sense for
+the formats which support subclusters (currently QCOW2 only).  If this
+field isn't set by driver's own bdrv_get_info() implementation, we
+simply set it equal to the cluster size thus treating each cluster as
+having a single subcluster.
 
-Fix the following crashes:
-
-Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
-359         BlockDriverState *bs = bitmap->bs;
- #0  0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
- #1  0x0000555555bba331 in unset_dirty_tracking () at ../migration/block.c:371
- #2  0x0000555555bbad98 in block_migration_cleanup_bmds () at ../migration/block.c:681
-
-Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
-7073        QLIST_FOREACH_SAFE(blocker, &bs->op_blockers[op], list, next) {
- #0  0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
- #1  0x0000555555e9734a in bdrv_op_unblock_all (bs=0x0, reason=0x0) at ../block.c:7095
- #2  0x0000555555bbae13 in block_migration_cleanup_bmds () at ../migration/block.c:690
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-id: 20230731203338.27581-1-farosas@suse.de
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Denis V. Lunev <den@openvz.org>
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20230711172553.234055-2-andrey.drobyshev@virtuozzo.com>
 ---
- migration/block.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/block/block-common.h | 5 +++++
+ block.c                      | 7 +++++++
+ block/qcow2.c                | 1 +
+ 3 files changed, 13 insertions(+)
 
-diff --git a/migration/block.c b/migration/block.c
-index b9580a6c7e..86c2256a2b 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -368,7 +368,9 @@ static void unset_dirty_tracking(void)
-     BlkMigDevState *bmds;
- 
-     QSIMPLEQ_FOREACH(bmds, &block_mig_state.bmds_list, entry) {
--        bdrv_release_dirty_bitmap(bmds->dirty_bitmap);
-+        if (bmds->dirty_bitmap) {
-+            bdrv_release_dirty_bitmap(bmds->dirty_bitmap);
-+        }
+diff --git a/include/block/block-common.h b/include/block/block-common.h
+index e15395f2cb..df5ffc8d09 100644
+--- a/include/block/block-common.h
++++ b/include/block/block-common.h
+@@ -132,6 +132,11 @@ typedef struct BlockZoneWps {
+ typedef struct BlockDriverInfo {
+     /* in bytes, 0 if irrelevant */
+     int cluster_size;
++    /*
++     * A fraction of cluster_size, if supported (currently QCOW2 only); if
++     * disabled or unsupported, set equal to cluster_size.
++     */
++    int subcluster_size;
+     /* offset at which the VM state can be saved (0 if not possible) */
+     int64_t vm_state_offset;
+     bool is_dirty;
+diff --git a/block.c b/block.c
+index a307c151a8..0af890f647 100644
+--- a/block.c
++++ b/block.c
+@@ -6480,6 +6480,13 @@ int coroutine_fn bdrv_co_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
      }
- }
- 
-@@ -676,13 +678,18 @@ static int64_t get_remaining_dirty(void)
- static void block_migration_cleanup_bmds(void)
+     memset(bdi, 0, sizeof(*bdi));
+     ret = drv->bdrv_co_get_info(bs, bdi);
++    if (bdi->subcluster_size == 0) {
++        /*
++         * If the driver left this unset, subclusters are not supported.
++         * Then it is safe to treat each cluster as having only one subcluster.
++         */
++        bdi->subcluster_size = bdi->cluster_size;
++    }
+     if (ret < 0) {
+         return ret;
+     }
+diff --git a/block/qcow2.c b/block/qcow2.c
+index c51388e99d..b48cd9ce63 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -5197,6 +5197,7 @@ qcow2_co_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
  {
-     BlkMigDevState *bmds;
-+    BlockDriverState *bs;
-     AioContext *ctx;
- 
-     unset_dirty_tracking();
- 
-     while ((bmds = QSIMPLEQ_FIRST(&block_mig_state.bmds_list)) != NULL) {
-         QSIMPLEQ_REMOVE_HEAD(&block_mig_state.bmds_list, entry);
--        bdrv_op_unblock_all(blk_bs(bmds->blk), bmds->blocker);
-+
-+        bs = blk_bs(bmds->blk);
-+        if (bs) {
-+            bdrv_op_unblock_all(bs, bmds->blocker);
-+        }
-         error_free(bmds->blocker);
- 
-         /* Save ctx, because bmds->blk can disappear during blk_unref.  */
+     BDRVQcow2State *s = bs->opaque;
+     bdi->cluster_size = s->cluster_size;
++    bdi->subcluster_size = s->subcluster_size;
+     bdi->vm_state_offset = qcow2_vm_state_offset(s);
+     bdi->is_dirty = s->incompatible_features & QCOW2_INCOMPAT_DIRTY;
+     return 0;
 -- 
 2.41.0
 
