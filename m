@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BB778D574
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F4978D575
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbJ99-0007xZ-Dk; Wed, 30 Aug 2023 07:14:03 -0400
+	id 1qbJAw-0000XR-5P; Wed, 30 Aug 2023 07:15:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1qbJ97-0007xF-LJ
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:14:01 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
- id 1qbJ93-0004T0-7G
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:14:01 -0400
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37UAdjZD003169; Wed, 30 Aug 2023 11:13:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=pHhKoErxIv8626/W5wGvY4SFoNd3XT18IQgFV2uM+W4=;
- b=ikTr5FdgRBYq4DhrGT4hwXYXhPNbdwKM6RjVFWs+Tj7jIE6QuaX9dmTOFDCojIyGH1Fh
- u+G3URhieCEjuENbxiIMxx5PRAakAgVu1DWqygr2vB1ZK7YUZPEcqSwmqL998RCICPjY
- actfJ5ojMUD5YCeqgMh9JI/ObUekek5b12F4De3n9LvrIprzOQir35+IsQ5P6NVI+1Bw
- 3ixsuGOCzL1GL9/q8TlBguYDFx4sxPSgkl+y6hl1WWYBsuG1ZzCen6h5ezMJGpTjJ+Vf
- B+/JD2aEWz62/HZ2v8a64F/kvrpwA9tnmlR+5tKn7DawVzOiAd1Bc5VLEISMjCeIhpt6 Tw== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ssv0y0yge-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Aug 2023 11:13:54 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37UBDrsZ016384
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Aug 2023 11:13:53 GMT
-Received: from [10.111.129.169] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 30 Aug
- 2023 04:13:52 -0700
-Message-ID: <7f446eba-52bb-187f-d098-ee70d4aff325@quicinc.com>
-Date: Wed, 30 Aug 2023 13:13:52 +0200
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qbJAq-0000X0-Ai; Wed, 30 Aug 2023 07:15:48 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qbJAn-0004yb-Ut; Wed, 30 Aug 2023 07:15:48 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52a1132b685so7477654a12.1; 
+ Wed, 30 Aug 2023 04:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693394142; x=1693998942; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1G8P8uTilc6oweDnqBNRT/pEiYH9xb3QPkwT6D9tJYk=;
+ b=TnM+0rtxMg5ovkVl7b34qVNRl+X79nlhfgL9aHcMc2JQu4XvPo1njqt1cEnYUVVncz
+ +XzmAqYIovXi6G0Q3KHqxG9L0xOyhukfH1cndTcxFzMwkqtMiBO8elF9KGovSPxrCc7Y
+ oLZ+sJz2XKrZhU7WRWHRc0rxNkgemEB1VKDpn7qyMZfamCtGjQtz9jPd3Nau1VNOazpQ
+ RKQoL5Po4ucGAEGNF0MwcCcKceS1QjtKrXTT7mbyx97Wcmbin1FZCfRfRVw/NXFdXxZX
+ nps8SUmSpEl2fWiKwhfxZO4XtuPezIQFh+3U1nBo/wJrjav2R3DVPednO+mN8IJRhskq
+ OPRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693394142; x=1693998942;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1G8P8uTilc6oweDnqBNRT/pEiYH9xb3QPkwT6D9tJYk=;
+ b=MWcGD7bQ60XDGKsiLwTbqCkcQCRA3yr90V0F8ghn366hNRWjvFGVNt3ftyGxl/AuY5
+ +tuuKCEOnHseiDnztAFYTAf0jXtMEmu8VOX6YZfExCso3TARWAM6SIGbxExKEnIvOkCL
+ i0S/FF13rOR9yKFGqqwfSo9oj7Jk3BY7+5QrCkIVX3sQ59CzPJHYeEo0ooO4GShhmews
+ XxcwlF0Krar53JJiiC4yigUuYdYzVdfs3N09z2vuwhGXf/YcOcLwSo017ZlXBpfPY9aE
+ MTnvwSn29naY8qkd5W4bpgQ9HNp6Z6Qb1xqcqZHUi00Zj0zlprueMeXg8v0ee9z7wuwb
+ N93Q==
+X-Gm-Message-State: AOJu0YyY2H/McoLM6kHC07mKODQXuxsZnPuzKpvqhzAdK/CWUkbNe2Hp
+ 81nVGsQdqe771ggmcEPDsn+/1rpeLAQ=
+X-Google-Smtp-Source: AGHT+IGF/jLlc5HguclUz9/ELATLIZ2A5XsD770yjuPsu6iHpeHBCtYr2tAEnvJbnczfRGkjInc9NA==
+X-Received: by 2002:a17:907:2cef:b0:9a4:88af:b7b with SMTP id
+ hz15-20020a1709072cef00b009a488af0b7bmr1283268ejc.62.1693394142404; 
+ Wed, 30 Aug 2023 04:15:42 -0700 (PDT)
+Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
+ [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ gw15-20020a170906f14f00b009929ab17bdfsm7043143ejb.168.2023.08.30.04.15.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Aug 2023 04:15:42 -0700 (PDT)
+Date: Wed, 30 Aug 2023 11:15:33 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-block@nongnu.org,
+ Guenter Roeck <linux@roeck-us.net>
+Subject: =?US-ASCII?Q?Re=3A_=5BPULL_01/10=5D_hw/sd/sdhci=3A_Do_not_forc?=
+ =?US-ASCII?Q?e_sdhci=5Fmmio=5F*=5Fops_onto_all_SD_controllers?=
+In-Reply-To: <20230725145829.37782-2-philmd@linaro.org>
+References: <20230725145829.37782-1-philmd@linaro.org>
+ <20230725145829.37782-2-philmd@linaro.org>
+Message-ID: <EBE60C76-B8C5-4FF0-BF15-0B924E8F0D22@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/21] virtio-gpu-virgl: teach it to get the QEMU EGL
- display
-Content-Language: en-US
-To: <marcandre.lureau@redhat.com>, <qemu-devel@nongnu.org>
-CC: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230606115658.677673-1-marcandre.lureau@redhat.com>
- <20230606115658.677673-18-marcandre.lureau@redhat.com>
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
-In-Reply-To: <20230606115658.677673-18-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: bwvUwycZ-pE2nGXryCC6o9filu1oc9uM
-X-Proofpoint-ORIG-GUID: bwvUwycZ-pE2nGXryCC6o9filu1oc9uM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_16,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- phishscore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 mlxscore=0 spamscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308300104
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_acaggian@quicinc.com; helo=mx0a-0031df01.pphosted.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,69 +96,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marc-André,
 
-I've been testing this, but I can't find where qemu_egl_display is set 
-when using sdl.
 
-Whil ui/gtk.c sets that in gl_area_realize, from my understanding there 
-is no equivalent call in ui/sdl2-gl.c
+Am 25=2E Juli 2023 14:58:20 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phi=
+lmd@linaro=2Eorg>:
+>From: Bernhard Beschow <shentey@gmail=2Ecom>
+>
+>Since commit c0a55a0c9da2 "hw/sd/sdhci: Support big endian SD host contro=
+ller
+>interfaces" sdhci_common_realize() forces all SD card controllers to use =
+either
+>sdhci_mmio_le_ops or sdhci_mmio_be_ops, depending on the "endianness" pro=
+perty=2E
+>However, there are device models which use different MMIO ops: TYPE_IMX_U=
+SDHC
+>uses usdhc_mmio_ops and TYPE_S3C_SDHCI uses sdhci_s3c_mmio_ops=2E
+>
+>Forcing sdhci_mmio_le_ops breaks SD card handling on the "sabrelite" boar=
+d, for
+>example=2E Fix this by defaulting the io_ops to little endian and switch =
+to big
+>endian in sdhci_common_realize() only if there is a matchig big endian va=
+riant
+>available=2E
+>
+>Fixes: c0a55a0c9da2 ("hw/sd/sdhci: Support big endian SD host controller
+>interfaces")
+>
+>Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>Tested-by: Guenter Roeck <linux@roeck-us=2Enet>
+>Message-Id: <20230709080950=2E92489-1-shentey@gmail=2Ecom>
 
-Also, in which case SDL would use EGL, and is there a way to request 
-that (e.g. as opposed to GLX)?
+Ping qemu-stable
 
-Kind regards,
-Antonio Caggiano
+AFAIU the regression happens since 8=2E0, thus would be great to have a fi=
+x there=2E
 
-On 06/06/2023 13:56, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> virgl offers a few features that require to have access to the
-> underlying EGLDisplay. This is the case for the D3D texture sharing support.
-> 
-> The API callback is merged for virgl 1.0:
-> https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1113
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->   hw/display/virtio-gpu-virgl.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 1c47603d40..9831c482e5 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -18,9 +18,17 @@
->   #include "hw/virtio/virtio.h"
->   #include "hw/virtio/virtio-gpu.h"
->   
-> +#include "ui/egl-helpers.h"
-> +
->   #include <virglrenderer.h>
->   
-> -static struct virgl_renderer_callbacks virtio_gpu_3d_cbs;
-> +#if VIRGL_RENDERER_CALLBACKS_VERSION >= 4
-> +static void *
-> +virgl_get_egl_display(G_GNUC_UNUSED void *cookie)
-> +{
-> +    return qemu_egl_display;
-> +}
-> +#endif
->   
->   static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
->                                            struct virtio_gpu_ctrl_command *cmd)
-> @@ -608,6 +616,13 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->   {
->       int ret;
->   
-> +#if VIRGL_RENDERER_CALLBACKS_VERSION >= 4
-> +    if (qemu_egl_display) {
-> +        virtio_gpu_3d_cbs.version = 4;
-> +        virtio_gpu_3d_cbs.get_egl_display = virgl_get_egl_display;
-> +    }
-> +#endif
-> +
->       ret = virgl_renderer_init(g, 0, &virtio_gpu_3d_cbs);
->       if (ret != 0) {
->           error_report("virgl could not be initialized: %d", ret);
+Best regards,
+Bernhard
+
+>---
+> hw/sd/sdhci=2Ec | 8 +++++++-
+> 1 file changed, 7 insertions(+), 1 deletion(-)
+>
+>diff --git a/hw/sd/sdhci=2Ec b/hw/sd/sdhci=2Ec
+>index 6811f0f1a8=2E=2E362c2c86aa 100644
+>--- a/hw/sd/sdhci=2Ec
+>+++ b/hw/sd/sdhci=2Ec
+>@@ -1382,6 +1382,8 @@ void sdhci_initfn(SDHCIState *s)
+>=20
+>     s->insert_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_raise_ins=
+ertion_irq, s);
+>     s->transfer_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_data_tr=
+ansfer, s);
+>+
+>+    s->io_ops =3D &sdhci_mmio_le_ops;
+> }
+>=20
+> void sdhci_uninitfn(SDHCIState *s)
+>@@ -1399,9 +1401,13 @@ void sdhci_common_realize(SDHCIState *s, Error **e=
+rrp)
+>=20
+>     switch (s->endianness) {
+>     case DEVICE_LITTLE_ENDIAN:
+>-        s->io_ops =3D &sdhci_mmio_le_ops;
+>+        /* s->io_ops is little endian by default */
+>         break;
+>     case DEVICE_BIG_ENDIAN:
+>+        if (s->io_ops !=3D &sdhci_mmio_le_ops) {
+>+            error_setg(errp, "SD controller doesn't support big endianne=
+ss");
+>+            return;
+>+        }
+>         s->io_ops =3D &sdhci_mmio_be_ops;
+>         break;
+>     default:
 
