@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA5978E08D
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 22:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D49278E0C9
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 22:36:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbRjp-0006lE-AO; Wed, 30 Aug 2023 16:24:29 -0400
+	id 1qbRtr-0002p2-Pt; Wed, 30 Aug 2023 16:34:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbRjn-0006l6-29
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:24:27 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbRtp-0002oJ-7B
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:34:49 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbRjk-00075p-JO
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:24:26 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6bf298ef1f5so188057a34.0
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 13:24:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbRtm-0000fQ-Nb
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:34:48 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68a56401b9aso67037b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 13:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693427063; x=1694031863;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=J5AMALSbpTvDIIDXan1gEk+pQdMoh+7IcjQ6UJ0J+Ec=;
- b=ML0iOf4aNO2hw6CtUAUVtoVIWfWn+/a6NPDjxsUgGHvO81fezjO+LMtltS3Q/1EisK
- WC7elw5pRFx3eJS0QcuhIyTdKQsmG5XTBqRU2atZzpKon3+qj8lNv/KCrTUEcStL6oCR
- 3KnnH4w2/S1yoHBianShnwRO3UAmIthsT7P0trODmnvWKuzAh7gPcvaAc7oMkwOou++g
- zC5BiZwh38ob9GQIdBpMO6jkL+LW+DbfrD/j+a7zjJd07kLm9br0XE0iiO389gL87H4b
- fYNS48Q/YUr/8AEwiswh1SCP2POwmYgS/WtqqLYW63bWFDJ2wIghbd6X1iW2NWezzAAD
- 7Xeg==
+ d=linaro.org; s=google; t=1693427685; x=1694032485; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WWoJcjMrli/UBoxVP+bc1AqaQlcf1mCsWLbenvoycVs=;
+ b=NnBz6OPFKkfXv8Qgzbdblc7xsXWTtIw61aWPf4FqZ+S4YpJMN20z/r1UU/66+kJsNP
+ bXEVyPKTDtps0UjqpyAbvbUFyj7afne+Oyz45SOk9v6CS106FuptmiN8o34upaw7/ffb
+ YvbALtGZYKs1gJTZrc22KcGqX7qfSI+ZlCmuvt26Z+1LdUfKaXnPlG0leo+2PWmyx/aK
+ FpoeUsslN1D0Y1ZyB0TD7Qmf60C0q4qvBLO/vX0keAEBU59C/NVeypzuEjj/Wlq8XOUA
+ H32vow5+fKemYDwj9uOJcgO38XldIMlBrjd4up4NxnS1NWUCDbj5nxmuZm2c5OdPAhC0
+ slGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693427063; x=1694031863;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J5AMALSbpTvDIIDXan1gEk+pQdMoh+7IcjQ6UJ0J+Ec=;
- b=kf8yBz0pqkkzw8eAEs2s+Fh35+98i9kTXyU9HlCYfocKJI0Nswjeo+1Oe4/y84sjTt
- 4z69OVdTGStRseA0we7sbl5lT0MKt4YUKxb9qqGZCgb5vil0MiYJmqRoG1j+CAP/gUJI
- iojM5t/4ZvhtDNhlr9LEs0z+B2D6VkqsDYMv/LsqKHijBsa15uuJ5kFkOB1wuPUmlkwg
- QSieXrk3dfrwDvlQnDc1ucwfnPt7mz6ch9MB7aM6zmqIsTR7yN8JJOMB+HJQqymCoehF
- 4ScctqswtfD5v0xAlnuiZqrzGns3zYnIRpYffAVfgnrkGyATfX6PebvhkFGEOii2Vavp
- mxhg==
-X-Gm-Message-State: AOJu0YznHxDURRoZbUHkDN4iv6erbYB3vDZRqMgIFdogad3c9XYNnRg4
- zMhLFccsQAaRrdVkdxz6nBsTPA==
-X-Google-Smtp-Source: AGHT+IEmN/whkhuVjvUeP2WzbjAWz9KksNOXqt7ciYVQ7ZlUsIo+f1N2VNcCd99d6UjqFHP4O/K5Dg==
-X-Received: by 2002:a9d:74d0:0:b0:6bd:9fa:34ff with SMTP id
- a16-20020a9d74d0000000b006bd09fa34ffmr3340244otl.9.1693427063434; 
- Wed, 30 Aug 2023 13:24:23 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- m185-20020a633fc2000000b005642314f05fsm1200pga.1.2023.08.30.13.24.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 13:24:22 -0700 (PDT)
-Message-ID: <a3ab68f7-ed60-43af-9268-2905b98b81aa@daynix.com>
-Date: Thu, 31 Aug 2023 05:24:20 +0900
+ d=1e100.net; s=20221208; t=1693427685; x=1694032485;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WWoJcjMrli/UBoxVP+bc1AqaQlcf1mCsWLbenvoycVs=;
+ b=bPgToWn86UGtMTLxH1aWGRPBfcSqMVPEhM9qxauE6WNt4xAEfbz1K91yx9B7hHHifU
+ kAQJzUxAexVWBlil/Vn5gJaKUfAJFTKSTiKmhLZTiqsdDRWqHguKdVt44Z0WrK0ciMER
+ zE0O7eO9M8MjP6rrWKXkOzOD+btim88/68zIhJBofGCsaFHZ5YIe+is+6e3Lnd9N4ZPv
+ y04RC8nSfp6mDS8z1ZNwvnqe6oQZRbUZQQictF5Hs1PsAbgKR8Nx/1eOK9ethBtRuVE2
+ 2RnThC+hXEJohuu1tXgHzm3u7RILPXia7KSaVGtek+537iEImk6/KdGAjSLKxSU0y6l6
+ Qu3Q==
+X-Gm-Message-State: AOJu0YxdHCBcQy2Om0xpLOWbYfiui+2dIDyaVHdNros/IH+Dt9TuPhBE
+ WzkHv1FvAaiUS6s863hYF1bCeLiVHvkb97iatxY=
+X-Google-Smtp-Source: AGHT+IFdIGr+PXWkX3Se43ug3jQZYqoJ1qLH5G552/NyanWfYFJ1ZFpO6vrt7BSQ0KPT8RoacMck9g==
+X-Received: by 2002:a05:6a00:b45:b0:68a:4b8c:4e91 with SMTP id
+ p5-20020a056a000b4500b0068a4b8c4e91mr3619789pfo.19.1693427684930; 
+ Wed, 30 Aug 2023 13:34:44 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ y17-20020aa78051000000b00688c733fe92sm10387544pfm.215.2023.08.30.13.34.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Aug 2023 13:34:44 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: thuth@redhat.com,
+	qemu-stable@nongnu.org
+Subject: [PATCH] linux-user: Fixes for zero_bss
+Date: Wed, 30 Aug 2023 13:34:43 -0700
+Message-Id: <20230830203443.1126914-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v5 20/26] gdbstub: Remove gdb_has_xml variable
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20230818033648.8326-1-akihiko.odaki@daynix.com>
- <20230818033648.8326-21-akihiko.odaki@daynix.com> <87il8wr2qw.fsf@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87il8wr2qw.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,21 +88,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/31 0:02, Alex Bennée wrote:
-> 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> GDB has XML support since 6.7 which was released in 2007.
->> It's time to remove support for old GDB versions without XML support.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> 
-> In principle I'm fine with this but should we not catch GDB's which
-> don't send qXfer:features:read earlier?
-> 
+The previous change, 2d385be6152, assumed !PAGE_VALID meant that
+the page would be unmapped by the elf image.  However, since we
+reserved the entire image space via mmap, PAGE_VALID will always
+be set.  Instead, assume PROT_NONE for the same condition.
 
-I don't think so. qXfer:features:read was introduced very long ago so 
-practically such a condition should only happen with a failing GDB. 
-There is nothing special for qXfer:features:read that differentiates 
-from many other possible GDB failures that we do not catch.
+Furthermore, assume bss is only ever present for writable segments,
+and that there is no page overlap between PT_LOAD segments.
+Instead of an assert, return false to indicate failure.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
+Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/elfload.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
+
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index a5b28fa3e7..7bc7bcec19 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2308,21 +2308,40 @@ static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
+ {
+     abi_ulong align_bss;
+ 
++    /* We only expect writable bss; the code segment shouldn't need this. */
++    if (!(prot & PROT_WRITE)) {
++        return false;
++    }
++
+     align_bss = TARGET_PAGE_ALIGN(start_bss);
+     end_bss = TARGET_PAGE_ALIGN(end_bss);
+ 
+     if (start_bss < align_bss) {
+         int flags = page_get_flags(start_bss);
+ 
+-        if (!(flags & PAGE_VALID)) {
+-            /* Map the start of the bss. */
++        if (!(flags & PAGE_BITS)) {
++            /*
++             * The whole address space of the executable was reserved
++             * at the start, therefore all pages will be VALID.
++             * But assuming there are no PROT_NONE PT_LOAD segments,
++             * a PROT_NONE page means no data all bss, and we can
++             * simply extend the new anon mapping back to the start
++             * of the page of bss.
++             */
+             align_bss -= TARGET_PAGE_SIZE;
+-        } else if (flags & PAGE_WRITE) {
+-            /* The page is already mapped writable. */
+-            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+         } else {
+-            /* Read-only zeros? */
+-            g_assert_not_reached();
++            /*
++             * The start of the bss shares a page with something.
++             * The only thing that we expect is the data section,
++             * which would already be marked writable.
++             * Overlapping the RX code segment seems malformed.
++             */
++            if (!(flags & PAGE_WRITE)) {
++                return false;
++            }
++
++            /* The page is already mapped and writable. */
++            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+         }
+     }
+ 
+-- 
+2.34.1
+
 
