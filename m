@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB3A78E349
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 01:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F7B78E34D
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 01:35:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbUde-00026w-Lm; Wed, 30 Aug 2023 19:30:18 -0400
+	id 1qbUiG-0005G2-18; Wed, 30 Aug 2023 19:35:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbUda-00026e-VS
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:30:16 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1qbUiE-0005Ft-81
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:35:02 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbUdX-0000qC-Ff
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:30:13 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-68a41035828so162477b3a.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 16:30:11 -0700 (PDT)
+ id 1qbUiC-0001ZV-1p
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:35:01 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68bed286169so177642b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 16:34:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693438210; x=1694043010; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693438498; x=1694043298; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9w4GvrDeirixDT1mIZ4qunLi3ZMzPcB4l5csyHct36U=;
- b=XRt5pA2lBdQkzNBNlUZS4vvnO4djmG/zW21KzlZpHyUNO1Gx0UIzeIZYJn9/tpvVt2
- imgQfHkJkIJ0wOLYaknhyF95zFMQuRuHstOfIQyADSHnyJ2Z9o8ztbGvf5LGmCLPDB/a
- gBhF7NbXQDStDXEfiV1MCSjiolff2+9sRw0zsi7X7TkR3KymSS3UNKtUbNd3wkj3RFDM
- wJjG0T5HQgYSyA8stAhrZjuGBpWxSBp+V+B7SA88w4IlqwytagslhBhUATy5qq9jcm+h
- MdlIcBkRkQRp99L5Mt37STTkU6wWxTin8UmlYnbwJV9vzLsbLd+wOuUyGi2gXtlSYAeR
- f6CA==
+ bh=2hhiQrW4rVAiCViwZmJGV6lA9+3KuNlIa0rUTKm1r+o=;
+ b=lfRU6gnM2lWB4tTb8QkpTRC3Ws/IOT2+W8exZEWq0e3RbXO60LtqcqVt9YaaHGe+K1
+ UGkt3OhLAp6gcRrqbFB7QdV3N9LcXl6304QkjUdq6TAnPwaHgjni4O+hx/sr9Yif96ej
+ WsTUipmnixUaOi2tTJ1QNBu2V5Qb0UrTQWfmdM0bPPKWecHGBB0D0O2ISCfTKA48LMnQ
+ iiYZT2PIQwVIHsQEM4tP0osazenVxvyha28flaaoMNtWfqVNpR1SwUc3Z04aVzwJCtTu
+ 7TMr/PRGdp+de4gBfKYYG83pAK442zIC4KV//10xy3Jbgunw16BaYkWcQxHeP4jmvcmo
+ bRqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693438210; x=1694043010;
+ d=1e100.net; s=20221208; t=1693438498; x=1694043298;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9w4GvrDeirixDT1mIZ4qunLi3ZMzPcB4l5csyHct36U=;
- b=OJgtL5F1ETD7GKl2aKEn/os3rLPRQqh+5Al6v8HFsokRR1LaKk97fjqnbOPSEWFKwv
- hWd9bTLURFmkVBq2E/y9UOB4WMN1cQ3JbKbJr1h3V9h5996WDIwuGiukJyLfFzSzAnpo
- tld2VClQOCHj/ETVUpErDWPHu/e/201er4LANu88k8zxPoV0xZgcKfU6B3l1Isu3BAGp
- I8zoWSFf/h8Tx3TMmHcW9hlMF/7hi1Vmzbo3a/oZ/dFq6Mrr/9KVQnlsGGvirVCA7QEQ
- HtkebuiYD4M45vdAF5GVOEpOMn4f6/g4PBirriWVdiUxW7TGLXGI0xEHTQMM3Jsp6wYJ
- 9wsw==
-X-Gm-Message-State: AOJu0YxahR1VuOGgc1fn3rxlZgSMmhxcJ8JIrl4sih/T6LOPmggeksEk
- 897D1xMRL7c1fsBXRVP7Yo3Pfw==
-X-Google-Smtp-Source: AGHT+IHSheXdZPo3d+uHKKZwV+kmCQoMDQl/ZCc9SFXmcvGZR7uAl/sN7CzIQjn4Od9i2SXP8K1S8Q==
-X-Received: by 2002:a05:6a21:3395:b0:13b:a2c9:922e with SMTP id
- yy21-20020a056a21339500b0013ba2c9922emr4336610pzb.27.1693438210047; 
- Wed, 30 Aug 2023 16:30:10 -0700 (PDT)
+ bh=2hhiQrW4rVAiCViwZmJGV6lA9+3KuNlIa0rUTKm1r+o=;
+ b=l1PTzel0nittIzaw0OM04EK44S32PG1ycb+s1i02WW75UBJrwF8RzAcjxPmqcE26NJ
+ Cf1/92VS0Hqzrrs6MIki5NnQxGJ0VCENch97X1x3+3LdwpSY2Gu/X0IzoS4SSDdNDO9q
+ Xs2aC2nrh17pYq/a80KDRwrosshJ/OuPILREjsUHbvRruo9N6azbTLSuYpnpXhoqidmS
+ O1veWnz1I5e3wRTjjDco9zoWtQQWsXkinWm+Of8vhrHciI3VmFDnN8KvuAK7dmJkMCjq
+ ZWQqB/S3OoTD7AGGT/r5yWwYysAXM3VoOE1LFCL11oXHdaDBa0MMNQFqkm7J056jF46M
+ Vs6A==
+X-Gm-Message-State: AOJu0YzBavnC85jYOsKNgXg+qDHDHeMsJjEsukTln7yYSjgknXVoA4yG
+ 7RGuFVvJhUZs3QkrvqMuBnTYPg==
+X-Google-Smtp-Source: AGHT+IFsiaMF2vW+UCeswrUJ+XpSsAs98VXrkmVZMzb1/fpWuhSHyw8R2+dPVAxio3cYCedT7ufQBA==
+X-Received: by 2002:a05:6a00:1a90:b0:68a:6e81:60a2 with SMTP id
+ e16-20020a056a001a9000b0068a6e8160a2mr3996221pfv.26.1693438498512; 
+ Wed, 30 Aug 2023 16:34:58 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- x13-20020a656aad000000b0055c558ac4edsm119909pgu.46.2023.08.30.16.30.08
+ j15-20020aa78d0f000000b00686ec858fb0sm114441pfe.190.2023.08.30.16.34.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 16:30:09 -0700 (PDT)
-Message-ID: <3935609a-9535-8fd4-0679-df0de97af023@linaro.org>
-Date: Wed, 30 Aug 2023 16:30:07 -0700
+ Wed, 30 Aug 2023 16:34:58 -0700 (PDT)
+Message-ID: <cb1d4b68-5c54-4a4f-8783-f62fc1a25cbe@linaro.org>
+Date: Wed, 30 Aug 2023 16:34:56 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v4 36/48] target/loongarch: Implement xvbitclr xvbitset
- xvbitrev
+Subject: Re: [PATCH v4 37/48] target/loongarch: Implement xvfrstp
 Content-Language: en-US
 To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
 References: <20230830084902.2113960-1-gaosong@loongson.cn>
- <20230830084902.2113960-37-gaosong@loongson.cn>
+ <20230830084902.2113960-38-gaosong@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230830084902.2113960-37-gaosong@loongson.cn>
+In-Reply-To: <20230830084902.2113960-38-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -97,37 +96,17 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/30/23 01:48, Song Gao wrote:
 > This patch includes:
-> - XVBITCLR[I].{B/H/W/D};
-> - XVBITSET[I].{B/H/W/D};
-> - XVBITREV[I].{B/H/W/D}.
+> - XVFRSTP[I].{B/H}.
 > 
 > Signed-off-by: Song Gao<gaosong@loongson.cn>
 > ---
->   target/loongarch/vec.h                       |  4 ++
->   target/loongarch/insns.decode                | 27 +++++++++++
->   target/loongarch/disas.c                     | 25 ++++++++++
->   target/loongarch/vec_helper.c                | 48 ++++++++++----------
->   target/loongarch/insn_trans/trans_lasx.c.inc | 27 +++++++++++
->   5 files changed, 106 insertions(+), 25 deletions(-)
-> 
-> diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
-> index 4497cd4a6d..aae70f9de9 100644
-> --- a/target/loongarch/vec.h
-> +++ b/target/loongarch/vec.h
-> @@ -85,4 +85,8 @@
->   #define DO_CLZ_W(N)  (clz32(N))
->   #define DO_CLZ_D(N)  (clz64(N))
->   
-> +#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
-> +#define DO_BITSET(a, bit) (a | 1ull << bit)
-> +#define DO_BITREV(a, bit) (a ^ (1ull << bit))
-> +
-
-
-Aside from this movement,
+>   target/loongarch/insns.decode                |  5 ++
+>   target/loongarch/disas.c                     |  5 ++
+>   target/loongarch/vec_helper.c                | 48 ++++++++++++--------
+>   target/loongarch/insn_trans/trans_lasx.c.inc |  5 ++
+>   4 files changed, 43 insertions(+), 20 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
