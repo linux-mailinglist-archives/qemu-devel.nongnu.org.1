@@ -2,52 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD7178D439
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 013FC78D436
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbGtZ-0001Kp-25; Wed, 30 Aug 2023 04:49:49 -0400
+	id 1qbGsq-0008H3-20; Wed, 30 Aug 2023 04:49:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qbGtX-0001Cf-44
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:47 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qbGtU-0007Xt-13
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:46 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cxc_CbAu9kuggdAA--.59450S3;
- Wed, 30 Aug 2023 16:49:31 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxF81+Au9kHhxnAA--.49766S38; 
- Wed, 30 Aug 2023 16:49:30 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PATCH v4 36/48] target/loongarch: Implement xvbitclr xvbitset
- xvbitrev
-Date: Wed, 30 Aug 2023 16:48:50 +0800
-Message-Id: <20230830084902.2113960-37-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230830084902.2113960-1-gaosong@loongson.cn>
-References: <20230830084902.2113960-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qbGsn-0008Gs-TH
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qbGsl-0007Rq-Iu
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693385337;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g7NLSUdk8FpNVRrr7pYga8bjxO1eGzE6sZ8Z4GqWmTE=;
+ b=O+1ygke0LS8pkb3l5TYTOAu7YFh9OocS1t2MO8InT7faAUPmAKd/HLmZ6aVuxGlvFAdHH2
+ FuCNLAP/RCrizPrsD+cfFS/jgtDOqQqZfSbiC0l9eSwKYBq634LAYX9V+vQ2ygCgk92zUM
+ 6538xSKK5m9S+lLlzWjzc7lbFHLk+XI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-SS7547CZM5aPxUgwyg8YNg-1; Wed, 30 Aug 2023 04:48:55 -0400
+X-MC-Unique: SS7547CZM5aPxUgwyg8YNg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-52bdadd5497so698421a12.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 01:48:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693385334; x=1693990134;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=g7NLSUdk8FpNVRrr7pYga8bjxO1eGzE6sZ8Z4GqWmTE=;
+ b=huKaqAyoURcZswNmOY2H3PiB//r8TnunbXq87WgfkFDQEDGvd2LvbeuNkxujuxuVCR
+ BuMmoIPJSxJmUGTVdPRrWDnf+DTEnKKLZRSOmNMkx2DcSWlwhZQFJEY5PdMh/D9zFF1l
+ NkIorqgu0/asppFUZOr+QebDH+uj7PTNQ90pwFCLZJ8Iw//lOR0CBf5VPd6bFUSsHB19
+ wrCKX8KHwTARAT5HCfH7dIc2zBeYhZ71XKHER6rrtauYF+K9QyACf8fZTY5evl/MZ6Nf
+ a5d3wRg1auHmL7zlqVH0wlaKXuZCRF3FuNuvpRicEHn4slxqBj655Z6tO6445sRh2+/2
+ uPZQ==
+X-Gm-Message-State: AOJu0Yxy+216Q6nC4vgQDQx2wOHzWEFQyWXOrlfIOHJjoNJPKellc3Mv
+ KBh1f+SjyHh/i+1De5rW9JZVpVnw0AgWl2hmY6Al2WgYpdO+u+AGTTsCpy1vqzhkOlA/MuxdbId
+ ET/i4F7/dZ7UvmW8=
+X-Received: by 2002:aa7:c685:0:b0:525:70b3:72c2 with SMTP id
+ n5-20020aa7c685000000b0052570b372c2mr1456242edq.14.1693385334764; 
+ Wed, 30 Aug 2023 01:48:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERzHVPDBSNf1TgZgqA23TaUc8SdKrB3TLBwExId1Gjvoi9ODk3WrCQsn+cOhFVhJ6WUhuPNQ==
+X-Received: by 2002:aa7:c685:0:b0:525:70b3:72c2 with SMTP id
+ n5-20020aa7c685000000b0052570b372c2mr1456233edq.14.1693385334436; 
+ Wed, 30 Aug 2023 01:48:54 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-57-51-114.retail.telecomitalia.it.
+ [82.57.51.114]) by smtp.gmail.com with ESMTPSA id
+ bo24-20020a0564020b3800b005232e637c24sm6527864edb.84.2023.08.30.01.48.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Aug 2023 01:48:53 -0700 (PDT)
+Date: Wed, 30 Aug 2023 10:48:51 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, 
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>
+Subject: Re: [PATCH 0/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+Message-ID: <3hc3j6klx6f3wveap72mebb26iratugg5z64ol3xikt3zigiyh@fd5yilpjuq44>
+References: <20230827182937.146450-1-lersek@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxF81+Au9kHhxnAA--.49766S38
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230827182937.146450-1-lersek@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,212 +101,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch includes:
-- XVBITCLR[I].{B/H/W/D};
-- XVBITSET[I].{B/H/W/D};
-- XVBITREV[I].{B/H/W/D}.
+On Sun, Aug 27, 2023 at 08:29:30PM +0200, Laszlo Ersek wrote:
+>The last patch in the series states and fixes the problem; prior patches
+>only refactor the code.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/vec.h                       |  4 ++
- target/loongarch/insns.decode                | 27 +++++++++++
- target/loongarch/disas.c                     | 25 ++++++++++
- target/loongarch/vec_helper.c                | 48 ++++++++++----------
- target/loongarch/insn_trans/trans_lasx.c.inc | 27 +++++++++++
- 5 files changed, 106 insertions(+), 25 deletions(-)
+Thanks for the fix and great cleanup!
 
-diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
-index 4497cd4a6d..aae70f9de9 100644
---- a/target/loongarch/vec.h
-+++ b/target/loongarch/vec.h
-@@ -85,4 +85,8 @@
- #define DO_CLZ_W(N)  (clz32(N))
- #define DO_CLZ_D(N)  (clz64(N))
- 
-+#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
-+#define DO_BITSET(a, bit) (a | 1ull << bit)
-+#define DO_BITREV(a, bit) (a ^ (1ull << bit))
+I fully reviewed the series and LGTM.
+
+An additional step that we can take (not in this series) crossed my
+mind, though. In some places we repeat the following pattern:
+
+     vhost_user_write(dev, &msg, NULL, 0);
+     ...
+
+     if (reply_supported) {
+         return process_message_reply(dev, &msg);
+     }
+
+So what about extending the vhost_user_write_msg() added in this series
+to support also this cases and remove some code.
+Or maybe integrate vhost_user_write_msg() in vhost_user_write().
+
+I mean something like this (untested):
+
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 01e0ca90c5..9ee2a78afa 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -1130,13 +1130,19 @@ static int vhost_user_get_features(struct vhost_dev *dev, uint
+64_t *features)
+      return 0;
+  }
+
++typedef enum {
++    NO_REPLY,
++    REPLY_IF_SUPPORTED,
++    REPLY_FORCED,
++} VhostUserReply;
 +
- #endif /* LOONGARCH_VEC_H */
-diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index d683c6a6ab..cb6db8002a 100644
---- a/target/loongarch/insns.decode
-+++ b/target/loongarch/insns.decode
-@@ -1784,6 +1784,33 @@ xvpcnt_h         0111 01101001 11000 01001 ..... .....    @vv
- xvpcnt_w         0111 01101001 11000 01010 ..... .....    @vv
- xvpcnt_d         0111 01101001 11000 01011 ..... .....    @vv
- 
-+xvbitclr_b       0111 01010000 11000 ..... ..... .....    @vvv
-+xvbitclr_h       0111 01010000 11001 ..... ..... .....    @vvv
-+xvbitclr_w       0111 01010000 11010 ..... ..... .....    @vvv
-+xvbitclr_d       0111 01010000 11011 ..... ..... .....    @vvv
-+xvbitclri_b      0111 01110001 00000 01 ... ..... .....   @vv_ui3
-+xvbitclri_h      0111 01110001 00000 1 .... ..... .....   @vv_ui4
-+xvbitclri_w      0111 01110001 00001 ..... ..... .....    @vv_ui5
-+xvbitclri_d      0111 01110001 0001 ...... ..... .....    @vv_ui6
-+
-+xvbitset_b       0111 01010000 11100 ..... ..... .....    @vvv
-+xvbitset_h       0111 01010000 11101 ..... ..... .....    @vvv
-+xvbitset_w       0111 01010000 11110 ..... ..... .....    @vvv
-+xvbitset_d       0111 01010000 11111 ..... ..... .....    @vvv
-+xvbitseti_b      0111 01110001 01000 01 ... ..... .....   @vv_ui3
-+xvbitseti_h      0111 01110001 01000 1 .... ..... .....   @vv_ui4
-+xvbitseti_w      0111 01110001 01001 ..... ..... .....    @vv_ui5
-+xvbitseti_d      0111 01110001 0101 ...... ..... .....    @vv_ui6
-+
-+xvbitrev_b       0111 01010001 00000 ..... ..... .....    @vvv
-+xvbitrev_h       0111 01010001 00001 ..... ..... .....    @vvv
-+xvbitrev_w       0111 01010001 00010 ..... ..... .....    @vvv
-+xvbitrev_d       0111 01010001 00011 ..... ..... .....    @vvv
-+xvbitrevi_b      0111 01110001 10000 01 ... ..... .....   @vv_ui3
-+xvbitrevi_h      0111 01110001 10000 1 .... ..... .....   @vv_ui4
-+xvbitrevi_w      0111 01110001 10001 ..... ..... .....    @vv_ui5
-+xvbitrevi_d      0111 01110001 1001 ...... ..... .....    @vv_ui6
-+
- xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
- xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
- xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
-diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 9e31f9bbbc..dad9243fd7 100644
---- a/target/loongarch/disas.c
-+++ b/target/loongarch/disas.c
-@@ -2210,6 +2210,31 @@ INSN_LASX(xvpcnt_h,          vv)
- INSN_LASX(xvpcnt_w,          vv)
- INSN_LASX(xvpcnt_d,          vv)
- 
-+INSN_LASX(xvbitclr_b,        vvv)
-+INSN_LASX(xvbitclr_h,        vvv)
-+INSN_LASX(xvbitclr_w,        vvv)
-+INSN_LASX(xvbitclr_d,        vvv)
-+INSN_LASX(xvbitclri_b,       vv_i)
-+INSN_LASX(xvbitclri_h,       vv_i)
-+INSN_LASX(xvbitclri_w,       vv_i)
-+INSN_LASX(xvbitclri_d,       vv_i)
-+INSN_LASX(xvbitset_b,        vvv)
-+INSN_LASX(xvbitset_h,        vvv)
-+INSN_LASX(xvbitset_w,        vvv)
-+INSN_LASX(xvbitset_d,        vvv)
-+INSN_LASX(xvbitseti_b,       vv_i)
-+INSN_LASX(xvbitseti_h,       vv_i)
-+INSN_LASX(xvbitseti_w,       vv_i)
-+INSN_LASX(xvbitseti_d,       vv_i)
-+INSN_LASX(xvbitrev_b,        vvv)
-+INSN_LASX(xvbitrev_h,        vvv)
-+INSN_LASX(xvbitrev_w,        vvv)
-+INSN_LASX(xvbitrev_d,        vvv)
-+INSN_LASX(xvbitrevi_b,       vv_i)
-+INSN_LASX(xvbitrevi_h,       vv_i)
-+INSN_LASX(xvbitrevi_w,       vv_i)
-+INSN_LASX(xvbitrevi_d,       vv_i)
-+
- INSN_LASX(xvreplgr2vr_b,     vr)
- INSN_LASX(xvreplgr2vr_h,     vr)
- INSN_LASX(xvreplgr2vr_w,     vr)
-diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 9c2b52fd7d..03b42dc887 100644
---- a/target/loongarch/vec_helper.c
-+++ b/target/loongarch/vec_helper.c
-@@ -2195,21 +2195,18 @@ VPCNT(vpcnt_h, 16, UH, ctpop16)
- VPCNT(vpcnt_w, 32, UW, ctpop32)
- VPCNT(vpcnt_d, 64, UD, ctpop64)
- 
--#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
--#define DO_BITSET(a, bit) (a | 1ull << bit)
--#define DO_BITREV(a, bit) (a ^ (1ull << bit))
+  /* Note: "msg->hdr.flags" may be modified. */
+  static int vhost_user_write_msg(struct vhost_dev *dev, VhostUserMsg *msg,
+-                                bool wait_for_reply)
++                                VhostUserReply reply)
+  {
+      int ret;
+
+-    if (wait_for_reply) {
++    if (reply != NO_REPLY) {
+          bool reply_supported = virtio_has_feature(dev->protocol_features,
+                                            VHOST_USER_PROTOCOL_F_REPLY_ACK);
+          if (reply_supported) {
+@@ -1149,7 +1155,7 @@ static int vhost_user_write_msg(struct vhost_dev *dev, VhostUserMsg *msg,
+          return ret;
+      }
+
+-    if (wait_for_reply) {
++    if (reply != NO_REPLY) {
+          uint64_t dummy;
+
+          if (msg->hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
+@@ -1162,7 +1168,9 @@ static int vhost_user_write_msg(struct vhost_dev 
+*dev, VhostUserMsg *msg,
+          * Send VHOST_USER_GET_FEATURES which makes all backends
+          * send a reply.
+          */
+-        return vhost_user_get_features(dev, &dummy);
++        if (reply == REPLY_FORCED) {
++            return vhost_user_get_features(dev, &dummy);
++        }
+      }
+
+      return 0;
+@@ -2207,9 +2228,6 @@ static bool vhost_user_can_merge(struct vhost_dev *dev,
+  static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
+  {
+      VhostUserMsg msg;
+-    bool reply_supported = virtio_has_feature(dev->protocol_features,
+-                                              VHOST_USER_PROTOCOL_F_REPLY_ACK);
+-    int ret;
+  
+      if (!(dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_NET_MTU))) {
+          return 0;
+@@ -2219,21 +2237,9 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
+      msg.payload.u64 = mtu;
+      msg.hdr.size = sizeof(msg.payload.u64);
+      msg.hdr.flags = VHOST_USER_VERSION;
+-    if (reply_supported) {
+-        msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+-    }
 -
--#define DO_BIT(NAME, BIT, E, DO_OP)                         \
--void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v) \
--{                                                           \
--    int i;                                                  \
--    VReg *Vd = (VReg *)vd;                                  \
--    VReg *Vj = (VReg *)vj;                                  \
--    VReg *Vk = (VReg *)vk;                                  \
--                                                            \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                     \
--        Vd->E(i) = DO_OP(Vj->E(i), Vk->E(i)%BIT);           \
--    }                                                       \
-+#define DO_BIT(NAME, BIT, E, DO_OP)                            \
-+void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
-+{                                                              \
-+    int i;                                                     \
-+    VReg *Vd = (VReg *)vd;                                     \
-+    VReg *Vj = (VReg *)vj;                                     \
-+    VReg *Vk = (VReg *)vk;                                     \
-+    int oprsz = simd_oprsz(desc);                              \
-+                                                               \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                  \
-+        Vd->E(i) = DO_OP(Vj->E(i), Vk->E(i) % BIT);            \
-+    }                                                          \
- }
- 
- DO_BIT(vbitclr_b, 8, UB, DO_BITCLR)
-@@ -2225,16 +2222,17 @@ DO_BIT(vbitrev_h, 16, UH, DO_BITREV)
- DO_BIT(vbitrev_w, 32, UW, DO_BITREV)
- DO_BIT(vbitrev_d, 64, UD, DO_BITREV)
- 
--#define DO_BITI(NAME, BIT, E, DO_OP)                            \
--void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t v) \
--{                                                               \
--    int i;                                                      \
--    VReg *Vd = (VReg *)vd;                                      \
--    VReg *Vj = (VReg *)vj;                                      \
--                                                                \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
--        Vd->E(i) = DO_OP(Vj->E(i), imm);                        \
--    }                                                           \
-+#define DO_BITI(NAME, BIT, E, DO_OP)                               \
-+void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
-+{                                                                  \
-+    int i;                                                         \
-+    VReg *Vd = (VReg *)vd;                                         \
-+    VReg *Vj = (VReg *)vj;                                         \
-+    int oprsz = simd_oprsz(desc);                                  \
-+                                                                   \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
-+        Vd->E(i) = DO_OP(Vj->E(i), imm);                           \
-+    }                                                              \
- }
- 
- DO_BITI(vbitclri_b, 8, UB, DO_BITCLR)
-diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index 2a24de178d..92c6506e04 100644
---- a/target/loongarch/insn_trans/trans_lasx.c.inc
-+++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -533,6 +533,33 @@ TRANS(xvpcnt_h, LASX, gen_vv, 32, gen_helper_vpcnt_h)
- TRANS(xvpcnt_w, LASX, gen_vv, 32, gen_helper_vpcnt_w)
- TRANS(xvpcnt_d, LASX, gen_vv, 32, gen_helper_vpcnt_d)
- 
-+TRANS(xvbitclr_b, LASX, gvec_vvv, 32, MO_8, do_vbitclr)
-+TRANS(xvbitclr_h, LASX, gvec_vvv, 32, MO_16, do_vbitclr)
-+TRANS(xvbitclr_w, LASX, gvec_vvv, 32, MO_32, do_vbitclr)
-+TRANS(xvbitclr_d, LASX, gvec_vvv, 32, MO_64, do_vbitclr)
-+TRANS(xvbitclri_b, LASX, gvec_vv_i, 32, MO_8, do_vbitclri)
-+TRANS(xvbitclri_h, LASX, gvec_vv_i, 32, MO_16, do_vbitclri)
-+TRANS(xvbitclri_w, LASX, gvec_vv_i, 32, MO_32, do_vbitclri)
-+TRANS(xvbitclri_d, LASX, gvec_vv_i, 32, MO_64, do_vbitclri)
-+
-+TRANS(xvbitset_b, LASX, gvec_vvv, 32, MO_8, do_vbitset)
-+TRANS(xvbitset_h, LASX, gvec_vvv, 32, MO_16, do_vbitset)
-+TRANS(xvbitset_w, LASX, gvec_vvv, 32, MO_32, do_vbitset)
-+TRANS(xvbitset_d, LASX, gvec_vvv, 32, MO_64, do_vbitset)
-+TRANS(xvbitseti_b, LASX, gvec_vv_i, 32, MO_8, do_vbitseti)
-+TRANS(xvbitseti_h, LASX, gvec_vv_i, 32, MO_16, do_vbitseti)
-+TRANS(xvbitseti_w, LASX, gvec_vv_i, 32, MO_32, do_vbitseti)
-+TRANS(xvbitseti_d, LASX, gvec_vv_i, 32, MO_64, do_vbitseti)
-+
-+TRANS(xvbitrev_b, LASX, gvec_vvv, 32, MO_8, do_vbitrev)
-+TRANS(xvbitrev_h, LASX, gvec_vvv, 32, MO_16, do_vbitrev)
-+TRANS(xvbitrev_w, LASX, gvec_vvv, 32, MO_32, do_vbitrev)
-+TRANS(xvbitrev_d, LASX, gvec_vvv, 32, MO_64, do_vbitrev)
-+TRANS(xvbitrevi_b, LASX, gvec_vv_i, 32, MO_8, do_vbitrevi)
-+TRANS(xvbitrevi_h, LASX, gvec_vv_i, 32, MO_16, do_vbitrevi)
-+TRANS(xvbitrevi_w, LASX, gvec_vv_i, 32, MO_32, do_vbitrevi)
-+TRANS(xvbitrevi_d, LASX, gvec_vv_i, 32, MO_64, do_vbitrevi)
-+
- TRANS(xvreplgr2vr_b, LASX, gvec_dup, 32, MO_8)
- TRANS(xvreplgr2vr_h, LASX, gvec_dup, 32, MO_16)
- TRANS(xvreplgr2vr_w, LASX, gvec_dup, 32, MO_32)
--- 
-2.39.1
+-    ret = vhost_user_write(dev, &msg, NULL, 0);
+-    if (ret < 0) {
+-        return ret;
+-    }
+  
+      /* If reply_ack supported, backend has to ack specified MTU is valid */
+-    if (reply_supported) {
+-        return process_message_reply(dev, &msg);
+-    }
+-
+-    return 0;
++    return vhost_user_write_msg(dev, &msg, REPLY_IF_SUPPORTED);
+  }
+  
+  static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
+@@ -2313,10 +2319,7 @@ static int vhost_user_get_config(struct vhost_dev *dev, uint8_t *config,
+  static int vhost_user_set_config(struct vhost_dev *dev, const uint8_t *data,
+                                   uint32_t offset, uint32_t size, uint32_t flags)
+  {
+-    int ret;
+      uint8_t *p;
+-    bool reply_supported = virtio_has_feature(dev->protocol_features,
+-                                              VHOST_USER_PROTOCOL_F_REPLY_ACK);
+  
+      VhostUserMsg msg = {
+          .hdr.request = VHOST_USER_SET_CONFIG,
+@@ -2329,10 +2332,6 @@ static int vhost_user_set_config(struct vhost_dev *dev, const uint8_t *data,
+          return -ENOTSUP;
+      }
+  
+-    if (reply_supported) {
+-        msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+-    }
+-
+      if (size > VHOST_USER_MAX_CONFIG_SIZE) {
+          return -EINVAL;
+      }
+@@ -2343,16 +2342,7 @@ static int vhost_user_set_config(struct vhost_dev *dev, const uint8_t *data,
+      p = msg.payload.config.region;
+      memcpy(p, data, size);
+  
+-    ret = vhost_user_write(dev, &msg, NULL, 0);
+-    if (ret < 0) {
+-        return ret;
+-    }
+-
+-    if (reply_supported) {
+-        return process_message_reply(dev, &msg);
+-    }
+-
+-    return 0;
++    return vhost_user_write_msg(dev, &msg, REPLY_IF_SUPPORTED);
+  }
+
+Thanks,
+Stefano
 
 
