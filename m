@@ -2,76 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B37D78D583
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB5B78D58A
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:30:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbJIj-0006BK-FV; Wed, 30 Aug 2023 07:23:57 -0400
+	id 1qbJO7-0001Nj-HX; Wed, 30 Aug 2023 07:29:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qbJIa-0006Am-IX
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:23:49 -0400
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qbJIX-0006gQ-BM
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:23:48 -0400
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-bcb6dbc477eso5120737276.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 04:23:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693394623; x=1693999423; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LtAfDI2ZgovRG4eywtJRoUXa+4rrAQaw44bUsY7tSXg=;
- b=NOy4b3RoACXmKdWXEaQMYJQHVB/T+wAdQKoHFgzU5biQS6nUGAEw+unei/fGS8/LgA
- upuMg5FCCUKRkHN8anXcIlvVg2ePhYCBTYrYciACaJoExD6MjLVD8hw6FfX4qdZVeDYk
- 8/NXumEv/WyoCIqh8uCa/F0yUxhBS4uJ1LmeXLaXe6B9EzfBSfaPDcZ9VQisHzfYnvbY
- yFGQPKqlO0vqdGizO0ZLiRqy6B3o0ehshYatwGKOBGdR2DfbcJeS6pKrdXWvC3RH2Ra0
- q6HZ8FPaW1WSXKCSIjwOanuj+KCFu0IgpL0Jci4TPb9SnsGY/VcMrob9npHFmOovyiXF
- la9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693394623; x=1693999423;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LtAfDI2ZgovRG4eywtJRoUXa+4rrAQaw44bUsY7tSXg=;
- b=PjLudDT0iiYN1TcqE4NhBBPx74klEjyQoSA1Vi0TDjBeuhmMeyJypzos2+72PhlpUE
- PNygjLKKj1l2mIzRKqr673y9Dxv3pvw8xp9/BFMGjonlw4ML4d3PKc5Hp3Hkn0zZIGFc
- msfR1Rv0QhgQKBq0vthfPmaaa4dtR2Vyw+1W+XOKB9LKMemWOSWAinv5wHBxtH23n64n
- LOKk34/kioeC2qINzGYoY4D9fGQZmuMIN6uVPn9N6C8HZpMcH0x96pM2DjG4MrtIwZOW
- PUnIOkwz1/0z0BzQa5Lu+ItoCiWir3mef1DPpXIohZzP+RJC9STVUt5/jKWSUvj2oL7K
- vFlQ==
-X-Gm-Message-State: AOJu0YwIgoJyFrJwKGFEC/c4cFcIZciTRzLsjnP2kH7HydENKcMz5npY
- mj6gz/mBlyYmg43ch6CzYvR3Bnfifs4hGilcL4I=
-X-Google-Smtp-Source: AGHT+IFTb7UDlTJZ4RRBrQc3HBsMznq7Rzf0/RC9QNRx66yEN+6Hb1h62rUy29ichvuKVzxSo5+TGF6773Y2L7lLmUU=
-X-Received: by 2002:a25:d48d:0:b0:d00:cc5b:8a9f with SMTP id
- m135-20020a25d48d000000b00d00cc5b8a9fmr2065976ybf.16.1693394623444; Wed, 30
- Aug 2023 04:23:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1qbJO5-0001MN-3z; Wed, 30 Aug 2023 07:29:29 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1qbJO1-0007pu-4Q; Wed, 30 Aug 2023 07:29:28 -0400
+Received: from lhrpeml100003.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbMQX0fL9z67FR3;
+ Wed, 30 Aug 2023 19:24:52 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Wed, 30 Aug 2023 12:29:11 +0100
+Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
+ lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.031; 
+ Wed, 30 Aug 2023 12:29:11 +0100
+To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "ricarkol@google.com" <ricarkol@google.com>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v2] arm/kvm: Enable support for
+ KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+Thread-Topic: [PATCH v2] arm/kvm: Enable support for
+ KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+Thread-Index: AQHZz1rBh96g1+Cwu0Gwaz2o/+lpEK/+1l8AgAP05VA=
+Date: Wed, 30 Aug 2023 11:29:11 +0000
+Message-ID: <2586f98a0999408aa3a88495dd72489c@huawei.com>
+References: <20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com>
+ <9fc460ef-bb6b-8b67-d52a-f2d5aea887f1@redhat.com>
+In-Reply-To: <9fc460ef-bb6b-8b67-d52a-f2d5aea887f1@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.202.227.178]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-54-marcandre.lureau@redhat.com>
- <ZO8lMuOzsjfj+Atd@redhat.com>
-In-Reply-To: <ZO8lMuOzsjfj+Atd@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 30 Aug 2023 15:23:31 +0400
-Message-ID: <CAJ+F1CJ9jwCVMyObV9ipx4c3_1uShuCqO5=tU6eYLdLYxZcuZA@mail.gmail.com>
-Subject: Re: [PATCH 53/67] ui: add pixman-compat.h
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-yb1-xb2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,313 +72,177 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Wed, Aug 30, 2023 at 3:17=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
->
-> On Wed, Aug 30, 2023 at 01:38:27PM +0400, marcandre.lureau@redhat.com wro=
-te:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > This is a tiny subset of PIXMAN API that is used pervasively in QEMU
-> > codebase to manage images and identify the underlying format.
-> >
-> > It doesn't seems worth to wrap this in a QEMU-specific API.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >  include/ui/pixman-compat.h | 190 +++++++++++++++++++++++++++++++++++++
-> >  include/ui/qemu-pixman.h   |   4 +
-> >  2 files changed, 194 insertions(+)
-> >  create mode 100644 include/ui/pixman-compat.h
->
-> This patch is what makes me feel the end state of this series
-> is somewhat dubious.  This pixman-compat.h shows we clearly
-> still need the pixman APIs, and trying to make pixman optional
-> is causing us to re-invent a part of pixman via copy+paste.
-> I don't find this very appealing.
-
-It's very limited though, as that compat doesn't offer any pixel manipulati=
-on.
-
->
-> If it is possible to disable the build of parts of QEMU such
-> that what remains compiled does not require pixman at all,
-> that is reasonable.
-
-I am afraid this leads to x10 of #ifdef if we follow that path. I was
-personally disgusted: not only it was getting horrible to deal with,
-but it makes you wonder what can be kept or not with embarrassing
-questions and behaviours. This compat approach is way saner and
-simpler. As can be seen, this is a fraction of the API, just to wrap
-the bits and define the formats. It's ridiculously small imho to keep
-most of QEMU code still work.
-
->
-> Keeping building stuff that actually wants pixman, via a
-> compat API is imposing a burden on QEMU without a compelling
-> gain IMHO.
->
-> >
-> > diff --git a/include/ui/pixman-compat.h b/include/ui/pixman-compat.h
-> > new file mode 100644
-> > index 0000000000..e511c8b946
-> > --- /dev/null
-> > +++ b/include/ui/pixman-compat.h
-> > @@ -0,0 +1,190 @@
-> > +/*
-> > + * SPDX-License-Identifier: MIT
-> > + *
-> > + * Tiny subset of PIXMAN API commonly used by QEMU.
-> > + *
-> > + * Copyright 1987, 1988, 1989, 1998  The Open Group
-> > + * Copyright 1987, 1988, 1989 Digital Equipment Corporation
-> > + * Copyright 1999, 2004, 2008 Keith Packard
-> > + * Copyright 2000 SuSE, Inc.
-> > + * Copyright 2000 Keith Packard, member of The XFree86 Project, Inc.
-> > + * Copyright 2004, 2005, 2007, 2008, 2009, 2010 Red Hat, Inc.
-> > + * Copyright 2004 Nicholas Miell
-> > + * Copyright 2005 Lars Knoll & Zack Rusin, Trolltech
-> > + * Copyright 2005 Trolltech AS
-> > + * Copyright 2007 Luca Barbato
-> > + * Copyright 2008 Aaron Plattner, NVIDIA Corporation
-> > + * Copyright 2008 Rodrigo Kumpera
-> > + * Copyright 2008 Andr=C3=A9 Tupinamb=C3=A1
-> > + * Copyright 2008 Mozilla Corporation
-> > + * Copyright 2008 Frederic Plourde
-> > + * Copyright 2009, Oracle and/or its affiliates. All rights reserved.
-> > + * Copyright 2009, 2010 Nokia Corporation
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person obtaini=
-ng a
-> > + * copy of this software and associated documentation files (the "Soft=
-ware"),
-> > + * to deal in the Software without restriction, including without limi=
-tation
-> > + * the rights to use, copy, modify, merge, publish, distribute, sublic=
-ense,
-> > + * and/or sell copies of the Software, and to permit persons to whom t=
-he
-> > + * Software is furnished to do so, subject to the following conditions=
-:
-> > + *
-> > + * The above copyright notice and this permission notice (including th=
-e next
-> > + * paragraph) shall be included in all copies or substantial portions =
-of the
-> > + * Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
-RESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
-LITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT =
-SHALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
-R OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
-SING
-> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-> > + * DEALINGS IN THE SOFTWARE.
-> > + */
-> > +
-> > +#ifndef PIXMAN_COMPAT_H
-> > +#define PIXMAN_COMPAT_H
-> > +
-> > +#define PIXMAN_TYPE_OTHER       0
-> > +#define PIXMAN_TYPE_ARGB        2
-> > +#define PIXMAN_TYPE_ABGR        3
-> > +#define PIXMAN_TYPE_BGRA        8
-> > +#define PIXMAN_TYPE_RGBA        9
-> > +
-> > +#define PIXMAN_FORMAT(bpp,type,a,r,g,b) (((bpp) << 24) |  \
-> > +                                         ((type) << 16) | \
-> > +                                         ((a) << 12) |    \
-> > +                                         ((r) << 8) |     \
-> > +                                         ((g) << 4) |     \
-> > +                                         ((b)))
-> > +
-> > +#define PIXMAN_FORMAT_RESHIFT(val, ofs, num)                          =
-  \
-> > +        (((val >> (ofs)) & ((1 << (num)) - 1)) << ((val >> 22) & 3))
-> > +
-> > +#define PIXMAN_FORMAT_BPP(f)    PIXMAN_FORMAT_RESHIFT(f, 24, 8)
-> > +#define PIXMAN_FORMAT_TYPE(f)   (((f) >> 16) & 0x3f)
-> > +#define PIXMAN_FORMAT_A(f)      PIXMAN_FORMAT_RESHIFT(f, 12, 4)
-> > +#define PIXMAN_FORMAT_R(f)      PIXMAN_FORMAT_RESHIFT(f, 8, 4)
-> > +#define PIXMAN_FORMAT_G(f)      PIXMAN_FORMAT_RESHIFT(f, 4, 4)
-> > +#define PIXMAN_FORMAT_B(f)      PIXMAN_FORMAT_RESHIFT(f, 0, 4)
-> > +#define PIXMAN_FORMAT_DEPTH(f)  (PIXMAN_FORMAT_A(f) +   \
-> > +                                 PIXMAN_FORMAT_R(f) +   \
-> > +                                 PIXMAN_FORMAT_G(f) +   \
-> > +                                 PIXMAN_FORMAT_B(f))
-> > +
-> > +typedef enum {
-> > +    /* 32bpp formats */
-> > +    PIXMAN_a8r8g8b8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ARGB,8,8,8,8),
-> > +    PIXMAN_x8r8g8b8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ARGB,0,8,8,8),
-> > +    PIXMAN_a8b8g8r8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ABGR,8,8,8,8),
-> > +    PIXMAN_x8b8g8r8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ABGR,0,8,8,8),
-> > +    PIXMAN_b8g8r8a8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_BGRA,8,8,8,8),
-> > +    PIXMAN_b8g8r8x8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_BGRA,0,8,8,8),
-> > +    PIXMAN_r8g8b8a8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_RGBA,8,8,8,8),
-> > +    PIXMAN_r8g8b8x8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_RGBA,0,8,8,8),
-> > +    /* 24bpp formats */
-> > +    PIXMAN_r8g8b8 =3D      PIXMAN_FORMAT(24,PIXMAN_TYPE_ARGB,0,8,8,8),
-> > +    PIXMAN_b8g8r8 =3D      PIXMAN_FORMAT(24,PIXMAN_TYPE_ABGR,0,8,8,8),
-> > +    /* 16bpp formats */
-> > +    PIXMAN_r5g6b5 =3D      PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,0,5,6,5),
-> > +    PIXMAN_a1r5g5b5 =3D    PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,1,5,5,5),
-> > +    PIXMAN_x1r5g5b5 =3D    PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,0,5,5,5),
-> > +} pixman_format_code_t;
-> > +
-> > +typedef struct pixman_image pixman_image_t;
-> > +
-> > +typedef void (* pixman_image_destroy_func_t)(pixman_image_t *image, vo=
-id *data);
-> > +
-> > +struct pixman_image {
-> > +    int ref_count;
-> > +    pixman_format_code_t format;
-> > +    int width;
-> > +    int height;
-> > +    int stride;
-> > +    uint8_t *data;
-> > +    pixman_image_destroy_func_t destroy_func;
-> > +    void *destroy_data;
-> > +};
-> > +
-> > +typedef struct pixman_color {
-> > +    uint16_t    red;
-> > +    uint16_t    green;
-> > +    uint16_t    blue;
-> > +    uint16_t    alpha;
-> > +} pixman_color_t;
-> > +
-> > +static inline pixman_image_t *pixman_image_create_bits(pixman_format_c=
-ode_t format,
-> > +                                                       int width,
-> > +                                                       int height,
-> > +                                                       uint32_t *bits,
-> > +                                                       int rowstride_b=
-ytes)
-> > +{
-> > +    pixman_image_t *i =3D g_new0(pixman_image_t, 1);
-> > +
-> > +    i->width =3D width;
-> > +    i->height =3D height;
-> > +    i->stride =3D rowstride_bytes ?: width * DIV_ROUND_UP(PIXMAN_FORMA=
-T_BPP(format), 8);
-> > +    i->format =3D format;
-> > +    i->data =3D bits ?: g_malloc0(rowstride_bytes * height);
-> > +    i->ref_count =3D 1;
-> > +
-> > +    return i;
-> > +}
-> > +
-> > +static inline pixman_image_t *pixman_image_ref(pixman_image_t *i)
-> > +{
-> > +    i->ref_count++;
-> > +    return i;
-> > +}
-> > +
-> > +static inline bool pixman_image_unref(pixman_image_t *i)
-> > +{
-> > +    i->ref_count--;
-> > +
-> > +    if (i->ref_count =3D=3D 0) {
-> > +        if (i->destroy_func) {
-> > +            i->destroy_func (i, i->destroy_data);
-> > +            g_free(i->data);
-> > +            g_free(i);
-> > +        }
-> > +
-> > +        return true;
-> > +    }
-> > +
-> > +    return false;
-> > +}
-> > +
-> > +static inline void pixman_image_set_destroy_function(pixman_image_t *i=
-,
-> > +                                                     pixman_image_dest=
-roy_func_t func,
-> > +                                                     void *data)
-> > +
-> > +{
-> > +    i->destroy_func =3D func;
-> > +    i->destroy_data =3D data;
-> > +}
-> > +
-> > +static inline uint8_t* pixman_image_get_data(pixman_image_t *i)
-> > +{
-> > +    return i->data;
-> > +}
-> > +
-> > +static inline int pixman_image_get_height(pixman_image_t *i)
-> > +{
-> > +    return i->height;
-> > +}
-> > +
-> > +static inline int pixman_image_get_width(pixman_image_t *i)
-> > +{
-> > +    return i->width;
-> > +}
-> > +
-> > +static inline int pixman_image_get_stride(pixman_image_t *i)
-> > +{
-> > +    return i->stride;
-> > +}
-> > +
-> > +static inline pixman_format_code_t pixman_image_get_format(pixman_imag=
-e_t *i)
-> > +{
-> > +    return i->format;
-> > +}
-> > +
-> > +#endif /* PIXMAN_COMPAT_H */
-> > diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-> > index c5a0911cc7..9c693df8dd 100644
-> > --- a/include/ui/qemu-pixman.h
-> > +++ b/include/ui/qemu-pixman.h
-> > @@ -6,11 +6,15 @@
-> >  #ifndef QEMU_PIXMAN_H
-> >  #define QEMU_PIXMAN_H
-> >
-> > +#ifdef CONFIG_PIXMAN
-> >  /* pixman-0.16.0 headers have a redundant declaration */
-> >  #pragma GCC diagnostic push
-> >  #pragma GCC diagnostic ignored "-Wredundant-decls"
-> >  #include <pixman.h>
-> >  #pragma GCC diagnostic pop
-> > +#else
-> > +#include "pixman-compat.h"
-> > +#endif
-> >
-> >  /*
-> >   * pixman image formats are defined to be native endian,
-> > --
-> > 2.41.0
-> >
-> >
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
->
-
-
---=20
-Marc-Andr=C3=A9 Lureau
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBHYXZpbiBTaGFuIFttYWlsdG86
+Z3NoYW5AcmVkaGF0LmNvbV0NCj4gU2VudDogMjggQXVndXN0IDIwMjMgMDE6MDINCj4gVG86IFNo
+YW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2Vp
+LmNvbT47DQo+IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZzsgcWVtdS1hcm1Abm9uZ251Lm9yZw0KPiBD
+YzogcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnOyByaWNhcmtvbEBnb29nbGUuY29tOyBrdm1Admdl
+ci5rZXJuZWwub3JnOw0KPiBKb25hdGhhbiBDYW1lcm9uIDxqb25hdGhhbi5jYW1lcm9uQGh1YXdl
+aS5jb20+OyBMaW51eGFybQ0KPiA8bGludXhhcm1AaHVhd2VpLmNvbT4NCj4gU3ViamVjdDogUmU6
+IFtQQVRDSCB2Ml0gYXJtL2t2bTogRW5hYmxlIHN1cHBvcnQgZm9yDQo+IEtWTV9DQVBfQVJNX0VB
+R0VSX1NQTElUX0NIVU5LX1NJWkUNCj4gDQo+IEhpIFNoYW1lZXIsDQoNCkhpIEdhdmluLA0KDQpB
+Z3JlZSB3aXRoIGFsbCB0aGUgY29tbWVudHMuIFdpbGwgc2VuZCBvdXQgYSB2MyBzb29uLg0KDQpU
+aGFua3MsDQpTaGFtZWVyDQogDQo+IE9uIDgvMTUvMjMgMTk6MjcsIFNoYW1lZXIgS29sb3RodW0g
+d3JvdGU6DQo+ID4gTm93IHRoYXQgd2UgaGF2ZSBFYWdlciBQYWdlIFNwbGl0IHN1cHBvcnQgYWRk
+ZWQgZm9yIEFSTSBpbiB0aGUga2VybmVsLA0KPiA+IGVuYWJsZSBpdCBpbiBRZW11LiBUaGlzIGFk
+ZHMsDQo+ID4gICAtZWFnZXItc3BsaXQtc2l6ZSB0byAtYWNjZWwgc3ViLW9wdGlvbnMgdG8gc2V0
+IHRoZSBlYWdlciBwYWdlIHNwbGl0IGNodW5rDQo+IHNpemUuDQo+ID4gICAtZW5hYmxlIEtWTV9D
+QVBfQVJNX0VBR0VSX1NQTElUX0NIVU5LX1NJWkUuDQo+ID4NCj4gPiBUaGUgY2h1bmsgc2l6ZSBz
+cGVjaWZpZXMgaG93IG1hbnkgcGFnZXMgdG8gYnJlYWsgYXQgYSB0aW1lLCB1c2luZyBhDQo+ID4g
+c2luZ2xlIGFsbG9jYXRpb24uIEJpZ2dlciB0aGUgY2h1bmsgc2l6ZSwgbW9yZSBwYWdlcyBuZWVk
+IHRvIGJlDQo+ID4gYWxsb2NhdGVkIGFoZWFkIG9mIHRpbWUuDQo+ID4NCj4gPiBTaWduZWQtb2Zm
+LWJ5OiBTaGFtZWVyIEtvbG90aHVtDQo+IDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2RpQGh1YXdl
+aS5jb20+DQo+ID4gLS0tDQo+ID4gUkZDIHYxOg0KPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9x
+ZW11LWRldmVsLzIwMjMwNzI1MTUwMDAyLjYyMS0xLXNoYW1lZXJhbGkua29sbw0KPiB0aHVtLnRo
+b2RpQGh1YXdlaS5jb20vDQo+ID4gICAgLVVwZGF0ZWQgcWVtdS1vcHRpb25zLmh4IHdpdGggZGVz
+Y3JpcHRpb24NCj4gPiAgICAtQWRkcmVzc2VkIHJldmlldyBjb21tZW50cyBmcm9tIFBldGVyIGFu
+ZCBHYXZpbihUaGFua3MpLg0KPiA+IC0tLQ0KPiA+ICAgaW5jbHVkZS9zeXNlbXUva3ZtX2ludC5o
+IHwgIDEgKw0KPiA+ICAgcWVtdS1vcHRpb25zLmh4ICAgICAgICAgIHwgMTQgKysrKysrKysrDQo+
+ID4gICB0YXJnZXQvYXJtL2t2bS5jICAgICAgICAgfCA2Mg0KPiArKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrDQo+ID4gICAzIGZpbGVzIGNoYW5nZWQsIDc3IGluc2VydGlv
+bnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL3N5c2VtdS9rdm1faW50LmggYi9p
+bmNsdWRlL3N5c2VtdS9rdm1faW50LmggaW5kZXgNCj4gPiA1MTFiNDJiZGU1Li4wM2ExNjYwZDQw
+IDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvc3lzZW11L2t2bV9pbnQuaA0KPiA+ICsrKyBiL2lu
+Y2x1ZGUvc3lzZW11L2t2bV9pbnQuaA0KPiA+IEBAIC0xMTYsNiArMTE2LDcgQEAgc3RydWN0IEtW
+TVN0YXRlDQo+ID4gICAgICAgdWludDY0X3Qga3ZtX2RpcnR5X3JpbmdfYnl0ZXM7ICAvKiBTaXpl
+IG9mIHRoZSBwZXItdmNwdSBkaXJ0eSByaW5nDQo+ICovDQo+ID4gICAgICAgdWludDMyX3Qga3Zt
+X2RpcnR5X3Jpbmdfc2l6ZTsgICAvKiBOdW1iZXIgb2YgZGlydHkgR0ZOcyBwZXIgcmluZw0KPiAq
+Lw0KPiA+ICAgICAgIGJvb2wga3ZtX2RpcnR5X3Jpbmdfd2l0aF9iaXRtYXA7DQo+ID4gKyAgICB1
+aW50NjRfdCBrdm1fZWFnZXJfc3BsaXRfc2l6ZTsgLyogRWFnZXIgUGFnZSBTcGxpdHRpbmcgY2h1
+bmsgc2l6ZQ0KPiA+ICsgKi8NCj4gDQo+IE9uZSBtb3JlIHNwYWNlIGlzIG5lZWRlZCBiZWZvcmUg
+dGhlIGNvbW1lbnRzLCB0byBoYXZlIHNhbWUgYWxpZ25tZW50IGFzDQo+IHdlIGhhZC4gQmVzaWRl
+cywgaXQgbmVlZHMgdG8gYmUgaW5pdGlhbGl6ZWQgdG8gemVybyBpbg0KPiBrdm0tYWxsLmM6Omt2
+bV9hY2NlbF9pbnN0YW5jZV9pbml0KCkNCj4gYXMgd2UncmUgZG9pbmcgZm9yIEBrdm1fZGlydHlf
+cmluZ19zaXplLg0KPiANCj4gPiAgICAgICBzdHJ1Y3QgS1ZNRGlydHlSaW5nUmVhcGVyIHJlYXBl
+cjsNCj4gPiAgICAgICBOb3RpZnlWbWV4aXRPcHRpb24gbm90aWZ5X3ZtZXhpdDsNCj4gPiAgICAg
+ICB1aW50MzJfdCBub3RpZnlfd2luZG93Ow0KPiA+IGRpZmYgLS1naXQgYS9xZW11LW9wdGlvbnMu
+aHggYi9xZW11LW9wdGlvbnMuaHggaW5kZXgNCj4gPiAyOWI5OGMzZDRjLi42ZWY3Yjg5MDEzIDEw
+MDY0NA0KPiA+IC0tLSBhL3FlbXUtb3B0aW9ucy5oeA0KPiA+ICsrKyBiL3FlbXUtb3B0aW9ucy5o
+eA0KPiA+IEBAIC0xODYsNiArMTg2LDcgQEAgREVGKCJhY2NlbCIsIEhBU19BUkcsIFFFTVVfT1BU
+SU9OX2FjY2VsLA0KPiA+ICAgICAgICIgICAgICAgICAgICAgICAgc3BsaXQtd3g9b258b2ZmIChl
+bmFibGUgVENHIHNwbGl0IHdeeA0KPiBtYXBwaW5nKVxuIg0KPiA+ICAgICAgICIgICAgICAgICAg
+ICAgICAgdGItc2l6ZT1uIChUQ0cgdHJhbnNsYXRpb24gYmxvY2sgY2FjaGUgc2l6ZSlcbiINCj4g
+PiAgICAgICAiICAgICAgICAgICAgICAgIGRpcnR5LXJpbmctc2l6ZT1uIChLVk0gZGlydHkgcmlu
+ZyBHRk4gY291bnQsDQo+IGRlZmF1bHQgMClcbiINCj4gPiArICAgICIgICAgICAgICAgICAgICAg
+ZWFnZXItc3BsaXQtc2l6ZT1uIChLVk0gRWFnZXIgUGFnZSBTcGxpdCBjaHVuaw0KPiBzaXplLCBk
+ZWZhdWx0IDAsIGRpc2FibGVkLiBBUk0gb25seSlcbiINCj4gPiAgICAgICAiDQo+IG5vdGlmeS12
+bWV4aXQ9cnVufGludGVybmFsLWVycm9yfGRpc2FibGUsbm90aWZ5LXdpbmRvdz1uIChlbmFibGUg
+bm90aWZ5IFZNDQo+IGV4aXQgYW5kIHNldCBub3RpZnkgd2luZG93LCB4ODYgb25seSlcbiINCj4g
+PiAgICAgICAiICAgICAgICAgICAgICAgIHRocmVhZD1zaW5nbGV8bXVsdGkgKGVuYWJsZSBtdWx0
+aS10aHJlYWRlZA0KPiBUQ0cpXG4iLCBRRU1VX0FSQ0hfQUxMKQ0KPiA+ICAgU1JTVA0KPiA+IEBA
+IC0yNDQsNiArMjQ1LDE5IEBAIFNSU1QNCj4gPiAgICAgICAgICAgaXMgZGlzYWJsZWQgKGRpcnR5
+LXJpbmctc2l6ZT0wKS4gIFdoZW4gZW5hYmxlZCwgS1ZNIHdpbGwNCj4gaW5zdGVhZA0KPiA+ICAg
+ICAgICAgICByZWNvcmQgZGlydHkgcGFnZXMgaW4gYSBiaXRtYXAuDQo+ID4NCj4gPiArICAgIGBg
+ZWFnZXItc3BsaXQtc2l6ZT1uYGANCj4gPiArICAgICAgICBLVk0gaW1wbGVtZW50cyBkaXJ0eSBw
+YWdlIGxvZ2dpbmcgYXQgdGhlIFBBR0VfU0laRSBncmFudWxhcml0eQ0KPiBhbmQNCj4gPiArICAg
+ICAgICBlbmFibGluZyBkaXJ0eS1sb2dnaW5nIG9uIGEgaHVnZS1wYWdlIHJlcXVpcmVzIGJyZWFr
+aW5nIGl0IGludG8NCj4gPiArICAgICAgICBQQUdFX1NJWkUgcGFnZXMgaW4gdGhlIGZpcnN0IHBs
+YWNlLiBLVk0gb24gQVJNIGRvZXMgdGhpcw0KPiBzcGxpdHRpbmcNCj4gPiArICAgICAgICBsYXpp
+bHkgYnkgZGVmYXVsdC4gVGhlcmUgYXJlIHBlcmZvcm1hbmNlIGJlbmVmaXRzIGluIGRvaW5nDQo+
+IGh1Z2UtcGFnZQ0KPiA+ICsgICAgICAgIHNwbGl0IGVhZ2VybHksIGVzcGVjaWFsbHkgaW4gc2l0
+dWF0aW9ucyB3aGVyZSBUTEJJIGNvc3RzIGFzc29jaWF0ZWQNCj4gPiArICAgICAgICB3aXRoIGJy
+ZWFrLWJlZm9yZS1tYWtlIHNlcXVlbmNlcyBhcmUgY29uc2lkZXJhYmxlIGFuZCBhbHNvIGlmDQo+
+IGd1ZXN0DQo+ID4gKyAgICAgICAgd29ya2xvYWRzIGFyZSByZWFkIGludGVuc2l2ZS4gVGhlIHNp
+emUgaGVyZSBzcGVjaWZpZXMgaG93IG1hbnkNCj4gcGFnZXMNCj4gPiArICAgICAgICB0byBicmVh
+ayBhdCBhIHRpbWUgYW5kIG5lZWRzIHRvIGJlIGEgdmFsaWQgYmxvY2sgcGFnZSBzaXplKGVnOg0K
+PiA0S0IgfA0KPiA+ICsgICAgICAgIDJNIHwgMUcgd2hlbiBQQUdFX1NJWkUgaXMgNEspLiBCZSB3
+YXJ5IG9mIHNwZWNpZnlpbmcgYSBoaWdoZXINCj4gc2l6ZSBhcw0KPiA+ICsgICAgICAgIGl0IHdp
+bGwgaGF2ZSBhbiBpbXBhY3Qgb24gdGhlIG1lbW9yeS4gQnkgZGVmYXVsdCwgdGhpcyBmZWF0dXJl
+IGlzDQo+ID4gKyAgICAgICAgZGlzYWJsZWQgKGVhZ2VyLXNwbGl0LXNpemU9MCkuDQo+ID4gKw0K
+PiANCj4gU2luY2UgNjRLQiBiYXNlIHBhZ2Ugc2l6ZSBpcyBhbm90aGVyIHBvcHVsYXIgb3B0aW9u
+LCBpdCdzIHdvcnRoeSB0byBtZW50aW9uDQo+IHRoZSBzdXBwb3J0ZWQgYmxvY2sgc2l6ZXMgZm9y
+IDY0S0IgYmFzZSBwYWdlIHNpemUuIEknbSBub3Qgc3VyZSBhYm91dCAxNktCDQo+IHRob3VnaC4N
+Cj4gRm9yIHRoaXMsIHRoZSBjb21tZW50cyBjYW4gYmUgaW1wcm92ZWQgYXMgYmVsb3cgaWYgeW91
+IGFncmVlLiBXaXRoIHRoZQ0KPiBpbXByb3ZlbWVudCwgdXNlcnMgbmVlZG4ndCBsb29rIGludG8g
+dGhlIGNvZGUgdG8gZmlndXJlIG91dCB0aGUgdmFsaWQgYmxvY2sNCj4gc2l6ZXMuDQo+IA0KPiBU
+aGUgc2l6ZSBoZXJlIHNwZWNpZmllcyBob3cgbWFueSBwYWdlcyB0byBiZSBzcGxpdCBhdCBhIHRp
+bWUgYW5kIG5lZWRzIHRvIGJlDQo+IGEgdmFsaWQgYmxvY2sgc2l6ZSwgd2hpY2ggaXMgMUdCLzJN
+Qi80S0IsIDMyTUIvMTZLQiBhbmQgNTEyTUIvNjRLQiBmb3INCj4gNEtCLzE2S0IvNjRLQiBQQUdF
+X1NJWkUgcmVzcGVjdGl2ZWx5Lg0KPiANCj4gPiAgICAgICBgYG5vdGlmeS12bWV4aXQ9cnVufGlu
+dGVybmFsLWVycm9yfGRpc2FibGUsbm90aWZ5LXdpbmRvdz1uYGANCj4gPiAgICAgICAgICAgRW5h
+YmxlcyBvciBkaXNhYmxlcyBub3RpZnkgVk0gZXhpdCBzdXBwb3J0IG9uIHg4NiBob3N0IGFuZA0K
+PiBzcGVjaWZ5DQo+ID4gICAgICAgICAgIHRoZSBjb3JyZXNwb25kaW5nIG5vdGlmeSB3aW5kb3cg
+dG8gdHJpZ2dlciB0aGUgVk0gZXhpdCBpZg0KPiBlbmFibGVkLg0KPiA+IGRpZmYgLS1naXQgYS90
+YXJnZXQvYXJtL2t2bS5jIGIvdGFyZ2V0L2FybS9rdm0uYyBpbmRleA0KPiA+IGI0Yzc2NTRmNDku
+LjZjZWJhNjczZDkgMTAwNjQ0DQo+ID4gLS0tIGEvdGFyZ2V0L2FybS9rdm0uYw0KPiA+ICsrKyBi
+L3RhcmdldC9hcm0va3ZtLmMNCj4gPiBAQCAtMzAsNiArMzAsNyBAQA0KPiA+ICAgI2luY2x1ZGUg
+ImV4ZWMvYWRkcmVzcy1zcGFjZXMuaCINCj4gPiAgICNpbmNsdWRlICJody9ib2FyZHMuaCINCj4g
+PiAgICNpbmNsdWRlICJody9pcnEuaCINCj4gPiArI2luY2x1ZGUgInFhcGkvdmlzaXRvci5oIg0K
+PiA+ICAgI2luY2x1ZGUgInFlbXUvbG9nLmgiDQo+ID4NCj4gPiAgIGNvbnN0IEtWTUNhcGFiaWxp
+dHlJbmZvIGt2bV9hcmNoX3JlcXVpcmVkX2NhcGFiaWxpdGllc1tdID0geyBAQA0KPiA+IC0yNDcs
+NiArMjQ4LDExIEBAIGludCBrdm1fYXJtX2dldF9tYXhfdm1faXBhX3NpemUoTWFjaGluZVN0YXRl
+DQo+ICptcywgYm9vbCAqZml4ZWRfaXBhKQ0KPiA+ICAgICAgIHJldHVybiByZXQgPiAwID8gcmV0
+IDogNDA7DQo+ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIGJvb2wga3ZtX2FybV9lYWdlcl9zcGxp
+dF9zaXplX3ZhbGlkKHVpbnQ2NF90IHJlcV9zaXplLA0KPiA+ICt1aW50MzJfdCBzaXplcykgew0K
+PiA+ICsgICAgcmV0dXJuIHJlcV9zaXplICYgc2l6ZXM7DQo+ID4gK30NCj4gPiArDQo+IA0KPiBJ
+dCdzIHdvcnRoeSB0byBiZSBhIGlubGluZSBmdW5jdGlvbi4NCj4gDQo+ID4gICBpbnQga3ZtX2Fy
+Y2hfaW5pdChNYWNoaW5lU3RhdGUgKm1zLCBLVk1TdGF0ZSAqcykNCj4gPiAgIHsNCj4gPiAgICAg
+ICBpbnQgcmV0ID0gMDsNCj4gPiBAQCAtMjgwLDYgKzI4NiwyMiBAQCBpbnQga3ZtX2FyY2hfaW5p
+dChNYWNoaW5lU3RhdGUgKm1zLCBLVk1TdGF0ZQ0KPiAqcykNCj4gPiAgICAgICAgICAgfQ0KPiA+
+ICAgICAgIH0NCj4gPg0KPiA+ICsgICAgaWYgKHMtPmt2bV9lYWdlcl9zcGxpdF9zaXplKSB7DQo+
+ID4gKyAgICAgICAgdWludDMyX3Qgc2l6ZXM7DQo+ID4gKw0KPiA+ICsgICAgICAgIHNpemVzID0g
+a3ZtX3ZtX2NoZWNrX2V4dGVuc2lvbihzLA0KPiBLVk1fQ0FQX0FSTV9TVVBQT1JURURfQkxPQ0tf
+U0laRVMpOw0KPiA+ICsgICAgICAgIGlmICghc2l6ZXMpIHsNCj4gPiArICAgICAgICAgICAgcy0+
+a3ZtX2VhZ2VyX3NwbGl0X3NpemUgPSAwOw0KPiA+ICsgICAgICAgICAgICB3YXJuX3JlcG9ydCgi
+RWFnZXIgUGFnZSBTcGxpdCBzdXBwb3J0IG5vdCBhdmFpbGFibGUiKTsNCj4gPiArICAgICAgICB9
+IGVsc2UgaWYNCj4gKCFrdm1fYXJtX2VhZ2VyX3NwbGl0X3NpemVfdmFsaWQocy0+a3ZtX2VhZ2Vy
+X3NwbGl0X3NpemUsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHNpemVzKSkgew0KPiA+ICsgICAgICAgICAgICBlcnJvcl9yZXBvcnQoIkVh
+Z2VyIFBhZ2UgU3BsaXQgcmVxdWVzdGVkIGNodW5rIHNpemUgbm90DQo+IHZhbGlkIik7DQo+ID4g
+KyAgICAgICAgfSBlbHNlIGlmIChrdm1fdm1fZW5hYmxlX2NhcChzLA0KPiBLVk1fQ0FQX0FSTV9F
+QUdFUl9TUExJVF9DSFVOS19TSVpFLCAwLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgcy0+a3ZtX2VhZ2VyX3NwbGl0X3NpemUpKSB7DQo+ID4gKyAgICAgICAgICAg
+IGVycm9yX3JlcG9ydCgiRmFpbGVkIHRvIHNldCBFYWdlciBQYWdlIFNwbGl0IGNodW5rDQo+ID4g
+KyBzaXplIik7DQo+IA0KPiBMZXRzIHByaW50IHRoZSBlcnJubyBoZXJlLiBJdCdzIGluZGljYXRp
+dmUgdG8gdGVsbCB3aGF0IGhhcHBlbnMgaW5zaWRlIHRoZSBob3N0DQo+IGtlcm5lbCBhbmQgd2h5
+IGl0J3MgZmFpbGluZyB0byBlbmFibGUgdGhlIGZlYXR1cmUuDQo+IA0KPiAJCWVycm9yX3JlcG9y
+dCgiRW5hYmxpbmcgb2YgRWFnZXIgUGFnZSBTcGxpdCBmYWlsZWQ6ICVzLiIsDQo+IHN0cmVycm9y
+KC1yZXQpKTsNCj4gDQo+ID4gKyAgICAgICAgfQ0KPiA+ICsgICAgfQ0KPiA+ICsNCj4gPiAgICAg
+ICBrdm1fYXJtX2luaXRfZGVidWcocyk7DQo+ID4NCj4gPiAgICAgICByZXR1cm4gcmV0Ow0KPiA+
+IEBAIC0xMDYyLDYgKzEwODQsNDYgQEAgYm9vbA0KPiBrdm1fYXJjaF9jcHVfY2hlY2tfYXJlX3Jl
+c2V0dGFibGUodm9pZCkNCj4gPiAgICAgICByZXR1cm4gdHJ1ZTsNCj4gPiAgIH0NCj4gPg0KPiA+
+ICtzdGF0aWMgdm9pZCBrdm1fYXJjaF9nZXRfZWFnZXJfc3BsaXRfc2l6ZShPYmplY3QgKm9iaiwg
+VmlzaXRvciAqdiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgY29uc3QgY2hhciAqbmFtZSwgdm9pZA0KPiAqb3BhcXVlLA0KPiA+ICsgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBFcnJvciAqKmVycnApIHsNCj4gPiArICAgIEtW
+TVN0YXRlICpzID0gS1ZNX1NUQVRFKG9iaik7DQo+ID4gKyAgICB1aW50NjRfdCB2YWx1ZSA9IHMt
+Pmt2bV9lYWdlcl9zcGxpdF9zaXplOw0KPiA+ICsNCj4gPiArICAgIHZpc2l0X3R5cGVfc2l6ZSh2
+LCBuYW1lLCAmdmFsdWUsIGVycnApOyB9DQo+ID4gKw0KPiA+ICtzdGF0aWMgdm9pZCBrdm1fYXJj
+aF9zZXRfZWFnZXJfc3BsaXRfc2l6ZShPYmplY3QgKm9iaiwgVmlzaXRvciAqdiwNCj4gPiArICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqbmFtZSwg
+dm9pZA0KPiAqb3BhcXVlLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBFcnJvciAqKmVycnApIHsNCj4gPiArICAgIEtWTVN0YXRlICpzID0gS1ZNX1NUQVRF
+KG9iaik7DQo+ID4gKyAgICB1aW50NjRfdCB2YWx1ZTsNCj4gPiArDQo+ID4gKyAgICBpZiAocy0+
+ZmQgIT0gLTEpIHsNCj4gPiArICAgICAgICBlcnJvcl9zZXRnKGVycnAsICJDYW5ub3Qgc2V0IHBy
+b3BlcnRpZXMgYWZ0ZXIgdGhlIGFjY2VsZXJhdG9yIGhhcw0KPiBiZWVuIGluaXRpYWxpemVkIik7
+DQo+ID4gKyAgICAgICAgcmV0dXJuOw0KPiA+ICsgICAgfQ0KPiA+ICsNCj4gDQo+IExldHMgYmUg
+bW9yZSBvYnZpb3VzIGhlcmU/DQo+IA0KPiAJZXJyb3Jfc2V0ZyhlcnJwLCAiVW5hYmxlIHRvIHNl
+dCBlYXJseS1zcGxpdC1zaXplIGFmdGVyIEtWTSBoYXMgYmVlbg0KPiBpbml0aWFsaXplZCIpOw0K
+PiANCj4gPiArICAgIGlmICghdmlzaXRfdHlwZV9zaXplKHYsIG5hbWUsICZ2YWx1ZSwgZXJycCkp
+IHsNCj4gPiArICAgICAgICByZXR1cm47DQo+ID4gKyAgICB9DQo+ID4gKw0KPiA+ICsgICAgaWYg
+KGlzX3Bvd2VyX29mXzIodmFsdWUpKSB7DQo+ID4gKyAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAi
+ZWFybHktc3BsaXQtc2l6ZSBtdXN0IGJlIGEgcG93ZXIgb2YgdHdvLiIpOw0KPiA+ICsgICAgICAg
+IHJldHVybjsNCj4gPiArICAgIH0NCj4gPiArDQo+IA0KPiBUaGlzIGNvbmRpdGlvbiBsb29rcyB3
+cm9uZyB0byBtZS4gJ3ZhbHVlID0gMCcgaXMgYWNjZXB0ZWQgdG8gZGlzYWJsZSB0aGUgZWFybHkN
+Cj4gcGFnZSBzcGxpdHRpbmcuIEJlc2lkZXMsIHdlIGFjdHVhbGx5IG5lZWQgdG8gd2FybiBvbiAh
+aXNfcG93ZXJfb2ZfMih2YWx1ZSkNCj4gDQo+IAlpZiAodmFsdWUgJiYgIWlzX3Bvd2VyX29mXzIo
+dmFsdWUpKSB7DQo+ICAgICAgICAgICAgICBlcnJvcl9zZXRnKGVycnAsICJlYXJseS1zcGxpdC1z
+aXplIG11c3QgYmUgYSBwb3dlciBvZiB0d28uIik7DQo+ICAgICAgICAgICAgICByZXR1cm47DQo+
+ICAgICAgICAgIH0NCj4gDQo+ID4gKyAgICBzLT5rdm1fZWFnZXJfc3BsaXRfc2l6ZSA9IHZhbHVl
+Ow0KPiA+ICt9DQo+ID4gKw0KPiA+ICAgdm9pZCBrdm1fYXJjaF9hY2NlbF9jbGFzc19pbml0KE9i
+amVjdENsYXNzICpvYykNCj4gPiAgIHsNCj4gPiArICAgIG9iamVjdF9jbGFzc19wcm9wZXJ0eV9h
+ZGQob2MsICJlYWdlci1zcGxpdC1zaXplIiwgInNpemUiLA0KPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBrdm1fYXJjaF9nZXRfZWFnZXJfc3BsaXRfc2l6ZSwNCj4gPiArICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAga3ZtX2FyY2hfc2V0X2VhZ2VyX3NwbGl0X3NpemUsIE5V
+TEwsDQo+ID4gKyBOVUxMKTsNCj4gPiArDQo+ID4gKyAgICBvYmplY3RfY2xhc3NfcHJvcGVydHlf
+c2V0X2Rlc2NyaXB0aW9uKG9jLCAiZWFnZXItc3BsaXQtc2l6ZSIsDQo+ID4gKyAgICAgICAgIkNv
+bmZpZ3VyZSBFYWdlciBQYWdlIFNwbGl0IGNodW5rIHNpemUgZm9yIGh1Z2VwYWdlcy4NCj4gPiAr
+IChkZWZhdWx0OiAwLCBkaXNhYmxlZCkiKTsNCj4gDQo+ICJDb25maWd1cmUiIG5lZWRzIHRvIGJl
+IGRyb3BwZWQgc2luY2UgdGhlIHByb3BlcnR5IGhhcyBib3RoIHJlYWQvd3JpdGUNCj4gcGVybWlz
+c2lvbi4NCj4gDQo+ID4gICB9DQo+IA0KPiBUaGFua3MsDQo+IEdhdmluDQoNCg==
 
