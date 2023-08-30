@@ -2,86 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BB478D6AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD0D78D6B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:55:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMaJ-0001CA-7U; Wed, 30 Aug 2023 10:54:19 -0400
+	id 1qbMaP-0001G9-0x; Wed, 30 Aug 2023 10:54:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMaH-0001B3-Ab
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:17 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qbMaK-0001Dq-Hh
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:20 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMaC-0000k0-UG
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:17 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-401da71b7c5so15201555e9.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:54:12 -0700 (PDT)
+ id 1qbMaF-0000lH-9L
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:20 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40037db2fe7so53705235e9.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:54:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693407251; x=1694012051; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693407254; x=1694012054; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SQNWyEt/hAb1sq6x2ShrI2jNVdnDYAzqYtnrYXK/jhc=;
- b=SPvRqdfednxicQJHYxe6VAFjOAnT7bseLZ4FcO+tKM2EQqwgWiTUlZ+C13A1zqYLpl
- /wMC3AJ2kNJu+mtnfwlLthKiFHrSacgNmJN1M46wsEXrrFYcspj8ryoysFbQvbC+CqgQ
- j1PWl77YFu5v8SWlNYqhyWLWnwnCMqiC458oQXwsbmqO1HOkDIZhO9btraVIzlf5++vO
- eQkc7krN8snfJpstF48F4rNCQGAaTvaEZ0CV+y+HcMJvp271wfOWPls+/4GuptjZrY0w
- 4yaTlr8bhJ0y8BTwHOXkEfeG9EDpCJucY3e1l3bHc7C1gED+8yX14pev6To/Ss1i5vIy
- Z9xA==
+ bh=FIIWkIImEVUr1vcFkZ9mfJXCWjjR9U+tUkLobigHVPM=;
+ b=T7COO35S88ANfT8GnupCiA0KH+UMe9X8yaUpz37HbEqx+43UjLJO7hTTNMeHTJVIjy
+ AUgb7IHyPebTNiwk9H7REK+c2NNZipQJq3NJtZGT3+BASie6ed7QkWGlJcJdWGNVC8tL
+ rOtbDwk5VqcnY3ik8kRYye/Jd5BKjGC3IXKBzPuqGyi30vL5ubdf2ifGIRkQ69G3MnZ1
+ 9UNBFqdZma7ZQ3koFd9uDlD83gyDXIJH133jUkUweRlbghBWUatrppDDPcScxSF3jxW1
+ uLzfWfn/pBB3e4PHgdylVTEVpkOrjKlUkLokku9dn35B8ML7VfCot4M4VGGr3NkjRs5a
+ TzQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693407251; x=1694012051;
+ d=1e100.net; s=20221208; t=1693407254; x=1694012054;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SQNWyEt/hAb1sq6x2ShrI2jNVdnDYAzqYtnrYXK/jhc=;
- b=Q6y3t2REKOgyUn9cnbWoJrlsdsGr2/IYfwO45k07Daw7VrYz4mBshaRfVz0qzfhGfT
- fdSzPr0x9cx3QIDv1syO7aNOW7qon8NgDE14vdbH1hCr7djeboXfMoSG8DFpDFaKunQT
- hCN2NrwmjAUdqDnOF6TmOk51cRBIdZ15QlW8L4PEPGp8GGcWM8VDFXCcxMOj2FMygBCI
- LHJXKiwdxvCK4fpFiMf7plP+lmQZEGL/i4iRORCGiKVpa8n0uPRH0AHhIKi2W1Xe1IQM
- brsfj0ZiGsUru+rpFvH0+BcvQZW2z+2LcVbKjdW/3x+R8vLRRgUzuW8HbiXPc9ubcixv
- 55Ww==
-X-Gm-Message-State: AOJu0YyKlzw48F1mqFOMMxTKBoxYa9WVdEmn73d1NlNNrFtEQYk13CgX
- UE4iMse7kL0BvQ2bIDlEz2L4bw==
-X-Google-Smtp-Source: AGHT+IGZ62lDvrQNEeYJa7B2J22la/c9PAmImIspgf/3iekIFnyM+VZTFc7Lk5AXHhlItZy1nKp4rw==
-X-Received: by 2002:a1c:6a03:0:b0:401:b652:b6cf with SMTP id
- f3-20020a1c6a03000000b00401b652b6cfmr2081629wmc.13.1693407251610; 
- Wed, 30 Aug 2023 07:54:11 -0700 (PDT)
+ bh=FIIWkIImEVUr1vcFkZ9mfJXCWjjR9U+tUkLobigHVPM=;
+ b=NaTtjg20o6zwrrB0tuii5Y9q8TF2bc1WC/3ILL1NTdihxUHLZ6V3Xp0nPPH4oti98y
+ FR61B2CMPOzY/ddJ42o/vzi8ICiXEJ1xc6lR1LOerGrSfrE2Es+CDay+iMWvyyX2/Pps
+ oPVXrMTasaGmjrnZOhPsn0O1OTNs2QJ0YOPipTiyw+K6P/LRDC4POhifEiKwKMvWi2FU
+ 6UYIkWE/u6STI+jifnX3oBn/OhCk0WCPfThGYjD670AzfnUrq5zTHNYm9zqWjNN4pPeE
+ epFIrK6SK+L+abmPy8COFvQkurAmq/MtPHJh7JsMVXIiCROfYRAMou6Mkh3083MEpAnZ
+ 4dFg==
+X-Gm-Message-State: AOJu0YwKyU96z9BSBn2Sln//CT28RQoODIotHpQ49o07Z72pu051yh7J
+ DifbqvXMvAcoqafP8I7qz9vToQ==
+X-Google-Smtp-Source: AGHT+IHGHcet/8iGTfC3vzIvHbGUcMB04gwTy2C38mu/ucSFQGJdLu9hiEWUb8mmVWCJGC0s7TZxDQ==
+X-Received: by 2002:a05:600c:b50:b0:3fe:c7fe:206e with SMTP id
+ k16-20020a05600c0b5000b003fec7fe206emr2253566wmr.16.1693407253709; 
+ Wed, 30 Aug 2023 07:54:13 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- u7-20020a05600c210700b003fee8793911sm2521092wml.44.2023.08.30.07.54.09
+ n8-20020a7bcbc8000000b00401d8810c8bsm2501252wmi.15.2023.08.30.07.54.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 07:54:09 -0700 (PDT)
+ Wed, 30 Aug 2023 07:54:12 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id B76831FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id DE1081FFBD;
  Wed, 30 Aug 2023 15:54:08 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/12] gdbstub: refactor get_feature_xml
-Date: Wed, 30 Aug 2023 15:54:05 +0100
-Message-Id: <20230830145407.3064249-11-alex.bennee@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs),
+ qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
+Subject: [PULL 11/12] gdbstub: replace global gdb_has_xml with a function
+Date: Wed, 30 Aug 2023 15:54:06 +0100
+Message-Id: <20230830145407.3064249-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230830145407.3064249-1-alex.bennee@linaro.org>
 References: <20230830145407.3064249-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,148 +104,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Try to bring up the code to more modern standards by:
+Try and make the self reported global hack a little less hackish by
+providing a query function instead. As gdb_has_xml was always set if
+we negotiated XML we can now use the presence of ->target_xml as the
+test instead.
 
-  - use dynamic GString built xml over a fixed buffer
-  - use autofree to save on explicit g_free() calls
-  - don't hand hack strstr to find the delimiter
-  - fix up style of xml_builtin and invert loop
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230829161528.2707696-11-alex.bennee@linaro.org>
+Message-Id: <20230829161528.2707696-12-alex.bennee@linaro.org>
 
 diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index f2b46cce41..4876ebd74f 100644
+index 4876ebd74f..fee243081f 100644
 --- a/gdbstub/internals.h
 +++ b/gdbstub/internals.h
-@@ -33,7 +33,7 @@ typedef struct GDBProcess {
+@@ -33,6 +33,7 @@ typedef struct GDBProcess {
      uint32_t pid;
      bool attached;
  
--    char target_xml[1024];
-+    char *target_xml;
++    /* If gdb sends qXfer:features:read:target.xml this will be populated */
+     char *target_xml;
  } GDBProcess;
  
- enum RSState {
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 7d743fe1e9..0ee39cfdd1 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -31,12 +31,12 @@ int gdbserver_start(const char *port_or_device);
+ void gdb_set_stop_cpu(CPUState *cpu);
+ 
+ /**
+- * gdb_has_xml:
+- * This is an ugly hack to cope with both new and old gdb.
+- * If gdb sends qXfer:features:read then assume we're talking to a newish
+- * gdb that understands target descriptions.
++ * gdb_has_xml() - report of gdb supports modern target descriptions
++ *
++ * This will report true if the gdb negotiated qXfer:features:read
++ * target descriptions.
+  */
+-extern bool gdb_has_xml;
++bool gdb_has_xml(void);
+ 
+ /* in gdbstub-xml.c, generated by scripts/feature_to_c.sh */
+ extern const char *const xml_builtin[][2];
 diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 8e9bc17e07..729e54139a 100644
+index 729e54139a..fdebfe25ea 100644
 --- a/gdbstub/gdbstub.c
 +++ b/gdbstub/gdbstub.c
-@@ -354,64 +354,67 @@ static CPUState *gdb_get_cpu(uint32_t pid, uint32_t tid)
+@@ -75,8 +75,6 @@ void gdb_init_gdbserver_state(void)
+     gdbserver_state.sstep_flags &= gdbserver_state.supported_sstep_flags;
+ }
+ 
+-bool gdb_has_xml;
+-
+ /* writes 2*len+1 bytes in buf */
+ void gdb_memtohex(GString *buf, const uint8_t *mem, int len)
+ {
+@@ -351,6 +349,11 @@ static CPUState *gdb_get_cpu(uint32_t pid, uint32_t tid)
+     }
+ }
+ 
++bool gdb_has_xml(void)
++{
++    return !!gdb_get_cpu_process(gdbserver_state.g_cpu)->target_xml;
++}
++
  static const char *get_feature_xml(const char *p, const char **newp,
                                     GDBProcess *process)
  {
--    size_t len;
--    int i;
--    const char *name;
-     CPUState *cpu = gdb_get_first_cpu_in_process(process);
-     CPUClass *cc = CPU_GET_CLASS(cpu);
-+    size_t len;
+@@ -1084,7 +1087,7 @@ static void handle_set_reg(GArray *params, void *user_ctx)
+ {
+     int reg_size;
  
--    len = 0;
--    while (p[len] && p[len] != ':')
--        len++;
--    *newp = p + len;
-+    /*
-+     * qXfer:features:read:ANNEX:OFFSET,LENGTH'
-+     *                     ^p    ^newp
-+     */
-+    char *term = strchr(p, ':');
-+    *newp = term + 1;
-+    len = term - p;
+-    if (!gdb_has_xml) {
++    if (!gdb_get_cpu_process(gdbserver_state.g_cpu)->target_xml) {
+         gdb_put_packet("");
+         return;
+     }
+@@ -1105,7 +1108,7 @@ static void handle_get_reg(GArray *params, void *user_ctx)
+ {
+     int reg_size;
  
--    name = NULL;
-+    /* Is it the main target xml? */
-     if (strncmp(p, "target.xml", len) == 0) {
--        char *buf = process->target_xml;
--        const size_t buf_sz = sizeof(process->target_xml);
--
--        /* Generate the XML description for this CPU.  */
--        if (!buf[0]) {
-+        if (!process->target_xml) {
-             GDBRegisterState *r;
-+            GString *xml = g_string_new("<?xml version=\"1.0\"?>");
-+
-+            g_string_append(xml,
-+                            "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
-+                            "<target>");
+-    if (!gdb_has_xml) {
++    if (!gdb_get_cpu_process(gdbserver_state.g_cpu)->target_xml) {
+         gdb_put_packet("");
+         return;
+     }
+@@ -1572,7 +1575,6 @@ static void handle_query_xfer_features(GArray *params, void *user_ctx)
+         return;
+     }
  
--            pstrcat(buf, buf_sz,
--                    "<?xml version=\"1.0\"?>"
--                    "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
--                    "<target>");
-             if (cc->gdb_arch_name) {
--                gchar *arch = cc->gdb_arch_name(cpu);
--                pstrcat(buf, buf_sz, "<architecture>");
--                pstrcat(buf, buf_sz, arch);
--                pstrcat(buf, buf_sz, "</architecture>");
--                g_free(arch);
-+                g_autofree gchar *arch = cc->gdb_arch_name(cpu);
-+                g_string_append_printf(xml,
-+                                       "<architecture>%s</architecture>",
-+                                       arch);
-             }
--            pstrcat(buf, buf_sz, "<xi:include href=\"");
--            pstrcat(buf, buf_sz, cc->gdb_core_xml_file);
--            pstrcat(buf, buf_sz, "\"/>");
-+            g_string_append(xml, "<xi:include href=\"");
-+            g_string_append(xml, cc->gdb_core_xml_file);
-+            g_string_append(xml, "\"/>");
-             for (r = cpu->gdb_regs; r; r = r->next) {
--                pstrcat(buf, buf_sz, "<xi:include href=\"");
--                pstrcat(buf, buf_sz, r->xml);
--                pstrcat(buf, buf_sz, "\"/>");
-+                g_string_append(xml, "<xi:include href=\"");
-+                g_string_append(xml, r->xml);
-+                g_string_append(xml, "\"/>");
-             }
--            pstrcat(buf, buf_sz, "</target>");
-+            g_string_append(xml, "</target>");
-+
-+            process->target_xml = g_string_free(xml, false);
-+            return process->target_xml;
-         }
--        return buf;
-     }
-+    /* Is it dynamically generated by the target? */
-     if (cc->gdb_get_dynamic_xml) {
--        char *xmlname = g_strndup(p, len);
-+        g_autofree char *xmlname = g_strndup(p, len);
-         const char *xml = cc->gdb_get_dynamic_xml(cpu, xmlname);
--
--        g_free(xmlname);
-         if (xml) {
-             return xml;
-         }
-     }
--    for (i = 0; ; i++) {
--        name = xml_builtin[i][0];
--        if (!name || (strncmp(name, p, len) == 0 && strlen(name) == len))
--            break;
-+    /* Is it one of the encoded gdb-xml/ files? */
-+    for (int i = 0; xml_builtin[i][0]; i++) {
-+        const char *name = xml_builtin[i][0];
-+        if ((strncmp(name, p, len) == 0) &&
-+            strlen(name) == len) {
-+            return xml_builtin[i][1];
-+        }
-     }
--    return name ? xml_builtin[i][1] : NULL;
-+
-+    /* failed */
-+    return NULL;
+-    gdb_has_xml = true;
+     p = get_param(params, 0)->data;
+     xml = get_feature_xml(p, &p, process);
+     if (!xml) {
+diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+index f509b7285d..9f0b8b5497 100644
+--- a/gdbstub/softmmu.c
++++ b/gdbstub/softmmu.c
+@@ -97,7 +97,6 @@ static void gdb_chr_event(void *opaque, QEMUChrEvent event)
+ 
+         vm_stop(RUN_STATE_PAUSED);
+         replay_gdb_attached();
+-        gdb_has_xml = false;
+         break;
+     default:
+         break;
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 5b375be1d9..7ab6e5d975 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -198,7 +198,6 @@ static void gdb_accept_init(int fd)
+     gdbserver_state.c_cpu = gdb_first_attached_cpu();
+     gdbserver_state.g_cpu = gdbserver_state.c_cpu;
+     gdbserver_user_state.fd = fd;
+-    gdb_has_xml = false;
  }
  
- static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-@@ -2245,6 +2248,6 @@ void gdb_create_default_process(GDBState *s)
-     process = &s->processes[s->process_num - 1];
-     process->pid = pid;
-     process->attached = false;
--    process->target_xml[0] = '\0';
-+    process->target_xml = NULL;
- }
- 
+ static bool gdb_accept_socket(int gdb_fd)
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index f421c5d041..8fc8351df7 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -48,7 +48,7 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     }
+     if (n < 24) {
+         /* FPA registers.  */
+-        if (gdb_has_xml) {
++        if (gdb_has_xml()) {
+             return 0;
+         }
+         return gdb_get_zeroes(mem_buf, 12);
+@@ -56,7 +56,7 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     switch (n) {
+     case 24:
+         /* FPA status register.  */
+-        if (gdb_has_xml) {
++        if (gdb_has_xml()) {
+             return 0;
+         }
+         return gdb_get_reg32(mem_buf, 0);
+@@ -102,7 +102,7 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     }
+     if (n < 24) { /* 16-23 */
+         /* FPA registers (ignored).  */
+-        if (gdb_has_xml) {
++        if (gdb_has_xml()) {
+             return 0;
+         }
+         return 12;
+@@ -110,7 +110,7 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     switch (n) {
+     case 24:
+         /* FPA status register (ignored).  */
+-        if (gdb_has_xml) {
++        if (gdb_has_xml()) {
+             return 0;
+         }
+         return 4;
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index ca39efdc35..2ad11510bf 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -56,7 +56,7 @@ static int ppc_gdb_register_len(int n)
+         return sizeof(target_ulong);
+     case 32 ... 63:
+         /* fprs */
+-        if (gdb_has_xml) {
++        if (gdb_has_xml()) {
+             return 0;
+         }
+         return 8;
+@@ -76,7 +76,7 @@ static int ppc_gdb_register_len(int n)
+         return sizeof(target_ulong);
+     case 70:
+         /* fpscr */
+-        if (gdb_has_xml) {
++        if (gdb_has_xml()) {
+             return 0;
+         }
+         return sizeof(target_ulong);
 -- 
 2.39.2
 
