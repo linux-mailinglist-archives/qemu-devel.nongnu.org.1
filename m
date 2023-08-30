@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BFD78D7F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 20:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66DF78D7F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 20:24:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbPpV-0007yL-2F; Wed, 30 Aug 2023 14:22:13 -0400
+	id 1qbPrC-0000Q4-3u; Wed, 30 Aug 2023 14:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qbPpK-0007wR-4s
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 14:22:03 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbPr8-0000Pn-F7
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 14:23:54 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qbPpG-0006v5-E3
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 14:22:00 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1cccbd43250so4089908fac.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 11:21:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbPr5-0007KO-US
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 14:23:54 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1bdb7b0c8afso37065005ad.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 11:23:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693419717; x=1694024517; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1693419830; x=1694024630; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ybMlO36yVsWWZqjpl3dswAOIwf63QiGvHAGprVkkdGs=;
- b=If9umJzu0+yM56bc/018zsn4fLif3oJuRgBWgJDfSe4Af/FN6v3ogu9CEMytewq5RZ
- OAfKQm1HuQDyxfbEtwWWSrBlJfa+2Xcft2QSlfrAHnAQhsg39QbxlaRXImJt2wboICyZ
- MUoGW8dVvymt992TclO8PbBeurYpw2HfvtVjRCJCZnCsjnsxnO3SogObIH6dKXvwk+2d
- VYGNA9dWsoKZc9aTNXBagZdrkrg+JZXCCs2l0K300ubRvBxlCoU6qNg+o5R+lun0QVcx
- A5vmEl7x2gmAHa+VQESXXXmoTgZH4rj2VhJwvdVWk8TKc8YoQBGpbK4eeV/g+mDG6VBh
- D7mw==
+ bh=CaE+AF/iO9sIbjj6frl71U1zuDqmx5lioM/O8lH6Klo=;
+ b=OCNRG40YBAO6x0v+Qfjegcq4zHWd+1+vmBEJCx5CBPONwOdTCE6RGK1i7EmBKoDzYv
+ RsYBC1lSIraeoA2aLWRgxKS7NdBMj5PXT5SEqDjstku/C3NjErx9VzNBN8WBdmbTk9bn
+ v8pB55OI4mWKzU5DeyUU45hxFSX8AIoVrAgQvXttjoQcS3sHJVj4KNl0ycv2TUMDu2RC
+ WUq+39nRkvNO/3XY0yzbOZXX05uqI0cUFk95LbvhD84Ci/eFJVRGP/QfR7oJDbiWegQi
+ UoeSYa5lRFpi/ty0HjfVZMWcGv8mVz/7KOa/X2qWnFC/zMYwTrKPcV3anbJwjn7Pm0PA
+ SPTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693419717; x=1694024517;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693419830; x=1694024630;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ybMlO36yVsWWZqjpl3dswAOIwf63QiGvHAGprVkkdGs=;
- b=RcxQln0s32XnXnNHpQqJ3G6xNOi0RabiFFgifj8OyM4kktaW9MIyeMgSFEdr8j39kA
- 8cEqGjcr85udoz5BBhUVNkq8IT2Xd00qh39hTjxONZ1gbpOheV4oBipWNNLR5iRnkadR
- uMHQEfelMW6iQS2PGBB/NGElvz2U7U4PKAHzVNlQWsKNV4WEiv1Jqiufz7JpDTIfU3yq
- Hy48c44wN3vgY2N3s2E0LLCnq8Glq5pJRw0mBRAStb7x3xl2VzomZwY3Pxfw7UHvtVIz
- d2ZctCObNNsyE1gC618Nwr7KAs8XNRcuIfho8OLCbnDPdyYpeI1vUGa7NftESIhWnfaM
- 2sOg==
-X-Gm-Message-State: AOJu0YxLlwEOA4ZiqVANzVbHB+OglhOzI3MhJDewhTasv84Vp+CoJqSJ
- mS1RO3M9F1cMALWxbu1/o7muZL67eBtooRZoQSc=
-X-Google-Smtp-Source: AGHT+IFXl1cpGxPKK+fyxbk74t820laJBHgXgxCXMIw9qP9Fush4NqQ3k3tOLoU4c2oo+bakdGYudg==
-X-Received: by 2002:a05:6870:e988:b0:1c8:c909:8942 with SMTP id
- r8-20020a056870e98800b001c8c9098942mr3794358oao.26.1693419717060; 
- Wed, 30 Aug 2023 11:21:57 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
+ bh=CaE+AF/iO9sIbjj6frl71U1zuDqmx5lioM/O8lH6Klo=;
+ b=Gpn7YsVACQumhLgn6VG921RaaW3aHCynpLOtCAHSNZt9kOKq6NfPi3G4bgP3BNs3Yi
+ 1w4zbkA3nub4o6NQqWndmVKH3hlNRzgMo1UQ5lXMQ+vcXN7/AJEO3oZEKrrLwNsDnPdJ
+ Y4ZtC4EjhJhBRmRgu2y0w3JVvwdwwzM6+QbIVntRRw6uA2SBy4OjWp+0u0Jz8zgsw10/
+ 7hh53kkRfqLZskz3LWduT8gIT6m3fjp4cvDuBaUbcobC0KD2XIUJChVxGxW8XNcGyZSV
+ LhcMTAV3rdIar0P9Vak2bE1FMLVkctT/zOOC0ezmgP87GeWi36oxyCFipDniUHRt0ZCR
+ fjGA==
+X-Gm-Message-State: AOJu0Yzub/OQTj05nqUtxLmOEJ6qt01Q7phh4cNyAyMMeqBSeyxCQ32T
+ vHRIb3AqK8NvrBo3cV3nsbWn8sx05mmKz2a67+g=
+X-Google-Smtp-Source: AGHT+IHTUJDYiz5kigVtX3AJOqt0KmXMhu3omdRYNzrRwV6UDmjKpSC2BuhzRET8hjE9OxtAAbLu4w==
+X-Received: by 2002:a17:90b:4a86:b0:26d:3458:7a61 with SMTP id
+ lp6-20020a17090b4a8600b0026d34587a61mr2837841pjb.5.1693419830271; 
+ Wed, 30 Aug 2023 11:23:50 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- ny3-20020a056870be0300b001cd07e1c66dsm6704382oab.6.2023.08.30.11.21.54
+ ce14-20020a17090aff0e00b0026b46ad94c9sm1536650pjb.24.2023.08.30.11.23.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 11:21:56 -0700 (PDT)
-Message-ID: <646bd37a-367b-5877-f54d-721f61cbfcd0@ventanamicro.com>
-Date: Wed, 30 Aug 2023 15:21:52 -0300
+ Wed, 30 Aug 2023 11:23:49 -0700 (PDT)
+Message-ID: <c648ae08-eaf4-4f55-e8a3-e8400b19ed1c@linaro.org>
+Date: Wed, 30 Aug 2023 11:23:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 12/20] target/riscv: move KVM only files to kvm subdir
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
- <20230825130853.511782-13-dbarboza@ventanamicro.com>
- <355beacc-19a4-f860-52ec-c421858b40e1@linaro.org>
+Subject: Re: [PATCH v4 17/48] target/loongarch: Implement
+ xvmul/xvmuh/xvmulw{ev/od}
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <355beacc-19a4-f860-52ec-c421858b40e1@linaro.org>
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20230830084902.2113960-1-gaosong@loongson.cn>
+ <20230830084902.2113960-18-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230830084902.2113960-18-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -98,118 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 8/28/23 13:47, Philippe Mathieu-Daudé wrote:
-> On 25/8/23 15:08, Daniel Henrique Barboza wrote:
->> Move the files to a 'kvm' dir to promote more code separation between
->> accelerators and making our lives easier supporting build options such
->> as --disable-tcg.
->>
->> Rename kvm.c to kvm-cpu.c to keep it in line with its TCG counterpart.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   hw/riscv/virt.c                       | 2 +-
->>   target/riscv/cpu.c                    | 2 +-
->>   target/riscv/{kvm.c => kvm/kvm-cpu.c} | 0
->>   target/riscv/{ => kvm}/kvm-stub.c     | 0
->>   target/riscv/{ => kvm}/kvm_riscv.h    | 0
->>   target/riscv/kvm/meson.build          | 2 ++
->>   target/riscv/meson.build              | 2 +-
->>   7 files changed, 5 insertions(+), 3 deletions(-)
->>   rename target/riscv/{kvm.c => kvm/kvm-cpu.c} (100%)
->>   rename target/riscv/{ => kvm}/kvm-stub.c (100%)
->>   rename target/riscv/{ => kvm}/kvm_riscv.h (100%)
->>   create mode 100644 target/riscv/kvm/meson.build
+On 8/30/23 01:48, Song Gao wrote:
+> This patch includes:
+> - XVMUL.{B/H/W/D};
+> - XVMUH.{B/H/W/D}[U];
+> - XVMULW{EV/OD}.{H.B/W.H/D.W/Q.D}[U];
+> - XVMULW{EV/OD}.{H.BU.B/W.HU.H/D.WU.W/Q.DU.D}.
 > 
-> 
->> +++ b/target/riscv/kvm/meson.build
->> @@ -0,0 +1,2 @@
->> +riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm-cpu.c'),
->> +                                 if_false: files('kvm-stub.c'))
-> 
-> Hmm maybe we need to add:
-> 
-> -- >8 --
-> diff --git a/include/hw/core/accel-cpu.h b/include/hw/core/accel-cpu.h
-> index 5dbfd79955..65973b6f2e 100644
-> --- a/include/hw/core/accel-cpu.h
-> +++ b/include/hw/core/accel-cpu.h
-> @@ -33,6 +33,7 @@ typedef struct AccelCPUClass {
->       void (*cpu_class_init)(CPUClass *cc);
->       void (*cpu_instance_init)(CPUState *cpu);
->       bool (*cpu_realizefn)(CPUState *cpu, Error **errp);
-> +    ResettablePhases cpu_reset;
->   } AccelCPUClass;
+> Signed-off-by: Song Gao<gaosong@loongson.cn>
 > ---
+>   target/loongarch/vec.h                       |  2 +
+>   target/loongarch/insns.decode                | 38 +++++++++++++
+>   target/loongarch/disas.c                     | 38 +++++++++++++
+>   target/loongarch/vec_helper.c                | 57 ++++++++++---------
+>   target/loongarch/insn_trans/trans_lasx.c.inc | 42 ++++++++++++++
+>   target/loongarch/insn_trans/trans_lsx.c.inc  | 60 ++++++++++----------
+>   6 files changed, 180 insertions(+), 57 deletions(-)
 > 
-> and here:
-> 
->   static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
->   {
->       AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
-> 
->       acc->cpu_instance_init = kvm_cpu_instance_init;
-> +    acc->cpu_reset.hold = kvm_riscv_reset_vcpu;
->   }
-> 
-> so then calling some accel_cpu_reset_hold() in riscv_cpu_reset_hold(),
-> would call kvm_riscv_reset_vcpu() and we can remove kvm-stub.c.
+> diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+> index cd6f6a72fd..6fc84c8c5a 100644
+> --- a/target/loongarch/vec.h
+> +++ b/target/loongarch/vec.h
+> @@ -60,4 +60,6 @@
+>   #define DO_MIN(a, b)    (a < b ? a : b)
+>   #define DO_MAX(a, b)    (a > b ? a : b)
+>   
+> +#define DO_MUL(a, b)    (a * b)
+> +
+
+No need to move this.
+
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-Or we can just remove kvm-stub.c without doing any other changes :)
-
-Just removing it works fine it seems, even with --enable-debug builds. All functions
-implemented in the stub are already wrapped in 'if kvm_enabled()' blocks, so the
-stub isn't really being used.
-
-I'll take the opportunity to not just remove kvm-stub.c but also add the non-KVM
-stubs of all kvm_riscv.h APIs in the header, like you ARM folks are already doing
-in kvm_arm.h.  I'll do that in a preliminary patch.
-
-
-Oh, and a side note: I took a quick look at target/arm/kvm-stub.c and how
-write_kvmstate_to_list() and write_list_to_kvmstate() are being called.
-
-Turns out that this works for me:
-
-[danielhb@grind qemu]$ git diff
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index e645e456da..e524e1114b 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -8,7 +8,7 @@ arm_ss.add(files(
-  ))
-  arm_ss.add(zlib)
-  
--arm_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c', 'kvm64.c'), if_false: files('kvm-stub.c'))
-+arm_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c', 'kvm64.c'))
-  arm_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
-  
-  arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
-
-[danielhb@grind qemu]$ git rm target/arm/kvm-stub.c
-rm 'target/arm/kvm-stub.c'
-
-[danielhb@grind qemu]$ cd build
-[danielhb@grind build]$ ../configure --target-list=aarch64-softmmu --enable-debug && make -j
-(...)
-[2724/2725] Generating docs/QEMU manual with a custom command
-[2725/2725] Generating docs/QEMU man pages with a custom command
-[danielhb@grind build]$
-
-
-I suggest you take a look into target/arm/kvm-stub.c. Seems like you can just rip it out.
-
-
-Thanks,
-
-
-Daniel
-
-
-> 
-> 
-> 
+r~
 
