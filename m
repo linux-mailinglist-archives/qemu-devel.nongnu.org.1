@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD29178D4AE
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DE878D4E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:47:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHgU-0002ui-Nc; Wed, 30 Aug 2023 05:40:22 -0400
+	id 1qbHgW-00039k-FE; Wed, 30 Aug 2023 05:40:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHgR-0002PQ-1O
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:19 -0400
+ id 1qbHgU-00031e-SS
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHgO-0001Gj-Hd
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:18 -0400
+ id 1qbHgR-0001HO-OD
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388415;
+ s=mimecast20190719; t=1693388419;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jNukM4kC5+isisYiLdiV9eVZ7kfQmbo7DtK8Pk7+pbA=;
- b=Qd0JcFz6hogtbtcYo11p/1nuu2yXNjLdqmWs6ndgavSzwXTh7TwdjXQ3RFqnCtXazwoZKh
- bpPMgE2alqqnTCRq33OyWVGvce5t+jLms2gxy0MTbyrLT37Do8tlQ90YLaRR300e8PyfHY
- zh3y355DM2D6in1tpQhFll+xvLvuL48=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-474-IhQWqd7EP6msJZNVEa9I6A-1; Wed, 30 Aug 2023 05:40:13 -0400
-X-MC-Unique: IhQWqd7EP6msJZNVEa9I6A-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=2GP6O6o4+gPJ3XyQDd7O4dkYgiHE9UWFU5cb/THrjas=;
+ b=CLXXWkAqC2/N5waUYKqOrjBVA4DwG3Ks7dpT/xSoexRxyoZlrqgCL8CklvcsvZp7dV8way
+ OpFMWjMm/yptHIB63Tgu7nFqv5XWRxHPnK4dHjdR1782EwMP4CZIG+YFGkz6U1zfn5Pl6F
+ LbyFRR4IAKxAEBPOp6I3jB8Gb2fg6A8=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-64-HRm-LVlVM5imNAggX8xjtw-1; Wed, 30 Aug 2023 05:40:17 -0400
+X-MC-Unique: HRm-LVlVM5imNAggX8xjtw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95E06185A791
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:40:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A41D1C07595
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:40:17 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9D515140E96E;
- Wed, 30 Aug 2023 09:40:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 63AEF6466B;
+ Wed, 30 Aug 2023 09:40:15 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 22/67] ui/console: remove new_console()
-Date: Wed, 30 Aug 2023 13:37:56 +0400
-Message-ID: <20230830093843.3531473-23-marcandre.lureau@redhat.com>
+Subject: [PATCH 23/67] ui/console: specialize console_lookup_unused()
+Date: Wed, 30 Aug 2023 13:37:57 +0400
+Message-ID: <20230830093843.3531473-24-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -82,68 +82,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The constructor helper isn't of much used now.
+graphics_console_init() is expected to return a graphic console.
 
-"head" is only specified for graphic console (and default to 0), and we
-are going to move it to QemuGraphicConsole next.
+The function doesn't need to be exported.
+
+We are going to specialize further QemuGraphicConsole & QemuTextConsole.
+The two will not be interchangeable anymore.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/console.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ include/ui/console.h | 1 -
+ ui/console.c         | 7 ++++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 1b08b0f8ad..465f0f93a0 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -484,7 +484,6 @@ QemuConsole *qemu_console_lookup_by_index(unsigned int index);
+ QemuConsole *qemu_console_lookup_by_device(DeviceState *dev, uint32_t head);
+ QemuConsole *qemu_console_lookup_by_device_name(const char *device_id,
+                                                 uint32_t head, Error **errp);
+-QemuConsole *qemu_console_lookup_unused(void);
+ QEMUCursor *qemu_console_get_cursor(QemuConsole *con);
+ bool qemu_console_is_visible(QemuConsole *con);
+ bool qemu_console_is_graphic(QemuConsole *con);
 diff --git a/ui/console.c b/ui/console.c
-index 02a24eaf5d..e0e4f980d7 100644
+index e0e4f980d7..08bed58b80 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -1414,16 +1414,6 @@ qemu_fixed_text_console_init(Object *obj)
+@@ -196,6 +196,7 @@ static void text_console_update_cursor(void *opaque);
+ static bool displaychangelistener_has_dmabuf(DisplayChangeListener *dcl);
+ static bool console_compatible_with(QemuConsole *con,
+                                     DisplayChangeListener *dcl, Error **errp);
++static QemuConsole *qemu_graphic_console_lookup_unused(void);
+ 
+ static void gui_update(void *opaque)
  {
+@@ -2184,7 +2185,7 @@ QemuConsole *graphic_console_init(DeviceState *dev, uint32_t head,
+     QemuConsole *s;
+     DisplaySurface *surface;
+ 
+-    s = qemu_console_lookup_unused();
++    s = qemu_graphic_console_lookup_unused();
+     if (s) {
+         trace_console_gfx_reuse(s->index);
+         width = qemu_console_get_width(s, 0);
+@@ -2289,13 +2290,13 @@ QemuConsole *qemu_console_lookup_by_device_name(const char *device_id,
+     return con;
  }
  
--static QemuConsole *new_console(const char *typename,
--                                uint32_t head)
--{
--    QemuConsole *c = QEMU_CONSOLE(object_new(typename));
--
--    c->head = head;
--
--    return c;
--}
--
- #ifdef WIN32
- void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
-                                           HANDLE h, uint32_t offset)
-@@ -2163,7 +2153,7 @@ DisplayState *init_displaystate(void)
+-QemuConsole *qemu_console_lookup_unused(void)
++static QemuConsole *qemu_graphic_console_lookup_unused(void)
+ {
      QemuConsole *con;
+     Object *obj;
  
      QTAILQ_FOREACH(con, &consoles, next) {
--        /* Hook up into the qom tree here (not in new_console()), once
-+        /* Hook up into the qom tree here (not in object_new()), once
-          * all QemuConsoles are created and the order / numbering
-          * doesn't change any more */
-         name = g_strdup_printf("console[%d]", con->index);
-@@ -2201,7 +2191,8 @@ QemuConsole *graphic_console_init(DeviceState *dev, uint32_t head,
-         height = qemu_console_get_height(s, 0);
-     } else {
-         trace_console_gfx_new();
--        s = new_console(TYPE_QEMU_GRAPHIC_CONSOLE, head);
-+        s = (QemuConsole *)object_new(TYPE_QEMU_GRAPHIC_CONSOLE);
-+        s->head = head;
-         s->ui_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
-                                    dpy_set_ui_info_timer, s);
-     }
-@@ -2578,9 +2569,9 @@ static void vc_chr_open(Chardev *chr,
- 
-     trace_console_txt_new(width, height);
-     if (width == 0 || height == 0) {
--        s = new_console(TYPE_QEMU_TEXT_CONSOLE, 0);
-+        s = (QemuConsole *)object_new(TYPE_QEMU_TEXT_CONSOLE);
-     } else {
--        s = new_console(TYPE_QEMU_FIXED_TEXT_CONSOLE, 0);
-+        s = (QemuConsole *)object_new(TYPE_QEMU_FIXED_TEXT_CONSOLE);
-         s->scanout.kind = SCANOUT_SURFACE;
-         s->surface = qemu_create_displaysurface(width, height);
-     }
+-        if (con->hw_ops != &unused_ops) {
++        if (!QEMU_IS_GRAPHIC_CONSOLE(con) || con->hw_ops != &unused_ops) {
+             continue;
+         }
+         obj = object_property_get_link(OBJECT(con),
 -- 
 2.41.0
 
