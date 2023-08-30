@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5452678D6A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 808E478D6A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMVF-0003m6-G0; Wed, 30 Aug 2023 10:49:05 -0400
+	id 1qbMYb-0000Sg-4R; Wed, 30 Aug 2023 10:52:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbMVB-0003ex-Kq
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:49:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qbMYZ-0000SW-1p
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:52:31 -0400
+Received: from mout.gmx.net ([212.227.17.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbMV6-00088M-QZ
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:49:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693406935;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=4Zq3i2WOIUSi8EXE5K6NvSD1T4v/O+3Jk8tOU138jEo=;
- b=UgusAGzF38Vw7R5PWhzlLZVN4o3mp3bAdsRWVv3NJeZh7U2xuAL5smuUEPh+qDEVAL2HGa
- C8iwDOAltJF7fKn39WtSab65m/S2rvCGYeZN0QZUV+YmunZGrWN1LFg5t2j+HZXaEV3Vi+
- PEB/8SDBnFdIsuIzXqogJ5s1zeK0tkU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-226-BsazKCwePfmjv-SZJ2q-XQ-1; Wed, 30 Aug 2023 10:48:48 -0400
-X-MC-Unique: BsazKCwePfmjv-SZJ2q-XQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C304185A78B;
- Wed, 30 Aug 2023 14:48:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E3FEC4021B9;
- Wed, 30 Aug 2023 14:48:46 +0000 (UTC)
-Date: Wed, 30 Aug 2023 15:48:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Warner Losh <imp@bsdimp.com>
-Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Laurent Vivier <laurent@vivier.eu>, Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PULL 0/1] Quick fix patches
-Message-ID: <ZO9WzHvhuGEnViue@redhat.com>
-References: <20230830022205.57878-1-imp@bsdimp.com>
- <CAJSP0QVnEswDVbvWU3Zv74L+19De+nTVmzueAP-Lg_zw4E1mtg@mail.gmail.com>
- <bcc8770e-95e6-e259-3c0b-e18a2c41474b@redhat.com>
- <CANCZdfqijpBfCJpv0QywMF3bd4Kow-3wyqs2ohT7w3tcYWOVZQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qbMYW-0000UC-8u
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:52:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1693407144; x=1694011944; i=deller@gmx.de;
+ bh=P/PQL8CV2apvOg8uQVUS1u6uyHZK7omKWCQDjeG30v0=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=D1rU94ZeFK/Af46oJ7/BNzwHS1m3Xa/zd/beYJRM7W+K8vFraSXvp8cLukvxG573ll/bSWL
+ gyG1RcbnzttArhwXsiLDqiqR5d4PK7DwbvhyQXre6mXrUU7dI4gKPtpLNewf2JOClCYsXKP+Z
+ wK42IRkISRjTDnexkKEGFZkxfFK62AL3pxqRBzvWD6Y1tXMrCD7fO6XXoXIksL1kNYWzJxPi5
+ KjGgqOeFt+477RX1JV5E2mnvroKS8DrFvX5rDM5ywSOT3a/ivzQGueZ+ApJfRXWq+GONGpo+/
+ iGeMdzrQT8hNTFgRo+REITxjDgIaeb64tbjEPo0JPOGTgBYhG1Hw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.153.41]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSc1B-1q8SlF0Bc9-00SwX2; Wed, 30
+ Aug 2023 16:52:24 +0200
+Message-ID: <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
+Date: Wed, 30 Aug 2023 16:52:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANCZdfqijpBfCJpv0QywMF3bd4Kow-3wyqs2ohT7w3tcYWOVZQ@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 00/20] linux-user: Implement VDSOs
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, laurent@vivier.eu
+References: <20230829220228.928506-1-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230829220228.928506-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rcU9Yz29CGi4UQt/+3kFUXtbC/vgVvfajobTNx/6M0mgMzO7FNy
+ qY1Hp2tzdRnozDIUmryEjV1KR1bLityVYMYzhHKWQ2hiIaQlumY28RhjoyUjfJUbahat79+
+ +VGt5O6dPCnR9kCPCJEPTMxDwmALXhEerHpxUgJ+XCbVfWPQ11nKuszV1d5J3b9SJbHX5Et
+ XCDIMPodQyzXEvVdXnvXA==
+UI-OutboundReport: notjunk:1;M01:P0:QrhihjAQYTM=;Vc3ijCIqFaPFCZusoKJiaoMJcLB
+ Qcp5wq2EQyssXvsQ/FpjRtOq1AnH0jhvEfO+QjxBWj/ZobuGzhfJXHfs2vSg/GRhn+7UDI5vi
+ YaO/4CJ+Iln25lY3SdogxWsx2vS6vZXmIB+8shwEfSeqrYA0JQ5tBl+cCX2jO8B83GN2AbXVR
+ dPl8BrN5/epB9yBnZfSPda2Cp1Q5zW1GDAiSoEDXbAPgP/+ScgUdZ937vsAQ7kwLTRu7docb+
+ ySRJflgXVioOlCQjfA4ciA4Byrdv35zUv7lcarW5DcQJ4GzVF1QwBIUfxHJUIAIJFE0rICrMf
+ tKgCrByvrGtag6oD6ACgf1QJKYG1gVV9zJLDvVn1VopEpdgUhA8ss25OxuqgRLWrio71NX/Rj
+ f4uUnCRtCryKeIKp7U4makBUeFB0XziGa61Aoy5/FwQM02HnKO8XJAiuNTLgssOeDFkniuUOz
+ NJO8qP8f6736gFWV/PPFd+3RSN7a/WwnTJpBvU0BrAOTx/EAcbiVu1Dxnn0qu2PUveJ3Hgg2u
+ YdREv4kSJN9ITMMv/nhFFASXrArI+0SY4I4zeclrvjrxbQ4mo6AebQuHWMhb6HI4L0LG9/UI6
+ GAF9e5e7iPw8YJTwGcuOlN214aTwBsTQZRMD07q3or06i+whimXSio4xUDvp2Kv7mpunZ20b0
+ vYzWfJf9dRM5v8Rb081fSgGmy0yO38B7ZiYvI1zhlVcZEhMBQe2UzfrnVAC9x4aeJ8aqttRMN
+ lu/9YHUcTbMMzKvqwQPZ5lUTNU7MF8B3ESEvkVi6HvRZRpkrzV/hEerrfSyczLUwyfsvdfG1f
+ 4U1YbP9F27S8224QatQ7ENcOBW6Q6DnHkY5TRW7WmZATCqmYWtBDFnmwVd5hEp6FqNiVizUuB
+ 1VJT2nM9F+11F37/ldI15O65Oe03+xDgnWB45C7W4cTbxW3tebl4J7a+bPEwDnXO752Vm3uAL
+ yexpmw==
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,71 +84,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 08:31:15AM -0600, Warner Losh wrote:
-> On Wed, Aug 30, 2023, 7:26 AM Thomas Huth <thuth@redhat.com> wrote:
-> 
-> > On 30/08/2023 15.16, Stefan Hajnoczi wrote:
-> > > Hi,
-> > > The patch introduces the following build failure:
-> > >
-> > > cc -m64 -mcx16 -Isubprojects/libvhost-user/libvhost-user.a.p
-> > > -Isubprojects/libvhost-user -I../subprojects/libvhost-user
-> > > -fdiagnostics-color=auto -Wall -Winvalid-pch -Werror -std=gnu99 -O2 -g
-> > > -Wsign-compare -Wdeclaration-after-statement -Wstrict-aliasing
-> > > -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
-> > > -fno-common -fwrapv -fPIE -pthread -D_GNU_SOURCE -MD -MQ
-> > > subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -MF
-> > > subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o.d -o
-> > > subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -c
-> > > ../subprojects/libvhost-user/libvhost-user.c
-> > > In file included from ../subprojects/libvhost-user/include/atomic.h:18,
-> > > from ../subprojects/libvhost-user/libvhost-user.c:53:
-> > > ../subprojects/libvhost-user/include/compiler.h:38:40: error: missing
-> > > binary operator before token "("
-> > > 38 | #if defined(__clang__) &&
-> > __has_warning("-Waddress-of-packed-member")
-> > > | ^
-> > >
-> > > https://gitlab.com/qemu-project/qemu/-/jobs/4981576093
-> >
-> > IIRC older versions of GCC do not have __has_warning() yet, so if you want
-> > to use this in compiler.h, you have to do it below the line in compiler.h
-> > that adds this:
-> >
-> > #ifndef __has_warning
-> > #define __has_warning(x) 0 /* compatibility with non-clang compilers */
-> > #endif
-> >
-> 
-> This already works for linux-user. If there are gcc versions that break,
-> our current CI jobs don't show it. Why add complexity for unsupported gcc
-> versions? And how do I know I got it right?
+On 8/30/23 00:02, Richard Henderson wrote:
+> Changes for v5:
+>    * Integrated cross-compile, via new build-vdso.sh and meson rules.
+>      However, keep the binaries in the tree for hosts which do not
+>      have all of the cross-compile machinery.
+>    * Update our loongarch64 docker image to avoid a binutils bug.
+>
+> Just in case the list eats a binary:
+>    https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
 
-IIUC, /no/ GCC version has __has_warning. The no-op stub we have works
-because we merely need the preprocessor to be able to parse the
-expression
+I pulled that on top of git head, and ran into the build problem below.
+Do I miss something?
 
-  #if defined(__clang__) && __has_warning("....")
+Helge
 
-it'll never actually evaluate the __has_warning clause under GCC
-because the defined(__clang__) will be false.
-
-> I'm really starting to think the feedback 'move it to compilers.h' should
-> have just been ignored... it's turning into a lot of my time to correct
-> that I don't have when I'm also out of CI minutes to test with.
-
-FWIW, if you have a Linux VM with docker/podman present it also possible
-to run the CI environments locally with 'make docker-help' has more info
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+[62/1742] Generating linux-user/aarch64/vdso-be.so with a custom command
+FAILED: linux-user/aarch64/vdso-be.so
+/home/cvs/qemu/qemu/linux-user/build-vdso.sh -B /srv/_build -C /home/cvs/q=
+emu/qemu/linux-user/aarch64 -T aarch64-linux-user -o linux-user/aarch64/vd=
+so-be.so -- -nostdlib -shared -Wl,-h,linux-vdso.so.1 -Wl,--build-id=3Dsha1=
+ -Wl,--hash-style=3Dboth -Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch6=
+4/vdso.ld ../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S -mbig-endian
+Error: short-name resolution enforced but cannot prompt without a TTY
+Traceback (most recent call last):
+   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 683, in <module=
+>
+     sys.exit(main())
+              ^^^^^^
+   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 679, in main
+     return args.cmdobj.run(args, argv)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 657, in run
+     return Docker().run(cmd, False, quiet=3Dargs.quiet,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 370, in run
+     ret =3D self._do_check(["run", "--rm", "--label",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 247, in _do_che=
+ck
+     return subprocess.check_call(self._command + cmd, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File "/usr/lib64/python3.11/subprocess.py", line 413, in check_call
+     raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['podman', 'run', '--rm', '--label=
+', 'com.qemu.instance.uuid=3De746f7e345ed420088a9cc30e884a7e8', '--userns=
+=3Dkeep-id', '-u', '1000', '-w', '/srv/_build', '-v', '/srv/_build:/srv/_b=
+uild:rw', '-v', '/home/cvs/qemu/qemu:/home/cvs/qemu/qemu:ro,z', 'qemu/debi=
+an-arm64-cross', 'aarch64-linux-gnu-gcc-10', '-o', 'linux-user/aarch64/vds=
+o-be.so', '-nostdlib', '-shared', '-Wl,-h,linux-vdso.so.1', '-Wl,--build-i=
+d=3Dsha1', '-Wl,--hash-style=3Dboth', '-Wl,-T,../../home/cvs/qemu/qemu/lin=
+ux-user/aarch64/vdso.ld', '../../home/cvs/qemu/qemu/linux-user/aarch64/vds=
+o.S', '-mbig-endian']' returned non-zero exit status 125.
+filter=3D--filter=3Dlabel=3Dcom.qemu.instance.uuid=3De746f7e345ed420088a9c=
+c30e884a7e8
 
 
