@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A65678D6D9
+	by mail.lfdr.de (Postfix) with ESMTPS id 7302378D6DA
 	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:14:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMsn-00034U-EF; Wed, 30 Aug 2023 11:13:25 -0400
+	id 1qbMtD-0003Ag-SX; Wed, 30 Aug 2023 11:13:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbMsl-00034E-M1
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:13:23 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbMtC-0003AU-3g
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:13:50 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbMsj-0005jv-GU
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:13:23 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fef56f7248so53748365e9.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:13:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbMtA-0005m0-00
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:13:49 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40037db2fe7so53927285e9.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693408399; x=1694013199; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693408426; x=1694013226; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NX21Uj55k3Z0fAhH22nUETgzLdTU9GMK9J0KT1CNAb4=;
- b=r4s4arBOoOqJbhwZYGveC44NczPfv9akTt7j0z2U6zPOIXCL+FDRPOatjoSi8XpTRj
- 5zSOoMKObnLZC46ldKOZXbO2pTW6/D25x0gAqoktG5H8laTAAF9OE5v3BkuBHSseCXiZ
- TnEoJma9YfRIoytDbsSHzror5Wo8/YlA1PyMPQmHOhr48Xh32BzZamHBYPOGkYGsv+ew
- /Y1kOK/iWjyF7u9h0IqR2FED3tlg4lG6TtUZV/SgQx8EVzr7w66NgH9ip3Ln1IVXJLhX
- FypBVL0BXWwP7m/01iDqSnlIYddv6I1hVHarNaBpY3ygWgMONVfi8zJBmbhvUT31r+4o
- 6WCA==
+ bh=6P71vvJ7ptsd0vmhWYR8dZEDPpDX55u5Wf1LptQc2Hk=;
+ b=a1t1a2uTUhfkXNQ0awIV5mLHu05gyYDuHs1XnFTvhCDMvIbdNyRJqbFK/gH2y8+7dF
+ 8w7VjXWjaP+mQxI4BnFNl1brKxJ1Mq2vUAOmM2ZZNIRLGIMx7SiZ4zjsjfho149EVY03
+ T8fy0dvjZQp7kAL/I1knqrgdxA5iU5xkp2FlOiSpFdCzIb6up5P5DhLKlKm+Sx+DzxxC
+ 7J0espoWhDXd0h7q0hF/ECBPYdMta6ZWX8bWPBMPpcx7/4AEtBmhVVKSPlS06i8B922b
+ 2TeCfybkjQB64oYiGRyzVwcxf6kaQArLsWkaLgbIgIc9EBR3rATX/Oe8J+rkdEcQXPVz
+ LaBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693408399; x=1694013199;
+ d=1e100.net; s=20221208; t=1693408426; x=1694013226;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NX21Uj55k3Z0fAhH22nUETgzLdTU9GMK9J0KT1CNAb4=;
- b=VDtHU5JEL1Y+ziQwdSFSjlFfCqvMGtI3ZBHf3EqGbm1zP7Lm7CFcug+obWFrhd578o
- gGoIGFFIvWM4RI6KmRr7d75ERpOU71GFdJVqiCz8VS1kvzxBqJAvX/H/MatKGQvPbRSV
- W2xP30qlI9XBUGH40sKF9oUoXRQyOc7X8BKE3jWFbibMjPZuhpBxb1TbRPCb5qM6Lb4a
- O5c42Jzauhp0FdusgLyLsll9fZFicZC9vvUquSM9veaKWwsTXj5MDcmzdQs98oYF3zQa
- 5/u8oD9so/x41D9Ha7A2i7EXyxpYJ49rmNPgNO1xAqS00nrxB1zImdLhlk9dhQJsHhH/
- wdnA==
-X-Gm-Message-State: AOJu0Yy8sNgguFacSNrI22/CP5dy5ID9c0+kGNQ11ebeoELANhEW0NuT
- IzSKjxLSmpIfXx14sS3pwtRs+Q==
-X-Google-Smtp-Source: AGHT+IHFFTrQixqZv56o9suKPJwo07MUCHisqsHWYu1DcWz+dEgWWuTlZfcMF9adBEodjDU9SkXZ7Q==
-X-Received: by 2002:adf:e64e:0:b0:317:eee2:6fba with SMTP id
- b14-20020adfe64e000000b00317eee26fbamr2250232wrn.40.1693408399271; 
- Wed, 30 Aug 2023 08:13:19 -0700 (PDT)
+ bh=6P71vvJ7ptsd0vmhWYR8dZEDPpDX55u5Wf1LptQc2Hk=;
+ b=glZk+PjaZKlX9q3MoeS0Aodh0udTDGGjd3khQukxcN3DItFiuQJk/yJBJyQZbh01hO
+ 6J/90++Kw73uL2lVe6Hsnr7K79hY8xfrBA3XVMS4qanQ8QCUQEI8FWr6fc/LTeHDmwkl
+ Emy7JmNlmtJub5RpiaPNQjsKIyuZ3zCwosqeDL+8B06XM+MgoempGVuBA6zatVGtVFiJ
+ f5HXATdNE+N/0uzi0G408ZH/0HXlIjrlRBZnHTeEeeok10LH5UP5W4f6MGQLFbZ0CtQr
+ yZMQai4k0G9Ad9pDio5LwCYEHOt01mSid3Sr75X+19jJbCJxP9gxs/khJDPJcXnWyjpi
+ NYFw==
+X-Gm-Message-State: AOJu0Yz6i5MMiNEVrd8GIzAJKBvAr85V/70MHS8+HbaNq32FZqtdxULc
+ IiK20D+KnXcN8944G0lF0Nkdgw==
+X-Google-Smtp-Source: AGHT+IELKJ+nNcvOn/IINRYldx6lF7VCthK2xuwwxFLVlIWU3XAgvLiewx1F7XRR5BHq8IJU+E/thQ==
+X-Received: by 2002:a5d:69ce:0:b0:317:e515:d623 with SMTP id
+ s14-20020a5d69ce000000b00317e515d623mr1793492wrw.60.1693408426613; 
+ Wed, 30 Aug 2023 08:13:46 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.142.89])
  by smtp.gmail.com with ESMTPSA id
- b16-20020a5d4d90000000b0030fd03e3d25sm16982959wru.75.2023.08.30.08.13.18
+ y21-20020a05600c365500b00400268671c6sm2550071wmq.13.2023.08.30.08.13.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 08:13:18 -0700 (PDT)
-Message-ID: <896384ac-7fde-1535-a85f-17ba4ec962f4@linaro.org>
-Date: Wed, 30 Aug 2023 17:13:17 +0200
+ Wed, 30 Aug 2023 08:13:46 -0700 (PDT)
+Message-ID: <93bd9139-3a5a-f71f-ed17-aaa8091cb278@linaro.org>
+Date: Wed, 30 Aug 2023 17:13:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 36/67] ui/console: use QEMU_PIXMAN_COLOR helpers
+Subject: =?UTF-8?Q?Re=3a_=5bPATCH_37/67=5d_ui/console=3a_rename_vga=5f_funct?=
+ =?UTF-8?Q?ions_=e2=86=92_qemu=5fconsole=5f?=
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-37-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-38-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230830093843.3531473-37-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-38-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -96,17 +97,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 30/8/23 11:38, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> QEMU_RGB macro is actually defining a pixman color. Make this explicit
-> in the macro name. Move it to qemu-pixman.h so it can be used elsewhere,
-> as done in the following patch. Finally, define
-> QEMU_PIXMAN_COLOR_{BLACK,GRAY}, to avoid need to look up the VGA color
-> table from the QemuConsole placeholder surface rendering.
+> They are not specific to VGA. Let's use the object type name as prefix
+> instead, to avoid confusion.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   include/ui/qemu-pixman.h |  6 ++++++
->   ui/console.c             | 39 ++++++++++++++++++---------------------
->   2 files changed, 24 insertions(+), 21 deletions(-)
+>   ui/console.c | 25 ++++++++++++-------------
+>   1 file changed, 12 insertions(+), 13 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
