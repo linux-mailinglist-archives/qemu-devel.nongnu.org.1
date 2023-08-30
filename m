@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E8678D7E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 19:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7129378D7EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 20:07:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbPLp-0006DJ-BH; Wed, 30 Aug 2023 13:51:33 -0400
+	id 1qbPaU-0002Kv-F1; Wed, 30 Aug 2023 14:06:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbPLn-0006D7-Fl
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 13:51:31 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbPaS-0002Kk-BD
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 14:06:40 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbPLl-0000Qh-4m
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 13:51:31 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-31dd10c2b8bso2408979f8f.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 10:51:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbPaP-0003mH-O9
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 14:06:40 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1c0ecb9a075so26145525ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 11:06:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693417887; x=1694022687; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lqjOovzKZiF4cEkpElGacjGhl2pPIROjegeiSw4rVQM=;
- b=m8hmv4RkgbVeCzJIXq6v5VSXx+6tjVtBdDcBnxuCf8W44ERxa2jezE6gqKURytHhkl
- j1UH3YOXdvh4rTzvcEaABVoksUyzOEI6FlP6mllPpMYZFjjKQGjgWddnEvCr5Plye0hD
- 8JXsdCtiwqwqH6B+R0ozBWd3T6ANE9SvtEH7HBWS7cU39S0rmKolGPIypM30l/HVoTBc
- 1RWupmV4etCcJrHnEaow7wJEJPFXXsB8Wyn6/BzJvTWzoOckZz4Ohi10Afv9yJvlZl3+
- XAOpcw8kioHlyioecXV04A98hpf3JQO+Fxj5P029hMTnhVtFTbbDl8GB9UrkTBx04KWJ
- UgFA==
+ d=linaro.org; s=google; t=1693418796; x=1694023596; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wDL4orI0+7bv1IvD/7NcuUQfbs8uxMO+ots1NTtsaBo=;
+ b=nXvJkOauJltMZdboY7/sNjMGWGZh7dKBZy7y5MVz3bJMzLhWzURPEdDhhFKNT2vUHW
+ 94sdk0bnIeURH08kmKKxYKdl4GgX1avjsq6VtNPO1gs1bSwJdVvELsW94ZZKw6D/mj/J
+ 8hZJpa8lpgdo7r/05HkLhvspJd9nmiJvesKGC7VwWvqmlKQ0uYSYEiU0ONp7sy6t4OJ7
+ Wwa08qKzgOAHXRIbd3NKr5BYbq60jb1w5BoovJZTVcZZWK9rLHo/g1Rf5LhyAW7dXn+K
+ JkptUYEaAXRvosLSv5YyBue5zM8WqxooHRIXys317GXxgeYUJfpWVJKKygbQZGR2dCR2
+ tdCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693417887; x=1694022687;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=lqjOovzKZiF4cEkpElGacjGhl2pPIROjegeiSw4rVQM=;
- b=OuOWhLRy0rGbrk3+pgr0NKxmwi2M8KRIREL7ZPTmhSrmni0+2WSUOl7WyjMqrc+uxv
- J3DqdNplSlgYXzR2lHO1WG64OOylr02+x6s7FgHX/0Zxs9yRjZFYHTAUTOJ4Ig0wEcNF
- FytSfnfrdvzk5nTxnwGgEZdEPZTn/rSiU5SdTssXh7NKdrodwgyEZKdMqSuWirkDHXVa
- A+WfKs864ePWgnJbrpjNuKHoJQ9G6F9PrOvhcyaIFG6jwROraRljErfSA5ernE6PyXZa
- 7VIgyDmHPHJbbkakswmedVFsejnBxrchKkylFiQ1U9whnc9pCX5qyhTS3FFgWwxBKhgS
- +neA==
-X-Gm-Message-State: AOJu0Yw6nMrnzeRxMME+5Bu5pPkzzR2xXWTgNQGCMcK2Xgn/MjBmbms+
- FEzFkoiNh7B+ZstKCok7QFZRzQ==
-X-Google-Smtp-Source: AGHT+IEkctwZw75YKgxWbmwiAnxMDm29RL+wvUZpElTsgOVZ7grOjvUo4GQbEYEDQ1g7oyMLjU2Bxg==
-X-Received: by 2002:a5d:5601:0:b0:317:6c16:a8a8 with SMTP id
- l1-20020a5d5601000000b003176c16a8a8mr2500804wrv.35.1693417887345; 
- Wed, 30 Aug 2023 10:51:27 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693418796; x=1694023596;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wDL4orI0+7bv1IvD/7NcuUQfbs8uxMO+ots1NTtsaBo=;
+ b=XVpeKWTTnGXuye3ntZCtld7Dj7FCNhiBJ30X2Gxp1MF3VoN9X0yMp3m1hiUBlENvQO
+ MgqI1fq0LTU/Uo7Q0hmkSMQK6GmAxmG2A3lkVzNMY6OPxetbK4IUBV6hfafaK7Y88Zv8
+ RfjXnd0XPTI9wWssu+vrkHefHgV2C80MOaIG/PWjyF3cuQh//Xba8P/sfa7jK1IzDK+a
+ PlJENUAzkuRa5dUpSXqAUczoLeYFbVyOhYvSMdmJzPCfu6cWIKmORQYr6feQIlaniweX
+ JOm9zrL9C3sHEH/in9sBfM60+ZwkWUKbcBcfqQaJgnb8OtQ1xHWxEJPr0P9+rI9g7HiX
+ DUxg==
+X-Gm-Message-State: AOJu0YwRs0GZb9wePdxj9ZqRSH2FIN7Sw6TGh86o871AT65u2EqJovgt
+ ZAy3xPx1e6PiTT2Xsw2z8+tCKWNlXq1jgYwlh5g=
+X-Google-Smtp-Source: AGHT+IH7sxL73JnmM3K+RWOucAwu0Qg8MM+Z3FGb9moOtywI3wWlcOwpCBy3FRe7FvrCFhLPlg8vlA==
+X-Received: by 2002:a17:902:d902:b0:1bd:ba57:5a8f with SMTP id
+ c2-20020a170902d90200b001bdba575a8fmr2754816plz.13.1693418795797; 
+ Wed, 30 Aug 2023 11:06:35 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- b3-20020adfde03000000b0031accc7228asm17215857wrm.34.2023.08.30.10.51.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 10:51:27 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 5F2E91FFBB;
- Wed, 30 Aug 2023 18:51:26 +0100 (BST)
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <69eb5f4fbae731f5fc05dea8a5f4b656e0de127f.1693252037.git.manos.pitsidianakis@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
- Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>, =?utf-8?B?S8WRdsOh?=
- =?utf-8?B?Z8OzLCBab2x0w6Fu?=
- <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v8 12/12] docs/system: add basic virtio-snd documentation
-Date: Wed, 30 Aug 2023 18:49:03 +0100
-In-reply-to: <69eb5f4fbae731f5fc05dea8a5f4b656e0de127f.1693252037.git.manos.pitsidianakis@linaro.org>
-Message-ID: <87ttsgpgf5.fsf@linaro.org>
+ q14-20020a170902dace00b001aadd0d7364sm11405900plx.83.2023.08.30.11.06.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Aug 2023 11:06:35 -0700 (PDT)
+Message-ID: <74a0aeda-fc07-6e04-092b-772ef154e83a@linaro.org>
+Date: Wed, 30 Aug 2023 11:06:33 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 10/48] target/loongarch: rename lsx_helper.c to
+ vec_helper.c
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20230830084902.2113960-1-gaosong@loongson.cn>
+ <20230830084902.2113960-11-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230830084902.2113960-11-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,115 +95,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-
-> This commit adds basic documentation for using virtio-snd.
->
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+On 8/30/23 01:48, Song Gao wrote:
+> Use gen_helper_gvec_* series function.
+> and rename lsx_helper.c to vec_helper.c.
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->  docs/system/device-emulation.rst   |  1 +
->  docs/system/devices/virtio-snd.rst | 49 ++++++++++++++++++++++++++++++
->  2 files changed, 50 insertions(+)
->  create mode 100644 docs/system/devices/virtio-snd.rst
->
-> diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulat=
-ion.rst
-> index 4491c4cbf7..dae19446e5 100644
-> --- a/docs/system/device-emulation.rst
-> +++ b/docs/system/device-emulation.rst
-> @@ -92,6 +92,7 @@ Emulated Devices
->     devices/usb.rst
->     devices/vhost-user.rst
->     devices/virtio-pmem.rst
-> +   devices/virtio-snd.rst
->     devices/vhost-user-rng.rst
->     devices/canokey.rst
->     devices/usb-u2f.rst
-> diff --git a/docs/system/devices/virtio-snd.rst b/docs/system/devices/vir=
-tio-snd.rst
-> new file mode 100644
-> index 0000000000..2a9187fd70
-> --- /dev/null
-> +++ b/docs/system/devices/virtio-snd.rst
-> @@ -0,0 +1,49 @@
-> +virtio sound
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +This document explains the setup and usage of the Virtio sound device.
-> +The Virtio sound device is a paravirtualized sound card device.
-> +
-> +Linux kernel support
-> +--------------------
-> +
-> +Virtio sound requires a guest Linux kernel built with the
-> +``CONFIG_SND_VIRTIO`` option.
-> +
-> +Description
-> +-----------
-> +
-> +Virtio sound implements capture and playback from inside a guest using t=
-he
-> +configured audio backend of the host machine.
-> +
-> +Device properties
-> +-----------------
-> +
-> +The Virtio sound device can be configured with the following properties:
-> +
-> + * ``jacks`` number of physical jacks (Unimplemented).
-> + * ``streams`` number of PCM streams. At the moment, no stream configura=
-tion is supported: the first one will always be a playback stream, an optio=
-nal second will always be a capture stream. Adding more will cycle stream d=
-irections from playback to capture.
-> + * ``chmaps`` number of channel maps (Unimplemented).
+>   target/loongarch/helper.h                     |  642 ++++----
+>   .../loongarch/{lsx_helper.c => vec_helper.c}  | 1297 ++++++++---------
 
-I think you can drop the unimplemented properties from the docs and the
-code. No point having them if they do nothing and you might change your
-mind on the name when they are implemented ;-)
+These changes are fine, but should be split.
 
-> +
-> +All streams are stereo and have the default channel positions ``Front le=
-ft, right``.
-> +
-> +Examples
-> +--------
-> +
-> +Add an audio device and an audio backend at once with ``-audio`` and ``m=
-odel=3Dvirtio``:
-> +
-> + * pulseaudio: ``-audio driver=3Dpa,model=3Dvirtio``
-> +   or ``-audio driver=3Dpa,model=3Dvirtio,server=3D/run/user/1000/pulse/=
-native``
-> + * sdl: ``-audio driver=3Dsdl,model=3Dvirtio``
-> + * coreaudio: ``-audio driver=3Dcoreaudio,model=3Dvirtio``
-> +
-> +etc.
-> +
-> +To specifically add virtualized sound devices, you have to specify a PCI=
- device
-> +and an audio backend listed with ``-audio driver=3Dhelp`` that works on =
-your host
-> +machine, e.g.:
+The helper changes can be done with only minimal changes
 
-I'd be tempted to start with the specific example and then mention the
-shortcut. I'm curious as to how model=3D resolves on various platforms or
-how you would tell from the command line.
+>   target/loongarch/insn_trans/trans_lsx.c.inc   |  731 +++++-----
 
-> +
-> +::
-> +
-> +  -device virtio-sound-pci,audiodev=3Dmy_audiodev \
-> +  -audiodev alsa,id=3Dmy_audiodev
+here, rather than to 700+ lines at once.
 
-Otherwise:
+> -static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a,
+> -                     void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32,
+> -                                  TCGv_i32, TCGv_i32))
+> +static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a, int oprsz,
+> +                     gen_helper_gvec_4 *fn)
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+If you omit the oprsz argument within this patch,
+
+> +    tcg_gen_gvec_4_ool(vec_full_offset(a->vd),
+> +                       vec_full_offset(a->vj),
+> +                       vec_full_offset(a->vk),
+> +                       vec_full_offset(a->va),
+> +                       oprsz, ctx->vl / 8, oprsz, fn);
+
+hard-coding 16 here instead,
+
+> -TRANS(vhaddw_h_b, LSX, gen_vvv, gen_helper_vhaddw_h_b)
+> +TRANS(vhaddw_h_b, LSX, gen_vvv, 16, gen_helper_vhaddw_h_b)
+
+then you do not need all of these changes.
+
+At which point I'll refer you back to my comments vs patches 5 and 6, wherein separate 
+gen_vvv and gen_xxx helpers would avoid the need to replicate 16 across all of these lines.
 
 
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+r~
 
