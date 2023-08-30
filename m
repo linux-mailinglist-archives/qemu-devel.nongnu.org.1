@@ -2,94 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3FE78D63A
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2D278D635
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:41:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbLRP-0008BV-Gt; Wed, 30 Aug 2023 09:41:03 -0400
+	id 1qbLRR-0008CL-Fc; Wed, 30 Aug 2023 09:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbLRN-0008As-Pj
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:41:01 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbLRL-0007oK-Lc
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:41:01 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-401f68602a8so3951335e9.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 06:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693402858; x=1694007658; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=l4skyAPGu6D16wOCDK55AMUBYuBFtZUeSrH+It0+wt8=;
- b=z5I0DekrdlR3n9ly7oYadZqVaff1tJOjQyjyQLSS1CVtKv1az8B15LynHnO39CVPti
- BmD/h4Dqt3bijJjjovEGF/52DC86dKL8ezeksmSEJ7S+FB3CLST7VG7CQVQ9I3PKDxe3
- Xc3UboyVRes7bTQ5Me2AUQeLT+Xq39B5hLF/z6YoM4fHF/Mikmrn1vvt0RAR/JYrCn69
- V+J5Q4bgAMfIJxkBf4n/z0ZeoYOQqI/UsMXo4DCjgCTovZYtR37KSz6rjkHWl7RDXUFI
- oP0/FkLTkED9cKEQUOqiJXuEJpwkcXd3sUGURcoLxqMS8LaylRotOUAPVpmxxo3wrGgW
- p1Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693402858; x=1694007658;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=l4skyAPGu6D16wOCDK55AMUBYuBFtZUeSrH+It0+wt8=;
- b=MYp9Q2pHfZzoIltjBot7NQcZ+Vaie6THNU9XTl6JSWRBRyLXacE6ZPRxFet5bjxygz
- mc6xgn+s+RtSaBC/fivfMVjjggLPXhdHMfbMhCDkJixQiBeLTQlZVgLaNfBWTOqt435p
- M6FwzsPD34YeUMVpr6AFJ8E1yJa4PdfCU85ZEjZSbT8NKulU53VAkqkS0EDOB2zbLN2q
- PFd/34an8xSUUm2LFCCIimcL3cOvC3KwyTWRtOipdHRg3q0s8r9siK14iM/7ihfZHW76
- U5YzSlj8+qqQF3RvE6zPl9yDC8/bhV1VOdMhkRXrwL7hk3SF+n1MniNhZ8w79TFfphcY
- LCPQ==
-X-Gm-Message-State: AOJu0Yxy51qw9FK5XlgUKc/R3AKAAAZ060edo56fDilp60sve92wTleS
- /VSO9vInP0Y7rtJ4pd+HyorV/A==
-X-Google-Smtp-Source: AGHT+IHHXBgQnBQlLZjNi7wF2wU3mnqZ211LFgkF4+QtJ3vGMzJePfk8oVvnp9CHxD/XPKLaaTbgEg==
-X-Received: by 2002:a5d:6604:0:b0:317:c2a9:9b0c with SMTP id
- n4-20020a5d6604000000b00317c2a99b0cmr1625040wru.50.1693402858263; 
- Wed, 30 Aug 2023 06:40:58 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- y14-20020adfee0e000000b0031c56218984sm16620169wrn.104.2023.08.30.06.40.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 06:40:57 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 77BAF1FFBB;
- Wed, 30 Aug 2023 14:40:57 +0100 (BST)
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
- Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>, =?utf-8?B?S8WRdsOh?=
- =?utf-8?B?Z8OzLCBab2x0w6Fu?=
- <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v8 00/12] Add VIRTIO sound card
-Date: Wed, 30 Aug 2023 14:40:23 +0100
-In-reply-to: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
-Message-ID: <874jkgsl5i.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qbLRQ-0008C6-8c
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:41:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qbLRN-0007os-Oq
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:41:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693402861;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ef+vN8hHtxcX68UE8weV3Ql/OCwiPUonisa6+grW5lw=;
+ b=UpeL1EZ/xSop/YaBiUcUimPlKVyei0TQfrKUiwJX8YCgbBfCJHzM6vtAf69r83kPQR1HiS
+ E3fUNvclCEdi5zhJo27+hK7nRWoaUuJLKTiM3b2B1q1oPvycYIqAs7ahr9EbH6oIk4PP3c
+ VQ+Xcwzlf8bxRs/I6bGNyfTls8BEnTM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-206-EeRa4a-iNRivW-yZqKVHlg-1; Wed, 30 Aug 2023 09:40:59 -0400
+X-MC-Unique: EeRa4a-iNRivW-yZqKVHlg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8D60856DED;
+ Wed, 30 Aug 2023 13:40:58 +0000 (UTC)
+Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3658D1121315;
+ Wed, 30 Aug 2023 13:40:57 +0000 (UTC)
+From: Laszlo Ersek <lersek@redhat.com>
+To: qemu-devel@nongnu.org,
+	lersek@redhat.com
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>,
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v2 0/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+Date: Wed, 30 Aug 2023 15:40:48 +0200
+Message-Id: <20230830134055.106812-1-lersek@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,23 +79,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+djE6CgotIGh0dHA6Ly9taWQubWFpbC1hcmNoaXZlLmNvbS8yMDIzMDgyNzE4MjkzNy4xNDY0NTAt
+MS1sZXJzZWtAcmVkaGF0LmNvbQotIGh0dHBzOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcHJvamVj
+dC9xZW11LWRldmVsL2NvdmVyLzIwMjMwODI3MTgyOTM3LjE0NjQ1MC0xLWxlcnNla0ByZWRoYXQu
+Y29tLwoKdjIgcGlja3MgdXAgdGFncyBmcm9tIFBoaWwgYW5kIFN0ZWZhbm8sIGFuZCBhZGRyZXNz
+ZXMgZmVlZGJhY2sgZnJvbQpTdGVmYW5vLiBQbGVhc2Ugc2VlIHRoZSBOb3RlcyBzZWN0aW9uIG9u
+IGVhY2ggcGF0Y2gsIGZvciB0aGUgdjIgY2hhbmdlcy4KCkkndmUgbm90IENDJ2QgdGhlIHN0YWJs
+ZSBsaXN0LCBhcyB3ZSd2ZSBub3QgZmlndXJlZCBvdXQgd2hhdCBwcmlvcgpyZWxlYXNlcyB0byB0
+YXJnZXQuIEFwcGx5aW5nIHRoZSBzZXJpZXMgdG8gOC4xIGlzIGVhc3k7IHRvIDguMCAtLSBub3Qg
+c28KbXVjaC4KClJldGVzdGVkLgoKQ2M6ICJNaWNoYWVsIFMuIFRzaXJraW4iIDxtc3RAcmVkaGF0
+LmNvbT4gKHN1cHBvcnRlcjp2aG9zdCkKQ2M6IEV1Z2VuaW8gUGVyZXogTWFydGluIDxlcGVyZXpt
+YUByZWRoYXQuY29tPgpDYzogR2VybWFuIE1hZ2xpb25lIDxnbWFnbGlvbmVAcmVkaGF0LmNvbT4K
+Q2M6IExpdSBKaWFuZyA8Z2VycnlAbGludXguYWxpYmFiYS5jb20+CkNjOiBTZXJnaW8gTG9wZXog
+UGFzY3VhbCA8c2xwQHJlZGhhdC5jb20+CkNjOiBTdGVmYW5vIEdhcnphcmVsbGEgPHNnYXJ6YXJl
+QHJlZGhhdC5jb20+CgpUaGFua3MsCkxhc3psbwoKTGFzemxvIEVyc2VrICg3KToKICB2aG9zdC11
+c2VyOiBzdHJpcCBzdXBlcmZsdW91cyB3aGl0ZXNwYWNlCiAgdmhvc3QtdXNlcjogdGlnaHRlbiAi
+cmVwbHlfc3VwcG9ydGVkIiBzY29wZSBpbiAic2V0X3ZyaW5nX2FkZHIiCiAgdmhvc3QtdXNlcjog
+ZmFjdG9yIG91dCAidmhvc3RfdXNlcl93cml0ZV9zeW5jIgogIHZob3N0LXVzZXI6IGZsYXR0ZW4g
+ImVuZm9yY2VfcmVwbHkiIGludG8gInZob3N0X3VzZXJfd3JpdGVfc3luYyIKICB2aG9zdC11c2Vy
+OiBob2lzdCAid3JpdGVfc3luYyIsICJnZXRfZmVhdHVyZXMiLCAiZ2V0X3U2NCIKICB2aG9zdC11
+c2VyOiBhbGxvdyAidmhvc3Rfc2V0X3ZyaW5nIiB0byB3YWl0IGZvciBhIHJlcGx5CiAgdmhvc3Qt
+dXNlcjogY2FsbCBWSE9TVF9VU0VSX1NFVF9WUklOR19FTkFCTEUgc3luY2hyb25vdXNseQoKIGh3
+L3ZpcnRpby92aG9zdC11c2VyLmMgfCAyMTYgKysrKysrKysrKy0tLS0tLS0tLS0KIDEgZmlsZSBj
+aGFuZ2VkLCAxMDggaW5zZXJ0aW9ucygrKSwgMTA4IGRlbGV0aW9ucygtKQoKCmJhc2UtY29tbWl0
+OiA4MTNiYWMzZDhkNzBkODVjYjc4MzVmNzk0NWViOWVlZDg0YzJkOGQwCg==
 
-Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-
-> This patch series adds an audio device implementing the recent virtio=20
-> sound spec (1.2) and a corresponding PCI wrapper device.
-
-And you can have a:
-
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-for the whole series.
-
-mst,
-
-are you going to pull via your tree?
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
