@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5112878D5AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F046178D5AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbJhy-0003VG-O9; Wed, 30 Aug 2023 07:50:02 -0400
+	id 1qbJi1-0003Zt-1s; Wed, 30 Aug 2023 07:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbJhw-0003Sk-Ez
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qbJhx-0003T2-8H
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbJhu-0003ii-0r
+ id 1qbJhv-0003iz-0W
  for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:50:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693396197;
+ s=mimecast20190719; t=1693396198;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7BekLkQHdNl+nON36AsTjo2RLArJ5w0AroGSMvtVbtI=;
- b=deJtnQqdlMMfKLl3+dgRdGtDGd6A+AVkGP8shi4WWxhtIbdZZzmL9uidPMMXG4QMvotB1T
- Qgg500kmPPbBS839TaxGUDqBLydt1QOsegfXgff+UFTuWkOfUGzD0U9xMyDzmNvGpWukPG
- 72ZsatNIrCuiUhY4RDC0VjD+0g+lzIU=
+ bh=Ga6qSUQdwzhmfn/lQ9lhh6t3Yiayp8nRSobjZ382ohU=;
+ b=SsVF7tZAtHz99Lh+WLZoxtdMafuNvbcAkpQSGBgZCwUvkrOs36UdlDaZqnC5Ws3h/HVMmF
+ j2aKdnBvLToUM5cA9+kM8HH7gKfs3Z4l01fCSgs7XSOXFDzlm/ns0Yh3g+gvWsCKBWaXaD
+ u0TmQA7v4HBhy2Gg5aNdoJrg6I01fgU=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-340-48Nm6KIxN32zGDVVvn0LWg-1; Wed, 30 Aug 2023 07:49:52 -0400
-X-MC-Unique: 48Nm6KIxN32zGDVVvn0LWg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-613-s8R2zKAEPTC61o899lSztQ-1; Wed, 30 Aug 2023 07:49:54 -0400
+X-MC-Unique: s8R2zKAEPTC61o899lSztQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5FD61C25A6C;
- Wed, 30 Aug 2023 11:49:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87D1F381C166;
+ Wed, 30 Aug 2023 11:49:53 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.236])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 00D7F2026D35;
- Wed, 30 Aug 2023 11:49:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0095E40C6F4C;
+ Wed, 30 Aug 2023 11:49:52 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -59,15 +59,16 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Hanna Reitz <hreitz@redhat.com>,
  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
  Eric Blake <eblake@redhat.com>, "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL v3 3/5] block/io: align requests to subcluster_size
-Date: Wed, 30 Aug 2023 07:49:40 -0400
-Message-ID: <20230830114942.449060-4-stefanha@redhat.com>
+Subject: [PULL v3 4/5] tests/qemu-iotests/197: add testcase for CoR with
+ subclusters
+Date: Wed, 30 Aug 2023 07:49:41 -0400
+Message-ID: <20230830114942.449060-5-stefanha@redhat.com>
 In-Reply-To: <20230830114942.449060-1-stefanha@redhat.com>
 References: <20230830114942.449060-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,22 +94,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-When target image is using subclusters, and we align the request during
-copy-on-read, it makes sense to align to subcluster_size rather than
-cluster_size.  Otherwise we end up with unnecessary allocations.
+Add testcase which checks that allocations during copy-on-read are
+performed on the subcluster basis when subclusters are enabled in target
+image.
 
-This commit renames bdrv_round_to_clusters() to bdrv_round_to_subclusters()
-and utilizes subcluster_size field of BlockDriverInfo to make necessary
-alignments.  It affects copy-on-read as well as mirror job (which is
-using bdrv_round_to_clusters()).
-
-This change also fixes the following bug with failing assert (covered by
-the test in the subsequent commit):
-
-qemu-img create -f qcow2 base.qcow2 64K
-qemu-img create -f qcow2 -o extended_l2=on,backing_file=base.qcow2,backing_fmt=qcow2 img.qcow2 64K
-qemu-io -c "write -P 0xaa 0 2K" img.qcow2
-qemu-io -C -c "read -P 0x00 2K 62K" img.qcow2
+This testcase also triggers the following assert with previous commit
+not being applied, so we check that as well:
 
 qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
 
@@ -117,186 +108,85 @@ Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230711172553.234055-3-andrey.drobyshev@virtuozzo.com>
+Message-ID: <20230711172553.234055-4-andrey.drobyshev@virtuozzo.com>
 ---
- include/block/block-io.h |  8 +++----
- block/io.c               | 50 ++++++++++++++++++++--------------------
- block/mirror.c           |  8 +++----
- 3 files changed, 33 insertions(+), 33 deletions(-)
+ tests/qemu-iotests/197     | 29 +++++++++++++++++++++++++++++
+ tests/qemu-iotests/197.out | 24 ++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index 4415506e40..6db48f2d35 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -189,10 +189,10 @@ bdrv_get_info(BlockDriverState *bs, BlockDriverInfo *bdi);
- ImageInfoSpecific *bdrv_get_specific_info(BlockDriverState *bs,
-                                           Error **errp);
- BlockStatsSpecific *bdrv_get_specific_stats(BlockDriverState *bs);
--void bdrv_round_to_clusters(BlockDriverState *bs,
--                            int64_t offset, int64_t bytes,
--                            int64_t *cluster_offset,
--                            int64_t *cluster_bytes);
-+void bdrv_round_to_subclusters(BlockDriverState *bs,
-+                               int64_t offset, int64_t bytes,
-+                               int64_t *cluster_offset,
-+                               int64_t *cluster_bytes);
+diff --git a/tests/qemu-iotests/197 b/tests/qemu-iotests/197
+index a2547bc280..f07a9da136 100755
+--- a/tests/qemu-iotests/197
++++ b/tests/qemu-iotests/197
+@@ -122,6 +122,35 @@ $QEMU_IO -f qcow2 -C -c 'read 0 1024' "$TEST_WRAP" | _filter_qemu_io
+ $QEMU_IO -f qcow2 -c map "$TEST_WRAP"
+ _check_test_img
  
- void bdrv_get_backing_filename(BlockDriverState *bs,
-                                char *filename, int filename_size);
-diff --git a/block/io.c b/block/io.c
-index 055fcf7438..76e7df18d8 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -728,21 +728,21 @@ BdrvTrackedRequest *coroutine_fn bdrv_co_get_self_request(BlockDriverState *bs)
- }
- 
- /**
-- * Round a region to cluster boundaries
-+ * Round a region to subcluster (if supported) or cluster boundaries
-  */
- void coroutine_fn GRAPH_RDLOCK
--bdrv_round_to_clusters(BlockDriverState *bs, int64_t offset, int64_t bytes,
--                       int64_t *cluster_offset, int64_t *cluster_bytes)
-+bdrv_round_to_subclusters(BlockDriverState *bs, int64_t offset, int64_t bytes,
-+                          int64_t *align_offset, int64_t *align_bytes)
- {
-     BlockDriverInfo bdi;
-     IO_CODE();
--    if (bdrv_co_get_info(bs, &bdi) < 0 || bdi.cluster_size == 0) {
--        *cluster_offset = offset;
--        *cluster_bytes = bytes;
-+    if (bdrv_co_get_info(bs, &bdi) < 0 || bdi.subcluster_size == 0) {
-+        *align_offset = offset;
-+        *align_bytes = bytes;
-     } else {
--        int64_t c = bdi.cluster_size;
--        *cluster_offset = QEMU_ALIGN_DOWN(offset, c);
--        *cluster_bytes = QEMU_ALIGN_UP(offset - *cluster_offset + bytes, c);
-+        int64_t c = bdi.subcluster_size;
-+        *align_offset = QEMU_ALIGN_DOWN(offset, c);
-+        *align_bytes = QEMU_ALIGN_UP(offset - *align_offset + bytes, c);
-     }
- }
- 
-@@ -1168,8 +1168,8 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-     void *bounce_buffer = NULL;
- 
-     BlockDriver *drv = bs->drv;
--    int64_t cluster_offset;
--    int64_t cluster_bytes;
-+    int64_t align_offset;
-+    int64_t align_bytes;
-     int64_t skip_bytes;
-     int ret;
-     int max_transfer = MIN_NON_ZERO(bs->bl.max_transfer,
-@@ -1203,28 +1203,28 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-      * BDRV_REQUEST_MAX_BYTES (even when the original read did not), which
-      * is one reason we loop rather than doing it all at once.
-      */
--    bdrv_round_to_clusters(bs, offset, bytes, &cluster_offset, &cluster_bytes);
--    skip_bytes = offset - cluster_offset;
-+    bdrv_round_to_subclusters(bs, offset, bytes, &align_offset, &align_bytes);
-+    skip_bytes = offset - align_offset;
- 
-     trace_bdrv_co_do_copy_on_readv(bs, offset, bytes,
--                                   cluster_offset, cluster_bytes);
-+                                   align_offset, align_bytes);
- 
--    while (cluster_bytes) {
-+    while (align_bytes) {
-         int64_t pnum;
- 
-         if (skip_write) {
-             ret = 1; /* "already allocated", so nothing will be copied */
--            pnum = MIN(cluster_bytes, max_transfer);
-+            pnum = MIN(align_bytes, max_transfer);
-         } else {
--            ret = bdrv_is_allocated(bs, cluster_offset,
--                                    MIN(cluster_bytes, max_transfer), &pnum);
-+            ret = bdrv_is_allocated(bs, align_offset,
-+                                    MIN(align_bytes, max_transfer), &pnum);
-             if (ret < 0) {
-                 /*
-                  * Safe to treat errors in querying allocation as if
-                  * unallocated; we'll probably fail again soon on the
-                  * read, but at least that will set a decent errno.
-                  */
--                pnum = MIN(cluster_bytes, max_transfer);
-+                pnum = MIN(align_bytes, max_transfer);
-             }
- 
-             /* Stop at EOF if the image ends in the middle of the cluster */
-@@ -1242,7 +1242,7 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             /* Must copy-on-read; use the bounce buffer */
-             pnum = MIN(pnum, MAX_BOUNCE_BUFFER);
-             if (!bounce_buffer) {
--                int64_t max_we_need = MAX(pnum, cluster_bytes - pnum);
-+                int64_t max_we_need = MAX(pnum, align_bytes - pnum);
-                 int64_t max_allowed = MIN(max_transfer, MAX_BOUNCE_BUFFER);
-                 int64_t bounce_buffer_len = MIN(max_we_need, max_allowed);
- 
-@@ -1254,7 +1254,7 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             }
-             qemu_iovec_init_buf(&local_qiov, bounce_buffer, pnum);
- 
--            ret = bdrv_driver_preadv(bs, cluster_offset, pnum,
-+            ret = bdrv_driver_preadv(bs, align_offset, pnum,
-                                      &local_qiov, 0, 0);
-             if (ret < 0) {
-                 goto err;
-@@ -1266,13 +1266,13 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-                 /* FIXME: Should we (perhaps conditionally) be setting
-                  * BDRV_REQ_MAY_UNMAP, if it will allow for a sparser copy
-                  * that still correctly reads as zero? */
--                ret = bdrv_co_do_pwrite_zeroes(bs, cluster_offset, pnum,
-+                ret = bdrv_co_do_pwrite_zeroes(bs, align_offset, pnum,
-                                                BDRV_REQ_WRITE_UNCHANGED);
-             } else {
-                 /* This does not change the data on the disk, it is not
-                  * necessary to flush even in cache=writethrough mode.
-                  */
--                ret = bdrv_driver_pwritev(bs, cluster_offset, pnum,
-+                ret = bdrv_driver_pwritev(bs, align_offset, pnum,
-                                           &local_qiov, 0,
-                                           BDRV_REQ_WRITE_UNCHANGED);
-             }
-@@ -1301,8 +1301,8 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             }
-         }
- 
--        cluster_offset += pnum;
--        cluster_bytes -= pnum;
-+        align_offset += pnum;
-+        align_bytes -= pnum;
-         progress += pnum - skip_bytes;
-         skip_bytes = 0;
-     }
-diff --git a/block/mirror.c b/block/mirror.c
-index d3cacd1708..e213a892db 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -283,8 +283,8 @@ static int coroutine_fn mirror_cow_align(MirrorBlockJob *s, int64_t *offset,
-     need_cow |= !test_bit((*offset + *bytes - 1) / s->granularity,
-                           s->cow_bitmap);
-     if (need_cow) {
--        bdrv_round_to_clusters(blk_bs(s->target), *offset, *bytes,
--                               &align_offset, &align_bytes);
-+        bdrv_round_to_subclusters(blk_bs(s->target), *offset, *bytes,
-+                                  &align_offset, &align_bytes);
-     }
- 
-     if (align_bytes > max_bytes) {
-@@ -576,8 +576,8 @@ static void coroutine_fn mirror_iteration(MirrorBlockJob *s)
-             int64_t target_offset;
-             int64_t target_bytes;
-             WITH_GRAPH_RDLOCK_GUARD() {
--                bdrv_round_to_clusters(blk_bs(s->target), offset, io_bytes,
--                                       &target_offset, &target_bytes);
-+                bdrv_round_to_subclusters(blk_bs(s->target), offset, io_bytes,
-+                                          &target_offset, &target_bytes);
-             }
-             if (target_offset == offset &&
-                 target_bytes == io_bytes) {
++echo
++echo '=== Copy-on-read with subclusters ==='
++echo
++
++# Create base and top images 64K (1 cluster) each.  Make subclusters enabled
++# for the top image
++_make_test_img 64K
++IMGPROTO=file IMGFMT=qcow2 TEST_IMG_FILE="$TEST_WRAP" \
++    _make_test_img --no-opts -o extended_l2=true -F "$IMGFMT" -b "$TEST_IMG" \
++    64K | _filter_img_create
++
++$QEMU_IO -c "write -P 0xaa 0 64k" "$TEST_IMG" | _filter_qemu_io
++
++# Allocate individual subclusters in the top image, and not the whole cluster
++$QEMU_IO -c "write -P 0xbb 28K 2K" -c "write -P 0xcc 34K 2K" "$TEST_WRAP" \
++    | _filter_qemu_io
++
++# Only 2 subclusters should be allocated in the top image at this point
++$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
++
++# Actual copy-on-read operation
++$QEMU_IO -C -c "read -P 0xaa 30K 4K" "$TEST_WRAP" | _filter_qemu_io
++
++# And here we should have 4 subclusters allocated right in the middle of the
++# top image. Make sure the whole cluster remains unallocated
++$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
++
++_check_test_img
++
+ # success, all done
+ echo '*** done'
+ status=0
+diff --git a/tests/qemu-iotests/197.out b/tests/qemu-iotests/197.out
+index ad414c3b0e..8f34a30afe 100644
+--- a/tests/qemu-iotests/197.out
++++ b/tests/qemu-iotests/197.out
+@@ -31,4 +31,28 @@ read 1024/1024 bytes at offset 0
+ 1 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ 1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
+ No errors were found on the image.
++
++=== Copy-on-read with subclusters ===
++
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=65536
++Formatting 'TEST_DIR/t.wrap.IMGFMT', fmt=IMGFMT size=65536 backing_file=TEST_DIR/t.IMGFMT backing_fmt=IMGFMT
++wrote 65536/65536 bytes at offset 0
++64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 2048/2048 bytes at offset 28672
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 2048/2048 bytes at offset 34816
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Offset          Length          File
++0               0x7000          TEST_DIR/t.IMGFMT
++0x7000          0x800           TEST_DIR/t.wrap.IMGFMT
++0x7800          0x1000          TEST_DIR/t.IMGFMT
++0x8800          0x800           TEST_DIR/t.wrap.IMGFMT
++0x9000          0x7000          TEST_DIR/t.IMGFMT
++read 4096/4096 bytes at offset 30720
++4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Offset          Length          File
++0               0x7000          TEST_DIR/t.IMGFMT
++0x7000          0x2000          TEST_DIR/t.wrap.IMGFMT
++0x9000          0x7000          TEST_DIR/t.IMGFMT
++No errors were found on the image.
+ *** done
 -- 
 2.41.0
 
