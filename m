@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FE378D60D
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6D078D611
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:17:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbKxU-0001ME-6f; Wed, 30 Aug 2023 09:10:08 -0400
+	id 1qbL3g-00048G-Lg; Wed, 30 Aug 2023 09:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qbKxR-0001Ln-K8
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:10:05 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qbL3c-00047r-ER
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:16:28 -0400
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qbKxP-0000P0-27
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:10:05 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4BC8E1F45F;
- Wed, 30 Aug 2023 13:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1693400997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=avZcAc/KkOdXvapZZKqgTRvLBMkNUQrOw8aMPjikbP0=;
- b=K1bet8MNZ8nNy+U4AgAuuocgGKJh2XVbo7FQio2RYTh9Ntoqh98igSPeBSizW7z4IZCBu9
- xgChCG5MZ0OOT9OxIA5AH4TDIswjNJJ+JhqUQkW6KcWW97URFhgBhUc0C8aaV3bycBEDsa
- M7cHmiTWH2mYcr70yJG95FhC8K3TNgU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1693400997;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=avZcAc/KkOdXvapZZKqgTRvLBMkNUQrOw8aMPjikbP0=;
- b=d8YGIMWYkTz+nOSXwwabX02PPxLXTN4cE8neGs2DrdWUSXlUByf6uSy1Bo0XwL84zN+OWm
- 9bJE2Fx23gyXCuCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F040613441;
- Wed, 30 Aug 2023 13:09:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id bxYkOaQ/72SVXgAAMHmgww
- (envelope-from <cfontana@suse.de>); Wed, 30 Aug 2023 13:09:56 +0000
-Message-ID: <2f5b9774-e089-3606-905a-8b991dcc5e87@suse.de>
-Date: Wed, 30 Aug 2023 15:09:56 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qbL3a-0001dk-0I
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:16:28 -0400
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-570e63f5224so468925eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 06:16:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693401384; x=1694006184; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5FP3trPg53yl275kW0nL0asoihxD8JeP8t9DI3qE8Yk=;
+ b=DzGxKOL+AqbGHmYhKVDZxOPTwYiZs5S8Di97hIYQaipePMSRaO/uKEX1OxHnB6nwvj
+ E3Lwwd8TRsXEdLcmgpJz9J0J01mGFGwKBN0eZFfstHfFczXjHuZSojqMcnrUIN5r5CKZ
+ dZcg/oYwQm2UBm0fGirmFjD2Z1+qGtiGGuzYhmlz9GHSufmdbnbMTy6XGm3ucKnbe5lj
+ 0/2XCdz+HAAeA4OPNWC7qhlggnHvZHJ8b01JT2o53A/dIr8eHlMSZ5kLdRyrBvl27a/d
+ Mkc76QcxKfM0ZdCwrtczVIntzDAKgU877nysYMNk3cSGvIRfv0uDeCQIankUEL+qH98I
+ AnPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693401384; x=1694006184;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5FP3trPg53yl275kW0nL0asoihxD8JeP8t9DI3qE8Yk=;
+ b=ezCa+ojsYewnduAnYyp/fUNhlLN+HMYObO6jHhgtJPILBUBYjZNBsrQMwnS4amy/cZ
+ 6ObCNQuXKDurPuT09avlkKurQfRqTI4VwxZkbCV/6259ACOwbRZ7uJJ9MkRq+1uOpgg6
+ oBTwFV/bNx98adMdJgGzlRF38GIjzAUYvbj20dSjBrVSpe9GfW3PDHz8WPOuVh/+Jl/0
+ uHqundSCp/XeEt1Wv97OklVXzwMnzcxx8CsUApDNGEeqUtCGLhlRK37yNiBhsY3xq7Tw
+ 7VvJsJUPPP45LzBdLteSpUtEhxTsy1k+FSrqHCGit5i8RDTGUoytMHf31oyBMB9XqpWN
+ eWDA==
+X-Gm-Message-State: AOJu0YyWu7npxXTShBNcSl0EhCjuCeeV1LLblm/cp8cBbniThTE/xHKn
+ MGL96xaoDYbl71W+oOVumlfpf7dkGPm7XgUiN7g=
+X-Google-Smtp-Source: AGHT+IEu6cCasuUcqcy06lnjQc9z5fy4ksKddEwSG6mSvDxGwtyG+aNR7lGmOLgOoEtX/F+0z4Tz3RkmIM0nEB2WVxI=
+X-Received: by 2002:a05:6808:130d:b0:3a8:4333:85f2 with SMTP id
+ y13-20020a056808130d00b003a8433385f2mr3667707oiv.5.1693401384333; Wed, 30 Aug
+ 2023 06:16:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH V4 0/2] migration file URI
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <1688135108-316997-1-git-send-email-steven.sistare@oracle.com>
- <dba1e07d-6ebf-9329-7be7-4702ff5dc16d@suse.de>
- <1290963e-9f63-fc70-6729-d355d247c2fd@linaro.org>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <1290963e-9f63-fc70-6729-d355d247c2fd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+References: <20230830022205.57878-1-imp@bsdimp.com>
+In-Reply-To: <20230830022205.57878-1-imp@bsdimp.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 30 Aug 2023 09:16:12 -0400
+Message-ID: <CAJSP0QVnEswDVbvWU3Zv74L+19De+nTVmzueAP-Lg_zw4E1mtg@mail.gmail.com>
+Subject: Re: [PULL 0/1] Quick fix patches
+To: Warner Losh <imp@bsdimp.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,56 +88,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/23 15:25, Philippe Mathieu-Daudé wrote:
-> Hi Claudio,
-> 
-> On 22/8/23 14:00, Claudio Fontana wrote:
->> Hello,
->>
->> this series is all reviewed,
->>
->> and is needed as a precondition for further work to improve dramatically the performance of virsh save, virsh restore
->> when migrating to disk, can it be merged?
-> 
-> $ ./scripts/get_maintainer.pl -f migration/meson.build
-> Juan Quintela <quintela@redhat.com> (maintainer:Migration)
-> Peter Xu <peterx@redhat.com> (reviewer:Migration)
-> Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
-> qemu-devel@nongnu.org (open list:All patches CC here)
-> 
-> One maintainer, one single point of failure. When the
-> maintainer is busy or offline (vacations?) then everybody
-> is stuck.
-> 
-> This is usually solved by adding co-maintainers.
-> 
-> Juan, would you accept having co-maintainers helping you
-> dealing with the merge process? I'm not volunteering, but
-> this can be a good opportunity to make a formal request to
-> the community.
-> 
-> Regards,
-> 
-> Phil.
-> 
+Hi,
+The patch introduces the following build failure:
 
-Thanks Philippe,
+cc -m64 -mcx16 -Isubprojects/libvhost-user/libvhost-user.a.p
+-Isubprojects/libvhost-user -I../subprojects/libvhost-user
+-fdiagnostics-color=auto -Wall -Winvalid-pch -Werror -std=gnu99 -O2 -g
+-Wsign-compare -Wdeclaration-after-statement -Wstrict-aliasing
+-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+-fno-common -fwrapv -fPIE -pthread -D_GNU_SOURCE -MD -MQ
+subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -MF
+subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o.d -o
+subprojects/libvhost-user/libvhost-user.a.p/libvhost-user.c.o -c
+../subprojects/libvhost-user/libvhost-user.c
+In file included from ../subprojects/libvhost-user/include/atomic.h:18,
+from ../subprojects/libvhost-user/libvhost-user.c:53:
+../subprojects/libvhost-user/include/compiler.h:38:40: error: missing
+binary operator before token "("
+38 | #if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
+| ^
 
-I would like to highlight to the QEMU community here how important this is for SUSE,
+https://gitlab.com/qemu-project/qemu/-/jobs/4981576093
 
-to see progress for all the series in the migration area that are currently still waiting and competing for attention.
-
-The specific features and improvements we are developing or helping to review are a priority for us,
-and we are concerned about the rate of progress with the existing governance processes.
-
-Fabiano is investing a lot of his attention to this area, with features, bugfixes and reviews,
-but of course it is up to the community as a whole to address the issue so that reviewed work is merged.
-
-My attempt here is to make sure that it is recognized as a problem, so it can be hopefully be addressed by the community in a timely fashion,
-and we can all benefit from the already developed and reviewed work that is pending.
-
-Thanks!
-
-CLaudio
-
+Stefan
 
