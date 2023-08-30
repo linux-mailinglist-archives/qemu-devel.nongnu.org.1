@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15E278D41F
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D4478D421
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:33:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbGcn-0007xE-RY; Wed, 30 Aug 2023 04:32:31 -0400
+	id 1qbGdB-0008Kg-Qq; Wed, 30 Aug 2023 04:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qbGcc-0007vN-Dz
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:32:20 -0400
+ id 1qbGd9-0008KF-Hk
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:32:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qbGca-0003zY-9m
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:32:18 -0400
+ id 1qbGd7-0004Hg-Fi
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:32:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693384334;
+ s=mimecast20190719; t=1693384369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=F7aMZ14QdTR84yY9Ds3iu3dR6/Z0dlvCAfq8iXH9CVA=;
- b=jIL/VJCe1dmDKGcIg18G14pGOofl5erXdSJQqhMwniGMEBSn8EdxSkJtuKQrwrUm2NIngm
- PSL0X2TzoJ3XhhN7tA5HEg3fhHZ0Kx6F27qlwwih0a8et5x3KNH+v5UEt10bKl+zpWm3wm
- XdbF2xxxYohJbuuzuLvlKKKXPNhhuTw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EK2OZOUxKkdKro3GHkOhODHiw84vZmGuiLG99FdeGuY=;
+ b=iY41RAMMiIw1qU++VyH6yCqspspxkN/bKnGI3WHSqEOuiQqvUW9rf40xZZEdCmiofZo9hO
+ ZztrxXKkda8wLQOtw2uH8vSqHzDCg8iTKM8p3NM/UEEi+A50jNq//x5d3zmyKMfNve5KjC
+ 5y9RK+/K24tQWwHsPUIYHYfhICqd1O8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-qlLsrt8BOUaL7ilbhzbA2A-1; Wed, 30 Aug 2023 04:32:13 -0400
-X-MC-Unique: qlLsrt8BOUaL7ilbhzbA2A-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9a5c0f8134eso173980866b.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 01:32:13 -0700 (PDT)
+ us-mta-602-9cCRXwanMmatLqUFcahftQ-1; Wed, 30 Aug 2023 04:32:46 -0400
+X-MC-Unique: 9cCRXwanMmatLqUFcahftQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-52a5e65d9b4so2764187a12.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 01:32:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693384332; x=1693989132;
+ d=1e100.net; s=20221208; t=1693384365; x=1693989165;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F7aMZ14QdTR84yY9Ds3iu3dR6/Z0dlvCAfq8iXH9CVA=;
- b=hgNDtSSEG61NrcG9w0yz8bwdfjl0nBMc3x3sGzp9hr/CsxajDQveBF9cWMCh6qWBQw
- y/lYWKpbR8l+/zSjHWXGdXngcMJyg4PMoV0cmoXq8u9AaRtzFcpkJ+bOh/806ISeVRJ4
- /2T6UkQDhYj4XrFqt67QUkW+M0uoNGt4pqukhhlimCVK+HideB2GpAIT8zULQu4FdsEv
- iyXPojsfs6y3b4lxdZ83qtMsgV6cpAlNNvjuVC/aIoQ7QThXfmQoDxknGvbdbR0DMDNR
- bNFzSXuKFyDvZr96pU1jEEi3TMsv4u4QyiOO6X4L1eZO1AeJ1v+pmSlLX5uJ990GAtxu
- 8g/w==
-X-Gm-Message-State: AOJu0YyNcaE2J7n9esI4scY0QtGToa1vv/VqTkEo55MqdhmDrTfVOZM3
- SXix5s/Ja38SafhgdnCXagNdCtR3cizNxcd24pxZlZV5yCWU1P39M3QkrM0wy04nYLDjZUxTYIp
- fEJ/+9zQoJa49Y+Y=
-X-Received: by 2002:a17:906:845a:b0:99c:c50f:7fb4 with SMTP id
- e26-20020a170906845a00b0099cc50f7fb4mr1061059ejy.1.1693384332366; 
- Wed, 30 Aug 2023 01:32:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGd5r7ZoyBtakEUuY9S9uDikV2J5jz7t8PMLYU3fN00XZs0FNn9PIbHs95laSRBAmQ6ymvclw==
-X-Received: by 2002:a17:906:845a:b0:99c:c50f:7fb4 with SMTP id
- e26-20020a170906845a00b0099cc50f7fb4mr1061049ejy.1.1693384332009; 
- Wed, 30 Aug 2023 01:32:12 -0700 (PDT)
+ bh=EK2OZOUxKkdKro3GHkOhODHiw84vZmGuiLG99FdeGuY=;
+ b=Zv2yTytvzWTdcczkgAilUdGBV3zvWD0Qi/s07y6P+mjPb1P7QZ69vOun7sG5usFpTH
+ d5/fEFicn0ab3kkk2TCZxzoGLlzTAO7sv00yXY0HOrvQI4/HEEVPPg1bBlOUjcdtftQq
+ Isav+fYUhuhrRK7pNKK/DyF5w8SY8zbe0kVG28s54EXL3v8Fv6ZmnEylhET1ktE5iqUD
+ zGoGUvNSJMtwavBM3hzmcgL2imihhBu7EA9ml4VWf0q7WnQ1SXcJWa2KIkzW7g1jpuMP
+ VK/6cOBSJUd44iASSznqFZg10bxvJw8SQrFh9Q0hniafTmc0ouKnKx1QLgJU8JK1NvWE
+ c8qQ==
+X-Gm-Message-State: AOJu0Ywan4I70Nk8wCdn3tDbPUrSOXANgpnlPP8vwnqCUS48hlqf6Gp6
+ W9wwUZUuex2hf4/ceFGnMC1w5v5uJHT0lKlBtl4H6IF7IPgGI1E0Iis46pBOU37RtL5EO3uRFnD
+ 5k9ScYAa4P2CL9CU=
+X-Received: by 2002:a17:906:20dd:b0:9a1:c89a:9260 with SMTP id
+ c29-20020a17090620dd00b009a1c89a9260mr1069584ejc.51.1693384365501; 
+ Wed, 30 Aug 2023 01:32:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE+BRzJjNB68oJg3megIg9REgS9fX9Jp6VpXrT5xjno98Ig8ZtRWPZ0bGhabjDJCf8h62hc2Q==
+X-Received: by 2002:a17:906:20dd:b0:9a1:c89a:9260 with SMTP id
+ c29-20020a17090620dd00b009a1c89a9260mr1069577ejc.51.1693384365298; 
+ Wed, 30 Aug 2023 01:32:45 -0700 (PDT)
 Received: from sgarzare-redhat (host-82-57-51-114.retail.telecomitalia.it.
  [82.57.51.114]) by smtp.gmail.com with ESMTPSA id
- j16-20020a170906051000b0099cc402d3ddsm6886078eja.202.2023.08.30.01.32.10
+ h11-20020a170906590b00b00992e14af9b9sm6882503ejq.134.2023.08.30.01.32.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 01:32:11 -0700 (PDT)
-Date: Wed, 30 Aug 2023 10:32:09 +0200
+ Wed, 30 Aug 2023 01:32:44 -0700 (PDT)
+Date: Wed, 30 Aug 2023 10:32:42 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Laszlo Ersek <lersek@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
  Eugenio Perez Martin <eperezma@redhat.com>,
  German Maglione <gmaglione@redhat.com>, 
  Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>
-Subject: Re: [PATCH 5/7] vhost-user: hoist "write_msg", "get_features",
- "get_u64"
-Message-ID: <vgjq676yvuns6rwafy6cwxwbxdhdeclxjhbarwdwydi4csn5gi@vlvwek4rqui4>
+Subject: Re: [PATCH 6/7] vhost-user: allow "vhost_set_vring" to wait for a
+ reply
+Message-ID: <ac7zexkjvfvztxmfrhnlfoofwjzrblyctogmdhkpd527idjqpy@oxgzapdzlkgk>
 References: <20230827182937.146450-1-lersek@redhat.com>
- <20230827182937.146450-6-lersek@redhat.com>
+ <20230827182937.146450-7-lersek@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20230827182937.146450-6-lersek@redhat.com>
+In-Reply-To: <20230827182937.146450-7-lersek@redhat.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -102,13 +102,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Aug 27, 2023 at 08:29:35PM +0200, Laszlo Ersek wrote:
->In order to avoid a forward-declaration for "vhost_user_write_msg" in a
->subsequent patch, hoist "vhost_user_write_msg" ->
->"vhost_user_get_features" -> "vhost_user_get_u64" just above
->"vhost_set_vring".
+On Sun, Aug 27, 2023 at 08:29:36PM +0200, Laszlo Ersek wrote:
+>The "vhost_set_vring" function already centralizes the common parts of
+>"vhost_user_set_vring_num", "vhost_user_set_vring_base" and
+>"vhost_user_set_vring_enable". We'll want to allow some of those callers
+>to wait for a reply.
 >
->This is purely code movement -- no observable change.
+>Therefore, rebase "vhost_set_vring" from just "vhost_user_write" to
+>"vhost_user_write_msg", exposing the "wait_for_reply" parameter.
+>
+>This is purely refactoring -- there is no observable change. That's
+>because:
+>
+>- all three callers pass in "false" for "wait_for_reply", which disables
+>  all logic in "vhost_user_write_msg" except the call to
+>  "vhost_user_write";
+>
+>- the fds=NULL and fd_num=0 arguments of the original "vhost_user_write"
+>  call inside "vhost_set_vring" are hard-coded within
+>  "vhost_user_write_msg".
 >
 >Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
 >Cc: Eugenio Perez Martin <eperezma@redhat.com>
@@ -118,8 +130,8 @@ On Sun, Aug 27, 2023 at 08:29:35PM +0200, Laszlo Ersek wrote:
 >Cc: Stefano Garzarella <sgarzare@redhat.com>
 >Signed-off-by: Laszlo Ersek <lersek@redhat.com>
 >---
-> hw/virtio/vhost-user.c | 170 ++++++++++----------
-> 1 file changed, 85 insertions(+), 85 deletions(-)
+> hw/virtio/vhost-user.c | 11 ++++++-----
+> 1 file changed, 6 insertions(+), 5 deletions(-)
 
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
