@@ -2,50 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0209A78D5F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 14:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2107378D608
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:06:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbKZA-0005To-6H; Wed, 30 Aug 2023 08:45:00 -0400
+	id 1qbKsM-0005kF-H7; Wed, 30 Aug 2023 09:04:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qbKZ8-0005TR-91
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 08:44:58 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qbKsG-0005hC-AD; Wed, 30 Aug 2023 09:04:45 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qbKZ4-0002QO-VS
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 08:44:58 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 47C4B7456AC;
- Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0C9557456AA; Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0A8987456A7;
- Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
-Date: Wed, 30 Aug 2023 14:44:42 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_37=2F67=5D_ui=2Fconsole=3A_rename_vga?=
- =?UTF-8?Q?=5F_functions_=E2=86=92_qemu=5Fconsole=5F?=
-In-Reply-To: <20230830093843.3531473-38-marcandre.lureau@redhat.com>
-Message-ID: <058a8394-afcd-614e-7848-e3897b2d76ab@eik.bme.hu>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-38-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qbKs9-0007Qj-EC; Wed, 30 Aug 2023 09:04:43 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbPWg5GjTz6K6V0;
+ Wed, 30 Aug 2023 20:59:27 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 30 Aug
+ 2023 14:04:15 +0100
+Date: Wed, 30 Aug 2023 14:04:14 +0100
+To: Klaus Jensen <its@irrelevant.dk>
+CC: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ Keith Busch <kbusch@kernel.org>, Lior Weintraub <liorw@pliops.com>, Jeremy
+ Kerr <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>,
+ Peter Delevoryas <peter@pjd.dev>, <qemu-devel@nongnu.org>,
+ <qemu-arm@nongnu.org>, <qemu-block@nongnu.org>, "Klaus Jensen"
+ <k.jensen@samsung.com>
+Subject: Re: [PATCH v4 1/3] hw/i2c: add smbus pec utility function
+Message-ID: <20230830140414.0000428b@Huawei.com>
+In-Reply-To: <20230823-nmi-i2c-v4-1-2b0f86e5be25@samsung.com>
+References: <20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com>
+ <20230823-nmi-i2c-v4-1-2b0f86e5be25@samsung.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1001586873-1693399482=:10171"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -59,91 +66,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Wed, 23 Aug 2023 11:21:58 +0200
+Klaus Jensen <its@irrelevant.dk> wrote:
 
---3866299591-1001586873-1693399482=:10171
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+> From: Klaus Jensen <k.jensen@samsung.com>
+> 
+> Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
+> message.
+> 
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 
-On Wed, 30 Aug 2023, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Maybe refrain from using unicode arrow in Subject: as it may show up 
-wrongly with some fonts. Just write "replace ... with" or "rename ... to" 
-instead which is also more normal looking sentence than with an arrow.
-
-Regards,
-BALATON Zoltan
-
-> They are not specific to VGA. Let's use the object type name as prefix
-> instead, to avoid confusion.
->
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
-> ui/console.c | 25 ++++++++++++-------------
-> 1 file changed, 12 insertions(+), 13 deletions(-)
->
-> diff --git a/ui/console.c b/ui/console.c
-> index 88e37eaff3..a157a5b31c 100644
-> --- a/ui/console.c
-> +++ b/ui/console.c
-> @@ -331,9 +331,8 @@ void graphic_hw_text_update(QemuConsole *con, console_ch_t *chardata)
->     }
-> }
->
-> -static void vga_fill_rect(QemuConsole *con,
-> -                          int posx, int posy, int width, int height,
-> -                          pixman_color_t color)
-> +static void qemu_console_fill_rect(QemuConsole *con, int posx, int posy,
-> +                                   int width, int height, pixman_color_t color)
-> {
->     DisplaySurface *surface = qemu_console_surface(con);
->     pixman_rectangle16_t rect = {
-> @@ -345,8 +344,8 @@ static void vga_fill_rect(QemuConsole *con,
-> }
->
-> /* copy from (xs, ys) to (xd, yd) a rectangle of size (w, h) */
-> -static void vga_bitblt(QemuConsole *con,
-> -                       int xs, int ys, int xd, int yd, int w, int h)
-> +static void qemu_console_bitblt(QemuConsole *con,
-> +                                int xs, int ys, int xd, int yd, int w, int h)
-> {
->     DisplaySurface *surface = qemu_console_surface(con);
->
-> @@ -526,8 +525,8 @@ static void console_refresh(QemuTextConsole *s)
->     s->text_y[1] = s->height - 1;
->     s->cursor_invalidate = 1;
->
-> -    vga_fill_rect(QEMU_CONSOLE(s), 0, 0, surface_width(surface), surface_height(surface),
-> -                  color_table_rgb[0][QEMU_COLOR_BLACK]);
-> +    qemu_console_fill_rect(QEMU_CONSOLE(s), 0, 0, surface_width(surface), surface_height(surface),
-> +                           color_table_rgb[0][QEMU_COLOR_BLACK]);
->     y1 = s->y_displayed;
->     for (y = 0; y < s->height; y++) {
->         c = s->cells + y1 * s->width;
-> @@ -605,12 +604,12 @@ static void vc_put_lf(VCChardev *vc)
->             s->text_x[1] = s->width - 1;
->             s->text_y[1] = s->height - 1;
->
-> -            vga_bitblt(QEMU_CONSOLE(s), 0, FONT_HEIGHT, 0, 0,
-> -                       s->width * FONT_WIDTH,
-> -                       (s->height - 1) * FONT_HEIGHT);
-> -            vga_fill_rect(QEMU_CONSOLE(s), 0, (s->height - 1) * FONT_HEIGHT,
-> -                          s->width * FONT_WIDTH, FONT_HEIGHT,
-> -                          color_table_rgb[0][TEXT_ATTRIBUTES_DEFAULT.bgcol]);
-> +            qemu_console_bitblt(QEMU_CONSOLE(s), 0, FONT_HEIGHT, 0, 0,
-> +                                s->width * FONT_WIDTH,
-> +                                (s->height - 1) * FONT_HEIGHT);
-> +            qemu_console_fill_rect(QEMU_CONSOLE(s), 0, (s->height - 1) * FONT_HEIGHT,
-> +                                   s->width * FONT_WIDTH, FONT_HEIGHT,
-> +                                   color_table_rgb[0][TEXT_ATTRIBUTES_DEFAULT.bgcol]);
->             s->update_x0 = 0;
->             s->update_y0 = 0;
->             s->update_x1 = s->width * FONT_WIDTH;
->
---3866299591-1001586873-1693399482=:10171--
+>  hw/i2c/smbus_master.c         | 26 ++++++++++++++++++++++++++
+>  include/hw/i2c/smbus_master.h |  2 ++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
+> index 6a53c34e70b7..01a8e4700222 100644
+> --- a/hw/i2c/smbus_master.c
+> +++ b/hw/i2c/smbus_master.c
+> @@ -15,6 +15,32 @@
+>  #include "hw/i2c/i2c.h"
+>  #include "hw/i2c/smbus_master.h"
+>  
+> +static uint8_t crc8(uint16_t data)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < 8; i++) {
+> +        if (data & 0x8000) {
+> +            data ^= 0x1070U << 3;
+> +        }
+> +
+> +        data <<= 1;
+> +    }
+> +
+> +    return (uint8_t)(data >> 8);
+> +}
+> +
+> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < len; i++) {
+> +        crc = crc8((crc ^ buf[i]) << 8);
+> +    }
+> +
+> +    return crc;
+> +}
+> +
+>  /* Master device commands.  */
+>  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read)
+>  {
+> diff --git a/include/hw/i2c/smbus_master.h b/include/hw/i2c/smbus_master.h
+> index bb13bc423c22..d90f81767d86 100644
+> --- a/include/hw/i2c/smbus_master.h
+> +++ b/include/hw/i2c/smbus_master.h
+> @@ -27,6 +27,8 @@
+>  
+>  #include "hw/i2c/i2c.h"
+>  
+> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len);
+> +
+>  /* Master device commands.  */
+>  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read);
+>  int smbus_receive_byte(I2CBus *bus, uint8_t addr);
+> 
+
 
