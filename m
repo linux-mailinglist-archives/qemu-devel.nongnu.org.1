@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110D178D560
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C03A78D562
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbIyl-0005Vv-Gi; Wed, 30 Aug 2023 07:03:19 -0400
+	id 1qbJ1I-0006jf-HJ; Wed, 30 Aug 2023 07:05:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbIya-0005Uw-4P
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:03:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qbJ1F-0006jA-Et
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:05:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbIyX-0001NO-Jf
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:03:07 -0400
+ id 1qbJ1D-0002IK-5R
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:05:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693393385;
+ s=mimecast20190719; t=1693393549;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WeoTcucHUtogUW2ffSj75TaHsnXOr/lom+SkGXbnf2k=;
- b=aYAejBdU/EaYaFrK4vTxD0IM+1RORn5bDaVDSoQsuaRd/smvugcmCcPS3dyYXnupjtPtBq
- j6rdI+oHZGW6BtG5evrBckBH5W/WoH5SxAoGR9FcTjGfIrhgCVP/uzpgX8icm5GLFDaKBz
- z9ZCCZQiA8rsAMFJleIJOQo5rRVHfEY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-491-yJnmdcRhNDKIg6_9JBagEA-1; Wed, 30 Aug 2023 07:03:03 -0400
-X-MC-Unique: yJnmdcRhNDKIg6_9JBagEA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=UrvYBmeJgeO0zamZqWzPFvQCVTqobxh3H1g1nxqPsAY=;
+ b=Lh1uYKkQP3Acn6PLzabPFsq7jwD2nOtLF5wvS6VAUzD3fSBXqLfqaQXljDIH+be6lJHmxk
+ okdZ6zzxFv/0OtbHX1yNBOdi5CkbToE2H8o0RrCJjNZdK3P67ja/rAFawtCmENTkgIxmtc
+ QM8qKdM1tzkz5cD7FSsLptYONerPCbg=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-278-5nHjba2CO7WFO-MyGV5H1A-1; Wed, 30 Aug 2023 07:05:27 -0400
+X-MC-Unique: 5nHjba2CO7WFO-MyGV5H1A-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35832101A53C
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 11:03:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 260633C13507
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 11:05:27 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 74ECE40C2063;
- Wed, 30 Aug 2023 11:03:02 +0000 (UTC)
-Date: Wed, 30 Aug 2023 12:03:00 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 54E57492C13;
+ Wed, 30 Aug 2023 11:05:26 +0000 (UTC)
+Date: Wed, 30 Aug 2023 12:05:24 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 05/67] ui/vc: drop have_text
-Message-ID: <ZO8h5OOaNohhGZi9@redhat.com>
+Subject: Re: [PATCH 06/67] ui/console: console_select() regardless of have_gfx
+Message-ID: <ZO8idKRP4Yimai8T@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-6-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-7-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830093843.3531473-6-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-7-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,19 +83,16 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:37:39PM +0400, marcandre.lureau@redhat.com wrote:
+On Wed, Aug 30, 2023 at 01:37:40PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> If there are no "text" listener, the callback will simply be ignored.
-> The rest of text handling can be done cheaply.
-> 
-> This allows to remove some dependency on DisplayState from VC
-> implementation.
+> Even if we don't have a gfx listener, we should call
+> displaychangelistener_display_console() which handle that case correctly.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  ui/console.c | 42 +++++++++++++-----------------------------
->  1 file changed, 13 insertions(+), 29 deletions(-)
+>  ui/console.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
