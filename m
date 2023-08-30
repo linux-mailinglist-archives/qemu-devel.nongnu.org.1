@@ -2,114 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC6178D2CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 06:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952D578D2DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 06:55:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbCwJ-0005YM-Bt; Wed, 30 Aug 2023 00:36:23 -0400
+	id 1qbDDK-0006qq-Li; Wed, 30 Aug 2023 00:53:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qbCvg-0005Wl-Gt
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 00:35:45 -0400
-Received: from mail-co1nam11on2062c.outbound.protection.outlook.com
- ([2a01:111:f400:7eab::62c]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qbCvd-0000Jf-Gg
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 00:35:44 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GYXUiRwS0z/7gZPYQz4CMhd+1da0joO/FNEfRrsAnKEsHufLulEL7juhouJ2hgragv4h2sjzcy8CJXlWOkQR12xVnDUrihG+bq5/QRDlyoQ9sQMDvXN859ZLOyC6fRwxoZc2t/VUTJWbRuFBhGyg4acPuJVItHRMjjlIdYGGGjIagzn0htv0RUDqQwWOvldnkcJDjU2gMX4QoRfrsUDlzuSHOixo5hG4KB0hwjxtq3G5HLMenzWEo/QAfpnbY3gdvjpR7VGxvRDj2E/ZT8MEmFiePgH6+dyPpsioEe+11OQVu8VmX2d0jkcKaK9QnRDoTReZ4SzLVWEIlMMnpDSyLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1a/A4UAgepJ+GzXsqiD6GCsQifRd+u9n12Dmn6XslQE=;
- b=fqoJmsxMxQYcbJnkjMA8TQLHKbJZUeamCK0uLtshykxEbHk4ohyYjwFLi7xUCyuyJ6n2/E45dPOX2/Ps4m/sWKsY4TsX5NipSwoRDYdnys1mdLw6kpCpf0GebSh9vAwOVcNQt88hbDy3iLnowRNUPL9Ew6zrmUaDCeNBOwrmlBO0fZO7yVpu4KjA9e0LanP2n89SVzULrEjvEKNMdRWzyKi3fuKEybx+qZSYsUWIFnaMRrHhS8Lc1gebRSPdvxPIJL7KaqeoZ7o1/m6NvBK+viCfxD8w7uGTrutg0NTyGmwVnk7zVv2EMjNlNyX0Qna0kFWLhqV+KUAFnVHrpwNPyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1a/A4UAgepJ+GzXsqiD6GCsQifRd+u9n12Dmn6XslQE=;
- b=QIwsvfZMPtHQ7JJ5a3vlZbCdS3gA10USg+kE4Hk5ppfsxn2dCKzlDGC8vY+jnTsYtmPeCPJ059c855alrsrpSzsd0JnjQZJqX8ki583CyH5BXMHKhepSCSBEGtnrVcOGFbEIJHBcxJrCtEqfkIIc3wWo8hQ9LttSDtSCvGe1nQY=
-Received: from MW4PR03CA0094.namprd03.prod.outlook.com (2603:10b6:303:b7::9)
- by IA0PR12MB8424.namprd12.prod.outlook.com (2603:10b6:208:40c::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20; Wed, 30 Aug
- 2023 04:35:37 +0000
-Received: from CO1PEPF000042AA.namprd03.prod.outlook.com
- (2603:10b6:303:b7:cafe::fe) by MW4PR03CA0094.outlook.office365.com
- (2603:10b6:303:b7::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35 via Frontend
- Transport; Wed, 30 Aug 2023 04:35:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000042AA.mail.protection.outlook.com (10.167.243.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6745.16 via Frontend Transport; Wed, 30 Aug 2023 04:35:36 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 29 Aug
- 2023 23:35:35 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 29 Aug
- 2023 23:35:35 -0500
-Received: from xsjfnuv50.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
- Transport; Tue, 29 Aug 2023 23:35:34 -0500
-From: Vikram Garhwal <vikram.garhwal@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <sstabellini@kernel.org>, <vikram.garhwal@amd.com>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>
-Subject: [QEMU][PATCH v4 2/2] xen_arm: Initialize RAM and add hi/low memory
- regions
-Date: Tue, 29 Aug 2023 21:35:18 -0700
-Message-ID: <20230830043518.21584-3-vikram.garhwal@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230830043518.21584-1-vikram.garhwal@amd.com>
-References: <20230830043518.21584-1-vikram.garhwal@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AA:EE_|IA0PR12MB8424:EE_
-X-MS-Office365-Filtering-Correlation-Id: cde0b46d-a1cd-4e8c-236f-08dba9128e7a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sLcDD6GuaeCFhUN9gSi7eyThLW7t9MLvHqV8rYsLyMO7gZ2iBpmFO1orEY+dIlrApsJw4mvi/DKF2EjgJiGFxfgxI64RVPBYW7MKZhRnzwS1WVwxcMXoGISCWujC/HMEp44uDCCKwpSvubRrT8NDazgLUsMlMJSvao7GgATOxUHkFl+zMhfkVOoBQ8MfsSb3t/XGxlbUSCUadu4QdaK90eyVbTtcqrV5sczN4ucoFHLOJaT824Idc3whPqd7pGyPPvCLtskMVqzDHx+WkzYtCwT5dRTI/h8r/zjrcbigVenjK4XgH8j/TeVNPK4gs0TNHBaSpBQ7cloasmof1SOuBMN/zsUQvDN0WXZMHvdYXy+KPj+h4+NBVjd4ui+3D5EDUbcPnE0WIXjiU+LN/+8rjlXPyzvDLnOSXoeMKuhHyOK52ETHkB6umrfjmG1KXfRRIYS1N84uXjyAjoY0Fy6v1ys2xshVYFr13SHWlVft2WnqxF3ElyOKxwKzbWx4XZ/TS8KOdx8ki8VTdMl5On6JQyqj/cT06NDIFC/qpfLCxXY1xJp0MXA2jnj5tMiem3CzJZBFi7MEbQwZA2SjFcObB/5yjw6bconX36AU0fRKbt2wB+a4z/cucgDbflYc3iqKWJWt+JoE2TJRLgW6Z/8x02yTH9BHhVZcl7DtxJt9J0nFxL+PmJlC4vnW2X9SlEpmZhRXb2dluLc5GX5j5ocEb12iF+62kDT7VA64Ui8D1DwEH1KQD2YW/glkpwmfIaF8yNOQyxON9ZeRm3a6bd9+8A==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(376002)(346002)(136003)(396003)(39860400002)(82310400011)(451199024)(1800799009)(186009)(36840700001)(40470700004)(46966006)(36756003)(40460700003)(40480700001)(83380400001)(44832011)(86362001)(41300700001)(4326008)(5660300002)(8676002)(8936002)(26005)(6666004)(1076003)(2616005)(426003)(336012)(36860700001)(47076005)(82740400003)(478600001)(81166007)(2906002)(356005)(54906003)(70586007)(70206006)(316002)(6916009)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2023 04:35:36.6213 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cde0b46d-a1cd-4e8c-236f-08dba9128e7a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042AA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8424
-Received-SPF: softfail client-ip=2a01:111:f400:7eab::62c;
- envelope-from=vikram.garhwal@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qbDDI-0006qS-Ee
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 00:53:56 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qbDD8-00030H-7X
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 00:53:56 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-5694ee2d0edso2160167a12.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 21:51:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693371101; x=1693975901;
+ darn=nongnu.org; 
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=baWE9tl7df3F/zNSyaQaPOJMOot/BWCbFpgiP6BcqAw=;
+ b=W2hg37vbBBoccL/pxOH4+RbdKjheBu//6OCiQxJADGQ5soz/ostWNDLOdJnIxUsaWS
+ SvM5PIaQ3VFp2xeoSZK8QF738vFDHJqviOSxkduRSywtZqmhJjRotQ5RRrrRndu9asSw
+ Oz3ErmWqMyuLGYc/TYneL6W6/CbqzP577B83POPC3+slu/vX8vUNz0Fjh8dTkZqAzAld
+ dA5R8KQyl23wkxCXHX2oZdfZvZ+EOp6BdyqLCbovZzgQGyT2hg/1XlYdeFzgePzqrL8C
+ Ztc4MC27AKhY6e5xk01LRCy5yUQu6XefjZKGH53C36n3JG6mrV58j5aMkOLHAG3X4aM7
+ 2K6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693371101; x=1693975901;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=baWE9tl7df3F/zNSyaQaPOJMOot/BWCbFpgiP6BcqAw=;
+ b=URWOsJKT66aEAQF39qpGcuEp3vyxfxFhi0MU70NBeID2g+/St2w3Z39PSq7gobqf0L
+ mPbvXFk3SGLDs6lJGduw+eJvw3YxuJVbaoUVbr4AQorF2q7slLNO+A+CToAHysq+QNR+
+ lh9Rlq9dPej6rmoR3+shlAbZZ00n4+ugaKVR5FdBA3bNRR+8EAFZEuTUDhXtrRYLcfUr
+ UVZuX8x5V10/2fXQzFXycDQhey0TR/nk0kekOVX0beEsyUwxq+nmuo5cc33nA0HmbQfI
+ RRDgwsnoEh0tl+iLacjC1NmYIJPYBkjdE2E3ZD0eZi0gGcK3FquFQUKXEHwbEGGuKQX9
+ nGeg==
+X-Gm-Message-State: AOJu0YxegDjCySGo5x93hlXG2I91s/v8yMUyE62ua7RSF9fgknVvBskm
+ BTSDvps2rZbzIJgfs1qdlRSoMg==
+X-Google-Smtp-Source: AGHT+IF6oysGRNXlSdKPp75ImXbjWtNfU6Iulz5wbuzpRKu0sTGa1tBU+vk/leUNVqREciM6K68SSg==
+X-Received: by 2002:a05:6a20:2444:b0:14d:29f6:18c3 with SMTP id
+ t4-20020a056a20244400b0014d29f618c3mr1398559pzc.20.1693371101020; 
+ Tue, 29 Aug 2023 21:51:41 -0700 (PDT)
+Received: from smtpclient.apple ([8.210.91.195])
+ by smtp.gmail.com with ESMTPSA id
+ z5-20020a170902ee0500b001b03f208323sm242900plb.64.2023.08.29.21.51.38
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 29 Aug 2023 21:51:40 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+Message-Id: <93D7CACD-ABAB-40BB-8491-88324AC08729@smartx.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_E364CD9E-78A3-4CC3-9EA7-D9780F764BE9"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH v2 1/2] vhost-user: Fix lost reconnect
+Date: Wed, 30 Aug 2023 12:51:34 +0800
+In-Reply-To: <C8126682-6FA5-4511-80B9-289EF83EB59F@nutanix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+To: Raphael Norwitz <raphael.norwitz@nutanix.com>
+References: <20230804052954.2918915-1-fengli@smartx.com>
+ <20230824074115.93897-1-fengli@smartx.com>
+ <20230824074115.93897-2-fengli@smartx.com>
+ <C8126682-6FA5-4511-80B9-289EF83EB59F@nutanix.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=fengli@smartx.com; helo=mail-pg1-x52c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,123 +97,461 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 
-In order to use virtio backends we need to initialize RAM for the
-xen-mapcache (which is responsible for mapping guest memory using foreign
-mapping) to work. Calculate and add hi/low memory regions based on
-machine->ram_size.
+--Apple-Mail=_E364CD9E-78A3-4CC3-9EA7-D9780F764BE9
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-Use the constants defined in public header arch-arm.h to be aligned with the xen
-toolstack.
 
-While using this machine, the toolstack should then pass real ram_size using
-"-m" arg. If "-m" is not given, create a QEMU machine without IOREQ and other
-emulated devices like TPM and VIRTIO. This is done to keep this QEMU machine
-usable for /etc/init.d/xencommons.
 
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
----
- hw/arm/xen_arm.c            | 45 +++++++++++++++++++++++++++++++++++++
- include/hw/xen/xen_native.h |  8 +++++++
- 2 files changed, 53 insertions(+)
+> On 30 Aug 2023, at 6:11 AM, Raphael Norwitz =
+<raphael.norwitz@nutanix.com> wrote:
+>=20
+>=20
+>=20
+>> On Aug 24, 2023, at 3:41 AM, Li Feng <fengli@smartx.com> wrote:
+>>=20
+>> When the vhost-user is reconnecting to the backend, and if the =
+vhost-user fails
+>> at the get_features in vhost_dev_init(), then the reconnect will fail
+>> and it will not be retriggered forever.
+>>=20
+>> The reason is:
+>> When the vhost-user fails at get_features, the vhost_dev_cleanup will =
+be called
+>> immediately.
+>>=20
+>> vhost_dev_cleanup calls 'memset(hdev, 0, sizeof(struct vhost_dev))'.
+>>=20
+>> The reconnect path is:
+>> vhost_user_blk_event
+>>  vhost_user_async_close(.. vhost_user_blk_disconnect ..)
+>>    qemu_chr_fe_set_handlers <----- clear the notifier callback
+>>      schedule vhost_user_async_close_bh
+>>=20
+>> The vhost->vdev is null, so the vhost_user_blk_disconnect will not be
+>> called, then the event fd callback will not be reinstalled.
+>>=20
+>> All vhost-user devices have this issue, including =
+vhost-user-blk/scsi.
+>>=20
+>> With this patch, if the vdev->vdev is null, the fd callback will =
+still
+>> be reinstalled.
+>>=20
+>> Fixes: 71e076a07d ("hw/virtio: generalise CHR_EVENT_CLOSED handling")
+>>=20
+>=20
+> A couple of NITs, otherwise LGTM
+>=20
+> Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com =
+<mailto:raphael.norwitz@nutanix.com>>
+>=20
+>> Signed-off-by: Li Feng <fengli@smartx.com>
+>> ---
+>> hw/block/vhost-user-blk.c      |  2 +-
+>> hw/scsi/vhost-user-scsi.c      |  3 ++-
+>> hw/virtio/vhost-user-gpio.c    |  2 +-
+>> hw/virtio/vhost-user.c         | 10 ++++++++--
+>> include/hw/virtio/vhost-user.h |  4 +++-
+>> 5 files changed, 15 insertions(+), 6 deletions(-)
+>>=20
+>> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+>> index 3c69fa47d5..95c758200d 100644
+>> --- a/hw/block/vhost-user-blk.c
+>> +++ b/hw/block/vhost-user-blk.c
+>> @@ -391,7 +391,7 @@ static void vhost_user_blk_event(void *opaque, =
+QEMUChrEvent event)
+>>    case CHR_EVENT_CLOSED:
+>>        /* defer close until later to avoid circular close */
+>>        vhost_user_async_close(dev, &s->chardev, &s->dev,
+>> -                               vhost_user_blk_disconnect);
+>> +                               vhost_user_blk_disconnect, =
+vhost_user_blk_event);
+>>        break;
+>>    case CHR_EVENT_BREAK:
+>>    case CHR_EVENT_MUX_IN:
+>> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+>> index a7fa8e8df2..e931df9f5b 100644
+>> --- a/hw/scsi/vhost-user-scsi.c
+>> +++ b/hw/scsi/vhost-user-scsi.c
+>> @@ -236,7 +236,8 @@ static void vhost_user_scsi_event(void *opaque, =
+QEMUChrEvent event)
+>>    case CHR_EVENT_CLOSED:
+>>        /* defer close until later to avoid circular close */
+>>        vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
+>> -                               vhost_user_scsi_disconnect);
+>> +                               vhost_user_scsi_disconnect,
+>> +                               vhost_user_scsi_event);
+>>        break;
+>>    case CHR_EVENT_BREAK:
+>>    case CHR_EVENT_MUX_IN:
+>> diff --git a/hw/virtio/vhost-user-gpio.c =
+b/hw/virtio/vhost-user-gpio.c
+>> index d9979aa5db..04c2cc79f4 100644
+>> --- a/hw/virtio/vhost-user-gpio.c
+>> +++ b/hw/virtio/vhost-user-gpio.c
+>> @@ -283,7 +283,7 @@ static void vu_gpio_event(void *opaque, =
+QEMUChrEvent event)
+>>    case CHR_EVENT_CLOSED:
+>>        /* defer close until later to avoid circular close */
+>>        vhost_user_async_close(dev, &gpio->chardev, &gpio->vhost_dev,
+>> -                               vu_gpio_disconnect);
+>> +                               vu_gpio_disconnect, vu_gpio_event);
+>>        break;
+>>    case CHR_EVENT_BREAK:
+>>    case CHR_EVENT_MUX_IN:
+>> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>> index 8dcf049d42..9540766dd3 100644
+>> --- a/hw/virtio/vhost-user.c
+>> +++ b/hw/virtio/vhost-user.c
+>> @@ -2643,6 +2643,7 @@ typedef struct {
+>>    DeviceState *dev;
+>>    CharBackend *cd;
+>>    struct vhost_dev *vhost;
+>> +    IOEventHandler *event_cb;
+>> } VhostAsyncCallback;
+>>=20
+>> static void vhost_user_async_close_bh(void *opaque)
+>> @@ -2657,7 +2658,10 @@ static void vhost_user_async_close_bh(void =
+*opaque)
+>>     */
+>>    if (vhost->vdev) {
+>>        data->cb(data->dev);
+>> -    }
+>> +    } else if (data->event_cb) {
+>> +        qemu_chr_fe_set_handlers(data->cd, NULL, NULL, =
+data->event_cb,
+>> +                                 NULL, data->dev, NULL, true);
+>> +   }
+>>=20
+>>    g_free(data);
+>> }
+>> @@ -2669,7 +2673,9 @@ static void vhost_user_async_close_bh(void =
+*opaque)
+>> */
+>> void vhost_user_async_close(DeviceState *d,
+>>                            CharBackend *chardev, struct vhost_dev =
+*vhost,
+>> -                            vu_async_close_fn cb)
+>> +                            vu_async_close_fn cb,
+>> +                            IOEventHandler *event_cb
+>=20
+> Nit: why the newline before the closing parenthesis?
+Acked.
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 7393b37355..f83b983ec5 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -60,6 +60,8 @@ struct XenArmState {
-     } cfg;
- };
- 
-+static MemoryRegion ram_lo, ram_hi;
-+
- /*
-  * VIRTIO_MMIO_DEV_SIZE is imported from tools/libs/light/libxl_arm.c under Xen
-  * repository.
-@@ -92,6 +94,39 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
-     }
- }
- 
-+static void xen_init_ram(MachineState *machine)
-+{
-+    MemoryRegion *sysmem = get_system_memory();
-+    ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
-+
-+    if (machine->ram_size <= GUEST_RAM0_SIZE) {
-+        ram_size[0] = machine->ram_size;
-+        ram_size[1] = 0;
-+        block_len = GUEST_RAM0_BASE + ram_size[0];
-+    } else {
-+        ram_size[0] = GUEST_RAM0_SIZE;
-+        ram_size[1] = machine->ram_size - GUEST_RAM0_SIZE;
-+        block_len = GUEST_RAM1_BASE + ram_size[1];
-+    }
-+
-+    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
-+                           &error_fatal);
-+
-+    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
-+                             GUEST_RAM0_BASE, ram_size[0]);
-+    memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
-+    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
-+            GUEST_RAM0_BASE, ram_size[0]);
-+
-+    if (ram_size[1] > 0) {
-+        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
-+                                 GUEST_RAM1_BASE, ram_size[1]);
-+        memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-+        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
-+                GUEST_RAM1_BASE, ram_size[1]);
-+    }
-+}
-+
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
- {
-     hw_error("Invalid ioreq type 0x%x\n", req->type);
-@@ -141,6 +176,14 @@ static void xen_arm_init(MachineState *machine)
- 
-     xam->state =  g_new0(XenIOState, 1);
- 
-+    if (machine->ram_size == 0) {
-+        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
-+                "(no emulated devices including Virtio)\n");
-+        return;
-+    }
-+
-+    xen_init_ram(machine);
-+
-     xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
- 
-     xen_create_virtio_mmio_devices(xam);
-@@ -188,6 +231,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
-     mc->init = xen_arm_init;
-     mc->max_cpus = 1;
-     mc->default_machine_opts = "accel=xen";
-+    /* Set explicitly here to make sure that real ram_size is passed */
-+    mc->default_ram_size = 0;
- 
- #ifdef CONFIG_TPM
-     object_class_property_add(oc, "tpm-base-addr", "uint64_t",
-diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-index a4b1aa9e5d..5d2718261f 100644
---- a/include/hw/xen/xen_native.h
-+++ b/include/hw/xen/xen_native.h
-@@ -539,4 +539,12 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
- #define GUEST_VIRTIO_MMIO_SPI_LAST    43
- #endif
- 
-+#if defined(__i386__) || defined(__x86_64__)
-+#define GUEST_RAM_BANKS   2
-+#define GUEST_RAM0_BASE   0x40000000ULL /* 3GB of low RAM @ 1GB */
-+#define GUEST_RAM0_SIZE   0xc0000000ULL
-+#define GUEST_RAM1_BASE   0x0200000000ULL /* 1016GB of RAM @ 8GB */
-+#define GUEST_RAM1_SIZE   0xfe00000000ULL
-+#endif
-+
- #endif /* QEMU_HW_XEN_NATIVE_H */
--- 
-2.17.1
+>=20
+>> +                            )
+>> {
+>>    if (!runstate_check(RUN_STATE_SHUTDOWN)) {
+>>        /*
+>> diff --git a/include/hw/virtio/vhost-user.h =
+b/include/hw/virtio/vhost-user.h
+>> index 191216a74f..5fdc711d4e 100644
+>> --- a/include/hw/virtio/vhost-user.h
+>> +++ b/include/hw/virtio/vhost-user.h
+>> @@ -84,6 +84,8 @@ typedef void (*vu_async_close_fn)(DeviceState *cb);
+>>=20
+>> void vhost_user_async_close(DeviceState *d,
+>>                            CharBackend *chardev, struct vhost_dev =
+*vhost,
+>> -                            vu_async_close_fn cb);
+>> +                            vu_async_close_fn cb,
+>> +                            IOEventHandler *event_cb
+>=20
+> Nit: ditto - don=E2=80=99t think we need this newline before );
+Acked.
+>=20
+>> +                            );
+>>=20
+>> #endif
+>> --=20
+>> 2.41.0
 
+
+--Apple-Mail=_E364CD9E-78A3-4CC3-9EA7-D9780F764BE9
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: =
+after-white-space;"><br><div><br><blockquote type=3D"cite"><div>On 30 =
+Aug 2023, at 6:11 AM, Raphael Norwitz =
+&lt;raphael.norwitz@nutanix.com&gt; wrote:</div><br =
+class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
+type=3D"cite" style=3D"font-family: Monaco; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: auto; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: auto; word-spacing: =
+0px; -webkit-text-stroke-width: 0px; text-decoration: none;">On Aug 24, =
+2023, at 3:41 AM, Li Feng &lt;fengli@smartx.com&gt; wrote:<br><br>When =
+the vhost-user is reconnecting to the backend, and if the vhost-user =
+fails<br>at the get_features in vhost_dev_init(), then the reconnect =
+will fail<br>and it will not be retriggered forever.<br><br>The reason =
+is:<br>When the vhost-user fails at get_features, the vhost_dev_cleanup =
+will be called<br>immediately.<br><br>vhost_dev_cleanup calls =
+'memset(hdev, 0, sizeof(struct vhost_dev))'.<br><br>The reconnect path =
+is:<br>vhost_user_blk_event<br>&nbsp;vhost_user_async_close(.. =
+vhost_user_blk_disconnect =
+..)<br>&nbsp;&nbsp;&nbsp;qemu_chr_fe_set_handlers &lt;----- clear the =
+notifier callback<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;schedule =
+vhost_user_async_close_bh<br><br>The vhost-&gt;vdev is null, so the =
+vhost_user_blk_disconnect will not be<br>called, then the event fd =
+callback will not be reinstalled.<br><br>All vhost-user devices have =
+this issue, including vhost-user-blk/scsi.<br><br>With this patch, if =
+the vdev-&gt;vdev is null, the fd callback will still<br>be =
+reinstalled.<br><br>Fixes: 71e076a07d ("hw/virtio: generalise =
+CHR_EVENT_CLOSED handling")<br><br></blockquote><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">A =
+couple of NITs, otherwise LGTM</span><br style=3D"caret-color: rgb(0, 0, =
+0); font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline =
+!important;">Reviewed-by: Raphael Norwitz &lt;</span><a =
+href=3D"mailto:raphael.norwitz@nutanix.com" style=3D"font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: =
+0px;">raphael.norwitz@nutanix.com</a><span style=3D"caret-color: rgb(0, =
+0, 0); font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline =
+!important;">&gt;</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">Signed-off-by: Li Feng =
+&lt;fengli@smartx.com&gt;<br>---<br>hw/block/vhost-user-blk.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;2 +-<br>hw/scsi/vhost-user-scsi.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;3 =
+++-<br>hw/virtio/vhost-user-gpio.c &nbsp;&nbsp;&nbsp;| &nbsp;2 =
++-<br>hw/virtio/vhost-user.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 10 =
+++++++++--<br>include/hw/virtio/vhost-user.h | &nbsp;4 +++-<br>5 files =
+changed, 15 insertions(+), 6 deletions(-)<br><br>diff --git =
+a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c<br>index =
+3c69fa47d5..95c758200d 100644<br>--- a/hw/block/vhost-user-blk.c<br>+++ =
+b/hw/block/vhost-user-blk.c<br>@@ -391,7 +391,7 @@ static void =
+vhost_user_blk_event(void *opaque, QEMUChrEvent =
+event)<br>&nbsp;&nbsp;&nbsp;case =
+CHR_EVENT_CLOSED:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* defer =
+close until later to avoid circular close =
+*/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_async_close(dev=
+, &amp;s-&gt;chardev, &amp;s-&gt;dev,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_blk_disconnect);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_blk_disconnect, =
+vhost_user_blk_event);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;=
+<br>&nbsp;&nbsp;&nbsp;case CHR_EVENT_BREAK:<br>&nbsp;&nbsp;&nbsp;case =
+CHR_EVENT_MUX_IN:<br>diff --git a/hw/scsi/vhost-user-scsi.c =
+b/hw/scsi/vhost-user-scsi.c<br>index a7fa8e8df2..e931df9f5b =
+100644<br>--- a/hw/scsi/vhost-user-scsi.c<br>+++ =
+b/hw/scsi/vhost-user-scsi.c<br>@@ -236,7 +236,8 @@ static void =
+vhost_user_scsi_event(void *opaque, QEMUChrEvent =
+event)<br>&nbsp;&nbsp;&nbsp;case =
+CHR_EVENT_CLOSED:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* defer =
+close until later to avoid circular close =
+*/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_async_close(dev=
+, &amp;vs-&gt;conf.chardev, &amp;vsc-&gt;dev,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_scsi_disconnect);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_scsi_disconnect,<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_scsi_event);<br>&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;case =
+CHR_EVENT_BREAK:<br>&nbsp;&nbsp;&nbsp;case CHR_EVENT_MUX_IN:<br>diff =
+--git a/hw/virtio/vhost-user-gpio.c =
+b/hw/virtio/vhost-user-gpio.c<br>index d9979aa5db..04c2cc79f4 =
+100644<br>--- a/hw/virtio/vhost-user-gpio.c<br>+++ =
+b/hw/virtio/vhost-user-gpio.c<br>@@ -283,7 +283,7 @@ static void =
+vu_gpio_event(void *opaque, QEMUChrEvent =
+event)<br>&nbsp;&nbsp;&nbsp;case =
+CHR_EVENT_CLOSED:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* defer =
+close until later to avoid circular close =
+*/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_async_close(dev=
+, &amp;gpio-&gt;chardev, &amp;gpio-&gt;vhost_dev,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vu_gpio_disconnect);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vu_gpio_disconnect, =
+vu_gpio_event);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nb=
+sp;&nbsp;&nbsp;case CHR_EVENT_BREAK:<br>&nbsp;&nbsp;&nbsp;case =
+CHR_EVENT_MUX_IN:<br>diff --git a/hw/virtio/vhost-user.c =
+b/hw/virtio/vhost-user.c<br>index 8dcf049d42..9540766dd3 100644<br>--- =
+a/hw/virtio/vhost-user.c<br>+++ b/hw/virtio/vhost-user.c<br>@@ -2643,6 =
++2643,7 @@ typedef struct {<br>&nbsp;&nbsp;&nbsp;DeviceState =
+*dev;<br>&nbsp;&nbsp;&nbsp;CharBackend *cd;<br>&nbsp;&nbsp;&nbsp;struct =
+vhost_dev *vhost;<br>+ &nbsp;&nbsp;&nbsp;IOEventHandler *event_cb;<br>} =
+VhostAsyncCallback;<br><br>static void vhost_user_async_close_bh(void =
+*opaque)<br>@@ -2657,7 +2658,10 @@ static void =
+vhost_user_async_close_bh(void =
+*opaque)<br>&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;if =
+(vhost-&gt;vdev) =
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-&gt;cb(data-&gt;dev);<=
+br>- &nbsp;&nbsp;&nbsp;}<br>+ &nbsp;&nbsp;&nbsp;} else if =
+(data-&gt;event_cb) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qemu_chr_fe_set_handlers(data-&g=
+t;cd, NULL, NULL, data-&gt;event_cb,<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL, data-&gt;dev, NULL, =
+true);<br>+ =
+&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;g_free(data);<br>}<br>@@ -2669,7 =
++2673,9 @@ static void vhost_user_async_close_bh(void =
+*opaque)<br>*/<br>void vhost_user_async_close(DeviceState =
+*d,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;CharBackend *chardev, struct vhost_dev *vhost,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;vu_async_close_fn cb)<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;vu_async_close_fn cb,<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;IOEventHandler *event_cb<br></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Nit: why the newline before the closing =
+parenthesis?</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"></div></blockquote>Acked.</div><div><br><blockquote =
+type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;)<br>{<br>&nbsp;&nbsp;&nbsp;if =
+(!runstate_check(RUN_STATE_SHUTDOWN)) =
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>diff --git =
+a/include/hw/virtio/vhost-user.h =
+b/include/hw/virtio/vhost-user.h<br>index 191216a74f..5fdc711d4e =
+100644<br>--- a/include/hw/virtio/vhost-user.h<br>+++ =
+b/include/hw/virtio/vhost-user.h<br>@@ -84,6 +84,8 @@ typedef void =
+(*vu_async_close_fn)(DeviceState *cb);<br><br>void =
+vhost_user_async_close(DeviceState =
+*d,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;CharBackend *chardev, struct vhost_dev *vhost,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;vu_async_close_fn cb);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;vu_async_close_fn cb,<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;IOEventHandler *event_cb<br></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Nit: ditto - don=E2=80=99t think we need =
+this newline before );</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"></div></blockquote>Acked.<br><blockquote =
+type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;);<br><br>#endif<br>--<span =
+class=3D"Apple-converted-space">&nbsp;</span><br>2.41.0</blockquote></div>=
+</blockquote></div><br></body></html>=
+
+--Apple-Mail=_E364CD9E-78A3-4CC3-9EA7-D9780F764BE9--
 
