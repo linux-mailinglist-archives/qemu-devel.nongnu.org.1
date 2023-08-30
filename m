@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A524E78D4DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2DE78D49C
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:39:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHfR-0007S4-43; Wed, 30 Aug 2023 05:39:17 -0400
+	id 1qbHfV-0007c1-QV; Wed, 30 Aug 2023 05:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHfP-0007Ig-DW
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:39:15 -0400
+ id 1qbHfT-0007bI-Lj
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:39:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHfN-0000sB-Cn
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:39:15 -0400
+ id 1qbHfR-0000se-Kh
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:39:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388352;
+ s=mimecast20190719; t=1693388357;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KA9NJQsp+fVWXqLqtRuq/dcV4t81Mp+eSHyizE2FTm0=;
- b=hjfVhtHu200AZO4pQch83Efj52G6y7ZVwX5tx2LT/MIHyQNhnCjthB3D4Q5lrz4kOg5sIc
- Rs5/ieJqQTOeZ9JZK2AKJtnL9VjRUvEG3PRxlhUfoMtayn+Q1lx3Xccz3jOI7UxKyL8Z3C
- y766zgAVfLAC0xNtqVPZceJ6iE137Uo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-154-2QZvUGqFPLa2P5qyQBVtow-1; Wed, 30 Aug 2023 05:39:11 -0400
-X-MC-Unique: 2QZvUGqFPLa2P5qyQBVtow-1
+ bh=FZSp7auxlWGvr9TYNAeLVMxJiG2pnfk9RKkvbjZ29xE=;
+ b=en80Eb1nmWFE85KCeT5XjkLfMQTYD0cw9P0CzcudgI09Jo0pclvN3rOcJr3ix0dtPDYzRk
+ 1Q/a4k0g81b64G5Rc6H0dEr5qOZ2pxCF1MAz2hyiUXz8veGosk2+G8kyAX4Qeu5lI8Lf8m
+ RlF2/bOe8yjLYtIn2d7GdQ45gR1iOoU=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-306-B3PpmN51OLC9bCb9KKTMFg-1; Wed, 30 Aug 2023 05:39:15 -0400
+X-MC-Unique: B3PpmN51OLC9bCb9KKTMFg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE6498022E4
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:39:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09EC13811F26
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:39:15 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4AE30401E63;
- Wed, 30 Aug 2023 09:39:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E4196401E63;
+ Wed, 30 Aug 2023 09:39:13 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 06/67] ui/console: console_select() regardless of have_gfx
-Date: Wed, 30 Aug 2023 13:37:40 +0400
-Message-ID: <20230830093843.3531473-7-marcandre.lureau@redhat.com>
+Subject: [PATCH 07/67] ui/console: call dpy_gfx_update() regardless of have_gfx
+Date: Wed, 30 Aug 2023 13:37:41 +0400
+Message-ID: <20230830093843.3531473-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -82,36 +82,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Even if we don't have a gfx listener, we should call
-displaychangelistener_display_console() which handle that case correctly.
+The function will handle the case when no listeners are gfx, without
+extra meaningful cost.
+
+This allows to get rid of DisplayState dependency in VC implementation.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/console.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ ui/console.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/ui/console.c b/ui/console.c
-index bec2d1a40a..14717a6f4d 100644
+index 14717a6f4d..2bc4c153de 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -1047,13 +1047,11 @@ void console_select(unsigned int index)
-         DisplayState *ds = s->ds;
- 
-         active_console = s;
--        if (ds->have_gfx) {
--            QLIST_FOREACH(dcl, &ds->listeners, next) {
--                if (dcl->con != NULL) {
--                    continue;
--                }
--                displaychangelistener_display_console(dcl, s, NULL);
-+        QLIST_FOREACH (dcl, &ds->listeners, next) {
-+            if (dcl->con != NULL) {
-+                continue;
-             }
-+            displaychangelistener_display_console(dcl, s, NULL);
-         }
-         dpy_text_resize(s, s->width, s->height);
-         text_console_update_cursor(NULL);
+@@ -1087,7 +1087,7 @@ static int vc_chr_write(Chardev *chr, const uint8_t *buf, int len)
+         console_putchar(s, buf[i]);
+     }
+     console_show_cursor(s, 1);
+-    if (s->ds->have_gfx && s->update_x0 < s->update_x1) {
++    if (s->update_x0 < s->update_x1) {
+         dpy_gfx_update(s, s->update_x0, s->update_y0,
+                        s->update_x1 - s->update_x0,
+                        s->update_y1 - s->update_y0);
 -- 
 2.41.0
 
