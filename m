@@ -2,82 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91B878D3BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 09:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1479078D3C1
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 09:56:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbFw6-0000yp-NA; Wed, 30 Aug 2023 03:48:22 -0400
+	id 1qbG2e-0002Kp-4V; Wed, 30 Aug 2023 03:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbFw4-0000xz-P3
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 03:48:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qbG2Q-0002KN-NT
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 03:54:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbFw2-0004Dy-1D
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 03:48:20 -0400
+ id 1qbG2L-0005Lf-CS
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 03:54:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693381696;
+ s=mimecast20190719; t=1693382088;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6OfCyRIQgh7H7wL/M4F+avKR6APj87bZXhcAT8LxgUI=;
- b=HzhL1jbNn1HtqXAjqqX/vNw4Z+kS9765NCJNR1Imafy3JCZa2QwcRTAUNLG5gq7OJWvZ7p
- gvsIgUTw/ZZquTf0iV+iD20eqTY6kdx8ffa3LiN096jy85bnStjOw3bxCnKL+BrwhkNn3J
- uGuxTPJXdxNgttMGYnIOvfteQXn+7pY=
+ bh=EZy+KSLH6nfPYgmgbDDKWlNHIyj9++xoyYi6hDFezRY=;
+ b=C+oJWoArrfTGZA8W7O08RqwO/45loJmzqLJfmZmY5cxleNWv4m5qWP1wdy2AAGzS959i6T
+ w6v4E7OuSfVvZzwFcVaynPpeYWzhRAdZ57r+9csNeviV3b6D5tjv/ao4BSG0bmIcJ/bwcG
+ zRyX3jvRodufam1OL30UFbD7pIVHcsQ=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-524-4Z6p0HkgMhuX25KfugmTZQ-1; Wed, 30 Aug 2023 03:48:13 -0400
-X-MC-Unique: 4Z6p0HkgMhuX25KfugmTZQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-479-cDeXtSHBOxO_CLRymVXlRA-1; Wed, 30 Aug 2023 03:54:44 -0400
+X-MC-Unique: cDeXtSHBOxO_CLRymVXlRA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B5B153C0D858;
- Wed, 30 Aug 2023 07:48:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0DE9E3C100B0;
+ Wed, 30 Aug 2023 07:54:44 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F01E01121315;
- Wed, 30 Aug 2023 07:48:09 +0000 (UTC)
-Date: Wed, 30 Aug 2023 08:48:07 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0AFD72166B25;
+ Wed, 30 Aug 2023 07:54:41 +0000 (UTC)
+Date: Wed, 30 Aug 2023 08:54:40 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Eduardo Habkost <eduardo@habkost.net>,
- Laszlo Ersek <lersek@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com
-Subject: Re: [PATCH v2 41/58] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-Message-ID: <ZO70NwADsSRSe/WD@redhat.com>
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-42-xiaoyao.li@intel.com>
- <87wmxn6029.fsf@pond.sub.org> <ZORws2GWRwIGAaJE@redhat.com>
- <d6fbacab-d7e4-9992-438d-a8cb58e179ae@intel.com>
- <ZO3HjRp1pk5Qd51j@redhat.com>
- <c74e7e2e-a986-240c-6300-0d3fbc22dfc4@intel.com>
- <11130e51-72fe-a07a-767b-f768611cf0d9@intel.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>, farosas@suse.de,
+ kwolf@redhat.com, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Juan Quintela <quintela@redhat.com>, qemu-block@nongnu.org,
+ Coiby Xu <Coiby.Xu@gmail.com>, Fam Zheng <fam@euphon.net>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v2 4/4] io: follow coroutine AioContext in
+ qio_channel_yield()
+Message-ID: <ZO71wKBFNT2BECAS@redhat.com>
+References: <20230829160623.277411-1-stefanha@redhat.com>
+ <20230829160623.277411-5-stefanha@redhat.com>
+ <z6rrcwlphydkdsg53sq66hv45ogdg47js6di6wl6ndxbibudci@cql6lnmzhvfk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <11130e51-72fe-a07a-767b-f768611cf0d9@intel.com>
+In-Reply-To: <z6rrcwlphydkdsg53sq66hv45ogdg47js6di6wl6ndxbibudci@cql6lnmzhvfk>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,108 +92,163 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:57:59PM +0800, Xiaoyao Li wrote:
-> On 8/30/2023 1:18 PM, Chenyi Qiang wrote:
+On Tue, Aug 29, 2023 at 02:32:46PM -0500, Eric Blake wrote:
+> On Tue, Aug 29, 2023 at 12:06:22PM -0400, Stefan Hajnoczi wrote:
+> > The ongoing QEMU multi-queue block layer effort makes it possible for multiple
+> > threads to process I/O in parallel. The nbd block driver is not compatible with
+> > the multi-queue block layer yet because QIOChannel cannot be used easily from
+> > coroutines running in multiple threads. This series changes the QIOChannel API
+> > to make that possible.
 > > 
+> > In the current API, calling qio_channel_attach_aio_context() sets the
+> > AioContext where qio_channel_yield() installs an fd handler prior to yielding:
 > > 
-> > On 8/29/2023 6:25 PM, Daniel P. Berrangé wrote:
-> > > On Tue, Aug 29, 2023 at 01:31:37PM +0800, Chenyi Qiang wrote:
-> > > > 
-> > > > 
-> > > > On 8/22/2023 4:24 PM, Daniel P. Berrangé wrote:
-> > > > > On Tue, Aug 22, 2023 at 08:52:30AM +0200, Markus Armbruster wrote:
-> > > > > > Xiaoyao Li <xiaoyao.li@intel.com> writes:
-> > > > > > 
-> > > > > > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > > > > > 
-> > > > > > > For GetQuote, delegate a request to Quote Generation Service.  Add property
-> > > > > > > of address of quote generation server and On request, connect to the
-> > > > > > > server, read request buffer from shared guest memory, send the request
-> > > > > > > buffer to the server and store the response into shared guest memory and
-> > > > > > > notify TD guest by interrupt.
-> > > > > > > 
-> > > > > > > "quote-generation-service" is a property to specify Quote Generation
-> > > > > > > Service(QGS) in qemu socket address format.  The examples of the supported
-> > > > > > > format are "vsock:2:1234", "unix:/run/qgs", "localhost:1234".
-> > > > > > > 
-> > > > > > > command line example:
-> > > > > > >    qemu-system-x86_64 \
-> > > > > > >      -object 'tdx-guest,id=tdx0,quote-generation-service=localhost:1234' \
-> > > > > > >      -machine confidential-guest-support=tdx0
-> > > > > > > 
-> > > > > > > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > > > > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > > > > > ---
-> > > > > > >   qapi/qom.json         |   5 +-
-> > > > > > >   target/i386/kvm/tdx.c | 380 ++++++++++++++++++++++++++++++++++++++++++
-> > > > > > >   target/i386/kvm/tdx.h |   7 +
-> > > > > > >   3 files changed, 391 insertions(+), 1 deletion(-)
-> > > > > > > 
-> > > > > > > diff --git a/qapi/qom.json b/qapi/qom.json
-> > > > > > > index 87c1d440f331..37139949d761 100644
-> > > > > > > --- a/qapi/qom.json
-> > > > > > > +++ b/qapi/qom.json
-> > > > > > > @@ -879,13 +879,16 @@
-> > > > > > >   #
-> > > > > > >   # @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
-> > > > > > >   #
-> > > > > > > +# @quote-generation-service: socket address for Quote Generation Service(QGS)
-> > > > > > > +#
-> > > > > > >   # Since: 8.2
-> > > > > > >   ##
-> > > > > > >   { 'struct': 'TdxGuestProperties',
-> > > > > > >     'data': { '*sept-ve-disable': 'bool',
-> > > > > > >               '*mrconfigid': 'str',
-> > > > > > >               '*mrowner': 'str',
-> > > > > > > -            '*mrownerconfig': 'str' } }
-> > > > > > > +            '*mrownerconfig': 'str',
-> > > > > > > +            '*quote-generation-service': 'str' } }
-> > > > > > 
-> > > > > > Why not type SocketAddress?
-> > > > > 
-> > > > > Yes, the code uses SocketAddress internally when it eventually
-> > > > > calls qio_channel_socket_connect_async(), so we should directly
-> > > > > use SocketAddress in the QAPI from the start.
-> > > > 
-> > > > Any benefit to directly use SocketAddress?
-> > > 
-> > > We don't want whatever code consumes the configuration to
-> > > do a second level of parsing to convert the 'str' value
-> > > into the 'SocketAddress' object it actually needs.
-> > > 
-> > > QEMU has a long history of having a second round of ad-hoc
-> > > parsing of configuration and we've found it to be a serious
-> > > maintenence burden. Thus we strive to have everything
-> > > represented in QAPI using the desired final type, and avoid
-> > > the second round of parsing.
+> >   qio_channel_attach_aio_context(ioc, my_ctx);
+> >   ...
+> >   qio_channel_yield(ioc); // my_ctx is used here
+> >   ...
+> >   qio_channel_detach_aio_context(ioc);
 > > 
-> > Thanks for your explanation.
+> > This API design has limitations: reading and writing must be done in the same
+> > AioContext and moving between AioContexts involves a cumbersome sequence of API
+> > calls that is not suitable for doing on a per-request basis.
 > > 
-> > > 
-> > > > "quote-generation-service" here is optional, it seems not trivial to add
-> > > > and parse the SocketAddress type in QEMU command. After I change 'str'
-> > > > to 'SocketAddress' and specify the command like "-object
-> > > > tdx-guest,type=vsock,cid=2,port=1234...", it will report "invalid
-> > > > parameter cid".
-> > > 
-> > > The -object parameter supports JSON syntax for this reason
-> > > 
-> > >     -object '{"qom-type":"tdx-guest","quote-generation-service":{"type": "vsock", "cid":"2","port":"1234"}}'
-> > > 
-> > > libvirt will always use the JSON syntax for -object with a new enough
-> > > QEMU.
+> > There is no fundamental reason why a QIOChannel needs to run within the
+> > same AioContext every time qio_channel_yield() is called. QIOChannel
+> > only uses the AioContext while inside qio_channel_yield(). The rest of
+> > the time, QIOChannel is independent of any AioContext.
 > > 
-> > The JSON syntax works for me. Then, we need to add some doc about using
-> > JSON syntax when quote-generation-service is required.
+> > In the new API, qio_channel_yield() queries the AioContext from the current
+> > coroutine using qemu_coroutine_get_aio_context(). There is no need to
+> > explicitly attach/detach AioContexts anymore and
+> > qio_channel_attach_aio_context() and qio_channel_detach_aio_context() are gone.
+> > One coroutine can read from the QIOChannel while another coroutine writes from
+> > a different AioContext.
+> > 
+> > This API change allows the nbd block driver to use QIOChannel from any thread.
+> > It's important to keep in mind that the block driver already synchronizes
+> > QIOChannel access and ensures that two coroutines never read simultaneously or
+> > write simultaneously.
+> > 
+> > This patch updates all users of qio_channel_attach_aio_context() to the
+> > new API. Most conversions are simple, but vhost-user-server requires a
+> > new qemu_coroutine_yield() call to quiesce the vu_client_trip()
+> > coroutine when not attached to any AioContext.
+> > 
+> > While the API is has become simpler, there is one wart: QIOChannel has a
+> > special case for the iohandler AioContext (used for handlers that must not run
+> > in nested event loops). I didn't find an elegant way preserve that behavior, so
+> > I added a new API called qio_channel_set_follow_coroutine_ctx(ioc, true|false)
+> > for opting in to the new AioContext model. By default QIOChannel uses the
+> > iohandler AioHandler. Code that formerly called
+> > qio_channel_attach_aio_context() now calls
+> > qio_channel_set_follow_coroutine_ctx(ioc, true) once after the QIOChannel is
+> > created.
+> > 
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> > +++ b/include/io/channel-util.h
+> > @@ -49,4 +49,27 @@
+> >  QIOChannel *qio_channel_new_fd(int fd,
+> >                                 Error **errp);
+> >  
+> > +/**
+> > + * qio_channel_yield:
 > 
-> This limitation doesn't look reasonable to me.
+> Wrong function name...
 > 
-> @Daniel,
+> > + * @read_fd: the file descriptor for the read handler
+> > + * @read_ctx: the AioContext for the read handler
+> > + * @io_read: the read handler
+> > + * @write_fd: the file descriptor for the write handler
+> > + * @write_ctx: the AioContext for the write handler
+> > + * @io_write: the write handler
+> > + * @opaque: the opaque argument to the read and write handler
+> > + *
+> > + * Set the read and write handlers when @read_ctx and @write_ctx are non-NULL,
+> > + * respectively. To leave a handler in its current state, pass a NULL
+> > + * AioContext. To clear a handler, pass a non-NULL AioContext and a NULL
+> > + * handler.
+> > + */
+> > +void qio_channel_util_set_aio_fd_handler(int read_fd,
 > 
-> Is it acceptable by QEMU community?
+> ...should be this.
+> 
+> > +                                         AioContext *read_ctx,
+> > +                                         IOHandler *io_read,
+> > +                                         int write_fd,
+> > +                                         AioContext *write_ctx,
+> > +                                         IOHandler *io_write,
+> > +                                         void *opaque);
+> > +
+> >  #endif /* QIO_CHANNEL_UTIL_H */
+> > diff --git a/include/io/channel.h b/include/io/channel.h
+> > index 229bf36910..5f9dbaab65 100644
+> > --- a/include/io/channel.h
+> 
+> > +++ b/io/channel.c
+> 
+> >  
+> > -static void qio_channel_set_aio_fd_handlers(QIOChannel *ioc)
+> > +static void coroutine_fn
+> > +qio_channel_set_fd_handlers(QIOChannel *ioc, GIOCondition condition)
+> >  {
+> > -    IOHandler *rd_handler = NULL, *wr_handler = NULL;
+> > +    AioContext *ctx = ioc->follow_coroutine_ctx ?
+> > +        qemu_coroutine_get_aio_context(qemu_coroutine_self()) :
+> > +        iohandler_get_aio_context();
+> > +    AioContext *read_ctx = NULL;
+> > +    IOHandler *io_read = NULL;
+> > +    AioContext *write_ctx = NULL;
+> > +    IOHandler *io_write = NULL;
+> > +
+> > +    if (condition == G_IO_IN) {
+> > +        ioc->read_coroutine = qemu_coroutine_self();
+> > +        ioc->read_ctx = ctx;
+> > +        read_ctx = ctx;
+> > +        io_read = qio_channel_restart_read;
+> > +
+> > +        /*
+> > +         * Thread safety: if the other coroutine is set and its AioContext
+> > +         * match ours, then there is mutual exclusion between read and write
+> 
+> matches
+> 
+> > +         * because they share a single thread and it's safe to set both read
+> > +         * and write fd handlers here. If the AioContext does not match ours,
+> > +         * then both threads may run in parallel but there is no shared state
+> > +         * to worry about.
+> > +         */
+> > +        if (ioc->write_coroutine && ioc->write_ctx == ctx) {
+> > +            write_ctx = ctx;
+> > +            io_write = qio_channel_restart_write;
+> > +        }
+> > +    } else if (condition == G_IO_OUT) {
+> > +        ioc->write_coroutine = qemu_coroutine_self();
+> > +        ioc->write_ctx = ctx;
+> > +        write_ctx = ctx;
+> > +        io_write = qio_channel_restart_write;
+> > +        if (ioc->read_coroutine && ioc->read_ctx == ctx) {
+> > +            read_ctx = ctx;
+> > +            io_read = qio_channel_restart_read;
+> > +        }
+> > +    } else {
+> > +        abort();
+> > +    }
+> > +
+> > +    qio_channel_set_aio_fd_handler(ioc, read_ctx, io_read,
+> > +            write_ctx, io_write, ioc);
+> > +}
+> > +
+> 
+> With those minor fixes,
+> 
+> Reviewed-by: Eric Blake <eblake@redhat.com>
 
-This is the expected approach for object types which have non-scalar
-properties.
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
+
+Eric, feel free to merge the two io subsystem changes at the same time
+as the NBD changes.
 
 With regards,
 Daniel
