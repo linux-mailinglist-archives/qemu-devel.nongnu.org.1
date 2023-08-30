@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772DF78D4B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFDA78D4C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHgd-000465-4D; Wed, 30 Aug 2023 05:40:31 -0400
+	id 1qbHgf-0004TR-W2; Wed, 30 Aug 2023 05:40:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHgZ-0003eO-FJ
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qbHgc-00044Q-7V
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHgX-0001IC-Aj
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:27 -0400
+ id 1qbHgZ-0001J9-W0
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388424;
+ s=mimecast20190719; t=1693388427;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wIrK7LuSPOnZFF5+VRMkHtc4amrP3wwzjj+LlwqTb7A=;
- b=AwkGOLBMuXbunUA0ETwi2Ts1uIC3M5/Y5aMZVNXVXJM2dNAli4naB4O5lgDEltOoFuUHBR
- 1O8AfB9ZFujQhc/hFGXh8pAJfZjMKjfFiR5OAj/1TcOztUJZGx/sYh2led5OkCOEzoa7pl
- F4PJ77pfjyDOn+A7GyXpcS++f8xapxE=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-352-e5g7TYAzO4mT1SPuvE6w_g-1; Wed, 30 Aug 2023 05:40:21 -0400
-X-MC-Unique: e5g7TYAzO4mT1SPuvE6w_g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=ESvNM7heA+chmmL/gplxFmmKr3XxI9TnVw/Fc2rxKHQ=;
+ b=d3DbWd9yW/4wfS80QlEKi3VoGQVhzvsTPZY37KEIMF0vRUZ6I2jxsxHlQd/iO6S3Yv4j9N
+ McDvNdilEpkuzUrRgp6X7p6axVcnOfw2b+KyBmK8lo88OmahqHdLevWP+pi+sSvgZp5eA/
+ YSosYTpf+uOiACqwHG3WY+43XA0XcEc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-391-yDT0ZI4mOZeSVL4r-nOFaw-1; Wed, 30 Aug 2023 05:40:25 -0400
+X-MC-Unique: yDT0ZI4mOZeSVL4r-nOFaw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 280D329ABA19
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:40:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 14E1F80027F
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:40:25 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 57D9E2166B25;
- Wed, 30 Aug 2023 09:40:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 473E8140E96F;
+ Wed, 30 Aug 2023 09:40:23 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 24/67] ui/console: update the head from unused QemuConsole
-Date: Wed, 30 Aug 2023 13:37:58 +0400
-Message-ID: <20230830093843.3531473-25-marcandre.lureau@redhat.com>
+Subject: [PATCH 25/67] ui/console: allocate ui_timer in QemuConsole
+Date: Wed, 30 Aug 2023 13:37:59 +0400
+Message-ID: <20230830093843.3531473-26-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,30 +82,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When recycling unused QemuConsole, we should still set the associated
-head number for correct information and lookups.
+Although at this point only QemuGraphicConsole have hw_ops that
+implements ui_info() callback, it makes sense to keep the code in the
+base QemuConsole, to simplify conditions for the caller.
+
+As of now, the code didn't reach a NULL timer because dpy_set_ui_info()
+checks if dpy_ui_info_supported() (hw_ops->ui_info != NULL), which is
+false for text_console_ops. This is a bit fragile, let simply allocate
+and free the timer in the base class.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ui/console.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/ui/console.c b/ui/console.c
-index 08bed58b80..a9a922b6e3 100644
+index a9a922b6e3..8c4a2c83fa 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -2193,10 +2193,10 @@ QemuConsole *graphic_console_init(DeviceState *dev, uint32_t head,
+@@ -197,6 +197,7 @@ static bool displaychangelistener_has_dmabuf(DisplayChangeListener *dcl);
+ static bool console_compatible_with(QemuConsole *con,
+                                     DisplayChangeListener *dcl, Error **errp);
+ static QemuConsole *qemu_graphic_console_lookup_unused(void);
++static void dpy_set_ui_info_timer(void *opaque);
+ 
+ static void gui_update(void *opaque)
+ {
+@@ -1334,6 +1335,9 @@ qemu_console_register(QemuConsole *c)
+ static void
+ qemu_console_finalize(Object *obj)
+ {
++    QemuConsole *c = QEMU_CONSOLE(obj);
++
++    g_clear_pointer(&c->ui_timer, timer_free);
+     /* TODO: should unregister from consoles and free itself  */
+ }
+ 
+@@ -1367,6 +1371,8 @@ qemu_console_init(Object *obj)
+     qemu_co_queue_init(&c->dump_queue);
+     c->ds = ds;
+     c->window_id = -1;
++    c->ui_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
++                               dpy_set_ui_info_timer, c);
+     qemu_console_register(c);
+ }
+ 
+@@ -2193,8 +2199,6 @@ QemuConsole *graphic_console_init(DeviceState *dev, uint32_t head,
      } else {
          trace_console_gfx_new();
          s = (QemuConsole *)object_new(TYPE_QEMU_GRAPHIC_CONSOLE);
--        s->head = head;
-         s->ui_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
-                                    dpy_set_ui_info_timer, s);
+-        s->ui_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
+-                                   dpy_set_ui_info_timer, s);
      }
-+    s->head = head;
+     s->head = head;
      graphic_console_set_hwops(s, hw_ops, opaque);
-     if (dev) {
-         object_property_set_link(OBJECT(s), "device", OBJECT(dev),
 -- 
 2.41.0
 
