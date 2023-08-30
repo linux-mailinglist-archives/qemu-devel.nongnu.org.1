@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC46A78D78C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 18:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D71C78D790
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 18:20:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbNst-0005eg-CP; Wed, 30 Aug 2023 12:17:35 -0400
+	id 1qbNvb-0005jx-NO; Wed, 30 Aug 2023 12:20:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbNsg-0005D5-Td
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 12:17:23 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1qbNvZ-0005j9-LT
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 12:20:21 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbNse-0004Mq-NP
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 12:17:22 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1c09673b006so31343135ad.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:17:20 -0700 (PDT)
+ id 1qbNvX-0005OL-03
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 12:20:21 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1c0d5b16aacso35470585ad.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:20:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693412239; x=1694017039; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693412417; x=1694017217; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/S9pN+pggNlxItZ/6Sz9/Co+NbI9U4om/ySGOtIMA4I=;
- b=NRNMDbEIji0c+UZmKIBtzu8NZNgTWjjerw49KPjMIIVA27/rwXOzDRcw/vPqZjESOP
- A44uXu5bR/I612hzoGPyeu/P/RAWeuYQsM4qqwMRBNz5nGKOdi4fQCpAprqoI3WGvpLl
- fyMk1Zo0J7B2P2PaHyH4MzBXvTe2iZH2RkMoLeNLEPsYbujlxtWnsLFQ/ja0Y/NT+BxZ
- z+DHvQSlQi2OFZfU04w7QcCTSmkWW5kx3LW/VK/KJNb/Vc926NJIgMDoSWKvc9P0onZI
- ntzB+WH6T63Xas7VyNEayM30BTBaWP3uJlYpZM1NX6Vk4R24Mul/SuVL9qTN23rxSuI5
- dwJw==
+ bh=UjLsk6gqNV1/48HplNgS+r2vtKikXz8vwkFTyORY1tU=;
+ b=i082SPa0me5LvXWxItiHv6vaBMDFgw5Xtk1IcCNWnvQVOVT71mLVQPDI+qSvREyXDM
+ 7KQX8LmOLouZTFeHQelX4hNnm+Tf/zBTHUpk3shh7S5qtq4dmUkzoJvQFd0lvG1VgwFC
+ hGW4hxwzAUVfwwCQ9TfjruSfRuESvOMKJTNdIWO/k+4Hvzl4QAt7UyEVJItYsf13QHCL
+ m6uobV0CMzRwSRZEGw8zTQcuHdHtyxttz7YKzOewWWUXiTGGt8Yn72PSlGv7JGI1GRY3
+ IiaTbKVLtjulbelyvXFlyUUHT4qSy5nxWIqXnq0NvX33ktrdpYPwGFNVoUsj5jJt66BM
+ tanQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693412239; x=1694017039;
+ d=1e100.net; s=20221208; t=1693412417; x=1694017217;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/S9pN+pggNlxItZ/6Sz9/Co+NbI9U4om/ySGOtIMA4I=;
- b=Qv2CvXUzyXQljx/n8ZK29WEnUqFtMKFyIVk9jvX28DCymUAf5bEnm+8s20jZ0XeP0F
- Bze9XeAIh9sSUSep1+fNWXaaES/ST+JpAeiJSOEk+xounEAH9COiLo6qbT54hq0heoSL
- Sxo/G/RgzbG5lirIp+MiLREeT6cP3aTp8hIYn74XoJblKEW2VAdWS+6eQWOrMQgqMcUP
- Yc0q9MichMh6WH8KpUaW2YG9YJtPPieXY7WxYYQizPk+hleNHeo5cIR4e+ReSHuovHfr
- cH2RghLrIT3QsR51/Db3UmTkQFcA6ItJy4uPRReUr1ptZidUkKFScZnDEZvWYmQfwaFt
- b5zw==
-X-Gm-Message-State: AOJu0YzsCuFZPKktjd0+d0kz1HQ4zsQmiBrWv5iir7HXCHkmW0haIfgg
- nQCfnnU3ykv8JDLekDWPfWzu+g==
-X-Google-Smtp-Source: AGHT+IFeQ9HdKJJec/FSracIxDbSw9C4r0vwfZgZdmydHgemyBP0S1LYIg+uVXj19M0RY1j+ygLoSw==
-X-Received: by 2002:a17:902:eccf:b0:1be:ff74:ec21 with SMTP id
- a15-20020a170902eccf00b001beff74ec21mr2877409plh.27.1693412238992; 
- Wed, 30 Aug 2023 09:17:18 -0700 (PDT)
+ bh=UjLsk6gqNV1/48HplNgS+r2vtKikXz8vwkFTyORY1tU=;
+ b=hAGCmngwO0dEkJdxgWQaS+EwDi8DVQrgrVUudLoZT+j1CbNPXh/WQ3438PxZCcOgZG
+ 7sL7R3E4LZagZSddYysA/4KlAAodRwI5seNXw5BCZebxyD83JHqcsHRJcycZ11aq2GZs
+ ncahuOhEm9OPO9qwoK/1j1KFNjAfc4VOuIbK8JUi5/SHxx/5SzEc5aYiX4vsUO6Ih5ny
+ bdlhIXVe069hmLTxjrDAQxUbDj5AQTdfg56Y8J8KSwk+ek8UWdIiBbpJxvOLTAZuVxj6
+ DRky9DZJ+Fb+1fBVnEjDGvGVOTebTJgKVQW1E2ArGOeij1zt/E6z/v70TN4Fmzq9T70b
+ EqQg==
+X-Gm-Message-State: AOJu0YwicRsqVfgE9s6tmw37qVa5Q91su+x2rzPWoy0ha/8Cf3ToysPZ
+ iUtjgKRE/h30F8eay/Kgd4cWgV1qMjnGzyhKL1I=
+X-Google-Smtp-Source: AGHT+IGJFgfSv/IuUEHRew6VPjhcWsxmLno7QIdVmmh5VvB+t8/4S4okSvISb8ZxUFGU7xRYKcj4sg==
+X-Received: by 2002:a17:902:f550:b0:1b9:e591:db38 with SMTP id
+ h16-20020a170902f55000b001b9e591db38mr2706708plf.8.1693412417395; 
+ Wed, 30 Aug 2023 09:20:17 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- ji18-20020a170903325200b001b9d8688956sm11312837plb.144.2023.08.30.09.17.18
+ a11-20020a170902b58b00b001bc9bfaba3esm11320987pls.126.2023.08.30.09.20.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 09:17:18 -0700 (PDT)
-Message-ID: <e5685d29-bb2a-f0c2-5030-453dae529c03@linaro.org>
-Date: Wed, 30 Aug 2023 09:17:16 -0700
+ Wed, 30 Aug 2023 09:20:16 -0700 (PDT)
+Message-ID: <efc935f7-67c2-8877-98aa-1aebfcafa534@linaro.org>
+Date: Wed, 30 Aug 2023 09:20:14 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v5 08/20] linux-user: Load vdso image if available
+Subject: Re: [PATCH v5 00/20] linux-user: Implement VDSOs
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, laurent@vivier.eu
 References: <20230829220228.928506-1-richard.henderson@linaro.org>
- <20230829220228.928506-9-richard.henderson@linaro.org>
- <d703be2d-8131-58d4-2ed8-7104316a8e21@linaro.org>
+ <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <d703be2d-8131-58d4-2ed8-7104316a8e21@linaro.org>
+In-Reply-To: <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -97,40 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 07:22, Philippe Mathieu-Daudé wrote:
-> Hi Richard,
-> 
-> On 30/8/23 00:02, Richard Henderson wrote:
->> The vdso image will be pre-processed into a C data array, with
->> a simple list of relocations to perform, and identifying the
->> location of signal trampolines.
+On 8/30/23 07:52, Helge Deller wrote:
+> On 8/30/23 00:02, Richard Henderson wrote:
+>> Changes for v5:
+>>    * Integrated cross-compile, via new build-vdso.sh and meson rules.
+>>      However, keep the binaries in the tree for hosts which do not
+>>      have all of the cross-compile machinery.
+>>    * Update our loongarch64 docker image to avoid a binutils bug.
 >>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   linux-user/elfload.c | 87 +++++++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 78 insertions(+), 9 deletions(-)
->>
->> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
->> index f34fb64c0c..2a6adebb4a 100644
->> --- a/linux-user/elfload.c
->> +++ b/linux-user/elfload.c
->> @@ -33,6 +33,19 @@
->>   #undef ELF_ARCH
->>   #endif
->> +#ifndef TARGET_ARCH_HAS_SIGTRAMP_PAGE
->> +#define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
+>> Just in case the list eats a binary:
+>>    https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
 > 
-> I'd rather #error here so new targets are added with
-> a clearly defined TARGET_ARCH_HAS_SIGTRAMP_PAGE.
+> I pulled that on top of git head, and ran into the build problem below.
+> Do I miss something?
 
-The next step after adding vdso's is to remove TARGET_ARCH_HAS_SIGTRAMP_PAGE.
+No idea, since it worked for me.  Looks like some sort of docker.py problem.  Alex?
 
->> +    for (unsigned i = 0, n = vdso->reloc_count; i < n; i++) {
-> 
-> Do we really need 'n'?
-
-You should always have an loop invariant condition if possible.
+In the short term, use --disable-containers so that you only use the cross-compilers that 
+you have locally installed.
 
 
 r~
+
+> 
+> Helge
+> 
+> [62/1742] Generating linux-user/aarch64/vdso-be.so with a custom command
+> FAILED: linux-user/aarch64/vdso-be.so
+> /home/cvs/qemu/qemu/linux-user/build-vdso.sh -B /srv/_build -C 
+> /home/cvs/qemu/qemu/linux-user/aarch64 -T aarch64-linux-user -o 
+> linux-user/aarch64/vdso-be.so -- -nostdlib -shared -Wl,-h,linux-vdso.so.1 
+> -Wl,--build-id=sha1 -Wl,--hash-style=both 
+> -Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.ld 
+> ../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S -mbig-endian
+> Error: short-name resolution enforced but cannot prompt without a TTY
+> Traceback (most recent call last):
+>    File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 683, in <module>
+>      sys.exit(main())
+>               ^^^^^^
+>    File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 679, in main
+>      return args.cmdobj.run(args, argv)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>    File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 657, in run
+>      return Docker().run(cmd, False, quiet=args.quiet,
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>    File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 370, in run
+>      ret = self._do_check(["run", "--rm", "--label",
+>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>    File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 247, in _do_check
+>      return subprocess.check_call(self._command + cmd, **kwargs)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>    File "/usr/lib64/python3.11/subprocess.py", line 413, in check_call
+>      raise CalledProcessError(retcode, cmd)
+> subprocess.CalledProcessError: Command '['podman', 'run', '--rm', '--label', 
+> 'com.qemu.instance.uuid=e746f7e345ed420088a9cc30e884a7e8', '--userns=keep-id', '-u', 
+> '1000', '-w', '/srv/_build', '-v', '/srv/_build:/srv/_build:rw', '-v', 
+> '/home/cvs/qemu/qemu:/home/cvs/qemu/qemu:ro,z', 'qemu/debian-arm64-cross', 
+> 'aarch64-linux-gnu-gcc-10', '-o', 'linux-user/aarch64/vdso-be.so', '-nostdlib', '-shared', 
+> '-Wl,-h,linux-vdso.so.1', '-Wl,--build-id=sha1', '-Wl,--hash-style=both', 
+> '-Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.ld', 
+> '../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S', '-mbig-endian']' returned non-zero 
+> exit status 125.
+> filter=--filter=label=com.qemu.instance.uuid=e746f7e345ed420088a9cc30e884a7e8
+> 
+
 
