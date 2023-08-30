@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B949E78D463
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D8D78D46F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:57:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbGtN-0000qx-MX; Wed, 30 Aug 2023 04:49:37 -0400
+	id 1qbGtQ-0000yb-KF; Wed, 30 Aug 2023 04:49:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qbGtM-0000nA-HC
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:36 -0400
+ id 1qbGtO-0000w1-Ja
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:38 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qbGtI-0007V3-N3
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:36 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qbGtL-0007Vm-6m
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:49:38 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxxPCPAu9klQgdAA--.60061S3;
- Wed, 30 Aug 2023 16:49:19 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Dxg_CQAu9kmAgdAA--.59641S3;
+ Wed, 30 Aug 2023 16:49:20 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxF81+Au9kHhxnAA--.49766S22; 
- Wed, 30 Aug 2023 16:49:18 +0800 (CST)
+ AQAAf8CxF81+Au9kHhxnAA--.49766S23; 
+ Wed, 30 Aug 2023 16:49:19 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v4 20/48] target/loongarch: Implement xvsat
-Date: Wed, 30 Aug 2023 16:48:34 +0800
-Message-Id: <20230830084902.2113960-21-gaosong@loongson.cn>
+Subject: [PATCH v4 21/48] target/loongarch: Implement xvexth
+Date: Wed, 30 Aug 2023 16:48:35 +0800
+Message-Id: <20230830084902.2113960-22-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230830084902.2113960-1-gaosong@loongson.cn>
 References: <20230830084902.2113960-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxF81+Au9kHhxnAA--.49766S22
+X-CM-TRANSID: AQAAf8CxF81+Au9kHhxnAA--.49766S23
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,138 +63,134 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVSAT.{B/H/W/D}[U].
+- XVEXTH.{H.B/W.H/D.W/Q.D};
+- XVEXTH.{HU.BU/WU.HU/DU.WU/QU.DU}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/insns.decode                |  9 ++++
- target/loongarch/disas.c                     |  9 ++++
- target/loongarch/vec_helper.c                | 48 ++++++++++----------
- target/loongarch/insn_trans/trans_lasx.c.inc |  9 ++++
- 4 files changed, 52 insertions(+), 23 deletions(-)
+ target/loongarch/insns.decode                |  9 +++++
+ target/loongarch/disas.c                     |  9 +++++
+ target/loongarch/vec_helper.c                | 36 +++++++++++++-------
+ target/loongarch/insn_trans/trans_lasx.c.inc |  9 +++++
+ 4 files changed, 51 insertions(+), 12 deletions(-)
 
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index fa25c876b4..e366cf7615 100644
+index e366cf7615..7491f295a5 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1562,6 +1562,15 @@ xvmod_hu         0111 01001110 01101 ..... ..... .....    @vvv
- xvmod_wu         0111 01001110 01110 ..... ..... .....    @vvv
- xvmod_du         0111 01001110 01111 ..... ..... .....    @vvv
+@@ -1571,6 +1571,15 @@ xvsat_hu         0111 01110010 10000 1 .... ..... .....   @vv_ui4
+ xvsat_wu         0111 01110010 10001 ..... ..... .....    @vv_ui5
+ xvsat_du         0111 01110010 1001 ...... ..... .....    @vv_ui6
  
-+xvsat_b          0111 01110010 01000 01 ... ..... .....   @vv_ui3
-+xvsat_h          0111 01110010 01000 1 .... ..... .....   @vv_ui4
-+xvsat_w          0111 01110010 01001 ..... ..... .....    @vv_ui5
-+xvsat_d          0111 01110010 0101 ...... ..... .....    @vv_ui6
-+xvsat_bu         0111 01110010 10000 01 ... ..... .....   @vv_ui3
-+xvsat_hu         0111 01110010 10000 1 .... ..... .....   @vv_ui4
-+xvsat_wu         0111 01110010 10001 ..... ..... .....    @vv_ui5
-+xvsat_du         0111 01110010 1001 ...... ..... .....    @vv_ui6
++xvexth_h_b       0111 01101001 11101 11000 ..... .....    @vv
++xvexth_w_h       0111 01101001 11101 11001 ..... .....    @vv
++xvexth_d_w       0111 01101001 11101 11010 ..... .....    @vv
++xvexth_q_d       0111 01101001 11101 11011 ..... .....    @vv
++xvexth_hu_bu     0111 01101001 11101 11100 ..... .....    @vv
++xvexth_wu_hu     0111 01101001 11101 11101 ..... .....    @vv
++xvexth_du_wu     0111 01101001 11101 11110 ..... .....    @vv
++xvexth_qu_du     0111 01101001 11101 11111 ..... .....    @vv
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 72df9f0b08..09e5981fc3 100644
+index 09e5981fc3..6ca545956d 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1979,6 +1979,15 @@ INSN_LASX(xvmod_hu,          vvv)
- INSN_LASX(xvmod_wu,          vvv)
- INSN_LASX(xvmod_du,          vvv)
+@@ -1988,6 +1988,15 @@ INSN_LASX(xvsat_hu,          vv_i)
+ INSN_LASX(xvsat_wu,          vv_i)
+ INSN_LASX(xvsat_du,          vv_i)
  
-+INSN_LASX(xvsat_b,           vv_i)
-+INSN_LASX(xvsat_h,           vv_i)
-+INSN_LASX(xvsat_w,           vv_i)
-+INSN_LASX(xvsat_d,           vv_i)
-+INSN_LASX(xvsat_bu,          vv_i)
-+INSN_LASX(xvsat_hu,          vv_i)
-+INSN_LASX(xvsat_wu,          vv_i)
-+INSN_LASX(xvsat_du,          vv_i)
++INSN_LASX(xvexth_h_b,        vv)
++INSN_LASX(xvexth_w_h,        vv)
++INSN_LASX(xvexth_d_w,        vv)
++INSN_LASX(xvexth_q_d,        vv)
++INSN_LASX(xvexth_hu_bu,      vv)
++INSN_LASX(xvexth_wu_hu,      vv)
++INSN_LASX(xvexth_du_wu,      vv)
++INSN_LASX(xvexth_qu_du,      vv)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index d217d76ea7..44daf5ee9a 100644
+index 44daf5ee9a..51cc8c4526 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -652,18 +652,19 @@ VDIV(vmod_hu, 16, UH, DO_REMU)
- VDIV(vmod_wu, 32, UW, DO_REMU)
- VDIV(vmod_du, 64, UD, DO_REMU)
+@@ -691,32 +691,44 @@ VSAT_U(vsat_hu, 16, UH)
+ VSAT_U(vsat_wu, 32, UW)
+ VSAT_U(vsat_du, 64, UD)
  
--#define VSAT_S(NAME, BIT, E)                                    \
--void HELPER(NAME)(void *vd, void *vj, uint64_t max, uint32_t v) \
--{                                                               \
--    int i;                                                      \
--    VReg *Vd = (VReg *)vd;                                      \
--    VReg *Vj = (VReg *)vj;                                      \
--    typedef __typeof(Vd->E(0)) TD;                              \
--                                                                \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
--        Vd->E(i) = Vj->E(i) > (TD)max ? (TD)max :               \
--                   Vj->E(i) < (TD)~max ? (TD)~max: Vj->E(i);    \
--    }                                                           \
-+#define VSAT_S(NAME, BIT, E)                                       \
-+void HELPER(NAME)(void *vd, void *vj, uint64_t max, uint32_t desc) \
-+{                                                                  \
-+    int i;                                                         \
-+    VReg *Vd = (VReg *)vd;                                         \
-+    VReg *Vj = (VReg *)vj;                                         \
-+    typedef __typeof(Vd->E(0)) TD;                                 \
-+    int oprsz = simd_oprsz(desc);                                  \
-+                                                                   \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
-+        Vd->E(i) = Vj->E(i) > (TD)max ? (TD)max :                  \
-+                   Vj->E(i) < (TD)~max ? (TD)~max: Vj->E(i);       \
-+    }                                                              \
+-#define VEXTH(NAME, BIT, E1, E2)                     \
+-void HELPER(NAME)(void *vd, void *vj, uint32_t desc) \
+-{                                                    \
+-    int i;                                           \
+-    VReg *Vd = (VReg *)vd;                           \
+-    VReg *Vj = (VReg *)vj;                           \
+-                                                     \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {              \
+-        Vd->E1(i) = Vj->E2(i + LSX_LEN/BIT);         \
+-    }                                                \
++#define VEXTH(NAME, BIT, E1, E2)                                 \
++void HELPER(NAME)(void *vd, void *vj, uint32_t desc)             \
++{                                                                \
++    int i, j, ofs;                                               \
++    VReg *Vd = (VReg *)vd;                                       \
++    VReg *Vj = (VReg *)vj;                                       \
++    int oprsz = simd_oprsz(desc);                                \
++                                                                 \
++    ofs = LSX_LEN / BIT;                                         \
++    for (i = 0; i < oprsz / 16; i++) {                           \
++        for (j = 0; j < ofs; j++) {                              \
++            Vd->E1(j + i * ofs) = Vj->E2(j + ofs + ofs * 2 * i); \
++        }                                                        \
++    }                                                            \
  }
  
- VSAT_S(vsat_b, 8, B)
-@@ -671,17 +672,18 @@ VSAT_S(vsat_h, 16, H)
- VSAT_S(vsat_w, 32, W)
- VSAT_S(vsat_d, 64, D)
+ void HELPER(vexth_q_d)(void *vd, void *vj, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
++    int oprsz = simd_oprsz(desc);
  
--#define VSAT_U(NAME, BIT, E)                                    \
--void HELPER(NAME)(void *vd, void *vj, uint64_t max, uint32_t v) \
--{                                                               \
--    int i;                                                      \
--    VReg *Vd = (VReg *)vd;                                      \
--    VReg *Vj = (VReg *)vj;                                      \
--    typedef __typeof(Vd->E(0)) TD;                              \
--                                                                \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
--        Vd->E(i) = Vj->E(i) > (TD)max ? (TD)max : Vj->E(i);     \
--    }                                                           \
-+#define VSAT_U(NAME, BIT, E)                                       \
-+void HELPER(NAME)(void *vd, void *vj, uint64_t max, uint32_t desc) \
-+{                                                                  \
-+    int i;                                                         \
-+    VReg *Vd = (VReg *)vd;                                         \
-+    VReg *Vj = (VReg *)vj;                                         \
-+    typedef __typeof(Vd->E(0)) TD;                                 \
-+    int oprsz = simd_oprsz(desc);                                  \
-+                                                                   \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
-+        Vd->E(i) = Vj->E(i) > (TD)max ? (TD)max : Vj->E(i);        \
-+    }                                                              \
+-    Vd->Q(0) = int128_makes64(Vj->D(1));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_makes64(Vj->D(2 * i + 1));
++    }
  }
  
- VSAT_U(vsat_bu, 8, UB)
+ void HELPER(vexth_qu_du)(void *vd, void *vj, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_make64((uint64_t)Vj->D(1));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_make64(Vj->UD(2 * i + 1));
++    }
+ }
+ 
+ VEXTH(vexth_h_b, 16, H, B)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index fff6ddd3e0..093cf2a1fa 100644
+index 093cf2a1fa..3fb86d9a92 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -308,6 +308,15 @@ TRANS(xvmod_hu, LASX, gen_vvv, 32, gen_helper_vmod_hu)
- TRANS(xvmod_wu, LASX, gen_vvv, 32, gen_helper_vmod_wu)
- TRANS(xvmod_du, LASX, gen_vvv, 32, gen_helper_vmod_du)
+@@ -317,6 +317,15 @@ TRANS(xvsat_hu, LASX, gvec_vv_i, 32, MO_16, do_vsat_u)
+ TRANS(xvsat_wu, LASX, gvec_vv_i, 32, MO_32, do_vsat_u)
+ TRANS(xvsat_du, LASX, gvec_vv_i, 32, MO_64, do_vsat_u)
  
-+TRANS(xvsat_b, LASX, gvec_vv_i, 32, MO_8, do_vsat_s)
-+TRANS(xvsat_h, LASX, gvec_vv_i, 32, MO_16, do_vsat_s)
-+TRANS(xvsat_w, LASX, gvec_vv_i, 32, MO_32, do_vsat_s)
-+TRANS(xvsat_d, LASX, gvec_vv_i, 32, MO_64, do_vsat_s)
-+TRANS(xvsat_bu, LASX, gvec_vv_i, 32, MO_8, do_vsat_u)
-+TRANS(xvsat_hu, LASX, gvec_vv_i, 32, MO_16, do_vsat_u)
-+TRANS(xvsat_wu, LASX, gvec_vv_i, 32, MO_32, do_vsat_u)
-+TRANS(xvsat_du, LASX, gvec_vv_i, 32, MO_64, do_vsat_u)
++TRANS(xvexth_h_b, LASX, gen_vv, 32, gen_helper_vexth_h_b)
++TRANS(xvexth_w_h, LASX, gen_vv, 32, gen_helper_vexth_w_h)
++TRANS(xvexth_d_w, LASX, gen_vv, 32, gen_helper_vexth_d_w)
++TRANS(xvexth_q_d, LASX, gen_vv, 32, gen_helper_vexth_q_d)
++TRANS(xvexth_hu_bu, LASX, gen_vv, 32, gen_helper_vexth_hu_bu)
++TRANS(xvexth_wu_hu, LASX, gen_vv, 32, gen_helper_vexth_wu_hu)
++TRANS(xvexth_du_wu, LASX, gen_vv, 32, gen_helper_vexth_du_wu)
++TRANS(xvexth_qu_du, LASX, gen_vv, 32, gen_helper_vexth_qu_du)
 +
  TRANS(xvreplgr2vr_b, LASX, gvec_dup, 32, MO_8)
  TRANS(xvreplgr2vr_h, LASX, gvec_dup, 32, MO_16)
