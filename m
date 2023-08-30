@@ -2,85 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B2A78D207
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 04:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3162F78D213
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 04:28:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbAtf-00013L-M3; Tue, 29 Aug 2023 22:25:31 -0400
+	id 1qbAvP-0002tA-AQ; Tue, 29 Aug 2023 22:27:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbAtd-00012o-PB
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:25:29 -0400
-Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbAtZ-00025I-Vb
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:25:29 -0400
-Received: by mail-io1-xd2d.google.com with SMTP id
- ca18e2360f4ac-77ac14ff51bso163660539f.3
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 19:25:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693362324; x=1693967124;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5fMqF4JPyjBxdbMqRIVZHqpDolrSgxQrfNo/OPx9hRc=;
- b=M2A5EZxPB2Be+mE9BNT+R8MuyyrlFmqrOvXeIfj1QbzgJS40B6OL+bB6x6W3RFF7h8
- AFcpw5EjEDN1xjWLlqM8mPQ7ftrftn868iN+TtFE5V8CHogqRHJM25MyZMP7hJFzHvcp
- CvkKlZto4dfQxEKLqurgr0O56kg/ZKI7EfYVk/DS3HzXGHFV79q4KMsm1uyCQSY+JNmX
- ULcF9UV6UUiRVQx89H2RHiLyEtE0tIrQmsRDZRZgifHYHr4Ro8g0rdNJCJsU3fPUVdxG
- NCBzYXt+m6h8YHEpqbpySlXLAUG/INoCyPr3q+WQe3uebM4O1KMxdO+EQg2KzWnJ+EGE
- 1jqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693362324; x=1693967124;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5fMqF4JPyjBxdbMqRIVZHqpDolrSgxQrfNo/OPx9hRc=;
- b=gymu5n8OHh4Z1VRKIgcLyoj0ZMXRIMbpGuSXGi0FvUtSvEgYN9geWPStEgeXdqMsNQ
- 20G8ie1DkWjUIRmzonqqRm9Rsg/qMQEcbyjJDYtcTCyXYH1lXBvq2UR7rxZCMaPlzc6y
- oj1Kg1BJxovQfhoFWQO3Q1vNbLhgTlnpEwfV0oJHh2se5C22B8SX+PEC5fP8LTWEXUTv
- T3AboyHk980x+OLDv2IoKiVhJaYLMFvokE4a0IV8DU6Ssnqs53pB9n34jIrsgTtAiBsQ
- s0UNC2gOp+7m5GixJCsyXrLZiYaLVyB2GAkpF8LvFrrGaG0RlfHxCIUnYQaqr2JaNdgb
- kliQ==
-X-Gm-Message-State: AOJu0YzAMiWiNIa+Jvm/sbvXSN5IrWo62JJLYHA+hUlO1E8vUhG3vlP+
- wnZckWylhv/vQz1tQLV40QKsDOeU1mbU4qGRNGY=
-X-Google-Smtp-Source: AGHT+IEAjHdy+oIE+wlhmdBUFE8wai4FjH/eJV2s7pysjYtS6kpa0TGVQT377blwThBFl4aduUGn9Q==
-X-Received: by 2002:a5d:990f:0:b0:792:792e:6616 with SMTP id
- x15-20020a5d990f000000b00792792e6616mr1227737iol.2.1693362324281; 
- Tue, 29 Aug 2023 19:25:24 -0700 (PDT)
-Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
- [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- h16-20020a0566380f1000b0042b61a5087csm3369250jas.132.2023.08.29.19.25.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 19:25:23 -0700 (PDT)
-From: Warner Losh <imp@bsdimp.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Warner Losh <imp@bsdimp.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 1/1] linux-user: Move PRAGMA_DISABLE_PACKED_WARNING to
- compiler.h
-Date: Tue, 29 Aug 2023 20:22:05 -0600
-Message-ID: <20230830022205.57878-2-imp@bsdimp.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230830022205.57878-1-imp@bsdimp.com>
-References: <20230830022205.57878-1-imp@bsdimp.com>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qbAvE-0002dV-PH; Tue, 29 Aug 2023 22:27:09 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qbAv5-0002Cn-78; Tue, 29 Aug 2023 22:27:05 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37U29Ebu020848; Wed, 30 Aug 2023 02:26:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=pQ1ExT2MIgXAtQr1Brbid/phfFpCNvFP/j5LDM0Gmxc=;
+ b=W1Uv8Gf6RKBYYhvoyalSCGkWOGIW6wU39GQ0RdVKXB0MFBka7sqhCEhiud/lBYesTGgo
+ i1/a+u7XUKu4hiojqdKQM0sLryrd0/C/d1v1DXiXrQwpq2fvtkRoa1kNdg+4AxlXHsta
+ f/ZDh0RZZz3asD2GGJDEX4ResPZmrcgDdqd5HRMon0fXM+FbqWgmJCaHxUFJgopxAUdw
+ 5SEp9lIy2ubCxcHVtVr+Q+OLcIK6GNBYwwIELWj8SKR8iwYJmytCOqr1p1DWeNzFdIxt
+ zIWAV3JyKTQfMnlBbSUmWpwdbrbXeAX2ggYF1gwl129bTa3JeZbhNQVeoudrgUpERMT+ wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ssu57sxhc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Aug 2023 02:26:45 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37U2BMHL026908;
+ Wed, 30 Aug 2023 02:26:44 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ssu57sxh2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Aug 2023 02:26:44 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37U2NFQL020180; Wed, 30 Aug 2023 02:26:43 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sqv3ygm72-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Aug 2023 02:26:43 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37U2QgVP39649958
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 30 Aug 2023 02:26:43 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4B3C58050;
+ Wed, 30 Aug 2023 02:26:42 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 22B2A5805F;
+ Wed, 30 Aug 2023 02:26:42 +0000 (GMT)
+Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 30 Aug 2023 02:26:42 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, lvivier@redhat.com
+Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
+Subject: [PATCH v3 0/8] Introduce model for IBM's FSI
+Date: Tue, 29 Aug 2023 21:26:30 -0500
+Message-Id: <20230830022638.4183766-1-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d2d;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ngVdKeyyBXiYMDREBrqndc7_yvmqz-_7
+X-Proofpoint-ORIG-GUID: J2FYX4oB9OMp0ZOW8PDIlCVaQuS_DyhA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-29_16,2023-08-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=328 bulkscore=0
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308300017
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,78 +112,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the slightly older version of this in include/qemu/compiler.h
-that was commit as part of bsd-user changes with the newer one from
-linux-user. bsd-user has no regreassions with this.
+Hello,
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/qemu/compiler.h |  6 +-----
- linux-user/qemu.h       | 26 --------------------------
- 2 files changed, 1 insertion(+), 31 deletions(-)
+Please review the patch-set version 3.
+I have incorporated review comments from Cedric and Thomas.
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index b0374425180..0df9febbe2f 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -31,17 +31,13 @@
-  *   functions than host-endian unaligned load/store plus tswapN.
-  * - The pragmas are necessary only to silence a clang false-positive
-  *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
-- * - We have to disable -Wpragmas warnings to avoid a complaint about
-- *   an unknown warning type from older compilers that don't know about
-- *   -Waddress-of-packed-member.
-  * - gcc has bugs in its _Pragma() support in some versions, eg
-  *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
-  *   include the warning-suppression pragmas for clang
-  */
--#ifdef __clang__
-+#if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
- #define PRAGMA_DISABLE_PACKED_WARNING                                   \
-     _Pragma("GCC diagnostic push");                                     \
--    _Pragma("GCC diagnostic ignored \"-Wpragmas\"");                    \
-     _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
- 
- #define PRAGMA_REENABLE_PACKED_WARNING          \
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 4f8b55e2fb0..12821e54d0a 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -193,32 +193,6 @@ static inline bool access_ok(CPUState *cpu, int type,
-    These are usually used to access struct data members once the struct has
-    been locked - usually with lock_user_struct.  */
- 
--/*
-- * Tricky points:
-- * - Use __builtin_choose_expr to avoid type promotion from ?:,
-- * - Invalid sizes result in a compile time error stemming from
-- *   the fact that abort has no parameters.
-- * - It's easier to use the endian-specific unaligned load/store
-- *   functions than host-endian unaligned load/store plus tswapN.
-- * - The pragmas are necessary only to silence a clang false-positive
-- *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
-- * - gcc has bugs in its _Pragma() support in some versions, eg
-- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
-- *   include the warning-suppression pragmas for clang
-- */
--#if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
--#define PRAGMA_DISABLE_PACKED_WARNING                                   \
--    _Pragma("GCC diagnostic push");                                     \
--    _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
--
--#define PRAGMA_REENABLE_PACKED_WARNING          \
--    _Pragma("GCC diagnostic pop")
--
--#else
--#define PRAGMA_DISABLE_PACKED_WARNING
--#define PRAGMA_REENABLE_PACKED_WARNING
--#endif
--
- #define __put_user_e(x, hptr, e)                                            \
-     do {                                                                    \
-         PRAGMA_DISABLE_PACKED_WARNING;                                      \
+Ninad Palsule (8):
+  hw/fsi: Introduce IBM's Local bus
+  hw/fsi: Introduce IBM's scratchpad
+  hw/fsi: Introduce IBM's cfam,fsi-slave
+  hw/fsi: Introduce IBM's FSI
+  hw/fsi: IBM's On-chip Peripheral Bus
+  hw/fsi: Aspeed APB2OPB interface
+  hw/arm: Hook up FSI module in AST2600
+  hw/fsi: Documentation and testing
+
+ MAINTAINERS                        |  20 ++
+ docs/specs/fsi.rst                 | 141 ++++++++++++
+ hw/Kconfig                         |   1 +
+ hw/arm/Kconfig                     |   1 +
+ hw/arm/aspeed_ast2600.c            |  19 ++
+ hw/fsi/Kconfig                     |  23 ++
+ hw/fsi/aspeed-apb2opb.c            | 352 +++++++++++++++++++++++++++++
+ hw/fsi/cfam.c                      | 239 ++++++++++++++++++++
+ hw/fsi/engine-scratchpad.c         | 100 ++++++++
+ hw/fsi/fsi-master.c                | 201 ++++++++++++++++
+ hw/fsi/fsi-slave.c                 | 109 +++++++++
+ hw/fsi/fsi.c                       |  54 +++++
+ hw/fsi/lbus.c                      |  94 ++++++++
+ hw/fsi/meson.build                 |   6 +
+ hw/fsi/opb.c                       | 194 ++++++++++++++++
+ hw/fsi/trace-events                |   8 +
+ hw/fsi/trace.h                     |   1 +
+ hw/meson.build                     |   1 +
+ include/hw/arm/aspeed_soc.h        |   4 +
+ include/hw/fsi/aspeed-apb2opb.h    |  33 +++
+ include/hw/fsi/cfam.h              |  61 +++++
+ include/hw/fsi/engine-scratchpad.h |  33 +++
+ include/hw/fsi/fsi-master.h        |  30 +++
+ include/hw/fsi/fsi-slave.h         |  29 +++
+ include/hw/fsi/fsi.h               |  31 +++
+ include/hw/fsi/lbus.h              |  48 ++++
+ include/hw/fsi/opb.h               |  43 ++++
+ include/qemu/bitops.h              |   6 +
+ meson.build                        |   1 +
+ tests/qtest/fsi-test.c             | 210 +++++++++++++++++
+ tests/qtest/meson.build            |   2 +
+ 31 files changed, 2095 insertions(+)
+ create mode 100644 docs/specs/fsi.rst
+ create mode 100644 hw/fsi/Kconfig
+ create mode 100644 hw/fsi/aspeed-apb2opb.c
+ create mode 100644 hw/fsi/cfam.c
+ create mode 100644 hw/fsi/engine-scratchpad.c
+ create mode 100644 hw/fsi/fsi-master.c
+ create mode 100644 hw/fsi/fsi-slave.c
+ create mode 100644 hw/fsi/fsi.c
+ create mode 100644 hw/fsi/lbus.c
+ create mode 100644 hw/fsi/meson.build
+ create mode 100644 hw/fsi/opb.c
+ create mode 100644 hw/fsi/trace-events
+ create mode 100644 hw/fsi/trace.h
+ create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+ create mode 100644 include/hw/fsi/cfam.h
+ create mode 100644 include/hw/fsi/engine-scratchpad.h
+ create mode 100644 include/hw/fsi/fsi-master.h
+ create mode 100644 include/hw/fsi/fsi-slave.h
+ create mode 100644 include/hw/fsi/fsi.h
+ create mode 100644 include/hw/fsi/lbus.h
+ create mode 100644 include/hw/fsi/opb.h
+ create mode 100644 tests/qtest/fsi-test.c
+
 -- 
-2.41.0
+2.39.2
 
 
