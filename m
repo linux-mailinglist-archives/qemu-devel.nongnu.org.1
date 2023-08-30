@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809F278D784
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 18:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D076778D779
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 18:15:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbNqE-00030W-9i; Wed, 30 Aug 2023 12:14:50 -0400
+	id 1qbNq8-0002xv-1Q; Wed, 30 Aug 2023 12:14:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=599fd62c5=graf@amazon.de>)
- id 1qbNqC-0002zo-2H; Wed, 30 Aug 2023 12:14:48 -0400
-Received: from smtp-fw-80006.amazon.com ([99.78.197.217])
+ id 1qbNq6-0002xd-5y; Wed, 30 Aug 2023 12:14:42 -0400
+Received: from smtp-fw-80007.amazon.com ([99.78.197.218])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <prvs=599fd62c5=graf@amazon.de>)
- id 1qbNq9-0003bz-BS; Wed, 30 Aug 2023 12:14:47 -0400
+ id 1qbNq3-0003af-6f; Wed, 30 Aug 2023 12:14:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1693412086; x=1724948086;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+8hLgFkWvMXm6uldA/BXf1FRkrOuAMgPjsKZWzE7P30=;
- b=IG0D9hZCBrOIUyCD56e0AM9TeFtjtC3j6fKm4fODzDfnutZQEz1FI8Xk
- 0kI8ja2wQPreCLSZVt8cA/o4WRmmm7y/IXgCMrydvNbaY1ao61zNxakY1
- vXr8R2l8l0aEg7sJRoGJSepYVHv6NTDIDSlXXFZAC6i9CfcvnZAVS6JyI s=;
-X-IronPort-AV: E=Sophos;i="6.02,214,1688428800"; d="scan'208";a="235834940"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO
- email-inbound-relay-iad-1e-m6i4x-a65ebc6e.us-east-1.amazon.com)
- ([10.25.36.214]) by smtp-border-fw-80006.pdx80.corp.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 16:14:37 +0000
-Received: from EX19MTAUWC001.ant.amazon.com
- (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
- by email-inbound-relay-iad-1e-m6i4x-a65ebc6e.us-east-1.amazon.com (Postfix)
- with ESMTPS id 8634F67E25; Wed, 30 Aug 2023 16:14:31 +0000 (UTC)
+ t=1693412079; x=1724948079;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=zfECsNuRUa9iSGp4Kx54IVbh1qkcDQSJ2bh50q8NsAg=;
+ b=d62vGvz4frI7Q9A7l4HVBOcfEygVg4yuXqEvP4nNhD7Q9PnDGTE0G6dm
+ UMsD4j0PIXJKmi3l/s2GVG52SOqbmHJqaIodBbAmcq2zcq3XKIZiQ7jgP
+ pgGxi9m9oUi2r0Upbh5WRuUj2etsKERUdxnlPNcpeinX3Q40kAyxH14x4 k=;
+X-IronPort-AV: E=Sophos;i="6.02,214,1688428800"; d="scan'208";a="236197144"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO
+ email-inbound-relay-pdx-2c-m6i4x-b1c0e1d0.us-west-2.amazon.com)
+ ([10.25.36.210]) by smtp-border-fw-80007.pdx80.corp.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 16:14:33 +0000
+Received: from EX19MTAUWB002.ant.amazon.com
+ (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+ by email-inbound-relay-pdx-2c-m6i4x-b1c0e1d0.us-west-2.amazon.com (Postfix)
+ with ESMTPS id 17407878F5; Wed, 30 Aug 2023 16:14:33 +0000 (UTC)
 Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 30 Aug 2023 16:14:29 +0000
+ 15.2.1118.37; Wed, 30 Aug 2023 16:14:32 +0000
 Received: from dev-dsk-graf-1a-5ce218e4.eu-west-1.amazon.com (10.253.83.51) by
  EX19D020UWC004.ant.amazon.com (10.13.138.149) with Microsoft SMTP
  Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 30 Aug 2023 16:14:27 +0000
+ 15.2.1118.37; Wed, 30 Aug 2023 16:14:29 +0000
 From: Alexander Graf <graf@amazon.com>
 To: <qemu-devel@nongnu.org>
 CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
@@ -54,26 +54,28 @@ CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
  <mads@ynddal.dk>, =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?=
  <berrange@redhat.com>, Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann
  <kraxel@redhat.com>
-Subject: [PATCH v2 00/12] Introduce new vmapple machine type
-Date: Wed, 30 Aug 2023 16:14:13 +0000
-Message-ID: <20230830161425.91946-1-graf@amazon.com>
+Subject: [PATCH v2 01/12] build: Only define OS_OBJECT_USE_OBJC with gcc
+Date: Wed, 30 Aug 2023 16:14:14 +0000
+Message-ID: <20230830161425.91946-2-graf@amazon.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230830161425.91946-1-graf@amazon.com>
+References: <20230830161425.91946-1-graf@amazon.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.253.83.51]
 X-ClientProxiedBy: EX19D036UWC003.ant.amazon.com (10.13.139.214) To
  EX19D020UWC004.ant.amazon.com (10.13.138.149)
 Precedence: Bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=99.78.197.217;
- envelope-from=prvs=599fd62c5=graf@amazon.de; helo=smtp-fw-80006.amazon.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=99.78.197.218;
+ envelope-from=prvs=599fd62c5=graf@amazon.de; helo=smtp-fw-80007.amazon.com
 X-Spam_score_int: -39
 X-Spam_score: -4.0
 X-Spam_bar: ----
 X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
  HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,109 +91,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VGhpcyBwYXRjaCBzZXQgaW50cm9kdWNlcyBhIG5ldyBBUk0gYW5kIEhWRiBzcGVjaWZpYyBtYWNo
-aW5lIHR5cGUKY2FsbGVkICJ2bWFwcGxlIi4gSXQgbWltaWNrcyB0aGUgZGV2aWNlIG1vZGVsIHRo
-YXQgQXBwbGUncyBwcm9wcmlldGFyeQpWaXJ0dWFsaXphdGlvbi5GcmFtZXdvcmsgZXhwb3Nlcywg
-YnV0IGltcGxlbWVudHMgaXQgaW4gUUVNVS4KCldpdGggdGhpcyBuZXcgbWFjaGluZSB0eXBlLCB5
-b3UgY2FuIHJ1biBtYWNPUyBndWVzdHMgb24gQXBwbGUgU2lsaWNvbgpzeXN0ZW1zIHZpYSBIVkYu
-IFRvIGRvIHNvLCB5b3UgbmVlZCB0byBmaXJzdCBpbnN0YWxsIG1hY09TIHVzaW5nClZpcnR1YWxp
-emF0aW9uLkZyYW1ld29yayBvbnRvIGEgdmlydHVhbCBkaXNrIGltYWdlIHVzaW5nIGEgdG9vbCBs
-aWtlCm1hY29zdm0gKGh0dHBzOi8vZ2l0aHViLmNvbS9zLXUvbWFjb3N2bSkKCiAgJCBtYWNvc3Zt
-IC0tZGlzayBkaXNrLmltZyxzaXplPTMyZyAtLWF1eCBhdXguaW1nIFwKICAgICAgICAgICAgLS1y
-ZXN0b3JlIFVuaXZlcnNhbE1hY18xMi4wLjFfMjFBNTU5X1Jlc3RvcmUuaXBzdyB2bS5qc29uCgpU
-aGVuLCBleHRyYWN0IHRoZSBFQ0lEIGZyb20gdGhlIGluc3RhbGxlZCBWTToKCiAgJCBjYXQgIiRE
-SVIvbWFjb3N2bS5qc29uIiB8IHB5dGhvbjMgLWMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBcCiAgJ2ltcG9ydCBqc29uLHN5cztvYmo9anNvbi5sb2FkKHN5cy5zdGRpbik7cHJpbnQo
-b2JqWyJtYWNoaW5lSWQiXSkgfCAgICBcCiAgYmFzZTY0IC1kIHwgcGx1dGlsIC1leHRyYWN0IEVD
-SUQgcmF3IC0KCkluIGFkZGl0aW9uLCBjdXQgb2ZmIHRoZSBmaXJzdCAxNmtiIG9mIHRoZSBhdXgu
-aW1nOgoKICAkIGRkIGlmPWF1eC5pbWcgb2Y9YXV4LmltZy50cmltbWVkIGJzPSQoKCAweDQwMDAg
-KSkgc2tpcD0xCgpOb3csIHlvdSBjYW4ganVzdCBsYXVuY2ggUUVNVSB3aXRoIHRoZSBiaXRzIGdl
-bmVyYXRlZCBhYm92ZToKCiAgJCBxZW11LXN5c3RlbS1hYXJjaDY0IC1zZXJpYWwgbW9uOnN0ZGlv
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAgLW0gNEcgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAgLU0g
-dm1hcHBsZSx1dWlkPTYyNDAzNDk2NTYxNjUxNjE3ODkgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBcCiAgLWJpb3MgL1N5cyovTGliKi9GcmEqL1ZpcnR1YWxpemF0aW9uLmYqL1Iq
-L0FWUEJvb3Rlci52bWFwcGxlMi5iaW4gICAgICBcCiAgLXBmbGFzaCBhdXguaW1nLnRyaW1tZWQg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAgLXBmbGFz
-aCBkaXNrLmltZyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBcCiAgLWRyaXZlIGZpbGU9ZGlzay5pbWcsaWY9bm9uZSxpZD1yb290ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAgLWRldmljZSB2bWFwcGxlLXZpcnRpby1yb290
-LGRyaXZlPXJvb3QgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAgLWRyaXZlIGZp
-bGU9YXV4LmltZy50cmltbWVkLGlmPW5vbmUsaWQ9YXV4ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBcCiAgLWRldmljZSB2bWFwcGxlLXZpcnRpby1haXgsZHJpdmU9YXV4ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBcCiAgLWFjY2VsIGh2ZgoKVGhlcmUgYXJlIGEgZmV3IGxp
-bWl0YXRpb25zIHdpdGggdGhpcyBpbXBsZW1lbnRhdGlvbjoKCiAgLSBPbmx5IHJ1bnMgb24gbWFj
-T1MgYmVjYXVzZSBpdCByZWxpZXMgb24KICAgIFBhcmF2aXJ0dWFsaXplc0dyYXBoaWNzLkZyYW1l
-d29yawogIC0gU29tZXRoaW5nIGlzIG5vdCBmdWxseSBjb3JyZWN0IG9uIGludGVycnVwdCBkZWxp
-dmVyeSBvcgogICAgc2ltaWxhciAtIHRoZSBrZXlib2FyZCBkb2VzIG5vdCB3b3JrCiAgLSBObyBS
-b3NldHRhIGluIHRoZSBndWVzdCBiZWNhdXNlIHdlIGxhY2sgdGhlIHByaXZhdGUKICAgIGVudGl0
-bGVtZW50IHRvIGVuYWJsZSBUU08KCk92ZXIgdGltZSwgSSBob3BlIHRoYXQgc29tZSBvZiB0aGUg
-bGltaXRhdGlvbnMgYWJvdmUgY291bGQgY2Vhc2UgdG8gZXhpc3QuClRoaXMgZGV2aWNlIG1vZGVs
-IHdvdWxkIGVuYWJsZSB2ZXJ5IG5pY2UgdXNlIGNhc2VzIHdpdGggS1ZNIG9uIGFuIEFzYWhpCkxp
-bnV4IGRldmljZS4KClBsZWFzZSBiZXdhcmUgdGhhdCB0aGUgdm1hcHBsZSBkZXZpY2UgbW9kZWwg
-b25seSB3b3JrcyB3aXRoIG1hY09TIDEyIGd1ZXN0cwpmb3Igbm93LiBOZXdlciBndWVzdHMgcnVu
-IGludG8gSHlwZXJ2aXNvci5GcmFtZXdvcmsgaW5jb21wYXRpYmlsaXRpZXMuCgotLS0KCnYxIC0+
-IHYyOgoKICAtIEFkYXB0IHRvIHN5c3RlbV9zcyBtZXNvbi5idWlsZCB0YXJnZXQKICAtIEFkZCBk
-b2N1bWVudGF0aW9uCiAgLSBSZXdvcmsgdmlydGlvLWJsayBwYXRjaCB0byBtYWtlIGFsbCB2bWFw
-cGxlIHZpcnRpby1ibGsgbG9naWMgc3ViY2xhc3NlcwogIC0gQWRkIGxvZyBtZXNzYWdlIG9uIHdy
-aXRlCiAgLSBNb3ZlIG1heCBzbG90IG51bWJlciB0byBkZWZpbmUKICAtIFVzZSBTUERYIGhlYWRl
-cgogIC0gUmVtb3ZlIHVzZWxlc3MgaW5jbHVkZXMKCkFsZXhhbmRlciBHcmFmICgxMik6CiAgYnVp
-bGQ6IE9ubHkgZGVmaW5lIE9TX09CSkVDVF9VU0VfT0JKQyB3aXRoIGdjYwogIGh3L21pc2MvcHZw
-YW5pYzogQWRkIE1NSU8gaW50ZXJmYWNlCiAgaHZmOiBJbmNyZWFzZSBudW1iZXIgb2YgcG9zc2li
-bGUgbWVtb3J5IHNsb3RzCiAgaHZmOiBhcm06IElnbm9yZSB3cml0ZXMgdG8gQ05UUF9DVExfRUww
-CiAgaHc6IEFkZCB2bWFwcGxlIHN1YmRpcgogIGdwZXg6IEFsbG93IG1vcmUgdGhhbiA0IGxlZ2Fj
-eSBJUlFzCiAgaHcvdm1hcHBsZS9hZXM6IEludHJvZHVjZSBhZXMgZW5naW5lCiAgaHcvdm1hcHBs
-ZS9iZGlmOiBJbnRyb2R1Y2Ugdm1hcHBsZSBiYWNrZG9vciBpbnRlcmZhY2UKICBody92bWFwcGxl
-L2NmZzogSW50cm9kdWNlIHZtYXBwbGUgY2ZnIHJlZ2lvbgogIGh3L3ZtYXBwbGUvYXBwbGUtZ2Z4
-OiBJbnRyb2R1Y2UgUGFyYXZpcnR1YWxpemVkR3JhcGhpY3MuRnJhbWV3b3JrCiAgICBzdXBwb3J0
-CiAgaHcvdm1hcHBsZS92aXJ0aW8tYmxrOiBBZGQgc3VwcG9ydCBmb3IgYXBwbGUgdmlydGlvLWJs
-awogIGh3L3ZtYXBwbGUvdm1hcHBsZTogQWRkIHZtYXBwbGUgbWFjaGluZSB0eXBlCgogTUFJTlRB
-SU5FUlMgICAgICAgICAgICAgICAgICAgICB8ICAgNyArCiBkb2NzL3N5c3RlbS9hcm0vdm1hcHBs
-ZS5yc3QgICAgIHwgIDY4ICsrKysKIGRvY3Mvc3lzdGVtL3RhcmdldC1hcm0ucnN0ICAgICAgfCAg
-IDEgKwogbWVzb24uYnVpbGQgICAgICAgICAgICAgICAgICAgICB8ICAgOSArLQogaHcvdm1hcHBs
-ZS90cmFjZS5oICAgICAgICAgICAgICB8ICAgMSArCiBpbmNsdWRlL2h3L21pc2MvcHZwYW5pYy5o
-ICAgICAgIHwgICAxICsKIGluY2x1ZGUvaHcvcGNpLWhvc3QvZ3BleC5oICAgICAgfCAgIDcgKy0K
-IGluY2x1ZGUvaHcvcGNpL3BjaV9pZHMuaCAgICAgICAgfCAgIDEgKwogaW5jbHVkZS9ody92aXJ0
-aW8vdmlydGlvLWJsay5oICB8ICAxMSArLQogaW5jbHVkZS9ody92bWFwcGxlL2JkaWYuaCAgICAg
-ICB8ICAzMSArKwogaW5jbHVkZS9ody92bWFwcGxlL2NmZy5oICAgICAgICB8ICA2OCArKysrCiBp
-bmNsdWRlL2h3L3ZtYXBwbGUvdmlydGlvLWJsay5oIHwgIDM5ICsrCiBpbmNsdWRlL3N5c2VtdS9o
-dmZfaW50LmggICAgICAgIHwgICA0ICstCiBhY2NlbC9odmYvaHZmLWFjY2VsLW9wcy5jICAgICAg
-IHwgICAyICstCiBody9hcm0vc2JzYS1yZWYuYyAgICAgICAgICAgICAgIHwgICAyICstCiBody9h
-cm0vdmlydC5jICAgICAgICAgICAgICAgICAgIHwgICAyICstCiBody9ibG9jay92aXJ0aW8tYmxr
-LmMgICAgICAgICAgIHwgIDE4ICstCiBody9pMzg2L21pY3Jvdm0uYyAgICAgICAgICAgICAgIHwg
-ICAyICstCiBody9sb29uZ2FyY2gvdmlydC5jICAgICAgICAgICAgIHwgICAyICstCiBody9taXBz
-L2xvb25nc29uM192aXJ0LmMgICAgICAgIHwgICAyICstCiBody9taXNjL3B2cGFuaWMtbW1pby5j
-ICAgICAgICAgIHwgIDYxICsrKwogaHcvb3BlbnJpc2MvdmlydC5jICAgICAgICAgICAgICB8ICAx
-MiArLQogaHcvcGNpLWhvc3QvZ3BleC5jICAgICAgICAgICAgICB8ICAzNiArLQogaHcvcmlzY3Yv
-dmlydC5jICAgICAgICAgICAgICAgICB8ICAxMiArLQogaHcvdm1hcHBsZS9hZXMuYyAgICAgICAg
-ICAgICAgICB8IDU4MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBody92bWFwcGxlL2Jk
-aWYuYyAgICAgICAgICAgICAgIHwgMjQ1ICsrKysrKysrKysrKwogaHcvdm1hcHBsZS9jZmcuYyAg
-ICAgICAgICAgICAgICB8IDEwNSArKysrKwogaHcvdm1hcHBsZS92aXJ0aW8tYmxrLmMgICAgICAg
-ICB8IDIxMiArKysrKysrKysrCiBody92bWFwcGxlL3ZtYXBwbGUuYyAgICAgICAgICAgIHwgNjYx
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBody94dGVuc2EvdmlydC5jICAgICAg
-ICAgICAgICAgIHwgICAyICstCiB0YXJnZXQvYXJtL2h2Zi9odmYuYyAgICAgICAgICAgIHwgICA5
-ICsKIGh3L0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwogaHcvbWVzb24uYnVp
-bGQgICAgICAgICAgICAgICAgICB8ICAgMSArCiBody9taXNjL0tjb25maWcgICAgICAgICAgICAg
-ICAgIHwgICA0ICsKIGh3L21pc2MvbWVzb24uYnVpbGQgICAgICAgICAgICAgfCAgIDEgKwogaHcv
-dm1hcHBsZS9LY29uZmlnICAgICAgICAgICAgICB8ICAzMyArKwogaHcvdm1hcHBsZS9hcHBsZS1n
-ZngubSAgICAgICAgICB8IDU3OCArKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBody92bWFw
-cGxlL21lc29uLmJ1aWxkICAgICAgICAgIHwgICA2ICsKIGh3L3ZtYXBwbGUvdHJhY2UtZXZlbnRz
-ICAgICAgICAgfCAgNDcgKysrCiAzOSBmaWxlcyBjaGFuZ2VkLCAyODUyIGluc2VydGlvbnMoKyks
-IDM1IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRvY3Mvc3lzdGVtL2FybS92bWFw
-cGxlLnJzdAogY3JlYXRlIG1vZGUgMTAwNjQ0IGh3L3ZtYXBwbGUvdHJhY2UuaAogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGluY2x1ZGUvaHcvdm1hcHBsZS9iZGlmLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBp
-bmNsdWRlL2h3L3ZtYXBwbGUvY2ZnLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2h3L3Zt
-YXBwbGUvdmlydGlvLWJsay5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgaHcvbWlzYy9wdnBhbmljLW1t
-aW8uYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGh3L3ZtYXBwbGUvYWVzLmMKIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBody92bWFwcGxlL2JkaWYuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGh3L3ZtYXBwbGUvY2Zn
-LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBody92bWFwcGxlL3ZpcnRpby1ibGsuYwogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGh3L3ZtYXBwbGUvdm1hcHBsZS5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgaHcvdm1h
-cHBsZS9LY29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgaHcvdm1hcHBsZS9hcHBsZS1nZngubQog
-Y3JlYXRlIG1vZGUgMTAwNjQ0IGh3L3ZtYXBwbGUvbWVzb24uYnVpbGQKIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBody92bWFwcGxlL3RyYWNlLWV2ZW50cwoKLS0gCjIuMzkuMiAoQXBwbGUgR2l0LTE0MykK
-CgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4
-CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpv
-bmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVu
-dGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3IDg3OQoKCg==
+Recent versions of macOS use clang instead of gcc. The OS_OBJECT_USE_OBJC
+define is only necessary when building with gcc. Let's not define it when
+building with clang.
+
+With this patch, I can successfully include GCD headers in QEMU when
+building with clang.
+
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ meson.build | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 98e68ef0b1..0d6a0015a1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -224,7 +224,9 @@ qemu_ldflags = []
+ if targetos == 'darwin'
+   # Disable attempts to use ObjectiveC features in os/object.h since they
+   # won't work when we're compiling with gcc as a C compiler.
+-  qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
++  if compiler.get_id() == 'gcc'
++    qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
++  endif
+ elif targetos == 'solaris'
+   # needed for CMSG_ macros in sys/socket.h
+   qemu_common_flags += '-D_XOPEN_SOURCE=600'
+-- 
+2.39.2 (Apple Git-143)
+
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
 
 
