@@ -2,80 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1479078D3C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 09:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D741178D416
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:24:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbG2e-0002Kp-4V; Wed, 30 Aug 2023 03:55:08 -0400
+	id 1qbGTg-0004Hl-Nm; Wed, 30 Aug 2023 04:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbG2Q-0002KN-NT
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 03:54:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbG2L-0005Lf-CS
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 03:54:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693382088;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EZy+KSLH6nfPYgmgbDDKWlNHIyj9++xoyYi6hDFezRY=;
- b=C+oJWoArrfTGZA8W7O08RqwO/45loJmzqLJfmZmY5cxleNWv4m5qWP1wdy2AAGzS959i6T
- w6v4E7OuSfVvZzwFcVaynPpeYWzhRAdZ57r+9csNeviV3b6D5tjv/ao4BSG0bmIcJ/bwcG
- zRyX3jvRodufam1OL30UFbD7pIVHcsQ=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-479-cDeXtSHBOxO_CLRymVXlRA-1; Wed, 30 Aug 2023 03:54:44 -0400
-X-MC-Unique: cDeXtSHBOxO_CLRymVXlRA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0DE9E3C100B0;
- Wed, 30 Aug 2023 07:54:44 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0AFD72166B25;
- Wed, 30 Aug 2023 07:54:41 +0000 (UTC)
-Date: Wed, 30 Aug 2023 08:54:40 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Leonardo Bras <leobras@redhat.com>, farosas@suse.de,
- kwolf@redhat.com, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Juan Quintela <quintela@redhat.com>, qemu-block@nongnu.org,
- Coiby Xu <Coiby.Xu@gmail.com>, Fam Zheng <fam@euphon.net>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 4/4] io: follow coroutine AioContext in
- qio_channel_yield()
-Message-ID: <ZO71wKBFNT2BECAS@redhat.com>
-References: <20230829160623.277411-1-stefanha@redhat.com>
- <20230829160623.277411-5-stefanha@redhat.com>
- <z6rrcwlphydkdsg53sq66hv45ogdg47js6di6wl6ndxbibudci@cql6lnmzhvfk>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qbGTe-0004HM-GS
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:23:02 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qbGTZ-0002OB-3H
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:23:01 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-50043cf2e29so8219799e87.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 01:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693383775; x=1693988575; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=3MHYzLT29b91n+PztaYFJfltDPpZKVrYcVws59a3o5A=;
+ b=Rl0h2FYiZI0nWRjYsmjbNwNmlET6tiw2IawbPr6hCtEFElvmOt5aaqeiUC0s5EmXhC
+ nOS+kt7p9zeE+btc2p16GeDFb4geCBIWPNemzsy+QjdO0tBeiPLbVG/dl+x0e1kmvxr6
+ od3ctph2gDfPouz0Ph2wvF0XlkVvpju96dRictmMyHCmJT/HWx0hvvdFtxIokBSRi76X
+ 6cbhA9CdnUyrIQ/c4jt4Pb+dJfRD7GTU6zqiIN3tB9kSmd0G/9ZQ0xbD79G/+99nfB7C
+ pL9Wdw/sSTxKP5REeiiolu5j/iQr8wTfPepXCc7iO3mzaIDprpu/9bRgA4cg0ynEj3Lh
+ QXfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693383775; x=1693988575;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3MHYzLT29b91n+PztaYFJfltDPpZKVrYcVws59a3o5A=;
+ b=GfA11pdiuXSOiytqBjKWKHLN5WtQm8C03L1gzFbGOdx7SqnayMnqU6e0sUDyNWj8x5
+ JGw68DcwW2IUa0JCaKmfpYt/4xhLVRrsgCvR2zxUT4dXPamI6Muv/Gt5znkeo9pXLXNJ
+ RtZOOFLqntTUTI9Pv1MN53X3aR4J5aTmczSvtasKGplcWRk+QQZDYswgPf/P3Q9pV7fH
+ 0I89Pf5tI1jbDfQcz9mL0z9UBDXiUyciDhSsmGXAzsjyA9Wvq7pBpKjY60xuCGU5DnQV
+ 84LWqOtH02i/AK+9j094avL0hXd8FsdRgiY55hFmFoUWaU7QZJo51uWP+oo4bNSPFPA7
+ De+Q==
+X-Gm-Message-State: AOJu0YyQfSh689Bhl7KYfqYIkKE29yAzcRVX6wEWxKB+SGdeEsj6ZNUa
+ 4XlG33zXGrcVPYJ0Y+PYXMbOjA==
+X-Google-Smtp-Source: AGHT+IFwFGuNrlR4UoKlTyaXjvAaVzchGJvl26wUVOFj95cvFP3lOflA/3wn8qhPfvffNkz+yuiAIQ==
+X-Received: by 2002:a05:6512:234d:b0:4fb:52a3:e809 with SMTP id
+ p13-20020a056512234d00b004fb52a3e809mr1132024lfu.28.1693383775067; 
+ Wed, 30 Aug 2023 01:22:55 -0700 (PDT)
+Received: from [192.168.200.206] (83.11.188.80.ipv4.supernova.orange.pl.
+ [83.11.188.80]) by smtp.gmail.com with ESMTPSA id
+ c2-20020ac25302000000b005008cd9396bsm2268860lfh.25.2023.08.30.01.22.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Aug 2023 01:22:54 -0700 (PDT)
+Message-ID: <86c5e07d-58f0-41a0-f497-bd236691188b@linaro.org>
+Date: Wed, 30 Aug 2023 10:22:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: PCIe: SLT attribute mismatch: 0xFF020100 instead of 0x20100
+Content-Language: pl-PL, en-GB, en-HK
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Gowtham Siddarth <gowtham.siddarth@arm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <56aa4acb-d54c-a457-5a32-9258cec1ac96@linaro.org>
+ <CAFEAcA81xq_yEXYdtAXtkqcdR=MHagSNf5rXOtt+AwohMY_=BQ@mail.gmail.com>
+ <20230829093909-mutt-send-email-mst@kernel.org>
+ <43653986-c04f-0076-637b-9061f9702f77@linaro.org>
+ <20230829130617-mutt-send-email-mst@kernel.org>
+ <ff230439-5d76-1f50-a25a-1fd666c3f369@linaro.org>
+ <20230829161732-mutt-send-email-mst@kernel.org>
+ <601619fb-5f1e-4b93-3dd1-b415d0ee8979@linaro.org>
+ <20230829163929-mutt-send-email-mst@kernel.org>
+ <fd3665ae-da56-9d86-ff91-b1efa107671b@linaro.org>
+ <20230829164638-mutt-send-email-mst@kernel.org>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <20230829164638-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <z6rrcwlphydkdsg53sq66hv45ogdg47js6di6wl6ndxbibudci@cql6lnmzhvfk>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,173 +105,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 02:32:46PM -0500, Eric Blake wrote:
-> On Tue, Aug 29, 2023 at 12:06:22PM -0400, Stefan Hajnoczi wrote:
-> > The ongoing QEMU multi-queue block layer effort makes it possible for multiple
-> > threads to process I/O in parallel. The nbd block driver is not compatible with
-> > the multi-queue block layer yet because QIOChannel cannot be used easily from
-> > coroutines running in multiple threads. This series changes the QIOChannel API
-> > to make that possible.
-> > 
-> > In the current API, calling qio_channel_attach_aio_context() sets the
-> > AioContext where qio_channel_yield() installs an fd handler prior to yielding:
-> > 
-> >   qio_channel_attach_aio_context(ioc, my_ctx);
-> >   ...
-> >   qio_channel_yield(ioc); // my_ctx is used here
-> >   ...
-> >   qio_channel_detach_aio_context(ioc);
-> > 
-> > This API design has limitations: reading and writing must be done in the same
-> > AioContext and moving between AioContexts involves a cumbersome sequence of API
-> > calls that is not suitable for doing on a per-request basis.
-> > 
-> > There is no fundamental reason why a QIOChannel needs to run within the
-> > same AioContext every time qio_channel_yield() is called. QIOChannel
-> > only uses the AioContext while inside qio_channel_yield(). The rest of
-> > the time, QIOChannel is independent of any AioContext.
-> > 
-> > In the new API, qio_channel_yield() queries the AioContext from the current
-> > coroutine using qemu_coroutine_get_aio_context(). There is no need to
-> > explicitly attach/detach AioContexts anymore and
-> > qio_channel_attach_aio_context() and qio_channel_detach_aio_context() are gone.
-> > One coroutine can read from the QIOChannel while another coroutine writes from
-> > a different AioContext.
-> > 
-> > This API change allows the nbd block driver to use QIOChannel from any thread.
-> > It's important to keep in mind that the block driver already synchronizes
-> > QIOChannel access and ensures that two coroutines never read simultaneously or
-> > write simultaneously.
-> > 
-> > This patch updates all users of qio_channel_attach_aio_context() to the
-> > new API. Most conversions are simple, but vhost-user-server requires a
-> > new qemu_coroutine_yield() call to quiesce the vu_client_trip()
-> > coroutine when not attached to any AioContext.
-> > 
-> > While the API is has become simpler, there is one wart: QIOChannel has a
-> > special case for the iohandler AioContext (used for handlers that must not run
-> > in nested event loops). I didn't find an elegant way preserve that behavior, so
-> > I added a new API called qio_channel_set_follow_coroutine_ctx(ioc, true|false)
-> > for opting in to the new AioContext model. By default QIOChannel uses the
-> > iohandler AioHandler. Code that formerly called
-> > qio_channel_attach_aio_context() now calls
-> > qio_channel_set_follow_coroutine_ctx(ioc, true) once after the QIOChannel is
-> > created.
-> > 
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> > +++ b/include/io/channel-util.h
-> > @@ -49,4 +49,27 @@
-> >  QIOChannel *qio_channel_new_fd(int fd,
-> >                                 Error **errp);
-> >  
-> > +/**
-> > + * qio_channel_yield:
+W dniu 29.08.2023 o 22:46, Michael S. Tsirkin pisze:
+> On Tue, Aug 29, 2023 at 10:44:08PM +0200, Marcin Juszkiewicz wrote:
+>> W dniu 29.08.2023 o 22:40, Michael S. Tsirkin pisze:
+>>>> It passes with sbsa-ref (which is not using QEMU versioning).
+>>>>
+>>>> Fails (as expected) when used new property for each pcie-root-port
+>>>> (ignore line breaks):
+>>>>
+>>>> "-device pcie-root-port,
+>>>>     x-pci-express-writeable-slt-bug=true,
+>>>>     id=root30,chassis=30,slot=0"
+>>>
+>>> could you also check with -machine pc-q35-8.1 instead of this
+>>> property?
+>>
+>> BSA ACS is AArch64 only.
 > 
-> Wrong function name...
-> 
-> > + * @read_fd: the file descriptor for the read handler
-> > + * @read_ctx: the AioContext for the read handler
-> > + * @io_read: the read handler
-> > + * @write_fd: the file descriptor for the write handler
-> > + * @write_ctx: the AioContext for the write handler
-> > + * @io_write: the write handler
-> > + * @opaque: the opaque argument to the read and write handler
-> > + *
-> > + * Set the read and write handlers when @read_ctx and @write_ctx are non-NULL,
-> > + * respectively. To leave a handler in its current state, pass a NULL
-> > + * AioContext. To clear a handler, pass a non-NULL AioContext and a NULL
-> > + * handler.
-> > + */
-> > +void qio_channel_util_set_aio_fd_handler(int read_fd,
-> 
-> ...should be this.
-> 
-> > +                                         AioContext *read_ctx,
-> > +                                         IOHandler *io_read,
-> > +                                         int write_fd,
-> > +                                         AioContext *write_ctx,
-> > +                                         IOHandler *io_write,
-> > +                                         void *opaque);
-> > +
-> >  #endif /* QIO_CHANNEL_UTIL_H */
-> > diff --git a/include/io/channel.h b/include/io/channel.h
-> > index 229bf36910..5f9dbaab65 100644
-> > --- a/include/io/channel.h
-> 
-> > +++ b/io/channel.c
-> 
-> >  
-> > -static void qio_channel_set_aio_fd_handlers(QIOChannel *ioc)
-> > +static void coroutine_fn
-> > +qio_channel_set_fd_handlers(QIOChannel *ioc, GIOCondition condition)
-> >  {
-> > -    IOHandler *rd_handler = NULL, *wr_handler = NULL;
-> > +    AioContext *ctx = ioc->follow_coroutine_ctx ?
-> > +        qemu_coroutine_get_aio_context(qemu_coroutine_self()) :
-> > +        iohandler_get_aio_context();
-> > +    AioContext *read_ctx = NULL;
-> > +    IOHandler *io_read = NULL;
-> > +    AioContext *write_ctx = NULL;
-> > +    IOHandler *io_write = NULL;
-> > +
-> > +    if (condition == G_IO_IN) {
-> > +        ioc->read_coroutine = qemu_coroutine_self();
-> > +        ioc->read_ctx = ctx;
-> > +        read_ctx = ctx;
-> > +        io_read = qio_channel_restart_read;
-> > +
-> > +        /*
-> > +         * Thread safety: if the other coroutine is set and its AioContext
-> > +         * match ours, then there is mutual exclusion between read and write
-> 
-> matches
-> 
-> > +         * because they share a single thread and it's safe to set both read
-> > +         * and write fd handlers here. If the AioContext does not match ours,
-> > +         * then both threads may run in parallel but there is no shared state
-> > +         * to worry about.
-> > +         */
-> > +        if (ioc->write_coroutine && ioc->write_ctx == ctx) {
-> > +            write_ctx = ctx;
-> > +            io_write = qio_channel_restart_write;
-> > +        }
-> > +    } else if (condition == G_IO_OUT) {
-> > +        ioc->write_coroutine = qemu_coroutine_self();
-> > +        ioc->write_ctx = ctx;
-> > +        write_ctx = ctx;
-> > +        io_write = qio_channel_restart_write;
-> > +        if (ioc->read_coroutine && ioc->read_ctx == ctx) {
-> > +            read_ctx = ctx;
-> > +            io_read = qio_channel_restart_read;
-> > +        }
-> > +    } else {
-> > +        abort();
-> > +    }
-> > +
-> > +    qio_channel_set_aio_fd_handler(ioc, read_ctx, io_read,
-> > +            write_ctx, io_write, ioc);
-> > +}
-> > +
-> 
-> With those minor fixes,
-> 
-> Reviewed-by: Eric Blake <eblake@redhat.com>
+> virt-8.1 then
 
-Acked-by: Daniel P. Berrangé <berrange@redhat.com>
+Passes for virt, virt-8.1 and virt-8.0 machines.
 
-Eric, feel free to merge the two io subsystem changes at the same time
-as the NBD changes.
+./code/qemu/build/aarch64-softmmu/qemu-system-aarch64 \
+  -machine virt-8.0 \
+  -m 4096  \
+  -cpu neoverse-n1 \
+  -smp 2 \
+  -drive if=pflash,format=raw,file=QEMU_EFI.fd \
+  -drive if=pflash,format=raw,file=QEMU_EFI-vars.fd \
+-drive file=fat:rw:$PWD/disks/virtual/,format=raw \
+-device pcie-root-port,id=root30,chassis=30,slot=0 \
+-device igb,bus=root30 \
+  -device qemu-xhci,id=usb \
+  -device bochs-display \
+  -device e1000e \
+-nographic \
+  -usb \
+  -device usb-kbd \
+  -device usb-tablet \
+  -monitor telnet::45454,server,nowait \
+  -serial stdio
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
