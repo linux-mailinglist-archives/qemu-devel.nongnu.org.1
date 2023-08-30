@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE6C78D4E2
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 988AF78D4E1
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:46:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHhb-0000Jx-FZ; Wed, 30 Aug 2023 05:41:31 -0400
+	id 1qbHhc-0000go-ET; Wed, 30 Aug 2023 05:41:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHhF-0008VP-LA
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:09 -0400
+ id 1qbHhK-0000TD-5L
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHhD-0001Tf-H2
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:09 -0400
+ id 1qbHhH-0001Tu-Mf
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388467;
+ s=mimecast20190719; t=1693388471;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6X7vAMagRhJo2WUw26kDDjrIxpoTT6nK6oaTa2aRhs4=;
- b=E4iKNzbqLU+qh16NgBDLO55NlKzdd+xpHjwG0g9FboEwsBYNGFSgTZhqN6NhSyzk5C+j3T
- TVHoiOe/0+gWAckwcNtzwR/Mm5l+wfQ/5LHbKYobEy3dyyWFAXEPl92cUglO+EsVQEuvAY
- mXYpxxg92Pm8yBxdbJEAw8pF5zizz3E=
+ bh=bcP8Jbb6P94GlnsCHtBb+7ml3WM/0XgijhwvUrfnjbE=;
+ b=DQmErIqpVOyWMBjcb0qshTS+xn5nI16ht/de9rDvmvwpt4/GbLm6I53tfDWn5DsoAp4LKg
+ 8d7nNuGaNI/QLSeuenNYozeREHcDs7Ta2FK0Jqk89/5haTPmKcthCqvsZkP229Daqr0t6C
+ zZwvxnWFY83M3mxmhik8FB3ru8/74C0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-450-1hiqTk1NOy2qzgskJEKmcQ-1; Wed, 30 Aug 2023 05:41:05 -0400
-X-MC-Unique: 1hiqTk1NOy2qzgskJEKmcQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-38-E8X14ua8OiK8rJKi7CIhUg-1; Wed, 30 Aug 2023 05:41:09 -0400
+X-MC-Unique: E8X14ua8OiK8rJKi7CIhUg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 051B98022E4
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:41:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26F9F806007
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:41:09 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EF6E1140E96E;
- Wed, 30 Aug 2023 09:41:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 041B9C15BAE;
+ Wed, 30 Aug 2023 09:41:07 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 35/67] ui/console: declare console types in console.h
-Date: Wed, 30 Aug 2023 13:38:09 +0400
-Message-ID: <20230830093843.3531473-36-marcandre.lureau@redhat.com>
+Subject: [PATCH 36/67] ui/console: use QEMU_PIXMAN_COLOR helpers
+Date: Wed, 30 Aug 2023 13:38:10 +0400
+Message-ID: <20230830093843.3531473-37-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -82,103 +82,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-We are going to split the console.c unit next, and implement
-separately. But we need to check the underlying type in various places.
+QEMU_RGB macro is actually defining a pixman color. Make this explicit
+in the macro name. Move it to qemu-pixman.h so it can be used elsewhere,
+as done in the following patch. Finally, define
+QEMU_PIXMAN_COLOR_{BLACK,GRAY}, to avoid need to look up the VGA color
+table from the QemuConsole placeholder surface rendering.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/ui/console.h | 25 +++++++++++++++++++++----
- ui/console.c         | 15 ---------------
- 2 files changed, 21 insertions(+), 19 deletions(-)
+ include/ui/qemu-pixman.h |  6 ++++++
+ ui/console.c             | 39 ++++++++++++++++++---------------------
+ 2 files changed, 24 insertions(+), 21 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 465f0f93a0..0f7f50deaf 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -12,6 +12,27 @@
- # include "ui/shader.h"
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index ce4518e4de..51f8709327 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -47,6 +47,12 @@
+ # define PIXMAN_LE_x8r8g8b8   PIXMAN_x8r8g8b8
  #endif
  
-+#define TYPE_QEMU_CONSOLE "qemu-console"
-+OBJECT_DECLARE_TYPE(QemuConsole, QemuConsoleClass, QEMU_CONSOLE)
++#define QEMU_PIXMAN_COLOR(r, g, b)                                               \
++    { .red = r << 8, .green = g << 8, .blue = b << 8, .alpha = 0xffff }
 +
-+#define TYPE_QEMU_GRAPHIC_CONSOLE "qemu-graphic-console"
-+OBJECT_DECLARE_SIMPLE_TYPE(QemuGraphicConsole, QEMU_GRAPHIC_CONSOLE)
++#define QEMU_PIXMAN_COLOR_BLACK QEMU_PIXMAN_COLOR(0x00, 0x00, 0x00)
++#define QEMU_PIXMAN_COLOR_GRAY QEMU_PIXMAN_COLOR(0xaa, 0xaa, 0xaa)
 +
-+#define TYPE_QEMU_TEXT_CONSOLE "qemu-text-console"
-+OBJECT_DECLARE_SIMPLE_TYPE(QemuTextConsole, QEMU_TEXT_CONSOLE)
-+
-+#define TYPE_QEMU_FIXED_TEXT_CONSOLE "qemu-fixed-text-console"
-+OBJECT_DECLARE_SIMPLE_TYPE(QemuFixedTextConsole, QEMU_FIXED_TEXT_CONSOLE)
-+
-+#define QEMU_IS_GRAPHIC_CONSOLE(c) \
-+    object_dynamic_cast(OBJECT(c), TYPE_QEMU_GRAPHIC_CONSOLE)
-+
-+#define QEMU_IS_TEXT_CONSOLE(c) \
-+    object_dynamic_cast(OBJECT(c), TYPE_QEMU_TEXT_CONSOLE)
-+
-+#define QEMU_IS_FIXED_TEXT_CONSOLE(c) \
-+    object_dynamic_cast(OBJECT(c), TYPE_QEMU_FIXED_TEXT_CONSOLE)
-+
- /* keyboard/mouse support */
+ /* -------------------------------------------------------------------- */
  
- #define MOUSE_EVENT_LBUTTON 0x01
-@@ -112,10 +133,6 @@ void console_handle_touch_event(QemuConsole *con,
-                                 Error **errp);
- /* consoles */
- 
--#define TYPE_QEMU_CONSOLE "qemu-console"
--OBJECT_DECLARE_TYPE(QemuConsole, QemuConsoleClass, QEMU_CONSOLE)
--
--
- struct QemuConsoleClass {
-     ObjectClass parent_class;
- };
+ typedef struct PixelFormat {
 diff --git a/ui/console.c b/ui/console.c
-index 3d884956b7..ed9e7137b8 100644
+index ed9e7137b8..88e37eaff3 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -106,13 +106,8 @@ typedef struct QemuGraphicConsole {
+@@ -363,29 +363,26 @@ static void vga_bitblt(QemuConsole *con,
  
- typedef QemuConsoleClass QemuGraphicConsoleClass;
+ #include "vgafont.h"
  
--#define TYPE_QEMU_GRAPHIC_CONSOLE "qemu-graphic-console"
--OBJECT_DECLARE_SIMPLE_TYPE(QemuGraphicConsole, QEMU_GRAPHIC_CONSOLE)
- OBJECT_DEFINE_TYPE(QemuGraphicConsole, qemu_graphic_console, QEMU_GRAPHIC_CONSOLE, QEMU_CONSOLE)
- 
--#define QEMU_IS_GRAPHIC_CONSOLE(c) \
--    object_dynamic_cast(OBJECT(c), TYPE_QEMU_GRAPHIC_CONSOLE)
+-#define QEMU_RGB(r, g, b)                                               \
+-    { .red = r << 8, .green = g << 8, .blue = b << 8, .alpha = 0xffff }
 -
- typedef struct QemuTextConsole {
-     QemuConsole parent;
+ static const pixman_color_t color_table_rgb[2][8] = {
+     {   /* dark */
+-        [QEMU_COLOR_BLACK]   = QEMU_RGB(0x00, 0x00, 0x00),  /* black */
+-        [QEMU_COLOR_BLUE]    = QEMU_RGB(0x00, 0x00, 0xaa),  /* blue */
+-        [QEMU_COLOR_GREEN]   = QEMU_RGB(0x00, 0xaa, 0x00),  /* green */
+-        [QEMU_COLOR_CYAN]    = QEMU_RGB(0x00, 0xaa, 0xaa),  /* cyan */
+-        [QEMU_COLOR_RED]     = QEMU_RGB(0xaa, 0x00, 0x00),  /* red */
+-        [QEMU_COLOR_MAGENTA] = QEMU_RGB(0xaa, 0x00, 0xaa),  /* magenta */
+-        [QEMU_COLOR_YELLOW]  = QEMU_RGB(0xaa, 0xaa, 0x00),  /* yellow */
+-        [QEMU_COLOR_WHITE]   = QEMU_RGB(0xaa, 0xaa, 0xaa),  /* white */
++        [QEMU_COLOR_BLACK]   = QEMU_PIXMAN_COLOR_BLACK,
++        [QEMU_COLOR_BLUE]    = QEMU_PIXMAN_COLOR(0x00, 0x00, 0xaa),  /* blue */
++        [QEMU_COLOR_GREEN]   = QEMU_PIXMAN_COLOR(0x00, 0xaa, 0x00),  /* green */
++        [QEMU_COLOR_CYAN]    = QEMU_PIXMAN_COLOR(0x00, 0xaa, 0xaa),  /* cyan */
++        [QEMU_COLOR_RED]     = QEMU_PIXMAN_COLOR(0xaa, 0x00, 0x00),  /* red */
++        [QEMU_COLOR_MAGENTA] = QEMU_PIXMAN_COLOR(0xaa, 0x00, 0xaa),  /* magenta */
++        [QEMU_COLOR_YELLOW]  = QEMU_PIXMAN_COLOR(0xaa, 0xaa, 0x00),  /* yellow */
++        [QEMU_COLOR_WHITE]   = QEMU_PIXMAN_COLOR_GRAY,
+     },
+     {   /* bright */
+-        [QEMU_COLOR_BLACK]   = QEMU_RGB(0x00, 0x00, 0x00),  /* black */
+-        [QEMU_COLOR_BLUE]    = QEMU_RGB(0x00, 0x00, 0xff),  /* blue */
+-        [QEMU_COLOR_GREEN]   = QEMU_RGB(0x00, 0xff, 0x00),  /* green */
+-        [QEMU_COLOR_CYAN]    = QEMU_RGB(0x00, 0xff, 0xff),  /* cyan */
+-        [QEMU_COLOR_RED]     = QEMU_RGB(0xff, 0x00, 0x00),  /* red */
+-        [QEMU_COLOR_MAGENTA] = QEMU_RGB(0xff, 0x00, 0xff),  /* magenta */
+-        [QEMU_COLOR_YELLOW]  = QEMU_RGB(0xff, 0xff, 0x00),  /* yellow */
+-        [QEMU_COLOR_WHITE]   = QEMU_RGB(0xff, 0xff, 0xff),  /* white */
++        [QEMU_COLOR_BLACK]   = QEMU_PIXMAN_COLOR_BLACK,
++        [QEMU_COLOR_BLUE]    = QEMU_PIXMAN_COLOR(0x00, 0x00, 0xff),  /* blue */
++        [QEMU_COLOR_GREEN]   = QEMU_PIXMAN_COLOR(0x00, 0xff, 0x00),  /* green */
++        [QEMU_COLOR_CYAN]    = QEMU_PIXMAN_COLOR(0x00, 0xff, 0xff),  /* cyan */
++        [QEMU_COLOR_RED]     = QEMU_PIXMAN_COLOR(0xff, 0x00, 0x00),  /* red */
++        [QEMU_COLOR_MAGENTA] = QEMU_PIXMAN_COLOR(0xff, 0x00, 0xff),  /* magenta */
++        [QEMU_COLOR_YELLOW]  = QEMU_PIXMAN_COLOR(0xff, 0xff, 0x00),  /* yellow */
++        [QEMU_COLOR_WHITE]   = QEMU_PIXMAN_COLOR(0xff, 0xff, 0xff),  /* white */
+     }
+ };
  
-@@ -139,26 +134,16 @@ typedef struct QemuTextConsole {
+@@ -1520,8 +1517,8 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
+                                                 const char *msg)
+ {
+     DisplaySurface *surface = qemu_create_displaysurface(w, h);
+-    pixman_color_t bg = color_table_rgb[0][QEMU_COLOR_BLACK];
+-    pixman_color_t fg = color_table_rgb[0][QEMU_COLOR_WHITE];
++    pixman_color_t bg = QEMU_PIXMAN_COLOR_BLACK;
++    pixman_color_t fg = QEMU_PIXMAN_COLOR_GRAY;
+     pixman_image_t *glyph;
+     int len, x, y, i;
  
- typedef QemuConsoleClass QemuTextConsoleClass;
- 
--#define TYPE_QEMU_TEXT_CONSOLE "qemu-text-console"
--OBJECT_DECLARE_SIMPLE_TYPE(QemuTextConsole, QEMU_TEXT_CONSOLE)
- OBJECT_DEFINE_TYPE(QemuTextConsole, qemu_text_console, QEMU_TEXT_CONSOLE, QEMU_CONSOLE)
- 
--#define QEMU_IS_TEXT_CONSOLE(c) \
--    object_dynamic_cast(OBJECT(c), TYPE_QEMU_TEXT_CONSOLE)
--
- typedef struct QemuFixedTextConsole {
-     QemuTextConsole parent;
- } QemuFixedTextConsole;
- 
- typedef QemuTextConsoleClass QemuFixedTextConsoleClass;
- 
--#define TYPE_QEMU_FIXED_TEXT_CONSOLE "qemu-fixed-text-console"
--OBJECT_DECLARE_SIMPLE_TYPE(QemuFixedTextConsole, QEMU_FIXED_TEXT_CONSOLE)
- OBJECT_DEFINE_TYPE(QemuFixedTextConsole, qemu_fixed_text_console, QEMU_FIXED_TEXT_CONSOLE, QEMU_TEXT_CONSOLE)
- 
--#define QEMU_IS_FIXED_TEXT_CONSOLE(c) \
--    object_dynamic_cast(OBJECT(c), TYPE_QEMU_FIXED_TEXT_CONSOLE)
--
- struct VCChardev {
-     Chardev parent;
-     QemuTextConsole *console;
 -- 
 2.41.0
 
