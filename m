@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C63D78DEBF
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 22:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A726E78E081
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 22:22:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbRMH-0000PA-Uk; Wed, 30 Aug 2023 16:00:10 -0400
+	id 1qbRg6-0006dW-Rc; Wed, 30 Aug 2023 16:20:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+95b5e436ce2346f297cf+7311+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qbRMF-0000DH-7S
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:00:07 -0400
+ id 1qbRg1-0006dK-1v
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:20:33 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+95b5e436ce2346f297cf+7311+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qbRMB-0002Ai-W3
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:00:06 -0400
+ id 1qbRfx-0006Wf-8g
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 16:20:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
  From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
  Content-Description:In-Reply-To:References;
- bh=dTH3sSJczab8rqZQYOKRM5oagEGFN+P/wiIToNru6QQ=; b=BeJSGSsBDvrzsaaG0C9tCIrEOI
- JeYJWuAABlJV8wFvN+dntCvxhNkZxQK/wmL5xgATHPMJqtl849Yk/y/ipYwErWv2JhX5J5II9058p
- +oE9NIFHzExLQ/Q2IudkqZExJ0wgJTI6QpNgEvhaU/t5rfil6NRnlJI6O6mBmD5/BsKJWSYfXzMX1
- dOCQKhvfpqDu/307F/cXdgqv63AJt5biJyAQZH6UbDkrTW/G06HT2gWbBOLaegnkCZxtzcNFjiFdb
- X3o0nmEtzO/PKjq2ThG42GkQ+4swF4+Txbhui71N3B5xByKVkI7Lb4tYsGkGsoo5TxjyhdAjPuexV
- J8dk9rTA==;
+ bh=ZoIy3PQeG3cfnCQbvZ9kpnx7SV/Cye4yXMXdgyKaPio=; b=ndvmTj4mGcbxYD948Y1Qx7KUR3
+ WzxvCu2ajTH38zwuy5fbBv4ESK8Z0+GMM3anx1s11LnYs9LdCcbSwQ0Wr0QgOmNTMr2nbvlFcjUXX
+ JXKPhsAiblxbCDYpDDD9UaoQazrDPWF4b9gma8jTSjL5axIgJKZTxp55+s8MBQfG3EO2q9z8nY+d5
+ A7EWquheAfopj8BdCMshJrN32MUFm/EFgUcdkn6r+aaB2cp5PBob4Gyuqbx/voDwUD6a3IIwOoD+c
+ zEBLXbAC+lYBkg564sRb3rXs0nBcxCQ+yEuzm5J9JED2w7b6dbMCrYLEgd9TNRVXy+wEqGEvp7iU2
+ p5Ah76zQ==;
 Received: from [2001:8b0:10b:5:f75b:6505:1165:4f9a]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qbRLu-00EgGt-D9; Wed, 30 Aug 2023 19:59:46 +0000
-Message-ID: <112a09643b8191c4eae7d92fa247a861ab90a9ee.camel@infradead.org>
-Subject: [PATCH] hw/isa/ich9: Add comment on imperfect emulation of PIC vs.
- I/O APIC routing
+ id 1qbRfq-00ElrL-3d; Wed, 30 Aug 2023 20:20:22 +0000
+Message-ID: <6c1f2ced5b329a86a5c6846fb8530f2f1a845a44.camel@infradead.org>
+Subject: [RFC PATCH] hw/timer/hpet: fix IRQ routing in legacy support mode
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Joel Upham <jupham125@gmail.com>
-Date: Wed, 30 Aug 2023 20:59:43 +0100
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>
+Date: Wed, 30 Aug 2023 21:20:21 +0100
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-Lf6iGIpTmPVdVojSpYNI"
+ boundary="=-+u715UetTkKgB4I2TNSU"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -75,60 +76,96 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-Lf6iGIpTmPVdVojSpYNI
+--=-+u715UetTkKgB4I2TNSU
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-As noted in the comment, the PCI INTx lines are supposed to be routed
-to *both* the PIC and the I/O APIC. It's just that we don't cope with
-the concept of an IRQ being asserted to two *different* pins on the
-two irqchips.
+The interrupt from timer 0 in legacy mode is supposed to go to IRQ 0 on
+the i8259 and IRQ 2 on the I/O APIC. The generic x86 GSI handling can't
+cope with IRQ numbers differing between the two chips (despite it also
+being the case for PCI INTx routing), so add a special case for the HPET.
 
-So we have this hack of routing to I/O APIC only if the PIRQ routing to
-the PIC is disabled. Which seems to work well enough, even when I try
-hard to break it with kexec. But should be explicitly documented and
-understood.
+IRQ 2 isn't valid on the i8259; it's the cascade IRQ and would be
+interpreted as spurious interrupt on the secondary PIC. So we can fix
+up all attempts to deliver IRQ2, to actually deliver to IRQ0 on the PIC.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/isa/lpc_ich9.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+It ain't ever so pretty, but it's prettier than the INTx routing hack
+that I just documented and at least this one doesn't rely on guest
+behaviour.
 
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index 9c47a2f6c7..399fd04b6b 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -304,6 +304,21 @@ static PCIINTxRoute ich9_route_intx_pin_to_irq(void *o=
-paque, int pirq_pin)
-             route.irq =3D -1;
-         }
-     } else {
+Do we have tests for HPET interrupt delivery that can be extended to
+cover this?
+
+
+ hw/i386/x86.c   | 19 +++++++++++++++----
+ hw/timer/hpet.c |  5 ++++-
+ 2 files changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index a88a126123..0d2c74f2d9 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -602,13 +602,24 @@ DeviceState *cpu_get_current_apic(void)
+ void gsi_handler(void *opaque, int n, int level)
+ {
+     GSIState *s =3D opaque;
+-
++    int i8259_pin =3D n;
+     trace_x86_gsi_interrupt(n, level);
+     switch (n) {
+-    case 0 ... ISA_NUM_IRQS - 1:
+-        if (s->i8259_irq[n]) {
++    case 2:
 +        /*
-+         * Strictly speaking, this is wrong. The PIRQ should be routed
-+         * to *both* the I/O APIC and the PIC, on different pins. The
-+         * I/O APIC has a fixed mapping to IRQ16-23, while the PIC is
-+         * routed according to the PIRQx_ROUT configuration. But QEMU
-+         * doesn't (yet) cope with the concept of pin numbers differing
-+         * between PIC and I/O APIC, and neither does the in-kernel KVM
-+         * irqchip support. So we route to the I/O APIC *only* if the
-+         * routing to the PIC is disabled in the PIRQx_ROUT settings.
-+         *
-+         * This seems to work even if we boot a Linux guest with 'noapic'
-+         * to make it use the legacy PIC, and then kexec directly into a
-+         * new kernel which uses the I/O APIC. The new kernel explicitly
-+         * disables the PIRQ routing even though it doesn't need to care.
++         * Special case for HPET legacy mode, which is defined as routing =
+HPET
++         * timer 0 to IRQ2 of the I/O APIC and IRQ0 of the i8259 PIC. Sinc=
+e
++         * IRQ2 on the i8259 is the cascade, it isn't otherwise valid so w=
+e
++         * handle it via this special case.
 +         */
-         route.irq =3D ich9_pirq_to_gsi(pirq_pin);
++        i8259_pin =3D 0;
++        /* fall through */
++    case 0:
++    case 1:
++    case 3 ... ISA_NUM_IRQS - 1:
++        if (s->i8259_irq[i8259_pin]) {
+             /* Under KVM, Kernel will forward to both PIC and IOAPIC */
+-            qemu_set_irq(s->i8259_irq[n], level);
++            qemu_set_irq(s->i8259_irq[i8259_pin], level);
+         }
+         /* fall through */
+     case ISA_NUM_IRQS ... IOAPIC_NUM_PINS - 1:
+diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+index 6998094233..9f740ffdee 100644
+--- a/hw/timer/hpet.c
++++ b/hw/timer/hpet.c
+@@ -196,8 +196,11 @@ static void update_irq(struct HPETTimer *timer, int se=
+t)
+         /* if LegacyReplacementRoute bit is set, HPET specification requir=
+es
+          * timer0 be routed to IRQ0 in NON-APIC or IRQ2 in the I/O APIC,
+          * timer1 be routed to IRQ8 in NON-APIC or IRQ8 in the I/O APIC.
++         *
++         * There is a special case in the x86 gsi_handler() which converts
++         * IRQ2 into IRQ0 for the i8259 PIC and makes this work correctly.
+          */
+-        route =3D (timer->tn =3D=3D 0) ? 0 : RTC_ISA_IRQ;
++        route =3D (timer->tn =3D=3D 0) ? 2 : RTC_ISA_IRQ;
+     } else {
+         route =3D timer_int_route(timer);
      }
-=20
 --=20
 2.34.1
 
 
 
---=-Lf6iGIpTmPVdVojSpYNI
+--=-+u715UetTkKgB4I2TNSU
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -220,25 +257,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODMwMTk1OTQzWjAvBgkqhkiG9w0BCQQxIgQgNuhcW00l
-AJX/fzFjogxA7JLNu8SZ6DI5R5D3QYDmEvAwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwODMwMjAyMDIxWjAvBgkqhkiG9w0BCQQxIgQgv7EZOwSo
+XaKzKnlZAWdLUMnUPUbqS/kkhjpmRiaJENYwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBKgIifaeZu+N1TJdznRw3tKjYEbSHKHAq4
-JiyfJMOPypAmAc5iSKWB56ad3I2BXd6EFcmyxtK02/oYH9rdeNFf2MCfLppQB2usnOFIu8L6mcus
-4HT2Rs1yKELxvoAcxbcsxwDlbLtZQy+binEOZFEq3ZuMxFKMytoffwOvWhL+dbTMgGFu26CaBZhj
-T0ZE7BXWQNL79/sieVjmnrDvyunWWArilGIDvk4WRpUJwuxeDtvJnJpXSAXsmi0AWoUYaRDMP+v4
-OeAQim3uFO/kT20jE8ucBCxHUrWfbjjX5Qh2kisySBmMEPZdj45iYD32c+o9KEZHA90Tcw2hklP1
-LZCmGC+JXQT2FswaRlA2NJWxYKnbGkMzG1PWQ7IIlUIKQAbVJrGyjiBuxioRdYavvgpGfW1I5fFe
-dBygE0ZgJS0GUuZfZlH4PrNSYpN+3ISWZPHY+fz9A5LHy2VxdcPXJ/KBlrEYrbE9bsscOMuCbWgL
-RIGHxIPRbtv8cw6SFBCMDPqejD1PhJKnvn3XZOrkGyuqAXO/jmU8NERJYQML0Ogesi+Dbxrv0iSG
-eXpFn4yqANaxIyUi2gSNF5XfiUFVDvD9ALo6dEzwKGmc5dW55jhHnfRo2opuk6a5oT3heak7uI3T
-QXD7P6k9Q3czOOqdM+qkZoYwT+iHpyALAk4vpSWBUgAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAMogpxpgKbu3AU0YROfgY4rHRpylSpodDm
+foK8BPa8yi7AIQ76IsaluBRfaaFom0GJGsayoTFJcCR7QQWP2F5ktNMvuUu8GDnzRPCfJVtcMFi9
+XchEPXe/ZnmJ718jYXgiSO5tlImzRrfDJb3KlNdwL9mccDP01EcfJud9v1j4kBMA5fWQXsLShx3Z
+RB7Y3tDYcui/Wf+nMFUMxujzGF80cIYgO1n2pdj+3prPYU1A+P5UWao27+2cH2Rt0i+ku1Bp2ms9
+lrMiMhIzbW4xPM97l4rhABl7RALuR07Dktha4geDLP4IkHh7mAdxPHDcH86LpP51MmfxWC0ApvtA
+2EMT3MY74ym7OX5kfndg+V2eKz9ykYQCYg0o8ubt5FxvU+qZQmbz+nv5vaYbU5XffukQsuF5OJJK
+/dvNuhEcdY8fHCFRAAZDKQtxg+MpAlc7UEYLQ5Lt4rGzA77l+NYpQwBu81GebYgvfXhrtx3RK5Mv
+PoDniL/vsRti9ChfkIEL5w9mZ6IpyyIjHzkFKGnaKwi2xgpMq8xIYuOtU48pPLG6kLn1jxxm7s4W
+TD+iCRMgTdjBTqWXHSCuOdP0fmBJOXXj0fAgLo1tTsTCKaQNKeSJu3yK0vPsrozjS7MrO1RQ974s
+MdEXZohAqYIjIt79NS4/YdS58E44bzmL0MFHa2FyxAAAAAAAAA==
 
 
---=-Lf6iGIpTmPVdVojSpYNI--
+--=-+u715UetTkKgB4I2TNSU--
 
