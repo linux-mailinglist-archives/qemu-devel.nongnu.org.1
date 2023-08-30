@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1645378E2F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 01:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C3278E32E
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 01:23:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbUAi-0001Et-Uq; Wed, 30 Aug 2023 19:00:24 -0400
+	id 1qbUWb-0002Hg-Ie; Wed, 30 Aug 2023 19:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbUAf-0001E6-DX
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:00:22 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbUAc-0003nr-5T
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:00:21 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68a41031768so150769b3a.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 16:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693436417; x=1694041217; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=I7SSduhUWQv7yo8/F0rTBaamEil6mHudIQ5a9xL0saM=;
- b=ltuAJJKFkCHrnibMFOBXkG4y4dzsEvxRE6HYNeFRF1FLnMCwUt6DUv3PaPIZiEXdtg
- dlCotQBtirj6wnQQzuR7ZCTomGpZgpo/t7RJ53MWAghgkWvvdgZWu/5ItlmzJY8THej6
- Gu+FKSR5m85qIag5kbsQ3XlX6CoDeGbmQZlUuCacyfHPPtjoES/VTTBkAvuz8av0A5De
- miHSwZe6DeW5H8E7FUy/cRevhaG/AWyGXruF+MBNyV24pvnAaLlLqLLnt1FkFY1ZdyL5
- rXzyk2iEDAi/daeUWhXs/5iPhv26iPBjBW7VAV5hww1oW+adXtacREodpEZCuPaiiazW
- 0Mxg==
+ (Exim 4.90_1) (envelope-from <afaria@redhat.com>) id 1qbUWY-0002F8-DA
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:22:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <afaria@redhat.com>) id 1qbUWV-00080o-Vr
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 19:22:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693437774;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=Tsy3LmzPrdu5P0qiQOX33Am8dWyeQt7PGfPhY+UZaco=;
+ b=fjtDEKmQLJp69ehecXAl0nzJYgE37mC5OyF+9ARb347A9Acrl6JS8lpbzocRSLtN4/AxUB
+ 7/HHgzZpz3QH4EnS4qGiv0sXRhh/0eKduv+mAgxAfv+Fcq1K0N50kWvCl8cUepKytRe8cu
+ IzqbvKRkUDhB3n8nPB99noDnOBY0Zh0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-r3ju4MTDPp-2r15uCY_eBw-1; Wed, 30 Aug 2023 19:22:53 -0400
+X-MC-Unique: r3ju4MTDPp-2r15uCY_eBw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-52be5604cdeso106949a12.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 16:22:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693436417; x=1694041217;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I7SSduhUWQv7yo8/F0rTBaamEil6mHudIQ5a9xL0saM=;
- b=Sh0cGGfbvRGhU5RR7eCp2w6lmsMWKgHK/QNYLJZRbmwc7OfKGyO6fD997Kmw73//ph
- N92VSrjWrexvAZ5N9pqMzrCr9aFX1rgG3gSMUIDrHK8UDYG8isC6eaEQZt1zHDKpji3F
- JB6B000D+/ZmDLJ/TcDWmR245hfncl6ZLsWUrXQ3y2YAwrADcKIWesJUGTHDfJhjdbXX
- ncbn4YgmIqdeGqboyeESWyuCZ28OZqkwpemyR8OF+wTFyaQVjMp6qNwQ5wQkz05AYq5P
- PepbnW3bUBaGYyP9N9c8zfi5BRtMq+VEZ8758+zqTcpd+x/H5vxbkyecctF8fo9ux8ua
- Q24w==
-X-Gm-Message-State: AOJu0YwBQudauZ+LSgUqHMHV/erIYniBY+Gcgsp3Mhg2E8tByX9rmeP7
- YdZc9S+3Va3yk9wXSasUCe3rJ81wbF6i5rURVG4=
-X-Google-Smtp-Source: AGHT+IEyuvp0r1JvnnxgO9BE79vsJqxJFUxO/hUVNuUzCjObuLDJJGj5cGs2k5TLPm4scbJ5Wtr2yg==
-X-Received: by 2002:a05:6a20:4290:b0:14d:7130:7bb3 with SMTP id
- o16-20020a056a20429000b0014d71307bb3mr4387305pzj.13.1693436416753; 
- Wed, 30 Aug 2023 16:00:16 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- fm12-20020a056a002f8c00b00686b649cdd0sm95709pfb.86.2023.08.30.16.00.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 16:00:16 -0700 (PDT)
-Message-ID: <42b291ed-487b-e59f-d703-e3c406ab8044@linaro.org>
-Date: Wed, 30 Aug 2023 16:00:14 -0700
+ d=1e100.net; s=20221208; t=1693437771; x=1694042571;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Tsy3LmzPrdu5P0qiQOX33Am8dWyeQt7PGfPhY+UZaco=;
+ b=gZomNUEJ1Bg9JeUJFC2G9TtynBafyjrFclmli/J9Tu6wOlh3dnRlAgl/iwBWafbYI+
+ +Lb1/L4Ng4JvQ6kW1SU1zXTWOz6h1lNP4aJ6mZ917cTmUYaC0ESbUpxylcB/upKw0e7D
+ oniRoq1RcvwkQyxJrpov+kJZ8E6gJGXuGhjWnwL7w/grM9ULjFmMAWP+avQU4y0RJ1qN
+ pSJ/b3FdhXC2ts1RGYM/KuKMk+bID7Wif/yrkvs0Lyggk0smcWsHECrbZG55OCjiIF98
+ XbPCeD2Fq0SzsLSzxxltgqZdOJIihhNeaLmczOCEOs4fFHdwJoh3KHA7+T/Lecif2EW3
+ 7A4w==
+X-Gm-Message-State: AOJu0YznTB3XlukM29yfn2EYIDyyA2XLZpRiPW/NKR9YX8WsVoxaKBBS
+ Byu4q6OTRyZy10aJWPqnmO0zMUGAl52w8N0196KebCL7T45Pux1QRXRZVpLahtCN+krkiXZA+ux
+ QPhM8d9XIBp6Yx8XGyRuR8+hTzz2B1QcfSQU4AUHwhg==
+X-Received: by 2002:a05:6402:b11:b0:523:d1e0:7079 with SMTP id
+ bm17-20020a0564020b1100b00523d1e07079mr2686734edb.21.1693437771599; 
+ Wed, 30 Aug 2023 16:22:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8eoW3Hi+j/55wZMrl5/Mc+RkMFI35251SDVw61l4VBdwbEClooK1Ylv0l+fTVg5MAJX8iqnBNxTAPbrBluE0=
+X-Received: by 2002:a05:6402:b11:b0:523:d1e0:7079 with SMTP id
+ bm17-20020a0564020b1100b00523d1e07079mr2686719edb.21.1693437771207; Wed, 30
+ Aug 2023 16:22:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 31/48] target/loongarch: Implement xvsrlrn xvsrarn
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230830084902.2113960-1-gaosong@loongson.cn>
- <20230830084902.2113960-32-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230830084902.2113960-32-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Alberto Faria <afaria@redhat.com>
+Date: Thu, 31 Aug 2023 00:22:15 +0100
+Message-ID: <CAELaAXwZWmhmFzUXu01g+_nZY0eSaqUeLQqGxbFAG-xFhHRmCQ@mail.gmail.com>
+Subject: Announcing Subprovisioner, a qsd-powered k8s storage provider
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: qemu-block@nongnu.org, Vivek Goyal <vgoyal@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Alice Frosi <afrosi@redhat.com>, 
+ Alexander Wels <awels@redhat.com>, kvaps <kvapss@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=afaria@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,22 +88,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 01:48, Song Gao wrote:
-> This patch includes:
-> - XVSRLRN.{B.H/H.W/W.D};
-> - XVSRARN.{B.H/H.W/W.D};
-> - XVSRLRNI.{B.H/H.W/W.D/D.Q};
-> - XVSRARNI.{B.H/H.W/W.D/D.Q}.
-> 
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   target/loongarch/insns.decode                |  16 ++
->   target/loongarch/disas.c                     |  16 ++
->   target/loongarch/vec_helper.c                | 198 +++++++++++--------
->   target/loongarch/insn_trans/trans_lasx.c.inc |  16 ++
->   4 files changed, 161 insertions(+), 85 deletions(-)
+Hi all,
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+FYI, I recently released Subprovisioner [1], a
+qemu-storage-daemon-powered Kubernetes storage provider that enables
+users to provision block volumes backed by a single underlying shared
+file system. It works by storing those volumes as qcow2 images and
+exposing them as block devices using qemu-storage-daemon. This also
+allows it to support features like volume cloning and snapshots
+efficiently, by creating overlay images.
 
-r~
+A solution like this can be useful, for instance, when one would like
+to use a single big NFS share as storage for a Kubernetes cluster.
+It's also an interesting use case for qsd.
+
+Thanks,
+Alberto Faria
+
+[1] https://gitlab.com/subprovisioner/subprovisioner
+
 
