@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD3278D6C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9339678D6C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:00:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMec-0001wG-T4; Wed, 30 Aug 2023 10:58:46 -0400
+	id 1qbMg8-0003Y4-GZ; Wed, 30 Aug 2023 11:00:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=599fd62c5=graf@amazon.de>)
- id 1qbMea-0001vy-Nr; Wed, 30 Aug 2023 10:58:44 -0400
-Received: from smtp-fw-52003.amazon.com ([52.119.213.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=599fd62c5=graf@amazon.de>)
- id 1qbMeW-0001nm-Tm; Wed, 30 Aug 2023 10:58:44 -0400
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbMg4-0003Xn-9J
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:00:16 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbMfz-0002E6-PB
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:00:15 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-31c615eb6feso4786856f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1693407521; x=1724943521;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=r/HPMTJk6dp3XM/SXn8KqltP7i7cQN1WskDvy/MnlBE=;
- b=NT8C2WLuMZIS8SkZHJCLtbHmaylrntzgM/E+Aae5+BXxREGlBUy75UXk
- Xnxk45ofNJy1w+8zyt7pCaIsYwL9zLfUFB+WuASTU0tqzQ1L7igpKIFbS
- DLWx6CgDWjYPZLyfP2ZcihdTVVhLzFu1o6+6PXiMtgIgddLV7Pq7DRb9/ M=;
-X-IronPort-AV: E=Sophos;i="6.02,214,1688428800"; d="scan'208";a="605174950"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- email-inbound-relay-pdx-2c-m6i4x-fad5e78e.us-west-2.amazon.com) ([10.43.8.6])
- by smtp-border-fw-52003.iad7.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 14:58:35 +0000
-Received: from EX19MTAUWC001.ant.amazon.com
- (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
- by email-inbound-relay-pdx-2c-m6i4x-fad5e78e.us-west-2.amazon.com (Postfix)
- with ESMTPS id 72505A0AAA; Wed, 30 Aug 2023 14:58:33 +0000 (UTC)
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Wed, 30 Aug 2023 14:58:33 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Wed, 30 Aug
- 2023 14:58:30 +0000
-Message-ID: <9fbdcca3-e965-4879-9695-84bc5785c16e@amazon.com>
-Date: Wed, 30 Aug 2023 16:58:28 +0200
+ d=linaro.org; s=google; t=1693407610; x=1694012410; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/iSn/+nN1G0NOP7wm/QNt8uNHk4rJ74E0bfrkFLGaRc=;
+ b=viOrQh/A7sgAx4rShxr5reluJ524zcj7YS8rYewqJotSubn8eMbS8ycFs7mfp6ZXhl
+ c7u1PNS5AkRPUSiGvqIbXf9x1v2FgsMhikfO1efFmUKbCawCEFf375WDmgkGMphbSvMi
+ FMlTt22jTSIkcWKKi5tD45GK1hBrs7kr1u9ZQ2QuxRZ9SXCg6idPncLVMdLrX2Z4KDQc
+ LI1qSt92w82RHvWQV2i/G3NDkgQkE/3FFVH16WbKKsirL0yQs0tfM9aKpkpoDsw3wfPn
+ /UqrPTlhQER0TMKJ5H9K9rlkotGYzcquACJNFlBP49MkwbGXCBKGOQRXsV0r+vekUhez
+ DwDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693407610; x=1694012410;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=/iSn/+nN1G0NOP7wm/QNt8uNHk4rJ74E0bfrkFLGaRc=;
+ b=FJ81soVmjznPxqmAhrk0eJce2EZMqiPvf4sdE7ymqcaoLkqkXqHrQCb4w4mDbEn8nd
+ KqJHczTSDw/hJ4b+kcO3kdY4xHp8LPJ9FKhXioWwXPGvjE3S2nNYHutgN/GgI/8Rg3nb
+ 5rSVpoCycCDIdBG5UnHdTgJkLwgxJGv51PVDgCFLqX5W9b+x23/0jYhuDbk6LHOOOGZE
+ 61XJIn66Gymv3d62ys/570tuz37WSJF2XOP/t159fMGfXGg2Ir1knEkTf14bEZg24aCZ
+ LV9O+NNINFF3HbPZm3LQhG2nlluxqp4T5okquHMWmTRrBazIKhdgRhQdbUzunqvCpHCA
+ mOPg==
+X-Gm-Message-State: AOJu0Yx2rMZcvt8YZuL48kkjmH6FzsUsxNu7l8e28qwsRrLfdG1VQpxJ
+ W94Y/Unn/v7IMmqPDNOJpl0xNGKM88bcrQRYqS8=
+X-Google-Smtp-Source: AGHT+IH5CJtImvHb8C9z5rdGptYE/4HA39ZfQaG4SVLMUouhTKsAl+i0kYRroHF5MyiBoxwctd3Z4A==
+X-Received: by 2002:a5d:54c8:0:b0:30f:c5b1:23ef with SMTP id
+ x8-20020a5d54c8000000b0030fc5b123efmr2029482wrv.41.1693407609952; 
+ Wed, 30 Aug 2023 08:00:09 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ l1-20020a5d4101000000b0031c6ae19e27sm16773821wrp.99.2023.08.30.08.00.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Aug 2023 08:00:09 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 0B3481FFBB;
+ Wed, 30 Aug 2023 16:00:09 +0100 (BST)
+References: <20230818033648.8326-1-akihiko.odaki@daynix.com>
+ <20230818033648.8326-13-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH RESEND v5 12/26] gdbstub: Use GDBFeature for
+ GDBRegisterState
+Date: Wed, 30 Aug 2023 15:59:21 +0100
+In-reply-to: <20230818033648.8326-13-akihiko.odaki@daynix.com>
+Message-ID: <87v8cwr2x2.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/12] hw/vmapple/vmapple: Add vmapple machine type
-Content-Language: en-GB
-To: Bernhard Beschow <shentey@gmail.com>, <qemu-devel@nongnu.org>
-CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
- <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
- <hreitz@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-References: <20230614224038.86148-1-graf>
- <20230614225734.806-1-graf@amazon.com> <20230614225734.806-3-graf@amazon.com>
- <4854EBDC-AB24-45AD-A890-06382993F507@gmail.com>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <4854EBDC-AB24-45AD-A890-06382993F507@gmail.com>
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Precedence: Bulk
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=52.119.213.152;
- envelope-from=prvs=599fd62c5=graf@amazon.de; helo=smtp-fw-52003.amazon.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -88,79 +99,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ck9uIDIwLjA2LjIzIDE5OjM1LCBCZXJuaGFyZCBCZXNjaG93IHdyb3RlOgo+Cj4KPiBBbSAxNC4g
-SnVuaSAyMDIzIDIyOjU3OjM0IFVUQyBzY2hyaWViIEFsZXhhbmRlciBHcmFmIDxncmFmQGFtYXpv
-bi5jb20+Ogo+PiBBcHBsZSBkZWZpbmVzIGEgbmV3ICJ2bWFwcGxlIiBtYWNoaW5lIHR5cGUgYXMg
-cGFydCBvZiBpdHMgcHJvcHJpZXRhcnkKPj4gbWFjT1MgVmlydHVhbGl6YXRpb24uRnJhbWV3b3Jr
-IHZtbS4gVGhpcyBtYWNoaW5lIHR5cGUgaXMgc2ltaWxhciB0byB0aGUKPj4gdmlydCBvbmUsIGJ1
-dCB3aXRoIHN1YnRsZSBkaWZmZXJlbmNlcyBpbiBiYXNlIGRldmljZXMsIGEgZmV3IHNwZWNpYWwK
-Pj4gdm1hcHBsZSBkZXZpY2UgYWRkaXRpb25zIGFuZCBhIHZhc3RseSBkaWZmZXJlbnQgYm9vdCBj
-aGFpbi4KPj4KPj4gVGhpcyBwYXRjaCByZWltcGxlbWVudHMgdGhpcyBtYWNoaW5lIHR5cGUgaW4g
-UUVNVS4gVG8gdXNlIGl0LCB5b3UKPj4gaGF2ZSB0byBoYXZlIGEgcmVhZGlseSBpbnN0YWxsZWQg
-dmVyc2lvbiBvZiBtYWNPUyBmb3IgVk1BcHBsZSwKPj4gcnVuIG9uIG1hY09TIHdpdGggLWFjY2Vs
-IGh2ZiwgcGFzcyB0aGUgVmlydHVhbGl6YXRpb24uRnJhbWV3b3JrCj4+IGJvb3Qgcm9tIChBVlBC
-b290ZXIpIGluIHZpYSAtYmlvcywgcGFzcyB0aGUgYXV4IGFuZCByb290IHZvbHVtZSBhcyBwZmxh
-c2gKPj4gYW5kIHBhc3MgYXV4IGFuZCByb290IHZvbHVtZSBhcyB2aXJ0aW8gZHJpdmVzLiBJbiBh
-ZGRpdGlvbiwgeW91IGFsc28KPj4gbmVlZCB0byBmaW5kIHRoZSBtYWNoaW5lIFVVSUQgYW5kIHBh
-c3MgdGhhdCBhcyAtTSB2bWFwcGxlLHV1aWQ9IHBhcmFtZXRlcjoKPj4KPj4gJCBxZW11LXN5c3Rl
-bS1hYXJjaDY0IC1hY2NlbCBodmYgLU0gdm1hcHBsZSx1dWlkPTB4MTIzNCAtbSA0RyBcCj4+ICAg
-ICAtYmlvcyAvU3lzdGVtL0xpYnJhcnkvRnJhbWV3b3Jrcy9WaXJ0dWFsaXphdGlvbi5mcmFtZXdv
-cmsvVmVyc2lvbnMvQS9SZXNvdXJjZXMvQVZQQm9vdGVyLnZtYXBwbGUyLmJpbgo+PiAgICAgLWRy
-aXZlIGZpbGU9YXV4LGlmPXBmbGFzaCxmb3JtYXQ9cmF3IFwKPj4gICAgIC1kcml2ZSBmaWxlPXJv
-b3QsaWY9cGZsYXNoLGZvcm1hdD1yYXcgXAo+PiAgICAgLWRyaXZlIGZpbGU9YXV4LGlmPW5vbmUs
-aWQ9YXV4LGZvcm1hdD1yYXcgXAo+PiAgICAgLWRldmljZSB2aXJ0aW8tYmxrLXBjaSxkcml2ZT1h
-dXgseC1hcHBsZS10eXBlPTIgXAo+PiAgICAgLWRyaXZlIGZpbGU9cm9vdCxpZj1ub25lLGlkPXJv
-b3QsZm9ybWF0PXJhdyBcCj4+ICAgICAtZGV2aWNlIHZpcnRpby1ibGstcGNpLGRyaXZlPXJvb3Qs
-eC1hcHBsZS10eXBlPTEKPj4KPj4gV2l0aCBhbGwgdGhlc2UgaW4gcGxhY2UsIHlvdSBzaG91bGQg
-YmUgYWJsZSB0byBzZWUgbWFjT1MgYm9vdGluZwo+PiBzdWNjZXNzZnVsbHkuCj4gVGhpcyBkb2N1
-bWVudGF0aW9uIHNlZW1zIHZhbHVhYmxlIGZvciB0aGUgUUVNVSBtYW51YWwuIEJ1dCBBRkFJQ1Mg
-dGhlcmUgaXMgbm8gZG9jdW1lbnRhdGlvbiBsaWtlIHRoaXMgYWRkZWQgdG8gdGhlIFFFTVUgbWFu
-dWFsIGluIHRoaXMgc2VyaWVzLiBUaGlzIG1lYW5zIHRoYXQgaXQnbGwgZ2V0ICJsb3N0Ii4gSG93
-IGFib3V0IGFkZGluZyBpdCwgcG9zc2libHkgaW4gdGhpcyBwYXRjaD8KCgpUaGFua3MsIEkgbG92
-ZSB0aGUgaWRlYSA6KS4gTGV0IG1lIGRvIHRoYXQgZm9yIHYyIQoKCj4KPiBOb3RlIHRoYXQgSSdt
-IG5vdCBhYmxlIHRvIHRlc3QgdGhpcyBzZXJpZXMuIEknbSBqdXN0IHNlZWluZyB0aGUgdmFsdWFi
-bGUtaW5mb3JtYXRpb24taW4tdGhlLWNvbW1pdC1tZXNzYWdlLXdoaWNoLXdpbGwtZ2V0LWxvc3Qg
-cGF0dGVybi4KPgo+PiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kZXIgR3JhZiA8Z3JhZkBhbWF6b24u
-Y29tPgo+PiAtLS0KPj4gaHcvdm1hcHBsZS9LY29uZmlnICAgICB8ICAxOSArKwo+PiBody92bWFw
-cGxlL21lc29uLmJ1aWxkIHwgICAxICsKPj4gaHcvdm1hcHBsZS92bWFwcGxlLmMgICB8IDY2MSAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+PiAzIGZpbGVzIGNoYW5n
-ZWQsIDY4MSBpbnNlcnRpb25zKCspCj4+IGNyZWF0ZSBtb2RlIDEwMDY0NCBody92bWFwcGxlL3Zt
-YXBwbGUuYwo+Pgo+PiBkaWZmIC0tZ2l0IGEvaHcvdm1hcHBsZS9LY29uZmlnIGIvaHcvdm1hcHBs
-ZS9LY29uZmlnCj4+IGluZGV4IGJhMzdmYzViODEuLjdhMjM3NWRjOTUgMTAwNjQ0Cj4+IC0tLSBh
-L2h3L3ZtYXBwbGUvS2NvbmZpZwo+PiArKysgYi9ody92bWFwcGxlL0tjb25maWcKPj4gQEAgLTks
-MyArOSwyMiBAQCBjb25maWcgVk1BUFBMRV9DRkcKPj4KPj4gY29uZmlnIFZNQVBQTEVfUFZHCj4+
-ICAgICAgYm9vbAo+PiArCj4+ICtjb25maWcgVk1BUFBMRQo+PiArICAgIGJvb2wKPj4gKyAgICBk
-ZXBlbmRzIG9uIEFSTSAmJiBIVkYKPj4gKyAgICBkZWZhdWx0IHkgaWYgQVJNICYmIEhWRgo+PiAr
-ICAgIGltcGx5IFBDSV9ERVZJQ0VTCj4+ICsgICAgc2VsZWN0IEFSTV9HSUMKPj4gKyAgICBzZWxl
-Y3QgUExBVEZPUk1fQlVTCj4+ICsgICAgc2VsZWN0IFBDSV9FWFBSRVNTCj4+ICsgICAgc2VsZWN0
-IFBDSV9FWFBSRVNTX0dFTkVSSUNfQlJJREdFCj4+ICsgICAgc2VsZWN0IFBMMDExICMgVUFSVAo+
-PiArICAgIHNlbGVjdCBQTDAzMSAjIFJUQwo+PiArICAgIHNlbGVjdCBQTDA2MSAjIEdQSU8KPj4g
-KyAgICBzZWxlY3QgR1BJT19QV1IKPj4gKyAgICBzZWxlY3QgUFZQQU5JQ19NTUlPCj4+ICsgICAg
-c2VsZWN0IFZNQVBQTEVfQUVTCj4+ICsgICAgc2VsZWN0IFZNQVBQTEVfQkRJRgo+PiArICAgIHNl
-bGVjdCBWTUFQUExFX0NGRwo+PiArICAgIHNlbGVjdCBWTUFQUExFX1BWRwo+PiBkaWZmIC0tZ2l0
-IGEvaHcvdm1hcHBsZS9tZXNvbi5idWlsZCBiL2h3L3ZtYXBwbGUvbWVzb24uYnVpbGQKPj4gaW5k
-ZXggMzFmZWM4NzE1Ni4uZDczMjg3M2QzNSAxMDA2NDQKPj4gLS0tIGEvaHcvdm1hcHBsZS9tZXNv
-bi5idWlsZAo+PiArKysgYi9ody92bWFwcGxlL21lc29uLmJ1aWxkCj4+IEBAIC0yLDMgKzIsNCBA
-QCBzb2Z0bW11X3NzLmFkZCh3aGVuOiAnQ09ORklHX1ZNQVBQTEVfQUVTJywgIGlmX3RydWU6IGZp
-bGVzKCdhZXMuYycpKQo+PiBzb2Z0bW11X3NzLmFkZCh3aGVuOiAnQ09ORklHX1ZNQVBQTEVfQkRJ
-RicsIGlmX3RydWU6IGZpbGVzKCdiZGlmLmMnKSkKPj4gc29mdG1tdV9zcy5hZGQod2hlbjogJ0NP
-TkZJR19WTUFQUExFX0NGRycsICBpZl90cnVlOiBmaWxlcygnY2ZnLmMnKSkKPj4gc29mdG1tdV9z
-cy5hZGQod2hlbjogJ0NPTkZJR19WTUFQUExFX1BWRycsICBpZl90cnVlOiBbZmlsZXMoJ2FwcGxl
-LWdmeC5tJyksIHB2ZywgbWV0YWxdKQo+PiArc3BlY2lmaWNfc3MuYWRkKHdoZW46ICdDT05GSUdf
-Vk1BUFBMRScsICAgICBpZl90cnVlOiBmaWxlcygndm1hcHBsZS5jJykpCj4+IGRpZmYgLS1naXQg
-YS9ody92bWFwcGxlL3ZtYXBwbGUuYyBiL2h3L3ZtYXBwbGUvdm1hcHBsZS5jCj4+IG5ldyBmaWxl
-IG1vZGUgMTAwNjQ0Cj4+IGluZGV4IDAwMDAwMDAwMDAuLjVkM2ZlNTRiOTYKPj4gLS0tIC9kZXYv
-bnVsbAo+PiArKysgYi9ody92bWFwcGxlL3ZtYXBwbGUuYwo+PiBAQCAtMCwwICsxLDY2MSBAQAo+
-PiArLyoKPj4gKyAqIFZNQXBwbGUgbWFjaGluZSBlbXVsYXRpb24KPj4gKyAqCj4+ICsgKiBDb3B5
-cmlnaHQgwqkgMjAyMyBBbWF6b24uY29tLCBJbmMuIG9yIGl0cyBhZmZpbGlhdGVzLiBBbGwgUmln
-aHRzIFJlc2VydmVkLgo+IElzIGFuICJBbGwgUmlnaHRzIFJlc2VydmVkIiB3b3JkaW5nIGNvbXBh
-dGlibGUgd2l0aCB0aGUgR1BMPwoKCklBTkFMLiBZb3Ugd2lsbCBmaW5kIHRoZSBwYXR0ZXJuIGNv
-bW1vbmx5IGFjcm9zcyB0aGUgY29kZSBiYXNlIGFscmVhZHkuIApNeSB1bmRlcnN0YW5kaW5nIGlz
-IHRoYXQgYWxsIHJpZ2h0cyBhcmUgcmVzZXJ2ZWQsIGJ1dCBhZGRpdGlvbmFsbHkgSSAKZ3JhbnQg
-eW91IHRoZSBwZXJtaXNzaW9ucyBvZiB0aGUgR1BMLgoKCkFsZXgKCgoKCgpBbWF6b24gRGV2ZWxv
-cG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApLcmF1c2Vuc3RyLiAzOAoxMDExNyBCZXJsaW4KR2Vz
-Y2hhZWZ0c2Z1ZWhydW5nOiBDaHJpc3RpYW4gU2NobGFlZ2VyLCBKb25hdGhhbiBXZWlzcwpFaW5n
-ZXRyYWdlbiBhbSBBbXRzZ2VyaWNodCBDaGFybG90dGVuYnVyZyB1bnRlciBIUkIgMTQ5MTczIEIK
-U2l0ejogQmVybGluClVzdC1JRDogREUgMjg5IDIzNyA4NzkKCgo=
 
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+
+> Simplify GDBRegisterState by replacing num_regs and xml members with
+> one member that points to GDBFeature.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  gdbstub/gdbstub.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+>
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index b62002bc34..ee6b8b98c8 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -47,10 +47,9 @@
+>=20=20
+>  typedef struct GDBRegisterState {
+>      int base_reg;
+> -    int num_regs;
+>      gdb_get_reg_cb get_reg;
+>      gdb_set_reg_cb set_reg;
+> -    const char *xml;
+> +    const GDBFeature *feature;
+>      struct GDBRegisterState *next;
+>  } GDBRegisterState;
+>=20=20
+> @@ -390,7 +389,7 @@ static const char *get_feature_xml(const char *p, con=
+st char **newp,
+>              pstrcat(buf, buf_sz, "\"/>");
+>              for (r =3D cpu->gdb_regs; r; r =3D r->next) {
+>                  pstrcat(buf, buf_sz, "<xi:include href=3D\"");
+> -                pstrcat(buf, buf_sz, r->xml);
+> +                pstrcat(buf, buf_sz, r->feature->xmlname);
+>                  pstrcat(buf, buf_sz, "\"/>");
+>              }
+
+I should note I've done some cleaning up of the XML code in the gdbstub
+so you'll probably want to re-base once the PR has gone in.
+
+
+>              pstrcat(buf, buf_sz, "</target>");
+> @@ -497,7 +496,7 @@ static int gdb_read_register(CPUState *cpu, GByteArra=
+y *buf, int reg)
+>      }
+>=20=20
+>      for (r =3D cpu->gdb_regs; r; r =3D r->next) {
+> -        if (r->base_reg <=3D reg && reg < r->base_reg + r->num_regs) {
+> +        if (r->base_reg <=3D reg && reg < r->base_reg + r->feature->num_=
+regs) {
+>              return r->get_reg(env, buf, reg - r->base_reg);
+>          }
+>      }
+> @@ -515,7 +514,7 @@ static int gdb_write_register(CPUState *cpu, uint8_t =
+*mem_buf, int reg)
+>      }
+>=20=20
+>      for (r =3D cpu->gdb_regs; r; r =3D r->next) {
+> -        if (r->base_reg <=3D reg && reg < r->base_reg + r->num_regs) {
+> +        if (r->base_reg <=3D reg && reg < r->base_reg + r->feature->num_=
+regs) {
+>              return r->set_reg(env, mem_buf, reg - r->base_reg);
+>          }
+>      }
+> @@ -538,17 +537,16 @@ void gdb_register_coprocessor(CPUState *cpu,
+>      p =3D &cpu->gdb_regs;
+>      while (*p) {
+>          /* Check for duplicates.  */
+> -        if (strcmp((*p)->xml, feature->xmlname) =3D=3D 0)
+> +        if ((*p)->feature =3D=3D feature)
+>              return;
+>          p =3D &(*p)->next;
+>      }
+>=20=20
+>      s =3D g_new0(GDBRegisterState, 1);
+>      s->base_reg =3D cpu->gdb_num_regs;
+> -    s->num_regs =3D feature->num_regs;
+>      s->get_reg =3D get_reg;
+>      s->set_reg =3D set_reg;
+> -    s->xml =3D feature->xml;
+> +    s->feature =3D feature;
+>=20=20
+>      /* Add to end of list.  */
+>      cpu->gdb_num_regs +=3D feature->num_regs;
+
+Otherwise:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
