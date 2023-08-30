@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E0778D206
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B2A78D207
 	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 04:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbAth-00013O-IW; Tue, 29 Aug 2023 22:25:33 -0400
+	id 1qbAtf-00013L-M3; Tue, 29 Aug 2023 22:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbAtc-00012c-Sq
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbAtd-00012o-PB
  for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:25:29 -0400
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
+Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbAta-00024i-2e
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:25:28 -0400
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-34cafafa50eso17710485ab.3
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 19:25:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbAtZ-00025I-Vb
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:25:29 -0400
+Received: by mail-io1-xd2d.google.com with SMTP id
+ ca18e2360f4ac-77ac14ff51bso163660539f.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 19:25:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693362323; x=1693967123;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1693362324; x=1693967124;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=LHGZTzkhp4dykCDiPkYB2fGJ16RjqE3NFFxhIL4xZaU=;
- b=Mw5sFPFnCJNPFRlgYwcgobsrk1R8DAfm+iZ/zAh/z259TgbqImzKcHPCu+xEqeZfh1
- FrR30UAGBDTXDlxP3h/pN8G242ZFWjyNJwwSAqXh/9dnUS8zeQ9OiDM4JI6qu+GPLC2u
- KGo6vn2w7aFLs8vdv9YcHbBZFXHNJgWnxvvFqfrj4hNRfy816fhg38kloAEgDfnH1d8s
- Fb0HhC5zJeXYUgJdGXdnixolNKVgzgdHRvry2ARKzlCfqwJkKUSiELW0F3tv2LU+2kdz
- XBwGd1ncIls66A9A0M2cJE1YCj5+rlu/VNWHC+5V/E8UtV4dEFgDq8FxKzLzGpB0JP3c
- hCAA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5fMqF4JPyjBxdbMqRIVZHqpDolrSgxQrfNo/OPx9hRc=;
+ b=M2A5EZxPB2Be+mE9BNT+R8MuyyrlFmqrOvXeIfj1QbzgJS40B6OL+bB6x6W3RFF7h8
+ AFcpw5EjEDN1xjWLlqM8mPQ7ftrftn868iN+TtFE5V8CHogqRHJM25MyZMP7hJFzHvcp
+ CvkKlZto4dfQxEKLqurgr0O56kg/ZKI7EfYVk/DS3HzXGHFV79q4KMsm1uyCQSY+JNmX
+ ULcF9UV6UUiRVQx89H2RHiLyEtE0tIrQmsRDZRZgifHYHr4Ro8g0rdNJCJsU3fPUVdxG
+ NCBzYXt+m6h8YHEpqbpySlXLAUG/INoCyPr3q+WQe3uebM4O1KMxdO+EQg2KzWnJ+EGE
+ 1jqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693362323; x=1693967123;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LHGZTzkhp4dykCDiPkYB2fGJ16RjqE3NFFxhIL4xZaU=;
- b=BsxXk8tt+b/Z6FS+zr91jjeOKfyEfUsNzTQy2F5EhevFswBCi15AxgrrCJxib/EWtj
- n13fltnoMlDN5sxMTroZgwu+azcRJg/SshRB6Ed0qZ/qRtL7wh+jqiG/edgBTtWwvnXK
- qAmQYqagqKswFQxTmXiR+Jw7sR6TXVJzk+yCwZCcBkJ7UWJCDpesg/JW+qTDo01HNXnl
- tZ+1UXBEl3DAOMsfnEVSuwmyllUnjUZBzWgzSppKjENhJo0Kn1Rh4F59Sb9plV+lS6ie
- MsGhCKWNSkubvky0I/fhtXOS4B1AygZSAMYdCTXcQdR3apsxXBVBu+Bgx+xOONqHbmYG
- 9ZDw==
-X-Gm-Message-State: AOJu0YxFSkSvXD7rBkdruzRp2lSxdgz1t7hNfWLzz+8sTX1bJROwxCqR
- 8fblS8bpQKtp4GoSnskA+iiCEqKgtbWA9wX7WRA=
-X-Google-Smtp-Source: AGHT+IEwD1TAtkRvC3GGRpthMOHD78KryXBNp/SBQORWUeO3vGp8W0T2lSBVfbfdonhJs9M2/WgaUw==
-X-Received: by 2002:a05:6e02:1aaf:b0:34c:e630:e95 with SMTP id
- l15-20020a056e021aaf00b0034ce6300e95mr1080776ilv.20.1693362323407; 
- Tue, 29 Aug 2023 19:25:23 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693362324; x=1693967124;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5fMqF4JPyjBxdbMqRIVZHqpDolrSgxQrfNo/OPx9hRc=;
+ b=gymu5n8OHh4Z1VRKIgcLyoj0ZMXRIMbpGuSXGi0FvUtSvEgYN9geWPStEgeXdqMsNQ
+ 20G8ie1DkWjUIRmzonqqRm9Rsg/qMQEcbyjJDYtcTCyXYH1lXBvq2UR7rxZCMaPlzc6y
+ oj1Kg1BJxovQfhoFWQO3Q1vNbLhgTlnpEwfV0oJHh2se5C22B8SX+PEC5fP8LTWEXUTv
+ T3AboyHk980x+OLDv2IoKiVhJaYLMFvokE4a0IV8DU6Ssnqs53pB9n34jIrsgTtAiBsQ
+ s0UNC2gOp+7m5GixJCsyXrLZiYaLVyB2GAkpF8LvFrrGaG0RlfHxCIUnYQaqr2JaNdgb
+ kliQ==
+X-Gm-Message-State: AOJu0YzAMiWiNIa+Jvm/sbvXSN5IrWo62JJLYHA+hUlO1E8vUhG3vlP+
+ wnZckWylhv/vQz1tQLV40QKsDOeU1mbU4qGRNGY=
+X-Google-Smtp-Source: AGHT+IEAjHdy+oIE+wlhmdBUFE8wai4FjH/eJV2s7pysjYtS6kpa0TGVQT377blwThBFl4aduUGn9Q==
+X-Received: by 2002:a5d:990f:0:b0:792:792e:6616 with SMTP id
+ x15-20020a5d990f000000b00792792e6616mr1227737iol.2.1693362324281; 
+ Tue, 29 Aug 2023 19:25:24 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
- h16-20020a0566380f1000b0042b61a5087csm3369250jas.132.2023.08.29.19.25.22
+ h16-20020a0566380f1000b0042b61a5087csm3369250jas.132.2023.08.29.19.25.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 29 Aug 2023 19:25:23 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
@@ -61,16 +62,19 @@ Cc: Laurent Vivier <laurent@vivier.eu>, Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Warner Losh <imp@bsdimp.com>
-Subject: [PULL 0/1] Quick fix patches
-Date: Tue, 29 Aug 2023 20:22:04 -0600
-Message-ID: <20230830022205.57878-1-imp@bsdimp.com>
+ Warner Losh <imp@bsdimp.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 1/1] linux-user: Move PRAGMA_DISABLE_PACKED_WARNING to
+ compiler.h
+Date: Tue, 29 Aug 2023 20:22:05 -0600
+Message-ID: <20230830022205.57878-2-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230830022205.57878-1-imp@bsdimp.com>
+References: <20230830022205.57878-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::12f;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x12f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2d;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,50 +96,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 813bac3d8d70d85cb7835f7945eb9eed84c2d8d0:
+Replace the slightly older version of this in include/qemu/compiler.h
+that was commit as part of bsd-user changes with the newer one from
+linux-user. bsd-user has no regreassions with this.
 
-  Merge tag '2023q3-bsd-user-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-29 08:58:00 -0400)
-
-are available in the Git repository at:
-
-  https://gitlab.com/bsdimp/qemu.git tags/quick-fix-pull-request
-
-for you to fetch changes up to de287fb4e8987b32e133f7f37b990e09f3aa6325:
-
-  linux-user: Move PRAGMA_DISABLE_PACKED_WARNING to compiler.h (2023-08-29 20:12:25 -0600)
-
-----------------------------------------------------------------
-Pull request: Quick fix for clang user-mode job
-
-Move the linux-user version of PRAGMA_DISABLE_PACKED_WARNING
-to qemu/compiler.h and remove it from linux-user/qemu.h.
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - https://gpgtools.org
-
-iQIzBAABCgAdFiEEIDX4lLAKo898zeG3bBzRKH2wEQAFAmTup4sACgkQbBzRKH2w
-EQChXw/9H/hKENL0vLz9LE1iq05+bJ6/uY/Kl4avXX3/ZBq39/ZvNHrgT6h26PMb
-wU2vFYFL8UTZQsfC8t35B1khmoK3ZUtbTYYUjzpmVQQA1+MGNpflgciSQhsITGkG
-zOraHo9kSkM/ByHE246zSxqJlgHTziE/mQ1Hg8AFNvI5KChgedMblFz4gu99ADMA
-sVQwBUTAeOJv3uvY9DhXCxtvg5Lj+ZcJd7Uu4pYl86jHp0RSE7Jk6jrJXo+Xp3GF
-MnDxK9IrShEmIK1ci+tG8YBiY91GW/GEPVJJxL03JsvWxuRhj8GQsIopD1Mo4xbp
-mniDs6AbDTpxnE3DpqrN8UFh+3Ko0qZw+/OjCxckYbQadYrWVeL6n+uHxcs15Z+R
-SmIURzBrcLqzvFmvpUD4KHBQxSdIGdZrCQA+PC54Ghx0tqBBPapd/4LPL5kJsVqX
-6DOYwegbbnDNcGIXv/5RXoL+sIF00mWpWslV+xCrTP5Dz9KQmjSC/fgPnNucr2H5
-MBbe0BAxZvn1KHbgUhxCVNd1WFyaq1Gu5XZRNsXy0BBs5/NzkrJm614JOLbS+jtO
-DgvEHvbo57LGB145IBZQOUfAUQUnizyUhb27cK+L8hzg3MHsMG+coQyi5I4zaBGn
-5JddIPvbpUFk9mS+i9oeZRr/gPmDgPbylaOQhNGQvYpu8xB8/lU=
-=QC7n
------END PGP SIGNATURE-----
-
-----------------------------------------------------------------
-
-Warner Losh (1):
-  linux-user: Move PRAGMA_DISABLE_PACKED_WARNING to compiler.h
-
+Signed-off-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
  include/qemu/compiler.h |  6 +-----
  linux-user/qemu.h       | 26 --------------------------
  2 files changed, 1 insertion(+), 31 deletions(-)
 
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index b0374425180..0df9febbe2f 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -31,17 +31,13 @@
+  *   functions than host-endian unaligned load/store plus tswapN.
+  * - The pragmas are necessary only to silence a clang false-positive
+  *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
+- * - We have to disable -Wpragmas warnings to avoid a complaint about
+- *   an unknown warning type from older compilers that don't know about
+- *   -Waddress-of-packed-member.
+  * - gcc has bugs in its _Pragma() support in some versions, eg
+  *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
+  *   include the warning-suppression pragmas for clang
+  */
+-#ifdef __clang__
++#if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
+ #define PRAGMA_DISABLE_PACKED_WARNING                                   \
+     _Pragma("GCC diagnostic push");                                     \
+-    _Pragma("GCC diagnostic ignored \"-Wpragmas\"");                    \
+     _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
+ 
+ #define PRAGMA_REENABLE_PACKED_WARNING          \
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 4f8b55e2fb0..12821e54d0a 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -193,32 +193,6 @@ static inline bool access_ok(CPUState *cpu, int type,
+    These are usually used to access struct data members once the struct has
+    been locked - usually with lock_user_struct.  */
+ 
+-/*
+- * Tricky points:
+- * - Use __builtin_choose_expr to avoid type promotion from ?:,
+- * - Invalid sizes result in a compile time error stemming from
+- *   the fact that abort has no parameters.
+- * - It's easier to use the endian-specific unaligned load/store
+- *   functions than host-endian unaligned load/store plus tswapN.
+- * - The pragmas are necessary only to silence a clang false-positive
+- *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
+- * - gcc has bugs in its _Pragma() support in some versions, eg
+- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
+- *   include the warning-suppression pragmas for clang
+- */
+-#if defined(__clang__) && __has_warning("-Waddress-of-packed-member")
+-#define PRAGMA_DISABLE_PACKED_WARNING                                   \
+-    _Pragma("GCC diagnostic push");                                     \
+-    _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
+-
+-#define PRAGMA_REENABLE_PACKED_WARNING          \
+-    _Pragma("GCC diagnostic pop")
+-
+-#else
+-#define PRAGMA_DISABLE_PACKED_WARNING
+-#define PRAGMA_REENABLE_PACKED_WARNING
+-#endif
+-
+ #define __put_user_e(x, hptr, e)                                            \
+     do {                                                                    \
+         PRAGMA_DISABLE_PACKED_WARNING;                                      \
 -- 
 2.41.0
 
