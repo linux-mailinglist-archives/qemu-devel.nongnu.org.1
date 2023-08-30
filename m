@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F007178D4EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 492CD78D4C2
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHiy-000577-C2; Wed, 30 Aug 2023 05:42:56 -0400
+	id 1qbHiz-0005Iv-64; Wed, 30 Aug 2023 05:42:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHiX-0003di-IW
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qbHiZ-0003hv-Hr
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHiS-0001gg-9I
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:28 -0400
+ id 1qbHiV-0001iw-Cw
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388542;
+ s=mimecast20190719; t=1693388545;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WQae6YZWZquYjdjql9P0b0vhegCU4iorHjDj1iKlBU8=;
- b=JDuWXoV765eG0HbGVyGDIC9O8HSltd+wye2BJLMWwGb9/WuEI5kyeo2OW7a0mxWQHQeUNy
- LCgiZsWDo8+XFGquUFSL1ZlysMcAeKtN4A/wBvbaMbX4hfmXW6nNlTnOZhuCyT4PFJOTho
- UgUeZ0s1+sJyKVjYIVg98yoR1VNFXU8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-498-osopQbWXNfq28GiHSuhh0A-1; Wed, 30 Aug 2023 05:42:20 -0400
-X-MC-Unique: osopQbWXNfq28GiHSuhh0A-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=ROrHXpEO3Zu08wBSpmJok6KEwDh9xXGjqpAm9j0eWMA=;
+ b=d+lvqsr8T946Xlh4B71DDKT1ww4dwTNBZ8XKJLRYrIw2mfIVDuiuDkmUR42v4RweGyTkog
+ PNumNdwhmPd2CVxehAmC6DkwwS8RejxyzxQeGk8PDLtyQc1WQd6CavNMJMM/p6sQDOOyND
+ iMEBlPrjWWW28gTyOzmwMmsAVjgTi6c=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-587-uD11gYBBNHGq96dsw1mESg-1; Wed, 30 Aug 2023 05:42:24 -0400
+X-MC-Unique: uD11gYBBNHGq96dsw1mESg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DC86803F3A
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:42:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EAF5D3C100B5
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:42:23 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 15B94140E96E;
- Wed, 30 Aug 2023 09:42:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 391E963F6C;
+ Wed, 30 Aug 2023 09:42:22 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 53/67] ui: add pixman-compat.h
-Date: Wed, 30 Aug 2023 13:38:27 +0400
-Message-ID: <20230830093843.3531473-54-marcandre.lureau@redhat.com>
+Subject: [PATCH 54/67] ui/vc: console-vc requires PIXMAN
+Date: Wed, 30 Aug 2023 13:38:28 +0400
+Message-ID: <20230830093843.3531473-55-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,234 +82,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This is a tiny subset of PIXMAN API that is used pervasively in QEMU
-codebase to manage images and identify the underlying format.
-
-It doesn't seems worth to wrap this in a QEMU-specific API.
+Add stubs for the fallback paths.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/ui/pixman-compat.h | 190 +++++++++++++++++++++++++++++++++++++
- include/ui/qemu-pixman.h   |   4 +
- 2 files changed, 194 insertions(+)
- create mode 100644 include/ui/pixman-compat.h
+ ui/console-vc-stubs.c | 59 +++++++++++++++++++++++++++++++++++++++++++
+ ui/meson.build        |  2 +-
+ 2 files changed, 60 insertions(+), 1 deletion(-)
+ create mode 100644 ui/console-vc-stubs.c
 
-diff --git a/include/ui/pixman-compat.h b/include/ui/pixman-compat.h
+diff --git a/ui/console-vc-stubs.c b/ui/console-vc-stubs.c
 new file mode 100644
-index 0000000000..e511c8b946
+index 0000000000..76ea880d27
 --- /dev/null
-+++ b/include/ui/pixman-compat.h
-@@ -0,0 +1,190 @@
++++ b/ui/console-vc-stubs.c
+@@ -0,0 +1,59 @@
 +/*
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Tiny subset of PIXMAN API commonly used by QEMU.
-+ *
-+ * Copyright 1987, 1988, 1989, 1998  The Open Group
-+ * Copyright 1987, 1988, 1989 Digital Equipment Corporation
-+ * Copyright 1999, 2004, 2008 Keith Packard
-+ * Copyright 2000 SuSE, Inc.
-+ * Copyright 2000 Keith Packard, member of The XFree86 Project, Inc.
-+ * Copyright 2004, 2005, 2007, 2008, 2009, 2010 Red Hat, Inc.
-+ * Copyright 2004 Nicholas Miell
-+ * Copyright 2005 Lars Knoll & Zack Rusin, Trolltech
-+ * Copyright 2005 Trolltech AS
-+ * Copyright 2007 Luca Barbato
-+ * Copyright 2008 Aaron Plattner, NVIDIA Corporation
-+ * Copyright 2008 Rodrigo Kumpera
-+ * Copyright 2008 André Tupinambá
-+ * Copyright 2008 Mozilla Corporation
-+ * Copyright 2008 Frederic Plourde
-+ * Copyright 2009, Oracle and/or its affiliates. All rights reserved.
-+ * Copyright 2009, 2010 Nokia Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-+ * DEALINGS IN THE SOFTWARE.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * QEMU VC stubs
 + */
++#include "qemu/osdep.h"
 +
-+#ifndef PIXMAN_COMPAT_H
-+#define PIXMAN_COMPAT_H
++#include "qapi/error.h"
++#include "qemu/error-report.h"
++#include "qemu/option.h"
++#include "chardev/char.h"
++#include "ui/console-priv.h"
 +
-+#define PIXMAN_TYPE_OTHER       0
-+#define PIXMAN_TYPE_ARGB        2
-+#define PIXMAN_TYPE_ABGR        3
-+#define PIXMAN_TYPE_BGRA        8
-+#define PIXMAN_TYPE_RGBA        9
++void qemu_text_console_select(QemuTextConsole *c)
++{
++}
 +
-+#define PIXMAN_FORMAT(bpp,type,a,r,g,b) (((bpp) << 24) |  \
-+                                         ((type) << 16) | \
-+                                         ((a) << 12) |    \
-+                                         ((r) << 8) |     \
-+                                         ((g) << 4) |     \
-+                                         ((b)))
++const char * qemu_text_console_get_label(QemuTextConsole *c)
++{
++    return NULL;
++}
 +
-+#define PIXMAN_FORMAT_RESHIFT(val, ofs, num)                            \
-+        (((val >> (ofs)) & ((1 << (num)) - 1)) << ((val >> 22) & 3))
++void qemu_text_console_update_cursor(void)
++{
++}
 +
-+#define PIXMAN_FORMAT_BPP(f)    PIXMAN_FORMAT_RESHIFT(f, 24, 8)
-+#define PIXMAN_FORMAT_TYPE(f)   (((f) >> 16) & 0x3f)
-+#define PIXMAN_FORMAT_A(f)      PIXMAN_FORMAT_RESHIFT(f, 12, 4)
-+#define PIXMAN_FORMAT_R(f)      PIXMAN_FORMAT_RESHIFT(f, 8, 4)
-+#define PIXMAN_FORMAT_G(f)      PIXMAN_FORMAT_RESHIFT(f, 4, 4)
-+#define PIXMAN_FORMAT_B(f)      PIXMAN_FORMAT_RESHIFT(f, 0, 4)
-+#define PIXMAN_FORMAT_DEPTH(f)  (PIXMAN_FORMAT_A(f) +   \
-+                                 PIXMAN_FORMAT_R(f) +   \
-+                                 PIXMAN_FORMAT_G(f) +   \
-+                                 PIXMAN_FORMAT_B(f))
++void qemu_text_console_handle_keysym(QemuTextConsole *s, int keysym)
++{
++}
 +
-+typedef enum {
-+    /* 32bpp formats */
-+    PIXMAN_a8r8g8b8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_ARGB,8,8,8,8),
-+    PIXMAN_x8r8g8b8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_ARGB,0,8,8,8),
-+    PIXMAN_a8b8g8r8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_ABGR,8,8,8,8),
-+    PIXMAN_x8b8g8r8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_ABGR,0,8,8,8),
-+    PIXMAN_b8g8r8a8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_BGRA,8,8,8,8),
-+    PIXMAN_b8g8r8x8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_BGRA,0,8,8,8),
-+    PIXMAN_r8g8b8a8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_RGBA,8,8,8,8),
-+    PIXMAN_r8g8b8x8 =    PIXMAN_FORMAT(32,PIXMAN_TYPE_RGBA,0,8,8,8),
-+    /* 24bpp formats */
-+    PIXMAN_r8g8b8 =      PIXMAN_FORMAT(24,PIXMAN_TYPE_ARGB,0,8,8,8),
-+    PIXMAN_b8g8r8 =      PIXMAN_FORMAT(24,PIXMAN_TYPE_ABGR,0,8,8,8),
-+    /* 16bpp formats */
-+    PIXMAN_r5g6b5 =      PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,0,5,6,5),
-+    PIXMAN_a1r5g5b5 =    PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,1,5,5,5),
-+    PIXMAN_x1r5g5b5 =    PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,0,5,5,5),
-+} pixman_format_code_t;
++#define TYPE_CHARDEV_VC "chardev-vc"
 +
-+typedef struct pixman_image pixman_image_t;
++static void vc_chr_parse(QemuOpts *opts, ChardevBackend *backend, Error **errp)
++{
++    const char *id = qemu_opts_id(opts);
 +
-+typedef void (* pixman_image_destroy_func_t)(pixman_image_t *image, void *data);
++    warn_report("%s: this is a dummy VC driver. "
++                "Use '-nographic' or a different chardev.", id);
++}
 +
-+struct pixman_image {
-+    int ref_count;
-+    pixman_format_code_t format;
-+    int width;
-+    int height;
-+    int stride;
-+    uint8_t *data;
-+    pixman_image_destroy_func_t destroy_func;
-+    void *destroy_data;
++static void char_vc_class_init(ObjectClass *oc, void *data)
++{
++    ChardevClass *cc = CHARDEV_CLASS(oc);
++
++    cc->parse = vc_chr_parse;
++}
++
++static const TypeInfo char_vc_type_info = {
++    .name = TYPE_CHARDEV_VC,
++    .parent = TYPE_CHARDEV,
++    .class_init = char_vc_class_init,
 +};
 +
-+typedef struct pixman_color {
-+    uint16_t    red;
-+    uint16_t    green;
-+    uint16_t    blue;
-+    uint16_t    alpha;
-+} pixman_color_t;
-+
-+static inline pixman_image_t *pixman_image_create_bits(pixman_format_code_t format,
-+                                                       int width,
-+                                                       int height,
-+                                                       uint32_t *bits,
-+                                                       int rowstride_bytes)
++void qemu_console_early_init(void)
 +{
-+    pixman_image_t *i = g_new0(pixman_image_t, 1);
-+
-+    i->width = width;
-+    i->height = height;
-+    i->stride = rowstride_bytes ?: width * DIV_ROUND_UP(PIXMAN_FORMAT_BPP(format), 8);
-+    i->format = format;
-+    i->data = bits ?: g_malloc0(rowstride_bytes * height);
-+    i->ref_count = 1;
-+
-+    return i;
-+}
-+
-+static inline pixman_image_t *pixman_image_ref(pixman_image_t *i)
-+{
-+    i->ref_count++;
-+    return i;
-+}
-+
-+static inline bool pixman_image_unref(pixman_image_t *i)
-+{
-+    i->ref_count--;
-+
-+    if (i->ref_count == 0) {
-+        if (i->destroy_func) {
-+            i->destroy_func (i, i->destroy_data);
-+            g_free(i->data);
-+            g_free(i);
-+        }
-+
-+        return true;
++    /* set the default vc driver */
++    if (!object_class_by_name(TYPE_CHARDEV_VC)) {
++        type_register(&char_vc_type_info);
 +    }
-+
-+    return false;
 +}
-+
-+static inline void pixman_image_set_destroy_function(pixman_image_t *i,
-+                                                     pixman_image_destroy_func_t func,
-+                                                     void *data)
-+
-+{
-+    i->destroy_func = func;
-+    i->destroy_data = data;
-+}
-+
-+static inline uint8_t* pixman_image_get_data(pixman_image_t *i)
-+{
-+    return i->data;
-+}
-+
-+static inline int pixman_image_get_height(pixman_image_t *i)
-+{
-+    return i->height;
-+}
-+
-+static inline int pixman_image_get_width(pixman_image_t *i)
-+{
-+    return i->width;
-+}
-+
-+static inline int pixman_image_get_stride(pixman_image_t *i)
-+{
-+    return i->stride;
-+}
-+
-+static inline pixman_format_code_t pixman_image_get_format(pixman_image_t *i)
-+{
-+    return i->format;
-+}
-+
-+#endif /* PIXMAN_COMPAT_H */
-diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-index c5a0911cc7..9c693df8dd 100644
---- a/include/ui/qemu-pixman.h
-+++ b/include/ui/qemu-pixman.h
-@@ -6,11 +6,15 @@
- #ifndef QEMU_PIXMAN_H
- #define QEMU_PIXMAN_H
- 
-+#ifdef CONFIG_PIXMAN
- /* pixman-0.16.0 headers have a redundant declaration */
- #pragma GCC diagnostic push
- #pragma GCC diagnostic ignored "-Wredundant-decls"
- #include <pixman.h>
- #pragma GCC diagnostic pop
-+#else
-+#include "pixman-compat.h"
-+#endif
- 
- /*
-  * pixman image formats are defined to be native endian,
+diff --git a/ui/meson.build b/ui/meson.build
+index 0a1e8272a3..3085e10a72 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -6,7 +6,6 @@ system_ss.add(png)
+ system_ss.add(files(
+   'clipboard.c',
+   'console.c',
+-  'console-vc.c',
+   'cursor.c',
+   'input-keymap.c',
+   'input-legacy.c',
+@@ -19,6 +18,7 @@ system_ss.add(files(
+   'ui-qmp-cmds.c',
+   'util.c',
+ ))
++system_ss.add(when: pixman, if_true: files('console-vc.c'), if_false: files('console-vc-stubs.c'))
+ if dbus_display
+   system_ss.add(files('dbus-module.c'))
+ endif
 -- 
 2.41.0
 
