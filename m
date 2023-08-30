@@ -2,92 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6742E78D496
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6FB78D49D
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:39:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHbL-0003Xj-7v; Wed, 30 Aug 2023 05:35:03 -0400
+	id 1qbHf7-0007FV-Tf; Wed, 30 Aug 2023 05:38:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qbHbJ-0003S6-Fs
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:35:01 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qbHbE-00008f-ML
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:35:01 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6bca5d6dcedso4068104a34.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 02:34:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693388095; x=1693992895; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=X7z2VhinNCiprwvDFYHJ3K2xxfMGBZ2v2G9mtN8m0xE=;
- b=Xryc7pKySXz8vhzHHgjbrfp7fVeYSbkHSL+9hc084jir40NvcPLkQS0JurXskecA13
- xn5Yiui66Oigcdofn3Uv+Zjq+njnIBGYav11sKyD+OOfOHe2V3BCxoXmKxfGoOjkmeGo
- ByCmq/5C9oN9lb5Md2ewFkt7ULzpTu9E+3heuRFzDmhNCLzM37FxGAtFXFDA9Tj/MVQX
- vlkYO3huZklFgb0y67RSDmqIv/aTjX+Acr9urnTbOLurjXxBIKqPJu8SMg6A3d3ADYZd
- x7sehfvPH0BsPtSZ6ASr3Ya0cvGtCYv8q+non+x3HI3pTKGpOD2BDtQ04jxUz7PEsP1p
- ACWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693388095; x=1693992895;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X7z2VhinNCiprwvDFYHJ3K2xxfMGBZ2v2G9mtN8m0xE=;
- b=XyeE2IoIDvcHlBgLA9Kj/vdKtEQcj65TI6mJj/WmoVUM3lDhBA7k9D8Ul7f0vKfof/
- I/zqL7JSx5lYIe9TfZD0lYGaUMdXocx77NCFYfl3PcSOSFO8u6tp9GxKDGAjjt8QoUG6
- QVE613Vbj6wNH8kpHUr0J6wGtTxv9zOl4i/el3BkjaaBYhydfe8mtfiER86kNwkPQ4Tk
- TDms4g+iL572FOIuZpTR0Ivm/loExoWjbLhtQH13kuHK1BaVqlAXEnEfbYA85MNEC7cv
- M4Fwww6KhZYt9sg4eymtV55lFVK26T7rA7GhRt5wf0gzYe9EfUT9/lAiS5VoSPDFjgOe
- JkoQ==
-X-Gm-Message-State: AOJu0YxYpcQOdrCiTNqUkLEXhW8hpjShXPPcTR3Kr3bhOzol5d4mXV1f
- iCE+BWwgCPo7DD5RfallgaVAgw==
-X-Google-Smtp-Source: AGHT+IH4iTtbArfHzVwGZ7uXT4hB4k7Z+J7IR/Ae8aFTFQhhe6hB2uNdeYPkI35JdPeT14udAyJgQg==
-X-Received: by 2002:a05:6808:14c7:b0:3a7:44da:d5e4 with SMTP id
- f7-20020a05680814c700b003a744dad5e4mr1955358oiw.51.1693388095281; 
- Wed, 30 Aug 2023 02:34:55 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
- by smtp.gmail.com with ESMTPSA id
- j3-20020aca6543000000b003a40b3fce01sm5375296oiw.10.2023.08.30.02.34.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 02:34:55 -0700 (PDT)
-Message-ID: <7a309a5c-c88e-4cfc-7811-5643a53def81@ventanamicro.com>
-Date: Wed, 30 Aug 2023 06:34:50 -0300
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qbHf5-0007Eu-Bg
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:38:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qbHf1-0000pX-ML
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:38:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693388330;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=cQ5AqcZTK82+6RR1+2VeCQaqXpl66JiwbUlSDGkTN0g=;
+ b=acDuENdAnsQxIag4+gKSNzyHWbg0ZXBPVKSd/BNKlBWRx4QL9V+pRvp+ZkeegMQicUySYz
+ N088AedxC7zv4ATvy7ZPnGxW97bN5Lp5Lu1oG4IPIk1Af5GypHNKqXzBCOgTA3sYuda8RS
+ zjsMVEUfwiTMnbxkTEI4iEWMiZuL7S4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-314-yNLCx9Q_Nd6Z5sG3SkSmqw-1; Wed, 30 Aug 2023 05:38:48 -0400
+X-MC-Unique: yNLCx9Q_Nd6Z5sG3SkSmqw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E4BD185A792
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:38:48 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.9])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0259FC15BAE;
+ Wed, 30 Aug 2023 09:38:46 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 00/67] Make pixman an optional dependency
+Date: Wed, 30 Aug 2023 13:37:34 +0400
+Message-ID: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/2] hw/riscv/virt.c: fix non-KVM --enable-debug build
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-References: <20230829122144.464489-1-dbarboza@ventanamicro.com>
- <20230829122144.464489-3-dbarboza@ventanamicro.com>
- <c0089044-54d2-43ab-6b30-854a4fa3aa4f@linaro.org>
- <72de2f6a-5ede-40f4-5edc-a22d89587e4e@ventanamicro.com>
- <63d099a2-ac5e-1ce9-3663-10e317d7dc5a@linaro.org>
- <40938464-2008-aff3-ffb7-37fbb16615d3@ventanamicro.com>
- <d2f1ad02-eb03-138f-9d08-db676deeed05@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <d2f1ad02-eb03-138f-9d08-db676deeed05@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x333.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,119 +77,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Hi,
 
-On 8/29/23 22:26, Richard Henderson wrote:
-> On 8/29/23 16:51, Daniel Henrique Barboza wrote:
->>> The compiler certainly does eliminate 0 && foo(), even at -O0.
->>>
->>> There must be something else going on.
->>> Pointer to your tree?
->>
->> It's this tree:
->>
->> https://github.com/alistair23/qemu/tree/riscv-to-apply.next
-> 
-> 
-> Ok, so while -O0 will eliminate 0 && foo(), it doesn't eliminate with bar() && foo(), where bar must be inlined (multiple times in this case) to find the 0.
-> 
-> Moreover in the case of
-> 
->> /usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_intc_riscv_aplic.c.o: in function `riscv_kvm_aplic_request':
->> /home/danielhb/work/qemu/build/../hw/intc/riscv_aplic.c:486: undefined reference to `kvm_set_irq'
-> 
-> this one, where foo (aka riscv_kvm_aplic_request) would have to be eliminated as well. But the compiler won't eliminate entire unused functions with -O0.
-> 
-> This seems to do the trick.  Whether it is aesthetically better than what you had with your patches, I will leave to someone else.
-> 
-> 
-> r~
-> 
-> 
-> diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-> index 592c3ce768..0e22dcaf8a 100644
-> --- a/hw/intc/riscv_aplic.c
-> +++ b/hw/intc/riscv_aplic.c
-> @@ -481,10 +481,14 @@ static uint32_t riscv_aplic_idc_claimi(RISCVAPLICState *aplic, uint32_t idc)
->       return topi;
->   }
-> 
-> +#ifdef CONFIG_KVM
->   static void riscv_kvm_aplic_request(void *opaque, int irq, int level)
->   {
->       kvm_set_irq(kvm_state, irq, !!level);
->   }
-> +#else
-> +#define riscv_kvm_aplic_request  ({ qemu_build_not_reached(); NULL; })
-> +#endif
-> 
->   static void riscv_aplic_request(void *opaque, int irq, int level)
->   {
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 388e52a294..b787ae38c2 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -782,7 +782,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
->       }
-> 
->       /* KVM AIA only has one APLIC instance */
-> -    if (virt_use_kvm_aia(s)) {
-> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
->           create_fdt_socket_aplic(s, memmap, 0,
->                                   msi_m_phandle, msi_s_phandle, phandle,
->                                   &intc_phandles[0], xplic_phandles,
-> @@ -1461,7 +1461,7 @@ static void virt_machine_init(MachineState *machine)
->           }
->       }
-> 
-> -    if (virt_use_kvm_aia(s)) {
-> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
->           kvm_riscv_aia_create(machine, IMSIC_MMIO_GROUP_MIN_SHIFT,
->                                VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
->                                memmap[VIRT_APLIC_S].base,
-> 
+QEMU system emulators can be made to compile and work without pixman.
 
-I'll leave to Alistair to decide, both seems good to me.
+Given how pervasively pixman types and API is used in all the code base, it was
+a bit difficult to figure out how to cut the dependency.
 
+I decided that it was important to keep VGA and graphics device working for
+compatibility reasons, although some devices, such as xlnx Display Port, have
+stronger dependency and have to be disabled. The ui/console code also has a lot
+of pixman usage and a bit of a mess to deal with. I made large refactoring to
+allow to compile out the VC code.
 
-TBH I'm bothered why this doesn't work:
+The series can be roughly divded as:
+- a few related preliminary cleanups
+- ui/console refactoring to allow ui/vc split
+- add a 'pixman' option, and a minimal pixman-compat.h
+- make some parts depend on 'pixman'
 
+Graphic -display still work, although with some caveats. For ex, -display sdl or
+cocoa don't have VCs, so starting QEMU will print the following warnings when
+pixman is disabled:
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 592c3ce768..251e08ddc4 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -839,12 +839,16 @@ static void riscv_aplic_realize(DeviceState *dev, Error **errp)
-       * Only root APLICs have hardware IRQ lines. All non-root APLICs
-       * have IRQ lines delegated by their parent APLIC.
-       */
--    if (!aplic->parent) {
--        if (is_kvm_aia(aplic->msimode)) {
--            qdev_init_gpio_in(dev, riscv_kvm_aplic_request, aplic->num_irqs);
--        } else {
--            qdev_init_gpio_in(dev, riscv_aplic_request, aplic->num_irqs);
-+    if (kvm_enabled()) {
-+        if (!aplic->parent) {
-+            if (is_kvm_aia(aplic->msimode)) {
-+                qdev_init_gpio_in(dev, riscv_kvm_aplic_request, aplic->num_irqs);
-+            } else {
-+                qdev_init_gpio_in(dev, riscv_aplic_request, aplic->num_irqs);
-+            }
-          }
-+    } else if (!aplic->parent) {
-+        qdev_init_gpio_in(dev, riscv_aplic_request, aplic->num_irqs);
-      }
+qemu-system-x86_64: warning: compat_monitor0: this is a dummy VC driver. Use '-nographic' or a different chardev.
+qemu-system-x86_64: warning: serial0: this is a dummy VC driver. Use '-nographic' or a different chardev.
+qemu-system-x86_64: warning: parallel0: this is a dummy VC driver. Use '-nographic' or a different chardev.
 
-Why is the compiler refusing to crop an "if kvm_enabled()" block? There's no other
-conditionals to handle, and it is able to crop "if (kvm_enabled() && virt_use_kvm_aia(s))".
+But -display dbus is fully functionnal, for ex, as it operates at chardev/text
+level.
 
-Is this solely because riscv_kvm_aplic_request() will be an unused function if the crop
-happens and, as you said above, "the compiler won't eliminate entire unused functions with
--O0"?
+Fixes:
+https://gitlab.com/qemu-project/qemu/-/issues/1172
 
+Marc-André Lureau (67):
+  ui: remove qemu_pixman_color() helper
+  ui: remove qemu_pixman_linebuf_copy()
+  ui/qmp: move screendump to ui-qmp-cmds.c
+  ui/vc: replace vc_chr_write() with generic qemu_chr_write()
+  ui/vc: drop have_text
+  ui/console: console_select() regardless of have_gfx
+  ui/console: call dpy_gfx_update() regardless of have_gfx
+  ui/console: drop have_gfx
+  ui/console: get the DisplayState from new_console()
+  ui/console: new_console() cannot fail
+  ui/vc: VC always has a DisplayState now
+  ui/vc: move VCChardev declaration at the top
+  ui/vc: replace variable with static text attributes default
+  ui/vc: fold text_update_xy()
+  ui/vc: pass VCCharDev to VC-specific functions
+  ui/vc: move VCCharDev specific fields out of QemuConsole
+  ui/console: use OBJECT_DEFINE_TYPE for QemuConsole
+  ui/console: change new_console() to use object initialization
+  ui/console: introduce different console objects
+  ui/console: instantiate a specific console type
+  ui/console: register the console from qemu_console_init()
+  ui/console: remove new_console()
+  ui/console: specialize console_lookup_unused()
+  ui/console: update the head from unused QemuConsole
+  ui/console: allocate ui_timer in QemuConsole
+  ui/vc: move cursor_timer initialization to QemuTextConsole class
+  ui/console: free more QemuConsole resources
+  ui/vc: move text fields to QemuTextConsole
+  ui/console: move graphic fields to QemuGraphicConsole
+  ui/vc: fold text_console_do_init() in vc_chr_open()
+  ui/vc: move some text console initialization to qom handlers
+  ui/console: simplify getting active_console size
+  ui/console: remove need for g_width/g_height
+  ui/vc: use common text console surface creation
+  ui/console: declare console types in console.h
+  ui/console: use QEMU_PIXMAN_COLOR helpers
+  ui/console: rename vga_ functions → qemu_console_
+  ui/console: assert(surface) where appropriate
+  ui/console: fold text_console_update_cursor_timer
+  ui/vc: skip text console resize when possible
+  ui/console: minor stylistic changes
+  ui/vc: move text console invalidate in helper
+  ui/vc: do not parse VC-specific options in Spice and GTK
+  ui/vc: change the argument for QemuTextConsole
+  ui/vc: remove kby_put_keysym() and update function calls
+  ui/vc: rename kbd_put → qemu_text_console functions
+  ui/console: remove redundant format field
+  ui/vc: preliminary QemuTextConsole changes before split
+  ui/vc: split off the VC part from console.c
+  ui/console: move DisplaySurface to its own header
+  build-sys: add optional "pixman" feature
+  ui: compile out some qemu-pixman functions when !PIXMAN
+  ui: add pixman-compat.h
+  ui/vc: console-vc requires PIXMAN
+  qmp/hmp: disable screendump if PIXMAN is missing
+  virtio-gpu: replace PIXMAN for region/rect test
+  ui/console: when PIXMAN is unavailable, don't draw placeholder msg
+  vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when !PIXMAN
+  ui/gl: opengl doesn't require PIXMAN
+  ui/vnc: VNC requires PIXMAN
+  ui/spice: SPICE/QXL requires PIXMAN
+  ui/gtk: -display gtk requires PIXMAN
+  ui/dbus: do not require PIXMAN
+  arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
+  ppc/kconfig: make SAM460EX depend on PPC & PIXMAN
+  sh4/kconfig: make R2D depend on SH4 & PIXMAN
+  display/kconfig: make SM501 depend on PIXMAN
 
+ configs/devices/ppc-softmmu/default.mak |    2 +-
+ configs/devices/sh4-softmmu/default.mak |    2 +-
+ meson.build                             |   11 +-
+ qapi/char.json                          |    4 +
+ qapi/ui.json                            |    3 +-
+ include/chardev/char.h                  |    3 -
+ include/ui/console.h                    |  118 +-
+ include/ui/pixman-compat.h              |  190 +++
+ include/ui/qemu-pixman.h                |   20 +-
+ include/ui/rect.h                       |   55 +
+ include/ui/surface.h                    |   91 ++
+ ui/console-priv.h                       |   43 +
+ hw/display/vhost-user-gpu.c             |    2 +
+ hw/display/virtio-gpu.c                 |   30 +-
+ ui/console-gl.c                         |    2 +-
+ ui/console-vc-stubs.c                   |   59 +
+ ui/console-vc.c                         | 1079 +++++++++++++++
+ ui/console.c                            | 1603 +++--------------------
+ ui/curses.c                             |    2 +-
+ ui/dbus-listener.c                      |   62 +-
+ ui/gtk.c                                |   11 +-
+ ui/qemu-pixman.c                        |   25 +-
+ ui/sdl2-input.c                         |    5 +-
+ ui/sdl2.c                               |    5 +-
+ ui/spice-app.c                          |    7 +-
+ ui/spice-display.c                      |    2 +-
+ ui/ui-hmp-cmds.c                        |    2 +
+ ui/ui-qmp-cmds.c                        |  189 +++
+ ui/vnc.c                                |   56 +-
+ Kconfig.host                            |    3 +
+ hmp-commands.hx                         |    2 +
+ hw/arm/Kconfig                          |    2 +-
+ hw/display/Kconfig                      |    3 +-
+ hw/ppc/Kconfig                          |    2 +
+ hw/sh4/Kconfig                          |    2 +
+ meson_options.txt                       |    2 +
+ ui/cocoa.m                              |    2 +-
+ ui/meson.build                          |   25 +-
+ 38 files changed, 2093 insertions(+), 1633 deletions(-)
+ create mode 100644 include/ui/pixman-compat.h
+ create mode 100644 include/ui/rect.h
+ create mode 100644 include/ui/surface.h
+ create mode 100644 ui/console-priv.h
+ create mode 100644 ui/console-vc-stubs.c
+ create mode 100644 ui/console-vc.c
 
-Thanks,
+-- 
+2.41.0
 
-Daniel
 
