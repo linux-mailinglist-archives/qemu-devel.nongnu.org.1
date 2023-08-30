@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2FC78E21C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 00:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A1478E22C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 00:15:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbTMM-0004tH-L2; Wed, 30 Aug 2023 18:08:22 -0400
+	id 1qbTSe-0006mS-6S; Wed, 30 Aug 2023 18:14:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbTML-0004t3-5O
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:08:21 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qbTSc-0006mJ-MW
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:14:50 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbTMI-0001uj-W8
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:08:20 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c1e128135aso1121655ad.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 15:08:18 -0700 (PDT)
+ id 1qbTSa-0002uM-2c
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:14:50 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1bc0d39b52cso1119835ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 15:14:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693433297; x=1694038097; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1693433686; x=1694038486; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2QwLwM1/RLjs6N4oo5vhdzdLN1LQK2YlckSgbs+8Ods=;
- b=a5LbQj0PQfTgjachGiU0bbd0s7uiNXnqsGiBOcPOVA7kRmWmqIe6pSkpIKC1HXSnWv
- vpPhOW3Sv4uUGBrd1J79RMSIv0DSiHCAOrDSZowI6FSsT+14x9i6QGjDjKnHR2I5Y3DP
- mf0zC64/mxyNkIKxIC6WjcUUECMr7Y4jToSQR8jCEtWm+KDZLnqjd1KjbTEX7kBg9bAk
- iYYj+n+DwRCKBuqaqpx220C7mMa3Flv8gim0fgoQqGdWq1uHI5HhtaSaI+ii31ptUv0B
- PKWO0TAabVG2O9HN4v6CA70fu1BjqQQi1eju+Jf8yOvkGCYVZnjay/SscpD/GLvxaj7T
- jnyQ==
+ bh=Hh8bhZASm1fnrN/u99t5IxHTJhH+uiUyan8+5BhhGyA=;
+ b=KZDKlxY6uKbFKtFrS2IEK6do+tnBq76Y+RFciTIxnZmdrOPJv0wMKtCIk1PXWPqEQm
+ F8SV1pXUCsDk4sO45mAI7+GtxdQCQnq/NHYY3E2UqW3jIzhBFww1tFhjenMOaxuuVRas
+ j8E50267JPqf3T6J+zuKqWwH+GmAILDd1aRDoYKUnX0c2+OCgiDPF2P41WMsl7cYiUBo
+ gxmdOFiTS3xvFDrOIi1v8YTT/+Bu4P92WuSJWcb3xoSUy5/jAR9zZaFubhZeOBy3w8YP
+ E8j+X64GW1kkMeA7JIzDRafiHeVUswYlq6jFrn3jqE89lDIEEr3EKJ5sX/hUC3Sws1tk
+ pzVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693433297; x=1694038097;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1693433686; x=1694038486;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2QwLwM1/RLjs6N4oo5vhdzdLN1LQK2YlckSgbs+8Ods=;
- b=RL2n7aKrYr3lue++toqPkmlpM8Xt7UqaBR4fboCVYjk/RwpMVQepwZip8LRblqNbqm
- uurtEoxl/0PssRYbaR7wK4ZIrpqCgm1y80htRhvss5Udxl1CfZjpN92nkLgmpFEqa1mp
- 1Pk1+8sEmH5Q8hra3jgASZ0X0rpL/vnKi/pBOv7hnFuK6Jq3PfC3/b3YuzlAC8FtmIZj
- FDpmnioibzRJ0Cp2uelCgT8PcB8HEvBsIP27zpe6+dx7VzuVKkW5mwCR4/eb21EhH6mD
- yVaFhLkefcuhZi+UVFyQNVv3aRdDAVmptNKDa+z31Jwq90gVhBEyNdXF7dOaPpoEKrnY
- Uz7Q==
-X-Gm-Message-State: AOJu0YyfCUjf4kRJc1DLbBq8WNeBLq59smE3YpusNEJpDeAGv9VllaeU
- w6jUa/ngqzoikaqJQZQVTkkpdA==
-X-Google-Smtp-Source: AGHT+IEtmJZ5nAolDfuSYwvscZkiiZLYdVnCKAK1mm6tswE/E2OWB80BIynoSwFRK8f/fYLFPsD/RQ==
-X-Received: by 2002:a17:903:25d4:b0:1c1:ebcc:612e with SMTP id
- jc20-20020a17090325d400b001c1ebcc612emr3214351plb.69.1693433297251; 
- Wed, 30 Aug 2023 15:08:17 -0700 (PDT)
+ bh=Hh8bhZASm1fnrN/u99t5IxHTJhH+uiUyan8+5BhhGyA=;
+ b=VSJUMZ5Mtp5DGIsaGVWa9Epu1xzb285xXw8ptNM7fZ0P5Lhh1KOF8Or5XJdcCwkFJq
+ zE5vHseHpHtpadw0m3Ox3m1lO2uvGxmCNycT8qeJe9NGlOchIaGkS81TMEkodtGAzS18
+ 6OOr5bgxfkG/mUTpgufcAtp+vkstcLjQL15YhloL93XPL77T+0ZjGpFm4F93y+hPHkju
+ Z5klsotaLsD5uHfKAC+lTiYmzGM7o9iZgMjt6ixalUKYHobMGK6Yl08GtRpAPwvMpDUL
+ sFgg6zwFqUOK+2TJ37cNEHTNU+PAmWDYyMvfqy+HSqir2x+20yrJk3omHMquj6QVv0r1
+ yzcw==
+X-Gm-Message-State: AOJu0YyAlNYBA8AO4UGp7TGkVX2DkZqPof6sztOWp5vNg6wHZblEaia4
+ IyD3c5XpqoV2iGqBDMB7eO6u1Hb7WnWo61YpyQI=
+X-Google-Smtp-Source: AGHT+IGczQemSq/BWHKRcPf1T+j2wIDpI3mb1xmQRThxaJtd4+ncV7/aaJvFDSDMKBY8XAjnDtDqjQ==
+X-Received: by 2002:a17:902:8f8e:b0:1bc:3504:de35 with SMTP id
+ z14-20020a1709028f8e00b001bc3504de35mr3412532plo.62.1693433686601; 
+ Wed, 30 Aug 2023 15:14:46 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- jk17-20020a170903331100b001bdf046ed71sm11573214plb.120.2023.08.30.15.08.16
+ 12-20020a170902c10c00b001bdc2fdcf7esm11600511pli.129.2023.08.30.15.14.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 15:08:16 -0700 (PDT)
-Message-ID: <d99d661f-9de0-a6a7-91b4-9cfa5b6af02f@linaro.org>
-Date: Wed, 30 Aug 2023 15:08:14 -0700
+ Wed, 30 Aug 2023 15:14:46 -0700 (PDT)
+Message-ID: <a16e5b3d-743f-fe43-dcad-e1ece1f6c458@linaro.org>
+Date: Wed, 30 Aug 2023 15:14:44 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v5 08/20] linux-user: Load vdso image if available
+Subject: Re: [PATCH v4 19/48] target/loongarch; Implement xvdiv/xvmod
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, laurent@vivier.eu
-References: <20230829220228.928506-1-richard.henderson@linaro.org>
- <20230829220228.928506-9-richard.henderson@linaro.org>
- <d703be2d-8131-58d4-2ed8-7104316a8e21@linaro.org>
- <e5685d29-bb2a-f0c2-5030-453dae529c03@linaro.org>
- <e299f256-9af8-a63e-2107-f6566c623f75@linaro.org>
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20230830084902.2113960-1-gaosong@loongson.cn>
+ <20230830084902.2113960-20-gaosong@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <e299f256-9af8-a63e-2107-f6566c623f75@linaro.org>
+In-Reply-To: <20230830084902.2113960-20-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -99,17 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 13:56, Philippe Mathieu-Daudé wrote:
->>>> +    for (unsigned i = 0, n = vdso->reloc_count; i < n; i++) {
->>>
->>> Do we really need 'n'?
->>
->> You should always have an loop invariant condition if possible.
+On 8/30/23 01:48, Song Gao wrote:
+> This patch includes:
+> - XVDIV.{B/H/W/D}[U];
+> - XVMOD.{B/H/W/D}[U].
 > 
-> vdso->reloc_count doesn't seem updated, but I get your point.
+> Signed-off-by: Song Gao<gaosong@loongson.cn>
+> ---
+>   target/loongarch/vec.h                       |  7 +++++++
+>   target/loongarch/insns.decode                | 17 +++++++++++++++++
+>   target/loongarch/disas.c                     | 17 +++++++++++++++++
+>   target/loongarch/vec_helper.c                | 10 ++--------
+>   target/loongarch/insn_trans/trans_lasx.c.inc | 17 +++++++++++++++++
+>   5 files changed, 60 insertions(+), 8 deletions(-)
+> 
+> diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+> index 06c8d7e314..ee50d53f4e 100644
+> --- a/target/loongarch/vec.h
+> +++ b/target/loongarch/vec.h
+> @@ -65,4 +65,11 @@
+>   #define DO_MADD(a, b, c)  (a + b * c)
+>   #define DO_MSUB(a, b, c)  (a - b * c)
+>   
+> +#define DO_DIVU(N, M) (unlikely(M == 0) ? 0 : N / M)
+> +#define DO_REMU(N, M) (unlikely(M == 0) ? 0 : N % M)
+> +#define DO_DIV(N, M)  (unlikely(M == 0) ? 0 :\
+> +        unlikely((N == -N) && (M == (__typeof(N))(-1))) ? N : N / M)
+> +#define DO_REM(N, M)  (unlikely(M == 0) ? 0 :\
+> +        unlikely((N == -N) && (M == (__typeof(N))(-1))) ? 0 : N % M)
+> +
+>   #endif /* LOONGARCH_VEC_H */
 
-But the compiler doesn't know that -- it must assume that the store to *addr may overlap 
-reloc_count.
+
+Aside from this movement,
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
