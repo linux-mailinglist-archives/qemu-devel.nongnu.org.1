@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB94078E291
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 00:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A3678E293
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 00:49:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbTyw-0006TN-LJ; Wed, 30 Aug 2023 18:48:14 -0400
+	id 1qbTyx-0006UH-IG; Wed, 30 Aug 2023 18:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbTyt-0006RN-Ty
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:48:11 -0400
+ id 1qbTyv-0006TK-RD
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:48:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qbTyr-0001KG-RS
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:48:11 -0400
+ id 1qbTys-0001KU-W9
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 18:48:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693435688;
+ s=mimecast20190719; t=1693435690;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=AxrAblbhpof7DMyt9/wfYw7XgNulpGCBvps1Od41TZk=;
- b=F/4goVB3w/Zd7wno++QH7r8Vk5v60f+i2KQDuPJjf9d1hyjaoqGAJav/UFl6FZ+l8m2fEq
- Y0KAZtcz/gr7kuJyY+9XXriANriVw+yo57jC4v4rJQM/VPllvngZutqrPDZYdQGYu6OIGN
- tr/dioleRF+tw0T/XQCbiWrutg3arIA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-54-zbkyx7d2NaCu4yix7pi4JQ-1; Wed, 30 Aug 2023 18:48:04 -0400
-X-MC-Unique: zbkyx7d2NaCu4yix7pi4JQ-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gN6y1nBDUA1LI5Ks5qyQNeC2RuI/LEi5lAp7pT50gvM=;
+ b=YK+V3+4BRjyXN/kS6W7IIhGg6nuoAagFOr0lGrtAlqin63BXb2w0ovZ4GytilWo39Wyfxy
+ +HUfz9f/cvGQBgtZY6EWjSRMA3/Er+gp03Twr/aTqaNujt0FLztOcUl1M72Z7XlpwcSAz8
+ bzwWL+qqteXzxOoPseRAe8OUkHftY5A=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-570-R9Tp_LbZP3S0yZR_C7rNVg-1; Wed, 30 Aug 2023 18:48:07 -0400
+X-MC-Unique: R9Tp_LbZP3S0yZR_C7rNVg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F611858EED;
- Wed, 30 Aug 2023 22:48:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5156B3803915;
+ Wed, 30 Aug 2023 22:48:06 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.22])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 78A48492C18;
- Wed, 30 Aug 2023 22:48:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C0C84492C13;
+ Wed, 30 Aug 2023 22:48:05 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Daniel Berrange <berrange@redhat.com>,
@@ -50,12 +51,16 @@ Cc: Daniel Berrange <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  kwolf@redhat.com, Coiby Xu <Coiby.Xu@gmail.com>,
  Fam Zheng <fam@euphon.net>, eblake@redhat.com, <qemu-block@nongnu.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v3 0/4] io: follow coroutine AioContext in qio_channel_yield()
-Date: Wed, 30 Aug 2023 18:47:58 -0400
-Message-ID: <20230830224802.493686-1-stefanha@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 1/4] nbd: drop unused nbd_receive_negotiate() aio_context
+ argument
+Date: Wed, 30 Aug 2023 18:47:59 -0400
+Message-ID: <20230830224802.493686-2-stefanha@redhat.com>
+In-Reply-To: <20230830224802.493686-1-stefanha@redhat.com>
+References: <20230830224802.493686-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
@@ -82,48 +87,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-- Fix wrong copy-pasted function name in doc comment [Eric]
-- Fix "match" -> "matches" in comment [Eric]
-v2:
-- Add Patch 1 & 2 to remove unused NBD aio_context arguments and dead code [Fabiano]
-- Remove attach/detach prototypes from "io/channel.h" [Daniel]
-- Add utility function to set fd handlers [Daniel]
+aio_context is always NULL, so drop it.
 
-The ongoing QEMU multi-queue block layer effort makes it possible for multiple
-threads to process I/O in parallel. The nbd block driver is not compatible with
-the multi-queue block layer yet because QIOChannel cannot be used easily from
-coroutines running in multiple threads. This series changes the QIOChannel API
-to make that possible.
+Suggested-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/block/nbd.h     | 3 +--
+ nbd/client-connection.c | 3 +--
+ nbd/client.c            | 5 ++---
+ qemu-nbd.c              | 4 ++--
+ 4 files changed, 6 insertions(+), 9 deletions(-)
 
-Stefan Hajnoczi (4):
-  nbd: drop unused nbd_receive_negotiate() aio_context argument
-  nbd: drop unused nbd_start_negotiate() aio_context argument
-  io: check there are no qio_channel_yield() coroutines during
-    ->finalize()
-  io: follow coroutine AioContext in qio_channel_yield()
-
- include/block/nbd.h              |   3 +-
- include/io/channel-util.h        |  23 ++++++
- include/io/channel.h             |  69 ++++++++---------
- include/qemu/vhost-user-server.h |   1 +
- block/nbd.c                      |  11 +--
- io/channel-command.c             |  10 ++-
- io/channel-file.c                |   9 ++-
- io/channel-null.c                |   3 +-
- io/channel-socket.c              |   9 ++-
- io/channel-tls.c                 |   6 +-
- io/channel-util.c                |  24 ++++++
- io/channel.c                     | 124 ++++++++++++++++++++++---------
- migration/channel-block.c        |   3 +-
- nbd/client-connection.c          |   3 +-
- nbd/client.c                     |  14 +---
- nbd/server.c                     |  14 +---
- qemu-nbd.c                       |   4 +-
- scsi/qemu-pr-helper.c            |   4 +-
- util/vhost-user-server.c         |  27 +++++--
- 19 files changed, 228 insertions(+), 133 deletions(-)
-
+diff --git a/include/block/nbd.h b/include/block/nbd.h
+index 4428bcffbb..f672b76173 100644
+--- a/include/block/nbd.h
++++ b/include/block/nbd.h
+@@ -324,8 +324,7 @@ typedef struct NBDExportInfo {
+     char **contexts;
+ } NBDExportInfo;
+ 
+-int nbd_receive_negotiate(AioContext *aio_context, QIOChannel *ioc,
+-                          QCryptoTLSCreds *tlscreds,
++int nbd_receive_negotiate(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+                           const char *hostname, QIOChannel **outioc,
+                           NBDExportInfo *info, Error **errp);
+ void nbd_free_export_list(NBDExportInfo *info, int count);
+diff --git a/nbd/client-connection.c b/nbd/client-connection.c
+index 3d14296c04..aafb3d0fb4 100644
+--- a/nbd/client-connection.c
++++ b/nbd/client-connection.c
+@@ -146,8 +146,7 @@ static int nbd_connect(QIOChannelSocket *sioc, SocketAddress *addr,
+         return 0;
+     }
+ 
+-    ret = nbd_receive_negotiate(NULL, QIO_CHANNEL(sioc), tlscreds,
+-                                tlshostname,
++    ret = nbd_receive_negotiate(QIO_CHANNEL(sioc), tlscreds, tlshostname,
+                                 outioc, info, errp);
+     if (ret < 0) {
+         /*
+diff --git a/nbd/client.c b/nbd/client.c
+index 479208d5d9..16ec10c8a9 100644
+--- a/nbd/client.c
++++ b/nbd/client.c
+@@ -1014,8 +1014,7 @@ static int nbd_negotiate_finish_oldstyle(QIOChannel *ioc, NBDExportInfo *info,
+  * Returns: negative errno: failure talking to server
+  *          0: server is connected
+  */
+-int nbd_receive_negotiate(AioContext *aio_context, QIOChannel *ioc,
+-                          QCryptoTLSCreds *tlscreds,
++int nbd_receive_negotiate(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+                           const char *hostname, QIOChannel **outioc,
+                           NBDExportInfo *info, Error **errp)
+ {
+@@ -1027,7 +1026,7 @@ int nbd_receive_negotiate(AioContext *aio_context, QIOChannel *ioc,
+     assert(info->name && strlen(info->name) <= NBD_MAX_STRING_SIZE);
+     trace_nbd_receive_negotiate_name(info->name);
+ 
+-    result = nbd_start_negotiate(aio_context, ioc, tlscreds, hostname, outioc,
++    result = nbd_start_negotiate(NULL, ioc, tlscreds, hostname, outioc,
+                                  info->structured_reply, &zeroes, errp);
+     if (result < 0) {
+         return result;
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index aaccaa3318..b47459f781 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -295,8 +295,8 @@ static void *nbd_client_thread(void *arg)
+         goto out;
+     }
+ 
+-    if (nbd_receive_negotiate(NULL, QIO_CHANNEL(sioc),
+-                              NULL, NULL, NULL, &info, &local_error) < 0) {
++    if (nbd_receive_negotiate(QIO_CHANNEL(sioc), NULL, NULL, NULL,
++                              &info, &local_error) < 0) {
+         if (local_error) {
+             error_report_err(local_error);
+         }
 -- 
 2.41.0
 
