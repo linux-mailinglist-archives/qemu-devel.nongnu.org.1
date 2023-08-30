@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E534F78D6CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374BB78D6CB
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:04:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMiF-0005El-NL; Wed, 30 Aug 2023 11:02:31 -0400
+	id 1qbMjd-00065V-Qx; Wed, 30 Aug 2023 11:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMiB-0005E7-6J
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:02:29 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qbMjb-00065N-US
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:03:55 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMi8-0002ti-RX
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:02:26 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40061928e5aso54059275e9.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:02:24 -0700 (PDT)
+ id 1qbMjZ-0003Fm-Qx
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:03:55 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4018af1038cso54036755e9.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:03:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693407743; x=1694012543; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693407832; x=1694012632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p196gr26G1t24hZUNnGp85YtE5tVoTZxdjKKYXNPwqQ=;
- b=T1zA5J7aShtG2KRQPcAFQUuiITtb21WOGk2JYGbc9jpIZneDZ0xFWvz6srQBOJllze
- twfx+8OluyJDA6U4tRvzh2PJ3dvKCJGSRVWduv8N/62JAUXXibJSlFn6ZPyQIk8aROil
- sfhKjj6THdCJy3cA3BJPtKlBkl6w0h6s+slDwhTmW2XMzzwZpGcO4wyVZM5GKT+keZdt
- ZM4DmiF22GpWI2iHLj0iTwdcEitLQLi7d3oGfSFT/FUbk1Hj10i9x956aMAYeqA5C2XI
- giYu3S+SvdE1k9fAaB2mu07jvqC9ZZ/C7O+5kBSMtHBVteehwzi+WJJu4hV2Fxowjkqo
- zx8A==
+ bh=Tr7KHQ0KuRc94CntpN5NG/B9TtzzNLRQr/cNb5nEOUQ=;
+ b=WLvLVrCU24WqLDgke9dTg6xMvpWKdBwik6zoTLfqbFi4pmp+i1aXsQG+VSxHxZKU8L
+ YbMCMLXSRx7kfV/UT04lplGpC+doPzjifTiYw1ZdfU7ecMj4+a07dIkJsdIZUZ5Vji/b
+ iasI+kQRufJiNIFULrWFQ4m5PDMOEU0dHNwKdlGrRRotRZ4z9UOf5UDXyP8T8asgp6Pr
+ t42PKiyNuBc23yheE2ciLZfhY0GkkhnZkHnU9y/gZRB8qTdl24msJw4zLXvVWmPXYbuH
+ Vpz7ZWZx8qqd4k63hnCZWLVuZrJg2nGPwPzJn3d2Lvm5JqeuOOFj7TOPI8vxZBprqjFL
+ Q0pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693407743; x=1694012543;
+ d=1e100.net; s=20221208; t=1693407832; x=1694012632;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=p196gr26G1t24hZUNnGp85YtE5tVoTZxdjKKYXNPwqQ=;
- b=BoZcdGhGOqp+wf5VcCizyuxINHV76s7NyZip83v59KMxaGgJaBTgVCqow6Ah9UG0LW
- h/TaweahA5PQ3xg8PUlgyub/mZP/790kvqRxPs1QKDhz0TyuoKUUlcWB8YFaN9vvLsW2
- EQj9XpObzAnamj6VP+0NLl76SFoISIn1klT+chatENnNEUiO1Rt7IdygKbZ8z3IOo7he
- SMphDB/R45BxJqiXOgZmIIzGDWaokuoBHi0PbFpfGPfWFAeZmEoh54XdGntktevr+11Z
- 9yk+92/YvTtkjiNkRqlev2mljbhs/i8uPEHgvm6OJarlf21DsIXsazU8nRCfO61Pwb4A
- QhYQ==
-X-Gm-Message-State: AOJu0YwbQBE6dJPUfi1mI48WgNcjOvlKasmjGNRKAT0SVD1kM8U1zUg1
- d2WvZPTSVI0DIcdBk6TWKUANUGlrqyyx0TF+TuY=
-X-Google-Smtp-Source: AGHT+IFfVbhT38Q31GmX/R2oP2kvug6eXMmRS4JNexhPkZog5FO9wdmA8DUwS0xbhMH3ppV93vtC+A==
-X-Received: by 2002:a7b:c454:0:b0:3fe:4e4e:bedb with SMTP id
- l20-20020a7bc454000000b003fe4e4ebedbmr2206492wmi.4.1693407743173; 
- Wed, 30 Aug 2023 08:02:23 -0700 (PDT)
+ bh=Tr7KHQ0KuRc94CntpN5NG/B9TtzzNLRQr/cNb5nEOUQ=;
+ b=I5orgFQZyvIeNKUmHse0+LVeyVMNibQPbT8QDijnGPPBiw4pztmS+A4P3DckjJTUlz
+ jYqn+CZogIQmVDx4RCTSImZmYF8hbdr0nO7eP5+ka9ZBb+y8DYFlgDpkw4MjeBSmTIfT
+ mhNNN05NhzcczOO6fkunu0yzv03JVrZRI7wPvpnxEJbWC+YG9jPwVWZs1tW5UUmhmO/H
+ 9+2n/hZyFmX3iHNg57/P71wQPuM4IPzRcaajNXNZxqIFftKqQsQy7enltb+tsGSWgDaU
+ VSYJhpOtONzf0nJg4xaOOTnJ8bdnOf07/jJKOxrEgheDMFhAoJ4v4L03+xwXjlJOy/sf
+ XIGg==
+X-Gm-Message-State: AOJu0YzkWqu6T703Bw6S9Yr0eht2zpv97uGlWi/RbnRocrC5qhUg10PX
+ WrebzLiB8VJcBctwjaexdMrvyw==
+X-Google-Smtp-Source: AGHT+IFz/25NDWeggi1rbHJVXYJQrewUguwMtJAgYBG/7jPEHdpfJWH6a2vLhSMHO2qmULo6OI1zTg==
+X-Received: by 2002:a05:600c:2116:b0:3fe:d1b9:7ea9 with SMTP id
+ u22-20020a05600c211600b003fed1b97ea9mr2128165wml.36.1693407832184; 
+ Wed, 30 Aug 2023 08:03:52 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- f11-20020a7bcd0b000000b003fedcd02e2asm2539785wmj.35.2023.08.30.08.02.22
+ o9-20020a05600c510900b003fbe791a0e8sm2669016wms.0.2023.08.30.08.03.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 08:02:22 -0700 (PDT)
+ Wed, 30 Aug 2023 08:03:51 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 460E71FFBB;
- Wed, 30 Aug 2023 16:02:22 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 86B791FFBB;
+ Wed, 30 Aug 2023 16:03:51 +0100 (BST)
 References: <20230818033648.8326-1-akihiko.odaki@daynix.com>
- <20230818033648.8326-19-akihiko.odaki@daynix.com>
+ <20230818033648.8326-21-akihiko.odaki@daynix.com>
 User-agent: mu4e 1.11.16; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Peter Maydell
- <peter.maydell@linaro.org>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Subject: Re: [PATCH RESEND v5 18/26] target/arm: Remove references to
- gdb_has_xml
-Date: Wed, 30 Aug 2023 16:02:17 +0100
-In-reply-to: <20230818033648.8326-19-akihiko.odaki@daynix.com>
-Message-ID: <87msy8r2td.fsf@linaro.org>
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH RESEND v5 20/26] gdbstub: Remove gdb_has_xml variable
+Date: Wed, 30 Aug 2023 16:02:50 +0100
+In-reply-to: <20230818033648.8326-21-akihiko.odaki@daynix.com>
+Message-ID: <87il8wr2qw.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,7 +106,8 @@ Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+In principle I'm fine with this but should we not catch GDB's which
+don't send qXfer:features:read earlier?
 
 --=20
 Alex Benn=C3=A9e
