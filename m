@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12A678D6F7
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E0478D71C
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:38:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbN6s-00023i-Ik; Wed, 30 Aug 2023 11:27:59 -0400
+	id 1qbNGC-00082K-I3; Wed, 30 Aug 2023 11:37:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbN6h-00022y-1N
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:27:47 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbN6c-0000pY-Ss
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:27:44 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-401d10e3e54so25242485e9.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:27:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693409261; x=1694014061; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NyTkGwzMuSmN+msqEOXmvCZn1EpBuljFmbrUhOFAvvw=;
- b=lAqmzawz2mp+ODe/YXNxo1M0/IljNDmvxtoC1Gbey6c666t6leyyr7UOJ4SVtt3FiD
- YbwcqQY0cMiTuoQdEK6aEqSVITfnz21U6OVUMMFImSOZDLqMTteMoOygAcyFID1KWK9d
- HOhmToY4ruKHmdrCa33qZCRyC2OciTyP8ttAeJslXkNAbrM1ZxK0CCWOMZ3gdCVnAtie
- 1VaiK2tTiDs4PKy0i9SwzlFbmYnAHk6eSET9G9SNQ5gYuwcyVinvURf7/XztZfXFQiv9
- aZXgMvx6EHbGg2VO7XqWeSOKVpxOiP4BK8BhOF1LblnNZKPgIcMaAjy0PN+WIw0WrdoP
- 6m4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693409261; x=1694014061;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NyTkGwzMuSmN+msqEOXmvCZn1EpBuljFmbrUhOFAvvw=;
- b=L+bUBhnwBh0BUCZzPBbfYh6HHZoYkAtoxNpaneQzmWALTjdhC7CutQzIPX06MpVgWq
- 2idnr3XF4FeQhNLuBkJgDl5uzXiWekGfj37V7Bn0SdNlDKKmOYwEOH4HlelVYrMFvLdy
- OInw82cHWFT9tsXrC/4D2mwvLcBESjVBea/Rrb3dLMInCVCjPlkw9675oLUSkd5Rg8N5
- 9AaarPfxVXAsmObQBjLmIXiAXznKVP8OJp7u7zcPl7CZkbJ+3kJyJSfIfGDeq6SLspGO
- Mp9ZfNUR7vAemUiMTZp5LMFHfgow21VAxHhqgzXkn+F/9vhvtkB2mXn9lMPlhicIAmhL
- oVCA==
-X-Gm-Message-State: AOJu0YxlHFXSMuqSRzZJzRgUycHDd2fVQQwtfCstAgS6DB2LVP4eTVxb
- /QFoI+hcZO/iIukIZRvgeC0ttg==
-X-Google-Smtp-Source: AGHT+IE2mt734RccB7AaiRSeF9OFKmcSokmn7hI7HaWcSHQu/5aavulUpGIKF1au4ctz1eTdbXXHUw==
-X-Received: by 2002:adf:e80e:0:b0:315:8a13:ef17 with SMTP id
- o14-20020adfe80e000000b003158a13ef17mr1959916wrm.65.1693409261520; 
- Wed, 30 Aug 2023 08:27:41 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.142.89])
- by smtp.gmail.com with ESMTPSA id
- n8-20020a1c7208000000b003fefaf299b6sm2595630wmc.38.2023.08.30.08.27.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 08:27:41 -0700 (PDT)
-Message-ID: <39fc098c-e1fb-ebb9-763a-03d2384163af@linaro.org>
-Date: Wed, 30 Aug 2023 17:27:39 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qbNG7-00081l-3X
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:37:31 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qbNG3-0002nC-I8
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:37:30 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbT0f1VYxz6HJZZ;
+ Wed, 30 Aug 2023 23:36:18 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 30 Aug
+ 2023 16:37:21 +0100
+Date: Wed, 30 Aug 2023 16:37:20 +0100
+To: =?ISO-8859-1?Q?J=F8rgen?= Hansen <Jorgen.Hansen@wdc.com>
+CC: Fan Ni <fan.ni@samsung.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, "gregory.price@memverge.com"
+ <gregory.price@memverge.com>, "hchkuo@avery-design.com.tw"
+ <hchkuo@avery-design.com.tw>, "cbrowy@avery-design.com"
+ <cbrowy@avery-design.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>, Adam Manzanares
+ <a.manzanares@samsung.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+ "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, "nifan@outlook.com"
+ <nifan@outlook.com>
+Subject: Re: [Qemu PATCH v2 9/9] hw/mem/cxl_type3: Add dpa range validation
+ for accesses to dc regions
+Message-ID: <20230830163720.00000f9c@Huawei.com>
+In-Reply-To: <d0d7ca1d-81bc-19b3-4904-d60046ded844@wdc.com>
+References: <20230725183939.2741025-1-fan.ni@samsung.com>
+ <CGME20230725183957uscas1p2ca5293c7229ab989ad1a2d95395436a6@uscas1p2.samsung.com>
+ <20230725183939.2741025-10-fan.ni@samsung.com>
+ <d0d7ca1d-81bc-19b3-4904-d60046ded844@wdc.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 67/67] display/kconfig: make SM501 depend on PIXMAN
-Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-68-marcandre.lureau@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230830093843.3531473-68-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,30 +74,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/8/23 11:38, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->   hw/display/Kconfig | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/display/Kconfig b/hw/display/Kconfig
-> index 4d8b0cec40..e8077c16d8 100644
-> --- a/hw/display/Kconfig
-> +++ b/hw/display/Kconfig
-> @@ -74,6 +74,7 @@ config FRAMEBUFFER
->   
->   config SM501
->       bool
-> +    depends on PIXMAN
->       select I2C
->       select DDC
->       select SERIAL
 
-SM501 optionally use pixman, so by adding some CONFIG_PIXMAN
-#ifdefry in hw/display/sm501.c we can compile it without pixman.
+> > +
+> > +/*
+> > + * This function check whether a dpa range [dpa, dpa + len) has been backed
+> > + * with dc extents, used when validating read/write to dc regions
+> > + */
+> > +static bool test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+> > +        uint64_t len)
+> > +{
+> > +    int i;
+> > +    CXLDCD_Region *region = &ct3d->dc.regions[0];
+> > +    uint64_t nbits;
+> > +    long nr;
+> > +
+> > +    if (dpa < region->base
+> > +            || dpa >= region->base + ct3d->dc.total_capacity)
+> > +        return false;
+> > +
+> > +    /*
+> > +     * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
+> > +     * Region 0 being used for the lowest DPA of Dynamic Capacity and
+> > +     * Region 7 for the highest DPA.
+> > +     * So we check from the last region to find where the dpa belongs.
+> > +     * access across multiple regions is not allowed.
+> > +     */
+> > +    for (i = ct3d->dc.num_regions - 1; i >= 0; i--) {
+> > +        region = &ct3d->dc.regions[i];
+> > +        if (dpa >= region->base) {
+> > +            break;
+> > +        }
+> > +    }
+> > +
+> > +    nr = (dpa - region->base) / region->block_size;  
+> 
+> > +    nbits = len / region->block_size;
+oops. Len is probably always smaller than block_size (typically 8 or less)
+so nbits always 0.  Should be 1 in those cases.
+
+> > +    return find_next_zero_bit(region->blk_bitmap, nbits, nr) >= nr + nbits;  
+> 
+> The 2nd parameter to find_next_zero_bit is the length of the bitmap, so 
+> shouldn't this be something like (also considering that len is the 
+> read/write len, and will be smaller than the region block size):
+> 
+>    nbits = DIV_ROUND_UP(len, region->block_size);
+
+>  
+> 
+>    return find_next_zero_bit(region->blk_bitmap, nbits + nr, nr) ==
+>           nbits + nr;
+
+Agreed with your suggestion. I'll carry that in my forward port of this
+series for now and update my tree at
+gitlab.com/jic23/qemu branch will probably be cxl-2023-08-30
+a bit later today.
+
+Jonathan
+
 
