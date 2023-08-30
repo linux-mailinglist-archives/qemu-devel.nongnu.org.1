@@ -2,64 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2313878D4B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3416578D4EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:50:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHiv-0004m2-SD; Wed, 30 Aug 2023 05:42:53 -0400
+	id 1qbHiy-00051H-0m; Wed, 30 Aug 2023 05:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHiS-0003ZZ-HM
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qbHiT-0003aL-Mj
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHiI-0001dv-Uw
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:22 -0400
+ id 1qbHiO-0001gF-Q7
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388533;
+ s=mimecast20190719; t=1693388538;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3uBLZSLVSTuRtrzYfTYy2+csCZWtH8neKKBdq6qx4iQ=;
- b=jKm3uUPpCsyZO7Pi/Y99i8gQz5JP1JET0m02ydBYB0YAhvt4CWYdkRQC5ggJZ5aHCAcQNO
- 5wY+7U09SVwLdepk1VZxSewyIpnGoqtWA6PLm1rc23Nw+z9dsfiwj4dAGNWCl2cIzDb5ac
- C1ibMy9aHvNQAs2PphG2HFanOSdjx1Y=
+ bh=36GFC5TPI0ds1WvEYMWYwriEYzeCfd3nV9CShiKZNcI=;
+ b=aZEgziG75F9NTHymDqgIIMD3PJaJx1pUP0CzbSjS9w8cav9Qmcl0cW5SEvl6ONgTybJuGC
+ dGninDiNEkybSyyZBH46x0XTHsXrZPeqIJQ+Lu+mbk/lV4wlWU1hcXEqIazlJOVALTFNqz
+ p5puV7yccw08lb+YOmrWRXfIAVsT18I=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-590-PM-neeCyOTeE9WpSjoYNDg-1; Wed, 30 Aug 2023 05:42:12 -0400
-X-MC-Unique: PM-neeCyOTeE9WpSjoYNDg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-433-O9ixrTk9PLCYyn93fi8IxA-1; Wed, 30 Aug 2023 05:42:16 -0400
+X-MC-Unique: O9ixrTk9PLCYyn93fi8IxA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0AC7857A84;
- Wed, 30 Aug 2023 09:42:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 59870803E2E
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:42:16 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D9B01140E96E;
- Wed, 30 Aug 2023 09:42:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 23371C15BAE;
+ Wed, 30 Aug 2023 09:42:14 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 51/67] build-sys: add optional "pixman" feature
-Date: Wed, 30 Aug 2023 13:38:25 +0400
-Message-ID: <20230830093843.3531473-52-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 52/67] ui: compile out some qemu-pixman functions when !PIXMAN
+Date: Wed, 30 Aug 2023 13:38:26 +0400
+Message-ID: <20230830093843.3531473-53-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,73 +82,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Set CONFIG_PIXMAN accordinly.
+Those functions require the PIXMAN library.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- meson.build       | 6 ++++--
- Kconfig.host      | 3 +++
- meson_options.txt | 2 ++
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ include/ui/qemu-pixman.h | 7 +++++--
+ ui/qemu-pixman.c         | 6 ++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 98e68ef0b1..3bd7046099 100644
---- a/meson.build
-+++ b/meson.build
-@@ -836,8 +836,8 @@ if 'ust' in get_option('trace_backends')
-                      method: 'pkg-config')
- endif
- pixman = not_found
--if have_system or have_tools
--  pixman = dependency('pixman-1', required: have_system, version:'>=0.21.8',
-+if not get_option('pixman').auto() or have_system or have_tools
-+  pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
-                       method: 'pkg-config')
- endif
- zlib = dependency('zlib', required: true)
-@@ -2126,6 +2126,7 @@ config_host_data.set('CONFIG_SECCOMP', seccomp.found())
- if seccomp.found()
-   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
- endif
-+config_host_data.set('CONFIG_PIXMAN', pixman.found())
- config_host_data.set('CONFIG_SNAPPY', snappy.found())
- config_host_data.set('CONFIG_TPM', have_tpm)
- config_host_data.set('CONFIG_TSAN', get_option('tsan'))
-@@ -2833,6 +2834,7 @@ have_ivshmem = config_host_data.get('CONFIG_EVENTFD')
- host_kconfig = \
-   (get_option('fuzzing') ? ['CONFIG_FUZZ=y'] : []) + \
-   (have_tpm ? ['CONFIG_TPM=y'] : []) + \
-+  (pixman.found() ? ['CONFIG_PIXMAN=y'] : []) + \
-   (spice.found() ? ['CONFIG_SPICE=y'] : []) + \
-   (have_ivshmem ? ['CONFIG_IVSHMEM=y'] : []) + \
-   (opengl.found() ? ['CONFIG_OPENGL=y'] : []) + \
-diff --git a/Kconfig.host b/Kconfig.host
-index d763d89269..b6ac2b9316 100644
---- a/Kconfig.host
-+++ b/Kconfig.host
-@@ -11,6 +11,9 @@ config OPENGL
- config X11
-     bool
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index 51f8709327..c5a0911cc7 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -70,17 +70,17 @@ pixman_format_code_t qemu_default_pixman_format(int bpp, bool native_endian);
+ pixman_format_code_t qemu_drm_format_to_pixman(uint32_t drm_format);
+ uint32_t qemu_pixman_to_drm_format(pixman_format_code_t pixman);
+ int qemu_pixman_get_type(int rshift, int gshift, int bshift);
+-pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf);
+ bool qemu_pixman_check_format(DisplayChangeListener *dcl,
+                               pixman_format_code_t format);
  
-+config PIXMAN
-+    bool
++#ifdef CONFIG_PIXMAN
++pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf);
+ pixman_image_t *qemu_pixman_linebuf_create(pixman_format_code_t format,
+                                            int width);
+ void qemu_pixman_linebuf_fill(pixman_image_t *linebuf, pixman_image_t *fb,
+                               int width, int x, int y);
+ pixman_image_t *qemu_pixman_mirror_create(pixman_format_code_t format,
+                                           pixman_image_t *image);
+-void qemu_pixman_image_unref(pixman_image_t *image);
+ 
+ pixman_image_t *qemu_pixman_glyph_from_vgafont(int height, const uint8_t *font,
+                                                unsigned int ch);
+@@ -89,6 +89,9 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+                               pixman_color_t *fgcol,
+                               pixman_color_t *bgcol,
+                               int x, int y, int cw, int ch);
++#endif
 +
- config SPICE
-     bool
++void qemu_pixman_image_unref(pixman_image_t *image);
  
-diff --git a/meson_options.txt b/meson_options.txt
-index aaea5ddd77..89654fd77d 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -216,6 +216,8 @@ option('l2tpv3', type : 'feature', value : 'auto',
-        description: 'l2tpv3 network backend support')
- option('netmap', type : 'feature', value : 'auto',
-        description: 'netmap network backend support')
-+option('pixman', type : 'feature', value : 'auto',
-+       description: 'pixman support')
- option('slirp', type: 'feature', value: 'auto',
-        description: 'libslirp user mode network backend support')
- option('vde', type : 'feature', value : 'auto',
+ G_DEFINE_AUTOPTR_CLEANUP_FUNC(pixman_image_t, qemu_pixman_image_unref)
+ 
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index be00a96340..4272a43744 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -143,6 +143,7 @@ int qemu_pixman_get_type(int rshift, int gshift, int bshift)
+     return type;
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf)
+ {
+     pixman_format_code_t format;
+@@ -156,6 +157,7 @@ pixman_format_code_t qemu_pixman_get_format(PixelFormat *pf)
+     }
+     return format;
+ }
++#endif
+ 
+ /*
+  * Return true for known-good pixman conversions.
+@@ -184,6 +186,7 @@ bool qemu_pixman_check_format(DisplayChangeListener *dcl,
+     }
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ pixman_image_t *qemu_pixman_linebuf_create(pixman_format_code_t format,
+                                            int width)
+ {
+@@ -209,6 +212,7 @@ pixman_image_t *qemu_pixman_mirror_create(pixman_format_code_t format,
+                                     NULL,
+                                     pixman_image_get_stride(image));
+ }
++#endif
+ 
+ void qemu_pixman_image_unref(pixman_image_t *image)
+ {
+@@ -218,6 +222,7 @@ void qemu_pixman_image_unref(pixman_image_t *image)
+     pixman_image_unref(image);
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ pixman_image_t *qemu_pixman_glyph_from_vgafont(int height, const uint8_t *font,
+                                                unsigned int ch)
+ {
+@@ -260,3 +265,4 @@ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+     pixman_image_unref(ifg);
+     pixman_image_unref(ibg);
+ }
++#endif /* CONFIG_PIXMAN */
 -- 
 2.41.0
 
