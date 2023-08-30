@@ -2,79 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA80E78D6B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4201A78D6B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 16:56:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbMaM-0001FN-SD; Wed, 30 Aug 2023 10:54:22 -0400
+	id 1qbMbu-0005e6-3l; Wed, 30 Aug 2023 10:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMaK-0001Dr-K0
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:20 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbMbk-0005Qb-9x
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:55:51 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbMaF-0000lV-Ia
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:54:20 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-31c8321c48fso631075f8f.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:54:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbMbi-0001Lo-3H
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 10:55:48 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b9c907bc68so85955811fa.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 07:55:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693407254; x=1694012054; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XKjAgQoj2FFsH6qRrmv8SNeV5ivWp4tXeZ8rykfRKz0=;
- b=swZJNEGXqnTMvy1jFN8vxOx1D/68V5iyROcHqkELnQqZIWK052mHjALCX06QsWBnT7
- 0238cPdGWQtl6G9ocsB9p0w22FaqhRfOhLS+4yOy838PJWlksxbmdqdRHMZ2TEpLESQ7
- ZTfCEQf8XFc7RRMS5uoiorUtvyDt6j7hF9W3y/2Q7lHC1Bf6dj5tGqhxvJVgYnWDG9ER
- P0/eAMTv4jzuCVp/TRIysjO6kiQyCOoizUrh/TN5zH1g4hC5TrJTtEqMpeqSWH5dbBWd
- b6FPIjWWTdwLy+xrjCGsu3JcY2TRKUCbmIjtyZJwMIzXHI1Y1IixeoswZtvqDhedt7/U
- ml9Q==
+ d=linaro.org; s=google; t=1693407344; x=1694012144; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=PqZLJH+sYZ+PTZMmrO4ed85PJ1nGazXEdyk5wET/rsc=;
+ b=SpPGQcJsHJhPkBFYYw4W4zcEQxnSllrQgd+hh/5xyHmCvyomj3yhg7ehLheVD7GsoF
+ n7t1uKQ6RSn0Bg3u69uPhT7fHrCG9CjchLoGLl+rQG+ZUmSYp9wJMxkTEgWZpegp8ABk
+ UW1KWieh+hqSQ39AHJfN/LDy3v/1IjBee0vc3WbA9Aw4jeVum6uXFOBs7qauDdIOLBs1
+ oXF8vIVDrqLVRyriGMetO/xOfQG+pLmeUnM2fpcZTcvsckUTG7+RH4hOYWKHA7cEjTPb
+ pnz2V1017VXHYUCRJRZ8Mj4zd1AygIDheHFa4JrlSyFPjKfWCJQ7L5ubb2cgIspxUB94
+ ZdNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693407254; x=1694012054;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XKjAgQoj2FFsH6qRrmv8SNeV5ivWp4tXeZ8rykfRKz0=;
- b=Qpri+AkHJgdTa+EEcoofeEzlTweKW5pHX/6ZXA72r+i3oULb6GwRhPEUX3VYRv8tYI
- NljGK/+dBr6pPfn/n7genJYCWhbkGOgIoTHAMIs4zwL0XUp2uvz3ZnKZyyFNhxk0YMAl
- +RxgYR9y0xZL8ICeG2bsZWtzG/BwQbRkx5jlSyiMjolNHpki9kQB/zlxRL9hV8fmrrdW
- WHzoB1Q3EjpqzjHRAw6e3VsiyBTKVZhnzhEome8DIj1Uy2eZoDyLvE9kOyLS2aLlgOwE
- 8it0HqWpB+ICK8QzRD8TZ0LqLs5h5dNSnSiJAaGcgz8jv8g0ZRPzZYtPqDSE/BlwNMyF
- UVYQ==
-X-Gm-Message-State: AOJu0YxvkP8CtzF2pJqMct6jzjYHxSLcxgAymD5+778mCwo2EWcvjGKx
- erk/59CpTJgxadbU/m3Q4SxeHQ==
-X-Google-Smtp-Source: AGHT+IFQi+JSrDVqEeN60MsRe7UVIdJns3aQBSrxm+N1qgNV+VRNVJpzuBtuQmObro1Nzwf5dxllIw==
-X-Received: by 2002:adf:f7c1:0:b0:317:6734:c2ae with SMTP id
- a1-20020adff7c1000000b003176734c2aemr4673187wrq.11.1693407254211; 
- Wed, 30 Aug 2023 07:54:14 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- s8-20020a5d6a88000000b0031431fb40fasm16810212wru.89.2023.08.30.07.54.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 07:54:12 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0305A1FFC4;
- Wed, 30 Aug 2023 15:54:09 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/12] gdbstub: move comment for gdb_register_coprocessor
-Date: Wed, 30 Aug 2023 15:54:07 +0100
-Message-Id: <20230830145407.3064249-13-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230830145407.3064249-1-alex.bennee@linaro.org>
-References: <20230830145407.3064249-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20221208; t=1693407344; x=1694012144;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PqZLJH+sYZ+PTZMmrO4ed85PJ1nGazXEdyk5wET/rsc=;
+ b=SatptMI0YrWHdLyWN3ENH5NutQZFfIEue7wxljcUZJbYQPat0uEhuwX+Oc9fyKNNoP
+ tfrS430T56D7dVxEU3b+KogLx+U9WbkooRS8FTR1HcvBUqGRde8FRgrDOyT0Id/4SF+W
+ NalV907WryFPhP2+eNY1RVDgaTuWIVWGy8obeRruSZXeMcfKpu4Q/BbrLFTqvyvJxqMP
+ BJEUdhaImJvuWzYVjxsKGBxNcduATAS8j92xp5+wvLt67FtrV736YVL4Laury7k19Fsm
+ EDmFVs12UHGaWDNZJSyEqAwP6ZKDgzUv7zh+yopodLe+1+vN734mHv/2e012H6hg9DTE
+ 6TSw==
+X-Gm-Message-State: AOJu0Yw6FE+Ti8K2+/wD3JFw7A+l+/dpCGl8Pdou3HB6S8kdt43b3i3m
+ t0biENyBFNzVKSJALawjG587bVtqibuoSI9BMu6kkQ==
+X-Google-Smtp-Source: AGHT+IFVEBGCLfvWoClqKa8Lrn2ANg4JPDsezG9WJrS5mM0/9AeXor/VtAPF50XweKESQZAbnnYLqdt4ji288cE+jlQ=
+X-Received: by 2002:ac2:46d2:0:b0:4fd:d470:203b with SMTP id
+ p18-20020ac246d2000000b004fdd470203bmr1818868lfo.69.1693407343950; Wed, 30
+ Aug 2023 07:55:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+References: <20230830144743.53770-1-imp@bsdimp.com>
+In-Reply-To: <20230830144743.53770-1-imp@bsdimp.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 30 Aug 2023 15:55:31 +0100
+Message-ID: <CAFEAcA9LNyxEe42cBBWYLE2TxQKD39Qv_Ud+-TbbWdvMR=wNCg@mail.gmail.com>
+Subject: Re: [PATCH v3] bsd-user: Move PRAGMA_DISABLE_PACKED_WARNING etc to
+ qemu.h
+To: Warner Losh <imp@bsdimp.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Laurent Vivier <laurent@vivier.eu>, Kyle Evans <kevans@freebsd.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +90,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use proper kdoc style comments for this API function.
+On Wed, 30 Aug 2023 at 15:51, Warner Losh <imp@bsdimp.com> wrote:
+>
+> For the moment, move PRAGMA_DISABLE_PACKED_WARNING and
+> PRAGMA_ENABLE_PACKED_WARNING back to bsd-user/qemu.h.
+>
+> Of course, these should be in compiler.h, but that interferes with too
+> many things at the moment, so take one step back to unbreak clang
+> linux-user builds first. Use the exact same version that's in
+> linux-user/qemu.h since that's what should be in compiler.h.
+> ---
+>  bsd-user/qemu.h         | 27 +++++++++++++++++++++++++++
+>  include/qemu/compiler.h | 30 ------------------------------
+>  2 files changed, 27 insertions(+), 30 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230829161528.2707696-13-alex.bennee@linaro.org>
+Yeah, let's un-break CI first and then think about a neater
+thing afterwards.
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 0ee39cfdd1..16a139043f 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -14,6 +14,16 @@
- /* Get or set a register.  Returns the size of the register.  */
- typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
- typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
-+
-+/**
-+ * gdb_register_coprocessor() - register a supplemental set of registers
-+ * @cpu - the CPU associated with registers
-+ * @get_reg - get function (gdb reading)
-+ * @set_reg - set function (gdb modifying)
-+ * @num_regs - number of registers in set
-+ * @xml - xml name of set
-+ * @gpos - non-zero to append to "general" register set at @gpos
-+ */
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos);
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index fdebfe25ea..349d348c7b 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -456,12 +456,6 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-     return 0;
- }
- 
--/* Register a supplemental set of CPU registers.  If g_pos is nonzero it
--   specifies the first register number and these registers are included in
--   a standard "g" packet.  Direction is relative to gdb, i.e. get_reg is
--   gdb reading a CPU register, and set_reg is gdb modifying a CPU register.
-- */
--
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos)
--- 
-2.39.2
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
+-- PMM
 
