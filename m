@@ -2,155 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4899D78D46B
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2EDB78D474
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 10:59:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbGvP-0002Uy-H9; Wed, 30 Aug 2023 04:51:43 -0400
+	id 1qbH2u-0006jc-7z; Wed, 30 Aug 2023 04:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qbGvN-0002G3-8k; Wed, 30 Aug 2023 04:51:41 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qbH2s-0006jN-FT
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:59:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qbGvJ-00089a-3r; Wed, 30 Aug 2023 04:51:40 -0400
-Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 37U6dp9h019716; Wed, 30 Aug 2023 01:51:23 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:references:in-reply-to
- :content-type:content-id:content-transfer-encoding:mime-version;
- s=proofpoint20171006; bh=cpuj5KjYICwATaNJ+tjeXAL9FXCUhZyJctZQPF
- 405IU=; b=MNdKo6lesMxJyW8hSSzB6Ue9IpHuyFK89OxyCDLmjExYDJn2RQypFE
- n9LG6i6+2x7csxCzcTCYW0dKh+Io+CC7FcEC4iyOd+W+sfXPvq4lNODpsNQZY4gd
- wNGdRtLfC8CtXziataHd881lSytMyB6Mb2ZDXGh2MttIyBKAzWJN/XooZX5GlBgc
- eFN7QgdZw/Mv6Mnywc046ZcAeH9TWc7b5GxUaxXQSacLoD3EmkE2acTdk6cA31by
- N5EwRCwtoayn4Ft3lyFrx2z2/pDQysGnm+GzsrnjUUlyFFLAZXa/88o3exkHBD12
- GagWRzxgmtvSipYzMN5Kb5jTUSETka3A==
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3sqda68h6c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Aug 2023 01:51:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oGVzOxKuS9yXGcPOT9PKDAiAqos65Mnva+Zsdxw+UxxaERkGR6gEZVYsECNCWT7bKy3s/Z1p2G+qhFoLvfRTYuR5PvNCG+gVarACxADtG4Y8TPKlzlhCDYdeGnM71YxoXs1FaqXqNaCr5oQnsT4teYmZDoZ+iRYR+B5Uf9yHgt7Mfre3b6yfOMex5lMn9xCGDe9NS1oeYigDn3Dz/OStgMvN3OOEDEM8qAreSQ+K3dkab4VT0du2xF/5f/stRacmJ3zVBlLYeEq4/y2WBe1K7G0GU0uduVAJqxZFiAbZJh383/p6xelZlHZofjYWy0s6Mvhz+7cf67art9R6m4wJcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cpuj5KjYICwATaNJ+tjeXAL9FXCUhZyJctZQPF405IU=;
- b=Xd1v3e7SWAVnMGTcZ6jCpVu3J/3P8rgsep/mSRaXjbRXHeWGWDYQ+mevVEmpQFrXuVHBbk8hWFSq3rINuIjm89deQLHWg65uMF/JEtyKVp1tapMRS64hmmllnCZPp/VGAdc+ucELY7IRqnULga6y6I6Eb1LHZ/Je1LDIbGSUn6WE+6jpp/EK6B9GmUhmn6iZtNzSAvwJcugy28pkif6zYBdl+Lg3Fbcjfsv7DuK58bWBaBkTgQMzZ2DHZheg8fNYs/kRDTW72F3u2YEigMd02NsGoBvlNbtPZTy/BZmrBkwE9NxFYWxoN/1v62Pd6hsfdGlBnePiL6omerey9v95CA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cpuj5KjYICwATaNJ+tjeXAL9FXCUhZyJctZQPF405IU=;
- b=JhYHMrJL28cJVstkhHrsmc51rls4gTRVSxd6+OPzx6PgUW3uT5jQi6KbQxruQNHkmokbW1uXkYJ2ngEmsbBhHoRF+6IZIPYdUbfErGcCwQZ81RcYt5enTmKwQlnHCUuUdzhT9zss1Ce0bzpPIfpjjqpAFQQcdZoc1K8hnd8o6XNSQVg6yMgAfM/q3J3Iv2HUsz0jRFRFGfXGrf3IHNWGpDGewfxKb/tGK0iRNj1BJAOeCjy+WmKQYECh7ApZnD+6QaR8U6LygXafD2s3/jLHHoPIgs7jsKwMAuCwusObg7OhjjtXerY1J60L1AC0BSNLZys6bOwbKJo4hN1d/Y3osA==
-Received: from BL3PR02MB7938.namprd02.prod.outlook.com (2603:10b6:208:355::20)
- by PH7PR02MB9339.namprd02.prod.outlook.com (2603:10b6:510:277::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Wed, 30 Aug
- 2023 08:51:19 +0000
-Received: from BL3PR02MB7938.namprd02.prod.outlook.com
- ([fe80::1da1:b8:e69e:79c8]) by BL3PR02MB7938.namprd02.prod.outlook.com
- ([fe80::1da1:b8:e69e:79c8%3]) with mapi id 15.20.6745.020; Wed, 30 Aug 2023
- 08:51:19 +0000
-From: Raphael Norwitz <raphael.norwitz@nutanix.com>
-To: Li Feng <fengli@smartx.com>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Fam
- Zheng <fam@euphon.net>, =?iso-8859-1?Q?Alex_Benn=E9e?=
- <alex.bennee@linaro.org>, Viresh Kumar <viresh.kumar@linaro.org>, "open
- list:Block layer core" <qemu-block@nongnu.org>, "open list:All patches CC
- here" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v3 2/2] vhost: Add Error parameter to
- vhost_scsi_common_start()
-Thread-Topic: [PATCH v3 2/2] vhost: Add Error parameter to
- vhost_scsi_common_start()
-Thread-Index: AQHZ2v6n6Ye7MNF+tUO1zw3Z/SJjGrACiEmA
-Date: Wed, 30 Aug 2023 08:51:19 +0000
-Message-ID: <DB6ED5F8-5D7E-4580-9882-407355D7CFEF@nutanix.com>
-References: <20230804052954.2918915-1-fengli@smartx.com>
- <20230830045722.611224-1-fengli@smartx.com>
- <20230830045722.611224-3-fengli@smartx.com>
-In-Reply-To: <20230830045722.611224-3-fengli@smartx.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3696.120.41.1.1)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL3PR02MB7938:EE_|PH7PR02MB9339:EE_
-x-ms-office365-filtering-correlation-id: 7eefeb31-ae64-4166-700e-08dba936474a
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: BTyPD054h4Gg5BIESlaUkLnc7wNqxrrmhml0ttf3W3dYGwUAroKyilecj97mNGZ7m4bA7MrsfkisMiSN27LEao025iSy67shqD3gpL73ch8xY38WItuTIeyBYvez8NFLMqNuAIXnvF1CftWWIOYHN7SkWKmBMpFyTnBFVhVxkqan/Lj8YZrByk3sNfMvNu2ua8aBCxiX3rbizaEtzMY9tvwF/zs77xxnvHelS4PlKEDFTaLRVJmZC4thFCWwIImjXW7pz1iRfVnBy3qxxgtDaHnLMAMqhVGBlIL4SZpia/aITyJslaAADzkIxeCmK2m5iAFtVQVyKsTx+t36fLAEFnCLIcCYomFarcrv0mmnNTQIrLM7uWL/IHrf12o/FRDdrObZuVT/4hBgrekTW6fq0TIhbD52OeNaNE+XI69mcsn9sxGMmQpFeew1yZZ4sVzJvj/GIh8GvtKK5mXXVAXJEI2TOWoWMTJFf11gUm2CExe5gTnq7rnT+3/ddDfOTm3Z6Ptz9uIU4LS8SLUR85iSI1hVsxOkfZgZPb81XJ4KcaDa0gSF/zYZlNtvgM6ke9Cgen1FTKx1eybVb29o2l6WT8tjLfPXu/QfpZ3dMaE99uH7IiBNBY8YdEm8u+73LJMrWGeQH7juTWmjcQhPQALNKw==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL3PR02MB7938.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(396003)(39860400002)(376002)(136003)(366004)(186009)(451199024)(1800799009)(26005)(33656002)(2616005)(36756003)(71200400001)(83380400001)(478600001)(6486002)(53546011)(66556008)(6506007)(6512007)(316002)(41300700001)(64756008)(8676002)(8936002)(66946007)(91956017)(54906003)(6916009)(66476007)(76116006)(66446008)(86362001)(5660300002)(4326008)(44832011)(7416002)(2906002)(38070700005)(122000001)(38100700002)(45980500001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?xQ3T8h8738khcIM6iYSq6DC49a8YvhoDDBq/8ShnjKzvisxhEiCkRqAsRe?=
- =?iso-8859-1?Q?PXSwXiugHDr18s+h1FylCinJ3fpDlK85CkCqFgva4w0pctJjhjkHO4VZpo?=
- =?iso-8859-1?Q?oNrSFVaVIe0YD+vBHOVXZSUmM4z6jpEc+EFuoa9dPIJWycqOT2U4wR53uc?=
- =?iso-8859-1?Q?b1GVPIBEgXAv07y4RUTIAEfCW/ZwU7hFHZSczn2kW4YjhWZGRFX8kCnWME?=
- =?iso-8859-1?Q?Ft7s7O/IVBiAlRKBej+tsBU0TGjwhAeM/7/1LScNdx91puBBkJxMKTjdYN?=
- =?iso-8859-1?Q?oVqIekcPHKi+bhM+HHJ7vOGJescnh4ktlLWPyIBzJcbeJRlG2UZ/tF26OJ?=
- =?iso-8859-1?Q?S3unN0ULjQs0HeqHmJ3IQ3ElZ+R3hdtgCqlu25nHoYDgNcTZ6PGRC6Bjcn?=
- =?iso-8859-1?Q?tHcJbspYzTMlsXEM45Q2/8x+/guFqpaROrHeFi8ziDyUvhEUrRLSXisW1X?=
- =?iso-8859-1?Q?7Ke5sDWMRl0x7EAD/voo1D8DCwdvVEc/Yczhvb6BFu2gfSDxnFx+JhvRGa?=
- =?iso-8859-1?Q?uIqM+UTn68W/Dc4cioj53W05pVortOBKeXZdx9ogrv89uf7hnOaFllP8X2?=
- =?iso-8859-1?Q?F1MBosrc1FNfcLEPDuq46EyR0UooaXNpDOk6vHcd+70G2DYSPWfZRF6U1a?=
- =?iso-8859-1?Q?/ej1iRN5m3OUVz+ojFUoJTCewAFcXAXzSM1yvvwBYsTfotIx4lsWCMG0kk?=
- =?iso-8859-1?Q?P6nQexU8jSU84deqcjfyzXH9tfbV6EVoQRqFIgnIYGBp/oc9snkPbOn+oR?=
- =?iso-8859-1?Q?F7C9UDanaoA++gX6ijrIg2Pt6MA/I2c9Mfn1azDJt+cq1w91qKtIH42+s2?=
- =?iso-8859-1?Q?nzh5MLV/JLmLFKNhWqggaZHpEipnIc4ogzVTo5aGLcGz4O83lLe9Ax8LVP?=
- =?iso-8859-1?Q?0SvET4JYxVFZ+Vf9YWZluQRe2ppzRPNJ0RLPskThT0XobSdSRuWZBIS1/V?=
- =?iso-8859-1?Q?XmLKlK/2/x9DOkOrl9uXyT4YINrz8Fn8xXHgXdzm8jphfhjGts8XYMm2Qj?=
- =?iso-8859-1?Q?HlsmIV/78l3FTO5bhCbPqtfNRVax5WYnHskJ3GKpOdNyg2RvTs37jYyWvx?=
- =?iso-8859-1?Q?eP4PyGImUNi1zMB3sgxwLPqwWhWDzMN5fCutJXucnrskIiXvycDhaoleUt?=
- =?iso-8859-1?Q?HOqCKGt7v+aM1Gyztd34LvreO75dPddZ/hMQZb5xjuLzwJnNeQcKaiVl4V?=
- =?iso-8859-1?Q?GMwGJXn71rtCZgYjpNFq74h3u7ixCokRwzCqsZU1wNzSjP/fEDomHZpqsn?=
- =?iso-8859-1?Q?HpcdjVktXFrPw3U0i+qjlAdRmmnJZqn/EFewToLn2W5PDj37QGltoZbUot?=
- =?iso-8859-1?Q?ePG9Jd0W2u2lP6l7stAzTpQ9gyvgGF4bQoqfNISYPKCB2P6v2k8CquQ8NB?=
- =?iso-8859-1?Q?PT9BE/a0nU6tITgOUoRcqpenMrGzeel6LfiLCRanwvO/xd5xd9nSX4aKk8?=
- =?iso-8859-1?Q?7m6/lD1cbM8P5eVdsD425AZfRC2zVLuDd0J/MxxlONMTLcRxdIY1vHV6LO?=
- =?iso-8859-1?Q?uGVtl0wmXHnkpFm3dmgOZnsuLz4BrBZHuNyeGKPdXnDjd+dQjTYCjKnO17?=
- =?iso-8859-1?Q?P71styd2ynVgbzJ0JWgP4ZMy5jvt1w8v/2q3HTQP8gvE9EjEzMD/5ndZ3F?=
- =?iso-8859-1?Q?1dPjj3BcMaICqeLF7c93svrnzPO5g1aoE6lQqDOb/lC2vlLq1gz7v3pw?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <BF49E40A22775543ACE04FF42706AFBF@namprd02.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qbH2p-0001Si-Bz
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 04:59:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693385961;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=63NWFjDJqLIww9Loqb3M2tZXMvQfQn7jfC03lQPQGDU=;
+ b=DU9RQYX745QFzEDVAJtE6IM/UegEFDKBCjwH6iTYEwEALpWD80xQuz2EMNJj6Gv23Lkdh4
+ VqEl5ozihz0Mj9x+W1A3Fc9cBHRKlugX5Zt1/1mJCT+jntNItYyNtV8cyEZiZBSu2OX62H
+ RP9pndxP7D07q3BP0owTrbScZTVLdss=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-674-QwxszBUyOvWAhDwBwxZ45A-1; Wed, 30 Aug 2023 04:59:18 -0400
+X-MC-Unique: QwxszBUyOvWAhDwBwxZ45A-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32483381180A;
+ Wed, 30 Aug 2023 08:59:17 +0000 (UTC)
+Received: from [10.39.192.65] (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 99AC1401E63;
+ Wed, 30 Aug 2023 08:59:15 +0000 (UTC)
+Message-ID: <ed6da820-91c2-3546-0cd3-359c90d99347@redhat.com>
+Date: Wed, 30 Aug 2023 10:59:14 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR02MB7938.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7eefeb31-ae64-4166-700e-08dba936474a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Aug 2023 08:51:19.1868 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OVkZ4o/ZydkqsmDibBGsudYOa6FQlxBsjveVgC29miTWitdIno9u3hgMo6r67iSjjrray3lsltdwO867C/y7kBOLZibjp3Nb7XdJD0AEk9w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR02MB9339
-X-Proofpoint-GUID: 8nCgncURNwuoBq0SAyAsTAG-zvZSFpux
-X-Proofpoint-ORIG-GUID: 8nCgncURNwuoBq0SAyAsTAG-zvZSFpux
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_16,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=raphael.norwitz@nutanix.com; helo=mx0a-002c1b01.pphosted.com
+Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+Content-Language: en-US
+From: Laszlo Ersek <lersek@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>,
+ Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <20230827182937.146450-1-lersek@redhat.com>
+ <20230827182937.146450-8-lersek@redhat.com>
+ <b24315a1-906d-f3af-02e5-e6788765639c@redhat.com>
+In-Reply-To: <b24315a1-906d-f3af-02e5-e6788765639c@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -167,212 +85,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/30/23 10:41, Laszlo Ersek wrote:
+> I'm adding Stefan to the CC list, and an additional piece of explanation
+> below:
+> 
+> On 8/27/23 20:29, Laszlo Ersek wrote:
+>> (1) The virtio-1.0 specification
+>> <http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html> writes:
+>>
+>>> 3     General Initialization And Device Operation
+>>> 3.1   Device Initialization
+>>> 3.1.1 Driver Requirements: Device Initialization
+>>>
+>>> [...]
+>>>
+>>> 7. Perform device-specific setup, including discovery of virtqueues for
+>>>    the device, optional per-bus setup, reading and possibly writing the
+>>>    device’s virtio configuration space, and population of virtqueues.
+>>>
+>>> 8. Set the DRIVER_OK status bit. At this point the device is “live”.
+>>
+>> and
+>>
+>>> 4         Virtio Transport Options
+>>> 4.1       Virtio Over PCI Bus
+>>> 4.1.4     Virtio Structure PCI Capabilities
+>>> 4.1.4.3   Common configuration structure layout
+>>> 4.1.4.3.2 Driver Requirements: Common configuration structure layout
+>>>
+>>> [...]
+>>>
+>>> The driver MUST configure the other virtqueue fields before enabling the
+>>> virtqueue with queue_enable.
+>>>
+>>> [...]
+>>
+>> These together mean that the following sub-sequence of steps is valid for
+>> a virtio-1.0 guest driver:
+>>
+>> (1.1) set "queue_enable" for the needed queues as the final part of device
+>> initialization step (7),
+>>
+>> (1.2) set DRIVER_OK in step (8),
+>>
+>> (1.3) immediately start sending virtio requests to the device.
+>>
+>> (2) When vhost-user is enabled, and the VHOST_USER_F_PROTOCOL_FEATURES
+>> special virtio feature is negotiated, then virtio rings start in disabled
+>> state, according to
+>> <https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#ring-states>.
+>> In this case, explicit VHOST_USER_SET_VRING_ENABLE messages are needed for
+>> enabling vrings.
+>>
+>> Therefore setting "queue_enable" from the guest (1.1) is a *control plane*
+>> operation, which travels from the guest through QEMU to the vhost-user
+>> backend, using a unix domain socket.
+>>
+>> Whereas sending a virtio request (1.3) is a *data plane* operation, which
+>> evades QEMU -- it travels from guest to the vhost-user backend via
+>> eventfd.
+>>
+>> This means that steps (1.1) and (1.3) travel through different channels,
+>> and their relative order can be reversed, as perceived by the vhost-user
+>> backend.
+>>
+>> That's exactly what happens when OVMF's virtiofs driver (VirtioFsDxe) runs
+>> against the Rust-language virtiofsd version 1.7.2. (Which uses version
+>> 0.10.1 of the vhost-user-backend crate, and version 0.8.1 of the vhost
+>> crate.)
+>>
+>> Namely, when VirtioFsDxe binds a virtiofs device, it goes through the
+>> device initialization steps (i.e., control plane operations), and
+>> immediately sends a FUSE_INIT request too (i.e., performs a data plane
+>> operation). In the Rust-language virtiofsd, this creates a race between
+>> two components that run *concurrently*, i.e., in different threads or
+>> processes:
+>>
+>> - Control plane, handling vhost-user protocol messages:
+>>
+>>   The "VhostUserSlaveReqHandlerMut::set_vring_enable" method
+>>   [crates/vhost-user-backend/src/handler.rs] handles
+>>   VHOST_USER_SET_VRING_ENABLE messages, and updates each vring's "enabled"
+>>   flag according to the message processed.
+>>
+>> - Data plane, handling virtio / FUSE requests:
+>>
+>>   The "VringEpollHandler::handle_event" method
+>>   [crates/vhost-user-backend/src/event_loop.rs] handles the incoming
+>>   virtio / FUSE request, consuming the virtio kick at the same time. If
+>>   the vring's "enabled" flag is set, the virtio / FUSE request is
+>>   processed genuinely. If the vring's "enabled" flag is clear, then the
+>>   virtio / FUSE request is discarded.
+>>
+>> Note that OVMF enables the queue *first*, and sends FUSE_INIT *second*.
+>> However, if the data plane processor in virtiofsd wins the race, then it
+>> sees the FUSE_INIT *before* the control plane processor took notice of
+>> VHOST_USER_SET_VRING_ENABLE and green-lit the queue for the data plane
+>> processor. Therefore the latter drops FUSE_INIT on the floor, and goes
+>> back to waiting for further virtio / FUSE requests with epoll_wait.
+>> Meanwhile OVMF is stuck waiting for the FUSET_INIT response -- a deadlock.
+> 
+> I can explain why this issue has not been triggered by / witnessed with
+> the Linux guest driver for virtiofs ("fs/fuse/virtio_fs.c").
+> 
+> That driver registers *two* driver (callback) structures, a virtio
+> driver, and a filesystem driver.
+> 
+> (1) The virtio driver half initializes the virtio device, and takes a
+> note of the particular virtio filesystem, remembering its "tag". See
+> virtio_fs_probe() -> virtio_device_ready(), and then virtio_fs_probe()
+> -> virtio_fs_add_instance().
+> 
+> Importantly, at this time, no FUSE_INIT request is sent.
+> 
+> (2) The filesystem driver half has a totally independent entry point.
+> The relevant parts (after the driver registration) are:
+> 
+> (a) virtio_fs_get_tree() -> virtio_fs_find_instance(), and
+> 
+> (b) if the "tag" was found, (b) virtio_fs_get_tree() ->
+> virtio_fs_fill_super() -> fuse_send_init().
+> 
+> Importantly, this occurs when guest userspace (i.e., an interactive
+> user, or a userspace automatism such as systemd) tries to mount a
+> *concrete* virtio filesystem, identified by its tag (such as in "mount
+> -t virtiofs TAG /mount/point").
+> 
+> 
+> This means that there is an *abritrarily long* delay between (1)
+> VHOST_USER_SET_VRING_ENABLE (which QEMU sends to virtiofsd while the
+> guest is inside virtio_fs_probe()) and (2) FUSE_INIT (which the guest
+> kernel driver sends to virtiofsd while inside virtio_fs_get_tree()).
+> 
+> That huge delay is plenty for masking the race.
+> 
+> But the race is there nonetheless.
 
+Furthermore, the race was not seen in the C-language virtiofsd
+implementation (removed in QEMU commit
+e0dc2631ec4ac718ebe22ddea0ab25524eb37b0e) for the following reason:
 
-> On Aug 30, 2023, at 12:57 AM, Li Feng <fengli@smartx.com> wrote:
->=20
-> Add a Error parameter to report the real error, like vhost-user-blk.
->=20
+The C language virtiofsd *did not care* about
+VHOST_USER_SET_VRING_ENABLE at all:
 
-Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
+- Upon VHOST_USER_GET_VRING_BASE, vu_get_vring_base_exec() in
+libvhost-user would call fv_queue_set_started() in virtiofsd, and the
+latter would start the data plane thread fv_queue_thread().
 
-> Signed-off-by: Li Feng <fengli@smartx.com>
-> ---
-> hw/scsi/vhost-scsi-common.c           | 16 +++++++++-------
-> hw/scsi/vhost-scsi.c                  |  5 +++--
-> hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
-> include/hw/virtio/vhost-scsi-common.h |  2 +-
-> 4 files changed, 21 insertions(+), 16 deletions(-)
->=20
-> diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-> index a61cd0e907..4c8637045d 100644
-> --- a/hw/scsi/vhost-scsi-common.c
-> +++ b/hw/scsi/vhost-scsi-common.c
-> @@ -16,6 +16,7 @@
->  */
->=20
-> #include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> #include "qemu/error-report.h"
-> #include "qemu/module.h"
-> #include "hw/virtio/vhost.h"
-> @@ -25,7 +26,7 @@
-> #include "hw/virtio/virtio-access.h"
-> #include "hw/fw-path-provider.h"
->=20
-> -int vhost_scsi_common_start(VHostSCSICommon *vsc)
-> +int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
-> {
->     int ret, i;
->     VirtIODevice *vdev =3D VIRTIO_DEVICE(vsc);
-> @@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->     VirtIOSCSICommon *vs =3D (VirtIOSCSICommon *)vsc;
->=20
->     if (!k->set_guest_notifiers) {
-> -        error_report("binding does not support guest notifiers");
-> +        error_setg(errp, "binding does not support guest notifiers");
->         return -ENOSYS;
->     }
->=20
->     ret =3D vhost_dev_enable_notifiers(&vsc->dev, vdev);
->     if (ret < 0) {
-> +        error_setg_errno(errp, -ret, "Error enabling host notifiers");
->         return ret;
->     }
->=20
->     ret =3D k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
->     if (ret < 0) {
-> -        error_report("Error binding guest notifier");
-> +        error_setg_errno(errp, -ret, "Error binding guest notifier");
->         goto err_host_notifiers;
->     }
->=20
-> @@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->=20
->     ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
->     if (ret < 0) {
-> -        error_report("Error setting inflight format: %d", -ret);
-> +        error_setg_errno(errp, -ret, "Error setting inflight format");
->         goto err_guest_notifiers;
->     }
->=20
-> @@ -64,21 +66,21 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->                                         vs->conf.virtqueue_size,
->                                         vsc->inflight);
->             if (ret < 0) {
-> -                error_report("Error getting inflight: %d", -ret);
-> +                error_setg_errno(errp, -ret, "Error getting inflight");
->                 goto err_guest_notifiers;
->             }
->         }
->=20
->         ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
->         if (ret < 0) {
-> -            error_report("Error setting inflight: %d", -ret);
-> +            error_setg_errno(errp, -ret, "Error setting inflight");
->             goto err_guest_notifiers;
->         }
->     }
->=20
->     ret =3D vhost_dev_start(&vsc->dev, vdev, true);
->     if (ret < 0) {
-> -        error_report("Error start vhost dev");
-> +        error_setg_errno(errp, -ret, "Error starting vhost dev");
->         goto err_guest_notifiers;
->     }
->=20
-> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-> index 443f67daa4..01a3ab4277 100644
-> --- a/hw/scsi/vhost-scsi.c
-> +++ b/hw/scsi/vhost-scsi.c
-> @@ -75,6 +75,7 @@ static int vhost_scsi_start(VHostSCSI *s)
->     int ret, abi_version;
->     VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->     const VhostOps *vhost_ops =3D vsc->dev.vhost_ops;
-> +    Error *local_err =3D NULL;
->=20
->     ret =3D vhost_ops->vhost_scsi_get_abi_version(&vsc->dev, &abi_version=
-);
->     if (ret < 0) {
-> @@ -88,14 +89,14 @@ static int vhost_scsi_start(VHostSCSI *s)
->         return -ENOSYS;
->     }
->=20
-> -    ret =3D vhost_scsi_common_start(vsc);
-> +    ret =3D vhost_scsi_common_start(vsc, &local_err);
->     if (ret < 0) {
->         return ret;
->     }
->=20
->     ret =3D vhost_scsi_set_endpoint(s);
->     if (ret < 0) {
-> -        error_report("Error setting vhost-scsi endpoint");
-> +        error_reportf_err(local_err, "Error setting vhost-scsi endpoint"=
-);
->         vhost_scsi_common_stop(vsc);
->     }
->=20
-> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-> index e931df9f5b..62fc98bb1c 100644
-> --- a/hw/scsi/vhost-user-scsi.c
-> +++ b/hw/scsi/vhost-user-scsi.c
-> @@ -43,12 +43,12 @@ enum VhostUserProtocolFeature {
->     VHOST_USER_PROTOCOL_F_RESET_DEVICE =3D 13,
-> };
->=20
-> -static int vhost_user_scsi_start(VHostUserSCSI *s)
-> +static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
-> {
->     VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->     int ret;
->=20
-> -    ret =3D vhost_scsi_common_start(vsc);
-> +    ret =3D vhost_scsi_common_start(vsc, errp);
->     s->started_vu =3D (ret < 0 ? false : true);
->=20
->     return ret;
-> @@ -73,6 +73,7 @@ static void vhost_user_scsi_set_status(VirtIODevice *vd=
-ev, uint8_t status)
->     VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->     VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->     bool should_start =3D virtio_device_should_start(vdev, status);
-> +    Error *local_err =3D NULL;
->     int ret;
->=20
->     if (!s->connected) {
-> @@ -84,9 +85,10 @@ static void vhost_user_scsi_set_status(VirtIODevice *v=
-dev, uint8_t status)
->     }
->=20
->     if (should_start) {
-> -        ret =3D vhost_user_scsi_start(s);
-> +        ret =3D vhost_user_scsi_start(s, &local_err);
->         if (ret < 0) {
-> -            error_report("unable to start vhost-user-scsi: %s", strerror=
-(-ret));
-> +            error_reportf_err(local_err, "unable to start vhost-user-scs=
-i: %s",
-> +                              strerror(-ret));
->             qemu_chr_fe_disconnect(&vs->conf.chardev);
->         }
->     } else {
-> @@ -139,7 +141,7 @@ static void vhost_user_scsi_handle_output(VirtIODevic=
-e *vdev, VirtQueue *vq)
->      * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
->      * vhost here instead of waiting for .set_status().
->      */
-> -    ret =3D vhost_user_scsi_start(s);
-> +    ret =3D vhost_user_scsi_start(s, &local_err);
->     if (ret < 0) {
->         error_reportf_err(local_err, "vhost-user-scsi: vhost start failed=
-: ");
->         qemu_chr_fe_disconnect(&vs->conf.chardev);
-> @@ -184,7 +186,7 @@ static int vhost_user_scsi_connect(DeviceState *dev, =
-Error **errp)
->=20
->     /* restore vhost state */
->     if (virtio_device_started(vdev, vdev->status)) {
-> -        ret =3D vhost_user_scsi_start(s);
-> +        ret =3D vhost_user_scsi_start(s, errp);
->         if (ret < 0) {
->             return ret;
->         }
-> diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vh=
-ost-scsi-common.h
-> index 18f115527c..c5d2c09455 100644
-> --- a/include/hw/virtio/vhost-scsi-common.h
-> +++ b/include/hw/virtio/vhost-scsi-common.h
-> @@ -39,7 +39,7 @@ struct VHostSCSICommon {
->     struct vhost_inflight *inflight;
-> };
->=20
-> -int vhost_scsi_common_start(VHostSCSICommon *vsc);
-> +int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
-> void vhost_scsi_common_stop(VHostSCSICommon *vsc);
-> char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
->                                         DeviceState *dev);
-> --=20
-> 2.41.0
->=20
+- Upon VHOST_USER_SET_VRING_ENABLE, vu_set_vring_enable_exec() in
+libvhost-user would set the "enable" field, but not call back into
+virtiofsd. And virtiofsd ("tools/virtiofsd/fuse_virtio.c") nowhere
+checks the "enable" field.
+
+In summary, the C-language virtiofsd didn't implement queue enablement
+in a conformant way. The Rust-language version does, but that exposes a
+race in how QEMU sends VHOST_USER_SET_VRING_ENABLE. The race is
+triggered by the OVMF guest driver, and not triggered by the Linux guest
+driver (since the latter introduces an unbounded delay between vring
+enablement and FUSE_INIT submission).
+
+Laszlo
+
+> 
+> 
+> Also note that this race does not exist for vhost-net. For vhost-net,
+> AIUI, such queue operations are handled with ioctl()s, and ioctl()s are
+> synchronous by nature. Cf.
+> <https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#vhost-user-protocol-f-reply-ack>:
+> 
+> "The original vhost-user specification only demands replies for certain
+> commands. This differs from the vhost protocol implementation where
+> commands are sent over an ioctl() call and block until the back-end has
+> completed."
+> 
+> Laszlo
+> 
+>>
+>> The deadlock is not deterministic. OVMF hangs infrequently during first
+>> boot. However, OVMF hangs almost certainly during reboots from the UEFI
+>> shell.
+>>
+>> The race can be "reliably masked" by inserting a very small delay -- a
+>> single debug message -- at the top of "VringEpollHandler::handle_event",
+>> i.e., just before the data plane processor checks the "enabled" field of
+>> the vring. That delay suffices for the control plane processor to act upon
+>> VHOST_USER_SET_VRING_ENABLE.
+>>
+>> We can deterministically prevent the race in QEMU, by blocking OVMF inside
+>> step (1.1) -- i.e., in the write to the "queue_enable" register -- until
+>> VHOST_USER_SET_VRING_ENABLE actually *completes*. That way OVMF's VCPU
+>> cannot advance to the FUSE_INIT submission before virtiofsd's control
+>> plane processor takes notice of the queue being enabled.
+>>
+>> Wait for VHOST_USER_SET_VRING_ENABLE completion by:
+>>
+>> - setting the NEED_REPLY flag on VHOST_USER_SET_VRING_ENABLE, and waiting
+>>   for the reply, if the VHOST_USER_PROTOCOL_F_REPLY_ACK vhost-user feature
+>>   has been negotiated, or
+>>
+>> - performing a separate VHOST_USER_GET_FEATURES *exchange*, which requires
+>>   a backend response regardless of VHOST_USER_PROTOCOL_F_REPLY_ACK.
+>>
+>> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
+>> Cc: Eugenio Perez Martin <eperezma@redhat.com>
+>> Cc: German Maglione <gmaglione@redhat.com>
+>> Cc: Liu Jiang <gerry@linux.alibaba.com>
+>> Cc: Sergio Lopez Pascual <slp@redhat.com>
+>> Cc: Stefano Garzarella <sgarzare@redhat.com>
+>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+>> ---
+>>  hw/virtio/vhost-user.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>> index beb4b832245e..01e0ca90c538 100644
+>> --- a/hw/virtio/vhost-user.c
+>> +++ b/hw/virtio/vhost-user.c
+>> @@ -1235,7 +1235,7 @@ static int vhost_user_set_vring_enable(struct vhost_dev *dev, int enable)
+>>              .num   = enable,
+>>          };
+>>  
+>> -        ret = vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state, false);
+>> +        ret = vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state, true);
+>>          if (ret < 0) {
+>>              /*
+>>               * Restoring the previous state is likely infeasible, as well as
+> 
 
 
