@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA22F78D633
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFC378D634
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 15:40:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbLQN-0006lk-Vc; Wed, 30 Aug 2023 09:40:00 -0400
+	id 1qbLQt-0007ES-Qm; Wed, 30 Aug 2023 09:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbLQL-0006lK-LT
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:39:57 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qbLQm-00071r-1l
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:40:25 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbLQJ-0007Fm-55
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:39:57 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31c65820134so4636614f8f.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 06:39:54 -0700 (PDT)
+ id 1qbLQi-0007Z6-0b
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 09:40:23 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3ff1c397405so54982215e9.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 06:40:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693402793; x=1694007593; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693402817; x=1694007617; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wzN/XuFhlJ00gjJCtI59eyw8EiOue6KOqy1LOGCZHjY=;
- b=xLBz/iiLdyq2+8W5wQkrohDMGfrjiNpzdefVyjlB85o2TM/glsLs8QHb9hYTszrlwL
- 4YSUKf2u1uIrl+wNJQsxrteuH+Tp5Ta6uhO63H2IPLcW6ih5pR2fuIF+j/pIb85fA11J
- 5f53DrznViGXFogRst2VfylrEPb33wCyq1c+A12cFGPm/WH6YQix9Ftc8sL2JZWmkX14
- DDI2qyEqk/mUMAthuhyuKOm6PHxvSZn8/kUYf0Ovvn4CZ56JKEPqwJCc5Xu7DSp6lyYH
- 8xZ4bT6JuRukRtt3XpAbYXUhcG1CCuuI7Sdz01EXSwo5i3QCz/Smw7p8YvCqHodKmyhT
- QyMQ==
+ bh=LFrOhKabnRctXDAtnKNqP3QF62HqkwnyAFa2BuN6wNI=;
+ b=NrdTy3DudEC/KkZbhAQ+lkfwOLw3SEVP/v5Ll4tuWPTM5I5vNWnB7fEdhM+tKsQey2
+ C5qPc8YeUshpAN7KWf/CrgkS4cHhupK1N5ZAPfKm5PeiH0v+IwRNDDj/ZsSTjzhkcTDD
+ KlXAykJNxFxQwHPzCT8mAhFIdTnED9nHUYQl4XozYDE/zZZ0NZhdCBY/x1qIsKzoKmuc
+ xOV7hM04Zml3h7duOz/gn8WykykZTLpVtLOGAZ10njrFPOT7VaAwDrXF+7PCo0eB0VnW
+ R0dXj8GVO21OBAsABrHSSGPAUcgmPkMHN9RJaOvYPQzJ5xlCM9ReJlSn0t/3Oaavj44J
+ jzJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693402793; x=1694007593;
+ d=1e100.net; s=20221208; t=1693402817; x=1694007617;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=wzN/XuFhlJ00gjJCtI59eyw8EiOue6KOqy1LOGCZHjY=;
- b=YAsDTnuhqXXNZSB25f65YUmea7jfwxJdZWLmNr687JNbVcZcftK+gwN2XsO1gObKtQ
- 1KWVjjig8EqOx8fKBYoXMmdeTuM+U6WcpD2ONM4KLa4Fo9m1TDuk2jtzsWPP1MpaKk0q
- zVu1Y+cZaCj8/HmVNgU0sxhX4M/KHp/0fxiJPqT5gHilM/dVOboy8Qa+ZDbuEyDIFnI1
- DmG0qmnvHtjoJBfWQSpYaJyxpSkDA9r2cgpUmhXD2VNHaZOK5/A+kFjDjIaZUfqIxrUg
- O1Qv0z6UT2o/592B2WZ3NrABJHB/QqN6oRFk2aThGeVKkrN29jFDpJ1jWP0hgSf3708P
- 3AVA==
-X-Gm-Message-State: AOJu0YxHEQ5vPY8ZFB/US45ttIdWpuIpinuA+k7nKCTfEr/R6anyCRt+
- hTUNF/bwyr1eMATYsY1NIPD09LvXP9p5nWbp970=
-X-Google-Smtp-Source: AGHT+IFnuNCUsXx3i0WIXv7rs/rOIy1MPA5rkC+8FkliErn7lU5cnhhHEGcHycN63W3J6fOxc1cYGg==
-X-Received: by 2002:adf:f18f:0:b0:314:4c1d:1c0a with SMTP id
- h15-20020adff18f000000b003144c1d1c0amr1802022wro.46.1693402793090; 
- Wed, 30 Aug 2023 06:39:53 -0700 (PDT)
+ bh=LFrOhKabnRctXDAtnKNqP3QF62HqkwnyAFa2BuN6wNI=;
+ b=L8mK4lgW/XaG0xr7Y4W0ZmqS/gSsjoJLHwhLxyt/772F+WJTEnqH7ajohxGmrxGhfM
+ oGsFvA95jziBMGChl3jley91UBBj8bnwtgUSd0lvbiM4t4Ck/W1nMnVaW/jEU+CN5lBO
+ lF/SCCocDOWOksGMiRaDagbECplikOfMrpLhNHSyhG+uGiaz3tZPP8y1PoIMcTCEQA3Q
+ 0nDkA+A/oVlVsXBsq6BVvfubl1KSAPokeZu1nV2kFdwn2d1n+EOC9sbq16hNcH9fP/cB
+ ezsasa96HHh0JOXtHkG/5krkkzPcxMi776Xj1bpT/V4SNoajzS6LnGwLIVqWZeU6kvVJ
+ psYg==
+X-Gm-Message-State: AOJu0YzldnujhDjXIOFKE7REvC2XGz2tRWYn6xJ6dNBcyvivrYOo/TVv
+ Okh0CO7cWefdJ9YVlWJ9bVlJBg==
+X-Google-Smtp-Source: AGHT+IEBMI1C6viEsovDRGCbcF4z0Lre+LYqTrqRGVA48lKNyu5tKB44xAY9wpHhPz5Z53snaDIJSw==
+X-Received: by 2002:a05:600c:28b:b0:401:daf2:2737 with SMTP id
+ 11-20020a05600c028b00b00401daf22737mr1948893wmk.30.1693402817314; 
+ Wed, 30 Aug 2023 06:40:17 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- d11-20020a056000114b00b0031c6dc684f8sm16718157wrx.20.2023.08.30.06.39.52
+ m9-20020a05600c280900b00401df304a7esm2317134wmb.28.2023.08.30.06.40.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 06:39:52 -0700 (PDT)
+ Wed, 30 Aug 2023 06:40:17 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3125B1FFBB;
- Wed, 30 Aug 2023 14:39:52 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 982F01FFBB;
+ Wed, 30 Aug 2023 14:40:16 +0100 (BST)
 References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <c94a9c1e65bb6bb43c58e5ccb982948424a3f3f2.1693252037.git.manos.pitsidianakis@linaro.org>
+ <9a85da0dde1ff77021909e05b992bcdc76914eb1.1693252037.git.manos.pitsidianakis@linaro.org>
 User-agent: mu4e 1.11.16; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
@@ -75,15 +75,15 @@ Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
  =?utf-8?B?Z8OzLCBab2x0w6Fu?=
  <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>
-Subject: Re: [PATCH v8 10/12] virtio-sound: implement audio output (TX)
-Date: Wed, 30 Aug 2023 14:39:47 +0100
-In-reply-to: <c94a9c1e65bb6bb43c58e5ccb982948424a3f3f2.1693252037.git.manos.pitsidianakis@linaro.org>
-Message-ID: <87cyz4sl7b.fsf@linaro.org>
+Subject: Re: [PATCH v8 11/12] virtio-sound: implement audio capture (RX)
+Date: Wed, 30 Aug 2023 14:40:11 +0100
+In-reply-to: <9a85da0dde1ff77021909e05b992bcdc76914eb1.1693252037.git.manos.pitsidianakis@linaro.org>
+Message-ID: <878r9ssl6n.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,31 +109,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 
-> Handle output IO messages in the transmit (TX) virtqueue.
+> To perform audio capture we duplicate the TX logic of the previous
+> commit with the following difference: we receive data from the QEMU
+> audio backend and write it in the virt queue IO buffers the guest sends
+> to QEMU. When they are full (i.e. they have `period_bytes` amount of
+> data) or when recording stops in QEMU's audio backend, the buffer is
+> returned to the guest by notifying it.
 >
-> It allocates a VirtIOSoundPCMBlock for each IO message and copies the
-> data buffer to it. When the IO buffer is written to the host's sound
-> card, the guest will be notified that it has been consumed.
->
-> The lifetime of an IO message is:
->
-> 1. Guest sends IO message to TX virtqueue.
-> 2. QEMU adds it to the appropriate stream's IO buffer queue.
-> 3. Sometime later, the host audio backend calls the output callback,
->    virtio_snd_pcm_out_cb(), which is defined with an AUD_open_out()
->    call. The callback gets an available number of bytes the backend can
->    receive. Then it writes data from the IO buffer queue to the backend.
->    If at any time a buffer is exhausted, it is returned to the guest as
->    completed.
-> 4. If the guest releases the stream, its buffer queue is flushed by
->    attempting to write any leftover data to the audio backend and
->    releasing all IO messages back to the guest. This is how according to
->    the spec the guest knows the release was successful.
->
-> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9=
-c7b40a8e603f4da92471
-> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
-> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
 > Signed-off-by: Emmanouil Pitsidianakis
 > <manos.pitsidianakis@linaro.org>
 
