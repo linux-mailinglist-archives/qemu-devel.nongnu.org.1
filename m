@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E968678D57F
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B37D78D583
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:24:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbJG8-0003wo-Oy; Wed, 30 Aug 2023 07:21:16 -0400
+	id 1qbJIj-0006BK-FV; Wed, 30 Aug 2023 07:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbJG6-0003wG-SB
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:21:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbJG4-0006Ff-5v
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:21:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693394471;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tTR34d595pJr6oKP/2WuO/wseuhw1t9Ci0hmHReg+4A=;
- b=L8/o8m8wo3uVFy6kJrpM9bfHb/thER2bXyfWSoJzaegc4YsQH0APtk41d80yfnJruhQ0ls
- E4QWOftIjkJw0nYyylDRtqWSK84dOD6jKN5X0O61Dv0Vr8QOqq5xEpl5umT8enRnTffFKr
- mfPl93xhqpKyUQ0S1QrooZPWyZMf/YQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-548-fFzMRDwXPt6MvGvEKTSCyQ-1; Wed, 30 Aug 2023 07:21:10 -0400
-X-MC-Unique: fFzMRDwXPt6MvGvEKTSCyQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D6801185A78F;
- Wed, 30 Aug 2023 11:21:09 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1342E2166B25;
- Wed, 30 Aug 2023 11:21:08 +0000 (UTC)
-Date: Wed, 30 Aug 2023 12:21:06 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 00/67] Make pixman an optional dependency
-Message-ID: <ZO8mIo+xdXK022k/@redhat.com>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <740c7ad9-1c6f-ec7f-29d5-153bfc5f68ab@redhat.com>
- <CAMxuvazwReV-_W-DAGNc46xRck5OofnB60xVPSUW1BeacVahYA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qbJIa-0006Am-IX
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:23:49 -0400
+Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qbJIX-0006gQ-BM
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:23:48 -0400
+Received: by mail-yb1-xb2a.google.com with SMTP id
+ 3f1490d57ef6-bcb6dbc477eso5120737276.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 04:23:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693394623; x=1693999423; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LtAfDI2ZgovRG4eywtJRoUXa+4rrAQaw44bUsY7tSXg=;
+ b=NOy4b3RoACXmKdWXEaQMYJQHVB/T+wAdQKoHFgzU5biQS6nUGAEw+unei/fGS8/LgA
+ upuMg5FCCUKRkHN8anXcIlvVg2ePhYCBTYrYciACaJoExD6MjLVD8hw6FfX4qdZVeDYk
+ 8/NXumEv/WyoCIqh8uCa/F0yUxhBS4uJ1LmeXLaXe6B9EzfBSfaPDcZ9VQisHzfYnvbY
+ yFGQPKqlO0vqdGizO0ZLiRqy6B3o0ehshYatwGKOBGdR2DfbcJeS6pKrdXWvC3RH2Ra0
+ q6HZ8FPaW1WSXKCSIjwOanuj+KCFu0IgpL0Jci4TPb9SnsGY/VcMrob9npHFmOovyiXF
+ la9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693394623; x=1693999423;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LtAfDI2ZgovRG4eywtJRoUXa+4rrAQaw44bUsY7tSXg=;
+ b=PjLudDT0iiYN1TcqE4NhBBPx74klEjyQoSA1Vi0TDjBeuhmMeyJypzos2+72PhlpUE
+ PNygjLKKj1l2mIzRKqr673y9Dxv3pvw8xp9/BFMGjonlw4ML4d3PKc5Hp3Hkn0zZIGFc
+ msfR1Rv0QhgQKBq0vthfPmaaa4dtR2Vyw+1W+XOKB9LKMemWOSWAinv5wHBxtH23n64n
+ LOKk34/kioeC2qINzGYoY4D9fGQZmuMIN6uVPn9N6C8HZpMcH0x96pM2DjG4MrtIwZOW
+ PUnIOkwz1/0z0BzQa5Lu+ItoCiWir3mef1DPpXIohZzP+RJC9STVUt5/jKWSUvj2oL7K
+ vFlQ==
+X-Gm-Message-State: AOJu0YwIgoJyFrJwKGFEC/c4cFcIZciTRzLsjnP2kH7HydENKcMz5npY
+ mj6gz/mBlyYmg43ch6CzYvR3Bnfifs4hGilcL4I=
+X-Google-Smtp-Source: AGHT+IFTb7UDlTJZ4RRBrQc3HBsMznq7Rzf0/RC9QNRx66yEN+6Hb1h62rUy29ichvuKVzxSo5+TGF6773Y2L7lLmUU=
+X-Received: by 2002:a25:d48d:0:b0:d00:cc5b:8a9f with SMTP id
+ m135-20020a25d48d000000b00d00cc5b8a9fmr2065976ybf.16.1693394623444; Wed, 30
+ Aug 2023 04:23:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMxuvazwReV-_W-DAGNc46xRck5OofnB60xVPSUW1BeacVahYA@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-54-marcandre.lureau@redhat.com>
+ <ZO8lMuOzsjfj+Atd@redhat.com>
+In-Reply-To: <ZO8lMuOzsjfj+Atd@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 30 Aug 2023 15:23:31 +0400
+Message-ID: <CAJ+F1CJ9jwCVMyObV9ipx4c3_1uShuCqO5=tU6eYLdLYxZcuZA@mail.gmail.com>
+Subject: Re: [PATCH 53/67] ui: add pixman-compat.h
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-yb1-xb2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,93 +85,313 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 03:01:27PM +0400, Marc-André Lureau wrote:
-> Hi
-> 
-> On Wed, Aug 30, 2023 at 2:53 PM Thomas Huth <thuth@redhat.com> wrote:
+Hi
+
+On Wed, Aug 30, 2023 at 3:17=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> On Wed, Aug 30, 2023 at 01:38:27PM +0400, marcandre.lureau@redhat.com wro=
+te:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 > >
-> > On 30/08/2023 11.37, marcandre.lureau@redhat.com wrote:
-> > > From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > >
-> > > Hi,
-> > >
-> > > QEMU system emulators can be made to compile and work without pixman.
-> > >
-> > > Given how pervasively pixman types and API is used in all the code base, it was
-> > > a bit difficult to figure out how to cut the dependency.
-> > >
-> > > I decided that it was important to keep VGA and graphics device working for
-> > > compatibility reasons, although some devices, such as xlnx Display Port, have
-> > > stronger dependency and have to be disabled. The ui/console code also has a lot
-> > > of pixman usage and a bit of a mess to deal with. I made large refactoring to
-> > > allow to compile out the VC code.
-> > >
-> > > The series can be roughly divded as:
-> > > - a few related preliminary cleanups
-> > > - ui/console refactoring to allow ui/vc split
-> > > - add a 'pixman' option, and a minimal pixman-compat.h
-> > > - make some parts depend on 'pixman'
-> > >
-> > > Graphic -display still work, although with some caveats. For ex, -display sdl or
-> > > cocoa don't have VCs, so starting QEMU will print the following warnings when
-> > > pixman is disabled:
+> > This is a tiny subset of PIXMAN API that is used pervasively in QEMU
+> > codebase to manage images and identify the underlying format.
 > >
-> > I just had a quick look at the series, but for me it looks like this is
-> > adding a lot of additional complexity to the code (adds lots of #ifdefs, and
-> > adds a subset of the pixman library to the code base), which seems somewhat
-> 
-> The #ifdef aren't so bad (at least I can bare it). Just a quick stat:
-> 
-> $ git diff origin/master | grep "+#ifdef CONFIG_PIXMAN" | wc -l
-> 11
-> 
-> > unfortunate for such a marginal feature request. What's really so bad about
-> > requiring pixman for building QEMU?
-> 
-> Not that a good part of the series is cleaning up ui/console.c code
-> that really deserved it. It makes it use QOM, and split VC code. It's
-> still worth it regardless of the outcome for pixman.
-
-I've done a review of the start and like the cleanup patches, and the
-adaption to make sane use of inheritance in QOM rather than the poor
-man's inheritance via the console type field. I agree that's worthwhile
-regardless of what we think about pixman optionality.
-
-> > IMHO, if we really want to go down this path, I think we should rather
-> > disable all graphic related stuff in QEMU instead, i.e. disable VGA cards,
-> > Spice, SDL, etc. completely. I think this is also what has been requested in
+> > It doesn't seems worth to wrap this in a QEMU-specific API.
 > >
-> 
-> The various features and devices can be disabled by other means. I
-> think we should aim at making the different configure options
-> orthogonal, so QEMU without pixman can still provide most gfx/vga/UI
-> experience too, by default.
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >  include/ui/pixman-compat.h | 190 +++++++++++++++++++++++++++++++++++++
+> >  include/ui/qemu-pixman.h   |   4 +
+> >  2 files changed, 194 insertions(+)
+> >  create mode 100644 include/ui/pixman-compat.h
+>
+> This patch is what makes me feel the end state of this series
+> is somewhat dubious.  This pixman-compat.h shows we clearly
+> still need the pixman APIs, and trying to make pixman optional
+> is causing us to re-invent a part of pixman via copy+paste.
+> I don't find this very appealing.
 
-To me where this series becomes dubious is roughly around the patch
-that adds pixman-compat.h providing a bunch of pixman API as stubs.
+It's very limited though, as that compat doesn't offer any pixel manipulati=
+on.
 
-If we can use Kconfig and/or meson options to simply drop the build
-of files in QEMU that require pixman that's reasonable. If we're
-adding compat APIs the provide local impls of pixman APIs it feels
-wrong to me.
+>
+> If it is possible to disable the build of parts of QEMU such
+> that what remains compiled does not require pixman at all,
+> that is reasonable.
 
-> > the original gitlab issue ticket where the reporter wanted to compile a
-> > text-mode only QEMU binary...?
-> 
-> So that is not an incompatible goal, further tuning of configure
-> options can help.
+I am afraid this leads to x10 of #ifdef if we follow that path. I was
+personally disgusted: not only it was getting horrible to deal with,
+but it makes you wonder what can be kept or not with embarrassing
+questions and behaviours. This compat approach is way saner and
+simpler. As can be seen, this is a fraction of the API, just to wrap
+the bits and define the formats. It's ridiculously small imho to keep
+most of QEMU code still work.
+
+>
+> Keeping building stuff that actually wants pixman, via a
+> compat API is imposing a burden on QEMU without a compelling
+> gain IMHO.
+>
+> >
+> > diff --git a/include/ui/pixman-compat.h b/include/ui/pixman-compat.h
+> > new file mode 100644
+> > index 0000000000..e511c8b946
+> > --- /dev/null
+> > +++ b/include/ui/pixman-compat.h
+> > @@ -0,0 +1,190 @@
+> > +/*
+> > + * SPDX-License-Identifier: MIT
+> > + *
+> > + * Tiny subset of PIXMAN API commonly used by QEMU.
+> > + *
+> > + * Copyright 1987, 1988, 1989, 1998  The Open Group
+> > + * Copyright 1987, 1988, 1989 Digital Equipment Corporation
+> > + * Copyright 1999, 2004, 2008 Keith Packard
+> > + * Copyright 2000 SuSE, Inc.
+> > + * Copyright 2000 Keith Packard, member of The XFree86 Project, Inc.
+> > + * Copyright 2004, 2005, 2007, 2008, 2009, 2010 Red Hat, Inc.
+> > + * Copyright 2004 Nicholas Miell
+> > + * Copyright 2005 Lars Knoll & Zack Rusin, Trolltech
+> > + * Copyright 2005 Trolltech AS
+> > + * Copyright 2007 Luca Barbato
+> > + * Copyright 2008 Aaron Plattner, NVIDIA Corporation
+> > + * Copyright 2008 Rodrigo Kumpera
+> > + * Copyright 2008 Andr=C3=A9 Tupinamb=C3=A1
+> > + * Copyright 2008 Mozilla Corporation
+> > + * Copyright 2008 Frederic Plourde
+> > + * Copyright 2009, Oracle and/or its affiliates. All rights reserved.
+> > + * Copyright 2009, 2010 Nokia Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaini=
+ng a
+> > + * copy of this software and associated documentation files (the "Soft=
+ware"),
+> > + * to deal in the Software without restriction, including without limi=
+tation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublic=
+ense,
+> > + * and/or sell copies of the Software, and to permit persons to whom t=
+he
+> > + * Software is furnished to do so, subject to the following conditions=
+:
+> > + *
+> > + * The above copyright notice and this permission notice (including th=
+e next
+> > + * paragraph) shall be included in all copies or substantial portions =
+of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
+RESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
+LITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT =
+SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
+SING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+> > + * DEALINGS IN THE SOFTWARE.
+> > + */
+> > +
+> > +#ifndef PIXMAN_COMPAT_H
+> > +#define PIXMAN_COMPAT_H
+> > +
+> > +#define PIXMAN_TYPE_OTHER       0
+> > +#define PIXMAN_TYPE_ARGB        2
+> > +#define PIXMAN_TYPE_ABGR        3
+> > +#define PIXMAN_TYPE_BGRA        8
+> > +#define PIXMAN_TYPE_RGBA        9
+> > +
+> > +#define PIXMAN_FORMAT(bpp,type,a,r,g,b) (((bpp) << 24) |  \
+> > +                                         ((type) << 16) | \
+> > +                                         ((a) << 12) |    \
+> > +                                         ((r) << 8) |     \
+> > +                                         ((g) << 4) |     \
+> > +                                         ((b)))
+> > +
+> > +#define PIXMAN_FORMAT_RESHIFT(val, ofs, num)                          =
+  \
+> > +        (((val >> (ofs)) & ((1 << (num)) - 1)) << ((val >> 22) & 3))
+> > +
+> > +#define PIXMAN_FORMAT_BPP(f)    PIXMAN_FORMAT_RESHIFT(f, 24, 8)
+> > +#define PIXMAN_FORMAT_TYPE(f)   (((f) >> 16) & 0x3f)
+> > +#define PIXMAN_FORMAT_A(f)      PIXMAN_FORMAT_RESHIFT(f, 12, 4)
+> > +#define PIXMAN_FORMAT_R(f)      PIXMAN_FORMAT_RESHIFT(f, 8, 4)
+> > +#define PIXMAN_FORMAT_G(f)      PIXMAN_FORMAT_RESHIFT(f, 4, 4)
+> > +#define PIXMAN_FORMAT_B(f)      PIXMAN_FORMAT_RESHIFT(f, 0, 4)
+> > +#define PIXMAN_FORMAT_DEPTH(f)  (PIXMAN_FORMAT_A(f) +   \
+> > +                                 PIXMAN_FORMAT_R(f) +   \
+> > +                                 PIXMAN_FORMAT_G(f) +   \
+> > +                                 PIXMAN_FORMAT_B(f))
+> > +
+> > +typedef enum {
+> > +    /* 32bpp formats */
+> > +    PIXMAN_a8r8g8b8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ARGB,8,8,8,8),
+> > +    PIXMAN_x8r8g8b8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ARGB,0,8,8,8),
+> > +    PIXMAN_a8b8g8r8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ABGR,8,8,8,8),
+> > +    PIXMAN_x8b8g8r8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_ABGR,0,8,8,8),
+> > +    PIXMAN_b8g8r8a8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_BGRA,8,8,8,8),
+> > +    PIXMAN_b8g8r8x8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_BGRA,0,8,8,8),
+> > +    PIXMAN_r8g8b8a8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_RGBA,8,8,8,8),
+> > +    PIXMAN_r8g8b8x8 =3D    PIXMAN_FORMAT(32,PIXMAN_TYPE_RGBA,0,8,8,8),
+> > +    /* 24bpp formats */
+> > +    PIXMAN_r8g8b8 =3D      PIXMAN_FORMAT(24,PIXMAN_TYPE_ARGB,0,8,8,8),
+> > +    PIXMAN_b8g8r8 =3D      PIXMAN_FORMAT(24,PIXMAN_TYPE_ABGR,0,8,8,8),
+> > +    /* 16bpp formats */
+> > +    PIXMAN_r5g6b5 =3D      PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,0,5,6,5),
+> > +    PIXMAN_a1r5g5b5 =3D    PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,1,5,5,5),
+> > +    PIXMAN_x1r5g5b5 =3D    PIXMAN_FORMAT(16,PIXMAN_TYPE_ARGB,0,5,5,5),
+> > +} pixman_format_code_t;
+> > +
+> > +typedef struct pixman_image pixman_image_t;
+> > +
+> > +typedef void (* pixman_image_destroy_func_t)(pixman_image_t *image, vo=
+id *data);
+> > +
+> > +struct pixman_image {
+> > +    int ref_count;
+> > +    pixman_format_code_t format;
+> > +    int width;
+> > +    int height;
+> > +    int stride;
+> > +    uint8_t *data;
+> > +    pixman_image_destroy_func_t destroy_func;
+> > +    void *destroy_data;
+> > +};
+> > +
+> > +typedef struct pixman_color {
+> > +    uint16_t    red;
+> > +    uint16_t    green;
+> > +    uint16_t    blue;
+> > +    uint16_t    alpha;
+> > +} pixman_color_t;
+> > +
+> > +static inline pixman_image_t *pixman_image_create_bits(pixman_format_c=
+ode_t format,
+> > +                                                       int width,
+> > +                                                       int height,
+> > +                                                       uint32_t *bits,
+> > +                                                       int rowstride_b=
+ytes)
+> > +{
+> > +    pixman_image_t *i =3D g_new0(pixman_image_t, 1);
+> > +
+> > +    i->width =3D width;
+> > +    i->height =3D height;
+> > +    i->stride =3D rowstride_bytes ?: width * DIV_ROUND_UP(PIXMAN_FORMA=
+T_BPP(format), 8);
+> > +    i->format =3D format;
+> > +    i->data =3D bits ?: g_malloc0(rowstride_bytes * height);
+> > +    i->ref_count =3D 1;
+> > +
+> > +    return i;
+> > +}
+> > +
+> > +static inline pixman_image_t *pixman_image_ref(pixman_image_t *i)
+> > +{
+> > +    i->ref_count++;
+> > +    return i;
+> > +}
+> > +
+> > +static inline bool pixman_image_unref(pixman_image_t *i)
+> > +{
+> > +    i->ref_count--;
+> > +
+> > +    if (i->ref_count =3D=3D 0) {
+> > +        if (i->destroy_func) {
+> > +            i->destroy_func (i, i->destroy_data);
+> > +            g_free(i->data);
+> > +            g_free(i);
+> > +        }
+> > +
+> > +        return true;
+> > +    }
+> > +
+> > +    return false;
+> > +}
+> > +
+> > +static inline void pixman_image_set_destroy_function(pixman_image_t *i=
+,
+> > +                                                     pixman_image_dest=
+roy_func_t func,
+> > +                                                     void *data)
+> > +
+> > +{
+> > +    i->destroy_func =3D func;
+> > +    i->destroy_data =3D data;
+> > +}
+> > +
+> > +static inline uint8_t* pixman_image_get_data(pixman_image_t *i)
+> > +{
+> > +    return i->data;
+> > +}
+> > +
+> > +static inline int pixman_image_get_height(pixman_image_t *i)
+> > +{
+> > +    return i->height;
+> > +}
+> > +
+> > +static inline int pixman_image_get_width(pixman_image_t *i)
+> > +{
+> > +    return i->width;
+> > +}
+> > +
+> > +static inline int pixman_image_get_stride(pixman_image_t *i)
+> > +{
+> > +    return i->stride;
+> > +}
+> > +
+> > +static inline pixman_format_code_t pixman_image_get_format(pixman_imag=
+e_t *i)
+> > +{
+> > +    return i->format;
+> > +}
+> > +
+> > +#endif /* PIXMAN_COMPAT_H */
+> > diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+> > index c5a0911cc7..9c693df8dd 100644
+> > --- a/include/ui/qemu-pixman.h
+> > +++ b/include/ui/qemu-pixman.h
+> > @@ -6,11 +6,15 @@
+> >  #ifndef QEMU_PIXMAN_H
+> >  #define QEMU_PIXMAN_H
+> >
+> > +#ifdef CONFIG_PIXMAN
+> >  /* pixman-0.16.0 headers have a redundant declaration */
+> >  #pragma GCC diagnostic push
+> >  #pragma GCC diagnostic ignored "-Wredundant-decls"
+> >  #include <pixman.h>
+> >  #pragma GCC diagnostic pop
+> > +#else
+> > +#include "pixman-compat.h"
+> > +#endif
+> >
+> >  /*
+> >   * pixman image formats are defined to be native endian,
+> > --
+> > 2.41.0
+> >
+> >
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
+>
 
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
