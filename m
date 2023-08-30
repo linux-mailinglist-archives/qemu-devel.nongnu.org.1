@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D312C78D721
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4764878D734
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:44:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbNHB-0008U7-MZ; Wed, 30 Aug 2023 11:38:38 -0400
+	id 1qbNME-0004Fh-0y; Wed, 30 Aug 2023 11:43:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbNGs-0008AD-IC
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:38:20 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbNMB-0004FA-Ey
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:43:47 -0400
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbNGo-0002wa-NL
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:38:17 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1c1e3a4a06fso22034455ad.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:38:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qbNLx-00049M-3N
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:43:36 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-34ccedcc584so2643675ab.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:43:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693409892; x=1694014692; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LHJVm1p6+gILOEgkcy2yx9tB3DNyh3ZZ8aaqP+PyVcw=;
- b=oDYzPFu+wNqIdK0HFP4S7yENfBVzhNVOchsA4aXAdhFZY7b7QXiCw2NmDY0stpINvF
- XiulzMLZ9sbu/BomIBeRL1+SnuCvkIXGDI2P2vM3nQhPBQ3kv4SkiIHzxqEqenz7ZC7I
- eLicJuq7d6NRuFLMXxcJfgWZndb0k1tWrux93EqmVbWpz6oJGDoc6WSvCnq/39JjxOyN
- TxOsW/GByL3cEW9ZxaFy9G7/3+ZzG9VCwgwTEcHaOf/ZcLaGZaLjLACmkGx4Mwj1PcRQ
- f9/y617K9rzwbUSTG7de1XwvYMdZsvJXczaHWN3gAff6wFQcr9HjI/FuJv5ZPE1Z2T7w
- LimQ==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1693410205; x=1694015005;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jlpAzn+ryQ1470M30ft/2xJksecIGbaNT6KlHUeD4Rw=;
+ b=kbeTXmRwepecjRkX0bnyw1W+/oDkY/E314cTt2VhDmEFPWn9b05cluw5yYROm3bip2
+ l6gHv5AusLQ/1J35AHjHJynFwp5T50ozeX1AA0drn6YdC2y0rQ9wqipYG8lcnV2pnUmG
+ xPcZ1HCg+slo7diP9d/6fgNJAs3XiUgiAHRQVdXli24c+0haoXSkfAulogcmrn7Z0A5H
+ k4wptYYWsWMlIX7LGXtbRBCcRoi3DIa2Laz+TPf/y+3DtBL4wsQg/RkVnv2b++lamdn7
+ YV39mWS4t6ny3oqBi/pxEVI711Sf/IZph5bPOEU3YS6u9kqPYJJnt5/AT6rJqBlTeBTB
+ 8q2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693409892; x=1694014692;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LHJVm1p6+gILOEgkcy2yx9tB3DNyh3ZZ8aaqP+PyVcw=;
- b=fH7G+lMmSMKwhY93jSx2os5eSSs79MedmHGg1Z6nuxEkE3lATmZtulwATA21VgANjP
- 5mqWqN//wLXpX+oSb8mdDNVYc8ag9RU7Y1/Y9ggthh4GZktITW6/UlCeqN/zWybXX9KX
- bO7dZ/8o2XerkB7niXHUDjEgug+eMRQhQE2uQYElQjJGsvcn77xzDzPIpC2FIXuq9gJF
- QSoN+Yhgz46Z0KryqqItDqfBFkXXRru8tqeAMewLMdy20F7XfyjuYVTAx9MwVeXM4+Eo
- y1W0dL95eWmtR7va5w7CsmnGZSai4G6MueeAaaBgfgQ3J2PqqLeZKU70nH1iNZWXxzmx
- jmvg==
-X-Gm-Message-State: AOJu0YyGyC2h0XGwGU3h3jgvMYYm8uaL6yufbeTQvBBLnnBclRBBUiwf
- eqVbFHakonAMHVKqBo3CdYZ1hzAqbLSrYUZCi0o=
-X-Google-Smtp-Source: AGHT+IF4w3zOdNHAcSHkpTRyEbZ/91ll2Qv9O3dAx6YN12qwJxyRc5X7N1pEgtygVeD86VQwB4FtOA==
-X-Received: by 2002:a17:902:d2cd:b0:1bb:994c:bc43 with SMTP id
- n13-20020a170902d2cd00b001bb994cbc43mr3136769plc.18.1693409892233; 
- Wed, 30 Aug 2023 08:38:12 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- k18-20020a170902c41200b001b9d7c8f44dsm1521498plk.182.2023.08.30.08.38.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 08:38:11 -0700 (PDT)
-Message-ID: <c63ca74a-71ac-3fea-56d2-f8f53b0e7d8a@linaro.org>
-Date: Wed, 30 Aug 2023 08:38:09 -0700
+ d=1e100.net; s=20221208; t=1693410205; x=1694015005;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jlpAzn+ryQ1470M30ft/2xJksecIGbaNT6KlHUeD4Rw=;
+ b=gPGw27Z2SVQNL/KJekh8h1OI+et0kiG0zBC2uRCnu78STAQZcVdZpbviZMdj0YCD5L
+ f8OvEH587fHwgIUYPBuyapHzTr9CxrdWwidm75Pwezd27Lw1hgoqW0S7pyf9j2OUCNsE
+ Ici2Bq+bBF1+/u1lQXLa0RqoLkxNCe8FQ6LIflge8YGRiiYVF95P0U22qpJ8BDlsyinR
+ RWspanOx+3kbP21YB1biRgsXOWeNFkCKrMf6vY0mPWG3A33/QnmC77S9iFKorBOUrdNv
+ f+ogYhNS0E24oWlJY8fCwsbrdiEaaj95NHMM2PbKp8krt+iRJj0LIGlL7aSlODitDECs
+ p8Tg==
+X-Gm-Message-State: AOJu0YzZzvvORDRBaywd5yFWvgF3+36nSKcetRJPOdAq6xX7SVJTaLbD
+ bHs6KsjIwQ5btF27qSzydE4Cw1H5ldswnRuVhEM=
+X-Google-Smtp-Source: AGHT+IE9CMr7MbfB1kpGqstxPb7D1Mw9Q6AArqjd1gzrOzl9Vjnpj84UuXqt0cT5Y6FAj9Pb9g4yhw==
+X-Received: by 2002:a92:cf0a:0:b0:346:4f37:9ee7 with SMTP id
+ c10-20020a92cf0a000000b003464f379ee7mr5728ilo.13.1693410204813; 
+ Wed, 30 Aug 2023 08:43:24 -0700 (PDT)
+Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
+ [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
+ h14-20020a92c08e000000b00345e3a04f2dsm3899980ile.62.2023.08.30.08.43.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Aug 2023 08:43:24 -0700 (PDT)
+From: Warner Losh <imp@bsdimp.com>
+To: qemu-devel@nongnu.org
+Cc: Kyle Evans <kevans@freebsd.org>, Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Warner Losh <imp@bsdimp.com>
+Subject: [PULL 0/1] Quick fix patches
+Date: Wed, 30 Aug 2023 09:40:06 -0600
+Message-ID: <20230830154007.54297-1-imp@bsdimp.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 05/48] target/loongarch: Implement xvadd/xvsub
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230830084902.2113960-1-gaosong@loongson.cn>
- <20230830084902.2113960-6-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230830084902.2113960-6-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x12b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,127 +92,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 01:48, Song Gao wrote:
-> +#ifndef CONFIG_USER_ONLY
-> + #define CHECK_VEC do { \
-> +     if ((ctx->vl == LSX_LEN) && \
-> +         (ctx->base.tb->flags & HW_FLAGS_EUEN_SXE) == 0) { \
-> +         generate_exception(ctx, EXCCODE_SXD); \
-> +         return true; \
-> +     } \
-> +     if ((ctx->vl == LASX_LEN) && \
-> +         (ctx->base.tb->flags & HW_FLAGS_EUEN_ASXE) == 0) { \
-> +         generate_exception(ctx, EXCCODE_ASXD); \
-> +         return true; \
-> +     } \
-> + } while (0)
-> +#else
-> + #define CHECK_VEC
-> +#endif /*!CONFIG_USER_ONLY */
+The following changes since commit 813bac3d8d70d85cb7835f7945eb9eed84c2d8d0:
 
-I think this is wrong.  The check would seem to be determined by the instruction (oprsz) 
-rather than a fixed configuration of the cpu (vl).
+  Merge tag '2023q3-bsd-user-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-29 08:58:00 -0400)
 
-You're also replacing
+are available in the Git repository at:
 
-> -#ifndef CONFIG_USER_ONLY
-> -#define CHECK_ASXE do { \
-> -    if ((ctx->base.tb->flags & HW_FLAGS_EUEN_ASXE) == 0) { \
-> -        generate_exception(ctx, EXCCODE_ASXD); \
-> -        return true; \
-> -    } \
-> -} while (0)
-> -#else
-> -#define CHECK_ASXE
-> -#endif
+  https://gitlab.com/bsdimp/qemu.git tags/quick-fix-pull-request
 
-this, the correct test, which you just added in patch 3.
+for you to fetch changes up to 8a45962be33d4f7449567f8b9e07c724733ca303:
 
+  bsd-user: Move PRAGMA_DISABLE_PACKED_WARNING etc to qemu.h (2023-08-30 08:57:08 -0600)
 
-> +TRANS(xvadd_b, LASX, gvec_vvv, 32, MO_8, tcg_gen_gvec_add)
-> +TRANS(xvadd_h, LASX, gvec_vvv, 32, MO_16, tcg_gen_gvec_add)
-> +TRANS(xvadd_w, LASX, gvec_vvv, 32, MO_32, tcg_gen_gvec_add)
-> +TRANS(xvadd_d, LASX, gvec_vvv, 32, MO_64, tcg_gen_gvec_add)
+----------------------------------------------------------------
+Pull request: fix ci by fixing clang-user
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - https://gpgtools.org
 
-The size of the changes required to add oprsz to gen_vvv would seem to be an poor choice. 
-If you do go that way, all of the LSX changes would need to be a separate patch.
+iQIzBAABCgAdFiEEIDX4lLAKo898zeG3bBzRKH2wEQAFAmTvYpcACgkQbBzRKH2w
+EQCKvhAA3nfvm+UMoRbOjFGuOOZKy+HR+nk40rxHa8CzOabbJnx4EtdBZTnNJ+f5
+WxLvEIzQw6iLYoqr6Rkcn0MkfYryesDScig7tQW0A87DtivXbDyrRbcmAQuCrcSe
+EpEqjBOueiC9xe1U9hzdpNyBkuXQWFUNGKX6swR5vpOEb1hHKzFMY+60vEgcjcjQ
+/y7cQcwRJeMNyBEwAM4HSgcVIKxB8ZmIQpIbsWJPAJhEZZE6SvTiKhM0PlZvrwnv
+dlEV8F68f3cBka0QmX5JJNJQdXn+2gb2Ix06dm8z7BWtiZoH/rcJ0FfVjMk7bkcC
+2e0J0jI9JTf1MKNGHbO8V2YoZw+jCB9nr6N8HEymgla7bK6QPD6LIdTs0i6PUEB8
+PUf902NrOS+kbWTGsb9GINegklk3pJ0jnFZagqfCUxARQ2qrqmA6q5vg9d0FjPVl
+vJ13weKkSHW126/4Wr23EhUFIoYtiuMjgz/Bjd5TvzhvnVGJiPJaY9sGpgZZ3PJJ
+EPCRms5MRut/NE0znKQ9ozAz1FMdVd2XnXeClWJd2NUmGc7ZbBGMcSvUYdC9KLIK
+oSQRBTUDgGIdHnB+g367vKs98ir+03gOcpQk9z0fy25wCymmp/Uco8jsm6hCgSGn
+x7b9R6/+92xd/IZFZm5N3/llu6JHYPEMhdg8evNp9VTFPoi9PYc=
+=jG8p
+-----END PGP SIGNATURE-----
 
-Perhaps better as
+----------------------------------------------------------------
 
-static bool gvec_vvv_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz, MemOp mop,
-                         void (*func)(unsigned, uint32_t, uint32_t,
-                                      uint32_t, uint32_t, uint32_t))
-{
-     uint32_t vd_ofs = vec_full_offset(a->vd);
-     uint32_t vj_ofs = vec_full_offset(a->vj);
-     uint32_t vk_ofs = vec_full_offset(a->vk);
+Warner Losh (1):
+  bsd-user: Move PRAGMA_DISABLE_PACKED_WARNING etc to qemu.h
 
-     func(mop, vd_ofs, vj_ofs, vk_ofs, oprsz, ctx->vl / 8);
-     return true;
-}
+ bsd-user/qemu.h         | 27 +++++++++++++++++++++++++++
+ include/qemu/compiler.h | 30 ------------------------------
+ 2 files changed, 27 insertions(+), 30 deletions(-)
 
-static bool gvec_vvv(DisasContext *ctx, arg_vvv *a, MemOp mop,
-                      void (*func)(unsigned, uint32_t, uint32_t,
-                                   uint32_t, uint32_t, uint32_t))
-{
-     CHECK_SXE;
-     return gvec_vvv_vl(ctx, a, 16, mop, func);
-}
+-- 
+2.41.0
 
-static bool gvec_xxx(DisasContext *ctx, arg_vvv *a, MemOp mop,
-                      void (*func)(unsigned, uint32_t, uint32_t,
-                                   uint32_t, uint32_t, uint32_t))
-{
-     CHECK_ASXE;
-     return gvec_vvv_vl(ctx, a, 32, mop, func);
-}
-
-so that you don't have to replicate "16" or "32" across each instruction.
-
-
-> +#define XVADDSUB_Q(NAME)                                         \
-> +static bool trans_xv## NAME ##_q(DisasContext *ctx, arg_vvv * a) \
-> +{                                                                \
-> +    TCGv_i64 rh, rl, ah, al, bh, bl;                             \
-> +    int i;                                                       \
-> +                                                                 \
-> +    if (!avail_LASX(ctx)) {                                      \
-> +        return false;                                            \
-> +    }                                                            \
-> +                                                                 \
-> +    CHECK_VEC;                                                   \
-> +                                                                 \
-> +    rh = tcg_temp_new_i64();                                     \
-> +    rl = tcg_temp_new_i64();                                     \
-> +    ah = tcg_temp_new_i64();                                     \
-> +    al = tcg_temp_new_i64();                                     \
-> +    bh = tcg_temp_new_i64();                                     \
-> +    bl = tcg_temp_new_i64();                                     \
-> +                                                                 \
-> +    for (i = 0; i < 2; i++) {                                    \
-> +        get_vreg64(ah, a->vj, 1 + i * 2);                        \
-> +        get_vreg64(al, a->vj, 0 + i * 2);                        \
-> +        get_vreg64(bh, a->vk, 1 + i * 2);                        \
-> +        get_vreg64(bl, a->vk, 0 + i * 2);                        \
-> +                                                                 \
-> +        tcg_gen_## NAME ##2_i64(rl, rh, al, ah, bl, bh);         \
-> +                                                                 \
-> +        set_vreg64(rh, a->vd, 1 + i * 2);                        \
-> +        set_vreg64(rl, a->vd, 0 + i * 2);                        \
-> +   }                                                             \
-> +                                                                 \
-> +    return true;                                                 \
-> +}
-
-This should be a function, not a macro, passing in tcg_gen_{add,sub}2_i64.
-
-> +
-> +XVADDSUB_Q(add)
-> +XVADDSUB_Q(sub)
-
-Which lets these be normal TRANS expansions.
-
-
-
-r~
 
