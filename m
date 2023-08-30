@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E665778D559
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D707D78D55B
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 13:00:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbIvX-0002p8-D3; Wed, 30 Aug 2023 06:59:59 -0400
+	id 1qbIwE-0003Xq-PP; Wed, 30 Aug 2023 07:00:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbIvV-0002ns-8A
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 06:59:57 -0400
+ id 1qbIw8-0003Xf-C9
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:00:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qbIvS-0000W6-T5
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 06:59:57 -0400
+ id 1qbIw6-0000qd-3B
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 07:00:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693393193;
+ s=mimecast20190719; t=1693393233;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eR7FCkFIpzhF0Bl7YYjN5XVhGxs+DqPjkJTTlX6qhaA=;
- b=GxJrOw9Qi5E+jnIwgVjoLDuW+B0L3eA2wLs10QjPlJpdL1NgqWJNxs/iOD9vZYBcv4tt1u
- UvwnGSzCLFtY+qijh5KMkvg6VE9fIXduRMc28ax/9OEKm38Hjm1zE+Fmj5i+eyNiJ8ZO01
- 3xbgxNJ5b7yPBEF5r1O2K7sv3GOOkfk=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-599-ViwyWrKbN_CJcz8AC8sRXA-1; Wed, 30 Aug 2023 06:59:52 -0400
-X-MC-Unique: ViwyWrKbN_CJcz8AC8sRXA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=pyfgqBQGUj7/IW0063aa5zmE9uxqLuxhJTm/P3xlfJ4=;
+ b=e/ysXskLoe1JCqngW8oAAscvwUap+at/8p8mAnVRFBPpYwvjD8r0ztdDn28oZS7/iIoIQ1
+ VNxWJNUM1oA9czAtceN7Q4PM5OFSSL2kMEuQg591WWaOGmzwWfdTCFvwpC6DktNjHctWdY
+ Z23inB4YgfUnjgg3sQIIQr3M/IypA2E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-191-dzoWMnqZO5qIn9FmvpG03w-1; Wed, 30 Aug 2023 07:00:32 -0400
+X-MC-Unique: dzoWMnqZO5qIn9FmvpG03w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47EDE29DD98E
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 10:59:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DA690803E2E
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 11:00:30 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B2F062166B25;
- Wed, 30 Aug 2023 10:59:51 +0000 (UTC)
-Date: Wed, 30 Aug 2023 11:59:49 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3E3ED492C13;
+ Wed, 30 Aug 2023 11:00:30 +0000 (UTC)
+Date: Wed, 30 Aug 2023 12:00:28 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 02/67] ui: remove qemu_pixman_linebuf_copy()
-Message-ID: <ZO8hJWrblgSMEQ5x@redhat.com>
+Subject: Re: [PATCH 03/67] ui/qmp: move screendump to ui-qmp-cmds.c
+Message-ID: <ZO8hTGQdHoYE9sQQ@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-3-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-4-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830093843.3531473-3-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-4-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,17 +83,18 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:37:36PM +0400, marcandre.lureau@redhat.com wrote:
+On Wed, Aug 30, 2023 at 01:37:37PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Since commit 43c7d8bd449 ("console: add qemu_pixman_linebuf_copy"), it
-> seems it was never used.
+> console.c unit is over-crowded. This code is specific to the handling of
+> the QMP screendump command, so move it in ui-qmp-cmds.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  include/ui/qemu-pixman.h | 2 --
->  ui/qemu-pixman.c         | 8 --------
->  2 files changed, 10 deletions(-)
+>  include/ui/console.h |   1 +
+>  ui/console.c         | 212 ++++---------------------------------------
+>  ui/ui-qmp-cmds.c     | 187 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 205 insertions(+), 195 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
