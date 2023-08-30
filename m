@@ -2,55 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5B478D4CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36EC78D4CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHi9-0002p9-FG; Wed, 30 Aug 2023 05:42:07 -0400
+	id 1qbHif-0003dN-OY; Wed, 30 Aug 2023 05:42:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHhn-0002aP-JW
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:43 -0400
+ id 1qbHhv-0002p3-CD
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHhl-0001XC-5m
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:43 -0400
+ id 1qbHht-0001Zf-3n
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:41:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388500;
+ s=mimecast20190719; t=1693388507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=i/q4fKSOhyZCL2FrkGOjnzDqZRW/4aoqTcGzWnJ3CVU=;
- b=gnqoOm9wcHWlS3TA9Wq5FrwfCjy23WJKfhLFRWTHSc+Tnn7buRvnYBF8++uRxugM1MpX4g
- mPTwnuPX6G4wxa3rNa/g/CGYaUMFc0f8hd6s9q9joIGEWeDb+S9249dQTZo096vPki9L3J
- GrCG9bSviu5+bCNlrUE7vQUPLccmOPA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-65-X-Ec5l0FMOGD5fnpVoGWSg-1; Wed, 30 Aug 2023 05:41:38 -0400
-X-MC-Unique: X-Ec5l0FMOGD5fnpVoGWSg-1
+ bh=GlhsUu8MLYDQ0zR+ycTEozW/BwEPc8R8qs1to4igIEA=;
+ b=QubD7zajaFylSEZtw2bkSSqcOkoEOSsVpS9XtFZsdldyf2r2bSQXmHEmvp5uAUeOSE6JrO
+ yXsWURdxOnDgJC5z+R00bZEo8UUqgvO8Aa2BSeG1HLakwWTKL7EGprQT7gP4m6fG9gdGXG
+ TlRoepd3dbP08LAS+VWwsxoSgT0MX+o=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-17-rAaGs8GHObKzn2ULBBBpzg-1; Wed, 30 Aug 2023 05:41:42 -0400
+X-MC-Unique: rAaGs8GHObKzn2ULBBBpzg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53C2D8022E4
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:41:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 38F8C1C0758C
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:41:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2C249140E96E;
- Wed, 30 Aug 2023 09:41:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2CAB2140E96E;
+ Wed, 30 Aug 2023 09:41:40 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 43/67] ui/vc: do not parse VC-specific options in Spice and GTK
-Date: Wed, 30 Aug 2023 13:38:17 +0400
-Message-ID: <20230830093843.3531473-44-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 44/67] ui/vc: change the argument for QemuTextConsole
+Date: Wed, 30 Aug 2023 13:38:18 +0400
+Message-ID: <20230830093843.3531473-45-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -84,112 +82,138 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-In commit 6f974c843c ("gtk: overwrite the console.c char driver"), I
-shared the VC console parse handler with GTK. And later on in commit
-d8aec9d9 ("display: add -display spice-app launching a Spice client"),
-I also used it to handle spice-app VC.
-
-This is not necessary, the VC console options (width/height/cols/rows)
-are specific, and unused by tty-level GTK/Spice VC.
-
-This is not a breaking change, as those options are still being parsed
-by QAPI ChardevVC. Adjust the documentation about it.
+Those functions are specifc to text/vc console, make that explicit from
+the argument type.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- qapi/char.json         | 4 ++++
- include/chardev/char.h | 3 ---
- ui/console.c           | 4 ++--
- ui/gtk.c               | 1 -
- ui/spice-app.c         | 7 ++++++-
- 5 files changed, 12 insertions(+), 7 deletions(-)
+ include/ui/console.h |  6 +++---
+ ui/console.c         | 14 ++++++--------
+ ui/gtk.c             |  2 +-
+ ui/sdl2-input.c      |  5 +++--
+ ui/sdl2.c            |  5 ++---
+ 5 files changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/qapi/char.json b/qapi/char.json
-index 52aaff25eb..7e23fe3180 100644
---- a/qapi/char.json
-+++ b/qapi/char.json
-@@ -390,6 +390,10 @@
- #
- # @rows: console height, in chars
- #
-+# Note: the options are only effective when using the built-in QEMU graphical VC
-+# (with the SDL display). When the VC is handled by the display backend (with
-+# GTK/VTE, Spice or D-Bus), they are simply ignored.
-+#
- # Since: 1.5
- ##
- { 'struct': 'ChardevVC',
-diff --git a/include/chardev/char.h b/include/chardev/char.h
-index 44cd82e405..01df55f9e8 100644
---- a/include/chardev/char.h
-+++ b/include/chardev/char.h
-@@ -320,7 +320,4 @@ GSource *qemu_chr_timeout_add_ms(Chardev *chr, guint ms,
- void suspend_mux_open(void);
- void resume_mux_open(void);
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 91d8bbc9dc..1ccd432b4d 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -112,9 +112,9 @@ bool qemu_mouse_set(int index, Error **errp);
+ #define QEMU_KEY_CTRL_PAGEUP     0xe406
+ #define QEMU_KEY_CTRL_PAGEDOWN   0xe407
  
--/* console.c */
--void qemu_chr_parse_vc(QemuOpts *opts, ChardevBackend *backend, Error **errp);
--
- #endif
+-void kbd_put_keysym_console(QemuConsole *s, int keysym);
+-bool kbd_put_qcode_console(QemuConsole *s, int qcode, bool ctrl);
+-void kbd_put_string_console(QemuConsole *s, const char *str, int len);
++void kbd_put_keysym_console(QemuTextConsole *s, int keysym);
++bool kbd_put_qcode_console(QemuTextConsole *s, int qcode, bool ctrl);
++void kbd_put_string_console(QemuTextConsole *s, const char *str, int len);
+ void kbd_put_keysym(int keysym);
+ 
+ /* Touch devices */
 diff --git a/ui/console.c b/ui/console.c
-index 7be2d4eef3..9fccecafd7 100644
+index 9fccecafd7..a98adbb1b2 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -2708,7 +2708,7 @@ void qemu_display_help(void)
-     }
+@@ -1135,16 +1135,12 @@ static void kbd_send_chars(QemuTextConsole *s)
  }
  
--void qemu_chr_parse_vc(QemuOpts *opts, ChardevBackend *backend, Error **errp)
-+static void vc_chr_parse(QemuOpts *opts, ChardevBackend *backend, Error **errp)
+ /* called when an ascii key is pressed */
+-void kbd_put_keysym_console(QemuConsole *con, int keysym)
++void kbd_put_keysym_console(QemuTextConsole *s, int keysym)
  {
-     int val;
-     ChardevVC *vc;
-@@ -2746,7 +2746,7 @@ static void char_vc_class_init(ObjectClass *oc, void *data)
- {
-     ChardevClass *cc = CHARDEV_CLASS(oc);
+-    QemuTextConsole *s = (QemuTextConsole *)object_dynamic_cast(OBJECT(con), TYPE_QEMU_TEXT_CONSOLE);
+     uint8_t buf[16], *q;
+     int c;
+     uint32_t num_free;
  
--    cc->parse = qemu_chr_parse_vc;
-+    cc->parse = vc_chr_parse;
-     cc->open = vc_chr_open;
-     cc->chr_write = vc_chr_write;
-     cc->chr_accept_input = vc_chr_accept_input;
+-    if (!s)
+-        return;
+-
+     switch(keysym) {
+     case QEMU_KEY_CTRL_UP:
+         console_scroll(s, -1);
+@@ -1214,7 +1210,7 @@ static const int ctrl_qcode_to_keysym[Q_KEY_CODE__MAX] = {
+     [Q_KEY_CODE_PGDN]   = QEMU_KEY_CTRL_PAGEDOWN,
+ };
+ 
+-bool kbd_put_qcode_console(QemuConsole *s, int qcode, bool ctrl)
++bool kbd_put_qcode_console(QemuTextConsole *s, int qcode, bool ctrl)
+ {
+     int keysym;
+ 
+@@ -1226,7 +1222,7 @@ bool kbd_put_qcode_console(QemuConsole *s, int qcode, bool ctrl)
+     return true;
+ }
+ 
+-void kbd_put_string_console(QemuConsole *s, const char *str, int len)
++void kbd_put_string_console(QemuTextConsole *s, const char *str, int len)
+ {
+     int i;
+ 
+@@ -1237,7 +1233,9 @@ void kbd_put_string_console(QemuConsole *s, const char *str, int len)
+ 
+ void kbd_put_keysym(int keysym)
+ {
+-    kbd_put_keysym_console(active_console, keysym);
++    if (QEMU_IS_TEXT_CONSOLE(active_console)) {
++        kbd_put_keysym_console(QEMU_TEXT_CONSOLE(active_console), keysym);
++    }
+ }
+ 
+ static void text_console_invalidate(void *opaque)
 diff --git a/ui/gtk.c b/ui/gtk.c
-index 8ba41c8f13..ef98bb0648 100644
+index ef98bb0648..c34c133550 100644
 --- a/ui/gtk.c
 +++ b/ui/gtk.c
-@@ -1860,7 +1860,6 @@ static void char_gd_vc_class_init(ObjectClass *oc, void *data)
+@@ -1187,7 +1187,7 @@ static gboolean gd_text_key_down(GtkWidget *widget,
+                                  GdkEventKey *key, void *opaque)
  {
-     ChardevClass *cc = CHARDEV_CLASS(oc);
+     VirtualConsole *vc = opaque;
+-    QemuConsole *con = vc->gfx.dcl.con;
++    QemuTextConsole *con = QEMU_TEXT_CONSOLE(vc->gfx.dcl.con);
  
--    cc->parse = qemu_chr_parse_vc;
-     cc->open = gd_vc_open;
-     cc->chr_write = gd_vc_chr_write;
-     cc->chr_accept_input = gd_vc_chr_accept_input;
-diff --git a/ui/spice-app.c b/ui/spice-app.c
-index ad7f0551ad..405fb7f9f5 100644
---- a/ui/spice-app.c
-+++ b/ui/spice-app.c
-@@ -96,6 +96,11 @@ static void vc_chr_set_echo(Chardev *chr, bool echo)
-     /* TODO: set echo for frontends QMP and qtest */
+     if (key->keyval == GDK_KEY_Delete) {
+         kbd_put_qcode_console(con, Q_KEY_CODE_DELETE, false);
+diff --git a/ui/sdl2-input.c b/ui/sdl2-input.c
+index f068382209..efc0e76e8c 100644
+--- a/ui/sdl2-input.c
++++ b/ui/sdl2-input.c
+@@ -44,14 +44,15 @@ void sdl2_process_key(struct sdl2_console *scon,
+     qkbd_state_key_event(scon->kbd, qcode, ev->type == SDL_KEYDOWN);
+ 
+     if (!qemu_console_is_graphic(con)) {
++        QemuTextConsole *s = QEMU_TEXT_CONSOLE(con);
+         bool ctrl = qkbd_state_modifier_get(scon->kbd, QKBD_MOD_CTRL);
+         if (ev->type == SDL_KEYDOWN) {
+             switch (qcode) {
+             case Q_KEY_CODE_RET:
+-                kbd_put_keysym_console(con, '\n');
++                kbd_put_keysym_console(s, '\n');
+                 break;
+             default:
+-                kbd_put_qcode_console(con, qcode, ctrl);
++                kbd_put_qcode_console(s, qcode, ctrl);
+                 break;
+             }
+         }
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 0d91b555e3..16b515fcf9 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -483,10 +483,9 @@ static void handle_textinput(SDL_Event *ev)
+         return;
+     }
+ 
+-    if (qemu_console_is_graphic(con)) {
+-        return;
++    if (QEMU_IS_TEXT_CONSOLE(con)) {
++        kbd_put_string_console(QEMU_TEXT_CONSOLE(con), ev->text.text, strlen(ev->text.text));
+     }
+-    kbd_put_string_console(con, ev->text.text, strlen(ev->text.text));
  }
  
-+static void vc_chr_parse(QemuOpts *opts, ChardevBackend *backend, Error **errp)
-+{
-+    /* fqdn is dealt with in vc_chr_open() */
-+}
-+
- static void char_vc_class_init(ObjectClass *oc, void *data)
- {
-     VCChardevClass *vc = CHARDEV_VC_CLASS(oc);
-@@ -103,7 +108,7 @@ static void char_vc_class_init(ObjectClass *oc, void *data)
- 
-     vc->parent_open = cc->open;
- 
--    cc->parse = qemu_chr_parse_vc;
-+    cc->parse = vc_chr_parse;
-     cc->open = vc_chr_open;
-     cc->chr_set_echo = vc_chr_set_echo;
- }
+ static void handle_mousemotion(SDL_Event *ev)
 -- 
 2.41.0
 
