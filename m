@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FC478D4DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2AE78D4D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHgR-0002Ao-48; Wed, 30 Aug 2023 05:40:19 -0400
+	id 1qbHgR-0002Ow-JX; Wed, 30 Aug 2023 05:40:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHgB-00021w-PL
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:05 -0400
+ id 1qbHgE-00024r-Od
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHg9-0000zd-4L
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:03 -0400
+ id 1qbHgC-00018y-Di
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:40:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388400;
+ s=mimecast20190719; t=1693388403;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XFnOdNYuiv69WO1ry6iYZlboB+aJKY5lwScUXpmbQ2Q=;
- b=Zd20JXdqLOgdnI215INvsm7F2r7WAbBN8p66JqwZQAqeu68HAL33Ci8ORJ2jbBIxreDm07
- ka/aXzlezRD6ghEIWMyb9rz8+AExLL/YpusjyQPYrqou4p3SygDBzXPlmrqEuJ5GtLgQPF
- hmtpev5cIqpclYSkzD9RZ1K2E2NXuMI=
+ bh=3zoYg89OwJfG0NluN1/bV+0j5aS05WZHXFM7pIMf1rE=;
+ b=embzbSHJV84/AS54PeCDrvqv5iBeTuTaE66o5m4W+mTLz/nRxiMA4xF8WvtNvz+W1Jr6TE
+ E/QN1I2jl6jry3n9jH0608qXjPvaEVZE+KItg6CLy1xrGiZOXNQ+gtvoV/xTnOSSNhdvpr
+ fJ4TEVX+y01hdFpOkFr0yTHXK4c/LzQ=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-15-wOuSYbXcMXibzy8mcuuICw-1; Wed, 30 Aug 2023 05:39:58 -0400
-X-MC-Unique: wOuSYbXcMXibzy8mcuuICw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-63-cTVQl1VaPpuEhtUwi2ZkLw-1; Wed, 30 Aug 2023 05:40:01 -0400
+X-MC-Unique: cTVQl1VaPpuEhtUwi2ZkLw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B3053C100B6
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:39:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97EEA29ABA1C
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:40:01 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4D950C15BAE;
- Wed, 30 Aug 2023 09:39:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E75D6492C13;
+ Wed, 30 Aug 2023 09:40:00 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 18/67] ui/console: change new_console() to use object
- initialization
-Date: Wed, 30 Aug 2023 13:37:52 +0400
-Message-ID: <20230830093843.3531473-19-marcandre.lureau@redhat.com>
+Subject: [PATCH 19/67] ui/console: introduce different console objects
+Date: Wed, 30 Aug 2023 13:37:53 +0400
+Message-ID: <20230830093843.3531473-20-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -83,166 +82,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Object construction should be done in respective object instance and
-class handlers.
-
-Introduce qemu_console_register() to split out the registration logic.
+Boilerplate code to introduce different object types for the different
+console types.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/console.c | 93 +++++++++++++++++++++++++++++++---------------------
- 1 file changed, 56 insertions(+), 37 deletions(-)
+ ui/console.c | 84 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 84 insertions(+)
 
 diff --git a/ui/console.c b/ui/console.c
-index 7d0bb819ac..bdecfe7306 100644
+index bdecfe7306..4ca5064cc9 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -27,6 +27,7 @@
- #include "hw/qdev-core.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-ui.h"
-+#include "qapi/visitor.h"
- #include "qemu/coroutine.h"
- #include "qemu/fifo8.h"
- #include "qemu/error-report.h"
-@@ -1253,40 +1254,24 @@ static void text_console_update(void *opaque, console_ch_t *chardata)
-     }
+@@ -128,6 +128,45 @@ struct QemuConsole {
+ 
+ OBJECT_DEFINE_TYPE(QemuConsole, qemu_console, QEMU_CONSOLE, OBJECT)
+ 
++typedef struct QemuGraphicConsole {
++    QemuConsole parent;
++} QemuGraphicConsole;
++
++typedef QemuConsoleClass QemuGraphicConsoleClass;
++
++#define TYPE_QEMU_GRAPHIC_CONSOLE "qemu-graphic-console"
++OBJECT_DECLARE_SIMPLE_TYPE(QemuGraphicConsole, QEMU_GRAPHIC_CONSOLE)
++OBJECT_DEFINE_TYPE(QemuGraphicConsole, qemu_graphic_console, QEMU_GRAPHIC_CONSOLE, QEMU_CONSOLE)
++
++#define QEMU_IS_GRAPHIC_CONSOLE(c) \
++    object_dynamic_cast(OBJECT(c), TYPE_QEMU_GRAPHIC_CONSOLE)
++
++typedef struct QemuTextConsole {
++    QemuConsole parent;
++} QemuTextConsole;
++
++typedef QemuConsoleClass QemuTextConsoleClass;
++
++#define TYPE_QEMU_TEXT_CONSOLE "qemu-text-console"
++OBJECT_DECLARE_SIMPLE_TYPE(QemuTextConsole, QEMU_TEXT_CONSOLE)
++OBJECT_DEFINE_TYPE(QemuTextConsole, qemu_text_console, QEMU_TEXT_CONSOLE, QEMU_CONSOLE)
++
++#define QEMU_IS_TEXT_CONSOLE(c) \
++    object_dynamic_cast(OBJECT(c), TYPE_QEMU_TEXT_CONSOLE)
++
++typedef struct QemuFixedTextConsole {
++    QemuTextConsole parent;
++} QemuFixedTextConsole;
++
++typedef QemuTextConsoleClass QemuFixedTextConsoleClass;
++
++#define TYPE_QEMU_FIXED_TEXT_CONSOLE "qemu-fixed-text-console"
++OBJECT_DECLARE_SIMPLE_TYPE(QemuFixedTextConsole, QEMU_FIXED_TEXT_CONSOLE)
++OBJECT_DEFINE_TYPE(QemuFixedTextConsole, qemu_fixed_text_console, QEMU_FIXED_TEXT_CONSOLE, QEMU_TEXT_CONSOLE)
++
++#define QEMU_IS_FIXED_TEXT_CONSOLE(c) \
++    object_dynamic_cast(OBJECT(c), TYPE_QEMU_FIXED_TEXT_CONSOLE)
++
+ struct VCChardev {
+     Chardev parent;
+     QemuConsole *console;
+@@ -1338,6 +1377,51 @@ qemu_console_init(Object *obj)
+     c->window_id = -1;
  }
  
--static QemuConsole *new_console(console_type_t console_type,
--                                uint32_t head)
 +static void
-+qemu_console_register(QemuConsole *c, console_type_t console_type)
- {
--    DisplayState *ds = get_alloc_displaystate();
--    Object *obj;
--    QemuConsole *s;
-     int i;
- 
--    obj = object_new(TYPE_QEMU_CONSOLE);
--    s = QEMU_CONSOLE(obj);
--    qemu_co_queue_init(&s->dump_queue);
--    s->head = head;
--    object_property_add_link(obj, "device", TYPE_DEVICE,
--                             (Object **)&s->device,
--                             object_property_allow_set_link,
--                             OBJ_PROP_LINK_STRONG);
--    object_property_add_uint32_ptr(obj, "head", &s->head,
--                                   OBJ_PROP_FLAG_READ);
--
-     if (!active_console || ((active_console->console_type != GRAPHIC_CONSOLE) &&
--        (console_type == GRAPHIC_CONSOLE))) {
--        active_console = s;
-+                            (console_type == GRAPHIC_CONSOLE))) {
-+        active_console = c;
-     }
--    s->ds = ds;
--    s->console_type = console_type;
--    s->window_id = -1;
-+    c->console_type = console_type;
- 
-     if (QTAILQ_EMPTY(&consoles)) {
--        s->index = 0;
--        QTAILQ_INSERT_TAIL(&consoles, s, next);
-+        c->index = 0;
-+        QTAILQ_INSERT_TAIL(&consoles, c, next);
-     } else if (console_type != GRAPHIC_CONSOLE || phase_check(PHASE_MACHINE_READY)) {
-         QemuConsole *last = QTAILQ_LAST(&consoles);
--        s->index = last->index + 1;
--        QTAILQ_INSERT_TAIL(&consoles, s, next);
-+        c->index = last->index + 1;
-+        QTAILQ_INSERT_TAIL(&consoles, c, next);
-     } else {
-         /*
-          * HACK: Put graphical consoles before text consoles.
-@@ -1294,41 +1279,75 @@ static QemuConsole *new_console(console_type_t console_type,
-          * Only do that for coldplugged devices.  After initial device
-          * initialization we will not renumber the consoles any more.
-          */
--        QemuConsole *c = QTAILQ_FIRST(&consoles);
-+        QemuConsole *it = QTAILQ_FIRST(&consoles);
- 
--        while (QTAILQ_NEXT(c, next) != NULL &&
--               c->console_type == GRAPHIC_CONSOLE) {
--            c = QTAILQ_NEXT(c, next);
-+        while (QTAILQ_NEXT(it, next) != NULL &&
-+               it->console_type == GRAPHIC_CONSOLE) {
-+            it = QTAILQ_NEXT(it, next);
-         }
--        if (c->console_type == GRAPHIC_CONSOLE) {
-+        if (it->console_type == GRAPHIC_CONSOLE) {
-             /* have no text consoles */
--            s->index = c->index + 1;
--            QTAILQ_INSERT_AFTER(&consoles, c, s, next);
-+            c->index = it->index + 1;
-+            QTAILQ_INSERT_AFTER(&consoles, it, c, next);
-         } else {
--            s->index = c->index;
--            QTAILQ_INSERT_BEFORE(c, s, next);
-+            c->index = it->index;
-+            QTAILQ_INSERT_BEFORE(it, c, next);
-             /* renumber text consoles */
--            for (i = s->index + 1; c != NULL; c = QTAILQ_NEXT(c, next), i++) {
--                c->index = i;
-+            for (i = c->index + 1; it != NULL; it = QTAILQ_NEXT(it, next), i++) {
-+                it->index = i;
-             }
-         }
-     }
--    return s;
- }
- 
- static void
- qemu_console_finalize(Object *obj)
- {
-+    /* TODO: should unregister from consoles and free itself  */
++qemu_graphic_console_finalize(Object *obj)
++{
 +}
 +
 +static void
-+qemu_console_prop_get_head(Object *obj, Visitor *v, const char *name,
-+                           void *opaque, Error **errp)
++qemu_graphic_console_class_init(ObjectClass *oc, void *data)
 +{
-+    QemuConsole *c = QEMU_CONSOLE(obj);
-+
-+    visit_type_uint32(v, name, &c->head, errp);
- }
- 
- static void
- qemu_console_class_init(ObjectClass *oc, void *data)
- {
-+    object_class_property_add_link(oc, "device", TYPE_DEVICE,
-+                                   offsetof(QemuConsole, device),
-+                                   object_property_allow_set_link,
-+                                   OBJ_PROP_LINK_STRONG);
-+    object_class_property_add(oc, "head", "uint32",
-+                              qemu_console_prop_get_head,
-+                              NULL, NULL, NULL);
- }
- 
- static void
- qemu_console_init(Object *obj)
- {
-+    QemuConsole *c = QEMU_CONSOLE(obj);
-+    DisplayState *ds = get_alloc_displaystate();
-+
-+    qemu_co_queue_init(&c->dump_queue);
-+    c->ds = ds;
-+    c->window_id = -1;
 +}
 +
-+static QemuConsole *new_console(console_type_t console_type,
-+                                uint32_t head)
++static void
++qemu_graphic_console_init(Object *obj)
 +{
-+    QemuConsole *c = QEMU_CONSOLE(object_new(TYPE_QEMU_CONSOLE));
++}
 +
-+    c->head = head;
-+    /* TODO: move to console_init() once there is a type hierarchy */
-+    qemu_console_register(c, console_type);
++static void
++qemu_text_console_finalize(Object *obj)
++{
++}
 +
-+    return c;
- }
- 
- #ifdef WIN32
++static void
++qemu_text_console_class_init(ObjectClass *oc, void *data)
++{
++}
++
++static void
++qemu_text_console_init(Object *obj)
++{
++}
++
++static void
++qemu_fixed_text_console_finalize(Object *obj)
++{
++}
++
++static void
++qemu_fixed_text_console_class_init(ObjectClass *oc, void *data)
++{
++}
++
++static void
++qemu_fixed_text_console_init(Object *obj)
++{
++}
++
+ static QemuConsole *new_console(console_type_t console_type,
+                                 uint32_t head)
+ {
 -- 
 2.41.0
 
