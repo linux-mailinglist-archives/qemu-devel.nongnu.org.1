@@ -2,86 +2,180 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587F678D2E2
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 07:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD72378D2F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 07:21:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbDJD-0007wF-5Z; Wed, 30 Aug 2023 01:00:03 -0400
+	id 1qbDcE-0007Hm-Rm; Wed, 30 Aug 2023 01:19:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qbDIy-0007ua-EP
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 00:59:50 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qbDIq-00041n-34
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 00:59:47 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-56c2e882416so2602405a12.3
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 21:57:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693371459; x=1693976259;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DYhaBgdJtds96WYpoue74AAWuPp3SkCXlJzfVY0iv9Y=;
- b=OGVVy7dInTY9mmwoQGdvU26hEWy7AUMoUhnfJQ4Hm8U7UDWJhklXga0xysc/Okwkrw
- VyJgLglNqDwfpMUFTgN0w7HW4UqOsuylYHD1CVgpgKTJiFGhiWSx2kgKXwmjlyXN7jRf
- EZPbIXcpUvJh15e66Plo4qiPpoMECnzqUP7L76Vw2ZFafIIoCIFTJYxa5K0h2chMemUB
- 4JHe5icJAFSiAGbIEoWWsmWzHHlL4rx2NzpEbveEfNYQRFaGssiTgoEgs14izGSAKLh7
- 1fKRfoBX68MWHg/88rjGUS/pcB25XBwYm9AnDWU+2vXxpI16BB9gs9TpdjMZuuquoxTg
- CBhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693371459; x=1693976259;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DYhaBgdJtds96WYpoue74AAWuPp3SkCXlJzfVY0iv9Y=;
- b=XvSl0hikmOKoBkbgIvWyFHOP/Ur2gORQQ6A0p7hveSV8ZTB9eyCzfOjtR/wqqkDOX6
- y7xuRMxESLgNGlDzzMws2qvojF9XKyloMY/rJJt7DC+gwg+0zrKkCWoPNEvP2H9/jwB6
- VpQ/gcyRmOlIRjeXGvM9AuNRcE6EW2yjTeAJiJGeVPtBFxP1WI2+hRh+3emGZDHYywa2
- NghktydbwXy1LIkrZlqAgT05ZovDIWkgabLPKeB0GFIhYNmQPKCni5vmO60hfcmWEnQe
- rLEiI3PwFgTKKhOz3u5YFvJFkXersmS1+G0lvH3rucOuW5kEeQ/URz4vfxi34pKWM/sl
- BWcA==
-X-Gm-Message-State: AOJu0Yw8wxwP4OVTzfaQzJet+DgLxwIN4sr6pPKJdFvbUZuaA7arB9z8
- FtebMFSlQFsWYLwoPxLbM30QMw==
-X-Google-Smtp-Source: AGHT+IE2ynpzfGWaybdZrAH0Vrqp8hJmK9tnFW523ym2FMzw2JjusJKiwB/hXeaTdA2IKuA4NpYiJw==
-X-Received: by 2002:a17:90a:f417:b0:26f:b158:ef2b with SMTP id
- ch23-20020a17090af41700b0026fb158ef2bmr1153079pjb.23.1693371458544; 
- Tue, 29 Aug 2023 21:57:38 -0700 (PDT)
-Received: from 64217.gitgo.cc ([8.210.91.195])
- by smtp.gmail.com with ESMTPSA id
- t11-20020a170902a5cb00b001bfd92ec592sm10183553plq.292.2023.08.29.21.57.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Aug 2023 21:57:38 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v3 2/2] vhost: Add Error parameter to vhost_scsi_common_start()
-Date: Wed, 30 Aug 2023 12:57:14 +0800
-Message-ID: <20230830045722.611224-3-fengli@smartx.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230830045722.611224-1-fengli@smartx.com>
-References: <20230804052954.2918915-1-fengli@smartx.com>
- <20230830045722.611224-1-fengli@smartx.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1qbDbw-0007G2-Lu
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 01:19:24 -0400
+Received: from mgamail.intel.com ([134.134.136.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
+ id 1qbDbp-0008Pa-N2
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 01:19:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1693372757; x=1724908757;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=LXJuPDXh3gwQJJRH7U0bQkQoX6Ky44NOYuYOW0HmDug=;
+ b=a0XWYtMIt1CN5doBE+E8uAocCpxlmnkcaCxNWfqODpAWnctoyDBN8qyR
+ kLeJx4UjHp+M+te30aobOzlne9y+/Sr1Jof2N6tpK+mG0q3l2LdXy3gu2
+ 4z1FpWwsP91BE2mR0uOrHNzIlFSDH3JYZ130iHanBBCm6agpyfWqIz8BV
+ DofkxsMQ4/syNkHw+OdjrbGeXOSQny5UNkxuBVzEMWx638WOStOH5IHW1
+ iqGxRP056ABek6YqovFd3IP6ruEUrgMxgkVHxT+WXGBuSH4zukptAub0e
+ poSMU61uDAkCOs2O5+SNFtpWU8Qyk4c8SLMaxe32y/NYqGeXFw7gCGcFx g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="365754184"
+X-IronPort-AV: E=Sophos;i="6.02,212,1688454000"; d="scan'208";a="365754184"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2023 22:19:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; d="scan'208";a="882584143"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmsmga001.fm.intel.com with ESMTP; 29 Aug 2023 22:19:17 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 29 Aug 2023 22:19:11 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 29 Aug 2023 22:19:10 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Tue, 29 Aug 2023 22:19:10 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Tue, 29 Aug 2023 22:19:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mlYjk/5ZQPsgswJbiQlk7l4IBH9+X62y0Rv1qXwliHFyGKoGtJ0wVCQCA9QXFYyNRwtg4FYyzvvXcbBw/iCEf0funtA8ooFaB3ZNNIBZNz6qOqnWYKCvWsetT8867Apzx0h2fMcWz4F5pnuJU4xLxZ2SIY8ugdLRnSk78dO103iv8y2vJkgMBkWML5JeRtJXi0FtOVtnowxG+M9JM8oQgBekWxN8Fn30giOrMizDzQ1QyDJkRhP4WrsMlPhOHXutSqrzAHgMKrK541FarzUWvuWD6n6J4lyFR7O8e+wF55NAoyYPREe0MjiCUYrYhIhHgfVlArPE3XYkD0yiZz67ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6xow0aFO1NKcdGvsnbp5fmqJlo7GvPcYytbiEL2eUzA=;
+ b=ampb/s0P1fYjbFRnFEbjea4L+OpDv1lRYdTpx45gYJd01C1Xi82nlB1CXxR7VQkMC2NQVo6UPHTcEKf5jHuWyfH5Ih4w/U+EWdr2rkNAd8fhSJ1CAc03wJeriGVxhXDYKB8lDL9O5HcWTZCRf61D3+ZUxdN+V0IFa5PoUsqYbldV43w1u4BJUSJo8vV/UYupRDlmhJJJxue8a3/jee4XdqWNqSUjqIT4cqwNOxQgUHwuoyWuhTfqyqUfzyfYKsTNR1OojIJmt+u9TgN9gqvRG7coRSHoB4SVtTmzOV7IWfxHA5pZLaQSmEiWhx6dWAND2ClqtH8hSHa0PVJuOg4wZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA2PR11MB5052.namprd11.prod.outlook.com (2603:10b6:806:fa::15)
+ by IA0PR11MB7355.namprd11.prod.outlook.com (2603:10b6:208:433::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Wed, 30 Aug
+ 2023 05:19:07 +0000
+Received: from SA2PR11MB5052.namprd11.prod.outlook.com
+ ([fe80::e0e8:f57f:3ef9:ae6]) by SA2PR11MB5052.namprd11.prod.outlook.com
+ ([fe80::e0e8:f57f:3ef9:ae6%4]) with mapi id 15.20.6745.020; Wed, 30 Aug 2023
+ 05:19:07 +0000
+Message-ID: <c74e7e2e-a986-240c-6300-0d3fbc22dfc4@intel.com>
+Date: Wed, 30 Aug 2023 13:18:49 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 41/58] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+CC: Markus Armbruster <armbru@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>, David
+ Hildenbrand <david@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, Gerd Hoffmann
+ <kraxel@redhat.com>, <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Eduardo
+ Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>, Isaku
+ Yamahata <isaku.yamahata@gmail.com>, <erdemaktas@google.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-42-xiaoyao.li@intel.com>
+ <87wmxn6029.fsf@pond.sub.org> <ZORws2GWRwIGAaJE@redhat.com>
+ <d6fbacab-d7e4-9992-438d-a8cb58e179ae@intel.com>
+ <ZO3HjRp1pk5Qd51j@redhat.com>
+Content-Language: en-US
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+In-Reply-To: <ZO3HjRp1pk5Qd51j@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
- envelope-from=fengli@smartx.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+X-ClientProxiedBy: KU1PR03CA0032.apcprd03.prod.outlook.com
+ (2603:1096:802:19::20) To SA2PR11MB5052.namprd11.prod.outlook.com
+ (2603:10b6:806:fa::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PR11MB5052:EE_|IA0PR11MB7355:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ca2330f-8d64-4b6f-7d5c-08dba918a1b5
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: THErIgTa1gv42LahEzfm7JL6deku1oW308T8mi519FBvR0JuemjSefg1pxaNryCreWlWhEjcYxqzmEj8RhVwGItStKPloq3+LtTplUYz2StaGZGOWejYG806yup3CiCO+nLTz70eXr/YUwYVQtA8N5Jnoq+h026QJXK+6yDQfYLkft/zS/e1EpL2TAi7bsXquCppvaKhnRpGO0K6OxPL04lE9C+9EkHqq1RG6qHSijkz3Py98Yg1WvGJNSyIiJDI44qLVk7ZV8otXIl9g8PtABA2VEtqhzAjGIlf196rkl2FOruMwOHtc1LzJm2tymyLHKmoop4mNQw9d/vxM8N5fn6tJDIFMKV93JvT9RYCH2RX4m6tSiJTeedBJtM80RU4XdCrL6sB5WNmoNTx7p5W4AfdmHt5dfUMcZ10SlR+5/z05Xh+ImLQSgrNroZwvTVZNGkJ9KmqmzDWfw9IGp7uHeIWSBP670MAswmF2GIuCzh0c0mG4MZV+8mk9gNhaP8IH4Y4DtcdAVjm2AuvgWJEs5qynMI+WoWlHCcZxmBX0nTSqtFV0JAn4sUTaHjtVHLhGrYxJftnQrDgRNyaSTS14rDYB3pN/DWN3MInwNDm846QNKrH1bIwlESGTy6eBf9n6bmmuau0h8hMWRmXBlZd2w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA2PR11MB5052.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(136003)(346002)(396003)(376002)(366004)(451199024)(1800799009)(186009)(6512007)(26005)(316002)(38100700002)(6916009)(82960400001)(41300700001)(4326008)(7416002)(2906002)(31696002)(2616005)(86362001)(36756003)(5660300002)(44832011)(8676002)(83380400001)(8936002)(6666004)(6506007)(66476007)(6486002)(54906003)(66556008)(53546011)(66946007)(478600001)(31686004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TW9WS3RVL0ZuYVpDSjVpaTlGMGpXZVBvdndRNjNoMGRBQmRGLys0UWMwbFZ2?=
+ =?utf-8?B?cWpodEVpSGhrVVBiL05jdmZzZ3dFNUhtaDBwVTB3YzZjZklCQkNWWk12Ky9V?=
+ =?utf-8?B?bGR1dG1BQzZEd1VqNnFreHlLeUdITzFiTmxieTZQZGlIK3pHUC9HNmsxOFRE?=
+ =?utf-8?B?R2FnSFA0blpkcnVJYWN3RFQ0WDZXaTduSUZvdkFpbm5YT0RtRXpiNTVmU2la?=
+ =?utf-8?B?UytwdjU5M2trZjFjUE4yM3QvMkFRMXFFZWd6Q0NVWlZBanJFLzZJdzJiSHly?=
+ =?utf-8?B?T1hycU1JcTkyZ0VQd29MNVZhTEFUSDdpcS9qdmFiWWpjSzlFbEEwWkdqUUZM?=
+ =?utf-8?B?MHVyQmR3ZVJ0MU14V3k1NHI3b2x0RDFQeEpGQ0ZkTmxNVWJlZnZ5VVF5Vloy?=
+ =?utf-8?B?bkQyMVA4RTBkN2phUVFQMml4T2ZRMWgrMlVuNWh2UVZaUTgxcEtOc2d2aEJH?=
+ =?utf-8?B?RFNkNkVxVk8wZ1ZDR1NURldpQUpMTU80ejM5czVpWjIrcVgrNkpWWndvKzVC?=
+ =?utf-8?B?Zld1QXNhNnZOSkZDd3hIa2FxMG1IUkJhSm9nYkE2alBxN1JwUHNLVFBnNDJ0?=
+ =?utf-8?B?TlNtK0pVak03RVhNWGFMR05nRVlXemg1YncwQUhuVTZSekxuVDJEZFNoRFhR?=
+ =?utf-8?B?MG52Z05pUVo0c0pvcWlYOWs3c0tMb0dheCtoSERiVG4wTTNLb3NWdEdvV3ZS?=
+ =?utf-8?B?OTUwQlVtVzlnWGZLOXZPWFJtaUh1aTg0ck9IOVpMNWFQM0RCK1ZNV2o4cUFM?=
+ =?utf-8?B?WXUwazB2K2lRZTMwUys4c2Q0dWtLL1ZjQjVkOVJzSnBFWnhqZmt5OWJOODBN?=
+ =?utf-8?B?Y3pKdUg4bjB6TjlUVHNjQ2JNdFNvOEF3UVJUb1RlYUVJSXJaR0JPNFhKeVRP?=
+ =?utf-8?B?RER1Y2lVV29XQmV1YmVJYlV2MWtJWEI2TXNGQTBQY2xXd2wwbkd2dkQrQTZG?=
+ =?utf-8?B?ZEpYN0JzZ2c3MFl5YWxHQ2VrNXluZlVCMGV1dndYY1VPVVhvL016VWRic2xN?=
+ =?utf-8?B?cWlUUER0UCtiVDRrVjR1dkNyM3NRRHJPR3RQcFArN0xwNkZQNFo2bzNjMmdF?=
+ =?utf-8?B?V1ZrNXc0d0MvYTBqTkY3R0dvMDk1SFFtQ3RPbThrVGlVazdUUmh0YnVUTWZM?=
+ =?utf-8?B?MHo2bnQ4ZStFZFFFdFFDMitmV0pBZGx0Mkp0WDc4VDZUbjFaWU9CT2RUN3J3?=
+ =?utf-8?B?dVZ0NTBQeEpKeFM0NHlCeC9sRFd1TmtGS3R1TlI3dUQyNlBIV2Frb3AweE5s?=
+ =?utf-8?B?dUpMdFo1RkY1L3A5bTdlYUZPTTFjSVlEMnRoT2NXZkZURGQ3T3JVeTkvSUxr?=
+ =?utf-8?B?K0xoTU4xUnpweUlHNFZDSFBtYUlFS3hERzNHV3p2bTZ4SDJ5SG9JVkpUbHJl?=
+ =?utf-8?B?Z2V1dmxRb1prdmlOU01wTzVzOHN2SzdRZFZENkdmVEtIMWNhaDVoYlNKL2NZ?=
+ =?utf-8?B?MkY1UWdqUEgwSHJmRUlpM3pXQ0tDRDdkbDJLUFZzQ0x6T2tvN2wwL1RybTZG?=
+ =?utf-8?B?RkwyV1NwUzkrc2sxM3N4Rm5ISHV4VVZOM0JmRzE3UHpSTEdBYXg4Y0FqSysy?=
+ =?utf-8?B?N29qV0g4MXZjS3JmbTVkeHdmMkcxMmd5MHN0cHFqT1pjRlI1UC9OTHRMbVVs?=
+ =?utf-8?B?K0hRcnVWNUdBVVQ4ZEpldzc1SnNGYWhZcDRET0theTByNW4wN3RKMW1tZFVO?=
+ =?utf-8?B?K0FwL0VNVENjL2xoWFBDdUlEdkwzQjEyNDArSXZvMjhteHJkTmxqcFMydVdv?=
+ =?utf-8?B?SlNtOEZ6azBvaW1Xdlk3emVVcXh1ZllxUnVSdVVlTmxoaHlsSVVzd2VKeGsy?=
+ =?utf-8?B?eGtUQW13emtMZ3A1VnF5Nk1hUmVLRlNvUEFVdGN1bW9yeHgxVno3aGFIWHo2?=
+ =?utf-8?B?OHVDMTdMYkFEaEtMN1BhSmpwT0dyMEZQUkR5dStMWElPQW5YS3FaVXVGVktu?=
+ =?utf-8?B?ZU9FK05KMEVPNVB2NGl4NVpENHFUUE9tQUFja2Y1WnhLUGFuMzExc1dpbytP?=
+ =?utf-8?B?cDJqeDdlWHREL0g1QnlmTVhTdWZ1RGM5Y3A0SXZNSlpsMllQRWpEeWZZNy9S?=
+ =?utf-8?B?NUNPQlFOMjExVmRvUDBtYnk2NmpuelE0RmpWeFhCd24rSDF3WnhseFY2bnB0?=
+ =?utf-8?Q?v5WUDNcE64eeR3OBOgJyJVSlW?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ca2330f-8d64-4b6f-7d5c-08dba918a1b5
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR11MB5052.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2023 05:19:06.8119 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lOjqRLDfrluGL2Kp8OC42wlS9zsnOj0nEFXtlL20rahuirFb45HbeNidmjWhmTYnEH+PFWkkcf7XZRsIJwxoCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7355
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.20;
+ envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,194 +191,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a Error parameter to report the real error, like vhost-user-blk.
 
-Signed-off-by: Li Feng <fengli@smartx.com>
----
- hw/scsi/vhost-scsi-common.c           | 16 +++++++++-------
- hw/scsi/vhost-scsi.c                  |  5 +++--
- hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
- include/hw/virtio/vhost-scsi-common.h |  2 +-
- 4 files changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-index a61cd0e907..4c8637045d 100644
---- a/hw/scsi/vhost-scsi-common.c
-+++ b/hw/scsi/vhost-scsi-common.c
-@@ -16,6 +16,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "hw/virtio/vhost.h"
-@@ -25,7 +26,7 @@
- #include "hw/virtio/virtio-access.h"
- #include "hw/fw-path-provider.h"
- 
--int vhost_scsi_common_start(VHostSCSICommon *vsc)
-+int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
- {
-     int ret, i;
-     VirtIODevice *vdev = VIRTIO_DEVICE(vsc);
-@@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
-     VirtIOSCSICommon *vs = (VirtIOSCSICommon *)vsc;
- 
-     if (!k->set_guest_notifiers) {
--        error_report("binding does not support guest notifiers");
-+        error_setg(errp, "binding does not support guest notifiers");
-         return -ENOSYS;
-     }
- 
-     ret = vhost_dev_enable_notifiers(&vsc->dev, vdev);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "Error enabling host notifiers");
-         return ret;
-     }
- 
-     ret = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
-     if (ret < 0) {
--        error_report("Error binding guest notifier");
-+        error_setg_errno(errp, -ret, "Error binding guest notifier");
-         goto err_host_notifiers;
-     }
- 
-@@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
- 
-     ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
-     if (ret < 0) {
--        error_report("Error setting inflight format: %d", -ret);
-+        error_setg_errno(errp, -ret, "Error setting inflight format");
-         goto err_guest_notifiers;
-     }
- 
-@@ -64,21 +66,21 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
-                                         vs->conf.virtqueue_size,
-                                         vsc->inflight);
-             if (ret < 0) {
--                error_report("Error getting inflight: %d", -ret);
-+                error_setg_errno(errp, -ret, "Error getting inflight");
-                 goto err_guest_notifiers;
-             }
-         }
- 
-         ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
-         if (ret < 0) {
--            error_report("Error setting inflight: %d", -ret);
-+            error_setg_errno(errp, -ret, "Error setting inflight");
-             goto err_guest_notifiers;
-         }
-     }
- 
-     ret = vhost_dev_start(&vsc->dev, vdev, true);
-     if (ret < 0) {
--        error_report("Error start vhost dev");
-+        error_setg_errno(errp, -ret, "Error starting vhost dev");
-         goto err_guest_notifiers;
-     }
- 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 443f67daa4..01a3ab4277 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -75,6 +75,7 @@ static int vhost_scsi_start(VHostSCSI *s)
-     int ret, abi_version;
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-     const VhostOps *vhost_ops = vsc->dev.vhost_ops;
-+    Error *local_err = NULL;
- 
-     ret = vhost_ops->vhost_scsi_get_abi_version(&vsc->dev, &abi_version);
-     if (ret < 0) {
-@@ -88,14 +89,14 @@ static int vhost_scsi_start(VHostSCSI *s)
-         return -ENOSYS;
-     }
- 
--    ret = vhost_scsi_common_start(vsc);
-+    ret = vhost_scsi_common_start(vsc, &local_err);
-     if (ret < 0) {
-         return ret;
-     }
- 
-     ret = vhost_scsi_set_endpoint(s);
-     if (ret < 0) {
--        error_report("Error setting vhost-scsi endpoint");
-+        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
-         vhost_scsi_common_stop(vsc);
-     }
- 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index e931df9f5b..62fc98bb1c 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -43,12 +43,12 @@ enum VhostUserProtocolFeature {
-     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
- };
- 
--static int vhost_user_scsi_start(VHostUserSCSI *s)
-+static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
- {
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-     int ret;
- 
--    ret = vhost_scsi_common_start(vsc);
-+    ret = vhost_scsi_common_start(vsc, errp);
-     s->started_vu = (ret < 0 ? false : true);
- 
-     return ret;
-@@ -73,6 +73,7 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-     bool should_start = virtio_device_should_start(vdev, status);
-+    Error *local_err = NULL;
-     int ret;
- 
-     if (!s->connected) {
-@@ -84,9 +85,10 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     }
- 
-     if (should_start) {
--        ret = vhost_user_scsi_start(s);
-+        ret = vhost_user_scsi_start(s, &local_err);
-         if (ret < 0) {
--            error_report("unable to start vhost-user-scsi: %s", strerror(-ret));
-+            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
-+                              strerror(-ret));
-             qemu_chr_fe_disconnect(&vs->conf.chardev);
-         }
-     } else {
-@@ -139,7 +141,7 @@ static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-      * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
-      * vhost here instead of waiting for .set_status().
-      */
--    ret = vhost_user_scsi_start(s);
-+    ret = vhost_user_scsi_start(s, &local_err);
-     if (ret < 0) {
-         error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
-         qemu_chr_fe_disconnect(&vs->conf.chardev);
-@@ -184,7 +186,7 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
- 
-     /* restore vhost state */
-     if (virtio_device_started(vdev, vdev->status)) {
--        ret = vhost_user_scsi_start(s);
-+        ret = vhost_user_scsi_start(s, errp);
-         if (ret < 0) {
-             return ret;
-         }
-diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
-index 18f115527c..c5d2c09455 100644
---- a/include/hw/virtio/vhost-scsi-common.h
-+++ b/include/hw/virtio/vhost-scsi-common.h
-@@ -39,7 +39,7 @@ struct VHostSCSICommon {
-     struct vhost_inflight *inflight;
- };
- 
--int vhost_scsi_common_start(VHostSCSICommon *vsc);
-+int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
- void vhost_scsi_common_stop(VHostSCSICommon *vsc);
- char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
-                                         DeviceState *dev);
--- 
-2.41.0
+On 8/29/2023 6:25 PM, Daniel P. Berrangé wrote:
+> On Tue, Aug 29, 2023 at 01:31:37PM +0800, Chenyi Qiang wrote:
+>>
+>>
+>> On 8/22/2023 4:24 PM, Daniel P. Berrangé wrote:
+>>> On Tue, Aug 22, 2023 at 08:52:30AM +0200, Markus Armbruster wrote:
+>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>
+>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>
+>>>>> For GetQuote, delegate a request to Quote Generation Service.  Add property
+>>>>> of address of quote generation server and On request, connect to the
+>>>>> server, read request buffer from shared guest memory, send the request
+>>>>> buffer to the server and store the response into shared guest memory and
+>>>>> notify TD guest by interrupt.
+>>>>>
+>>>>> "quote-generation-service" is a property to specify Quote Generation
+>>>>> Service(QGS) in qemu socket address format.  The examples of the supported
+>>>>> format are "vsock:2:1234", "unix:/run/qgs", "localhost:1234".
+>>>>>
+>>>>> command line example:
+>>>>>   qemu-system-x86_64 \
+>>>>>     -object 'tdx-guest,id=tdx0,quote-generation-service=localhost:1234' \
+>>>>>     -machine confidential-guest-support=tdx0
+>>>>>
+>>>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>>> ---
+>>>>>  qapi/qom.json         |   5 +-
+>>>>>  target/i386/kvm/tdx.c | 380 ++++++++++++++++++++++++++++++++++++++++++
+>>>>>  target/i386/kvm/tdx.h |   7 +
+>>>>>  3 files changed, 391 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>>> index 87c1d440f331..37139949d761 100644
+>>>>> --- a/qapi/qom.json
+>>>>> +++ b/qapi/qom.json
+>>>>> @@ -879,13 +879,16 @@
+>>>>>  #
+>>>>>  # @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
+>>>>>  #
+>>>>> +# @quote-generation-service: socket address for Quote Generation Service(QGS)
+>>>>> +#
+>>>>>  # Since: 8.2
+>>>>>  ##
+>>>>>  { 'struct': 'TdxGuestProperties',
+>>>>>    'data': { '*sept-ve-disable': 'bool',
+>>>>>              '*mrconfigid': 'str',
+>>>>>              '*mrowner': 'str',
+>>>>> -            '*mrownerconfig': 'str' } }
+>>>>> +            '*mrownerconfig': 'str',
+>>>>> +            '*quote-generation-service': 'str' } }
+>>>>
+>>>> Why not type SocketAddress?
+>>>
+>>> Yes, the code uses SocketAddress internally when it eventually
+>>> calls qio_channel_socket_connect_async(), so we should directly
+>>> use SocketAddress in the QAPI from the start.
+>>
+>> Any benefit to directly use SocketAddress?
+> 
+> We don't want whatever code consumes the configuration to
+> do a second level of parsing to convert the 'str' value
+> into the 'SocketAddress' object it actually needs.
+> 
+> QEMU has a long history of having a second round of ad-hoc
+> parsing of configuration and we've found it to be a serious
+> maintenence burden. Thus we strive to have everything
+> represented in QAPI using the desired final type, and avoid
+> the second round of parsing.
 
+Thanks for your explanation.
+
+> 
+>> "quote-generation-service" here is optional, it seems not trivial to add
+>> and parse the SocketAddress type in QEMU command. After I change 'str'
+>> to 'SocketAddress' and specify the command like "-object
+>> tdx-guest,type=vsock,cid=2,port=1234...", it will report "invalid
+>> parameter cid".
+> 
+> The -object parameter supports JSON syntax for this reason
+> 
+>    -object '{"qom-type":"tdx-guest","quote-generation-service":{"type": "vsock", "cid":"2","port":"1234"}}'
+> 
+> libvirt will always use the JSON syntax for -object with a new enough
+> QEMU.
+
+The JSON syntax works for me. Then, we need to add some doc about using
+JSON syntax when quote-generation-service is required.
+
+> 
+> With regards,
+> Daniel
 
