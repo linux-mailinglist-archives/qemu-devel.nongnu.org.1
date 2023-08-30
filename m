@@ -2,60 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690E878D4C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8936078D4DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 11:44:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbHj1-0005hj-3h; Wed, 30 Aug 2023 05:42:59 -0400
+	id 1qbHj3-00066S-Q6; Wed, 30 Aug 2023 05:43:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHir-0004Zy-0u
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qbHit-0004jZ-H4
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qbHio-0001vB-Ul
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:48 -0400
+ id 1qbHir-0001x3-DW
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 05:42:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693388566;
+ s=mimecast20190719; t=1693388568;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4SZ/OasRCxgbsCQYI36rdtboQkh+0BPjMMpQl7MHELU=;
- b=AHOWfcGGKbxW3HJIN0DR7jkpDz9qyUqPtCY8p9VGuXzX7KNnF89OxUa8km9EmUR8oYY60y
- 6HnN/8zPsUJrBUN1k7V5c9+fb4PkiK+jFjeXyPEcUm5gYB8cMGeQs6vp7HAexL5Py6K90F
- Y7w0kukDCzM3VJVYzk/lxVeH8xEuDP8=
+ bh=AMMRaerQlihVOw3Lu4fXWsKdhjcg7w4aRDw0yDXhlU0=;
+ b=LSXoUg8XDYQaiowsAvRvGRG6zHMKhjKOAc98y58cFpl+klGSOO9Uzip8eM3qvJ8Dg/zIhv
+ hGWGep3uVoPo6xAu7+OZUbwk5jxCrdQamA7tVaG3RUyUmkINamAIp6czg+KMhJD/JCRpfb
+ f92lEMRSxklMbS7KcAnSspgKqSWp4kQ=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-367-CxG68KVvPMSLkFog5MXbjA-1; Wed, 30 Aug 2023 05:42:44 -0400
-X-MC-Unique: CxG68KVvPMSLkFog5MXbjA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-180-CxyZdY85OGi7LkY4aKLjTQ-1; Wed, 30 Aug 2023 05:42:45 -0400
+X-MC-Unique: CxyZdY85OGi7LkY4aKLjTQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BBBAE2999B3B
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 09:42:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58E4F2999B2E;
+ Wed, 30 Aug 2023 09:42:45 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1F1F440C2063;
- Wed, 30 Aug 2023 09:42:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7A3FFC15BAE;
+ Wed, 30 Aug 2023 09:42:44 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 59/67] ui/gl: opengl doesn't require PIXMAN
-Date: Wed, 30 Aug 2023 13:38:33 +0400
-Message-ID: <20230830093843.3531473-60-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 60/67] ui/vnc: VNC requires PIXMAN
+Date: Wed, 30 Aug 2023 13:38:34 +0400
+Message-ID: <20230830093843.3531473-61-marcandre.lureau@redhat.com>
 In-Reply-To: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,29 +86,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The QEMU fallback covers the requirements. We still need the flags of
-header inclusion with CONFIG_PIXMAN.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
+ meson.build    | 5 ++++-
  ui/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/meson.build b/meson.build
+index 3bd7046099..ceafbc5b73 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1549,7 +1549,10 @@ endif
+ vnc = not_found
+ jpeg = not_found
+ sasl = not_found
+-if get_option('vnc').allowed() and have_system
++if get_option('vnc') \
++  .disable_auto_if(not pixman.found()) \
++  .require(pixman.found()) \
++  .allowed() and have_system
+   vnc = declare_dependency() # dummy dependency
+   jpeg = dependency('libjpeg', required: get_option('vnc_jpeg'),
+                     method: 'pkg-config')
 diff --git a/ui/meson.build b/ui/meson.build
-index 3085e10a72..7c99613950 100644
+index 7c99613950..b3525ef064 100644
 --- a/ui/meson.build
 +++ b/ui/meson.build
-@@ -60,8 +60,8 @@ endif
- system_ss.add(opengl)
- if opengl.found()
-   opengl_ss = ss.source_set()
--  opengl_ss.add(gbm)
--  opengl_ss.add(when: [opengl, pixman],
-+  opengl_ss.add(gbm, pixman)
-+  opengl_ss.add(when: [opengl],
-                if_true: files('shader.c', 'console-gl.c', 'egl-helpers.c', 'egl-context.c'))
-   ui_modules += {'opengl' : opengl_ss}
- endif
+@@ -46,8 +46,8 @@ vnc_ss.add(files(
+ ))
+ vnc_ss.add(zlib, jpeg, gnutls)
+ vnc_ss.add(when: sasl, if_true: files('vnc-auth-sasl.c'))
+-system_ss.add_all(when: vnc, if_true: vnc_ss)
+-system_ss.add(when: vnc, if_false: files('vnc-stubs.c'))
++system_ss.add_all(when: [vnc, pixman], if_true: vnc_ss)
++system_ss.add(when: [vnc, pixman], if_false: files('vnc-stubs.c'))
+ 
+ ui_modules = {}
+ 
 -- 
 2.41.0
 
