@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B4C78D1FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 04:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5190178D1F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 04:17:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbAle-0004gW-Ce; Tue, 29 Aug 2023 22:17:14 -0400
+	id 1qbAjw-0003lR-W1; Tue, 29 Aug 2023 22:15:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qbAlV-0004fG-O2
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:17:06 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qbAlR-0008KB-L0
- for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:17:05 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1ccb6a69b13so3599777fac.2
- for <qemu-devel@nongnu.org>; Tue, 29 Aug 2023 19:14:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1693361696; x=1693966496;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Kl7DlHQzZDfJ0La3iYBSwHB0/Uq5YxWxP8Vy1m2qofc=;
- b=CRa/nRdKxWghfvHXTU+zurUQvsLUIV+i14UrgOdjw9Tf5DvNGA30XJ+XS8LitejvIZ
- dOznYPxOocfl+AZ1c2xzJldQgFewTrcMudtqJNse+vQcaB/QOAQK7D9Q8/zdysT3Ug9e
- WbJVsZD57We4+9l+6OjkRr+VjmJEJGbAKKVt57ZAqGBiDh7ogLxghwynAWHaRuov1/mJ
- fQeVhG/1EVdY7Si47mAQd+fvVleH+s0aKaDrTwPgqqdL4NfcdgcXJQ/RHUj1nzfphejf
- wx4V3UN2I9DbUVpshkhIsVSoZLcyHqxMD6+IOlWVnjoZDDr9Qg7LfvwthPzsXpIJs7Jo
- A5qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693361696; x=1693966496;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Kl7DlHQzZDfJ0La3iYBSwHB0/Uq5YxWxP8Vy1m2qofc=;
- b=QNqW0YPUrFKZ4Ou0ctpGPVdoPeUKgTp+lmSBTYr5nB8I277nXshVp9gKFJvq+DNXJj
- gx71A3d89CQSOja6zlqYa0+xGS030mjS299mvnNLfLnKLoXLJhO7iSmPsgl0iE1DfLjs
- NXo6mvRHUAHjyXpOz1hpEjXUghYmJcc6dCFAan0G6+Tc+q9TxHMnaAMWlP1xPE2NdVAG
- MgJhr10dmmA/H0AQuoeM+68ncN/c+7oHas8p9fuBRPB8n7i1wYL8rcYKj0xGYsVed5Sx
- MboVJWOjtdc0mYcVPvFzQgxuOCmhSHJznBIsVqgDbj5S9asqdWeBKQXQjX8grRRY2W9T
- qE7Q==
-X-Gm-Message-State: AOJu0YxIv2BWdXsvaONi5uWjuPMpkZr6bdlGA8AiNjG7cB38JHZhyLC9
- qSTXgkaCriKHv8bslERpCyLTpKKfYDbDLVtGdvkK5Q==
-X-Google-Smtp-Source: AGHT+IGarrPFqQN12agVoycwHsKvO6EBshd0zU7MgfxlhmkmwOefI80fOvlVHwroQY49IAIJGyDCnpL9J/dWf/CrkLc=
-X-Received: by 2002:a05:6870:d7a8:b0:1b0:5b04:ebec with SMTP id
- bd40-20020a056870d7a800b001b05b04ebecmr948964oab.59.1693361696226; Tue, 29
- Aug 2023 19:14:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qbAju-0003lI-Fz
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:15:26 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qbAjq-00006m-C0
+ for qemu-devel@nongnu.org; Tue, 29 Aug 2023 22:15:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1693361722; x=1724897722;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=OyDffJZtx/8oj0rHDa++JBuKCV1OAXuJkt8RbaQcbtQ=;
+ b=nCi3gSASWhA4GWgJZFvNM9JZq1Gip4LGCPzbk/zHuxD5pRwwFMDLtmVi
+ lG9GTvu+RArLbllmGHHt4VcprKSUJQ2rrDI+N/2OFqKhzSVJLpwmGvMOl
+ NmuGHHYqLZgH7nox0vsFlcEt7KH585HHxsODiOBalfgw9KWb64LSa55C8
+ Raj1GgHAzm4tmb3NJr6lmB10ctmdIGO412ytt1Zbg7QBxFgsQHiczKCZj
+ 31LcoQ8Sbwr8xTwBpYR8ug8GXiKry4Bs1cLGb9K/1Nc/Bc3D0J8HBNuAU
+ 4o/pN7flnKSW6aMB3CvEbW/G7FoocjlSTfxNPlmXnqiCozxRzQla03mDK g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="355038866"
+X-IronPort-AV: E=Sophos;i="6.02,212,1688454000"; d="scan'208";a="355038866"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2023 19:15:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="715732436"
+X-IronPort-AV: E=Sophos;i="6.02,212,1688454000"; d="scan'208";a="715732436"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
+ ([10.93.16.81])
+ by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2023 19:15:11 -0700
+Message-ID: <a58cdd12-a83a-9e06-1df4-64267f6cbd9f@intel.com>
+Date: Wed, 30 Aug 2023 10:15:07 +0800
 MIME-Version: 1.0
-References: <cover.1693228686.git.yong.huang@smartx.com>
- <CAJSP0QXLticPp0DOS=7bYQf0R0MiYpRXYu_dCRE9JVUbZd2nsw@mail.gmail.com>
- <CAK9dgmai9Q0cSYudyM8PBb1AZyxcv6G6BTrRAeJL2EaaR8CNUg@mail.gmail.com>
- <CAJSP0QXa1mn-W9pAhRmFYU0V3Y2C_K4Ca=KXsmaZ-bheiVB_+Q@mail.gmail.com>
-In-Reply-To: <CAJSP0QXa1mn-W9pAhRmFYU0V3Y2C_K4Ca=KXsmaZ-bheiVB_+Q@mail.gmail.com>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Wed, 30 Aug 2023 10:14:40 +0800
-Message-ID: <CAK9dgmaj02tAoztpycHeVh8TiA-3aqm8eh+sK5B3Gbj78sCZpw@mail.gmail.com>
-Subject: Re: [PULL 0/3] Dirty page rate and dirty page limit 20230828 patches
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Andrei Gudkov <gudkov.andrei@huawei.com>, 
- "alloc . young" <alloc.young@outlook.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000006155e606041a7e02"
-Received-SPF: none client-ip=2001:4860:4864:20::2b;
- envelope-from=yong.huang@smartx.com; helo=mail-oa1-x2b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 47/58] i386/tdx: Wire REPORT_FATAL_ERROR with
+ GuestPanic facility
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-48-xiaoyao.li@intel.com>
+ <ZOM1Qk4wjNczWEf2@redhat.com>
+ <00b88ec1-675c-9384-3a93-16b15e666126@intel.com>
+ <ZO3IOax8bF0NpgnU@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZO3IOax8bF0NpgnU@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.136; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,155 +99,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000006155e606041a7e02
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 8/29/2023 6:28 PM, Daniel P. Berrangé wrote:
+> On Mon, Aug 28, 2023 at 09:14:41PM +0800, Xiaoyao Li wrote:
+>> On 8/21/2023 5:58 PM, Daniel P. Berrangé wrote:
+>>> On Fri, Aug 18, 2023 at 05:50:30AM -0400, Xiaoyao Li wrote:
+>>>> Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>> ---
+>>>>    qapi/run-state.json   | 17 +++++++++++++--
+>>>>    softmmu/runstate.c    | 49 +++++++++++++++++++++++++++++++++++++++++++
+>>>>    target/i386/kvm/tdx.c | 24 ++++++++++++++++++++-
+>>>>    3 files changed, 87 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/qapi/run-state.json b/qapi/run-state.json
+>>>> index f216ba54ec4c..506bbe31541f 100644
+>>>> --- a/qapi/run-state.json
+>>>> +++ b/qapi/run-state.json
+>>>> @@ -499,7 +499,7 @@
+>>>>    # Since: 2.9
+>>>>    ##
+>>>>    { 'enum': 'GuestPanicInformationType',
+>>>> -  'data': [ 'hyper-v', 's390' ] }
+>>>> +  'data': [ 'hyper-v', 's390', 'tdx' ] }
+> 
+>>
+>>>> +#
+>>>> +# Since: 8.2
+>>>> +##
+>>>> +{'struct': 'GuestPanicInformationTdx',
+>>>> + 'data': {'error-code': 'uint64',
+>>>> +          'gpa': 'uint64',
+>>>> +          'message': 'str'}}
+>>>> +
+>>>>    ##
+>>>>    # @MEMORY_FAILURE:
+>>>>    #
+>>>> diff --git a/softmmu/runstate.c b/softmmu/runstate.c
+>>>> index f3bd86281813..cab11484ed7e 100644
+>>>> --- a/softmmu/runstate.c
+>>>> +++ b/softmmu/runstate.c
+>>>> @@ -518,7 +518,56 @@ void qemu_system_guest_panicked(GuestPanicInformation *info)
+>>>>                              S390CrashReason_str(info->u.s390.reason),
+>>>>                              info->u.s390.psw_mask,
+>>>>                              info->u.s390.psw_addr);
+>>>> +        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
+>>>> +            char *buf = NULL;
+>>>> +            bool printable = false;
+>>>> +
+>>>> +            /*
+>>>> +             * Although message is defined as a json string, we shouldn't
+>>>> +             * unconditionally treat it as is because the guest generated it and
+>>>> +             * it's not necessarily trustable.
+>>>> +             */
+>>>> +            if (info->u.tdx.message) {
+>>>> +                /* The caller guarantees the NUL-terminated string. */
+>>>> +                int len = strlen(info->u.tdx.message);
+>>>> +                int i;
+>>>> +
+>>>> +                printable = len > 0;
+>>>> +                for (i = 0; i < len; i++) {
+>>>> +                    if (!(0x20 <= info->u.tdx.message[i] &&
+>>>> +                          info->u.tdx.message[i] <= 0x7e)) {
+>>>> +                        printable = false;
+>>>> +                        break;
+>>>> +                    }
+>>>> +                }
+>>>> +
+>>>> +                /* 3 = length of "%02x " */
+>>>> +                buf = g_malloc(len * 3);
+>>>> +                for (i = 0; i < len; i++) {
+>>>> +                    if (info->u.tdx.message[i] == '\0') {
+>>>> +                        break;
+>>>> +                    } else {
+>>>> +                        sprintf(buf + 3 * i, "%02x ", info->u.tdx.message[i]);
+>>>> +                    }
+>>>> +                }
+>>>> +                if (i > 0)
+>>>> +                    /* replace the last ' '(space) to NUL */
+>>>> +                    buf[i * 3 - 1] = '\0';
+>>>> +                else
+>>>> +                    buf[0] = '\0';
+>>>
+>>> You're building this escaped buffer but...
+>>>
+>>>> +            }
+>>>> +
+>>>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>>>> +                          //" TDX report fatal error:\"%s\" %s",
+>>>> +                          " TDX report fatal error:\"%s\""
+>>>> +                          "error: 0x%016" PRIx64 " gpa page: 0x%016" PRIx64 "\n",
+>>>> +                          printable ? info->u.tdx.message : "",
+>>>> +                          //buf ? buf : "",
+>>>
+>>> ...then not actually using it
+>>>
+>>> Either delete the 'buf' code, or use it.
+>>
+>> Sorry for posting some internal testing version.
+>> Does below look good to you?
+>>
+>> @@ -518,7 +518,56 @@ void qemu_system_guest_panicked(GuestPanicInformation
+>> *info)
+>>                             S390CrashReason_str(info->u.s390.reason),
+>>                             info->u.s390.psw_mask,
+>>                             info->u.s390.psw_addr);
+>> +        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
+>> +            bool printable = false;
+>> +            char *buf = NULL;
+>> +            int len = 0, i;
+>> +
+>> +            /*
+>> +             * Although message is defined as a json string, we shouldn't
+>> +             * unconditionally treat it as is because the guest generated
+>> it and
+>> +             * it's not necessarily trustable.
+>> +             */
+>> +            if (info->u.tdx.message) {
+>> +                /* The caller guarantees the NUL-terminated string. */
+>> +                len = strlen(info->u.tdx.message);
+>> +
+>> +                printable = len > 0;
+>> +                for (i = 0; i < len; i++) {
+>> +                    if (!(0x20 <= info->u.tdx.message[i] &&
+>> +                          info->u.tdx.message[i] <= 0x7e)) {
+>> +                        printable = false;
+>> +                        break;
+>> +                    }
+>> +                }
+>> +            }
+>> +
+>> +            if (!printable && len) {
+>> +                /* 3 = length of "%02x " */
+>> +                buf = g_malloc(len * 3);
+>> +                for (i = 0; i < len; i++) {
+>> +                    if (info->u.tdx.message[i] == '\0') {
+>> +                        break;
+>> +                    } else {
+>> +                        sprintf(buf + 3 * i, "%02x ",
+>> info->u.tdx.message[i]);
+>> +                    }
+>> +                }
+>> +                if (i > 0)
+>> +                    /* replace the last ' '(space) to NUL */
+>> +                    buf[i * 3 - 1] = '\0';
+>> +                else
+>> +                    buf[0] = '\0';
+>> +            }
+>> +
+>> +            qemu_log_mask(LOG_GUEST_ERROR,
+>> +                          " TDX guest reports fatal error:\"%s\""
+>> +                          " error code: 0x%016" PRIx64 " gpa page: 0x%016"
+>> PRIx64 "\n",
+>> +                          printable ? info->u.tdx.message : buf,
+>> +                          info->u.tdx.error_code,
+>> +                          info->u.tdx.gpa);
+>> +            g_free(buf);
+>>           }
+> 
+> 
+> Ok that makes more sense now. BTW, probably a nice idea to create a
+> separate helper method that santizes the guest provided JSON into
+> the safe 'buf' string.
+> 
 
-On Wed, Aug 30, 2023 at 1:31=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail.com=
-> wrote:
+OK. Thanks for the suggestion.
 
-> On Tue, 29 Aug 2023 at 12:30, Yong Huang <yong.huang@smartx.com> wrote:
-> > On Tue, Aug 29, 2023 at 4:01=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail=
-.com>
-> wrote:
-> >>
-> >> On Mon, 28 Aug 2023 at 10:36, Hyman Huang <yong.huang@smartx.com>
-> wrote:
-> >> >
-> >> > From: Hyman <yong.huang@smartx.com>
-> >> >
-> >> > The following changes since commit
-> 50e7a40af372ee5931c99ef7390f5d3d6fbf6ec4:
-> >> >
-> >> >   Merge tag 'pull-target-arm-20230824' of
-> https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-08-24
-> 10:08:33 -0400)
-> >> >
-> >> > are available in the git repository at:
-> >> >
-> >> >   https://github.com/newfriday/qemu.git
-> tags/dirtylimit-dirtyrate-fixes-pull-request
-> >>
-> >> Hi,
-> >> This is not a signed tag. Please use "git tag -s" so the tag is signed
-> >> with your GPG key.
-> >>
-> >> I also noticed that this pull request email thread only has a cover
-> >> letter. Please also send the individual patches along with the pull
-> >> request email. This makes it easier for people to reply if they have
-> >> comments about a patch.
-> >>
-> >> After pushing a signed tag, please send the pull request again with
-> >> "PULL v2" in the subject line. Thanks!
-> >
-> >
-> > Sorry for not noticing this earlier and I have sent a pull request with
-> "PULL"
-> > in the subject line instead of "PULL v3" that you mentioned above, plea=
-se
-> > ping me if PULL request resending is required indeed.
->
-> I have applied the pull request. To make it easier to verify future
-> pull requests, please publish your public key to a keyserver:
->
->   $ gpg --send-keys DFF223D6B3FECB9C
->
+Will do it in next version.
 
-Ok, get it. Thanks.
+> With regards,
+> Daniel
 
-Yong
-
->
-> Thanks!
->
-> Stefan
->
-
-
---=20
-Best regards
-
---0000000000006155e606041a7e02
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
-ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 30, 20=
-23 at 1:31=E2=80=AFAM Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@gmail.=
-com">stefanha@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-=
-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">On Tue, 29=
- Aug 2023 at 12:30, Yong Huang &lt;<a href=3D"mailto:yong.huang@smartx.com"=
- target=3D"_blank">yong.huang@smartx.com</a>&gt; wrote:<br>
-&gt; On Tue, Aug 29, 2023 at 4:01=E2=80=AFAM Stefan Hajnoczi &lt;<a href=3D=
-"mailto:stefanha@gmail.com" target=3D"_blank">stefanha@gmail.com</a>&gt; wr=
-ote:<br>
-&gt;&gt;<br>
-&gt;&gt; On Mon, 28 Aug 2023 at 10:36, Hyman Huang &lt;<a href=3D"mailto:yo=
-ng.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt; wrote:=
-<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; From: Hyman &lt;<a href=3D"mailto:yong.huang@smartx.com" targ=
-et=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; The following changes since commit 50e7a40af372ee5931c99ef739=
-0f5d3d6fbf6ec4:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0Merge tag &#39;pull-target-arm-20230824&#39; of <=
-a href=3D"https://git.linaro.org/people/pmaydell/qemu-arm" rel=3D"noreferre=
-r" target=3D"_blank">https://git.linaro.org/people/pmaydell/qemu-arm</a> in=
-to staging (2023-08-24 10:08:33 -0400)<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; are available in the git repository at:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt;=C2=A0 =C2=A0<a href=3D"https://github.com/newfriday/qemu.git"=
- rel=3D"noreferrer" target=3D"_blank">https://github.com/newfriday/qemu.git=
-</a> tags/dirtylimit-dirtyrate-fixes-pull-request<br>
-&gt;&gt;<br>
-&gt;&gt; Hi,<br>
-&gt;&gt; This is not a signed tag. Please use &quot;git tag -s&quot; so the=
- tag is signed<br>
-&gt;&gt; with your GPG key.<br>
-&gt;&gt;<br>
-&gt;&gt; I also noticed that this pull request email thread only has a cove=
-r<br>
-&gt;&gt; letter. Please also send the individual patches along with the pul=
-l<br>
-&gt;&gt; request email. This makes it easier for people to reply if they ha=
-ve<br>
-&gt;&gt; comments about a patch.<br>
-&gt;&gt;<br>
-&gt;&gt; After pushing a signed tag, please send the pull request again wit=
-h<br>
-&gt;&gt; &quot;PULL v2&quot; in the subject line. Thanks!<br>
-&gt;<br>
-&gt;<br>
-&gt; Sorry for not noticing this earlier and I have sent a pull request wit=
-h &quot;PULL&quot;<br>
-&gt; in the subject line instead of &quot;PULL v3&quot; that you mentioned =
-above, please<br>
-&gt; ping me if PULL request resending is required indeed.<br>
-<br>
-I have applied the pull request. To make it easier to verify future<br>
-pull requests, please publish your public key to a keyserver:<br>
-<br>
-=C2=A0 $ gpg --send-keys DFF223D6B3FECB9C<br></blockquote><div><br></div><d=
-iv class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,s=
-ans-serif">Ok, get it. Thanks.</div><div class=3D"gmail_default" style=3D"f=
-ont-family:&quot;comic sans ms&quot;,sans-serif"><br></div><div class=3D"gm=
-ail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Yon=
-g</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
-border-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204=
-,204);padding-left:1ex">
-<br>
-Thanks!<br>
-<br>
-Stefan<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
-</div></div></div>
-
---0000000000006155e606041a7e02--
 
