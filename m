@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5BA78D72F
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD9E78D743
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Aug 2023 17:49:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbNKS-0003b0-6f; Wed, 30 Aug 2023 11:42:00 -0400
+	id 1qbNQs-0001Rn-BB; Wed, 30 Aug 2023 11:48:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbNKQ-0003ah-4W
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:41:58 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbNQp-0001RX-Fs
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:48:35 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbNKN-0003ba-H7
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:41:57 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31ae6bf91a9so4797506f8f.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:41:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbNQm-0005IN-VO
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 11:48:35 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-5007f3d3235so9158964e87.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 08:48:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693410113; x=1694014913; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693410511; x=1694015311; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QxfGAdTzhPoM8rqSZw3PBdFh3zDuXtKednbBpy+kykY=;
- b=G2NsmxgUmNSnQTLbS8lP0uPVgMx4EVLo7mOc86VL+TKyoh9ngq9ue1exD/e2iJT5S7
- QecPd8N0UDIB96X+Ndx7nVnrtf7R43d/lb0adJboY6iPeRqL/NsrKGyliv1WYfmF6R1k
- fTgofsaMgrKdCv35Q+iplRmtJpQbiVWB2gSQvh9SW62eLGLMIkz4gSdvNzaQE3IyxBgx
- dV1gMA+ohYz0Fw7QlJSc4qbQ/woJ7lJ3NX+RKzMtI865htlNHznkL/PiNuPR8RFBuvoo
- 7YvFBRTTxpYfDMSLcmGtk1usvW9AmOAFLklMX4q0l/cYFuZHy6iPi5/nHI7fRjMlILEO
- Aqqg==
+ bh=/4mw9SmvIy3YgT48BGk6E+wOswVwxnu575qnqjB0usY=;
+ b=R6/a7AmqFiBgp+vDokb7LI8ZvESE4WygSQqVk9eHObSkh4LousGiWRP3jE7RFzW6CV
+ 7/ADIV74IR18niV3FrrCS+LoSdAYYGd29YeClPAD0D8gkYgHquCvYdrU6A6APOYDR7q0
+ QJFG18yywVh3Nl+nKmnnxg24CfoR2Q1mNt82cua94snPQGkVTJs/X5a/916G6Unoj5tg
+ nowLZXJqzn4GVAy5r+xVWGhfdlwj2CBhM7psx+PXmbiJr/OMxi4XAqxzfn3Y4Ni3bCd3
+ RwHf3RkZ/W26PQWb9hpPhXmzB9utZIZCQgfumYa4rAiOZEiskNBI//37q/82lZ22KOip
+ uKhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693410113; x=1694014913;
+ d=1e100.net; s=20221208; t=1693410511; x=1694015311;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QxfGAdTzhPoM8rqSZw3PBdFh3zDuXtKednbBpy+kykY=;
- b=LbmRBT3UpxpwEwZjMGjAZ+Nk1aJj334L/MRtADFgoAPBb1UxZMWtCJGeYmztfwDbuf
- ti5CVgWTLPdLzdlnG64o+kMaFPN1fubgAZMnzsTTpEp5L/z7dsQvaTobi4Xcs62Fog/5
- Skek6liBqLkAuOsKBqkSOrcT6ioQH6QZQ7/WVylywl2QuXtSra3HpYPuYlSxYjnsrSQj
- JIYD1qCsv2NZJ0hOgEVgMRrNl2nBvXTK6WscsH7BzXUJ3DqhadJY7oYHLhuMhT3K/GXB
- YfMP18rtBa51ml+d/ShFTPEZfGbGvyXOsFe5R1LYB8Sq0aI9Qd6L8Zk6s4Sb6jCdqmB8
- 84/w==
-X-Gm-Message-State: AOJu0YxzFhJbFkTaxIScp7XNWB2DHxZf0Q835EuYfSHsIvxPF5v45mNT
- iLD+24/SJtro9KHJRKCIEMEEKg==
-X-Google-Smtp-Source: AGHT+IEDUUDThb98yy18zcDlRanXmQranNJkisBLirL3KaAyEWHx7EtR2yHPfqmIpBscY2L7JstHNQ==
-X-Received: by 2002:a5d:4f8f:0:b0:314:36f0:2214 with SMTP id
- d15-20020a5d4f8f000000b0031436f02214mr1806914wru.6.1693410113637; 
- Wed, 30 Aug 2023 08:41:53 -0700 (PDT)
+ bh=/4mw9SmvIy3YgT48BGk6E+wOswVwxnu575qnqjB0usY=;
+ b=O7F7gz2PawfN18EN34Th+fd3YGATFokTv/gMg+xK+gJlJd/55nt9GDCFFoPVg3/RCf
+ bnF29TNZSQk5MCcuVFUOI0/1lwogn77pRD0MRMb5jNO/x+pYgJhtFv0x00/cIrYvXeQg
+ pdxM/GyQUkO3QYBP55g1TWncf2YLgQRmaSOiR5ytjoLROyQ77NkSIN1yZFVOHmqdeTvK
+ 2k34oTjoDAJj7wDXLv39fOgBc5/bYDCp+IZ/wuFGNAt8016E8DDL/duCo567RaaIBNPF
+ 9g2l6CNuz/RpQ0wflREat1aGDKcll/hquIUrm2HJ4MLNy3kR8l+59/nMmGtLDrmaVECk
+ TmFA==
+X-Gm-Message-State: AOJu0YyzU4M6skeDP2y2WkW6G4lNwtWLVg8pCmHaxUEMk4a0xeoMg+5W
+ tXYP1nNef+jPHgjMBTxwf3IVpwkhGnRR+QYOlApHPQob
+X-Google-Smtp-Source: AGHT+IFKIxlohdABUY3feVKWFL+1+DPuVFemkRm6PtvfKZG1SLC/m+lZ7u3ndBfqODeAtNB6zPakow==
+X-Received: by 2002:a05:6512:33cd:b0:4f8:67f0:7253 with SMTP id
+ d13-20020a05651233cd00b004f867f07253mr2560086lfg.49.1693410510733; 
+ Wed, 30 Aug 2023 08:48:30 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.142.89])
  by smtp.gmail.com with ESMTPSA id
- y1-20020adff6c1000000b00317e77106dbsm16801854wrp.48.2023.08.30.08.41.52
+ f2-20020a056402150200b005233609e39dsm6969047edw.30.2023.08.30.08.48.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 08:41:53 -0700 (PDT)
-Message-ID: <67a794e5-4208-b413-c274-03bad36e3c24@linaro.org>
-Date: Wed, 30 Aug 2023 17:41:51 +0200
+ Wed, 30 Aug 2023 08:48:30 -0700 (PDT)
+Message-ID: <784947c2-3b2a-6452-b009-c4a21fd67d0a@linaro.org>
+Date: Wed, 30 Aug 2023 17:48:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: =?UTF-8?Q?Re=3a_=5bPATCH_46/67=5d_ui/vc=3a_rename_kbd=5fput_?=
- =?UTF-8?Q?=e2=86=92_qemu=5ftext=5fconsole_functions?=
+Subject: Re: [PATCH 51/67] build-sys: add optional "pixman" feature
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-47-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-52-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230830093843.3531473-47-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-52-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -99,71 +98,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 30/8/23 11:38, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> They are QemuTextConsole functions, let's make it clear.
+> Set CONFIG_PIXMAN accordinly.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   include/ui/console.h |  6 ++---
->   ui/console.c         | 10 ++++----
->   ui/curses.c          |  2 +-
->   ui/gtk.c             |  6 ++---
->   ui/sdl2-input.c      |  4 ++--
->   ui/sdl2.c            |  2 +-
->   ui/vnc.c             | 54 ++++++++++++++++++++++----------------------
->   ui/cocoa.m           |  2 +-
->   8 files changed, 43 insertions(+), 43 deletions(-)
+>   meson.build       | 6 ++++--
+>   Kconfig.host      | 3 +++
+>   meson_options.txt | 2 ++
+>   3 files changed, 9 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index 9c362f0e87..26d63d17a2 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -112,9 +112,9 @@ bool qemu_mouse_set(int index, Error **errp);
->   #define QEMU_KEY_CTRL_PAGEUP     0xe406
->   #define QEMU_KEY_CTRL_PAGEDOWN   0xe407
+> diff --git a/meson.build b/meson.build
+> index 98e68ef0b1..3bd7046099 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -836,8 +836,8 @@ if 'ust' in get_option('trace_backends')
+>                        method: 'pkg-config')
+>   endif
+>   pixman = not_found
+> -if have_system or have_tools
+> -  pixman = dependency('pixman-1', required: have_system, version:'>=0.21.8',
+> +if not get_option('pixman').auto() or have_system or have_tools
+> +  pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
+>                         method: 'pkg-config')
+>   endif
+>   zlib = dependency('zlib', required: true)
+> @@ -2126,6 +2126,7 @@ config_host_data.set('CONFIG_SECCOMP', seccomp.found())
+>   if seccomp.found()
+>     config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
+>   endif
+> +config_host_data.set('CONFIG_PIXMAN', pixman.found())
+>   config_host_data.set('CONFIG_SNAPPY', snappy.found())
+>   config_host_data.set('CONFIG_TPM', have_tpm)
+>   config_host_data.set('CONFIG_TSAN', get_option('tsan'))
+> @@ -2833,6 +2834,7 @@ have_ivshmem = config_host_data.get('CONFIG_EVENTFD')
+>   host_kconfig = \
+>     (get_option('fuzzing') ? ['CONFIG_FUZZ=y'] : []) + \
+>     (have_tpm ? ['CONFIG_TPM=y'] : []) + \
+> +  (pixman.found() ? ['CONFIG_PIXMAN=y'] : []) + \
+>     (spice.found() ? ['CONFIG_SPICE=y'] : []) + \
+>     (have_ivshmem ? ['CONFIG_IVSHMEM=y'] : []) + \
+>     (opengl.found() ? ['CONFIG_OPENGL=y'] : []) + \
+> diff --git a/Kconfig.host b/Kconfig.host
+> index d763d89269..b6ac2b9316 100644
+> --- a/Kconfig.host
+> +++ b/Kconfig.host
+> @@ -11,6 +11,9 @@ config OPENGL
+>   config X11
+>       bool
 >   
-> -void kbd_put_keysym_console(QemuTextConsole *s, int keysym);
-> -bool kbd_put_qcode_console(QemuTextConsole *s, int qcode, bool ctrl);
-> -void kbd_put_string_console(QemuTextConsole *s, const char *str, int len);
-> +void qemu_text_console_put_keysym(QemuTextConsole *s, int keysym);
-> +bool qemu_text_console_put_qcode(QemuTextConsole *s, int qcode, bool ctrl);
-> +void qemu_text_console_put_string(QemuTextConsole *s, const char *str, int len);
-
-
-> diff --git a/ui/cocoa.m b/ui/cocoa.m
-> index 9eb4da7713..8b97319587 100644
-> --- a/ui/cocoa.m
-> +++ b/ui/cocoa.m
-> @@ -784,7 +784,7 @@ - (void) handleMonitorInput:(NSEvent *)event
->       }
+> +config PIXMAN
+> +    bool
+> +
+>   config SPICE
+>       bool
 >   
->       if (keysym) {
-> -        kbd_put_keysym_console(NULL, keysym);
-> +        qemu_text_console_keysym(NULL, keysym);
->       }
->   }
->   
+> diff --git a/meson_options.txt b/meson_options.txt
+> index aaea5ddd77..89654fd77d 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -216,6 +216,8 @@ option('l2tpv3', type : 'feature', value : 'auto',
+>          description: 'l2tpv3 network backend support')
+>   option('netmap', type : 'feature', value : 'auto',
+>          description: 'netmap network backend support')
+> +option('pixman', type : 'feature', value : 'auto',
+> +       description: 'pixman support')
+>   option('slirp', type: 'feature', value: 'auto',
+>          description: 'libslirp user mode network backend support')
+>   option('vde', type : 'feature', value : 'auto',
 
-../../ui/cocoa.m:787:9: error: call to undeclared function 
-'qemu_text_console_keysym'; ISO C99 and later do not support implicit 
-function declarations [-Wimplicit-function-declaration]
-         qemu_text_console_keysym(NULL, keysym);
-         ^
-
-I can compile using:
+Apparently missing:
 
 -- >8 --
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 8b97319587..b886db7510 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -784,7 +784,7 @@ - (void) handleMonitorInput:(NSEvent *)event
-      }
-
-      if (keysym) {
--        qemu_text_console_keysym(NULL, keysym);
-+        qemu_text_console_put_keysym(NULL, keysym);
-      }
-  }
-
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 9da3fe299b..16957ea9f0 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -146,6 +146,7 @@ meson_options_help() {
+    printf "%s\n" '  pa              PulseAudio sound support'
+    printf "%s\n" '  parallels       parallels image format support'
+    printf "%s\n" '  pipewire        PipeWire sound support'
++  printf "%s\n" '  pixman          pixman support'
+    printf "%s\n" '  png             PNG support with libpng'
+    printf "%s\n" '  pvrdma          Enable PVRDMA support'
+    printf "%s\n" '  qcow1           qcow1 image format support'
+@@ -397,6 +398,8 @@ _meson_option_parse() {
+      --disable-parallels) printf "%s" -Dparallels=disabled ;;
+      --enable-pipewire) printf "%s" -Dpipewire=enabled ;;
+      --disable-pipewire) printf "%s" -Dpipewire=disabled ;;
++    --enable-pixman) printf "%s" -Dpixman=enabled ;;
++    --disable-pixman) printf "%s" -Dpixman=disabled ;;
+      --with-pkgversion=*) quote_sh "-Dpkgversion=$2" ;;
+      --enable-png) printf "%s" -Dpng=enabled ;;
+      --disable-png) printf "%s" -Dpng=disabled ;;
 ---
 
