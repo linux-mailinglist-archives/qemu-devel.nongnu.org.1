@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF0E78F132
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B8778F134
 	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 18:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbkUM-0004Du-5A; Thu, 31 Aug 2023 12:25:46 -0400
+	id 1qbkUF-0004Bi-Bc; Thu, 31 Aug 2023 12:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <francisco.iglesias@amd.com>)
- id 1qbkU3-000497-TN
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 12:25:27 -0400
-Received: from mail-mw2nam12on20623.outbound.protection.outlook.com
- ([2a01:111:f400:fe5a::623]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ id 1qbkU7-00049h-HQ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 12:25:32 -0400
+Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
+ ([2a01:111:f400:7eae::601]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <francisco.iglesias@amd.com>)
- id 1qbkTz-0004jZ-CH
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 12:25:27 -0400
+ id 1qbkU3-0004mP-Q3
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 12:25:31 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IlLZQx2ZfmT+bax4WVkBtJ0wFKqKRowrNqQhLglRbmT+2PTANQozxSEagtncdEI2w4/Ur1Znho+RdT0MNHVY0r9XmHDA0YiDTzhqgHDMiuUhJdT12dmBaBKdEh4oZ5snJK0WUZJR1jUyutZOzHkvzQl76IAo9uRKlQhhpKr537q9aGSms8K7Ysznr4P5Zz4HQ1I3qT0k6eqr+Y6umrFYZtQEf6n7VBSuIq3Udy7tANMz3lpr0JaYn+LKafR8etae0FtdGzR9f1n/Vn0QSPzOstnkd/bTQx/UuwGx7ypnX7GVDmX4Hyrg5Qr8pdbmimx+GBt9qBsPzT0QGobGUIp4jg==
+ b=T0BJQOj68FHJVVQS+1rMX7cOTcupWC3AGGIIqHspbog+Rlz6uiedfRr9hBRWLUPiCJKNey//FjmXE2Bd7KrWCylydi6vkNVbWrMU+BptpvllMWQUcOt5nlJlY5vpfzzdffYRCcjGFator5bWQVzLraSMSE4A4HvyzpeFxTPFf7/WILV/WheGLx5j/+rGZ32k8H2+qY1s76LwFOsEyAQsZABt0SGtqDw4E8pHjSnfHe4xZZlvu17QoSbWOR4jTeNsPtqVyl6qvCBuk8vWJ74+MUR6epTampYGQk+zgjxBzJszWxXg0KGAhLq8v3jUsrC5Z9yeqLc66TyR16uhwT8Hbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e9SHItlAQjSTqN0xrYejzdl651JvBfZEfP1DZ2T+Oyg=;
- b=E7r4kAGa/mgLVThhCeFT64oIYDiF1YHcgBO6PVOvp77FE6P4Ec6hLW9B2mtQHTITVSHdz5J8WL+yH0sSnn8a4A46c0J0vzbQQucCp2FEKi7tj/oe+jHxar+Cxy7ArT7qXYxYyNY6RNYvWyhnwp9nNqbhj5hBW95HKck2HH6EWp9UHuBQ0+M14KDDyqaogXL1ERQH4+R6ybcXOhfCOqvMLy0A6TlGEJgNZYzz3wp+wjZvrMEL5aiuCZBA4vliJxehhkf1MTaZ4+vh40dZ1hSGTe6ov18xgG4/VnGkiKD5pDRumlsbh5eseMJgbBFouzeEqweBKUHWWMCfYOiv8FJeQQ==
+ bh=dP9DJgnfmyBqIQPky8kPymTuxPZxwsqnJY/SEnS5AJY=;
+ b=kX/Q3Poz0ZE3Fn42XqU7Qtagkr8gDTd2v/aBR+Ys4wnakVdZLle3rud4iBHP8hIDF603qvhjkFEdM8ewCe+E8EL3ISxGkjSFQA178hbKZbYKIiey6/gJNuzP9QiNZJN0bWgoAXWFeY9djb0bI5JB2ZP+anu49hjy27Fk9dy5iIZwCe/CGtQlEYrF07GSyh9b7TMWoweP8VNSoCAbrTKi2qzXUKCc9ZXgHM0YfZH4Y0/ShtfquqHMNb+Bx8ZFgdp7ARECtdpH234RyJCrcXmNm+TZI2GudePja1RcKc0tguvwpk6YLA9qWk9lELaBSDnRZhUyH624LzTih5R40pQksQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e9SHItlAQjSTqN0xrYejzdl651JvBfZEfP1DZ2T+Oyg=;
- b=PjIgFlhp/p1BFh/7B4BuczOVSnaVeTim/fPLN2Hn6SZYzFuDvtJcuB13o1dfiSuQfPczMSJclgJGZxwEFjF+r17k/84ZNQORcYy6mtxNvzQzfd0wVLdddiEMjKcQf5WDez1A1F30TYNUrlv9mi0HjhF/uwXTTNQNGNODAFqGJRE=
-Received: from DM6PR10CA0025.namprd10.prod.outlook.com (2603:10b6:5:60::38) by
- CY8PR12MB7731.namprd12.prod.outlook.com (2603:10b6:930:86::16) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6699.35; Thu, 31 Aug 2023 16:25:18 +0000
-Received: from DS3PEPF000099DF.namprd04.prod.outlook.com (2603:10b6:5:60::4)
- by DM6PR10CA0025.outlook.office365.com (2603:10b6:5:60::38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6745.22 via Frontend Transport; Thu, 31 Aug 2023 16:25:18 +0000
+ bh=dP9DJgnfmyBqIQPky8kPymTuxPZxwsqnJY/SEnS5AJY=;
+ b=G5p2StD1Y4MynOftIccmtNAczrO6OlPCoKrDwU8w6YeCKZpeIdOFS+1dW6mBBdI4TCZdEzIOOixgAdqy84u0+W/V9xJZGECGKMOnj41SyzfSY3levAOyriAs7QgHJH0xRoEWAZzjyz8YsN/P6ADerBhEADEGcsWKwROCcaCf4YE=
+Received: from MW4PR04CA0367.namprd04.prod.outlook.com (2603:10b6:303:81::12)
+ by CH3PR12MB9249.namprd12.prod.outlook.com (2603:10b6:610:1bc::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Thu, 31 Aug
+ 2023 16:25:22 +0000
+Received: from CO1PEPF000044F4.namprd05.prod.outlook.com
+ (2603:10b6:303:81:cafe::a7) by MW4PR04CA0367.outlook.office365.com
+ (2603:10b6:303:81::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22 via Frontend
+ Transport; Thu, 31 Aug 2023 16:25:22 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099DF.mail.protection.outlook.com (10.167.17.202) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CO1PEPF000044F4.mail.protection.outlook.com (10.167.241.74) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6745.20 via Frontend Transport; Thu, 31 Aug 2023 16:25:18 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 16:25:22 +0000
+Received: from SATLEXMB07.amd.com (10.181.41.45) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
- 2023 11:25:17 -0500
+ 2023 11:25:20 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB07.amd.com
+ (10.181.41.45) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
+ 2023 09:25:19 -0700
 Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
- Transport; Thu, 31 Aug 2023 11:25:15 -0500
+ Transport; Thu, 31 Aug 2023 11:25:18 -0500
 From: Francisco Iglesias <francisco.iglesias@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <frasse.iglesias@gmail.com>, <alistair@alistair23.me>,
  <edgar.iglesias@gmail.com>, <peter.maydell@linaro.org>, <fkonrad@amd.com>,
  <sai.pavan.boddu@amd.com>, <tong.ho@amd.com>, <vikram.garhwal@amd.com>
-Subject: [PATCH v4 2/8] hw/misc: Introduce a model of Xilinx Versal's CFU_APB
-Date: Thu, 31 Aug 2023 18:24:59 +0200
-Message-ID: <20230831162505.30399-3-francisco.iglesias@amd.com>
+Subject: [PATCH v4 3/8] hw/misc/xlnx-versal-cfu: Introduce a model of Xilinx
+ Versal CFU_FDRO
+Date: Thu, 31 Aug 2023 18:25:00 +0200
+Message-ID: <20230831162505.30399-4-francisco.iglesias@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230831162505.30399-1-francisco.iglesias@amd.com>
 References: <20230831162505.30399-1-francisco.iglesias@amd.com>
@@ -77,29 +83,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DF:EE_|CY8PR12MB7731:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89af45c3-d5c6-4621-c739-08dbaa3edd87
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F4:EE_|CH3PR12MB9249:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffcd1c00-f7ba-4573-cbd8-08dbaa3edfc5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wAdp/kgcyEov+AaOHaTiucHZY1DnP4L9b0sPz+6vR13JQAlFFLG8UkvjdMGEc9c0vxHKPojDLYmISpngcakyAszROLiD/gWOzDOQDInisTPnjJWRRDKhArvzmTQalBx2Ogd19VuXh+imvRarWEQ66+2OPUjpbLnN3Z4xuGGcjO6bS/1vG8p7G3bxsIjJimxk9X9l7IvASY+kXEUb9McmEhSdfx+Xo0yepSjiQbdeoVp6yQlgMdzYwggGm6FtHjYa3CE0aUM+X105ib2ByOgbfjgaWqXPTXxNOAEmWSBeH8a4E1Av/vAv5agycIpnc9FaimQbhfAZbFD18oSmxio88Z4Xp/F+JbPplvIvIPz2B6+fDOhVS88kUuu0Hf9/TDe6QVyoR4BR4Jz/9Nit9s1bbQ4Yto8WmckF/v/KRo/aey9/maOB+hGLilTQza+CyI3mykPBzZBxoxwXPDZGOznUFeSXya+hcDptJPTobTaqxfo454DTf2rxGl6gnHPZhExmw9fhuYFqpcf8cI3B0GvXrxMw3YxRXTN2UhD+akWUEaNs/nQpOfL/bAioRw7jgtZws0NpvHIISJEYiMehcU3lbiPN8KhQYgyZtx0EaBdZHQ8iVaainfKWZnhQBhsrC3RhSPHr6snLF/C+nHsNtnhnXsbRiavwJAPa0WU/FrdPh4MuK14LkWZm3ZkdjGjK5eI6dYqAoK6dwsK91u6WxEUUJP2k4caIflnRrcT3B+JWkrxSJ8xY57Zyut48Oofx1zcx0dW/bbzDxpXloj9sxq14sbWZPwPW29ER3+ZUc1p9ExA=
+X-Microsoft-Antispam-Message-Info: OXrBw07chFY4ZoZNjzuGY8+vEYvS+lgXEYerE3e/yHA5KO4EGQUTqchz/xN5rqJxiteWBck444g4TX8GOny3U26V9y/+n1Hl5xJlaqvUm6iWHGMKetlkYwSiCnjbzDx+Myw8+xuj+by0iL35/mqUvbeamOZCTd+zsUgK4EkWTCZ24frrlyDeWSjPWKR5FqfY3SvxOa29p7IKY0Ms2OODHlLrGE0EUBrjnxSCfz7rkjI8LDjZwbTqoYb/jmnxijGZjHC2bHgNo9VTbPOzEmBzGqkcOaQ7+w1a5KKF4xhaE8dj1yFmuhwGvabqa0RHFnxq0Jd5BUGomXy4fgAhSBQMSVxDPFIj5NBLof1x1nDaPYHIk6JBrpovEsubhNv+dvUxbx/JdrgoepbjYx1hxDnqB7VFFJnW7JuEOs9tHH43nOu50k4rhYduEdThETk/ShGZU0HOsuMJJfHi32u/mYrRN6gCimkLF0c/kYAPGF53gNlQK1EXgRAE0FT3SseAA6AacwDOljdj85lIydVkFkWkVLjI4RgOmcen6C2KuZr8WYQT5FDxI4GTkjgj7gL1+j4HhXmhvkEzpnFS5fWY0NshXPAdNTF8T+Blm142dDjiZTh47538pRA/D8HVO/MMc5je+Q1lRaj8MUfelJRraiIy9Cu6TM5gmibEoVUyS3pwT0uVb4asI2vo1OwNH+XHc2MKdyIlQyPirZoudqTCdU9XsuW74RUar/TxO3gfY0qn6VPUBsNXQiblaYpMGuYj9UjdgYsrBJRLWTY771aqUgGi1Q==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(136003)(346002)(396003)(376002)(82310400011)(451199024)(186009)(1800799009)(40470700004)(36840700001)(46966006)(26005)(40460700003)(6916009)(316002)(41300700001)(1076003)(4326008)(336012)(426003)(47076005)(44832011)(2906002)(30864003)(86362001)(2616005)(36756003)(5660300002)(8676002)(36860700001)(40480700001)(83380400001)(6666004)(8936002)(81166007)(356005)(82740400003)(966005)(70586007)(54906003)(70206006)(478600001)(36900700001);
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(346002)(39860400002)(376002)(396003)(186009)(82310400011)(1800799009)(451199024)(40470700004)(36840700001)(46966006)(41300700001)(40460700003)(356005)(6666004)(82740400003)(478600001)(2616005)(86362001)(47076005)(81166007)(83380400001)(36860700001)(426003)(336012)(1076003)(26005)(40480700001)(70206006)(36756003)(70586007)(316002)(54906003)(2906002)(6916009)(5660300002)(8676002)(8936002)(4326008)(44832011)(36900700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 16:25:18.3476 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89af45c3-d5c6-4621-c739-08dbaa3edd87
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 16:25:22.0470 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffcd1c00-f7ba-4573-cbd8-08dbaa3edfc5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DF.namprd04.prod.outlook.com
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F4.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7731
-Received-SPF: softfail client-ip=2a01:111:f400:fe5a::623;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9249
+Received-SPF: softfail client-ip=2a01:111:f400:7eae::601;
  envelope-from=francisco.iglesias@amd.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,229 +127,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a model of the software programming interface (CFU_APB) of
-Xilinx Versal's Configuration Frame Unit.
+Introduce a model of Xilinx Versal's Configuration Frame Unit's data out
+port (CFU_FDRO).
 
 Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS                       |   2 +
- hw/misc/meson.build               |   1 +
- hw/misc/xlnx-versal-cfu.c         | 380 ++++++++++++++++++++++++++++++
- include/hw/misc/xlnx-versal-cfu.h | 231 ++++++++++++++++++
- 4 files changed, 614 insertions(+)
- create mode 100644 hw/misc/xlnx-versal-cfu.c
- create mode 100644 include/hw/misc/xlnx-versal-cfu.h
+ hw/misc/xlnx-versal-cfu.c         | 96 +++++++++++++++++++++++++++++++
+ include/hw/misc/xlnx-versal-cfu.h | 12 ++++
+ 2 files changed, 108 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e0cd365462..847b997d73 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1039,6 +1039,8 @@ M: Francisco Iglesias <francisco.iglesias@amd.com>
- S: Maintained
- F: hw/misc/xlnx-cfi-if.c
- F: include/hw/misc/xlnx-cfi-if.h
-+F: hw/misc/xlnx-versal-cfu.c
-+F: include/hw/misc/xlnx-versal-cfu.h
- 
- STM32F100
- M: Alexandre Iooss <erdnaxe@crans.org>
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 0c562f5e3e..d95cc3fd87 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -97,6 +97,7 @@ specific_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-crl.c'))
- system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files(
-   'xlnx-versal-xramc.c',
-   'xlnx-versal-pmc-iou-slcr.c',
-+  'xlnx-versal-cfu.c',
-   'xlnx-cfi-if.c',
- ))
- system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: files('stm32f2xx_syscfg.c'))
 diff --git a/hw/misc/xlnx-versal-cfu.c b/hw/misc/xlnx-versal-cfu.c
-new file mode 100644
-index 0000000000..b2dc6ab211
---- /dev/null
+index b2dc6ab211..255c1bf4b8 100644
+--- a/hw/misc/xlnx-versal-cfu.c
 +++ b/hw/misc/xlnx-versal-cfu.c
-@@ -0,0 +1,380 @@
-+/*
-+ * QEMU model of the CFU Configuration Unit.
-+ *
-+ * Copyright (C) 2023, Advanced Micro Devices, Inc.
-+ *
-+ * Written by Edgar E. Iglesias <edgar.iglesias@gmail.com>,
-+ *            Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
-+ *            Francisco Iglesias <francisco.iglesias@amd.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/sysbus.h"
-+#include "hw/register.h"
-+#include "hw/irq.h"
-+#include "qemu/bitops.h"
-+#include "qemu/log.h"
-+#include "qemu/units.h"
-+#include "migration/vmstate.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-properties-system.h"
-+#include "hw/misc/xlnx-versal-cfu.h"
-+
-+#ifndef XLNX_VERSAL_CFU_APB_ERR_DEBUG
-+#define XLNX_VERSAL_CFU_APB_ERR_DEBUG 0
-+#endif
-+
-+#define KEYHOLE_STREAM_4K (4 * KiB)
-+#define KEYHOLE_STREAM_256K (256 * KiB)
-+#define CFRAME_BROADCAST_ROW 0x1F
-+
-+bool update_wfifo(hwaddr addr, uint64_t value,
-+                  uint32_t *wfifo, uint32_t *wfifo_ret)
+@@ -264,6 +264,25 @@ static void cfu_stream_write(void *opaque, hwaddr addr, uint64_t value,
+     }
+ }
+ 
++static uint64_t cfu_fdro_read(void *opaque, hwaddr addr, unsigned size)
 +{
-+    unsigned int idx = extract32(addr, 2, 2);
++    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(opaque);
++    uint64_t ret = 0;
 +
-+    wfifo[idx] = value;
-+
-+    if (idx == 3) {
-+        memcpy(wfifo_ret, wfifo, WFIFO_SZ * sizeof(uint32_t));
-+        memset(wfifo, 0, WFIFO_SZ * sizeof(uint32_t));
-+        return true;
++    if (!fifo32_is_empty(&s->fdro_data)) {
++        ret = fifo32_pop(&s->fdro_data);
 +    }
 +
-+    return false;
++    return ret;
 +}
 +
-+static void cfu_imr_update_irq(XlnxVersalCFUAPB *s)
++static void cfu_fdro_write(void *opaque, hwaddr addr, uint64_t value,
++                           unsigned size)
 +{
-+    bool pending = s->regs[R_CFU_ISR] & ~s->regs[R_CFU_IMR];
-+    qemu_set_irq(s->irq_cfu_imr, pending);
++    qemu_log_mask(LOG_GUEST_ERROR, "%s: Unsupported write from addr=%"
++                  HWADDR_PRIx "\n", __func__, addr);
 +}
 +
-+static void cfu_isr_postw(RegisterInfo *reg, uint64_t val64)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(reg->opaque);
-+    cfu_imr_update_irq(s);
-+}
-+
-+static uint64_t cfu_ier_prew(RegisterInfo *reg, uint64_t val64)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(reg->opaque);
-+    uint32_t val = val64;
-+
-+    s->regs[R_CFU_IMR] &= ~val;
-+    cfu_imr_update_irq(s);
-+    return 0;
-+}
-+
-+static uint64_t cfu_idr_prew(RegisterInfo *reg, uint64_t val64)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(reg->opaque);
-+    uint32_t val = val64;
-+
-+    s->regs[R_CFU_IMR] |= val;
-+    cfu_imr_update_irq(s);
-+    return 0;
-+}
-+
-+static uint64_t cfu_itr_prew(RegisterInfo *reg, uint64_t val64)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(reg->opaque);
-+    uint32_t val = val64;
-+
-+    s->regs[R_CFU_ISR] |= val;
-+    cfu_imr_update_irq(s);
-+    return 0;
-+}
-+
-+static void cfu_fgcr_postw(RegisterInfo *reg, uint64_t val64)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(reg->opaque);
-+    uint32_t val = (uint32_t)val64;
-+
-+    /* Do a scan. It always looks good. */
-+    if (FIELD_EX32(val, CFU_FGCR, SC_HBC_TRIGGER)) {
-+        ARRAY_FIELD_DP32(s->regs, CFU_STATUS, SCAN_CLEAR_PASS, 1);
-+        ARRAY_FIELD_DP32(s->regs, CFU_STATUS, SCAN_CLEAR_DONE, 1);
-+    }
-+}
-+
-+static const RegisterAccessInfo cfu_apb_regs_info[] = {
-+    {   .name = "CFU_ISR",  .addr = A_CFU_ISR,
-+        .rsvd = 0xfffffc00,
-+        .w1c = 0x3ff,
-+        .post_write = cfu_isr_postw,
-+    },{ .name = "CFU_IMR",  .addr = A_CFU_IMR,
-+        .reset = 0x3ff,
-+        .rsvd = 0xfffffc00,
-+        .ro = 0x3ff,
-+    },{ .name = "CFU_IER",  .addr = A_CFU_IER,
-+        .rsvd = 0xfffffc00,
-+        .pre_write = cfu_ier_prew,
-+    },{ .name = "CFU_IDR",  .addr = A_CFU_IDR,
-+        .rsvd = 0xfffffc00,
-+        .pre_write = cfu_idr_prew,
-+    },{ .name = "CFU_ITR",  .addr = A_CFU_ITR,
-+        .rsvd = 0xfffffc00,
-+        .pre_write = cfu_itr_prew,
-+    },{ .name = "CFU_PROTECT",  .addr = A_CFU_PROTECT,
-+        .reset = 0x1,
-+    },{ .name = "CFU_FGCR",  .addr = A_CFU_FGCR,
-+        .rsvd = 0xffff8000,
-+        .post_write = cfu_fgcr_postw,
-+    },{ .name = "CFU_CTL",  .addr = A_CFU_CTL,
-+        .rsvd = 0xffff0000,
-+    },{ .name = "CFU_CRAM_RW",  .addr = A_CFU_CRAM_RW,
-+        .reset = 0x401f7d9,
-+        .rsvd = 0xf8000000,
-+    },{ .name = "CFU_MASK",  .addr = A_CFU_MASK,
-+    },{ .name = "CFU_CRC_EXPECT",  .addr = A_CFU_CRC_EXPECT,
-+    },{ .name = "CFU_CFRAME_LEFT_T0",  .addr = A_CFU_CFRAME_LEFT_T0,
-+        .rsvd = 0xfff00000,
-+    },{ .name = "CFU_CFRAME_LEFT_T1",  .addr = A_CFU_CFRAME_LEFT_T1,
-+        .rsvd = 0xfff00000,
-+    },{ .name = "CFU_CFRAME_LEFT_T2",  .addr = A_CFU_CFRAME_LEFT_T2,
-+        .rsvd = 0xfff00000,
-+    },{ .name = "CFU_ROW_RANGE",  .addr = A_CFU_ROW_RANGE,
-+        .rsvd = 0xffffffc0,
-+        .ro = 0x3f,
-+    },{ .name = "CFU_STATUS",  .addr = A_CFU_STATUS,
-+        .rsvd = 0x80000000,
-+        .ro = 0x7fffffff,
-+    },{ .name = "CFU_INTERNAL_STATUS",  .addr = A_CFU_INTERNAL_STATUS,
-+        .rsvd = 0xff800000,
-+        .ro = 0x7fffff,
-+    },{ .name = "CFU_QWORD_CNT",  .addr = A_CFU_QWORD_CNT,
-+        .ro = 0xffffffff,
-+    },{ .name = "CFU_CRC_LIVE",  .addr = A_CFU_CRC_LIVE,
-+        .ro = 0xffffffff,
-+    },{ .name = "CFU_PENDING_READ_CNT",  .addr = A_CFU_PENDING_READ_CNT,
-+        .rsvd = 0xfe000000,
-+        .ro = 0x1ffffff,
-+    },{ .name = "CFU_FDRI_CNT",  .addr = A_CFU_FDRI_CNT,
-+        .ro = 0xffffffff,
-+    },{ .name = "CFU_ECO1",  .addr = A_CFU_ECO1,
-+    },{ .name = "CFU_ECO2",  .addr = A_CFU_ECO2,
-+    }
-+};
-+
-+static void cfu_apb_reset(DeviceState *dev)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(dev);
-+    unsigned int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
-+        register_reset(&s->regs_info[i]);
-+    }
-+    memset(s->wfifo, 0, WFIFO_SZ * sizeof(uint32_t));
-+
-+    s->regs[R_CFU_STATUS] |= R_CFU_STATUS_HC_COMPLETE_MASK;
-+    cfu_imr_update_irq(s);
-+}
-+
-+static const MemoryRegionOps cfu_apb_ops = {
-+    .read = register_read_memory,
-+    .write = register_write_memory,
+ static const MemoryRegionOps cfu_stream_ops = {
+     .read = cfu_stream_read,
+     .write = cfu_stream_write,
+@@ -274,6 +293,16 @@ static const MemoryRegionOps cfu_stream_ops = {
+     },
+ };
+ 
++static const MemoryRegionOps cfu_fdro_ops = {
++    .read = cfu_fdro_read,
++    .write = cfu_fdro_write,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
 +    .valid = {
 +        .min_access_size = 4,
@@ -351,438 +181,141 @@ index 0000000000..b2dc6ab211
 +    },
 +};
 +
-+static void cfu_transfer_cfi_packet(XlnxVersalCFUAPB *s, uint8_t row_addr,
-+                                    XlnxCfiPacket *pkt)
+ static void cfu_apb_init(Object *obj)
+ {
+     XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(obj);
+@@ -305,6 +334,39 @@ static void cfu_apb_init(Object *obj)
+     sysbus_init_irq(sbd, &s->irq_cfu_imr);
+ }
+ 
++static void cfu_fdro_init(Object *obj)
 +{
-+    if (row_addr == CFRAME_BROADCAST_ROW) {
-+        for (int i = 0; i < ARRAY_SIZE(s->cfg.cframe); i++) {
-+            if (s->cfg.cframe[i]) {
-+                xlnx_cfi_transfer_packet(s->cfg.cframe[i], pkt);
-+            }
++    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
++
++    memory_region_init_io(&s->iomem_fdro, obj, &cfu_fdro_ops, s,
++                          TYPE_XLNX_VERSAL_CFU_FDRO, KEYHOLE_STREAM_4K);
++    sysbus_init_mmio(sbd, &s->iomem_fdro);
++    fifo32_create(&s->fdro_data, 8 * KiB / sizeof(uint32_t));
++}
++
++static void cfu_fdro_reset_enter(Object *obj, ResetType type)
++{
++    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(obj);
++
++    fifo32_reset(&s->fdro_data);
++}
++
++static void cfu_fdro_cfi_transfer_packet(XlnxCfiIf *cfi_if, XlnxCfiPacket *pkt)
++{
++    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(cfi_if);
++
++    if (fifo32_num_free(&s->fdro_data) >= ARRAY_SIZE(pkt->data)) {
++        for (int i = 0; i < ARRAY_SIZE(pkt->data); i++) {
++            fifo32_push(&s->fdro_data, pkt->data[i]);
 +        }
 +    } else {
-+            assert(row_addr < ARRAY_SIZE(s->cfg.cframe));
-+
-+            if (s->cfg.cframe[row_addr]) {
-+                xlnx_cfi_transfer_packet(s->cfg.cframe[row_addr], pkt);
-+            }
++        /* It is a programming error to fill the fifo. */
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "CFU_FDRO: CFI data dropped due to full read fifo\n");
 +    }
 +}
 +
-+static uint64_t cfu_stream_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    qemu_log_mask(LOG_GUEST_ERROR, "%s: Unsupported read from addr=%"
-+                  HWADDR_PRIx "\n", __func__, addr);
-+    return 0;
-+}
-+
-+static void cfu_stream_write(void *opaque, hwaddr addr, uint64_t value,
-+                      unsigned size)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(opaque);
-+    uint32_t wfifo[WFIFO_SZ];
-+
-+    if (update_wfifo(addr, value, s->wfifo, wfifo)) {
-+        uint8_t packet_type, row_addr, reg_addr;
-+
-+        packet_type = extract32(wfifo[0], 24, 8);
-+        row_addr = extract32(wfifo[0], 16, 5);
-+        reg_addr = extract32(wfifo[0], 8, 6);
-+
-+        /* Compressed bitstreams are not supported yet. */
-+        if (ARRAY_FIELD_EX32(s->regs, CFU_CTL, DECOMPRESS) == 0) {
-+            if (s->regs[R_CFU_FDRI_CNT]) {
-+                XlnxCfiPacket pkt = {
-+                    .reg_addr = CFRAME_FDRI,
-+                    .data[0] = wfifo[0],
-+                    .data[1] = wfifo[1],
-+                    .data[2] = wfifo[2],
-+                    .data[3] = wfifo[3]
-+                };
-+
-+                cfu_transfer_cfi_packet(s, s->fdri_row_addr, &pkt);
-+
-+                s->regs[R_CFU_FDRI_CNT]--;
-+
-+            } else if (packet_type == PACKET_TYPE_CFU &&
-+                       reg_addr == CFRAME_FDRI) {
-+
-+                /* Load R_CFU_FDRI_CNT, must be multiple of 25 */
-+                s->regs[R_CFU_FDRI_CNT] = wfifo[1];
-+
-+                /* Store target row_addr */
-+                s->fdri_row_addr = row_addr;
-+
-+                if (wfifo[1] % 25 != 0) {
-+                    qemu_log_mask(LOG_GUEST_ERROR,
-+                                  "CFU FDRI_CNT is not loaded with "
-+                                  "a multiple of 25 value\n");
-+                }
-+
-+            } else if (packet_type == PACKET_TYPE_CFRAME) {
-+                XlnxCfiPacket pkt = {
-+                    .reg_addr = reg_addr,
-+                    .data[0] = wfifo[1],
-+                    .data[1] = wfifo[2],
-+                    .data[2] = wfifo[3],
-+                };
-+                cfu_transfer_cfi_packet(s, row_addr, &pkt);
-+            }
-+        }
-+    }
-+}
-+
-+static const MemoryRegionOps cfu_stream_ops = {
-+    .read = cfu_stream_read,
-+    .write = cfu_stream_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 8,
-+    },
-+};
-+
-+static void cfu_apb_init(Object *obj)
-+{
-+    XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(obj);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+    RegisterInfoArray *reg_array;
-+    unsigned int i;
-+    char *name;
-+
-+    memory_region_init(&s->iomem, obj, TYPE_XLNX_VERSAL_CFU_APB, R_MAX * 4);
-+    reg_array =
-+        register_init_block32(DEVICE(obj), cfu_apb_regs_info,
-+                              ARRAY_SIZE(cfu_apb_regs_info),
-+                              s->regs_info, s->regs,
-+                              &cfu_apb_ops,
-+                              XLNX_VERSAL_CFU_APB_ERR_DEBUG,
-+                              R_MAX * 4);
-+    memory_region_add_subregion(&s->iomem,
-+                                0x0,
-+                                &reg_array->mem);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+    for (i = 0; i < NUM_STREAM; i++) {
-+        name = g_strdup_printf(TYPE_XLNX_VERSAL_CFU_APB "-stream%d", i);
-+        memory_region_init_io(&s->iomem_stream[i], obj, &cfu_stream_ops, s,
-+                          name, i == 0 ? KEYHOLE_STREAM_4K :
-+                                         KEYHOLE_STREAM_256K);
-+        sysbus_init_mmio(sbd, &s->iomem_stream[i]);
-+        g_free(name);
-+    }
-+    sysbus_init_irq(sbd, &s->irq_cfu_imr);
-+}
-+
-+static Property cfu_props[] = {
-+        DEFINE_PROP_LINK("cframe0", XlnxVersalCFUAPB, cfg.cframe[0],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe1", XlnxVersalCFUAPB, cfg.cframe[1],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe2", XlnxVersalCFUAPB, cfg.cframe[2],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe3", XlnxVersalCFUAPB, cfg.cframe[3],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe4", XlnxVersalCFUAPB, cfg.cframe[4],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe5", XlnxVersalCFUAPB, cfg.cframe[5],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe6", XlnxVersalCFUAPB, cfg.cframe[6],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe7", XlnxVersalCFUAPB, cfg.cframe[7],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe8", XlnxVersalCFUAPB, cfg.cframe[8],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe9", XlnxVersalCFUAPB, cfg.cframe[9],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe10", XlnxVersalCFUAPB, cfg.cframe[10],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe11", XlnxVersalCFUAPB, cfg.cframe[11],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe12", XlnxVersalCFUAPB, cfg.cframe[12],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe13", XlnxVersalCFUAPB, cfg.cframe[13],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_LINK("cframe14", XlnxVersalCFUAPB, cfg.cframe[14],
-+                         TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+        DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static const VMStateDescription vmstate_cfu_apb = {
-+    .name = TYPE_XLNX_VERSAL_CFU_APB,
+ static Property cfu_props[] = {
+         DEFINE_PROP_LINK("cframe0", XlnxVersalCFUAPB, cfg.cframe[0],
+                          TYPE_XLNX_CFI_IF, XlnxCfiIf *),
+@@ -351,6 +413,16 @@ static const VMStateDescription vmstate_cfu_apb = {
+     }
+ };
+ 
++static const VMStateDescription vmstate_cfu_fdro = {
++    .name = TYPE_XLNX_VERSAL_CFU_FDRO,
 +    .version_id = 1,
 +    .minimum_version_id = 1,
 +    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(wfifo, XlnxVersalCFUAPB, 4),
-+        VMSTATE_UINT32_ARRAY(regs, XlnxVersalCFUAPB, R_MAX),
-+        VMSTATE_UINT8(fdri_row_addr, XlnxVersalCFUAPB),
++        VMSTATE_FIFO32(fdro_data, XlnxVersalCFUFDRO),
 +        VMSTATE_END_OF_LIST(),
 +    }
 +};
 +
-+static void cfu_apb_class_init(ObjectClass *klass, void *data)
+ static void cfu_apb_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -360,6 +432,17 @@ static void cfu_apb_class_init(ObjectClass *klass, void *data)
+     device_class_set_props(dc, cfu_props);
+ }
+ 
++static void cfu_fdro_class_init(ObjectClass *klass, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++    XlnxCfiIfClass *xcic = XLNX_CFI_IF_CLASS(klass);
 +
-+    dc->reset = cfu_apb_reset;
-+    dc->vmsd = &vmstate_cfu_apb;
-+    device_class_set_props(dc, cfu_props);
++    dc->vmsd = &vmstate_cfu_fdro;
++    xcic->cfi_transfer_packet = cfu_fdro_cfi_transfer_packet;
++    rc->phases.enter = cfu_fdro_reset_enter;
 +}
 +
-+static const TypeInfo cfu_apb_info = {
-+    .name          = TYPE_XLNX_VERSAL_CFU_APB,
+ static const TypeInfo cfu_apb_info = {
+     .name          = TYPE_XLNX_VERSAL_CFU_APB,
+     .parent        = TYPE_SYS_BUS_DEVICE,
+@@ -372,9 +455,22 @@ static const TypeInfo cfu_apb_info = {
+     }
+ };
+ 
++static const TypeInfo cfu_fdro_info = {
++    .name          = TYPE_XLNX_VERSAL_CFU_FDRO,
 +    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(XlnxVersalCFUAPB),
-+    .class_init    = cfu_apb_class_init,
-+    .instance_init = cfu_apb_init,
++    .instance_size = sizeof(XlnxVersalCFUFDRO),
++    .class_init    = cfu_fdro_class_init,
++    .instance_init = cfu_fdro_init,
 +    .interfaces = (InterfaceInfo[]) {
 +        { TYPE_XLNX_CFI_IF },
 +        { }
 +    }
 +};
 +
-+static void cfu_apb_register_types(void)
-+{
-+    type_register_static(&cfu_apb_info);
-+}
-+
-+type_init(cfu_apb_register_types)
+ static void cfu_apb_register_types(void)
+ {
+     type_register_static(&cfu_apb_info);
++    type_register_static(&cfu_fdro_info);
+ }
+ 
+ type_init(cfu_apb_register_types)
 diff --git a/include/hw/misc/xlnx-versal-cfu.h b/include/hw/misc/xlnx-versal-cfu.h
-new file mode 100644
-index 0000000000..62d10caf27
---- /dev/null
+index 62d10caf27..73e9a21af4 100644
+--- a/include/hw/misc/xlnx-versal-cfu.h
 +++ b/include/hw/misc/xlnx-versal-cfu.h
-@@ -0,0 +1,231 @@
-+/*
-+ * QEMU model of the CFU Configuration Unit.
-+ *
-+ * Copyright (C) 2023, Advanced Micro Devices, Inc.
-+ *
-+ * Written by Francisco Iglesias <francisco.iglesias@amd.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * References:
-+ * [1] Versal ACAP Technical Reference Manual,
-+ *     https://www.xilinx.com/support/documentation/architecture-manuals/am011-versal-acap-trm.pdf
-+ *
-+ * [2] Versal ACAP Register Reference,
-+ *     https://www.xilinx.com/htmldocs/registers/am012/am012-versal-register-reference.html
-+ */
-+#ifndef HW_MISC_XLNX_VERSAL_CFU_APB_H
-+#define HW_MISC_XLNX_VERSAL_CFU_APB_H
+@@ -20,10 +20,14 @@
+ #include "hw/sysbus.h"
+ #include "hw/register.h"
+ #include "hw/misc/xlnx-cfi-if.h"
++#include "qemu/fifo32.h"
+ 
+ #define TYPE_XLNX_VERSAL_CFU_APB "xlnx,versal-cfu-apb"
+ OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFUAPB, XLNX_VERSAL_CFU_APB)
+ 
++#define TYPE_XLNX_VERSAL_CFU_FDRO "xlnx,versal-cfu-fdro"
++OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFUFDRO, XLNX_VERSAL_CFU_FDRO)
 +
-+#include "hw/sysbus.h"
-+#include "hw/register.h"
-+#include "hw/misc/xlnx-cfi-if.h"
+ REG32(CFU_ISR, 0x0)
+     FIELD(CFU_ISR, USR_GTS_EVENT, 9, 1)
+     FIELD(CFU_ISR, USR_GSR_EVENT, 8, 1)
+@@ -210,6 +214,14 @@ struct XlnxVersalCFUAPB {
+     } cfg;
+ };
+ 
 +
-+#define TYPE_XLNX_VERSAL_CFU_APB "xlnx,versal-cfu-apb"
-+OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFUAPB, XLNX_VERSAL_CFU_APB)
-+
-+REG32(CFU_ISR, 0x0)
-+    FIELD(CFU_ISR, USR_GTS_EVENT, 9, 1)
-+    FIELD(CFU_ISR, USR_GSR_EVENT, 8, 1)
-+    FIELD(CFU_ISR, SLVERR, 7, 1)
-+    FIELD(CFU_ISR, DECOMP_ERROR, 6, 1)
-+    FIELD(CFU_ISR, BAD_CFI_PACKET, 5, 1)
-+    FIELD(CFU_ISR, AXI_ALIGN_ERROR, 4, 1)
-+    FIELD(CFU_ISR, CFI_ROW_ERROR, 3, 1)
-+    FIELD(CFU_ISR, CRC32_ERROR, 2, 1)
-+    FIELD(CFU_ISR, CRC8_ERROR, 1, 1)
-+    FIELD(CFU_ISR, SEU_ENDOFCALIB, 0, 1)
-+REG32(CFU_IMR, 0x4)
-+    FIELD(CFU_IMR, USR_GTS_EVENT, 9, 1)
-+    FIELD(CFU_IMR, USR_GSR_EVENT, 8, 1)
-+    FIELD(CFU_IMR, SLVERR, 7, 1)
-+    FIELD(CFU_IMR, DECOMP_ERROR, 6, 1)
-+    FIELD(CFU_IMR, BAD_CFI_PACKET, 5, 1)
-+    FIELD(CFU_IMR, AXI_ALIGN_ERROR, 4, 1)
-+    FIELD(CFU_IMR, CFI_ROW_ERROR, 3, 1)
-+    FIELD(CFU_IMR, CRC32_ERROR, 2, 1)
-+    FIELD(CFU_IMR, CRC8_ERROR, 1, 1)
-+    FIELD(CFU_IMR, SEU_ENDOFCALIB, 0, 1)
-+REG32(CFU_IER, 0x8)
-+    FIELD(CFU_IER, USR_GTS_EVENT, 9, 1)
-+    FIELD(CFU_IER, USR_GSR_EVENT, 8, 1)
-+    FIELD(CFU_IER, SLVERR, 7, 1)
-+    FIELD(CFU_IER, DECOMP_ERROR, 6, 1)
-+    FIELD(CFU_IER, BAD_CFI_PACKET, 5, 1)
-+    FIELD(CFU_IER, AXI_ALIGN_ERROR, 4, 1)
-+    FIELD(CFU_IER, CFI_ROW_ERROR, 3, 1)
-+    FIELD(CFU_IER, CRC32_ERROR, 2, 1)
-+    FIELD(CFU_IER, CRC8_ERROR, 1, 1)
-+    FIELD(CFU_IER, SEU_ENDOFCALIB, 0, 1)
-+REG32(CFU_IDR, 0xc)
-+    FIELD(CFU_IDR, USR_GTS_EVENT, 9, 1)
-+    FIELD(CFU_IDR, USR_GSR_EVENT, 8, 1)
-+    FIELD(CFU_IDR, SLVERR, 7, 1)
-+    FIELD(CFU_IDR, DECOMP_ERROR, 6, 1)
-+    FIELD(CFU_IDR, BAD_CFI_PACKET, 5, 1)
-+    FIELD(CFU_IDR, AXI_ALIGN_ERROR, 4, 1)
-+    FIELD(CFU_IDR, CFI_ROW_ERROR, 3, 1)
-+    FIELD(CFU_IDR, CRC32_ERROR, 2, 1)
-+    FIELD(CFU_IDR, CRC8_ERROR, 1, 1)
-+    FIELD(CFU_IDR, SEU_ENDOFCALIB, 0, 1)
-+REG32(CFU_ITR, 0x10)
-+    FIELD(CFU_ITR, USR_GTS_EVENT, 9, 1)
-+    FIELD(CFU_ITR, USR_GSR_EVENT, 8, 1)
-+    FIELD(CFU_ITR, SLVERR, 7, 1)
-+    FIELD(CFU_ITR, DECOMP_ERROR, 6, 1)
-+    FIELD(CFU_ITR, BAD_CFI_PACKET, 5, 1)
-+    FIELD(CFU_ITR, AXI_ALIGN_ERROR, 4, 1)
-+    FIELD(CFU_ITR, CFI_ROW_ERROR, 3, 1)
-+    FIELD(CFU_ITR, CRC32_ERROR, 2, 1)
-+    FIELD(CFU_ITR, CRC8_ERROR, 1, 1)
-+    FIELD(CFU_ITR, SEU_ENDOFCALIB, 0, 1)
-+REG32(CFU_PROTECT, 0x14)
-+    FIELD(CFU_PROTECT, ACTIVE, 0, 1)
-+REG32(CFU_FGCR, 0x18)
-+    FIELD(CFU_FGCR, GCLK_CAL, 14, 1)
-+    FIELD(CFU_FGCR, SC_HBC_TRIGGER, 13, 1)
-+    FIELD(CFU_FGCR, GLOW, 12, 1)
-+    FIELD(CFU_FGCR, GPWRDWN, 11, 1)
-+    FIELD(CFU_FGCR, GCAP, 10, 1)
-+    FIELD(CFU_FGCR, GSCWE, 9, 1)
-+    FIELD(CFU_FGCR, GHIGH_B, 8, 1)
-+    FIELD(CFU_FGCR, GMC_B, 7, 1)
-+    FIELD(CFU_FGCR, GWE, 6, 1)
-+    FIELD(CFU_FGCR, GRESTORE, 5, 1)
-+    FIELD(CFU_FGCR, GTS_CFG_B, 4, 1)
-+    FIELD(CFU_FGCR, GLUTMASK, 3, 1)
-+    FIELD(CFU_FGCR, EN_GLOBS_B, 2, 1)
-+    FIELD(CFU_FGCR, EOS, 1, 1)
-+    FIELD(CFU_FGCR, INIT_COMPLETE, 0, 1)
-+REG32(CFU_CTL, 0x1c)
-+    FIELD(CFU_CTL, GSR_GSC, 15, 1)
-+    FIELD(CFU_CTL, SLVERR_EN, 14, 1)
-+    FIELD(CFU_CTL, CRC32_RESET, 13, 1)
-+    FIELD(CFU_CTL, AXI_ERROR_EN, 12, 1)
-+    FIELD(CFU_CTL, FLUSH_AXI, 11, 1)
-+    FIELD(CFU_CTL, SSI_PER_SLR_PR, 10, 1)
-+    FIELD(CFU_CTL, GCAP_CLK_EN, 9, 1)
-+    FIELD(CFU_CTL, STATUS_SYNC_DISABLE, 8, 1)
-+    FIELD(CFU_CTL, IGNORE_CFI_ERROR, 7, 1)
-+    FIELD(CFU_CTL, CFRAME_DISABLE, 6, 1)
-+    FIELD(CFU_CTL, QWORD_CNT_RESET, 5, 1)
-+    FIELD(CFU_CTL, CRC8_DISABLE, 4, 1)
-+    FIELD(CFU_CTL, CRC32_CHECK, 3, 1)
-+    FIELD(CFU_CTL, DECOMPRESS, 2, 1)
-+    FIELD(CFU_CTL, SEU_GO, 1, 1)
-+    FIELD(CFU_CTL, CFI_LOCAL_RESET, 0, 1)
-+REG32(CFU_CRAM_RW, 0x20)
-+    FIELD(CFU_CRAM_RW, RFIFO_AFULL_DEPTH, 18, 9)
-+    FIELD(CFU_CRAM_RW, RD_WAVE_CNT_LEFT, 12, 6)
-+    FIELD(CFU_CRAM_RW, RD_WAVE_CNT, 6, 6)
-+    FIELD(CFU_CRAM_RW, WR_WAVE_CNT, 0, 6)
-+REG32(CFU_MASK, 0x28)
-+REG32(CFU_CRC_EXPECT, 0x2c)
-+REG32(CFU_CFRAME_LEFT_T0, 0x60)
-+    FIELD(CFU_CFRAME_LEFT_T0, NUM, 0, 20)
-+REG32(CFU_CFRAME_LEFT_T1, 0x64)
-+    FIELD(CFU_CFRAME_LEFT_T1, NUM, 0, 20)
-+REG32(CFU_CFRAME_LEFT_T2, 0x68)
-+    FIELD(CFU_CFRAME_LEFT_T2, NUM, 0, 20)
-+REG32(CFU_ROW_RANGE, 0x6c)
-+    FIELD(CFU_ROW_RANGE, HALF_FSR, 5, 1)
-+    FIELD(CFU_ROW_RANGE, NUM, 0, 5)
-+REG32(CFU_STATUS, 0x100)
-+    FIELD(CFU_STATUS, SEU_WRITE_ERROR, 30, 1)
-+    FIELD(CFU_STATUS, FRCNT_ERROR, 29, 1)
-+    FIELD(CFU_STATUS, RSVD_ERROR, 28, 1)
-+    FIELD(CFU_STATUS, FDRO_ERROR, 27, 1)
-+    FIELD(CFU_STATUS, FDRI_ERROR, 26, 1)
-+    FIELD(CFU_STATUS, FDRI_READ_ERROR, 25, 1)
-+    FIELD(CFU_STATUS, READ_FDRI_ERROR, 24, 1)
-+    FIELD(CFU_STATUS, READ_SFR_ERROR, 23, 1)
-+    FIELD(CFU_STATUS, READ_STREAM_ERROR, 22, 1)
-+    FIELD(CFU_STATUS, UNKNOWN_STREAM_PKT, 21, 1)
-+    FIELD(CFU_STATUS, USR_GTS, 20, 1)
-+    FIELD(CFU_STATUS, USR_GSR, 19, 1)
-+    FIELD(CFU_STATUS, AXI_BAD_WSTRB, 18, 1)
-+    FIELD(CFU_STATUS, AXI_BAD_AR_SIZE, 17, 1)
-+    FIELD(CFU_STATUS, AXI_BAD_AW_SIZE, 16, 1)
-+    FIELD(CFU_STATUS, AXI_BAD_ARADDR, 15, 1)
-+    FIELD(CFU_STATUS, AXI_BAD_AWADDR, 14, 1)
-+    FIELD(CFU_STATUS, SCAN_CLEAR_PASS, 13, 1)
-+    FIELD(CFU_STATUS, HC_SEC_ERROR, 12, 1)
-+    FIELD(CFU_STATUS, GHIGH_B_ISHIGH, 11, 1)
-+    FIELD(CFU_STATUS, GHIGH_B_ISLOW, 10, 1)
-+    FIELD(CFU_STATUS, GMC_B_ISHIGH, 9, 1)
-+    FIELD(CFU_STATUS, GMC_B_ISLOW, 8, 1)
-+    FIELD(CFU_STATUS, GPWRDWN_B_ISHIGH, 7, 1)
-+    FIELD(CFU_STATUS, CFI_SEU_CRC_ERROR, 6, 1)
-+    FIELD(CFU_STATUS, CFI_SEU_ECC_ERROR, 5, 1)
-+    FIELD(CFU_STATUS, CFI_SEU_HEARTBEAT, 4, 1)
-+    FIELD(CFU_STATUS, SCAN_CLEAR_DONE, 3, 1)
-+    FIELD(CFU_STATUS, HC_COMPLETE, 2, 1)
-+    FIELD(CFU_STATUS, CFI_CFRAME_BUSY, 1, 1)
-+    FIELD(CFU_STATUS, CFU_STREAM_BUSY, 0, 1)
-+REG32(CFU_INTERNAL_STATUS, 0x104)
-+    FIELD(CFU_INTERNAL_STATUS, SSI_EOS, 22, 1)
-+    FIELD(CFU_INTERNAL_STATUS, SSI_GWE, 21, 1)
-+    FIELD(CFU_INTERNAL_STATUS, RFIFO_EMPTY, 20, 1)
-+    FIELD(CFU_INTERNAL_STATUS, RFIFO_FULL, 19, 1)
-+    FIELD(CFU_INTERNAL_STATUS, SEL_SFR, 18, 1)
-+    FIELD(CFU_INTERNAL_STATUS, STREAM_CFRAME, 17, 1)
-+    FIELD(CFU_INTERNAL_STATUS, FDRI_PHASE, 16, 1)
-+    FIELD(CFU_INTERNAL_STATUS, CFI_PIPE_EN, 15, 1)
-+    FIELD(CFU_INTERNAL_STATUS, AWFIFO_DCNT, 10, 5)
-+    FIELD(CFU_INTERNAL_STATUS, WFIFO_DCNT, 5, 5)
-+    FIELD(CFU_INTERNAL_STATUS, REPAIR_BUSY, 4, 1)
-+    FIELD(CFU_INTERNAL_STATUS, TRIMU_BUSY, 3, 1)
-+    FIELD(CFU_INTERNAL_STATUS, TRIMB_BUSY, 2, 1)
-+    FIELD(CFU_INTERNAL_STATUS, HCLEANR_BUSY, 1, 1)
-+    FIELD(CFU_INTERNAL_STATUS, HCLEAN_BUSY, 0, 1)
-+REG32(CFU_QWORD_CNT, 0x108)
-+REG32(CFU_CRC_LIVE, 0x10c)
-+REG32(CFU_PENDING_READ_CNT, 0x110)
-+    FIELD(CFU_PENDING_READ_CNT, NUM, 0, 25)
-+REG32(CFU_FDRI_CNT, 0x114)
-+REG32(CFU_ECO1, 0x118)
-+REG32(CFU_ECO2, 0x11c)
-+
-+#define R_MAX (R_CFU_ECO2 + 1)
-+
-+#define NUM_STREAM 2
-+#define WFIFO_SZ 4
-+
-+struct XlnxVersalCFUAPB {
++struct XlnxVersalCFUFDRO {
 +    SysBusDevice parent_obj;
-+    MemoryRegion iomem;
-+    MemoryRegion iomem_stream[NUM_STREAM];
-+    qemu_irq irq_cfu_imr;
++    MemoryRegion iomem_fdro;
 +
-+    /* 128-bit wfifo.  */
-+    uint32_t wfifo[WFIFO_SZ];
-+
-+    uint32_t regs[R_MAX];
-+    RegisterInfo regs_info[R_MAX];
-+
-+    uint8_t fdri_row_addr;
-+
-+    struct {
-+        XlnxCfiIf *cframe[15];
-+    } cfg;
++    Fifo32 fdro_data;
 +};
 +
-+/**
-+ * This is a helper function for updating a CFI data write fifo, an array of 4
-+ * uint32_t and 128 bits of data that are allowed to be written through 4
-+ * sequential 32 bit accesses. After the last index has been written into the
-+ * write fifo (wfifo), the data is copied to and returned in a secondary fifo
-+ * provided to the function (wfifo_ret), and the write fifo is cleared
-+ * (zeroized).
-+ *
-+ * @addr: the address used when calculating the wfifo array index to update
-+ * @value: the value to write into the wfifo array
-+ * @wfifo: the wfifo to update
-+ * @wfifo_out: will return the wfifo data when all 128 bits have been written
-+ *
-+ * @return: true if all 128 bits have been updated.
-+ */
-+bool update_wfifo(hwaddr addr, uint64_t value,
-+                  uint32_t *wfifo, uint32_t *wfifo_ret);
-+
-+#endif
+ /**
+  * This is a helper function for updating a CFI data write fifo, an array of 4
+  * uint32_t and 128 bits of data that are allowed to be written through 4
 -- 
 2.34.1
 
