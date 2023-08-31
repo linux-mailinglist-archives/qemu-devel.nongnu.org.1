@@ -2,88 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2F678E853
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA2178E865
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbd6v-0006NS-Hs; Thu, 31 Aug 2023 04:33:05 -0400
+	id 1qbdAq-0007we-Aa; Thu, 31 Aug 2023 04:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbd6n-0006N8-2b
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:32:57 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbd6j-0001O0-FG
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:32:56 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9a603159f33so47737166b.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693470771; x=1694075571; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pfExW0wvJbL75l+XPekcfEQYMr9eTFc9esyn7jJfCbE=;
- b=d5kejjomt60Fw4zhzXuIALnLQ7q28xWcepRFxxqL2khS6DL2M6PnbY5zW1acSw2k8M
- OvthwGowjfjxvN/s76RSoX2KPOfqsEHNS5AfizFikK7zdLS28W5a5OG2dsB0/dE29yjV
- nzrbaKgvytTwL0PEZ6f+snW0K9CfkA8Ky+XXwdNFEqxg2BFCFVZmNAjPP6RLozybXrIn
- lvzy3TmN4ydKswHISlD3zuBnrjTwEqvyOwz25dTmUYNeLzreW4/joS+wnpQ561XKcSx5
- N11xKiFRf/LyD8u4qehL/dNVLny+P567UnsZMLMIdrAE84POEQJuEMN6iu6Wbus+MQYw
- +xYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693470771; x=1694075571;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pfExW0wvJbL75l+XPekcfEQYMr9eTFc9esyn7jJfCbE=;
- b=JrfEdpKLO5tLNTpqk9070Ku1lGFvDiT0t1YTcLCOhAI+fQqf68Ij45+O9jaG92FiCc
- 2xfulyGkUx2Is4I/15AbVCMOLdbJWNVZbWnsIcAtPX98wzOz5moOQqm4vKBS09f1+H4c
- vPpSnJXbw6gN4dXz5Tr1mDVRTK/YFkSYP4MbmJDL8ZvAnMyKK7Ay8enpxdDI6OSJAg8o
- ZV9p8OR46SNL08PU2brUqZKFJtC+o1R3ibAg4QDGtHL1e7vwHfTK33+i6PbCFk/oy/fH
- N09BnJLNtEdDwaxNYfFKd5LQdMWBBytHqC3/xBZzkwHxuU2gFEtxAY+nASC4t3UTDKNt
- aBug==
-X-Gm-Message-State: AOJu0Ywlj7RJXWYIdgA2kxFnJFDU6zVO/QbKpI5Sx9IpLv7ODvn1DWL9
- UfzYeL3vv/E6VKrkBKG2b8TM0Q==
-X-Google-Smtp-Source: AGHT+IE8Ujf1rgUIpY5+GcQPDS3d4GeZQx/nowansygkfq84pt+u4kU/hMW2Die2RiIgXfvYa2fwZw==
-X-Received: by 2002:a17:906:7683:b0:9a5:d657:47ec with SMTP id
- o3-20020a170906768300b009a5d65747ecmr3160536ejm.64.1693470771518; 
- Thu, 31 Aug 2023 01:32:51 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.245])
- by smtp.gmail.com with ESMTPSA id
- i2-20020a1709064ec200b0099bc8db97bcsm494328ejv.131.2023.08.31.01.32.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 01:32:51 -0700 (PDT)
-Message-ID: <63170abc-187d-5c2e-655e-fd6d0b9266a9@linaro.org>
-Date: Thu, 31 Aug 2023 10:32:49 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
+ id 1qbdAo-0007vv-68; Thu, 31 Aug 2023 04:37:06 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
+ id 1qbdAk-00028h-7D; Thu, 31 Aug 2023 04:37:05 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RbvfH3zhPz4x09;
+ Thu, 31 Aug 2023 18:36:55 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbvfG1gxzz4wy9;
+ Thu, 31 Aug 2023 18:36:53 +1000 (AEST)
+Message-ID: <0a54be6c-698d-de03-1e7d-374960a518c4@kaod.org>
+Date: Thu, 31 Aug 2023 10:36:52 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 0/8] misc AHCI cleanups
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/4] ppc/xive: Introduce a new XiveRouter end_notify()
+ handler
 Content-Language: en-US
-To: John Snow <jsnow@redhat.com>, Niklas Cassel <Niklas.Cassel@wdc.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Qemu-block <qemu-block@nongnu.org>, qemu-devel <qemu-devel@nongnu.org>,
- Damien Le Moal <dlemoal@kernel.org>
-References: <20230609140844.202795-1-nks@flawful.org>
- <ZLe/VG5d6TEdp/MT@x1-carbon>
- <b58779ed-cecb-824b-019e-bc34e6b2258a@linaro.org>
- <CAFn=p-Y4Tw0eY=8yXxnzSA3kzwb36H0oysag=HD_8eMsPNwuDg@mail.gmail.com>
- <ZNDIUzyB9hmt+E1I@x1-carbon>
- <CAFn=p-a5GuQ9mxxTn7T7B2-_5nPq9nw1ucsmJK5WuMOwXg=cSw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFn=p-a5GuQ9mxxTn7T7B2-_5nPq9nw1ucsmJK5WuMOwXg=cSw@mail.gmail.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20230829143236.219348-1-clg@kaod.org>
+ <20230829143236.219348-3-clg@kaod.org>
+ <a835ad10-0de5-7364-ab4c-444b8b9fd94e@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <a835ad10-0de5-7364-ab4c-444b8b9fd94e@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.242, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,26 +66,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi John,
-
-On 7/8/23 19:37, John Snow wrote:
-
-> Apologies again for the delay. I tested it lightly and it seems fine to 
-> me (and in general I trust your commits as they've got meticulous 
-> references to the spec, so it'll be easy to fix if something goes wrong)
+On 8/31/23 09:50, Frederic Barrat wrote:
 > 
-> It's my fault we'll miss this release window, but putting it in early 
-> next window gives us a lot of time for people to notice accidental 
-> regressions.
 > 
-> Thanks for the patches and I hope to see more from you soon ;)
+> On 29/08/2023 16:32, Cédric Le Goater wrote:
+>> It will help us model the END triggers on the PowerNV machine, which
+>> can be rerouted to another interrupt controller.
+>>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+> 
+> 
+> 
+>> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+>> index 56670b2cac6e..df3ee0496fe7 100644
+>> --- a/hw/intc/xive.c
+>> +++ b/hw/intc/xive.c
+>> @@ -1518,6 +1518,13 @@ static void xive_router_realize(DeviceState *dev, Error **errp)
+>>       assert(xrtr->xfb);
+>>   }
+>> +static void xive_router_end_notify_handler(XiveRouter *xrtr, XiveEAS *eas)
+>> +{
+>> +    XiveRouterClass *xrc = XIVE_ROUTER_GET_CLASS(xrtr);
+>> +
+>> +    return xrc->end_notify(xrtr, eas);
+>> +}
+>> +
+>>   /*
+>>    * Encode the HW CAM line in the block group mode format :
+>>    *
+>> @@ -1664,8 +1671,7 @@ static bool xive_router_end_es_notify(XiveRouter *xrtr, uint8_t end_blk,
+>>    * another chip. We don't model the PowerBus but the END trigger
+>>    * message has the same parameters than in the function below.
+>>    */
+>> -static void xive_router_end_notify(XiveRouter *xrtr, uint8_t end_blk,
+>> -                                   uint32_t end_idx, uint32_t end_data)
+>> +void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas)
+>>   {
+>>       XiveEND end;
+>>       uint8_t priority;
+>> @@ -1675,6 +1681,10 @@ static void xive_router_end_notify(XiveRouter *xrtr, uint8_t end_blk,
+>>       XiveNVT nvt;
+>>       bool found;
+>> +    uint8_t end_blk = xive_get_field64(EAS_END_BLOCK, eas->w);
+>> +    uint32_t end_idx = xive_get_field64(EAS_END_INDEX, eas->w);
+>> +    uint32_t end_data = xive_get_field64(EAS_END_DATA,  eas->w);
+>> +
+>>       /* END cache lookup */
+>>       if (xive_router_get_end(xrtr, end_blk, end_idx, &end)) {
+>>           qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No END %x/%x\n", end_blk,
+>> @@ -1817,10 +1827,7 @@ do_escalation:
+>>       /*
+>>        * The END trigger becomes an Escalation trigger
+>>        */
+>> -    xive_router_end_notify(xrtr,
+>> -                           xive_get_field32(END_W4_ESC_END_BLOCK, end.w4),
+>> -                           xive_get_field32(END_W4_ESC_END_INDEX, end.w4),
+>> -                           xive_get_field32(END_W5_ESC_END_DATA,  end.w5));
+>> +    xive_router_end_notify_handler(xrtr, (XiveEAS *) &end.w4);
+> 
+> 
+> I didn't like the cast, but I can see why you're doing it this way. 
 
-I've been doing some testing (x86/mips), but I don't think I have the
-same coverage as your maintainer test suite. Still, if you are busy,
-I can merge this series now that we are at the beginning of the
-development cycle.
+OPAL does a similar cast :
 
-Regards,
+  https://github.com/open-power/skiboot/blob/master/hw/xive.c#L783
 
-Phil.
+> We should be fine as long as the notify handler is not testing the validity bit of the EAS structure.
+
+Indeed. It doesn't seem to be set :
+
+XIVE[0] #0 END Escalation EAT
+   0000008e -Q    end:00/008f data:00000000
+   0000008f --    end:01/003f data:0000008f
+   00000096 -Q    end:00/0097 data:00000000
+   00000097 --    end:01/003f data:00000097
+
+I don't remember to be honest. This is from a few years back. Ask the
+HW designer may be ?
+  
+> Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+Thanks,
+
+C.
+
+> 
+>    Fred
+> 
+> 
+>>   }
+>>   void xive_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
+>> @@ -1871,10 +1878,7 @@ void xive_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
+>>       /*
+>>        * The event trigger becomes an END trigger
+>>        */
+>> -    xive_router_end_notify(xrtr,
+>> -                           xive_get_field64(EAS_END_BLOCK, eas.w),
+>> -                           xive_get_field64(EAS_END_INDEX, eas.w),
+>> -                           xive_get_field64(EAS_END_DATA,  eas.w));
+>> +    xive_router_end_notify_handler(xrtr, &eas);
+>>   }
+>>   static Property xive_router_properties[] = {
+>> @@ -1887,12 +1891,16 @@ static void xive_router_class_init(ObjectClass *klass, void *data)
+>>   {
+>>       DeviceClass *dc = DEVICE_CLASS(klass);
+>>       XiveNotifierClass *xnc = XIVE_NOTIFIER_CLASS(klass);
+>> +    XiveRouterClass *xrc = XIVE_ROUTER_CLASS(klass);
+>>       dc->desc    = "XIVE Router Engine";
+>>       device_class_set_props(dc, xive_router_properties);
+>>       /* Parent is SysBusDeviceClass. No need to call its realize hook */
+>>       dc->realize = xive_router_realize;
+>>       xnc->notify = xive_router_notify;
+>> +
+>> +    /* By default, the router handles END triggers locally */
+>> +    xrc->end_notify = xive_router_end_notify;
+>>   }
+>>   static const TypeInfo xive_router_info = {
+
 
