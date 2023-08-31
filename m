@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA7878ED97
+	by mail.lfdr.de (Postfix) with ESMTPS id AA86178ED96
 	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 14:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbh5W-0007Ce-05; Thu, 31 Aug 2023 08:47:54 -0400
+	id 1qbh5h-0007E5-84; Thu, 31 Aug 2023 08:48:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbh5C-0007Ak-Hd
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:47:41 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbh5f-0007Dw-6p
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:48:03 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbh55-00029M-Sj
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:47:31 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9a2a4a5472dso416052966b.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:47:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbh5b-0002Hl-0e
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:48:02 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-401bbfc05fcso7290245e9.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:47:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693486045; x=1694090845; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=wE+CPuSny35cVHZvMe7RkMz+Zl+YRsPgMfw+4FYzHhQ=;
- b=du7AS8LY+HCptcd0DX9nZf+NQdUQVayIPOVPLd/bxrzJZl9XuzhsfKWtBS9RcEB5Uz
- x8g72LE62HClWlolGgycqQVOYd3hSLpQCRkr1niUqNLFQm6nhQq3ze86vAJX6kcs780p
- ymskKyWYVnS198/nD53Ym+J0ex7iGUe0u1kY1bl7lg9pOo2kg7kV0s+0tLbw3qz+Zcd4
- ibDdBMY6ECoYXQVBDmIThLp4WaHfC6TEEbFNCPbFhStaRBJkvY3olZgjjzuwxSKSWj/U
- IFjKNugYD00Xaknnj7+t6Bbs7h5wpOcgkAnP7EMeGMzNcKcOHyo2f5gLvgQKHiEeQciX
- 0jww==
+ d=linaro.org; s=google; t=1693486077; x=1694090877; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MuKQEjqs7xtZpogq/M2NsngsOFq+Lr4SRZ+K71ruknQ=;
+ b=eGlFW9cKKT/OQV1hHHt7zefp6ehh7nJFJE/wiXhU1PQJWlbx5XISEV9yEv+SA4odJa
+ zeN4bv2nEYOPI9GnAa3O/A3KVEaZjHdBhtx/OSf+eP1QNGYuO7XUKRqCe22Cm4fLc/Va
+ HdMc5Qdg7pphRAZ3XkawG3ysYC0MJEnvsICatLhgtKesSmVizfhGX+e3ccT8GI5trqMT
+ xVPNHVuH4H5esGuQSaaxDeY/0+Or/G6PJfGw36qUg0RQNZRGn9zOQY0fsU7bf67HUsin
+ dzU0TKjlySAjNLNfpiQrqeuQ62jl5sDi3OgNUWnVWcrs3XiQutbH/lB1r9VA+MfySioJ
+ Dhfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486045; x=1694090845;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wE+CPuSny35cVHZvMe7RkMz+Zl+YRsPgMfw+4FYzHhQ=;
- b=F0SAN+l/1a5vuTlmFRx139KhGUZ0Wcv4hxF27WTbmB46HocxbVBcYymRRFDq/sZEpU
- oDJSrVRdHOgYL+wO8RYcBYezohFSnXpMUoFsybvKw9rW3UxrTUdvWDUHHD+ruKR5lwsT
- dt/XvYkb70GANAtLz8kMO0t7+6kuGg/UXScrTZKsHbPvaUdG1YoQ9VHAmvEdS7taBPGV
- x2F+9ujRKb58nPHrAeSkImA8wOGUX1jO7ohnYkRO/iwtmQSVgzNEnYe6rMypblEE6+vL
- e9IpQlxJYvoajIK331ybfPK166v04f5g/++pinBUt2NSSFvqUrecXn74YZwwCA3VCGhM
- eEVg==
-X-Gm-Message-State: AOJu0Yw9IfLQDbBnSmiyD2XeO01HhdYM2bhuFZtNxEMJxv0XKdQV8xhu
- Pp5zuBaw6U7GIz/nklfCD7PdjQ==
-X-Google-Smtp-Source: AGHT+IFPtHGClKf+Ne2KZZWy4Wq3EilHMitnEr7A9TpjtMedFpD+T1ieroBMODUdI/GSb7+CwykhMg==
-X-Received: by 2002:a17:907:a076:b0:9a1:df30:e158 with SMTP id
- ia22-20020a170907a07600b009a1df30e158mr2758334ejc.36.1693486044891; 
- Thu, 31 Aug 2023 05:47:24 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ d=1e100.net; s=20221208; t=1693486077; x=1694090877;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MuKQEjqs7xtZpogq/M2NsngsOFq+Lr4SRZ+K71ruknQ=;
+ b=EX7I3kCT6GNbqOuFY7LreoPNEPzLEhhSxIDw2yo06Psgs22EMYFhI+Jh0czxh2Ngol
+ 8Wfc9YRM0JAyLudLW22bw/VpcHwYs9xYDZFzbV8qN0VoQdCGhPLdMActziP5K3On1dxu
+ 9SuZQvfh7cJmPoMPh5hID70GxMgBiIq521qJd0MJl903IGVMFXJnyzeMz0RKYGFMjddL
+ CHXA3St/eCVidL0FOOncywdWAhEqjSJAlrihq9PJPKYejs3qOrFYBjo3ZoOz7em9JmXq
+ WUMwp4QyfIrjhGyyBn+FbQg+GjtGMmA/YAXNJDzR1lC9H3CQDJ30wFxXrLj9IKoagYNJ
+ QEOw==
+X-Gm-Message-State: AOJu0YygJbCDbg9608fckL1EkE1gVFo9PdyoZcc6Lkj4zyXQ83FJTYYl
+ 2UAo8fFKWfiGfgNOVBq9/fFzMQ==
+X-Google-Smtp-Source: AGHT+IEXcUi09vWHQhQyrCMQALpbyA0GFPvHq6+nlextyisEOtaU7wDKErFhskYBZAkgudz1d91xVQ==
+X-Received: by 2002:a05:600c:214d:b0:401:bdd7:499d with SMTP id
+ v13-20020a05600c214d00b00401bdd7499dmr4111475wml.25.1693486077308; 
+ Thu, 31 Aug 2023 05:47:57 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- i2-20020a1709064ec200b0099bc8db97bcsm725885ejv.131.2023.08.31.05.47.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 05:47:24 -0700 (PDT)
-Date: Thu, 31 Aug 2023 14:47:23 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH 20/20] target/riscv: add 'kvm_supported' class property
-Message-ID: <20230831-786fd32dfa7014f439b69775@orel>
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
- <20230825130853.511782-21-dbarboza@ventanamicro.com>
+ c10-20020a05600c0aca00b003fc0505be19sm1884577wmr.37.2023.08.31.05.47.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 05:47:56 -0700 (PDT)
+Message-ID: <292f8ac7-402f-0da1-2f4e-40d5391c861a@linaro.org>
+Date: Thu, 31 Aug 2023 14:47:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230825130853.511782-21-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 1/2] hw/riscv/virt.c: fix non-KVM --enable-debug build
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, richard.henderson@linaro.org
+References: <20230830133503.711138-1-dbarboza@ventanamicro.com>
+ <20230830133503.711138-2-dbarboza@ventanamicro.com>
+ <20230831-d3b40182209cb9054ceaed62@orel>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230831-d3b40182209cb9054ceaed62@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,133 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 25, 2023 at 10:08:53AM -0300, Daniel Henrique Barboza wrote:
-> This follows the same idea of 'tcg_support' property added in the
-> previous patch. Note that we're now implementing the 'cpu_realizefn' for
-> the KVMAccel class since this verification is done in realize() time.
-> 
-> Supporting vendor CPUs with KVM is not possible. We rely on the
-> extension support of the KVM module running in the host, making it
-> impossible to guarantee that a vendor CPU will have all the required
-> extensions available. The only way to guarantee that a vendor CPU is KVM
-> compatible is running KVM in a host that has the same vendor CPU, and
+On 31/8/23 10:42, Andrew Jones wrote:
+> On Wed, Aug 30, 2023 at 10:35:02AM -0300, Daniel Henrique Barboza wrote:
+>> A build with --enable-debug and without KVM will fail as follows:
+>>
+>> /usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
+>> ./qemu/build/../hw/riscv/virt.c:1465: undefined reference to `kvm_riscv_aia_create'
+>>
+>> This happens because the code block with "if virt_use_kvm_aia(s)" isn't
+>> being ignored by the debug build, resulting in an undefined reference to
+>> a KVM only function.
+>>
+>> Add a 'kvm_enabled()' conditional together with virt_use_kvm_aia() will
+>> make the compiler crop the kvm_riscv_aia_create() call entirely from a
+>> non-KVM build. Note that adding the 'kvm_enabled()' conditional inside
+>> virt_use_kvm_aia() won't fix the build because this function would need
+>> to be inlined multiple times to make the compiler zero out the entire
+>> block.
+>>
+>> While we're at it, use kvm_enabled() in all instances where
+>> virt_use_kvm_aia() is checked to allow the compiler to elide these other
+>> kvm-only instances as well.
+>>
+>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>> Fixes: dbdb99948e ("target/riscv: select KVM AIA in riscv virt machine")
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   hw/riscv/virt.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
 
-Or to attempt to enable each extension which the vendor CPU expects and
-to attempt to disable everything else. If all those actions succeed, then
-we can override the ID registers with those of the CPU we want to model
-and go for it. There's still risk, though, that the guest kernel will see
-the ID registers of the model and attempt to apply some errata workaround
-which may or may not work and/or crash the guest.
 
-> for this case we already have the 'host' CPU type.
+> I think I'd prefer
 > 
-> We're better of declaring that all vendors CPUs are not KVM capable.
-> After this patch, running KVM accel with a vendor CPU will produce an
-> error like the following:
-> 
-> $ ./qemu-system-riscv64 -M virt,accel=kvm -cpu veyron-v1
-> qemu-system-riscv64: 'veyron-v1' CPU is not compatible with KVM acceleration
+>   /* We need this inlined for debug (-O0) builds */
+>   static inline QEMU_ALWAYS_INLINE bool virt_use_kvm_aia(RISCVVirtState *s)
+>   {
+>      return kvm_enabled() && kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
 
-Shouldn't we at least check if the host matches the requested CPU first?
-So, if we happen to be on a veyron-v1, then the veyron-v1 model should
-be equivalent to 'host'. (They may not be 100% equivalent in practice, but
-theoretically they should be, which means trying it and debugging the bugs
-should improve the CPU models on both sides.)
+Generally we should know whether KVM is enabled or not _before_
+calling any foo_kvm() code, not after.
 
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu-qom.h     |  1 +
->  target/riscv/cpu.c         |  1 +
->  target/riscv/kvm/kvm-cpu.c | 24 ++++++++++++++++++++++++
->  3 files changed, 26 insertions(+)
-> 
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index e86b76f9fe..32d9bb07b4 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -72,5 +72,6 @@ struct RISCVCPUClass {
->  
->      bool user_extension_properties;
->      bool tcg_supported;
-> +    bool kvm_supported;
->  };
->  #endif /* RISCV_CPU_QOM_H */
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index f749ea2a2e..73302bb72a 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1646,6 +1646,7 @@ static void riscv_dynamic_cpu_class_init(ObjectClass *c, void *data)
->  
->      rcc->user_extension_properties = true;
->      rcc->tcg_supported = true;
-> +    rcc->kvm_supported = true;
->  }
->  
->  static void riscv_vendor_cpu_class_init(ObjectClass *c, void *data)
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index 501384924b..85f3b8c80e 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -1289,6 +1289,7 @@ static void riscv_kvm_cpu_class_init(ObjectClass *c, void *data)
->      RISCVCPUClass *rcc = RISCV_CPU_CLASS(c);
->  
->      rcc->user_extension_properties = true;
-> +    rcc->kvm_supported = true;
->  }
->  
->  static const TypeInfo riscv_kvm_cpu_type_infos[] = {
-> @@ -1302,6 +1303,28 @@ static const TypeInfo riscv_kvm_cpu_type_infos[] = {
->  
->  DEFINE_TYPES(riscv_kvm_cpu_type_infos)
->  
-> +/*
-> + * We'll get here via the following path:
-> + *
-> + * riscv_cpu_realize()
-> + *   -> cpu_exec_realizefn()
-> + *      -> kvm_cpu_realizefn() (via accel_cpu_realizefn())
-> + */
-> +static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-> +{
-> +    RISCVCPU *cpu = RISCV_CPU(cs);
-> +    RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
-> +
-> +    if (!rcc->kvm_supported) {
-> +        g_autofree char *name = riscv_cpu_get_name(rcc);
-> +        error_setg(errp, "'%s' CPU is not compatible with KVM acceleration",
-> +                   name);
-> +        return false;
-> +    }
-> +
-> +    return true;
-> +}
-> +
->  static void kvm_cpu_instance_init(CPUState *cs)
->  {
->      Object *obj = OBJECT(RISCV_CPU(cs));
-> @@ -1328,6 +1351,7 @@ static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
->      AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
->  
->      acc->cpu_instance_init = kvm_cpu_instance_init;
-> +    acc->cpu_realizefn = kvm_cpu_realizefn;
->  }
->  
->  static const TypeInfo kvm_cpu_accel_type_info = {
-> -- 
-> 2.41.0
-> 
->
+>   }
 
-I don't think we want kvm_supported nor tcg_supported as they necessarily
-bring accelerator knowledge into target/riscv/cpu.c, where the booleans
-have to be set. It would be better if the decisions as to what is
-supported or not are made in the accelerator's respective files. So, we
-try to realize some model with some accel and let that accel do some
-checks and error out when it can't. If riscv kvm only supports 'host',
-then it's check would simply be "is the model host?" and the inverse for
-tcg.
-
-Thanks,
-drew
 
