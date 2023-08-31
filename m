@@ -2,94 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1533078F3E2
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 22:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE9D78F413
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 22:32:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbo9E-0001tf-RX; Thu, 31 Aug 2023 16:20:12 -0400
+	id 1qboJZ-000058-Lb; Thu, 31 Aug 2023 16:30:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qbo99-0001tJ-UP
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:20:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qbo97-0000Oc-TV
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:20:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693513204;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ufk8GCiw/LwQVAZTYLTycpsT48xt2rPVrWRGaQbD81E=;
- b=DNtiUd7Zga+cN+KEtU49Wk6YnHFdaSZJKFRV1yUoF+NdbYMjzVfjrqX4yjAiGr7vXqQmMm
- dQFfFvqGsp9SBwFBebv8sR1FhTHEztUY0ayTKHsX7SEuqjF1Hffxtw2M9/sA2BLXGSDkTs
- CWtBxgSmi3G/mlXQQN7bFbp5FcqsnpE=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-cqwv-qlyP9C0ncTjVtRsVA-1; Thu, 31 Aug 2023 16:20:02 -0400
-X-MC-Unique: cqwv-qlyP9C0ncTjVtRsVA-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-40559875dd1so2520231cf.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 13:20:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qboJD-0008W0-Cm
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:30:32 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qboJB-0002Zk-1D
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:30:31 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-99bcfe28909so140399566b.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 13:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693513827; x=1694118627; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GPoMTlp876b4GOvagv/YEBtZYu5eWFRVSdZFP4aw4Ic=;
+ b=rVaHC0UQAlTx0n+qDCiwgcD/ypK5+rMl/oLyBfsgmsddH+6gohCXq0o6/dX2S+DNwx
+ EXKr1VWpTQfyLcuMR/oQLaj470dGkWzat1Gbxk3zqHUitox5quv1BIHxvsdNHcLF2vNA
+ u/Y58mIbhPWrnaB3HvA3SrViKmOdFZh7xAhjAH2Lb3zPcEFer2EyTERO1S5nMa6uqGoO
+ 80jzQfMWglXQi9rhn6SE/Psm38xdlD7T+WURJ1U6TGNf7FAZLq1OdoUC6guzR1xLwCkq
+ 3qt3GJqtZ9TCFqo3Its25bl5RchzaCw3PpCMV6iTjHHZWO7ROEZpSbYpwT95Lmk0zhI0
+ 90wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693513201; x=1694118001;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ufk8GCiw/LwQVAZTYLTycpsT48xt2rPVrWRGaQbD81E=;
- b=hp9/dfXyoHHdOFs8BbjTD8NpihGdq7Pr1tJulaB7c1b2Vze6FAnE6TTzg/58fizMPv
- q4DlaVWA5TiLK4/BRj6leKy7MSNCybczu8bnIl03zBAitNtNw8g0p0imR9gJ/Inp7yrT
- rP3YTT9ZSgl6VU5NjPxfB9yUTUS57droEsRZ0GOwFMUO8Qeye1F9LtGiwlhqs67v7+qj
- 4BGSXHVzsDFjgQrro2nsRFdDUxb5v9sNM6OZj4i7TtvLMB1XKixo+uxRXJUo4OLZHbZv
- E2nadsk+AtKwS4kuGbE7YGo4S0ceaT5C3LyLp8+i+dcWuFY4czQka3CSJFI8wz2LGjvr
- CWvw==
-X-Gm-Message-State: AOJu0YxlCYJcewZJAy2wRaRZXqawb4dDG8ain2wm7EKU7JiyyUDVWhN8
- t6MhqjODDFM1HjooK8mOl6UXZ0R34ZqPqiGECgZfMgoqKRSkSUxDTxZVsurT3XYt3OKzTeMY05y
- fwFK+1jDx/JejvQ0=
-X-Received: by 2002:a05:622a:1a95:b0:412:944:542f with SMTP id
- s21-20020a05622a1a9500b004120944542fmr554600qtc.2.1693513201284; 
- Thu, 31 Aug 2023 13:20:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGFAF781BYCy/7xjebcfDDFV6O9tFD+MwHw2lCzWGRBIbm6hK0VSsMkVUfbwGvnURh5QKA8xg==
-X-Received: by 2002:a05:622a:1a95:b0:412:944:542f with SMTP id
- s21-20020a05622a1a9500b004120944542fmr554577qtc.2.1693513200985; 
- Thu, 31 Aug 2023 13:20:00 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- y21-20020ac85255000000b004109928c607sm882603qtn.43.2023.08.31.13.19.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 13:20:00 -0700 (PDT)
-Date: Thu, 31 Aug 2023 16:19:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- eblake@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
- idryomov@gmail.com, pl@kamp.de, sw@weilnetz.de,
- sstabellini@kernel.org, anthony.perard@citrix.com, paul@xen.org,
- pbonzini@redhat.com, marcandre.lureau@redhat.com,
- berrange@redhat.com, thuth@redhat.com, philmd@linaro.org,
- stefanha@redhat.com, fam@euphon.net, quintela@redhat.com,
- leobras@redhat.com, kraxel@redhat.com, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH 2/7] migration: Clean up local variable shadowing
-Message-ID: <ZPD17rBVIoFgpBWA@x1n>
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-3-armbru@redhat.com>
+ d=1e100.net; s=20221208; t=1693513827; x=1694118627;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GPoMTlp876b4GOvagv/YEBtZYu5eWFRVSdZFP4aw4Ic=;
+ b=kcal+G/Q9dFAm+BSSF3kbvPUY7b8l2yyrwhieowakAwLT+p83zEbUIZzp1AZAfgTrt
+ bQXdDx9MrT1af8fuOst18d0Z51nF20342OBpURrK24pe4S/502a4RWU+4oEZqNluJerG
+ bYDBNZr9K7Uk8XdQomo469Vxl0app9bOt90VIZEB4LI9fogZb6IZiKZAOyR7mlnlZ0kD
+ /mAly5rgd3Sz6b65Dc/JK7RXTc0s/pLQVLUvuBluWc5rjcbgjf7EPFr+OZ5vLP3CuQmT
+ E8ZL1Hsqbd/qUfv/Cf9B2pDV4kqa3Tyz/OMXODe9kNOnVioOjKV1HcdNot0aXUhIljhg
+ TIEA==
+X-Gm-Message-State: AOJu0YxDoxDumfCjwiPdlECcaPkKoIxTN9mKfyTM0wiKuWXx64klRiQy
+ 15ti/QKQ19Bn1Z15MRGY1zedS5EgtCSmTlbd2+I=
+X-Google-Smtp-Source: AGHT+IH0hJ8tIdH/KxlvGDjtrgqF4/fOx0h+Xje101YuuBelFW1yHqtAojUzcJ0BdFaMKasz7pn4hQ==
+X-Received: by 2002:a17:906:5a5b:b0:9a1:db2e:9dbf with SMTP id
+ my27-20020a1709065a5b00b009a1db2e9dbfmr278843ejc.14.1693513826789; 
+ Thu, 31 Aug 2023 13:30:26 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.199.245])
+ by smtp.gmail.com with ESMTPSA id
+ qq7-20020a17090720c700b00992afee724bsm1121684ejb.76.2023.08.31.13.30.25
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 31 Aug 2023 13:30:26 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [PATCH v2 0/7] target/mips: Convert Loongson LEXT opcodes to
+ decodetree
+Date: Thu, 31 Aug 2023 22:30:16 +0200
+Message-ID: <20230831203024.87300-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230831132546.3525721-3-armbru@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,17 +91,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 03:25:41PM +0200, Markus Armbruster wrote:
-> Local variables shadowing other local variables or parameters make the
-> code needlessly hard to understand.  Tracked down with -Wshadow=local.
-> Clean up: delete inner declarations when they are actually redundant,
-> else rename variables.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Respin of old series...
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Since v1 [*]:
+- Fixed '!is_double' check (rth)
+- Rebased (removing tcg_temp_free calls)
+- Simplified MULT[U].G (rth)
+- Added R-b
+
+Cover from v1:
+
+  Loongson is next step in the "MIPS decodetree conversion" epic.
+  Start with the simplest extension.
+
+  The diffstat addition comes from the TCG functions expanded.
+  The code is easier to review now.
+  IMO this is also a good template to show how easy a decodetree
+  conversion can be (and how nice the .decode file is to review) :P
+
+Please review,
+
+Phil.
+
+Based-on: <20230831201140.85799-1-philmd@linaro.org>
+          "target/mips: Simplify Loongson MULTU.G opcode"
+
+[*] https://lore.kernel.org/qemu-devel/20210112215504.2093955-1-f4bug@amsat.org/
+
+Philippe Mathieu-Daudé (7):
+  target/mips: Simplify Loongson MULTU.G opcode
+  target/mips: Re-introduce OPC_ADDUH_QB_DSP and OPC_MUL_PH_DSP
+  target/mips: Convert Loongson DDIV.G opcodes to decodetree
+  target/mips: Convert Loongson DIV.G opcodes to decodetree
+  target/mips: Convert Loongson [D]DIVU.G opcodes to decodetree
+  target/mips: Convert Loongson [D]MOD[U].G opcodes to decodetree
+  target/mips: Convert Loongson [D]MULT[U].G opcodes to decodetree
+
+ target/mips/tcg/translate.h       |   1 +
+ target/mips/tcg/godson2.decode    |  27 +++
+ target/mips/tcg/loong-ext.decode  |  28 +++
+ target/mips/tcg/loong_translate.c | 307 ++++++++++++++++++++++++++++++
+ target/mips/tcg/translate.c       | 264 +------------------------
+ target/mips/tcg/meson.build       |   3 +
+ 6 files changed, 376 insertions(+), 254 deletions(-)
+ create mode 100644 target/mips/tcg/godson2.decode
+ create mode 100644 target/mips/tcg/loong-ext.decode
+ create mode 100644 target/mips/tcg/loong_translate.c
 
 -- 
-Peter Xu
+2.41.0
 
 
