@@ -2,121 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0ED78EDF6
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9E578EE4D
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:15:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhHu-0006sb-HU; Thu, 31 Aug 2023 09:00:42 -0400
+	id 1qbhHs-0006Kh-QJ; Thu, 31 Aug 2023 09:00:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qbhF2-0002u2-Bt
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:46 -0400
-Received: from mail-bn8nam12on2060a.outbound.protection.outlook.com
- ([2a01:111:f400:fe5b::60a]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qbhEx-0005J0-9C
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H6tUxO62L4Guf3xLlgH4fPU5Xj+7hC9zZatKrmhprNdO3gJybuf122s/HXL/zSjHKT8oPbXy/oetfWFoA/CjOswyVyfR6GDNRFf3KJuRnUOgBIsSeZaVHcouz3zzM918Sk/BJC4Q14eZfwpIRQ1clUejM7GI31TYyrQ4ADOSyMiUi1kQLMEBDnRSKwyAhKaartJJ4m+3ZUOmUPl8QmJkU4IugUeigreptYnEIql6urYHmW5SvEGHNMqmoSzsgQ6lpJ1QtmD9bMK8AKOTf35PHPGNISIAjW8nunxGyvPKgOZO2rjXFYRzkr67jCZdix9Lnut84CdcZtwIVT/v1r6wfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EVsz7qyjfGTciYL0GienL0XaxUN0EYgW/kSLjyWZIg0=;
- b=nEvcWYvquGutJ+bqIn3fZn4EPWDWxGg1deEC7g39I3hS1iK78kJlNbhR4hUG3OeUBFlsMZlpQHEuQP/2AREZgpVqM7sgTXQuwLn1Kqdiby4hQxt1vIIsr/FdaDY+N1a4Nq0W8os7iOYk4Hk8rMEUGEznRCntk4m8xl8mXQ9l3BjLLvnyvBTH2iCQ7dyS5ZeQWpH83XlcEUSD25kM/EO8mQ6PhR4oS60RYyZioDojAaSUBxueOn1BOZcl7+AGy18p95mltokN6CHWKCK1tNEmD24gYqs9cKriGq1ozApKFmPC9+IDgGQ0w2QT6Hpu/Fas8a66qWullocVYO78H1QQ2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EVsz7qyjfGTciYL0GienL0XaxUN0EYgW/kSLjyWZIg0=;
- b=tfV8AP/7RDhCqscEH9lha3q4aT6KXFZFkmVZ/dEiVWURqoM5yRALFWnfBwLH8XfCwKFvKW7kNCWaP05q5OM/Uc1pUp76gvQbJXiVH5ZfCAmZ1tNqwfX7W3jgMwuX7a6wz639yMYIMAZlmQHy8fR0w51ai8Y+hNaCJB2FYgyZXEVSFAt5Kl3NCp8uK4zObFxni2WXx3Ywi+6fwpM18iEYrV8tvrbXLIIAZSYqMFlXXr82gbI46DiYBBvZFGidqszETuoftwfyjerz7rmZFLkvUbdZpHpXTBGjdpY4Y5wGdWB6YDBF920Sfp+LOPU4I/+Rc2Q8F64EP7sD2hk+te07lA==
-Received: from DM6PR04CA0009.namprd04.prod.outlook.com (2603:10b6:5:334::14)
- by PH7PR12MB6467.namprd12.prod.outlook.com (2603:10b6:510:1f5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Thu, 31 Aug
- 2023 12:57:33 +0000
-Received: from CY4PEPF0000EE3F.namprd03.prod.outlook.com
- (2603:10b6:5:334:cafe::dc) by DM6PR04CA0009.outlook.office365.com
- (2603:10b6:5:334::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20 via Frontend
- Transport; Thu, 31 Aug 2023 12:57:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000EE3F.mail.protection.outlook.com (10.167.242.19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 12:57:32 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Thu, 31 Aug 2023
- 05:57:18 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Thu, 31 Aug
- 2023 05:57:17 -0700
-Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Thu, 31 Aug
- 2023 05:57:15 -0700
-From: Avihai Horon <avihaih@nvidia.com>
-To: <qemu-devel@nongnu.org>
-CC: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Yanghang Liu <yanghliu@redhat.com>, Avihai Horon
- <avihaih@nvidia.com>
-Subject: [PATCH v2 5/5] vfio/migration: Block VFIO migration with background
- snapshot
-Date: Thu, 31 Aug 2023 15:57:02 +0300
-Message-ID: <20230831125702.11263-6-avihaih@nvidia.com>
-X-Mailer: git-send-email 2.21.3
-In-Reply-To: <20230831125702.11263-1-avihaih@nvidia.com>
-References: <20230831125702.11263-1-avihaih@nvidia.com>
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qbhFB-0002xj-On; Thu, 31 Aug 2023 08:57:54 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qbhF0-0005KD-Cm; Thu, 31 Aug 2023 08:57:50 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9a2185bd83cso92109266b.0; 
+ Thu, 31 Aug 2023 05:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1693486659; x=1694091459; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xSAoiEDqsEgwaEI0QYDYYQxHuwjjUN7v4Aw6JIXOYZk=;
+ b=EtPeNYNkxd8ZvKQt0hf7a14GljpGu2ZjZBP91SaJR231p/EkHdye1L+rOYMSSlFoyy
+ TSjsGXcOcJVkI76zTUOesc4VG44syDBSTp8k4XOQpbO0+yrLCOVOpIRMXLtYsaSAlfpu
+ apnCY5ZkA3loLPhcYDHApERCUB18CkVookjsw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693486659; x=1694091459;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xSAoiEDqsEgwaEI0QYDYYQxHuwjjUN7v4Aw6JIXOYZk=;
+ b=FDewL5k6qaGSJKxDkLe4sNQAojMMrVpZdQ9lb1c6ft9oTiV33+jQpXVZbZsxpOX2q7
+ mYiqm0tJDJ7223wv16ZAOLQ5K0UsvWZbUCvf+u96GdhzuOgfYrn+WYWvoTCPpSx1jNYL
+ FdF43rqur+w1xreO/bzU2l2GwHBRhu5/1C6fi0y/oTCI/r/0jPRtdjNKZ8+HeuEJDVWU
+ QD+4P7I9Uepx9olK22aB0EQvT0LYLefZAFkNLYFPRtiTD9Nq2RW3phriLajqqrZc6L8i
+ FQyc8dPOIzti909nsUdJcgwvhkgzzbc71VHNP5Xb+EskNX6K1dWWn39sDKdtg/QO4dT9
+ Wsag==
+X-Gm-Message-State: AOJu0YzJvE6erBmN8s8TshIUv2M8GLgSNnPj0zqVeX7sk4NwfRrYgl55
+ Whly/gYrkRKIQbxHlMZ4+Pffzb4HedwgcPq9qFFb9v24
+X-Google-Smtp-Source: AGHT+IHaINliQ83lAnEM0uuMsSBbtCNhc9Pxq16bginTNCdkwPtCZq3DZeI1wzjz9giHhtlAmFNKhIBEUbO3fQKkymg=
+X-Received: by 2002:a17:906:3058:b0:9a5:7759:19c0 with SMTP id
+ d24-20020a170906305800b009a5775919c0mr3619395ejd.64.1693486658612; Thu, 31
+ Aug 2023 05:57:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3F:EE_|PH7PR12MB6467:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9df120a8-994d-4381-f5cc-08dbaa21d764
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FLSBN8gtc4kIK24MBEvVE2UDWCTQUMdL92fMIc4127undcd/vBoIm6vvRt0qrBIRmjpRhAyFeQh7CN1iV7FOAc/YuMtD9RRo/2F5X12HAQUwF0UEkjLfSTp7+wS/+JEiGv/JiO/2crJfB2QsdvnumULY2TDQJk5KwOjQTzbgrNsnDQE8SkKxeK2E0guKJi60fBp/OuqztzAdhgdTnFQdfdixtAlcQ6GBpcvgC5PnJtv1F36EnCL4j7C2TKPyarsbiQunNwV+EDPdH01+BePPleF+h0b98kieiSV/JqpYVc0AA2WLkEd6tbHM7N7c8uU0AlUoM0G5tvveTAl/KS1BPYCpAG3dmiLPqCR7Zoz7DY8VGAU8jrV6kRNo0fsWW0WiUwIxQhDD1q7Aj2pu748cCJEbr8FoeQ/ifw0Q9MMAgmznaYw4NlfufgsKsZE75fLwZv56vf/MWt8rcjS+gSWvocOTiy2ynOfk786wrOSwvbBBBeXfTHwt1sDMju3/xt/QE836iQfNY4SP65wJK+v7NOAZoj7JJkarBBN642WeCw4HMMzwcU3IxGpfevw6jHlK9BZNG7JsjzaCpmiH6S4G2kwNSF+a//6AOt6IwDAJnPGs/gI2Cn1EEf1naelTfCc4V3aUwGEVNB9KGPGmBEoWoVXvU/KxHmAiMTEBf7t5vb9HRmPXwRm9KOK1w4ihrMPWWtPEfcLTsSyZy5vHHzr2xqQ5DnOEX3Xg8pN0jSushJPRhIEo5mmgVkL6axvu3dwG
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(346002)(376002)(396003)(39860400002)(186009)(82310400011)(1800799009)(451199024)(40470700004)(36840700001)(46966006)(36860700001)(40460700003)(41300700001)(26005)(356005)(82740400003)(7636003)(6666004)(86362001)(83380400001)(478600001)(47076005)(336012)(426003)(1076003)(107886003)(7696005)(2616005)(40480700001)(70206006)(70586007)(6916009)(2906002)(54906003)(36756003)(316002)(5660300002)(8936002)(4326008)(8676002);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 12:57:32.6011 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9df120a8-994d-4381-f5cc-08dbaa21d764
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6467
-Received-SPF: softfail client-ip=2a01:111:f400:fe5b::60a;
- envelope-from=avihaih@nvidia.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230808083445.4613-1-joel@jms.id.au>
+ <20230808083445.4613-3-joel@jms.id.au>
+ <61cf0069-e845-3a07-2a55-659594e886be@linux.ibm.com>
+ <bc069058-28d0-3cba-2fb5-c5701049a5d9@kaod.org>
+In-Reply-To: <bc069058-28d0-3cba-2fb5-c5701049a5d9@kaod.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Thu, 31 Aug 2023 12:57:22 +0000
+Message-ID: <CACPK8XfX0uEsc6PifsWj8=Vp0sfwVotEanMum7ydmpvnP3zy-A@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 2/3] pnv/lpc: Hook up xscom region for P9/P10
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,59 +87,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Background snapshot allows creating a snapshot of the VM while it's
-running and keeping it small by not including dirty RAM pages.
+On Tue, 29 Aug 2023 at 14:45, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>
+> On 8/9/23 16:56, Frederic Barrat wrote:
+> > Hello Joel,
+> >
+> > So we're re-using the same xscom ops as on P8. A quick look at the defi=
+nition of those 4 registers on P8 (0xb0020) and on P9/P10 (0x00090040) seem=
+ to show they are not the same though. Am i missing something?
+>
+> Joel, are we ok ? Should we grab this patch ? or not.
 
-The way it works is by first stopping the VM, saving the non-iterable
-devices' state and then starting the VM and saving the RAM while write
-protecting it with UFFD. The resulting snapshot represents the VM state
-at snapshot start.
+Sorry, I chatted to Fred about this one but forgot to reply on the
+list. I made a bad assumption about the xscom registers matching
+between p8 and p9/10. This patch will need to be reworked, so please
+ignore it.
 
-VFIO migration is not compatible with background snapshot.
-First of all, VFIO device state is not even saved in background snapshot
-because only non-iterable device state is saved. But even if it was
-saved, after starting the VM, a VFIO device could dirty pages without it
-being detected by UFFD write protection. This would corrupt the
-snapshot, as the RAM in it would not represent the RAM at snapshot
-start.
+Cheers,
 
-To prevent this, block VFIO migration with background snapshot.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
----
- hw/vfio/migration.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 20994dc1d6..da43dcd2fe 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -340,7 +340,8 @@ static int vfio_save_prepare(void *opaque, Error **errp)
-     VFIODevice *vbasedev = opaque;
- 
-     /*
--     * Snapshot doesn't use postcopy, so allow snapshot even if postcopy is on.
-+     * Snapshot doesn't use postcopy nor background snapshot, so allow snapshot
-+     * even if they are on.
-      */
-     if (runstate_check(RUN_STATE_SAVE_VM)) {
-         return 0;
-@@ -353,6 +354,14 @@ static int vfio_save_prepare(void *opaque, Error **errp)
-         return -EOPNOTSUPP;
-     }
- 
-+    if (migrate_background_snapshot()) {
-+        error_setg(
-+            errp,
-+            "%s: VFIO migration is not supported with background snapshot",
-+            vbasedev->name);
-+        return -EOPNOTSUPP;
-+    }
-+
-     return 0;
- }
- 
--- 
-2.26.3
-
+Joel
 
