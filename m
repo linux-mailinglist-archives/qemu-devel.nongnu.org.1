@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EB778E6BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 08:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426CC78E6C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 08:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbbQx-0007PF-7f; Thu, 31 Aug 2023 02:45:39 -0400
+	id 1qbbVH-0003ao-1j; Thu, 31 Aug 2023 02:50:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qbbQu-0007Oz-EU
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:45:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qbbVF-0003aX-7H
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:50:05 -0400
+Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qbbQq-0004Hn-II
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:45:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693464331;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=O/y5DzxMLTw1D8HRtgegoAmhlZUlasmvCG+PdKWBwVA=;
- b=VKGFLvcmFkBJZHXwX6+lSRqGBs2FTEKRUKsjW4zdQEuSEebUJM3Gj0txlbY8Q8WlhjSrkx
- 4ZACc49zPGGiGvEPAipvqLLz+qoyZ+kDtUalFEcInq0CYe/8Aa7OKaxWZsn14HdiP5j4HW
- cUl4GO4Vp2PmaMEfd+4w23yOuBW5FXo=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-QM-2_-LSOquIyOM4YUTAbA-1; Thu, 31 Aug 2023 02:45:29 -0400
-X-MC-Unique: QM-2_-LSOquIyOM4YUTAbA-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-51da39aa6dcso340680a12.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 23:45:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693464328; x=1694069128;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O/y5DzxMLTw1D8HRtgegoAmhlZUlasmvCG+PdKWBwVA=;
- b=LZOjTuhfqQR99Y7SjYswUcufrzlmnmpW5xFYIHcktG8QS0pCZA+c3GajjYew/c/xJP
- lSuXGJumHdYy/CkPzgE17NpaPOChgs4irE0VeSqj7L4n2JgecP4O4StxW4gtKDlM/h4C
- 83+JIccDkR/xd70Adnkj48Odoi6bKMSnHQ4G3wKN4F0RBqhfgsMMrMHaxKmzgiaKL5oN
- 2SdFfPvMzVPjIzgCCuqhFzVQul2s0ghFleuPx6taT/ZWpj+vmSVLyk9j926qZlu8g3kO
- EdaWd2cgei2jhtawBieKFRiYkXg7KTMUSVK4RknXvtSVLHV+bGzSeR/vgOJqrtXfoIXV
- 19dw==
-X-Gm-Message-State: AOJu0Yx1UNc0tlc0HR4KRWCTVHnTwYNsIRJ94QP5HJ/W6NHJoeCIWXta
- clkFZ606nO4o864LTCu7IATdM7v63SoRvdzj9wJPGBGicEeJCWrw+LVxKxnpuUkSe3tTh0asxiA
- Sb0CF4Na+WI4amM0=
-X-Received: by 2002:a05:6402:3442:b0:523:c19d:a521 with SMTP id
- l2-20020a056402344200b00523c19da521mr2936303edc.40.1693464328580; 
- Wed, 30 Aug 2023 23:45:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmk5w0DRODFUFQ+G7BgF8xBdCo/TKoDfuRcn6UwTERZ4uXb+dh9Ec+gdKNlK00IttzsCz6oQ==
-X-Received: by 2002:a05:6402:3442:b0:523:c19d:a521 with SMTP id
- l2-20020a056402344200b00523c19da521mr2936288edc.40.1693464328225; 
- Wed, 30 Aug 2023 23:45:28 -0700 (PDT)
-Received: from redhat.com ([2.55.167.22]) by smtp.gmail.com with ESMTPSA id
- bo9-20020a0564020b2900b0052889d090bfsm420011edb.79.2023.08.30.23.45.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 23:45:27 -0700 (PDT)
-Date: Thu, 31 Aug 2023 02:45:24 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: Re: [PATCH] pci: SLT must be RO
-Message-ID: <20230831024011-mutt-send-email-mst@kernel.org>
-References: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
- <084d2e90-86d4-eabc-3270-d3ef680c9631@linaro.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qbbVB-00052P-KU
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:50:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1693464601; x=1725000601;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=6kcZ8h9lTsHGVhE1c9EO1Ak6pqJpZkYxV0ZLtyVD+ho=;
+ b=c8ccn5zZ3ZN1EyquAPsOy45a0uGOrbjPRMRXkb2AhUZE8juLgHHI05+N
+ aRxzG3nGI2BsCoMf1l0a9UYisz9yQd2qebhWS2sq7z0lVeDlMAddZNd1e
+ gNjknexhTkKV1SrHsnfvylllyN5tZRfknLI7bDb0XHi+InlPOTZWw2YSb
+ Li2Od1LEzIaE2NRg14HCcVecbhaztjofL0bYU1n5klUM/qA58PuoLkdy3
+ 7uJN3VW/YZJ50hHe3B/T0X+ofv58Ondkt9JktL3etNz7KduO6OswKR7zH
+ pwQmfrHAiCRoPSWKQD9jU6dxQ+1GdZtw8LAplJj9l23XFIRrTuHWPnvo2 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="373235656"
+X-IronPort-AV: E=Sophos;i="6.02,216,1688454000"; d="scan'208";a="373235656"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Aug 2023 23:49:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="768678181"
+X-IronPort-AV: E=Sophos;i="6.02,216,1688454000"; d="scan'208";a="768678181"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.87])
+ ([10.93.16.87])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Aug 2023 23:49:51 -0700
+Message-ID: <a98ba28c-1d39-ea83-ade3-c0089a5e9343@intel.com>
+Date: Thu, 31 Aug 2023 14:49:49 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 41/58] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com
+References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
+ <20230818095041.1973309-42-xiaoyao.li@intel.com>
+ <87wmxn6029.fsf@pond.sub.org> <ZORws2GWRwIGAaJE@redhat.com>
+ <d6fbacab-d7e4-9992-438d-a8cb58e179ae@intel.com>
+ <ZO3HjRp1pk5Qd51j@redhat.com>
+ <c74e7e2e-a986-240c-6300-0d3fbc22dfc4@intel.com>
+ <11130e51-72fe-a07a-767b-f768611cf0d9@intel.com>
+ <ZO70NwADsSRSe/WD@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZO70NwADsSRSe/WD@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <084d2e90-86d4-eabc-3270-d3ef680c9631@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=192.55.52.93; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,93 +100,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 08:22:34AM +0200, Philippe Mathieu-Daudé wrote:
-> Hi Michael,
+On 8/30/2023 3:48 PM, Daniel P. BerrangÃ© wrote:
+> On Wed, Aug 30, 2023 at 01:57:59PM +0800, Xiaoyao Li wrote:
+>> On 8/30/2023 1:18 PM, Chenyi Qiang wrote:
+>>>
+>>>
+>>> On 8/29/2023 6:25 PM, Daniel P. BerrangÃ© wrote:
+>>>> On Tue, Aug 29, 2023 at 01:31:37PM +0800, Chenyi Qiang wrote:
+>>>>>
+>>>>>
+>>>>> On 8/22/2023 4:24 PM, Daniel P. BerrangÃ© wrote:
+>>>>>> On Tue, Aug 22, 2023 at 08:52:30AM +0200, Markus Armbruster wrote:
+>>>>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>>>>
+>>>>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>>>>
+>>>>>>>> For GetQuote, delegate a request to Quote Generation Service.  Add property
+>>>>>>>> of address of quote generation server and On request, connect to the
+>>>>>>>> server, read request buffer from shared guest memory, send the request
+>>>>>>>> buffer to the server and store the response into shared guest memory and
+>>>>>>>> notify TD guest by interrupt.
+>>>>>>>>
+>>>>>>>> "quote-generation-service" is a property to specify Quote Generation
+>>>>>>>> Service(QGS) in qemu socket address format.  The examples of the supported
+>>>>>>>> format are "vsock:2:1234", "unix:/run/qgs", "localhost:1234".
+>>>>>>>>
+>>>>>>>> command line example:
+>>>>>>>>     qemu-system-x86_64 \
+>>>>>>>>       -object 'tdx-guest,id=tdx0,quote-generation-service=localhost:1234' \
+>>>>>>>>       -machine confidential-guest-support=tdx0
+>>>>>>>>
+>>>>>>>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>>>>>> ---
+>>>>>>>>    qapi/qom.json         |   5 +-
+>>>>>>>>    target/i386/kvm/tdx.c | 380 ++++++++++++++++++++++++++++++++++++++++++
+>>>>>>>>    target/i386/kvm/tdx.h |   7 +
+>>>>>>>>    3 files changed, 391 insertions(+), 1 deletion(-)
+>>>>>>>>
+>>>>>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>>>>>> index 87c1d440f331..37139949d761 100644
+>>>>>>>> --- a/qapi/qom.json
+>>>>>>>> +++ b/qapi/qom.json
+>>>>>>>> @@ -879,13 +879,16 @@
+>>>>>>>>    #
+>>>>>>>>    # @mrownerconfig: MROWNERCONFIG SHA384 hex string of 48 * 2 length (default: 0)
+>>>>>>>>    #
+>>>>>>>> +# @quote-generation-service: socket address for Quote Generation Service(QGS)
+>>>>>>>> +#
+>>>>>>>>    # Since: 8.2
+>>>>>>>>    ##
+>>>>>>>>    { 'struct': 'TdxGuestProperties',
+>>>>>>>>      'data': { '*sept-ve-disable': 'bool',
+>>>>>>>>                '*mrconfigid': 'str',
+>>>>>>>>                '*mrowner': 'str',
+>>>>>>>> -            '*mrownerconfig': 'str' } }
+>>>>>>>> +            '*mrownerconfig': 'str',
+>>>>>>>> +            '*quote-generation-service': 'str' } }
+>>>>>>>
+>>>>>>> Why not type SocketAddress?
+>>>>>>
+>>>>>> Yes, the code uses SocketAddress internally when it eventually
+>>>>>> calls qio_channel_socket_connect_async(), so we should directly
+>>>>>> use SocketAddress in the QAPI from the start.
+>>>>>
+>>>>> Any benefit to directly use SocketAddress?
+>>>>
+>>>> We don't want whatever code consumes the configuration to
+>>>> do a second level of parsing to convert the 'str' value
+>>>> into the 'SocketAddress' object it actually needs.
+>>>>
+>>>> QEMU has a long history of having a second round of ad-hoc
+>>>> parsing of configuration and we've found it to be a serious
+>>>> maintenence burden. Thus we strive to have everything
+>>>> represented in QAPI using the desired final type, and avoid
+>>>> the second round of parsing.
+>>>
+>>> Thanks for your explanation.
+>>>
+>>>>
+>>>>> "quote-generation-service" here is optional, it seems not trivial to add
+>>>>> and parse the SocketAddress type in QEMU command. After I change 'str'
+>>>>> to 'SocketAddress' and specify the command like "-object
+>>>>> tdx-guest,type=vsock,cid=2,port=1234...", it will report "invalid
+>>>>> parameter cid".
+>>>>
+>>>> The -object parameter supports JSON syntax for this reason
+>>>>
+>>>>      -object '{"qom-type":"tdx-guest","quote-generation-service":{"type": "vsock", "cid":"2","port":"1234"}}'
+>>>>
+>>>> libvirt will always use the JSON syntax for -object with a new enough
+>>>> QEMU.
+>>>
+>>> The JSON syntax works for me. Then, we need to add some doc about using
+>>> JSON syntax when quote-generation-service is required.
+>>
+>> This limitation doesn't look reasonable to me.
+>>
+>> @Daniel,
+>>
+>> Is it acceptable by QEMU community?
 > 
-> On 30/8/23 23:48, Michael S. Tsirkin wrote:
-> > current code sets PCI_SEC_LATENCY_TIMER to WO, but for
-> > pcie to pcie bridges it must be RO 0 according to
-> > pci express spec which says:
-> >      This register does not apply to PCI Express. It must be read-only
-> >      and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges, refer to the
-> >      [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
-> > 
-> > also, fix typo in comment where it's make writeable - this typo
-> > is likely what prevented us noticing we violate this requirement
-> > in the 1st place.
-> > 
-> > Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > 
-> > Marcin, could you pls test this patch with virt-8.1 and latest?
-> > Thanks a lot!
-> > 
-> > 
-> >   include/hw/pci/pci_bridge.h |  3 +++
-> >   hw/core/machine.c           |  5 ++++-
-> >   hw/pci/pci.c                |  2 +-
-> >   hw/pci/pci_bridge.c         | 14 ++++++++++++++
-> >   4 files changed, 22 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
-> > index ea54a81a15..5cd452115a 100644
-> > --- a/include/hw/pci/pci_bridge.h
-> > +++ b/include/hw/pci/pci_bridge.h
-> > @@ -77,6 +77,9 @@ struct PCIBridge {
-> >       pci_map_irq_fn map_irq;
-> >       const char *bus_name;
-> > +
-> > +    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
-> > +    bool pcie_writeable_slt_bug;
-> >   };
-> 
-> Patch LGTM, so:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> > -GlobalProperty hw_compat_8_1[] = {};
-> > +GlobalProperty hw_compat_8_1[] = {
-> > +    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
-> 
-> However I don't understand why we can't clear the config register and
-> must use a compat flag, since per the spec it is hardwired to 0.
+> This is the expected approach for object types which have non-scalar
+> properties.
 
-Because historically we didn't. If we make it RO and migrate from
-VM where guest wrote into this register, migration will fail
-as we check that RO fields are unchanged.
-Another trick would be to pretend it's hardware driven
-and set cmask. Compat machinery is more straight-forward though.
+Learned it.
 
-> Do we need the "x-" compat prefix? This is not an experimental property.
+thanks!
 
-It's an internal one, we don't want users to tweak it.
-
-> > +};
-> >   const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
-> 
-> 
-> > diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
-> > index e7b9345615..6a4e38856d 100644
-> > --- a/hw/pci/pci_bridge.c
-> > +++ b/hw/pci/pci_bridge.c
-> > @@ -38,6 +38,7 @@
-> >   #include "qapi/error.h"
-> >   #include "hw/acpi/acpi_aml_interface.h"
-> >   #include "hw/acpi/pci.h"
-> > +#include "hw/qdev-properties.h"
-> >   /* PCI bridge subsystem vendor ID helper functions */
-> >   #define PCI_SSVID_SIZEOF        8
-> > @@ -385,6 +386,11 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
-> >       pci_bridge_region_init(br);
-> >       QLIST_INIT(&sec_bus->child);
-> >       QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
-> > +
-> > +    /* For express secondary buses, secondary latency timer is RO 0 */
-> > +    if (pci_bus_is_express(sec_bus) && !br->pcie_writeable_slt_bug) {
-> > +        dev->wmask[PCI_SEC_LATENCY_TIMER] = 0;
-> > +    }
-> >   }
-> 
-> 
+> With regards,
+> Daniel
 
 
