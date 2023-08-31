@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4AC78E9E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7144578E9E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:06:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbeWh-0008Cy-B5; Thu, 31 Aug 2023 06:03:47 -0400
+	id 1qbeZ1-0001c0-48; Thu, 31 Aug 2023 06:06:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qbeWf-0008Cd-Gy
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:03:45 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qbeYy-0001bH-Sf
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:06:08 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qbeWc-00036p-UW
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:03:45 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4ff09632194so1260012e87.2
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:03:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qbeYt-0003my-V5
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:06:08 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2bcc331f942so7152751fa.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693476221; x=1694081021; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hB33pLaPpLvvdt+D2fH747Y5XKVfL/40nfO6Hfng3FQ=;
- b=y4jT+9NTgBBLV/1S8KpI4D9Z83yrWJgum73yJCkluyA7tTUUFaz6nWlUEvoI7BxXay
- Q0LfWGATGSt7iQSFCwQ2I/mjB9kx9poR8++rqCqKmgjeKJWIT9HbggRIG8tay5Qdud9P
- eZw3Xh9Zu/URN0hhORwDjO4nJE9FMPEREwmdSROgM4j/vMe0IdxaBVGK5qe9vo3F1Mvz
- VKvbchNM5vqaG2m35MwcIHuCj+J1S6wC6vPGe4hjnPv4753I1EbDZnzOfv7AqNvYt3Sz
- cvNKdiaHZXpXvtU6AZQ+X8etX9Mk2kqW0rqnYQC8SZRgny3CAVObLDKGos5fEg5ZQPtS
- /ZCg==
+ d=linaro.org; s=google; t=1693476362; x=1694081162; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=K9pC53nVetDko8SCaq8cdQDhTLcU7iHKY/1Vp9uPtbk=;
+ b=CVDIkTLrHxrMEXBdrinKvpemXpP7jU4xZLjt5RJ6xJ5RMO4YTk0PbceLymbTtJea/M
+ rWBMq00c06SdEXBbtvnPSIvEB7vtLEp+T32KiUbTqOIsxJafu3ohwu3b4QEXJazNVuBC
+ 0a3aJTC1CFOiAHdsk12gtCWf4D1ntL+2quD5I8YuNY8rPflmclxsag8Hhagwf9sseBYj
+ 5wAS3HdcWiIzklnzOO1I5cileuisu2s7DQo8LyJKkYlu83LW+yWGgXO1xmA/7M53AQiS
+ 2Pe9L0nViJlLuhqdV72BfC0+eXqfPK4zRGpHHXWdpjLdpHxioSJXGpMnxU7bsyROAE1M
+ O6AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693476221; x=1694081021;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hB33pLaPpLvvdt+D2fH747Y5XKVfL/40nfO6Hfng3FQ=;
- b=GFkc8dz66i4zwko/LCCCcUvjhLOM3FLgzFjDbosuZE0iBnughMW5EXiM7MkENcS30w
- dsqy/7+2aykttCIBLMyF6VE7pt47WG8use7p7rfsC6dNdz9HdFzeqNiFMXHS2neOlN1+
- neHluB3nly1SwvFXiaJCBUsmxMMiH5vO6kkWCdEvQOmFBFomh3SKZrUww7WdIL2wg+3t
- s+VFKRZuiLAF/GZfKwGAx6sT9G2MjHay/73pQYP1oxR8/EKxdSj/CAhn0oII5iNqXmpd
- KCJE/QPn9ZZvR/lAVW7S3dsCQ5Zaj5goxHiZ7xPduP0qamQ2H74CkI7i3A7CzDwzLHD2
- VobQ==
-X-Gm-Message-State: AOJu0YxZyHZ1QqQwk/fT2NoiFa3CIrQo1j546/FhO4ZAy2Pk7f6z+ztv
- UGC7xblrVO/VgiIroQzbnwouVXJrvDCPzoXZLjDFvA==
-X-Google-Smtp-Source: AGHT+IFX/1mT0xBVolLvtKiip3l9RctqLyhOc8k7b+Kx7yXW6Ml6LFMZECJTcU1bzt/3GOP5hwm7DtZPrPFwphsqjfg=
-X-Received: by 2002:a19:6914:0:b0:500:b890:fb38 with SMTP id
- e20-20020a196914000000b00500b890fb38mr3118822lfc.24.1693476220885; Thu, 31
- Aug 2023 03:03:40 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693476362; x=1694081162;
+ h=content-transfer-encoding:in-reply-to:organization:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K9pC53nVetDko8SCaq8cdQDhTLcU7iHKY/1Vp9uPtbk=;
+ b=hHeKf2Uz7fQ1Z3sgpwXT1MyRR5GO5qkmheFvFK87c6ZFBqTzYR9HLTb7mxzRNqHkrH
+ 2r0C1RHFHCyykYhonVrFxQo2x4vbmt4aED1Y0EF2CE4RpauVPt8mNrDyCAAJzXi4RLCe
+ 61PiUlCSnrVt/njM3j2eA6Brze3FA9r82AIAUlf+PkUbG0PyDDam3L6nBRtEXxsAItL2
+ 8r+si7yTtpKFjuAh7BF1OUJOYIsd7AVAR/Kv4rjDxAZwEvppm0NNPG0C97ddE4mVepIg
+ GeqXgw09AmEFZpWUmUTZaUgMUw+LjKkj9fqttr6SPj1k121anhZBvS4tGgrQUhdzG6DG
+ zdmQ==
+X-Gm-Message-State: AOJu0YyEiJ13u48Obii3Kz3yQBbMqP2gXYJ7BU+OFr1ouZIz9wBDFSqN
+ y3NyU4/Mbf2Uiv1zwtYToynngQ==
+X-Google-Smtp-Source: AGHT+IGrFy4EaKsxfjTcmsV9zvv3YHW54NsqNrd9+8kQiNpPzLU31vQ1SETBxerzgum0M6uv+avM/w==
+X-Received: by 2002:a05:651c:2c3:b0:2bc:d3b1:d6c1 with SMTP id
+ f3-20020a05651c02c300b002bcd3b1d6c1mr712493ljo.9.1693476361686; 
+ Thu, 31 Aug 2023 03:06:01 -0700 (PDT)
+Received: from [192.168.200.206] (83.11.188.80.ipv4.supernova.orange.pl.
+ [83.11.188.80]) by smtp.gmail.com with ESMTPSA id
+ x2-20020a2e9dc2000000b002bce5e379a3sm239825ljj.7.2023.08.31.03.06.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 03:06:01 -0700 (PDT)
+Message-ID: <9cebce70-59fc-e7bb-5973-3091680b72ea@linaro.org>
+Date: Thu, 31 Aug 2023 12:05:59 +0200
 MIME-Version: 1.0
-References: <87y1hspiyh.fsf@linaro.org>
- <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
- <CAFEAcA8Ziov9vA9dW+4vzFE=KkSUqfMNNMZOtvQhqCXyjRytzQ@mail.gmail.com>
- <87cyz3pmgz.fsf@linaro.org>
-In-Reply-To: <87cyz3pmgz.fsf@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Aug 2023 11:03:29 +0100
-Message-ID: <CAFEAcA-m8G1kfTw52kOGPEvQwWPph0NWc0URVY1aQ2WwVeB_OQ@mail.gmail.com>
-Subject: Re: QEMU features useful for Xen development?
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Xen-devel <xen-devel@lists.xenproject.org>, 
- Stewart Hildebrand <stewart.hildebrand@amd.com>,
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- Sergiy Kibrik <Sergiy_Kibrik@epam.com>, 
- QEMU Developers <qemu-devel@nongnu.org>,
- Vikram Garhwal <vikram.garhwal@amd.com>, 
- Stefano Stabellini <stefano.stabellini@amd.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pci: SLT must be RO
+To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+References: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
+Content-Language: pl-PL, en-GB, en-HK
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +98,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 10:53, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Thu, 31 Aug 2023 at 01:57, Stefano Stabellini <sstabellini@kernel.or=
-g> wrote:
-> >> As Xen is gaining R52 and R82 support, it would be great to be able to
-> >> use QEMU for development and testing there as well, but I don't think
-> >> QEMU can emulate EL2 properly for the Cortex-R architecture. We would
-> >> need EL2 support in the GIC/timer for R52/R82 as well.
-> >
-> > We do actually have a Cortex-R52 model which at least in theory
-> > should include EL2 support, though as usual with newer QEMU
-> > stuff it quite likely has lurking bugs; I'm not sure how much
-> > testing it's had. Also there is currently no board model which
-> > will work with the Cortex-R52 so it's a bit tricky to use in practice.
-> > (What sort of board model would Xen want to use it with?)
->
-> We already model a bunch of the mps2/mps3 images so I'm assuming adding
-> the mps3-an536 would be a fairly simple step to do (mps2tz.c is mostly
-> tweaking config values). The question is would it be a useful target for
-> Xen?
+W dniu 30.08.2023 o 23:48, Michael S. Tsirkin pisze:
+> current code sets PCI_SEC_LATENCY_TIMER to WO, but for
+> pcie to pcie bridges it must be RO 0 according to
+> pci express spec which says:
+>      This register does not apply to PCI Express. It must be read-only
+>      and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges, refer to the
+>      [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
+> 
+> also, fix typo in comment where it's make writeable - this typo
+> is likely what prevented us noticing we violate this requirement
+> in the 1st place.
+> 
+> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
 
-All our MPS2/MPS3 boards are M-profile. That means we have the
-device models for all the interesting devices on the board, but
-it would be simpler to write the an536 board model separately.
-(In particular, the M-profile boards are wrappers around an
-"ARMSSE" sort-of-like-an-SoC component; there's no equivalent
-for the Cortex-R52.)
+> Marcin, could you pls test this patch with virt-8.1 and latest?
+> Thanks a lot!
 
->   https://developer.arm.com/documentation/dai0536/latest/
->
-> > The Cortex-R82 would be more work, because (unlike the R52) it's
-> > AArch64, and we don't have Armv8-R AArch64 support yet, only the AArch3=
-2.
-> >
-> > I haven't looked at whether GIC on R-profile requires any changes
-> > from the A-profile GIC; on A-profile obviously we emulate the
-> > virtualization support already.
-> >
-> >> On Cortex-As, in addition to a PCI root complex and an arbitrary PCI
-> >> device, SMMUv3 emulation (both stages) and GICv3 ITS are needed to be
-> >> able to test PCI Passthrough.
->
-> We have ITS emulation support and it was recently plumbed into the
-> "sbsa-ref" board as it is needed for higher level SBSA compliance.
->
-> >> However, if I recall correctly SMMUv3
-> >> emulation in QEMU might not be complete enough to enable us to use it.
-> >
-> > Yeah, at the moment the SMMU emulation supports stage 1 and stage 2,
-> > but not both at the same time. This is good enough for PCI passthrough
-> > with a Linux guest using KVM to pass a device through to a nested
-> > Linux guest.
->
-> Is this a missing feature for SMMUv3 or something introduced in the
-> later revisions?
+Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-It's a missing feature. The SMMUv3 spec allows an implementation
-to implement stage 1, stage 2 or both. We started with just a
-stage-1-only implementation because Linux doesn't need any more.
-Stage-2-only just landed recently. Nobody's looked at both-stages yet.
+sbsa-ref: PASS
+virt:     PASS
+virt-8.1: FAIL (as expected)
+virt-8.0: FAIL (as expected)
 
-thanks
--- PMM
+./code/qemu/build/aarch64-softmmu/qemu-system-aarch64 \
+  -machine virt \
+  -m 4096  \
+  -cpu neoverse-n1 \
+  -smp 2 \
+  -drive if=pflash,format=raw,file=QEMU_EFI.fd \
+  -drive if=pflash,format=raw,file=QEMU_EFI-vars.fd \
+-drive file=fat:rw:$PWD/disks/virtual/,format=raw \
+-device pcie-root-port,id=root30,chassis=30,slot=0 \
+-device igb,bus=root30 \
+  -device qemu-xhci,id=usb \
+  -device bochs-display \
+  -device e1000e \
+-nographic \
+  -usb \
+  -device usb-kbd \
+  -device usb-tablet \
+  -monitor telnet::45454,server,nowait \
+  -serial stdio
+
+> 
+>   include/hw/pci/pci_bridge.h |  3 +++
+>   hw/core/machine.c           |  5 ++++-
+>   hw/pci/pci.c                |  2 +-
+>   hw/pci/pci_bridge.c         | 14 ++++++++++++++
+>   4 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+> index ea54a81a15..5cd452115a 100644
+> --- a/include/hw/pci/pci_bridge.h
+> +++ b/include/hw/pci/pci_bridge.h
+> @@ -77,6 +77,9 @@ struct PCIBridge {
+>   
+>       pci_map_irq_fn map_irq;
+>       const char *bus_name;
+> +
+> +    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
+> +    bool pcie_writeable_slt_bug;
+>   };
+>   
+>   #define PCI_BRIDGE_DEV_PROP_CHASSIS_NR "chassis_nr"
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index da699cf4e1..76743e3b31 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -32,6 +32,7 @@
+>   #include "qemu/error-report.h"
+>   #include "sysemu/qtest.h"
+>   #include "hw/pci/pci.h"
+> +#include "hw/pci/pci_bridge.h"
+>   #include "hw/mem/nvdimm.h"
+>   #include "migration/global_state.h"
+>   #include "migration/vmstate.h"
+> @@ -39,7 +40,9 @@
+>   #include "hw/virtio/virtio.h"
+>   #include "hw/virtio/virtio-pci.h"
+>   
+> -GlobalProperty hw_compat_8_1[] = {};
+> +GlobalProperty hw_compat_8_1[] = {
+> +    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
+> +};
+>   const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+>   
+>   GlobalProperty hw_compat_8_0[] = {
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 881d774fb6..b0d21bf43a 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -893,7 +893,7 @@ static void pci_init_w1cmask(PCIDevice *dev)
+>   static void pci_init_mask_bridge(PCIDevice *d)
+>   {
+>       /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS and
+> -       PCI_SEC_LETENCY_TIMER */
+> +       PCI_SEC_LATENCY_TIMER */
+>       memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 4);
+>   
+>       /* base and limit */
+> diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
+> index e7b9345615..6a4e38856d 100644
+> --- a/hw/pci/pci_bridge.c
+> +++ b/hw/pci/pci_bridge.c
+> @@ -38,6 +38,7 @@
+>   #include "qapi/error.h"
+>   #include "hw/acpi/acpi_aml_interface.h"
+>   #include "hw/acpi/pci.h"
+> +#include "hw/qdev-properties.h"
+>   
+>   /* PCI bridge subsystem vendor ID helper functions */
+>   #define PCI_SSVID_SIZEOF        8
+> @@ -385,6 +386,11 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
+>       pci_bridge_region_init(br);
+>       QLIST_INIT(&sec_bus->child);
+>       QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
+> +
+> +    /* For express secondary buses, secondary latency timer is RO 0 */
+> +    if (pci_bus_is_express(sec_bus) && !br->pcie_writeable_slt_bug) {
+> +        dev->wmask[PCI_SEC_LATENCY_TIMER] = 0;
+> +    }
+>   }
+>   
+>   /* default qdev clean up function for PCI-to-PCI bridge */
+> @@ -466,10 +472,18 @@ int pci_bridge_qemu_reserve_cap_init(PCIDevice *dev, int cap_offset,
+>       return 0;
+>   }
+>   
+> +static Property pci_bridge_properties[] = {
+> +    DEFINE_PROP_BOOL("x-pci-express-writeable-slt-bug", PCIBridge,
+> +                     pcie_writeable_slt_bug, false),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+>   static void pci_bridge_class_init(ObjectClass *klass, void *data)
+>   {
+>       AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
+> +    DeviceClass *k = DEVICE_CLASS(klass);
+>   
+> +    device_class_set_props(k, pci_bridge_properties);
+>       adevc->build_dev_aml = build_pci_bridge_aml;
+>   }
+>   
+
 
