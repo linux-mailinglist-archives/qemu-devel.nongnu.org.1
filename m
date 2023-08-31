@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F3478F5E9
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 00:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCB178F5E1
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 00:58:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbqb7-0004Ug-TE; Thu, 31 Aug 2023 18:57:09 -0400
+	id 1qbqbW-0004fa-Af; Thu, 31 Aug 2023 18:57:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbqb5-0004TJ-89
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 18:57:07 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbqbB-0004a8-AQ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 18:57:13 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbqb3-00038C-3w
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 18:57:07 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9a1de3417acso551233766b.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 15:57:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbqb9-0003Au-5O
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 18:57:13 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-99bcfe28909so151988866b.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 15:57:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693522623; x=1694127423; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693522629; x=1694127429; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4KLx6XBhwZsbEqcvd2/L0DAF2KnkpBlHb/IZBmOztIQ=;
- b=YeGwrBIuzjOTSmCeVjJ0kHsDobcKC4tY5b8eMQbxApar//mN0cp3kZIni6gJHA82s0
- v3V64jpK/XFDcYolINV+s8QhM59Bq3a5/2ls1J11O8kjsapmtLiEX5cxPWXkmp8BRjRm
- Uv8yOPwmEtxUoLZXBKnTohZjfaXfrSDqocKkaCOG16cYptDz8Hnl2G9bTr3Ga3ydKg/3
- ZU2ayDxvrPn1UwdqF/qQ6Shqf7slVdOBqUVzDNQ2E7VeDB4yd60SxfXtOIcRwsTKd8Fn
- RhpeBDKN6AVseHlnMBcj1vN/QR1Z309JdZiByDAimgeKjp1XiRff0B8lhBDL3nyy8Axf
- mbXA==
+ bh=x6ajozl3I8cZhElfB+2XmFUmgwvrNnndLTvZEZRsKzQ=;
+ b=qbs72Wtgr5wleqqxACB2kg5jrFwIOtIYweM0AmXR0vGNhP0RPJuaQ1zHjixnJlcc0y
+ 844xTw+Bm09WwmFFT1MarqvxiZaYwKRJkYPCjlgkjT9nZRkUiLax91TCwR0MTGAxVLPK
+ GutDeGUHzxkG/JXcOov15ZeDBvFeRgHbPywwxmmFLawRKKv3Shl2teTxmW+nfl96e2F+
+ fb6sfHSegvd+Ur1k1uX2YkQk/h60FhC68VLcLXjqPOBzvOxHnXvWrdOeZvkSdVRkI6RB
+ 4LhkdingWREmc0V0GkI5BLyhZiz+Xx0cXE9wmlyY2Ouu/XLnCmheREakmlInOABXbf4b
+ UX+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693522623; x=1694127423;
+ d=1e100.net; s=20221208; t=1693522629; x=1694127429;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4KLx6XBhwZsbEqcvd2/L0DAF2KnkpBlHb/IZBmOztIQ=;
- b=jMVzwoS2H+mAtYkZE8L37/8zzzD18LGU2lITD2a2dM/Y73NTUskjA3luWxHrEK2H0t
- p1fuCtBDzGSrspDib40WrMuA/08kHT+jNwmutFYIYxJoJwci06u3osh2CPwJ62h4AsHl
- AtzVU89iHnarn6jfS6fEV6aLUHSyAdyBLaUrGQqSHLFDZ9eUkIIJ1Z6bQhdWOz+/dwlc
- WapOhG2BOR4u8TZH/RTNG6rXTFE3sCB8sZVoGO9X2Zr2H6Wb2jAL1HPJ74HzTDbK7vLC
- +Z8/eFyBwY42yUYvD1qXQyChz1nltf5dKKGVgu9sQEUmMtS9c9cBbWhVNb6rsepGyAc8
- c+dw==
-X-Gm-Message-State: AOJu0YyqPtJwO5IFAXEs26diCWzchs+R1Krr+W5cDxIUmhQ35Y7d0LCz
- HzNzYYQP0Js+ByCyRRsQiZk+GGrINLEML9IELJI=
-X-Google-Smtp-Source: AGHT+IGMXhGYgjabc1iv+BK9NV5ShYwxyM6hQ9l8TFMZu/K64adbK1KE/ZkfvRW9Nn39KykvNHCxgw==
-X-Received: by 2002:a17:906:73d5:b0:99e:afd:f2ba with SMTP id
- n21-20020a17090673d500b0099e0afdf2bamr1190360ejl.35.1693522623707; 
- Thu, 31 Aug 2023 15:57:03 -0700 (PDT)
+ bh=x6ajozl3I8cZhElfB+2XmFUmgwvrNnndLTvZEZRsKzQ=;
+ b=PPMRSjdh4p3NS/52RWrMSrHksJLw4Ul6XEhnA2bHq7mg0+vV1gzQsgxNe+bneJ6L+1
+ 1OCJzu25CKmAkxt8+cdlB/tu4ug6k3Vq0ByY+kUnNoeK3f7tCP4JROU9cVwN2MNKGr5h
+ zFyVe5eMzkInjjAYrIClCu6JAC57Oscukv8yfvt5Hb/sTNVR9FhKWAvd0Jz0Y7085AND
+ ye3yq/13NYd1bMQtl9ATJ1ae2kdR1gwjSXMp9hGFVPdxfJjhwfoYAQcdponmwUxmbJFB
+ UWW77q+yKQkMXuu1NSpUrh058aM7NIrSXxn+XvAWsOxb9l+t2TSzEGW5LJiTfnuqJaJo
+ z6RQ==
+X-Gm-Message-State: AOJu0YwkFlql4pbtsCIdXHX5HKivFDpajDI/H1Ro7cFHsDtuakF7QyFb
+ hcZd3He0KJ9qeNbzeYZCn0lfzmoXrR3PiMdb0yQ=
+X-Google-Smtp-Source: AGHT+IFrf6r+rU1QpvLTztuLMlCNJoY1gopaeWx3eI3SP/jE5CFGIWJiR7gl0wuWKgSl/P74y5+MVA==
+X-Received: by 2002:a17:907:7804:b0:99b:5574:7d0f with SMTP id
+ la4-20020a170907780400b0099b55747d0fmr439332ejc.23.1693522629667; 
+ Thu, 31 Aug 2023 15:57:09 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- t24-20020a1709064f1800b00992b1c93279sm1244368eju.110.2023.08.31.15.57.02
+ dt22-20020a170906b79600b0099d959f9536sm1273599ejb.12.2023.08.31.15.57.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 15:57:03 -0700 (PDT)
+ Thu, 31 Aug 2023 15:57:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org,
  David Gibson <david@gibson.dropbear.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH 09/11] hw/ide/ahci: Clean up local variable shadowing
-Date: Fri,  1 Sep 2023 00:56:04 +0200
-Message-ID: <20230831225607.30829-10-philmd@linaro.org>
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 10/11] net/eth: Clean up local variable shadowing
+Date: Fri,  1 Sep 2023 00:56:05 +0200
+Message-ID: <20230831225607.30829-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831225607.30829-1-philmd@linaro.org>
 References: <20230831225607.30829-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  hw/ide/ahci.c:1577:23: error: declaration shadows a local variable [-Werror,-Wshadow]
-            IDEState *s = &ad->port.ifs[j];
-                      ^
-  hw/ide/ahci.c:1569:29: note: previous declaration is here
-    void ahci_uninit(AHCIState *s)
-                                ^
+Fix:
+
+  net/eth.c:435:20: error: declaration shadows a local variable [-Werror,-Wshadow]
+            size_t input_size = iov_size(pkt, pkt_frags);
+                   ^
+  net/eth.c:413:16: note: previous declaration is here
+        size_t input_size = iov_size(pkt, pkt_frags);
+               ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/ahci.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 48d550f633..8c9a7c2117 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1573,10 +1573,8 @@ void ahci_uninit(AHCIState *s)
-     for (i = 0; i < s->ports; i++) {
-         AHCIDevice *ad = &s->dev[i];
- 
--        for (j = 0; j < 2; j++) {
--            IDEState *s = &ad->port.ifs[j];
--
--            ide_exit(s);
-+        for (j = 0; j < ARRAY_SIZE(ad->port.ifs); j++) {
-+            ide_exit(&ad->port.ifs[j]);
+diff --git a/net/eth.c b/net/eth.c
+index 649e66bb1f..cf030eed7b 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -432,7 +432,7 @@ _eth_get_rss_ex_src_addr(const struct iovec *pkt, int pkt_frags,
          }
-         object_unparent(OBJECT(&ad->port));
-     }
+ 
+         if (opthdr.type == IP6_OPT_HOME) {
+-            size_t input_size = iov_size(pkt, pkt_frags);
++            input_size = iov_size(pkt, pkt_frags);
+ 
+             if (input_size < opt_offset + sizeof(opthdr)) {
+                 return false;
 -- 
 2.41.0
 
