@@ -2,102 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3807078E773
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DC278E778
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:59:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbcYb-0004Ew-Um; Thu, 31 Aug 2023 03:57:37 -0400
+	id 1qbcZp-00055L-Mu; Thu, 31 Aug 2023 03:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qbcYZ-0004Ed-Rh; Thu, 31 Aug 2023 03:57:35 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qbcYX-0002Cf-Dz; Thu, 31 Aug 2023 03:57:35 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37V7k1AR008264; Thu, 31 Aug 2023 07:57:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=TPJAc8wfPbguUUzoWnvd5jGFxDjGi16T8MJPSYal6sQ=;
- b=bXGEzTp+KNkYdgWKOJFyqKUFOzygof9/CAYATr/l5jkWgiRnRaGQsydZe4sIKY9YlIRX
- /4mhKRvsZfqN3P6qzF+rJyA5niqJKYfU0bwcmRaQeMZcU3sfkLdsOGGIg3/eRS+omg7G
- 7uTt5dkl0ARoACRStdpOk4hvwxelcePNEjrvjhwwKhXKvcSg+DQmU8N1AWLvZ4f4tYwO
- XH4QNDBcDeLihzJB0yHwAD+7LVSW+nJ/jjNcH0Vk//4fSpDzbn4/G0GhmizcYp4ZFmxl
- wnXvydiBx970L/qNDITZPwLiNMz8wBnFdWAOXz6oVheZkt/B69yTkqQzsWEhcpRnnQh/ wA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3stbvypw94-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Aug 2023 07:57:24 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37V7qvaj000364;
- Thu, 31 Aug 2023 07:57:24 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3stbvypw90-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Aug 2023 07:57:23 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37V5i7SP019174; Thu, 31 Aug 2023 07:57:23 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqxe2252n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Aug 2023 07:57:23 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37V7vLMh39190898
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 31 Aug 2023 07:57:21 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F38E20040;
- Thu, 31 Aug 2023 07:57:21 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 321EB20043;
- Thu, 31 Aug 2023 07:57:21 +0000 (GMT)
-Received: from [9.179.13.135] (unknown [9.179.13.135])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 31 Aug 2023 07:57:21 +0000 (GMT)
-Message-ID: <f582e58c-487f-3947-6d9d-39552e1a8193@linux.ibm.com>
-Date: Thu, 31 Aug 2023 09:57:20 +0200
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbcZn-000554-DI
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 03:58:51 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbcZk-0002R4-OT
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 03:58:51 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-401ceda85cdso4908585e9.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 00:58:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693468727; x=1694073527; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DyDFCnhNE/har/KY6iiXMetsIsADgeTMgi3ePE979zc=;
+ b=TZLet+H3X7i3R+h+wvN7Ncbhq5/wxTw8C4CrGJbdVg+763TSdTXg6XX8Dd8mmV0fOF
+ v3gypmAEQwiEm3uDMJ4qx5OvSy0RkQq5aM5tuOpznGSZeIWzH0613EnE17EeyuXt1Cu8
+ /kjDjXv5L5t10VmweAkZYviy34UMqFaIPwQQo2G85MAWbCS0xrvEq3cgQVW9gUryOgHD
+ jjTNFCh21i4NLkr3e7U1bh8pS/JYGcP4eLztoHf0GgsXxMwDG/kinPMpYDfiC3zOIeK6
+ OmaN5QC8HBCpklj1TG5tMiAJQjAxImmsuDej8wucG0kuXfUEU1M6VTl0v/X9tQRXSPCv
+ /1sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693468727; x=1694073527;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=DyDFCnhNE/har/KY6iiXMetsIsADgeTMgi3ePE979zc=;
+ b=Jeip1ggQODkcq0FTjbdMVH2U8XqPw5IPRhi9OwkDnACm9GLlriDnTGAK+uJzH0+YZx
+ 6Y3qHMtA93colU78ne6rgDZ+PzL/Ze4+ZSYnj8wcZtpeNQPWxPH56kVXDBkphK9Bt6wr
+ Zk6x9DUZAnYDY9wqsvvJritU709vXmv4wF/rqO8ng7HalrXlVPF7FCmx8k1qfdxlgV3m
+ 6k7enNF7pDde6n3H/gW4az1T4w6XGIimkyHksgAmRf48w6oQsqfzzjUhyI6eP5VG6eKN
+ 70BUNgB6lx8ZtD+sQ8lZd06ILzL/iZwH/SbDijEkYppPz3aQqrKjB0GWBNMKoUMCuuJ0
+ Pc7Q==
+X-Gm-Message-State: AOJu0YwWboEEuQKasIN0NGy3rQdBb2rX68DcaQNauw+Be53O0R0/Ic5D
+ 98poUqMbtQx/jmONnSNWCCU2wA==
+X-Google-Smtp-Source: AGHT+IHq8tiDwqaCMIVls2HT4HfdzYptBR/FFhrgkdRNi5mc6rRKRwOsgXOBJMiJ2VqReNUwFTV/fQ==
+X-Received: by 2002:a7b:c455:0:b0:400:ce4f:f184 with SMTP id
+ l21-20020a7bc455000000b00400ce4ff184mr3447790wmi.41.1693468726857; 
+ Thu, 31 Aug 2023 00:58:46 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ x18-20020adfec12000000b0031989784d96sm1303615wrn.76.2023.08.31.00.58.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 00:58:46 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 0AF071FFBB;
+ Thu, 31 Aug 2023 08:58:46 +0100 (BST)
+References: <20230829220228.928506-1-richard.henderson@linaro.org>
+ <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
+ <efc935f7-67c2-8877-98aa-1aebfcafa534@linaro.org>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org, laurent@vivier.eu
+Subject: Re: [PATCH v5 00/20] linux-user: Implement VDSOs
+Date: Thu, 31 Aug 2023 08:57:51 +0100
+In-reply-to: <efc935f7-67c2-8877-98aa-1aebfcafa534@linaro.org>
+Message-ID: <87h6ofprre.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4/4] ppc/xive: Add support for the PC MMIOs
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
-References: <20230829143236.219348-1-clg@kaod.org>
- <20230829143236.219348-5-clg@kaod.org>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230829143236.219348-5-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: boANMJTU_C1yQwwgPH1Lz1mpI2BmsSFP
-X-Proofpoint-ORIG-GUID: wtYMK-1ch_0Hxe-VrHDjhQPMvTKKoW_A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-31_05,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- impostorscore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
- malwarescore=0 spamscore=0 bulkscore=0 adultscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308310067
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,161 +98,98 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-On 29/08/2023 16:32, Cédric Le Goater wrote:
-> The XIVE interrupt contoller maintains various fields on interrupt
-> targets in a structure called NVT. Each unit has a NVT cache, backed
-> by RAM.
-> 
-> When the NVT structure is not local (in RAM) to the chip, the XIVE
-> interrupt controller forwards the memory operation to the owning chip
-> using the PC MMIO region configured for this purpose. QEMU does not
-> need to be so precise since software shouldn't perform any of these
-> operations. The model implementation is simplified to return the RAM
-> address of the NVT structure which is then used by pnv_xive_vst_write
-> or read to perform the operation in RAM.
-> 
-> Remove the last use of pnv_xive_get_remote().
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> -
+> On 8/30/23 07:52, Helge Deller wrote:
+>> On 8/30/23 00:02, Richard Henderson wrote:
+>>> Changes for v5:
+>>> =C2=A0=C2=A0 * Integrated cross-compile, via new build-vdso.sh and meso=
+n rules.
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 However, keep the binaries in the tree for hos=
+ts which do not
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 have all of the cross-compile machinery.
+>>> =C2=A0=C2=A0 * Update our loongarch64 docker image to avoid a binutils =
+bug.
+>>>
+>>> Just in case the list eats a binary:
+>>> =C2=A0=C2=A0 https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
+>> I pulled that on top of git head, and ran into the build problem
+>> below.
+>> Do I miss something?
+>
+> No idea, since it worked for me.  Looks like some sort of docker.py probl=
+em.  Alex?
+>
+> In the short term, use --disable-containers so that you only use the
+> cross-compilers that you have locally installed.
+>
+>
+> r~
+>
+>> Helge
+>> [62/1742] Generating linux-user/aarch64/vdso-be.so with a custom
+>> command
+>> FAILED: linux-user/aarch64/vdso-be.so
+>> /home/cvs/qemu/qemu/linux-user/build-vdso.sh -B /srv/_build -C
+>> /home/cvs/qemu/qemu/linux-user/aarch64 -T aarch64-linux-user -o
+>> linux-user/aarch64/vdso-be.so -- -nostdlib -shared
+>> -Wl,-h,linux-vdso.so.1 -Wl,--build-id=3Dsha1 -Wl,--hash-style=3Dboth
+>> -Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.ld
+>> ../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S -mbig-endian
+>> Error: short-name resolution enforced but cannot prompt without a TTY
+>> Traceback (most recent call last):
+>>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 683, in =
+<module>
+>>  =C2=A0=C2=A0=C2=A0 sys.exit(main())
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 ^^^^^^
+>>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 679, in =
+main
+>>  =C2=A0=C2=A0=C2=A0 return args.cmdobj.run(args, argv)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^
+>>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 657, in =
+run
+>>  =C2=A0=C2=A0=C2=A0 return Docker().run(cmd, False, quiet=3Dargs.quiet,
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 370, in =
+run
+>>  =C2=A0=C2=A0=C2=A0 ret =3D self._do_check(["run", "--rm", "--label",
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^
+>>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 247, in =
+_do_check
+>>  =C2=A0=C2=A0=C2=A0 return subprocess.check_call(self._command + cmd, **=
+kwargs)
+>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>  =C2=A0 File "/usr/lib64/python3.11/subprocess.py", line 413, in check_c=
+all
+>>  =C2=A0=C2=A0=C2=A0 raise CalledProcessError(retcode, cmd)
+>> subprocess.CalledProcessError: Command '['podman', 'run', '--rm',
+>> '--label',
+
+It looks like it detected podman on this setup. Can you invoke the
+container from the command line?
+
+>> 'com.qemu.instance.uuid=3De746f7e345ed420088a9cc30e884a7e8',
+>> '--userns=3Dkeep-id', '-u', '1000', '-w', '/srv/_build', '-v',
+>> '/srv/_build:/srv/_build:rw', '-v',
+>> '/home/cvs/qemu/qemu:/home/cvs/qemu/qemu:ro,z',
+>> 'qemu/debian-arm64-cross', 'aarch64-linux-gnu-gcc-10', '-o',
+>> 'linux-user/aarch64/vdso-be.so', '-nostdlib', '-shared',
+>> '-Wl,-h,linux-vdso.so.1', '-Wl,--build-id=3Dsha1',
+>> '-Wl,--hash-style=3Dboth',
+>> '-Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.ld',
+>> '../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S',
+>> '-mbig-endian']' returned non-zero exit status 125.
+>> filter=3D--filter=3Dlabel=3Dcom.qemu.instance.uuid=3De746f7e345ed420088a=
+9cc30e884a7e8
+>>=20
 
 
-Nice cleanup
-
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-   Fred
-
-
->   hw/intc/pnv_xive.c | 84 ++++++++++++++++++++++++++--------------------
->   1 file changed, 48 insertions(+), 36 deletions(-)
-> 
-> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-> index aae5cb6f607b..9b10e905195a 100644
-> --- a/hw/intc/pnv_xive.c
-> +++ b/hw/intc/pnv_xive.c
-> @@ -84,28 +84,6 @@ static uint8_t pnv_xive_block_id(PnvXive *xive)
->       return blk;
->   }
->   
-> -/*
-> - * Remote access to controllers. HW uses MMIOs. For now, a simple scan
-> - * of the chips is good enough.
-> - *
-> - * TODO: Block scope support
-> - */
-> -static PnvXive *pnv_xive_get_remote(uint8_t blk)
-> -{
-> -    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
-> -    int i;
-> -
-> -    for (i = 0; i < pnv->num_chips; i++) {
-> -        Pnv9Chip *chip9 = PNV9_CHIP(pnv->chips[i]);
-> -        PnvXive *xive = &chip9->xive;
-> -
-> -        if (pnv_xive_block_id(xive) == blk) {
-> -            return xive;
-> -        }
-> -    }
-> -    return NULL;
-> -}
-> -
->   /*
->    * VST accessors for SBE, EAT, ENDT, NVT
->    *
-> @@ -209,6 +187,42 @@ static uint64_t pnv_xive_vst_addr_indirect(PnvXive *xive, uint32_t type,
->       return pnv_xive_vst_addr_direct(xive, type, vsd, (idx % vst_per_page));
->   }
->   
-> +/*
-> + * This is a simplified model of operation forwarding on a remote IC.
-> + *
-> + * A PC MMIO address is built to identify the NVT structure. The load
-> + * on the remote IC will return the address of the structure in RAM,
-> + * which will then be used by pnv_xive_vst_write/read to perform the
-> + * RAM operation.
-> + */
-> +static uint64_t pnv_xive_vst_addr_remote(PnvXive *xive, uint32_t type,
-> +                                         uint64_t vsd, uint8_t blk,
-> +                                         uint32_t idx)
-> +{
-> +    const XiveVstInfo *info = &vst_infos[type];
-> +    uint64_t remote_addr = vsd & VSD_ADDRESS_MASK;
-> +    uint64_t vst_addr;
-> +    MemTxResult result;
-> +
-> +    if (type != VST_TSEL_VPDT) {
-> +        xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
-> +                   info->name, blk, idx);
-> +        return 0;
-> +    }
-> +
-> +    remote_addr |= idx << xive->pc_shift;
-> +
-> +    vst_addr = address_space_ldq_be(&address_space_memory, remote_addr,
-> +                                    MEMTXATTRS_UNSPECIFIED, &result);
-> +    if (result != MEMTX_OK) {
-> +        xive_error(xive, "VST: read failed at @0x%"  HWADDR_PRIx
-> +                   " for NVT %x/%x\n", remote_addr, blk, idx);
-> +        return 0;
-> +    }
-> +
-> +    return vst_addr;
-> +}
-> +
->   static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
->                                     uint32_t idx)
->   {
-> @@ -225,14 +239,7 @@ static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
->   
->       /* Remote VST access */
->       if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
-> -        if (type != VST_TSEL_VPDT) {
-> -            xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
-> -                       info->name, blk, idx);
-> -            return 0;
-> -        }
-> -        xive = pnv_xive_get_remote(blk);
-> -
-> -        return xive ? pnv_xive_vst_addr(xive, type, blk, idx) : 0;
-> +        return pnv_xive_vst_addr_remote(xive, type, vsd, blk, idx);
->       }
->   
->       if (VSD_INDIRECT & vsd) {
-> @@ -1785,16 +1792,20 @@ static const MemoryRegionOps pnv_xive_vc_ops = {
->   };
->   
->   /*
-> - * Presenter Controller MMIO region. The Virtualization Controller
-> - * updates the IPB in the NVT table when required. Not modeled.
-> + * Presenter Controller MMIO region. Points to the NVT sets.
-> + *
-> + * HW implements all possible mem ops to the underlying NVT structure
-> + * but QEMU does not need to be so precise. The model implementation
-> + * simply returns the RAM address of the NVT structure which is then
-> + * used by pnv_xive_vst_write/read to perform the RAM operation.
->    */
-> -static uint64_t pnv_xive_pc_read(void *opaque, hwaddr addr,
-> -                                 unsigned size)
-> +static uint64_t pnv_xive_pc_read(void *opaque, hwaddr offset, unsigned size)
->   {
->       PnvXive *xive = PNV_XIVE(opaque);
-> +    uint32_t nvt_idx = offset >> xive->pc_shift;
-> +    uint8_t blk = pnv_xive_block_id(xive); /* TODO: VDT -> block xlate */
->   
-> -    xive_error(xive, "PC: invalid read @%"HWADDR_PRIx, addr);
-> -    return -1;
-> +    return pnv_xive_vst_addr(xive, VST_TSEL_VPDT, blk, nvt_idx);
->   }
->   
->   static void pnv_xive_pc_write(void *opaque, hwaddr addr,
-> @@ -2016,6 +2027,7 @@ static void pnv_xive_realize(DeviceState *dev, Error **errp)
->       /* Presenter Controller MMIO region (not modeled) */
->       memory_region_init_io(&xive->pc_mmio, OBJECT(xive), &pnv_xive_pc_ops, xive,
->                             "xive-pc", PNV9_XIVE_PC_SIZE);
-> +    xive->pc_mmio.disable_reentrancy_guard = true;
->   
->       /* Thread Interrupt Management Area (Direct) */
->       memory_region_init_io(&xive->tm_mmio, OBJECT(xive), &pnv_xive_tm_ops,
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
