@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA61678E4F4
+	by mail.lfdr.de (Postfix) with ESMTPS id C519578E4F3
 	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 05:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbY1i-0003Xy-Rh; Wed, 30 Aug 2023 23:07:22 -0400
+	id 1qbY1k-0003YF-K4; Wed, 30 Aug 2023 23:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbY1g-0003XT-Rm
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 23:07:20 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qbY1i-0003Xu-AW
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 23:07:22 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbY1e-00012n-Nt
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 23:07:20 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1bdca7cc28dso2692855ad.1
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 20:07:18 -0700 (PDT)
+ id 1qbY1f-00012r-Vq
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 23:07:22 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c0c6d4d650so2666905ad.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 20:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693451237; x=1694056037; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693451238; x=1694056038; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=e02Mul0OfqUA50lWHNyjtWfRKC7498FCi8j1nOB5Wto=;
- b=RfgEdQ8qmlKuL/Gta7YDAaxsIFvPFycrdZmBshkPyQlbFwXRLj4Fs+ZwPMCFNwfsMC
- kZ7byuok5Qq52c09j0+d+yzvkbAJQjrYWbs8+kI7jKaNYwNC1ilFzSiFSbtECbW7YTDb
- 5TE1kniKHxIeXYiCEe8dy/YxO9c28Ei28upf2lZ8Ho9m0lgiMj2zIecIln1RX2HhfwWJ
- LIqL0cN/M/FjGPvDkKm7lKMPY0V9b1rCIMB3p2zA6zeHyQ8p3fCRSHWY1TAcPUpyn91o
- R6Q/UwrmhSCcvyeSDs6jqDJPnNmyHIonXiMnyiOJ8nppMgiGHKZ2wgSNyaQwm/wLxh55
- sZBg==
+ :reply-to; bh=JsBwcmai69DwtSy3p5qDNG9Z2ep35wWirnfrfJquRn4=;
+ b=UmFgATo9WF9k871l77mqIW2ZZbBSWt9tfCqrfDwlw/pygMYYqp8KKotscM1PyxwoqU
+ CF2Q2tW7d4V9HrIMqBehkwIlQG94vOHQyHGkH+co1AlwP6GQyq55tWH5qrjqlHBqMh8F
+ GbuggpoLLh7I2lgQFEk3bjRhJLgARIvcvf2cUGw1aVLa5A2ddwk8hbKzWMN9pOt0lKVU
+ 8+5DmQj4Zws0U80j50i3hNswfXhkhSmNeXp6jUL4sCYBcxQYRg8v/gJpeZvzOUteo1AE
+ LUZ1RCikqisNdbB4hwCVBvBADXIrZAJTCGdmx7ypx1WRYlsZ67P1zzZsyh+UkM7UuqCJ
+ 4iKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693451237; x=1694056037;
+ d=1e100.net; s=20221208; t=1693451238; x=1694056038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e02Mul0OfqUA50lWHNyjtWfRKC7498FCi8j1nOB5Wto=;
- b=W8BN8XYcuGqpRhMVTkpaxH7JmaDTGQJ53va/P92pnaOmUu1rPX1dNjy6q8eGxZQJ2L
- mjthoQtrmai2PeayuxbrsXIyoibKfbyIasC4tD+fFDfRZX37TUFbVk2S0HbaW5Jretq6
- 61581LoqhTytDJvOysryEvXhP8USNGQVnIKbis3Uf2GmRsiI2TsCH4Je9fQQp7I3FO+m
- 82IDOseqSVQNNYvyC4Yqo60b3+GPybZu7AZ6jyPq0zZx1nakcpSflQykOj4NbHbY/NNS
- OXcZeGLTX4RZueSWtY/a+xdq//B2PZeUSWQmuK33JfCJ39cNiWu0Aoiys8+JEvJrXFN+
- TJTg==
-X-Gm-Message-State: AOJu0Yzk5CCqpaX1n9JgxEtPKBBvSfDpmG+p/mF6DZ9Lxtoq3z3JcbhH
- 1qOq3hyjwHTBU9zvUbDnOU5UhviQT9kp89NOzsE=
-X-Google-Smtp-Source: AGHT+IGYE8zzog4ZD5qeY7JWfT+6AJNQ7E10szK6V3HSmHU70BV2RrpSoX68kkAmype793aN+uPcMA==
-X-Received: by 2002:a17:902:bd48:b0:1c0:d7a9:580 with SMTP id
- b8-20020a170902bd4800b001c0d7a90580mr3581453plx.60.1693451237191; 
- Wed, 30 Aug 2023 20:07:17 -0700 (PDT)
+ bh=JsBwcmai69DwtSy3p5qDNG9Z2ep35wWirnfrfJquRn4=;
+ b=gRleVMO6XVpJR6eKIqM8vnrCqpNHerrvKDUuRE9NB/WDb8hIeFbiHCXwAweEHXDlJs
+ cJglueMvqnOBeZY/1X2rO9gkIblPY+B56wbWncTIlHUdeBi636/61MU0LlqTBhnw5I1H
+ VTs5wYmbBeS/v10MXyJ1ag7Jw3ktv81z73rqz+qNlTGynKFW3z4f0iT3l2eojkK9qPyg
+ aaBpSAk6xI2tXn+WKqdJ2NXH7kwlFGNP5Zby2H7KdtaI2GO5SHrTcEUTpcnQuRgzWgG/
+ EvZ5G2jjEN5PKlaS1F7nXV388LUWeIXw+2arVR2Qi/PXVoMfhar8H1xFi0UDQlMddkQ4
+ fV6g==
+X-Gm-Message-State: AOJu0YwwCS0CvrtN2CEhZQG8tPqXGA0fU8egwmcM9fpwcz/E0e8tfliI
+ UTkhl9safEC84vD/X3EzH4oihNBMSn/cCNZ4sE4=
+X-Google-Smtp-Source: AGHT+IF9I+sBYeBkOR034RQijVb5ZMu/Zkqj9/wRs5gsgCc51QYN2ZRmMIV6K3xGXKeBxkTXZraaig==
+X-Received: by 2002:a17:902:cec5:b0:1c0:ec66:f2b2 with SMTP id
+ d5-20020a170902cec500b001c0ec66f2b2mr4708049plg.27.1693451238518; 
+ Wed, 30 Aug 2023 20:07:18 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- ju19-20020a170903429300b001b8c689060dsm228847plb.28.2023.08.30.20.07.16
+ ju19-20020a170903429300b001b8c689060dsm228847plb.28.2023.08.30.20.07.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Aug 2023 20:07:16 -0700 (PDT)
+ Wed, 30 Aug 2023 20:07:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 1/2] tcg: Add tcg_gen_{ld,st}_i128
-Date: Wed, 30 Aug 2023 20:07:13 -0700
-Message-Id: <20230831030714.1194595-2-richard.henderson@linaro.org>
+Subject: [PATCH 2/2] target/i386: Use i128 for 128 and 256-bit loads and stores
+Date: Wed, 30 Aug 2023 20:07:14 -0700
+Message-Id: <20230831030714.1194595-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230831030714.1194595-1-richard.henderson@linaro.org>
 References: <20230831030714.1194595-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,62 +89,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not require the translators to jump through concat and
-extract of i64 in order to move values to and from  env.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg-op-common.h |  3 +++
- tcg/tcg-op.c                | 22 ++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ target/i386/tcg/translate.c | 61 ++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 34 deletions(-)
 
-diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
-index a53b15933b..c81cdbe11c 100644
---- a/include/tcg/tcg-op-common.h
-+++ b/include/tcg/tcg-op-common.h
-@@ -747,6 +747,9 @@ void tcg_gen_mov_i128(TCGv_i128 dst, TCGv_i128 src);
- void tcg_gen_extr_i128_i64(TCGv_i64 lo, TCGv_i64 hi, TCGv_i128 arg);
- void tcg_gen_concat_i64_i128(TCGv_i128 ret, TCGv_i64 lo, TCGv_i64 hi);
- 
-+void tcg_gen_ld_i128(TCGv_i128 ret, TCGv_ptr base, tcg_target_long offset);
-+void tcg_gen_st_i128(TCGv_i128 val, TCGv_ptr base, tcg_target_long offset);
-+
- static inline void tcg_gen_concat32_i64(TCGv_i64 ret, TCGv_i64 lo, TCGv_i64 hi)
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 90c7b32f36..bbcb81e908 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2919,58 +2919,51 @@ static inline void gen_stq_env_A0(DisasContext *s, int offset)
+ static inline void gen_ldo_env_A0(DisasContext *s, int offset, bool align)
  {
-     tcg_gen_deposit_i64(ret, lo, hi, 32, 32);
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 02a8cadcc0..a005a0eb29 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -2880,6 +2880,28 @@ void tcg_gen_mov_i128(TCGv_i128 dst, TCGv_i128 src)
-     }
+     int mem_index = s->mem_index;
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0, mem_index,
+-                        MO_LEUQ | (align ? MO_ALIGN_16 : 0));
+-    tcg_gen_st_i64(s->tmp1_i64, cpu_env, offset + offsetof(XMMReg, XMM_Q(0)));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 8);
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
+-    tcg_gen_st_i64(s->tmp1_i64, cpu_env, offset + offsetof(XMMReg, XMM_Q(1)));
++    TCGv_i128 t = tcg_temp_new_i128();
++
++    tcg_gen_qemu_ld_i128(t, s->A0, mem_index,
++                         MO_128 | MO_LE | (align ? MO_ALIGN_16 : 0));
++    tcg_gen_st_i128(t, cpu_env, offset);
  }
  
-+void tcg_gen_ld_i128(TCGv_i128 ret, TCGv_ptr base, tcg_target_long offset)
-+{
-+    if (HOST_BIG_ENDIAN) {
-+        tcg_gen_ld_i64(TCGV128_HIGH(ret), base, offset);
-+        tcg_gen_ld_i64(TCGV128_LOW(ret), base, offset + 8);
-+    } else {
-+        tcg_gen_ld_i64(TCGV128_LOW(ret), base, offset);
-+        tcg_gen_ld_i64(TCGV128_HIGH(ret), base, offset + 8);
-+    }
-+}
+ static inline void gen_sto_env_A0(DisasContext *s, int offset, bool align)
+ {
+     int mem_index = s->mem_index;
+-    tcg_gen_ld_i64(s->tmp1_i64, cpu_env, offset + offsetof(XMMReg, XMM_Q(0)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0, mem_index,
+-                        MO_LEUQ | (align ? MO_ALIGN_16 : 0));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 8);
+-    tcg_gen_ld_i64(s->tmp1_i64, cpu_env, offset + offsetof(XMMReg, XMM_Q(1)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
++    TCGv_i128 t = tcg_temp_new_i128();
 +
-+void tcg_gen_st_i128(TCGv_i128 val, TCGv_ptr base, tcg_target_long offset)
-+{
-+    if (HOST_BIG_ENDIAN) {
-+        tcg_gen_st_i64(TCGV128_HIGH(val), base, offset);
-+        tcg_gen_st_i64(TCGV128_LOW(val), base, offset + 8);
-+    } else {
-+        tcg_gen_st_i64(TCGV128_LOW(val), base, offset);
-+        tcg_gen_st_i64(TCGV128_HIGH(val), base, offset + 8);
-+    }
-+}
-+
- /* QEMU specific operations.  */
++    tcg_gen_ld_i128(t, cpu_env, offset);
++    tcg_gen_qemu_st_i128(t, s->A0, mem_index,
++                         MO_128 | MO_LE | (align ? MO_ALIGN_16 : 0));
+ }
  
- void tcg_gen_exit_tb(const TranslationBlock *tb, unsigned idx)
+ static void gen_ldy_env_A0(DisasContext *s, int offset, bool align)
+ {
+     int mem_index = s->mem_index;
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->A0, mem_index,
+-                        MO_LEUQ | (align ? MO_ALIGN_32 : 0));
+-    tcg_gen_st_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(0)));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 8);
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
+-    tcg_gen_st_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(1)));
++    TCGv_i128 t0 = tcg_temp_new_i128();
++    TCGv_i128 t1 = tcg_temp_new_i128();
+ 
++    tcg_gen_qemu_ld_i128(t0, s->A0, mem_index,
++                         MO_128 | MO_LE | (align ? MO_ALIGN_32 : 0));
+     tcg_gen_addi_tl(s->tmp0, s->A0, 16);
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
+-    tcg_gen_st_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(2)));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 24);
+-    tcg_gen_qemu_ld_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
+-    tcg_gen_st_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(3)));
++    tcg_gen_qemu_ld_i128(t1, s->tmp0, mem_index,
++                         MO_128 | MO_LE | (align ? MO_ALIGN_16 : 0));
++
++    tcg_gen_st_i128(t0, cpu_env, offset + offsetof(YMMReg, YMM_X(0)));
++    tcg_gen_st_i128(t1, cpu_env, offset + offsetof(YMMReg, YMM_X(1)));
+ }
+ 
+ static void gen_sty_env_A0(DisasContext *s, int offset, bool align)
+ {
+     int mem_index = s->mem_index;
+-    tcg_gen_ld_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(0)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->A0, mem_index,
+-                        MO_LEUQ | (align ? MO_ALIGN_32 : 0));
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 8);
+-    tcg_gen_ld_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(1)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
++    TCGv_i128 t = tcg_temp_new_i128();
++
++    tcg_gen_ld_i128(t, cpu_env, offset + offsetof(YMMReg, YMM_X(0)));
++    tcg_gen_qemu_st_i128(t, s->A0, mem_index,
++                         MO_128 | MO_LE | (align ? MO_ALIGN_32 : 0));
+     tcg_gen_addi_tl(s->tmp0, s->A0, 16);
+-    tcg_gen_ld_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(2)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
+-    tcg_gen_addi_tl(s->tmp0, s->A0, 24);
+-    tcg_gen_ld_i64(s->tmp1_i64, cpu_env, offset + offsetof(YMMReg, YMM_Q(3)));
+-    tcg_gen_qemu_st_i64(s->tmp1_i64, s->tmp0, mem_index, MO_LEUQ);
++    tcg_gen_ld_i128(t, cpu_env, offset + offsetof(YMMReg, YMM_X(1)));
++    tcg_gen_qemu_st_i128(t, s->tmp0, mem_index,
++                         MO_128 | MO_LE | (align ? MO_ALIGN_16 : 0));
+ }
+ 
+ #include "decode-new.h"
 -- 
 2.34.1
 
