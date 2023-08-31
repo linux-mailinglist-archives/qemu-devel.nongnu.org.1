@@ -2,88 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EA078E8F4
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 11:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F27B78E906
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 11:03:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbdWW-00087T-QD; Thu, 31 Aug 2023 04:59:32 -0400
+	id 1qbdZO-000413-Ro; Thu, 31 Aug 2023 05:02:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=600a63f8b=graf@amazon.de>)
- id 1qbdWU-00086S-Ce; Thu, 31 Aug 2023 04:59:30 -0400
-Received: from smtp-fw-33001.amazon.com ([207.171.190.10])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qbdZF-0003zS-03
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:02:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=600a63f8b=graf@amazon.de>)
- id 1qbdWO-0006Zb-QE; Thu, 31 Aug 2023 04:59:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1693472365; x=1725008365;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=rpZteB40Xc3krtDPWqABxcfQN04TYa31YJvNV2idAUQ=;
- b=iyNcLu6SkvpDBMOo41cC1Ln/CUpAfEVEiqSpXS2VUstdHNjgU/JkUwrI
- bBSCuYW/98ktV1Wp8YBF1vbuX1+xEkXnw6xHac6rRA4UXsmRJSUGohqpj
- TyC6uh9K3yS1Jt/UsQfoXmrYfbqqoJ1g0JCGpnAjZInMywzXiGsml8zuK A=;
-X-IronPort-AV: E=Sophos;i="6.02,216,1688428800"; d="scan'208";a="302445613"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- email-inbound-relay-pdx-2c-m6i4x-d2040ec1.us-west-2.amazon.com) ([10.43.8.6])
- by smtp-border-fw-33001.sea14.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 08:59:11 +0000
-Received: from EX19MTAUWC002.ant.amazon.com
- (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
- by email-inbound-relay-pdx-2c-m6i4x-d2040ec1.us-west-2.amazon.com (Postfix)
- with ESMTPS id 1129C40DC2; Thu, 31 Aug 2023 08:59:09 +0000 (UTC)
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Thu, 31 Aug 2023 08:59:08 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Thu, 31 Aug
- 2023 08:59:04 +0000
-Message-ID: <6e98c4e8-89ea-4fd1-a6cf-e9cdcf043482@amazon.com>
-Date: Thu, 31 Aug 2023 10:59:02 +0200
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qbdZA-000783-Pt
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:02:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693472532;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NC2DazyaP/wuw++05qPLMfoOTSxXfaGBP7yIljDNAIM=;
+ b=Ko7iCwNYhMXx3BR83UoWH63y4Opb+i0TQqUXHbBpioMOYyDSvqsCe4tQenk9jfZjDooeWX
+ ly9HoY8zNN6n4fFuExNPNk670KMksC3gUclFM5C5Y2Y3+UMvFBunsrKDXik3oVKacvJfmc
+ OIryht/ISHfT7qRyiIGqBCO83GgfWv0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-dUaK8MzXNfutNdt5diXo8g-1; Thu, 31 Aug 2023 05:02:09 -0400
+X-MC-Unique: dUaK8MzXNfutNdt5diXo8g-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-52a06f5f4e2so438397a12.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 02:02:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693472528; x=1694077328;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NC2DazyaP/wuw++05qPLMfoOTSxXfaGBP7yIljDNAIM=;
+ b=apHytwbsr3Xh2f3BTcQSK/i+8OMUNCtMwJ1gqP+Aod10jA91hDo65UqFt53uVCjmfh
+ TTjRaZPAHNWKYamlnwOO1gzhRDAFiDSE61ahDq6OLzKeMQg+UC4QtT5UtqYtMqwJ66Rl
+ d0dc9sNOIvv4QSZ9bFOEUM3S2+Bljeq/SWwxJs2xUgE6+kaFTDWsdHsOmx1/JGJ8A4qm
+ HKpH329OiF54I4SmzzrwBurpp9KEW2h4ruDrAhzWAzoACGX4MgNjq366Q41jpKPQv+G5
+ 1jmGJvUAGqlWOJSNnavajU9t1IwnsLzRAZv+JgHnkCY5dDysol1Q9UAbqa43TMB5RnC2
+ ojgA==
+X-Gm-Message-State: AOJu0YyUmK+pbKjP07It654CH2dsjhxMTyJd9SFmi6Vxea9gGgK/BqGW
+ yQNkFoUqpN/l4cLew+r7VYsT0AGcBYSU6hpkVK3/GWSpIIHY3bpPH8xxRLPMELKYnw3mBMMRhXq
+ 143xGJQJflaMqex8=
+X-Received: by 2002:aa7:c6ce:0:b0:51e:362d:b172 with SMTP id
+ b14-20020aa7c6ce000000b0051e362db172mr3267152eds.32.1693472528542; 
+ Thu, 31 Aug 2023 02:02:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTNen8iVVU2KPxjnIi+8a1lLWDkgvT5oB8U2L1Xi1tUWGf4/KhF4xVi70yoKO1acZIhu1voA==
+X-Received: by 2002:aa7:c6ce:0:b0:51e:362d:b172 with SMTP id
+ b14-20020aa7c6ce000000b0051e362db172mr3267102eds.32.1693472527928; 
+ Thu, 31 Aug 2023 02:02:07 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ x2-20020aa7dac2000000b005272523b162sm539053eds.69.2023.08.31.02.02.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 02:02:07 -0700 (PDT)
+Date: Thu, 31 Aug 2023 11:02:05 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
+ sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, cohuck@redhat.com,
+ pbonzini@redhat.com, shan.gavin@gmail.com, qemu-ppc@nongnu.org
+Subject: Re: [PATCH v2 3/8] machine: Print supported CPU models instead of
+ typenames
+Message-ID: <20230831110205.27447fac@imammedo.users.ipa.redhat.com>
+In-Reply-To: <a5a61f17-6792-fd53-e48b-aa9ab8fae803@redhat.com>
+References: <20230726003205.1599788-1-gshan@redhat.com>
+ <20230726003205.1599788-4-gshan@redhat.com>
+ <24e54bac-9149-20da-e4cf-5829a6dcb174@linaro.org>
+ <0454c1ad-314c-3df6-d6e9-1a05cb4c4050@redhat.com>
+ <20230727110010.648b61a6@imammedo.users.ipa.redhat.com>
+ <5f26299e-f1e0-a2ab-db83-87011fe524d5@redhat.com>
+ <20230828164637.52c2b5b0@imammedo.users.ipa.redhat.com>
+ <6e637717-b739-3ee8-ac12-a339ea5fb166@redhat.com>
+ <20230829110308.5282936f@imammedo.users.ipa.redhat.com>
+ <a5a61f17-6792-fd53-e48b-aa9ab8fae803@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/12] build: Only define OS_OBJECT_USE_OBJC with gcc
-Content-Language: en-GB
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>
-CC: <qemu-block@nongnu.org>, <qemu-arm@nongnu.org>, Cameron Esfahani
- <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>, "Michael S .
- Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
- <hreitz@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Mads Ynddal" <mads@ynddal.dk>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann
- <kraxel@redhat.com>
-References: <20230830161425.91946-1-graf@amazon.com>
- <20230830161425.91946-2-graf@amazon.com>
- <996b4057-6d64-3803-792b-f6c49dd9f3bf@linaro.org>
- <c933da5b-92fe-47f6-ade1-9c1e2770aa23@daynix.com>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <c933da5b-92fe-47f6-ade1-9c1e2770aa23@daynix.com>
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Precedence: Bulk
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=207.171.190.10;
- envelope-from=prvs=600a63f8b=graf@amazon.de; helo=smtp-fw-33001.amazon.com
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -95,51 +119,345 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ck9uIDMxLjA4LjIzIDEwOjUzLCBBa2loaWtvIE9kYWtpIHdyb3RlOgo+Cj4KPiBPbiAyMDIzLzA4
-LzMxIDE3OjEyLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToKPj4gT24gMzAvOC8yMyAx
-ODoxNCwgQWxleGFuZGVyIEdyYWYgd3JvdGU6Cj4+PiBSZWNlbnQgdmVyc2lvbnMgb2YgbWFjT1Mg
-dXNlIGNsYW5nIGluc3RlYWQgb2YgZ2NjLiBUaGUgCj4+PiBPU19PQkpFQ1RfVVNFX09CSkMKPj4+
-IGRlZmluZSBpcyBvbmx5IG5lY2Vzc2FyeSB3aGVuIGJ1aWxkaW5nIHdpdGggZ2NjLiBMZXQncyBu
-b3QgZGVmaW5lIGl0IAo+Pj4gd2hlbgo+Pj4gYnVpbGRpbmcgd2l0aCBjbGFuZy4KPj4+Cj4+PiBX
-aXRoIHRoaXMgcGF0Y2gsIEkgY2FuIHN1Y2Nlc3NmdWxseSBpbmNsdWRlIEdDRCBoZWFkZXJzIGlu
-IFFFTVUgd2hlbgo+Pj4gYnVpbGRpbmcgd2l0aCBjbGFuZy4KPj4+Cj4+PiBTaWduZWQtb2ZmLWJ5
-OiBBbGV4YW5kZXIgR3JhZiA8Z3JhZkBhbWF6b24uY29tPgo+Pj4gLS0tCj4+PiDCoCBtZXNvbi5i
-dWlsZCB8IDQgKysrLQo+Pj4gwqAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBk
-ZWxldGlvbigtKQo+Pj4KPj4+IGRpZmYgLS1naXQgYS9tZXNvbi5idWlsZCBiL21lc29uLmJ1aWxk
-Cj4+PiBpbmRleCA5OGU2OGVmMGIxLi4wZDZhMDAxNWExIDEwMDY0NAo+Pj4gLS0tIGEvbWVzb24u
-YnVpbGQKPj4+ICsrKyBiL21lc29uLmJ1aWxkCj4+PiBAQCAtMjI0LDcgKzIyNCw5IEBAIHFlbXVf
-bGRmbGFncyA9IFtdCj4+PiDCoCBpZiB0YXJnZXRvcyA9PSAnZGFyd2luJwo+Pj4gwqDCoMKgICMg
-RGlzYWJsZSBhdHRlbXB0cyB0byB1c2UgT2JqZWN0aXZlQyBmZWF0dXJlcyBpbiBvcy9vYmplY3Qu
-aCBzaW5jZQo+Pj4gdGhleQo+Pj4gwqDCoMKgICMgd29uJ3Qgd29yayB3aGVuIHdlJ3JlIGNvbXBp
-bGluZyB3aXRoIGdjYyBhcyBhIEMgY29tcGlsZXIuCj4+PiAtwqAgcWVtdV9jb21tb25fZmxhZ3Mg
-Kz0gJy1ET1NfT0JKRUNUX1VTRV9PQkpDPTAnCj4+PiArwqAgaWYgY29tcGlsZXIuZ2V0X2lkKCkg
-PT0gJ2djYycKPj4+ICvCoMKgwqAgcWVtdV9jb21tb25fZmxhZ3MgKz0gJy1ET1NfT0JKRUNUX1VT
-RV9PQkpDPTAnCj4+PiArwqAgZW5kaWYKPj4+IMKgIGVsaWYgdGFyZ2V0b3MgPT0gJ3NvbGFyaXMn
-Cj4+PiDCoMKgwqAgIyBuZWVkZWQgZm9yIENNU0dfIG1hY3JvcyBpbiBzeXMvc29ja2V0LmgKPj4+
-IMKgwqDCoCBxZW11X2NvbW1vbl9mbGFncyArPSAnLURfWE9QRU5fU09VUkNFPTYwMCcKPj4KPj4g
-UmV2aWV3ZWQtYnk6IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9yZz4K
-Pj4KPgo+IERlZmluaW5nIE9TX09CSkVDVF9VU0VfT0JKQyBkb2VzIG5vdCBsb29rIGxpa2UgYSBw
-cm9wZXIgc29sdXRpb24uCj4gTG9va2luZyBhdCBvcy9vYmplY3QuaCwgaXQgc2VlbXMgT1NfT0JK
-RUNUX1VTRV9PQkpDIGlzIGRlZmluZWQgYXMgMCB3aGVuOgo+ICFkZWZpbmVkKE9TX09CSkVDVF9I
-QVZFX09CSkNfU1VQUE9SVCkgJiYgKCFkZWZpbmVkKF9fT0JKQ19fKSB8fAo+IGRlZmluZWQoX19P
-QkpDX0dDX18pKQo+Cj4gVGhpcyBtZWFucyBPU19PQkpFQ1RfVVNFX09CSkMgaXMgYWx3YXlzIDAg
-aWYgT2JqZWN0aXZlLUMgaXMgZGlzYWJsZWQuIEkKPiBhbHNvIGNvbmZpcm1lZCBvcy9vYmplY3Qu
-aCB3aWxsIG5vdCB1c2UgT2JqZWN0aXZlLUMgZmVhdHVyZXMgd2hlbgo+IGNvbXBpbGVkIGFzIEMg
-Y29kZSBvbiBjbGFuZyB3aXRoIHRoZSBmb2xsb3dpbmcgY29tbWFuZDoKPgo+IGNsYW5nIC1FIC14
-IC1jIC0gPDxFT0YKPiAjaW5jbHVkZSA8b3Mvb2JqZWN0Lmg+Cj4gRU9GCj4KPiBJZiBjb21waWxh
-dGlvbiBmYWlscyB3aXRoIEdDQyB3aGVuIG5vdCBkZWZpbmluZyBPU19PQkpFQ1RfVVNFX09CSkMs
-IGl0Cj4gcHJvYmFibHkgbWVhbnMgR0NDIGluY29ycmVjdGx5IHRyZWF0cyBDIGNvZGUgYXMgT2Jq
-ZWN0aXZlLUMgYW5kIHRoYXQgaXMKPiB0aGUgcHJvYmxlbSB3ZSBzaG91bGQgc29sdmUuIEkgY2Fu
-bm90IGNvbmZpcm0gdGhpcyB0aGVvcnkgaG93ZXZlciBzaW5jZQo+IEkgaGF2ZSBvbmx5IGFuIEFw
-cGxlIFNpbGljb24gTWFjIHRoYXQgaXMgaW5jb21wYXRpYmxlIHdpdGggR0NDLgoKCk15IHRha2Ug
-b24gdGhpcyB3YXMgdG8gbWFrZSB0aGUgZ2NjIGhhY2sgYmUgYSAibGVnYWN5IiB0aGluZyB0aGF0
-IHdlIHB1dCAKaW50byBpdHMgb3duIGNvcm5lciwgc28gdGhhdCBpbiBhIGZldyB5ZWFycyB3ZSBj
-YW4ganVzdCBkcm9wIGl0IAphbHRvZ2V0aGVyLiBJIGRvbid0IHJlYWxseSB0aGluayBpdCdzIHdv
-cnRoIHdhc3RpbmcgbXVjaCB0aW1lIG9uIHRoaXMgCndvcmthcm91bmQgYW5kIGl0cyBwb3RlbnRp
-YWwgY29tcGF0aWJpbGl0eSB3aXRoIG9sZCBtYWNPUyB2ZXJzaW9ucy4KCgpBbGV4CgoKCgoKQW1h
-em9uIERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcg
-QmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4g
-V2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJC
-IDE0OTE3MyBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDI4OSAyMzcgODc5CgoK
+On Wed, 30 Aug 2023 17:34:12 +1000
+Gavin Shan <gshan@redhat.com> wrote:
+
+> Hi Igor,
+>=20
+> On 8/29/23 19:03, Igor Mammedov wrote:
+> > On Tue, 29 Aug 2023 16:28:45 +1000
+> > Gavin Shan <gshan@redhat.com> wrote: =20
+> >> On 8/29/23 00:46, Igor Mammedov wrote: =20
+> >>> On Mon, 31 Jul 2023 15:07:30 +1000
+> >>> Gavin Shan <gshan@redhat.com> wrote: =20
+> >>>> On 7/27/23 19:00, Igor Mammedov wrote: =20
+> >>>>> On Thu, 27 Jul 2023 15:16:18 +1000
+> >>>>> Gavin Shan <gshan@redhat.com> wrote:
+> >>>>>        =20
+> >>>>>> On 7/27/23 09:08, Richard Henderson wrote: =20
+> >>>>>>> On 7/25/23 17:32, Gavin Shan wrote: =20
+> >>>>>>>> -static const char *q800_machine_valid_cpu_types[] =3D {
+> >>>>>>>> +static const char * const q800_machine_valid_cpu_types[] =3D {
+> >>>>>>>>    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 M68K_CPU_TYPE_NAME("m68040"),
+> >>>>>>>>    =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NULL
+> >>>>>>>>    =C2=A0 };
+> >>>>>>>> +static const char * const q800_machine_valid_cpu_models[] =3D {
+> >>>>>>>> +=C2=A0=C2=A0=C2=A0 "m68040",
+> >>>>>>>> +=C2=A0=C2=A0=C2=A0 NULL
+> >>>>>>>> +}; =20
+> >>>>>>>
+> >>>>>>> I really don't like this replication.
+> >>>>>>>           =20
+> >>>>>>
+> >>>>>> Right, it's going to be lots of replications, but gives much flexi=
+bility.
+> >>>>>> There are 21 targets and we don't have fixed pattern for the mappi=
+ng between
+> >>>>>> CPU model name and CPU typename. I'm summarizing the used patterns=
+ like below.
+> >>>>>>
+> >>>>>>       1 All CPU model names are mappinged to fixed CPU typename; =
+=20
+> >>>>>
+> >>>>>            plainly spelled it would be: cpu_model name ignored and
+> >>>>>            a cpu type is returned anyways.
+> >>>>>
+> >>>>> I'd make this hard error right away, as "junk in =3D> error out"
+> >>>>> it's clearly user error. I think we don't even have to follow
+> >>>>> deprecation process for that.
+> >>>>>        =20
+> >>>>
+> >>>> Right, It's not expected behavior to map ambiguous CPU model names to
+> >>>> the fixed CPU typename. =20
+> >>>
+> >>> to be nice we can deprecate those and then later remove.
+> >>> (while deprecating make those targets accept typenames)
+> >>>     =20
+> >>
+> >> Lets put it aside for now and revisit it later, so that we can focus on
+> >> the conversion from the CPU type name to the CPU model name for now.
+> >> =20
+> >>>>    =20
+> >>>>>>       2 CPU model name is same to CPU typename;
+> >>>>>>       3 CPU model name is alias to CPU typename;
+> >>>>>>       4 CPU model name is prefix of CPU typename; =20
+> >>>>>
+> >>>>> and some more:
+> >>>>>        5. cpu model names aren't names at all sometimes, and some o=
+ther
+> >>>>>           CPU property is used. (ppc)
+> >>>>> This one I'd prefer to get rid of and ppc handling more consistent
+> >>>>> with other targets, which would need PPC folks to persuaded to drop
+> >>>>> PVR lookup.
+> >>>>>        =20
+> >>>>
+> >>>> I put this into class 3, meaning the PVRs are regarded as aliases to=
+ CPU
+> >>>> typenames. =20
+> >>>
+> >>> with PPC using 'true' aliases, -cpu input is lost after it's translat=
+ed into typename.
+> >>> (same for alpha)
+> >>>
+> >>> it also adds an extra fun with 'max' cpu model but that boils down to=
+ above statement.
+> >>> (same for
+> >>>     * sh4
+> >>>     * cris(in user mode only, but you are making sysemu extension, so=
+ it doesn't count)
+> >>> )
+> >>> For this class of aliases reverse translation won't yield the same
+> >>> result as used -cpu. The only option you have is to store -cpu cpu_mo=
+del
+> >>> somewhere (use qemu_opts??, and then fetch it later to print in error=
+ message)
+> >>>
+> >>> x86 has 'aliases' as well, but in reality it creates distinct cpu typ=
+es
+> >>> for each 'alias', so it's possible to do reverse translation.
+> >>>     =20
+> >>
+> >> It's true that '-cpu input' gets lost in these cases. However, the CPU=
+ type
+> >> name instead of the CPU model name is printed in the error message whe=
+n the
+> >> CPU type is validated in hw/core/machine.c::machine_run_board_init(). =
+It looks
+> >> good to me to print the CPU type name instead of the model name there.=
+ =20
+> >=20
+> > It's the same confusing whether it's type or cpumodel it it doesn't mat=
+ch
+> > user provided value.
+> >  =20
+>=20
+> I tend to agree that it's misleading to print the CPU type name in the
+> error message in hw/core/machine.c::machine_run_board_init(), where the C=
+PU
+> type is validated. qemu_opts may be too heavy for this. It eventually tur=
+ns
+> to a machine's property if @machine_opts_dict is the best place to store
+> '-cpu input'. Besides, it doesn't fit for another case very well, where
+> current_machine->cpu_type =3D machine_class->default_cpu_type if '-cpu in=
+put'
+> isn't provided by user.
+>=20
+> For simplicity, how about to add MachineState::cpu_model? It's initialize=
+d to
+> cpu_model_from_type(machine_class->default_cpu_type) in qemu_init(), or
+> g_strdump(model_pieces[0) in parse_cpu_option().
+
+I'd prefer not bringing cpu_model back to device models
+(Machine in this case) after getting rid of it.
+
+
+> >> Another error message is printed when the CPU model specified in '-cpu=
+ input'
+> >> isn't valid. The CPU model has been printed and it looks good either.
+> >>
+> >>     # qemu-system-aarch64 -M virt -cpu aaa
+> >>     qemu-system-aarch64: unable to find CPU model 'aaa'
+> >>
+> >> Are there other cases I missed where we need to print the CPU model na=
+me, which
+> >> is specified by user through '-cpu input'?
+> >> =20
+> >>>>>>
+> >>>>>>       Target         Categories    suffix-of-CPU-typename
+> >>>>>>       -------------------------------------------------------
+> >>>>>>       alpha          -234          -alpha-cpu
+> >>>>>>       arm            ---4          -arm-cpu
+> >>>>>>       avr            -2--
+> >>>>>>       cris           --34          -cris-cpu
+> >>>>>>       hexagon        ---4          -hexagon-cpu
+> >>>>>>       hppa           1---
+> >>>>>>       i386           ---4          -i386-cpu
+> >>>>>>       loongarch      -2-4          -loongarch-cpu
+> >>>>>>       m68k           ---4          -m68k-cpu
+> >>>>>>       microblaze     1---
+> >>>>>>       mips           ---4          -mips64-cpu  -mips-cpu
+> >>>>>>       nios2          1---
+> >>>>>>       openrisc       ---4          -or1k-cpu
+> >>>>>>       ppc            --34          -powerpc64-cpu  -powerpc-cpu
+> >>>>>>       riscv          ---4          -riscv-cpu
+> >>>>>>       rx             -2-4          -rx-cpu
+> >>>>>>       s390x          ---4          -s390x-cpu
+> >>>>>>       sh4            --34          -superh-cpu
+> >>>>>>       sparc          -2-- =20
+> >>>
+> >>> it's case 4
+> >>>     =20
+> >>
+> >> Yes.
+> >> =20
+> >>>>>>       tricore        ---4          -tricore-cpu
+> >>>>>>       xtensa         ---4          -xtensa-cpu
+> >>>>>>
+> >>>>>> There are several options as below. Please let me know which one o=
+r something
+> >>>>>> else is the best.
+> >>>>>>
+> >>>>>> (a) Keep what we have and use mc->valid_{cpu_types, cpu_models}[] =
+to track
+> >>>>>> the valid CPU typenames and CPU model names.
+> >>>>>>
+> >>>>>> (b) Introduce CPUClass::model_name_by_typename(). Every target has=
+ their own
+> >>>>>> implementation to convert CPU typename to CPU model name. The CPU =
+model name
+> >>>>>> is parsed from mc->valid_cpu_types[i].
+> >>>>>>
+> >>>>>>         char *CPUClass::model_by_typename(const char *typename);
+> >>>>>>
+> >>>>>> (c) As we discussed before, use mc->valid_cpu_type_suffix and mc->=
+valid_cpu_models
+> >>>>>> because the CPU type check is currently needed by target arm/m68k/=
+riscv where we
+> >>>>>> do have fixed pattern to convert CPU model names to CPU typenames.=
+ The CPU typename
+> >>>>>> is comprised of CPU model name and suffix. However, it won't be wo=
+rking when the CPU
+> >>>>>> type check is required by other target where we have patterns othe=
+r than this. =20
+> >>>>>
+> >>>>> none of above is really good, that's why I was objecting to introdu=
+cing
+> >>>>> reverse type->name mapping. That ends up with increased amount junk,
+> >>>>> and it's not because your patches are bad, but because you are tryi=
+ng
+> >>>>> to deal with cpu model names (which is a historically evolved mess).
+> >>>>> The best from engineering POV would be replacing CPU models with
+> >>>>> type names.
+> >>>>>
+> >>>>> Even though it's a bit radical, I very much prefer replacing
+> >>>>> cpu_model names with '-cpu type'usage directly. Making it
+> >>>>> consistent with -device/other interfaces and coincidentally that
+> >>>>> obsoletes need in reverse name mapping.
+> >>>>>
+> >>>>> It's painful for end users who will need to change configs/scripts,
+> >>>>> but it's one time job. Additionally from QEMU pov, codebase
+> >>>>> will be less messy =3D> more maintainable which benefits not only
+> >>>>> developers but end-users in the end.
+> >>>>>        =20
+> >>>>
+> >>>> I have to clarify the type->model mapping has been existing since the
+> >>>> model->type mapping was introduced with the help of CPU_RESOLVING_TY=
+PE.
+> >>>> I mean the logic has been existing since the existence of CPU_RESOLV=
+ING_TYPE,
+> >>>> even the code wasn't there.
+> >>>>
+> >>>> I'm not sure about the idea to switch to '-cpu <cpu-type-name>' since
+> >>>> it was rejected by Peter Maydell before. Hope Peter can double confi=
+rm
+> >>>> for this. For me, the shorter name is beneficial. For example, users
+> >>>> needn't to have '-cpu host-arm-cpu' for '-cpu host'.
+> >>>>
+> >>>>    =20
+> >>>>> [rant:
+> >>>>> It's the same story repeating over and over, when it comes to
+> >>>>> changing QEMU CLI, which hits resistance wall. But with QEMU
+> >>>>> deprecation process we've changed CLI behavior before,
+> >>>>> despite of that world didn't cease to exist and users
+> >>>>> have adapted to new QEMU and arguably QEMU became a tiny
+> >>>>> bit more maintainable since we don't have to deal some
+> >>>>> legacy behavior.
+> >>>>> ]
+> >>>>>        =20
+> >>>>
+> >>>> I need more context about 'deprecation process' here. My understandi=
+ng
+> >>>> is both CPU typename and model name will be accepted for a fixed per=
+iod
+> >>>> of time. However, a warning message will be given to indicate that t=
+he
+> >>>> model name will be obsoleted soon. Eventually, we switch to CPU type=
+name
+> >>>> completely. Please correct me if there are anything wrong. =20
+> >>>
+> >>> yep, that's the gist of deprecation in this case.
+> >>>     =20
+> >>
+> >> Ok. Thanks for your confirm.
+> >>      =20
+> >>>>> Another idea back in the days was (as a compromise),
+> >>>>>     1. keep using keep valid_cpu_types
+> >>>>>     2. instead of introducing yet another way to do reverse mapping,
+> >>>>>        clean/generalize/make it work everywhere list_cpus (which
+> >>>>>        already does that mapping) and then use that to do your thin=
+g.
+> >>>>>        It will have drawbacks you've listed above, but hopefully
+> >>>>>        that will clean up and reuse existing list_cpus.
+> >>>>>        (only this time, I'd build it around  query-cpu-model-expans=
+ion,
+> >>>>>         which output is used by generic list_cpus)
+> >>>>>        [and here I'm asking to rewrite directly unrelated QEMU part=
+ yet again]
+> >>>>>        =20
+> >>>>
+> >>>> I'm afraid that list_cpus() is hard to be reused. All available CPU =
+model names
+> >>>> are listed by list_cpus(). mc->valid_cpu_types[] are just part of th=
+em and variable
+> >>>> on basis of boards. Generally speaking, we need a function to do rev=
+erse things
+> >>>> as to CPUClass::class_by_name(). So I would suggest to introduce CPU=
+Class::model_from_type(),
+> >>>> as below. Could you please suggest if it sounds reasonable to you?
+> >>>>
+> >>>> - CPUClass::class_by_name() is modified to
+> >>>>      char *CPUClass::model_to_type(const char *model)
+> >>>>
+> >>>> - char *CPUClass::type_to_model(const char *type)
+> >>>>
+> >>>> - CPUClass::type_to_model() is used in cpu_list() for every target w=
+hen CPU
+> >>>>      model name, fetched from CPU type name, is printed in xxx_cpu_l=
+ist_entry()
+> >>>>
+> >>>> - CPUClass::type_to_model() is reused in hw/core/machine.c to get th=
+e CPU
+> >>>>      model name from CPU type names in mc->valid_cpu_types[]. =20
+> >>>
+> >>> instead of per target hooks (which are atm mostly open-coded in sever=
+al places)
+> >>> how about adding generic handler for cases 2,4:
+> >>>     cpu_type_to_model(typename)
+> >>>        cpu_suffix =3D re'-*-cpu'
+> >>>        if (class_exists(typename - cpu_suffix))
+> >>>            return typename - cpu_suffix
+> >>>        else if (class_exists(typename))
+> >>>            return typename
+> >>>        explode
+> >>>
+> >>> that should work for translating valid_cpus typenames to cpumodel nam=
+es
+> >>> and once that in place cleanup all open-coded translations with it tr=
+ee-wide
+> >>>
+> >>> you can find those easily by:
+> >>> git grep _CPU_TYPE_SUFFIX
+> >>> git grep query_cpu_definitions
+> >>>     =20
+> >>
+> >> Thanks for the advice. I think it's enough for now since the CPU type
+> >> invalidation is currently done for arm/mips/riscv for now. On these
+> >> targets, the CPU type name is always the combination of the CPU model
+> >> name and suffix. I will add helper qemu/cpu.c::cpu_model_by_name() =20
+> >=20
+> > cpu_model_from_type() would be describe what function does better.
+> >  =20
+>=20
+> Agreed, thanks.
+>=20
+> >> as you suggested. Note that, the suffix can be gained by ("-" CPU_RESO=
+LVING_TYPE)
+> >>
+> >> Yes, the newly added helper cpu_model_by_name() needs to be applied
+> >> to targets where query_cpu_definitions and cpu_list are defined. =20
+>=20
+> Thanks,
+> Gavin
+>=20
 
 
