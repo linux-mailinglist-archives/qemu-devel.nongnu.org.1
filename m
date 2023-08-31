@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B739378EE2C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54CF78EE68
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:18:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhLT-0008BH-Ji; Thu, 31 Aug 2023 09:04:23 -0400
+	id 1qbhLI-00083o-Ka; Thu, 31 Aug 2023 09:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHU-0005kf-7b
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHY-0005vb-Gs
  for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:22 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHN-0006Uw-AD
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:15 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fee5ddc23eso7129215e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:00:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHS-0006YM-Ve
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:20 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31c7912416bso647871f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:00:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693486807; x=1694091607; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693486813; x=1694091613; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RBqrh3+OwbRO0FKJwz0pOQZiq7Hglu3XVSiWyrHauk4=;
- b=jwS/5IOwS7px3CF7UdLJXiNGi0KzHBTBrNC3LNr1yrKDqhQx7fm3CUw4PBMeKW4J1H
- jc1OBsWy4pZKscTGUgc96/BfumC5sIiVKA5KpA7agOKtnX9Z3GCBWmbbX9DJi7nSswyr
- g5CQzniYwRsFnM7KXcYMLDaRq5++/3A8p7tqiEvw5FwqAe+ovuwV5WXBc3YWm5UwObqD
- Q6lYKRb6zjlV4HIDhZQCPc5DQErAWV4vfZ390BvPC9USoGs5L6m+FabLrs7g2XZPw0j3
- awlETQmsyds6nj0Wh7DUw3/KJS5ok5b9lhC14HhenTs48OV7AHP+Tky/SfWMHoA3+wf8
- paMw==
+ bh=VP+M0BihzQYUg4SRwLkLGrk4ZyudSjdzOazRzuk1iZE=;
+ b=i5Bpdoze4npJm6QxlKHqPZMz8I8wpJWrzHE5mIO849R+8GK+gDeAlSNm5kZKbclavb
+ 5wR+gpTDRQLaEa9F7XJ0szqiSs+KOfjyAk3+rzqfcKMAE8KN1g46r7KSS32G6cOtAtOp
+ CYgMyJ/nB+TzuSgqd5QXCgvVfIHsXZnubzaFiWym1EORm7Pn0nOKMUohT0Rmb4yFcVPy
+ fASkFQPmuFLUBNgD+xqOkheExo27hk4NQBqPlUyeh3MYBuhBXjwZ7i1LPOW2Fv/oHlXD
+ ymdb3g0JH0tFrYOQV1KpVlBYoGxq6DhMZJA6y+o3wQU82MfDzuqGlZZxUv4GmWCA9X1s
+ 2cyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486807; x=1694091607;
+ d=1e100.net; s=20221208; t=1693486813; x=1694091613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RBqrh3+OwbRO0FKJwz0pOQZiq7Hglu3XVSiWyrHauk4=;
- b=aD7Q/MAljKoXAcY4gBEtPtdXCJV3P5Ce+Zc9kojKQ6AllmTK1XweoSIrYRkJ7NDSBl
- OUlzXf5AVgxTbU7csxyUmsYEzA1RY5YIIHlylhv/TZfkn/lm/y7ek5NXv8C6lXmyt8do
- CH3tjCZ2BM6Xr+y8htAbFg1TOrPoS1NUL7L/M/NJWZUc5x4GbkBeSIUuOiOztBvLG2Ok
- sHqSQDIJHb7El/CcmM3dOTKK9ri4aY8TYdakcr8d0GdW8UDJKRtZP6zpRug0Ez2XulGq
- SlE+LAcxZWJHzQzZk26jU7gXzw5+gSiVfgwmPHZEjFgH1DcFGPCoXIGoqQhUoeyS6SC+
- R05w==
-X-Gm-Message-State: AOJu0Yxo3lJ2TZ3w6xj6mz7/7Y++ktJKCxpkjk3O4Fr8FBLGknfMRUx4
- RPvUaEytjQmp4/it9L9rkGGxWRUvma903D57ilE=
-X-Google-Smtp-Source: AGHT+IHFtn1g4oVr4OxUDyOHvfLkdRRms95A80KEEeJytluOw9x87dJtzVPYJS4DW6y4OFRSEbfikw==
-X-Received: by 2002:adf:e5cf:0:b0:317:e542:80a8 with SMTP id
- a15-20020adfe5cf000000b00317e54280a8mr3780210wrn.15.1693486807461; 
- Thu, 31 Aug 2023 06:00:07 -0700 (PDT)
+ bh=VP+M0BihzQYUg4SRwLkLGrk4ZyudSjdzOazRzuk1iZE=;
+ b=Ffl3Z9BCChv8MpVMzm0wiq4JQA1TgWBzk/CB3fyxjSt7nPqz6+YBNqHwrcAVCnIaHc
+ nUeaT20lbcuaPzgIsaiQNpPtTx+jMffIHdf8XcP9YdLHfWUf37M7xKRZNdLIPKqgEYyo
+ vM6ih03N8ivTIsdSYJ0IsPSFWpH61M0Ou0nieq0MDb6X++vHynhKsrLJC/txNojyg5TW
+ gSLikiHitm/Jp4ALjEwppwyZkAs1+1w9NdRQ7aMXoJFOwB7Cw2pJT5XLCsVWgYA5Oq2/
+ r0MXBF9/b/CitY7VGMMFqKQoiy9sSQeIa2LM4E6uSAl2f2EOGnMoxoq8weEa6qQlA7pf
+ Do0A==
+X-Gm-Message-State: AOJu0YwvlL5TCH6KA0+1FspTCP+FWMhmzdjFeI7Dww1DC3vvqGtOpiP0
+ nAnjKO695DK0PAFwcVHBsfDegbu0GyMCHi85SZo=
+X-Google-Smtp-Source: AGHT+IFkLUG8FoqYQGLxIWmAujQUC1t2HyWpTmJZPehMql7lR3V8T4TK2NlQ8qw0KI6hEXg35E48Zw==
+X-Received: by 2002:a5d:6888:0:b0:319:854f:7b02 with SMTP id
+ h8-20020a5d6888000000b00319854f7b02mr4148884wru.51.1693486813078; 
+ Thu, 31 Aug 2023 06:00:13 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- i16-20020adffc10000000b0031c5ee51638sm2147619wrr.109.2023.08.31.06.00.05
+ s16-20020adfecd0000000b0030ada01ca78sm2179819wro.10.2023.08.31.06.00.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 06:00:07 -0700 (PDT)
+ Thu, 31 Aug 2023 06:00:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
@@ -64,19 +64,18 @@ Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- kvm@vger.kernel.org
-Subject: [PULL 33/41] hw/i386: Remove unuseful kvmclock_create() stub
-Date: Thu, 31 Aug 2023 14:56:35 +0200
-Message-ID: <20230831125646.67855-34-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>
+Subject: [PULL 34/41] hw/i386: Rename 'hw/kvm/clock.h' -> 'hw/i386/kvm/clock.h'
+Date: Thu, 31 Aug 2023 14:56:36 +0200
+Message-ID: <20230831125646.67855-35-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831125646.67855-1-philmd@linaro.org>
 References: <20230831125646.67855-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,104 +98,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We shouldn't call kvmclock_create() when KVM is not available
-or disabled:
- - check for kvm_enabled() before calling it
- - assert KVM is enabled once called
-Since the call is elided when KVM is not available, we can
-remove the stub (it is never compiled).
+kvmclock_create() is only implemented in hw/i386/kvm/clock.h.
+Restrict the "hw/kvm/clock.h" header to i386 by moving it to
+hw/i386/.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230620083228.88796-2-philmd@linaro.org>
+Message-Id: <20230620083228.88796-3-philmd@linaro.org>
 ---
- include/hw/kvm/clock.h | 10 ----------
- hw/i386/kvm/clock.c    |  4 +++-
- hw/i386/microvm.c      |  4 +++-
- hw/i386/pc_piix.c      |  2 +-
- hw/i386/pc_q35.c       |  4 +++-
- 5 files changed, 10 insertions(+), 14 deletions(-)
+ {include/hw => hw/i386}/kvm/clock.h | 4 ++--
+ hw/i386/kvm/clock.c                 | 2 +-
+ hw/i386/microvm.c                   | 2 +-
+ hw/i386/pc_piix.c                   | 2 +-
+ hw/i386/pc_q35.c                    | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
+ rename {include/hw => hw/i386}/kvm/clock.h (85%)
 
-diff --git a/include/hw/kvm/clock.h b/include/hw/kvm/clock.h
-index 7994071c4f..3efe0a871c 100644
+diff --git a/include/hw/kvm/clock.h b/hw/i386/kvm/clock.h
+similarity index 85%
+rename from include/hw/kvm/clock.h
+rename to hw/i386/kvm/clock.h
+index 3efe0a871c..401c7e445b 100644
 --- a/include/hw/kvm/clock.h
-+++ b/include/hw/kvm/clock.h
-@@ -13,16 +13,6 @@
- #ifndef HW_KVM_CLOCK_H
- #define HW_KVM_CLOCK_H
++++ b/hw/i386/kvm/clock.h
+@@ -10,8 +10,8 @@
+  * See the COPYING file in the top-level directory.
+  */
  
--#ifdef CONFIG_KVM
--
+-#ifndef HW_KVM_CLOCK_H
+-#define HW_KVM_CLOCK_H
++#ifndef HW_I386_KVM_CLOCK_H
++#define HW_I386_KVM_CLOCK_H
+ 
  void kvmclock_create(bool create_always);
  
--#else /* CONFIG_KVM */
--
--static inline void kvmclock_create(bool create_always)
--{
--}
--
--#endif /* !CONFIG_KVM */
--
- #endif
 diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
-index df70b4a033..0824c6d313 100644
+index 0824c6d313..34348a3324 100644
 --- a/hw/i386/kvm/clock.c
 +++ b/hw/i386/kvm/clock.c
-@@ -332,8 +332,10 @@ void kvmclock_create(bool create_always)
- {
-     X86CPU *cpu = X86_CPU(first_cpu);
+@@ -22,7 +22,7 @@
+ #include "kvm/kvm_i386.h"
+ #include "migration/vmstate.h"
+ #include "hw/sysbus.h"
+-#include "hw/kvm/clock.h"
++#include "hw/i386/kvm/clock.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
  
--    if (!kvm_enabled() || !kvm_has_adjust_clock())
-+    assert(kvm_enabled());
-+    if (!kvm_has_adjust_clock()) {
-         return;
-+    }
- 
-     if (create_always ||
-         cpu->env.features[FEAT_KVM] & ((1ULL << KVM_FEATURE_CLOCKSOURCE) |
 diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index 7227a2156c..6b762bc18e 100644
+index 6b762bc18e..8deeb62774 100644
 --- a/hw/i386/microvm.c
 +++ b/hw/i386/microvm.c
-@@ -180,7 +180,9 @@ static void microvm_devices_init(MicrovmMachineState *mms)
-         x86ms->ioapic2 = ioapic_init_secondary(gsi_state);
-     }
+@@ -32,7 +32,7 @@
  
--    kvmclock_create(true);
-+    if (kvm_enabled()) {
-+        kvmclock_create(true);
-+    }
- 
-     mms->virtio_irq_base = 5;
-     mms->virtio_num_transports = 8;
+ #include "hw/loader.h"
+ #include "hw/irq.h"
+-#include "hw/kvm/clock.h"
++#include "hw/i386/kvm/clock.h"
+ #include "hw/i386/microvm.h"
+ #include "hw/i386/x86.h"
+ #include "target/i386/cpu.h"
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ce1ac95274..3de8e0d741 100644
+index 3de8e0d741..5cbad6ad84 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -192,7 +192,7 @@ static void pc_init1(MachineState *machine,
-     pc_machine_init_sgx_epc(pcms);
-     x86_cpus_init(x86ms, pcmc->default_cpu_version);
- 
--    if (pcmc->kvmclock_enabled) {
-+    if (kvm_enabled() && pcmc->kvmclock_enabled) {
-         kvmclock_create(pcmc->kvmclock_create_always);
-     }
- 
+@@ -46,7 +46,7 @@
+ #include "hw/ide/piix.h"
+ #include "hw/irq.h"
+ #include "sysemu/kvm.h"
+-#include "hw/kvm/clock.h"
++#include "hw/i386/kvm/clock.h"
+ #include "hw/sysbus.h"
+ #include "hw/i2c/smbus_eeprom.h"
+ #include "exec/memory.h"
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 37c4814bed..a95c5d046e 100644
+index a95c5d046e..0bd68690f5 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -183,7 +183,9 @@ static void pc_q35_init(MachineState *machine)
-     pc_machine_init_sgx_epc(pcms);
-     x86_cpus_init(x86ms, pcmc->default_cpu_version);
- 
--    kvmclock_create(pcmc->kvmclock_create_always);
-+    if (kvm_enabled()) {
-+        kvmclock_create(pcmc->kvmclock_create_always);
-+    }
- 
-     /* pci enabled */
-     if (pcmc->pci_enabled) {
+@@ -35,7 +35,7 @@
+ #include "hw/i2c/smbus_eeprom.h"
+ #include "hw/rtc/mc146818rtc.h"
+ #include "sysemu/kvm.h"
+-#include "hw/kvm/clock.h"
++#include "hw/i386/kvm/clock.h"
+ #include "hw/pci-host/q35.h"
+ #include "hw/pci/pcie_port.h"
+ #include "hw/qdev-properties.h"
 -- 
 2.41.0
 
