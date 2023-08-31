@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184DA78E7B4
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A59578E7C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:18:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbcoS-0003qs-AB; Thu, 31 Aug 2023 04:14:00 -0400
+	id 1qbcsF-0008Bn-2Q; Thu, 31 Aug 2023 04:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbcoQ-0003qO-QI
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:13:58 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbcsB-00087I-AA
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:17:51 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbcoO-0005ry-F7
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:13:58 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-401c90ed2ecso5259055e9.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:13:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbcs8-0006pX-9F
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:17:51 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-4fe27849e6aso1088527e87.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693469606; x=1694074406; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1693469865; x=1694074665; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uLOSf4IKR2u3nLq7YRvZKcumpqtqVZcRnAHRKPjSApI=;
- b=GWNMdoj7kN54Glc9rGv0AhSC7ws95yJYz8/XjHCec6jL/PD8zdZSnDUw2lhY29RYqR
- M4L5iYBw/qjbWGCAxhIWx0YwLOBssJvB2G+N0Ix62NnLzxLGIIKgMFMrihboOpxTC2xS
- XZoImDV6xYPiGx7SHbpGVslxtiFYmt9/keNaBDCXBMCrcreyL0MEm2YLpLUDc1Pb4wTQ
- ddhGJkS2HS0ZDiWFHlN2jYeaZQSsrkCaFUSMeZIQpdb1DCFpP3+gIrft5FZQdAAqosxe
- yXaDe7ifANxi6dMT2r9Jm49ajwcp7htzc9zAH61N6I1Csd5hDwYs9zUm/O/UU8j8Ih0u
- zOQw==
+ bh=afYWtHr3+mjB/u7pMAgIJK40tVxHVJJUHVzRTRI1NW0=;
+ b=Yjj9R5J/wVC/9ARGoMCOFQ/uxYnPU/67JK0l/qEYmPe+cVbMlIHkKz5Ty2CR7Pn2We
+ UO43pPI4pTpJnmpVRY1ykKopLNqNMYj+7D1+BzYOn7p8A/E1zNptPgmhjQufKcrhgyND
+ fHCsBux/HX3cF+TeOWMILBe38kiVHXMvGAtBxSqfWlKxsc2BwJo9xNptFkHjFK58Ox6F
+ JHmjUYsGR4amXWHHrdBpDatFXM5DmZTKt5ULLDsKInb12T8VKOnt7v/GrfF5A793qUY/
+ 0EKnwUnj0b7b2x5FIwefoHCcM/8/KCgVq7qoyss+RTFR4E9xQdWddU8ha0NG+OUBoyfH
+ DnJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693469606; x=1694074406;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1693469865; x=1694074665;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uLOSf4IKR2u3nLq7YRvZKcumpqtqVZcRnAHRKPjSApI=;
- b=AG+LWIraW2Gqra/hAYNKua3kSf5G5dG93WsMygaXEI/KzTw29htJalB13ozo9Br+Yn
- 2QbQndQ98pGygNZZ3hS2NCxT6h0D5gvZIbh5Vd61D7AG/2fuRQj+gZU/wSxiwClV4x/I
- AqjCZV/nmWYDuAhUHRg5IjzYDkGQr3bRf04V6aw5veDtogu0eGIWKQn75LSyv+3Mft61
- oYKkRfqQUG5eBGz3hStMrabZfQWPfpuHcVNRDDh/K4znO0jJP7qohUpYfL+YfOx4jGm3
- wP7rsDD5YR0Li50xfhjNseN9xt8RlTXXDwpllGdks6+I1hgTM4/9MRGmuqa/BCx1Tazf
- 28IA==
-X-Gm-Message-State: AOJu0YwxV2M4Bjw+UnztpQdlo5+PQFzJwgFNcluDzkOO7Yu6e5cMiu8I
- 7ABuE0FeuD7oB2D8MJukNxDFSA==
-X-Google-Smtp-Source: AGHT+IGXvMSdb6Wangb1yie1cgi6OX4SNx54ljaLL1M63u4ZUVLekqMJhXgXsysPX04UbGFGXULFtg==
-X-Received: by 2002:a05:600c:3641:b0:401:b0f2:88cf with SMTP id
- y1-20020a05600c364100b00401b0f288cfmr3938812wmq.40.1693469606245; 
- Thu, 31 Aug 2023 01:13:26 -0700 (PDT)
+ bh=afYWtHr3+mjB/u7pMAgIJK40tVxHVJJUHVzRTRI1NW0=;
+ b=UGNoBlYrb1TgX0rWic02jlLslS/hvTXaP3hQ5P3Gw7Rk9MI6OVKOod0jMAYFH6msyp
+ ck1GCADTtOF1UJT+7x22t+FcT6Po2jtGVhWbXtPdi/0xWwRvKa6QxcPT9FyOYba84/AF
+ cKVAhpNTSZJXkSlpY7SRVG25paBKYjerhHhD8fHoZkCwdlADJKgyNoAgdIB7UGt8x23k
+ nqCNrs2v5YEP4dVwZNW622rsLDGxC0Opx1gRJTmo55u6hjMKcwYsEopcuhCC0BzRWXHP
+ l8oPfuqtsVCtCo9189DmYxVFYG170YXjyc3BY5LzmdpLgZa1AZj8UIj8r9+b4FC73TFd
+ mCyQ==
+X-Gm-Message-State: AOJu0YychVgNGqccJPgat3xNonn+x2mOIdwB8frZuBRdo4naxEh7/hbz
+ JL+jGQ2LjrAvb06prCrDQUmylg==
+X-Google-Smtp-Source: AGHT+IGdpSY+jUCImkCfNJiiBgvW5fOfCWGLAU41eFSsxXNmL3xJHr5+BmY7AFOrXp/jo6VMAbzmiw==
+X-Received: by 2002:a05:6512:214c:b0:500:b964:37e0 with SMTP id
+ s12-20020a056512214c00b00500b96437e0mr2994265lfr.6.1693469864744; 
+ Thu, 31 Aug 2023 01:17:44 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- z9-20020a1c4c09000000b003fee849df23sm1168800wmf.22.2023.08.31.01.13.24
+ x2-20020aa7dac2000000b005272523b162sm498344eds.69.2023.08.31.01.17.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 01:13:25 -0700 (PDT)
-Message-ID: <02fb7b48-8314-4f92-aad2-ca9cf2ceaad4@linaro.org>
-Date: Thu, 31 Aug 2023 10:13:23 +0200
+ Thu, 31 Aug 2023 01:17:44 -0700 (PDT)
+Message-ID: <84c180db-ab99-a8ab-8e75-bd1fa09c785f@linaro.org>
+Date: Thu, 31 Aug 2023 10:17:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 04/12] hvf: arm: Ignore writes to CNTP_CTL_EL0
+Subject: Re: [PATCH 10/10] configure: move --enable-debug-tcg to meson
 Content-Language: en-US
-To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
-References: <20230830161425.91946-1-graf@amazon.com>
- <20230830161425.91946-5-graf@amazon.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230829082931.67601-1-pbonzini@redhat.com>
+ <20230829082931.67601-11-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230830161425.91946-5-graf@amazon.com>
+In-Reply-To: <20230829082931.67601-11-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
 X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,21 +92,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/8/23 18:14, Alexander Graf wrote:
-> MacOS unconditionally disables interrupts of the physical timer on boot
-> and then continues to use the virtual one. We don't really want to support
-> a full physical timer emulation, so let's just ignore those writes.
-> 
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> 
+On 29/8/23 10:29, Paolo Bonzini wrote:
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
-> 
-> v1 -> v2:
-> 
->    - Add log message on write
-> ---
->   target/arm/hvf/hvf.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
+>   configure                     | 11 +----------
+>   meson.build                   |  3 ++-
+>   meson_options.txt             |  2 ++
+>   scripts/meson-buildoptions.sh |  3 +++
+>   4 files changed, 8 insertions(+), 11 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
