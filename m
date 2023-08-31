@@ -2,58 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DC178EE79
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 678CF78EE9B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:27:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhda-0001Fq-DR; Thu, 31 Aug 2023 09:23:06 -0400
+	id 1qbhgZ-0004rn-4t; Thu, 31 Aug 2023 09:26:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
- id 1qbhdN-000198-FI; Thu, 31 Aug 2023 09:22:55 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qbhgP-0004cl-JM
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:26:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
- id 1qbhdJ-0006QB-SM; Thu, 31 Aug 2023 09:22:53 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rc2045srmz4wy9;
- Thu, 31 Aug 2023 23:22:44 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qbhgJ-0007L9-QQ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:26:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693488354;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ChPjbICG22oISTLdoZBu20p3DiMRw4EY8JI0c9BFGJs=;
+ b=Bpue9hgMgaaGpSlGzwi4qtWOrr4Y9cKBO0yuEtmpWYn1cPu7dvEA0uhAx0R9Q15JToLACd
+ OhFzZtvzVK2VOFK7DYAvD+wOfKIrKNd+/w19AK5Mxw/weqtqDteAXluOeSHvJORCGnsNmR
+ Lziscwgm71gP/HsRlryYGNOzJxVle2E=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-156-7l0Kjf4tPbm-G8T1mwim1w-1; Thu, 31 Aug 2023 09:25:49 -0400
+X-MC-Unique: 7l0Kjf4tPbm-G8T1mwim1w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rc2026xrpz4wb5;
- Thu, 31 Aug 2023 23:22:42 +1000 (AEST)
-Message-ID: <a35c9605-7bea-0252-359e-86855e8ee304@kaod.org>
-Date: Thu, 31 Aug 2023 15:22:40 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFC401C0726F;
+ Thu, 31 Aug 2023 13:25:48 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BDEBAC15BAE;
+ Thu, 31 Aug 2023 13:25:47 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B418921E690D; Thu, 31 Aug 2023 15:25:46 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, eblake@redhat.com,
+ vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
+ pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
+ anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
+ quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ kraxel@redhat.com, qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
+ alex.bennee@linaro.org, peter.maydell@linaro.org
+Subject: [PATCH 0/7] Steps towards enabling -Wshadow=local
+Date: Thu, 31 Aug 2023 15:25:39 +0200
+Message-ID: <20230831132546.3525721-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 5/7] aspeed: Create flash devices only when defaults
- are enabled
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230831123922.105200-1-clg@kaod.org>
- <20230831123922.105200-6-clg@kaod.org>
- <CACPK8XdiTpONmuLag5HnTCPXtoz+Zg-Yo+rrzt+Wuz17hbdDRg@mail.gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CACPK8XdiTpONmuLag5HnTCPXtoz+Zg-Yo+rrzt+Wuz17hbdDRg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -73
-X-Spam_score: -7.4
-X-Spam_bar: -------
-X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.478,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,69 +83,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/31/23 15:00, Joel Stanley wrote:
-> On Thu, 31 Aug 2023 at 12:39, Cédric Le Goater <clg@kaod.org> wrote:
->>
->> When the -nodefaults option is set, flash devices should be created
->> with :
->>
->>      -blockdev node-name=fmc0,driver=file,filename=./flash.img \
->>      -device mx66u51235f,cs=0x0,bus=ssi.0,drive=fmc0 \
->>
->> To be noted that in this case, the ROM will not be installed and the
->> initial boot sequence (U-Boot loading) will fetch instructions using
->> SPI transactions which is significantly slower. That's exactly how HW
->> operates though.
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> 
-> I think this is the first foray for the aspeed machines into
-> nodefaults removing things that previously would have just worked.
+Local variables shadowing other local variables or parameters make the
+code needlessly hard to understand.  Bugs love to hide in such code.
+Evidence: PATCH 1.
 
-This is true. It is change from the previous behavior.
+Enabling -Wshadow would prevent bugs like this one.  But we'd have to
+clean up all the offenders first.  We got a lot of them.
 
-QEMU should probably complain if no fmc0 are found to boot from.
-Would that be ok ? And yes, documentation needs some update.
+Enabling -Wshadow=local should be less work for almost as much gain.
+I took a stab at it.  There's a small, exciting part, and a large,
+boring part.
 
-Thanks,
+The exciting part is dark preprocessor sorcery to let us nest macro
+calls without shadowing: PATCH 7.
 
-C.
+The boring part is cleaning up all the other warnings.  I did some
+[PATCH 2-6], but ran out of steam long before finishing the job.  Some
+160 unique warnings remain.
 
-> I
-> know we haven't had it in our recommended command lines for a long
-> time, so that's fine.
-> 
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
-> 
-> Should the content of your commit message go in the docs?
-> 
->> ---
->>   hw/arm/aspeed.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
->> index cd92cf9ce0bb..271512ce5ced 100644
->> --- a/hw/arm/aspeed.c
->> +++ b/hw/arm/aspeed.c
->> @@ -396,12 +396,14 @@ static void aspeed_machine_init(MachineState *machine)
->>       connect_serial_hds_to_uarts(bmc);
->>       qdev_realize(DEVICE(&bmc->soc), NULL, &error_abort);
->>
->> -    aspeed_board_init_flashes(&bmc->soc.fmc,
->> +    if (defaults_enabled()) {
->> +        aspeed_board_init_flashes(&bmc->soc.fmc,
->>                                 bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
->>                                 amc->num_cs, 0);
->> -    aspeed_board_init_flashes(&bmc->soc.spi[0],
->> +        aspeed_board_init_flashes(&bmc->soc.spi[0],
->>                                 bmc->spi_model ? bmc->spi_model : amc->spi_model,
->>                                 1, amc->num_cs);
->> +    }
->>
->>       if (machine->kernel_filename && sc->num_cpus > 1) {
->>           /* With no u-boot we must set up a boot stub for the secondary CPU */
->> --
->> 2.41.0
->>
+To see them, enable -Wshadow=local like so:
+
+diff --git a/meson.build b/meson.build
+index 98e68ef0b1..9fc4c7ac9d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -466,6 +466,9 @@ warn_flags = [
+   '-Wno-tautological-type-limit-compare',
+   '-Wno-psabi',
+   '-Wno-gnu-variable-sized-type-not-at-end',
++  '-Wshadow=local',
++  '-Wno-error=shadow=local',
++  '-Wno-error=shadow=compatible-local',
+ ]
+ 
+ if targetos != 'darwin'
+
+You may want to drop the -Wno-error lines.
+
+Subsystems with -Wshadow=local warnings:
+
+    virtio-gpu
+    virtio
+    Device Tree
+    Overall TCG CPUs
+    Overall Audio backends
+    Open Sound System (OSS) Audio backend
+    vhost
+    vhost-user-gpu
+    Cryptography
+    M68K TCG CPUs
+    Dump
+    ACPI/SMBIOS
+    Allwinner-a10
+    ARM TCG CPUs
+    MPS2
+    ASPEED BMCs
+    ARM SMMU
+    Virt
+    Machine core
+    PC Chipset
+    X86 TCG CPUs
+    PC
+    VT-d Emulation
+    IDE
+    ARM cores
+    OpenPIC interrupt controller
+    q800
+    petalogix_ml605
+    MicroBlaze TCG CPUs
+    Versatile PB
+    Network devices
+    NiosII TCG CPUs
+    nvme
+    PowerNV (Non-Virtualized)
+    sPAPR (pseries)
+    OpenTitan
+    RISC-V TCG CPUs
+    SCSI
+    USB
+    Linux user
+    Network packet abstractions
+    Network device backends
+    Network Block Device (NBD)
+    Semihosting
+    Memory API
+    Seccomp
+    Main loop
+    Hexagon TCG CPUs
+    X86 KVM CPUs
+    MIPS TCG CPUs
+    PowerPC TCG CPUs
+    TriCore TCG CPUs
+    Common TCG code
+    qtest
+    Throttling infrastructure
+    Vhost-user block device backend server
+
+Files with -Wshadow=local warnings:
+
+    accel/tcg/tb-maint.c
+    audio/audio.c
+    audio/ossaudio.c
+    contrib/vhost-user-gpu/vhost-user-gpu.c
+    contrib/vhost-user-gpu/vugpu.h
+    crypto/cipher-gnutls.c.inc
+    crypto/tls-cipher-suites.c
+    disas/m68k.c
+    dump/dump.c
+    hw/acpi/cpu_hotplug.c
+    hw/arm/allwinner-r40.c
+    hw/arm/armsse.c
+    hw/arm/armv7m.c
+    hw/arm/aspeed_ast2600.c
+    hw/arm/smmuv3-internal.h
+    hw/arm/smmuv3.c
+    hw/arm/virt.c
+    hw/core/machine.c
+    hw/i2c/aspeed_i2c.c
+    hw/i2c/pm_smbus.c
+    hw/i386/acpi-build.c
+    hw/i386/acpi-microvm.c
+    hw/i386/intel_iommu.c
+    hw/i386/pc.c
+    hw/i386/x86.c
+    hw/ide/ahci.c
+    hw/intc/arm_gicv3_its.c
+    hw/intc/openpic.c
+    hw/loongarch/virt.c
+    hw/m68k/bootinfo.h
+    hw/microblaze/petalogix_ml605_mmu.c
+    hw/misc/arm_sysctl.c
+    hw/misc/aspeed_i3c.c
+    hw/net/vhost_net.c
+    hw/nios2/10m50_devboard.c
+    hw/nvme/ns.c
+    hw/ppc/pnv_psi.c
+    hw/ppc/spapr.c
+    hw/ppc/spapr_drc.c
+    hw/ppc/spapr_pci.c
+    hw/riscv/opentitan.c
+    hw/scsi/mptsas.c
+    hw/smbios/smbios.c
+    hw/usb/desc.c
+    hw/usb/dev-hub.c
+    hw/usb/dev-storage.c
+    hw/usb/hcd-xhci.c
+    hw/usb/host-libusb.c
+    hw/virtio/vhost.c
+    hw/virtio/virtio-pci.c
+    include/hw/cxl/cxl_device.h
+    include/hw/ppc/fdt.h
+    include/hw/virtio/virtio-gpu.h
+    include/sysemu/device_tree.h
+    linux-user/flatload.c
+    linux-user/mmap.c
+    linux-user/strace.c
+    linux-user/syscall.c
+    net/eth.c
+    qemu-nbd.c
+    semihosting/arm-compat-semi.c
+    softmmu/device_tree.c
+    softmmu/memory.c
+    softmmu/physmem.c
+    softmmu/qemu-seccomp.c
+    softmmu/vl.c
+    target/arm/tcg/mve_helper.c
+    target/arm/tcg/translate-m-nocp.c
+    target/hexagon/helper_funcs_generated.c.inc
+    target/hexagon/mmvec/macros.h
+    target/hexagon/op_helper.c
+    target/hexagon/translate.c
+    target/i386/cpu.c
+    target/i386/kvm/kvm.c
+    target/i386/tcg/seg_helper.c
+    target/i386/tcg/sysemu/svm_helper.c
+    target/i386/tcg/translate.c
+    target/m68k/translate.c
+    target/mips/tcg/msa_helper.c
+    target/mips/tcg/nanomips_translate.c.inc
+    target/mips/tcg/translate.c
+    target/ppc/int_helper.c
+    target/riscv/cpu.c
+    target/riscv/vector_helper.c
+    target/tricore/translate.c
+    tcg/tcg.c
+    tests/qtest/m48t59-test.c
+    tests/qtest/pflash-cfi02-test.c
+    tests/unit/test-throttle.c
+    util/vhost-user-server.c
+
+Markus Armbruster (7):
+  migration/rdma: Fix save_page method to fail on polling error
+  migration: Clean up local variable shadowing
+  ui: Clean up local variable shadowing
+  block/dirty-bitmap: Clean up local variable shadowing
+  block/vdi: Clean up local variable shadowing
+  block: Clean up local variable shadowing
+  qobject atomics osdep: Make a few macros more hygienic
+
+ include/qapi/qmp/qobject.h      |  8 +++++---
+ include/qemu/atomic.h           | 11 ++++++-----
+ include/qemu/osdep.h            | 34 ++++++++++++++++++---------------
+ block.c                         |  7 ++++---
+ block/monitor/bitmap-qmp-cmds.c |  2 +-
+ block/qcow2-bitmap.c            |  3 +--
+ block/rbd.c                     |  2 +-
+ block/stream.c                  |  1 -
+ block/vdi.c                     |  7 +++----
+ block/vvfat.c                   | 34 ++++++++++++++++-----------------
+ hw/block/xen-block.c            |  6 +++---
+ migration/block.c               |  4 ++--
+ migration/ram.c                 |  8 +++-----
+ migration/rdma.c                | 14 +++++++++-----
+ migration/vmstate.c             |  2 +-
+ ui/gtk.c                        | 14 +++++++-------
+ ui/spice-display.c              |  9 +++++----
+ ui/vnc-palette.c                |  2 --
+ ui/vnc.c                        | 12 ++++++------
+ ui/vnc-enc-zrle.c.inc           |  9 ++++-----
+ 20 files changed, 97 insertions(+), 92 deletions(-)
+
+-- 
+2.41.0
 
 
