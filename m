@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABBA78E451
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 03:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF43278E450
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 03:28:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbWTG-0006Qy-3Q; Wed, 30 Aug 2023 21:27:42 -0400
+	id 1qbWTJ-0006RJ-6g; Wed, 30 Aug 2023 21:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qbWTE-0006Qa-71
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:27:40 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ id 1qbWTH-0006RA-Vf
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:27:43 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qbWTB-0006X2-EU
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:27:40 -0400
+ id 1qbWTF-0006Z5-7J
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:27:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id E15B060BD3;
+ by sin.source.kernel.org (Postfix) with ESMTPS id 40E46CE1F8A;
+ Thu, 31 Aug 2023 01:27:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBBFC433C8;
  Thu, 31 Aug 2023 01:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F696C433C7;
- Thu, 31 Aug 2023 01:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1693445255;
- bh=ZtQqJg0TEefrU+teRKptfKezqeWNwR2lX3vNqNqciYk=;
+ s=k20201202; t=1693445256;
+ bh=oHDyaB9hkzMzI1KW4yyUBD+EUdbWcBABAZvMrBiaYLQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=L+M6Ld0s3IV6G1tpPK8WqBw7ag/JrdvJdtr4zP+oavaw2hAF88FtKBOw9e9NijdL3
- EpeIrBnb53rcKX0HmSu0H0Mgk5rxjCU1mPN8e5XVVoPozdg4yxMSFtbp1gi4DTzzVC
- /DsFZErd6eO0hZIhjOuK4KQspkosvLnINiQk2lRVW3694UxE8is18dkCAHYl8dhYAS
- LkvmDZCuwgBftcnxJbreS9dFBYVUoT2O3hSDwoQxTNBlYUOyORyIALWbqZ4M9QMzve
- HKUocXXfy/1qkSn+aixHjDnQZzZgHqEDE8DPlCCrIWHad3P5INvI9kmCoN7c8ZH8bn
- WxFFWj7dxeJJw==
+ b=ToU6mC/HFoFpBcW6IAtOqDG/lZMRESAW5qkpwOcZNcFLcSpu4T4VfRP6rBjcK2d5Z
+ 3MmzWv5DQuzs9ziFAdcE6PdydeZQdT27qqPBCwQUW5JPg87id6dz17BPa7CUsfe+yJ
+ TNl+/+Dz47z5rnvA5+9H7vxr/0PW9MRV7KYVqEnb1R9/2F694/xQ+O8e1uTZJS76eo
+ UZukpgJOHF7/2xknxgSyy5dsJA892nKlABisqJa3MIPmP6qfj2xz/hhL5+8x2L1cp4
+ q5b+Yuex2eDYN71w6UjAZy3bBn92ARJ8f1yRVIIAr5aBGQLWAgg2E3RePPsz4GiuRE
+ BoN6RoHPB/uZw==
 From: Stefano Stabellini <sstabellini@kernel.org>
 To: peter.maydell@linaro.org
 Cc: sstabellini@kernel.org, richard.henderson@linaro.org,
  qemu-devel@nongnu.org, vikram.garhwal@amd.com,
  Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
  Stefano Stabellini <stefano.stabellini@amd.com>
-Subject: [PULL v2 1/2] xen_arm: Create virtio-mmio devices during
- initialization
-Date: Wed, 30 Aug 2023 18:27:30 -0700
-Message-Id: <20230831012731.525739-1-sstabellini@kernel.org>
+Subject: [PULL v2 2/2] xen_arm: Initialize RAM and add hi/low memory regions
+Date: Wed, 30 Aug 2023 18:27:31 -0700
+Message-Id: <20230831012731.525739-2-sstabellini@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <alpine.DEB.2.22.394.2308301824340.6458@ubuntu-linux-20-04-desktop>
 References: <alpine.DEB.2.22.394.2308301824340.6458@ubuntu-linux-20-04-desktop>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=sstabellini@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -77,110 +76,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 
-In order to use virtio backends we need to allocate virtio-mmio
-parameters (irq and base) and register corresponding buses.
+In order to use virtio backends we need to initialize RAM for the
+xen-mapcache (which is responsible for mapping guest memory using foreign
+mapping) to work. Calculate and add hi/low memory regions based on
+machine->ram_size.
 
-Use the constants defined in public header arch-arm.h to be
-aligned with the toolstack. So the number of current supported
-virtio-mmio devices is 10.
+Use the constants defined in public header arch-arm.h to be aligned with the xen
+toolstack.
 
-For the interrupts triggering use already existing on Arm
-device-model hypercall.
-
-The toolstack should then insert the same amount of device nodes
-into guest device-tree.
+While using this machine, the toolstack should then pass real ram_size using
+"-m" arg. If "-m" is not given, create a QEMU machine without IOREQ and other
+emulated devices like TPM and VIRTIO. This is done to keep this QEMU machine
+usable for /etc/init.d/xencommons.
 
 Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
 ---
- hw/arm/xen_arm.c            | 35 +++++++++++++++++++++++++++++++++++
- include/hw/xen/xen_native.h | 16 ++++++++++++++++
- 2 files changed, 51 insertions(+)
+ hw/arm/xen_arm.c            | 45 +++++++++++++++++++++++++++++++++++++
+ include/hw/xen/xen_native.h |  8 +++++++
+ 2 files changed, 53 insertions(+)
 
 diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 1d3e6d481a..7393b37355 100644
+index 7393b37355..f83b983ec5 100644
 --- a/hw/arm/xen_arm.c
 +++ b/hw/arm/xen_arm.c
-@@ -26,6 +26,7 @@
- #include "qapi/qapi-commands-migration.h"
- #include "qapi/visitor.h"
- #include "hw/boards.h"
-+#include "hw/irq.h"
- #include "hw/sysbus.h"
- #include "sysemu/block-backend.h"
- #include "sysemu/tpm_backend.h"
-@@ -59,6 +60,38 @@ struct XenArmState {
+@@ -60,6 +60,8 @@ struct XenArmState {
      } cfg;
  };
  
-+/*
-+ * VIRTIO_MMIO_DEV_SIZE is imported from tools/libs/light/libxl_arm.c under Xen
-+ * repository.
-+ *
-+ * Origin: git://xenbits.xen.org/xen.git 2128143c114c
-+ */
-+#define VIRTIO_MMIO_DEV_SIZE   0x200
++static MemoryRegion ram_lo, ram_hi;
 +
-+#define NR_VIRTIO_MMIO_DEVICES   \
-+   (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
-+
-+static void xen_set_irq(void *opaque, int irq, int level)
+ /*
+  * VIRTIO_MMIO_DEV_SIZE is imported from tools/libs/light/libxl_arm.c under Xen
+  * repository.
+@@ -92,6 +94,39 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
+     }
+ }
+ 
++static void xen_init_ram(MachineState *machine)
 +{
-+    xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level);
-+}
++    MemoryRegion *sysmem = get_system_memory();
++    ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
 +
-+static void xen_create_virtio_mmio_devices(XenArmState *xam)
-+{
-+    int i;
++    if (machine->ram_size <= GUEST_RAM0_SIZE) {
++        ram_size[0] = machine->ram_size;
++        ram_size[1] = 0;
++        block_len = GUEST_RAM0_BASE + ram_size[0];
++    } else {
++        ram_size[0] = GUEST_RAM0_SIZE;
++        ram_size[1] = machine->ram_size - GUEST_RAM0_SIZE;
++        block_len = GUEST_RAM1_BASE + ram_size[1];
++    }
 +
-+    for (i = 0; i < NR_VIRTIO_MMIO_DEVICES; i++) {
-+        hwaddr base = GUEST_VIRTIO_MMIO_BASE + i * VIRTIO_MMIO_DEV_SIZE;
-+        qemu_irq irq = qemu_allocate_irq(xen_set_irq, NULL,
-+                                         GUEST_VIRTIO_MMIO_SPI_FIRST + i);
++    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
++                           &error_fatal);
 +
-+        sysbus_create_simple("virtio-mmio", base, irq);
++    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
++                             GUEST_RAM0_BASE, ram_size[0]);
++    memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
++    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
++            GUEST_RAM0_BASE, ram_size[0]);
 +
-+        DPRINTF("Created virtio-mmio device %d: irq %d base 0x%lx\n",
-+                i, GUEST_VIRTIO_MMIO_SPI_FIRST + i, base);
++    if (ram_size[1] > 0) {
++        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
++                                 GUEST_RAM1_BASE, ram_size[1]);
++        memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
++        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
++                GUEST_RAM1_BASE, ram_size[1]);
 +    }
 +}
 +
  void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
  {
      hw_error("Invalid ioreq type 0x%x\n", req->type);
-@@ -110,6 +143,8 @@ static void xen_arm_init(MachineState *machine)
+@@ -141,6 +176,14 @@ static void xen_arm_init(MachineState *machine)
  
+     xam->state =  g_new0(XenIOState, 1);
+ 
++    if (machine->ram_size == 0) {
++        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
++                "(no emulated devices including Virtio)\n");
++        return;
++    }
++
++    xen_init_ram(machine);
++
      xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
  
-+    xen_create_virtio_mmio_devices(xam);
-+
+     xen_create_virtio_mmio_devices(xam);
+@@ -188,6 +231,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
+     mc->init = xen_arm_init;
+     mc->max_cpus = 1;
+     mc->default_machine_opts = "accel=xen";
++    /* Set explicitly here to make sure that real ram_size is passed */
++    mc->default_ram_size = 0;
+ 
  #ifdef CONFIG_TPM
-     if (xam->cfg.tpm_base_addr) {
-         xen_enable_tpm(xam);
+     object_class_property_add(oc, "tpm-base-addr", "uint64_t",
 diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-index 4dce905fde..a4b1aa9e5d 100644
+index a4b1aa9e5d..5d2718261f 100644
 --- a/include/hw/xen/xen_native.h
 +++ b/include/hw/xen/xen_native.h
-@@ -523,4 +523,20 @@ static inline int xen_set_ioreq_server_state(domid_t dom,
-                                                  enable);
- }
+@@ -539,4 +539,12 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
+ #define GUEST_VIRTIO_MMIO_SPI_LAST    43
+ #endif
  
-+#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41500
-+static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
-+                                               domid_t domid, uint32_t irq,
-+                                               unsigned int level)
-+{
-+    return 0;
-+}
-+#endif
-+
-+#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
-+#define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
-+#define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
-+#define GUEST_VIRTIO_MMIO_SPI_FIRST   33
-+#define GUEST_VIRTIO_MMIO_SPI_LAST    43
++#if defined(__i386__) || defined(__x86_64__)
++#define GUEST_RAM_BANKS   2
++#define GUEST_RAM0_BASE   0x40000000ULL /* 3GB of low RAM @ 1GB */
++#define GUEST_RAM0_SIZE   0xc0000000ULL
++#define GUEST_RAM1_BASE   0x0200000000ULL /* 1016GB of RAM @ 8GB */
++#define GUEST_RAM1_SIZE   0xfe00000000ULL
 +#endif
 +
  #endif /* QEMU_HW_XEN_NATIVE_H */
