@@ -2,70 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FD578E413
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 02:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E9B78E41C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 03:05:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbVzB-0000ll-Cx; Wed, 30 Aug 2023 20:56:37 -0400
+	id 1qbW6m-0008Uh-8K; Wed, 30 Aug 2023 21:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qbVzA-0000lU-6q
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 20:56:36 -0400
-Received: from ams.source.kernel.org ([145.40.68.75])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qbVz7-0000Gg-Af
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 20:56:35 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id D6617B8201C;
- Thu, 31 Aug 2023 00:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D871C433C8;
- Thu, 31 Aug 2023 00:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1693443388;
- bh=bdcvKVmYhY6hiG40uNbDrovAdJe/+D6kOb4JuPRDfIA=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=unKCL3b1J+IkcuRfRaPrHdsNfYVv14S3zAON+bHi7WLLVjoPbXs98Reo/yGTFeX4T
- j2+53Xxwe+lcAk8b9CIuGB46tH5TC1G73LARwrvolRcF0OcxJGkhTlIQrxyRLyBvWq
- dQYRmtWPRYMUZK2AItqZQT6dF/aJ32ppq877CbvzbVGepLqx0iCoGYC8hRLuhB4BUy
- KsqNSGA9Pj29S9fOSFEzdbMLvq4NBW6BkJWnTBTZoUCb4s4M08ob7rdClfWgYNL9D/
- HWLTDDQyLfbOLku2WMjcWYZM1kGkZhy5Rd149sykhlhjIP4jl+NcF5+IHpjyk24+83
- MU55ezk62ztyA==
-Date: Wed, 30 Aug 2023 17:56:25 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-cc: Xen-devel <xen-devel@lists.xenproject.org>, 
- Stewart Hildebrand <stewart.hildebrand@amd.com>, 
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, 
- Sergiy Kibrik <Sergiy_Kibrik@epam.com>, 
- QEMU Developers <qemu-devel@nongnu.org>, 
- Vikram Garhwal <vikram.garhwal@amd.com>, 
- Stefano Stabellini <stefano.stabellini@amd.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: QEMU features useful for Xen development?
-In-Reply-To: <87y1hspiyh.fsf@linaro.org>
-Message-ID: <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
-References: <87y1hspiyh.fsf@linaro.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qbW6i-0008UZ-Iy
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:04:24 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qbW6f-0001Wk-Bv
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:04:24 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-1c8be41e5efso119596fac.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 18:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1693443736; x=1694048536;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=S6qUesVrF9fvpx6JB+jyIlGxeckD4XA/tJUqPVmmNDg=;
+ b=bRJlmGoxIbgPCXJpona5EdkdWfdipE2WY0gBA8FnMdR7JXasYeSYpANDvmVHTSUrpC
+ euZ7kk/G91PoDe+/XYAxJ3PS95+hBN8G+BAl/kuhJ4yfIK3FqeFvuCyrVXwYPmHyNXEE
+ P8eBs6qMM2AqPjWjvAwvwQ1aEAsaHI0qGA6JCpvT+b72LhKmExvqBQAC1HScPDItVXI3
+ 74Yxlmw3wJh65gxblT8sNJXen4kT4qiXlQD7cDVwpxe7q9yUPx19jQsSFbD/YPL5tgmu
+ Tq66NxcRfOWWQyzP+UCJazo9C0LHNAuT5fOdnZYg9FK4vumruMbpHYh0E8c7BiLPFQn3
+ gyVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693443736; x=1694048536;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=S6qUesVrF9fvpx6JB+jyIlGxeckD4XA/tJUqPVmmNDg=;
+ b=QrlSRFQYRCIFreKKpjiEiaTBFwAsSh7GBukoR2UB3HeN9+jqj9h9t2JsN0S84+THFp
+ 2fl8SVrnM/IEcHxDQwKsI2cdkKR6N41Aq4e8VU0kc+b0XSfeo7wKQ5HRH0IA3l6Z9YyD
+ ym0rsSgFG9Gk7dN5cvtIJHEfSzpQnhKDYl+6ewetnShVSH9XmyE44Y6tFoycKVsEc5xc
+ 9Pqw3FsrZygrrpM5edyeAaKQTxXG6oaW++m3ehWYT8o7HdAV1F8rJXLTkb2ittHuJnGf
+ OH5GVoEEtrOwAO6ZWM2zqtGa8wXK6Ui4eDuBJQhLjSfJO+66uOxdcZFwPJx3VARqsHSI
+ VMiA==
+X-Gm-Message-State: AOJu0YzgYOpQP5L5wp7TndbuGCS641IOQvv9lGHC1Pj5G0MGrQYVmTLA
+ NxCncdCved+2Rlb+stHmpmEo3BV+lIbK8CXYDvps1w==
+X-Google-Smtp-Source: AGHT+IFzr4h8YTWGWqoit+uo8HCUcyCAMdL7xiaqm2guGUI7jUmR1rI5OQakcVbH83AnoS5zWKHkVuKsIKZScS4tD94=
+X-Received: by 2002:a05:6870:789:b0:1bf:77e2:95cc with SMTP id
+ en9-20020a056870078900b001bf77e295ccmr4301629oab.17.1693443735727; Wed, 30
+ Aug 2023 18:02:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1957996329-1693443387=:6458"
-Received-SPF: pass client-ip=145.40.68.75; envelope-from=sstabellini@kernel.org;
- helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <cover.1693322363.git.yong.huang@smartx.com>
+ <ff118704fa5498c64a55d7a732fd42515fdc356c.1693322363.git.yong.huang@smartx.com>
+ <aa868e42-334d-50f3-29fb-19ffa6fda72f@tls.msk.ru>
+In-Reply-To: <aa868e42-334d-50f3-29fb-19ffa6fda72f@tls.msk.ru>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Thu, 31 Aug 2023 09:01:59 +0800
+Message-ID: <CAK9dgmY=bu4jNtpVEURcCRnxOdSE-K6+X0RDpOBwwQz5za2NwQ@mail.gmail.com>
+Subject: Re: [PULL 1/3] softmmu: Fix dirtylimit memory leak
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, "alloc.young" <alloc.young@outlook.com>
+Content-Type: multipart/alternative; boundary="00000000000050c56a06042d9834"
+Received-SPF: none client-ip=2001:4860:4864:20::35;
+ envelope-from=yong.huang@smartx.com; helo=mail-oa1-x35.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,92 +86,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+--00000000000050c56a06042d9834
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---8323329-1957996329-1693443387=:6458
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+On Thu, Aug 31, 2023 at 12:55=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> w=
+rote:
 
-Hi Alex,
-
-Thanks for reaching out. QEMU is an important development tool for the
-Xen community and we are using QEMU as part of our upstream gitlab-ci
-testing, see automation/scripts/qemu-*.
-
-As Xen is gaining R52 and R82 support, it would be great to be able to
-use QEMU for development and testing there as well, but I don't think
-QEMU can emulate EL2 properly for the Cortex-R architecture. We would
-need EL2 support in the GIC/timer for R52/R82 as well.
-
-On Cortex-As, in addition to a PCI root complex and an arbitrary PCI
-device, SMMUv3 emulation (both stages) and GICv3 ITS are needed to be
-able to test PCI Passthrough. However, if I recall correctly SMMUv3
-emulation in QEMU might not be complete enough to enable us to use it.
-
-For Virtio, using QEMU on target (not develpment/testing, but
-production), it would greatly help if we could improve the build system
-to only build what is strictly necessary for the xenpvh machine to run.
-
-Cheers,
-
-Stefano
+> 29.08.2023 18:29, Hyman Huang wrote:
+> > From: "alloc.young" <alloc.young@outlook.com>
+> >
+> > Fix memory leak in hmp_info_vcpu_dirty_limit,use g_autoptr
+> > to handle memory deallocation.
+>
+> It does not feel like -stable-worthy, or am I wrong and it should be
+> picked up
+> for -stable?
 
 
-On Wed, 30 Aug 2023, Alex Bennée wrote:
-> Dear Xen community,
-> 
-> Linaro is significantly invested in QEMU development, with a special
-> focus on Arm-related aspects. We recognize the value of QEMU as a
-> readily available software reference platform for projects that need to
-> test their software well before the availability of real hardware.
-> 
-> The primary focus of our effort is on adding core architectural elements
-> to the CPU emulation. For an overview of the current feature set, please
-> see:
-> 
->   https://qemu.readthedocs.io/en/master/system/arm/emulation.html
-> 
-> Besides the -cpu max, providing an approximation of a v9.0 baseline CPU,
-> we have also recently added several specific CPU types like the
-> Neoverse-N1 and V1 processor types as well as numerous Cortex CPU
-> models.
-> 
-> Our most utilized machine model is "virt", which is primarily designed
-> for guest operation and therefore has minimal resemblance to actual
-> hardware. "sbsa-ref" was implemented to more closely simulate a real
-> machine that aligns with Arm's SBSA specification.
-> 
-> In our work on VirtIO, we often use QEMU. Most of our rust-vmm
-> vhost-device backends, for instance, were initially tested on QEMU.
-> 
-> Now that everyone is up-to-date, I would welcome any feedback from the
-> Xen community on features that would increase QEMU's usefulness as a
-> development target.
-> 
-> Do you have interest in any upcoming Arm CPU features? For example, we
-> recently added FEAT_RME support for Arm's new confidential computing,
-> but currently do not implement FEAT_NV/NV2.
-> 
-> How about the HW emulation in QEMU? Is the PCI emulation reliable enough
-> to ensure confidence while testing changes to Xen's PCI management? What
-> about the few peripherals that the hypervisor accesses directly?
-> 
-> Are there other development features you consider essential? Have you
-> noticed any limitations with gdbstub? Does anyone use the record/replay
-> or reverse debug functions? Has anyone tried TCG plugins for analysing
-> the behavior of the hypervisor?
-> 
-> While I cannot promise to implement every wish-list item (performance
-> counter emulation, for example, as we are not a uArch simulator), I am
-> eager to gather feedback on how QEMU could be improved to help the Xen
-> community deliver it's roadmap faster.
-> 
-> Thank you for your time and I look forward to any feedback :-)
-> 
-> -- 
-> Alex Bennée
-> Virtualisation Tech Lead @ Linaro
-> 
---8323329-1957996329-1693443387=:6458--
+Since the leak occurs when using the hmp command instead of qmp, which
+lowers the frequency, it is, in my opinion, somewhat tolerable for the
+dirtylimit feature.
+It is undoubtedly not -stable-worthy for the memory leak issue by itself,
+which is regrettable. :( And the valgrind tool would be applied as much as
+possible for my further work.
+
+Thanks,
+
+Yong
+
+
+> Thanks,
+>
+> /mjt
+>
+
+
+--=20
+Best regards
+
+--00000000000050c56a06042d9834
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 31, 20=
+23 at 12:55=E2=80=AFAM Michael Tokarev &lt;<a href=3D"mailto:mjt@tls.msk.ru=
+">mjt@tls.msk.ru</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" =
+style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:s=
+olid;border-left-color:rgb(204,204,204);padding-left:1ex">29.08.2023 18:29,=
+ Hyman Huang wrote:<br>
+&gt; From: &quot;alloc.young&quot; &lt;<a href=3D"mailto:alloc.young@outloo=
+k.com" target=3D"_blank">alloc.young@outlook.com</a>&gt;<br>
+&gt; <br>
+&gt; Fix memory leak in hmp_info_vcpu_dirty_limit,use g_autoptr<br>
+&gt; to handle memory deallocation.<br>
+<br>
+It does not feel like -stable-worthy, or am I wrong and it should be picked=
+ up<br>
+for -stable?</blockquote><div><div class=3D"gmail_default" style=3D"font-fa=
+mily:&quot;comic sans ms&quot;,sans-serif"><br></div></div><div class=3D"gm=
+ail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Sin=
+ce the leak occurs when using the hmp command instead of qmp, which</div><d=
+iv class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,s=
+ans-serif">lowers the frequency, it is, in my opinion, somewhat tolerable f=
+or the</div><div class=3D"gmail_default" style=3D"font-family:&quot;comic s=
+ans ms&quot;,sans-serif">dirtylimit feature.=C2=A0</div><div class=3D"gmail=
+_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">It is =
+undoubtedly not -stable-worthy for the memory leak issue by itself,=C2=A0</=
+div><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&q=
+uot;,sans-serif">which is regrettable. :( And the valgrind tool would be ap=
+plied as much as</div><div class=3D"gmail_default" style=3D"font-family:&qu=
+ot;comic sans ms&quot;,sans-serif">possible for my further work.=C2=A0</div=
+><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot=
+;,sans-serif"><br></div><div class=3D"gmail_default" style=3D"font-family:&=
+quot;comic sans ms&quot;,sans-serif">Thanks,=C2=A0</div><div><br></div><div=
+ class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,san=
+s-serif">Yong</div><div><br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;=
+border-left-color:rgb(204,204,204);padding-left:1ex">
+<br>
+Thanks,<br>
+<br>
+/mjt<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--00000000000050c56a06042d9834--
 
