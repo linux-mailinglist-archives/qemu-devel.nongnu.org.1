@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A442B78EB09
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846EF78EB05
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbfBO-00042d-SB; Thu, 31 Aug 2023 06:45:51 -0400
+	id 1qbfBM-0003rO-5b; Thu, 31 Aug 2023 06:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qbfBB-0003db-Bx
+ id 1qbfBB-0003dh-Cl
  for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:37 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qbfB5-000453-Cl
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:34 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-401d2e11dacso11782565e9.0
+ id 1qbfB5-00045D-Cy
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:35 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31dcd553fecso480210f8f.2
  for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:45:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693478729; x=1694083529; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693478730; x=1694083530; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MCjuA8VpBXu0MenkuxVKPe+uHxER/DcfJ0S9UzL2X1E=;
- b=hBgAZB2WBTZ2sMBlxcDudK5djuP0XJW0zDaXg/NK3MFwnOndMqMSrzdJ66dv9l5XWx
- rpp+Smun2er8hJ75/4AY+gz13jNbr9EOCSH9RKKdyAa4yAjkyuJBvJ/NH3zD4uDcWbnL
- B3C6nYf59rNzbvsMEQZNn7Xu/gIqJrL1OqbJDXlpXeyEsEwwAK5xUoH1O+jMB7DwO9BD
- TS0jAG04+ok0MllTA2UVYNVXrBwN3SWhGj52sdT0A/RSJoeQ9isGndiHBTADhtWVFKgN
- Gaeg31cejjEQ/GJamrrTI5f+RBBP0qWi5srKA1rCwbpIKPECp0mCsAcLzj3TD8chiKjB
- Nmmg==
+ :reply-to; bh=+VSlQGCsD1Pcew2GJP5QWEZRyhS81cLxeQnfhrofKf0=;
+ b=ex4ekol4H36W4ge9il9DwlbDng9niFS7UMF5V7Zh5NpLS8DI64gOBXrRT5TtJVdydn
+ rszjjThaTA5gg0Kpm5+n2CnkoOoS8A3xX0oAssNOMh0yd++NHEVWIVAtoa9LgmUZcEsB
+ q/GJSHZgCYCZOz7f9rQBWmELMSUL5ElKbBxCGYMjbEgjUL5apQMoMXiBq3PVEf8vRX0B
+ Cev9y7ri91X7vahKvcK9cWLgLNAQnt5lQgzvAOg5M9cHCYnGK9nQTQ2W4hdAcSymK9si
+ 4i0acVL06DpJl5FAnU+kR7l98k/3BR1ufT07CwiVfkowLFRyJHjaTskA0rfOZ/+GmjFq
+ akhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693478729; x=1694083529;
+ d=1e100.net; s=20221208; t=1693478730; x=1694083530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MCjuA8VpBXu0MenkuxVKPe+uHxER/DcfJ0S9UzL2X1E=;
- b=KCzkeIX5G3ef4gEf0i/zLpfiHgwlXtiEzNi6iefx9H3lZHbnkmpfE6xOVnmiCzcqM1
- WTdBpXGflMSZHtK60u60VmffADmbkQlRDNLIXSlQx2FFfpxBcALTb10S6Aq6gxugtLAd
- 7LCsXTRnsKFS30tYWVVL1iv0uBE13JqfrPUZPAJhcVoSQ8qjWMU6/TNxRqdQRZ+YTlGT
- ikNylh91BXKRvuH7JVXCEVqTXl7PlK22oN869yLgSF2eWQNphtjFFh0CexHVjojvzv37
- zzU66Y60dyygIe+kDfWQa54PeqIOGfKsomBA88ixuOvMqVTaz/8VhsnmyGMclA1drDML
- q7qg==
-X-Gm-Message-State: AOJu0YylhiIIMfgfkDwn7J8UczTVX/A+ETzZOHnMQ+Pv/GKXxSjeOM1f
- XH8/2DsrbFICLItL2j48oC0NA3hRTr8CRoS9RSc=
-X-Google-Smtp-Source: AGHT+IHZxCCrWiBn/JuMdyU3FarSQe3DnSF+as/hEw47asgYg0kuJb4Qnq/GpV3cT2yv7cgHAIdZWQ==
-X-Received: by 2002:a7b:c84f:0:b0:401:b504:b6a8 with SMTP id
- c15-20020a7bc84f000000b00401b504b6a8mr1745176wml.2.1693478729209; 
+ bh=+VSlQGCsD1Pcew2GJP5QWEZRyhS81cLxeQnfhrofKf0=;
+ b=jJQKDF+FWBPUm8OZBLAMHXQubpyXZZszgDD9ERslGoGQ0IqGe4tWXUt99eHg1I6t0q
+ f1Ur6rDrTC4t0Rig5WvxwQQyHqZXNE9I1uaj0AvQeWayJuTiMq2GNkSItCC0qQ3GwP8L
+ /P4TX7Ejq6sawHqJ7n4zhw5q7RM78r1hLzSQZ3icffWf4MJZ/7zZ+6cGp17EzjUceIRb
+ jT3hNxhHeg6ERYu5WQ4sxcXAMoHxbLM0E+vTXSfZJxM/xVe1dAF85A3FvNDXbRLu1pPI
+ QqYg1RTMLIocS3SnO5jcXmtzRwRzUpjN+rP/EHTrJLV8xRJYWzi3hhLoRZ0xr5K5+45a
+ 3kPA==
+X-Gm-Message-State: AOJu0YxUE9m1tbIvrv0G4H4b+fm792I1dnpNINuXSOY8EqQpkfXQc9MR
+ nNGqGg2mRt/uFkth+ZRxluxY8vKARDgwHfILUF8=
+X-Google-Smtp-Source: AGHT+IFmOnSKxs0IHqEKGaA0FE9D8X9tHPr6kMiSu4U4D00p8keMroFUKVHzg8LCNnVT66fsC8zQ1w==
+X-Received: by 2002:a5d:5487:0:b0:319:8a5a:ab5e with SMTP id
+ h7-20020a5d5487000000b003198a5aab5emr3656194wrv.38.1693478729799; 
  Thu, 31 Aug 2023 03:45:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- l5-20020adfe585000000b0031c71693449sm1785524wrm.1.2023.08.31.03.45.28
+ l5-20020adfe585000000b0031c71693449sm1785524wrm.1.2023.08.31.03.45.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 03:45:28 -0700 (PDT)
+ Thu, 31 Aug 2023 03:45:29 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/24] hw/rtc/aspeed_rtc: Use 64-bit offset for holding time_t
- difference
-Date: Thu, 31 Aug 2023 11:45:15 +0100
-Message-Id: <20230831104519.3520658-21-peter.maydell@linaro.org>
+Subject: [PULL 21/24] rtc: Use time_t for passing and returning time offsets
+Date: Thu, 31 Aug 2023 11:45:16 +0100
+Message-Id: <20230831104519.3520658-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230831104519.3520658-1-peter.maydell@linaro.org>
 References: <20230831104519.3520658-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,52 +91,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the aspeed_rtc device we store a difference between two time_t
-values in an 'int'. This is not really correct when time_t could
-be 64 bits. Enlarge the field to 'int64_t'.
+The functions qemu_get_timedate() and qemu_timedate_diff() take
+and return a time offset as an integer. Coverity points out that
+means that when an RTC device implementation holds an offset
+as a time_t, as the m48t59 does, the time_t will get truncated.
+(CID 1507157, 1517772).
 
-This is a migration compatibility break for the aspeed boards.
-While we are changing the vmstate, remove the accidental
-duplicate of the offset field.
+The functions work with time_t internally, so make them use that type
+in their APIs.
+
+Note that this won't help any Y2038 issues where either the device
+model itself is keeping the offset in a 32-bit integer, or where the
+hardware under emulation has Y2038 or other rollover problems.  If we
+missed any cases of the former then hopefully Coverity will warn us
+about them since after this patch we'd be truncating a time_t in
+assignments from qemu_timedate_diff().)
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/rtc/aspeed_rtc.h | 2 +-
- hw/rtc/aspeed_rtc.c         | 5 ++---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ include/sysemu/rtc.h | 4 ++--
+ softmmu/rtc.c        | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/rtc/aspeed_rtc.h b/include/hw/rtc/aspeed_rtc.h
-index df61e46059e..596dfebb46c 100644
---- a/include/hw/rtc/aspeed_rtc.h
-+++ b/include/hw/rtc/aspeed_rtc.h
-@@ -18,7 +18,7 @@ struct AspeedRtcState {
-     qemu_irq irq;
+diff --git a/include/sysemu/rtc.h b/include/sysemu/rtc.h
+index 159702b45b5..0fc8ad6fdf1 100644
+--- a/include/sysemu/rtc.h
++++ b/include/sysemu/rtc.h
+@@ -42,7 +42,7 @@
+  * The behaviour of the clock whose value this function returns will
+  * depend on the -rtc command line option passed by the user.
+  */
+-void qemu_get_timedate(struct tm *tm, int offset);
++void qemu_get_timedate(struct tm *tm, time_t offset);
  
-     uint32_t reg[0x18];
--    int offset;
-+    int64_t offset;
+ /**
+  * qemu_timedate_diff: Return difference between a struct tm and the RTC
+@@ -53,6 +53,6 @@ void qemu_get_timedate(struct tm *tm, int offset);
+  * a timestamp one hour further ahead than the current RTC time
+  * then this function will return 3600.
+  */
+-int qemu_timedate_diff(struct tm *tm);
++time_t qemu_timedate_diff(struct tm *tm);
  
- };
+ #endif
+diff --git a/softmmu/rtc.c b/softmmu/rtc.c
+index 4b2bf75dd67..4904581abeb 100644
+--- a/softmmu/rtc.c
++++ b/softmmu/rtc.c
+@@ -68,7 +68,7 @@ static time_t qemu_ref_timedate(QEMUClockType clock)
+     return value;
+ }
  
-diff --git a/hw/rtc/aspeed_rtc.c b/hw/rtc/aspeed_rtc.c
-index f6da7b666d6..fa861e2d494 100644
---- a/hw/rtc/aspeed_rtc.c
-+++ b/hw/rtc/aspeed_rtc.c
-@@ -136,11 +136,10 @@ static const MemoryRegionOps aspeed_rtc_ops = {
+-void qemu_get_timedate(struct tm *tm, int offset)
++void qemu_get_timedate(struct tm *tm, time_t offset)
+ {
+     time_t ti = qemu_ref_timedate(rtc_clock);
  
- static const VMStateDescription vmstate_aspeed_rtc = {
-     .name = TYPE_ASPEED_RTC,
--    .version_id = 1,
-+    .version_id = 2,
-     .fields = (VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(reg, AspeedRtcState, 0x18),
--        VMSTATE_INT32(offset, AspeedRtcState),
--        VMSTATE_INT32(offset, AspeedRtcState),
-+        VMSTATE_INT64(offset, AspeedRtcState),
-         VMSTATE_END_OF_LIST()
+@@ -85,7 +85,7 @@ void qemu_get_timedate(struct tm *tm, int offset)
      }
- };
+ }
+ 
+-int qemu_timedate_diff(struct tm *tm)
++time_t qemu_timedate_diff(struct tm *tm)
+ {
+     time_t seconds;
+ 
 -- 
 2.34.1
 
