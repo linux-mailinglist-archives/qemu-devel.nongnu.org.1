@@ -2,84 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33C978EA1F
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2674678EA24
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:26:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbenw-0005O0-QO; Thu, 31 Aug 2023 06:21:36 -0400
+	id 1qbeqy-0008Ot-57; Thu, 31 Aug 2023 06:24:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbenu-0005MI-DL
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:21:34 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qbeqw-0008Oc-9I
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:24:42 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbenr-0006w9-MK
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:21:34 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-522dd6b6438so784755a12.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:21:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qbeqt-0007ZZ-DU
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:24:42 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-564af0ac494so549638a12.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:24:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693477289; x=1694082089; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=p3ZTbMpGlGZr04M7AHcw/ms/RWHHhtm8YDEiPgYrbRM=;
- b=GKn2zZmAotKWUbOch+qaefNmIE2G9mqdjysG27a2G53DgBSXo/ZwyyRf742D+i6vvP
- 7/iS27FSyC92U13yB7+Y2UKgYOXNXChE+BcqZQiPg/Dg1Ceyb2ztsiA0bjQWshgO1GYR
- ykPnIkAN4HVo3TtlW5AeNzrHXRZ4x/KHExgyVQTAZK21vp2sh6nalLkNqNVzQ3lod4MI
- SffHZfgYcFjZwD2y2YM4rWr64bx7sgh2INn4IAjdrxMxIBZ7JH2cU9dBF4Hy+k7gi1I3
- 85QVJo1u5+Ur+/vV5GSSQvFhZ7uKp06b3HHZmQJyZhigZ1hDUVBFq+Z0XK/HzFH8uueg
- 3Z3w==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693477478; x=1694082278;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GT2ML8crheS73wRMI+Sy5kWTw+VLsH9mZg25anukBf4=;
+ b=ZfzM++ZrInZGpqsW6WnhBnof+Tq0YioXHpswxQPimt2x2MOyy4ATmIi6uBwZqaZmYY
+ LMiv8nVPxqV35zSj8/BJVQffOj5BOlo45an6+HCzTCC/HJo/MXDXLqgeXGHydhxRNg3q
+ OLb4D9gQxUw9sBSaMK8Ruo8leC2WcrIojBvmVBU4owGI18cW0L4G403KMVA+3Gmo1haO
+ MuDt9A9/H4lcY1d1ennyE+U4tSdlWlusUARBuwI0qGoJxr9bRvvmKyhAtYzQQO67zJxZ
+ PF7P6HQk3NRj1LMPDVb419glal8utjyqOpl32Fgvr3UtaIx8GSUwG7ctQmG7wxty8fXq
+ DaWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693477289; x=1694082089;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p3ZTbMpGlGZr04M7AHcw/ms/RWHHhtm8YDEiPgYrbRM=;
- b=fOwwBhpRI8bPdDipJJ3h3sN/GB/CbvyWqc4DOM1aRz18xK88pK8jCjVtzIN5wPQOA5
- dKlE4o+EK7edI9wV4lWb790lQfeB0tcinmaqY7HRJOsKC8xMFy52f9u758wiBrwi4hhF
- CFz+4EZm7e1jJq8J+opEdiE5hunzeOYSqRsZMTRZPzz/Fisd64Fbb3mdEqJY72/bC9uO
- YdX5m+ACMdwUi1a4hUpqvKwUo6uQKzkGd+WEsY47CDyCZrmWKaQpG+rBz6Wq3IhpJt2R
- vhrVaP/5dSIUiNXiojI6GeiQmaLO+dH8FNotXx1PDDsHpMNxleN5FKHMn4xAgTaVVF+T
- uInA==
-X-Gm-Message-State: AOJu0Yxd11EPabq5RPgP7rT6CuPHHF7rqY0ePC7ykotTvUOaFjWGnIWL
- 2Q752hgQKOtUKN5TxYlU3K1NSg==
-X-Google-Smtp-Source: AGHT+IHVUQitIMwnKaSewAd9zx8RAg1KqmgDJrO0MExB5PBBQAT78xB6RP/5JhXoGr82ETgnJ/Vgkg==
-X-Received: by 2002:a17:906:2192:b0:9a1:bf00:ae53 with SMTP id
- 18-20020a170906219200b009a1bf00ae53mr3405082eju.69.1693477289362; 
- Thu, 31 Aug 2023 03:21:29 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ d=1e100.net; s=20221208; t=1693477478; x=1694082278;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GT2ML8crheS73wRMI+Sy5kWTw+VLsH9mZg25anukBf4=;
+ b=Ryvfq9sq6yDF3tPCCx4v5RXzGtFkdO+vGTFES2sBk5nYIkB5XUCRLdZaAZK/F6bmT0
+ B17/4JXPZTB33ZTY0K6iyNi1T9NeaV3WZoNsEhIrbK+HV6v8b/0+Uv5O+b9j+A3dav4/
+ qIQ7wTS2z0kMCAL7ld/6MWjnuqLXy0PBB3zEK8qC8Pq3guS4y9DRyO3ZRPkQ2Ma47Pku
+ 46+yIwkL+x2JvvHa8YcZ9kM5SKCVggMdEhWDSWe+eb+5c8ENOB8SoaEoq/NxrJ5kfAOv
+ oRrW/nazpT5VoUiiphTFciEwiZMVb0Dmm/K2L26pe4Z1cXru6M7Cod446eb8e6WYU5eZ
+ 9n9g==
+X-Gm-Message-State: AOJu0YxHXuGLTJoxhKRq3iMlGhxSA5gvb7wAUQtqoKgIXB67ZqRDHsLp
+ tsiJndkTEko82qF6pD/vx8LjVA==
+X-Google-Smtp-Source: AGHT+IGcYJn+WIPGNSXx7TlUjrHKHWIGou0hXGU08zidD9LgTAkPoArZK+Pr9SfwLNBJi8oHxsJTEA==
+X-Received: by 2002:a05:6a20:2444:b0:14e:3ba7:2933 with SMTP id
+ t4-20020a056a20244400b0014e3ba72933mr5415271pzc.54.1693477478052; 
+ Thu, 31 Aug 2023 03:24:38 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- ko18-20020a170907987200b0099de082442esm599415ejc.70.2023.08.31.03.21.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 03:21:28 -0700 (PDT)
-Date: Thu, 31 Aug 2023 12:21:28 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH 02/20] target/riscv: move riscv_cpu_realize_tcg() to
- TCG::cpu_realizefn()
-Message-ID: <20230831-fbbaf4a1fa62816f0ff9de1e@orel>
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
- <20230825130853.511782-3-dbarboza@ventanamicro.com>
+ 4-20020a170902e9c400b001b86dd825e7sm956213plk.108.2023.08.31.03.24.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 03:24:37 -0700 (PDT)
+Message-ID: <ba478789-5db0-4011-bed1-7dd6901eccd6@daynix.com>
+Date: Thu, 31 Aug 2023 19:24:32 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230825130853.511782-3-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v4 09/13] virtio-gpu: Handle resource blob commands
+Content-Language: en-US
+To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20230831093252.2461282-1-ray.huang@amd.com>
+ <20230831093252.2461282-10-ray.huang@amd.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230831093252.2461282-10-ray.huang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::536;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,350 +112,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 25, 2023 at 10:08:35AM -0300, Daniel Henrique Barboza wrote:
-> riscv_cpu_realize_tcg() was added to allow TCG cpus to have a different
-> realize() path during the common riscv_cpu_realize(), making it a good
-> choice to start moving TCG exclusive code to tcg-cpu.c.
+On 2023/08/31 18:32, Huang Rui wrote:
+> From: Antonio Caggiano <antonio.caggiano@collabora.com>
 > 
-> Rename it to tcg_cpu_realizefn() and assign it as a implementation of
-> accel::cpu_realizefn(). tcg_cpu_realizefn() will then be called during
-> riscv_cpu_realize() via cpu_exec_realizefn(). We'll use a similar
-> approach with KVM in the near future.
+> Support BLOB resources creation, mapping and unmapping by calling the
+> new stable virglrenderer 0.10 interface. Only enabled when available and
+> via the blob config. E.g. -device virtio-vga-gl,blob=true
 > 
-> riscv_cpu_validate_set_extensions() is too big and with too many
-> dependencies to be moved in this same patch. We'll do that next.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
 > ---
->  target/riscv/cpu.c         | 128 -----------------------------------
->  target/riscv/tcg/tcg-cpu.c | 132 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 132 insertions(+), 128 deletions(-)
 > 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 38dcbc4dd2..36c5c6e579 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -23,9 +23,7 @@
->  #include "qemu/log.h"
->  #include "cpu.h"
->  #include "cpu_vendorid.h"
-> -#include "pmu.h"
->  #include "internals.h"
-> -#include "time_helper.h"
->  #include "exec/exec-all.h"
->  #include "qapi/error.h"
->  #include "qapi/visitor.h"
-> @@ -1065,29 +1063,6 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
->      }
->  }
->  
-> -static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
-> -{
-> -    CPURISCVState *env = &cpu->env;
-> -    int priv_version = -1;
-> -
-> -    if (cpu->cfg.priv_spec) {
-> -        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
-> -            priv_version = PRIV_VERSION_1_12_0;
-> -        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
-> -            priv_version = PRIV_VERSION_1_11_0;
-> -        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
-> -            priv_version = PRIV_VERSION_1_10_0;
-> -        } else {
-> -            error_setg(errp,
-> -                       "Unsupported privilege spec version '%s'",
-> -                       cpu->cfg.priv_spec);
-> -            return;
-> -        }
-> -
-> -        env->priv_ver = priv_version;
-> -    }
-> -}
-> -
->  static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->  {
->      CPURISCVState *env = &cpu->env;
-> @@ -1112,33 +1087,6 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->      }
->  }
->  
-> -static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
-> -{
-> -    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
-> -    CPUClass *cc = CPU_CLASS(mcc);
-> -    CPURISCVState *env = &cpu->env;
-> -
-> -    /* Validate that MISA_MXL is set properly. */
-> -    switch (env->misa_mxl_max) {
-> -#ifdef TARGET_RISCV64
-> -    case MXL_RV64:
-> -    case MXL_RV128:
-> -        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
-> -        break;
-> -#endif
-> -    case MXL_RV32:
-> -        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
-> -        break;
-> -    default:
-> -        g_assert_not_reached();
-> -    }
-> -
-> -    if (env->misa_mxl_max != env->misa_mxl) {
-> -        error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
-> -        return;
-> -    }
-> -}
-> -
->  /*
->   * Check consistency between chosen extensions while setting
->   * cpu->cfg accordingly.
-> @@ -1512,74 +1460,6 @@ static void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
->  #endif
->  }
->  
-> -static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
-> -{
-> -    if (riscv_has_ext(env, RVH) && env->priv_ver < PRIV_VERSION_1_12_0) {
-> -        error_setg(errp, "H extension requires priv spec 1.12.0");
-> -        return;
-> -    }
-> -}
-> -
-> -static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
-> -{
-> -    RISCVCPU *cpu = RISCV_CPU(dev);
-> -    CPURISCVState *env = &cpu->env;
-> -    Error *local_err = NULL;
-> -
-> -    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_HOST)) {
-> -        error_setg(errp, "'host' CPU is not compatible with TCG acceleration");
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_misa_mxl(cpu, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_priv_spec(cpu, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_misa_priv(env, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
-> -        /*
-> -         * Enhanced PMP should only be available
-> -         * on harts with PMP support
-> -         */
-> -        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_set_extensions(cpu, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    CPU(dev)->tcg_cflags |= CF_PCREL;
-> -
-> -    if (cpu->cfg.ext_sstc) {
-> -        riscv_timer_init(cpu);
-> -    }
-> -
-> -    if (cpu->cfg.pmu_num) {
-> -        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-> -            cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-> -                                          riscv_pmu_timer_cb, cpu);
-> -        }
-> -     }
-> -#endif
-> -}
-> -
->  static void riscv_cpu_realize(DeviceState *dev, Error **errp)
->  {
->      CPUState *cs = CPU(dev);
-> @@ -1598,14 +1478,6 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
->          return;
->      }
->  
-> -    if (tcg_enabled()) {
-> -        riscv_cpu_realize_tcg(dev, &local_err);
-> -        if (local_err != NULL) {
-> -            error_propagate(errp, local_err);
-> -            return;
-> -        }
-> -    }
-> -
->      riscv_cpu_finalize_features(cpu, &local_err);
->      if (local_err != NULL) {
->          error_propagate(errp, local_err);
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 1ad27a26aa..b3d3f265d7 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -19,9 +19,140 @@
->  
->  #include "qemu/osdep.h"
->  #include "cpu.h"
-> +#include "pmu.h"
-> +#include "time_helper.h"
-> +#include "qapi/error.h"
->  #include "qemu/accel.h"
->  #include "hw/core/accel-cpu.h"
->  
-> +
-> +static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
+> v1->v2:
+>      - Remove unused #include "hw/virtio/virtio-iommu.h"
+> 
+>      - Add a local function, called virgl_resource_destroy(), that is used
+>        to release a vgpu resource on error paths and in resource_unref.
+> 
+>      - Remove virtio_gpu_virgl_resource_unmap from virtio_gpu_cleanup_mapping(),
+>        since this function won't be called on blob resources and also because
+>        blob resources are unmapped via virgl_cmd_resource_unmap_blob().
+> 
+>      - In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
+>        and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
+>        has been fully initialized.
+> 
+>      - Memory region has a different life-cycle from virtio gpu resources
+>        i.e. cannot be released synchronously along with the vgpu resource.
+>        So, here the field "region" was changed to a pointer that will be
+>        released automatically once the memory region is unparented and all
+>        of its references have been released.
+>        Also, since the pointer can be used to indicate whether the blob
+>        is mapped, the explicit field "mapped" was removed.
+> 
+>      - In virgl_cmd_resource_map_blob(), add check on the value of
+>        res->region, to prevent beeing called twice on the same resource.
+> 
+>      - Remove direct references to parent_obj.
+> 
+>      - Separate declarations from code.
+> 
+>   hw/display/virtio-gpu-virgl.c  | 213 +++++++++++++++++++++++++++++++++
+>   hw/display/virtio-gpu.c        |   4 +-
+>   include/hw/virtio/virtio-gpu.h |   5 +
+>   meson.build                    |   4 +
+>   4 files changed, 225 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index 312953ec16..17b634d4ee 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -17,6 +17,7 @@
+>   #include "trace.h"
+>   #include "hw/virtio/virtio.h"
+>   #include "hw/virtio/virtio-gpu.h"
+> +#include "hw/virtio/virtio-gpu-bswap.h"
+>   
+>   #include "ui/egl-helpers.h"
+>   
+> @@ -78,9 +79,24 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
+>       virgl_renderer_resource_create(&args, NULL, 0);
+>   }
+>   
+> +static void virgl_resource_destroy(VirtIOGPU *g,
+> +                                   struct virtio_gpu_simple_resource *res)
 > +{
-> +    if (riscv_has_ext(env, RVH) && env->priv_ver < PRIV_VERSION_1_12_0) {
-> +        error_setg(errp, "H extension requires priv spec 1.12.0");
+> +    if (!res)
 > +        return;
-> +    }
+> +
+> +    QTAILQ_REMOVE(&g->reslist, res, next);
+> +
+> +    virtio_gpu_cleanup_mapping_iov(g, res->iov, res->iov_cnt);
+> +    g_free(res->addrs);
+> +
+> +    g_free(res);
 > +}
 > +
-> +static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>   static void virgl_cmd_resource_unref(VirtIOGPU *g,
+>                                        struct virtio_gpu_ctrl_command *cmd)
+>   {
+> +    struct virtio_gpu_simple_resource *res;
+>       struct virtio_gpu_resource_unref unref;
+>       struct iovec *res_iovs = NULL;
+>       int num_iovs = 0;
+> @@ -88,13 +104,22 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
+>       VIRTIO_GPU_FILL_CMD(unref);
+>       trace_virtio_gpu_cmd_res_unref(unref.resource_id);
+>   
+> +    res = virtio_gpu_find_resource(g, unref.resource_id);
+> +
+>       virgl_renderer_resource_detach_iov(unref.resource_id,
+>                                          &res_iovs,
+>                                          &num_iovs);
+>       if (res_iovs != NULL && num_iovs != 0) {
+>           virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
+> +        if (res) {
+> +            res->iov = NULL;
+> +            res->iov_cnt = 0;
+> +        }
+>       }
+> +
+>       virgl_renderer_resource_unref(unref.resource_id);
+> +
+> +    virgl_resource_destroy(g, res);
+>   }
+>   
+>   static void virgl_cmd_context_create(VirtIOGPU *g,
+> @@ -426,6 +451,183 @@ static void virgl_cmd_get_capset(VirtIOGPU *g,
+>       g_free(resp);
+>   }
+>   
+> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
+> +
+> +static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
+> +                                           struct virtio_gpu_ctrl_command *cmd)
 > +{
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
-> +    CPUClass *cc = CPU_CLASS(mcc);
-> +    CPURISCVState *env = &cpu->env;
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_create_blob cblob;
+> +    struct virgl_renderer_resource_create_blob_args virgl_args = { 0 };
+> +    int ret;
 > +
-> +    /* Validate that MISA_MXL is set properly. */
-> +    switch (env->misa_mxl_max) {
-> +#ifdef TARGET_RISCV64
-> +    case MXL_RV64:
-> +    case MXL_RV128:
-> +        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
-> +        break;
-> +#endif
-> +    case MXL_RV32:
-> +        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
-> +        break;
-> +    default:
-> +        g_assert_not_reached();
-> +    }
+> +    VIRTIO_GPU_FILL_CMD(cblob);
+> +    virtio_gpu_create_blob_bswap(&cblob);
+> +    trace_virtio_gpu_cmd_res_create_blob(cblob.resource_id, cblob.size);
 > +
-> +    if (env->misa_mxl_max != env->misa_mxl) {
-> +        error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
+> +    if (cblob.resource_id == 0) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
+> +                      __func__);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
 > +        return;
 > +    }
-> +}
 > +
-> +static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
-> +{
-> +    CPURISCVState *env = &cpu->env;
-> +    int priv_version = -1;
+> +    res = virtio_gpu_find_resource(g, cblob.resource_id);
+> +    if (res) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already exists %d\n",
+> +                      __func__, cblob.resource_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
+> +    }
 > +
-> +    if (cpu->cfg.priv_spec) {
-> +        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
-> +            priv_version = PRIV_VERSION_1_12_0;
-> +        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
-> +            priv_version = PRIV_VERSION_1_11_0;
-> +        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
-> +            priv_version = PRIV_VERSION_1_10_0;
-> +        } else {
-> +            error_setg(errp,
-> +                       "Unsupported privilege spec version '%s'",
-> +                       cpu->cfg.priv_spec);
+> +    res = g_new0(struct virtio_gpu_simple_resource, 1);
+> +    if (!res) {
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
+> +        return;
+> +    }
+> +
+> +    res->resource_id = cblob.resource_id;
+> +    res->blob_size = cblob.size;
+> +
+> +    if (cblob.blob_mem != VIRTIO_GPU_BLOB_MEM_HOST3D) {
+> +        ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
+> +                                            cmd, &res->addrs, &res->iov,
+> +                                            &res->iov_cnt);
+> +        if (!ret) {
+> +            g_free(res);
+> +            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
 > +            return;
 > +        }
+> +    }
 > +
-> +        env->priv_ver = priv_version;
+> +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+> +
+> +    virgl_args.res_handle = cblob.resource_id;
+> +    virgl_args.ctx_id = cblob.hdr.ctx_id;
+> +    virgl_args.blob_mem = cblob.blob_mem;
+> +    virgl_args.blob_id = cblob.blob_id;
+> +    virgl_args.blob_flags = cblob.blob_flags;
+> +    virgl_args.size = cblob.size;
+> +    virgl_args.iovecs = res->iov;
+> +    virgl_args.num_iovs = res->iov_cnt;
+> +
+> +    ret = virgl_renderer_resource_create_blob(&virgl_args);
+> +    if (ret) {
+> +        virgl_resource_destroy(g, res);
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: virgl blob create error: %s\n",
+> +                      __func__, strerror(-ret));
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
 > +    }
 > +}
 > +
-> +/*
-> + * We'll get here via the following path:
-> + *
-> + * riscv_cpu_realize()
-> + *   -> cpu_exec_realizefn()
-> + *      -> tcg_cpu_realizefn() (via accel_cpu_realizefn())
-> + */
-> +static bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
+> +static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
+> +                                        struct virtio_gpu_ctrl_command *cmd)
 > +{
-> +    RISCVCPU *cpu = RISCV_CPU(cs);
-> +    CPURISCVState *env = &cpu->env;
-> +    Error *local_err = NULL;
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_map_blob mblob;
+> +    int ret;
+> +    void *data;
+> +    uint64_t size;
+> +    struct virtio_gpu_resp_map_info resp;
+> +    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
 > +
-> +    if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
-> +        error_setg(errp, "'host' CPU is not compatible with TCG acceleration");
-> +        return false;
+> +    VIRTIO_GPU_FILL_CMD(mblob);
+> +    virtio_gpu_map_blob_bswap(&mblob);
+> +
+> +    if (mblob.resource_id == 0) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
+> +                      __func__);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
 > +    }
 > +
-> +    riscv_cpu_validate_misa_mxl(cpu, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
+> +    res = virtio_gpu_find_resource(g, mblob.resource_id);
+> +    if (!res) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
+> +                      __func__, mblob.resource_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
+> +    }
+> +    if (res->region) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already mapped %d\n",
+> +		      __func__, mblob.resource_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
 > +    }
 > +
-> +    riscv_cpu_validate_priv_spec(cpu, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
+> +    ret = virgl_renderer_resource_map(res->resource_id, &data, &size);
+> +    if (ret) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource map error: %s\n",
+> +                      __func__, strerror(-ret));
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
 > +    }
 > +
-> +    riscv_cpu_validate_misa_priv(env, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
+> +    res->region = g_new0(MemoryRegion, 1);
+> +    if (!res->region) {
+> +        virgl_renderer_resource_unmap(res->resource_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
+> +        return;
 > +    }
-> +
-> +    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
-> +        /*
-> +         * Enhanced PMP should only be available
-> +         * on harts with PMP support
-> +         */
-> +        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
-> +        return false;
-> +    }
-> +
-> +    riscv_cpu_validate_set_extensions(cpu, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
-> +    }
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    CPU(cs)->tcg_cflags |= CF_PCREL;
-> +
-> +    if (cpu->cfg.ext_sstc) {
-> +        riscv_timer_init(cpu);
-> +    }
-> +
-> +    if (cpu->cfg.pmu_num) {
-> +        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-> +            cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-> +                                          riscv_pmu_timer_cb, cpu);
-> +        }
-> +     }
-> +#endif
-> +
-> +    return true;
-> +}
-> +
->  static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
->  {
->      /*
-> @@ -41,6 +172,7 @@ static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
->      AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
->  
->      acc->cpu_class_init = tcg_cpu_class_init;
-> +    acc->cpu_realizefn = tcg_cpu_realizefn;
->  }
->  
->  static const TypeInfo tcg_cpu_accel_type_info = {
-> -- 
-> 2.41.0
-> 
->
+> +    memory_region_init_ram_device_ptr(res->region, OBJECT(g), NULL, size, data);
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+I think memory_region_init_ram_ptr() should be used instead.
 
