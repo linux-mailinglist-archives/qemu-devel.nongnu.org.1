@@ -2,102 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6E178E9EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8181F78EA0F
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:19:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbed2-0005yr-W3; Thu, 31 Aug 2023 06:10:21 -0400
+	id 1qbekF-0001iY-N2; Thu, 31 Aug 2023 06:17:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbed0-0005yO-Va
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:10:18 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbekC-0001fI-U4
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:17:45 -0400
+Received: from mail-lj1-x244.google.com ([2a00:1450:4864:20::244])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbecy-0004fA-B9
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:10:18 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-565403bda57so474791a12.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:10:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbek9-000646-Vo
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:17:44 -0400
+Received: by mail-lj1-x244.google.com with SMTP id
+ 38308e7fff4ca-2bd0d135ca3so12522711fa.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693476615; x=1694081415;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7xV5TKTZLN/3JXan3YO54ft5hHcTRYD0N+F4yuMnyUc=;
- b=X5dWVh8Js1NAVqVkfkzZ+CigdF4UoPcsg27F2azITT/bnwH5q0cNSBEVMm1z8Sn3VV
- lOLD2J5mRpn5LgYxk0eZ82s3OUHfPcWWZ9yhlWfxAepujs5whkV7S1p4bmvJ5ZEuD/Dk
- 09NTIkoMwmKKWm/RjfCX+JZAgu37NU923TXdzkgUgslNKiuISgXMwiMhAKxE4Toq+FkZ
- CjEqB4fg+/gedixC0XeQpCj7AhozWTJg9aTc45htg/yuhg2XAjiPRlJKo0DvVE2MREPj
- wko4XiAbrTNQkxrceEHRLTMn2+jw+ZhWC1zwAE9Fp/HDHRxDkK4oJ6UOSz8/CtHWQ70d
- 9gTg==
+ d=ventanamicro.com; s=google; t=1693477060; x=1694081860; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=W5Kv+jhpnD31nudOXQSXbz+VjLF+EmEAtBRSqSr/qio=;
+ b=pZSqeqUKuSbZtA+46xOSo9UiY6Q2yZwGkg2XFMsWxdtRDEedO/HdcFizgN6NdW6pKO
+ rtGD04MF3mMzYG2AU78Gqq/5lNPyvp5+3B+4Zs0H2TyUGQGQpovthzijI3JzaMGv+Pcm
+ y/hkUmA7BdAlmuhTZDYJqRk2TalPon3uSi6VgC8+ZZh+oGx7/3mtW3+vLFQqLU1dHkz5
+ z3G8y9wjCW8zyL9zEW/9U0eFGo44fstq+L+OoA0W5qENfIlWSDIchPcfO0XXWpGFqS3O
+ iHpZI3tnktY7bEw6DWT0aiIedWJeZqBykGDW06dwyK6dotbtARehDKLJ4F8quFNPbbw1
+ UzQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693476615; x=1694081415;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7xV5TKTZLN/3JXan3YO54ft5hHcTRYD0N+F4yuMnyUc=;
- b=EobbPyTCaHpYXYFQ5E5qSkojqQtxxFQSgUEk4MavglP1LNx/uI6PMmSORCClp3/NdT
- grK2YPAImHxUTbe5tfPZeD1kViAAf5gfGyzDt+0b9QY4KUw4LTctx8TVRk7m+lN9rt9K
- W29e5BEDuEM1mkdC/6xJauBy7x8PFTLeUJPeokp5kycm/lBodJHDKqclLmnDhXepphZo
- Dfk8M6yhLehIqJIJgXPsE0N6HZ/6n4XbWdZ+WeP37isx8HedpLqyq+X8E7se5bvj7529
- RHhq6E97CtPvIgBslHKh3FUkCWSxP/uHsZ+fckZc0w8aL2MUHgYS85mZxuzM8fe3KOfa
- 06ng==
-X-Gm-Message-State: AOJu0Yw6QmwWMjZVlzVBEZn1QZPrFXcq0p4sJyyRgyKgILZJWaetfxub
- kI1cJwTjP5Qy+FSfgO1iVJNrmw==
-X-Google-Smtp-Source: AGHT+IEzCPAVkZ+OTDDrjqC043m/jBaZip82pDddNT2h8xBjnKXA9BSp1Xd1jvkLzRYYNTay05mZbA==
-X-Received: by 2002:a05:6a20:c901:b0:130:835b:e6b7 with SMTP id
- gx1-20020a056a20c90100b00130835be6b7mr4181294pzb.47.1693476614617; 
- Thu, 31 Aug 2023 03:10:14 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1693477060; x=1694081860;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=W5Kv+jhpnD31nudOXQSXbz+VjLF+EmEAtBRSqSr/qio=;
+ b=FBZ4diluJnzIGFXNttdlW6o54xBHLFsDO/B93ZeMxScxqr1o+ty5c2HnrrWgmUetMN
+ YqON4uI6Ssn9g+5z1dTrApoFtn8IW6Smt4CGBbKikcL9DK8/ganRFoB28rljKT9Go3/C
+ k6djJExRb4N9W6tXHAGrn/SWKshe8BKzsNrASAbUwCL7JjSX2dhuQN2Kr70BS6F7zTWX
+ SylhgOkQdYYUOL08VxA8IM6D0OIASszdoPCqkZcsnaKqcCS4o9YD70UDZ29TZgmy6ThB
+ 3ufP2AYnb2JbjCxNkEOQBqPCy+3CHYu1wuLjdgOWAHf5jVCAPO9ECRSbwOhryStO0frz
+ Bmhw==
+X-Gm-Message-State: AOJu0Yw++seYrvN1njQ92eQ4dO2IRFkIRpLww8bXoOQypPJZLbrNNGCs
+ v87hGCAiRt4B/ujolHGF9NoinA==
+X-Google-Smtp-Source: AGHT+IFmm77ZeHdb1VSILjUhU9gRqkB+Uz3QD+5/hua10XpuOA0zo71XpvnK819VOi4DBIz/99OTQA==
+X-Received: by 2002:a2e:9397:0:b0:2bc:e1a3:fbaa with SMTP id
+ g23-20020a2e9397000000b002bce1a3fbaamr4113925ljh.22.1693477059435; 
+ Thu, 31 Aug 2023 03:17:39 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- ff16-20020a056a002f5000b0068991abe1desm1026798pfb.176.2023.08.31.03.10.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 03:10:14 -0700 (PDT)
-Message-ID: <b988f9d4-69d7-4cc4-b13e-3e697acf9fe9@daynix.com>
-Date: Thu, 31 Aug 2023 19:10:08 +0900
+ r22-20020a170906365600b009a5f1d1564dsm585326ejb.126.2023.08.31.03.17.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 03:17:38 -0700 (PDT)
+Date: Thu, 31 Aug 2023 12:17:37 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH 01/20] target/riscv: introduce TCG AccelCPUClass
+Message-ID: <20230831-8468b3a793485bb070b5eb6b@orel>
+References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+ <20230825130853.511782-2-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v4 07/13] softmmu/memory: enable automatic
- deallocation of memory regions
-To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-8-ray.huang@amd.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230831093252.2461282-8-ray.huang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::533;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230825130853.511782-2-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::244;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x244.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,83 +94,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/31 18:32, Huang Rui wrote:
-> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+On Fri, Aug 25, 2023 at 10:08:34AM -0300, Daniel Henrique Barboza wrote:
+> target/riscv/cpu.c needs to handle all possible accelerators (TCG and
+> KVM at this moment) during both init() and realize() time. This forces
+> us to resort to a lot of "if tcg" and "if kvm" throughout the code,
+> which isn't wrong, but can get cluttered over time. Splitting
+> acceleration specific code from cpu.c to its own file will help to
+> declutter the existing code and it will also make it easier to support
+> KVM/TCG only builds in the future.
 > 
-> When the memory region has a different life-cycle from that of her parent,
-> could be automatically released, once has been unparent and once all of her
-> references have gone away, via the object's free callback.
+> We'll start by adding a new subdir called 'tcg' and a new file called
+> 'tcg-cpu.c'. This file will be used to introduce a new accelerator class
+> for TCG acceleration in RISC-V, allowing us to center all TCG exclusive
+> code in its file instead of using 'cpu.c' for everything. This design is
+> inpired by the work Claudio Fontana did in x86 a few years ago in commit
+> f5cc5a5c1 ("i386: split cpu accelerators from cpu.c, using
+> AccelCPUClass").
 > 
-> However, currently, references to the memory region are held by its owner
-> without first incrementing the memory region object's reference count.
-> As a result, the automatic deallocation of the object, not taking into
-> account those references, results in use-after-free memory corruption.
+> To avoid moving too much code at once we'll start by adding the new file
+> and TCG AccelCPUClass declaration. The 'class_init' from the accel class
+> will init 'tcg_ops', relieving the common riscv_cpu_class_init() from
+> doing it.
 > 
-> This patch increases the reference count of the memory region object on
-> each memory_region_ref() and decreases it on each memory_region_unref().
+> 'riscv_tcg_ops' is being exported from 'cpu.c' for now to avoid having
+> to deal with moving code and files around right now. We'll focus on
+> decoupling the realize() logic first.
 > 
-> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
+>  target/riscv/cpu.c           |  5 +---
+>  target/riscv/cpu.h           |  4 +++
+>  target/riscv/meson.build     |  2 ++
+>  target/riscv/tcg/meson.build |  2 ++
+>  target/riscv/tcg/tcg-cpu.c   | 57 ++++++++++++++++++++++++++++++++++++
+>  5 files changed, 66 insertions(+), 4 deletions(-)
+>  create mode 100644 target/riscv/tcg/meson.build
+>  create mode 100644 target/riscv/tcg/tcg-cpu.c
 > 
-> New patch
-> 
->   softmmu/memory.c | 19 +++++++++++++++++--
->   1 file changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/softmmu/memory.c b/softmmu/memory.c
-> index 7d9494ce70..0fdd5eebf9 100644
-> --- a/softmmu/memory.c
-> +++ b/softmmu/memory.c
-> @@ -1797,6 +1797,15 @@ Object *memory_region_owner(MemoryRegion *mr)
->   
->   void memory_region_ref(MemoryRegion *mr)
->   {
-> +    if (!mr) {
-> +        return;
-> +    }
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 21ebdbf084..38dcbc4dd2 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -2275,9 +2275,7 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
+>  };
+>  #endif
+>  
+> -#include "hw/core/tcg-cpu-ops.h"
+> -
+> -static const struct TCGCPUOps riscv_tcg_ops = {
+> +const struct TCGCPUOps riscv_tcg_ops = {
+>      .initialize = riscv_translate_init,
+>      .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
+>      .restore_state_to_opc = riscv_restore_state_to_opc,
+> @@ -2436,7 +2434,6 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+>  #endif
+>      cc->gdb_arch_name = riscv_gdb_arch_name;
+>      cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+> -    cc->tcg_ops = &riscv_tcg_ops;
+>  
+>      object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
+>                                cpu_set_mvendorid, NULL, NULL);
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 577abcd724..b84b62f84e 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -707,6 +707,10 @@ enum riscv_pmu_event_idx {
+>      RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS = 0x10021,
+>  };
+>  
+> +/* Export tcg_ops until we move everything to tcg/tcg-cpu.c */
+> +#include "hw/core/tcg-cpu-ops.h"
+> +extern const struct TCGCPUOps riscv_tcg_ops;
 > +
-> +    /* Obtain a reference to prevent the memory region object
-> +     * from being released under our feet.
+>  /* CSR function table */
+>  extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
+>  
+> diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+> index 660078bda1..f0486183fa 100644
+> --- a/target/riscv/meson.build
+> +++ b/target/riscv/meson.build
+> @@ -38,5 +38,7 @@ riscv_system_ss.add(files(
+>    'riscv-qmp-cmds.c',
+>  ))
+>  
+> +subdir('tcg')
+> +
+>  target_arch += {'riscv': riscv_ss}
+>  target_softmmu_arch += {'riscv': riscv_system_ss}
+> diff --git a/target/riscv/tcg/meson.build b/target/riscv/tcg/meson.build
+> new file mode 100644
+> index 0000000000..061df3d74a
+> --- /dev/null
+> +++ b/target/riscv/tcg/meson.build
+> @@ -0,0 +1,2 @@
+> +riscv_ss.add(when: 'CONFIG_TCG', if_true: files(
+> +  'tcg-cpu.c'))
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> new file mode 100644
+> index 0000000000..1ad27a26aa
+> --- /dev/null
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -0,0 +1,57 @@
+> +/*
+> + * riscv TCG cpu class initialization
+> + *
+> + * Copyright (c) 2023 Ventana Micro Systems Inc.
+> + *
+> + * This library is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU Lesser General Public
+> + * License as published by the Free Software Foundation; either
+> + * version 2 of the License, or (at your option) any later version.
+> + *
+> + * This library is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * Lesser General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU Lesser General Public
+> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "cpu.h"
+> +#include "qemu/accel.h"
+> +#include "hw/core/accel-cpu.h"
+> +
+> +static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+> +{
+> +    /*
+> +     * All cpus use the same set of operations.
+> +     * riscv_tcg_ops is being imported from cpu.c for now.
 > +     */
-> +    object_ref(OBJECT(mr));
+> +    cc->tcg_ops = &riscv_tcg_ops;
+> +}
 > +
->       /* MMIO callbacks most likely will access data that belongs
->        * to the owner, hence the need to ref/unref the owner whenever
->        * the memory region is in use.
-> @@ -1807,16 +1816,22 @@ void memory_region_ref(MemoryRegion *mr)
->        * Memory regions without an owner are supposed to never go away;
->        * we do not ref/unref them because it slows down DMA sensibly.
->        */
-
-The collapsed comment says:
- > The memory region is a child of its owner.  As long as the
- > owner doesn't call unparent itself on the memory region,
- > ref-ing the owner will also keep the memory region alive.
- > Memory regions without an owner are supposed to never go away;
- > we do not ref/unref them because it slows down DMA sensibly.
-
-It contradicts with this patch.
-
-> -    if (mr && mr->owner) {
-> +    if (mr->owner) {
->           object_ref(mr->owner);
->       }
->   }
->   
->   void memory_region_unref(MemoryRegion *mr)
->   {
-> -    if (mr && mr->owner) {
-> +    if (!mr) {
-> +        return;
-> +    }
+> +static void tcg_cpu_class_init(CPUClass *cc)
+> +{
+> +    cc->init_accel_cpu = tcg_cpu_init_ops;
+> +}
 > +
-> +    if (mr->owner) {
->           object_unref(mr->owner);
->       }
+> +static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
+> +{
+> +    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
 > +
-> +    object_unref(OBJECT(mr));
->   }
->   
->   uint64_t memory_region_size(MemoryRegion *mr)
+> +    acc->cpu_class_init = tcg_cpu_class_init;
+> +}
+> +
+> +static const TypeInfo tcg_cpu_accel_type_info = {
+> +    .name = ACCEL_CPU_NAME("tcg"),
+> +
+> +    .parent = TYPE_ACCEL_CPU,
+> +    .class_init = tcg_cpu_accel_class_init,
+> +    .abstract = true,
+> +};
+
+need blank line here
+
+> +static void tcg_cpu_accel_register_types(void)
+> +{
+> +    type_register_static(&tcg_cpu_accel_type_info);
+> +}
+> +type_init(tcg_cpu_accel_register_types);
+> -- 
+> 2.41.0
+> 
+>
+
+Appears to be consistent with target/i386/tcg/tcg-cpu.c, so
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+
+Thanks,
+drew
 
