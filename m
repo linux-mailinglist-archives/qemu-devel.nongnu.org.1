@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C28678F14E
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 18:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A4D78F14C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 18:30:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbkY8-0000ic-8x; Thu, 31 Aug 2023 12:29:40 -0400
+	id 1qbkY9-0000rm-F6; Thu, 31 Aug 2023 12:29:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <francisco.iglesias@amd.com>)
- id 1qbkY6-0000hS-Hk
+ id 1qbkY6-0000ha-PC
  for qemu-devel@nongnu.org; Thu, 31 Aug 2023 12:29:38 -0400
-Received: from mail-bn8nam04on20601.outbound.protection.outlook.com
- ([2a01:111:f400:7e8d::601]
- helo=NAM04-BN8-obe.outbound.protection.outlook.com)
+Received: from mail-bn8nam11on20600.outbound.protection.outlook.com
+ ([2a01:111:f400:7eae::600]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <francisco.iglesias@amd.com>)
- id 1qbkY3-0005Ze-0M
+ id 1qbkY4-0005aA-1T
  for qemu-devel@nongnu.org; Thu, 31 Aug 2023 12:29:38 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lIWY4U9dDVSse21bb0mqny9+kFXygl6zWB0ASOVhrFggGkwI2exVY9kxQJArkldnPQrj7A5iiaEveUQHa6w6fjqV27G+z2Jvuw7bFIWklciZ8WUiHWhpuUvx3SLhViU+UFtMHEtrJUD4hlWmYSbN29vshUbmkr5qpBqBMjph04cQgdtGghORUnjXyKvzzo/UJSRZ4EabZk4DjNSHvd/uXW/d9UaIdcnvmEpUKTquoyRQVTvzDgwjuYcvhJ76Mup9WiF3pGGqTYGPQtRb74Wx0DkNfZzuLV9/Ikq63L0YR79lhSXOr/L5C2812YWvjWg9FnbAwYv8XcNHknnpXYH1Ng==
+ b=eN8Eej57GgyJOX5Unmu9vX3QWhEowZ3kcCxezHfr7ZXghJkzmpeIF53tLCkPUibUdChtJj8dSglz5SlpWhWO1Fa5uObK/OrVms02TnqvYmWoDNzmze67Or2D2gl41wJcuKke2QjcIGuNsa90g/1xA78cs022RLRuAsmPjfTQCgfNhM0/CjS+tG3AKin6f68EggkdafmanQlE9D0mRcUr5BuhCFcYpbIWPv6s1fWmsP/I1RQxLXAWmQ8vPibP2jqQ8vF8s6dg4TJyOJ1UBnH51Qab9DKVGHk9FSU7O3Rdio+XPCICshM/DfcJ7vp7b4zER3+qzMxVT4kR5e+T7ttWSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PlmBUBFnHafoH3wKL40OSkcDUt6CIpWrhXuMNEfPU0U=;
- b=gaym0sSVClw0YbUT4KkwkLzEA7WVkS0DIGAQ1LAMNnfPlTJQDOARFJmiZ8HpCxOlwcEZMbEPK4xbwCyB/2ptXnEfkKUJ9/03+9gCwhgmAeNiYBCm1yXpCg/ckwYDjV1mT1Y/oql5fJPVMxoYvyOU5QLMp1i3rSEFbd3d/Qsjy2SFUr4BQyktcvt4dT5MIDTSQcX56P9mBQ5MRKEDA1r6JuKVxr0tLz6TiPzc4pNqAlaf6eea1eruPSOXTHIkSn7xQwG3WQmyNSA/K4Vu7GScw1/3jes33I8FX/86wRR4ZR0fBD8i3tJL1ZJu/GTSVM/xecnu8sXlfWHdSWyD2nrJmg==
+ bh=PQ+lddYVIVTyHUZJvwGaDUPTBiw80FboOA1+/NRIf+w=;
+ b=I6vmz+5r5LKlpi5l0KBwytFqvHvbWF7gg+q2QGtXaFGfZQ66Ag0g3+qA16qlWeyKj2u5U5HqKUf2TmyXopRFwZnG4GEwkn1c0Q4So++EgOze26H9Vqn9sDZ4wNjUQwhhOMm/eBdiJMtJ4fYyT4dJa1sVH355CNvRiHRQiA41uUGBPNJKsyKHnixPSL3sMF5JCJujS8+ia0wr8cNuDlu9JxTnskMbTjuas5i5RTWWnlQVyo42sFdTOCaCMU0tP2PErQZsSuTBwjahOpPmcGqS8zHaMIqaM17ID/ATBd2+is2TFTzeYtZJkOT8G+1hN8dESO47Pjir/vGUfi31S1Zp9A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PlmBUBFnHafoH3wKL40OSkcDUt6CIpWrhXuMNEfPU0U=;
- b=0Bihuk8o8LErdi0LfqyZcu2Vh2J7tqr6SOSsiTJNxZzuYlqOiuvbmW6JJf1aGmznwkkvPthppgMX+VQtCzRD+UAyvC6om72RCNk7aadczHrVYoiwQd+G3HZ29kPykhOLT6FDUNMnHcMr1jsUgt3oU5DdZ58+uO5UrZdLMxz1c64=
-Received: from MW4PR04CA0298.namprd04.prod.outlook.com (2603:10b6:303:89::33)
- by DM4PR12MB5200.namprd12.prod.outlook.com (2603:10b6:5:397::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22; Thu, 31 Aug
- 2023 16:29:30 +0000
-Received: from MWH0EPF000971E5.namprd02.prod.outlook.com
- (2603:10b6:303:89:cafe::34) by MW4PR04CA0298.outlook.office365.com
- (2603:10b6:303:89::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.21 via Frontend
- Transport; Thu, 31 Aug 2023 16:29:30 +0000
+ bh=PQ+lddYVIVTyHUZJvwGaDUPTBiw80FboOA1+/NRIf+w=;
+ b=bo6BHxZ3gwx/mzt9i3tCJELUzCMsZQ6FHagVwkNF1TE8Pn/mKPo0eg/a1aV+nUUy6017G2M73t80EPGuCQyC676KLacib47y0hw6d3EkeQiDzULx15UFOc5UL6IVsKXEoeV6TbhUcXptt9JuJMBKKJGScSHdmsY41UnnOejyfmk=
+Received: from MW4PR03CA0108.namprd03.prod.outlook.com (2603:10b6:303:b7::23)
+ by CH2PR12MB4922.namprd12.prod.outlook.com (2603:10b6:610:65::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.21; Thu, 31 Aug
+ 2023 16:29:32 +0000
+Received: from MWH0EPF000971E7.namprd02.prod.outlook.com
+ (2603:10b6:303:b7:cafe::f) by MW4PR03CA0108.outlook.office365.com
+ (2603:10b6:303:b7::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20 via Frontend
+ Transport; Thu, 31 Aug 2023 16:29:32 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -52,29 +52,29 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- MWH0EPF000971E5.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ MWH0EPF000971E7.mail.protection.outlook.com (10.167.243.75) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6745.16 via Frontend Transport; Thu, 31 Aug 2023 16:29:30 +0000
+ 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 16:29:31 +0000
 Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
- 2023 11:29:29 -0500
+ 2023 11:29:31 -0500
 Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
  (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
- 2023 11:29:28 -0500
+ 2023 11:29:30 -0500
 Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
- Transport; Thu, 31 Aug 2023 11:29:26 -0500
+ Transport; Thu, 31 Aug 2023 11:29:29 -0500
 From: Francisco Iglesias <francisco.iglesias@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <frasse.iglesias@gmail.com>, <alistair@alistair23.me>,
  <edgar.iglesias@gmail.com>, <peter.maydell@linaro.org>, <fkonrad@amd.com>,
  <sai.pavan.boddu@amd.com>, <tong.ho@amd.com>, <vikram.garhwal@amd.com>
-Subject: [PATCH v4 6/8] hw/misc: Introduce a model of Xilinx Versal's
- CFRAME_BCAST_REG
-Date: Thu, 31 Aug 2023 18:29:17 +0200
-Message-ID: <20230831162919.30472-2-francisco.iglesias@amd.com>
+Subject: [PATCH v4 7/8] hw/arm/xlnx-versal: Connect the CFU_APB,
+ CFU_FDRO and CFU_SFR
+Date: Thu, 31 Aug 2023 18:29:18 +0200
+Message-ID: <20230831162919.30472-3-francisco.iglesias@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230831162919.30472-1-francisco.iglesias@amd.com>
 References: <20230831162919.30472-1-francisco.iglesias@amd.com>
@@ -83,29 +83,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E5:EE_|DM4PR12MB5200:EE_
-X-MS-Office365-Filtering-Correlation-Id: 722f6818-bf2f-426c-c3ee-08dbaa3f73a1
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E7:EE_|CH2PR12MB4922:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee47af32-61e1-421f-f24c-08dbaa3f74a7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: l5Kra0RgOXWFrWtqtyyCJ4g8iZo1FDeEt+urG1HJC/oA9/KYupUmjLji6EUKroi2n4q2HryMp1CnAEwiIYl9D+giSg0JDUIshq5btDmB/nwji/9FQw0Krb5AMJKY4wYo1Po8ZYfi3IWVbAqofRSNORWBBZYLKy0Q+do5C8swUWteLBQahvpZvT1W4dNQ0dpZx5oKsKI62SSk71OKrSKBQAU856R0x+QtoFkcRCt0DFqEzdsSYjxpAKVtZo5FUt80L92ajC+3nbLbNkpUApNVKKZs44Z5vDJVfjyUAouKlUMXFYFwN/8znHDDTJSGRquZ4RhsN5L25aXAXkSg2bUCBivdNmJRLubqNOkZUQoHEZCXbHbusUj8m3fpUe6YzCR1a4MI71HaqzCWW8a04jsJAXYo9SwHlv9Sxe7lz1J1/UspKwzTRyQALCdcMFV2PCm7mhDIsw9kYjr5eNliKeH7adFUG5Lbjc4Opim1OvhyD/U0kpBzbKfC9WFyQ+jO0iy7cK3H6vv2fQnotzaEMfQGA0AVYmnIi2/N9zZpnDIlq7FwqXgyymDDzzcRVA0Pf4VZgDrPvz12/aLrmQsy/4tg72prHFcP+16dvR8+g06xckDPDlGj7EZmyrvSE8hZydrgMycLoI/BowNHeAsidfFiNTHC3Pa0KcQ8qb3EdGaLTZ81omvlKUgx84f9tij8w8Gm/Ig7zjqdT+nQzTt9ncClL1UhB0TJ6WA6nr4dNq3wJHQV1oUy9M7CZW1J5XHa9wy7jDvSCA9kfKtNgyaQz7Gx3A==
+X-Microsoft-Antispam-Message-Info: 8vNpfCYNSPwwIaW4fqxOXVQrs+SYZ9X/XGgrYnnHBk1K8DIqB9lzOpY2ufzX4SLHEc/0qOg5ncgru7X9ijBmQFnabONbMYno1MMT8TCgCE724IwAZfO59UWRE4nl94CLsiHMnpXc81SuomwCw6Uc4aJjusVQhsAK9/hgvFX6Y1MoiqtsO76ETXoscXpVyohJGek+RLXF8SNN3L+PdD4wGzHUZStN2k/BlJ3aX079BGZHbfOHkZBMgI3uZ6tqlopICjUNYxxR7XMnPmxUJnste40u8c2vjPUQVt7wt+nKH1MHskT/zbRXkgaULkIVBFLzXYZEt0hnEJGX4Qkuv6ZgzONKBFvmCP2sssIqYHjJwQa+EpgkAOefEXw8QA5HlBVxYJ1yalUrOZpvNNcLkbkX1S0lmCEXI/oGGFXYvb9pxElmdosK4i4dB3c1f3/3gh5MBWCqgiQ+vlSNTeqRiAJnDHwTofSIrDmzpNzZRv9VXgXuP6ya8AL4tqkQ0+uDoU2rRdMQEap7jOxI/zQv1nVnesQR34o4oAdL5TT7hVetkefqnplMbzc8uksfDjSf0CGvwK/kHxRUJupgiQOokPraO/whNW80ordcZ4NYKcIyEcuYDak3PAZx+M9NQBOh6rzBJDnDtwcHKczH9EWH2TqjlnozngViIwY497W388wgeNarPSwHxSCWot7PiN1Mt2nMP4mNEbpPH89V99H6xa+9NMAI2WycYs9PNRMX13FKTE0cq+ZRWjQQ18st5gDdeYiOJOFj0cKF0YP8rZsZZ7JIeA==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(136003)(346002)(376002)(396003)(1800799009)(186009)(82310400011)(451199024)(46966006)(36840700001)(40470700004)(41300700001)(70586007)(70206006)(86362001)(40460700003)(2906002)(6916009)(54906003)(316002)(4326008)(8676002)(8936002)(2616005)(26005)(44832011)(1076003)(36756003)(5660300002)(426003)(336012)(40480700001)(83380400001)(81166007)(356005)(82740400003)(6666004)(36860700001)(478600001)(47076005)(36900700001);
+ SFS:(13230031)(4636009)(396003)(346002)(376002)(136003)(39860400002)(82310400011)(1800799009)(451199024)(186009)(36840700001)(40470700004)(46966006)(356005)(82740400003)(6666004)(36756003)(40460700003)(81166007)(86362001)(40480700001)(47076005)(36860700001)(1076003)(2616005)(2906002)(426003)(336012)(26005)(478600001)(70586007)(70206006)(4326008)(8936002)(8676002)(54906003)(5660300002)(6916009)(44832011)(41300700001)(316002)(36900700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 16:29:30.1137 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 722f6818-bf2f-426c-c3ee-08dbaa3f73a1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 16:29:31.8319 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee47af32-61e1-421f-f24c-08dbaa3f74a7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E7.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5200
-Received-SPF: softfail client-ip=2a01:111:f400:7e8d::601;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4922
+Received-SPF: softfail client-ip=2a01:111:f400:7eae::600;
  envelope-from=francisco.iglesias@amd.com;
- helo=NAM04-BN8-obe.outbound.protection.outlook.com
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,245 +127,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a model of Xilinx Versal's Configuration Frame broadcast
-controller (CFRAME_BCAST_REG).
+Connect the Configuration Frame Unit (CFU_APB, CFU_FDRO and CFU_SFR) to
+the Versal machine.
 
 Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Acked-by: Edgar E. Iglesias <edgar@zeroasic.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/xlnx-versal-cframe-reg.c         | 161 +++++++++++++++++++++++
- include/hw/misc/xlnx-versal-cframe-reg.h |  17 +++
- 2 files changed, 178 insertions(+)
+ hw/arm/xlnx-versal.c         | 42 ++++++++++++++++++++++++++++++++++++
+ include/hw/arm/xlnx-versal.h | 16 ++++++++++++++
+ 2 files changed, 58 insertions(+)
 
-diff --git a/hw/misc/xlnx-versal-cframe-reg.c b/hw/misc/xlnx-versal-cframe-reg.c
-index 78db68f10c..8e8ec0715a 100644
---- a/hw/misc/xlnx-versal-cframe-reg.c
-+++ b/hw/misc/xlnx-versal-cframe-reg.c
-@@ -569,6 +569,83 @@ static const MemoryRegionOps cframe_reg_fdri_ops = {
-     },
- };
- 
-+static uint64_t cframes_bcast_reg_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    qemu_log_mask(LOG_GUEST_ERROR, "%s: Unsupported read from addr=%"
-+                  HWADDR_PRIx "\n", __func__, addr);
-+    return 0;
-+}
-+
-+static void cframes_bcast_write(XlnxVersalCFrameBcastReg *s, uint8_t reg_addr,
-+                                uint32_t *wfifo)
-+{
-+    XlnxCfiPacket pkt = {
-+        .reg_addr = reg_addr,
-+        .data[0] = wfifo[0],
-+        .data[1] = wfifo[1],
-+        .data[2] = wfifo[2],
-+        .data[3] = wfifo[3]
-+    };
-+
-+    for (int i = 0; i < ARRAY_SIZE(s->cfg.cframe); i++) {
-+        if (s->cfg.cframe[i]) {
-+            xlnx_cfi_transfer_packet(s->cfg.cframe[i], &pkt);
-+        }
-+    }
-+}
-+
-+static void cframes_bcast_reg_write(void *opaque, hwaddr addr, uint64_t value,
-+                      unsigned size)
-+{
-+    XlnxVersalCFrameBcastReg *s = XLNX_VERSAL_CFRAME_BCAST_REG(opaque);
-+    uint32_t wfifo[WFIFO_SZ];
-+
-+    if (update_wfifo(addr, value, s->wfifo, wfifo)) {
-+        uint8_t reg_addr = extract32(addr, 4, 6);
-+
-+        cframes_bcast_write(s, reg_addr, wfifo);
-+    }
-+}
-+
-+static uint64_t cframes_bcast_fdri_read(void *opaque, hwaddr addr,
-+                                        unsigned size)
-+{
-+    qemu_log_mask(LOG_GUEST_ERROR, "%s: Unsupported read from addr=%"
-+                  HWADDR_PRIx "\n", __func__, addr);
-+    return 0;
-+}
-+
-+static void cframes_bcast_fdri_write(void *opaque, hwaddr addr, uint64_t value,
-+                      unsigned size)
-+{
-+    XlnxVersalCFrameBcastReg *s = XLNX_VERSAL_CFRAME_BCAST_REG(opaque);
-+    uint32_t wfifo[WFIFO_SZ];
-+
-+    if (update_wfifo(addr, value, s->wfifo, wfifo)) {
-+        cframes_bcast_write(s, CFRAME_FDRI, wfifo);
-+    }
-+}
-+
-+static const MemoryRegionOps cframes_bcast_reg_reg_ops = {
-+    .read = cframes_bcast_reg_read,
-+    .write = cframes_bcast_reg_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static const MemoryRegionOps cframes_bcast_reg_fdri_ops = {
-+    .read = cframes_bcast_fdri_read,
-+    .write = cframes_bcast_fdri_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
- static void cframe_reg_realize(DeviceState *dev, Error **errp)
- {
-     XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(dev);
-@@ -663,6 +740,71 @@ static Property cframe_regs_props[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+static void cframe_bcast_reg_init(Object *obj)
-+{
-+    XlnxVersalCFrameBcastReg *s = XLNX_VERSAL_CFRAME_BCAST_REG(obj);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+
-+    memory_region_init_io(&s->iomem_reg, obj, &cframes_bcast_reg_reg_ops, s,
-+                          TYPE_XLNX_VERSAL_CFRAME_BCAST_REG, KEYHOLE_STREAM_4K);
-+    memory_region_init_io(&s->iomem_fdri, obj, &cframes_bcast_reg_fdri_ops, s,
-+                          TYPE_XLNX_VERSAL_CFRAME_BCAST_REG "-fdri",
-+                          KEYHOLE_STREAM_4K);
-+    sysbus_init_mmio(sbd, &s->iomem_reg);
-+    sysbus_init_mmio(sbd, &s->iomem_fdri);
-+}
-+
-+static void cframe_bcast_reg_reset_enter(Object *obj, ResetType type)
-+{
-+    XlnxVersalCFrameBcastReg *s = XLNX_VERSAL_CFRAME_BCAST_REG(obj);
-+
-+    memset(s->wfifo, 0, WFIFO_SZ * sizeof(uint32_t));
-+}
-+
-+static const VMStateDescription vmstate_cframe_bcast_reg = {
-+    .name = TYPE_XLNX_VERSAL_CFRAME_BCAST_REG,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(wfifo, XlnxVersalCFrameBcastReg, 4),
-+        VMSTATE_END_OF_LIST(),
-+    }
-+};
-+
-+static Property cframe_bcast_regs_props[] = {
-+    DEFINE_PROP_LINK("cframe0", XlnxVersalCFrameBcastReg, cfg.cframe[0],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe1", XlnxVersalCFrameBcastReg, cfg.cframe[1],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe2", XlnxVersalCFrameBcastReg, cfg.cframe[2],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe3", XlnxVersalCFrameBcastReg, cfg.cframe[3],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe4", XlnxVersalCFrameBcastReg, cfg.cframe[4],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe5", XlnxVersalCFrameBcastReg, cfg.cframe[5],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe6", XlnxVersalCFrameBcastReg, cfg.cframe[6],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe7", XlnxVersalCFrameBcastReg, cfg.cframe[7],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe8", XlnxVersalCFrameBcastReg, cfg.cframe[8],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe9", XlnxVersalCFrameBcastReg, cfg.cframe[9],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe10", XlnxVersalCFrameBcastReg, cfg.cframe[10],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe11", XlnxVersalCFrameBcastReg, cfg.cframe[11],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe12", XlnxVersalCFrameBcastReg, cfg.cframe[12],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe13", XlnxVersalCFrameBcastReg, cfg.cframe[13],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_LINK("cframe14", XlnxVersalCFrameBcastReg, cfg.cframe[14],
-+                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void cframe_reg_class_init(ObjectClass *klass, void *data)
- {
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
-@@ -677,6 +819,16 @@ static void cframe_reg_class_init(ObjectClass *klass, void *data)
-     xcic->cfi_transfer_packet = cframe_reg_cfi_transfer_packet;
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 60bf5fe657..3f4b4b1560 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -570,6 +570,47 @@ static void versal_create_ospi(Versal *s, qemu_irq *pic)
+     qdev_connect_gpio_out(orgate, 0, pic[VERSAL_OSPI_IRQ]);
  }
  
-+static void cframe_bcast_reg_class_init(ObjectClass *klass, void *data)
++static void versal_create_cfu(Versal *s, qemu_irq *pic)
 +{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
++    SysBusDevice *sbd;
 +
-+    dc->vmsd = &vmstate_cframe_bcast_reg;
-+    device_class_set_props(dc, cframe_bcast_regs_props);
-+    rc->phases.enter = cframe_bcast_reg_reset_enter;
++    /* CFU FDRO */
++    object_initialize_child(OBJECT(s), "cfu-fdro", &s->pmc.cfu_fdro,
++                            TYPE_XLNX_VERSAL_CFU_FDRO);
++    sbd = SYS_BUS_DEVICE(&s->pmc.cfu_fdro);
++
++    sysbus_realize(sbd, &error_fatal);
++    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_FDRO,
++                                sysbus_mmio_get_region(sbd, 0));
++
++    /* CFU APB */
++    object_initialize_child(OBJECT(s), "cfu-apb", &s->pmc.cfu_apb,
++                            TYPE_XLNX_VERSAL_CFU_APB);
++    sbd = SYS_BUS_DEVICE(&s->pmc.cfu_apb);
++
++    sysbus_realize(sbd, &error_fatal);
++    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_APB,
++                                sysbus_mmio_get_region(sbd, 0));
++    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_STREAM,
++                                sysbus_mmio_get_region(sbd, 1));
++    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_STREAM_2,
++                                sysbus_mmio_get_region(sbd, 2));
++    sysbus_connect_irq(sbd, 0, pic[VERSAL_CFU_IRQ_0]);
++
++    /* CFU SFR */
++    object_initialize_child(OBJECT(s), "cfu-sfr", &s->pmc.cfu_sfr,
++                            TYPE_XLNX_VERSAL_CFU_SFR);
++
++    sbd = SYS_BUS_DEVICE(&s->pmc.cfu_sfr);
++
++    object_property_set_link(OBJECT(&s->pmc.cfu_sfr),
++                            "cfu", OBJECT(&s->pmc.cfu_apb), &error_abort);
++
++    sysbus_realize(sbd, &error_fatal);
++    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_SFR,
++                                sysbus_mmio_get_region(sbd, 0));
 +}
 +
- static const TypeInfo cframe_reg_info = {
-     .name          = TYPE_XLNX_VERSAL_CFRAME_REG,
-     .parent        = TYPE_SYS_BUS_DEVICE,
-@@ -689,9 +841,18 @@ static const TypeInfo cframe_reg_info = {
-     }
- };
- 
-+static const TypeInfo cframe_bcast_reg_info = {
-+    .name          = TYPE_XLNX_VERSAL_CFRAME_BCAST_REG,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(XlnxVersalCFrameBcastReg),
-+    .class_init    = cframe_bcast_reg_class_init,
-+    .instance_init = cframe_bcast_reg_init,
-+};
-+
- static void cframe_reg_register_types(void)
+ static void versal_create_crl(Versal *s, qemu_irq *pic)
  {
-     type_register_static(&cframe_reg_info);
-+    type_register_static(&cframe_bcast_reg_info);
- }
+     SysBusDevice *sbd;
+@@ -763,6 +804,7 @@ static void versal_realize(DeviceState *dev, Error **errp)
+     versal_create_pmc_iou_slcr(s, pic);
+     versal_create_ospi(s, pic);
+     versal_create_crl(s, pic);
++    versal_create_cfu(s, pic);
+     versal_map_ddr(s);
+     versal_unimp(s);
  
- type_init(cframe_reg_register_types)
-diff --git a/include/hw/misc/xlnx-versal-cframe-reg.h b/include/hw/misc/xlnx-versal-cframe-reg.h
-index f286d973bf..a14fbd7fe4 100644
---- a/include/hw/misc/xlnx-versal-cframe-reg.h
-+++ b/include/hw/misc/xlnx-versal-cframe-reg.h
-@@ -26,6 +26,10 @@
- #define TYPE_XLNX_VERSAL_CFRAME_REG "xlnx,cframe-reg"
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFrameReg, XLNX_VERSAL_CFRAME_REG)
+diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+index 39ee31185c..29b9c60301 100644
+--- a/include/hw/arm/xlnx-versal.h
++++ b/include/hw/arm/xlnx-versal.h
+@@ -32,6 +32,7 @@
+ #include "hw/misc/xlnx-versal-crl.h"
+ #include "hw/misc/xlnx-versal-pmc-iou-slcr.h"
+ #include "hw/net/xlnx-versal-canfd.h"
++#include "hw/misc/xlnx-versal-cfu.h"
  
-+#define TYPE_XLNX_VERSAL_CFRAME_BCAST_REG "xlnx.cframe-bcast-reg"
-+OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCFrameBcastReg,
-+                           XLNX_VERSAL_CFRAME_BCAST_REG)
-+
- /*
-  * The registers in this module are 128 bits wide but it is ok to write
-  * and read them through 4 sequential 32 bit accesses (address[3:2] = 0,
-@@ -283,4 +287,17 @@ struct XlnxVersalCFrameReg {
-     bool row_configured;
- };
+ #define TYPE_XLNX_VERSAL "xlnx-versal"
+ OBJECT_DECLARE_SIMPLE_TYPE(Versal, XLNX_VERSAL)
+@@ -117,6 +118,9 @@ struct Versal {
+         XlnxEFuse efuse;
+         XlnxVersalEFuseCtrl efuse_ctrl;
+         XlnxVersalEFuseCache efuse_cache;
++        XlnxVersalCFUAPB cfu_apb;
++        XlnxVersalCFUFDRO cfu_fdro;
++        XlnxVersalCFUSFR cfu_sfr;
  
-+struct XlnxVersalCFrameBcastReg {
-+    SysBusDevice parent_obj;
-+    MemoryRegion iomem_reg;
-+    MemoryRegion iomem_fdri;
+         OrIRQState apb_irq_orgate;
+     } pmc;
+@@ -147,6 +151,7 @@ struct Versal {
+ #define VERSAL_GEM1_WAKE_IRQ_0     59
+ #define VERSAL_ADMA_IRQ_0          60
+ #define VERSAL_XRAM_IRQ_0          79
++#define VERSAL_CFU_IRQ_0           120
+ #define VERSAL_PMC_APB_IRQ         121
+ #define VERSAL_OSPI_IRQ            124
+ #define VERSAL_SD0_IRQ_0           126
+@@ -240,6 +245,17 @@ struct Versal {
+ #define MM_PMC_EFUSE_CACHE          0xf1250000
+ #define MM_PMC_EFUSE_CACHE_SIZE     0x00C00
+ 
++#define MM_PMC_CFU_APB              0xf12b0000
++#define MM_PMC_CFU_APB_SIZE         0x10000
++#define MM_PMC_CFU_STREAM           0xf12c0000
++#define MM_PMC_CFU_STREAM_SIZE      0x1000
++#define MM_PMC_CFU_SFR              0xf12c1000
++#define MM_PMC_CFU_SFR_SIZE         0x1000
++#define MM_PMC_CFU_FDRO             0xf12c2000
++#define MM_PMC_CFU_FDRO_SIZE        0x1000
++#define MM_PMC_CFU_STREAM_2         0xf1f80000
++#define MM_PMC_CFU_STREAM_2_SIZE    0x40000
 +
-+    /* 128-bit wfifo. */
-+    uint32_t wfifo[WFIFO_SZ];
-+
-+    struct {
-+        XlnxCfiIf *cframe[15];
-+    } cfg;
-+};
-+
- #endif
+ #define MM_PMC_CRP                  0xf1260000U
+ #define MM_PMC_CRP_SIZE             0x10000
+ #define MM_PMC_RTC                  0xf12a0000
 -- 
 2.34.1
 
