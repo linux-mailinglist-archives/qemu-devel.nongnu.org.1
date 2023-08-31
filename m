@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BBE78EE46
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B532E78EE61
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhS8-0005P3-TZ; Thu, 31 Aug 2023 09:11:16 -0400
+	id 1qbhUk-0000As-1X; Thu, 31 Aug 2023 09:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbhS3-00050K-8q
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:11:11 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhUh-0008Dd-FL
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:13:55 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbhRz-0001ym-HS
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:11:09 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99c1f6f3884so90451066b.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:11:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhUf-0002pH-2B
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:13:55 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-99bcf2de59cso91969166b.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:13:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693487465; x=1694092265; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=njvqji7ZYkq9lGMC9uKIVhI5gf1E+Sm34Az4hHBWlJ8=;
- b=dlJR3N3p+c6DvgakgiMLZwooZsqYbxa/cV8fmH8r1EKp1VCsTGknj3UmvoBKk9nF9s
- d73foWh+Em2LBPeXducFGw1GnLDXT3DZmdYcTM8stobKMXSsMW/98PrRHeZOy8gxystt
- HtT8N+W7LebIDv4f/0Vegg/+gIfpnwepyiuyYKDCXDAAeq+IMvLl5ppBAjKiH4r3X65s
- SwuTPjaV87fQTPZFFk2pbyDGVYMdqASsbkX76EfZMtMN66MpSkojz8VMf36OGx7rhwIk
- hePuPpcUCL7HKFat8b1MoGMl+8MbpMx9AKjy2TVYNlvcPdGgFZaI/iBuMiV3yY3A8KZE
- QymQ==
+ d=linaro.org; s=google; t=1693487631; x=1694092431; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ly1kC7+EX0Gl6t88DEpIhyLj6K5uYKTE96gtcEHiBoc=;
+ b=w5tp9k2M9/hzQZeSRe3Z+kbtEcpoT4YhYcZVUQ1xqYIEM03V7pXwr+dYqVUUcQCDAc
+ ESmJO4NXyc9ENkL32+6qQLEp5PlomnTrB34jTye3uIAzmMFY8Se6YWLonvmJVd+9i+i6
+ WjNZ+9dK2DDQK7HTPK27v6CBE1tNpg5yVg0+u1LrAtNeTdfF1vw6tJjZupkAX5r9BhNV
+ 6KehFw/HIdMMNbsdXmKAJamHso+W0mpYbn83sXambwfLXalw7Czujw2WrTMoVbSFwznO
+ sH2HhSkURAT37mXTjh/L7Os5LDoDoCQRh+qx6agQXoM818zCNzJ0roROIbwocDgiKjG6
+ RnPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693487465; x=1694092265;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=njvqji7ZYkq9lGMC9uKIVhI5gf1E+Sm34Az4hHBWlJ8=;
- b=bLqDrLgSk37x6K/q/wGG3QKPLPzyOa/P8gvQb3VYfxehxFBAfujn4Zamz+F+RmGPkn
- ksShPp2IdV9g0IVjwz5D7zKjEvS50+tbJwpmBCQV/HpalH0SH/o3KuFGOfXdzv0K2GVW
- NjWzLQAn6CBrnuvo9rW/JBjPLsC9l3CDfHLgV3APUMsjyNDgr7c698G+Jn2sTkLzxgZU
- LdKwFXmoI+aDHJmkA/qEaNwWnmYQIH2TcZPId3TeMyUXr9MRYXY2hLSE0qah308jtLLY
- mT8ztPwWxeEQdarbFJ9IQAG5WBJH02oUuZRteW02E/YYjQmK1N1fM05FuUIZsO3Ayxdi
- rE1w==
-X-Gm-Message-State: AOJu0YzSJwukZRpXDsC7T6d8J6mxv2LyoF1xRqWvVIochTWUI3/+WrNU
- q4TDr+wN5DJFWmTe+9mfo9umKw==
-X-Google-Smtp-Source: AGHT+IGMdZtDUwjMhwCbFscMlP7UJFPB7vmOPBDFsVpPj+2KLqE9BFt6PkgIH33/M2CrNE1IV/vLuw==
-X-Received: by 2002:a17:906:1d8:b0:99d:ff60:6ff4 with SMTP id
- 24-20020a17090601d800b0099dff606ff4mr4299319ejj.70.1693487465176; 
- Thu, 31 Aug 2023 06:11:05 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ d=1e100.net; s=20221208; t=1693487631; x=1694092431;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ly1kC7+EX0Gl6t88DEpIhyLj6K5uYKTE96gtcEHiBoc=;
+ b=CoOKZLCCLDnQER/TUl7STGn/d0kl674QtGXk4Hi6PkcHwUudjRikdbUemsXzQ4tT4t
+ R7QF24nHLB4xJwFemJQJT9IxB7iA/u3kyQV08KzWm85qntOynMpKCG1BD/ipXZBFG4GG
+ NI8NyO8dw2SUqYT29urybFwSyum94157aQfGAKGu6kxBeEXEs5tadskGe341eZ/pOF72
+ 2cO/QNb3wHy6bgFPKa4fen0lkXcq5+wykfN99UiYF+FZiLNBISGDlgyg8OIFww+fS2Fb
+ VQsgsG+iznyIaWC9hrMkvlaJI1rro+OP2ORhsGzh4vS2MsezG/zNpQ7ACcrQIGIdwGK6
+ bL5w==
+X-Gm-Message-State: AOJu0YyMJRcjbcH0xfDVyCfBTyiC4VbAA/2TLKx6by7Lo5AdRqgR/Pps
+ 7cBfQozfkTAX23QrS7BXbEbmrioIBS5rIs11KmE=
+X-Google-Smtp-Source: AGHT+IHK+CghSPkulL+QmWlZEs11yaPEw95PZ8fQcBjqLCIFtCYr34OzaFA8H4WTNRKu3i+b4VFz7Q==
+X-Received: by 2002:a17:906:7685:b0:9a1:cdf1:ba7 with SMTP id
+ o5-20020a170906768500b009a1cdf10ba7mr3684104ejm.15.1693487631192; 
+ Thu, 31 Aug 2023 06:13:51 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- f2-20020a1709064dc200b0099c53c4407dsm749542ejw.78.2023.08.31.06.11.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 06:11:04 -0700 (PDT)
-Date: Thu, 31 Aug 2023 15:11:03 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH RESEND v8 10/20] target/riscv: add 'max' CPU type
-Message-ID: <20230831-8bda2abafcb322586175aa69@orel>
-References: <20230824221440.484675-1-dbarboza@ventanamicro.com>
- <20230824221440.484675-11-dbarboza@ventanamicro.com>
+ lg16-20020a170906f89000b009a0955a7ad0sm745041ejb.128.2023.08.31.06.13.50
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 31 Aug 2023 06:13:50 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Shashi Mallela <shashi.mallela@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hw/intc/arm_gicv3_its: Avoid maybe-uninitialized error in
+ get_vte()
+Date: Thu, 31 Aug 2023 15:13:48 +0200
+Message-ID: <20230831131348.69032-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824221440.484675-11-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x629.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,44 +90,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 24, 2023 at 07:14:30PM -0300, Daniel Henrique Barboza wrote:
-> The 'max' CPU type is used by tooling to determine what's the most
-> capable CPU a current QEMU version implements. Other archs such as ARM
-> implements this type. Let's add it to RISC-V.
-> 
-> What we consider "most capable CPU" in this context are related to
-> ratified, non-vendor extensions. This means that we want the 'max' CPU
-> to enable all (possible) ratified extensions by default. The reasoning
-> behind this design is (1) vendor extensions can conflict with each other
-> and we won't play favorities deciding which one is default or not and
-> (2) non-ratified extensions are always prone to changes, not being
-> stable enough to be enabled by default.
-> 
-> All this said, we're still not able to enable all ratified extensions
-> due to conflicts between them. Zfinx and all its dependencies aren't
-> enabled because of a conflict with RVF. zce, zcmp and zcmt are also
-> disabled due to RVD conflicts. When running with 64 bits we're also
-> disabling zcf.
-> 
-> MISA bits RVG, RVJ and RVV are also being set manually since they're
-> default disabled.
-> 
-> This is the resulting 'riscv,isa' DT for this new CPU:
-> 
-> rv64imafdcvh_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_
-> zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbkb_zbkc_zbkx_zbs_zk_zkn_zknd_
-> zkne_zknh_zkr_zks_zksed_zksh_zkt_zve32f_zve64f_zve64d_
-> smstateen_sscofpmf_sstc_svadu_svinval_svnapot_svpbmt
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->  target/riscv/cpu-qom.h |  1 +
->  target/riscv/cpu.c     | 56 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 57 insertions(+)
->
+Fix when using GCC v11.4 (Ubuntu 11.4.0-1ubuntu1~22.04) with CFLAGS=-Og:
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+  [4/6] Compiling C object libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
+  FAILED: libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
+      inlined from ‘lookup_vte’ at hw/intc/arm_gicv3_its.c:453:9,
+      inlined from ‘vmovp_callback’ at hw/intc/arm_gicv3_its.c:1039:14:
+  hw/intc/arm_gicv3_its.c:347:9: error: ‘vte.rdbase’ may be used uninitialized [-Werror=maybe-uninitialized]
+    347 |         trace_gicv3_its_vte_read(vpeid, vte->valid, vte->vptsize,
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    348 |                                  vte->vptaddr, vte->rdbase);
+        |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  hw/intc/arm_gicv3_its.c: In function ‘vmovp_callback’:
+  hw/intc/arm_gicv3_its.c:1036:13: note: ‘vte’ declared here
+   1036 |     VTEntry vte;
+        |             ^~~
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/intc/arm_gicv3_its.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/hw/intc/arm_gicv3_its.c b/hw/intc/arm_gicv3_its.c
+index 43dfd7a35c..5f552b4d37 100644
+--- a/hw/intc/arm_gicv3_its.c
++++ b/hw/intc/arm_gicv3_its.c
+@@ -330,23 +330,20 @@ static MemTxResult get_vte(GICv3ITSState *s, uint32_t vpeid, VTEntry *vte)
+     if (entry_addr == -1) {
+         /* No L2 table entry, i.e. no valid VTE, or a memory error */
+         vte->valid = false;
+-        goto out;
++        trace_gicv3_its_vte_read_fault(vpeid);
++        return MEMTX_OK;
+     }
+     vteval = address_space_ldq_le(as, entry_addr, MEMTXATTRS_UNSPECIFIED, &res);
+     if (res != MEMTX_OK) {
+-        goto out;
++        trace_gicv3_its_vte_read_fault(vpeid);
++        return res;
+     }
+     vte->valid = FIELD_EX64(vteval, VTE, VALID);
+     vte->vptsize = FIELD_EX64(vteval, VTE, VPTSIZE);
+     vte->vptaddr = FIELD_EX64(vteval, VTE, VPTADDR);
+     vte->rdbase = FIELD_EX64(vteval, VTE, RDBASE);
+-out:
+-    if (res != MEMTX_OK) {
+-        trace_gicv3_its_vte_read_fault(vpeid);
+-    } else {
+-        trace_gicv3_its_vte_read(vpeid, vte->valid, vte->vptsize,
+-                                 vte->vptaddr, vte->rdbase);
+-    }
++    trace_gicv3_its_vte_read(vpeid, vte->valid, vte->vptsize,
++                             vte->vptaddr, vte->rdbase);
+     return res;
+ }
+ 
+-- 
+2.41.0
 
 
