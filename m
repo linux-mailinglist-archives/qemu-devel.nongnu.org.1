@@ -2,136 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9EC78F1AC
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 19:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF04D78F1BF
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 19:20:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbl66-0004wI-59; Thu, 31 Aug 2023 13:04:46 -0400
+	id 1qblJw-0001sT-DJ; Thu, 31 Aug 2023 13:19:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qbl63-0004w4-DU
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 13:04:43 -0400
-Received: from mail-mw2nam12on2083.outbound.protection.outlook.com
- ([40.107.244.83] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <tong.ho@amd.com>)
+ id 1qblJt-0001rf-EK; Thu, 31 Aug 2023 13:19:01 -0400
+Received: from mail-sn1nam02on20603.outbound.protection.outlook.com
+ ([2a01:111:f400:7ea9::603]
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qbl60-0006d0-PN
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 13:04:43 -0400
+ (Exim 4.90_1) (envelope-from <tong.ho@amd.com>)
+ id 1qblJq-0005uV-7a; Thu, 31 Aug 2023 13:19:01 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W0zhTN0pnERuuHL70GHj0+y2XKPX3NYUwkEUGfo5vbkUg7QkDIZikPxU3AcBz1/shqOtvNnmGe3xkiiUGtfMuo2KZUkmK2S97MXCzZwbWKxA9xSQ2yDYNomEzqVsBv+1OmnBugv+w9L5ENmvgqU9n3cFNdbpGD0lVGkr94s5NFenoZUhOSllLQ5Edg751Bhfj2ygmc+shfoYNpCdCZ5UFKutQY8Jy3baQBGtNNDxY7UFy1IXLjQY+ttANG1eJYAqX2RBMYauzyax/cgYE0LJ225Q92hcvb5pAX2QBn2/481UmZg1zvAuRf0VIAkq71syNpmbx5TIFqy/qdFWzKXBuw==
+ b=SodR19civSaYezaXZ7fkG9E/0X0kKFqbHwef2yH0zCaPtQB1a3E2VECBDXS/lqfOoosidSQtS6bdqsfT9CWZ1PnDNMB31Dg/5ZDHuVcLP8LNB8hWmmuhZ6CPA9OTRyRcj1PJmDZdkTm+cMOtAxSdz8zsQ65+f3VckVvB4cKDizON1udmFlAW2VLIiUHGWgsZCkFRS/N5VqsbsZtgrrWqfx4JQnXzrCW+SnfQgDbabJhzcRTnX92fTSDeyPUikLoZ4H5sHf/pJrNzFFmZDAGnYERX1t0eNQdnzOFZirgEcSoTb29J60rmHFmSciaKhXkzgiKOb1YR8khYV2qcxP1JtQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Bw8oI+ymk/6cREMEQrCAVbwzgBZWgxLuQRj2rrcloqo=;
- b=DlEpXiASGVdy2lBMwtya9BDFjn5Wp3OcCKicxiyLhDHaG7qEbpApe1hA0jQX8mzS2L5HtlEk4WXn5cLW5IjtAxGXQMGYhSxubtjl8Mnae3kSxVtjDyBlzAKckjIYu2R3HmFVtMnPrTMOcfJU4ANZN1fPwSVPiZ+7td46PUXo8IHQb/YMEtwSos0JHrI1EYbnyMd3cRPOTLFmmCyWGEtdrIVdGXasdXAmDyj1sXlQDFbSeMX1r5yz4U+sogAVmZCMcQP7XWaT9559yaeWZKTZXNAKk8lk9lVx2UwOCGGzGs97nXeONda9d/o8hrizl15675IXgv0BhMGdTeEm+lDBlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
+ bh=8EnDUgUc3qTw/RNMR37PEezNAVJvfhhU9I37o14tguU=;
+ b=gFfI9XnawWfWqYvNRBIsoIOXpzKMoNbzML0dhBodoiYE/7W2tUP/NobfEc5gxnFA29378S9TC7VSYlcmB+Wxq6p9/Kgzce53kd8kL81hx8TtiUaL0SvMuYCxZwNusxFdwVY9s73ARl39ybmfZfmobwOdJq8ah1rF3tbYEsvHbM0GaQwQ1KDUFvNJBZQvqpG8tWIgfEAUrVLaQ8l+BA3K+I8J98zvxcToH+Sma9QsGaxhZy0I/PNZ2yYMT1ytIK5qHBqMwpRJ73Bzk+zhPpL8wEHjmXmOHPR6NYPI2UBtxn2O10wcFCq5MhXwrEvPJ9pzGHnewMy6TyKV5A4q7VGigQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bw8oI+ymk/6cREMEQrCAVbwzgBZWgxLuQRj2rrcloqo=;
- b=ex2x67mzcO5eNN+KIkeKY8UhNdPcLAx7PvjplZQy2kxB6UMN8+bJX4QPdC6GbHnAq/EfE3sA6TiUksAyTT+dav/XbHVneYvxgDa5jUrkINLkjCZySBcu8+ZWrM2LQ+r6zJfCawpBt0bvoz0Z90SO7m8zOHXx7Cy6urkwQH0USJ0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by PH0PR17MB4879.namprd17.prod.outlook.com (2603:10b6:510:8d::5) with
+ bh=8EnDUgUc3qTw/RNMR37PEezNAVJvfhhU9I37o14tguU=;
+ b=mFelVaCdKyedpgix6Er5U4hHFSk4xbXtNOuJuBwDhxpv32O7wV5EwEY6j9ovDX75cwoUNkVqKZBYGZLaEu0Pasj9kce6WwudujsSwPr8Sf2uYDTU7nyRqMJQrMxCtqAXy2Dcc+YYNSgHtq8kVqZ0Ezb+UDBTT5KiwGvkks8/PhU=
+Received: from CY5PR03CA0015.namprd03.prod.outlook.com (2603:10b6:930:8::43)
+ by DS7PR12MB6167.namprd12.prod.outlook.com (2603:10b6:8:98::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20; Thu, 31 Aug
- 2023 16:59:32 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::76eb:3cc8:b142:feb5]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::76eb:3cc8:b142:feb5%7]) with mapi id 15.20.6699.034; Thu, 31 Aug 2023
- 16:59:32 +0000
-Date: Thu, 31 Aug 2023 12:59:24 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org, junhee.ryu@sk.com, kwangjin.ko@sk.com
-Subject: Re: [PATCH 3/4] cxl/type3: minimum MHD cci support
-Message-ID: <ZPDG7EKSXmMSAiJa@memverge.com>
-References: <20230721163505.1910-1-gregory.price@memverge.com>
- <20230721163505.1910-4-gregory.price@memverge.com>
- <20230807155609.000055db@Huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230807155609.000055db@Huawei.com>
-X-ClientProxiedBy: BYAPR05CA0083.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::24) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ 2023 17:18:51 +0000
+Received: from CY4PEPF0000E9D8.namprd05.prod.outlook.com
+ (2603:10b6:930:8:cafe::15) by CY5PR03CA0015.outlook.office365.com
+ (2603:10b6:930:8::43) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22 via Frontend
+ Transport; Thu, 31 Aug 2023 17:18:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D8.mail.protection.outlook.com (10.167.241.83) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 17:18:50 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
+ 2023 12:18:50 -0500
+Received: from xsjtongh40.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
+ Transport; Thu, 31 Aug 2023 12:18:49 -0500
+From: Tong Ho <tong.ho@amd.com>
+To: <qemu-arm@nongnu.org>
+CC: <qemu-devel@nongnu.org>, <alistair@alistair23.me>,
+ <edgar.iglesias@gmail.com>, <peter.maydell@linaro.org>, <tong.ho@amd.com>
+Subject: [PATCH 0/3] AMD/Xilinx Versal TRNG support
+Date: Thu, 31 Aug 2023 10:18:46 -0700
+Message-ID: <20230831171849.3297497-1-tong.ho@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH0PR17MB4879:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee9da406-3fb3-4bdb-9c41-08dbaa43a587
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D8:EE_|DS7PR12MB6167:EE_
+X-MS-Office365-Filtering-Correlation-Id: 312038fb-d358-4e6a-7e24-08dbaa465862
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: clUV1BX4IG3c0WHCisgramXvYA/xy/wDgG+eVv7Ee4zsj2lpdd4SDorONC8vIpkFzsDdfJ3R0UsiVCwT8kzv0zo0wzICzomzufmGnTO3poRiPPW7tJR/9CeDHhuN6Pj6fcnadFjYEcS9e5WYCm3oQyVLYz2oIAMElaSfg8Nn79js5i1z9dq5lrU094Svk31P3o+wfRroHMLEV8zYgJig0girTmF4OaxaROqnbXWf2Y8H3+bR+Z9omso+5iERkAGSuBceDrS4k4iBUe4duSpKgq4yxJlhBm9lG6T6YRDZJSJWXuVaKN5vBaF3n53a5PwuoevQew9js0GekhCZdTKO2zluFlexw3JB87UzixmNVuTdDtA3zwPThDaW5S2FB/GNP1unN+mB10fZE2akocZZztkQYxAeMCCORoA143wPl+TPQuNIKzmv7PLiTj46gXOdg5lCP5u1TFdnW5ljPLzZibdD5zIk35+1+kzEu7WLTvj+ujjS6zG2ZKlJbU+UAWIMhNamBJ/GqpJhv6fTKeqIk5M8ppmq36C13IEZevistaKFFBOWb8THh1+h9IijkXVY
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(376002)(346002)(136003)(396003)(39840400004)(1800799009)(451199024)(186009)(41300700001)(8936002)(83380400001)(66556008)(8676002)(4326008)(478600001)(66476007)(6666004)(6486002)(66946007)(6916009)(316002)(2616005)(6506007)(26005)(6512007)(2906002)(38100700002)(5660300002)(36756003)(86362001)(44832011)(66899024);
+X-Microsoft-Antispam-Message-Info: +pWSvSiXsTRabO6eaaVs8AmJ/2tE5pq1ngTJP4PJAlIi1C7hic8TR4/cb9aDLkWYFf3zRQQufYb9S5s8Y0oY4UxVdRQVc77pbyPtPNLAaq6OFCa1tX9sTNSBzsH4Wb5RkVhTobF+HYcGEVdBSw4YOnDJCix0oGU37X1B7tpY3fzjm97iZyiVsP3lh7xopaGxSk76PlHV5TV6r1CcZKmyM9mBmLP7eUpkWzzAyJsOuWGKdHMXR4YgLXs2INfc5I4ZoTWaKhhG9AIdMOfmwjmigrxA3FrXtsPL5/3PIm3a4uAw6s6wg9j+DjJhWhVhpFwGmdyWHMEAzwEmoUBNlCfSSq0JghbzYp0OW+wesnr+ZrjaWLxvPXg60+RBYSgd1Kmg2ru7nOB7g23tnomaP1VxiwKOF6W8q3BSAPYVdXEkLuhtrRqdXl0lcX6K+8zjbEjkRBUnMTtWPuH9op+yksTEezy03++zd9HNU66WKmLzSwvcnLF205BZg87Eoe0DmP8Gt+Rl+0bDcPwc0c3kcvzvgXxTtDalEw+MvNHIuymwiiNBvJHiGVh0QrJ2EQEF9ZdzjOCf6xqWzOnNH/rKjTbafRcSM0UqHAEryoDufzKHRhYiQYJ7T/Aha6yGlRY2BJNATDeFoDINcThjKXE1AxKTdD2QzzVQLbjqb5IJ0+h+Y64vfunKp5UpGXtuzuKnPko4n8tkSt0VuYR8uN0AXTrlPF9fphzRNcnDTU/4ofJHvgLzsw+d5JzwpNWD4awtAsqS9GpD3s/MfDPwEpDUwRvgDw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(376002)(346002)(136003)(396003)(451199024)(186009)(1800799009)(82310400011)(40470700004)(36840700001)(46966006)(70206006)(8936002)(41300700001)(47076005)(83380400001)(4326008)(40480700001)(8676002)(36860700001)(478600001)(966005)(6666004)(54906003)(426003)(336012)(26005)(1076003)(6916009)(316002)(70586007)(2616005)(2906002)(44832011)(81166007)(82740400003)(86362001)(356005)(40460700003)(5660300002)(36756003)(36900700001);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TjRSeU5qT09xK1NaSW5EcUt6Uk5RTEdjNFpGcDlTdk9SekcwRUFXRnlXeDQ2?=
- =?utf-8?B?anJaMzZMOS9PRkFsdk1Lc3E4Y0RRT3RzSEdwL0drVksxWVhRS0lrVEJtMUxL?=
- =?utf-8?B?Y2ZkQWtncitYRTJVMVowZ2xCMkEzQzFHZmhqRytuR2dpOG44OGZocW9heHNm?=
- =?utf-8?B?WFVYQ3NvaTQrbm5rMGRCQnZwUm5UbC9PL0oyVzNRa1NVTVEwRmxBUWFBMVRY?=
- =?utf-8?B?M0FDaW4wOWc2clFNN1VlMXpOSFhXTEJ4YWJNQ0F3VDRaQTFSZjRDdTE0ZFJP?=
- =?utf-8?B?ZVRHR05uZjl5OFNST0p6U2lPeitxMllUTnR4VEpFK3B6U1A2SEdORytDd1J2?=
- =?utf-8?B?OFRSS1V5ME1rVkpCMTc3S3oyL3FDSVprVnNqNzJNS2REQmZpdkFzRGcyc3Jr?=
- =?utf-8?B?Uk1Kc0RIK2xHT0lEY2FnbkV2Q0sxT2ZkWkdXdW5IaUpCWHFQWW5JMnQxSlky?=
- =?utf-8?B?NDhJc2VtMEwzQW1QZjlwZmFMaHlqOFpoVXBoeUVqNk1nUUFldVBTOTBkaXJT?=
- =?utf-8?B?YWs1TmpLeXprenRXcVV1UzBVc040NmpqVWRlUm1BdUR2OVpSSU81MHdYTlNU?=
- =?utf-8?B?ZXNjamZyclJPd0hJdkErSTZPRmU5dUJlbDh1STFObmsyUjFJakdGVmF6YWRy?=
- =?utf-8?B?S1Y5Sy9XL3ByNG9ZNklwK3dOYW9RZ3o5R3BCaVl3Z0UxL1pkR1BEVzBuK1cy?=
- =?utf-8?B?Z3A1b1phdFB1bGpZT3c2TXNUV2tncEhkelZwZDB1MnJiV0p4YXdXUmwwU3Z1?=
- =?utf-8?B?eUFZMlpHbTZKV1dSSmpXWmljbXJ3VGxxY3VpTE5vTVNhN003NVprL2h3amNT?=
- =?utf-8?B?TGZ4SWNkQWJ6WjFSa0hPZUdGRGlaaEppcXpFeVRQZzZrSXg3T3Y2NWlOWVBr?=
- =?utf-8?B?ZVhSR003YTRVVmVIK3o3Z3R3SW9HRjk4ajNjM1VSc2hkOWtLeU5vbElDVitF?=
- =?utf-8?B?bWdYd2tqcmxVQnhiOXRUNzU5RUFURXIwK3JuYkpPdXAyZ1lLazNBVmFodExK?=
- =?utf-8?B?emxlZ0JuRlhtK3JDeG8vbEFKTnd1MVZuQ09rL1UyMjd0MTA4VUMzdTNORzlB?=
- =?utf-8?B?UkFHdFhaVnU1SDBsakszN05FeDlKYWl6L1hDT3p6ajlrbWxaSmI1UnpKR2pY?=
- =?utf-8?B?SWlabEs5d01NakFYYWJaMUIzeUVjTnJHR2lwQks4RndjQllmMCtGZlpwQUVl?=
- =?utf-8?B?VUt2RmpZbGQxcGlubzZIUnAvQllMdTYvMTd5RzlYRm81TEZyTlhNWnRWWXlD?=
- =?utf-8?B?b3Q1YzZveXNyeWxEMlZBNFlMRTFMYVJGT01RSFpVdm9CNHZWOUtyWm1lTEhI?=
- =?utf-8?B?N0tveFM5Yi83Q1d3Y051Mjd0cnZlMS9JZTY5aEhaMlZlYUdQVHFGVGIvYm5I?=
- =?utf-8?B?dklVYVBMaGx2QzR0UGsvb2dzZlQrdmhqdUVkQVJVYXFXNGhXN1lOMU1zak01?=
- =?utf-8?B?d2MxZC8zVzlUbzlWT0c1YkZtOWdGWFF6eEptQmtJMzlaaUVkMHI3ZFZyakJm?=
- =?utf-8?B?SFJIaEtoU2pISnlYSDNYSkF6N2FmdWJQV0k0WmRGYklWVWlmMDJTVXhBSFZD?=
- =?utf-8?B?YzlEMm01Ykkzc0ZGSFlBREg1TFpBbU40NFovOU5TNk5SRkF2TUZlSWY3eUl3?=
- =?utf-8?B?eExWY1dSWHpqN2YyVmQ3Yk9ZeTJ5ODdFb1RWZUdmLzhHMk9aakxjUG5vaXV2?=
- =?utf-8?B?bFMwVEU4RGtzZlBKMm9LeWo4NWtPTzA4dnZ0cmI2YnF5aE5yM1FOYkZpUnpX?=
- =?utf-8?B?NTQ5YlNJNWtGK2FxRldzVm9ZZWxBQ2lXUm5XSXhWMGhDaUhPRUFzQ2ZteDkv?=
- =?utf-8?B?THhVWk00d1A0eHA0VUNYZmtpTnpubmg2SGFHM0ZtbEhUUUFZUnR4b28zNjFp?=
- =?utf-8?B?S05IK012a25LWE5ML0wrZHM3VithSFJseFpLcnlvNlBuU3FJUjBqUzNqNWFI?=
- =?utf-8?B?TXJmVy82Yzh6K0puTGtEK0JOOXVDWXJxUTJGQ0lscFpKK0Z3RDdYckZFN1hZ?=
- =?utf-8?B?Zk0ydTZpQjFFRVZJd3AzZFRBTFNwbUZic3pRZkQ4RW81amgwMmNoVlR0M3VQ?=
- =?utf-8?B?cksvR3k5NU12bVNEb0F4UzZQb0U2NU1ORG1sVGtoRmg5bWJHRFlraGdNNEx4?=
- =?utf-8?B?azZDRG5CSXBmcVhoRklyOTR1QnBrd08vamJsZnAwUUcyMkRMSVYwQ3VGQ0lK?=
- =?utf-8?B?Wnc9PQ==?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee9da406-3fb3-4bdb-9c41-08dbaa43a587
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 16:59:32.2653 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OMpuut8crJHebwI4BNdwS97KUlp3kZ9twh0LBPJegnPVIqMS0l3SzktA7XDPJEWt1WX634Kd0Onm9p9Sq+7IS74moiBRXdEXKts3KIJ0vrc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR17MB4879
-Received-SPF: none client-ip=40.107.244.83;
- envelope-from=gregory.price@memverge.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 17:18:50.9245 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 312038fb-d358-4e6a-7e24-08dbaa465862
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D8.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6167
+Received-SPF: softfail client-ip=2a01:111:f400:7ea9::603;
+ envelope-from=tong.ho@amd.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,106 +117,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 07, 2023 at 03:56:09PM +0100, Jonathan Cameron wrote:
-> On Fri, 21 Jul 2023 12:35:08 -0400
-> Gregory Price <gourry.memverge@gmail.com> wrote:
-> 
-> > Implement the MHD GET_INFO cci command and add a shared memory
-> > region to the type3 device to host the information.
-> > 
-> > Add a helper program to initialize this shared memory region.
-> > 
-> > Add a function pointer to type3 devices for future work that
-> > will allow an mhd device to provide a hook to validate whether
-> > a memory access is valid or not.
-> > 
-> > For now, limit the number of LD's to the number of heads. Later,
-> > this limitation will need to be lifted for MH-MLDs.
-> > 
-> > Intended use case:
-> > 
-> > 1. Create the shared memory region
-> > 2. Format the shared memory region
-> > 3. Launch QEMU with `is_mhd=true,mhd_head=N,mhd_shmid=$shmid`
-> 
-> I'd definitely like some feedback from experienced QEMU folk on
-> how to model this sort of cross QEMU instance sharing.
-> 
-> My instinct is a socket would be more flexible as it lets us
-> potentially emulate the machines on multiple hosts (assuming they
-> can see some shared backend storage).
-> 
+This series adds support for the True Random Number Generator
+(TRNG) in the AMD/Xilinx Versal family of devices.
 
-I'd considered a socket, but after mulling it over, I realized the
-operations I was trying to implement amounted to an atomic compare
-and swap.  I wanted to avoid locks and serialization if at all
-possible to avoid introducing that into the hot-path of memory
-accesses.  Maybe there is a known pattern for this kind of
-multi-instance QEMU coherency stuff, but that seemed the simplest path.
+The series starts by introducing a non-cryptographic grade model
+of the TRNG controller in the Versal family of devices, followed
+by instantiating the model in Xilinx Versal machine.
 
-This obviously has the downside of limiting emulation of MHD system to
-a local machine, but the use of common files/memory to back CXL memory
-already does that (i think).
+The series ends with a q-test for sanity check of the TRNG model
+in the Xilinx Versal machine.
 
-¯\_(ツ)_/¯ feedback welcome.  I'll leave it for now unless there are
-strong opinions.
+Best regards,
+Tong Ho
 
-> else not needed if we returned in previous leg.
-> 
-> 	if (ct3d->is_mhd && ...
-> 
-> > +               (!ct3d->mhd_shmid || (ct3d->mhd_head == ~(0)))) {
-> 
-> How does mhd_head equal that? Default is 0. I'm not sure there is a reason
-> to require it.
-> 
+References:
+[1] https://docs.xilinx.com/r/en-US/am011-versal-acap-trm/True-Random-Number-Generator
 
-Good catch, the default should be ~(0).  Updated in the field
-initialization section.
+Tong Ho (3):
+  hw/misc: Introduce AMD/Xilix Versal TRNG device
+  hw/arm: xlnx-versal-virt: Add AMD/Xilinx TRNG device
+  tests/qtest: Introduce tests for AMD/Xilinx Versal TRNG device
 
-> > +    /* For now, limit the number of heads to the number of LD's (SLD) */
-> 
-> Feels backwards.  Number of heads never going to be bigger than numbre of
-> LDs.  Other way around is possible of course.
-> 
-> > +    if (ct3d->mhd_state->nr_heads <= ct3d->mhd_head) {
-> 
-> mhd head needs to be out of range?  Confused.
-> 
+ hw/arm/Kconfig                      |   1 +
+ hw/arm/xlnx-versal-virt.c           |  20 +
+ hw/arm/xlnx-versal.c                |  16 +
+ hw/misc/Kconfig                     |   3 +
+ hw/misc/meson.build                 |   3 +
+ hw/misc/xlnx-versal-trng.c          | 725 ++++++++++++++++++++++++++++
+ include/hw/arm/xlnx-versal.h        |   5 +
+ include/hw/misc/xlnx-versal-trng.h  |  58 +++
+ tests/qtest/meson.build             |   2 +-
+ tests/qtest/xlnx-versal-trng-test.c | 490 +++++++++++++++++++
+ 10 files changed, 1322 insertions(+), 1 deletion(-)
+ create mode 100644 hw/misc/xlnx-versal-trng.c
+ create mode 100644 include/hw/misc/xlnx-versal-trng.h
+ create mode 100644 tests/qtest/xlnx-versal-trng-test.c
 
-Woops, yes this should be mhd_head >= nr_heads. Wording is backwards and
-so is the code.  fixed.
+-- 
+2.25.1
 
-> > +    if (ct3d->mhd_state) {
-> > +        shmdt(ct3d->mhd_state);
-> > +    }
-> 
-> Reverse order of realize - so I think this wants to be earlier.
-> 
-> >  }
-
-Just to be clear you *don't* want the reverse order, correct?  If so
-i'll swap it.
-
-> >  
-> > +    if (ct3d->is_mhd && ct3d->mhd_access_valid) {
-> > +        if (!ct3d->mhd_access_valid(ct3d, dpa_offset, size))
-> > +            return MEMTX_ERROR;
-> 
-> Brackets for inner block.
-> Arguably could just add the ct3d->is_mhd check in the place where
-> mhd_access_valid is set and hence only need to check that here.
-> Maybe that makes it slightly harder to follow though.
-> 
-> Also could just unset is_mhd if mhd_access_valid not present..
->
-
-I'm going to change the next patch to fully inherit CXLType3Dev into
-Niagara as you suggested.  I will have to see what falls out when i do
-that, but my feeling was being more explicit when checking pointers is
-better.  If you prefer to to drop the is_mhd check i'm ok with that
-simply because mhd_access_valid should always be NULL when is_mhd is
-false.  Either way the result is the same.
-
-~Gregory
 
