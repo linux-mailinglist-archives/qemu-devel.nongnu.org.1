@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C2478EC1D
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 13:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B496378EC64
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 13:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbfwV-0002Jj-2F; Thu, 31 Aug 2023 07:34:31 -0400
+	id 1qbg4d-0008JP-80; Thu, 31 Aug 2023 07:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbfwS-0002BT-AY
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 07:34:28 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbg4R-0008H5-Vg
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 07:42:45 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbfwQ-0007j7-26
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 07:34:28 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-52bcd4db4cbso847434a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 04:34:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbg4P-0001O9-HJ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 07:42:43 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5280ef23593so854438a12.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 04:42:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693481664; x=1694086464; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=UeujAOT+IY4z0mN0+1iXiGPfI2w/z6g9XMPJjB/4cJ4=;
- b=FChI7H97AUhYf+y1hW7vocRRq+mg6bFzSFgEKut3ojAb1tGZ5u/tfe1syjlpuAYd+I
- JFUmVlv/eOldENhFXEhAJO/wu45tA9KajcIn/mZnEF9dgP1epCPuweE8BeLVGh5fXvg0
- 0M47/Ezc0b/jf9QR1Fn+1xC5oD6ANnjS4rNDj7a/Rg3+VT1f0f3CKIUIFQjhxcWm9x3j
- ZBhYIkeAJH5l93xQGGdekxZLvtsWQcLE5yxo+WstsiuuXXlOFzO+HsLDtQrHycplPGd7
- wSiJliyBzXHcoBdOLZ4n1a8BtVBFIexlNDK/o5b1ZJi6j1W+6vERxzKkV2JWusN0XmL/
- qpAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693481664; x=1694086464;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1693482158; x=1694086958; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UeujAOT+IY4z0mN0+1iXiGPfI2w/z6g9XMPJjB/4cJ4=;
- b=b3ovczAZJQLFdgMtgLBTgwCOOYysdNFDYs7y/vJx473CgM+1vpUunr01f4/L2hlu5Q
- SN0NeZZOLeCNpBVM78t6k12Gt8FTaVE7UL8gIWNJ2oEd07Q6uvp51MOWgeXyYZx99N3J
- bMPvAhqOnbuUml6jnLNFLZqpZkAtmoEe8qTRuy7jIyVD7ePBi8/eAY6yDc19YQ9tyZA0
- 5WBCKbdOO0Ggbw+48ZMsGTvRD8AQYue0WAXY3PdZCfFbRVMci/SfR9oI+hvqGLes5wd4
- +eFEZm4WyW/Dpppc0rinkkXEmKd2Ei3v8/rLQh1BupfMOk4cE9dIK8NSmkgiKsmJtjt4
- TiOw==
-X-Gm-Message-State: AOJu0YyTAG4TGddfI0WAlbcp0Fb2i04uI33ZKH8qIt7zn+F85qGyVjOn
- g1eXSGgrtwsPj30FxqSoE/1j3g==
-X-Google-Smtp-Source: AGHT+IFd03cNSDna4KwUkCI8s/kHHFoEKH71IBAYBLKyDEmprybHOoJ/EthsVU9xuUS2WvSieZF2Xg==
-X-Received: by 2002:a17:906:5a51:b0:9a1:edfd:73b2 with SMTP id
- my17-20020a1709065a5100b009a1edfd73b2mr3963081ejc.2.1693481664636; 
- Thu, 31 Aug 2023 04:34:24 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- l13-20020a170906a40d00b0099bc0daf3d7sm661633ejz.182.2023.08.31.04.34.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 04:34:24 -0700 (PDT)
-Date: Thu, 31 Aug 2023 13:34:23 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH 13/20] target/riscv/kvm: refactor
- kvm_riscv_init_user_properties()
-Message-ID: <20230831-c901e15b4e101f60d7e76267@orel>
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
- <20230825130853.511782-14-dbarboza@ventanamicro.com>
+ bh=DZYYMlf2Q/sBIqNnlNnSd1DVS5c7jiyWNWe7v8r7llI=;
+ b=RWqGhM7UgeyEWsWfSIZzJO3VdOlV9R2OfVvsHNtpWp/LGhHD0k8faHcd1uiSJ2VgdO
+ gDWbPgWUoz59LrvDUDxoOUFppI4VeLy1uu0CmVZ36pk6DtupAQilvm3Xyr1yaqNkVlQF
+ FkJba3RI0G/4dZCNHnIG9yGMAKpz75nNiz/Tnx613KIYm8qAL+yEgUUyNS8f3J3wHxYn
+ zDJsJ4+6Mvz21V+luqkTcRji7RvbJ53LaPnl14J/TLic8rqhYMKTXc89WMjfZqnbo1cr
+ RDibtro69uA+6WbIznNjx8HOeVtT/NOPfi+NlgbzLmDws/4lRPD9PW09QooJKxBShRn0
+ dnhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693482158; x=1694086958;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DZYYMlf2Q/sBIqNnlNnSd1DVS5c7jiyWNWe7v8r7llI=;
+ b=Thdv2BCF5eQJUxSnteZMm7sRfQHSPfmnpy16nY5B9llwl+2gk+79LIHJ8tuT7EQWZL
+ lq2bR+UPS2bO45yk5of57nkSt9zkqXyS+IGBaorx/C747d2clTyo+XG+J1m6kDVKDCyL
+ ywOawv5B1zH0u/7MZyI1tO6VEAcxoxN3AOSXOIF/bLBTk4QzEpkN3Zwew9p5Sb2KiFDo
+ PSRJfGI9oG7x88ynHkcGB48tLPNLDoE6sJ/MsTGU8WmMnGx97N7DE6z0AwalxS6R6Q8Z
+ br4YM6wMwKVOTX6yd6GlWd4wxGeH7xHo+H5Aj0SqGA0k2mvCVBn8puAmP2fpqJitOlM9
+ rxgA==
+X-Gm-Message-State: AOJu0YzVLLhxf3H3UyRKREYTs9jTe11/GnPgRxG9e5LWV9Aup7pDAVp1
+ 5jteNl/teccaEFedHt3svxCqPcFXMwuF9yp0xbLJEQ==
+X-Google-Smtp-Source: AGHT+IFl4wwDm0ua5CjWpvaFUGyolXCkXUNGWOEKAEJSJIc3bB6h9uhvyAyd6pxrYHp+x7WDevFt9lIiV4C29oUEVcI=
+X-Received: by 2002:aa7:c414:0:b0:51e:ed6:df38 with SMTP id
+ j20-20020aa7c414000000b0051e0ed6df38mr3890545edq.13.1693482158356; Thu, 31
+ Aug 2023 04:42:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230825130853.511782-14-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x531.google.com
+References: <87y1hspiyh.fsf@linaro.org>
+ <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
+ <CAFEAcA8Ziov9vA9dW+4vzFE=KkSUqfMNNMZOtvQhqCXyjRytzQ@mail.gmail.com>
+ <87cyz3pmgz.fsf@linaro.org>
+ <CAFEAcA-m8G1kfTw52kOGPEvQwWPph0NWc0URVY1aQ2WwVeB_OQ@mail.gmail.com>
+ <878r9rpjvl.fsf@linaro.org>
+In-Reply-To: <878r9rpjvl.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 31 Aug 2023 12:42:27 +0100
+Message-ID: <CAFEAcA8ZdkHmtJ1r5zi-bW4msSUqvCdo1L6QbqMjEaJHf5Ji1g@mail.gmail.com>
+Subject: Re: QEMU features useful for Xen development?
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Xen-devel <xen-devel@lists.xenproject.org>, 
+ Stewart Hildebrand <stewart.hildebrand@amd.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>, 
+ Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
+ Sergiy Kibrik <Sergiy_Kibrik@epam.com>, 
+ QEMU Developers <qemu-devel@nongnu.org>,
+ Vikram Garhwal <vikram.garhwal@amd.com>, 
+ Stefano Stabellini <stefano.stabellini@amd.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,74 +101,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 25, 2023 at 10:08:46AM -0300, Daniel Henrique Barboza wrote:
-> The function is doing way more than just init user properties. We would
-> also like to use the 'user_extension_properties' class property, as the
-> TCG driver is already using, to decide whether KVM should expose user
-> properties or not.
-> 
-> Rename kvm_riscv_init_user_properties() to riscv_init_kvm_registers()
-> and leave only the essential, non-optional KVM init functions there. All
-> functions that deals with property handling is now gated via
-> rcc->user_extension_properties.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/kvm/kvm-cpu.c | 19 +++++++++++--------
->  1 file changed, 11 insertions(+), 8 deletions(-)
-> 
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index 3c4fa43cee..85e8b0a927 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -792,7 +792,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
->      }
->  }
->  
-> -static void riscv_init_user_properties(Object *cpu_obj)
-> +static void riscv_init_kvm_registers(Object *cpu_obj)
->  {
->      RISCVCPU *cpu = RISCV_CPU(cpu_obj);
->      KVMScratchCPU kvmcpu;
-> @@ -801,7 +801,6 @@ static void riscv_init_user_properties(Object *cpu_obj)
->          return;
->      }
->  
-> -    kvm_riscv_add_cpu_user_properties(cpu_obj);
->      kvm_riscv_init_machine_ids(cpu, &kvmcpu);
->      kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
->      kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
-> @@ -1295,16 +1294,20 @@ DEFINE_TYPES(riscv_kvm_cpu_type_infos)
->  static void kvm_cpu_instance_init(CPUState *cs)
->  {
->      Object *obj = OBJECT(RISCV_CPU(cs));
-> +    RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(obj);
->      DeviceState *dev = DEVICE(obj);
->  
-> -    riscv_init_user_properties(obj);
-> +    riscv_init_kvm_registers(obj);
->  
-> -    riscv_add_satp_mode_properties(obj);
-> -    riscv_cpu_add_misa_properties(obj);
-> +    if (rcc->user_extension_properties) {
-> +        kvm_riscv_add_cpu_user_properties(obj);
-> +        riscv_add_satp_mode_properties(obj);
-> +        riscv_cpu_add_misa_properties(obj);
->  
-> -    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_extensions);
-> -    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_vendor_exts);
-> -    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_exts);
-> +        riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_extensions);
-> +        riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_vendor_exts);
-> +        riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_exts);
-> +    }
->  
->      for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
->          /* Check if we have a specific KVM handler for the option */
-> -- 
-> 2.41.0
-> 
+On Thu, 31 Aug 2023 at 11:49, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+> Peter Maydell <peter.maydell@linaro.org> writes:
+> > All our MPS2/MPS3 boards are M-profile. That means we have the
+> > device models for all the interesting devices on the board, but
+> > it would be simpler to write the an536 board model separately.
+> > (In particular, the M-profile boards are wrappers around an
+> > "ARMSSE" sort-of-like-an-SoC component; there's no equivalent
+> > for the Cortex-R52.)
+> >
+> >>   https://developer.arm.com/documentation/dai0536/latest/
 >
+> It's not super clear from the design notes but it does mention the
+> SSE-200 sub-system as the basis for peripherals. Specifically the blocks
+> are:
+>
+>   Arm Cortex-R52 Processor
+>   Arm CoreSight SoC-400 (n/a for QEMU)
+>   Cortex-M System Design Kit
+>   PL022 Serial Port
+>   NIC-400 Network interconnect
+>
+> But if writing it from scratch is simpler so be it. The real question is
+> what new hardware would we need to model to be able to bring something
+> up that is useful to Xen?
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Just the board, basically. The SSE-200 is specifically a
+dual-Cortex-M33 block; all the references to it in the
+AN536 appnote look like cases where text wasn't sufficiently
+cleaned up when creating it based on the M-profile doc...
+
+-- PMM
 
