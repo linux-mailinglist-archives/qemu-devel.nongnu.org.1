@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5112578EAD6
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EED78EB49
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 13:02:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbfBX-0004WV-Fk; Thu, 31 Aug 2023 06:45:59 -0400
+	id 1qbfQA-0006kT-7g; Thu, 31 Aug 2023 07:01:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbfBT-0004Fh-3O
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:56 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbfPz-0006jN-JT
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 07:00:56 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbfBP-0004B3-9c
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:53 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so525872a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:45:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbfPx-0007Lz-6l
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 07:00:55 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99c1c66876aso75571966b.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 04:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693478749; x=1694083549;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VhDkEgN2IlfKuEoOWYouw6z+bUytQcoqFCx/xnn/WOc=;
- b=NDGrr1cwiN+gLjQcdZqfCUYMnNzBzww27AbnN+9uGVSFlnDuUteHInJUFuVfpJjWpc
- 9zQsuxwmmNq2mt5VEqUT/HQVwQgq3YvwUotrNRngbxgdas11lMoIfbYT/GgIdsXdTXh8
- dGfGXZ8unLrlpsrQKVFQOlK/JpCJUymPlu81JGh8JtBhNkAccKOsiA80F0FnQfIWSSD5
- kCzS9Hwuqe78rCZdFBk1Ge6Z7sqD0bq28AFGDvlH8p866OxJgJQbH3nzoHpxmxxA/dxy
- NgRnI1D/ZfjGMdiZHT+VLYC6XMEmZDDyzHwWRt177eh7FHboqHCEMjJ+mz4fVfCcdpio
- l0sA==
+ d=ventanamicro.com; s=google; t=1693479651; x=1694084451; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=k9WbQJo8R/rKJAdJtcTKlX1Tt7tf+C9DxhqO5Qvimc4=;
+ b=pNyhpCd/Wrabeyv9kb98gIvF/WuR1aecDS1k2Kz21Vu7UNcwGrw2ZEvsqHTbtqieVD
+ qepRT0hd2/Awspb0q4IoIb/U8cKHn67ZvYhGcbGFM7hslOzW1JcuE1LN2ZosxgiYxtYH
+ yxNhCIRrGljW6wGUBj0h22cV8KUEYHCuxtMhX6h8Iez7I82EyXHEU1arvBCyGi8mo7Hf
+ 1zRhEzB29hvLwhsnSQCPqHv38CG/I5Wo9MGCCEEbLmO+6hfR2bxuTLLqZ5/6VDOAIkB7
+ glb27k3iNmACWoyNBM/ONt9LJHRPBwGBfuqyRJKOBlY9wp1ELex2MrPgUHVpWPNa6R5D
+ DlMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693478749; x=1694083549;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VhDkEgN2IlfKuEoOWYouw6z+bUytQcoqFCx/xnn/WOc=;
- b=aTFa1MwUO/ayWKMRM9GePREatyFi8yA5GKGr1btKvR++DzUVF5fZMmvCgEs6a9yz19
- 64/jl1EdCCAeM0HJ1x4ojONeIgI3bIx3ewwKKREokfn2Yc6bCPObIrtFTcDDjyZY6lqx
- 3G+e9Lsw63F8qODKGFW3oROyK1vsHiqW6QbEZoUcft1FHqJpK+yQb6ZYUiRFe2QcQBS/
- +muiF28rbbhZA4iImoIrz/PkniM4hjegqQEwWAd00uKA7FaSjbTXjUFeGfvhuZoVJ/vF
- 2Gw43rNnO501/eK9IplIh6F+UZS8l5bXWWYwjeOjVBuoEnpjGE5AIopPmDMisVcwFFqW
- xSAA==
-X-Gm-Message-State: AOJu0YwciXS2sqXvl0DpSXgSuCCU1rrUqq9seI8A4MJGkk8ZmhTHotIp
- Zo8usH/ncWU1IrumWI3dKBorgA==
-X-Google-Smtp-Source: AGHT+IF0ylutJSdEUAnvdxe9Gg66bbNWEVsTvFXrgCiMap4BSUpNrsj9oRKwJEo8F8M0YSR+V1A3kg==
-X-Received: by 2002:a05:6a20:44c:b0:14c:daa9:5e22 with SMTP id
- b12-20020a056a20044c00b0014cdaa95e22mr4058925pzb.45.1693478749545; 
- Thu, 31 Aug 2023 03:45:49 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1693479651; x=1694084451;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k9WbQJo8R/rKJAdJtcTKlX1Tt7tf+C9DxhqO5Qvimc4=;
+ b=Iz2BymRJGDpga9C4CfoVF4JA/p/L5a6yKBy8Y/BR3xyVDLX8KlyJ5q3VsGjM8cljgb
+ Qb5zA/Inr7dpNFtrYUlr5c59OopNEg3D13FAfIhkl5UPxUUCtzhW442Im0xFghQuDwWv
+ 0oaoG1NYN0CWGySR09PLiZbjO09zs8awUDhSy3BVYOp6CwR6tbZSQLcA6w5yzJfQFvQN
+ rt7Ogr6aoebeOm3SA/lC3kFFizVTPMVFceWsO20oMJZFStJl3tuLtIUZDrtI9ppXY70h
+ 56DAdznsgs1nSNrnB2x4zDgR6X4zxioqeUUUfAZZkt7DRmVUCgDMfmYqjgtrTHWk/mjQ
+ W2lA==
+X-Gm-Message-State: AOJu0Yy3N2XoUwWiEOfeRml5fa+jxIrBkcmfKPDEyWbSqBsTaIn47QNX
+ yagmGMopcZAxvMS8uTDihKqcKA==
+X-Google-Smtp-Source: AGHT+IH4PgtIkdl2tyrRMxp1JJC8NsD+yxbhJ+KYqcH1a/8fRE01rblrY3lkob7dmw26IQSLqKpOVQ==
+X-Received: by 2002:a17:906:5a6b:b0:9a5:9305:8402 with SMTP id
+ my43-20020a1709065a6b00b009a593058402mr3566621ejc.51.1693479650733; 
+ Thu, 31 Aug 2023 04:00:50 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- j17-20020a62b611000000b0066a2e8431a0sm1060679pff.183.2023.08.31.03.45.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 03:45:49 -0700 (PDT)
-Message-ID: <bb17db0b-69d5-4d53-b93b-e1984bf7ca1b@daynix.com>
-Date: Thu, 31 Aug 2023 19:45:44 +0900
+ cf20-20020a170906b2d400b00988dbbd1f7esm622505ejb.213.2023.08.31.04.00.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 04:00:50 -0700 (PDT)
+Date: Thu, 31 Aug 2023 13:00:49 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH 07/20] target/riscv/cpu.c: add .instance_post_init()
+Message-ID: <20230831-863a8334e34c5248fa71d7bf@orel>
+References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+ <20230825130853.511782-8-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/12] build: Only define OS_OBJECT_USE_OBJC with gcc
-Content-Language: en-US
-To: Alexander Graf <graf@amazon.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
-References: <20230830161425.91946-1-graf@amazon.com>
- <20230830161425.91946-2-graf@amazon.com>
- <996b4057-6d64-3803-792b-f6c49dd9f3bf@linaro.org>
- <c933da5b-92fe-47f6-ade1-9c1e2770aa23@daynix.com>
- <6e98c4e8-89ea-4fd1-a6cf-e9cdcf043482@amazon.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <6e98c4e8-89ea-4fd1-a6cf-e9cdcf043482@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230825130853.511782-8-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,72 +94,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/31 17:59, Alexander Graf wrote:
+On Fri, Aug 25, 2023 at 10:08:40AM -0300, Daniel Henrique Barboza wrote:
+> All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
+> calls riscv_init_max_cpu_extensions(). Both can be moved to a common
+> instance_post_init() callback, implemented in riscv_cpu_post_init(),
+> called by all CPUs. The call order then becomes:
 > 
-> On 31.08.23 10:53, Akihiko Odaki wrote:
->>
->>
->> On 2023/08/31 17:12, Philippe Mathieu-Daudé wrote:
->>> On 30/8/23 18:14, Alexander Graf wrote:
->>>> Recent versions of macOS use clang instead of gcc. The 
->>>> OS_OBJECT_USE_OBJC
->>>> define is only necessary when building with gcc. Let's not define it 
->>>> when
->>>> building with clang.
->>>>
->>>> With this patch, I can successfully include GCD headers in QEMU when
->>>> building with clang.
->>>>
->>>> Signed-off-by: Alexander Graf <graf@amazon.com>
->>>> ---
->>>>   meson.build | 4 +++-
->>>>   1 file changed, 3 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/meson.build b/meson.build
->>>> index 98e68ef0b1..0d6a0015a1 100644
->>>> --- a/meson.build
->>>> +++ b/meson.build
->>>> @@ -224,7 +224,9 @@ qemu_ldflags = []
->>>>   if targetos == 'darwin'
->>>>     # Disable attempts to use ObjectiveC features in os/object.h since
->>>> they
->>>>     # won't work when we're compiling with gcc as a C compiler.
->>>> -  qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
->>>> +  if compiler.get_id() == 'gcc'
->>>> +    qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
->>>> +  endif
->>>>   elif targetos == 'solaris'
->>>>     # needed for CMSG_ macros in sys/socket.h
->>>>     qemu_common_flags += '-D_XOPEN_SOURCE=600'
->>>
->>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>
->>
->> Defining OS_OBJECT_USE_OBJC does not look like a proper solution.
->> Looking at os/object.h, it seems OS_OBJECT_USE_OBJC is defined as 0 when:
->> !defined(OS_OBJECT_HAVE_OBJC_SUPPORT) && (!defined(__OBJC__) ||
->> defined(__OBJC_GC__))
->>
->> This means OS_OBJECT_USE_OBJC is always 0 if Objective-C is disabled. I
->> also confirmed os/object.h will not use Objective-C features when
->> compiled as C code on clang with the following command:
->>
->> clang -E -x -c - <<EOF
->> #include <os/object.h>
->> EOF
->>
->> If compilation fails with GCC when not defining OS_OBJECT_USE_OBJC, it
->> probably means GCC incorrectly treats C code as Objective-C and that is
->> the problem we should solve. I cannot confirm this theory however since
->> I have only an Apple Silicon Mac that is incompatible with GCC.
+> riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
 > 
+> A CPU class that wants to add user flags will let us know via the
+> 'user_extension_properties' property. Likewise, 'cfg.max_features' will
+> determine if any given CPU, regardless of being the 'max' CPU or not,
+> wants to enable the maximum amount of extensions.
 > 
-> My take on this was to make the gcc hack be a "legacy" thing that we put 
-> into its own corner, so that in a few years we can just drop it 
-> altogether. I don't really think it's worth wasting much time on this 
-> workaround and its potential compatibility with old macOS versions.
+> In the near future riscv_cpu_post_init() will call the init() function
+> of the current accelerator, providing a hook for KVM and TCG accel
+> classes to change the init() process of the CPU.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c | 20 +++++++++++++++-----
+>  1 file changed, 15 insertions(+), 5 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index c35d58c64b..f67b782675 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -430,8 +430,6 @@ static void riscv_max_cpu_init(Object *obj)
+>      mlx = MXL_RV32;
+>  #endif
+>      set_misa(env, mlx, 0);
+> -    riscv_cpu_add_user_properties(obj);
+> -    riscv_init_max_cpu_extensions(obj);
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
+> @@ -445,7 +443,6 @@ static void rv64_base_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV64, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -569,7 +566,6 @@ static void rv128_base_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV128, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -582,7 +578,6 @@ static void rv32_base_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV32, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -1212,6 +1207,20 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+>  }
+>  #endif /* CONFIG_USER_ONLY */
+>  
+> +static void riscv_cpu_post_init(Object *obj)
+> +{
+> +    RISCVCPU *cpu = RISCV_CPU(obj);
+> +    RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
+> +
+> +    if (rcc->user_extension_properties) {
 
-That makes sense.
+It's not yet clear to me why we need 'user_extension_properties'. Can't we
+just do the 'object_dynamic_cast(obj, TYPE_RISCV_DYNAMIC_CPU) != NULL'
+check here?
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> +        riscv_cpu_add_user_properties(obj);
+> +    }
+> +
+> +    if (cpu->cfg.max_features) {
+
+It's also not yet clear why we need max_features. I can't think of any
+other models that want max_features besides 'max'. Checking the cpu type
+here should be sufficient, no?
+
+> +        riscv_init_max_cpu_extensions(obj);
+> +    }
+> +}
+> +
+>  static void riscv_cpu_init(Object *obj)
+>  {
+>      RISCVCPU *cpu = RISCV_CPU(obj);
+> @@ -2019,6 +2028,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>          .instance_size = sizeof(RISCVCPU),
+>          .instance_align = __alignof__(RISCVCPU),
+>          .instance_init = riscv_cpu_init,
+> +        .instance_post_init = riscv_cpu_post_init,
+>          .abstract = true,
+>          .class_size = sizeof(RISCVCPUClass),
+>          .class_init = riscv_cpu_class_init,
+> -- 
+> 2.41.0
+> 
+>
+
+Thanks,
+drew
 
