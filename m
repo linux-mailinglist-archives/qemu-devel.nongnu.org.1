@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F87178ED6C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 14:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F2078ED69
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 14:40:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbgxo-0007yl-6S; Thu, 31 Aug 2023 08:39:56 -0400
+	id 1qbgxk-0007tl-6B; Thu, 31 Aug 2023 08:39:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
- id 1qbgxb-0007qH-H9; Thu, 31 Aug 2023 08:39:45 -0400
+ id 1qbgxb-0007qI-Q7; Thu, 31 Aug 2023 08:39:45 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
- id 1qbgxY-0008CK-Tr; Thu, 31 Aug 2023 08:39:43 -0400
+ id 1qbgxY-0008Cc-UW; Thu, 31 Aug 2023 08:39:43 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rc12H5lhZz4x2Y;
- Thu, 31 Aug 2023 22:39:35 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rc12L480xz4x2Z;
+ Thu, 31 Aug 2023 22:39:38 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rc12F22Kyz4wZJ;
- Thu, 31 Aug 2023 22:39:33 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rc12J2Ck4z4wxW;
+ Thu, 31 Aug 2023 22:39:36 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Alistair Francis <alistair@alistair23.me>
-Subject: [PATCH v3 2/7] hw/ssi: Introduce a ssi_get_cs() helper
-Date: Thu, 31 Aug 2023 14:39:17 +0200
-Message-ID: <20230831123922.105200-3-clg@kaod.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH v3 3/7] aspeed/smc: Wire CS lines at reset
+Date: Thu, 31 Aug 2023 14:39:18 +0200
+Message-ID: <20230831123922.105200-4-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831123922.105200-1-clg@kaod.org>
 References: <20230831123922.105200-1-clg@kaod.org>
@@ -65,55 +64,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simple routine to retrieve a DeviceState object on a SPI bus using its
-CS index. It will be useful for the board to wire the CS lines.
+Currently, a set of default flash devices is created at machine init
+and drives defined on the QEMU command line are associated to the FMC
+and SPI controllers in sequence :
 
-Cc: Alistair Francis <alistair@alistair23.me>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+   -drive file<file>,format=raw,if=mtd
+   -drive file<file1>,format=raw,if=mtd
+
+The CS lines are wired in the same creation loop. This makes a strong
+assumption on the ordering and is not very flexible since only a
+limited set of flash devices can be defined : 1 FMC + 1 or 2 SPI,
+which is less than what the SoC really supports.
+
+A better alternative would be to define the flash devices on the
+command line using a blockdev attached to a CS line of a SSI bus :
+
+    -blockdev node-name=fmc0,driver=file,filename=./flash.img
+    -device mx66u51235f,cs=0x0,bus=ssi.0,drive=fmc0
+
+However, user created flash devices are not correctly wired to their
+SPI controller and consequently can not be used by the machine. Fix
+that and wire the CS lines of all available devices when the SSI bus
+is reset.
+
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- include/hw/ssi/ssi.h |  2 ++
- hw/ssi/ssi.c         | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+ hw/arm/aspeed.c     | 5 +----
+ hw/ssi/aspeed_smc.c | 8 ++++++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
-index c5bdf1f2165f..3cdcbd539042 100644
---- a/include/hw/ssi/ssi.h
-+++ b/include/hw/ssi/ssi.h
-@@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, const char *name);
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index b922a2c491cc..cd92cf9ce0bb 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -307,17 +307,14 @@ void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
  
- uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
+     for (i = 0; i < count; ++i) {
+         DriveInfo *dinfo = drive_get(IF_MTD, 0, unit0 + i);
+-        qemu_irq cs_line;
+         DeviceState *dev;
  
-+DeviceState *ssi_get_cs(SSIBus *bus, uint8_t cs_index);
-+
- #endif
-diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
-index 4e33e0ea5bc2..54ca3c34e9d0 100644
---- a/hw/ssi/ssi.c
-+++ b/hw/ssi/ssi.c
-@@ -27,6 +27,21 @@ struct SSIBus {
- #define TYPE_SSI_BUS "SSI"
- OBJECT_DECLARE_SIMPLE_TYPE(SSIBus, SSI_BUS)
+         dev = qdev_new(flashtype);
+         if (dinfo) {
+             qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
+         }
++        qdev_prop_set_uint8(dev, "cs", i);
+         qdev_realize_and_unref(dev, BUS(s->spi), &error_fatal);
+-
+-        cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
+-        qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
+     }
+ }
  
-+DeviceState *ssi_get_cs(SSIBus *bus, uint8_t cs_index)
-+{
-+    BusState *b = BUS(bus);
-+    BusChild *kid;
-+
-+    QTAILQ_FOREACH(kid, &b->children, sibling) {
-+        SSIPeripheral *kid_ssi = SSI_PERIPHERAL(kid->child);
-+        if (kid_ssi->cs_index == cs_index) {
-+            return kid->child;
+diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+index 72811693224d..2a4001b774a2 100644
+--- a/hw/ssi/aspeed_smc.c
++++ b/hw/ssi/aspeed_smc.c
+@@ -692,6 +692,14 @@ static void aspeed_smc_reset(DeviceState *d)
+         memset(s->regs, 0, sizeof s->regs);
+     }
+ 
++    for (i = 0; i < asc->cs_num_max; i++) {
++        DeviceState *dev = ssi_get_cs(s->spi, i);
++        if (dev) {
++            qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
++            qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
 +        }
 +    }
 +
-+    return NULL;
-+}
-+
- static const TypeInfo ssi_bus_info = {
-     .name = TYPE_SSI_BUS,
-     .parent = TYPE_BUS,
+     /* Unselect all peripherals */
+     for (i = 0; i < asc->cs_num_max; ++i) {
+         s->regs[s->r_ctrl0 + i] |= CTRL_CE_STOP_ACTIVE;
 -- 
 2.41.0
 
