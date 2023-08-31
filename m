@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73DF78EEC4
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1388078EECC
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:41:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhsQ-0002i9-7t; Thu, 31 Aug 2023 09:38:26 -0400
+	id 1qbhuU-0005vf-Pb; Thu, 31 Aug 2023 09:40:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qbhsN-0002dD-Vy
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:38:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qbhsK-00028L-IS
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:38:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693489099;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lHvH6tD37wk1zyp+h5UmwcIdUR0oNVNgJfvKLJlrg4M=;
- b=dsG9o9WOkqhHGX8Lr8O/geHgDM+ucbcAYJvqViWF4LKmY1S34pYiVu0tJzJ6utthbCBl0e
- Ac0g6gti5YkngZgvntGfJWC0mmRA1zG0ANuXy9PlH+QqupSVybhO0sDGDmoYs4uZFOU5BG
- 4sX0LzEOOxoZROGf1DT6gesiJisfgFM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-272-RvOQvMEROUGy2tVbeKhNpw-1; Thu, 31 Aug 2023 09:38:16 -0400
-X-MC-Unique: RvOQvMEROUGy2tVbeKhNpw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 93D191C09A62;
- Thu, 31 Aug 2023 13:38:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.67])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 070CF2166B25;
- Thu, 31 Aug 2023 13:38:10 +0000 (UTC)
-Date: Thu, 31 Aug 2023 08:38:09 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, 
- vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com, pl@kamp.de,
- sw@weilnetz.de, 
- sstabellini@kernel.org, anthony.perard@citrix.com, paul@xen.org,
- pbonzini@redhat.com, 
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, 
- stefanha@redhat.com, fam@euphon.net, quintela@redhat.com, peterx@redhat.com, 
- leobras@redhat.com, kraxel@redhat.com, qemu-block@nongnu.org, 
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH 1/7] migration/rdma: Fix save_page method to fail on
- polling error
-Message-ID: <npnhurzixjae6schhran3dnicpwozrhkaan5sxcf3gyxviam5y@ofklh25a6wlc>
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-2-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhuT-0005vL-1u
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:40:33 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhuP-0002jy-6s
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:40:31 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-98377c5d53eso93225566b.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693489227; x=1694094027; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UaQvh2TWVyrDTmtA7qg5xUugr3sGI5yfCdQY10inEKg=;
+ b=R3DdLEVsXkhai+d2hvfQqtvaUgurQiQ+7frV2q+34LsuzkS6857+YkKDmdySnCBS34
+ /W09ZAN6fYomVj8lHD2LOQce3TjxxlGj0ALhwjIytIWe4jFNiqUlsOgIv47wkpoQ8v/u
+ 2qIX1Kcyusltj8/eLjSxYk2UiIYTeVIZ5qrhg3HeyF1n2zLsrCSwqKQGsjy1kiW5xvjE
+ UH5zEDICM9C7Bw8qOwkqHDRvWWJhX8Pr//UPlytiKlPajVdWrKN4dcXV3H8BQUwQRBb2
+ z2lbVrqzQqaASMU+rVmjXVZzeoKT1plnhcMqSOdcJmMITO+tEVYn4k2bMbc+92qwl1Uo
+ POZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693489227; x=1694094027;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UaQvh2TWVyrDTmtA7qg5xUugr3sGI5yfCdQY10inEKg=;
+ b=Q0qN1JCLm0/7FOIF09zBPcHmke5lhWn01YMDHd2wHG20+aqD2owgzZQ78uypn3artJ
+ SgjWS+2BRVfLM42L9KVuhuKrtbxCLjsjCUcvDPC1+ht4lOHiuAGeL+S59ggS9tOj0x5u
+ Y5mCnNMyHU5ahsuRoRKeEPAXjIHaPa0/fIU6gaxchu0Hy4nl76aGnco6W6bgvyFnl0tO
+ nmUpilqH9n8I5aLPztY7QDFldvfPW6yGUBvgBdi5EsL2s8uWg43Sjn5Y2ElsTxXhBCH0
+ Q5vhquZBQimm8/J4JLU8qNfrVuii6XqjM7trgPCxN6tsHDWsW+qJU6PaGBWSJX1ZlpoS
+ uadw==
+X-Gm-Message-State: AOJu0Ywy+1I+r4Hu46sR4PgRjjHLfkyp5xLSYl7386QlOqSZCgqSl6k8
+ mvx9eQ1d4hYaE8Z324NRW4oddg==
+X-Google-Smtp-Source: AGHT+IFY9wAYl/ayeavrQZSVJYIZmqIpwcdpqs8eQPxDartuHQw70FwgJN3JVc/flQgKYys/OTUiJw==
+X-Received: by 2002:a17:906:4c1:b0:9a1:8812:a8a6 with SMTP id
+ g1-20020a17090604c100b009a18812a8a6mr4036094eja.73.1693489227063; 
+ Thu, 31 Aug 2023 06:40:27 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.245])
+ by smtp.gmail.com with ESMTPSA id
+ qw17-20020a170906fcb100b0099d798a6bb5sm783069ejb.67.2023.08.31.06.40.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 06:40:26 -0700 (PDT)
+Message-ID: <cb2807f0-fc7d-fc03-376e-09c3d5f10a7f@linaro.org>
+Date: Thu, 31 Aug 2023 15:40:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230831132546.3525721-2-armbru@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [Bug 1863025] Re: Use-after-free after flush in TCG accelerator
+Content-Language: en-US
+To: Bug 1863025 <1863025@bugs.launchpad.net>, qemu-devel@nongnu.org
+References: <158154486735.14935.3370403781300872079.malonedeb@soybean.canonical.com>
+ <169348611423.1472917.10027704436078423318.malone@juju-98d295-prod-launchpad-3>
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+ Mauro Matteo Cascella <mcascell@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <169348611423.1472917.10027704436078423318.malone@juju-98d295-prod-launchpad-3>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,31 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 03:25:40PM +0200, Markus Armbruster wrote:
-> qemu_rdma_save_page() reports polling error with error_report(), then
-> succeeds anyway.  This is because the variable holding the polling
-> status *shadows* the variable the function returns.  The latter
-> remains zero.
+Hi Samuel,
+
+On 31/8/23 14:48, Samuel Henrique wrote:
+> CVE-2020-24165 was assigned to this:
+> https://nvd.nist.gov/vuln/detail/CVE-2020-24165
 > 
-> Broken since day one, and duplicated more recently.
+> I had no involvement in the assignment, posting here for reference only.
 > 
-> Fixes: 2da776db4846 (rdma: core logic)
-> Fixes: b390afd8c50b (migration/rdma: Fix out of order wrid)
+> ** CVE added: https://cve.mitre.org/cgi-bin/cvename.cgi?name=2020-24165
 
-Alas, the curse of immutable git history preserving typos in commit
-subjects ;) The alternative of rewriting history and breaking SHA
-references is worse.
+QEMU 4.2.0 was released in 2019. The issue you report
+has been fixed in commit 886cc68943 ("accel/tcg: fix race
+in cpu_exec_step_atomic (bug 1863025)") which is included
+in QEMU v5.0, released in April 2020, more than 3 years ago.
 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  migration/rdma.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+What do you expect us to do here? I'm not sure whether assigning
+CVE for 3 years old code is a good use of engineering time.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Regards,
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+Phil.
 
