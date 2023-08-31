@@ -2,93 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D58178E484
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 03:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFEC78E4BF
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 04:32:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbWid-0007gR-AV; Wed, 30 Aug 2023 21:43:35 -0400
+	id 1qbXSn-0006Kr-O2; Wed, 30 Aug 2023 22:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qbWib-0007fu-9h
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:43:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qbXSj-0006JA-K5
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 22:31:13 -0400
+Received: from mail-bn8nam12on2061.outbound.protection.outlook.com
+ ([40.107.237.61] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qbWiY-0001h2-9G
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:43:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693446209;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=raRRZt8Kjchm0E16NQZbMgza4POm6EXhRH+XznC3V64=;
- b=izjrES7RF+XsIjTF6Gw6ACoi4sy7ucXxGHKM3pTRagPGF44IaLiMZkBGJf9PUyOC+Z6qJH
- 4yA+kIOEm6GsZ31rh+w/NN+5C9j4seR29tSqSxGOr+zXFdKPp1h9jN6bNjgtHF6bKmzbjM
- 6Eiz9OcjwqwGw3IVU8ZA9IZneiO3Py8=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-YE9D5M9qNfudWwtMNlfRNw-1; Wed, 30 Aug 2023 21:43:27 -0400
-X-MC-Unique: YE9D5M9qNfudWwtMNlfRNw-1
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-1c09c1fd0abso2668725ad.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 18:43:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693446206; x=1694051006;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=raRRZt8Kjchm0E16NQZbMgza4POm6EXhRH+XznC3V64=;
- b=GNmSrCeS0SDvGcOfeoseQEgTT3zpB+X/CPNeO4eJVZz8m23oPTPQqyHE0YS+ybdFWk
- Sc4UHUzl+LDsFHZzXgjZTx5WwieDDLeOa9vgOZ1dFtpLE4DAxQlhY64jW/99HkuSJlzv
- rNdO2jsau7ktzuN7MEfdNHZRRFxO3WSvGAJHAw2/gy6zYyQ5exOB3BiPbCFLEtJraSbF
- b4Z8I3omEgh+KV8Fo502WlAHJhc3tHfWhTkcodkT5WiZ7d+V6CzaxxN5vyETL3fdmyLk
- GTqF+SVMWoKYHk1AMzaaRxP14nenhQM7oWT+tWB6nQZFYhQ9ZFfPiF2al5FoT4XHvHHu
- 5hvA==
-X-Gm-Message-State: AOJu0YyOVvKG7c0C3mYJObcIilNY19fKD5UEvuT5yENf+7xjid2L2s1o
- 4cpFyc+96YZCzGblEW8SkZXXmQZy+OAqhd2IdlF9r26qPQ9ZvZ0vQl3rygURXMGXRH9dXDDq7Xx
- lVGinlkFBpFGw28c=
-X-Received: by 2002:a17:902:e885:b0:1c0:d5b1:2de8 with SMTP id
- w5-20020a170902e88500b001c0d5b12de8mr4400042plg.9.1693446206616; 
- Wed, 30 Aug 2023 18:43:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyVoIWodsjLPnoDoAcOvuyj2EEeIVJlLCYjnP39q8JzcYUlqFKCut777rC9HEUiMQjQwZzLw==
-X-Received: by 2002:a17:902:e885:b0:1c0:d5b1:2de8 with SMTP id
- w5-20020a170902e88500b001c0d5b12de8mr4400030plg.9.1693446206216; 
- Wed, 30 Aug 2023 18:43:26 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- y4-20020a170902700400b001bb889530adsm143381plk.217.2023.08.30.18.43.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 18:43:25 -0700 (PDT)
-Message-ID: <f3abdbd6-337f-d175-07ab-ac1975d98dfc@redhat.com>
-Date: Thu, 31 Aug 2023 11:43:20 +1000
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qbXSg-0002wR-IL
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 22:31:13 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BaCQNRIu2QTM2cD5WQpvNtCcsvqgGWwEyC54Czdbqr8KadMA/YC2cXVmvWZbiYdbmHsg8cfj/INBF4sUPvxx6xpLra4HLRDvnY96Hjt/+rsTFW7SLyUnACzmAsw2OuoDzpnrOGIwddoVNBJrXL2MySqdtpiYK0g5xTiAWJHRjUUmxC9S0h6UnffUYdnb3xUP/+svSkn3yWnvbhdGPKJbwWUb2lGrJLybJHRmA/uaxpZuv5/JzchYkM5a+mM2DRJhZ2dErHxFgPAwQ8rgaB4RN3H41MkJrFcVGBxTjfNnapZXvTPXU17n6xBQIVTzrEEM8fLDEh+1EAADwE0rG4Gbhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jIHXqzlUXv55MiAwBqodTuZICT8DAM/Z61uIvSCkulQ=;
+ b=E58opzMahpvvQWi1+oIBUgfsOH1O9ENWANKJQWGAPn4Bxnkh1GmdnCk8oG908gHN0yH9PSZK8/W2GwN07tjNAwI03fu577vdcSnG6mB8jZI+Pnp/OVY8hMqwQL5wVMcE1ttjWb9Yao3Bgb8JPnqqYheDDnBwsRhYbcHBXLk/mV+02DGZ6rJpLOrV0ewHgZ5TZiQqUYSEVKuJN661AHJT8zZBTcJI36Y44cMpByT8dCHlKeTatU+3lqL6xv7QNf8x7N0QsKvLGnksiqH6W/62IBRIN2l2DdVqdSBV1v5IUgh4pgqps4hBesHlJ04dK0Cmq+rayXhl3nZyE11OxG/FnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jIHXqzlUXv55MiAwBqodTuZICT8DAM/Z61uIvSCkulQ=;
+ b=QroI5Z6uo7TI+x5pUPQgMkTIU5d8fk7eSP5U54+BAZyug+91EKAf6SYh0JgZYIyZ6DtoRa+RA2s8a4bDu3xRGbWJtlAZ3qM74XuqUFfvaxx8Kt0L+ohORPW0QuEshg8/4YkvjSXO/VJoIUzf5OO/dDCvyOxTjdrKCvMw1Pukvfg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by SJ2PR12MB8718.namprd12.prod.outlook.com (2603:10b6:a03:540::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Thu, 31 Aug
+ 2023 02:26:03 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::da13:5f6:45:fa40]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::da13:5f6:45:fa40%4]) with mapi id 15.20.6699.027; Thu, 31 Aug 2023
+ 02:26:03 +0000
+Date: Thu, 31 Aug 2023 10:25:41 +0800
+From: Huang Rui <ray.huang@amd.com>
+To: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
+ "akihiko.odaki@gmail.com" <akihiko.odaki@gmail.com>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "shentey@gmail.com" <shentey@gmail.com>, "hi@alyssa.is" <hi@alyssa.is>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ "manos.pitsidianakis@linaro.org" <manos.pitsidianakis@linaro.org>,
+ "philmd@linaro.org" <philmd@linaro.org>,
+ "mark.cave-ayland@ilande.co.uk" <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH v13 0/9] rutabaga_gfx + gfxstream
+Message-ID: <ZO/6JXmYm/lW9dSZ@amd.com>
+References: <20230829003629.410-1-gurchetansingh@chromium.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230829003629.410-1-gurchetansingh@chromium.org>
+X-ClientProxiedBy: TY2PR0101CA0012.apcprd01.prod.exchangelabs.com
+ (2603:1096:404:92::24) To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3] arm/kvm: Enable support for
- KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
-Content-Language: en-US
-To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: peter.maydell@linaro.org, ricarkol@google.com,
- jonathan.cameron@huawei.com, kvm@vger.kernel.org, linuxarm@huawei.com
-References: <20230830114818.641-1-shameerali.kolothum.thodi@huawei.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230830114818.641-1-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|SJ2PR12MB8718:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c1bc8ff-dabb-4097-fb0b-08dba9c99f32
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: IR6YODKPePmMhKoGqCQbmx+6tl4pGjlHukIilTePd+X/jGHY9kFbiSgYPfPsRu/k6XeBOO8u9qYevMlDIEM6pRsQUtq2tpULV9kGezmpxnUmfDY05oUn79DouHX3+Pha6+34EXPUqsF5yFNAGArbkogcZ5+T4Tq3CFn/6SdZlDMy1E4RO9jnPF0S5dJ1LGPi+3f1OQ1J6nny/KjquXKdLHJrBjfL5Dy8nWgvQGwGOw9ramZ1lNSwUvaSgxv/KG3NwnAppZr7Q7+lr8/tyCCEapIZU9qSBR4yXGJlCGnnVF9VRLf4qdrXi0y5NjoiBmoZmz3o46fVuaYiOs0x/5crrFh/aRgV9WksXTEt/zjZ+e0xoEQRmrzZ11//b0z/ZCOA/TZxH9tw1IUe0wzhjc/WT6TvjjCLf9u5ZTcTQEexRvgEhTaNL+trHf4j4kHdN9czIQBx5uGRac8SyaUc8abvtlLKs2Q8CR5SIH1/RwYwKI8wcm+1ECGmIk2vkN4spmtap35iDJ4XJ1a9wRjUjaChhjtRSdQgjfZDAN1keifT5oGm/2zk2MiLXN4LeGC4ZEEuz/08a+8oZ0SXwJMbs1SstS5eg0obSVXJ0rJd8rftquI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(39860400002)(376002)(136003)(346002)(396003)(451199024)(1800799009)(186009)(6512007)(316002)(38100700002)(41300700001)(5660300002)(4326008)(7416002)(2616005)(83380400001)(8676002)(86362001)(26005)(36756003)(6916009)(2906002)(8936002)(6666004)(66556008)(6506007)(966005)(6486002)(66476007)(54906003)(478600001)(66946007)(156123004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0xElkX9ZzUsUpRd2FJ4RQq/AjCS7zVNd8UBrY1Dib1ArxK9zvIZmePwfk2F8?=
+ =?us-ascii?Q?blCr0ZFtWUwLU04CBO07tV6bX+0ehT78Atd3o/jQCmlDxqBGRtm2BmL62BXk?=
+ =?us-ascii?Q?BrGU+GRxX2BC8ooHBrGcB1PdZCGaMcd4BbX103DFWr5fIu25QkWvaEVZXcQQ?=
+ =?us-ascii?Q?qOafXWVyJFsD3uDFSP0kFFJIYngk1IFPSyEGzwBBkh5WZQ5YW3EfZvmtJoiT?=
+ =?us-ascii?Q?/12RjCXbJIWsHYVW90xcIENMDlUKLIiM6oY1AEDlBWHPwo/EVdB3iouq9S06?=
+ =?us-ascii?Q?RQbhP5qjLcWOMBZx8SuCpIJurKXqEJJCOdvND3sMo8JB8dasCYm1WWDcbxCD?=
+ =?us-ascii?Q?rs2bC/WMP+4CkgiAcNvAICrJS3Um4xTVCbOVQd1CQcbBV8OxKIeFbtOVpUn4?=
+ =?us-ascii?Q?gzMdWKqB0pd2Z0KccrDSQWaU/bewKKWMwIBIvZn0BpArfNqLtl59RakXy8yo?=
+ =?us-ascii?Q?KnPunMNQj7telwThXBa1wicXSzjEhPFnHqm5F+iJwp/2Q4WCmXoePbhXW3+s?=
+ =?us-ascii?Q?D5Irb0ATiULnUyWNk+rrDcKUq+N0CUeUmfUdh25DjVAP5i2DC4JguF5NAe6P?=
+ =?us-ascii?Q?L28ZwRTJ9bsKIlGjCgFcufRhPCp/kxbdVTq2gqLQWE5qcHmgyiIwmGEQ5eWz?=
+ =?us-ascii?Q?6mPZiAs3igM8d0gvz44MU02dUAyENxWxuqwuGTv8sCLeDHatKu9S4Icl+j97?=
+ =?us-ascii?Q?+Gxlb0s97yzOX2ZpMUN71mUdOW+nYLmfs79ayaV+I14zrFyacRKyJ6ZInf7F?=
+ =?us-ascii?Q?1gM+mlYZzI2siUSpIBDeSRzc1I2wHxxQ++SNCN/0j2eYDNhacmVI1GJB1Vo0?=
+ =?us-ascii?Q?C6OPznA5GwXRDRnRaRu7Ycqqz8/0Dv2IJ0uxFcKJjFpqdKVSCXXMKc3KF15f?=
+ =?us-ascii?Q?K58z9HDIhhQ5xBYayCYc7DiAqFRGIifgW6rHiwPrQV1s61T3CXU9NIC/hdan?=
+ =?us-ascii?Q?e5d+EmfA6OmexIeR/YSp9AJAHnyz0PGhIslHz7Nv6w1u3rPeDlemwD6eXifz?=
+ =?us-ascii?Q?xc65SOA3p07O87dhMiC5TLA33wVhC+0lkkViJkUQiDM6vfaAnHk+J1/+Xn8S?=
+ =?us-ascii?Q?JvBqTDCmwhv3ogUNVXf0zEhFyvhH0REIfv6M7vRtvlz2noDF5JWrhqLReRYZ?=
+ =?us-ascii?Q?B2EYNphsmzVcB9fU8N19yOwXGJMgeWoj+JZin7rTj3HdVc6zZeKXCzl31kLM?=
+ =?us-ascii?Q?wg80eNKq1ht/dmLsi7is9shgeUrmm3jXrLiYtqYRp9nwr+t03HJLcZgv3zEE?=
+ =?us-ascii?Q?gBF+ZKdlXRG8OEtT6FdwzEHGxxTNydQd4RFBzAL7ZRPDGQVEwveMl8sZvBxA?=
+ =?us-ascii?Q?wW5pN0N6Oxiy+2MEXZiphvuZZseQtjoSbL81hG5Zzpl6Yi83rj+pRNOrSRf9?=
+ =?us-ascii?Q?wz/9Pb7UKdX0afl4Xo5tFK/vKOe6y7p3tuVMdYMc+z4ciz1kr535nKLvV3Fk?=
+ =?us-ascii?Q?z8wPQX5zIsl2205v/uG4AK3vzzcAJAv20WiV9+YWJ792rgj6dEam9mulmwV0?=
+ =?us-ascii?Q?nPagkJldubX3bEbiTY+Bxzf7NC9D9+v47Dv7ktY0vGksoC0QvTAx4T0NLgK2?=
+ =?us-ascii?Q?HCK1GqD257ilOk1Rq2YZ9XL5qPzTG50Ipovc4LSc?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c1bc8ff-dabb-4097-fb0b-08dba9c99f32
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 02:26:02.9810 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i6IBio27q+a98Ph+gZUwobX0FVrrUqKQhIizDrMHlpABXdogeJCkUSmvvWGtmQjEmUcNPALahOe4FiQ5zEqVzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8718
+Received-SPF: softfail client-ip=40.107.237.61; envelope-from=Ray.Huang@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,209 +137,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shameer,
-
-On 8/30/23 21:48, Shameer Kolothum wrote:
-> Now that we have Eager Page Split support added for ARM in the kernel,
-> enable it in Qemu. This adds,
->   -eager-split-size to -accel sub-options to set the eager page split chunk size.
->   -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
+On Tue, Aug 29, 2023 at 08:36:20AM +0800, Gurchetan Singh wrote:
+> From: Gurchetan Singh <gurchetansingh@google.com>
 > 
-> The chunk size specifies how many pages to break at a time, using a
-> single allocation. Bigger the chunk size, more pages need to be
-> allocated ahead of time.
+> Changes since v12:
+> - Added r-b tags from Antonio Caggiano and Akihiko Odaki
+> - Removed review version from commit messages
+> - I think we're good to merge since we've had multiple people test and review this series??
 > 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
-> v2: https://lore.kernel.org/qemu-devel/20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com/
->     -Addressed comments from Gavin(Thanks).
-> RFC v1: https://lore.kernel.org/qemu-devel/20230725150002.621-1-shameerali.kolothum.thodi@huawei.com/
->    -Updated qemu-options.hx with description
->    -Addressed review comments from Peter and Gavin(Thanks).
-> ---
->   accel/kvm/kvm-all.c      |  1 +
->   include/sysemu/kvm_int.h |  1 +
->   qemu-options.hx          | 15 +++++++++
->   target/arm/kvm.c         | 68 ++++++++++++++++++++++++++++++++++++++++
->   4 files changed, 85 insertions(+)
+> How to build both rutabaga and gfxstream guest/host libs:
 > 
+> https://crosvm.dev/book/appendix/rutabaga_gfx.html
+> 
+> Branch containing this patch series:
+> 
+> https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v13
+> 
+> Antonio Caggiano (2):
+>   virtio-gpu: CONTEXT_INIT feature
+>   virtio-gpu: blob prep
+> 
+> Dr. David Alan Gilbert (1):
+>   virtio: Add shared memory capability
+> 
+> Gerd Hoffmann (1):
+>   virtio-gpu: hostmem
 
-One more question below. Please check if it's worthy to be addressed in v4, needed
-to resolved other comments. Otherwise, it looks fine to me.
+Patch 1 -> 4 are
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Acked-and-Tested-by: Huang Rui <ray.huang@amd.com>
 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 2ba7521695..ff1578bb32 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -3763,6 +3763,7 @@ static void kvm_accel_instance_init(Object *obj)
->       /* KVM dirty ring is by default off */
->       s->kvm_dirty_ring_size = 0;
->       s->kvm_dirty_ring_with_bitmap = false;
-> +    s->kvm_eager_split_size = 0;
->       s->notify_vmexit = NOTIFY_VMEXIT_OPTION_RUN;
->       s->notify_window = 0;
->       s->xen_version = 0;
-> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-> index 511b42bde5..a5b9122cb8 100644
-> --- a/include/sysemu/kvm_int.h
-> +++ b/include/sysemu/kvm_int.h
-> @@ -116,6 +116,7 @@ struct KVMState
->       uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
->       uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
->       bool kvm_dirty_ring_with_bitmap;
-> +    uint64_t kvm_eager_split_size;  /* Eager Page Splitting chunk size */
->       struct KVMDirtyRingReaper reaper;
->       NotifyVmexitOption notify_vmexit;
->       uint32_t notify_window;
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 29b98c3d4c..2e70704ee8 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -186,6 +186,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
->       "                split-wx=on|off (enable TCG split w^x mapping)\n"
->       "                tb-size=n (TCG translation block cache size)\n"
->       "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
-> +    "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
->       "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
->       "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
->   SRST
-> @@ -244,6 +245,20 @@ SRST
->           is disabled (dirty-ring-size=0).  When enabled, KVM will instead
->           record dirty pages in a bitmap.
->   
-> +    ``eager-split-size=n``
-> +        KVM implements dirty page logging at the PAGE_SIZE granularity and
-> +        enabling dirty-logging on a huge-page requires breaking it into
-> +        PAGE_SIZE pages in the first place. KVM on ARM does this splitting
-> +        lazily by default. There are performance benefits in doing huge-page
-> +        split eagerly, especially in situations where TLBI costs associated
-> +        with break-before-make sequences are considerable and also if guest
-> +        workloads are read intensive. The size here specifies how many pages
-> +        to break at a time and needs to be a valid block size which is
-> +        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
-> +        respectively. Be wary of specifying a higher size as it will have an
-> +        impact on the memory. By default, this feature is disabled
-> +        (eager-split-size=0).
-> +
->       ``notify-vmexit=run|internal-error|disable,notify-window=n``
->           Enables or disables notify VM exit support on x86 host and specify
->           the corresponding notify window to trigger the VM exit if enabled.
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index 23aeb09949..28d81ca790 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -30,6 +30,7 @@
->   #include "exec/address-spaces.h"
->   #include "hw/boards.h"
->   #include "hw/irq.h"
-> +#include "qapi/visitor.h"
->   #include "qemu/log.h"
->   
->   const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-> @@ -247,6 +248,12 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
->       return ret > 0 ? ret : 40;
->   }
->   
-> +static inline bool kvm_arm_eager_split_size_valid(uint64_t req_size,
-> +                                                  uint32_t sizes)
-> +{
-> +    return req_size & sizes;
-> +}
-> +
->   int kvm_arch_get_default_type(MachineState *ms)
->   {
->       bool fixed_ipa;
-> @@ -287,6 +294,27 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->           }
->       }
->   
-> +    if (s->kvm_eager_split_size) {
-> +        uint32_t sizes;
-> +
-> +        sizes = kvm_vm_check_extension(s, KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES);
-> +        if (!sizes) {
-> +            s->kvm_eager_split_size = 0;
-> +            warn_report("Eager Page Split support not available");
-> +        } else if (!kvm_arm_eager_split_size_valid(s->kvm_eager_split_size,
-> +                                                   sizes)) {
-> +            error_report("Eager Page Split requested chunk size not valid");
-> +            ret = -EINVAL;
-> +        } else {
-> +            ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
-> +                                    s->kvm_eager_split_size);
-> +            if (ret < 0) {
-> +                error_report("Enabling of Eager Page Split failed: %s",
-> +                             strerror(-ret));
-> +            }
-> +        }
-> +    }
-> +
->       kvm_arm_init_debug(s);
->   
->       return ret;
-
-The function kvm_arm_eager_split_size_valid() was suggested by Peter if I'm correct.
-However, it seems we needn't it any more since it's called for once. Why not simply to
-have something like below? The detailed error message can help to explain why we
-need the condition of (s->kvm_eager_split_size & sizes) here.
-
-     } else if (s->kvm_eager_split_size & sizes) {
-         error_report("Unsupported Eager Page Split chunk size 0x%lx by 0x%x",
-                      s->kvm_eager_split_size, sizes);
-         ret = -EINVAL;
-     }
-
-> @@ -1069,6 +1097,46 @@ bool kvm_arch_cpu_check_are_resettable(void)
->       return true;
->   }
->   
-> +static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
-> +                                          const char *name, void *opaque,
-> +                                          Error **errp)
-> +{
-> +    KVMState *s = KVM_STATE(obj);
-> +    uint64_t value = s->kvm_eager_split_size;
-> +
-> +    visit_type_size(v, name, &value, errp);
-> +}
-> +
-> +static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
-> +                                          const char *name, void *opaque,
-> +                                          Error **errp)
-> +{
-> +    KVMState *s = KVM_STATE(obj);
-> +    uint64_t value;
-> +
-> +    if (s->fd != -1) {
-> +        error_setg(errp, "Unable to set early-split-size after KVM has been initialized");
-> +        return;
-> +    }
-> +
-> +    if (!visit_type_size(v, name, &value, errp)) {
-> +        return;
-> +    }
-> +
-> +    if (value && !is_power_of_2(value)) {
-> +        error_setg(errp, "early-split-size must be a power of two");
-> +        return;
-> +    }
-> +
-> +    s->kvm_eager_split_size = value;
-> +}
-> +
->   void kvm_arch_accel_class_init(ObjectClass *oc)
->   {
-> +    object_class_property_add(oc, "eager-split-size", "size",
-> +                              kvm_arch_get_eager_split_size,
-> +                              kvm_arch_set_eager_split_size, NULL, NULL);
-> +
-> +    object_class_property_set_description(oc, "eager-split-size",
-> +        "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
->   }
-
-Thanks,
-Gavin
-
+> 
+> Gurchetan Singh (5):
+>   gfxstream + rutabaga prep: added need defintions, fields, and options
+>   gfxstream + rutabaga: add initial support for gfxstream
+>   gfxstream + rutabaga: meson support
+>   gfxstream + rutabaga: enable rutabaga
+>   docs/system: add basic virtio-gpu documentation
+> 
+>  docs/system/device-emulation.rst     |    1 +
+>  docs/system/devices/virtio-gpu.rst   |  112 +++
+>  hw/display/meson.build               |   22 +
+>  hw/display/virtio-gpu-base.c         |    6 +-
+>  hw/display/virtio-gpu-pci-rutabaga.c |   47 ++
+>  hw/display/virtio-gpu-pci.c          |   14 +
+>  hw/display/virtio-gpu-rutabaga.c     | 1119 ++++++++++++++++++++++++++
+>  hw/display/virtio-gpu.c              |   16 +-
+>  hw/display/virtio-vga-rutabaga.c     |   50 ++
+>  hw/display/virtio-vga.c              |   33 +-
+>  hw/virtio/virtio-pci.c               |   18 +
+>  include/hw/virtio/virtio-gpu-bswap.h |   15 +
+>  include/hw/virtio/virtio-gpu.h       |   41 +
+>  include/hw/virtio/virtio-pci.h       |    4 +
+>  meson.build                          |    7 +
+>  meson_options.txt                    |    2 +
+>  scripts/meson-buildoptions.sh        |    3 +
+>  softmmu/qdev-monitor.c               |    3 +
+>  softmmu/vl.c                         |    1 +
+>  19 files changed, 1495 insertions(+), 19 deletions(-)
+>  create mode 100644 docs/system/devices/virtio-gpu.rst
+>  create mode 100644 hw/display/virtio-gpu-pci-rutabaga.c
+>  create mode 100644 hw/display/virtio-gpu-rutabaga.c
+>  create mode 100644 hw/display/virtio-vga-rutabaga.c
+> 
+> -- 
+> 2.42.0.rc2.253.gd59a3bf2b4-goog
+> 
 
