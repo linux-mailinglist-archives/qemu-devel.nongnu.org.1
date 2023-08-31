@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183BB78E62B
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 08:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893DD78E674
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 08:23:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbau0-0008UG-Ij; Thu, 31 Aug 2023 02:11:36 -0400
+	id 1qbb4m-0000gX-5z; Thu, 31 Aug 2023 02:22:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbatt-0008RA-ID
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:11:30 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbb4j-0000gA-D8
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:22:41 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbatr-0005Pz-5L
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:11:29 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-52bca2e8563so471990a12.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 23:11:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbb4h-0007t9-23
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:22:41 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-52a4737a08fso468373a12.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 23:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693462285; x=1694067085; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1693462957; x=1694067757; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=23HH6W9oiX0Td0WTUVAKAot+IsF2Xsx2IgqizwueE7A=;
- b=WjtcKexcD9kYXcmj+aFydYVqnhWYo3ditxO4/sv75rzF7eiNFzDOWY+lHYedOGCe3c
- vEhBf1gOYKWrZqFIbeXduSnp09eszR5W9Tt2ayFS3DjDSAct72bxIJQhvrl9MAdyrNGJ
- ub04vYDOWFIGmLRZodl6if522iygyz0ePQJHxfl+VwkCj6nWNGhRJTdB7+1edDGfSFY9
- hIurzyeErQPCuRGvo5zFHYJKHMQTZhrmCKwrYH3dgghxIZXB8XbKdadIZNFO7c/Rw/GP
- eiBNlQYiaAKwi3U92JUd78NGRm798hNpU385FbSir6uPFI98EDHIQ71Mgar2DQY+03rC
- bCXw==
+ bh=tS5vYakQdR3nVkQgnyszypHkbTRBZPUvRax7gaPHFxI=;
+ b=RWWW2FXxgGb2/uvUqVym0K8aKFr2BmdrYy6bUgWXHkAfKbY2vqEmsfkormVfK9Z9c9
+ n1hrUWceGfeMmHVtAMpbs7skXzPhlOHYY4URwwwK5ONhRz4ynnNu9bD60DhJkwxGO/KL
+ ogdYMjUfER2TZYuV3RasxPXvJv1uWQXfklNokejs94rlySxG5VmmIXtCYGmWy2W+wV4G
+ A3+LVXtR4xJ0zXLc5VBxe/gl5xWd1LziJTs+8InAg4/Hp7Z+wPDDB/VyRWyHGanJxDUT
+ 3C10gQ1I0RFJmGu0L5uI6cWzRuZKaD7e1/ix78gdpOcMfYa1fA5MXOybOBYlSL7LwYCT
+ QeGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693462285; x=1694067085;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1693462957; x=1694067757;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=23HH6W9oiX0Td0WTUVAKAot+IsF2Xsx2IgqizwueE7A=;
- b=d11MuvhOGoLPNqP1P2ydkC9CHZ7esOt2GqNafQpZK5hRU7i2PceNIbn795fwPqLFvy
- IbrbiESKo1gCfK8U0d2O2V15x8IetvDIVO2j2sNUZI3RSXRftMi83flQXuhje4NItRQ1
- 7cSbhU2JGd8qz8Tc1MwMd+7GydcJCGmq89lCdPCIgPic1nNap5bjoKlZWzX53rWEvOdi
- Z4cPL5UjXOlHxjF+s3oQ0aYW3BGb9AVhAQUIQywDGD7W5XN6OUdS9J1Mhn0iA3zTNdmE
- y9pVKS/ZtNsZPZyMfdifXDMDs0COkrHGgLnxeuSahNJgGaNbwsbHnDUKPSoiCUNRN15W
- uHPw==
-X-Gm-Message-State: AOJu0Yzt8X0C60nPMk1dIZc8FcI2MmN3BUAQpkBfO68ezqlolLd+E6ca
- RqojxIvgMpO0EYPWwY6caNJlBA==
-X-Google-Smtp-Source: AGHT+IHiS+EN49zaK8G05x20+8T94/jQMkcKJbTUtiDTQXrE90R5PYzE2kiDN1Ezr1dYixOCu/qhsg==
-X-Received: by 2002:a17:906:3d22:b0:9a1:be5b:f4a5 with SMTP id
- l2-20020a1709063d2200b009a1be5bf4a5mr3282876ejf.35.1693462285445; 
- Wed, 30 Aug 2023 23:11:25 -0700 (PDT)
+ bh=tS5vYakQdR3nVkQgnyszypHkbTRBZPUvRax7gaPHFxI=;
+ b=CAiJs6NVy5IzOuwDnJSjSz0nUbmblgem4Hhq7N0dlD1fjPi9bCyX1wl2RGAqPlmJ+g
+ Z/6MnPP+xVYyjEfAatWv39/QQQOkbEEwtiwTJ1OL4scC4C8syCVFANaWrCF/GK7KZBTt
+ ZftrVUYg0rZhPF+wOZftMxvBpYxuIN90mmqOvqloNg7BT+p2yDUlXO8Oke5vygxKdhUJ
+ 3g5sHE/rLs8xwMQqh30sIZezn5IixH9fW5Pbno2gbD7HSkOcDAtkKQo4GtDWD9tyZnuf
+ wpvzby923FIX5TA7EXfUdMQ+u0Evg40hp9XWpZvG8CEbIzhPw7NqfM2auRltiBZlNzyd
+ SCAw==
+X-Gm-Message-State: AOJu0YwQIuWhNvKgCkJPpYnL2NFMKcAYo7Q/AZfuCUdnlJOg5f88VuvN
+ qo/ZxZ2o7+5QeVj+ch6HPuWmrg==
+X-Google-Smtp-Source: AGHT+IHMjOFTTBLn2DC8w18H05hGAcsI//wrD0exwEpG3VhtP9G/oW9u/4tTOnNbgLHFfmml3+JVEg==
+X-Received: by 2002:a05:6402:124c:b0:523:d1ab:b2ed with SMTP id
+ l12-20020a056402124c00b00523d1abb2edmr3566702edw.29.1693462957173; 
+ Wed, 30 Aug 2023 23:22:37 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- qw17-20020a170906fcb100b0099d798a6bb5sm376043ejb.67.2023.08.30.23.11.24
+ p11-20020a056402074b00b005231e1780aasm400722edy.91.2023.08.30.23.22.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 23:11:24 -0700 (PDT)
-Message-ID: <a4ef9f54-7a57-af6f-c947-5383a7559288@linaro.org>
-Date: Thu, 31 Aug 2023 08:11:23 +0200
+ Wed, 30 Aug 2023 23:22:36 -0700 (PDT)
+Message-ID: <084d2e90-86d4-eabc-3270-d3ef680c9631@linaro.org>
+Date: Thu, 31 Aug 2023 08:22:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: About "PC_MACHINE_CLASS" definition.
+Subject: Re: [PATCH] pci: SLT must be RO
 Content-Language: en-US
-To: Liu Jaloo <liu.jaloo@gmail.com>, qemu-devel@nongnu.org
-References: <CAOYM0N0o2SdiaAqtBm5md4z_FQnnP2csPrapc+5L47Qcaiw3Kg@mail.gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+References: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAOYM0N0o2SdiaAqtBm5md4z_FQnnP2csPrapc+5L47Qcaiw3Kg@mail.gmail.com>
+In-Reply-To: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -91,39 +95,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Hi Michael,
 
-On 31/8/23 05:15, Liu Jaloo wrote:
-> Where actually defined the "PC_MACHINE_CLASS", I can't find it in source 
-> code, please help to point out the file.
+On 30/8/23 23:48, Michael S. Tsirkin wrote:
+> current code sets PCI_SEC_LATENCY_TIMER to WO, but for
+> pcie to pcie bridges it must be RO 0 according to
+> pci express spec which says:
+>      This register does not apply to PCI Express. It must be read-only
+>      and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges, refer to the
+>      [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
+> 
+> also, fix typo in comment where it's make writeable - this typo
+> is likely what prevented us noticing we violate this requirement
+> in the 1st place.
+> 
+> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+> 
+> Marcin, could you pls test this patch with virt-8.1 and latest?
+> Thanks a lot!
+> 
+> 
+>   include/hw/pci/pci_bridge.h |  3 +++
+>   hw/core/machine.c           |  5 ++++-
+>   hw/pci/pci.c                |  2 +-
+>   hw/pci/pci_bridge.c         | 14 ++++++++++++++
+>   4 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+> index ea54a81a15..5cd452115a 100644
+> --- a/include/hw/pci/pci_bridge.h
+> +++ b/include/hw/pci/pci_bridge.h
+> @@ -77,6 +77,9 @@ struct PCIBridge {
+>   
+>       pci_map_irq_fn map_irq;
+>       const char *bus_name;
+> +
+> +    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
+> +    bool pcie_writeable_slt_bug;
+>   };
 
-It is defined in include/hw/i386/pc.h:
+Patch LGTM, so:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, PC_MACHINE)
+> -GlobalProperty hw_compat_8_1[] = {};
+> +GlobalProperty hw_compat_8_1[] = {
+> +    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
 
-The macro itself is defined in include/qom/object.h:
+However I don't understand why we can't clear the config register and
+must use a compat flag, since per the spec it is hardwired to 0.
 
-/**
-  * OBJECT_DECLARE_TYPE:
-  * @InstanceType: instance struct name
-  * @ClassType: class struct name
-  * @MODULE_OBJ_NAME: the object name in uppercase with underscore 
-separators
-  *
-  * This macro is typically used in a header file, and will:
-  *
-  *   - create the typedefs for the object and class structs
-  *   - register the type for use with g_autoptr
-  *   - provide three standard type cast functions
-  *
-  * The object struct and class struct need to be declared manually.
-  */
+Do we need the "x-" compat prefix? This is not an experimental property.
 
-See the QOM documentation:
+> +};
+>   const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
 
-https://qemu-project.gitlab.io/qemu/devel/qom.html
 
-Regards,
+> diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
+> index e7b9345615..6a4e38856d 100644
+> --- a/hw/pci/pci_bridge.c
+> +++ b/hw/pci/pci_bridge.c
+> @@ -38,6 +38,7 @@
+>   #include "qapi/error.h"
+>   #include "hw/acpi/acpi_aml_interface.h"
+>   #include "hw/acpi/pci.h"
+> +#include "hw/qdev-properties.h"
+>   
+>   /* PCI bridge subsystem vendor ID helper functions */
+>   #define PCI_SSVID_SIZEOF        8
+> @@ -385,6 +386,11 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
+>       pci_bridge_region_init(br);
+>       QLIST_INIT(&sec_bus->child);
+>       QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
+> +
+> +    /* For express secondary buses, secondary latency timer is RO 0 */
+> +    if (pci_bus_is_express(sec_bus) && !br->pcie_writeable_slt_bug) {
+> +        dev->wmask[PCI_SEC_LATENCY_TIMER] = 0;
+> +    }
+>   }
 
-Phil.
+
+
 
