@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3996878EE4B
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4B378EE10
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:06:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhLQ-0008Aq-OL; Thu, 31 Aug 2023 09:04:20 -0400
+	id 1qbhLZ-0008CA-RW; Thu, 31 Aug 2023 09:04:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHu-0007Mn-Uj
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:43 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhI1-00088u-De
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:49 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHq-0006lt-Po
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:42 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-401b393df02so7999425e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:00:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhHx-0006ou-5F
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:00:48 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31dcf18f9e2so638590f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693486837; x=1694091637; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693486843; x=1694091643; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uHTYP96hxROQBfiRHrUY1wrTC25GMnf+igTYqzxdbDE=;
- b=WD6MAfLiIo8WFCh9IzuyV3eICQyOVpEgw1+9dovw3501/dIr9lvebzAf8+bRn63dUP
- 70Q5LftB9Nlee7NrBqhxg1FUenpbAZdn4xxjhfMc9uOL295JqCqDtO3shCQOB8RlGZJy
- C+pQRAEPasB3nJJ0jUyfe+BH8k9nf/N1Z70ERrxVniOIGBMEp+lYzAw7pPXhIBCxxrRH
- 9XgTw9r2Xtrmo6lgk/otO4EAHwGj51pefzBFefg7SIttWzmNzVbspBXCtLUyIw2ZIRxM
- vMZnK2RTQiwC7wQiSBf//rwChAIwapxwgQ/mS8Mzl+PpT6gL9ZGcBFcTEBw1PcHpdOR2
- 1P3w==
+ bh=7hmpcKbPMiCB1lRYiTD63IbOGzz5WRqg6JB5CP58x9E=;
+ b=Ei5+GZYK8/+CY0aIOgA2fVUBPVljAjgdxJcdBubH6rGLe9ByOEBsiPYDYCvJ2QVZ0e
+ 1lE7Tm1oWylsWX6+v5B5oP7XPo701MD2Tl0OfxQ4OE9MDerWhcc6bmLkI/cL8fvSg7W3
+ TQBJIDFMcwpFxbZkx2mwaMXR3NUIrM+OJJqXRXVtVyaDQ/fBqmDXOZL2QEs3b20f2H+b
+ gloOzkZ6t/fcHeJEvLuSTLBdJG5jgC//C7ZIyvohXmj1n5YN0mYQSX/aofNEToF0jMka
+ wWIeT2HTK8xDqMyjpkH/Z+VK3eDrNy0L21pdymlTGn1ZnJY5FHjupl+MFzRgcPWaQePz
+ yzUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486837; x=1694091637;
+ d=1e100.net; s=20221208; t=1693486843; x=1694091643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uHTYP96hxROQBfiRHrUY1wrTC25GMnf+igTYqzxdbDE=;
- b=KRKDRMaT/QRuW8LiCUO9f87GY1DO2+hmcbq4mHmgBSoVLM4BJ7N7g9B6IhBnqJac5h
- D4b5StZ9rolXZ5F7BwJy9sfF3nYVaS0nKUtXoRiOQZxpvwIOo8XqCcy+fjDpPpd6e5G6
- SJ979O7w4KeVpithXCWWGeOTF9kR7T9ZOQPxRyRfbVrUlz+R2FZS8aiwI+/49uDZwJ50
- tn7QzGgYI5ZOLpQxcCXA3NIu3jBaDW+TDrhkAmWzL9cRIlx8ILJNLuHBbv+SRFg5e7mY
- dHb3eMG5oyFO7EieT5xK8xEWT7QIxUwv8TyYxPRbQALw68OU00IPtKPRgE3IgHtU/wcE
- xq4A==
-X-Gm-Message-State: AOJu0YyDticqiGdPicmargilCvqspnAY3guXaSMWWg4YvTwUgbZba/tx
- 4vcPnReyFDHaTfEqYqk00NEUW781EW1OIyQX1z0=
-X-Google-Smtp-Source: AGHT+IHSfjXXbD7/9ei3HXX1kSg6gDM000wd3/dTlZv3LZYaKRVUta2cW+0Bh9erRMeVWfzJCTAoYw==
-X-Received: by 2002:adf:f5c6:0:b0:314:3b02:a8a8 with SMTP id
- k6-20020adff5c6000000b003143b02a8a8mr3761369wrp.55.1693486836365; 
- Thu, 31 Aug 2023 06:00:36 -0700 (PDT)
+ bh=7hmpcKbPMiCB1lRYiTD63IbOGzz5WRqg6JB5CP58x9E=;
+ b=RbMO3kBeiCgLqsLzdckAB2yb0W1Fc+FdzrDRtwTBqzTuLh3FiwawMNWDJAGwhtUrvT
+ IpR3LbMMt4pZ02PXmFK87nrNf/id8FCDnLr8yZNUbvnrTEyYTZndUrsBZ2bwNjGrPIw9
+ vv3neiAoMGv74CGl8DGqKoPBitC/viCvvggTzvmUTYZVef+FrKabhSIFM+2Ml4/JkpoW
+ wq1+UdZcPtBYn9O4EwZVbKcElysxNdp9zhyzxqSyuiUHCRyUFZ/T0r6+cUlM48mcLOTb
+ c7KKq6gk+cq3cB0NpOn/gfOJ3mIlzhMOeoN+Qm44XDg5TOI21s/F+RVpd58x8FMf1jZ7
+ 6FcQ==
+X-Gm-Message-State: AOJu0YwSEDuA1w8X4emJqwS7T0tqWWnw7KfpgVHM3VzS7DE1oyuA/xRO
+ oIHQ5T/OfiNnzyEviI0QvXaBzcZA6p6y3gKgaIw=
+X-Google-Smtp-Source: AGHT+IHonzwgbGKHVktYaGinY4yu5VcOLRqqaXIktb/m1aXBdIyR95+05v0nNooDeF7CJ+gIguTprQ==
+X-Received: by 2002:a5d:5487:0:b0:317:6310:a616 with SMTP id
+ h7-20020a5d5487000000b003176310a616mr3810958wrv.36.1693486843054; 
+ Thu, 31 Aug 2023 06:00:43 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- r5-20020adfe685000000b003143867d2ebsm2189041wrm.63.2023.08.31.06.00.34
+ b17-20020a5d6351000000b0030fd03e3d25sm2183922wrw.75.2023.08.31.06.00.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 06:00:36 -0700 (PDT)
+ Thu, 31 Aug 2023 06:00:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-riscv@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Juan Quintela <quintela@redhat.com>
-Subject: [PULL 38/41] docs/style: permit inline loop variables
-Date: Thu, 31 Aug 2023 14:56:40 +0200
-Message-ID: <20230831125646.67855-39-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Subject: [PULL 39/41] meson: Fix MESONINTROSPECT parsing
+Date: Thu, 31 Aug 2023 14:56:41 +0200
+Message-ID: <20230831125646.67855-40-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831125646.67855-1-philmd@linaro.org>
 References: <20230831125646.67855-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,45 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-I've already wasted enough of my time debugging aliased variables in
-deeply nested loops. While not scattering variable declarations around
-is a good aim I think we can make an exception for stuff used inside a
-loop.
+The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
+must be parsed with shlex.split().
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230822155004.1158931-1-alex.bennee@linaro.org>
+Message-ID: <20230812061540.5398-1-akihiko.odaki@daynix.com>
 ---
- docs/devel/style.rst | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ scripts/symlink-install-tree.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/docs/devel/style.rst b/docs/devel/style.rst
-index 3cfcdeb9cd..2f68b50079 100644
---- a/docs/devel/style.rst
-+++ b/docs/devel/style.rst
-@@ -204,7 +204,14 @@ Declarations
+diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
+index 8ed97e3c94..b72563895c 100644
+--- a/scripts/symlink-install-tree.py
++++ b/scripts/symlink-install-tree.py
+@@ -4,6 +4,7 @@
+ import errno
+ import json
+ import os
++import shlex
+ import subprocess
+ import sys
  
- Mixed declarations (interleaving statements and declarations within
- blocks) are generally not allowed; declarations should be at the beginning
--of blocks.
-+of blocks. To avoid accidental re-use it is permissible to declare
-+loop variables inside for loops:
-+
-+.. code-block:: c
-+
-+    for (int i = 0; i < ARRAY_SIZE(thing); i++) {
-+        /* do something loopy */
-+    }
+@@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
+     return str(PurePath(d1, *PurePath(d2).parts[1:]))
  
- Every now and then, an exception is made for declarations inside a
- #ifdef or #ifndef block: if the code looks nicer, such declarations can
+ introspect = os.environ.get('MESONINTROSPECT')
+-out = subprocess.run([*introspect.split(' '), '--installed'],
++out = subprocess.run([*shlex.split(introspect), '--installed'],
+                      stdout=subprocess.PIPE, check=True).stdout
+ for source, dest in json.loads(out).items():
+     bundle_dest = destdir_join('qemu-bundle', dest)
 -- 
 2.41.0
 
