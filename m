@@ -2,83 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF3678F5E8
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 00:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BAAD78F623
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 01:26:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbqbZ-0004sf-4B; Thu, 31 Aug 2023 18:57:37 -0400
+	id 1qbr25-0006qo-NE; Thu, 31 Aug 2023 19:25:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbqbJ-0004fZ-Eh
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 18:57:22 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbr23-0006q8-PZ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 19:24:59 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbqbF-0003DF-Po
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 18:57:21 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-500cfb168c6so2428965e87.2
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 15:57:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbr1o-0002Gw-NP
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 19:24:59 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1c1f8aaab9aso11053135ad.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 16:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693522636; x=1694127436; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4GNi2AOj7YBZidVqMdiMTsl/wL7uqVeokPItco5CZ1w=;
- b=BO63+KHXIScqc/o1nMCK7Mz7lmzuQ7DEUqw5iMowpiHgfWKHpf+qh+cI6bt1O1X7lv
- jkWzn3QOvsV7qoTdoVIHU26sE7ytH1hGfb743k8ktggJdcq6bJM9UFASbkpsSZx8ulYu
- P3uChnX+V6qe5PFdlRv+dEmyh/zmwIuWb1G6kihR0vtPSasbauctsgyrKTnFQljyIji0
- tGbFI08BMYB60KPMHgmqnDJKF9olgPtTc4/hmpQbnMRbG6UfLyfIke2WjtwU1mxe5Rqj
- Ck15lRS8uClSMjIbrQ5A4t1U815fY1Oh5wtTPxFj1vtckQqUUwFnaG3+L+vd1wP1CbKB
- tSLA==
+ d=linaro.org; s=google; t=1693524282; x=1694129082; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cYadnNUzS+EStUScAbd7zg63A8xSjmBqfglid51vMNM=;
+ b=QBwIEakuGpcuvTEcoH96wbCul7hGrca3XVkdicJbd9ZqzcOeQqgRzalJSmSq6o1IEK
+ as8/pkZIjnFJJC5JPKvafp6FMQW4HgqohvFX+SybqqnhnELcoZIPfaGjz7zvBkjb4KpP
+ C3FbA0ljMyAARcIpkwp/kG3FzkkryrM4pZ7aMnF2PZX+dvJxMovRUlWVxr6OwGXSH1XI
+ z++/UxOLNOvk2T4RPkrPBULCk5FGxz1jhPgrznT76d5GU3pJvDA1H0pW6mgVZ900ag5z
+ +4ITBDILTaeoR/oay1yZO9ZJ9U4mmoDicGpdM+TZhD9T7MRxF3OQgdOcRILkTR5mdTq5
+ O7Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693522636; x=1694127436;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4GNi2AOj7YBZidVqMdiMTsl/wL7uqVeokPItco5CZ1w=;
- b=iHObpH4S3OwQ4I/XOInmNyrMpXVWqjS1SWixKiEiAnj0cQYTJaSedOMezvGW6ID816
- EobhsNTQHS7jT9G2GOWOHNgii3CH8pweHJ6lWLFn8ltWaNrK6dJeLj1eyHZFgeEQUSDc
- qoHZYuVQxTR7xGG1a2EhDMWj1WxKp2UKUNfS5SOQsnbZv6u24mySFGh6cdUUMzZZKqsf
- 3domZ/SVjTT7q/3o56/sXyoZv8h+K28en/oru2ZjEaxklExlf1HR2PgevChsuQbOrubv
- nxHX7fl0i3cMv690pIu6v0IgZ5DqRfg60xti1Kt1rPdWMi5HpYCu6wLf9X/mADlbAP+U
- gisA==
-X-Gm-Message-State: AOJu0YzpFxWvkqt+88zUNPjiQ8PJn9tTge3KjhgYHY2AMcaeW7/El12C
- Ei/vyy9tgErr+Lq8dkEmldK7IX9Wqwup4N9Sojs=
-X-Google-Smtp-Source: AGHT+IGjAFi3vSCU73KKmCz/ZMWqIazeCAyvlKRs2rPDGApBDzbCegHHqOk7U1/PfnPtoZzjgEi0/w==
-X-Received: by 2002:a05:6512:2513:b0:4f8:8be4:8a82 with SMTP id
- be19-20020a056512251300b004f88be48a82mr466680lfb.22.1693522635678; 
- Thu, 31 Aug 2023 15:57:15 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.199.245])
- by smtp.gmail.com with ESMTPSA id
- j8-20020a50ed08000000b0052333d7e320sm1304363eds.27.2023.08.31.15.57.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 15:57:14 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Markus Armbruster <armbru@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 11/11] sysemu/device_tree: Clean up local variable shadowing
-Date: Fri,  1 Sep 2023 00:56:06 +0200
-Message-ID: <20230831225607.30829-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230831225607.30829-1-philmd@linaro.org>
-References: <20230831225607.30829-1-philmd@linaro.org>
+ d=1e100.net; s=20221208; t=1693524282; x=1694129082;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cYadnNUzS+EStUScAbd7zg63A8xSjmBqfglid51vMNM=;
+ b=OhF9USLjmfMdz5zlm2UZiw/kXqHBmmH+65ekKNEKZAAp8c7IEGYA/IrEF9xxb1C+L2
+ gcFwRs3R8PZEm7oqEI2DqhBCjewRK0BOqQq/N+ZteXVjl1kSYgv2BAlwhLYzXYYpvo54
+ JWiqP8wQqYFLu0ObSSfkGFq1cJHMCbDodUNh8N6ge6iWFRhCpjOu9JiwcxeinJEs0Q83
+ 8dz390Npx+xirtyBUstDRFwbWl5oZJayk0YO0a/BpVUflQDSi6XR26FUIjtWlo0GVONb
+ s8S5TfCnHtZYPTVIiC4A/q40aDnGBOiv0G0dpuaPBHw7FaJmdlI1BLis24oK8avx/N6o
+ a5nA==
+X-Gm-Message-State: AOJu0YyTyzjdVhyTvqw0xDZZNXOdYWxUUWpabmZENm/SCQIIPlPXNm8x
+ UyT+q1v7T7Hkv5ded6MULFzvZpWxTibveKp2syo=
+X-Google-Smtp-Source: AGHT+IFeE00ydtprW77iClJLcF+QpFafvz0KCg0iJVAS7t1xIHWsXRwAqNUZM9Mi4uZ5iS7trU7PpA==
+X-Received: by 2002:a17:902:d3d5:b0:1b6:c229:c350 with SMTP id
+ w21-20020a170902d3d500b001b6c229c350mr1195958plb.18.1693524282543; 
+ Thu, 31 Aug 2023 16:24:42 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ jd5-20020a170903260500b001bb8895848bsm1732711plb.71.2023.08.31.16.24.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 16:24:41 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v3 0/5] target/arm: Implement cortex-a710
+Date: Thu, 31 Aug 2023 16:24:36 -0700
+Message-Id: <20230831232441.66020-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,41 +86,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix:
+Changes for v3:
+  * 9 patches upstreamed
+  * Implement RMR_ELx generically, as a stub.
+  * Implement TIDCP and the closely related v8.8 FEAT_TIDCP1.
 
-  hw/mips/boston.c:472:5: error: declaration shadows a local variable [-Werror,-Wshadow]
-    qemu_fdt_setprop_cells(fdt, name, "reg", reg_base, reg_size);
-    ^
-  include/sysemu/device_tree.h:129:13: note: expanded from macro 'qemu_fdt_setprop_cells'
-        int i;
-            ^
-  hw/mips/boston.c:461:9: note: previous declaration is here
-    int i;
-        ^
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/sysemu/device_tree.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+r~
 
-diff --git a/include/sysemu/device_tree.h b/include/sysemu/device_tree.h
-index ca5339beae..8eab395934 100644
---- a/include/sysemu/device_tree.h
-+++ b/include/sysemu/device_tree.h
-@@ -126,10 +126,8 @@ int qemu_fdt_add_path(void *fdt, const char *path);
- #define qemu_fdt_setprop_cells(fdt, node_path, property, ...)                 \
-     do {                                                                      \
-         uint32_t qdt_tmp[] = { __VA_ARGS__ };                                 \
--        int i;                                                                \
--                                                                              \
--        for (i = 0; i < ARRAY_SIZE(qdt_tmp); i++) {                           \
--            qdt_tmp[i] = cpu_to_be32(qdt_tmp[i]);                             \
-+        for (unsigned i_ = 0; i_ < ARRAY_SIZE(qdt_tmp); i_++) {               \
-+            qdt_tmp[i_] = cpu_to_be32(qdt_tmp[i_]);                           \
-         }                                                                     \
-         qemu_fdt_setprop(fdt, node_path, property, qdt_tmp,                   \
-                          sizeof(qdt_tmp));                                    \
+
+Richard Henderson (5):
+  target/arm: Implement RMR_ELx
+  target/arm: Implement cortex-a710
+  target/arm: Implement HCR_EL2.TIDCP
+  target/arm: Implement FEAT_TIDCP1
+  target/arm: Enable SCTLR_EL1.TIDCP for user-only
+
+ docs/system/arm/emulation.rst  |   1 +
+ docs/system/arm/virt.rst       |   1 +
+ target/arm/cpu.h               |   5 +
+ target/arm/helper.h            |   2 +
+ hw/arm/virt.c                  |   1 +
+ target/arm/cpu.c               |   4 +
+ target/arm/helper.c            |  64 ++++++----
+ target/arm/tcg/cpu64.c         | 213 +++++++++++++++++++++++++++++++++
+ target/arm/tcg/op_helper.c     |  33 +++++
+ target/arm/tcg/translate-a64.c |  21 +++-
+ target/arm/tcg/translate.c     |  33 +++++
+ 11 files changed, 353 insertions(+), 25 deletions(-)
+
 -- 
-2.41.0
+2.34.1
 
 
