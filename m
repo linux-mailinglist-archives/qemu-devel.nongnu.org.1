@@ -2,84 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A95F78EDEF
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D01678EDE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhEO-0002FK-6E; Thu, 31 Aug 2023 08:57:04 -0400
+	id 1qbhFp-00038K-JA; Thu, 31 Aug 2023 08:58:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbhEL-0002Dp-9G
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:01 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbhEH-00054X-2T
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:01 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-99c1c66876aso90176766b.2
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:56:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693486615; x=1694091415; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=C4l2uMumWMiMt/kZEsLPjsauoaZLoTuUhXl7YwuCku8=;
- b=annnjPAcwSWI1AohWhYb5du1unH4JvOk0HD249MybjDiHMx07muhDNJte4BBXn5lq2
- jm32RJsw57e7Kv24XlfOiKPR5kxh7EmTkRpHLLmkY4XGFBDsJVn8LYokL0X52YMvfhHY
- gn90gtlkZPxhP3mzW+psrV0GO7iUlI4jbWp4562FMsfHHiD6RicSpW2PqgnZm8HIaGmH
- NvGH+/bMyJVk4uiEAvE0DQpTuFLhP2Kg7Vw6qBjtgPZ5ZL5ZVnMxlgwug7y4cg1uW9ew
- MGfOInG3cncRbvq2fscSqZ3jmckH6Jtiw4l6Be8sBBZnHg4JsE7DtUexkGD9zRErD4Fp
- u+Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486615; x=1694091415;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=C4l2uMumWMiMt/kZEsLPjsauoaZLoTuUhXl7YwuCku8=;
- b=NtD6gE8dqpaNMBjC6mrKYaQPTMhdxggj1cI1oFZbLpS2W/WqGYFnDxwl0c6a0QxM/K
- V/WdgD2YYnbF/3fyX418je85si9/VMcH8OecCeVAd/GICKsPUJpmMjUfAsRsLI6gOHxc
- mYOoOiq7QvHF7oauKM6hnpWethwybWL9YrBlwElzSEqd8hNLuZCn2f2DYlq+kVonuvEK
- vJzOGzRD/dYQ7Om2eFDT3wjJcrIJYBuqtUhucnPo+klGQoTMj+hdss1dPzuh520lcljg
- LVCAb/ikP3eu6B5pakXxx9OtjLwlEcpb/SNBItCwMj+gZlAbAqJtYMdBSSAzD2gVMlTE
- j6kQ==
-X-Gm-Message-State: AOJu0Yzu0zODR8yqD0dhROc/1O9l95y0wprhJbcASnIAzqVG05i4MPxy
- FXQXh+V+sOw/HqtQXKehxgLJhg==
-X-Google-Smtp-Source: AGHT+IGASl6kuA2BVfANBAG0B2dksMm2RNUJ3l5bd3IUkkOJv2RBpimUn2s+C+4sSyT+Av5Jmeuujw==
-X-Received: by 2002:a17:906:739c:b0:9a5:8269:2c94 with SMTP id
- f28-20020a170906739c00b009a582692c94mr3381288ejl.57.1693486615538; 
- Thu, 31 Aug 2023 05:56:55 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- l23-20020a1709060e1700b0097073f1ed84sm737517eji.4.2023.08.31.05.56.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 05:56:55 -0700 (PDT)
-Date: Thu, 31 Aug 2023 14:56:54 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH RESEND v8 05/20] target/riscv/cpu.c: split non-ratified
- exts from riscv_cpu_extensions[]
-Message-ID: <20230831-f7aff5aadae6aa730ee39299@orel>
-References: <20230824221440.484675-1-dbarboza@ventanamicro.com>
- <20230824221440.484675-6-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qbhEp-0002hy-Ia
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:31 -0400
+Received: from mail-dm6nam11on20606.outbound.protection.outlook.com
+ ([2a01:111:f400:7eaa::606]
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qbhEj-0005D3-Gg
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:31 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SjGmcLI4WAiY6Z2FtFSuZCnKl8i0TObpMv9BXKi4Fo6zYnzfBld4MajrLXXI8wYHSUsQsuq3BqLp9xFwX2rT+IMZRoNbkyLkONgWfBCgSHt1rIn3Fa4A9kpUqgwBV5weUJlifrHTw2Dhjv5fuS+Fr381nJ+GbiGXWDmNJaaO9J5Fjf+KbmG+ZjZM5DEDehQkqqkM4OP+SqipIJO3qAWSvFNYdoKLSqOpV2qJpaVOFul1Hfat90dTs8uBq3A+aUQFF6sPTWIdC8mXGX2fHbnXKX7uoPDYRyqUJluHIb5aFPdhegbJSL5GjeoLryMoYR8EVZ+DuzfKXm4UXNQjdiMgkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8NWteZOyQ8IkZkxbAJF8lF9N+E0xLxzFGevd+dn9GGU=;
+ b=ZS0iZgyV+t0AlGfMLuXIJOKHVbec6n+oDDf3OQcnChpoikd4oA0502+2VFpR1WFjLQuETTbHwIY6SAqHXSNRzj7WcTaamBie40KZ9s5UgNxEaVY2/Pbd3lj4XpAQq7KySdLSep5YHNdZTiqd+0HWtshQJ4HkbwfWN382VnFQxHvt+ZbjzOw439fwTGB1Ke3GZsv26tsuDinxr+9al+lGIaLZmPvzG8rcBq4hCefTTJEFprncCoMWdvyiCfN3N3VKcJBwQ5Aon1LoLHoYiqFYjrhK0TgFUTHFSxnHUlC+LLYxNR45nP+CrWNT+tq3M1niyGfacVJ4gG9fdEfgrxNLKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8NWteZOyQ8IkZkxbAJF8lF9N+E0xLxzFGevd+dn9GGU=;
+ b=CdMcI1MpXI6TS6IPhBtHepxKJOeHwYBBFpa4gzzW5WTx8JROkhoceuIO3c/+CXMVRXN/c1kGsR1LgDzlJXa/KnnPAy7gF2zj/m6ZfH23f6cGF4wyMMmP0W+1fWZMxqkj4krdS8OlTQR2JjAgFClTuaqan3knX7LTU8HHQXoniPMbz/r7pO8IwJhgl6GPHvCt1t7+JbKcVV6uKw9MMEugurMPHEH3ag3C4t2hZCbkfha8a/fXwKaf/Dll0FzvMw9PbRITKvNATJgzuF4rITtL9b8fimGmKvOvSAhDGKEepYkDKbbGgANuTmpxbCdJ46eVFGGS2h0LGa8EQQFyhSoeiw==
+Received: from DM6PR17CA0033.namprd17.prod.outlook.com (2603:10b6:5:1b3::46)
+ by BY5PR12MB4949.namprd12.prod.outlook.com (2603:10b6:a03:1df::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.21; Thu, 31 Aug
+ 2023 12:57:20 +0000
+Received: from CY4PEPF0000EE3E.namprd03.prod.outlook.com
+ (2603:10b6:5:1b3:cafe::db) by DM6PR17CA0033.outlook.office365.com
+ (2603:10b6:5:1b3::46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22 via Frontend
+ Transport; Thu, 31 Aug 2023 12:57:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000EE3E.mail.protection.outlook.com (10.167.242.18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 12:57:19 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Thu, 31 Aug 2023
+ 05:57:05 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Thu, 31 Aug
+ 2023 05:57:05 -0700
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Thu, 31 Aug
+ 2023 05:57:03 -0700
+From: Avihai Horon <avihaih@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Yanghang Liu <yanghliu@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>
+Subject: [PATCH v2 0/5] vfio/migration: Block VFIO migration with postcopy and
+ background snapshot
+Date: Thu, 31 Aug 2023 15:56:57 +0300
+Message-ID: <20230831125702.11263-1-avihaih@nvidia.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824221440.484675-6-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x633.google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3E:EE_|BY5PR12MB4949:EE_
+X-MS-Office365-Filtering-Correlation-Id: 151cc171-4519-4fed-fbd9-08dbaa21cf9b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gfWPpCUoVC7GZYAL8QPCHDxLQJSszIQe0hp2kuaKrxZvaO1M2WO2XjVOLdsLinb5mknnmi+0YmRhRIaDMNM024dJd+G/ZGcAJi+1EvttAqjuVHsr3an//091q4T/tLhz0Me2JUlRQWCMJrd4Nw6Z4q8NolmBmjb6b8dYQKsqqzKw123/Tf9S6IE8hWTZFbHeCEQ8BzRxTtOlhoc0uI9MZo4ohPORisNzC+XNZeeyuf/UzOgVqRxt2KVrxXEx/pwqSWgsvb1dTiPeIXpIy+SvqrUowrQUJ7CxEN7dZxU9jZ0Zhy5KUwSlX10IvQpeYAEI344GBC5P2UKZEWJuV/LCR8FrFrQ3+/qItFPE13XBJuo9RsWaMuhS8n0HpeuUWL5YMt9CKZv1exb3QHqmZMRkEfMpN+v4jaKgMzxomU8NLcUoQe+beQfpJFqlBib6Hk73L6qRe65vqM5Rffg9Oicmn99i4ldmRN1ab5RypaoiUk7qYHNbWzHBV65BlKMUGzcSTuoYQZfqyg71XbOUFNvb0/sDzUzNYDYJNEJ909ThdqrWpByTrnrMoRButfb0cvl/9VxPGN60+78pxejev9ve82xHjdWN6rrjYaUSz7Yfbv85tue3jNNj5UEOQidjqyl+LajkGYpIyzeSHxeDipwHba6SaWIx9NAIyNocMC602OkXDUKHAaQckdFWi7ylJUxG+usUTjnROHADMDvACRbl8iuEysP0pmT1ClqVJ89cLhNhxcAbZt3VXDJpQWZ+YOC7Kyk0pEf41W7NBwWv2vKPgw==
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(376002)(396003)(39860400002)(346002)(82310400011)(451199024)(1800799009)(186009)(40470700004)(46966006)(36840700001)(6666004)(7696005)(966005)(478600001)(83380400001)(2616005)(1076003)(107886003)(2906002)(336012)(426003)(26005)(316002)(6916009)(54906003)(41300700001)(70206006)(70586007)(5660300002)(4326008)(8676002)(8936002)(40460700003)(36756003)(40480700001)(47076005)(36860700001)(86362001)(82740400003)(7636003)(356005);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 12:57:19.5243 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 151cc171-4519-4fed-fbd9-08dbaa21cf9b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4949
+Received-SPF: softfail client-ip=2a01:111:f400:7eaa::606;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,63 +130,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 24, 2023 at 07:14:25PM -0300, Daniel Henrique Barboza wrote:
-> Create a new riscv_cpu_experimental_exts[] to store the non-ratified
-> extensions properties. Once they are ratified we'll move them back to
-> riscv_cpu_extensions[].
-> 
-> riscv_cpu_add_user_properties() and riscv_cpu_add_kvm_properties() are
-> changed to keep adding non-ratified properties to users.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->  target/riscv/cpu.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 272edaadf0..78eb2ac6bd 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1874,7 +1874,11 @@ static Property riscv_cpu_extensions[] = {
->      DEFINE_PROP_BOOL("xtheadsync", RISCVCPU, cfg.ext_xtheadsync, false),
->      DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
->  
-> -    /* These are experimental so mark with 'x-' */
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +/* These are experimental so mark with 'x-' */
-> +static Property riscv_cpu_experimental_exts[] = {
->      DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
->  
->      /* ePMP 0.9.3 */
-> @@ -1969,6 +1973,10 @@ static void riscv_cpu_add_kvm_properties(Object *obj)
->          riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
->      }
->  
-> +    for (prop = riscv_cpu_experimental_exts; prop && prop->name; prop++) {
-> +        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
-> +    }
-> +
->      for (prop = riscv_cpu_options; prop && prop->name; prop++) {
->          /* Check if KVM created the property already */
->          if (object_property_find(obj, prop->name)) {
-> @@ -2008,6 +2016,10 @@ static void riscv_cpu_add_user_properties(Object *obj)
->      for (prop = riscv_cpu_options; prop && prop->name; prop++) {
->          qdev_property_add_static(dev, prop);
->      }
-> +
-> +    for (prop = riscv_cpu_experimental_exts; prop && prop->name; prop++) {
-> +        qdev_property_add_static(dev, prop);
-> +    }
->  }
->  
->  static Property riscv_cpu_properties[] = {
-> -- 
-> 2.41.0
-> 
->
+Hello,
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Recently added VFIO migration is not compatible with some of the
+pre-existing migration features. This was overlooked and today these
+combinations are not blocked by QEMU. This series fixes it.
+
+Postcopy migration:
+VFIO migration is not compatible with postcopy migration. A VFIO device
+in the destination can't handle page faults for pages that have not been
+sent yet. Doing such migration will cause the VM to crash in the
+destination.
+
+Background snapshot:
+Background snapshot allows creating a snapshot of the VM while it's
+running and keeping it small by not including dirty RAM pages.
+
+The way it works is by first stopping the VM, saving the non-iterable
+devices' state and then starting the VM and saving the RAM while write
+protecting it with UFFD. The resulting snapshot represents the VM state
+at snapshot start.
+
+VFIO migration is not compatible with background snapshot.
+First of all, VFIO device state is not even saved in background snapshot
+because only non-iterable device state is saved. But even if it was
+saved, after starting the VM, a VFIO device could dirty pages without it
+being detected by UFFD write protection. This would corrupt the
+snapshot, as the RAM in it would not represent the RAM at snapshot
+start.
+
+This series fixes it by blocking these combinations. This is done by
+adding a .save_prepare() handler to struct SaveVMHandler. The
+.save_prepare() handler is called early, even before migration starts,
+and is used by VFIO migration to check the migration capabilities and
+fail migration if needed.
+
+Note that this series is based on the P2P series [1] sent a few weeks
+ago.
+
+Comments and suggestions will be greatly appreciated.
+
+Thanks.
+
+Changes from v1 [2]:
+* Adopted Peter's suggestion to block migration upon migrate command
+  using a new .save_prepare() handler in SaveVMHandlers.
+* Added R-bs by Cedric.
+
+[1]
+https://lore.kernel.org/qemu-devel/20230802081449.2528-1-avihaih@nvidia.com/
+
+[2]
+https://lore.kernel.org/qemu-devel/20230828151842.11303-1-avihaih@nvidia.com/
+
+Avihai Horon (5):
+  migration: Add migration prefix to functions in target.c
+  vfio/migration: Fail adding device with enable-migration=on and
+    existing blocker
+  migration: Add .save_prepare() handler to struct SaveVMHandlers
+  vfio/migration: Block VFIO migration with postcopy migration
+  vfio/migration: Block VFIO migration with background snapshot
+
+ include/migration/register.h |  5 +++++
+ migration/migration.h        |  4 ++--
+ migration/savevm.h           |  1 +
+ hw/vfio/common.c             |  7 +++++--
+ hw/vfio/migration.c          | 31 +++++++++++++++++++++++++++++++
+ migration/migration.c        | 10 +++++++---
+ migration/savevm.c           | 31 ++++++++++++++++++++++++++++++-
+ migration/target.c           |  8 ++++----
+ 8 files changed, 85 insertions(+), 12 deletions(-)
+
+-- 
+2.26.3
+
 
