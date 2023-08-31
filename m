@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A86978EFED
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 17:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEA678EFEF
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 17:07:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbjCr-0008IR-92; Thu, 31 Aug 2023 11:03:37 -0400
+	id 1qbjFy-00024A-7z; Thu, 31 Aug 2023 11:06:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qbjCe-0008Hd-K8
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:03:25 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbjFv-00020z-Sy
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:06:47 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qbjCc-00041Q-96
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:03:24 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-51e28cac164so4466553a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 08:03:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbjFt-00054p-Ba
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:06:47 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bc3d94d40fso7047745ad.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 08:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693494198; x=1694098998; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=1aX9TOjhlfbr3EWGRSam9s6CHNXIEvwtRT2ZHXvklWM=;
- b=DrrI3NAyCDEnC1DFCpH/oa5QKU3IXAXh+kQN9CLWzrDDgtN5vOE5Bx5/1tRhzqYOwY
- 9pLl2JGjDpePzC3XGm31Di86BJT33cL+q53h+hWkkmMdSdl4EyRgBZmMfG3UxRUpo8gN
- Rl5ixUIlJsvfBcrVjNHtNCZ2TDFYWoot6OVyYYOuDCO4bRyP1utF5kvplsw4z9VrgqbV
- dBb9v+tR1RoovolpJZ8xIyefJl2bqX4RO2qI5LaqByYnrK+gbBTeHcujxP3nV6AKdg5u
- yVaQxULkBBjC6INEFKHpPDgwi7hEjxZUOV/bh/II1028t2v0RobpimyaxlAZl4ZgKUQq
- lZXA==
+ d=linaro.org; s=google; t=1693494403; x=1694099203; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ASeEk5TntfOaPM4aLzmYaBRIBLp6uNC3+X4E2AtusX8=;
+ b=YELQ/C6CSOfMp/nTRUi/WfXRNY16CXwLXfTf3/gESfcwcSwfO++D8kocYKa4mkKk92
+ 2DLfwrMaWrf24DPjV21D3h7tdbB5RZ0bf8LrCLVZ6A0n/wNNECC/5okdhLPRe8P/zsUN
+ iNfwErgHb5aldEMA6HOnP9gQTomAoGPjumwQQTCl9mDe+gu/+tbkbMvhH2Pf9lREpSaO
+ tS+nZucfFP0hcfY3AVdVoLu3JVF/bwK+88nvFEUj+ecTahk49DHJbNGDzc5ekbxoVLtL
+ rqlA8c2miDqNCRKzubCvP38cbxmLyua62dgtpKZBF98utv/Ah2yewd+ei1/0E7ujNdOL
+ CGtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693494198; x=1694098998;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1aX9TOjhlfbr3EWGRSam9s6CHNXIEvwtRT2ZHXvklWM=;
- b=OnLYUMAbUGPpihqSHtMVCfXnGEArn6I053+xvoul6iIwZ15Sh7D+5i6MbPGG2MQ/o/
- EoybBJLhNoU70S3/ldPHECiNG9phHs+96n8V1S/Vb/5TZkAoWq0Qw2thT1dDAVogIRCb
- zHlYl3xrwhLZtjPcnSSNNOJbwqCBpnebURO+NdHXMRdPb6+8DScdvc19RVC8yRiBZ/TP
- utIkE8Q2qt9VTOv7fSO6B32VyYIWt+F8l5j0bpWdKACu8fSXKV9zYrpx7Kh7E0shrJxy
- NdkS+TPD8CT5TousT8uD00BUATSgZXuOPT628lUCHUEMxsyGfbEPhJhK7PkZ+QblPNnx
- zGEw==
-X-Gm-Message-State: AOJu0YwnUhkByPSSHl3t5tUUlv6yZSfni8F/JN8FSBQlBdN43/pjyDQ6
- UV34gG2nt4jVbplLE+dmhs5Wrd8OSsUv90VcGLeO0Ra1LQejjOsT
-X-Google-Smtp-Source: AGHT+IFFm6v20Yy+84UQ6hOwmS0zYNb0Gzn1LksHmowZr3f4ttJLm9Ca6j6sBKgF98BH15WqBHmsBG/8yTkbxIx70bM=
-X-Received: by 2002:a05:6402:50cb:b0:525:4d74:be8c with SMTP id
- h11-20020a05640250cb00b005254d74be8cmr3760154edb.14.1693494198113; Thu, 31
- Aug 2023 08:03:18 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693494403; x=1694099203;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ASeEk5TntfOaPM4aLzmYaBRIBLp6uNC3+X4E2AtusX8=;
+ b=aZxLjNmgF9bovAPxrPLAc+CGNdqdp52gM3/t/oE/w86PESPDk/gHc4hJVBZxxpBNBf
+ BIm7TJuIQnrEh/oBFCSGF5b9oBrcih+VA5BpuGxa0RhSj729NljCvM4RK0xdnsSE5HgC
+ RaZCc0KkWB2aMgHak7I1P5U/w5PzKk3oUaCxf0hgrlOUHh0NDVbP7JYofGtD9QCv0GLO
+ NsHRAVl4i5UJ+6wwTIWtP0/9c73uyl8RDmBe+yDfhQkGGygLAUtgBJVoqCbf9Osb/5LL
+ Q/t7DVHfgdo/7vhJC0puni9/C9TjKGmUY+/SXvLwcn3sH5d3Xyi3N/2sr40ewpsfCdqB
+ Kk6g==
+X-Gm-Message-State: AOJu0Yy97Vz1pYIFc96iy6hXiEn0+1zJLMlL9B3/0QUU6hyrjKs/JOpe
+ QbBnNZZm8gtNezC3zaTNGivdbf8IMH6cneHtT0w=
+X-Google-Smtp-Source: AGHT+IGc/chn/yWj2682sM0KWrr2DKQF9CZGsoxvQoR7S6siuK8RI+Y+PSzSNi2sV355SJmpstrklw==
+X-Received: by 2002:a17:902:c40b:b0:1bc:671d:6d31 with SMTP id
+ k11-20020a170902c40b00b001bc671d6d31mr72338plk.3.1693494403044; 
+ Thu, 31 Aug 2023 08:06:43 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ z13-20020a170902ee0d00b001bf11cf2e21sm1367921plb.210.2023.08.31.08.06.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 08:06:41 -0700 (PDT)
+Message-ID: <ff3f0c9b-c724-70e7-8bc7-904fcc5d5a58@linaro.org>
+Date: Thu, 31 Aug 2023 08:06:39 -0700
 MIME-Version: 1.0
-References: <20230824183448.151738-1-francisco.iglesias@amd.com>
- <20230824183448.151738-6-francisco.iglesias@amd.com>
- <CAFEAcA_Es_sX4O-oqX9E49LTWUMDzv6sao2i3Fb-YCqg9M8WXA@mail.gmail.com>
- <49408ea1-c837-76b8-7a43-de6ac5c682e9@amd.com>
-In-Reply-To: <49408ea1-c837-76b8-7a43-de6ac5c682e9@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 31 Aug 2023 16:03:07 +0100
-Message-ID: <CAFEAcA-dbHt4Gvy48eVkobJCMfOivTPfryAgYUBtveebkUqVjA@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] hw/misc: Introduce a model of Xilinx Versal's
- CFRAME_REG
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 11/48] target/loongarch: Implement xvhaddw/xvhsubw
+To: gaosong <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20230830084902.2113960-1-gaosong@loongson.cn>
+ <20230830084902.2113960-12-gaosong@loongson.cn>
+ <93b90f31-d33d-2c37-0ab8-166d9c28bb6a@linaro.org>
+ <965c1068-be7d-0642-3111-39fbc4e54006@loongson.cn>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <965c1068-be7d-0642-3111-39fbc4e54006@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,36 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 16:00, Francisco Iglesias
-<francisco.iglesias@amd.com> wrote:
->
-> Hi Peter,
->
-> On 2023-08-29 18:44, Peter Maydell wrote:
-> > You don't need to g_tree_lookup() for every address. If
-> > you use g_tree_lookup_node() you get a GTreeNode* back,
-> > and you can then iterate through the tree from that point using
-> > g_tree_node_next(), something like this:
-> >
-> >       for (node = g_tree_lookup_node(s->cframes, GUINT_TO_POINTER(addr));
-> >            node && GPOINTER_TO_UINT(g_tree_node_key(node)) < end_addr;
-> >            node = g_tree_node_next(node)) {
-> >           XlnxCFrame *f = g_tree_node_value(node);  // definitely not NULL
-> >           /* Transmit the data */
-> >           for (int i = 0; i < FRAME_NUM_WORDS; i += 4) {
-> >               ... etc ...
-> >           }
-> >       }
-> >
->
-> I tried above but it looks to require glib 2.68 so added a comment
-> instead (didn't compile on my machine with glib-2.64 :/, if I understand
-> meson.build correctly the min glib version supported is 2.56). Let me
-> know if some other solution would be preferred.
+On 8/31/23 00:17, gaosong wrote:
+> 在 2023/8/31 上午2:12, Richard Henderson 写道:
+>> On 8/30/23 01:48, Song Gao wrote:
+>>> --- a/target/loongarch/vec.h
+>>> +++ b/target/loongarch/vec.h
+>>> @@ -47,4 +47,7 @@
+>>>   #define Q(x)  Q[x]
+>>>   #endif /* HOST_BIG_ENDIAN */
+>>> +#define DO_ADD(a, b)  (a + b)
+>>> +#define DO_SUB(a, b)  (a - b)
+>>> +
+>>
+>> Why are these moved?
+>>
+> I want to move simple macros together.
 
-Whoops, yes, I didn't notice the version-statement on
-g_tree_lookup_node(). Yeah, keep what you have.
+Ok.
 
-thanks
--- PMM
+
+r~
+
 
