@@ -2,68 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9530F78E503
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 05:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 183BB78E62B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 08:13:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbY9q-0007eS-P5; Wed, 30 Aug 2023 23:15:46 -0400
+	id 1qbau0-0008UG-Ij; Thu, 31 Aug 2023 02:11:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
- id 1qbY9p-0007eH-G0
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 23:15:45 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbatt-0008RA-ID
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:11:30 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
- id 1qbY9m-0002fn-QQ
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 23:15:45 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2b962c226ceso7062561fa.3
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 20:15:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbatr-0005Pz-5L
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 02:11:29 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-52bca2e8563so471990a12.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 23:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693451738; x=1694056538; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=dpQyDxKC3QwG9MvCu1UHMgG74BVGMJv7VFvFq4YAnbs=;
- b=BIYmbhrHutOAEX6yW7jE/IUysbcpXFQGpOZ4dE0Cm6THYQ1kYp6GnxkpEs+3R6XW+L
- NOpf358AbsYWdbidTpsliRN+ZYEd57gOQB8pB5d1eC1U78rzlt8f50hB5nNQmKJ20xSZ
- 1WW81V+vuvMNSET9hMIWVdwMJ/mj/bG98KlFMz5Ykj3bxHPn8guNqBqFepgpAbbT/+Z2
- VzpEQVXivZHB+IGEXCh+SMua6ypTudRqep0esvGoDp4AN0nZWsxx06GirUpyJfn1/r/f
- /z8ggp9Z9VJ1b3vyrDhHn47e5eb7j0atHL2mBmAtWc+GwRwDlv9UDIpY9PWXNXxc20qg
- LD/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693451738; x=1694056538;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=linaro.org; s=google; t=1693462285; x=1694067085; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dpQyDxKC3QwG9MvCu1UHMgG74BVGMJv7VFvFq4YAnbs=;
- b=TvrUVggEpYqVe8OrnB2Cs7GAnkP75S32vL0ObkPKttwI/B7TKTyTHr0ney4zjmEiHf
- wwRSlFUgb2v6mozRjHMUh6W+paSa8PkyUsyWwaxF12UHluaATOLnWnsKKnXZMnw9PlN6
- Xlrhu4RLJLh1JasQDi6kaDSfsWpzlkDDYXTtSkXURS2HL1N/xuHnLfGn2cl2mwmb5KL/
- E57fTNJnC0fub8s9JRf8CJe7rvbvoW7++9CXcpm/OHQj3Pfap1FdTVL4VRiyf9JJRkZI
- iDbunjAg+1f0RA7CCpn+Oq72ZdjbtjouoF8wfWs7w1Xo3naGeg9/zO3gH27EKSekfEsJ
- yaOg==
-X-Gm-Message-State: AOJu0YziAHpSxnhQN30LSc66VRZhFBZ80zoYLY+qP6RqC7m6D07gXgKX
- IQK+vZeUYAteXLO2QQIrCOpQdUNUcjKUxG8CKuCD1oABvN6f
-X-Google-Smtp-Source: AGHT+IEByfYkLiEYXLXXYyVr/C6FFex0H/IYA1vRNrP6dv+jLUXMXELbs2asSditjHkmq+uSrnY6xI+3Sf8MBWN9Y20=
-X-Received: by 2002:a05:651c:228:b0:2bc:b61d:44c9 with SMTP id
- z8-20020a05651c022800b002bcb61d44c9mr3046868ljn.53.1693451737827; Wed, 30 Aug
- 2023 20:15:37 -0700 (PDT)
+ bh=23HH6W9oiX0Td0WTUVAKAot+IsF2Xsx2IgqizwueE7A=;
+ b=WjtcKexcD9kYXcmj+aFydYVqnhWYo3ditxO4/sv75rzF7eiNFzDOWY+lHYedOGCe3c
+ vEhBf1gOYKWrZqFIbeXduSnp09eszR5W9Tt2ayFS3DjDSAct72bxIJQhvrl9MAdyrNGJ
+ ub04vYDOWFIGmLRZodl6if522iygyz0ePQJHxfl+VwkCj6nWNGhRJTdB7+1edDGfSFY9
+ hIurzyeErQPCuRGvo5zFHYJKHMQTZhrmCKwrYH3dgghxIZXB8XbKdadIZNFO7c/Rw/GP
+ eiBNlQYiaAKwi3U92JUd78NGRm798hNpU385FbSir6uPFI98EDHIQ71Mgar2DQY+03rC
+ bCXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693462285; x=1694067085;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=23HH6W9oiX0Td0WTUVAKAot+IsF2Xsx2IgqizwueE7A=;
+ b=d11MuvhOGoLPNqP1P2ydkC9CHZ7esOt2GqNafQpZK5hRU7i2PceNIbn795fwPqLFvy
+ IbrbiESKo1gCfK8U0d2O2V15x8IetvDIVO2j2sNUZI3RSXRftMi83flQXuhje4NItRQ1
+ 7cSbhU2JGd8qz8Tc1MwMd+7GydcJCGmq89lCdPCIgPic1nNap5bjoKlZWzX53rWEvOdi
+ Z4cPL5UjXOlHxjF+s3oQ0aYW3BGb9AVhAQUIQywDGD7W5XN6OUdS9J1Mhn0iA3zTNdmE
+ y9pVKS/ZtNsZPZyMfdifXDMDs0COkrHGgLnxeuSahNJgGaNbwsbHnDUKPSoiCUNRN15W
+ uHPw==
+X-Gm-Message-State: AOJu0Yzt8X0C60nPMk1dIZc8FcI2MmN3BUAQpkBfO68ezqlolLd+E6ca
+ RqojxIvgMpO0EYPWwY6caNJlBA==
+X-Google-Smtp-Source: AGHT+IHiS+EN49zaK8G05x20+8T94/jQMkcKJbTUtiDTQXrE90R5PYzE2kiDN1Ezr1dYixOCu/qhsg==
+X-Received: by 2002:a17:906:3d22:b0:9a1:be5b:f4a5 with SMTP id
+ l2-20020a1709063d2200b009a1be5bf4a5mr3282876ejf.35.1693462285445; 
+ Wed, 30 Aug 2023 23:11:25 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.245])
+ by smtp.gmail.com with ESMTPSA id
+ qw17-20020a170906fcb100b0099d798a6bb5sm376043ejb.67.2023.08.30.23.11.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Aug 2023 23:11:24 -0700 (PDT)
+Message-ID: <a4ef9f54-7a57-af6f-c947-5383a7559288@linaro.org>
+Date: Thu, 31 Aug 2023 08:11:23 +0200
 MIME-Version: 1.0
-From: Liu Jaloo <liu.jaloo@gmail.com>
-Date: Thu, 31 Aug 2023 11:15:41 +0800
-Message-ID: <CAOYM0N0o2SdiaAqtBm5md4z_FQnnP2csPrapc+5L47Qcaiw3Kg@mail.gmail.com>
-Subject: About "PC_MACHINE_CLASS" definition.
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000470cbc06042f75b4"
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=liu.jaloo@gmail.com; helo=mail-lj1-x236.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: About "PC_MACHINE_CLASS" definition.
+Content-Language: en-US
+To: Liu Jaloo <liu.jaloo@gmail.com>, qemu-devel@nongnu.org
+References: <CAOYM0N0o2SdiaAqtBm5md4z_FQnnP2csPrapc+5L47Qcaiw3Kg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAOYM0N0o2SdiaAqtBm5md4z_FQnnP2csPrapc+5L47Qcaiw3Kg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,17 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000470cbc06042f75b4
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Where actually defined the "PC_MACHINE_CLASS", I can't find it in source
-code, please help to point out the file.
-Thanks.
+On 31/8/23 05:15, Liu Jaloo wrote:
+> Where actually defined the "PC_MACHINE_CLASS", I can't find it in source 
+> code, please help to point out the file.
 
---000000000000470cbc06042f75b4
-Content-Type: text/html; charset="UTF-8"
+It is defined in include/hw/i386/pc.h:
 
-<div dir="ltr"><div>Where actually defined the &quot;PC_MACHINE_CLASS&quot;, I can&#39;t find it in source code, please help to point out the file.</div><div>Thanks.</div></div>
+OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, PC_MACHINE)
 
---000000000000470cbc06042f75b4--
+The macro itself is defined in include/qom/object.h:
+
+/**
+  * OBJECT_DECLARE_TYPE:
+  * @InstanceType: instance struct name
+  * @ClassType: class struct name
+  * @MODULE_OBJ_NAME: the object name in uppercase with underscore 
+separators
+  *
+  * This macro is typically used in a header file, and will:
+  *
+  *   - create the typedefs for the object and class structs
+  *   - register the type for use with g_autoptr
+  *   - provide three standard type cast functions
+  *
+  * The object struct and class struct need to be declared manually.
+  */
+
+See the QOM documentation:
+
+https://qemu-project.gitlab.io/qemu/devel/qom.html
+
+Regards,
+
+Phil.
 
