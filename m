@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041B378EEE5
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBFD78EEE4
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:44:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhxp-0005Ne-0O; Thu, 31 Aug 2023 09:44:01 -0400
+	id 1qbhxt-0005iz-CN; Thu, 31 Aug 2023 09:44:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbhxn-0005MS-P0
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:43:59 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbhxs-0005hH-3D
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:44:04 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbhxl-0003bd-HR
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:43:59 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso621459f8f.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:43:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbhxp-0003cM-OE
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:44:03 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-500cd6261fdso1631252e87.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:44:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693489435; x=1694094235; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=irkvSQpNZre+Z0M7OS3ADSzmUcddRSofGIUv38Rn0NI=;
- b=FcD4MQs3eF5qaIYAnnzSwztuY/HPsdabAGk7zHEjWkv3V+N5S22Ig3X3+srCDognLB
- Xfg0BOd0DRqVBV2QmXjLjXi+ec1TVZT68+MChfsBlzAaUZrkkJ/uXGfknypmbrY1bUen
- dfj+h39cJBjRAhNeUJeLPew1qP/xziYkNR7WUFbatRf24zQzkpS9hqClG5qtFf1fQosA
- ZRvyVU/6/6VoyWidXixJKcT136X/RBjuayMd0RircxGAHlUD404hcyRQ71Dm50enSkLN
- xIjyuJLTcxQs8iEelMbvgzkfVkGVEKGIUxguYDzTJX7Ho1z+7/ss8pP0kmWB42KMjI3y
- c07g==
+ d=ventanamicro.com; s=google; t=1693489439; x=1694094239; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=O/NnKczXggCe9FEX+f3YRwtOiddV19c1MJwyPW4Ea0c=;
+ b=WtM0SUHmrGgi4DQ37xv79hAxjf8poGbqgsGTtQ5mnvOdz0ZnRQZ9LF7FeyyTM6CcyQ
+ MU0tDho75NXLvdNrW3Hb8iaSH1492fcNACdTY5y7PwDUgIfP/+t/r2UkTbFtDU8qknNJ
+ vqjLlhYhqPAVFpCIzqktoz2x/iJg0g9w1bPVJW1AIyb/jM+xCZx0YSdmPkw956+V5Nln
+ BJmzcr3lYp7uAVyrtkHqNpSFRhmuZWoOanYHycbgZBHmrrDNsRIxnPL9P6/yDMQ5GZeb
+ g3UsB09c8N/MjHHz7O6XeM+zfg1pAHbft81FZiLIZ0y0S+Q7CAGn8jZ0Ki/WBiT50Wso
+ YZbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693489435; x=1694094235;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=irkvSQpNZre+Z0M7OS3ADSzmUcddRSofGIUv38Rn0NI=;
- b=FBmtGgrrwTIq2J/CDN9Faeh2g/aOkP9ynIn9TgWMbOu/D1QPabdOdrNHV3qliP+tul
- jIjgcpNdcpqsjBk57NPePkojIzsoOHKHHclNKppE/UjSxlSrHEajzfq5FND2aOnd7Gr5
- PikohHQ4u/SAaGgu1g0UgSundy8G1ujwf+fwLwQ1M79aWeFQtgUgeFwbuIEqvo/eJC0i
- FdhBfCwlNB9uJSzUxk0rDaGeqDU1tBYGiE6LayPu6u/bhasKsYf/AYyE9nD5A4n3VIfL
- fSmSPcck6j+VKx72ywmsCAidpuo/6m6fxDKNA9QloZ+8WzoqayVnCwGdNHbZe8/camvH
- v9Gg==
-X-Gm-Message-State: AOJu0YwZtn9BW1EgEXfC/QBQkNx6erfYWwjki7W92tHPvrnxiqzl7xbq
- fr3NcRmFEIM3FzqbJkvvL8oz8Q==
-X-Google-Smtp-Source: AGHT+IHGKtt4eXQkzzOr2qYPtO4KM+Tj89UpfqxnicLqE+KFEWduC64R7pHfaxJjUFtfVrScfKYauQ==
-X-Received: by 2002:a5d:6145:0:b0:31a:ddf0:93b with SMTP id
- y5-20020a5d6145000000b0031addf0093bmr4379046wrt.33.1693489435317; 
- Thu, 31 Aug 2023 06:43:55 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693489439; x=1694094239;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=O/NnKczXggCe9FEX+f3YRwtOiddV19c1MJwyPW4Ea0c=;
+ b=WVHvYHJJ6bnpZjhhHUjrNCAjhfdFmWJucIhPEjPsNCxaTrjoo5OL66ki2SAC4vLJeC
+ kmApB2GExiEJ6E88DRx5Zt+bqbW1onTwTdXW/mihdQxu+MBArmqDQijT2O9bU6avA3Df
+ Ymu63ng5UATWxFteOpre8roFgW1wGdq1xlGa/n3JqI4ovkcYj0/RMJBlCEHayneCseRc
+ PYZ9kQ6vYqtlNuecyDjQ14svG4A6EhSiHbqahBepSm3Trsm3ahDM0byO4rlCV0g0YUyU
+ SK9pdZmxGnTG/taKHopp1zSsB9F6cu08xNJQFRiKsvl6fOeiC/NIsrYeCvp/Yyv4tYZZ
+ YETA==
+X-Gm-Message-State: AOJu0YwPq2HCgA1OwK9SBe4J2Pw78bLZeaOg72moC8jEdtTtZJHgsf2+
+ KBUgaP88MGlBA3c5v2tymRawjA==
+X-Google-Smtp-Source: AGHT+IHvr8WWIttVjcaKGgncj4DYv6iqSYNsItg/p4Y+eE4DSG0ioBY/Or7WrwD5eL1oLA2YFH2sbg==
+X-Received: by 2002:ac2:5f54:0:b0:4fe:7e7f:1328 with SMTP id
+ 20-20020ac25f54000000b004fe7e7f1328mr3334947lfz.16.1693489439189; 
+ Thu, 31 Aug 2023 06:43:59 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- h12-20020a5d688c000000b0031ae2a7adb5sm2253802wru.85.2023.08.31.06.43.54
+ d26-20020a50fb1a000000b0052574ef0da1sm798131edq.28.2023.08.31.06.43.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 06:43:54 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 707851FFBB;
- Thu, 31 Aug 2023 14:43:54 +0100 (BST)
-References: <20230831131348.69032-1-philmd@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-arm@nongnu.org, Shashi Mallela <shashi.mallela@linaro.org>, Peter
- Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/intc/arm_gicv3_its: Avoid maybe-uninitialized error
- in get_vte()
-Date: Thu, 31 Aug 2023 14:43:49 +0100
-In-reply-to: <20230831131348.69032-1-philmd@linaro.org>
-Message-ID: <87zg27nx7p.fsf@linaro.org>
+ Thu, 31 Aug 2023 06:43:58 -0700 (PDT)
+Date: Thu, 31 Aug 2023 15:43:57 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH RESEND v8 17/20] target/riscv/cpu.c: introduce
+ RISCVCPUMultiExtConfig
+Message-ID: <20230831-b89b2b92f98ad55ab70bb431@orel>
+References: <20230824221440.484675-1-dbarboza@ventanamicro.com>
+ <20230824221440.484675-18-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824221440.484675-18-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,36 +95,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-> Fix when using GCC v11.4 (Ubuntu 11.4.0-1ubuntu1~22.04) with CFLAGS=3D-Og:
+On Thu, Aug 24, 2023 at 07:14:37PM -0300, Daniel Henrique Barboza wrote:
+> If we want to make better decisions when auto-enabling extensions during
+> realize() we need a way to tell if an user set an extension manually.
+> The RISC-V KVM driver has its own solution via a KVMCPUConfig struct
+> that has an 'user_set' flag that is set during the Property set()
+> callback. The set() callback also does init() time validations based on
+> the current KVM driver capabilities.
+> 
+> For TCG we would want a 'user_set' mechanic too, but we would look
+> ad-hoc via cpu_cfg_ext_auto_update() if a certain extension was user set
+> or not. If we copy what was made in the KVM side we would look for
+> 'user_set' for one into 60+ extension structs spreaded in 3 arrays
+> (riscv_cpu_extensions, riscv_cpu_experimental_exts,
+> riscv_cpu_vendor_exts).
+> 
+> We'll still need an extension struct but we won't be using the
+> 'user_set' flag:
+> 
+> - 'RISCVCPUMultiExtConfig' will be our specialized structure, similar to what
+> we're already doing with the MISA extensions in 'RISCVCPUMisaExtConfig'.
+> DEFINE_PROP_BOOL() for all 3 extensions arrays were replaced by
+> MULTI_EXT_CFG_BOOL(), a macro that will init our specialized struct;
+> 
+> - the 'multi_ext_user_opts' hash will be used to store the offset of each
+> extension that the user set via the set() callback, cpu_set_multi_ext_cfg().
+> For now we're just initializing and populating it - next patch will use
+> it to determine if a certain extension was user set;
+> 
+> - cpu_add_multi_ext_prop() is a new helper that will replace the
+> qdev_property_add_static() calls that our macros are doing to populate
+> user properties. The macro was renamed to ADD_CPU_MULTIEXT_PROPS_ARRAY()
+> for clarity. Note that the non-extension properties in
+> riscv_cpu_options[] still need to be declared via qdev().
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  target/riscv/cpu.c | 257 ++++++++++++++++++++++++++++-----------------
+>  1 file changed, 158 insertions(+), 99 deletions(-)
 >
->   [4/6] Compiling C object libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
->   FAILED: libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
->       inlined from =E2=80=98lookup_vte=E2=80=99 at hw/intc/arm_gicv3_its.=
-c:453:9,
->       inlined from =E2=80=98vmovp_callback=E2=80=99 at hw/intc/arm_gicv3_=
-its.c:1039:14:
->   hw/intc/arm_gicv3_its.c:347:9: error: =E2=80=98vte.rdbase=E2=80=99 may =
-be used uninitialized [-Werror=3Dmaybe-uninitialized]
->     347 |         trace_gicv3_its_vte_read(vpeid, vte->valid, vte->vptsiz=
-e,
->         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~
->     348 |                                  vte->vptaddr, vte->rdbase);
->         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
->   hw/intc/arm_gicv3_its.c: In function =E2=80=98vmovp_callback=E2=80=99:
->   hw/intc/arm_gicv3_its.c:1036:13: note: =E2=80=98vte=E2=80=99 declared h=
-ere
->    1036 |     VTEntry vte;
->         |             ^~~
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
