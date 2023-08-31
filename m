@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF9C78EE6B
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F252878EE53
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:16:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhLI-00082u-9a; Thu, 31 Aug 2023 09:04:12 -0400
+	id 1qbhLM-00089R-Jy; Thu, 31 Aug 2023 09:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGu-0004jw-Uq
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:42 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGz-0004pQ-OA
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:49 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGp-00061g-GR
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:40 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-401da71b85eso7296795e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:59:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGu-00065p-IY
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:45 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-401f68602a8so7216475e9.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693486773; x=1694091573; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693486779; x=1694091579; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sCCxv16p0EiY2aKlOpGL2Z1uWvBgdn7GkvBoQqZSuSQ=;
- b=XrC7DTwUFnqOeLsTkPLW6yUb1NY+iNSk1KXGr8nZ2RaH9ALSGbv8TEdrWPyvqrNDQO
- +by4fiGlpzKWrJKF+hWX/K7c0kP0KNwB9+qjzySDc7ugCtPzej+U/6Sgt2Zxrc31k7qS
- qTudWVCvHzNPH2MsnuB2xWCBJe8T6Y4IOTUlhsjRELeJ/KBGTOfZU3121P/UVZMMOyMs
- t0ld2Ou8gAaH7ONCTJseKxcu46BARghmbTQyeZTyO88TcdqIstCHz0QdslibXzlNYXcC
- eBKT0l87IRq5iJ1j5t9N9+QUSG9q7GtdtM0ULeHPLbQ1jTTRqDo1Rywa6Oy1z1BRnBJ4
- afRg==
+ bh=ur9xi937dzz6Bl2U4bEFfYnHfQ2+6Mk7VLbsIy+yiQY=;
+ b=p93qFbrXQ6SN01gFC+mCDwinPT864Vc7iDNXuSaBjHtdOEM6rBKil8dKQMPYY2qjUY
+ OtECUlmpp0yZSFIxBJB6tJq/vCr3YSyj+aM8gKaY63Yizrw5i60UeqyprRtf2k/ie+Pi
+ hYJ86rk0Vu59s3rdEe3YbLm5746nZv6Wn+DU6nN6tsMEARtzQewj2zH+gG7x706l8ADh
+ 1di5McuhMV0ZrWI+0aF8QQaq8m2M8XBvqTi2sTkDAaYHIPK/ib4NpVwFh8chxmWXTHOp
+ OIO0FiXolg9WGjacQB/aIjGDDUCe/MVhzPzFvOQnGjKUKN7jipPA4ZFZ1WZ/FftdDV9N
+ usrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486773; x=1694091573;
+ d=1e100.net; s=20221208; t=1693486779; x=1694091579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sCCxv16p0EiY2aKlOpGL2Z1uWvBgdn7GkvBoQqZSuSQ=;
- b=QVlmR9akUCp82u0sIZso9E7W528JzPM/TorUfpooIzUYQfUvDpAgR4XthKzcIPlT/z
- x5k0J7BmWNjtXIXfLHylN0ZPbf31LUUz1Oy1JivKv94O+mLwa7cQvFLJinmrbgg0Qr2K
- Rtf+CkoBs5frWASZEtlVINHa3JO3pJUjF1N9Zv8MzUF/B84icpud1M4g+bwKo2jaqrxS
- xUGfwJpsV0/trZYo2Xp2okjc611qKh7xCWLy9k7ReY07903seboweduaqCLkP23FMM/Z
- yM5pjrJs07+gjD0Ti3FJQ9XJNlEVXTNjTagIMHjlQJIpYrpLxElaAIobCnsg0d9I8h+I
- 6sMg==
-X-Gm-Message-State: AOJu0YzULFJfZ78u25vvTkSvS02fW8MIhBkrn+61Rpb5jfrUHSKCigDP
- 3Bdvxl5NRKPZPw9kezoc5iylRf0LZKVlh5J/Iio=
-X-Google-Smtp-Source: AGHT+IEeC3gq5VJyMXfII0kcH/A4EW7CmvDoRsTVWuxXwQitf9eoymhkncZXtEa22ByiLuh7y3LDCA==
-X-Received: by 2002:adf:f40c:0:b0:315:9e1b:4ea6 with SMTP id
- g12-20020adff40c000000b003159e1b4ea6mr3895600wro.58.1693486773261; 
- Thu, 31 Aug 2023 05:59:33 -0700 (PDT)
+ bh=ur9xi937dzz6Bl2U4bEFfYnHfQ2+6Mk7VLbsIy+yiQY=;
+ b=Zrz0pVpYdpzEzFx8FuB03/3U8/F8UXFJQjjEXs/AnhMMJRksHslFUKZxUjo1TQWN1r
+ vldWIxUYBPQmyQmf7kW30lX/GCdvTON3nOghj9x0ITxSFF0BpEW/kcZJ+UNp01+IPcu/
+ bS/8ntlM5n5RVwredHh9Ib1BU0qksx3qROj54gF0ZJMC2eIwV/yHJ26+G9q94K0dl1Q1
+ r7+UGKSRcM3aKPChbUuxtl7Wg9f49WdJ1InYJ1hL0fKkCtQheBOOwM02ccxbH4Ql09+h
+ BM/udhbxmQL9QKXStDr5AsnP3JnPhcDbFtLJ3l2WvVOoO/eDFrhpdOaXIjDt9mZYjgAP
+ lIHw==
+X-Gm-Message-State: AOJu0YzB+iksPTWm4Ea9qrUQbYIlcqyL1/DBDMx9XpScOx5qOYdsD8BF
+ Wtkty62HPtcTJszzesNeROUPynZwR9WFWfVFDrc=
+X-Google-Smtp-Source: AGHT+IFqinXDk2baO7sSaMza/9NPra0g8C/2PjSHejWBb1jQQgc23npbEqzbt534RZO28ZwbkvpYww==
+X-Received: by 2002:a05:600c:220d:b0:3fc:92:73d6 with SMTP id
+ z13-20020a05600c220d00b003fc009273d6mr3971473wml.11.1693486778822; 
+ Thu, 31 Aug 2023 05:59:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- b15-20020a5d550f000000b0031c5ce91ad6sm2142636wrv.97.2023.08.31.05.59.32
+ q9-20020adff789000000b003180027d67asm2141739wrp.19.2023.08.31.05.59.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 05:59:32 -0700 (PDT)
+ Thu, 31 Aug 2023 05:59:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-riscv@nongnu.org, qemu-block@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>
-Subject: [PULL 27/41] hw/ide: spelling fixes
-Date: Thu, 31 Aug 2023 14:56:29 +0200
-Message-ID: <20230831125646.67855-28-philmd@linaro.org>
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 28/41] hw/display: spelling fixes
+Date: Thu, 31 Aug 2023 14:56:30 +0200
+Message-ID: <20230831125646.67855-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831125646.67855-1-philmd@linaro.org>
 References: <20230831125646.67855-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,60 +100,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Michael Tokarev <mjt@tls.msk.ru>
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20230823065335.1919380-14-mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230823065335.1919380-15-mjt@tls.msk.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/ahci_internal.h | 4 ++--
- hw/ide/cmd646.c        | 2 +-
- hw/ide/core.c          | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ hw/display/bochs-display.c | 2 +-
+ hw/display/qxl.c           | 2 +-
+ hw/display/ssd0303.c       | 2 +-
+ hw/display/ssd0323.c       | 2 +-
+ hw/display/xlnx_dp.c       | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/ide/ahci_internal.h b/hw/ide/ahci_internal.h
-index 2480455372..c244bbd8be 100644
---- a/hw/ide/ahci_internal.h
-+++ b/hw/ide/ahci_internal.h
-@@ -61,13 +61,13 @@ enum AHCIHostReg {
-     AHCI_HOST_REG_CTL        = 1,  /* GHC: global host control */
-     AHCI_HOST_REG_IRQ_STAT   = 2,  /* IS: interrupt status */
-     AHCI_HOST_REG_PORTS_IMPL = 3,  /* PI: bitmap of implemented ports */
--    AHCI_HOST_REG_VERSION    = 4,  /* VS: AHCI spec. version compliancy */
-+    AHCI_HOST_REG_VERSION    = 4,  /* VS: AHCI spec. version compliance */
-     AHCI_HOST_REG_CCC_CTL    = 5,  /* CCC_CTL: CCC Control */
-     AHCI_HOST_REG_CCC_PORTS  = 6,  /* CCC_PORTS: CCC Ports */
-     AHCI_HOST_REG_EM_LOC     = 7,  /* EM_LOC: Enclosure Mgmt Location */
-     AHCI_HOST_REG_EM_CTL     = 8,  /* EM_CTL: Enclosure Mgmt Control */
-     AHCI_HOST_REG_CAP2       = 9,  /* CAP2: host capabilities, extended */
--    AHCI_HOST_REG_BOHC       = 10, /* BOHC: firmare/os handoff ctrl & status */
-+    AHCI_HOST_REG_BOHC       = 10, /* BOHC: firmware/os handoff ctrl & status */
-     AHCI_HOST_REG__COUNT     = 11
- };
- 
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index cabe9048b1..c0bcfa4414 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -257,7 +257,7 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
- 
-     pci_conf[CNTRL] = CNTRL_EN_CH0; // enable IDE0
-     if (d->secondary) {
--        /* XXX: if not enabled, really disable the seconday IDE controller */
-+        /* XXX: if not enabled, really disable the secondary IDE controller */
-         pci_conf[CNTRL] |= CNTRL_EN_CH1; /* enable IDE1 */
+diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
+index e7ec268184..9138e98c3b 100644
+--- a/hw/display/bochs-display.c
++++ b/hw/display/bochs-display.c
+@@ -164,7 +164,7 @@ static int bochs_display_get_mode(BochsDisplayState *s,
+     memset(mode, 0, sizeof(*mode));
+     switch (vbe[VBE_DISPI_INDEX_BPP]) {
+     case 16:
+-        /* best effort: support native endianess only */
++        /* best effort: support native endianness only */
+         mode->format = PIXMAN_r5g6b5;
+         mode->bytepp = 2;
+         break;
+diff --git a/hw/display/qxl.c b/hw/display/qxl.c
+index f1c0eb7dfc..af941fb0c2 100644
+--- a/hw/display/qxl.c
++++ b/hw/display/qxl.c
+@@ -1544,7 +1544,7 @@ static void qxl_create_guest_primary(PCIQXLDevice *qxl, int loadvm,
      }
+ }
  
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index de48ff9f86..ee116891ed 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -1698,7 +1698,7 @@ static bool cmd_set_features(IDEState *s, uint8_t cmd)
-                 put_le16(identify_data + 63, 0x07);
-                 put_le16(identify_data + 88, 0x3f);
-                 break;
--            case 0x02: /* sigle word dma mode*/
-+            case 0x02: /* single word dma mode */
-                 put_le16(identify_data + 62, 0x07 | (1 << (val + 8)));
-                 put_le16(identify_data + 63, 0x07);
-                 put_le16(identify_data + 88, 0x3f);
+-/* return 1 if surface destoy was initiated (in QXL_ASYNC case) or
++/* return 1 if surface destroy was initiated (in QXL_ASYNC case) or
+  * done (in QXL_SYNC case), 0 otherwise. */
+ static int qxl_destroy_primary(PCIQXLDevice *d, qxl_async_io async)
+ {
+diff --git a/hw/display/ssd0303.c b/hw/display/ssd0303.c
+index d67b0ad7b5..32b32a3044 100644
+--- a/hw/display/ssd0303.c
++++ b/hw/display/ssd0303.c
+@@ -8,7 +8,7 @@
+  */
+ 
+ /* The controller can support a variety of different displays, but we only
+-   implement one.  Most of the commends relating to brightness and geometry
++   implement one.  Most of the commands relating to brightness and geometry
+    setup are ignored. */
+ 
+ #include "qemu/osdep.h"
+diff --git a/hw/display/ssd0323.c b/hw/display/ssd0323.c
+index ab229d32b7..09b1bbed0a 100644
+--- a/hw/display/ssd0323.c
++++ b/hw/display/ssd0323.c
+@@ -8,7 +8,7 @@
+  */
+ 
+ /* The controller can support a variety of different displays, but we only
+-   implement one.  Most of the commends relating to brightness and geometry
++   implement one.  Most of the commands relating to brightness and geometry
+    setup are ignored. */
+ 
+ #include "qemu/osdep.h"
+diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
+index b0828d65aa..822355ecc6 100644
+--- a/hw/display/xlnx_dp.c
++++ b/hw/display/xlnx_dp.c
+@@ -380,7 +380,7 @@ static inline void xlnx_dp_audio_mix_buffer(XlnxDPState *s)
+ static void xlnx_dp_audio_callback(void *opaque, int avail)
+ {
+     /*
+-     * Get some data from the DPDMA and compute these datas.
++     * Get some data from the DPDMA and compute these data.
+      * Then wait for QEMU's audio subsystem to call this callback.
+      */
+     XlnxDPState *s = XLNX_DP(opaque);
 -- 
 2.41.0
 
