@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA0D78F410
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 22:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5F078F415
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 22:32:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qboJq-0000AZ-KX; Thu, 31 Aug 2023 16:31:10 -0400
+	id 1qboJv-0000BJ-NX; Thu, 31 Aug 2023 16:31:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qboJn-0000AR-Js
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:31:07 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qboJs-0000Aw-Em
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:31:12 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qboJk-0002oS-O0
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:31:07 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52a3ff5f0abso1694348a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 13:31:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qboJp-0002rm-B0
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 16:31:12 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31aeedbb264so1114324f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 13:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693513860; x=1694118660; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693513866; x=1694118666; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YxNrNRgFFV/AAAT6JMiONDW218OhK4/S9sVDVf48+HY=;
- b=uBm1B8HZOpd9/IzCK2m1vEoYdCXdObA4UdIIT7kzU6izbb6upRnsoTaPbvSFPAj0dk
- HQS8njrHgBG4aBkSmkcMH1kvUg61begV/hEsK+xGZqFwYgoA+XyitrJmlX4CnjE48J30
- og4gu3GWMl5zh+/ZjiBcdRB1+42IATbRU0819B698k8gtUIDAzaDvPuZvlO6AuQN20hG
- V+njBjwIWm9io6/8Kq4dcisomRLINUFGgwZxEYNuwY5uRKBZ+bKrUYOG8iu6GKWftw6+
- +IhXfOBYZznBM18cTcQDns0u2+hBLs3NUUmPovMc2I1ZQiwMSG/q0h2l46W1YBWKRELQ
- K4oA==
+ bh=VGIdt7gdw15SUX7XAakdKyogx2vXcJbQwgMp+pQoatU=;
+ b=NmvpEyzGnR/l4BHEQPoNHzwxrgH63KswG170GP8o43M9oDv4N5965P+I2nnDF0/v8e
+ orhzziWzo2Xu3npwL+oo3hAS0s+ksZXxWWS6W0X5lJvYIydX+uXbTKxjKr1atxdcPuCm
+ fbYTgx/jwXBfKJDmAWXS0qrKyQsT+C7I7ayCN0SI+muzyfj+xnLXUUWHpO/fM9hWsUp7
+ 2UIqjvfMr5XHQSfnTleVEME9oqyutCsPP1KDhpgyILlefdknuKmz/7ygaN99T+svEvX7
+ eaguNbOeOzwmwwKY1SQfn0DvP0ryZ90YRIy8ZpMdS89jkj+sL511OuV+kAcglBssAFJU
+ d9wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693513860; x=1694118660;
+ d=1e100.net; s=20221208; t=1693513866; x=1694118666;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YxNrNRgFFV/AAAT6JMiONDW218OhK4/S9sVDVf48+HY=;
- b=XEbQThzZMGuWI7+kvH//0mAjQ2nUa2PvD/orEAYABguAikyO0zYZshMQJI/xciNXC6
- MjOq8yGXpJMhtUutZwcklC0zp6CN4gmzrMVLS8xyv8oXTb5H1RAOWjEFEYGJVqxa3uO2
- fncToCQRtGyrP4tcj04uT8v3uaYtFYH96d55vLanPhxkY4Ci1WsgNVmjTJVeFefMCQ+9
- XQjsmj5r8PxSssYCyS1EGbZmbVh6ZIWtvegsOrQHonmZOzqFb9Xku/MMs/JjwmK6jGhh
- grMMXoJzNhUVdj/aVxoilCPDaWlM8NvB84iytaczJ3B001UGy75wF4+btY6odfaE9d9K
- 3LBQ==
-X-Gm-Message-State: AOJu0Yy43AylxG4mgvRbk522KY8HaXchzdNHB7zr2wlb2zzrOHH+cwot
- zXBsoVpbbKykJ/h9nhAYstrHNzKrbFwN4T+OEws=
-X-Google-Smtp-Source: AGHT+IHd092jf10jsSuvAmIgcgXqpDiHM4rWV90HuPGCCyF/Z+0uCyg+8hRUo488zlPQNr7z6heV0A==
-X-Received: by 2002:a50:ef13:0:b0:523:102f:3cdd with SMTP id
- m19-20020a50ef13000000b00523102f3cddmr541511eds.19.1693513860447; 
- Thu, 31 Aug 2023 13:31:00 -0700 (PDT)
+ bh=VGIdt7gdw15SUX7XAakdKyogx2vXcJbQwgMp+pQoatU=;
+ b=cFb1zr30X6o8isylf74m7fCZYZcT9qW5t5PBBAGwBixq4BcJLC4VRy8MbEUWmPitOq
+ cdfkmysGakEYJYHpx5bzSdSYMhYs+opwSbnchWzUSJGdrPkK/B2nxUwLeKThYbeBrDCR
+ VMuQSUxEkOtWV70iNW6WlAVzo0eM+el9NyroGiDQpxRvxWlGfaSbHUFOEcwjcJi5ipGt
+ 31+3V0fkUvD4xau733K1acdqDOA4kv8vQnPE9g8vsPqXmXTuWlcb7adZh6JjIk6qG6Ms
+ t8cKh/tw8LlCb4MhC7wObDkec+TMm+iCXpLCveqfnTDhSN5JXFAjILivZUufUoKbzmL0
+ rykw==
+X-Gm-Message-State: AOJu0Yy9X2lV0iKCLYgEy/ly6ZnAsnHfmbHC4BFR8U6ZME55DK3TPBfW
+ eyec48VSCpHDQNV4N1OiEH3i9WyY06La4K3Uj/4=
+X-Google-Smtp-Source: AGHT+IGQE5WB1v/tBKXTuq0JwqzUk5GVdmGIebKHDK7WQdC1uad6PQo1RN2MbdhxlzgqkmrofrMTow==
+X-Received: by 2002:adf:f6c7:0:b0:31d:74f8:fae with SMTP id
+ y7-20020adff6c7000000b0031d74f80faemr366679wrp.71.1693513866474; 
+ Thu, 31 Aug 2023 13:31:06 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- a3-20020aa7cf03000000b0052348d74865sm1182071edy.61.2023.08.31.13.30.59
+ q6-20020aa7da86000000b0052a063e52b8sm1168685eds.83.2023.08.31.13.31.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 13:31:00 -0700 (PDT)
+ Thu, 31 Aug 2023 13:31:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 6/7] target/mips: Convert Loongson [D]MOD[U].G opcodes to
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PATCH v2 7/7] target/mips: Convert Loongson [D]MULT[U].G opcodes to
  decodetree
-Date: Thu, 31 Aug 2023 22:30:22 +0200
-Message-ID: <20230831203024.87300-7-philmd@linaro.org>
+Date: Thu, 31 Aug 2023 22:30:23 +0200
+Message-ID: <20230831203024.87300-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831203024.87300-1-philmd@linaro.org>
 References: <20230831203024.87300-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,117 +99,63 @@ From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
 Convert the following opcodes to decodetree:
 
-- MOD.G - mod 32-bit signed integers
-- MODU.G - mod 32-bit unsigned integers
-- DMOD.G - mod 64-bit signed integers
-- DMODU.G - mod 64-bit unsigned integers
+- MULT.G - multiply 32-bit signed integers
+- MULTU.G - multiply 32-bit unsigned integers
+- DMULT.G - multiply 64-bit signed integers
+- DMULTU.G - multiply 64-bit unsigned integers
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Now that all opcodes from the extension have been converted, we
+can remove completely gen_loongson_integer() and its 2 calls in
+decode_opc_special2_legacy() and decode_opc_special3_legacy().
+
 Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
 ---
- target/mips/tcg/godson2.decode    |   5 ++
- target/mips/tcg/loong-ext.decode  |   5 ++
- target/mips/tcg/loong_translate.c | 111 ++++++++++++++++++++++++++++++
- target/mips/tcg/translate.c       |  82 ----------------------
- 4 files changed, 121 insertions(+), 82 deletions(-)
+ target/mips/tcg/godson2.decode    |  3 ++
+ target/mips/tcg/loong-ext.decode  |  3 ++
+ target/mips/tcg/loong_translate.c | 41 +++++++++++++++++
+ target/mips/tcg/translate.c       | 73 +------------------------------
+ 4 files changed, 49 insertions(+), 71 deletions(-)
 
 diff --git a/target/mips/tcg/godson2.decode b/target/mips/tcg/godson2.decode
-index 4352d1e5e7..e3bf6b12e4 100644
+index e3bf6b12e4..86015ac8e5 100644
 --- a/target/mips/tcg/godson2.decode
 +++ b/target/mips/tcg/godson2.decode
-@@ -17,3 +17,8 @@ DIV_G           011111 ..... ..... ..... 00000 011010   @rs_rt_rd
+@@ -13,6 +13,9 @@
+ 
+ @rs_rt_rd       ...... rs:5  rt:5  rd:5  ..... ......   &muldiv
+ 
++MULTu_G         011111 ..... ..... ..... 00000 01100-   @rs_rt_rd
++DMULTu_G        011111 ..... ..... ..... 00000 01110-   @rs_rt_rd
++
+ DIV_G           011111 ..... ..... ..... 00000 011010   @rs_rt_rd
  DIVU_G          011111 ..... ..... ..... 00000 011011   @rs_rt_rd
  DDIV_G          011111 ..... ..... ..... 00000 011110   @rs_rt_rd
- DDIVU_G         011111 ..... ..... ..... 00000 011111   @rs_rt_rd
-+
-+MOD_G           011111 ..... ..... ..... 00000 100010   @rs_rt_rd
-+MODU_G          011111 ..... ..... ..... 00000 100011   @rs_rt_rd
-+DMOD_G          011111 ..... ..... ..... 00000 100110   @rs_rt_rd
-+DMODU_G         011111 ..... ..... ..... 00000 100111   @rs_rt_rd
 diff --git a/target/mips/tcg/loong-ext.decode b/target/mips/tcg/loong-ext.decode
-index 77639227a1..d63406e3f4 100644
+index d63406e3f4..b05236eb41 100644
 --- a/target/mips/tcg/loong-ext.decode
 +++ b/target/mips/tcg/loong-ext.decode
-@@ -18,3 +18,8 @@ DIV_G           011100 ..... ..... ..... 00000 010100   @rs_rt_rd
+@@ -14,6 +14,9 @@
+ 
+ @rs_rt_rd       ...... rs:5  rt:5  rd:5  ..... ......   &muldiv
+ 
++MULTu_G         011100 ..... ..... ..... 00000 0100-0   @rs_rt_rd
++DMULTu_G        011100 ..... ..... ..... 00000 0100-1   @rs_rt_rd
++
+ DIV_G           011100 ..... ..... ..... 00000 010100   @rs_rt_rd
  DDIV_G          011100 ..... ..... ..... 00000 010101   @rs_rt_rd
  DIVU_G          011100 ..... ..... ..... 00000 010110   @rs_rt_rd
- DDIVU_G         011100 ..... ..... ..... 00000 010111   @rs_rt_rd
-+
-+MOD_G           011100 ..... ..... ..... 00000 011100   @rs_rt_rd
-+DMOD_G          011100 ..... ..... ..... 00000 011101   @rs_rt_rd
-+MODU_G          011100 ..... ..... ..... 00000 011110   @rs_rt_rd
-+DMODU_G         011100 ..... ..... ..... 00000 011111   @rs_rt_rd
 diff --git a/target/mips/tcg/loong_translate.c b/target/mips/tcg/loong_translate.c
-index 87023696a0..bddf1cb7aa 100644
+index bddf1cb7aa..c896e64b9e 100644
 --- a/target/mips/tcg/loong_translate.c
 +++ b/target/mips/tcg/loong_translate.c
-@@ -141,6 +141,117 @@ static bool trans_DDIVU_G(DisasContext *s, arg_muldiv *a)
-     return gen_lext_DIVU_G(s, a->rt, a->rs, a->rd, true);
+@@ -252,6 +252,47 @@ static bool trans_DMODU_G(DisasContext *s, arg_muldiv *a)
+     return gen_lext_MODU_G(s, a->rt, a->rs, a->rd, true);
  }
  
-+static bool gen_lext_MOD_G(DisasContext *s, int rd, int rs, int rt,
-+                           bool is_double)
-+{
-+    TCGv t0, t1;
-+    TCGLabel *l1, *l2, *l3;
-+
-+    if (is_double) {
-+        if (TARGET_LONG_BITS != 64) {
-+            return false;
-+        }
-+        check_mips_64(s);
-+    }
-+
-+    if (rd == 0) {
-+        /* Treat as NOP. */
-+        return true;
-+    }
-+
-+    t0 = tcg_temp_new();
-+    t1 = tcg_temp_new();
-+    l1 = gen_new_label();
-+    l2 = gen_new_label();
-+    l3 = gen_new_label();
-+
-+    gen_load_gpr(t0, rs);
-+    gen_load_gpr(t1, rt);
-+
-+    if (!is_double) {
-+        tcg_gen_ext32u_tl(t0, t0);
-+        tcg_gen_ext32u_tl(t1, t1);
-+    }
-+    tcg_gen_brcondi_tl(TCG_COND_EQ, t1, 0, l1);
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t0, is_double && TARGET_LONG_BITS == 64
-+                                        ? LLONG_MIN : INT_MIN, l2);
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t1, -1LL, l2);
-+    gen_set_label(l1);
-+    tcg_gen_movi_tl(cpu_gpr[rd], 0);
-+    tcg_gen_br(l3);
-+    gen_set_label(l2);
-+    tcg_gen_rem_tl(cpu_gpr[rd], t0, t1);
-+    if (!is_double) {
-+        tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
-+    }
-+    gen_set_label(l3);
-+
-+    return true;
-+}
-+
-+static bool trans_MOD_G(DisasContext *s, arg_muldiv *a)
-+{
-+    return gen_lext_MOD_G(s, a->rt, a->rs, a->rd, false);
-+}
-+
-+static bool trans_DMOD_G(DisasContext *s, arg_muldiv *a)
-+{
-+    return gen_lext_MOD_G(s, a->rt, a->rs, a->rd, true);
-+}
-+
-+static bool gen_lext_MODU_G(DisasContext *s, int rd, int rs, int rt,
++static bool gen_lext_MULT_G(DisasContext *s, int rd, int rs, int rt,
 +                            bool is_double)
 +{
 +    TCGv t0, t1;
-+    TCGLabel *l1, *l2;
 +
 +    if (is_double) {
 +        if (TARGET_LONG_BITS != 64) {
@@ -226,184 +171,165 @@ index 87023696a0..bddf1cb7aa 100644
 +
 +    t0 = tcg_temp_new();
 +    t1 = tcg_temp_new();
-+    l1 = gen_new_label();
-+    l2 = gen_new_label();
 +
 +    gen_load_gpr(t0, rs);
 +    gen_load_gpr(t1, rt);
 +
-+    if (!is_double) {
-+        tcg_gen_ext32u_tl(t0, t0);
-+        tcg_gen_ext32u_tl(t1, t1);
-+    }
-+    tcg_gen_brcondi_tl(TCG_COND_NE, t1, 0, l1);
-+    tcg_gen_movi_tl(cpu_gpr[rd], 0);
-+    tcg_gen_br(l2);
-+    gen_set_label(l1);
-+    tcg_gen_remu_tl(cpu_gpr[rd], t0, t1);
++    tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
 +    if (!is_double) {
 +        tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
 +    }
-+    gen_set_label(l2);
 +
 +    return true;
 +}
 +
-+static bool trans_MODU_G(DisasContext *s, arg_muldiv *a)
++static bool trans_MULTu_G(DisasContext *s, arg_muldiv *a)
 +{
-+    return gen_lext_MODU_G(s, a->rt, a->rs, a->rd, false);
++    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, false);
 +}
 +
-+static bool trans_DMODU_G(DisasContext *s, arg_muldiv *a)
++static bool trans_DMULTu_G(DisasContext *s, arg_muldiv *a)
 +{
-+    return gen_lext_MODU_G(s, a->rt, a->rs, a->rd, true);
++    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, true);
 +}
 +
  bool decode_ext_loongson(DisasContext *ctx, uint32_t insn)
  {
      if ((ctx->insn_flags & INSN_LOONGSON2E)
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index f1c99a9218..2cfabb3103 100644
+index 2cfabb3103..e770840d28 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -333,10 +333,6 @@ enum {
-     OPC_DMULT_G_2F  = 0x11 | OPC_SPECIAL2,
-     OPC_MULTU_G_2F  = 0x12 | OPC_SPECIAL2,
-     OPC_DMULTU_G_2F = 0x13 | OPC_SPECIAL2,
--    OPC_MOD_G_2F    = 0x1c | OPC_SPECIAL2,
--    OPC_DMOD_G_2F   = 0x1d | OPC_SPECIAL2,
--    OPC_MODU_G_2F   = 0x1e | OPC_SPECIAL2,
--    OPC_DMODU_G_2F  = 0x1f | OPC_SPECIAL2,
+@@ -328,11 +328,6 @@ enum {
+     OPC_MUL      = 0x02 | OPC_SPECIAL2,
+     OPC_MSUB     = 0x04 | OPC_SPECIAL2,
+     OPC_MSUBU    = 0x05 | OPC_SPECIAL2,
+-    /* Loongson 2F */
+-    OPC_MULT_G_2F   = 0x10 | OPC_SPECIAL2,
+-    OPC_DMULT_G_2F  = 0x11 | OPC_SPECIAL2,
+-    OPC_MULTU_G_2F  = 0x12 | OPC_SPECIAL2,
+-    OPC_DMULTU_G_2F = 0x13 | OPC_SPECIAL2,
      /* Misc */
      OPC_CLZ      = 0x20 | OPC_SPECIAL2,
      OPC_CLO      = 0x21 | OPC_SPECIAL2,
-@@ -370,10 +366,6 @@ enum {
-     OPC_MULTU_G_2E  = 0x19 | OPC_SPECIAL3,
-     OPC_DMULT_G_2E  = 0x1C | OPC_SPECIAL3,
-     OPC_DMULTU_G_2E = 0x1D | OPC_SPECIAL3,
--    OPC_MOD_G_2E    = 0x22 | OPC_SPECIAL3,
--    OPC_MODU_G_2E   = 0x23 | OPC_SPECIAL3,
--    OPC_DMOD_G_2E   = 0x26 | OPC_SPECIAL3,
--    OPC_DMODU_G_2E  = 0x27 | OPC_SPECIAL3,
+@@ -361,12 +356,6 @@ enum {
+     OPC_RDHWR    = 0x3B | OPC_SPECIAL3,
+     OPC_GINV     = 0x3D | OPC_SPECIAL3,
  
+-    /* Loongson 2E */
+-    OPC_MULT_G_2E   = 0x18 | OPC_SPECIAL3,
+-    OPC_MULTU_G_2E  = 0x19 | OPC_SPECIAL3,
+-    OPC_DMULT_G_2E  = 0x1C | OPC_SPECIAL3,
+-    OPC_DMULTU_G_2E = 0x1D | OPC_SPECIAL3,
+-
      /* MIPS DSP Load */
      OPC_LX_DSP         = 0x0A | OPC_SPECIAL3,
-@@ -3617,42 +3609,6 @@ static void gen_loongson_integer(DisasContext *ctx, uint32_t opc,
-         tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
-         tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
-         break;
--    case OPC_MOD_G_2E:
--    case OPC_MOD_G_2F:
--        {
--            TCGLabel *l1 = gen_new_label();
--            TCGLabel *l2 = gen_new_label();
--            TCGLabel *l3 = gen_new_label();
--            tcg_gen_ext32u_tl(t0, t0);
--            tcg_gen_ext32u_tl(t1, t1);
--            tcg_gen_brcondi_tl(TCG_COND_EQ, t1, 0, l1);
--            tcg_gen_brcondi_tl(TCG_COND_NE, t0, INT_MIN, l2);
--            tcg_gen_brcondi_tl(TCG_COND_NE, t1, -1, l2);
--            gen_set_label(l1);
--            tcg_gen_movi_tl(cpu_gpr[rd], 0);
--            tcg_gen_br(l3);
--            gen_set_label(l2);
--            tcg_gen_rem_tl(cpu_gpr[rd], t0, t1);
--            tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
--            gen_set_label(l3);
--        }
--        break;
--    case OPC_MODU_G_2E:
--    case OPC_MODU_G_2F:
--        {
--            TCGLabel *l1 = gen_new_label();
--            TCGLabel *l2 = gen_new_label();
--            tcg_gen_ext32u_tl(t0, t0);
--            tcg_gen_ext32u_tl(t1, t1);
--            tcg_gen_brcondi_tl(TCG_COND_NE, t1, 0, l1);
--            tcg_gen_movi_tl(cpu_gpr[rd], 0);
--            tcg_gen_br(l2);
--            gen_set_label(l1);
--            tcg_gen_remu_tl(cpu_gpr[rd], t0, t1);
--            tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
--            gen_set_label(l2);
--        }
--        break;
- #if defined(TARGET_MIPS64)
-     case OPC_DMULT_G_2E:
-     case OPC_DMULT_G_2F:
-@@ -3662,36 +3618,6 @@ static void gen_loongson_integer(DisasContext *ctx, uint32_t opc,
-     case OPC_DMULTU_G_2F:
-         tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
-         break;
--    case OPC_DMOD_G_2E:
--    case OPC_DMOD_G_2F:
--        {
--            TCGLabel *l1 = gen_new_label();
--            TCGLabel *l2 = gen_new_label();
--            TCGLabel *l3 = gen_new_label();
--            tcg_gen_brcondi_tl(TCG_COND_EQ, t1, 0, l1);
--            tcg_gen_brcondi_tl(TCG_COND_NE, t0, -1LL << 63, l2);
--            tcg_gen_brcondi_tl(TCG_COND_NE, t1, -1LL, l2);
--            gen_set_label(l1);
--            tcg_gen_movi_tl(cpu_gpr[rd], 0);
--            tcg_gen_br(l3);
--            gen_set_label(l2);
--            tcg_gen_rem_tl(cpu_gpr[rd], t0, t1);
--            gen_set_label(l3);
--        }
--        break;
--    case OPC_DMODU_G_2E:
--    case OPC_DMODU_G_2F:
--        {
--            TCGLabel *l1 = gen_new_label();
--            TCGLabel *l2 = gen_new_label();
--            tcg_gen_brcondi_tl(TCG_COND_NE, t1, 0, l1);
--            tcg_gen_movi_tl(cpu_gpr[rd], 0);
--            tcg_gen_br(l2);
--            gen_set_label(l1);
--            tcg_gen_remu_tl(cpu_gpr[rd], t0, t1);
--            gen_set_label(l2);
--        }
--        break;
- #endif
+     /* MIPS DSP Arithmetic */
+@@ -3582,46 +3571,6 @@ static void gen_cl(DisasContext *ctx, uint32_t opc,
      }
  }
-@@ -13619,8 +13545,6 @@ static void decode_opc_special2_legacy(CPUMIPSState *env, DisasContext *ctx)
+ 
+-/* Godson integer instructions */
+-static void gen_loongson_integer(DisasContext *ctx, uint32_t opc,
+-                                 int rd, int rs, int rt)
+-{
+-    TCGv t0, t1;
+-
+-    if (rd == 0) {
+-        /* Treat as NOP. */
+-        return;
+-    }
+-
+-    t0 = tcg_temp_new();
+-    t1 = tcg_temp_new();
+-    gen_load_gpr(t0, rs);
+-    gen_load_gpr(t1, rt);
+-
+-    switch (opc) {
+-    case OPC_MULT_G_2E:
+-    case OPC_MULT_G_2F:
+-        tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
+-        tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
+-        break;
+-    case OPC_MULTU_G_2E:
+-    case OPC_MULTU_G_2F:
+-        tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
+-        tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
+-        break;
+-#if defined(TARGET_MIPS64)
+-    case OPC_DMULT_G_2E:
+-    case OPC_DMULT_G_2F:
+-        tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
+-        break;
+-    case OPC_DMULTU_G_2E:
+-    case OPC_DMULTU_G_2F:
+-        tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
+-        break;
+-#endif
+-    }
+-}
+-
+ /* Loongson multimedia instructions */
+ static void gen_loongson_multimedia(DisasContext *ctx, int rd, int rs, int rt)
+ {
+@@ -13543,11 +13492,6 @@ static void decode_opc_special2_legacy(CPUMIPSState *env, DisasContext *ctx)
+     case OPC_MUL:
+         gen_arith(ctx, op1, rd, rs, rt);
          break;
-     case OPC_MULT_G_2F:
-     case OPC_MULTU_G_2F:
--    case OPC_MOD_G_2F:
--    case OPC_MODU_G_2F:
-         check_insn(ctx, INSN_LOONGSON2F | ASE_LEXT);
-         gen_loongson_integer(ctx, op1, rd, rs, rt);
+-    case OPC_MULT_G_2F:
+-    case OPC_MULTU_G_2F:
+-        check_insn(ctx, INSN_LOONGSON2F | ASE_LEXT);
+-        gen_loongson_integer(ctx, op1, rd, rs, rt);
+-        break;
+     case OPC_CLO:
+     case OPC_CLZ:
+         check_insn(ctx, ISA_MIPS_R1);
+@@ -13572,11 +13516,6 @@ static void decode_opc_special2_legacy(CPUMIPSState *env, DisasContext *ctx)
+         check_mips_64(ctx);
+         gen_cl(ctx, op1, rd, rs);
          break;
-@@ -13650,8 +13574,6 @@ static void decode_opc_special2_legacy(CPUMIPSState *env, DisasContext *ctx)
-         break;
-     case OPC_DMULT_G_2F:
-     case OPC_DMULTU_G_2F:
--    case OPC_DMOD_G_2F:
--    case OPC_DMODU_G_2F:
-         check_insn(ctx, INSN_LOONGSON2F | ASE_LEXT);
-         gen_loongson_integer(ctx, op1, rd, rs, rt);
-         break;
-@@ -13787,8 +13709,6 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
+-    case OPC_DMULT_G_2F:
+-    case OPC_DMULTU_G_2F:
+-        check_insn(ctx, INSN_LOONGSON2F | ASE_LEXT);
+-        gen_loongson_integer(ctx, op1, rd, rs, rt);
+-        break;
+ #endif
+     default:            /* Invalid */
+         MIPS_INVAL("special2_legacy");
+@@ -13709,10 +13648,9 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
  
      op1 = MASK_SPECIAL3(ctx->opcode);
      switch (op1) {
--    case OPC_MOD_G_2E:
--    case OPC_MODU_G_2E:
-     case OPC_MULT_G_2E:
-     case OPC_MULTU_G_2E:
+-    case OPC_MULT_G_2E:
+-    case OPC_MULTU_G_2E:
++    case OPC_MUL_PH_DSP:
          /*
-@@ -14055,8 +13975,6 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
- #if defined(TARGET_MIPS64)
-     case OPC_DMULT_G_2E:
-     case OPC_DMULTU_G_2E:
--    case OPC_DMOD_G_2E:
--    case OPC_DMODU_G_2E:
-         check_insn(ctx, INSN_LOONGSON2E);
-         gen_loongson_integer(ctx, op1, rd, rs, rt);
+-         * OPC_MULT_G_2E, OPC_ADDUH_QB_DSP, OPC_MUL_PH_DSP have
++         * OPC_ADDUH_QB_DSP, OPC_MUL_PH_DSP have
+          * the same mask and op1.
+          */
+         if ((ctx->insn_flags & ASE_DSP_R2) && (op1 == OPC_MUL_PH_DSP)) {
+@@ -13743,8 +13681,6 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
+                 gen_reserved_instruction(ctx);
+                 break;
+             }
+-        } else if (ctx->insn_flags & INSN_LOONGSON2E) {
+-            gen_loongson_integer(ctx, op1, rd, rs, rt);
+         } else {
+             gen_reserved_instruction(ctx);
+         }
+@@ -13973,11 +13909,6 @@ static void decode_opc_special3_legacy(CPUMIPSState *env, DisasContext *ctx)
+         }
          break;
+ #if defined(TARGET_MIPS64)
+-    case OPC_DMULT_G_2E:
+-    case OPC_DMULTU_G_2E:
+-        check_insn(ctx, INSN_LOONGSON2E);
+-        gen_loongson_integer(ctx, op1, rd, rs, rt);
+-        break;
+     case OPC_ABSQ_S_QH_DSP:
+         op2 = MASK_ABSQ_S_QH(ctx->opcode);
+         switch (op2) {
 -- 
 2.41.0
 
