@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EEE78EE27
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9166D78EE26
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:10:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhKM-0006NQ-RV; Thu, 31 Aug 2023 09:03:14 -0400
+	id 1qbhLF-0007q6-C4; Thu, 31 Aug 2023 09:04:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGa-0004Ml-K5
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:24 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGn-0004bM-I8
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:37 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGY-0005uE-1J
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:20 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-76f08e302a1so50149885a.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:59:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhGi-0005wB-0S
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:32 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-529fb04a234so983955a12.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:59:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693486756; x=1694091556; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693486762; x=1694091562; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K9fF8pIxAEbO1JVLS8qke83pavQv2lkvy3aArf23uO4=;
- b=U+ujwEYqQM3eIXUkydQYLzhXZYQ2rseIjBxygt4+yAiMOIOu1LuDSiTCt2uUMHyQL2
- 5N6KEjj4pXlAqzzTMIARnwRv89aPxO6PsXqK4HSuKiPoVZ2GfgAVyj02/Uv1smN61aHZ
- QMo47O7uS0P6bLaNipi+hC+OA9gJ0DSisbb/yNzxtUPGvmzJBhwVqKBAj5weEn6nFfBP
- nLwoYvQrMf6DRnbfmVuXHsNmpXtKm28D65wzEvd8reQhaYugbaAZkry8HMg2iZvpGhP9
- PsJV+MaYoZ/6CTfs+wOI5Sfra2XMSZggrRsyr24PRQQUyxp7nfJrAlJ/KdOu9E/lJq5+
- LVug==
+ bh=24nF/N+YzUtE3HhDlO2XU4XzAEvrvbZNN4parmEdVAE=;
+ b=AdqSwMeSmeNpTUxF+OoIEvGdlgYKiIQlQFeWvycyrkJt6VfM8Ai8r42IKy/SdEHFId
+ SE+6OSAoplnWZJxnthYiHgaCmsolT06mSriZPNBfnaRFaag+yLZKVgFaoeOkUOdj+arE
+ OXXaPDLzrHu5p40qzzbJ0W6Hbrkz2u1MVwKGx03KbzTq+xXKCCiuZwGwPY6L/vLUAm58
+ SbCx9EaJoVXznyVSIWzUVTg/Q9o+3bTJnnwILOsyUL4dGoI8mMgOBPlUBbl7R2FZUWhn
+ qrV6C7E3bv7L3ENXpO3m+zeMQzd0W5pasiyX1FH2LlJTG7Z0nDZOqvPeRyUqhMoK2+gC
+ Qe4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486756; x=1694091556;
+ d=1e100.net; s=20221208; t=1693486762; x=1694091562;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K9fF8pIxAEbO1JVLS8qke83pavQv2lkvy3aArf23uO4=;
- b=RRAiu0KVcaA8c7SEewfZ59+zqCkTCeTYdnPZHnGCi4H0hkZXh4GyFI2aDx5kJetPfo
- KnzXO/EHf/QCbOyNGDQ+CjTDKc2redH54pwgAw9ryfwMM976BvLjat1WEtSobtwPF+kj
- GX6zcREJ2Ah2nYdN6x+gYF2XOX7659/ZhBxXXqqYcq8cjBp0P/YhY6jBrJOJ5th/R1T+
- 2syT0L7guXmAmLOEIj/bA0MXG1B0UDwS3MiT40QDbRa9ddvhXM/Lj5YLOWU3+ltHmKFc
- 7ozKUrg/8RHf/FpWpyZD80sV98HHTBOhreb7M8F7pqT9Mnw/EOaXRSQ8z6fvW7KvWCKx
- EQ8Q==
-X-Gm-Message-State: AOJu0YxSATxbBPzD1Rl8OQg7Q430CJFOtG/IPcTCDsBT6TZ+/cQ5K+xd
- rKKAE7QIUsTucTR577/T/2iMGS+5UD8NkK0DB9Q=
-X-Google-Smtp-Source: AGHT+IGwjHt9Woz6qrincB4KsE1QT88bhz5+lOlWGReU9TCMWSDsRn3K1so61hSEvDs7bfEfS/oM1w==
-X-Received: by 2002:a05:620a:143a:b0:767:915a:ccf6 with SMTP id
- k26-20020a05620a143a00b00767915accf6mr2254503qkj.65.1693486756318; 
- Thu, 31 Aug 2023 05:59:16 -0700 (PDT)
+ bh=24nF/N+YzUtE3HhDlO2XU4XzAEvrvbZNN4parmEdVAE=;
+ b=JHXREMHtM//9fVVe+jRM33dj6SqfMtgyod79ECFZz37z0glaxvyrv9H+hypGZGPTTG
+ kr9uZseW2yjtEVsXQsWbgXMigXqX+5is2D0CePyYO5Hut5oEw4AUqr+ZDRVaBQdwn1uS
+ oMj30quvLMo7hxfP3srGjJ7bSKyGa9pmCGHxgNy5Ve+Q6b9go0gzyWB/vIHka1xlEjvB
+ OsBMBIJapqv6/F+vPf0WP6+2OC2g+qo9qpie7RnMSS+IR/KZh0FSD5woeSueq8YgTu75
+ oLcuYJEs23s13Pm/fHhbpAEcvaepUsgAYAkkLSlWj1rb3dC/5foWFAiCoGvroduO3dAw
+ QScw==
+X-Gm-Message-State: AOJu0YwdrhYXsQxPWU0CXivaiACdYt9x6DVBi4hiMwl0AVtkEhB9Fs+g
+ 8Ta3yv7Cu8Mo/qUCRPgngpU7O8Krx+2YnZAjtII=
+X-Google-Smtp-Source: AGHT+IEJndlv4FOjjHD0urZaoFW5piSdOIxRYpDTk+s3vMcsrjx8/dtQecEcYbDkv/K0TyDW/U3YrQ==
+X-Received: by 2002:a50:ec95:0:b0:523:b1b0:f69f with SMTP id
+ e21-20020a50ec95000000b00523b1b0f69fmr4078743edr.32.1693486762097; 
+ Thu, 31 Aug 2023 05:59:22 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- x12-20020ae9f80c000000b00767da10efb6sm565423qkh.97.2023.08.31.05.59.14
+ i19-20020a056402055300b005233609e39dsm777727edx.30.2023.08.31.05.59.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 05:59:16 -0700 (PDT)
+ Thu, 31 Aug 2023 05:59:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-riscv@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 24/41] hw/char/pl011: Replace magic values by register field
- definitions
-Date: Thu, 31 Aug 2023 14:56:26 +0200
-Message-ID: <20230831125646.67855-25-philmd@linaro.org>
+ Titus Rwantare <titusr@google.com>
+Subject: [PULL 25/41] hw/i2c/pmbus_device: Fix modifying QOM class internals
+ from instance
+Date: Thu, 31 Aug 2023 14:56:27 +0200
+Message-ID: <20230831125646.67855-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831125646.67855-1-philmd@linaro.org>
 References: <20230831125646.67855-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=philmd@linaro.org; helo=mail-qk1-x731.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,88 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-0x400 is Data Register Break Error (DR_BE),
-0x10 is Line Control Register Fifo Enabled (LCR_FEN)
-and 0x1 is Send Break (LCR_BRK).
+QOM object instance should not modify its class state (because
+all other objects instanciated from this class get affected).
 
+Instead of modifying the PMBusDeviceClass 'device_num_pages' field
+the first time a instance is initialized (in pmbus_pages_alloc),
+introduce a new pmbus_pages_num() helper which returns the page
+number from the class without modifying the class state.
+
+The code logic become slighly simplified.
+
+Inspired-by: Bernhard Beschow <shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230522153144.30610-7-philmd@linaro.org>
+Message-Id: <20230523064408.57941-4-philmd@linaro.org>
 ---
- hw/char/pl011.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ hw/i2c/pmbus_device.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-index 96675f52cc..58edeb9ddb 100644
---- a/hw/char/pl011.c
-+++ b/hw/char/pl011.c
-@@ -54,6 +54,9 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
- #define PL011_FLAG_TXFF 0x20
- #define PL011_FLAG_RXFE 0x10
- 
-+/* Data Register, UARTDR */
-+#define DR_BE   (1 << 10)
-+
- /* Interrupt status bits in UARTRIS, UARTMIS, UARTIMSC */
- #define INT_OE (1 << 10)
- #define INT_BE (1 << 9)
-@@ -69,6 +72,10 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Chardev *chr)
- #define INT_E (INT_OE | INT_BE | INT_PE | INT_FE)
- #define INT_MS (INT_RI | INT_DSR | INT_DCD | INT_CTS)
- 
-+/* Line Control Register, UARTLCR_H */
-+#define LCR_FEN     (1 << 4)
-+#define LCR_BRK     (1 << 0)
-+
- static const unsigned char pl011_id_arm[8] =
-   { 0x11, 0x10, 0x14, 0x00, 0x0d, 0xf0, 0x05, 0xb1 };
- static const unsigned char pl011_id_luminary[8] =
-@@ -116,7 +123,7 @@ static void pl011_update(PL011State *s)
- 
- static bool pl011_is_fifo_enabled(PL011State *s)
- {
--    return (s->lcr & 0x10) != 0;
-+    return (s->lcr & LCR_FEN) != 0;
+diff --git a/hw/i2c/pmbus_device.c b/hw/i2c/pmbus_device.c
+index 44fe4eddbb..8bc9d5108a 100644
+--- a/hw/i2c/pmbus_device.c
++++ b/hw/i2c/pmbus_device.c
+@@ -190,15 +190,18 @@ static void pmbus_quick_cmd(SMBusDevice *smd, uint8_t read)
+     }
  }
  
- static inline unsigned pl011_get_fifo_depth(PL011State *s)
-@@ -218,7 +225,7 @@ static void pl011_set_read_trigger(PL011State *s)
-        the threshold.  However linux only reads the FIFO in response to an
-        interrupt.  Triggering the interrupt when the FIFO is non-empty seems
-        to make things work.  */
--    if (s->lcr & 0x10)
-+    if (s->lcr & LCR_FEN)
-         s->read_trigger = (s->ifl >> 1) & 0x1c;
-     else
- #endif
-@@ -281,11 +288,11 @@ static void pl011_write(void *opaque, hwaddr offset,
-         break;
-     case 11: /* UARTLCR_H */
-         /* Reset the FIFO state on FIFO enable or disable */
--        if ((s->lcr ^ value) & 0x10) {
-+        if ((s->lcr ^ value) & LCR_FEN) {
-             pl011_reset_fifo(s);
-         }
--        if ((s->lcr ^ value) & 0x1) {
--            int break_enable = value & 0x1;
-+        if ((s->lcr ^ value) & LCR_BRK) {
-+            int break_enable = value & LCR_BRK;
-             qemu_chr_fe_ioctl(&s->chr, CHR_IOCTL_SERIAL_SET_BREAK,
-                               &break_enable);
-         }
-@@ -359,8 +366,9 @@ static void pl011_receive(void *opaque, const uint8_t *buf, int size)
- 
- static void pl011_event(void *opaque, QEMUChrEvent event)
++static uint8_t pmbus_pages_num(PMBusDevice *pmdev)
++{
++    const PMBusDeviceClass *k = PMBUS_DEVICE_GET_CLASS(pmdev);
++
++    /* some PMBus devices don't use the PAGE command, so they get 1 page */
++    return k->device_num_pages ? : 1;
++}
++
+ static void pmbus_pages_alloc(PMBusDevice *pmdev)
  {
--    if (event == CHR_EVENT_BREAK)
--        pl011_put_fifo(opaque, 0x400);
-+    if (event == CHR_EVENT_BREAK) {
-+        pl011_put_fifo(opaque, DR_BE);
-+    }
+-    /* some PMBus devices don't use the PAGE command, so they get 1 page */
+-    PMBusDeviceClass *k = PMBUS_DEVICE_GET_CLASS(pmdev);
+-    if (k->device_num_pages == 0) {
+-        k->device_num_pages = 1;
+-    }
+-    pmdev->num_pages = k->device_num_pages;
+-    pmdev->pages = g_new0(PMBusPage, k->device_num_pages);
++    pmdev->num_pages = pmbus_pages_num(pmdev);
++    pmdev->pages = g_new0(PMBusPage, pmdev->num_pages);
  }
  
- static void pl011_clock_update(void *opaque, ClockEvent event)
+ void pmbus_check_limits(PMBusDevice *pmdev)
 -- 
 2.41.0
 
