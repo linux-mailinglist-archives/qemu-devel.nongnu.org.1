@@ -2,98 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8ED78E9AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 11:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4AC78E9E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:05:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbeAt-0003eY-4y; Thu, 31 Aug 2023 05:41:15 -0400
+	id 1qbeWh-0008Cy-B5; Thu, 31 Aug 2023 06:03:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbeAp-0003eC-Nj
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:41:11 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbeWf-0008Cd-Gy
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:03:45 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbeAn-0007T2-Cw
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:41:11 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-52bca2e8563so710846a12.2
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 02:41:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbeWc-00036p-UW
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:03:45 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4ff09632194so1260012e87.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693474868; x=1694079668; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wtrAuLS2IemVwbQWVwz9e7GBYwn2a8GD3H/IILTsKuQ=;
- b=iIYkl+CK6PaoJnjmmF+ibKoK8hLjzdBuATs2zVHT13AqOg5VUCSSh/qPpxBIgpnUls
- OZJoXh9kJ7byH+VhfScQrYxV5FLTDamT60XKEjUxZ80m1fS88LYGL6Ds2ORTIsvdASQ9
- Gx992YWGQinOVtHoaOlirQOc6gomewInuGBPUeCczMDc2RLlRIOzXgU5ZglICnxvZEJJ
- GVwbZIl7BlcQE+HCfvn5QR6xDkgvG0zo1D7gJ8/KoIyLw3DakphCXXCMYnFQGx4Xav2y
- g0egbPdwCoQFyehst4yCeSIlbGY+YWv+xHfv0Oi3NoA1k3cYVfmCuICE8CIbHbwEa7MR
- TKxQ==
+ d=linaro.org; s=google; t=1693476221; x=1694081021; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hB33pLaPpLvvdt+D2fH747Y5XKVfL/40nfO6Hfng3FQ=;
+ b=y4jT+9NTgBBLV/1S8KpI4D9Z83yrWJgum73yJCkluyA7tTUUFaz6nWlUEvoI7BxXay
+ Q0LfWGATGSt7iQSFCwQ2I/mjB9kx9poR8++rqCqKmgjeKJWIT9HbggRIG8tay5Qdud9P
+ eZw3Xh9Zu/URN0hhORwDjO4nJE9FMPEREwmdSROgM4j/vMe0IdxaBVGK5qe9vo3F1Mvz
+ VKvbchNM5vqaG2m35MwcIHuCj+J1S6wC6vPGe4hjnPv4753I1EbDZnzOfv7AqNvYt3Sz
+ cvNKdiaHZXpXvtU6AZQ+X8etX9Mk2kqW0rqnYQC8SZRgny3CAVObLDKGos5fEg5ZQPtS
+ /ZCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693474868; x=1694079668;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wtrAuLS2IemVwbQWVwz9e7GBYwn2a8GD3H/IILTsKuQ=;
- b=IrmXjbiMG3F0TaWk01OVWs1066fisHKQnkUDVvFH4HQgcTi5a1rdPFhqTTeuqMKcY+
- EMaMfEwnr029GjVfw98WZ9hELrosV9quGCmugKbntmaGRYiN/HM2A7hhbXWXKuadd1Tx
- xp67kFWS5fKMv1aA0fVOKUGnaDZH2AYsa7OScoFjjPU8Y/hTlFyfrhOV8lun7aoOq+FT
- Ch//+2mDIHjVmYMV9DMUh5aTH7YP+GijsdvKEvgmyrRAPn3hUg/50Lha/0E/yrbpxtMv
- fbodeZ6LDF2jMkfHBNWBcIBf8xYlsEPocYvNwkXdbwNbXlLUnz4R9cTZEJ5qxRpuYf5g
- JP3w==
-X-Gm-Message-State: AOJu0YxqvHANzVifXdyz4T9/AdKN/05ucWnWGtYdSeFfHOPQfniLgPGB
- Y0p1nzVjc84W2WGXJznwwPgLlg==
-X-Google-Smtp-Source: AGHT+IG3c1HJMxF4MJNYluefZGxd3hmyWfK9ojUZ7EbwQT0LdoejqO1VhAZhb19uqnff5TwlXBJs/w==
-X-Received: by 2002:aa7:c685:0:b0:523:b133:5c7e with SMTP id
- n5-20020aa7c685000000b00523b1335c7emr4148407edq.1.1693474867879; 
- Thu, 31 Aug 2023 02:41:07 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.245])
- by smtp.gmail.com with ESMTPSA id
- g10-20020aa7c58a000000b005227e53cec2sm588254edq.50.2023.08.31.02.41.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 02:41:07 -0700 (PDT)
-Message-ID: <ef1c5137-f4d4-cb12-c606-ad76f46e4608@linaro.org>
-Date: Thu, 31 Aug 2023 11:41:04 +0200
+ d=1e100.net; s=20221208; t=1693476221; x=1694081021;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hB33pLaPpLvvdt+D2fH747Y5XKVfL/40nfO6Hfng3FQ=;
+ b=GFkc8dz66i4zwko/LCCCcUvjhLOM3FLgzFjDbosuZE0iBnughMW5EXiM7MkENcS30w
+ dsqy/7+2aykttCIBLMyF6VE7pt47WG8use7p7rfsC6dNdz9HdFzeqNiFMXHS2neOlN1+
+ neHluB3nly1SwvFXiaJCBUsmxMMiH5vO6kkWCdEvQOmFBFomh3SKZrUww7WdIL2wg+3t
+ s+VFKRZuiLAF/GZfKwGAx6sT9G2MjHay/73pQYP1oxR8/EKxdSj/CAhn0oII5iNqXmpd
+ KCJE/QPn9ZZvR/lAVW7S3dsCQ5Zaj5goxHiZ7xPduP0qamQ2H74CkI7i3A7CzDwzLHD2
+ VobQ==
+X-Gm-Message-State: AOJu0YxZyHZ1QqQwk/fT2NoiFa3CIrQo1j546/FhO4ZAy2Pk7f6z+ztv
+ UGC7xblrVO/VgiIroQzbnwouVXJrvDCPzoXZLjDFvA==
+X-Google-Smtp-Source: AGHT+IFX/1mT0xBVolLvtKiip3l9RctqLyhOc8k7b+Kx7yXW6Ml6LFMZECJTcU1bzt/3GOP5hwm7DtZPrPFwphsqjfg=
+X-Received: by 2002:a19:6914:0:b0:500:b890:fb38 with SMTP id
+ e20-20020a196914000000b00500b890fb38mr3118822lfc.24.1693476220885; Thu, 31
+ Aug 2023 03:03:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [QEMU PATCH v4 05/13] virtio-gpu: Support context init feature
- with virglrenderer
-Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-6-ray.huang@amd.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230831093252.2461282-6-ray.huang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+References: <87y1hspiyh.fsf@linaro.org>
+ <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
+ <CAFEAcA8Ziov9vA9dW+4vzFE=KkSUqfMNNMZOtvQhqCXyjRytzQ@mail.gmail.com>
+ <87cyz3pmgz.fsf@linaro.org>
+In-Reply-To: <87cyz3pmgz.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 31 Aug 2023 11:03:29 +0100
+Message-ID: <CAFEAcA-m8G1kfTw52kOGPEvQwWPph0NWc0URVY1aQ2WwVeB_OQ@mail.gmail.com>
+Subject: Re: QEMU features useful for Xen development?
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Xen-devel <xen-devel@lists.xenproject.org>, 
+ Stewart Hildebrand <stewart.hildebrand@amd.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>, 
+ Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
+ Sergiy Kibrik <Sergiy_Kibrik@epam.com>, 
+ QEMU Developers <qemu-devel@nongnu.org>,
+ Vikram Garhwal <vikram.garhwal@amd.com>, 
+ Stefano Stabellini <stefano.stabellini@amd.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -111,64 +99,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/8/23 11:32, Huang Rui wrote:
-> Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
-> feature flags.
-> We would like to enable the feature with virglrenderer, so add to create
-> virgl renderer context with flags using context_id when valid.
-> 
-> Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> ---
-> 
-> New patch, result of splitting
-> [RFC QEMU PATCH 04/18] virtio-gpu: CONTEXT_INIT feature
-> 
->   hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
->   hw/display/virtio-gpu.c       |  2 ++
->   2 files changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 8bb7a2c21f..312953ec16 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -106,8 +106,17 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
->       trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
->                                       cc.debug_name);
->   
-> -    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
-> -                                  cc.debug_name);
-> +    if (cc.context_init) {
-> +#ifdef HAVE_VIRGL_CONTEXT_INIT
-> +        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
-> +                                                 cc.context_init,
-> +                                                 cc.nlen,
-> +                                                 cc.debug_name);
-> +        return;
-> +#endif
+On Thu, 31 Aug 2023 at 10:53, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+> > On Thu, 31 Aug 2023 at 01:57, Stefano Stabellini <sstabellini@kernel.or=
+g> wrote:
+> >> As Xen is gaining R52 and R82 support, it would be great to be able to
+> >> use QEMU for development and testing there as well, but I don't think
+> >> QEMU can emulate EL2 properly for the Cortex-R architecture. We would
+> >> need EL2 support in the GIC/timer for R52/R82 as well.
+> >
+> > We do actually have a Cortex-R52 model which at least in theory
+> > should include EL2 support, though as usual with newer QEMU
+> > stuff it quite likely has lurking bugs; I'm not sure how much
+> > testing it's had. Also there is currently no board model which
+> > will work with the Cortex-R52 so it's a bit tricky to use in practice.
+> > (What sort of board model would Xen want to use it with?)
+>
+> We already model a bunch of the mps2/mps3 images so I'm assuming adding
+> the mps3-an536 would be a fairly simple step to do (mps2tz.c is mostly
+> tweaking config values). The question is would it be a useful target for
+> Xen?
 
-What happens if someone sets the 'context_init' property but virgl
-doesn't have virgl_renderer_context_create_with_flags()? Should we
-report an error?
+All our MPS2/MPS3 boards are M-profile. That means we have the
+device models for all the interesting devices on the board, but
+it would be simpler to write the an536 board model separately.
+(In particular, the M-profile boards are wrappers around an
+"ARMSSE" sort-of-like-an-SoC component; there's no equivalent
+for the Cortex-R52.)
 
-> +    }
-> +
-> +    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
->   }
->   
->   static void virgl_cmd_context_destroy(VirtIOGPU *g,
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 3e658f1fef..a66cbd9930 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -1506,6 +1506,8 @@ static Property virtio_gpu_properties[] = {
->       DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
->                       VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
->       DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
-> +    DEFINE_PROP_BIT("context_init", VirtIOGPU, parent_obj.conf.flags,
-> +                    VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED, false),
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
+>   https://developer.arm.com/documentation/dai0536/latest/
+>
+> > The Cortex-R82 would be more work, because (unlike the R52) it's
+> > AArch64, and we don't have Armv8-R AArch64 support yet, only the AArch3=
+2.
+> >
+> > I haven't looked at whether GIC on R-profile requires any changes
+> > from the A-profile GIC; on A-profile obviously we emulate the
+> > virtualization support already.
+> >
+> >> On Cortex-As, in addition to a PCI root complex and an arbitrary PCI
+> >> device, SMMUv3 emulation (both stages) and GICv3 ITS are needed to be
+> >> able to test PCI Passthrough.
+>
+> We have ITS emulation support and it was recently plumbed into the
+> "sbsa-ref" board as it is needed for higher level SBSA compliance.
+>
+> >> However, if I recall correctly SMMUv3
+> >> emulation in QEMU might not be complete enough to enable us to use it.
+> >
+> > Yeah, at the moment the SMMU emulation supports stage 1 and stage 2,
+> > but not both at the same time. This is good enough for PCI passthrough
+> > with a Linux guest using KVM to pass a device through to a nested
+> > Linux guest.
+>
+> Is this a missing feature for SMMUv3 or something introduced in the
+> later revisions?
 
+It's a missing feature. The SMMUv3 spec allows an implementation
+to implement stage 1, stage 2 or both. We started with just a
+stage-1-only implementation because Linux doesn't need any more.
+Stage-2-only just landed recently. Nobody's looked at both-stages yet.
+
+thanks
+-- PMM
 
