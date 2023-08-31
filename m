@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FF178E7AE
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B599578E7B1
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:13:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbclT-00029c-Cx; Thu, 31 Aug 2023 04:10:55 -0400
+	id 1qbcnC-0002r7-3b; Thu, 31 Aug 2023 04:12:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbclR-00028u-CP
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:10:53 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbcnA-0002q9-HW
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:12:40 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbclP-0005bb-0u
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:10:53 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9a2185bd83cso57550366b.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:10:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbcn8-0005jk-9A
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:12:40 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-99cdb0fd093so56420566b.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:12:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693469449; x=1694074249; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693469557; x=1694074357; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZBn4qGU93pywR8nFxzsC0BsJWlS1sr/wx4SQxHYh8PI=;
- b=mQMasy27iLXHTCUrjdQUrf44ULiIqnLTGgrCMH9ZsgpiwXGWn/7/EHKF9W/4qkHWVr
- RrEXKGDRaZfgiYMRNwRejK5Kn10EABghCdFV6XE15v0YThqChsyCU9ouWpKtiNLR3OvX
- +7gdJfJx9RoN0wlaUJDwzz548ul6EP2DSxEPJ7eq9bEk+IlxYTPuoUJ65whoHzKpy3Cd
- ghtqHfiMnla/7e1FSe+Flv3Xm+41/wcq9YBcvO9lUk6EGfT51e+XU+mnTIkV0COcuF2r
- bmhnb5tLNXdKigBUp8wKWm//AVCZiEb5n30EDBdGpujKK63IRQdbQV9zhOPym0nMkPax
- ZhBQ==
+ bh=ET1drrAeR+50pLLuvmRQuMFng/wLuH3/v7BWsoxcmXo=;
+ b=TAKED8QSTtdPDyyehIhvGRlpAH3FweEt21cp6IJeTE8edTpL5+G/f67unwwZB65Olg
+ ox3BGCdtGwV62r8nOodInJcuur05cRbm05i/BbwRYqx36YGxJiq8+Tn3Cpce3zV4dd8t
+ 0XR98NxoDbyixkeWXh0b/6PjhCV2KCHGUg8rV/cDo2xfsd0ajmN3vgHmAl3X6QErafid
+ JhkgHSTiITo89sJeQycvZyMyx4Fs1urshZvQ73iOvWkhycmwkFDiXv+o5cyySlVvS1Wo
+ jZK84JwYTIQmRzkl9Md+veWRhJxYjNT/6KM6DfZGkcU1Np9lEejooZxAw9hSuZNYaD1j
+ fdDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693469449; x=1694074249;
+ d=1e100.net; s=20221208; t=1693469557; x=1694074357;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZBn4qGU93pywR8nFxzsC0BsJWlS1sr/wx4SQxHYh8PI=;
- b=K57xHmwGPUwi4Urjjr5Wf4lVJTeNnGOPv+zdAhRLxP9TedfTWs9axHaAKJtCnAr7ZC
- PLQ4d1gcyw8iIKCDtT8JgJAR58Ad4Bq5ZtHgSjK8Zg8huLmWFUUwye6qblhEu6rVXw8W
- mFzEwJTqQEI5YtdR4Y3JBgJJ0qgTmyuaQ9DA4exHs8FmceFkCJlBKgNWswXp8Eg2M84T
- KoopHd83aeM9UAp/9vZgexql7LPP05I6iVopdjgkZGDIhRwWWos+ciAry/8rPuzP7dFM
- a1gSlQAI7V8KPQNzFosMvhdn1y3Nq1P4Yr4N/hS2GqXynR4GdQOgR/CtxcLfGuCOR1uS
- gHzQ==
-X-Gm-Message-State: AOJu0YxlEmZYBMJwnHF7Afj3D7GsB8a35G7yegsiYEQFZauVZH4VukUL
- 9wHeh7VvasvJ9ZkBp4l/M6bLWw==
-X-Google-Smtp-Source: AGHT+IEj8+UHM31ahwE8rDUokNeydp6QV0Irxh4D3NpwI7dmwtIPuy8GVfB0O0Mlc1GXq2EDZKN4iA==
-X-Received: by 2002:a17:907:2c4b:b0:99d:6b3c:3d40 with SMTP id
- hf11-20020a1709072c4b00b0099d6b3c3d40mr3305123ejc.6.1693469449348; 
- Thu, 31 Aug 2023 01:10:49 -0700 (PDT)
+ bh=ET1drrAeR+50pLLuvmRQuMFng/wLuH3/v7BWsoxcmXo=;
+ b=k+/fVUadx+JhNR7X4Y4bS2t6awHX2DHvIPhu7w55AD7vJwZrn988mpBy8kkZdlu9zz
+ AFNk8/1rS2d8OFgOuZ9pvNwYuOzBgyuCy04sJUhJI1pBA/TrCqlUr52XTp6HYcJWBGCx
+ E2T9w51vR830rX1N9ZGoCQF5+peWejsrXKP5rxg5Gwhu3KhjlsQjkVFXkcGmMc7V2yyU
+ PhUmDmnR4FPFY6J2VAesS2PFSvUi14ehy7nL8eQpFnBsprkHHIxbnsJj1smZcqeRVmqc
+ RO+W2rQXYKT19PmNPp9nhR+YA/1P7TenW3Yvw6s26EF4tXOdFTDa9/b8Hqt9GSG2qQxU
+ 1H2g==
+X-Gm-Message-State: AOJu0YyBfkZgyPzq6j3Q6ycajdMM9diZOeaFKJTyP9I36dDcVPsEJnUy
+ z94s6bMHnfqTwB9kHd5+4ho0tw==
+X-Google-Smtp-Source: AGHT+IEEZo5m33tGZg15SJ1iqv2x57yPQ3pcdVjQBLULLoPCPnWFsVPOuqBfcRZaw7d88wNSb0ywEA==
+X-Received: by 2002:a17:906:32d8:b0:9a5:ce62:6e19 with SMTP id
+ k24-20020a17090632d800b009a5ce626e19mr3049441ejk.69.1693469556822; 
+ Thu, 31 Aug 2023 01:12:36 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- e19-20020a1709067e1300b009a198078c53sm466906ejr.214.2023.08.31.01.10.48
+ rl21-20020a170907217500b0099315454e76sm466386ejb.211.2023.08.31.01.12.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 01:10:49 -0700 (PDT)
-Message-ID: <972bf6a0-f879-dc94-e0c3-c9d5e107da0d@linaro.org>
-Date: Thu, 31 Aug 2023 10:10:47 +0200
+ Thu, 31 Aug 2023 01:12:36 -0700 (PDT)
+Message-ID: <996b4057-6d64-3803-792b-f6c49dd9f3bf@linaro.org>
+Date: Thu, 31 Aug 2023 10:12:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] pci: SLT must be RO
+Subject: Re: [PATCH v2 01/12] build: Only define OS_OBJECT_USE_OBJC with gcc
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-References: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
- <084d2e90-86d4-eabc-3270-d3ef680c9631@linaro.org>
- <20230831024011-mutt-send-email-mst@kernel.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
+References: <20230830161425.91946-1-graf@amazon.com>
+ <20230830161425.91946-2-graf@amazon.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230831024011-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230830161425.91946-2-graf@amazon.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -97,71 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/8/23 08:45, Michael S. Tsirkin wrote:
-> On Thu, Aug 31, 2023 at 08:22:34AM +0200, Philippe Mathieu-Daudé wrote:
->> Hi Michael,
->>
->> On 30/8/23 23:48, Michael S. Tsirkin wrote:
->>> current code sets PCI_SEC_LATENCY_TIMER to WO, but for
->>> pcie to pcie bridges it must be RO 0 according to
->>> pci express spec which says:
->>>       This register does not apply to PCI Express. It must be read-only
->>>       and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges, refer to the
->>>       [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
->>>
->>> also, fix typo in comment where it's make writeable - this typo
->>> is likely what prevented us noticing we violate this requirement
->>> in the 1st place.
->>>
->>> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
->>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>> ---
->>>
->>> Marcin, could you pls test this patch with virt-8.1 and latest?
->>> Thanks a lot!
->>>
->>>
->>>    include/hw/pci/pci_bridge.h |  3 +++
->>>    hw/core/machine.c           |  5 ++++-
->>>    hw/pci/pci.c                |  2 +-
->>>    hw/pci/pci_bridge.c         | 14 ++++++++++++++
->>>    4 files changed, 22 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
->>> index ea54a81a15..5cd452115a 100644
->>> --- a/include/hw/pci/pci_bridge.h
->>> +++ b/include/hw/pci/pci_bridge.h
->>> @@ -77,6 +77,9 @@ struct PCIBridge {
->>>        pci_map_irq_fn map_irq;
->>>        const char *bus_name;
->>> +
->>> +    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
->>> +    bool pcie_writeable_slt_bug;
->>>    };
->>
->> Patch LGTM, so:
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->>> -GlobalProperty hw_compat_8_1[] = {};
->>> +GlobalProperty hw_compat_8_1[] = {
->>> +    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
->>
->> However I don't understand why we can't clear the config register and
->> must use a compat flag, since per the spec it is hardwired to 0.
+On 30/8/23 18:14, Alexander Graf wrote:
+> Recent versions of macOS use clang instead of gcc. The OS_OBJECT_USE_OBJC
+> define is only necessary when building with gcc. Let's not define it when
+> building with clang.
 > 
-> Because historically we didn't. If we make it RO and migrate from
-> VM where guest wrote into this register, migration will fail
-> as we check that RO fields are unchanged.
-> Another trick would be to pretend it's hardware driven
-> and set cmask. Compat machinery is more straight-forward though.
-
-I see.
-
+> With this patch, I can successfully include GCD headers in QEMU when
+> building with clang.
 > 
->> Do we need the "x-" compat prefix? This is not an experimental property.
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> ---
+>   meson.build | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> It's an internal one, we don't want users to tweak it.
+> diff --git a/meson.build b/meson.build
+> index 98e68ef0b1..0d6a0015a1 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -224,7 +224,9 @@ qemu_ldflags = []
+>   if targetos == 'darwin'
+>     # Disable attempts to use ObjectiveC features in os/object.h since they
+>     # won't work when we're compiling with gcc as a C compiler.
+> -  qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
+> +  if compiler.get_id() == 'gcc'
+> +    qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
+> +  endif
+>   elif targetos == 'solaris'
+>     # needed for CMSG_ macros in sys/socket.h
+>     qemu_common_flags += '-D_XOPEN_SOURCE=600'
 
-OK, thanks!
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
