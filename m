@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA7578EF56
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 16:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E188A78EF70
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 16:17:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbiNb-00060X-OG; Thu, 31 Aug 2023 10:10:39 -0400
+	id 1qbiSW-0003qM-Io; Thu, 31 Aug 2023 10:15:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1qbiNS-0005wa-Ix
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:10:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1qbiSU-0003pM-5u
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:15:42 -0400
+Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1qbiNP-0001e4-QU
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:10:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693491026;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=q8u1gO7jaENPAD2rwOXB/XMoOm0Klf+Sv2GNVqT/At0=;
- b=eK6WrDtYDhEz24HL7EZfINJfRs9u9iMrBku5kVLNGbn3YpqUS8p/Jj6plqwnVPUXDd5WKV
- 9MxqFdmPng2kMrfQdrmhcbBpLpW+GE6eymRsXqpk0L9Vu1+BV3hWLE492+ZR4zm4uBRVKo
- pfi2SrIBTu2s1lS6I/qgvmmD3d3OK2Y=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-r7aNRq1YMbmRFZbu2FDlmw-1; Thu, 31 Aug 2023 10:10:24 -0400
-X-MC-Unique: r7aNRq1YMbmRFZbu2FDlmw-1
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-573325a9d49so1004706eaf.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 07:10:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693491022; x=1694095822;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=q8u1gO7jaENPAD2rwOXB/XMoOm0Klf+Sv2GNVqT/At0=;
- b=RJ8kCZJ5KBTm4L8YIgLtr9KqWTjF1ASA/mSMvZkMUneDD6/D8fI9SWyFVdxYCK2qdq
- lk1GUBvhpLYSyQfq4AnzvpfhH4UHKWooNETXEXAsTB9vWCQkxABJVpOZup+8Fl2Pvy8l
- 20P126eWmUKeZz82Uw/UH5Pl4RijpbRy9tfR7xnJUcBDwXNkU8pvSooh8CKM4Wqtgjbh
- inoEzcvktOZrQN20ys+s0+uAuClSESTw4ni8jvQwDKlkJI6v3GTEp1gYVPdcTw6Yn+n+
- JpDUFkERnReclCdfx5gatLoZU+hqitVaCXEysiYPM+CjUIAMbqJcIsLquDB+cjz5i+8A
- BHdg==
-X-Gm-Message-State: AOJu0YyIm1wkT5UWD+4bHbz3FivwJGoZzh8U+Xs75Qc5J2FEi9L1ClR7
- L45+QepqZrn1aEc5xsugVMElUkgQdOfw9I1xewfAEj4B8rfhE4tDtSFzhnq+dq51zQVcxkB+xQ/
- iQuL6iT0Nom76PTmf7RQeKtyAup+HBEs=
-X-Received: by 2002:a05:6358:9986:b0:132:dc58:b372 with SMTP id
- j6-20020a056358998600b00132dc58b372mr3904211rwb.19.1693491022466; 
- Thu, 31 Aug 2023 07:10:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHw+quw3TJ0eGH8qDyzvYfHIts9+Z2hCWAe0mAsn9TBgMEkq4gcDsvE3Ke6tTw8eq/Q+91pXbKuldN9jFuN/7I=
-X-Received: by 2002:a05:6358:9986:b0:132:dc58:b372 with SMTP id
- j6-20020a056358998600b00132dc58b372mr3904195rwb.19.1693491022140; Thu, 31 Aug
- 2023 07:10:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1qbiSQ-0002Tu-8Z
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:15:41 -0400
+Received: from juju-98d295-prod-launchpad-16.localdomain (unknown
+ [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id A7866431B8
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 14:15:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1693491335;
+ bh=N7Kr7KFqGr4kkjcrxa2R26gmEj86kfv/bAdBUIS8804=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=EgQ/DQEw8imvrQKMBdK+XFO2eBNe9MfKidEXCVGlRyfJMvdbXhtt9ZrBI9xt2MI+Y
+ GgNwcUAd6i/wcyxfcMTi31p+YM5cjxLKOgc9dZQVLdvTeCv0xyxkL/iDVSdLSlQ8sU
+ hpArFQsh6Jia3MAjR+h887pF05Idb+fTw/4QG+0QRvRYjq0RHxVpMyIFG/OSq5MEiJ
+ 16kZGdl34yBhsnO3bDSoqQb3jhN2oGStrPjkLrrvRq7C8SObH+l4fCyP7928htXKmR
+ aSn8hBQryg9VssNrHmIsQ0OdBclTViHM7upTf2xpID1O5UYoqft947KCp//zi8gsOP
+ ytotsxlQECNNw==
+Received: from [10.131.215.246] (localhost [127.0.0.1])
+ by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
+ 982537EB6B
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 14:15:35 +0000 (UTC)
 MIME-Version: 1.0
-References: <158154486735.14935.3370403781300872079.malonedeb@soybean.canonical.com>
- <169348611423.1472917.10027704436078423318.malone@juju-98d295-prod-launchpad-3>
- <cb2807f0-fc7d-fc03-376e-09c3d5f10a7f@linaro.org>
- <ZPCcRD/zv/l80WWC@redhat.com>
-In-Reply-To: <ZPCcRD/zv/l80WWC@redhat.com>
-From: Mauro Matteo Cascella <mcascell@redhat.com>
-Date: Thu, 31 Aug 2023 16:10:11 +0200
-Message-ID: <CAA8xKjXNFVtzoYaVYz_apW2i3Qbvs0XC4JBS5EG7q_qPTOiAAw@mail.gmail.com>
-Subject: Re: [Bug 1863025] Re: Use-after-free after flush in TCG accelerator
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Bug 1863025 <1863025@bugs.launchpad.net>, qemu-devel@nongnu.org, 
- Michael Tokarev <mjt@tls.msk.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Date: Thu, 31 Aug 2023 14:10:11 -0000
+From: Mauro Matteo Cascella <1863025@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
+ assignee=alex.bennee@linaro.org; 
+X-Launchpad-Bug-Tags: mttcg tcg
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: ajbennee berrange laurent-vivier mauro-cascella
+ samueloph yifanlu
+X-Launchpad-Bug-Reporter: Yifan (yifanlu)
+X-Launchpad-Bug-Modifier: Mauro Matteo Cascella (mauro-cascella)
+References: <158154486735.14935.3370403781300872079.malonedeb@soybean.canonical.com>
+ <ZPCcRD/zv/l80WWC@redhat.com>
+Message-Id: <CAA8xKjXNFVtzoYaVYz_apW2i3Qbvs0XC4JBS5EG7q_qPTOiAAw@mail.gmail.com>
+Subject: Re: [Bug 1863025] Re: Use-after-free after flush in TCG accelerator
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="5e6925a96ee17ce45a766139d74108c2c83abbc9";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: 989d23af15e641b375a3615771987139a25e1035
+Received-SPF: pass client-ip=185.125.188.250;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -95,6 +87,7 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1863025 <1863025@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
@@ -155,5 +148,66 @@ ge :|
 Mauro Matteo Cascella
 Red Hat Product Security
 PGP-Key ID: BB3410B0
+
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1863025
+
+Title:
+  Use-after-free after flush in TCG accelerator
+
+Status in QEMU:
+  Fix Released
+
+Bug description:
+  I believe I found a UAF in TCG that can lead to a guest VM escape. The
+  security list informed me "This can not be treated as a security
+  issue." and to post it here. I am looking at the 4.2.0 source code.
+  The issue requires a race and I will try to describe it in terms of
+  three concurrent threads.
+
+  Thread A:
+
+  A1. qemu_tcg_cpu_thread_fn runs work loop
+  A2. qemu_wait_io_event =3D> qemu_wait_io_event_common =3D> process_queued=
+_cpu_work
+  A3. start_exclusive critical section entered
+  A4. do_tb_flush is called, TB memory freed/re-allocated
+  A5. end_exclusive exits critical section
+
+  Thread B:
+
+  B1. qemu_tcg_cpu_thread_fn runs work loop
+  B2. tcg_cpu_exec =3D> cpu_exec =3D> tb_find =3D> tb_gen_code
+  B3. tcg_tb_alloc obtains a new TB
+
+  Thread C:
+
+  C1. qemu_tcg_cpu_thread_fn runs work loop
+  C2. cpu_exec_step_atomic executes
+  C3. TB obtained with tb_lookup__cpu_state or tb_gen_code
+  C4. start_exclusive critical section entered
+  C5. cpu_tb_exec executes the TB code
+  C6. end_exclusive exits critical section
+
+  Consider the following sequence of events:
+  =C2=A0=C2=A0B2 =3D> B3 =3D> C3 (same TB as B2) =3D> A3 =3D> A4 (TB freed)=
+ =3D> A5 =3D> B2 =3D>
+  =C2=A0=C2=A0B3 (re-allocates TB from B2) =3D> C4 =3D> C5 (freed/reused TB=
+ now executing) =3D> C6
+
+  In short, because thread C uses the TB in the critical section, there
+  is no guarantee that the pointer has not been "freed" (rather the
+  memory is marked as re-usable) and therefore a use-after-free occurs.
+
+  Since the TCG generated code can be in the same memory as the TB data
+  structure, it is possible for an attacker to overwrite the UAF pointer
+  with code generated from TCG. This can overwrite key pointer values
+  and could lead to code execution on the host outside of the TCG
+  sandbox.
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/1863025/+subscriptions
 
 
