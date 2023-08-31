@@ -2,101 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1507778EA7B
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BFE78EAE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:47:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbf98-0002LC-8e; Thu, 31 Aug 2023 06:43:30 -0400
+	id 1qbfBJ-0003n9-FM; Thu, 31 Aug 2023 06:45:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbf95-0002L4-MW
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:43:27 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbfAz-0003I0-Th
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:27 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qbf93-0003hX-7M
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:43:27 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bee82fad0fso4703975ad.2
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:43:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qbfAw-00042B-DZ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:45:25 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-31c73c21113so485567f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:45:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693478603; x=1694083403;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pthxO9otZ5F1W93I4fM7b6t8TGyUaxxABGXbq13EuGw=;
- b=2MBGQRcr6Xd7XIGkm63xujqBzeXqPo6abLAN8JWwFIz5yj8zfvcU5i3xX7hTegg7F3
- ndDyuMJamiq5KxYcoI5KJFfTxWBssfWRtxfYIWepL5A0FwGRh/TC7tugwGazG9ZhrB2F
- smJkCYL7GVzCSbq/WcisoCNwXD9dNvbu8Oo2+GSDZ9TQ/JcfLnYmJui22qZSY0qESbMJ
- blgWiAO2Z2+Gub/WbrctuuHeMuZQbVKU8r/Q6gTBEYoJwFo/2IHgBJzm/2us93hd0z+k
- Cbk3YX9WRSU+yTKMSyapot1HqM/DUuVnr6w0+OkSlbLFUyxzBXF0Mmb1crxnrkrZTJ70
- vQIA==
+ d=linaro.org; s=google; t=1693478721; x=1694083521; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=L/BROq7YSFk7hTexo83CnJUGJbbaJkyOOUOlHRoJZHE=;
+ b=VhMwAOZ88Pzjn7IB0LLuQW4DtuaJ0jEAa2ezxx5LrmyfHY+42hJgN+arJYbD3MRgqK
+ oE2CU+Qmkyagml92yTYmGQcNaVNH8u/Q8vJqnM8Beb9Jfsmyu4j3ahxvmFce2JpL1MVD
+ xVbpWgNd5gg+vlf+VA+LfKpp/pAUv5/uKBBVJ1JVVKX/yvHwSkAgi/Zx3zJIiiW2xPDl
+ TyoMZJ9ECGoI5PIXwBZ953uvIfdWU3DhzcpyDiIcznw+SZVkKYvyl25TNZ0pJqnBwVYS
+ dCIR+M4Gt5lCHKBJWVfv+ybmUQn/7Imam7MQraNUbHtq+qWlQYF+LXNVSBDcujBOEjXs
+ hDgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693478603; x=1694083403;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pthxO9otZ5F1W93I4fM7b6t8TGyUaxxABGXbq13EuGw=;
- b=cTMKw9oYohlXetG//BPP+a0tgWMfg7tE+4eeUjWJwOhzNDqfjDPW4CPsc6QmqRXFDU
- Fjsc1xi6HcuEOstPeCRouwYT8Bxf9fq1e1mjQA9OiLmluPFhDvUKAZpIMQ7FHj85gm9u
- 5vgHm2cWJqNHbuw4KQeId03RexDDsvRxVG+jrIB0U/d9dS3OuBbi8acQUw3T3HdstnCE
- FMGLVLZwLgmxjajOHZtN/Ff3yozOKivjN6+Bh2K/KiBcxzGq4OAXXm2TGpMlrWtLInEF
- CXmKrEeITNftjrqCVvH4if02ETQgx4bgF7Gij+3bCX5Kj795YK5k10690EJwFa4Vf9si
- 7IRw==
-X-Gm-Message-State: AOJu0YzybFXbRn3Nvk2gTHj+0dPDjZQ8hRG0cxBHECV+1rWzom6irND3
- QTVF1Kz6fsYrwCGaL/lHT0g8NQ==
-X-Google-Smtp-Source: AGHT+IF61CnqGDOu6EZq+ZgIaumeod7KOlm7Ef1ZjxoEiKfNUFtI0udiwYapvHIpTz8Oekph4Jtnfg==
-X-Received: by 2002:a17:902:c086:b0:1c0:6e92:8cc5 with SMTP id
- j6-20020a170902c08600b001c06e928cc5mr3604644pld.17.1693478603280; 
- Thu, 31 Aug 2023 03:43:23 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1693478721; x=1694083521;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=L/BROq7YSFk7hTexo83CnJUGJbbaJkyOOUOlHRoJZHE=;
+ b=dvcerpBeqIneN21qGvO03GXJEGnlJSI/C1X2ioTLff0o0c34Q7jn4MzHNVo14+JwJW
+ K2rFDSHW8xQJMb7SPzpsxCaFtsUWEXWtHiocJgvzGt/WtRZBnXJnvUxs2F5RU7kBHcpY
+ wfjM2V78tsX3b2hubGaykYuGhSIXC3+l4+hAbSQjf+cUF8c3Gj69N1VVOcwUtprNLgWp
+ ylfof7Ya+54SRzgdXKqxgnxcFhB8b7sUpauxhSh461j6axf+FY2CIxbfXRXMyJssyYvg
+ 2KrT1715/xz6cTVMbuoEiZs4i2Zr3hpwVQYQhU00tkE9KxcZCED4cK2yWmpS0Gwt4U3G
+ EmoQ==
+X-Gm-Message-State: AOJu0YwIy2Q9B4JjPtyyY1HqzRPUkbS1zqsE8Hx2h7gvTXp44oe0qdFf
+ VwTfUvuK845Uzz318h6Mrm2XfyoUCH8Dmg2cCeY=
+X-Google-Smtp-Source: AGHT+IHjqmkbTHjT9f4q/EAVi+5w7dTfIKtuz/I+HZWMoEIOohadvC49L+wGh7aPAb/icShZznZ0aA==
+X-Received: by 2002:adf:e50e:0:b0:319:7472:f0b6 with SMTP id
+ j14-20020adfe50e000000b003197472f0b6mr3407510wrm.15.1693478720602; 
+ Thu, 31 Aug 2023 03:45:20 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- g12-20020a170902740c00b001bbdd44bbb6sm984888pll.136.2023.08.31.03.43.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 03:43:22 -0700 (PDT)
-Message-ID: <fe36e4e1-1198-4da4-b6ee-a6a00a44298a@daynix.com>
-Date: Thu, 31 Aug 2023 19:43:17 +0900
+ l5-20020adfe585000000b0031c71693449sm1785524wrm.1.2023.08.31.03.45.20
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 03:45:20 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/24] target-arm queue
+Date: Thu, 31 Aug 2023 11:44:55 +0100
+Message-Id: <20230831104519.3520658-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v4 11/13] virtio-gpu: Support Venus capset
-Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-12-ray.huang@amd.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230831093252.2461282-12-ray.huang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,73 +88,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/31 18:32, Huang Rui wrote:
-> From: Antonio Caggiano <antonio.caggiano@collabora.com>
-> 
-> Add support for the Venus capset, which enables Vulkan support through
-> the Venus Vulkan driver for virtio-gpu.
-> 
-> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> ---
->   hw/display/virtio-gpu-virgl.c               | 21 +++++++++++++++++----
->   include/standard-headers/linux/virtio_gpu.h |  2 ++
->   2 files changed, 19 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 1a996a08fc..83cd8c8fd0 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -437,6 +437,11 @@ static void virgl_cmd_get_capset_info(VirtIOGPU *g,
->           virgl_renderer_get_cap_set(resp.capset_id,
->                                      &resp.capset_max_version,
->                                      &resp.capset_max_size);
-> +    } else if (info.capset_index == 2) {
-> +        resp.capset_id = VIRTIO_GPU_CAPSET_VENUS;
-> +        virgl_renderer_get_cap_set(resp.capset_id,
-> +                                   &resp.capset_max_version,
-> +                                   &resp.capset_max_size);
->       } else {
->           resp.capset_max_version = 0;
->           resp.capset_max_size = 0;
-> @@ -901,10 +906,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->   
->   int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
->   {
-> -    uint32_t capset2_max_ver, capset2_max_size;
-> +    uint32_t capset2_max_ver, capset2_max_size, num_capsets;
-> +    num_capsets = 1;
-> +
->       virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
-> -                              &capset2_max_ver,
-> -                              &capset2_max_size);
-> +                               &capset2_max_ver,
-> +                               &capset2_max_size);
-> +    num_capsets += capset2_max_ver ? 1 : 0;
-> +
-> +    virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-> +                               &capset2_max_ver,
-> +                               &capset2_max_size);
-> +    num_capsets += capset2_max_size ? 1 : 0;
->   
-> -    return capset2_max_ver ? 2 : 1;
-> +    return num_capsets;
->   }
-> diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
-> index 2da48d3d4c..2db643ed8f 100644
-> --- a/include/standard-headers/linux/virtio_gpu.h
-> +++ b/include/standard-headers/linux/virtio_gpu.h
-> @@ -309,6 +309,8 @@ struct virtio_gpu_cmd_submit {
->   
->   #define VIRTIO_GPU_CAPSET_VIRGL 1
->   #define VIRTIO_GPU_CAPSET_VIRGL2 2
-> +/* 3 is reserved for gfxstream */
-> +#define VIRTIO_GPU_CAPSET_VENUS 4
+Hi; here's the latest round of arm patches. I have included also
+my patchset for the RTC devices to avoid keeping time_t and
+time_t diffs in 32-bit variables.
 
-This file is synced with scripts/update-linux-headers.sh and should not 
-be modified.
+thanks
+-- PMM
 
->   
->   /* VIRTIO_GPU_CMD_GET_CAPSET_INFO */
->   struct virtio_gpu_get_capset_info {
+The following changes since commit 156618d9ea67f2f2e31d9dedd97f2dcccbe6808c:
+
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-08-30 09:20:27 -0400)
+
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20230831
+
+for you to fetch changes up to e73b8bb8a3e9a162f70e9ffbf922d4fafc96bbfb:
+
+  hw/arm: Set number of MPU regions correctly for an505, an521, an524 (2023-08-31 11:07:02 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * Some of the preliminary patches for Cortex-A710 support
+ * i.MX7 and i.MX6UL refactoring
+ * Implement SRC device for i.MX7
+ * Catch illegal-exception-return from EL3 with bad NSE/NS
+ * Use 64-bit offsets for holding time_t differences in RTC devices
+ * Model correct number of MPU regions for an505, an521, an524 boards
+
+----------------------------------------------------------------
+Alex Bennée (1):
+      target/arm: properly document FEAT_CRC32
+
+Jean-Christophe Dubois (6):
+      Remove i.MX7 IOMUX GPR device from i.MX6UL
+      Refactor i.MX6UL processor code
+      Add i.MX6UL missing devices.
+      Refactor i.MX7 processor code
+      Add i.MX7 missing TZ devices and memory regions
+      Add i.MX7 SRC device implementation
+
+Peter Maydell (8):
+      target/arm: Catch illegal-exception-return from EL3 with bad NSE/NS
+      hw/rtc/m48t59: Use 64-bit arithmetic in set_alarm()
+      hw/rtc/twl92230: Use int64_t for sec_offset and alm_sec
+      hw/rtc/aspeed_rtc: Use 64-bit offset for holding time_t difference
+      rtc: Use time_t for passing and returning time offsets
+      target/arm: Do all "ARM_FEATURE_X implies Y" checks in post_init
+      hw/arm/armv7m: Add mpu-ns-regions and mpu-s-regions properties
+      hw/arm: Set number of MPU regions correctly for an505, an521, an524
+
+Richard Henderson (9):
+      target/arm: Reduce dcz_blocksize to uint8_t
+      target/arm: Allow cpu to configure GM blocksize
+      target/arm: Support more GM blocksizes
+      target/arm: When tag memory is not present, set MTE=1
+      target/arm: Introduce make_ccsidr64
+      target/arm: Apply access checks to neoverse-n1 special registers
+      target/arm: Apply access checks to neoverse-v1 special registers
+      target/arm: Suppress FEAT_TRBE (Trace Buffer Extension)
+      target/arm: Implement FEAT_HPDS2 as a no-op
+
+ docs/system/arm/emulation.rst  |   2 +
+ include/hw/arm/armsse.h        |   5 +
+ include/hw/arm/armv7m.h        |   8 +
+ include/hw/arm/fsl-imx6ul.h    | 158 ++++++++++++++++---
+ include/hw/arm/fsl-imx7.h      | 338 ++++++++++++++++++++++++++++++-----------
+ include/hw/misc/imx7_src.h     |  66 ++++++++
+ include/hw/rtc/aspeed_rtc.h    |   2 +-
+ include/sysemu/rtc.h           |   4 +-
+ target/arm/cpregs.h            |   2 +
+ target/arm/cpu.h               |   5 +-
+ target/arm/internals.h         |   6 -
+ target/arm/tcg/translate.h     |   2 +
+ hw/arm/armsse.c                |  16 ++
+ hw/arm/armv7m.c                |  21 +++
+ hw/arm/fsl-imx6ul.c            | 174 +++++++++++++--------
+ hw/arm/fsl-imx7.c              | 201 +++++++++++++++++++-----
+ hw/arm/mps2-tz.c               |  29 ++++
+ hw/misc/imx7_src.c             | 276 +++++++++++++++++++++++++++++++++
+ hw/rtc/aspeed_rtc.c            |   5 +-
+ hw/rtc/m48t59.c                |   2 +-
+ hw/rtc/twl92230.c              |   4 +-
+ softmmu/rtc.c                  |   4 +-
+ target/arm/cpu.c               | 207 ++++++++++++++-----------
+ target/arm/helper.c            |  15 +-
+ target/arm/tcg/cpu32.c         |   2 +-
+ target/arm/tcg/cpu64.c         | 102 +++++++++----
+ target/arm/tcg/helper-a64.c    |   9 ++
+ target/arm/tcg/mte_helper.c    |  90 ++++++++---
+ target/arm/tcg/translate-a64.c |   5 +-
+ hw/misc/meson.build            |   1 +
+ hw/misc/trace-events           |   4 +
+ 31 files changed, 1393 insertions(+), 372 deletions(-)
+ create mode 100644 include/hw/misc/imx7_src.h
+ create mode 100644 hw/misc/imx7_src.c
 
