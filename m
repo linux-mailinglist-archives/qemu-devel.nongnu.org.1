@@ -2,87 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C7A78E950
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 11:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 160CF78E981
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 11:34:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbdsd-0002I9-G0; Thu, 31 Aug 2023 05:22:23 -0400
+	id 1qbe3L-0005Fs-I1; Thu, 31 Aug 2023 05:33:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qbdsb-0002Hs-1L
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:22:21 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qbdsY-0002oa-Hc
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:22:20 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3a88e1a5286so314560b6e.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 02:22:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693473737; x=1694078537; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aBV9ZJsds9vQgp+8Kc+hM5xtDO43f/8R7u6yMZkaLyk=;
- b=Q8kvDwvi3BAQmt+VE65gVneTOtuTb01PYBSB8+PFDm0hQyo2Sn1hVjSJHLvHp0gnVf
- HAsUddbCdtOqWqvQRkM9OaqKjojR4UpUugpAjZYsQ9FRGhY009aGsLADcCPsGuU9+2UN
- CGf7q+VowP67RM+SirOrw2qf1AZzoZ03V9XrvoeDCfSm774/vXdGJaPDxVXQ5zEo84xm
- 4Drgrbh4a7xWZEhC3o5n+o1epuMwcDPtyoKz+kJ/3Xn4kviAC1MJJp8gbJ55wvyVlkQL
- +qsLzLTijPJYVaavL7hDkDGptBmZV/lEHH8ayjc8Kb7Yv5sXVnvLhMR86BEAU6YDDCzJ
- 9AQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693473737; x=1694078537;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aBV9ZJsds9vQgp+8Kc+hM5xtDO43f/8R7u6yMZkaLyk=;
- b=SCfFDN0gMWhA1vgJWdZrLv3xs0q9rHmlaiPr8q/FlVLrlhm+jjSNYqLtWs8XB4GfMH
- mY8u7LDQLewsgKXvqoNLBARZYiNcLSAzCrNrp77esBHGAnjZTocAjbWuz0KqzO3uo4Y9
- HhJ3dl9W6bEvmtI3sgV6TrhFaunBNjs6S8PGlHYKX/BSibs4ZsU4h7Kq8UWuNtoscqVl
- iX1O4AV1aXSpyXfN7RxkHAgKqVCSsRxPbJerOG3CBrGqXc+sGqGqmQ26BMV0oIQ5bBT9
- Y/wyN/UTQDPptVvBed/ViGohIaXkEuihi8tZQ6G7k86rcftpAlbcJhw0clsAYC2O8zzH
- HqWQ==
-X-Gm-Message-State: AOJu0Yzue17nd1RmrNN2u4VWQG43MowbSwd9t3ALci/ERzRGqbaY9kDc
- aqd9A/+tm5CP9D08fXGBkyRtMQ==
-X-Google-Smtp-Source: AGHT+IHoqs8cXDKEK7gwOEWilUeRgKNx+Why4f7WYTBBjCs05GDi1dPVVVG50Hj27AD2GUmgBVVYHA==
-X-Received: by 2002:a05:6808:2903:b0:3a1:e17a:b3fb with SMTP id
- ev3-20020a056808290300b003a1e17ab3fbmr4696650oib.1.1693473737297; 
- Thu, 31 Aug 2023 02:22:17 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
- by smtp.gmail.com with ESMTPSA id
- bx33-20020a0568081b2100b003a3b321712fsm501824oib.35.2023.08.31.02.22.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 02:22:17 -0700 (PDT)
-Message-ID: <6064b599-dedb-1871-b666-199aae74b2ba@ventanamicro.com>
-Date: Thu, 31 Aug 2023 06:22:12 -0300
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qbe3J-0005C0-M4
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:33:25 -0400
+Received: from mail-sn1nam02on20626.outbound.protection.outlook.com
+ ([2a01:111:f400:7ea9::626]
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qbe3F-0005A9-Jf
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 05:33:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NWpia6LSni2HH+R19FgEnQYCWCD4FSkSL+exj7E2WwupvwdI6WpCu+j/TiBRCGl0PGcfcF7iChmsjMGXrXubmlGykWXmFh5hot4hQuGy9FZFWnpJLTEytJRRdh8Y9/5jzMWVLKQOGKzG6Qj/+5vhh9x5DIeOdTrbamNgk0zlSzy2Ar/OFbLqijdLP86iyhW86flFS+l5iLD0TPoWHZMnyDKMQWvUZAcvqh2XiwuYw1hTIAzN99HW3bShBzPkMFWS7HD7RCeEoMgDP8TndzjSsmYyB73znR4UULrWoXIPUvVGBiGfyTNAMoyKh7a/44BnBZhkhjW7OroShWlcXE6isg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=40iM+fZux/xCi4XmCq6hzMQOQ9bUd0OFvX4rrQtY/pc=;
+ b=UU60r8fG+F1JJnuVh3njYnUoA0j36Ri9Ge1O/iRm2NVXokLmvphlFrU7Lps5uy3kdxslZsdyRLZaausYz0bYT15cqjXguzAcuNO/GZcKRlm4TT/1glJOCK/zI6gWzW3Dl6FbFZZjkGruldIrwSNzs8+uAH9gFCEpBm0DuBJVE+bujdJia+ITiS+fO2yfwrI540vvVcvsQoWVSxof9P1DmJw/SZ5hkCypEquXGm9/bWisbFX15b6u7RZHODneIch+7LdbIntSPRutYSfgxaKSuK+IaaUH8UN4XrOW3WHoFst1KvNA/sHyS3PoNwGsUYy7WJar2yixnrMcolUx26y/+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=40iM+fZux/xCi4XmCq6hzMQOQ9bUd0OFvX4rrQtY/pc=;
+ b=N/oWC1EG6DRzt1lSSUXsSQ9YalQ4H8wUMdaG1Gqx/4XU6WRECl46UOTtK9wEgnryOfMKNP9yZtTM4kGcGbSOBm5+4rYV62A/zPOjhqVAjKIHWwc1E3BYLo+oquOE+yAywVqogH6wfDpJ15kG1Hauaq75LFBUOXufzWeNSjCVhpg=
+Received: from MW2PR2101CA0024.namprd21.prod.outlook.com (2603:10b6:302:1::37)
+ by DM8PR12MB5400.namprd12.prod.outlook.com (2603:10b6:8:3b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Thu, 31 Aug
+ 2023 09:33:17 +0000
+Received: from MWH0EPF000989E9.namprd02.prod.outlook.com
+ (2603:10b6:302:1:cafe::55) by MW2PR2101CA0024.outlook.office365.com
+ (2603:10b6:302:1::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.9 via Frontend
+ Transport; Thu, 31 Aug 2023 09:33:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000989E9.mail.protection.outlook.com (10.167.241.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 09:33:16 +0000
+Received: from hr-amd.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
+ 2023 04:33:10 -0500
+From: Huang Rui <ray.huang@amd.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, Antonio Caggiano
+ <antonio.caggiano@collabora.com>, "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>, Robert Beckett <bob.beckett@collabora.com>, "Dmitry
+ Osipenko" <dmitry.osipenko@collabora.com>, =?UTF-8?q?Alex=20Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, <ernunes@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Akihiko Odaki
+ <akihiko.odaki@daynix.com>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
+ <christian.koenig@amd.com>, Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>, "Honglei
+ Huang" <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>, "Chen
+ Jiqian" <Jiqian.Chen@amd.com>, Huang Rui <ray.huang@amd.com>
+Subject: [QEMU PATCH v4 00/13] Support blob memory and venus on qemu
+Date: Thu, 31 Aug 2023 17:32:39 +0800
+Message-ID: <20230831093252.2461282-1-ray.huang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/2] hw/riscv/virt.c: fix non-KVM --enable-debug build
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, richard.henderson@linaro.org
-References: <20230830133503.711138-1-dbarboza@ventanamicro.com>
- <20230830133503.711138-2-dbarboza@ventanamicro.com>
- <20230831-d3b40182209cb9054ceaed62@orel>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230831-d3b40182209cb9054ceaed62@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x232.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989E9:EE_|DM8PR12MB5400:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf3c0d40-ad27-4e8e-874f-08dbaa054e60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /iHGW0ABY3mH3/L11xmSshoBnuBFKerSyq8+VZw7zz6+m+CjsrIR9MTOBAmZctxICpznEIkv+vCK2EZ2+oPaZmEE5bWvDX4V6c0lkJ6lel278gJITQrFs8ZLYqidcYGvsw5EymjMhrVICA4mWtGKLvu9yw6xJJqQIQkHP89iVywcEw5vLohJ+dQ9GLKIVaGfKFCRIM8Q7kyBECmoD3uDjzP0hzkjTELuVi2HdIwp8tBLiBvpZMqAVfSarMsD9qjr1DosHliR5w5ixpyIqTNBSwKiCz0jTKEHNfKi07M/OrN1s3Fvz4bR1KwiZo3jUIHyFo8xjgKnd7B43vs3s16VvaT/coxurAqol5mDdK1cWU+30Ei5Mk+55T9O3qtzGKtpgrpuEx2X0D6wdnnEgK8coDsAIOpKArtS9ot4HyPr1q8nhfeN77GUCsXLGdixmMplfoBD/V7C4IhbNR9NRBx0qbtyt6hMogr+BaKsZdtkMVgqGqw5IhtcdvsKwxVXz8IaXHPh5T9cLfzygjK+OvPXxKXagAipjbu/0Pwho1e4AKmpgiAHvhhKXIAltZ5L3dMHV7bDBl2Gqg6ng5DALDsxnihiKDUbI+wVpKGJZwGTZ9qizzQoHzvGW8KPoNfPigJT8ta+PFn4iRSm9ixReY48vKBLNh2f5XhQSNEL2KozxSrgbPC7ZE6z6Fx2tQjwe6RQx41BTI5x4oND7b3Gge1mCRrhbP3Hy/oLQtRfnM5XSRt/wl8hf8D6FPewiawwuTL6WBI4dBwuohjB33f/7ZzRAfGsYK5qCeNzCRU9DyivEgWkWDb1LGyUQKSk+BRHHgz6
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(346002)(396003)(376002)(136003)(82310400011)(451199024)(1800799009)(186009)(40470700004)(36840700001)(46966006)(426003)(40460700003)(316002)(66899024)(41300700001)(5660300002)(336012)(4326008)(7416002)(8676002)(47076005)(16526019)(83380400001)(2616005)(86362001)(26005)(36756003)(1076003)(36860700001)(2906002)(40480700001)(8936002)(6666004)(356005)(82740400003)(81166007)(921005)(7696005)(966005)(54906003)(70206006)(70586007)(478600001)(110136005)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 09:33:16.8001 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf3c0d40-ad27-4e8e-874f-08dbaa054e60
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989E9.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5400
+Received-SPF: softfail client-ip=2a01:111:f400:7ea9::626;
+ envelope-from=Ray.Huang@amd.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,156 +131,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all,
 
+Antonio Caggiano made the venus with QEMU on KVM platform last
+September[1]. This series are inherited from his original work to support
+the features of context init, hostmem, resource uuid, and blob resources
+for venus.
+At March of this year, we sent out the V1 version[2] for the review. But
+those series are included both xen and virtio gpu. Right now, we would like
+to divide into two parts, one is to continue the Antonio's work to upstream
+virtio-gpu support for blob memory and venus, and another is to upstream
+xen specific patches. This series is focusing on virtio-gpu, so we are
+marking as V4 version here to continue Antonio's patches[1]. And we will
+send xen specific patches separately, because they are hypervisor specific.
+Besides of QEMU, these supports also included virglrenderer[3][4] and
+mesa[5][6] as well. Right now, virglrenderer and mesa parts are all
+accepted by upstream. In this qemu version, we try to address the concerns
+around not proper cleanup during blob resource unmap and unref. Appreciate
+it if you have any commments.
 
-On 8/31/23 05:42, Andrew Jones wrote:
-> On Wed, Aug 30, 2023 at 10:35:02AM -0300, Daniel Henrique Barboza wrote:
->> A build with --enable-debug and without KVM will fail as follows:
->>
->> /usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
->> ./qemu/build/../hw/riscv/virt.c:1465: undefined reference to `kvm_riscv_aia_create'
->>
->> This happens because the code block with "if virt_use_kvm_aia(s)" isn't
->> being ignored by the debug build, resulting in an undefined reference to
->> a KVM only function.
->>
->> Add a 'kvm_enabled()' conditional together with virt_use_kvm_aia() will
->> make the compiler crop the kvm_riscv_aia_create() call entirely from a
->> non-KVM build. Note that adding the 'kvm_enabled()' conditional inside
->> virt_use_kvm_aia() won't fix the build because this function would need
->> to be inlined multiple times to make the compiler zero out the entire
->> block.
->>
->> While we're at it, use kvm_enabled() in all instances where
->> virt_use_kvm_aia() is checked to allow the compiler to elide these other
->> kvm-only instances as well.
->>
->> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
->> Fixes: dbdb99948e ("target/riscv: select KVM AIA in riscv virt machine")
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   hw/riscv/virt.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
->> index 388e52a294..3b259b9305 100644
->> --- a/hw/riscv/virt.c
->> +++ b/hw/riscv/virt.c
->> @@ -782,7 +782,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
->>       }
->>   
->>       /* KVM AIA only has one APLIC instance */
->> -    if (virt_use_kvm_aia(s)) {
->> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
->>           create_fdt_socket_aplic(s, memmap, 0,
->>                                   msi_m_phandle, msi_s_phandle, phandle,
->>                                   &intc_phandles[0], xplic_phandles,
->> @@ -808,7 +808,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
->>   
->>       g_free(intc_phandles);
->>   
->> -    if (virt_use_kvm_aia(s)) {
->> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
->>           *irq_mmio_phandle = xplic_phandles[0];
->>           *irq_virtio_phandle = xplic_phandles[0];
->>           *irq_pcie_phandle = xplic_phandles[0];
->> @@ -1461,7 +1461,7 @@ static void virt_machine_init(MachineState *machine)
->>           }
->>       }
->>   
->> -    if (virt_use_kvm_aia(s)) {
->> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
->>           kvm_riscv_aia_create(machine, IMSIC_MMIO_GROUP_MIN_SHIFT,
->>                                VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
->>                                memmap[VIRT_APLIC_S].base,
->> -- 
->> 2.41.0
->>
->>
-> 
-> I think I'd prefer
-> 
->   /* We need this inlined for debug (-O0) builds */
->   static inline QEMU_ALWAYS_INLINE bool virt_use_kvm_aia(RISCVVirtState *s)
->   {
->      return kvm_enabled() && kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
->   }
-> 
-> assuming that works.
+[1] https://lore.kernel.org/qemu-devel/20220926142422.22325-1-antonio.caggiano@collabora.com/
+[2] V1: https://lore.kernel.org/qemu-devel/20230312092244.451465-1-ray.huang@amd.com
+[3] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1068
+[4] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1180
+[5] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22108
+[6] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/23680
 
+Please note the first 4 patches 1 -> 4 are inlcuded in these series because
+the series depends on them and not because we want them to be reviewed
+since they are already in the process of review through the "rutabaga_gfx +
+gfxstream" series.
+- https://lore.kernel.org/qemu-devel/20230829003629.410-1-gurchetansingh@chromium.org/
 
-I've tried before with 'inline' but not with 'QEMU_ALWAYS_INLINE'. But unfortunately
-it doesn't work too:
+Changes from V1 to V2 (virtio gpu V4)
 
+- Remove unused #include "hw/virtio/virtio-iommu.h"
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 3b259b9305..a600d81e77 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -77,9 +77,10 @@
-  #endif
-  
-  /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
--static bool virt_use_kvm_aia(RISCVVirtState *s)
-+static inline QEMU_ALWAYS_INLINE bool virt_use_kvm_aia(RISCVVirtState *s)
-  {
--    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
-+    return kvm_enabled() && kvm_irqchip_in_kernel() &&
-+           s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
-  }
-  
-  static const MemMapEntry virt_memmap[] = {
-@@ -782,7 +783,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
-      }
-  
-      /* KVM AIA only has one APLIC instance */
--    if (kvm_enabled() && virt_use_kvm_aia(s)) {
-+    if (virt_use_kvm_aia(s)) {
-          create_fdt_socket_aplic(s, memmap, 0,
-                                  msi_m_phandle, msi_s_phandle, phandle,
-                                  &intc_phandles[0], xplic_phandles,
-@@ -808,7 +809,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
-  
-      g_free(intc_phandles);
-  
--    if (kvm_enabled() && virt_use_kvm_aia(s)) {
-+    if (virt_use_kvm_aia(s)) {
-          *irq_mmio_phandle = xplic_phandles[0];
-          *irq_virtio_phandle = xplic_phandles[0];
-          *irq_pcie_phandle = xplic_phandles[0];
-@@ -1461,7 +1462,7 @@ static void virt_machine_init(MachineState *machine)
-          }
-      }
-  
--    if (kvm_enabled() && virt_use_kvm_aia(s)) {
-+    if (virt_use_kvm_aia(s)) {
-          kvm_riscv_aia_create(machine, IMSIC_MMIO_GROUP_MIN_SHIFT,
-                               VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
-                               memmap[VIRT_APLIC_S].base,
+- Add a local function, called virgl_resource_destroy(), that is used
+  to release a vgpu resource on error paths and in resource_unref.
 
+- Remove virtio_gpu_virgl_resource_unmap from
+  virtio_gpu_cleanup_mapping(),
+  since this function won't be called on blob resources and also because
+  blob resources are unmapped via virgl_cmd_resource_unmap_blob().
 
-Same error:
+- In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
+  and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
+  has been fully initialized.
 
-/libssh.so -lrbd -lrados -lbz2 -lutil -Wl,--end-group
-/usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
-/home/danielhb/work/qemu/build/../hw/riscv/virt.c:1466: undefined reference to `kvm_riscv_aia_create'
-collect2: error: ld returned 1 exit status
+- Memory region has a different life-cycle from virtio gpu resources
+  i.e. cannot be released synchronously along with the vgpu resource.
+  So, here the field "region" was changed to a pointer and is allocated
+  dynamically when the blob is mapped.
+  Also, since the pointer can be used to indicate whether the blob
+  is mapped, the explicite field "mapped" was removed.
 
+- In virgl_cmd_resource_map_blob(), add check on the value of
+  res->region, to prevent beeing called twice on the same resource.
 
+- Add a patch to enable automatic deallocation of memory regions to resolve
+  use-after-free memory corruption with a reference.
+
+References
+
+Demo with Venus:
+- https://static.sched.com/hosted_files/xen2023/3f/xen_summit_2023_virtgpu_demo.mp4
+QEMU repository:
+- https://gitlab.freedesktop.org/rui/qemu-xen/-/commits/upstream-for-virtio-gpu
 
 Thanks,
+Ray
 
+Antonio Caggiano (6):
+  virtio-gpu: CONTEXT_INIT feature
+  virtio-gpu: blob prep
+  virtio-gpu: Handle resource blob commands
+  virtio-gpu: Resource UUID
+  virtio-gpu: Support Venus capset
+  virtio-gpu: Initialize Venus
 
-Daniel
+Dmitry Osipenko (1):
+  virtio-gpu: Don't require udmabuf when blobs and virgl are enabled
 
+Dr. David Alan Gilbert (1):
+  virtio: Add shared memory capability
 
+Gerd Hoffmann (1):
+  virtio-gpu: hostmem
 
+Huang Rui (3):
+  virtio-gpu: Support context init feature with virglrenderer
+  virtio-gpu: Configure context init for virglrenderer
+  virtio-gpu: Enable virglrenderer render server flag for venus
 
-> 
-> Either way,
-> 
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> 
-> Thanks,
-> drew
+Xenia Ragiadakou (1):
+  softmmu/memory: enable automatic deallocation of memory regions
+
+ hw/display/trace-events                     |   1 +
+ hw/display/virtio-gpu-base.c                |   5 +
+ hw/display/virtio-gpu-pci.c                 |  14 +
+ hw/display/virtio-gpu-virgl.c               | 270 +++++++++++++++++++-
+ hw/display/virtio-gpu.c                     |  61 ++++-
+ hw/display/virtio-vga.c                     |  33 ++-
+ hw/virtio/virtio-pci.c                      |  18 ++
+ include/hw/virtio/virtio-gpu-bswap.h        |  15 ++
+ include/hw/virtio/virtio-gpu.h              |  22 ++
+ include/hw/virtio/virtio-pci.h              |   4 +
+ include/standard-headers/linux/virtio_gpu.h |   2 +
+ meson.build                                 |   8 +
+ softmmu/memory.c                            |  19 +-
+ 13 files changed, 446 insertions(+), 26 deletions(-)
+
+-- 
+2.34.1
+
 
