@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA86178ED96
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 14:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5D178EE6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbh5h-0007E5-84; Thu, 31 Aug 2023 08:48:05 -0400
+	id 1qbhKR-0006aF-FN; Thu, 31 Aug 2023 09:03:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbh5f-0007Dw-6p
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:48:03 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbh5b-0002Hl-0e
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:48:02 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-401bbfc05fcso7290245e9.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:47:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693486077; x=1694090877; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MuKQEjqs7xtZpogq/M2NsngsOFq+Lr4SRZ+K71ruknQ=;
- b=eGlFW9cKKT/OQV1hHHt7zefp6ehh7nJFJE/wiXhU1PQJWlbx5XISEV9yEv+SA4odJa
- zeN4bv2nEYOPI9GnAa3O/A3KVEaZjHdBhtx/OSf+eP1QNGYuO7XUKRqCe22Cm4fLc/Va
- HdMc5Qdg7pphRAZ3XkawG3ysYC0MJEnvsICatLhgtKesSmVizfhGX+e3ccT8GI5trqMT
- xVPNHVuH4H5esGuQSaaxDeY/0+Or/G6PJfGw36qUg0RQNZRGn9zOQY0fsU7bf67HUsin
- dzU0TKjlySAjNLNfpiQrqeuQ62jl5sDi3OgNUWnVWcrs3XiQutbH/lB1r9VA+MfySioJ
- Dhfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486077; x=1694090877;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MuKQEjqs7xtZpogq/M2NsngsOFq+Lr4SRZ+K71ruknQ=;
- b=EX7I3kCT6GNbqOuFY7LreoPNEPzLEhhSxIDw2yo06Psgs22EMYFhI+Jh0czxh2Ngol
- 8Wfc9YRM0JAyLudLW22bw/VpcHwYs9xYDZFzbV8qN0VoQdCGhPLdMActziP5K3On1dxu
- 9SuZQvfh7cJmPoMPh5hID70GxMgBiIq521qJd0MJl903IGVMFXJnyzeMz0RKYGFMjddL
- CHXA3St/eCVidL0FOOncywdWAhEqjSJAlrihq9PJPKYejs3qOrFYBjo3ZoOz7em9JmXq
- WUMwp4QyfIrjhGyyBn+FbQg+GjtGMmA/YAXNJDzR1lC9H3CQDJ30wFxXrLj9IKoagYNJ
- QEOw==
-X-Gm-Message-State: AOJu0YygJbCDbg9608fckL1EkE1gVFo9PdyoZcc6Lkj4zyXQ83FJTYYl
- 2UAo8fFKWfiGfgNOVBq9/fFzMQ==
-X-Google-Smtp-Source: AGHT+IEXcUi09vWHQhQyrCMQALpbyA0GFPvHq6+nlextyisEOtaU7wDKErFhskYBZAkgudz1d91xVQ==
-X-Received: by 2002:a05:600c:214d:b0:401:bdd7:499d with SMTP id
- v13-20020a05600c214d00b00401bdd7499dmr4111475wml.25.1693486077308; 
- Thu, 31 Aug 2023 05:47:57 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.245])
- by smtp.gmail.com with ESMTPSA id
- c10-20020a05600c0aca00b003fc0505be19sm1884577wmr.37.2023.08.31.05.47.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 05:47:56 -0700 (PDT)
-Message-ID: <292f8ac7-402f-0da1-2f4e-40d5391c861a@linaro.org>
-Date: Thu, 31 Aug 2023 14:47:54 +0200
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1qbhGI-00046m-Un
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:07 -0400
+Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1qbhGC-0005kj-1i
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:00 -0400
+Received: from juju-98d295-prod-launchpad-16.localdomain (unknown
+ [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 9C05843131
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 12:58:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1693486731;
+ bh=loiUURVNUqqr7KJsWykJTYXn/A2Pa64k18IX4ITs1fM=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=feTYY4jHUIAsoKGN543QyKH7v6Gvow897AdMd+AB7jP0NYj6WQPU/eaKdycr91GAf
+ qug63PBsDUBwQJz0lTKwfbDI173iBnw2NQqC7Cua3IS0sPSRYX95U278JGaXNSv0+Z
+ 4jODSivO47ECrmJHdtAXWeS/eFUET7JEuNL45hY9MkJbu8oyeDwewY44Hl28IkIzwg
+ seP7akajFhh/tu8ScGL7hZGSMqtY+bjkgN8JFDKRleFymx6YD0yjSDAvPwQZCue7fR
+ 9ChsNwidzqVl6Lq77Quh4x1W2fS9U923R1u76lO8YBZ/Ub7nVVr/KJHe3GWxWUPrFW
+ YHdc3Ka93Wpgw==
+Received: from [10.131.215.246] (localhost [127.0.0.1])
+ by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
+ BF9597EB81
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 12:58:50 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 1/2] hw/riscv/virt.c: fix non-KVM --enable-debug build
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, richard.henderson@linaro.org
-References: <20230830133503.711138-1-dbarboza@ventanamicro.com>
- <20230830133503.711138-2-dbarboza@ventanamicro.com>
- <20230831-d3b40182209cb9054ceaed62@orel>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230831-d3b40182209cb9054ceaed62@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 31 Aug 2023 12:48:34 -0000
+From: Samuel Henrique <1863025@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
+ assignee=alex.bennee@linaro.org; 
+X-Launchpad-Bug-Tags: mttcg tcg
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: ajbennee laurent-vivier samueloph yifanlu
+X-Launchpad-Bug-Reporter: Yifan (yifanlu)
+X-Launchpad-Bug-Modifier: Samuel Henrique (samueloph)
+References: <158154486735.14935.3370403781300872079.malonedeb@soybean.canonical.com>
+Message-Id: <169348611423.1472917.10027704436078423318.malone@juju-98d295-prod-launchpad-3>
+Subject: [Bug 1863025] Re: Use-after-free after flush in TCG accelerator
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="5e6925a96ee17ce45a766139d74108c2c83abbc9";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: ded076c6ee19d49d504f3b3d608f28910e7e578d
+Received-SPF: pass client-ip=185.125.188.250;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -94,49 +85,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1863025 <1863025@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/8/23 10:42, Andrew Jones wrote:
-> On Wed, Aug 30, 2023 at 10:35:02AM -0300, Daniel Henrique Barboza wrote:
->> A build with --enable-debug and without KVM will fail as follows:
->>
->> /usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
->> ./qemu/build/../hw/riscv/virt.c:1465: undefined reference to `kvm_riscv_aia_create'
->>
->> This happens because the code block with "if virt_use_kvm_aia(s)" isn't
->> being ignored by the debug build, resulting in an undefined reference to
->> a KVM only function.
->>
->> Add a 'kvm_enabled()' conditional together with virt_use_kvm_aia() will
->> make the compiler crop the kvm_riscv_aia_create() call entirely from a
->> non-KVM build. Note that adding the 'kvm_enabled()' conditional inside
->> virt_use_kvm_aia() won't fix the build because this function would need
->> to be inlined multiple times to make the compiler zero out the entire
->> block.
->>
->> While we're at it, use kvm_enabled() in all instances where
->> virt_use_kvm_aia() is checked to allow the compiler to elide these other
->> kvm-only instances as well.
->>
->> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
->> Fixes: dbdb99948e ("target/riscv: select KVM AIA in riscv virt machine")
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   hw/riscv/virt.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
+CVE-2020-24165 was assigned to this:
+https://nvd.nist.gov/vuln/detail/CVE-2020-24165
 
+I had no involvement in the assignment, posting here for reference only.
 
-> I think I'd prefer
-> 
->   /* We need this inlined for debug (-O0) builds */
->   static inline QEMU_ALWAYS_INLINE bool virt_use_kvm_aia(RISCVVirtState *s)
->   {
->      return kvm_enabled() && kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
+** CVE added: https://cve.mitre.org/cgi-bin/cvename.cgi?name=3D2020-24165
 
-Generally we should know whether KVM is enabled or not _before_
-calling any foo_kvm() code, not after.
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1863025
 
->   }
+Title:
+  Use-after-free after flush in TCG accelerator
+
+Status in QEMU:
+  Fix Released
+
+Bug description:
+  I believe I found a UAF in TCG that can lead to a guest VM escape. The
+  security list informed me "This can not be treated as a security
+  issue." and to post it here. I am looking at the 4.2.0 source code.
+  The issue requires a race and I will try to describe it in terms of
+  three concurrent threads.
+
+  Thread A:
+
+  A1. qemu_tcg_cpu_thread_fn runs work loop
+  A2. qemu_wait_io_event =3D> qemu_wait_io_event_common =3D> process_queued=
+_cpu_work
+  A3. start_exclusive critical section entered
+  A4. do_tb_flush is called, TB memory freed/re-allocated
+  A5. end_exclusive exits critical section
+
+  Thread B:
+
+  B1. qemu_tcg_cpu_thread_fn runs work loop
+  B2. tcg_cpu_exec =3D> cpu_exec =3D> tb_find =3D> tb_gen_code
+  B3. tcg_tb_alloc obtains a new TB
+
+  Thread C:
+
+  C1. qemu_tcg_cpu_thread_fn runs work loop
+  C2. cpu_exec_step_atomic executes
+  C3. TB obtained with tb_lookup__cpu_state or tb_gen_code
+  C4. start_exclusive critical section entered
+  C5. cpu_tb_exec executes the TB code
+  C6. end_exclusive exits critical section
+
+  Consider the following sequence of events:
+  =C2=A0=C2=A0B2 =3D> B3 =3D> C3 (same TB as B2) =3D> A3 =3D> A4 (TB freed)=
+ =3D> A5 =3D> B2 =3D>
+  =C2=A0=C2=A0B3 (re-allocates TB from B2) =3D> C4 =3D> C5 (freed/reused TB=
+ now executing) =3D> C6
+
+  In short, because thread C uses the TB in the critical section, there
+  is no guarantee that the pointer has not been "freed" (rather the
+  memory is marked as re-usable) and therefore a use-after-free occurs.
+
+  Since the TCG generated code can be in the same memory as the TB data
+  structure, it is possible for an attacker to overwrite the UAF pointer
+  with code generated from TCG. This can overwrite key pointer values
+  and could lead to code execution on the host outside of the TCG
+  sandbox.
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/1863025/+subscriptions
 
 
