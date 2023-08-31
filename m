@@ -2,82 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E95678EA50
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6288978EA54
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 12:41:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbf4s-0006kb-3y; Thu, 31 Aug 2023 06:39:06 -0400
+	id 1qbf6b-0001b0-8Z; Thu, 31 Aug 2023 06:40:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbf4m-0006Zc-TO
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:39:01 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbf4j-0002uA-Gf
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:39:00 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-52a1132b685so819837a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 03:38:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693478336; x=1694083136; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=sL3iFsaRePKAi0r+5lwj376Mc8I3ZXuv5uvF02qnOKU=;
- b=IGdsp+epQ1HJmF95u4QZDfu/P79EhyRGv3JWq/fK+uMC8KMzJWngzmj9l3TO8/1xCa
- 8KjuokyjWJ9Vaha6zGVaApM5pV7ElYmCk5Yq9u7G0IG3i5qVUpnymhsig2qkYYLTHbFi
- ZYuO/r+ZqI9roOgTxd8hCp3RMasVaKrqEKIdOVtKE52aZ/dFek2AytxWcbwxnbiRl1kL
- nD669o7RDIyiDViwOovAIf1QyiJ+w/HPiiHY/gQzye9qb/35zccnHPNCLKyAU/RpdjnJ
- xKWXgwh26LJWx51dFy9pKzrZIiF5qoFblDyaMYNckmtCkiD4XJWE6fXH0dbKPhpYFwcz
- PK3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693478336; x=1694083136;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sL3iFsaRePKAi0r+5lwj376Mc8I3ZXuv5uvF02qnOKU=;
- b=F+AOXuR4Kr5EG+o39HGw+OmRi6/vB66xIV2hMbJShHE4C0k9yaUIGQ2i/CiEmOePqu
- FOpi57L22ZT6vWh8RTi//MZgQ6f7v09Cnb+HtQ+mdr2PBDMgmh0/hdliy8Co9gmT0Iix
- gReIP/ytyDDz6oqvY3F2N71Z/AQpmuR307pb94uAZd73n+Z6JFv5i08pLc66YSZXIiTx
- dPaKo7WZQ3cTIR+TmARXYZRULRg1+FARx4USf8a2UFzoOKOt950dsrSra4JmjrichoII
- j95zfTnp4sK3AA4tyGQJRHdNcMJ+n6EDQTcv1JZZ9jkzZmXkUziEfKOAuJ4gQAoieVxN
- q5AQ==
-X-Gm-Message-State: AOJu0YxJU6wctPvH6T4wCVDe7EPVH6Qwu64UK8/HJUADxh+EquTxsNnV
- +QA+Ymkp4jwSitPHJFThashYKw==
-X-Google-Smtp-Source: AGHT+IHKsrS4I2LFThJEYNdhxHbjRXhaGOqT+tmJm3NTQ17RJaytrRg+HhKLMZ4ALBQpUsCXn8+47Q==
-X-Received: by 2002:a50:ee82:0:b0:525:950d:60ad with SMTP id
- f2-20020a50ee82000000b00525950d60admr4072093edr.25.1693478335872; 
- Thu, 31 Aug 2023 03:38:55 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- d17-20020aa7ce11000000b00522572f323dsm636680edv.16.2023.08.31.03.38.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 03:38:55 -0700 (PDT)
-Date: Thu, 31 Aug 2023 12:38:54 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH 04/20] target/riscv: move riscv_tcg_ops to tcg-cpu.c
-Message-ID: <20230831-6f8dde2ab55ce8323d5e3b0e@orel>
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
- <20230825130853.511782-5-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1qbf6Z-0001ao-1N
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:40:51 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1qbf6J-0003F1-GY
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 06:40:39 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37VAPWlS029502; Thu, 31 Aug 2023 10:40:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=znF0BF1kUSuueMdP2rNueLOh4tYw4WJJ9faw+zW9ezE=;
+ b=ELQ9F/3ZU0zebAto+M91FILiBhz/DQXgs5NK032d7uTi7rI/0PAJVoCP9YYtYpaKkag9
+ NHdp3y0kTUMyStycA0deIeSIJyylGiRugrZoFY8zicKsIzFaMpcwcc9hgT+6ESNiM3GC
+ KXnCnTf8IF/bwaxq9IIgcrknWCfwBOU7i84qQTWnp+o+3KWyG7fr272KGlHOGF3jR3jG
+ bqZU3/tabQx3cxvQ4vX5zeyvmMM6VaKNk7rzw4sK9SLlxxhZv2gi4OIPKalnkU4OIOLN
+ ptOlrfISRvBhuEsWoXtXu/dpiHOK8oj4dv6yh8BynsXLol1+dQtMbR3oSUbkEcg0IMnk zw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3st6cta50c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Aug 2023 10:40:21 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37VAeJ2U026136
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Aug 2023 10:40:19 GMT
+Received: from [10.111.142.103] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 31 Aug
+ 2023 03:40:13 -0700
+Message-ID: <ca8bcf9a-2886-aed0-5229-4787808bd39c@quicinc.com>
+Date: Thu, 31 Aug 2023 12:40:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230825130853.511782-5-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v4 12/13] virtio-gpu: Initialize Venus
+Content-Language: en-US
+To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>, "Michael
+ S . Tsirkin" <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>, Antonio Caggiano
+ <antonio.caggiano@collabora.com>, "Dr . David Alan Gilbert"
+ <dgilbert@redhat.com>, Robert Beckett <bob.beckett@collabora.com>, Dmitry
+ Osipenko <dmitry.osipenko@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, <ernunes@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Akihiko Odaki
+ <akihiko.odaki@daynix.com>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>, Honglei
+ Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>, Chen
+ Jiqian <Jiqian.Chen@amd.com>
+References: <20230831093252.2461282-1-ray.huang@amd.com>
+ <20230831093252.2461282-13-ray.huang@amd.com>
+From: Antonio Caggiano <quic_acaggian@quicinc.com>
+In-Reply-To: <20230831093252.2461282-13-ray.huang@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: IyA5KR4iV1dHZO-i5Zd2-Cub9Bp8YLb6
+X-Proofpoint-ORIG-GUID: IyA5KR4iV1dHZO-i5Zd2-Cub9Bp8YLb6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-31_07,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ clxscore=1011 malwarescore=0 phishscore=0 adultscore=0 mlxlogscore=961
+ suspectscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308310094
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_acaggian@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,195 +114,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 25, 2023 at 10:08:37AM -0300, Daniel Henrique Barboza wrote:
-> Move the remaining of riscv_tcg_ops now that we have a working realize()
-> implementation.
+Hi Huang,
+
+Thank you for pushing this forward!
+
+On 31/08/2023 11:32, Huang Rui wrote:
+> From: Antonio Caggiano <antonio.caggiano@collabora.com>
 > 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Request Venus when initializing VirGL.
+> 
+> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
 > ---
->  target/riscv/cpu.c         | 58 -------------------------------------
->  target/riscv/cpu.h         |  4 ---
->  target/riscv/tcg/tcg-cpu.c | 59 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 59 insertions(+), 62 deletions(-)
 > 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 12cea62ee7..839b83e52a 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -839,24 +839,6 @@ static vaddr riscv_cpu_get_pc(CPUState *cs)
->      return env->pc;
->  }
->  
-> -static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-> -                                          const TranslationBlock *tb)
-> -{
-> -    if (!(tb_cflags(tb) & CF_PCREL)) {
-> -        RISCVCPU *cpu = RISCV_CPU(cs);
-> -        CPURISCVState *env = &cpu->env;
-> -        RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> -
-> -        tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
-> -
-> -        if (xl == MXL_RV32) {
-> -            env->pc = (int32_t) tb->pc;
-> -        } else {
-> -            env->pc = tb->pc;
-> -        }
-> -    }
-> -}
-> -
->  static bool riscv_cpu_has_work(CPUState *cs)
->  {
->  #ifndef CONFIG_USER_ONLY
-> @@ -872,29 +854,6 @@ static bool riscv_cpu_has_work(CPUState *cs)
->  #endif
->  }
->  
-> -static void riscv_restore_state_to_opc(CPUState *cs,
-> -                                       const TranslationBlock *tb,
-> -                                       const uint64_t *data)
-> -{
-> -    RISCVCPU *cpu = RISCV_CPU(cs);
-> -    CPURISCVState *env = &cpu->env;
-> -    RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> -    target_ulong pc;
-> -
-> -    if (tb_cflags(tb) & CF_PCREL) {
-> -        pc = (env->pc & TARGET_PAGE_MASK) | data[0];
-> -    } else {
-> -        pc = data[0];
-> -    }
-> -
-> -    if (xl == MXL_RV32) {
-> -        env->pc = (int32_t)pc;
-> -    } else {
-> -        env->pc = pc;
-> -    }
-> -    env->bins = data[1];
-> -}
-> -
->  static void riscv_cpu_reset_hold(Object *obj)
->  {
->  #ifndef CONFIG_USER_ONLY
-> @@ -1796,23 +1755,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
->  };
->  #endif
->  
-> -const struct TCGCPUOps riscv_tcg_ops = {
-> -    .initialize = riscv_translate_init,
-> -    .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-> -    .restore_state_to_opc = riscv_restore_state_to_opc,
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    .tlb_fill = riscv_cpu_tlb_fill,
-> -    .cpu_exec_interrupt = riscv_cpu_exec_interrupt,
-> -    .do_interrupt = riscv_cpu_do_interrupt,
-> -    .do_transaction_failed = riscv_cpu_do_transaction_failed,
-> -    .do_unaligned_access = riscv_cpu_do_unaligned_access,
-> -    .debug_excp_handler = riscv_cpu_debug_excp_handler,
-> -    .debug_check_breakpoint = riscv_cpu_debug_check_breakpoint,
-> -    .debug_check_watchpoint = riscv_cpu_debug_check_watchpoint,
-> -#endif /* !CONFIG_USER_ONLY */
-> -};
-> -
->  static bool riscv_cpu_is_dynamic(Object *cpu_obj)
->  {
->      return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 721bd0b119..2ac00a0304 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -706,10 +706,6 @@ enum riscv_pmu_event_idx {
->      RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS = 0x10021,
->  };
->  
-> -/* Export tcg_ops until we move everything to tcg/tcg-cpu.c */
-> -#include "hw/core/tcg-cpu-ops.h"
-> -extern const struct TCGCPUOps riscv_tcg_ops;
-> -
->  /* used by tcg/tcg-cpu.c*/
->  void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
->  bool cpu_cfg_ext_is_user_set(uint32_t ext_offset);
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index fb17097bb1..2024c98793 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -26,7 +26,66 @@
->  #include "qemu/accel.h"
->  #include "qemu/error-report.h"
->  #include "hw/core/accel-cpu.h"
-> +#include "hw/core/tcg-cpu-ops.h"
-> +#include "tcg/tcg.h"
->  
-> +static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-> +                                          const TranslationBlock *tb)
-> +{
-> +    if (!(tb_cflags(tb) & CF_PCREL)) {
-> +        RISCVCPU *cpu = RISCV_CPU(cs);
-> +        CPURISCVState *env = &cpu->env;
-> +        RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> +
-> +        tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
-> +
-> +        if (xl == MXL_RV32) {
-> +            env->pc = (int32_t) tb->pc;
-> +        } else {
-> +            env->pc = tb->pc;
-> +        }
-> +    }
-> +}
-> +
-> +static void riscv_restore_state_to_opc(CPUState *cs,
-> +                                       const TranslationBlock *tb,
-> +                                       const uint64_t *data)
-> +{
-> +    RISCVCPU *cpu = RISCV_CPU(cs);
-> +    CPURISCVState *env = &cpu->env;
-> +    RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> +    target_ulong pc;
-> +
-> +    if (tb_cflags(tb) & CF_PCREL) {
-> +        pc = (env->pc & TARGET_PAGE_MASK) | data[0];
-> +    } else {
-> +        pc = data[0];
-> +    }
-> +
-> +    if (xl == MXL_RV32) {
-> +        env->pc = (int32_t)pc;
-> +    } else {
-> +        env->pc = pc;
-> +    }
-> +    env->bins = data[1];
-> +}
-> +
-> +const struct TCGCPUOps riscv_tcg_ops = {
-
-This can be static again.
-
-> +    .initialize = riscv_translate_init,
-> +    .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-> +    .restore_state_to_opc = riscv_restore_state_to_opc,
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    .tlb_fill = riscv_cpu_tlb_fill,
-> +    .cpu_exec_interrupt = riscv_cpu_exec_interrupt,
-> +    .do_interrupt = riscv_cpu_do_interrupt,
-> +    .do_transaction_failed = riscv_cpu_do_transaction_failed,
-> +    .do_unaligned_access = riscv_cpu_do_unaligned_access,
-> +    .debug_excp_handler = riscv_cpu_debug_excp_handler,
-> +    .debug_check_breakpoint = riscv_cpu_debug_check_breakpoint,
-> +    .debug_check_watchpoint = riscv_cpu_debug_check_watchpoint,
-> +#endif /* !CONFIG_USER_ONLY */
-> +};
->  
->  static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
->                                      bool value)
-> -- 
-> 2.41.0
+> v1->v2:
+>      - Rebase to latest version
 > 
->
+>   hw/display/virtio-gpu-virgl.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index 83cd8c8fd0..c5a62665bd 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -887,6 +887,8 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+>       }
+>   #endif
+>   
+> +    flags |= VIRGL_RENDERER_VENUS;
+> +
 
-With the above static change and Phil's remove comment change,
+VIRGL_RENDERER_VENUS is a symbol only available from virglrenderer 0.9.1 
+[0] and only if VIRGL_RENDERER_UNSTABLE_APIS is defined.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Luckily for us, VIRGL_RENDERER_UNSTABLE_APIS is defined unconditionally 
+from virglrenderer 0.9.0 [1], so we could check for that in qemu/meson.build
+
+e.g.
+
+
+   if virgl.version().version_compare('>= 0.9.0')
+     message('Enabling virglrenderer unstable APIs')
+     virgl = declare_dependency(compile_args: 
+'-DVIRGL_RENDERER_UNSTABLE_APIS',
+                                dependencies: virgl)
+   endif
+
+
+Also, while testing this with various versions of virglrenderer, I 
+realized there are no guarantees for Venus backend to be available in 
+the linked library. Virglrenderer should be built with 
+-Dvenus_experimental=true, and if that is not the case, the following 
+virgl_renderer_init would fail for previous versions of virglrenderer or 
+in case it has not been built with venus support.
+
+I would suggest another approach for that which tries initializing Venus 
+only if VIRGL_RENDERER_VENUS is actually defined. Then, if it fails 
+cause virglrenderer has not been built with venus support, try again 
+falling back to virgl only.
+
+e.g.
+
+#ifdef VIRGL_RENDERER_VENUS
+     ret = virgl_renderer_init(g, VIRGL_RENDERER_VENUS, &virtio_gpu_3d_cbs);
+     if (ret != 0) {
+         warn_report("Failed to initialize virglrenderer with venus: 
+%d", ret);
+         warn_report("Falling back to virgl only");
+         ret = virgl_renderer_init(g, 0, &virtio_gpu_3d_cbs);
+     }
+#else
+     ret = virgl_renderer_init(g, 0, &virtio_gpu_3d_cbs);
+#endif
+
+
+>       ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
+>       if (ret != 0) {
+>           error_report("virgl could not be initialized: %d", ret);
+
+[0] 
+https://gitlab.freedesktop.org/virgl/virglrenderer/-/commit/6c31f85330bb4c5aba8b82eba606971e598c6e25
+[1] 
+https://gitlab.freedesktop.org/virgl/virglrenderer/-/commit/491afdc42a49ec6a1b8d7cbc5c97360229002d41
+
+Best regards,
+Antonio Caggiano
 
