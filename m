@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D6978E76E
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3807078E773
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:58:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbcWg-0002rO-Qf; Thu, 31 Aug 2023 03:55:38 -0400
+	id 1qbcYb-0004Ew-Um; Thu, 31 Aug 2023 03:57:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qbcWe-0002qi-La; Thu, 31 Aug 2023 03:55:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qbcYZ-0004Ed-Rh; Thu, 31 Aug 2023 03:57:35 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qbcWb-0001xf-OP; Thu, 31 Aug 2023 03:55:36 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ id 1qbcYX-0002Cf-Dz; Thu, 31 Aug 2023 03:57:35 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37V7dQXe029465; Thu, 31 Aug 2023 07:55:23 GMT
+ 37V7k1AR008264; Thu, 31 Aug 2023 07:57:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=OrOlnLaF44Lp7Lw7xqlWZmfA5qPGUn6WZuZXKkjQ8qg=;
- b=oKiHkoa6W/Jr8j/h0LeNOFJkAQhZgsdrIRkrZR5WCGndfXQoo1Ru3e22ey4yJQo6qyxW
- iR01uMo8p6zZlVjAhzKRUyo4EwBpZXD/ogLqokvQ34DYboNJcQvmOD2boAK2paIPJ+CA
- HpeuBKE8XG29Sh8To9Uinyp2heGV7NW12vm/TYrshp+fP7ulBVqChnPwsbPhy/suhGI0
- F5dNSB+6CbBkM2XvMAQDQXl7GPxfWvNW+vdiNyNEmB0cDfqEWScxYqOPPnnBqNsMVcVN
- FIRsXTPa+rh9C5Gak73002r3Yzic0ik6SWAXwwGsOJS1tBS5Hwm6zhcehMs26MS8pXck PA== 
+ bh=TPJAc8wfPbguUUzoWnvd5jGFxDjGi16T8MJPSYal6sQ=;
+ b=bXGEzTp+KNkYdgWKOJFyqKUFOzygof9/CAYATr/l5jkWgiRnRaGQsydZe4sIKY9YlIRX
+ /4mhKRvsZfqN3P6qzF+rJyA5niqJKYfU0bwcmRaQeMZcU3sfkLdsOGGIg3/eRS+omg7G
+ 7uTt5dkl0ARoACRStdpOk4hvwxelcePNEjrvjhwwKhXKvcSg+DQmU8N1AWLvZ4f4tYwO
+ XH4QNDBcDeLihzJB0yHwAD+7LVSW+nJ/jjNcH0Vk//4fSpDzbn4/G0GhmizcYp4ZFmxl
+ wnXvydiBx970L/qNDITZPwLiNMz8wBnFdWAOXz6oVheZkt/B69yTkqQzsWEhcpRnnQh/ wA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ste4ku8ek-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3stbvypw94-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Aug 2023 07:55:23 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37V7g5IW005972;
- Thu, 31 Aug 2023 07:55:23 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ste4ku8e5-1
+ Thu, 31 Aug 2023 07:57:24 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37V7qvaj000364;
+ Thu, 31 Aug 2023 07:57:24 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3stbvypw90-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Aug 2023 07:55:23 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37V7RR2g014115; Thu, 31 Aug 2023 07:55:22 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqwxka9k5-1
+ Thu, 31 Aug 2023 07:57:23 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37V5i7SP019174; Thu, 31 Aug 2023 07:57:23 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqxe2252n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 31 Aug 2023 07:55:22 +0000
+ Thu, 31 Aug 2023 07:57:23 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37V7tKmZ46137642
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37V7vLMh39190898
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 31 Aug 2023 07:55:20 GMT
+ Thu, 31 Aug 2023 07:57:21 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 566B72004B;
- Thu, 31 Aug 2023 07:55:20 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7F38E20040;
+ Thu, 31 Aug 2023 07:57:21 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11E5820043;
- Thu, 31 Aug 2023 07:55:20 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 321EB20043;
+ Thu, 31 Aug 2023 07:57:21 +0000 (GMT)
 Received: from [9.179.13.135] (unknown [9.179.13.135])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 31 Aug 2023 07:55:19 +0000 (GMT)
-Message-ID: <1c97cd3b-e3f5-2624-9992-c4d1a377e1ca@linux.ibm.com>
-Date: Thu, 31 Aug 2023 09:55:19 +0200
+ Thu, 31 Aug 2023 07:57:21 +0000 (GMT)
+Message-ID: <f582e58c-487f-3947-6d9d-39552e1a8193@linux.ibm.com>
+Date: Thu, 31 Aug 2023 09:57:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 3/4] ppc/xive: Handle END triggers between chips with MMIOs
+Subject: Re: [PATCH 4/4] ppc/xive: Add support for the PC MMIOs
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
 References: <20230829143236.219348-1-clg@kaod.org>
- <20230829143236.219348-4-clg@kaod.org>
+ <20230829143236.219348-5-clg@kaod.org>
 From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230829143236.219348-4-clg@kaod.org>
+In-Reply-To: <20230829143236.219348-5-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jSiSD8t_S2mof1JR6AkurKwNAL1GHSOo
-X-Proofpoint-GUID: fkw_dglRevINp2524lE6cqZV0EDcCQxU
+X-Proofpoint-GUID: boANMJTU_C1yQwwgPH1Lz1mpI2BmsSFP
+X-Proofpoint-ORIG-GUID: wtYMK-1ch_0Hxe-VrHDjhQPMvTKKoW_A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-31_05,2023-08-29_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- mlxlogscore=973 mlxscore=0 malwarescore=0 lowpriorityscore=0
- suspectscore=0 spamscore=0 phishscore=0 adultscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1015 mlxscore=0
+ impostorscore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
+ malwarescore=0 spamscore=0 bulkscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2308100000 definitions=main-2308310067
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -117,163 +117,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 29/08/2023 16:32, Cédric Le Goater wrote:
-> The notify page of the interrupt controller can either be used to
-> receive trigger events from the HW controllers (PHB, PSI) or to
-> reroute interrupts between Interrupt Controllers. In which case, the
-> VSD table is used to determine the address of the notify page of the
-> remote IC and the store data is forwarded.
+> The XIVE interrupt contoller maintains various fields on interrupt
+> targets in a structure called NVT. Each unit has a NVT cache, backed
+> by RAM.
 > 
-> Today, our model grabs the remote VSD (EAS, END, NVT) address using
-> pnv_xive_get_remote() helper. Be more precise and implement remote END
-> triggers using a store on the remote IC notify page.
+> When the NVT structure is not local (in RAM) to the chip, the XIVE
+> interrupt controller forwards the memory operation to the owning chip
+> using the PC MMIO region configured for this purpose. QEMU does not
+> need to be so precise since software shouldn't perform any of these
+> operations. The model implementation is simplified to return the RAM
+> address of the NVT structure which is then used by pnv_xive_vst_write
+> or read to perform the operation in RAM.
 > 
-> We still have a shortcut in the model for the NVT accesses which we
-> will address later.
+> Remove the last use of pnv_xive_get_remote().
 > 
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
+> -
 
+
+Nice cleanup
 
 Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
    Fred
 
 
->   hw/intc/pnv_xive_regs.h |  1 +
->   hw/intc/pnv_xive.c      | 69 +++++++++++++++++++++++++++++++++++++++--
->   2 files changed, 68 insertions(+), 2 deletions(-)
+>   hw/intc/pnv_xive.c | 84 ++++++++++++++++++++++++++--------------------
+>   1 file changed, 48 insertions(+), 36 deletions(-)
 > 
-> diff --git a/hw/intc/pnv_xive_regs.h b/hw/intc/pnv_xive_regs.h
-> index c78f030c0260..793847638bce 100644
-> --- a/hw/intc/pnv_xive_regs.h
-> +++ b/hw/intc/pnv_xive_regs.h
-> @@ -228,6 +228,7 @@
->    *       VSD and is only meant to be used in indirect mode !
->    */
->   #define VSD_MODE                PPC_BITMASK(0, 1)
-> +#define  VSD_MODE_INVALID       0
->   #define  VSD_MODE_SHARED        1
->   #define  VSD_MODE_EXCLUSIVE     2
->   #define  VSD_MODE_FORWARD       3
 > diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-> index b2bafd61b157..aae5cb6f607b 100644
+> index aae5cb6f607b..9b10e905195a 100644
 > --- a/hw/intc/pnv_xive.c
 > +++ b/hw/intc/pnv_xive.c
-> @@ -225,6 +225,11 @@ static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
+> @@ -84,28 +84,6 @@ static uint8_t pnv_xive_block_id(PnvXive *xive)
+>       return blk;
+>   }
+>   
+> -/*
+> - * Remote access to controllers. HW uses MMIOs. For now, a simple scan
+> - * of the chips is good enough.
+> - *
+> - * TODO: Block scope support
+> - */
+> -static PnvXive *pnv_xive_get_remote(uint8_t blk)
+> -{
+> -    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
+> -    int i;
+> -
+> -    for (i = 0; i < pnv->num_chips; i++) {
+> -        Pnv9Chip *chip9 = PNV9_CHIP(pnv->chips[i]);
+> -        PnvXive *xive = &chip9->xive;
+> -
+> -        if (pnv_xive_block_id(xive) == blk) {
+> -            return xive;
+> -        }
+> -    }
+> -    return NULL;
+> -}
+> -
+>   /*
+>    * VST accessors for SBE, EAT, ENDT, NVT
+>    *
+> @@ -209,6 +187,42 @@ static uint64_t pnv_xive_vst_addr_indirect(PnvXive *xive, uint32_t type,
+>       return pnv_xive_vst_addr_direct(xive, type, vsd, (idx % vst_per_page));
+>   }
+>   
+> +/*
+> + * This is a simplified model of operation forwarding on a remote IC.
+> + *
+> + * A PC MMIO address is built to identify the NVT structure. The load
+> + * on the remote IC will return the address of the structure in RAM,
+> + * which will then be used by pnv_xive_vst_write/read to perform the
+> + * RAM operation.
+> + */
+> +static uint64_t pnv_xive_vst_addr_remote(PnvXive *xive, uint32_t type,
+> +                                         uint64_t vsd, uint8_t blk,
+> +                                         uint32_t idx)
+> +{
+> +    const XiveVstInfo *info = &vst_infos[type];
+> +    uint64_t remote_addr = vsd & VSD_ADDRESS_MASK;
+> +    uint64_t vst_addr;
+> +    MemTxResult result;
+> +
+> +    if (type != VST_TSEL_VPDT) {
+> +        xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
+> +                   info->name, blk, idx);
+> +        return 0;
+> +    }
+> +
+> +    remote_addr |= idx << xive->pc_shift;
+> +
+> +    vst_addr = address_space_ldq_be(&address_space_memory, remote_addr,
+> +                                    MEMTXATTRS_UNSPECIFIED, &result);
+> +    if (result != MEMTX_OK) {
+> +        xive_error(xive, "VST: read failed at @0x%"  HWADDR_PRIx
+> +                   " for NVT %x/%x\n", remote_addr, blk, idx);
+> +        return 0;
+> +    }
+> +
+> +    return vst_addr;
+> +}
+> +
+>   static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
+>                                     uint32_t idx)
+>   {
+> @@ -225,14 +239,7 @@ static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
 >   
 >       /* Remote VST access */
 >       if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
-> +        if (type != VST_TSEL_VPDT) {
-> +            xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
-> +                       info->name, blk, idx);
-> +            return 0;
-> +        }
->           xive = pnv_xive_get_remote(blk);
->   
->           return xive ? pnv_xive_vst_addr(xive, type, blk, idx) : 0;
-> @@ -294,12 +299,26 @@ static int pnv_xive_vst_write(PnvXive *xive, uint32_t type, uint8_t blk,
->   static int pnv_xive_get_end(XiveRouter *xrtr, uint8_t blk, uint32_t idx,
->                               XiveEND *end)
->   {
-> +    PnvXive *xive = PNV_XIVE(xrtr);
-> +
-> +    if (pnv_xive_block_id(xive) != blk) {
-> +        xive_error(xive, "VST: END %x/%x is remote !?", blk, idx);
-> +        return -1;
-> +    }
-> +
->       return pnv_xive_vst_read(PNV_XIVE(xrtr), VST_TSEL_EQDT, blk, idx, end);
->   }
->   
->   static int pnv_xive_write_end(XiveRouter *xrtr, uint8_t blk, uint32_t idx,
->                                 XiveEND *end, uint8_t word_number)
->   {
-> +    PnvXive *xive = PNV_XIVE(xrtr);
-> +
-> +    if (pnv_xive_block_id(xive) != blk) {
-> +        xive_error(xive, "VST: END %x/%x is remote !?", blk, idx);
-> +        return -1;
-> +    }
-> +
->       return pnv_xive_vst_write(PNV_XIVE(xrtr), VST_TSEL_EQDT, blk, idx, end,
->                                 word_number);
->   }
-> @@ -1368,6 +1387,50 @@ static const MemoryRegionOps pnv_xive_ic_reg_ops = {
->   #define PNV_XIVE_SYNC_PUSH          0xf00 /* Sync push context */
->   #define PNV_XIVE_SYNC_VPC           0xf80 /* Sync remove VPC store */
->   
-> +static void pnv_xive_end_notify(XiveRouter *xrtr, XiveEAS *eas)
-> +{
-> +    PnvXive *xive = PNV_XIVE(xrtr);
-> +    uint8_t end_blk = xive_get_field64(EAS_END_BLOCK, eas->w);
-> +    uint32_t end_idx = xive_get_field64(EAS_END_INDEX, eas->w);
-> +    uint32_t end_data = xive_get_field64(EAS_END_DATA, eas->w);
-> +    uint64_t end_vsd = xive->vsds[VST_TSEL_EQDT][end_blk];
-> +
-> +    switch (GETFIELD(VSD_MODE, end_vsd)) {
-> +    case VSD_MODE_EXCLUSIVE:
-> +        /* Perform the END notification on the local IC. */
-> +        xive_router_end_notify(xrtr, eas);
-> +        break;
-> +
-> +    case VSD_MODE_FORWARD: {
-> +        MemTxResult result;
-> +        uint64_t notif_port = end_vsd & VSD_ADDRESS_MASK;
-> +        uint64_t data = XIVE_TRIGGER_END | XIVE_TRIGGER_PQ |
-> +            be64_to_cpu(eas->w);
-> +
-> +        /* Forward the store on the remote IC notify page. */
-> +        address_space_stq_be(&address_space_memory, notif_port, data,
-> +                             MEMTXATTRS_UNSPECIFIED, &result);
-> +        if (result != MEMTX_OK) {
-> +            xive_error(xive, "IC: Forward notif END %x/%x [%x] failed @%"
-> +                       HWADDR_PRIx, end_blk, end_idx, end_data, notif_port);
-> +            return;
-> +        }
-> +        break;
-> +    }
-> +
-> +    case VSD_MODE_INVALID:
-> +    default:
-> +        /* Set FIR */
-> +        xive_error(xive, "IC: Invalid END VSD for block %x", end_blk);
-> +        return;
-> +    }
-> +}
-> +
-> +/*
-> + * The notify page can either be used to receive trigger events from
-> + * the HW controllers (PHB, PSI) or to reroute interrupts between
-> + * Interrupt controllers.
-> + */
->   static void pnv_xive_ic_hw_trigger(PnvXive *xive, hwaddr addr, uint64_t val)
->   {
->       uint8_t blk;
-> @@ -1376,8 +1439,8 @@ static void pnv_xive_ic_hw_trigger(PnvXive *xive, hwaddr addr, uint64_t val)
->       trace_pnv_xive_ic_hw_trigger(addr, val);
->   
->       if (val & XIVE_TRIGGER_END) {
-> -        xive_error(xive, "IC: END trigger at @0x%"HWADDR_PRIx" data 0x%"PRIx64,
-> -                   addr, val);
-> +        val = cpu_to_be64(val);
-> +        pnv_xive_end_notify(XIVE_ROUTER(xive), (XiveEAS *) &val);
->           return;
+> -        if (type != VST_TSEL_VPDT) {
+> -            xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
+> -                       info->name, blk, idx);
+> -            return 0;
+> -        }
+> -        xive = pnv_xive_get_remote(blk);
+> -
+> -        return xive ? pnv_xive_vst_addr(xive, type, blk, idx) : 0;
+> +        return pnv_xive_vst_addr_remote(xive, type, vsd, blk, idx);
 >       }
 >   
-> @@ -1917,6 +1980,7 @@ static void pnv_xive_realize(DeviceState *dev, Error **errp)
->       memory_region_init_io(&xive->ic_notify_mmio, OBJECT(dev),
->                             &pnv_xive_ic_notify_ops,
->                             xive, "xive-ic-notify", 1 << xive->ic_shift);
-> +    xive->ic_notify_mmio.disable_reentrancy_guard = true;
+>       if (VSD_INDIRECT & vsd) {
+> @@ -1785,16 +1792,20 @@ static const MemoryRegionOps pnv_xive_vc_ops = {
+>   };
 >   
->       /* The Pervasive LSI trigger and EOI pages (not modeled) */
->       memory_region_init_io(&xive->ic_lsi_mmio, OBJECT(dev), &pnv_xive_ic_lsi_ops,
-> @@ -2017,6 +2081,7 @@ static void pnv_xive_class_init(ObjectClass *klass, void *data)
->       xrc->get_nvt = pnv_xive_get_nvt;
->       xrc->write_nvt = pnv_xive_write_nvt;
->       xrc->get_block_id = pnv_xive_get_block_id;
-> +    xrc->end_notify = pnv_xive_end_notify;
+>   /*
+> - * Presenter Controller MMIO region. The Virtualization Controller
+> - * updates the IPB in the NVT table when required. Not modeled.
+> + * Presenter Controller MMIO region. Points to the NVT sets.
+> + *
+> + * HW implements all possible mem ops to the underlying NVT structure
+> + * but QEMU does not need to be so precise. The model implementation
+> + * simply returns the RAM address of the NVT structure which is then
+> + * used by pnv_xive_vst_write/read to perform the RAM operation.
+>    */
+> -static uint64_t pnv_xive_pc_read(void *opaque, hwaddr addr,
+> -                                 unsigned size)
+> +static uint64_t pnv_xive_pc_read(void *opaque, hwaddr offset, unsigned size)
+>   {
+>       PnvXive *xive = PNV_XIVE(opaque);
+> +    uint32_t nvt_idx = offset >> xive->pc_shift;
+> +    uint8_t blk = pnv_xive_block_id(xive); /* TODO: VDT -> block xlate */
 >   
->       xnc->notify = pnv_xive_notify;
->       xpc->match_nvt  = pnv_xive_match_nvt;
+> -    xive_error(xive, "PC: invalid read @%"HWADDR_PRIx, addr);
+> -    return -1;
+> +    return pnv_xive_vst_addr(xive, VST_TSEL_VPDT, blk, nvt_idx);
+>   }
+>   
+>   static void pnv_xive_pc_write(void *opaque, hwaddr addr,
+> @@ -2016,6 +2027,7 @@ static void pnv_xive_realize(DeviceState *dev, Error **errp)
+>       /* Presenter Controller MMIO region (not modeled) */
+>       memory_region_init_io(&xive->pc_mmio, OBJECT(xive), &pnv_xive_pc_ops, xive,
+>                             "xive-pc", PNV9_XIVE_PC_SIZE);
+> +    xive->pc_mmio.disable_reentrancy_guard = true;
+>   
+>       /* Thread Interrupt Management Area (Direct) */
+>       memory_region_init_io(&xive->tm_mmio, OBJECT(xive), &pnv_xive_tm_ops,
 
