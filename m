@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87B678EF45
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 16:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5DE78EF3C
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 16:06:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbiKW-0003ZK-OL; Thu, 31 Aug 2023 10:07:28 -0400
+	id 1qbiIl-0002lX-LF; Thu, 31 Aug 2023 10:05:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qbiJs-0003Wk-CR
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:06:55 -0400
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qbiJo-0000oY-7n
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:06:47 -0400
-Received: from juju-98d295-prod-launchpad-16.localdomain (unknown
- [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id B650E431B9
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 14:06:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1693490801;
- bh=4/hVjYAm3pnlt/6DrTFFILs8WrOKMdAYL9uhrppH8os=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=YZOW3xkbrLf0CZCN+Vydf2J+Gsqo8UqHRI9kG3jFOcGAV3CIzjP0LhZyLFcounXNX
- KNRPthUQlYr6RvGGI2l57FK+1JnZ/cq18zh+jyK9+bkZ3jm8S44vHFdMqj8PjvwNWN
- m5xpT8+qGlvFQL/qz8hyqAkqzEjyEK48/UzQnxuOZi2DaUq9vRpt9/1JoKz9ZirP3l
- +eGGvCGxrLJZN5lvyQ1r0o9lUUAfkTdeb9moRcftba7e2zT1Z1Wz80DNrBECOOuArg
- qlLxZZ2s74Cub3sRlW05e7yndRML24B+PyFVjj9j6ggwB+s8Hj5Q6/TYmnXaoDG7aW
- q8BOxzsNAtkhQ==
-Received: from [10.131.215.246] (localhost [127.0.0.1])
- by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
- 944317EB93
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 14:06:41 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbiIi-0002kx-Un
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:05:36 -0400
+Received: from mail-ej1-x644.google.com ([2a00:1450:4864:20::644])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbiIg-0000Yy-68
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 10:05:36 -0400
+Received: by mail-ej1-x644.google.com with SMTP id
+ a640c23a62f3a-991c786369cso100479866b.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 07:05:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693490733; x=1694095533; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=PELuaiX3vV/mXIndActHRdN0VyKcLY9qfxPbe5lrsho=;
+ b=c4ER3TBPCUAICcWNICCdc+0Wzrbj4L8TN2taNuL4i38wDch3jtyVce25rbJNC+btqv
+ QEfcMQMVeywqgM+RC0Csk7x6+y7c/MMBkywDG8Lo6E5yN0U4ePkr0d6023VZDeqFeNDt
+ 2M7/aLbesCLrGCjwKnJMJJwIRKzT4GWRSsk/IgUAN0haTUWW6oeq6m3Q1EBlZWsoB436
+ mUYhGChV8eR6i/LlMaVUYpCA1tYLwTu7rUNpNCiqGk+/xWKpsGUiLaitl0kp3gebm/3J
+ 3mgyu1s0vMtoJ9JsyT2apCbkOoc4ewqCKQuYqAKmig3l1bsQQWuEcemlkaBwD0NIvLO8
+ 1qeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693490733; x=1694095533;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PELuaiX3vV/mXIndActHRdN0VyKcLY9qfxPbe5lrsho=;
+ b=mDykeitk7rcmLg/cXP9FauIGHuieYuiA0r9baqk+cMU+Q6l1JDu424ZsHuhQaB+Dh9
+ ATb/HxaA3yyoVlvPmBONCOUNDPTgRhDVUfV4b5AKT1hIwq5YWXFhKoqe7SI4QtsqEdII
+ Uie5YynGl2YLeG489H/fZrLbAHEDfjpfNKa3T22Xv6FfTWErNgecmgpUi97i99SgzlVG
+ X0cMuVZApPLLzSzd5yP7z2xXOcd3zbjzyDbBm6gfVW+EFBGWtwvMqlQJ7OjBLEc7Oryy
+ SZ72upyXVRVRdr5Ge++YKcrK9EqpTT1l/GCjkonia5Dt8u7eknl1mJJZBX+QBLJdPKTi
+ 7njA==
+X-Gm-Message-State: AOJu0YwyoKPFa7GHZjQysUrRa/9FzS1g78ERs4a6MzkujyuqWDXAAGR4
+ gJRK7MDv9XWgs6oBfZiwHNiebQ==
+X-Google-Smtp-Source: AGHT+IGcAoB+2PCH4z8yhEhEYXWB1DFCW6f8D1NaZSHLpSndCCzFbVlWVs+TI0oKGEhaTQtcqgGzGA==
+X-Received: by 2002:a17:907:1dd3:b0:9a1:c221:4661 with SMTP id
+ og19-20020a1709071dd300b009a1c2214661mr3555693ejc.0.1693490732728; 
+ Thu, 31 Aug 2023 07:05:32 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ qq7-20020a17090720c700b00992afee724bsm791795ejb.76.2023.08.31.07.05.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 07:05:32 -0700 (PDT)
+Date: Thu, 31 Aug 2023 16:05:31 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH RESEND v8 00/20] riscv: 'max' CPU, detect user choice in
+ TCG
+Message-ID: <20230831-adf7386649250fe8c2af87c3@orel>
+References: <20230824221440.484675-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 31 Aug 2023 13:57:24 -0000
-From: Daniel Berrange <1863025@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
- assignee=alex.bennee@linaro.org; 
-X-Launchpad-Bug-Tags: mttcg tcg
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: ajbennee berrange laurent-vivier samueloph yifanlu
-X-Launchpad-Bug-Reporter: Yifan (yifanlu)
-X-Launchpad-Bug-Modifier: Daniel Berrange (berrange)
-References: <158154486735.14935.3370403781300872079.malonedeb@soybean.canonical.com>
-Message-Id: <ZPCcRD/zv/l80WWC@redhat.com>
-Subject: Re: [Bug 1863025] Re: Use-after-free after flush in TCG accelerator
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="5e6925a96ee17ce45a766139d74108c2c83abbc9";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: f53bc3f799190c99261a3d064e065a6e6cdb6c05
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824221440.484675-1-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::644;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x644.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -85,106 +91,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 1863025 <1863025@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 03:40:25PM +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> Hi Samuel,
->=20
-> On 31/8/23 14:48, Samuel Henrique wrote:
-> > CVE-2020-24165 was assigned to this:
-> > https://nvd.nist.gov/vuln/detail/CVE-2020-24165
-> >=20
-> > I had no involvement in the assignment, posting here for reference only.
-> >=20
-> > ** CVE added: https://cve.mitre.org/cgi-bin/cvename.cgi?name=3D2020-241=
-65
->=20
-> QEMU 4.2.0 was released in 2019. The issue you report
-> has been fixed in commit 886cc68943 ("accel/tcg: fix race
-> in cpu_exec_step_atomic (bug 1863025)") which is included
-> in QEMU v5.0, released in April 2020, more than 3 years ago.
->=20
-> What do you expect us to do here? I'm not sure whether assigning
-> CVE for 3 years old code is a good use of engineering time.
+On Thu, Aug 24, 2023 at 07:14:20PM -0300, Daniel Henrique Barboza wrote:
+> Hi,
+> 
+> This is a resend of these two patch sets because they no longer apply
+> into Alistair's riscv-to-apply.next:
+> 
+> [PATCH v8 00/12] riscv: add 'max' CPU, deprecate 'any'
+> https://lore.kernel.org/qemu-riscv/20230815223741.433763-1-dbarboza@ventanamicro.com/
+> 
+> [PATCH v3 0/8] riscv: detecting user choice in TCG extensions
+> https://lore.kernel.org/qemu-riscv/20230815224733.434682-1-dbarboza@ventanamicro.com/
+> 
+> 
+> They're being sent in a single package for convenience. No other changes
+> made from their old versions aside from the rebase.
+> 
+> Patches missing acks: 4,7,8
+> 
+> Changes from v7:
+> - patch 7:
+>   - add riscv_cpu_add_qdev_prop_array() function instead of a macro
+> - patch 8:
+>   - add riscv_cpu_add_kvm_unavail_prop_array() function instead of a
+>     macro
+> - v7 link: https://lore.kernel.org/qemu-riscv/20230815201559.398643-1-dbarboza@ventanamicro.com/
+>
 
-In any case per our stated security policy, we do not consider TCG to
-be providing a security boundary between host and guest, and thus bugs
-in TCG aren't considered security flaws:
+Tracking whether or not the user enabled/disabled an extension is good. I
+see we're still not tracking for the MISA extensions, though. If tracking
+isn't necessary for them, then a comment above
+riscv_cpu_add_misa_properties()
+explaining why not would be good. If tracking may be necessary, then
+making them consistent with the multi extensions by using the hash would
+be good.
 
- https://www.qemu.org/docs/master/system/security.html#non-
-virtualization-use-case
-
-With regards,
-Daniel
---=20
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange=
- :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com=
- :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange=
- :|
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/1863025
-
-Title:
-  Use-after-free after flush in TCG accelerator
-
-Status in QEMU:
-  Fix Released
-
-Bug description:
-  I believe I found a UAF in TCG that can lead to a guest VM escape. The
-  security list informed me "This can not be treated as a security
-  issue." and to post it here. I am looking at the 4.2.0 source code.
-  The issue requires a race and I will try to describe it in terms of
-  three concurrent threads.
-
-  Thread A:
-
-  A1. qemu_tcg_cpu_thread_fn runs work loop
-  A2. qemu_wait_io_event =3D> qemu_wait_io_event_common =3D> process_queued=
-_cpu_work
-  A3. start_exclusive critical section entered
-  A4. do_tb_flush is called, TB memory freed/re-allocated
-  A5. end_exclusive exits critical section
-
-  Thread B:
-
-  B1. qemu_tcg_cpu_thread_fn runs work loop
-  B2. tcg_cpu_exec =3D> cpu_exec =3D> tb_find =3D> tb_gen_code
-  B3. tcg_tb_alloc obtains a new TB
-
-  Thread C:
-
-  C1. qemu_tcg_cpu_thread_fn runs work loop
-  C2. cpu_exec_step_atomic executes
-  C3. TB obtained with tb_lookup__cpu_state or tb_gen_code
-  C4. start_exclusive critical section entered
-  C5. cpu_tb_exec executes the TB code
-  C6. end_exclusive exits critical section
-
-  Consider the following sequence of events:
-  =C2=A0=C2=A0B2 =3D> B3 =3D> C3 (same TB as B2) =3D> A3 =3D> A4 (TB freed)=
- =3D> A5 =3D> B2 =3D>
-  =C2=A0=C2=A0B3 (re-allocates TB from B2) =3D> C4 =3D> C5 (freed/reused TB=
- now executing) =3D> C6
-
-  In short, because thread C uses the TB in the critical section, there
-  is no guarantee that the pointer has not been "freed" (rather the
-  memory is marked as re-usable) and therefore a use-after-free occurs.
-
-  Since the TCG generated code can be in the same memory as the TB data
-  structure, it is possible for an attacker to overwrite the UAF pointer
-  with code generated from TCG. This can overwrite key pointer values
-  and could lead to code execution on the host outside of the TCG
-  sandbox.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/1863025/+subscriptions
-
+Thanks,
+drew
 
