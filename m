@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5491778F2C3
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 20:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3F278F325
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 21:14:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbmaE-0002S6-BE; Thu, 31 Aug 2023 14:39:58 -0400
+	id 1qbn6M-0004Ak-7q; Thu, 31 Aug 2023 15:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qbmZw-0001nN-2j
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 14:39:43 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbn60-00046H-68
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 15:12:49 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qbmZt-0002I7-LL
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 14:39:39 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6CDE32185E;
- Thu, 31 Aug 2023 18:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1693507176; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=swlq77dy5YMKKTArUbn3kVk9WsfzhHqGuEgL1/CaOcM=;
- b=SRbdK7is1oHdqq4ddneyNK/QIPCMPW709r5e9cPJSYPLwp4peJUIgkdTGxhwEXOp6u4GRu
- 1ZQCwEGFq3l39XSyKX8syed9Y8Zm9ww8JwHyvG0SAUNjqVSv21NtpGX1c2HkbVCcNSmYg8
- j/Dkvggzom+txHxlPAbJdGO1pwK68ZM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1693507176;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=swlq77dy5YMKKTArUbn3kVk9WsfzhHqGuEgL1/CaOcM=;
- b=UwzeuiXzDwe8jFoP/GMKzu6pPhg3DKRalEdPdtiAra80pA/ZiTSEwU2vbh0T86T3IeNyIv
- fKEwF4J7gP5HZeCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B0DE313583;
- Thu, 31 Aug 2023 18:39:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 4LSDHmbe8GQhPgAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 31 Aug 2023 18:39:34 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>,
- Lukas Straub <lukasstraub2@web.de>
-Subject: [PATCH v5 8/8] migration: Add a wrapper to cleanup migration files
-Date: Thu, 31 Aug 2023 15:39:16 -0300
-Message-Id: <20230831183916.13203-9-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20230831183916.13203-1-farosas@suse.de>
-References: <20230831183916.13203-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbn5x-00013a-6U
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 15:12:47 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9a21b6d105cso139654466b.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 12:12:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693509163; x=1694113963; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JU+uZG7slio/IEiiD/btpXK94Pz0x3aIB0M6+r48syQ=;
+ b=tI9es1zR/D308eNm833L6HlnmaiLEoF94gVnCSzPrzK2LWCWC7wiyfaTfb6bPsIy6H
+ q3DIxADRramWT7ftRY6om8rf+ziaMJcBhEfZUkfErKZ88VkMQtrPkwqt4trKmdlO/B9M
+ hUECW953QEPXtcucjwrAlmUEsK1NrRfTFuuqtVQtLPME+t6AaFOPeve01lc3q031jLOi
+ c3AsoSCZzxyKXgItY2Y1sZq0aTCBCEOzXtL6/ZPJsWICnAKZlQ8MfKlSNFZJhFRN72du
+ o6bZh/oFUpAnJiLH4S3cFVhtJIokt2Ck7iZ3n7ne3LulPBAkhtOcq+1z71rkJHhkp1NE
+ wWCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693509163; x=1694113963;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JU+uZG7slio/IEiiD/btpXK94Pz0x3aIB0M6+r48syQ=;
+ b=hZpAQGOzz/xZPvg6A+5MlN+Awq6zN4xrziXC8S6aXfQRsh5jOd+Arw8UzZF8cjDj9m
+ Gs5FrFtoeQmIu7+LxTv0yeUKNM98PnBYCTk5uyH4nu254kRQACVfKYh6w4NNqeui5PCC
+ YBNbQv6glww6OWADZ3wi0bx4cGMJP/xQrGexkqM992gaYX4nUl+nOvNTcRWGnCkxmMN/
+ eUJe7aaefuBwtemLtI9TmPys/sdir1AjtfJdtgM3sOkCQrJuwXArrhmyOWjtj2S4oJe/
+ YunilZgC8mOHC0nQKv0py+de9NO6nwZFg82MrhNxSG2EZTOnf9d2pTD0sL7m7ldcW/2N
+ 5XRA==
+X-Gm-Message-State: AOJu0YyStdD+pcKMixYPGDrC8IxBVCCg2LHd5yof7D/Altn7Y7Wqxtay
+ Asb9KRW8Yd4aWZw/8FkfMXj6vw==
+X-Google-Smtp-Source: AGHT+IGVp+gTsctKPnQPu4j27tJgfhqJpq5J7jM0TBOhBLaWVos3JEg3sTmEIDUhtAiJLJrA/p2EKQ==
+X-Received: by 2002:a17:906:2d4:b0:9a5:a6e2:5ea8 with SMTP id
+ 20-20020a17090602d400b009a5a6e25ea8mr225725ejk.29.1693509162966; 
+ Thu, 31 Aug 2023 12:12:42 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.245])
+ by smtp.gmail.com with ESMTPSA id
+ gj17-20020a170906e11100b009929ab17bdfsm1048191ejb.168.2023.08.31.12.12.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 12:12:42 -0700 (PDT)
+Message-ID: <e13600b3-cba5-6d04-1505-8f6c536370b0@linaro.org>
+Date: Thu, 31 Aug 2023 21:12:40 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 6/6] target/mips: Convert Loongson [D]MULT[U].G opcodes to
+ decodetree
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Aurelien Jarno <aurelien@aurel32.net>, Huacai Chen
+ <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20210112215504.2093955-1-f4bug@amsat.org>
+ <20210112215504.2093955-7-f4bug@amsat.org>
+ <aa2c30c2-deaf-29d4-b166-81690d5443d6@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <aa2c30c2-deaf-29d4-b166-81690d5443d6@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,200 +96,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently have a pattern for cleaning up a migration QEMUFile:
+On 21/1/21 21:06, Richard Henderson wrote:
+> On 1/12/21 11:55 AM, Philippe Mathieu-Daudé wrote:
+>> Convert the following opcodes to decodetree:
+>>
+>> - MULT.G - multiply 32-bit signed integers
+>> - MULTU.G - multiply 32-bit unsigned integers
+>> - DMULT.G - multiply 64-bit signed integers
+>> - DMULTU.G - multiply 64-bit unsigned integers
+>>
+>> Now that all opcodes from the extension have been converted, we
+>> can remove completely gen_loongson_integer() and its 2 calls in
+>> decode_opc_special2_legacy() and decode_opc_special3_legacy().
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+>> ---
+>>   target/mips/godson2.decode    |  5 ++
+>>   target/mips/loong-ext.decode  |  5 ++
+>>   target/mips/loong_translate.c | 58 ++++++++++++++++++++++
+>>   target/mips/translate.c       | 92 +----------------------------------
+>>   4 files changed, 70 insertions(+), 90 deletions(-)
+>>
+>> diff --git a/target/mips/godson2.decode b/target/mips/godson2.decode
+>> index 805452fa975..cf12d9072ec 100644
+>> --- a/target/mips/godson2.decode
+>> +++ b/target/mips/godson2.decode
+>> @@ -13,6 +13,11 @@
+>>   
+>>   @rs_rt_rd       ...... rs:5  rt:5  rd:5  ..... ......   &muldiv
+>>   
+>> +MULT.G          011111 ..... ..... ..... 00000 011000   @rs_rt_rd
+>> +MULTU.G         011111 ..... ..... ..... 00000 011001   @rs_rt_rd
+>> +DMULT.G         011111 ..... ..... ..... 00000 011100   @rs_rt_rd
+>> +DMULTU.G        011111 ..... ..... ..... 00000 011101   @rs_rt_rd
+>> +
+>>   DIV.G           011111 ..... ..... ..... 00000 011010   @rs_rt_rd
+>>   DIVU.G          011111 ..... ..... ..... 00000 011011   @rs_rt_rd
+>>   DDIV.G          011111 ..... ..... ..... 00000 011110   @rs_rt_rd
+>> diff --git a/target/mips/loong-ext.decode b/target/mips/loong-ext.decode
+>> index b0715894ee1..2281afaad95 100644
+>> --- a/target/mips/loong-ext.decode
+>> +++ b/target/mips/loong-ext.decode
+>> @@ -14,6 +14,11 @@
+>>   
+>>   @rs_rt_rd       ...... rs:5  rt:5  rd:5  ..... ......   &muldiv
+>>   
+>> +MULT.G          011100 ..... ..... ..... 00000 010000   @rs_rt_rd
+>> +DMULT.G         011100 ..... ..... ..... 00000 010001   @rs_rt_rd
+>> +MULTU.G         011100 ..... ..... ..... 00000 010010   @rs_rt_rd
+>> +DMULTU.G        011100 ..... ..... ..... 00000 010011   @rs_rt_rd
+>> +
+>>   DIV.G           011100 ..... ..... ..... 00000 010100   @rs_rt_rd
+>>   DDIV.G          011100 ..... ..... ..... 00000 010101   @rs_rt_rd
+>>   DIVU.G          011100 ..... ..... ..... 00000 010110   @rs_rt_rd
+>> diff --git a/target/mips/loong_translate.c b/target/mips/loong_translate.c
+>> index 50609ce4178..2af94535921 100644
+>> --- a/target/mips/loong_translate.c
+>> +++ b/target/mips/loong_translate.c
+>> @@ -263,6 +263,64 @@ static bool trans_DMODU_G(DisasContext *s, arg_muldiv *a)
+>>       return gen_lext_MODU_G(s, a->rt, a->rs, a->rd, true);
+>>   }
+>>   
+>> +static bool gen_lext_MULT_G(DisasContext *s, int rd, int rs, int rt,
+>> +                            bool is_double, bool is_unsigned)
+>> +{
+>> +    TCGv t0, t1;
+>> +
+>> +    if (is_double) {
+>> +        if (TARGET_LONG_BITS != 64) {
+>> +            return false;
+>> +        }
+>> +        check_mips_64(s);
+>> +    }
+>> +
+>> +    if (rd == 0) {
+>> +        /* Treat as NOP. */
+>> +        return true;
+>> +    }
+>> +
+>> +    t0 = tcg_temp_new();
+>> +    t1 = tcg_temp_new();
+>> +
+>> +    gen_load_gpr(t0, rs);
+>> +    gen_load_gpr(t1, rt);
+>> +
+>> +    if (is_unsigned && !is_double) {
+>> +        tcg_gen_ext32u_tl(t0, t0);
+>> +        tcg_gen_ext32u_tl(t1, t1);
+>> +    }
+> 
+> While this is a faithful conversion of the existing code, these extensions make
+> no difference to the result.  They are redundant with
+> 
+>> +    tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
+>> +    if (!is_double) {
+>> +        tcg_gen_ext32s_tl(cpu_gpr[rd], cpu_gpr[rd]);
+> 
+> this one, which discards any bit that might have been set by the input bits
+> that are cleared.
 
-  qemu_mutex_lock(&s->qemu_file_lock);
-  file = s->file_name;
-  s->file_name = NULL;
-  qemu_mutex_unlock(&s->qemu_file_lock);
+I see.
 
-  migration_ioc_unregister_yank_from_file(file);
-  qemu_file_shutdown(file);
-  qemu_fclose(file);
+> There is no actual difference between MULT.G and MULTU.G, or DMULT.G and
+> DMULTU.G, because they don't record the most significant bits of the infinite
+> result in any way.
 
-This sequence requires some consideration about locking to avoid
-TOC/TOU bugs and avoid passing NULL into the functions that don't
-expect it.
+Right.
 
-There's not need to call a shutdown() right before a close() and a
-shutdown() in another thread being issued as a means to unblock a file
-should not collide with this close().
+>> +static bool trans_MULT_G(DisasContext *s, arg_muldiv *a)
+>> +{
+>> +    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, false, false);
+>> +}
+>> +
+>> +static bool trans_MULTU_G(DisasContext *s, arg_muldiv *a)
+>> +{
+>> +    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, false, true);
+>> +}
+>> +
+>> +static bool trans_DMULT_G(DisasContext *s, arg_muldiv *a)
+>> +{
+>> +    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, true, false);
+>> +}
+>> +
+>> +static bool trans_DMULTU_G(DisasContext *s, arg_muldiv *a)
+>> +{
+>> +    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, true, true);
+>> +}
+> 
+> So... if you want to clean this up afterward, or before is up to you.
 
-Create a wrapper function to make sure the locking is being done
-properly. Remove the extra shutdown().
+IIUC you are suggesting this simplification:
 
-The yank is linked to the QIOChannel, so if more than one QEMUFile
-share the same channel, care must be taken to (un)register only one
-yank function.
+-- >8 --
+diff --git a/target/mips/tcg/godson2.decode b/target/mips/tcg/godson2.decode
+index 4fb8fdba9c..86015ac8e5 100644
+--- a/target/mips/tcg/godson2.decode
++++ b/target/mips/tcg/godson2.decode
+@@ -15,6 +15,4 @@
 
-Move the yank unregister before clearing the pointer, so we can avoid
-locking and add a comment explaining we're only using the QEMUFile as
-a way to access the channel.
+-MULT_G          011111 ..... ..... ..... 00000 011000   @rs_rt_rd
+-MULTU_G         011111 ..... ..... ..... 00000 011001   @rs_rt_rd
+-DMULT_G         011111 ..... ..... ..... 00000 011100   @rs_rt_rd
+-DMULTU_G        011111 ..... ..... ..... 00000 011101   @rs_rt_rd
++MULTu_G         011111 ..... ..... ..... 00000 01100-   @rs_rt_rd
++DMULTu_G        011111 ..... ..... ..... 00000 01110-   @rs_rt_rd
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/migration.c      | 93 ++++++++++++--------------------------
- migration/yank_functions.c |  5 ++
- 2 files changed, 35 insertions(+), 63 deletions(-)
+diff --git a/target/mips/tcg/loong-ext.decode 
+b/target/mips/tcg/loong-ext.decode
+index d2c46d3110..b05236eb41 100644
+--- a/target/mips/tcg/loong-ext.decode
++++ b/target/mips/tcg/loong-ext.decode
+@@ -16,6 +16,4 @@
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 7fec57ad7f..99d21c3442 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -217,6 +217,25 @@ MigrationIncomingState *migration_incoming_get_current(void)
-     return current_incoming;
- }
- 
-+static void migration_file_release(QEMUFile **file)
-+{
-+    MigrationState *ms = migrate_get_current();
-+    QEMUFile *tmp;
-+
-+    /*
-+     * Reset the pointer before releasing it to avoid holding the lock
-+     * for too long.
-+     */
-+    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-+        tmp = *file;
-+        *file = NULL;
-+    }
-+
-+    if (tmp) {
-+        qemu_fclose(tmp);
-+    }
-+}
-+
- void migration_incoming_transport_cleanup(MigrationIncomingState *mis)
- {
-     if (mis->socket_address_list) {
-@@ -1155,8 +1174,6 @@ static void migrate_fd_cleanup(MigrationState *s)
-     qemu_savevm_state_cleanup();
- 
-     if (s->to_dst_file) {
--        QEMUFile *tmp;
--
-         trace_migrate_fd_cleanup();
-         qemu_mutex_unlock_iothread();
-         if (s->migration_thread_running) {
-@@ -1166,16 +1183,9 @@ static void migrate_fd_cleanup(MigrationState *s)
-         qemu_mutex_lock_iothread();
- 
-         multifd_save_cleanup();
--        qemu_mutex_lock(&s->qemu_file_lock);
--        tmp = s->to_dst_file;
--        s->to_dst_file = NULL;
--        qemu_mutex_unlock(&s->qemu_file_lock);
--        /*
--         * Close the file handle without the lock to make sure the
--         * critical section won't block for long.
--         */
--        migration_ioc_unregister_yank_from_file(tmp);
--        qemu_fclose(tmp);
-+
-+        migration_ioc_unregister_yank_from_file(s->to_dst_file);
-+        migration_file_release(&s->to_dst_file);
-     }
- 
-     /*
-@@ -1815,38 +1825,6 @@ static int migrate_handle_rp_resume_ack(MigrationState *s, uint32_t value)
-     return 0;
- }
- 
--/*
-- * Release ms->rp_state.from_dst_file (and postcopy_qemufile_src if
-- * existed) in a safe way.
-- */
--static void migration_release_dst_files(MigrationState *ms)
--{
--    QEMUFile *file;
--
--    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
--        /*
--         * Reset the from_dst_file pointer first before releasing it, as we
--         * can't block within lock section
--         */
--        file = ms->rp_state.from_dst_file;
--        ms->rp_state.from_dst_file = NULL;
+-MULT_G          011100 ..... ..... ..... 00000 010000   @rs_rt_rd
+-DMULT_G         011100 ..... ..... ..... 00000 010001   @rs_rt_rd
+-MULTU_G         011100 ..... ..... ..... 00000 010010   @rs_rt_rd
+-DMULTU_G        011100 ..... ..... ..... 00000 010011   @rs_rt_rd
++MULTu_G         011100 ..... ..... ..... 00000 0100-0   @rs_rt_rd
++DMULTu_G        011100 ..... ..... ..... 00000 0100-1   @rs_rt_rd
+
+diff --git a/target/mips/tcg/loong_translate.c 
+b/target/mips/tcg/loong_translate.c
+index 672d8b6163..4b6bdf28be 100644
+--- a/target/mips/tcg/loong_translate.c
++++ b/target/mips/tcg/loong_translate.c
+@@ -253,3 +253,3 @@ static bool trans_DMODU_G(DisasContext *s, 
+arg_muldiv *a)
+  static bool gen_lext_MULT_G(DisasContext *s, int rd, int rs, int rt,
+-                            bool is_double, bool is_unsigned)
++                            bool is_double)
+  {
+@@ -275,6 +275,2 @@ static bool gen_lext_MULT_G(DisasContext *s, int rd, 
+int rs, int rt,
+
+-    if (is_unsigned && !is_double) {
+-        tcg_gen_ext32u_tl(t0, t0);
+-        tcg_gen_ext32u_tl(t1, t1);
 -    }
--
--    /*
--     * Do the same to postcopy fast path socket too if there is.  No
--     * locking needed because this qemufile should only be managed by
--     * return path thread.
--     */
--    if (ms->postcopy_qemufile_src) {
--        migration_ioc_unregister_yank_from_file(ms->postcopy_qemufile_src);
--        qemu_file_shutdown(ms->postcopy_qemufile_src);
--        qemu_fclose(ms->postcopy_qemufile_src);
--        ms->postcopy_qemufile_src = NULL;
--    }
--
--    qemu_fclose(file);
+      tcg_gen_mul_tl(cpu_gpr[rd], t0, t1);
+@@ -287,20 +283,10 @@ static bool gen_lext_MULT_G(DisasContext *s, int 
+rd, int rs, int rt,
+
+-static bool trans_MULT_G(DisasContext *s, arg_muldiv *a)
++static bool trans_MULTu_G(DisasContext *s, arg_muldiv *a)
+  {
+-    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, false, false);
++    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, false);
+  }
+
+-static bool trans_MULTU_G(DisasContext *s, arg_muldiv *a)
++static bool trans_DMULTu_G(DisasContext *s, arg_muldiv *a)
+  {
+-    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, false, true);
 -}
 -
- /*
-  * Handles messages sent on the return path towards the source VM
-  *
-@@ -2046,7 +2024,12 @@ static int await_return_path_close_on_source(MigrationState *ms)
-     ret = ms->rp_state.error;
-     ms->rp_state.error = false;
- 
--    migration_release_dst_files(ms);
-+    migration_file_release(&ms->rp_state.from_dst_file);
-+
-+    if (ms->postcopy_qemufile_src) {
-+        migration_ioc_unregister_yank_from_file(ms->postcopy_qemufile_src);
-+    }
-+    migration_file_release(&ms->postcopy_qemufile_src);
- 
-     trace_migration_return_path_end_after(ret);
-     return ret;
-@@ -2502,26 +2485,10 @@ static MigThrError postcopy_pause(MigrationState *s)
-     assert(s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
- 
-     while (true) {
--        QEMUFile *file;
+-static bool trans_DMULT_G(DisasContext *s, arg_muldiv *a)
+-{
+-    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, true, false);
+-}
 -
--        /*
--         * Current channel is possibly broken. Release it.  Note that this is
--         * guaranteed even without lock because to_dst_file should only be
--         * modified by the migration thread.  That also guarantees that the
--         * unregister of yank is safe too without the lock.  It should be safe
--         * even to be within the qemu_file_lock, but we didn't do that to avoid
--         * taking more mutex (yank_lock) within qemu_file_lock.  TL;DR: we make
--         * the qemu_file_lock critical section as small as possible.
--         */
-+        /* Current channel is possibly broken. Release it. */
-         assert(s->to_dst_file);
-         migration_ioc_unregister_yank_from_file(s->to_dst_file);
--        qemu_mutex_lock(&s->qemu_file_lock);
--        file = s->to_dst_file;
--        s->to_dst_file = NULL;
--        qemu_mutex_unlock(&s->qemu_file_lock);
--
--        qemu_file_shutdown(file);
--        qemu_fclose(file);
-+        migration_file_release(&s->to_dst_file);
- 
-         /*
-          * We're already pausing, so ignore any errors on the return
-diff --git a/migration/yank_functions.c b/migration/yank_functions.c
-index d5a710a3f2..31b0d790e2 100644
---- a/migration/yank_functions.c
-+++ b/migration/yank_functions.c
-@@ -48,6 +48,11 @@ void migration_ioc_unregister_yank(QIOChannel *ioc)
-     }
- }
- 
-+/*
-+ * There's no direct relationship between the QEMUFile and the
-+ * yank. This is just a convenience helper because the QIOChannel and
-+ * the QEMUFile lifecycles happen to match.
-+ */
- void migration_ioc_unregister_yank_from_file(QEMUFile *file)
- {
-     QIOChannel *ioc = qemu_file_get_ioc(file);
--- 
-2.35.3
+-static bool trans_DMULTU_G(DisasContext *s, arg_muldiv *a)
+-{
+-    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, true, true);
++    return gen_lext_MULT_G(s, a->rt, a->rs, a->rd, true);
+  }
+---
+
+Is that correct?
 
 
