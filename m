@@ -2,99 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B393F78E87C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE4578E899
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:43:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbdDV-0000RY-2T; Thu, 31 Aug 2023 04:39:53 -0400
+	id 1qbdGH-0001dP-Jw; Thu, 31 Aug 2023 04:42:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qbdDT-0000RQ-M4
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:39:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qbdDR-0002Vy-Bd
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:39:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693471187;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0mWoX6dA3SBhDj+3ryEghGVTq6HXU3X0NCEY/VZUD4w=;
- b=N6xNHBTbivK5Z1JMUT9L/Fkd7Do82e4tiTlOK3gKAaKvnB80Ex5uG/7227jN8DmlOwpGXx
- S4+Dd9eKkkHbzXEch16SDXcBCKURWdh+AcHi5KZpGb7LXNga+ExOV0o1n7LO1qi70BN2Q8
- lKVq6MvIrSrGivpgj1qXf5QOyBu8y50=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-ogK1H9QIMIi2A4qZOCgKhA-1; Thu, 31 Aug 2023 04:39:46 -0400
-X-MC-Unique: ogK1H9QIMIi2A4qZOCgKhA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-315af0252c2so291814f8f.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:39:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbdGD-0001bu-Id
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:42:41 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbdGA-00033i-2l
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:42:40 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52bca2e8563so634039a12.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693471355; x=1694076155; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=gDFKuq03eMCHLbMsGMmFE3EEmuQZaDoeVrm8H+xKAYA=;
+ b=kuMK9sxVZs2g/I6WWyD+MrkIZxsojTXDxNvRUxJB3z/mrLigLPtl7VOfSrCs4zKxBp
+ pfDPnIxQCOLYHzsbokW2P0QemQbT30nateDbZAhyw2Zh/NGecsi5b6JwkJQ1Oe/ItrCQ
+ KWu7JnbjTp3UQNl0k0my8+ELWxodSRo5ZBlIOeuvSuqc16SWaDV6LVh9Lt0291+xPvFr
+ tc7l1st2njVSC0KRWvD/gJmQYTYDBSdCoWpMcn5y7TgFDPL5Iz2OL/z82oqvIvRTxhzP
+ Tq7lQvlW/9dVALWPqUiAHgy8uwpe5zTjB0aahowhjC08hAcpSjDLpHEwfaNyGepwPcEH
+ lycg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693471185; x=1694075985;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0mWoX6dA3SBhDj+3ryEghGVTq6HXU3X0NCEY/VZUD4w=;
- b=YK67eAs19LDM0P9MQGhKFkQDehyFyCLRJSvvEJEO0/F3EYWiyBXwUZbvwlxbgngV8k
- 5ht6lVxkbOTlxJcD1eVndmGgSjVkcbLeIvNI3nbo53Uon4839IVUCTdMzUpaGtsnQp+Q
- xA52ghjFXmqDIoZZ7EPQQeitk/cbxaozrxcpCLzHFcbW09YwPAnKOlB2V2M9IgUUQS1E
- 2elUw0QdU4jde3ALcYFQs+37TgATtfRbZVWBDBCL1UxDh13m+j7prvZat5Z7lf7HyXRi
- +jUlDg+lpsxzmP5EomIUxstfQ0wZrsSmP/Q31QvSp7E5Iztfgm+cF4pj+e2V7ArdxUEW
- e+5Q==
-X-Gm-Message-State: AOJu0Yz0iJr/+CngXRz/y98vKbKaYU6H336QMQFH7ieThTIXJ3fU+zIA
- 8OgRT5ZNyfHbZ78tZqmIcg2bmkID58dCMI8gPKqvJx3Eov45e9ILRQ4VOh/zN0PpQEfQ1a8uXnl
- 316KkLaib499rNwY=
-X-Received: by 2002:a5d:4588:0:b0:318:8ad:f9f with SMTP id
- p8-20020a5d4588000000b0031808ad0f9fmr3297053wrq.24.1693471185119; 
- Thu, 31 Aug 2023 01:39:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGftv6Ny1k5melAVzSouUZdAtfDC0ZMXfJv8/45BX3y+NtXRXII1M4x3ZGhNL7B6Y6aFuyuQQ==
-X-Received: by 2002:a5d:4588:0:b0:318:8ad:f9f with SMTP id
- p8-20020a5d4588000000b0031808ad0f9fmr3297034wrq.24.1693471184792; 
- Thu, 31 Aug 2023 01:39:44 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-223.web.vodafone.de.
- [109.43.179.223]) by smtp.gmail.com with ESMTPSA id
- h17-20020adff191000000b003180fdf5589sm1429037wro.6.2023.08.31.01.39.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 01:39:44 -0700 (PDT)
-Message-ID: <bb3a12e2-dd2b-091b-ccab-bec14fcbce50@redhat.com>
-Date: Thu, 31 Aug 2023 10:39:41 +0200
+ d=1e100.net; s=20221208; t=1693471355; x=1694076155;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gDFKuq03eMCHLbMsGMmFE3EEmuQZaDoeVrm8H+xKAYA=;
+ b=SttnQ2pXROjGTMnjV2WiiAtY5URlrPxxQY+CBlwD1QzHDev46Ss0jEtUNRFO+EA/NN
+ RKvlfRFugzK2oPm8GyOyKTJhc6ZDRp/3OU9Za+/VK4uqZlfiFAkrvs3h56m6y+5k7SGc
+ CkToTZTYyq7+GlIZWk3dlQyuGn5DYdjY3ThXUZVVUxpXUsG2ce+CrdMpRf58zyydCrDR
+ RJwiBxFcq6EWMspDDf0I5BPFmsNptarHo95XdNWtzTH5j2NEIVrhrc2aAE5c3uRhhzku
+ xYb8GxP+Mek/I1y48Rz+Z1V8vnUbmrqAFtL+QRYdnU1QuvgZpbFY1Z0Gqktov+qDA2/V
+ haDg==
+X-Gm-Message-State: AOJu0Yw85tOxAcFDElR559KBYmHCw8/ZRGsSatpmWCtCwzqzcwtaOQ0c
+ ybUn50JD07fMMDQFZPhDylGsEw==
+X-Google-Smtp-Source: AGHT+IFlNIql9KDCuMbv4dvHw7Z98i2xQN+mIyYK0TpbDJVvicMDkRI5hb/yxwbUZWfzPMyEGSFSNA==
+X-Received: by 2002:a05:6402:646:b0:526:9c4:bc06 with SMTP id
+ u6-20020a056402064600b0052609c4bc06mr3433979edx.18.1693471355508; 
+ Thu, 31 Aug 2023 01:42:35 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ e23-20020aa7d7d7000000b00525683f9b2fsm525212eds.5.2023.08.31.01.42.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 01:42:34 -0700 (PDT)
+Date: Thu, 31 Aug 2023 10:42:33 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, richard.henderson@linaro.org
+Subject: Re: [PATCH v2 1/2] hw/riscv/virt.c: fix non-KVM --enable-debug build
+Message-ID: <20230831-d3b40182209cb9054ceaed62@orel>
+References: <20230830133503.711138-1-dbarboza@ventanamicro.com>
+ <20230830133503.711138-2-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2] accel: Remove HAX accelerator
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, libvir-list@redhat.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-References: <20230831082016.60885-1-philmd@linaro.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230831082016.60885-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230830133503.711138-2-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,38 +94,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/08/2023 10.20, Philippe Mathieu-Daudé wrote:
-> HAX is deprecated since commits 73741fda6c ("MAINTAINERS: Abort
-> HAXM maintenance") and 90c167a1da ("docs/about/deprecated: Mark
-> HAXM in QEMU as deprecated"), released in v8.0.0.
+On Wed, Aug 30, 2023 at 10:35:02AM -0300, Daniel Henrique Barboza wrote:
+> A build with --enable-debug and without KVM will fail as follows:
 > 
-> Per the latest HAXM release (v7.8 [*]), the latest QEMU supported
-> is v7.2:
+> /usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
+> ./qemu/build/../hw/riscv/virt.c:1465: undefined reference to `kvm_riscv_aia_create'
 > 
->    Note: Up to this release, HAXM supports QEMU from 2.9.0 to 7.2.0.
+> This happens because the code block with "if virt_use_kvm_aia(s)" isn't
+> being ignored by the debug build, resulting in an undefined reference to
+> a KVM only function.
 > 
-> The next commit (https://github.com/intel/haxm/commit/da1b8ec072)
-> added:
+> Add a 'kvm_enabled()' conditional together with virt_use_kvm_aia() will
+> make the compiler crop the kvm_riscv_aia_create() call entirely from a
+> non-KVM build. Note that adding the 'kvm_enabled()' conditional inside
+> virt_use_kvm_aia() won't fix the build because this function would need
+> to be inlined multiple times to make the compiler zero out the entire
+> block.
 > 
->    HAXM v7.8.0 is our last release and we will not accept
->    pull requests or respond to issues after this.
+> While we're at it, use kvm_enabled() in all instances where
+> virt_use_kvm_aia() is checked to allow the compiler to elide these other
+> kvm-only instances as well.
 > 
-> It became very hard to build and test HAXM. Its previous
-> maintainers made it clear they won't help.  It doesn't seem to be
-> a very good use of QEMU maintainers to spend their time in a dead
-> project. Save our time by removing this orphan zombie code.
-> 
-> [*] https://github.com/intel/haxm/releases/tag/v7.8.0
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Fixes: dbdb99948e ("target/riscv: select KVM AIA in riscv virt machine")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
-> I plan to commit this in my next PR.
+>  hw/riscv/virt.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index 388e52a294..3b259b9305 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -782,7 +782,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+>      }
+>  
+>      /* KVM AIA only has one APLIC instance */
+> -    if (virt_use_kvm_aia(s)) {
+> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+>          create_fdt_socket_aplic(s, memmap, 0,
+>                                  msi_m_phandle, msi_s_phandle, phandle,
+>                                  &intc_phandles[0], xplic_phandles,
+> @@ -808,7 +808,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+>  
+>      g_free(intc_phandles);
+>  
+> -    if (virt_use_kvm_aia(s)) {
+> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+>          *irq_mmio_phandle = xplic_phandles[0];
+>          *irq_virtio_phandle = xplic_phandles[0];
+>          *irq_pcie_phandle = xplic_phandles[0];
+> @@ -1461,7 +1461,7 @@ static void virt_machine_init(MachineState *machine)
+>          }
+>      }
+>  
+> -    if (virt_use_kvm_aia(s)) {
+> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+>          kvm_riscv_aia_create(machine, IMSIC_MMIO_GROUP_MIN_SHIFT,
+>                               VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
+>                               memmap[VIRT_APLIC_S].base,
+> -- 
+> 2.41.0
+> 
+>
 
-Yes, please!
+I think I'd prefer
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+ /* We need this inlined for debug (-O0) builds */
+ static inline QEMU_ALWAYS_INLINE bool virt_use_kvm_aia(RISCVVirtState *s)
+ {
+    return kvm_enabled() && kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
+ }
 
+assuming that works.
 
+Either way,
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+
+Thanks,
+drew
 
