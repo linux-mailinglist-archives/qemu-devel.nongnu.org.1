@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE1678EEDC
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 041B378EEE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:44:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhwK-0000yr-0K; Thu, 31 Aug 2023 09:42:28 -0400
+	id 1qbhxp-0005Ne-0O; Thu, 31 Aug 2023 09:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qbhwF-0000lT-7a; Thu, 31 Aug 2023 09:42:23 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbhxn-0005MS-P0
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:43:59 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qbhwC-0003BM-DI; Thu, 31 Aug 2023 09:42:22 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-99bf3f59905so95677766b.3; 
- Thu, 31 Aug 2023 06:42:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbhxl-0003bd-HR
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:43:59 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso621459f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:43:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1693489338; x=1694094138; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1693489435; x=1694094235; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fHfXKsk4Fp2//RuLUG648k4PSIDJ9GIP2HHnP04Uc/A=;
- b=bSaLibuX3z2briMh165CtPcQNTe4D/8jbc5SpAtRsxNQt/IrQuIyqVmjw3penIa+3Q
- xh0nREtVAYH6be40Ia7VO6oq8ETV6sMy0LyaYfzTf+qYbh06yMHe+cfPmHRESHsyRQBT
- KHI3MU4mouo1xiWOBUunQuxaZWyBR9VUNIssk=
+ bh=irkvSQpNZre+Z0M7OS3ADSzmUcddRSofGIUv38Rn0NI=;
+ b=FcD4MQs3eF5qaIYAnnzSwztuY/HPsdabAGk7zHEjWkv3V+N5S22Ig3X3+srCDognLB
+ Xfg0BOd0DRqVBV2QmXjLjXi+ec1TVZT68+MChfsBlzAaUZrkkJ/uXGfknypmbrY1bUen
+ dfj+h39cJBjRAhNeUJeLPew1qP/xziYkNR7WUFbatRf24zQzkpS9hqClG5qtFf1fQosA
+ ZRvyVU/6/6VoyWidXixJKcT136X/RBjuayMd0RircxGAHlUD404hcyRQ71Dm50enSkLN
+ xIjyuJLTcxQs8iEelMbvgzkfVkGVEKGIUxguYDzTJX7Ho1z+7/ss8pP0kmWB42KMjI3y
+ c07g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693489338; x=1694094138;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fHfXKsk4Fp2//RuLUG648k4PSIDJ9GIP2HHnP04Uc/A=;
- b=HEZB/Bssn20KE4Hpw644u7dTHWHjgYrxC/2dnmF/QCFFBl2REuJ6zvh+vfA2XP3MF9
- 5VHlahQo0fYw/hidCBR8g8JeJuNVxx3iu/KbGsEylsSg0YObXpOOIS9TQ5P6GUpmw1Ib
- 5UtWxZXPFcGc7mqu7VeuJTWh4YesAsm+v2fWd3gs2meIJfBGbbukHy06CXyW+CoeO9Qf
- lq9+AJjshOlCSSX/Rv5xd/nGV9DI3K5ozJZfJPTGAItcywTOuuSK/xOWr3kUS0EA8oKd
- 4whxxH8ePHevOUkD8nZVX5EDlB3Rn3hyWLxQiNogpa/A0kYwIgyBLnMmw9fnStbofyVI
- NjwA==
-X-Gm-Message-State: AOJu0YwiRSLJSkLW8Bf0LtNrqqyH9FxnTwkTzLQ+DA/vYtHUvPMik5vc
- lawkWWBPngyu3yWyxPx0ms0QbsHECwLUllZteRw=
-X-Google-Smtp-Source: AGHT+IGaKfoJ1XkQ6VsFq+G1z6Q/L93f5jtJ/0OdYc8ayBdu/SqyqyISU2f+/23SUG39M/ZO5cBbBgDTn8ksiD3d97Y=
-X-Received: by 2002:a17:907:7758:b0:99c:6692:7f76 with SMTP id
- kx24-20020a170907775800b0099c66927f76mr4571158ejc.16.1693489337965; Thu, 31
- Aug 2023 06:42:17 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693489435; x=1694094235;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=irkvSQpNZre+Z0M7OS3ADSzmUcddRSofGIUv38Rn0NI=;
+ b=FBmtGgrrwTIq2J/CDN9Faeh2g/aOkP9ynIn9TgWMbOu/D1QPabdOdrNHV3qliP+tul
+ jIjgcpNdcpqsjBk57NPePkojIzsoOHKHHclNKppE/UjSxlSrHEajzfq5FND2aOnd7Gr5
+ PikohHQ4u/SAaGgu1g0UgSundy8G1ujwf+fwLwQ1M79aWeFQtgUgeFwbuIEqvo/eJC0i
+ FdhBfCwlNB9uJSzUxk0rDaGeqDU1tBYGiE6LayPu6u/bhasKsYf/AYyE9nD5A4n3VIfL
+ fSmSPcck6j+VKx72ywmsCAidpuo/6m6fxDKNA9QloZ+8WzoqayVnCwGdNHbZe8/camvH
+ v9Gg==
+X-Gm-Message-State: AOJu0YwZtn9BW1EgEXfC/QBQkNx6erfYWwjki7W92tHPvrnxiqzl7xbq
+ fr3NcRmFEIM3FzqbJkvvL8oz8Q==
+X-Google-Smtp-Source: AGHT+IHGKtt4eXQkzzOr2qYPtO4KM+Tj89UpfqxnicLqE+KFEWduC64R7pHfaxJjUFtfVrScfKYauQ==
+X-Received: by 2002:a5d:6145:0:b0:31a:ddf0:93b with SMTP id
+ y5-20020a5d6145000000b0031addf0093bmr4379046wrt.33.1693489435317; 
+ Thu, 31 Aug 2023 06:43:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ h12-20020a5d688c000000b0031ae2a7adb5sm2253802wru.85.2023.08.31.06.43.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 06:43:54 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 707851FFBB;
+ Thu, 31 Aug 2023 14:43:54 +0100 (BST)
+References: <20230831131348.69032-1-philmd@linaro.org>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, Shashi Mallela <shashi.mallela@linaro.org>, Peter
+ Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/intc/arm_gicv3_its: Avoid maybe-uninitialized error
+ in get_vte()
+Date: Thu, 31 Aug 2023 14:43:49 +0100
+In-reply-to: <20230831131348.69032-1-philmd@linaro.org>
+Message-ID: <87zg27nx7p.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230831123922.105200-1-clg@kaod.org>
- <20230831123922.105200-6-clg@kaod.org>
- <CACPK8XdiTpONmuLag5HnTCPXtoz+Zg-Yo+rrzt+Wuz17hbdDRg@mail.gmail.com>
- <a35c9605-7bea-0252-359e-86855e8ee304@kaod.org>
-In-Reply-To: <a35c9605-7bea-0252-359e-86855e8ee304@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 31 Aug 2023 13:42:06 +0000
-Message-ID: <CACPK8Xd_XXTStxrNkx36TtE7dfRR2yG0oS3Mfa62F3ap-52OHg@mail.gmail.com>
-Subject: Re: [PATCH v3 5/7] aspeed: Create flash devices only when defaults
- are enabled
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,100 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 13:22, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+
+> Fix when using GCC v11.4 (Ubuntu 11.4.0-1ubuntu1~22.04) with CFLAGS=3D-Og:
 >
-> On 8/31/23 15:00, Joel Stanley wrote:
-> > On Thu, 31 Aug 2023 at 12:39, C=C3=A9dric Le Goater <clg@kaod.org> wrot=
-e:
-> >>
-> >> When the -nodefaults option is set, flash devices should be created
-> >> with :
-> >>
-> >>      -blockdev node-name=3Dfmc0,driver=3Dfile,filename=3D./flash.img \
-> >>      -device mx66u51235f,cs=3D0x0,bus=3Dssi.0,drive=3Dfmc0 \
-> >>
-> >> To be noted that in this case, the ROM will not be installed and the
-> >> initial boot sequence (U-Boot loading) will fetch instructions using
-> >> SPI transactions which is significantly slower. That's exactly how HW
-> >> operates though.
-> >>
-> >> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> >
-> > I think this is the first foray for the aspeed machines into
-> > nodefaults removing things that previously would have just worked.
+>   [4/6] Compiling C object libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
+>   FAILED: libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
+>       inlined from =E2=80=98lookup_vte=E2=80=99 at hw/intc/arm_gicv3_its.=
+c:453:9,
+>       inlined from =E2=80=98vmovp_callback=E2=80=99 at hw/intc/arm_gicv3_=
+its.c:1039:14:
+>   hw/intc/arm_gicv3_its.c:347:9: error: =E2=80=98vte.rdbase=E2=80=99 may =
+be used uninitialized [-Werror=3Dmaybe-uninitialized]
+>     347 |         trace_gicv3_its_vte_read(vpeid, vte->valid, vte->vptsiz=
+e,
+>         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~
+>     348 |                                  vte->vptaddr, vte->rdbase);
+>         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   hw/intc/arm_gicv3_its.c: In function =E2=80=98vmovp_callback=E2=80=99:
+>   hw/intc/arm_gicv3_its.c:1036:13: note: =E2=80=98vte=E2=80=99 declared h=
+ere
+>    1036 |     VTEntry vte;
+>         |             ^~~
 >
-> This is true. It is change from the previous behavior.
->
-> QEMU should probably complain if no fmc0 are found to boot from.
-> Would that be ok ? And yes, documentation needs some update.
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-I didn't consider warning. That would help users who blindly added
--nodefaults and wondered why nothing was happening.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-This is what happens if you add -nodefaults to an "old" command line
-with your patch applied:
-
-$ ./build/qemu-system-arm -M rainier-bmc -nographic -nodefaults
--serial stdio -drive
-file=3Dobmc-phosphor-image-rainier.static.mtd,if=3Dmtd,format=3Draw
-qemu-system-arm: -drive
-file=3Dobmc-phosphor-image-rainier.static.mtd,if=3Dmtd,format=3Draw: machin=
-e
-type does not support if=3Dmtd,bus=3D0,unit=3D0
-
-Which at least isn't sitting there spinning, as I was worried. I'll
-leave it to you as to whether it needs a helpful message.
-
-Cheers,
-
-Joel
-
-
-
->
-> Thanks,
->
-> C.
->
-> > I
-> > know we haven't had it in our recommended command lines for a long
-> > time, so that's fine.
-> >
-> > Reviewed-by: Joel Stanley <joel@jms.id.au>
-> >
-> > Should the content of your commit message go in the docs?
-> >
-> >> ---
-> >>   hw/arm/aspeed.c | 6 ++++--
-> >>   1 file changed, 4 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> >> index cd92cf9ce0bb..271512ce5ced 100644
-> >> --- a/hw/arm/aspeed.c
-> >> +++ b/hw/arm/aspeed.c
-> >> @@ -396,12 +396,14 @@ static void aspeed_machine_init(MachineState *ma=
-chine)
-> >>       connect_serial_hds_to_uarts(bmc);
-> >>       qdev_realize(DEVICE(&bmc->soc), NULL, &error_abort);
-> >>
-> >> -    aspeed_board_init_flashes(&bmc->soc.fmc,
-> >> +    if (defaults_enabled()) {
-> >> +        aspeed_board_init_flashes(&bmc->soc.fmc,
-> >>                                 bmc->fmc_model ? bmc->fmc_model : amc-=
->fmc_model,
-> >>                                 amc->num_cs, 0);
-> >> -    aspeed_board_init_flashes(&bmc->soc.spi[0],
-> >> +        aspeed_board_init_flashes(&bmc->soc.spi[0],
-> >>                                 bmc->spi_model ? bmc->spi_model : amc-=
->spi_model,
-> >>                                 1, amc->num_cs);
-> >> +    }
-> >>
-> >>       if (machine->kernel_filename && sc->num_cpus > 1) {
-> >>           /* With no u-boot we must set up a boot stub for the seconda=
-ry CPU */
-> >> --
-> >> 2.41.0
-> >>
->
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
