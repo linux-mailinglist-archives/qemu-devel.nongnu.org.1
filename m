@@ -2,82 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9386578EE76
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DC178EE79
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:23:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhch-0000GT-Tr; Thu, 31 Aug 2023 09:22:12 -0400
+	id 1qbhda-0001Fq-DR; Thu, 31 Aug 2023 09:23:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbhcf-0000FY-OK
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:22:09 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qbhcd-0006DI-BU
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 09:22:09 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5280ef23593so992014a12.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 06:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693488126; x=1694092926; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=JHIOb+lmlzqzBlRtVdVPzEewoRPaKNtQgbobNXdxnLk=;
- b=IFhRt3172eImeP60nit8xcRAjFv4+pvVVd+b2bkDU+AguvGaIB7bswHAE/zYcLAzLn
- 6XKHwnCTSwhyDYQCKwqqTbvP3Mq35zd+p5famTcl4ox1QTkNN0njNwCoWQIsb2cfmpL9
- iMaAw62rCER+tdNoGVOxozUd7dDjRKRm/qDbhS1OPDe1oOphQgGp796e3rdgpjG50IxU
- eXY07GocZedbQEBhNmGXc/aOvQZ1AXQU0L+UGtRhFklyYqcIS4IYaqPd3enORebTFr/w
- tyrMQJ45fF9uGXGAm7rFwBsSttPyXuBtmhfwpIzwuv+R4zSW22QclyiIfpmqAZ/Ezj/M
- OhPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693488126; x=1694092926;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JHIOb+lmlzqzBlRtVdVPzEewoRPaKNtQgbobNXdxnLk=;
- b=NKI3j9niDGZzZhykNU69v6x3pJ3u10i0AFQ2UVIgtBOyhhhbCqhXPQJvIggjpo44XU
- zLxrl0Ovrfm0Aa05MabialEiM/b3aT3NRBz4vAebuaNGGgflaZlYY+vvQs8i/OcvNAsz
- COW29HjeIwfmTiq61lWZfwTpylnYgtpqegFRtPXgi23Rm2lITqFtDGY5MX5cCBrCmcqy
- Zpe1oBFlE4BW+twyDC5eLICXFnOMPrWrSOfr/Ojzvzv82S35c+Kw+KAsZTM8gQvbqABS
- Owbi6xHKkKZ4AU0ALEz3x4Lbey3zHTATJnlN4OJO9gwJvArhRNDIDI6AVXKsXarOQ0sK
- UHTA==
-X-Gm-Message-State: AOJu0YzaohcAi8ctsEPNs46IXaUZMgMh7pH4I+vdBL1HdHYBzKqov/Fl
- ZNwTNoPMwXtoBvxDOcNXegIlcQ==
-X-Google-Smtp-Source: AGHT+IHvbHVgjFghHMc7Ne7jONJr6t2H9dE7z1vyaDu8N1uJGw/PGLt78YU/S3ItTfkYQ9elHvDj1Q==
-X-Received: by 2002:aa7:d6cb:0:b0:525:4c2b:b87b with SMTP id
- x11-20020aa7d6cb000000b005254c2bb87bmr3874095edr.22.1693488125754; 
- Thu, 31 Aug 2023 06:22:05 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- f26-20020a056402069a00b0051e2670d599sm799794edy.4.2023.08.31.06.22.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 06:22:05 -0700 (PDT)
-Date: Thu, 31 Aug 2023 15:22:04 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH RESEND v8 14/20] target/riscv: make CPUCFG() macro public
-Message-ID: <20230831-31d8999871829091f53c2b5c@orel>
-References: <20230824221440.484675-1-dbarboza@ventanamicro.com>
- <20230824221440.484675-15-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
+ id 1qbhdN-000198-FI; Thu, 31 Aug 2023 09:22:55 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org>)
+ id 1qbhdJ-0006QB-SM; Thu, 31 Aug 2023 09:22:53 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rc2045srmz4wy9;
+ Thu, 31 Aug 2023 23:22:44 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rc2026xrpz4wb5;
+ Thu, 31 Aug 2023 23:22:42 +1000 (AEST)
+Message-ID: <a35c9605-7bea-0252-359e-86855e8ee304@kaod.org>
+Date: Thu, 31 Aug 2023 15:22:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824221440.484675-15-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 5/7] aspeed: Create flash devices only when defaults
+ are enabled
+Content-Language: en-US
+To: Joel Stanley <joel@jms.id.au>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230831123922.105200-1-clg@kaod.org>
+ <20230831123922.105200-6-clg@kaod.org>
+ <CACPK8XdiTpONmuLag5HnTCPXtoz+Zg-Yo+rrzt+Wuz17hbdDRg@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CACPK8XdiTpONmuLag5HnTCPXtoz+Zg-Yo+rrzt+Wuz17hbdDRg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=TXcQ=EQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -73
+X-Spam_score: -7.4
+X-Spam_bar: -------
+X-Spam_report: (-7.4 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.478,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,21 +69,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 24, 2023 at 07:14:34PM -0300, Daniel Henrique Barboza wrote:
-> The RISC-V KVM driver uses a CPUCFG() macro that calculates the offset
-> of a certain field in the struct RISCVCPUConfig. We're going to use this
-> macro in target/riscv/cpu.c as well in the next patches. Make it public.
+On 8/31/23 15:00, Joel Stanley wrote:
+> On Thu, 31 Aug 2023 at 12:39, Cédric Le Goater <clg@kaod.org> wrote:
+>>
+>> When the -nodefaults option is set, flash devices should be created
+>> with :
+>>
+>>      -blockdev node-name=fmc0,driver=file,filename=./flash.img \
+>>      -device mx66u51235f,cs=0x0,bus=ssi.0,drive=fmc0 \
+>>
+>> To be noted that in this case, the ROM will not be installed and the
+>> initial boot sequence (U-Boot loading) will fetch instructions using
+>> SPI transactions which is significantly slower. That's exactly how HW
+>> operates though.
+>>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > 
-> Rename it to CPU_CFG_OFFSET() for more clarity while we're at it.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->  target/riscv/cpu.c | 2 +-
->  target/riscv/cpu.h | 2 ++
->  target/riscv/kvm.c | 8 +++-----
->  3 files changed, 6 insertions(+), 6 deletions(-)
->
+> I think this is the first foray for the aspeed machines into
+> nodefaults removing things that previously would have just worked.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+This is true. It is change from the previous behavior.
+
+QEMU should probably complain if no fmc0 are found to boot from.
+Would that be ok ? And yes, documentation needs some update.
+
+Thanks,
+
+C.
+
+> I
+> know we haven't had it in our recommended command lines for a long
+> time, so that's fine.
+> 
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> 
+> Should the content of your commit message go in the docs?
+> 
+>> ---
+>>   hw/arm/aspeed.c | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+>> index cd92cf9ce0bb..271512ce5ced 100644
+>> --- a/hw/arm/aspeed.c
+>> +++ b/hw/arm/aspeed.c
+>> @@ -396,12 +396,14 @@ static void aspeed_machine_init(MachineState *machine)
+>>       connect_serial_hds_to_uarts(bmc);
+>>       qdev_realize(DEVICE(&bmc->soc), NULL, &error_abort);
+>>
+>> -    aspeed_board_init_flashes(&bmc->soc.fmc,
+>> +    if (defaults_enabled()) {
+>> +        aspeed_board_init_flashes(&bmc->soc.fmc,
+>>                                 bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
+>>                                 amc->num_cs, 0);
+>> -    aspeed_board_init_flashes(&bmc->soc.spi[0],
+>> +        aspeed_board_init_flashes(&bmc->soc.spi[0],
+>>                                 bmc->spi_model ? bmc->spi_model : amc->spi_model,
+>>                                 1, amc->num_cs);
+>> +    }
+>>
+>>       if (machine->kernel_filename && sc->num_cpus > 1) {
+>>           /* With no u-boot we must set up a boot stub for the secondary CPU */
+>> --
+>> 2.41.0
+>>
+
 
