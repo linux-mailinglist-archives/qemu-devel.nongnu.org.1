@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381E278EDED
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E99B78EE18
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhHY-0005FX-JU; Thu, 31 Aug 2023 09:00:22 -0400
+	id 1qbhIA-0000X9-UJ; Thu, 31 Aug 2023 09:00:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhFB-0002xk-Ov
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:54 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhFG-00032r-TF
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:59 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhF2-0005LG-71
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:48 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-307d20548adso641299f8f.0
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:57:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbhFB-0005Oo-Hi
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:57:58 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3ff7d73a6feso7061175e9.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:57:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693486661; x=1694091461; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693486668; x=1694091468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OEBOMsh/2YnVXzixxLDyYqxUdUQOvziVNTmEZMBX0zo=;
- b=q7gXQi51bkl/faqbG5DeWykzANSO+dP0F+d7XfJxrzOdVly4o1roQGyTdru02vHDEP
- 2Epwcn2T6N95iwOKH96OVRpXswy4bkE+G7x9dKR1LkymX6UTaPqp0sEAJhh2s3AmlBZ+
- L4L6ubkQ1UwsC50F0h/nQzi6i61GbkJxr+crpx6Uji96IGlWb921sXTeMFnjyj9lyH/h
- aXzcbg8QH4MFhQpy2zirkHME6QpW6AMAoEVcYcHnYeBCYJsPblVJaFD6Ji7gqj6c7od7
- m7f9yGIVdrNA3Ue4FN6n/cY6xyiZWj8872G/Q5BQqc1QWq1URvgylGURo1BwwNKW5V3F
- A71g==
+ bh=RGsHEuyFoG4D07fPwCyTopmI6+5DcT12Nv/vCGRvwBA=;
+ b=jAK3cfG84TIOtj2LAh5tqKi6QMHrpgt/Y4R4eOj8QbIhIiKsSL1lfi+rKbgpN6iZjk
+ dV2D+Jz7Y49hBx/OP0UsgNA0Fyh7GDJ63mnIruQmLrMZrRlCQ2qaqd3ozYkt28UQQgjr
+ 1P3B5wkR9XRv+h09TZc04anoAnDb8p6Ub1jD/+X/BrNRnE5hR3D7L3Ks54AICYoj01ys
+ Jup516hQV0zQMzLSEH5uVhBMasEEdy+fs/u6xCTB5FZwtogwRLFh04waMXbXAX7dyrBm
+ RVXtLbGMjLo3qmYXbSUXKljPEYbAeH10Aj5iqBV/xAeLnHC7F1TbvjFpbHELXxSKhZf8
+ 5UOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693486661; x=1694091461;
+ d=1e100.net; s=20221208; t=1693486668; x=1694091468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OEBOMsh/2YnVXzixxLDyYqxUdUQOvziVNTmEZMBX0zo=;
- b=K/4kWhkUjb2rb4/7t1hlKpnN9o3aktkE329+sN6e2BzyGhu/T/Rpy+jhsQyzkEHxuh
- sApqULUIKaFvrt3LSh8oXyVPd+/++QIdbVe/k4GojcU5hxaEq5RBqhpP9GNH1GTogiS6
- 30gMZaxN8UIroaoL8gLOvxbxFi+2GDYeLk3F2+f7NmyfIDFZl2sBes0gcWw2sFRuBRGH
- lLrU3pqeq8GMK2imQJ6Xo67KrNTekcwG/l2rWE3u5R0RPRfyjYhmwDfwC8l3dniJNxWY
- +vswTgjOWiVOQmWZv14rPVthu6Gaol7CSYz0Jp4MPdQtyQz+QuC5lFbHpEe7Q/G0LiIO
- mNlw==
-X-Gm-Message-State: AOJu0Yyl3PY8Xiyq53kof0UDoGaJWBqieOKF6IS14phfQy95Pc59lZzT
- 2zye6lh9kWdyK52QdIALIJUXpFSdqcdsV9XVTsA=
-X-Google-Smtp-Source: AGHT+IGLd09qYyb4/3kaqCrC5REt7mc9FS2sDslJG6mJAYhCIMYt2pVEe6AZW+Rku8HX3jErKIKnWg==
-X-Received: by 2002:adf:e6ce:0:b0:319:74d5:a2d7 with SMTP id
- y14-20020adfe6ce000000b0031974d5a2d7mr4511339wrm.32.1693486661117; 
- Thu, 31 Aug 2023 05:57:41 -0700 (PDT)
+ bh=RGsHEuyFoG4D07fPwCyTopmI6+5DcT12Nv/vCGRvwBA=;
+ b=B3CNLd1dYpDV41vcYYTdK6n+Wul1dJchrU2KzVUuLXwX/aWqOghRjnTCFweNiyVQt2
+ 7tu4JMX17BU58kBOkj5RoI3voNVHRlmaHS1jZLxCLcaVMtF6SC94ug3GpK40y0VBsV7e
+ k+yVQ4YvjYalvoPALnHYIPUqn2uITJ/i08NK1elmNZaqZmTHDlRZr4CoblsnvHgSb69K
+ R1Jjqjmyga00eabkqCZm0Hd3iHe9MMMrtwVrAtsTB6QbH/IN6AxhpA8j5OkkOm90cN30
+ e+ybMoMHLCb9fPelKt0tpG1qC7ItGPW6W530RSWpAtfVVIUheMJTQXDqjAKn0Gcgk6Jy
+ wL/A==
+X-Gm-Message-State: AOJu0Yytbrx1qZH7KEFWOde6g96KEszEteTWLD+wD4yoZKFHtO7zcKpd
+ FSaGa4MwCL7oNLbVMrR5Fl9BUgjPKzlW0vipwYs=
+X-Google-Smtp-Source: AGHT+IFchwuM8PgXwtvVitQFOAlj/Yyd7/TFYBsqNV6SL8Vm89km1iz/gH6nwnik6/HLFLRvC7+C4Q==
+X-Received: by 2002:a05:600c:ac4:b0:3fe:1b4e:c484 with SMTP id
+ c4-20020a05600c0ac400b003fe1b4ec484mr4008814wmr.5.1693486667797; 
+ Thu, 31 Aug 2023 05:57:47 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- h18-20020adff4d2000000b003141e629cb6sm2158792wrp.101.2023.08.31.05.57.39
+ d9-20020a5d4f89000000b0031c5b380291sm2184139wru.110.2023.08.31.05.57.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 31 Aug 2023 05:57:40 -0700 (PDT)
+ Thu, 31 Aug 2023 05:57:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-riscv@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PULL 09/41] target/riscv/pmu: Restrict 'qemu/log.h' include to source
-Date: Thu, 31 Aug 2023 14:56:11 +0200
-Message-ID: <20230831125646.67855-10-philmd@linaro.org>
+Subject: [PULL 10/41] target/translate: Include missing 'exec/cpu_ldst.h'
+ header
+Date: Thu, 31 Aug 2023 14:56:12 +0200
+Message-ID: <20230831125646.67855-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230831125646.67855-1-philmd@linaro.org>
 References: <20230831125646.67855-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,41 +105,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Declarations from "riscv/pmu.h" don't need anything from "qemu/log.h",
-reduce it's inclusion to the source.
+All these files access the CPU LD/ST API declared in "exec/cpu_ldst.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230828221314.18435-3-philmd@linaro.org>
+Message-Id: <20230828221314.18435-4-philmd@linaro.org>
 ---
- target/riscv/pmu.h | 1 -
- target/riscv/pmu.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ target/avr/helper.c                  | 1 +
+ target/i386/tcg/fpu_helper.c         | 1 +
+ target/i386/tcg/sysemu/excp_helper.c | 1 +
+ target/loongarch/cpu.c               | 1 +
+ target/mips/tcg/ldst_helper.c        | 1 +
+ target/mips/tcg/msa_helper.c         | 1 +
+ target/riscv/op_helper.c             | 1 +
+ target/riscv/vector_helper.c         | 1 +
+ 8 files changed, 8 insertions(+)
 
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 0c819ca983..d2be06a133 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -16,7 +16,6 @@
-  * this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
--#include "qemu/log.h"
+diff --git a/target/avr/helper.c b/target/avr/helper.c
+index e6e7d51487..fdc9884ea0 100644
+--- a/target/avr/helper.c
++++ b/target/avr/helper.c
+@@ -24,6 +24,7 @@
  #include "cpu.h"
- #include "qemu/main-loop.h"
+ #include "hw/core/tcg-cpu-ops.h"
  #include "exec/exec-all.h"
-diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index db06b3882f..36f6307d28 100644
---- a/target/riscv/pmu.c
-+++ b/target/riscv/pmu.c
-@@ -17,6 +17,7 @@
-  */
++#include "exec/cpu_ldst.h"
+ #include "exec/address-spaces.h"
+ #include "exec/helper-proto.h"
+ 
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index 6f3741b635..4430d3d380 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -21,6 +21,7 @@
+ #include <math.h>
+ #include "cpu.h"
+ #include "tcg-cpu.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "fpu/softfloat.h"
+ #include "fpu/softfloat-macros.h"
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index b5f0abffa3..226689a4f2 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -19,6 +19,7 @@
  
  #include "qemu/osdep.h"
-+#include "qemu/log.h"
  #include "cpu.h"
- #include "pmu.h"
- #include "sysemu/cpu-timers.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/exec-all.h"
+ #include "tcg/helper-tcg.h"
+ 
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 27fc6e1f33..65f9320e34 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -11,6 +11,7 @@
+ #include "qapi/error.h"
+ #include "qemu/module.h"
+ #include "sysemu/qtest.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/exec-all.h"
+ #include "cpu.h"
+ #include "internals.h"
+diff --git a/target/mips/tcg/ldst_helper.c b/target/mips/tcg/ldst_helper.c
+index c1a8380e34..97056d00a2 100644
+--- a/target/mips/tcg/ldst_helper.c
++++ b/target/mips/tcg/ldst_helper.c
+@@ -24,6 +24,7 @@
+ #include "cpu.h"
+ #include "exec/helper-proto.h"
+ #include "exec/exec-all.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/memop.h"
+ #include "internal.h"
+ 
+diff --git a/target/mips/tcg/msa_helper.c b/target/mips/tcg/msa_helper.c
+index 29b31d70fe..c8597b9e30 100644
+--- a/target/mips/tcg/msa_helper.c
++++ b/target/mips/tcg/msa_helper.c
+@@ -22,6 +22,7 @@
+ #include "internal.h"
+ #include "tcg/tcg.h"
+ #include "exec/exec-all.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "exec/memop.h"
+ #include "fpu/softfloat.h"
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index 9cdb9cdd06..7e2f1908ee 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -23,6 +23,7 @@
+ #include "internals.h"
+ #include "qemu/main-loop.h"
+ #include "exec/exec-all.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ 
+ /* Exceptions processing helpers */
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index bf7e0029a1..bc9e151aa9 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -22,6 +22,7 @@
+ #include "cpu.h"
+ #include "exec/memop.h"
+ #include "exec/exec-all.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "fpu/softfloat.h"
+ #include "tcg/tcg-gvec-desc.h"
 -- 
 2.41.0
 
