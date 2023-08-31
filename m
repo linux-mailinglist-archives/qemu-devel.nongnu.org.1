@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085D778E408
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 02:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FD578E413
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 02:57:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbViD-0008Bt-Jl; Wed, 30 Aug 2023 20:39:05 -0400
+	id 1qbVzB-0000ll-Cx; Wed, 30 Aug 2023 20:56:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbViB-0008Bk-Ke
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 20:39:03 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbVi9-00053y-FQ
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 20:39:03 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c1ff5b741cso1966585ad.2
- for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 17:38:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693442338; x=1694047138; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8lJsoYHEXSMxqTYqNfj88o9kpS8w10+pZo17S079E+g=;
- b=Hqj5QclimFK4XdLbRv18HJWS9Rzb2HheX657hkiBHGPOXKlWaUD+SvzBdDHYjJKJSi
- gYJScsxZFd7zVXnRzsgu7tYUdNk1jIKiOYqTm+E17PG/wzkoexqG2CjVj7tOPU5998Rb
- I8yhgHt6Xm54u2V3z82pJh8XlZyWWJjcsOe7EpeewChSoiHZtMCMgC/wbHwc7eMftw8v
- pl61IBnh6fxBc2LcICS0l7ot9fsIQD2xAGDM6RxVRj3aRBW0nC4zR9Tk/NLYwjTGJCJs
- 9cZTc/M5ST+iGTzbxCqRMXSv2sjiLwoT5yrMsZ/cbigyxwgzjKjYo4o2klUs4wpmvbGH
- XxfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693442338; x=1694047138;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8lJsoYHEXSMxqTYqNfj88o9kpS8w10+pZo17S079E+g=;
- b=BuXxjfuVPFvHhV4VHHAI+7uSLXQ91/7cH7q9EqKtRNz8fSOuFEyVcXR0qEYw6qP5ur
- GDUYHAF22Z+1+SG9LWMrZN8BTtjdzc990s1VaWpNUGZKK9Ys/wlOv9zlUb8M5dsVAOSk
- BX3FjT4YNHR01xyZo7AV9n+ayG2PrpSp/ASgGbcWMWffPGPGEUwBPrcyCniOVNKU8hbP
- IPpNBd6JIPgKWuewtmt40FOz6yUscCU62zeLMSFKZ4hLhx+AF7kebrHg2PKNsB1IjHZh
- 0Wu+1al/70gysr+uSE5fbtnbdwUaDJvOaoK9N9uSxnpBFPGVncx7nHK4mIXIM6AOXjGX
- 7HUA==
-X-Gm-Message-State: AOJu0YyPt0Ugya2GUQrijlpzeXwl0XilND9cSlt/zd4dNi6Xw31KuLWU
- e1KMuONZQ14nEbp5BTdw2/upUQ==
-X-Google-Smtp-Source: AGHT+IE78xhoo06gItP5hzEM+/T0J3hvPYfdbB7G5ayirR2RVebYXxjHHlsBd4fM9n7o2SAya3Tesw==
-X-Received: by 2002:a17:902:a414:b0:1c1:ecff:a637 with SMTP id
- p20-20020a170902a41400b001c1ecffa637mr3307279plq.15.1693442337708; 
- Wed, 30 Aug 2023 17:38:57 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- jw2-20020a170903278200b001b8943b37a5sm99420plb.24.2023.08.30.17.38.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Aug 2023 17:38:56 -0700 (PDT)
-Message-ID: <72bc538d-2fe1-f825-23ca-e89a69bf17d7@linaro.org>
-Date: Wed, 30 Aug 2023 17:38:54 -0700
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1qbVzA-0000lU-6q
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 20:56:36 -0400
+Received: from ams.source.kernel.org ([145.40.68.75])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1qbVz7-0000Gg-Af
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 20:56:35 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id D6617B8201C;
+ Thu, 31 Aug 2023 00:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D871C433C8;
+ Thu, 31 Aug 2023 00:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1693443388;
+ bh=bdcvKVmYhY6hiG40uNbDrovAdJe/+D6kOb4JuPRDfIA=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=unKCL3b1J+IkcuRfRaPrHdsNfYVv14S3zAON+bHi7WLLVjoPbXs98Reo/yGTFeX4T
+ j2+53Xxwe+lcAk8b9CIuGB46tH5TC1G73LARwrvolRcF0OcxJGkhTlIQrxyRLyBvWq
+ dQYRmtWPRYMUZK2AItqZQT6dF/aJ32ppq877CbvzbVGepLqx0iCoGYC8hRLuhB4BUy
+ KsqNSGA9Pj29S9fOSFEzdbMLvq4NBW6BkJWnTBTZoUCb4s4M08ob7rdClfWgYNL9D/
+ HWLTDDQyLfbOLku2WMjcWYZM1kGkZhy5Rd149sykhlhjIP4jl+NcF5+IHpjyk24+83
+ MU55ezk62ztyA==
+Date: Wed, 30 Aug 2023 17:56:25 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+cc: Xen-devel <xen-devel@lists.xenproject.org>, 
+ Stewart Hildebrand <stewart.hildebrand@amd.com>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, 
+ Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, 
+ Sergiy Kibrik <Sergiy_Kibrik@epam.com>, 
+ QEMU Developers <qemu-devel@nongnu.org>, 
+ Vikram Garhwal <vikram.garhwal@amd.com>, 
+ Stefano Stabellini <stefano.stabellini@amd.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: QEMU features useful for Xen development?
+In-Reply-To: <87y1hspiyh.fsf@linaro.org>
+Message-ID: <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
+References: <87y1hspiyh.fsf@linaro.org>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 48/48] target/loongarch: CPUCFG support LASX
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230830084902.2113960-1-gaosong@loongson.cn>
- <20230830084902.2113960-49-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230830084902.2113960-49-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed; boundary="8323329-1957996329-1693443387=:6458"
+Received-SPF: pass client-ip=145.40.68.75; envelope-from=sstabellini@kernel.org;
+ helo=ams.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,13 +81,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 01:49, Song Gao wrote:
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu.c | 1 +
->   1 file changed, 1 insertion(+)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+--8323329-1957996329-1693443387=:6458
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-r~
+Hi Alex,
+
+Thanks for reaching out. QEMU is an important development tool for the
+Xen community and we are using QEMU as part of our upstream gitlab-ci
+testing, see automation/scripts/qemu-*.
+
+As Xen is gaining R52 and R82 support, it would be great to be able to
+use QEMU for development and testing there as well, but I don't think
+QEMU can emulate EL2 properly for the Cortex-R architecture. We would
+need EL2 support in the GIC/timer for R52/R82 as well.
+
+On Cortex-As, in addition to a PCI root complex and an arbitrary PCI
+device, SMMUv3 emulation (both stages) and GICv3 ITS are needed to be
+able to test PCI Passthrough. However, if I recall correctly SMMUv3
+emulation in QEMU might not be complete enough to enable us to use it.
+
+For Virtio, using QEMU on target (not develpment/testing, but
+production), it would greatly help if we could improve the build system
+to only build what is strictly necessary for the xenpvh machine to run.
+
+Cheers,
+
+Stefano
+
+
+On Wed, 30 Aug 2023, Alex Bennée wrote:
+> Dear Xen community,
+> 
+> Linaro is significantly invested in QEMU development, with a special
+> focus on Arm-related aspects. We recognize the value of QEMU as a
+> readily available software reference platform for projects that need to
+> test their software well before the availability of real hardware.
+> 
+> The primary focus of our effort is on adding core architectural elements
+> to the CPU emulation. For an overview of the current feature set, please
+> see:
+> 
+>   https://qemu.readthedocs.io/en/master/system/arm/emulation.html
+> 
+> Besides the -cpu max, providing an approximation of a v9.0 baseline CPU,
+> we have also recently added several specific CPU types like the
+> Neoverse-N1 and V1 processor types as well as numerous Cortex CPU
+> models.
+> 
+> Our most utilized machine model is "virt", which is primarily designed
+> for guest operation and therefore has minimal resemblance to actual
+> hardware. "sbsa-ref" was implemented to more closely simulate a real
+> machine that aligns with Arm's SBSA specification.
+> 
+> In our work on VirtIO, we often use QEMU. Most of our rust-vmm
+> vhost-device backends, for instance, were initially tested on QEMU.
+> 
+> Now that everyone is up-to-date, I would welcome any feedback from the
+> Xen community on features that would increase QEMU's usefulness as a
+> development target.
+> 
+> Do you have interest in any upcoming Arm CPU features? For example, we
+> recently added FEAT_RME support for Arm's new confidential computing,
+> but currently do not implement FEAT_NV/NV2.
+> 
+> How about the HW emulation in QEMU? Is the PCI emulation reliable enough
+> to ensure confidence while testing changes to Xen's PCI management? What
+> about the few peripherals that the hypervisor accesses directly?
+> 
+> Are there other development features you consider essential? Have you
+> noticed any limitations with gdbstub? Does anyone use the record/replay
+> or reverse debug functions? Has anyone tried TCG plugins for analysing
+> the behavior of the hypervisor?
+> 
+> While I cannot promise to implement every wish-list item (performance
+> counter emulation, for example, as we are not a uArch simulator), I am
+> eager to gather feedback on how QEMU could be improved to help the Xen
+> community deliver it's roadmap faster.
+> 
+> Thank you for your time and I look forward to any feedback :-)
+> 
+> -- 
+> Alex Bennée
+> Virtualisation Tech Lead @ Linaro
+> 
+--8323329-1957996329-1693443387=:6458--
 
