@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5D178EE6C
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 15:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C6878ED98
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 14:49:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbhKR-0006aF-FN; Thu, 31 Aug 2023 09:03:19 -0400
+	id 1qbh6w-00088Q-Oj; Thu, 31 Aug 2023 08:49:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qbhGI-00046m-Un
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:07 -0400
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qbhGC-0005kj-1i
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:59:00 -0400
-Received: from juju-98d295-prod-launchpad-16.localdomain (unknown
- [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 9C05843131
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 12:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1693486731;
- bh=loiUURVNUqqr7KJsWykJTYXn/A2Pa64k18IX4ITs1fM=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=feTYY4jHUIAsoKGN543QyKH7v6Gvow897AdMd+AB7jP0NYj6WQPU/eaKdycr91GAf
- qug63PBsDUBwQJz0lTKwfbDI173iBnw2NQqC7Cua3IS0sPSRYX95U278JGaXNSv0+Z
- 4jODSivO47ECrmJHdtAXWeS/eFUET7JEuNL45hY9MkJbu8oyeDwewY44Hl28IkIzwg
- seP7akajFhh/tu8ScGL7hZGSMqtY+bjkgN8JFDKRleFymx6YD0yjSDAvPwQZCue7fR
- 9ChsNwidzqVl6Lq77Quh4x1W2fS9U923R1u76lO8YBZ/Ub7nVVr/KJHe3GWxWUPrFW
- YHdc3Ka93Wpgw==
-Received: from [10.131.215.246] (localhost [127.0.0.1])
- by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
- BF9597EB81
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 12:58:50 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbh6g-0007zh-Cy
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:49:08 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qbh6e-0002VH-3x
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 08:49:06 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2bcfd3220d3so13471941fa.2
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 05:49:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693486142; x=1694090942; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=5+gTtKRnVEIja1xBtveYgsqQRdKygOna8UIiM8z144k=;
+ b=ZHTk0rsdHxYwUl1H47v3PTgVn8DDBWd1/IP+poQ6y5otThK6f1DdYlNktTcWFyyIu1
+ 7kmRDkEV/f5oa94l2S8WEae3HAbX+tpl8N14HCRYE6+9c8IdJEwE1TqX3qT3A9PigpIJ
+ W7QSvBpzDdcl6yrFhpke/Ti98PTRmGqUG4QIgGI8PqnoiK71O912bEHa6boVg11BnSUr
+ PgBaDRlg/yXjkBSoszPgbBnWbV+t9dbZ0DDREbkRA4MHaAWY9JkDnLPyk2TVsAqxwZlH
+ BuOTRy6Vf3E2FxR1pWHj2GYDITeWUC/upVjnWOecolVkuQgjLwGmAEuT5qR0fAy9y8kr
+ ZaIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693486142; x=1694090942;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5+gTtKRnVEIja1xBtveYgsqQRdKygOna8UIiM8z144k=;
+ b=e9Yxyn1MgZCqPs8+SzYAtYhXJSOMkGlajXHW3SZMLGKHVkhgWW6Nk41yBazT873fr4
+ 3homBBrllD8zU06Gx67GLoaTp8IEvz6ow1tkkVJ2mgd1iy1pbR5Y2e2ZyUIyIj1K9X9z
+ j/ziHSj6mHwaKLO/JwAtQN/8ceGW65O1pLouPrp7GiE2VvMfrJf7hFUGb/gYrQMm9pFO
+ MKFVLuhzVLmcRoAW8WB0Fy9dVJJcGk2CrJBCVJO1b5E4R3+btqhOCCbnp6BdoFx1/pJF
+ 4/6BbUh8f4qZvByFzbObbRrlps+Kvv1M9jORxpNEfl1OnmekUa13kKOmlz7CrdNMY9ce
+ 5LBQ==
+X-Gm-Message-State: AOJu0YyjA5sayCzEF3aaFezCflXZDtHgSeeyQIt0CJdHJbCJtyl2qa/a
+ KjzP9TwfxadRJ0Rup0i6kaCNuw==
+X-Google-Smtp-Source: AGHT+IHRE4zcCBGfSy6QljO7XRkC8Xw5r26dEk8yZOIRNRgFCoVIDiQKnk0odYUzt79Iddk5qpcWaA==
+X-Received: by 2002:a2e:9995:0:b0:2bc:dba0:60f9 with SMTP id
+ w21-20020a2e9995000000b002bcdba060f9mr4179326lji.44.1693486141789; 
+ Thu, 31 Aug 2023 05:49:01 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ dk24-20020a170906f0d800b00992d0de8762sm723518ejb.216.2023.08.31.05.49.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 05:49:01 -0700 (PDT)
+Date: Thu, 31 Aug 2023 14:49:00 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH RESEND v8 01/20] target/riscv/cpu.c: split CPU options
+ from riscv_cpu_extensions[]
+Message-ID: <20230831-1bdbe4d2afbc10dd26f1892f@orel>
+References: <20230824221440.484675-1-dbarboza@ventanamicro.com>
+ <20230824221440.484675-2-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 31 Aug 2023 12:48:34 -0000
-From: Samuel Henrique <1863025@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
- assignee=alex.bennee@linaro.org; 
-X-Launchpad-Bug-Tags: mttcg tcg
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: ajbennee laurent-vivier samueloph yifanlu
-X-Launchpad-Bug-Reporter: Yifan (yifanlu)
-X-Launchpad-Bug-Modifier: Samuel Henrique (samueloph)
-References: <158154486735.14935.3370403781300872079.malonedeb@soybean.canonical.com>
-Message-Id: <169348611423.1472917.10027704436078423318.malone@juju-98d295-prod-launchpad-3>
-Subject: [Bug 1863025] Re: Use-after-free after flush in TCG accelerator
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="5e6925a96ee17ce45a766139d74108c2c83abbc9";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: ded076c6ee19d49d504f3b3d608f28910e7e578d
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824221440.484675-2-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x22a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -85,76 +92,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 1863025 <1863025@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CVE-2020-24165 was assigned to this:
-https://nvd.nist.gov/vuln/detail/CVE-2020-24165
+On Thu, Aug 24, 2023 at 07:14:21PM -0300, Daniel Henrique Barboza wrote:
+> We'll add a new CPU type that will enable a considerable amount of
+> extensions. To make it easier for us we'll do a few cleanups in our
+> existing riscv_cpu_extensions[] array.
+> 
+> Start by splitting all CPU non-boolean options from it. Create a new
+> riscv_cpu_options[] array for them. Add all these properties in
+> riscv_cpu_add_user_properties() as it is already being done today.
+> 
+> 'mmu' and 'pmp' aren't really extensions in the usual way we think about
+> RISC-V extensions. These are closer to CPU features/options, so move
+> both to riscv_cpu_options[] too. In the near future we'll need to match
+> all extensions with all entries in isa_edata_arr[], and so it happens
+> that both 'mmu' and 'pmp' do not have a riscv,isa string (thus, no priv
+> spec version restriction). This further emphasizes the point that these
+> are more a CPU option than an extension.
+> 
+> No functional changes made.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  target/riscv/cpu.c | 33 +++++++++++++++++++++++----------
+>  1 file changed, 23 insertions(+), 10 deletions(-)
+>
 
-I had no involvement in the assignment, posting here for reference only.
-
-** CVE added: https://cve.mitre.org/cgi-bin/cvename.cgi?name=3D2020-24165
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/1863025
-
-Title:
-  Use-after-free after flush in TCG accelerator
-
-Status in QEMU:
-  Fix Released
-
-Bug description:
-  I believe I found a UAF in TCG that can lead to a guest VM escape. The
-  security list informed me "This can not be treated as a security
-  issue." and to post it here. I am looking at the 4.2.0 source code.
-  The issue requires a race and I will try to describe it in terms of
-  three concurrent threads.
-
-  Thread A:
-
-  A1. qemu_tcg_cpu_thread_fn runs work loop
-  A2. qemu_wait_io_event =3D> qemu_wait_io_event_common =3D> process_queued=
-_cpu_work
-  A3. start_exclusive critical section entered
-  A4. do_tb_flush is called, TB memory freed/re-allocated
-  A5. end_exclusive exits critical section
-
-  Thread B:
-
-  B1. qemu_tcg_cpu_thread_fn runs work loop
-  B2. tcg_cpu_exec =3D> cpu_exec =3D> tb_find =3D> tb_gen_code
-  B3. tcg_tb_alloc obtains a new TB
-
-  Thread C:
-
-  C1. qemu_tcg_cpu_thread_fn runs work loop
-  C2. cpu_exec_step_atomic executes
-  C3. TB obtained with tb_lookup__cpu_state or tb_gen_code
-  C4. start_exclusive critical section entered
-  C5. cpu_tb_exec executes the TB code
-  C6. end_exclusive exits critical section
-
-  Consider the following sequence of events:
-  =C2=A0=C2=A0B2 =3D> B3 =3D> C3 (same TB as B2) =3D> A3 =3D> A4 (TB freed)=
- =3D> A5 =3D> B2 =3D>
-  =C2=A0=C2=A0B3 (re-allocates TB from B2) =3D> C4 =3D> C5 (freed/reused TB=
- now executing) =3D> C6
-
-  In short, because thread C uses the TB in the critical section, there
-  is no guarantee that the pointer has not been "freed" (rather the
-  memory is marked as re-usable) and therefore a use-after-free occurs.
-
-  Since the TCG generated code can be in the same memory as the TB data
-  structure, it is possible for an attacker to overwrite the UAF pointer
-  with code generated from TCG. This can overwrite key pointer values
-  and could lead to code execution on the host outside of the TCG
-  sandbox.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/1863025/+subscriptions
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
