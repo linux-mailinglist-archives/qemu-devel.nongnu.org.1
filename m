@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0A078E7F4
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2F678E853
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:33:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbd11-0002Wv-El; Thu, 31 Aug 2023 04:27:01 -0400
+	id 1qbd6v-0006NS-Hs; Thu, 31 Aug 2023 04:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qbd0u-0002Wc-3f
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:26:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qbd0r-0000S2-K7
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:26:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693470408;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6fDL3J2Yu6MPNEPzJwQrhG+Xw7kqRJPUukRL0CLgSaM=;
- b=g6CmDQF/pPwBiE1vhYM4CA3kRQT6GZqqbqPoF8HZI4VeG68vmPYBxh+crWW8QA1kjuPaQY
- +1ml/nGc/J+AVKki+gWtodEltbyp5QUJc1Gyqtqoxq8kFBAmEa7nL/8UDeykSPhv6pyaJr
- bSiHf+fGl80leLUolc+CfZewE0nDPt0=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-O2oj-CDGPDGelP2dvuvTBw-1; Thu, 31 Aug 2023 04:26:46 -0400
-X-MC-Unique: O2oj-CDGPDGelP2dvuvTBw-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-44d5ac106ddso323681137.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:26:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbd6n-0006N8-2b
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:32:57 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbd6j-0001O0-FG
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:32:56 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9a603159f33so47737166b.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:32:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693470771; x=1694075571; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pfExW0wvJbL75l+XPekcfEQYMr9eTFc9esyn7jJfCbE=;
+ b=d5kejjomt60Fw4zhzXuIALnLQ7q28xWcepRFxxqL2khS6DL2M6PnbY5zW1acSw2k8M
+ OvthwGowjfjxvN/s76RSoX2KPOfqsEHNS5AfizFikK7zdLS28W5a5OG2dsB0/dE29yjV
+ nzrbaKgvytTwL0PEZ6f+snW0K9CfkA8Ky+XXwdNFEqxg2BFCFVZmNAjPP6RLozybXrIn
+ lvzy3TmN4ydKswHISlD3zuBnrjTwEqvyOwz25dTmUYNeLzreW4/joS+wnpQ561XKcSx5
+ N11xKiFRf/LyD8u4qehL/dNVLny+P567UnsZMLMIdrAE84POEQJuEMN6iu6Wbus+MQYw
+ +xYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693470406; x=1694075206;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6fDL3J2Yu6MPNEPzJwQrhG+Xw7kqRJPUukRL0CLgSaM=;
- b=LZ+6f2fd5r7VbUMW0cru/m/qAWyw1SOPCWx0q9kMHhXUccn41agBM6nhVYcbul7fuu
- 3mt9WirFp5+fl/FsxDF7zqXbfUbv1AWhR+dOadIO6aSNFDDiJ4Jsq7i4GGzf86kkp9es
- Ma3Sm964WIecR8fLRu2/T+wZO7zM62HEQsH31ppKfNcI/ahzgJrpfIqMFd7PWK9tQ0My
- CS5t+vtdhC+OUmjsCgoW0n2oesresdi0ldJTkLDN0qp/UFk7dbaqbipfL9rXv0LfDyrI
- NOhM3a/pbLn0tsFb8zTbs8VuLj2Wr/X9je4Lz0d8BH6QtF1lF4qHS2mpRO8Jce9WdSiZ
- rfww==
-X-Gm-Message-State: AOJu0Ywu7JQtjGJjURXd9RUoBHOKxtSFpZ1mCO6FxPm87g97xpFUCtZS
- HIBKFMZ6SYvih/WT9YMBizzdbjaTNRMGUg2uqWkgKyevG0iMDi9TK1zkDqJHrYpfeFzVx7PbgzZ
- bGPb12IZbM+M9jKN99my659tXExjP+us=
-X-Received: by 2002:a67:db8d:0:b0:44d:4904:e080 with SMTP id
- f13-20020a67db8d000000b0044d4904e080mr4379002vsk.31.1693470406011; 
- Thu, 31 Aug 2023 01:26:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFGX52JH5XKbV6sKQuHChi+h6yLqtwt2czK4GHaoMtF5xbKhaUxwMCqps+d+rzOfjHrSg5lBuxKUxlp1RVg3w=
-X-Received: by 2002:a67:db8d:0:b0:44d:4904:e080 with SMTP id
- f13-20020a67db8d000000b0044d4904e080mr4378995vsk.31.1693470405753; Thu, 31
- Aug 2023 01:26:45 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693470771; x=1694075571;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pfExW0wvJbL75l+XPekcfEQYMr9eTFc9esyn7jJfCbE=;
+ b=JrfEdpKLO5tLNTpqk9070Ku1lGFvDiT0t1YTcLCOhAI+fQqf68Ij45+O9jaG92FiCc
+ 2xfulyGkUx2Is4I/15AbVCMOLdbJWNVZbWnsIcAtPX98wzOz5moOQqm4vKBS09f1+H4c
+ vPpSnJXbw6gN4dXz5Tr1mDVRTK/YFkSYP4MbmJDL8ZvAnMyKK7Ay8enpxdDI6OSJAg8o
+ ZV9p8OR46SNL08PU2brUqZKFJtC+o1R3ibAg4QDGtHL1e7vwHfTK33+i6PbCFk/oy/fH
+ N09BnJLNtEdDwaxNYfFKd5LQdMWBBytHqC3/xBZzkwHxuU2gFEtxAY+nASC4t3UTDKNt
+ aBug==
+X-Gm-Message-State: AOJu0Ywlj7RJXWYIdgA2kxFnJFDU6zVO/QbKpI5Sx9IpLv7ODvn1DWL9
+ UfzYeL3vv/E6VKrkBKG2b8TM0Q==
+X-Google-Smtp-Source: AGHT+IE8Ujf1rgUIpY5+GcQPDS3d4GeZQx/nowansygkfq84pt+u4kU/hMW2Die2RiIgXfvYa2fwZw==
+X-Received: by 2002:a17:906:7683:b0:9a5:d657:47ec with SMTP id
+ o3-20020a170906768300b009a5d65747ecmr3160536ejm.64.1693470771518; 
+ Thu, 31 Aug 2023 01:32:51 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.245])
+ by smtp.gmail.com with ESMTPSA id
+ i2-20020a1709064ec200b0099bc8db97bcsm494328ejv.131.2023.08.31.01.32.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 01:32:51 -0700 (PDT)
+Message-ID: <63170abc-187d-5c2e-655e-fd6d0b9266a9@linaro.org>
+Date: Thu, 31 Aug 2023 10:32:49 +0200
 MIME-Version: 1.0
-References: <20230829082931.67601-1-pbonzini@redhat.com>
- <20230829082931.67601-5-pbonzini@redhat.com>
- <ZO4ndKXdF5oQSHlU@redhat.com>
-In-Reply-To: <ZO4ndKXdF5oQSHlU@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 31 Aug 2023 10:26:34 +0200
-Message-ID: <CABgObfYtyTM3_2ykLsHNV8TCnm0U0u9BK3ZTdnKP=JDSO2EHeA@mail.gmail.com>
-Subject: Re: [PATCH 04/10] configure: create native file with contents of
- $host_cc
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 0/8] misc AHCI cleanups
+Content-Language: en-US
+To: John Snow <jsnow@redhat.com>, Niklas Cassel <Niklas.Cassel@wdc.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Qemu-block <qemu-block@nongnu.org>, qemu-devel <qemu-devel@nongnu.org>,
+ Damien Le Moal <dlemoal@kernel.org>
+References: <20230609140844.202795-1-nks@flawful.org>
+ <ZLe/VG5d6TEdp/MT@x1-carbon>
+ <b58779ed-cecb-824b-019e-bc34e6b2258a@linaro.org>
+ <CAFn=p-Y4Tw0eY=8yXxnzSA3kzwb36H0oysag=HD_8eMsPNwuDg@mail.gmail.com>
+ <ZNDIUzyB9hmt+E1I@x1-carbon>
+ <CAFn=p-a5GuQ9mxxTn7T7B2-_5nPq9nw1ucsmJK5WuMOwXg=cSw@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFn=p-a5GuQ9mxxTn7T7B2-_5nPq9nw1ucsmJK5WuMOwXg=cSw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,47 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 7:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
->
-> On Tue, Aug 29, 2023 at 10:29:25AM +0200, Paolo Bonzini wrote:
-> > The argument of --host-cc is not obeyed when cross compiling.  To avoid
-> > this issue, place it in a configuration file and pass it to meson
-> > with --native-file.
-> >
-> > While at it, clarify that --host-cc is not obeyed anyway when _not_
-> > cross compiling.
->
-> I presume that's refering to this piece of code
->
-> if test -z "${CC}${cross_prefix}"; then
->   cc=3D"$host_cc"
-> else
->   cc=3D"${CC-${cross_prefix}gcc}"
-> fi
->
-> which is using $host_cc *before* --host-cc is processed, thus
-> meaning it is always at its default value of 'cc'.
+Hi John,
 
-That, plus the fact that --native-file is only used in cross
-compilation scenarios; when doing a native compilation there's no
-difference between "native: true" and "native: false" as far as Meson
-is concerned.
+On 7/8/23 19:37, John Snow wrote:
 
-> Perhaps the above code snippet should just be changed to
->
->   if test -z "${CC}${cross_prefix}"; then
->     cc=3D"cc"
->   else
->     cc=3D"${CC-${cross_prefix}gcc}"
->   fi
->
-> to make it clear that we were not intending to honour the
-> --host-cc value for this code.
+> Apologies again for the delay. I tested it lightly and it seems fine to 
+> me (and in general I trust your commits as they've got meticulous 
+> references to the spec, so it'll be easy to fix if something goes wrong)
+> 
+> It's my fault we'll miss this release window, but putting it in early 
+> next window gives us a lot of time for people to notice accidental 
+> regressions.
+> 
+> Thanks for the patches and I hope to see more from you soon ;)
 
-Since I have to send a v2 anyway for the (un)supported OS message,
-I'll do the change.
+I've been doing some testing (x86/mips), but I don't think I have the
+same coverage as your maintainer test suite. Still, if you are busy,
+I can merge this series now that we are at the beginning of the
+development cycle.
 
-Paolo
+Regards,
 
+Phil.
 
