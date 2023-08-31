@@ -2,63 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF43278E450
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 03:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D58178E484
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 03:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbWTJ-0006RJ-6g; Wed, 30 Aug 2023 21:27:45 -0400
+	id 1qbWid-0007gR-AV; Wed, 30 Aug 2023 21:43:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qbWTH-0006RA-Vf
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:27:43 -0400
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qbWib-0007fu-9h
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:43:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qbWTF-0006Z5-7J
- for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:27:43 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 40E46CE1F8A;
- Thu, 31 Aug 2023 01:27:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBBFC433C8;
- Thu, 31 Aug 2023 01:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1693445256;
- bh=oHDyaB9hkzMzI1KW4yyUBD+EUdbWcBABAZvMrBiaYLQ=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ToU6mC/HFoFpBcW6IAtOqDG/lZMRESAW5qkpwOcZNcFLcSpu4T4VfRP6rBjcK2d5Z
- 3MmzWv5DQuzs9ziFAdcE6PdydeZQdT27qqPBCwQUW5JPg87id6dz17BPa7CUsfe+yJ
- TNl+/+Dz47z5rnvA5+9H7vxr/0PW9MRV7KYVqEnb1R9/2F694/xQ+O8e1uTZJS76eo
- UZukpgJOHF7/2xknxgSyy5dsJA892nKlABisqJa3MIPmP6qfj2xz/hhL5+8x2L1cp4
- q5b+Yuex2eDYN71w6UjAZy3bBn92ARJ8f1yRVIIAr5aBGQLWAgg2E3RePPsz4GiuRE
- BoN6RoHPB/uZw==
-From: Stefano Stabellini <sstabellini@kernel.org>
-To: peter.maydell@linaro.org
-Cc: sstabellini@kernel.org, richard.henderson@linaro.org,
- qemu-devel@nongnu.org, vikram.garhwal@amd.com,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>
-Subject: [PULL v2 2/2] xen_arm: Initialize RAM and add hi/low memory regions
-Date: Wed, 30 Aug 2023 18:27:31 -0700
-Message-Id: <20230831012731.525739-2-sstabellini@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <alpine.DEB.2.22.394.2308301824340.6458@ubuntu-linux-20-04-desktop>
-References: <alpine.DEB.2.22.394.2308301824340.6458@ubuntu-linux-20-04-desktop>
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qbWiY-0001h2-9G
+ for qemu-devel@nongnu.org; Wed, 30 Aug 2023 21:43:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693446209;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=raRRZt8Kjchm0E16NQZbMgza4POm6EXhRH+XznC3V64=;
+ b=izjrES7RF+XsIjTF6Gw6ACoi4sy7ucXxGHKM3pTRagPGF44IaLiMZkBGJf9PUyOC+Z6qJH
+ 4yA+kIOEm6GsZ31rh+w/NN+5C9j4seR29tSqSxGOr+zXFdKPp1h9jN6bNjgtHF6bKmzbjM
+ 6Eiz9OcjwqwGw3IVU8ZA9IZneiO3Py8=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-YE9D5M9qNfudWwtMNlfRNw-1; Wed, 30 Aug 2023 21:43:27 -0400
+X-MC-Unique: YE9D5M9qNfudWwtMNlfRNw-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1c09c1fd0abso2668725ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Aug 2023 18:43:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693446206; x=1694051006;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=raRRZt8Kjchm0E16NQZbMgza4POm6EXhRH+XznC3V64=;
+ b=GNmSrCeS0SDvGcOfeoseQEgTT3zpB+X/CPNeO4eJVZz8m23oPTPQqyHE0YS+ybdFWk
+ Sc4UHUzl+LDsFHZzXgjZTx5WwieDDLeOa9vgOZ1dFtpLE4DAxQlhY64jW/99HkuSJlzv
+ rNdO2jsau7ktzuN7MEfdNHZRRFxO3WSvGAJHAw2/gy6zYyQ5exOB3BiPbCFLEtJraSbF
+ b4Z8I3omEgh+KV8Fo502WlAHJhc3tHfWhTkcodkT5WiZ7d+V6CzaxxN5vyETL3fdmyLk
+ GTqF+SVMWoKYHk1AMzaaRxP14nenhQM7oWT+tWB6nQZFYhQ9ZFfPiF2al5FoT4XHvHHu
+ 5hvA==
+X-Gm-Message-State: AOJu0YyOVvKG7c0C3mYJObcIilNY19fKD5UEvuT5yENf+7xjid2L2s1o
+ 4cpFyc+96YZCzGblEW8SkZXXmQZy+OAqhd2IdlF9r26qPQ9ZvZ0vQl3rygURXMGXRH9dXDDq7Xx
+ lVGinlkFBpFGw28c=
+X-Received: by 2002:a17:902:e885:b0:1c0:d5b1:2de8 with SMTP id
+ w5-20020a170902e88500b001c0d5b12de8mr4400042plg.9.1693446206616; 
+ Wed, 30 Aug 2023 18:43:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyVoIWodsjLPnoDoAcOvuyj2EEeIVJlLCYjnP39q8JzcYUlqFKCut777rC9HEUiMQjQwZzLw==
+X-Received: by 2002:a17:902:e885:b0:1c0:d5b1:2de8 with SMTP id
+ w5-20020a170902e88500b001c0d5b12de8mr4400030plg.9.1693446206216; 
+ Wed, 30 Aug 2023 18:43:26 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
+ by smtp.gmail.com with ESMTPSA id
+ y4-20020a170902700400b001bb889530adsm143381plk.217.2023.08.30.18.43.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Aug 2023 18:43:25 -0700 (PDT)
+Message-ID: <f3abdbd6-337f-d175-07ab-ac1975d98dfc@redhat.com>
+Date: Thu, 31 Aug 2023 11:43:20 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=sstabellini@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3] arm/kvm: Enable support for
+ KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+Content-Language: en-US
+To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: peter.maydell@linaro.org, ricarkol@google.com,
+ jonathan.cameron@huawei.com, kvm@vger.kernel.org, linuxarm@huawei.com
+References: <20230830114818.641-1-shameerali.kolothum.thodi@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20230830114818.641-1-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.242, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,125 +104,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Hi Shameer,
 
-In order to use virtio backends we need to initialize RAM for the
-xen-mapcache (which is responsible for mapping guest memory using foreign
-mapping) to work. Calculate and add hi/low memory regions based on
-machine->ram_size.
+On 8/30/23 21:48, Shameer Kolothum wrote:
+> Now that we have Eager Page Split support added for ARM in the kernel,
+> enable it in Qemu. This adds,
+>   -eager-split-size to -accel sub-options to set the eager page split chunk size.
+>   -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
+> 
+> The chunk size specifies how many pages to break at a time, using a
+> single allocation. Bigger the chunk size, more pages need to be
+> allocated ahead of time.
+> 
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+> v2: https://lore.kernel.org/qemu-devel/20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com/
+>     -Addressed comments from Gavin(Thanks).
+> RFC v1: https://lore.kernel.org/qemu-devel/20230725150002.621-1-shameerali.kolothum.thodi@huawei.com/
+>    -Updated qemu-options.hx with description
+>    -Addressed review comments from Peter and Gavin(Thanks).
+> ---
+>   accel/kvm/kvm-all.c      |  1 +
+>   include/sysemu/kvm_int.h |  1 +
+>   qemu-options.hx          | 15 +++++++++
+>   target/arm/kvm.c         | 68 ++++++++++++++++++++++++++++++++++++++++
+>   4 files changed, 85 insertions(+)
+> 
 
-Use the constants defined in public header arch-arm.h to be aligned with the xen
-toolstack.
+One more question below. Please check if it's worthy to be addressed in v4, needed
+to resolved other comments. Otherwise, it looks fine to me.
 
-While using this machine, the toolstack should then pass real ram_size using
-"-m" arg. If "-m" is not given, create a QEMU machine without IOREQ and other
-emulated devices like TPM and VIRTIO. This is done to keep this QEMU machine
-usable for /etc/init.d/xencommons.
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
----
- hw/arm/xen_arm.c            | 45 +++++++++++++++++++++++++++++++++++++
- include/hw/xen/xen_native.h |  8 +++++++
- 2 files changed, 53 insertions(+)
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 2ba7521695..ff1578bb32 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3763,6 +3763,7 @@ static void kvm_accel_instance_init(Object *obj)
+>       /* KVM dirty ring is by default off */
+>       s->kvm_dirty_ring_size = 0;
+>       s->kvm_dirty_ring_with_bitmap = false;
+> +    s->kvm_eager_split_size = 0;
+>       s->notify_vmexit = NOTIFY_VMEXIT_OPTION_RUN;
+>       s->notify_window = 0;
+>       s->xen_version = 0;
+> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+> index 511b42bde5..a5b9122cb8 100644
+> --- a/include/sysemu/kvm_int.h
+> +++ b/include/sysemu/kvm_int.h
+> @@ -116,6 +116,7 @@ struct KVMState
+>       uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
+>       uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
+>       bool kvm_dirty_ring_with_bitmap;
+> +    uint64_t kvm_eager_split_size;  /* Eager Page Splitting chunk size */
+>       struct KVMDirtyRingReaper reaper;
+>       NotifyVmexitOption notify_vmexit;
+>       uint32_t notify_window;
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 29b98c3d4c..2e70704ee8 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -186,6 +186,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+>       "                split-wx=on|off (enable TCG split w^x mapping)\n"
+>       "                tb-size=n (TCG translation block cache size)\n"
+>       "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
+> +    "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
+>       "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+>       "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
+>   SRST
+> @@ -244,6 +245,20 @@ SRST
+>           is disabled (dirty-ring-size=0).  When enabled, KVM will instead
+>           record dirty pages in a bitmap.
+>   
+> +    ``eager-split-size=n``
+> +        KVM implements dirty page logging at the PAGE_SIZE granularity and
+> +        enabling dirty-logging on a huge-page requires breaking it into
+> +        PAGE_SIZE pages in the first place. KVM on ARM does this splitting
+> +        lazily by default. There are performance benefits in doing huge-page
+> +        split eagerly, especially in situations where TLBI costs associated
+> +        with break-before-make sequences are considerable and also if guest
+> +        workloads are read intensive. The size here specifies how many pages
+> +        to break at a time and needs to be a valid block size which is
+> +        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
+> +        respectively. Be wary of specifying a higher size as it will have an
+> +        impact on the memory. By default, this feature is disabled
+> +        (eager-split-size=0).
+> +
+>       ``notify-vmexit=run|internal-error|disable,notify-window=n``
+>           Enables or disables notify VM exit support on x86 host and specify
+>           the corresponding notify window to trigger the VM exit if enabled.
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 23aeb09949..28d81ca790 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -30,6 +30,7 @@
+>   #include "exec/address-spaces.h"
+>   #include "hw/boards.h"
+>   #include "hw/irq.h"
+> +#include "qapi/visitor.h"
+>   #include "qemu/log.h"
+>   
+>   const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+> @@ -247,6 +248,12 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+>       return ret > 0 ? ret : 40;
+>   }
+>   
+> +static inline bool kvm_arm_eager_split_size_valid(uint64_t req_size,
+> +                                                  uint32_t sizes)
+> +{
+> +    return req_size & sizes;
+> +}
+> +
+>   int kvm_arch_get_default_type(MachineState *ms)
+>   {
+>       bool fixed_ipa;
+> @@ -287,6 +294,27 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>           }
+>       }
+>   
+> +    if (s->kvm_eager_split_size) {
+> +        uint32_t sizes;
+> +
+> +        sizes = kvm_vm_check_extension(s, KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES);
+> +        if (!sizes) {
+> +            s->kvm_eager_split_size = 0;
+> +            warn_report("Eager Page Split support not available");
+> +        } else if (!kvm_arm_eager_split_size_valid(s->kvm_eager_split_size,
+> +                                                   sizes)) {
+> +            error_report("Eager Page Split requested chunk size not valid");
+> +            ret = -EINVAL;
+> +        } else {
+> +            ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
+> +                                    s->kvm_eager_split_size);
+> +            if (ret < 0) {
+> +                error_report("Enabling of Eager Page Split failed: %s",
+> +                             strerror(-ret));
+> +            }
+> +        }
+> +    }
+> +
+>       kvm_arm_init_debug(s);
+>   
+>       return ret;
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 7393b37355..f83b983ec5 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -60,6 +60,8 @@ struct XenArmState {
-     } cfg;
- };
- 
-+static MemoryRegion ram_lo, ram_hi;
-+
- /*
-  * VIRTIO_MMIO_DEV_SIZE is imported from tools/libs/light/libxl_arm.c under Xen
-  * repository.
-@@ -92,6 +94,39 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
+The function kvm_arm_eager_split_size_valid() was suggested by Peter if I'm correct.
+However, it seems we needn't it any more since it's called for once. Why not simply to
+have something like below? The detailed error message can help to explain why we
+need the condition of (s->kvm_eager_split_size & sizes) here.
+
+     } else if (s->kvm_eager_split_size & sizes) {
+         error_report("Unsupported Eager Page Split chunk size 0x%lx by 0x%x",
+                      s->kvm_eager_split_size, sizes);
+         ret = -EINVAL;
      }
- }
- 
-+static void xen_init_ram(MachineState *machine)
-+{
-+    MemoryRegion *sysmem = get_system_memory();
-+    ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
-+
-+    if (machine->ram_size <= GUEST_RAM0_SIZE) {
-+        ram_size[0] = machine->ram_size;
-+        ram_size[1] = 0;
-+        block_len = GUEST_RAM0_BASE + ram_size[0];
-+    } else {
-+        ram_size[0] = GUEST_RAM0_SIZE;
-+        ram_size[1] = machine->ram_size - GUEST_RAM0_SIZE;
-+        block_len = GUEST_RAM1_BASE + ram_size[1];
-+    }
-+
-+    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
-+                           &error_fatal);
-+
-+    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
-+                             GUEST_RAM0_BASE, ram_size[0]);
-+    memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
-+    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
-+            GUEST_RAM0_BASE, ram_size[0]);
-+
-+    if (ram_size[1] > 0) {
-+        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
-+                                 GUEST_RAM1_BASE, ram_size[1]);
-+        memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-+        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
-+                GUEST_RAM1_BASE, ram_size[1]);
-+    }
-+}
-+
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
- {
-     hw_error("Invalid ioreq type 0x%x\n", req->type);
-@@ -141,6 +176,14 @@ static void xen_arm_init(MachineState *machine)
- 
-     xam->state =  g_new0(XenIOState, 1);
- 
-+    if (machine->ram_size == 0) {
-+        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
-+                "(no emulated devices including Virtio)\n");
-+        return;
-+    }
-+
-+    xen_init_ram(machine);
-+
-     xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
- 
-     xen_create_virtio_mmio_devices(xam);
-@@ -188,6 +231,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
-     mc->init = xen_arm_init;
-     mc->max_cpus = 1;
-     mc->default_machine_opts = "accel=xen";
-+    /* Set explicitly here to make sure that real ram_size is passed */
-+    mc->default_ram_size = 0;
- 
- #ifdef CONFIG_TPM
-     object_class_property_add(oc, "tpm-base-addr", "uint64_t",
-diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-index a4b1aa9e5d..5d2718261f 100644
---- a/include/hw/xen/xen_native.h
-+++ b/include/hw/xen/xen_native.h
-@@ -539,4 +539,12 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
- #define GUEST_VIRTIO_MMIO_SPI_LAST    43
- #endif
- 
-+#if defined(__i386__) || defined(__x86_64__)
-+#define GUEST_RAM_BANKS   2
-+#define GUEST_RAM0_BASE   0x40000000ULL /* 3GB of low RAM @ 1GB */
-+#define GUEST_RAM0_SIZE   0xc0000000ULL
-+#define GUEST_RAM1_BASE   0x0200000000ULL /* 1016GB of RAM @ 8GB */
-+#define GUEST_RAM1_SIZE   0xfe00000000ULL
-+#endif
-+
- #endif /* QEMU_HW_XEN_NATIVE_H */
--- 
-2.25.1
+
+> @@ -1069,6 +1097,46 @@ bool kvm_arch_cpu_check_are_resettable(void)
+>       return true;
+>   }
+>   
+> +static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
+> +                                          const char *name, void *opaque,
+> +                                          Error **errp)
+> +{
+> +    KVMState *s = KVM_STATE(obj);
+> +    uint64_t value = s->kvm_eager_split_size;
+> +
+> +    visit_type_size(v, name, &value, errp);
+> +}
+> +
+> +static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
+> +                                          const char *name, void *opaque,
+> +                                          Error **errp)
+> +{
+> +    KVMState *s = KVM_STATE(obj);
+> +    uint64_t value;
+> +
+> +    if (s->fd != -1) {
+> +        error_setg(errp, "Unable to set early-split-size after KVM has been initialized");
+> +        return;
+> +    }
+> +
+> +    if (!visit_type_size(v, name, &value, errp)) {
+> +        return;
+> +    }
+> +
+> +    if (value && !is_power_of_2(value)) {
+> +        error_setg(errp, "early-split-size must be a power of two");
+> +        return;
+> +    }
+> +
+> +    s->kvm_eager_split_size = value;
+> +}
+> +
+>   void kvm_arch_accel_class_init(ObjectClass *oc)
+>   {
+> +    object_class_property_add(oc, "eager-split-size", "size",
+> +                              kvm_arch_get_eager_split_size,
+> +                              kvm_arch_set_eager_split_size, NULL, NULL);
+> +
+> +    object_class_property_set_description(oc, "eager-split-size",
+> +        "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
+>   }
+
+Thanks,
+Gavin
 
 
