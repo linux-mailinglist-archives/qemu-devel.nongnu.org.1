@@ -2,73 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41D978E74E
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A2778E758
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:46:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbcJN-0005z6-3y; Thu, 31 Aug 2023 03:41:53 -0400
+	id 1qbcMI-0008LG-Eu; Thu, 31 Aug 2023 03:44:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
- id 1qbcJK-0005yf-Jr
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 03:41:50 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <liu.jaloo@gmail.com>)
- id 1qbcJG-00088L-GO
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 03:41:50 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2bd0d135ca3so10366841fa.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 00:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693467704; x=1694072504; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vHyyz5Qzcn1KAW8TqPNDVyfgN6Lih+6klE89jhJswgQ=;
- b=b83QAW60oNsacCP8izrZggccaXov90of93e+HGSnNCQftn3LFo7op3kTPdTmW/Qc/r
- 8gKA25PdwQqyxuV11pzW2DL4G5/8UTAmU1hG5eklf5yPxvH1jxUp0cMH4e1Eh4n1vynh
- FCswlif17Pzdg65AdXvtSoatUzeREvIQwj+i2vKOM/VUSGs9YMXYTwAU5CaBV+LKpTdP
- xajRrnEc0+XSfLGIZPSHBk6KRe7zBm52IrjStJ78nsbw3vV8aYe+h1K/uBbcLG2H8oPP
- CYfTrRV6vYaIGrGHtAtcR95dWereLfPgqM3aWX5VKf7DuJF8egTx2lf2y8u6Bp91TKX7
- JVXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693467704; x=1694072504;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vHyyz5Qzcn1KAW8TqPNDVyfgN6Lih+6klE89jhJswgQ=;
- b=CHoCaOSnanfWWn5y6EUOeAP19mlpZtjE6CZVN8I0W2H5K/Rq8dJRl5CzuvUOckjFXl
- QhUq47n2fRa+/wkfha+5rQqAqfzj9TQ5/6NRrqH9Cw/DfhM17i6Jpu0j+LWDW18GW2Wi
- HqffNUDAQ85fEYvU00eod64Hcgjc5nj5mk9iFOpeB6TsrKxVdVbZsx/NQsOViFdVP+mJ
- 2Wm71j7Etb2Y37W2xGzAHGw5Goc306hpQPZfiEfG532hEgu96XmOCW/z9hD2lPHgCsIx
- A1PO52hyNFzz4jIAYS6vBpJrLDpoOh9rst73eaNzNvzpXuQqoF8v7m+X2/yFGi5G7g5o
- EVtw==
-X-Gm-Message-State: AOJu0YwN6xVc2emrDA3/DPwZMkygBQ6zENNO8Z863jnBDvK3IBX3PAv3
- r5AZg1dPG4Ic9m78JKjd9ZdkqWjGApT+9SagoA==
-X-Google-Smtp-Source: AGHT+IFBEkedhUr9ygPSOKW43EQ/wFujvNh2V4AwKf3TIbhlftc6YK3OXsGt8sEzqA/bYs29/GHp/4ub7y6T2viicWw=
-X-Received: by 2002:a2e:b046:0:b0:2ba:2cf8:9334 with SMTP id
- d6-20020a2eb046000000b002ba2cf89334mr3467043ljl.19.1693467704195; Thu, 31 Aug
- 2023 00:41:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qbcMF-0008KP-Fc; Thu, 31 Aug 2023 03:44:51 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qbcMC-0008R9-Vs; Thu, 31 Aug 2023 03:44:51 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37V7fQKa003959; Thu, 31 Aug 2023 07:44:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=LrqZQZRG2HA907WHLdcaH5RVAyOtdfB0qgWoC6rju0A=;
+ b=ee36yvkhMXjwOU4yXvSe0WQf1mgHnx5k5y2mGCkqpPjmph9G7ilDduKtH+LD8ti8NU8H
+ dWxLCcKOZKb1MTZIC3Zc77ZWoD7W6o8sp7uq1BLtfrYKZlOTXpaSNUKeEIT727u055h1
+ bA4Lt5VEtDXw48ra3nn2X0Cnu6YrUmZH+JK4wtkjVNyDcyktZNyMbg9Qf0MijCfKOf+v
+ LnAHiz+70xTkeM/wLYKZlh7KewkLCtXGLbzdl+H8g3YPw//tYILlbgsppYnPJCeMv4gF
+ 9qb2toxmeiaLMNl+FrDJw6JQj9LDHBmknvFu2GB/+aSwW1olz3ZHiOh7YFzPTY6tfUd5 HA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3st71epq58-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Aug 2023 07:44:44 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37V7fMPD003735;
+ Thu, 31 Aug 2023 07:44:43 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3st71epq52-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Aug 2023 07:44:43 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37V7BhhF009941; Thu, 31 Aug 2023 07:44:42 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sqw7ktf84-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Aug 2023 07:44:42 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37V7ierc20054760
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 31 Aug 2023 07:44:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8FC720043;
+ Thu, 31 Aug 2023 07:44:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 65E9920040;
+ Thu, 31 Aug 2023 07:44:40 +0000 (GMT)
+Received: from [9.179.13.135] (unknown [9.179.13.135])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 31 Aug 2023 07:44:40 +0000 (GMT)
+Message-ID: <288cb639-0b1a-9f46-d348-731c201cc535@linux.ibm.com>
+Date: Thu, 31 Aug 2023 09:44:40 +0200
 MIME-Version: 1.0
-References: <CAOYM0N0o2SdiaAqtBm5md4z_FQnnP2csPrapc+5L47Qcaiw3Kg@mail.gmail.com>
- <a4ef9f54-7a57-af6f-c947-5383a7559288@linaro.org>
-In-Reply-To: <a4ef9f54-7a57-af6f-c947-5383a7559288@linaro.org>
-From: Liu Jaloo <liu.jaloo@gmail.com>
-Date: Thu, 31 Aug 2023 15:41:47 +0800
-Message-ID: <CAOYM0N2L+piWiPVtJ=hni_+dkerDgEr1TAHj1XpiXc91Y6NoYg@mail.gmail.com>
-Subject: Re: About "PC_MACHINE_CLASS" definition.
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000f27d8c0604332cd8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=liu.jaloo@gmail.com; helo=mail-lj1-x236.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/4] ppc/xive: Use address_space routines to access the
+ machine RAM
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20230829143236.219348-1-clg@kaod.org>
+ <20230829143236.219348-2-clg@kaod.org>
+Content-Language: en-US
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <20230829143236.219348-2-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: RFQN5YICXpQCJm6wnE-XCLyOrmj0Fle4
+X-Proofpoint-GUID: U87UBPhIvndXeyLdF6jYxjZY5a_OqdvM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-31_05,2023-08-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ impostorscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0 spamscore=0
+ phishscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2308310067
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,105 +115,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f27d8c0604332cd8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Thanks a lot.
 
-On Thu, Aug 31, 2023 at 2:11=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
-@linaro.org>
-wrote:
+On 29/08/2023 16:32, Cédric Le Goater wrote:
+> to log an error in case of bad configuration of the XIVE tables by the FW.
+> 
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>   hw/intc/pnv_xive.c  | 27 +++++++++++++++++++++++----
+>   hw/intc/pnv_xive2.c | 27 +++++++++++++++++++++++----
+>   2 files changed, 46 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+> index e536b3ec26e5..b2bafd61b157 100644
+> --- a/hw/intc/pnv_xive.c
+> +++ b/hw/intc/pnv_xive.c
+> @@ -242,12 +242,20 @@ static int pnv_xive_vst_read(PnvXive *xive, uint32_t type, uint8_t blk,
+>   {
+>       const XiveVstInfo *info = &vst_infos[type];
+>       uint64_t addr = pnv_xive_vst_addr(xive, type, blk, idx);
+> +    MemTxResult result;
+>   
+>       if (!addr) {
+>           return -1;
+>       }
+>   
+> -    cpu_physical_memory_read(addr, data, info->size);
+> +    result = address_space_read(&address_space_memory, addr,
+> +                                MEMTXATTRS_UNSPECIFIED, data,
+> +                                info->size);
 
-> Hi,
->
-> On 31/8/23 05:15, Liu Jaloo wrote:
-> > Where actually defined the "PC_MACHINE_CLASS", I can't find it in sourc=
-e
-> > code, please help to point out the file.
->
-> It is defined in include/hw/i386/pc.h:
->
-> OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, PC_MACHINE)
->
-> The macro itself is defined in include/qom/object.h:
->
-> /**
->   * OBJECT_DECLARE_TYPE:
->   * @InstanceType: instance struct name
->   * @ClassType: class struct name
->   * @MODULE_OBJ_NAME: the object name in uppercase with underscore
-> separators
->   *
->   * This macro is typically used in a header file, and will:
->   *
->   *   - create the typedefs for the object and class structs
->   *   - register the type for use with g_autoptr
->   *   - provide three standard type cast functions
->   *
->   * The object struct and class struct need to be declared manually.
->   */
->
-> See the QOM documentation:
->
-> https://qemu-project.gitlab.io/qemu/devel/qom.html
->
-> Regards,
->
-> Phil.
->
 
---000000000000f27d8c0604332cd8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I had been wondering which is the "right" API to update the guest 
+memory. Since the cpu_physical_memory_* family ends up calling its 
+address_space_* equivalent, I'm guessing the point of the change is 
+really to catch any error and remove any potential ambiguity about the 
+address space?
 
-<div dir=3D"ltr">Thanks a lot. <br></div><br><div class=3D"gmail_quote"><di=
-v dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 31, 2023 at 2:11=E2=80=AFPM =
-Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd=
-@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">Hi,<br>
-<br>
-On 31/8/23 05:15, Liu Jaloo wrote:<br>
-&gt; Where actually defined the &quot;PC_MACHINE_CLASS&quot;, I can&#39;t f=
-ind it in source <br>
-&gt; code, please help to point out the file.<br>
-<br>
-It is defined in include/hw/i386/pc.h:<br>
-<br>
-OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, PC_MACHINE)<br>
-<br>
-The macro itself is defined in include/qom/object.h:<br>
-<br>
-/**<br>
-=C2=A0 * OBJECT_DECLARE_TYPE:<br>
-=C2=A0 * @InstanceType: instance struct name<br>
-=C2=A0 * @ClassType: class struct name<br>
-=C2=A0 * @MODULE_OBJ_NAME: the object name in uppercase with underscore <br=
->
-separators<br>
-=C2=A0 *<br>
-=C2=A0 * This macro is typically used in a header file, and will:<br>
-=C2=A0 *<br>
-=C2=A0 *=C2=A0 =C2=A0- create the typedefs for the object and class structs=
-<br>
-=C2=A0 *=C2=A0 =C2=A0- register the type for use with g_autoptr<br>
-=C2=A0 *=C2=A0 =C2=A0- provide three standard type cast functions<br>
-=C2=A0 *<br>
-=C2=A0 * The object struct and class struct need to be declared manually.<b=
-r>
-=C2=A0 */<br>
-<br>
-See the QOM documentation:<br>
-<br>
-<a href=3D"https://qemu-project.gitlab.io/qemu/devel/qom.html" rel=3D"noref=
-errer" target=3D"_blank">https://qemu-project.gitlab.io/qemu/devel/qom.html=
-</a><br>
-<br>
-Regards,<br>
-<br>
-Phil.<br>
-</blockquote></div>
+In any case,
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
---000000000000f27d8c0604332cd8--
+   Fred
+
+
+> +    if (result != MEMTX_OK) {
+> +        xive_error(xive, "VST: read failed at @0x%" HWADDR_PRIx
+> +                   " for VST %s %x/%x\n", addr, info->name, blk, idx);
+> +        return -1;
+> +    }
+>       return 0;
+>   }
+>   
+> @@ -258,16 +266,27 @@ static int pnv_xive_vst_write(PnvXive *xive, uint32_t type, uint8_t blk,
+>   {
+>       const XiveVstInfo *info = &vst_infos[type];
+>       uint64_t addr = pnv_xive_vst_addr(xive, type, blk, idx);
+> +    MemTxResult result;
+>   
+>       if (!addr) {
+>           return -1;
+>       }
+>   
+>       if (word_number == XIVE_VST_WORD_ALL) {
+> -        cpu_physical_memory_write(addr, data, info->size);
+> +        result = address_space_write(&address_space_memory, addr,
+> +                                     MEMTXATTRS_UNSPECIFIED, data,
+> +                                     info->size);
+>       } else {
+> -        cpu_physical_memory_write(addr + word_number * 4,
+> -                                  data + word_number * 4, 4);
+> +        result = address_space_write(&address_space_memory,
+> +                                     addr + word_number * 4,
+> +                                     MEMTXATTRS_UNSPECIFIED,
+> +                                     data + word_number * 4, 4);
+> +    }
+> +
+> +    if (result != MEMTX_OK) {
+> +        xive_error(xive, "VST: write failed at @0x%" HWADDR_PRIx
+> +                    "for VST %s %x/%x\n", addr, info->name, blk, idx);
+> +        return -1;
+>       }
+>       return 0;
+>   }
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index bbb44a533cff..4b8d0a5d8120 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -240,12 +240,20 @@ static int pnv_xive2_vst_read(PnvXive2 *xive, uint32_t type, uint8_t blk,
+>   {
+>       const XiveVstInfo *info = &vst_infos[type];
+>       uint64_t addr = pnv_xive2_vst_addr(xive, type, blk, idx);
+> +    MemTxResult result;
+>   
+>       if (!addr) {
+>           return -1;
+>       }
+>   
+> -    cpu_physical_memory_read(addr, data, info->size);
+> +    result = address_space_read(&address_space_memory, addr,
+> +                                MEMTXATTRS_UNSPECIFIED, data,
+> +                                info->size);
+> +    if (result != MEMTX_OK) {
+> +        xive2_error(xive, "VST: read failed at @0x%" HWADDR_PRIx
+> +                   " for VST %s %x/%x\n", addr, info->name, blk, idx);
+> +        return -1;
+> +    }
+>       return 0;
+>   }
+>   
+> @@ -256,16 +264,27 @@ static int pnv_xive2_vst_write(PnvXive2 *xive, uint32_t type, uint8_t blk,
+>   {
+>       const XiveVstInfo *info = &vst_infos[type];
+>       uint64_t addr = pnv_xive2_vst_addr(xive, type, blk, idx);
+> +    MemTxResult result;
+>   
+>       if (!addr) {
+>           return -1;
+>       }
+>   
+>       if (word_number == XIVE_VST_WORD_ALL) {
+> -        cpu_physical_memory_write(addr, data, info->size);
+> +        result = address_space_write(&address_space_memory, addr,
+> +                                     MEMTXATTRS_UNSPECIFIED, data,
+> +                                     info->size);
+>       } else {
+> -        cpu_physical_memory_write(addr + word_number * 4,
+> -                                  data + word_number * 4, 4);
+> +        result = address_space_write(&address_space_memory,
+> +                                     addr + word_number * 4,
+> +                                     MEMTXATTRS_UNSPECIFIED,
+> +                                     data + word_number * 4, 4);
+> +    }
+> +
+> +    if (result != MEMTX_OK) {
+> +        xive2_error(xive, "VST: write failed at @0x%" HWADDR_PRIx
+> +                   "for VST %s %x/%x\n", addr, info->name, blk, idx);
+> +        return -1;
+>       }
+>       return 0;
+>   }
 
