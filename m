@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DC278E778
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 09:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FF178E7AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 10:12:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbcZp-00055L-Mu; Thu, 31 Aug 2023 03:58:53 -0400
+	id 1qbclT-00029c-Cx; Thu, 31 Aug 2023 04:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbcZn-000554-DI
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 03:58:51 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbclR-00028u-CP
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:10:53 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qbcZk-0002R4-OT
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 03:58:51 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-401ceda85cdso4908585e9.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 00:58:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qbclP-0005bb-0u
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 04:10:53 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9a2185bd83cso57550366b.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 01:10:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693468727; x=1694073527; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DyDFCnhNE/har/KY6iiXMetsIsADgeTMgi3ePE979zc=;
- b=TZLet+H3X7i3R+h+wvN7Ncbhq5/wxTw8C4CrGJbdVg+763TSdTXg6XX8Dd8mmV0fOF
- v3gypmAEQwiEm3uDMJ4qx5OvSy0RkQq5aM5tuOpznGSZeIWzH0613EnE17EeyuXt1Cu8
- /kjDjXv5L5t10VmweAkZYviy34UMqFaIPwQQo2G85MAWbCS0xrvEq3cgQVW9gUryOgHD
- jjTNFCh21i4NLkr3e7U1bh8pS/JYGcP4eLztoHf0GgsXxMwDG/kinPMpYDfiC3zOIeK6
- OmaN5QC8HBCpklj1TG5tMiAJQjAxImmsuDej8wucG0kuXfUEU1M6VTl0v/X9tQRXSPCv
- /1sA==
+ d=linaro.org; s=google; t=1693469449; x=1694074249; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZBn4qGU93pywR8nFxzsC0BsJWlS1sr/wx4SQxHYh8PI=;
+ b=mQMasy27iLXHTCUrjdQUrf44ULiIqnLTGgrCMH9ZsgpiwXGWn/7/EHKF9W/4qkHWVr
+ RrEXKGDRaZfgiYMRNwRejK5Kn10EABghCdFV6XE15v0YThqChsyCU9ouWpKtiNLR3OvX
+ +7gdJfJx9RoN0wlaUJDwzz548ul6EP2DSxEPJ7eq9bEk+IlxYTPuoUJ65whoHzKpy3Cd
+ ghtqHfiMnla/7e1FSe+Flv3Xm+41/wcq9YBcvO9lUk6EGfT51e+XU+mnTIkV0COcuF2r
+ bmhnb5tLNXdKigBUp8wKWm//AVCZiEb5n30EDBdGpujKK63IRQdbQV9zhOPym0nMkPax
+ ZhBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693468727; x=1694073527;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=DyDFCnhNE/har/KY6iiXMetsIsADgeTMgi3ePE979zc=;
- b=Jeip1ggQODkcq0FTjbdMVH2U8XqPw5IPRhi9OwkDnACm9GLlriDnTGAK+uJzH0+YZx
- 6Y3qHMtA93colU78ne6rgDZ+PzL/Ze4+ZSYnj8wcZtpeNQPWxPH56kVXDBkphK9Bt6wr
- Zk6x9DUZAnYDY9wqsvvJritU709vXmv4wF/rqO8ng7HalrXlVPF7FCmx8k1qfdxlgV3m
- 6k7enNF7pDde6n3H/gW4az1T4w6XGIimkyHksgAmRf48w6oQsqfzzjUhyI6eP5VG6eKN
- 70BUNgB6lx8ZtD+sQ8lZd06ILzL/iZwH/SbDijEkYppPz3aQqrKjB0GWBNMKoUMCuuJ0
- Pc7Q==
-X-Gm-Message-State: AOJu0YwWboEEuQKasIN0NGy3rQdBb2rX68DcaQNauw+Be53O0R0/Ic5D
- 98poUqMbtQx/jmONnSNWCCU2wA==
-X-Google-Smtp-Source: AGHT+IHq8tiDwqaCMIVls2HT4HfdzYptBR/FFhrgkdRNi5mc6rRKRwOsgXOBJMiJ2VqReNUwFTV/fQ==
-X-Received: by 2002:a7b:c455:0:b0:400:ce4f:f184 with SMTP id
- l21-20020a7bc455000000b00400ce4ff184mr3447790wmi.41.1693468726857; 
- Thu, 31 Aug 2023 00:58:46 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693469449; x=1694074249;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZBn4qGU93pywR8nFxzsC0BsJWlS1sr/wx4SQxHYh8PI=;
+ b=K57xHmwGPUwi4Urjjr5Wf4lVJTeNnGOPv+zdAhRLxP9TedfTWs9axHaAKJtCnAr7ZC
+ PLQ4d1gcyw8iIKCDtT8JgJAR58Ad4Bq5ZtHgSjK8Zg8huLmWFUUwye6qblhEu6rVXw8W
+ mFzEwJTqQEI5YtdR4Y3JBgJJ0qgTmyuaQ9DA4exHs8FmceFkCJlBKgNWswXp8Eg2M84T
+ KoopHd83aeM9UAp/9vZgexql7LPP05I6iVopdjgkZGDIhRwWWos+ciAry/8rPuzP7dFM
+ a1gSlQAI7V8KPQNzFosMvhdn1y3Nq1P4Yr4N/hS2GqXynR4GdQOgR/CtxcLfGuCOR1uS
+ gHzQ==
+X-Gm-Message-State: AOJu0YxlEmZYBMJwnHF7Afj3D7GsB8a35G7yegsiYEQFZauVZH4VukUL
+ 9wHeh7VvasvJ9ZkBp4l/M6bLWw==
+X-Google-Smtp-Source: AGHT+IEj8+UHM31ahwE8rDUokNeydp6QV0Irxh4D3NpwI7dmwtIPuy8GVfB0O0Mlc1GXq2EDZKN4iA==
+X-Received: by 2002:a17:907:2c4b:b0:99d:6b3c:3d40 with SMTP id
+ hf11-20020a1709072c4b00b0099d6b3c3d40mr3305123ejc.6.1693469449348; 
+ Thu, 31 Aug 2023 01:10:49 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.245])
  by smtp.gmail.com with ESMTPSA id
- x18-20020adfec12000000b0031989784d96sm1303615wrn.76.2023.08.31.00.58.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 00:58:46 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0AF071FFBB;
- Thu, 31 Aug 2023 08:58:46 +0100 (BST)
-References: <20230829220228.928506-1-richard.henderson@linaro.org>
- <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
- <efc935f7-67c2-8877-98aa-1aebfcafa534@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org, laurent@vivier.eu
-Subject: Re: [PATCH v5 00/20] linux-user: Implement VDSOs
-Date: Thu, 31 Aug 2023 08:57:51 +0100
-In-reply-to: <efc935f7-67c2-8877-98aa-1aebfcafa534@linaro.org>
-Message-ID: <87h6ofprre.fsf@linaro.org>
+ e19-20020a1709067e1300b009a198078c53sm466906ejr.214.2023.08.31.01.10.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 01:10:49 -0700 (PDT)
+Message-ID: <972bf6a0-f879-dc94-e0c3-c9d5e107da0d@linaro.org>
+Date: Thu, 31 Aug 2023 10:10:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH] pci: SLT must be RO
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+References: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
+ <084d2e90-86d4-eabc-3270-d3ef680c9631@linaro.org>
+ <20230831024011-mutt-send-email-mst@kernel.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230831024011-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.242,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,99 +97,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Richard Henderson <richard.henderson@linaro.org> writes:
-
-> On 8/30/23 07:52, Helge Deller wrote:
->> On 8/30/23 00:02, Richard Henderson wrote:
->>> Changes for v5:
->>> =C2=A0=C2=A0 * Integrated cross-compile, via new build-vdso.sh and meso=
-n rules.
->>> =C2=A0=C2=A0=C2=A0=C2=A0 However, keep the binaries in the tree for hos=
-ts which do not
->>> =C2=A0=C2=A0=C2=A0=C2=A0 have all of the cross-compile machinery.
->>> =C2=A0=C2=A0 * Update our loongarch64 docker image to avoid a binutils =
-bug.
+On 31/8/23 08:45, Michael S. Tsirkin wrote:
+> On Thu, Aug 31, 2023 at 08:22:34AM +0200, Philippe Mathieu-Daudé wrote:
+>> Hi Michael,
+>>
+>> On 30/8/23 23:48, Michael S. Tsirkin wrote:
+>>> current code sets PCI_SEC_LATENCY_TIMER to WO, but for
+>>> pcie to pcie bridges it must be RO 0 according to
+>>> pci express spec which says:
+>>>       This register does not apply to PCI Express. It must be read-only
+>>>       and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges, refer to the
+>>>       [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
 >>>
->>> Just in case the list eats a binary:
->>> =C2=A0=C2=A0 https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
->> I pulled that on top of git head, and ran into the build problem
->> below.
->> Do I miss something?
->
-> No idea, since it worked for me.  Looks like some sort of docker.py probl=
-em.  Alex?
->
-> In the short term, use --disable-containers so that you only use the
-> cross-compilers that you have locally installed.
->
->
-> r~
->
->> Helge
->> [62/1742] Generating linux-user/aarch64/vdso-be.so with a custom
->> command
->> FAILED: linux-user/aarch64/vdso-be.so
->> /home/cvs/qemu/qemu/linux-user/build-vdso.sh -B /srv/_build -C
->> /home/cvs/qemu/qemu/linux-user/aarch64 -T aarch64-linux-user -o
->> linux-user/aarch64/vdso-be.so -- -nostdlib -shared
->> -Wl,-h,linux-vdso.so.1 -Wl,--build-id=3Dsha1 -Wl,--hash-style=3Dboth
->> -Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.ld
->> ../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S -mbig-endian
->> Error: short-name resolution enforced but cannot prompt without a TTY
->> Traceback (most recent call last):
->>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 683, in =
-<module>
->>  =C2=A0=C2=A0=C2=A0 sys.exit(main())
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^^^^^^
->>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 679, in =
-main
->>  =C2=A0=C2=A0=C2=A0 return args.cmdobj.run(args, argv)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^
->>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 657, in =
-run
->>  =C2=A0=C2=A0=C2=A0 return Docker().run(cmd, False, quiet=3Dargs.quiet,
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 370, in =
-run
->>  =C2=A0=C2=A0=C2=A0 ret =3D self._do_check(["run", "--rm", "--label",
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^^^^^
->>  =C2=A0 File "/home/cvs/qemu/qemu/tests/docker/docker.py", line 247, in =
-_do_check
->>  =C2=A0=C2=A0=C2=A0 return subprocess.check_call(self._command + cmd, **=
-kwargs)
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>  =C2=A0 File "/usr/lib64/python3.11/subprocess.py", line 413, in check_c=
-all
->>  =C2=A0=C2=A0=C2=A0 raise CalledProcessError(retcode, cmd)
->> subprocess.CalledProcessError: Command '['podman', 'run', '--rm',
->> '--label',
+>>> also, fix typo in comment where it's make writeable - this typo
+>>> is likely what prevented us noticing we violate this requirement
+>>> in the 1st place.
+>>>
+>>> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>>> ---
+>>>
+>>> Marcin, could you pls test this patch with virt-8.1 and latest?
+>>> Thanks a lot!
+>>>
+>>>
+>>>    include/hw/pci/pci_bridge.h |  3 +++
+>>>    hw/core/machine.c           |  5 ++++-
+>>>    hw/pci/pci.c                |  2 +-
+>>>    hw/pci/pci_bridge.c         | 14 ++++++++++++++
+>>>    4 files changed, 22 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
+>>> index ea54a81a15..5cd452115a 100644
+>>> --- a/include/hw/pci/pci_bridge.h
+>>> +++ b/include/hw/pci/pci_bridge.h
+>>> @@ -77,6 +77,9 @@ struct PCIBridge {
+>>>        pci_map_irq_fn map_irq;
+>>>        const char *bus_name;
+>>> +
+>>> +    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
+>>> +    bool pcie_writeable_slt_bug;
+>>>    };
+>>
+>> Patch LGTM, so:
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>>> -GlobalProperty hw_compat_8_1[] = {};
+>>> +GlobalProperty hw_compat_8_1[] = {
+>>> +    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
+>>
+>> However I don't understand why we can't clear the config register and
+>> must use a compat flag, since per the spec it is hardwired to 0.
+> 
+> Because historically we didn't. If we make it RO and migrate from
+> VM where guest wrote into this register, migration will fail
+> as we check that RO fields are unchanged.
+> Another trick would be to pretend it's hardware driven
+> and set cmask. Compat machinery is more straight-forward though.
 
-It looks like it detected podman on this setup. Can you invoke the
-container from the command line?
+I see.
 
->> 'com.qemu.instance.uuid=3De746f7e345ed420088a9cc30e884a7e8',
->> '--userns=3Dkeep-id', '-u', '1000', '-w', '/srv/_build', '-v',
->> '/srv/_build:/srv/_build:rw', '-v',
->> '/home/cvs/qemu/qemu:/home/cvs/qemu/qemu:ro,z',
->> 'qemu/debian-arm64-cross', 'aarch64-linux-gnu-gcc-10', '-o',
->> 'linux-user/aarch64/vdso-be.so', '-nostdlib', '-shared',
->> '-Wl,-h,linux-vdso.so.1', '-Wl,--build-id=3Dsha1',
->> '-Wl,--hash-style=3Dboth',
->> '-Wl,-T,../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.ld',
->> '../../home/cvs/qemu/qemu/linux-user/aarch64/vdso.S',
->> '-mbig-endian']' returned non-zero exit status 125.
->> filter=3D--filter=3Dlabel=3Dcom.qemu.instance.uuid=3De746f7e345ed420088a=
-9cc30e884a7e8
->>=20
+> 
+>> Do we need the "x-" compat prefix? This is not an experimental property.
+> 
+> It's an internal one, we don't want users to tweak it.
 
+OK, thanks!
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
