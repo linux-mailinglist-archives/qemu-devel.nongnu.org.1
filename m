@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEA678EFEF
-	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 17:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C62378F06B
+	for <lists+qemu-devel@lfdr.de>; Thu, 31 Aug 2023 17:36:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbjFy-00024A-7z; Thu, 31 Aug 2023 11:06:50 -0400
+	id 1qbjgt-0005Xp-OS; Thu, 31 Aug 2023 11:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbjFv-00020z-Sy
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:06:47 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbjgn-0005XD-AT
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:34:34 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbjFt-00054p-Ba
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:06:47 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso7047745ad.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 08:06:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qbjgj-0002oK-Ue
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 11:34:32 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31977ace1c8so810849f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 08:34:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693494403; x=1694099203; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ASeEk5TntfOaPM4aLzmYaBRIBLp6uNC3+X4E2AtusX8=;
- b=YELQ/C6CSOfMp/nTRUi/WfXRNY16CXwLXfTf3/gESfcwcSwfO++D8kocYKa4mkKk92
- 2DLfwrMaWrf24DPjV21D3h7tdbB5RZ0bf8LrCLVZ6A0n/wNNECC/5okdhLPRe8P/zsUN
- iNfwErgHb5aldEMA6HOnP9gQTomAoGPjumwQQTCl9mDe+gu/+tbkbMvhH2Pf9lREpSaO
- tS+nZucfFP0hcfY3AVdVoLu3JVF/bwK+88nvFEUj+ecTahk49DHJbNGDzc5ekbxoVLtL
- rqlA8c2miDqNCRKzubCvP38cbxmLyua62dgtpKZBF98utv/Ah2yewd+ei1/0E7ujNdOL
- CGtQ==
+ d=linaro.org; s=google; t=1693496068; x=1694100868; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wgU6mAtiCUnZnHZSYdXc2+Tg489tSf3aIw7bmd44Wk0=;
+ b=hvsdgwuk8V9VMXifO0whDbXGOTvGRWiKy4GkY3GprUtc0E3XUX98cuY0NALvjA9opN
+ oXYMsYkqZaAex+iYDdvAFUSM6p19/SmjfmqNuSQIGnXQU5TQuN8WBw2kOap4aCzPn9Ej
+ aXwNFmXN1NvKDo+bK2p2xK27eW/LxbfLmDXvsf8PRLq2Uk/9n68egHMMyVbnRt0B52xK
+ BYJmHxFMfiYBzYFYhdlbApMPG7VBgA+Uy9nh9eF8Q/vTmcx57QSzoueGd8k0kEoD7aYq
+ eueva2YQR3Xp618Rma2PqzPnOQhmc3L0yYNydxwGHtoo3sYYps8nuaM5badQvlIl7wzJ
+ +8bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693494403; x=1694099203;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ASeEk5TntfOaPM4aLzmYaBRIBLp6uNC3+X4E2AtusX8=;
- b=aZxLjNmgF9bovAPxrPLAc+CGNdqdp52gM3/t/oE/w86PESPDk/gHc4hJVBZxxpBNBf
- BIm7TJuIQnrEh/oBFCSGF5b9oBrcih+VA5BpuGxa0RhSj729NljCvM4RK0xdnsSE5HgC
- RaZCc0KkWB2aMgHak7I1P5U/w5PzKk3oUaCxf0hgrlOUHh0NDVbP7JYofGtD9QCv0GLO
- NsHRAVl4i5UJ+6wwTIWtP0/9c73uyl8RDmBe+yDfhQkGGygLAUtgBJVoqCbf9Osb/5LL
- Q/t7DVHfgdo/7vhJC0puni9/C9TjKGmUY+/SXvLwcn3sH5d3Xyi3N/2sr40ewpsfCdqB
- Kk6g==
-X-Gm-Message-State: AOJu0Yy97Vz1pYIFc96iy6hXiEn0+1zJLMlL9B3/0QUU6hyrjKs/JOpe
- QbBnNZZm8gtNezC3zaTNGivdbf8IMH6cneHtT0w=
-X-Google-Smtp-Source: AGHT+IGc/chn/yWj2682sM0KWrr2DKQF9CZGsoxvQoR7S6siuK8RI+Y+PSzSNi2sV355SJmpstrklw==
-X-Received: by 2002:a17:902:c40b:b0:1bc:671d:6d31 with SMTP id
- k11-20020a170902c40b00b001bc671d6d31mr72338plk.3.1693494403044; 
- Thu, 31 Aug 2023 08:06:43 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ d=1e100.net; s=20221208; t=1693496068; x=1694100868;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=wgU6mAtiCUnZnHZSYdXc2+Tg489tSf3aIw7bmd44Wk0=;
+ b=DW6d/LgNYqdacFXkr0AgPD9XbXft53pXXIDWYO6T4zCWV+Fe093ger1OaAA1Rkb7fC
+ Anp9pn2EQ1nUF+zFuWICjhT5cojfRXcZT92R2xezUNvRQPTdEyqBmo4SaV+UXYjOuqYP
+ 9aVTTY+RYoib5aeJlG0OcbP9s6BxcbKrJWAHymYsFq0kZoOguc5iR1RFnZ99YseQRL2/
+ 50+Lvo3JCB+K18xuEkEoeQGoTnrNs/kwewQsFVHqkkBz4qOgNEpLpTzF/DPUkkmJjxo+
+ SWaouKAoPmgezmSlAKdkRKrCd9HpVoqqTa9xWO13WwBmoeJNh90v44vmqEWHlD6mW9Mn
+ ALaw==
+X-Gm-Message-State: AOJu0YxSuHlV1hAzcFZ8HDX7FFEhql4tg6zYUp5ZEPSZciJATBUpeMSp
+ okg3V4WV/iHQ4DSXG8IkVUyx3A==
+X-Google-Smtp-Source: AGHT+IGwkt6PVLttrvKrgB36GKx1oHF+OICd3FejER/RJU5gRki3FVeGnM3ycFEFIq9ghepy8VOQyQ==
+X-Received: by 2002:adf:f40c:0:b0:315:9e1b:4ea6 with SMTP id
+ g12-20020adff40c000000b003159e1b4ea6mr4272785wro.58.1693496068090; 
+ Thu, 31 Aug 2023 08:34:28 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- z13-20020a170902ee0d00b001bf11cf2e21sm1367921plb.210.2023.08.31.08.06.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 08:06:41 -0700 (PDT)
-Message-ID: <ff3f0c9b-c724-70e7-8bc7-904fcc5d5a58@linaro.org>
-Date: Thu, 31 Aug 2023 08:06:39 -0700
+ u19-20020a05600c00d300b003fe17901fcdsm5458769wmm.32.2023.08.31.08.34.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 08:34:27 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 54A5C1FFBB;
+ Thu, 31 Aug 2023 16:34:26 +0100 (BST)
+References: <20230831082016.60885-1-philmd@linaro.org>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth
+ <thuth@redhat.com>, libvir-list@redhat.com, Richard Henderson
+ <richard.henderson@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, Beraldo Leal
+ <bleal@redhat.com>
+Subject: Re: [PATCH v2] accel: Remove HAX accelerator
+Date: Thu, 31 Aug 2023 16:34:16 +0100
+In-reply-to: <20230831082016.60885-1-philmd@linaro.org>
+Message-ID: <87v8cvp6nx.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 11/48] target/loongarch: Implement xvhaddw/xvhsubw
-To: gaosong <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230830084902.2113960-1-gaosong@loongson.cn>
- <20230830084902.2113960-12-gaosong@loongson.cn>
- <93b90f31-d33d-2c37-0ab8-166d9c28bb6a@linaro.org>
- <965c1068-be7d-0642-3111-39fbc4e54006@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <965c1068-be7d-0642-3111-39fbc4e54006@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,25 +104,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/31/23 00:17, gaosong wrote:
-> 在 2023/8/31 上午2:12, Richard Henderson 写道:
->> On 8/30/23 01:48, Song Gao wrote:
->>> --- a/target/loongarch/vec.h
->>> +++ b/target/loongarch/vec.h
->>> @@ -47,4 +47,7 @@
->>>   #define Q(x)  Q[x]
->>>   #endif /* HOST_BIG_ENDIAN */
->>> +#define DO_ADD(a, b)  (a + b)
->>> +#define DO_SUB(a, b)  (a - b)
->>> +
->>
->> Why are these moved?
->>
-> I want to move simple macros together.
 
-Ok.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
+> HAX is deprecated since commits 73741fda6c ("MAINTAINERS: Abort
+> HAXM maintenance") and 90c167a1da ("docs/about/deprecated: Mark
+> HAXM in QEMU as deprecated"), released in v8.0.0.
+>
+> Per the latest HAXM release (v7.8 [*]), the latest QEMU supported
+> is v7.2:
+>
+>   Note: Up to this release, HAXM supports QEMU from 2.9.0 to 7.2.0.
+>
+> The next commit (https://github.com/intel/haxm/commit/da1b8ec072)
+> added:
+>
+>   HAXM v7.8.0 is our last release and we will not accept
+>   pull requests or respond to issues after this.
+>
+> It became very hard to build and test HAXM. Its previous
+> maintainers made it clear they won't help.  It doesn't seem to be
+> a very good use of QEMU maintainers to spend their time in a dead
+> project. Save our time by removing this orphan zombie code.
+>
+> [*] https://github.com/intel/haxm/releases/tag/v7.8.0
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-r~
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
