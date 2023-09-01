@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDEF7902EB
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E1A7902F6
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:45:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcAzF-0007DD-RN; Fri, 01 Sep 2023 16:43:25 -0400
+	id 1qcAzH-0007EY-3c; Fri, 01 Sep 2023 16:43:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qcAyx-00071n-9V
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:43:08 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qcAyy-00072K-Ex
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:43:10 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qcAyu-0001yY-St
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:43:07 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68c3ec0578bso2056881b3a.2
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:43:04 -0700 (PDT)
+ id 1qcAyv-0001ys-Cs
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:43:08 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68a440a8a20so2058329b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:43:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693600982; x=1694205782; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693600983; x=1694205783; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AcFXIYDDmm3o3vQOz6x04+Y31c6savnmQ0Pt4q+vdFI=;
- b=LQ+Quwj+eTG47JAGkz/UcfPvbmtEJV7evBaoVg7wgX33IDjSlFhzQbLNf5RvjqAB/O
- vY75tXpK8sP7qDPkMCiHgCYVsG3xkcEtImFoxCfbcx9R1W0n7wxUHL1nlqhLg2kuiF2Y
- ZxP9lazUitF4H4JiNXRsyhya5tmfmaKdgN4PjLxJSamN3gUF2NsltEKKYWo9cd9Xvke/
- 7NIzjQq03Uxbj+g20iPTdMDkQSE6JWuNa9A7Av+4Nd6qxENRPAr9VFQDjy7d2bQRa9vL
- Q7muW7i3PGhcAEZYebFeGeg+Y/I202RkbO9d+uftk4woJ+fi8faWFaoKCKB2vJs9ccpB
- VZ1g==
+ bh=mqs/jfDEIHNofUCfPibQFnYzPmfzQW+loIwUJrctV2Y=;
+ b=KHdlZu61YagUHHQbODp5Ew143SF/t5iVYhgtpRrv7R+fBjB8DACeyoU7l2DmDA2sdf
+ b9kjhElYFKyI7MVikgpNV2bt0X/5tm93W8ardtBCD4xHR9G0ZkhpAZOsgxtuK6ASEP08
+ 4g6cTw/WsI2BkunO0dU+vzFAfkRvyA0BXiPxngDvc0P6nFvPvxmJeOEFZsJD9Iwh7ak7
+ A/F3LOPAck71TTIdYzwLDZ/HrbUu9a7V9lyiOvRHugAivICcCqDmi9yYXlYSHi3D+l2m
+ d0Bt5sDuwyIBUqvnHFlKlhnw6eB9u/cOvlI7J6J0khNOs0QNJceVFaxguILtvQVJ0PdI
+ s5dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693600982; x=1694205782;
+ d=1e100.net; s=20221208; t=1693600983; x=1694205783;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AcFXIYDDmm3o3vQOz6x04+Y31c6savnmQ0Pt4q+vdFI=;
- b=KY95V9+p/niKKzxpF2nyipHzHtMx0cVuDIJP9Wq3+jVTc2qpnjSQyZaqfQIaAkfiRc
- 82FhW8FBbPfmKyEwgjHtNIj4UHOy8EDHs23mDtzFuq0kxAUFC2dxvVMuLQpmuDWYnoan
- 61CB+TMO7JbH44pZ51dO5dxgLQXBtxfybrGEFZYguT/Ai6WwtDhb0L+ljH5SD8CJtP+S
- ZeEaBT6nKsYJrzELeMwjvP5E71VpqkPOgNUriVSR2ggn5fs3K4uDMINMbGqpzcuNKGuD
- 27FJeFsqkMrv6CyABHbpGJCo1EuOuJdLer782o5kXWokxpBUUun2hwi96oIXtAN2SOX5
- nkDg==
-X-Gm-Message-State: AOJu0YyrynhncUw87dLyCbiAkhfmCU+AvcIU8TtWGSh90ix5ufl2iX91
- 7k/X2Z6JYysL8K6wzhrvuWRdyCfpw1Hcha5vosY=
-X-Google-Smtp-Source: AGHT+IE3+1H255BAvc/p616rxvJuxhZlApeuDHO/fWYHKIJYg+3W89BjsdbPZ4wThyLMRUyNk/AclQ==
-X-Received: by 2002:a05:6a00:2e0b:b0:68b:c2c7:a8ce with SMTP id
- fc11-20020a056a002e0b00b0068bc2c7a8cemr4069095pfb.17.1693600982583; 
- Fri, 01 Sep 2023 13:43:02 -0700 (PDT)
+ bh=mqs/jfDEIHNofUCfPibQFnYzPmfzQW+loIwUJrctV2Y=;
+ b=F9DIG6oJ0ULFjKj5VydsCEXAJfvCa5mZcygCv9vCi+CJXg1RqwrvIsdSZaPzN3a7E/
+ iZ23ZzC67FR564ccf6i6G+h6i5L8crurBq3eCsD4ruyEc7QXepnoO7GecK4ZjQyrEVba
+ QKswYncLcH4vpPcEPLcFzdsJm5M9QefA7EGLoGmFtjmlCF3NDVHAV+TWrs6kZHj0+wFt
+ v6xRI84Cvpd2WXvaTVypZBUdHsc6FZ+JBwoMfocYMi8PZF4zwDGhrd3OmCZUvsSRxja5
+ 49O6DRI/QjZqA8W0q7sUwtHOp1qvn4dHA+iCEAjVfGS6EoVHjqjnq5w0v6fzjh9IY+rd
+ nf5w==
+X-Gm-Message-State: AOJu0Yw3Ab/MBLQTpNUXgSzHXb9JQXlKypn5oFDNtXm7Kts4qYhIdWMx
+ 3Wd+KIKSPqSmuWRb7FK1QNMXqs56hGK5EqRo5AA=
+X-Google-Smtp-Source: AGHT+IECctyunljcjLbUnDSO4lHrYQrd2PessSthws60l1KuCfj8OVnsYIuN8+Ptv7Bo0zfvCnjDZw==
+X-Received: by 2002:a05:6a20:7f85:b0:134:76f6:e9e2 with SMTP id
+ d5-20020a056a207f8500b0013476f6e9e2mr5320407pzj.58.1693600983481; 
+ Fri, 01 Sep 2023 13:43:03 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j15-20020aa78d0f000000b0068c97a4eb0dsm3320666pfe.191.2023.09.01.13.43.01
+ j15-20020aa78d0f000000b0068c97a4eb0dsm3320666pfe.191.2023.09.01.13.43.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 13:43:02 -0700 (PDT)
+ Fri, 01 Sep 2023 13:43:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 11/13] linux-user: Use WITH_MMAP_LOCK_GUARD in target_{shmat,
- shmdt}
-Date: Fri,  1 Sep 2023 13:42:49 -0700
-Message-Id: <20230901204251.137307-12-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 12/13] linux-user: Fix shmdt
+Date: Fri,  1 Sep 2023 13:42:50 -0700
+Message-Id: <20230901204251.137307-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230901204251.137307-1-richard.henderson@linaro.org>
 References: <20230901204251.137307-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,147 +92,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the CF_PARALLEL setting outside of the mmap lock.
+If the shm region is not mapped at shmaddr, EINVAL.
+Do not unmap the region until the syscall succeeds.
+Use mmap_reserve_or_unmap to preserve reserved_va semantics.
 
 Tested-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 98 ++++++++++++++++++++++-------------------------
- 1 file changed, 46 insertions(+), 52 deletions(-)
+ linux-user/mmap.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 3aeacd1ecd..f45b2d307c 100644
+index f45b2d307c..44116c014b 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -1017,9 +1017,8 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
- {
-     CPUState *cpu = env_cpu(cpu_env);
-     abi_ulong raddr;
--    void *host_raddr;
-     struct shmid_ds shm_info;
--    int i, ret;
-+    int ret;
-     abi_ulong shmlba;
- 
-     /* shmat pointers are always untagged */
-@@ -1044,7 +1043,43 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
-         return -TARGET_EINVAL;
-     }
- 
--    mmap_lock();
-+    WITH_MMAP_LOCK_GUARD() {
-+        void *host_raddr;
-+
-+        if (shmaddr) {
-+            host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
-+        } else {
-+            abi_ulong mmap_start;
-+
-+            /* In order to use the host shmat, we need to honor host SHMLBA.  */
-+            mmap_start = mmap_find_vma(0, shm_info.shm_segsz,
-+                                       MAX(SHMLBA, shmlba));
-+
-+            if (mmap_start == -1) {
-+                return -TARGET_ENOMEM;
-+            }
-+            host_raddr = shmat(shmid, g2h_untagged(mmap_start),
-+                               shmflg | SHM_REMAP);
-+        }
-+
-+        if (host_raddr == (void *)-1) {
-+            return get_errno(-1);
-+        }
-+        raddr = h2g(host_raddr);
-+
-+        page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
-+                       PAGE_VALID | PAGE_RESET | PAGE_READ |
-+                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
-+
-+        for (int i = 0; i < N_SHM_REGIONS; i++) {
-+            if (!shm_regions[i].in_use) {
-+                shm_regions[i].in_use = true;
-+                shm_regions[i].start = raddr;
-+                shm_regions[i].size = shm_info.shm_segsz;
-+                break;
-+            }
-+        }
-+    }
- 
-     /*
-      * We're mapping shared memory, so ensure we generate code for parallel
-@@ -1057,65 +1092,24 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
-         tb_flush(cpu);
-     }
- 
--    if (shmaddr) {
--        host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
--    } else {
--        abi_ulong mmap_start;
--
--        /* In order to use the host shmat, we need to honor host SHMLBA.  */
--        mmap_start = mmap_find_vma(0, shm_info.shm_segsz, MAX(SHMLBA, shmlba));
--
--        if (mmap_start == -1) {
--            errno = ENOMEM;
--            host_raddr = (void *)-1;
--        } else {
--            host_raddr = shmat(shmid, g2h_untagged(mmap_start),
--                               shmflg | SHM_REMAP);
--        }
--    }
--
--    if (host_raddr == (void *)-1) {
--        mmap_unlock();
--        return get_errno((intptr_t)host_raddr);
--    }
--    raddr = h2g((uintptr_t)host_raddr);
--
--    page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
--                   PAGE_VALID | PAGE_RESET | PAGE_READ |
--                   (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
--
--    for (i = 0; i < N_SHM_REGIONS; i++) {
--        if (!shm_regions[i].in_use) {
--            shm_regions[i].in_use = true;
--            shm_regions[i].start = raddr;
--            shm_regions[i].size = shm_info.shm_segsz;
--            break;
--        }
--    }
--
--    mmap_unlock();
-     return raddr;
- }
- 
- abi_long target_shmdt(abi_ulong shmaddr)
- {
--    int i;
-     abi_long rv;
- 
+@@ -1102,14 +1102,25 @@ abi_long target_shmdt(abi_ulong shmaddr)
      /* shmdt pointers are always untagged */
  
--    mmap_lock();
--
--    for (i = 0; i < N_SHM_REGIONS; ++i) {
--        if (shm_regions[i].in_use && shm_regions[i].start == shmaddr) {
--            shm_regions[i].in_use = false;
--            page_set_flags(shmaddr, shmaddr + shm_regions[i].size - 1, 0);
--            break;
-+    WITH_MMAP_LOCK_GUARD() {
-+        for (int i = 0; i < N_SHM_REGIONS; ++i) {
-+            if (shm_regions[i].in_use && shm_regions[i].start == shmaddr) {
-+                shm_regions[i].in_use = false;
-+                page_set_flags(shmaddr, shmaddr + shm_regions[i].size - 1, 0);
-+                break;
-+            }
+     WITH_MMAP_LOCK_GUARD() {
+-        for (int i = 0; i < N_SHM_REGIONS; ++i) {
++        int i;
++
++        for (i = 0; i < N_SHM_REGIONS; ++i) {
+             if (shm_regions[i].in_use && shm_regions[i].start == shmaddr) {
+-                shm_regions[i].in_use = false;
+-                page_set_flags(shmaddr, shmaddr + shm_regions[i].size - 1, 0);
+                 break;
+             }
          }
-+        rv = get_errno(shmdt(g2h_untagged(shmaddr)));
++        if (i == N_SHM_REGIONS) {
++            return -TARGET_EINVAL;
++        }
++
+         rv = get_errno(shmdt(g2h_untagged(shmaddr)));
++        if (rv == 0) {
++            abi_ulong size = shm_regions[i].size;
++
++            shm_regions[i].in_use = false;
++            page_set_flags(shmaddr, shmaddr + size - 1, 0);
++            mmap_reserve_or_unmap(shmaddr, size);
++        }
      }
--    rv = get_errno(shmdt(g2h_untagged(shmaddr)));
--
--    mmap_unlock();
--
      return rv;
  }
 -- 
