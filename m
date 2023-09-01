@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630F778F724
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BF378F725
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtt4-0007fR-Co; Thu, 31 Aug 2023 22:27:54 -0400
+	id 1qbtuF-0003eB-P7; Thu, 31 Aug 2023 22:29:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qbtt1-0007Uy-OQ; Thu, 31 Aug 2023 22:27:51 -0400
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
+ id 1qbtu6-0003dB-CT; Thu, 31 Aug 2023 22:28:58 -0400
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qbtsz-0002Kd-Gb; Thu, 31 Aug 2023 22:27:51 -0400
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-79d8edd6d99so672969241.3; 
- Thu, 31 Aug 2023 19:27:48 -0700 (PDT)
+ id 1qbtu2-0002TB-MF; Thu, 31 Aug 2023 22:28:56 -0400
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-44d38d91885so737589137.1; 
+ Thu, 31 Aug 2023 19:28:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693535268; x=1694140068; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1693535333; x=1694140133; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OOo2zkmmt6KrgQcW9V7n2tzEjgpG4NduNd8ONC7HLbc=;
- b=iH0WKTLuErnZY1/CnQkRtK7ePPYJ6QVk6NQMUgG1P8HizANk99AyB9ne+Nll8ZuUHV
- /vEbtXDhEegRFX50gmwCzRFFvkHa8UE6b0bDaOlUzEPqmzzJATpnecAtHP/gJ5NUjD/4
- ZorDg39WLAThM4QVNLTh9RUbuTq0xCkfO9ocHyCwCZhSWtmGYJKvUMxz3EtLV8TnQl8k
- qoM5Gqqn13NZgUSkXKhp8StUgg6r+QEViuYIvFg2L1/0yUagC+XIou3YCczuvQwrmu9F
- 3QJI+szgQROst8quQv5XrFkco2XHs4pWFCpbEKUZVgHQKZLevXUJtqZs3V96gx1+M6z3
- A4PA==
+ bh=BcwEfdfaKAzY1q71GpFY8RoOlX2asnxOyf6/1C1zFPM=;
+ b=k7NGAl1rsebCJPBoiKOB16Ktoiy8+t3i5CysFW2iZtgBeNmUIeB/RReTJc6mCmWfE5
+ PwTq/+Kz9zmEHf0Om6OcR0Llq3fA2llxy8dV/UAsq0QZAWZFh2bkChSjeAjN2+k4JK4T
+ 9OqWlj4TZ9ES1E3UYhpw+0e2bvqL1MJ/ROFcPNrCVE0+6qeVDlc+QkBxe+0O8L4/GAfl
+ 5Ha9J9hmCN0oxn8QAS4ErcqY7EngmHtm31muM7fynPKm6QIIDe350v3c5g7gjSm83OpF
+ Cypd7i+/uGZVWMex691WMgN9tCGopcEsu51UeSHQaqI68In6dIDQIZHxDiLOtivtQFX0
+ K02Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535268; x=1694140068;
+ d=1e100.net; s=20221208; t=1693535333; x=1694140133;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OOo2zkmmt6KrgQcW9V7n2tzEjgpG4NduNd8ONC7HLbc=;
- b=mDbdlKPMx6jWkj05hPKRaA1bzEqNWcuXsp3Ika5Mei68e3DyroF2TGKrK9IXlF6Gsh
- 3s8jAwfpK7ihOCFHYQctCx5KZ0TUTQqr2MksCCoOVp6q9QD/UxwPnabC5kLC+zYCWbN4
- di/dgns1VbjA0VcSyAooKMLPgdxM2qn/Yvq/hj3xf2cqm+Z9mwVnVT2NmfKOCjoQI8Q6
- 7f16zyFoFwqWFXTDlY7tjRBdZVTUwzjB/g2gdglsPu2c4wD9j2BrlEtkpOz6vZ8r+aoT
- 8y6rgoIIJE5LouRQpbLFVvXe6RX6YzKV6YD6E0EYOp/Ery9puu4VcLTp2vf+Yhmtm0+D
- XjGw==
-X-Gm-Message-State: AOJu0YzdPwdVp/HlR3kLtviVzyEINb4qojKOu12d1kIqfIGwzE8AHErh
- cxXgjq18vhXDHKSVoIofdqlSuefw1feASm/+AQOJfnUooXlL+Q==
-X-Google-Smtp-Source: AGHT+IEfYFSM2zX+hZl18SR8RiSmAlXKk1TBT+uNsyOCb6SS8r5Leqfv3EpoDM1FOODy1ML/zhbX0cQLaFzDcJjd9Jw=
-X-Received: by 2002:a05:6102:4b5:b0:44e:a216:59a2 with SMTP id
- r21-20020a05610204b500b0044ea21659a2mr1462760vsa.7.1693535268134; Thu, 31 Aug
- 2023 19:27:48 -0700 (PDT)
+ bh=BcwEfdfaKAzY1q71GpFY8RoOlX2asnxOyf6/1C1zFPM=;
+ b=TP/LroyB9fi/kVGxn1TJjCM5BLEjcU+bhWrSNIaXOUmnbtor/jkGHO9+eykpQDp+E7
+ L4ssFUEHhUvCt7vu8GSnb2Jlms6gqBtJSOFccrHXel9lR+3HXYQRb5zaBIzdfsi1fRRg
+ sNpdZTSz4oCcqCiiXUnMYAlTiwj+B4joqbFlZDRRCM7GezyhH08YDCbQInQRJez1vaan
+ mQSciv7wuRIYmcD5eSEr5SaX2HdvNxXS5TtD6v9jrCMuqF01znojNzg6idOm5wNMBRZF
+ tFknt6UVQN3blyX39ci8PkbRefa6WWzx1Uk4Y8pSPfZYXWYf3FUrWrQuCI8XwyET7BsM
+ 8Ozg==
+X-Gm-Message-State: AOJu0YwvND6FqLacFQHLZdETeRFgNC8ZOa00Zr2t0ISGKE+5iM47vWgw
+ 1Lq23c3FtusyONGr2RrCz9Z3Uw0qVdJsyGjVBHWEHbRtM4IX8A==
+X-Google-Smtp-Source: AGHT+IFAEtJWFzJMfYBO4jPbb5BVF4ee6UIGRDHruBT17H145OdgxB4iFY4i+2tkFP6lf3d/vdLYhuI+IZfSn3WwmPE=
+X-Received: by 2002:a67:e8cc:0:b0:44e:a216:59a6 with SMTP id
+ y12-20020a67e8cc000000b0044ea21659a6mr1713042vsn.4.1693535333300; Thu, 31 Aug
+ 2023 19:28:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
 In-Reply-To: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 1 Sep 2023 12:27:21 +1000
-Message-ID: <CAKmqyKPmhAUHe5nN=V05TwvWZkuQhRFrigB-FRkBgRb=zJPQWQ@mail.gmail.com>
+Date: Fri, 1 Sep 2023 12:28:26 +1000
+Message-ID: <CAKmqyKPQN_xNV1sXV=nenQXPzWViUjq9DC-hD52J+GRYjv1CeA@mail.gmail.com>
 Subject: Re: [PATCH] linux-user/riscv: Add new extensions to hwprobe
 To: Robbin Ehn <rehn@rivosinc.com>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,7 +97,9 @@ te:
 >
 > Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Thanks!
+
+Applied to riscv-to-apply.next
 
 Alistair
 
