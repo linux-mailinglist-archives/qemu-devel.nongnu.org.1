@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCF278FA2A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 10:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1916F78FA2F
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 10:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbzmC-0007eI-0V; Fri, 01 Sep 2023 04:45:12 -0400
+	id 1qbzpW-0000I2-Ql; Fri, 01 Sep 2023 04:48:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qbzm6-0007e0-NB; Fri, 01 Sep 2023 04:45:07 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qbzlz-0006bh-BE; Fri, 01 Sep 2023 04:45:03 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2bd0d19a304so30932991fa.1; 
- Fri, 01 Sep 2023 01:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1693557895; x=1694162695; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ub/+8uCz80Du/L/b809/ZyRrakMTY6fHgUa5/nXoR0k=;
- b=lGda+3696bpMoL33bqGImH8H8QuLQERctG+YhTfiB9bAQOaN1BLEuQ4juqxpSaLxvl
- hCWIBr8Qmr6yDMLq1Xw6EaIyi0iZdr9m0yQZATaK4klAixXTUtI4JeLiKsbS87tC+8Ss
- YPsCAoitTfqIUrMBkVGMKEzQO3KsfOnAMy9BY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693557895; x=1694162695;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ub/+8uCz80Du/L/b809/ZyRrakMTY6fHgUa5/nXoR0k=;
- b=UDpT5p/CNyAZQ/xK6xcku7wy/87jlR3LiOY3ReclEzlyxx7i2D0kvPeIM7L6EgwtED
- YVxBrDr+IWxVCvBrw2yD2msxsSXhjTM5HyZCxy+l/i8FBZKcQ8E6ti0TI4Y9s+IL6DRA
- axF/+Wj9pdJsbaJ7pPVkwIKLrNeX/QwoE/rFrtZnllsKfvifWfQUhwJRswZEIMWJVbUH
- jLAcGYgGzWpy1X4Ms+pNv1gyPeIScjhDItQgEiyrVIhNcJpVVoJnEughc/ed4HAiGqZG
- 5pC3GLCODnyblPrdXmyx/IjlR5Kk7zcxbUCkEGk2choa3+2Cy5Z1bFRZytQxI+d3y3ZZ
- 9EKA==
-X-Gm-Message-State: AOJu0Yzwe6PMlBcND61cLOhD3Yfb7vzvrmBGpMKNxfm5ymcwwbQJ2i6k
- XHyBNVcNKbunx9a/iTSkgCzzFtNImBgWEA5zV7GnUg0m
-X-Google-Smtp-Source: AGHT+IHoIblBxMPjRsMhVju2QXw73qvZzigVo4kT2ySQk7InWL1yHNdg3m8OS4JAzS+wv4ekfTH7CaPnRBRJkQLfGMQ=
-X-Received: by 2002:a2e:98cd:0:b0:2bc:d607:4d1f with SMTP id
- s13-20020a2e98cd000000b002bcd6074d1fmr1092754ljj.44.1693557894592; Fri, 01
- Sep 2023 01:44:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qbzpV-0000HJ-2K
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 04:48:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qbzpS-0007D9-35
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 04:48:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693558113;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qDec9lEmkr03tUmuqrMQUr6Z0wXTALRazdDr4iYPmgI=;
+ b=X4hFf0HvEwrjcRdfzi0H2tFectEoL2zBk00Z93xzYkdHNrXPBy9bs58QkAEEmpmQmtDDhM
+ ekXiPs2f0Y+7NswKhVZaDsftHyjMiz3i7qKDTREml8GvnZqYrC9+pwFCOhLnTiKTll7y5D
+ 14iTseueJA+KO1ZUAFx137mXs9K8t1k=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-652-_-5Ivo6gMjGpo5PL1QjuTA-1; Fri, 01 Sep 2023 04:48:30 -0400
+X-MC-Unique: _-5Ivo6gMjGpo5PL1QjuTA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E9FB1C05ED8;
+ Fri,  1 Sep 2023 08:48:28 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EC29D2166B26;
+ Fri,  1 Sep 2023 08:48:27 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E451721E692A; Fri,  1 Sep 2023 10:48:26 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org,  kwolf@redhat.com,  hreitz@redhat.com,
+ vsementsov@yandex-team.ru,  jsnow@redhat.com,  idryomov@gmail.com,
+ pl@kamp.de,  sw@weilnetz.de,  sstabellini@kernel.org,
+ anthony.perard@citrix.com,  paul@xen.org,  pbonzini@redhat.com,
+ marcandre.lureau@redhat.com,  berrange@redhat.com,  thuth@redhat.com,
+ philmd@linaro.org,  stefanha@redhat.com,  fam@euphon.net,
+ quintela@redhat.com,  peterx@redhat.com,  leobras@redhat.com,
+ kraxel@redhat.com,  qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org,  alex.bennee@linaro.org,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH 7/7] qobject atomics osdep: Make a few macros more hygienic
+References: <20230831132546.3525721-1-armbru@redhat.com>
+ <20230831132546.3525721-8-armbru@redhat.com>
+ <vfkfi6uld3gbd4urmqdlzkv6djtws6mkbluc5qvwcla6btszhu@ff66zfyd7smm>
+Date: Fri, 01 Sep 2023 10:48:26 +0200
+In-Reply-To: <vfkfi6uld3gbd4urmqdlzkv6djtws6mkbluc5qvwcla6btszhu@ff66zfyd7smm>
+ (Eric Blake's message of "Thu, 31 Aug 2023 09:30:33 -0500")
+Message-ID: <87ledqjn39.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230831123922.105200-1-clg@kaod.org>
- <20230831123922.105200-6-clg@kaod.org>
- <b6c8df57-c6e4-9962-40a3-f01d5fd2a6dc@kaod.org>
-In-Reply-To: <b6c8df57-c6e4-9962-40a3-f01d5fd2a6dc@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Fri, 1 Sep 2023 08:44:43 +0000
-Message-ID: <CACPK8Xc1rGpkiALx70PXZHbt5K54QpMA1gnkKHgHFy=Gk0+rKQ@mail.gmail.com>
-Subject: Re: [PATCH v3.2 5/7] aspeed: Create flash devices only when defaults
- are enabled
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=joel.stan@gmail.com; helo=mail-lj1-x22c.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,125 +89,313 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 21:13, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> When the -nodefaults option is set, flash devices should be created
-> with :
->
->      -blockdev node-name=3Dfmc0,driver=3Dfile,filename=3D./flash.img \
->      -device mx66u51235f,cs=3D0x0,bus=3Dssi.0,drive=3Dfmc0 \
->
-> To be noted that in this case, the ROM will not be installed and the
-> initial boot sequence (U-Boot loading) will fetch instructions using
-> SPI transactions which is significantly slower. That's exactly how HW
-> operates though.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+Eric Blake <eblake@redhat.com> writes:
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+> On Thu, Aug 31, 2023 at 03:25:46PM +0200, Markus Armbruster wrote:
+>
+> [This paragraph written last: Bear with my stream of consciousness
+> review below, where I end up duplicating some of the conslusions you
+> reached before the point where I saw where the patch was headed]
+>
+>> Variables declared in macros can shadow other variables.  Much of the
+>> time, this is harmless, e.g.:
+>> 
+>>     #define _FDT(exp)                                                  \
+>>         do {                                                           \
+>>             int ret = (exp);                                           \
+>>             if (ret < 0) {                                             \
+>>                 error_report("error creating device tree: %s: %s",   \
+>>                         #exp, fdt_strerror(ret));                      \
+>>                 exit(1);                                               \
+>>             }                                                          \
+>>         } while (0)
+>
+> Which is why I've seen some projects require a strict namespace
+> separation: if all macro parameters and any identifiers declared in
+> macros use either a leading or a trailing _ (I prefer a trailing one,
+> to avoid risking conflicts with libc reserved namespace; but leading
+> is usually okay), and all other identifiers avoid that namespace, then
+> you will never have shadowing by calling a macro from normal code.
+>
+>> 
+>> Harmless shadowing in h_client_architecture_support():
+>> 
+>>         target_ulong ret;
+>> 
+>>         [...]
+>> 
+>>         ret = do_client_architecture_support(cpu, spapr, vec, fdt_bufsize);
+>>         if (ret == H_SUCCESS) {
+>>             _FDT((fdt_pack(spapr->fdt_blob)));
+>>             [...]
+>>         }
+>> 
+>>         return ret;
+>> 
+>> However, we can get in trouble when the shadowed variable is used in a
+>> macro argument:
+>> 
+>>     #define QOBJECT(obj) ({                                 \
+>>         typeof(obj) o = (obj);                              \
+>>         o ? container_of(&(o)->base, QObject, base) : NULL; \
+>>      })
+>> 
+>> QOBJECT(o) expands into
+>> 
+>>     ({
+>> --->    typeof(o) o = (o);
+>>         o ? container_of(&(o)->base, QObject, base) : NULL;
+>>     })
+>> 
+>> Unintended variable name capture at --->.  We'd be saved by
+>> -Winit-self.  But I could certainly construct more elaborate death
+>> traps that don't trigger it.
+>
+> Indeed, not fully understanding the preprocessor makes for some
+> interesting death traps.
 
-A good addition. Thanks!
+We use ALL_CAPS for macros to signal "watch out for traps".
 
-> ---
->   docs/system/arm/aspeed.rst | 35 +++++++++++++++++++++++++++++------
->   hw/arm/aspeed.c            |  6 ++++--
->   2 files changed, 33 insertions(+), 8 deletions(-)
+>> To reduce the risk of trapping ourselves, we use variable names in
+>> macros that no sane person would use elsewhere.  Here's our actual
+>> definition of QOBJECT():
+>> 
+>>     #define QOBJECT(obj) ({                                         \
+>>         typeof(obj) _obj = (obj);                                   \
+>>         _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
+>>     })
 >
-> diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-> index 80538422a1a4..b2dea54eedad 100644
-> --- a/docs/system/arm/aspeed.rst
-> +++ b/docs/system/arm/aspeed.rst
-> @@ -104,7 +104,7 @@ To boot a kernel directly from a Linux build tree:
->           -dtb arch/arm/boot/dts/aspeed-ast2600-evb.dtb \
->           -initrd rootfs.cpio
+> Yep, goes back to the policy I've seen of enforcing naming conventions
+> that ensure macros can't shadow normal code.
 >
-> -The image should be attached as an MTD drive. Run :
-> +To boot the machine from the flash image, use an MTD drive :
+>> 
+>> Works well enough until we nest macro calls.  For instance, with
+>> 
+>>     #define qobject_ref(obj) ({                     \
+>>         typeof(obj) _obj = (obj);                   \
+>>         qobject_ref_impl(QOBJECT(_obj));            \
+>>         _obj;                                       \
+>>     })
+>> 
+>> the expression qobject_ref(obj) expands into
+>> 
+>>     ({
+>>         typeof(obj) _obj = (obj);
+>>         qobject_ref_impl(
+>>             ({
+>> --->            typeof(_obj) _obj = (_obj);
+>>                 _obj ? container_of(&(_obj)->base, QObject, base) : NULL;
+>>             }));
+>>         _obj;
+>>     })
+>> 
+>> Unintended variable name capture at --->.
 >
->   .. code-block:: bash
+> Yep, you've just proven how macros calling macros requires care, as we
+> no longer have the namespace protections.  If macro calls can only
+> form a DAG, it is possible to choose unique intermediate declarations
+> for every macro (although remembering to do that, and still keeping
+> the macro definition legible, may not be easy).  But if you can have
+> macros that form any sort of nesting loop (and we WANT to allow things
+> like MIN(MIN(a, b), c) - which is such a loop), dynamic naming becomes
+> the only solution.
 >
-> @@ -117,23 +117,46 @@ Options specific to Aspeed machines are :
->      device by using the FMC controller to load the instructions, and
->      not simply from RAM. This takes a little longer.
+>> 
+>> The only reliable way to prevent unintended variable name capture is
+>> -Wshadow.
 >
-> - * ``fmc-model`` to change the FMC Flash model. FW needs support for
-> -   the chip model to boot.
-> + * ``fmc-model`` to change the default FMC Flash model. FW needs
-> +   support for the chip model to boot.
+> Yes, I would love to have that enabled eventually.
 >
-> - * ``spi-model`` to change the SPI Flash model.
-> + * ``spi-model`` to change the default SPI Flash model.
+>> 
+>> One blocker for enabling it is shadowing hiding in function-like
+>> macros like
+>> 
+>>      qdict_put(dict, "name", qobject_ref(...))
+>> 
+>> qdict_put() wraps its last argument in QOBJECT(), and the last
+>> argument here contains another QOBJECT().
+>> 
+>> Use dark preprocessor sorcery to make the macros that give us this
+>> problem use different variable names on every call.
 >
->    * ``bmc-console`` to change the default console device. Most of the
->      machines use the ``UART5`` device for a boot console, which is
->      mapped on ``/dev/ttyS4`` under Linux, but it is not always the
->      case.
+> Sounds foreboding; hopefully not many macros are affected...
 >
-> -For instance, to start the ``ast2500-evb`` machine with a different
-> -FMC chip and a bigger (64M) SPI chip, use :
-> +To use other flash models, for instance a different FMC chip and a
-> +bigger (64M) SPI for the ``ast2500-evb`` machine, run :
+>> 
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> ---
+>>  include/qapi/qmp/qobject.h |  8 +++++---
+>>  include/qemu/atomic.h      | 11 ++++++-----
+>>  include/qemu/osdep.h       | 34 +++++++++++++++++++---------------
+>>  3 files changed, 30 insertions(+), 23 deletions(-)
 >
->   .. code-block:: bash
+> ...okay, the size of the diffstat seems tolerable (good that we don't
+> have many macros that expand to a temporary variable declaration and
+> which are likely to be heavily reused from nested contexts).
 >
->     -M ast2500-evb,fmc-model=3Dmx25l25635e,spi-model=3Dmx66u51235f
+>> diff --git a/include/qapi/qmp/qobject.h b/include/qapi/qmp/qobject.h
+>> index 9003b71fd3..7b50fc905d 100644
+>> --- a/include/qapi/qmp/qobject.h
+>> +++ b/include/qapi/qmp/qobject.h
+>> @@ -45,10 +45,12 @@ struct QObject {
+>>      struct QObjectBase_ base;
+>>  };
+>>  
+>> -#define QOBJECT(obj) ({                                         \
+>> -    typeof(obj) _obj = (obj);                                   \
+>> -    _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
+>> +#define QOBJECT_INTERNAL(obj, l) ({                                     \
+>> +    typeof(obj) PASTE(_obj, l) = (obj);                                 \
+>> +    PASTE(_obj, l)                                                      \
+>> +        ? container_of(&(PASTE(_obj, l))->base, QObject, base) : NULL;  \
+>>  })
+>> +#define QOBJECT(obj) QOBJECT_INTERNAL((obj), __COUNTER__)
 >
-> +When more flexibility is needed to define the flash devices, to use
-> +different flash models or define all flash devices (up to 8), the
-> +``-nodefaults`` QEMU option can be used to avoid creating the default
-> +flash devices.
-> +
-> +Flash devices should then be created from the command line and attached
-> +to a block device :
-> +
-> +.. code-block:: bash
-> +
-> +  $ qemu-system-arm -M ast2600-evb \
-> +        -blockdev node-name=3Dfmc0,driver=3Dfile,filename=3D/path/to/fmc=
-0.img \
-> +       -device mx66u51235f,bus=3Dssi.0,cs=3D0x0,drive=3Dfmc0 \
-> +       -blockdev node-name=3Dfmc1,driver=3Dfile,filename=3D/path/to/fmc1=
-.img \
-> +       -device mx66u51235f,bus=3Dssi.0,cs=3D0x1,drive=3Dfmc1 \
-> +       -blockdev node-name=3Dspi1,driver=3Dfile,filename=3D/path/to/spi1=
-.img \
-> +       -device mx66u51235f,cs=3D0x0,bus=3Dssi.1,drive=3Dspi1 \
-> +       -nographic -nodefaults
-> +
-> +In that case, the machine boots fetching instructions from the FMC0
-> +device. It is slower to start but closer to what HW does. Using the
-> +machine option ``execute-in-place`` has a similar effect.
-> +
->   To change the boot console and use device ``UART3`` (``/dev/ttyS2``
->   under Linux), use :
+> Slick!  Every call to QOBJECT() defines a unique temporary variable
+> name.  But as written, QOBJECT(o) expands to this (when __COUNTER__ is
+> 1):
 >
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index cd92cf9ce0bb..271512ce5ced 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -396,12 +396,14 @@ static void aspeed_machine_init(MachineState *machi=
-ne)
->       connect_serial_hds_to_uarts(bmc);
->       qdev_realize(DEVICE(&bmc->soc), NULL, &error_abort);
+> ({
+>   typeof((o)) _obj1 = ((o));
+>   _obj1 ? container_of(&(_obj1)->base, QObject, base) : NULL;
+> })
 >
-> -    aspeed_board_init_flashes(&bmc->soc.fmc,
-> +    if (defaults_enabled()) {
-> +        aspeed_board_init_flashes(&bmc->soc.fmc,
->                                 bmc->fmc_model ? bmc->fmc_model : amc->fm=
-c_model,
->                                 amc->num_cs, 0);
-> -    aspeed_board_init_flashes(&bmc->soc.spi[0],
-> +        aspeed_board_init_flashes(&bmc->soc.spi[0],
->                                 bmc->spi_model ? bmc->spi_model : amc->sp=
-i_model,
->                                 1, amc->num_cs);
-> +    }
+> which has three sets of redundant parens that could be elided.  Why do
+> you need to add () around obj when forwarding to QOBJECT_INTERNAL()?
+
+Habit: enclose macro arguments in parenthesis unless there's a specific
+need not to.
+
+> The only way the expansion of the text passed through the 'obj'
+> parameter can contain a comma is if the user has already parenthesized
+> it on their end (not that I expect a comma expression to be a frequent
+> argument to QOBJECT(), but who knows).  Arguing that it is to silence
+> a syntax checker is weak; since we must NOT add parens around the
+> parameters to QOBJECT_INTERNAL (calling PASTE((_obj), (l)) is
+> obviously wrong).
 >
->       if (machine->kernel_filename && sc->num_cpus > 1) {
->           /* With no u-boot we must set up a boot stub for the secondary =
-CPU */
-> --
-> 2.41.0
+> Meanwhile, the repetition of three calls to PASTE() is annoying.  How
+> about:
 >
+> #define QOBJECT_INTERNAL_2(_obj, _tmp) ({ \
+>   typeof _obj _tmp = _obj; \
+>   _tmp ? container_of(&_tmp->base, QObject, base) : NULL; \
+>   )}
+> #define QOBJECT_INTERNAL_1(_arg, _tmp) QOBJECT_INTERNAL_2(_arg, _tmp)
+> #define QOBJECT_INTERNAL(_arg, _ctr) \
+>   QOBJECT_INTERNAL_1(_arg, PASTE(_obj, _ctr))
+> #define QOBJECT(obj) QOBJECT_INTERNAL((obj), __COUNTER__)
 >
+> or:
+>
+> #define QOBJECT_INTERNAL_2(_obj, _tmp) ({ \
+>   typeof(_obj) _tmp = (_obj); \
+>   _tmp ? container_of(&_tmp->base, QObject, base) : NULL; \
+>   )}
+> #define QOBJECT_INTERNAL_1(_arg, _tmp) QOBJECT_INTERNAL_2(_arg, _tmp)
+> #define QOBJECT_INTERNAL(_arg, _ctr) \
+>   QOBJECT_INTERNAL_1(_arg, PASTE(_obj, _ctr))
+> #define QOBJECT(obj) QOBJECT_INTERNAL(obj, __COUNTER__)
+>
+> where, in either case, QOBJECT(o) should then expand to
+>
+> ({
+>   typeof (o) _obj1 = (o);
+>   _obj1 ? container_of(&_obj1->base, QObject, base) : NULL;
+> })
+
+The idea is to have the innermost macro take the variable name instead
+of the counter.  "PASTE(_obj, l)" then becomes "_tmp" there, which is
+more legible.  However, we pay for it by going through two more macros.
+
+Can you explain why you need two more?
+
+Complication: the innermost macro needs to take all its variable names
+as arguments.  The macro above has just one.  Macros below have two.
+
+Not quite sure which version is easier to understand.
+
+>>  /* Required for qobject_to() */
+>>  #define QTYPE_CAST_TO_QNull     QTYPE_QNULL
+>> diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
+>> index d95612f7a0..3f80ffac69 100644
+>> --- a/include/qemu/atomic.h
+>> +++ b/include/qemu/atomic.h
+>> @@ -157,13 +157,14 @@
+>>      smp_read_barrier_depends();
+>>  #endif
+>>  
+>> -#define qatomic_rcu_read(ptr)                          \
+>> -    ({                                                 \
+>> +#define qatomic_rcu_read_internal(ptr, l)               \
+>> +    ({                                                  \
+>>      qemu_build_assert(sizeof(*ptr) <= ATOMIC_REG_SIZE); \
+>> -    typeof_strip_qual(*ptr) _val;                      \
+>> -    qatomic_rcu_read__nocheck(ptr, &_val);             \
+>> -    _val;                                              \
+>> +    typeof_strip_qual(*ptr) PASTE(_val, l);             \
+>> +    qatomic_rcu_read__nocheck(ptr, &PASTE(_val, l));    \
+>> +    PASTE(_val, l);                                     \
+>>      })
+>> +#define qatomic_rcu_read(ptr) qatomic_rcu_read_internal((ptr), __COUNTER__)
+>
+> Same observation about being able to reduce the number of PASTE()
+> calls by adding yet another layer of macro invocations.
+>
+>>  
+>>  #define qatomic_rcu_set(ptr, i) do {                   \
+>>      qemu_build_assert(sizeof(*ptr) <= ATOMIC_REG_SIZE); \
+>> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+>> index 21ef8f1699..9c191ebe99 100644
+>> --- a/include/qemu/osdep.h
+>> +++ b/include/qemu/osdep.h
+>> @@ -371,18 +371,21 @@ void QEMU_ERROR("code path is reachable")
+>>   * have to open-code it.  Sadly, Coverity is severely confused by the
+>>   * constant variants, so we have to dumb things down there.
+>>   */
+>> +#define PASTE(a, b) a##b
+>> +#define MIN_INTERNAL(a, b, l)                                           \
+>> +    ({                                                                  \
+>> +        typeof(1 ? (a) : (b)) PASTE(_a, l) = (a), PASTE(_b, l) = (b);   \
+>> +        PASTE(_a, l) < PASTE(_b, l) ? PASTE(_a, l) : PASTE(_b, l);      \
+>> +    })
+>
+> And again.
+>
+> I think you are definitely on the right track to have all internal
+> variable declarations within a macro definition use multi-layered
+> expansion with the help of __COUNTER__ to ensure that the macro's
+> temporary variable is globally unique; so if you leave it as written,
+> I could live with:
+>
+> Reviewed-by: Eric Blake <eblake@redhat.com>
+>
+> But if you respin it to pick up any of my suggestions, I'll definitely
+> spend another review cycle on the result.
+>
+> If it helps, here's what I ended up using in nbdkit:
+>
+> https://gitlab.com/nbdkit/nbdkit/-/blame/master/common/include/unique-name.h#L36
+> /* https://stackoverflow.com/a/1597129
+>  * https://stackoverflow.com/a/12711226
+>  */
+> #define XXUNIQUE_NAME(name, counter) name ## counter
+> #define XUNIQUE_NAME(name, counter) XXUNIQUE_NAME (name, counter)
+> #define NBDKIT_UNIQUE_NAME(name) XUNIQUE_NAME (name, __COUNTER__)
+>
+> https://gitlab.com/nbdkit/nbdkit/-/blame/master/common/include/minmax.h#L47
+> #include "unique-name.h"
+>
+> #undef MIN
+> #define MIN(x, y) \
+>   MIN_1 ((x), (y), NBDKIT_UNIQUE_NAME (_x), NBDKIT_UNIQUE_NAME (_y))
+>
+> ...
+> #define MIN_1(x, y, _x, _y) ({                 \
+>       __auto_type _x = (x);                    \
+>       __auto_type _y = (y);                    \
+>       _x < _y ? _x : _y;                       \
+>     })
+
+Thanks!
+
 
