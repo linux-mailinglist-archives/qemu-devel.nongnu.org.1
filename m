@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DEA78FC50
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 13:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AF178FC96
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 13:45:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc2NI-0005DM-86; Fri, 01 Sep 2023 07:31:40 -0400
+	id 1qc2Zd-0005Er-Jh; Fri, 01 Sep 2023 07:44:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qc2NE-0005Cd-RA
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:31:37 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qc2NC-0004Wa-JK
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:31:36 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-52bcd4db4bdso2546525a12.3
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 04:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693567893; x=1694172693; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vweUuZA9Wa7LLnw3i29gbze6FJcaN4nWKQpFD/lg9sE=;
- b=RxUjmolkvcsZ0wykk7TCKM4dk9GxMaPQeBCov3gBHXG2kS7mrngtOxG407bAX1e5S2
- hYxfZtFfiXQ1ZwOQ9c6CpMgdMmXSV7+NSxsspnNbg7lPfdbrcw5je1PnrXdiau+qxUqA
- 5kOymn6r7pJPl8BvP4APA+PoBa3r4+U2/IXf4eYajTU4pAbmENUjPL4b/nz259fIYgT5
- lbkmnn1CWOAG7l5G/T+zpsoX3IClT8J5DisXbD3gnhUN7b+PsEbt6bKkd20o5ML6ShJG
- BrGiVOozwphzvnOWO/fE9yf/ntd98ydH+D8ytCDYKab/OXBLmPPhumyUW666XdnFSqgc
- X+bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693567893; x=1694172693;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vweUuZA9Wa7LLnw3i29gbze6FJcaN4nWKQpFD/lg9sE=;
- b=A47inswTtxeShFuO8qFq0y8bpxQvcl0Doz3VMceWwEBmhZzm7UlyMM8uCuqShe6Zou
- J3ShVn/iLYtjEs/mn3Qo7F/+QXjoTl5dvbo6pcJKcrixl0HBEM4wjrq9RDFUmisUU9Sq
- cVcIf5p/xxP38wzLX2+7E1UUXPIodNqMwO/YME/8S5P8ginf5iwsbh6VOWV5J/OfEJVX
- 5vp3z95vEFXtqiqE83IsczblRQaJPyOQOePqHH1/8AUb+BSKOzKAFTFfJaTDPW7k0vZg
- xVUDtxWcIMTO9ckP2uBGJJ9jDnnCnr9HEP0nmszOGYvW5kZiveciMDJ3LWroR1K4L7Eq
- D64w==
-X-Gm-Message-State: AOJu0Yw12Om2d6t2h4JoXX0PUnM0QCz42yP1vAcTDWf+b9dB9sl5Ak+D
- JbOaJ3AF4NowrRs8Ty/fxR+F4mKhkU0WFoH+Gpbw0Q==
-X-Google-Smtp-Source: AGHT+IFnBmb7+VYhVMzqQC6rblJIFEvWxK+pTvY/YM8j6v+rp+QMzzpBfF+h5+j4PII2ohU19U4PPfLj4m2pkH/f3nw=
-X-Received: by 2002:a05:6402:2027:b0:522:b112:6254 with SMTP id
- ay7-20020a056402202700b00522b1126254mr1613046edb.4.1693567893155; Fri, 01 Sep
- 2023 04:31:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2ZV-0005Dn-G9
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:44:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2ZR-0006cW-Cv
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:44:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693568652;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pqnU3r01l4dw5bR8qsKAbf7WjL/4AS4ln9SzPEhnayI=;
+ b=VAL7T1Zgm//E3cZz4aLe4+OifMkHH0oYdLRph7GEr3wZypPDMHYjogXSx7kr8LfjjF6vaH
+ 1lhTLfoMFiBEwSJ0LPVKMK7OlobhH+osTQosX1qyVYYyKL+NOnpgjpleZjHAuksxboiXvO
+ JNwMX64oecLyoOop2lS6aYd4+jXNzhM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-607-O16ilosHOY2mnEhADi4xog-1; Fri, 01 Sep 2023 07:44:08 -0400
+X-MC-Unique: O16ilosHOY2mnEhADi4xog-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A0350872922;
+ Fri,  1 Sep 2023 11:44:07 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1933E49310F;
+ Fri,  1 Sep 2023 11:44:07 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1241721E692A; Fri,  1 Sep 2023 13:44:06 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Li Feng <fengli@smartx.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Raphael Norwitz
+ <raphael.norwitz@nutanix.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna
+ Reitz <hreitz@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Fam
+ Zheng <fam@euphon.net>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Viresh
+ Kumar <viresh.kumar@linaro.org>,  qemu-block@nongnu.org (open list:Block
+ layer core),  qemu-devel@nongnu.org (open list:All patches CC here)
+Subject: Re: [PATCH v3 5/5] vhost-user-scsi: start vhost when guest kicks
+References: <20230721105205.1714449-1-fengli@smartx.com>
+ <20230731121018.2856310-1-fengli@smartx.com>
+ <20230731121018.2856310-6-fengli@smartx.com>
+Date: Fri, 01 Sep 2023 13:44:06 +0200
+In-Reply-To: <20230731121018.2856310-6-fengli@smartx.com> (Li Feng's message
+ of "Mon, 31 Jul 2023 20:10:10 +0800")
+Message-ID: <87zg2686ex.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230831225607.30829-1-philmd@linaro.org>
- <20230831225607.30829-5-philmd@linaro.org>
-In-Reply-To: <20230831225607.30829-5-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 1 Sep 2023 12:31:22 +0100
-Message-ID: <CAFEAcA_bE01tiv8pk_+U1P_eJKoi77TCc-D=y+qK10ZgykOP=Q@mail.gmail.com>
-Subject: Re: [PATCH 04/11] target/m68k: Clean up local variable shadowing
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- qemu-arm@nongnu.org, 
- qemu-block@nongnu.org, David Gibson <david@gibson.dropbear.id.au>, 
- Laurent Vivier <laurent@vivier.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,25 +86,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 23:58, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+Li Feng <fengli@smartx.com> writes:
+
+> Let's keep the same behavior as vhost-user-blk.
 >
-> Fix:
+> Some old guests kick virtqueue before setting VIRTIO_CONFIG_S_DRIVER_OK.
 >
->   target/m68k/translate.c:828:18: error: declaration shadows a local vari=
-able [-Werror,-Wshadow]
->             TCGv tmp =3D tcg_temp_new();
->                  ^
->   target/m68k/translate.c:801:15: note: previous declaration is here
->     TCGv reg, tmp, result;
->               ^
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Li Feng <fengli@smartx.com>
 > ---
->  target/m68k/translate.c | 2 +-
+>  hw/scsi/vhost-user-scsi.c | 48 +++++++++++++++++++++++++++++++++++----
+>  1 file changed, 44 insertions(+), 4 deletions(-)
+>
+> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+> index 5bf012461b..a7fa8e8df2 100644
+> --- a/hw/scsi/vhost-user-scsi.c
+> +++ b/hw/scsi/vhost-user-scsi.c
+> @@ -113,8 +113,48 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
+>      }
+>  }
+>  
+> -static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+> +static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+>  {
+> +    VHostUserSCSI *s = (VHostUserSCSI *)vdev;
+> +    DeviceState *dev = &s->parent_obj.parent_obj.parent_obj.parent_obj;
+> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
+> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
+> +
+> +    Error *local_err = NULL;
+> +    int i, ret;
+> +
+> +    if (!vdev->start_on_kick) {
+> +        return;
+> +    }
+> +
+> +    if (!s->connected) {
+> +        return;
+> +    }
+> +
+> +    if (vhost_dev_is_started(&vsc->dev)) {
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
+> +     * vhost here instead of waiting for .set_status().
+> +     */
+> +    ret = vhost_user_scsi_start(s);
+> +    if (ret < 0) {
+> +        error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Crashes, since @local_err is null.  Please test your error paths.
 
-thanks
--- PMM
+Obvious fix: drop this call.
+
+> +        qemu_chr_fe_disconnect(&vs->conf.chardev);
+> +        return;
+> +    }
+> +
+> +    /* Kick right away to begin processing requests already in vring */
+> +    for (i = 0; i < vsc->dev.nvqs; i++) {
+> +        VirtQueue *kick_vq = virtio_get_queue(vdev, i);
+> +
+> +        if (!virtio_queue_get_desc_addr(vdev, i)) {
+> +            continue;
+> +        }
+> +        event_notifier_set(virtio_queue_get_host_notifier(kick_vq));
+> +    }
+>  }
+>  
+>  static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
+> @@ -243,9 +283,9 @@ static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
+>          return;
+>      }
+>  
+> -    virtio_scsi_common_realize(dev, vhost_dummy_handle_output,
+> -                               vhost_dummy_handle_output,
+> -                               vhost_dummy_handle_output, &err);
+> +    virtio_scsi_common_realize(dev, vhost_user_scsi_handle_output,
+> +                               vhost_user_scsi_handle_output,
+> +                               vhost_user_scsi_handle_output, &err);
+>      if (err != NULL) {
+>          error_propagate(errp, err);
+>          return;
+
 
