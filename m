@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE1E790026
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 17:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6E0790028
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 17:51:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc6P6-00081q-0u; Fri, 01 Sep 2023 11:49:48 -0400
+	id 1qc6QV-0000dn-Vi; Fri, 01 Sep 2023 11:51:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qc6P4-00081i-Gi
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:49:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qc6QT-0000UC-QA
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:51:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qc6P2-0006ug-EF
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:49:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qc6QR-0007Jl-LH
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:51:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693583383;
+ s=mimecast20190719; t=1693583470;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=lk2tOer5KRsjxsoDDqxKrAc85w2V968MNfvwVD/hcy0=;
- b=Om+jN7kEq0vBO/GakHcodpj4VolgHjubOKA4UVLHb+MNxIX6YrEtuKahwIprK63RVYGTCM
- aBG20mYYkB/gj0uFYVQ+NHy+YW3CmUjKYHTuLO8yMo/K0hdqwEFNREp6ubGXti24g1xBKq
- YSbI7Th4sdvSJugKJHWF9qB53NRXv78=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fi7XjShym3umATXjA2XiTFzPNCTzPN2OfnOZ8h/Aqgo=;
+ b=R+dMvbbVdve+IT5iclr2abNZUQMbXjryT2M0wNDkv8uCOfmC6gCVn8/i94z1RB5GZsynYR
+ qTAQJu+gLrrw/KJMD1utzMAMMyyZo+oOS5diKIiZ1C0iHJMyAV3N/SgoENQGBUUo53JVcF
+ ogKngGE357wRMdiKDqMleThlK4rjyeQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-oeaOs1_EPYy2E0YFs4GrGA-1; Fri, 01 Sep 2023 11:49:41 -0400
-X-MC-Unique: oeaOs1_EPYy2E0YFs4GrGA-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6b9ef9c2268so417571a34.1
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 08:49:41 -0700 (PDT)
+ us-mta-119-ok7hJTtoMgyH1I2P9NwuWw-1; Fri, 01 Sep 2023 11:51:09 -0400
+X-MC-Unique: ok7hJTtoMgyH1I2P9NwuWw-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-63c9463c116so4299156d6.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 08:51:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693583381; x=1694188181;
+ d=1e100.net; s=20221208; t=1693583468; x=1694188268;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lk2tOer5KRsjxsoDDqxKrAc85w2V968MNfvwVD/hcy0=;
- b=aui3JXHyfV0sFM5wvbleShfMC8sYHZKjguo9RTeoXV1FWA8DHLo2ZokR4o5lqAT0BM
- DAl2aVU2le4MQ1Xd5YyOEgxByNoXIfMR7/dklnEU4GaTZJCjBQjzvyMh5foS91PYyGRj
- bFxr5i6vjZJjmj5W4lnnDzI3sd5rOZR5Nj4Zf14DEOXuCoYkWgAxFW9VugsVI6g5XX28
- tW6xXSvJefRtAd2n1ddsDJQFmZs1MCl4ZBV1MHcOdbxDtuLlxf6x9WVUSSsxNqVT57oO
- KCat7fH39yh0PWOGVpg7GbZMTxHZ/g9vndTxcLWiwkLU2yLmWWk5pYDQcUdt6rLmKbNF
- zLbA==
-X-Gm-Message-State: AOJu0Yz6WBrDTMYS0BCZBz2LhMq/+L56a2AX6pMGVHy8LbIUWxS6ohMi
- 5zKvmXol9PsgpewtFseiIrzNTt+/PXBNOcEwrEHckh22kQAgK+60o6iN5MbrGljSSBJDaGqkY8F
- SK84DjQWwtGxm2RE=
-X-Received: by 2002:a05:6830:4694:b0:6b7:36af:1937 with SMTP id
- ay20-20020a056830469400b006b736af1937mr3164890otb.0.1693583380858; 
- Fri, 01 Sep 2023 08:49:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkbdXOHvjoQYJsNJOrN9s2ij7vRQkpj7kojLLuXuLXsXNkpP7f8uM8xadSqGgoDZk4glny8A==
-X-Received: by 2002:a05:6830:4694:b0:6b7:36af:1937 with SMTP id
- ay20-20020a056830469400b006b736af1937mr3164870otb.0.1693583380588; 
- Fri, 01 Sep 2023 08:49:40 -0700 (PDT)
+ bh=fi7XjShym3umATXjA2XiTFzPNCTzPN2OfnOZ8h/Aqgo=;
+ b=bpx8+i+Jz9HWq582s12V8Jlu212/pTmQiZzFrLqKbDFFrauZzkHLhD4m10JcGPyBHK
+ wg+m5+IHspXtEXw50WJYTQeQSq1pmlWVfApUZKq6jDUjWy1Qt7emS8HUZdoYDSVLUU/9
+ D2/pEQoLZDVgYh+qFa/YtG9DBuVt72eue9mfnUDHe+uKzb/AdWMeGem4EJNGVekIzOCx
+ 7C60qIS6BXMSQ0qDbHrYQ6mR8SjKjSAmwh/CHXS9GgQ0vF7tYyYVy5ABSQ91FU0HTJgI
+ rwWAy9F/6H3kfZ4vJJxGws+aABb9TxhmBKZ+cqketg8cFjrWan3ioWFyOmsMvvi/8vjp
+ gJRg==
+X-Gm-Message-State: AOJu0YxIAUTpKyWppb2jEK41cxyYasUjNzkEu2iOYPjNkwHrjus7RdHg
+ fPT1nyvOuMGy4zh93taOtyc2Qs8hJM+j3F3fYuxjBbCpsfY+ZXCWjg3oZ+jvz0S600Y7Dd7Xh92
+ EJDo0t4siIbraA6o=
+X-Received: by 2002:a05:620a:45a8:b0:76f:167a:cc5d with SMTP id
+ bp40-20020a05620a45a800b0076f167acc5dmr3010916qkb.7.1693583468575; 
+ Fri, 01 Sep 2023 08:51:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGvcJQTbZ4LdmrjLCNDXm7HzpStzWMcU1ZJ5lT2XrzvJLAvt4vZ1ugllecbFsfQr3hfbelxDQ==
+X-Received: by 2002:a05:620a:45a8:b0:76f:167a:cc5d with SMTP id
+ bp40-20020a05620a45a800b0076f167acc5dmr3010893qkb.7.1693583468267; 
+ Fri, 01 Sep 2023 08:51:08 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- c6-20020ae9e206000000b00767e98535b7sm1478498qkc.67.2023.09.01.08.49.39
+ z7-20020ae9c107000000b0076eedc31b5esm1465984qki.128.2023.09.01.08.51.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 08:49:40 -0700 (PDT)
-Date: Fri, 1 Sep 2023 11:49:37 -0400
+ Fri, 01 Sep 2023 08:51:08 -0700 (PDT)
+Date: Fri, 1 Sep 2023 11:51:01 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Avihai Horon <avihaih@nvidia.com>
 Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Yanghang Liu <yanghliu@redhat.com>
-Subject: Re: [PATCH v2 3/5] migration: Add .save_prepare() handler to struct
- SaveVMHandlers
-Message-ID: <ZPIIEYhcwPJLg2Lj@x1n>
+Subject: Re: [PATCH v2 4/5] vfio/migration: Block VFIO migration with
+ postcopy migration
+Message-ID: <ZPIIZT6RywNN4M/9@x1n>
 References: <20230831125702.11263-1-avihaih@nvidia.com>
- <20230831125702.11263-4-avihaih@nvidia.com>
+ <20230831125702.11263-5-avihaih@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230831125702.11263-4-avihaih@nvidia.com>
+In-Reply-To: <20230831125702.11263-5-avihaih@nvidia.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -100,20 +100,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 03:57:00PM +0300, Avihai Horon wrote:
-> Add a new .save_prepare() handler to struct SaveVMHandlers. This handler
-> is called early, even before migration starts, and can be used by
-> devices to perform early checks.
+On Thu, Aug 31, 2023 at 03:57:01PM +0300, Avihai Horon wrote:
+> VFIO migration is not compatible with postcopy migration. A VFIO device
+> in the destination can't handle page faults for pages that have not been
+> sent yet.
 > 
-> Suggested-by: Peter Xu <peterx@redhat.com>
+> Doing such migration will cause the VM to crash in the destination:
+> 
+> qemu-system-x86_64: VFIO_MAP_DMA failed: Bad address
+> qemu-system-x86_64: vfio_dma_map(0x55a28c7659d0, 0xc0000, 0xb000, 0x7f1b11a00000) = -14 (Bad address)
+> qemu: hardware error: vfio: DMA mapping failed, unable to continue
+> 
+> To prevent this, block VFIO migration with postcopy migration.
+> 
+> Reported-by: Yanghang Liu <yanghliu@redhat.com>
 > Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> ---
+>  hw/vfio/migration.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index 71855468fe..20994dc1d6 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -335,6 +335,27 @@ static bool vfio_precopy_supported(VFIODevice *vbasedev)
+>  
+>  /* ---------------------------------------------------------------------- */
+>  
+> +static int vfio_save_prepare(void *opaque, Error **errp)
+> +{
+> +    VFIODevice *vbasedev = opaque;
+> +
+> +    /*
+> +     * Snapshot doesn't use postcopy, so allow snapshot even if postcopy is on.
+> +     */
+> +    if (runstate_check(RUN_STATE_SAVE_VM)) {
+> +        return 0;
+> +    }
 
-Shouldn't be hard to unify the two call sites for qmp migrate and save
-snapshot, but we can leave that for later:
+Just purely curious: will it really work to save a snapshot for the GPU
+assigned use case?
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-
-Thanks,
+> +
+> +    if (migrate_postcopy_ram()) {
+> +        error_setg(
+> +            errp, "%s: VFIO migration is not supported with postcopy migration",
+> +            vbasedev->name);
+> +        return -EOPNOTSUPP;
+> +    }
+> +
+> +    return 0;
+> +}
 
 -- 
 Peter Xu
