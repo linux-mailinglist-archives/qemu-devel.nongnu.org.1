@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B8778FB40
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7163E78FB55
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:46:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc0fo-0001Nt-68; Fri, 01 Sep 2023 05:42:40 -0400
+	id 1qc0fp-0001UF-Iw; Fri, 01 Sep 2023 05:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fl-0001NY-Rf; Fri, 01 Sep 2023 05:42:37 -0400
+ id 1qc0fn-0001OA-LZ; Fri, 01 Sep 2023 05:42:39 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fi-0002t1-KS; Fri, 01 Sep 2023 05:42:37 -0400
+ id 1qc0fl-0002tv-9R; Fri, 01 Sep 2023 05:42:39 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3X26CZz4x3j;
- Fri,  1 Sep 2023 19:42:32 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3Z5r3Sz4x3k;
+ Fri,  1 Sep 2023 19:42:34 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3V5Z2cz4wxW;
- Fri,  1 Sep 2023 19:42:30 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3X5h8Cz4x3H;
+ Fri,  1 Sep 2023 19:42:32 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Joel Stanley <joel@jms.id.au>
-Subject: [PULL 05/26] tests/avocado/machine_aspeed.py: Update SDK images
-Date: Fri,  1 Sep 2023 11:41:53 +0200
-Message-ID: <20230901094214.296918-6-clg@kaod.org>
+Subject: [PULL 06/26] hw/ssi: Add a "cs" property to SSIPeripheral
+Date: Fri,  1 Sep 2023 11:41:54 +0200
+Message-ID: <20230901094214.296918-7-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901094214.296918-1-clg@kaod.org>
 References: <20230901094214.296918-1-clg@kaod.org>
@@ -63,55 +65,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Switch to the latest v8.06 release which introduces interesting
-changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
-images instead of the default since QEMU tries to model The AST2600 A3
-SoC.
+Boards will use this new property to identify the device CS line and
+wire the SPI controllers accordingly.
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Cc: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- tests/avocado/machine_aspeed.py | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/hw/ssi/ssi.h | 3 +++
+ hw/ssi/ssi.c         | 7 +++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
-index 724ee72c0208..90f1b7cb77a1 100644
---- a/tests/avocado/machine_aspeed.py
-+++ b/tests/avocado/machine_aspeed.py
-@@ -316,8 +316,8 @@ def test_arm_ast2500_evb_sdk(self):
-         """
+diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
+index 6950f86810d3..c5bdf1f2165f 100644
+--- a/include/hw/ssi/ssi.h
++++ b/include/hw/ssi/ssi.h
+@@ -64,6 +64,9 @@ struct SSIPeripheral {
  
-         image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
--                     'download/v08.01/ast2500-default-obmc.tar.gz')
--        image_hash = ('5375f82b4c43a79427909342a1e18b4e48bd663e38466862145d27bb358796fd')
-+                     'download/v08.06/ast2500-default-obmc.tar.gz')
-+        image_hash = ('e1755f3cadff69190438c688d52dd0f0d399b70a1e14b1d3d5540fc4851d38ca')
-         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
-                                       algorithm='sha256')
-         archive.extract(image_path, self.workdir)
-@@ -334,8 +334,8 @@ def test_arm_ast2600_evb_sdk(self):
-         """
+     /* Chip select state */
+     bool cs;
++
++    /* Chip select index */
++    uint8_t cs_index;
+ };
  
-         image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
--                     'download/v08.01/ast2600-default-obmc.tar.gz')
--        image_hash = ('f12ef15e8c1f03a214df3b91c814515c5e2b2f56119021398c1dbdd626817d15')
-+                     'download/v08.06/ast2600-a2-obmc.tar.gz')
-+        image_hash = ('9083506135f622d5e7351fcf7d4e1c7125cee5ba16141220c0ba88931f3681a4')
-         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
-                                       algorithm='sha256')
-         archive.extract(image_path, self.workdir)
-@@ -345,8 +345,8 @@ def test_arm_ast2600_evb_sdk(self):
-         self.vm.add_args('-device',
-                          'ds1338,bus=aspeed.i2c.bus.5,address=0x32');
-         self.do_test_arm_aspeed_sdk_start(
--            self.workdir + '/ast2600-default/image-bmc')
--        self.wait_for_console_pattern('nodistro.0 ast2600-default ttyS4')
-+            self.workdir + '/ast2600-a2/image-bmc')
-+        self.wait_for_console_pattern('nodistro.0 ast2600-a2 ttyS4')
+ extern const VMStateDescription vmstate_ssi_peripheral;
+diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
+index d54a109beeb5..4e33e0ea5bc2 100644
+--- a/hw/ssi/ssi.c
++++ b/hw/ssi/ssi.c
+@@ -13,6 +13,7 @@
+  */
  
-         self.ssh_connect('root', '0penBmc', False)
-         self.ssh_command('dmesg -c > /dev/null')
+ #include "qemu/osdep.h"
++#include "hw/qdev-properties.h"
+ #include "hw/ssi/ssi.h"
+ #include "migration/vmstate.h"
+ #include "qemu/module.h"
+@@ -71,6 +72,11 @@ static void ssi_peripheral_realize(DeviceState *dev, Error **errp)
+     ssc->realize(s, errp);
+ }
+ 
++static Property ssi_peripheral_properties[] = {
++    DEFINE_PROP_UINT8("cs", SSIPeripheral, cs_index, 0),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void ssi_peripheral_class_init(ObjectClass *klass, void *data)
+ {
+     SSIPeripheralClass *ssc = SSI_PERIPHERAL_CLASS(klass);
+@@ -81,6 +87,7 @@ static void ssi_peripheral_class_init(ObjectClass *klass, void *data)
+     if (!ssc->transfer_raw) {
+         ssc->transfer_raw = ssi_transfer_raw_default;
+     }
++    device_class_set_props(dc, ssi_peripheral_properties);
+ }
+ 
+ static const TypeInfo ssi_peripheral_info = {
 -- 
 2.41.0
 
