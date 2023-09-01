@@ -2,52 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DCC78FAF2
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 753B878FB3E
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:43:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc0Y4-0005Fv-6G; Fri, 01 Sep 2023 05:34:41 -0400
+	id 1qc0fr-0001Wt-HB; Fri, 01 Sep 2023 05:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qc0XY-00054H-KR
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 05:34:09 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
+ (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
+ id 1qc0fo-0001TW-Pg; Fri, 01 Sep 2023 05:42:40 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qc0XS-0000Zz-IQ
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 05:34:07 -0400
-Received: from ls3a6000.. (unknown [223.72.40.98])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id CCC8744470;
- Fri,  1 Sep 2023 09:33:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1693560831; bh=32SlQyD3SIyzxtyd1pmcYkrZHHAhgAihMV8Lj5s6cYM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=Ut6cJnr7pEjmJ/HK50swXu1gZpXFym9akw1mU+YzJ/NbtLe32IwDqB8JavQMmPgiW
- vTwEEkOksN/MFYw9JSK+ndmL/enbbto1xBhgc6PdNA3ujA22uKXAGXZ0d23OV+aVgq
- 6YZXpp3NMhaheTI+A0gS7+KGGVzQcXXPY4Mk8WXM=
-From: Jiajie Chen <c@jia.je>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
- Jiajie Chen <c@jia.je>
-Subject: [PATCH v2 14/14] tcg/loongarch64: Lower rotli_vec to vrotri
-Date: Fri,  1 Sep 2023 17:31:07 +0800
-Message-ID: <20230901093258.942357-15-c@jia.je>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230901093258.942357-1-c@jia.je>
-References: <20230901093258.942357-1-c@jia.je>
+ (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
+ id 1qc0fa-0002pI-KP; Fri, 01 Sep 2023 05:42:40 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3K2GJtz4wy6;
+ Fri,  1 Sep 2023 19:42:21 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3J0MPmz4wxW;
+ Fri,  1 Sep 2023 19:42:19 +1000 (AEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 00/26] aspeed queue
+Date: Fri,  1 Sep 2023 11:41:48 +0200
+Message-ID: <20230901094214.296918-1-clg@kaod.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=SnXb=ER=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,65 +59,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Jiajie Chen <c@jia.je>
----
- tcg/loongarch64/tcg-target.c.inc | 21 +++++++++++++++++++++
- tcg/loongarch64/tcg-target.h     |  2 +-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 6fe319a77e..c4e9e0309e 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1894,6 +1894,26 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         tcg_out32(s, encode_vdvjvk_insn(rotrv_vec_insn[vece], a0, a1,
-                                         temp_vec));
-         break;
-+    case INDEX_op_rotli_vec:
-+        /* rotli_vec a1, a2 = rotri_vec a1, -a2 */
-+        a2 = extract32(-a2, 0, 3 + vece);
-+        switch (vece) {
-+        case MO_8:
-+            tcg_out_opc_vrotri_b(s, a0, a1, a2);
-+            break;
-+        case MO_16:
-+            tcg_out_opc_vrotri_h(s, a0, a1, a2);
-+            break;
-+        case MO_32:
-+            tcg_out_opc_vrotri_w(s, a0, a1, a2);
-+            break;
-+        case MO_64:
-+            tcg_out_opc_vrotri_d(s, a0, a1, a2);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        break;
-     case INDEX_op_bitsel_vec:
-         /* vbitsel vd, vj, vk, va = bitsel_vec vd, va, vk, vj */
-         tcg_out_opc_vbitsel_v(s, a0, a3, a2, a1);
-@@ -2132,6 +2152,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_shli_vec:
-     case INDEX_op_shri_vec:
-     case INDEX_op_sari_vec:
-+    case INDEX_op_rotli_vec:
-         return C_O1_I1(w, w);
- 
-     case INDEX_op_bitsel_vec:
-diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index f6eb3cf7a6..3dc2dbf800 100644
---- a/tcg/loongarch64/tcg-target.h
-+++ b/tcg/loongarch64/tcg-target.h
-@@ -187,7 +187,7 @@ extern bool use_lsx_instructions;
- #define TCG_TARGET_HAS_shi_vec          1
- #define TCG_TARGET_HAS_shs_vec          0
- #define TCG_TARGET_HAS_shv_vec          1
--#define TCG_TARGET_HAS_roti_vec         0
-+#define TCG_TARGET_HAS_roti_vec         1
- #define TCG_TARGET_HAS_rots_vec         0
- #define TCG_TARGET_HAS_rotv_vec         1
- #define TCG_TARGET_HAS_sat_vec          1
--- 
-2.42.0
+  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
 
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-aspeed-20230901
+
+for you to fetch changes up to c3287c0f70dae07dd12322c5c8663f7b878826e7:
+
+  hw/sd: Introduce a "sd-card" SPI variant model (2023-09-01 11:40:04 +0200)
+
+----------------------------------------------------------------
+aspeed queue:
+
+* Fixes for the Aspeed I2C model
+* New SDK image for avocado tests
+* blockdev support for flash device definition
+* SD refactoring preparing ground for eMMC support
+
+----------------------------------------------------------------
+Cédric Le Goater (10):
+      aspeed: Introduce helper for 32-bit hosts limitation
+      tests/avocado/machine_aspeed.py: Update SDK images
+      hw/ssi: Add a "cs" property to SSIPeripheral
+      hw/ssi: Introduce a ssi_get_cs() helper
+      aspeed/smc: Wire CS lines at reset
+      hw/ssi: Check for duplicate CS indexes
+      aspeed: Create flash devices only when defaults are enabled
+      m25p80: Introduce an helper to retrieve the BlockBackend of a device
+      aspeed: Get the BlockBackend of FMC0 from the flash device
+      hw/sd: Introduce a "sd-card" SPI variant model
+
+Hang Yu (3):
+      hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
+      hw/i2c/aspeed: Fix TXBUF transmission start position error
+      hw/i2c/aspeed: Add support for buffer organization
+
+Joel Stanley (1):
+      hw/sd: Add sd_cmd_SEND_TUNING_BLOCK() handler
+
+Philippe Mathieu-Daudé (12):
+      hw/sd/sdcard: Return ILLEGAL for CMD19/CMD23 prior SD spec v3.01
+      hw/sd: When card is in wrong state, log which state it is
+      hw/sd: When card is in wrong state, log which spec version is used
+      hw/sd: Move proto_name to SDProto structure
+      hw/sd: Introduce sd_cmd_handler type
+      hw/sd: Add sd_cmd_illegal() handler
+      hw/sd: Add sd_cmd_unimplemented() handler
+      hw/sd: Add sd_cmd_GO_IDLE_STATE() handler
+      hw/sd: Add sd_cmd_SEND_OP_CMD() handler
+      hw/sd: Add sd_cmd_ALL_SEND_CID() handler
+      hw/sd: Add sd_cmd_SEND_RELATIVE_ADDR() handler
+      hw/sd: Add sd_cmd_SET_BLOCK_COUNT() handler
+
+ docs/system/arm/aspeed.rst          |  35 +++-
+ include/hw/block/flash.h            |   4 +
+ include/hw/i2c/aspeed_i2c.h         |   5 +-
+ include/hw/sd/sd.h                  |   5 +
+ include/hw/ssi/ssi.h                |   5 +
+ hw/arm/aspeed.c                     |  40 ++---
+ hw/arm/stellaris.c                  |   7 +-
+ hw/arm/xilinx_zynq.c                |   1 +
+ hw/arm/xlnx-versal-virt.c           |   1 +
+ hw/arm/xlnx-zcu102.c                |   2 +
+ hw/block/m25p80.c                   |   6 +
+ hw/i2c/aspeed_i2c.c                 |  40 ++---
+ hw/microblaze/petalogix_ml605_mmu.c |   1 +
+ hw/riscv/sifive_u.c                 |   3 +-
+ hw/sd/sd.c                          | 348 ++++++++++++++++++++++--------------
+ hw/sd/sdmmc-internal.c              |   2 +-
+ hw/ssi/aspeed_smc.c                 |   8 +
+ hw/ssi/ssi.c                        |  43 +++++
+ tests/avocado/machine_aspeed.py     |  12 +-
+ 19 files changed, 367 insertions(+), 201 deletions(-)
 
