@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2EF79014D
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E57790167
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc7oE-00066d-GG; Fri, 01 Sep 2023 13:19:50 -0400
+	id 1qc7rf-0000RH-3H; Fri, 01 Sep 2023 13:23:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7oB-00064N-Bf
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:19:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qc7rU-0000R0-Vd
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:23:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7o7-0008Aq-Vo
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:19:46 -0400
+ id 1qc7rR-0000cr-U3
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:23:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693588783;
+ s=mimecast20190719; t=1693588988;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OzaLB3nGd6nhhYUqppLafKgQNgFcrlnUpqOGfTNBaac=;
- b=dRx5sozSYx9zoRn82kOZB3KlFmVlVcsDz2XG/P/edshqgwja4l2KLZrx0Pc6DT/G6GJ+fJ
- Lg8cQRboiNR+6O+7knCKA+P5Wkwsrm/eMpDZB70GhArisnexhRBElPbKjVted9hYecByIH
- LmV7jqUHh9Qsoa2LRP/wiISzjjvPniU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-446-PI3VQ-1wPo-XqHl4jtzPwg-1; Fri, 01 Sep 2023 13:19:41 -0400
-X-MC-Unique: PI3VQ-1wPo-XqHl4jtzPwg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=fmFjSTy+S/6IcDOeNulzA+RaFnwPtIeHvPQ/ObbChRo=;
+ b=GI5l2SG53GcaYo4nWxh81B1ExENwbKAngi/lP+i4+z7hnzX3xuCjEUlNWi6Gw495c3pVpF
+ 3Yqu4N4jVTWjZoSRbxLCqPZvISN0NnEXudWRL9wkzmZAsq8tDiG676FqXY4aMKWjLo2CBf
+ 8fj1vazAyf14pO8ltmj2o8wIqZcJbfM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-297-GpcFJtfJNySEJW_NAloMDQ-1; Fri, 01 Sep 2023 13:23:07 -0400
+X-MC-Unique: GpcFJtfJNySEJW_NAloMDQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48F5210264C1
- for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:19:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DA895381CC0C
+ for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:23:06 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A1A4A63F7A;
- Fri,  1 Sep 2023 17:19:40 +0000 (UTC)
-Date: Fri, 1 Sep 2023 18:19:38 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 26AE41005B8E;
+ Fri,  1 Sep 2023 17:23:05 +0000 (UTC)
+Date: Fri, 1 Sep 2023 18:23:03 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 48/67] ui/vc: preliminary QemuTextConsole changes before
- split
-Message-ID: <ZPIdKoNDbH2VxkGb@redhat.com>
+Subject: Re: [PATCH 49/67] ui/vc: split off the VC part from console.c
+Message-ID: <ZPId9976tOP7o8XS@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-49-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-50-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830093843.3531473-49-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-50-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,18 +83,41 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:38:22PM +0400, marcandre.lureau@redhat.com wrote:
+On Wed, Aug 30, 2023 at 01:38:23PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Those changes will help to split console.c unit in the following commit.
+> Move common declarations to console-priv.h, and add a new unit
+> console-vc.c which will handle VC/chardev rendering, when pixman is
+> available.
+> 
+> (if necessary, the move could be done chunk by chunks)
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  ui/console.c | 52 +++++++++++++++++++++++++++++++++++-----------------
->  1 file changed, 35 insertions(+), 17 deletions(-)
+>  ui/console-priv.h |   43 ++
+>  ui/console-vc.c   | 1079 ++++++++++++++++++++++++++++++++++++++++++++
+>  ui/console.c      | 1096 +--------------------------------------------
+>  ui/meson.build    |    1 +
+>  4 files changed, 1126 insertions(+), 1093 deletions(-)
+>  create mode 100644 ui/console-priv.h
+>  create mode 100644 ui/console-vc.c
+> 
+> diff --git a/ui/console-vc.c b/ui/console-vc.c
+> new file mode 100644
+> index 0000000000..656f099556
+> --- /dev/null
+> +++ b/ui/console-vc.c
+> @@ -0,0 +1,1079 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * QEMU VC
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+This code is moved out of console.c, which (surprisingly) appears
+to have an MIT license header.
 
+
+The include/ui/console.h header meanwhile has no license, so is
+valid to assume it is GPL-2.0-or-later I guess.
 
 With regards,
 Daniel
