@@ -2,58 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3CC78FD26
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E5778FD51
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc3E0-0002UW-7C; Fri, 01 Sep 2023 08:26:08 -0400
+	id 1qc3KI-0006P3-AI; Fri, 01 Sep 2023 08:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc3Dy-0002UE-7b; Fri, 01 Sep 2023 08:26:06 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc3KG-0006Og-25
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:32:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc3Dv-0007pf-RR; Fri, 01 Sep 2023 08:26:05 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rcch64V1Tz4wy9;
- Fri,  1 Sep 2023 22:25:58 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc3KC-0000uc-KA
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:32:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693571551;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4qjcwZML5WNcqa2TqT8DipTZtsUBetYmXXLYlwc2OtE=;
+ b=ga0KkUA27VyuyoHxhIzlGqOyqGJUTpJgEBMqPQiTU1iiS43KaWdOzprO2FnH3UmU6N0wRM
+ oQUdFJyyeR53+Vs+AAIt3SmgyXeJNn4du0VbTm0hP7Fr5bVGIMwKuqiPJMow92IgazeOI+
+ Rfzt7XqJ9XyHPC/ftAomqJBoreLnYsQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-660-Nu1OyHSkM_GVPAdt1G6xtw-1; Fri, 01 Sep 2023 08:32:27 -0400
+X-MC-Unique: Nu1OyHSkM_GVPAdt1G6xtw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rcch40bm9z4wy7;
- Fri,  1 Sep 2023 22:25:55 +1000 (AEST)
-Message-ID: <59203654-9490-0b2c-af6d-3d52577c41ff@kaod.org>
-Date: Fri, 1 Sep 2023 14:25:54 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9302810264F3;
+ Fri,  1 Sep 2023 12:32:27 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 40F7C493110;
+ Fri,  1 Sep 2023 12:32:27 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3BA0221E692A; Fri,  1 Sep 2023 14:32:26 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: helei.sig11@bytedance.com,
+	pizhenwei@bytedance.com,
+	berrange@redhat.com
+Subject: [PATCH] crypto/rsakey-builtin.c.inc: Clean up two error paths
+Date: Fri,  1 Sep 2023 14:32:26 +0200
+Message-ID: <20230901123226.3656164-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 08/19] target/ppc: Sign-extend large decrementer to
- 64-bits
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230808042001.411094-1-npiggin@gmail.com>
- <20230808042001.411094-9-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230808042001.411094-9-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=SnXb=ER=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.478, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,57 +77,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nick,
+When qcrypto_builtin_rsa_public_key_parse() is about to fail, but no
+error has been set, it makes one up.  Actually, there's just one way
+to fail without setting an error.  Set it there instead.
 
-On 8/8/23 06:19, Nicholas Piggin wrote:
-> When storing a large decrementer value with the most significant
-> implemented bit set, it is to be treated as a negative and sign
-> extended.
-> 
-> This isn't hit for book3s DEC because of another bug, fixing it
-> in the next patch exposes this one and can cause additional
-> problems, so fix this first. It can be hit with HDECR and other
-> edge triggered types.
-> 
-> Fixes: a8dafa52518 ("target/ppc: Implement large decrementer support for TCG")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/ppc/ppc.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index a397820d9c..fb4784793c 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -743,7 +743,9 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
->        * to 64 bits, otherwise it is a 32 bit value.
->        */
->       if (env->spr[SPR_LPCR] & LPCR_LD) {
-> -        return decr;
-> +        PowerPCCPU *cpu = env_archcpu(env);
-> +        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-> +        return sextract64(decr, 0, pcc->lrg_decr_bits);
->       }
->       return (uint32_t) decr;
->   }
-> @@ -762,7 +764,9 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
->        * extended to 64 bits, otherwise it is 32 bits.
->        */
->       if (pcc->lrg_decr_bits > 32) {
-> -        return hdecr;
-> +        PowerPCCPU *cpu = env_archcpu(env);
-> +        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+Same for qcrypto_builtin_rsa_private_key_parse().
 
-Why are 'cpu' and 'ppc' duplicated ?
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ crypto/rsakey-builtin.c.inc | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-Thanks,
-
-C.
-
-
-> +        return sextract64(hdecr, 0, pcc->lrg_decr_bits);
->       }
->       return (uint32_t) hdecr;
->   }
+diff --git a/crypto/rsakey-builtin.c.inc b/crypto/rsakey-builtin.c.inc
+index aeeacc8f9b..46cc7afe87 100644
+--- a/crypto/rsakey-builtin.c.inc
++++ b/crypto/rsakey-builtin.c.inc
+@@ -88,15 +88,13 @@ static QCryptoAkCipherRSAKey *qcrypto_builtin_rsa_public_key_parse(
+         goto error;
+     }
+     if (seq_length != 0) {
++        error_setg(errp, "Invalid RSA public key");
+         goto error;
+     }
+ 
+     return rsa;
+ 
+ error:
+-    if (errp && !*errp) {
+-        error_setg(errp, "Invalid RSA public key");
+-    }
+     qcrypto_akcipher_rsakey_free(rsa);
+     return NULL;
+ }
+@@ -169,15 +167,13 @@ static QCryptoAkCipherRSAKey *qcrypto_builtin_rsa_private_key_parse(
+         return rsa;
+     }
+     if (seq_length != 0) {
++        error_setg(errp, "Invalid RSA private key");
+         goto error;
+     }
+ 
+     return rsa;
+ 
+ error:
+-    if (errp && !*errp) {
+-        error_setg(errp, "Invalid RSA private key");
+-    }
+     qcrypto_akcipher_rsakey_free(rsa);
+     return NULL;
+ }
+-- 
+2.41.0
 
 
