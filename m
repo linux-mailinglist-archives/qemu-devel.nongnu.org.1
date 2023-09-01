@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAC578FC4B
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 13:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DEA78FC50
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 13:32:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc2Lu-0004Ez-Jc; Fri, 01 Sep 2023 07:30:14 -0400
+	id 1qc2NI-0005DM-86; Fri, 01 Sep 2023 07:31:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qc2Ls-0004E1-Pk
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:30:12 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1qc2NE-0005Cd-RA
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:31:37 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qc2Lq-0003o3-4y
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:30:12 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-529fb2c6583so2440747a12.1
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 04:30:09 -0700 (PDT)
+ id 1qc2NC-0004Wa-JK
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:31:36 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcd4db4bdso2546525a12.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 04:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693567809; x=1694172609; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693567893; x=1694172693; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yNT8hjywM3hateRXY/fPBXDS/ULk/xkyL06caX8Wwxw=;
- b=oKC33rPgcVFXhIFRVdfSuCbSdBYjzzq9FDXjEdNqfhS6Dz9G0uEVruQImnoHLRwuk3
- GBwDSAfcWoRrOnOtuZNa/NRIAH99+RfY5u5288jfeaS77G51eA9zcwIDDO6wGdMWxA7s
- rmAEUGfJ++hCA28dJ9xnkSdHf0J4P9VNhsdbfUWQfpkeBquxTG26dXELD5c3NpWdQS9c
- QPURM94jpBWpLrQD4ofwTLxbaloT799eww2SwEdA5DJVylvfJfnw90Y9ztJvmX0STuiV
- ngGa9B2OGX2Xn9vb8sWQhKRkU7alIrJJuBVX/GpyEIeqRkhuA55Q2FWemtC9TejrBeVE
- +rfg==
+ bh=vweUuZA9Wa7LLnw3i29gbze6FJcaN4nWKQpFD/lg9sE=;
+ b=RxUjmolkvcsZ0wykk7TCKM4dk9GxMaPQeBCov3gBHXG2kS7mrngtOxG407bAX1e5S2
+ hYxfZtFfiXQ1ZwOQ9c6CpMgdMmXSV7+NSxsspnNbg7lPfdbrcw5je1PnrXdiau+qxUqA
+ 5kOymn6r7pJPl8BvP4APA+PoBa3r4+U2/IXf4eYajTU4pAbmENUjPL4b/nz259fIYgT5
+ lbkmnn1CWOAG7l5G/T+zpsoX3IClT8J5DisXbD3gnhUN7b+PsEbt6bKkd20o5ML6ShJG
+ BrGiVOozwphzvnOWO/fE9yf/ntd98ydH+D8ytCDYKab/OXBLmPPhumyUW666XdnFSqgc
+ X+bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693567809; x=1694172609;
+ d=1e100.net; s=20221208; t=1693567893; x=1694172693;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yNT8hjywM3hateRXY/fPBXDS/ULk/xkyL06caX8Wwxw=;
- b=gZvzc0p0Sp8nE85xlLSziFed/c/lmdbtvTNu/U7MKbT1qay/IOeA3w8h0t/8gCFtP2
- FxWX068Y17ygm68jFBEJq7giNYAB+CP8NxYfJLwkz5CdQB64K6Xo23kG2dn4/0D0Ye+J
- czyuZg1M5PCaw6/hGZiEmYKfrmDe9wA6PQmwi69GQnwLJDMEt2VieywViyyg2iX59P+y
- hGMHHJLWiHtqVPzZtSVtJXF501qI6P8s3K4iGvzEgG/4iMZXEpSFXJE0yeWU9qqBgZlK
- dcB89YRMwBzzvrZEGLaY3IHrs05/T73rX1Aa7z9lxkhCgwuEBbwvdOCudSo+HWyy4Jfl
- jm2w==
-X-Gm-Message-State: AOJu0Yzh4Ycq+YEonSvFAvP4FK4ms1hsThUwCPmj9QbiRh4U+8hlRmyX
- 4kAJsYRWL/nOk66DsEmJ10BQQ7SoDwODV98miW0ECw==
-X-Google-Smtp-Source: AGHT+IFNEV4q9Oc7bjh+pli7jeptXe3SuYeqRyapQXttxY6VmBwhUN65GXfpjXLuaxau5eFMvoc5gwlNKKhyyh13p0E=
-X-Received: by 2002:aa7:da09:0:b0:523:1053:9b50 with SMTP id
- r9-20020aa7da09000000b0052310539b50mr1636435eds.20.1693567808819; Fri, 01 Sep
- 2023 04:30:08 -0700 (PDT)
+ bh=vweUuZA9Wa7LLnw3i29gbze6FJcaN4nWKQpFD/lg9sE=;
+ b=A47inswTtxeShFuO8qFq0y8bpxQvcl0Doz3VMceWwEBmhZzm7UlyMM8uCuqShe6Zou
+ J3ShVn/iLYtjEs/mn3Qo7F/+QXjoTl5dvbo6pcJKcrixl0HBEM4wjrq9RDFUmisUU9Sq
+ cVcIf5p/xxP38wzLX2+7E1UUXPIodNqMwO/YME/8S5P8ginf5iwsbh6VOWV5J/OfEJVX
+ 5vp3z95vEFXtqiqE83IsczblRQaJPyOQOePqHH1/8AUb+BSKOzKAFTFfJaTDPW7k0vZg
+ xVUDtxWcIMTO9ckP2uBGJJ9jDnnCnr9HEP0nmszOGYvW5kZiveciMDJ3LWroR1K4L7Eq
+ D64w==
+X-Gm-Message-State: AOJu0Yw12Om2d6t2h4JoXX0PUnM0QCz42yP1vAcTDWf+b9dB9sl5Ak+D
+ JbOaJ3AF4NowrRs8Ty/fxR+F4mKhkU0WFoH+Gpbw0Q==
+X-Google-Smtp-Source: AGHT+IFnBmb7+VYhVMzqQC6rblJIFEvWxK+pTvY/YM8j6v+rp+QMzzpBfF+h5+j4PII2ohU19U4PPfLj4m2pkH/f3nw=
+X-Received: by 2002:a05:6402:2027:b0:522:b112:6254 with SMTP id
+ ay7-20020a056402202700b00522b1126254mr1613046edb.4.1693567893155; Fri, 01 Sep
+ 2023 04:31:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230831225607.30829-1-philmd@linaro.org>
- <20230831225607.30829-7-philmd@linaro.org>
-In-Reply-To: <20230831225607.30829-7-philmd@linaro.org>
+ <20230831225607.30829-5-philmd@linaro.org>
+In-Reply-To: <20230831225607.30829-5-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 1 Sep 2023 12:29:58 +0100
-Message-ID: <CAFEAcA-kLGnxNesUKGSUpC4DT5Bhpcz30zu3ce18=2vH2EnxGw@mail.gmail.com>
-Subject: Re: [PATCH 06/11] hw/arm/allwinner: Clean up local variable shadowing
+Date: Fri, 1 Sep 2023 12:31:22 +0100
+Message-ID: <CAFEAcA_bE01tiv8pk_+U1P_eJKoi77TCc-D=y+qK10ZgykOP=Q@mail.gmail.com>
+Subject: Re: [PATCH 04/11] target/m68k: Clean up local variable shadowing
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  qemu-arm@nongnu.org, 
  qemu-block@nongnu.org, David Gibson <david@gibson.dropbear.id.au>, 
- Beniamino Galvani <b.galvani@gmail.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+ Laurent Vivier <laurent@vivier.eu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,21 +90,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 23:56, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+On Thu, 31 Aug 2023 at 23:58, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
 > Fix:
 >
->   hw/arm/allwinner-r40.c:412:14: error: declaration shadows a local varia=
-ble [-Werror,-Wshadow]
->     for (int i =3D 0; i < AW_R40_NUM_MMCS; i++) {
->              ^
->   hw/arm/allwinner-r40.c:299:14: note: previous declaration is here
->     unsigned i;
->              ^
+>   target/m68k/translate.c:828:18: error: declaration shadows a local vari=
+able [-Werror,-Wshadow]
+>             TCGv tmp =3D tcg_temp_new();
+>                  ^
+>   target/m68k/translate.c:801:15: note: previous declaration is here
+>     TCGv reg, tmp, result;
+>               ^
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
+>  target/m68k/translate.c | 2 +-
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
