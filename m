@@ -2,67 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43DC79016A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 627D7790175
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:29:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc7uQ-0002Wy-U1; Fri, 01 Sep 2023 13:26:14 -0400
+	id 1qc7wT-0004eq-97; Fri, 01 Sep 2023 13:28:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7u7-0002WX-6O
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:25:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qc7wR-0004bi-1Q
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:28:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7u4-0001EW-60
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:25:54 -0400
+ id 1qc7wJ-0001hL-HA
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:28:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693589151;
+ s=mimecast20190719; t=1693589290;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ybKG+mP87ewv3f9de9EtOHrhIPuwwBrQv/VLHEuYE20=;
- b=JUKM5S+LUuMdEUYpq+PfpjeQ/KxmBYTiB2t9tF0CnDAiEwWW8BRr/iMXzgTMMWxEKZVft0
- 6R7PfquQYmwlOAT5GLXv73GKYjtL16d+XfXB1t9Pdei9FoNIURjaUe9X6X5+xY3jyc6bUA
- poqb2saqtPekMJKyMNcHDQVSYyeAwws=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-27-JtSnsOCoMBKaPkV51l6cFg-1; Fri, 01 Sep 2023 13:25:49 -0400
-X-MC-Unique: JtSnsOCoMBKaPkV51l6cFg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=rZeeHzOro6xjre21jtFOqOZWCF8fDuv0GFSXGmwQz1Y=;
+ b=V5W4TzWP1GKmkDfC9ReVwfKU5NZBSRGpRJDEK+f+A/neYa3A82kvaaisgwY/vUgH5gikn2
+ 97JB8guAWiqCnIbQlSZ+lCySfGpBaJFLdqZ5c/4LkAD7AvpP4BvZZbzYKleQJtndFeulfD
+ xVMHwekhBsX+ug1dnrBF6KhwKmURkHs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-70-VCkxchGIMWKFOJTUFOaEFA-1; Fri, 01 Sep 2023 13:28:08 -0400
+X-MC-Unique: VCkxchGIMWKFOJTUFOaEFA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6ECBE381CC0B;
- Fri,  1 Sep 2023 17:25:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C89519469A2
+ for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:28:07 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 54E021460FE5;
- Fri,  1 Sep 2023 17:25:48 +0000 (UTC)
-Date: Fri, 1 Sep 2023 18:25:46 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 38B1740C84A5;
+ Fri,  1 Sep 2023 17:28:07 +0000 (UTC)
+Date: Fri, 1 Sep 2023 18:28:05 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 51/67] build-sys: add optional "pixman" feature
-Message-ID: <ZPIemvwFKAVL7bJH@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH 54/67] ui/vc: console-vc requires PIXMAN
+Message-ID: <ZPIfJd0h6h5zeiMa@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-52-marcandre.lureau@redhat.com>
- <784947c2-3b2a-6452-b009-c4a21fd67d0a@linaro.org>
- <fa0b84b4-f513-0667-eca2-e8dd70ae677a@linaro.org>
+ <20230830093843.3531473-55-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa0b84b4-f513-0667-eca2-e8dd70ae677a@linaro.org>
+In-Reply-To: <20230830093843.3531473-55-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,84 +83,112 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 05:55:26PM +0200, Philippe Mathieu-Daudé wrote:
-> On 30/8/23 17:48, Philippe Mathieu-Daudé wrote:
-> > On 30/8/23 11:38, marcandre.lureau@redhat.com wrote:
-> > > From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > > 
-> > > Set CONFIG_PIXMAN accordinly.
-> > > 
-> > > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > > ---
-> > >   meson.build       | 6 ++++--
-> > >   Kconfig.host      | 3 +++
-> > >   meson_options.txt | 2 ++
-> > >   3 files changed, 9 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/meson.build b/meson.build
-> > > index 98e68ef0b1..3bd7046099 100644
-> > > --- a/meson.build
-> > > +++ b/meson.build
-> > > @@ -836,8 +836,8 @@ if 'ust' in get_option('trace_backends')
-> > >                        method: 'pkg-config')
-> > >   endif
-> > >   pixman = not_found
-> > > -if have_system or have_tools
-> > > -  pixman = dependency('pixman-1', required: have_system,
-> > > version:'>=0.21.8',
-> > > +if not get_option('pixman').auto() or have_system or have_tools
-> > > +  pixman = dependency('pixman-1', required: get_option('pixman'),
-> > > version:'>=0.21.8',
-> > >                         method: 'pkg-config')
+On Wed, Aug 30, 2023 at 01:38:28PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
+> Add stubs for the fallback paths.
 > 
-> > > diff --git a/meson_options.txt b/meson_options.txt
-> > > index aaea5ddd77..89654fd77d 100644
-> > > --- a/meson_options.txt
-> > > +++ b/meson_options.txt
-> > > @@ -216,6 +216,8 @@ option('l2tpv3', type : 'feature', value : 'auto',
-> > >          description: 'l2tpv3 network backend support')
-> > >   option('netmap', type : 'feature', value : 'auto',
-> > >          description: 'netmap network backend support')
-> > > +option('pixman', type : 'feature', value : 'auto',
-> > > +       description: 'pixman support')
-> > >   option('slirp', type: 'feature', value: 'auto',
-> > >          description: 'libslirp user mode network backend support')
-> > >   option('vde', type : 'feature', value : 'auto',
-> > 
-> > Apparently missing:
-> > 
-> > -- >8 --
-> > diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> > index 9da3fe299b..16957ea9f0 100644
-> > --- a/scripts/meson-buildoptions.sh
-> > +++ b/scripts/meson-buildoptions.sh
-> > @@ -146,6 +146,7 @@ meson_options_help() {
-> >     printf "%s\n" '  pa              PulseAudio sound support'
-> >     printf "%s\n" '  parallels       parallels image format support'
-> >     printf "%s\n" '  pipewire        PipeWire sound support'
-> > +  printf "%s\n" '  pixman          pixman support'
-> >     printf "%s\n" '  png             PNG support with libpng'
-> >     printf "%s\n" '  pvrdma          Enable PVRDMA support'
-> >     printf "%s\n" '  qcow1           qcow1 image format support'
-> > @@ -397,6 +398,8 @@ _meson_option_parse() {
-> >       --disable-parallels) printf "%s" -Dparallels=disabled ;;
-> >       --enable-pipewire) printf "%s" -Dpipewire=enabled ;;
-> >       --disable-pipewire) printf "%s" -Dpipewire=disabled ;;
-> > +    --enable-pixman) printf "%s" -Dpixman=enabled ;;
-> > +    --disable-pixman) printf "%s" -Dpixman=disabled ;;
-> >       --with-pkgversion=*) quote_sh "-Dpkgversion=$2" ;;
-> >       --enable-png) printf "%s" -Dpng=enabled ;;
-> >       --disable-png) printf "%s" -Dpng=disabled ;;
-> > ---
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>  ui/console-vc-stubs.c | 59 +++++++++++++++++++++++++++++++++++++++++++
+>  ui/meson.build        |  2 +-
+>  2 files changed, 60 insertions(+), 1 deletion(-)
+>  create mode 100644 ui/console-vc-stubs.c
 > 
-> Many files fail to build when using --disable-pixman here:
+> diff --git a/ui/console-vc-stubs.c b/ui/console-vc-stubs.c
+> new file mode 100644
+> index 0000000000..76ea880d27
+> --- /dev/null
+> +++ b/ui/console-vc-stubs.c
+> @@ -0,0 +1,59 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * QEMU VC stubs
+> + */
+> +#include "qemu/osdep.h"
+> +
+> +#include "qapi/error.h"
+> +#include "qemu/error-report.h"
+> +#include "qemu/option.h"
+> +#include "chardev/char.h"
+> +#include "ui/console-priv.h"
+> +
+> +void qemu_text_console_select(QemuTextConsole *c)
+> +{
+> +}
+> +
+> +const char * qemu_text_console_get_label(QemuTextConsole *c)
+> +{
+> +    return NULL;
+> +}
+> +
+> +void qemu_text_console_update_cursor(void)
+> +{
+> +}
+> +
+> +void qemu_text_console_handle_keysym(QemuTextConsole *s, int keysym)
+> +{
+> +}
+> +
+> +#define TYPE_CHARDEV_VC "chardev-vc"
+> +
+> +static void vc_chr_parse(QemuOpts *opts, ChardevBackend *backend, Error **errp)
+> +{
+> +    const char *id = qemu_opts_id(opts);
+> +
+> +    warn_report("%s: this is a dummy VC driver. "
+> +                "Use '-nographic' or a different chardev.", id);
+> +}
 
-I guess meson.build ought to (temporarily) report an
-eror if pixman is missing and/or explicitly disabled,
-which is then removed in the next patch that actually
-makes it work.
+Why should this be an error_setg() call given we have a errp
+parameter, so make this unsupportable config into an error ?
+Ignoring invalid user configs is not desirable in general.
 
+> +
+> +static void char_vc_class_init(ObjectClass *oc, void *data)
+> +{
+> +    ChardevClass *cc = CHARDEV_CLASS(oc);
+> +
+> +    cc->parse = vc_chr_parse;
+> +}
+> +
+> +static const TypeInfo char_vc_type_info = {
+> +    .name = TYPE_CHARDEV_VC,
+> +    .parent = TYPE_CHARDEV,
+> +    .class_init = char_vc_class_init,
+> +};
+> +
+> +void qemu_console_early_init(void)
+> +{
+> +    /* set the default vc driver */
+> +    if (!object_class_by_name(TYPE_CHARDEV_VC)) {
+> +        type_register(&char_vc_type_info);
+> +    }
+> +}
+> diff --git a/ui/meson.build b/ui/meson.build
+> index 0a1e8272a3..3085e10a72 100644
+> --- a/ui/meson.build
+> +++ b/ui/meson.build
+> @@ -6,7 +6,6 @@ system_ss.add(png)
+>  system_ss.add(files(
+>    'clipboard.c',
+>    'console.c',
+> -  'console-vc.c',
+>    'cursor.c',
+>    'input-keymap.c',
+>    'input-legacy.c',
+> @@ -19,6 +18,7 @@ system_ss.add(files(
+>    'ui-qmp-cmds.c',
+>    'util.c',
+>  ))
+> +system_ss.add(when: pixman, if_true: files('console-vc.c'), if_false: files('console-vc-stubs.c'))
+>  if dbus_display
+>    system_ss.add(files('dbus-module.c'))
+>  endif
+> -- 
+> 2.41.0
+> 
+> 
 
 With regards,
 Daniel
