@@ -2,75 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5835C78FA51
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 10:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D207A78FA81
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbzwb-00026l-LF; Fri, 01 Sep 2023 04:55:57 -0400
+	id 1qc078-0007pR-UT; Fri, 01 Sep 2023 05:06:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qbzwY-00026c-Bg
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 04:55:54 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qbzwT-0000DK-M6
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 04:55:54 -0400
-Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8AxueoKp_Fk9r0dAA--.50932S3;
- Fri, 01 Sep 2023 16:55:38 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxzyMHp_Fkt8doAA--.15445S3; 
- Fri, 01 Sep 2023 16:55:35 +0800 (CST)
-Subject: Re: [PATCH] roms: Support compile the efi bios for loongarch
-From: lixianglai <lixianglai@loongson.cn>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>
-References: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
- <41a215d5-4ae6-dfa3-a61e-c21fd8ca311d@linaro.org>
- <0cc3d20d-e849-9e2d-7560-fd694a412032@loongson.cn>
-Message-ID: <c9f1e257-0875-21cf-4bbb-f678aab6b60c@loongson.cn>
-Date: Fri, 1 Sep 2023 16:55:35 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qc05w-0006zk-Tg
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 05:05:38 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qc05r-0002a2-4I
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 05:05:35 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RcX6v38F3z6FGLT;
+ Fri,  1 Sep 2023 17:00:23 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 1 Sep
+ 2023 10:05:17 +0100
+Date: Fri, 1 Sep 2023 10:05:14 +0100
+To: Gregory Price <gregory.price@memverge.com>
+CC: Gregory Price <gourry.memverge@gmail.com>, <qemu-devel@nongnu.org>,
+ <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, <kwangjin.ko@sk.com>
+Subject: Re: [PATCH 3/4] cxl/type3: minimum MHD cci support
+Message-ID: <20230901100514.0000074b@Huawei.com>
+In-Reply-To: <ZPDG7EKSXmMSAiJa@memverge.com>
+References: <20230721163505.1910-1-gregory.price@memverge.com>
+ <20230721163505.1910-4-gregory.price@memverge.com>
+ <20230807155609.000055db@Huawei.com>
+ <ZPDG7EKSXmMSAiJa@memverge.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <0cc3d20d-e849-9e2d-7560-fd694a412032@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8AxzyMHp_Fkt8doAA--.15445S3
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZFWkWF43CF1xXF1rAr4rCrX_yoW5Kw13pa
- n7Ga1akrWkur4vyrZag3WxZrWjvwsYq398Xan3tFy8ArnxXr1qvr1jqr1Y9F9rXw4xGFWj
- vryYgw1093W5ZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.478,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,127 +65,138 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping!
+On Thu, 31 Aug 2023 12:59:24 -0400
+Gregory Price <gregory.price@memverge.com> wrote:
 
+> On Mon, Aug 07, 2023 at 03:56:09PM +0100, Jonathan Cameron wrote:
+> > On Fri, 21 Jul 2023 12:35:08 -0400
+> > Gregory Price <gourry.memverge@gmail.com> wrote:
+> >  =20
+> > > Implement the MHD GET_INFO cci command and add a shared memory
+> > > region to the type3 device to host the information.
+> > >=20
+> > > Add a helper program to initialize this shared memory region.
+> > >=20
+> > > Add a function pointer to type3 devices for future work that
+> > > will allow an mhd device to provide a hook to validate whether
+> > > a memory access is valid or not.
+> > >=20
+> > > For now, limit the number of LD's to the number of heads. Later,
+> > > this limitation will need to be lifted for MH-MLDs.
+> > >=20
+> > > Intended use case:
+> > >=20
+> > > 1. Create the shared memory region
+> > > 2. Format the shared memory region
+> > > 3. Launch QEMU with `is_mhd=3Dtrue,mhd_head=3DN,mhd_shmid=3D$shmid` =
+=20
+> >=20
+> > I'd definitely like some feedback from experienced QEMU folk on
+> > how to model this sort of cross QEMU instance sharing.
+> >=20
+> > My instinct is a socket would be more flexible as it lets us
+> > potentially emulate the machines on multiple hosts (assuming they
+> > can see some shared backend storage).
+> >  =20
+>=20
+> I'd considered a socket, but after mulling it over, I realized the
+> operations I was trying to implement amounted to an atomic compare
+> and swap.  I wanted to avoid locks and serialization if at all
+> possible to avoid introducing that into the hot-path of memory
+> accesses.  Maybe there is a known pattern for this kind of
+> multi-instance QEMU coherency stuff, but that seemed the simplest path.
 
-Hi,Philippe Mathieu-Daudé:
+I'd definitely like some input from others on this if possible as I've
+no idea if this problem has really been tackled in the past.
+>=20
+> This obviously has the downside of limiting emulation of MHD system to
+> a local machine, but the use of common files/memory to back CXL memory
+> already does that (i think).
 
-Would like to know if there is any progress in the discussion on this issue?
+Files should be fine I think on a suitable sharing aware file system.
 
+>=20
+> =C2=AF\_(=E3=83=84)_/=C2=AF feedback welcome.  I'll leave it for now unle=
+ss there are
+> strong opinions.
+>=20
+> > else not needed if we returned in previous leg.
+> >=20
+> > 	if (ct3d->is_mhd && ...
+> >  =20
+> > > +               (!ct3d->mhd_shmid || (ct3d->mhd_head =3D=3D ~(0)))) {=
+ =20
+> >=20
+> > How does mhd_head equal that? Default is 0. I'm not sure there is a rea=
+son
+> > to require it.
+> >  =20
+>=20
+> Good catch, the default should be ~(0).  Updated in the field
+> initialization section.
+>=20
+> > > +    /* For now, limit the number of heads to the number of LD's (SLD=
+) */ =20
+> >=20
+> > Feels backwards.  Number of heads never going to be bigger than numbre =
+of
+> > LDs.  Other way around is possible of course.
+> >  =20
+> > > +    if (ct3d->mhd_state->nr_heads <=3D ct3d->mhd_head) { =20
+> >=20
+> > mhd head needs to be out of range?  Confused.
+> >  =20
+>=20
+> Woops, yes this should be mhd_head >=3D nr_heads. Wording is backwards and
+> so is the code.  fixed.
+>=20
+> > > +    if (ct3d->mhd_state) {
+> > > +        shmdt(ct3d->mhd_state);
+> > > +    } =20
+> >=20
+> > Reverse order of realize - so I think this wants to be earlier.
+> >  =20
+> > >  } =20
+>=20
+> Just to be clear you *don't* want the reverse order, correct?  If so
+> i'll swap it.
 
-In addition, is the compilation of our UEFI done on the fedora38 
-operating system
+I do want reverse order.   Generally speaking it's much easier to
+review precisely matching reverse order as then mostly the ordering is
+fine in a way that it isn't in any other ordering.
 
-or on a later version of fedora?
+>=20
+> > > =20
+> > > +    if (ct3d->is_mhd && ct3d->mhd_access_valid) {
+> > > +        if (!ct3d->mhd_access_valid(ct3d, dpa_offset, size))
+> > > +            return MEMTX_ERROR; =20
+> >=20
+> > Brackets for inner block.
+> > Arguably could just add the ct3d->is_mhd check in the place where
+> > mhd_access_valid is set and hence only need to check that here.
+> > Maybe that makes it slightly harder to follow though.
+> >=20
+> > Also could just unset is_mhd if mhd_access_valid not present..
+> > =20
+>=20
+> I'm going to change the next patch to fully inherit CXLType3Dev into
+> Niagara as you suggested.  I will have to see what falls out when i do
+> that, but my feeling was being more explicit when checking pointers is
+> better.  If you prefer to to drop the is_mhd check i'm ok with that
+> simply because mhd_access_valid should always be NULL when is_mhd is
+> false.  Either way the result is the same.
 
+Minimizing redundant checks is always good as long as a reviewer can
+easily see they are redundant. I think that's true here.
 
-The loongarch cross-compilation tool on the fedora38 operating system is 
-a bit old,
+Jonathan
 
-and there is a problem with the UEFI of the compiled loongarch,
-
-so I want to ask about the UEFI compilation environment.
-
-
-Thanks,
-
-xianglai
-
-
-On 8/10/23 8:54 PM, lixianglai wrote:
->
-> On 8/10/23 7:34 PM, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> On 10/8/23 09:42, xianglai li wrote:
->>> 1.Add edk2-platform submodule
->>> 2.Added loongarch UEFI BIOS support to compiled scripts.
->>> 3.The cross-compilation toolchain on x86 can be obtained from the 
->>> link below:
->>> https://github.com/loongson/build-tools/tree/2022.09.06
->>>
->>> Cc: Paolo Bonzini <pbonzini@redhat.com>
->>> Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
->>> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
->>> Cc: Thomas Huth <thuth@redhat.com>
->>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
->>> Cc: Gerd Hoffmann <kraxel@redhat.com>
->>> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->>> Cc: Song Gao <gaosong@loongson.cn>
->>> Cc: Bibo Mao <maobibo@loongson.cn>
->>> Signed-off-by: xianglai li <lixianglai@loongson.cn>
->>> ---
->>>   .gitmodules            |  3 +++
->>>   meson.build            |  2 +-
->>>   pc-bios/meson.build    |  2 ++
->>>   roms/edk2-build.config | 14 ++++++++++++++
->>>   roms/edk2-build.py     |  4 ++--
->>>   roms/edk2-platforms    |  1 +
->>>   6 files changed, 23 insertions(+), 3 deletions(-)
->>>   create mode 160000 roms/edk2-platforms
->>>
->>> diff --git a/.gitmodules b/.gitmodules
->>> index 73cae4cd4d..0cb57123fa 100644
->>> --- a/.gitmodules
->>> +++ b/.gitmodules
->>> @@ -43,3 +43,6 @@
->>>   [submodule "tests/lcitool/libvirt-ci"]
->>>       path = tests/lcitool/libvirt-ci
->>>       url = https://gitlab.com/libvirt/libvirt-ci.git
->>> +[submodule "roms/edk2-platforms"]
->>> +    path = roms/edk2-platforms
->>> +    url = https://github.com/tianocore/edk2-platforms.git
->>
->> See "Topic 4" in [*].
->>
->>  > We do need to be careful about GPL compliance (making sure users
->>  > have the source if we provide them the compiled firmware blob
->>  > for a GPL'd piece of firmware); but we don't need to necessarily
->>  > ship the sources in the exact same tarball as the blob.
->>
->>  > [...]
->>
->>  > Users of QEMU from git don't get a great firmware experience either,
->>  > since the firmware is in submodules, with all the usual git submodule
->>  > problems.
->>
->> edk2-platforms.git use the same license than edk2.git, 
->> BSD-2-Clause-Patent, which is compatible with GPLv2. At least this is 
->> not
->> edk2-non-osi.git.
->>
->> Still, we should discuss this generic issue before going forward with
->> this patch IMO.
->>
->
-> Okay, I also think that there is no need to include EDK2 source code 
-> in the tar ball,
->
-> you can package the git repository of QEMU for distribution,
->
-> and compile the BIOS binary package before release,
->
-> so that there is no need to include BIOS code,
->
-> QEMU users can also get the source code of BIOS through Git Submodule.
->
-> This is only my opinion, and I look forward to the outcome of the 
-> final discussion.
->
->
-> Thanks,
->
-> xianglai
->
->
->> Regards,
->>
->> Phil.
->>
->> [*] 
->> https://lore.kernel.org/qemu-devel/CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com/
+>=20
+> ~Gregory
 
 
