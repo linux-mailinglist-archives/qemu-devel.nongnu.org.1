@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B9F78FCDB
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5DC78FCDC
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:02:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc2pb-0006Bv-Lj; Fri, 01 Sep 2023 08:00:55 -0400
+	id 1qc2qd-0006dQ-SA; Fri, 01 Sep 2023 08:02:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2pV-000652-Fj
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:00:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2ph-0006Dx-8m
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:01:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2pR-0001dN-Mk
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:00:48 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2pd-0001ll-LI
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:01:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693569645;
+ s=mimecast20190719; t=1693569655;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FYGvcbxqOqjbBIzjeBqFf3Nh2WxsPiZSET2SVUC8z7U=;
- b=E+QnHD+oAqo5++ya8pS2ElWgaiidhXkwhdmVgNVJaYY/IalGFD+LVAcx86MdjHeZ8G8O0G
- JlB2HdLxeMWATPEhBdqlUsiJgr5Gnicco0cKYTJfpCl6+RgRIo7o+2wSczG1WqhturhuuA
- NlAgqHanA1Bjj4PuojZ7RHuaweeHtRM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-43-ikBIkA81PGW2P643EBV5gg-1; Fri, 01 Sep 2023 08:00:40 -0400
-X-MC-Unique: ikBIkA81PGW2P643EBV5gg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=CCAA6J3rL7iCZJliIvNSfqNUOpnGkvsOpQIjeqk/1BA=;
+ b=KZezB2O3TPW8pf/I757PkuGfZS5c191GNE7rCo6bZ07bBKa4173q0KGpfn0J7w76GRVJe/
+ NDtVuXNVPGNtckK10JOajbjFpOTR+mgLPXQL8TEMg700Vn+UhxuvXmG68ygwSWLPgy4odQ
+ dd90tDyaDF5838o2XtRfk8hH92IvZeU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-487-CSTU8kEOMDCNTY2C2ahr3g-1; Fri, 01 Sep 2023 08:00:52 -0400
+X-MC-Unique: CSTU8kEOMDCNTY2C2ahr3g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0EC791C18C6A;
- Fri,  1 Sep 2023 12:00:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCADC85651F;
+ Fri,  1 Sep 2023 12:00:51 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C26582026D0E;
- Fri,  1 Sep 2023 12:00:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A026921D4F3D;
+ Fri,  1 Sep 2023 12:00:51 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B987A21E692A; Fri,  1 Sep 2023 14:00:38 +0200 (CEST)
+ id A7FFE21E692A; Fri,  1 Sep 2023 14:00:50 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Li Feng <fengli@smartx.com>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Raphael Norwitz
@@ -50,18 +50,19 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Raphael Norwitz
  <alex.bennee@linaro.org>,  Viresh
  Kumar <viresh.kumar@linaro.org>,  qemu-block@nongnu.org (open list:Block
  layer core),  qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: Re: [PATCH v3 4/5] vhost-user-scsi: support reconnect to backend
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230731121018.2856310-1-fengli@smartx.com>
- <20230731121018.2856310-5-fengli@smartx.com>
-Date: Fri, 01 Sep 2023 14:00:38 +0200
-In-Reply-To: <20230731121018.2856310-5-fengli@smartx.com> (Li Feng's message
- of "Mon, 31 Jul 2023 20:10:09 +0800")
-Message-ID: <878r9q85nd.fsf@pond.sub.org>
+Subject: Re: [PATCH v3 2/2] vhost: Add Error parameter to
+ vhost_scsi_common_start()
+References: <20230804052954.2918915-1-fengli@smartx.com>
+ <20230830045722.611224-1-fengli@smartx.com>
+ <20230830045722.611224-3-fengli@smartx.com>
+Date: Fri, 01 Sep 2023 14:00:50 +0200
+In-Reply-To: <20230830045722.611224-3-fengli@smartx.com> (Li Feng's message of
+ "Wed, 30 Aug 2023 12:57:14 +0800")
+Message-ID: <877cpa85n1.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -70,7 +71,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,339 +89,222 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Li Feng <fengli@smartx.com> writes:
 
-> If the backend crashes and restarts, the device is broken.
-> This patch adds reconnect for vhost-user-scsi.
->
-> Tested with spdk backend.
+> Add a Error parameter to report the real error, like vhost-user-blk.
 >
 > Signed-off-by: Li Feng <fengli@smartx.com>
 > ---
->  hw/scsi/vhost-user-scsi.c           | 199 +++++++++++++++++++++++++---
->  include/hw/virtio/vhost-user-scsi.h |   4 +
->  2 files changed, 184 insertions(+), 19 deletions(-)
+>  hw/scsi/vhost-scsi-common.c           | 16 +++++++++-------
+>  hw/scsi/vhost-scsi.c                  |  5 +++--
+>  hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
+>  include/hw/virtio/vhost-scsi-common.h |  2 +-
+>  4 files changed, 21 insertions(+), 16 deletions(-)
 >
+> diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
+> index a61cd0e907..4c8637045d 100644
+> --- a/hw/scsi/vhost-scsi-common.c
+> +++ b/hw/scsi/vhost-scsi-common.c
+> @@ -16,6 +16,7 @@
+>   */
+>  
+>  #include "qemu/osdep.h"
+> +#include "qapi/error.h"
+>  #include "qemu/error-report.h"
+>  #include "qemu/module.h"
+>  #include "hw/virtio/vhost.h"
+> @@ -25,7 +26,7 @@
+>  #include "hw/virtio/virtio-access.h"
+>  #include "hw/fw-path-provider.h"
+>  
+> -int vhost_scsi_common_start(VHostSCSICommon *vsc)
+> +int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
+>  {
+>      int ret, i;
+>      VirtIODevice *vdev = VIRTIO_DEVICE(vsc);
+> @@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>      VirtIOSCSICommon *vs = (VirtIOSCSICommon *)vsc;
+>  
+>      if (!k->set_guest_notifiers) {
+> -        error_report("binding does not support guest notifiers");
+> +        error_setg(errp, "binding does not support guest notifiers");
+>          return -ENOSYS;
+>      }
+>  
+>      ret = vhost_dev_enable_notifiers(&vsc->dev, vdev);
+>      if (ret < 0) {
+> +        error_setg_errno(errp, -ret, "Error enabling host notifiers");
+
+Looks like the error is silent before your patch.  Correct?
+
+>          return ret;
+>      }
+>  
+>      ret = k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
+>      if (ret < 0) {
+> -        error_report("Error binding guest notifier");
+> +        error_setg_errno(errp, -ret, "Error binding guest notifier");
+
+Error message now provides more detail.
+
+>          goto err_host_notifiers;
+>      }
+>  
+> @@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>  
+>      ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
+>      if (ret < 0) {
+> -        error_report("Error setting inflight format: %d", -ret);
+> +        error_setg_errno(errp, -ret, "Error setting inflight format");
+
+Error message now shows errno in human-readable form.
+
+>          goto err_guest_notifiers;
+>      }
+>  
+> @@ -64,21 +66,21 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>                                          vs->conf.virtqueue_size,
+>                                          vsc->inflight);
+>              if (ret < 0) {
+> -                error_report("Error getting inflight: %d", -ret);
+> +                error_setg_errno(errp, -ret, "Error getting inflight");
+
+Likewise.
+
+>                  goto err_guest_notifiers;
+>              }
+>          }
+>  
+>          ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+>          if (ret < 0) {
+> -            error_report("Error setting inflight: %d", -ret);
+> +            error_setg_errno(errp, -ret, "Error setting inflight");
+
+Likewise.
+
+>              goto err_guest_notifiers;
+>          }
+>      }
+>  
+>      ret = vhost_dev_start(&vsc->dev, vdev, true);
+>      if (ret < 0) {
+> -        error_report("Error start vhost dev");
+> +        error_setg_errno(errp, -ret, "Error starting vhost dev");
+
+Likewise.
+
+>          goto err_guest_notifiers;
+>      }
+>  
+> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+> index 443f67daa4..01a3ab4277 100644
+> --- a/hw/scsi/vhost-scsi.c
+> +++ b/hw/scsi/vhost-scsi.c
+> @@ -75,6 +75,7 @@ static int vhost_scsi_start(VHostSCSI *s)
+>      int ret, abi_version;
+>      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
+>      const VhostOps *vhost_ops = vsc->dev.vhost_ops;
+> +    Error *local_err = NULL;
+>  
+>      ret = vhost_ops->vhost_scsi_get_abi_version(&vsc->dev, &abi_version);
+>      if (ret < 0) {
+> @@ -88,14 +89,14 @@ static int vhost_scsi_start(VHostSCSI *s)
+>          return -ENOSYS;
+>      }
+>  
+> -    ret = vhost_scsi_common_start(vsc);
+> +    ret = vhost_scsi_common_start(vsc, &local_err);
+>      if (ret < 0) {
+>          return ret;
+>      }
+>  
+>      ret = vhost_scsi_set_endpoint(s);
+>      if (ret < 0) {
+> -        error_report("Error setting vhost-scsi endpoint");
+> +        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
+>          vhost_scsi_common_stop(vsc);
+>      }
+>  
 > diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-> index ee99b19e7a..5bf012461b 100644
+> index e931df9f5b..62fc98bb1c 100644
 > --- a/hw/scsi/vhost-user-scsi.c
 > +++ b/hw/scsi/vhost-user-scsi.c
-> @@ -43,26 +43,54 @@ enum VhostUserProtocolFeature {
+> @@ -43,12 +43,12 @@ enum VhostUserProtocolFeature {
 >      VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
 >  };
 >  
-> +static int vhost_user_scsi_start(VHostUserSCSI *s)
-> +{
-> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> +    int ret;
-> +
-> +    ret = vhost_scsi_common_start(vsc);
-> +    s->started_vu = (ret < 0 ? false : true);
-> +
-> +    return ret;
-> +}
-> +
-> +static void vhost_user_scsi_stop(VHostUserSCSI *s)
-> +{
-> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> +
-> +    if (!s->started_vu) {
-> +        return;
-> +    }
-> +    s->started_vu = false;
-> +
-> +    vhost_scsi_common_stop(vsc);
-> +}
-> +
->  static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+> -static int vhost_user_scsi_start(VHostUserSCSI *s)
+> +static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
 >  {
->      VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-> +    DeviceState *dev = &s->parent_obj.parent_obj.parent_obj.parent_obj;
 >      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> -    bool start = (status & VIRTIO_CONFIG_S_DRIVER_OK) && vdev->vm_running;
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-> +    bool should_start = virtio_device_should_start(vdev, status);
-> +    int ret;
+>      int ret;
 >  
-> -    if (vhost_dev_is_started(&vsc->dev) == start) {
-> +    if (!s->connected) {
->          return;
+> -    ret = vhost_scsi_common_start(vsc);
+> +    ret = vhost_scsi_common_start(vsc, errp);
+>      s->started_vu = (ret < 0 ? false : true);
+>  
+>      return ret;
+> @@ -73,6 +73,7 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+>      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
+>      VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
+>      bool should_start = virtio_device_should_start(vdev, status);
+> +    Error *local_err = NULL;
+>      int ret;
+>  
+>      if (!s->connected) {
+> @@ -84,9 +85,10 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
 >      }
 >  
-> -    if (start) {
-> -        int ret;
-> +    if (vhost_dev_is_started(&vsc->dev) == should_start) {
-> +        return;
-> +    }
->  
-> -        ret = vhost_scsi_common_start(vsc);
-> +    if (should_start) {
-> +        ret = vhost_user_scsi_start(s);
+>      if (should_start) {
+> -        ret = vhost_user_scsi_start(s);
+> +        ret = vhost_user_scsi_start(s, &local_err);
 >          if (ret < 0) {
->              error_report("unable to start vhost-user-scsi: %s", strerror(-ret));
-> -            exit(1);
-> +            qemu_chr_fe_disconnect(&vs->conf.chardev);
+> -            error_report("unable to start vhost-user-scsi: %s", strerror(-ret));
+> +            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
+> +                              strerror(-ret));
+>              qemu_chr_fe_disconnect(&vs->conf.chardev);
 >          }
 >      } else {
-> -        vhost_scsi_common_stop(vsc);
-> +        vhost_user_scsi_stop(s);
->      }
->  }
->  
-> @@ -89,14 +117,126 @@ static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
->  {
->  }
->  
-> +static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
-> +{
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserSCSI *s = VHOST_USER_SCSI(vdev);
-> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-> +    int ret = 0;
-> +
-> +    if (s->connected) {
-> +        return 0;
-> +    }
-> +    s->connected = true;
-> +
-> +    vsc->dev.num_queues = vs->conf.num_queues;
-> +    vsc->dev.nvqs = VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
-> +    vsc->dev.vqs = s->vhost_vqs;
-> +    vsc->dev.vq_index = 0;
-> +    vsc->dev.backend_features = 0;
-> +
-> +    ret = vhost_dev_init(&vsc->dev, &s->vhost_user, VHOST_BACKEND_TYPE_USER, 0,
-> +                         errp);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    /* restore vhost state */
-> +    if (virtio_device_started(vdev, vdev->status)) {
-> +        ret = vhost_user_scsi_start(s);
-> +        if (ret < 0) {
-> +            return ret;
-> +        }
-
-Fails without setting an error, violating the function's (tacit)
-postcondition.  Callers:
-
-* vhost_user_scsi_event()
-
-  Dereferences the null error and crashes.
-
-* vhost_user_scsi_realize_connect()
-
-  Also fails without setting an error.  Caller:
-
-  - vhost_user_scsi_realize()
-
-    1. Doesn't emit the "Reconnecting after error: " message.  See
-       also below.
-
-    2. Succeeds instead of failing!
-
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event);
-> +
-> +static void vhost_user_scsi_disconnect(DeviceState *dev)
-> +{
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserSCSI *s = VHOST_USER_SCSI(vdev);
-> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-> +
-> +    if (!s->connected) {
-> +        return;
-> +    }
-> +    s->connected = false;
-> +
-> +    vhost_user_scsi_stop(s);
-> +
-> +    vhost_dev_cleanup(&vsc->dev);
-> +
-> +    /* Re-instate the event handler for new connections */
-> +    qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL,
-> +                             vhost_user_scsi_event, NULL, dev, NULL, true);
-> +}
-> +
-> +static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
-> +{
-> +    DeviceState *dev = opaque;
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserSCSI *s = VHOST_USER_SCSI(vdev);
-> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-> +    Error *local_err = NULL;
-> +
-> +    switch (event) {
-> +    case CHR_EVENT_OPENED:
-> +        if (vhost_user_scsi_connect(dev, &local_err) < 0) {
-> +            error_report_err(local_err);
-> +            qemu_chr_fe_disconnect(&vs->conf.chardev);
-> +            return;
-> +        }
-> +        break;
-> +    case CHR_EVENT_CLOSED:
-> +        /* defer close until later to avoid circular close */
-> +        vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
-> +                               vhost_user_scsi_disconnect);
-> +        break;
-> +    case CHR_EVENT_BREAK:
-> +    case CHR_EVENT_MUX_IN:
-> +    case CHR_EVENT_MUX_OUT:
-> +        /* Ignore */
-> +        break;
-> +    }
-> +}
-> +
-> +static int vhost_user_scsi_realize_connect(VHostUserSCSI *s, Error **errp)
-> +{
-> +    DeviceState *dev = &s->parent_obj.parent_obj.parent_obj.parent_obj;
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-> +    int ret;
-> +
-> +    s->connected = false;
-> +
-> +    ret = qemu_chr_fe_wait_connected(&vs->conf.chardev, errp);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    ret = vhost_user_scsi_connect(dev, errp);
-> +    if (ret < 0) {
-> +        qemu_chr_fe_disconnect(&vs->conf.chardev);
-> +        return ret;
-> +    }
-> +    assert(s->connected);
-> +
-> +    return 0;
-> +}
-> +
->  static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
->  {
->      VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
->      VHostUserSCSI *s = VHOST_USER_SCSI(dev);
->      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> -    struct vhost_virtqueue *vqs = NULL;
->      Error *err = NULL;
->      int ret;
-> +    int retries = VU_REALIZE_CONN_RETRIES;
->  
->      if (!vs->conf.chardev.chr) {
->          error_setg(errp, "vhost-user-scsi: missing chardev");
-> @@ -115,18 +255,28 @@ static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
->          goto free_virtio;
->      }
->  
-> -    vsc->dev.nvqs = VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
-> -    vsc->dev.vqs = g_new0(struct vhost_virtqueue, vsc->dev.nvqs);
-> -    vsc->dev.vq_index = 0;
-> -    vsc->dev.backend_features = 0;
-> -    vqs = vsc->dev.vqs;
-> +    vsc->inflight = g_new0(struct vhost_inflight, 1);
-> +    s->vhost_vqs = g_new0(struct vhost_virtqueue,
-> +                          VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues);
-> +
-> +    assert(!*errp);
-
-Dereferencing *errp is wrong.  Quoting qapi/error.h's big comment:
-
- * = Why, when and how to use ERRP_GUARD() =
- *
- * Without ERRP_GUARD(), use of the @errp parameter is restricted:
- * - It must not be dereferenced, because it may be null.
- * - It should not be passed to error_prepend() or
- *   error_append_hint(), because that doesn't work with &error_fatal.
- * ERRP_GUARD() lifts these restrictions.
-
-See there for how to use ERRP_GUARD().
-
-> +    do {
-> +        if (*errp) {
-> +            error_prepend(errp, "Reconnecting after error: ");
-> +            error_report_err(*errp);
-> +            *errp = NULL;
-> +        }
-> +        ret = vhost_user_scsi_realize_connect(s, errp);
-> +    } while (ret < 0 && retries--);
-
-Reports "Reconnecting ..." to the HMP monitor when in HMP context, else
-to stderr.  I.e. reports to stderr when we're in QMP context.  Is this
-really what we want?
-
->  
-> -    ret = vhost_dev_init(&vsc->dev, &s->vhost_user,
-> -                         VHOST_BACKEND_TYPE_USER, 0, errp);
+> @@ -139,7 +141,7 @@ static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+>       * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
+>       * vhost here instead of waiting for .set_status().
+>       */
+> -    ret = vhost_user_scsi_start(s);
+> +    ret = vhost_user_scsi_start(s, &local_err);
 >      if (ret < 0) {
->          goto free_vhost;
->      }
+>          error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
+
+The error_reportf_err() is wrong before the patch, as I just pointed out
+in my review of "[PATCH v3 5/5] vhost-user-scsi: start vhost when guest
+kicks".  It is correct afterwards.
+
+>          qemu_chr_fe_disconnect(&vs->conf.chardev);
+> @@ -184,7 +186,7 @@ static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
 >  
-> +    /* we're fully initialized, now we can operate, so add the handler */
-> +    qemu_chr_fe_set_handlers(&vs->conf.chardev,  NULL, NULL,
-> +                             vhost_user_scsi_event, NULL, (void *)dev,
-> +                             NULL, true);
->      /* Channel and lun both are 0 for bootable vhost-user-scsi disk */
->      vsc->channel = 0;
->      vsc->lun = 0;
-> @@ -135,8 +285,12 @@ static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
->      return;
->  
->  free_vhost:
-> +    g_free(s->vhost_vqs);
-> +    s->vhost_vqs = NULL;
-> +    g_free(vsc->inflight);
-> +    vsc->inflight = NULL;
->      vhost_user_cleanup(&s->vhost_user);
-> -    g_free(vqs);
-> +
->  free_virtio:
->      virtio_scsi_common_unrealize(dev);
->  }
-> @@ -146,16 +300,23 @@ static void vhost_user_scsi_unrealize(DeviceState *dev)
->      VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->      VHostUserSCSI *s = VHOST_USER_SCSI(dev);
->      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> -    struct vhost_virtqueue *vqs = vsc->dev.vqs;
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
->  
->      /* This will stop the vhost backend. */
->      vhost_user_scsi_set_status(vdev, 0);
-> +    qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL, NULL, NULL, NULL,
-> +                             NULL, false);
->  
->      vhost_dev_cleanup(&vsc->dev);
-> -    g_free(vqs);
-> +    g_free(s->vhost_vqs);
-> +    s->vhost_vqs = NULL;
-> +
-> +    vhost_dev_free_inflight(vsc->inflight);
-> +    g_free(vsc->inflight);
-> +    vsc->inflight = NULL;
->  
-> -    virtio_scsi_common_unrealize(dev);
->      vhost_user_cleanup(&s->vhost_user);
-> +    virtio_scsi_common_unrealize(dev);
->  }
->  
->  static Property vhost_user_scsi_properties[] = {
-> diff --git a/include/hw/virtio/vhost-user-scsi.h b/include/hw/virtio/vhost-user-scsi.h
-> index 521b08e559..b405ec952a 100644
-> --- a/include/hw/virtio/vhost-user-scsi.h
-> +++ b/include/hw/virtio/vhost-user-scsi.h
-> @@ -29,6 +29,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSCSI, VHOST_USER_SCSI)
->  struct VHostUserSCSI {
->      VHostSCSICommon parent_obj;
->      VhostUserState vhost_user;
-> +    bool connected;
-> +    bool started_vu;
-> +
-> +    struct vhost_virtqueue *vhost_vqs;
+>      /* restore vhost state */
+>      if (virtio_device_started(vdev, vdev->status)) {
+> -        ret = vhost_user_scsi_start(s);
+> +        ret = vhost_user_scsi_start(s, errp);
+>          if (ret < 0) {
+>              return ret;
+>          }
+
+Wrong before the patch, as I just pointed out in my review of "[PATCH v3
+4/5] vhost-user-scsi: support reconnect to backend".  Correct afterwards.
+
+> diff --git a/include/hw/virtio/vhost-scsi-common.h b/include/hw/virtio/vhost-scsi-common.h
+> index 18f115527c..c5d2c09455 100644
+> --- a/include/hw/virtio/vhost-scsi-common.h
+> +++ b/include/hw/virtio/vhost-scsi-common.h
+> @@ -39,7 +39,7 @@ struct VHostSCSICommon {
+>      struct vhost_inflight *inflight;
 >  };
 >  
->  #endif /* VHOST_USER_SCSI_H */
+> -int vhost_scsi_common_start(VHostSCSICommon *vsc);
+> +int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
+>  void vhost_scsi_common_stop(VHostSCSICommon *vsc);
+>  char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState *bus,
+>                                          DeviceState *dev);
+
+Please mention in the commit message that error messages improve, and
+silent errors are now reported.
 
 
