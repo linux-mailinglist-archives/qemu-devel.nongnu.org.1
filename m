@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD5E78F728
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4BE78F729
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:32:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtwb-0008ON-Gp; Thu, 31 Aug 2023 22:31:33 -0400
+	id 1qbtx5-0000ai-Ho; Thu, 31 Aug 2023 22:32:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qbtwV-0008N0-Kn
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:31:27 -0400
-Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbtx3-0000U7-3W
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:01 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qbtwQ-000395-GW
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:31:24 -0400
-Received: by mail-vs1-xe2a.google.com with SMTP id
- ada2fe7eead31-44d4c3fa5beso712445137.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:31:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbtx0-0003E1-Sl
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:00 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-52a39a1c4d5so1910674a12.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:31:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693535481; x=1694140281; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nuq3cRJ0HlSGxczmAT+J8JFanVd+kSpPGkCOSmcq+w0=;
- b=YZTtopKvD8umyRZPyzKZ4F8a6P3iwcS3JM7hzToZxT+ULfTis4WutUwYA1IN3lE0Cp
- D56bmS5cX5qBv7pwAVoayJPhUk6bUBhR3tu5XTvX4TO2d+ZkNeZIWEyXA5nwKM3dTUYd
- ImnsKuJG6HSvBPM8GXurMMPGJUXLZglOkefPVDQgExapsPOX5QO+w1HHaf2dvGLTZdpl
- J2vvzgPjthpO+yA/l+UKoK/3SIeJBuQcuPpJ6ctXGv8RqauIROMzkaKcheGRUVWFxn8x
- nce6TIyzfV5ipq4L2aGjXhubeA8oKsa+LDOnzd5hcTjP8aMxP37AC25RFQH8EqjKPK+p
- FROQ==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1693535516; x=1694140316;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jIXHXxMzQD7uO3+uExuhlXOEOC4qn6XCXwUYC+CauiI=;
+ b=AfYCQntE973Vhh0MeKM9cqqdXUSOeKpmR4K3uB4jR3LarWrtPuOQg4Y++eFiuXlIby
+ 3YpOw7q4q/huJnOJqes/BQ/pVbDkyw01M8T+pdGiGVh/IQddpkt+qpRfblc7ADLwlXHf
+ 7kxB00i3rza9T4zv5AzPv55gnEeU6JLLbAWRsZLVgf5aP5kC6264exlMciCrmJ4S/WsV
+ gqLGarfXOwrWoSCfggZyxSGn3EkXtko0+UFT0GVH8/4IisR6juUgc/j/TGP+97dW9mbC
+ +R4qK27DaGAM7DVC+uHETt7kkmTAs/kCzS8fVxIP1u2YG3cQQg266wXSP5t+wA/BNCYe
+ EXTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535481; x=1694140281;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nuq3cRJ0HlSGxczmAT+J8JFanVd+kSpPGkCOSmcq+w0=;
- b=PoOI8NB0f2ys/31bVkRRChZ5H9FZQf3ya+qM+pXKPZd+R0f12Q5rAOhmrkWwQJ+DPA
- tsvwWX4HLQ26GRuIUKEZMRHaGTOLhLqCcltbMV/1LaEfSN5d8jqkRj3iHSqgj4sN5JZP
- JmJYbpcJ5PRKUNR6KESQS7GahmQweAYzBYu2+9Y0RYWyy6nghFQ0aH1xPW4yJJ8krNEj
- WeQMrTbu6Uas5EVqf+SNlO9tmZ9p7owz/wmPtDFarIVAR4ds3Cn9kgNsdY0UJbZMkOCK
- S5eRb+wLU7KQpdnPVs/c8dQyPniFNkTqhCNpa9py7ALbjqWIzA+mNHR6u0SsLP2z5Ey6
- V8Rw==
-X-Gm-Message-State: AOJu0YyegfV2o7G4B3uX+vM3oMCejRzEN5Rn6P6il728wUQ7UZgfPgsy
- 61IiImv3rZV3ADtGOvftvTo8VlspcLP+d2v55k5vKKB+Jpy6/A==
-X-Google-Smtp-Source: AGHT+IGzqkOaseIBtAWs/iqmtlI1flOXroF40AK0G9JaN2Gh+qOo2glzcVkDf+euiKuI9RQ8Lgxut7VfkSUG/ny+mBI=
-X-Received: by 2002:a67:b60a:0:b0:44d:3bc0:f1bc with SMTP id
- d10-20020a67b60a000000b0044d3bc0f1bcmr1379934vsm.18.1693535481293; Thu, 31
- Aug 2023 19:31:21 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693535516; x=1694140316;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jIXHXxMzQD7uO3+uExuhlXOEOC4qn6XCXwUYC+CauiI=;
+ b=InIXIslf2s3V6fLK3amTE0UGuCj4oSXxYVgmAgVcArqVjemMnGcSutKW3NdegVzeHJ
+ s+1LfZeuD0Of0F8JzPwPPEdhRufIxnjCH0KxLktoZ6nbIJwfdGLH+eaRnlH+NEXdB2Na
+ +hoo3yeDva3Yz7RzWUgZJ1SOZwBdgSKmEeucwyX5C3jRMdlGLZJNU1YKGWku0GOha0WZ
+ 4aA6cz+zC9SIxMPxdvzIGwSHVsA0D6FQovpLdTKMUVQI3ghZP4NJwvb9+1Lwds6BvlHR
+ 0EQe3ZXMA0A5WcqHdS/8TvJ9zUQVS7PfVAMVFqrlsfm0INf3eWUx7uWyK50WDxMGloTX
+ XsiA==
+X-Gm-Message-State: AOJu0YyeXeHrj3XNsav6OsIhgpNR7Fj2S8/SqyBDuTR+uKhqi4M3ZaFi
+ Gko2neBUuwVJE6bwDKyklPZMoIXetsfuTvEe/fhTZXvYXROv5tPV
+X-Google-Smtp-Source: AGHT+IETSL1STpt2JBH4iFsTF0/iSjPGNU2TEgJVph+/y94zyiwwQzrSCfgmoKONETjAIwcNC2rGh7Fqchdtn2dCNGk=
+X-Received: by 2002:aa7:d407:0:b0:52a:3ee9:a786 with SMTP id
+ z7-20020aa7d407000000b0052a3ee9a786mr851471edq.26.1693535516610; Thu, 31 Aug
+ 2023 19:31:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230831154118.138727-1-ardb@kernel.org>
-In-Reply-To: <20230831154118.138727-1-ardb@kernel.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 1 Sep 2023 12:30:54 +1000
-Message-ID: <CAKmqyKPO2GLFMJtn3uA8yXXOXcA+fA9zcpPz_+6dfV-C-TuJjA@mail.gmail.com>
-Subject: Re: [PATCH v2] target/riscv: Use accelerated helper for AES64KS1I
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+References: <20230901022331.115247-1-richard.henderson@linaro.org>
+ <20230901022331.115247-28-richard.henderson@linaro.org>
+In-Reply-To: <20230901022331.115247-28-richard.henderson@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Thu, 31 Aug 2023 20:31:47 -0600
+Message-ID: <CANCZdfqOmp1mkodcGtdvLPtokbF4waZoybJdROn29J_+fBhbBQ@mail.gmail.com>
+Subject: Re: [PATCH v2 27/33] cpu: Remove page_size_init
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, laurent@vivier.eu, alex.bennee@linaro.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000e1e3fd060442f689"
+Received-SPF: none client-ip=2a00:1450:4864:20::534;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,69 +84,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 1, 2023 at 3:12=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
-te:
+--000000000000e1e3fd060442f689
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Aug 31, 2023 at 8:23=E2=80=AFPM Richard Henderson <
+richard.henderson@linaro.org> wrote:
+
+> Move qemu_host_page_{size,mask} and HOST_PAGE_ALIGN into bsd-user.
+> It should be removed from bsd-user as well, but defer that cleanup.
 >
-> Use the accelerated SubBytes/ShiftRows/AddRoundKey AES helper to
-> implement the first half of the key schedule derivation. This does not
-> actually involve shifting rows, so clone the same value into all four
-> columns of the AES vector to counter that operation.
->
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Alistair Francis <alistair.francis@wdc.com>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-Thanks!
-
-Applied to riscv-to-apply.next
-
-Alistair
-
+> Cc: Warner Losh <imp@bsdimp.com>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> v2: assign round constant to elements 0 and 1 only
+>  bsd-user/qemu.h           |  7 +++++++
+>  include/exec/cpu-common.h |  7 -------
+>  include/hw/core/cpu.h     |  2 --
+>  accel/tcg/translate-all.c |  1 -
+>  bsd-user/main.c           | 12 ++++++++++++
+>  cpu.c                     | 13 -------------
+>  softmmu/vl.c              |  1 -
+>  7 files changed, 19 insertions(+), 24 deletions(-)
 >
->  target/riscv/crypto_helper.c | 17 +++++------------
->  1 file changed, 5 insertions(+), 12 deletions(-)
->
-> diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
-> index 4d65945429c6dcc4..bb084e00efe52d1b 100644
-> --- a/target/riscv/crypto_helper.c
-> +++ b/target/riscv/crypto_helper.c
-> @@ -148,24 +148,17 @@ target_ulong HELPER(aes64ks1i)(target_ulong rs1, ta=
-rget_ulong rnum)
->
->      uint8_t enc_rnum =3D rnum;
->      uint32_t temp =3D (RS1 >> 32) & 0xFFFFFFFF;
-> -    uint8_t rcon_ =3D 0;
-> -    target_ulong result;
-> +    AESState t, rc =3D {};
->
->      if (enc_rnum !=3D 0xA) {
->          temp =3D ror32(temp, 8); /* Rotate right by 8 */
-> -        rcon_ =3D round_consts[enc_rnum];
-> +        rc.w[0] =3D rc.w[1] =3D round_consts[enc_rnum];
->      }
->
-> -    temp =3D ((uint32_t)AES_sbox[(temp >> 24) & 0xFF] << 24) |
-> -           ((uint32_t)AES_sbox[(temp >> 16) & 0xFF] << 16) |
-> -           ((uint32_t)AES_sbox[(temp >> 8) & 0xFF] << 8) |
-> -           ((uint32_t)AES_sbox[(temp >> 0) & 0xFF] << 0);
-> +    t.w[0] =3D t.w[1] =3D t.w[2] =3D t.w[3] =3D temp;
-> +    aesenc_SB_SR_AK(&t, &t, &rc, false);
->
-> -    temp ^=3D rcon_;
-> -
-> -    result =3D ((uint64_t)temp << 32) | temp;
-> -
-> -    return result;
-> +    return t.d[0];
->  }
->
->  target_ulong HELPER(aes64im)(target_ulong rs1)
-> --
-> 2.39.2
->
->
+
+ACK on the todo... My student is close to submitting the mmap series of his
+patches, so I appreciate the 'quick fix' to not disrupt that effort.
+
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+
+--000000000000e1e3fd060442f689
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 31, 2023 at 8:23=E2=80=AF=
+PM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
+chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">Move qemu_host_page_{size,mask} and HOST_PAGE_ALI=
+GN into bsd-user.<br>
+It should be removed from bsd-user as well, but defer that cleanup.<br>
+<br>
+Cc: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" target=3D"_blank">imp=
+@bsdimp.com</a>&gt;<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+Signed-off-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@li=
+naro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+---<br>
+=C2=A0bsd-user/qemu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 7 +++=
+++++<br>
+=C2=A0include/exec/cpu-common.h |=C2=A0 7 -------<br>
+=C2=A0include/hw/core/cpu.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 --<br>
+=C2=A0accel/tcg/translate-all.c |=C2=A0 1 -<br>
+=C2=A0bsd-user/main.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 12 ++++++++=
+++++<br>
+=C2=A0cpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0| 13 -------------<br>
+=C2=A0softmmu/vl.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =
+1 -<br>
+=C2=A07 files changed, 19 insertions(+), 24 deletions(-)<br></blockquote><d=
+iv><br></div><div>ACK on the todo... My student is close to submitting the =
+mmap series of his</div><div>patches, so I appreciate the &#39;quick fix&#3=
+9; to not disrupt that effort.</div><div><br></div><div>Reviewed-by: Warner=
+ Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.com</a>&gt;</div></d=
+iv></div>
+
+--000000000000e1e3fd060442f689--
 
