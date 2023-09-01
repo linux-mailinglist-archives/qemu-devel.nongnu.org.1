@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E2378F708
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E0D78F71B
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:27:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtpi-000808-5p; Thu, 31 Aug 2023 22:24:26 -0400
+	id 1qbtrz-0002h4-4C; Thu, 31 Aug 2023 22:26:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtpZ-0007B5-Mv
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:24:17 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qbtrw-0002PR-51; Thu, 31 Aug 2023 22:26:44 -0400
+Received: from mail-vk1-xa2f.google.com ([2607:f8b0:4864:20::a2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtpJ-0001TK-Vk
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:24:13 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-68a56401b9aso1248220b3a.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:24:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qbtrt-00025A-0Y; Thu, 31 Aug 2023 22:26:43 -0400
+Received: by mail-vk1-xa2f.google.com with SMTP id
+ 71dfb90a1353d-48d0db157efso538332e0c.1; 
+ Thu, 31 Aug 2023 19:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693535039; x=1694139839; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1693535199; x=1694139999; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UM3G3JW9WxcLT5Dzb3w4vT9giwKkE+uVqc4Wz3d/fxQ=;
- b=FzDh7kdFcl+ICqiOH8saF6XwJwMc1DcChe0vxWHjxEx8s0Xu1OaH+DnNrWMw0je2zD
- K8ho8r9LXLBPDrP4yW9aj9Hnrs4+qKz1CDeSlqrwPGqfROKC0CQVc1tbgCylJ0hBZS0Z
- rNazWYATamlcc1Cfo/A29qR7s+mCtqWmQM6/JRBh1xcCSt3QVvgl96knfAHtVQM+FBGb
- 7cNFbE3oMSgrAZ2E8ZX4mDJkeU0PyS5MjKsoJtRQsGPt4XherlwDfUumqFgyfHVCR1Lu
- OuNURzgqUJOM1ripkxTug2KwiVZL2dQJHB/TFsY3WuHj2C8Zyt4ZmKnRGja6XOK+BQiE
- RPhg==
+ bh=wA9BSQCL/MKywW8HyJ85tXlot+E3RAwdISDjgBwLBAE=;
+ b=Sa+FSNn29LX/Det4UNIXPd7QxxFtMcLpJLeDIwMSp+KGlrBYUrs1SH4+3ADS653pzo
+ r5qhH7IUGHtnUV92fGvDR3xMgVkOUyu/9Sd8M5ziMSo3WZdMe2Bf0Sg+/RVBp8nAoTqu
+ IEl14Wst72rmMnMHp2FNeI3LrbLrXIYhGFIhePB7pfoiWE1qISAew8MfLdJdb4kj6jLr
+ yqt9C8ttujws+qjyaVog70dlGuonx9Bvpj6LwLyhXyA3QCaM7+V+UXnlP09v8tthUsCS
+ XGLkGsk9UEJ4sDFW6cCMJMRuFTVChT4mJJ0ZcwdPiHBbVTMPKR8CcYZRMyFfcKyeMXh9
+ KHRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535039; x=1694139839;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1693535199; x=1694139999;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UM3G3JW9WxcLT5Dzb3w4vT9giwKkE+uVqc4Wz3d/fxQ=;
- b=NXUurHzwqoZ4r3SYpem0jjV0MWNyGiZToKEnUk1mwRcCfcfvBpE81nYfRFkEktmEVq
- 3zNEZ3OS0yug+4mFP9A+tGHmgKAbGq5s0QotYm2o8dQPiVEE4AB97QaOsqNkdw0QXUIT
- UWDG3UcTVXSsQnynOmWLpXdcNPzPvb4d5TLJHFTYhlP9sMZSY4swoiXk1hD1xUIeKkQy
- LDwkRMnXepy+KKCzBMcsoNnRztns08tw2GiCNfjvKC9JRky9CfRM0mbkFRD+2McZL/nI
- c7GxdoHGVXQUluKLJMbDnh2C6KdStkxYQvNes1djINnzTqrxb93CFtvws33FHfKNznSm
- 7xEA==
-X-Gm-Message-State: AOJu0YxnsRfccGFdfoMfL3Aex2OP995+VBHCqU+7BUbAA3o7ZM0L1Cva
- iLrnmdM29CzktBtX2tMjZvFIuAX6PUcvN1qtA3A=
-X-Google-Smtp-Source: AGHT+IFeWhEix0PiAx8keqXc00mLa/nUIYMptZ0Rc/yTpfngUDY+40qjoCdatFu/e6QLGnsflL2/wA==
-X-Received: by 2002:a05:6a20:157:b0:12f:c61e:7cac with SMTP id
- 23-20020a056a20015700b0012fc61e7cacmr1470526pzs.31.1693535039263; 
- Thu, 31 Aug 2023 19:23:59 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- c25-20020aa781d9000000b0068a54866ca8sm1906977pfn.134.2023.08.31.19.23.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 19:23:58 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
-	alex.bennee@linaro.org
-Subject: [PATCH v2 33/33] target/alpha: Enable TARGET_PAGE_BITS_VARY for
- user-only
-Date: Thu, 31 Aug 2023 19:23:31 -0700
-Message-Id: <20230901022331.115247-34-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230901022331.115247-1-richard.henderson@linaro.org>
-References: <20230901022331.115247-1-richard.henderson@linaro.org>
+ bh=wA9BSQCL/MKywW8HyJ85tXlot+E3RAwdISDjgBwLBAE=;
+ b=LDUmiKAZ0Mh6he9YCLMC9z6sESWkGhgEuGJfn0cIQtFvGKL8KgAH/nAV6HuO0GRksq
+ 8pVW+IeQwe0S6QNQLgjGTMueRxZXscrcpJSiB48fLBJd76uEu7lTc00J8fHAHEUqc7J/
+ Ou3McF542rqqdyRMELV3mjLeoDdydZHck2oN3/peHnkTHxPvZrGbQczgxJzRpjnwxIbW
+ DTYbBF88IkZWbULI5odRFQEmvwQjkJSaWg+/KZp9xLdWL3P0om7cE2LtB19l7RKnI5qy
+ nF4Zwm8qg+8VqG4suY1Rm2jCtGLpdYwrlFMLG2aOKKR0M8ZAwF2VMvoUNOiOaRbxwZkG
+ yBKg==
+X-Gm-Message-State: AOJu0YytMzD1jTobGfBEot5Rhtv/4zJQk4IG7XK2fKVJgYqChlhuxoox
+ OwG1GJeumqHxUj9dpxGgPDjnSGqbwTlWLLhp1D0=
+X-Google-Smtp-Source: AGHT+IG0jvDkmwxI1DCo9yJ01UJ02F789x+PNtHODgbbjYABxm+OPTEMiStydtpIK7Fu3Dp+EwalZh/MBTcm+ArGokA=
+X-Received: by 2002:a1f:cb82:0:b0:48f:e2eb:6dd9 with SMTP id
+ b124-20020a1fcb82000000b0048fe2eb6dd9mr1458336vkg.8.1693535199613; Thu, 31
+ Aug 2023 19:26:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20230830133503.711138-1-dbarboza@ventanamicro.com>
+In-Reply-To: <20230830133503.711138-1-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 1 Sep 2023 12:26:12 +1000
+Message-ID: <CAKmqyKNQk-_s8LF2tvgvibM8KTersTQiYSr80fwg3+OmaWz7nw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] riscv: fix --enable-debug in riscv-to-apply.next
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,44 +87,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since alpha binaries are generally built for multiple
-page sizes, it is trivial to allow the page size to vary.
+On Wed, Aug 30, 2023 at 11:36=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Hi,
+>
+> This is the second version of the --enable-debug build fix for the
+> riscv-to-apply.next branch:
+>
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+>
+> This implements suggestions from Richard Henderson made in v1. Most
+> notable difference is that riscv_kvm_aplic_request() was moved to
+> kvm.c and it's now being declared in kvm_riscv.h.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/alpha/cpu-param.h | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+Thanks!
 
-diff --git a/target/alpha/cpu-param.h b/target/alpha/cpu-param.h
-index 68c46f7998..c969cb016b 100644
---- a/target/alpha/cpu-param.h
-+++ b/target/alpha/cpu-param.h
-@@ -9,10 +9,22 @@
- #define ALPHA_CPU_PARAM_H
- 
- #define TARGET_LONG_BITS 64
--#define TARGET_PAGE_BITS 13
- 
- /* ??? EV4 has 34 phys addr bits, EV5 has 40, EV6 has 44.  */
- #define TARGET_PHYS_ADDR_SPACE_BITS  44
--#define TARGET_VIRT_ADDR_SPACE_BITS  (30 + TARGET_PAGE_BITS)
-+
-+#ifdef CONFIG_USER_ONLY
-+/*
-+ * Allow user-only to vary page size.  Real hardware allows only 8k and 64k,
-+ * but since any variance means guests cannot assume a fixed value, allow
-+ * a 4k minimum to match x86 host, which can minimize emulation issues.
-+ */
-+# define TARGET_PAGE_BITS_VARY
-+# define TARGET_PAGE_BITS_MIN 12
-+# define TARGET_VIRT_ADDR_SPACE_BITS  63
-+#else
-+# define TARGET_PAGE_BITS 13
-+# define TARGET_VIRT_ADDR_SPACE_BITS  (30 + TARGET_PAGE_BITS)
-+#endif
- 
- #endif
--- 
-2.34.1
+Applied to riscv-to-apply.next
 
+Alistair
+
+>
+> Changes from v1:
+> - changed patch order
+> - patch 1 (former 2):
+>   - use kvm_enabled() to crop the whole block
+> - patch 2 (former 1):
+>   - move riscv_kvm_aplic_request() to kvm_riscv.h
+>   - use kvm_enabled() to crop the whole block
+> - v1 link: https://lore.kernel.org/qemu-riscv/20230829122144.464489-1-dba=
+rboza@ventanamicro.com/
+>
+>
+> Daniel Henrique Barboza (2):
+>   hw/riscv/virt.c: fix non-KVM --enable-debug build
+>   hw/intc/riscv_aplic.c fix non-KVM --enable-debug build
+>
+>  hw/intc/riscv_aplic.c    | 8 ++------
+>  hw/riscv/virt.c          | 6 +++---
+>  target/riscv/kvm.c       | 5 +++++
+>  target/riscv/kvm_riscv.h | 1 +
+>  4 files changed, 11 insertions(+), 9 deletions(-)
+>
+> --
+> 2.41.0
+>
+>
 
