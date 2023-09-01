@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E6678F71D
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3527978F70F
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:25:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtoy-0006TX-WA; Thu, 31 Aug 2023 22:23:41 -0400
+	id 1qbtoz-0006Tg-If; Thu, 31 Aug 2023 22:23:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtow-0006SM-Tg
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:23:38 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qbtox-0006Sn-NA
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:23:39 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtou-0001Nx-Lt
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:23:38 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-68a56401b9aso1248109b3a.1
+ id 1qbtov-0001O2-2u
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:23:39 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-68a3e271491so1099143b3a.0
  for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693535015; x=1694139815; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693535016; x=1694139816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C0v5Ti5rtUv1bybp9Gg5g/SRQF/P2TUzqcILBLMIhF4=;
- b=PlkpcrVHz48OUlKwgK7v8YJ9XMV5S6bSGVquvo5+qwi8vJYwdlpIPzbiDe6YfrYmZ9
- 0/3wwApUZ7hlTLbOs8FqxMQ1DXqPF243dTY6QjsW7lG4x27C0na7bKovAB41OjjeTKHF
- UH1Tc/5vn6cxpVKjN6bx3aMinjIXfqSScZ9OewjE2jO3p7sCJdLInLpgUOC7b5O51CGE
- XB1Duw0XxsQzkuATLuBLoSzC2q4wSNSoX+q9WPNJjsEBIvjCHpMFAIJmsoN1omoeVBMZ
- cRGTRYZqPQ0awvjYzc8Qz8Nz9uBRX2aRYtje5yLKXLwFOhQxG/s02qDNbGxSSWSzzCKt
- CREQ==
+ bh=l1Ia6H4r6/UDLfCIgaKhnJIkJDHurCCHa2efkMKJruA=;
+ b=u3Ojsx1ZXD6IVEVCqXqvTn0O/PZHORG75p6wWJm961yqH3STGeebqV8V6B7AI0NP3C
+ IHTP67pUF8PrtFpFQGbmw9HmEtvVvGYh2JjMxPsPYIJD+fBVppv7NpSEKa/4hrnJvmH7
+ 2JB0BzFHfOXjipUNs2QTC9E1OSAG7nTAJvlvemBhpvzhdu1jfq0/ILu+qIQkvryVl54x
+ Phfdkh4D0mYDt7eUdma6hqMQaHZ6O0FgJs7HxaKrBD0Qiqgc3+3XZHlch7RDmzUI2yUH
+ u8iuKa4yMKxkqXN8Qv4+JpjePaSo5KqPqusoinP0L7nQRgAaEVZesrUfg728StOLnbe4
+ pWDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535015; x=1694139815;
+ d=1e100.net; s=20221208; t=1693535016; x=1694139816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C0v5Ti5rtUv1bybp9Gg5g/SRQF/P2TUzqcILBLMIhF4=;
- b=co3IAmdqvPZmPj1dmSdBdPqqVYOsToisNBpn4nvYHjCcw6FCRY02cSgGHIkhiuB9yC
- XD09ozq0ow49nBm7qONK4EmdFuL/xLVpiH5ZPl+28zGTmxktfDZn0LtqqN+fFCX1mcGd
- glF9Ns85QsBugv+hDUWPvHEmGNivHT8l0O6WF1UB7Evca7PxYkfbIhePadYHaSoDexf6
- a8E0MSVMUAp6RRKH2SjlB7tz/McQKy+QYgFQ93iRuktl2fAIGIx/zJE21E4Xdc36RnAq
- P353HawHAwvo4RMCm5jMVX3nthqvT6izdPIVw1i/qnSB9ECRqjjVRXuWJbUNP2bdUh00
- w/mA==
-X-Gm-Message-State: AOJu0YxjprENpgSVp7C9XStFWKsCmPGpblRFJqDQjeZIPzrPfGq/FrFL
- 8p8i7RaXIJ8XAzvJNep7+5N9Dloq98qU2dq+jiY=
-X-Google-Smtp-Source: AGHT+IHE+LlPemmHaxhE32S2daEbvcy1c+TUwD/IVpzJOKzwSn/TzcAheBrRoWakwfMoYWS1K+pUww==
-X-Received: by 2002:a05:6a00:1a8e:b0:68c:3f20:5e8b with SMTP id
- e14-20020a056a001a8e00b0068c3f205e8bmr1891149pfv.15.1693535014979; 
- Thu, 31 Aug 2023 19:23:34 -0700 (PDT)
+ bh=l1Ia6H4r6/UDLfCIgaKhnJIkJDHurCCHa2efkMKJruA=;
+ b=QywVY0XYqn4ys6aDZIlVo1veQNxtZICXmv8QVnx7gdsiFTvQmA6QqQsPO5GRafSsjP
+ /Gdl/8/xipqyeVtbWmg5RrTKJ01U4AoAdu37ruA0xV48P8DhCipN5tZFnDqLZBJtW0ea
+ MtIix7Ajf0aFuyF3CuqjWtjgoXTIY8mIlAaWOSSI3+k6wyS1SuTGfh1UDV+3kY8NwtU+
+ 31wzsmP/ts/uMoG1aTZVCuvjKa1vTsdcSq5FB7KxqgWQvSO2Arh/Ef22QFj5PEfUX8GS
+ OWCFGS+fK8ZghUCUGfBKQ7Cmbpgp2yRGd4VfLVMxq0Ezguuz8Py+x7D3GBNJ/HOMFpEw
+ GI+w==
+X-Gm-Message-State: AOJu0YwLjoIwUCc67NPrAfT2l7KKDh2eGfPW+hwWRjcxaGfpFHM0UzdU
+ R/sVeWOteOPLgdAaksUWUMOGOjSjjWtTRWQZeGE=
+X-Google-Smtp-Source: AGHT+IHEALxxBg6d86WOmSKU1byXjrg4JPQqlT9FMnuoRk3lgRk7KjWBr+fjPJE08JZd3pMSH9z5cA==
+X-Received: by 2002:a05:6a00:3985:b0:68a:3b25:50d2 with SMTP id
+ fi5-20020a056a00398500b0068a3b2550d2mr1529427pfb.14.1693535015739; 
+ Thu, 31 Aug 2023 19:23:35 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- c25-20020aa781d9000000b0068a54866ca8sm1906977pfn.134.2023.08.31.19.23.34
+ c25-20020aa781d9000000b0068a54866ca8sm1906977pfn.134.2023.08.31.19.23.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 19:23:34 -0700 (PDT)
+ Thu, 31 Aug 2023 19:23:35 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	alex.bennee@linaro.org
-Subject: [PATCH v2 03/33] linux-user: Remove qemu_host_page_{size,
- mask} in probe_guest_base
-Date: Thu, 31 Aug 2023 19:23:01 -0700
-Message-Id: <20230901022331.115247-4-richard.henderson@linaro.org>
+Subject: [PATCH v2 04/33] linux-user: Remove qemu_host_page_size from
+ create_elf_tables
+Date: Thu, 31 Aug 2023 19:23:02 -0700
+Message-Id: <20230901022331.115247-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230901022331.115247-1-richard.henderson@linaro.org>
 References: <20230901022331.115247-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,37 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The host SHMLBA is by definition a multiple of the host page size.
-Thus the remaining component of qemu_host_page_size is the
-target page size.
+AT_PAGESZ is supposed to advertise the guest page size.
+The random adjustment made here using qemu_host_page_size
+does not match anything else within linux-user.
+
+The idea here is good, but should be done more systemically
+via adjustment to TARGET_PAGE_SIZE.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/elfload.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 803281a53a..7851003147 100644
+index 7851003147..885566c798 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -2712,7 +2712,7 @@ static bool pgb_addr_set(PGBAddrs *ga, abi_ulong guest_loaddr,
- 
-     /* Add any HI_COMMPAGE not covered by reserved_va. */
-     if (reserved_va < HI_COMMPAGE) {
--        ga->bounds[n][0] = HI_COMMPAGE & qemu_host_page_mask;
-+        ga->bounds[n][0] = HI_COMMPAGE & -qemu_real_host_page_size();
-         ga->bounds[n][1] = HI_COMMPAGE + TARGET_PAGE_SIZE - 1;
-         n++;
-     }
-@@ -2894,7 +2894,7 @@ void probe_guest_base(const char *image_name, abi_ulong guest_loaddr,
-                       abi_ulong guest_hiaddr)
- {
-     /* In order to use host shmat, we must be able to honor SHMLBA.  */
--    uintptr_t align = MAX(SHMLBA, qemu_host_page_size);
-+    uintptr_t align = MAX(SHMLBA, TARGET_PAGE_SIZE);
- 
-     /* Sanity check the guest binary. */
-     if (reserved_va) {
+@@ -2498,13 +2498,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
+     NEW_AUX_ENT(AT_PHDR, (abi_ulong)(info->load_addr + exec->e_phoff));
+     NEW_AUX_ENT(AT_PHENT, (abi_ulong)(sizeof (struct elf_phdr)));
+     NEW_AUX_ENT(AT_PHNUM, (abi_ulong)(exec->e_phnum));
+-    if ((info->alignment & ~qemu_host_page_mask) != 0) {
+-        /* Target doesn't support host page size alignment */
+-        NEW_AUX_ENT(AT_PAGESZ, (abi_ulong)(TARGET_PAGE_SIZE));
+-    } else {
+-        NEW_AUX_ENT(AT_PAGESZ, (abi_ulong)(MAX(TARGET_PAGE_SIZE,
+-                                               qemu_host_page_size)));
+-    }
++    NEW_AUX_ENT(AT_PAGESZ, (abi_ulong)(TARGET_PAGE_SIZE));
+     NEW_AUX_ENT(AT_BASE, (abi_ulong)(interp_info ? interp_info->load_addr : 0));
+     NEW_AUX_ENT(AT_FLAGS, (abi_ulong)0);
+     NEW_AUX_ENT(AT_ENTRY, info->entry);
 -- 
 2.34.1
 
