@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A31078FB44
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B8778FB40
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:43:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc0fr-0001WX-En; Fri, 01 Sep 2023 05:42:43 -0400
+	id 1qc0fo-0001Nt-68; Fri, 01 Sep 2023 05:42:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fn-0001Qx-Uq; Fri, 01 Sep 2023 05:42:39 -0400
+ id 1qc0fl-0001NY-Rf; Fri, 01 Sep 2023 05:42:37 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fh-0002rf-47; Fri, 01 Sep 2023 05:42:38 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3V28qhz4x3G;
- Fri,  1 Sep 2023 19:42:30 +1000 (AEST)
+ id 1qc0fi-0002t1-KS; Fri, 01 Sep 2023 05:42:37 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3X26CZz4x3j;
+ Fri,  1 Sep 2023 19:42:32 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3S5SWWz4wxW;
- Fri,  1 Sep 2023 19:42:28 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3V5Z2cz4wxW;
+ Fri,  1 Sep 2023 19:42:30 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Hang Yu <francis_yuu@stu.pku.edu.cn>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 04/26] hw/i2c/aspeed: Add support for buffer organization
-Date: Fri,  1 Sep 2023 11:41:52 +0200
-Message-ID: <20230901094214.296918-5-clg@kaod.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>
+Subject: [PULL 05/26] tests/avocado/machine_aspeed.py: Update SDK images
+Date: Fri,  1 Sep 2023 11:41:53 +0200
+Message-ID: <20230901094214.296918-6-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901094214.296918-1-clg@kaod.org>
 References: <20230901094214.296918-1-clg@kaod.org>
@@ -43,12 +42,12 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=SnXb=ER=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, FORGED_SPF_HELO=1,
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
  HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,48 +63,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hang Yu <francis_yuu@stu.pku.edu.cn>
+Switch to the latest v8.06 release which introduces interesting
+changes for the AST2600 I2C and I3C models. Also take the AST2600 A2
+images instead of the default since QEMU tries to model The AST2600 A3
+SoC.
 
-Added support for the buffer organization option in pool buffer control
-register.when set to 1,The buffer is split into two parts: Lower 16 bytes
-for Tx and higher 16 bytes for Rx.
-
-Signed-off-by: Hang Yu <francis_yuu@stu.pku.edu.cn>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-[ clg: checkpatch fixes ]
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- include/hw/i2c/aspeed_i2c.h | 1 +
- hw/i2c/aspeed_i2c.c         | 4 ++++
- 2 files changed, 5 insertions(+)
+ tests/avocado/machine_aspeed.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
-index 2e1e15aaf0f7..a064479e599c 100644
---- a/include/hw/i2c/aspeed_i2c.h
-+++ b/include/hw/i2c/aspeed_i2c.h
-@@ -143,6 +143,7 @@ REG32(I2CD_POOL_CTRL, 0x1C) /* Pool Buffer Control */
-     SHARED_FIELD(RX_SIZE, 16, 5)
-     SHARED_FIELD(TX_COUNT, 8, 5)
-     FIELD(I2CD_POOL_CTRL, OFFSET, 2, 6) /* AST2400 */
-+    SHARED_FIELD(BUF_ORGANIZATION, 0, 1) /* AST2600 */
- REG32(I2CD_BYTE_BUF, 0x20) /* Transmit/Receive Byte Buffer */
-     SHARED_FIELD(RX_BUF, 8, 8)
-     SHARED_FIELD(TX_BUF, 0, 8)
-diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index 44905d789998..7275d40749a9 100644
---- a/hw/i2c/aspeed_i2c.c
-+++ b/hw/i2c/aspeed_i2c.c
-@@ -297,6 +297,10 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
+diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+index 724ee72c0208..90f1b7cb77a1 100644
+--- a/tests/avocado/machine_aspeed.py
++++ b/tests/avocado/machine_aspeed.py
+@@ -316,8 +316,8 @@ def test_arm_ast2500_evb_sdk(self):
+         """
  
-     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
-         uint8_t *pool_base = aic->bus_pool_base(bus);
-+        if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
-+                                    BUF_ORGANIZATION)) {
-+            pool_base += 16;
-+        }
+         image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
+-                     'download/v08.01/ast2500-default-obmc.tar.gz')
+-        image_hash = ('5375f82b4c43a79427909342a1e18b4e48bd663e38466862145d27bb358796fd')
++                     'download/v08.06/ast2500-default-obmc.tar.gz')
++        image_hash = ('e1755f3cadff69190438c688d52dd0f0d399b70a1e14b1d3d5540fc4851d38ca')
+         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+                                       algorithm='sha256')
+         archive.extract(image_path, self.workdir)
+@@ -334,8 +334,8 @@ def test_arm_ast2600_evb_sdk(self):
+         """
  
-         for (i = 0; i < pool_rx_count; i++) {
-             pool_base[i] = i2c_recv(bus->bus);
+         image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
+-                     'download/v08.01/ast2600-default-obmc.tar.gz')
+-        image_hash = ('f12ef15e8c1f03a214df3b91c814515c5e2b2f56119021398c1dbdd626817d15')
++                     'download/v08.06/ast2600-a2-obmc.tar.gz')
++        image_hash = ('9083506135f622d5e7351fcf7d4e1c7125cee5ba16141220c0ba88931f3681a4')
+         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+                                       algorithm='sha256')
+         archive.extract(image_path, self.workdir)
+@@ -345,8 +345,8 @@ def test_arm_ast2600_evb_sdk(self):
+         self.vm.add_args('-device',
+                          'ds1338,bus=aspeed.i2c.bus.5,address=0x32');
+         self.do_test_arm_aspeed_sdk_start(
+-            self.workdir + '/ast2600-default/image-bmc')
+-        self.wait_for_console_pattern('nodistro.0 ast2600-default ttyS4')
++            self.workdir + '/ast2600-a2/image-bmc')
++        self.wait_for_console_pattern('nodistro.0 ast2600-a2 ttyS4')
+ 
+         self.ssh_connect('root', '0penBmc', False)
+         self.ssh_command('dmesg -c > /dev/null')
 -- 
 2.41.0
 
