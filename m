@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6800778F9FE
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 10:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCF278FA2A
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 10:46:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbzaT-0002f8-5a; Fri, 01 Sep 2023 04:33:05 -0400
+	id 1qbzmC-0007eI-0V; Fri, 01 Sep 2023 04:45:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qbzaP-0002ee-L6
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 04:33:02 -0400
-Received: from mgamail.intel.com ([192.55.52.88])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qbzaM-0004Yh-8G
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 04:33:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1693557178; x=1725093178;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8It53ixGZHBgx/mDSjo9vwNy0K/ixo32HsNTC+oW4zs=;
- b=cWEE/VD99mGdgsm4p6f1h0+6vHOZ1u7ruKoIyM+4MR0UKOasGmda5UuV
- TDMKnV27XqxYpG+DcrNa01ipVbGRskaDDNaSUeTWZFJUVLc79rqF0sDmH
- wBWuP23QaJdE7TxqojPOXhErB82UbL6bn5YxUQHgRSFHZ8hfjuYHungvm
- uV3jGqd+DPwYBbjAtK9xu+GclwG8MhGaQE7fR1+wBkmapwUxE5SxtSAE1
- EldbEOH7cdVEwg34+7IDNOMEb1lRc1kcpT7Dlu1mUUdikX1G1H5yAUqj/
- XKJqAZbXd2jUXDahSDUUGsVq6OwDCs9L+xHG5ZUQ/KeiprXvkTskPVrjV Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="407160319"
-X-IronPort-AV: E=Sophos;i="6.02,219,1688454000"; d="scan'208";a="407160319"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2023 01:32:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="689681522"
-X-IronPort-AV: E=Sophos;i="6.02,219,1688454000"; d="scan'208";a="689681522"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga003.jf.intel.com with ESMTP; 01 Sep 2023 01:32:47 -0700
-Date: Fri, 1 Sep 2023 16:43:44 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Moger, Babu" <babu.moger@amd.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Wei Wang <wei.w.wang@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
- CPUID[4]
-Message-ID: <ZPGkQNrolfEKz3UK@liuzhao-OptiPlex-7080>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-15-zhao1.liu@linux.intel.com>
- <19ba8210-3e11-a36f-3b26-52cbe40042b1@amd.com>
- <3f7510f2-20f3-93df-72b3-01cfa687f554@amd.com>
- <ZMzJaElw/T5caQU+@liuzhao-OptiPlex-7080>
- <5947274f-e29d-cb76-3325-5dc75f205eeb@amd.com>
- <ZNnkR+G6PvE2q77E@liuzhao-OptiPlex-7080>
- <4615221c-407c-1542-56c8-a9557a5800b2@amd.com>
- <ZN8fw0CU+j/dOvBy@liuzhao-OptiPlex-7080>
- <1eb2e3e7-87e0-9d8f-0eb1-da5888c2f6cc@amd.com>
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qbzm6-0007e0-NB; Fri, 01 Sep 2023 04:45:07 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qbzlz-0006bh-BE; Fri, 01 Sep 2023 04:45:03 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2bd0d19a304so30932991fa.1; 
+ Fri, 01 Sep 2023 01:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1693557895; x=1694162695; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ub/+8uCz80Du/L/b809/ZyRrakMTY6fHgUa5/nXoR0k=;
+ b=lGda+3696bpMoL33bqGImH8H8QuLQERctG+YhTfiB9bAQOaN1BLEuQ4juqxpSaLxvl
+ hCWIBr8Qmr6yDMLq1Xw6EaIyi0iZdr9m0yQZATaK4klAixXTUtI4JeLiKsbS87tC+8Ss
+ YPsCAoitTfqIUrMBkVGMKEzQO3KsfOnAMy9BY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693557895; x=1694162695;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ub/+8uCz80Du/L/b809/ZyRrakMTY6fHgUa5/nXoR0k=;
+ b=UDpT5p/CNyAZQ/xK6xcku7wy/87jlR3LiOY3ReclEzlyxx7i2D0kvPeIM7L6EgwtED
+ YVxBrDr+IWxVCvBrw2yD2msxsSXhjTM5HyZCxy+l/i8FBZKcQ8E6ti0TI4Y9s+IL6DRA
+ axF/+Wj9pdJsbaJ7pPVkwIKLrNeX/QwoE/rFrtZnllsKfvifWfQUhwJRswZEIMWJVbUH
+ jLAcGYgGzWpy1X4Ms+pNv1gyPeIScjhDItQgEiyrVIhNcJpVVoJnEughc/ed4HAiGqZG
+ 5pC3GLCODnyblPrdXmyx/IjlR5Kk7zcxbUCkEGk2choa3+2Cy5Z1bFRZytQxI+d3y3ZZ
+ 9EKA==
+X-Gm-Message-State: AOJu0Yzwe6PMlBcND61cLOhD3Yfb7vzvrmBGpMKNxfm5ymcwwbQJ2i6k
+ XHyBNVcNKbunx9a/iTSkgCzzFtNImBgWEA5zV7GnUg0m
+X-Google-Smtp-Source: AGHT+IHoIblBxMPjRsMhVju2QXw73qvZzigVo4kT2ySQk7InWL1yHNdg3m8OS4JAzS+wv4ekfTH7CaPnRBRJkQLfGMQ=
+X-Received: by 2002:a2e:98cd:0:b0:2bc:d607:4d1f with SMTP id
+ s13-20020a2e98cd000000b002bcd6074d1fmr1092754ljj.44.1693557894592; Fri, 01
+ Sep 2023 01:44:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1eb2e3e7-87e0-9d8f-0eb1-da5888c2f6cc@amd.com>
-Received-SPF: none client-ip=192.55.52.88;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20230831123922.105200-1-clg@kaod.org>
+ <20230831123922.105200-6-clg@kaod.org>
+ <b6c8df57-c6e4-9962-40a3-f01d5fd2a6dc@kaod.org>
+In-Reply-To: <b6c8df57-c6e4-9962-40a3-f01d5fd2a6dc@kaod.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Fri, 1 Sep 2023 08:44:43 +0000
+Message-ID: <CACPK8Xc1rGpkiALx70PXZHbt5K54QpMA1gnkKHgHFy=Gk0+rKQ@mail.gmail.com>
+Subject: Re: [PATCH v3.2 5/7] aspeed: Create flash devices only when defaults
+ are enabled
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=joel.stan@gmail.com; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,150 +87,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Babu,
+On Thu, 31 Aug 2023 at 21:13, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>
+> When the -nodefaults option is set, flash devices should be created
+> with :
+>
+>      -blockdev node-name=3Dfmc0,driver=3Dfile,filename=3D./flash.img \
+>      -device mx66u51235f,cs=3D0x0,bus=3Dssi.0,drive=3Dfmc0 \
+>
+> To be noted that in this case, the ROM will not be installed and the
+> initial boot sequence (U-Boot loading) will fetch instructions using
+> SPI transactions which is significantly slower. That's exactly how HW
+> operates though.
+>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 
-On Wed, Aug 23, 2023 at 12:18:30PM -0500, Moger, Babu wrote:
-> Date: Wed, 23 Aug 2023 12:18:30 -0500
-> From: "Moger, Babu" <babu.moger@amd.com>
-> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
->  CPUID[4]
-> 
-> Hi Zhao,
-> 
-> On 8/18/23 02:37, Zhao Liu wrote:
-> > Hi Babu,
-> > 
-> > On Mon, Aug 14, 2023 at 11:03:53AM -0500, Moger, Babu wrote:
-> >> Date: Mon, 14 Aug 2023 11:03:53 -0500
-> >> From: "Moger, Babu" <babu.moger@amd.com>
-> >> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
-> >>  CPUID[4]
-> >>
-> >> Hi Zhao,
-> >>
-> >>
-> >> On 8/14/23 03:22, Zhao Liu wrote:
-> >>> Hi Babu,
-> >>>
-> >>> On Fri, Aug 04, 2023 at 10:48:29AM -0500, Moger, Babu wrote:
-> >>>> Date: Fri, 4 Aug 2023 10:48:29 -0500
-> >>>> From: "Moger, Babu" <babu.moger@amd.com>
-> >>>> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
-> >>>>  CPUID[4]
-> >>>>
-> >>>> Hi Zhao,
-> >>>>
-> >>>> On 8/4/23 04:48, Zhao Liu wrote:
-> >>>>> Hi Babu,
-> >>>>>
-> >>>>> On Thu, Aug 03, 2023 at 11:41:40AM -0500, Moger, Babu wrote:
-> >>>>>> Date: Thu, 3 Aug 2023 11:41:40 -0500
-> >>>>>> From: "Moger, Babu" <babu.moger@amd.com>
-> >>>>>> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
-> >>>>>>  CPUID[4]
-> >>>>>>
-> >>>>>> Hi Zhao,
-> >>>>>>
-> >>>>>> On 8/2/23 18:49, Moger, Babu wrote:
-> >>>>>>> Hi Zhao,
-> >>>>>>>
-> >>>>>>> Hitting this error after this patch.
-> >>>>>>>
-> >>>>>>> ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code should
-> >>>>>>> not be reached
-> >>>>>>> Bail out! ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code
-> >>>>>>> should not be reached
-> >>>>>>> Aborted (core dumped)
-> >>>>>>>
-> >>>>>>> Looks like share_level for all the caches for AMD is not initialized.
-> >>>>>
-> >>>>> I missed these change when I rebase. Sorry for that.
-> >>>>>
-> >>>>> BTW, could I ask a question? From a previous discussion[1], I understand
-> >>>>> that the cache info is used to show the correct cache information in
-> >>>>> new machine. And from [2], the wrong cache info may cause "compatibility
-> >>>>> issues".
-> >>>>>
-> >>>>> Is this "compatibility issues" AMD specific? I'm not sure if Intel should
-> >>>>> update the cache info like that. thanks!
-> >>>>
-> >>>> I was going to comment about that. Good that you asked me.
-> >>>>
-> >>>> Compatibility is qemu requirement.  Otherwise the migrations will fail.
-> >>>>
-> >>>> Any changes in the topology is going to cause migration problems.
-> >>>
-> >>> Could you please educate me more about the details of the "migration
-> >>> problem"?
-> >>>
-> >>> I didn't understand why it was causing the problem and wasn't sure if I
-> >>> was missing any cases.
-> >>>
-> >>
-> >> I am not an expert on migration but I test VM migration sometimes.
-> >> Here are some guidelines.
-> >> https://developers.redhat.com/blog/2015/03/24/live-migrating-qemu-kvm-virtual-machines
-> > 
-> > Thanks for the material!
-> > 
-> >>
-> >> When you migrate a VM to newer qemu using the same CPU type, migration
-> >> should work seamless. That means list of CPU features should be compatible
-> >> when you move to newer qemu version with CPU type.
-> > 
-> > I see. This patches set adds the "-smp cluster" command and the
-> > "x-l2-cache-topo" command. Migration requires that the target and
-> 
-> Shouldn't the command x-l2-cache-topo disabled by default? (For example
-> look at hw/i386/pc.c the property x-migrate-smi-count).
+Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-Thanks!
+A good addition. Thanks!
 
-Since we add the default topology level in cache models, so the default
-l2 topology is the level hardcoded in cache model.
-
-From this point, this option won't affect the migration between
-different QEMU versions. If user doesn't change l2 to cluster, the
-default l2 topology levels are the same (core level).
-
-> 
-> It will be enabled when user passes "-cpu x-l2-cache-topo=[core|cluster]".
-> Current code enables it by default as far I can see.
-
-I think the compatibility issue for x-migrate-smi-count is because it
-has differnt default settings for different QEMU versions.
-
-And for x-l2-cache-topo, it defaults to use the level hardcoded in cache
-model, this is no difference between new and old QEMUs.
-
-> 
-> > source VM command lines are the same, so the new commands ensure that
-> > the migration is consistent.
-> > 
-> > But this patch set also includes some topology fixes (nr_cores fix and
-> > l1 cache topology fix) and encoding change (use APIC ID offset to encode
-> > addressable ids), these changes would affect migration and may cause
-> > CPUID change for VM view. Thus if this patch set is accepted, these
-> > changes also need to be pushed into stable versions. Do you agree?
-> 
-> Yes. That sounds right.
-> 
-> > 
-> > And about cache info for different CPU generations, migration usually
-> > happens on the same CPU type, and Intel uses the same default cache
-> > info for all CPU types. With the consistent cache info, migration is
-> > also Ok. So if we don't care about the specific cache info in the VM,
-> > it's okay to use the same default cache info for all CPU types. Right?
-> 
-> I am not sure about this. Please run migration tests to be sure.
-
-We tested for these cases:
-
-1. v3 <-> v3: same cli (same setting in x-l2-cache-topo) cases succeed.
-
-2. v3 <-> master base (no v3 patches): same cli or v3 with default level
-   (as hardcoded in cache models) cases succeed.
-
-Thanks,
-Zhao
+> ---
+>   docs/system/arm/aspeed.rst | 35 +++++++++++++++++++++++++++++------
+>   hw/arm/aspeed.c            |  6 ++++--
+>   2 files changed, 33 insertions(+), 8 deletions(-)
+>
+> diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+> index 80538422a1a4..b2dea54eedad 100644
+> --- a/docs/system/arm/aspeed.rst
+> +++ b/docs/system/arm/aspeed.rst
+> @@ -104,7 +104,7 @@ To boot a kernel directly from a Linux build tree:
+>           -dtb arch/arm/boot/dts/aspeed-ast2600-evb.dtb \
+>           -initrd rootfs.cpio
+>
+> -The image should be attached as an MTD drive. Run :
+> +To boot the machine from the flash image, use an MTD drive :
+>
+>   .. code-block:: bash
+>
+> @@ -117,23 +117,46 @@ Options specific to Aspeed machines are :
+>      device by using the FMC controller to load the instructions, and
+>      not simply from RAM. This takes a little longer.
+>
+> - * ``fmc-model`` to change the FMC Flash model. FW needs support for
+> -   the chip model to boot.
+> + * ``fmc-model`` to change the default FMC Flash model. FW needs
+> +   support for the chip model to boot.
+>
+> - * ``spi-model`` to change the SPI Flash model.
+> + * ``spi-model`` to change the default SPI Flash model.
+>
+>    * ``bmc-console`` to change the default console device. Most of the
+>      machines use the ``UART5`` device for a boot console, which is
+>      mapped on ``/dev/ttyS4`` under Linux, but it is not always the
+>      case.
+>
+> -For instance, to start the ``ast2500-evb`` machine with a different
+> -FMC chip and a bigger (64M) SPI chip, use :
+> +To use other flash models, for instance a different FMC chip and a
+> +bigger (64M) SPI for the ``ast2500-evb`` machine, run :
+>
+>   .. code-block:: bash
+>
+>     -M ast2500-evb,fmc-model=3Dmx25l25635e,spi-model=3Dmx66u51235f
+>
+> +When more flexibility is needed to define the flash devices, to use
+> +different flash models or define all flash devices (up to 8), the
+> +``-nodefaults`` QEMU option can be used to avoid creating the default
+> +flash devices.
+> +
+> +Flash devices should then be created from the command line and attached
+> +to a block device :
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-arm -M ast2600-evb \
+> +        -blockdev node-name=3Dfmc0,driver=3Dfile,filename=3D/path/to/fmc=
+0.img \
+> +       -device mx66u51235f,bus=3Dssi.0,cs=3D0x0,drive=3Dfmc0 \
+> +       -blockdev node-name=3Dfmc1,driver=3Dfile,filename=3D/path/to/fmc1=
+.img \
+> +       -device mx66u51235f,bus=3Dssi.0,cs=3D0x1,drive=3Dfmc1 \
+> +       -blockdev node-name=3Dspi1,driver=3Dfile,filename=3D/path/to/spi1=
+.img \
+> +       -device mx66u51235f,cs=3D0x0,bus=3Dssi.1,drive=3Dspi1 \
+> +       -nographic -nodefaults
+> +
+> +In that case, the machine boots fetching instructions from the FMC0
+> +device. It is slower to start but closer to what HW does. Using the
+> +machine option ``execute-in-place`` has a similar effect.
+> +
+>   To change the boot console and use device ``UART3`` (``/dev/ttyS2``
+>   under Linux), use :
+>
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index cd92cf9ce0bb..271512ce5ced 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -396,12 +396,14 @@ static void aspeed_machine_init(MachineState *machi=
+ne)
+>       connect_serial_hds_to_uarts(bmc);
+>       qdev_realize(DEVICE(&bmc->soc), NULL, &error_abort);
+>
+> -    aspeed_board_init_flashes(&bmc->soc.fmc,
+> +    if (defaults_enabled()) {
+> +        aspeed_board_init_flashes(&bmc->soc.fmc,
+>                                 bmc->fmc_model ? bmc->fmc_model : amc->fm=
+c_model,
+>                                 amc->num_cs, 0);
+> -    aspeed_board_init_flashes(&bmc->soc.spi[0],
+> +        aspeed_board_init_flashes(&bmc->soc.spi[0],
+>                                 bmc->spi_model ? bmc->spi_model : amc->sp=
+i_model,
+>                                 1, amc->num_cs);
+> +    }
+>
+>       if (machine->kernel_filename && sc->num_cpus > 1) {
+>           /* With no u-boot we must set up a boot stub for the secondary =
+CPU */
+> --
+> 2.41.0
+>
+>
 
