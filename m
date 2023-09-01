@@ -2,63 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C932878FF8E
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A6678FF93
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:59:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc5Yf-0000JG-In; Fri, 01 Sep 2023 10:55:37 -0400
+	id 1qc5bX-0001nK-GL; Fri, 01 Sep 2023 10:58:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc5YY-0000Ia-Hn; Fri, 01 Sep 2023 10:55:31 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qc5bU-0001n3-KC
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:58:32 -0400
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc5YH-0001br-At; Fri, 01 Sep 2023 10:55:29 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rch0C0g8Nz4wy8;
- Sat,  2 Sep 2023 00:55:07 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rch000JYNz4wy7;
- Sat,  2 Sep 2023 00:54:55 +1000 (AEST)
-Message-ID: <e6a0b290-b76c-2f6d-4bbc-c97222d26935@kaod.org>
-Date: Fri, 1 Sep 2023 16:54:50 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qc5bR-0002YG-1u
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:58:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1693580306; x=1694185106; i=deller@gmx.de;
+ bh=r5myozIejJUe6xZDXwltXMMvwOFBx9smAWxCKitEsf0=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=Q5p+zfZ3fVUfEdlEh8s80QQIgJdWn4eb/k/Xg00FutmkMnbHpI59JEs+Jf9u5PQ2G7XbQVw
+ rLJUW9qH846Mv01NJ3X3T7bOU5f66y8y1nrNxv0toKaRCCDlQC3AByxXEIxzeRE/l8dtnOYYL
+ hPGKrLTi+y7vwPGnmxRwzdlmErNYtOmCXMcaFss8mnzqILtTLuyL5E3krYuW0WyzCTuzKfzeY
+ rzpTByHBeKlf59Gz8szg65kM/zz9yK+TxWWfcgb9qHmb4cWDO3kWyI9BlXDu/MYtHrBAB2mwC
+ cK4p4+Fyw0iL+zOcA08WST/ai6UhF+QVNCkt38OwPD7yt9hj5dtw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.152.187]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIMbO-1qPvza1nhE-00EOhs; Fri, 01
+ Sep 2023 16:58:26 +0200
+Message-ID: <15405ae0-1422-05f6-eb82-38e8dc9af2bc@gmx.de>
+Date: Fri, 1 Sep 2023 16:58:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 7/7] qobject atomics osdep: Make a few macros more hygienic
+Subject: Re: [PATCH 11/13] linux-user: Use WITH_MMAP_LOCK_GUARD in
+ target_{shmat, shmdt}
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org, kwolf@redhat.com,
- hreitz@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
- idryomov@gmail.com, pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
- anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, stefanha@redhat.com, fam@euphon.net, quintela@redhat.com,
- peterx@redhat.com, leobras@redhat.com, kraxel@redhat.com,
- qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
- alex.bennee@linaro.org, peter.maydell@linaro.org
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-8-armbru@redhat.com>
- <vfkfi6uld3gbd4urmqdlzkv6djtws6mkbluc5qvwcla6btszhu@ff66zfyd7smm>
- <7b8a4589-7f29-e564-4904-9b1a4fd342af@kaod.org> <87ttsevtgl.fsf@pond.sub.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <87ttsevtgl.fsf@pond.sub.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230824010237.1379735-1-richard.henderson@linaro.org>
+ <20230824010237.1379735-12-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230824010237.1379735-12-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=SnXb=ER=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.478, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0FgkqzTqYqLMK4Pn8cLzf8DTp8H5tNzsYozkX8XO9WiQ+Z24Gps
+ 3jVTLEr049/KDYuoQy30NWy+eXGn8Zsko+Ye+21ReuXc4Qsab6J1BsdrBBY3H2epY4/Yl9u
+ 6HoIHxfRpkQz8hE9pibZ9RtqZE+QWTp2KVhaxo+7UB2aI2+JxfJmfGJLgDU0XVc8r6qojKc
+ 4jyHQZM4b9S136+Jqntfg==
+UI-OutboundReport: notjunk:1;M01:P0:RbAbyMyx8Bg=;nwbB7+StiA24b8a/OOtdRZG66R6
+ /GIrpXJhCMN/m7f/hFTKpJSiqR12mgzLBo/lJjrPHpOQGRSOtdNlRsnfSO16GvRQ1WZ19wi18
+ 1qE4KRvTTZTDMDCIOfiuyltwpc88hDz7GkwFoKZnEggS4OmbxgIMwnObGJZXJ2G9Fha5HUpcr
+ leAk2yi911B8o3TKQzwv68sQKD0ZsA9E4oY6xU98vLBvfVVMKif8mCKRNUAzyQbVhni/iM/l5
+ symukzDdJlyVgevl4DfY361GcNFDHrcQbvqASeu4Yr8vy0MbCG0M3t8BBRnUfDwTRP8sIwW/p
+ 1piFt0jNBhqNsIhwZ935MtVKAPbxCVWB+D0bPPPYBrxIB/JEaf5CfvFr3ySsMqvy057HznmK6
+ xBmFPxzn05PW6k4iJGB1ap9qLkBcovXM1LGHJp4B+ELun0mbb0AfJC0mY3DYjXeGpcqSbINsI
+ xRGCS2lobQ7aJdHrjQTulzkn9qx+38g56pW9f80rCMl/4VUFljSKugtNN1zCUuf10dVOUOp4l
+ 0Nio8n/RjqqPF4lMhLpmKioTn5Mna5cCpDsvCNN8OZMHGBB4f8TEDI1TH73lU7UXXGwPu01SB
+ q19Z8OB1GSwFgZ1ChHpngYcvxiB2KMUdN+3UpVvKuIKY8DqR3PqpTV9N4FfCcxZLIKbmeXYFb
+ bUUjqPCWNb1pIOZllo/CnC2Kd/WwNKIqTW0WL3KYjmOcdhwA8qo2QtO6Y+92j3KklXqxKowPL
+ 4fpOby67LIzVfGU5n0TCDM6r+reBlGChi+Mlv4CoNKRV/EL4nzO2L6+MlAkZVn4tJtgGRI8lx
+ bC3FF+rM5BitQFGvnuGHwyOzQeQRSQvbPaQU66c+ac2Lu8vKqZlwOQ7h5ZVUmBkiaNquNWWFf
+ ZDko+pXJxmVZUHVe+bL6F9LXzuerFjUyFgJiydWfk1yEquKr/6YOAYMTOseGGqjrYaz83cLo6
+ vWdGew==
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-3.478, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,60 +88,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/1/23 16:50, Markus Armbruster wrote:
-> Cédric Le Goater <clg@kaod.org> writes:
-> 
->> On 8/31/23 16:30, Eric Blake wrote:
->>> On Thu, Aug 31, 2023 at 03:25:46PM +0200, Markus Armbruster wrote:
->>> [This paragraph written last: Bear with my stream of consciousness
->>> review below, where I end up duplicating some of the conslusions you
->>> reached before the point where I saw where the patch was headed]
->>>
->>>> Variables declared in macros can shadow other variables.  Much of the
->>>> time, this is harmless, e.g.:
->>>>
->>>>       #define _FDT(exp)                                                  \
->>>>           do {                                                           \
->>>>               int ret = (exp);                                           \
->>>>               if (ret < 0) {                                             \
->>>>                   error_report("error creating device tree: %s: %s",   \
->>>>                           #exp, fdt_strerror(ret));                      \
->>>>                   exit(1);                                               \
->>>>               }                                                          \
->>>>           } while (0)
->>> Which is why I've seen some projects require a strict namespace
->>> separation: if all macro parameters and any identifiers declared in
->>> macros use either a leading or a trailing _ (I prefer a trailing one,
->>> to avoid risking conflicts with libc reserved namespace; but leading
->>> is usually okay), and all other identifiers avoid that namespace, then
->>> you will never have shadowing by calling a macro from normal code.
->>
->> I started fixing the _FDT() macro since it is quite noisy at compile.
->> Same for qemu_fdt_setprop_cells(). So are we ok with names like 'ret_'
->> and 'i_' ? I used a 'local_' prefix for now but I can change.
-> 
-> I believe identifiers with a '_' suffix are just fine in macros.  We
-> have quite a few of them already.
+On 8/24/23 03:02, Richard Henderson wrote:
+> Move the CF_PARALLEL setting outside of the mmap lock.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-ok
+Reviewed-by: Helge Deller <deller@gmx.de>
 
->> I also have a bunch of fixes for ppc.
-> 
-> Appreciated!
+> ---
+>   linux-user/mmap.c | 98 ++++++++++++++++++++++-------------------------
+>   1 file changed, 46 insertions(+), 52 deletions(-)
+>
+> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+> index 3aeacd1ecd..f45b2d307c 100644
+> --- a/linux-user/mmap.c
+> +++ b/linux-user/mmap.c
+> @@ -1017,9 +1017,8 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int =
+shmid,
+>   {
+>       CPUState *cpu =3D env_cpu(cpu_env);
+>       abi_ulong raddr;
+> -    void *host_raddr;
+>       struct shmid_ds shm_info;
+> -    int i, ret;
+> +    int ret;
+>       abi_ulong shmlba;
+>
+>       /* shmat pointers are always untagged */
+> @@ -1044,7 +1043,43 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int=
+ shmid,
+>           return -TARGET_EINVAL;
+>       }
+>
+> -    mmap_lock();
+> +    WITH_MMAP_LOCK_GUARD() {
+> +        void *host_raddr;
+> +
+> +        if (shmaddr) {
+> +            host_raddr =3D shmat(shmid, (void *)g2h_untagged(shmaddr), =
+shmflg);
+> +        } else {
+> +            abi_ulong mmap_start;
+> +
+> +            /* In order to use the host shmat, we need to honor host SH=
+MLBA.  */
+> +            mmap_start =3D mmap_find_vma(0, shm_info.shm_segsz,
+> +                                       MAX(SHMLBA, shmlba));
+> +
+> +            if (mmap_start =3D=3D -1) {
+> +                return -TARGET_ENOMEM;
+> +            }
+> +            host_raddr =3D shmat(shmid, g2h_untagged(mmap_start),
+> +                               shmflg | SHM_REMAP);
+> +        }
+> +
+> +        if (host_raddr =3D=3D (void *)-1) {
+> +            return get_errno(-1);
+> +        }
+> +        raddr =3D h2g(host_raddr);
+> +
+> +        page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
+> +                       PAGE_VALID | PAGE_RESET | PAGE_READ |
+> +                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
+> +
+> +        for (int i =3D 0; i < N_SHM_REGIONS; i++) {
+> +            if (!shm_regions[i].in_use) {
+> +                shm_regions[i].in_use =3D true;
+> +                shm_regions[i].start =3D raddr;
+> +                shm_regions[i].size =3D shm_info.shm_segsz;
+> +                break;
+> +            }
+> +        }
+> +    }
+>
+>       /*
+>        * We're mapping shared memory, so ensure we generate code for par=
+allel
+> @@ -1057,65 +1092,24 @@ abi_ulong target_shmat(CPUArchState *cpu_env, in=
+t shmid,
+>           tb_flush(cpu);
+>       }
+>
+> -    if (shmaddr) {
+> -        host_raddr =3D shmat(shmid, (void *)g2h_untagged(shmaddr), shmf=
+lg);
+> -    } else {
+> -        abi_ulong mmap_start;
+> -
+> -        /* In order to use the host shmat, we need to honor host SHMLBA=
+.  */
+> -        mmap_start =3D mmap_find_vma(0, shm_info.shm_segsz, MAX(SHMLBA,=
+ shmlba));
+> -
+> -        if (mmap_start =3D=3D -1) {
+> -            errno =3D ENOMEM;
+> -            host_raddr =3D (void *)-1;
+> -        } else {
+> -            host_raddr =3D shmat(shmid, g2h_untagged(mmap_start),
+> -                               shmflg | SHM_REMAP);
+> -        }
+> -    }
+> -
+> -    if (host_raddr =3D=3D (void *)-1) {
+> -        mmap_unlock();
+> -        return get_errno((intptr_t)host_raddr);
+> -    }
+> -    raddr =3D h2g((uintptr_t)host_raddr);
+> -
+> -    page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
+> -                   PAGE_VALID | PAGE_RESET | PAGE_READ |
+> -                   (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
+> -
+> -    for (i =3D 0; i < N_SHM_REGIONS; i++) {
+> -        if (!shm_regions[i].in_use) {
+> -            shm_regions[i].in_use =3D true;
+> -            shm_regions[i].start =3D raddr;
+> -            shm_regions[i].size =3D shm_info.shm_segsz;
+> -            break;
+> -        }
+> -    }
+> -
+> -    mmap_unlock();
+>       return raddr;
+>   }
+>
+>   abi_long target_shmdt(abi_ulong shmaddr)
+>   {
+> -    int i;
+>       abi_long rv;
+>
+>       /* shmdt pointers are always untagged */
+>
+> -    mmap_lock();
+> -
+> -    for (i =3D 0; i < N_SHM_REGIONS; ++i) {
+> -        if (shm_regions[i].in_use && shm_regions[i].start =3D=3D shmadd=
+r) {
+> -            shm_regions[i].in_use =3D false;
+> -            page_set_flags(shmaddr, shmaddr + shm_regions[i].size - 1, =
+0);
+> -            break;
+> +    WITH_MMAP_LOCK_GUARD() {
+> +        for (int i =3D 0; i < N_SHM_REGIONS; ++i) {
+> +            if (shm_regions[i].in_use && shm_regions[i].start =3D=3D sh=
+maddr) {
+> +                shm_regions[i].in_use =3D false;
+> +                page_set_flags(shmaddr, shmaddr + shm_regions[i].size -=
+ 1, 0);
+> +                break;
+> +            }
+>           }
+> +        rv =3D get_errno(shmdt(g2h_untagged(shmaddr)));
+>       }
+> -    rv =3D get_errno(shmdt(g2h_untagged(shmaddr)));
+> -
+> -    mmap_unlock();
+> -
+>       return rv;
+>   }
 
-count me on for the ppc files :
-
-  hw/ppc/pnv_psi.c
-  hw/ppc/spapr.c
-  hw/ppc/spapr_drc.c
-  hw/ppc/spapr_pci.c
-  include/hw/ppc/fdt.h
-
-and surely some other files under target/ppc/
-
-This one was taken care of by Phil:
-
-  include/sysemu/device_tree.h
-
-C.
 
