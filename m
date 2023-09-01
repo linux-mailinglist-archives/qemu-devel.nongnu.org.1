@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1847778FB43
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CE578FB42
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:43:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc0gI-0002S9-I8; Fri, 01 Sep 2023 05:43:10 -0400
+	id 1qc0gE-00024p-22; Fri, 01 Sep 2023 05:43:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0g3-0001w9-Jj; Fri, 01 Sep 2023 05:42:55 -0400
+ id 1qc0g1-0001u1-Dg; Fri, 01 Sep 2023 05:42:55 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fv-00032X-GH; Fri, 01 Sep 2023 05:42:55 -0400
+ id 1qc0fy-0002wb-TD; Fri, 01 Sep 2023 05:42:53 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3m15Pqz4x2b;
- Fri,  1 Sep 2023 19:42:44 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3p4rFXz4x3D;
+ Fri,  1 Sep 2023 19:42:46 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3k4XNZz4wy6;
- Fri,  1 Sep 2023 19:42:42 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3m4hFGz4x2D;
+ Fri,  1 Sep 2023 19:42:44 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Joel Stanley <joel@jms.id.au>
-Subject: [PULL 10/26] aspeed: Create flash devices only when defaults are
- enabled
-Date: Fri,  1 Sep 2023 11:41:58 +0200
-Message-ID: <20230901094214.296918-11-clg@kaod.org>
+Subject: [PULL 11/26] m25p80: Introduce an helper to retrieve the BlockBackend
+ of a device
+Date: Fri,  1 Sep 2023 11:41:59 +0200
+Message-ID: <20230901094214.296918-12-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901094214.296918-1-clg@kaod.org>
 References: <20230901094214.296918-1-clg@kaod.org>
@@ -65,110 +67,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the -nodefaults option is set, flash devices should be created
-with :
+It will help in getting rid of some drive_get(IF_MTD) calls by
+retrieving the BlockBackend directly from the m25p80 device.
 
-    -blockdev node-name=fmc0,driver=file,filename=./flash.img \
-    -device mx66u51235f,cs=0x0,bus=ssi.0,drive=fmc0 \
-
-To be noted that in this case, the ROM will not be installed and the
-initial boot sequence (U-Boot loading) will fetch instructions using
-SPI transactions which is significantly slower. That's exactly how HW
-operates though.
-
+Cc: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- docs/system/arm/aspeed.rst | 35 +++++++++++++++++++++++++++++------
- hw/arm/aspeed.c            |  6 ++++--
- 2 files changed, 33 insertions(+), 8 deletions(-)
+ include/hw/block/flash.h | 4 ++++
+ hw/block/m25p80.c        | 6 ++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 80538422a1a4..b2dea54eedad 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -104,7 +104,7 @@ To boot a kernel directly from a Linux build tree:
-         -dtb arch/arm/boot/dts/aspeed-ast2600-evb.dtb \
-         -initrd rootfs.cpio
+diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
+index 7198953702b7..de93756cbe8f 100644
+--- a/include/hw/block/flash.h
++++ b/include/hw/block/flash.h
+@@ -76,4 +76,8 @@ uint8_t ecc_digest(ECCState *s, uint8_t sample);
+ void ecc_reset(ECCState *s);
+ extern const VMStateDescription vmstate_ecc_state;
  
--The image should be attached as an MTD drive. Run :
-+To boot the machine from the flash image, use an MTD drive :
- 
- .. code-block:: bash
- 
-@@ -117,23 +117,46 @@ Options specific to Aspeed machines are :
-    device by using the FMC controller to load the instructions, and
-    not simply from RAM. This takes a little longer.
- 
-- * ``fmc-model`` to change the FMC Flash model. FW needs support for
--   the chip model to boot.
-+ * ``fmc-model`` to change the default FMC Flash model. FW needs
-+   support for the chip model to boot.
- 
-- * ``spi-model`` to change the SPI Flash model.
-+ * ``spi-model`` to change the default SPI Flash model.
- 
-  * ``bmc-console`` to change the default console device. Most of the
-    machines use the ``UART5`` device for a boot console, which is
-    mapped on ``/dev/ttyS4`` under Linux, but it is not always the
-    case.
- 
--For instance, to start the ``ast2500-evb`` machine with a different
--FMC chip and a bigger (64M) SPI chip, use :
-+To use other flash models, for instance a different FMC chip and a
-+bigger (64M) SPI for the ``ast2500-evb`` machine, run :
- 
- .. code-block:: bash
- 
-   -M ast2500-evb,fmc-model=mx25l25635e,spi-model=mx66u51235f
- 
-+When more flexibility is needed to define the flash devices, to use
-+different flash models or define all flash devices (up to 8), the
-+``-nodefaults`` QEMU option can be used to avoid creating the default
-+flash devices.
++/* m25p80.c */
 +
-+Flash devices should then be created from the command line and attached
-+to a block device :
++BlockBackend *m25p80_get_blk(DeviceState *dev);
 +
-+.. code-block:: bash
-+
-+  $ qemu-system-arm -M ast2600-evb \
-+        -blockdev node-name=fmc0,driver=file,filename=/path/to/fmc0.img \
-+	-device mx66u51235f,bus=ssi.0,cs=0x0,drive=fmc0 \
-+	-blockdev node-name=fmc1,driver=file,filename=/path/to/fmc1.img \
-+	-device mx66u51235f,bus=ssi.0,cs=0x1,drive=fmc1 \
-+	-blockdev node-name=spi1,driver=file,filename=/path/to/spi1.img \
-+	-device mx66u51235f,cs=0x0,bus=ssi.1,drive=spi1 \
-+	-nographic -nodefaults
-+
-+In that case, the machine boots fetching instructions from the FMC0
-+device. It is slower to start but closer to what HW does. Using the
-+machine option ``execute-in-place`` has a similar effect.
-+
- To change the boot console and use device ``UART3`` (``/dev/ttyS2``
- under Linux), use :
+ #endif
+diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
+index dc5ffbc4ff52..afc3fdf4d60b 100644
+--- a/hw/block/m25p80.c
++++ b/hw/block/m25p80.c
+@@ -25,6 +25,7 @@
+ #include "qemu/units.h"
+ #include "sysemu/block-backend.h"
+ #include "hw/block/block.h"
++#include "hw/block/flash.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "hw/ssi/ssi.h"
+@@ -1830,3 +1831,8 @@ static void m25p80_register_types(void)
+ }
  
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index cd92cf9ce0bb..271512ce5ced 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -396,12 +396,14 @@ static void aspeed_machine_init(MachineState *machine)
-     connect_serial_hds_to_uarts(bmc);
-     qdev_realize(DEVICE(&bmc->soc), NULL, &error_abort);
- 
--    aspeed_board_init_flashes(&bmc->soc.fmc,
-+    if (defaults_enabled()) {
-+        aspeed_board_init_flashes(&bmc->soc.fmc,
-                               bmc->fmc_model ? bmc->fmc_model : amc->fmc_model,
-                               amc->num_cs, 0);
--    aspeed_board_init_flashes(&bmc->soc.spi[0],
-+        aspeed_board_init_flashes(&bmc->soc.spi[0],
-                               bmc->spi_model ? bmc->spi_model : amc->spi_model,
-                               1, amc->num_cs);
-+    }
- 
-     if (machine->kernel_filename && sc->num_cpus > 1) {
-         /* With no u-boot we must set up a boot stub for the secondary CPU */
+ type_init(m25p80_register_types)
++
++BlockBackend *m25p80_get_blk(DeviceState *dev)
++{
++    return M25P80(dev)->blk;
++}
 -- 
 2.41.0
 
