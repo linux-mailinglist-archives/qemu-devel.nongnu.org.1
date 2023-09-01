@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D758E78F72A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCCD78F762
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 05:11:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtxr-00056d-6g; Thu, 31 Aug 2023 22:32:51 -0400
+	id 1qbuXi-0001Br-07; Thu, 31 Aug 2023 23:09:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtxp-0004zY-Hj
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:49 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qbuXf-0001Ba-UD; Thu, 31 Aug 2023 23:09:51 -0400
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtxn-0003Yx-60
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:49 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-56f84de64b9so941423a12.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:32:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qbuXd-0001xD-Kn; Thu, 31 Aug 2023 23:09:51 -0400
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-7a52a1e2a59so637941241.0; 
+ Thu, 31 Aug 2023 20:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693535565; x=1694140365; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=s538vCkpclK5ATTHW63+oqL5qr7+Lo9fs0+lfXMGLHc=;
- b=i4mJnedfiho0VBaSLeBZpj5G+QFARTf/nBt7T5zrGTFtg7wlfAWi7DUA/UeWihQCT5
- ZftlfQ6M6hMlqsbpovTOg7vvxSYP9gur0NMuq/l8dkz0P6c+/GAIxJc/l05vRRi1DsUM
- xWcQoKi0mT5xMujWWOQnGhhopjqkPTqW4MEQBtrJJVV/QYryIPfLPZKJocZUX7DEGJqo
- Hd+PF4JvUIBdFF2i7cHkbKKeirLOQ6dKcgMK+p3MH5ogxqZUzVSbqG8Juhx42u3d9Fux
- BOnzWGggz4kdE5/Jv1UZxHCkedx5S7RmswyCV8BcpdIkhKKpqvUyAI+/Hfge+7q4T7EQ
- Q/Tg==
+ d=gmail.com; s=20221208; t=1693537788; x=1694142588; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CVNQ/yceRMs8ZkENG+QMFYa+iVWV2HAOsSXf380enn4=;
+ b=bufxwnBM3lPnXo2LyMOxYUzZqQhGiASKSQNyRVDU/u64yWf18r5Q2+5Dg5TFgxbq91
+ c/PK0B2xaZcMl1fqpz1r/dSmwcYaY4YZ4Grj9C7RX5xZi+DMEHTuKF3NJunQh046gYwt
+ zE76cMEqhD7AQaMazEbvGsQF49zy6iHGnJVZJJDcmBTPAp29UFwaLONi8PfaaD+8ONVt
+ 10Q4xdkSizwx2y7NqZf9Xv4SugrPsZXmxU3x7LLZOUp2geIaBoN2+4eH1XNknuruKUSW
+ 8upOTT6bXfNB2iUpBkTFF9GU7Y2nJi4ZVPyKYaxhJtmEoO/oXxivh9OlVSzJ8HrvQ95R
+ uk7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535565; x=1694140365;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s538vCkpclK5ATTHW63+oqL5qr7+Lo9fs0+lfXMGLHc=;
- b=eviIjixvFkOL6EXPIAHB32IGzUNruneh6DQsV6If9A9g1htyeT142TayGmlrPDWHIT
- NlUeGqfOpCY8r/yNAMLM8Vz3RnWnKS+pvttGKR0sruQp4otno/ajaq3wKgALm6lHlWD2
- vZ64bjoVSvDZmof2YpedoHGzvsC4eaU++AAwmNF7I+31RZiRQCot4/xKGKk+quz5+TDx
- lfAtvydkJhm9D8NL4n0bYerXEVdKI0+KboSHJuT5PM9MHw2GRhGf/iG4RLF0/JQaB8x/
- yRtGKXVpvBX9NQZ00KFp+Q6e9qsjVe0rU8YAG1LvpsdaSubc5yhwQLRLUMga6dxcIndm
- 8uBg==
-X-Gm-Message-State: AOJu0Yx36Rk9cN9xDFQ3fYxUt7rEL95caczgDWBPGw6cnQAyUvPIUMu1
- KcPCVDcyaPoJJPCM2MKfP4iszZYKeVSQs4oi4fM=
-X-Google-Smtp-Source: AGHT+IG1HM+tb4S10O97gmCtNDKxgfFrElgwDNx0TuFyXTw7C7tY716DtXFTtrE56kLXRFRvl9cMzg==
-X-Received: by 2002:a17:90a:fe86:b0:269:68e7:bbb9 with SMTP id
- co6-20020a17090afe8600b0026968e7bbb9mr1637279pjb.23.1693535565478; 
- Thu, 31 Aug 2023 19:32:45 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- 26-20020a17090a005a00b0025dc5749b4csm3840215pjb.21.2023.08.31.19.32.44
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 19:32:45 -0700 (PDT)
-Message-ID: <05129269-b718-53e0-0a1d-d8640ea9b57f@linaro.org>
-Date: Thu, 31 Aug 2023 19:32:43 -0700
+ d=1e100.net; s=20221208; t=1693537788; x=1694142588;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CVNQ/yceRMs8ZkENG+QMFYa+iVWV2HAOsSXf380enn4=;
+ b=bx3M1HZ9kNFcZMGIEzcVx+7gx0SN3GZYlvmTRWlfrU5XjDe27HwunMmIvl9sg+W/dI
+ WGk9NuNVMiu0Rd2KNlMExRm6uX4zsypTf+IpgC0rm8kBaLoPcTFqL6G+JDaKtnRmWITZ
+ LIVhMAqAv1QkPRLpNRiHmFkbzBIJSc+K+75dY/f/K6PQ5SXV5FmZkrzSjTdSog3Q1/+r
+ j7bPhfTs1dvsx8iHZx7Q/r+Z0OFOydJVQJTPexiw4yTjaigwshp3gFPSauiTDEJWJ+vR
+ ka0tJ/hNGXLI6Ptjnp0mzjPd3bl65YkUsW7fGBPr4FnFxLcRTxg73Dqk1t4FaB21ofeX
+ ooiQ==
+X-Gm-Message-State: AOJu0Ywa0wQa85e58kNh7YPsjrtEqE3B/UD+O6QxHQvbzVsNISvdNgb1
+ m9k4psi0Dr56tfZOS3N95XaVQ9xz9GGbgsyjn6I=
+X-Google-Smtp-Source: AGHT+IGAnwA+iHDcfeuaarL54Hj6vC2GAFWrhC4BRHBm14Fa2ckOXuJddzlSHf+UpLVY5V4cciMl9uXrEn3paCdhi80=
+X-Received: by 2002:a67:eb55:0:b0:44d:95d4:9fa1 with SMTP id
+ x21-20020a67eb55000000b0044d95d49fa1mr1500144vso.17.1693537788211; Thu, 31
+ Aug 2023 20:09:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/13] linux-user patch queue
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20230824010237.1379735-1-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20230824010237.1379735-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+References: <20230816162717.44125-1-akihiko.odaki@daynix.com>
+In-Reply-To: <20230816162717.44125-1-akihiko.odaki@daynix.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 1 Sep 2023 13:09:21 +1000
+Message-ID: <CAKmqyKMgfofyXVdZncxHG0KVGztw01TaE2aMDBX+DJtzLztG9A@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: Allocate itrigger timers only once
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Bin Meng <bin.meng@windriver.com>, Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,101 +90,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
+On Thu, Aug 17, 2023 at 2:28=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
+>
+> riscv_trigger_init() had been called on reset events that can happen
+> several times for a CPU and it allocated timers for itrigger. If old
+> timers were present, they were simply overwritten by the new timers,
+> resulting in a memory leak.
+>
+> Divide riscv_trigger_init() into two functions, namely
+> riscv_trigger_realize() and riscv_trigger_reset() and call them in
+> appropriate timing. The timer allocation will happen only once for a
+> CPU in riscv_trigger_realize().
+>
+> Fixes: 5a4ae64cac ("target/riscv: Add itrigger support when icount is ena=
+bled")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-On 8/23/23 18:02, Richard Henderson wrote:
-> Combine a bunch of smaller linux-user patches:
-> 
-> Supercedes: 20230801230842.414421-1-deller@gmx.de
-> ("[PATCH v2 0/3] linux-user: /proc/cpuinfo fix and content emulation for arm")
-> Supercedes: 20230807122206.655701-1-iii@linux.ibm.com
-> ("[PATCH v2] linux-user: Emulate the Anonymous: keyword in /proc/self/smaps")
-> Supercedes: 20230816181437.572997-1-richard.henderson@linaro.org
-> ("[PATCH 0/6] linux-user: Rewrite open_self_maps")
-> Supercedes: 20230820204408.327348-1-richard.henderson@linaro.org
-> ("[PATCH 0/4] linux-user: shmat/shmdt improvements")
-> 
-> with some additions.  Patches needing review:
-> 
->    01-linux-user-Split-out-cpu-target_proc.h.patch
->    11-linux-user-Use-WITH_MMAP_LOCK_GUARD-in-target_-shmat.patch
->    12-linux-user-Fix-shmdt.patch
->    13-linux-user-Track-shm-regions-with-an-interval-tree.patch
-> 
-> 
-> r~
-> 
-> 
-> Helge Deller (2):
->    linux-user: Emulate /proc/cpuinfo on aarch64 and arm
->    linux-user: Emulate /proc/cpuinfo for Alpha
-> 
-> Ilya Leoshkevich (1):
->    linux-user: Emulate the Anonymous: keyword in /proc/self/smaps
-> 
-> Richard Henderson (10):
->    linux-user: Split out cpu/target_proc.h
->    util/selfmap: Use dev_t and ino_t in MapInfo
->    linux-user: Use walk_memory_regions for open_self_maps
->    linux-user: Adjust brk for load_bias
->    linux-user: Show heap address in /proc/pid/maps
->    linux-user: Remove ELF_START_MMAP and image_info.start_mmap
->    linux-user: Move shmat and shmdt implementations to mmap.c
->    linux-user: Use WITH_MMAP_LOCK_GUARD in target_{shmat,shmdt}
->    linux-user: Fix shmdt
->    linux-user: Track shm regions with an interval tree
-> 
->   include/qemu/selfmap.h               |   4 +-
->   linux-user/aarch64/target_proc.h     |   1 +
->   linux-user/alpha/target_proc.h       |  67 ++++
->   linux-user/arm/target_proc.h         | 101 ++++++
->   linux-user/cris/target_proc.h        |   1 +
->   linux-user/hexagon/target_proc.h     |   1 +
->   linux-user/hppa/target_proc.h        |  26 ++
->   linux-user/i386/target_proc.h        |   1 +
->   linux-user/loader.h                  |   6 +-
->   linux-user/loongarch64/target_proc.h |   1 +
->   linux-user/m68k/target_proc.h        |  16 +
->   linux-user/microblaze/target_proc.h  |   1 +
->   linux-user/mips/target_proc.h        |   1 +
->   linux-user/mips64/target_proc.h      |   1 +
->   linux-user/nios2/target_proc.h       |   1 +
->   linux-user/openrisc/target_proc.h    |   1 +
->   linux-user/ppc/target_proc.h         |   1 +
->   linux-user/qemu.h                    |   1 -
->   linux-user/riscv/target_proc.h       |  37 ++
->   linux-user/s390x/target_proc.h       | 109 ++++++
->   linux-user/sh4/target_proc.h         |   1 +
->   linux-user/sparc/target_proc.h       |  16 +
->   linux-user/user-mmap.h               |   4 +
->   linux-user/x86_64/target_proc.h      |   1 +
->   linux-user/xtensa/target_proc.h      |   1 +
->   linux-user/elfload.c                 | 170 ++++++---
->   linux-user/mmap.c                    | 168 +++++++++
->   linux-user/syscall.c                 | 514 +++++++--------------------
->   util/selfmap.c                       |  12 +-
->   29 files changed, 828 insertions(+), 437 deletions(-)
->   create mode 100644 linux-user/aarch64/target_proc.h
->   create mode 100644 linux-user/alpha/target_proc.h
->   create mode 100644 linux-user/arm/target_proc.h
->   create mode 100644 linux-user/cris/target_proc.h
->   create mode 100644 linux-user/hexagon/target_proc.h
->   create mode 100644 linux-user/hppa/target_proc.h
->   create mode 100644 linux-user/i386/target_proc.h
->   create mode 100644 linux-user/loongarch64/target_proc.h
->   create mode 100644 linux-user/m68k/target_proc.h
->   create mode 100644 linux-user/microblaze/target_proc.h
->   create mode 100644 linux-user/mips/target_proc.h
->   create mode 100644 linux-user/mips64/target_proc.h
->   create mode 100644 linux-user/nios2/target_proc.h
->   create mode 100644 linux-user/openrisc/target_proc.h
->   create mode 100644 linux-user/ppc/target_proc.h
->   create mode 100644 linux-user/riscv/target_proc.h
->   create mode 100644 linux-user/s390x/target_proc.h
->   create mode 100644 linux-user/sh4/target_proc.h
->   create mode 100644 linux-user/sparc/target_proc.h
->   create mode 100644 linux-user/x86_64/target_proc.h
->   create mode 100644 linux-user/xtensa/target_proc.h
-> 
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
+Alistair
+
+> ---
+>  target/riscv/debug.h |  3 ++-
+>  target/riscv/cpu.c   |  8 +++++++-
+>  target/riscv/debug.c | 15 ++++++++++++---
+>  3 files changed, 21 insertions(+), 5 deletions(-)
+>
+> diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+> index c471748d5a..7edc31e7cc 100644
+> --- a/target/riscv/debug.h
+> +++ b/target/riscv/debug.h
+> @@ -143,7 +143,8 @@ void riscv_cpu_debug_excp_handler(CPUState *cs);
+>  bool riscv_cpu_debug_check_breakpoint(CPUState *cs);
+>  bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
+>
+> -void riscv_trigger_init(CPURISCVState *env);
+> +void riscv_trigger_realize(CPURISCVState *env);
+> +void riscv_trigger_reset(CPURISCVState *env);
+>
+>  bool riscv_itrigger_enabled(CPURISCVState *env);
+>  void riscv_itrigger_update_priv(CPURISCVState *env);
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index e12b6ef7f6..3bc3f96a58 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -904,7 +904,7 @@ static void riscv_cpu_reset_hold(Object *obj)
+>
+>  #ifndef CONFIG_USER_ONLY
+>      if (cpu->cfg.debug) {
+> -        riscv_trigger_init(env);
+> +        riscv_trigger_reset(env);
+>      }
+>
+>      if (kvm_enabled()) {
+> @@ -1475,6 +1475,12 @@ static void riscv_cpu_realize(DeviceState *dev, Er=
+ror **errp)
+>
+>      riscv_cpu_register_gdb_regs_for_features(cs);
+>
+> +#ifndef CONFIG_USER_ONLY
+> +    if (cpu->cfg.debug) {
+> +        riscv_trigger_realize(&cpu->env);
+> +    }
+> +#endif
+> +
+>      qemu_init_vcpu(cs);
+>      cpu_reset(cs);
+>
+> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+> index 75ee1c4971..1c44403205 100644
+> --- a/target/riscv/debug.c
+> +++ b/target/riscv/debug.c
+> @@ -903,7 +903,17 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, =
+CPUWatchpoint *wp)
+>      return false;
+>  }
+>
+> -void riscv_trigger_init(CPURISCVState *env)
+> +void riscv_trigger_realize(CPURISCVState *env)
+> +{
+> +    int i;
+> +
+> +    for (i =3D 0; i < RV_MAX_TRIGGERS; i++) {
+> +        env->itrigger_timer[i] =3D timer_new_ns(QEMU_CLOCK_VIRTUAL,
+> +                                              riscv_itrigger_timer_cb, e=
+nv);
+> +    }
+> +}
+> +
+> +void riscv_trigger_reset(CPURISCVState *env)
+>  {
+>      target_ulong tdata1 =3D build_tdata1(env, TRIGGER_TYPE_AD_MATCH, 0, =
+0);
+>      int i;
+> @@ -928,7 +938,6 @@ void riscv_trigger_init(CPURISCVState *env)
+>          env->tdata3[i] =3D 0;
+>          env->cpu_breakpoint[i] =3D NULL;
+>          env->cpu_watchpoint[i] =3D NULL;
+> -        env->itrigger_timer[i] =3D timer_new_ns(QEMU_CLOCK_VIRTUAL,
+> -                                              riscv_itrigger_timer_cb, e=
+nv);
+> +        timer_del(env->itrigger_timer[i]);
+>      }
+>  }
+> --
+> 2.41.0
+>
+>
 
