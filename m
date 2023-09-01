@@ -2,94 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A31078FF5B
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C09778FF7B
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:51:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc5Kr-0003zD-KZ; Fri, 01 Sep 2023 10:41:21 -0400
+	id 1qc5Ti-0007AV-Qa; Fri, 01 Sep 2023 10:50:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qc5Km-0003yV-Hd
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:41:17 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc5Td-000793-Bl
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:50:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qc5KX-00071k-3Q
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:41:16 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc5TV-0000VK-PB
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:50:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693579260;
+ s=mimecast20190719; t=1693579814;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vx5OIcvqltmH9Xho0MP35R1N6LlfjIM2asT9noUJXQs=;
- b=hIeAbrspI9aqyzOgZSrAwPxFVxI3EYz5RjBY9iF5rJMrI0ejiJCCHnqU1MdkdHD3+iX8SJ
- dSNDTXl4txRvakBTr8WYfB+yF52wRz5CDgpOrLAgm6SiFBmlrsPh4fqHLfC+ioYTklp5Jm
- Cb9JNHqu5b0IRWlu3t6mVz/ye14G6AE=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-Q7uMVfZlPCCLNNKg7-3yCg-1; Fri, 01 Sep 2023 10:40:59 -0400
-X-MC-Unique: Q7uMVfZlPCCLNNKg7-3yCg-1
-Received: by mail-oa1-f69.google.com with SMTP id
- 586e51a60fabf-1c537d413c8so512648fac.0
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 07:40:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693579258; x=1694184058;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vx5OIcvqltmH9Xho0MP35R1N6LlfjIM2asT9noUJXQs=;
- b=ZwV76Sebj81GpMPEc1fUxUkXESjOnfWWD+1+7CQ9B3bgNfZtmzgcvjXdMyvPrJOvSL
- cPV32jNHBJFo3TLHkw78KJOnA8F6CsZjZFCq8RoIllbCCAMVqp0RWL6hmCBAGLaoPEXp
- hGV7PcEsDZsfj2TY/vqepSLVb8lyGl60papiw8QOGLLPR8xppnHJNtV9dIqv7+K4iheS
- YcN4xHy6yyZC+O4Um4eOQkZpWvbMMowteokh26YmterjFSn06Zpq/YnRBcBwMVq/daR2
- cTpulxy9PIUjBKnfUZlR8EQoTqKObd6HuXQEI+O8VwuhMQhDcGC5NYHTUjud052fMAlc
- g0vg==
-X-Gm-Message-State: AOJu0YxGDtg0qMfvVrzg+OaVOipxR2CVdhrvrHluC1UbHBUW1konP1aK
- KMTJNaX1Wu5EBuU8YwzNvLeXj1bhnGkFP7NXqVyx3Cj6nRRORdmdZC449kvkR2A2o61BW3IDRf5
- qI0uhnfLGnPyIlgE=
-X-Received: by 2002:a05:6359:6795:b0:13c:cb79:c3b4 with SMTP id
- sq21-20020a056359679500b0013ccb79c3b4mr2815988rwb.1.1693579258004; 
- Fri, 01 Sep 2023 07:40:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIylTTKEPllrYR0yNKKkgz53yCls0BMdJbS1D1q4GU0kFnkFArH/wCxC76t+DumF8WuuW6Dg==
-X-Received: by 2002:a05:6359:6795:b0:13c:cb79:c3b4 with SMTP id
- sq21-20020a056359679500b0013ccb79c3b4mr2815973rwb.1.1693579257566; 
- Fri, 01 Sep 2023 07:40:57 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- c18-20020ac853d2000000b0040ff234b9c4sm1498734qtq.25.2023.09.01.07.40.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 07:40:57 -0700 (PDT)
-Date: Fri, 1 Sep 2023 10:40:55 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: "Wang, Lei" <lei4.wang@intel.com>, qemu-devel@nongnu.org,
- Zhiyi Guo <zhguo@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
- Chensheng Dong <chdong@redhat.com>
-Subject: Re: [PATCH for-8.2 v2 2/2] migration: Allow user to specify
- migration switchover bandwidth
-Message-ID: <ZPH399XvYl+AiFxE@x1n>
-References: <20230803155344.11450-1-peterx@redhat.com>
- <20230803155344.11450-3-peterx@redhat.com>
- <8bb36b56-e2f6-ece8-0d8f-90b87a3b5c40@intel.com>
- <ZPGizMa52LF7Qek1@redhat.com>
+ bh=paHLoHNKtg8UFBFt/WB+m2kHfbeuo7pAuQSEBP1sizg=;
+ b=JsojMRJ6K3QNCSOuwR5SOkQLfAVy0CHgGLpNR77Qm9hhqRFdRUX5+GcXI+x1MRP6GhW0QM
+ 6Qh5KZtiYotsvD6mn4drBY767z703/GQGr0AIs6UwpopeaFrA8zswfD4BAF47vtJmCdtEi
+ mNKaIEm4oiXVBipmx7aAy0xggj9TquU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-574-esBF9IBpOe2aBcfYjXur5w-1; Fri, 01 Sep 2023 10:50:05 -0400
+X-MC-Unique: esBF9IBpOe2aBcfYjXur5w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F4641817905;
+ Fri,  1 Sep 2023 14:50:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3B9AE1460FE5;
+ Fri,  1 Sep 2023 14:50:03 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3048A21E692A; Fri,  1 Sep 2023 16:50:02 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: Eric Blake <eblake@redhat.com>,  qemu-devel@nongnu.org,
+ kwolf@redhat.com,  hreitz@redhat.com,  vsementsov@yandex-team.ru,
+ jsnow@redhat.com,  idryomov@gmail.com,  pl@kamp.de,  sw@weilnetz.de,
+ sstabellini@kernel.org,  anthony.perard@citrix.com,  paul@xen.org,
+ pbonzini@redhat.com,  marcandre.lureau@redhat.com,  berrange@redhat.com,
+ thuth@redhat.com,  philmd@linaro.org,  stefanha@redhat.com,
+ fam@euphon.net,  quintela@redhat.com,  peterx@redhat.com,
+ leobras@redhat.com,  kraxel@redhat.com,  qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org,  alex.bennee@linaro.org,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH 7/7] qobject atomics osdep: Make a few macros more hygienic
+References: <20230831132546.3525721-1-armbru@redhat.com>
+ <20230831132546.3525721-8-armbru@redhat.com>
+ <vfkfi6uld3gbd4urmqdlzkv6djtws6mkbluc5qvwcla6btszhu@ff66zfyd7smm>
+ <7b8a4589-7f29-e564-4904-9b1a4fd342af@kaod.org>
+Date: Fri, 01 Sep 2023 16:50:02 +0200
+In-Reply-To: <7b8a4589-7f29-e564-4904-9b1a4fd342af@kaod.org>
+ (=?utf-8?Q?=22C=C3=A9dric?= Le
+ Goater"'s message of "Fri, 1 Sep 2023 14:59:22 +0200")
+Message-ID: <87ttsevtgl.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZPGizMa52LF7Qek1@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,42 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 01, 2023 at 09:37:32AM +0100, Daniel P. Berrangé wrote:
-> > Hi Peter. I'm curious if we specify max-switchover-bandwidth to 5Gbps over a
-> > 10Gbps network, in the completion stage will it send the remaining data in 5Gbps
-> > using downtime_limit time or in 10Gbps (saturate the network) using the
-> > downtime_limit / 2 time? Seems this parameter won't rate limit the final stage:)
-> 
-> Effectively the mgmt app is telling QEMU to assume that this
-> much bandwidth is available for use during switchover. If QEMU
-> determines that, given this available bandwidth, the remaining
-> data can be sent over the link within the downtime limit, it
-> will perform the switchover. When sending this sitchover data,
-> it will actually transmit the data at full line rate IIUC.
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
 
-Right, currently it's only a way for QEMU to do more accurate calculations
-on the switchover decision, while we always use full speed to transfer
-during switchover.
+> On 8/31/23 16:30, Eric Blake wrote:
+>> On Thu, Aug 31, 2023 at 03:25:46PM +0200, Markus Armbruster wrote:
+>> [This paragraph written last: Bear with my stream of consciousness
+>> review below, where I end up duplicating some of the conslusions you
+>> reached before the point where I saw where the patch was headed]
+>>=20
+>>> Variables declared in macros can shadow other variables.  Much of the
+>>> time, this is harmless, e.g.:
+>>>
+>>>      #define _FDT(exp)                                                 =
+ \
+>>>          do {                                                          =
+ \
+>>>              int ret =3D (exp);                                        =
+   \
+>>>              if (ret < 0) {                                            =
+ \
+>>>                  error_report("error creating device tree: %s: %s",   \
+>>>                          #exp, fdt_strerror(ret));                     =
+ \
+>>>                  exit(1);                                              =
+ \
+>>>              }                                                         =
+ \
+>>>          } while (0)
+>> Which is why I've seen some projects require a strict namespace
+>> separation: if all macro parameters and any identifiers declared in
+>> macros use either a leading or a trailing _ (I prefer a trailing one,
+>> to avoid risking conflicts with libc reserved namespace; but leading
+>> is usually okay), and all other identifiers avoid that namespace, then
+>> you will never have shadowing by calling a macro from normal code.
+>
+> I started fixing the _FDT() macro since it is quite noisy at compile.
+> Same for qemu_fdt_setprop_cells(). So are we ok with names like 'ret_'
+> and 'i_' ? I used a 'local_' prefix for now but I can change.
 
-The old name "available-bandwidth" might reflect more on that side (telling
-qemu the available bandwidth QEMU can use only), but it might be unclear on
-when the value will be used (only during making decisions for switchover).
-So it seems there's no ideal name for it.
+I believe identifiers with a '_' suffix are just fine in macros.  We
+have quite a few of them already.
 
-To be explicit, see migration_completion() has a call there with:
+> I also have a bunch of fixes for ppc.
 
-        migration_rate_set(RATE_LIMIT_DISABLED);
-
-And this patch won't change that behavior (to use full line speed).
-
-Interestingly this question let me also notice that when switchover for
-postcopy we did it slightly different.  I believe postcopy also use line
-speed because we put mostly everything needed in the package, and flushed
-in qemu_savevm_send_packaged() with line speed too.
-
-Thanks,
-
--- 
-Peter Xu
+Appreciated!
 
 
