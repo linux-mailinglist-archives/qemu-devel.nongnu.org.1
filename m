@@ -2,71 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D12E79014A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3546C79014B
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc7nG-0005IC-Bx; Fri, 01 Sep 2023 13:18:50 -0400
+	id 1qc7nv-0005gB-UG; Fri, 01 Sep 2023 13:19:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7nE-0005Hk-6L
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:18:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7nB-000730-U1
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:18:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693588724;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/zNT57hD/aJKwaLAKccF+DeWFxMkg9xVyN4foD6frec=;
- b=Nd/38hCglkB149lj9k5Z4c6MTDn63hIAu+aHAC4v3t8aL55d8t8hADt5hX4Qv1Hm3E16nb
- Ra9Qzupj1DGmWi1rIghU3UzczEav0PCB6ZKJjti4GuiF+ABVAb9n1aSztfUJcgYj+arryG
- DzuceIBXcNSqC90bSVekU0icRcaTHB8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-497-VlgA4CeONLSdrcbPxNmMHw-1; Fri, 01 Sep 2023 13:18:43 -0400
-X-MC-Unique: VlgA4CeONLSdrcbPxNmMHw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3064610264C1
- for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:18:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A086549310F;
- Fri,  1 Sep 2023 17:18:42 +0000 (UTC)
-Date: Fri, 1 Sep 2023 18:18:40 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 47/67] ui/console: remove redundant format field
-Message-ID: <ZPIc8Ia8BL2ocstY@redhat.com>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-48-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qc7nr-0005bF-4E
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:19:28 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qc7nm-0007sp-Fu
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:19:24 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6bf04263dc8so1796626a34.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 10:19:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693588760; x=1694193560; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=es38x9Bg1Mw/R8NCbkQ3Xkv9VM+Ky3SPHGId3ZoIHvk=;
+ b=HTy3wWs4x4TAt7Idgm2Y8adDoD2Bhf+SoLwVR167yQlF0deG8cmhe4uReC1w16zL81
+ C6VxLX7Tg1I4D56n3CneaEcT+QrQ19AIDSmFANZgejbG8smoUFvgJcEJWjoJj73eFs2L
+ fD070nszFomYQJDCaJEmWcUGc7s5ShFBFxDME3mA9x0ie4tcRVcAxFABir37eQTj+HMY
+ 0LrBX+2LPbttCc7+2L83aYJyKoEAQz/x+lYtp9Wugb9TIHbVrcLFaAq3gEjgQQJdgdL4
+ fPA6dNPup04HwcTao2MLAJmneT3frx+mRBY33fwE5oXRrVPQN88zgdhK3y7drW6THSEq
+ bD+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693588760; x=1694193560;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=es38x9Bg1Mw/R8NCbkQ3Xkv9VM+Ky3SPHGId3ZoIHvk=;
+ b=DNVOWTk37InjXgA3rF2V07RUNdt9LNeQbIo9RepxaK9AQ7wG0uJEAJtfztCjTAEt8q
+ x4ctUMtTI28aauG1Uex7HMb08Ir+AZDBCSEE5Vhon0dD+lnUrJJenrxJTmWl3RgILZBl
+ P/tbqTofAGG3TZFv7JJ8/dTt/3FgeEWouIYAP/atM+2hxPOCS910leRtSyha+T6nqHxV
+ K1OVVW6zorMIfZDGWBfVRWzP7U/ooc3PAhWM5Z9LHRF01lqNZWTIT8pFQDz2JfMfvH4+
+ xLWu7cARo1Nj0pv/PPxLyQ7psY7bYwFtRiS2hjdzihDn1LOgUssRAgOTaqPrCSFB1mbW
+ DEGw==
+X-Gm-Message-State: AOJu0Yzi+q2yJsj6gXzS2kfiFuhSF4hY67ecHc5fzWnJ6yEVXdv6kAFG
+ yfJrn0cMNqUNmK9fFFoV5v4L7A==
+X-Google-Smtp-Source: AGHT+IENPpLJlZefo31K91tm396gCSkpYwVaQcBfrqhzOYxNeF0rowgppMyJgHe0mrRR46b/HO5eWQ==
+X-Received: by 2002:a05:6870:3925:b0:1bf:26f0:6b5b with SMTP id
+ b37-20020a056870392500b001bf26f06b5bmr3505417oap.32.1693588760712; 
+ Fri, 01 Sep 2023 10:19:20 -0700 (PDT)
+Received: from [192.168.68.108] ([177.94.15.194])
+ by smtp.gmail.com with ESMTPSA id
+ hv12-20020a056871cc0c00b001c50fb56845sm2358863oac.16.2023.09.01.10.19.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Sep 2023 10:19:20 -0700 (PDT)
+Message-ID: <94d6cf97-204c-e190-4cf5-fa47f2aa15ec@ventanamicro.com>
+Date: Fri, 1 Sep 2023 14:19:15 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830093843.3531473-48-marcandre.lureau@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 12/20] target/riscv: move KVM only files to kvm subdir
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+ <20230825130853.511782-13-dbarboza@ventanamicro.com>
+ <20230831-032c04ea20e3338ff9170980@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230831-032c04ea20e3338ff9170980@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x334.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,33 +95,126 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:38:21PM +0400, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+
+On 8/31/23 08:30, Andrew Jones wrote:
+> On Fri, Aug 25, 2023 at 10:08:45AM -0300, Daniel Henrique Barboza wrote:
+>> Move the files to a 'kvm' dir to promote more code separation between
+>> accelerators and making our lives easier supporting build options such
+>> as --disable-tcg.
+>>
+>> Rename kvm.c to kvm-cpu.c to keep it in line with its TCG counterpart.
 > 
-> It's already part of PIXMAN image.
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->  include/ui/console.h | 15 +++++++--------
->  ui/console-gl.c      |  2 +-
->  ui/console.c         |  4 +---
->  ui/gtk.c             |  2 +-
->  ui/spice-display.c   |  2 +-
->  ui/vnc.c             |  2 +-
->  6 files changed, 12 insertions(+), 15 deletions(-)
+> Now that we have 'kvm' and 'tcg' subdirectories, it seems like we should
+> be removing prefixes from files, i.e. 'kvm/cpu.c' and 'tcg/cpu.c' would be
+> less verbose and just as easy to identify, but whatever people like...
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+I don't mind shortening the names. I chose these because x86 names it that
+way.
+
+It's also easier to identify in the editor which file I'm editing at that
+moment via the filename alone, e.g. tcg-cpu.c is easier to identify than
+seeing 'cpu.c' and having to check the rest of the path.
+
+Yes, VSCode user here, too old for vim/emacs :D
 
 
-With regards,
+
+Thanks,
+
 Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
+
+> 
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   hw/riscv/virt.c                       | 2 +-
+>>   target/riscv/cpu.c                    | 2 +-
+>>   target/riscv/{kvm.c => kvm/kvm-cpu.c} | 0
+>>   target/riscv/{ => kvm}/kvm-stub.c     | 0
+>>   target/riscv/{ => kvm}/kvm_riscv.h    | 0
+>>   target/riscv/kvm/meson.build          | 2 ++
+>>   target/riscv/meson.build              | 2 +-
+>>   7 files changed, 5 insertions(+), 3 deletions(-)
+>>   rename target/riscv/{kvm.c => kvm/kvm-cpu.c} (100%)
+>>   rename target/riscv/{ => kvm}/kvm-stub.c (100%)
+>>   rename target/riscv/{ => kvm}/kvm_riscv.h (100%)
+>>   create mode 100644 target/riscv/kvm/meson.build
+>>
+>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>> index 388e52a294..77c384ddc3 100644
+>> --- a/hw/riscv/virt.c
+>> +++ b/hw/riscv/virt.c
+>> @@ -35,7 +35,7 @@
+>>   #include "hw/riscv/virt.h"
+>>   #include "hw/riscv/boot.h"
+>>   #include "hw/riscv/numa.h"
+>> -#include "kvm_riscv.h"
+>> +#include "kvm/kvm_riscv.h"
+>>   #include "hw/intc/riscv_aclint.h"
+>>   #include "hw/intc/riscv_aplic.h"
+>>   #include "hw/intc/riscv_imsic.h"
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 04c6bfaeef..bf6c8519b1 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -33,7 +33,7 @@
+>>   #include "fpu/softfloat-helpers.h"
+>>   #include "sysemu/kvm.h"
+>>   #include "sysemu/tcg.h"
+>> -#include "kvm_riscv.h"
+>> +#include "kvm/kvm_riscv.h"
+>>   #include "tcg/tcg.h"
+>>   
+>>   /* RISC-V CPU definitions */
+>> diff --git a/target/riscv/kvm.c b/target/riscv/kvm/kvm-cpu.c
+>> similarity index 100%
+>> rename from target/riscv/kvm.c
+>> rename to target/riscv/kvm/kvm-cpu.c
+>> diff --git a/target/riscv/kvm-stub.c b/target/riscv/kvm/kvm-stub.c
+>> similarity index 100%
+>> rename from target/riscv/kvm-stub.c
+>> rename to target/riscv/kvm/kvm-stub.c
+>> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+>> similarity index 100%
+>> rename from target/riscv/kvm_riscv.h
+>> rename to target/riscv/kvm/kvm_riscv.h
+>> diff --git a/target/riscv/kvm/meson.build b/target/riscv/kvm/meson.build
+>> new file mode 100644
+>> index 0000000000..1cd6783894
+>> --- /dev/null
+>> +++ b/target/riscv/kvm/meson.build
+>> @@ -0,0 +1,2 @@
+>> +riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm-cpu.c'),
+>> +                                 if_false: files('kvm-stub.c'))
+>> diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+>> index f0486183fa..c53962215f 100644
+>> --- a/target/riscv/meson.build
+>> +++ b/target/riscv/meson.build
+>> @@ -24,7 +24,6 @@ riscv_ss.add(files(
+>>     'zce_helper.c',
+>>     'vcrypto_helper.c'
+>>   ))
+>> -riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
+>>   
+>>   riscv_system_ss = ss.source_set()
+>>   riscv_system_ss.add(files(
+>> @@ -39,6 +38,7 @@ riscv_system_ss.add(files(
+>>   ))
+>>   
+>>   subdir('tcg')
+>> +subdir('kvm')
+>>   
+>>   target_arch += {'riscv': riscv_ss}
+>>   target_softmmu_arch += {'riscv': riscv_system_ss}
+>> -- 
+>> 2.41.0
+>>
+>>
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
