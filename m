@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78CF78F6FC
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD8178F6FD
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:24:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtmO-0005bC-Jr; Thu, 31 Aug 2023 22:21:00 -0400
+	id 1qbtow-0006Rr-49; Thu, 31 Aug 2023 22:23:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qbtmL-0005a9-32; Thu, 31 Aug 2023 22:20:57 -0400
-Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbtou-0006Rf-EH
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:23:36 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qbtmI-00017M-UW; Thu, 31 Aug 2023 22:20:56 -0400
-Received: by mail-vs1-xe36.google.com with SMTP id
- ada2fe7eead31-44e8d9e6ca0so621219137.3; 
- Thu, 31 Aug 2023 19:20:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbtor-0001Na-SG
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:23:36 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-56a3e6bce68so1063271a12.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:23:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693534853; x=1694139653; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UJPg4HuHDKQaPt5ElTirIj8PVpgwS63LdrTo6sKZfIg=;
- b=TcwbskJ0SuUsdyqBOP4rezGgSy8QH6XpWj4YXd54qD920XoERu9P1yfb9yat3CDZzL
- Q0wTpZJYwelOxGip7CBQvXykUckXQmL0uUeGLV6yZAFhkWgJs8Rq+L+LhDoknSVeHqjx
- edKdi4eMzTspjcRmvp2RejNuxE/IVY77oDM9Swcwr2MZPZKH+HTCUwFXzRJyTud1z3Y9
- PegwS0LbvunmOp8j0wqyTvSIJFHB2UjT3zozU8B9Xxnq38NwRRCResScCMtPxA0v9iCw
- /yKEhYgi4qRJ4M0R3uA7iwHqzs4F1W84kSBI5g8xQ/zte5im4GubkZvdKXhUuMvktDKr
- 9zGA==
+ d=linaro.org; s=google; t=1693535012; x=1694139812; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VgtVEtfsGPNKYq8tMsndmynxnaxH/hCwV+PXhCi2NPE=;
+ b=JJDeMRVa7mjvBkgvt6MzvFHt6sIuD/d/j4QExUuvN48i6E/niQGFECl9pWyGz6iDWF
+ bB5URooKl5q75/t5To31gW0dK38EiJuAkgJrfKthwVt44ECIGjKYuMPFMsNDeoF86sEP
+ dqtIlJvV2lZqTGr+m2s+LD0OvOt7JGSoV2TTeLtqZxO6IMe+WL0iVee2fPB2j6QScY+h
+ 23tdSSlH5AtZrGRJFphgCGXlWUXU2vZI/qy0M4zan9sX/64IFOEesslmUPdGVZ1DuMQv
+ Jonmf85GYr2VB0nyXnlLOgNn93q++y97Qp6e5DFq2vWT0T0CBZmJ50d4lzhOwMdEiJcx
+ UoeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693534853; x=1694139653;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UJPg4HuHDKQaPt5ElTirIj8PVpgwS63LdrTo6sKZfIg=;
- b=U4JbzkrO5OwC+RitWL22wFUiKli0YKcFOS3UA2YYQaZhjBfwfjFFzRtHhl/LQ1byN5
- X6Q199S7icddqYOXNZaRl3YiPEA2r0yLePlyPjssnahYtWzqpk2IaBkjAXfyTCNyCl57
- xeyb0PwR6UadW8R/97U1AMmXfm19rGZ7i+kBhgwHilMQ+vmvC7kSah6Yw2qh3ipig8XR
- egOet8czBNZRcEs+Hx47xDcO9Kpge0pyO8NyqJ5KeLfqjuieFFAlyvc6tg70JDwvMAAA
- 05gmEzQQjUzXRnTErJdOkbHsfLMRTY41MZuxF+j25iW8YJRnjZlaR0GdWRlOyUMAD0by
- yEeg==
-X-Gm-Message-State: AOJu0YxjLmWRGS2vyGhf02QuuEtdQdt1tCNEan8cwDryOylMRcG2xH3W
- dDkjqOpNf/zuPNvJLOgATPyPuQUhGqwsyWLzuTc=
-X-Google-Smtp-Source: AGHT+IGgpyxNegYz644fRNP7+R8+ra+MTpO8Zq27T4HzFNkSJG3Mh3NPkWloWiRO8muWDmrZdPJJ7t82QZ7u09gQU+E=
-X-Received: by 2002:a67:fd0f:0:b0:44e:99c9:418 with SMTP id
- f15-20020a67fd0f000000b0044e99c90418mr1492453vsr.4.1693534853303; Thu, 31 Aug
- 2023 19:20:53 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693535012; x=1694139812;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VgtVEtfsGPNKYq8tMsndmynxnaxH/hCwV+PXhCi2NPE=;
+ b=CWqnftMpUTl3OefnfGeFB3bqp+AEbjSDSF7E4ZvWvjNm4I+rkNO9w8lkDc1UVUg5Aj
+ /A3xPBAWL+xBNTNQ5OsftlISh8mB+ojFi+VvPINMUa2MzIbz8JjlL/eQUvswJ+Gf0RMN
+ g8qB2cujGnmdEIxVeLE79je8f1e68U200agTOPnURO15XvMUxWy0/OpDhGCNx8h10T1F
+ nm45S6Je3pLrzGEbR58okVyQOsOSOa5qfgC6mZdIUnGjNlRp/nPDiop+iJnlHJC4mU1j
+ 4sGZnuJ070zVVALPmkmmCaP7Kj4YeUXV1CiF90A3s3TzHEU5OnT6ruXKXKgP3Wc0DEoi
+ BL2Q==
+X-Gm-Message-State: AOJu0YwBCKPBtZAUGur5UPTO0cDlkirbaG/pbw0CmliHEwDapLTw919j
+ mhJ7peQ3b4IeT9ifPAbhiyEqYM1MLOWkO9fzq8E=
+X-Google-Smtp-Source: AGHT+IHkPZMlfo4rE/RgiAh1c6ZQOh3LgX2oDLnpjsVr2rTZEw8LHdj25C0zm739UQw+v1xVGbO3Ew==
+X-Received: by 2002:a05:6a21:7787:b0:14c:d105:2d7e with SMTP id
+ bd7-20020a056a21778700b0014cd1052d7emr1457381pzc.30.1693535012261; 
+ Thu, 31 Aug 2023 19:23:32 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ c25-20020aa781d9000000b0068a54866ca8sm1906977pfn.134.2023.08.31.19.23.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Aug 2023 19:23:31 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu,
+	alex.bennee@linaro.org
+Subject: [PATCH v2 00/33] linux-user: Improve host and guest page size handling
+Date: Thu, 31 Aug 2023 19:22:58 -0700
+Message-Id: <20230901022331.115247-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230808181715.436395-1-vineetg@rivosinc.com>
-In-Reply-To: <20230808181715.436395-1-vineetg@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 1 Sep 2023 12:20:26 +1000
-Message-ID: <CAKmqyKPdLbfyZOEmev4Th6Aes_WuuKymxV6CsexPazYdZWfh1g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] riscv: zicond: make non-experimental
-To: Vineet Gupta <vineetg@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, kito.cheng@gmail.com, 
- Jeff Law <jeffreyalaw@gmail.com>, Palmer Dabbelt <palmer@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe36.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,51 +89,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 9, 2023 at 4:18=E2=80=AFAM Vineet Gupta <vineetg@rivosinc.com> =
-wrote:
->
-> zicond is now codegen supported in both llvm and gcc.
->
-> This change allows seamless enabling/testing of zicond in downstream
-> projects. e.g. currently riscv-gnu-toolchain parses elf attributes
-> to create a cmdline for qemu but fails short of enabling it because of
-> the "x-" prefix.
->
-> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
+Based-on: 20230829220228.928506-1-richard.henderson@linaro.org
+("[PATCH v5 00/20] linux-user: Implement VDSOs")
 
-Thanks!
+Changes for v2:
+  * Minor adjustments to bsd-user.
+  * Update docs for deprecation.
+  * Philippe's r-b.
 
-Applied to riscv-to-apply.next
+Blurb from v1:
 
-Alistair
+While working on mmap issues for 8.1, I noticed a lot of corner
+cases of host != guest page size that we implement poorly.
+This seems to be particularly visible on Apple M1 with 16k pages,
+more so than Power with 64k pages for some reason.
 
-> ---
->  target/riscv/cpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 6b93b04453c8..022bd9d01223 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1816,6 +1816,7 @@ static Property riscv_cpu_extensions[] =3D {
->      DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
->      DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
->      DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
-> +    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, false),
->
->      /* Vendor-specific custom extensions */
->      DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
-> @@ -1832,7 +1833,6 @@ static Property riscv_cpu_extensions[] =3D {
->      DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOp=
-s, false),
->
->      /* These are experimental so mark with 'x-' */
-> -    DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
->
->      /* ePMP 0.9.3 */
->      DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
-> --
-> 2.34.1
->
->
+Objective 1 is to deprecate and (essentially) disable the -p option.
+
+The effect of -p is apparently confusing, so much so that our own
+testsuite misuses it.  One cannot really change the host page size,
+and pretending otherwise means that we don't treat the host memory
+system correctly, and stuff breaks.
+
+I have not yet done the same work for bsd-user.
+
+Objective 2 is to allow the guest page size to change to match the host.
+
+There are corner cases of host != guest page size will fail in odd ways.
+For case of host > guest page size, the issues could be solved with
+softmmu, allowing a non-linear mapping between host and guest addresses
+and also disconnecting host and guest page permissions.
+
+However, host < guest page has issues with SIGBUS which I believe to be
+totally unfixable.  At minimum one would need to monitor changes to all
+files mapped in the address space, but I'm sure there is much more.
+
+But as always the best behaviour is obtained when the host and guest
+page sizes match -- there are no corner cases to contend with.
+
+There are a set of guests which can be configured to use multiple page
+sizes, and therefore software developed for those guests (usually) does
+not hard-code a particular page size.  For those, we can allow the
+page size to vary and let the guest match the host.
+
+I have only changed aarch64, alpha and ppc guests so far, as those
+are both easy to test and, especially for the case of alpha's default
+8k page size, prone to failure.
+
+
+r~
+
+
+Richard Henderson (33):
+  accel/tcg: Remove qemu_host_page_size from page_protect/page_unprotect
+  linux-user: Adjust SVr4 NULL page mapping
+  linux-user: Remove qemu_host_page_{size,mask} in probe_guest_base
+  linux-user: Remove qemu_host_page_size from create_elf_tables
+  linux-user/hppa: Simplify init_guest_commpage
+  linux-user/nios2: Remove qemu_host_page_size from init_guest_commpage
+  linux-user/arm: Remove qemu_host_page_size from init_guest_commpage
+  linux-user: Remove qemu_host_page_{size,mask} from mmap.c
+  linux-user: Remove REAL_HOST_PAGE_ALIGN from mmap.c
+  linux-user: Remove HOST_PAGE_ALIGN from mmap.c
+  migration: Remove qemu_host_page_size
+  hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
+  softmmu/physmem: Remove qemu_host_page_size
+  softmmu/physmem: Remove HOST_PAGE_ALIGN
+  linux-user: Remove qemu_host_page_size from main
+  linux-user: Split out target_mmap__locked
+  linux-user: Move some mmap checks outside the lock
+  linux-user: Fix sub-host-page mmap
+  linux-user: Split out mmap_end
+  linux-user: Do early mmap placement only for reserved_va
+  linux-user: Split out mmap_h_eq_g
+  linux-user: Split out mmap_h_lt_g
+  linux-user: Split out mmap_h_gt_g
+  tests/tcg: Remove run-test-mmap-*
+  tests/tcg: Extend file in linux-madvise.c
+  *-user: Deprecate and disable -p pagesize
+  cpu: Remove page_size_init
+  accel/tcg: Disconnect TargetPageDataNode from page size
+  linux-user: Allow TARGET_PAGE_BITS_VARY
+  target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
+  linux-user: Bound mmap_min_addr by host page size
+  target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
+  target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
+
+ docs/about/deprecated.rst                 |   7 +
+ docs/user/main.rst                        |   3 -
+ bsd-user/qemu.h                           |   7 +
+ include/exec/cpu-common.h                 |   7 -
+ include/hw/core/cpu.h                     |   2 -
+ target/alpha/cpu-param.h                  |  16 +-
+ target/arm/cpu-param.h                    |   6 +-
+ target/ppc/cpu-param.h                    |   9 +-
+ accel/tcg/translate-all.c                 |   1 -
+ accel/tcg/user-exec.c                     |  31 +-
+ bsd-user/main.c                           |  21 +-
+ cpu.c                                     |  13 -
+ hw/tpm/tpm_ppi.c                          |   3 +-
+ linux-user/elfload.c                      |  67 +-
+ linux-user/main.c                         |  33 +-
+ linux-user/mmap.c                         | 714 +++++++++++++---------
+ migration/ram.c                           |  22 +-
+ softmmu/physmem.c                         |  17 +-
+ softmmu/vl.c                              |   1 -
+ target/arm/cpu.c                          |  51 +-
+ tests/tcg/multiarch/linux/linux-madvise.c |   2 +
+ tests/tcg/alpha/Makefile.target           |   3 -
+ tests/tcg/arm/Makefile.target             |   3 -
+ tests/tcg/hppa/Makefile.target            |   3 -
+ tests/tcg/i386/Makefile.target            |   3 -
+ tests/tcg/m68k/Makefile.target            |   3 -
+ tests/tcg/multiarch/Makefile.target       |   9 -
+ tests/tcg/ppc/Makefile.target             |  12 -
+ tests/tcg/sh4/Makefile.target             |   3 -
+ tests/tcg/sparc64/Makefile.target         |   6 -
+ 30 files changed, 626 insertions(+), 452 deletions(-)
+ delete mode 100644 tests/tcg/ppc/Makefile.target
+ delete mode 100644 tests/tcg/sparc64/Makefile.target
+
+-- 
+2.34.1
+
 
