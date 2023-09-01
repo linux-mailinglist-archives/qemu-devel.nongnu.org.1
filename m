@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7DA5790290
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 21:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E8F790294
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 21:50:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcA8V-0000VK-BH; Fri, 01 Sep 2023 15:48:56 -0400
+	id 1qcA8d-0001L1-Ir; Fri, 01 Sep 2023 15:49:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qcA75-00087K-Jz
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:29 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ id 1qcA77-0008DB-U3
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:34 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qcA73-0003IU-4h
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:27 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-572a7141434so1325302eaf.2
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 12:47:23 -0700 (PDT)
+ id 1qcA75-0003NC-Ai
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:29 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-572a7141434so1325320eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 12:47:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693597643; x=1694202443; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1693597646; x=1694202446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eZZ2U72EJggfHwx80fzT+1XQBGT3ahOCx1fEjDzEhhg=;
- b=er4u2I9IHRPcQlGBhfhJn/9c+NhF+p8VR9WjV1A4RXmU/WKu0kHCkHdzQga7SGHEJl
- N3fTGV3s3C7i41qx+i5kOnhDdcczHW3TjCMA8hf3ygMIz+FdSGp97k1+CGBlQmuZDhSy
- x+CWYxZ5UVNo+IJxmqF8O9FIOMOscPPpbO4ShvYR1bp2ed+2yJmJE/kJ48gJLFFgdXIQ
- kJEh/1WlZ67jx2RJoUxoPzhrj8jufMtEC4rYqIJvOSV54bGrQTZqzE/YU0iK4gXQRpei
- J/mPn49Y92wHmN9H3H6Pw7DSxzh9+x08m5a/rNhmK2u1T8ubMxoJAS1NrLy8GYoQgYsh
- ZB/w==
+ bh=v023n2PbxiR5ip3T4K94HNm0FMcZR3bFuZyEZiJsIlY=;
+ b=fCQbC7bhNXzZhgSX6kiyCVlQxoxMrD2mOSGjLMqfXZIMDUeqxgovbAW+5HEaCdtXm+
+ 6Q6we4cbtJkStcNDJU57fu04dz7qMvXVSCFqXzJtjlet14UWhE7fXNxC4gXG8cNYpsQC
+ G5BZ0gzIN90Mqv5DluBjV4NPZeHPbVhSkjybejc5t7kAU2BnHK0E/AI0q0casMTtf8bb
+ kxiohDdkfpjhPsvy1Ts/ROrqK2+AzQfEc4pw52lAZ/9BtHSdKqqqlBfNqTslLzV3c30n
+ JBGaBHLd8chK7I5Y413ZV2zTK03yKK7OFo4ncDTjjwy9vHdvcOqBZD1Vs3fBjGArvbcc
+ Qv5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693597643; x=1694202443;
+ d=1e100.net; s=20221208; t=1693597646; x=1694202446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eZZ2U72EJggfHwx80fzT+1XQBGT3ahOCx1fEjDzEhhg=;
- b=BzHMNEvBxrf3Xr7EYIBZiDvKidk8/FcHo7j/gIx+VmxwgEyc3NHjDgkBd2UfJeFPp3
- W6N8UwT/fNOvjnOpk135gH3ZgaqvqMR2jTt5e8gHZ5YrZyEJxz3OYLDsbhcPpSSZNbOu
- UCHcrlpP0kBM+ngKQBTEQ3ooO62wJauXM+6ExNsSkG2ibEpbe+l9qSZQoY7Pb4ZNvdO8
- hE+BLU/0Ek4Agt+hyCchl5QzjeaOzP82GgU1G6IcrkM9kJHG3PsSFuT7FJCcx4uHLsKS
- uZ6/n9k0bjoh+PJjuC1Ta15en40VtI5oEZQXiy3KwGlzH0OuXkoEDagoOz+urOy9tkVq
- JM+w==
-X-Gm-Message-State: AOJu0Yw7wt2lgBmHuyEhEFxZLOQmzJyfwQD0nErwgwPfwnS0oi5zMpPh
- SFVk65apNfiGpeSzMg+BpPbjsFgWK66wSK1Wi3k=
-X-Google-Smtp-Source: AGHT+IFCO87LB/eOPdJf5GTIkUHjAJ4qn3GcBdk4MGIMu6eqGxil2reW0T7fkTGzQnoeAOE77WM8eQ==
-X-Received: by 2002:a4a:9d57:0:b0:56c:a41c:f264 with SMTP id
- f23-20020a4a9d57000000b0056ca41cf264mr3067611ook.8.1693597642755; 
- Fri, 01 Sep 2023 12:47:22 -0700 (PDT)
+ bh=v023n2PbxiR5ip3T4K94HNm0FMcZR3bFuZyEZiJsIlY=;
+ b=c7JvAVQY23iZrZeBb26LT7lZfFeZe9yVJo3In79q6FggAVOekUDyETTclHWsO1ZvaU
+ 3Sn3jq9CBQLi9DwfLZqB3S+3FAX8Ckj3vtb4bUjCjzFTd3NiUm/kt0PE0gJmlzbuHA59
+ HI3yxdhaz3uiKEggaqZy2ZJBjAb1QsW3RyHjDcKvB/JwgMt3imq0Xy7OAXmQBjgS5XsB
+ 1cFXARczxGaiKTKnL4A5dJKTWx+hSI2FfMf/hVseitucbZx0UIMUtAZ+W8C+OTu3cEts
+ mAl0eMcm+hneBWUYeaHtDqwDAEfm1EgjqI9xmUXmaT5xTHp0xp4tdSv+nDLGzQMlfIAQ
+ N3Ew==
+X-Gm-Message-State: AOJu0YxRYnybCqQd1MhdIqx9/UNSFwp7uFqMuWxWUVVoojfBqp79J0xD
+ bNtCCOjwA68suxDaeHdgn7ppiVvtmbW2/JDNMVg=
+X-Google-Smtp-Source: AGHT+IH0sLe5nw96Y9FJOg6fUZ4LK0xgMlXGc7Ho0GkFa/CDEPj4CUkt0g7nb5j83BUp53Tyn8p5NQ==
+X-Received: by 2002:a4a:3008:0:b0:56c:e856:8b2c with SMTP id
+ q8-20020a4a3008000000b0056ce8568b2cmr3440718oof.9.1693597645789; 
+ Fri, 01 Sep 2023 12:47:25 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com ([177.94.15.194])
  by smtp.gmail.com with ESMTPSA id
- h187-20020a4a5ec4000000b00565d41ba4d0sm2303002oob.35.2023.09.01.12.47.20
+ h187-20020a4a5ec4000000b00565d41ba4d0sm2303002oob.35.2023.09.01.12.47.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 12:47:22 -0700 (PDT)
+ Fri, 01 Sep 2023 12:47:25 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 15/20] target/riscv/cpu.c: introduce
- cpu_cfg_ext_auto_update()
-Date: Fri,  1 Sep 2023 16:46:21 -0300
-Message-ID: <20230901194627.1214811-16-dbarboza@ventanamicro.com>
+Subject: [PATCH v9 16/20] target/riscv/cpu.c: use cpu_cfg_ext_auto_update()
+ during realize()
+Date: Fri,  1 Sep 2023 16:46:22 -0300
+Message-ID: <20230901194627.1214811-17-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
 References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,99 +95,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-During realize() time we're activating a lot of extensions based on some
-criteria, e.g.:
+Let's change the other instances in realize() where we're enabling an
+extension based on a certain criteria (e.g. it's a dependency of another
+extension).
 
-    if (cpu->cfg.ext_zk) {
-        cpu->cfg.ext_zkn = true;
-        cpu->cfg.ext_zkr = true;
-        cpu->cfg.ext_zkt = true;
-    }
+We're leaving icsr and ifencei being enabled during RVG for later -
+we'll want to error out in that case. Every other extension enablement
+during realize is now done via cpu_cfg_ext_auto_update().
 
-This practice resulted in at least one case where we ended up enabling
-something we shouldn't: RVC enabling zca/zcd/zcf when using a CPU that
-has priv_spec older than 1.12.0.
-
-We're also not considering user choice. There's no way of doing it now
-but this is about to change in the next few patches.
-
-cpu_cfg_ext_auto_update() will check for priv version mismatches before
-enabling extensions. If we have a mismatch between the current priv
-version and the extension we want to enable, do not enable it. In the
-near future, this same function will also consider user choice when
-deciding if we're going to enable/disable an extension or not.
-
-For now let's use it to handle zca/zcd/zcf enablement if RVC is enabled.
+The end goal is that only cpu init() functions will handle extension
+flags directly via "cpu->cfg.ext_N = true|false".
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/cpu.c | 43 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 40 insertions(+), 3 deletions(-)
+ target/riscv/cpu.c | 50 +++++++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 43c68e1792..a4876df5f4 100644
+index a4876df5f4..eeaf69599e 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -177,6 +177,43 @@ static void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset,
-     *ext_enabled = en;
- }
+@@ -1193,7 +1193,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     }
  
-+static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
-+{
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
-+        if (isa_edata_arr[i].ext_enable_offset != ext_offset) {
-+            continue;
-+        }
-+
-+        return isa_edata_arr[i].min_version;
-+    }
-+
-+    g_assert_not_reached();
-+}
-+
-+static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-+                                    bool value)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    bool prev_val = isa_ext_is_enabled(cpu, ext_offset);
-+    int min_version;
-+
-+    if (prev_val == value) {
-+        return;
-+    }
-+
-+    if (value && env->priv_ver != PRIV_VERSION_LATEST) {
-+        /* Do not enable it if priv_ver is older than min_version */
-+        min_version = cpu_cfg_ext_get_min_version(ext_offset);
-+        if (env->priv_ver < min_version) {
-+            return;
-+        }
-+    }
-+
-+    isa_ext_update_enabled(cpu, ext_offset, value);
-+}
-+
- const char * const riscv_int_regnames[] = {
-     "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1",
-     "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a3",
-@@ -1268,12 +1305,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     if (cpu->cfg.ext_zfh) {
+-        cpu->cfg.ext_zfhmin = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zfhmin), true);
+     }
  
-     /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
-     if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
--        cpu->cfg.ext_zca = true;
+     if (cpu->cfg.ext_zfhmin && !riscv_has_ext(env, RVF)) {
+@@ -1219,17 +1219,17 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         }
+ 
+         /* The V vector extension depends on the Zve64d extension */
+-        cpu->cfg.ext_zve64d = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64d), true);
+     }
+ 
+     /* The Zve64d extension depends on the Zve64f extension */
+     if (cpu->cfg.ext_zve64d) {
+-        cpu->cfg.ext_zve64f = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64f), true);
+     }
+ 
+     /* The Zve64f extension depends on the Zve32f extension */
+     if (cpu->cfg.ext_zve64f) {
+-        cpu->cfg.ext_zve32f = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve32f), true);
+     }
+ 
+     if (cpu->cfg.ext_zve64d && !riscv_has_ext(env, RVD)) {
+@@ -1243,7 +1243,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     }
+ 
+     if (cpu->cfg.ext_zvfh) {
+-        cpu->cfg.ext_zvfhmin = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvfhmin), true);
+     }
+ 
+     if (cpu->cfg.ext_zvfhmin && !cpu->cfg.ext_zve32f) {
+@@ -1273,7 +1273,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+ 
+     /* Set the ISA extensions, checks should have happened above */
+     if (cpu->cfg.ext_zhinx) {
+-        cpu->cfg.ext_zhinxmin = true;
 +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
+     }
+ 
+     if ((cpu->cfg.ext_zdinx || cpu->cfg.ext_zhinxmin) && !cpu->cfg.ext_zfinx) {
+@@ -1294,12 +1294,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     }
+ 
+     if (cpu->cfg.ext_zce) {
+-        cpu->cfg.ext_zca = true;
+-        cpu->cfg.ext_zcb = true;
+-        cpu->cfg.ext_zcmp = true;
+-        cpu->cfg.ext_zcmt = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcb), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmp), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmt), true);
          if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
 -            cpu->cfg.ext_zcf = true;
 +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
          }
-         if (riscv_has_ext(env, RVD)) {
--            cpu->cfg.ext_zcd = true;
-+            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcd), true);
-         }
      }
  
+@@ -1367,26 +1367,26 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     }
+ 
+     if (cpu->cfg.ext_zk) {
+-        cpu->cfg.ext_zkn = true;
+-        cpu->cfg.ext_zkr = true;
+-        cpu->cfg.ext_zkt = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkn), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkr), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkt), true);
+     }
+ 
+     if (cpu->cfg.ext_zkn) {
+-        cpu->cfg.ext_zbkb = true;
+-        cpu->cfg.ext_zbkc = true;
+-        cpu->cfg.ext_zbkx = true;
+-        cpu->cfg.ext_zkne = true;
+-        cpu->cfg.ext_zknd = true;
+-        cpu->cfg.ext_zknh = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkne), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknd), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknh), true);
+     }
+ 
+     if (cpu->cfg.ext_zks) {
+-        cpu->cfg.ext_zbkb = true;
+-        cpu->cfg.ext_zbkc = true;
+-        cpu->cfg.ext_zbkx = true;
+-        cpu->cfg.ext_zksed = true;
+-        cpu->cfg.ext_zksh = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksed), true);
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
+     }
+ 
+     /*
 -- 
 2.41.0
 
