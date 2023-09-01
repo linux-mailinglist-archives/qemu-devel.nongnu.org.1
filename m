@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A6678FF93
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 343D378FF98
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 17:02:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc5bX-0001nK-GL; Fri, 01 Sep 2023 10:58:35 -0400
+	id 1qc5eC-00034w-Tl; Fri, 01 Sep 2023 11:01:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qc5bU-0001n3-KC
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:58:32 -0400
-Received: from mout.gmx.net ([212.227.15.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qc5bR-0002YG-1u
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:58:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1693580306; x=1694185106; i=deller@gmx.de;
- bh=r5myozIejJUe6xZDXwltXMMvwOFBx9smAWxCKitEsf0=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=Q5p+zfZ3fVUfEdlEh8s80QQIgJdWn4eb/k/Xg00FutmkMnbHpI59JEs+Jf9u5PQ2G7XbQVw
- rLJUW9qH846Mv01NJ3X3T7bOU5f66y8y1nrNxv0toKaRCCDlQC3AByxXEIxzeRE/l8dtnOYYL
- hPGKrLTi+y7vwPGnmxRwzdlmErNYtOmCXMcaFss8mnzqILtTLuyL5E3krYuW0WyzCTuzKfzeY
- rzpTByHBeKlf59Gz8szg65kM/zz9yK+TxWWfcgb9qHmb4cWDO3kWyI9BlXDu/MYtHrBAB2mwC
- cK4p4+Fyw0iL+zOcA08WST/ai6UhF+QVNCkt38OwPD7yt9hj5dtw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.152.187]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIMbO-1qPvza1nhE-00EOhs; Fri, 01
- Sep 2023 16:58:26 +0200
-Message-ID: <15405ae0-1422-05f6-eb82-38e8dc9af2bc@gmx.de>
-Date: Fri, 1 Sep 2023 16:58:26 +0200
+ (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
+ id 1qc5eA-00034Z-C1
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:01:18 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
+ id 1qc5e5-0003DF-V0
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:01:18 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68a56401c12so1723169b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 08:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693580470; x=1694185270; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:user-agent:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Vh6UICktw4XyRZqdiOs4SpBiz5rdOOCs7MmAwxNtlAw=;
+ b=D5OQms8/9MIjpzg/oXCo4wBEjKoQ+1FyUEMwRUxKOwnHEz6mRetgsjYRB1XMU7naou
+ wJOkBgVYAfazCzay4eLRoWz1f8p9EMxJRpJqwrTnZsVoclAoPRpkAX3cQ+eHqvUDK5/5
+ FW1lagoVK2e+k4Nf6JFiQDM4hfYO4tqy5Kc7Gyu595m56Ht52X7TSHIpbrv3qREGbzf8
+ LAF1K8I4TnJ0i2kVlhRYNQdH23m2tRc6vfdfwzeDj9Y57Dt9Ny1bD0E956HQ+UQcco97
+ UWsjZPg4zAfeF7vTl2dEFJU75SGksSN23yKr29w54mhom0qu8yCbJ6g7DXmOXNKZfFxC
+ /GLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693580470; x=1694185270;
+ h=content-transfer-encoding:mime-version:user-agent:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Vh6UICktw4XyRZqdiOs4SpBiz5rdOOCs7MmAwxNtlAw=;
+ b=gsHRAkHX4LugLdwM31dKrRALguHMMWcPbzfOKkzBAtrlDjZyUFhSib5JW8CjEOIbF6
+ wcTRBY7ldQuYMckRrnYG/nzHF5KRZPp4+z0y6RhWhU9Gm4YtBoRz8iBs4AejZJdYFO4b
+ uKBemBUQDGp8MFp9m/fBsWcOelG139lDDiN23OVA3huM0QjKKluPcCQOh108g6tZvUSd
+ MMtSpmcQynZunURZoKVN9jtpUyhqkhDjTaeodPqdPn8odcTDY7eUHk/KqS+LaSgcCrwI
+ KLaTfwGtbMlyPUNNdD3F2lZHJz23Vdg62nkmHnyjJKhL2imm1a4GHhW3rQS4yVS/Nye8
+ aU9Q==
+X-Gm-Message-State: AOJu0YwKHV8yq/Fg8UXIzJyZEATzoWiZya8Pqb21L9+oMb1Fhpmdpt+o
+ cJp6mxuG8MoVdYsgfaY7/PwhFQ==
+X-Google-Smtp-Source: AGHT+IE4NzUbVz10cbnc3UvFNwE81W4DmUgv82e8hyy3rw49QnGuV47AyVwt6PKdewqSLp5pNgX8ZA==
+X-Received: by 2002:a05:6a20:3258:b0:148:6ebd:2834 with SMTP id
+ hm24-20020a056a20325800b001486ebd2834mr2520491pzc.34.1693580470109; 
+ Fri, 01 Sep 2023 08:01:10 -0700 (PDT)
+Received: from ?IPv6:2401:4900:52fc:9c89:4352:c7fa:a5a4:5f35?
+ ([2401:4900:52fc:9c89:4352:c7fa:a5a4:5f35])
+ by smtp.gmail.com with ESMTPSA id
+ c9-20020aa78c09000000b0068bff979c33sm3065924pfd.188.2023.09.01.08.01.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Sep 2023 08:01:09 -0700 (PDT)
+Message-ID: <cb9207ad80c0c8dfae677853cd7b0f86ba2ab5bc.camel@ventanamicro.com>
+Subject: Re: [PATCH] target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX
+ changes
+From: mchitale@ventanamicro.com
+To: leon@is.currently.online, qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair23@gmail.com>, Leon Schuermann
+ <leons@opentitan.org>
+Date: Fri, 01 Sep 2023 20:30:55 +0530
+In-Reply-To: <20230829215046.1430463-1-leon@is.currently.online>
+References: <20230829215046.1430463-1-leon@is.currently.online>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 11/13] linux-user: Use WITH_MMAP_LOCK_GUARD in
- target_{shmat, shmdt}
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230824010237.1379735-1-richard.henderson@linaro.org>
- <20230824010237.1379735-12-richard.henderson@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20230824010237.1379735-12-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0FgkqzTqYqLMK4Pn8cLzf8DTp8H5tNzsYozkX8XO9WiQ+Z24Gps
- 3jVTLEr049/KDYuoQy30NWy+eXGn8Zsko+Ye+21ReuXc4Qsab6J1BsdrBBY3H2epY4/Yl9u
- 6HoIHxfRpkQz8hE9pibZ9RtqZE+QWTp2KVhaxo+7UB2aI2+JxfJmfGJLgDU0XVc8r6qojKc
- 4jyHQZM4b9S136+Jqntfg==
-UI-OutboundReport: notjunk:1;M01:P0:RbAbyMyx8Bg=;nwbB7+StiA24b8a/OOtdRZG66R6
- /GIrpXJhCMN/m7f/hFTKpJSiqR12mgzLBo/lJjrPHpOQGRSOtdNlRsnfSO16GvRQ1WZ19wi18
- 1qE4KRvTTZTDMDCIOfiuyltwpc88hDz7GkwFoKZnEggS4OmbxgIMwnObGJZXJ2G9Fha5HUpcr
- leAk2yi911B8o3TKQzwv68sQKD0ZsA9E4oY6xU98vLBvfVVMKif8mCKRNUAzyQbVhni/iM/l5
- symukzDdJlyVgevl4DfY361GcNFDHrcQbvqASeu4Yr8vy0MbCG0M3t8BBRnUfDwTRP8sIwW/p
- 1piFt0jNBhqNsIhwZ935MtVKAPbxCVWB+D0bPPPYBrxIB/JEaf5CfvFr3ySsMqvy057HznmK6
- xBmFPxzn05PW6k4iJGB1ap9qLkBcovXM1LGHJp4B+ELun0mbb0AfJC0mY3DYjXeGpcqSbINsI
- xRGCS2lobQ7aJdHrjQTulzkn9qx+38g56pW9f80rCMl/4VUFljSKugtNN1zCUuf10dVOUOp4l
- 0Nio8n/RjqqPF4lMhLpmKioTn5Mna5cCpDsvCNN8OZMHGBB4f8TEDI1TH73lU7UXXGwPu01SB
- q19Z8OB1GSwFgZ1ChHpngYcvxiB2KMUdN+3UpVvKuIKY8DqR3PqpTV9N4FfCcxZLIKbmeXYFb
- bUUjqPCWNb1pIOZllo/CnC2Kd/WwNKIqTW0WL3KYjmOcdhwA8qo2QtO6Y+92j3KklXqxKowPL
- 4fpOby67LIzVfGU5n0TCDM6r+reBlGChi+Mlv4CoNKRV/EL4nzO2L6+MlAkZVn4tJtgGRI8lx
- bC3FF+rM5BitQFGvnuGHwyOzQeQRSQvbPaQU66c+ac2Lu8vKqZlwOQ7h5ZVUmBkiaNquNWWFf
- ZDko+pXJxmVZUHVe+bL6F9LXzuerFjUyFgJiydWfk1yEquKr/6YOAYMTOseGGqjrYaz83cLo6
- vWdGew==
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-3.478, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=mchitale@ventanamicro.com; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,163 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/24/23 03:02, Richard Henderson wrote:
-> Move the CF_PARALLEL setting outside of the mmap lock.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-Reviewed-by: Helge Deller <deller@gmx.de>
-
+On Tue, 2023-08-29 at 17:50 -0400, leon@is.currently.online wrote:
+> From: Leon Schuermann <leons@opentitan.org>
+> 
+> When the rule-lock bypass (RLB) bit is set in the mseccfg CSR, the
+> PMP
+> configuration lock bits must not apply. While this behavior is
+> implemented for the pmpcfgX CSRs, this bit is not respected for
+> changes to the pmpaddrX CSRs. This patch ensures that pmpaddrX CSR
+> writes work even on locked regions when the global rule-lock bypass
+> is
+> enabled.
+> 
+> Signed-off-by: Leon Schuermann <leons@opentitan.org>
 > ---
->   linux-user/mmap.c | 98 ++++++++++++++++++++++-------------------------
->   1 file changed, 46 insertions(+), 52 deletions(-)
->
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index 3aeacd1ecd..f45b2d307c 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -1017,9 +1017,8 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int =
-shmid,
->   {
->       CPUState *cpu =3D env_cpu(cpu_env);
->       abi_ulong raddr;
-> -    void *host_raddr;
->       struct shmid_ds shm_info;
-> -    int i, ret;
-> +    int ret;
->       abi_ulong shmlba;
->
->       /* shmat pointers are always untagged */
-> @@ -1044,7 +1043,43 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int=
- shmid,
->           return -TARGET_EINVAL;
->       }
->
-> -    mmap_lock();
-> +    WITH_MMAP_LOCK_GUARD() {
-> +        void *host_raddr;
-> +
-> +        if (shmaddr) {
-> +            host_raddr =3D shmat(shmid, (void *)g2h_untagged(shmaddr), =
-shmflg);
-> +        } else {
-> +            abi_ulong mmap_start;
-> +
-> +            /* In order to use the host shmat, we need to honor host SH=
-MLBA.  */
-> +            mmap_start =3D mmap_find_vma(0, shm_info.shm_segsz,
-> +                                       MAX(SHMLBA, shmlba));
-> +
-> +            if (mmap_start =3D=3D -1) {
-> +                return -TARGET_ENOMEM;
-> +            }
-> +            host_raddr =3D shmat(shmid, g2h_untagged(mmap_start),
-> +                               shmflg | SHM_REMAP);
-> +        }
-> +
-> +        if (host_raddr =3D=3D (void *)-1) {
-> +            return get_errno(-1);
-> +        }
-> +        raddr =3D h2g(host_raddr);
-> +
-> +        page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
-> +                       PAGE_VALID | PAGE_RESET | PAGE_READ |
-> +                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
-> +
-> +        for (int i =3D 0; i < N_SHM_REGIONS; i++) {
-> +            if (!shm_regions[i].in_use) {
-> +                shm_regions[i].in_use =3D true;
-> +                shm_regions[i].start =3D raddr;
-> +                shm_regions[i].size =3D shm_info.shm_segsz;
-> +                break;
-> +            }
-> +        }
+>  target/riscv/pmp.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 9d8db493e6..5e60c26031 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -44,6 +44,10 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
+>   */
+>  static inline int pmp_is_locked(CPURISCVState *env, uint32_t
+> pmp_index)
+>  {
+> +    /* mseccfg.RLB is set */
+> +    if (MSECCFG_RLB_ISSET(env)) {
+> +        return 0;
 > +    }
->
->       /*
->        * We're mapping shared memory, so ensure we generate code for par=
-allel
-> @@ -1057,65 +1092,24 @@ abi_ulong target_shmat(CPUArchState *cpu_env, in=
-t shmid,
->           tb_flush(cpu);
->       }
->
-> -    if (shmaddr) {
-> -        host_raddr =3D shmat(shmid, (void *)g2h_untagged(shmaddr), shmf=
-lg);
-> -    } else {
-> -        abi_ulong mmap_start;
-> -
-> -        /* In order to use the host shmat, we need to honor host SHMLBA=
-.  */
-> -        mmap_start =3D mmap_find_vma(0, shm_info.shm_segsz, MAX(SHMLBA,=
- shmlba));
-> -
-> -        if (mmap_start =3D=3D -1) {
-> -            errno =3D ENOMEM;
-> -            host_raddr =3D (void *)-1;
-> -        } else {
-> -            host_raddr =3D shmat(shmid, g2h_untagged(mmap_start),
-> -                               shmflg | SHM_REMAP);
-> -        }
-> -    }
-> -
-> -    if (host_raddr =3D=3D (void *)-1) {
-> -        mmap_unlock();
-> -        return get_errno((intptr_t)host_raddr);
-> -    }
-> -    raddr =3D h2g((uintptr_t)host_raddr);
-> -
-> -    page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
-> -                   PAGE_VALID | PAGE_RESET | PAGE_READ |
-> -                   (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
-> -
-> -    for (i =3D 0; i < N_SHM_REGIONS; i++) {
-> -        if (!shm_regions[i].in_use) {
-> -            shm_regions[i].in_use =3D true;
-> -            shm_regions[i].start =3D raddr;
-> -            shm_regions[i].size =3D shm_info.shm_segsz;
-> -            break;
-> -        }
-> -    }
-> -
-> -    mmap_unlock();
->       return raddr;
->   }
->
->   abi_long target_shmdt(abi_ulong shmaddr)
->   {
-> -    int i;
->       abi_long rv;
->
->       /* shmdt pointers are always untagged */
->
-> -    mmap_lock();
-> -
-> -    for (i =3D 0; i < N_SHM_REGIONS; ++i) {
-> -        if (shm_regions[i].in_use && shm_regions[i].start =3D=3D shmadd=
-r) {
-> -            shm_regions[i].in_use =3D false;
-> -            page_set_flags(shmaddr, shmaddr + shm_regions[i].size - 1, =
-0);
-> -            break;
-> +    WITH_MMAP_LOCK_GUARD() {
-> +        for (int i =3D 0; i < N_SHM_REGIONS; ++i) {
-> +            if (shm_regions[i].in_use && shm_regions[i].start =3D=3D sh=
-maddr) {
-> +                shm_regions[i].in_use =3D false;
-> +                page_set_flags(shmaddr, shmaddr + shm_regions[i].size -=
- 1, 0);
-> +                break;
-> +            }
->           }
-> +        rv =3D get_errno(shmdt(g2h_untagged(shmaddr)));
->       }
-> -    rv =3D get_errno(shmdt(g2h_untagged(shmaddr)));
-> -
-> -    mmap_unlock();
-> -
->       return rv;
->   }
+>  
+>      if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
+>          return 1;
+> 
+> base-commit: a8fc5165aab02f328ccd148aafec1e59fd1426eb
+
+Reviewed-by: Mayuresh Chitale <mchitale@ventanamicro.com>
 
 
