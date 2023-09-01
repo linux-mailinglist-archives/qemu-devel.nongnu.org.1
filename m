@@ -2,137 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A1F78F7A3
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 06:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9F678F7FA
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 07:21:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbvaZ-0000re-1U; Fri, 01 Sep 2023 00:16:55 -0400
+	id 1qbwZX-00048l-7f; Fri, 01 Sep 2023 01:19:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tong.ho@amd.com>)
- id 1qbvaV-0000rC-0w; Fri, 01 Sep 2023 00:16:51 -0400
-Received: from mail-dm6nam11on2061d.outbound.protection.outlook.com
- ([2a01:111:f400:7eaa::61d]
- helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qbwZP-00047h-1I; Fri, 01 Sep 2023 01:19:47 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tong.ho@amd.com>)
- id 1qbvaR-0007gh-S7; Fri, 01 Sep 2023 00:16:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BJyJzztaaRChxx4ghqEW+o/w1h2BbuUrauBwV33T48hPtEeEsvJpg+SOI4d868xTaJ9CQ1LCUoTMQE87xA6mdZHq9Gh17mJJkQVVe331fSwubkxV1jQR3hDbqXdvc5EozGcpGo3exhAPkunQnEByTzj95M7y4MPLqC23ObrANqC30N+CAnk2qiCXmxTdsBDCUfshl0lMYR7ts4PpeFRIKHpVNfDKvspa9pvnY5apONwy5o+F0KTag4db5Da31wYD6xs6luGMXmjK3f2qLjZouyUtrmW30o69P5I3G3m0CGRAvSQPPZamP58/W4rHN9Np1CHMh0xfdbrMouDoeI296Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l/9VhZv3LM3tlm67SpX8Iel04/VHHYjWcSY3WEFuKbo=;
- b=QqsdJ59HYqcfZFcBd6HOp8CgcBV1C8S7756PdLqXIaMteySpAFhgjFuke4Il5pnnGus1nl2Q0vhfEq128bgoE5iZjg3HE1bXWEg7SO0QEjgK68OyArt+4eSp61dRnXdcstsgKwcPgRgAhOm6D3vTS4OQEqBJ6mcAAh07nPXO7ZbDS6veOTk7OkxgLT00Qcdvqcs9yBDSKaG09yhJTS2e0HDaB4RVgfyKePsiYSbBbYmNc7qPqn5AJPCi09MwLoVVz2mLVIUPGMSqwsRnQ1bNlNGKa+8T6PeycfCIAMtmHkaZUqbSXK01T4cDLjgj7++/x5xR0pq2yg1N++pyyslARg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l/9VhZv3LM3tlm67SpX8Iel04/VHHYjWcSY3WEFuKbo=;
- b=Yr/+oJMriGWv7XCE6QDJ2NySwiK2TkiS1KQhOzowiulj9zLBU+bHI1MP2MtuasJwdOz+83ZSLGGsH2pSyjFdiSOsfC1DIXg+sWku8Zq0NXKfoA42bvz6ysb5Fzax8D13ZDrnfoJGvZ4MGxxhIooHrnlpXePvYkp2q2zWu+6+2ys=
-Received: from BL0PR12MB4882.namprd12.prod.outlook.com (2603:10b6:208:1c3::10)
- by DM4PR12MB7501.namprd12.prod.outlook.com (2603:10b6:8:113::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20; Fri, 1 Sep
- 2023 04:16:43 +0000
-Received: from BL0PR12MB4882.namprd12.prod.outlook.com
- ([fe80::c8b1:9fbd:b3d5:693c]) by BL0PR12MB4882.namprd12.prod.outlook.com
- ([fe80::c8b1:9fbd:b3d5:693c%4]) with mapi id 15.20.6745.020; Fri, 1 Sep 2023
- 04:16:43 +0000
-From: "Ho, Tong" <tong.ho@amd.com>
-To: Richard Henderson <richard.henderson@linaro.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "alistair@alistair23.me"
- <alistair@alistair23.me>, "edgar.iglesias@gmail.com"
- <edgar.iglesias@gmail.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "Ho, Tong" <tong.ho@amd.com>
-Subject: RE: [PATCH 1/3] hw/misc: Introduce AMD/Xilix Versal TRNG device
-Thread-Topic: [PATCH 1/3] hw/misc: Introduce AMD/Xilix Versal TRNG device
-Thread-Index: AQHZ3C85IdR/2hbobUC8AAIMe7DmJrAFEeUAgABB0kA=
-Date: Fri, 1 Sep 2023 04:16:43 +0000
-Message-ID: <BL0PR12MB48829589D59FA02B93549E65E6E4A@BL0PR12MB4882.namprd12.prod.outlook.com>
-References: <20230831171849.3297497-1-tong.ho@amd.com>
- <20230831171849.3297497-2-tong.ho@amd.com>
- <622751d4-8a89-b34e-171f-9e9f7ac99972@linaro.org>
-In-Reply-To: <622751d4-8a89-b34e-171f-9e9f7ac99972@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL0PR12MB4882:EE_|DM4PR12MB7501:EE_
-x-ms-office365-filtering-correlation-id: f80fac6f-5fac-49d4-cd57-08dbaaa23fea
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DTIynzT3oiRyd+UX6ZP/3DmrhvEuIhrzozJGGRWFRZBUG/gNQGGxIzb96U9DOfmhs3xWD630IhDDpyzAmRAv1LrDRmHg6A8SFO5qt0KwgyhJUsAA7+fn0uUGQq7SxY13b0j2N8hEQRrhslfhSHgAPulMYA560UCrxIgpSaOj7B73oeSh/eQGcdyIqwtQ3gTJ00M2rMX90aBTqPgwdX/zEag+n6irhmW99Os7ZJvflfA9TaGq/2GK9qdc2e78e5xmE5KWaIqdW+n3K27GriS+RaMZh3D4O5YrI7bh8Pn31ChiCm9RK4EirlB48OALEs7euXEmttjWe8UIcBwdEYxd7iE5+t3qv/1Jg5rHSfh8yldi7joeEcOIW2n6XqX58wvCyifHpUT5JoGPOpsR/6FECVy5ykCgbhHCKl8Tc4DH1oTjRR4QuVmHDe/7IPebmNOfy0VREhV43cDBV3Yw6H4WR1BY/QZspCfIpAUDF8xfUFoTeTnGq2y/Gr7AaXYjdoGEjm+tUiouLbDYg8QLZnqJDeJZiCdi6QB7tTwUFupFa6LSXEVt42O6JqC1umUrHK9pP/V1+aFB0ywIfUR9BDBwPsp+AvXns5X8VGdPRUNFGGrbmPsXFKftXOHonOjogtDI
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL0PR12MB4882.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(366004)(346002)(136003)(376002)(396003)(186009)(1800799009)(451199024)(55016003)(54906003)(66446008)(66556008)(316002)(66476007)(64756008)(66946007)(110136005)(38100700002)(122000001)(76116006)(38070700005)(2906002)(41300700001)(8936002)(86362001)(5660300002)(7696005)(4326008)(52536014)(8676002)(83380400001)(9686003)(53546011)(26005)(6506007)(71200400001)(33656002)(478600001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Uy9rZU9YTVVQMlNqck5zZjNzczdmbVA1dTZyT3Q0VW5GWXM2eGlsdFFiSEJ6?=
- =?utf-8?B?UTBvMXR0NnRuS2hKODBySGdIbENCSGpxNmFRVjFvaDJVTzVPb3BSU2dwVi9i?=
- =?utf-8?B?REU3RTR1Zmt2YUJ4ekpkZ0NCbXVjOGtscGVSejNIS0FlSEsxWXNGUFgwMktP?=
- =?utf-8?B?ZFNJbUxXV0VpUzVMVEVDS01JMkJEOS8xZVA0SlVoT3g4dnhOZ2p1cjlQK3pB?=
- =?utf-8?B?Z0g2azdJQjM5NC9LaVFiekljM2Rtc3dSb1RNT0hIQ0VhUTRESWtpWjgyQkZw?=
- =?utf-8?B?ZG0yZnFSZkVLa1lJcnVWUHlUN21SN1ZvZTVZN0M1WGhnaUVKejY3aWZITUNC?=
- =?utf-8?B?Ty8xc1ltb0NCTlNDWVlGSzIzU25jdU5DVlRXYjE3cisvWVQzM3ZrdE9wblF3?=
- =?utf-8?B?cmd4MDVXU0xTb01ib1ByL0VKY0NHZmE3RjEvRE1aYys5MW5tckd2ejBtMk9H?=
- =?utf-8?B?MlZvUWpNKy8wcm1hOG44MFozSzJWaDRqUlI2OXNZL25yVFNEamVIZlZwcHpV?=
- =?utf-8?B?UGZPdGUrQXpqblc5bGd0dml6bWZOQ09oa1dHVkRQbEJjdnNzN3NhK2VXS2N0?=
- =?utf-8?B?di9jdkRyUzcyZmx6cXhqcW1YV3dxSncvYmdIQ3ZtUEgxY3c3L2V4OEdXTUtt?=
- =?utf-8?B?eVF5Q3pyQ3FaYjYrOHpjYkJQUHlLNVNkcXVxRk1oakVJVUROM1Jxa0NFUWg3?=
- =?utf-8?B?U0E3bTREdVJ4d1ZiYjU5c0ZUeEpMUDJXdnN4MmhYVzBhVGRqclkwMloySnNh?=
- =?utf-8?B?L3ZRdzd2OUFYTWlsWUNKbTJsSm5yQWtpRUI2SWhjY05GM1E2bm00cU4yeVN0?=
- =?utf-8?B?OTFUODhJMzBLS2JIVEF5dElOYVVkRUNvZlJWL3BGaDBHd1JRTDRpcUlRQlRE?=
- =?utf-8?B?NTJYM3diN1ZwbmdOR1JkVlQ5aXJSV2NDTU1SM3N2UFpNVWt2VkRIbXA5QUs4?=
- =?utf-8?B?R2lsaWl0UVNXTkx4a0ZsNXV5YU1DalRmeDllSWpNSUZOWlQ3Sk43NmRPb0RD?=
- =?utf-8?B?TWZwUFdKZWp1V3BCUFBRVUsxV05OSS94YkllQ0xCSkNudFEzd0JEeG83dklo?=
- =?utf-8?B?cXZiVzNIUU5lRVU5UkNTVmhUTVZRVkkzbWlNRHV5THpQd0R4UHBqenRJU2gw?=
- =?utf-8?B?TmhoMTZJN0tsL3J2T2RZUEVDMnRHUElPUWRwbUNjQklSamc1Y0trdGlZL1JC?=
- =?utf-8?B?QktYRDFWdkJxNFZkcUVYOUhyeW1rSk1pZi8ya1JhdFo4TXZtQUwxSDg1UERm?=
- =?utf-8?B?RFZySEZtZ2dhd2lGc3hWQWNTU21LeURUOGVxaU50aGxLeXRaSWZnOCtXcVRz?=
- =?utf-8?B?NlNGNWs4NkxwMUF0eDhVTEZhNFdXTW15MUU5c0ZKNEdCWTAzVUcyYUF3alNO?=
- =?utf-8?B?M3AvaGJ2b3pYdDAxY0k0V1RlZWFDaFp3MDczODBYY2NnNFkyRjZWYytGS0tw?=
- =?utf-8?B?L1V6VTE5SXNKNE1GMVRaSmVPRzF4OHV5WXpRWGlJTWtzS0E3S3ZINmQzRUFK?=
- =?utf-8?B?TU95L3NDM0lkaTdXbTUzN3BFejRvYVVpcW10M3FmUnVKSENJc3pmUGlHNmw2?=
- =?utf-8?B?SkdBMFhWbEhPMzNiSVJySVlyTFV3Zi9KMFdkeU1BRTFlNEJvMTAxQ2lHVy95?=
- =?utf-8?B?MEFWQk10Vmo4ZExyVXR1c3BZc0FmekFSMU9Tc1d6aHVrZ3N4My8yWDRFUEhy?=
- =?utf-8?B?Q0pORXlYTWZMc3JVTU5qZmFJb3BscDhsVGxRSVhZaWk3M2wyUmNFMHB1ZEVr?=
- =?utf-8?B?QnNrdDRRKzFEZWFUTzNrNFlZRmM1UjZMY1ZxSnJNU3dNaFVqQzV2cTdVT3Nm?=
- =?utf-8?B?djZTSUlZT2RoNWpTTUxsZzdjRE4xdDRDRUkwbEordlp4NUd6MDVrWWFQMWxz?=
- =?utf-8?B?Y2hsYmVuYnFqVGlNV3hKeW03c1YwempubkdUWHpLRDVaSkU1WkdZUWRjbks1?=
- =?utf-8?B?WHp5NlRKKytnaGZuL2JuaklUc2ZiU3NoMVp2MjlkMCtMa1l3UzhzRnlaeWVu?=
- =?utf-8?B?eXF0ZzJMamxpRW1KKzJEMUdtMXpyUXFhcTZSR2lTTFpPT2RtZ09CSW1pY0RL?=
- =?utf-8?B?UUZkOWROUU5ldE1OcHB1R1lmdzN0ZkZCZnZ6ejlDZG5ZZ3FRSzBUQXZ4d2ov?=
- =?utf-8?Q?mvL0=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qbwZL-0003VH-G2; Fri, 01 Sep 2023 01:19:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6o+SkscDBZQHxO4IPoXk2b6VpWaf2BDVtjcSJ5cypVY=; b=Nlv+qFmzy3W8ioaB3pick0Neaw
+ dXlZXYhw4bZjD8zEARqJf8z8DNMlE63WKWFdfxlkSaEqftA7v9jCr4HZf+DsiXNYWiverKTt2kgHi
+ dsOPC3EDQ4rJklkiKKQhvkrXsxFGLC5gTsCjyUvPk5Xreu6uCYBD4ZLcJs6uAvEpebhgGS6/xZaHf
+ 2sqW1lVimCdpu3EZoc+h17HuvvUJGDVlfUy0BZydvztwwQzMvqhekLNPX5DA3DQCWw6m7qqJFMkjs
+ ++byBWKhGjwFO2u7vsFIBgE7Pfi368Idm5NR9/cWAPnXLSxRUusT62RXEveGSKZ+oFJEO3ctjllmA
+ FlNOJUHxR/5XqellTXwYHmZP8/cSw2GA38Cz7SCk7vbWNd8UkziBXRmTGz2W1sMIeSRuh2AduAciI
+ wIBLX8IB+W0VhwBUhKJq3SWH8ilzujcj4Y3Ykv1iA6dNWcHGeVPtcJ9U4oqRRNefry+hQ5BBgl0OG
+ VWgA3d4RG5zZ3eR3D9hESAavUIFBwFY43bBhZO4rTrdukVIMO7cCXmyL8H44kmi/+I813UzkroxW+
+ Jx1h5Yw363uvHLfRfx1mt7bMW0DUcr5w12kixjL6QlhtaceE/Gz7kvVpLp13hFMhM15o/DkGe7hTa
+ +ZGShjDZ0zBkQbwAdX3fKVDLpy8d0xy7k+sMYXx0A=;
+Received: from [2a00:23c4:8bae:9a00:e29b:2528:c042:5a0c]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qbwYg-0000Et-0K; Fri, 01 Sep 2023 06:19:06 +0100
+Message-ID: <10c161a3-e22b-5319-4d6e-6f24abfe564a@ilande.co.uk>
+Date: Fri, 1 Sep 2023 06:19:29 +0100
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB4882.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f80fac6f-5fac-49d4-cd57-08dbaaa23fea
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2023 04:16:43.6385 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Yyz6lhlO029pYG2gEA74hYselPpazBtXxmvLaMFmueO6ES25s2iagEyi3BX5nWAn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7501
-Received-SPF: softfail client-ip=2a01:111:f400:7eaa::61d;
- envelope-from=tong.ho@amd.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
+References: <20230830161425.91946-1-graf@amazon.com>
+ <20230830161425.91946-3-graf@amazon.com>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230830161425.91946-3-graf@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bae:9a00:e29b:2528:c042:5a0c
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 02/12] hw/misc/pvpanic: Add MMIO interface
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,61 +87,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgUmljaGFyZCwNCg0KVGhhbmtzIGZvciB5b3VyIGlucHV0Lg0KDQpJIGhhdmUgcXVlc3Rpb25z
-IHJlZ2FyZGluZyB1c2luZyBxZW11L2d1ZXN0LXJhbmRvbS5oIGZvciBRRU1VIGRldmljZSBtb2Rl
-bHMuDQoNClVzaW5nIHFlbXUvZ3Vlc3QtcmFuZG9tLmgsIGhvdyBjYW4gdGhpcyBUUk5HIG1vZGVs
-IGVuc3VyZSBpdHMgaW5kZXBlbmRlbmNlIGZyb20NCm90aGVyIHVzZXMgb2YgdGhlIHNhbWUgcWVt
-dV9ndWVzdF9nZXRyYW5kb20oKSBhbmQgcWVtdV9ndWVzdF9yYW5kb21fc2VlZF8qKCk/DQoNCkJ5
-ICJvdGhlciB1c2VzIiwgSSBtZWFuIGNvbXBvbmVudHMgYW5kL29yIGRldmljZXMgdXNpbmcgcWVt
-dS9ndWVzdC1yYW5kb20uaCBidXQgdW5yZWxhdGVkIHRvIHRoaXMgWGlsaW54IFZlcnNhbCBUUk5H
-IGRldmljZS4NCg0KQnkgImluZGVwZW5kZW50IiwgSSBtZWFuIHRoZSBYaWxpbnggVmVyc2FsIFRS
-TkcgZGV2aWNlIGlzOg0KDQoxLiBOb3QgaW1wYWN0ZWQgYnkgb3RoZXIgdXNlcyB0aGF0IG1heSBv
-ciBtYXkgbm90IG5lZWQgdG8gc2V0IHRoZSAnLXNlZWQnIG9wdGlvbiwgYW5kDQoNCjIuIE5vdCBp
-bXBhY3Rpbmcgb3RoZXIgdXNlcyBqdXN0IGJlY2F1c2UgYSBYaWxpbnggVmVyc2FsIG1hY2hpbmUg
-dXNlciBkZWNpZGVzIHRvIHVzZSBkZXRlcm1pbmlzdGljIG1vZGUgKm9ubHkiIGZvciB0aGlzIFRS
-TkcgZGV2aWNlLg0KDQpBbHNvLCBJIGFtIGF0IGEgbG9zcyBpbiBob3cgdW5yZWxhdGVkIFFFTVUg
-ZGV2aWNlcyBjYW4gcmVtYWluIGluZGVwZW5kZW50IHdoZW46DQoNCjMuIHFlbXUvZ3Vlc3QtcmFu
-ZG9tLmggdXNlcyAnX190aHJlYWQnIHZhcmlhYmxlIGZvciBHUmFuZCBjb250ZXh0LCBidXQNCg0K
-NC4gUUVNVSBkZXZpY2VzIHJ1biBtb3N0bHkgYXMgY28tcm91dGluZXMgYW5kIG5vdCBhcyBzZXBh
-cmF0ZSB0aHJlYWRzLg0KDQpJIHN1cHBvc2UgdGhlIFZlcnNhbCBUUk5HIGltcGxlbWVudGF0aW9u
-IGNvdWxkIHVzZSBnX3JhbmRfKigpIGRpcmVjdGx5LA0KaGF2aW5nIGEgR1JhbmQgb2JqZWN0IGlu
-IHRoZSBkZXZpY2Ugc3RhdGUgYW5kIHNlZWRpbmcgdGhyb3VnaCBnX3JhbmRfc2V0X3NlZWRfYXJy
-YXkoKS4NCg0KQmVzdCByZWdhcmRzLA0KVG9uZyBIbw0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
-LS0tLQ0KRnJvbTogUmljaGFyZCBIZW5kZXJzb24gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5v
-cmc+IA0KU2VudDogVGh1cnNkYXksIEF1Z3VzdCAzMSwgMjAyMyA0OjQ1IFBNDQpUbzogSG8sIFRv
-bmcgPHRvbmcuaG9AYW1kLmNvbT47IHFlbXUtYXJtQG5vbmdudS5vcmcNCkNjOiBxZW11LWRldmVs
-QG5vbmdudS5vcmc7IGFsaXN0YWlyQGFsaXN0YWlyMjMubWU7IGVkZ2FyLmlnbGVzaWFzQGdtYWls
-LmNvbTsgcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnDQpTdWJqZWN0OiBSZTogW1BBVENIIDEvM10g
-aHcvbWlzYzogSW50cm9kdWNlIEFNRC9YaWxpeCBWZXJzYWwgVFJORyBkZXZpY2UNCg0KT24gOC8z
-MS8yMyAxMDoxOCwgVG9uZyBIbyB3cm90ZToNCj4gVGhpcyBhZGRzIGEgbm9uLWNyeXB0b2dyYXBo
-aWMgZ3JhZGUgaW1wbGVtZW50YXRpb24gb2YgdGhlIG1vZGVsIGZvciANCj4gdGhlIFRydWUgUmFu
-ZG9tIE51bWJlciBHZW5lcmF0b3IgKFRSTkcpIGNvbXBvbmVudCBpbiBBTUQvWGlsaW54IFZlcnNh
-bCANCj4gZGV2aWNlIGZhbWlseS4NCj4gDQo+IFRoaXMgbW9kZWwgaXMgb25seSBpbnRlbmRlZCBm
-b3Igbm9uLXJlYWwgd29ybGQgdGVzdGluZyBvZiBndWVzdCANCj4gc29mdHdhcmUsIHdoZXJlIGNy
-eXB0b2dyYXBoaWNhbGx5IHN0cm9uZyBUUk5HIGlzIG5vdCBuZWVkZWQuDQo+IA0KPiBUaGlzIG1v
-ZGVsIHN1cHBvcnRzIHZlcnNpb25zIDEgJiAyIG9mIHRoZSBWZXJzYWwgVFJORywgd2l0aCBkZWZh
-dWx0IHRvIA0KPiBiZSB2ZXJzaW9uIDI7IHRoZSAnaHctdmVyc2lvbicgdWludDMyIHByb3BlcnR5
-IGNhbiBiZSBzZXQgdG8gMHgwMTAwIHRvIA0KPiBvdmVycmlkZSB0aGUgZGVmYXVsdC4NCj4gDQo+
-IE90aGVyIGltcGxlbWVudGVkIHByb3BlcnRpZXM6DQo+IC0gJ2ZvcmNlZC1wcm5nJywgdWludDY0
-DQo+ICAgIFdoZW4gc2V0IHRvIG5vbi16ZXJvLCAidHJ1ZSByYW5kb20gcmVzZWVkIiBpcyByZXBs
-YWNlZCBieQ0KPiAgICBkZXRlcm1pbmlzdGljIHJlc2VlZCBiYXNlZCBvbiB0aGUgZ2l2ZW4gdmFs
-dWUgYW5kIG90aGVyDQo+ICAgIGRldGVybWluaXN0aWMgcGFyYW1ldGVycywgZXZlbiB3aGVuIGd1
-ZXN0IHNvZnR3YXJlIGhhcw0KPiAgICBjb25maWd1cmVkIHRoZSBUUk5HIGFzICJ0cnVlIHJhbmRv
-bSByZXNlZWQiLiAgVGhpcyBvcHRpb24NCj4gICAgYWxsb3dzIGd1ZXN0IHNvZnR3YXJlIHRvIHJl
-cHJvZHVjZSBkYXRhLWRlcGVuZGVudCBkZWZlY3RzLg0KPiANCj4gLSAnZmlwcy1mYXVsdC1ldmVu
-dHMnLCB1aW50MzIsIGJpdC1tYXNrDQo+ICAgIGJpdCAzOiBUcmlnZ2VycyB0aGUgU1A4MDAtOTBC
-IGVudHJvcHkgaGVhbHRoIHRlc3QgZmF1bHQgaXJxDQo+ICAgIGJpdCAxOiBUcmlnZ2VycyB0aGUg
-RklQUyAxNDAtMiBjb250aW51b3VzIHRlc3QgZmF1bHQgaXJxDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
-OiBUb25nIEhvPHRvbmcuaG9AYW1kLmNvbT4NCj4gLS0tDQo+ICAgaHcvbWlzYy9LY29uZmlnICAg
-ICAgICAgICAgICAgICAgICB8ICAgMyArDQo+ICAgaHcvbWlzYy9tZXNvbi5idWlsZCAgICAgICAg
-ICAgICAgICB8ICAgMyArDQo+ICAgaHcvbWlzYy94bG54LXZlcnNhbC10cm5nLmMgICAgICAgICB8
-IDcyNSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgIGluY2x1ZGUvaHcvbWlzYy94
-bG54LXZlcnNhbC10cm5nLmggfCAgNTggKysrDQo+ICAgNCBmaWxlcyBjaGFuZ2VkLCA3ODkgaW5z
-ZXJ0aW9ucygrKQ0KPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBody9taXNjL3hsbngtdmVyc2FsLXRy
-bmcuYw0KPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL2h3L21pc2MveGxueC12ZXJzYWwt
-dHJuZy5oDQoNCkkgZG9uJ3QgdGhpbmsgeW91IHNob3VsZCBiZSBpbnZlbnRpbmcgYW5vdGhlciBQ
-Uk5HLCBvciByZWxhdGVkIHByb3BlcnRpZXMuDQoNCldlIGFscmVhZHkgaGF2ZSBxZW11L2d1ZXN0
-LXJhbmRvbS5oLCBhbmQgdGhlIC1zZWVkIGNvbW1hbmQtbGluZSBwYXJhbWV0ZXIgdG8gZm9yY2Ug
-dGhlIHVzZSBvZiBhIGRldGVybWluaXN0aWMgUFJORyB3aXRoIGEgZ2l2ZW4gc2VlZCB2YWx1ZS4N
-Cg0KDQpyfg0K
+On 30/08/2023 17:14, Alexander Graf wrote:
+
+Hi Alex,
+
+> In addition to the ISA and PCI variants of pvpanic, let's add an MMIO
+> platform device that we can use in embedded arm environments.
+> 
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> ---
+> 
+> v1 -> v2:
+> 
+>    - Use SPDX header
+>    - Remove useless includes
+>    - Adapt to new meson.build target (system_ss)
+> ---
+>   include/hw/misc/pvpanic.h |  1 +
+>   hw/misc/pvpanic-mmio.c    | 61 +++++++++++++++++++++++++++++++++++++++
+>   hw/misc/Kconfig           |  4 +++
+>   hw/misc/meson.build       |  1 +
+>   4 files changed, 67 insertions(+)
+>   create mode 100644 hw/misc/pvpanic-mmio.c
+> 
+> diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
+> index fab94165d0..f9e7c1ea17 100644
+> --- a/include/hw/misc/pvpanic.h
+> +++ b/include/hw/misc/pvpanic.h
+> @@ -20,6 +20,7 @@
+>   
+>   #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
+>   #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
+> +#define TYPE_PVPANIC_MMIO_DEVICE "pvpanic-mmio"
+>   
+>   #define PVPANIC_IOPORT_PROP "ioport"
+>   
+> diff --git a/hw/misc/pvpanic-mmio.c b/hw/misc/pvpanic-mmio.c
+> new file mode 100644
+> index 0000000000..99a24f104c
+> --- /dev/null
+> +++ b/hw/misc/pvpanic-mmio.c
+> @@ -0,0 +1,61 @@
+> +/*
+> + * QEMU simulated pvpanic device (MMIO frontend)
+> + *
+> + * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +
+> +#include "hw/qdev-properties.h"
+> +#include "hw/misc/pvpanic.h"
+> +#include "hw/sysbus.h"
+> +#include "standard-headers/linux/pvpanic.h"
+> +
+> +OBJECT_DECLARE_SIMPLE_TYPE(PVPanicMMIOState, PVPANIC_MMIO_DEVICE)
+> +
+> +#define PVPANIC_MMIO_SIZE 0x2
+> +
+> +struct PVPanicMMIOState {
+> +    SysBusDevice parent_obj;
+> +
+> +    PVPanicState pvpanic;
+> +};
+> +
+> +static void pvpanic_mmio_initfn(Object *obj)
+> +{
+> +    PVPanicMMIOState *s = PVPANIC_MMIO_DEVICE(obj);
+> +
+> +    pvpanic_setup_io(&s->pvpanic, DEVICE(s), PVPANIC_MMIO_SIZE);
+> +    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->pvpanic.mr);
+> +}
+> +
+> +static Property pvpanic_mmio_properties[] = {
+> +    DEFINE_PROP_UINT8("events", PVPanicMMIOState, pvpanic.events,
+> +                      PVPANIC_PANICKED | PVPANIC_CRASH_LOADED),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void pvpanic_mmio_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    device_class_set_props(dc, pvpanic_mmio_properties);
+> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+> +}
+> +
+> +static const TypeInfo pvpanic_mmio_info = {
+> +    .name          = TYPE_PVPANIC_MMIO_DEVICE,
+> +    .parent        = TYPE_SYS_BUS_DEVICE,
+> +    .instance_size = sizeof(PVPanicMMIOState),
+> +    .instance_init = pvpanic_mmio_initfn,
+> +    .class_init    = pvpanic_mmio_class_init,
+> +};
+> +
+> +static void pvpanic_register_types(void)
+> +{
+> +    type_register_static(&pvpanic_mmio_info);
+> +}
+> +
+> +type_init(pvpanic_register_types)
+
+Instead of using the above boilerplate, the current recommended way to register QOM 
+types is with the DEFINE_TYPES() macro.
+
+> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+> index 6996d265e4..b69746a60a 100644
+> --- a/hw/misc/Kconfig
+> +++ b/hw/misc/Kconfig
+> @@ -125,6 +125,10 @@ config PVPANIC_ISA
+>       depends on ISA_BUS
+>       select PVPANIC_COMMON
+>   
+> +config PVPANIC_MMIO
+> +    bool
+> +    select PVPANIC_COMMON
+> +
+>   config AUX
+>       bool
+>       select I2C
+> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> index 892f8b91c5..63821d6040 100644
+> --- a/hw/misc/meson.build
+> +++ b/hw/misc/meson.build
+> @@ -116,6 +116,7 @@ system_ss.add(when: 'CONFIG_ARMSSE_MHU', if_true: files('armsse-mhu.c'))
+>   
+>   system_ss.add(when: 'CONFIG_PVPANIC_ISA', if_true: files('pvpanic-isa.c'))
+>   system_ss.add(when: 'CONFIG_PVPANIC_PCI', if_true: files('pvpanic-pci.c'))
+> +system_ss.add(when: 'CONFIG_PVPANIC_MMIO', if_true: files('pvpanic-mmio.c'))
+>   system_ss.add(when: 'CONFIG_AUX', if_true: files('auxbus.c'))
+>   system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
+>     'aspeed_hace.c',
+
+
+ATB,
+
+Mark.
+
 
