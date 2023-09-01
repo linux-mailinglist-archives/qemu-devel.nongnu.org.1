@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA4F78F6C1
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 03:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9717478F6BE
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 03:30:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbsyU-0002qe-UM; Thu, 31 Aug 2023 21:29:26 -0400
+	id 1qbsyd-0002to-7H; Thu, 31 Aug 2023 21:29:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qbsyT-0002qN-C8
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:25 -0400
-Received: from mail-yw1-x1142.google.com ([2607:f8b0:4864:20::1142])
+ id 1qbsyV-0002qq-UG
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:27 -0400
+Received: from mail-yw1-x1144.google.com ([2607:f8b0:4864:20::1144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qbsyQ-0007WB-VA
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:25 -0400
-Received: by mail-yw1-x1142.google.com with SMTP id
- 00721157ae682-58ca499456dso15517947b3.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 18:29:22 -0700 (PDT)
+ id 1qbsyS-0007WW-Oq
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:27 -0400
+Received: by mail-yw1-x1144.google.com with SMTP id
+ 00721157ae682-59234aaca15so16504687b3.3
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 18:29:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693531762; x=1694136562; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1693531763; x=1694136563; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RQlDC7xQKtcr8MKPJQclDMnhMXYknCWURW4x9XXFigw=;
- b=fuyvoTBIWGgfYah8MAlVuMAgkvBXrnKtH15izYVwM9poFPecsHhIKxKTur9kdQ04Of
- tOe2Xyd90ILbAZBle6hfigGbnLs6SBK0IM9aiRStVgwbhMQxVPKYECWI31XhgfofiPea
- rdoc4zyJJhhQZf9+k0JT+HzuPgcNqrxdFec3cbyXi0FHmNAguwlUvY0ZfdzoWdCgENO4
- 2kMNfYDy6gwbWjwvN32hTDu5ycD3bZqn7TIL321vGV5TCt24bFMJ/laukbhy3d5dTbPt
- Cvz742cyunL8bWGqIrP4QDaH5r0OuioGhuvK90nlhTJHSIcxNqlUGHDbYtRN0U8DJLgE
- xukg==
+ bh=6pq4K1DRMCsdduEbuGuJ200122U1I+V8+TOdtq9hf9Q=;
+ b=f91O3TNaW208+8uAJJuN4045Wj7XbKrpC4GBuiwdGWeLdXuZrqn/jMhBce2XblWb0Z
+ ugCk4Q9dlZgnYcN8iOWByRg1D7Qa8VGCRiq06anz1D7q5BP6zAkIhGcfaC2Cfci244Kx
+ Nsn7l5ejqu0Fzcj2Wd8JTLg1jF1rTfq18l6tk/obPRPLP2iTlZu0o4v7n4o7pR1Vcm4Z
+ ei4RQKowGQYhcGXF7Q1Ux4caXih9ymaS3gyKPxeBgzOvYwWMjFEWR5fPF7+KyJEi5+Yd
+ QEWn5xkiukIP2C+1+/Rz/ZVaH49+oD3p5QypsDzKZ2CvcBhwcRM9lIVJDdEylg3X8LCE
+ HHZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693531762; x=1694136562;
+ d=1e100.net; s=20221208; t=1693531763; x=1694136563;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RQlDC7xQKtcr8MKPJQclDMnhMXYknCWURW4x9XXFigw=;
- b=lZdQssQ0KMkOfF3gzJYAq/+1v1X73IfE3Yg16lav9HzIujq+lAB0cgguN31TTNfJ3o
- 6sAaMQUaDP5W8e8EZpS7+pz1fzHPCIXHTJqEaCKsyIL3aR39tIjqBfl11ZR5+smjcdY7
- miCY1h1U7IFzmMSfoRo9j/C68A8UEcbPpYSNifQ8xVdT471TWF03/5sfox0nkU+65zWj
- 77YF+HBbcnIQuWAKZQV1/oFNMWvYPXQUzN8+5Y/kXYbb31ifyLqxnmVeriSMRl5q+qBA
- S9l/GdyQOQvZgNNh63ugEh5ZmCusJ38CZVdwc8x2To6P2LVH39BQNY/wq0sFvn1vJXju
- b+Gg==
-X-Gm-Message-State: AOJu0YzmG34vqkBsKSDWtN58/t5mbFJWzujAdiipMhmGgmMK3mHgaDed
- VnSUNbfA8QtOfcjTOrczZyM3t1A6XnYo
-X-Google-Smtp-Source: AGHT+IFO/m2eBPCDxfBuNLMQImuzehkXXmKU9hip/MJQ3qzbmUlRdW+ymMcEB46b1P3qt6og0eitXw==
-X-Received: by 2002:a0d:c341:0:b0:591:fb31:3edd with SMTP id
- f62-20020a0dc341000000b00591fb313eddmr1319929ywd.30.1693531761739; 
- Thu, 31 Aug 2023 18:29:21 -0700 (PDT)
+ bh=6pq4K1DRMCsdduEbuGuJ200122U1I+V8+TOdtq9hf9Q=;
+ b=SXvk2bhbF4juhRsZ3aXSinmfKV6Cdzv+UrVbzV8+9Y0bcqqYVpOAE9d2rSRLSiNxzm
+ jQtg8TCe3Mi8e4Ec8CxinYlOoa/TO5zMyNWdCcKii/bP+xpOcFE3VdM59VQucsJ2T3Jj
+ uczOoGixzYDflxJCLOjlY9VpLNKro5RmZ8meCPKX8ZCvI33mujrqW5DYmVE4Vfni4qmz
+ 9Jj5uPSNuJIX15axpJdlO+RqwMf/UQ2mTnhHY+pFNKnjxmtcqxQp9uUnU3iZd/ronOKv
+ aurBw/9UBi+GPa5+INschj4vjSzPQXnkO1utUwIbvz++TZXmY2oftxcaW9gSQeHjIoyE
+ z0Fw==
+X-Gm-Message-State: AOJu0YzwxWK6Jtajx/d0zOJErasKFCqQq1lFNf/CZi60GMz5Byf9mrhN
+ 88jymd/BjnC/Z9iT1qcXRivXprvZFLrn
+X-Google-Smtp-Source: AGHT+IEJPgTPHVRYS7i4yrvWXex07bwZ3MY3D94Tlo3IEKDVY/laIV/4Ngd3nqRkijMM4+JN86bGYg==
+X-Received: by 2002:a81:9141:0:b0:586:6a71:b018 with SMTP id
+ i62-20020a819141000000b005866a71b018mr1181617ywg.20.1693531763637; 
+ Thu, 31 Aug 2023 18:29:23 -0700 (PDT)
 Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
  [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
- g186-20020a0df6c3000000b00559fb950d9fsm810447ywf.45.2023.08.31.18.29.21
+ g186-20020a0df6c3000000b00559fb950d9fsm810447ywf.45.2023.08.31.18.29.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 18:29:21 -0700 (PDT)
+ Thu, 31 Aug 2023 18:29:23 -0700 (PDT)
 From: Gregory Price <gourry.memverge@gmail.com>
 X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org, junhee.ryu@sk.com,
  kwangjin.ko@sk.com, Gregory Price <gregory.price@memverge.com>
-Subject: [PATCH 1/5] cxl/mailbox: move mailbox effect definitions to a header
-Date: Thu, 31 Aug 2023 21:29:10 -0400
-Message-Id: <20230901012914.226527-2-gregory.price@memverge.com>
+Subject: [PATCH 2/5] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
+ read/write functions
+Date: Thu, 31 Aug 2023 21:29:11 -0400
+Message-Id: <20230901012914.226527-3-gregory.price@memverge.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230901012914.226527-1-gregory.price@memverge.com>
 References: <20230901012914.226527-1-gregory.price@memverge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1142;
- envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1142.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1144;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1144.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,143 +94,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Preparation for allowing devices to define their own CCI commands
+Call CXL_TYPE3 once at top of function to avoid multiple invocations.
 
 Signed-off-by: Gregory Price <gregory.price@memverge.com>
 ---
- hw/cxl/cxl-mailbox-utils.c   | 35 +++++++++++++++++++----------------
- include/hw/cxl/cxl_mailbox.h | 18 ++++++++++++++++++
- 2 files changed, 37 insertions(+), 16 deletions(-)
- create mode 100644 include/hw/cxl/cxl_mailbox.h
+ hw/mem/cxl_type3.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 4e8651ebe2..edf39a3efb 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -12,6 +12,7 @@
- #include "hw/pci/msix.h"
- #include "hw/cxl/cxl.h"
- #include "hw/cxl/cxl_events.h"
-+#include "hw/cxl/cxl_mailbox.h"
- #include "hw/pci/pci.h"
- #include "hw/pci-bridge/cxl_upstream_port.h"
- #include "qemu/cutils.h"
-@@ -1561,28 +1562,28 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index fd9d134d46..80d596ee10 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1248,17 +1248,18 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+                            unsigned size, MemTxAttrs attrs)
+ {
++    CXLType3Dev *ct3d = CXL_TYPE3(d);
+     uint64_t dpa_offset = 0;
+     AddressSpace *as = NULL;
+     int res;
  
--#define IMMEDIATE_CONFIG_CHANGE (1 << 1)
--#define IMMEDIATE_DATA_CHANGE (1 << 2)
--#define IMMEDIATE_POLICY_CHANGE (1 << 3)
--#define IMMEDIATE_LOG_CHANGE (1 << 4)
--#define SECURITY_STATE_CHANGE (1 << 5)
--#define BACKGROUND_OPERATION (1 << 6)
-+#define CXL_MBOX_IMMEDIATE_CONFIG_CHANGE (1 << 1)
-+#define CXL_MBOX_IMMEDIATE_DATA_CHANGE (1 << 2)
-+#define CXL_MBOX_IMMEDIATE_POLICY_CHANGE (1 << 3)
-+#define CXL_MBOX_IMMEDIATE_LOG_CHANGE (1 << 4)
-+#define CXL_MBOX_SECURITY_STATE_CHANGE (1 << 5)
-+#define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
- 
- static const struct cxl_cmd cxl_cmd_set[256][256] = {
-     [EVENTS][GET_RECORDS] = { "EVENTS_GET_RECORDS",
-         cmd_events_get_records, 1, 0 },
-     [EVENTS][CLEAR_RECORDS] = { "EVENTS_CLEAR_RECORDS",
--        cmd_events_clear_records, ~0, IMMEDIATE_LOG_CHANGE },
-+        cmd_events_clear_records, ~0, CXL_MBOX_IMMEDIATE_LOG_CHANGE },
-     [EVENTS][GET_INTERRUPT_POLICY] = { "EVENTS_GET_INTERRUPT_POLICY",
-                                       cmd_events_get_interrupt_policy, 0, 0 },
-     [EVENTS][SET_INTERRUPT_POLICY] = { "EVENTS_SET_INTERRUPT_POLICY",
-                                       cmd_events_set_interrupt_policy,
--                                      ~0, IMMEDIATE_CONFIG_CHANGE },
-+                                      ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE },
-     [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
-         cmd_firmware_update_get_info, 0, 0 },
-     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-     [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 8,
--                         IMMEDIATE_POLICY_CHANGE },
-+                         CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
-     [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0, 0 },
-     [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-     [IDENTIFY][MEMORY_DEVICE] = { "IDENTIFY_MEMORY_DEVICE",
-@@ -1591,9 +1592,11 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
-         cmd_ccls_get_partition_info, 0, 0 },
-     [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
-     [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
--        ~0, IMMEDIATE_CONFIG_CHANGE | IMMEDIATE_DATA_CHANGE },
-+        ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE | CXL_MBOX_IMMEDIATE_DATA_CHANGE },
-     [SANITIZE][OVERWRITE] = { "SANITIZE_OVERWRITE", cmd_sanitize_overwrite, 0,
--        IMMEDIATE_DATA_CHANGE | SECURITY_STATE_CHANGE | BACKGROUND_OPERATION },
-+        (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
-+         CXL_MBOX_SECURITY_STATE_CHANGE |
-+         CXL_MBOX_BACKGROUND_OPERATION)},
-     [PERSISTENT_MEM][GET_SECURITY_STATE] = { "GET_SECURITY_STATE",
-         cmd_get_security_state, 0, 0 },
-     [MEDIA_AND_POISON][GET_POISON_LIST] = { "MEDIA_AND_POISON_GET_POISON_LIST",
-@@ -1612,10 +1615,10 @@ static const struct cxl_cmd cxl_cmd_set_dcd[256][256] = {
-         8, 0 },
-     [DCD_CONFIG][ADD_DYN_CAP_RSP] = {
-         "ADD_DCD_DYNAMIC_CAPACITY_RESPONSE", cmd_dcd_add_dyn_cap_rsp,
--        ~0, IMMEDIATE_DATA_CHANGE },
-+        ~0, CXL_MBOX_IMMEDIATE_DATA_CHANGE },
-     [DCD_CONFIG][RELEASE_DYN_CAP] = {
-         "RELEASE_DCD_DYNAMIC_CAPACITY", cmd_dcd_release_dyn_cap,
--        ~0, IMMEDIATE_DATA_CHANGE },
-+        ~0, CXL_MBOX_IMMEDIATE_DATA_CHANGE },
- };
- 
- static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
-@@ -1628,7 +1631,7 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
-      */
-     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-     [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 8,
--                         IMMEDIATE_POLICY_CHANGE },
-+                         CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
-     [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
-                               0 },
-     [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-@@ -1670,7 +1673,7 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+-    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
++    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
+                                       &as, &dpa_offset);
+     if (res) {
+         return MEMTX_ERROR;
      }
  
-     /* Only one bg command at a time */
--    if ((cxl_cmd->effect & BACKGROUND_OPERATION) &&
-+    if ((cxl_cmd->effect & CXL_MBOX_BACKGROUND_OPERATION) &&
-         cci->bg.runtime > 0) {
-         return CXL_MBOX_BUSY;
+-    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
++    if (sanitize_running(&ct3d->cci)) {
+         qemu_guest_getrandom_nofail(data, size);
+         return MEMTX_OK;
      }
-@@ -1691,7 +1694,7 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-     }
+@@ -1268,16 +1269,17 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+                             unsigned size, MemTxAttrs attrs)
+ {
++    CXLType3Dev *ct3d = CXL_TYPE3(d);
+     uint64_t dpa_offset = 0;
+     AddressSpace *as = NULL;
+     int res;
  
-     ret = (*h)(cxl_cmd, pl_in, len_in, pl_out, len_out, cci);
--    if ((cxl_cmd->effect & BACKGROUND_OPERATION) &&
-+    if ((cxl_cmd->effect & CXL_MBOX_BACKGROUND_OPERATION) &&
-         ret == CXL_MBOX_BG_STARTED) {
-         *bg_started = true;
-     } else {
-diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
-new file mode 100644
-index 0000000000..beb048052e
---- /dev/null
-+++ b/include/hw/cxl/cxl_mailbox.h
-@@ -0,0 +1,18 @@
-+/*
-+ * QEMU CXL Mailbox
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2. See the
-+ * COPYING file in the top-level directory.
-+ */
-+
-+#ifndef CXL_MAILBOX_H
-+#define CXL_MAILBOX_H
-+
-+#define CXL_MBOX_IMMEDIATE_CONFIG_CHANGE (1 << 1)
-+#define CXL_MBOX_IMMEDIATE_DATA_CHANGE (1 << 2)
-+#define CXL_MBOX_IMMEDIATE_POLICY_CHANGE (1 << 3)
-+#define CXL_MBOX_IMMEDIATE_LOG_CHANGE (1 << 4)
-+#define CXL_MBOX_SECURITY_STATE_CHANGE (1 << 5)
-+#define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
-+
-+#endif
+-    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
++    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
+                                       &as, &dpa_offset);
+     if (res) {
+         return MEMTX_ERROR;
+     }
+-    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
++    if (sanitize_running(&ct3d->cci)) {
+         return MEMTX_OK;
+     }
+     return address_space_write(as, dpa_offset, attrs, &data, size);
 -- 
 2.39.1
 
