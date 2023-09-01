@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F6878FE38
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 15:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE95078FE88
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 15:43:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc438-0004uH-U6; Fri, 01 Sep 2023 09:18:58 -0400
+	id 1qc4PR-0003zA-Qz; Fri, 01 Sep 2023 09:42:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qc435-0004sC-Bv
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 09:18:55 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc4PP-0003wv-Rj
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 09:41:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qc42z-0004aV-Fp
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 09:18:55 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc4PN-0001GD-ER
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 09:41:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693574328;
+ s=mimecast20190719; t=1693575716;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5ORjCogk/T3wtJvdEQcveV1ZRZ94PW0/afyX1i5phnI=;
- b=H7BRiONjiph/CkEGcyls08cJcD6BduAvxGwmuUrWoaLsxJGjJYuMOXx5CAeSxIjt4Ju8em
- FsKjhrYWVbgr3WyAeoZuarBBdA5ISkn+IrZx1+voCLnddSgdM7/kcUJK2tlNIko7Pb6ZyZ
- JVqQirlrQlgnMMNWgRvf4fxzoBf2vpI=
+ bh=T9pMmrfgRwoYvBTmwElKtEPkCaTxrEUwluNScO0dHM0=;
+ b=Cq48RFIINAPAOtQVVhBiIixvDMnvRdp9cVLs+llQC0MRMU1uOE2Zfs9eueJumOOQLlJl3Z
+ 7lNduYYExzxZ/vxIa5QIepy0thDFVfht4EyIZUTqvGJFO7QBG7TuoEUlft+KqY9JG/mNXw
+ uF96gD1Gvx5zHGq7qJdhl+QkMdauaqI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-157-REwgjqJMNmWwe92Rdpm8Cw-1; Fri, 01 Sep 2023 09:18:44 -0400
-X-MC-Unique: REwgjqJMNmWwe92Rdpm8Cw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-551-CecrKuR8OL6-dKu3wAOgpg-1; Fri, 01 Sep 2023 09:41:54 -0400
+X-MC-Unique: CecrKuR8OL6-dKu3wAOgpg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 022B88008A4;
- Fri,  1 Sep 2023 13:18:44 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.84])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0937D200A86A;
- Fri,  1 Sep 2023 13:18:39 +0000 (UTC)
-Date: Fri, 1 Sep 2023 08:18:38 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com, 
- vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com, sw@weilnetz.de,
- sstabellini@kernel.org, anthony.perard@citrix.com, paul@xen.org,
- pbonzini@redhat.com, 
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, 
- stefanha@redhat.com, fam@euphon.net, quintela@redhat.com, peterx@redhat.com, 
- leobras@redhat.com, kraxel@redhat.com, qemu-block@nongnu.org, 
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH 7/7] qobject atomics osdep: Make a few macros more hygienic
-Message-ID: <viam47z5ascty5zluzvj3byrrrp2fe6jh6vevcaggpozxwzabj@avo7fb3gs7bt>
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-8-armbru@redhat.com>
- <vfkfi6uld3gbd4urmqdlzkv6djtws6mkbluc5qvwcla6btszhu@ff66zfyd7smm>
- <87ledqjn39.fsf@pond.sub.org>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2075597D662;
+ Fri,  1 Sep 2023 13:41:54 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C31571460FE5;
+ Fri,  1 Sep 2023 13:41:53 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BCA9C21E692A; Fri,  1 Sep 2023 15:41:52 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>,  Mattias Nissler <mnissler@rivosinc.com>,
+ qemu-devel@nongnu.org,  john.levon@nutanix.com,  Jagannathan Raman
+ <jag.raman@oracle.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, David Hildenbrand <david@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ armbru@redhat.com
+Subject: Re: [PATCH v2 1/4] softmmu: Support concurrent bounce buffers
+References: <20230823092905.2259418-1-mnissler@rivosinc.com>
+ <20230823092905.2259418-2-mnissler@rivosinc.com>
+ <ZOZDQVgboMaiZ4x6@x1n>
+ <CAGNS4TY2-scz3pu16tUF1bA-FEk+pe86QsgjW8L=qjidw5TqOQ@mail.gmail.com>
+ <ZOZx7vMqFRfaIwSp@x1n> <20230824133245.GA1412804@fedora>
+Date: Fri, 01 Sep 2023 15:41:52 +0200
+In-Reply-To: <20230824133245.GA1412804@fedora> (Stefan Hajnoczi's message of
+ "Thu, 24 Aug 2023 09:32:45 -0400")
+Message-ID: <87edjixb6n.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ledqjn39.fsf@pond.sub.org>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -72,7 +73,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,198 +89,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 01, 2023 at 10:48:26AM +0200, Markus Armbruster wrote:
-> > Indeed, not fully understanding the preprocessor makes for some
-> > interesting death traps.
-> 
-> We use ALL_CAPS for macros to signal "watch out for traps".
-> 
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-> >> -#define QOBJECT(obj) ({                                         \
-> >> -    typeof(obj) _obj = (obj);                                   \
-> >> -    _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
-> >> +#define QOBJECT_INTERNAL(obj, l) ({                                     \
-> >> +    typeof(obj) PASTE(_obj, l) = (obj);                                 \
-> >> +    PASTE(_obj, l)                                                      \
-> >> +        ? container_of(&(PASTE(_obj, l))->base, QObject, base) : NULL;  \
-> >>  })
-> >> +#define QOBJECT(obj) QOBJECT_INTERNAL((obj), __COUNTER__)
-> >
-> > Slick!  Every call to QOBJECT() defines a unique temporary variable
-> > name.  But as written, QOBJECT(o) expands to this (when __COUNTER__ is
-> > 1):
-> >
-> > ({
-> >   typeof((o)) _obj1 = ((o));
-> >   _obj1 ? container_of(&(_obj1)->base, QObject, base) : NULL;
-> > })
-> >
-> > which has three sets of redundant parens that could be elided.  Why do
-> > you need to add () around obj when forwarding to QOBJECT_INTERNAL()?
-> 
-> Habit: enclose macro arguments in parenthesis unless there's a specific
-> need not to.
-> 
-> > The only way the expansion of the text passed through the 'obj'
-> > parameter can contain a comma is if the user has already parenthesized
-> > it on their end (not that I expect a comma expression to be a frequent
-> > argument to QOBJECT(), but who knows).  Arguing that it is to silence
-> > a syntax checker is weak; since we must NOT add parens around the
-> > parameters to QOBJECT_INTERNAL (calling PASTE((_obj), (l)) is
-> > obviously wrong).
-> >
-> > Meanwhile, the repetition of three calls to PASTE() is annoying.  How
-> > about:
-> >
-> > #define QOBJECT_INTERNAL_2(_obj, _tmp) ({ \
-> >   typeof _obj _tmp = _obj; \
-> >   _tmp ? container_of(&_tmp->base, QObject, base) : NULL; \
-> >   )}
-> > #define QOBJECT_INTERNAL_1(_arg, _tmp) QOBJECT_INTERNAL_2(_arg, _tmp)
-> > #define QOBJECT_INTERNAL(_arg, _ctr) \
-> >   QOBJECT_INTERNAL_1(_arg, PASTE(_obj, _ctr))
-> > #define QOBJECT(obj) QOBJECT_INTERNAL((obj), __COUNTER__)
-> >
-> > or:
-> >
-> > #define QOBJECT_INTERNAL_2(_obj, _tmp) ({ \
-> >   typeof(_obj) _tmp = (_obj); \
-> >   _tmp ? container_of(&_tmp->base, QObject, base) : NULL; \
-> >   )}
-> > #define QOBJECT_INTERNAL_1(_arg, _tmp) QOBJECT_INTERNAL_2(_arg, _tmp)
-> > #define QOBJECT_INTERNAL(_arg, _ctr) \
-> >   QOBJECT_INTERNAL_1(_arg, PASTE(_obj, _ctr))
-> > #define QOBJECT(obj) QOBJECT_INTERNAL(obj, __COUNTER__)
-> >
-> > where, in either case, QOBJECT(o) should then expand to
-> >
-> > ({
-> >   typeof (o) _obj1 = (o);
-> >   _obj1 ? container_of(&_obj1->base, QObject, base) : NULL;
-> > })
-> 
-> The idea is to have the innermost macro take the variable name instead
-> of the counter.  "PASTE(_obj, l)" then becomes "_tmp" there, which is
-> more legible.  However, we pay for it by going through two more macros.
-> 
-> Can you explain why you need two more?
+> On Wed, Aug 23, 2023 at 04:54:06PM -0400, Peter Xu wrote:
+>> On Wed, Aug 23, 2023 at 10:08:08PM +0200, Mattias Nissler wrote:
+>> > On Wed, Aug 23, 2023 at 7:35=E2=80=AFPM Peter Xu <peterx@redhat.com> w=
+rote:
+>> > > On Wed, Aug 23, 2023 at 02:29:02AM -0700, Mattias Nissler wrote:
+>> > > > diff --git a/softmmu/vl.c b/softmmu/vl.c
+>> > > > index b0b96f67fa..dbe52f5ea1 100644
+>> > > > --- a/softmmu/vl.c
+>> > > > +++ b/softmmu/vl.c
+>> > > > @@ -3469,6 +3469,12 @@ void qemu_init(int argc, char **argv)
+>> > > >                  exit(1);
+>> > > >  #endif
+>> > > >                  break;
+>> > > > +            case QEMU_OPTION_max_bounce_buffer_size:
+>> > > > +                if (qemu_strtosz(optarg, NULL, &max_bounce_buffer=
+_size) < 0) {
+>> > > > +                    error_report("invalid -max-ounce-buffer-size =
+value");
+>> > > > +                    exit(1);
+>> > > > +                }
+>> > > > +                break;
+>> > >
+>> > > PS: I had a vague memory that we do not recommend adding more qemu c=
+mdline
+>> > > options, but I don't know enough on the plan to say anything real.
+>> >=20
+>> > I am aware of that, and I'm really not happy with the command line
+>> > option myself. Consider the command line flag a straw man I put in to
+>> > see whether any reviewers have better ideas :)
+>> >=20
+>> > More seriously, I actually did look around to see whether I can add
+>> > the parameter to one of the existing option groupings somewhere, but
+>> > neither do I have a suitable QOM object that I can attach the
+>> > parameter to, nor did I find any global option groups that fits: this
+>> > is not really memory configuration, and it's not really CPU
+>> > configuration, it's more related to shared device model
+>> > infrastructure... If you have a good idea for a home for this, I'm all
+>> > ears.
+>>=20
+>> No good & simple suggestion here, sorry.  We can keep the option there
+>> until someone jumps in, then the better alternative could also come alon=
+g.
+>>=20
+>> After all I expect if we can choose a sensible enough default value, this
+>> new option shouldn't be used by anyone for real.
+>
+> QEMU commits to stability in its external interfaces. Once the
+> command-line option is added, it needs to be supported in the future or
+> go through the deprecation process. I think we should agree on the
+> command-line option now.
+>
+> Two ways to avoid the issue:
+> 1. Drop the command-line option until someone needs it.
 
-Likewise habit, on my part (and laziness - I wrote the previous email
-without testing anything). I've learned over the years that pasting is
-hard (you can't mix ## with a macro that you want expanded without 2
-layers of indirection), so I started out by adding two layers of
-QOBJECT_INTERNAL, then wrote QOBJECT to forward to QOBJECT_INTERNAL.
-But now that you asked, I actually spent the time to test with the
-preprocessor, and your hunch is indeed correct: I over-compensated
-becaues of my habit.
+Avoiding unneeded configuration knobs is always good.
 
-$cat foo.c
-#define PASTE(_a, _b) _a##_b
+> 2. Make it an experimental option (with an "x-" prefix).
 
-#define QOBJECT_INTERNAL_2(_obj, _tmp) ({       \
-  typeof _obj _tmp = _obj; \
-  _tmp ? container_of(&_tmp->base, QObject, base) : NULL; \
-  )}
-#define QOBJECT_INTERNAL_1(_arg, _tmp) QOBJECT_INTERNAL_2(_arg, _tmp)
-#define QOBJECT_INTERNAL(_arg, _ctr) \
-  QOBJECT_INTERNAL_1(_arg, PASTE(_obj, _ctr))
-#define QOBJECT(obj) QOBJECT_INTERNAL((obj), __COUNTER__)
+Fine if actual experiments are planned.
 
-QOBJECT(o)
+Also fine if it's a development or debugging aid.
 
-#define Q_INTERNAL_1(_obj, _tmp) ({ \
-  typeof _obj _tmp = _obj; \
-  _tmp ? container_of(&_tmp->base, QObject, base) : NULL; \
-  )}
-#define Q_INTERNAL(_arg, _ctr) \
-  Q_INTERNAL_1(_arg, PASTE(_obj, _ctr))
-#define Q(obj) Q_INTERNAL((obj), __COUNTER__)
+> The closest to a proper solution that I found was adding it as a
+> -machine property. What bothers me is that if QEMU supports
+> multi-machine emulation in a single process some day, then the property
+> doesn't make sense since it's global rather than specific to a machine.
+>
+> CCing Markus Armbruster for ideas.
 
-Q(o)
-$ gcc -E foo.c
-# 0 "foo.c"
-# 0 "<built-in>"
-# 0 "<command-line>"
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-# 0 "<command-line>" 2
-# 1 "foo.c"
-# 12 "foo.c"
-({ typeof (o) _obj0 = (o); _obj0 ? container_of(&_obj0->base, QObject, base) : NULL; )}
-# 22 "foo.c"
-({ typeof (o) _obj1 = (o); _obj1 ? container_of(&_obj1->base, QObject, base) : NULL; )}
+I'm afraid I'm lacking context.  Glancing at the patch...
 
-So the important part was merely ensuring that __COUNTER__ has a
-chance to be expanded PRIOR to the point where ## gets its argument,
-and one less layer of indirection was still sufficient for that.
+    ``-max-bounce-buffer-size size``
+        Set the limit in bytes for DMA bounce buffer allocations.
+=20=20=20=20
+        DMA bounce buffers are used when device models request memory-mappe=
+d access
+        to memory regions that can't be directly mapped by the qemu process=
+, so the
+        memory must read or written to a temporary local buffer for the dev=
+ice
+        model to work with. This is the case e.g. for I/O memory regions, a=
+nd when
+        running in multi-process mode without shared access to memory.
+=20=20=20=20
+        Whether bounce buffering is necessary depends heavily on the device=
+ model
+        implementation. Some devices use explicit DMA read and write operat=
+ions
+        which do not require bounce buffers. Some devices, notably storage,=
+ will
+        retry a failed DMA map request after bounce buffer space becomes av=
+ailable
+        again. Most other devices will bail when encountering map request f=
+ailures,
+        which will typically appear to the guest as a hardware error.
+=20=20=20=20
+        Suitable bounce buffer size values depend on the workload and guest
+        configuration. A few kilobytes up to a few megabytes are common siz=
+es
+        encountered in practice.
 
-> 
-> Complication: the innermost macro needs to take all its variable names
-> as arguments.  The macro above has just one.  Macros below have two.
-> 
-> Not quite sure which version is easier to understand.
-
-Proper comments may help; once you realize that you are passing in the
-unique variable name(s) to be used as the temporary identifier(s),
-rather than an integer that still needs to be glued, then separating
-the task of generating name(s) (which is done once per name, instead
-of repeated 3 times) makes sense to me.  I also like minimizing the
-number of times I have to spell out __COUNTER__; wrapping unique name
-generation behind a well-named helper macro gives a better view of why
-it is needed in the first place.
-
-At any rate, this comment still applies:
-
-> >
-> > I think you are definitely on the right track to have all internal
-> > variable declarations within a macro definition use multi-layered
-> > expansion with the help of __COUNTER__ to ensure that the macro's
-> > temporary variable is globally unique; so if you leave it as written,
-> > I could live with:
-> >
-> > Reviewed-by: Eric Blake <eblake@redhat.com>
-> >
-> > But if you respin it to pick up any of my suggestions, I'll definitely
-> > spend another review cycle on the result.
-> >
-> > If it helps, here's what I ended up using in nbdkit:
-> >
-> > https://gitlab.com/nbdkit/nbdkit/-/blame/master/common/include/unique-name.h#L36
-> > /* https://stackoverflow.com/a/1597129
-> >  * https://stackoverflow.com/a/12711226
-> >  */
-> > #define XXUNIQUE_NAME(name, counter) name ## counter
-> > #define XUNIQUE_NAME(name, counter) XXUNIQUE_NAME (name, counter)
-> > #define NBDKIT_UNIQUE_NAME(name) XUNIQUE_NAME (name, __COUNTER__)
-> >
-> > https://gitlab.com/nbdkit/nbdkit/-/blame/master/common/include/minmax.h#L47
-> > #include "unique-name.h"
-> >
-> > #undef MIN
-> > #define MIN(x, y) \
-> >   MIN_1 ((x), (y), NBDKIT_UNIQUE_NAME (_x), NBDKIT_UNIQUE_NAME (_y))
-> >
-> > ...
-> > #define MIN_1(x, y, _x, _y) ({                 \
-> >       __auto_type _x = (x);                    \
-> >       __auto_type _y = (y);                    \
-> >       _x < _y ? _x : _y;                       \
-> >     })
-> 
-> Thanks!
-
-and so I'm fine leaving it up to you if you want to copy the paradigm
-I've seen elsewhere, or if you want to leave it as you first proposed.
-The end result is the same, and it is more of a judgment call on which
-form is easier for you to reason about.
-
-But as other commenters mentioned, we already have a glue() macro, so
-use that instead of PASTE(), no matter what else you choose.
-
-Looking forward to v2!
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Sounds quite device-specific.  Why isn't this configured per device?
 
 
