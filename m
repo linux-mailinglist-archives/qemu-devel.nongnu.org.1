@@ -2,76 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4B678F829
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 07:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 808DC78F82E
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 07:49:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbwzN-00070G-LL; Fri, 01 Sep 2023 01:46:37 -0400
+	id 1qbx1B-00088l-ES; Fri, 01 Sep 2023 01:48:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qbwzM-000704-0d; Fri, 01 Sep 2023 01:46:36 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
+ id 1qbx0v-00086j-PF; Fri, 01 Sep 2023 01:48:15 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qbwzI-0001DW-Lv; Fri, 01 Sep 2023 01:46:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=bJwxh5hq03oHv1iIcgNDGo/CGHaj19TaFfiEr/+xc/c=; b=AMR5ixrwFY8FXzCXZUpFadQ1hB
- ZICcSyyCNUHh1IDGbeEvuuBJCJULEoicxzMja1bQaDtwqe3x9HHOz5xBAozzCkSNoMVQruBmHnGqe
- H/0tDRi5tS2DWXerNg+kRhOHsVPcqOku9vb3rnkCmKvZAf+UVnBJFLhCGFKrZfMmabLGFpxWCVDPc
- intMtvhnI8WgqoBsvor+oeU9y5S4n7JlqOKa/VVZLJd0GrP5VzAXGbKPKpo73Z1sKgRQFWmj0Kjrs
- AjSsQxRFJnoHbX2gtjhUB+xRJY/z3i7IddK3N4p+zkSIvrVmKkyrq2tSzqnc0BOaPfldgJPD4hoaR
- Dou65D1A0ewykeH56eSuJqfvfWM3eQhoJJ/b15sK2t8ISHL75e8ohguinzGYPA+0EfZsVpVsfxbwZ
- xjoyabVOELD3vnD2bRypMkmLXOk4pEa5si//TTPvXI9xP093FKKlY8yqlx3LtlBHASYFzo1+9P2Y9
- i49JzNk+ml7K7Nj5jNx8nquMLk4uHosGbwruQTU4qoGpTrOvD8lIyxGBtlSrUKtbCuinhRom8LrQi
- lW27BepIrulRLxyjw+LemSQO2xoivNPIFmeWBiQYlbxQYlxGaS13lNMVnktP1AJfaSizD3oTr5tv3
- VDouHeK55F8omOQ7UDIByVyGmcTM6mdosLK0F8Euo=;
-Received: from [2a00:23c4:8bae:9a00:dd88:5208:9abb:2b35]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qbwyh-0000QA-77; Fri, 01 Sep 2023 06:45:59 +0100
-Message-ID: <89405935-ffd3-f7b5-1a25-d6d99daf0e0c@ilande.co.uk>
-Date: Fri, 1 Sep 2023 06:46:24 +0100
+ (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
+ id 1qbx0t-0001XI-2i; Fri, 01 Sep 2023 01:48:13 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcRrx3MFZz4wy6;
+ Fri,  1 Sep 2023 15:48:01 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcRrt3dMMz4wb0;
+ Fri,  1 Sep 2023 15:47:58 +1000 (AEST)
+Message-ID: <4dcdcdb4-6b1e-9141-c23d-b8deda819b8c@kaod.org>
+Date: Fri, 1 Sep 2023 07:47:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 07/11] hw/arm/aspeed: Clean up local variable shadowing
 Content-Language: en-US
-To: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Cameron Esfahani <dirty@apple.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
-References: <20230830161425.91946-1-graf@amazon.com>
- <20230830161425.91946-10-graf@amazon.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230830161425.91946-10-graf@amazon.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Joel Stanley <joel@jms.id.au>
+References: <20230831225607.30829-1-philmd@linaro.org>
+ <20230831225607.30829-8-philmd@linaro.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230831225607.30829-8-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bae:9a00:dd88:5208:9abb:2b35
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 09/12] hw/vmapple/cfg: Introduce vmapple cfg region
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -55
-X-Spam_score: -5.6
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=SnXb=ER=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -50
+X-Spam_score: -5.1
 X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.478, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,258 +67,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/08/2023 17:14, Alexander Graf wrote:
+On 9/1/23 00:56, Philippe Mathieu-Daudé wrote:
+> Fix:
+> 
+>    hw/arm/aspeed_ast2600.c:391:18: error: declaration shadows a local variable [-Werror,-Wshadow]
+>          qemu_irq irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+>                   ^
+>    hw/arm/aspeed_ast2600.c:283:14: note: previous declaration is here
+>      qemu_irq irq;
+>               ^
+>    hw/arm/aspeed_ast2600.c:416:18: error: declaration shadows a local variable [-Werror,-Wshadow]
+>          qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore),
+>                   ^
+>    hw/arm/aspeed_ast2600.c:283:14: note: previous declaration is here
+>      qemu_irq irq;
+>               ^
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Hi Alex,
 
-> Instead of device tree or other more standardized means, VMApple passes
-> platform configuration to the first stage boot loader in a binary encoded
-> format that resides at a dedicated RAM region in physical address space.
-> 
-> This patch models this configuration space as a qdev device which we can
-> then map at the fixed location in the address space. That way, we can
-> influence and annotate all configuration fields easily.
-> 
-> Signed-off-by: Alexander Graf <graf@amazon.com>
-> 
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
 > ---
+>   hw/arm/aspeed_ast2600.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> v1 -> v2:
-> 
->    - Adapt to system_ss meson.build target
-> ---
->   include/hw/vmapple/cfg.h |  68 +++++++++++++++++++++++++
->   hw/vmapple/cfg.c         | 105 +++++++++++++++++++++++++++++++++++++++
->   hw/vmapple/Kconfig       |   3 ++
->   hw/vmapple/meson.build   |   1 +
->   4 files changed, 177 insertions(+)
->   create mode 100644 include/hw/vmapple/cfg.h
->   create mode 100644 hw/vmapple/cfg.c
-> 
-> diff --git a/include/hw/vmapple/cfg.h b/include/hw/vmapple/cfg.h
-> new file mode 100644
-> index 0000000000..3337064e44
-> --- /dev/null
-> +++ b/include/hw/vmapple/cfg.h
-> @@ -0,0 +1,68 @@
-> +/*
-> + * VMApple Configuration Region
-> + *
-> + * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#ifndef HW_VMAPPLE_CFG_H
-> +#define HW_VMAPPLE_CFG_H
-> +
-> +#include "hw/sysbus.h"
-> +#include "qom/object.h"
-> +#include "net/net.h"
-> +
-> +typedef struct VMAppleCfg {
-> +    uint32_t version;         /* 0x000 */
-> +    uint32_t nr_cpus;         /* 0x004 */
-> +    uint32_t unk1;            /* 0x008 */
-> +    uint32_t unk2;            /* 0x00c */
-> +    uint32_t unk3;            /* 0x010 */
-> +    uint32_t unk4;            /* 0x014 */
-> +    uint64_t ecid;            /* 0x018 */
-> +    uint64_t ram_size;        /* 0x020 */
-> +    uint32_t run_installer1;  /* 0x028 */
-> +    uint32_t unk5;            /* 0x02c */
-> +    uint32_t unk6;            /* 0x030 */
-> +    uint32_t run_installer2;  /* 0x034 */
-> +    uint32_t rnd;             /* 0x038 */
-> +    uint32_t unk7;            /* 0x03c */
-> +    MACAddr mac_en0;          /* 0x040 */
-> +    uint8_t pad1[2];
-> +    MACAddr mac_en1;          /* 0x048 */
-> +    uint8_t pad2[2];
-> +    MACAddr mac_wifi0;        /* 0x050 */
-> +    uint8_t pad3[2];
-> +    MACAddr mac_bt0;          /* 0x058 */
-> +    uint8_t pad4[2];
-> +    uint8_t reserved[0xa0];   /* 0x060 */
-> +    uint32_t cpu_ids[0x80];   /* 0x100 */
-> +    uint8_t scratch[0x200];   /* 0x180 */
-> +    char serial[32];          /* 0x380 */
-> +    char unk8[32];            /* 0x3a0 */
-> +    char model[32];           /* 0x3c0 */
-> +    uint8_t unk9[32];         /* 0x3e0 */
-> +    uint32_t unk10;           /* 0x400 */
-> +    char soc_name[32];        /* 0x404 */
-> +} VMAppleCfg;
-> +
-> +#define TYPE_VMAPPLE_CFG "vmapple-cfg"
-> +OBJECT_DECLARE_SIMPLE_TYPE(VMAppleCfgState, VMAPPLE_CFG)
-> +
-> +struct VMAppleCfgState {
-> +    /* <private> */
-> +    SysBusDevice parent_obj;
-
-Missing newline after parent_obj here (we do this so that it's obvious looking 
-through a file that if you see the first member of parent_obj followed by a newline 
-then you know that struct belongs to a QOM type).
-
-> +    VMAppleCfg cfg;
-> +
-> +    /* <public> */
-> +    MemoryRegion mem;
-> +    char *serial;
-> +    char *model;
-> +    char *soc_name;
-> +};
-
-And again please drop the private/public comments.
-
-> +#define VMAPPLE_CFG_SIZE 0x00010000
-> +
-> +#endif /* HW_VMAPPLE_CFG_H */
-> diff --git a/hw/vmapple/cfg.c b/hw/vmapple/cfg.c
-> new file mode 100644
-> index 0000000000..d48e3c3afa
-> --- /dev/null
-> +++ b/hw/vmapple/cfg.c
-> @@ -0,0 +1,105 @@
-> +/*
-> + * VMApple Configuration Region
-> + *
-> + * Copyright © 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "hw/vmapple/cfg.h"
-> +#include "qemu/log.h"
-> +#include "qemu/module.h"
-> +#include "qapi/error.h"
-> +
-> +static void vmapple_cfg_reset(DeviceState *dev)
-> +{
-> +    VMAppleCfgState *s = VMAPPLE_CFG(dev);
-> +    VMAppleCfg *cfg;
-> +
-> +    cfg = memory_region_get_ram_ptr(&s->mem);
-> +    memset((void *)cfg, 0, VMAPPLE_CFG_SIZE);
-> +    *cfg = s->cfg;
-
-Is this last line needed?
-
-> +}
-
-And again for SysBusDevice you can use the Resettable interface instead of the legacy 
-DeviceClass::reset.
-
-> +static void vmapple_cfg_realize(DeviceState *dev, Error **errp)
-> +{
-> +    VMAppleCfgState *s = VMAPPLE_CFG(dev);
-> +    uint32_t i;
-> +
-> +    strncpy(s->cfg.serial, s->serial, sizeof(s->cfg.serial));
-> +    strncpy(s->cfg.model, s->model, sizeof(s->cfg.model));
-> +    strncpy(s->cfg.soc_name, s->soc_name, sizeof(s->cfg.soc_name));
-> +    strncpy(s->cfg.unk8, "D/A", sizeof(s->cfg.soc_name));
-> +    s->cfg.ecid = cpu_to_be64(s->cfg.ecid);
-> +    s->cfg.version = 2;
-> +    s->cfg.unk1 = 1;
-> +    s->cfg.unk2 = 1;
-> +    s->cfg.unk3 = 0x20;
-> +    s->cfg.unk4 = 0;
-> +    s->cfg.unk5 = 1;
-> +    s->cfg.unk6 = 1;
-> +    s->cfg.unk7 = 0;
-> +    s->cfg.unk10 = 1;
-> +
-> +    g_assert(s->cfg.nr_cpus < ARRAY_SIZE(s->cfg.cpu_ids));
-> +    for (i = 0; i < s->cfg.nr_cpus; i++) {
-> +        s->cfg.cpu_ids[i] = i;
-> +    }
-> +}
-> +
-> +static void vmapple_cfg_init(Object *obj)
-> +{
-> +    VMAppleCfgState *s = VMAPPLE_CFG(obj);
-> +
-> +    memory_region_init_ram(&s->mem, obj, "VMApple Config", VMAPPLE_CFG_SIZE,
-> +                           &error_fatal);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mem);
-> +
-> +    s->serial = (char *)"1234";
-> +    s->model = (char *)"VM0001";
-> +    s->soc_name = (char *)"Apple M1 (Virtual)";
-> +}
-> +
-> +static Property vmapple_cfg_properties[] = {
-> +    DEFINE_PROP_UINT32("nr-cpus", VMAppleCfgState, cfg.nr_cpus, 1),
-> +    DEFINE_PROP_UINT64("ecid", VMAppleCfgState, cfg.ecid, 0),
-> +    DEFINE_PROP_UINT64("ram-size", VMAppleCfgState, cfg.ram_size, 0),
-> +    DEFINE_PROP_UINT32("run_installer1", VMAppleCfgState, cfg.run_installer1, 0),
-> +    DEFINE_PROP_UINT32("run_installer2", VMAppleCfgState, cfg.run_installer2, 0),
-> +    DEFINE_PROP_UINT32("rnd", VMAppleCfgState, cfg.rnd, 0),
-> +    DEFINE_PROP_MACADDR("mac-en0", VMAppleCfgState, cfg.mac_en0),
-> +    DEFINE_PROP_MACADDR("mac-en1", VMAppleCfgState, cfg.mac_en1),
-> +    DEFINE_PROP_MACADDR("mac-wifi0", VMAppleCfgState, cfg.mac_wifi0),
-> +    DEFINE_PROP_MACADDR("mac-bt0", VMAppleCfgState, cfg.mac_bt0),
-> +    DEFINE_PROP_STRING("serial", VMAppleCfgState, serial),
-> +    DEFINE_PROP_STRING("model", VMAppleCfgState, model),
-> +    DEFINE_PROP_STRING("soc_name", VMAppleCfgState, soc_name),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +static void vmapple_cfg_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    dc->realize = vmapple_cfg_realize;
-> +    dc->desc = "VMApple Configuration Region";
-> +    device_class_set_props(dc, vmapple_cfg_properties);
-> +    dc->reset = vmapple_cfg_reset;
-> +}
-> +
-> +static const TypeInfo vmapple_cfg_info = {
-> +    .name          = TYPE_VMAPPLE_CFG,
-> +    .parent        = TYPE_SYS_BUS_DEVICE,
-> +    .instance_size = sizeof(VMAppleCfgState),
-> +    .instance_init = vmapple_cfg_init,
-> +    .class_init    = vmapple_cfg_class_init,
-> +};
-> +
-> +static void vmapple_cfg_register_types(void)
-> +{
-> +    type_register_static(&vmapple_cfg_info);
-> +}
-> +
-> +type_init(vmapple_cfg_register_types)
-
-And DEFINE_TYPES() here again.
-
-> diff --git a/hw/vmapple/Kconfig b/hw/vmapple/Kconfig
-> index 388a2bc60c..542426a740 100644
-> --- a/hw/vmapple/Kconfig
-> +++ b/hw/vmapple/Kconfig
-> @@ -3,3 +3,6 @@ config VMAPPLE_AES
+> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+> index a8b3a8065a..f54063445d 100644
+> --- a/hw/arm/aspeed_ast2600.c
+> +++ b/hw/arm/aspeed_ast2600.c
+> @@ -280,7 +280,6 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       AspeedSoCState *s = ASPEED_SOC(dev);
+>       AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+>       Error *err = NULL;
+> -    qemu_irq irq;
+>       g_autofree char *sram_name = NULL;
 >   
->   config VMAPPLE_BDIF
->       bool
-> +
-> +config VMAPPLE_CFG
-> +    bool
-> diff --git a/hw/vmapple/meson.build b/hw/vmapple/meson.build
-> index d4624713de..64b78693a3 100644
-> --- a/hw/vmapple/meson.build
-> +++ b/hw/vmapple/meson.build
-> @@ -1,2 +1,3 @@
->   system_ss.add(when: 'CONFIG_VMAPPLE_AES',  if_true: files('aes.c'))
->   system_ss.add(when: 'CONFIG_VMAPPLE_BDIF', if_true: files('bdif.c'))
-> +system_ss.add(when: 'CONFIG_VMAPPLE_CFG',  if_true: files('cfg.c'))
-
-
-ATB,
-
-Mark.
+>       /* Default boot region (SPI memory or ROMs) */
+> @@ -339,6 +338,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>       for (i = 0; i < sc->num_cpus; i++) {
+>           SysBusDevice *sbd = SYS_BUS_DEVICE(&s->a7mpcore);
+>           DeviceState  *d   = DEVICE(&s->cpu[i]);
+> +        qemu_irq irq;
+>   
+>           irq = qdev_get_gpio_in(d, ARM_CPU_IRQ);
+>           sysbus_connect_irq(sbd, i, irq);
 
 
