@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E57790167
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A9D790168
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:25:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc7rf-0000RH-3H; Fri, 01 Sep 2023 13:23:23 -0400
+	id 1qc7sn-0001Ba-Pg; Fri, 01 Sep 2023 13:24:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7rU-0000R0-Vd
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:23:12 -0400
+ id 1qc7sg-00016T-Ru
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:24:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc7rR-0000cr-U3
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:23:12 -0400
+ id 1qc7sb-0000mj-PV
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:24:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693588988;
+ s=mimecast20190719; t=1693589060;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fmFjSTy+S/6IcDOeNulzA+RaFnwPtIeHvPQ/ObbChRo=;
- b=GI5l2SG53GcaYo4nWxh81B1ExENwbKAngi/lP+i4+z7hnzX3xuCjEUlNWi6Gw495c3pVpF
- 3Yqu4N4jVTWjZoSRbxLCqPZvISN0NnEXudWRL9wkzmZAsq8tDiG676FqXY4aMKWjLo2CBf
- 8fj1vazAyf14pO8ltmj2o8wIqZcJbfM=
+ bh=o4CCoZZwwrRalru+xijapU/e+2wQyNr/5fpJmvqDNm4=;
+ b=AALp7O7tHcZaNJhPVdyoH08IhC5ITN1Eu63BAwO/YVcffTKeZtuZC+BPjlUZg4KnCDBsD/
+ c5Mm+TDqojhbWoro5l8qSYC7egO9FQZ1CFMB94tjio8VBO5b0pJsPcdDDJ7g+pu+4cAMfC
+ f7VAP8w1qcrejyvkV32Q+rOICOv0KLA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-297-GpcFJtfJNySEJW_NAloMDQ-1; Fri, 01 Sep 2023 13:23:07 -0400
-X-MC-Unique: GpcFJtfJNySEJW_NAloMDQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-687-Rt4-XjQlOPuwKXwp5_Lbjg-1; Fri, 01 Sep 2023 13:24:18 -0400
+X-MC-Unique: Rt4-XjQlOPuwKXwp5_Lbjg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DA895381CC0C
- for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:23:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 603123C1DC23
+ for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:24:18 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 26AE41005B8E;
- Fri,  1 Sep 2023 17:23:05 +0000 (UTC)
-Date: Fri, 1 Sep 2023 18:23:03 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C3E2E2012F37;
+ Fri,  1 Sep 2023 17:24:17 +0000 (UTC)
+Date: Fri, 1 Sep 2023 18:24:15 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 49/67] ui/vc: split off the VC part from console.c
-Message-ID: <ZPId9976tOP7o8XS@redhat.com>
+Subject: Re: [PATCH 50/67] ui/console: move DisplaySurface to its own header
+Message-ID: <ZPIeP6Gwm5AtfUgF@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-50-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-51-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830093843.3531473-50-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-51-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,41 +83,124 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:38:23PM +0400, marcandre.lureau@redhat.com wrote:
+On Wed, Aug 30, 2023 at 01:38:24PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Move common declarations to console-priv.h, and add a new unit
-> console-vc.c which will handle VC/chardev rendering, when pixman is
-> available.
-> 
-> (if necessary, the move could be done chunk by chunks)
+> Mostly for readability reasons.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  ui/console-priv.h |   43 ++
->  ui/console-vc.c   | 1079 ++++++++++++++++++++++++++++++++++++++++++++
->  ui/console.c      | 1096 +--------------------------------------------
->  ui/meson.build    |    1 +
->  4 files changed, 1126 insertions(+), 1093 deletions(-)
->  create mode 100644 ui/console-priv.h
->  create mode 100644 ui/console-vc.c
+>  include/ui/console.h | 84 +---------------------------------------
+>  include/ui/surface.h | 91 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 92 insertions(+), 83 deletions(-)
+>  create mode 100644 include/ui/surface.h
 > 
-> diff --git a/ui/console-vc.c b/ui/console-vc.c
+
+> diff --git a/include/ui/surface.h b/include/ui/surface.h
 > new file mode 100644
-> index 0000000000..656f099556
+> index 0000000000..37725a303e
 > --- /dev/null
-> +++ b/ui/console-vc.c
-> @@ -0,0 +1,1079 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * QEMU VC
+> +++ b/include/ui/surface.h
+> @@ -0,0 +1,91 @@
 
-This code is moved out of console.c, which (surprisingly) appears
-to have an MIT license header.
+When you moved the VC bits out of console.h you added a GPL-2.0-or-later
+SPDX tag, so by implication this ought to gain the same.
 
-
-The include/ui/console.h header meanwhile has no license, so is
-valid to assume it is GPL-2.0-or-later I guess.
+> +#ifndef SURFACE_H
+> +#define SURFACE_H
+> +
+> +#include "ui/qemu-pixman.h"
+> +
+> +#ifdef CONFIG_OPENGL
+> +# include <epoxy/gl.h>
+> +# include "ui/shader.h"
+> +#endif
+> +
+> +#define QEMU_ALLOCATED_FLAG     0x01
+> +#define QEMU_PLACEHOLDER_FLAG   0x02
+> +
+> +typedef struct DisplaySurface {
+> +    pixman_image_t *image;
+> +    uint8_t flags;
+> +#ifdef CONFIG_OPENGL
+> +    GLenum glformat;
+> +    GLenum gltype;
+> +    GLuint texture;
+> +#endif
+> +#ifdef WIN32
+> +    HANDLE handle;
+> +    uint32_t handle_offset;
+> +#endif
+> +} DisplaySurface;
+> +
+> +PixelFormat qemu_default_pixelformat(int bpp);
+> +
+> +DisplaySurface *qemu_create_displaysurface_from(int width, int height,
+> +                                                pixman_format_code_t format,
+> +                                                int linesize, uint8_t *data);
+> +DisplaySurface *qemu_create_displaysurface_pixman(pixman_image_t *image);
+> +DisplaySurface *qemu_create_placeholder_surface(int w, int h,
+> +                                                const char *msg);
+> +#ifdef WIN32
+> +void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
+> +                                          HANDLE h, uint32_t offset);
+> +#endif
+> +
+> +DisplaySurface *qemu_create_displaysurface(int width, int height);
+> +void qemu_free_displaysurface(DisplaySurface *surface);
+> +
+> +static inline int is_buffer_shared(DisplaySurface *surface)
+> +{
+> +    return !(surface->flags & QEMU_ALLOCATED_FLAG);
+> +}
+> +
+> +static inline int is_placeholder(DisplaySurface *surface)
+> +{
+> +    return surface->flags & QEMU_PLACEHOLDER_FLAG;
+> +}
+> +
+> +static inline int surface_stride(DisplaySurface *s)
+> +{
+> +    return pixman_image_get_stride(s->image);
+> +}
+> +
+> +static inline void *surface_data(DisplaySurface *s)
+> +{
+> +    return pixman_image_get_data(s->image);
+> +}
+> +
+> +static inline int surface_width(DisplaySurface *s)
+> +{
+> +    return pixman_image_get_width(s->image);
+> +}
+> +
+> +static inline int surface_height(DisplaySurface *s)
+> +{
+> +    return pixman_image_get_height(s->image);
+> +}
+> +
+> +static inline pixman_format_code_t surface_format(DisplaySurface *s)
+> +{
+> +    return pixman_image_get_format(s->image);
+> +}
+> +
+> +static inline int surface_bits_per_pixel(DisplaySurface *s)
+> +{
+> +    int bits = PIXMAN_FORMAT_BPP(surface_format(s));
+> +    return bits;
+> +}
+> +
+> +static inline int surface_bytes_per_pixel(DisplaySurface *s)
+> +{
+> +    int bits = PIXMAN_FORMAT_BPP(surface_format(s));
+> +    return DIV_ROUND_UP(bits, 8);
+> +}
+> +
+> +#endif
+> -- 
+> 2.41.0
+> 
+> 
 
 With regards,
 Daniel
