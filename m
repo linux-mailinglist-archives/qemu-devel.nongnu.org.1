@@ -2,75 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F9779010A
+	by mail.lfdr.de (Postfix) with ESMTPS id 71124790109
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:03:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc7Wv-0008Kd-F2; Fri, 01 Sep 2023 13:01:57 -0400
+	id 1qc7XY-0001Yd-5p; Fri, 01 Sep 2023 13:02:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qc7Wt-0008K4-24
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:01:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qc7Wk-0001jg-Tv
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:01:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693587705;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JxHEtYkT3GBxvRQxXoP0Vc6Ymh4t0iBJmh64oEadsmM=;
- b=ZNi9g/Erngj28SLx6isNJNuksuoLwekb1euA1kogHt/ESt0nQ3yVW3YJkb3uFAwzAmS/kL
- ba0TeVFrfXrOc/9ErOvGBlHCYqjCzqfpCgw6MTIexO86Ekbc3ILNsWaFwaxXShi6frLZAU
- 3n//5eWPdYIC2urNum8QivqDjTEeEf0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-611--jfb-kpdMAW2W7xu9Q8Qbw-1; Fri, 01 Sep 2023 13:01:42 -0400
-X-MC-Unique: -jfb-kpdMAW2W7xu9Q8Qbw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E02BC3C0EAA1;
- Fri,  1 Sep 2023 17:01:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.166])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E593A493110;
- Fri,  1 Sep 2023 17:01:38 +0000 (UTC)
-Date: Fri, 1 Sep 2023 19:01:37 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
- Klaus Jensen <its@irrelevant.dk>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>,
- David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v2 4/4] block-coroutine-wrapper: use
- qemu_get_current_aio_context()
-Message-ID: <ZPIY8UzEeRrpM1rp@redhat.com>
-References: <20230823235938.1398382-1-stefanha@redhat.com>
- <20230823235938.1398382-5-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qc7XT-0001QU-Kc
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:02:33 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qc7XR-0001sc-7Z
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:02:31 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1c0d5b16aacso17833085ad.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 10:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693587747; x=1694192547; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Rt2Z4ZWPmB/wuN/gtbm45yySFn+Phmrx84Dxkvy7I/I=;
+ b=jVBtfptcdW0KfdTK18JdH6T+mjBEYpTZm01DELGMBWQi6oyhop12d5cEMeagr4shI2
+ 6FysnxxI0t9iqRKPAGJ/ZN7BllPm+y0mqb/pakVMSFwWHv6viVWVDB7koyogaI6slt3C
+ aOEkB7+Y90ohBmZu7JlXLu9qmUqGwcrepA96ud6rPZN7t3wlU9wzWHzK1rWt8m5OIVNg
+ eoQmXbpwetEVxXsOVzjDn0KzslO3tolpM0itndFFYjKVO2x6xP/W+IWVVMyMrsApmG+a
+ W/sCMbzzAEGwcUE57JpjFDLK8h+y2TBipjD9UT5MdKNARFtqnVIXxIO5sn2N5FYLOT8r
+ xAWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693587747; x=1694192547;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rt2Z4ZWPmB/wuN/gtbm45yySFn+Phmrx84Dxkvy7I/I=;
+ b=bLUsNtT6jQ5JCf/wDypLF2YMhOaQ0h4oSgfvAlmIEmdEfNm3Xy9QE2pc7YQI7tKSRp
+ yiWFwslVLYxf/BmaHFF3xzeFnjS05pkuW4OZUQPbTdngA3OVzoPYakuSG/cuxAa2ltbN
+ 6lZzWxxOux8OuP0+7fERiCWpsNlVAJKfPgfmLCzWOSCL1E+URWkR0LMrbhwYOVKU35CT
+ hP+di9upCE+4nKffbMQi1sDzsyDdAkXC2921Xpho4P+RP52WtyvEhIuL570dWLy+xLfS
+ 5jxKKKkjgQAV1V7OQZKTxHcdxDrAOsfy0Zw7+IGVqmAg6VCX0ech1AakLgFpRG3KCiBu
+ IrlQ==
+X-Gm-Message-State: AOJu0YyQX1cexKSWU4Nixtfb/p8o0NMKv1Qzcyvmh0m7gKs8awiiA0SU
+ OAPW/W3yu14kdEbkP0nOn7o1Tw==
+X-Google-Smtp-Source: AGHT+IG5pKYmzJNZA2TBoUAfYehoVhX6cTfKLN1Ng0PRAqJTfvm2faUC94SuS8sXaE/MIbYAgyJBGA==
+X-Received: by 2002:a17:902:7442:b0:1c1:f1db:e86d with SMTP id
+ e2-20020a170902744200b001c1f1dbe86dmr3285746plt.7.1693587747594; 
+ Fri, 01 Sep 2023 10:02:27 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ t13-20020a1709028c8d00b001b5247cac3dsm3197223plo.110.2023.09.01.10.02.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Sep 2023 10:02:26 -0700 (PDT)
+Message-ID: <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
+Date: Fri, 1 Sep 2023 10:02:25 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230823235938.1398382-5-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 05/19] host-utils: Add muldiv64_round_up
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230808042001.411094-1-npiggin@gmail.com>
+ <20230808042001.411094-6-npiggin@gmail.com>
+ <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,75 +103,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 24.08.2023 um 01:59 hat Stefan Hajnoczi geschrieben:
-> Use qemu_get_current_aio_context() in mixed wrappers and coroutine
-> wrappers so that code runs in the caller's AioContext instead of moving
-> to the BlockDriverState's AioContext. This change is necessary for the
-> multi-queue block layer where any thread can call into the block layer.
+On 9/1/23 04:51, Cédric Le Goater wrote:
+> Adding more reviewers since this patch is modifying a common service.
 > 
-> Most wrappers are IO_CODE where it's safe to use the current AioContext
-> nowadays. BlockDrivers and the core block layer use their own locks and
-> no longer depend on the AioContext lock for thread-safety.
+> Thanks,
 > 
-> The bdrv_create() wrapper invokes GLOBAL_STATE code. Using the current
-> AioContext is safe because this code is only called with the BQL held
-> from the main loop thread.
+> C.
 > 
-> The output of qemu-iotests 051 is sensitive to event loop activity.
-> Update the output because the monitor BH runs at a different time,
-> causing prompts to be printed differently in the output.
 > 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> On 8/8/23 06:19, Nicholas Piggin wrote:
+>> This will be used for converting time intervals in different base units
+>> to host units, for the purpose of scheduling timers to emulate target
+>> timers. Timers typically must not fire before their requested expiry
+>> time but may fire some time afterward, so rounding up is the right way
+>> to implement these.
+>>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   include/qemu/host-utils.h | 21 ++++++++++++++++++++-
+>>   1 file changed, 20 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
+>> index 011618373e..e2a50a567f 100644
+>> --- a/include/qemu/host-utils.h
+>> +++ b/include/qemu/host-utils.h
+>> @@ -56,6 +56,11 @@ static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>>       return (__int128_t)a * b / c;
+>>   }
+>> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
+>> +{
+>> +    return ((__int128_t)a * b + c - 1) / c;
+>> +}
+>> +
+>>   static inline uint64_t divu128(uint64_t *plow, uint64_t *phigh,
+>>                                  uint64_t divisor)
+>>   {
+>> @@ -83,7 +88,8 @@ void mulu64(uint64_t *plow, uint64_t *phigh, uint64_t a, uint64_t b);
+>>   uint64_t divu128(uint64_t *plow, uint64_t *phigh, uint64_t divisor);
+>>   int64_t divs128(uint64_t *plow, int64_t *phigh, int64_t divisor);
+>> -static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>> +static inline uint64_t __muldiv64(uint64_t a, uint32_t b, uint32_t c,
+>> +                                  bool round_up)
 
-The update for 051 is actually missing from this patch, and so the test
-fails.
+Perhaps better avoiding the reserved name: muldiv64_internal?
 
-I missed the dependency on your qio_channel series, so 281 ran into an
-abort() for me (see below for the stack trace). I expect that the other
-series actually fixes this, but this kind of interaction wasn't really
-obvious. How did you make sure that there aren't other places that don't
-like this change?
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Kevin
 
-(gdb) bt
-#0  0x00007f8ef0d2fe5c in __pthread_kill_implementation () at /lib64/libc.so.6
-#1  0x00007f8ef0cdfa76 in raise () at /lib64/libc.so.6
-#2  0x00007f8ef0cc97fc in abort () at /lib64/libc.so.6
-#3  0x00007f8ef0cc971b in _nl_load_domain.cold () at /lib64/libc.so.6
-#4  0x00007f8ef0cd8656 in  () at /lib64/libc.so.6
-#5  0x000055fd19da6af3 in qio_channel_yield (ioc=0x7f8ee0000b70, condition=G_IO_IN) at ../io/channel.c:583
-#6  0x000055fd19e0382f in nbd_read_eof (bs=0x55fd1b681350, ioc=0x7f8ee0000b70, buffer=0x55fd1b680da0, size=4, errp=0x0) at ../nbd/client.c:1454
-#7  0x000055fd19e03612 in nbd_receive_reply (bs=0x55fd1b681350, ioc=0x7f8ee0000b70, reply=0x55fd1b680da0, errp=0x0) at ../nbd/client.c:1491
-#8  0x000055fd19e40575 in nbd_receive_replies (s=0x55fd1b680b00, cookie=1) at ../block/nbd.c:461
-#9  0x000055fd19e3fec4 in nbd_co_do_receive_one_chunk
-    (s=0x55fd1b680b00, cookie=1, only_structured=true, request_ret=0x7f8ee8bff91c, qiov=0x7f8ee8bfff10, payload=0x7f8ee8bff9d0, errp=0x7f8ee8bff910) at ../block/nbd.c:844
-#10 0x000055fd19e3fd55 in nbd_co_receive_one_chunk
-    (s=0x55fd1b680b00, cookie=1, only_structured=true, request_ret=0x7f8ee8bff91c, qiov=0x7f8ee8bfff10, reply=0x7f8ee8bff9f0, payload=0x7f8ee8bff9d0, errp=0x7f8ee8bff910)
-    at ../block/nbd.c:925
-#11 0x000055fd19e3f7b5 in nbd_reply_chunk_iter_receive (s=0x55fd1b680b00, iter=0x7f8ee8bff9d8, cookie=1, qiov=0x7f8ee8bfff10, reply=0x7f8ee8bff9f0, payload=0x7f8ee8bff9d0)
-    at ../block/nbd.c:1008
-#12 0x000055fd19e3ecf7 in nbd_co_receive_cmdread_reply (s=0x55fd1b680b00, cookie=1, offset=0, qiov=0x7f8ee8bfff10, request_ret=0x7f8ee8bffad4, errp=0x7f8ee8bffac8) at ../block/nbd.c:1074
-#13 0x000055fd19e3c804 in nbd_client_co_preadv (bs=0x55fd1b681350, offset=0, bytes=131072, qiov=0x7f8ee8bfff10, flags=0) at ../block/nbd.c:1258
-#14 0x000055fd19e33547 in bdrv_driver_preadv (bs=0x55fd1b681350, offset=0, bytes=131072, qiov=0x7f8ee8bfff10, qiov_offset=0, flags=0) at ../block/io.c:1005
-#15 0x000055fd19e2c8bb in bdrv_aligned_preadv (child=0x55fd1c282d90, req=0x7f8ee8bffd90, offset=0, bytes=131072, align=1, qiov=0x7f8ee8bfff10, qiov_offset=0, flags=0) at ../block/io.c:1398
-#16 0x000055fd19e2bf7d in bdrv_co_preadv_part (child=0x55fd1c282d90, offset=0, bytes=131072, qiov=0x7f8ee8bfff10, qiov_offset=0, flags=0) at ../block/io.c:1815
-#17 0x000055fd19e176bd in blk_co_do_preadv_part (blk=0x55fd1c269c00, offset=0, bytes=131072, qiov=0x7f8ee8bfff10, qiov_offset=0, flags=0) at ../block/block-backend.c:1344
-#18 0x000055fd19e17588 in blk_co_preadv (blk=0x55fd1c269c00, offset=0, bytes=131072, qiov=0x7f8ee8bfff10, flags=0) at ../block/block-backend.c:1369
-#19 0x000055fd19e17514 in blk_co_pread (blk=0x55fd1c269c00, offset=0, bytes=131072, buf=0x55fd1c16d000, flags=0) at ../block/block-backend.c:1358
-#20 0x000055fd19ddcc91 in blk_co_pread_entry (opaque=0x7ffc4bbdd9a0) at block/block-gen.c:1519
-#21 0x000055fd19feb2a1 in coroutine_trampoline (i0=460835072, i1=22013) at ../util/coroutine-ucontext.c:177
-#22 0x00007f8ef0cf5c20 in __start_context () at /lib64/libc.so.6
+r~
 
-io/channel.c:583 is this:
 
-577 void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-578                                     GIOCondition condition)
-579 {
-580     AioContext *ioc_ctx = ioc->ctx ?: qemu_get_aio_context();
-581
-582     assert(qemu_in_coroutine());
-583     assert(in_aio_context_home_thread(ioc_ctx));
-584
+>>   {
+>>       union {
+>>           uint64_t ll;
+>> @@ -99,12 +105,25 @@ static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>>       u.ll = a;
+>>       rl = (uint64_t)u.l.low * (uint64_t)b;
+>> +    if (round_up) {
+>> +        rl += c - 1;
+>> +    }
+>>       rh = (uint64_t)u.l.high * (uint64_t)b;
+>>       rh += (rl >> 32);
+>>       res.l.high = rh / c;
+>>       res.l.low = (((rh % c) << 32) + (rl & 0xffffffff)) / c;
+>>       return res.ll;
+>>   }
+>> +
+>> +static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>> +{
+>> +    return __muldiv64(a, b, c, false);
+>> +}
+>> +
+>> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
+>> +{
+>> +    return __muldiv64(a, b, c, true);
+>> +}
+>>   #endif
+>>   /**
+> 
+> 
 
 
