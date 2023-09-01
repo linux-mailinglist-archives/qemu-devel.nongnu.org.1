@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B8879028A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 21:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B107902A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 21:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcA7d-0008IW-BF; Fri, 01 Sep 2023 15:48:04 -0400
+	id 1qcA8V-0000VL-Am; Fri, 01 Sep 2023 15:48:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qcA6z-00080Z-7e
+ id 1qcA6z-00080b-Lc
  for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:25 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qcA6u-0003FR-3j
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:20 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-1d0d3d40124so1544446fac.3
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 12:47:15 -0700 (PDT)
+ id 1qcA6w-0003H7-7P
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:47:21 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1c8d895a602so1514578fac.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 12:47:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693597633; x=1694202433; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1693597636; x=1694202436; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6bz0dqSG1/NR9vONR3Zg7ZJ3UJqOsJUfrg/aOBJFGTs=;
- b=gDAbgfWLU3eXboE7DbyCfvJslz2o+7WlFXcKWYMeBPsutavAcbwsSCFCdczRbUvYag
- 63vTo/GMd6JjwWtWc6QfPpFGI4v409Il5alPga+cePnQA4+rai2oaEPFN1tRVT2Ldx0J
- DjKNH7MJFwccBZqwxmDZ+iihAExXO1Tiy2m8vnCardM46IKEgbz+z+wvxI/KtxsOu/SC
- bF2kM9i+J8GFjQBuA0V05ujq0A7+NK2xSjpo1BvY3AkM8AJYnSG9QqOQp6BxxFB/4D05
- vpjZIpI6BkMaXP0Z0On/12w8XX0jZfjHkuthaSvQG5p3W/Wv5m8/XljcmDu2iRCNba3L
- UqHg==
+ bh=q6U/kJmT8i79eDIx8//Bo6UHXfVCePxHVAlASyqB6rg=;
+ b=NklMquHBS6DmPZhQBQUZjyJH31dO5pxnK1OuiBZDq4KfYVqg9vS0xCjgNMcRAyVZfF
+ jcP4JtSNQYi5mdXnafw7c6nTSj2IoR8VAYrqp6LMVJvO7qUxA2l95Csse3syjW1Cwhl+
+ M4kr3OJXiPmA1IBuKd8FPtNmud//Z3B9h+DGAqPXeuFRGNYw10KUBFHxoq3/cjuM/O1j
+ YV3/dSr4rAC5DRpNopSqB1gu94PWGFzgJPfTArOYtDbD+sfWOKHR88jdwvZ24c0FagR+
+ o3OfijGRZDSA+w9WcaGEWdjjn0yb9SP94gyByfXV5GVqGZAeJShBc3S4BFK2tlVlSUK2
+ rixA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693597633; x=1694202433;
+ d=1e100.net; s=20221208; t=1693597636; x=1694202436;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6bz0dqSG1/NR9vONR3Zg7ZJ3UJqOsJUfrg/aOBJFGTs=;
- b=CG4JADlNPHm/xG8MyyYXWdAHJrSI5Y/arv9OhC/jiJXcJp2CGl99fSfffPNy9sS3kC
- kKCFvU2huhMLray848ur55zFkctLJByNCgo5HQg1dmZ7w0r6eDFq8/P7S7ScwFZHCMEn
- wM1O4vdG/bGLnKagvHmRAZIkfF7ikimXKP/Z9Bqo6w+6X4qBmq88lOOt5Z6knbH6Vcwu
- LVfa1mBWaw++UBUN1nDlumNNZ4roijgqqAk/HqwEuuQ1uciNUq+3RllHVyur2tLX+IcA
- pP6Edfv91eUS3VbMxLrxQEU5J83XLa6iRZhulpLftwk8Cp2HDMtMk/nNzWCm154GEQK5
- y6aA==
-X-Gm-Message-State: AOJu0Yw644m6GUdpxXIi6rppOdy6Kad8pIYMeag/IJ2pU0Ol2sE7+TjZ
- Hm7ATGcFD+7/cliFfIXCqYQEG3jgviVcAikYf50=
-X-Google-Smtp-Source: AGHT+IEKEuW4D07TGSOb3OWzYiprA8+hyyIcBqHL5xjqhBcGGUIh8qxe6ZJbRXBOzs2q5E4xewrEoA==
-X-Received: by 2002:a05:6870:8327:b0:1bf:6ec:dd4d with SMTP id
- p39-20020a056870832700b001bf06ecdd4dmr3890147oae.28.1693597633285; 
- Fri, 01 Sep 2023 12:47:13 -0700 (PDT)
+ bh=q6U/kJmT8i79eDIx8//Bo6UHXfVCePxHVAlASyqB6rg=;
+ b=J/mle0LH+pnDhjIs032ilrGClKhA5GoVgqwbAEUWSmnANJv3HTJ3vKsdgsJb4pwzx3
+ nvOBHImrsOnDWuHXzdr6MGPnSFI0PEpmP831nYueK/Zp2FGkVz95dteBRry4p8mV7yHT
+ DJvEwsXqw/mymp0piAMMh7tlAvzUZIgQWDnTy0jALlRC2nO5bfSEV2w9SXanHqOa3VUp
+ 8FDYjRk96X8YQVicVrS63DVq/Q5aMUHHDUkeAOjiL5wgFmA6SHgNhpDsQ9Wqkv+UtMUo
+ 3I9mOItZ1S8lBqD6sXq2uDKG0IBosPEwo5HwDll/HQHRD6rHvkpUkTVdHr7t9hgW0qzl
+ mdfw==
+X-Gm-Message-State: AOJu0Yy+FC/qNt3uC+FtgVcipBWUMRyCYzKTcJFj3ODKTmgLn3zexwTR
+ i9YU7lMoWULsjHeCjbdeYcDrSOa8IluxZpRRezE=
+X-Google-Smtp-Source: AGHT+IGCqXPjvCr3fiX7JRXdG0KLJYZLSdMCigpsIAzRriouv6WRWq5U3nKQVBi7AM1I6s9hkp+vtg==
+X-Received: by 2002:a05:6870:35cd:b0:1ba:3ff0:4934 with SMTP id
+ c13-20020a05687035cd00b001ba3ff04934mr3725930oak.12.1693597636642; 
+ Fri, 01 Sep 2023 12:47:16 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com ([177.94.15.194])
  by smtp.gmail.com with ESMTPSA id
- h187-20020a4a5ec4000000b00565d41ba4d0sm2303002oob.35.2023.09.01.12.47.10
+ h187-20020a4a5ec4000000b00565d41ba4d0sm2303002oob.35.2023.09.01.12.47.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 12:47:13 -0700 (PDT)
+ Fri, 01 Sep 2023 12:47:16 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 12/20] target/riscv: deprecate the 'any' CPU type
-Date: Fri,  1 Sep 2023 16:46:18 -0300
-Message-ID: <20230901194627.1214811-13-dbarboza@ventanamicro.com>
+Subject: [PATCH v9 13/20] target/riscv/cpu.c: use offset in
+ isa_ext_is_enabled/update_enabled
+Date: Fri,  1 Sep 2023 16:46:19 -0300
+Message-ID: <20230901194627.1214811-14-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
 References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,75 +95,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'any' CPU type was introduced in commit dc5bd18fa5725 ("RISC-V CPU
-Core Definition"), being around since the beginning. It's not an easy
-CPU to use: it's undocumented and its name doesn't tell users much about
-what the CPU is supposed to bring. 'git log' doesn't help us either in
-knowing what was the original design of this CPU type.
+We'll have future usage for a function where, given an offset of the
+struct RISCVCPUConfig, the flag is updated to a certain val.
 
-The closest we have is a comment from Alistair [1] where he recalls from
-memory that the 'any' CPU is supposed to behave like the newly added
-'max' CPU. He also suggested that the 'any' CPU should be removed.
-
-The default CPUs are rv32 and rv64, so removing the 'any' CPU will have
-impact only on users that might have a script that uses '-cpu any'.
-And those users are better off using the default CPUs or the new 'max'
-CPU.
-
-We would love to just remove the code and be done with it, but one does
-not simply remove a feature in QEMU. We'll put the CPU in quarantine
-first, letting users know that we have the intent of removing it in the
-future.
-
-[1] https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02891.html
+Change all existing callers to use edata->ext_enable_offset instead of
+'edata'.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- docs/about/deprecated.rst | 12 ++++++++++++
- target/riscv/cpu.c        |  5 +++++
- 2 files changed, 17 insertions(+)
+ target/riscv/cpu.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 92a2bafd2b..7277d4e8a4 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -371,6 +371,18 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
- which the 9p ``proxy`` backend currently suffers. However as of to date nobody
- has indicated plans for such kind of reimplementation unfortunately.
- 
-+RISC-V 'any' CPU type ``-cpu any`` (since 8.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The 'any' CPU type was introduced back in 2018 and has been around since the
-+initial RISC-V QEMU port. Its usage has always been unclear: users don't know
-+what to expect from a CPU called 'any', and in fact the CPU does not do anything
-+special that isn't already done by the default CPUs rv32/rv64.
-+
-+After the introduction of the 'max' CPU type, RISC-V now has a good coverage
-+of generic CPUs: rv32 and rv64 as default CPUs and 'max' as a feature complete
-+CPU for both 32 and 64 bit builds. Users are then discouraged to use the 'any'
-+CPU type starting in 8.2.
- 
- Block device options
- ''''''''''''''''''''
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 365c2b3b56..0dae259e02 100644
+index 0dae259e02..03e936348a 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1522,6 +1522,11 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
-     Error *local_err = NULL;
+@@ -162,18 +162,17 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentanaCondOps),
+ };
  
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_ANY) != NULL) {
-+        warn_report("The 'any' CPU is deprecated and will be "
-+                    "removed in the future.");
-+    }
-+
-     cpu_exec_realizefn(cs, &local_err);
-     if (local_err != NULL) {
-         error_propagate(errp, local_err);
+-static bool isa_ext_is_enabled(RISCVCPU *cpu,
+-                               const struct isa_ext_data *edata)
++static bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
+ {
+-    bool *ext_enabled = (void *)&cpu->cfg + edata->ext_enable_offset;
++    bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
+ 
+     return *ext_enabled;
+ }
+ 
+-static void isa_ext_update_enabled(RISCVCPU *cpu,
+-                                   const struct isa_ext_data *edata, bool en)
++static void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset,
++                                   bool en)
+ {
+-    bool *ext_enabled = (void *)&cpu->cfg + edata->ext_enable_offset;
++    bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
+ 
+     *ext_enabled = en;
+ }
+@@ -1045,9 +1044,10 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+ 
+     /* Force disable extensions if priv spec version does not match */
+     for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+-        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i]) &&
++        if (isa_ext_is_enabled(cpu, isa_edata_arr[i].ext_enable_offset) &&
+             (env->priv_ver < isa_edata_arr[i].min_version)) {
+-            isa_ext_update_enabled(cpu, &isa_edata_arr[i], false);
++            isa_ext_update_enabled(cpu, isa_edata_arr[i].ext_enable_offset,
++                                   false);
+ #ifndef CONFIG_USER_ONLY
+             warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
+                         " because privilege spec version does not match",
+@@ -2346,7 +2346,7 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
+     int i;
+ 
+     for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+-        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
++        if (isa_ext_is_enabled(cpu, isa_edata_arr[i].ext_enable_offset)) {
+             new = g_strconcat(old, "_", isa_edata_arr[i].name, NULL);
+             g_free(old);
+             old = new;
 -- 
 2.41.0
 
