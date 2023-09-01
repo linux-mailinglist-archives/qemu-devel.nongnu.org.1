@@ -2,49 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C4E78F84F
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 08:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F88478F8D9
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 09:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbxEj-0000X1-9r; Fri, 01 Sep 2023 02:02:29 -0400
+	id 1qby9k-00057O-J4; Fri, 01 Sep 2023 03:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qbxEg-0000Wt-Mp
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 02:02:26 -0400
-Received: from out30-101.freemail.mail.aliyun.com ([115.124.30.101])
+ (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
+ id 1qby9V-0004qL-AG; Fri, 01 Sep 2023 03:01:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qbxEd-0004Al-HN
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 02:02:26 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R581e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046051;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=4; SR=0;
- TI=SMTPD_---0Vr1M3Ks_1693548128; 
-Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0Vr1M3Ks_1693548128) by smtp.aliyun-inc.com;
- Fri, 01 Sep 2023 14:02:09 +0800
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 1/1] accel/tcg: Fix the comment for CPUTLBEntryFull
-Date: Fri,  1 Sep 2023 14:01:18 +0800
-Message-Id: <20230901060118.379-1-zhiwei_liu@linux.alibaba.com>
-X-Mailer: git-send-email 2.23.0
+ (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
+ id 1qby9S-0002AO-SP; Fri, 01 Sep 2023 03:01:08 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3816atqi021756; Fri, 1 Sep 2023 07:01:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=5qaFs/IwcjvQV70EagjCBvupNpZ2/N0064UnYGjbufI=;
+ b=Ym27cOz4TElKafFtlktah4wFDJHLcADcmaax3Z8FdB/3Svz0R40/0B5xVPliYfboqUqr
+ UM6kB2g8X5XRbr0PPFGiVRzqf6gcWmYqSQ0loQL63vBMul9WoAsARwosUwQkCm/X3bfE
+ 6lqFwZtsNHu9Zf3RdNKAHWvnORkB0TTKFi+T+ERrxe0skYnnGO+MyRZOM5LZwQ8XZtZN
+ WSkUxseHGLe5TAfj+Q+8si3lELIyvViuu/2i3g1o7ywUZooakY61wBeIwQGoNvM3Rkvx
+ m+JwCM7r5T+nvLBfNRFvUIlfTV7djIZBDXgLkjf7rTnH8nGzE27SyLW21Ij5YBA3AnEo RA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3su9ksa973-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Sep 2023 07:01:02 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3816b0bk022462;
+ Fri, 1 Sep 2023 07:01:01 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3su9ksa8wu-7
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Sep 2023 07:01:01 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3813xi14020514; Fri, 1 Sep 2023 06:31:30 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sqv402wdv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Sep 2023 06:31:30 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3816VRE720185724
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 1 Sep 2023 06:31:27 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B38420043;
+ Fri,  1 Sep 2023 06:31:27 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8BC5520040;
+ Fri,  1 Sep 2023 06:31:26 +0000 (GMT)
+Received: from [9.171.82.64] (unknown [9.171.82.64])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  1 Sep 2023 06:31:26 +0000 (GMT)
+Message-ID: <80b007e8-91d7-8298-f628-77c30616f0f4@linux.ibm.com>
+Date: Fri, 1 Sep 2023 08:31:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.101;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-101.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 2/5] s390x: switch pv and subsystem reset ordering on
+ reboot
+To: Marc Hartmayer <mhartmay@linux.ibm.com>,
+ Steffen Eiden <seiden@linux.ibm.com>, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Michael Mueller <mimu@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>
+References: <20230823142219.1046522-1-seiden@linux.ibm.com>
+ <20230823142219.1046522-3-seiden@linux.ibm.com>
+ <87o7in2nec.fsf@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+In-Reply-To: <87o7in2nec.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vmUSm0nqbYSeFiVDmd491ZRI6Oz1Xavk
+X-Proofpoint-ORIG-GUID: V044V2brmhWM2UwWawuoN3pq_trjyGEk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-01_04,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309010061
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=frankja@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,70 +120,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When memory region is ram, the lower TARGET_PAGE_BITS is not the
-physical section number. Instead, its value is always 0.
-
-Add comment and assert to make it clear.
-
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- accel/tcg/cputlb.c      | 11 +++++++----
- include/exec/cpu-defs.h | 12 ++++++------
- 2 files changed, 13 insertions(+), 10 deletions(-)
-
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index d68fa6867c..a1ebf75068 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1192,6 +1192,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
-     write_flags = read_flags;
-     if (is_ram) {
-         iotlb = memory_region_get_ram_addr(section->mr) + xlat;
-+        assert(!(iotlb & ~TARGET_PAGE_MASK));
-         /*
-          * Computing is_clean is expensive; avoid all that unless
-          * the page is actually writable.
-@@ -1254,10 +1255,12 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
- 
-     /* refill the tlb */
-     /*
--     * At this point iotlb contains a physical section number in the lower
--     * TARGET_PAGE_BITS, and either
--     *  + the ram_addr_t of the page base of the target RAM (RAM)
--     *  + the offset within section->mr of the page base (I/O, ROMD)
-+     * When memory region is ram, iotlb contains a TARGET_PAGE_BITS
-+     * aligned ram_addr_t of the page base of the target RAM.
-+     * Otherwise, iotlb contains
-+     *  - a physical section number in the lower TARGET_PAGE_BITS
-+     *  - the offset within section->mr of the page base (I/O, ROMD) with the
-+     *    TARGET_PAGE_BITS masked off.
-      * We subtract addr_page (which is page aligned and thus won't
-      * disturb the low bits) to give an offset which can be added to the
-      * (non-page-aligned) vaddr of the eventual memory access to get
-diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index fb4c8d480f..350287852e 100644
---- a/include/exec/cpu-defs.h
-+++ b/include/exec/cpu-defs.h
-@@ -100,12 +100,12 @@
- typedef struct CPUTLBEntryFull {
-     /*
-      * @xlat_section contains:
--     *  - in the lower TARGET_PAGE_BITS, a physical section number
--     *  - with the lower TARGET_PAGE_BITS masked off, an offset which
--     *    must be added to the virtual address to obtain:
--     *     + the ram_addr_t of the target RAM (if the physical section
--     *       number is PHYS_SECTION_NOTDIRTY or PHYS_SECTION_ROM)
--     *     + the offset within the target MemoryRegion (otherwise)
-+     *  - For ram, an offset which must be added to the virtual address
-+     *    to obtain the ram_addr_t of the target RAM
-+     *  - For other memory regions,
-+     *     + in the lower TARGET_PAGE_BITS, the physical section number
-+     *     + with the TARGET_PAGE_BITS masked off, the offset within
-+     *       the target MemoryRegion
-      */
-     hwaddr xlat_section;
- 
--- 
-2.17.1
-
+T24gOC8zMS8yMyAxODoyMSwgTWFyYyBIYXJ0bWF5ZXIgd3JvdGU6DQo+IE9uIFdlZCwgQXVn
+IDIzLCAyMDIzIGF0IDA0OjIyIFBNICswMjAwLCBTdGVmZmVuIEVpZGVuIDxzZWlkZW5AbGlu
+dXguaWJtLmNvbT4gd3JvdGU6DQo+PiBGcm9tOiBKYW5vc2NoIEZyYW5rIDxmcmFua2phQGxp
+bnV4LmlibS5jb20+DQo+Pg0KPj4gQm91bmQgQVBRTnMgaGF2ZSB0byBiZSByZXNldCBiZWZv
+cmUgdGVhcmluZyBkb3duIHRoZSBzZWN1cmUgY29uZmlnIHZpYQ0KPj4gczM5MF9tYWNoaW5l
+X3VucHJvdGVjdCgpLiBPdGhlcndpc2UgdGhlIFVsdHJhdmlzb3Igd2lsbCByZXR1cm4gYSBl
+cnJvcg0KPj4gY29kZS4NCj4+DQo+PiBTbyBsZXQncyBzd2l0Y2ggdGhlIG9yZGVyaW5nIGFy
+b3VuZCB0byBtYWtlIHRoYXQgaGFwcGVuLg0KPj4NCj4+IFJldmlld2VkLWJ5OiBDaHJpc3Rp
+YW4gQm9ybnRyYWVnZXIgPGJvcm50cmFlZ2VyQGxpbnV4LmlibS5jb20+DQo+PiBTaWduZWQt
+b2ZmLWJ5OiBKYW5vc2NoIEZyYW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+DQo+PiAtLS0N
+Cj4+ICAgaHcvczM5MHgvczM5MC12aXJ0aW8tY2N3LmMgfCA2ICsrKy0tLQ0KPj4gICAxIGZp
+bGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRp
+ZmYgLS1naXQgYS9ody9zMzkweC9zMzkwLXZpcnRpby1jY3cuYyBiL2h3L3MzOTB4L3MzOTAt
+dmlydGlvLWNjdy5jDQo+PiBpbmRleCA0YjM2Yzk5NzBlLi43OTVkZDUzZDY4IDEwMDY0NA0K
+Pj4gLS0tIGEvaHcvczM5MHgvczM5MC12aXJ0aW8tY2N3LmMNCj4+ICsrKyBiL2h3L3MzOTB4
+L3MzOTAtdmlydGlvLWNjdy5jDQo+PiBAQCAtNDQyLDEzICs0NDIsMTMgQEAgc3RhdGljIHZv
+aWQgczM5MF9tYWNoaW5lX3Jlc2V0KE1hY2hpbmVTdGF0ZSAqbWFjaGluZSwgU2h1dGRvd25D
+YXVzZSByZWFzb24pDQo+PiAgICAgICBzd2l0Y2ggKHJlc2V0X3R5cGUpIHsNCj4+ICAgICAg
+IGNhc2UgUzM5MF9SRVNFVF9FWFRFUk5BTDoNCj4+ICAgICAgIGNhc2UgUzM5MF9SRVNFVF9S
+RUlQTDoNCj4+ICsgICAgICAgIHFlbXVfZGV2aWNlc19yZXNldChyZWFzb24pOw0KPj4gKyAg
+ICAgICAgczM5MF9jcnlwdG9fcmVzZXQoKTsNCj4+ICsNCj4+ICAgICAgICAgICBpZiAoczM5
+MF9pc19wdigpKSB7DQo+PiAgICAgICAgICAgICAgIHMzOTBfbWFjaGluZV91bnByb3RlY3Qo
+bXMpOw0KPj4gICAgICAgICAgIH0NCj4+ICAgDQo+PiAtICAgICAgICBxZW11X2RldmljZXNf
+cmVzZXQocmVhc29uKTsNCj4+IC0gICAgICAgIHMzOTBfY3J5cHRvX3Jlc2V0KCk7DQo+PiAt
+DQo+PiAgICAgICAgICAgLyogY29uZmlndXJlIGFuZCBzdGFydCB0aGUgaXBsIENQVSBvbmx5
+ICovDQo+PiAgICAgICAgICAgcnVuX29uX2NwdShjcywgczM5MF9kb19jcHVfaXBsLCBSVU5f
+T05fQ1BVX05VTEwpOw0KPj4gICAgICAgICAgIGJyZWFrOw0KPj4gLS0gDQo+PiAyLjQxLjAN
+Cj4+DQo+IA0KPiBVbmZvcnR1bmF0ZWx5LCB0aGlzIGJyZWFrcyB0aGluZ3MgZm9yIG1lLiBZ
+b3UgY2FuIHJlcHJvZHVjZSB0aGUgcHJvYmxlbQ0KPiBlYXNpbHnigKYgU3RhcnQgYW4gU0Ug
+Z3Vlc3QgdmlhIGRpcmVjdCBrZXJuZWwgYm9vdCBhbmQgcmVib290IHRoZSBndWVzdA0KPiBh
+ZnRlciB0aGUgZ3Vlc3QgaGFzIGJvb3RlZC4NCg0KU2VlbXMgbGlrZSB3ZSBkaWRuJ3QgdGVz
+dCBhIGRpcmVjdCBrZXJuZWwgYm9vdCByZWJvb3QuLi4NCkknbSBsb29raW5nIGludG8gaXQu
+DQoNCg==
 
