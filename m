@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A8178F704
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE0578F70B
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:25:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtpe-0007Zv-OS; Thu, 31 Aug 2023 22:24:22 -0400
+	id 1qbtpf-0007iF-8Z; Thu, 31 Aug 2023 22:24:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtpZ-0007Ah-Ja
+ id 1qbtpZ-0007Aw-M7
  for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:24:17 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbtpI-0001Sl-UG
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:24:11 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-68a41035828so1182381b3a.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:23:55 -0700 (PDT)
+ id 1qbtpJ-0001St-VQ
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:24:13 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-1c26bb27feeso960863fac.0
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693535034; x=1694139834; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693535035; x=1694139835; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g3/iatjXff6UUdz2cl7k/bF/yMUs8bwvdLM3Z+AtKOI=;
- b=J0rDxM6jGBYmkHZSIlGa37+7nlBgHAI2+laizxvHJqxkj8QIQSOo7pz2QOzv+ZVWYE
- 63mX8dzYjCtklPCYzbDlkiZqj9Z5B52Q1WCWXFyFFJ5KxA/ARDDjYuzG4XkueUP+qiRb
- fkl/lpGQXLP1n8sl1s6wWRYW4V5ojpRrZzLAoCz6V27w93L1Yn7KT/GuNhPfTooSU+h1
- IYSCE+It6R/7g8lcaQH4N6TccRkEYKmDoULj297bQvwH1/rlx7fcDQBSJpeU6WQA/QO3
- n4FeHIAgAPcaWT9OoXPXGwNbn6O38IVwVUFp0iiVUXGuniT8Zx/hY9cvL2lHUk0yeIoW
- HDGA==
+ bh=v2oMFltgopchvkCHTnrNxCsJsKx6S/nBlH+XZvf6iJQ=;
+ b=uQAacoMe2WjDYLW0a/J/nKVA7w/hLcOTOn6aS9DCQ5TJB+VvahbbScmhjVUXXA7Dpn
+ cnspQc+B18oKBa343SW4kMEu3C+SrvIBa+uWYDUpmUj3gJ6tp99n400BzHcrKYYyWd2T
+ l9CvXQysmkX2i6elqlfThbFG4KnOzhIvoxe+JKqAhvgg8a5mbxrCO2CI5oo4uCN5UIfI
+ P0Xp4/sfqxN20/QuSfM3TAe2wQnH91yzBFp9iR69nnpz+eqEYE7AMZqCOl2ZcNSNdZPD
+ GyB9t7OVuFZ+V/Fz1qde/+2pl/m2yDH9/jpwNeJv1VXMemzRghv+ipEiZQhAWz0HTqBt
+ eF9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535034; x=1694139834;
+ d=1e100.net; s=20221208; t=1693535035; x=1694139835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g3/iatjXff6UUdz2cl7k/bF/yMUs8bwvdLM3Z+AtKOI=;
- b=HwiXVJRzxoNJZRiguGh1PIgumInCfCA8Uq0TA6a2QnMSZE1GkyCzmdFy7pM3d6YHh1
- HQN2W1dDGMXP7ZYH9pu0kFXgIuIIJA+A0W8M8Qy64/qRxOiNd2WWjn2Wpz4/YtXKrQqP
- 7ozh46F8uSGbAfJJoByUt8yveSqIksX6TmcNZhiJUiBItvV/vUxEodr8lGx3olmMj2Xz
- tSkzaCSgxeL5jEKmR+6weEpQ3AYxj8CyYKeVNMOoN4S1EmcV+xMIaux5aGhdAQ0AJ/i2
- CAxOK5YVv35ygtK3qjjPtmgYENPjK7856IcwX+Q8exdDt3BVP6H/4prfAEdf2FzBA4hF
- r4+w==
-X-Gm-Message-State: AOJu0YxWcnOP0psaGClQhtDP7kICzeQ8OMvPkA7DYWY4VW2tlTcMVaT7
- 6QhTFaBI0TP2CpG78S/ZXFKqJlFziH2lBT2/RhU=
-X-Google-Smtp-Source: AGHT+IFV4PTpbDQ1XidVdKjc7jBwvSMVKrCtABdezjhFl2ncYvuUl8OIXKh33RpxEEW2wl7wgM5sKw==
-X-Received: by 2002:a05:6a20:f39f:b0:14c:5f8:fb3e with SMTP id
- qr31-20020a056a20f39f00b0014c05f8fb3emr1444053pzb.38.1693535034680; 
- Thu, 31 Aug 2023 19:23:54 -0700 (PDT)
+ bh=v2oMFltgopchvkCHTnrNxCsJsKx6S/nBlH+XZvf6iJQ=;
+ b=dzxa+Vxo6OVKuCf7gYoSSf1xOjvXG1tGpTwEMF0Vt14VupbQoDqwyYJE6xjDZvHcYj
+ /4EeAz6Nspa/XS0Wem+KHfd0bPctvA+G0PG9bT8LSy8Y5joqTihcjkiwdPa8N+jXRKQc
+ P5yz7Z85jmO/Gy2xjncPK/aelDwUwHYKhHgHGK31zRmMoDBddwca5RUbtjuvr/XDhKx6
+ IhDg+Bp86AjnbkQAaav5tQ3hw3lZie24Y9jdCVTkV42zZb0tgGhczZM2H5t4PPGwrjGZ
+ 4b9VOjVl9z25l61kSVtyQ8Fp8luEBxy9RE2V/T2qLUI1di0yfgqki9xc3hQTzJnm1t1R
+ Yh9w==
+X-Gm-Message-State: AOJu0Yw6+ZF0kqUu1cTbJ1MVQGG1AIJ3yuOew/7pODt16RdCElsGQCX5
+ AtuG8BJ5Kyvc1ia2SXImb4GIQvh2Le26Ek0yD5U=
+X-Google-Smtp-Source: AGHT+IFRkdGSIfCJdhpgv8TZpIfA6N04ObBj2uDDZG0hEfsCmeGVdA+gAB1wc/mJMb1SCOEf9G0mMw==
+X-Received: by 2002:a05:6870:7021:b0:1b4:4a2e:33f1 with SMTP id
+ u33-20020a056870702100b001b44a2e33f1mr1523556oae.29.1693535035472; 
+ Thu, 31 Aug 2023 19:23:55 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- c25-20020aa781d9000000b0068a54866ca8sm1906977pfn.134.2023.08.31.19.23.53
+ c25-20020aa781d9000000b0068a54866ca8sm1906977pfn.134.2023.08.31.19.23.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 19:23:54 -0700 (PDT)
+ Thu, 31 Aug 2023 19:23:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, alex.bennee@linaro.org, Warner Losh <imp@bsdimp.com>,
+Cc: laurent@vivier.eu, alex.bennee@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 27/33] cpu: Remove page_size_init
-Date: Thu, 31 Aug 2023 19:23:25 -0700
-Message-Id: <20230901022331.115247-28-richard.henderson@linaro.org>
+Subject: [PATCH v2 28/33] accel/tcg: Disconnect TargetPageDataNode from page
+ size
+Date: Thu, 31 Aug 2023 19:23:26 -0700
+Message-Id: <20230901022331.115247-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230901022331.115247-1-richard.henderson@linaro.org>
 References: <20230901022331.115247-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,153 +93,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move qemu_host_page_{size,mask} and HOST_PAGE_ALIGN into bsd-user.
-It should be removed from bsd-user as well, but defer that cleanup.
+Dynamically size the node for the runtime target page size.
 
-Cc: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/qemu.h           |  7 +++++++
- include/exec/cpu-common.h |  7 -------
- include/hw/core/cpu.h     |  2 --
- accel/tcg/translate-all.c |  1 -
- bsd-user/main.c           | 12 ++++++++++++
- cpu.c                     | 13 -------------
- softmmu/vl.c              |  1 -
- 7 files changed, 19 insertions(+), 24 deletions(-)
+ accel/tcg/user-exec.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index d3158bc2ed..c53f06d3f6 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -39,6 +39,13 @@ extern char **environ;
- #include "qemu/clang-tsa.h"
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 4c1697500a..09dc85c851 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -863,7 +863,7 @@ tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+ typedef struct TargetPageDataNode {
+     struct rcu_head rcu;
+     IntervalTreeNode itree;
+-    char data[TPD_PAGES][TARGET_PAGE_DATA_SIZE] __attribute__((aligned));
++    char data[] __attribute__((aligned));
+ } TargetPageDataNode;
  
- #include "qemu-os.h"
-+/*
-+ * TODO: Remove these and rely only on qemu_real_host_page_size().
-+ */
-+extern uintptr_t qemu_host_page_size;
-+extern intptr_t qemu_host_page_mask;
-+#define HOST_PAGE_ALIGN(addr) ROUND_UP((addr), qemu_host_page_size)
-+
- /*
-  * This struct is used to hold certain information about the image.  Basically,
-  * it replicates in user space what would be certain task_struct fields in the
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 41788c0bdd..46b0abc918 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -22,13 +22,6 @@ typedef uint64_t vaddr;
- void cpu_exec_init_all(void);
- void cpu_exec_step_atomic(CPUState *cpu);
+ static IntervalTreeRoot targetdata_root;
+@@ -901,7 +901,8 @@ void page_reset_target_data(target_ulong start, target_ulong last)
+         n_last = MIN(last, n->last);
+         p_len = (n_last + 1 - n_start) >> TARGET_PAGE_BITS;
  
--/* Using intptr_t ensures that qemu_*_page_mask is sign-extended even
-- * when intptr_t is 32-bit and we are aligning a long long.
-- */
--extern uintptr_t qemu_host_page_size;
--extern intptr_t qemu_host_page_mask;
--
--#define HOST_PAGE_ALIGN(addr) ROUND_UP((addr), qemu_host_page_size)
- #define REAL_HOST_PAGE_ALIGN(addr) ROUND_UP((addr), qemu_real_host_page_size())
- 
- /* The CPU list lock nests outside page_(un)lock or mmap_(un)lock */
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index fdcbe87352..66575eec73 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1025,8 +1025,6 @@ bool target_words_bigendian(void);
- 
- const char *target_name(void);
- 
--void page_size_init(void);
--
- #ifdef NEED_CPU_H
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index b2d4e22c17..d84558dd95 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -255,7 +255,6 @@ bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
- 
- void page_init(void)
- {
--    page_size_init();
-     page_table_config_init();
+-        memset(t->data[p_ofs], 0, p_len * TARGET_PAGE_DATA_SIZE);
++        memset(t->data + p_ofs * TARGET_PAGE_DATA_SIZE, 0,
++               p_len * TARGET_PAGE_DATA_SIZE);
+     }
  }
  
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index f227d87834..ab389aa938 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -49,6 +49,13 @@
- #include "host-os.h"
- #include "target_arch_cpu.h"
- 
-+
-+/*
-+ * TODO: Remove these and rely only on qemu_real_host_page_size().
-+ */
-+uintptr_t qemu_host_page_size;
-+intptr_t qemu_host_page_mask;
-+
- static bool opt_one_insn_per_tb;
- uintptr_t guest_base;
- bool have_guest_base;
-@@ -308,6 +315,9 @@ int main(int argc, char **argv)
-         (void) envlist_setenv(envlist, *wrk);
-     }
- 
-+    qemu_host_page_size = getpagesize();
-+    qemu_host_page_size = MAX(qemu_host_page_size, TARGET_PAGE_SIZE);
-+
-     cpu_model = NULL;
- 
-     qemu_add_opts(&qemu_trace_opts);
-@@ -408,6 +418,8 @@ int main(int argc, char **argv)
-         }
-     }
- 
-+    qemu_host_page_mask = -qemu_host_page_size;
-+
-     /* init debug */
-     {
-         int mask = 0;
-diff --git a/cpu.c b/cpu.c
-index 1c948d1161..743c889ece 100644
---- a/cpu.c
-+++ b/cpu.c
-@@ -431,16 +431,3 @@ const char *target_name(void)
+@@ -909,7 +910,7 @@ void *page_get_target_data(target_ulong address)
  {
-     return TARGET_NAME;
- }
--
--void page_size_init(void)
--{
--    /* NOTE: we can always suppose that qemu_host_page_size >=
--       TARGET_PAGE_SIZE */
--    if (qemu_host_page_size == 0) {
--        qemu_host_page_size = qemu_real_host_page_size();
--    }
--    if (qemu_host_page_size < TARGET_PAGE_SIZE) {
--        qemu_host_page_size = TARGET_PAGE_SIZE;
--    }
--    qemu_host_page_mask = -(intptr_t)qemu_host_page_size;
--}
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index b0b96f67fa..bc2aab9aaa 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -2049,7 +2049,6 @@ static void qemu_create_machine(QDict *qdict)
+     IntervalTreeNode *n;
+     TargetPageDataNode *t;
+-    target_ulong page, region;
++    target_ulong page, region, p_ofs;
+ 
+     page = address & TARGET_PAGE_MASK;
+     region = address & TBD_MASK;
+@@ -925,7 +926,8 @@ void *page_get_target_data(target_ulong address)
+         mmap_lock();
+         n = interval_tree_iter_first(&targetdata_root, page, page);
+         if (!n) {
+-            t = g_new0(TargetPageDataNode, 1);
++            t = g_malloc0(sizeof(TargetPageDataNode)
++                          + TPD_PAGES * TARGET_PAGE_DATA_SIZE);
+             n = &t->itree;
+             n->start = region;
+             n->last = region | ~TBD_MASK;
+@@ -935,7 +937,8 @@ void *page_get_target_data(target_ulong address)
      }
  
-     cpu_exec_init_all();
--    page_size_init();
- 
-     if (machine_class->hw_version) {
-         qemu_set_hw_version(machine_class->hw_version);
+     t = container_of(n, TargetPageDataNode, itree);
+-    return t->data[(page - region) >> TARGET_PAGE_BITS];
++    p_ofs = (page - region) >> TARGET_PAGE_BITS;
++    return t->data + p_ofs * TARGET_PAGE_DATA_SIZE;
+ }
+ #else
+ void page_reset_target_data(target_ulong start, target_ulong last) { }
 -- 
 2.34.1
 
