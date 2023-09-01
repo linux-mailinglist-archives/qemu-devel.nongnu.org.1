@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770A3790273
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 21:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DF7790289
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 21:48:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc9k0-0005DN-JK; Fri, 01 Sep 2023 15:23:36 -0400
+	id 1qcA6J-0007lM-9a; Fri, 01 Sep 2023 15:46:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <coltonlewis@google.com>)
- id 1qc9ju-0005BY-Rr
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:23:31 -0400
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qcA6H-0007l2-Oy
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:46:37 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <coltonlewis@google.com>)
- id 1qc9jq-0001xa-RJ
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:23:29 -0400
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-34cacab5e34so8051425ab.0
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 12:23:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qcA6F-0002uK-8t
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 15:46:37 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5739965a482so201105eaf.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 12:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1693596204; x=1694201004; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Jk8eU1YUzlGph2kkfy1NgH1ax2sGgPgvKzoaDKemgb4=;
- b=oXYkIXYDziSUWq9BrI+1q/q3PyIoPbqLpoJcQ0T+iHUZ62Rh0mVch+W/KKrKPW0YSk
- Uyb0uoPe8JQeSts47aBw93gKdC9AN5n3PbLBFgOGkPRJApzdikjtsWiaWBdxudh32IP0
- GYSaDGabzgO8SWz5Y/bm8TTADOkW/RdLdsYZhLVVEzd5ZeB+QKcjSj7Civ5pL7PBzK1X
- Vvq8NXaWuKot6Oon7+2ESPVQo8jvLxUFfKklkQT7Kw7pe15LatOTGg+NXu8kQlbeYQmQ
- Y5qiJGgTzA8teDOmjmzZKm4VhwBzS237Ri97bpIVup7o8HrVgn83nZuekUHvg0lgFqyY
- //VA==
+ d=ventanamicro.com; s=google; t=1693597594; x=1694202394; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qa/lEGUuiSTYdIPWFhWhc/A3P+oNCfp1O+Hq9v6jrOI=;
+ b=E5cMFeJL1u3cY127yDQ7vEq7wqorgkdiaijGDmhwaz9DVWSEHSCm1g/LqCputjNbpK
+ XRJV1YBBkDtALOeI1lj7qkWZpJnRF4ozkoUSOzHBczv7PapG7jl72m0uZ/YZhUojwUuX
+ AUQwo+lOOJHFDx2U8+6JQGAxhB17qRremNVDsrRVgcvKhAONIqwtBaRKqdXnLoMRR9cX
+ tiBy7vBDnHc5kjwP/BoBde28ew6mfaCWTRqO6AddtAyGDAJbUpzv8brqZMa9Xy0AyVdI
+ HKX20gvaK46RBbIwu+ulugf+Nqkq4LiKQT2TkewvV+GHDOKdgkNbDYTZL9nOcmiQsktl
+ Y9vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693596204; x=1694201004;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Jk8eU1YUzlGph2kkfy1NgH1ax2sGgPgvKzoaDKemgb4=;
- b=QvAiswtPgmzN5Oj4bBWdAnI+FKFFC9o7vtrjHfYnogUMi+TvQ6KqHRv+017CaANJI9
- FEXYi9gt9CYJ7ujbWJYZjdcDyXlOV+9tlTETO24TEEL58PSMcv/7UMdcpx2m7qlv9wYt
- r9jQ9DeqNOZDPtiDc+cfiwQSzbspBqfV6JafQkyvE7HOoh8IHHlhsMP4A+RB1mENypDZ
- OZuYLpbxEKCMn0NzVMR3sQIDhJP0blfha/ZDNgRbWsSFMbt9qWv0Idyl8mag5TilHgm0
- xa12tD83OOClmYwm10Imiw8NUQAjHC8gqLhT1UwR78fHMsW8Ou9yYkn7Xa4OCRHMMnfo
- w67A==
-X-Gm-Message-State: AOJu0YzCxdNgJ9T0RJNyUM2rE4DVCeElf3VRUlm4dm4oQbiA7Kz/2bqk
- bvmuwHQ42Z5PJzjAqwx6y8JCIA==
-X-Google-Smtp-Source: AGHT+IHARIbykt4ZHFf2A2z7AfZBgjkaI7ulhwMgGHyetk3eR9KVbd5UJppbxfa1hzIpHvaB8/atjw==
-X-Received: by 2002:a92:d284:0:b0:349:3c0:395d with SMTP id
- p4-20020a92d284000000b0034903c0395dmr3617488ilp.1.1693596203704; 
- Fri, 01 Sep 2023 12:23:23 -0700 (PDT)
-Received: from google.com (30.64.135.34.bc.googleusercontent.com.
- [34.135.64.30]) by smtp.gmail.com with ESMTPSA id
- v12-20020a92d24c000000b00345d6e8ded4sm1252896ilg.25.2023.09.01.12.23.23
+ d=1e100.net; s=20221208; t=1693597594; x=1694202394;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qa/lEGUuiSTYdIPWFhWhc/A3P+oNCfp1O+Hq9v6jrOI=;
+ b=eo36pb5Qw0zptnmCIB6uF7+KYKf7KdRbyw197wt9kcPHMomLFFUlLsLko2agYYjcay
+ xJs5m3GfptK/TMAISuV+rzx3B+lTS4d+oN2YrDt1fYibXfpv4js2m5Q8dbj3IPT4byon
+ YXflItMpPK3WqlR14gEW3xyaoh/FZqdNEKmW8YFGVrTaSaUNGiJ2a3XvuAXJqGIZK1rL
+ 0H4am0c+9zwfFc4mxRUGT/JlTlX+Pskkjae194ZcifdbFBqm+pz5o8qHxZ0Hxn+m1kL5
+ Vm5i4Xc2XudzGUGU8iVUM/w1E4tmXlrNOMehG+Ymr+2zFzNZoaf6rBT+V1FqxvNf6mmI
+ sN8Q==
+X-Gm-Message-State: AOJu0YyaDFmqWBr12YUZqXwH4mtv0vOoT+ayXfouPF6cN5ba5ygBVixS
+ c41GuSOPV2fVKMvQjza8fniemDKijmcH5QofEJU=
+X-Google-Smtp-Source: AGHT+IG7rgOAhevh8Mhk1w7TnZ29oBcnsVlSps0hzKYWtf2JjW6zT3S9F/M+OlDf1F5NGYMOt4QCMA==
+X-Received: by 2002:a4a:2553:0:b0:56e:9d63:9ac5 with SMTP id
+ v19-20020a4a2553000000b0056e9d639ac5mr2475324ooe.2.1693597593735; 
+ Fri, 01 Sep 2023 12:46:33 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.194])
+ by smtp.gmail.com with ESMTPSA id
+ h187-20020a4a5ec4000000b00565d41ba4d0sm2303002oob.35.2023.09.01.12.46.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 12:23:23 -0700 (PDT)
-Date: Fri, 1 Sep 2023 19:23:20 +0000
-From: Colton Lewis <coltonlewis@google.com>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- kvm@vger.kernel.org, qemu-trivial@nongnu.org
-Subject: Re: [PATCH] arm64: Restore trapless ptimer access
-Message-ID: <ZPI6KNqGGTxxHhCh@google.com>
-References: <20230831190052.129045-1-coltonlewis@google.com>
- <20230901-16232ff17690fc32a0feb5df@orel>
+ Fri, 01 Sep 2023 12:46:33 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v9 00/20] riscv: 'max' CPU, detect user choice in TCG
+Date: Fri,  1 Sep 2023 16:46:06 -0300
+Message-ID: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230901-16232ff17690fc32a0feb5df@orel>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
- envelope-from=coltonlewis@google.com; helo=mail-il1-x134.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,62 +91,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 01, 2023 at 09:35:47AM +0200, Andrew Jones wrote:
-> On Thu, Aug 31, 2023 at 07:00:52PM +0000, Colton Lewis wrote:
-> > Due to recent KVM changes, QEMU is setting a ptimer offset resulting
-> > in unintended trap and emulate access and a consequent performance
-> > hit. Filter out the PTIMER_CNT register to restore trapless ptimer
-> > access.
-> >
-> > Quoting Andrew Jones:
-> >
-> > Simply reading the CNT register and writing back the same value is
-> > enough to set an offset, since the timer will have certainly moved
-> > past whatever value was read by the time it's written.  QEMU
-> > frequently saves and restores all registers in the get-reg-list array,
-> > unless they've been explicitly filtered out (with Linux commit
-> > 680232a94c12, KVM_REG_ARM_PTIMER_CNT is now in the array). So, to
-> > restore trapless ptimer accesses, we need a QEMU patch to filter out
-> > the register.
-> >
-> > See
-> > https://lore.kernel.org/kvmarm/gsntttsonus5.fsf@coltonlewis-kvm.c.googlers.com/T/#m0770023762a821db2a3f0dd0a7dc6aa54e0d0da9
->
-> The link can be shorter with
->
-> https://lore.kernel.org/all/20230823200408.1214332-1-coltonlewis@google.com/
+Hi,
 
-I will keep that in mind next time.
+This new version contains suggestions made by Andrew Jones in v8.
 
-> > for additional context.
-> >
-> > Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
->
-> Thanks for the testing and posting, Colton. Please add your s-o-b and a
-> Tested-by tag as well.
+Most notable change is the removal of the opensbi.py test in patch 11,
+which was replaced by a TuxBoot test. It's more suitable to test the
+integrity of all the extensions enabled by the 'max' CPU.
 
-Assuming it is sufficient to add here instead of reposting the whole patch:
+The series is available in this branch:
 
-Signed-off-by: Colton Lewis <coltonlewis@google.com>
-Tested-by: Colton Lewis <coltonlewis@google.com>
+https://gitlab.com/danielhb/qemu/-/tree/max_cpu_user_choice_v9
 
-> > ---
-> >  target/arm/kvm64.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-> > index 4d904a1d11..2dd46e0a99 100644
-> > --- a/target/arm/kvm64.c
-> > +++ b/target/arm/kvm64.c
-> > @@ -672,6 +672,7 @@ typedef struct CPRegStateLevel {
-> >   */
-> >  static const CPRegStateLevel non_runtime_cpregs[] = {
-> >      { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
-> > +    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
-> >  };
-> >
-> >  int kvm_arm_cpreg_level(uint64_t regidx)
-> > --
-> > 2.42.0.283.g2d96d420d3-goog
-> >
+Patches missing acks: 11, 15
+
+Changes from v8:
+- patch 7:
+  - add g_assert(array) at the start of riscv_cpu_add_qdev_prop_array()
+- patch 8:
+  - add g_assert(array) at the start of riscv_cpu_add_kvm_unavail_prop_array()
+- patch 11:
+  - removed both opensbi.py tests
+  - added 2 'max' cpu tuxboot tests in tuxrun_baselines.py
+- patch 12:
+  - fixed typos in deprecated.rst
+- patch 15:
+  - use g_assert_not_reached() at the end of cpu_cfg_ext_get_min_version()
+- patch 19:
+  - added comment on top of riscv_cpu_add_misa_properties() explaining why
+    we're not implementing user choice support for MISA properties
+- patch 20:
+  - warn_report() is now called after the G error conditions
+- v8 link: https://lore.kernel.org/qemu-riscv/20230824221440.484675-1-dbarboza@ventanamicro.com/
+
+
+
+Daniel Henrique Barboza (20):
+  target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[]
+  target/riscv/cpu.c: skip 'bool' check when filtering KVM props
+  target/riscv/cpu.c: split kvm prop handling to its own helper
+  target/riscv: add DEFINE_PROP_END_OF_LIST() to riscv_cpu_options[]
+  target/riscv/cpu.c: split non-ratified exts from
+    riscv_cpu_extensions[]
+  target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[]
+  target/riscv/cpu.c: add riscv_cpu_add_qdev_prop_array()
+  target/riscv/cpu.c: add riscv_cpu_add_kvm_unavail_prop_array()
+  target/riscv/cpu.c: limit cfg->vext_spec log message
+  target/riscv: add 'max' CPU type
+  avocado, risc-v: add tuxboot tests for 'max' CPU
+  target/riscv: deprecate the 'any' CPU type
+  target/riscv/cpu.c: use offset in isa_ext_is_enabled/update_enabled
+  target/riscv: make CPUCFG() macro public
+  target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
+  target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during realize()
+  target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
+  target/riscv: use isa_ext_update_enabled() in
+    init_max_cpu_extensions()
+  target/riscv/cpu.c: honor user choice in cpu_cfg_ext_auto_update()
+  target/riscv/cpu.c: consider user option with RVG
+
+ docs/about/deprecated.rst         |  12 +
+ target/riscv/cpu-qom.h            |   1 +
+ target/riscv/cpu.c                | 564 +++++++++++++++++++++---------
+ target/riscv/cpu.h                |   2 +
+ target/riscv/kvm.c                |   8 +-
+ tests/avocado/tuxrun_baselines.py |  32 ++
+ 6 files changed, 450 insertions(+), 169 deletions(-)
+
+-- 
+2.41.0
+
 
