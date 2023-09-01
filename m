@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701E17902D6
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194527902F5
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:45:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcAnS-00088n-1Q; Fri, 01 Sep 2023 16:31:14 -0400
+	id 1qcAyq-0006wz-NR; Fri, 01 Sep 2023 16:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qcAnO-00086z-Cv
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:31:10 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qcAyp-0006wf-Bp
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:42:59 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qcAnK-0005Pb-U5
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:31:10 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c0d5b16aacso19508065ad.1
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:31:05 -0700 (PDT)
+ id 1qcAyl-0001wQ-Ck
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:42:59 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68c3b9f83f4so2058422b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693600265; x=1694205065; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VN6l2cROyOIJzFYTqk3mQSzHqtpIGQeP6fwa2uvMk5I=;
- b=mlkChalYArBHuLVyfUFLhw5KKbAHJ5U58eCXE/J2sbxFSKqJhP7HhlS3nwbk0tDk3a
- T4ggddBQRA+xuTi2z6mmBpU/ZnX/DVVccrjRqfYb17X89xUvN0Q6MuJW5V6obvaQRd09
- IkoZeIYkx3ygKr7uRlXpgk+SxIn0KzkOtxaH4ASB0QObp1FML+ER6ZcpP8ldMLC7AzFY
- ebiLwTsEHm74/fXQpryImO7wUKBFHhxugmYBZf3F++kevkLjkrx1Gc0vXqLoL1Mjt2op
- qZoN4WQVpnh7V4ebdulZ9OortXWalrMOkMe8UBWIkpIHgZVfytnH/RZe/18hP8UFTWeY
- O8pA==
+ d=linaro.org; s=google; t=1693600973; x=1694205773; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wZWpJ03Z9eDSw/KqR9tATJV7QN6dmFf4hk1P937SZZk=;
+ b=R5dhx1NIt0ynwJIDj4xuNRMh5WSQ30imXPytM8+yvir7+7ogv+KkR9H7rWawWFPc/W
+ Dm/gcgfDvKXKhH6/M0JubOz4fN0j0nDKFbADladYEju+Cb2IBn7iAcCGb5e4cThxf2ap
+ MD3XTih7qRCu5gV0mTPkdFBVxovUZPSRDjm9E0SE/1cGGSDGh6PFcO1L2061pL2T9RLU
+ Zd5Y0ewPc6XvGy6FvWXTfuuweOSRUHai2ixbeRrHL+hQdZ0eCOan45asZ2xuCmDj13x6
+ G6SbOXxiQWhYztYydT3MXV6kYgrIlHXs+W5D4eINaWE24V6EAzjBDcp+7GN6WQbURM6z
+ iNRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693600265; x=1694205065;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VN6l2cROyOIJzFYTqk3mQSzHqtpIGQeP6fwa2uvMk5I=;
- b=HHIOX+fwe39bQpe/VZhsJlgvE2swO9AnZGh1kJghjPdPEW+iGtfi/ABJiCOTzmUKsY
- Ve0u47UrWKqQH7evZ+yq47+y6orTJHHzxM0yszCUaUmtVJeYXiytoV0CnjflPhgvjmuM
- 9p86PoOnzNEZSsuoFfQZjSbWJ7+K149R4SNq14u2b4w2au5BP4QoVEzurT/Uy9bhhIGy
- naKm3cRUvjNu7KtLw30YkQnWQHPurdXvyGqMc3txGlgLvfBArjmYYn/VUsawgchZsn1X
- hi+4A4VaolqqwFxAyS9xmameTwDQNQDGfUlw4ovw6infyI4Tmv16/TposNvSDYOKNKtA
- jl5w==
-X-Gm-Message-State: AOJu0Yzj81BiE5d3QBlz3nSFo8A0UNAunpXi3jMBO992PiUKHY6TkOoq
- +0UAUkFYyfQI5B3vcF1Y19vR+C208YkK6VOrNKI=
-X-Google-Smtp-Source: AGHT+IFtFQWFXxQydjm4SbPah1uzvFkBlm9aMxiHtOH/gHrASiMrnd6yENR3hEuBAdFjz9QzhcllkQ==
-X-Received: by 2002:a17:90b:150:b0:269:7eea:d7f6 with SMTP id
- em16-20020a17090b015000b002697eead7f6mr2917655pjb.49.1693600264674; 
- Fri, 01 Sep 2023 13:31:04 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693600973; x=1694205773;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wZWpJ03Z9eDSw/KqR9tATJV7QN6dmFf4hk1P937SZZk=;
+ b=BDx4MweW5NeQup5veL1EHOCdfmz6S3BtkwKTyBU9rDK8OFGpwGfa10YXFa8rhPs665
+ XNdLt3pedOWPtpauklfAHFfgzyx01D48gja4cSNFzpoHM6TQH3jM2+um2xXNeHBL304M
+ Dpx/poBaqTeaL3yXQruDIx+B/TJwv60VqXvz5A7gDAVT4TouFK7Pv3ySXnDWML0Z9bfH
+ g3EyojyCyZvfhh1lns6VxLcP7hb0KuLo3EsduCA/MRhpZl0bwf9yXdJasm0HwA0gyyeQ
+ Gzsxl597tZSiX93HXkpEKx22AdWq9P+QCcGHh4tdfX0eb/Of2kbOpsWpimk+MNVk7z8L
+ ha1Q==
+X-Gm-Message-State: AOJu0YydvDiz5ke/Z6pQ9LAXpV5CA8MHpsKw+jMRjUl9ltVlkfiY6eGk
+ I0FlJ8rxd7lj+pBUsx2eXyHclQ1uViCA07Yf1fg=
+X-Google-Smtp-Source: AGHT+IG06cLVupWsg1ifAFCH7p8nVLKPirioxUq7QZQdF5mz21HS0jBKgMwUDws8IMQnUbNWftXRAw==
+X-Received: by 2002:a05:6a21:7983:b0:133:bbe0:2ff1 with SMTP id
+ bh3-20020a056a21798300b00133bbe02ff1mr4015232pzc.44.1693600972555; 
+ Fri, 01 Sep 2023 13:42:52 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- 14-20020a17090a190e00b00262ca945cecsm5360373pjg.54.2023.09.01.13.31.03
+ j15-20020aa78d0f000000b0068c97a4eb0dsm3320666pfe.191.2023.09.01.13.42.51
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 13:31:04 -0700 (PDT)
+ Fri, 01 Sep 2023 13:42:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2] target/arm: Do not use gen_mte_checkN in trans_STGP
-Date: Fri,  1 Sep 2023 13:31:03 -0700
-Message-Id: <20230901203103.136408-1-richard.henderson@linaro.org>
+Subject: [PULL 00/13] linux-user patch queue
+Date: Fri,  1 Sep 2023 13:42:38 -0700
+Message-Id: <20230901204251.137307-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,80 +87,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-STGP writes to tag memory, it does not check it.
-This happened to work because we wrote tag memory first
-so that the check always succeeded.
+The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-a64.c | 41 +++++++++++++---------------------
- 1 file changed, 15 insertions(+), 26 deletions(-)
+  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 0b77c92437..c5de176b8b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3020,37 +3020,17 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-         tcg_gen_addi_i64(dirty_addr, dirty_addr, offset);
-     }
- 
--    if (!s->ata) {
--        /*
--         * TODO: We could rely on the stores below, at least for
--         * system mode, if we arrange to add MO_ALIGN_16.
--         */
--        gen_helper_stg_stub(cpu_env, dirty_addr);
--    } else if (tb_cflags(s->base.tb) & CF_PARALLEL) {
--        gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
--    } else {
--        gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
--    }
--
--    mop = finalize_memop(s, MO_64);
--    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << MO_64, mop);
--
-+    clean_addr = clean_data_tbi(s, dirty_addr);
-     tcg_rt = cpu_reg(s, a->rt);
-     tcg_rt2 = cpu_reg(s, a->rt2);
- 
-     /*
--     * STGP is defined as two 8-byte memory operations and one tag operation.
--     * We implement it as one single 16-byte memory operation for convenience.
--     * Rebuild mop as for STP.
--     * TODO: The atomicity with LSE2 is stronger than required.
--     * Need a form of MO_ATOM_WITHIN16_PAIR that never requires
--     * 16-byte atomicity.
-+     * STGP is defined as two 8-byte memory operations, aligned to TAG_GRANULE,
-+     * and one tag operation.  We implement it as one single aligned 16-byte
-+     * memory operation for convenience.  Note that the alignment ensures
-+     * MO_ATOM_IFALIGN_PAIR produces 8-byte atomicity for the memory store.
-      */
--    mop = MO_128;
--    if (s->align_mem) {
--        mop |= MO_ALIGN_8;
--    }
--    mop = finalize_memop_pair(s, mop);
-+    mop = finalize_memop_atom(s, MO_128 | MO_ALIGN, MO_ATOM_IFALIGN_PAIR);
- 
-     tmp = tcg_temp_new_i128();
-     if (s->be_data == MO_LE) {
-@@ -3060,6 +3040,15 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-     }
-     tcg_gen_qemu_st_i128(tmp, clean_addr, get_mem_index(s), mop);
- 
-+    /* Perform the tag store, if tag access enabled. */
-+    if (s->ata) {
-+        if (tb_cflags(s->base.tb) & CF_PARALLEL) {
-+            gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
-+        } else {
-+            gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
-+        }
-+    }
-+
-     op_addr_ldstpair_post(s, a, dirty_addr, offset);
-     return true;
- }
--- 
-2.34.1
+are available in the Git repository at:
 
+  https://gitlab.com/rth7680/qemu.git tags/pull-lu-20230901
+
+for you to fetch changes up to 044e95c81e750a0605deb12a20ee23bfde7dc9c8:
+
+  linux-user: Track shm regions with an interval tree (2023-09-01 13:35:57 -0700)
+
+----------------------------------------------------------------
+linux-user: Rewrite and improve /proc/pid/maps
+linux-user: Fix shmdt and improve shm region tracking
+linux-user: Remove ELF_START_MMAP and image_info.start_mmap
+
+----------------------------------------------------------------
+Helge Deller (2):
+      linux-user: Emulate /proc/cpuinfo on aarch64 and arm
+      linux-user: Emulate /proc/cpuinfo for Alpha
+
+Ilya Leoshkevich (1):
+      linux-user: Emulate the Anonymous: keyword in /proc/self/smaps
+
+Richard Henderson (10):
+      linux-user: Split out cpu/target_proc.h
+      util/selfmap: Use dev_t and ino_t in MapInfo
+      linux-user: Use walk_memory_regions for open_self_maps
+      linux-user: Adjust brk for load_bias
+      linux-user: Show heap address in /proc/pid/maps
+      linux-user: Remove ELF_START_MMAP and image_info.start_mmap
+      linux-user: Move shmat and shmdt implementations to mmap.c
+      linux-user: Use WITH_MMAP_LOCK_GUARD in target_{shmat,shmdt}
+      linux-user: Fix shmdt
+      linux-user: Track shm regions with an interval tree
+
+ include/qemu/selfmap.h               |   4 +-
+ linux-user/aarch64/target_proc.h     |   1 +
+ linux-user/alpha/target_proc.h       |  67 +++++
+ linux-user/arm/target_proc.h         | 101 +++++++
+ linux-user/cris/target_proc.h        |   1 +
+ linux-user/hexagon/target_proc.h     |   1 +
+ linux-user/hppa/target_proc.h        |  26 ++
+ linux-user/i386/target_proc.h        |   1 +
+ linux-user/loader.h                  |   6 +-
+ linux-user/loongarch64/target_proc.h |   1 +
+ linux-user/m68k/target_proc.h        |  16 ++
+ linux-user/microblaze/target_proc.h  |   1 +
+ linux-user/mips/target_proc.h        |   1 +
+ linux-user/mips64/target_proc.h      |   1 +
+ linux-user/nios2/target_proc.h       |   1 +
+ linux-user/openrisc/target_proc.h    |   1 +
+ linux-user/ppc/target_proc.h         |   1 +
+ linux-user/qemu.h                    |   1 -
+ linux-user/riscv/target_proc.h       |  37 +++
+ linux-user/s390x/target_proc.h       | 109 ++++++++
+ linux-user/sh4/target_proc.h         |   1 +
+ linux-user/sparc/target_proc.h       |  16 ++
+ linux-user/user-mmap.h               |   4 +
+ linux-user/x86_64/target_proc.h      |   1 +
+ linux-user/xtensa/target_proc.h      |   1 +
+ linux-user/elfload.c                 | 170 +++++++++---
+ linux-user/mmap.c                    | 168 ++++++++++++
+ linux-user/syscall.c                 | 514 +++++++++--------------------------
+ util/selfmap.c                       |  12 +-
+ 29 files changed, 828 insertions(+), 437 deletions(-)
+ create mode 100644 linux-user/aarch64/target_proc.h
+ create mode 100644 linux-user/alpha/target_proc.h
+ create mode 100644 linux-user/arm/target_proc.h
+ create mode 100644 linux-user/cris/target_proc.h
+ create mode 100644 linux-user/hexagon/target_proc.h
+ create mode 100644 linux-user/hppa/target_proc.h
+ create mode 100644 linux-user/i386/target_proc.h
+ create mode 100644 linux-user/loongarch64/target_proc.h
+ create mode 100644 linux-user/m68k/target_proc.h
+ create mode 100644 linux-user/microblaze/target_proc.h
+ create mode 100644 linux-user/mips/target_proc.h
+ create mode 100644 linux-user/mips64/target_proc.h
+ create mode 100644 linux-user/nios2/target_proc.h
+ create mode 100644 linux-user/openrisc/target_proc.h
+ create mode 100644 linux-user/ppc/target_proc.h
+ create mode 100644 linux-user/riscv/target_proc.h
+ create mode 100644 linux-user/s390x/target_proc.h
+ create mode 100644 linux-user/sh4/target_proc.h
+ create mode 100644 linux-user/sparc/target_proc.h
+ create mode 100644 linux-user/x86_64/target_proc.h
+ create mode 100644 linux-user/xtensa/target_proc.h
 
