@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA1C78F844
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 08:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2E878F848
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 08:00:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbxC0-0003ae-18; Fri, 01 Sep 2023 01:59:40 -0400
+	id 1qbxC3-0003sO-DK; Fri, 01 Sep 2023 01:59:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1qbxBy-0003Vf-3d
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 01:59:38 -0400
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1qbxC0-0003hX-Lh
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 01:59:40 -0400
 Received: from mgamail.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1qbxBv-0003WI-Rk
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 01:59:37 -0400
+ (Exim 4.90_1) (envelope-from <xin3.li@intel.com>) id 1qbxBy-0003WI-GF
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 01:59:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1693547975; x=1725083975;
+ t=1693547978; x=1725083978;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cYxBFAMtro4zbkcrtr3LvUksDBEPZ7yuMe4iZR87FMY=;
- b=Y++vpIISuPzWOMUbciXFz66E1JqTqq8hAsycLp+3OT2lFKWkv89+TZ8V
- YBHBEDKk/iH0ZCVaPkWeInKaBlPbUmn7y4Nekd7qHUwgu+v7WyCHBpd5W
- uODSJKFPRZ2pwEZ/YRrLnyGe9LzBaYMJQUhV0hbdvJ8/BXAFnVR/1AhhQ
- MRJqPb7kS/pvW9isDVL4gfxaJUzgKAtiV1CrwSviIGoEMrBLW7mJEYtFA
- kit2lhiRoXwcPywctEnwNBktriKW4fUeZL7ZmiijBMjjyjQGWzt8N2pSK
- vBO/g+kWZb+GwShU8FR4KRjjuIE/6MZFiYvvXb55jkyy0HHE5sNj/zYkn A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="356456632"
-X-IronPort-AV: E=Sophos;i="6.02,218,1688454000"; d="scan'208";a="356456632"
+ bh=kBJjgJUqdsnUFUfQUjqAeWVl/5i30fjbjZiEHQKmmFc=;
+ b=DLvLu23viOTOmOMiYhLqnKZlp7ul0PMBXVpdpID65Eins3UeElAljriY
+ pCq51U1lGYW2y1YU4fQdAy+OwKD9LCNum+BL3yLZTwljOoRb8rnXSaf93
+ nPAOsmwdw8Vrva/upQ4xWpYDbtZiuJPdUX7biAtbz+WyxOzubLkkXkI7a
+ 9k3hbYTnHrNJglyGrjLgZ1PmVANNYCvdtHO2CedoqsVRAi7xW+XoIjiy0
+ Fu/QAKwIPwJcQmJ/VVnE61Tz+UBsJKXC5cZW4d/bYgLqmWyOm6g1rZL5J
+ 6QJXJt595fxcksGq6ZePVZqMv+NAOchw0bkwb7amEVQ6j/fu8pMK0x8Sh A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="356456638"
+X-IronPort-AV: E=Sophos;i="6.02,218,1688454000"; d="scan'208";a="356456638"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  31 Aug 2023 22:59:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="739816164"
-X-IronPort-AV: E=Sophos;i="6.02,218,1688454000"; d="scan'208";a="739816164"
+X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="739816168"
+X-IronPort-AV: E=Sophos;i="6.02,218,1688454000"; d="scan'208";a="739816168"
 Received: from unknown (HELO fred..) ([172.25.112.68])
  by orsmga002.jf.intel.com with ESMTP; 31 Aug 2023 22:59:25 -0700
 From: Xin Li <xin3.li@intel.com>
@@ -43,9 +43,9 @@ To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
  chao.gao@intel.com, hpa@zytor.com, xiaoyao.li@intel.com,
  weijiang.yang@intel.com
-Subject: [PATCH 2/4] target/i386: mark CR4.FRED not reserved
-Date: Thu, 31 Aug 2023 22:30:20 -0700
-Message-Id: <20230901053022.18672-3-xin3.li@intel.com>
+Subject: [PATCH 3/4] target/i386: enumerate VMX nested-exception support
+Date: Thu, 31 Aug 2023 22:30:21 -0700
+Message-Id: <20230901053022.18672-4-xin3.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230901053022.18672-1-xin3.li@intel.com>
 References: <20230901053022.18672-1-xin3.li@intel.com>
@@ -75,52 +75,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when FRED
-is exposed to guests, otherwise it is still a reserved bit.
+Allow VMX nested-exception support to be exposed in KVM guests, thus
+nested KVM guests can enumerate it.
 
 Tested-by: Shan Kang <shan.kang@intel.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
 ---
- target/i386/cpu.h | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 064decbc85..924819a64c 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -262,6 +262,12 @@ typedef enum X86Seg {
- #define CR4_PKE_MASK   (1U << 22)
- #define CR4_PKS_MASK   (1U << 24)
- 
-+#ifdef TARGET_X86_64
-+#define CR4_FRED_MASK   (1ULL << 32)
-+#else
-+#define CR4_FRED_MASK   0
-+#endif
-+
- #define CR4_RESERVED_MASK \
- (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
-                 | CR4_DE_MASK | CR4_PSE_MASK | CR4_PAE_MASK \
-@@ -269,7 +275,8 @@ typedef enum X86Seg {
-                 | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
-                 | CR4_LA57_MASK \
-                 | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
--                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
-+                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
-+                | CR4_FRED_MASK))
- 
- #define DR6_BD          (1 << 13)
- #define DR6_BS          (1 << 14)
-@@ -2481,6 +2488,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
-     if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
-         reserved_bits |= CR4_PKS_MASK;
-     }
-+    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED)) {
-+        reserved_bits |= CR4_FRED_MASK;
-+    }
-     return reserved_bits;
- }
- 
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3dba6b46d9..ba579e1fb7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1340,6 +1340,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .feat_names = {
+             [54] = "vmx-ins-outs",
+             [55] = "vmx-true-ctls",
++            [58] = "vmx-nested-exception",
+         },
+         .msr = {
+             .index = MSR_IA32_VMX_BASIC,
 -- 
 2.34.1
 
