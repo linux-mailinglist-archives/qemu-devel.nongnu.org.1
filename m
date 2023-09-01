@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9672E78FF32
+	by mail.lfdr.de (Postfix) with ESMTPS id 343B978FF31
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:29:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc58H-0008Lk-HH; Fri, 01 Sep 2023 10:28:21 -0400
+	id 1qc59L-0001Vx-2S; Fri, 01 Sep 2023 10:29:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qc58F-0008Kz-4b
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:28:19 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qc58C-0004Ai-Ss
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:28:18 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-51a52a7d859so58611a12.0
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 07:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693578495; x=1694183295; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ib9DWaGi508QjpjnVnCTBsHEnjsMVtZTYxOscEQvaNA=;
- b=qObMpJLU0wr/AeAyUHjFmgnDrZX9ItPRyPaQKjScTmERYLBV7izrOLrIlcsFUb5Qkl
- iVR37hYl4jiq/epi0xIM0Io0Zk/bde5VVbsBsugXDUZz+BDNWjnIL6k32hx6yVtr/8/J
- z85YKdiNKL7Vco8mc3g9YBMcCEH6bvQoETE/GRyDOY4fyKCX6hqWXb3LAb2et01ZrA/R
- cTRiFJjdIiVO+jHEa1RSgfiXsXOsrXAONB3V9xr3jFE1WkU/RXulYsF5KY2okGYOkwi1
- c0z0VRzf+/RNnOA+1fdQp+8esND3y4vLKkcaLizlW3jX3GugBgPyFJB/2Yk28iyt/urs
- UkiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693578495; x=1694183295;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ib9DWaGi508QjpjnVnCTBsHEnjsMVtZTYxOscEQvaNA=;
- b=ZnRvtYlRIKnq0AeIHk/vR4h6dRrG40N1wngsWO/M3pFqveXlLP7dr+V3pNHC/cggp2
- /LWYlDGp7WHZ8ZXAyO5qZf8d0WzK0eeouXZSnlxeKjq0AlslzJ2ZqaPGN6al7yBsHwC8
- 0h62+hz61UmBLkweGs+GVw6r/yupAa1q2TjuM6Q8a7d/7M5mpbBRsMcmnHcvLnCNs+QT
- H0f3qCRjSHtNyMrAejcvkD/YuQZhSpPJ2qGp3R7H4QHJfNnwtNbmQrPB7NVSPjAclrDj
- 04ZGBq9MDiXof4IZ7CJxVhOnrghPPApBfrkcOQsnXj7sQLZ5R2s/pmtPNjqe9e00qDX+
- mZDA==
-X-Gm-Message-State: AOJu0YyMK/jGzhcLMaze2VzHRzIv3vDqUF5GU6X06L/d7FuUbSmaG8P9
- s8cJivn1ILlMwrd/bKSqSdhqnQ==
-X-Google-Smtp-Source: AGHT+IE1dijZ9iz1ospmyEq8I7bNJNkl00WxVQV4XZLUsF0bkqyGB/4PSW17QUi9M1DijlvpILdCeA==
-X-Received: by 2002:a17:907:7f29:b0:9a5:ae8a:6e0b with SMTP id
- qf41-20020a1709077f2900b009a5ae8a6e0bmr7192612ejc.24.1693578495042; 
- Fri, 01 Sep 2023 07:28:15 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.203.220])
- by smtp.gmail.com with ESMTPSA id
- y8-20020a170906914800b00992f2befcbcsm2034271ejw.180.2023.09.01.07.28.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Sep 2023 07:28:14 -0700 (PDT)
-Message-ID: <a0683cdc-9e90-f115-d477-8adf4682d4ee@linaro.org>
-Date: Fri, 1 Sep 2023 16:28:13 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qc59H-0001CB-By
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:29:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qc59F-0004IM-2L
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:29:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693578559;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=V9lBquCL2YclY2sze51zyiHcB0zyQaAv6CEpdCySxG4=;
+ b=eOqQpzRE499I4Mjt46r56PuZIgC52F1mm0OJqxT6v/EMmJqexjINmW0onC7U5gYG5pKjwp
+ vqaivDWIj8dQHvga2/RIbxE2kgsYF6OGdjaADx5emMxnOld4usrWvynII08diYvffxym1A
+ GHqITtu1/fHzh51nsrbj4qqviiMV2n0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-597-g81sGpLFML2CLhkI2QMRtw-1; Fri, 01 Sep 2023 10:29:18 -0400
+X-MC-Unique: g81sGpLFML2CLhkI2QMRtw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05B8C1C189A3
+ for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 14:29:18 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 578741460FF4;
+ Fri,  1 Sep 2023 14:29:17 +0000 (UTC)
+Date: Fri, 1 Sep 2023 15:29:15 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH 27/67] ui/console: free more QemuConsole resources
+Message-ID: <ZPH1Ow9w9fJkcr+r@redhat.com>
+References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-28-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2] dbus: Properly dispose touch/mouse dbus objects
-Content-Language: en-US
-To: Bilal Elmoussaoui <belmouss@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20230901124507.94087-1-belmouss@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230901124507.94087-1-belmouss@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230830093843.3531473-28-marcandre.lureau@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,31 +79,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/23 14:45, Bilal Elmoussaoui wrote:
-
-Fixes: 142ca628a7 ("ui: add a D-Bus display backend")
-Fixes: de9f844ce2 ("ui/dbus: Expose a touch device interface")
-
-> Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
-> ---
->   ui/dbus-console.c | 2 ++
->   1 file changed, 2 insertions(+)
+On Wed, Aug 30, 2023 at 01:38:01PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-> index e19774f985..36f7349585 100644
-> --- a/ui/dbus-console.c
-> +++ b/ui/dbus-console.c
-> @@ -150,6 +150,8 @@ dbus_display_console_dispose(GObject *object)
->       DBusDisplayConsole *ddc = DBUS_DISPLAY_CONSOLE(object);
->   
->       unregister_displaychangelistener(&ddc->dcl);
-> +    g_clear_object(&ddc->iface_touch);
-> +    g_clear_object(&ddc->iface_mouse);
->       g_clear_object(&ddc->iface_kbd);
->       g_clear_object(&ddc->iface);
->       g_clear_pointer(&ddc->listeners, g_hash_table_unref);
+> This code path is probably not executed at this point, since console
+> aren't being released.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>  ui/console.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
