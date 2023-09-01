@@ -2,63 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212AB78FD1C
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3CC78FD26
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc3BV-0000V3-5v; Fri, 01 Sep 2023 08:23:33 -0400
+	id 1qc3E0-0002UW-7C; Fri, 01 Sep 2023 08:26:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qc3BS-0000Oy-2O
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:23:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
+ id 1qc3Dy-0002UE-7b; Fri, 01 Sep 2023 08:26:06 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qc3BP-0007EY-TO
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:23:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693571007;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=HpDc0+/XXYKR0NtBCGyPSKv38OLN2dLh3nwWw6zVwyY=;
- b=G4VAsVqQ7mk9HF7ZjhYuI0LshhlagzFxAQZAHq/R707T2zfITZ//tjIEH7pHt8knTpg63v
- Klp0oHnrBOpp0t9zAvlRCzN0AtwvfHHz0mZSj6rDKXDQpQb8VZrYdHQl3w9a+KmMckDT+3
- d0bdt1fTrQWEcsV65N/kMD3YkZK3Yoc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-635-Tipm5M9hPUCj-yyxNcSqjA-1; Fri, 01 Sep 2023 08:23:25 -0400
-X-MC-Unique: Tipm5M9hPUCj-yyxNcSqjA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
+ id 1qc3Dv-0007pf-RR; Fri, 01 Sep 2023 08:26:05 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rcch64V1Tz4wy9;
+ Fri,  1 Sep 2023 22:25:58 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94A7D1817908
- for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 12:23:25 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.224.141])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 973CD83B7A;
- Fri,  1 Sep 2023 12:23:24 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Albert Esteve <aesteve@redhat.com>
-Subject: [PATCH] hw/virtio/vhost: check nvqs at dev_start
-Date: Fri,  1 Sep 2023 14:23:23 +0200
-Message-ID: <20230901122323.66183-1-aesteve@redhat.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rcch40bm9z4wy7;
+ Fri,  1 Sep 2023 22:25:55 +1000 (AEST)
+Message-ID: <59203654-9490-0b2c-af6d-3d52577c41ff@kaod.org>
+Date: Fri, 1 Sep 2023 14:25:54 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 08/19] target/ppc: Sign-extend large decrementer to
+ 64-bits
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230808042001.411094-1-npiggin@gmail.com>
+ <20230808042001.411094-9-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230808042001.411094-9-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=SnXb=ER=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.478, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,47 +69,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While this is not expected to happen, it could still
-be that a vhost_dev did not set its nvqs member.
+Nick,
 
-Since `vhost_dev_start` access the device's vqs array
-later without checking its size, it would cause a
-Segmentation fault when nvqs is 0.
+On 8/8/23 06:19, Nicholas Piggin wrote:
+> When storing a large decrementer value with the most significant
+> implemented bit set, it is to be treated as a negative and sign
+> extended.
+> 
+> This isn't hit for book3s DEC because of another bug, fixing it
+> in the next patch exposes this one and can cause additional
+> problems, so fix this first. It can be hit with HDECR and other
+> edge triggered types.
+> 
+> Fixes: a8dafa52518 ("target/ppc: Implement large decrementer support for TCG")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   hw/ppc/ppc.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+> index a397820d9c..fb4784793c 100644
+> --- a/hw/ppc/ppc.c
+> +++ b/hw/ppc/ppc.c
+> @@ -743,7 +743,9 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
+>        * to 64 bits, otherwise it is a 32 bit value.
+>        */
+>       if (env->spr[SPR_LPCR] & LPCR_LD) {
+> -        return decr;
+> +        PowerPCCPU *cpu = env_archcpu(env);
+> +        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+> +        return sextract64(decr, 0, pcc->lrg_decr_bits);
+>       }
+>       return (uint32_t) decr;
+>   }
+> @@ -762,7 +764,9 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
+>        * extended to 64 bits, otherwise it is 32 bits.
+>        */
+>       if (pcc->lrg_decr_bits > 32) {
+> -        return hdecr;
+> +        PowerPCCPU *cpu = env_archcpu(env);
+> +        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
 
-To avoid this `rare` case and made the code safer,
-add a clause that ensures nvqs has been set, and
-warn the user if it has not.
+Why are 'cpu' and 'ppc' duplicated ?
 
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
- hw/virtio/vhost.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thanks,
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index e2f6ffb446..78805fe5b7 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1935,6 +1935,11 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     hdev->started = true;
-     hdev->vdev = vdev;
- 
-+    if (!hdev->nvqs) {
-+        error_report("device nvqs not set");
-+        goto fail_nvqs;
-+    }
-+
-     r = vhost_dev_set_features(hdev, hdev->log_enabled);
-     if (r < 0) {
-         goto fail_features;
-@@ -2028,6 +2033,7 @@ fail_mem:
-     if (vhost_dev_has_iommu(hdev)) {
-         memory_listener_unregister(&hdev->iommu_listener);
-     }
-+fail_nvqs:
- fail_features:
-     vdev->vhost_started = false;
-     hdev->started = false;
--- 
-2.41.0
+C.
+
+
+> +        return sextract64(hdecr, 0, pcc->lrg_decr_bits);
+>       }
+>       return (uint32_t) hdecr;
+>   }
 
 
