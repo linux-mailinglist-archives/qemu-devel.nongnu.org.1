@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7163E78FB55
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5989078FB4F
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:45:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc0fp-0001UF-Iw; Fri, 01 Sep 2023 05:42:41 -0400
+	id 1qc0fu-0001cF-RI; Fri, 01 Sep 2023 05:42:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fn-0001OA-LZ; Fri, 01 Sep 2023 05:42:39 -0400
+ id 1qc0fq-0001VE-72; Fri, 01 Sep 2023 05:42:42 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0fl-0002tv-9R; Fri, 01 Sep 2023 05:42:39 -0400
+ id 1qc0fn-0002wb-L8; Fri, 01 Sep 2023 05:42:41 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3Z5r3Sz4x3k;
- Fri,  1 Sep 2023 19:42:34 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY3d2STnz4x2b;
+ Fri,  1 Sep 2023 19:42:37 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3X5h8Cz4x3H;
- Fri,  1 Sep 2023 19:42:32 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY3b2J0Pz4x2Y;
+ Fri,  1 Sep 2023 19:42:35 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -33,9 +33,9 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Joel Stanley <joel@jms.id.au>
-Subject: [PULL 06/26] hw/ssi: Add a "cs" property to SSIPeripheral
-Date: Fri,  1 Sep 2023 11:41:54 +0200
-Message-ID: <20230901094214.296918-7-clg@kaod.org>
+Subject: [PULL 07/26] hw/ssi: Introduce a ssi_get_cs() helper
+Date: Fri,  1 Sep 2023 11:41:55 +0200
+Message-ID: <20230901094214.296918-8-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901094214.296918-1-clg@kaod.org>
 References: <20230901094214.296918-1-clg@kaod.org>
@@ -65,64 +65,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Boards will use this new property to identify the device CS line and
-wire the SPI controllers accordingly.
+Simple routine to retrieve a DeviceState object on a SPI bus using its
+CS index. It will be useful for the board to wire the CS lines.
 
 Cc: Alistair Francis <alistair@alistair23.me>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- include/hw/ssi/ssi.h | 3 +++
- hw/ssi/ssi.c         | 7 +++++++
- 2 files changed, 10 insertions(+)
+ include/hw/ssi/ssi.h |  2 ++
+ hw/ssi/ssi.c         | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
-index 6950f86810d3..c5bdf1f2165f 100644
+index c5bdf1f2165f..3cdcbd539042 100644
 --- a/include/hw/ssi/ssi.h
 +++ b/include/hw/ssi/ssi.h
-@@ -64,6 +64,9 @@ struct SSIPeripheral {
+@@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, const char *name);
  
-     /* Chip select state */
-     bool cs;
+ uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
+ 
++DeviceState *ssi_get_cs(SSIBus *bus, uint8_t cs_index);
 +
-+    /* Chip select index */
-+    uint8_t cs_index;
- };
- 
- extern const VMStateDescription vmstate_ssi_peripheral;
+ #endif
 diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
-index d54a109beeb5..4e33e0ea5bc2 100644
+index 4e33e0ea5bc2..54ca3c34e9d0 100644
 --- a/hw/ssi/ssi.c
 +++ b/hw/ssi/ssi.c
-@@ -13,6 +13,7 @@
-  */
+@@ -27,6 +27,21 @@ struct SSIBus {
+ #define TYPE_SSI_BUS "SSI"
+ OBJECT_DECLARE_SIMPLE_TYPE(SSIBus, SSI_BUS)
  
- #include "qemu/osdep.h"
-+#include "hw/qdev-properties.h"
- #include "hw/ssi/ssi.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
-@@ -71,6 +72,11 @@ static void ssi_peripheral_realize(DeviceState *dev, Error **errp)
-     ssc->realize(s, errp);
- }
- 
-+static Property ssi_peripheral_properties[] = {
-+    DEFINE_PROP_UINT8("cs", SSIPeripheral, cs_index, 0),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
++DeviceState *ssi_get_cs(SSIBus *bus, uint8_t cs_index)
++{
++    BusState *b = BUS(bus);
++    BusChild *kid;
 +
- static void ssi_peripheral_class_init(ObjectClass *klass, void *data)
- {
-     SSIPeripheralClass *ssc = SSI_PERIPHERAL_CLASS(klass);
-@@ -81,6 +87,7 @@ static void ssi_peripheral_class_init(ObjectClass *klass, void *data)
-     if (!ssc->transfer_raw) {
-         ssc->transfer_raw = ssi_transfer_raw_default;
-     }
-+    device_class_set_props(dc, ssi_peripheral_properties);
- }
- 
- static const TypeInfo ssi_peripheral_info = {
++    QTAILQ_FOREACH(kid, &b->children, sibling) {
++        SSIPeripheral *kid_ssi = SSI_PERIPHERAL(kid->child);
++        if (kid_ssi->cs_index == cs_index) {
++            return kid->child;
++        }
++    }
++
++    return NULL;
++}
++
+ static const TypeInfo ssi_bus_info = {
+     .name = TYPE_SSI_BUS,
+     .parent = TYPE_BUS,
 -- 
 2.41.0
 
