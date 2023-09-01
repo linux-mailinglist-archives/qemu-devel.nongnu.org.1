@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4BE78F729
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D758E78F72A
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:33:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbtx5-0000ai-Ho; Thu, 31 Aug 2023 22:32:03 -0400
+	id 1qbtxr-00056d-6g; Thu, 31 Aug 2023 22:32:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbtx3-0000U7-3W
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:01 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbtxp-0004zY-Hj
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:49 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbtx0-0003E1-Sl
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:00 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-52a39a1c4d5so1910674a12.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:31:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qbtxn-0003Yx-60
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:32:49 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-56f84de64b9so941423a12.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1693535516; x=1694140316;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jIXHXxMzQD7uO3+uExuhlXOEOC4qn6XCXwUYC+CauiI=;
- b=AfYCQntE973Vhh0MeKM9cqqdXUSOeKpmR4K3uB4jR3LarWrtPuOQg4Y++eFiuXlIby
- 3YpOw7q4q/huJnOJqes/BQ/pVbDkyw01M8T+pdGiGVh/IQddpkt+qpRfblc7ADLwlXHf
- 7kxB00i3rza9T4zv5AzPv55gnEeU6JLLbAWRsZLVgf5aP5kC6264exlMciCrmJ4S/WsV
- gqLGarfXOwrWoSCfggZyxSGn3EkXtko0+UFT0GVH8/4IisR6juUgc/j/TGP+97dW9mbC
- +R4qK27DaGAM7DVC+uHETt7kkmTAs/kCzS8fVxIP1u2YG3cQQg266wXSP5t+wA/BNCYe
- EXTA==
+ d=linaro.org; s=google; t=1693535565; x=1694140365; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=s538vCkpclK5ATTHW63+oqL5qr7+Lo9fs0+lfXMGLHc=;
+ b=i4mJnedfiho0VBaSLeBZpj5G+QFARTf/nBt7T5zrGTFtg7wlfAWi7DUA/UeWihQCT5
+ ZftlfQ6M6hMlqsbpovTOg7vvxSYP9gur0NMuq/l8dkz0P6c+/GAIxJc/l05vRRi1DsUM
+ xWcQoKi0mT5xMujWWOQnGhhopjqkPTqW4MEQBtrJJVV/QYryIPfLPZKJocZUX7DEGJqo
+ Hd+PF4JvUIBdFF2i7cHkbKKeirLOQ6dKcgMK+p3MH5ogxqZUzVSbqG8Juhx42u3d9Fux
+ BOnzWGggz4kdE5/Jv1UZxHCkedx5S7RmswyCV8BcpdIkhKKpqvUyAI+/Hfge+7q4T7EQ
+ Q/Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535516; x=1694140316;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jIXHXxMzQD7uO3+uExuhlXOEOC4qn6XCXwUYC+CauiI=;
- b=InIXIslf2s3V6fLK3amTE0UGuCj4oSXxYVgmAgVcArqVjemMnGcSutKW3NdegVzeHJ
- s+1LfZeuD0Of0F8JzPwPPEdhRufIxnjCH0KxLktoZ6nbIJwfdGLH+eaRnlH+NEXdB2Na
- +hoo3yeDva3Yz7RzWUgZJ1SOZwBdgSKmEeucwyX5C3jRMdlGLZJNU1YKGWku0GOha0WZ
- 4aA6cz+zC9SIxMPxdvzIGwSHVsA0D6FQovpLdTKMUVQI3ghZP4NJwvb9+1Lwds6BvlHR
- 0EQe3ZXMA0A5WcqHdS/8TvJ9zUQVS7PfVAMVFqrlsfm0INf3eWUx7uWyK50WDxMGloTX
- XsiA==
-X-Gm-Message-State: AOJu0YyeXeHrj3XNsav6OsIhgpNR7Fj2S8/SqyBDuTR+uKhqi4M3ZaFi
- Gko2neBUuwVJE6bwDKyklPZMoIXetsfuTvEe/fhTZXvYXROv5tPV
-X-Google-Smtp-Source: AGHT+IETSL1STpt2JBH4iFsTF0/iSjPGNU2TEgJVph+/y94zyiwwQzrSCfgmoKONETjAIwcNC2rGh7Fqchdtn2dCNGk=
-X-Received: by 2002:aa7:d407:0:b0:52a:3ee9:a786 with SMTP id
- z7-20020aa7d407000000b0052a3ee9a786mr851471edq.26.1693535516610; Thu, 31 Aug
- 2023 19:31:56 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693535565; x=1694140365;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=s538vCkpclK5ATTHW63+oqL5qr7+Lo9fs0+lfXMGLHc=;
+ b=eviIjixvFkOL6EXPIAHB32IGzUNruneh6DQsV6If9A9g1htyeT142TayGmlrPDWHIT
+ NlUeGqfOpCY8r/yNAMLM8Vz3RnWnKS+pvttGKR0sruQp4otno/ajaq3wKgALm6lHlWD2
+ vZ64bjoVSvDZmof2YpedoHGzvsC4eaU++AAwmNF7I+31RZiRQCot4/xKGKk+quz5+TDx
+ lfAtvydkJhm9D8NL4n0bYerXEVdKI0+KboSHJuT5PM9MHw2GRhGf/iG4RLF0/JQaB8x/
+ yRtGKXVpvBX9NQZ00KFp+Q6e9qsjVe0rU8YAG1LvpsdaSubc5yhwQLRLUMga6dxcIndm
+ 8uBg==
+X-Gm-Message-State: AOJu0Yx36Rk9cN9xDFQ3fYxUt7rEL95caczgDWBPGw6cnQAyUvPIUMu1
+ KcPCVDcyaPoJJPCM2MKfP4iszZYKeVSQs4oi4fM=
+X-Google-Smtp-Source: AGHT+IG1HM+tb4S10O97gmCtNDKxgfFrElgwDNx0TuFyXTw7C7tY716DtXFTtrE56kLXRFRvl9cMzg==
+X-Received: by 2002:a17:90a:fe86:b0:269:68e7:bbb9 with SMTP id
+ co6-20020a17090afe8600b0026968e7bbb9mr1637279pjb.23.1693535565478; 
+ Thu, 31 Aug 2023 19:32:45 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ 26-20020a17090a005a00b0025dc5749b4csm3840215pjb.21.2023.08.31.19.32.44
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Aug 2023 19:32:45 -0700 (PDT)
+Message-ID: <05129269-b718-53e0-0a1d-d8640ea9b57f@linaro.org>
+Date: Thu, 31 Aug 2023 19:32:43 -0700
 MIME-Version: 1.0
-References: <20230901022331.115247-1-richard.henderson@linaro.org>
- <20230901022331.115247-28-richard.henderson@linaro.org>
-In-Reply-To: <20230901022331.115247-28-richard.henderson@linaro.org>
-From: Warner Losh <imp@bsdimp.com>
-Date: Thu, 31 Aug 2023 20:31:47 -0600
-Message-ID: <CANCZdfqOmp1mkodcGtdvLPtokbF4waZoybJdROn29J_+fBhbBQ@mail.gmail.com>
-Subject: Re: [PATCH v2 27/33] cpu: Remove page_size_init
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, laurent@vivier.eu, alex.bennee@linaro.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000e1e3fd060442f689"
-Received-SPF: none client-ip=2a00:1450:4864:20::534;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 00/13] linux-user patch queue
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20230824010237.1379735-1-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20230824010237.1379735-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -55
+X-Spam_score: -5.6
+X-Spam_bar: -----
+X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,72 +94,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e1e3fd060442f689
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Ping.
 
-On Thu, Aug 31, 2023 at 8:23=E2=80=AFPM Richard Henderson <
-richard.henderson@linaro.org> wrote:
+On 8/23/23 18:02, Richard Henderson wrote:
+> Combine a bunch of smaller linux-user patches:
+> 
+> Supercedes: 20230801230842.414421-1-deller@gmx.de
+> ("[PATCH v2 0/3] linux-user: /proc/cpuinfo fix and content emulation for arm")
+> Supercedes: 20230807122206.655701-1-iii@linux.ibm.com
+> ("[PATCH v2] linux-user: Emulate the Anonymous: keyword in /proc/self/smaps")
+> Supercedes: 20230816181437.572997-1-richard.henderson@linaro.org
+> ("[PATCH 0/6] linux-user: Rewrite open_self_maps")
+> Supercedes: 20230820204408.327348-1-richard.henderson@linaro.org
+> ("[PATCH 0/4] linux-user: shmat/shmdt improvements")
+> 
+> with some additions.  Patches needing review:
+> 
+>    01-linux-user-Split-out-cpu-target_proc.h.patch
+>    11-linux-user-Use-WITH_MMAP_LOCK_GUARD-in-target_-shmat.patch
+>    12-linux-user-Fix-shmdt.patch
+>    13-linux-user-Track-shm-regions-with-an-interval-tree.patch
+> 
+> 
+> r~
+> 
+> 
+> Helge Deller (2):
+>    linux-user: Emulate /proc/cpuinfo on aarch64 and arm
+>    linux-user: Emulate /proc/cpuinfo for Alpha
+> 
+> Ilya Leoshkevich (1):
+>    linux-user: Emulate the Anonymous: keyword in /proc/self/smaps
+> 
+> Richard Henderson (10):
+>    linux-user: Split out cpu/target_proc.h
+>    util/selfmap: Use dev_t and ino_t in MapInfo
+>    linux-user: Use walk_memory_regions for open_self_maps
+>    linux-user: Adjust brk for load_bias
+>    linux-user: Show heap address in /proc/pid/maps
+>    linux-user: Remove ELF_START_MMAP and image_info.start_mmap
+>    linux-user: Move shmat and shmdt implementations to mmap.c
+>    linux-user: Use WITH_MMAP_LOCK_GUARD in target_{shmat,shmdt}
+>    linux-user: Fix shmdt
+>    linux-user: Track shm regions with an interval tree
+> 
+>   include/qemu/selfmap.h               |   4 +-
+>   linux-user/aarch64/target_proc.h     |   1 +
+>   linux-user/alpha/target_proc.h       |  67 ++++
+>   linux-user/arm/target_proc.h         | 101 ++++++
+>   linux-user/cris/target_proc.h        |   1 +
+>   linux-user/hexagon/target_proc.h     |   1 +
+>   linux-user/hppa/target_proc.h        |  26 ++
+>   linux-user/i386/target_proc.h        |   1 +
+>   linux-user/loader.h                  |   6 +-
+>   linux-user/loongarch64/target_proc.h |   1 +
+>   linux-user/m68k/target_proc.h        |  16 +
+>   linux-user/microblaze/target_proc.h  |   1 +
+>   linux-user/mips/target_proc.h        |   1 +
+>   linux-user/mips64/target_proc.h      |   1 +
+>   linux-user/nios2/target_proc.h       |   1 +
+>   linux-user/openrisc/target_proc.h    |   1 +
+>   linux-user/ppc/target_proc.h         |   1 +
+>   linux-user/qemu.h                    |   1 -
+>   linux-user/riscv/target_proc.h       |  37 ++
+>   linux-user/s390x/target_proc.h       | 109 ++++++
+>   linux-user/sh4/target_proc.h         |   1 +
+>   linux-user/sparc/target_proc.h       |  16 +
+>   linux-user/user-mmap.h               |   4 +
+>   linux-user/x86_64/target_proc.h      |   1 +
+>   linux-user/xtensa/target_proc.h      |   1 +
+>   linux-user/elfload.c                 | 170 ++++++---
+>   linux-user/mmap.c                    | 168 +++++++++
+>   linux-user/syscall.c                 | 514 +++++++--------------------
+>   util/selfmap.c                       |  12 +-
+>   29 files changed, 828 insertions(+), 437 deletions(-)
+>   create mode 100644 linux-user/aarch64/target_proc.h
+>   create mode 100644 linux-user/alpha/target_proc.h
+>   create mode 100644 linux-user/arm/target_proc.h
+>   create mode 100644 linux-user/cris/target_proc.h
+>   create mode 100644 linux-user/hexagon/target_proc.h
+>   create mode 100644 linux-user/hppa/target_proc.h
+>   create mode 100644 linux-user/i386/target_proc.h
+>   create mode 100644 linux-user/loongarch64/target_proc.h
+>   create mode 100644 linux-user/m68k/target_proc.h
+>   create mode 100644 linux-user/microblaze/target_proc.h
+>   create mode 100644 linux-user/mips/target_proc.h
+>   create mode 100644 linux-user/mips64/target_proc.h
+>   create mode 100644 linux-user/nios2/target_proc.h
+>   create mode 100644 linux-user/openrisc/target_proc.h
+>   create mode 100644 linux-user/ppc/target_proc.h
+>   create mode 100644 linux-user/riscv/target_proc.h
+>   create mode 100644 linux-user/s390x/target_proc.h
+>   create mode 100644 linux-user/sh4/target_proc.h
+>   create mode 100644 linux-user/sparc/target_proc.h
+>   create mode 100644 linux-user/x86_64/target_proc.h
+>   create mode 100644 linux-user/xtensa/target_proc.h
+> 
 
-> Move qemu_host_page_{size,mask} and HOST_PAGE_ALIGN into bsd-user.
-> It should be removed from bsd-user as well, but defer that cleanup.
->
-> Cc: Warner Losh <imp@bsdimp.com>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  bsd-user/qemu.h           |  7 +++++++
->  include/exec/cpu-common.h |  7 -------
->  include/hw/core/cpu.h     |  2 --
->  accel/tcg/translate-all.c |  1 -
->  bsd-user/main.c           | 12 ++++++++++++
->  cpu.c                     | 13 -------------
->  softmmu/vl.c              |  1 -
->  7 files changed, 19 insertions(+), 24 deletions(-)
->
-
-ACK on the todo... My student is close to submitting the mmap series of his
-patches, so I appreciate the 'quick fix' to not disrupt that effort.
-
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-
---000000000000e1e3fd060442f689
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 31, 2023 at 8:23=E2=80=AF=
-PM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
-chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">Move qemu_host_page_{size,mask} and HOST_PAGE_ALI=
-GN into bsd-user.<br>
-It should be removed from bsd-user as well, but defer that cleanup.<br>
-<br>
-Cc: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" target=3D"_blank">imp=
-@bsdimp.com</a>&gt;<br>
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
-o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
-Signed-off-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@li=
-naro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
----<br>
-=C2=A0bsd-user/qemu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 7 +++=
-++++<br>
-=C2=A0include/exec/cpu-common.h |=C2=A0 7 -------<br>
-=C2=A0include/hw/core/cpu.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 --<br>
-=C2=A0accel/tcg/translate-all.c |=C2=A0 1 -<br>
-=C2=A0bsd-user/main.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 12 ++++++++=
-++++<br>
-=C2=A0cpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0| 13 -------------<br>
-=C2=A0softmmu/vl.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =
-1 -<br>
-=C2=A07 files changed, 19 insertions(+), 24 deletions(-)<br></blockquote><d=
-iv><br></div><div>ACK on the todo... My student is close to submitting the =
-mmap series of his</div><div>patches, so I appreciate the &#39;quick fix&#3=
-9; to not disrupt that effort.</div><div><br></div><div>Reviewed-by: Warner=
- Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.com</a>&gt;</div></d=
-iv></div>
-
---000000000000e1e3fd060442f689--
 
