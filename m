@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488617902BD
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2BB7902BE
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:12:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcAS5-0004qi-4B; Fri, 01 Sep 2023 16:09:09 -0400
+	id 1qcAUG-0006VM-C1; Fri, 01 Sep 2023 16:11:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qcAS3-0004qI-9z
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:09:07 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qcAU8-0006Qg-6n
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:11:16 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qcAS0-00042R-RL
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:09:07 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-573249e73f8so1485821eaf.1
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:09:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qcAU6-0004ql-0I
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:11:15 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c0d0bf18d6so19867845ad.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693598943; x=1694203743; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1693599071; x=1694203871; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vAJsA08M/nhXr+3mDS1vaY4+2RkwaDlwFrDJRFNcigI=;
- b=l4Jg8vsDnHPeFVQp8bKb3eZYSZQ09a1/y/Q6Xc35YCBzfRBV1s4+GFJ+0u9zc9ta/Z
- 95cCuV0/4R2oCvSpHavNN0yBSK3SlMORuEyq3LhcQoyGil91uAlrFKC8FM+b3Z+bbd+Q
- azAKsBSXpVoRfqlaq7OQdIU+0HRANsvnFS3q6gu4Jn26IkrkTF1N3o8Z2tCWmb0qbtIt
- XtmG7vGdWP4H1wJUTVW7P7AyaaCA5Fg3gwjZFjgtWbmNDpVL8HGk3l8PhNfyt2orEtnx
- TJzQdhYfJL6BAmHv4GuzljecWPn+qnChR1Vn03vHgfXrTbUG8wWKO7PRuuuFV4Rf4hgD
- 8N+g==
+ bh=fjqh9M3ijGtsIXjKbUOuFHkh0DNqOvOrEWAcsm4hd68=;
+ b=LSzP6DYFBeyOqMkI/fp0bL6NCkASNCD6mlfB+1UsBhWsXA+Oq0pYtoMjOfjfKGb6jR
+ ymkiM6fgmjy+4Bbl1fWIY3WXfVwoM6adVb7XT5gogAzyz2rJb+G3aq/y3uRMZEjF8y2K
+ nR+QKCdDgYmXu0WDlAzAyidtdFQKKqvs7r2+W216d2kHajb9Z4LFV4j0PGiwAR7L4+Gt
+ oWQ5b9161u/We0QQBhnRCZPDhjGVLjP6vLidAm6z/SO5MS1h3Kaco+dbsQN79gZ2hAd/
+ uaFRqbO4W5uxEOhbkeN42+AkvBqa0CW6fjTWCEQD1NBy5LBeBXXU9q3TW/GdMN7gAW8F
+ pDew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693598943; x=1694203743;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693599071; x=1694203871;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vAJsA08M/nhXr+3mDS1vaY4+2RkwaDlwFrDJRFNcigI=;
- b=hxM1GQTzlKjMldYmI+a2XuXs8cPxiZdkaGbQrZBzw/InWKFsHDRaC+oc9Dy/+vpbPS
- UtlrQoExqY8JzUOq72oc1Oyb96j4R5K1RhzxnZgajK9fV1443KlBqQfZYj0NZTK2j0TG
- ubkJDzEbiTGsjLqemW77nMIZJt3Ac/TT3DB3otTS0Ih58grsAD4LUuVTfY330LtE5fVv
- ChFCY96wb45VfrxHEQTT4nqsd8DpER+yBaquAfwGYHKHXPQVbde/XN358Lafr2ofWWsq
- 3FPZn98JHsKLZ/WVftLmOMC/SoadxhcvFK6LVL8AXuTpIHs9LL8drmfUSlhQ/N7yreYe
- Z4nA==
-X-Gm-Message-State: AOJu0Yy3Xa9mwD1NfLhrLXz6D1IpDwcMHA9yRUmHKJ+E6bnnLO72VNOE
- Bif0t3oxB18BQcNy/yRKLFW0LA==
-X-Google-Smtp-Source: AGHT+IEK3Zkvde1IfTbg43I7m1xi93ITumhkjmEwr+4Nkwp1AUd4tB/+pHd++Yx3AtmEdBMAIGz6Kg==
-X-Received: by 2002:a4a:2553:0:b0:56e:5a8e:654f with SMTP id
- v19-20020a4a2553000000b0056e5a8e654fmr3911533ooe.8.1693598942902; 
- Fri, 01 Sep 2023 13:09:02 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
+ bh=fjqh9M3ijGtsIXjKbUOuFHkh0DNqOvOrEWAcsm4hd68=;
+ b=OKRisvmEw70bFOWdBkMP2CiYyuYzVL+/qP8K7w8bOGJY7Pe+yeTU69tpAIfoKZTzox
+ py1NW0N6lZfqrW9DIiOWXreD63ggT8Fz6zcgbW3TlTXldOSodHNHM8WNT3l55hl+H6fA
+ vG/3S+Gz95NRWGLBlXdlT/aIzKf3L53lwNuLqaFWMdfZZ3xEvSwPAMZ8Lsm4t0t2177B
+ lXIB88yFu+Cz2wItgYW437jSzGPZgykCSHmEdgO7SJcOlB6nZrDoythWoj5VV3th+2oX
+ 3ZcEQtmQb5GYp+FPWQm+wBY2OrhKqOjeltfE1OxXkXcahc2BvUqi4yZbdZwOzkS7A8gC
+ BsjQ==
+X-Gm-Message-State: AOJu0YwTB4h91VmLbD6lo3QghFlRoyV+xATH/INd7SmmKn9skDflopmE
+ 5WSET0gWCwK3fLPqYdRUlCjW3g==
+X-Google-Smtp-Source: AGHT+IFrj8BYyLPVQklNu0Mm8DMELjtEW1rSrQxpfFkvyEdhEJ6uGeR2pP/AIJc3XbDL5zZyFs5Udw==
+X-Received: by 2002:a17:902:e850:b0:1bc:e6a:205a with SMTP id
+ t16-20020a170902e85000b001bc0e6a205amr4331279plg.4.1693599071526; 
+ Fri, 01 Sep 2023 13:11:11 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- h13-20020a4aa9cd000000b0056dbeb283cesm2108297oon.43.2023.09.01.13.09.00
+ im23-20020a170902bb1700b001a98f844e60sm3396696plb.263.2023.09.01.13.11.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Sep 2023 13:09:02 -0700 (PDT)
-Message-ID: <7ef12393-e92e-087e-a2aa-0da25a3229fd@ventanamicro.com>
-Date: Fri, 1 Sep 2023 17:08:59 -0300
+ Fri, 01 Sep 2023 13:11:11 -0700 (PDT)
+Message-ID: <8ff95ccc-306b-725f-f4fa-7a5f058b300f@linaro.org>
+Date: Fri, 1 Sep 2023 13:11:08 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 07/20] target/riscv/cpu.c: add .instance_post_init()
+Subject: Re: [PATCH 2/8] os-posix: create and export os_set_runas()
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>
+References: <20230901101302.3618955-1-mjt@tls.msk.ru>
+ <20230901101302.3618955-3-mjt@tls.msk.ru>
 Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
- <20230825130853.511782-8-dbarboza@ventanamicro.com>
- <20230831-863a8334e34c5248fa71d7bf@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230831-863a8334e34c5248fa71d7bf@orel>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230901101302.3618955-3-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -55
 X-Spam_score: -5.6
 X-Spam_bar: -----
@@ -98,140 +95,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/1/23 03:12, Michael Tokarev wrote:
+> +/*
+> + * Prepare to change user ID. optarg can be one of 3 forms:
+> + *   - a username, in which case user ID will be changed to its uid,
+> + *     with primary and supplementary groups set up too;
+> + *   - a nemeric uid, in which case only the uid will be set;
 
+numeric.
 
-On 8/31/23 08:00, Andrew Jones wrote:
-> On Fri, Aug 25, 2023 at 10:08:40AM -0300, Daniel Henrique Barboza wrote:
->> All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
->> calls riscv_init_max_cpu_extensions(). Both can be moved to a common
->> instance_post_init() callback, implemented in riscv_cpu_post_init(),
->> called by all CPUs. The call order then becomes:
->>
->> riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
->>
->> A CPU class that wants to add user flags will let us know via the
->> 'user_extension_properties' property. Likewise, 'cfg.max_features' will
->> determine if any given CPU, regardless of being the 'max' CPU or not,
->> wants to enable the maximum amount of extensions.
->>
->> In the near future riscv_cpu_post_init() will call the init() function
->> of the current accelerator, providing a hook for KVM and TCG accel
->> classes to change the init() process of the CPU.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c | 20 +++++++++++++++-----
->>   1 file changed, 15 insertions(+), 5 deletions(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index c35d58c64b..f67b782675 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -430,8 +430,6 @@ static void riscv_max_cpu_init(Object *obj)
->>       mlx = MXL_RV32;
->>   #endif
->>       set_misa(env, mlx, 0);
->> -    riscv_cpu_add_user_properties(obj);
->> -    riscv_init_max_cpu_extensions(obj);
->>       env->priv_ver = PRIV_VERSION_LATEST;
->>   #ifndef CONFIG_USER_ONLY
->>       set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
->> @@ -445,7 +443,6 @@ static void rv64_base_cpu_init(Object *obj)
->>       CPURISCVState *env = &RISCV_CPU(obj)->env;
->>       /* We set this in the realise function */
->>       set_misa(env, MXL_RV64, 0);
->> -    riscv_cpu_add_user_properties(obj);
->>       /* Set latest version of privileged specification */
->>       env->priv_ver = PRIV_VERSION_LATEST;
->>   #ifndef CONFIG_USER_ONLY
->> @@ -569,7 +566,6 @@ static void rv128_base_cpu_init(Object *obj)
->>       CPURISCVState *env = &RISCV_CPU(obj)->env;
->>       /* We set this in the realise function */
->>       set_misa(env, MXL_RV128, 0);
->> -    riscv_cpu_add_user_properties(obj);
->>       /* Set latest version of privileged specification */
->>       env->priv_ver = PRIV_VERSION_LATEST;
->>   #ifndef CONFIG_USER_ONLY
->> @@ -582,7 +578,6 @@ static void rv32_base_cpu_init(Object *obj)
->>       CPURISCVState *env = &RISCV_CPU(obj)->env;
->>       /* We set this in the realise function */
->>       set_misa(env, MXL_RV32, 0);
->> -    riscv_cpu_add_user_properties(obj);
->>       /* Set latest version of privileged specification */
->>       env->priv_ver = PRIV_VERSION_LATEST;
->>   #ifndef CONFIG_USER_ONLY
->> @@ -1212,6 +1207,20 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
->>   }
->>   #endif /* CONFIG_USER_ONLY */
->>   
->> +static void riscv_cpu_post_init(Object *obj)
->> +{
->> +    RISCVCPU *cpu = RISCV_CPU(obj);
->> +    RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
->> +
->> +    if (rcc->user_extension_properties) {
-> 
-> It's not yet clear to me why we need 'user_extension_properties'. Can't we
-> just do the 'object_dynamic_cast(obj, TYPE_RISCV_DYNAMIC_CPU) != NULL'
-> check here?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-I'll answer here but this also applies for patches 19 and 20.
-
-The idea in my head was to create a flexible way of defining new CPU types in
-the future that doesn't necessarily fits the 3 big molds we have: generic CPUs
-(I'm considering 'max' CPU as a generic CPU on steroids), vendor CPUs and the
-KVM only 'host' CPU. For example, it would be possible to create a vendor-style
-CPU that has all extensions enabled and runs KVM.
-
-This idea is probably better in my head than in reality, and there's a very high
-chance that I'm adding extra stuff in the CPU class and we won't add any new
-'funky' CPU type in the future to justify it.
-
-I'll drop patches 5 and 6 with 'user_extension_properties' and 'max_features'
-flag and do a regular CPU type check in post_init().'tcg_supported' in patch 19
-is indeed a bit silly today since every CPU but 'host' will enable it, so we can
-do a 'cpu is host' kind of check and live without it. We can still throw generic
-errors in all these checks regardless of how we're doing the validation.
-
-Patch 20 has another underlying discussion that I'd rather have there. Thanks,
-
-
-Daniel
-
-
-
-
-
-> 
->> +        riscv_cpu_add_user_properties(obj);
->> +    }
->> +
->> +    if (cpu->cfg.max_features) {
-> 
-> It's also not yet clear why we need max_features. I can't think of any
-> other models that want max_features besides 'max'. Checking the cpu type
-> here should be sufficient, no?
-> 
->> +        riscv_init_max_cpu_extensions(obj);
->> +    }
->> +}
->> +
->>   static void riscv_cpu_init(Object *obj)
->>   {
->>       RISCVCPU *cpu = RISCV_CPU(obj);
->> @@ -2019,6 +2028,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->>           .instance_size = sizeof(RISCVCPU),
->>           .instance_align = __alignof__(RISCVCPU),
->>           .instance_init = riscv_cpu_init,
->> +        .instance_post_init = riscv_cpu_post_init,
->>           .abstract = true,
->>           .class_size = sizeof(RISCVCPUClass),
->>           .class_init = riscv_cpu_class_init,
->> -- 
->> 2.41.0
->>
->>
-> 
-> Thanks,
-> drew
+r~
 
