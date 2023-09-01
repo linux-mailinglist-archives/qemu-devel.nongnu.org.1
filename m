@@ -2,75 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AF178FC96
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 13:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAEA78FCA6
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 13:50:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc2Zd-0005Er-Jh; Fri, 01 Sep 2023 07:44:26 -0400
+	id 1qc2eJ-0003EU-NX; Fri, 01 Sep 2023 07:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2ZV-0005Dn-G9
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:44:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
+ id 1qc2eD-0003Ai-99; Fri, 01 Sep 2023 07:49:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc2ZR-0006cW-Cv
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 07:44:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693568652;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pqnU3r01l4dw5bR8qsKAbf7WjL/4AS4ln9SzPEhnayI=;
- b=VAL7T1Zgm//E3cZz4aLe4+OifMkHH0oYdLRph7GEr3wZypPDMHYjogXSx7kr8LfjjF6vaH
- 1lhTLfoMFiBEwSJ0LPVKMK7OlobhH+osTQosX1qyVYYyKL+NOnpgjpleZjHAuksxboiXvO
- JNwMX64oecLyoOop2lS6aYd4+jXNzhM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-607-O16ilosHOY2mnEhADi4xog-1; Fri, 01 Sep 2023 07:44:08 -0400
-X-MC-Unique: O16ilosHOY2mnEhADi4xog-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A0350872922;
- Fri,  1 Sep 2023 11:44:07 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1933E49310F;
- Fri,  1 Sep 2023 11:44:07 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1241721E692A; Fri,  1 Sep 2023 13:44:06 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Li Feng <fengli@smartx.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Raphael Norwitz
- <raphael.norwitz@nutanix.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna
- Reitz <hreitz@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Fam
- Zheng <fam@euphon.net>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Viresh
- Kumar <viresh.kumar@linaro.org>,  qemu-block@nongnu.org (open list:Block
- layer core),  qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: Re: [PATCH v3 5/5] vhost-user-scsi: start vhost when guest kicks
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230731121018.2856310-1-fengli@smartx.com>
- <20230731121018.2856310-6-fengli@smartx.com>
-Date: Fri, 01 Sep 2023 13:44:06 +0200
-In-Reply-To: <20230731121018.2856310-6-fengli@smartx.com> (Li Feng's message
- of "Mon, 31 Jul 2023 20:10:10 +0800")
-Message-ID: <87zg2686ex.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
+ id 1qc2e8-0007hG-LA; Fri, 01 Sep 2023 07:49:09 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 381BeXRk007076; Fri, 1 Sep 2023 11:49:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=aSIHArLEnmUztU3tbBn1hhACoycsdwN6EGOGSu3FKxo=;
+ b=fJ7MX2C3AGhOA17upft2hlfAQN9ORNDW9Ebtsa7/7wvamVDJ5flB1S5sMiLmW71jrG02
+ f9AAYx9jkBooSS+gd0WbjNYD99b73L+/IadivwLgIhHjsPFoRVmU8iaBgZe2L747WyAC
+ Sex4KD8zd/37CsWrKRXKae5CceFc3lUut9g5/A/DNPakS0tOSbjY3WfBF0Et4u6OHF7/
+ 4aaFcdcHam5RMUThqYjRN9bDmzEWQX6e7kWInkC1xN8yNWR3y9p8RzKNiin2aT/Yr0le
+ E7x8tlSoTnAFjjCvx0naQu6+nidU4exlMepItbweKyxx3kRjRgmXb4b/3plWjykSw4v+ Iw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sudqt25jh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Sep 2023 11:49:02 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 381Bf150008478;
+ Fri, 1 Sep 2023 11:49:01 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sudqt25j5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Sep 2023 11:49:01 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 381AoO03009897; Fri, 1 Sep 2023 11:49:00 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sqw7m493s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Sep 2023 11:49:00 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 381BmvTs37355950
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 1 Sep 2023 11:48:57 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 47B6420043;
+ Fri,  1 Sep 2023 11:48:57 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1716920040;
+ Fri,  1 Sep 2023 11:48:57 +0000 (GMT)
+Received: from a46lp67.. (unknown [9.152.108.100])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  1 Sep 2023 11:48:57 +0000 (GMT)
+From: Janosch Frank <frankja@linux.ibm.com>
+To: qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, seiden@linux.ibm.com, mhartmay@linux.ibm.com,
+ thuth@redhat.com, david@redhat.com, mimu@linux.ibm.com,
+ borntraeger@linux.ibm.com
+Subject: [PATCH] s390x: do a subsystem reset before the unprotect on reboot
+Date: Fri,  1 Sep 2023 11:48:51 +0000
+Message-Id: <20230901114851.154357-1-frankja@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <80b007e8-91d7-8298-f628-77c30616f0f4@linux.ibm.com>
+References: <80b007e8-91d7-8298-f628-77c30616f0f4@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EBITEUgsvKDM5BkDSXVkJbuwS7fgn_nZ
+X-Proofpoint-ORIG-GUID: tFQJ2DS9OIQ7pYLW5TJfyKvMtqvphOrA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-01_09,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 mlxlogscore=999
+ bulkscore=0 impostorscore=0 phishscore=0 spamscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309010108
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=frankja@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,88 +112,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Li Feng <fengli@smartx.com> writes:
+Bound APQNs have to be reset before tearing down the secure config via
+s390_machine_unprotect(). Otherwise the Ultravisor will return a error
+code.
 
-> Let's keep the same behavior as vhost-user-blk.
->
-> Some old guests kick virtqueue before setting VIRTIO_CONFIG_S_DRIVER_OK.
->
-> Signed-off-by: Li Feng <fengli@smartx.com>
-> ---
->  hw/scsi/vhost-user-scsi.c | 48 +++++++++++++++++++++++++++++++++++----
->  1 file changed, 44 insertions(+), 4 deletions(-)
->
-> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-> index 5bf012461b..a7fa8e8df2 100644
-> --- a/hw/scsi/vhost-user-scsi.c
-> +++ b/hw/scsi/vhost-user-scsi.c
-> @@ -113,8 +113,48 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
->      }
->  }
->  
-> -static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-> +static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
->  {
-> +    VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-> +    DeviceState *dev = &s->parent_obj.parent_obj.parent_obj.parent_obj;
-> +    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-> +    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-> +
-> +    Error *local_err = NULL;
-> +    int i, ret;
-> +
-> +    if (!vdev->start_on_kick) {
-> +        return;
-> +    }
-> +
-> +    if (!s->connected) {
-> +        return;
-> +    }
-> +
-> +    if (vhost_dev_is_started(&vsc->dev)) {
-> +        return;
-> +    }
-> +
-> +    /*
-> +     * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
-> +     * vhost here instead of waiting for .set_status().
-> +     */
-> +    ret = vhost_user_scsi_start(s);
-> +    if (ret < 0) {
-> +        error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
+So let's do a subsystem_reset() which includes a AP reset before the
+unprotect call. We'll do a full device_reset() afterwards which will
+reset some devices twice. That's ok since we can't move the
+device_reset() before the unprotect as it includes a CPU clear reset
+which the Ultravisor does not expect at that point in time.
 
-Crashes, since @local_err is null.  Please test your error paths.
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+---
 
-Obvious fix: drop this call.
+I'm not able to test this for the PV AP case right new, that has to
+wait to early next week. However Marc told me that the non-AP PV test
+works fine now.
 
-> +        qemu_chr_fe_disconnect(&vs->conf.chardev);
-> +        return;
-> +    }
-> +
-> +    /* Kick right away to begin processing requests already in vring */
-> +    for (i = 0; i < vsc->dev.nvqs; i++) {
-> +        VirtQueue *kick_vq = virtio_get_queue(vdev, i);
-> +
-> +        if (!virtio_queue_get_desc_addr(vdev, i)) {
-> +            continue;
-> +        }
-> +        event_notifier_set(virtio_queue_get_host_notifier(kick_vq));
-> +    }
->  }
->  
->  static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
-> @@ -243,9 +283,9 @@ static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
->          return;
->      }
->  
-> -    virtio_scsi_common_realize(dev, vhost_dummy_handle_output,
-> -                               vhost_dummy_handle_output,
-> -                               vhost_dummy_handle_output, &err);
-> +    virtio_scsi_common_realize(dev, vhost_user_scsi_handle_output,
-> +                               vhost_user_scsi_handle_output,
-> +                               vhost_user_scsi_handle_output, &err);
->      if (err != NULL) {
->          error_propagate(errp, err);
->          return;
+---
+ hw/s390x/s390-virtio-ccw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 3dd0b2372d..2d75f2131f 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -438,10 +438,20 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
+     switch (reset_type) {
+     case S390_RESET_EXTERNAL:
+     case S390_RESET_REIPL:
++        /*
++         * Reset the subsystem which includes a AP reset. If a PV
++         * guest had APQNs attached the AP reset is a prerequisite to
++         * unprotecting since the UV checks if all APQNs are reset.
++         */
++        subsystem_reset();
+         if (s390_is_pv()) {
+             s390_machine_unprotect(ms);
+         }
+ 
++        /*
++         * Device reset includes CPU clear resets so this has to be
++         * done AFTER the unprotect call above.
++         */
+         qemu_devices_reset(reason);
+         s390_crypto_reset();
+ 
+-- 
+2.34.1
 
 
