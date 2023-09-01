@@ -2,83 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343D378FF98
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 17:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A502F78FFB2
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 17:11:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc5eC-00034w-Tl; Fri, 01 Sep 2023 11:01:21 -0400
+	id 1qc5nE-00061R-CS; Fri, 01 Sep 2023 11:10:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1qc5eA-00034Z-C1
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:01:18 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1qc5e5-0003DF-V0
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:01:18 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-68a56401c12so1723169b3a.2
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 08:01:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693580470; x=1694185270; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:user-agent:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Vh6UICktw4XyRZqdiOs4SpBiz5rdOOCs7MmAwxNtlAw=;
- b=D5OQms8/9MIjpzg/oXCo4wBEjKoQ+1FyUEMwRUxKOwnHEz6mRetgsjYRB1XMU7naou
- wJOkBgVYAfazCzay4eLRoWz1f8p9EMxJRpJqwrTnZsVoclAoPRpkAX3cQ+eHqvUDK5/5
- FW1lagoVK2e+k4Nf6JFiQDM4hfYO4tqy5Kc7Gyu595m56Ht52X7TSHIpbrv3qREGbzf8
- LAF1K8I4TnJ0i2kVlhRYNQdH23m2tRc6vfdfwzeDj9Y57Dt9Ny1bD0E956HQ+UQcco97
- UWsjZPg4zAfeF7vTl2dEFJU75SGksSN23yKr29w54mhom0qu8yCbJ6g7DXmOXNKZfFxC
- /GLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693580470; x=1694185270;
- h=content-transfer-encoding:mime-version:user-agent:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Vh6UICktw4XyRZqdiOs4SpBiz5rdOOCs7MmAwxNtlAw=;
- b=gsHRAkHX4LugLdwM31dKrRALguHMMWcPbzfOKkzBAtrlDjZyUFhSib5JW8CjEOIbF6
- wcTRBY7ldQuYMckRrnYG/nzHF5KRZPp4+z0y6RhWhU9Gm4YtBoRz8iBs4AejZJdYFO4b
- uKBemBUQDGp8MFp9m/fBsWcOelG139lDDiN23OVA3huM0QjKKluPcCQOh108g6tZvUSd
- MMtSpmcQynZunURZoKVN9jtpUyhqkhDjTaeodPqdPn8odcTDY7eUHk/KqS+LaSgcCrwI
- KLaTfwGtbMlyPUNNdD3F2lZHJz23Vdg62nkmHnyjJKhL2imm1a4GHhW3rQS4yVS/Nye8
- aU9Q==
-X-Gm-Message-State: AOJu0YwKHV8yq/Fg8UXIzJyZEATzoWiZya8Pqb21L9+oMb1Fhpmdpt+o
- cJp6mxuG8MoVdYsgfaY7/PwhFQ==
-X-Google-Smtp-Source: AGHT+IE4NzUbVz10cbnc3UvFNwE81W4DmUgv82e8hyy3rw49QnGuV47AyVwt6PKdewqSLp5pNgX8ZA==
-X-Received: by 2002:a05:6a20:3258:b0:148:6ebd:2834 with SMTP id
- hm24-20020a056a20325800b001486ebd2834mr2520491pzc.34.1693580470109; 
- Fri, 01 Sep 2023 08:01:10 -0700 (PDT)
-Received: from ?IPv6:2401:4900:52fc:9c89:4352:c7fa:a5a4:5f35?
- ([2401:4900:52fc:9c89:4352:c7fa:a5a4:5f35])
- by smtp.gmail.com with ESMTPSA id
- c9-20020aa78c09000000b0068bff979c33sm3065924pfd.188.2023.09.01.08.01.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 08:01:09 -0700 (PDT)
-Message-ID: <cb9207ad80c0c8dfae677853cd7b0f86ba2ab5bc.camel@ventanamicro.com>
-Subject: Re: [PATCH] target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX
- changes
-From: mchitale@ventanamicro.com
-To: leon@is.currently.online, qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair23@gmail.com>, Leon Schuermann
- <leons@opentitan.org>
-Date: Fri, 01 Sep 2023 20:30:55 +0530
-In-Reply-To: <20230829215046.1430463-1-leon@is.currently.online>
-References: <20230829215046.1430463-1-leon@is.currently.online>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qc5nB-0005zm-Su
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:10:37 -0400
+Received: from mout.gmx.net ([212.227.15.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qc5n9-0005Wv-En
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 11:10:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1693581032; x=1694185832; i=deller@gmx.de;
+ bh=w7ZvPco2bima+HJDswL/xrAsJWrr/eWSJw2OHc7p6EU=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=d5K8Es/cZSC69srXHGeCi6D3sXDKIEuv5E7LtZVAnQqKw7s/Yd8g0f3ZceQVah8tdIkObsN
+ CCk/qRjGzvGnbQCdWDB3Ohztq0LRN1WERg9R0jiAKe9O2Tdv4nFTgY6vy8wIonZXhsGtLBLma
+ TGrGgLTslash5phyX4+CU5Yl/5ctXPd39ZjAB/ZrubPjB/WFNGCAk6GOODwvh2mlYWCMDf01V
+ +xc0FTc604hoB5ls/+A1G3jdzMvbiFq4ZSkQLmBJsepW597pPe/YQcNwKK1reM/DHApaXTVVj
+ IU0+0USOwWvFVSvEyIjTewpDfME6YX7udfKR0yXhjwMmg4lnz+Eg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.152.187]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1McpJg-1q3IwE0uNG-00a03t; Fri, 01
+ Sep 2023 17:10:32 +0200
+Message-ID: <7f652d0e-d077-a8d2-d4f3-c85c17af71f1@gmx.de>
+Date: Fri, 1 Sep 2023 17:10:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=mchitale@ventanamicro.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 13/13] linux-user: Track shm regions with an interval tree
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230824010237.1379735-1-richard.henderson@linaro.org>
+ <20230824010237.1379735-14-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230824010237.1379735-14-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:t7fRHT497DPy7+NcY5GibnQ4cduiHTlmz4g5+mctb39S+r8iKbS
+ 02gkmUj1pH+yowjbKCdH9vXNFDE+x6MfEiqPHsIMhcApc2TaPUcn46/Rm/mbF9DA/9L6JCa
+ zsbHTg1TVYWWx7OKuh3AfY1eK65vBNkuDK5bdd2Ym2/VLWEEny3bEcEHEUnywZt7hzHbEoZ
+ dpSR0rozKBibbeawzEWmQ==
+UI-OutboundReport: notjunk:1;M01:P0:DIqiYh5EofI=;tM2n0+1Cc/xOUNf9dtntSWCID1R
+ Fnq8azau4/KZELpJfY2lwRbuBzw+clJBx+b+xS9FDQR/vxt1XPp2jQ+r0Hh4CXM56vGafKkeH
+ aBI3hAifSxrI9pA4FbIAdRlVUZfyQWx3K/xYpSw8ZVn62d0DddOXQB1p5NIHWApSotu4+07gL
+ Cm7nUhEGZOMF60JGdpofv4dAXJx4YHPEtmizGmdrK7K8m8ZNnFVJgg7AYQZMJ2Eg9V6Y8u7GJ
+ sjgW9zVlOSAfM44US+K4zrRBht1T/3FPwOHPjOL7FTUx6sNHs6XVdwaqx7fhLVfxaoFuJhDnM
+ fn4RYG6WaaaSMs30MyJXG9q8NMa3F4CIOjAUCF3svodrDT2zoIB1GCTUzwd46DNpUepwJ6HBn
+ gKvfQsNtRm80djvlmzzN5CAZL8nmKbFpcT1RYoeqIjODXajIWmyBvkAkEIl49+XkO72BUhubZ
+ OlESx3HSKGBrkWx0v0hAuHBUELsn5fdSrXovrok9r9mDXEEv3gl1CNhIdVtDKagW4SnN2+hd0
+ Cn/nMGyXn0MViNtvYQBHscRjvXhEXgu3/zZsdb0iKr6jMQpXqiGKMu4okggcRx5xmxKhJfnQ5
+ mtY0LIQjkBAOm0NDG6+50UnRj4d3LavxA/765vcaCgITFtjnP63rEf8o7Ub6Yt6ksjTz4Klh+
+ A3cyrUllSm8gU9JOyMmR/ISNdm5X3HECCIUBvXNtP9tuKNI0lTam9geIWB1440EnLmRdWKCfF
+ TKvdu+4D0A0Gsf0jkMTSkPfe7qq1iMcVwIT2a12BAvgFwNNjFd/jq22P4e9822EfDdXn9lHkA
+ jCPuJ1hwpvkyw71uhnN5znpieMonyUZ7AJPBaUvbA1B99ZIpzhgI3N3xdKzfyqoVVb0cmUzmz
+ 9vwvUuD7Y89CFDO9ThT9nheuW5Pc2nO3GGRa8qmExbeE9buVzzi5brOBM6UjfwpNllTDtpVX7
+ H0UC6g==
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-3.478, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,42 +87,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-08-29 at 17:50 -0400, leon@is.currently.online wrote:
-> From: Leon Schuermann <leons@opentitan.org>
-> 
-> When the rule-lock bypass (RLB) bit is set in the mseccfg CSR, the
-> PMP
-> configuration lock bits must not apply. While this behavior is
-> implemented for the pmpcfgX CSRs, this bit is not respected for
-> changes to the pmpaddrX CSRs. This patch ensures that pmpaddrX CSR
-> writes work even on locked regions when the global rule-lock bypass
-> is
-> enabled.
-> 
-> Signed-off-by: Leon Schuermann <leons@opentitan.org>
-> ---
->  target/riscv/pmp.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 9d8db493e6..5e60c26031 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -44,6 +44,10 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
->   */
->  static inline int pmp_is_locked(CPURISCVState *env, uint32_t
-> pmp_index)
->  {
-> +    /* mseccfg.RLB is set */
-> +    if (MSECCFG_RLB_ISSET(env)) {
-> +        return 0;
-> +    }
->  
->      if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
->          return 1;
-> 
-> base-commit: a8fc5165aab02f328ccd148aafec1e59fd1426eb
+On 8/24/23 03:02, Richard Henderson wrote:
+> Remove the fixed size shm_regions[] array.
+> Remove references when other mappings completely remove
+> or replace a region.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Reviewed-by: Helge Deller <deller@gmx.de>
+
 
 
