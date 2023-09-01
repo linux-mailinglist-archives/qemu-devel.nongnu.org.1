@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9717478F6BE
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE8278F6BF
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 03:30:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbsyd-0002to-7H; Thu, 31 Aug 2023 21:29:35 -0400
+	id 1qbsyl-00031L-Ez; Thu, 31 Aug 2023 21:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qbsyV-0002qq-UG
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:27 -0400
-Received: from mail-yw1-x1144.google.com ([2607:f8b0:4864:20::1144])
+ id 1qbsyW-0002qs-1R
+ for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:28 -0400
+Received: from mail-yw1-x1143.google.com ([2607:f8b0:4864:20::1143])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qbsyS-0007WW-Oq
+ id 1qbsyT-0007Wv-RZ
  for qemu-devel@nongnu.org; Thu, 31 Aug 2023 21:29:27 -0400
-Received: by mail-yw1-x1144.google.com with SMTP id
- 00721157ae682-59234aaca15so16504687b3.3
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 18:29:24 -0700 (PDT)
+Received: by mail-yw1-x1143.google.com with SMTP id
+ 00721157ae682-58ca499456dso15518177b3.1
+ for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 18:29:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693531763; x=1694136563; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1693531765; x=1694136565; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6pq4K1DRMCsdduEbuGuJ200122U1I+V8+TOdtq9hf9Q=;
- b=f91O3TNaW208+8uAJJuN4045Wj7XbKrpC4GBuiwdGWeLdXuZrqn/jMhBce2XblWb0Z
- ugCk4Q9dlZgnYcN8iOWByRg1D7Qa8VGCRiq06anz1D7q5BP6zAkIhGcfaC2Cfci244Kx
- Nsn7l5ejqu0Fzcj2Wd8JTLg1jF1rTfq18l6tk/obPRPLP2iTlZu0o4v7n4o7pR1Vcm4Z
- ei4RQKowGQYhcGXF7Q1Ux4caXih9ymaS3gyKPxeBgzOvYwWMjFEWR5fPF7+KyJEi5+Yd
- QEWn5xkiukIP2C+1+/Rz/ZVaH49+oD3p5QypsDzKZ2CvcBhwcRM9lIVJDdEylg3X8LCE
- HHZA==
+ bh=SK7n0aiJMN0SWoP8B2n02PHYDXpt98FoPoro/RkTgS8=;
+ b=PJiMP9FomkJZuoenhx9N0lHUcoN2Safbi2QXlxDtJ+GjIS0KJiLvyQAizmcD8DwZK8
+ TRQ2oROfBreZ7EfKI2HK+WJKI1/yvVMhuWU7iIFxR2MvFgZHu4K22HrQWpefqtfYbPPb
+ fyJ5pSnfwbyYisTuC5wpuB8V6ltW/lQRIWRgmuoWYWGsGaVlRQw67mev4DHtQS8QwncD
+ OXOxCSe1JiiHoQS3ddDBUgyKOscQSBnhbBMTjjX1llcNzCqoMeMYyrOdRsk3cxDz4uFU
+ +7voBF1EPWxQnoZlxNvC2kd/6W8pm0Fa0Ym98DxarcUNalMqMBgyf8t1oSOKtZOvsCkM
+ K7qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693531763; x=1694136563;
+ d=1e100.net; s=20221208; t=1693531765; x=1694136565;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6pq4K1DRMCsdduEbuGuJ200122U1I+V8+TOdtq9hf9Q=;
- b=SXvk2bhbF4juhRsZ3aXSinmfKV6Cdzv+UrVbzV8+9Y0bcqqYVpOAE9d2rSRLSiNxzm
- jQtg8TCe3Mi8e4Ec8CxinYlOoa/TO5zMyNWdCcKii/bP+xpOcFE3VdM59VQucsJ2T3Jj
- uczOoGixzYDflxJCLOjlY9VpLNKro5RmZ8meCPKX8ZCvI33mujrqW5DYmVE4Vfni4qmz
- 9Jj5uPSNuJIX15axpJdlO+RqwMf/UQ2mTnhHY+pFNKnjxmtcqxQp9uUnU3iZd/ronOKv
- aurBw/9UBi+GPa5+INschj4vjSzPQXnkO1utUwIbvz++TZXmY2oftxcaW9gSQeHjIoyE
- z0Fw==
-X-Gm-Message-State: AOJu0YzwxWK6Jtajx/d0zOJErasKFCqQq1lFNf/CZi60GMz5Byf9mrhN
- 88jymd/BjnC/Z9iT1qcXRivXprvZFLrn
-X-Google-Smtp-Source: AGHT+IEJPgTPHVRYS7i4yrvWXex07bwZ3MY3D94Tlo3IEKDVY/laIV/4Ngd3nqRkijMM4+JN86bGYg==
-X-Received: by 2002:a81:9141:0:b0:586:6a71:b018 with SMTP id
- i62-20020a819141000000b005866a71b018mr1181617ywg.20.1693531763637; 
- Thu, 31 Aug 2023 18:29:23 -0700 (PDT)
+ bh=SK7n0aiJMN0SWoP8B2n02PHYDXpt98FoPoro/RkTgS8=;
+ b=F/FO8MvrCMBRJsxlIjHb5zoQxUCjKsYbk8LbqsoiE+DAGxQ9wt5lpRmzH6fejN9ZNB
+ kChXKKqfYBgSXO4W247rWJLPuW8meYtrcXJkpf3pMkIqqIXJXnsdBjtS8JmqzC4502Db
+ c4bWLBuGSEsoyWDRjHo4RGI4T00eg8UmZBaChTfF0Aohw9Lrq7zInnXVAti7dg9bnY3s
+ zX8Z5W4bZl/b6/PQjx3tO2PLpzfb8plh6gr8FV64vTN77S4HlFx7dkt0t3Lt9G/DWm7H
+ 8S0IZ2UxXaHJwysPdFmtxt8oNsU6Upzbp+RSqdVK1GaYmzeKriEkGwKqg8MrELARGrWJ
+ FRlg==
+X-Gm-Message-State: AOJu0Yw+UBqY1KnCvkwWPxfIpXpc1FSxZsp/jTkInGn69VINg5CyEoRb
+ aHFTSEg6hF44YDqY0/CDdWTczF1XPb6M
+X-Google-Smtp-Source: AGHT+IHopUFq0B9kgHdCiPSfXi9p4iJvI2XcsVjcI25l4AGICoAvGmt9VwQA2GIRpLzeMRkcsz5gYA==
+X-Received: by 2002:a0d:e5c2:0:b0:595:b30:1dd8 with SMTP id
+ o185-20020a0de5c2000000b005950b301dd8mr1394663ywe.18.1693531764903; 
+ Thu, 31 Aug 2023 18:29:24 -0700 (PDT)
 Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
  [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
- g186-20020a0df6c3000000b00559fb950d9fsm810447ywf.45.2023.08.31.18.29.22
+ g186-20020a0df6c3000000b00559fb950d9fsm810447ywf.45.2023.08.31.18.29.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Aug 2023 18:29:23 -0700 (PDT)
+ Thu, 31 Aug 2023 18:29:24 -0700 (PDT)
 From: Gregory Price <gourry.memverge@gmail.com>
 X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org, junhee.ryu@sk.com,
  kwangjin.ko@sk.com, Gregory Price <gregory.price@memverge.com>
-Subject: [PATCH 2/5] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
- read/write functions
-Date: Thu, 31 Aug 2023 21:29:11 -0400
-Message-Id: <20230901012914.226527-3-gregory.price@memverge.com>
+Subject: [PATCH 3/5] cxl/type3: Expose ct3 functions so that inheriters can
+ call them
+Date: Thu, 31 Aug 2023 21:29:12 -0400
+Message-Id: <20230901012914.226527-4-gregory.price@memverge.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230901012914.226527-1-gregory.price@memverge.com>
 References: <20230901012914.226527-1-gregory.price@memverge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1144;
- envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1144.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1143;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1143.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,58 +94,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call CXL_TYPE3 once at top of function to avoid multiple invocations.
+For devices built on top of ct3, we need the init, realize, and
+exit functions exposed to correctly start up and tear down.
 
 Signed-off-by: Gregory Price <gregory.price@memverge.com>
 ---
- hw/mem/cxl_type3.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ hw/mem/cxl_type3.c          | 8 ++++----
+ include/hw/cxl/cxl_device.h | 5 +++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index fd9d134d46..80d596ee10 100644
+index 80d596ee10..a8d4a12f3e 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -1248,17 +1248,18 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
- MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
-                            unsigned size, MemTxAttrs attrs)
+@@ -950,7 +950,7 @@ static DOEProtocol doe_spdm_prot[] = {
+     { }
+ };
+ 
+-static void ct3_realize(PCIDevice *pci_dev, Error **errp)
++void ct3_realize(PCIDevice *pci_dev, Error **errp)
  {
-+    CXLType3Dev *ct3d = CXL_TYPE3(d);
-     uint64_t dpa_offset = 0;
-     AddressSpace *as = NULL;
-     int res;
+     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+     CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
+@@ -1054,7 +1054,7 @@ err_address_space_free:
+     return;
+ }
  
--    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
-+    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
-                                       &as, &dpa_offset);
-     if (res) {
-         return MEMTX_ERROR;
-     }
- 
--    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
-+    if (sanitize_running(&ct3d->cci)) {
-         qemu_guest_getrandom_nofail(data, size);
-         return MEMTX_OK;
-     }
-@@ -1268,16 +1269,17 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
- MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
-                             unsigned size, MemTxAttrs attrs)
+-static void ct3_exit(PCIDevice *pci_dev)
++void ct3_exit(PCIDevice *pci_dev)
  {
-+    CXLType3Dev *ct3d = CXL_TYPE3(d);
-     uint64_t dpa_offset = 0;
-     AddressSpace *as = NULL;
-     int res;
- 
--    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
-+    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
-                                       &as, &dpa_offset);
-     if (res) {
-         return MEMTX_ERROR;
-     }
--    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
-+    if (sanitize_running(&ct3d->cci)) {
-         return MEMTX_OK;
-     }
+     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+     CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
+@@ -1285,7 +1285,7 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
      return address_space_write(as, dpa_offset, attrs, &data, size);
+ }
+ 
+-static void ct3d_reset(DeviceState *dev)
++void ct3d_reset(DeviceState *dev)
+ {
+     CXLType3Dev *ct3d = CXL_TYPE3(dev);
+     uint32_t *reg_state = ct3d->cxl_cstate.crb.cache_mem_registers;
+@@ -2081,7 +2081,7 @@ void qmp_cxl_release_dynamic_capacity(const char *path,
+                                      errp);
+ }
+ 
+-static void ct3_class_init(ObjectClass *oc, void *data)
++void ct3_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+     PCIDeviceClass *pc = PCI_DEVICE_CLASS(oc);
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index e824c5ade8..4ad38b689c 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -524,6 +524,11 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+                             unsigned size, MemTxAttrs attrs);
+ 
++void ct3_realize(PCIDevice *pci_dev, Error **errp);
++void ct3_exit(PCIDevice *pci_dev);
++void ct3d_reset(DeviceState *d);
++void ct3_class_init(ObjectClass *oc, void *data);
++
+ uint64_t cxl_device_get_timestamp(CXLDeviceState *cxlds);
+ 
+ void cxl_event_init(CXLDeviceState *cxlds, int start_msg_num);
 -- 
 2.39.1
 
