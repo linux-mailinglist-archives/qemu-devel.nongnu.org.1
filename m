@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8D378FB4E
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6762F78FB52
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 11:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc0gX-0003Bp-Gd; Fri, 01 Sep 2023 05:43:25 -0400
+	id 1qc0gM-0002es-JF; Fri, 01 Sep 2023 05:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0gU-00032r-0n; Fri, 01 Sep 2023 05:43:22 -0400
+ id 1qc0gJ-0002aw-Sw; Fri, 01 Sep 2023 05:43:11 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=SnXb=ER=kaod.org=clg@ozlabs.org>)
- id 1qc0gF-000398-Ks; Fri, 01 Sep 2023 05:43:21 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY4B4Pgbz4x2W;
- Fri,  1 Sep 2023 19:43:06 +1000 (AEST)
+ id 1qc0gH-00039v-Jk; Fri, 01 Sep 2023 05:43:11 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RcY4D4WN8z4wxW;
+ Fri,  1 Sep 2023 19:43:08 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY48629Qz4wy6;
- Fri,  1 Sep 2023 19:43:04 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RcY4C0sJpz4wy6;
+ Fri,  1 Sep 2023 19:43:06 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 20/26] hw/sd: Add sd_cmd_GO_IDLE_STATE() handler
-Date: Fri,  1 Sep 2023 11:42:08 +0200
-Message-ID: <20230901094214.296918-21-clg@kaod.org>
+Subject: [PULL 21/26] hw/sd: Add sd_cmd_SEND_OP_CMD() handler
+Date: Fri,  1 Sep 2023 11:42:09 +0200
+Message-ID: <20230901094214.296918-22-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230901094214.296918-1-clg@kaod.org>
 References: <20230901094214.296918-1-clg@kaod.org>
@@ -67,69 +65,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
 Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
-Message-Id: <20210624142209.1193073-8-f4bug@amsat.org>
+[ clg: Update cmd_abbrev ]
+Message-Id: <20210624142209.1193073-9-f4bug@amsat.org>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/sd/sd.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ hw/sd/sd.c             | 18 +++++++++---------
+ hw/sd/sdmmc-internal.c |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index e88bfcb8c802..535b72ff5c2a 100644
+index 535b72ff5c2a..bd67c50894fe 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -1020,6 +1020,16 @@ static sd_rsp_type_t sd_cmd_unimplemented(SDState *sd, SDRequest req)
-     return sd_illegal;
+@@ -1030,6 +1030,13 @@ static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
+     return sd->spi ? sd_r1 : sd_r0;
  }
  
-+static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
++static sd_rsp_type_t sd_cmd_SEND_OP_CMD(SDState *sd, SDRequest req)
 +{
-+    if (sd->state != sd_inactive_state) {
-+        sd->state = sd_idle_state;
-+        sd_reset(DEVICE(sd));
-+    }
++    sd->state = sd_transfer_state;
 +
-+    return sd->spi ? sd_r1 : sd_r0;
++    return sd_r1;
 +}
 +
  static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
  {
      uint32_t rca = 0x0000;
-@@ -1059,18 +1069,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+@@ -1069,10 +1076,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
  
      switch (req.cmd) {
      /* Basic commands (Class 0 and Class 1) */
--    case 0:  /* CMD0:   GO_IDLE_STATE */
--        switch (sd->state) {
--        case sd_inactive_state:
--            return sd->spi ? sd_r1 : sd_r0;
+-    case 1:  /* CMD1:   SEND_OP_CMD */
+-        sd->state = sd_transfer_state;
+-        return sd_r1;
 -
--        default:
--            sd->state = sd_idle_state;
--            sd_reset(DEVICE(sd));
--            return sd->spi ? sd_r1 : sd_r0;
+     case 2:  /* CMD2:   ALL_SEND_CID */
+         switch (sd->state) {
+         case sd_ready_state:
+@@ -1622,11 +1625,6 @@ static sd_rsp_type_t sd_app_command(SDState *sd,
+         break;
+ 
+     case 41:  /* ACMD41: SD_APP_OP_COND */
+-        if (sd->spi) {
+-            /* SEND_OP_CMD */
+-            sd->state = sd_transfer_state;
+-            return sd_r1;
 -        }
--        break;
--
-     case 1:  /* CMD1:   SEND_OP_CMD */
-         sd->state = sd_transfer_state;
-         return sd_r1;
-@@ -2132,6 +2130,7 @@ void sd_enable(SDState *sd, bool enable)
- static const SDProto sd_proto_spi = {
+         if (sd->state != sd_idle_state) {
+             break;
+         }
+@@ -2131,6 +2129,7 @@ static const SDProto sd_proto_spi = {
      .name = "SPI",
      .cmd = {
-+        [0]         = sd_cmd_GO_IDLE_STATE,
+         [0]         = sd_cmd_GO_IDLE_STATE,
++        [1]         = sd_cmd_SEND_OP_CMD,
          [2 ... 4]   = sd_cmd_illegal,
          [5]         = sd_cmd_illegal,
          [7]         = sd_cmd_illegal,
-@@ -2147,6 +2146,7 @@ static const SDProto sd_proto_spi = {
- static const SDProto sd_proto_sd = {
-     .name = "SD",
-     .cmd = {
-+        [0]         = sd_cmd_GO_IDLE_STATE,
-         [1]         = sd_cmd_illegal,
-         [5]         = sd_cmd_illegal,
-         [52 ... 54] = sd_cmd_illegal,
+@@ -2140,6 +2139,7 @@ static const SDProto sd_proto_spi = {
+     },
+     .acmd = {
+         [6]         = sd_cmd_unimplemented,
++        [41]        = sd_cmd_SEND_OP_CMD,
+     },
+ };
+ 
+diff --git a/hw/sd/sdmmc-internal.c b/hw/sd/sdmmc-internal.c
+index 2053def3f10b..8648a7808dcc 100644
+--- a/hw/sd/sdmmc-internal.c
++++ b/hw/sd/sdmmc-internal.c
+@@ -14,7 +14,7 @@
+ const char *sd_cmd_name(uint8_t cmd)
+ {
+     static const char *cmd_abbrev[SDMMC_CMD_MAX] = {
+-         [0]    = "GO_IDLE_STATE",
++         [0]    = "GO_IDLE_STATE",           [1]    = "SEND_OP_CMD",
+          [2]    = "ALL_SEND_CID",            [3]    = "SEND_RELATIVE_ADDR",
+          [4]    = "SET_DSR",                 [5]    = "IO_SEND_OP_COND",
+          [6]    = "SWITCH_FUNC",             [7]    = "SELECT/DESELECT_CARD",
 -- 
 2.41.0
 
