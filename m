@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614EE78FEF8
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E9F78FEFB
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 16:24:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc53Z-0002HM-PA; Fri, 01 Sep 2023 10:23:29 -0400
+	id 1qc547-0004dP-PI; Fri, 01 Sep 2023 10:24:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc53T-0001vD-Ui
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:23:25 -0400
+ id 1qc545-0004VG-80
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:24:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qc53Q-0003B7-1G
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:23:23 -0400
+ id 1qc53z-0003ET-86
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 10:24:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693578199;
+ s=mimecast20190719; t=1693578232;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/TtR/kM1ZZGRgybpInV401/ExqrpXhyJnnd14FeZueY=;
- b=ec26Mv6/xUqpfQiM4tBbBstJcYE9xwF31hwKIYkDyZzzevqpIGfB2OUm/d/D4lW68JoLMs
- hI18FrHSC7IFZL5v5HzbuMNNk5AbNS0pa8QB79LuJJ6d+m4nfVOQxFWa2N3yd0/LXWPeyn
- XpCXV+nsD1oXNmMaCDxm4dUfskYc+XU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-591-QWrOkTeiOU6otwdzG7rpHw-1; Fri, 01 Sep 2023 10:23:17 -0400
-X-MC-Unique: QWrOkTeiOU6otwdzG7rpHw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=xpl9o5NbJYxU6DgwPiYU604T2vqMgmiE8NqfkGJ79ZQ=;
+ b=FWvMznFAwn9s6vJ12aLlhwQLqmS+LDwsZhJUsNX4vh8IcGCTQvBHNTtllJWKfDLoAGlj9D
+ Vkeq1wOARjMV5j1JZR8auYiX0MHLPNHNUO9/ZpBEeXLiuY9k4mHr4wVBpoJI/ns/ud0t1I
+ s/L6Ybvk3MJx3xv5COfhpZpedwQ0XUI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-231-l7Zz-4hSPxSmvp44Sd7f3w-1; Fri, 01 Sep 2023 10:23:48 -0400
+X-MC-Unique: l7Zz-4hSPxSmvp44Sd7f3w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2A39E10264C1
- for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 14:23:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 78E103C0EAA1
+ for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 14:23:41 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9B80C49310F;
- Fri,  1 Sep 2023 14:23:16 +0000 (UTC)
-Date: Fri, 1 Sep 2023 15:23:14 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E7CCC1005B8C;
+ Fri,  1 Sep 2023 14:23:40 +0000 (UTC)
+Date: Fri, 1 Sep 2023 15:23:38 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 23/67] ui/console: specialize console_lookup_unused()
-Message-ID: <ZPHz0jgRL5+MfQIx@redhat.com>
+Subject: Re: [PATCH 24/67] ui/console: update the head from unused QemuConsole
+Message-ID: <ZPHz6kKdqkHDn24S@redhat.com>
 References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-24-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-25-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830093843.3531473-24-marcandre.lureau@redhat.com>
+In-Reply-To: <20230830093843.3531473-25-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,21 +83,16 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 01:37:57PM +0400, marcandre.lureau@redhat.com wrote:
+On Wed, Aug 30, 2023 at 01:37:58PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> graphics_console_init() is expected to return a graphic console.
-> 
-> The function doesn't need to be exported.
-> 
-> We are going to specialize further QemuGraphicConsole & QemuTextConsole.
-> The two will not be interchangeable anymore.
+> When recycling unused QemuConsole, we should still set the associated
+> head number for correct information and lookups.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  include/ui/console.h | 1 -
->  ui/console.c         | 7 ++++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  ui/console.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
