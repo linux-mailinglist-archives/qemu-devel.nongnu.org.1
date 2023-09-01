@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F7078FDAD
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532FF78FDC2
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 14:51:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc3XL-0004Ar-Hm; Fri, 01 Sep 2023 08:46:07 -0400
+	id 1qc3bc-00076J-K8; Fri, 01 Sep 2023 08:50:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qc3XI-0004AC-3w
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:46:06 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc3bY-00073S-VW
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:50:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qc3XE-0004E0-KD
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:46:03 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qc3bW-0005Wy-Lm
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 08:50:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693572359;
+ s=mimecast20190719; t=1693572624;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=A6yVvBA0Fl7mQ/6uiaLMfvmegHqGvn7fBP/4cVScsEA=;
- b=MD2M8CmgO1/yBx5Yvw30q5KYGx9ZEfXWcQf1U8smglq1tQTrSGhicURPm84S9HHvCpVnaS
- GB4R2IKOuhWtHZ9uyzw2RH7o770Xvn1p2PTMBWrTLrzCh8KaH7oCJSx70HHz8khGi2iKGR
- YSDraTJ2HiriBsUsEWHJr5hjcnJTVDA=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-otDRu-csMzCFE35bu1uDfQ-1; Fri, 01 Sep 2023 08:45:57 -0400
-X-MC-Unique: otDRu-csMzCFE35bu1uDfQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-521a38098faso1456328a12.2
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 05:45:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693572356; x=1694177156;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=A6yVvBA0Fl7mQ/6uiaLMfvmegHqGvn7fBP/4cVScsEA=;
- b=PSw6WBsQkEIYySzJZ9LuddqiMnN1JP9Rbk69WheHB7pA3iYXPsMzmQcUBs9+uVrxe5
- zUXmaaF7kLq/YLPZrJjzYv18TjfQIKkltBWlxV4sZz5sKqzHYitqzKq3wzwZ3D7i90Nd
- gtGNBw032VYDWbclIJ8DM1CisOTRo23gf3GA6tXF3WS/Fn0I8/vGsOR75NHVKsZ9L7MH
- a1FJqVq9o3Zhci21iHEDYH9rCDlELRQPKlR1z8EtF5ayyms0DcQ359Zplw6ng0ixnUU/
- OEZMnKK3NZ8wUIOwD229MghYu6zYosoUaERs7jQirfxP60HojVcwCFtMdtsOWSrYB2eO
- K5aA==
-X-Gm-Message-State: AOJu0Yy7pZ27m5nkTKdoevnBZjD8R9rNN5n0Z7+3w2t6j1hXCbDcmCC+
- ieBXX9LVH+5Q37rig3I4tGvjI5JNNpoDwg5NZP9hEgEJvUzI4U4lzq2QfRQDuHyKDR/ZfjuTQuc
- l6liilRlLpfBykGJUDS11y6RUfXvsN34=
-X-Received: by 2002:a05:6402:8c3:b0:523:37ff:1170 with SMTP id
- d3-20020a05640208c300b0052337ff1170mr1866530edz.16.1693572356667; 
- Fri, 01 Sep 2023 05:45:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQE0Z9G6R62kjsViyWIppdgWa0jUFDFaKfHDuxntUfVS84nPLjIvMA1FzrXcn9BnMN2jNCx2yevGQ2JYjNoTg=
-X-Received: by 2002:a05:6402:8c3:b0:523:37ff:1170 with SMTP id
- d3-20020a05640208c300b0052337ff1170mr1866516edz.16.1693572356378; Fri, 01 Sep
- 2023 05:45:56 -0700 (PDT)
+ bh=/mvctKVG9aJI3YgDX6pDfTG/ROYKu/ZdGMIoudx+m4I=;
+ b=KCt1WI8FWwO7EBIk6oWj2X96wH85IdARd57uAfuObfe8zwOrlkFc2Q4M/iEI7BZ2UuB8yA
+ fQ9QXPq8jvvavA0Fq3lFYJM1wEjObZxUZw9VcdcuujO61rUsihQ6A5iGBBNQS6TPIxWhoW
+ 57GxH2hYu6U6nmKcn59TsnPzi+Kd8KI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-311-Ckj2_WMKOnu42O_0_6wGag-1; Fri, 01 Sep 2023 08:50:19 -0400
+X-MC-Unique: Ckj2_WMKOnu42O_0_6wGag-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 683B029ABA28;
+ Fri,  1 Sep 2023 12:50:18 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3A6D71005B8D;
+ Fri,  1 Sep 2023 12:50:18 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1A52C21E692A; Fri,  1 Sep 2023 14:50:17 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org,  qemu-ppc@nongnu.org,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Peter Xu <peterx@redhat.com>,  Igor Mammedov
+ <imammedo@redhat.com>,  Thiner Logoer <logoerthiner1@163.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Elena
+ Ufimtseva <elena.ufimtseva@oracle.com>,  Jagannathan Raman
+ <jag.raman@oracle.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Ani Sinha
+ <anisinha@redhat.com>,  Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,  Greg Kurz
+ <groug@kaod.org>,  Eric Blake <eblake@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>
+Subject: Re: [PATCH v3 03/11] backends/hostmem-file: Add "rom" property to
+ support VM templating with R/O files
+References: <20230823153412.832081-1-david@redhat.com>
+ <20230823153412.832081-4-david@redhat.com>
+Date: Fri, 01 Sep 2023 14:50:17 +0200
+In-Reply-To: <20230823153412.832081-4-david@redhat.com> (David Hildenbrand's
+ message of "Wed, 23 Aug 2023 17:34:03 +0200")
+Message-ID: <87y1hqxdkm.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230901103020.86915-1-belmouss@redhat.com>
- <adbb7fc5-1e25-131b-b6dd-da782d46528c@linaro.org>
-In-Reply-To: <adbb7fc5-1e25-131b-b6dd-da782d46528c@linaro.org>
-From: Bilal Elmoussaoui <belmouss@redhat.com>
-Date: Fri, 1 Sep 2023 14:45:45 +0200
-Message-ID: <CALz9Gza-=sxx8bsddL4f-bUzAkhXvF2a=y8sZMkDo+SQ_jZ01w@mail.gmail.com>
-Subject: Re: [PATCH] dbus: Properly dispose touch/mouse dbus objects
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000b4237306044b8a82"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=belmouss@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,106 +91,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b4237306044b8a82
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+David Hildenbrand <david@redhat.com> writes:
 
-Hi Philippe,
+> For now, "share=off,readonly=on" would always result in us opening the
+> file R/O and mmap'ing the opened file MAP_PRIVATE R/O -- effectively
+> turning it into ROM.
+>
+> Especially for VM templating, "share=off" is a common use case. However,
+> that use case is impossible with files that lack write permissions,
+> because "share=off,readonly=on" will not give us writable RAM.
+>
+> The sole user of ROM via memory-backend-file are R/O NVDIMMs, but as we
+> have users (Kata Containers) that rely on the existing behavior --
+> malicious VMs should not be able to consume COW memory for R/O NVDIMMs --
+> we cannot change the semantics of "share=off,readonly=on"
+>
+> So let's add a new "rom" property with on/off/auto values. "auto" is
+> the default and what most people will use: for historical reasons, to not
+> change the old semantics, it defaults to the value of the "readonly"
+> property.
+>
+> For VM templating, one can now use:
+>     -object memory-backend-file,share=off,readonly=on,rom=off,...
+>
+> But we'll disallow:
+>     -object memory-backend-file,share=on,readonly=on,rom=off,...
+> because we would otherwise get an error when trying to mmap the R/O file
+> shared and writable. An explicit error message is cleaner.
+>
+> We will also disallow for now:
+>     -object memory-backend-file,share=off,readonly=off,rom=on,...
+>     -object memory-backend-file,share=on,readonly=off,rom=on,...
+> It's not harmful, but also not really required for now.
+>
+> Alternatives that were abandoned:
+> * Make "unarmed=on" for the NVDIMM set the memory region container
+>   readonly. We would still see a change of ROM->RAM and possibly run
+>   into memslot limits with vhost-user. Further, there might be use cases
+>   for "unarmed=on" that should still allow writing to that memory
+>   (temporary files, system RAM, ...).
+> * Add a new "readonly=on/off/auto" parameter for NVDIMMs. Similar issues
+>   as with "unarmed=on".
+> * Make "readonly" consume "on/off/file" instead of being a 'bool' type.
+>   This would slightly changes the behavior of the "readonly" parameter:
+>   values like true/false (as accepted by a 'bool'type) would no longer be
+>   accepted.
+>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Sorry, I forgot that again. Sent a v2
-
-On Fri, Sep 1, 2023 at 12:48=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
-@linaro.org>
-wrote:
-
-> Hi Bilal,
->
-> Fixes: 142ca628a7 ("ui: add a D-Bus display backend")
-> Fixes: de9f844ce2 ("ui/dbus: Expose a touch device interface")
->
-> See
->
-> https://www.qemu.org/docs/master/devel/submitting-a-patch.html#patch-emai=
-ls-must-include-a-signed-off-by-line
->
->    Your patches must include a Signed-off-by: line. This is a
->    hard requirement because it=E2=80=99s how you say =E2=80=9CI=E2=80=99m=
- legally okay
->    to contribute this and happy for it to go into QEMU=E2=80=9D.
->
-> On 1/9/23 12:30, Bilal Elmoussaoui wrote:
-> > ---
-> >   ui/dbus-console.c | 2 ++
-> >   1 file changed, 2 insertions(+)
-> >
-> > diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-> > index e19774f985..36f7349585 100644
-> > --- a/ui/dbus-console.c
-> > +++ b/ui/dbus-console.c
-> > @@ -150,6 +150,8 @@ dbus_display_console_dispose(GObject *object)
-> >       DBusDisplayConsole *ddc =3D DBUS_DISPLAY_CONSOLE(object);
-> >
-> >       unregister_displaychangelistener(&ddc->dcl);
-> > +    g_clear_object(&ddc->iface_touch);
-> > +    g_clear_object(&ddc->iface_mouse);
-> >       g_clear_object(&ddc->iface_kbd);
-> >       g_clear_object(&ddc->iface);
-> >       g_clear_pointer(&ddc->listeners, g_hash_table_unref);
->
->
-
---000000000000b4237306044b8a82
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi Philippe,</div><div><br></div><div>Sorry, I forgot=
- that again. Sent a v2<br></div></div><br><div class=3D"gmail_quote"><div d=
-ir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 1, 2023 at 12:48=E2=80=AFPM Phi=
-lippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@li=
-naro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex">Hi Bilal,<br>
-<br>
-Fixes: 142ca628a7 (&quot;ui: add a D-Bus display backend&quot;)<br>
-Fixes: de9f844ce2 (&quot;ui/dbus: Expose a touch device interface&quot;)<br=
->
-<br>
-See <br>
-<a href=3D"https://www.qemu.org/docs/master/devel/submitting-a-patch.html#p=
-atch-emails-must-include-a-signed-off-by-line" rel=3D"noreferrer" target=3D=
-"_blank">https://www.qemu.org/docs/master/devel/submitting-a-patch.html#pat=
-ch-emails-must-include-a-signed-off-by-line</a><br>
-<br>
-=C2=A0 =C2=A0Your patches must include a Signed-off-by: line. This is a<br>
-=C2=A0 =C2=A0hard requirement because it=E2=80=99s how you say =E2=80=9CI=
-=E2=80=99m legally okay<br>
-=C2=A0 =C2=A0to contribute this and happy for it to go into QEMU=E2=80=9D.<=
-br>
-<br>
-On 1/9/23 12:30, Bilal Elmoussaoui wrote:<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0ui/dbus-console.c | 2 ++<br>
-&gt;=C2=A0 =C2=A01 file changed, 2 insertions(+)<br>
-&gt; <br>
-&gt; diff --git a/ui/dbus-console.c b/ui/dbus-console.c<br>
-&gt; index e19774f985..36f7349585 100644<br>
-&gt; --- a/ui/dbus-console.c<br>
-&gt; +++ b/ui/dbus-console.c<br>
-&gt; @@ -150,6 +150,8 @@ dbus_display_console_dispose(GObject *object)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0DBusDisplayConsole *ddc =3D DBUS_DISPLAY_CON=
-SOLE(object);<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0unregister_displaychangelistener(&amp;ddc-&g=
-t;dcl);<br>
-&gt; +=C2=A0 =C2=A0 g_clear_object(&amp;ddc-&gt;iface_touch);<br>
-&gt; +=C2=A0 =C2=A0 g_clear_object(&amp;ddc-&gt;iface_mouse);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_clear_object(&amp;ddc-&gt;iface_kbd);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_clear_object(&amp;ddc-&gt;iface);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_clear_pointer(&amp;ddc-&gt;listeners, g_ha=
-sh_table_unref);<br>
-<br>
-</blockquote></div>
-
---000000000000b4237306044b8a82--
+QAPI schema
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
