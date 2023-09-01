@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BB87902E7
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3AB7902E6
 	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 22:43:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcAyu-0006yR-MO; Fri, 01 Sep 2023 16:43:06 -0400
+	id 1qcAzB-00071M-UD; Fri, 01 Sep 2023 16:43:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qcAyq-0006wy-5F
+ id 1qcAyq-0006wv-1W
  for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:43:00 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qcAyl-0001wU-G3
+ id 1qcAyl-0001wi-U3
  for qemu-devel@nongnu.org; Fri, 01 Sep 2023 16:42:59 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-68a3082c771so271648b3a.0
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:42:54 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-68c0d262933so2072876b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 13:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1693600974; x=1694205774; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kIdz6fORtYQosHOppAmYyY3l4+SK9t3Ue4xgFTE6WTQ=;
- b=ltZDxIsGuDDnUYMvqVF2IEhluAQITbhnFNvU45OmjR2tecJyKGdeSiMoBcpTXkSibe
- pvIYzq+ONgTU6hYlyKTb8Ne1KOwfl6Vw7tIoUqBHgYTqBQbXa99uW+nRxnQ6iw8XBmlR
- +D2FGr3hmdcXT0rm6shrz9kpkmLZ9kZyANk1b/CDIlOHt+r8uyM7COg/b34AefD88oie
- z+JYCEZFQ1LMeFPY5+Nr1hMeInd3ULBx//oMyIbb7QtVpcOwOSebIWJNRHAPdV2x7Da4
- UzbLhJ+/7H1wqe+5WlD3INlBPTA78aPAWGTRJ0/YWo+jHkMYBDDbNyXJ3n4Bt3o/jDYB
- ULPQ==
+ bh=HN9bdDKpCXsqx9IM4u0+R/+OpGOMVkY0zwFC+KcDdss=;
+ b=i7b0PwzJAd7ZeLiweZG3er6WuQwE5Td7xg9zK3tNFktCUWwVCSMG6IBGcLNS3LyTGP
+ Wn+XkIWCczqOrJo9LoTJ10ugss9ukkZr8d12hqJMZfra8d3dnP3OhEZOvLqKyosbZsFV
+ OFhAuMN00Rs0ZpRAI5VYoy20LZ4T7KNuTwKPYXQ+wjk/rAWsTmgXzTDSzRBzNzm4Gu8U
+ heuYmf6koXdbOasuw9SaxgKxVYOCz6wwAqUU9GVuRGBu6cWOQjXPyJdzkMdOM3rG24yB
+ cNX+xDA7bfomqmpy/SnZJ+iNGzwVBKx/kTbKGW6IlPsmaiBqvBDZKeymnarPnvQWw1F/
+ de6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1693600974; x=1694205774;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kIdz6fORtYQosHOppAmYyY3l4+SK9t3Ue4xgFTE6WTQ=;
- b=Uq5zIWWpcAECIcUtGkH5RJbXbGeQUQPv0rWVyIfs8nezsrHa7E7U+paAQv4ZCNCal2
- o5IW7H3kPQ1JQ9LtAcrSVxGlSPdXJfqRRJ3RStog/8Xmo4fj0aCvDaHMo47iIoGKVZcJ
- 7hDICstByNL72824Vrp3idxBZQmP0LSkn/B33CBUHHruWJBF+OWbiafbLoM+Ep4ZY063
- sUV/Wgy0Api6xXBWxGQjyCyblO4wFGf22v4poY5rCnFeK/bwbnUwH/3jwobDIMlmWjfy
- v7XFQtdy+hAjqtuZUuj6xTtjgTUHaSfADQNfmxkPd6ve9Hv/C0GVZKcMxdvDx/hk9Ytc
- tdYQ==
-X-Gm-Message-State: AOJu0YxcNnx7ryT5kArAVY8cF0BbNwaENW0To5fQnd82veXiPA/ZvPBw
- C64WZ2Do0STpnolCmcLnHlOWysQkcOQWoJ4f7XM=
-X-Google-Smtp-Source: AGHT+IH3BBDxsOnZ6G0HS0kn5nq3SeY+fUdigk/KE1yb2Zyt69v+32Cj7lfe4UVeijr8W0y4e4x4QQ==
-X-Received: by 2002:a05:6a00:1d1e:b0:68a:3eef:1672 with SMTP id
- a30-20020a056a001d1e00b0068a3eef1672mr5202227pfx.5.1693600973609; 
- Fri, 01 Sep 2023 13:42:53 -0700 (PDT)
+ bh=HN9bdDKpCXsqx9IM4u0+R/+OpGOMVkY0zwFC+KcDdss=;
+ b=PVqmgyjrBDWjie9/H73krnOnLbdlp78BNaPZxjBzNG+0mTfcOS0G6HradHcHKJerFi
+ L3fviSOnheCQnRXZDQVCJ6ZLJdcrSCE0BpD0PBmtGt12zPRNWuNbCJLHKl2nWIQTAQqn
+ 4cSlrlBdTUJmnv26cp638YHbvr03sUaNjAnZGZeUMnlfcO8Ej39f7mDM8/K8xJYTz/ES
+ 6fM6AtAiMOJJA6cfS/hc0jRx5GqZOP3e3X6mQ+OZXvjPC+80WEwWL4Ey0ntYa6RSQuyZ
+ eF+//P+tvm3yRn5zoD8/O9NA+YsLVk4YIIL4tEwOXLcXJSnm+P0CR4TRWVWXO50dzp7c
+ KOTw==
+X-Gm-Message-State: AOJu0YyVAkmk3jY7vo6TYEvGjJ1IKfbuNS5QibEujHavmB2KuQVQCyJH
+ sjeLEiaOr0AwTW4L4RbDAwqDCaFP9VaUNDNZPH8=
+X-Google-Smtp-Source: AGHT+IFTVmOAAiXLgMozC39CZm79BhemktokayZtDKBpXGCyBkfguTgNLqaB+3mYjMVdjkq/tqPHDQ==
+X-Received: by 2002:a05:6a21:7746:b0:138:60e:9bb with SMTP id
+ bc6-20020a056a21774600b00138060e09bbmr3623655pzc.28.1693600974411; 
+ Fri, 01 Sep 2023 13:42:54 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j15-20020aa78d0f000000b0068c97a4eb0dsm3320666pfe.191.2023.09.01.13.42.52
+ j15-20020aa78d0f000000b0068c97a4eb0dsm3320666pfe.191.2023.09.01.13.42.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Sep 2023 13:42:53 -0700 (PDT)
+ Fri, 01 Sep 2023 13:42:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/13] linux-user: Split out cpu/target_proc.h
-Date: Fri,  1 Sep 2023 13:42:39 -0700
-Message-Id: <20230901204251.137307-2-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 02/13] linux-user: Emulate /proc/cpuinfo on aarch64 and arm
+Date: Fri,  1 Sep 2023 13:42:40 -0700
+Message-Id: <20230901204251.137307-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230901204251.137307-1-richard.henderson@linaro.org>
 References: <20230901204251.137307-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,609 +90,355 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the various open_cpuinfo functions into new files.
-Move the m68k open_hardware function as well.
-All other guest architectures get a boilerplate empty file.
+From: Helge Deller <deller@gmx.de>
 
-Tested-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Add emulation for /proc/cpuinfo for arm architecture.
+The output below mimics output as seen on debian porterboxes.
+
+aarch64 output example:
+
+processor       : 0
+model name      : ARMv8 Processor rev 0 (v8l)
+BogoMIPS        : 100.00
+Features        : swp half thumb fast_mult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae aes pmull sha1 sha2 crc32
+CPU implementer : 0x41
+CPU architecture: 8
+CPU variant     : 0x1
+CPU part        : 0xd07
+CPU revision    : 0
+
+arm 32-bit output example:
+
+processor	: 0
+model name	: ARMv7 Processor rev 5 (armv7l)
+BogoMIPS	: 100.00
+Features	: swp half thumb fast_mult vfp edsp thumbee neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0f
+CPU part	: 0xc07
+CPU revision	: 5
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230803214450.647040-3-deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/target_proc.h     |   1 +
- linux-user/alpha/target_proc.h       |   1 +
- linux-user/arm/target_proc.h         |   1 +
- linux-user/cris/target_proc.h        |   1 +
- linux-user/hexagon/target_proc.h     |   1 +
- linux-user/hppa/target_proc.h        |  26 ++++
- linux-user/i386/target_proc.h        |   1 +
- linux-user/loongarch64/target_proc.h |   1 +
- linux-user/m68k/target_proc.h        |  16 +++
- linux-user/microblaze/target_proc.h  |   1 +
- linux-user/mips/target_proc.h        |   1 +
- linux-user/mips64/target_proc.h      |   1 +
- linux-user/nios2/target_proc.h       |   1 +
- linux-user/openrisc/target_proc.h    |   1 +
- linux-user/ppc/target_proc.h         |   1 +
- linux-user/riscv/target_proc.h       |  37 ++++++
- linux-user/s390x/target_proc.h       | 109 +++++++++++++++++
- linux-user/sh4/target_proc.h         |   1 +
- linux-user/sparc/target_proc.h       |  16 +++
- linux-user/x86_64/target_proc.h      |   1 +
- linux-user/xtensa/target_proc.h      |   1 +
- linux-user/syscall.c                 | 176 +--------------------------
- 22 files changed, 226 insertions(+), 170 deletions(-)
- create mode 100644 linux-user/aarch64/target_proc.h
- create mode 100644 linux-user/alpha/target_proc.h
- create mode 100644 linux-user/arm/target_proc.h
- create mode 100644 linux-user/cris/target_proc.h
- create mode 100644 linux-user/hexagon/target_proc.h
- create mode 100644 linux-user/hppa/target_proc.h
- create mode 100644 linux-user/i386/target_proc.h
- create mode 100644 linux-user/loongarch64/target_proc.h
- create mode 100644 linux-user/m68k/target_proc.h
- create mode 100644 linux-user/microblaze/target_proc.h
- create mode 100644 linux-user/mips/target_proc.h
- create mode 100644 linux-user/mips64/target_proc.h
- create mode 100644 linux-user/nios2/target_proc.h
- create mode 100644 linux-user/openrisc/target_proc.h
- create mode 100644 linux-user/ppc/target_proc.h
- create mode 100644 linux-user/riscv/target_proc.h
- create mode 100644 linux-user/s390x/target_proc.h
- create mode 100644 linux-user/sh4/target_proc.h
- create mode 100644 linux-user/sparc/target_proc.h
- create mode 100644 linux-user/x86_64/target_proc.h
- create mode 100644 linux-user/xtensa/target_proc.h
+ linux-user/aarch64/target_proc.h |   2 +-
+ linux-user/arm/target_proc.h     | 102 +++++++++++++++++++++++-
+ linux-user/loader.h              |   6 +-
+ linux-user/elfload.c             | 130 ++++++++++++++++++++++++++++++-
+ 4 files changed, 233 insertions(+), 7 deletions(-)
 
 diff --git a/linux-user/aarch64/target_proc.h b/linux-user/aarch64/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
+index 43fe29ca72..907df4dcd2 100644
+--- a/linux-user/aarch64/target_proc.h
 +++ b/linux-user/aarch64/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/alpha/target_proc.h b/linux-user/alpha/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/alpha/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
+@@ -1 +1 @@
+-/* No target-specific /proc support */
++#include "../arm/target_proc.h"
 diff --git a/linux-user/arm/target_proc.h b/linux-user/arm/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
+index 43fe29ca72..ac75af9ca6 100644
+--- a/linux-user/arm/target_proc.h
 +++ b/linux-user/arm/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/cris/target_proc.h b/linux-user/cris/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/cris/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/hexagon/target_proc.h b/linux-user/hexagon/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/hexagon/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/hppa/target_proc.h b/linux-user/hppa/target_proc.h
-new file mode 100644
-index 0000000000..9340c3b6af
---- /dev/null
-+++ b/linux-user/hppa/target_proc.h
-@@ -0,0 +1,26 @@
+@@ -1 +1,101 @@
+-/* No target-specific /proc support */
 +/*
-+ * HPPA specific proc functions for linux-user
++ * Arm specific proc functions for linux-user
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+#ifndef HPPA_TARGET_PROC_H
-+#define HPPA_TARGET_PROC_H
++#ifndef ARM_TARGET_PROC_H
++#define ARM_TARGET_PROC_H
 +
 +static int open_cpuinfo(CPUArchState *cpu_env, int fd)
 +{
-+    int i, num_cpus;
++    ARMCPU *cpu = env_archcpu(cpu_env);
++    int arch, midr_rev, midr_part, midr_var, midr_impl;
++    target_ulong elf_hwcap = get_elf_hwcap();
++    target_ulong elf_hwcap2 = get_elf_hwcap2();
++    const char *elf_name;
++    int num_cpus, len_part, len_var;
++
++#if TARGET_BIG_ENDIAN
++# define END_SUFFIX "b"
++#else
++# define END_SUFFIX "l"
++#endif
++
++    arch = 8;
++    elf_name = "v8" END_SUFFIX;
++    midr_rev = FIELD_EX32(cpu->midr, MIDR_EL1, REVISION);
++    midr_part = FIELD_EX32(cpu->midr, MIDR_EL1, PARTNUM);
++    midr_var = FIELD_EX32(cpu->midr, MIDR_EL1, VARIANT);
++    midr_impl = FIELD_EX32(cpu->midr, MIDR_EL1, IMPLEMENTER);
++    len_part = 3;
++    len_var = 1;
++
++#ifndef TARGET_AARCH64
++    /* For simplicity, treat ARMv8 as an arm64 kernel with CONFIG_COMPAT. */
++    if (!arm_feature(&cpu->env, ARM_FEATURE_V8)) {
++        if (arm_feature(&cpu->env, ARM_FEATURE_V7)) {
++            arch = 7;
++            midr_var = (cpu->midr >> 16) & 0x7f;
++            len_var = 2;
++            if (arm_feature(&cpu->env, ARM_FEATURE_M)) {
++                elf_name = "armv7m" END_SUFFIX;
++            } else {
++                elf_name = "armv7" END_SUFFIX;
++            }
++        } else {
++            midr_part = cpu->midr >> 4;
++            len_part = 7;
++            if (arm_feature(&cpu->env, ARM_FEATURE_V6)) {
++                arch = 6;
++                elf_name = "armv6" END_SUFFIX;
++            } else if (arm_feature(&cpu->env, ARM_FEATURE_V5)) {
++                arch = 5;
++                elf_name = "armv5t" END_SUFFIX;
++            } else {
++                arch = 4;
++                elf_name = "armv4" END_SUFFIX;
++            }
++        }
++    }
++#endif
++
++#undef END_SUFFIX
 +
 +    num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    for (i = 0; i < num_cpus; i++) {
-+        dprintf(fd, "processor\t: %d\n", i);
-+        dprintf(fd, "cpu family\t: PA-RISC 1.1e\n");
-+        dprintf(fd, "cpu\t\t: PA7300LC (PCX-L2)\n");
-+        dprintf(fd, "capabilities\t: os32\n");
-+        dprintf(fd, "model\t\t: 9000/778/B160L - "
-+                    "Merlin L2 160 QEMU (9000/778/B160L)\n\n");
-+    }
-+    return 0;
-+}
-+#define HAVE_ARCH_PROC_CPUINFO
++    for (int i = 0; i < num_cpus; i++) {
++        dprintf(fd,
++                "processor\t: %d\n"
++                "model name\t: ARMv%d Processor rev %d (%s)\n"
++                "BogoMIPS\t: 100.00\n"
++                "Features\t:",
++                i, arch, midr_rev, elf_name);
 +
-+#endif /* HPPA_TARGET_PROC_H */
-diff --git a/linux-user/i386/target_proc.h b/linux-user/i386/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/i386/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/loongarch64/target_proc.h b/linux-user/loongarch64/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/loongarch64/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/m68k/target_proc.h b/linux-user/m68k/target_proc.h
-new file mode 100644
-index 0000000000..3df8f28e22
---- /dev/null
-+++ b/linux-user/m68k/target_proc.h
-@@ -0,0 +1,16 @@
-+/*
-+ * M68K specific proc functions for linux-user
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef M68K_TARGET_PROC_H
-+#define M68K_TARGET_PROC_H
-+
-+static int open_hardware(CPUArchState *cpu_env, int fd)
-+{
-+    dprintf(fd, "Model:\t\tqemu-m68k\n");
-+    return 0;
-+}
-+#define HAVE_ARCH_PROC_HARDWARE
-+
-+#endif /* M68K_TARGET_PROC_H */
-diff --git a/linux-user/microblaze/target_proc.h b/linux-user/microblaze/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/microblaze/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/mips/target_proc.h b/linux-user/mips/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/mips/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/mips64/target_proc.h b/linux-user/mips64/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/mips64/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/nios2/target_proc.h b/linux-user/nios2/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/nios2/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/openrisc/target_proc.h b/linux-user/openrisc/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/openrisc/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/ppc/target_proc.h b/linux-user/ppc/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/ppc/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/riscv/target_proc.h b/linux-user/riscv/target_proc.h
-new file mode 100644
-index 0000000000..c77c003d65
---- /dev/null
-+++ b/linux-user/riscv/target_proc.h
-@@ -0,0 +1,37 @@
-+/*
-+ * RISC-V specific proc functions for linux-user
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef RISCV_TARGET_PROC_H
-+#define RISCV_TARGET_PROC_H
-+
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    int i;
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    RISCVCPU *cpu = env_archcpu(cpu_env);
-+    const RISCVCPUConfig *cfg = riscv_cpu_cfg((CPURISCVState *) cpu_env);
-+    char *isa_string = riscv_isa_string(cpu);
-+    const char *mmu;
-+
-+    if (cfg->mmu) {
-+        mmu = (cpu_env->xl == MXL_RV32) ? "sv32"  : "sv48";
-+    } else {
-+        mmu = "none";
-+    }
-+
-+    for (i = 0; i < num_cpus; i++) {
-+        dprintf(fd, "processor\t: %d\n", i);
-+        dprintf(fd, "hart\t\t: %d\n", i);
-+        dprintf(fd, "isa\t\t: %s\n", isa_string);
-+        dprintf(fd, "mmu\t\t: %s\n", mmu);
-+        dprintf(fd, "uarch\t\t: qemu\n\n");
-+    }
-+
-+    g_free(isa_string);
-+    return 0;
-+}
-+#define HAVE_ARCH_PROC_CPUINFO
-+
-+#endif /* RISCV_TARGET_PROC_H */
-diff --git a/linux-user/s390x/target_proc.h b/linux-user/s390x/target_proc.h
-new file mode 100644
-index 0000000000..a4a4821ea5
---- /dev/null
-+++ b/linux-user/s390x/target_proc.h
-@@ -0,0 +1,109 @@
-+/*
-+ * S390X specific proc functions for linux-user
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef S390X_TARGET_PROC_H
-+#define S390X_TARGET_PROC_H
-+
-+/*
-+ * Emulate what a Linux kernel running in qemu-system-s390x -M accel=tcg would
-+ * show in /proc/cpuinfo.
-+ *
-+ * Skip the following in order to match the missing support in op_ecag():
-+ * - show_cacheinfo().
-+ * - show_cpu_topology().
-+ * - show_cpu_mhz().
-+ *
-+ * Use fixed values for certain fields:
-+ * - bogomips per cpu - from a qemu-system-s390x run.
-+ * - max thread id = 0, since SMT / SIGP_SET_MULTI_THREADING is not supported.
-+ *
-+ * Keep the code structure close to arch/s390/kernel/processor.c.
-+ */
-+
-+static void show_facilities(int fd)
-+{
-+    size_t sizeof_stfl_bytes = 2048;
-+    g_autofree uint8_t *stfl_bytes = g_new0(uint8_t, sizeof_stfl_bytes);
-+    unsigned int bit;
-+
-+    dprintf(fd, "facilities      :");
-+    s390_get_feat_block(S390_FEAT_TYPE_STFL, stfl_bytes);
-+    for (bit = 0; bit < sizeof_stfl_bytes * 8; bit++) {
-+        if (test_be_bit(bit, stfl_bytes)) {
-+            dprintf(fd, " %d", bit);
++        for (target_ulong j = elf_hwcap; j ; j &= j - 1) {
++            dprintf(fd, " %s", elf_hwcap_str(ctz64(j)));
 +        }
-+    }
-+    dprintf(fd, "\n");
-+}
-+
-+static int cpu_ident(unsigned long n)
-+{
-+    return deposit32(0, CPU_ID_BITS - CPU_PHYS_ADDR_BITS, CPU_PHYS_ADDR_BITS,
-+                     n);
-+}
-+
-+static void show_cpu_summary(CPUArchState *cpu_env, int fd)
-+{
-+    S390CPUModel *model = env_archcpu(cpu_env)->model;
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    uint32_t elf_hwcap = get_elf_hwcap();
-+    const char *hwcap_str;
-+    int i;
-+
-+    dprintf(fd, "vendor_id       : IBM/S390\n"
-+                "# processors    : %i\n"
-+                "bogomips per cpu: 13370.00\n",
-+            num_cpus);
-+    dprintf(fd, "max thread id   : 0\n");
-+    dprintf(fd, "features\t: ");
-+    for (i = 0; i < sizeof(elf_hwcap) * 8; i++) {
-+        if (!(elf_hwcap & (1 << i))) {
-+            continue;
++        for (target_ulong j = elf_hwcap2; j ; j &= j - 1) {
++            dprintf(fd, " %s", elf_hwcap2_str(ctz64(j)));
 +        }
-+        hwcap_str = elf_hwcap_str(i);
-+        if (hwcap_str) {
-+            dprintf(fd, "%s ", hwcap_str);
++
++        dprintf(fd, "\n"
++                "CPU implementer\t: 0x%02x\n"
++                "CPU architecture: %d\n"
++                "CPU variant\t: 0x%0*x\n",
++                midr_impl, arch, len_var, midr_var);
++        if (arch >= 7) {
++            dprintf(fd, "CPU part\t: 0x%0*x\n", len_part, midr_part);
 +        }
++        dprintf(fd, "CPU revision\t: %d\n\n", midr_rev);
 +    }
-+    dprintf(fd, "\n");
-+    show_facilities(fd);
-+    for (i = 0; i < num_cpus; i++) {
-+        dprintf(fd, "processor %d: "
-+               "version = %02X,  "
-+               "identification = %06X,  "
-+               "machine = %04X\n",
-+               i, model->cpu_ver, cpu_ident(i), model->def->type);
-+    }
-+}
 +
-+static void show_cpu_ids(CPUArchState *cpu_env, int fd, unsigned long n)
-+{
-+    S390CPUModel *model = env_archcpu(cpu_env)->model;
-+
-+    dprintf(fd, "version         : %02X\n", model->cpu_ver);
-+    dprintf(fd, "identification  : %06X\n", cpu_ident(n));
-+    dprintf(fd, "machine         : %04X\n", model->def->type);
-+}
-+
-+static void show_cpuinfo(CPUArchState *cpu_env, int fd, unsigned long n)
-+{
-+    dprintf(fd, "\ncpu number      : %ld\n", n);
-+    show_cpu_ids(cpu_env, fd, n);
-+}
-+
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    int i;
-+
-+    show_cpu_summary(cpu_env, fd);
-+    for (i = 0; i < num_cpus; i++) {
-+        show_cpuinfo(cpu_env, fd, i);
++    if (arch < 8) {
++        dprintf(fd, "Hardware\t: QEMU v%s %s\n", QEMU_VERSION,
++                cpu->dtb_compatible ? : "");
++        dprintf(fd, "Revision\t: 0000\n");
++        dprintf(fd, "Serial\t\t: 0000000000000000\n");
 +    }
 +    return 0;
 +}
 +#define HAVE_ARCH_PROC_CPUINFO
 +
-+#endif /* S390X_TARGET_PROC_H */
-diff --git a/linux-user/sh4/target_proc.h b/linux-user/sh4/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/sh4/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/sparc/target_proc.h b/linux-user/sparc/target_proc.h
-new file mode 100644
-index 0000000000..3bb3134a47
---- /dev/null
-+++ b/linux-user/sparc/target_proc.h
-@@ -0,0 +1,16 @@
-+/*
-+ * Sparc specific proc functions for linux-user
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef SPARC_TARGET_PROC_H
-+#define SPARC_TARGET_PROC_H
-+
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    dprintf(fd, "type\t\t: sun4u\n");
-+    return 0;
-+}
-+#define HAVE_ARCH_PROC_CPUINFO
-+
-+#endif /* SPARC_TARGET_PROC_H */
-diff --git a/linux-user/x86_64/target_proc.h b/linux-user/x86_64/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/x86_64/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/xtensa/target_proc.h b/linux-user/xtensa/target_proc.h
-new file mode 100644
-index 0000000000..43fe29ca72
---- /dev/null
-+++ b/linux-user/xtensa/target_proc.h
-@@ -0,0 +1 @@
-+/* No target-specific /proc support */
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 9353268cc1..faad3a56df 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8339,9 +8339,11 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code)
-     }
++#endif /* ARM_TARGET_PROC_H */
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index 59cbeacf24..324e5c872a 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -56,9 +56,13 @@ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+ 
+ extern unsigned long guest_stack_size;
+ 
+-#ifdef TARGET_S390X
++#if defined(TARGET_S390X) || defined(TARGET_AARCH64) || defined(TARGET_ARM)
+ uint32_t get_elf_hwcap(void);
+ const char *elf_hwcap_str(uint32_t bit);
+ #endif
++#if defined(TARGET_AARCH64) || defined(TARGET_ARM)
++uint32_t get_elf_hwcap2(void);
++const char *elf_hwcap2_str(uint32_t bit);
++#endif
+ 
+ #endif /* LINUX_USER_LOADER_H */
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 92b981c445..7c95098e3e 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -466,7 +466,7 @@ static bool init_guest_commpage(void)
+ #define ELF_HWCAP get_elf_hwcap()
+ #define ELF_HWCAP2 get_elf_hwcap2()
+ 
+-static uint32_t get_elf_hwcap(void)
++uint32_t get_elf_hwcap(void)
+ {
+     ARMCPU *cpu = ARM_CPU(thread_cpu);
+     uint32_t hwcaps = 0;
+@@ -508,7 +508,7 @@ static uint32_t get_elf_hwcap(void)
+     return hwcaps;
  }
  
-+#include "target_proc.h"
-+
- #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN || \
--    defined(TARGET_SPARC) || defined(TARGET_M68K) || defined(TARGET_HPPA) || \
--    defined(TARGET_RISCV) || defined(TARGET_S390X)
-+    defined(HAVE_ARCH_PROC_CPUINFO) || \
-+    defined(HAVE_ARCH_PROC_HARDWARE)
- static int is_proc(const char *filename, const char *entry)
+-static uint32_t get_elf_hwcap2(void)
++uint32_t get_elf_hwcap2(void)
  {
-     return strcmp(filename, entry) == 0;
-@@ -8393,171 +8395,6 @@ static int open_net_route(CPUArchState *cpu_env, int fd)
+     ARMCPU *cpu = ARM_CPU(thread_cpu);
+     uint32_t hwcaps = 0;
+@@ -521,6 +521,49 @@ static uint32_t get_elf_hwcap2(void)
+     return hwcaps;
  }
- #endif
  
--#if defined(TARGET_SPARC)
--static int open_cpuinfo(CPUArchState *cpu_env, int fd)
--{
--    dprintf(fd, "type\t\t: sun4u\n");
--    return 0;
--}
--#endif
--
--#if defined(TARGET_HPPA)
--static int open_cpuinfo(CPUArchState *cpu_env, int fd)
--{
--    int i, num_cpus;
--
--    num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
--    for (i = 0; i < num_cpus; i++) {
--        dprintf(fd, "processor\t: %d\n", i);
--        dprintf(fd, "cpu family\t: PA-RISC 1.1e\n");
--        dprintf(fd, "cpu\t\t: PA7300LC (PCX-L2)\n");
--        dprintf(fd, "capabilities\t: os32\n");
--        dprintf(fd, "model\t\t: 9000/778/B160L - "
--                    "Merlin L2 160 QEMU (9000/778/B160L)\n\n");
--    }
--    return 0;
--}
--#endif
--
--#if defined(TARGET_RISCV)
--static int open_cpuinfo(CPUArchState *cpu_env, int fd)
--{
--    int i;
--    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
--    RISCVCPU *cpu = env_archcpu(cpu_env);
--    const RISCVCPUConfig *cfg = riscv_cpu_cfg((CPURISCVState *) cpu_env);
--    char *isa_string = riscv_isa_string(cpu);
--    const char *mmu;
--
--    if (cfg->mmu) {
--        mmu = (cpu_env->xl == MXL_RV32) ? "sv32"  : "sv48";
--    } else {
--        mmu = "none";
--    }
--
--    for (i = 0; i < num_cpus; i++) {
--        dprintf(fd, "processor\t: %d\n", i);
--        dprintf(fd, "hart\t\t: %d\n", i);
--        dprintf(fd, "isa\t\t: %s\n", isa_string);
--        dprintf(fd, "mmu\t\t: %s\n", mmu);
--        dprintf(fd, "uarch\t\t: qemu\n\n");
--    }
--
--    g_free(isa_string);
--    return 0;
--}
--#endif
--
--#if defined(TARGET_S390X)
--/*
-- * Emulate what a Linux kernel running in qemu-system-s390x -M accel=tcg would
-- * show in /proc/cpuinfo.
-- *
-- * Skip the following in order to match the missing support in op_ecag():
-- * - show_cacheinfo().
-- * - show_cpu_topology().
-- * - show_cpu_mhz().
-- *
-- * Use fixed values for certain fields:
-- * - bogomips per cpu - from a qemu-system-s390x run.
-- * - max thread id = 0, since SMT / SIGP_SET_MULTI_THREADING is not supported.
-- *
-- * Keep the code structure close to arch/s390/kernel/processor.c.
-- */
--
--static void show_facilities(int fd)
--{
--    size_t sizeof_stfl_bytes = 2048;
--    g_autofree uint8_t *stfl_bytes = g_new0(uint8_t, sizeof_stfl_bytes);
--    unsigned int bit;
--
--    dprintf(fd, "facilities      :");
--    s390_get_feat_block(S390_FEAT_TYPE_STFL, stfl_bytes);
--    for (bit = 0; bit < sizeof_stfl_bytes * 8; bit++) {
--        if (test_be_bit(bit, stfl_bytes)) {
--            dprintf(fd, " %d", bit);
--        }
--    }
--    dprintf(fd, "\n");
--}
--
--static int cpu_ident(unsigned long n)
--{
--    return deposit32(0, CPU_ID_BITS - CPU_PHYS_ADDR_BITS, CPU_PHYS_ADDR_BITS,
--                     n);
--}
--
--static void show_cpu_summary(CPUArchState *cpu_env, int fd)
--{
--    S390CPUModel *model = env_archcpu(cpu_env)->model;
--    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
--    uint32_t elf_hwcap = get_elf_hwcap();
--    const char *hwcap_str;
--    int i;
--
--    dprintf(fd, "vendor_id       : IBM/S390\n"
--                "# processors    : %i\n"
--                "bogomips per cpu: 13370.00\n",
--            num_cpus);
--    dprintf(fd, "max thread id   : 0\n");
--    dprintf(fd, "features\t: ");
--    for (i = 0; i < sizeof(elf_hwcap) * 8; i++) {
--        if (!(elf_hwcap & (1 << i))) {
--            continue;
--        }
--        hwcap_str = elf_hwcap_str(i);
--        if (hwcap_str) {
--            dprintf(fd, "%s ", hwcap_str);
--        }
--    }
--    dprintf(fd, "\n");
--    show_facilities(fd);
--    for (i = 0; i < num_cpus; i++) {
--        dprintf(fd, "processor %d: "
--               "version = %02X,  "
--               "identification = %06X,  "
--               "machine = %04X\n",
--               i, model->cpu_ver, cpu_ident(i), model->def->type);
--    }
--}
--
--static void show_cpu_ids(CPUArchState *cpu_env, int fd, unsigned long n)
--{
--    S390CPUModel *model = env_archcpu(cpu_env)->model;
--
--    dprintf(fd, "version         : %02X\n", model->cpu_ver);
--    dprintf(fd, "identification  : %06X\n", cpu_ident(n));
--    dprintf(fd, "machine         : %04X\n", model->def->type);
--}
--
--static void show_cpuinfo(CPUArchState *cpu_env, int fd, unsigned long n)
--{
--    dprintf(fd, "\ncpu number      : %ld\n", n);
--    show_cpu_ids(cpu_env, fd, n);
--}
--
--static int open_cpuinfo(CPUArchState *cpu_env, int fd)
--{
--    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
--    int i;
--
--    show_cpu_summary(cpu_env, fd);
--    for (i = 0; i < num_cpus; i++) {
--        show_cpuinfo(cpu_env, fd, i);
--    }
--    return 0;
--}
--#endif
--
--#if defined(TARGET_M68K)
--static int open_hardware(CPUArchState *cpu_env, int fd)
--{
--    dprintf(fd, "Model:\t\tqemu-m68k\n");
--    return 0;
--}
--#endif
--
--
- int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-                     int flags, mode_t mode, bool safe)
++const char *elf_hwcap_str(uint32_t bit)
++{
++    static const char *hwcap_str[] = {
++    [__builtin_ctz(ARM_HWCAP_ARM_SWP      )] = "swp",
++    [__builtin_ctz(ARM_HWCAP_ARM_HALF     )] = "half",
++    [__builtin_ctz(ARM_HWCAP_ARM_THUMB    )] = "thumb",
++    [__builtin_ctz(ARM_HWCAP_ARM_26BIT    )] = "26bit",
++    [__builtin_ctz(ARM_HWCAP_ARM_FAST_MULT)] = "fast_mult",
++    [__builtin_ctz(ARM_HWCAP_ARM_FPA      )] = "fpa",
++    [__builtin_ctz(ARM_HWCAP_ARM_VFP      )] = "vfp",
++    [__builtin_ctz(ARM_HWCAP_ARM_EDSP     )] = "edsp",
++    [__builtin_ctz(ARM_HWCAP_ARM_JAVA     )] = "java",
++    [__builtin_ctz(ARM_HWCAP_ARM_IWMMXT   )] = "iwmmxt",
++    [__builtin_ctz(ARM_HWCAP_ARM_CRUNCH   )] = "crunch",
++    [__builtin_ctz(ARM_HWCAP_ARM_THUMBEE  )] = "thumbee",
++    [__builtin_ctz(ARM_HWCAP_ARM_NEON     )] = "neon",
++    [__builtin_ctz(ARM_HWCAP_ARM_VFPv3    )] = "vfpv3",
++    [__builtin_ctz(ARM_HWCAP_ARM_VFPv3D16 )] = "vfpv3d16",
++    [__builtin_ctz(ARM_HWCAP_ARM_TLS      )] = "tls",
++    [__builtin_ctz(ARM_HWCAP_ARM_VFPv4    )] = "vfpv4",
++    [__builtin_ctz(ARM_HWCAP_ARM_IDIVA    )] = "idiva",
++    [__builtin_ctz(ARM_HWCAP_ARM_IDIVT    )] = "idivt",
++    [__builtin_ctz(ARM_HWCAP_ARM_VFPD32   )] = "vfpd32",
++    [__builtin_ctz(ARM_HWCAP_ARM_LPAE     )] = "lpae",
++    [__builtin_ctz(ARM_HWCAP_ARM_EVTSTRM  )] = "evtstrm",
++    };
++
++    return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
++}
++
++const char *elf_hwcap2_str(uint32_t bit)
++{
++    static const char *hwcap_str[] = {
++    [__builtin_ctz(ARM_HWCAP2_ARM_AES  )] = "aes",
++    [__builtin_ctz(ARM_HWCAP2_ARM_PMULL)] = "pmull",
++    [__builtin_ctz(ARM_HWCAP2_ARM_SHA1 )] = "sha1",
++    [__builtin_ctz(ARM_HWCAP2_ARM_SHA2 )] = "sha2",
++    [__builtin_ctz(ARM_HWCAP2_ARM_CRC32)] = "crc32",
++    };
++
++    return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
++}
++
+ #undef GET_FEATURE
+ #undef GET_FEATURE_ID
+ 
+@@ -668,7 +711,7 @@ enum {
+ #define GET_FEATURE_ID(feat, hwcap) \
+     do { if (cpu_isar_feature(feat, cpu)) { hwcaps |= hwcap; } } while (0)
+ 
+-static uint32_t get_elf_hwcap(void)
++uint32_t get_elf_hwcap(void)
  {
-@@ -8578,11 +8415,10 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
- #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
-         { "/proc/net/route", open_net_route, is_proc },
- #endif
--#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
--    defined(TARGET_RISCV) || defined(TARGET_S390X)
-+#if defined(HAVE_ARCH_PROC_CPUINFO)
-         { "/proc/cpuinfo", open_cpuinfo, is_proc },
- #endif
--#if defined(TARGET_M68K)
-+#if defined(HAVE_ARCH_PROC_HARDWARE)
-         { "/proc/hardware", open_hardware, is_proc },
- #endif
-         { NULL, NULL, NULL }
+     ARMCPU *cpu = ARM_CPU(thread_cpu);
+     uint32_t hwcaps = 0;
+@@ -706,7 +749,7 @@ static uint32_t get_elf_hwcap(void)
+     return hwcaps;
+ }
+ 
+-static uint32_t get_elf_hwcap2(void)
++uint32_t get_elf_hwcap2(void)
+ {
+     ARMCPU *cpu = ARM_CPU(thread_cpu);
+     uint32_t hwcaps = 0;
+@@ -741,6 +784,85 @@ static uint32_t get_elf_hwcap2(void)
+     return hwcaps;
+ }
+ 
++const char *elf_hwcap_str(uint32_t bit)
++{
++    static const char *hwcap_str[] = {
++    [__builtin_ctz(ARM_HWCAP_A64_FP      )] = "fp",
++    [__builtin_ctz(ARM_HWCAP_A64_ASIMD   )] = "asimd",
++    [__builtin_ctz(ARM_HWCAP_A64_EVTSTRM )] = "evtstrm",
++    [__builtin_ctz(ARM_HWCAP_A64_AES     )] = "aes",
++    [__builtin_ctz(ARM_HWCAP_A64_PMULL   )] = "pmull",
++    [__builtin_ctz(ARM_HWCAP_A64_SHA1    )] = "sha1",
++    [__builtin_ctz(ARM_HWCAP_A64_SHA2    )] = "sha2",
++    [__builtin_ctz(ARM_HWCAP_A64_CRC32   )] = "crc32",
++    [__builtin_ctz(ARM_HWCAP_A64_ATOMICS )] = "atomics",
++    [__builtin_ctz(ARM_HWCAP_A64_FPHP    )] = "fphp",
++    [__builtin_ctz(ARM_HWCAP_A64_ASIMDHP )] = "asimdhp",
++    [__builtin_ctz(ARM_HWCAP_A64_CPUID   )] = "cpuid",
++    [__builtin_ctz(ARM_HWCAP_A64_ASIMDRDM)] = "asimdrdm",
++    [__builtin_ctz(ARM_HWCAP_A64_JSCVT   )] = "jscvt",
++    [__builtin_ctz(ARM_HWCAP_A64_FCMA    )] = "fcma",
++    [__builtin_ctz(ARM_HWCAP_A64_LRCPC   )] = "lrcpc",
++    [__builtin_ctz(ARM_HWCAP_A64_DCPOP   )] = "dcpop",
++    [__builtin_ctz(ARM_HWCAP_A64_SHA3    )] = "sha3",
++    [__builtin_ctz(ARM_HWCAP_A64_SM3     )] = "sm3",
++    [__builtin_ctz(ARM_HWCAP_A64_SM4     )] = "sm4",
++    [__builtin_ctz(ARM_HWCAP_A64_ASIMDDP )] = "asimddp",
++    [__builtin_ctz(ARM_HWCAP_A64_SHA512  )] = "sha512",
++    [__builtin_ctz(ARM_HWCAP_A64_SVE     )] = "sve",
++    [__builtin_ctz(ARM_HWCAP_A64_ASIMDFHM)] = "asimdfhm",
++    [__builtin_ctz(ARM_HWCAP_A64_DIT     )] = "dit",
++    [__builtin_ctz(ARM_HWCAP_A64_USCAT   )] = "uscat",
++    [__builtin_ctz(ARM_HWCAP_A64_ILRCPC  )] = "ilrcpc",
++    [__builtin_ctz(ARM_HWCAP_A64_FLAGM   )] = "flagm",
++    [__builtin_ctz(ARM_HWCAP_A64_SSBS    )] = "ssbs",
++    [__builtin_ctz(ARM_HWCAP_A64_SB      )] = "sb",
++    [__builtin_ctz(ARM_HWCAP_A64_PACA    )] = "paca",
++    [__builtin_ctz(ARM_HWCAP_A64_PACG    )] = "pacg",
++    };
++
++    return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
++}
++
++const char *elf_hwcap2_str(uint32_t bit)
++{
++    static const char *hwcap_str[] = {
++    [__builtin_ctz(ARM_HWCAP2_A64_DCPODP       )] = "dcpodp",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVE2         )] = "sve2",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEAES       )] = "sveaes",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEPMULL     )] = "svepmull",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEBITPERM   )] = "svebitperm",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVESHA3      )] = "svesha3",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVESM4       )] = "svesm4",
++    [__builtin_ctz(ARM_HWCAP2_A64_FLAGM2       )] = "flagm2",
++    [__builtin_ctz(ARM_HWCAP2_A64_FRINT        )] = "frint",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEI8MM      )] = "svei8mm",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEF32MM     )] = "svef32mm",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEF64MM     )] = "svef64mm",
++    [__builtin_ctz(ARM_HWCAP2_A64_SVEBF16      )] = "svebf16",
++    [__builtin_ctz(ARM_HWCAP2_A64_I8MM         )] = "i8mm",
++    [__builtin_ctz(ARM_HWCAP2_A64_BF16         )] = "bf16",
++    [__builtin_ctz(ARM_HWCAP2_A64_DGH          )] = "dgh",
++    [__builtin_ctz(ARM_HWCAP2_A64_RNG          )] = "rng",
++    [__builtin_ctz(ARM_HWCAP2_A64_BTI          )] = "bti",
++    [__builtin_ctz(ARM_HWCAP2_A64_MTE          )] = "mte",
++    [__builtin_ctz(ARM_HWCAP2_A64_ECV          )] = "ecv",
++    [__builtin_ctz(ARM_HWCAP2_A64_AFP          )] = "afp",
++    [__builtin_ctz(ARM_HWCAP2_A64_RPRES        )] = "rpres",
++    [__builtin_ctz(ARM_HWCAP2_A64_MTE3         )] = "mte3",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME          )] = "sme",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_I16I64   )] = "sme_i16i64",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_F64F64   )] = "sme_f64f64",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_I8I32    )] = "sme_i8i32",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_F16F32   )] = "sme_f16f32",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_B16F32   )] = "sme_b16f32",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_F32F32   )] = "sme_f32f32",
++    [__builtin_ctz(ARM_HWCAP2_A64_SME_FA64     )] = "sme_fa64",
++    };
++
++    return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
++}
++
+ #undef GET_FEATURE_ID
+ 
+ #endif /* not TARGET_AARCH64 */
 -- 
 2.34.1
 
