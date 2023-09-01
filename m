@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4618378F71A
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 630F778F724
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 04:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbts0-0002pd-2I; Thu, 31 Aug 2023 22:26:48 -0400
+	id 1qbtt4-0007fR-Co; Thu, 31 Aug 2023 22:27:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbtry-0002eH-5o
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:26:46 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qbtt1-0007Uy-OQ; Thu, 31 Aug 2023 22:27:51 -0400
+Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qbtrv-00025d-CI
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 22:26:45 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-99bdcade7fbso166717866b.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 19:26:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qbtsz-0002Kd-Gb; Thu, 31 Aug 2023 22:27:51 -0400
+Received: by mail-ua1-x92d.google.com with SMTP id
+ a1e0cc1a2514c-79d8edd6d99so672969241.3; 
+ Thu, 31 Aug 2023 19:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1693535201; x=1694140001;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Hrzg9JqFL41LiiwxHvUbC6DuvkHczk7hmvOHpgZDroM=;
- b=L9wvzKZDynao/hHe61w83B95/XecK82MwZTENnr1oiYCHkN0J6Oko7YTqK22NYJRaj
- pZN++D87dh5FcL9j3ufFSIIscAHgKKxLj4oL15i1OQBgUMwfFwItN292WgrrSyWArd3Q
- FUMJ8ZW9RNO0b5wWScLxN4tw4h2hmk4rPsrObEgoRCDbXAKpsco6P4A0s7/OG2c6P7vP
- 8mRL8IJipWlQc4y0W0dJyCo53QbHTgiY32m6anbxA6EA3hxPxPWhQFRh5gV7MMLSm1Nb
- FVPbYt0nz7tn4JoPQf+bluohEA9LcKh3lpQXim5eT4Ny7UgwX7lccM1pHn1JoNDGXdd0
- tp3A==
+ d=gmail.com; s=20221208; t=1693535268; x=1694140068; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=OOo2zkmmt6KrgQcW9V7n2tzEjgpG4NduNd8ONC7HLbc=;
+ b=iH0WKTLuErnZY1/CnQkRtK7ePPYJ6QVk6NQMUgG1P8HizANk99AyB9ne+Nll8ZuUHV
+ /vEbtXDhEegRFX50gmwCzRFFvkHa8UE6b0bDaOlUzEPqmzzJATpnecAtHP/gJ5NUjD/4
+ ZorDg39WLAThM4QVNLTh9RUbuTq0xCkfO9ocHyCwCZhSWtmGYJKvUMxz3EtLV8TnQl8k
+ qoM5Gqqn13NZgUSkXKhp8StUgg6r+QEViuYIvFg2L1/0yUagC+XIou3YCczuvQwrmu9F
+ 3QJI+szgQROst8quQv5XrFkco2XHs4pWFCpbEKUZVgHQKZLevXUJtqZs3V96gx1+M6z3
+ A4PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693535201; x=1694140001;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Hrzg9JqFL41LiiwxHvUbC6DuvkHczk7hmvOHpgZDroM=;
- b=eiznVvoNzkGZY0C8tX5OJfCi7BQXgWwDIH3IeB0yP6hNAQZt3km4ltTx4UEpSDDizp
- v9N5GYzSbCTih/h2DfR8Xny9M2cnKXH379uBRTGSy/aUDuf+/s957DzyqAirLnWXueMO
- sShZgIptWzzzJyFvqfz8YTwKyI7FxMyE+KUSAeKXreNJC3nqk2nzdws5HpJTcdjhc1JD
- JDvuurWDandFIlxGKxx9hupP3a2xZSRp/AoAX6lWMOydGytLUaKWvdY4syYAagtLoAiU
- f39AL1KU0jYflAcVa79cyrINjG4CZwZrqZ15+oERQfOWTmwcY3pNRHrNRVx+UdW9ravM
- SC5Q==
-X-Gm-Message-State: AOJu0YyqftizvN2S6BwzYGf2V8FZSJF9P5gpHGvId9gAc07+Adr7gkZV
- JlykP9z/i8ni3SjojKDLhFKlOph6VAArW1R2p3HCMDcRNnFdOuHQTcw=
-X-Google-Smtp-Source: AGHT+IESDl56oRIEfzHl7XGDuZmUPeCQJIJovqVSK5bEwPwgVNKZdnnchWZcMDULEySerPHLuzpr8M5ZIALJcICkryw=
-X-Received: by 2002:a17:906:224a:b0:9a4:88af:b77 with SMTP id
- 10-20020a170906224a00b009a488af0b77mr774548ejr.60.1693535200943; Thu, 31 Aug
- 2023 19:26:40 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693535268; x=1694140068;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OOo2zkmmt6KrgQcW9V7n2tzEjgpG4NduNd8ONC7HLbc=;
+ b=mDbdlKPMx6jWkj05hPKRaA1bzEqNWcuXsp3Ika5Mei68e3DyroF2TGKrK9IXlF6Gsh
+ 3s8jAwfpK7ihOCFHYQctCx5KZ0TUTQqr2MksCCoOVp6q9QD/UxwPnabC5kLC+zYCWbN4
+ di/dgns1VbjA0VcSyAooKMLPgdxM2qn/Yvq/hj3xf2cqm+Z9mwVnVT2NmfKOCjoQI8Q6
+ 7f16zyFoFwqWFXTDlY7tjRBdZVTUwzjB/g2gdglsPu2c4wD9j2BrlEtkpOz6vZ8r+aoT
+ 8y6rgoIIJE5LouRQpbLFVvXe6RX6YzKV6YD6E0EYOp/Ery9puu4VcLTp2vf+Yhmtm0+D
+ XjGw==
+X-Gm-Message-State: AOJu0YzdPwdVp/HlR3kLtviVzyEINb4qojKOu12d1kIqfIGwzE8AHErh
+ cxXgjq18vhXDHKSVoIofdqlSuefw1feASm/+AQOJfnUooXlL+Q==
+X-Google-Smtp-Source: AGHT+IEfYFSM2zX+hZl18SR8RiSmAlXKk1TBT+uNsyOCb6SS8r5Leqfv3EpoDM1FOODy1ML/zhbX0cQLaFzDcJjd9Jw=
+X-Received: by 2002:a05:6102:4b5:b0:44e:a216:59a2 with SMTP id
+ r21-20020a05610204b500b0044ea21659a2mr1462760vsa.7.1693535268134; Thu, 31 Aug
+ 2023 19:27:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230901022331.115247-1-richard.henderson@linaro.org>
- <20230901022331.115247-27-richard.henderson@linaro.org>
-In-Reply-To: <20230901022331.115247-27-richard.henderson@linaro.org>
-From: Warner Losh <imp@bsdimp.com>
-Date: Thu, 31 Aug 2023 20:26:31 -0600
-Message-ID: <CANCZdfrQ+KszX=7EaWd7+vjUK4T+ou+zCavWcMH=NjmfcHxV_g@mail.gmail.com>
-Subject: Re: [PATCH v2 26/33] *-user: Deprecate and disable -p pagesize
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, laurent@vivier.eu, alex.bennee@linaro.org
-Content-Type: multipart/alternative; boundary="000000000000113120060442e493"
-Received-SPF: none client-ip=2a00:1450:4864:20::62d;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
+In-Reply-To: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 1 Sep 2023 12:27:21 +1000
+Message-ID: <CAKmqyKPmhAUHe5nN=V05TwvWZkuQhRFrigB-FRkBgRb=zJPQWQ@mail.gmail.com>
+Subject: Re: [PATCH] linux-user/riscv: Add new extensions to hwprobe
+To: Robbin Ehn <rehn@rivosinc.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,65 +85,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000113120060442e493
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Aug 31, 2023 at 8:23=E2=80=AFPM Richard Henderson <
-richard.henderson@linaro.org> wrote:
-
-> This option controls the host page size.  From the mis-usage in
-> our own testsuite, this is easily confused with guest page size.
+On Tue, Aug 29, 2023 at 12:58=E2=80=AFAM Robbin Ehn <rehn@rivosinc.com> wro=
+te:
 >
-> The only thing that occurs when changing the host page size is
-> that stuff breaks, because one cannot actually change the host
-> page size.  Therefore reject all but the no-op setting as part
-> of the deprecation process.
+> This patch adds the new extensions in
+> linux 6.5 to the hwprobe syscall.
 >
-> Cc: Warner Losh <imp@bsdimp.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> And fixes RVC check to OR with correct value.
+> The previous variable contains 0 therefore it
+> did work.
+>
+> Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
+
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
 > ---
->  docs/about/deprecated.rst |  7 +++++++
->  docs/user/main.rst        |  3 ---
->  bsd-user/main.c           |  9 +++++----
->  linux-user/main.c         | 11 ++++++-----
->  4 files changed, 18 insertions(+), 12 deletions(-)
+>  linux-user/syscall.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
 >
-
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-
---000000000000113120060442e493
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 31, 2023 at 8:23=E2=80=AF=
-PM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ri=
-chard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">This option controls the host page size.=C2=A0 Fr=
-om the mis-usage in<br>
-our own testsuite, this is easily confused with guest page size.<br>
-<br>
-The only thing that occurs when changing the host page size is<br>
-that stuff breaks, because one cannot actually change the host<br>
-page size.=C2=A0 Therefore reject all but the no-op setting as part<br>
-of the deprecation process.<br>
-<br>
-Cc: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" target=3D"_blank">imp=
-@bsdimp.com</a>&gt;<br>
-Signed-off-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@li=
-naro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
----<br>
-=C2=A0docs/about/deprecated.rst |=C2=A0 7 +++++++<br>
-=C2=A0docs/user/main.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 3 ---<br>
-=C2=A0bsd-user/main.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 9 +++=
-++----<br>
-=C2=A0linux-user/main.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 11 ++++++-----<b=
-r>
-=C2=A04 files changed, 18 insertions(+), 12 deletions(-)<br></blockquote><d=
-iv><br></div><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp=
-.com">imp@bsdimp.com</a>&gt;</div><div>=C2=A0<br></div></div></div>
-
---000000000000113120060442e493--
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 9353268cc1..c46a0b1493 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -9049,6 +9049,10 @@ static int do_getdents64(abi_long dirfd, abi_long =
+arg2, abi_long count)
+>  #define RISCV_HWPROBE_KEY_IMA_EXT_0     4
+>  #define     RISCV_HWPROBE_IMA_FD       (1 << 0)
+>  #define     RISCV_HWPROBE_IMA_C        (1 << 1)
+> +#define     RISCV_HWPROBE_IMA_V        (1 << 2)
+> +#define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
+> +#define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
+> +#define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
+>
+>  #define RISCV_HWPROBE_KEY_CPUPERF_0     5
+>  #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> @@ -9096,7 +9100,15 @@ static void risc_hwprobe_fill_pairs(CPURISCVState =
+*env,
+>                      riscv_has_ext(env, RVD) ?
+>                      RISCV_HWPROBE_IMA_FD : 0;
+>              value |=3D riscv_has_ext(env, RVC) ?
+> -                     RISCV_HWPROBE_IMA_C : pair->value;
+> +                     RISCV_HWPROBE_IMA_C : 0;
+> +            value |=3D riscv_has_ext(env, RVV) ?
+> +                     RISCV_HWPROBE_IMA_V : 0;
+> +            value |=3D cfg->ext_zba ?
+> +                     RISCV_HWPROBE_EXT_ZBA : 0;
+> +            value |=3D cfg->ext_zbb ?
+> +                     RISCV_HWPROBE_EXT_ZBB : 0;
+> +            value |=3D cfg->ext_zbs ?
+> +                     RISCV_HWPROBE_EXT_ZBS : 0;
+>              __put_user(value, &pair->value);
+>              break;
+>          case RISCV_HWPROBE_KEY_CPUPERF_0:
+> --
+> 2.39.2
+>
+>
 
