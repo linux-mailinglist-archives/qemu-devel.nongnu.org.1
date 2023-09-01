@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD67A790124
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734EE790140
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 19:15:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qc7bE-0002yO-9G; Fri, 01 Sep 2023 13:06:25 -0400
+	id 1qc7iY-0001sW-9T; Fri, 01 Sep 2023 13:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qc7b6-0002li-Pv
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:06:16 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qc7b1-0002aB-Sx
- for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:06:16 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-563f8e8a53dso1556788a12.3
- for <qemu-devel@nongnu.org>; Fri, 01 Sep 2023 10:06:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693587970; x=1694192770; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KtxwzhYrd+4Ed/IH4pKYyJKaCBHgPX0diDnGtGepIE4=;
- b=X/vhl2Jm/SQJzzFV22hqFsfVhi8jxYpGDFP3fgPTifXuF0pQ0HH6yiWqwr9cxcogDq
- 6yW/vbBT0R857tENeV1zyKG/VMKJVVWINWacekMRS3cPBBwiLBevQDCVuZ4nGXzBlIzr
- ZNNoqeslMqxDJi7yNOT7UkrBPyejZ0A0E2laHoiSd673xh1sPxJ3cukejGt3uo300ti+
- QRfhyq4xL6kJU7gT7o/Oo0W8vtRQpyvdbvSi4/lksoLgXen/r/a+8PGm6LGeR0PhD6UU
- pNEwaOePPHjV1HP9TQbF4sRyreTU23OTqRVxfi3mXKuRk72bDr8VH1bzhDo7VggmtK7C
- 3gIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693587970; x=1694192770;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KtxwzhYrd+4Ed/IH4pKYyJKaCBHgPX0diDnGtGepIE4=;
- b=H0lReiEo29ythJG32XwXtiQupX8HIObNt9S5gM+Xp4WGbq3ukH1rTClq+IeBkudwbL
- g7VzIZM4kYTeJM3XQj2KXh6TrNIGesE0IPfivBPiWxUxWAy+nMbvy8ym+YOe/TG6jPdF
- blBquCSyUvKjtc043JPiOvrcItldGwJlPjDQz4KhDgVwW5ClAAO/kXRFyIDOnEYrj2K3
- qGgzaQ9ujYronD1hx3etxQfj5++EwJhS/lm0sCcwKdUZW+jSg7xw09nTgdtpCHkTQBO8
- oFCg0VPdfXuIa4cfnWol+BEL5OSIKxUaLjPTKVWrpuURWfLiVkLLQzAFJu2ajn84LCS7
- ln6g==
-X-Gm-Message-State: AOJu0Yw8qbTHFM5rbxudedrUCgSjIpV6KaF2uPjADVHkJddPvBKQOwqq
- vtsmxUJ/jFRHbTc/2+W4De9ZXvbLtSU1bflnzkM=
-X-Google-Smtp-Source: AGHT+IEGcpahjvB39HrTCW/hsKGEBFmF5ZNEDHn0JcxyI2juYhmtwshVb99k1T7cpJLlNdE2n73KkQ==
-X-Received: by 2002:a17:90a:d916:b0:26b:1364:e784 with SMTP id
- c22-20020a17090ad91600b0026b1364e784mr2929145pjv.0.1693587970184; 
- Fri, 01 Sep 2023 10:06:10 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- fw13-20020a17090b128d00b0026d4100e0e8sm3239603pjb.10.2023.09.01.10.06.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Sep 2023 10:06:09 -0700 (PDT)
-Message-ID: <1a6cf366-bc54-d402-f2f9-ada981d5ca75@linaro.org>
-Date: Fri, 1 Sep 2023 10:06:08 -0700
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qc7iW-0001rT-8s
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:13:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qc7iT-0005Ui-Lk
+ for qemu-devel@nongnu.org; Fri, 01 Sep 2023 13:13:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693588432;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SP1z6HE/QGHMeSZdco0/IZ0jLt0cijLAcgqlxQ1LFHQ=;
+ b=g3IcKKz+6bn7mPgrj5PweoeUofngraXXi6LLf7LxNuInP2+H0wWybcOhXKcMbA9o2RftLV
+ pOs0eQ3vCC+T1fK33IbTodbOW6Xwx4ldVM2MV2eLb8geOKRwX0as4BMYfBtdfE4dSvelOn
+ JDzF3daBGT8LjogE7B/9/ROn0S2gJ48=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-131-ekM_Xvl2P6WENPwxHnr2sA-1; Fri, 01 Sep 2023 13:13:51 -0400
+X-MC-Unique: ekM_Xvl2P6WENPwxHnr2sA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0B3E1C18C77
+ for <qemu-devel@nongnu.org>; Fri,  1 Sep 2023 17:13:50 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0AC552012F37;
+ Fri,  1 Sep 2023 17:13:49 +0000 (UTC)
+Date: Fri, 1 Sep 2023 18:13:47 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH 43/67] ui/vc: do not parse VC-specific options in Spice
+ and GTK
+Message-ID: <ZPIby+nDU9gvF53j@redhat.com>
+References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-44-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 01/14] tcg/loongarch64: Import LSX instructions
-Content-Language: en-US
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn, git@xen0n.name
-References: <20230901093258.942357-1-c@jia.je>
- <20230901093258.942357-2-c@jia.je>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230901093258.942357-2-c@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -55
-X-Spam_score: -5.6
-X-Spam_bar: -----
-X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230830093843.3531473-44-marcandre.lureau@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,35 +82,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/1/23 02:30, Jiajie Chen wrote:
-> Add opcodes and encoder functions for LSX.
+On Wed, Aug 30, 2023 at 01:38:17PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Generated from
-> https://github.com/jiegec/loongarch-opcodes/tree/qemu-lsx.
+> In commit 6f974c843c ("gtk: overwrite the console.c char driver"), I
+> shared the VC console parse handler with GTK. And later on in commit
+> d8aec9d9 ("display: add -display spice-app launching a Spice client"),
+> I also used it to handle spice-app VC.
 > 
-> Signed-off-by: Jiajie Chen<c@jia.je>
+> This is not necessary, the VC console options (width/height/cols/rows)
+> are specific, and unused by tty-level GTK/Spice VC.
+> 
+> This is not a breaking change, as those options are still being parsed
+> by QAPI ChardevVC. Adjust the documentation about it.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->   tcg/loongarch64/tcg-insn-defs.c.inc | 6251 ++++++++++++++++++++++++++-
->   1 file changed, 6134 insertions(+), 117 deletions(-)
+>  qapi/char.json         | 4 ++++
+>  include/chardev/char.h | 3 ---
+>  ui/console.c           | 4 ++--
+>  ui/gtk.c               | 1 -
+>  ui/spice-app.c         | 7 ++++++-
+>  5 files changed, 12 insertions(+), 7 deletions(-)
 > 
-> diff --git a/tcg/loongarch64/tcg-insn-defs.c.inc b/tcg/loongarch64/tcg-insn-defs.c.inc
-> index b5bb0c5e73..ee3b483b02 100644
-> --- a/tcg/loongarch64/tcg-insn-defs.c.inc
-> +++ b/tcg/loongarch64/tcg-insn-defs.c.inc
-> @@ -4,7 +4,7 @@
->    *
->    * This file is auto-generated by genqemutcgdefs from
->    *https://github.com/loongson-community/loongarch-opcodes,
-> - * from commit 25ca7effe9d88101c1cf96c4005423643386d81f.
-> + * from commit 8027da9a8157a8b47fc48ff1def292e09c5668bd.
->    * DO NOT EDIT.
->    */
->   
+> diff --git a/qapi/char.json b/qapi/char.json
+> index 52aaff25eb..7e23fe3180 100644
+> --- a/qapi/char.json
+> +++ b/qapi/char.json
+> @@ -390,6 +390,10 @@
+>  #
+>  # @rows: console height, in chars
+>  #
+> +# Note: the options are only effective when using the built-in QEMU graphical VC
+> +# (with the SDL display). When the VC is handled by the display backend (with
+> +# GTK/VTE, Spice or D-Bus), they are simply ignored.
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+I don't find this explains the situation very well, I had to look at
+the code to understand what's ultimately going on, as I didn't really
+know what it meant by "built-in QEMU graphical VC". From the end user's
+POV, they're just using '-chardev vc...'.
 
-r~
+IIUC, the command line -chardev vc,..... will end up instantiating
+TYPE_CHARDEV_VC.
+
+We actually then have 4 completely different implementations
+of TYPE_CHARDEV_VC, and depending on which display backend
+is enabled, a different TYPE_CHARDEV_VC will get registered.
+
+So what your comment is saying is that the width/height/rows/cols
+properties will only get honoured if the TYPE_CHARDEV_VC that is
+registered, is the one that maps to the SDL display backend.
+
+Wow, is this situation confusing and gross in the code :-(
+
+So for the comment I think we can just cut out a few words to
+make it simpler
+
+ # Note: the options are only effective when the SDL graphical
+ # display backend is active. They are ignored with the GTK,
+ # Spice, VNC and D-Bus display backends.
+
+As a future exercise for anyone motiviated, I would say that
+TYPE_CHARDEV_VC ought to be abstract and we then have subclasses
+for each of the impls we have that are registered unconditionally
+with type_init(), then pick the subclass to instantiate based
+on the display backend. That way we can ultimately make the
+QAPI schema reflect that we have multiple ChardevVC impls and
+only expose the cols/width/etc for the SDL impl.
+
+
+Anyway, if the comment is simplied/clarified then
+
+ Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+ 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
