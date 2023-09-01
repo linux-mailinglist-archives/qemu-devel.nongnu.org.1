@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA4978F66E
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 02:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2775B78F675
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Sep 2023 02:47:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qbsBU-0001NV-Ll; Thu, 31 Aug 2023 20:38:48 -0400
+	id 1qbsJ2-0004UT-57; Thu, 31 Aug 2023 20:46:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbsBD-0001I7-Ue
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 20:38:33 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qbsIs-0004Tf-SU; Thu, 31 Aug 2023 20:46:27 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qbsB8-0004P3-Jk
- for qemu-devel@nongnu.org; Thu, 31 Aug 2023 20:38:31 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-68c3b9f8333so933424b3a.1
- for <qemu-devel@nongnu.org>; Thu, 31 Aug 2023 17:38:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qbsIq-0006p5-8K; Thu, 31 Aug 2023 20:46:26 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68c3b9f83f4so1200363b3a.2; 
+ Thu, 31 Aug 2023 17:46:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693528703; x=1694133503; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=gmail.com; s=20221208; t=1693529181; x=1694133981; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=taA0aY40AgM649B8wnCD0KFOwzw1i52mzgxmLn0otc8=;
- b=uVUVMcj+ly/4XMDewHZLPUoIixmE+lL66C9Q2UsKNT4iqhOBSgwZs1e8hB9McqRL0o
- +KHVcNte9Ym4BiX8zLYcO0jITpb2vo/ALhT/4PSEEpTUhy/rkb2rgcWqGWvANXx60muP
- 93WeQ2W0qfpsWXHpr4Wskh37BUVM+SLUH8hya+T+xrE/2PbAMfGnJr6O2RmYmrezvNb+
- Hu7hG9gx2FBCZHpVpVDPsdBmC7kxZ9kcM/UlYTYZ2oQNtKGabFNcoroQi4kPcgvg+mtA
- sfXI5cnojbKhmx6O4GfwsGBSsycc8DuQALWS78lXx5DClCt2uOHQ2UukaYWZTFD97KEU
- D9uQ==
+ bh=nFvU/FMoSCyW0mf3xXRVHqnOLh+c1ISlntPyEgPuDz4=;
+ b=WYTb0qxd7hsV30JegVE+osikefeFo5c6PI1pvFAOzoa0QDy1rKeqWWtEEuA0gamf/o
+ hUl+1f9M2eoh6EjiRwilPrtCFhcqPtfatYN99wayvw7ajvsPD24eDChZIJNngXEAA1/v
+ XXQRQtooD6Gx7fqCMieT5mYtCJrOoU9H3lK++k1W7zbSZJ8NhVcDO1bJMtHk7cQ+5QC7
+ 0G7Tx6JC+VPREfaM1qUYabreG/qXk9htdIjMf0yjv0n7uPCOfTmZKC1cbBGGh+SjV27Y
+ LXu2nl+zm5IvG+xPVQDhbrwuiDDyYSObfpRMGFHXPMBpue8DnZOp7zbjsCToTbfIIg2A
+ i3Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693528703; x=1694133503;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693529181; x=1694133981;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=taA0aY40AgM649B8wnCD0KFOwzw1i52mzgxmLn0otc8=;
- b=l5YR/ZnSPU+zq9Hqm84Er6uLjap25/yFO1XM7c9EsD4T1qRjnekj3QBfW0Wg4yVR7P
- W1f9y7dVIUil12zoDsTByRBxJRN5w6/bBBgycgXRGhBqYKCztUoqEgWaIm9fyVu0Tar6
- AC+hZVESPuDa055wGj9n+KjQpQCNA7qn1V1CxOaInpaV9yvYF+1XHsDoKqsuXIsexeen
- rukhPt4x7T4SnZ3Q81qXqNzP8bt5pTNJBodd2/gF9vbyK28qIJhjJacmuNTtvJwUYhIQ
- pOa0cB0UQXQxpdECkkCHVZHIPMfEyTh2M/TGXyEH9p3DYGtxYJECfLARVEY9X/WlLqmB
- Ughg==
-X-Gm-Message-State: AOJu0YyHxRvQoH84IbWYGu/oD5RjKVe+WtxnC2+nfJq84rLZQuUZU7Ew
- 1y8GCW29QELmNHua+vHZNModNA==
-X-Google-Smtp-Source: AGHT+IE7pieQS45Dfi88gvcgTT8QTZ6EmVvI2FVWi1h7Fu2TlRk0/EWmBZcd8+nDvS/9NJCEyHf6lQ==
-X-Received: by 2002:a05:6a00:1786:b0:68a:5cf8:dae4 with SMTP id
- s6-20020a056a00178600b0068a5cf8dae4mr1591471pfg.3.1693528702922; 
- Thu, 31 Aug 2023 17:38:22 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ bh=nFvU/FMoSCyW0mf3xXRVHqnOLh+c1ISlntPyEgPuDz4=;
+ b=V3zHiXmxvIXxNrzQlO3lHPMtFYOGAdfIJlk6DOtj2GpeahC4miR+/krUabe4vU9uWx
+ ZerYhdiNb4XYW4P/KNrZ/PKgP03j8p9zEABFlsJABzGMxCvO0MwneurDaRNfhg5rE72N
+ j+NcYlvp4pT+vkLBqSpSgcVzVGqTasOh5X4BwxaTwSAWkA2ld4UkP3rb9htDN3O4R1qU
+ O4/57o7w7WJUCuMSLkz/JdhNuh6imuQdH8NRCPDoL6GkCKX103GYKkX3llqXgxjtLZrP
+ Q/PdWKgR5mL55Y7GV1BMGvWeEZUhV0cYRD6hEvUDai3rieKubf+KVK95XUG+JIm+epdH
+ UhVw==
+X-Gm-Message-State: AOJu0YzPOixyHw/lyc7bdTP3B27nVTIwDQitVc9j5sI7Lt09jzc4WiWI
+ GAfm/l5Ge+9obeL0SyoAsuBtDd1C+PoYSA==
+X-Google-Smtp-Source: AGHT+IF0mHwBKEcdSApS27hSqLbN5jADzVUiw9L1e3j0nSkKLTgSQkXrLtNv/wXUPYF2XDKjOzLVYg==
+X-Received: by 2002:a05:6300:8082:b0:141:cc5f:7d28 with SMTP id
+ ap2-20020a056300808200b00141cc5f7d28mr1257170pzc.50.1693529181123; 
+ Thu, 31 Aug 2023 17:46:21 -0700 (PDT)
+Received: from [192.168.0.62] ([218.147.112.168])
  by smtp.gmail.com with ESMTPSA id
- x10-20020a056a00270a00b0068a13b0b300sm1900522pfv.11.2023.08.31.17.38.22
+ x52-20020a056a000bf400b006889348ba6esm1826019pfu.127.2023.08.31.17.46.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Aug 2023 17:38:22 -0700 (PDT)
-Message-ID: <91f8724b-1f1d-6121-afc8-cc6446bf9359@linaro.org>
-Date: Thu, 31 Aug 2023 17:38:20 -0700
+ Thu, 31 Aug 2023 17:46:20 -0700 (PDT)
+Message-ID: <8a1713ac-8121-1ab6-9d9b-a772c2783161@gmail.com>
+Date: Fri, 1 Sep 2023 09:46:15 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 01/11] tcg: Clean up local variable shadowing
+Subject: Re: [PATCH v9 0/4] hw/ufs: Add Universal Flash Storage (UFS) support
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, fam@euphon.net, hreitz@redhat.com,
+ k.jensen@samsung.com, kwolf@redhat.com, pbonzini@redhat.com,
+ qemu-block@nongnu.org, stefanha@redhat.com, berrange@redhat.com,
+ marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com,
+ philmd@linaro.org, thuth@redhat.com, lvivier@redhat.com,
+ jeuk20.kim@samsung.com
+References: <cover.1691062912.git.jeuk20.kim@samsung.com>
+ <CAJSP0QXnydKxy++mJmdt28gULER1grif0uZ-4xr+rpvv-zmuDw@mail.gmail.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230831225607.30829-1-philmd@linaro.org>
- <20230831225607.30829-2-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230831225607.30829-2-philmd@linaro.org>
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+In-Reply-To: <CAJSP0QXnydKxy++mJmdt28gULER1grif0uZ-4xr+rpvv-zmuDw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -55
 X-Spam_score: -5.6
 X-Spam_bar: -----
 X-Spam_report: (-5.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.478,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-3.478, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,15 +98,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/31/23 15:55, Philippe Mathieu-Daudé wrote:
-> -                    MemOp op = get_memop(oi);
-> +                    MemOp o = get_memop(oi);
 
-mop would be a more descriptive replacement.
+On 23. 8. 30. 20:38, Stefan Hajnoczi wrote:
+> On Thu, 3 Aug 2023 at 07:49, Jeuk Kim <jeuk20.kim@gmail.com> wrote:
+>> Dear Stefan,
+>> I'm really sorry, but could you please put this patch series
+>> instead of v8, which was previously merged into block-next?
+>> The fixes from v8 are below.
+>> Please let me know if you have any comments or issues.
+> The CI hit a test failure:
+> https://gitlab.com/qemu-project/qemu/-/jobs/4977256030
+>
+> Please investigate how to fix this so this series can be merged. Thanks!
+>
+> Stefan
 
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+https://gitlab.com/qemu-project/qemu/-/jobs/4977256030
+https://gitlab.com/qemu-project/qemu/-/jobs/4977255992
 
+I'll analyze and fix above issues and resend the patch.
+Thanks for letting me know.
 
-r~
+Jeuk
+
 
