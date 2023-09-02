@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23F779051C
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 07:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AA179052D
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 07:10:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcIor-0000GX-P0; Sat, 02 Sep 2023 01:05:13 -0400
+	id 1qcIos-0000Gb-Mn; Sat, 02 Sep 2023 01:05:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIod-0008KL-BT
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIof-0008Km-9a
  for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:05:02 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIoZ-0001DF-9V
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:04:57 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIob-0001DR-JD
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:05:00 -0400
 Received: from ls3a6000.. (unknown [223.72.40.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 5A7A844476;
- Sat,  2 Sep 2023 05:04:52 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 9DF8344378;
+ Sat,  2 Sep 2023 05:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1693631094; bh=zrMZEJtiPLoLhMiocfmEpEgfjthSD8rk6thdR12e58c=;
+ t=1693631096; bh=0zRNSAThSqTTb1/CT8MVS2adIhiNeGtqIpzCWdc+j5c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=f1AieYnCZbv2PkjCUUcmYZFEzT6CTzlApEfFnFKPU0vaAi7jzGjfkmvRXUVEh0j1f
- 1L6nNs1wqBF4LgQvOL5j1NHErK7I1hZDSRylEw6H15QGqiKNCisI2qHrHCm4nK396M
- Hoix/K45CPLrHz98Bghqp0aiWnIOYrirhCQ2b4UA=
+ b=bYHiijdWgMVGxhHMngened7+4hHRq1f6r2CTQLT9ZCLx9ZNQPV0SOnEy33FB/KMT9
+ QzRwa+azFSDshiCdb8H4ld03Oi8egQAEHNyivEkwDbKDjAoElJITzpXxOIIkQn7WAh
+ cQUZP9fvEUlFVcWGUEeIhM9HfM+FttF6wG872unU=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
  Jiajie Chen <c@jia.je>
-Subject: [PATCH v3 07/16] tcg/loongarch64: Lower neg_vec to vneg
-Date: Sat,  2 Sep 2023 13:02:07 +0800
-Message-ID: <20230902050415.1832700-8-c@jia.je>
+Subject: [PATCH v3 08/16] tcg/loongarch64: Lower mul_vec to vmul
+Date: Sat,  2 Sep 2023 13:02:08 +0800
+Message-ID: <20230902050415.1832700-9-c@jia.je>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230902050415.1832700-1-c@jia.je>
 References: <20230902050415.1832700-1-c@jia.je>
@@ -72,58 +72,58 @@ Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
  2 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 133b0f7113..1e196bb68f 100644
+index 1e196bb68f..6905775698 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1662,6 +1662,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-     static const LoongArchInsn sub_vec_imm_insn[4] = {
-         OPC_VSUBI_BU, OPC_VSUBI_HU, OPC_VSUBI_WU, OPC_VSUBI_DU
+@@ -1665,6 +1665,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     static const LoongArchInsn neg_vec_insn[4] = {
+         OPC_VNEG_B, OPC_VNEG_H, OPC_VNEG_W, OPC_VNEG_D
      };
-+    static const LoongArchInsn neg_vec_insn[4] = {
-+        OPC_VNEG_B, OPC_VNEG_H, OPC_VNEG_W, OPC_VNEG_D
++    static const LoongArchInsn mul_vec_insn[4] = {
++        OPC_VMUL_B, OPC_VMUL_H, OPC_VMUL_W, OPC_VMUL_D
 +    };
  
      a0 = args[0];
      a1 = args[1];
-@@ -1792,6 +1795,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         }
-         tcg_out32(s, encode_vdvjvk_insn(sub_vec_insn[vece], a0, a1, a2));
+@@ -1798,6 +1801,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_neg_vec:
+         tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], a0, a1));
          break;
-+    case INDEX_op_neg_vec:
-+        tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], a0, a1));
++    case INDEX_op_mul_vec:
++        tcg_out32(s, encode_vdvjvk_insn(mul_vec_insn[vece], a0, a1, a2));
 +        break;
      case INDEX_op_dupm_vec:
          tcg_out_dupm_vec(s, type, vece, a0, a1, a2);
          break;
-@@ -1817,6 +1823,7 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-     case INDEX_op_xor_vec:
+@@ -1824,6 +1830,7 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
      case INDEX_op_nor_vec:
      case INDEX_op_not_vec:
-+    case INDEX_op_neg_vec:
+     case INDEX_op_neg_vec:
++    case INDEX_op_mul_vec:
          return 1;
      default:
          return 0;
-@@ -1994,6 +2001,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+@@ -1998,6 +2005,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_orc_vec:
+     case INDEX_op_xor_vec:
+     case INDEX_op_nor_vec:
++    case INDEX_op_mul_vec:
          return C_O1_I2(w, w, w);
  
      case INDEX_op_not_vec:
-+    case INDEX_op_neg_vec:
-         return C_O1_I1(w, w);
- 
-     default:
 diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index f9c5cb12ca..64c72d0857 100644
+index 64c72d0857..2c2266ed31 100644
 --- a/tcg/loongarch64/tcg-target.h
 +++ b/tcg/loongarch64/tcg-target.h
-@@ -178,7 +178,7 @@ extern bool use_lsx_instructions;
- #define TCG_TARGET_HAS_v256             0
- 
- #define TCG_TARGET_HAS_not_vec          1
--#define TCG_TARGET_HAS_neg_vec          0
-+#define TCG_TARGET_HAS_neg_vec          1
- #define TCG_TARGET_HAS_abs_vec          0
- #define TCG_TARGET_HAS_andc_vec         1
- #define TCG_TARGET_HAS_orc_vec          1
+@@ -185,7 +185,7 @@ extern bool use_lsx_instructions;
+ #define TCG_TARGET_HAS_nand_vec         0
+ #define TCG_TARGET_HAS_nor_vec          1
+ #define TCG_TARGET_HAS_eqv_vec          0
+-#define TCG_TARGET_HAS_mul_vec          0
++#define TCG_TARGET_HAS_mul_vec          1
+ #define TCG_TARGET_HAS_shi_vec          0
+ #define TCG_TARGET_HAS_shs_vec          0
+ #define TCG_TARGET_HAS_shv_vec          0
 -- 
 2.42.0
 
