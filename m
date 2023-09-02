@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CEC790809
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5DD79080B
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:06:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcQEo-0001OW-IF; Sat, 02 Sep 2023 09:00:30 -0400
+	id 1qcQEn-0001Ns-9V; Sat, 02 Sep 2023 09:00:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEV-0001En-L6
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:15 -0400
+ id 1qcQEV-0001El-1z
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEQ-0001we-9O
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:11 -0400
+ id 1qcQEQ-0001x7-NK
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693659604;
+ s=mimecast20190719; t=1693659605;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I+Ir5xaBdiViIYuuEv81e7Jvg2/2x1hLSUNb3g8KVTw=;
- b=Zq67+1puqWvctQ0xT8K2277zier7IUnkP7xZDncFqYLDpujj9sv8cySN4ZQvOWKfz79xdz
- PDc4EKlmMdB4MAf57NGBGTG8HeQBz5QZLsCYBPds/4EgvLrRFumZ6jvGATiULYBKWrMkKr
- 7DlgZonX1svipfTfjQRbyenLxyZPuRA=
+ bh=hdxMt1JWLcVMJ4q896LNcJMB3TzYb0uEnxCUsLKSwU4=;
+ b=W2jgxHUgfqaQWtChva06bkGGeP09qHel2jkWsi6rhlCFtVaWO1HuWZG0PcF+DkViD+/n2F
+ htyJTjNQQKP2umJ+sTcm0fq9t/ri4Q2ByZqk6AOo76TGEyhhUWUwJR2EcANkWnNk24eoOx
+ sDzpDVmkUOgWi2wbAwlserTks2Y1UtA=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-h7_eHbAoMgq878XlUCqMiw-1; Sat, 02 Sep 2023 09:00:02 -0400
-X-MC-Unique: h7_eHbAoMgq878XlUCqMiw-1
+ us-mta-425-C0lsPNBVNUGh-HF92FIXVg-1; Sat, 02 Sep 2023 09:00:03 -0400
+X-MC-Unique: C0lsPNBVNUGh-HF92FIXVg-1
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe661c0323so18091895e9.0
+ 5b1f17b1804b1-401d9abf21cso19541835e9.0
  for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 06:00:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1693659601; x=1694264401;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I+Ir5xaBdiViIYuuEv81e7Jvg2/2x1hLSUNb3g8KVTw=;
- b=B19rd103oduqRYYfzG3TKDhqiiu7NmmkfS4s66duJg8nxl6Mnvb3+3R8g/kJfK/KCP
- qqSIWlACGeNdjYUhprcEx5v4pLsrHpk/0C6nmaZsQ8ZoPgOYMiK12GRm96aDCZWiBlHi
- ogvrK2axenWFEUkeHWpd0xZ8FevRrpXJrr3FNRGjSfMxiCTWhiZL5617Cb72EJRqk4wx
- ICWFsTduWUamLGHnnEZTLg5vyWhNtq+Sv/d4l2c5ZVEEczI5wvhnXCOwjYUHVqW1cEL+
- QIXi+MpCF1F/ovC3g+l7o85cYaUfSLb+h3Z9q6VYaHptAiNy/L+D4p53lfcZen4pCgiH
- 3nHA==
-X-Gm-Message-State: AOJu0YzATp/hsGPspgm/vxDPoncGyDsb+OJRHlRUR2vzcnynOPo/mCyg
- uzRLENRVjeqhnKmX/fSSwC3avcfOc0q7qYsoIhEGPcYyAtvTWV5a9qtlevIc5y81DmbmNg+x5+U
- 8i+9AHYxJoUj9NmNUwvKIlTA1c/WawMPTU58dXYE4QSZ0Q67e+KgEvviIlJkzV5bXH4Q64jNwEK
+ bh=hdxMt1JWLcVMJ4q896LNcJMB3TzYb0uEnxCUsLKSwU4=;
+ b=kfyJFF2DdU7RcjSFTYlzrrdi9SXHcArOElF325sifSpBG1dL2sBr8nJD8DW7q2yRvs
+ +k6HpzLq287OiOHUt6yXFJ/hVT2rE+Y15FD/743tbAtj4o5f5iEGFeRYoekTW0CcxblK
+ RB1Q0dkmXARrl2BfWJYHrYaz/gZIcJWoe7WppHDLcMX85Ui8B5b4vwqHpSW//0tIJhag
+ k4BLaC7NgoIzjCZpNiEzgXJCgePKQ9Sbs54R/zqDxz1XF28MO1YVXl0Gw8VbKsMOqqdV
+ nt6K6pQC7xveVYFGOdbDuhjTADsCFYwxZZxLMYMT85bg8eA8G17ByW1qPhjakpQHqtsn
+ iBUg==
+X-Gm-Message-State: AOJu0YwAiuCjzEf1jU9JECNxVbJHp5LCwgvyIugO0jZhoQV71r20FHO/
+ 5BnD8JLcf6LWix8HpwVgiCqZRrMY88awLwW/28VVeTyeemaSvUl8gidCDfiK1yCYXEnj8cbyGO3
+ ULgmp+1PP6uPJa3PabTKyWIllQx0hS2ljasbxcnCuoRsxZL8ICUH4mM3xW2+n4PTMPsOHGnUoqr
  g=
-X-Received: by 2002:a7b:c4c5:0:b0:3f6:9634:c8d6 with SMTP id
- g5-20020a7bc4c5000000b003f69634c8d6mr3680761wmk.18.1693659600620; 
- Sat, 02 Sep 2023 06:00:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJzeNIjcYg8xIM/u74mRUYN5l9LKJtvtDMiw4zUApLFggmxQ7fI9qIdhj1JaipstpPvJcNEQ==
-X-Received: by 2002:a7b:c4c5:0:b0:3f6:9634:c8d6 with SMTP id
- g5-20020a7bc4c5000000b003f69634c8d6mr3680749wmk.18.1693659600042; 
- Sat, 02 Sep 2023 06:00:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:c3:b0:3fe:dcd0:2e10 with SMTP id
+ u3-20020a05600c00c300b003fedcd02e10mr3956801wmm.17.1693659601714; 
+ Sat, 02 Sep 2023 06:00:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYZ5R3cNHt6kY5K6aryXMPnryPjEZ421Gmt/xEWIMvymt7u2pJm7xo4Pb9HIdoa3tc677WEw==
+X-Received: by 2002:a05:600c:c3:b0:3fe:dcd0:2e10 with SMTP id
+ u3-20020a05600c00c300b003fedcd02e10mr3956789wmm.17.1693659601317; 
+ Sat, 02 Sep 2023 06:00:01 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- n26-20020a05600c3b9a00b00402c0a8a084sm2289110wms.17.2023.09.02.05.59.58
+ c20-20020a7bc854000000b003fee0741b8csm10942924wml.23.2023.09.02.06.00.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 05:59:59 -0700 (PDT)
+ Sat, 02 Sep 2023 06:00:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 13/15] configure,
- meson: remove target OS symbols from config-host.mak
-Date: Sat,  2 Sep 2023 14:59:32 +0200
-Message-ID: <20230902125934.113017-14-pbonzini@redhat.com>
+Subject: [PATCH 14/15] meson: list leftover CONFIG_* symbols
+Date: Sat,  2 Sep 2023 14:59:33 +0200
+Message-ID: <20230902125934.113017-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230902125934.113017-1-pbonzini@redhat.com>
 References: <20230902125934.113017-1-pbonzini@redhat.com>
@@ -101,411 +100,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stop applying config-host.mak to the sourcesets, since it does not
-have any more CONFIG_* symbols coming from the command line.
+There are no config-host.mak symbols anymore that are needed in
+config-host.h; the only symbols that are included in config_host_data via
+the foreach loop are:
+
+- CONFIG_DEFAULT_TARGETS, which is not used by C code.
+
+- CONFIG_TCG and CONFIG_TCG_INTERPRETER, which are not part of config-host.mak
+
+So, list these two symbols explicitly.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Makefile                   |  2 +-
- chardev/meson.build        |  2 +-
- configure                  | 18 -----------------
- docs/devel/kconfig.rst     |  2 +-
- gdbstub/meson.build        |  4 ++--
- meson.build                | 40 +++++++++++++++++++++++++-------------
- qga/meson.build            |  4 ++--
- storage-daemon/meson.build |  2 +-
- tcg/meson.build            |  2 +-
- tests/meson.build          |  2 +-
- tests/qtest/meson.build    | 12 ++++++------
- tests/unit/meson.build     |  6 +++---
- 12 files changed, 46 insertions(+), 50 deletions(-)
+ docs/devel/build-system.rst |  8 ++------
+ meson.build                 | 10 ++--------
+ 2 files changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 118c28e80d9..bfc4b2c8e92 100644
---- a/Makefile
-+++ b/Makefile
-@@ -313,7 +313,7 @@ endif
- 	@echo  'Documentation targets:'
- 	$(call print-help,html man,Build documentation in specified format)
- 	@echo  ''
--ifdef CONFIG_WIN32
-+ifneq ($(filter msi, $(ninja-targets)),)
- 	@echo  'Windows targets:'
- 	$(call print-help,installer,Build NSIS-based installer for QEMU)
- 	$(call print-help,msi,Build MSI-based installer for qemu-ga)
-diff --git a/chardev/meson.build b/chardev/meson.build
-index fb630b429eb..6d56ad32fdb 100644
---- a/chardev/meson.build
-+++ b/chardev/meson.build
-@@ -26,7 +26,7 @@ chardev_ss.add(when: 'CONFIG_WIN32', if_true: files(
-   'char-win.c',
- ))
+diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
+index 64efa26b905..0f990bb3e90 100644
+--- a/docs/devel/build-system.rst
++++ b/docs/devel/build-system.rst
+@@ -460,17 +460,13 @@ Built by configure:
  
--chardev_ss = chardev_ss.apply(config_host, strict: false)
-+chardev_ss = chardev_ss.apply(config_targetos, strict: false)
+ ``config-host.mak``
+   When configure has determined the characteristics of the build host it
+-  will write them to this file for use in ``Makefile`` and to a smaller
+-  extent ``meson.build``. These include the paths to various tools and a
+-  variety of ``CONFIG_*`` variables related to optionally enabled features.
++  will write the paths to various tools to this file, for use in ``Makefile``
++  and to a smaller extent ``meson.build``.
  
- system_ss.add(files(
-     'char-hmp-cmds.c',
-diff --git a/configure b/configure
-index f3ffaca1878..6404b659718 100755
---- a/configure
-+++ b/configure
-@@ -1683,32 +1683,14 @@ echo >> $config_host_mak
- echo all: >> $config_host_mak
+   ``config-host.mak`` is also used as a dependency checking mechanism. If make
+   sees that the modification timestamp on configure is newer than that on
+   ``config-host.mak``, then configure will be re-run.
  
- if test "$targetos" = "windows"; then
--  echo "CONFIG_WIN32=y" >> $config_host_mak
-   echo "QEMU_GA_MANUFACTURER=${QEMU_GA_MANUFACTURER-QEMU}" >> $config_host_mak
-   echo "QEMU_GA_DISTRO=${QEMU_GA_DISTRO-Linux}" >> $config_host_mak
-   echo "QEMU_GA_VERSION=${QEMU_GA_VERSION-$(cat "$source_path"/VERSION)}" >> $config_host_mak
--else
--  echo "CONFIG_POSIX=y" >> $config_host_mak
--fi
+-  The variables defined here apply to all QEMU
+-  build outputs.
 -
--if test "$targetos" = "linux" ; then
--  echo "CONFIG_LINUX=y" >> $config_host_mak
--fi
--
--if test "$targetos" = "darwin" ; then
--  echo "CONFIG_DARWIN=y" >> $config_host_mak
- fi
+ ``config-meson.cross``
  
- echo "SRC_PATH=$source_path" >> $config_host_mak
- echo "TARGET_DIRS=$target_list" >> $config_host_mak
- 
--# XXX: suppress that
--case $targetos in
--  gnu/kfreebsd | freebsd | dragonfly | netbsd | openbsd | darwin)
--    echo "CONFIG_BSD=y" >> $config_host_mak
--    ;;
--esac
--
- if test -n "$gdb_bin"; then
-     gdb_version=$($gdb_bin --version | head -n 1)
-     if version_ge ${gdb_version##* } 9.1; then
-diff --git a/docs/devel/kconfig.rst b/docs/devel/kconfig.rst
-index e3a544e463f..73f52de1067 100644
---- a/docs/devel/kconfig.rst
-+++ b/docs/devel/kconfig.rst
-@@ -316,6 +316,6 @@ variable::
- 
-     host_kconfig = \
-       (have_tpm ? ['CONFIG_TPM=y'] : []) + \
--      ('CONFIG_LINUX' in config_host ? ['CONFIG_LINUX=y'] : []) + \
-+      (targetos == 'linux' ? ['CONFIG_LINUX=y'] : []) + \
-       (have_ivshmem ? ['CONFIG_IVSHMEM=y'] : []) + \
-       ...
-diff --git a/gdbstub/meson.build b/gdbstub/meson.build
-index 77762e0b3e1..9500b9dc4e6 100644
---- a/gdbstub/meson.build
-+++ b/gdbstub/meson.build
-@@ -14,8 +14,8 @@ gdb_system_ss = ss.source_set()
- gdb_user_ss.add(files('gdbstub.c', 'user.c'))
- gdb_system_ss.add(files('gdbstub.c', 'softmmu.c'))
- 
--gdb_user_ss = gdb_user_ss.apply(config_host, strict: false)
--gdb_system_ss = gdb_system_ss.apply(config_host, strict: false)
-+gdb_user_ss = gdb_user_ss.apply(config_targetos, strict: false)
-+gdb_system_ss = gdb_system_ss.apply(config_targetos, strict: false)
- 
- libgdb_user = static_library('gdb_user',
-                              gdb_user_ss.sources() + genh,
+   A Meson "cross file" (or native file) used to communicate the paths to
 diff --git a/meson.build b/meson.build
-index f6d079f4cda..d3feac656cb 100644
+index d3feac656cb..cde2b58b91e 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2069,10 +2069,15 @@ config_host_data.set('CONFIG_MODULE_UPGRADES', get_option('module_upgrades'))
- config_host_data.set('CONFIG_ATTR', libattr.found())
- config_host_data.set('CONFIG_BDRV_WHITELIST_TOOLS', get_option('block_drv_whitelist_in_tools'))
- config_host_data.set('CONFIG_BRLAPI', brlapi.found())
-+config_host_data.set('CONFIG_BSD', targetos in bsd_oses)
- config_host_data.set('CONFIG_COCOA', cocoa.found())
-+config_host_data.set('CONFIG_DARWIN', targetos == 'darwin')
- config_host_data.set('CONFIG_FUZZ', get_option('fuzzing'))
- config_host_data.set('CONFIG_GCOV', get_option('b_coverage'))
- config_host_data.set('CONFIG_LIBUDEV', libudev.found())
-+config_host_data.set('CONFIG_LINUX', targetos == 'linux')
-+config_host_data.set('CONFIG_POSIX', targetos != 'windows')
-+config_host_data.set('CONFIG_WIN32', targetos == 'windows')
- config_host_data.set('CONFIG_LZO', lzo.found())
- config_host_data.set('CONFIG_MPATH', mpathpersist.found())
- config_host_data.set('CONFIG_BLKIO', blkio.found())
-@@ -2799,6 +2804,15 @@ endif
- ########################
- 
- minikconf = find_program('scripts/minikconf.py')
-+config_targetos = {
-+  (targetos == 'windows' ? 'CONFIG_WIN32' : 'CONFIG_POSIX'): 'y'
-+}
-+if targetos == 'darwin'
-+  config_targetos += {'CONFIG_DARWIN': 'y'}
-+elif targetos == 'linux'
-+  config_targetos += {'CONFIG_LINUX': 'y'}
-+endif
-+
- config_all = {}
- config_all_devices = {}
- config_all_disas = {}
-@@ -2842,7 +2856,7 @@ host_kconfig = \
-   (have_vhost_vdpa ? ['CONFIG_VHOST_VDPA=y'] : []) + \
-   (have_vhost_kernel ? ['CONFIG_VHOST_KERNEL=y'] : []) + \
-   (have_virtfs ? ['CONFIG_VIRTFS=y'] : []) + \
--  ('CONFIG_LINUX' in config_host ? ['CONFIG_LINUX=y'] : []) + \
-+  (targetos == 'linux' ? ['CONFIG_LINUX=y'] : []) + \
-   (have_pvrdma ? ['CONFIG_PVRDMA=y'] : []) + \
-   (multiprocess_allowed ? ['CONFIG_MULTIPROCESS_ALLOWED=y'] : []) + \
-   (vfio_user_server_allowed ? ['CONFIG_VFIO_USER_SERVER_ALLOWED=y'] : [])
-@@ -2863,7 +2877,7 @@ foreach target : target_dirs
-     endif
-     config_target += { 'CONFIG_LINUX_USER': 'y' }
-   elif target.endswith('bsd-user')
--    if 'CONFIG_BSD' not in config_host
-+    if targetos not in bsd_oses
-       if default_targets
-         continue
-       endif
-@@ -2994,7 +3008,7 @@ target_dirs = actual_target_dirs
- # pseudo symbol replaces it.
- 
- config_all += config_all_devices
--config_all += config_host
-+config_all += config_targetos
- config_all += config_all_disas
- config_all += {
-   'CONFIG_XEN': xen.found(),
-@@ -3341,7 +3355,7 @@ if enable_modules
-   modulecommon = declare_dependency(link_whole: libmodulecommon, compile_args: '-DBUILD_DSO')
- endif
- 
--qom_ss = qom_ss.apply(config_host, strict: false)
-+qom_ss = qom_ss.apply(config_targetos, strict: false)
- libqom = static_library('qom', qom_ss.sources() + genh,
-                         dependencies: [qom_ss.dependencies()],
-                         name_suffix: 'fa')
-@@ -3515,7 +3529,7 @@ foreach d, list : target_modules
-       foreach target : target_dirs
-         if target.endswith('-softmmu')
-           config_target = config_target_mak[target]
--          config_target += config_host
-+          config_target += config_targetos
-           target_inc = [include_directories('target' / config_target['TARGET_BASE_ARCH'])]
-           c_args = ['-DNEED_CPU_H',
-                     '-DCONFIG_TARGET="@0@-config-target.h"'.format(target),
-@@ -3576,7 +3590,7 @@ qemu_syms = custom_target('qemu.syms', output: 'qemu.syms',
-                              capture: true,
-                              command: [undefsym, nm, '@INPUT@'])
- 
--authz_ss = authz_ss.apply(config_host, strict: false)
-+authz_ss = authz_ss.apply(config_targetos, strict: false)
- libauthz = static_library('authz', authz_ss.sources() + genh,
-                           dependencies: [authz_ss.dependencies()],
-                           name_suffix: 'fa',
-@@ -3585,7 +3599,7 @@ libauthz = static_library('authz', authz_ss.sources() + genh,
- authz = declare_dependency(link_whole: libauthz,
-                            dependencies: qom)
- 
--crypto_ss = crypto_ss.apply(config_host, strict: false)
-+crypto_ss = crypto_ss.apply(config_targetos, strict: false)
- libcrypto = static_library('crypto', crypto_ss.sources() + genh,
-                            dependencies: [crypto_ss.dependencies()],
-                            name_suffix: 'fa',
-@@ -3594,7 +3608,7 @@ libcrypto = static_library('crypto', crypto_ss.sources() + genh,
- crypto = declare_dependency(link_whole: libcrypto,
-                             dependencies: [authz, qom])
- 
--io_ss = io_ss.apply(config_host, strict: false)
-+io_ss = io_ss.apply(config_targetos, strict: false)
- libio = static_library('io', io_ss.sources() + genh,
-                        dependencies: [io_ss.dependencies()],
-                        link_with: libqemuutil,
-@@ -3610,7 +3624,7 @@ migration = declare_dependency(link_with: libmigration,
-                                dependencies: [zlib, qom, io])
- system_ss.add(migration)
- 
--block_ss = block_ss.apply(config_host, strict: false)
-+block_ss = block_ss.apply(config_targetos, strict: false)
- libblock = static_library('block', block_ss.sources() + genh,
-                           dependencies: block_ss.dependencies(),
-                           link_depends: block_syms,
-@@ -3621,7 +3635,7 @@ block = declare_dependency(link_whole: [libblock],
-                            link_args: '@block.syms',
-                            dependencies: [crypto, io])
- 
--blockdev_ss = blockdev_ss.apply(config_host, strict: false)
-+blockdev_ss = blockdev_ss.apply(config_targetos, strict: false)
- libblockdev = static_library('blockdev', blockdev_ss.sources() + genh,
-                              dependencies: blockdev_ss.dependencies(),
-                              name_suffix: 'fa',
-@@ -3630,7 +3644,7 @@ libblockdev = static_library('blockdev', blockdev_ss.sources() + genh,
- blockdev = declare_dependency(link_whole: [libblockdev],
-                               dependencies: [block, event_loop_base])
- 
--qmp_ss = qmp_ss.apply(config_host, strict: false)
-+qmp_ss = qmp_ss.apply(config_targetos, strict: false)
- libqmp = static_library('qmp', qmp_ss.sources() + genh,
-                         dependencies: qmp_ss.dependencies(),
-                         name_suffix: 'fa',
-@@ -3645,7 +3659,7 @@ libchardev = static_library('chardev', chardev_ss.sources() + genh,
- 
- chardev = declare_dependency(link_whole: libchardev)
- 
--hwcore_ss = hwcore_ss.apply(config_host, strict: false)
-+hwcore_ss = hwcore_ss.apply(config_targetos, strict: false)
- libhwcore = static_library('hwcore', sources: hwcore_ss.sources() + genh,
-                            name_suffix: 'fa',
-                            build_by_default: false)
-@@ -3702,7 +3716,7 @@ foreach target : target_dirs
-             '-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
-   link_args = emulator_link_args
- 
--  config_target += config_host
-+  config_target += config_targetos
-   target_inc = [include_directories('target' / config_target['TARGET_BASE_ARCH'])]
-   if targetos == 'linux'
-     target_inc += include_directories('linux-headers', is_system: true)
-diff --git a/qga/meson.build b/qga/meson.build
-index dd18092f561..59cae0cc6ee 100644
---- a/qga/meson.build
-+++ b/qga/meson.build
-@@ -85,7 +85,7 @@ qga_ss.add(when: 'CONFIG_WIN32', if_true: files(
-   'vss-win32.c'
- ))
- 
--qga_ss = qga_ss.apply(config_host, strict: false)
-+qga_ss = qga_ss.apply(config_targetos, strict: false)
- 
- gen_tlb = []
- qga_libs = []
-@@ -180,7 +180,7 @@ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
- # the leak detector in build-oss-fuzz Gitlab CI test. we should re-enable
- # this when an alternative is implemented or when the underlying glib
- # issue is identified/fix
--#if 'CONFIG_POSIX' in config_host
-+#if targetos != 'windows'
- if false
-   srcs = [files('commands-posix-ssh.c')]
-   i = 0
-diff --git a/storage-daemon/meson.build b/storage-daemon/meson.build
-index 49c9d2eac91..5e90cd32b40 100644
---- a/storage-daemon/meson.build
-+++ b/storage-daemon/meson.build
-@@ -5,7 +5,7 @@ qsd_ss.add(blockdev, chardev, qmp, qom, qemuutil, gnutls)
- subdir('qapi')
- 
- if have_tools
--  qsd_ss = qsd_ss.apply(config_host, strict: false)
-+  qsd_ss = qsd_ss.apply(config_targetos, strict: false)
-   qsd = executable('qemu-storage-daemon',
-                    qsd_ss.sources(),
-                    dependencies: qsd_ss.dependencies(),
-diff --git a/tcg/meson.build b/tcg/meson.build
-index c0252c41988..0014dca7d4f 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -22,7 +22,7 @@ if get_option('tcg_interpreter')
-   tcg_ss.add(files('tci.c'))
- endif
- 
--tcg_ss = tcg_ss.apply(config_host, strict: false)
-+tcg_ss = tcg_ss.apply(config_targetos, strict: false)
- 
- libtcg_user = static_library('tcg_user',
-                              tcg_ss.sources() + genh,
-diff --git a/tests/meson.build b/tests/meson.build
-index c2528a88f99..debaa4505eb 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -68,7 +68,7 @@ test_deps = {
-   'test-qht-par': qht_bench,
- }
- 
--if have_tools and have_vhost_user and 'CONFIG_LINUX' in config_host
-+if have_tools and have_vhost_user and targetos == 'linux'
-   executable('vhost-user-bridge',
-              sources: files('vhost-user-bridge.c'),
-              dependencies: [qemuutil, vhost_user])
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index c0751ef7c35..4a9b0267e50 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -38,8 +38,8 @@ qtests_cxl = \
- #        for the availability of the default NICs in the tests
- qtests_filter = \
-   (get_option('default_devices') and slirp.found() ? ['test-netfilter'] : []) + \
--  (get_option('default_devices') and config_host.has_key('CONFIG_POSIX') ? ['test-filter-mirror'] : []) + \
--  (get_option('default_devices') and config_host.has_key('CONFIG_POSIX') ? ['test-filter-redirector'] : [])
-+  (get_option('default_devices') and targetos != 'windows' ? ['test-filter-mirror'] : []) + \
-+  (get_option('default_devices') and targetos != 'windows' ? ['test-filter-redirector'] : [])
- 
- qtests_i386 = \
-   (slirp.found() ? ['pxe-test'] : []) + \
-@@ -48,7 +48,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_ISA_TESTDEV') ? ['endianness-test'] : []) +           \
-   (config_all_devices.has_key('CONFIG_SGA') ? ['boot-serial-test'] : []) +                  \
-   (config_all_devices.has_key('CONFIG_ISA_IPMI_KCS') ? ['ipmi-kcs-test'] : []) +            \
--  (config_host.has_key('CONFIG_LINUX') and                                                  \
-+  (targetos == 'linux' and                                                                  \
-    config_all_devices.has_key('CONFIG_ISA_IPMI_BT') and
-    config_all_devices.has_key('CONFIG_IPMI_EXTERN') ? ['ipmi-bt-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_WDT_IB700') ? ['wdt_ib700-test'] : []) +              \
-@@ -74,7 +74,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_ESP_PCI') ? ['am53c974-test'] : []) +                 \
--  (config_host.has_key('CONFIG_POSIX') and                                                  \
-+  (targetos != 'windows' and                                                                \
-    config_all_devices.has_key('CONFIG_ACPI_ERST') ? ['erst-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_PCIE_PORT') and                                       \
-    config_all_devices.has_key('CONFIG_VIRTIO_NET') and                                      \
-@@ -275,7 +275,7 @@ if config_all_devices.has_key('CONFIG_VIRTIO_SERIAL')
-   qos_test_ss.add(files('virtio-serial-test.c'))
- endif
- 
--if config_host.has_key('CONFIG_POSIX')
-+if targetos != 'windows'
-   qos_test_ss.add(files('e1000e-test.c'))
- endif
- if have_virtfs
-@@ -308,7 +308,7 @@ qtests = {
-   'ivshmem-test': [rt, '../../contrib/ivshmem-server/ivshmem-server.c'],
-   'migration-test': migration_files,
-   'pxe-test': files('boot-sector.c'),
--  'qos-test': [chardev, io, qos_test_ss.apply(config_host, strict: false).sources()],
-+  'qos-test': [chardev, io, qos_test_ss.apply(config_targetos, strict: false).sources()],
-   'tpm-crb-swtpm-test': [io, tpmemu_files],
-   'tpm-crb-test': [io, tpmemu_files],
-   'tpm-tis-swtpm-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 93977cc32d2..0299ef6906c 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -98,7 +98,7 @@ if have_block
-   }
-   if gnutls.found() and \
-      tasn1.found() and \
--     'CONFIG_POSIX' in config_host
-+     targetos != 'windows'
-     tests += {
-       'test-crypto-tlscredsx509': ['crypto-tls-x509-helpers.c', 'pkix_asn1_tab.c',
-                                    tasn1, crypto, gnutls],
-@@ -113,7 +113,7 @@ if have_block
-   if xts == 'private'
-     tests += {'test-crypto-xts': [crypto, io]}
+@@ -691,7 +691,6 @@ if get_option('tcg').allowed()
    endif
--  if 'CONFIG_POSIX' in config_host
-+  if targetos != 'windows'
-     tests += {
-       'test-image-locking': [testblock],
-       'test-nested-aio-poll': [testblock],
-@@ -148,7 +148,7 @@ if have_system
-   # are not runnable under TSan due to a known issue.
-   # https://github.com/google/sanitizers/issues/1116
-   if not get_option('tsan')
--    if 'CONFIG_POSIX' in config_host
-+    if targetos != 'windows'
-         tests += {
-           'test-char': ['socket-helpers.c', qom, io, chardev]
-         }
+   if get_option('tcg_interpreter')
+     tcg_arch = 'tci'
+-    config_host += { 'CONFIG_TCG_INTERPRETER': 'y' }
+   elif host_arch == 'x86_64'
+     tcg_arch = 'i386'
+   elif host_arch == 'ppc64'
+@@ -701,7 +700,6 @@ if get_option('tcg').allowed()
+                         language: all_languages)
+ 
+   accelerators += 'CONFIG_TCG'
+-  config_host += { 'CONFIG_TCG': 'y' }
+ endif
+ 
+ if 'CONFIG_KVM' not in accelerators and get_option('kvm').enabled()
+@@ -2132,6 +2130,10 @@ if seccomp.found()
+ endif
+ config_host_data.set('CONFIG_SNAPPY', snappy.found())
+ config_host_data.set('CONFIG_SOLARIS', targetos == 'sunos')
++if get_option('tcg').allowed()
++  config_host_data.set('CONFIG_TCG', 1)
++  config_host_data.set('CONFIG_TCG_INTERPRETER', tcg_arch == 'tci')
++endif
+ config_host_data.set('CONFIG_TPM', have_tpm)
+ config_host_data.set('CONFIG_TSAN', get_option('tsan'))
+ config_host_data.set('CONFIG_USB_LIBUSB', libusb.found())
+@@ -2760,12 +2762,6 @@ if targetos == 'windows' and 'cpp' in all_languages
+ endif
+ config_host_data.set('HAVE_VSS_SDK', have_vss_sdk)
+ 
+-foreach k, v: config_host
+-  if k.startswith('CONFIG_')
+-    config_host_data.set(k, v == 'y' ? 1 : v)
+-  endif
+-endforeach
+-
+ # Older versions of MinGW do not import _lock_file and _unlock_file properly.
+ # This was fixed for v6.0.0 with commit b48e3ac8969d.
+ if targetos == 'windows'
 -- 
 2.41.0
 
