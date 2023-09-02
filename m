@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34EC07907FD
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE37790806
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcQEE-00012m-Du; Sat, 02 Sep 2023 08:59:54 -0400
+	id 1qcQEG-00017H-18; Sat, 02 Sep 2023 08:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEC-0000zj-Bc
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qcQEE-00013K-1L
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQE9-0001gt-S4
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:52 -0400
+ id 1qcQEB-0001hC-Q0
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693659589;
+ s=mimecast20190719; t=1693659591;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9aPc6QuIQUSjFgfjtGm1gBlb1gbxgW+SxTCr4ISfE8k=;
- b=K1dE23B5nXjmroepP4APEtMgZi4ZQZZUouIMvtKIcS2Su6NQXZ+6YuYba6saAYjgaRimXf
- xvjsnhWCCDM9DQrSjyMV3b5ZHJ2n0aERucn4kHDqvQQujPNUyBa39lP/Wn1am4SI1j3sUd
- /MnUSfq9rQ1B78G/ZwEUEL38lttVLA8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EdLsJG62Ze4MUY0tKyHT3F9g6F8Ou2/1hureqaW2AWw=;
+ b=KYhGoFLe6z/0kXg2VPW2K0F9APWMezK8+pE2kbD59cUD6gvip9m5qq0XDAWmzfFmWSJT64
+ 3qHiL34VEr4zyTSW6zM3JFC8W3/DSh5Apm2uMXeB7fDxmGgq5nhIySxiaiPZW0GJ0RZ1C9
+ 6Chcr8cSSFNIaaO0GyPKXwXE/oXBxXE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-k-XUWVGUMMqVfckZzz1_FA-1; Sat, 02 Sep 2023 08:59:47 -0400
-X-MC-Unique: k-XUWVGUMMqVfckZzz1_FA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31f3233861aso360905f8f.2
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 05:59:47 -0700 (PDT)
+ us-mta-652-fnDC_Bd8Nxm_8mEU4J8t8g-1; Sat, 02 Sep 2023 08:59:49 -0400
+X-MC-Unique: fnDC_Bd8Nxm_8mEU4J8t8g-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-31c5c762f97so1647054f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 05:59:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693659586; x=1694264386;
+ d=1e100.net; s=20221208; t=1693659588; x=1694264388;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9aPc6QuIQUSjFgfjtGm1gBlb1gbxgW+SxTCr4ISfE8k=;
- b=RhLRN5Kp5tlMxbMJMwTzsKvRkAz3Z86I35iLuSVpBMscoO0IYAsTXurUpdlrJMyreE
- IqCAQTquoJiqTN/9BEODlEISb/9qa7R5prqFyAtjsoUVBneQKSev6Dv7Pjd8Jqn4NuDk
- nlvF6pwjxzmzZoIgoeINqVhRkIFxitWmDjoTqL6wiR1LOoJYWf2MdRgx4X0PZ/W/uP4C
- duA7ZD8/2vONPgNYL4F+R+gJKpTlaD9lSCrwM/feIAcFYLOelbf3cNemb6k+jAgbFQZK
- XdmkPXEK10ZzzBfnKE7YFaD+KkpwM9dPvxel1Qeunx8kMmOCzEzHJ5+8UwB2aUINsxAR
- Oaig==
-X-Gm-Message-State: AOJu0YyWbizfzCes+Vf+Y2/n4lSWjeEW8zDtadR/3TAqMuGmc1B7cFVe
- FSh5pRNRK0BRm43mIt12YKDP+rL5iMXNoQr9jMBxt553gYq35WyF4kRRZgQeC8EGd2hVEQfOWq2
- ScSVcN/p5VUtun1uUm0SC3Vvi+uwqIHkwTYvdPsGKPsjrDk187eOmRKLvY6cdr9cCmGkFmDulxr
- U=
-X-Received: by 2002:a05:6000:10:b0:319:8261:2087 with SMTP id
- h16-20020a056000001000b0031982612087mr3524360wrx.43.1693659586017; 
- Sat, 02 Sep 2023 05:59:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDmtgGP6bA19E4YAQvgmKud8VQ2aGZfargJokHSkxUkJwjn2U9zC+Kl2hPf/xXPJauHtKDJg==
-X-Received: by 2002:a05:6000:10:b0:319:8261:2087 with SMTP id
- h16-20020a056000001000b0031982612087mr3524349wrx.43.1693659585610; 
- Sat, 02 Sep 2023 05:59:45 -0700 (PDT)
+ bh=EdLsJG62Ze4MUY0tKyHT3F9g6F8Ou2/1hureqaW2AWw=;
+ b=HoUQhkJdfKKRgs0pWm5fXnSZOuM28f7sntLwv/mGjSnkQ6JqmXiBD3jTT9Pgx0rLzw
+ dg+IczXDiTcMXCFp3epHDSeMBgCy+NnoeQNkcPxIuG0FJbwt06o4qIqukxJcAMbDyxsb
+ V8iASMIxtYHa14azCx+/JwNLYK7FH0PGhUWRBC4Uq2dW4r73cOwx3QgmZp4X2fhyw0ru
+ YLzYxIK5xHuJaUTKEtcofNupeQiOVZmMxRFln4nXjYlMrKqdL9V4Le6A1rvvM9Z5DkYF
+ vSzqBUSAZyE9YXRpagmWbldA90ccnwJnFzm2POXOnxU2cIlgGecL8rxh9oHWboDTWS0r
+ yS6w==
+X-Gm-Message-State: AOJu0Yzm/5KIjSaDkvX7bNXGp8fWffS9uJbQ9Nox4fJhngXGezAW0OSb
+ 5m5T34R8zw9xa7Pwyh3PrKE60FSkAIyEdddC4izhnrNUFKz/RmiGelv8FSiEx5tOKmzc8Ij4IEy
+ eU1anrmWEHxqHwBoyS+YxHcnX30SE+UHQfF4Gx7ULR2nM1rR6xkdTJ8hSl+jYkiE4fO2BKPFnaq
+ 4=
+X-Received: by 2002:a05:6000:10cf:b0:314:748:d59d with SMTP id
+ b15-20020a05600010cf00b003140748d59dmr3464620wrx.27.1693659587819; 
+ Sat, 02 Sep 2023 05:59:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEpWjliVqVheTHM/U1Me/RRj2jM8hR14tLqitVIefTS/sfPdRJhpsUSsVX+5FtaXaz2LH+WZw==
+X-Received: by 2002:a05:6000:10cf:b0:314:748:d59d with SMTP id
+ b15-20020a05600010cf00b003140748d59dmr3464609wrx.27.1693659587474; 
+ Sat, 02 Sep 2023 05:59:47 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- k1-20020adff5c1000000b0031ad5a54bedsm8532813wrp.9.2023.09.02.05.59.44
+ d1-20020adfa401000000b0031980294e9fsm4995496wra.116.2023.09.02.05.59.46
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 05:59:44 -0700 (PDT)
+ Sat, 02 Sep 2023 05:59:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 05/15] meson: compile bundled device trees
-Date: Sat,  2 Sep 2023 14:59:24 +0200
-Message-ID: <20230902125934.113017-6-pbonzini@redhat.com>
+Subject: [PATCH 06/15] configure: remove boolean variables for targets
+Date: Sat,  2 Sep 2023 14:59:25 +0200
+Message-ID: <20230902125934.113017-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230902125934.113017-1-pbonzini@redhat.com>
 References: <20230902125934.113017-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,85 +100,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If dtc is available, compile the .dts files in the pc-bios directory
-instead of using the precompiled binaries.
+Just use $targetos always.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- pc-bios/Makefile    | 19 -------------------
- pc-bios/meson.build | 25 +++++++++++++++++++++----
- 2 files changed, 21 insertions(+), 23 deletions(-)
- delete mode 100644 pc-bios/Makefile
+ configure | 55 +++++++++++++------------------------------------------
+ 1 file changed, 13 insertions(+), 42 deletions(-)
 
-diff --git a/pc-bios/Makefile b/pc-bios/Makefile
-deleted file mode 100644
-index 315288df84e..00000000000
---- a/pc-bios/Makefile
-+++ /dev/null
-@@ -1,19 +0,0 @@
--#
--# NOTE: only compilable with x86 cross compile tools
--#
--include ../config-host.mak
--
--DEFINES=
--
--TARGETS=
--
--all: $(TARGETS)
--
--%.o: %.S
--	$(CC) $(DEFINES) -c -o $@ $<
--
--%.dtb: %.dts
--	dtc -I dts -O dtb -o $@ $<
--
--clean:
--	rm -f $(TARGETS) *.o *~
-diff --git a/pc-bios/meson.build b/pc-bios/meson.build
-index a7224ef4699..e67fa433a1b 100644
---- a/pc-bios/meson.build
-+++ b/pc-bios/meson.build
-@@ -57,10 +57,6 @@ blobs = [
-   'efi-e1000e.rom',
-   'efi-vmxnet3.rom',
-   'qemu-nsis.bmp',
--  'bamboo.dtb',
--  'canyonlands.dtb',
--  'petalogix-s3adsp1800.dtb',
--  'petalogix-ml605.dtb',
-   'multiboot.bin',
-   'multiboot_dma.bin',
-   'linuxboot.bin',
-@@ -84,6 +80,27 @@ blobs = [
-   'vof-nvram.bin',
- ]
+diff --git a/configure b/configure
+index 378a0de9fb6..f96f7359a83 100755
+--- a/configure
++++ b/configure
+@@ -374,45 +374,14 @@ fi
  
-+dtc = find_program('dtc', required: false)
-+foreach f : [
-+  'bamboo.dts',
-+  'canyonlands.dts',
-+  'petalogix-s3adsp1800.dts',
-+  'petalogix-ml605.dts',
-+]
-+  out = fs.replace_suffix(f, '.dtb')
-+  if dtc.found()
-+    custom_target(f,
-+        build_by_default: have_system,
-+        input: files(f),
-+        output: out,
-+        install: get_option('install_blobs'),
-+        install_dir: qemu_datadir,
-+        command: [ dtc, '-I', 'dts', '-O', 'dtb', '-o', '@OUTPUT@', '@INPUT0@' ])
-+  else
-+    blobs += out
-+  endif
-+endforeach
-+
- if get_option('install_blobs')
-   install_data(blobs, install_dir: qemu_datadir)
- endif
+ # OS specific
+ 
+-mingw32="no"
+-bsd="no"
+-linux="no"
+-solaris="no"
+ case $targetos in
+ windows)
+-  mingw32="yes"
+   plugins="no"
+   pie="no"
+ ;;
+-gnu/kfreebsd)
+-  bsd="yes"
+-;;
+-freebsd)
+-  bsd="yes"
+-  # needed for kinfo_getvmmap(3) in libutil.h
+-;;
+-dragonfly)
+-  bsd="yes"
+-;;
+-netbsd)
+-  bsd="yes"
+-;;
+-openbsd)
+-  bsd="yes"
+-;;
+-darwin)
+-  bsd="yes"
+-  darwin="yes"
+-;;
+-sunos)
+-  solaris="yes"
+-;;
+ haiku)
+   pie="no"
+ ;;
+-linux)
+-  linux="yes"
+-;;
+ esac
+ 
+ if test ! -z "$cpu" ; then
+@@ -627,7 +596,7 @@ do
+     fi
+ done
+ 
+-if test "$mingw32" = "yes" ; then
++if test "$targetos" = "windows" ; then
+   EXESUF=".exe"
+   prefix="/qemu"
+   bindir=""
+@@ -809,7 +778,7 @@ for opt do
+   ;;
+   --enable-download) download="enabled"; git_submodules_action=update;
+   ;;
+-  --enable-plugins) if test "$mingw32" = "yes"; then
++  --enable-plugins) if test "$targetos" = "windows"; then
+                         error_exit "TCG plugins not currently supported on Windows platforms"
+                     else
+                         plugins="yes"
+@@ -1080,7 +1049,7 @@ fi
+ # by default.  Only enable by default for git builds
+ if test -z "$werror" ; then
+     if test -e "$source_path/.git" && \
+-        { test "$linux" = "yes" || test "$mingw32" = "yes"; }; then
++        { test "$targetos" = linux || test "$targetos" = "windows"; }; then
+         werror="yes"
+     else
+         werror="no"
+@@ -1718,7 +1687,7 @@ echo all: >> $config_host_mak
+ if test "$debug_tcg" = "yes" ; then
+   echo "CONFIG_DEBUG_TCG=y" >> $config_host_mak
+ fi
+-if test "$mingw32" = "yes" ; then
++if test "$targetos" = "windows"; then
+   echo "CONFIG_WIN32=y" >> $config_host_mak
+   echo "QEMU_GA_MANUFACTURER=${QEMU_GA_MANUFACTURER-QEMU}" >> $config_host_mak
+   echo "QEMU_GA_DISTRO=${QEMU_GA_DISTRO-Linux}" >> $config_host_mak
+@@ -1727,24 +1696,26 @@ else
+   echo "CONFIG_POSIX=y" >> $config_host_mak
+ fi
+ 
+-if test "$linux" = "yes" ; then
++if test "$targetos" = "linux" ; then
+   echo "CONFIG_LINUX=y" >> $config_host_mak
+ fi
+ 
+-if test "$darwin" = "yes" ; then
++if test "$targetos" = "darwin" ; then
+   echo "CONFIG_DARWIN=y" >> $config_host_mak
+ fi
+ 
+-if test "$solaris" = "yes" ; then
++if test "$targetos" = "sunos" ; then
+   echo "CONFIG_SOLARIS=y" >> $config_host_mak
+ fi
+ echo "SRC_PATH=$source_path" >> $config_host_mak
+ echo "TARGET_DIRS=$target_list" >> $config_host_mak
+ 
+ # XXX: suppress that
+-if [ "$bsd" = "yes" ] ; then
+-  echo "CONFIG_BSD=y" >> $config_host_mak
+-fi
++case $targetos in
++  gnu/kfreebsd | freebsd | dragonfly | netbsd | openbsd | darwin)
++    echo "CONFIG_BSD=y" >> $config_host_mak
++    ;;
++esac
+ 
+ if test "$plugins" = "yes" ; then
+     echo "CONFIG_PLUGIN=y" >> $config_host_mak
+@@ -1774,7 +1745,7 @@ echo "CC=$cc" >> $config_host_mak
+ echo "EXESUF=$EXESUF" >> $config_host_mak
+ 
+ # use included Linux headers for KVM architectures
+-if test "$linux" = "yes" && test -n "$linux_arch"; then
++if test "$targetos" = "linux" && test -n "$linux_arch"; then
+   symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
+ fi
+ 
 -- 
 2.41.0
 
