@@ -2,89 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01BF790808
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DD379090E
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 20:13:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcQEn-0001OP-Pr; Sat, 02 Sep 2023 09:00:29 -0400
+	id 1qcV6A-0002l9-Ba; Sat, 02 Sep 2023 14:11:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEV-0001Em-2i
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEQ-0001x9-Us
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693659606;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4WcGDl6RkhTkBJqOx8dimnwDWVGbWEwjjaYfS1PTpFo=;
- b=i5UY3C0RuR11MzzEDAv9RQ0JdPNsxG5P0VhLYt+nEye5IRdWB3MxsU5FX9IRbFqJO3cXDN
- kKv9DQEDcZ/68RwfBbqSKLeVmZVcrkx6J59I9ojP9/aW9IM7h+MVwEkZkiREqjy8Ps+6uZ
- Yyp1aLg9Me3d2OdiINbTqgw5pg32EqY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-XiQW7mQ6NguceJLlpNJmlA-1; Sat, 02 Sep 2023 09:00:04 -0400
-X-MC-Unique: XiQW7mQ6NguceJLlpNJmlA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31400956ce8so1523183f8f.3
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 06:00:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcV65-0002if-Jc
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 14:11:49 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcV61-0004zl-Ok
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 14:11:48 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b9338e4695so1258161fa.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 11:11:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=livius-net.20230601.gappssmtp.com; s=20230601; t=1693678303; x=1694283103;
+ darn=nongnu.org; 
+ h=to:date:message-id:subject:mime-version:content-transfer-encoding
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=harrS9fT99VacEDc+dyIb00pnN3mybrcONM9bSm8Tdw=;
+ b=CVr1FwyDYqIBAYiu2TkpFJobSilOtX60iCIa8TOO5run/G0H+TtgRMuaZOolsvXgWW
+ ETmUcDuCLtpiMCrGgcoFl9kl0WsjgFUkGXCsuZ4CSDAm62ZMltggwmZIfimWv/RlHOku
+ OLaMePekp05DIJIH4qBH340gkFxQ9pLsUk19pbvcbVkYn4GDuO/8LpKJ9DWHR/u7Ee4y
+ oKTs/7+IcKxH/WB6sr+5WgJnh1C2seLZ8OnVJJBp+yjJd2XSxN/uaB1N8IopIPRjjSHT
+ 5nNjSkLxuYPY+Rdr1YOdtv1O55qzRlOikmbuQHooi11yJsE6yegyYGcb3ytbAbLD7tIr
+ jIFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693659603; x=1694264403;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4WcGDl6RkhTkBJqOx8dimnwDWVGbWEwjjaYfS1PTpFo=;
- b=KqWGZHs5+lK2+UsoFQZvn6+2oisPqMhBmp0CslnsgizI2o2NPYO6M6FuwPOUJZI6vE
- UOVQgzSIhqNiM6MU8h9DuV9C+iI10Mix1OFY/fMPSkwPnUPlX5Jn3ASWuHCiMHVoUasb
- e4JaZov6M0OL/wRNXKi3ldzUaY6qDCv0DUj37pdS7/AVtXXu/GkwCsI8MJ+uk2g690li
- w29djg6iIeJHVz76FJK89sfhGg7XhyrPvsMxnx5/jCzXNUqfNMQegSMUiVEetgUmXOrO
- kb2IqJtClbutTckzXznPHlY4eQEuto2e/UvRYFiS1F6bPMJktKnjw34y+r3KqHPno6N3
- oe0g==
-X-Gm-Message-State: AOJu0YyxTIqZ01+akgNnRH0Ex2LcO8MO8nKgcfGq0eoV03U9BvGOg3Tk
- FDjA62yptjpstZUf7U9uTrtiduHoxaoMsiy78QXEdv8ZKHuYcFMXAvAY3POY9Cqa/MQ5WKhKg/R
- uVKh2//BBwVA35FhsufD2mv0GIQzJITNp29mLIsSi9v67d69bYcWef5BnhQHJIaefK6CcQId3yY
- c=
-X-Received: by 2002:a05:6000:82:b0:31d:cd2f:4a4b with SMTP id
- m2-20020a056000008200b0031dcd2f4a4bmr3460736wrx.50.1693659603150; 
- Sat, 02 Sep 2023 06:00:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNO0Z1oguqNDY7xj3vr1LGrnZH/BSf58pU72nTu7U+f+H+OjM4w2YkPQP8Mdrqby/dh3BT8Q==
-X-Received: by 2002:a05:6000:82:b0:31d:cd2f:4a4b with SMTP id
- m2-20020a056000008200b0031dcd2f4a4bmr3460732wrx.50.1693659602896; 
- Sat, 02 Sep 2023 06:00:02 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ d=1e100.net; s=20221208; t=1693678303; x=1694283103;
+ h=to:date:message-id:subject:mime-version:content-transfer-encoding
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=harrS9fT99VacEDc+dyIb00pnN3mybrcONM9bSm8Tdw=;
+ b=hRcFH+Yi17WWcqfxgmaGcnmjDlzMoxWyS4nZbCfvzlpUXqKLOcBPJ/V2HB4b8aiitc
+ P9yQRsJLWV3UZY7nj8apsWd8vZsqjTpPKOLnNOyo0tdIWxrRi+OLRQTiEMD+vMAw/UsF
+ lK/9AbjOp04npddqwaX+GNaZP0Rv7qSsDHPVj49anwyHHDbO96+e1p/YPA0H3z6TWQaq
+ Cr14L1xaOEb6LtpyElQS3pmOCYBIENs2vZOT4gAbHR7xOVV7xcyjdVDAOn71DxcrsP+V
+ eKnKqimbF71KxjL381Pw2QVgHWeWKenKnzjsFEfREqM0RkIwVRE/8+D/MYpcBoMN44hx
+ Y8CQ==
+X-Gm-Message-State: AOJu0YyHYokq2sklCSB+0tEjhGsf5IwIZdujaH1vX0BdDJzbM9xAisYg
+ H63ZnzYm5FBTf/2hjD6vAe8H7FQMW2MaTkv+LT0t2w==
+X-Google-Smtp-Source: AGHT+IGwz8kav5m5fhLdbHPXjVhC36zENSqz0jlTAvocT/xiYYEIdhR8/CXJUw4xf0w3vHnkWmhhOA==
+X-Received: by 2002:a2e:300c:0:b0:2b6:d137:b61c with SMTP id
+ w12-20020a2e300c000000b002b6d137b61cmr3877268ljw.39.1693678302873; 
+ Sat, 02 Sep 2023 11:11:42 -0700 (PDT)
+Received: from smtpclient.apple ([86.121.135.50])
  by smtp.gmail.com with ESMTPSA id
- g7-20020a5d46c7000000b0031accc7228asm8443093wrs.34.2023.09.02.06.00.01
+ f3-20020a170906824300b0099b921de301sm3669043ejx.159.2023.09.02.11.11.42
  for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 06:00:02 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 15/15] configure: remove dead code
-Date: Sat,  2 Sep 2023 14:59:34 +0200
-Message-ID: <20230902125934.113017-16-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230902125934.113017-1-pbonzini@redhat.com>
-References: <20230902125934.113017-1-pbonzini@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 02 Sep 2023 11:11:42 -0700 (PDT)
+From: Liviu Ionescu <ilg@livius.net>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: /util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared
+Message-Id: <8386D452-771E-4E4D-ACD1-F871BA458691@livius.net>
+Date: Sat, 2 Sep 2023 21:11:41 +0300
+To: QEMU Developers <qemu-devel@nongnu.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: none client-ip=2a00:1450:4864:20::22e;
+ envelope-from=ilg@livius.net; helo=mail-lj1-x22e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,31 +87,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 8 --------
- 1 file changed, 8 deletions(-)
+When trying to build 8.1.0 on an Ubuntu 18.04 aarch64, I get the above =
+error.
 
-diff --git a/configure b/configure
-index 6404b659718..a8d79602098 100755
---- a/configure
-+++ b/configure
-@@ -1126,14 +1126,6 @@ else
-     done
- fi
- 
--# see if system emulation was really requested
--case " $target_list " in
--  *"-softmmu "*) softmmu=yes
--  ;;
--  *) softmmu=no
--  ;;
--esac
--
- if test "$tcg" = "auto"; then
-   if test -z "$target_list"; then
-     tcg="disabled"
--- 
-2.41.0
+The offending code in `/util/cpuinfo-aarch64.c` is:
+
+```c
+#ifdef CONFIG_LINUX
+    unsigned long hwcap =3D qemu_getauxval(AT_HWCAP);
+    info |=3D (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
+    info |=3D (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+    info |=3D (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
+#endif
+```
+
+The reason is that on this distribution the <bits/hwcap.h> header file =
+does not define HWCAP_USCAT:
+
+```
+root@9c7ad90af4f8:/# cat /usr/include/aarch64-linux-gnu/bits/hwcap.h
+/* Defines for bits in AT_HWCAP.  AArch64 Linux version.
+   Copyright (C) 2016-2018 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
+
+#if !defined (_SYS_AUXV_H)
+# error "Never include <bits/hwcap.h> directly; use <sys/auxv.h> =
+instead."
+#endif
+
+/* The following must match the kernel's <asm/hwcap.h>.  */
+#define HWCAP_FP		(1 << 0)
+#define HWCAP_ASIMD		(1 << 1)
+#define HWCAP_EVTSTRM		(1 << 2)
+#define HWCAP_AES		(1 << 3)
+#define HWCAP_PMULL		(1 << 4)
+#define HWCAP_SHA1		(1 << 5)
+#define HWCAP_SHA2		(1 << 6)
+#define HWCAP_CRC32		(1 << 7)
+#define HWCAP_ATOMICS		(1 << 8)
+#define HWCAP_FPHP		(1 << 9)
+#define HWCAP_ASIMDHP		(1 << 10)
+#define HWCAP_CPUID		(1 << 11)
+#define HWCAP_ASIMDRDM		(1 << 12)
+#define HWCAP_JSCVT		(1 << 13)
+#define HWCAP_FCMA		(1 << 14)
+#define HWCAP_LRCPC		(1 << 15)
+#define HWCAP_DCPOP		(1 << 16)
+#define HWCAP_SHA3		(1 << 17)
+#define HWCAP_SM3		(1 << 18)
+#define HWCAP_SM4		(1 << 19)
+#define HWCAP_ASIMDDP		(1 << 20)
+#define HWCAP_SHA512		(1 << 21)
+#define HWCAP_SVE		(1 << 22)
+root@9c7ad90af4f8:/#=20
+```
+
+The full list of definitions should include:
+
+```
+#define HWCAP_ASIMDFHM		(1 << 23)
+#define HWCAP_DIT		(1 << 24)
+#define HWCAP_USCAT		(1 << 25)
+#define HWCAP_ILRCPC		(1 << 26)
+#define HWCAP_FLAGM		(1 << 27)
+#define HWCAP_SSBS		(1 << 28)
+```
+
+I don't know the meaning behind these bits, and how important is for =
+QEMU to correctly identify them all.
+
+Since I know my build environment, my quick and dirty workaround was to =
+pass the definition via the preprocessor options:
+
+```
+CPPFLAGS+=3D" -DHWCAP_USCAT=3D(1<<25)"
+```
+
+However, for QEMU this is not a solution.
+
+A possible solution would be to compile the code conditionally:
+
+```
+#ifdef CONFIG_LINUX
+    unsigned long hwcap =3D qemu_getauxval(AT_HWCAP);
+    info |=3D (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
+#ifdef HWCAP_USCAT
+    info |=3D (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+#endif
+    info |=3D (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
+#endif
+```
+
+I don't know if other distributions are also affected, my build platform =
+for all xPack standalone binaries is Ubuntu 18.04 LTS.
+
+I know that 18.04 is an old version, but I use the xPack QEMU mainly to =
+run unit tests, and in some enterprise environments the machines used =
+for testing are sometimes pretty outdated, thus 18.04 will remain the =
+base build platform for a while.
+
+It would be very nice if QEMU would still compile on Ubuntu 18.04, as it =
+did before 8.1.0.
+
+
+
+Regards,
+
+Liviu
 
 
