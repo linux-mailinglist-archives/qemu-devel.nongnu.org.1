@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DD379090E
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 20:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC8F79093C
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 20:45:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcV6A-0002l9-Ba; Sat, 02 Sep 2023 14:11:54 -0400
+	id 1qcVav-0005Oi-QV; Sat, 02 Sep 2023 14:43:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcV65-0002if-Jc
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 14:11:49 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcVas-0005OZ-J1
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 14:43:38 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcV61-0004zl-Ok
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 14:11:48 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2b9338e4695so1258161fa.2
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 11:11:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcVap-0007AN-Tj
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 14:43:38 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31c3726cc45so111706f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 11:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=livius-net.20230601.gappssmtp.com; s=20230601; t=1693678303; x=1694283103;
+ d=livius-net.20230601.gappssmtp.com; s=20230601; t=1693680214; x=1694285014;
  darn=nongnu.org; 
  h=to:date:message-id:subject:mime-version:content-transfer-encoding
  :from:from:to:cc:subject:date:message-id:reply-to;
- bh=harrS9fT99VacEDc+dyIb00pnN3mybrcONM9bSm8Tdw=;
- b=CVr1FwyDYqIBAYiu2TkpFJobSilOtX60iCIa8TOO5run/G0H+TtgRMuaZOolsvXgWW
- ETmUcDuCLtpiMCrGgcoFl9kl0WsjgFUkGXCsuZ4CSDAm62ZMltggwmZIfimWv/RlHOku
- OLaMePekp05DIJIH4qBH340gkFxQ9pLsUk19pbvcbVkYn4GDuO/8LpKJ9DWHR/u7Ee4y
- oKTs/7+IcKxH/WB6sr+5WgJnh1C2seLZ8OnVJJBp+yjJd2XSxN/uaB1N8IopIPRjjSHT
- 5nNjSkLxuYPY+Rdr1YOdtv1O55qzRlOikmbuQHooi11yJsE6yegyYGcb3ytbAbLD7tIr
- jIFw==
+ bh=G/8E9CMQqAbvxKzVt20rZnKkbteGjhlZXXeAGumsidg=;
+ b=HUGQ1in75rqAw1Jf54oO4vYYKAIamXick0NiiGdlh8lMPXHaPJUFvIQwEoXsAs+xVQ
+ QLGz2kWNMz0irykoZ7o6w5oGXoJhVAhvA5W0d+FtomWuOUZEDlxj22KLk9a8/iWZOohw
+ y0XMKfw228NpkxvXIX2/SijMiGLUPJjkl++FNA5T2DDM8TBbrvCW9ZnZh4xB2rHlmJ3B
+ Er4hYO/ZNod91WBy4jpbsfOResUIE/XC/6lzpyOq0eQAFWQfLkcCtO8NZMAmItvoExWA
+ XUGsCmAH5fr19yJUqfekGzdKDyO9BrefNYEsz8fXaFqDtlYPgbaXcKOp4w7BOLYogJdh
+ l1HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693678303; x=1694283103;
+ d=1e100.net; s=20221208; t=1693680214; x=1694285014;
  h=to:date:message-id:subject:mime-version:content-transfer-encoding
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=harrS9fT99VacEDc+dyIb00pnN3mybrcONM9bSm8Tdw=;
- b=hRcFH+Yi17WWcqfxgmaGcnmjDlzMoxWyS4nZbCfvzlpUXqKLOcBPJ/V2HB4b8aiitc
- P9yQRsJLWV3UZY7nj8apsWd8vZsqjTpPKOLnNOyo0tdIWxrRi+OLRQTiEMD+vMAw/UsF
- lK/9AbjOp04npddqwaX+GNaZP0Rv7qSsDHPVj49anwyHHDbO96+e1p/YPA0H3z6TWQaq
- Cr14L1xaOEb6LtpyElQS3pmOCYBIENs2vZOT4gAbHR7xOVV7xcyjdVDAOn71DxcrsP+V
- eKnKqimbF71KxjL381Pw2QVgHWeWKenKnzjsFEfREqM0RkIwVRE/8+D/MYpcBoMN44hx
- Y8CQ==
-X-Gm-Message-State: AOJu0YyHYokq2sklCSB+0tEjhGsf5IwIZdujaH1vX0BdDJzbM9xAisYg
- H63ZnzYm5FBTf/2hjD6vAe8H7FQMW2MaTkv+LT0t2w==
-X-Google-Smtp-Source: AGHT+IGwz8kav5m5fhLdbHPXjVhC36zENSqz0jlTAvocT/xiYYEIdhR8/CXJUw4xf0w3vHnkWmhhOA==
-X-Received: by 2002:a2e:300c:0:b0:2b6:d137:b61c with SMTP id
- w12-20020a2e300c000000b002b6d137b61cmr3877268ljw.39.1693678302873; 
- Sat, 02 Sep 2023 11:11:42 -0700 (PDT)
+ bh=G/8E9CMQqAbvxKzVt20rZnKkbteGjhlZXXeAGumsidg=;
+ b=A3s6HiAG7mFZSexC6dt/o9buP06W8+3pD0YVTD+lYFB65zo3w8rox2kw84Sagngk4p
+ gSBc9mCSsVJaNJj6qYoThsmudXC/+KdJFkIqp8l/3IbYGkymRbtgCiqyjUKUNgsVRWUG
+ vIN0++zO4KLJFjINYmdvHO3IbKi6dNT27QH2WzJHW1wbPVLLNwBLCJMUDVlT+ZrbrD/I
+ eiqJrc0kcEyx7+gbGJhc43YBCLy7HPRUPZ+LxDr0h+rvx5JT3Ys9D7BtfeOVAcfUWlyk
+ onkyl1og6xhSOfqR4nz9e2Wcjbvb1IlOeMgAPx54nL5KQ3uduE4x0jIP0BUX67oa8Ptx
+ U7ww==
+X-Gm-Message-State: AOJu0Yz5cp+PIWv7moXOUf1hAs2I/4RDGzmLNyDOIMOtOck3NU9CtnJ4
+ mYmkfdNa8WIONGDxbi6OvNBFtYtrBHKjlnlGi7kAfQ==
+X-Google-Smtp-Source: AGHT+IEWbhInS3Skx6kydR2DuFkiyC2CYOadnwBn5BV5Ai34QSwWpJDe55L3nl75aU7D6ZQN286hQA==
+X-Received: by 2002:a05:6000:128b:b0:313:fe1b:f441 with SMTP id
+ f11-20020a056000128b00b00313fe1bf441mr3818393wrx.29.1693680213677; 
+ Sat, 02 Sep 2023 11:43:33 -0700 (PDT)
 Received: from smtpclient.apple ([86.121.135.50])
  by smtp.gmail.com with ESMTPSA id
- f3-20020a170906824300b0099b921de301sm3669043ejx.159.2023.09.02.11.11.42
+ h17-20020adff191000000b003180fdf5589sm9310436wro.6.2023.09.02.11.43.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 02 Sep 2023 11:11:42 -0700 (PDT)
+ Sat, 02 Sep 2023 11:43:33 -0700 (PDT)
 From: Liviu Ionescu <ilg@livius.net>
 Content-Type: text/plain;
 	charset=us-ascii
 Content-Transfer-Encoding: quoted-printable
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: /util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared
-Message-Id: <8386D452-771E-4E4D-ACD1-F871BA458691@livius.net>
-Date: Sat, 2 Sep 2023 21:11:41 +0300
+Subject: Error: .seh_endproc used in segment '.text' instead of expected
+ '.text$qemu_close_socket_osfhandle'
+Message-Id: <0C1AED16-2AC0-43FE-AEA6-BF3F61B62536@livius.net>
+Date: Sat, 2 Sep 2023 21:43:32 +0300
 To: QEMU Developers <qemu-devel@nongnu.org>
 X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: none client-ip=2a00:1450:4864:20::22e;
- envelope-from=ilg@livius.net; helo=mail-lj1-x22e.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::42d;
+ envelope-from=ilg@livius.net; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,126 +88,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When trying to build 8.1.0 on an Ubuntu 18.04 aarch64, I get the above =
-error.
-
-The offending code in `/util/cpuinfo-aarch64.c` is:
-
-```c
-#ifdef CONFIG_LINUX
-    unsigned long hwcap =3D qemu_getauxval(AT_HWCAP);
-    info |=3D (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
-    info |=3D (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
-    info |=3D (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
-#endif
-```
-
-The reason is that on this distribution the <bits/hwcap.h> header file =
-does not define HWCAP_USCAT:
+When compiling 8.1.0 for Windows (with mingw-w64-gcc on Linux), I got =
+the following error:
 
 ```
-root@9c7ad90af4f8:/# cat /usr/include/aarch64-linux-gnu/bits/hwcap.h
-/* Defines for bits in AT_HWCAP.  AArch64 Linux version.
-   Copyright (C) 2016-2018 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <http://www.gnu.org/licenses/>.  */
-
-#if !defined (_SYS_AUXV_H)
-# error "Never include <bits/hwcap.h> directly; use <sys/auxv.h> =
-instead."
-#endif
-
-/* The following must match the kernel's <asm/hwcap.h>.  */
-#define HWCAP_FP		(1 << 0)
-#define HWCAP_ASIMD		(1 << 1)
-#define HWCAP_EVTSTRM		(1 << 2)
-#define HWCAP_AES		(1 << 3)
-#define HWCAP_PMULL		(1 << 4)
-#define HWCAP_SHA1		(1 << 5)
-#define HWCAP_SHA2		(1 << 6)
-#define HWCAP_CRC32		(1 << 7)
-#define HWCAP_ATOMICS		(1 << 8)
-#define HWCAP_FPHP		(1 << 9)
-#define HWCAP_ASIMDHP		(1 << 10)
-#define HWCAP_CPUID		(1 << 11)
-#define HWCAP_ASIMDRDM		(1 << 12)
-#define HWCAP_JSCVT		(1 << 13)
-#define HWCAP_FCMA		(1 << 14)
-#define HWCAP_LRCPC		(1 << 15)
-#define HWCAP_DCPOP		(1 << 16)
-#define HWCAP_SHA3		(1 << 17)
-#define HWCAP_SM3		(1 << 18)
-#define HWCAP_SM4		(1 << 19)
-#define HWCAP_ASIMDDP		(1 << 20)
-#define HWCAP_SHA512		(1 << 21)
-#define HWCAP_SVE		(1 << 22)
-root@9c7ad90af4f8:/#=20
+[634/1917] Compiling C object libqemuutil.a.p/util_oslib-win32.c.obj
+FAILED: libqemuutil.a.p/util_oslib-win32.c.obj=20
+=
+/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/xpacks=
+/.bin/x86_64-w64-mingw32-gcc -m64 -mcx16 -Ilibqemuutil.a.p -I. =
+-I../../../sources/qemu-8.1.0.git -Iqapi -Itrace -Iui -Iui/shader =
+-I/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/x86_=
+64-w64-mingw32/install/include -Iinclude =
+-I/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/x86_=
+64-w64-mingw32/install/include/glib-2.0 =
+-I/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/x86_=
+64-w64-mingw32/install/lib/glib-2.0/include =
+-I/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/x86_=
+64-w64-mingw32/install/include/pixman-1 -fdiagnostics-color=3Dauto -Wall =
+-Winvalid-pch -std=3Dgnu11 -O2 -g -fstack-protector-strong -Wundef =
+-Wwrite-strings -Wmissing-prototypes -Wstrict-prototypes =
+-Wredundant-decls -Wold-style-declaration -Wold-style-definition =
+-Wtype-limits -Wformat-security -Wformat-y2k -Winit-self =
+-Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels =
+-Wexpansion-to-defined -Wimplicit-fallthrough=3D2 =
+-Wmissing-format-attribute -Wno-missing-include-dirs =
+-Wno-shift-negative-value -Wno-psabi -iquote . -iquote =
+/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/source=
+s/qemu-8.1.0.git -iquote =
+/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/source=
+s/qemu-8.1.0.git/include -iquote =
+/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/source=
+s/qemu-8.1.0.git/host/include/x86_64 -iquote =
+/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/source=
+s/qemu-8.1.0.git/host/include/generic -iquote =
+/home/ilg/Work/xpack-dev-tools/qemu-riscv-xpack.git/build/win32-x64/source=
+s/qemu-8.1.0.git/tcg/i386 -mms-bitfields -D_GNU_SOURCE =
+-D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing =
+-fno-common -fwrapv -fno-pie -no-pie -ffunction-sections -fdata-sections =
+-pipe -O2 -D__USE_MINGW_ACCESS -w -mms-bitfields -pthread -mms-bitfields =
+-MD -MQ libqemuutil.a.p/util_oslib-win32.c.obj -MF =
+libqemuutil.a.p/util_oslib-win32.c.obj.d -o =
+libqemuutil.a.p/util_oslib-win32.c.obj -c =
+../../../sources/qemu-8.1.0.git/util/oslib-win32.c
+{standard input}: Assembler messages:
+{standard input}:2859: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2860: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2862: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2863: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2867: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2868: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2872: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2873: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2875: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2876: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2882: Error: CFI instruction used without previous =
+.cfi_startproc
+{standard input}:2909: Error: .cfi_endproc without corresponding =
+.cfi_startproc
+{standard input}:2911: Error: .seh_endproc used in segment '.text' =
+instead of expected '.text$qemu_close_socket_osfhandle'
+{standard input}: Error: open CFI at the end of file; missing =
+.cfi_endproc directive
+{standard input}:19020: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19024: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19025: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19032: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19033: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19054: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19058: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:19059: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:24038: Error: invalid operands (.text and =
+.text$qemu_close_socket_osfhandle sections) for `-'
+{standard input}:10743: Error: can't resolve .text - .LFB7879
+{standard input}:23588: Error: can't resolve .text - .LFB7879
+[635/1917] Compiling C object =
+libqemuutil.a.p/util_event_notifier-win32.c.obj
+[636/1917] Compiling C object libqemuutil.a.p/util_cutils.c.obj
+[637/1917] Compiling C object =
+libqemuutil.a.p/util_qemu-thread-win32.c.obj
+[638/1917] Compiling C object libqemuutil.a.p/util_host-utils.c.obj
+[639/1917] Compiling C object libqemuutil.a.p/util_module.c.obj
+[640/1917] Compiling C object libqemuutil.a.p/util_bitmap.c.obj
+[641/1917] Compiling C object libqemuutil.a.p/util_bitops.c.obj
+[642/1917] Compiling C object libqemuutil.a.p/util_cacheflush.c.obj
+[643/1917] Compiling C object libqemuutil.a.p/util_fifo8.c.obj
+[644/1917] Compiling C object libqemuutil.a.p/util_id.c.obj
+[645/1917] Compiling C object libqemuutil.a.p/util_qemu-print.c.obj
+[646/1917] Compiling C object libqemuutil.a.p/util_error.c.obj
+[647/1917] Compiling C object libqemuutil.a.p/util_error-report.c.obj
+ninja: build stopped: subcommand failed.
+Makefile:162: recipe for target 'run-ninja' failed
+make: *** [run-ninja] Error 1
 ```
 
-The full list of definitions should include:
+I tried with two toolchains, gcc 13.2 & mingw 11.0.1, and gcc 12.2 & =
+mingw 10.0.0.
 
-```
-#define HWCAP_ASIMDFHM		(1 << 23)
-#define HWCAP_DIT		(1 << 24)
-#define HWCAP_USCAT		(1 << 25)
-#define HWCAP_ILRCPC		(1 << 26)
-#define HWCAP_FLAGM		(1 << 27)
-#define HWCAP_SSBS		(1 << 28)
-```
 
-I don't know the meaning behind these bits, and how important is for =
-QEMU to correctly identify them all.
+With the same build scripts, compiling QEMU 7.1.0 was ok, the problem =
+was introduced in the last year.
 
-Since I know my build environment, my quick and dirty workaround was to =
-pass the definition via the preprocessor options:
-
-```
-CPPFLAGS+=3D" -DHWCAP_USCAT=3D(1<<25)"
-```
-
-However, for QEMU this is not a solution.
-
-A possible solution would be to compile the code conditionally:
-
-```
-#ifdef CONFIG_LINUX
-    unsigned long hwcap =3D qemu_getauxval(AT_HWCAP);
-    info |=3D (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
-#ifdef HWCAP_USCAT
-    info |=3D (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
-#endif
-    info |=3D (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
-#endif
-```
-
-I don't know if other distributions are also affected, my build platform =
-for all xPack standalone binaries is Ubuntu 18.04 LTS.
-
-I know that 18.04 is an old version, but I use the xPack QEMU mainly to =
-run unit tests, and in some enterprise environments the machines used =
-for testing are sometimes pretty outdated, thus 18.04 will remain the =
-base build platform for a while.
-
-It would be very nice if QEMU would still compile on Ubuntu 18.04, as it =
-did before 8.1.0.
-
+I checked the history of oslib-win32.c, and there were several changes, =
+but I don't understand them to the point of being able to suggest =
+changes.
 
 
 Regards,
 
 Liviu
+
+
 
 
