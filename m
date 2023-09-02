@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3713790804
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8062790800
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:01:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcQEM-0001CO-Oo; Sat, 02 Sep 2023 09:00:02 -0400
+	id 1qcQES-0001Cs-Nu; Sat, 02 Sep 2023 09:00:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEJ-0001BA-Pn
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:59 -0400
+ id 1qcQEL-0001CX-Sm
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQEH-0001iO-Hf
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:59 -0400
+ id 1qcQEJ-0001if-DJ
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 09:00:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693659596;
+ s=mimecast20190719; t=1693659598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ASlqPfRTx1HqkKZS28AHHrSkUMgZS0lrgJaZwtX7dp0=;
- b=A8tkr9C+krOl7vZHNxSbs1uj/0bK6Iqp0BAi8/CSEAJ1a8RBXAyXAfqV9nn8TqPDPK9r28
- aTQ5k05nubt/PSC1elQ2uM+2t8t2m9oPGvSeaWTMbhfXlJGKsPdnE6QdmcQluSJJ0OkglC
- 7a1FJ8NutKi3j+wPAK9SU2D+ye5JgEw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qSmsxj0F9zLlEDlOc9BUZf4KydooBJ42LvrgpdbGCY4=;
+ b=hOTerFVQiDmNFiY9ooA+hyPUrKpHblZDfJoWWrorKwl6VQSRkynyNoY6U5WZTIWKbdrRL8
+ BgG5b3y7rIAHnm3qTfgR3uOGnGrjxMZ16J7Yw87QqMrkELRINZiuYkC1sPFM5+PMwP0mzp
+ fhO3/ezlPygrgyaktrIdaGxxJh3GT2E=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-Po1VeB4rO5esmcwKmhbneQ-1; Sat, 02 Sep 2023 08:59:54 -0400
-X-MC-Unique: Po1VeB4rO5esmcwKmhbneQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4005f0a53c5so19219655e9.3
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 05:59:54 -0700 (PDT)
+ us-mta-17-uapJV6D0MXOKa9XsuMg98Q-1; Sat, 02 Sep 2023 08:59:57 -0400
+X-MC-Unique: uapJV6D0MXOKa9XsuMg98Q-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-402493d2997so11395835e9.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 05:59:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693659593; x=1694264393;
+ d=1e100.net; s=20221208; t=1693659595; x=1694264395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ASlqPfRTx1HqkKZS28AHHrSkUMgZS0lrgJaZwtX7dp0=;
- b=HSaOX8aWSvTBjU/2CU75E0R0bNB7gDZNTfpyWs30vziOIkSxwk2HeSQKMi/H4GNRE7
- d9AP2RgDxxBdhR7v7skQVa0XClCjgSrxniE2HO31lYLae32yvQxxB4AQxt/ZQF34bYSE
- TKOQaADhjH7L6HO2Yy5MzCr9emUcYeU4evC6Gzxd5cxuzUF7v2nFw1dZ0Us7/unC78G9
- ejtqhk/tVIdMRSDudYZacYb1WjbkFidnG+ZGWMtPLFn10IiqQjXLsSuVyO3G6iCqmn+r
- G09E8RK/qiPab7P++AZ0U0TrxeqtXkGOfa0h/0QfEcj1+USjHi7I7ciyOC+KkAYYmnEp
- 8p4g==
-X-Gm-Message-State: AOJu0YyBoqUiWXqVbv0QK5/QOKUIZMtCtJyjhMPG8nKEMcz+0LW4c7qO
- vNaIsGnPaIdPOm8wCPIP8V6+rF9Q9bypWF8O77UBkHxyPVaj3jzPUaS+wgRLWJJ4JaPtdN0NkSK
- h9p8FApL9y5Xzi0gc4X8dhrJqNSMeSpZiJAWah3bKZ+tkWlqkUXWHA/zW9j9U61HVn7CMF2Lt0h
- s=
-X-Received: by 2002:a1c:790b:0:b0:401:b654:e8e7 with SMTP id
- l11-20020a1c790b000000b00401b654e8e7mr3786688wme.28.1693659593146; 
- Sat, 02 Sep 2023 05:59:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPFbV1Z6U3OuSKPIsvSauFr2bXqQE0z15d2Ve7pfaf6ePa/FGPFALtKArAPxHEQjc8S154Eg==
-X-Received: by 2002:a1c:790b:0:b0:401:b654:e8e7 with SMTP id
- l11-20020a1c790b000000b00401b654e8e7mr3786680wme.28.1693659592637; 
- Sat, 02 Sep 2023 05:59:52 -0700 (PDT)
+ bh=qSmsxj0F9zLlEDlOc9BUZf4KydooBJ42LvrgpdbGCY4=;
+ b=DKWmdZAu8UOJ8LEtQBMxSqck6sXUUOzB9XG/Pcy+MhE7rNwu6gRzKjBVWkn6fg4XpK
+ 6SNopVrZf+VoBtf7UBZN+S8o2HkALj2qTh3tlsZ7GnIllmAcQSNN9NXMjq6tpEBjapLA
+ t/CYkOM1Aag/xyZRQA+EGwxnqS54hk7a8oL6lW9MWNKg1DHUrYjsmCiY+jmxT3sBM7ah
+ BrCsrnfDshRPKK3h5GOni6ebNMyl00Z6wucE6vPar5DID4LrkRpe3xlinCY859IX3WXA
+ 47VRMqyRM66hBFAivawRn3XiFMYNgMGmj8RprXHjHmSQjQ820zQKstmvh2W2GGKalTbc
+ RDGA==
+X-Gm-Message-State: AOJu0YxOfLxqFIssNYfJH2V5o0wVRgLE6MEMYGvmDSoj7BtLGNsJEu4K
+ 6DOhs/A3pa6PJVkUrSrYLTEhGFobOggWRPSb+/ZZ74jvICYuo/C9f4LlWOr8Evem0rUkBXSeagC
+ SFDP3zsM5gOBsZfDm7CmmXf8301is0oXdYuNVu6Mza3AC93q5aygoWaloEDGLO9sVLg/tifTCfk
+ w=
+X-Received: by 2002:a05:600c:2111:b0:401:cf0d:25ca with SMTP id
+ u17-20020a05600c211100b00401cf0d25camr3604399wml.40.1693659595438; 
+ Sat, 02 Sep 2023 05:59:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHtYH+qiVTYJNRhuVh6FcOLlCJkxWXp0jNR2sBEOlRGNZJbFzqR0Twsj8ZaqBjX7xyWMxvDg==
+X-Received: by 2002:a05:600c:2111:b0:401:cf0d:25ca with SMTP id
+ u17-20020a05600c211100b00401cf0d25camr3604395wml.40.1693659595083; 
+ Sat, 02 Sep 2023 05:59:55 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a1ced03000000b003feae747ff2sm11181296wmh.35.2023.09.02.05.59.51
+ f3-20020a7bc8c3000000b00401c595fcc7sm11060883wml.11.2023.09.02.05.59.53
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 05:59:52 -0700 (PDT)
+ Sat, 02 Sep 2023 05:59:53 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 09/15] contrib/plugins: use an independent makefile
-Date: Sat,  2 Sep 2023 14:59:28 +0200
-Message-ID: <20230902125934.113017-10-pbonzini@redhat.com>
+Subject: [PATCH 10/15] configure: unify recursion into sub-Makefiles
+Date: Sat,  2 Sep 2023 14:59:29 +0200
+Message-ID: <20230902125934.113017-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230902125934.113017-1-pbonzini@redhat.com>
 References: <20230902125934.113017-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -101,117 +100,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The initial reason to write this patch was to remove the last use of
-CONFIG_DEBUG_TCG from the makefiles; the flags to use to build TCG
-plugins are unrelated to --enable-debug-tcg, and instead they should
-be the same as those used to build emulators (the plugins are not build
-via meson for demonstration reasons only).
+Treat contrib/plugins the same as the firmware.
 
-However, since contrib/plugins/Makefile is also the last case of doing
-a compilation job using config-host.mak, go a step further and make it
-use a completely separate configuration file, removing all references
-to compilers from the toplevel config-host.mak.  Clean up references to
-empty variables, and use .SECONDARY so that intermediate object files
-are not deleted.
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                | 12 +++++++++---
- contrib/plugins/Makefile | 18 +++++++++---------
- 2 files changed, 18 insertions(+), 12 deletions(-)
+ Makefile  | 27 ++++++++++++---------------
+ configure | 13 ++++++++-----
+ 2 files changed, 20 insertions(+), 20 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 5d48dfac18a..118c28e80d9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -164,14 +164,6 @@ ifneq ($(filter $(ninja-targets), $(ninja-cmd-goals)),)
+ endif
+ endif
+ 
+-ifeq ($(CONFIG_PLUGIN),y)
+-.PHONY: plugins
+-plugins:
+-	$(call quiet-command,\
+-		$(MAKE) $(SUBDIR_MAKEFLAGS) -C contrib/plugins V="$(V)", \
+-		"BUILD", "example plugins")
+-endif # $(CONFIG_PLUGIN)
+-
+ else # config-host.mak does not exist
+ ifneq ($(filter-out $(UNCHECKED_GOALS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,fail))
+ $(error Please call configure before running make)
+@@ -184,15 +176,20 @@ include $(SRC_PATH)/tests/Makefile.include
+ 
+ all: recurse-all
+ 
+-ROMS_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(ROMS)))
+-.PHONY: $(ROMS_RULES)
+-$(ROMS_RULES):
++SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
++.PHONY: $(SUBDIR_RULES)
++$(SUBDIR_RULES):
+ 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
+ 
++ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
++.PHONY: plugins
++plugins: contrib/plugins/all
++endif
++
+ .PHONY: recurse-all recurse-clean
+-recurse-all: $(addsuffix /all, $(ROMS))
+-recurse-clean: $(addsuffix /clean, $(ROMS))
+-recurse-distclean: $(addsuffix /distclean, $(ROMS))
++recurse-all: $(addsuffix /all, $(SUBDIRS))
++recurse-clean: $(addsuffix /clean, $(SUBDIRS))
++recurse-distclean: $(addsuffix /distclean, $(SUBDIRS))
+ 
+ ######################################################################
+ 
+@@ -296,7 +293,7 @@ help:
+ 	$(call print-help,cscope,Generate cscope index)
+ 	$(call print-help,sparse,Run sparse on the QEMU source)
+ 	@echo  ''
+-ifeq ($(CONFIG_PLUGIN),y)
++ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
+ 	@echo  'Plugin targets:'
+ 	$(call print-help,plugins,Build the example TCG plugins)
+ 	@echo  ''
 diff --git a/configure b/configure
-index afd6121b616..1be8b430a54 100755
+index 1be8b430a54..9980eaeef57 100755
 --- a/configure
 +++ b/configure
-@@ -245,7 +245,7 @@ for opt do
-   esac
- done
+@@ -256,6 +256,7 @@ softmmu="yes"
+ linux_user=""
+ bsd_user=""
+ plugins="$default_feature"
++subdirs=""
+ ninja=""
+ python=
+ download="enabled"
+@@ -1067,6 +1068,9 @@ if test "$static" = "yes" ; then
+   fi
+ fi
+ test "$plugins" = "" && plugins=yes
++if test "$plugins" = "yes"; then
++  subdirs="$subdirs contrib/plugins"
++fi
  
--
-+default_cflags='-O2 -g'
- git_submodules_action="update"
- git="git"
- docs="auto"
-@@ -732,6 +732,7 @@ for opt do
-       meson_option_parse --enable-debug-graph-lock ""
-       meson_option_parse --enable-debug-mutex ""
-       meson_option_add -Doptimization=0
-+      default_cflags='-O0 -g'
-   ;;
-   --disable-tcg) tcg="disabled"
-                  plugins="no"
-@@ -1731,8 +1732,6 @@ echo "PYTHON=$python" >> $config_host_mak
+ cat > $TMPC << EOF
+ 
+@@ -1627,12 +1631,11 @@ done
+ echo "# Automatically generated by configure - do not modify" > Makefile.prereqs
+ 
+ # Mac OS X ships with a broken assembler
+-roms=
+ if have_target i386-softmmu x86_64-softmmu && \
+         test "$targetos" != "darwin" && test "$targetos" != "sunos" && \
+         test "$targetos" != "haiku" && \
+         probe_target_compiler i386-softmmu; then
+-    roms="pc-bios/optionrom"
++    subdirs="$subdirs pc-bios/optionrom"
+     config_mak=pc-bios/optionrom/config.mak
+     echo "# Automatically generated by configure - do not modify" > $config_mak
+     echo "TOPSRC_DIR=$source_path" >> $config_mak
+@@ -1641,7 +1644,7 @@ fi
+ 
+ if have_target ppc-softmmu ppc64-softmmu && \
+         probe_target_compiler ppc-softmmu; then
+-    roms="$roms pc-bios/vof"
++    subdirs="$subdirs pc-bios/vof"
+     config_mak=pc-bios/vof/config.mak
+     echo "# Automatically generated by configure - do not modify" > $config_mak
+     echo "SRC_DIR=$source_path/pc-bios/vof" >> $config_mak
+@@ -1660,7 +1663,7 @@ if have_target s390x-softmmu && probe_target_compiler s390x-softmmu && \
+       echo "WARNING: Your compiler does not support the z900!"
+       echo "         The s390-ccw bios will only work with guest CPUs >= z10."
+     fi
+-    roms="$roms pc-bios/s390-ccw"
++    subdirs="$subdirs pc-bios/s390-ccw"
+     config_mak=pc-bios/s390-ccw/config-host.mak
+     echo "# Automatically generated by configure - do not modify" > $config_mak
+     echo "SRC_PATH=$source_path/pc-bios/s390-ccw" >> $config_mak
+@@ -1727,7 +1730,7 @@ if test "$container" != no; then
+     echo "ENGINE=$container" >> $config_host_mak
+     echo "RUNC=$runc" >> $config_host_mak
+ fi
+-echo "ROMS=$roms" >> $config_host_mak
++echo "SUBDIRS=$subdirs" >> $config_host_mak
+ echo "PYTHON=$python" >> $config_host_mak
  echo "GENISOIMAGE=$genisoimage" >> $config_host_mak
  echo "MESON=$meson" >> $config_host_mak
- echo "NINJA=$ninja" >> $config_host_mak
--echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
--echo "CC=$cc" >> $config_host_mak
- echo "EXESUF=$EXESUF" >> $config_host_mak
- 
- # use included Linux headers for KVM architectures
-@@ -1757,6 +1756,13 @@ if test "$ccache_cpp2" = "yes"; then
-   echo "export CCACHE_CPP2=y" >> $config_host_mak
- fi
- 
-+# contrib/plugins configuration
-+echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
-+echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
-+echo "PKG_CONFIG=${pkg_config}" >> contrib/plugins/$config_host_mak
-+echo "CC=$cc $CPU_CFLAGS" >> contrib/plugins/$config_host_mak
-+echo "CFLAGS=${CFLAGS-$default_cflags} $EXTRA_CFLAGS" >> contrib/plugins/$config_host_mak
-+
- # tests/tcg configuration
- (config_host_mak=tests/tcg/config-host.mak
- mkdir -p tests/tcg
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index b2b9db9f51a..0751201bcb3 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -6,11 +6,11 @@
- # programs that the main configure has already done for us.
- #
- 
--BUILD_DIR := $(CURDIR)/../..
-+include config-host.mak
- 
--include $(BUILD_DIR)/config-host.mak
-+TOP_SRC_PATH = $(SRC_PATH)/../..
- 
--VPATH += $(SRC_PATH)/contrib/plugins
-+VPATH += $(SRC_PATH)
- 
- NAMES :=
- NAMES += execlog
-@@ -26,21 +26,21 @@ SONAMES := $(addsuffix .so,$(addprefix lib,$(NAMES)))
- 
- # The main QEMU uses Glib extensively so it's perfectly fine to use it
- # in plugins (which many example do).
--CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
--CFLAGS += -fPIC -Wall
--CFLAGS += $(if $(CONFIG_DEBUG_TCG), -ggdb -O0)
--CFLAGS += -I$(SRC_PATH)/include/qemu
-+PLUGIN_CFLAGS := $(shell $(PKG_CONFIG) --cflags glib-2.0)
-+PLUGIN_CFLAGS += -fPIC -Wall
-+PLUGIN_CFLAGS += -I$(TOP_SRC_PATH)/include/qemu
- 
- all: $(SONAMES)
- 
- %.o: %.c
--	$(CC) $(CFLAGS) -c -o $@ $<
-+	$(CC) $(CFLAGS) $(PLUGIN_CFLAGS) -c -o $@ $<
- 
- lib%.so: %.o
--	$(CC) -shared -Wl,-soname,$@ -o $@ $^ $(LDLIBS)
-+	$(CC) -shared -Wl,-soname,$@ -o $@ $^
- 
- clean:
- 	rm -f *.o *.so *.d
- 	rm -Rf .libs
- 
- .PHONY: all clean
-+.SECONDARY:
 -- 
 2.41.0
 
