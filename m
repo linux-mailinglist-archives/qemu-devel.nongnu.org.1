@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A06F79051F
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 07:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0E1790524
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 07:07:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcIpO-0000Z5-Ue; Sat, 02 Sep 2023 01:05:49 -0400
+	id 1qcIpT-0001Fk-3h; Sat, 02 Sep 2023 01:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIp4-0000Y4-Cr
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:05:26 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIp6-0000Yh-4Z
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:05:28 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIp1-0001FP-66
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:05:26 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qcIp3-0001QN-KX
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 01:05:27 -0400
 Received: from ls3a6000.. (unknown [223.72.40.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 794434444A;
- Sat,  2 Sep 2023 05:05:10 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id C185C44465;
+ Sat,  2 Sep 2023 05:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1693631112; bh=cnCe3mCSrWDNyxxjUaMNjxKGdTQTdAr7vK8KaMLgzr8=;
+ t=1693631114; bh=mY0YEXoc/VPR+1GpxYGl2vAyxathoJNpcBmThR+u4iw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=WA3/QVoEj1zFxML87DdMXdEbATQkWqD07pHS42z6162fmYspKGm/Z0fg8mNlgB9jN
- 6nYZhwhme9WuasGVnKZqqwRVIjUzVVonIigLdeYlZrsHaNJxyIkOX6wHnwbHnxwled
- JSI2cQEMTXEjGjGlji3ZLueOVkRCWqskZDPwYZOg=
+ b=qIunEnMpeiiJ3DE0f/5smIV/l6ZaFVPoeb6gGsaLPIDLecsHPHAqERyZBcYeuAr/d
+ 3UNbPFtNykATQbr7vuxVYo/rWd+3x3aI2FTwp83MoHS50lJiiLeGXXE1Lbf9nrKUpS
+ 6igRXd/uagRWmKJWHy+mNcqKbssDKVU+vOV9/cSM=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
  Jiajie Chen <c@jia.je>
-Subject: [PATCH v3 15/16] tcg/loongarch64: Lower rotli_vec to vrotri
-Date: Sat,  2 Sep 2023 13:02:15 +0800
-Message-ID: <20230902050415.1832700-16-c@jia.je>
+Subject: [PATCH v3 16/16] tcg/loongarch64: Implement 128-bit load & store
+Date: Sat,  2 Sep 2023 13:02:16 +0800
+Message-ID: <20230902050415.1832700-17-c@jia.je>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230902050415.1832700-1-c@jia.je>
 References: <20230902050415.1832700-1-c@jia.je>
@@ -64,65 +64,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Jiajie Chen <c@jia.je>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/loongarch64/tcg-target.c.inc | 21 +++++++++++++++++++++
- tcg/loongarch64/tcg-target.h     |  2 +-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+If LSX is available, use LSX instructions to implement 128-bit load &
+store.
 
+Signed-off-by: Jiajie Chen <c@jia.je>
+---
+ tcg/loongarch64/tcg-target-con-set.h |  2 ++
+ tcg/loongarch64/tcg-target.c.inc     | 42 ++++++++++++++++++++++++++++
+ tcg/loongarch64/tcg-target.h         |  2 +-
+ 3 files changed, 45 insertions(+), 1 deletion(-)
+
+diff --git a/tcg/loongarch64/tcg-target-con-set.h b/tcg/loongarch64/tcg-target-con-set.h
+index 914572d21b..77d62e38e7 100644
+--- a/tcg/loongarch64/tcg-target-con-set.h
++++ b/tcg/loongarch64/tcg-target-con-set.h
+@@ -18,6 +18,7 @@ C_O0_I1(r)
+ C_O0_I2(rZ, r)
+ C_O0_I2(rZ, rZ)
+ C_O0_I2(w, r)
++C_O0_I3(r, r, r)
+ C_O1_I1(r, r)
+ C_O1_I1(w, r)
+ C_O1_I1(w, w)
+@@ -37,3 +38,4 @@ C_O1_I2(w, w, wM)
+ C_O1_I2(w, w, wA)
+ C_O1_I3(w, w, w, w)
+ C_O1_I4(r, rZ, rJ, rZ, rZ)
++C_O2_I1(r, r, r)
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 95359b1757..2b001598e2 100644
+index 2b001598e2..9d999ef58c 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1901,6 +1901,26 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         tcg_out32(s, encode_vdvjvk_insn(rotrv_vec_insn[vece], a0, a1,
-                                         temp_vec));
-         break;
-+    case INDEX_op_rotli_vec:
-+        /* rotli_vec a1, a2 = rotri_vec a1, -a2 */
-+        a2 = extract32(-a2, 0, 3 + vece);
-+        switch (vece) {
-+        case MO_8:
-+            tcg_out_opc_vrotri_b(s, a0, a1, a2);
-+            break;
-+        case MO_16:
-+            tcg_out_opc_vrotri_h(s, a0, a1, a2);
-+            break;
-+        case MO_32:
-+            tcg_out_opc_vrotri_w(s, a0, a1, a2);
-+            break;
-+        case MO_64:
-+            tcg_out_opc_vrotri_d(s, a0, a1, a2);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+        break;
-     case INDEX_op_bitsel_vec:
-         /* vbitsel vd, vj, vk, va = bitsel_vec vd, va, vk, vj */
-         tcg_out_opc_vbitsel_v(s, a0, a3, a2, a1);
-@@ -2139,6 +2159,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_shli_vec:
-     case INDEX_op_shri_vec:
-     case INDEX_op_sari_vec:
-+    case INDEX_op_rotli_vec:
-         return C_O1_I1(w, w);
+@@ -1081,6 +1081,31 @@ static void tcg_out_qemu_st(TCGContext *s, TCGReg data_reg, TCGReg addr_reg,
+     }
+ }
  
-     case INDEX_op_bitsel_vec:
++static void tcg_out_qemu_ldst_i128(TCGContext *s, TCGReg data_lo, TCGReg data_hi,
++                                   TCGReg addr_reg, MemOpIdx oi, bool is_ld)
++{
++    TCGLabelQemuLdst *ldst;
++    HostAddress h;
++
++    ldst = prepare_host_addr(s, &h, addr_reg, oi, true);
++    if (is_ld) {
++        tcg_out_opc_vldx(s, TCG_VEC_TMP0, h.base, h.index);
++        tcg_out_opc_vpickve2gr_d(s, data_lo, TCG_VEC_TMP0, 0);
++        tcg_out_opc_vpickve2gr_d(s, data_hi, TCG_VEC_TMP0, 1);
++    } else {
++        tcg_out_opc_vinsgr2vr_d(s, TCG_VEC_TMP0, data_lo, 0);
++        tcg_out_opc_vinsgr2vr_d(s, TCG_VEC_TMP0, data_hi, 1);
++        tcg_out_opc_vstx(s, TCG_VEC_TMP0, h.base, h.index);
++    }
++
++    if (ldst) {
++        ldst->type = TCG_TYPE_I128;
++        ldst->datalo_reg = data_lo;
++        ldst->datahi_reg = data_hi;
++        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
++    }
++}
++
+ /*
+  * Entry-points
+  */
+@@ -1145,6 +1170,7 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     TCGArg a0 = args[0];
+     TCGArg a1 = args[1];
+     TCGArg a2 = args[2];
++    TCGArg a3 = args[3];
+     int c2 = const_args[2];
+ 
+     switch (opc) {
+@@ -1507,6 +1533,10 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
++        tcg_out_qemu_ldst_i128(s, a0, a1, a2, a3, true);
++        break;
+     case INDEX_op_qemu_st_a32_i32:
+     case INDEX_op_qemu_st_a64_i32:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I32);
+@@ -1515,6 +1545,10 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
++        tcg_out_qemu_ldst_i128(s, a0, a1, a2, a3, false);
++        break;
+ 
+     case INDEX_op_mov_i32:  /* Always emitted via tcg_out_mov.  */
+     case INDEX_op_mov_i64:
+@@ -1995,6 +2029,14 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(rZ, r);
+ 
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
++        return C_O2_I1(r, r, r);
++
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
++        return C_O0_I3(r, r, r);
++
+     case INDEX_op_brcond_i32:
+     case INDEX_op_brcond_i64:
+         return C_O0_I2(rZ, rZ);
 diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index d5c69bc192..67b0a95532 100644
+index 67b0a95532..03017672f6 100644
 --- a/tcg/loongarch64/tcg-target.h
 +++ b/tcg/loongarch64/tcg-target.h
-@@ -189,7 +189,7 @@ extern bool use_lsx_instructions;
- #define TCG_TARGET_HAS_shi_vec          1
- #define TCG_TARGET_HAS_shs_vec          0
- #define TCG_TARGET_HAS_shv_vec          1
--#define TCG_TARGET_HAS_roti_vec         0
-+#define TCG_TARGET_HAS_roti_vec         1
- #define TCG_TARGET_HAS_rots_vec         0
- #define TCG_TARGET_HAS_rotv_vec         1
- #define TCG_TARGET_HAS_sat_vec          1
+@@ -171,7 +171,7 @@ extern bool use_lsx_instructions;
+ #define TCG_TARGET_HAS_muluh_i64        1
+ #define TCG_TARGET_HAS_mulsh_i64        1
+ 
+-#define TCG_TARGET_HAS_qemu_ldst_i128   0
++#define TCG_TARGET_HAS_qemu_ldst_i128   use_lsx_instructions
+ 
+ #define TCG_TARGET_HAS_v64              0
+ #define TCG_TARGET_HAS_v128             use_lsx_instructions
 -- 
 2.42.0
 
