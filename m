@@ -2,48 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0ABE790975
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 22:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AEF7909C0
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 23:15:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcWwJ-0008JF-C0; Sat, 02 Sep 2023 16:09:51 -0400
+	id 1qcXwL-00023Q-W0; Sat, 02 Sep 2023 17:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qcWwG-0008Ir-Bz
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 16:09:48 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qcWwD-0003tq-T3
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 16:09:48 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 944981EA26
- for <qemu-devel@nongnu.org>; Sat,  2 Sep 2023 23:10:10 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E2E0225450
- for <qemu-devel@nongnu.org>; Sat,  2 Sep 2023 23:09:29 +0300 (MSK)
-Message-ID: <7223931c-d5c7-9f51-f703-aea41ab7f11f@tls.msk.ru>
-Date: Sat, 2 Sep 2023 23:09:29 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: /util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-References: <8386D452-771E-4E4D-ACD1-F871BA458691@livius.net>
- <bcc0df2f-5fb7-41be-035a-210eccc5a495@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <bcc0df2f-5fb7-41be-035a-210eccc5a495@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcXwJ-000232-KA
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 17:13:55 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ilg@livius.net>) id 1qcXwG-0007xg-V4
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 17:13:54 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-401d67434daso2497745e9.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 14:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=livius-net.20230601.gappssmtp.com; s=20230601; t=1693689231; x=1694294031;
+ darn=nongnu.org; 
+ h=message-id:in-reply-to:to:references:date:subject:mime-version
+ :content-transfer-encoding:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=w0LuNJeVZ74IqV3n1wTUg2pN65vx8qMHsVrL3JlnPkw=;
+ b=pr3Y/HUgAjjT1wm/EQzb6DVQVkRI57TOeRBOWsjP2PHJjTykJcq8fzg3tDswMfpIUM
+ gcgvUDYRzssH7IK3uYtXYg0hSv+YkAhEDF0HhKTpz5ksyEEz9y4bj0geuUp4FW2BHNyn
+ HCCa6Q83QL0as5beKG13YOIwp+1FSgFBHrm2nKojiv1JTNQwcrlFBM67tlIgk7TDudbT
+ 1p4cut48a2ZruvGLxyfTIgol6lmr0MpbjNcHy+Jrca6s7Ycd0YzS1AqEQqzw0Fw8fzoO
+ ZLb1pMQ9tRVEmlxIijJqeJTZSRpyu8xlG+BuOUXwlS2GHiUCXXCUFrKL3hZMP+K22cTe
+ p+iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693689231; x=1694294031;
+ h=message-id:in-reply-to:to:references:date:subject:mime-version
+ :content-transfer-encoding:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w0LuNJeVZ74IqV3n1wTUg2pN65vx8qMHsVrL3JlnPkw=;
+ b=Khevjs+/457vUxeD2P1QJioB8b11sHC/pRZqn124hvQIBwuMoWZOjuwhqST0M38bAu
+ 9mejH6CAlRnsA9d0N1bxKwXRjFiGFTYitNdsqpuENaakFYp67oiPtgSKHBMap93xtcGE
+ ClPMDvtgD7C+lOZXMEfHqbtWLDYPeb76OxPLFjrvML2E8Nh8ADBRvfztgbf4TTqmzy/4
+ 6zNbB8X71GjD4FLLVZWKtM+PaeSj4ruhCBfZZEFELkS7/AN3peNuDvc3+N9Byhc/Vo3p
+ jkLfD4sIGFHRaxC94Z+srk9+ufyAexDUH1Hk1qShzWu6CbvyOWowfOm8gDRhoZ/oCLc/
+ 1Qzg==
+X-Gm-Message-State: AOJu0Yz5L3cOyZHOlpemzRgtW6OqqPdJVsoeJV8a9vTe+Qne6Be6kqDr
+ FSPcMfM+Bzp7d1NRqutQb7GyUgmQOztGHqWTM0Wi8g==
+X-Google-Smtp-Source: AGHT+IFQcIsLIhm6xvVMW3UaC2Qz4pkOsqroHHuquqWnfzvf8lZwOev89i690ScpOnbndV2zpHv3YQ==
+X-Received: by 2002:a05:600c:3797:b0:401:d1a3:d7f7 with SMTP id
+ o23-20020a05600c379700b00401d1a3d7f7mr4475055wmr.30.1693689230650; 
+ Sat, 02 Sep 2023 14:13:50 -0700 (PDT)
+Received: from smtpclient.apple ([86.121.135.50])
+ by smtp.gmail.com with ESMTPSA id
+ a14-20020a05600c224e00b003fbe4cecc3bsm12206237wmm.16.2023.09.02.14.13.49
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 02 Sep 2023 14:13:50 -0700 (PDT)
+From: Liviu Ionescu <ilg@livius.net>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: Error: .seh_endproc used in segment '.text' instead of expected
+ '.text$qemu_close_socket_osfhandle'
+Date: Sun, 3 Sep 2023 00:13:47 +0300
+References: <0C1AED16-2AC0-43FE-AEA6-BF3F61B62536@livius.net>
+To: QEMU Developers <qemu-devel@nongnu.org>
+In-Reply-To: <0C1AED16-2AC0-43FE-AEA6-BF3F61B62536@livius.net>
+Message-Id: <0D6F61D2-BC24-4187-AAE1-1CA302E3D12F@livius.net>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: none client-ip=2a00:1450:4864:20::32f;
+ envelope-from=ilg@livius.net; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,42 +91,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.09.2023 23:01, Marcin Juszkiewicz wrote:
-...
->> The offending code in `/util/cpuinfo-aarch64.c` is:
->>
->  > ```c
->  > #ifdef CONFIG_LINUX
->  >      unsigned long hwcap = qemu_getauxval(AT_HWCAP);
->  >      info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
->  >      info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
->  >      info |= (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
->  > #endif
->  > ```
->>
->> The reason is that on this distribution the <bits/hwcap.h> header
->> file does not define HWCAP_USCAT:
-> 
-> I would recommend either upgrading your distro or staying at QEMU 8.1
-> release.
-> 
-> HWCAP_USCAT was added to glibc in June 2018. As your distribution is not supported anymore you can also patch glibc in your system.
-> 
->> I don't know if other distributions are also affected, my build
->> platform for all xPack standalone binaries is Ubuntu 18.04 LTS.
-> 
-> I do not know any supported distribution release without it.
 
-In this very case it's trivial to work-around this by using
 
-#ifndef HWCAP_USCAT
-# define HWCAP_USCAT 0
-#endif
+> On 2 Sep 2023, at 21:43, Liviu Ionescu <ilg@livius.net> wrote:
+>=20
+> ... With the same build scripts, compiling QEMU 7.1.0 was ok, the =
+problem was introduced in the last year.
 
-or just commenting-out this line.
+I also tried 7.2.5, and it passed the build, with the same scripts and =
+the same toolchain, so the problem seems to be specific to 8.x.
 
-But 18.04 being unsupported is true still.
+For now I'll stick to 7.2.5, until the issues with the 8.1.0 build will =
+be clarified.
 
-/mjt
+Regards,
+
+Liviu
 
 
