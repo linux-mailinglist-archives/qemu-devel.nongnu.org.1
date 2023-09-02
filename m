@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A239F79080C
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 811F1790805
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Sep 2023 15:05:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcQEA-0000w8-5h; Sat, 02 Sep 2023 08:59:50 -0400
+	id 1qcQEA-0000ws-OE; Sat, 02 Sep 2023 08:59:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQE8-0000vZ-8r
- for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qcQE9-0000vw-2U
+ for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qcQE6-0001g9-0b
+ id 1qcQE6-0001gI-TY
  for qemu-devel@nongnu.org; Sat, 02 Sep 2023 08:59:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693659585;
+ s=mimecast20190719; t=1693659586;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nqCLzWC5Te9PQ+uHTLXN6umOZS02O1C9B8XH1Qm66mo=;
- b=OvyWP1Q/u5XuSmLWAsqbqw1blNsoljSDr6hHrC0r1YTiLLK2E0QNQ1YxRw/G3wwFHDi5Xh
- rcv8wdw9KuSqvgDUOcNuSeJL8duCmDToRiQ5fmam5mWYycLpXrETa9ZAmwyp+I2+70ZRfk
- JTsVux6LZ0sQoPyTIMvvIrSb2c9vWZc=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p/UaO2tdvyoA4JIJQgWAGmd+D1MVsgHmpLvvBwYxVwg=;
+ b=ZNMZU8cbVWT3ThBpTPJAizW+0J63yU9BqU7fZLmuNpDtGsU0pl4QKXNi7GX9+6c/MujAzl
+ Y8x18/ZrDpXy/NmVtEDRtSRAxnCXEUxTcPb+Df1VybWa5ih9VnKKYe4BTzZW1fFaMbREl6
+ knGHVEVsC/07b/i3uQ/dL9CRnMTqHkw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-vivoJQk5NVW0rR8UWSEQCw-1; Sat, 02 Sep 2023 08:59:42 -0400
-X-MC-Unique: vivoJQk5NVW0rR8UWSEQCw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-500a9156daaso10973e87.0
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 05:59:42 -0700 (PDT)
+ us-mta-661-QYdaXeePNw6aDw9KUdSc8g-1; Sat, 02 Sep 2023 08:59:44 -0400
+X-MC-Unique: QYdaXeePNw6aDw9KUdSc8g-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-31c6c275c83so1689868f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 05:59:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693659581; x=1694264381;
+ d=1e100.net; s=20221208; t=1693659582; x=1694264382;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nqCLzWC5Te9PQ+uHTLXN6umOZS02O1C9B8XH1Qm66mo=;
- b=fEH01hCno8OIdZVRjEKtEbthryAC4OI/goKTds7ftaAy/UpM0/v1+R3lC8lY1gQHIs
- Kf5CH6w/8YvNTCtv5FdVgwI+89pqzG8vrIuJAiarKpskKFQoE0qn/gIB8VxEPkZ28mzg
- v1XaE8UXKdpg46gn6jH9CM1ACMvk85MZU9N1RSFWx2nzvuTOuz4Yhr4Y1q4Poth0EJgw
- 76f4wNJbBH1o0UlcMp3rcI+l8fWjcJ4mAIR8r808tkaW0npuc6KdcFxFWGQIteT/7HHw
- Akl3OovwAxuOuE05eDFaHD9uqEpK1/vxMoS2OTIqnnMmP1a8r2gwHq2LtwZdDVuNFHnj
- 4rcw==
-X-Gm-Message-State: AOJu0YxePvX1ZlWTvbpEXFGfwR0cYGEEYhL+HpYYDrlAxuhKwNtn1sXW
- /ZqkYCchX/rzBXXV3v9k/P93XQcKf/PJRITaRKHrlqjxATiFMOuh+a9YABRwytanAq4GwrYaR88
- Xnk9A6TiO1ISospFrCv3Xxc+Q2JVPIux9hTK+ugP8TPz2grlrXVp6ynqiOnEYsH1OirWJVPcPTS
- U=
-X-Received: by 2002:a05:6512:3194:b0:500:b96a:6f59 with SMTP id
- i20-20020a056512319400b00500b96a6f59mr4307657lfe.56.1693659580829; 
- Sat, 02 Sep 2023 05:59:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHUh1GKfebFSh8M1iznBUa210lpaB/QSB4vVAIum1BA9Gkx5fXol3rs4prlg6bUXcNfaurAeg==
-X-Received: by 2002:a05:6512:3194:b0:500:b96a:6f59 with SMTP id
- i20-20020a056512319400b00500b96a6f59mr4307644lfe.56.1693659580326; 
- Sat, 02 Sep 2023 05:59:40 -0700 (PDT)
+ bh=p/UaO2tdvyoA4JIJQgWAGmd+D1MVsgHmpLvvBwYxVwg=;
+ b=cKT1Uiz8FvfbSJuWQXBxAGlUL3kg/BlHNh0ikmS9BjC3Yl8yDNg9++n7JpDzsXrpES
+ Oxn28RXm8i8h6Be0DE1kohR4se86HipJiYYZCgN9y4HC1LQp+CIXjXT5vtqUuLyEX40Z
+ laypiL1pMILnIW1424W+mT2aa3SwAWxW8ti+r1dOXBzW8DhDTQGuDvXztkWo7hztZ3cM
+ w7aGD4VxWdwIjZ+oiusAB0jPE6rKYnbBLnfnKBebnfoX0eYljkxZa9dUpKIx6O+VepCI
+ pYeq0/d2ZB8LgQs7MIqgcjkt7T3dNjGF/1/nl+Om9LPn6zoMwqEv+JDZ9zae9L6EzKxh
+ RV8g==
+X-Gm-Message-State: AOJu0YySbGn2kvXx7bg1J/xJRtgMjoahshTwhu20JNR09utLtovVQM/7
+ E8Gpy5Iq/+ujb5Jy831nLpaPhy1N4aARyN1SE/lx1IfjuNgFVKXFvgfjNCrTJceTKYr/pTRalIo
+ CtCI+3sLQyiq5QCNGLmn7Es/k9oG8DesOsDwXcFXfhg6p74X+KlW/YJr8gBxJZMDfEejU7lhfeH
+ g=
+X-Received: by 2002:adf:e411:0:b0:315:8f4f:81b2 with SMTP id
+ g17-20020adfe411000000b003158f4f81b2mr3480753wrm.64.1693659582464; 
+ Sat, 02 Sep 2023 05:59:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuyJbadSpQe42h44s5/dOvqikDRZftxoXOU76sAcU8K9irETdD5ot8ppnrHc5NtLgun13ezA==
+X-Received: by 2002:adf:e411:0:b0:315:8f4f:81b2 with SMTP id
+ g17-20020adfe411000000b003158f4f81b2mr3480742wrm.64.1693659582165; 
+ Sat, 02 Sep 2023 05:59:42 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c249100b003fbc30825fbsm7823128wms.39.2023.09.02.05.59.39
- for <qemu-devel@nongnu.org>
+ bt12-20020a056000080c00b0031433443265sm2680062wrb.53.2023.09.02.05.59.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 05:59:39 -0700 (PDT)
+ Sat, 02 Sep 2023 05:59:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 02/15] meson: update unsupported host/CPU messages
-Date: Sat,  2 Sep 2023 14:59:21 +0200
-Message-ID: <20230902125934.113017-3-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 03/15] configure: remove HOST_CC
+Date: Sat,  2 Sep 2023 14:59:22 +0200
+Message-ID: <20230902125934.113017-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230902125934.113017-1-pbonzini@redhat.com>
 References: <20230902125934.113017-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,85 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unsupported CPU and OSes are not really going away, but the
-project simply does not guarantee that they work.  Rephrase
-the messages accordingly.  While at it, move the warning for
-TCI performance at the end where it is more visible.
+$(HOST_CC) is only used to invoke the preprocessor, and $(CC) can be
+used instead now that there is a Tricore C compiler.  Remove the variable
+from config-host.mak.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 45 ++++++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+ configure                                 | 1 -
+ tests/tcg/tricore/Makefile.softmmu-target | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 98e68ef0b1e..9bcf117f8a4 100644
---- a/meson.build
-+++ b/meson.build
-@@ -678,9 +678,7 @@ endif
- tcg_arch = host_arch
- if get_option('tcg').allowed()
-   if host_arch == 'unknown'
--    if get_option('tcg_interpreter')
--      warning('Unsupported CPU @0@, will use TCG with TCI (slow)'.format(cpu))
--    else
-+    if not get_option('tcg_interpreter')
-       error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
-     endif
-   elif get_option('tcg_interpreter')
-@@ -4317,28 +4315,37 @@ summary_info += {'selinux':           selinux}
- summary_info += {'libdw':             libdw}
- summary(summary_info, bool_yn: true, section: 'Dependencies')
+diff --git a/configure b/configure
+index b9af8282293..7743c18f2fe 100755
+--- a/configure
++++ b/configure
+@@ -1800,7 +1800,6 @@ fi
+ mkdir -p tests/tcg
+ echo "# Automatically generated by configure - do not modify" > $config_host_mak
+ echo "SRC_PATH=$source_path" >> $config_host_mak
+-echo "HOST_CC=$host_cc" >> $config_host_mak
  
--if not supported_cpus.contains(cpu)
-+if host_arch == 'unknown'
-   message()
--  warning('SUPPORT FOR THIS HOST CPU WILL GO AWAY IN FUTURE RELEASES!')
-+  warning('UNSUPPORTED HOST CPU')
-   message()
--  message('CPU host architecture ' + cpu + ' support is not currently maintained.')
--  message('The QEMU project intends to remove support for this host CPU in')
--  message('a future release if nobody volunteers to maintain it and to')
--  message('provide a build host for our continuous integration setup.')
--  message('configure has succeeded and you can continue to build, but')
--  message('if you care about QEMU on this platform you should contact')
--  message('us upstream at qemu-devel@nongnu.org.')
-+  message('Support for CPU host architecture ' + cpu + ' is not currently')
-+  message('maintained. The QEMU project does not guarantee that QEMU will')
-+  message('compile or work on this host CPU. You can help by volunteering')
-+  message('to maintain it and providing a build host for our continuous.')
-+  message('integration setup.')
-+  if get_option('tcg').allowed() and target_dirs.length() > 0
-+    message()
-+    message('configure has succeeded and you can continue to build, but')
-+    message('QEMU will use a slow interpreter to emulate the target CPU.')
-+  endif
- endif
+ # versioned checked in the main config_host.mak above
+ if test -n "$gdb_bin"; then
+diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
+index aff7c1b5802..2ec0bd36225 100644
+--- a/tests/tcg/tricore/Makefile.softmmu-target
++++ b/tests/tcg/tricore/Makefile.softmmu-target
+@@ -28,7 +28,7 @@ TESTS += test_context_save_areas.c.tst
+ QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
  
- if not supported_oses.contains(targetos)
-   message()
--  warning('WARNING: SUPPORT FOR THIS HOST OS WILL GO AWAY IN FUTURE RELEASES!')
-+  warning('UNSUPPORTED HOST OS')
-   message()
--  message('Host OS ' + targetos + 'support is not currently maintained.')
--  message('The QEMU project intends to remove support for this host OS in')
--  message('a future release if nobody volunteers to maintain it and to')
--  message('provide a build host for our continuous integration setup.')
-+  message('Support for host OS ' + targetos + 'is not currently maintained.')
-   message('configure has succeeded and you can continue to build, but')
--  message('if you care about QEMU on this platform you should contact')
--  message('us upstream at qemu-devel@nongnu.org.')
-+  message('the QEMU project does not guarantee that QEMU will compile or')
-+  message('work on this operating system. You can help by volunteering')
-+  message('to maintain it and providing a build host for our continuous.')
-+  message('integration setup. This will ensure that future versions of QEMU')
-+  message('will keep working on ' + targetos + '.')
-+endif
-+
-+if host_arch == 'unknown' or not supported_oses.contains(targetos)
-+  message()
-+  message('If you care about QEMU on this platform, please contact the')
-+  message('developers at qemu-devel@nongnu.org.')
- endif
+ %.pS: $(ASM_TESTS_PATH)/%.S
+-	$(HOST_CC) -E -o $@ $<
++	$(CC) -E -o $@ $<
+ 
+ %.o: %.pS
+ 	$(AS) $(ASFLAGS) -o $@ $<
 -- 
 2.41.0
 
