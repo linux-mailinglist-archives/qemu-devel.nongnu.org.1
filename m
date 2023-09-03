@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB72D790ADB
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 07:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC68A790AF3
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 07:41:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcfI5-00033u-9X; Sun, 03 Sep 2023 01:04:53 -0400
+	id 1qcfpt-0006VY-TC; Sun, 03 Sep 2023 01:39:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcfHu-00033O-Ks
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:04:42 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qcfpr-0006V7-At
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:39:47 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcfHp-0001pc-S2
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:04:42 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bf1935f6c2so2105335ad.1
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 22:04:37 -0700 (PDT)
+ id 1qcfpo-0003mY-Do
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:39:47 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68a3cae6d94so393074b3a.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 22:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693717476; x=1694322276;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693719583; x=1694324383;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=c2bscsJzpeRHxPoEuFVzdoUPIwbXoKcsg2VXxI81RBc=;
- b=O8rvQtANgoGnHsBmTGlXFVbsSHfnqHlrzOnFzz+GxvaFnRSqkbbu3xSyZgdVAJamQR
- U54uc/4eYoBlxeF4ITYQ3WlI1zszYUHcyaGwgiZqy+fhEzDznYVJenJwl2Rrq7Velg5k
- RQDOO3uDFiJOiPH5656nrKca5ekkozz+cP6Bh3obkEb3azrl0jx380aY0NY4ZT0wTSSe
- MSu+giIu8fM6cXaevuCzztg2oMpk9glqCKh4uenpPzI1aAEbV13h4ohMuaoij1fdAvg0
- NPfw7mvDpfEAm7WRIqB0QxkwKkzG2FiiQV2LTDOhnfGAj3PRAdodReHSonwpUNbYQ+OK
- p2nA==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ht2oSsbGIVQE/VA9erprFmrrQZEv1oX6m1VovqFC2WY=;
+ b=VzbQPHXmWWTCoHkW2tqcwKrJOFyl3ysGY5Qv/vvXADZowdFFOjq5CWSh5Cw0Ovhzgd
+ VKwcJnJGxmEOGKd1PZqXESbtWZ00pqOYagV4jb+xlwUn5+AF3uHx+ihqYmYmDPms8Lnr
+ wuk3xZiYkoQqspT4Fqp2fAGp9OyMuojv3JmfFF/RHGhT4Iuao7VEcGXrws7r4K9EzqBm
+ 6zmTsb/AQa9/LEQ0iI2g/iAlGSbzO9GmuT0+H+CD+RmyOuS2bmYVYAN6PeiJYrR/CI49
+ hWQxgT40bCwSMCQXqh/WUEhSe9D/MzYWAxcP2Jht+MtZfcXsEgpOEVFFCgA0pY2f1X8l
+ MDsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693717476; x=1694322276;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=c2bscsJzpeRHxPoEuFVzdoUPIwbXoKcsg2VXxI81RBc=;
- b=RcUmd/elL/O3ogB41oNiftv/1fkMIj9n9sXcge3KffFFys973/c1uhPCGHoajqlV+s
- Dc0YgJdvhDt96j8vVzWRNnQx06Nnbz3fuBHdLvDN9a0FG+PaylLe/d5UsxeYVLFibRYO
- bjJ+6zvVDRV2tYhrXzWc6keBIg2OWTZKg2N9AyA2UCf3TG6Iv1/ZGwVyTq08C3Fyk2ZZ
- 8NtP4P8/XBjVC6SS1+DcU4vi/Ktu5go0Hv4RdoJRqukvCyecaJwZ3DVNYNJlUrIsPN9H
- HpiQUfFztGEqnhoUAEUUFNDHbrfhBrHy+daBFpH9JPmdV2acQ3u5r3xttUoWUEC7wsTQ
- c38Q==
-X-Gm-Message-State: AOJu0YzrrT+xgXP95Fho969kGNEuT8k5GH7rNVscCHD53AWYjc7+nXby
- 9Bdo8+XQ/5cUgsCzA1IUps1ObA==
-X-Google-Smtp-Source: AGHT+IEq6C8xetVFp+xRYS7OhzV5NnK2LFZc+OVbt5e8hLUmj2ZUMJnos1EO+ZgY1nqFzsFtHhi/RA==
-X-Received: by 2002:a17:902:a386:b0:1bd:9498:f15d with SMTP id
- x6-20020a170902a38600b001bd9498f15dmr8150261pla.24.1693717476610; 
- Sat, 02 Sep 2023 22:04:36 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693719583; x=1694324383;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ht2oSsbGIVQE/VA9erprFmrrQZEv1oX6m1VovqFC2WY=;
+ b=dERrjpbzm4g5b57tqJ5XWuDAMYc9H6wrH/3RYLUVlxU/uWPRVPTHdb6ocfyLzVBfGC
+ elhDhJESXbBgFPWIx5QoK03SzqcTDkxVSZXWPl+k83aCi2ZpQPDjOV1NkA2v5MJ+2e7O
+ FzqL/wkhfgqgCMBOejrAm6V/xYpvbzWm37IWxpjKUMsCot6mbJNFDOY07gKjPUv+Djmp
+ qha3YvYQbarXNruQ/eGQ8+coeJcuIEvG0EgPWgTNXA0D7oWpDLYdfj8tWzemPsWZIzmL
+ R3nHBiEYF6SUfLS3LajHh8VuhNJaEIxdYvCLi5Ddj1AKCbr10BRHkp3h4UXkN/vjeuyl
+ KDvQ==
+X-Gm-Message-State: AOJu0Yz5jphtNrKAovmjdVKR7hCnHQ/GfpXl7X6GJzVr60wROB2CS6UT
+ rHItOf6yl08ECOdsy4bEtBqHtQ==
+X-Google-Smtp-Source: AGHT+IE/CbX+j2rQgcKVG89N6PS+Z0aIWxkn83pCw/SeKZIACGcbFlIFztcJpqXrLKC2BrNSiPGDNg==
+X-Received: by 2002:a05:6a00:1507:b0:68b:f524:b8fa with SMTP id
+ q7-20020a056a00150700b0068bf524b8famr8957044pfu.28.1693719582829; 
+ Sat, 02 Sep 2023 22:39:42 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- l11-20020a170902f68b00b001b8af7f632asm5324835plg.176.2023.09.02.22.04.34
+ x52-20020a056a000bf400b0063b898b3502sm5290957pfu.153.2023.09.02.22.39.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 22:04:36 -0700 (PDT)
+ Sat, 02 Sep 2023 22:39:42 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 18/18] contrib/plugins: Add cc plugin
-Date: Sun,  3 Sep 2023 14:03:26 +0900
-Message-ID: <20230903050338.35256-19-akihiko.odaki@daynix.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ joel@jms.id.au, laurent@vivier.eu, deller@gmx.de,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2] linux-user: Undo incomplete mmap
+Date: Sun,  3 Sep 2023 14:39:25 +0900
+Message-ID: <20230903053927.38037-1-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230903050338.35256-1-akihiko.odaki@daynix.com>
-References: <20230903050338.35256-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,131 +90,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This demonstrates how to write a plugin in C++.
+When the host page size is greater than the target page size and
+MAP_FIXED or MAP_FIXED_NOREPLACE is requested, mmap will be done for
+three parts: start, middle, and end. If a later part of mmap fail,
+mmap done in the earlier parts must be reverted.
 
+Fixes: 54936004fd ("mmap emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- docs/devel/tcg-plugins.rst |  8 ++++++++
- configure                  | 15 ++++++++++++---
- contrib/plugins/Makefile   |  5 +++++
- contrib/plugins/cc.cc      | 17 +++++++++++++++++
- tests/tcg/Makefile.target  |  3 +++
- 5 files changed, 45 insertions(+), 3 deletions(-)
- create mode 100644 contrib/plugins/cc.cc
+V1 -> V2: Rebased.
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index c9f8b27590..0a11f8036c 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -584,6 +584,14 @@ The plugin has a number of arguments, all of them are optional:
-   configuration arguments implies ``l2=on``.
-   (default: N = 2097152 (2MB), B = 64, A = 16)
+ linux-user/mmap.c | 65 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 25 deletions(-)
+
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 9aab48d4a3..72521f8d27 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -224,13 +224,15 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
  
-+- contrib/plugins/cc.cc
-+
-+cc plugin demonstrates how to write a plugin in C++. It simply outputs
-+"hello, world" to the plugin log::
-+
-+  $ qemu-system-arm $(QEMU_ARGS) \
-+    -plugin ./contrib/plugins/libcc.so -d plugin
-+
- API
- ---
+ /* map an incomplete host page */
+ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
+-                      int prot, int flags, int fd, off_t offset)
++                      int prot, int flags, int fd, off_t offset, bool *mapped)
+ {
+     abi_ulong real_last;
+     void *host_start;
+     int prot_old, prot_new;
+     int host_prot_old, host_prot_new;
  
-diff --git a/configure b/configure
-index 26ec5e4f54..0065b0dfe0 100755
---- a/configure
-+++ b/configure
-@@ -293,10 +293,18 @@ else
-   cc="${CC-${cross_prefix}gcc}"
- fi
- 
--if test -z "${CXX}${cross_prefix}"; then
--  cxx="c++"
-+if test -n "${CXX+x}"; then
-+  cxx="$CXX"
- else
--  cxx="${CXX-${cross_prefix}g++}"
-+  if test -n "${cross_prefix}"; then
-+    cxx="${cross_prefix}g++"
-+  else
-+    cxx="c++"
-+  fi
++    *mapped = false;
 +
-+  if ! has "$cxx"; then
-+    cxx=
-+  fi
- fi
+     if (!(flags & MAP_ANONYMOUS)
+         && (flags & MAP_TYPE) == MAP_SHARED
+         && (prot & PROT_WRITE)) {
+@@ -271,6 +273,7 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
+             return false;
+         }
+         prot_old = prot;
++        *mapped = true;
+     }
+     prot_new = prot | prot_old;
  
- # Preferred ObjC compiler:
-@@ -1702,6 +1710,7 @@ echo "MESON=$meson" >> $config_host_mak
- echo "NINJA=$ninja" >> $config_host_mak
- echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
- echo "CC=$cc" >> $config_host_mak
-+echo "CXX=$cxx" >> $config_host_mak
- echo "EXESUF=$EXESUF" >> $config_host_mak
- 
- # use included Linux headers
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index b2b9db9f51..93d86b3d07 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -21,6 +21,9 @@ NAMES += lockstep
- NAMES += hwprofile
- NAMES += cache
- NAMES += drcov
-+ifneq ($(CXX),)
-+NAMES += cc
-+endif
- 
- SONAMES := $(addsuffix .so,$(addprefix lib,$(NAMES)))
- 
-@@ -31,6 +34,8 @@ CFLAGS += -fPIC -Wall
- CFLAGS += $(if $(CONFIG_DEBUG_TCG), -ggdb -O0)
- CFLAGS += -I$(SRC_PATH)/include/qemu
- 
-+CXXFLAGS := $(CFLAGS)
+@@ -448,7 +451,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
+ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+                      int flags, int fd, off_t offset)
+ {
+-    abi_ulong ret, last, real_start, real_last, retaddr, host_len;
++    abi_ulong ret, last, real_start, retaddr, host_len;
+     abi_ulong passthrough_start = -1, passthrough_last = 0;
+     int page_flags;
+     off_t host_offset;
+@@ -577,12 +580,16 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+         passthrough_start = start;
+         passthrough_last = last;
+     } else {
++        abi_ulong middle_start = HOST_PAGE_ALIGN(start);
++        abi_ulong middle_last = ((start + len) & qemu_host_page_mask) - 1;
++        abi_ulong mapped_len = 0;
++        bool mapped;
 +
- all: $(SONAMES)
+         if (start & ~TARGET_PAGE_MASK) {
+             errno = EINVAL;
+             goto fail;
+         }
+         last = start + len - 1;
+-        real_last = HOST_PAGE_ALIGN(last) - 1;
  
- %.o: %.c
-diff --git a/contrib/plugins/cc.cc b/contrib/plugins/cc.cc
-new file mode 100644
-index 0000000000..83a5528db0
---- /dev/null
-+++ b/contrib/plugins/cc.cc
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include <qemu-plugin.h>
-+
-+extern "C" {
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-+                                           const qemu_info_t *info, int argc,
-+                                           char **argv)
-+{
-+    qemu_plugin_outs("hello, world\n");
-+    return 0;
-+}
-+
-+};
-diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 462289f47c..3d7837d3b8 100644
---- a/tests/tcg/Makefile.target
-+++ b/tests/tcg/Makefile.target
-@@ -149,6 +149,9 @@ PLUGIN_SRC=$(SRC_PATH)/tests/plugin
- PLUGIN_LIB=../../plugin
- VPATH+=$(PLUGIN_LIB)
- PLUGINS=$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
-+ifneq ($(CXX),)
-+PLUGINS+=$(patsubst %.cc, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.cc)))
-+endif
+         /*
+          * Test if requested memory area fits target address space
+@@ -649,35 +656,26 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+         }
  
- # We need to ensure expand the run-plugin-TEST-with-PLUGIN
- # pre-requistes manually here as we can't use stems to handle it. We
+         /* handle the start of the mapping */
+-        if (start > real_start) {
+-            if (real_last == real_start + qemu_host_page_size - 1) {
++        if (start < middle_start) {
++            if (last < middle_start) {
+                 /* one single host page */
+                 if (!mmap_frag(real_start, start, last,
+-                               target_prot, flags, fd, offset)) {
++                               target_prot, flags, fd, offset, &mapped)) {
+                     goto fail;
+                 }
+                 goto the_end1;
+             }
+-            if (!mmap_frag(real_start, start,
+-                           real_start + qemu_host_page_size - 1,
+-                           target_prot, flags, fd, offset)) {
++            if (!mmap_frag(real_start, start, middle_start - 1,
++                           target_prot, flags, fd, offset, &mapped)) {
+                 goto fail;
+             }
+-            real_start += qemu_host_page_size;
+-        }
+-        /* handle the end of the mapping */
+-        if (last < real_last) {
+-            abi_ulong real_page = real_last - qemu_host_page_size + 1;
+-            if (!mmap_frag(real_page, real_page, last,
+-                           target_prot, flags, fd,
+-                           offset + real_page - start)) {
+-                goto fail;
++            if (mapped) {
++                mapped_len = qemu_host_page_size;
+             }
+-            real_last -= qemu_host_page_size;
+         }
+ 
+         /* map the middle (easier) */
+-        if (real_start < real_last) {
++        if (middle_start < middle_last) {
+             void *p, *want_p;
+             off_t offset1;
+             size_t len1;
+@@ -685,10 +683,10 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+             if (flags & MAP_ANONYMOUS) {
+                 offset1 = 0;
+             } else {
+-                offset1 = offset + real_start - start;
++                offset1 = offset + middle_start - start;
+             }
+-            len1 = real_last - real_start + 1;
+-            want_p = g2h_untagged(real_start);
++            len1 = middle_last - middle_start + 1;
++            want_p = g2h_untagged(middle_start);
+ 
+             p = mmap(want_p, len1, target_to_host_prot(target_prot),
+                      flags, fd, offset1);
+@@ -697,10 +695,27 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+                     munmap(p, len1);
+                     errno = EEXIST;
+                 }
++                if (mapped_len) {
++                    munmap(g2h_untagged(middle_start - mapped_len), mapped_len);
++                }
++                goto fail;
++            }
++            mapped_len += len1;
++            passthrough_start = middle_start;
++            passthrough_last = middle_last;
++        }
++
++        /* handle the end of the mapping */
++        if (last > middle_last) {
++            abi_ulong real_page = middle_last + 1;
++            if (!mmap_frag(real_page, real_page, last,
++                           target_prot, flags, fd,
++                           offset + real_page - start, &mapped)) {
++                if (mapped_len) {
++                    munmap(g2h_untagged(real_page - mapped_len), mapped_len);
++                }
+                 goto fail;
+             }
+-            passthrough_start = real_start;
+-            passthrough_last = real_last;
+         }
+     }
+  the_end1:
 -- 
 2.42.0
 
