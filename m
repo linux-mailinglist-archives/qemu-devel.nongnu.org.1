@@ -2,89 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8097A790AE4
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 07:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3A4790AE0
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 07:06:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcfHP-0002j4-D1; Sun, 03 Sep 2023 01:04:11 -0400
+	id 1qcfIh-0002lF-7i; Sun, 03 Sep 2023 01:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcfHM-0002iO-Vc
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:04:08 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ id 1qcfHW-0002kf-Pv
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:04:18 -0400
+Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcfHJ-0001i5-UC
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:04:08 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3aa14d8641cso315875b6e.3
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 22:04:05 -0700 (PDT)
+ id 1qcfHQ-0001j8-1X
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:04:17 -0400
+Received: by mail-il1-x136.google.com with SMTP id
+ e9e14a558f8ab-34e1b6eccfeso1254945ab.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 22:04:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693717445; x=1694322245;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693717451; x=1694322251;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t+8gtXQLkZ5PR95dA/2IY/7GW/8nDUoQWZBqSaQ3Mw4=;
- b=mDD42h3LOs7Q1pgQMAr2q2SE6qEWXtb8QT0H0d9jKUKE6KHpyptvNLymn1jPdGotws
- k8SIP4nh7QXJ9bhVf/sE3Q8q7HUS4InLzBy44SuQLIabewggWPLNuEUWAE0U9oQIDY1k
- zC3D4nY7gl8D1KyEu9FUjA17Bk0BwblSCKWL3+TbKYIhYHHtjkMn0LlW9xhM/aZBapmZ
- DIoiqkNwUzMmLLvfhcD0MivLiCSiBLiJOlL6hnraMyfMCFfahPXtyvYejnlU03MA0uyV
- gGy2jPhtbpYzKciENAhVSvX8hEA2ESsI0ZJTRBbAPro3XErLO419KfnI0HzqWprFb6S5
- FVGA==
+ bh=lPpb9S9gUv4M0jg5oq1ckRJxf9Uynjmagdd8+dAPltU=;
+ b=L0xkhpr1P92pC52oudM0qD3Pb3z+jqCoiwYKJYugyFTieTzUrM43JjtpsweUfEir9T
+ Sm/fwKqrujzgnMkOpQWYjUX5HgNSPaPJ8Ve9LprnO7DAnKFYHa4vn7FSRmaJftUCQITI
+ uiji4EZlcTSWc0xVtjuzASzF/DG6ZSpPOX8v9caHPwVBWhUVB33wc6kYVMIJ/AoKYvxo
+ 4cn8UEOsoDbYJ9Z09HlLE/D/resD8UW6wzA9/AlcWS7KTU1FLq0Xw8fv440Xf9Bi3I+b
+ LgKS4CUF6vWc8v0wQeWlP4GAv6xES9ZzyFbCI8xkzvAuFEDDQWr8H1sA/7Wgl4M5s3AM
+ 9ktQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693717445; x=1694322245;
+ d=1e100.net; s=20221208; t=1693717451; x=1694322251;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t+8gtXQLkZ5PR95dA/2IY/7GW/8nDUoQWZBqSaQ3Mw4=;
- b=ZBJ4GRqcSKwPIV/O8+3m7tUNsHt+y7o1F91umNTg7Mkp4hGmLPGxkt5IHoHG1dBq7h
- sjd9HsRJoTzFAaKC4bx1XlLPpHCfgSMKQKW8nbjfTWnVBONTzoy8zIok4Nx18QvFbDWP
- nh6DuLPtG/cOvxqPycDLiYFB4Umdirl2i93eU4cv9rj0LtZOqLF0FWTGjw8mfVp/SObM
- 3NGXX0KoUCLg6sGdIxBZUu7tePuchZFVi2oL+l7X3XxcctI7k54RDM/78/k1a7QUlUOc
- Tv8HmEQ9CwHScQ2LJFQf1Q6zIRbFfIdg12O7TM9aESCIWebSYa4SLJ1/w+V2T8SYrwsb
- Gz6g==
-X-Gm-Message-State: AOJu0Yw84uRGZTUWeyL3zcFd+ILQBvbZs0SJ8M1JccMriq2c4fRlWukm
- cdUmD4I3+CITC08NcSVDT4PIWg==
-X-Google-Smtp-Source: AGHT+IEw+lz7tj2d0iKAZfmQ09FcTmV0XiaVg0JYuJkEtG9UkVfHReq2Q+KMIEslOl8kKxYpvKnqiQ==
-X-Received: by 2002:a05:6808:1291:b0:3a9:bc8d:42e9 with SMTP id
- a17-20020a056808129100b003a9bc8d42e9mr10422497oiw.21.1693717444942; 
- Sat, 02 Sep 2023 22:04:04 -0700 (PDT)
+ bh=lPpb9S9gUv4M0jg5oq1ckRJxf9Uynjmagdd8+dAPltU=;
+ b=kiHfOwvFGdEmHnuf+utRyDdojaJcqdplD9IIffX48e2GTWK5XzgQsQ1XbdgStfTn1N
+ jw+IQAiwB28WPOjT32KGgAgMnWAKfebSZ7QJ1v2ymSvwCv9ZE2gUuwPCbQS1Y5alUYcS
+ cRy7YiUeOLUt3GyRLZW/Id6BM9HJbkULjrV0F/g/sGi83fTNOcX5GtB9Bwy6gWg4Ivbf
+ Xd1Ps+bLMsSiu+oO7othw/pFOQrECIOKF9J4SVJq654cmtJHMHqHd8Vehfyev5VFEbNv
+ aQwfvKrtDLelcO3zmMDDAEiarogrPizbuWDZOgCuDrrT+m5hbKkiabWOU2luhaNHROEk
+ D65A==
+X-Gm-Message-State: AOJu0YxxiUWbhOzxD+0qCvQBtB1TZHFO7ZMn+j3NxB8s2fFtJZDzTK+V
+ da0rPkV7Fzbb0VNomUSmKlfF4w==
+X-Google-Smtp-Source: AGHT+IEqiYL940PlBUfeb4kTtev2rb0jOG+DpEKCzBIwVuF5+Eo6HSgkAyoCIlqtAkGS2DDoKsPGHw==
+X-Received: by 2002:a05:6e02:1071:b0:345:f28f:cc26 with SMTP id
+ q17-20020a056e02107100b00345f28fcc26mr7241365ilj.24.1693717450821; 
+ Sat, 02 Sep 2023 22:04:10 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- l11-20020a170902f68b00b001b8af7f632asm5324835plg.176.2023.09.02.22.04.02
+ l11-20020a170902f68b00b001b8af7f632asm5324835plg.176.2023.09.02.22.04.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 22:04:04 -0700 (PDT)
+ Sat, 02 Sep 2023 22:04:10 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Brian Cain <bcain@quicinc.com>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Laurent Vivier <laurent@vivier.eu>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v6 07/18] target/riscv: Use GDBFeature for dynamic XML
-Date: Sun,  3 Sep 2023 14:03:15 +0900
-Message-ID: <20230903050338.35256-8-akihiko.odaki@daynix.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs),
+ qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ qemu-s390x@nongnu.org (open list:S390 general arch...)
+Subject: [PATCH v6 08/18] gdbstub: Use GDBFeature for gdb_register_coprocessor
+Date: Sun,  3 Sep 2023 14:03:16 +0900
+Message-ID: <20230903050338.35256-9-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230903050338.35256-1-akihiko.odaki@daynix.com>
 References: <20230903050338.35256-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::22b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::136;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x136.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,202 +113,422 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation for a change to use GDBFeature as a parameter of
-gdb_register_coprocessor(), convert the internal representation of
-dynamic feature from plain XML to GDBFeature.
+This is a tree-wide change to introduce GDBFeature parameter to
+gdb_register_coprocessor(). The new parameter just replaces num_regs
+and xml parameters for now. GDBFeature will be utilized to simplify XML
+lookup in a following change.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/riscv/cpu.h     |  4 +--
- target/riscv/cpu.c     |  4 +--
- target/riscv/gdbstub.c | 77 ++++++++++++++++++------------------------
- 3 files changed, 37 insertions(+), 48 deletions(-)
+ include/exec/gdbstub.h     |  2 +-
+ gdbstub/gdbstub.c          | 13 +++++++------
+ target/arm/gdbstub.c       | 34 ++++++++++++++++++----------------
+ target/hexagon/cpu.c       |  3 +--
+ target/loongarch/gdbstub.c |  2 +-
+ target/m68k/helper.c       |  6 +++---
+ target/microblaze/cpu.c    |  5 +++--
+ target/ppc/gdbstub.c       | 11 ++++++-----
+ target/riscv/gdbstub.c     | 18 ++++++++++--------
+ target/s390x/gdbstub.c     | 28 +++++++---------------------
+ 10 files changed, 57 insertions(+), 65 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 6ea22e0eea..f67751d5b7 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -391,8 +391,8 @@ struct ArchCPU {
-     CPUNegativeOffsetState neg;
-     CPURISCVState env;
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 1ea2631c24..1f5fb4da25 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -27,7 +27,7 @@ typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
+ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
+ void gdb_register_coprocessor(CPUState *cpu,
+                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
+-                              int num_regs, const char *xml, int g_pos);
++                              const GDBFeature *feature, int g_pos);
  
--    char *dyn_csr_xml;
--    char *dyn_vreg_xml;
-+    GDBFeature dyn_csr_feature;
-+    GDBFeature dyn_vreg_feature;
+ /**
+  * gdbserver_start: start the gdb server
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 6b530f1e1e..b641e87fd1 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -530,7 +530,7 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
  
-     /* Configuration Settings */
-     RISCVCPUConfig cfg;
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 48f1426299..86a477bfc0 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1962,9 +1962,9 @@ static const char *riscv_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
-     RISCVCPU *cpu = RISCV_CPU(cs);
- 
-     if (strcmp(xmlname, "riscv-csr.xml") == 0) {
--        return cpu->dyn_csr_xml;
-+        return cpu->dyn_csr_feature.xml;
-     } else if (strcmp(xmlname, "riscv-vector.xml") == 0) {
--        return cpu->dyn_vreg_xml;
-+        return cpu->dyn_vreg_feature.xml;
+ void gdb_register_coprocessor(CPUState *cpu,
+                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
+-                              int num_regs, const char *xml, int g_pos)
++                              const GDBFeature *feature, int g_pos)
+ {
+     GDBRegisterState *s;
+     GDBRegisterState **p;
+@@ -538,25 +538,26 @@ void gdb_register_coprocessor(CPUState *cpu,
+     p = &cpu->gdb_regs;
+     while (*p) {
+         /* Check for duplicates.  */
+-        if (strcmp((*p)->xml, xml) == 0)
++        if (strcmp((*p)->xml, feature->xmlname) == 0)
+             return;
+         p = &(*p)->next;
      }
  
-     return NULL;
+     s = g_new0(GDBRegisterState, 1);
+     s->base_reg = cpu->gdb_num_regs;
+-    s->num_regs = num_regs;
++    s->num_regs = feature->num_regs;
+     s->get_reg = get_reg;
+     s->set_reg = set_reg;
+-    s->xml = xml;
++    s->xml = feature->xml;
+ 
+     /* Add to end of list.  */
+-    cpu->gdb_num_regs += num_regs;
++    cpu->gdb_num_regs += feature->num_regs;
+     *p = s;
+     if (g_pos) {
+         if (g_pos != s->base_reg) {
+             error_report("Error: Bad gdb register numbering for '%s', "
+-                         "expected %d got %d", xml, g_pos, s->base_reg);
++                         "expected %d got %d", feature->xml,
++                         g_pos, s->base_reg);
+         } else {
+             cpu->gdb_num_g_regs = cpu->gdb_num_regs;
+         }
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index fc0aa6f235..99040e0c4c 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -472,14 +472,14 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+          */
+ #ifdef TARGET_AARCH64
+         if (isar_feature_aa64_sve(&cpu->isar)) {
+-            int nreg = arm_gen_dynamic_svereg_feature(cs)->num_regs;
++            GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs);
+             gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
+-                                     aarch64_gdb_set_sve_reg, nreg,
+-                                     "sve-registers.xml", 0);
++                                     aarch64_gdb_set_sve_reg, feature, 0);
+         } else {
+             gdb_register_coprocessor(cs, aarch64_gdb_get_fpu_reg,
+                                      aarch64_gdb_set_fpu_reg,
+-                                     34, "aarch64-fpu.xml", 0);
++                                     gdb_find_static_feature("aarch64-fpu.xml"),
++                                     0);
+         }
+         /*
+          * Note that we report pauth information via the feature name
+@@ -490,19 +490,22 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+         if (isar_feature_aa64_pauth(&cpu->isar)) {
+             gdb_register_coprocessor(cs, aarch64_gdb_get_pauth_reg,
+                                      aarch64_gdb_set_pauth_reg,
+-                                     4, "aarch64-pauth.xml", 0);
++                                     gdb_find_static_feature("aarch64-pauth.xml"),
++                                     0);
+         }
+ #endif
+     } else {
+         if (arm_feature(env, ARM_FEATURE_NEON)) {
+             gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_reg,
+-                                     49, "arm-neon.xml", 0);
++                                     gdb_find_static_feature("arm-neon.xml"),
++                                     0);
+         } else if (cpu_isar_feature(aa32_simd_r32, cpu)) {
+             gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_reg,
+-                                     33, "arm-vfp3.xml", 0);
++                                     gdb_find_static_feature("arm-vfp3.xml"),
++                                     0);
+         } else if (cpu_isar_feature(aa32_vfp_simd, cpu)) {
+             gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_reg,
+-                                     17, "arm-vfp.xml", 0);
++                                     gdb_find_static_feature("arm-vfp.xml"), 0);
+         }
+         if (!arm_feature(env, ARM_FEATURE_M)) {
+             /*
+@@ -510,29 +513,28 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+              * expose to gdb.
+              */
+             gdb_register_coprocessor(cs, vfp_gdb_get_sysreg, vfp_gdb_set_sysreg,
+-                                     2, "arm-vfp-sysregs.xml", 0);
++                                     gdb_find_static_feature("arm-vfp-sysregs.xml"),
++                                     0);
+         }
+     }
+     if (cpu_isar_feature(aa32_mve, cpu) && tcg_enabled()) {
+         gdb_register_coprocessor(cs, mve_gdb_get_reg, mve_gdb_set_reg,
+-                                 1, "arm-m-profile-mve.xml", 0);
++                                 gdb_find_static_feature("arm-m-profile-mve.xml"),
++                                 0);
+     }
+     gdb_register_coprocessor(cs, arm_gdb_get_sysreg, arm_gdb_set_sysreg,
+-                             arm_gen_dynamic_sysreg_feature(cs)->num_regs,
+-                             "system-registers.xml", 0);
++                             arm_gen_dynamic_sysreg_feature(cs), 0);
+ 
+ #ifdef CONFIG_TCG
+     if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) {
+         gdb_register_coprocessor(cs,
+             arm_gdb_get_m_systemreg, arm_gdb_set_m_systemreg,
+-            arm_gen_dynamic_m_systemreg_feature(cs)->num_regs,
+-            "arm-m-system.xml", 0);
++            arm_gen_dynamic_m_systemreg_feature(cs), 0);
+ #ifndef CONFIG_USER_ONLY
+         if (arm_feature(env, ARM_FEATURE_M_SECURITY)) {
+             gdb_register_coprocessor(cs,
+                 arm_gdb_get_m_secextreg, arm_gdb_set_m_secextreg,
+-                arm_gen_dynamic_m_secextreg_feature(cs)->num_regs,
+-                "arm-m-secext.xml", 0);
++                arm_gen_dynamic_m_secextreg_feature(cs), 0);
+         }
+ #endif
+     }
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index b54162cbeb..6732efc5de 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -342,8 +342,7 @@ static void hexagon_cpu_realize(DeviceState *dev, Error **errp)
+ 
+     gdb_register_coprocessor(cs, hexagon_hvx_gdb_read_register,
+                              hexagon_hvx_gdb_write_register,
+-                             NUM_VREGS + NUM_QREGS,
+-                             "hexagon-hvx.xml", 0);
++                             gdb_find_static_feature("hexagon-hvx.xml"), 0);
+ 
+     qemu_init_vcpu(cs);
+     cpu_reset(cs);
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 0752fff924..2886b106bb 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -101,5 +101,5 @@ static int loongarch_gdb_set_fpu(CPULoongArchState *env,
+ void loongarch_cpu_register_gdb_regs_for_features(CPUState *cs)
+ {
+     gdb_register_coprocessor(cs, loongarch_gdb_get_fpu, loongarch_gdb_set_fpu,
+-                             41, "loongarch-fpu.xml", 0);
++                             gdb_find_static_feature("loongarch-fpu.xml"), 0);
+ }
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 0a1544cd68..675f2dcd5a 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -152,10 +152,10 @@ void m68k_cpu_init_gdb(M68kCPU *cpu)
+ 
+     if (m68k_feature(env, M68K_FEATURE_CF_FPU)) {
+         gdb_register_coprocessor(cs, cf_fpu_gdb_get_reg, cf_fpu_gdb_set_reg,
+-                                 11, "cf-fp.xml", 18);
++                                 gdb_find_static_feature("cf-fp.xml"), 18);
+     } else if (m68k_feature(env, M68K_FEATURE_FPU)) {
+-        gdb_register_coprocessor(cs, m68k_fpu_gdb_get_reg,
+-                                 m68k_fpu_gdb_set_reg, 11, "m68k-fp.xml", 18);
++        gdb_register_coprocessor(cs, m68k_fpu_gdb_get_reg, m68k_fpu_gdb_set_reg,
++                                 gdb_find_static_feature("m68k-fp.xml"), 18);
+     }
+     /* TODO: Add [E]MAC registers.  */
+ }
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 47f37c2519..c804622ab9 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -298,8 +298,9 @@ static void mb_cpu_initfn(Object *obj)
+ 
+     cpu_set_cpustate_pointers(cpu);
+     gdb_register_coprocessor(CPU(cpu), mb_cpu_gdb_read_stack_protect,
+-                             mb_cpu_gdb_write_stack_protect, 2,
+-                             "microblaze-stack-protect.xml", 0);
++                             mb_cpu_gdb_write_stack_protect,
++                             gdb_find_static_feature("microblaze-stack-protect.xml"),
++                             0);
+ 
+     set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
+ 
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 43de40ac36..9f2aad7aa9 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -567,22 +567,23 @@ void ppc_gdb_init(CPUState *cs, PowerPCCPUClass *pcc)
+ {
+     if (pcc->insns_flags & PPC_FLOAT) {
+         gdb_register_coprocessor(cs, gdb_get_float_reg, gdb_set_float_reg,
+-                                 33, "power-fpu.xml", 0);
++                                 gdb_find_static_feature("power-fpu.xml"), 0);
+     }
+     if (pcc->insns_flags & PPC_ALTIVEC) {
+         gdb_register_coprocessor(cs, gdb_get_avr_reg, gdb_set_avr_reg,
+-                                 34, "power-altivec.xml", 0);
++                                 gdb_find_static_feature("power-altivec.xml"),
++                                 0);
+     }
+     if (pcc->insns_flags & PPC_SPE) {
+         gdb_register_coprocessor(cs, gdb_get_spe_reg, gdb_set_spe_reg,
+-                                 34, "power-spe.xml", 0);
++                                 gdb_find_static_feature("power-spe.xml"), 0);
+     }
+     if (pcc->insns_flags2 & PPC2_VSX) {
+         gdb_register_coprocessor(cs, gdb_get_vsx_reg, gdb_set_vsx_reg,
+-                                 32, "power-vsx.xml", 0);
++                                 gdb_find_static_feature("power-vsx.xml"), 0);
+     }
+ #ifndef CONFIG_USER_ONLY
+     gdb_register_coprocessor(cs, gdb_get_spr_reg, gdb_set_spr_reg,
+-                             pcc->gdb_spr.num_regs, "power-spr.xml", 0);
++                             &pcc->gdb_spr, 0);
+ #endif
+ }
 diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-index 524bede865..cdae406751 100644
+index cdae406751..d4f9eb1516 100644
 --- a/target/riscv/gdbstub.c
 +++ b/target/riscv/gdbstub.c
-@@ -212,12 +212,13 @@ static int riscv_gdb_set_virtual(CPURISCVState *cs, uint8_t *mem_buf, int n)
-     return 0;
- }
- 
--static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
-+static GDBFeature *riscv_gen_dynamic_csr_feature(CPUState *cs)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
+@@ -305,28 +305,31 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
      CPURISCVState *env = &cpu->env;
--    GString *s = g_string_new(NULL);
-+    GDBFeatureBuilder builder;
-     riscv_csr_predicate_fn predicate;
-+    const char *name;
-     int bitsize = 16 << env->misa_mxl_max;
-     int i;
- 
-@@ -230,9 +231,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
-         bitsize = 64;
-     }
- 
--    g_string_printf(s, "<?xml version=\"1.0\"?>");
--    g_string_append_printf(s, "<!DOCTYPE feature SYSTEM \"gdb-target.dtd\">");
--    g_string_append_printf(s, "<feature name=\"org.gnu.gdb.riscv.csr\">");
-+    gdb_feature_builder_init(&builder, &cpu->dyn_csr_feature,
-+                             "org.gnu.gdb.riscv.csr", "riscv-csr.xml");
- 
-     for (i = 0; i < CSR_TABLE_SIZE; i++) {
-         if (env->priv_ver < csr_ops[i].min_priv_ver) {
-@@ -240,72 +240,63 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
-         }
-         predicate = csr_ops[i].predicate;
-         if (predicate && (predicate(env, i) == RISCV_EXCP_NONE)) {
--            if (csr_ops[i].name) {
--                g_string_append_printf(s, "<reg name=\"%s\"", csr_ops[i].name);
--            } else {
--                g_string_append_printf(s, "<reg name=\"csr%03x\"", i);
-+            g_autofree char *dynamic_name = NULL;
-+            name = csr_ops[i].name;
-+            if (!name) {
-+                dynamic_name = g_strdup_printf("csr%03x", i);
-+                name = dynamic_name;
-             }
--            g_string_append_printf(s, " bitsize=\"%d\"", bitsize);
--            g_string_append_printf(s, " regnum=\"%d\"/>", base_reg + i);
-+
-+            gdb_feature_builder_append_reg(&builder, name, bitsize,
-+                                           "int", NULL);
-         }
-     }
- 
--    g_string_append_printf(s, "</feature>");
--
--    cpu->dyn_csr_xml = g_string_free(s, false);
-+    gdb_feature_builder_end(&builder);
- 
- #if !defined(CONFIG_USER_ONLY)
-     env->debugger = false;
- #endif
- 
--    return CSR_TABLE_SIZE;
-+    return &cpu->dyn_csr_feature;
- }
- 
--static int ricsv_gen_dynamic_vector_xml(CPUState *cs, int base_reg)
-+static GDBFeature *ricsv_gen_dynamic_vector_feature(CPUState *cs)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
--    GString *s = g_string_new(NULL);
--    g_autoptr(GString) ts = g_string_new("");
-+    GDBFeatureBuilder builder;
-     int reg_width = cpu->cfg.vlen;
--    int num_regs = 0;
-     int i;
- 
--    g_string_printf(s, "<?xml version=\"1.0\"?>");
--    g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
--    g_string_append_printf(s, "<feature name=\"org.gnu.gdb.riscv.vector\">");
-+    gdb_feature_builder_init(&builder, &cpu->dyn_vreg_feature,
-+                             "org.gnu.gdb.riscv.vector", "riscv-vector.xml");
- 
-     /* First define types and totals in a whole VL */
-     for (i = 0; i < ARRAY_SIZE(vec_lanes); i++) {
-         int count = reg_width / vec_lanes[i].size;
--        g_string_printf(ts, "%s", vec_lanes[i].id);
--        g_string_append_printf(s,
--                               "<vector id=\"%s\" type=\"%s\" count=\"%d\"/>",
--                               ts->str, vec_lanes[i].gdb_type, count);
-+        gdb_feature_builder_append_tag(
-+            &builder, "<vector id=\"%s\" type=\"%s\" count=\"%d\"/>",
-+            vec_lanes[i].id, vec_lanes[i].gdb_type, count);
-     }
- 
-     /* Define unions */
--    g_string_append_printf(s, "<union id=\"riscv_vector\">");
-+    gdb_feature_builder_append_tag(&builder, "<union id=\"riscv_vector\">");
-     for (i = 0; i < ARRAY_SIZE(vec_lanes); i++) {
--        g_string_append_printf(s, "<field name=\"%c\" type=\"%s\"/>",
--                               vec_lanes[i].suffix,
--                               vec_lanes[i].id);
-+        gdb_feature_builder_append_tag(&builder,
-+                                       "<field name=\"%c\" type=\"%s\"/>",
-+                                       vec_lanes[i].suffix, vec_lanes[i].id);
-     }
--    g_string_append(s, "</union>");
-+    gdb_feature_builder_append_tag(&builder, "</union>");
- 
-     /* Define vector registers */
-     for (i = 0; i < 32; i++) {
--        g_string_append_printf(s,
--                               "<reg name=\"v%d\" bitsize=\"%d\""
--                               " regnum=\"%d\" group=\"vector\""
--                               " type=\"riscv_vector\"/>",
--                               i, reg_width, base_reg++);
--        num_regs++;
-+        gdb_feature_builder_append_reg(&builder, g_strdup_printf("v%d", i),
-+                                       reg_width, "riscv_vector", "vector");
-     }
- 
--    g_string_append_printf(s, "</feature>");
-+    gdb_feature_builder_end(&builder);
- 
--    cpu->dyn_vreg_xml = g_string_free(s, false);
--    return num_regs;
-+    return &cpu->dyn_vreg_feature;
- }
- 
- void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-@@ -320,10 +311,9 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-                                  32, "riscv-32bit-fpu.xml", 0);
+     if (env->misa_ext & RVD) {
+         gdb_register_coprocessor(cs, riscv_gdb_get_fpu, riscv_gdb_set_fpu,
+-                                 32, "riscv-64bit-fpu.xml", 0);
++                                 gdb_find_static_feature("riscv-64bit-fpu.xml"),
++                                 0);
+     } else if (env->misa_ext & RVF) {
+         gdb_register_coprocessor(cs, riscv_gdb_get_fpu, riscv_gdb_set_fpu,
+-                                 32, "riscv-32bit-fpu.xml", 0);
++                                 gdb_find_static_feature("riscv-32bit-fpu.xml"),
++                                 0);
      }
      if (env->misa_ext & RVV) {
--        int base_reg = cs->gdb_num_regs;
          gdb_register_coprocessor(cs, riscv_gdb_get_vector,
                                   riscv_gdb_set_vector,
--                                 ricsv_gen_dynamic_vector_xml(cs, base_reg),
-+                                 ricsv_gen_dynamic_vector_feature(cs)->num_regs,
-                                  "riscv-vector.xml", 0);
+-                                 ricsv_gen_dynamic_vector_feature(cs)->num_regs,
+-                                 "riscv-vector.xml", 0);
++                                 ricsv_gen_dynamic_vector_feature(cs), 0);
      }
      switch (env->misa_mxl_max) {
-@@ -343,9 +333,8 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-     }
+     case MXL_RV32:
+         gdb_register_coprocessor(cs, riscv_gdb_get_virtual,
+                                  riscv_gdb_set_virtual,
+-                                 1, "riscv-32bit-virtual.xml", 0);
++                                 gdb_find_static_feature("riscv-32bit-virtual.xml"),
++                                 0);
+         break;
+     case MXL_RV64:
+     case MXL_RV128:
+         gdb_register_coprocessor(cs, riscv_gdb_get_virtual,
+                                  riscv_gdb_set_virtual,
+-                                 1, "riscv-64bit-virtual.xml", 0);
++                                 gdb_find_static_feature("riscv-64bit-virtual.xml"),
++                                 0);
+         break;
+     default:
+         g_assert_not_reached();
+@@ -334,7 +337,6 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
  
      if (cpu->cfg.ext_icsr) {
--        int base_reg = cs->gdb_num_regs;
          gdb_register_coprocessor(cs, riscv_gdb_get_csr, riscv_gdb_set_csr,
--                                 riscv_gen_dynamic_csr_xml(cs, base_reg),
-+                                 riscv_gen_dynamic_csr_feature(cs)->num_regs,
-                                  "riscv-csr.xml", 0);
+-                                 riscv_gen_dynamic_csr_feature(cs)->num_regs,
+-                                 "riscv-csr.xml", 0);
++                                 riscv_gen_dynamic_csr_feature(cs), 0);
      }
  }
+diff --git a/target/s390x/gdbstub.c b/target/s390x/gdbstub.c
+index 6fbfd41bc8..02c388dc32 100644
+--- a/target/s390x/gdbstub.c
++++ b/target/s390x/gdbstub.c
+@@ -69,8 +69,6 @@ int s390_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ /* the values represent the positions in s390-acr.xml */
+ #define S390_A0_REGNUM 0
+ #define S390_A15_REGNUM 15
+-/* total number of registers in s390-acr.xml */
+-#define S390_NUM_AC_REGS 16
+ 
+ static int cpu_read_ac_reg(CPUS390XState *env, GByteArray *buf, int n)
+ {
+@@ -98,8 +96,6 @@ static int cpu_write_ac_reg(CPUS390XState *env, uint8_t *mem_buf, int n)
+ #define S390_FPC_REGNUM 0
+ #define S390_F0_REGNUM 1
+ #define S390_F15_REGNUM 16
+-/* total number of registers in s390-fpr.xml */
+-#define S390_NUM_FP_REGS 17
+ 
+ static int cpu_read_fp_reg(CPUS390XState *env, GByteArray *buf, int n)
+ {
+@@ -132,8 +128,6 @@ static int cpu_write_fp_reg(CPUS390XState *env, uint8_t *mem_buf, int n)
+ #define S390_V15L_REGNUM 15
+ #define S390_V16_REGNUM 16
+ #define S390_V31_REGNUM 31
+-/* total number of registers in s390-vx.xml */
+-#define S390_NUM_VREGS 32
+ 
+ static int cpu_read_vreg(CPUS390XState *env, GByteArray *buf, int n)
+ {
+@@ -172,8 +166,6 @@ static int cpu_write_vreg(CPUS390XState *env, uint8_t *mem_buf, int n)
+ /* the values represent the positions in s390-cr.xml */
+ #define S390_C0_REGNUM 0
+ #define S390_C15_REGNUM 15
+-/* total number of registers in s390-cr.xml */
+-#define S390_NUM_C_REGS 16
+ 
+ #ifndef CONFIG_USER_ONLY
+ static int cpu_read_c_reg(CPUS390XState *env, GByteArray *buf, int n)
+@@ -206,8 +198,6 @@ static int cpu_write_c_reg(CPUS390XState *env, uint8_t *mem_buf, int n)
+ #define S390_VIRT_CPUTM_REGNUM  1
+ #define S390_VIRT_BEA_REGNUM    2
+ #define S390_VIRT_PREFIX_REGNUM 3
+-/* total number of registers in s390-virt.xml */
+-#define S390_NUM_VIRT_REGS 4
+ 
+ static int cpu_read_virt_reg(CPUS390XState *env, GByteArray *mem_buf, int n)
+ {
+@@ -254,8 +244,6 @@ static int cpu_write_virt_reg(CPUS390XState *env, uint8_t *mem_buf, int n)
+ #define S390_VIRT_KVM_PFT_REGNUM    1
+ #define S390_VIRT_KVM_PFS_REGNUM    2
+ #define S390_VIRT_KVM_PFC_REGNUM    3
+-/* total number of registers in s390-virt-kvm.xml */
+-#define S390_NUM_VIRT_KVM_REGS 4
+ 
+ static int cpu_read_virt_kvm_reg(CPUS390XState *env, GByteArray *mem_buf, int n)
+ {
+@@ -303,8 +291,6 @@ static int cpu_write_virt_kvm_reg(CPUS390XState *env, uint8_t *mem_buf, int n)
+ #define S390_GS_GSD_REGNUM      1
+ #define S390_GS_GSSM_REGNUM     2
+ #define S390_GS_GSEPLA_REGNUM   3
+-/* total number of registers in s390-gs.xml */
+-#define S390_NUM_GS_REGS 4
+ 
+ static int cpu_read_gs_reg(CPUS390XState *env, GByteArray *buf, int n)
+ {
+@@ -322,33 +308,33 @@ void s390_cpu_gdb_init(CPUState *cs)
+ {
+     gdb_register_coprocessor(cs, cpu_read_ac_reg,
+                              cpu_write_ac_reg,
+-                             S390_NUM_AC_REGS, "s390-acr.xml", 0);
++                             gdb_find_static_feature("s390-acr.xml"), 0);
+ 
+     gdb_register_coprocessor(cs, cpu_read_fp_reg,
+                              cpu_write_fp_reg,
+-                             S390_NUM_FP_REGS, "s390-fpr.xml", 0);
++                             gdb_find_static_feature("s390-fpr.xml"), 0);
+ 
+     gdb_register_coprocessor(cs, cpu_read_vreg,
+                              cpu_write_vreg,
+-                             S390_NUM_VREGS, "s390-vx.xml", 0);
++                             gdb_find_static_feature("s390-vx.xml"), 0);
+ 
+     gdb_register_coprocessor(cs, cpu_read_gs_reg,
+                              cpu_write_gs_reg,
+-                             S390_NUM_GS_REGS, "s390-gs.xml", 0);
++                             gdb_find_static_feature("s390-gs.xml"), 0);
+ 
+ #ifndef CONFIG_USER_ONLY
+     gdb_register_coprocessor(cs, cpu_read_c_reg,
+                              cpu_write_c_reg,
+-                             S390_NUM_C_REGS, "s390-cr.xml", 0);
++                             gdb_find_static_feature("s390-cr.xml"), 0);
+ 
+     gdb_register_coprocessor(cs, cpu_read_virt_reg,
+                              cpu_write_virt_reg,
+-                             S390_NUM_VIRT_REGS, "s390-virt.xml", 0);
++                             gdb_find_static_feature("s390-virt.xml"), 0);
+ 
+     if (kvm_enabled()) {
+         gdb_register_coprocessor(cs, cpu_read_virt_kvm_reg,
+                                  cpu_write_virt_kvm_reg,
+-                                 S390_NUM_VIRT_KVM_REGS, "s390-virt-kvm.xml",
++                                 gdb_find_static_feature("s390-virt-kvm.xml"),
+                                  0);
+     }
+ #endif
 -- 
 2.42.0
 
