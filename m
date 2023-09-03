@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7059790AD0
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 06:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B96790AC7
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 06:32:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcem3-0002Ec-7Q; Sun, 03 Sep 2023 00:31:47 -0400
+	id 1qcelo-0002By-G8; Sun, 03 Sep 2023 00:31:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcelf-0002Ap-HY
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:23 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qceli-0002BG-Oq
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:27 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qceld-0006nx-2Y
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:23 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c0bae4da38so2111675ad.0
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 21:31:19 -0700 (PDT)
+ id 1qcelf-0006pn-Tb
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:26 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-56b0c5a140dso297625a12.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 21:31:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693715478; x=1694320278;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693715482; x=1694320282;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2Hs61unU0rT5Xs/IozPbclEmnlWYOJEOWqFw7vuLJvQ=;
- b=DOjlg1TBOFZIDvwJEWHFTRR6o4M5Ed67nbauoNcPKe2sbNTJRxQl8g4g1ygqq+WY3a
- N5NUcm+Q61NsVLeWMmV4gZMGublAvBdvg0QV99pGGsUQBTRuwMoyxU7p3RU7ZoNohGxp
- dHu2fHzBCQwGfD8rUIIeeEzfcoX9or0ZcRBDff6ywhDbeH8UPk+M9DDSObtNIV7nDIf/
- KYffO8COlFEEKm40w5PsCmg13o1VZyBJKeP04SXZcZzBix3vpTw8DDSHq+PabuMdJLeZ
- Uopv7U1AUGF3YYqrs9OcPzZL0FaDWOFFWxd/iUiPR4YlFRpGvpo2f7u7ljsAn36qlxWf
- 5CEQ==
+ bh=RZQXbCNxDHIujONx3PLPXTvpqp/0QLYa35wG6AhFq4M=;
+ b=1y4j/zxKlsPs+vsDl8OUgVk97V+GOQFfWU8g0TMUdI5tYhL4apHStJf+Wj6cg+xkbF
+ macjTrcngLcP8GxVPCn2bQBcNczBVV4/69GO/jNOMRSE02YN1siplfGe5BcX3PWy1l8F
+ UQtbKuor1lTAhGbRzqcpQqrGJT2VwHn8fL35cRQmPlhRuL5RDw2D82+D8a3TdAt+8ZgW
+ Mm2lthYwxZT+ZZKJjXv8fn7Veqq02xbNukcJnt1xDCuUdbFoNnyQw5b95+JLS+NA5tiQ
+ 5YBe89aE5/qR+he+oDu/kh2jAWgrDwqJpvySLhOfFAtIMIJviiEEZ+IiR8fqtS8lx1ct
+ K03A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693715478; x=1694320278;
+ d=1e100.net; s=20221208; t=1693715482; x=1694320282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2Hs61unU0rT5Xs/IozPbclEmnlWYOJEOWqFw7vuLJvQ=;
- b=ORba22sWC65VOfleKUqUUYdMP4AuRuKd6Deu2+kUH/UsfibBnC6TjC8aftGPnDfOm9
- RdvkGGK7wgHas/Fx1laTQYJbUtyiZLrLFRW4MZjamGIF51nqQ7w/acDykGM9+UV6iPYV
- AUP6L5Qc+ubGD4OcXTqGQ+Q8GoT4GH2q+djQ/JpgyIiiqeslZrbq8e7yPRUMsAROY70I
- D0lNaSMIRuPIlX/avKj/iXWTavrOgQ/bT0BHzlkYVlp1kQ2UM/tmYfvfHEmXOwVppRC4
- ZVfJozghQG9/Ywazank20k6zWJHdaxVn/UcT++CXx/pVSqTpAIMjPNZyYVcrqUozi03s
- DkLg==
-X-Gm-Message-State: AOJu0YzdC568SwOA7gKtwtlfZ4hdJkR+Ti0Ck7mKeKYEJb3Ha1XnOJ61
- UTAw0fyEKSDI88gkrHHMxJv+Sg==
-X-Google-Smtp-Source: AGHT+IH8qzb6UjiEf5BGZdY1AOhxyxpCLqDSifqBg4gw201nEsKgoxM2C5hJnacsoXhsjaS/PWhCTQ==
-X-Received: by 2002:a17:902:b782:b0:1b5:674d:2aa5 with SMTP id
- e2-20020a170902b78200b001b5674d2aa5mr7081958pls.13.1693715478525; 
- Sat, 02 Sep 2023 21:31:18 -0700 (PDT)
+ bh=RZQXbCNxDHIujONx3PLPXTvpqp/0QLYa35wG6AhFq4M=;
+ b=ipbVDLZHxuYU0sB1eoVHshCMtibwL4QfWiPoqGZgKUXTnMuowoFNjYXumbnWLJV5hd
+ +JlYBCb1tw51UM3cW/FiTnmDE/82+3XK9UnlPYnhf7FvT6J5N5Ofuz+f8fttrnuc+PEP
+ AOCi2jT6U2TFl8k+EwJsVrIXRD3T1YA2okGqc/z8NkhkPgFnLlAFLXUmWviemYQ/qo/5
+ KmmRCmGlod+E0HbqWlheOSIwvL4Uzh/bkKOIxX9XjlJYc/lFGTaKyAobE9X38EOpt0Wv
+ vSr+L4r5WPzhXsntevKEmvEEzA/kMuH9dNiYZPU6wEksrTjI/7GTnv3IdOzQ0p5FU1pa
+ rRbQ==
+X-Gm-Message-State: AOJu0YyeVbq65EJdAt0LHaT/WFzcUsbdEq/4X5QUue2MOCUqln8OfdnT
+ DV5RbYJB8eBfo18nyvQFDRdCuQ==
+X-Google-Smtp-Source: AGHT+IHqmdC0JxIJB8jQgrGWCbh5/umNdna0LCQ+NXzF0UoZ6LOqfVkAGWhW31oZG+ppaxLYRBHMnw==
+X-Received: by 2002:a17:902:7449:b0:1c1:fe87:f550 with SMTP id
+ e9-20020a170902744900b001c1fe87f550mr6903294plt.7.1693715482232; 
+ Sat, 02 Sep 2023 21:31:22 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- iz2-20020a170902ef8200b001bb9f104328sm5295792plb.146.2023.09.02.21.31.16
+ iz2-20020a170902ef8200b001bb9f104328sm5295792plb.146.2023.09.02.21.31.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 21:31:18 -0700 (PDT)
+ Sat, 02 Sep 2023 21:31:21 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 1/8] contrib/plugins: Use GRWLock in execlog
-Date: Sun,  3 Sep 2023 13:30:11 +0900
-Message-ID: <20230903043030.20708-2-akihiko.odaki@daynix.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Subject: [PATCH 2/8] gdbstub: Introduce GDBFeature structure
+Date: Sun,  3 Sep 2023 13:30:12 +0900
+Message-ID: <20230903043030.20708-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230903043030.20708-1-akihiko.odaki@daynix.com>
 References: <20230903043030.20708-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,85 +102,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-execlog had the following comment:
-> As we could have multiple threads trying to do this we need to
-> serialise the expansion under a lock. Threads accessing already
-> created entries can continue without issue even if the ptr array
-> gets reallocated during resize.
+Before this change, the information from a XML file was stored in an
+array that is not descriptive. Introduce a dedicated structure type to
+make it easier to understand and to extend with more fields.
 
-However, when the ptr array gets reallocated, the other threads may have
-a stale reference to the old buffer. This results in use-after-free.
-
-Use GRWLock to properly fix this issue.
-
-Fixes: 3d7caf145e ("contrib/plugins: add execlog to log instruction execution and memory access")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- contrib/plugins/execlog.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ MAINTAINERS             |  2 +-
+ meson.build             |  2 +-
+ include/exec/gdbstub.h  |  9 ++++--
+ gdbstub/gdbstub.c       |  4 +--
+ stubs/gdbstub.c         |  6 ++--
+ scripts/feature_to_c.py | 48 ++++++++++++++++++++++++++++
+ scripts/feature_to_c.sh | 69 -----------------------------------------
+ 7 files changed, 62 insertions(+), 78 deletions(-)
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
 
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 7129d526f8..82dc2f584e 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -19,7 +19,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 12e59b6b27..514ac74101 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2826,7 +2826,7 @@ F: include/exec/gdbstub.h
+ F: include/gdbstub/*
+ F: gdb-xml/
+ F: tests/tcg/multiarch/gdbstub/
+-F: scripts/feature_to_c.sh
++F: scripts/feature_to_c.py
+ F: scripts/probe-gdb-support.py
  
- /* Store last executed instruction on each vCPU as a GString */
- static GPtrArray *last_exec;
--static GMutex expand_array_lock;
-+static GRWLock expand_array_lock;
+ Memory API
+diff --git a/meson.build b/meson.build
+index 98e68ef0b1..5c633f7e01 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3683,7 +3683,7 @@ common_all = static_library('common',
+                             dependencies: common_all.dependencies(),
+                             name_suffix: 'fa')
  
- static GPtrArray *imatches;
- static GArray *amatches;
-@@ -28,18 +28,16 @@ static GArray *amatches;
-  * Expand last_exec array.
-  *
-  * As we could have multiple threads trying to do this we need to
-- * serialise the expansion under a lock. Threads accessing already
-- * created entries can continue without issue even if the ptr array
-- * gets reallocated during resize.
-+ * serialise the expansion under a lock.
+-feature_to_c = find_program('scripts/feature_to_c.sh')
++feature_to_c = find_program('scripts/feature_to_c.py')
+ 
+ if targetos == 'darwin'
+   entitlement = find_program('scripts/entitlement.sh')
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 7d743fe1e9..3f08093321 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -10,6 +10,11 @@
+ #define GDB_WATCHPOINT_READ      3
+ #define GDB_WATCHPOINT_ACCESS    4
+ 
++typedef struct GDBFeature {
++    const char *xmlname;
++    const char *xml;
++} GDBFeature;
++
+ 
+ /* Get or set a register.  Returns the size of the register.  */
+ typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
+@@ -38,7 +43,7 @@ void gdb_set_stop_cpu(CPUState *cpu);
   */
- static void expand_last_exec(int cpu_index)
- {
--    g_mutex_lock(&expand_array_lock);
-+    g_rw_lock_writer_lock(&expand_array_lock);
-     while (cpu_index >= last_exec->len) {
-         GString *s = g_string_new(NULL);
-         g_ptr_array_add(last_exec, s);
+ extern bool gdb_has_xml;
+ 
+-/* in gdbstub-xml.c, generated by scripts/feature_to_c.sh */
+-extern const char *const xml_builtin[][2];
++/* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
++extern const GDBFeature gdb_static_features[];
+ 
+ #endif
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 6911b73c07..2772f07bbe 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -407,11 +407,11 @@ static const char *get_feature_xml(const char *p, const char **newp,
+         }
      }
--    g_mutex_unlock(&expand_array_lock);
-+    g_rw_lock_writer_unlock(&expand_array_lock);
+     for (i = 0; ; i++) {
+-        name = xml_builtin[i][0];
++        name = gdb_static_features[i].xmlname;
+         if (!name || (strncmp(name, p, len) == 0 && strlen(name) == len))
+             break;
+     }
+-    return name ? xml_builtin[i][1] : NULL;
++    return name ? gdb_static_features[i].xml : NULL;
  }
  
- /**
-@@ -51,8 +49,10 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-     GString *s;
+ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+diff --git a/stubs/gdbstub.c b/stubs/gdbstub.c
+index 2b7aee50d3..580e20702b 100644
+--- a/stubs/gdbstub.c
++++ b/stubs/gdbstub.c
+@@ -1,6 +1,6 @@
+ #include "qemu/osdep.h"
+-#include "exec/gdbstub.h"       /* xml_builtin */
++#include "exec/gdbstub.h"       /* gdb_static_features */
  
-     /* Find vCPU in array */
-+    g_rw_lock_reader_lock(&expand_array_lock);
-     g_assert(cpu_index < last_exec->len);
-     s = g_ptr_array_index(last_exec, cpu_index);
-+    g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Indicate type of memory access */
-     if (qemu_plugin_mem_is_store(info)) {
-@@ -80,10 +80,14 @@ static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
-     GString *s;
- 
-     /* Find or create vCPU in array */
-+    g_rw_lock_reader_lock(&expand_array_lock);
-     if (cpu_index >= last_exec->len) {
-+        g_rw_lock_reader_unlock(&expand_array_lock);
-         expand_last_exec(cpu_index);
-+        g_rw_lock_reader_lock(&expand_array_lock);
-     }
-     s = g_ptr_array_index(last_exec, cpu_index);
-+    g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Print previous instruction in cache */
-     if (s->len) {
+-const char *const xml_builtin[][2] = {
+-  { NULL, NULL }
++const GDBFeature gdb_static_features[] = {
++  { NULL }
+ };
+diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
+new file mode 100755
+index 0000000000..bcbcb83beb
+--- /dev/null
++++ b/scripts/feature_to_c.py
+@@ -0,0 +1,48 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++import os, sys
++
++def writeliteral(indent, bytes):
++    sys.stdout.write(' ' * indent)
++    sys.stdout.write('"')
++    quoted = True
++
++    for c in bytes:
++        if not quoted:
++            sys.stdout.write('\n')
++            sys.stdout.write(' ' * indent)
++            sys.stdout.write('"')
++            quoted = True
++
++        if c == b'"'[0]:
++            sys.stdout.write('\\"')
++        elif c == b'\\'[0]:
++            sys.stdout.write('\\\\')
++        elif c == b'\n'[0]:
++            sys.stdout.write('\\n"')
++            quoted = False
++        elif c >= 32 and c < 127:
++            sys.stdout.write(c.to_bytes(1, 'big').decode())
++        else:
++            sys.stdout.write(f'\{c:03o}')
++
++    if quoted:
++        sys.stdout.write('"')
++
++sys.stdout.write('#include "qemu/osdep.h"\n' \
++                 '#include "exec/gdbstub.h"\n' \
++                 '\n'
++                 'const GDBFeature gdb_static_features[] = {\n')
++
++for input in sys.argv[1:]:
++    with open(input, 'rb') as file:
++        read = file.read()
++
++    sys.stdout.write('    {\n')
++    writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
++    sys.stdout.write(',\n')
++    writeliteral(8, read)
++    sys.stdout.write('\n    },\n')
++
++sys.stdout.write('    { NULL }\n};\n')
+diff --git a/scripts/feature_to_c.sh b/scripts/feature_to_c.sh
+deleted file mode 100644
+index c1f67c8f6a..0000000000
+--- a/scripts/feature_to_c.sh
++++ /dev/null
+@@ -1,69 +0,0 @@
+-#!/bin/sh
+-
+-# Convert text files to compilable C arrays.
+-#
+-# Copyright (C) 2007 Free Software Foundation, Inc.
+-#
+-# This file is part of GDB.
+-#
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2 of the License, or
+-# (at your option) any later version.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, see <http://www.gnu.org/licenses/>.
+-
+-if test -z "$1"; then
+-  echo "Usage: $0 INPUTFILE..."
+-  exit 1
+-fi
+-
+-for input; do
+-  arrayname=xml_feature_$(echo $input | sed 's,.*/,,; s/[-.]/_/g')
+-
+-  ${AWK:-awk} 'BEGIN { n = 0
+-      printf "#include \"qemu/osdep.h\"\n"
+-      print "static const char '$arrayname'[] = {"
+-      for (i = 0; i < 255; i++)
+-        _ord_[sprintf("%c", i)] = i
+-    } {
+-      split($0, line, "");
+-      printf "  "
+-      for (i = 1; i <= length($0); i++) {
+-        c = line[i]
+-        if (c == "'\''") {
+-          printf "'\''\\'\'''\'', "
+-        } else if (c == "\\") {
+-          printf "'\''\\\\'\'', "
+-        } else if (_ord_[c] >= 32 && _ord_[c] < 127) {
+-	  printf "'\''%s'\'', ", c
+-        } else {
+-          printf "'\''\\%03o'\'', ", _ord_[c]
+-        }
+-        if (i % 10 == 0)
+-          printf "\n   "
+-      }
+-      printf "'\''\\n'\'', \n"
+-    } END {
+-      print "  0 };"
+-    }' < $input
+-done
+-
+-echo
+-echo '#include "exec/gdbstub.h"'
+-echo "const char *const xml_builtin[][2] = {"
+-
+-for input; do
+-  basename=$(echo $input | sed 's,.*/,,')
+-  arrayname=xml_feature_$(echo $input | sed 's,.*/,,; s/[-.]/_/g')
+-  echo "  { \"$basename\", $arrayname },"
+-done
+-
+-echo "  { (char *)0, (char *)0 }"
+-echo "};"
 -- 
 2.42.0
 
