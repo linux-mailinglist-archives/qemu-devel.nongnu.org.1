@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64486790AC9
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 06:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A5D790AC6
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 06:32:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcem6-0002GB-34; Sun, 03 Sep 2023 00:31:50 -0400
+	id 1qcem9-0002IB-H7; Sun, 03 Sep 2023 00:31:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcem1-0002Et-JV
+ id 1qcem0-0002Ep-RP
  for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:45 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcelv-0006zr-UR
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:45 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6bcb5df95c5so383727a34.1
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 21:31:39 -0700 (PDT)
+ id 1qcely-00070G-BH
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:44 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-56c2e840e70so268747a12.3
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 21:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693715499; x=1694320299;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693715501; x=1694320301;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JGIx5VmKC+qEqkrX7A0VzIiIuVMOabzMZ9XhVHygWtw=;
- b=nh0ZP+w7OjM1poJUNbqrJZ0QpD6tk/yYiQX4QHgzsMSUMRXw4+NONJH81DMqEaxYdU
- +ELScZmISITmQ+S+ebT5a6esJyInG+XSZfWb9ZNkTLetuAg90KDEe5l8KAKWU5Nss973
- e4ysDPBFLIEEcGN0udrssKOjyQc59WDWIuZYkh1tmwP7g7o5C1yISda5lUdpTLPf1C58
- L7XWs5Sj1g4RaJSAwsN6E4cnaKW9u7zffMDICUi301vmpnno0AjTYduEA8IM0EXqcx2r
- UwmcNfmWMOne93TB6+5H1CR6ZYF/hNYhk7zkvGgNiokvHII6OLaja2r+krpgwVPGYxIn
- XMxg==
+ bh=VEpkefa+vwrcbEzUpVuiGVWFL+7pW2dZSw9F43I190M=;
+ b=piHSXw+43F7E7TGvLNqsL84Tg8UAHzpuxPzUuyBQSAPvdXkj1AbZf55qxtQwqCcM1z
+ nB1QODNUHV86by+FPyPulWdQsYwnbEswq+PKbGQzsvg+b+hjFEsXEQb96WbGyLR13h8g
+ Jz+vNt9u7CrUjbBsAkb5Yba8ruhDz9APRg/PiVqSVUWXj0YTbzqplhoCa3NT8VJq+hGA
+ y49j7mYtV8eHWYjMh/KiEWKiLGJrsq79as31PfGXqEJ8pCCuXtMFzw52SeC/HMwB7bPa
+ ZYaJXuVKA/SLIaa36aNpg/CUgLl4x36un5ATbHBYkzZFkh01CGMjNffM+gQ7uG/goAKm
+ Ch2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693715499; x=1694320299;
+ d=1e100.net; s=20221208; t=1693715501; x=1694320301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JGIx5VmKC+qEqkrX7A0VzIiIuVMOabzMZ9XhVHygWtw=;
- b=EL/afcrGHgPq9+hcEYSyFmUFKiY9TSiMJ0tUuaJHl7UImMDLXNjO4tlB3Rba6H4GeK
- jtcQ8DL+aPQZ5iF64AKKPRPuCe7GAEORAuYo8t5m8kkNuIizWhHFY67J1hG6wF6g9877
- 92bhCU70nqhz2EQvYtpjZD6vdI6gLlH9byc7tltaaePBSsuKZ6pClLGrZbh2wHJHJiKL
- Y/BGnVJ2uRJ9540XEOiieHy7+mEW4N7gqaAWoBNjJDDpU8JabkOv6nmOL9nUsmaXctnr
- yc1wsWxdDM4SFJCEsmJG01Bes5M/0HlNOdma22a+lubFqUTBslifCXgA/OIrAZa0leFN
- RHTg==
-X-Gm-Message-State: AOJu0YzAkxL4DwpQpboIcVgek7HITTo7XhH8lW26rNDwhCaviUHtn1pf
- hY2qlDT3Lgyb6+rCvLonqsgHbg==
-X-Google-Smtp-Source: AGHT+IFQkakJ8PSvZSCptRrZmoLdXYWhZchavzY3Bbjb9riKNDi8Uw0rJR7gGrV4tpZInEngFR6ecg==
-X-Received: by 2002:a54:4e81:0:b0:3a7:2570:dcfc with SMTP id
- c1-20020a544e81000000b003a72570dcfcmr7919345oiy.43.1693715498840; 
- Sat, 02 Sep 2023 21:31:38 -0700 (PDT)
+ bh=VEpkefa+vwrcbEzUpVuiGVWFL+7pW2dZSw9F43I190M=;
+ b=JTGxcsK2QuCOmmJYraWVcz3Pc5iXE+7NuavYWWpHaWC7JKT4n7omPfSfHZ1RQeLlkN
+ t2nPZ0cudc69UjCq/dUJGYh6yH1TFhFbyC5tVguGQy03f/JwzUE5hQHIlsPTtT7ZjnC7
+ a9l48mBj24ILSRtyWxj2dMyASD8/qecH4K9AaZaleoJ39ZT5Twg/4bXXWLvScfeD4lJG
+ mNrk/5gGaPmR0Vwc1aoU9cZv/O2A1Q/MGLDo6evMBvZUjThCmPhBTnhe5YN+VTSdkPE4
+ CV9JTEmajwVEXk4dcRfyEBl2laEcR1KdZeMSexPlqjunTmfvVfFoQot5MrzDylC+aayC
+ Nv5Q==
+X-Gm-Message-State: AOJu0YxRnUN4/EXoam6gavqQDvvvR5Z0HErxlAWeSe1bgD08PcTRPeqL
+ J6o1gAGHRip0Sfzhv5QhBzwLrw==
+X-Google-Smtp-Source: AGHT+IGgh+1VfKLQaHmCsegaxJ/N/F1rIFb0Lzv4WKdJJBl902/x/DzzoZawowmQ7cAg86Skg0i2QA==
+X-Received: by 2002:a17:902:d3d5:b0:1b6:c229:c350 with SMTP id
+ w21-20020a170902d3d500b001b6c229c350mr7414253plb.18.1693715501143; 
+ Sat, 02 Sep 2023 21:31:41 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- iz2-20020a170902ef8200b001bb9f104328sm5295792plb.146.2023.09.02.21.31.36
+ iz2-20020a170902ef8200b001bb9f104328sm5295792plb.146.2023.09.02.21.31.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 21:31:38 -0700 (PDT)
+ Sat, 02 Sep 2023 21:31:40 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH 7/8] target/ppc: Remove references to gdb_has_xml
-Date: Sun,  3 Sep 2023 13:30:17 +0900
-Message-ID: <20230903043030.20708-8-akihiko.odaki@daynix.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 8/8] gdbstub: Remove gdb_has_xml variable
+Date: Sun,  3 Sep 2023 13:30:18 +0900
+Message-ID: <20230903043030.20708-9-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230903043030.20708-1-akihiko.odaki@daynix.com>
 References: <20230903043030.20708-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::330;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x330.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: none client-ip=2607:f8b0:4864:20::532;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,59 +100,100 @@ It's time to remove support for old GDB versions without XML support.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- target/ppc/gdbstub.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ include/exec/gdbstub.h |  8 --------
+ gdbstub/gdbstub.c      | 13 -------------
+ gdbstub/softmmu.c      |  1 -
+ gdbstub/user.c         |  1 -
+ 4 files changed, 23 deletions(-)
 
-diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-index 72df36ca06..ec5731e5d6 100644
---- a/target/ppc/gdbstub.c
-+++ b/target/ppc/gdbstub.c
-@@ -54,12 +54,6 @@ static int ppc_gdb_register_len(int n)
-     case 0 ... 31:
-         /* gprs */
-         return sizeof(target_ulong);
--    case 32 ... 63:
--        /* fprs */
--        if (gdb_has_xml) {
--            return 0;
--        }
--        return 8;
-     case 66:
-         /* cr */
-     case 69:
-@@ -74,12 +68,6 @@ static int ppc_gdb_register_len(int n)
-     case 68:
-         /* ctr */
-         return sizeof(target_ulong);
--    case 70:
--        /* fpscr */
--        if (gdb_has_xml) {
--            return 0;
--        }
--        return sizeof(target_ulong);
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 3f08093321..ecbc60a934 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -35,14 +35,6 @@ int gdbserver_start(const char *port_or_device);
+ 
+ void gdb_set_stop_cpu(CPUState *cpu);
+ 
+-/**
+- * gdb_has_xml:
+- * This is an ugly hack to cope with both new and old gdb.
+- * If gdb sends qXfer:features:read then assume we're talking to a newish
+- * gdb that understands target descriptions.
+- */
+-extern bool gdb_has_xml;
+-
+ /* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
+ extern const GDBFeature gdb_static_features[];
+ 
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 3f97dc66e5..61c811f42b 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -75,8 +75,6 @@ void gdb_init_gdbserver_state(void)
+     gdbserver_state.sstep_flags &= gdbserver_state.supported_sstep_flags;
+ }
+ 
+-bool gdb_has_xml;
+-
+ /* writes 2*len+1 bytes in buf */
+ void gdb_memtohex(GString *buf, const uint8_t *mem, int len)
+ {
+@@ -1054,11 +1052,6 @@ static void handle_set_reg(GArray *params, void *user_ctx)
+ {
+     int reg_size;
+ 
+-    if (!gdb_has_xml) {
+-        gdb_put_packet("");
+-        return;
+-    }
+-
+     if (params->len != 2) {
+         gdb_put_packet("E22");
+         return;
+@@ -1075,11 +1068,6 @@ static void handle_get_reg(GArray *params, void *user_ctx)
+ {
+     int reg_size;
+ 
+-    if (!gdb_has_xml) {
+-        gdb_put_packet("");
+-        return;
+-    }
+-
+     if (!params->len) {
+         gdb_put_packet("E14");
+         return;
+@@ -1542,7 +1530,6 @@ static void handle_query_xfer_features(GArray *params, void *user_ctx)
+         return;
+     }
+ 
+-    gdb_has_xml = true;
+     p = get_param(params, 0)->data;
+     xml = get_feature_xml(p, &p, process);
+     if (!xml) {
+diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+index 5282324764..42645d2220 100644
+--- a/gdbstub/softmmu.c
++++ b/gdbstub/softmmu.c
+@@ -97,7 +97,6 @@ static void gdb_chr_event(void *opaque, QEMUChrEvent event)
+ 
+         vm_stop(RUN_STATE_PAUSED);
+         replay_gdb_attached();
+-        gdb_has_xml = false;
+         break;
      default:
-         return 0;
-     }
-@@ -132,9 +120,6 @@ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
-     if (n < 32) {
-         /* gprs */
-         gdb_get_regl(buf, env->gpr[n]);
--    } else if (n < 64) {
--        /* fprs */
--        gdb_get_reg64(buf, *cpu_fpr_ptr(env, n - 32));
-     } else {
-         switch (n) {
-         case 64:
-@@ -158,9 +143,6 @@ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
-         case 69:
-             gdb_get_reg32(buf, cpu_read_xer(env));
-             break;
--        case 70:
--            gdb_get_reg32(buf, env->fpscr);
--            break;
-         }
-     }
-     mem_buf = buf->data + buf->len - r;
+         break;
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 5b375be1d9..7ab6e5d975 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -198,7 +198,6 @@ static void gdb_accept_init(int fd)
+     gdbserver_state.c_cpu = gdb_first_attached_cpu();
+     gdbserver_state.g_cpu = gdbserver_state.c_cpu;
+     gdbserver_user_state.fd = fd;
+-    gdb_has_xml = false;
+ }
+ 
+ static bool gdb_accept_socket(int gdb_fd)
 -- 
 2.42.0
 
