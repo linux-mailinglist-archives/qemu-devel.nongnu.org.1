@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A5D790AC6
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 06:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E89A3790ADE
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Sep 2023 07:05:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcem9-0002IB-H7; Sun, 03 Sep 2023 00:31:53 -0400
+	id 1qcfHF-0002eY-Rd; Sun, 03 Sep 2023 01:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcem0-0002Ep-RP
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:45 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1qcfH1-0002e6-Lj
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:03:47 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qcely-00070G-BH
- for qemu-devel@nongnu.org; Sun, 03 Sep 2023 00:31:44 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-56c2e840e70so268747a12.3
- for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 21:31:42 -0700 (PDT)
+ id 1qcfGy-0001ex-T0
+ for qemu-devel@nongnu.org; Sun, 03 Sep 2023 01:03:47 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-68c3ec0578bso216613b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Sep 2023 22:03:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693715501; x=1694320301;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693717423; x=1694322223;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VEpkefa+vwrcbEzUpVuiGVWFL+7pW2dZSw9F43I190M=;
- b=piHSXw+43F7E7TGvLNqsL84Tg8UAHzpuxPzUuyBQSAPvdXkj1AbZf55qxtQwqCcM1z
- nB1QODNUHV86by+FPyPulWdQsYwnbEswq+PKbGQzsvg+b+hjFEsXEQb96WbGyLR13h8g
- Jz+vNt9u7CrUjbBsAkb5Yba8ruhDz9APRg/PiVqSVUWXj0YTbzqplhoCa3NT8VJq+hGA
- y49j7mYtV8eHWYjMh/KiEWKiLGJrsq79as31PfGXqEJ8pCCuXtMFzw52SeC/HMwB7bPa
- ZYaJXuVKA/SLIaa36aNpg/CUgLl4x36un5ATbHBYkzZFkh01CGMjNffM+gQ7uG/goAKm
- Ch2A==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=C/aJJlprExbZmmAiyobRX92/BYN2SSv60j7BO9mWs38=;
+ b=r9Oa8Hzm05bcRmi+J3XO/GnoUN92+i5CwOYapw/f9+VkLk1m+o76GVipJg8zobdlj1
+ xN9vWyRCMjSy15tZGVzum8523OoymB487cQ9LQp+iWaF16b5SHv5g0jSn/eSaViSaMdM
+ 1UOSrHb0Z5AHtkHCglkcfXNrat1Q79dy75OAEok8ZmUcU4lf32P2naKoiT9QDOeIWhYQ
+ vZ60OsmO76u88TtbgApIHhedSWigOwJ7f3cpjjiTk/dbH04AlyZnLg6xayRscX1NEuTc
+ Bgz/AqssjpFslfR17PzjbiUBcrH1KCStbLnXp6/uUEtzGStaY3VxGLIgYDZxuYhw69Hk
+ p9eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693715501; x=1694320301;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VEpkefa+vwrcbEzUpVuiGVWFL+7pW2dZSw9F43I190M=;
- b=JTGxcsK2QuCOmmJYraWVcz3Pc5iXE+7NuavYWWpHaWC7JKT4n7omPfSfHZ1RQeLlkN
- t2nPZ0cudc69UjCq/dUJGYh6yH1TFhFbyC5tVguGQy03f/JwzUE5hQHIlsPTtT7ZjnC7
- a9l48mBj24ILSRtyWxj2dMyASD8/qecH4K9AaZaleoJ39ZT5Twg/4bXXWLvScfeD4lJG
- mNrk/5gGaPmR0Vwc1aoU9cZv/O2A1Q/MGLDo6evMBvZUjThCmPhBTnhe5YN+VTSdkPE4
- CV9JTEmajwVEXk4dcRfyEBl2laEcR1KdZeMSexPlqjunTmfvVfFoQot5MrzDylC+aayC
- Nv5Q==
-X-Gm-Message-State: AOJu0YxRnUN4/EXoam6gavqQDvvvR5Z0HErxlAWeSe1bgD08PcTRPeqL
- J6o1gAGHRip0Sfzhv5QhBzwLrw==
-X-Google-Smtp-Source: AGHT+IGgh+1VfKLQaHmCsegaxJ/N/F1rIFb0Lzv4WKdJJBl902/x/DzzoZawowmQ7cAg86Skg0i2QA==
-X-Received: by 2002:a17:902:d3d5:b0:1b6:c229:c350 with SMTP id
- w21-20020a170902d3d500b001b6c229c350mr7414253plb.18.1693715501143; 
- Sat, 02 Sep 2023 21:31:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693717423; x=1694322223;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=C/aJJlprExbZmmAiyobRX92/BYN2SSv60j7BO9mWs38=;
+ b=ZtmdlloI39c+KwipA1SjPXYIi9sb3nlNCCDoAODP5RlQIj4syNy86rxsHcruPuFJw/
+ mHnGs4j1pQ5LNDFrDmeue/ToQWM9oB95RFk88uxMVxcqNo1T8HvMAVb0M1r/h+puxXiy
+ CeXF3ku6Yyub9QRD59epopwNUABDwHTp4qaRp3bomL5sSesst4QhyRvVoUeor/R/M/Fm
+ S/adCnXUW24xhbIAmJ4I+wqR+Ayx4SxXDhng327UhWE/Noq2LEcrBX2gW2izPvW69dSW
+ 8uXHW1ul7gzjhG9iZiO3LfW0AnhqOcOQl7IJGoH2j9uoEKWh9EbZtfZktWfwfKecIQn6
+ W9sQ==
+X-Gm-Message-State: AOJu0YxKgjxgtGcg12ELx7Nm0PGyWOHTUtmMNwbKHEL+HfPQLMu5Rh/w
+ 0JWdhfR5nfyyYuXZu3OYobaSzQ==
+X-Google-Smtp-Source: AGHT+IFfoe8UH+L/dlZ3mXoFjPnjrlLu1HXVN6rSaRHBnGuVIl+/zAQXXCusd2+A98/PDdw1vwmLsQ==
+X-Received: by 2002:a05:6300:8002:b0:140:8537:85c1 with SMTP id
+ an2-20020a056300800200b00140853785c1mr5448155pzc.28.1693717423220; 
+ Sat, 02 Sep 2023 22:03:43 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- iz2-20020a170902ef8200b001bb9f104328sm5295792plb.146.2023.09.02.21.31.39
+ l11-20020a170902f68b00b001b8af7f632asm5324835plg.176.2023.09.02.22.03.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Sep 2023 21:31:40 -0700 (PDT)
+ Sat, 02 Sep 2023 22:03:42 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 8/8] gdbstub: Remove gdb_has_xml variable
-Date: Sun,  3 Sep 2023 13:30:18 +0900
-Message-ID: <20230903043030.20708-9-akihiko.odaki@daynix.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v6 00/18] plugins: Allow to read registers
+Date: Sun,  3 Sep 2023 14:03:08 +0900
+Message-ID: <20230903050338.35256-1-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230903043030.20708-1-akihiko.odaki@daynix.com>
-References: <20230903043030.20708-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::532;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::430;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,105 +92,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GDB has XML support since 6.7 which was released in 2007.
-It's time to remove support for old GDB versions without XML support.
+Based-on: <20230903043030.20708-1-akihiko.odaki@daynix.com>
+("[PATCH 0/8] gdbstub and TCG plugin improvements")
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/exec/gdbstub.h |  8 --------
- gdbstub/gdbstub.c      | 13 -------------
- gdbstub/softmmu.c      |  1 -
- gdbstub/user.c         |  1 -
- 4 files changed, 23 deletions(-)
+I and other people in the University of Tokyo, where I research processor
+design, found TCG plugins are very useful for processor design exploration.
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 3f08093321..ecbc60a934 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -35,14 +35,6 @@ int gdbserver_start(const char *port_or_device);
- 
- void gdb_set_stop_cpu(CPUState *cpu);
- 
--/**
-- * gdb_has_xml:
-- * This is an ugly hack to cope with both new and old gdb.
-- * If gdb sends qXfer:features:read then assume we're talking to a newish
-- * gdb that understands target descriptions.
-- */
--extern bool gdb_has_xml;
--
- /* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
- extern const GDBFeature gdb_static_features[];
- 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 3f97dc66e5..61c811f42b 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -75,8 +75,6 @@ void gdb_init_gdbserver_state(void)
-     gdbserver_state.sstep_flags &= gdbserver_state.supported_sstep_flags;
- }
- 
--bool gdb_has_xml;
--
- /* writes 2*len+1 bytes in buf */
- void gdb_memtohex(GString *buf, const uint8_t *mem, int len)
- {
-@@ -1054,11 +1052,6 @@ static void handle_set_reg(GArray *params, void *user_ctx)
- {
-     int reg_size;
- 
--    if (!gdb_has_xml) {
--        gdb_put_packet("");
--        return;
--    }
--
-     if (params->len != 2) {
-         gdb_put_packet("E22");
-         return;
-@@ -1075,11 +1068,6 @@ static void handle_get_reg(GArray *params, void *user_ctx)
- {
-     int reg_size;
- 
--    if (!gdb_has_xml) {
--        gdb_put_packet("");
--        return;
--    }
--
-     if (!params->len) {
-         gdb_put_packet("E14");
-         return;
-@@ -1542,7 +1530,6 @@ static void handle_query_xfer_features(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    gdb_has_xml = true;
-     p = get_param(params, 0)->data;
-     xml = get_feature_xml(p, &p, process);
-     if (!xml) {
-diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-index 5282324764..42645d2220 100644
---- a/gdbstub/softmmu.c
-+++ b/gdbstub/softmmu.c
-@@ -97,7 +97,6 @@ static void gdb_chr_event(void *opaque, QEMUChrEvent event)
- 
-         vm_stop(RUN_STATE_PAUSED);
-         replay_gdb_attached();
--        gdb_has_xml = false;
-         break;
-     default:
-         break;
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 5b375be1d9..7ab6e5d975 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -198,7 +198,6 @@ static void gdb_accept_init(int fd)
-     gdbserver_state.c_cpu = gdb_first_attached_cpu();
-     gdbserver_state.g_cpu = gdbserver_state.c_cpu;
-     gdbserver_user_state.fd = fd;
--    gdb_has_xml = false;
- }
- 
- static bool gdb_accept_socket(int gdb_fd)
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
+
+The reuse of gdbstub code ensures the long-term stability of the TCG plugin
+interface for register access without incurring a burden to maintain yet
+another interface for register access.
+
+This process to add TCG plugin involves four major changes. The first one
+is to add GDBFeature structure that represents a GDB feature, which usually
+includes registers. GDBFeature can be generated from static XML files or
+dynamically generated by architecture-specific code. In fact, this is a
+refactoring independent of the feature this series adds, and potentially
+it's benefitial even without the plugin feature. The plugin feature will
+utilize this new structure to describe registers exposed to plugins.
+
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
+
+The third one is to actually make registers readable for plugins.
+
+The last one is to allow to implement a QEMU plugin in C++. A plugin that
+I'll describe later is written in C++.
+
+The below is a summary of patches:
+Patch [01, 03] introduces num_regs member to GDBFeature.
+Patch [04, 11] converts dynamic features to use GDBFeature.
+Patch 12 adds members useful to identify registers to GDBFeature.
+Patch 13 makes registers readable outside of gdbstub context.
+Patch [14, 16] add the feature to read registers from plugins.
+Patch [17, 18] make it possible to write plugins in C++.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution
+traces for Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+V5 -> V6:
+  Rebased to "[PATCH 0/8] gdbstub and TCG plugin improvements"
+
+V4 -> V5:
+  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
+  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
+  Fixed CSR name leak in target/riscv. (Richard Henderson)
+  Removed gdb_has_xml variable.
+
+V3 -> V4:
+  Added execlog changes I forgot to include in the last version.
+
+V2 -> V3:
+  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
+  Added patch "gdbstub: Dynamically allocate target.xml buffer".
+  (Alex Bennée)
+  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Bennée)
+  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
+  Changed gdb_find_static_feature() to abort on failure. (Alex Bennée)
+  Changed the execlog plugin to log the register value only when changed.
+  (Alex Bennée)
+  Dropped 0x prefixes for register value logs for conciseness.
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daudé)
+  Split long lines. (Philippe Mathieu-Daudé)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
+  Dropped RFC.
+
+Akihiko Odaki (18):
+  gdbstub: Add num_regs member to GDBFeature
+  gdbstub: Introduce gdb_find_static_feature()
+  hw/core/cpu: Replace gdb_core_xml_file with gdb_core_feature
+  gdbstub: Introduce GDBFeatureBuilder
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  gdbstub: Simplify XML lookup
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  gdbstub: Expose functions to read registers
+  cpu: Call plugin hooks only when ready
+  plugins: Allow to read registers
+  contrib/plugins: Allow to log registers
+  plugins: Support C++
+  contrib/plugins: Add cc plugin
+
+ docs/devel/tcg-plugins.rst   |  18 +++-
+ configure                    |  15 +++-
+ include/exec/gdbstub.h       |  34 ++++++-
+ include/hw/core/cpu.h        |   9 +-
+ include/qemu/qemu-plugin.h   |  69 +++++++++++++-
+ target/arm/cpu.h             |  26 ++----
+ target/arm/internals.h       |   2 +-
+ target/ppc/cpu-qom.h         |   3 +-
+ target/ppc/cpu.h             |   3 +-
+ target/riscv/cpu.h           |   4 +-
+ target/s390x/cpu.h           |   2 -
+ contrib/plugins/execlog.c    | 140 ++++++++++++++++++++++-------
+ cpu.c                        |  11 ---
+ gdbstub/gdbstub.c            | 145 ++++++++++++++++++++++++------
+ hw/core/cpu-common.c         |  10 +++
+ plugins/api.c                |  40 +++++++++
+ target/arm/cpu.c             |   5 +-
+ target/arm/cpu64.c           |   4 +-
+ target/arm/gdbstub.c         | 170 +++++++++++++++--------------------
+ target/arm/gdbstub64.c       |  90 ++++++++-----------
+ target/arm/tcg/cpu32.c       |   3 +-
+ target/avr/cpu.c             |   4 +-
+ target/hexagon/cpu.c         |   5 +-
+ target/i386/cpu.c            |   7 +-
+ target/loongarch/cpu.c       |   4 +-
+ target/loongarch/gdbstub.c   |   2 +-
+ target/m68k/cpu.c            |   7 +-
+ target/m68k/helper.c         |   6 +-
+ target/microblaze/cpu.c      |   9 +-
+ target/ppc/cpu_init.c        |   9 +-
+ target/ppc/gdbstub.c         |  62 ++++---------
+ target/riscv/cpu.c           |  21 +----
+ target/riscv/gdbstub.c       |  89 ++++++++----------
+ target/rx/cpu.c              |   4 +-
+ target/s390x/cpu.c           |   4 +-
+ target/s390x/gdbstub.c       |  28 ++----
+ contrib/plugins/Makefile     |   5 ++
+ contrib/plugins/cc.cc        |  17 ++++
+ plugins/qemu-plugins.symbols |   2 +
+ scripts/feature_to_c.py      |  58 +++++++++++-
+ tests/tcg/Makefile.target    |   3 +
+ 41 files changed, 713 insertions(+), 436 deletions(-)
+ create mode 100644 contrib/plugins/cc.cc
+
 -- 
 2.42.0
 
