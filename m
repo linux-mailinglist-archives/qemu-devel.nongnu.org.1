@@ -2,102 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235A4791992
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA542791994
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAS2-0002cH-Ve; Mon, 04 Sep 2023 10:21:15 -0400
+	id 1qdASh-0003TR-Rm; Mon, 04 Sep 2023 10:21:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qdARi-0002a3-Ay; Mon, 04 Sep 2023 10:20:55 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qdARf-0004kW-B5; Mon, 04 Sep 2023 10:20:54 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384E8QPe007877; Mon, 4 Sep 2023 14:20:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=G7EfF76p318BFmMe7QIRQ35pxvuo59k0nIPK10By/6g=;
- b=Jntk1D2OwdflvJdjLl6OrLeON+g4n5Cm1MvBmTVe84VimAm11dXAh0DnglbRX+7BUFhe
- Zuubo5wM885sWLAB+qqqn1uQ4lvEQo55/aAJJ2+Bd1kUs5jW3HJJAlAeExL7iPYcHl7I
- 7wt9I6BP++j4ylUWsLqpCQZGNSzRIOxMHFn24IHEoxoeUJUPGQYDd6OinkBAFvxDpyCd
- PHNZ6+uVh7LffmOVoVzy0FwyngqKcKFre6FBvW1f/xb9U1kC+jVu5ZiQ7EiAOGRWFUMs
- uyHfkj6H4aQb1SVLQVQ5WaydvDzlOhwaSytd5+gensOpag4G9VRAzzakgWlDSZ7b5dwo bg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw7sqeyaw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 14:20:45 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 384EAmiK016421;
- Mon, 4 Sep 2023 14:20:44 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw7sqeyaj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 14:20:44 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384EK422021459; Mon, 4 Sep 2023 14:20:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svfry3fh1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 14:20:43 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 384EKfbt11469566
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Sep 2023 14:20:41 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 371EA20040;
- Mon,  4 Sep 2023 14:20:41 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC3102004B;
- Mon,  4 Sep 2023 14:20:40 +0000 (GMT)
-Received: from [9.171.57.13] (unknown [9.171.57.13])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Sep 2023 14:20:40 +0000 (GMT)
-Message-ID: <b25fa578d588f29a7dc3f7817f0e6ea253647b11.camel@linux.ibm.com>
-Subject: Re: [risu PATCH 2/4] s390x: Add simple s390x.risu file
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>
-Date: Mon, 04 Sep 2023 16:20:40 +0200
-In-Reply-To: <20230904140040.33153-3-thuth@redhat.com>
-References: <20230904140040.33153-1-thuth@redhat.com>
- <20230904140040.33153-3-thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qdASf-0003SW-Dn
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:21:53 -0400
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qdASc-0004wC-Ve
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:21:53 -0400
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-6c0822f46a1so635318a34.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 07:21:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693837309; x=1694442109; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tSfdmgKzdx03PG8Cg2VNfjcO1w1vRh0EO/TOV/LuIxU=;
+ b=Ptp6kEYx3mJAMzB1J8AgCDFq0K3VU1HPEwETA77oasoWwh7As8GYsSmMhgKQM3JesV
+ XizYunaaDG7+tVEDBQk5Fk9ZvCW+q0gh3n8cJGIzMKf4mjX+/hyFm7d+QqI9vOkKX1ao
+ A2heeOauKXjzN5e31tWAmaK5+i9kYiHnlUuqQhbUXNL8KOkZUfryoyHBjgZMdTm5wJge
+ TDOmg8PyHocwmlNHSAK6O2ec9ZRqd54Vj6g0nZejIIZV3UYMuY7xCjwpb7vCZnYAsHa1
+ JkoiJpANQygQhZX+wGF0ImXwSofPwM+kKvmETNlBRIQBVv1XBer2UPXWMd7XWqAgR5Mp
+ pVEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693837309; x=1694442109;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tSfdmgKzdx03PG8Cg2VNfjcO1w1vRh0EO/TOV/LuIxU=;
+ b=daORvNYrXrBUOLNC4BeDnH5eVhCtiexhaPOIIVG0FDR2kMJrTsms9TjT+1VMV8pl29
+ DyRfAPluoeE4zIZyNAqy5Ol0CVZfdzPaSwNKUQzP6tawDJFBs5lrqbW6lp7J0zjLnG45
+ vXvqtPcNJt5e1w2yuPnAPnfZJJ1ZDk/ZaR4wr3b0Erz33eN5o5LHLtyrsMneTdHAprU4
+ hOkgZHySaF+8DJZWgj2IpUIioSz7vjUfoqs65BOnj5A7iG8KpuedpulywwdDBpr9uFMv
+ jx/kdaSOeUwO/LlM1EiPCkkHqxcrUQLUGU6dHpxWfJmkVhOVT7iJXox5N6y6yJNyLpgp
+ vTTA==
+X-Gm-Message-State: AOJu0Yy9L53H0vFEP1TIpRpIE8QU+UZstqNoEIn5lh9T9KeUp5suVi8A
+ FcO2xUkn47f8viJPvK5scmIHqA==
+X-Google-Smtp-Source: AGHT+IHEwkU9fnev1bERCGzDbMFLyS/Ghm8ix4KCkSPriQCMHS8HqrjNW18bWGE84+NR/5J33dl2pA==
+X-Received: by 2002:a9d:7dd3:0:b0:6b9:350e:4051 with SMTP id
+ k19-20020a9d7dd3000000b006b9350e4051mr10558158otn.4.1693837309027; 
+ Mon, 04 Sep 2023 07:21:49 -0700 (PDT)
+Received: from [192.168.68.108] ([177.94.15.194])
+ by smtp.gmail.com with ESMTPSA id
+ a18-20020a05683012d200b006bee542e840sm4561581otq.1.2023.09.04.07.21.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 07:21:48 -0700 (PDT)
+Message-ID: <04487f2f-3fc9-7bc3-1083-9f6328a18925@ventanamicro.com>
+Date: Mon, 4 Sep 2023 11:21:44 -0300
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OIt0zypOK4UAhBaqrhSXT5NjFSfvA63a
-X-Proofpoint-ORIG-GUID: 9Z1u05iBkEhf2f_4pfv6T5amTBf-Ybfc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-04_07,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- phishscore=0 mlxlogscore=993 spamscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 adultscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309040126
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 16/20] target/riscv/tcg: move
+ riscv_cpu_add_misa_properties() to tcg-cpu.c
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230825130853.511782-1-dbarboza@ventanamicro.com>
+ <20230825130853.511782-17-dbarboza@ventanamicro.com>
+ <20230831-9135d7f6e2059b82be3f9300@orel>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230831-9135d7f6e2059b82be3f9300@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32d.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,19 +99,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-09-04 at 16:00 +0200, Thomas Huth wrote:
-> This only adds a limited set of s390x instructions for initial
-> testing.
-> More instructions will be added later.
->=20
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
-> =C2=A0s390x.risu | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
-> =C2=A01 file changed, 48 insertions(+)
-> =C2=A0create mode 100644 s390x.risu
 
-Can this be somehow automatically derived from
-target/s390x/tcg/insn-data.h.inc?
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+On 8/31/23 09:01, Andrew Jones wrote:
+> On Fri, Aug 25, 2023 at 10:08:49AM -0300, Daniel Henrique Barboza wrote:
+>> All code related to MISA TCG properties is also moved.
+>>
+>> At this point, all TCG properties handling is done in tcg-cpu.c, all KVM
+>> properties handling is done in kvm-cpu.c.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c         | 89 --------------------------------------
+>>   target/riscv/cpu.h         |  1 -
+>>   target/riscv/tcg/tcg-cpu.c | 84 +++++++++++++++++++++++++++++++++++
+>>   3 files changed, 84 insertions(+), 90 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 89b09a7e89..3c9db46837 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1201,49 +1201,6 @@ static void riscv_cpu_init(Object *obj)
+>>   #endif /* CONFIG_USER_ONLY */
+>>   }
+>>   
+>> -typedef struct RISCVCPUMisaExtConfig {
+>> -    const char *name;
+>> -    const char *description;
+>> -    target_ulong misa_bit;
+>> -    bool enabled;
+>> -} RISCVCPUMisaExtConfig;
+>> -
+>> -static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+>> -                                 void *opaque, Error **errp)
+>> -{
+>> -    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+>> -    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+>> -    RISCVCPU *cpu = RISCV_CPU(obj);
+>> -    CPURISCVState *env = &cpu->env;
+>> -    bool value;
+>> -
+>> -    if (!visit_type_bool(v, name, &value, errp)) {
+>> -        return;
+>> -    }
+>> -
+>> -    if (value) {
+>> -        env->misa_ext |= misa_bit;
+>> -        env->misa_ext_mask |= misa_bit;
+>> -    } else {
+>> -        env->misa_ext &= ~misa_bit;
+>> -        env->misa_ext_mask &= ~misa_bit;
+>> -    }
+>> -}
+>> -
+>> -static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+>> -                                 void *opaque, Error **errp)
+>> -{
+>> -    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+>> -    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+>> -    RISCVCPU *cpu = RISCV_CPU(obj);
+>> -    CPURISCVState *env = &cpu->env;
+>> -    bool value;
+>> -
+>> -    value = env->misa_ext & misa_bit;
+>> -
+>> -    visit_type_bool(v, name, &value, errp);
+>> -}
+>> -
+>>   typedef struct misa_ext_info {
+>>       const char *name;
+>>       const char *description;
+>> @@ -1304,52 +1261,6 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
+>>       return val;
+>>   }
+>>   
+>> -#define MISA_CFG(_bit, _enabled) \
+>> -    {.misa_bit = _bit, .enabled = _enabled}
+>> -
+>> -static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+>> -    MISA_CFG(RVA, true),
+>> -    MISA_CFG(RVC, true),
+>> -    MISA_CFG(RVD, true),
+>> -    MISA_CFG(RVF, true),
+>> -    MISA_CFG(RVI, true),
+>> -    MISA_CFG(RVE, false),
+>> -    MISA_CFG(RVM, true),
+>> -    MISA_CFG(RVS, true),
+>> -    MISA_CFG(RVU, true),
+>> -    MISA_CFG(RVH, true),
+>> -    MISA_CFG(RVJ, false),
+>> -    MISA_CFG(RVV, false),
+>> -    MISA_CFG(RVG, false),
+>> -};
+>> -
+>> -void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>> -{
+>> -    int i;
+>> -
+>> -    for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
+>> -        RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
+>> -        int bit = misa_cfg->misa_bit;
+>> -
+>> -        misa_cfg->name = riscv_get_misa_ext_name(bit);
+>> -        misa_cfg->description = riscv_get_misa_ext_description(bit);
+>> -
+>> -        /* Check if KVM already created the property */
+>> -        if (object_property_find(cpu_obj, misa_cfg->name)) {
+>> -            continue;
+>> -        }
+>> -
+>> -        object_property_add(cpu_obj, misa_cfg->name, "bool",
+>> -                            cpu_get_misa_ext_cfg,
+>> -                            cpu_set_misa_ext_cfg,
+>> -                            NULL, (void *)misa_cfg);
+>> -        object_property_set_description(cpu_obj, misa_cfg->name,
+>> -                                        misa_cfg->description);
+>> -        object_property_set_bool(cpu_obj, misa_cfg->name,
+>> -                                 misa_cfg->enabled, NULL);
+>> -    }
+>> -}
+>> -
+>>   #define MULTI_EXT_CFG_BOOL(_name, _prop, _defval) \
+>>       {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
+>>        .enabled = _defval}
+>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> index 74fbb33e09..4269523e24 100644
+>> --- a/target/riscv/cpu.h
+>> +++ b/target/riscv/cpu.h
+>> @@ -726,7 +726,6 @@ extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
+>>   extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
+>>   extern Property riscv_cpu_options[];
+>>   
+>> -void riscv_cpu_add_misa_properties(Object *cpu_obj);
+>>   void riscv_add_satp_mode_properties(Object *obj);
+>>   
+>>   /* CSR function table */
+>> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+>> index 68ce3cbcb9..8e3f55d3a6 100644
+>> --- a/target/riscv/tcg/tcg-cpu.c
+>> +++ b/target/riscv/tcg/tcg-cpu.c
+>> @@ -574,6 +574,90 @@ static bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
+>>       return true;
+>>   }
+>>   
+>> +typedef struct RISCVCPUMisaExtConfig {
+>> +    const char *name;
+>> +    const char *description;
+>> +    target_ulong misa_bit;
+>> +    bool enabled;
+>> +} RISCVCPUMisaExtConfig;
+>> +
+>> +static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+>> +                                 void *opaque, Error **errp)
+>> +{
+>> +    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+>> +    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>> +    CPURISCVState *env = &cpu->env;
+>> +    bool value;
+>> +
+>> +    if (!visit_type_bool(v, name, &value, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (value) {
+>> +        env->misa_ext |= misa_bit;
+>> +        env->misa_ext_mask |= misa_bit;
+>> +    } else {
+>> +        env->misa_ext &= ~misa_bit;
+>> +        env->misa_ext_mask &= ~misa_bit;
+>> +    }
+>> +}
+>> +
+>> +static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+>> +                                 void *opaque, Error **errp)
+>> +{
+>> +    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+>> +    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>> +    CPURISCVState *env = &cpu->env;
+>> +    bool value;
+>> +
+>> +    value = env->misa_ext & misa_bit;
+>> +
+>> +    visit_type_bool(v, name, &value, errp);
+>> +}
+>> +
+>> +#define MISA_CFG(_bit, _enabled) \
+>> +    {.misa_bit = _bit, .enabled = _enabled}
+>> +
+>> +static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+> 
+> Can this be const?
+
+At this moment it can't because we're setting 'name' and 'description' for
+each element down there in riscv_cpu_add_misa_properties().
+
+However, in a quick look it seems that we don't need these fields because we
+don't access 'name' or 'description' using the struct after the property is
+created.
+
+I'll take another look and, if that's indeed the case, I'll do a prep patch
+to make these changes before moving code in this patch. Thanks,
+
+
+Daniel
+
+> 
+>> +    MISA_CFG(RVA, true),
+>> +    MISA_CFG(RVC, true),
+>> +    MISA_CFG(RVD, true),
+>> +    MISA_CFG(RVF, true),
+>> +    MISA_CFG(RVI, true),
+>> +    MISA_CFG(RVE, false),
+>> +    MISA_CFG(RVM, true),
+>> +    MISA_CFG(RVS, true),
+>> +    MISA_CFG(RVU, true),
+>> +    MISA_CFG(RVH, true),
+>> +    MISA_CFG(RVJ, false),
+>> +    MISA_CFG(RVV, false),
+>> +    MISA_CFG(RVG, false),
+>> +};
+>> +
+>> +static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>> +{
+>> +    int i;
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
+>> +        RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
+>> +        int bit = misa_cfg->misa_bit;
+>> +
+>> +        misa_cfg->name = riscv_get_misa_ext_name(bit);
+>> +        misa_cfg->description = riscv_get_misa_ext_description(bit);
+>> +
+>> +        object_property_add(cpu_obj, misa_cfg->name, "bool",
+>> +                            cpu_get_misa_ext_cfg,
+>> +                            cpu_set_misa_ext_cfg,
+>> +                            NULL, (void *)misa_cfg);
+>> +        object_property_set_description(cpu_obj, misa_cfg->name,
+>> +                                        misa_cfg->description);
+>> +        object_property_set_bool(cpu_obj, misa_cfg->name,
+>> +                                 misa_cfg->enabled, NULL);
+>> +    }
+>> +}
+>> +
+>>   static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+>>                                     void *opaque, Error **errp)
+>>   {
+>> -- 
+>> 2.41.0
+>>
+>>
+> 
+> Otherwise,
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
