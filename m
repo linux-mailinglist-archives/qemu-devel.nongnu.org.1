@@ -2,101 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AC97919B0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29077919BD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:38:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAbM-0008Qr-0I; Mon, 04 Sep 2023 10:30:52 -0400
+	id 1qdAhI-00022H-Se; Mon, 04 Sep 2023 10:37:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qdAbI-0008QS-IL; Mon, 04 Sep 2023 10:30:49 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhF-00020y-2f
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:36:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qdAbC-0008R8-Nr; Mon, 04 Sep 2023 10:30:46 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384DjC9Y008170; Mon, 4 Sep 2023 14:30:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=fyVZya4k1lxhEMSvnlNsbGmV5aGgTjqDVA4Grcc3/l8=;
- b=G6IsA9hCSWeXk59SkK+Afgm5Ip7uB/ePnIL3AaWywPYidsHBgEGl0TPzMiBPFrPdaO/j
- UnWuPBH5sbIyZ+SDv8eeCtDUg5D/F7uJp3ENPcgUAehXeNcEbU2v6wTdoHd7kFKc4gnD
- rjn7BCkvu6EHCjSXC04mp9doH4+uarINgKhkNPf/wBpurnz02wyYHtxL36OnRzhLo0cm
- +BTLxUGx8r+gd7FvJVHUmofSQajwelXA/FfbzReV0dN9bixapyWg80YySrkuo/cRXcgf
- zRn2s85LO1Dof9uIQKdg1FyBaEsMn2/H+8Vb23N8R15L3SxxFYA75evRsRu4VFQuDW1N kw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw82bvrdx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 14:30:38 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 384E6rYZ014990;
- Mon, 4 Sep 2023 14:30:37 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw82bvrdj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 14:30:37 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384Du3C0011154; Mon, 4 Sep 2023 14:30:37 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3svj31arr4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 14:30:36 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 384EUZGf16515754
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Sep 2023 14:30:35 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E49120040;
- Mon,  4 Sep 2023 14:30:35 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BEBBE2004E;
- Mon,  4 Sep 2023 14:30:34 +0000 (GMT)
-Received: from [9.171.57.13] (unknown [9.171.57.13])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Sep 2023 14:30:34 +0000 (GMT)
-Message-ID: <d5e28e46b9fab10c0a505fd49f86c12481b9e185.camel@linux.ibm.com>
-Subject: Re: [risu PATCH 0/4] Add support for s390x to RISU
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>
-Date: Mon, 04 Sep 2023 16:30:34 +0200
-In-Reply-To: <20230904140040.33153-1-thuth@redhat.com>
-References: <20230904140040.33153-1-thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhC-0001hf-6Q
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:36:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693838211;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jMxt6vGsfcwGStCZcAjlV9B30rYtad+ngnlRUA9+Kf0=;
+ b=iqAuKYc2pAodx/AXmQydpSJq8Pw7pzztGBzIW/KVmCDrLveOgHj6Hfwn/60wA3cg0mve6m
+ nbgsoBOCG0Jo86Sk80Heq5fRViBjuuUG7FdxsccMOuakapQsU++6ja2RWCNcwkqju9/qX8
+ A5UudqRbbsMnAAbvGygO+90j5/izqqs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-385-IDZ1U89qN3Ceq-d6yrPX_w-1; Mon, 04 Sep 2023 10:36:50 -0400
+X-MC-Unique: IDZ1U89qN3Ceq-d6yrPX_w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F7B8805F05;
+ Mon,  4 Sep 2023 14:36:49 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.193.211])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B464A403165;
+ Mon,  4 Sep 2023 14:36:48 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	qemu-devel@nongnu.org
+Subject: [PULL 00/14] Block layer patches
+Date: Mon,  4 Sep 2023 16:36:29 +0200
+Message-ID: <20230904143643.259916-1-kwolf@redhat.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _yaC11pbCieQ4lD_2dbp3VPe6ogbdaOA
-X-Proofpoint-ORIG-GUID: XpGxPd-2068u2wi52LJGL3fTGnYMRNFk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-04_07,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 clxscore=1015 adultscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxlogscore=742 impostorscore=0 spamscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309040126
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,43 +74,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-09-04 at 16:00 +0200, Thomas Huth wrote:
-> =C2=A0Hi Peter!
->=20
-> Here are some patches that add basic support for s390x to RISU.
-> It's still quite limited, e.g. no support for load/store memory
-> operations yet, but the basics with simple 16-bit or 32-bit
-> instructions work already fine.
->=20
-> (In the long run, we'd need to support instructions with 48-bit
-> length on s390x, too, since most newer "interesting" instructions
-> like e.g. vector SIMD instructions are encoded with 48 bit. This
-> will require modifications to the generic code, too, so I limited
-> my initial implementation to 16-bit and 32-bit instruction length
-> support to keep the code self-contained in the s390x architecture
-> specific files)
+The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
 
-What's also interesting about SIMD, is that floating-point instructions
-clobber the upper parts of vector registers. I wonder if there is a way
-to systematically solve this? In my scripts the solution isn't pretty:
+  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
 
-            insn =3D gdb.execute("x/i $pc", to_string=3DTrue)
-            print(insn)
-            gdb.execute("stepi")
-            if "%f" in insn:
-               [ Skip comparison ]
+are available in the Git repository at:
 
-I think there are also a few cases in non-SIMD areas, where PoP
-basically says "if conditions X and Y hold, the output is
-unpredictable".
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
+for you to fetch changes up to bb86eb45297840c31dbc4df6bac02e50596f2376:
 
-One other thing - for not-so-near future - is it possible to integrate
-this with coverage-based fuzzers? I.e., somehow generate the
-instructions based on the coverage signal. Maybe even make sure that
-the signal comes from JITed code too. I wanted to try AFLplusplus in
-QEMU mode for this purpose (which would ultimately run QEMU in QEMU),
-but never found the time.
+  block: Remove unnecessary variable in bdrv_block_device_info (2023-09-04 11:03:28 +0200)
 
-[...]
+----------------------------------------------------------------
+Block layer patches
+
+- Process I/O in the current AioContext (instead of the BB AioContext)
+- Optimise reqs_lock to make multiqueue actually scale
+- iotests: Fix reference output for some tests after recent changes
+- vpc: Avoid dynamic stack allocation
+- Code cleanup, improved documentation
+
+----------------------------------------------------------------
+Dmitry Frolov (1):
+      vmdk: Clean up bdrv_open_child() return value check
+
+Fabiano Rosas (2):
+      block: Remove bdrv_query_block_node_info
+      block: Remove unnecessary variable in bdrv_block_device_info
+
+Fiona Ebner (1):
+      iotests: adapt test output for new qemu_cleanup() behavior
+
+Hanna Czenczek (1):
+      block: Be more verbose in create fallback
+
+Kevin Wolf (1):
+      qemu-img: Update documentation for compressed images
+
+Michael Tokarev (1):
+      qemu-img: omit errno value in error message
+
+Peter Maydell (1):
+      block/iscsi: Document why we use raw malloc()
+
+Philippe Mathieu-Daudé (1):
+      block/vpc: Avoid dynamic stack allocation
+
+Stefan Hajnoczi (5):
+      block: minimize bs->reqs_lock section in tracked_request_end()
+      block: change reqs_lock to QemuMutex
+      block: remove AIOCBInfo->get_aio_context()
+      block-backend: process I/O in the current AioContext
+      block-backend: process zoned requests in the current AioContext
+
+ docs/tools/qemu-img.rst            | 19 ++++++++++++--
+ include/block/aio.h                |  1 -
+ include/block/block-global-state.h |  2 ++
+ include/block/block-io.h           |  1 -
+ include/block/block_int-common.h   |  2 +-
+ include/block/qapi.h               |  3 ---
+ block.c                            | 10 ++++---
+ block/block-backend.c              | 35 +++++++------------------
+ block/io.c                         | 53 +++++++++++++++++++-------------------
+ block/iscsi.c                      |  1 +
+ block/qapi.c                       | 32 ++---------------------
+ block/vmdk.c                       |  2 +-
+ block/vpc.c                        |  4 +--
+ hw/nvme/ctrl.c                     |  7 -----
+ qemu-img.c                         |  4 +--
+ softmmu/dma-helpers.c              |  8 ------
+ util/thread-pool.c                 |  8 ------
+ tests/qemu-iotests/080.out         |  6 ++---
+ tests/qemu-iotests/109.out         | 24 +++++++++++++++++
+ tests/qemu-iotests/112.out         |  6 ++---
+ tests/qemu-iotests/185             |  2 ++
+ tests/qemu-iotests/185.out         |  4 +++
+ tests/qemu-iotests/244.out         |  2 +-
+ 23 files changed, 107 insertions(+), 129 deletions(-)
+
 
