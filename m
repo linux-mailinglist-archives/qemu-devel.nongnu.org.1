@@ -2,67 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A60791657
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587AA791676
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:54:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd7yW-0006lk-19; Mon, 04 Sep 2023 07:42:37 -0400
+	id 1qd88h-000203-7y; Mon, 04 Sep 2023 07:53:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qd7yP-0006lV-8u
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:42:29 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qd88b-0001xI-7u
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qd7yN-000649-0H
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:42:28 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qd88Y-0008EZ-9o
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693827745;
+ s=mimecast20190719; t=1693828376;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hM/U8uGbMUBuvfOwJEsKQBhoJ7uwhgVWu/D20rxgaKw=;
- b=JDNTQWrLGBh2vuFLt0uJIHrFJLZsrJIrMhf4WHA2olQC/3qEZDI8L8vUymKJUfgVVUBGbv
- Vg09lZCVvkrD+cWu/yPJmkaN8UkRasujfaCYQHUX+Ph5Ud6n7z3tx9/rCnypRac/WGpmeg
- A0H1l+dgmaK6nsyeZ6l8vsYf44t8dtE=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sEHeOqjSmcJEuubGVo2RvR0+YNacRwwIj4iFQ715WLo=;
+ b=ZTt6Xm5At2FHvv2RFPvzaHkAKnWBC40biPHc7jR8J4TndKgpQpUIAvGBnsTyGqIl4UYfZK
+ 7U+zduujQbJBqQpQwARpMd9e0NjVqseVfOeJC2TBQe+wevUhKovsPH847ko7YQF4YKCLtT
+ FRJ4LleNioa3ZzAZr/fEfTchIvjUNuQ=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-444-vU7oRnSaOSyN04_QlPohVw-1; Mon, 04 Sep 2023 07:42:22 -0400
-X-MC-Unique: vU7oRnSaOSyN04_QlPohVw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-408-kDV0wY02NrO1ww13K1G2_Q-1; Mon, 04 Sep 2023 07:52:55 -0400
+X-MC-Unique: kDV0wY02NrO1ww13K1G2_Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAA923804519;
- Mon,  4 Sep 2023 11:42:21 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.152])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 68F36C02996;
- Mon,  4 Sep 2023 11:42:21 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 103F818007A8; Mon,  4 Sep 2023 13:42:20 +0200 (CEST)
-Date: Mon, 4 Sep 2023 13:42:20 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: lixianglai <lixianglai@loongson.cn>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, 
- Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>
-Subject: Re: [PATCH] roms: Support compile the efi bios for loongarch
-Message-ID: <lx3zo3f2ox5d4cgi2rhce2mikiiqetdngvzhfaxx5tnsz65vtr@al2euj2s7m6j>
-References: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
- <41a215d5-4ae6-dfa3-a61e-c21fd8ca311d@linaro.org>
- <0cc3d20d-e849-9e2d-7560-fd694a412032@loongson.cn>
- <c9f1e257-0875-21cf-4bbb-f678aab6b60c@loongson.cn>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2B98380671E
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:52:54 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.42])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1CD4D40C6CCC;
+ Mon,  4 Sep 2023 11:52:53 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 00/52] UI patches
+Date: Mon,  4 Sep 2023 15:51:57 +0400
+Message-ID: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c9f1e257-0875-21cf-4bbb-f678aab6b60c@loongson.cn>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,27 +77,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-> The loongarch cross-compilation tool on the fedora38 operating system is a
-> bit old,
+The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
 
-The gcc 12 -> 13 update for the cross compilers landed meanwhile,
-right now we have:
+  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
 
-    binutils-loongarch64-linux-gnu.x86_64 2.39-4.fc38    @updates
-    gcc-loongarch64-linux-gnu.x86_64      13.2.1-1.fc38  @updates
+are available in the Git repository at:
 
-Trying to build the loongarch firmware throws errors
-(edk2/edk2-platforms repos, master branch, checkout
-being a few days old):
+  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
 
-build.py...
-/home/kraxel/projects/edk2-platforms/Platform/Loongson/LoongArchQemuPkg/Loongson.dsc(...): error 4000: Instance of library class [AcpiPlatformLib] is not found
-	in [/home/kraxel/projects/edk2/OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf] [LOONGARCH64]
-	consumed by module [/home/kraxel/projects/edk2/OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf]
+for you to fetch changes up to e38f4e976dd40c985bfe84230a627de9a108c9d3:
 
-take care,
-  Gerd
+  ui/gtk: fix leaks found wtih fuzzing (2023-09-04 15:37:50 +0400)
+
+----------------------------------------------------------------
+UI patch queue
+
+- misc fixes and improvement
+- cleanups and refactoring in ui/vc code
+
+----------------------------------------------------------------
+
+Bilal Elmoussaoui (2):
+  ui/dbus: Properly dispose touch/mouse dbus objects
+  ui/dbus: implement damage regions for GL
+
+Dmitry Frolov (1):
+  ui/gtk: fix leaks found wtih fuzzing
+
+Guoyi Tu (2):
+  ui/vdagent: call vdagent_disconnect() when agent connection is lost
+  ui/vdagent: Unregister input handler of mouse during finalization
+
+Marc-André Lureau (44):
+  ui: remove qemu_pixman_color() helper
+  ui: remove qemu_pixman_linebuf_copy()
+  ui/qmp: move screendump to ui-qmp-cmds.c
+  ui/vc: replace vc_chr_write() with generic qemu_chr_write()
+  ui/vc: drop have_text
+  ui/console: console_select() regardless of have_gfx
+  ui/console: call dpy_gfx_update() regardless of have_gfx
+  ui/console: drop have_gfx
+  ui/console: get the DisplayState from new_console()
+  ui/console: new_console() cannot fail
+  ui/vc: VC always has a DisplayState now
+  ui/vc: move VCChardev declaration at the top
+  ui/vc: replace variable with static text attributes default
+  ui/vc: fold text_update_xy()
+  ui/vc: pass VCCharDev to VC-specific functions
+  ui/vc: move VCCharDev specific fields out of QemuConsole
+  ui/console: use OBJECT_DEFINE_TYPE for QemuConsole
+  ui/console: change new_console() to use object initialization
+  ui/console: introduce different console objects
+  ui/console: instantiate a specific console type
+  ui/console: register the console from qemu_console_init()
+  ui/console: remove new_console()
+  ui/console: specialize console_lookup_unused()
+  ui/console: update the head from unused QemuConsole
+  ui/console: allocate ui_timer in QemuConsole
+  ui/vc: move cursor_timer initialization to QemuTextConsole class
+  ui/console: free more QemuConsole resources
+  ui/vc: move text fields to QemuTextConsole
+  ui/console: move graphic fields to QemuGraphicConsole
+  ui/vc: fold text_console_do_init() in vc_chr_open()
+  ui/vc: move some text console initialization to qom handlers
+  ui/console: simplify getting active_console size
+  ui/console: remove need for g_width/g_height
+  ui/vc: use common text console surface creation
+  ui/console: declare console types in console.h
+  ui/console: use QEMU_PIXMAN_COLOR helpers
+  ui/console: rename vga_ functions with qemu_console_
+  ui/console: assert(surface) where appropriate
+  ui/console: fold text_console_update_cursor_timer
+  ui/vc: skip text console resize when possible
+  ui/console: minor stylistic changes
+  ui/vc: move text console invalidate in helper
+  ui/vc: do not parse VC-specific options in Spice and GTK
+  ui/vc: change the argument for QemuTextConsole
+
+Peter Maydell (2):
+  ui/spice-display: Avoid dynamic stack allocation
+  ui/vnc-enc-hextile: Use static rather than dynamic length stack array
+
+Philippe Mathieu-Daudé (1):
+  ui/vnc-enc-tight: Avoid dynamic stack allocation
+
+ qapi/char.json                |    4 +
+ include/chardev/char.h        |    3 -
+ include/ui/console.h          |   34 +-
+ include/ui/qemu-pixman.h      |    9 +-
+ ui/vnc-enc-hextile-template.h |    8 +-
+ ui/console.c                  | 1125 ++++++++++++++-------------------
+ ui/dbus-console.c             |    2 +
+ ui/dbus-listener.c            |   32 +-
+ ui/gtk.c                      |    6 +-
+ ui/qemu-pixman.c              |   19 -
+ ui/sdl2-input.c               |    7 +-
+ ui/sdl2.c                     |    5 +-
+ ui/spice-app.c                |    7 +-
+ ui/spice-display.c            |    3 +-
+ ui/ui-qmp-cmds.c              |  187 ++++++
+ ui/vdagent.c                  |    6 +
+ ui/vnc-enc-tight.c            |   11 +-
+ 17 files changed, 776 insertions(+), 692 deletions(-)
+
+-- 
+2.41.0
 
 
