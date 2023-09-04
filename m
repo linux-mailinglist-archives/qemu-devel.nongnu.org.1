@@ -2,66 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E407791F08
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 23:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8EA791FA4
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 01:09:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdHE3-00066d-9j; Mon, 04 Sep 2023 17:35:15 -0400
+	id 1qdIgL-0005So-67; Mon, 04 Sep 2023 19:08:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qdHE0-00066H-A6
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 17:35:12 -0400
-Received: from mailout11.t-online.de ([194.25.134.85])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qdHDw-0004MA-MU
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 17:35:12 -0400
-Received: from fwd71.aul.t-online.de (fwd71.aul.t-online.de [10.223.144.97])
- by mailout11.t-online.de (Postfix) with SMTP id 4891F12FA1;
- Mon,  4 Sep 2023 23:34:52 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.25.148]) by fwd71.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qdHDd-1nBG0f0; Mon, 4 Sep 2023 23:34:49 +0200
-Message-ID: <dbc4b65f-364b-02cc-b182-9c2f592d2ff5@t-online.de>
-Date: Mon, 4 Sep 2023 23:34:48 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qdIgJ-0005Sg-50
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 19:08:31 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qdIgG-0005Hi-Qd
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 19:08:30 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-5694a117254so1275125a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 16:08:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693868906; x=1694473706; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CPBCydmOjcsYCPCijtUBDvjXJZ+Yr5VDf5dNG67d6/Q=;
+ b=YKRRZk3N0/UjpbvdrAg7k/BvZDp0yiUz06uKHGPq8mw6QOhoPZX72OojvyIxLFgfgh
+ IW93vUeam2szdUR3dp7jodWia3kaPxEt9tTT0gcBIzgMsB5/V1qtSVgl4oVCGOCBDtGn
+ 4OESrggTkUUg7u2uDU6EJfWu06Puzs9x50VLJnUuZqsvuIo280Ki9X+qmQpe5E+z62pN
+ 7TP8EyC1mqqhSWRJi86V6S6T1qyo46n+fX1+PtYcfYA56sbD+28kt3VKP/pd8xo23f2I
+ shnyWJIxc5GGaHIaD9UeD4k7WF2Lpt9ycGK1Zb9MhsYdLl/FkT0xryfm/2tB8NFBc9As
+ yPgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693868906; x=1694473706;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CPBCydmOjcsYCPCijtUBDvjXJZ+Yr5VDf5dNG67d6/Q=;
+ b=MgZH/ZcBzNyRZJvJLZeFfamMmJGuiwj5FKKHRNWlbGR50kKHnuiTIX5AN2SFRbpY85
+ LpACjWPjA+kh552PYbyKEooinkDo2G/Ti7N05U7h4nWMI/GrqmUFfkPCFRucMYSwVnPw
+ Zn/esZib8vLeHZnhCb5D3OFvJzhgqsIjcCLly14f0kVrE9U2D2zH6ES510eLT00mbbE6
+ JLHIw0N3oyqdYSBuBej3AFqllzyREHLDLR9bTwqVmMbY2jQgVmXIN/g8nr7lCtFieWlg
+ WcB6WN+Atde81o/0McnI/kaoCyBVcXaSlJxFY2umHiSDJkc/KXGBhCJE9Y2LtFntY209
+ VrcA==
+X-Gm-Message-State: AOJu0YyVVecKQUz8gjOn429BHou1KaUc9ClHdlMxI76TgVfty2vkw0ZC
+ EsuDze/lDf7Z2u2hm/xY/lSYdw==
+X-Google-Smtp-Source: AGHT+IGF/z2GiWn7V9K3aTHIkhuM6uoBostGhjsFJM8Xyzh+oMSeeRRB2v9Vqln9KdVEgaqc/2L04Q==
+X-Received: by 2002:a17:90b:e94:b0:271:c314:a591 with SMTP id
+ fv20-20020a17090b0e9400b00271c314a591mr10925383pjb.47.1693868906343; 
+ Mon, 04 Sep 2023 16:08:26 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ c15-20020a17090a020f00b0026b3a86b0d5sm8550201pjc.33.2023.09.04.16.08.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 16:08:25 -0700 (PDT)
+Message-ID: <f1284643-ac00-b40c-db93-c6699afe6893@linaro.org>
+Date: Mon, 4 Sep 2023 16:08:24 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v8 10/12] virtio-sound: implement audio output (TX)
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 01/20] tests/docker: Update docker-loongarch-cross
+ toolchain
 Content-Language: en-US
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud_=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?B?S8WRdsOhZ8OzICwgWm9sdMOhbg==?= <DirtY.iCE.hu@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <c94a9c1e65bb6bb43c58e5ccb982948424a3f3f2.1693252037.git.manos.pitsidianakis@linaro.org>
- <3e844c1a-4f44-7a99-cc7f-810881335e45@linaro.org>
- <0gj4g.pagm7im4jud8@linaro.org>
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <0gj4g.pagm7im4jud8@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, laurent@vivier.eu
+References: <20230829220228.928506-1-richard.henderson@linaro.org>
+ <20230829220228.928506-2-richard.henderson@linaro.org>
+ <87wmx6hw9c.fsf@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <87wmx6hw9c.fsf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1693863289-D0DBE2DD-1F1EBCEA/0/0 CLEAN NORMAL
-X-TOI-MSGID: 56ab7972-747c-4a3d-a368-039d05f19240
-Received-SPF: none client-ip=194.25.134.85; envelope-from=vr_qemu@t-online.de;
- helo=mailout11.t-online.de
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,88 +97,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 04.09.23 um 12:34 schrieb Manos Pitsidianakis:
-> On Mon, 04 Sep 2023 13:26, Philippe Mathieu-Daudé <philmd@linaro.org> 
-> wrote:
->
->>> +/*
->>> + * AUD_* output callback.
->>> + *
->>> + * @data: VirtIOSoundPCMStream stream
->>> + * @available: number of bytes that can be written with AUD_write()
->>> + */
->>> +static void virtio_snd_pcm_out_cb(void *data, int available)
->>> +{
->>> +    VirtIOSoundPCMStream *stream = data;
->>> +    VirtIOSoundPCMBlock *block;
->>> +    VirtIOSoundPCMBlock *next;
->>> +    size_t size;
->>> +
->>> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
->>> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
->>> +            for (;;) {
->>> +                size = MIN(block->size, available);
->>> +                size = AUD_write(stream->voice.out,
->>> +                        block->data + block->offset,
->>> +                        size);
+On 9/4/23 07:02, Alex Bennée wrote:
+> 
+> Richard Henderson <richard.henderson@linaro.org> writes:
+> 
+>> Update from clfs 5.0 to clfs 8.1, which includes updates
+>> to binutils 2.41, gcc 13.2, and glibc 2.38.
 >>
->> If AUD_write() returns 0, is this an infinite loop?
->
-> Hm since we have available > 0 bytes this wouldn't theoretically 
-> happen, but I see there are code paths that return 0 on bugs/failures, 
-> I will add the check.
-
-Before QEMU 8.0.0 it was possible that AUD_write() couldn't write the 
-last audio frame and sometimes 'available' was just miscalculated. Since 
-commit e1e6a6fcc9 ("audio: handle leftover audio frame from upsampling") 
-AUD_write() writes all 'available' bytes.
-
-With best regards,
-Volker
-
->
->>> +                block->size -= size;
->>> +                block->offset += size;
->>> +                if (!block->size) {
->>> +                    virtqueue_push(block->vq,
->>> +                            block->elem,
->>> +                            sizeof(block->elem));
->>> + virtio_notify(VIRTIO_DEVICE(stream->s),
->>> +                            block->vq);
->>> + QSIMPLEQ_REMOVE_HEAD(&stream->queue, entry);
->>> +                    g_free(block);
->>> +                    available -= size;
->>> +                    break;
->>> +                }
->>> +
->>> +                available -= size;
->>> +                if (!available) {
->>> +                    break;
->>> +                }
->>> +            }
->>> +            if (!available) {
->>> +                break;
->>> +            }
->>> +        }
->>> +    }
->>> +}
->>> +
->>> +/*
->>> + * Flush all buffer data from this stream's queue into the driver's 
->>> virtual
->>> + * queue.
->>> + *
->>> + * @stream: VirtIOSoundPCMStream *stream
->>> + */
->>> +static void virtio_snd_pcm_flush(VirtIOSoundPCMStream *stream)
->>> +{
->>> +    VirtIOSoundPCMBlock *block;
->>> +    VirtIOSoundPCMBlock *next;
->>> +
->>> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
->>> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
->>> +            AUD_write(stream->voice.out, block->data + 
->>> block->offset, block->size);
+>> See https://github.com/loongson/build-tools
 >>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+> 
+> Do you want this queued ahead of a vdso series?
+
+Yes, please.
+
+
+r~
 
 
