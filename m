@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0B6791915
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE18791950
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9us-0002MB-Pi; Mon, 04 Sep 2023 09:46:58 -0400
+	id 1qdA8r-00070H-Py; Mon, 04 Sep 2023 10:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd9ud-0002Le-AQ
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:46:43 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd9ua-0004jW-T4
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:46:43 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-52a4737a08fso1949902a12.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 06:46:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693835199; x=1694439999; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fPvaJPFVBpM2rTDHekNU1+xDkQWhPcj+1om5P1ebX5U=;
- b=efGA650s7uO17x5spO9Ul3xB7nmZGVSUDVieXK7Y0LlfTf5AADeSfWTqHVE27805XB
- Wlkbr9MJ8/ZXYcUA8NkJZi4SpFtugIfD3LkXcJ514D1v6wqzZSlYo8hZ7Dc1seuM9AwN
- u1LVusSFoMFSsWJ6hdtzoUXtnY3nAB2HnUfxYvbEExQhZ9nL2mNwwtIuMRZaiWV80v27
- 6ViqTlt6RGhHkw9DravZGDOihk0boB88lqRtLE9t5dNEYbV9+Wzgks/9WNKyfh+Q9Zvf
- VC52svCD+sq38D5koe+f/9uySFA/2obvh5GHgNkLWMz9MuNpAai0WfuROslbNWoyt15O
- R5Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693835199; x=1694439999;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fPvaJPFVBpM2rTDHekNU1+xDkQWhPcj+1om5P1ebX5U=;
- b=Cj/xScO1tAxDSqcU/oeMHddgcK3wTJQyuKFHfObSWfjIbfkBKMllKIkd83fCDbZzR2
- UVZ0vpMeJa3Lt7Qabqg7XJkMJMbfm0sCFO0bAFOhdqK0t7JliNjHHHQGschkI0/Y9pjq
- dDtKJzMIDPTG0GlrHEQLeNLb4GmXErawFjhEerTUaTbzIPoj96904+G1jgrto8KJEJS6
- 9WPixRciiTLod1SZUnWco1Lb+slh3B3RC4GmyVhZklmTtxFVRybE2aQGogPEmlaLwsWA
- B0kD2S6CjAPF0x/JzTMjVnFg4VXEgrGsJNwqTKClGOgQx9H0ph9uq5x21zTH86WOqjYT
- AHyw==
-X-Gm-Message-State: AOJu0YyH6EiijcgCiD/6Dr3Gy+me6mB/GfHv+lpD6l6jSmS+K8igxB1I
- aQHDKapNzBieRFtGZJU2JJTJsQ==
-X-Google-Smtp-Source: AGHT+IGPsJmFzFzg8M3jmQ4yBjnho2pweXGuDIIFXtx3fiLE1YUJh+QvDAfFY0GBivkkHqskkMDwgw==
-X-Received: by 2002:a17:906:738c:b0:9a2:ecd:d962 with SMTP id
- f12-20020a170906738c00b009a20ecdd962mr7271120ejl.4.1693835199538; 
- Mon, 04 Sep 2023 06:46:39 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.209.227])
- by smtp.gmail.com with ESMTPSA id
- gj17-20020a170906e11100b0098921e1b064sm6195235ejb.181.2023.09.04.06.46.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 06:46:38 -0700 (PDT)
-Message-ID: <6661927c-d054-5747-3ceb-c2c88fb01265@linaro.org>
-Date: Mon, 4 Sep 2023 15:46:37 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qdA8L-0006tI-1e
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:01:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qdA8G-00087r-UK
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:00:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693836046;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VFPBYL8WCBkvRDrgZ8SmpUkV+reUMUNEYijgnwmOz2c=;
+ b=N5xfPTlgteVjqFLuF3QxCyIc5ySmz8BDcOVjyMJKyuwaAeSx0cEDHwS4nlP4BdYlNoDgE9
+ 3TFlO9+hdVGTPAGU1xWKMTryCBgY95Pn+7jWzvj8uSW2me/Ynuf64T6bZSRUJJKnngqtdg
+ NRP5h3IX9Zubg23encALtHtyVC/MUqQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-574-21E2CggrNgq2i33E3upGjQ-1; Mon, 04 Sep 2023 10:00:44 -0400
+X-MC-Unique: 21E2CggrNgq2i33E3upGjQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2CA28759E2;
+ Mon,  4 Sep 2023 14:00:43 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.108])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 558971121318;
+ Mon,  4 Sep 2023 14:00:42 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
+Subject: [risu PATCH 0/4] Add support for s390x to RISU
+Date: Mon,  4 Sep 2023 16:00:36 +0200
+Message-Id: <20230904140040.33153-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 4/4] docs/cxl: Change to lowercase as others
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- linux-cxl@vger.kernel.org
-Cc: Li Zhijian <lizhijian@cn.fujitsu.com>, Dave Jiang <dave.jiang@intel.com>, 
- linuxarm@huawei.com
-References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
- <20230904132806.6094-5-Jonathan.Cameron@huawei.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230904132806.6094-5-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,18 +74,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/9/23 15:28, Jonathan Cameron wrote:
-> From: Li Zhijian <lizhijian@cn.fujitsu.com>
-> 
-> Using the same style as elsewhere for topology / topo
-> 
-> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
-> Link: https://lore.kernel.org/r/20230519085802.2106900-2-lizhijian@cn.fujitsu.com
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->   docs/system/devices/cxl.rst | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+ Hi Peter!
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Here are some patches that add basic support for s390x to RISU.
+It's still quite limited, e.g. no support for load/store memory
+operations yet, but the basics with simple 16-bit or 32-bit
+instructions work already fine.
+
+(In the long run, we'd need to support instructions with 48-bit
+length on s390x, too, since most newer "interesting" instructions
+like e.g. vector SIMD instructions are encoded with 48 bit. This
+will require modifications to the generic code, too, so I limited
+my initial implementation to 16-bit and 32-bit instruction length
+support to keep the code self-contained in the s390x architecture
+specific files)
+
+Thomas Huth (4):
+  s390x: Add basic s390x support to the C code
+  s390x: Add simple s390x.risu file
+  s390x: Add basic risugen perl module for s390x
+  s390x: Update the configure script for s390x support
+
+ configure            |   4 +-
+ risu_reginfo_s390x.c | 142 +++++++++++++++++++++++++++++++
+ risu_reginfo_s390x.h |  23 +++++
+ risu_s390x.c         |  48 +++++++++++
+ risugen_s390x.pm     | 194 +++++++++++++++++++++++++++++++++++++++++++
+ s390x.risu           |  48 +++++++++++
+ test_s390x.S         |  32 +++++++
+ 7 files changed, 490 insertions(+), 1 deletion(-)
+ create mode 100644 risu_reginfo_s390x.c
+ create mode 100644 risu_reginfo_s390x.h
+ create mode 100644 risu_s390x.c
+ create mode 100644 risugen_s390x.pm
+ create mode 100644 s390x.risu
+ create mode 100644 test_s390x.S
+
+-- 
+2.39.3
 
 
