@@ -2,80 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6116B791B8C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4A0791B94
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:28:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCPH-0000EV-55; Mon, 04 Sep 2023 12:26:31 -0400
+	id 1qdCQe-00014b-Gl; Mon, 04 Sep 2023 12:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCPE-0000CR-JW
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:26:28 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCPC-0001x4-91
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:26:28 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2bb9a063f26so24513161fa.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:26:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693844784; x=1694449584; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OjhTv8vbMu73CcpPM02r72GfZrrGI1QEZM2R3d07g/Y=;
- b=xM1qvK29Pa3ryXBNX9CjWc5Mg/RWh6qR/tuYO6oRzfbPi1sAY0WCFHzq8qufeh80ze
- e51+IR7iZ6IIo6XQPHleTGuRNTSEQrfrDfLJMdRvRfeOOq1BbJbZr22QlTprBSeddZ0I
- S49O12uyOY2eyehPorWAAFFWYA0FzwTH+cq/WBAYVZtzo+UB1gXJBrcMQRy2VkqDN+u0
- 5gxYfJqDgv8IU20uwbglLdWKzXYo7FhzMds5aZ12dyky0Vpsw7yU5eGr5zRsgosD+u4G
- 2MOqaDwKwU5foQp+5wo/o+emiKXcyRtFWThBbNZ+G11aqS78gswBlabNEd3Job1114fl
- 8g7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693844784; x=1694449584;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OjhTv8vbMu73CcpPM02r72GfZrrGI1QEZM2R3d07g/Y=;
- b=NR8bwLcu5VTnpvwCg42fm34rmz9vTnZAJ9kE2l+ZPjBjCI7MUXk2j4jQlwC3tpiUmx
- /93c+7XdG9KNUm5mabIhf3kZ2oV5/sCH0Ykj17yvpJJT5ubenlFX1Yni9le6hrYDMtwk
- +ZSWf2kfBIJ3O/g1EJ5DLBYeDk5qf0aIJoW4viVZ/axv6aB11bdUMibFINpWaB+fg+KY
- bNK2WLPZxQcaiaR8fwiFcOrxE/jqe8ruWwQoJ5iJES54OMJSQ8KFJtdnh3wm5mwfax+E
- SR3wxrnZMJas/1eumSqM4kNkWoURTvo13frmIcSwh2Jk68wlSHAwlQVtUcPko/a1ookS
- JrGg==
-X-Gm-Message-State: AOJu0YxDtHZUqJYqCk2A5XGSQml+6gqUfloOkdmconLjTBVZpHywGo5A
- 7+8UzxPkvuE/OmCujD3MStDm0UflqE9wAfNT6dE=
-X-Google-Smtp-Source: AGHT+IFSNfP2GQN4MBoQKW5RAfiA4YpPnSWnOXEkg7zNqLuta/ckMQyJRLlFoTJPKez0+vfIw4kQhA==
-X-Received: by 2002:a05:6512:210c:b0:4fe:5a4b:911d with SMTP id
- q12-20020a056512210c00b004fe5a4b911dmr6333069lfr.64.1693844784145; 
- Mon, 04 Sep 2023 09:26:24 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.209.227])
- by smtp.gmail.com with ESMTPSA id
- n25-20020ac24919000000b005007cf8968esm1800299lfi.264.2023.09.04.09.26.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 09:26:23 -0700 (PDT)
-Message-ID: <c73cfe51-c207-1279-4a99-428567edd6e8@linaro.org>
-Date: Mon, 4 Sep 2023 18:26:21 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdCQc-00014R-KX
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:27:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdCQa-0002As-Bm
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:27:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693844870;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=C9uDrjxVFB72qftBqrwTX3ciD/6S7vvPyadxqNGLc3o=;
+ b=WLUpOkCejy3vqQfdcAMJDrO1U73ibtIlTnqCiInS5IqqwcUlNe0ab2aaKWeN0ejEH/BFVd
+ FckoEXb1mHT1VZr1cpv8hBZkbr4yjiTNqFV17OyxFceEuNiH6sCSqtVtZWir+VETaAz9K5
+ Fs94K/eb2yBqyOLxWKu0HtoFa0tz58M=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-205-qNZh33n8NFuqEgW03QSqgg-1; Mon, 04 Sep 2023 12:27:47 -0400
+X-MC-Unique: qNZh33n8NFuqEgW03QSqgg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20CD5939ECB;
+ Mon,  4 Sep 2023 16:27:47 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.145])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 619182026D4B;
+ Mon,  4 Sep 2023 16:27:46 +0000 (UTC)
+Date: Mon, 4 Sep 2023 17:27:43 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org
+Subject: Re: [PATCH v2 16/22] crypto/cipher-gnutls.c: Clean up local variable
+ shadowing
+Message-ID: <ZPYFfwYj6YgSf6Nb@redhat.com>
+References: <20230904161235.84651-1-philmd@linaro.org>
+ <20230904161235.84651-17-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] docs/devel/loads-stores: Fix git grep regexes
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230904161703.3996734-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230904161703.3996734-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230904161235.84651-17-philmd@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,28 +81,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/9/23 18:17, Peter Maydell wrote:
-> The loads-and-stores documentation includes git grep regexes to find
-> occurrences of the various functions.  Some of these regexes have
-> errors, typically failing to escape the '?', '(' and ')' when they
-> should be metacharacters (since these are POSIX basic REs). We also
-> weren't consistent about whether to have a ':' on the end of the
-> line introducing the list of regexes in each section.
+On Mon, Sep 04, 2023 at 06:12:28PM +0200, Philippe Mathieu-Daudé wrote:
+> Fix:
 > 
-> Fix the errors.
+>   In file included from crypto/cipher.c:140:
+>   crypto/cipher-gnutls.c.inc: In function ‘qcrypto_gnutls_cipher_encrypt’:
+>   crypto/cipher-gnutls.c.inc:116:17: warning: declaration of ‘err’ shadows a previous local [-Wshadow=compatible-local]
+>     116 |             int err = gnutls_cipher_init(&handle, ctx->galg, &gkey, NULL);
+>         |                 ^~~
+>   crypto/cipher-gnutls.c.inc:94:9: note: shadowed declaration is here
+>      94 |     int err;
+>         |         ^~~
+>        ---
 > 
-> The following shell rune will complain about any REs in the
-> file which don't have any matches in the codebase:
->   for re in $(sed -ne 's/ - ``\(\\<.*\)``/\1/p' docs/devel/loads-stores.rst); do git grep -q "$re" || echo "no matches for re $re"; done
+>   crypto/cipher-gnutls.c.inc: In function ‘qcrypto_gnutls_cipher_decrypt’:
+>   crypto/cipher-gnutls.c.inc:177:17: warning: declaration of ‘err’ shadows a previous local [-Wshadow=compatible-local]
+>     177 |             int err = gnutls_cipher_init(&handle, ctx->galg, &gkey, NULL);
+>         |                 ^~~
+>   crypto/cipher-gnutls.c.inc:154:9: note: shadowed declaration is here
+>     154 |     int err;
+>         |         ^~~
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   docs/devel/loads-stores.rst | 40 ++++++++++++++++++-------------------
->   1 file changed, 20 insertions(+), 20 deletions(-)
+>  crypto/cipher-gnutls.c.inc | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+and if you want to include it in general pull request
+
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
