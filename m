@@ -2,74 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420EA791448
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DD7791475
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:11:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5Wx-0008Jc-7E; Mon, 04 Sep 2023 05:05:59 -0400
+	id 1qd5Xw-0001IR-5D; Mon, 04 Sep 2023 05:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qd5Wp-0008FP-EJ
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:05:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
+ id 1qd5Xr-0001Ds-BT; Mon, 04 Sep 2023 05:06:55 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qd5Wn-0003VF-68
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:05:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693818346;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iQlEBQamD8acT3U8iBEiZodHSUgWhO+RdYMJmu+dzIo=;
- b=OjUTae1cp36PYOA59FiJDoLnWdTvK78eM8+13V8NS90+1TmiCa6pFfTtvK8OTEnDiednPB
- E4PHjwoi2SES0IX8sBfny3SO2A38rU2EgJBayxJ5vRbZwe74ogbfQwwrGdYGxreSA1OkMT
- b3VJtJbRAV8nOlyHJfrGYPrOvoRPkx4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-144-9dRyuMNONIu9tRwu0EtxcA-1; Mon, 04 Sep 2023 05:05:33 -0400
-X-MC-Unique: 9dRyuMNONIu9tRwu0EtxcA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
+ id 1qd5Xk-0003bf-Ks; Mon, 04 Sep 2023 05:06:55 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN6j43zdz4wxW;
+ Mon,  4 Sep 2023 19:06:37 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A05873C02B88;
- Mon,  4 Sep 2023 09:05:32 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.211])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B4F6CC02996;
- Mon,  4 Sep 2023 09:05:29 +0000 (UTC)
-Date: Mon, 4 Sep 2023 11:05:28 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
- Klaus Jensen <its@irrelevant.dk>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>,
- David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v2 0/4] block-backend: process I/O in the current
- AioContext
-Message-ID: <ZPWd2Ig0bsSvfNKj@redhat.com>
-References: <20230823235938.1398382-1-stefanha@redhat.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN6g72R0z4wy8;
+ Mon,  4 Sep 2023 19:06:35 +1000 (AEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: qemu-ppc@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 00/35] ppc queue
+Date: Mon,  4 Sep 2023 11:05:55 +0200
+Message-ID: <20230904090630.725952-1-clg@kaod.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230823235938.1398382-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=kZzc=EU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,27 +60,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 24.08.2023 um 01:59 hat Stefan Hajnoczi geschrieben:
-> v2
-> - Add patch to remove AIOCBInfo->get_aio_context() [Kevin]
-> - Add patch to use qemu_get_current_aio_context() in block-coroutine-wrapper so
->   that the wrappers use the current AioContext instead of
->   bdrv_get_aio_context().
-> 
-> Switch blk_aio_*() APIs over to multi-queue by using
-> qemu_get_current_aio_context() instead of blk_get_aio_context(). This change
-> will allow devices to process I/O in multiple IOThreads in the future.
-> 
-> The final patch requires my QIOChannel AioContext series to pass
-> tests/qemu-iotests/check -qcow2 281 because the nbd block driver is now
-> accessed from the main loop thread in addition to the IOThread:
-> https://lore.kernel.org/qemu-devel/20230823234504.1387239-1-stefanha@redhat.com/T/#t
-> 
-> Based-on: 20230823234504.1387239-1-stefanha@redhat.com
+The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
 
-While the dependency isn't in yet, I'm already applying patches 1-3.
-Patch 4 needs a respin anyway to update the failing test case.
+  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
 
-Kevin
+are available in the Git repository at:
 
+  https://github.com/legoater/qemu/ tags/pull-ppc-20230904
+
+for you to fetch changes up to 6ed470577a24fe471b09e4be089f34bb1eefc5a0:
+
+  ppc/xive: Add support for the PC MMIOs (2023-09-04 09:34:36 +0200)
+
+----------------------------------------------------------------
+ppc queue :
+
+* debug facility improvements
+* timebase and decrementer fixes
+* record-replay fixes
+* TCG fixes
+* XIVE model improvements for multichip
+
+----------------------------------------------------------------
+Cédric Le Goater (4):
+      ppc/xive: Use address_space routines to access the machine RAM
+      ppc/xive: Introduce a new XiveRouter end_notify() handler
+      ppc/xive: Handle END triggers between chips with MMIOs
+      ppc/xive: Add support for the PC MMIOs
+
+Joel Stanley (1):
+      ppc: Add stub implementation of TRIG SPRs
+
+Maksim Kostin (1):
+      hw/ppc/e500: fix broken snapshot replay
+
+Nicholas Piggin (26):
+      target/ppc: Remove single-step suppression inside 0x100-0xf00
+      target/ppc: Improve book3s branch trace interrupt for v2.07S
+      target/ppc: Suppress single step interrupts on rfi-type instructions
+      target/ppc: Implement breakpoint debug facility for v2.07S
+      target/ppc: Implement watchpoint debug facility for v2.07S
+      spapr: implement H_SET_MODE debug facilities
+      ppc/vhyp: reset exception state when handling vhyp hcall
+      ppc/vof: Fix missed fields in VOF cleanup
+      hw/ppc/ppc.c: Tidy over-long lines
+      hw/ppc: Introduce functions for conversion between timebase and nanoseconds
+      host-utils: Add muldiv64_round_up
+      hw/ppc: Round up the decrementer interval when converting to ns
+      hw/ppc: Avoid decrementer rounding errors
+      target/ppc: Sign-extend large decrementer to 64-bits
+      hw/ppc: Always store the decrementer value
+      target/ppc: Migrate DECR SPR
+      hw/ppc: Reset timebase facilities on machine reset
+      hw/ppc: Read time only once to perform decrementer write
+      target/ppc: Fix CPU reservation migration for record-replay
+      target/ppc: Fix timebase reset with record-replay
+      spapr: Fix machine reset deadlock from replay-record
+      spapr: Fix record-replay machine reset consuming too many events
+      tests/avocado: boot ppc64 pseries replay-record test to Linux VFS mount
+      tests/avocado: reverse-debugging cope with re-executing breakpoints
+      tests/avocado: ppc64 reverse debugging tests for pseries and powernv
+      target/ppc: Fix LQ, STQ register-pair order for big-endian
+
+Richard Henderson (1):
+      target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+
+Shawn Anastasio (1):
+      target/ppc: Generate storage interrupts for radix RC changes
+
+jianchunfu (1):
+      target/ppc: Fix the order of kvm_enable judgment about kvmppc_set_interrupt()
+
+ hw/intc/pnv_xive_regs.h                    |   1 +
+ include/hw/ppc/ppc.h                       |   3 +-
+ include/hw/ppc/spapr.h                     |   2 +
+ include/hw/ppc/xive.h                      |   2 +
+ include/qemu/host-utils.h                  |  21 ++-
+ target/ppc/cpu.h                           |  12 ++
+ target/ppc/helper.h                        |   4 +
+ target/ppc/internal.h                      |   3 +
+ target/ppc/spr_common.h                    |   3 +
+ hw/intc/pnv_xive.c                         | 170 +++++++++++++++-----
+ hw/intc/pnv_xive2.c                        |  27 +++-
+ hw/intc/xive.c                             |  28 ++--
+ hw/ppc/e500.c                              |   2 +-
+ hw/ppc/mac_oldworld.c                      |   1 +
+ hw/ppc/pegasos2.c                          |   1 +
+ hw/ppc/pnv_core.c                          |   2 +
+ hw/ppc/ppc.c                               | 244 +++++++++++++++++++----------
+ hw/ppc/prep.c                              |   1 +
+ hw/ppc/spapr.c                             |  32 +++-
+ hw/ppc/spapr_cpu_core.c                    |   2 +
+ hw/ppc/spapr_hcall.c                       |  57 +++++++
+ hw/ppc/vof.c                               |   2 +
+ target/ppc/compat.c                        |  19 +++
+ target/ppc/cpu.c                           |  87 ++++++++++
+ target/ppc/cpu_init.c                      |  21 ++-
+ target/ppc/excp_helper.c                   | 111 ++++++++++++-
+ target/ppc/kvm.c                           |   2 +-
+ target/ppc/machine.c                       |  45 +++++-
+ target/ppc/misc_helper.c                   |  15 ++
+ target/ppc/mmu-radix64.c                   |  74 ++++++---
+ target/ppc/translate.c                     |  64 ++++++--
+ target/ppc/translate/fixedpoint-impl.c.inc |  16 +-
+ tests/avocado/replay_kernel.py             |   3 +-
+ tests/avocado/reverse_debugging.py         |  54 ++++++-
+ 34 files changed, 926 insertions(+), 205 deletions(-)
 
