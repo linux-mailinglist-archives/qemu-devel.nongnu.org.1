@@ -2,113 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CA0791DDA
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 21:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03841791EE1
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 23:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdFer-00060G-2l; Mon, 04 Sep 2023 15:54:49 -0400
+	id 1qdGo2-00084l-0I; Mon, 04 Sep 2023 17:08:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qdFed-0005yI-PD; Mon, 04 Sep 2023 15:54:36 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdGny-00084N-3G
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 17:08:18 -0400
+Received: from mailout06.t-online.de ([194.25.134.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qdFeb-0001jt-Jh; Mon, 04 Sep 2023 15:54:35 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384JeTHe002904; Mon, 4 Sep 2023 19:54:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ndCdlF+4n6hwPdfMgXfnMy2GArQAe5BoBa08u8uKFTY=;
- b=KiYo0ZhEj6LMeaEXD58MIQOi5AmK7zgMeZg3lGnwgtn426SAtDyPiwy5PjykplgyJW5p
- 8bsXzWPZCzTsGJ7teVp66qh6GjFUppGVfgh6vqcS68xo9HxA+mYUtDEWtxRLVlYiC6WK
- fH24sjoPtKnKv1eX9GMudZ3BUcuHg4o0e0nkvM7z3CGJqGBNNSzZ1FwaPl9spAx3i+Q/
- 5uvTZto/hu8hEi41VG9eUHYn2204riGBwIqebJUffFgLWcn7Q4wEVnlDRihFgi/19xR3
- xRbHS3nE76T+kKHq0Gh5yJa4itqa8JCBuKeUG6tvbrp5xgWdB1oLLooETjvQidPtrgGE bQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw82c2y08-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 19:54:25 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 384JpEVq003090;
- Mon, 4 Sep 2023 19:54:24 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw82c2xyv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 19:54:24 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384IQ18W012275; Mon, 4 Sep 2023 19:54:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3svhkjmqea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 19:54:23 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 384JsKA760424602
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Sep 2023 19:54:20 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A61162004D;
- Mon,  4 Sep 2023 19:54:20 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5E90D20040;
- Mon,  4 Sep 2023 19:54:19 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.179.18.181]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Sep 2023 19:54:19 +0000 (GMT)
-Message-ID: <60f01115bbd82e8f245188e07429bd7dcf40ff14.camel@linux.ibm.com>
-Subject: Re: [PATCH v22 17/20] tests/avocado: s390x cpu topology test
- dedicated CPU
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Eduardo Habkost
- <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, Halil Pasic
- <pasic@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Eric
- Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael
- Roth <michael.roth@amd.com>
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Yanan
- Wang <wangyanan55@huawei.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa
- <crosa@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Date: Mon, 04 Sep 2023 21:54:19 +0200
-In-Reply-To: <20230901155812.2696560-18-nsg@linux.ibm.com>
-References: <20230901155812.2696560-1-nsg@linux.ibm.com>
- <20230901155812.2696560-18-nsg@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdGnv-000854-Ev
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 17:08:17 -0400
+Received: from fwd85.aul.t-online.de (fwd85.aul.t-online.de [10.223.144.111])
+ by mailout06.t-online.de (Postfix) with SMTP id 1A9FD1E338;
+ Mon,  4 Sep 2023 23:08:11 +0200 (CEST)
+Received: from [192.168.211.200] ([79.208.25.148]) by fwd85.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1qdGnq-24Pq410; Mon, 4 Sep 2023 23:08:11 +0200
+Message-ID: <059c5cbc-fe22-8b37-5427-f88016eee66d@t-online.de>
+Date: Mon, 4 Sep 2023 23:08:10 +0200
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ph2RVTx5pWXu1ZzvreS2GNdFZ4QK9n9E
-X-Proofpoint-ORIG-GUID: CV4hOWXulouG4Hg2zdHDJWXoptc1j2rO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-04_13,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 clxscore=1015 adultscore=0 suspectscore=0 bulkscore=0
- malwarescore=0 mlxlogscore=599 impostorscore=0 spamscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309040176
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
+Subject: Re: [PATCH v8 02/12] Add virtio-sound-pci device
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?B?S8WRdsOhZ8OzICwgWm9sdMOhbg==?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <8de966a86bc21358528eeee66ffe74f8a82bb687.1693252037.git.manos.pitsidianakis@linaro.org>
+ <99c231b8-8447-93a7-6a94-3a68921190ae@t-online.de>
+ <0gil3.63jtdidrts0@linaro.org>
+Content-Language: en-US
+In-Reply-To: <0gil3.63jtdidrts0@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1693861691-CD5E2EAB-8B50F400/0/0 CLEAN NORMAL
+X-TOI-MSGID: 90be2d26-0264-4454-92f0-2b2e3c23cef4
+Received-SPF: none client-ip=194.25.134.19; envelope-from=vr_qemu@t-online.de;
+ helo=mailout06.t-online.de
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,16 +76,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-09-01 at 17:58 +0200, Nina Schoetterl-Glausch wrote:
-> From: Pierre Morel <pmorel@linux.ibm.com>
->=20
-> A dedicated CPU in vertical polarization can only have
-> a high entitlement.
-> Let's check this from both host and guest point of view.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Am 04.09.23 um 12:26 schrieb Manos Pitsidianakis:
+> On Mon, 04 Sep 2023 09:32, Volker Rümelin <vr_qemu@t-online.de> wrote:
+>>> +static Property virtio_snd_pci_properties[] = {
+>>> +    DEFINE_AUDIO_PROPERTIES(VirtIOSoundPCI, vdev.card),
+>>
+>> I think DEFINE_AUDIO_PROPERTIES should be moved back to virtio-snd.c. 
+>> The audiodev property is a virtio-sound property and not a 
+>> virtio-sound-pci property.
+>
+> Hm, is it? Can you instantiate a virtio-sound device without the PCI 
+> wrapper? Under hw/audio, DEFINE_AUDIO_PROPERTIES is set in PCI devices 
+> as well (e.g. ac97)
+>
 
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Creating a virtio-sound device without the PCI wrapper is possible.
+./qemu-system-x86_64 -M microvm -accel kvm -cpu host -m 512m -smp 2 
+-serial stdio -device virtio-sound,audiodev=audio0 -audiodev 
+pipewire,id=audio0 -display gtk
+qemu-system-x86_64: -device virtio-sound,audiodev=audio0: Property 
+'virtio-sound.audiodev' not found
+
+If you move DEFINE_AUDIO_PROPERTIES to virtio-snd.c you don't see this 
+error message and you can see a virtio-mmio sound device if you type 
+info qtree in the QEMU compat monitor.
+
+Now that you asked this question I wonder if this should be #define 
+TYPE_VIRTIO_SND "virtio-sound-device". Other virtio devices have the 
+-device suffix.
+
+With best regards,
+Volker
+
+>>
+>>> +    DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
+>>> +                    VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, true),
+>>> +    DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
+>>> +                       DEV_NVECTORS_UNSPECIFIED),
+>>> +    DEFINE_PROP_END_OF_LIST(),
+>>> +};
+>>> +
+>>> +static void virtio_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error 
+>>> **errp)
+>>> +{
+>>> +    VirtIOSoundPCI *dev = VIRTIO_SND_PCI(vpci_dev);
+>>> +    DeviceState *vdev = DEVICE(&dev->vdev);
+>>> +
+>>> +    if (vpci_dev->nvectors == DEV_NVECTORS_UNSPECIFIED) {
+>>> +        vpci_dev->nvectors = 2;
+>>> +    }
+>>
+>> Why do you need that intermediate step with DEV_NVECTORS_UNSPECIFIED? 
+>> Unlike e.g. virtio-scsi-pci and virtio-net-pci devices, the default 
+>> value of nvectors is already known at compile time and can be 
+>> specified in the property definition.
+>
+> I did not think this through properly, you are correct. Thank you!
+>
+> Manos
+
 
