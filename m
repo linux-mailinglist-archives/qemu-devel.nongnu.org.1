@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7634A791B2F
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384D8791B33
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:14:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCCY-0002Zd-Ap; Mon, 04 Sep 2023 12:13:22 -0400
+	id 1qdCCf-0002kh-Ih; Mon, 04 Sep 2023 12:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCCU-0002Xe-NB
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:13:18 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCCY-0002bg-Ue
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:13:24 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCCQ-0007Vm-Sq
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:13:18 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-98377c5d53eso235544866b.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:13:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCCV-0007WT-FJ
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:13:22 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-52c74a2e8edso2352982a12.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693843992; x=1694448792; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693843997; x=1694448797; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x4jIrB8buoZ4kzwhFvV0xhUjYKmY274vhbfo/mB1lCg=;
- b=js5lkQL3cJNKZ3IsTjZb7hnuCT/Ea2PDHh7Gv3IevnDVVPJ3+IsbsceqGbagQgQK4g
- iNrUoZk+ulEP3GDeyTECKFG2Ka7M50tLBPWuJDWMG4KcdAdAa/tscs4ZIJtS7+HjGeFU
- w5u1V3ev984RlxkI7hkt30xIeI3yaIaC/xQpAx1+LX+sWPPy4BaWZdGQlao55Mu/Vk8f
- TyDCv7JsmoqaI0pjDmqGFhb22M3KqXlR3/uluzaPDuwakjXSKiqBB1c4rPWXgJT9Pr6e
- 004BHCYVvoa+GK/j92UnBtgOiUr+J0e+TH+jOWHa30BL3j/i578Hs6J9XliGt7xikn3n
- ANew==
+ bh=LlxpFbCHiWjslLmUxZfZSQm0srNjNWhApIJsD1WDg2g=;
+ b=p5vKNy9ENT9lXx0QojN/p20L4bgdRNkS023pkLbgSZDcr3aXUF0Q9sovdOJca5/9JD
+ p4xEB3DdkUjbhh3a8tGuT4AuvCe6mD+kwy9eC0KiV3+MKDcZlLdw0Srfv9br+Zvd3juu
+ krz6e6+Lxi+SNcc275ffqOdyZ6qXqLzoaYO0FHTtdZx2EPRUHnqDRp9p7c7wcHjWMkRQ
+ 2YO1H+pYBMAdMcARS248i18DHa7sDy4enQwJSLDKPqtLEPSV6AjGWBtK2HXZiWoVUg3J
+ HsKHNbE8M46dXkDdJaThZUW2Fv3IK+FfZhNpbSm0LjwpQsL08dS6LkrSigE2U8/5rO6F
+ qxDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693843992; x=1694448792;
+ d=1e100.net; s=20221208; t=1693843997; x=1694448797;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x4jIrB8buoZ4kzwhFvV0xhUjYKmY274vhbfo/mB1lCg=;
- b=C1aqBAKPEm8EGRj9MV7/ljx2p8vkCBwQBbFHRVD4fIA0p5bPwXxMR5uuJdA/DDupEh
- EMx07sI/rNsvaD3XJaqTpQlXf8vVBQOGGtUy0LN0Qj3P0tOtKysoyRiT71Evj2Od4bST
- 7ghPzdTWztafPwnc9IMWZO4ruavD2AQZKM7K5RLxY0Aq4sQFu0TGJKjGIDt41TnkYRZ5
- wf2103MSy3x3lmdf3O0ANMbDGGCfOq/S6I0wrGkkqeDpFo0UIi36FfWurBa3+xgszfvL
- 10e2jxh9ec0mDhus0nYhBnE3apon3XQhuptskz/HcTlbHfSBBaClC5F9LfjmGltZhyZd
- I5Ug==
-X-Gm-Message-State: AOJu0YxMP1CSwKorsYSlyQRVj8QMECNEYFm6z6mDYw3+FW/GrelyXoe2
- IDGHgfV4zhEEDigvd5uNzk6lsXPYYGRKmPVnxZw=
-X-Google-Smtp-Source: AGHT+IFuno0aEOAd/Qm4bAzBL04QnfUFnF8ufg0fd3HDzvACUSGMvCBQMCdpbgnBOJ6gTaOByOyJmg==
-X-Received: by 2002:a17:906:cc0f:b0:99e:f3b:2f78 with SMTP id
- ml15-20020a170906cc0f00b0099e0f3b2f78mr6530005ejb.67.1693843992290; 
- Mon, 04 Sep 2023 09:13:12 -0700 (PDT)
+ bh=LlxpFbCHiWjslLmUxZfZSQm0srNjNWhApIJsD1WDg2g=;
+ b=any8bEy9L5CweQD9bx9j6CPqbaL2NvILjynPowkcFZF3kUo26CH3V5AyjwGUDR0ytw
+ 1+utCejKbzlCLg5C00zVxrl4I41NWIODV7fYhPfnokPrNihpox5uFivAet1IF7tNgU+G
+ +UOIH2mtKda6CtveZtMc9CuhNufJmeQ1yW1syO4dbXKIjtEqxxwJUGLZL8YuUf45IDNu
+ d4Kx3wi+DRo1SCI6yQIgoJu30yF2r8ONSSCN6UyeiKw+N9iFT02QZnAX+XKh7K6SLVJt
+ EwZCZYTEAmT/8kjjCUnbz+HCNZkt6v4ZiZQ90WN18HD3pEFfDAdl32ZjNilVSoiGHbMZ
+ Qddg==
+X-Gm-Message-State: AOJu0YzhlERNW4Oo2zjqSQJM16CYs5Ri5fVBI4BqB+1n8rFo7gCgaCf+
+ MdXNBFoZFuy+zZOaWKiKYz4i6g==
+X-Google-Smtp-Source: AGHT+IEhZ9kvBDsoaYLY4Q/fNQLsRrvTJTGZrFKuJhZVz79KGWvOKOe6yJLF6Tvz+ig51XhirQg1ew==
+X-Received: by 2002:aa7:d615:0:b0:523:2e63:b9b with SMTP id
+ c21-20020aa7d615000000b005232e630b9bmr9196767edr.24.1693843997702; 
+ Mon, 04 Sep 2023 09:13:17 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- e19-20020a1709067e1300b009a198078c53sm6305559ejr.214.2023.09.04.09.13.11
+ f5-20020a50ee85000000b0052595b17fd4sm5941517edr.26.2023.09.04.09.13.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Sep 2023 09:13:11 -0700 (PDT)
+ Mon, 04 Sep 2023 09:13:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Markus Armbruster <armbru@redhat.com>,
 	qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Subject: [PATCH v2 06/22] target/tricore: Clean up local variable shadowing
-Date: Mon,  4 Sep 2023 18:12:18 +0200
-Message-ID: <20230904161235.84651-7-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 07/22] hw/arm/armv7m: Clean up local variable shadowing
+Date: Mon,  4 Sep 2023 18:12:19 +0200
+Message-ID: <20230904161235.84651-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904161235.84651-1-philmd@linaro.org>
 References: <20230904161235.84651-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,53 +95,123 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  target/tricore/translate.c:5016:18: warning: declaration of ‘temp’ shadows a previous local [-Wshadow=compatible-local]
-   5016 |             TCGv temp = tcg_constant_i32(const9);
-        |                  ^~~~
-  target/tricore/translate.c:4958:10: note: shadowed declaration is here
-   4958 |     TCGv temp;
-        |          ^~~~
+  hw/arm/armv7m.c: In function ‘armv7m_realize’:
+  hw/arm/armv7m.c:520:27: warning: declaration of ‘sbd’ shadows a previous local [-Wshadow=compatible-local]
+    520 |             SysBusDevice *sbd = SYS_BUS_DEVICE(&s->bitband[i]);
+        |                           ^~~
+  hw/arm/armv7m.c:278:19: note: shadowed declaration is here
+    278 |     SysBusDevice *sbd;
+        |                   ^~~
+       ---
+
+  hw/arm/armsse.c: In function ‘armsse_realize’:
+  hw/arm/armsse.c:1471:27: warning: declaration of ‘mr’ shadows a previous local [-Wshadow=compatible-local]
+   1471 |             MemoryRegion *mr;
+        |                           ^~
+  hw/arm/armsse.c:917:19: note: shadowed declaration is here
+    917 |     MemoryRegion *mr;
+        |                   ^~
+       ---
+
+  hw/arm/armsse.c:1608:22: warning: declaration of ‘dev_splitter’ shadows a previous local [-Wshadow=compatible-local]
+   1608 |         DeviceState *dev_splitter = DEVICE(splitter);
+        |                      ^~~~~~~~~~~~
+  hw/arm/armsse.c:923:18: note: shadowed declaration is here
+    923 |     DeviceState *dev_splitter;
+        |                  ^~~~~~~~~~~~
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/tricore/translate.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/arm/armsse.c | 16 ++++++----------
+ hw/arm/armv7m.c |  2 +-
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 6ae5ccbf72..9ca211b2a8 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -4962,8 +4962,6 @@ static void decode_rc_logical_shift(DisasContext *ctx)
-     const9 = MASK_OP_RC_CONST9(ctx->opcode);
-     op2 = MASK_OP_RC_OP2(ctx->opcode);
+diff --git a/hw/arm/armsse.c b/hw/arm/armsse.c
+index 11cd08b6c1..31acbf7347 100644
+--- a/hw/arm/armsse.c
++++ b/hw/arm/armsse.c
+@@ -1468,7 +1468,6 @@ static void armsse_realize(DeviceState *dev, Error **errp)
+     if (info->has_cachectrl) {
+         for (i = 0; i < info->num_cpus; i++) {
+             char *name = g_strdup_printf("cachectrl%d", i);
+-            MemoryRegion *mr;
  
--    temp = tcg_temp_new();
--
-     switch (op2) {
-     case OPC2_32_RC_AND:
-         tcg_gen_andi_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], const9);
-@@ -4972,10 +4970,12 @@ static void decode_rc_logical_shift(DisasContext *ctx)
-         tcg_gen_andi_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], ~const9);
-         break;
-     case OPC2_32_RC_NAND:
-+        temp = tcg_temp_new();
-         tcg_gen_movi_tl(temp, const9);
-         tcg_gen_nand_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], temp);
-         break;
-     case OPC2_32_RC_NOR:
-+        temp = tcg_temp_new();
-         tcg_gen_movi_tl(temp, const9);
-         tcg_gen_nor_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], temp);
-         break;
-@@ -5013,7 +5013,7 @@ static void decode_rc_logical_shift(DisasContext *ctx)
-         break;
-     case OPC2_32_RC_SHUFFLE:
-         if (has_feature(ctx, TRICORE_FEATURE_162)) {
--            TCGv temp = tcg_constant_i32(const9);
-+            temp = tcg_constant_i32(const9);
-             gen_helper_shuffle(cpu_gpr_d[r2], cpu_gpr_d[r1], temp);
+             qdev_prop_set_string(DEVICE(&s->cachectrl[i]), "name", name);
+             g_free(name);
+@@ -1484,7 +1483,6 @@ static void armsse_realize(DeviceState *dev, Error **errp)
+     if (info->has_cpusecctrl) {
+         for (i = 0; i < info->num_cpus; i++) {
+             char *name = g_strdup_printf("CPUSECCTRL%d", i);
+-            MemoryRegion *mr;
+ 
+             qdev_prop_set_string(DEVICE(&s->cpusecctrl[i]), "name", name);
+             g_free(name);
+@@ -1499,7 +1497,6 @@ static void armsse_realize(DeviceState *dev, Error **errp)
+     }
+     if (info->has_cpuid) {
+         for (i = 0; i < info->num_cpus; i++) {
+-            MemoryRegion *mr;
+ 
+             qdev_prop_set_uint32(DEVICE(&s->cpuid[i]), "CPUID", i);
+             if (!sysbus_realize(SYS_BUS_DEVICE(&s->cpuid[i]), errp)) {
+@@ -1512,7 +1509,6 @@ static void armsse_realize(DeviceState *dev, Error **errp)
+     }
+     if (info->has_cpu_pwrctrl) {
+         for (i = 0; i < info->num_cpus; i++) {
+-            MemoryRegion *mr;
+ 
+             if (!sysbus_realize(SYS_BUS_DEVICE(&s->cpu_pwrctrl[i]), errp)) {
+                 return;
+@@ -1605,7 +1601,7 @@ static void armsse_realize(DeviceState *dev, Error **errp)
+     /* Wire up the splitters for the MPC IRQs */
+     for (i = 0; i < IOTS_NUM_EXP_MPC + info->sram_banks; i++) {
+         SplitIRQ *splitter = &s->mpc_irq_splitter[i];
+-        DeviceState *dev_splitter = DEVICE(splitter);
++        DeviceState *devs = DEVICE(splitter);
+ 
+         if (!object_property_set_int(OBJECT(splitter), "num-lines", 2,
+                                      errp)) {
+@@ -1617,22 +1613,22 @@ static void armsse_realize(DeviceState *dev, Error **errp)
+ 
+         if (i < IOTS_NUM_EXP_MPC) {
+             /* Splitter input is from GPIO input line */
+-            s->mpcexp_status_in[i] = qdev_get_gpio_in(dev_splitter, 0);
+-            qdev_connect_gpio_out(dev_splitter, 0,
++            s->mpcexp_status_in[i] = qdev_get_gpio_in(devs, 0);
++            qdev_connect_gpio_out(devs, 0,
+                                   qdev_get_gpio_in_named(dev_secctl,
+                                                          "mpcexp_status", i));
          } else {
-             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+             /* Splitter input is from our own MPC */
+             qdev_connect_gpio_out_named(DEVICE(&s->mpc[i - IOTS_NUM_EXP_MPC]),
+                                         "irq", 0,
+-                                        qdev_get_gpio_in(dev_splitter, 0));
+-            qdev_connect_gpio_out(dev_splitter, 0,
++                                        qdev_get_gpio_in(devs, 0));
++            qdev_connect_gpio_out(devs, 0,
+                                   qdev_get_gpio_in_named(dev_secctl,
+                                                          "mpc_status",
+                                                          i - IOTS_NUM_EXP_MPC));
+         }
+ 
+-        qdev_connect_gpio_out(dev_splitter, 1,
++        qdev_connect_gpio_out(devs, 1,
+                               qdev_get_gpio_in(DEVICE(&s->mpc_irq_orgate), i));
+     }
+     /* Create GPIO inputs which will pass the line state for our
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index bf173b10b8..1f78e18872 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -517,7 +517,7 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+     for (i = 0; i < ARRAY_SIZE(s->bitband); i++) {
+         if (s->enable_bitband) {
+             Object *obj = OBJECT(&s->bitband[i]);
+-            SysBusDevice *sbd = SYS_BUS_DEVICE(&s->bitband[i]);
++            sbd = SYS_BUS_DEVICE(&s->bitband[i]);
+ 
+             if (!object_property_set_int(obj, "base",
+                                          bitband_input_addr[i], errp)) {
 -- 
 2.41.0
 
