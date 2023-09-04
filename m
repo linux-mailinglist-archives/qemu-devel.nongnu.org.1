@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50827919C0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA917919BC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:38:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAhQ-0002F4-1W; Mon, 04 Sep 2023 10:37:08 -0400
+	id 1qdAhU-0002Kn-0t; Mon, 04 Sep 2023 10:37:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhN-0002CM-R6
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:05 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhQ-0002Fd-FO
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhI-0001km-JR
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:05 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhL-0001lt-9B
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693838220;
+ s=mimecast20190719; t=1693838222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kzsgATGZYfldY6YykdbAhLxrAPKZFj+80Udg0CB2Lwk=;
- b=cjRbSXaHOjdvja2Rc10fW12UtVNBTJNBs1ldGrZ7HWKtAekJO3dcxQozq3tvhWVjtNrLbQ
- 9RiLvDLwhCTUFUypjR99PNczxIpH2hdG2EgaptXZaY1cuBjNlqNRmPf3oPF9ie1OV5942w
- 683wnqTIB6rJ3XVpjQjhPbxuNXy1c2A=
+ bh=zf9NDxIS/iJGILLCl6910I435ZrscVI83W0Ei362U9Q=;
+ b=KdvVYV6b3JHGG4MrsyWqFtZk0oCweKOlLEeQ5OGCxLMLF8qCR9ApqAanqnPvOZVMH1XNDv
+ z3RfpjcWAqqpCmEOpKDecmE+LrUOy4ACnqIuOIiFKJHAMjjhSGkybIWYkLuxTEcWOYeoA2
+ js8kuen8Gc3HWFVhkZeAkBRp11QXOFI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-524-ueCOy2KLMrGCMOEKl-9pzg-1; Mon, 04 Sep 2023 10:36:58 -0400
-X-MC-Unique: ueCOy2KLMrGCMOEKl-9pzg-1
+ us-mta-646-Hc8rf92IMziit5eOtVvB4g-1; Mon, 04 Sep 2023 10:36:59 -0400
+X-MC-Unique: Hc8rf92IMziit5eOtVvB4g-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5BFA91817903;
- Mon,  4 Sep 2023 14:36:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DF9E1817904;
+ Mon,  4 Sep 2023 14:36:59 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.211])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C0B26493114;
- Mon,  4 Sep 2023 14:36:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 932AA493114;
+ Mon,  4 Sep 2023 14:36:58 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 11/14] block-backend: process I/O in the current AioContext
-Date: Mon,  4 Sep 2023 16:36:40 +0200
-Message-ID: <20230904143643.259916-12-kwolf@redhat.com>
+Subject: [PULL 12/14] block-backend: process zoned requests in the current
+ AioContext
+Date: Mon,  4 Sep 2023 16:36:41 +0200
+Message-ID: <20230904143643.259916-13-kwolf@redhat.com>
 In-Reply-To: <20230904143643.259916-1-kwolf@redhat.com>
 References: <20230904143643.259916-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -60,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,45 +79,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Switch blk_aio_*() APIs over to multi-queue by using
-qemu_get_current_aio_context() instead of blk_get_aio_context(). This
-change will allow devices to process I/O in multiple IOThreads in the
-future.
+Process zoned requests in the current thread's AioContext instead of in
+the BlockBackend's AioContext.
 
-I audited existing blk_aio_*() callers:
-- migration/block.c: blk_mig_lock() protects the data accessed by the
-  completion callback.
-- The remaining emulated devices and exports run with
-  qemu_get_aio_context() == blk_get_aio_context().
+There is no need to use the BlockBackend's AioContext thanks to CoMutex
+bs->wps->colock, which protects zone metadata.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230823235938.1398382-3-stefanha@redhat.com>
+Message-ID: <20230823235938.1398382-4-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/block-backend.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/block-backend.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/block/block-backend.c b/block/block-backend.c
-index a77295a198..4863be5691 100644
+index 4863be5691..427ebcc0e4 100644
 --- a/block/block-backend.c
 +++ b/block/block-backend.c
-@@ -1530,7 +1530,7 @@ BlockAIOCB *blk_abort_aio_request(BlockBackend *blk,
-     acb->blk = blk;
-     acb->ret = ret;
- 
--    replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
-+    replay_bh_schedule_oneshot_event(qemu_get_current_aio_context(),
-                                      error_callback_bh, acb);
-     return &acb->common;
- }
-@@ -1584,11 +1584,11 @@ static BlockAIOCB *blk_aio_prwv(BlockBackend *blk, int64_t offset,
+@@ -1890,11 +1890,11 @@ BlockAIOCB *blk_aio_zone_report(BlockBackend *blk, int64_t offset,
      acb->has_returned = false;
  
-     co = qemu_coroutine_create(co_entry, acb);
+     co = qemu_coroutine_create(blk_aio_zone_report_entry, acb);
 -    aio_co_enter(blk_get_aio_context(blk), co);
 +    aio_co_enter(qemu_get_current_aio_context(), co);
  
+     acb->has_returned = true;
+     if (acb->rwco.ret != NOT_DONE) {
+-        replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
++        replay_bh_schedule_oneshot_event(qemu_get_current_aio_context(),
+                                          blk_aio_complete_bh, acb);
+     }
+ 
+@@ -1931,11 +1931,11 @@ BlockAIOCB *blk_aio_zone_mgmt(BlockBackend *blk, BlockZoneOp op,
+     acb->has_returned = false;
+ 
+     co = qemu_coroutine_create(blk_aio_zone_mgmt_entry, acb);
+-    aio_co_enter(blk_get_aio_context(blk), co);
++    aio_co_enter(qemu_get_current_aio_context(), co);
+ 
+     acb->has_returned = true;
+     if (acb->rwco.ret != NOT_DONE) {
+-        replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
++        replay_bh_schedule_oneshot_event(qemu_get_current_aio_context(),
+                                          blk_aio_complete_bh, acb);
+     }
+ 
+@@ -1971,10 +1971,10 @@ BlockAIOCB *blk_aio_zone_append(BlockBackend *blk, int64_t *offset,
+     acb->has_returned = false;
+ 
+     co = qemu_coroutine_create(blk_aio_zone_append_entry, acb);
+-    aio_co_enter(blk_get_aio_context(blk), co);
++    aio_co_enter(qemu_get_current_aio_context(), co);
      acb->has_returned = true;
      if (acb->rwco.ret != NOT_DONE) {
 -        replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
