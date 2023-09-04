@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED4E791571
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D3A791582
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:10:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd6QX-00017l-Ck; Mon, 04 Sep 2023 06:03:25 -0400
+	id 1qd6W3-0005e7-Rs; Mon, 04 Sep 2023 06:09:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qd6QT-00015d-Ko
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:03:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qd6QQ-0007q5-Ng
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:03:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693821798;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qf661RAc5tATpWdnoHy5aGgdaxdT8WeutCYB7FsgzCs=;
- b=EGf5FXnUqd3vUqOt+fZUnRfxY9s1TxnDUgj7EN0i1XoAQcwGfIxCVhNogePK6SuKAHc734
- wNcuVmtr/VvnL+Sj12vTKwrv6Z57athd1VObixvuNl6gzPODI9deuWpKCpLLFbFC+fZ1jJ
- wY6pL2UqMVcq3g7sbN9BMfNFYJ3nmHA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-IU_igck4Ncyy3rTDTDA3Lw-1; Mon, 04 Sep 2023 06:03:17 -0400
-X-MC-Unique: IU_igck4Ncyy3rTDTDA3Lw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3172a94b274so722327f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:03:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd6W0-0005d0-2F
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:09:04 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd6Vx-0000lS-9p
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:09:03 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2bcfdadd149so20670971fa.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693822139; x=1694426939; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=w4MSWW3/yX9rKp1XcDaq2LsuXtcRlyjuTwOHUK90LwI=;
+ b=e6kUMGsRka+xeG3xoc5V4DdxcoAH2lMp6ogswjJFotuNcFQIU0Wv8QklDZriCWfCwW
+ jFoYsPAG3vCeVauo6KhUu6DERpymCVaIpjPt+81jYZy4iJs1v9yXoOrfgoVgYljYvVaL
+ Acd0UYGPEnwd89U9YekwEI9V3EZMdNnWXCYRv0cmbYCvnPKxsYhNWGITeqoYkXOg42+4
+ NwAMo6H5L1MbB2W68DwNj1hC5xH9tlnJKBvgYF01fFgvw964YWWVMbqwnoJ2LrlKhbYu
+ eTzZm5dAAAizb4Rzo/hfd12L4Zmj6WFjVWXE0yJ1Ab6Sl9ZnsJUQcFJiPwyJGQAmpz5X
+ dnyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693821795; x=1694426595;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qf661RAc5tATpWdnoHy5aGgdaxdT8WeutCYB7FsgzCs=;
- b=TXia+aizSAwWmJMQVp1vaoJltvzXoYAFcDrsVsVB4PAdpbALG8lvWIH+3OJnpjHLIf
- AZXCvtUEQyXv8x+gdCL+uC1DZlh669PjkB0uJ6iaf9bNT2K6bNULn3wlB6PSESxRYIuF
- /byiLV5f6xocmg9exjii7cQ1+gmUaAdZ0TOso0JJMHkoL6uPdozUxHyshlpcNmS3KtWx
- xjYe6AzIP6ZSqaPfSrntCUQ4rDH+OpCru9qkDG//gb/lyl3t8rUrXTug+ILUpu2z6HK7
- 0pG8hvksH+BpYPKpapm+uzGNUggjS183BCGmsRanaU7e7vugMdbfWiwJLXBK4HtodwCw
- AabQ==
-X-Gm-Message-State: AOJu0YzxJS4G0qmvsdIOyO9UmyJFGXeID9DBuvjPxfTHx4c05r3hyfr4
- l9dvKnrAyQP29JxTq2ooB3u8hABWTEYWASKTsNfU6YmRZHphcJp41lb929vjnFK8nu6a6e/nHzn
- 7WXxSqZaLcvc21UlSKE7DIHdNXorTRkOKifPGT0eU5RNt/EJiVr56TBXHGWGWf4c+RnFRESkbUZ
- Y=
-X-Received: by 2002:adf:f98f:0:b0:313:dee2:e052 with SMTP id
- f15-20020adff98f000000b00313dee2e052mr6413073wrr.26.1693821795465; 
- Mon, 04 Sep 2023 03:03:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSSKgBEB16bS5f8nI9ecDMhN4BvXoBR3mo82mP85kjIYslL86LIrdjV4UuWdfz8VqAIZ1Vzw==
-X-Received: by 2002:adf:f98f:0:b0:313:dee2:e052 with SMTP id
- f15-20020adff98f000000b00313dee2e052mr6413053wrr.26.1693821795089; 
- Mon, 04 Sep 2023 03:03:15 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ d=1e100.net; s=20221208; t=1693822139; x=1694426939;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=w4MSWW3/yX9rKp1XcDaq2LsuXtcRlyjuTwOHUK90LwI=;
+ b=gQG5YUUhEG/PEBIswF/rFZqpLed5+yeFPW2F0Ywy+1j0gnYrvgeUA5oXRfqzLVJg/t
+ tzO3TvoWB/+g25UFCCzBER3CgUO1StMGsQU2gzuu8L91K3EeH/n4hGTwX0qc3yGB5XY9
+ RapaYiFJ47Kjh7+N+H1j0ZMlVz/A8172hP+KegBGdZHIQIkx88CTuv+IJEdPGyeX93nF
+ XoT3T9j0r8rdLzPYaU5IfB1oECtbfE8WsCHpBp/kwwPOcROobMHQePiBpz91tiaDiBNo
+ BOiNoSwiA6ST4KqsMnUyb/lEgc5fWmO4XR4iKvo0ul1Sh4WXNbfCJz9A0+SKHCJQaXba
+ nAcA==
+X-Gm-Message-State: AOJu0Yy7CEhP152RIS5D01JYYJ12kN/nty2xQ2GKSqfl4Xh18hsA/3n1
+ FAXYkSHDQyiqt5ZpyklcamhVrw==
+X-Google-Smtp-Source: AGHT+IE2AXL27xbR8iyLWOjQwjK6HAN/bIwqN4ESXTLtAryWpKFH9G2a8fAhuifcwEiiDxEIFr4M+Q==
+X-Received: by 2002:a2e:9c50:0:b0:2bc:c650:81b with SMTP id
+ t16-20020a2e9c50000000b002bcc650081bmr6167349ljj.15.1693822139155; 
+ Mon, 04 Sep 2023 03:08:59 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- e13-20020a5d4e8d000000b0031c6cc74882sm14071194wru.107.2023.09.04.03.03.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 03:03:14 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: eblake@redhat.com,
-	kwolf@redhat.com,
-	qemu-block@nongnu.org
-Subject: [PATCH v3 4/4] block: convert more bdrv_is_allocated* and
- bdrv_block_status* calls to coroutine versions
-Date: Mon,  4 Sep 2023 12:03:06 +0200
-Message-ID: <20230904100306.156197-5-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230904100306.156197-1-pbonzini@redhat.com>
-References: <20230904100306.156197-1-pbonzini@redhat.com>
+ mc24-20020a170906eb5800b00997e99a662bsm5962789ejb.20.2023.09.04.03.08.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 03:08:58 -0700 (PDT)
+Message-ID: <e5f5edcf-6a53-bf61-25cd-4b5ea6dd1d4e@linaro.org>
+Date: Mon, 4 Sep 2023 12:08:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v8 03/12] virtio-sound: handle control messages and streams
+Content-Language: en-US
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>,
+ =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <e3e57dd125611eeb5e563eb7fab8eb89194ed50e.1693252037.git.manos.pitsidianakis@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <e3e57dd125611eeb5e563eb7fab8eb89194ed50e.1693252037.git.manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,216 +104,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- block/copy-before-write.c |  2 +-
- block/copy-on-read.c      |  8 ++++----
- block/io.c                |  6 +++---
- block/mirror.c            | 10 +++++-----
- block/qcow2.c             |  5 +++--
- block/replication.c       |  8 ++++----
- block/stream.c            |  8 ++++----
- block/vvfat.c             | 18 +++++++++---------
- 8 files changed, 33 insertions(+), 32 deletions(-)
+Hi Emmanouil,
 
-diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-index b866e42271d..2711d95718f 100644
---- a/block/copy-before-write.c
-+++ b/block/copy-before-write.c
-@@ -305,7 +305,7 @@ cbw_co_snapshot_block_status(BlockDriverState *bs,
-         return -EACCES;
-     }
- 
--    ret = bdrv_block_status(child->bs, offset, cur_bytes, pnum, map, file);
-+    ret = bdrv_co_block_status(child->bs, offset, cur_bytes, pnum, map, file);
-     if (child == s->target) {
-         /*
-          * We refer to s->target only for areas that we've written to it.
-diff --git a/block/copy-on-read.c b/block/copy-on-read.c
-index b4d6b7efc30..5149fcf63ad 100644
---- a/block/copy-on-read.c
-+++ b/block/copy-on-read.c
-@@ -146,11 +146,11 @@ cor_co_preadv_part(BlockDriverState *bs, int64_t offset, int64_t bytes,
-         local_flags = flags;
- 
-         /* In case of failure, try to copy-on-read anyway */
--        ret = bdrv_is_allocated(bs->file->bs, offset, bytes, &n);
-+        ret = bdrv_co_is_allocated(bs->file->bs, offset, bytes, &n);
-         if (ret <= 0) {
--            ret = bdrv_is_allocated_above(bdrv_backing_chain_next(bs->file->bs),
--                                          state->bottom_bs, true, offset,
--                                          n, &n);
-+            ret = bdrv_co_is_allocated_above(bdrv_backing_chain_next(bs->file->bs),
-+                                             state->bottom_bs, true, offset,
-+                                             n, &n);
-             if (ret > 0 || ret < 0) {
-                 local_flags |= BDRV_REQ_COPY_ON_READ;
-             }
-diff --git a/block/io.c b/block/io.c
-index 81c9630dac1..3349f8d8a04 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -1216,8 +1216,8 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             ret = 1; /* "already allocated", so nothing will be copied */
-             pnum = MIN(align_bytes, max_transfer);
-         } else {
--            ret = bdrv_is_allocated(bs, align_offset,
--                                    MIN(align_bytes, max_transfer), &pnum);
-+            ret = bdrv_co_is_allocated(bs, align_offset,
-+                                       MIN(align_bytes, max_transfer), &pnum);
-             if (ret < 0) {
-                 /*
-                  * Safe to treat errors in querying allocation as if
-@@ -1364,7 +1364,7 @@ bdrv_aligned_preadv(BdrvChild *child, BdrvTrackedRequest *req,
-         /* The flag BDRV_REQ_COPY_ON_READ has reached its addressee */
-         flags &= ~BDRV_REQ_COPY_ON_READ;
- 
--        ret = bdrv_is_allocated(bs, offset, bytes, &pnum);
-+        ret = bdrv_co_is_allocated(bs, offset, bytes, &pnum);
-         if (ret < 0) {
-             goto out;
-         }
-diff --git a/block/mirror.c b/block/mirror.c
-index e213a892dbf..b9753312511 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -559,9 +559,9 @@ static void coroutine_fn mirror_iteration(MirrorBlockJob *s)
- 
-         assert(!(offset % s->granularity));
-         WITH_GRAPH_RDLOCK_GUARD() {
--            ret = bdrv_block_status_above(source, NULL, offset,
--                                        nb_chunks * s->granularity,
--                                        &io_bytes, NULL, NULL);
-+            ret = bdrv_co_block_status_above(source, NULL, offset,
-+                                             nb_chunks * s->granularity,
-+                                             &io_bytes, NULL, NULL);
-         }
-         if (ret < 0) {
-             io_bytes = MIN(nb_chunks * s->granularity, max_io_bytes);
-@@ -875,8 +875,8 @@ static int coroutine_fn mirror_dirty_init(MirrorBlockJob *s)
-         }
- 
-         WITH_GRAPH_RDLOCK_GUARD() {
--            ret = bdrv_is_allocated_above(bs, s->base_overlay, true, offset,
--                                          bytes, &count);
-+            ret = bdrv_co_is_allocated_above(bs, s->base_overlay, true, offset,
-+                                             bytes, &count);
-         }
-         if (ret < 0) {
-             return ret;
-diff --git a/block/qcow2.c b/block/qcow2.c
-index b48cd9ce636..f244136095a 100644
---- a/block/qcow2.c
-+++ b/block/qcow2.c
-@@ -3986,7 +3986,8 @@ finish:
- }
- 
- 
--static bool is_zero(BlockDriverState *bs, int64_t offset, int64_t bytes)
-+static bool coroutine_fn GRAPH_RDLOCK
-+is_zero(BlockDriverState *bs, int64_t offset, int64_t bytes)
- {
-     int64_t nr;
-     int res;
-@@ -4007,7 +4008,7 @@ static bool is_zero(BlockDriverState *bs, int64_t offset, int64_t bytes)
-      * backing file. So, we need a loop.
-      */
-     do {
--        res = bdrv_block_status_above(bs, NULL, offset, bytes, &nr, NULL, NULL);
-+        res = bdrv_co_block_status_above(bs, NULL, offset, bytes, &nr, NULL, NULL);
-         offset += nr;
-         bytes -= nr;
-     } while (res >= 0 && (res & BDRV_BLOCK_ZERO) && nr && bytes);
-diff --git a/block/replication.c b/block/replication.c
-index ea4bf1aa801..f44b2631ae0 100644
---- a/block/replication.c
-+++ b/block/replication.c
-@@ -276,10 +276,10 @@ replication_co_writev(BlockDriverState *bs, int64_t sector_num,
-     while (remaining_sectors > 0) {
-         int64_t count;
- 
--        ret = bdrv_is_allocated_above(top->bs, base->bs, false,
--                                      sector_num * BDRV_SECTOR_SIZE,
--                                      remaining_sectors * BDRV_SECTOR_SIZE,
--                                      &count);
-+        ret = bdrv_co_is_allocated_above(top->bs, base->bs, false,
-+                                         sector_num * BDRV_SECTOR_SIZE,
-+                                         remaining_sectors * BDRV_SECTOR_SIZE,
-+                                         &count);
-         if (ret < 0) {
-             goto out1;
-         }
-diff --git a/block/stream.c b/block/stream.c
-index e522bbdec54..f0ef58c8997 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -162,7 +162,7 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
-         copy = false;
- 
-         WITH_GRAPH_RDLOCK_GUARD() {
--            ret = bdrv_is_allocated(unfiltered_bs, offset, STREAM_CHUNK, &n);
-+            ret = bdrv_co_is_allocated(unfiltered_bs, offset, STREAM_CHUNK, &n);
-             if (ret == 1) {
-                 /* Allocated in the top, no need to copy.  */
-             } else if (ret >= 0) {
-@@ -170,9 +170,9 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
-                  * Copy if allocated in the intermediate images.  Limit to the
-                  * known-unallocated area [offset, offset+n*BDRV_SECTOR_SIZE).
-                  */
--                ret = bdrv_is_allocated_above(bdrv_cow_bs(unfiltered_bs),
--                                            s->base_overlay, true,
--                                            offset, n, &n);
-+                ret = bdrv_co_is_allocated_above(bdrv_cow_bs(unfiltered_bs),
-+                                                 s->base_overlay, true,
-+                                                 offset, n, &n);
-                 /* Finish early if end of backing file has been reached */
-                 if (ret == 0 && n == 0) {
-                     n = len - offset;
-diff --git a/block/vvfat.c b/block/vvfat.c
-index 0ddc91fc096..5df2d6b1c64 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -1481,8 +1481,8 @@ vvfat_read(BlockDriverState *bs, int64_t sector_num, uint8_t *buf, int nb_sector
-         if (s->qcow) {
-             int64_t n;
-             int ret;
--            ret = bdrv_is_allocated(s->qcow->bs, sector_num * BDRV_SECTOR_SIZE,
--                                    (nb_sectors - i) * BDRV_SECTOR_SIZE, &n);
-+            ret = bdrv_co_is_allocated(s->qcow->bs, sector_num * BDRV_SECTOR_SIZE,
-+                                       (nb_sectors - i) * BDRV_SECTOR_SIZE, &n);
-             if (ret < 0) {
-                 return ret;
-             }
-@@ -1807,10 +1807,10 @@ cluster_was_modified(BDRVVVFATState *s, uint32_t cluster_num)
-     }
- 
-     for (i = 0; !was_modified && i < s->sectors_per_cluster; i++) {
--        was_modified = bdrv_is_allocated(s->qcow->bs,
--                                         (cluster2sector(s, cluster_num) +
--                                          i) * BDRV_SECTOR_SIZE,
--                                         BDRV_SECTOR_SIZE, NULL);
-+        was_modified = bdrv_co_is_allocated(s->qcow->bs,
-+                                            (cluster2sector(s, cluster_num) +
-+                                             i) * BDRV_SECTOR_SIZE,
-+                                            BDRV_SECTOR_SIZE, NULL);
-     }
- 
-     /*
-@@ -1968,9 +1968,9 @@ get_cluster_count_for_direntry(BDRVVVFATState* s, direntry_t* direntry, const ch
-                 for (i = 0; i < s->sectors_per_cluster; i++) {
-                     int res;
- 
--                    res = bdrv_is_allocated(s->qcow->bs,
--                                            (offset + i) * BDRV_SECTOR_SIZE,
--                                            BDRV_SECTOR_SIZE, NULL);
-+                    res = bdrv_co_is_allocated(s->qcow->bs,
-+                                               (offset + i) * BDRV_SECTOR_SIZE,
-+                                               BDRV_SECTOR_SIZE, NULL);
-                     if (res < 0) {
-                         return -1;
-                     }
--- 
-2.41.0
+On 28/8/23 21:55, Emmanouil Pitsidianakis wrote:
+> Receive guest requests in the control (CTRL) queue of the virtio sound
+> device and reply with a NOT SUPPORTED error to all control commands.
+> 
+> The receiving handler is virtio_snd_handle_ctrl(). It stores all control
+> messages in the queue in the device's command queue. Then it calls
+> virtio_snd_process_cmdq() to handle each message.
+> 
+> The handler is process_cmd() which replies with VIRTIO_SND_S_NOT_SUPP.
+> 
+> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9c7b40a8e603f4da92471
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
+> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>   hw/virtio/trace-events         |   4 +
+>   hw/virtio/virtio-snd.c         | 227 ++++++++++++++++++++++++++++++++-
+>   include/hw/virtio/virtio-snd.h |  70 +++++++++-
+>   3 files changed, 292 insertions(+), 9 deletions(-)
+
+
+>   /*
+> - * Queue handler stub.
+> + * The actual processing done in virtio_snd_process_cmdq().
+> + *
+> + * @s: VirtIOSound device
+> + * @cmd: control command request
+> + */
+> +static inline void
+> +process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
+> +{
+> +    size_t sz = iov_to_buf(cmd->elem->out_sg,
+> +                           cmd->elem->out_num,
+> +                           0,
+> +                           &cmd->ctrl,
+> +                           sizeof(cmd->ctrl));
+> +    if (sz != sizeof(cmd->ctrl)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                "%s: virtio-snd command size incorrect %zu vs \
+> +                %zu\n", __func__, sz, sizeof(cmd->ctrl));
+> +        return;
+> +    }
+> +
+> +    trace_virtio_snd_handle_code(cmd->ctrl.code,
+> +                                 print_code(cmd->ctrl.code));
+> +
+> +    switch (cmd->ctrl.code) {
+> +    case VIRTIO_SND_R_JACK_INFO:
+> +    case VIRTIO_SND_R_JACK_REMAP:
+> +        qemu_log_mask(LOG_UNIMP,
+> +                     "virtio_snd: jack functionality is unimplemented.");
+> +        cmd->resp.code = VIRTIO_SND_S_NOT_SUPP;
+> +        break;
+> +    case VIRTIO_SND_R_PCM_INFO:
+> +    case VIRTIO_SND_R_PCM_SET_PARAMS:
+> +    case VIRTIO_SND_R_PCM_PREPARE:
+> +    case VIRTIO_SND_R_PCM_START:
+> +    case VIRTIO_SND_R_PCM_STOP:
+> +    case VIRTIO_SND_R_PCM_RELEASE:
+> +        cmd->resp.code = VIRTIO_SND_S_NOT_SUPP;
+> +        break;
+> +    case VIRTIO_SND_R_CHMAP_INFO:
+> +        qemu_log_mask(LOG_UNIMP,
+> +                     "virtio_snd: chmap info functionality is unimplemented.");
+> +        trace_virtio_snd_handle_chmap_info();
+> +        cmd->resp.code = VIRTIO_SND_S_NOT_SUPP;
+> +        break;
+> +    default:
+> +        /* error */
+> +        error_report("virtio snd header not recognized: %"PRIu32,
+> +                     cmd->ctrl.code);
+> +        cmd->resp.code = VIRTIO_SND_S_BAD_MSG;
+> +    }
+> +
+> +    iov_from_buf(cmd->elem->in_sg,
+> +                 cmd->elem->in_num,
+> +                 0,
+> +                 &cmd->resp,
+> +                 sizeof(cmd->resp));
+> +    virtqueue_push(cmd->vq, cmd->elem, sizeof(cmd->elem));
+> +    virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
+
+I have very few understanding of virtio, but I'm wondering here,
+since this function is called under cmdq_mutex(), could it be
+useful to batch the queue by calling virtio_notify() only once
+in the caller once the whole cmdq is processed ...
+
+> +}
+> +
+> +/*
+> + * Consume all elements in command queue.
+> + *
+> + * @s: VirtIOSound device
+> + */
+> +static void virtio_snd_process_cmdq(VirtIOSound *s)
+> +{
+> +    virtio_snd_ctrl_command *cmd;
+> +
+> +    if (unlikely(qatomic_read(&s->processing_cmdq))) {
+> +        return;
+> +    }
+> +
+> +    WITH_QEMU_LOCK_GUARD(&s->cmdq_mutex) {
+> +        qatomic_set(&s->processing_cmdq, true);
+> +        while (!QTAILQ_EMPTY(&s->cmdq)) {
+> +            cmd = QTAILQ_FIRST(&s->cmdq);
+> +
+> +            /* process command */
+> +            process_cmd(s, cmd);
+> +
+> +            QTAILQ_REMOVE(&s->cmdq, cmd, next);
+> +
+> +            g_free(cmd);
+> +        }
+
+... here?
+
+> +        qatomic_set(&s->processing_cmdq, false);
+> +    }
+> +}
 
 
