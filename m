@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B81791B56
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E421791B57
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:17:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCEh-0007HN-R6; Mon, 04 Sep 2023 12:15:37 -0400
+	id 1qdCEQ-0006my-Gq; Mon, 04 Sep 2023 12:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDp-0006Mx-NG
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:43 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDt-0006RJ-Po
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:46 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDm-0007oE-CU
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:40 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2bcc846fed0so24824821fa.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:14:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDr-0007pH-6R
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:45 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2bceb02fd2bso23381221fa.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693844076; x=1694448876; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693844081; x=1694448881; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Bvkfrc224yUF6DF6DTCqAYqVQw+ygdwws/3+78VrLoI=;
- b=acI2z3s3au07RftiPtQGrY/MtiI/7MaaawUW9yLXUFwLCfJrUX39c11gTVG1Qi8iGV
- kbCWCcIfvA87LPXEB6a45SL3Wx/Rj1GXV1Y8p7JHKVzPnEiNBqUOwQJ9EhXdJ3BZpac8
- weJK13x562VxCKxeQ2TsyIyRmrJ+slg/25sMB05f6NEJZ/lY61g7nWrQ4T/6uFPzFLp/
- RUdmLycVPhiHsV4zW580LhXWKM3T7Ag/IVsE4vG6ZsyHObJe81++nJD3GoYVDxksc6s6
- CTJiTwVVmhrKvwpWp9cCmv+3RNemsACe+wIkZQ+Fi5d/MlnQSYz68aGjea3MLMprzfcC
- 22+w==
+ bh=7aoDCyS5ybRvtm1vEyqjvOG3g4YR7gaGHrXcT9ATxAY=;
+ b=d8wl0CryFwrT5WsfMuzWbQsPqi5uhGXHshmapQnQEjQDef82AZ0hs5rHTx7qAD1EbZ
+ U+9ezAEDfL+H8KfPRQC1SH7d3H86+EoMEGM38ShZzijJM9iRIBtbmZt8GB/lhHoxzUxB
+ uL0NcTvO7T8WtvlifHIzzXYfItTCF+A1cHoe0kd/0qa0AgoZUuOLj/+7adcjk/Mg4tV0
+ pEKKRVXQO3RSo+u1IEC+G4Td3d2mlYVXHqKWQ4q3KTEyGnaRZ3mkpo/t4n0BSfOj6B5r
+ SKhWB2QE/ICc4FpuNezPz2JFrso6v2/q5gmifeY8D912Umh1HXbNF62btx+pNc7RYcop
+ xYWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693844076; x=1694448876;
+ d=1e100.net; s=20221208; t=1693844081; x=1694448881;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Bvkfrc224yUF6DF6DTCqAYqVQw+ygdwws/3+78VrLoI=;
- b=LcVoWXp9bMd8Qms/BEMssaDYDCGR52O3jIjVgQVNE3vHOfmUpOFNlduCXr0LcmIxKr
- CqR+HAIRRNGoL2o4nFMRqv/Jc2JYrbihEnEGP/JUYrYh6J8zXTDOu6kOaF+HZe7Pj0Xh
- yXi9QxMOf+mmelu3bXI+mPC1SixxattA0yoPZX31I1QW3aT2xFDE6nfciR27k4HsU7Nz
- GbZXqp0vPFBjDeyvsDJR7BgRQi0qHx/2nSRZb46dtHwauq3SJm6x7yiXQ1JV+5lq+YTG
- T2fEfTs+g6tED5VBpH/L7UI2ykycIYz7RZ+NWBzeUILdpWS0c31I+32YSlhdVJznH0f0
- ubrw==
-X-Gm-Message-State: AOJu0Yyse1+mZ9fSi3NDGO5Iao4FyfmLg6xmB/MiS/X1wmt3NITWdf73
- T69JjdfTqVBpBEvWlBsY/bITnQ==
-X-Google-Smtp-Source: AGHT+IEesCMWtIBNelqvTphhVlDDQaXrJ1066j6qk+ks7u0QsJMZ9CqW0zTh4LUp1QnyOBTENyeq6Q==
-X-Received: by 2002:a2e:81cc:0:b0:2bb:9fcf:6f64 with SMTP id
- s12-20020a2e81cc000000b002bb9fcf6f64mr7227876ljg.28.1693844076054; 
- Mon, 04 Sep 2023 09:14:36 -0700 (PDT)
+ bh=7aoDCyS5ybRvtm1vEyqjvOG3g4YR7gaGHrXcT9ATxAY=;
+ b=iBEa+VWXZgLuuRSBSJ1lldERJbj8Zhb++HNL7Z72dTHzgkNEdKjpyCjTDqUI2B3HUL
+ 9x1nb+yIoP0+c9jSVZgaU10xJ7HwqP0bZtxfyxmNs8Jm9ENjxc4P6GPgY6Rx1kOSvOkB
+ UNdtw3BjtvPeJ75q7d92IvJKAUUN7SWQ4Kmg/HS4hg9uH5aCd2LYQiy9tuW3CBhsDPV2
+ VOFZiqVrRgIep1emN8f4ApkqAMEYhTxgHSQU+vnLZTvlPqAmT+j61XIebToq+GKr8qfn
+ EQZtjYhSgE8payZRfbszNWdhezHh+vrzUj6ICE904cag8p72SCIejkFXIhfN+4B0OD9L
+ Uj8g==
+X-Gm-Message-State: AOJu0YxdgsDVTg0dW01MVB7oe83uuYTUXvqodnvucRXN3dDG7HSgCOwS
+ smeq/jq0nweNZS4qJVFmW+IallPMDfHCSuSPy9w=
+X-Google-Smtp-Source: AGHT+IH9nLVOvo63rFMlUAwTpu2i/3CBdxVvqPdwzdps3XnkvSsqn4hN+WLKfUqUGnANC31vZ6FpMg==
+X-Received: by 2002:a2e:888f:0:b0:2b6:de52:357 with SMTP id
+ k15-20020a2e888f000000b002b6de520357mr7656493lji.40.1693844081518; 
+ Mon, 04 Sep 2023 09:14:41 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- qc8-20020a170906d8a800b0099275c59bc9sm6345022ejb.33.2023.09.04.09.14.34
+ x24-20020a170906299800b0099cadcf13cesm6377093eje.66.2023.09.04.09.14.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Sep 2023 09:14:35 -0700 (PDT)
+ Mon, 04 Sep 2023 09:14:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Markus Armbruster <armbru@redhat.com>,
 	qemu-devel@nongnu.org
@@ -61,24 +61,25 @@ Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 21/22] softmmu/memory: Clean up local variable shadowing
-Date: Mon,  4 Sep 2023 18:12:33 +0200
-Message-ID: <20230904161235.84651-22-philmd@linaro.org>
+Subject: [RFC PATCH v2 22/22] softmmu/physmem: Clean up local variable
+ shadowing
+Date: Mon,  4 Sep 2023 18:12:34 +0200
+Message-ID: <20230904161235.84651-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904161235.84651-1-philmd@linaro.org>
 References: <20230904161235.84651-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,31 +97,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  softmmu/memory.c: In function ‘mtree_print_mr’:
-  softmmu/memory.c:3236:27: warning: declaration of ‘ml’ shadows a previous local [-Wshadow=compatible-local]
-   3236 |         MemoryRegionList *ml;
-        |                           ^~
-  softmmu/memory.c:3213:32: note: shadowed declaration is here
-   3213 |     MemoryRegionList *new_ml, *ml, *next_ml;
-        |                                ^~
+  softmmu/physmem.c: In function ‘cpu_physical_memory_snapshot_and_clear_dirty’:
+  softmmu/physmem.c:916:27: warning: declaration of ‘offset’ shadows a parameter [-Wshadow=compatible-local]
+    916 |             unsigned long offset = page % DIRTY_MEMORY_BLOCK_SIZE;
+        |                           ^~~~~~
+  softmmu/physmem.c:892:31: note: shadowed declaration is here
+    892 |     (MemoryRegion *mr, hwaddr offset, hwaddr length, unsigned client)
+        |                        ~~~~~~~^~~~~~
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- softmmu/memory.c | 1 -
- 1 file changed, 1 deletion(-)
+RFC: Please double-check how 'offset' is used few lines later.
+---
+ softmmu/physmem.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/softmmu/memory.c b/softmmu/memory.c
-index 7d9494ce70..bf48350438 100644
---- a/softmmu/memory.c
-+++ b/softmmu/memory.c
-@@ -3233,7 +3233,6 @@ static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
-     }
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 18277ddd67..db5b628a60 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -913,16 +913,16 @@ DirtyBitmapSnapshot *cpu_physical_memory_snapshot_and_clear_dirty
  
-     if (mr->alias) {
--        MemoryRegionList *ml;
-         bool found = false;
+         while (page < end) {
+             unsigned long idx = page / DIRTY_MEMORY_BLOCK_SIZE;
+-            unsigned long offset = page % DIRTY_MEMORY_BLOCK_SIZE;
++            unsigned long ofs = page % DIRTY_MEMORY_BLOCK_SIZE;
+             unsigned long num = MIN(end - page,
+-                                    DIRTY_MEMORY_BLOCK_SIZE - offset);
++                                    DIRTY_MEMORY_BLOCK_SIZE - ofs);
  
-         /* check if the alias is already in the queue */
+-            assert(QEMU_IS_ALIGNED(offset, (1 << BITS_PER_LEVEL)));
++            assert(QEMU_IS_ALIGNED(ofs, (1 << BITS_PER_LEVEL)));
+             assert(QEMU_IS_ALIGNED(num,    (1 << BITS_PER_LEVEL)));
+-            offset >>= BITS_PER_LEVEL;
++            ofs >>= BITS_PER_LEVEL;
+ 
+             bitmap_copy_and_clear_atomic(snap->dirty + dest,
+-                                         blocks->blocks[idx] + offset,
++                                         blocks->blocks[idx] + ofs,
+                                          num);
+             page += num;
+             dest += num >> BITS_PER_LEVEL;
 -- 
 2.41.0
 
