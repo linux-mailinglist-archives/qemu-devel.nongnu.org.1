@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7824C79178B
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB3779179E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:54:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8za-0004LB-SJ; Mon, 04 Sep 2023 08:47:46 -0400
+	id 1qd958-0007W3-If; Mon, 04 Sep 2023 08:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qd8zW-0004E9-Ve
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:47:43 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qd94T-00071Z-7K
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:52:51 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qd8zU-0005uy-C6
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:47:42 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1c1e3a4a06fso5067165ad.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:47:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qd93h-0007dd-BP
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:52:30 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bf092a16c9so10986945ad.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:51:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693831658; x=1694436458;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=bytedance.com; s=google; t=1693831908; x=1694436708; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jRuxEtyHzFFQHe/1AevhiBwG9/mjKjOTFo3lfGHrDRE=;
- b=GFkHS1JowEEBvq7MerEyptdsNitIePZRfU+2Odi8fPF87L7X3UxNfTdUG3PYQHGvDq
- t/ZB/uAvUableuNz3b/bSEsqHVhCERPHZ+oCub3H5wuApPDYiFNLxOLP4f1fBAlAHTin
- vbRlcZhGZf013pGXDcHE1026g20fKFQtuyrk92y117CHfhiF8TMp9GNgQkb12NQiStRm
- M+Y3zvzf5y1A2ltbRgw4NgC5DMfJC2LzOF8LpG5hkl9+5x6+Dlc3qoaoDI1OERopBQKv
- o74S74Jz2RDsSw0PS/eKmXLlpu9pCj+EJbRFbM8RY7FqOulQGS/DMKYYTHQ8oQyYsoKI
- ngrg==
+ bh=NgifOIEfe5qybip7R+A5p4SgKu8q0aPNQ5OhmuRD574=;
+ b=LRRH82FUbydjAfuSc7f9fPovfI8wtV+/mXmFpNJeS+uEfDth3Wbix31l6OMqSKjw3/
+ dGN91knsP4F+x/D4mh2lHmP+DjeutdYEEB/P1EC1p9X13/gLI1pSleoKGTjZOMYaR+WW
+ Mj9aZbBPjfW/R7/x1JAKidyuuazDUPrQjHYBhKq0K6hlXXibvJmUzj19kj/YSX6N2+Yi
+ YbFWoaaT42VMAsPjwAufhaQBlG8RsmpTZOjhnMl+m2T7PVWkU9zvqJ+NDuoMfAtIvf1l
+ KmJeFzbcbKbPRL03WnKH7CxCD8zDsmXuTOwTZPfIE0dGvfuQlUEjI+J0idscNkiHJVar
+ iSnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693831658; x=1694436458;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1693831908; x=1694436708;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jRuxEtyHzFFQHe/1AevhiBwG9/mjKjOTFo3lfGHrDRE=;
- b=fOhPn/y1HcXABDlS2ScINZN6q689Xg5Iv7RUGoTPSbBDjmFXSQwtfBmwZwIi3MXTrw
- 29w0i3QjO1rupKGH6MOGtK8fHNWE6IGwwIEu4jp1i8MgvM9pLGXuGnbKvbvlSxGB+IdL
- 0odQYP/paFSvgGc5RFsYQQrJQfzhakDKXOveNc4JmOGL9aeaI1P8+nVWgmPTFwIjslj5
- l7YzsZnLGDV0S/RSemxZIen3woRxmuLEOYCmCJlMHM2j4zDZP4wAJx1y624u/JI4FRQQ
- ehNHfbAsKnCH8GQ0/oYzI2I9E67DbhWZQxcgF9u6t9hWserPx4yuQrUm/hzi5hzhPSas
- 5ujw==
-X-Gm-Message-State: AOJu0Yytc/pO9sMx+lSiqMfn8uUosNHad8ZvTVjDEwnDwwtbHt3tXXMR
- rkaDvh7BcbYwqrSSo8SOvu0ACQ==
-X-Google-Smtp-Source: AGHT+IE5m19IgSBe9qH2ApBznXWaZyaFO75aIq70d9Cg64YY9dVDRC26aQ6YnftBUB3uOf1wqj/fTQ==
-X-Received: by 2002:a17:902:f807:b0:1b8:78e:7c1 with SMTP id
- ix7-20020a170902f80700b001b8078e07c1mr8064337plb.51.1693831658634; 
- Mon, 04 Sep 2023 05:47:38 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=NgifOIEfe5qybip7R+A5p4SgKu8q0aPNQ5OhmuRD574=;
+ b=PLuhnWoWiQitWoewYUZXdJCusrKxAgEWD6j6Qt6+QjRB9bF6LJehn7IgG7S8o7sRve
+ tP15eMGO/FIKhu/3H4CaiYS0BCrgG5ukjnUHANWwuc3+oJy4+tvnOZ+PeqgshYG+eYgu
+ SxRgZjWFNrICsKG+hf/f3fS72idQHECcoAJPN78/poc9WuNhrDQXGt43ekZyGavMdJt1
+ vqC6x5p+/uB1UZe8uQ5dVGvBDwEVYQR8bSjgdatUTeJPQkmcqdQwDvJcSDqRNh09cG3w
+ d1sKs8rpncI6wxtvmism541CnTJ6ovgnw1RZ+5dW/FxVnRkwUXzxwGDSOXezZroHZ6sx
+ ebHw==
+X-Gm-Message-State: AOJu0YyZoYTbZfkof/eP9sTpL6Era416jO/XDrw9VhN4QZIcnPuQl04O
+ 93jjzMG23F/Dlkp70+Hc5jDU35nS4ukwhwFOdAw=
+X-Google-Smtp-Source: AGHT+IGhTVukzW80QjgXGbtm+jqoVlHfCyd/gFessby50KHnfZ1M38iz5do2IHrgalIR1ch8Wk5YGA==
+X-Received: by 2002:a17:903:1d2:b0:1bd:fbc8:299e with SMTP id
+ e18-20020a17090301d200b001bdfbc8299emr12875992plh.4.1693831908171; 
+ Mon, 04 Sep 2023 05:51:48 -0700 (PDT)
+Received: from [10.84.152.215] ([203.208.167.147])
  by smtp.gmail.com with ESMTPSA id
- 4-20020a170902e9c400b001b86dd825e7sm7534881plk.108.2023.09.04.05.47.37
+ h11-20020a170902f7cb00b001b9e9f191f2sm7559096plw.15.2023.09.04.05.51.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 05:47:38 -0700 (PDT)
-Message-ID: <6a702e51-8372-45ba-81dc-aa2e426863ce@daynix.com>
-Date: Mon, 4 Sep 2023 21:47:35 +0900
+ Mon, 04 Sep 2023 05:51:47 -0700 (PDT)
+Message-ID: <499fe9b1-54f5-4d0f-ae2b-165cb0f3e6b3@bytedance.com>
+Date: Mon, 4 Sep 2023 20:51:43 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 45/67] ui/vc: remove kby_put_keysym() and update function
- calls
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-46-marcandre.lureau@redhat.com>
- <96a49f28-d92c-4910-9f24-b031212ccfc2@daynix.com>
- <CAJ+F1CLCeOgjpS9Wm-V7xNg9QcP8TFcWz86_f9uxsLFpRREQsw@mail.gmail.com>
+Subject: Re: [PATCH v2,1/1] memory: avoid updating ioeventfds for some
+ address_space
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAJ+F1CLCeOgjpS9Wm-V7xNg9QcP8TFcWz86_f9uxsLFpRREQsw@mail.gmail.com>
+To: qemu-devel@nongnu.org, pbonzini@redhat.com
+Cc: david@redhat.com, philmd@linaro.org, peterx@redhat.com
+References: <20230830032906.12488-1-hongmianquan@bytedance.com>
+From: hongmainquan <hongmianquan@bytedance.com>
+In-Reply-To: <20230830032906.12488-1-hongmianquan@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=hongmianquan@bytedance.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,126 +94,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/04 21:42, Marc-André Lureau wrote:
-> Hi
-> 
-> On Thu, Aug 31, 2023 at 12:59 AM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2023/08/30 18:38, marcandre.lureau@redhat.com wrote:
->>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>>
->>> The function calls to `kbd_put_keysym` have been updated to now call
->>> `kbd_put_keysym_console` with a NULL console parameter.
->>>
->>> Like most console functions, NULL argument is now for the active console.
->>>
->>> This will allow to rename the text console functions in a consistent manner.
->>>
->>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
->>> ---
->>>    include/ui/console.h |  1 -
->>>    ui/console.c         | 14 ++++++------
->>>    ui/curses.c          |  2 +-
->>>    ui/vnc.c             | 54 ++++++++++++++++++++++----------------------
->>>    ui/cocoa.m           |  2 +-
->>>    5 files changed, 36 insertions(+), 37 deletions(-)
->>>
->>> diff --git a/include/ui/console.h b/include/ui/console.h
->>> index 1ccd432b4d..9c362f0e87 100644
->>> --- a/include/ui/console.h
->>> +++ b/include/ui/console.h
->>> @@ -115,7 +115,6 @@ bool qemu_mouse_set(int index, Error **errp);
->>>    void kbd_put_keysym_console(QemuTextConsole *s, int keysym);
->>>    bool kbd_put_qcode_console(QemuTextConsole *s, int qcode, bool ctrl);
->>>    void kbd_put_string_console(QemuTextConsole *s, const char *str, int len);
->>> -void kbd_put_keysym(int keysym);
->>>
->>>    /* Touch devices */
->>>    typedef struct touch_slot {
->>> diff --git a/ui/console.c b/ui/console.c
->>> index a98adbb1b2..6068e02928 100644
->>> --- a/ui/console.c
->>> +++ b/ui/console.c
->>> @@ -1141,6 +1141,13 @@ void kbd_put_keysym_console(QemuTextConsole *s, int keysym)
->>>        int c;
->>>        uint32_t num_free;
->>>
->>> +    if (!s) {
->>> +        if (!QEMU_IS_TEXT_CONSOLE(active_console)) {
->>> +            return;
->>> +        }
->>> +        s = QEMU_TEXT_CONSOLE(active_console);
->>> +    }
->>> +
->>>        switch(keysym) {
->>>        case QEMU_KEY_CTRL_UP:
->>>            console_scroll(s, -1);
->>> @@ -1231,13 +1238,6 @@ void kbd_put_string_console(QemuTextConsole *s, const char *str, int len)
->>>        }
->>>    }
->>>
->>> -void kbd_put_keysym(int keysym)
->>> -{
->>> -    if (QEMU_IS_TEXT_CONSOLE(active_console)) {
->>> -        kbd_put_keysym_console(QEMU_TEXT_CONSOLE(active_console), keysym);
->>> -    }
->>> -}
->>> -
->>>    static void text_console_invalidate(void *opaque)
->>>    {
->>>        QemuTextConsole *s = QEMU_TEXT_CONSOLE(opaque);
->>> diff --git a/ui/curses.c b/ui/curses.c
->>> index de962faa7c..4ddbbae7cd 100644
->>> --- a/ui/curses.c
->>> +++ b/ui/curses.c
->>> @@ -400,7 +400,7 @@ static void curses_refresh(DisplayChangeListener *dcl)
->>>                if (keysym == -1)
->>>                    keysym = chr;
->>>
->>> -            kbd_put_keysym(keysym);
->>> +            kbd_put_keysym_console(NULL, keysym);
->>>            }
->>>        }
->>>    }
->>> diff --git a/ui/vnc.c b/ui/vnc.c
->>> index 92964dcc0c..1fa4456744 100644
->>> --- a/ui/vnc.c
->>> +++ b/ui/vnc.c
->>> @@ -1945,88 +1945,88 @@ static void do_key_event(VncState *vs, int down, int keycode, int sym)
->>>                case 0xb8:                          /* Right ALT */
->>>                    break;
->>>                case 0xc8:
->>> -                kbd_put_keysym(QEMU_KEY_UP);
->>> +                kbd_put_keysym_console(NULL, QEMU_KEY_UP);
->>
->> vs->vd->dcl.con should be used instead. There may be VNC connections for
->> consoles other than the "active console" and in such a case
->> vs->vd->dcl.con != NULL. Unfortunately it seems that ui/vnc is very
->> buggy in such a situation.
->>
-> 
-> That's not how the console & VNC server code works. VNC server will
-> send the key event to the hw anyway. But if the active_console is
-> text/vc, then it also sends (some) of the key events to it. There is
-> no "per-client" console either, the console switch is global
-> (console_select()).
 
-Actually vnc is capable of binding a VNC server instance to a particular 
-console instead of active console controlled by global console_select() 
-switch since commit 1d0d59fe29 ("vnc: allow binding servers to qemu 
-consoles").
+Friendly ping...
+Hello, this patch has already received a R-b from PeterXu. Could you 
+please help me review it as well and see if there are any issues? If 
+everything is fine, could you please consider merging it? Thank you!
 
+在 2023/8/30 11:29 上午, hongmianquan 写道:
+> When updating ioeventfds, we need to iterate all address spaces,
+> but some address spaces do not register eventfd_add|del call when
+> memory_listener_register() and they do nothing when updating ioeventfds.
+> So we can skip these AS in address_space_update_ioeventfds().
 > 
-> Anyway, this patch is quite systematic. Further complicated changes
-> should be done later. please ack/r-b
-
-I see.
-
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-
+> The overhead of memory_region_transaction_commit() can be significantly
+> reduced. For example, a VM with 8 vhost net devices and each one has
+> 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
 > 
-> thanks
+> Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> ---
+> v2:
+> -nothing has changed, just pick PeterXu's review.
+> ---
+>   include/exec/memory.h |  1 +
+>   softmmu/memory.c      | 12 ++++++++++++
+>   2 files changed, 13 insertions(+)
 > 
-> 
-> 
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 7f5c11a0cc..556f4f1871 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -1089,6 +1089,7 @@ struct AddressSpace {
+>       struct FlatView *current_map;
+>   
+>       int ioeventfd_nb;
+> +    int ioeventfd_notifiers;
+>       struct MemoryRegionIoeventfd *ioeventfds;
+>       QTAILQ_HEAD(, MemoryListener) listeners;
+>       QTAILQ_ENTRY(AddressSpace) address_spaces_link;
+> diff --git a/softmmu/memory.c b/softmmu/memory.c
+> index 7d9494ce70..178816c845 100644
+> --- a/softmmu/memory.c
+> +++ b/softmmu/memory.c
+> @@ -842,6 +842,10 @@ static void address_space_update_ioeventfds(AddressSpace *as)
+>       AddrRange tmp;
+>       unsigned i;
+>   
+> +    if (!as->ioeventfd_notifiers) {
+> +        return;
+> +    }
+> +
+>       /*
+>        * It is likely that the number of ioeventfds hasn't changed much, so use
+>        * the previous size as the starting value, with some headroom to avoid
+> @@ -3075,6 +3079,10 @@ void memory_listener_register(MemoryListener *listener, AddressSpace *as)
+>       }
+>   
+>       listener_add_address_space(listener, as);
+> +
+> +    if (listener->eventfd_add || listener->eventfd_del) {
+> +        as->ioeventfd_notifiers++;
+> +    }
+>   }
+>   
+>   void memory_listener_unregister(MemoryListener *listener)
+> @@ -3083,6 +3091,10 @@ void memory_listener_unregister(MemoryListener *listener)
+>           return;
+>       }
+>   
+> +    if (listener->eventfd_add || listener->eventfd_del) {
+> +        listener->address_space->ioeventfd_notifiers--;
+> +    }
+> +
+>       listener_del_address_space(listener, listener->address_space);
+>       QTAILQ_REMOVE(&memory_listeners, listener, link);
+>       QTAILQ_REMOVE(&listener->address_space->listeners, listener, link_as);
 
