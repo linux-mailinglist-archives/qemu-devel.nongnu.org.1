@@ -2,55 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB5F791B65
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B2B791BA1
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:30:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCJd-0005gZ-8f; Mon, 04 Sep 2023 12:20:42 -0400
+	id 1qdCRi-0002eZ-Ik; Mon, 04 Sep 2023 12:29:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdCJY-0005fh-FI
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:20:36 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdCJK-0000mq-4x
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:20:36 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfYf121F5z6J81k;
- Tue,  5 Sep 2023 00:15:53 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 4 Sep 2023 17:20:19 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>
-CC: Dave Jiang <dave.jiang@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <linuxarm@huawei.com>
-Subject: [PATCH v2 3/3] tests/acpi: Update DSDT.cxl with QTG DSM
-Date: Mon, 4 Sep 2023 17:18:47 +0100
-Message-ID: <20230904161847.18468-4-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
-References: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <vivahavey@gmail.com>)
+ id 1qdCJI-0005Z8-68; Mon, 04 Sep 2023 12:20:22 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <vivahavey@gmail.com>)
+ id 1qdCJD-0000lo-BR; Mon, 04 Sep 2023 12:20:19 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1bee82fad0fso8926635ad.2; 
+ Mon, 04 Sep 2023 09:20:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693844412; x=1694449212; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7Q80VNS5mMLiY+2ZB4hkhFDuko3FgyE8q1ZevVSDvMU=;
+ b=SvNu6+PCJG+RiWhrkbdmQ6ZWHhOsy2lHk2IBmYka5+CP3HLkbBZu45i4VScZbcTLn4
+ SsCx/Fr+stcBuWrDfCn3pPzEbYdUEvbzklDNoLuOwUQyL0mUS3vFErHChG92OxGJu6uo
+ ioji5edEb5fj+aAnFw2lWbeRlTG+ncgETPgSd+nUG8HBMxA2DgpH8omEtNzXxhrHkKkE
+ 9o9e+E8ZiJ9TXdq9xkkQshTAUzkRCQ6EVCRzpR96zptfY549lRILLqqzkode7J+7iJ9s
+ 95qWsQ5i/Z8HGzRMsO2kGNZSM75hTOqgJtNZ/nh4LpE1vM4NkRjyURyJia+D87cc0zXz
+ ncEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693844412; x=1694449212;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7Q80VNS5mMLiY+2ZB4hkhFDuko3FgyE8q1ZevVSDvMU=;
+ b=ZJjYfNGE11bvw3ep0yLPcIX/udbi1eVdqbJpagPoDljeQFq/zZ3sGOa1uXDW5X2yM9
+ 4izVRfnI6KV+uprMXbcKHaTh2ELg0AK6S3CNfOBiT6oVmt0xQvOecbZLd+FKdZLfCSlR
+ 52VJ7HIpoV6ahDzKZqgS75fLUd9SuheTr76bdkn3uXoBtkamltBbO1WTDzDbOuDRPjQ9
+ j1xs/y6rqZYFAcIiO8UaKj++EJjia9+dG2OE8RNxoc3EntXLbhsrx88EPAlfLvtpudou
+ cDIlv14ILYvtgtjhJz42ze/eIXq0k9K2DjBfDwtADbBk0bW8hADBbz8BzoQ/jNIeOF/U
+ PuHw==
+X-Gm-Message-State: AOJu0YyUpWeNGQWRHLoDlJOnaeDSnSvfkx2nUfZ715+SHQ00rTxhBDvi
+ Cm361i1AuzGvRfiqovp6ePIDTzlU/Jf9e6Rh
+X-Google-Smtp-Source: AGHT+IHP6JSgsfOHYEBohgn2sEQ257KS5+SQZBfYZGxFpqt/YMbkyvFrZzU85LkvIx29bGsnWvZwEg==
+X-Received: by 2002:a17:902:cec5:b0:1b7:e49f:1d with SMTP id
+ d5-20020a170902cec500b001b7e49f001dmr10121261plg.62.1693844412344; 
+ Mon, 04 Sep 2023 09:20:12 -0700 (PDT)
+Received: from localhost.localdomain (36-226-199-198.dynamic-ip.hinet.net.
+ [36.226.199.198]) by smtp.gmail.com with ESMTPSA id
+ l6-20020a170903244600b001b03f208323sm7735361pls.64.2023.09.04.09.20.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Sep 2023 09:20:12 -0700 (PDT)
+From: Alvin Chang <vivahavey@gmail.com>
+X-Google-Original-From: Alvin Chang <alvinga@andestech.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com,
+	Alvin Chang <alvinga@andestech.com>
+Subject: [PATCH] target/riscv: update checks on writing pmpcfg for ePMP to
+ version 1.0
+Date: Tue,  5 Sep 2023 00:19:59 +0800
+Message-Id: <20230904161959.1766-1-alvinga@andestech.com>
+X-Mailer: git-send-email 2.27.0.windows.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=vivahavey@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 04 Sep 2023 12:28:59 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,39 +88,95 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Description of change in previous patch.
+Current checks on writing pmpcfg for ePMP follows ePMP version 0.9.1.
+However, ePMP specification has already been ratified, and there are
+some differences between version 0.9.1 and 1.0. In this commit we update
+the checks of writing pmpcfg to follow ePMP version 1.0.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+When mseccfg.MML is set, the constraints to modify PMP rules are:
+1. Locked rules cannot be removed or modified until a PMP reset, unless
+   mseccfg.RLB is set.
+2. From Smepmp specification version 1.0, chapter 2 section 4b:
+   Adding a rule with executable privileges that either is M-mode-only
+   or a locked Shared-Region is not possible and such pmpcfg writes are
+   ignored, leaving pmpcfg unchanged.
+
+The commit transfers the value of pmpcfg into the index of the ePMP
+truth table, and checks the rules by aforementioned specification
+changes.
+
+Signed-off-by: Alvin Chang <alvinga@andestech.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/q35/DSDT.cxl                | Bin 9655 -> 9723 bytes
- 2 files changed, 1 deletion(-)
+ target/riscv/pmp.c | 51 ++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 9 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 9ce0f596cc..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/DSDT.cxl",
-diff --git a/tests/data/acpi/q35/DSDT.cxl b/tests/data/acpi/q35/DSDT.cxl
-index ee16a861c2de7b7caaf11d91c50fcdf308815233..d4272e87c00e010a6805b6a276fcc87d9b6ead17 100644
-GIT binary patch
-delta 129
-zcmdn){o9+%CD<k8w<-ezW5-6WiHaE>Z1KTP@zG5VY|arrz8vu$o-VwO&H<hV28QMg
-zA{_C-A&v}77)2ae;$4D$c@|hs&JYyl5?J;#_4B>ug$~QIw(xNK_XREBoSen5M39-0
-gae?^cEXE~5f=q&}Tuh7%LL7`B1_Q(9{fa-B0lXk1>i_@%
-
-delta 61
-zcmezEz1^G3CD<ioyD9?%qu)lZiHa&J@xe~<(M__>5k9^g@gANoypGNRo(2Yn<_sbn
-R@xdXE3`-a{Gb{aI1^_O_5bOW|
-
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index a08cd95658..c036ca3e70 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -99,16 +99,49 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+                 locked = false;
+             }
+ 
+-            /* mseccfg.MML is set */
+-            if (MSECCFG_MML_ISSET(env)) {
+-                /* not adding execute bit */
+-                if ((val & PMP_LOCK) != 0 && (val & PMP_EXEC) != PMP_EXEC) {
+-                    locked = false;
+-                }
+-                /* shared region and not adding X bit */
+-                if ((val & PMP_LOCK) != PMP_LOCK &&
+-                    (val & 0x7) != (PMP_WRITE | PMP_EXEC)) {
++            /*
++             * mseccfg.MML is set. Locked rules cannot be removed or modified
++             * until a PMP reset. Besides, from Smepmp specification version 1.0
++             * , chapter 2 section 4b says:
++             * Adding a rule with executable privileges that either is
++             * M-mode-only or a locked Shared-Region is not possible and such
++             * pmpcfg writes are ignored, leaving pmpcfg unchanged.
++             */
++            if (MSECCFG_MML_ISSET(env) && !pmp_is_locked(env, pmp_index)) {
++                /*
++                 * Convert the PMP permissions to match the truth table in the
++                 * ePMP spec.
++                 */
++                const uint8_t epmp_operation =
++                    ((val & PMP_LOCK) >> 4) | ((val & PMP_READ) << 2) |
++                    (val & PMP_WRITE) | ((val & PMP_EXEC) >> 2);
++
++                switch (epmp_operation) {
++                /* pmpcfg.L = 0. Neither M-mode-only nor locked Shared-Region */
++                case 0:
++                case 1:
++                case 2:
++                case 3:
++                case 4:
++                case 5:
++                case 6:
++                case 7:
++                /* pmpcfg.L = 1 and pmpcfg.X = 0 (but case 10 is not allowed) */
++                case 8:
++                case 12:
++                case 14:
++                /* pmpcfg.LRWX = 1111 */
++                case 15:  /* Read-only locked Shared-Region on all modes */
+                     locked = false;
++                    break;
++                /* Other rules which add new code regions are not allowed */
++                case 9:
++                case 10:  /* Execute-only locked Shared-Region on all modes */
++                case 11:
++                case 13:
++                    break;
++                default:
++                    g_assert_not_reached();
+                 }
+             }
+         } else {
 -- 
-2.39.2
+2.34.1
 
 
