@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29FB79149E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3957914AD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5jd-00017k-3f; Mon, 04 Sep 2023 05:19:05 -0400
+	id 1qd5o9-0002Iu-IF; Mon, 04 Sep 2023 05:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qd5jY-00017J-Pg
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:19:00 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qd5nw-0002Hp-Rp
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:23:32 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qd5jI-0006Uy-RU
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:19:00 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31c5a2e8501so936727f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 02:18:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qd5nm-0007dZ-8G
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:23:24 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2bcb50e194dso17367411fa.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 02:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693819123; x=1694423923; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=Nm5KqoAd+HSN4XenoZPzE6h42aQKOGVLcNJvjlXSQ1A=;
- b=mXK+CrqETUL60lQ6q76sIeVPdNd5r2c9rvm2IUx4ZgURHlM9iW2CEMsAP7dv11awcr
- qvimaaRbIb/zZeRZd3n7P/8EjMuaizEVxFJ544up+hXIjwLzBuTiQAFNuXtr5DbQMgsU
- ykccwSgo28CL6wVfMeCSeLgygO3JssJNdEPSGO2aElaBvh7wALiIWi/IvlYbZyrOTOhL
- L/gGpOzShx5HDjejBVZ+8Wq4XtiBZHFI9Ng7DC0ppN1nZwpKn9S7q+eZEy5+QUr0MN0Y
- P3jHUTP4XJ0WxjMrNH1gcrtfbgtNqbPZYxJxcZ4/rP2f5Pkh0x14HrzrL7dtmTAAuSly
- MZzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693819123; x=1694423923;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1693819399; x=1694424199; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nm5KqoAd+HSN4XenoZPzE6h42aQKOGVLcNJvjlXSQ1A=;
- b=koZ1aUC+2secFDxDkQaHMIx5TVfA0kMDcaOdJlhz8rWX3ojkuWZpi4SeP+kKo3tlCZ
- ScpC0+WUkiawZWmG0Bowb5Ds395bh9nCQkJqTbuTOc3al6tEGUtQzLI78PN3DIFJ0TNJ
- fzrn9cJ81GTwAYIjcJYhcDW/HUDA4ZcwW04mAC6VqMisNPuCXj+nwTvdZHiZFM7fftdO
- IWehKzZgM3HbRu0vTURMY7FTZP81viXfO70z+Iaw3vmeuq3ncV/unUXRDGoHoEY5Vd7K
- u8NEdA2CaSZ9fCFTP9sG1mfU9k/NGnexmEtGzPyG2alvlV4qvi0yu3emFmQkYbZH257y
- S+RA==
-X-Gm-Message-State: AOJu0YyE9tDuKluAVCB46QVLMJBfWTGDo1aEEuCyKw5q+g2venM60oH1
- jfuoWALakQksXvoDpiZHN1CglA==
-X-Google-Smtp-Source: AGHT+IFBUGAesEM4nr1ejCFfXkjo/2xQm4yQAMPYXedZD5DHOwOhH3CVOW70tNrAIl6pDIgfYHoQBQ==
-X-Received: by 2002:a5d:69c5:0:b0:317:e1a2:dccf with SMTP id
- s5-20020a5d69c5000000b00317e1a2dccfmr7847101wrw.62.1693819123210; 
- Mon, 04 Sep 2023 02:18:43 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- w2-20020adff9c2000000b00317ddccb0d1sm13908274wrr.24.2023.09.04.02.18.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 02:18:42 -0700 (PDT)
-Date: Mon, 4 Sep 2023 11:18:41 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v9 20/20] target/riscv/cpu.c: consider user option with RVG
-Message-ID: <20230904-3492f3db40617b7780ed7861@orel>
-References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
- <20230901194627.1214811-21-dbarboza@ventanamicro.com>
+ bh=YUq8bfNPYZgiJtNPTEdlgSJW/Yo5i05h5j1OZ9GNjNc=;
+ b=Ox9fPOFvKcJ16rzr1E0iwjAqff/8RE63YvaEszT/JswMZudWhTwLr/jnop8R7A5kLG
+ LW0ZOK/cF89oZ6Edj0LP1CcyTy1e6lNczP6TgO/HT3t7/rMULCf2UpPkjLq81g2KWDeV
+ 3mZGY+Xx3kBMPuewNacJpcxl6GOvGLpcI1jGRBKaceN/b4BOn07xrGmjNiUscKiABawq
+ VZzRiRblqoP5iOkIRG7zRQSVCtgNDdcoGhiJLiPujKGrvqFbhFYQ/4Hz973ncvTBZZKH
+ VDFw3fPOE6cD/0iNeQ42WX3mxgJIeYEMvRZm5IGr5HvsixV6l1U/fOcdSvAxt+wEeAYJ
+ aWzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693819399; x=1694424199;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YUq8bfNPYZgiJtNPTEdlgSJW/Yo5i05h5j1OZ9GNjNc=;
+ b=h6R7e0utMI2NU6xgwAs7J3f6uUYs0bPhs0KpfpLBYv1cKvrMTc+nmpqYbMbhWvOaAU
+ FHBl/SsMvxJAXZ2H2hKo10bRSo4iiuWqDjndowDoxupblfpWM+symMK1kIGRGeGCmU8J
+ d9KSnNZiwMPFMgkcFUI3lnv3ETpO9BsISsNXWTUFGD8GtoMtQtd4h90KOjJjfLd9GVDZ
+ nJzxvKj47Wo0C29TifNGIEKvap1WUrunqsklY4NOdKBFVNfSCMX4s1UqNwb38b/PtDkg
+ u2I9wtnzO+gvf8nzfnqkhMItUIxOr4Y7XzK8rKbkkgpK5Mjm9TkNWbrQMrwbcdNByms1
+ PUqg==
+X-Gm-Message-State: AOJu0YzgnTh6X4pfNtzKylNqaXB7jfG/RHZrjMvtFtHXTJqB91zooqhS
+ d3BFSTbFsRPtU6oMcu7gr5d8GiEXno3GmbDsf/eo5Q==
+X-Google-Smtp-Source: AGHT+IEzg1U6Bq1X2kenrm5UNt/+vhwd+sU8GIVRGVamPfKkyjZxfy4+annl+5lzwxn/IPFg78iQVPz0070Kzy+l46Q=
+X-Received: by 2002:ac2:52ab:0:b0:500:79a6:38d4 with SMTP id
+ r11-20020ac252ab000000b0050079a638d4mr5935204lfm.40.1693819399391; Mon, 04
+ Sep 2023 02:23:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230901194627.1214811-21-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42e.google.com
+References: <20230823070735.363197-1-chigot@adacore.com>
+In-Reply-To: <20230823070735.363197-1-chigot@adacore.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 4 Sep 2023 10:23:08 +0100
+Message-ID: <CAFEAcA9EHpyPuJOCAbLCn8=F+aaSZ=yzwDPwT70VUyCgMDLmYw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] gdbstub: replace exit(0) with proper shutdown
+To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,57 +86,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 01, 2023 at 04:46:26PM -0300, Daniel Henrique Barboza wrote:
-> Enabling RVG will enable a set of extensions that we're not checking if
-> the user was okay enabling or not. And in this case we want to error
-> out, instead of ignoring, otherwise we will be inconsistent enabling RVG
-> without all its extensions.
-> 
-> After this patch, disabling ifencei or icsr while enabling RVG will
-> result in error:
-> 
-> $ ./build/qemu-system-riscv64 -M virt -cpu rv64,g=true,Zifencei=false --nographic
-> qemu-system-riscv64: RVG requires Zifencei but user set Zifencei to false
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->  target/riscv/cpu.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 78382cb5f2..be1c028095 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1153,9 +1153,23 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->            riscv_has_ext(env, RVA) && riscv_has_ext(env, RVF) &&
->            riscv_has_ext(env, RVD) &&
->            cpu->cfg.ext_icsr && cpu->cfg.ext_ifencei)) {
-> +
-> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_icsr)) &&
-> +            !cpu->cfg.ext_icsr) {
-> +            error_setg(errp, "RVG requires Zicsr but user set Zicsr to false");
-> +            return;
-> +        }
-> +
-> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_ifencei)) &&
-> +            !cpu->cfg.ext_ifencei) {
-> +            error_setg(errp, "RVG requires Zifencei but user set "
-> +                       "Zifencei to false");
-> +            return;
-> +        }
-> +
->          warn_report("Setting G will also set IMAFD_Zicsr_Zifencei");
-> -        cpu->cfg.ext_icsr = true;
-> -        cpu->cfg.ext_ifencei = true;
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_ifencei), true);
->  
->          env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
->          env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
-> -- 
-> 2.41.0
+On Wed, 23 Aug 2023 at 08:07, Cl=C3=A9ment Chigot <chigot@adacore.com> wrot=
+e:
 >
+> This replaces the exit(0) call by a shutdown request, ensuring a proper
+> cleanup of Qemu. Otherwise, some connections could be broken without
+> being correctly flushed.
+>
+> Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> ---
+>  gdbstub/gdbstub.c |  3 +--
+>  gdbstub/softmmu.c | 13 +++++++++++++
+>  gdbstub/user.c    |  2 ++
+>  3 files changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index 5f28d5cf57..358eed1935 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -1298,7 +1298,6 @@ static void handle_v_kill(GArray *params, void *use=
+r_ctx)
+>      gdb_put_packet("OK");
+>      error_report("QEMU: Terminated via GDBstub");
+>      gdb_exit(0);
+> -    exit(0);
+>  }
+>
+>  static const GdbCmdParseEntry gdb_v_commands_table[] =3D {
+> @@ -1818,7 +1817,7 @@ static int gdb_handle_packet(const char *line_buf)
+>          /* Kill the target */
+>          error_report("QEMU: Terminated via GDBstub");
+>          gdb_exit(0);
+> -        exit(0);
+> +        break;
+>      case 'D':
+>          {
+>              static const GdbCmdParseEntry detach_cmd_desc =3D {
+> diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+> index f509b7285d..fa9b09537d 100644
+> --- a/gdbstub/softmmu.c
+> +++ b/gdbstub/softmmu.c
+> @@ -434,6 +434,19 @@ void gdb_exit(int code)
+>      }
+>
+>      qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
+> +
+> +    /*
+> +     * Shutdown request is a clean way to stop the QEMU, compared
+> +     * to a direct call to exit(). But we can't pass the exit code
+> +     * through it so avoid doing that when it can matter.
+> +     * As this function is also called during the cleanup process,
+> +     * avoid sending the request if one is already set.
+> +     */
+> +    if (code) {
+> +        exit(code);
+> +    } else if (!qemu_shutdown_requested_get()) {
+> +        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +    }
+>  }
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+This definitely doesn't look right. Either exit() is OK
+to call, or it is not. We shouldn't be exiting one way
+if the exit status is 0 and another way if it is non-0.
+
+thanks
+-- PMM
 
