@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2619479174F
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F61791753
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:44:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8uf-0000aW-JV; Mon, 04 Sep 2023 08:42:41 -0400
+	id 1qd8vV-0000y1-Ol; Mon, 04 Sep 2023 08:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qd8uU-0000ZB-T4
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:42:30 -0400
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8vU-0000xp-DA
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:43:32 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qd8uR-0004VQ-Qh
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:42:30 -0400
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-3a81154c570so697785b6e.1
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:42:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8vR-0004c7-Vp
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:43:32 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9a5be3166a2so195076866b.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:43:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693831346; x=1694436146; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cw3HIM5514WF/cylQUG43aOl2e22OtvqyjpBZvKGGVA=;
- b=JR1bBpIPESrVg0A9gRlPmA3+74fYbFETJnZnmv9c8/dfO0PS0k7L23JusancWxUgWN
- OiRFk/jSOCZlxRjYzS/vCT3Jfqb/ziHN5V2B1op3+siikpOpuAe/5MZ+luypQdHGUX5E
- B4S6vJg7EZxguwvM15Riw7jrR3wGliM0gEqJmmOnpUp/53LUjrnMWWndV4A0+gz7Rs1d
- 9DSJCaw8jmbgCWxPJqSRkjuXUR+vtA0ZOhA2HNB16SVTFNfcUL1CVTdWq/hz4BLKMvI2
- H1LuGZojOahEC8wHKtIqSJNkanOCrEdbMBXIXJKZxdqNO6cagJvczm4KJMDhGXk88lkf
- 4KMg==
+ d=linaro.org; s=google; t=1693831408; x=1694436208; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KgdDAI5WJeQpNJ7fVmtYD+dCjS5FrBlY0naTS3cJ2cY=;
+ b=JCPwwlN4qyay4pLYCrkAbK8XrsuIMW+DyqrPMbZhZAAkCQFEyeCfQ2D3ev1qbAqxcA
+ IF3uP1NtfbmUc4ZJALz878sSqmYdsx1x4Ite8PuvvHPbpnLFTFhJiC14/L+QtaX/ehUm
+ N1JuRTTkAIP03jLlB8ZhCDOr8XUE93XRa/iIoVCR+2SOEs0wpn/6lHyJvxFpeYnennP0
+ nZ8N1G89g/QMW+ENDo5Se8PaXht3tgMAsWHQQg8rWFT5CSnIVHgus4q9xkBvWeJ8lFf9
+ tJUISWcf/W/2FoqG+B2T6Ft7wh1rODoTXcwGH3YcyNgBf/dJS8Gu5uhptvpYfU45FT+a
+ GaZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693831346; x=1694436146;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cw3HIM5514WF/cylQUG43aOl2e22OtvqyjpBZvKGGVA=;
- b=MfQxjQTsl74epNDQjdtzUtJzFeRyy8zq3Y5KzzqJqpuRoMBjNE8s6S3YdVBJkql65Z
- cZBcPJQP8i/gWS6hvoS2FWiTAZuXY+l8G7IOHAc47ESjStc2Pe+h/3EaFcRxXWK6+yk0
- mM0m89fKzkXDTzLDD8kAH8y2GWP8L+un/hqGLNKMboBP42wAlB2FwZULTCfZIW3MKOsc
- gYrEc1YwbK9No4CYveTHA+kHjozaOg/v7DT1RQxVXA82cjvVMvt2LYyRBPNqbGt8tdJA
- NB9V1mha1VpBXATQtEabO8ErHmFlJ2lk+oR+rU1qgwm01L7ir8xp2STrSOb0MDNUq9fm
- wP8A==
-X-Gm-Message-State: AOJu0YxMIfVNPzz4C3HX06XasYRjKgJe4mD0kxupMFs6ixo+ABewf/HR
- ifGRhaR89I7MXgh+FRxu8c5H4M6Kkr5SXpm7YM8=
-X-Google-Smtp-Source: AGHT+IExK6K4sq5iWpUcyUsLakJHUzWYLIHB8K9QbXCGN/kym8oQ+ofY/5E+SBDemqSmMw4cdElyw9PR0RUQ4uhh65M=
-X-Received: by 2002:a05:6808:64a:b0:3a7:4802:c3f with SMTP id
- z10-20020a056808064a00b003a748020c3fmr8174608oih.52.1693831345957; Mon, 04
- Sep 2023 05:42:25 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693831408; x=1694436208;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KgdDAI5WJeQpNJ7fVmtYD+dCjS5FrBlY0naTS3cJ2cY=;
+ b=T+JMLp1PYv+WJK3/y/fEko7R9rej4+woKsw46tcRvz9glSApkr5lqqHtq4wIP95Ulu
+ fe/pwnw+WwkO0HEoEF1xS9xZPAQHz5PKStDZ29i+JqIHov596UiP5fCEXmEWGgrZ6+i5
+ 8P0K7jIwzs3MnzgECiF7MT3uYl/YiJjarozqwT/8KpE+tyEM3fLHFyvhphyzAsESyh1D
+ t77uwBf2CWaSmFMJKI+ejcVafUMhYT6J04wXEtLeMTvGqNb6NENt/2ECbhl/WLt+h7SL
+ fNGqeOlWM4Fi3OtzViMnh5daaOGiv7P40iTLoK6r+C2r3QMWYuCn4s6xM0Z8reeuM+mW
+ ZayQ==
+X-Gm-Message-State: AOJu0YwRXtx91NbsgJnNAN21Khp7GJtixo7DwI72PMjfMu0ca7OiUIAb
+ ZQa3QMmw3u9oFYFqgauEPCQzsTQv9w5LXtHQX+Q=
+X-Google-Smtp-Source: AGHT+IFhdp2S6dmdQU4L+6xLxXs/ra3AOIWeAuonsSZVIyQsXIqOo0I4pZ2Cuh3QLrH5FtcNOMpNIw==
+X-Received: by 2002:a17:906:2d1:b0:99e:5d8:a6f9 with SMTP id
+ 17-20020a17090602d100b0099e05d8a6f9mr6609163ejk.66.1693831407692; 
+ Mon, 04 Sep 2023 05:43:27 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.209.227])
+ by smtp.gmail.com with ESMTPSA id
+ um16-20020a170906cf9000b00992d70f8078sm6099214ejb.106.2023.09.04.05.43.26
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 04 Sep 2023 05:43:27 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/13] target/i386: Cleanups around KVM declarations
+Date: Mon,  4 Sep 2023 14:43:11 +0200
+Message-ID: <20230904124325.79040-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-46-marcandre.lureau@redhat.com>
- <96a49f28-d92c-4910-9f24-b031212ccfc2@daynix.com>
-In-Reply-To: <96a49f28-d92c-4910-9f24-b031212ccfc2@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 4 Sep 2023 16:42:14 +0400
-Message-ID: <CAJ+F1CLCeOgjpS9Wm-V7xNg9QcP8TFcWz86_f9uxsLFpRREQsw@mail.gmail.com>
-Subject: Re: [PATCH 45/67] ui/vc: remove kby_put_keysym() and update function
- calls
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-oi1-x236.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,126 +90,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Hi,
 
-On Thu, Aug 31, 2023 at 12:59=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
-x.com> wrote:
->
-> On 2023/08/30 18:38, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > The function calls to `kbd_put_keysym` have been updated to now call
-> > `kbd_put_keysym_console` with a NULL console parameter.
-> >
-> > Like most console functions, NULL argument is now for the active consol=
-e.
-> >
-> > This will allow to rename the text console functions in a consistent ma=
-nner.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >   include/ui/console.h |  1 -
-> >   ui/console.c         | 14 ++++++------
-> >   ui/curses.c          |  2 +-
-> >   ui/vnc.c             | 54 ++++++++++++++++++++++---------------------=
--
-> >   ui/cocoa.m           |  2 +-
-> >   5 files changed, 36 insertions(+), 37 deletions(-)
-> >
-> > diff --git a/include/ui/console.h b/include/ui/console.h
-> > index 1ccd432b4d..9c362f0e87 100644
-> > --- a/include/ui/console.h
-> > +++ b/include/ui/console.h
-> > @@ -115,7 +115,6 @@ bool qemu_mouse_set(int index, Error **errp);
-> >   void kbd_put_keysym_console(QemuTextConsole *s, int keysym);
-> >   bool kbd_put_qcode_console(QemuTextConsole *s, int qcode, bool ctrl);
-> >   void kbd_put_string_console(QemuTextConsole *s, const char *str, int =
-len);
-> > -void kbd_put_keysym(int keysym);
-> >
-> >   /* Touch devices */
-> >   typedef struct touch_slot {
-> > diff --git a/ui/console.c b/ui/console.c
-> > index a98adbb1b2..6068e02928 100644
-> > --- a/ui/console.c
-> > +++ b/ui/console.c
-> > @@ -1141,6 +1141,13 @@ void kbd_put_keysym_console(QemuTextConsole *s, =
-int keysym)
-> >       int c;
-> >       uint32_t num_free;
-> >
-> > +    if (!s) {
-> > +        if (!QEMU_IS_TEXT_CONSOLE(active_console)) {
-> > +            return;
-> > +        }
-> > +        s =3D QEMU_TEXT_CONSOLE(active_console);
-> > +    }
-> > +
-> >       switch(keysym) {
-> >       case QEMU_KEY_CTRL_UP:
-> >           console_scroll(s, -1);
-> > @@ -1231,13 +1238,6 @@ void kbd_put_string_console(QemuTextConsole *s, =
-const char *str, int len)
-> >       }
-> >   }
-> >
-> > -void kbd_put_keysym(int keysym)
-> > -{
-> > -    if (QEMU_IS_TEXT_CONSOLE(active_console)) {
-> > -        kbd_put_keysym_console(QEMU_TEXT_CONSOLE(active_console), keys=
-ym);
-> > -    }
-> > -}
-> > -
-> >   static void text_console_invalidate(void *opaque)
-> >   {
-> >       QemuTextConsole *s =3D QEMU_TEXT_CONSOLE(opaque);
-> > diff --git a/ui/curses.c b/ui/curses.c
-> > index de962faa7c..4ddbbae7cd 100644
-> > --- a/ui/curses.c
-> > +++ b/ui/curses.c
-> > @@ -400,7 +400,7 @@ static void curses_refresh(DisplayChangeListener *d=
-cl)
-> >               if (keysym =3D=3D -1)
-> >                   keysym =3D chr;
-> >
-> > -            kbd_put_keysym(keysym);
-> > +            kbd_put_keysym_console(NULL, keysym);
-> >           }
-> >       }
-> >   }
-> > diff --git a/ui/vnc.c b/ui/vnc.c
-> > index 92964dcc0c..1fa4456744 100644
-> > --- a/ui/vnc.c
-> > +++ b/ui/vnc.c
-> > @@ -1945,88 +1945,88 @@ static void do_key_event(VncState *vs, int down=
-, int keycode, int sym)
-> >               case 0xb8:                          /* Right ALT */
-> >                   break;
-> >               case 0xc8:
-> > -                kbd_put_keysym(QEMU_KEY_UP);
-> > +                kbd_put_keysym_console(NULL, QEMU_KEY_UP);
->
-> vs->vd->dcl.con should be used instead. There may be VNC connections for
-> consoles other than the "active console" and in such a case
-> vs->vd->dcl.con !=3D NULL. Unfortunately it seems that ui/vnc is very
-> buggy in such a situation.
->
+Mostly trivial cleanups.
 
-That's not how the console & VNC server code works. VNC server will
-send the key event to the hw anyway. But if the active_console is
-text/vc, then it also sends (some) of the key events to it. There is
-no "per-client" console either, the console switch is global
-(console_select()).
+We want to have QEMU core code accel-agnostic.
+(In particular, removing the KVM specific fields
+from CPUState).
 
-Anyway, this patch is quite systematic. Further complicated changes
-should be done later. please ack/r-b
+This serie contains the x86 specific patches
+before starting with the generic KVM code.
 
-thanks
+FWIW, I couldn't test the 'HVF only' configuration
+since I don't have access to such host.
 
+Regards,
 
+Phil.
 
---=20
-Marc-Andr=C3=A9 Lureau
+Philippe Mathieu-Daudé (13):
+  hw/i386/pc: Include missing 'sysemu/tcg.h' header
+  hw/i386/pc: Include missing 'cpu.h' header
+  hw/i386/fw_cfg: Include missing 'cpu.h' header
+  target/i386/helper: Restrict KVM declarations to system emulation
+  target/i386/cpu-sysemu: Inline kvm_apic_in_kernel()
+  target/i386: Remove unused KVM stubs
+  target/i386: Allow elision of kvm_enable_x2apic()
+  target/i386: Allow elision of kvm_hv_vpindex_settable()
+  target/i386: Restrict declarations specific to CONFIG_KVM
+  sysemu/kvm: Restrict kvm_arch_get_supported_cpuid/msr() to x86 targets
+  sysemu/kvm: Restrict kvm_get_apic_state() to x86 targets
+  sysemu/kvm: Restrict kvm_has_pit_state2() to x86 targets
+  sysemu/kvm: Restrict kvm_pc_setup_irq_routing() to x86 targets
+
+ include/sysemu/kvm.h        | 10 --------
+ target/i386/kvm/kvm_i386.h  | 36 ++++++++++++++++----------
+ hw/i386/fw_cfg.c            |  1 +
+ hw/i386/intel_iommu.c       |  2 +-
+ hw/i386/kvm/i8254.c         |  1 +
+ hw/i386/kvm/ioapic.c        |  1 +
+ hw/i386/pc_piix.c           |  1 +
+ hw/i386/pc_q35.c            |  2 ++
+ hw/i386/x86.c               |  4 +--
+ target/i386/cpu-sysemu.c    |  4 +--
+ target/i386/helper.c        |  2 +-
+ target/i386/kvm/kvm-stub.c  | 51 -------------------------------------
+ target/i386/kvm/kvm.c       |  4 +--
+ target/i386/kvm/meson.build |  2 --
+ 14 files changed, 37 insertions(+), 84 deletions(-)
+ delete mode 100644 target/i386/kvm/kvm-stub.c
+
+-- 
+2.41.0
+
 
