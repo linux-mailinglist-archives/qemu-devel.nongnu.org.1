@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCB6791326
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CECE791332
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:20:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd4mq-0006V1-It; Mon, 04 Sep 2023 04:18:20 -0400
+	id 1qd4oC-0007yp-8B; Mon, 04 Sep 2023 04:19:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd4mn-0006Ty-RS
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:18:17 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd4np-0007wr-1c
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:19:22 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd4mk-0000Nk-S2
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:18:17 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-52bd9ddb741so1567027a12.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 01:18:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd4nl-0000WZ-Qm
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:19:19 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-977e0fbd742so167822466b.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 01:19:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693815493; x=1694420293; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693815555; x=1694420355; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3xCVXbAhA7uHrZL2+u340yjZefRYEXr3ysXMcUTJAJU=;
- b=MOKAH4JsjaRb6UQ5r7fr9lW+tbcY/8rDHEzbYfRQx4sq8vgtlYvoRoywxbseFod81m
- qTABh/ClBr7cTtpk8JG5Sw2P64OpKvBIORhymyj3nOMLaOVFp5EUH67iBDPJG2FX/JpK
- tGyGVvsTwAbQAozOELH1uvOzdtynb/tFr6PuxO+a7VQoe2vYjIqaQ8l2TfnbExeb29qB
- P6abcSlC95dueucHcaTIr4VXvitu7BGvfNrJZ1H69rjAgJpstbw7P6CRWFpXJPpiMmed
- TXxTdVsqPOZRua1/tJokElENqbTX8TZyEf8xOnN7C8JXS6ZrhzDJlBvXt4UFP3m4HHfs
- qfpg==
+ bh=D0UexumYOWShk0V2gIT0GLNPhlxt4L6EPj0IqfdS0vk=;
+ b=uH91MWQj1bK4jkFfjAylVLJU88ZL7skQAT2lMo6Vnlnu80Sgn4AWJYh3FyYQwqCCoU
+ hyw8QWY3bRczrCj1uDLix03K3BAdBgpu5kHu3Ye2QJRgbtGykITOyY+SWPbVzlwSqXrB
+ 6dmZfZuaYv9rO1y2QxEN7yylmSaFEoPaY/bvh83RaCv1UAkCS5MyjK3CFUDouBFMfE8b
+ zB1KpQp/RgcrOYXwjkCcFTq0uFR8QR1aOk0MLSZkPmaZL3cedBuAFRSteyd28GLpzx6y
+ IvpJxtjgIZEVYkMqbuJ8CRCu62WQbavAGDQj+HfosoPviyQNahC4ZwnPLLy7pIN5Kxbr
+ 1GAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693815493; x=1694420293;
+ d=1e100.net; s=20221208; t=1693815555; x=1694420355;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3xCVXbAhA7uHrZL2+u340yjZefRYEXr3ysXMcUTJAJU=;
- b=CVeuU1z1BixVqoClyCofNdE72ZWHL5+EyLP0hFCUm7ubeU4HrhsOu28mjsHyyOG+34
- kRFEAoG+lj6fz0Fypw/Sp2B1NAlgIX/oqz32nVhtLMLSQU7xf/G5klZAe9UGBUqD8Ywh
- 8siFmKJ2jHd08guIE/Ga+Va7OyrtqGNC0+g9T52VPMi0LKF4VeHlBpsI7W8+IpTNTmRe
- AYIh54LXySRPEoptW6x90zbdT2dslY3+8W9W1uwy+xBEf23eJZbnrkAgo9/PALfVveLS
- Vr6Jwussk9YRpWKt8JuLdNJTDaPWPEDffm7+7fZqZES5Fih06FKQMGPipYXdeUkeiHui
- sa7A==
-X-Gm-Message-State: AOJu0Yy2RiVlQoZufc40FIIcSMRa01gcfALWqP4lwOydX75NOopemcQS
- N2DAf1dYWTz2RCnOaTJO9al1Sw==
-X-Google-Smtp-Source: AGHT+IELcYYtxWL3rF0k9otwbbPb2wZIrip7qaNXBM2FkfA5B6wSuixMHP5J6w436Z5tkb3zkfZXhw==
-X-Received: by 2002:a05:6402:2027:b0:522:b112:6254 with SMTP id
- ay7-20020a056402202700b00522b1126254mr5927067edb.4.1693815493181; 
- Mon, 04 Sep 2023 01:18:13 -0700 (PDT)
+ bh=D0UexumYOWShk0V2gIT0GLNPhlxt4L6EPj0IqfdS0vk=;
+ b=egok3J3lfj/aKeroQAfbe4zNgfWV9bnGydoaez5mWHGG5rCA1fLEE1nrpiVcmnpfXQ
+ YnS8oM2XKYaOi42dGcWinrX/QR3priPBVGkkk22Z2vilvyZwF0GxZE0LYeKUEi+qj4Qw
+ Pah+1P+1p3Uz7sM9iCplxUs+L/3lfJIz5HubbUMW6cPOdqSMR4erS2KSFS53WnimEuMI
+ N8IL5qUZQlYwMiXTof9+atmJXiVIW4PaIlsPPZUsSOyG/9n6R3gMKEgIa6j6XwgYS03o
+ lUQBQZ99xFGgMndBjDxHCXCkXT0YPzRs+A3xZnNM6wTwtJNi+KljzDwC9fIE5/veEN6f
+ Uv6g==
+X-Gm-Message-State: AOJu0YyH7wWmA+UlCNnnP8myYjvrUG0vU+cJpg/mP8bQCkL34CS8sgDN
+ mM38wxjpHM/7+AbicHDhh+zLxQ==
+X-Google-Smtp-Source: AGHT+IH9rGhCqhnsUpoZQ6/hb0WMVq1vuNRjUnaRKXgaVK4uVT9NWJBJerTDgUloVowi3uq/09eZWQ==
+X-Received: by 2002:a17:906:209c:b0:9a6:1811:e4eb with SMTP id
+ 28-20020a170906209c00b009a61811e4ebmr6421940ejq.38.1693815554771; 
+ Mon, 04 Sep 2023 01:19:14 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- d3-20020aa7d5c3000000b005232ea6a330sm5550179eds.2.2023.09.04.01.18.11
+ rp24-20020a170906d97800b009a5c98fd82asm5734092ejb.81.2023.09.04.01.19.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 01:18:12 -0700 (PDT)
-Message-ID: <91d32bd0-73bf-ee50-ccd1-bd010a4263cc@linaro.org>
-Date: Mon, 4 Sep 2023 10:18:10 +0200
+ Mon, 04 Sep 2023 01:19:14 -0700 (PDT)
+Message-ID: <dd39c9d7-f829-196b-1185-e6af96600fa3@linaro.org>
+Date: Mon, 4 Sep 2023 10:19:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 06/13] range: Introduce range_inverse_array()
+Subject: Re: [PATCH 08/13] range: Make range_compare() public
 Content-Language: en-US
 To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org, alex.williamson@redhat.com,
  clg@redhat.com, jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
 Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com
 References: <20230904080451.424731-1-eric.auger@redhat.com>
- <20230904080451.424731-7-eric.auger@redhat.com>
+ <20230904080451.424731-9-eric.auger@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230904080451.424731-7-eric.auger@redhat.com>
+In-Reply-To: <20230904080451.424731-9-eric.auger@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -96,78 +96,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/9/23 10:03, Eric Auger wrote:
-> This helper reverses an array of regions, turning original
-> regions into holes and original holes into actual regions,
-> covering the whole UINT64_MAX span.
+> Let's expose range_compare() in the header so that it can be
+> reused outside of util/range.c
 > 
 > Signed-off-by: Eric Auger <eric.auger@redhat.com>
 > ---
->   include/qemu/range.h |  3 +++
->   util/range.c         | 35 +++++++++++++++++++++++++++++++++++
->   2 files changed, 38 insertions(+)
-> 
-> diff --git a/include/qemu/range.h b/include/qemu/range.h
-> index 7e2b1cc447..fc1d3dabe6 100644
-> --- a/include/qemu/range.h
-> +++ b/include/qemu/range.h
-> @@ -219,4 +219,7 @@ static inline int ranges_overlap(uint64_t first1, uint64_t len1,
->   
->   GList *range_list_insert(GList *list, Range *data);
->   
-> +void range_inverse_array(uint32_t nr_ranges, Range *ranges,
-> +                         uint32_t *nr_inv_ranges, Range **inv_ranges);
-> +
->   #endif
-> diff --git a/util/range.c b/util/range.c
-> index 098d9d2dc0..11c4ff0b78 100644
-> --- a/util/range.c
-> +++ b/util/range.c
-> @@ -70,3 +70,38 @@ GList *range_list_insert(GList *list, Range *data)
->   
->       return list;
->   }
-> +
-> +/*
-> + * Inverse an array of sorted ranges over the UINT64_MAX span, ie.
-> + * original ranges becomes holes in the newly allocated inv_ranges
-> + */
+>   include/qemu/range.h | 6 ++++++
+>   util/range.c         | 6 +-----
+>   2 files changed, 7 insertions(+), 5 deletions(-)
 
-Most of the functions are described in the header; could you move this
-description with the declaration?
-
-> +void range_inverse_array(uint32_t nr_ranges, Range *ranges,
-> +                         uint32_t *nr_inv_ranges, Range **inv_ranges)
-> +{
-> +    Range *resv;
-> +    int i = 0, j = 0;
-> +
-> +    resv = g_malloc0_n(nr_ranges + 1, sizeof(Range));
-> +
-> +    /* first range lob is greater than 0, insert a first range */
-> +    if (range_lob(&ranges[0]) > 0) {
-> +        range_set_bounds(&resv[i++], 0,
-> +                         range_lob(&ranges[0]) - 1);
-> +    }
-> +
-> +    /* insert a range inbetween each original range */
-> +    for (; j < nr_ranges - 1; j++) {
-> +        if (range_compare(&ranges[j], &ranges[j + 1])) {
-> +            range_set_bounds(&resv[i++], range_upb(&ranges[j]) + 1,
-> +                             range_lob(&ranges[j + 1]) - 1);
-> +        }
-> +    }
-> +    /* last range upb is less than UINT64_MAX, insert a last range */
-
-In order to use this new function with variable range sizes,
-can we pass UINT64_MAX as an 'inv_range_upb' argument?
-
-> +    if (range_upb(&ranges[nr_ranges - 1]) <  UINT64_MAX) {
-> +        range_set_bounds(&resv[i++],
-> +                          range_upb(&ranges[nr_ranges - 1]) + 1, UINT64_MAX);
-> +    }
-> +    *nr_inv_ranges = i;
-> +    resv = g_realloc(resv, i * sizeof(Range));
-> +    *inv_ranges = resv;
-> +}
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
