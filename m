@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7687917C8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF327917CF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:10:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9JF-0008B1-K0; Mon, 04 Sep 2023 09:08:05 -0400
+	id 1qd9Kw-0000dO-5O; Mon, 04 Sep 2023 09:09:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qd9JD-0008AX-P3; Mon, 04 Sep 2023 09:08:03 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1qd9Kp-0000cU-IG; Mon, 04 Sep 2023 09:09:44 -0400
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qd9JB-0004vz-A5; Mon, 04 Sep 2023 09:08:03 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-563f8e8a53dso564602a12.3; 
- Mon, 04 Sep 2023 06:08:00 -0700 (PDT)
+ id 1qd9Km-00058W-Gh; Mon, 04 Sep 2023 09:09:42 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-34e12396f6fso5103115ab.1; 
+ Mon, 04 Sep 2023 06:09:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693832879; x=1694437679; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1693832979; x=1694437779; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DS4WjEmTOj6qfK8KWbdFHoAuX3YHHp1qmmf1Ie6+ojw=;
- b=Zrw8Y3jFzcd9uCSLbEsflNV0Ugq1QtAmTS2EZOI0odTzthumW0jCwldp03PxHcPuEb
- gp8xVpEAnF1kBfmu9cfqq6RhoxYw6OcA4E8/zy2bzmLRwlpkzebt7FznHyk256Buial0
- +XaoqsNcOpMrHsUa8x8ZDFvFuLHIKZ8mU6t5XFVM+7rLe8DG3aKs3kQGpcWeguD0DBCK
- bEnueod7hzabDPCQIue6CKlarx2isaf7GhgPKe3tJjXbdWEgVhk93FPgFDgSZXE2Afs7
- 7/t+4tCKIzn6m+yEZRHMl3FqX1ZRgsGySYbjw+VuoUBgdysdxl2sQtwLPaoh3UWMO2+C
- A1uw==
+ bh=aXdCSkQUnks4joj4Q9Xj2ogjlfuFzQJroeoQkDZyopg=;
+ b=GyH4//TmaOIceE3dkdaPF75RSXVzz7Qi74GQ57RUNJZ7eS23iOOIB+UyJZuDm6EFYL
+ XLKaC5r64J1x03yQloSUCUZ5NmIhZlvjQPIg6l6Jj39DcgbNUi3NZFy/K5QwHNFHlG6J
+ Rq2rRF2TAZBerr0FBnERW+9GLGOqaKxl14Mxn6wfu+BZW2cenX2l+ycPjZmHdR3fN48R
+ 5OafiN39j5ey9CN0QRvUkvPamMugj1wOr9GzMwhev/hBOIzm2WMBBUl3n1AdOxuLGyd0
+ doIaOxT+MYAT1LqBnVlf6arRo80uWq19RFdlV5ZKHhv1hv5byaGW46Tj+l9VWykRc+dW
+ Wa0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693832879; x=1694437679;
+ d=1e100.net; s=20221208; t=1693832979; x=1694437779;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=DS4WjEmTOj6qfK8KWbdFHoAuX3YHHp1qmmf1Ie6+ojw=;
- b=RbhrO8C3cvpx+Puu56uIkpsq8hcttoTdij2XWAO1IQ5ByM34AkgmRz7FrYKoETTloq
- Y9y1GyG2hCC3S11KogcuiW2W6ZXhORfe6FtBW3ARkuXd+6e/Xn9INsEh9Vl160HaiOlN
- oTqS3tGB6aSZ2hglbonw5VrWOvi+bqfiNthddHPfwzI436Vl3SlvwXLtpOKPmeqJfjQy
- r7CO9VyDJ5chiMVIADydgEwN3LR/pVdfZ7JUv6Nd8Yo/sPsH5nvV1SeD/P0a8niKbMeE
- U/wxjMQwQFCbJbGpNSQ8/d4zkV9+p4is/zDfZaHZhoBkefw8u1GKiMxyFsDy++22FGHD
- wv6g==
-X-Gm-Message-State: AOJu0YwYHoSujiP9n43Z8eZWWvH2rtQSL62k8C29j/1/71ag1eVlKDTJ
- FUqy5ldlEjybF/E3xhGMXLw=
-X-Google-Smtp-Source: AGHT+IGkYhqLfY8XmGpjNjBbcjcoZs5V0e92FPIqs/j0Me/DCdpTvKBC3S+RWPNP254STivwl7CdPQ==
-X-Received: by 2002:a05:6a20:9786:b0:14d:e075:fc5d with SMTP id
- hx6-20020a056a20978600b0014de075fc5dmr7471272pzc.40.1693832878926; 
- Mon, 04 Sep 2023 06:07:58 -0700 (PDT)
+ bh=aXdCSkQUnks4joj4Q9Xj2ogjlfuFzQJroeoQkDZyopg=;
+ b=hgLklw34ZS4ruU/ZywPDpUKPEDwTqeFInrjpYzB9kax9l1hKcC5VYNW/TKuEfkxSJq
+ NIqJdXziR+sfiN/M0GMR33YuZv2iGC8P0Yv2Gn8/+1VXw6erlsPETqShGnYh49Ay0G6/
+ CKp4vRN3VBJKDavz7BuBjsOI8JiorphzbkVzjYHs+oL/PqCvQZ+jqoEqIbN5QWPA9+xL
+ 7QaRqB/cbtx46pw6TRrEnfnbjHiOT/5BqRaAckl+qFek02spBPUOojF0lcLpVKV01Wn4
+ swXJlhYzbl00YIQZVPZ9SW4ClDEr/wkxBP2XuuKs3Zo4QQuANhgT6CwXajGeK04Mm79s
+ caZw==
+X-Gm-Message-State: AOJu0YywO8gCTMTQOw8OFPDJZfDyYZfGZQB6FU0x2/giwX+Ph6un08lr
+ Av16JNQ1px9j61/d4cPQ+Wk=
+X-Google-Smtp-Source: AGHT+IHEdx4vDy+OPE6M4w6z7xojWKWMJCcXlzvVVvF4Wrfd9lwP9R0DAGUTYMprLPQwru0ZDBRaqA==
+X-Received: by 2002:a92:c144:0:b0:34c:cc37:3064 with SMTP id
+ b4-20020a92c144000000b0034ccc373064mr11469619ilh.15.1693832978817; 
+ Mon, 04 Sep 2023 06:09:38 -0700 (PDT)
 Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
  by smtp.gmail.com with ESMTPSA id
- 15-20020aa7914f000000b0068bc2432ee2sm7294443pfi.51.2023.09.04.06.07.53
+ x7-20020a63b207000000b00563df2ba23bsm7703080pge.50.2023.09.04.06.09.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 06:07:58 -0700 (PDT)
+ Mon, 04 Sep 2023 06:09:38 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 04 Sep 2023 23:07:51 +1000
-Message-Id: <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
+Date: Mon, 04 Sep 2023 23:09:33 +1000
+Message-Id: <CVA5ODL1631K.3IGDZE9PWNRL3@wheely>
 Cc: "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz"
  <groug@kaod.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "Pavel
  Dovgalyuk" <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini"
- <pbonzini@redhat.com>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>,
- "Peter Maydell" <peter.maydell@linaro.org>,
- =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
-Subject: Re: [PATCH v2 05/19] host-utils: Add muldiv64_round_up
+ <pbonzini@redhat.com>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 08/19] target/ppc: Sign-extend large decrementer to
+ 64-bits
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Richard Henderson" <richard.henderson@linaro.org>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Daniel Henrique
+ Barboza" <danielhb413@gmail.com>
 X-Mailer: aerc 0.15.2
 References: <20230808042001.411094-1-npiggin@gmail.com>
- <20230808042001.411094-6-npiggin@gmail.com>
- <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
- <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
-In-Reply-To: <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x529.google.com
+ <20230808042001.411094-9-npiggin@gmail.com>
+ <59203654-9490-0b2c-af6d-3d52577c41ff@kaod.org>
+In-Reply-To: <59203654-9490-0b2c-af6d-3d52577c41ff@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=npiggin@gmail.com; helo=mail-il1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,103 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat Sep 2, 2023 at 3:02 AM AEST, Richard Henderson wrote:
-> On 9/1/23 04:51, C=C3=A9dric Le Goater wrote:
-> > Adding more reviewers since this patch is modifying a common service.
-> >=20
-> > Thanks,
-> >=20
-> > C.
-> >=20
-> >=20
-> > On 8/8/23 06:19, Nicholas Piggin wrote:
-> >> This will be used for converting time intervals in different base unit=
-s
-> >> to host units, for the purpose of scheduling timers to emulate target
-> >> timers. Timers typically must not fire before their requested expiry
-> >> time but may fire some time afterward, so rounding up is the right way
-> >> to implement these.
-> >>
-> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >> ---
-> >> =C2=A0 include/qemu/host-utils.h | 21 ++++++++++++++++++++-
-> >> =C2=A0 1 file changed, 20 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
-> >> index 011618373e..e2a50a567f 100644
-> >> --- a/include/qemu/host-utils.h
-> >> +++ b/include/qemu/host-utils.h
-> >> @@ -56,6 +56,11 @@ static inline uint64_t muldiv64(uint64_t a, uint32_=
-t b, uint32_t c)
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return (__int128_t)a * b / c;
-> >> =C2=A0 }
-> >> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint=
-32_t c)
-> >> +{
-> >> +=C2=A0=C2=A0=C2=A0 return ((__int128_t)a * b + c - 1) / c;
-> >> +}
-> >> +
-> >> =C2=A0 static inline uint64_t divu128(uint64_t *plow, uint64_t *phigh,
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t divisor)
-> >> =C2=A0 {
-> >> @@ -83,7 +88,8 @@ void mulu64(uint64_t *plow, uint64_t *phigh, uint64_=
-t a, uint64_t b);
-> >> =C2=A0 uint64_t divu128(uint64_t *plow, uint64_t *phigh, uint64_t divi=
-sor);
-> >> =C2=A0 int64_t divs128(uint64_t *plow, int64_t *phigh, int64_t divisor=
-);
-> >> -static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
-> >> +static inline uint64_t __muldiv64(uint64_t a, uint32_t b, uint32_t c,
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool round_up)
+On Fri Sep 1, 2023 at 10:25 PM AEST, C=C3=A9dric Le Goater wrote:
+> Nick,
 >
-> Perhaps better avoiding the reserved name: muldiv64_internal?
+> On 8/8/23 06:19, Nicholas Piggin wrote:
+> > When storing a large decrementer value with the most significant
+> > implemented bit set, it is to be treated as a negative and sign
+> > extended.
+> >=20
+> > This isn't hit for book3s DEC because of another bug, fixing it
+> > in the next patch exposes this one and can cause additional
+> > problems, so fix this first. It can be hit with HDECR and other
+> > edge triggered types.
+> >=20
+> > Fixes: a8dafa52518 ("target/ppc: Implement large decrementer support fo=
+r TCG")
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   hw/ppc/ppc.c | 8 ++++++--
+> >   1 file changed, 6 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+> > index a397820d9c..fb4784793c 100644
+> > --- a/hw/ppc/ppc.c
+> > +++ b/hw/ppc/ppc.c
+> > @@ -743,7 +743,9 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
+> >        * to 64 bits, otherwise it is a 32 bit value.
+> >        */
+> >       if (env->spr[SPR_LPCR] & LPCR_LD) {
+> > -        return decr;
+> > +        PowerPCCPU *cpu =3D env_archcpu(env);
+> > +        PowerPCCPUClass *pcc =3D POWERPC_CPU_GET_CLASS(cpu);
+> > +        return sextract64(decr, 0, pcc->lrg_decr_bits);
+> >       }
+> >       return (uint32_t) decr;
+> >   }
+> > @@ -762,7 +764,9 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
+> >        * extended to 64 bits, otherwise it is 32 bits.
+> >        */
+> >       if (pcc->lrg_decr_bits > 32) {
+> > -        return hdecr;
+> > +        PowerPCCPU *cpu =3D env_archcpu(env);
+> > +        PowerPCCPUClass *pcc =3D POWERPC_CPU_GET_CLASS(cpu);
+>
+> Why are 'cpu' and 'ppc' duplicated ?
 
-Thanks, that would be okay. Or could be muldiv64_rounding?
+Hmm.. cut and paste bug maybe, good catch.
 
->
-> Otherwise,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->
->
-> r~
->
->
-> >> =C2=A0 {
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 union {
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t ll;
-> >> @@ -99,12 +105,25 @@ static inline uint64_t muldiv64(uint64_t a, uint3=
-2_t b, uint32_t c)
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u.ll =3D a;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rl =3D (uint64_t)u.l.low * (uint64_t)b;
-> >> +=C2=A0=C2=A0=C2=A0 if (round_up) {
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rl +=3D c - 1;
-> >> +=C2=A0=C2=A0=C2=A0 }
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rh =3D (uint64_t)u.l.high * (uint64_t)b=
-;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rh +=3D (rl >> 32);
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res.l.high =3D rh / c;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res.l.low =3D (((rh % c) << 32) + (rl &=
- 0xffffffff)) / c;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return res.ll;
-> >> =C2=A0 }
-> >> +
-> >> +static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
-> >> +{
-> >> +=C2=A0=C2=A0=C2=A0 return __muldiv64(a, b, c, false);
-> >> +}
-> >> +
-> >> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint=
-32_t c)
-> >> +{
-> >> +=C2=A0=C2=A0=C2=A0 return __muldiv64(a, b, c, true);
-> >> +}
-> >> =C2=A0 #endif
-> >> =C2=A0 /**
-> >=20
-> >=20
+I'll send an increment to tidy it if needed.
 
+Thanks,
+Nick
 
