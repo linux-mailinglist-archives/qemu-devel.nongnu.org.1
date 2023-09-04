@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8757914ED
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8E17914EE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:44:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd660-00081m-2v; Mon, 04 Sep 2023 05:42:12 -0400
+	id 1qd67O-0000Ye-BP; Mon, 04 Sep 2023 05:43:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qd65y-00081K-Kk
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:42:10 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qd65w-0003DJ-B7
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:42:10 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-52a4737a08fso1615919a12.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 02:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693820526; x=1694425326; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LptqVxTJ6NVqTuYVKx88iEnT9ke8XsZsjtPuzi5a2Kc=;
- b=Gk/j49OkjVZnA7SYhm5f3drXmH0IjBndffvxxq4BDb6LgC03zGIP5kd4809/h51UZb
- eHWSUu+5j7maGfSodx7EqQpYkXPoXsHD54llP055/ngoJYRfpfwzsXB+lyZvqX/9U0d1
- B+mWmDWoD+LiiFlCMFtVj0n0zdMjY21dqxC8C37kxHj9BYg2UGgs1mOwPF1vHPEuYvcJ
- yMkY+IW0B+P7UNlm9Ge2NIcAD9Gbp7s4M/PtP6k7joWVa7p+w6Q+ueHPBZ050RAPzE/m
- Y6OSqm6PsVSsDZ903x4LqHoQRuCSdIKWPK7goBIy3Ji0W6FcZGx4Nph4YeWkCbql5uxj
- b2oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693820526; x=1694425326;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LptqVxTJ6NVqTuYVKx88iEnT9ke8XsZsjtPuzi5a2Kc=;
- b=IUGuOc009q6MJW7Kw4L6U5DjR8Tnas0o2tTKVk29aW4TCGpcq0Tuvfu8//5lVM/BAA
- SmhvIHOlv37u7v2GkSzHTzSCjMO2qg1rGkcTGcgvTwtSzPThQBxSPMSeJFWoabOp/co4
- UdKjNCQnGMrZF8szy0AZjQ543/sLrrMOA5qK6xYmTmI2xZvH1vMgAW9ObIci7gKjfrnM
- NtIOw2Dm2hIvE/WyGzcJF3T/ZKFB3ZxqG82lPOqexyvYD/POyWnx9ogxnZXIYEvG5dbB
- 2KSD5gIy3Ouv96EdboXzEE9I689vqLGpGxOImuvVirQjmz+9+mIY3E3pNg4FaacZ0FKO
- AM2w==
-X-Gm-Message-State: AOJu0YyQV65/7177q+9+2yZ9Z5WZ1WyOxgtqHAKGPLs/vyTNusCcFHJK
- vfMPXB+qX5/bgFIuwI0ksbuJ49xoRal6VpNG5YaLdw==
-X-Google-Smtp-Source: AGHT+IETeEUA4C3+X5gjw1/Yci0lPbUWIb4fdseJq1IdP56pQhj2MJDpRivuo71qHyvzQRwAd6V4MSm/Xz1RxPWDkbs=
-X-Received: by 2002:aa7:d3c3:0:b0:523:10c0:9dc with SMTP id
- o3-20020aa7d3c3000000b0052310c009dcmr7119980edr.8.1693820526443; Mon, 04 Sep
- 2023 02:42:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1qd67L-0000Ww-AG
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:43:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1qd67H-0003Mm-W8
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:43:35 -0400
+Received: from loongson.cn (unknown [10.20.42.170])
+ by gateway (Coremail) with SMTP id _____8BxpPC8pvVk8tIeAA--.62444S3;
+ Mon, 04 Sep 2023 17:43:24 +0800 (CST)
+Received: from [10.20.42.170] (unknown [10.20.42.170])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxPCO7pvVk8xdrAA--.42750S3; 
+ Mon, 04 Sep 2023 17:43:23 +0800 (CST)
+Message-ID: <c27c2c0c-2ca9-ac27-4779-b1fd66f9f237@loongson.cn>
+Date: Mon, 4 Sep 2023 17:43:23 +0800
 MIME-Version: 1.0
-References: <20230823070735.363197-1-chigot@adacore.com>
- <CAFEAcA9EHpyPuJOCAbLCn8=F+aaSZ=yzwDPwT70VUyCgMDLmYw@mail.gmail.com>
- <CAJ307EjBudxJTFo9HQMttKzKwQN0WaRzenhDKRL_wDGTHCtdhg@mail.gmail.com>
-In-Reply-To: <CAJ307EjBudxJTFo9HQMttKzKwQN0WaRzenhDKRL_wDGTHCtdhg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Sep 2023 10:41:55 +0100
-Message-ID: <CAFEAcA-BBAHQy944JKS8ZSf5mJTxK0V2+p6XO8W9dpArKtc-_A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] gdbstub: replace exit(0) with proper shutdown
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 16/16] tcg/loongarch64: Implement 128-bit load & store
+Content-Language: en-US
+To: gaosong <gaosong@loongson.cn>, qemu-devel@nongnu.org, yijun@loongson.cn
+Cc: Jiajie Chen <c@jia.je>, git@xen0n.name,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230902050415.1832700-1-c@jia.je>
+ <20230902050415.1832700-17-c@jia.je>
+ <fdd190b9-2d56-a888-d6b4-da9534a38339@linaro.org>
+ <e6937197-b09f-4222-2a27-abdd2a2ec10d@jia.je>
+ <623570ba-ca0b-8d46-a2dc-333e37bbfedd@loongson.cn>
+From: bibo mao <maobibo@loongson.cn>
+In-Reply-To: <623570ba-ca0b-8d46-a2dc-333e37bbfedd@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8DxPCO7pvVk8xdrAA--.42750S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7KFWUWr4DKF1DZrykXF1rKrX_yoW8Zr4Dpr
+ WkJF4UtFZxJw4vyw1jq3WUJF9ayryrJa1DXr48Xa4UGrn8tr1Iqr18Xr1YgFy8JrWfJryU
+ Zw1UJr9xurnxA3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,50 +84,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Sept 2023 at 10:36, Cl=C3=A9ment Chigot <chigot@adacore.com> wrot=
-e:
->
-> On Mon, Sep 4, 2023 at 11:23=E2=80=AFAM Peter Maydell <peter.maydell@lina=
-ro.org> wrote:
-> >
-> > On Wed, 23 Aug 2023 at 08:07, Cl=C3=A9ment Chigot <chigot@adacore.com> =
-wrote:
-> > >
-> > > This replaces the exit(0) call by a shutdown request, ensuring a prop=
-er
-> > > cleanup of Qemu. Otherwise, some connections could be broken without
-> > > being correctly flushed.
-> > >
-> > > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
 
-> > > +    /*
-> > > +     * Shutdown request is a clean way to stop the QEMU, compared
-> > > +     * to a direct call to exit(). But we can't pass the exit code
-> > > +     * through it so avoid doing that when it can matter.
-> > > +     * As this function is also called during the cleanup process,
-> > > +     * avoid sending the request if one is already set.
-> > > +     */
-> > > +    if (code) {
-> > > +        exit(code);
-> > > +    } else if (!qemu_shutdown_requested_get()) {
-> > > +        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > > +    }
-> > >  }
-> >
-> > This definitely doesn't look right. Either exit() is OK
-> > to call, or it is not. We shouldn't be exiting one way
-> > if the exit status is 0 and another way if it is non-0.
->
-> I do agree but AFAIK, this isn't possible to pass the exit code using
-> qemu_system_shutdown_request.
 
-That would mean that we should add a mechanism to do so.
+在 2023/9/4 09:43, gaosong 写道:
+> Hi, yijun
+> 
+> 在 2023/9/3 上午9:10, Jiajie Chen 写道:
+>>
+>> On 2023/9/3 09:06, Richard Henderson wrote:
+>>> On 9/1/23 22:02, Jiajie Chen wrote:
+>>>> If LSX is available, use LSX instructions to implement 128-bit load &
+>>>> store.
+>>>
+>>> Is this really guaranteed to be an atomic 128-bit operation?
+>>>
+>>
+>> Song Gao, please check this.
+>>
+>>
+> Could you explain this issue?  Thanks.
+If address is aligned with 16-bytes, the 128-bit load/store is atomic.
+Else it is not atomic since maybe it crosses two cache lines or pages.
 
-But my opinion is still what I said about the first version
-of this patchset: we should fix whatever the problem is
-that means that gdb_exit() is not correctly ensuring that
-gdb gets the packet response, not paper over it like this.
+Regards
+Bibo Mao
+> 
+>>> Or, as for many vector processors, is this really two separate 64-bit memory operations under the hood?
+>>>
+>>>
+>>>> +static void tcg_out_qemu_ldst_i128(TCGContext *s, TCGReg data_lo, TCGReg data_hi,
+>>>> +                                   TCGReg addr_reg, MemOpIdx oi, bool is_ld)
+>>>> +{
+>>>> +    TCGLabelQemuLdst *ldst;
+>>>> +    HostAddress h;
+>>>> +
+>>>> +    ldst = prepare_host_addr(s, &h, addr_reg, oi, true);
+>>>> +    if (is_ld) {
+>>>> +        tcg_out_opc_vldx(s, TCG_VEC_TMP0, h.base, h.index);
+>>>> +        tcg_out_opc_vpickve2gr_d(s, data_lo, TCG_VEC_TMP0, 0);
+>>>> +        tcg_out_opc_vpickve2gr_d(s, data_hi, TCG_VEC_TMP0, 1);
+>>>> +    } else {
+>>>> +        tcg_out_opc_vinsgr2vr_d(s, TCG_VEC_TMP0, data_lo, 0);
+>>>> +        tcg_out_opc_vinsgr2vr_d(s, TCG_VEC_TMP0, data_hi, 1);
+>>>> +        tcg_out_opc_vstx(s, TCG_VEC_TMP0, h.base, h.index);
+>>>> +    }
+>>>
+>>> You should use h.aa.atom < MO_128 to determine if 128-bit atomicity, and therefore the vector operation, is required.  I assume the gr<->vr moves have a cost and two integer operations are preferred when allowable.
+>>>
+>>> Compare the other implementations of this function.
+>>>
+>>>
+>>> r~
+> 
 
-thanks
--- PMM
 
