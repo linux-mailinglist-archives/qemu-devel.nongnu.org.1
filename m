@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055E67916CC
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A6B7916AC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8B3-00072B-EM; Mon, 04 Sep 2023 07:55:35 -0400
+	id 1qd8B6-0007Co-Ts; Mon, 04 Sep 2023 07:55:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8Ab-0006Ve-3h
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:07 -0400
+ id 1qd8Ah-0006tC-25
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8AY-0000MN-RE
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:04 -0400
+ id 1qd8Ac-0000XY-T0
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828502;
+ s=mimecast20190719; t=1693828506;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2Ne/7j6le0wzOyvB/VuAUFxnOQk1uvQsIvzJaRXinX0=;
- b=YTuvrqu8s8ndFXZ1MmakoDn8/ewgXahgDOnLd/9vyrm4WvyigZQmBmMUNT8q0M6kUfXIBU
- /KYVWwfn2gAUDzDvFTcth7tKwaU8fnwGEP09yZf2/hjAhJ4DM0UR6GLX+30sWrXVjdDhYa
- e6BWvVBQnjCyEsA56Q4hyd30TE4Rr9w=
+ bh=XUz5LIlrpmlm/3ukp2eWAxrg7lMtd/aX1XpFWZr4JgE=;
+ b=XUgEXbch4Vyv+NY4/YacCbnnlcFGV8Y9SjT9glTCXyglE44XH+Vxtj1WBjzc5nmEOR3yA5
+ d3KGHjcZqSP0n6p9d5fyKJrmzLGWlCcul8+MU2q1hu9HtDkMxuEWMshN+oZBt6H0DHeZGJ
+ ounIno7JrbzO+ScDisCrlFOuSx+H7AY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-607-B7N-ndzVPC2aep4YgqlVXA-1; Mon, 04 Sep 2023 07:55:00 -0400
-X-MC-Unique: B7N-ndzVPC2aep4YgqlVXA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-195-zJJwVuwON4a1xjvVhha8AQ-1; Mon, 04 Sep 2023 07:55:04 -0400
+X-MC-Unique: zJJwVuwON4a1xjvVhha8AQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5CDA9803F3A
- for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:55:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F252800C78
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:55:04 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5BD68400F5A;
- Mon,  4 Sep 2023 11:54:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4FADC1121314;
+ Mon,  4 Sep 2023 11:55:02 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 32/52] ui/console: simplify getting active_console size
-Date: Mon,  4 Sep 2023 15:52:29 +0400
-Message-ID: <20230904115251.4161397-33-marcandre.lureau@redhat.com>
+Subject: [PULL 33/52] ui/console: remove need for g_width/g_height
+Date: Mon,  4 Sep 2023 15:52:30 +0400
+Message-ID: <20230904115251.4161397-34-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -83,36 +83,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-We can get the active console dimension regardless of its kind, by
-simply giving NULL as argument. It will fallback with the given value
-when the dimensions aren't known.
-
-This will also allow to move the code in a separate unit more easily.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230830093843.3531473-33-marcandre.lureau@redhat.com>
+Message-Id: <20230830093843.3531473-34-marcandre.lureau@redhat.com>
 ---
- ui/console.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ ui/console.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/ui/console.c b/ui/console.c
-index 5d521ba79d..70e11f924d 100644
+index 70e11f924d..a3fd1c5059 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -2577,10 +2577,8 @@ static void vc_chr_open(Chardev *chr,
+@@ -2549,8 +2549,6 @@ static void vc_chr_open(Chardev *chr,
+     QemuTextConsole *s;
+     unsigned width = 0;
+     unsigned height = 0;
+-    int g_width = 80 * FONT_WIDTH;
+-    int g_height = 24 * FONT_HEIGHT;
+ 
+     if (vc->has_width) {
+         width = vc->width;
+@@ -2567,6 +2565,8 @@ static void vc_chr_open(Chardev *chr,
+     trace_console_txt_new(width, height);
+     if (width == 0 || height == 0) {
+         s = QEMU_TEXT_CONSOLE(object_new(TYPE_QEMU_TEXT_CONSOLE));
++        width = qemu_console_get_width(NULL, 80 * FONT_WIDTH);
++        height = qemu_console_get_height(NULL, 24 * FONT_HEIGHT);
+     } else {
+         s = QEMU_TEXT_CONSOLE(object_new(TYPE_QEMU_FIXED_TEXT_CONSOLE));
+         QEMU_CONSOLE(s)->scanout.kind = SCANOUT_SURFACE;
+@@ -2577,9 +2577,7 @@ static void vc_chr_open(Chardev *chr,
      drv->console = s;
  
      if (QEMU_CONSOLE(s)->scanout.kind != SCANOUT_SURFACE) {
--        if (active_console && active_console->scanout.kind == SCANOUT_SURFACE) {
--            g_width = qemu_console_get_width(active_console, g_width);
--            g_height = qemu_console_get_height(active_console, g_height);
--        }
-+        g_width = qemu_console_get_width(NULL, g_width);
-+        g_height = qemu_console_get_height(NULL, g_height);
-         QEMU_CONSOLE(s)->surface = qemu_create_displaysurface(g_width, g_height);
+-        g_width = qemu_console_get_width(NULL, g_width);
+-        g_height = qemu_console_get_height(NULL, g_height);
+-        QEMU_CONSOLE(s)->surface = qemu_create_displaysurface(g_width, g_height);
++        QEMU_CONSOLE(s)->surface = qemu_create_displaysurface(width, height);
          QEMU_CONSOLE(s)->scanout.kind = SCANOUT_SURFACE;
      }
+ 
 -- 
 2.41.0
 
