@@ -2,54 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3676791486
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF54791471
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:10:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5Z6-0004yT-HG; Mon, 04 Sep 2023 05:08:12 -0400
+	id 1qd5ZR-0005YZ-85; Mon, 04 Sep 2023 05:08:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Z2-0004YY-Qd; Mon, 04 Sep 2023 05:08:09 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1qd5Z4-0004oN-TP; Mon, 04 Sep 2023 05:08:10 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Yz-0003yF-J4; Mon, 04 Sep 2023 05:08:08 -0400
+ id 1qd5Z1-0003zk-W4; Mon, 04 Sep 2023 05:08:10 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN8M1Gbgz4x09;
- Mon,  4 Sep 2023 19:08:03 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN8P3kT4z4wy1;
+ Mon,  4 Sep 2023 19:08:05 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN8K2MPsz4wy9;
- Mon,  4 Sep 2023 19:08:01 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN8M4y0nz4wy9;
+ Mon,  4 Sep 2023 19:08:03 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: [PULL 32/35] ppc/xive: Use address_space routines to access the
- machine RAM
-Date: Mon,  4 Sep 2023 11:06:27 +0200
-Message-ID: <20230904090630.725952-33-clg@kaod.org>
+Subject: [PULL 33/35] ppc/xive: Introduce a new XiveRouter end_notify() handler
+Date: Mon,  4 Sep 2023 11:06:28 +0200
+Message-ID: <20230904090630.725952-34-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904090630.725952-1-clg@kaod.org>
 References: <20230904090630.725952-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=kZzc=EU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,129 +63,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-to log an error in case of bad configuration of the XIVE tables by the FW.
+It will help us model the END triggers on the PowerNV machine, which
+can be rerouted to another interrupt controller.
 
 Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/intc/pnv_xive.c  | 27 +++++++++++++++++++++++----
- hw/intc/pnv_xive2.c | 27 +++++++++++++++++++++++----
- 2 files changed, 46 insertions(+), 8 deletions(-)
+ include/hw/ppc/xive.h |  2 ++
+ hw/intc/xive.c        | 28 ++++++++++++++++++----------
+ 2 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-index e536b3ec26e5..b2bafd61b157 100644
---- a/hw/intc/pnv_xive.c
-+++ b/hw/intc/pnv_xive.c
-@@ -242,12 +242,20 @@ static int pnv_xive_vst_read(PnvXive *xive, uint32_t type, uint8_t blk,
- {
-     const XiveVstInfo *info = &vst_infos[type];
-     uint64_t addr = pnv_xive_vst_addr(xive, type, blk, idx);
-+    MemTxResult result;
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index 9f580a2699e9..f120874e0ff1 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -401,6 +401,7 @@ struct XiveRouterClass {
+     int (*write_nvt)(XiveRouter *xrtr, uint8_t nvt_blk, uint32_t nvt_idx,
+                      XiveNVT *nvt, uint8_t word_number);
+     uint8_t (*get_block_id)(XiveRouter *xrtr);
++    void (*end_notify)(XiveRouter *xrtr, XiveEAS *eas);
+ };
  
-     if (!addr) {
-         return -1;
-     }
+ int xive_router_get_eas(XiveRouter *xrtr, uint8_t eas_blk, uint32_t eas_idx,
+@@ -414,6 +415,7 @@ int xive_router_get_nvt(XiveRouter *xrtr, uint8_t nvt_blk, uint32_t nvt_idx,
+ int xive_router_write_nvt(XiveRouter *xrtr, uint8_t nvt_blk, uint32_t nvt_idx,
+                           XiveNVT *nvt, uint8_t word_number);
+ void xive_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked);
++void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas);
  
--    cpu_physical_memory_read(addr, data, info->size);
-+    result = address_space_read(&address_space_memory, addr,
-+                                MEMTXATTRS_UNSPECIFIED, data,
-+                                info->size);
-+    if (result != MEMTX_OK) {
-+        xive_error(xive, "VST: read failed at @0x%" HWADDR_PRIx
-+                   " for VST %s %x/%x\n", addr, info->name, blk, idx);
-+        return -1;
-+    }
-     return 0;
+ /*
+  * XIVE Presenter
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 56670b2cac6e..df3ee0496fe7 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -1518,6 +1518,13 @@ static void xive_router_realize(DeviceState *dev, Error **errp)
+     assert(xrtr->xfb);
  }
  
-@@ -258,16 +266,27 @@ static int pnv_xive_vst_write(PnvXive *xive, uint32_t type, uint8_t blk,
- {
-     const XiveVstInfo *info = &vst_infos[type];
-     uint64_t addr = pnv_xive_vst_addr(xive, type, blk, idx);
-+    MemTxResult result;
- 
-     if (!addr) {
-         return -1;
-     }
- 
-     if (word_number == XIVE_VST_WORD_ALL) {
--        cpu_physical_memory_write(addr, data, info->size);
-+        result = address_space_write(&address_space_memory, addr,
-+                                     MEMTXATTRS_UNSPECIFIED, data,
-+                                     info->size);
-     } else {
--        cpu_physical_memory_write(addr + word_number * 4,
--                                  data + word_number * 4, 4);
-+        result = address_space_write(&address_space_memory,
-+                                     addr + word_number * 4,
-+                                     MEMTXATTRS_UNSPECIFIED,
-+                                     data + word_number * 4, 4);
-+    }
++static void xive_router_end_notify_handler(XiveRouter *xrtr, XiveEAS *eas)
++{
++    XiveRouterClass *xrc = XIVE_ROUTER_GET_CLASS(xrtr);
 +
-+    if (result != MEMTX_OK) {
-+        xive_error(xive, "VST: write failed at @0x%" HWADDR_PRIx
-+                    "for VST %s %x/%x\n", addr, info->name, blk, idx);
-+        return -1;
-     }
-     return 0;
- }
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index bbb44a533cff..4b8d0a5d8120 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -240,12 +240,20 @@ static int pnv_xive2_vst_read(PnvXive2 *xive, uint32_t type, uint8_t blk,
- {
-     const XiveVstInfo *info = &vst_infos[type];
-     uint64_t addr = pnv_xive2_vst_addr(xive, type, blk, idx);
-+    MemTxResult result;
- 
-     if (!addr) {
-         return -1;
-     }
- 
--    cpu_physical_memory_read(addr, data, info->size);
-+    result = address_space_read(&address_space_memory, addr,
-+                                MEMTXATTRS_UNSPECIFIED, data,
-+                                info->size);
-+    if (result != MEMTX_OK) {
-+        xive2_error(xive, "VST: read failed at @0x%" HWADDR_PRIx
-+                   " for VST %s %x/%x\n", addr, info->name, blk, idx);
-+        return -1;
-+    }
-     return 0;
- }
- 
-@@ -256,16 +264,27 @@ static int pnv_xive2_vst_write(PnvXive2 *xive, uint32_t type, uint8_t blk,
- {
-     const XiveVstInfo *info = &vst_infos[type];
-     uint64_t addr = pnv_xive2_vst_addr(xive, type, blk, idx);
-+    MemTxResult result;
- 
-     if (!addr) {
-         return -1;
-     }
- 
-     if (word_number == XIVE_VST_WORD_ALL) {
--        cpu_physical_memory_write(addr, data, info->size);
-+        result = address_space_write(&address_space_memory, addr,
-+                                     MEMTXATTRS_UNSPECIFIED, data,
-+                                     info->size);
-     } else {
--        cpu_physical_memory_write(addr + word_number * 4,
--                                  data + word_number * 4, 4);
-+        result = address_space_write(&address_space_memory,
-+                                     addr + word_number * 4,
-+                                     MEMTXATTRS_UNSPECIFIED,
-+                                     data + word_number * 4, 4);
-+    }
++    return xrc->end_notify(xrtr, eas);
++}
 +
-+    if (result != MEMTX_OK) {
-+        xive2_error(xive, "VST: write failed at @0x%" HWADDR_PRIx
-+                   "for VST %s %x/%x\n", addr, info->name, blk, idx);
-+        return -1;
-     }
-     return 0;
+ /*
+  * Encode the HW CAM line in the block group mode format :
+  *
+@@ -1664,8 +1671,7 @@ static bool xive_router_end_es_notify(XiveRouter *xrtr, uint8_t end_blk,
+  * another chip. We don't model the PowerBus but the END trigger
+  * message has the same parameters than in the function below.
+  */
+-static void xive_router_end_notify(XiveRouter *xrtr, uint8_t end_blk,
+-                                   uint32_t end_idx, uint32_t end_data)
++void xive_router_end_notify(XiveRouter *xrtr, XiveEAS *eas)
+ {
+     XiveEND end;
+     uint8_t priority;
+@@ -1675,6 +1681,10 @@ static void xive_router_end_notify(XiveRouter *xrtr, uint8_t end_blk,
+     XiveNVT nvt;
+     bool found;
+ 
++    uint8_t end_blk = xive_get_field64(EAS_END_BLOCK, eas->w);
++    uint32_t end_idx = xive_get_field64(EAS_END_INDEX, eas->w);
++    uint32_t end_data = xive_get_field64(EAS_END_DATA,  eas->w);
++
+     /* END cache lookup */
+     if (xive_router_get_end(xrtr, end_blk, end_idx, &end)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No END %x/%x\n", end_blk,
+@@ -1817,10 +1827,7 @@ do_escalation:
+     /*
+      * The END trigger becomes an Escalation trigger
+      */
+-    xive_router_end_notify(xrtr,
+-                           xive_get_field32(END_W4_ESC_END_BLOCK, end.w4),
+-                           xive_get_field32(END_W4_ESC_END_INDEX, end.w4),
+-                           xive_get_field32(END_W5_ESC_END_DATA,  end.w5));
++    xive_router_end_notify_handler(xrtr, (XiveEAS *) &end.w4);
  }
+ 
+ void xive_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
+@@ -1871,10 +1878,7 @@ void xive_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
+     /*
+      * The event trigger becomes an END trigger
+      */
+-    xive_router_end_notify(xrtr,
+-                           xive_get_field64(EAS_END_BLOCK, eas.w),
+-                           xive_get_field64(EAS_END_INDEX, eas.w),
+-                           xive_get_field64(EAS_END_DATA,  eas.w));
++    xive_router_end_notify_handler(xrtr, &eas);
+ }
+ 
+ static Property xive_router_properties[] = {
+@@ -1887,12 +1891,16 @@ static void xive_router_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     XiveNotifierClass *xnc = XIVE_NOTIFIER_CLASS(klass);
++    XiveRouterClass *xrc = XIVE_ROUTER_CLASS(klass);
+ 
+     dc->desc    = "XIVE Router Engine";
+     device_class_set_props(dc, xive_router_properties);
+     /* Parent is SysBusDeviceClass. No need to call its realize hook */
+     dc->realize = xive_router_realize;
+     xnc->notify = xive_router_notify;
++
++    /* By default, the router handles END triggers locally */
++    xrc->end_notify = xive_router_end_notify;
+ }
+ 
+ static const TypeInfo xive_router_info = {
 -- 
 2.41.0
 
