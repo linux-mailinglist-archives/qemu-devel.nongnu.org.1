@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A033791698
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE59791690
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:56:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8BS-0000ZY-VZ; Mon, 04 Sep 2023 07:55:59 -0400
+	id 1qd8BX-0000kx-5w; Mon, 04 Sep 2023 07:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8BA-0008Eu-OS
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qd8BF-0000QQ-Po
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8B8-0000jG-FX
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:40 -0400
+ id 1qd8BC-0000lG-K6
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828537;
+ s=mimecast20190719; t=1693828541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LxMIBQi7PlqW3/xdFHAfeW/CZD2xQBgZSMYVWBTn90A=;
- b=i9rqGr6rvAq4d9f/G0BYlapk93Nj7mMYUZBmwD45WB1b+rOc/AB/+8lVqqIlHXgD7fDUmt
- oihQBgPJJQ7V8DJ7mYu7j52Qeo+KFKcHv2KNzY3oKp81JCtbQuI92aN71+PdhpLFwIL8Bd
- kEdd/Q72sWY0uOEtcA29uNpchDdmdcg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-526-sEfLxxIuPL-HAh7-n9c4QA-1; Mon, 04 Sep 2023 07:55:36 -0400
-X-MC-Unique: sEfLxxIuPL-HAh7-n9c4QA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=Tw8Jfq1yleSfAzzkeHw+4IZ6jVaWLy6lodD1vq/fnME=;
+ b=UzPF8lK6ReyYtWEzc2GpTMpaQzZWB8VxVPCriIL0LStH8+SUlk7RQMbsm3O/Su7KO2vbbS
+ x6HO6kJ2UyEMIjkr7XKAAXsW08F1O37fBrymC1sACyoHBJVt8tvy7IT49ouuHg5S8r89r5
+ 4QDyPLSDCcrMmV3/nylz8fnXpxkHLQE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-147-IOcxeru7NQ6bItJIa5yuUA-1; Mon, 04 Sep 2023 07:55:40 -0400
+X-MC-Unique: IOcxeru7NQ6bItJIa5yuUA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 217D9803E2E
- for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:55:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0086F380671E
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:55:40 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 77E6D493114;
- Mon,  4 Sep 2023 11:55:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3350E40C206F;
+ Mon,  4 Sep 2023 11:55:38 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 41/52] ui/console: minor stylistic changes
-Date: Mon,  4 Sep 2023 15:52:38 +0400
-Message-ID: <20230904115251.4161397-42-marcandre.lureau@redhat.com>
+Subject: [PULL 42/52] ui/vc: move text console invalidate in helper
+Date: Mon,  4 Sep 2023 15:52:39 +0400
+Message-ID: <20230904115251.4161397-43-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,42 +83,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+This will allow to split the VC code in a separate unit more easily.
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230830093843.3531473-42-marcandre.lureau@redhat.com>
+Message-Id: <20230830093843.3531473-43-marcandre.lureau@redhat.com>
 ---
- ui/console.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ include/ui/console.h |  1 +
+ ui/console.c         | 13 +++++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 0f7f50deaf..91d8bbc9dc 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -521,6 +521,7 @@ void console_select(unsigned int index);
+ void qemu_console_resize(QemuConsole *con, int width, int height);
+ DisplaySurface *qemu_console_surface(QemuConsole *con);
+ void coroutine_fn qemu_console_co_wait_update(QemuConsole *con);
++int qemu_invalidate_text_consoles(void);
+ 
+ /* console-gl.c */
+ #ifdef CONFIG_OPENGL
 diff --git a/ui/console.c b/ui/console.c
-index 4ee3b77568..b1d375ecb4 100644
+index b1d375ecb4..ba9da8c1b3 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -427,20 +427,18 @@ static void text_console_resize(QemuTextConsole *t)
-     t->width = w;
-     t->height = h;
+@@ -2500,13 +2500,11 @@ static void vc_chr_set_echo(Chardev *chr, bool echo)
+     drv->console->echo = echo;
+ }
  
--    w1 = last_width;
--    if (t->width < w1)
--        w1 = t->width;
-+    w1 = MIN(t->width, last_width);
+-static void text_console_update_cursor(void *opaque)
++int qemu_invalidate_text_consoles(void)
+ {
+     QemuConsole *s;
+     int count = 0;
  
-     cells = g_new(TextCell, t->width * t->total_height + 1);
--    for(y = 0; y < t->total_height; y++) {
-+    for (y = 0; y < t->total_height; y++) {
-         c = &cells[y * t->width];
-         if (w1 > 0) {
-             c1 = &t->cells[y * last_width];
--            for(x = 0; x < w1; x++) {
-+            for (x = 0; x < w1; x++) {
-                 *c++ = *c1++;
-             }
-         }
--        for(x = w1; x < t->width; x++) {
-+        for (x = w1; x < t->width; x++) {
-             c->ch = ' ';
-             c->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-             c++;
+-    cursor_visible_phase = !cursor_visible_phase;
+-
+     QTAILQ_FOREACH(s, &consoles, next) {
+         if (qemu_console_is_graphic(s) ||
+             !qemu_console_is_visible(s)) {
+@@ -2516,7 +2514,14 @@ static void text_console_update_cursor(void *opaque)
+         graphic_hw_invalidate(s);
+     }
+ 
+-    if (count) {
++    return count;
++}
++
++static void text_console_update_cursor(void *opaque)
++{
++    cursor_visible_phase = !cursor_visible_phase;
++
++    if (qemu_invalidate_text_consoles()) {
+         timer_mod(cursor_timer,
+                   qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + CONSOLE_CURSOR_PERIOD / 2);
+     }
 -- 
 2.41.0
 
