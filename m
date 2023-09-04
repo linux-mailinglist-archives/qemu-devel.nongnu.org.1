@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D454A791691
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B77791697
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:57:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8BP-000866-7h; Mon, 04 Sep 2023 07:55:55 -0400
+	id 1qd8BS-0000Yl-Oh; Mon, 04 Sep 2023 07:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8Aq-00072A-QB
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qd8Az-0007Cf-90
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8Ao-0000bW-6f
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:20 -0400
+ id 1qd8Aw-0000dF-S3
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828517;
+ s=mimecast20190719; t=1693828526;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FoZDucxUzmuuiWyI7LBgyTcst1NkbW7tCqS4oAXyq8g=;
- b=GGY0Glg4ivFDM7jQYOxg24XvKkx3M5qUY7e3fCtH92yyMLNz8GyJ/PzEcgEhtLUKLWR14O
- qdEaAHSTW5bnfddpjMRyOD6/7UmriEY+sIVSX/FelQ7oyjmlnwAI4pJ4rWK3S0k1KaBMin
- BTbIux200ley/a+1GSl2cb9puD8AYyM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-335-16BZt6mXP8uYeTklDpBguw-1; Mon, 04 Sep 2023 07:55:16 -0400
-X-MC-Unique: 16BZt6mXP8uYeTklDpBguw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=EmFenIM6fiAIHCfc6XVEryrdi9dLy3h1rbHdrUpWTCY=;
+ b=ds6JlHhO4gs2JEdCc0EjTVoqqIs2QzsmAXZtNtuWh6IsOnbNamDUJlfm7yipJFNg5ePIUr
+ K3uLRtUax5n52kGtXEWcn4v5r+sDk2c1nlx2G4mtDDeQZqEo6tunLYFbDfroP6F8jkFEJu
+ En1wIee9pf9DpOWK/LJ2KJia0X1gECM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-440-Cvl8aw57PpiyiI-DxmNFmg-1; Mon, 04 Sep 2023 07:55:25 -0400
+X-MC-Unique: Cvl8aw57PpiyiI-DxmNFmg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B323810264C1
- for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:55:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0269380671E
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:55:24 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9A92D2026D4B;
- Mon,  4 Sep 2023 11:55:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7BD4A1121314;
+ Mon,  4 Sep 2023 11:55:23 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 36/52] ui/console: use QEMU_PIXMAN_COLOR helpers
-Date: Mon,  4 Sep 2023 15:52:33 +0400
-Message-ID: <20230904115251.4161397-37-marcandre.lureau@redhat.com>
+Subject: [PULL 38/52] ui/console: assert(surface) where appropriate
+Date: Mon,  4 Sep 2023 15:52:35 +0400
+Message-ID: <20230904115251.4161397-39-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,98 +83,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-QEMU_RGB macro is actually defining a pixman color. Make this explicit
-in the macro name. Move it to qemu-pixman.h so it can be used elsewhere,
-as done in the following patch. Finally, define
-QEMU_PIXMAN_COLOR_{BLACK,GRAY}, to avoid need to look up the VGA color
-table from the QemuConsole placeholder surface rendering.
+The QemuTextConsole code paths assume a surface is being used as
+scanout, let's make this more explicit.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230830093843.3531473-37-marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230830093843.3531473-39-marcandre.lureau@redhat.com>
 ---
- include/ui/qemu-pixman.h |  6 ++++++
- ui/console.c             | 39 ++++++++++++++++++---------------------
- 2 files changed, 24 insertions(+), 21 deletions(-)
+ ui/console.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-index ce4518e4de..51f8709327 100644
---- a/include/ui/qemu-pixman.h
-+++ b/include/ui/qemu-pixman.h
-@@ -47,6 +47,12 @@
- # define PIXMAN_LE_x8r8g8b8   PIXMAN_x8r8g8b8
- #endif
- 
-+#define QEMU_PIXMAN_COLOR(r, g, b)                                               \
-+    { .red = r << 8, .green = g << 8, .blue = b << 8, .alpha = 0xffff }
-+
-+#define QEMU_PIXMAN_COLOR_BLACK QEMU_PIXMAN_COLOR(0x00, 0x00, 0x00)
-+#define QEMU_PIXMAN_COLOR_GRAY QEMU_PIXMAN_COLOR(0xaa, 0xaa, 0xaa)
-+
- /* -------------------------------------------------------------------- */
- 
- typedef struct PixelFormat {
 diff --git a/ui/console.c b/ui/console.c
-index ed9e7137b8..88e37eaff3 100644
+index a157a5b31c..04ec2d2488 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -363,29 +363,26 @@ static void vga_bitblt(QemuConsole *con,
+@@ -339,6 +339,7 @@ static void qemu_console_fill_rect(QemuConsole *con, int posx, int posy,
+         .x = posx, .y = posy, .width = width, .height = height
+     };
  
- #include "vgafont.h"
- 
--#define QEMU_RGB(r, g, b)                                               \
--    { .red = r << 8, .green = g << 8, .blue = b << 8, .alpha = 0xffff }
--
- static const pixman_color_t color_table_rgb[2][8] = {
-     {   /* dark */
--        [QEMU_COLOR_BLACK]   = QEMU_RGB(0x00, 0x00, 0x00),  /* black */
--        [QEMU_COLOR_BLUE]    = QEMU_RGB(0x00, 0x00, 0xaa),  /* blue */
--        [QEMU_COLOR_GREEN]   = QEMU_RGB(0x00, 0xaa, 0x00),  /* green */
--        [QEMU_COLOR_CYAN]    = QEMU_RGB(0x00, 0xaa, 0xaa),  /* cyan */
--        [QEMU_COLOR_RED]     = QEMU_RGB(0xaa, 0x00, 0x00),  /* red */
--        [QEMU_COLOR_MAGENTA] = QEMU_RGB(0xaa, 0x00, 0xaa),  /* magenta */
--        [QEMU_COLOR_YELLOW]  = QEMU_RGB(0xaa, 0xaa, 0x00),  /* yellow */
--        [QEMU_COLOR_WHITE]   = QEMU_RGB(0xaa, 0xaa, 0xaa),  /* white */
-+        [QEMU_COLOR_BLACK]   = QEMU_PIXMAN_COLOR_BLACK,
-+        [QEMU_COLOR_BLUE]    = QEMU_PIXMAN_COLOR(0x00, 0x00, 0xaa),  /* blue */
-+        [QEMU_COLOR_GREEN]   = QEMU_PIXMAN_COLOR(0x00, 0xaa, 0x00),  /* green */
-+        [QEMU_COLOR_CYAN]    = QEMU_PIXMAN_COLOR(0x00, 0xaa, 0xaa),  /* cyan */
-+        [QEMU_COLOR_RED]     = QEMU_PIXMAN_COLOR(0xaa, 0x00, 0x00),  /* red */
-+        [QEMU_COLOR_MAGENTA] = QEMU_PIXMAN_COLOR(0xaa, 0x00, 0xaa),  /* magenta */
-+        [QEMU_COLOR_YELLOW]  = QEMU_PIXMAN_COLOR(0xaa, 0xaa, 0x00),  /* yellow */
-+        [QEMU_COLOR_WHITE]   = QEMU_PIXMAN_COLOR_GRAY,
-     },
-     {   /* bright */
--        [QEMU_COLOR_BLACK]   = QEMU_RGB(0x00, 0x00, 0x00),  /* black */
--        [QEMU_COLOR_BLUE]    = QEMU_RGB(0x00, 0x00, 0xff),  /* blue */
--        [QEMU_COLOR_GREEN]   = QEMU_RGB(0x00, 0xff, 0x00),  /* green */
--        [QEMU_COLOR_CYAN]    = QEMU_RGB(0x00, 0xff, 0xff),  /* cyan */
--        [QEMU_COLOR_RED]     = QEMU_RGB(0xff, 0x00, 0x00),  /* red */
--        [QEMU_COLOR_MAGENTA] = QEMU_RGB(0xff, 0x00, 0xff),  /* magenta */
--        [QEMU_COLOR_YELLOW]  = QEMU_RGB(0xff, 0xff, 0x00),  /* yellow */
--        [QEMU_COLOR_WHITE]   = QEMU_RGB(0xff, 0xff, 0xff),  /* white */
-+        [QEMU_COLOR_BLACK]   = QEMU_PIXMAN_COLOR_BLACK,
-+        [QEMU_COLOR_BLUE]    = QEMU_PIXMAN_COLOR(0x00, 0x00, 0xff),  /* blue */
-+        [QEMU_COLOR_GREEN]   = QEMU_PIXMAN_COLOR(0x00, 0xff, 0x00),  /* green */
-+        [QEMU_COLOR_CYAN]    = QEMU_PIXMAN_COLOR(0x00, 0xff, 0xff),  /* cyan */
-+        [QEMU_COLOR_RED]     = QEMU_PIXMAN_COLOR(0xff, 0x00, 0x00),  /* red */
-+        [QEMU_COLOR_MAGENTA] = QEMU_PIXMAN_COLOR(0xff, 0x00, 0xff),  /* magenta */
-+        [QEMU_COLOR_YELLOW]  = QEMU_PIXMAN_COLOR(0xff, 0xff, 0x00),  /* yellow */
-+        [QEMU_COLOR_WHITE]   = QEMU_PIXMAN_COLOR(0xff, 0xff, 0xff),  /* white */
-     }
- };
- 
-@@ -1520,8 +1517,8 @@ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
-                                                 const char *msg)
++    assert(surface);
+     pixman_image_fill_rectangles(PIXMAN_OP_SRC, surface->image,
+                                  &color, 1, &rect);
+ }
+@@ -349,6 +350,7 @@ static void qemu_console_bitblt(QemuConsole *con,
  {
-     DisplaySurface *surface = qemu_create_displaysurface(w, h);
--    pixman_color_t bg = color_table_rgb[0][QEMU_COLOR_BLACK];
--    pixman_color_t fg = color_table_rgb[0][QEMU_COLOR_WHITE];
-+    pixman_color_t bg = QEMU_PIXMAN_COLOR_BLACK;
-+    pixman_color_t fg = QEMU_PIXMAN_COLOR_GRAY;
-     pixman_image_t *glyph;
-     int len, x, y, i;
+     DisplaySurface *surface = qemu_console_surface(con);
  
++    assert(surface);
+     pixman_image_composite(PIXMAN_OP_SRC,
+                            surface->image, NULL, surface->image,
+                            xs, ys, 0, 0, xd, yd, w, h);
+@@ -392,6 +394,7 @@ static void vga_putcharxy(QemuConsole *s, int x, int y, int ch,
+     DisplaySurface *surface = qemu_console_surface(s);
+     pixman_color_t fgcol, bgcol;
+ 
++    assert(surface);
+     if (t_attrib->invers) {
+         bgcol = color_table_rgb[t_attrib->bold][t_attrib->fgcol];
+         fgcol = color_table_rgb[t_attrib->bold][t_attrib->bgcol];
+@@ -519,6 +522,7 @@ static void console_refresh(QemuTextConsole *s)
+     TextCell *c;
+     int x, y, y1;
+ 
++    assert(surface);
+     s->text_x[0] = 0;
+     s->text_y[0] = 0;
+     s->text_x[1] = s->width - 1;
 -- 
 2.41.0
 
