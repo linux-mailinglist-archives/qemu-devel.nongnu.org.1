@@ -2,64 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5223D791BCC
+	by mail.lfdr.de (Postfix) with ESMTPS id 427F1791BCB
 	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:54:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCpE-0001Cx-Qb; Mon, 04 Sep 2023 12:53:20 -0400
+	id 1qdCpv-0001a4-II; Mon, 04 Sep 2023 12:54:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qdCpC-0001CI-0S; Mon, 04 Sep 2023 12:53:18 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdCpf-0001Wa-30
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:53:48 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qdCp8-0000Sb-Qn; Mon, 04 Sep 2023 12:53:17 -0400
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:9412:0:640:7d12:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id E19065F747;
- Mon,  4 Sep 2023 19:53:10 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b518::1:22] (unknown
- [2a02:6b8:b081:b518::1:22])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ArZTJS0OqCg0-EXNVWSzp; Mon, 04 Sep 2023 19:53:10 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1693846390;
- bh=Vbxd03CWfynC660/90u+fLqnDGlmqxzGIB1meFJzm90=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=ltQqPCWT7atyryoz4eE3x7d9S7MfQLpDS7rHx3BkPdpmScAyNCC8L9SC/1zfnXF1Z
- K9SRTBogAVQqZdo02MEr/5WdWTv76jEQGNpReFwmv1XF64LQGOwRwGDlNCmIAnv3UH
- VL/sdFa2nqmcDoC+2CYgcKCK7C328HncQwtITeQM=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <2ad497a6-7432-4ffd-138f-1c96ce7e3fce@yandex-team.ru>
-Date: Mon, 4 Sep 2023 19:53:10 +0300
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdCpc-0000VM-T9
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:53:46 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfZTW1sW3z6K6nC;
+ Tue,  5 Sep 2023 00:53:35 +0800 (CST)
+Received: from localhost (10.48.153.57) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 4 Sep
+ 2023 17:53:39 +0100
+Date: Mon, 4 Sep 2023 17:53:38 +0100
+To: Gregory Price <gourry.memverge@gmail.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
+ <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
+Subject: Re: [PATCH 2/5] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
+ read/write functions
+Message-ID: <20230904175338.00000af9@Huawei.com>
+In-Reply-To: <20230901012914.226527-3-gregory.price@memverge.com>
+References: <20230901012914.226527-1-gregory.price@memverge.com>
+ <20230901012914.226527-3-gregory.price@memverge.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v6 05/17] nbd/server: Refactor handling of command sanity
- checks
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org
-References: <20230829175826.377251-19-eblake@redhat.com>
- <20230829175826.377251-24-eblake@redhat.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230829175826.377251-24-eblake@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.48.153.57]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,28 +64,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29.08.23 20:58, Eric Blake wrote:
-> Upcoming additions to support NBD 64-bit effect lengths will add a new
-> command flag NBD_CMD_FLAG_PAYLOAD_LEN that needs to be considered in
-> our sanity checks of the client's messages (that is, more than just
-> CMD_WRITE have the potential to carry a client payload when extended
-> headers are in effect).  But before we can start to support that, it
-> is easier to first refactor the existing set of various if statements
-> over open-coded combinations of request->type to instead be a single
-> switch statement over all command types that sets witnesses, then
-> straight-line processing based on the witnesses.  No semantic change
-> is intended.
+On Thu, 31 Aug 2023 21:29:11 -0400
+Gregory Price <gourry.memverge@gmail.com> wrote:
+
+> Call CXL_TYPE3 once at top of function to avoid multiple invocations.
 > 
-> Signed-off-by: Eric Blake<eblake@redhat.com>
+> Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Good cleanup on it's own. 
 
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+I'll queue this one up on the backend of the sanitize set that
+introduces the second use in each of these functions.
 
+That series might take a while to land upstream though as the CCI rework is
+in front of them currently.  I'm not sure I want the pain of reording those
+two series.
 
--- 
-Best regards,
-Vladimir
+Jonathan
+
+> ---
+>  hw/mem/cxl_type3.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index fd9d134d46..80d596ee10 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -1248,17 +1248,18 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+>  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+>                             unsigned size, MemTxAttrs attrs)
+>  {
+> +    CXLType3Dev *ct3d = CXL_TYPE3(d);
+>      uint64_t dpa_offset = 0;
+>      AddressSpace *as = NULL;
+>      int res;
+>  
+> -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
+> +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
+>                                        &as, &dpa_offset);
+>      if (res) {
+>          return MEMTX_ERROR;
+>      }
+>  
+> -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
+> +    if (sanitize_running(&ct3d->cci)) {
+>          qemu_guest_getrandom_nofail(data, size);
+>          return MEMTX_OK;
+>      }
+> @@ -1268,16 +1269,17 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+>  MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+>                              unsigned size, MemTxAttrs attrs)
+>  {
+> +    CXLType3Dev *ct3d = CXL_TYPE3(d);
+>      uint64_t dpa_offset = 0;
+>      AddressSpace *as = NULL;
+>      int res;
+>  
+> -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
+> +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
+>                                        &as, &dpa_offset);
+>      if (res) {
+>          return MEMTX_ERROR;
+>      }
+> -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
+> +    if (sanitize_running(&ct3d->cci)) {
+>          return MEMTX_OK;
+>      }
+>      return address_space_write(as, dpa_offset, attrs, &data, size);
 
 
