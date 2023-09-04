@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2AE791821
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D51E791822
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9eO-000824-P6; Mon, 04 Sep 2023 09:29:56 -0400
+	id 1qd9fE-00018A-0J; Mon, 04 Sep 2023 09:30:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qd9eE-0007mK-Dh
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:29:48 -0400
+ id 1qd9el-0000ko-DK
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:30:21 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qd9e9-000162-4i
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:29:45 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfTwk01p5z67ydC;
- Mon,  4 Sep 2023 21:28:21 +0800 (CST)
+ id 1qd9ed-0001M7-Ax
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:30:14 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfTxJ1vs1z6D957;
+ Mon,  4 Sep 2023 21:28:52 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 4 Sep 2023 14:29:38 +0100
+ 15.1.2507.31; Mon, 4 Sep 2023 14:30:09 +0100
 To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
  <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>
 CC: Li Zhijian <lizhijian@cn.fujitsu.com>, Dave Jiang <dave.jiang@intel.com>, 
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  <linuxarm@huawei.com>
-Subject: [PATCH 3/4] hw/cxl/cxl_device: Replace magic number in CXLError
- definition
-Date: Mon, 4 Sep 2023 14:28:05 +0100
-Message-ID: <20230904132806.6094-4-Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4/4] docs/cxl: Change to lowercase as others
+Date: Mon, 4 Sep 2023 14:28:06 +0100
+Message-ID: <20230904132806.6094-5-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
 References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
@@ -69,32 +68,50 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Li Zhijian <lizhijian@cn.fujitsu.com>
 
-Replace the magic number 32 with CXL_RAS_ERR_HEADER_NUM for better code
-readability and maintainability.
+Using the same style as elsewhere for topology / topo
 
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+Link: https://lore.kernel.org/r/20230519085802.2106900-2-lizhijian@cn.fujitsu.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/hw/cxl/cxl_device.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/system/devices/cxl.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 1978730fba..fe8b46d9f7 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -300,7 +300,7 @@ REG64(CXL_MEM_DEV_STS, 0)
- typedef struct CXLError {
-     QTAILQ_ENTRY(CXLError) node;
-     int type; /* Error code as per FE definition */
--    uint32_t header[32];
-+    uint32_t header[CXL_RAS_ERR_HEADER_NUM];
- } CXLError;
+diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
+index f12011e230..b742120657 100644
+--- a/docs/system/devices/cxl.rst
++++ b/docs/system/devices/cxl.rst
+@@ -157,7 +157,7 @@ responsible for allocating appropriate ranges from within the CFMWs
+ and exposing those via normal memory configurations as would be done
+ for system RAM.
  
- typedef QTAILQ_HEAD(, CXLError) CXLErrorList;
+-Example system Topology. x marks the match in each decoder level::
++Example system topology. x marks the match in each decoder level::
+ 
+   |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
+   |    __________   __________________________________   __________    |
+@@ -187,8 +187,8 @@ Example system Topology. x marks the match in each decoder level::
+        ___________|___   __________|__   __|_________   ___|_________
+    (3)|  Root Port 0  | | Root Port 1 | | Root Port 2| | Root Port 3 |
+       |  Appears in   | | Appears in  | | Appears in | | Appear in   |
+-      |  PCI topology | | PCI Topology| | PCI Topo   | | PCI Topo    |
+-      |  As 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
++      |  PCI topology | | PCI topology| | PCI topo   | | PCI topo    |
++      |  as 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
+       |_______________| |_____________| |____________| |_____________|
+             |                  |               |              |
+             |                  |               |              |
+@@ -272,7 +272,7 @@ Example topology involving a switch::
+       |  Root Port 0  |
+       |  Appears in   |
+       |  PCI topology |
+-      |  As 0c:00.0   |
++      |  as 0c:00.0   |
+       |___________x___|
+                   |
+                   |
 -- 
 2.39.2
 
