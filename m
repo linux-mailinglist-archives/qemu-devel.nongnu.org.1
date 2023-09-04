@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EACC5791A00
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1B3791A21
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:56:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAsS-0006k0-Qy; Mon, 04 Sep 2023 10:48:32 -0400
+	id 1qdAyv-0000QE-86; Mon, 04 Sep 2023 10:55:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qdAsR-0006je-JW
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:48:31 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qdAys-0000Pa-BF
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:55:10 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qdAsC-0004cP-Gn
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:48:31 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A8C341F38C;
- Mon,  4 Sep 2023 14:48:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1693838894; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=+2qHZq5YHWZa5PL6pR5iirRHx0XHgaVsG7iMF7ATyyQ=;
- b=UoVmTX5oJkktBG1hfz5SKFFbOKldDqBM3zes8bs19YDny9pMx18O8ZY6nYR368dWf24rJ8
- yOfWROlCWprAwQgdHUcP7GtG2KROzvuUg+kufP5S2KTPy1izhjIc7l5utkD2dDmua5lVgQ
- GJSrP4OKdWVI/Ur68qAQHkFp7ST+WxA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1693838894;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=+2qHZq5YHWZa5PL6pR5iirRHx0XHgaVsG7iMF7ATyyQ=;
- b=OI1H7nxyEF8+Q3jwDY0EEdfJjDNp0IZaEaD5IiZ8vk0rzKmKqmOuPWTesAqGbuVG3vLT7E
- nqJ6LNtGr+vyoDAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9274A13425;
- Mon,  4 Sep 2023 14:48:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id iLHlFi3u9WRAOQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 04 Sep 2023 14:48:13 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: [PATCH] iothread: Set the GSource "name" field
-Date: Mon,  4 Sep 2023 11:48:11 -0300
-Message-Id: <20230904144811.4218-1-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qdAyp-0006gX-K6
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:55:10 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-31c3df710bdso1178644f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 07:55:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693839306; x=1694444106; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ohMhkSEG3q7rKDnrpXqNwzclMVCWMxQISciHtB7L1yw=;
+ b=oii2WItCiIstAJKCRxT+LwGBgmlbQyk48Igyqj6rCb0lJwx97va9ejy8nKhnnYiRCF
+ NiXy/PjmaqNsTBfLoGjM5ahxFJEiAuwtAeVRAcS3GWCAWaHcvhbBR/bsXmlJbdM8ESFo
+ o/lPbkow46mseV2W0BrKPTKaWSHQAPssDq9PDKQGuBy/64dD6YceVHHa63hwKt6cUWiY
+ LJVEVMPUaV17Wq4rk3+yrhwxu8mv47eC0s/I1u28tlvLVL69n1FGnTkaZnB+08VzXcKI
+ bCRFSj5f0eX4Ql/hj4hC+L43dc1oGaOZpYLSDtcmgwqqQUrDOFblxAOGABqpTEqSf3h9
+ 3ZgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693839306; x=1694444106;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ohMhkSEG3q7rKDnrpXqNwzclMVCWMxQISciHtB7L1yw=;
+ b=M70vKI3JTmEkDiAzPy81nkJ3lGCy4ex6oBpp9nNqDnZKMsC0WEaFEqhjK9OgWHD056
+ lVKMeDrgXMiVsDvzIW2XPZXT5Vb/rPI9/HEroebdM7aUlnA5oNPUFBs2ekMWkLSVlFq/
+ vJWBXfru7jJ+ckbRtrxlCHxmt0U7Ym3KAny01iiVAlMJ1wzKEavPjzS3FMTnHBDyn3RC
+ OPPKzSlm8ZgFNPoMrG7ZYbqb3kHic5joZfamUV1UG8NVP0zIXFdAwMmfmjWyYrQ7dhC1
+ KovUv4KVxaXCi5zsqjuhQblK7Wgw/CdyUVZvxLQD3ML0OSCyC7KHrSozPFZt3EPOQNgf
+ EvcQ==
+X-Gm-Message-State: AOJu0Yx8g+exBrB/CS508I+AtnU6Fs0ntRItm3PpTR6ahVw0aeIufw+Y
+ REWwdoZE9JtEMfZcCfttnb2tKw==
+X-Google-Smtp-Source: AGHT+IELuyrzdSIzUVRYSoLztFQAtQY9k0TxI3uo/VqF0OC1WuNZOns53qlo0/hs4MVMAfLZn2FAjA==
+X-Received: by 2002:a5d:610c:0:b0:319:72f8:7244 with SMTP id
+ v12-20020a5d610c000000b0031972f87244mr7323593wrt.45.1693839306014; 
+ Mon, 04 Sep 2023 07:55:06 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ s2-20020a5d4242000000b003197c2316ecsm14673389wrr.112.2023.09.04.07.55.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Sep 2023 07:55:05 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4DACC1FFBB;
+ Mon,  4 Sep 2023 15:55:05 +0100 (BST)
+References: <20230829220228.928506-1-richard.henderson@linaro.org>
+ <20230829220228.928506-4-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, laurent@vivier.eu, Philippe =?utf-8?Q?Mathieu-D?=
+ =?utf-8?Q?aud=C3=A9?= <f4bug@amsat.org>
+Subject: Re: [PATCH v5 03/20] linux-user: Tidy loader_exec
+Date: Mon, 04 Sep 2023 15:54:57 +0100
+In-reply-to: <20230829220228.928506-4-richard.henderson@linaro.org>
+Message-ID: <87o7iihtti.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,66 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Having a name in the source helps with debugging core dumps when one
-might not have access to TLS data to cross-reference AioContexts with
-their addresses.
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- iothread.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-diff --git a/iothread.c b/iothread.c
-index b41c305bd9..8cfb9d5be6 100644
---- a/iothread.c
-+++ b/iothread.c
-@@ -138,15 +138,19 @@ static void iothread_instance_finalize(Object *obj)
-     qemu_sem_destroy(&iothread->init_done_sem);
- }
- 
--static void iothread_init_gcontext(IOThread *iothread)
-+static void iothread_init_gcontext(IOThread *iothread, char *thread_name)
- {
-     GSource *source;
-+    gchar *name = g_strdup_printf("%s aio-context", thread_name);
- 
-     iothread->worker_context = g_main_context_new();
-     source = aio_get_g_source(iothread_get_aio_context(iothread));
-+    g_source_set_name(source, name);
-     g_source_attach(source, iothread->worker_context);
-     g_source_unref(source);
-     iothread->main_loop = g_main_loop_new(iothread->worker_context, TRUE);
-+
-+    g_free(name);
- }
- 
- static void iothread_set_aio_context_params(EventLoopBase *base, Error **errp)
-@@ -189,11 +193,14 @@ static void iothread_init(EventLoopBase *base, Error **errp)
-         return;
-     }
- 
-+    thread_name = g_strdup_printf("IO %s",
-+                        object_get_canonical_path_component(OBJECT(base)));
-+
-     /*
-      * Init one GMainContext for the iothread unconditionally, even if
-      * it's not used
-      */
--    iothread_init_gcontext(iothread);
-+    iothread_init_gcontext(iothread, thread_name);
- 
-     iothread_set_aio_context_params(base, &local_error);
-     if (local_error) {
-@@ -206,8 +213,6 @@ static void iothread_init(EventLoopBase *base, Error **errp)
-     /* This assumes we are called from a thread with useful CPU affinity for us
-      * to inherit.
-      */
--    thread_name = g_strdup_printf("IO %s",
--                        object_get_canonical_path_component(OBJECT(base)));
-     qemu_thread_create(&iothread->thread, thread_name, iothread_run,
-                        iothread, QEMU_THREAD_JOINABLE);
-     g_free(thread_name);
--- 
-2.35.3
+> Reorg the if cases to reduce indentation.
+> Test for 4 bytes in the file before checking the signatures.
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <f4bug@amsat.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
