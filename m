@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F61791753
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8762791751
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:43:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8vV-0000y1-Ol; Mon, 04 Sep 2023 08:43:33 -0400
+	id 1qd8vb-0001FK-PH; Mon, 04 Sep 2023 08:43:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8vU-0000xp-DA
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:43:32 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8va-0001DE-0Q
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:43:38 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8vR-0004c7-Vp
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:43:32 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9a5be3166a2so195076866b.1
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:43:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8vX-0004cX-MC
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:43:37 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2bd0a5a5abbso21117381fa.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693831408; x=1694436208; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KgdDAI5WJeQpNJ7fVmtYD+dCjS5FrBlY0naTS3cJ2cY=;
- b=JCPwwlN4qyay4pLYCrkAbK8XrsuIMW+DyqrPMbZhZAAkCQFEyeCfQ2D3ev1qbAqxcA
- IF3uP1NtfbmUc4ZJALz878sSqmYdsx1x4Ite8PuvvHPbpnLFTFhJiC14/L+QtaX/ehUm
- N1JuRTTkAIP03jLlB8ZhCDOr8XUE93XRa/iIoVCR+2SOEs0wpn/6lHyJvxFpeYnennP0
- nZ8N1G89g/QMW+ENDo5Se8PaXht3tgMAsWHQQg8rWFT5CSnIVHgus4q9xkBvWeJ8lFf9
- tJUISWcf/W/2FoqG+B2T6Ft7wh1rODoTXcwGH3YcyNgBf/dJS8Gu5uhptvpYfU45FT+a
- GaZA==
+ d=linaro.org; s=google; t=1693831413; x=1694436213; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aJCm9ielSGbSry5cbeI+YJvG0psfGNIv8B+tATNPjpc=;
+ b=BcpVQzQeY+8d9RsVWQiy1VBVzzeyR6OkhEIrMeEOU50iOKjXNpTeu0Shm22GtCumGl
+ ZuvosTK7Ee7SGSGto43LCoN56sGb2UPaD4adMMqEr9DF9FZ7U+E3SHDpsgWYHQHQ/tnt
+ LecuXfyOLMSVwcpyZzStKgW08UlGrlR0csHcxwCrDLpN/diVfZTesC3WGjPvm4HxAety
+ LZm80i39s9ltEn1EHbkXoeO2ZwIIAT1pwfYkFe0Ik38Mzkl9b5BmdAE1PxSSBLPiA/FW
+ V3gJ1lyuuBeeq9X9Hl0fM/czRoZKH5urRfIed+//OR7+BN+OzXiYtyYOefdyXA6dRJd6
+ bXDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693831408; x=1694436208;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KgdDAI5WJeQpNJ7fVmtYD+dCjS5FrBlY0naTS3cJ2cY=;
- b=T+JMLp1PYv+WJK3/y/fEko7R9rej4+woKsw46tcRvz9glSApkr5lqqHtq4wIP95Ulu
- fe/pwnw+WwkO0HEoEF1xS9xZPAQHz5PKStDZ29i+JqIHov596UiP5fCEXmEWGgrZ6+i5
- 8P0K7jIwzs3MnzgECiF7MT3uYl/YiJjarozqwT/8KpE+tyEM3fLHFyvhphyzAsESyh1D
- t77uwBf2CWaSmFMJKI+ejcVafUMhYT6J04wXEtLeMTvGqNb6NENt/2ECbhl/WLt+h7SL
- fNGqeOlWM4Fi3OtzViMnh5daaOGiv7P40iTLoK6r+C2r3QMWYuCn4s6xM0Z8reeuM+mW
- ZayQ==
-X-Gm-Message-State: AOJu0YwRXtx91NbsgJnNAN21Khp7GJtixo7DwI72PMjfMu0ca7OiUIAb
- ZQa3QMmw3u9oFYFqgauEPCQzsTQv9w5LXtHQX+Q=
-X-Google-Smtp-Source: AGHT+IFhdp2S6dmdQU4L+6xLxXs/ra3AOIWeAuonsSZVIyQsXIqOo0I4pZ2Cuh3QLrH5FtcNOMpNIw==
-X-Received: by 2002:a17:906:2d1:b0:99e:5d8:a6f9 with SMTP id
- 17-20020a17090602d100b0099e05d8a6f9mr6609163ejk.66.1693831407692; 
- Mon, 04 Sep 2023 05:43:27 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693831413; x=1694436213;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aJCm9ielSGbSry5cbeI+YJvG0psfGNIv8B+tATNPjpc=;
+ b=AmWMUVmWcCEApM0Ld56uU8tlj6fGobhXj9Ji3M9I52euraRgTS70kvQci1L6Wn2T7O
+ jdth3NfaVYZulLr/FxLoLTAv2wF/wAZUz2qngGrTv6KMdYFWLNKT/6nv4CCMbEw1NUEC
+ 2BtiU4ymvhA/QDSjECL5i/M6/75tavC03dyYQikMKHS73Zt2g6GI4km+Pu0aylLWQd1h
+ tv32eHLGyNF37ykV6VRMSvabtMgnI30rsrfn3KGJk5elKlxR8eC1hi+T4vkKAb0zBrvU
+ EntoXMY6hEk+YuSxIzZyNDQr+u0NUdCKn/A2Wj9qcUZRM4sHltm+KOnPSP8Gk9gRBMa4
+ nX0A==
+X-Gm-Message-State: AOJu0Yxd8j9GfWLfwobvHOxe1qKef1PLJrEVPolQnaIc1GlKcOoQ4lfi
+ NPnzN40T/v5W6VyWmaMJQX8WjMVKoSwOz5IfNbQ=
+X-Google-Smtp-Source: AGHT+IF1LC+yWQ0PhXvd9yzZgLb7+mH1K3LMUlqzrxxaMQCoDCfGxeabIkm0GVrCgphK+2vgyIMWHQ==
+X-Received: by 2002:a2e:9a8e:0:b0:2bc:b0ae:a9e5 with SMTP id
+ p14-20020a2e9a8e000000b002bcb0aea9e5mr7458665lji.42.1693831413634; 
+ Mon, 04 Sep 2023 05:43:33 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- um16-20020a170906cf9000b00992d70f8078sm6099214ejb.106.2023.09.04.05.43.26
+ f3-20020a170906824300b009786c8249d6sm6163671ejx.175.2023.09.04.05.43.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Sep 2023 05:43:27 -0700 (PDT)
+ Mon, 04 Sep 2023 05:43:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/13] target/i386: Cleanups around KVM declarations
-Date: Mon,  4 Sep 2023 14:43:11 +0200
-Message-ID: <20230904124325.79040-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH 01/13] hw/i386/pc: Include missing 'sysemu/tcg.h' header
+Date: Mon,  4 Sep 2023 14:43:12 +0200
+Message-ID: <20230904124325.79040-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230904124325.79040-1-philmd@linaro.org>
+References: <20230904124325.79040-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,56 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Since commit 6f529b7534 ("target/i386: move FERR handling
+to target/i386") pc_q35_init() calls tcg_enabled() which
+is declared in "sysemu/tcg.h".
 
-Mostly trivial cleanups.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/pc_q35.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-We want to have QEMU core code accel-agnostic.
-(In particular, removing the KVM specific fields
-from CPUState).
-
-This serie contains the x86 specific patches
-before starting with the generic KVM code.
-
-FWIW, I couldn't test the 'HVF only' configuration
-since I don't have access to such host.
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (13):
-  hw/i386/pc: Include missing 'sysemu/tcg.h' header
-  hw/i386/pc: Include missing 'cpu.h' header
-  hw/i386/fw_cfg: Include missing 'cpu.h' header
-  target/i386/helper: Restrict KVM declarations to system emulation
-  target/i386/cpu-sysemu: Inline kvm_apic_in_kernel()
-  target/i386: Remove unused KVM stubs
-  target/i386: Allow elision of kvm_enable_x2apic()
-  target/i386: Allow elision of kvm_hv_vpindex_settable()
-  target/i386: Restrict declarations specific to CONFIG_KVM
-  sysemu/kvm: Restrict kvm_arch_get_supported_cpuid/msr() to x86 targets
-  sysemu/kvm: Restrict kvm_get_apic_state() to x86 targets
-  sysemu/kvm: Restrict kvm_has_pit_state2() to x86 targets
-  sysemu/kvm: Restrict kvm_pc_setup_irq_routing() to x86 targets
-
- include/sysemu/kvm.h        | 10 --------
- target/i386/kvm/kvm_i386.h  | 36 ++++++++++++++++----------
- hw/i386/fw_cfg.c            |  1 +
- hw/i386/intel_iommu.c       |  2 +-
- hw/i386/kvm/i8254.c         |  1 +
- hw/i386/kvm/ioapic.c        |  1 +
- hw/i386/pc_piix.c           |  1 +
- hw/i386/pc_q35.c            |  2 ++
- hw/i386/x86.c               |  4 +--
- target/i386/cpu-sysemu.c    |  4 +--
- target/i386/helper.c        |  2 +-
- target/i386/kvm/kvm-stub.c  | 51 -------------------------------------
- target/i386/kvm/kvm.c       |  4 +--
- target/i386/kvm/meson.build |  2 --
- 14 files changed, 37 insertions(+), 84 deletions(-)
- delete mode 100644 target/i386/kvm/kvm-stub.c
-
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 37c4814bed..43413dd1ac 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -34,6 +34,7 @@
+ #include "hw/loader.h"
+ #include "hw/i2c/smbus_eeprom.h"
+ #include "hw/rtc/mc146818rtc.h"
++#include "sysemu/tcg.h"
+ #include "sysemu/kvm.h"
+ #include "hw/kvm/clock.h"
+ #include "hw/pci-host/q35.h"
 -- 
 2.41.0
 
