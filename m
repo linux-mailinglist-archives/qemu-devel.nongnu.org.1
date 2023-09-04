@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D4E791782
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03EA791769
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:45:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8wq-0003Yb-2v; Mon, 04 Sep 2023 08:44:56 -0400
+	id 1qd8ws-0003v8-IK; Mon, 04 Sep 2023 08:44:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8wY-0002hM-Kk
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:44:43 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8wi-0002sR-2D
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:44:49 -0400
 Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8wU-0004q1-8N
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:44:36 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8wc-0004sh-6r
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:44:47 -0400
 Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99c3c8adb27so221339266b.1
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:44:33 -0700 (PDT)
+ a640c23a62f3a-9a6190af24aso219547166b.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693831472; x=1694436272; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693831478; x=1694436278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wQp1ZwukkzwgrEJecGe85e61/jQRSJ79TXphHOkDcps=;
- b=kdM4fmih7f7PIXry0I6KDgO3ccjLjcYsaaIES5rX5783shZBjvqesxw6xJJnZgToju
- q4HT2kWEXWU2NkDVHMBTN6S7aSMEUp7nUyMm7PPZt/eO628pvWP0MGNOqFCzDLarFH0N
- 30orC0f7UPti1MDYHXPRMm+h7D2MVcRbOO3R98xuOluEj4oPWNpQj0xo4A8TLpOplaWh
- 5iDQ+ZYrSUVxwYwXAHeLz3B44pJJMNwJ53L6J3+IWRv1e2cZit99YG1EjQW7CD8tCSoD
- YXyBjHn5Z2bUd/zqviSboydn79io3X+yZ0ywiBpS9Qmw0GH+G3i806e6YU3mujR0Okbl
- vhaw==
+ bh=c18azMn+jtI1YAn3dB0AGJOCqMNVzX0REantB+5g0DU=;
+ b=WlkJXLjDr5p81463F//uUUFzTs4M3arxxHO3pd0X7GwKzvVMD4KAs/HnnrqHH9CKnl
+ hZ96fLDTUuzcWAggBeM8QdCRAT18r1mkHgiKDITDMGv3wgoKS3DC7d5qfKsbTw9Oe7Pb
+ XYleYjG3CudJ9aU+1h0xdBtz7ya1ZqSb1/01zyRdSWfZcQu1kc0dhei2zfdINxEAmGnx
+ vOM6p7Is+nJ1h/8c83AZtF9N3BZqbh19qsxMqn4PmHe6s4g9psg2tGvGQ5Q2ZkMKqab1
+ tRDsnOv4yaDzZPgDFjRUGFybk9o6HiJ9h19xHdHV+5tEFwde751i5w82b0/liA7sJl53
+ nolA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693831472; x=1694436272;
+ d=1e100.net; s=20221208; t=1693831478; x=1694436278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wQp1ZwukkzwgrEJecGe85e61/jQRSJ79TXphHOkDcps=;
- b=L7om7tDGaHDZ1UqelNfMJaUQqv/T4Dy8g+pu1bz9U9To0lDuLXNzHHbhuq/MiKRljZ
- Biec5woowqJ8QZr5Jjzjgh61hISHIQqaKgdfkCoO17zA2af/52cGSiguBv/mrJzOZ68D
- sXR8QD8IiHRRntf8x8weuXik890jLqH3sztBToKr1iR/gCP6Xsh4Ej40AoKQHTh+lUYW
- E78cdLPdBotHh5EJV8obwMqsMteqeYK/wz8R8y2ZadvZgEIyO0b6bJdh2pgRrQ0RJWww
- 7x60ux0T7SaniIIRegNcUVJwmrNpBTy8o8cYV5qpPlCqhdrleaYNDAJ6aU1WBRyA+VuY
- R7qg==
-X-Gm-Message-State: AOJu0YzqO5MYqg0uD+MUCU+b1iuANmNIAWoFwjWpQGNpBrK0sp2o+PKr
- gO7qEJmmNoD/B9SZ1TzEAr4pV3bQJNbVdPC+T8E=
-X-Google-Smtp-Source: AGHT+IHuyIx4y8Ds8coh9sd7t5uoyGE2ek+jqkPzJtAFpTx/gIGSHZIy1qj15vmm5PPTTvaYTKuKSw==
-X-Received: by 2002:a17:907:2c64:b0:9a1:b43b:73a0 with SMTP id
- ib4-20020a1709072c6400b009a1b43b73a0mr8116583ejc.20.1693831472606; 
- Mon, 04 Sep 2023 05:44:32 -0700 (PDT)
+ bh=c18azMn+jtI1YAn3dB0AGJOCqMNVzX0REantB+5g0DU=;
+ b=gd+JXPHhHuqyqQegIRpH23sOIJNaNcAuMObZzKVH4V4MvlLOYe6zUDvpAGZ0c/IJUL
+ 3IceZWcX+w4Pcpr9JEBiTDa3Lx6AVrc51k4L2NKVvvXAO21h2RzKDMJsYYOpSs9bja4m
+ 6u+alArqNZy1m8xEuZZRa/alFgYG24y5OD0FqMb1hWw1QTpmeGQ23WvZT8Cq08UTbqIC
+ NpVQO2IGlQL8u4B5QAQnuYo5UN1RxofSwEKwczPPLR5rXMgw71YHLqz9L1f0ENBfOhR7
+ 70JDLUwLn8h/wshHy/bfNzuIDuN1VJs/7K4foCnhzyfOHsyC0dy663ITdYXltwFZPaE1
+ hVfQ==
+X-Gm-Message-State: AOJu0YxKVPLwM+rbS4Q63slFggnAfN48ZeYP68i3ZHIcEGoYHdEe3BDK
+ k1BIoDDGHnXl289INoVnPCq94I3vvneNMdVTQWo=
+X-Google-Smtp-Source: AGHT+IGkBWzlSRGBOELBpUf+dLc0WEpvu9JCETivRhredxbliVAZerUGcF4mTiM1Pqigg7YcHDOtcQ==
+X-Received: by 2002:a17:906:5a6e:b0:9a2:24f9:fabe with SMTP id
+ my46-20020a1709065a6e00b009a224f9fabemr6871711ejc.66.1693831478762; 
+ Mon, 04 Sep 2023 05:44:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- x24-20020a170906299800b0099cadcf13cesm6132052eje.66.2023.09.04.05.44.31
+ hb26-20020a170906b89a00b0098cf565d98asm6058630ejb.22.2023.09.04.05.44.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Sep 2023 05:44:32 -0700 (PDT)
+ Mon, 04 Sep 2023 05:44:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 11/13] sysemu/kvm: Restrict kvm_get_apic_state() to x86 targets
-Date: Mon,  4 Sep 2023 14:43:22 +0200
-Message-ID: <20230904124325.79040-12-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH 12/13] sysemu/kvm: Restrict kvm_has_pit_state2() to x86 targets
+Date: Mon,  4 Sep 2023 14:43:23 +0200
+Message-ID: <20230904124325.79040-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904124325.79040-1-philmd@linaro.org>
 References: <20230904124325.79040-1-philmd@linaro.org>
@@ -93,52 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_get_apic_state() is only defined for x86 targets (in
-hw/i386/kvm/apic.c). Its declaration is pointless on all
-other targets.
-
-Since we include "linux-headers/asm-x86/kvm.h", no need
-to forward-declare 'struct kvm_lapic_state'.
+kvm_has_pit_state2() is only defined for x86 targets (in
+target/i386/kvm/kvm.c). Its declaration is pointless on
+all other targets. Have it return a boolean.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/sysemu/kvm.h       | 3 ---
+ include/sysemu/kvm.h       | 1 -
  target/i386/kvm/kvm_i386.h | 1 +
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ hw/i386/kvm/i8254.c        | 1 +
+ target/i386/kvm/kvm.c      | 4 ++--
+ 4 files changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index a578961a5e..4326b53f90 100644
+index 4326b53f90..147967422f 100644
 --- a/include/sysemu/kvm.h
 +++ b/include/sysemu/kvm.h
-@@ -188,7 +188,6 @@ extern bool kvm_msi_use_devid;
- #endif  /* CONFIG_KVM_IS_POSSIBLE */
- 
- struct kvm_run;
--struct kvm_lapic_state;
- struct kvm_irq_routing_entry;
- 
- typedef struct KVMCapabilityInfo {
-@@ -407,8 +406,6 @@ void kvm_irqchip_add_change_notifier(Notifier *n);
- void kvm_irqchip_remove_change_notifier(Notifier *n);
- void kvm_irqchip_change_notify(void);
- 
--void kvm_get_apic_state(DeviceState *d, struct kvm_lapic_state *kapic);
--
- struct kvm_guest_debug;
- struct kvm_debug_exit_arch;
- 
+@@ -221,7 +221,6 @@ int kvm_has_vcpu_events(void);
+ int kvm_has_robust_singlestep(void);
+ int kvm_has_debugregs(void);
+ int kvm_max_nested_state_length(void);
+-int kvm_has_pit_state2(void);
+ int kvm_has_many_ioeventfds(void);
+ int kvm_has_gsi_routing(void);
+ int kvm_has_intx_set_mask(void);
 diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index b78e2feb49..d4a1239c68 100644
+index d4a1239c68..76e8f952e5 100644
 --- a/target/i386/kvm/kvm_i386.h
 +++ b/target/i386/kvm/kvm_i386.h
-@@ -54,6 +54,7 @@ bool kvm_has_adjust_clock_stable(void);
- bool kvm_has_exception_payload(void);
- void kvm_synchronize_all_tsc(void);
+@@ -33,6 +33,7 @@
+ bool kvm_has_smm(void);
+ bool kvm_enable_x2apic(void);
+ bool kvm_hv_vpindex_settable(void);
++bool kvm_has_pit_state2(void);
  
-+void kvm_get_apic_state(DeviceState *d, struct kvm_lapic_state *kapic);
- void kvm_put_apicbase(X86CPU *cpu, uint64_t value);
+ bool kvm_enable_sgx_provisioning(KVMState *s);
+ bool kvm_hyperv_expand_features(X86CPU *cpu, Error **errp);
+diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
+index 6a7383d877..a649b2b7ca 100644
+--- a/hw/i386/kvm/i8254.c
++++ b/hw/i386/kvm/i8254.c
+@@ -34,6 +34,7 @@
+ #include "hw/timer/i8254_internal.h"
+ #include "hw/qdev-properties-system.h"
+ #include "sysemu/kvm.h"
++#include "target/i386/kvm/kvm_i386.h"
+ #include "qom/object.h"
  
- bool kvm_has_x2apic_api(void);
+ #define KVM_PIT_REINJECT_BIT 0
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 639a242ad8..e5cd7cc806 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -154,9 +154,9 @@ static KVMMSRHandlers msr_handlers[KVM_MSR_FILTER_MAX_RANGES];
+ static RateLimit bus_lock_ratelimit_ctrl;
+ static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
+ 
+-int kvm_has_pit_state2(void)
++bool kvm_has_pit_state2(void)
+ {
+-    return has_pit_state2;
++    return !!has_pit_state2;
+ }
+ 
+ bool kvm_has_smm(void)
 -- 
 2.41.0
 
