@@ -2,95 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E4A791B72
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B09791B85
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:26:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCNV-0006cj-MI; Mon, 04 Sep 2023 12:24:42 -0400
+	id 1qdCOj-0007Os-Qh; Mon, 04 Sep 2023 12:25:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdCNR-0006cH-Jr
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:24:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdCOf-0007Me-Ul
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:25:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdCNO-0001OT-9Q
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:24:37 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdCOd-0001rv-KA
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:25:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693844671;
+ s=mimecast20190719; t=1693844751;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lj0Bjpsfdw9VBp/7t7JcHkAAeoHZzPpAD9/UAbvcQYE=;
- b=MY0uth4mlVVl4MEixSHr49n1oc7KbYVh3ZbLDnmZeeMGwulhNNwqeIsEKznIDOx+RrNuxT
- 0O/pffycx5MzfufOPPm9BzOIanAXteywQi6Ugs/MAeVvp+b3pmhrs9aWd3WBQPzly4IJ8B
- hz1Eap93h6hD0xVU3MUvTsL5LOtElr8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-31-ZTybWnBBPMWCIo67wF1Mdw-1; Mon, 04 Sep 2023 12:24:30 -0400
-X-MC-Unique: ZTybWnBBPMWCIo67wF1Mdw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31aef4011cfso909936f8f.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:24:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693844668; x=1694449468;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lj0Bjpsfdw9VBp/7t7JcHkAAeoHZzPpAD9/UAbvcQYE=;
- b=ivoHL8eEXjPW44TKVfqPRBrZFUvtXJcuxUPOC/qgR1OXHNlatjHQy3v2VcMI+kJfSW
- /udxsVFLkYl5gyeu3uSpZPv3PCS3p0p5nIObcWgUO0DOkxL6/P+CftUHrcY3pNygt38N
- QkFJfitZT9fUjVECNnMAqIsQewWhUEtwifQ/s8V2K1ohmO6kG/JGYnw18gzReosYxlyW
- Z687PCrQojAOKtG4KDQ/n1ccFspnfDwtsatxk+6uT3At3BgRnmEUPsNRpo/kIKLJ/TjS
- 7OdRT283516yDSa5BgFAbpz7mFLuVM3Ux7cCoPOkWVxwudbS0Up2HWtS63CV7MegJIyP
- BP8w==
-X-Gm-Message-State: AOJu0YyjnIuuwpfvIXPSlsMWtFKj4p7bQLSOjKR/4kafvKRvbJCZutw8
- OzPehQF5YDLm3NghbonJfYf4uSzCy+81ZEFmkcUfe3TudvdG2seCggIzpWXWrKeFl6ykGcr79Fl
- Kzzz8lNmEBLgdqkwGQ3cxOuY=
-X-Received: by 2002:a5d:4f8f:0:b0:314:36f0:2214 with SMTP id
- d15-20020a5d4f8f000000b0031436f02214mr7414293wru.6.1693844668429; 
- Mon, 04 Sep 2023 09:24:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAQZGnPnBJNihUQ9Q6YDGy2ZK2+mj31N8SiK/54n/m1t4JpTMW5qqWaNPMeZZrlnVkW0myzg==
-X-Received: by 2002:a5d:4f8f:0:b0:314:36f0:2214 with SMTP id
- d15-20020a5d4f8f000000b0031436f02214mr7414283wru.6.1693844668086; 
- Mon, 04 Sep 2023 09:24:28 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
- ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.googlemail.com with ESMTPSA id
- bh13-20020a05600c3d0d00b003fe15ac0934sm11022571wmb.1.2023.09.04.09.24.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 09:24:27 -0700 (PDT)
-Message-ID: <eb3225a5-4c7e-d925-4163-27b595a91e7f@redhat.com>
-Date: Mon, 4 Sep 2023 18:24:26 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xi7CuMM1c7mkFaycy94LHIW/D/9DZWG4uAQGSJybtGY=;
+ b=TR5k4YYwo8rjZnLbfLufLtEsg/+PIhkm1xJI3REKwXNdmWavmV4R4JHOuM0RVG0tC8sg4B
+ mrgUS6c2OeVX5nwLRy9wi1I/9N00xoZIf3abqpFz205AIhpZohBzDeyKvGTVYBcwEXxIX+
+ 0sbEj9WQgPG4hA99gIn3obvNPU2SK+o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-464-dcwu184cPXutJcZxlgkgBQ-1; Mon, 04 Sep 2023 12:25:47 -0400
+X-MC-Unique: dcwu184cPXutJcZxlgkgBQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35B771817903;
+ Mon,  4 Sep 2023 16:25:47 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.145])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2962D493110;
+ Mon,  4 Sep 2023 16:25:46 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>,
+ William Tsai <williamtsai1111@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH 0/1] qom: fix setting of qdev array properties
+Date: Mon,  4 Sep 2023 17:25:43 +0100
+Message-ID: <20230904162544.2388037-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 65/67] ppc/kconfig: make SAM460EX depend on PPC & PIXMAN
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-66-marcandre.lureau@redhat.com>
- <cb0e2856-afdc-294b-d111-28be168eeed2@eik.bme.hu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <cb0e2856-afdc-294b-d111-28be168eeed2@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,36 +80,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 14:34, BALATON Zoltan wrote:
-> 
->> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>
->> SM501 is going to depend on PIXMAN next.
-> 
-> Why is this patch needed when SM501 is the one that depends on PIXMAN 
-> and should pull in the dependency? Also what's the change in 
-> default.mak?
+By the time of the 8.2.0 release, it will have been 2 years and 6
+releases since we accidentally broke setting of array properties
+for user creatable devices:
 
-The change in default.mak is needed because the default is moved from 
-there to hw/ppc/Kconfig.  Without it,
+  https://gitlab.com/qemu-project/qemu/-/issues/1090
 
-     # configs/devices/ppc-softmmu/default.mak
-     CONFIG_SAM460EX=y
+Some context:
 
-     # hw/ppc/Kconfig
-     config SAM460EX
-         depends on PPC && PIXMAN
+* Initial identification / report on the mailing list
 
-fails to compile without pixman, due to a contradiction (default.mak 
-requires enabling SAM460EX, hw/ppc/Kconfig requires disabling it because 
-CONFIG_PIXMAN=n).
+   https://lists.gnu.org/archive/html/qemu-devel/2022-07/msg00111.html
 
-> ati-vga also uses pixman and currently has no fall back. 
-> The sm501 already has fallback when pixman fails so could work without 
-> pixman too, see x-pixman property in sm501.c.
+* Sub-thread of that exploring the background on need/use of array
+  properties:
 
-Yeah, this means there are changes needed in both this patch and ATI.
+   https://lists.gnu.org/archive/html/qemu-devel/2022-07/msg01531.html
 
-Paolo
+* Markus' initial PoC for an order preserving QDict impl
+
+   https://lists.gnu.org/archive/html/qemu-devel/2022-07/msg00758.html
+
+* A later (unrelated?) patch for order preserving QDict impl
+
+   https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03229.html
+
+* A re-posting of the new patch
+
+   https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00292.html
+
+Personally I'm not a fan of the introducing the order preserving QDict
+impl, because I feel that the need to preserve QDict ordering is a
+design bug. Not that I think the current ordering when iterating over
+QDict is in any way special. I just rather see the ordering left as
+"undefined" and any callers that need a specific ordering should apply
+what they need.
+
+Since setting device array properties requires that 'len-XXX' be
+processed first, so the following patch does exactly that. We iterate
+over the properties twice, first setting the 'len-XXX' properties,
+then setting everything else.
+
+I still think for user creatable devices we'd be better off just
+mandating the use of JSON syntax for -device and thus leveraging
+the native JSON array type. This patch was the quick fix for the
+existing array property syntax though.
+
+Daniel P. Berrangé (1):
+  qom: fix setting of array properties
+
+ qom/object_interfaces.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+-- 
+2.41.0
 
 
