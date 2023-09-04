@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA70791B99
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C40791BA4
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:30:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCRZ-0002N2-Rc; Mon, 04 Sep 2023 12:28:53 -0400
+	id 1qdCT5-0005Pb-Ey; Mon, 04 Sep 2023 12:30:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCRW-0002D8-FO
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:28:51 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCSV-0004VJ-78
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:29:52 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCRR-0002NC-M6
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:28:49 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-52bcb8b199aso2171118a12.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:28:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCSQ-0002Wn-OL
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:29:50 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-99de884ad25so252743366b.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:29:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693844923; x=1694449723; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=V09dNf7wDwvKMqEpQRqfZrZ9Vsl+ZeGkw36NfyqmYlI=;
- b=JB3t0H6GJVI0lR6dWsBAT2L22pH5WV5Qy9aQ3QsrMrUcOgyOJ1P1rmHSxJ0EAu38cJ
- dE2dwLmCPNtZKLNPiZ5k0QXdZGqI/TTZteWCeWhgBKy3/UB2p/k22Jhmkv/Xg6DvGMkm
- DYKk3DulgKqm1yvqXX4hXM9z5Fw9o5Ot4hCrDIqaURRAM70i45qLG+1eYvln0W8r68zY
- IqOftDvwucu0oJXMrUf03+tWQpPrTeNouMUi9bO9L3VXJ/vzaNUwLLClpLx3vpmos2ck
- vBRxYWxN/gYDnyONbkPKUU2S+tIySGU1e81SKgBW4Mm3oTTZ3fPdcbTI1WsrBd+rMqiN
- QWKQ==
+ d=linaro.org; s=google; t=1693844985; x=1694449785; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NrnqPN7398ty7yLv/sczqA06bZUMw0IUliFG9AigZvE=;
+ b=FmRE3eH2KFpWiokgzvAk77PYYwQZQNy07SF5jglpmnj7DLIEWNe4+4FUo84KJK/L5G
+ +vcqniDcx2X2iGZN5P5ADkHNHfPVeeJey/IZbnO14T4zEBcXW5waqe8OkMDLIXplfRNK
+ GM7eUNZJduq0G+z5yeoI4uawZYaSF43iRVTPMFxD1QZAFBn43cvVjLtQ/UxvwW81SLZj
+ JE35GzlH1nFDGbc7ywLK4ZD61QI3tBqZsLAHOByYCAHHxARsFJI0NO3ImRfWMubnbcRF
+ j+OlUUSKVoKrNJPqfScZAjZ3q8NMMQf6na8bjPWSPll2z9oBmZJiPVuOVTAqFAXP/lAu
+ qoiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693844923; x=1694449723;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=V09dNf7wDwvKMqEpQRqfZrZ9Vsl+ZeGkw36NfyqmYlI=;
- b=CzZNXv+5F1Cg8qdVL0/2EIpTTIVHZ4/82t5Flvaj1pkMqCNb73hTo+FcedyjIyTS9/
- HVfzbA30XgecY2HqS9XUGzOfhPFXR6Ew8gRko77hMuaA0rAb+jJHHJXuFUXYdwGxAMv8
- 5uSXPJ1+8xWpnT4ILkGHwRfCzcKSq8g0pS/yVq1GPJb/TZMmGzBJY/RbC8OC5MGG+UuQ
- yqEKkUNuHcR+t59DUzYAP+dBAuHhY3lPAyMMSSMAPlO7mDMK+UlT6y+nUyP+eOJ2cTxY
- vJfgpAcrmjcI1+Q16U+1LtJiKLywNRVmlFr+NKr3ZAbqjqnLS168V9zkkGUIzlvOjtGb
- N9Bw==
-X-Gm-Message-State: AOJu0YzrKoudSsXs4h3bhmSygD4pGHVXMdfixcgAhgXsRnGXC/YFA+KT
- K3Z/TuEIQyZm80XAUa96a3Gl00Rus3Mhjbil+YM=
-X-Google-Smtp-Source: AGHT+IHPiHFlKCOIwU3oTD6y+IMPpuzCLKVP2FXB8LUj16xnEOzjZ4PG/bhSxJsLeoCIuIGEbuwBJw==
-X-Received: by 2002:a17:906:224a:b0:9a4:88af:b77 with SMTP id
- 10-20020a170906224a00b009a488af0b77mr7963442ejr.60.1693844923230; 
- Mon, 04 Sep 2023 09:28:43 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.209.227])
+ d=1e100.net; s=20221208; t=1693844985; x=1694449785;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NrnqPN7398ty7yLv/sczqA06bZUMw0IUliFG9AigZvE=;
+ b=gnJvpo40pG7/yez4hNZSv8NS3OVjV4yL9Qx0r0DjKyIUpCZla75udgP4dC64pi+tOa
+ 9lvCDn8cjD7w6UweXdxT2/ONhALa1MQ2Ki83s+quc1Dz6rvorTUasBe7aUFDwNd1beKH
+ bRg42eLLj0tuSuKB5miNT4/J8VVbvdW7nUGaIRAaK8I0I/9FYTIKjzJMfFYJ26k31nni
+ zFgHv8MtmADJJgVwyYZHVqhHiLrZBoKkYsVDJ7lJjXuTSx2FlAn0uYoR4uPUuqpyx1re
+ +TWS6Doqg45nMs5RYhB5ICTVCb4Sv7A4OEMxFRUxWs0yYIgTJfg8D+qhl2jDzfHZnE5b
+ nfpQ==
+X-Gm-Message-State: AOJu0Yx9wxt71JZnRo5zm5YvQTK+8XHKatk8akZ6f9xiHzuj6C24N44q
+ 2blz4wSabNx6yUsKfU8y/iljqg==
+X-Google-Smtp-Source: AGHT+IF4qQteS/d6G4FMN42N7lxsnnhf7mz5o9mwEqQ+TR3IKbVbXkUcu2b4rXKbDxOQbNsFeEwcyg==
+X-Received: by 2002:a17:906:189:b0:9a2:1df2:8e08 with SMTP id
+ 9-20020a170906018900b009a21df28e08mr7542096ejb.45.1693844984917; 
+ Mon, 04 Sep 2023 09:29:44 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- ss20-20020a170907c01400b00993159ce075sm6356037ejc.210.2023.09.04.09.28.41
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Sep 2023 09:28:42 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 3/3] tests/qtest/pflash: Clean up local variable shadowing
-Date: Mon,  4 Sep 2023 18:28:24 +0200
-Message-ID: <20230904162824.85385-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230904162824.85385-1-philmd@linaro.org>
-References: <20230904162824.85385-1-philmd@linaro.org>
+ ov22-20020a170906fc1600b00992c92af6f4sm6489916ejb.144.2023.09.04.09.29.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 09:29:44 -0700 (PDT)
+Message-ID: <81b122d8-6653-f293-45cf-7e68762e7dd4@linaro.org>
+Date: Mon, 4 Sep 2023 18:29:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v2 16/22] crypto/cipher-gnutls.c: Clean up local variable
+ shadowing
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org
+References: <20230904161235.84651-1-philmd@linaro.org>
+ <20230904161235.84651-17-philmd@linaro.org> <ZPYFfwYj6YgSf6Nb@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ZPYFfwYj6YgSf6Nb@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -94,35 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix:
+On 4/9/23 18:27, Daniel P. Berrangé wrote:
+> On Mon, Sep 04, 2023 at 06:12:28PM +0200, Philippe Mathieu-Daudé wrote:
+>> Fix:
+>>
+>>    In file included from crypto/cipher.c:140:
+>>    crypto/cipher-gnutls.c.inc: In function ‘qcrypto_gnutls_cipher_encrypt’:
+>>    crypto/cipher-gnutls.c.inc:116:17: warning: declaration of ‘err’ shadows a previous local [-Wshadow=compatible-local]
+>>      116 |             int err = gnutls_cipher_init(&handle, ctx->galg, &gkey, NULL);
+>>          |                 ^~~
+>>    crypto/cipher-gnutls.c.inc:94:9: note: shadowed declaration is here
+>>       94 |     int err;
+>>          |         ^~~
+>>         ---
+>>
+>>    crypto/cipher-gnutls.c.inc: In function ‘qcrypto_gnutls_cipher_decrypt’:
+>>    crypto/cipher-gnutls.c.inc:177:17: warning: declaration of ‘err’ shadows a previous local [-Wshadow=compatible-local]
+>>      177 |             int err = gnutls_cipher_init(&handle, ctx->galg, &gkey, NULL);
+>>          |                 ^~~
+>>    crypto/cipher-gnutls.c.inc:154:9: note: shadowed declaration is here
+>>      154 |     int err;
+>>          |         ^~~
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   crypto/cipher-gnutls.c.inc | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> and if you want to include it in general pull request
 
-  tests/qtest/pflash-cfi02-test.c: In function ‘test_geometry’:
-  tests/qtest/pflash-cfi02-test.c:409:22: warning: declaration of ‘byte_addr’ shadows a previous local [-Wshadow=compatible-local]
-    409 |             uint64_t byte_addr = (uint64_t)i * c->sector_len[region];
-        |                      ^~~~~~~~~
-  tests/qtest/pflash-cfi02-test.c:342:14: note: shadowed declaration is here
-    342 |     uint64_t byte_addr = 0;
-        |              ^~~~~~~~~
+Sure,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/qtest/pflash-cfi02-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 
-diff --git a/tests/qtest/pflash-cfi02-test.c b/tests/qtest/pflash-cfi02-test.c
-index 0b52c2ca5c..8c073efcb4 100644
---- a/tests/qtest/pflash-cfi02-test.c
-+++ b/tests/qtest/pflash-cfi02-test.c
-@@ -406,7 +406,7 @@ static void test_geometry(const void *opaque)
- 
-     for (int region = 0; region < nb_erase_regions; ++region) {
-         for (uint32_t i = 0; i < c->nb_blocs[region]; ++i) {
--            uint64_t byte_addr = (uint64_t)i * c->sector_len[region];
-+            byte_addr = (uint64_t)i * c->sector_len[region];
-             g_assert_cmphex(flash_read(c, byte_addr), ==, bank_mask(c));
-         }
-     }
--- 
-2.41.0
+Thank you!
 
 
