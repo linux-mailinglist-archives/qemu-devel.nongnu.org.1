@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07317919C7
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D56467919C2
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:38:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAhY-0002PS-4e; Mon, 04 Sep 2023 10:37:16 -0400
+	id 1qdAhT-0002Kf-8L; Mon, 04 Sep 2023 10:37:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhR-0002Hq-Bo
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhR-0002Hy-IY
  for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhM-0001mH-1X
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhN-0001mn-G6
  for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693838223;
+ s=mimecast20190719; t=1693838224;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LCa6uMnIGe5vy4MJfndt1m6rm1ATKiYAl/dKe3jmApY=;
- b=TTmVYOPRVi4kNUC9tr2YuNAWJjXuEsgbrqeGFroFOCo1xMifDUfqu3dQ+mk8LjePZADx1E
- o6vj4iAr7hOFwo6rmaWM//MjS+47mQSr0y4MikjA9t1apznSixCK6f4thKG7z+W4tROWRY
- 1bRjkhBS9QgOzD7ikr1FaPs3IlJ4QZQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-538-7YVDzPbXMSiqHzZ8tkIK-w-1; Mon, 04 Sep 2023 10:37:00 -0400
-X-MC-Unique: 7YVDzPbXMSiqHzZ8tkIK-w-1
+ bh=UnBnXbDFQSzMihNTk0UgBZT7Q2m3zJCm4ZBJ+7ReXKM=;
+ b=MeQkmv1fC+V98qFcdyuW2NvCpnXI3bLDapi9rpzorAASYheumPYeu8xOtSvE6m+j3uICVf
+ +I7cram7Llg7HWAf+NCAbpGKQDWwBn+0kKPs8VpJ9SRRVnrhxCbyuEWn/i/xY+v4P5CyRw
+ nOaTAgECKPh/+QuBMWy8MZHfhDqMsBw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-588-Fy8ShID_M8Ga3VC6f05_RQ-1; Mon, 04 Sep 2023 10:37:01 -0400
+X-MC-Unique: Fy8ShID_M8Ga3VC6f05_RQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 021621C07243;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C68998015AA;
  Mon,  4 Sep 2023 14:37:00 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.211])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 64E48400F5A;
- Mon,  4 Sep 2023 14:36:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 371E4493114;
+ Mon,  4 Sep 2023 14:37:00 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 13/14] block: Remove bdrv_query_block_node_info
-Date: Mon,  4 Sep 2023 16:36:42 +0200
-Message-ID: <20230904143643.259916-14-kwolf@redhat.com>
+Subject: [PULL 14/14] block: Remove unnecessary variable in
+ bdrv_block_device_info
+Date: Mon,  4 Sep 2023 16:36:43 +0200
+Message-ID: <20230904143643.259916-15-kwolf@redhat.com>
 In-Reply-To: <20230904143643.259916-1-kwolf@redhat.com>
 References: <20230904143643.259916-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
@@ -78,71 +80,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-The last call site of this function has been removed by commit
-c04d0ab026 ("qemu-img: Let info print block graph").
+The commit 5d8813593f ("block/qapi: Let bdrv_query_image_info()
+recurse") removed the loop where we set the 'bs0' variable, so now it
+is just the same as 'bs'.
 
-Reviewed-by: Claudio Fontana <cfontana@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20230901184605.32260-2-farosas@suse.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230901184605.32260-3-farosas@suse.de>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/qapi.h |  3 ---
- block/qapi.c         | 27 ---------------------------
- 2 files changed, 30 deletions(-)
+ block/qapi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/block/qapi.h b/include/block/qapi.h
-index 18d48ddb70..8663971c58 100644
---- a/include/block/qapi.h
-+++ b/include/block/qapi.h
-@@ -36,9 +36,6 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
- int bdrv_query_snapshot_info_list(BlockDriverState *bs,
-                                   SnapshotInfoList **p_list,
-                                   Error **errp);
--void bdrv_query_block_node_info(BlockDriverState *bs,
--                                BlockNodeInfo **p_info,
--                                Error **errp);
- void bdrv_query_image_info(BlockDriverState *bs,
-                            ImageInfo **p_info,
-                            bool flat,
 diff --git a/block/qapi.c b/block/qapi.c
-index f34f95e0ef..79bf80c503 100644
+index 79bf80c503..1cbb0935ff 100644
 --- a/block/qapi.c
 +++ b/block/qapi.c
-@@ -309,33 +309,6 @@ out:
-     aio_context_release(bdrv_get_aio_context(bs));
- }
+@@ -48,7 +48,7 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
+ {
+     ImageInfo **p_image_info;
+     ImageInfo *backing_info;
+-    BlockDriverState *bs0, *backing;
++    BlockDriverState *backing;
+     BlockDeviceInfo *info;
+     ERRP_GUARD();
  
--/**
-- * bdrv_query_block_node_info:
-- * @bs: block node to examine
-- * @p_info: location to store node information
-- * @errp: location to store error information
-- *
-- * Store image information about @bs in @p_info.
-- *
-- * @p_info will be set only on success. On error, store error in @errp.
-- */
--void bdrv_query_block_node_info(BlockDriverState *bs,
--                                BlockNodeInfo **p_info,
--                                Error **errp)
--{
--    BlockNodeInfo *info;
--    ERRP_GUARD();
--
--    info = g_new0(BlockNodeInfo, 1);
--    bdrv_do_query_node_info(bs, info, errp);
--    if (*errp) {
--        qapi_free_BlockNodeInfo(info);
--        return;
--    }
--
--    *p_info = info;
--}
--
- /**
-  * bdrv_query_image_info:
-  * @bs: block node to examine
+@@ -145,7 +145,6 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
+ 
+     info->write_threshold = bdrv_write_threshold_get(bs);
+ 
+-    bs0 = bs;
+     p_image_info = &info->image;
+     info->backing_file_depth = 0;
+ 
+@@ -153,7 +152,7 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
+      * Skip automatically inserted nodes that the user isn't aware of for
+      * query-block (blk != NULL), but not for query-named-block-nodes
+      */
+-    bdrv_query_image_info(bs0, p_image_info, flat, blk != NULL, errp);
++    bdrv_query_image_info(bs, p_image_info, flat, blk != NULL, errp);
+     if (*errp) {
+         qapi_free_BlockDeviceInfo(info);
+         return NULL;
 -- 
 2.41.0
 
