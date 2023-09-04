@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0692A7915AE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCEE7915B2
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:27:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd6l2-0001AM-5Q; Mon, 04 Sep 2023 06:24:37 -0400
+	id 1qd6nl-0002D2-QE; Mon, 04 Sep 2023 06:27:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qd6ki-00018q-05
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:24:18 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1qd6mA-0001gI-L6
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:25:49 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qd6ke-0003hG-QH
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:24:15 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-402be83929eso12626795e9.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:24:12 -0700 (PDT)
+ id 1qd6ly-0004Eb-8z
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:25:39 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4013454fa93so12798395e9.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:25:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693823051; x=1694427851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693823132; x=1694427932; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=Uk396+0WQ3LQHUu863IzHDD9yguLEEYZ0PLtvh8nT+0=;
- b=HKj2Fjc7uKepnRApJAcL4AVdKsidd12IJ6a4Zb47OBovEEI/2ZKwI2ahfLPx485IHR
- CW9kU7D2K8A5N7DMQwzHSuy2HW1oKec0b+1LxoK88OhBNPDJLUSuxeHIuBH0tLrq+dwk
- XqQNqSEMX+w4tGuc1K9oZgBomPELyHHYMdcK4RwiU6HiKv9mU4NmGMaMkQwA3xitgctT
- fP2yi3e518OsA1mtgXKmUvqUDdFieKUJTUCxPy/eK9VWM2Yj3wByq5SK2viE1Lbl6SKQ
- HATHoq7yb/0SSfgB43yg3i/V61waxNNBcN7zRB9bt9xr8Q+AnX63oYmPKGXjWykQLRlJ
- 6uoQ==
+ bh=Ml1xxTJVjPI8sqbbORt01R/FKzCE8EC/iqskPjiYzxQ=;
+ b=I+OvzZ+nZn9Ai02I95+S/dQu1+5gT+o+gyOm/tbU6fKnwq2VFMo2x4u2hqFq4b8vvw
+ DVY189bx6fgkYOJtnuNBQVA5U/NGlJcRNHBl0uyWUJbsl4/kNQWELOrLAql32bDP17g0
+ VpkicN3A8F23Uikrg0BDhk3uwHyoOAqVKW1NQN633WwSw6K739nsAtkViwMBJxrenLvn
+ /7vwjYdZ0QA6Nw1ZpU0vhd3jmNLz0RxL0JqL+Rzs1UO/RhQGDpz+eTHwmeBgFkBOqOzh
+ juw4TOuinZKPm1Y9H/WzScAcYRFBLD9RVNwf5j5La6f+Vx4os7eH1uBbh4a2WB9n+UQm
+ JlNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693823051; x=1694427851;
+ d=1e100.net; s=20221208; t=1693823132; x=1694427932;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Uk396+0WQ3LQHUu863IzHDD9yguLEEYZ0PLtvh8nT+0=;
- b=Nn5kUeNSZDA5PpWTYqzD/Bqd5fjZbSS8NV7SeTewAvFp+wRq5thiK7kfEt5EcUvoCh
- 7YNc5sSTJOlqudxfPT/aoHsvQRXl6qyj1F8rFvJZIC8zQMauA38MZIvJw6XjVUTk+fY5
- AE8gPHg5XZWQakdUT3MyrczIIWn0z+6v30GxRSUIhZ8UEVTUVuaEH85xpephwP5/mwQm
- Civ6GdGES2t8K2DdJrh0AeRed20TssDgrkOjyFhkPJu4NYF98Z642AMuYofjhHrmUDNB
- siGEAhtrGRsiOig/zIYh4Po9L5OTp3TLNZbKZmtqXpWZ0+J8qeMXOmEBeE6kIEz+Mt+3
- dqrw==
-X-Gm-Message-State: AOJu0Yx2wvfgr12rMJvJnvDc2KLzo5Xsl6avVlLBUnuKAmqHHKIjojqx
- yz7J1khYjPTJtD99djAX2fcTFQ==
-X-Google-Smtp-Source: AGHT+IH4YQpQy/E0hGQnje/fHMDkZgjPHrJsNSfUxN/aV7b2YXdlL9FukNpo+OdGE4CJKapKMjjCJA==
-X-Received: by 2002:a7b:c7d9:0:b0:3fc:1a6:7764 with SMTP id
- z25-20020a7bc7d9000000b003fc01a67764mr6193523wmk.16.1693823051139; 
- Mon, 04 Sep 2023 03:24:11 -0700 (PDT)
-Received: from meli.delivery (adsl-194.37.6.163.tellas.gr. [37.6.163.194])
- by smtp.gmail.com with ESMTPSA id
- q13-20020a7bce8d000000b003fe4548188bsm16794901wmj.48.2023.09.04.03.24.10
+ bh=Ml1xxTJVjPI8sqbbORt01R/FKzCE8EC/iqskPjiYzxQ=;
+ b=AcYXWDWbn2rBybGU3oN1nEnMDQ5g3LZqK3tpUfHnVWlXgD1bVAvExUg4UV5zFdjVUv
+ ISAcOvISvlInd4KAiV7pReaD3txODZESr4WjgZOmDtw9x9EkKG1EH/YkSwTpLpQ61Qwo
+ 9fuLqS8zhWFq7BM6Pxru3uTHcCgPpLsHtQBCfJfiVqurLHDUAfwnXgsmwKa/PdnTUoXL
+ tXzFBDltPRkZwaD8dESzVzfj9k47fFAFn68VQ/MgZy+E38MfGW6LjRCQLoewd6fOEAzu
+ 1VyUCPaTGKLGMIi2gwSBRR3gjL9vaOJCppk95ELRXUM+mL6bzxvm0Mnq4mFF6q+egfPd
+ Lrtw==
+X-Gm-Message-State: AOJu0YxaZ6e/QEMZL7QHyCFJkAKF5lP86gh07A6r7opp8qdui7KcPAkx
+ RmtW6NlhWlRrqC92Ji2Vj84hjw==
+X-Google-Smtp-Source: AGHT+IHAgz3RgDkGWqMV4HtXmAE6SxnGHb0aaYK1QBfLWKbszWQ0ci52CGTSyJM8dGwkKxhFTQv2kg==
+X-Received: by 2002:a7b:c4c7:0:b0:3fb:b890:128e with SMTP id
+ g7-20020a7bc4c7000000b003fbb890128emr6379953wmk.33.1693823131744; 
+ Mon, 04 Sep 2023 03:25:31 -0700 (PDT)
+Received: from meli.delivery (adsl-170.109.242.226.tellas.gr.
+ [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
+ t25-20020a7bc3d9000000b003fed4fa0c19sm16820403wmj.5.2023.09.04.03.25.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 03:24:10 -0700 (PDT)
-Date: Mon, 04 Sep 2023 13:18:42 +0300
+ Mon, 04 Sep 2023 03:25:31 -0700 (PDT)
+Date: Mon, 04 Sep 2023 13:24:46 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -72,18 +72,19 @@ Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
  "K=?UTF-8?B?xZE=?= v=?UTF-8?B?w6E=?= g=?UTF-8?B?w7M=?= ,
  Zolt=?UTF-8?B?w6E=?= n" <DirtY.iCE.hu@gmail.com>,
  Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
-Subject: Re: [PATCH v8 03/12] virtio-sound: handle control messages and streams
+Subject: Re: [PATCH v8 05/12] virtio-sound: handle VIRTIO_SND_R_PCM_INFO
+ request
 User-Agent: meli 0.8.0
 References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <e3e57dd125611eeb5e563eb7fab8eb89194ed50e.1693252037.git.manos.pitsidianakis@linaro.org>
- <e5f5edcf-6a53-bf61-25cd-4b5ea6dd1d4e@linaro.org>
-In-Reply-To: <e5f5edcf-6a53-bf61-25cd-4b5ea6dd1d4e@linaro.org>
-Message-ID: <0gi88.o687yqrpqd24@linaro.org>
+ <974d88412dd4ee18ae35efdbec657fa558c13fbf.1693252037.git.manos.pitsidianakis@linaro.org>
+ <30dde76a-099c-1f03-93e3-0c962f15404d@linaro.org>
+In-Reply-To: <30dde76a-099c-1f03-93e3-0c962f15404d@linaro.org>
+Message-ID: <0giah.s27xvtlho1sb@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,23 +107,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Good morning Philippe,
-
-On Mon, 04 Sep 2023 13:08, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->> +    iov_from_buf(cmd->elem->in_sg,
->> +                 cmd->elem->in_num,
->> +                 0,
->> +                 &cmd->resp,
->> +                 sizeof(cmd->resp));
->> +    virtqueue_push(cmd->vq, cmd->elem, sizeof(cmd->elem));
->> +    virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
+On Mon, 04 Sep 2023 13:13, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>> +
+>> +    pcm_info = g_new0(virtio_snd_pcm_info, req.count);
+>> +    for (uint32_t i = req.start_id; i < req.start_id + req.count; i++) {
 >
->I have very few understanding of virtio, but I'm wondering here,
->since this function is called under cmdq_mutex(), could it be
->useful to batch the queue by calling virtio_notify() only once
->in the caller once the whole cmdq is processed ...
+>Starting from req.start_id seems to increase this code complexity.
 
-In the linux driver (sound/virtio/virtio_ctl_msg.c), the guest has a 
-timeout for receiving the message. I found that if I did not notify as 
-fast as possible, I got timeout errors on the guest.
+I see your point, will change it!
+
+Manos
 
