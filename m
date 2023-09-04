@@ -2,78 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844187915F5
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DADD79160D
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd7G8-000743-9T; Mon, 04 Sep 2023 06:56:46 -0400
+	id 1qd7Qj-0003QA-DT; Mon, 04 Sep 2023 07:07:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qd7Ft-00073l-8v
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:56:30 -0400
-Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qd7Qd-0003Lc-Eg
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:07:35 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qd7Fq-0003Dw-Qk
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:56:29 -0400
-Received: by mail-qt1-x835.google.com with SMTP id
- d75a77b69052e-4108a8f0de7so7068031cf.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:56:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qd7Qa-00062m-Nb
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:07:35 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-31c5a2e8501so1027095f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 04:07:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693824985; x=1694429785; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=S6zAIZwbdHb1dcCPhh95jMp8A4bgde/BgOpqUIfZhM8=;
- b=Y4Zlqw+qaOFMO/W7RydiMA+RYTOhbq7/41s1YWvGywR7F0Hqvj7qhjwJPKogyIfej+
- vVWRwBjVuAWSXQYQ9hlQ7Kx++xXPa6HQnXFrV7iP8C+346CeXx384bAwlUb2ZYs/OzdO
- csD2Ox/VQiZ2TU9kiblPTb/kc3r4Y2qTDZtm8VAjqtAnNEgodFXBGDr4Bb6EAfJnX30X
- /heevVmZ1tW+XRzbWeVIUGJbNlCfV3GP/whDlCBdGGDG2PVwyVlGnnMP8eipFVT4nHJB
- aR0QZSmHfZE9krzRYrO+y1hYyNdWQZr5uXsMYW+/KXYZH1cHMFc7A+DgZ5vSgCTzWr+5
- CmJA==
+ d=linaro.org; s=google; t=1693825651; x=1694430451; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=lQy2gn55curr1Vt0WpWPA8bQW4XCLVOjK1FLPN4NUN0=;
+ b=Xh1W8y83u9RPvN4HcaZjPtkDK1uMfxhHzUn1BmWX1FurYYy3vvsDAHiXfTJ4xKpj9v
+ CQbhVCItNLlpLR8wxy7goJNwwNvU+Cd+SQY7aFyN1GRB2jpS6xKGH3SnPN+wrbNlqyiG
+ kpD2ooLqaGBXlA9U4nLLZZUi+2hnpSkQccjqPNuYM+ypKwYs40wAedjIEw6Er7sR0Cy6
+ 96Yljp5lVyYdVxzBIKQGAEW7Ns31Sn4bVoOUf/9DHX0PO6b5SyYXIR1ga8THgFncQU/h
+ WlqfDVdrmSn8gZrOFGftnw77VyeELbD/N0Tvqh0+ef/oplTsZtLN2OiostMQ82qwM29p
+ 5wcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693824985; x=1694429785;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S6zAIZwbdHb1dcCPhh95jMp8A4bgde/BgOpqUIfZhM8=;
- b=TZXkTYJVua8aZ4mBcvRpdDfODV5qQPahpsYHSzuBXIc478Qza8dO5AATsp8g3yLJ67
- hsx8Fkm+Yy8/31kpLQtWDAvC2sSDcBld8upcwUPy+IzhQY49OoDIpwu4+ObfW8QnOfvl
- GtmIeBnm7dYHH+ilfO+Nc1dOPgxHt1kKr+3Yz2PXWlGBM/bp4LpNidBKsNoaHyGFC86d
- Mte8Sa341d1k6UDsJ+yYbiyuDZTA9bceA2iBaU/1YPvTivu0SktkrPBboiA3afgmmSxg
- IRBjGszNTgPBzN7yxUQe6RHL1QtVTuHI3gB8bNv22m9QVmzo0u7R6bbBV9Jcuo4Pbtek
- 5ZTA==
-X-Gm-Message-State: AOJu0YzGwu7wa86Q/7ZBRAmLpycl1hFEI0q47e0ETUB0UR9lk5X1liZK
- ZYEaRdgrnIzLfZAAIgZRg3R+Jh2+g+bIbVzAaIY=
-X-Google-Smtp-Source: AGHT+IEzKZfUqYb/R3Psvi8Zt8bq7Bt7fuUAa7JwEEnp33mlrN42zXAuuMF/Lmx3uIGGKB2uaYOPso/Ajv++1+WN6GA=
-X-Received: by 2002:a05:622a:1341:b0:40f:ba4c:6222 with SMTP id
- w1-20020a05622a134100b0040fba4c6222mr11603316qtk.3.1693824985619; Mon, 04 Sep
- 2023 03:56:25 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693825651; x=1694430451;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lQy2gn55curr1Vt0WpWPA8bQW4XCLVOjK1FLPN4NUN0=;
+ b=ZrmXmncqzBf4vf/6O81ZLa6QrXstS9AhjleIQgtcDmZ9sTyclnc53rla1mnW/XmPLD
+ r/Yj+DfuWhqaDj6RGciZVVr8e48WlxavYpFI8MhLfYhrHqlj/SWVx3ON5FRlABEL2F2d
+ 5BWrDW4/cO340wLI6h1zyzW78iMIVMTNL7DYRTJnMteseasgOJmfhAF1p5iolQJJsxc/
+ hYbuFIdEJJHMsS84zlO+Rj+9a2oCsP8lTHyKDwbIErQwtBIuz4WapUI+o+fPt8gj3Kk2
+ PVb2BBY1LrVAmaXugj1/ggZY4gu2DlVp5uGVIojEA576/874nOzy6+o4wgwMCWO5ApBs
+ XdQQ==
+X-Gm-Message-State: AOJu0Ywok2nlm0M0AWlfDkzNSUnQOlo181SZWxY/h7OBJTQ2/vjcBfXs
+ kznkoC3XoYrUQE0P+mMjiiA00g==
+X-Google-Smtp-Source: AGHT+IHxWuZUjXFQnx53QLg67yG+sERt6WS1Z0u+Xloa9w4aUn1hgUwj7yEzrbqGDlB3SpAWeA8skQ==
+X-Received: by 2002:a5d:424b:0:b0:31a:d551:c2c0 with SMTP id
+ s11-20020a5d424b000000b0031ad551c2c0mr7463299wrr.57.1693825651169; 
+ Mon, 04 Sep 2023 04:07:31 -0700 (PDT)
+Received: from meli.delivery (adsl-170.109.242.226.tellas.gr.
+ [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
+ k8-20020a5d6d48000000b0031434c08bb7sm14054353wri.105.2023.09.04.04.07.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Sep 2023 04:07:30 -0700 (PDT)
+Date: Mon, 04 Sep 2023 14:00:18 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "ichael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
+ "K=?UTF-8?B?xZE=?= v=?UTF-8?B?w6E=?= g=?UTF-8?B?w7M=?= ,
+ Zolt=?UTF-8?B?w6E=?= n" <DirtY.iCE.hu@gmail.com>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
+Subject: Re: [PATCH v8 03/12] virtio-sound: handle control messages and streams
+User-Agent: meli 0.8.0
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <e3e57dd125611eeb5e563eb7fab8eb89194ed50e.1693252037.git.manos.pitsidianakis@linaro.org>
+ <198a502c-d7bb-5e83-08b4-f29222dd4d83@linaro.org>
+In-Reply-To: <198a502c-d7bb-5e83-08b4-f29222dd4d83@linaro.org>
+Message-ID: <0gk8g.5plunv7mgoh9@linaro.org>
 MIME-Version: 1.0
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-44-marcandre.lureau@redhat.com>
- <ZPIby+nDU9gvF53j@redhat.com>
-In-Reply-To: <ZPIby+nDU9gvF53j@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 4 Sep 2023 14:56:13 +0400
-Message-ID: <CAJ+F1C+E6H9HvTi5Ljy1XOUhgZ+B0Po5Nh1E92zd6XgPCrBBYQ@mail.gmail.com>
-Subject: Re: [PATCH 43/67] ui/vc: do not parse VC-specific options in Spice
- and GTK
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x835.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,107 +106,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Mon, 04 Sep 2023 13:46, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>> +    size_t sz = iov_to_buf(cmd->elem->out_sg,
+>> +                           cmd->elem->out_num,
+>> +                           0,
+>> +                           &cmd->ctrl,
+>> +                           sizeof(cmd->ctrl));
+>> +    if (sz != sizeof(cmd->ctrl)) {
+>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>> +                "%s: virtio-snd command size incorrect %zu vs \
+>> +                %zu\n", __func__, sz, sizeof(cmd->ctrl));
+>> +        return;
+>> +    }
+>> +
+>> +    trace_virtio_snd_handle_code(cmd->ctrl.code,
+>
+>IIUC the spec, this structure is in little endian, is that right?
+>So shouldn't swap various fields in this series?
 
-On Fri, Sep 1, 2023 at 9:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@re=
-dhat.com> wrote:
->
-> On Wed, Aug 30, 2023 at 01:38:17PM +0400, marcandre.lureau@redhat.com wro=
-te:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > In commit 6f974c843c ("gtk: overwrite the console.c char driver"), I
-> > shared the VC console parse handler with GTK. And later on in commit
-> > d8aec9d9 ("display: add -display spice-app launching a Spice client"),
-> > I also used it to handle spice-app VC.
-> >
-> > This is not necessary, the VC console options (width/height/cols/rows)
-> > are specific, and unused by tty-level GTK/Spice VC.
-> >
-> > This is not a breaking change, as those options are still being parsed
-> > by QAPI ChardevVC. Adjust the documentation about it.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >  qapi/char.json         | 4 ++++
-> >  include/chardev/char.h | 3 ---
-> >  ui/console.c           | 4 ++--
-> >  ui/gtk.c               | 1 -
-> >  ui/spice-app.c         | 7 ++++++-
-> >  5 files changed, 12 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/qapi/char.json b/qapi/char.json
-> > index 52aaff25eb..7e23fe3180 100644
-> > --- a/qapi/char.json
-> > +++ b/qapi/char.json
-> > @@ -390,6 +390,10 @@
-> >  #
-> >  # @rows: console height, in chars
-> >  #
-> > +# Note: the options are only effective when using the built-in QEMU gr=
-aphical VC
-> > +# (with the SDL display). When the VC is handled by the display backen=
-d (with
-> > +# GTK/VTE, Spice or D-Bus), they are simply ignored.
->
-> I don't find this explains the situation very well, I had to look at
-> the code to understand what's ultimately going on, as I didn't really
-> know what it meant by "built-in QEMU graphical VC". From the end user's
-> POV, they're just using '-chardev vc...'.
->
-> IIUC, the command line -chardev vc,..... will end up instantiating
-> TYPE_CHARDEV_VC.
->
-> We actually then have 4 completely different implementations
-> of TYPE_CHARDEV_VC, and depending on which display backend
-> is enabled, a different TYPE_CHARDEV_VC will get registered.
->
-> So what your comment is saying is that the width/height/rows/cols
-> properties will only get honoured if the TYPE_CHARDEV_VC that is
-> registered, is the one that maps to the SDL display backend.
->
-> Wow, is this situation confusing and gross in the code :-(
->
-> So for the comment I think we can just cut out a few words to
-> make it simpler
->
->  # Note: the options are only effective when the SDL graphical
->  # display backend is active. They are ignored with the GTK,
->  # Spice, VNC and D-Bus display backends.
-
-Actually, VNC too. I adjusted the doc.
-
-thanks
-
-
->
-> As a future exercise for anyone motiviated, I would say that
-> TYPE_CHARDEV_VC ought to be abstract and we then have subclasses
-> for each of the impls we have that are registered unconditionally
-> with type_init(), then pick the subclass to instantiate based
-> on the display backend. That way we can ultimately make the
-> QAPI schema reflect that we have multiple ChardevVC impls and
-> only expose the cols/width/etc for the SDL impl.
->
->
-> Anyway, if the comment is simplied/clarified then
->
->  Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
->
-
-
---
-Marc-Andr=C3=A9 Lureau
+Not sure about the answer to this. Need input from someone more 
+knowledgeable in virtio.
 
