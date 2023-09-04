@@ -2,64 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A7B791830
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7596B7918D4
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:42:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9gW-0001g1-E3; Mon, 04 Sep 2023 09:32:12 -0400
+	id 1qd9oh-0006OO-Gl; Mon, 04 Sep 2023 09:40:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd9fk-0001ZD-9N; Mon, 04 Sep 2023 09:31:25 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qd9oY-0006NN-Hx
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:40:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd9fd-0001fx-17; Mon, 04 Sep 2023 09:31:19 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfTzs6MHQz4wxW;
- Mon,  4 Sep 2023 23:31:05 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfTzn6064z4wb0;
- Mon,  4 Sep 2023 23:31:01 +1000 (AEST)
-Message-ID: <e32cdddb-8455-7bae-3280-4ab7d33d4a57@kaod.org>
-Date: Mon, 4 Sep 2023 15:30:57 +0200
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qd9oU-0003Os-Jn
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:40:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693834821;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ybX7f7bAE82t3NvaDRdD2Bv2sV2dup/rJ1RYllQVyTI=;
+ b=TzbYwjEqCNIZZWSud5trCCiebrf3jc8bR/JNrK7SYVlg4l8D7RqsHKD5uRHXNDTkWtCfaY
+ yfnqwCPmWvkv82mtVPyY3GReRdPWEGPgd/S+Yr9s3llXe/VJf0fT0G/eGWsxAK/QixBEqo
+ yPcojAvUoDqUnpxzJTCm1pqE9caYhLM=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-Ha-zXdFLN2y343q18sWUWw-1; Mon, 04 Sep 2023 09:40:17 -0400
+X-MC-Unique: Ha-zXdFLN2y343q18sWUWw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-500ac71f353so1523966e87.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 06:40:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693834816; x=1694439616;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ybX7f7bAE82t3NvaDRdD2Bv2sV2dup/rJ1RYllQVyTI=;
+ b=EwqjHdLOUwEietj7EN/cpDajgo+K2T2QA10DbHXXvm3Mkl99bj9OQju8V8uANXVG2Z
+ FSV5GQAZmw4U1jFi+7wDdI1zqCvSXV+nCwS1F0TJpqN7ChPCZEWuiTXNaNLiS2Q73UEy
+ Aoh2kT82+tCmCBQ+SSYb1JB2rpVgvJV+IFlQWpWShrGp281VLsaJfddX1st70lU0wwmQ
+ jBWhD0vZf7/Dr7DxEvmRx3TjH2xhudmoo27XUEPYmhpaxso4WPajPRS6SvMrijfsMZSn
+ pWtBAYOd6zcdDEuZgkSmoL/MBdDCndAaez+XiIlPz+bPglQiLRFcZuebFvEzprY/8wRG
+ p5CA==
+X-Gm-Message-State: AOJu0YxPb+V+iHFCMXG2CQ4yWsULouLmwLH0TtuMdJvM4yT5w7S/K9zc
+ rSJF0cFL5pjjDMA7uNKXB9I/YdbBUqS8G/uFkrr74QiJeqdwJA2zNEkrVE8fz6/Wb6w/zCLii6C
+ 7O+63G2rDMirSDqQ=
+X-Received: by 2002:a19:761a:0:b0:500:a368:a962 with SMTP id
+ c26-20020a19761a000000b00500a368a962mr5727649lff.43.1693834816043; 
+ Mon, 04 Sep 2023 06:40:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2/XtxuVlxB4/EWyheU+X5EwxV5jHkgwv144yyWkMy25vIixUm43Z48pPaZRSoxXwX4P36TA==
+X-Received: by 2002:a19:761a:0:b0:500:a368:a962 with SMTP id
+ c26-20020a19761a000000b00500a368a962mr5727636lff.43.1693834815650; 
+ Mon, 04 Sep 2023 06:40:15 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
+ ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.googlemail.com with ESMTPSA id
+ n10-20020adffe0a000000b003140f47224csm14482451wrr.15.2023.09.04.06.40.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 06:40:14 -0700 (PDT)
+Message-ID: <4b7bb33a-625d-5ad4-2110-c575b173aad9@redhat.com>
+Date: Mon, 4 Sep 2023 15:40:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 05/19] host-utils: Add muldiv64_round_up
+Subject: Re: [PATCH 07/13] target/i386: Allow elision of kvm_enable_x2apic()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, kvm@vger.kernel.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20230904124325.79040-1-philmd@linaro.org>
+ <20230904124325.79040-8-philmd@linaro.org>
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20230808042001.411094-1-npiggin@gmail.com>
- <20230808042001.411094-6-npiggin@gmail.com>
- <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
- <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
- <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230904124325.79040-8-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=kZzc=EU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,103 +111,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/4/23 15:07, Nicholas Piggin wrote:
-> On Sat Sep 2, 2023 at 3:02 AM AEST, Richard Henderson wrote:
->> On 9/1/23 04:51, Cédric Le Goater wrote:
->>> Adding more reviewers since this patch is modifying a common service.
->>>
->>> Thanks,
->>>
->>> C.
->>>
->>>
->>> On 8/8/23 06:19, Nicholas Piggin wrote:
->>>> This will be used for converting time intervals in different base units
->>>> to host units, for the purpose of scheduling timers to emulate target
->>>> timers. Timers typically must not fire before their requested expiry
->>>> time but may fire some time afterward, so rounding up is the right way
->>>> to implement these.
->>>>
->>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>> ---
->>>>    include/qemu/host-utils.h | 21 ++++++++++++++++++++-
->>>>    1 file changed, 20 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
->>>> index 011618373e..e2a50a567f 100644
->>>> --- a/include/qemu/host-utils.h
->>>> +++ b/include/qemu/host-utils.h
->>>> @@ -56,6 +56,11 @@ static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
->>>>        return (__int128_t)a * b / c;
->>>>    }
->>>> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
->>>> +{
->>>> +    return ((__int128_t)a * b + c - 1) / c;
->>>> +}
->>>> +
->>>>    static inline uint64_t divu128(uint64_t *plow, uint64_t *phigh,
->>>>                                   uint64_t divisor)
->>>>    {
->>>> @@ -83,7 +88,8 @@ void mulu64(uint64_t *plow, uint64_t *phigh, uint64_t a, uint64_t b);
->>>>    uint64_t divu128(uint64_t *plow, uint64_t *phigh, uint64_t divisor);
->>>>    int64_t divs128(uint64_t *plow, int64_t *phigh, int64_t divisor);
->>>> -static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
->>>> +static inline uint64_t __muldiv64(uint64_t a, uint32_t b, uint32_t c,
->>>> +                                  bool round_up)
->>
->> Perhaps better avoiding the reserved name: muldiv64_internal?
+On 9/4/23 14:43, Philippe Mathieu-Daudé wrote:
+> Call kvm_enabled() before kvm_enable_x2apic() to
+> let the compiler elide its call.
 > 
-> Thanks, that would be okay. Or could be muldiv64_rounding?
+> Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/i386/intel_iommu.c      | 2 +-
+>   hw/i386/x86.c              | 2 +-
+>   target/i386/kvm/kvm-stub.c | 7 -------
+>   3 files changed, 2 insertions(+), 9 deletions(-)
 > 
->>
->> Otherwise,
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 3ca71df369..c9961ef752 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -4053,7 +4053,7 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
+>               error_setg(errp, "eim=on requires accel=kvm,kernel-irqchip=split");
+>               return false;
+>           }
+> -        if (!kvm_enable_x2apic()) {
+> +        if (kvm_enabled() && !kvm_enable_x2apic()) {
+>               error_setg(errp, "eim=on requires support on the KVM side"
+>                                "(X2APIC_API, first shipped in v4.7)");
+>               return false;
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index a88a126123..d2920af792 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -136,7 +136,7 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+>        * With KVM's in-kernel lapic: only if X2APIC API is enabled.
+>        */
+>       if (x86ms->apic_id_limit > 255 && !xen_enabled() &&
+> -        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+> +        kvm_enabled() && (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
 
-oh, and I already sent the PR with the Rb of Richard ... :/
-Sorry about that. Can we fix it later ? Or I will respin with
-the update.
+This "!xen && kvm" expression can be simplified.
 
-Someone really ought to take over PPC. Daniel and I are real
-busy on other subsystems. Volunteers ?
+I am queuing the series with this squashed in:
 
-Thanks,
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index d2920af792d..3e86cf3060f 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -129,14 +129,11 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+                                                        ms->smp.max_cpus - 1) + 1;
+  
+      /*
+-     * Can we support APIC ID 255 or higher?
+-     *
+-     * Under Xen: yes.
+-     * With userspace emulated lapic: no
+-     * With KVM's in-kernel lapic: only if X2APIC API is enabled.
++     * Can we support APIC ID 255 or higher?  With KVM, that requires
++     * both in-kernel lapic and X2APIC userspace API.
+       */
+-    if (x86ms->apic_id_limit > 255 && !xen_enabled() &&
+-        kvm_enabled() && (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
++    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
++        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+          error_report("current -smp configuration requires kernel "
+                       "irqchip and X2APIC API support.");
+          exit(EXIT_FAILURE);
 
-C.
+Paolo
 
->>
->>
->> r~
->>
->>
->>>>    {
->>>>        union {
->>>>            uint64_t ll;
->>>> @@ -99,12 +105,25 @@ static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
->>>>        u.ll = a;
->>>>        rl = (uint64_t)u.l.low * (uint64_t)b;
->>>> +    if (round_up) {
->>>> +        rl += c - 1;
->>>> +    }
->>>>        rh = (uint64_t)u.l.high * (uint64_t)b;
->>>>        rh += (rl >> 32);
->>>>        res.l.high = rh / c;
->>>>        res.l.low = (((rh % c) << 32) + (rl & 0xffffffff)) / c;
->>>>        return res.ll;
->>>>    }
->>>> +
->>>> +static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
->>>> +{
->>>> +    return __muldiv64(a, b, c, false);
->>>> +}
->>>> +
->>>> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
->>>> +{
->>>> +    return __muldiv64(a, b, c, true);
->>>> +}
->>>>    #endif
->>>>    /**
->>>
->>>
-> 
+>           error_report("current -smp configuration requires kernel "
+>                        "irqchip and X2APIC API support.");
+>           exit(EXIT_FAILURE);
+> diff --git a/target/i386/kvm/kvm-stub.c b/target/i386/kvm/kvm-stub.c
+> index f985d9a1d3..62cccebee4 100644
+> --- a/target/i386/kvm/kvm-stub.c
+> +++ b/target/i386/kvm/kvm-stub.c
+> @@ -12,13 +12,6 @@
+>   #include "qemu/osdep.h"
+>   #include "kvm_i386.h"
+>   
+> -#ifndef __OPTIMIZE__
+> -bool kvm_enable_x2apic(void)
+> -{
+> -    return false;
+> -}
+> -#endif
+> -
+>   bool kvm_hv_vpindex_settable(void)
+>   {
+>       return false;
 
 
