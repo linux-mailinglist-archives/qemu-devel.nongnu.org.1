@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335EE791BAC
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9668C791BB3
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCX0-0002Vi-8K; Mon, 04 Sep 2023 12:34:30 -0400
+	id 1qdCbB-00041x-Pf; Mon, 04 Sep 2023 12:38:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qdCWv-0002V6-G0
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:34:25 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qdCWt-0003dz-BJ
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:34:25 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-52a0856b4fdso2215715a12.1
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:34:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693845262; x=1694450062; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PVf0ec9JUJet4Pqt/mpA4aToBYy39TdMPg+NqqnicEk=;
- b=Ph+ZQfJoK6dCCD1rg5cUuQYCCY2zjzPgsY0Qd3b6tHF0xJ51rkNdUKWO5J7nlQyYcb
- gr24WwOvXzW0rahHQBW2xxsi80TYktuisfa7pQRmdaaaLMtncP4Kw2r9/Uqc+dFQDJZ+
- QAnyD40x9w+Msehp23IHrMC9TTZkfvLF/o2EVT2av1shCIwOGaAlhdDX5rF190WgpLIo
- kGjmqdqgOzxmjcIdRqp7OzPXIaQgedZzKv0fnGzXakCWAjdKYu9sHlI9aAboiywHBeRV
- +OVdtYjApA+TNqXW47AwtDs/CnlO8Akxp+WB3A6KsM7Mcl2j0K3gEa0yhx8VkIokg40R
- RbKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693845262; x=1694450062;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PVf0ec9JUJet4Pqt/mpA4aToBYy39TdMPg+NqqnicEk=;
- b=EYu966ggSfYFc54WaN8FambMLt0FfaGxEz0niqwlW4ZDKHRxwHkvCVta4SugDnESvr
- 2obVTrAZYD3AjYBWQneXkD0Hj1P2MCq4PQEB6K8Ud8BSiAIHWZX23YtuGlLuZ/XVyFwu
- Th6anM0rl8GOTaRjPO37DsKavly51S8kB38QHW9vP8GItQzhN7umXEmyF0UDujfkfXjM
- z5eztKkdbRGlayhe7p0qZqfX+c7bYbz2uy2skbllNSPhYdZOCHtrnM4OFmvC6bs/2G64
- YmE6Js6fLNBqS7NdY6o6VWVIjaRzQGswlxNi1eNWnTiK9nLLh47YGHhFlYKQxC1+al5R
- Dk/w==
-X-Gm-Message-State: AOJu0YxrGyGjOtk7U8G+j7vwAOfobsYSHQYvgMoOWwIksGiVCGGVf7Pw
- H9rvqmlKnBT3mmSN8Arlf9N00Fhh+uQ6U1Xf2KR1ew==
-X-Google-Smtp-Source: AGHT+IHEbLLU/eC8fOIyWNp6EAoP3GehYZuroYuPs4sxN26ONgbVI5qCWw/uG45hEsAUiVdK1jBTCsKnKOnlB/IsblM=
-X-Received: by 2002:aa7:cd11:0:b0:52a:1c3c:2ecf with SMTP id
- b17-20020aa7cd11000000b0052a1c3c2ecfmr8006828edw.28.1693845261963; Mon, 04
- Sep 2023 09:34:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdCb8-00040m-HW
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:38:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdCb2-000502-VR
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:38:46 -0400
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-363-n2ioqOH0PF-NBkmIyU_qkQ-1; Mon, 04 Sep 2023 12:38:35 -0400
+X-MC-Unique: n2ioqOH0PF-NBkmIyU_qkQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44A721C05AD0;
+ Mon,  4 Sep 2023 16:38:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.145])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 583A740C206F;
+ Mon,  4 Sep 2023 16:38:31 +0000 (UTC)
+Date: Mon, 4 Sep 2023 17:38:29 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: William Tsai <williamtsai1111@gmail.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Peter Lieven <pl@kamp.de>, Fam Zheng <fam@euphon.net>,
+ "Richard W.M. Jones" <rjones@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:S390 TCG CPUs" <qemu-s390x@nongnu.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Subject: Re: [PATCH v2] qdict: Preserve order for iterating qdict elements
+Message-ID: <ZPYIBVtUgDGhj3TQ@redhat.com>
+References: <20230902094041.8626-1-williamtsai1111@gmail.com>
 MIME-Version: 1.0
-References: <20230904162824.85385-1-philmd@linaro.org>
- <20230904162824.85385-4-philmd@linaro.org>
-In-Reply-To: <20230904162824.85385-4-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 4 Sep 2023 17:34:11 +0100
-Message-ID: <CAFEAcA-LphZk_WHYS7ynE+SzZkYszu3fjKExLtPjJ=VW-hFCHw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] tests/qtest/pflash: Clean up local variable shadowing
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org, 
- qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230902094041.8626-1-williamtsai1111@gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,32 +78,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Sept 2023 at 17:30, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Fix:
->
->   tests/qtest/pflash-cfi02-test.c: In function =E2=80=98test_geometry=E2=
-=80=99:
->   tests/qtest/pflash-cfi02-test.c:409:22: warning: declaration of =E2=80=
-=98byte_addr=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local=
-]
->     409 |             uint64_t byte_addr =3D (uint64_t)i * c->sector_len[=
-region];
->         |                      ^~~~~~~~~
->   tests/qtest/pflash-cfi02-test.c:342:14: note: shadowed declaration is h=
-ere
->     342 |     uint64_t byte_addr =3D 0;
->         |              ^~~~~~~~~
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
+On Sat, Sep 02, 2023 at 05:40:40PM +0800, William Tsai wrote:
+> Changing the structure of qdict so that it can preserve order when
+> iterating qdict. This will fix array_properties as it relies on `len-`
+> prefixed argument to be set first.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1090
+> Signed-off-by: William Tsai <williamtsai1111@gmail.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+This is a variation of what Markus illustrated a year ago
 
-thanks
--- PMM
+  https://lists.gnu.org/archive/html/qemu-devel/2022-07/msg00758.html
+
+I wasn't a particular fan of that approach at the time.
+
+I've made an alternative proposal here which avoids the broader
+impact of this QDict change:
+
+  https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00652.html
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
