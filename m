@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7100791320
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DD6791325
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd4kJ-0005C8-9Z; Mon, 04 Sep 2023 04:15:43 -0400
+	id 1qd4mm-0006TZ-Ni; Mon, 04 Sep 2023 04:18:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qd4k7-0005BZ-LS
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:15:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qd4k5-0008Kq-GZ
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:15:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693815328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qd4mj-0006SS-39; Mon, 04 Sep 2023 04:18:13 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qd4mg-0000Jb-Je; Mon, 04 Sep 2023 04:18:12 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id F30B82185A;
+ Mon,  4 Sep 2023 08:18:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1693815486; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J54+QFr1irPJAAZ45z8udiHD24zPOAIHQ/qc0WcCq2g=;
- b=iP6TOrcxnnia9dS5/9HZ/VMz/ma9jDiO1Z/9Vikdq/Pj9/LqBsXCEJPK20CBse0k+QiDjF
- +v5/bPtewv92o2PgHxvxRo45Z3Rus8Fug26QD+s2f9MLy/gnh1SPn4qL0LqKwX0bkc5dnk
- bUyjVT9tUbOPJZnULdt1fd6Q6g2pmPk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-raJxMITZOayUqKdxGUBKNw-1; Mon, 04 Sep 2023 04:15:27 -0400
-X-MC-Unique: raJxMITZOayUqKdxGUBKNw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-401b8089339so7078855e9.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 01:15:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693815326; x=1694420126;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J54+QFr1irPJAAZ45z8udiHD24zPOAIHQ/qc0WcCq2g=;
- b=lJW3WZSLZ4sel30p0t/pUaNa4D0+2LY2Uh7UAJVKJwwb6Ex7LNx9cY1XViq2S+wqO2
- WeVeSMOxlUyLi3gxZZX6sAyVgYufSjx6+vpZ8p+YWz29PMzIfqRRkzAfr2jTlDdgKIoW
- Z0twJSxZtSYD6JbaD3K4VIQLVX9DKgq3dcVpjw9sSN2vYtub00fes0f1Kb+bd0VbKm/O
- Cv0TblduZ1WzySkU6JMcGvKOse8fCv8CoWAOsDjVoekAot4EX8njh4/7gH/fvFZ/8/Yn
- 4xuI4lIQ+fcT71vWiuBF/jZETfN3OU5ptBc64zClGk4U+BPwSqe8+Z7V3ikrhYlywJEv
- F92g==
-X-Gm-Message-State: AOJu0Yx8F8LA1AtKJS/KSkN3PqIPqoEfdAaFy9V06YmhMYpf3AMzeJQ4
- +9631GXzU5rYHB3G0b6yrQCvOL0tf6RsDDl+RGR5CxsdjJAJXjpTRO+k75raN8GM0njePtvufZa
- y3GwzZCX9Hrp7iK4=
-X-Received: by 2002:adf:ef49:0:b0:317:70da:abdd with SMTP id
- c9-20020adfef49000000b0031770daabddmr7692548wrp.59.1693815326078; 
- Mon, 04 Sep 2023 01:15:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfcaq/37TIIltJ449lzYsSuzXLhJxhiEbcQBhbC1Yd9r6tmQzsKh+AzNt4EPXCsQVweNjowQ==
-X-Received: by 2002:adf:ef49:0:b0:317:70da:abdd with SMTP id
- c9-20020adfef49000000b0031770daabddmr7692535wrp.59.1693815325765; 
- Mon, 04 Sep 2023 01:15:25 -0700 (PDT)
-Received: from [10.33.192.199] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- u6-20020a5d5146000000b00317f3fd21b7sm13671936wrt.80.2023.09.04.01.15.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 01:15:25 -0700 (PDT)
-Message-ID: <14a94f46-1f15-1480-c0dc-613a21004186@redhat.com>
-Date: Mon, 4 Sep 2023 10:15:24 +0200
+ bh=3AS0IT6yUk9p3q1y8aqClBmPuqem0MEXVXeHPyOtLN0=;
+ b=EsdMLVkQhMdJdW3ChKjTt7QZpyFqhgVOfXZEIyJevWjiwpNHKTqgEAr6tzp10EquHnJj/5
+ WfXydtcQzaIuBQIyqa3hkTHhbPRXWZUMouUw7Syad5l3OlU5G8/br8hMtZ3epZFPrA9Kvb
+ aIe8AetuvPaXGlJGA73o4h3o8oTVmYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1693815486;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3AS0IT6yUk9p3q1y8aqClBmPuqem0MEXVXeHPyOtLN0=;
+ b=i4grlFnZ0XX1OZGWGPcHPDTVT9RpPlba0+Rfms9z/Td95wrFWNVRg3oOPYA1+ktetfrt+K
+ jjrx0GMTPHx0o7Dg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B7FA51358B;
+ Mon,  4 Sep 2023 08:18:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 0IudK72S9WSJVgAAMHmgww
+ (envelope-from <cfontana@suse.de>); Mon, 04 Sep 2023 08:18:05 +0000
+Message-ID: <cfee780b-27ab-8a49-9d42-72fd2a425a17@suse.de>
+Date: Mon, 4 Sep 2023 10:18:05 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 06/15] configure: remove boolean variables for targets
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH] arm64: Restore trapless ptimer access
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230902125934.113017-1-pbonzini@redhat.com>
- <20230902125934.113017-7-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230902125934.113017-7-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Colton Lewis <coltonlewis@google.com>,
+ Andrew Jones <andrew.jones@linux.dev>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ kvm@vger.kernel.org, qemu-trivial@nongnu.org, Marc Zyngier <maz@kernel.org>
+References: <20230831190052.129045-1-coltonlewis@google.com>
+ <20230901-16232ff17690fc32a0feb5df@orel> <ZPI6KNqGGTxxHhCh@google.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <ZPI6KNqGGTxxHhCh@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2001:67c:2178:6::1c;
+ envelope-from=cfontana@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,58 +91,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/09/2023 14.59, Paolo Bonzini wrote:
-> Just use $targetos always.
+Hi,
+
+I think this discussion from ~2015 could potentially be be historically relevant for context,
+at the time we had the problem with CNTVOFF IIRC so KVM_REG_ARM_TIMER_CNT being read and rewritten causing time warps in the guest:
+
+https://patchwork.kernel.org/project/linux-arm-kernel/patch/1435157697-28579-1-git-send-email-marc.zyngier@arm.com/
+
+I could not remember or find if/where the problem was fixed in the end in QEMU,
+
+Ciao,
+
+Claudio
+
+On 9/1/23 21:23, Colton Lewis wrote:
+> On Fri, Sep 01, 2023 at 09:35:47AM +0200, Andrew Jones wrote:
+>> On Thu, Aug 31, 2023 at 07:00:52PM +0000, Colton Lewis wrote:
+>>> Due to recent KVM changes, QEMU is setting a ptimer offset resulting
+>>> in unintended trap and emulate access and a consequent performance
+>>> hit. Filter out the PTIMER_CNT register to restore trapless ptimer
+>>> access.
+>>>
+>>> Quoting Andrew Jones:
+>>>
+>>> Simply reading the CNT register and writing back the same value is
+>>> enough to set an offset, since the timer will have certainly moved
+>>> past whatever value was read by the time it's written.  QEMU
+>>> frequently saves and restores all registers in the get-reg-list array,
+>>> unless they've been explicitly filtered out (with Linux commit
+>>> 680232a94c12, KVM_REG_ARM_PTIMER_CNT is now in the array). So, to
+>>> restore trapless ptimer accesses, we need a QEMU patch to filter out
+>>> the register.
+>>>
+>>> See
+>>> https://lore.kernel.org/kvmarm/gsntttsonus5.fsf@coltonlewis-kvm.c.googlers.com/T/#m0770023762a821db2a3f0dd0a7dc6aa54e0d0da9
+>>
+>> The link can be shorter with
+>>
+>> https://lore.kernel.org/all/20230823200408.1214332-1-coltonlewis@google.com/
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   configure | 55 +++++++++++++------------------------------------------
->   1 file changed, 13 insertions(+), 42 deletions(-)
-...
-> @@ -1718,7 +1687,7 @@ echo all: >> $config_host_mak
->   if test "$debug_tcg" = "yes" ; then
->     echo "CONFIG_DEBUG_TCG=y" >> $config_host_mak
->   fi
-> -if test "$mingw32" = "yes" ; then
-> +if test "$targetos" = "windows"; then
->     echo "CONFIG_WIN32=y" >> $config_host_mak
->     echo "QEMU_GA_MANUFACTURER=${QEMU_GA_MANUFACTURER-QEMU}" >> $config_host_mak
->     echo "QEMU_GA_DISTRO=${QEMU_GA_DISTRO-Linux}" >> $config_host_mak
-> @@ -1727,24 +1696,26 @@ else
->     echo "CONFIG_POSIX=y" >> $config_host_mak
->   fi
->   
-> -if test "$linux" = "yes" ; then
-> +if test "$targetos" = "linux" ; then
->     echo "CONFIG_LINUX=y" >> $config_host_mak
->   fi
->   
-> -if test "$darwin" = "yes" ; then
-> +if test "$targetos" = "darwin" ; then
->     echo "CONFIG_DARWIN=y" >> $config_host_mak
->   fi
->   
-> -if test "$solaris" = "yes" ; then
-> +if test "$targetos" = "sunos" ; then
->     echo "CONFIG_SOLARIS=y" >> $config_host_mak
->   fi
->   echo "SRC_PATH=$source_path" >> $config_host_mak
->   echo "TARGET_DIRS=$target_list" >> $config_host_mak
->   
->   # XXX: suppress that
-> -if [ "$bsd" = "yes" ] ; then
-> -  echo "CONFIG_BSD=y" >> $config_host_mak
-> -fi
-> +case $targetos in
-> +  gnu/kfreebsd | freebsd | dragonfly | netbsd | openbsd | darwin)
-> +    echo "CONFIG_BSD=y" >> $config_host_mak
-> +    ;;
-> +esac
-
-It might look nicer to put the linux and solaris parts from above as 
-separate entries in the new case-esac statement.
-
-Anyway:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+> I will keep that in mind next time.
+> 
+>>> for additional context.
+>>>
+>>> Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+>>
+>> Thanks for the testing and posting, Colton. Please add your s-o-b and a
+>> Tested-by tag as well.
+> 
+> Assuming it is sufficient to add here instead of reposting the whole patch:
+> 
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> Tested-by: Colton Lewis <coltonlewis@google.com>
+> 
+>>> ---
+>>>  target/arm/kvm64.c | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+>>> index 4d904a1d11..2dd46e0a99 100644
+>>> --- a/target/arm/kvm64.c
+>>> +++ b/target/arm/kvm64.c
+>>> @@ -672,6 +672,7 @@ typedef struct CPRegStateLevel {
+>>>   */
+>>>  static const CPRegStateLevel non_runtime_cpregs[] = {
+>>>      { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
+>>> +    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
+>>>  };
+>>>
+>>>  int kvm_arm_cpreg_level(uint64_t regidx)
+>>> --
+>>> 2.42.0.283.g2d96d420d3-goog
+>>>
+> 
 
 
