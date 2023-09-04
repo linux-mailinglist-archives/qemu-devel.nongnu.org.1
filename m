@@ -2,49 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DD7791475
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717B0791460
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:09:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5Xw-0001IR-5D; Mon, 04 Sep 2023 05:07:00 -0400
+	id 1qd5Xx-0001LI-BB; Mon, 04 Sep 2023 05:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Xr-0001Ds-BT; Mon, 04 Sep 2023 05:06:55 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qd5Xr-0001Dr-9A; Mon, 04 Sep 2023 05:06:55 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Xk-0003bf-Ks; Mon, 04 Sep 2023 05:06:55 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN6j43zdz4wxW;
- Mon,  4 Sep 2023 19:06:37 +1000 (AEST)
+ id 1qd5Xk-0003br-LI; Mon, 04 Sep 2023 05:06:54 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN6n1Tfyz4wy8;
+ Mon,  4 Sep 2023 19:06:41 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN6g72R0z4wy8;
- Mon,  4 Sep 2023 19:06:35 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN6k0hCbz4wy1;
+ Mon,  4 Sep 2023 19:06:37 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 00/35] ppc queue
-Date: Mon,  4 Sep 2023 11:05:55 +0200
-Message-ID: <20230904090630.725952-1-clg@kaod.org>
+ Shawn Anastasio <sanastasio@raptorengineering.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: [PULL 01/35] target/ppc: Generate storage interrupts for radix RC
+ changes
+Date: Mon,  4 Sep 2023 11:05:56 +0200
+Message-ID: <20230904090630.725952-2-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230904090630.725952-1-clg@kaod.org>
+References: <20230904090630.725952-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=kZzc=EU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,110 +67,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
+From: Shawn Anastasio <sanastasio@raptorengineering.com>
 
-  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
+Change radix model to always generate a storage interrupt when the R/C
+bits are not set appropriately in a PTE instead of setting the bits
+itself.  According to the ISA both behaviors are valid, but in practice
+this change more closely matches behavior observed on the POWER9 CPU.
 
-are available in the Git repository at:
+From the POWER9 Processor User's Manual, Section 4.10.13.1: "When
+performing Radix translation, the POWER9 hardware triggers the
+appropriate interrupt ... for the mode and type of access whenever
+Reference (R) and Change (C) bits require setting in either the guest or
+host page-table entry (PTE)."
 
-  https://github.com/legoater/qemu/ tags/pull-ppc-20230904
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ target/ppc/mmu-radix64.c | 74 ++++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 25 deletions(-)
 
-for you to fetch changes up to 6ed470577a24fe471b09e4be089f34bb1eefc5a0:
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 920084bd8ff2..5823e039e64f 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -219,27 +219,25 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
+     return false;
+ }
+ 
+-static void ppc_radix64_set_rc(PowerPCCPU *cpu, MMUAccessType access_type,
+-                               uint64_t pte, hwaddr pte_addr, int *prot)
++static int ppc_radix64_check_rc(MMUAccessType access_type, uint64_t pte)
+ {
+-    CPUState *cs = CPU(cpu);
+-    uint64_t npte;
+-
+-    npte = pte | R_PTE_R; /* Always set reference bit */
++    switch (access_type) {
++    case MMU_DATA_STORE:
++        if (!(pte & R_PTE_C)) {
++            break;
++        }
++        /* fall through */
++    case MMU_INST_FETCH:
++    case MMU_DATA_LOAD:
++        if (!(pte & R_PTE_R)) {
++            break;
++        }
+ 
+-    if (access_type == MMU_DATA_STORE) { /* Store/Write */
+-        npte |= R_PTE_C; /* Set change bit */
+-    } else {
+-        /*
+-         * Treat the page as read-only for now, so that a later write
+-         * will pass through this function again to set the C bit.
+-         */
+-        *prot &= ~PAGE_WRITE;
++        /* R/C bits are already set appropriately for this access */
++        return 0;
+     }
+ 
+-    if (pte ^ npte) { /* If pte has changed then write it back */
+-        stq_phys(cs->as, pte_addr, npte);
+-    }
++    return 1;
+ }
+ 
+ static bool ppc_radix64_is_valid_level(int level, int psize, uint64_t nls)
+@@ -380,7 +378,8 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
+                                               ppc_v3_pate_t pate,
+                                               hwaddr *h_raddr, int *h_prot,
+                                               int *h_page_size, bool pde_addr,
+-                                              int mmu_idx, bool guest_visible)
++                                              int mmu_idx, uint64_t lpid,
++                                              bool guest_visible)
+ {
+     MMUAccessType access_type = orig_access_type;
+     int fault_cause = 0;
+@@ -418,7 +417,24 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
+     }
+ 
+     if (guest_visible) {
+-        ppc_radix64_set_rc(cpu, access_type, pte, pte_addr, h_prot);
++        if (ppc_radix64_check_rc(access_type, pte)) {
++            /*
++             * Per ISA 3.1 Book III, 7.5.3 and 7.5.5, failure to set R/C during
++             * partition-scoped translation when effLPID = 0 results in normal
++             * (non-Hypervisor) Data and Instruction Storage Interrupts
++             * respectively.
++             *
++             * ISA 3.0 is ambiguous about this, but tests on POWER9 hardware
++             * seem to exhibit the same behavior.
++             */
++            if (lpid > 0) {
++                ppc_radix64_raise_hsi(cpu, access_type, eaddr, g_raddr,
++                                      DSISR_ATOMIC_RC);
++            } else {
++                ppc_radix64_raise_si(cpu, access_type, eaddr, DSISR_ATOMIC_RC);
++            }
++            return 1;
++        }
+     }
+ 
+     return 0;
+@@ -447,7 +463,8 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
+                                             vaddr eaddr, uint64_t pid,
+                                             ppc_v3_pate_t pate, hwaddr *g_raddr,
+                                             int *g_prot, int *g_page_size,
+-                                            int mmu_idx, bool guest_visible)
++                                            int mmu_idx, uint64_t lpid,
++                                            bool guest_visible)
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+@@ -497,7 +514,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
+         ret = ppc_radix64_partition_scoped_xlate(cpu, access_type, eaddr,
+                                                  prtbe_addr, pate, &h_raddr,
+                                                  &h_prot, &h_page_size, true,
+-                                                 5, guest_visible);
++                                                 5, lpid, guest_visible);
+         if (ret) {
+             return ret;
+         }
+@@ -539,7 +556,8 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
+             ret = ppc_radix64_partition_scoped_xlate(cpu, access_type, eaddr,
+                                                      pte_addr, pate, &h_raddr,
+                                                      &h_prot, &h_page_size,
+-                                                     true, 5, guest_visible);
++                                                     true, 5, lpid,
++                                                     guest_visible);
+             if (ret) {
+                 return ret;
+             }
+@@ -580,7 +598,11 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
+     }
+ 
+     if (guest_visible) {
+-        ppc_radix64_set_rc(cpu, access_type, pte, pte_addr, g_prot);
++        /* R/C bits not appropriately set for access */
++        if (ppc_radix64_check_rc(access_type, pte)) {
++            ppc_radix64_raise_si(cpu, access_type, eaddr, DSISR_ATOMIC_RC);
++            return 1;
++        }
+     }
+ 
+     return 0;
+@@ -695,7 +717,8 @@ static bool ppc_radix64_xlate_impl(PowerPCCPU *cpu, vaddr eaddr,
+     if (relocation) {
+         int ret = ppc_radix64_process_scoped_xlate(cpu, access_type, eaddr, pid,
+                                                    pate, &g_raddr, &prot,
+-                                                   &psize, mmu_idx, guest_visible);
++                                                   &psize, mmu_idx, lpid,
++                                                   guest_visible);
+         if (ret) {
+             return false;
+         }
+@@ -719,7 +742,8 @@ static bool ppc_radix64_xlate_impl(PowerPCCPU *cpu, vaddr eaddr,
+             ret = ppc_radix64_partition_scoped_xlate(cpu, access_type, eaddr,
+                                                      g_raddr, pate, raddr,
+                                                      &prot, &psize, false,
+-                                                     mmu_idx, guest_visible);
++                                                     mmu_idx, lpid,
++                                                     guest_visible);
+             if (ret) {
+                 return false;
+             }
+-- 
+2.41.0
 
-  ppc/xive: Add support for the PC MMIOs (2023-09-04 09:34:36 +0200)
-
-----------------------------------------------------------------
-ppc queue :
-
-* debug facility improvements
-* timebase and decrementer fixes
-* record-replay fixes
-* TCG fixes
-* XIVE model improvements for multichip
-
-----------------------------------------------------------------
-Cédric Le Goater (4):
-      ppc/xive: Use address_space routines to access the machine RAM
-      ppc/xive: Introduce a new XiveRouter end_notify() handler
-      ppc/xive: Handle END triggers between chips with MMIOs
-      ppc/xive: Add support for the PC MMIOs
-
-Joel Stanley (1):
-      ppc: Add stub implementation of TRIG SPRs
-
-Maksim Kostin (1):
-      hw/ppc/e500: fix broken snapshot replay
-
-Nicholas Piggin (26):
-      target/ppc: Remove single-step suppression inside 0x100-0xf00
-      target/ppc: Improve book3s branch trace interrupt for v2.07S
-      target/ppc: Suppress single step interrupts on rfi-type instructions
-      target/ppc: Implement breakpoint debug facility for v2.07S
-      target/ppc: Implement watchpoint debug facility for v2.07S
-      spapr: implement H_SET_MODE debug facilities
-      ppc/vhyp: reset exception state when handling vhyp hcall
-      ppc/vof: Fix missed fields in VOF cleanup
-      hw/ppc/ppc.c: Tidy over-long lines
-      hw/ppc: Introduce functions for conversion between timebase and nanoseconds
-      host-utils: Add muldiv64_round_up
-      hw/ppc: Round up the decrementer interval when converting to ns
-      hw/ppc: Avoid decrementer rounding errors
-      target/ppc: Sign-extend large decrementer to 64-bits
-      hw/ppc: Always store the decrementer value
-      target/ppc: Migrate DECR SPR
-      hw/ppc: Reset timebase facilities on machine reset
-      hw/ppc: Read time only once to perform decrementer write
-      target/ppc: Fix CPU reservation migration for record-replay
-      target/ppc: Fix timebase reset with record-replay
-      spapr: Fix machine reset deadlock from replay-record
-      spapr: Fix record-replay machine reset consuming too many events
-      tests/avocado: boot ppc64 pseries replay-record test to Linux VFS mount
-      tests/avocado: reverse-debugging cope with re-executing breakpoints
-      tests/avocado: ppc64 reverse debugging tests for pseries and powernv
-      target/ppc: Fix LQ, STQ register-pair order for big-endian
-
-Richard Henderson (1):
-      target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
-
-Shawn Anastasio (1):
-      target/ppc: Generate storage interrupts for radix RC changes
-
-jianchunfu (1):
-      target/ppc: Fix the order of kvm_enable judgment about kvmppc_set_interrupt()
-
- hw/intc/pnv_xive_regs.h                    |   1 +
- include/hw/ppc/ppc.h                       |   3 +-
- include/hw/ppc/spapr.h                     |   2 +
- include/hw/ppc/xive.h                      |   2 +
- include/qemu/host-utils.h                  |  21 ++-
- target/ppc/cpu.h                           |  12 ++
- target/ppc/helper.h                        |   4 +
- target/ppc/internal.h                      |   3 +
- target/ppc/spr_common.h                    |   3 +
- hw/intc/pnv_xive.c                         | 170 +++++++++++++++-----
- hw/intc/pnv_xive2.c                        |  27 +++-
- hw/intc/xive.c                             |  28 ++--
- hw/ppc/e500.c                              |   2 +-
- hw/ppc/mac_oldworld.c                      |   1 +
- hw/ppc/pegasos2.c                          |   1 +
- hw/ppc/pnv_core.c                          |   2 +
- hw/ppc/ppc.c                               | 244 +++++++++++++++++++----------
- hw/ppc/prep.c                              |   1 +
- hw/ppc/spapr.c                             |  32 +++-
- hw/ppc/spapr_cpu_core.c                    |   2 +
- hw/ppc/spapr_hcall.c                       |  57 +++++++
- hw/ppc/vof.c                               |   2 +
- target/ppc/compat.c                        |  19 +++
- target/ppc/cpu.c                           |  87 ++++++++++
- target/ppc/cpu_init.c                      |  21 ++-
- target/ppc/excp_helper.c                   | 111 ++++++++++++-
- target/ppc/kvm.c                           |   2 +-
- target/ppc/machine.c                       |  45 +++++-
- target/ppc/misc_helper.c                   |  15 ++
- target/ppc/mmu-radix64.c                   |  74 ++++++---
- target/ppc/translate.c                     |  64 ++++++--
- target/ppc/translate/fixedpoint-impl.c.inc |  16 +-
- tests/avocado/replay_kernel.py             |   3 +-
- tests/avocado/reverse_debugging.py         |  54 ++++++-
- 34 files changed, 926 insertions(+), 205 deletions(-)
 
