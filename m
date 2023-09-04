@@ -2,46 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A26791BD4
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 19:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47ABF791C42
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 19:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCy2-0005aA-1L; Mon, 04 Sep 2023 13:02:26 -0400
+	id 1qdDpq-0002rZ-4z; Mon, 04 Sep 2023 13:58:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdCxy-0005Zy-BE
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 13:02:22 -0400
+ id 1qdDpn-0002rI-C3
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 13:57:59 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdCxu-0002KR-Mn
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 13:02:22 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfZZP32Rqz6J81N;
- Tue,  5 Sep 2023 00:57:49 +0800 (CST)
-Received: from localhost (10.48.153.57) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 4 Sep
- 2023 18:02:15 +0100
-Date: Mon, 4 Sep 2023 18:02:14 +0100
-To: Gregory Price <gourry.memverge@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
- <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
-Subject: Re: [PATCH 4/5] cxl/type3: add an optional mhd validation function
- for memory accesses
-Message-ID: <20230904180214.00007e32@Huawei.com>
-In-Reply-To: <20230901012914.226527-5-gregory.price@memverge.com>
-References: <20230901012914.226527-1-gregory.price@memverge.com>
- <20230901012914.226527-5-gregory.price@memverge.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ id 1qdDpk-0004Vf-2w
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 13:57:59 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfbtC0mNsz67hmj;
+ Tue,  5 Sep 2023 01:56:35 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 4 Sep 2023 18:57:52 +0100
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>
+CC: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <linuxarm@huawei.com>
+Subject: [PATCH] hw/pci-bridge/cxl-upstream: Add serial number extended
+ capability support
+Date: Mon, 4 Sep 2023 18:57:52 +0100
+Message-ID: <20230904175752.17927-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.153.57]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -64,91 +61,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 21:29:13 -0400
-Gregory Price <gourry.memverge@gmail.com> wrote:
+Will be needed so there is a defined serial number for
+information queries via the Switch CCI.
 
-> When memory accesses are made, some MHSLD's would validate the address
-> is within the scope of allocated sections.  To do this, the base device
-> must call an optional function set by inherited devices.
-> 
-> Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+No ordering dependencies wrt to other CXL patch sets.
 
-This sort of callback addition can be done via class initialization.
-E.g. get_lsa_size()
-https://elixir.bootlin.com/qemu/latest/source/hw/mem/cxl_type3.c#L1494
-as the callback is the same for all instances of the class which
-in next patch is CXLNiagraClass where you already set the
-PCIClass callbacks in cxl_niagara_class_init()
+Whilst we 'need' it for the Switch CCI set it is valid without
+it and aligns with existing EP serial number support. Seems sensible
+to upstream this first and reduce my out of tree backlog a little!
 
-You can then use something like:
-CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
-cvc->mhd_access_valid(ct3d, dpa_offset, size);
+ hw/pci-bridge/cxl_upstream.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Jonathan
-
-> ---
->  hw/mem/cxl_type3.c          | 15 +++++++++++++++
->  include/hw/cxl/cxl_device.h |  3 +++
->  2 files changed, 18 insertions(+)
-> 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index a8d4a12f3e..8e1565f2fc 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -1034,6 +1034,10 @@ void ct3_realize(PCIDevice *pci_dev, Error **errp)
->              goto err_release_cdat;
->          }
->      }
-> +
-> +    /* Devices which inherit ct3d should initialize these after ct3_realize */
-> +    ct3d->mhd_access_valid = NULL;
-> +
->      return;
->  
->  err_release_cdat:
-> @@ -1259,6 +1263,11 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
->          return MEMTX_ERROR;
->      }
->  
-> +    if (ct3d->mhd_access_valid &&
-> +        !ct3d->mhd_access_valid(d, dpa_offset, size)) {
-> +        return MEMTX_ERROR;
-> +    }
-> +
->      if (sanitize_running(&ct3d->cci)) {
->          qemu_guest_getrandom_nofail(data, size);
->          return MEMTX_OK;
-> @@ -1279,6 +1288,12 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
->      if (res) {
->          return MEMTX_ERROR;
->      }
-> +
-> +    if (ct3d->mhd_access_valid &&
-> +        !ct3d->mhd_access_valid(d, dpa_offset, size)) {
-> +        return MEMTX_ERROR;
-> +    }
-> +
->      if (sanitize_running(&ct3d->cci)) {
->          return MEMTX_OK;
->      }
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 4ad38b689c..b1b39a9aa0 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -489,6 +489,9 @@ struct CXLType3Dev {
->          uint8_t num_regions; /* 0-8 regions */
->          CXLDCDRegion regions[DCD_MAX_REGION_NUM];
->      } dc;
-> +
-> +    /* Multi-headed Device */
-> +    bool (*mhd_access_valid)(PCIDevice *d, uint64_t addr, unsigned int size);
->  };
->  
->  #define TYPE_CXL_TYPE3 "cxl-type3"
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index 2b9cf0cc97..15c4d84a56 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -14,6 +14,11 @@
+ #include "hw/pci/msi.h"
+ #include "hw/pci/pcie.h"
+ #include "hw/pci/pcie_port.h"
++/*
++ * Null value of all Fs suggested by IEEE RA guidelines for use of
++ * EU, OUI and CID
++ */
++#define UI64_NULL (~0ULL)
+ 
+ #define CXL_UPSTREAM_PORT_MSI_NR_VECTOR 2
+ 
+@@ -30,6 +35,7 @@ typedef struct CXLUpstreamPort {
+     /*< public >*/
+     CXLComponentState cxl_cstate;
+     DOECap doe_cdat;
++    uint64_t sn;
+ } CXLUpstreamPort;
+ 
+ CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp)
+@@ -326,8 +332,12 @@ static void cxl_usp_realize(PCIDevice *d, Error **errp)
+     if (rc) {
+         goto err_cap;
+     }
+-
+-    cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET;
++    if (usp->sn != UI64_NULL) {
++        pcie_dev_ser_num_init(d, CXL_UPSTREAM_PORT_DVSEC_OFFSET, usp->sn);
++        cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET + 0x0c;
++    } else {
++        cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET;
++    }
+     cxl_cstate->pdev = d;
+     build_dvsecs(cxl_cstate);
+     cxl_component_register_block_init(OBJECT(d), cxl_cstate, TYPE_CXL_USP);
+@@ -366,6 +376,7 @@ static void cxl_usp_exitfn(PCIDevice *d)
+ }
+ 
+ static Property cxl_upstream_props[] = {
++    DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
+     DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.filename),
+     DEFINE_PROP_END_OF_LIST()
+ };
+-- 
+2.39.2
 
 
