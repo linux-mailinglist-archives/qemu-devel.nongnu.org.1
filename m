@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F23791456
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF281791453
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:07:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5YB-0001sK-E1; Mon, 04 Sep 2023 05:07:15 -0400
+	id 1qd5YE-0001tZ-2m; Mon, 04 Sep 2023 05:07:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Y5-0001gy-3u; Mon, 04 Sep 2023 05:07:10 -0400
+ id 1qd5Y9-0001pE-7t; Mon, 04 Sep 2023 05:07:13 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Y2-0003f7-Qb; Mon, 04 Sep 2023 05:07:08 -0400
+ id 1qd5Y6-0003gg-Hl; Mon, 04 Sep 2023 05:07:12 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN7F5x2sz4wxW;
- Mon,  4 Sep 2023 19:07:05 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN7J1PQkz4x2Z;
+ Mon,  4 Sep 2023 19:07:08 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN7D01ptz4wy8;
- Mon,  4 Sep 2023 19:07:03 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN7G2XhFz4wy8;
+ Mon,  4 Sep 2023 19:07:06 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 11/35] hw/ppc/ppc.c: Tidy over-long lines
-Date: Mon,  4 Sep 2023 11:06:06 +0200
-Message-ID: <20230904090630.725952-12-clg@kaod.org>
+Subject: [PULL 12/35] hw/ppc: Introduce functions for conversion between
+ timebase and nanoseconds
+Date: Mon,  4 Sep 2023 11:06:07 +0200
+Message-ID: <20230904090630.725952-13-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904090630.725952-1-clg@kaod.org>
 References: <20230904090630.725952-1-clg@kaod.org>
@@ -65,71 +66,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
+These calculations are repeated several times, and they will become
+a little more complicated with subsequent changes.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/ppc/ppc.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ hw/ppc/ppc.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
 diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 0e0a3d93c3bf..09b82f68a84e 100644
+index 09b82f68a84e..423a3a117ae2 100644
 --- a/hw/ppc/ppc.c
 +++ b/hw/ppc/ppc.c
-@@ -497,7 +497,8 @@ uint64_t cpu_ppc_load_tbl (CPUPPCState *env)
-         return env->spr[SPR_TBL];
+@@ -482,10 +482,20 @@ void ppce500_set_mpic_proxy(bool enabled)
+ /*****************************************************************************/
+ /* PowerPC time base and decrementer emulation */
+ 
++static uint64_t ns_to_tb(uint32_t freq, int64_t clock)
++{
++    return muldiv64(clock, freq, NANOSECONDS_PER_SECOND);
++}
++
++static int64_t tb_to_ns(uint32_t freq, uint64_t tb)
++{
++    return muldiv64(tb, NANOSECONDS_PER_SECOND, freq);
++}
++
+ uint64_t cpu_ppc_get_tb(ppc_tb_t *tb_env, uint64_t vmclk, int64_t tb_offset)
+ {
+     /* TB time in tb periods */
+-    return muldiv64(vmclk, tb_env->tb_freq, NANOSECONDS_PER_SECOND) + tb_offset;
++    return ns_to_tb(tb_env->tb_freq, vmclk) + tb_offset;
+ }
+ 
+ uint64_t cpu_ppc_load_tbl (CPUPPCState *env)
+@@ -528,8 +538,7 @@ uint32_t cpu_ppc_load_tbu (CPUPPCState *env)
+ static inline void cpu_ppc_store_tb(ppc_tb_t *tb_env, uint64_t vmclk,
+                                     int64_t *tb_offsetp, uint64_t value)
+ {
+-    *tb_offsetp = value -
+-        muldiv64(vmclk, tb_env->tb_freq, NANOSECONDS_PER_SECOND);
++    *tb_offsetp = value - ns_to_tb(tb_env->tb_freq, vmclk);
+ 
+     trace_ppc_tb_store(value, *tb_offsetp);
+ }
+@@ -694,11 +703,11 @@ static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
+ 
+     diff = next - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     if (diff >= 0) {
+-        decr = muldiv64(diff, tb_env->decr_freq, NANOSECONDS_PER_SECOND);
++        decr = ns_to_tb(tb_env->decr_freq, diff);
+     } else if (tb_env->flags & PPC_TIMER_BOOKE) {
+         decr = 0;
+     }  else {
+-        decr = -muldiv64(-diff, tb_env->decr_freq, NANOSECONDS_PER_SECOND);
++        decr = -ns_to_tb(tb_env->decr_freq, -diff);
      }
+     trace_ppc_decr_load(decr);
  
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-+                        tb_env->tb_offset);
-     trace_ppc_tb_load(tb);
+@@ -838,7 +847,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
  
-     return tb;
-@@ -508,7 +509,8 @@ static inline uint32_t _cpu_ppc_load_tbu(CPUPPCState *env)
-     ppc_tb_t *tb_env = env->tb_env;
-     uint64_t tb;
+     /* Calculate the next timer event */
+     now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    next = now + muldiv64(value, NANOSECONDS_PER_SECOND, tb_env->decr_freq);
++    next = now + tb_to_ns(tb_env->decr_freq, value);
+     *nextp = next;
  
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-+                        tb_env->tb_offset);
-     trace_ppc_tb_load(tb);
- 
-     return tb >> 32;
-@@ -565,7 +567,8 @@ uint64_t cpu_ppc_load_atbl (CPUPPCState *env)
-     ppc_tb_t *tb_env = env->tb_env;
-     uint64_t tb;
- 
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-+                        tb_env->atb_offset);
-     trace_ppc_tb_load(tb);
- 
-     return tb;
-@@ -576,7 +579,8 @@ uint32_t cpu_ppc_load_atbu (CPUPPCState *env)
-     ppc_tb_t *tb_env = env->tb_env;
-     uint64_t tb;
- 
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-+                        tb_env->atb_offset);
-     trace_ppc_tb_load(tb);
- 
-     return tb >> 32;
-@@ -1040,10 +1044,11 @@ clk_setup_cb cpu_ppc_tb_init (CPUPPCState *env, uint32_t freq)
-         tb_env->flags |= PPC_DECR_UNDERFLOW_LEVEL;
+     /* Adjust timer */
+@@ -1130,7 +1139,7 @@ static void cpu_4xx_fit_cb (void *opaque)
+         /* Cannot occur, but makes gcc happy */
+         return;
      }
-     /* Create new timer */
--    tb_env->decr_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, &cpu_ppc_decr_cb, cpu);
-+    tb_env->decr_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                      &cpu_ppc_decr_cb, cpu);
-     if (env->has_hv_mode && !cpu->vhyp) {
--        tb_env->hdecr_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, &cpu_ppc_hdecr_cb,
--                                                cpu);
-+        tb_env->hdecr_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                           &cpu_ppc_hdecr_cb, cpu);
+-    next = now + muldiv64(next, NANOSECONDS_PER_SECOND, tb_env->tb_freq);
++    next = now + tb_to_ns(tb_env->tb_freq, next);
+     if (next == now)
+         next++;
+     timer_mod(ppc40x_timer->fit_timer, next);
+@@ -1158,8 +1167,7 @@ static void start_stop_pit (CPUPPCState *env, ppc_tb_t *tb_env, int is_excp)
      } else {
-         tb_env->hdecr_timer = NULL;
+         trace_ppc4xx_pit_start(ppc40x_timer->pit_reload);
+         now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        next = now + muldiv64(ppc40x_timer->pit_reload,
+-                              NANOSECONDS_PER_SECOND, tb_env->decr_freq);
++        next = now + tb_to_ns(tb_env->decr_freq, ppc40x_timer->pit_reload);
+         if (is_excp)
+             next += tb_env->decr_next - now;
+         if (next == now)
+@@ -1218,7 +1226,7 @@ static void cpu_4xx_wdt_cb (void *opaque)
+         /* Cannot occur, but makes gcc happy */
+         return;
      }
+-    next = now + muldiv64(next, NANOSECONDS_PER_SECOND, tb_env->decr_freq);
++    next = now + tb_to_ns(tb_env->decr_freq, next);
+     if (next == now)
+         next++;
+     trace_ppc4xx_wdt(env->spr[SPR_40x_TCR], env->spr[SPR_40x_TSR]);
 -- 
 2.41.0
 
