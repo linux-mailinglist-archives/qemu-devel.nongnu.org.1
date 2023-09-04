@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5B7791804
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0725D79179F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9Zy-0005YR-Ge; Mon, 04 Sep 2023 09:25:22 -0400
+	id 1qd958-0007aB-Ph; Mon, 04 Sep 2023 08:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qd9Zr-0005YD-Gb
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:25:16 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd94i-0007Jk-W0
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:53:10 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qd9Zo-0000LU-E2
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:25:14 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31de47996c8so1260088f8f.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 06:25:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd94Z-00085p-B8
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:53:01 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9a2a4a5472dso494246666b.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693833910; x=1694438710; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lnkQa+mF0QTOMBpgbaz/uDTz5KmvWwY/yP5P2ckABHE=;
- b=W70b++n5Aieg7XcruR6v999EiYbIa4eamQesYRLJs4CTUzY5v8a8IQEmMuJvxSDAem
- c5Az0sKqHwPLCtdCOgSLUg/YKEy1KvGJ09BAYHE/cNg0ssfaZazRVi3tXVXPISsMqyCV
- DRAvyXTfWgY8SQU5IRO/HJ3VoHXqRr1qRPDfzgNzFtr5yda9IsEZ0g1cXsVIL9dPi0Nc
- KdgY0mywsUnycyHMUTrdfub0OYQ2e+llxhbdsM8ob/XdxB193QoCtfYwqIp69oujTxAO
- 48/MQmubfcv2bOqdMvmWN9pxETAQYDhfVEqGvJT1S80lVr5lBDBfh6IdR1FUokT0zpmU
- +g2A==
+ d=linaro.org; s=google; t=1693831973; x=1694436773; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mLLrOInlqhD57AKDsb6eUt0pbNKyEYyMysQZ94xnQK8=;
+ b=Nh11GYnH27/eV1W8sMVstjJSIK1chYcFEqkoNehYGhSL8tV3pTREC0UGRIkObLuDXJ
+ TYnP2r2u85pcJyGs4K/ig7d4zxuqzd/iLrhxcRw+Dc6rLBLJ7XZYkgv+MDJb9BroB9rj
+ weFcEFu86J91byGFULIrvYiEicaoT8QNWP3yZowNkaL1Rrt96cXp55TB356mJFk5pL6m
+ T03lBaE53nD5gcCXAFGJ8t9hthnUkf5vLbQkEFd94bu22+E1hD9mMTwcLg0zrNwifWiw
+ dlgFXUIOgT2+NAZrkxRVMb7RxaHNMT0IHS/RyAG+umTpbnMZ5S3PYXgHGiCuDHHYo2nb
+ aXsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693833910; x=1694438710;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=lnkQa+mF0QTOMBpgbaz/uDTz5KmvWwY/yP5P2ckABHE=;
- b=eby3FPU91ZRJNlDIu4xr8lX+S4h4rGPkwAwL4dKEM5yqCr2JKmJ8UGr1xYUHt+SVrJ
- Nxov9LcuYLWzcscOCoD4sEwmrNzIJBvvCytQ/ATJqZs6WtieYfCkIVXINtiRRmcCVPEk
- /dsGVC0MVZb4NqPdwJ4En3Y3PoFeBwYEbSyQE8wkegF6YWh8Av6TGM0PFjFp7j5urTre
- IpxWAFmzaE4bA5TWlW0gN8/R1pKDVmnzhNZjb0CkBAMx5k/3Gt01kBMfkedyObCWOnbM
- dhrMrwYoCe538NxDQ0rXsO/KFARdqbOwrDFTc/qIBmrg6tKalqUXZkqOpOcAwFH8Mqe0
- mrhw==
-X-Gm-Message-State: AOJu0YwTe3DTDPVKVM/U9OT+Swoq4V5ho7RmvPxRcRKPllpmrZXJI/TA
- 9mU+45KhSqKQPsYfvIBD04+now==
-X-Google-Smtp-Source: AGHT+IFU+iuqRpSsdECcJKxr0E2qTpbzeBxbxFIInSPPndMsEvlWlAyKrLR9mx0yZF/ZXesKtTZosw==
-X-Received: by 2002:a05:6000:128b:b0:313:fe1b:f441 with SMTP id
- f11-20020a056000128b00b00313fe1bf441mr6616331wrx.29.1693833910160; 
- Mon, 04 Sep 2023 06:25:10 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693831973; x=1694436773;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mLLrOInlqhD57AKDsb6eUt0pbNKyEYyMysQZ94xnQK8=;
+ b=CE369zF0nuEt68/MkdofXFgkL0PgbOQuGaXo+FFt+t5WdKSe4rwCQ94e+yTiukWiKz
+ CC6UVJAgKjqgwlwBVVKjABgIGgcFwc2LIw2hCnKfdVSsBjBaL+H9Fmr7G6wp9K5iJsXP
+ bp3fcC2EDrTXBVH1aAxM4y5XctY1anUYofpygiHb3xRvnY0Olqnz5DlVpa6Lp9w1E8O9
+ NrmvNMM7Ppj2okXDJlzXZGJHY+xWWy2SvsCj2d0LgmmfDoGqvfhEUEDPyC9dYiK45El8
+ Ey2eUshvQrBo8BtnP29zkh3ZSNgFjjvFnbs0K5Nh+tUUHUWs0ntLWExaS5/UEV+e5n1Y
+ uLWA==
+X-Gm-Message-State: AOJu0YxBYIGURN9TwXf4d4t/lzRwoBHFPvc0wYjCrc16Y/W2yUGuyA6x
+ YEF4/zhtUkslAZHwuXGdGCMJKw==
+X-Google-Smtp-Source: AGHT+IE2dh17lIZp6pWvNurXWtAA+k1x62E7/ZXi3gGxjt6GLWY+HjsezLL0bXystJdB3rIkUGSVEQ==
+X-Received: by 2002:a17:906:30d2:b0:992:2f67:cd34 with SMTP id
+ b18-20020a17090630d200b009922f67cd34mr9888804ejb.22.1693831973385; 
+ Mon, 04 Sep 2023 05:52:53 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- b17-20020a5d6351000000b0030fd03e3d25sm14731535wrw.75.2023.09.04.06.25.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 06:25:09 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 59D701FFBB;
- Mon,  4 Sep 2023 14:25:09 +0100 (BST)
-References: <20230829220228.928506-1-richard.henderson@linaro.org>
- <31a0da15-2d40-6779-091a-fc19207399bc@gmx.de>
- <efc935f7-67c2-8877-98aa-1aebfcafa534@linaro.org>
- <87h6ofprre.fsf@linaro.org> <b6f1fba2-c9b6-eaf5-9693-06bd8d747bf9@gmx.de>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Helge Deller <deller@gmx.de>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- laurent@vivier.eu
-Subject: Re: [PATCH v5 00/20] linux-user: Implement VDSOs
-Date: Mon, 04 Sep 2023 13:51:58 +0100
-In-reply-to: <b6f1fba2-c9b6-eaf5-9693-06bd8d747bf9@gmx.de>
-Message-ID: <871qfejcju.fsf@linaro.org>
+ a22-20020a17090640d600b0099d0c0bb92bsm6129118ejk.80.2023.09.04.05.52.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 05:52:52 -0700 (PDT)
+Message-ID: <f9e162d3-1a7b-a037-0a61-68c044914098@linaro.org>
+Date: Mon, 4 Sep 2023 14:52:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 01/11] tcg: Clean up local variable shadowing
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230831225607.30829-1-philmd@linaro.org>
+ <20230831225607.30829-2-philmd@linaro.org>
+ <91f8724b-1f1d-6121-afc8-cc6446bf9359@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <91f8724b-1f1d-6121-afc8-cc6446bf9359@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,77 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/9/23 02:38, Richard Henderson wrote:
+> On 8/31/23 15:55, Philippe Mathieu-Daudé wrote:
+>> -                    MemOp op = get_memop(oi);
+>> +                    MemOp o = get_memop(oi);
+> 
+> mop would be a more descriptive replacement.
 
-Helge Deller <deller@gmx.de> writes:
+I went with that first, but then noticed 'MemOpIdx oi' and
+renamed as 'o'. Anyway I'll change to 'mop', thanks!
 
-> On 8/31/23 09:57, Alex Benn=C3=A9e wrote:
->>
->> Richard Henderson <richard.henderson@linaro.org> writes:
->>
->>> On 8/30/23 07:52, Helge Deller wrote:
->>>> On 8/30/23 00:02, Richard Henderson wrote:
->>>>> Changes for v5:
->>>>>  =C2=A0=C2=A0 * Integrated cross-compile, via new build-vdso.sh and m=
-eson rules.
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0 However, keep the binaries in the tree for =
-hosts which do not
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0 have all of the cross-compile machinery.
->>>>>  =C2=A0=C2=A0 * Update our loongarch64 docker image to avoid a binuti=
-ls bug.
->>>>>
->>>>> Just in case the list eats a binary:
->>>>>  =C2=A0=C2=A0 https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
->>>> I pulled that on top of git head, and ran into the build problem
->>>> below.
->>>> Do I miss something?
->>>
->>> No idea, since it worked for me.  Looks like some sort of docker.py pro=
-blem.  Alex?
->>>
->>> In the short term, use --disable-containers so that you only use the
->>> cross-compilers that you have locally installed.
-<snip>
->>
->> It looks like it detected podman on this setup. Can you invoke the
->> container from the command line?
->
-> Yes, if I run it on the command line:
->
-> [deller@p100 _build]$ 'podman' 'run' '--rm' '--label' 'com.qemu.instance.=
-uuid=3D21e1c0332a2c44b6ae94a71392c57ccf' '--userns=3Dkeep-id' '-u' '1000' '=
--w' '/srv/_build' '-v' '/srv/_build:/srv/_build:rw' '-v' '/home/cvs/qemu/qe=
-mu:/home/cvs/qemu/qemu:ro,z' 'qemu/debian-armhf-cross' 'arm-linux-gnueabihf=
--gcc' '-o' 'linux-user/arm/vdso-le.so' '-nostdlib' '-shared' '-Wl,-use-blx'=
- '-Wl,-h,linux-vdso.so.1' '-Wl,--build-id=3Dsha1' '-Wl,--hash-style=3Dboth'=
- '-Wl,-T,../../home/cvs/qemu/qemu/linux-user/arm/vdso.ld' '../../home/cvs/q=
-emu/qemu/linux-user/arm/vdso.S' '-mlittle-endian'
->
-> I get this interactive(!!!) output where I can use the cursor keys to swi=
-th up/down:
->
-> ? Please select an image:
->   =E2=96=B8 registry.fedoraproject.org/qemu/debian-armhf-cross:latest
->     registry.access.redhat.com/qemu/debian-armhf-cross:latest
->     docker.io/qemu/debian-armhf-cross:latest
->     quay.io/qemu/debian-armhf-cross:latest
->
-> I assume the problem is, that we don't want interactive input at this sta=
-ge?
-> Probably this is why I get the error message: "Error: short-name
-> resolution enforced but cannot prompt without a TTY" ?
+> 
+> Otherwise,
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> 
+> r~
 
-No I think the problem is we need to add dependencies to the target to
-ensure the containers are built and available (if they are needed). It
-looks like because qemu/debian-armhf-cross isn't available on your local
-setup it fails and offers some guesses.
-
-If you run:
-
-  make docker-image-debian-armhf-cross
-
-does the target work afterwards?
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
