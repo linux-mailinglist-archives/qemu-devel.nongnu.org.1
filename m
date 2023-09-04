@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228937912FE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A41D07912F0
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd4c2-0002CP-Ec; Mon, 04 Sep 2023 04:07:10 -0400
+	id 1qd4bz-00023B-DQ; Mon, 04 Sep 2023 04:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qd4by-00022w-7d
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:07:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qd4bw-0001zF-4f
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:07:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qd4bt-0006Wz-UP
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:07:05 -0400
+ id 1qd4bt-0006Wq-Q5
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:07:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1693814821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9XjeJbiDNaXUaAllo9WuRHroYJyNuZaKG8WZqJbDNBw=;
- b=D/LyQ6vT0QnOwh9zaHv9dSsaN+nx4f6TYr5ZuIvz/e/ccBEgNqw6FrkFtjSscCsSe/jhpp
- 2o5XQrKzCNxZkNMniyqc22goxLlSmt5rmY7BVJhL0uUxemIMxFdj3UqJzCwkTt6TV/6+LG
- PgT44p17pjPGnjitD04PEie5rNhSmjw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-501-744gbhUMPsG4Gi2DiD6G9w-1; Mon, 04 Sep 2023 04:05:33 -0400
-X-MC-Unique: 744gbhUMPsG4Gi2DiD6G9w-1
+ bh=cdJyzro/1PW1wpTBijWjAZMD3UPhZ9MGOFDP+xuEvXk=;
+ b=Qbe4nkw+lvP6YcAG+qdRdQuC0JK2ietyHiN4sWV8BNjRNeIdlgi63ryFDfEQkk4clftK4b
+ OlWpzt1WDKrNx0tVXQmepOaDuZnnuI6DXvzq8uU7jvMTZ4Z9gVvUle6ZW1WPEg8ae/+DRU
+ qTyKdkQLAg2ocUpmdlVelgwJcv6OmOw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-594-fRGHcY_WMvqyLpc1b289WA-1; Mon, 04 Sep 2023 04:05:36 -0400
+X-MC-Unique: fRGHcY_WMvqyLpc1b289WA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE6D9925FC9;
- Mon,  4 Sep 2023 08:05:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C953F3804519;
+ Mon,  4 Sep 2023 08:05:35 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.53])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C3F6340D2962;
- Mon,  4 Sep 2023 08:05:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 271A740C6CCC;
+ Mon,  4 Sep 2023 08:05:32 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
  jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
 Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org
-Subject: [PATCH 12/13] virtio-iommu: Resize memory region according to the max
- iova info
-Date: Mon,  4 Sep 2023 10:03:55 +0200
-Message-ID: <20230904080451.424731-13-eric.auger@redhat.com>
+Subject: [PATCH 13/13] vfio: Remove 64-bit IOVA address space assumption
+Date: Mon,  4 Sep 2023 10:03:56 +0200
+Message-ID: <20230904080451.424731-14-eric.auger@redhat.com>
 In-Reply-To: <20230904080451.424731-1-eric.auger@redhat.com>
 References: <20230904080451.424731-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,7 +64,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,35 +80,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By default the virtio-iommu MR has a 64b span. As we intend to
-remove the VFIO assumption of 64b IOVA, let's make sure the MR
-is resized according to the actual GAW of the physical IOMMU.
-Otherwise we will get a failure on vfio vfio_find_hostwin().
+Now we retrieve the usable IOVA ranges from the host,
+let's remove the assumption of 64b IOVA space when calling
+vfio_host_win_add().
+
+Make sure the vfio_find_hostwin() gets called after we get
+a chance to call set_iova_regions and resize the IOMMU MR
+according to the actual physical GAW.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/virtio/virtio-iommu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/vfio/common.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index d260235078..d877119df1 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1180,8 +1180,14 @@ static int virtio_iommu_set_iova_ranges(IOMMUMemoryRegion *mr,
-                                         Error **errp)
- {
-     IOMMUDevice *sdev = container_of(mr, IOMMUDevice, iommu_mr);
-+    uint64_t max_iova;
-+
-     assert(nr_ranges);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 26da38de05..40cac1ca91 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1112,13 +1112,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+ #endif
+     }
  
-+    max_iova = range_upb(&iova_ranges[nr_ranges - 1]);
-+    if (max_iova < UINT64_MAX) {
-+        memory_region_set_size(&mr->parent_obj, max_iova + 1);
+-    hostwin = vfio_find_hostwin(container, iova, end);
+-    if (!hostwin) {
+-        error_setg(&err, "Container %p can't map guest IOVA region"
+-                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+-        goto fail;
+-    }
+-
+     memory_region_ref(section->mr);
+ 
+     if (memory_region_is_iommu(section->mr)) {
+@@ -1177,6 +1170,14 @@ static void vfio_listener_region_add(MemoryListener *listener,
+         return;
+     }
+ 
++    hostwin = vfio_find_hostwin(container, iova, end);
++    if (!hostwin) {
++        error_setg(&err, "Container %p can't map guest IOVA region"
++                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
++        goto fail;
 +    }
++
++
+     /* Here we assume that memory_region_is_ram(section->mr)==true */
  
-     range_inverse_array(nr_ranges, iova_ranges,
-                         &sdev->nr_host_resv_regions, &sdev->host_resv_regions);
+     /*
+@@ -2594,12 +2595,10 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+         vfio_get_iommu_info_migration(container, info);
+         g_free(info);
+ 
+-        /*
+-         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
+-         * information to get the actual window extent rather than assume
+-         * a 64-bit IOVA address space.
+-         */
+-        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
++        g_assert(container->nr_iovas);
++        vfio_host_win_add(container, 0,
++                          container->iova_ranges[container->nr_iovas - 1].end,
++                          container->pgsizes);
+ 
+         break;
+     }
 -- 
 2.41.0
 
