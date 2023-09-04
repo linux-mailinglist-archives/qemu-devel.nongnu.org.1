@@ -2,72 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12FB791B86
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6116B791B8C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:26:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCOj-0007OC-Dg; Mon, 04 Sep 2023 12:25:57 -0400
+	id 1qdCPH-0000EV-55; Mon, 04 Sep 2023 12:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qdCOg-0007Mn-8Z
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:25:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qdCOd-0001s1-Rc
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:25:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693844751;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=opO8x/u1gtxbDGBKSy77Ei+EC+dcGTIytP3c3BLnam4=;
- b=NoHVLkeB6KYLs4quusMnsThW6PQoaN4yBqPIm2Cw6RWBw6QAwoNBYE2+w4EA2UmbE9XIqB
- x5cYQlnAXTHwCKi/KYb5d6lzS8xeaYFXYHJSPGFem10OueN8qvs9Fkcir98igVxFJkhJSA
- YQABsfq21yfJKBVyqJRhWvwtl+FYjc4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-10-cJqZhMOUNy-Vm4ep4HuxCw-1; Mon, 04 Sep 2023 12:25:48 -0400
-X-MC-Unique: cJqZhMOUNy-Vm4ep4HuxCw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 67271299E75A;
- Mon,  4 Sep 2023 16:25:48 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 63C25493110;
- Mon,  4 Sep 2023 16:25:47 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- William Tsai <williamtsai1111@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH 1/1] qom: fix setting of array properties
-Date: Mon,  4 Sep 2023 17:25:44 +0100
-Message-ID: <20230904162544.2388037-2-berrange@redhat.com>
-In-Reply-To: <20230904162544.2388037-1-berrange@redhat.com>
-References: <20230904162544.2388037-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCPE-0000CR-JW
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:26:28 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCPC-0001x4-91
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:26:28 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2bb9a063f26so24513161fa.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:26:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693844784; x=1694449584; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OjhTv8vbMu73CcpPM02r72GfZrrGI1QEZM2R3d07g/Y=;
+ b=xM1qvK29Pa3ryXBNX9CjWc5Mg/RWh6qR/tuYO6oRzfbPi1sAY0WCFHzq8qufeh80ze
+ e51+IR7iZ6IIo6XQPHleTGuRNTSEQrfrDfLJMdRvRfeOOq1BbJbZr22QlTprBSeddZ0I
+ S49O12uyOY2eyehPorWAAFFWYA0FzwTH+cq/WBAYVZtzo+UB1gXJBrcMQRy2VkqDN+u0
+ 5gxYfJqDgv8IU20uwbglLdWKzXYo7FhzMds5aZ12dyky0Vpsw7yU5eGr5zRsgosD+u4G
+ 2MOqaDwKwU5foQp+5wo/o+emiKXcyRtFWThBbNZ+G11aqS78gswBlabNEd3Job1114fl
+ 8g7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693844784; x=1694449584;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OjhTv8vbMu73CcpPM02r72GfZrrGI1QEZM2R3d07g/Y=;
+ b=NR8bwLcu5VTnpvwCg42fm34rmz9vTnZAJ9kE2l+ZPjBjCI7MUXk2j4jQlwC3tpiUmx
+ /93c+7XdG9KNUm5mabIhf3kZ2oV5/sCH0Ykj17yvpJJT5ubenlFX1Yni9le6hrYDMtwk
+ +ZSWf2kfBIJ3O/g1EJ5DLBYeDk5qf0aIJoW4viVZ/axv6aB11bdUMibFINpWaB+fg+KY
+ bNK2WLPZxQcaiaR8fwiFcOrxE/jqe8ruWwQoJ5iJES54OMJSQ8KFJtdnh3wm5mwfax+E
+ SR3wxrnZMJas/1eumSqM4kNkWoURTvo13frmIcSwh2Jk68wlSHAwlQVtUcPko/a1ookS
+ JrGg==
+X-Gm-Message-State: AOJu0YxDtHZUqJYqCk2A5XGSQml+6gqUfloOkdmconLjTBVZpHywGo5A
+ 7+8UzxPkvuE/OmCujD3MStDm0UflqE9wAfNT6dE=
+X-Google-Smtp-Source: AGHT+IFSNfP2GQN4MBoQKW5RAfiA4YpPnSWnOXEkg7zNqLuta/ckMQyJRLlFoTJPKez0+vfIw4kQhA==
+X-Received: by 2002:a05:6512:210c:b0:4fe:5a4b:911d with SMTP id
+ q12-20020a056512210c00b004fe5a4b911dmr6333069lfr.64.1693844784145; 
+ Mon, 04 Sep 2023 09:26:24 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
+ by smtp.gmail.com with ESMTPSA id
+ n25-20020ac24919000000b005007cf8968esm1800299lfi.264.2023.09.04.09.26.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 09:26:23 -0700 (PDT)
+Message-ID: <c73cfe51-c207-1279-4a99-428567edd6e8@linaro.org>
+Date: Mon, 4 Sep 2023 18:26:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] docs/devel/loads-stores: Fix git grep regexes
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230904161703.3996734-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230904161703.3996734-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,72 +91,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DEFINE_PROP_ARRAY() creates a property 'len-$ARRAY-PROP-NAME'
-which, when set, will create a sequence of '$ARRAY-PROP-NAME[N]'
-properties.
+On 4/9/23 18:17, Peter Maydell wrote:
+> The loads-and-stores documentation includes git grep regexes to find
+> occurrences of the various functions.  Some of these regexes have
+> errors, typically failing to escape the '?', '(' and ')' when they
+> should be metacharacters (since these are POSIX basic REs). We also
+> weren't consistent about whether to have a ':' on the end of the
+> line introducing the list of regexes in each section.
+> 
+> Fix the errors.
+> 
+> The following shell rune will complain about any REs in the
+> file which don't have any matches in the codebase:
+>   for re in $(sed -ne 's/ - ``\(\\<.*\)``/\1/p' docs/devel/loads-stores.rst); do git grep -q "$re" || echo "no matches for re $re"; done
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/devel/loads-stores.rst | 40 ++++++++++++++++++-------------------
+>   1 file changed, 20 insertions(+), 20 deletions(-)
 
-This only works if the 'len-$ARRAY-PROP-NAME' property is
-set first, and the array elements afterwards. Historically
-this required the user to set correct ordering and QemuOpts
-traversal would preserve that ordering. With QemuOpts now
-converted to QDict, iteration ordering is undefined. Thus
-to keep array properties working, we iterate over the QDict
-twice.
-
-Doing this in QOM is a bit of a layering violation since
-DEFINE_PROP_ARRAY is part of QDev, but it is the simplest
-option to preserve backwards compatibility, without ripple
-effects across any other part of QEMU.
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1090
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- qom/object_interfaces.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-index 7d31589b04..6aaaf42ffc 100644
---- a/qom/object_interfaces.c
-+++ b/qom/object_interfaces.c
-@@ -51,7 +51,37 @@ static void object_set_properties_from_qdict(Object *obj, const QDict *qdict,
-     if (!visit_start_struct(v, NULL, NULL, 0, errp)) {
-         return;
-     }
-+
-+    /* Layering violation here...
-+     *
-+     * DEFINE_PROP_ARRAY() creates a property 'len-$ARRAY-PROP-NAME'
-+     * which, when set, will create a sequence of '$ARRAY-PROP-NAME[N]'
-+     * properties.
-+     *
-+     * This only works if the 'len-$ARRAY-PROP-NAME' property is
-+     * set first, and the array elements afterwards. Historically
-+     * this required the user to get correct ordering and QemuOpts
-+     * traversal would preserve that ordering. With QemuOpts now
-+     * converted to QDict, iteration ordering is undefined. Thus
-+     * to keep array properties working, we iterate over the QDict
-+     * twice.
-+     */
-+
-+    /* First the props that control array property length */
-     for (e = qdict_first(qdict); e; e = qdict_next(qdict, e)) {
-+        if (!g_str_has_prefix(e->key, "len-")) {
-+            continue;
-+        }
-+        if (!object_property_set(obj, e->key, v, errp)) {
-+            goto out;
-+        }
-+    }
-+
-+    /* Then any other normal properties */
-+    for (e = qdict_first(qdict); e; e = qdict_next(qdict, e)) {
-+        if (g_str_has_prefix(e->key, "len-")) {
-+            continue;
-+        }
-         if (!object_property_set(obj, e->key, v, errp)) {
-             goto out;
-         }
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
