@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF327917CF
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BBE79181F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:30:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9Kw-0000dO-5O; Mon, 04 Sep 2023 09:09:50 -0400
+	id 1qd9eL-0007of-Oc; Mon, 04 Sep 2023 09:29:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qd9Kp-0000cU-IG; Mon, 04 Sep 2023 09:09:44 -0400
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qd9eA-0007g5-V8
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:29:43 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qd9Km-00058W-Gh; Mon, 04 Sep 2023 09:09:42 -0400
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-34e12396f6fso5103115ab.1; 
- Mon, 04 Sep 2023 06:09:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qd9e6-0000k1-9N
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:29:42 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68c3b9f8333so897414b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 06:27:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693832979; x=1694437779; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aXdCSkQUnks4joj4Q9Xj2ogjlfuFzQJroeoQkDZyopg=;
- b=GyH4//TmaOIceE3dkdaPF75RSXVzz7Qi74GQ57RUNJZ7eS23iOOIB+UyJZuDm6EFYL
- XLKaC5r64J1x03yQloSUCUZ5NmIhZlvjQPIg6l6Jj39DcgbNUi3NZFy/K5QwHNFHlG6J
- Rq2rRF2TAZBerr0FBnERW+9GLGOqaKxl14Mxn6wfu+BZW2cenX2l+ycPjZmHdR3fN48R
- 5OafiN39j5ey9CN0QRvUkvPamMugj1wOr9GzMwhev/hBOIzm2WMBBUl3n1AdOxuLGyd0
- doIaOxT+MYAT1LqBnVlf6arRo80uWq19RFdlV5ZKHhv1hv5byaGW46Tj+l9VWykRc+dW
- Wa0g==
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1693834054; x=1694438854;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IFhGCBAKg+gHQnVyRgyu1urOe/739zifFBUmXWMt6Pw=;
+ b=dmGmVsGz/RLZuIJpDj+7XXdT+U1xcriLsOOgvgs6OIFFqADwaLjRS/TiTlHKsf4pd9
+ R6fmSdvNoIBz4eaUbf2H0z1MdVvXaFNxi3tRaC7A/NxvWdc0mUT50Q1jv0dpVDHK9JQR
+ HKXh0YzT83sh+6zr8q0jjZ6cEMP2K50ve7fEqesLvyMQeoHsI+/WrgZ+jO1t6QSh5I/S
+ sskb8930Yg4IPxhCPyr9Vh3cXEVfAn5NuDwKzzy7zNxPr8hA9WV8FOF93D78cW0MlYiI
+ Rl7UPoD1fvI7JmIJio/vXavkk4UnKosgKfFTdg01tGAVVeffMHyHQ/0r5hpHkRxWMlIG
+ vrqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693832979; x=1694437779;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=aXdCSkQUnks4joj4Q9Xj2ogjlfuFzQJroeoQkDZyopg=;
- b=hgLklw34ZS4ruU/ZywPDpUKPEDwTqeFInrjpYzB9kax9l1hKcC5VYNW/TKuEfkxSJq
- NIqJdXziR+sfiN/M0GMR33YuZv2iGC8P0Yv2Gn8/+1VXw6erlsPETqShGnYh49Ay0G6/
- CKp4vRN3VBJKDavz7BuBjsOI8JiorphzbkVzjYHs+oL/PqCvQZ+jqoEqIbN5QWPA9+xL
- 7QaRqB/cbtx46pw6TRrEnfnbjHiOT/5BqRaAckl+qFek02spBPUOojF0lcLpVKV01Wn4
- swXJlhYzbl00YIQZVPZ9SW4ClDEr/wkxBP2XuuKs3Zo4QQuANhgT6CwXajGeK04Mm79s
- caZw==
-X-Gm-Message-State: AOJu0YywO8gCTMTQOw8OFPDJZfDyYZfGZQB6FU0x2/giwX+Ph6un08lr
- Av16JNQ1px9j61/d4cPQ+Wk=
-X-Google-Smtp-Source: AGHT+IHEdx4vDy+OPE6M4w6z7xojWKWMJCcXlzvVVvF4Wrfd9lwP9R0DAGUTYMprLPQwru0ZDBRaqA==
-X-Received: by 2002:a92:c144:0:b0:34c:cc37:3064 with SMTP id
- b4-20020a92c144000000b0034ccc373064mr11469619ilh.15.1693832978817; 
- Mon, 04 Sep 2023 06:09:38 -0700 (PDT)
-Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
- by smtp.gmail.com with ESMTPSA id
- x7-20020a63b207000000b00563df2ba23bsm7703080pge.50.2023.09.04.06.09.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 06:09:38 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 04 Sep 2023 23:09:33 +1000
-Message-Id: <CVA5ODL1631K.3IGDZE9PWNRL3@wheely>
-Cc: "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz"
- <groug@kaod.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "Pavel
- Dovgalyuk" <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini"
- <pbonzini@redhat.com>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 08/19] target/ppc: Sign-extend large decrementer to
- 64-bits
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>
-X-Mailer: aerc 0.15.2
-References: <20230808042001.411094-1-npiggin@gmail.com>
- <20230808042001.411094-9-npiggin@gmail.com>
- <59203654-9490-0b2c-af6d-3d52577c41ff@kaod.org>
-In-Reply-To: <59203654-9490-0b2c-af6d-3d52577c41ff@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20221208; t=1693834054; x=1694438854;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IFhGCBAKg+gHQnVyRgyu1urOe/739zifFBUmXWMt6Pw=;
+ b=hfu7VEp2LmRy6gcfb098oH8Br4eUxZgA3rDbx5LuEaQBZyQRMdum6SMX7kby84mPo/
+ w6uKaVYG+a+u4hkRmb8O2QRNPCNvvGvq6N4LDRAM5C/C3taSzqPdi7FB60dZZTDRCJRF
+ qlKCkOft4qBZOgCEWMMyr+SY7xY1zB33b+UAuX6oHuEBKUvONSE/3utnph/Wn6EBlXEp
+ fxajxnDTwIYVzMKZCCX+C/Kjf47i1o7HKEs/Os1DhGSgdcYMimMNzjZ1xvE97jkOHrmi
+ K61iADl5J0WOIYi2oAp0Yz/09bzeAZ0/UKJgWNvel5wvnR44+eolZgeA2jIoXf04TD61
+ WVbA==
+X-Gm-Message-State: AOJu0YxJT0iH98E4L42aGhR/RvW4kkRllv+RdKhvSbMa9UjwWifW7coX
+ LyTJuooQmeMfak9iPgACSg4nxaHL52FVJC/t0TuKVQ==
+X-Google-Smtp-Source: AGHT+IELx6AVspEtU/nkTmyh/aax8A7afGSzoN300asYs1akLG/K1tnBioydAYtUEpnUv2/M5Rc/7k6/v5FgTrRNM6M=
+X-Received: by 2002:a05:6a00:22c1:b0:68b:a137:373d with SMTP id
+ f1-20020a056a0022c100b0068ba137373dmr14258320pfj.17.1693834054162; Mon, 04
+ Sep 2023 06:27:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <SA1PR11MB6760A4AD57255448B62EDE38F5E4A@SA1PR11MB6760.namprd11.prod.outlook.com>
+In-Reply-To: <SA1PR11MB6760A4AD57255448B62EDE38F5E4A@SA1PR11MB6760.namprd11.prod.outlook.com>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Mon, 4 Sep 2023 21:27:17 +0800
+Message-ID: <CAK9dgmYVeGGf=2jawm77DtiOeqvnN_dEiLvOWK3-r1zzC1DJ8A@mail.gmail.com>
+Subject: Re: [PATCH] softmmu/dirtylimit: Fix usleep early return on signal
+To: alloc.young@outlook.com
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000001b72800604887901"
+Received-SPF: none client-ip=2607:f8b0:4864:20::434;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,55 +84,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Sep 1, 2023 at 10:25 PM AEST, C=C3=A9dric Le Goater wrote:
-> Nick,
+--0000000000001b72800604887901
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Sep 1, 2023 at 10:19=E2=80=AFAM <alloc.young@outlook.com> wrote:
+
+> From: alloc <alloc.young@outlook.com>
 >
-> On 8/8/23 06:19, Nicholas Piggin wrote:
-> > When storing a large decrementer value with the most significant
-> > implemented bit set, it is to be treated as a negative and sign
-> > extended.
-> >=20
-> > This isn't hit for book3s DEC because of another bug, fixing it
-> > in the next patch exposes this one and can cause additional
-> > problems, so fix this first. It can be hit with HDECR and other
-> > edge triggered types.
-> >=20
-> > Fixes: a8dafa52518 ("target/ppc: Implement large decrementer support fo=
-r TCG")
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >   hw/ppc/ppc.c | 8 ++++++--
-> >   1 file changed, 6 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> > index a397820d9c..fb4784793c 100644
-> > --- a/hw/ppc/ppc.c
-> > +++ b/hw/ppc/ppc.c
-> > @@ -743,7 +743,9 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
-> >        * to 64 bits, otherwise it is a 32 bit value.
-> >        */
-> >       if (env->spr[SPR_LPCR] & LPCR_LD) {
-> > -        return decr;
-> > +        PowerPCCPU *cpu =3D env_archcpu(env);
-> > +        PowerPCCPUClass *pcc =3D POWERPC_CPU_GET_CLASS(cpu);
-> > +        return sextract64(decr, 0, pcc->lrg_decr_bits);
-> >       }
-> >       return (uint32_t) decr;
-> >   }
-> > @@ -762,7 +764,9 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
-> >        * extended to 64 bits, otherwise it is 32 bits.
-> >        */
-> >       if (pcc->lrg_decr_bits > 32) {
-> > -        return hdecr;
-> > +        PowerPCCPU *cpu =3D env_archcpu(env);
-> > +        PowerPCCPUClass *pcc =3D POWERPC_CPU_GET_CLASS(cpu);
+> Timeout functions like usleep can return early on signal, which reduces
+> more dirty pages than expected. In dirtylimit case, dirtyrate meter
+> thread needs to kick all vcpus out to sync. The callchain:
 >
-> Why are 'cpu' and 'ppc' duplicated ?
+> vcpu_calculate_dirtyrate
+>     global_dirty_log_sync
+>         memory_global_dirty_log_sync
+>             kvm_log_sync_global
+>                 kvm_dirty_ring_flush
+>                     kvm_cpu_synchronize_kick_all <---- send vcpu signal
+>
+> For long time sleep, use qemu_cond_timedwait_iothread to handle cpu stop
+> event.
+>
+>
+The Dirty Limit algorithm seeks to keep the vCPU dirty page rate within
+the set limit; since it focuses more emphasis on processing time and
+precision, I feel that improvement should strive for the same result.
+Could you please provide the final test results showing the impact of
+that improvement?
 
-Hmm.. cut and paste bug maybe, good catch.
 
-I'll send an increment to tidy it if needed.
+> Signed-off-by: alloc <alloc.young@outlook.com>
+> ---
+>  softmmu/dirtylimit.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+>
+> diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
+> index fa959d7743..ee938c636d 100644
+> --- a/softmmu/dirtylimit.c
+> +++ b/softmmu/dirtylimit.c
+> @@ -411,13 +411,28 @@ void dirtylimit_set_all(uint64_t quota,
+>
+>  void dirtylimit_vcpu_execute(CPUState *cpu)
+>  {
+> +    int64_t sleep_us, endtime_us;
+> +
+> +    dirtylimit_state_lock();
+>      if (dirtylimit_in_service() &&
+>          dirtylimit_vcpu_get_state(cpu->cpu_index)->enabled &&
+>          cpu->throttle_us_per_full) {
+>          trace_dirtylimit_vcpu_execute(cpu->cpu_index,
+>                  cpu->throttle_us_per_full);
+> -        usleep(cpu->throttle_us_per_full);
+> -    }
+> +        sleep_us =3D cpu->throttle_us_per_full;
+> +        dirtylimit_state_unlock();
+> +        endtime_us =3D qemu_clock_get_us(QEMU_CLOCK_REALTIME) + sleep_us=
+;
+> +        while (sleep_us > 0 && !cpu->stop) {
+> +            if (sleep_us > SCALE_US) {
+> +                qemu_mutex_lock_iothread();
+> +                qemu_cond_timedwait_iothread(cpu->halt_cond, sleep_us /
+> SCALE_US);
+> +                qemu_mutex_unlock_iothread();
+> +            } else
+> +                g_usleep(sleep_us);
+> +            sleep_us =3D endtime_us -
+> qemu_clock_get_us(QEMU_CLOCK_REALTIME);
+> +        }
+> +    } else
+> +        dirtylimit_state_unlock();
+>  }
+>
+>  static void dirtylimit_init(void)
+> --
+> 2.39.3
+>
+>
 
-Thanks,
-Nick
+--=20
+Best regards
+
+--0000000000001b72800604887901
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 1, 202=
+3 at 10:19=E2=80=AFAM &lt;<a href=3D"mailto:alloc.young@outlook.com">alloc.=
+young@outlook.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:=
+solid;border-left-color:rgb(204,204,204);padding-left:1ex">From: alloc &lt;=
+<a href=3D"mailto:alloc.young@outlook.com" target=3D"_blank">alloc.young@ou=
+tlook.com</a>&gt;<br>
+<br>
+Timeout functions like usleep can return early on signal, which reduces<br>
+more dirty pages than expected. In dirtylimit case, dirtyrate meter<br>
+thread needs to kick all vcpus out to sync. The callchain:<br>
+<br>
+vcpu_calculate_dirtyrate<br>
+=C2=A0 =C2=A0 global_dirty_log_sync<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 memory_global_dirty_log_sync<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kvm_log_sync_global<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kvm_dirty_ring_flus=
+h<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kvm_c=
+pu_synchronize_kick_all &lt;---- send vcpu signal<br>
+<br>
+For long time sleep, use qemu_cond_timedwait_iothread to handle cpu stop<br=
+>
+event.<br>
+<br></blockquote><div><div class=3D"gmail_default" style=3D"font-family:&qu=
+ot;comic sans ms&quot;,sans-serif"><br></div></div><div class=3D"gmail_defa=
+ult" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">The Dirty L=
+imit algorithm seeks to keep the vCPU dirty page rate within</div><div clas=
+s=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-ser=
+if">the set limit; since it focuses more emphasis on processing time and</d=
+iv><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&qu=
+ot;,sans-serif">precision, I feel that improvement should strive for the sa=
+me result.</div><div class=3D"gmail_default" style=3D"font-family:&quot;com=
+ic sans ms&quot;,sans-serif">Could you please provide the final test result=
+s showing the impact of</div><div class=3D"gmail_default" style=3D"font-fam=
+ily:&quot;comic sans ms&quot;,sans-serif">that improvement?</div><div>=C2=
+=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left-width:1px;border-left-style:solid;border-left-color:rgb(204,2=
+04,204);padding-left:1ex">
+Signed-off-by: alloc &lt;<a href=3D"mailto:alloc.young@outlook.com" target=
+=3D"_blank">alloc.young@outlook.com</a>&gt;<br>
+---<br>
+=C2=A0softmmu/dirtylimit.c | 19 +++++++++++++++++--<br>
+=C2=A01 file changed, 17 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c<br>
+index fa959d7743..ee938c636d 100644<br>
+--- a/softmmu/dirtylimit.c<br>
++++ b/softmmu/dirtylimit.c<br>
+@@ -411,13 +411,28 @@ void dirtylimit_set_all(uint64_t quota,<br>
+<br>
+=C2=A0void dirtylimit_vcpu_execute(CPUState *cpu)<br>
+=C2=A0{<br>
++=C2=A0 =C2=A0 int64_t sleep_us, endtime_us;<br>
++<br>
++=C2=A0 =C2=A0 dirtylimit_state_lock();<br>
+=C2=A0 =C2=A0 =C2=A0if (dirtylimit_in_service() &amp;&amp;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dirtylimit_vcpu_get_state(cpu-&gt;cpu_ind=
+ex)-&gt;enabled &amp;&amp;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cpu-&gt;throttle_us_per_full) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0trace_dirtylimit_vcpu_execute(cpu-&gt;cpu=
+_index,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cpu-&gt;throt=
+tle_us_per_full);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 usleep(cpu-&gt;throttle_us_per_full);<br>
+-=C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 sleep_us =3D cpu-&gt;throttle_us_per_full;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 dirtylimit_state_unlock();<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 endtime_us =3D qemu_clock_get_us(QEMU_CLOCK_RE=
+ALTIME) + sleep_us;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 while (sleep_us &gt; 0 &amp;&amp; !cpu-&gt;sto=
+p) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sleep_us &gt; SCALE_US) {<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_mutex_lock_io=
+thread();<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_cond_timedwai=
+t_iothread(cpu-&gt;halt_cond, sleep_us / SCALE_US);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_mutex_unlock_=
+iothread();<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 g_usleep(sleep_us)=
+;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sleep_us =3D endtime_us - qemu_c=
+lock_get_us(QEMU_CLOCK_REALTIME);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 } else<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 dirtylimit_state_unlock();<br>
+=C2=A0}<br>
+<br>
+=C2=A0static void dirtylimit_init(void)<br>
+-- <br>
+2.39.3<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--0000000000001b72800604887901--
 
