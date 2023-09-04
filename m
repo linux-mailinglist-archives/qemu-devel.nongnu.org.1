@@ -2,60 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE4B7917C6
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:06:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7687917C8
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:08:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9HH-0006oE-2z; Mon, 04 Sep 2023 09:06:03 -0400
+	id 1qd9JF-0008B1-K0; Mon, 04 Sep 2023 09:08:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qd9H6-0006n2-Lo
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:05:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qd9H4-00047t-61
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:05:52 -0400
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-203-KwB1uegrNJmamFdGjHQySw-1; Mon, 04 Sep 2023 09:05:46 -0400
-X-MC-Unique: KwB1uegrNJmamFdGjHQySw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7336912B66;
- Mon,  4 Sep 2023 13:05:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.145])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5D04BC124A;
- Mon,  4 Sep 2023 13:05:44 +0000 (UTC)
-Date: Mon, 4 Sep 2023 14:05:41 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH 49/67] ui/vc: split off the VC part from console.c
-Message-ID: <ZPXWJQUrCSZrOyDr@redhat.com>
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-50-marcandre.lureau@redhat.com>
- <ZPId9976tOP7o8XS@redhat.com>
- <CAJ+F1C+mLdhOZgQs+v+7Me8m42re9i4D2LuVaqEimFXW+3X02w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1C+mLdhOZgQs+v+7Me8m42re9i4D2LuVaqEimFXW+3X02w@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qd9JD-0008AX-P3; Mon, 04 Sep 2023 09:08:03 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qd9JB-0004vz-A5; Mon, 04 Sep 2023 09:08:03 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-563f8e8a53dso564602a12.3; 
+ Mon, 04 Sep 2023 06:08:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693832879; x=1694437679; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DS4WjEmTOj6qfK8KWbdFHoAuX3YHHp1qmmf1Ie6+ojw=;
+ b=Zrw8Y3jFzcd9uCSLbEsflNV0Ugq1QtAmTS2EZOI0odTzthumW0jCwldp03PxHcPuEb
+ gp8xVpEAnF1kBfmu9cfqq6RhoxYw6OcA4E8/zy2bzmLRwlpkzebt7FznHyk256Buial0
+ +XaoqsNcOpMrHsUa8x8ZDFvFuLHIKZ8mU6t5XFVM+7rLe8DG3aKs3kQGpcWeguD0DBCK
+ bEnueod7hzabDPCQIue6CKlarx2isaf7GhgPKe3tJjXbdWEgVhk93FPgFDgSZXE2Afs7
+ 7/t+4tCKIzn6m+yEZRHMl3FqX1ZRgsGySYbjw+VuoUBgdysdxl2sQtwLPaoh3UWMO2+C
+ A1uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693832879; x=1694437679;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=DS4WjEmTOj6qfK8KWbdFHoAuX3YHHp1qmmf1Ie6+ojw=;
+ b=RbhrO8C3cvpx+Puu56uIkpsq8hcttoTdij2XWAO1IQ5ByM34AkgmRz7FrYKoETTloq
+ Y9y1GyG2hCC3S11KogcuiW2W6ZXhORfe6FtBW3ARkuXd+6e/Xn9INsEh9Vl160HaiOlN
+ oTqS3tGB6aSZ2hglbonw5VrWOvi+bqfiNthddHPfwzI436Vl3SlvwXLtpOKPmeqJfjQy
+ r7CO9VyDJ5chiMVIADydgEwN3LR/pVdfZ7JUv6Nd8Yo/sPsH5nvV1SeD/P0a8niKbMeE
+ U/wxjMQwQFCbJbGpNSQ8/d4zkV9+p4is/zDfZaHZhoBkefw8u1GKiMxyFsDy++22FGHD
+ wv6g==
+X-Gm-Message-State: AOJu0YwYHoSujiP9n43Z8eZWWvH2rtQSL62k8C29j/1/71ag1eVlKDTJ
+ FUqy5ldlEjybF/E3xhGMXLw=
+X-Google-Smtp-Source: AGHT+IGkYhqLfY8XmGpjNjBbcjcoZs5V0e92FPIqs/j0Me/DCdpTvKBC3S+RWPNP254STivwl7CdPQ==
+X-Received: by 2002:a05:6a20:9786:b0:14d:e075:fc5d with SMTP id
+ hx6-20020a056a20978600b0014de075fc5dmr7471272pzc.40.1693832878926; 
+ Mon, 04 Sep 2023 06:07:58 -0700 (PDT)
+Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
+ by smtp.gmail.com with ESMTPSA id
+ 15-20020aa7914f000000b0068bc2432ee2sm7294443pfi.51.2023.09.04.06.07.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 06:07:58 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 04 Sep 2023 23:07:51 +1000
+Message-Id: <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
+Cc: "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz"
+ <groug@kaod.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "Pavel
+ Dovgalyuk" <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini"
+ <pbonzini@redhat.com>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>,
+ "Peter Maydell" <peter.maydell@linaro.org>,
+ =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+Subject: Re: [PATCH v2 05/19] host-utils: Add muldiv64_round_up
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <20230808042001.411094-1-npiggin@gmail.com>
+ <20230808042001.411094-6-npiggin@gmail.com>
+ <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
+ <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
+In-Reply-To: <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,67 +97,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 04, 2023 at 04:57:45PM +0400, Marc-André Lureau wrote:
-> Hi
-> 
-> On Fri, Sep 1, 2023 at 9:23 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Wed, Aug 30, 2023 at 01:38:23PM +0400, marcandre.lureau@redhat.com wrote:
-> > > From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > >
-> > > Move common declarations to console-priv.h, and add a new unit
-> > > console-vc.c which will handle VC/chardev rendering, when pixman is
-> > > available.
-> > >
-> > > (if necessary, the move could be done chunk by chunks)
-> > >
-> > > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > > ---
-> > >  ui/console-priv.h |   43 ++
-> > >  ui/console-vc.c   | 1079 ++++++++++++++++++++++++++++++++++++++++++++
-> > >  ui/console.c      | 1096 +--------------------------------------------
-> > >  ui/meson.build    |    1 +
-> > >  4 files changed, 1126 insertions(+), 1093 deletions(-)
-> > >  create mode 100644 ui/console-priv.h
-> > >  create mode 100644 ui/console-vc.c
-> > >
-> > > diff --git a/ui/console-vc.c b/ui/console-vc.c
-> > > new file mode 100644
-> > > index 0000000000..656f099556
-> > > --- /dev/null
-> > > +++ b/ui/console-vc.c
-> > > @@ -0,0 +1,1079 @@
-> > > +/*
-> > > + * SPDX-License-Identifier: GPL-2.0-or-later
-> > > + * QEMU VC
-> >
-> > This code is moved out of console.c, which (surprisingly) appears
-> > to have an MIT license header.
-> >
-> 
-> updated
-> 
-> >
-> > The include/ui/console.h header meanwhile has no license, so is
-> > valid to assume it is GPL-2.0-or-later I guess.
-> >
-> 
-> Do you think I should split this patch in multiple patches? or can you
-> r-b it with the license change?
+On Sat Sep 2, 2023 at 3:02 AM AEST, Richard Henderson wrote:
+> On 9/1/23 04:51, C=C3=A9dric Le Goater wrote:
+> > Adding more reviewers since this patch is modifying a common service.
+> >=20
+> > Thanks,
+> >=20
+> > C.
+> >=20
+> >=20
+> > On 8/8/23 06:19, Nicholas Piggin wrote:
+> >> This will be used for converting time intervals in different base unit=
+s
+> >> to host units, for the purpose of scheduling timers to emulate target
+> >> timers. Timers typically must not fire before their requested expiry
+> >> time but may fire some time afterward, so rounding up is the right way
+> >> to implement these.
+> >>
+> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> >> ---
+> >> =C2=A0 include/qemu/host-utils.h | 21 ++++++++++++++++++++-
+> >> =C2=A0 1 file changed, 20 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
+> >> index 011618373e..e2a50a567f 100644
+> >> --- a/include/qemu/host-utils.h
+> >> +++ b/include/qemu/host-utils.h
+> >> @@ -56,6 +56,11 @@ static inline uint64_t muldiv64(uint64_t a, uint32_=
+t b, uint32_t c)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return (__int128_t)a * b / c;
+> >> =C2=A0 }
+> >> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint=
+32_t c)
+> >> +{
+> >> +=C2=A0=C2=A0=C2=A0 return ((__int128_t)a * b + c - 1) / c;
+> >> +}
+> >> +
+> >> =C2=A0 static inline uint64_t divu128(uint64_t *plow, uint64_t *phigh,
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t divisor)
+> >> =C2=A0 {
+> >> @@ -83,7 +88,8 @@ void mulu64(uint64_t *plow, uint64_t *phigh, uint64_=
+t a, uint64_t b);
+> >> =C2=A0 uint64_t divu128(uint64_t *plow, uint64_t *phigh, uint64_t divi=
+sor);
+> >> =C2=A0 int64_t divs128(uint64_t *plow, int64_t *phigh, int64_t divisor=
+);
+> >> -static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+> >> +static inline uint64_t __muldiv64(uint64_t a, uint32_t b, uint32_t c,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool round_up)
+>
+> Perhaps better avoiding the reserved name: muldiv64_internal?
 
-No need to split IMHO. With the MIT license for the .c file,
+Thanks, that would be okay. Or could be muldiv64_rounding?
 
-  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>
+> Otherwise,
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
+>
+> r~
+>
+>
+> >> =C2=A0 {
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 union {
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t ll;
+> >> @@ -99,12 +105,25 @@ static inline uint64_t muldiv64(uint64_t a, uint3=
+2_t b, uint32_t c)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u.ll =3D a;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rl =3D (uint64_t)u.l.low * (uint64_t)b;
+> >> +=C2=A0=C2=A0=C2=A0 if (round_up) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rl +=3D c - 1;
+> >> +=C2=A0=C2=A0=C2=A0 }
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rh =3D (uint64_t)u.l.high * (uint64_t)b=
+;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rh +=3D (rl >> 32);
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res.l.high =3D rh / c;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res.l.low =3D (((rh % c) << 32) + (rl &=
+ 0xffffffff)) / c;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return res.ll;
+> >> =C2=A0 }
+> >> +
+> >> +static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+> >> +{
+> >> +=C2=A0=C2=A0=C2=A0 return __muldiv64(a, b, c, false);
+> >> +}
+> >> +
+> >> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint=
+32_t c)
+> >> +{
+> >> +=C2=A0=C2=A0=C2=A0 return __muldiv64(a, b, c, true);
+> >> +}
+> >> =C2=A0 #endif
+> >> =C2=A0 /**
+> >=20
+> >=20
 
 
