@@ -2,96 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A247916FE
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82248791700
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8WW-0005Zh-4l; Mon, 04 Sep 2023 08:17:44 -0400
+	id 1qd8XA-0005oX-Vh; Mon, 04 Sep 2023 08:18:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8WU-0005ZZ-NX
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:17:42 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8WS-0006ej-Ab
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:17:42 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-99bcfe28909so202002066b.3
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:17:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693829859; x=1694434659; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JTtM7XOZ1r/iBc4hWPftr7NRzFwdU9CwaJVGZA36fhY=;
- b=IKuR/nL6vJn+ph9y2JYEhG6QhBUnKg9PTjUUpM3MenZ8Ynbdm4GrqiljXun5mlxmh9
- 6w+8IzAbNlqLCWs0Vh6tzqEbel9HSW1pFb7VmuBra9yGQVRjUMavkf+XVPl/ygvVxb9K
- W3RKJHaIHoHKMbvHJRdCTr7AvNNBI35lAUEK4MWwOScyczl37+r4nNyUjbTokjo2/gx9
- EviW2HdXdiS2b6/wODd0Qai1wQNpo3naBKHtzbm8W7xntPbOSeJlONfsILOZRIFTceMM
- w9Zujy0KJhiUqHd41rGwhA+rMlHsNNfZxjp/kcyfTTYTwpXH+J1xqhoXU4DD2b236feW
- ehWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693829859; x=1694434659;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JTtM7XOZ1r/iBc4hWPftr7NRzFwdU9CwaJVGZA36fhY=;
- b=MaSltqnUyIq6JhNkmXcc2vKzmphx3hxPoLLdzeOqhChoMO3hMGqXoACrU+I94nqRa+
- ckS1ke9NSSiaLspahNF8Toyx9X7l97s3IiaylntVOajlSZHzyNSz904BFNjwRQHU8xqg
- 6CFhtl2HRWog/irudXWMbZ0OcO+arKXA11EY3PVfe0ZTlVMmCkuevy3ktVOs1a4pold+
- EJQzEq4L7rqqFVM4cKI9LgnTuibIBs8/rWy8X7SSpRWO3KeWol9/M8NRKIgGtKEdpNfV
- j1RECZowh7fDG5hJCXLVD/0Fi3F/kKTS/EvJR1MH8X/FLuAuUOgrkDjhH9KgfGBQC/eD
- L0dw==
-X-Gm-Message-State: AOJu0YyxD+N+jzXQPXVQjbW31J26lONX51Pi89RXnJ6uGrJFpOTQd9Fz
- F9qgzI/ZfAVjXI/aaxAVq5Axgg==
-X-Google-Smtp-Source: AGHT+IE6dkpx9En4+Zf9EIqXar89zgsUq3+bWP2/QB7Hzt5InprNzm5O5EgkvdlHbNeHuVG5kDCrWA==
-X-Received: by 2002:a17:907:2cc8:b0:99d:de25:89bb with SMTP id
- hg8-20020a1709072cc800b0099dde2589bbmr6651532ejc.0.1693829858705; 
- Mon, 04 Sep 2023 05:17:38 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.209.227])
- by smtp.gmail.com with ESMTPSA id
- o13-20020a1709061d4d00b0098733a40bb7sm6063902ejh.155.2023.09.04.05.17.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 05:17:38 -0700 (PDT)
-Message-ID: <837a910c-2f45-4aeb-0ed6-fd934e270e35@linaro.org>
-Date: Mon, 4 Sep 2023 14:17:36 +0200
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qd8Ww-0005nI-LR
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:18:10 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qd8Ws-0006mf-UL
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:18:10 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8CxruvzyvVkLeIeAA--.59824S3;
+ Mon, 04 Sep 2023 20:17:56 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxLCPxyvVkRzFrAA--.42919S3; 
+ Mon, 04 Sep 2023 20:17:54 +0800 (CST)
+Subject: Re: [PATCH] roms: Support compile the efi bios for loongarch
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>, Chao Li <lichao@loongson.cn>
+References: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
+ <41a215d5-4ae6-dfa3-a61e-c21fd8ca311d@linaro.org>
+ <0cc3d20d-e849-9e2d-7560-fd694a412032@loongson.cn>
+ <c9f1e257-0875-21cf-4bbb-f678aab6b60c@loongson.cn>
+ <lx3zo3f2ox5d4cgi2rhce2mikiiqetdngvzhfaxx5tnsz65vtr@al2euj2s7m6j>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <e086fca3-39c1-cf8d-afed-65dba64d2dcc@loongson.cn>
+Date: Mon, 4 Sep 2023 20:17:53 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v8 03/12] virtio-sound: handle control messages and streams
+In-Reply-To: <lx3zo3f2ox5d4cgi2rhce2mikiiqetdngvzhfaxx5tnsz65vtr@al2euj2s7m6j>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "chael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Marc-Andr_=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Volker_R_=c3=bc_melin?= <vr_qemu@t-online.de>,
- =?UTF-8?B?S8WRIHbDoSBnw7MgLCBab2x0w6Egbg==?= <DirtY.iCE.hu@gmail.com>,
- =?UTF-8?Q?Alex_Benn_=c3=a9_e?= <alex.bennee@linaro.org>
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <e3e57dd125611eeb5e563eb7fab8eb89194ed50e.1693252037.git.manos.pitsidianakis@linaro.org>
- <198a502c-d7bb-5e83-08b4-f29222dd4d83@linaro.org>
- <0gk8g.5plunv7mgoh9@linaro.org>
- <df5e9f4e-9985-6c06-916e-48bd7b7a2dcb@linaro.org>
- <0gmex.y2a8jrzqq435@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <0gmex.y2a8jrzqq435@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+X-CM-TRANSID: AQAAf8CxLCPxyvVkRzFrAA--.42919S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tFWkJw48Kr4UCr1DXF1DJwc_yoW8Ww4kpF
+ 9aywsrJF48KryvqrWkGa48Xa1DZ34fGrn2vF4UXr18C3s8XrWru3srtFZYgF9rJw1vvFyU
+ ury093yqg3WDZagCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUBab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
+ z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+ 8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE
+ 2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+ xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
+ 7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07URKZXUUUUU=
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -33
+X-Spam_score: -3.4
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,42 +89,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/9/23 13:46, Manos Pitsidianakis wrote:
-> On Mon, 04 Sep 2023 14:30, Philippe Mathieu-Daudé <philmd@linaro.org> 
-> wrote:
->> On 4/9/23 13:00, Manos Pitsidianakis wrote:
->>> On Mon, 04 Sep 2023 13:46, Philippe Mathieu-Daudé <philmd@linaro.org> 
->>> wrote:
->>>>> +    size_t sz = iov_to_buf(cmd->elem->out_sg,
->>>>> +                           cmd->elem->out_num,
->>>>> +                           0,
->>>>> +                           &cmd->ctrl,
->>>>> +                           sizeof(cmd->ctrl));
->>>>> +    if (sz != sizeof(cmd->ctrl)) {
->>>>> +        qemu_log_mask(LOG_GUEST_ERROR,
->>>>> +                "%s: virtio-snd command size incorrect %zu vs \
->>>>> +                %zu\n", __func__, sz, sizeof(cmd->ctrl));
->>>>> +        return;
->>>>> +    }
->>>>> +
->>>>> +    trace_virtio_snd_handle_code(cmd->ctrl.code,
->>>>
->>>> IIUC the spec, this structure is in little endian, is that right?
->>>> So shouldn't swap various fields in this series?
->>>
->>> Not sure about the answer to this. Need input from someone more 
->>> knowledgeable in virtio.
->>
->> You can test running a big-endian guest (m68k, s390x, sparc64) on your
->> little-endian host.
-> 
-> The linux driver uses le{32,64}_to_cpu for reading fields, if there's 
-> any problem then it would be with the host?
 
-Ah right. Since using a BE guest is often simpler for most developers
-than accessing a BE host -- in particular to test recent kernel -- I was
-hoping this would be an easy enough suggestion.
+On 9/4/23 7:42 PM, Gerd Hoffmann wrote:
+>    Hi,
+>
+>> The loongarch cross-compilation tool on the fedora38 operating system is a
+>> bit old,
+> The gcc 12 -> 13 update for the cross compilers landed meanwhile,
+> right now we have:
+>
+>      binutils-loongarch64-linux-gnu.x86_64 2.39-4.fc38    @updates
+>      gcc-loongarch64-linux-gnu.x86_64      13.2.1-1.fc38  @updates
 
-Anyhow Linux swapping the fields confirms the virtio-sound model has to
-do the same.
+Compile with the compiler of the above version to compile UEFI normally,
+
+but there are some problems running on qemu,
+
+which require a later version of binutils to solve.
+
+It means that we need UEFI compiled by the following version
+
+of the compiler to run properly on qemu:
+
+binutils-loongarch64-linux-gnu-2.40-3.fc39.x86_64
+gcc-loongarch64-linux-gnu-13.2.1-1.fc39.x86_64
+
+>
+> Trying to build the loongarch firmware throws errors
+> (edk2/edk2-platforms repos, master branch, checkout
+> being a few days old):
+>
+> build.py...
+> /home/kraxel/projects/edk2-platforms/Platform/Loongson/LoongArchQemuPkg/Loongson.dsc(...): error 4000: Instance of library class [AcpiPlatformLib] is not found
+> 	in [/home/kraxel/projects/edk2/OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf] [LOONGARCH64]
+> 	consumed by module [/home/kraxel/projects/edk2/OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf]
+
+This compilation error is caused by a change in the AcpiPlatformLib 
+position in edk2, which is referenced by loongarch's UEFI.
+
+We have already submitted the patch to the edk2 community and may need a 
+day or two to merge.
+
+You can get the corresponding submission from the link below:
+
+https://github.com/tianocore/edk2-platforms/pull/94/files
+
+
+Thanks,
+
+xianglai
+
+
+> take care,
+>    Gerd
+
 
