@@ -2,57 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587AA791676
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C10791675
 	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:54:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd88h-000203-7y; Mon, 04 Sep 2023 07:53:07 -0400
+	id 1qd88m-00021B-Qs; Mon, 04 Sep 2023 07:53:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd88b-0001xI-7u
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qd88d-0001za-PL
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd88Y-0008EZ-9o
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:01 -0400
+ id 1qd88b-0008F0-J5
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828376;
+ s=mimecast20190719; t=1693828380;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=sEHeOqjSmcJEuubGVo2RvR0+YNacRwwIj4iFQ715WLo=;
- b=ZTt6Xm5At2FHvv2RFPvzaHkAKnWBC40biPHc7jR8J4TndKgpQpUIAvGBnsTyGqIl4UYfZK
- 7U+zduujQbJBqQpQwARpMd9e0NjVqseVfOeJC2TBQe+wevUhKovsPH847ko7YQF4YKCLtT
- FRJ4LleNioa3ZzAZr/fEfTchIvjUNuQ=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uPGziKzGBPsTm6kXFIORJt+KfCslq6m16s757uhh9hk=;
+ b=OGLEdgVU+yTcVUjAUjH0T6KEdGHApoXIXRWS9vfnn6+7HJbQFfdtkMp11Q0x47ord6DKmV
+ n0v+qMlEsHFrjjcTdPEhRW7wQ/jCte41ZhHHW3EKFhUsvctn0EtUHA1/1PLQTTD+ayT3OV
+ dFwQ2eyBlyqvF1pcpsfwkGeHfC2DE/s=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-408-kDV0wY02NrO1ww13K1G2_Q-1; Mon, 04 Sep 2023 07:52:55 -0400
-X-MC-Unique: kDV0wY02NrO1ww13K1G2_Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-131-EOMZ7R5JNIamXeo4PwRKJA-1; Mon, 04 Sep 2023 07:52:58 -0400
+X-MC-Unique: EOMZ7R5JNIamXeo4PwRKJA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2B98380671E
- for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:52:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1CC33C02B81
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:52:58 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1CD4D40C6CCC;
- Mon,  4 Sep 2023 11:52:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B1EFE568FF;
+ Mon,  4 Sep 2023 11:52:57 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 00/52] UI patches
-Date: Mon,  4 Sep 2023 15:51:57 +0400
-Message-ID: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 01/52] ui: remove qemu_pixman_color() helper
+Date: Mon,  4 Sep 2023 15:51:58 +0400
+Message-ID: <20230904115251.4161397-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
+References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -79,109 +83,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The following changes since commit 17780edd81d27fcfdb7a802efc870a99788bd2fc:
+Usage removed in commit e27bd65a72d ("console: switch color_table_rgb to pixman_color_t")
 
-  Merge tag 'quick-fix-pull-request' of https://gitlab.com/bsdimp/qemu into staging (2023-08-31 10:06:29 -0400)
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230830093843.3531473-2-marcandre.lureau@redhat.com>
+---
+ include/ui/qemu-pixman.h |  1 -
+ ui/qemu-pixman.c         | 11 -----------
+ 2 files changed, 12 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
-
-for you to fetch changes up to e38f4e976dd40c985bfe84230a627de9a108c9d3:
-
-  ui/gtk: fix leaks found wtih fuzzing (2023-09-04 15:37:50 +0400)
-
-----------------------------------------------------------------
-UI patch queue
-
-- misc fixes and improvement
-- cleanups and refactoring in ui/vc code
-
-----------------------------------------------------------------
-
-Bilal Elmoussaoui (2):
-  ui/dbus: Properly dispose touch/mouse dbus objects
-  ui/dbus: implement damage regions for GL
-
-Dmitry Frolov (1):
-  ui/gtk: fix leaks found wtih fuzzing
-
-Guoyi Tu (2):
-  ui/vdagent: call vdagent_disconnect() when agent connection is lost
-  ui/vdagent: Unregister input handler of mouse during finalization
-
-Marc-André Lureau (44):
-  ui: remove qemu_pixman_color() helper
-  ui: remove qemu_pixman_linebuf_copy()
-  ui/qmp: move screendump to ui-qmp-cmds.c
-  ui/vc: replace vc_chr_write() with generic qemu_chr_write()
-  ui/vc: drop have_text
-  ui/console: console_select() regardless of have_gfx
-  ui/console: call dpy_gfx_update() regardless of have_gfx
-  ui/console: drop have_gfx
-  ui/console: get the DisplayState from new_console()
-  ui/console: new_console() cannot fail
-  ui/vc: VC always has a DisplayState now
-  ui/vc: move VCChardev declaration at the top
-  ui/vc: replace variable with static text attributes default
-  ui/vc: fold text_update_xy()
-  ui/vc: pass VCCharDev to VC-specific functions
-  ui/vc: move VCCharDev specific fields out of QemuConsole
-  ui/console: use OBJECT_DEFINE_TYPE for QemuConsole
-  ui/console: change new_console() to use object initialization
-  ui/console: introduce different console objects
-  ui/console: instantiate a specific console type
-  ui/console: register the console from qemu_console_init()
-  ui/console: remove new_console()
-  ui/console: specialize console_lookup_unused()
-  ui/console: update the head from unused QemuConsole
-  ui/console: allocate ui_timer in QemuConsole
-  ui/vc: move cursor_timer initialization to QemuTextConsole class
-  ui/console: free more QemuConsole resources
-  ui/vc: move text fields to QemuTextConsole
-  ui/console: move graphic fields to QemuGraphicConsole
-  ui/vc: fold text_console_do_init() in vc_chr_open()
-  ui/vc: move some text console initialization to qom handlers
-  ui/console: simplify getting active_console size
-  ui/console: remove need for g_width/g_height
-  ui/vc: use common text console surface creation
-  ui/console: declare console types in console.h
-  ui/console: use QEMU_PIXMAN_COLOR helpers
-  ui/console: rename vga_ functions with qemu_console_
-  ui/console: assert(surface) where appropriate
-  ui/console: fold text_console_update_cursor_timer
-  ui/vc: skip text console resize when possible
-  ui/console: minor stylistic changes
-  ui/vc: move text console invalidate in helper
-  ui/vc: do not parse VC-specific options in Spice and GTK
-  ui/vc: change the argument for QemuTextConsole
-
-Peter Maydell (2):
-  ui/spice-display: Avoid dynamic stack allocation
-  ui/vnc-enc-hextile: Use static rather than dynamic length stack array
-
-Philippe Mathieu-Daudé (1):
-  ui/vnc-enc-tight: Avoid dynamic stack allocation
-
- qapi/char.json                |    4 +
- include/chardev/char.h        |    3 -
- include/ui/console.h          |   34 +-
- include/ui/qemu-pixman.h      |    9 +-
- ui/vnc-enc-hextile-template.h |    8 +-
- ui/console.c                  | 1125 ++++++++++++++-------------------
- ui/dbus-console.c             |    2 +
- ui/dbus-listener.c            |   32 +-
- ui/gtk.c                      |    6 +-
- ui/qemu-pixman.c              |   19 -
- ui/sdl2-input.c               |    7 +-
- ui/sdl2.c                     |    5 +-
- ui/spice-app.c                |    7 +-
- ui/spice-display.c            |    3 +-
- ui/ui-qmp-cmds.c              |  187 ++++++
- ui/vdagent.c                  |    6 +
- ui/vnc-enc-tight.c            |   11 +-
- 17 files changed, 776 insertions(+), 692 deletions(-)
-
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index 0c775604d1..fd78d17124 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -78,7 +78,6 @@ pixman_image_t *qemu_pixman_mirror_create(pixman_format_code_t format,
+                                           pixman_image_t *image);
+ void qemu_pixman_image_unref(pixman_image_t *image);
+ 
+-pixman_color_t qemu_pixman_color(PixelFormat *pf, uint32_t color);
+ pixman_image_t *qemu_pixman_glyph_from_vgafont(int height, const uint8_t *font,
+                                                unsigned int ch);
+ void qemu_pixman_glyph_render(pixman_image_t *glyph,
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index e4f024a85e..c5053cd326 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -226,17 +226,6 @@ void qemu_pixman_image_unref(pixman_image_t *image)
+     pixman_image_unref(image);
+ }
+ 
+-pixman_color_t qemu_pixman_color(PixelFormat *pf, uint32_t color)
+-{
+-    pixman_color_t c;
+-
+-    c.red   = ((color & pf->rmask) >> pf->rshift) << (16 - pf->rbits);
+-    c.green = ((color & pf->gmask) >> pf->gshift) << (16 - pf->gbits);
+-    c.blue  = ((color & pf->bmask) >> pf->bshift) << (16 - pf->bbits);
+-    c.alpha = ((color & pf->amask) >> pf->ashift) << (16 - pf->abits);
+-    return c;
+-}
+-
+ pixman_image_t *qemu_pixman_glyph_from_vgafont(int height, const uint8_t *font,
+                                                unsigned int ch)
+ {
 -- 
 2.41.0
 
