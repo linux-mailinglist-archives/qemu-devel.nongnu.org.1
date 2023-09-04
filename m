@@ -2,72 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1697916AF
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E602C7916CE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:04:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8CD-0001XQ-9a; Mon, 04 Sep 2023 07:56:45 -0400
+	id 1qd8CF-0001cH-Hk; Mon, 04 Sep 2023 07:56:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8Bx-0001MV-5R
+ id 1qd8Bx-0001Me-LW
  for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:56:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8Bt-00013v-R9
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:56:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828585;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=u9qzmsX2T96slRBtx7orvO5yh2WcU4rUq1DSMp/9kbQ=;
- b=Q307iDhlT46w8e89nvBvczrNd/DliaBCwrBvuOzfMi3/fRBMnVe+3/eHxwfzW1i+7HHYPN
- B4j76vKYxzR4YQ0t7rmav37p0ezlol3VUDr6oEzWAvoGZ+Z6t3PQ3f9itQUc06RRnIpSeh
- /UXt3LMTdkqJ8JnekZenye7k3L1F86w=
+ id 1qd8Bv-000142-HI
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:56:29 -0400
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-44-wJxSZSs2MiqcK57oSyB7gQ-1; Mon, 04 Sep 2023 07:56:21 -0400
-X-MC-Unique: wJxSZSs2MiqcK57oSyB7gQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-68-OxotyrIJP8u7enRm_qYQHg-1; Mon, 04 Sep 2023 07:56:25 -0400
+X-MC-Unique: OxotyrIJP8u7enRm_qYQHg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 737AB1C2979A;
- Mon,  4 Sep 2023 11:56:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 639173C0C491;
+ Mon,  4 Sep 2023 11:56:25 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A6DD9568FF;
- Mon,  4 Sep 2023 11:56:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5A3D6200A4B6;
+ Mon,  4 Sep 2023 11:56:23 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Guoyi Tu <tugy@chinatelecom.cn>,
- dengpengcheng <dengpc12@chinatelecom.cn>,
+Cc: stefanha@redhat.com, Dmitry Frolov <frolov@swemel.ru>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 51/52] ui/vdagent: Unregister input handler of mouse during
- finalization
-Date: Mon,  4 Sep 2023 15:52:48 +0400
-Message-ID: <20230904115251.4161397-52-marcandre.lureau@redhat.com>
+Subject: [PULL 52/52] ui/gtk: fix leaks found wtih fuzzing
+Date: Mon,  4 Sep 2023 15:52:49 +0400
+Message-ID: <20230904115251.4161397-53-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,33 +69,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Guoyi Tu <tugy@chinatelecom.cn>
+From: Dmitry Frolov <frolov@swemel.ru>
 
-Input handler resource should be released when
-VDAgentChardev object finalize
+It is true, that there is no problem during runtime
+from the first sight, because the memory is lost just
+before qemu exits. Nevertheless, this change is necessary,
+because AddressSanitizer is not able to recognize this
+situation and produces crash-report (which is
+false-positive in fact). Lots of False-Positive warnings
+are davaluing problems, found with fuzzing, and thus the
+whole methodology of dynamic analysis.
+This patch eliminates such False-Positive reports,
+and makes every problem, found with fuzzing, more valuable.
 
-Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
-Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <e7f5e172abf797d454e00a4bbe53af83e4aa4497.1692281173.git.tugy@chinatelecom.cn>
+Fixes: 060ab76356 ("gtk: don't exit early in case gtk init fails")
+
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <20230825115818.1091936-1-frolov@swemel.ru>
 ---
- ui/vdagent.c | 3 +++
- 1 file changed, 3 insertions(+)
+ ui/gtk.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/ui/vdagent.c b/ui/vdagent.c
-index 4b9a1fb7c5..00d36a8677 100644
---- a/ui/vdagent.c
-+++ b/ui/vdagent.c
-@@ -926,6 +926,9 @@ static void vdagent_chr_fini(Object *obj)
+diff --git a/ui/gtk.c b/ui/gtk.c
+index c34c133550..a14d56168d 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -2359,7 +2359,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+ {
+     VirtualConsole *vc;
  
-     migrate_del_blocker(vd->migration_blocker);
-     vdagent_disconnect(vd);
-+    if (vd->mouse_hs) {
-+        qemu_input_handler_unregister(vd->mouse_hs);
-+    }
-     buffer_free(&vd->outbuf);
-     error_free(vd->migration_blocker);
- }
+-    GtkDisplayState *s = g_malloc0(sizeof(*s));
++    GtkDisplayState *s;
+     GdkDisplay *window_display;
+     GtkIconTheme *theme;
+     char *dir;
+@@ -2369,6 +2369,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+         exit(1);
+     }
+     assert(opts->type == DISPLAY_TYPE_GTK);
++    s = g_malloc0(sizeof(*s));
+     s->opts = opts;
+ 
+     theme = gtk_icon_theme_get_default();
 -- 
 2.41.0
 
