@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFA5791563
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C601791555
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:58:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd6Kv-0005tY-VZ; Mon, 04 Sep 2023 05:57:37 -0400
+	id 1qd6Kw-0005tq-J4; Mon, 04 Sep 2023 05:57:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qd6Kp-0005sj-RS
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:57:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qd6Ks-0005t3-4u
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:57:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qd6Kn-0006mK-7k
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:57:31 -0400
+ id 1qd6Kp-0006mZ-Et
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 05:57:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693821448;
+ s=mimecast20190719; t=1693821450;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IFXyNZ8QXJiCq5ljFwwNbK2DgAER6VNuQmQR9ryjPQM=;
- b=WR34KO+RcGAXRCsYlLH1JUGMqbsfJS53oghmgp34nGfFwU5Hj84xFPZjIrvou7EVKD8odo
- FgDwiwPfIs54O/uDT2pWQyCry9c+rIfQx6Kx/y8+KKxbKkBpNHlZTpnOQUxwx8R0i7ic3T
- F+vekDkmYevR01B35pmgB7zJWTtSZkg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tF/gOVBt9Bwzbb1VjYdSOIoeRtnKVGuWbCyNBO/28Qg=;
+ b=edEvwJAd5As7HHF3GsPKLhp8TCEkA8gTv79Q8s/gOH4alys1NTjq4CRLK8GkPddHdXo8LX
+ 32AzQ6YEhSEUm142xgPTJ5JRAi/ayCPucA9lYJNpJt7Lgz1p81a8tc9dULYOESwf+Tk1p6
+ DHCgSMtLIKenDshd+3ONB1NPyIfFbYc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-pqIHSl6zNzOrRidyHeZGCQ-1; Mon, 04 Sep 2023 05:57:27 -0400
-X-MC-Unique: pqIHSl6zNzOrRidyHeZGCQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f5df65f9f4so8171345e9.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 02:57:26 -0700 (PDT)
+ us-mta-132-uku_EiTyNjq-CnNhiDMV7g-1; Mon, 04 Sep 2023 05:57:28 -0400
+X-MC-Unique: uku_EiTyNjq-CnNhiDMV7g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbdf341934so7778655e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 02:57:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693821445; x=1694426245;
+ d=1e100.net; s=20221208; t=1693821447; x=1694426247;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IFXyNZ8QXJiCq5ljFwwNbK2DgAER6VNuQmQR9ryjPQM=;
- b=ODWgc7T33LFIsKNhiMTBg0aSlH+7y3KEzUPs8yo6A1kpvhN64imSJIxx/VcWrPG5KW
- USoXvpvIs6Ep8Dr6vchTKM/YnX5ecYA6ntG7H2Soh1SXFyKRM53SBOFfeJW0/ziXMqjS
- RIakGoWudfytS9OzGK1ILyDcltb4kfftDQXDEG5gwL1WldURvQCV/L2dwCwh8IaZbFyy
- SoKbrFwPRPkX3uUzqpIkHRqk0nlpXQcUdk9bYYJVHC0xI8DKBZNLbfZNXhYRUdzoEkPQ
- k9AzGgf6ACBL/F1u8j+Vj/lbJxL8ipVZr/5dN1i98m8SKJ13chgfmqnMUUnCSIAfwOQK
- UlPw==
-X-Gm-Message-State: AOJu0YwV9CRoYEE8mlfzgLOZ9qy3mrDz9fpZRBcHP4vINxBCuoRt5E3I
- 8UnPHlKOed1YhlZv0LcMGQ4c7nLnUXKUbUHp2mSM9NDmLueiCtDlAH7kBwS5C5FgB0KglQgwdBp
- HFEWn5DKYlvTQoSa1K0VllQXu7x6e/URKbzKeXcmBs91n7TlPGD3LllEaHmROkpXjZlc9XwpPyQ
- c=
-X-Received: by 2002:a5d:69cb:0:b0:316:e249:c285 with SMTP id
- s11-20020a5d69cb000000b00316e249c285mr5875148wrw.71.1693821444717; 
- Mon, 04 Sep 2023 02:57:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHGGR0sdIxB/dKWAs8MMm7vX5mJGDRFl9oGt3tcL6BTNcN79thHDCWeWXa+qNSYlRvGgxB2Hg==
-X-Received: by 2002:a5d:69cb:0:b0:316:e249:c285 with SMTP id
- s11-20020a5d69cb000000b00316e249c285mr5875131wrw.71.1693821444252; 
- Mon, 04 Sep 2023 02:57:24 -0700 (PDT)
+ bh=tF/gOVBt9Bwzbb1VjYdSOIoeRtnKVGuWbCyNBO/28Qg=;
+ b=KA3eW197hZLsYOjF83rP26mJglJ9krg9kGUBy128V2qgFgWMlqxpJVUhOURxOC3VCU
+ r1MBdFhMO6QXHh/SYnNblEw0nveBxyfhB02yWGOZ9gDGQrIs7ZIe0mQEghV5ika16MHS
+ veGsZnISeCZtNIESajkOdWJoC9SkiO+2w8/xFxRbZ1nPAJFnltv8gFJmZgtk4IL3E2fV
+ T/bEjn5MHtWv61/1KkAbbYXJNZpg+wh6Vl46RDLz+UVdeBViDwcuZar/S+84Rdtyi7Yh
+ U63BV+9Lk2gM8TQ/+upqO5jAQQpMd2oMHOp5Q9TSUALz5shrOtfUFHKCKH6uPrYlQhLO
+ 0cig==
+X-Gm-Message-State: AOJu0Yy5NWU5Fbylw1dGWQSz2Ez0mSbuYd0Wz8BZucjiYDIPht2pudW8
+ +ZK4NVe1FwQjwDdqzcbPKB777ItjieI2cAMe3uwKTR5+BvBEfMfXsmJdsSma1/6MutMj/pvieKC
+ +1eDsfYQ9j5ll1eTKJ26M8m9c+pQWzZeBBwM6zZGAkfFnoW6+9U2Btac0J/YOwyI/5sjNDjv72R
+ 8=
+X-Received: by 2002:a7b:ca57:0:b0:3f9:b244:c294 with SMTP id
+ m23-20020a7bca57000000b003f9b244c294mr7271843wml.35.1693821446882; 
+ Mon, 04 Sep 2023 02:57:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGh6+rWFSZKRpUgAjcTCukmMTQUfRKtrrHmjxIEEk7zo/5nt5lpsshPg288090bqW1rSzJFRA==
+X-Received: by 2002:a7b:ca57:0:b0:3f9:b244:c294 with SMTP id
+ m23-20020a7bca57000000b003f9b244c294mr7271827wml.35.1693821446613; 
+ Mon, 04 Sep 2023 02:57:26 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- bj13-20020a0560001e0d00b00317b5c8a4f1sm1044297wrb.60.2023.09.04.02.57.22
+ m24-20020adfa3d8000000b0031753073abcsm9524307wrb.36.2023.09.04.02.57.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 02:57:23 -0700 (PDT)
+ Mon, 04 Sep 2023 02:57:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com, armbru@redhat.com, peter.maydell@linaro.org,
  berrange@redhat.com
-Subject: [RFC PATCH 1/3] Python: Drop support for Python 3.7
-Date: Mon,  4 Sep 2023 11:57:18 +0200
-Message-ID: <20230904095720.154738-2-pbonzini@redhat.com>
+Subject: [RFC PATCH 2/3] mkvenv: assume presence of importlib.metadata
+Date: Mon,  4 Sep 2023 11:57:19 +0200
+Message-ID: <20230904095720.154738-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904095720.154738-1-pbonzini@redhat.com>
 References: <20230904095720.154738-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,213 +101,317 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Debian 10 is not anymore a supported distro, since Debian 12 was
-released on June 10, 2023.  Our supported build platforms as of today
-all support at least 3.8 (and all of them except for Ubuntu 20.04
-support 3.9):
-
-openSUSE Leap 15.5: 3.6.15 (3.11.2)
-CentOS Stream 8:    3.6.8  (3.8.13, 3.9.16, 3.11.4)
-CentOS Stream 9:    3.9.17 (3.11.4)
-Fedora 37:          3.11.4
-Fedora 38:          3.11.4
-Debian 11:          3.9.2
-Debian 12:          3.11.2
-Alpine 3.14, 3.15:  3.9.16
-Alpine 3.16, 3.17:  3.10.10
-Ubuntu 20.04 LTS:   3.8.10
-Ubuntu 22.04 LTS:   3.10.12
-NetBSD 9.3:         3.9.13*
-FreeBSD 12.4:       3.9.16
-FreeBSD 13.1:       3.9.18
-OpenBSD 7.2:        3.9.17
-
-Note: NetBSD does not appear to have a default meta-package, but offers
-several options, the lowest of which is 3.7.15. However, "python39"
-appears to be a pre-requisite to one of the other packages we request
-in tests/vm/netbsd.
-
-Since it is safe to under our supported platform policy, bump our
-minimum supported version of Python to 3.8.  The two most interesting
-features to have by default include:
-
-- the importlib.metadata module, whose lack is responsible for over 100
-  lines of code in mkvenv.py
-
-- improvements to asyncio, for example asyncio.CancelledError
-  inherits from BaseException rather than Exception
-
-In addition, code can now use the assignment operator ':='
-
-Because mypy now learns about importlib.metadata, a small change to
-mkvenv.py is needed to pass type checking.
+importlib.metadata is included in Python 3.8, so there is no
+need to fallback to either importlib-metadata or pkgresources
+when generating console script shims.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                | 8 ++++----
- python/Makefile          | 8 ++++----
- python/scripts/mkvenv.py | 5 ++++-
- python/setup.cfg         | 7 +++----
- python/tests/minreqs.txt | 2 +-
- scripts/qapi/mypy.ini    | 2 +-
- 6 files changed, 17 insertions(+), 15 deletions(-)
+ python/scripts/mkvenv.py | 197 ++++++---------------------------------
+ python/setup.cfg         |   9 --
+ 2 files changed, 28 insertions(+), 178 deletions(-)
 
-diff --git a/configure b/configure
-index 83bbdfe8cdc..72e21cf5b62 100755
---- a/configure
-+++ b/configure
-@@ -552,16 +552,16 @@ if test -n "$linux_arch" && ! test -d "$source_path/linux-headers/asm-$linux_arc
- fi
- 
- check_py_version() {
--    # We require python >= 3.7.
-+    # We require python >= 3.8.
-     # NB: a True python conditional creates a non-zero return code (Failure)
--    "$1" -c 'import sys; sys.exit(sys.version_info < (3,7))'
-+    "$1" -c 'import sys; sys.exit(sys.version_info < (3,8))'
- }
- 
- first_python=
- if test -z "${PYTHON}"; then
-     # A bare 'python' is traditionally python 2.x, but some distros
-     # have it as python 3.x, so check in both places.
--    for binary in python3 python python3.11 python3.10 python3.9 python3.8 python3.7; do
-+    for binary in python3 python python3.11 python3.10 python3.9 python3.8; do
-         if has "$binary"; then
-             python=$(command -v "$binary")
-             if check_py_version "$python"; then
-@@ -952,7 +952,7 @@ then
- fi
- 
- if ! check_py_version "$python"; then
--  error_exit "Cannot use '$python', Python >= 3.7 is required." \
-+  error_exit "Cannot use '$python', Python >= 3.8 is required." \
-              "Use --python=/path/to/python to specify a supported Python." \
-              "Maybe try:" \
-              "  openSUSE Leap 15.3+: zypper install python39" \
-diff --git a/python/Makefile b/python/Makefile
-index 7c70dcc8d14..1fa4ba2498e 100644
---- a/python/Makefile
-+++ b/python/Makefile
-@@ -9,13 +9,13 @@ help:
- 	@echo "make check-minreqs:"
- 	@echo "    Run tests in the minreqs virtual environment."
- 	@echo "    These tests use the oldest dependencies."
--	@echo "    Requires: Python 3.7"
--	@echo "    Hint (Fedora): 'sudo dnf install python3.7'"
-+	@echo "    Requires: Python 3.8"
-+	@echo "    Hint (Fedora): 'sudo dnf install python3.8'"
- 	@echo ""
- 	@echo "make check-tox:"
- 	@echo "    Run tests against multiple python versions."
- 	@echo "    These tests use the newest dependencies."
--	@echo "    Requires: Python 3.7 - 3.11, and tox."
-+	@echo "    Requires: Python 3.8 - 3.11, and tox."
- 	@echo "    Hint (Fedora): 'sudo dnf install python3-tox python3.11'"
- 	@echo "    The variable QEMU_TOX_EXTRA_ARGS can be use to pass extra"
- 	@echo "    arguments to tox".
-@@ -59,7 +59,7 @@ PIP_INSTALL = pip install --disable-pip-version-check
- min-venv: $(QEMU_MINVENV_DIR) $(QEMU_MINVENV_DIR)/bin/activate
- $(QEMU_MINVENV_DIR) $(QEMU_MINVENV_DIR)/bin/activate: setup.cfg tests/minreqs.txt
- 	@echo "VENV $(QEMU_MINVENV_DIR)"
--	@python3.7 -m venv $(QEMU_MINVENV_DIR)
-+	@python3.8 -m venv $(QEMU_MINVENV_DIR)
- 	@(								\
- 		echo "ACTIVATE $(QEMU_MINVENV_DIR)";			\
- 		. $(QEMU_MINVENV_DIR)/bin/activate;			\
 diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index 4f2349fbb65..57a24948031 100644
+index 57a24948031..6797e12e349 100644
 --- a/python/scripts/mkvenv.py
 +++ b/python/scripts/mkvenv.py
-@@ -435,6 +435,7 @@ def _gen_importlib(packages: Sequence[str]) -> Iterator[str]:
-     try:
-         # First preference: Python 3.8+ stdlib
-         from importlib.metadata import (  # type: ignore
-+            EntryPoint,
-             PackageNotFoundError,
-             distribution,
-         )
-@@ -442,6 +443,7 @@ def _gen_importlib(packages: Sequence[str]) -> Iterator[str]:
-         logger.debug("%s", str(exc))
-         # Second preference: Commonly available PyPI backport
-         from importlib_metadata import (  # type: ignore
-+            EntryPoint,
-             PackageNotFoundError,
-             distribution,
-         )
-@@ -449,7 +451,8 @@ def _gen_importlib(packages: Sequence[str]) -> Iterator[str]:
+@@ -61,7 +61,6 @@
+ 
+ """
+ 
+-# The duplication between importlib and pkg_resources does not help
+ # pylint: disable=too-many-lines
+ 
+ # Copyright (C) 2022-2023 Red Hat, Inc.
+@@ -74,6 +73,13 @@
+ # later. See the COPYING file in the top-level directory.
+ 
+ import argparse
++from importlib.metadata import (
++    Distribution,
++    EntryPoint,
++    PackageNotFoundError,
++    distribution,
++    version,
++)
+ from importlib.util import find_spec
+ import logging
+ import os
+@@ -428,25 +434,7 @@ def _stringify(data: Union[str, bytes]) -> str:
+     print(builder.get_value("env_exe"))
+ 
+ 
+-def _gen_importlib(packages: Sequence[str]) -> Iterator[str]:
+-    # pylint: disable=import-outside-toplevel
+-    # pylint: disable=no-name-in-module
+-    # pylint: disable=import-error
+-    try:
+-        # First preference: Python 3.8+ stdlib
+-        from importlib.metadata import (  # type: ignore
+-            EntryPoint,
+-            PackageNotFoundError,
+-            distribution,
+-        )
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-        # Second preference: Commonly available PyPI backport
+-        from importlib_metadata import (  # type: ignore
+-            EntryPoint,
+-            PackageNotFoundError,
+-            distribution,
+-        )
++def _get_entry_points(packages: Sequence[str]) -> Iterator[str]:
+ 
      def _generator() -> Iterator[str]:
          for package in packages:
-             try:
--                entry_points = distribution(package).entry_points
-+                entry_points: Iterator[EntryPoint] = \
-+                    iter(distribution(package).entry_points)
-             except PackageNotFoundError:
-                 continue
+@@ -468,24 +456,6 @@ def _generator() -> Iterator[str]:
+     return _generator()
  
+ 
+-def _gen_pkg_resources(packages: Sequence[str]) -> Iterator[str]:
+-    # pylint: disable=import-outside-toplevel
+-    # Bundled with setuptools; has a good chance of being available.
+-    import pkg_resources
+-
+-    def _generator() -> Iterator[str]:
+-        for package in packages:
+-            try:
+-                eps = pkg_resources.get_entry_map(package, "console_scripts")
+-            except pkg_resources.DistributionNotFound:
+-                continue
+-
+-            for entry_point in eps.values():
+-                yield str(entry_point)
+-
+-    return _generator()
+-
+-
+ def generate_console_scripts(
+     packages: Sequence[str],
+     python_path: Optional[str] = None,
+@@ -510,30 +480,11 @@ def generate_console_scripts(
+     if not packages:
+         return
+ 
+-    def _get_entry_points() -> Iterator[str]:
+-        """Python 3.7 compatibility shim for iterating entry points."""
+-        # Python 3.8+, or Python 3.7 with importlib_metadata installed.
+-        try:
+-            return _gen_importlib(packages)
+-        except ImportError as exc:
+-            logger.debug("%s", str(exc))
+-
+-        # Python 3.7 with setuptools installed.
+-        try:
+-            return _gen_pkg_resources(packages)
+-        except ImportError as exc:
+-            logger.debug("%s", str(exc))
+-            raise Ouch(
+-                "Neither importlib.metadata nor pkg_resources found, "
+-                "can't generate console script shims.\n"
+-                "Use Python 3.8+, or install importlib-metadata or setuptools."
+-            ) from exc
+-
+     maker = distlib.scripts.ScriptMaker(None, bin_path)
+     maker.variants = {""}
+     maker.clobber = False
+ 
+-    for entry_point in _get_entry_points():
++    for entry_point in _get_entry_points(packages):
+         for filename in maker.make(entry_point):
+             logger.debug("wrote console_script '%s'", filename)
+ 
+@@ -587,57 +538,6 @@ def pkgname_from_depspec(dep_spec: str) -> str:
+     return match.group(0)
+ 
+ 
+-def _get_path_importlib(package: str) -> Optional[str]:
+-    # pylint: disable=import-outside-toplevel
+-    # pylint: disable=no-name-in-module
+-    # pylint: disable=import-error
+-    try:
+-        # First preference: Python 3.8+ stdlib
+-        from importlib.metadata import (  # type: ignore
+-            PackageNotFoundError,
+-            distribution,
+-        )
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-        # Second preference: Commonly available PyPI backport
+-        from importlib_metadata import (  # type: ignore
+-            PackageNotFoundError,
+-            distribution,
+-        )
+-
+-    try:
+-        return str(distribution(package).locate_file("."))
+-    except PackageNotFoundError:
+-        return None
+-
+-
+-def _get_path_pkg_resources(package: str) -> Optional[str]:
+-    # pylint: disable=import-outside-toplevel
+-    # Bundled with setuptools; has a good chance of being available.
+-    import pkg_resources
+-
+-    try:
+-        return str(pkg_resources.get_distribution(package).location)
+-    except pkg_resources.DistributionNotFound:
+-        return None
+-
+-
+-def _get_path(package: str) -> Optional[str]:
+-    try:
+-        return _get_path_importlib(package)
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-
+-    try:
+-        return _get_path_pkg_resources(package)
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-        raise Ouch(
+-            "Neither importlib.metadata nor pkg_resources found. "
+-            "Use Python 3.8+, or install importlib-metadata or setuptools."
+-        ) from exc
+-
+-
+ def _path_is_prefix(prefix: Optional[str], path: str) -> bool:
+     try:
+         return (
+@@ -647,65 +547,14 @@ def _path_is_prefix(prefix: Optional[str], path: str) -> bool:
+         return False
+ 
+ 
+-def _is_system_package(package: str) -> bool:
+-    path = _get_path(package)
+-    return path is not None and not (
++def _is_system_package(dist: Distribution) -> bool:
++    path = str(dist.locate_file("."))
++    return not (
+         _path_is_prefix(sysconfig.get_path("purelib"), path)
+         or _path_is_prefix(sysconfig.get_path("platlib"), path)
+     )
+ 
+ 
+-def _get_version_importlib(package: str) -> Optional[str]:
+-    # pylint: disable=import-outside-toplevel
+-    # pylint: disable=no-name-in-module
+-    # pylint: disable=import-error
+-    try:
+-        # First preference: Python 3.8+ stdlib
+-        from importlib.metadata import (  # type: ignore
+-            PackageNotFoundError,
+-            distribution,
+-        )
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-        # Second preference: Commonly available PyPI backport
+-        from importlib_metadata import (  # type: ignore
+-            PackageNotFoundError,
+-            distribution,
+-        )
+-
+-    try:
+-        return str(distribution(package).version)
+-    except PackageNotFoundError:
+-        return None
+-
+-
+-def _get_version_pkg_resources(package: str) -> Optional[str]:
+-    # pylint: disable=import-outside-toplevel
+-    # Bundled with setuptools; has a good chance of being available.
+-    import pkg_resources
+-
+-    try:
+-        return str(pkg_resources.get_distribution(package).version)
+-    except pkg_resources.DistributionNotFound:
+-        return None
+-
+-
+-def _get_version(package: str) -> Optional[str]:
+-    try:
+-        return _get_version_importlib(package)
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-
+-    try:
+-        return _get_version_pkg_resources(package)
+-    except ImportError as exc:
+-        logger.debug("%s", str(exc))
+-        raise Ouch(
+-            "Neither importlib.metadata nor pkg_resources found. "
+-            "Use Python 3.8+, or install importlib-metadata or setuptools."
+-        ) from exc
+-
+-
+ def diagnose(
+     dep_spec: str,
+     online: bool,
+@@ -731,7 +580,11 @@ def diagnose(
+     bad = False
+ 
+     pkg_name = pkgname_from_depspec(dep_spec)
+-    pkg_version = _get_version(pkg_name)
++    pkg_version: Optional[str] = None
++    try:
++        pkg_version = version(pkg_name)
++    except PackageNotFoundError:
++        pass
+ 
+     lines = []
+ 
+@@ -868,19 +721,25 @@ def _do_ensure(
+         constraint = _make_version_constraint(info, False)
+         matcher = distlib.version.LegacyMatcher(name + constraint)
+         print(f"mkvenv: checking for {matcher}", file=sys.stderr)
+-        ver = _get_version(name)
++
++        dist: Optional[Distribution] = None
++        try:
++            dist = distribution(matcher.name)
++        except PackageNotFoundError:
++            pass
++
+         if (
+-            ver is None
++            dist is None
+             # Always pass installed package to pip, so that they can be
+             # updated if the requested version changes
+-            or not _is_system_package(name)
+-            or not matcher.match(distlib.version.LegacyVersion(ver))
++            or not _is_system_package(dist)
++            or not matcher.match(distlib.version.LegacyVersion(dist.version))
+         ):
+             absent.append(name + _make_version_constraint(info, True))
+             if len(absent) == 1:
+                 canary = info.get("canary", None)
+         else:
+-            logger.info("found %s %s", name, ver)
++            logger.info("found %s %s", name, dist.version)
+             present.append(name)
+ 
+     if present:
 diff --git a/python/setup.cfg b/python/setup.cfg
-index e74b58a8c24..f6d2d8a1362 100644
+index f6d2d8a1362..8c67dce4579 100644
 --- a/python/setup.cfg
 +++ b/python/setup.cfg
-@@ -14,7 +14,6 @@ classifiers =
-     Natural Language :: English
-     Operating System :: OS Independent
-     Programming Language :: Python :: 3 :: Only
--    Programming Language :: Python :: 3.7
-     Programming Language :: Python :: 3.8
-     Programming Language :: Python :: 3.9
-     Programming Language :: Python :: 3.10
-@@ -22,7 +21,7 @@ classifiers =
-     Typing :: Typed
+@@ -108,15 +108,6 @@ ignore_missing_imports = True
+ [mypy-pygments]
+ ignore_missing_imports = True
  
- [options]
--python_requires = >= 3.7
-+python_requires = >= 3.8
- packages =
-     qemu.qmp
-     qemu.machine
-@@ -76,7 +75,7 @@ exclude = __pycache__,
+-[mypy-importlib.metadata]
+-ignore_missing_imports = True
+-
+-[mypy-importlib_metadata]
+-ignore_missing_imports = True
+-
+-[mypy-pkg_resources]
+-ignore_missing_imports = True
+-
+ [mypy-distlib]
+ ignore_missing_imports = True
  
- [mypy]
- strict = True
--python_version = 3.7
-+python_version = 3.8
- warn_unused_configs = True
- namespace_packages = True
- warn_unused_ignores = False
-@@ -192,7 +191,7 @@ multi_line_output=3
- # of python available on your system to run this test.
- 
- [tox:tox]
--envlist = py37, py38, py39, py310, py311
-+envlist = py38, py39, py310, py311
- skip_missing_interpreters = true
- 
- [testenv]
-diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
-index 979461be6bb..a3f423efd84 100644
---- a/python/tests/minreqs.txt
-+++ b/python/tests/minreqs.txt
-@@ -1,5 +1,5 @@
- # This file lists the ***oldest possible dependencies*** needed to run
--# "make check" successfully under ***Python 3.7***. It is used primarily
-+# "make check" successfully under ***Python 3.8***. It is used primarily
- # by GitLab CI to ensure that our stated minimum versions in setup.cfg
- # are truthful and regularly validated.
- #
-diff --git a/scripts/qapi/mypy.ini b/scripts/qapi/mypy.ini
-index 3463307ddc7..56e0dfb1327 100644
---- a/scripts/qapi/mypy.ini
-+++ b/scripts/qapi/mypy.ini
-@@ -1,7 +1,7 @@
- [mypy]
- strict = True
- disallow_untyped_calls = False
--python_version = 3.7
-+python_version = 3.8
- 
- [mypy-qapi.schema]
- disallow_untyped_defs = False
 -- 
 2.41.0
 
