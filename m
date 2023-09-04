@@ -2,112 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68260791CC0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 20:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2B1791CC3
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 20:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdEEV-0001rU-HH; Mon, 04 Sep 2023 14:23:31 -0400
+	id 1qdEI0-0003J1-BI; Mon, 04 Sep 2023 14:27:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qdEES-0001r3-VF; Mon, 04 Sep 2023 14:23:28 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qdEEP-0000wI-St; Mon, 04 Sep 2023 14:23:28 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384I8gEr013463; Mon, 4 Sep 2023 18:23:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Ok0gLZYYqujhlC4aqM7jJS2czGjHNNoTLRWmiCd681Y=;
- b=LvMCZUQ76nVGGzv46wfG0f7E2jShz3P139Y3mrSS3KuSazRZUtAq/WSq11EVl2m7EAgO
- TvjCdkoyjTG5TijlsmeKS+28D97yzu+ouLUcwbHSgT5FEs2jtTBslXs2tr836CNo2+eG
- 8j4CREi3b/r2AEURomNAvWJAesV19Q3i9x68XwAQOUVmlhas6A3zK1X5GpE2f3uZiFpx
- //zBrHqUBHrrCd6OrQHzlaFGBhW5PiNdZG+OP9ult4d+F+AKzEV4Dzg5qmGv7woZTwHF
- PzU80E7YPFm8WixnFdnoPK/7bB+wW4KXhFZlsbYQAbFtalYN3eix8d5N+z6tCyaWBJ6k bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw6p91sr5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 18:23:10 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 384IHA4K015816;
- Mon, 4 Sep 2023 18:23:09 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sw6p91sqw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 18:23:09 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 384HjJjA006611; Mon, 4 Sep 2023 18:23:08 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgvk4exn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Sep 2023 18:23:08 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 384IN5XW43450704
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Sep 2023 18:23:05 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8522E20043;
- Mon,  4 Sep 2023 18:23:05 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4092D20040;
- Mon,  4 Sep 2023 18:23:04 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.179.18.181]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  4 Sep 2023 18:23:04 +0000 (GMT)
-Message-ID: <1458dfbaf715087a4a79c7e8c10452096c628797.camel@linux.ibm.com>
-Subject: Re: [PATCH v22 03/20] target/s390x/cpu topology: handle STSI(15)
- and build the SYSIB
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Eduardo Habkost
- <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, Halil Pasic
- <pasic@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Eric
- Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, Michael
- Roth <michael.roth@amd.com>
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Yanan
- Wang <wangyanan55@huawei.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa
- <crosa@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Date: Mon, 04 Sep 2023 20:23:03 +0200
-In-Reply-To: <20230901155812.2696560-4-nsg@linux.ibm.com>
-References: <20230901155812.2696560-1-nsg@linux.ibm.com>
- <20230901155812.2696560-4-nsg@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdEHy-0003If-LL
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 14:27:06 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdEHw-0001eo-Cg
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 14:27:06 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-52a250aa012so2319433a12.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 11:27:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693852022; x=1694456822; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=541JyCy9XPIs515STXSwG4wUnIWy4aYwP9IFPsJMMiY=;
+ b=muqxjb+4xn2Gx9VT+Xvj4TKNGRF4BvMnetIYRaAaCiVN8kMKbbWY2sbcj5balX/6Oi
+ yXKKR2dft/ISTex4grkG95IOpZOybuKleKY4j9Symteqcq2vjoF89bnXONobfi1zDu/7
+ bQcV/Zx9aP31bMCQJLk+kcknRA7Mc6IbhcI2Y4u+pTlkPbjD1egAE2vfUx3iiEgdZZtn
+ gs/vyuIhZMZZ+kmRIudP7qiaiZxV2cTOcAixLkMjg2b9l3jIetK+zWfLjidnq3JJJxcH
+ SeVDQ3vSGjkeNQeY1UqNvi3dZrpG7ZWI1E5jQepFEPvVBDdYI/Vfea/fHko+y05xh5TT
+ 59JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693852022; x=1694456822;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=541JyCy9XPIs515STXSwG4wUnIWy4aYwP9IFPsJMMiY=;
+ b=L7wxJo6zDnujtsvvKEnvvcY2R/ljvkx2PmKILCthVXl1tgJScDbQHFbdTiqRe4iZ2w
+ 1iXkPQ579OvhJGeXzKKP0VkdgnmNCfSccHEzWewUQtDIfIZK5aUM7cZ2RbvEK/BZz+dI
+ R6zL0B4k9eMA6738K33k7bclrII6y0eqPYTqM4XJcl3zIWm0bGLaN3yZAOKaBJFeR79M
+ XWWttm/xrZcz+zsx2S00dye8y56dJt7VgtG0Lu2SLDHjl9e0Zn6fOEN4nkIfe/1WCWum
+ v26+9e08Ub4WXDR30oq9F6830f929+sh6MxbhkUYUmvAklb9nmxhp6dCDCkRp+9Tr0G5
+ NuHw==
+X-Gm-Message-State: AOJu0YxFVfjcx6nx897oOi0trOU55R66RXoXcfv5vSCelTw0YyFXNYTP
+ vIPsl2epvLjO2nKVYjmrx0Ztxg==
+X-Google-Smtp-Source: AGHT+IG7olyS+jXevCnvnP0ISdYpGDEZXpjpOLluwjmlzCxf9S1L1N/Icwq7w84VNpuh8r40vekAIQ==
+X-Received: by 2002:a05:6402:382:b0:525:7e46:940 with SMTP id
+ o2-20020a056402038200b005257e460940mr8972257edv.24.1693852022524; 
+ Mon, 04 Sep 2023 11:27:02 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
+ by smtp.gmail.com with ESMTPSA id
+ b22-20020aa7d496000000b0051dd19d6d6esm6172363edr.73.2023.09.04.11.27.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 11:27:01 -0700 (PDT)
+Message-ID: <89d5477c-ece0-b738-c64f-056242619d92@linaro.org>
+Date: Mon, 4 Sep 2023 20:26:59 +0200
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: C1Loc5WUjkbX3eHQ_seTHlanZUYXvFal
-X-Proofpoint-ORIG-GUID: hWb8RVSOKYj6c6F2WaY32Uki4yCorcaA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-04_11,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- adultscore=0 spamscore=0 clxscore=1015 malwarescore=0 mlxlogscore=966
- impostorscore=0 suspectscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309040162
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 1/2] hw/cxl: Add utility functions decoder interleave ways
+ and target count.
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
+ Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
+ linux-cxl@vger.kernel.org
+Cc: Dave Jiang <dave.jiang@intel.com>, linuxarm@huawei.com
+References: <20230904164704.18739-1-Jonathan.Cameron@huawei.com>
+ <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,92 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-09-01 at 17:57 +0200, Nina Schoetterl-Glausch wrote:
-> From: Pierre Morel <pmorel@linux.ibm.com>
->=20
-> On interception of STSI(15.1.x) the System Information Block
-> (SYSIB) is built from the list of pre-ordered topology entries.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-
+On 4/9/23 18:47, Jonathan Cameron wrote:
+> As an encoded version of these key configuration parameters is
+> a register, provide functions to extract it again so as to avoid
+> the need for duplicating the storage.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  MAINTAINERS                      |   1 +
->  qapi/machine-target.json         |  14 ++
->  include/hw/s390x/cpu-topology.h  |  25 +++
->  include/hw/s390x/sclp.h          |   1 +
->  target/s390x/cpu.h               |  76 ++++++++
->  hw/s390x/cpu-topology.c          |   2 +
->  target/s390x/kvm/kvm.c           |   5 +-
->  target/s390x/kvm/stsi-topology.c | 296 +++++++++++++++++++++++++++++++
->  target/s390x/kvm/meson.build     |   3 +-
->  9 files changed, 421 insertions(+), 2 deletions(-)
->  create mode 100644 target/s390x/kvm/stsi-topology.c
+>   include/hw/cxl/cxl_component.h | 14 ++++++++++++++
+>   hw/cxl/cxl-component-utils.c   | 17 +++++++++++++++++
+>   2 files changed, 31 insertions(+)
+> 
+> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+> index 42c7e581a7..f0ad9cf7de 100644
+> --- a/include/hw/cxl/cxl_component.h
+> +++ b/include/hw/cxl/cxl_component.h
+> @@ -238,7 +238,21 @@ static inline int cxl_decoder_count_enc(int count)
+>       return 0;
+>   }
+>   
+> +static inline int cxl_decoder_count_dec(int enc_cnt)
+> +{
+> +    switch (enc_cnt) {
+> +    case 0: return 1;
+> +    case 1: return 2;
+> +    case 2: return 4;
+> +    case 3: return 6;
+> +    case 4: return 8;
+> +    case 5: return 10;
+> +    }
+> +    return 0;
+> +}
 
-[...]
+Why inline?
 
-> +/*
-> + * CPU Topology List provided by STSI with fc=3D15 provides a list
-> + * of two different Topology List Entries (TLE) types to specify
-> + * the topology hierarchy.
-> + *
-> + * - Container Topology List Entry
-> + *   Defines a container to contain other Topology List Entries
-> + *   of any type, nested containers or CPU.
-> + * - CPU Topology List Entry
-> + *   Specifies the CPUs position, type, entitlement and polarization
-> + *   of the CPUs contained in the last Container TLE.
-> + *
-> + * There can be theoretically up to five levels of containers, QEMU
-> + * uses only three levels, the drawer's, book's and socket's level.
-> + *
-> + * A container with a nesting level (NL) greater than 1 can only
-> + * contain another container of nesting level NL-1.
-> + *
-> + * A container of nesting level 1 (socket), contains as many CPU TLE
-> + * as needed to describe the position and qualities of all CPUs inside
-> + * the container.
-> + * The qualities of a CPU are polarization, entitlement and type.
-> + *
-> + * The CPU TLE defines the position of the CPUs of identical qualities
-> + * using a 64bits mask which first bit has its offset defined by
-> + * the CPU address orgin field of the CPU TLE like in:
+Alternatively:
 
-s/orgin/origin/
-
-> + * CPU address =3D origin * 64 + bit position within the mask
-> + *
-> + */
-
-[...]
-
-> diff --git a/target/s390x/kvm/stsi-topology.c b/target/s390x/kvm/stsi-top=
-ology.c
-> new file mode 100644
-> index 0000000000..cb78040ea5
-> --- /dev/null
-> +++ b/target/s390x/kvm/stsi-topology.c
-
-[...]
-
-> +/**
-> + * setup_stsi:
-> + * sysib: pointer to a SysIB to be filled with SysIB_151x data
-> + * level: Nested level specified by the guest
-
-No @ in front of the arguments here.
-
-> + *
-> + * Setup the SYSIB for STSI 15.1, the header as well as the description
-> + * of the topology.
-> + */
-> +static int setup_stsi(S390TopologyList *topology_list, SysIB_151x *sysib=
-,
-> +                      int level)
-
-[...]
+   unsigned cxl_decoder_count_dec(unsigned enc_cnt)
+   {
+       return enc_cnt <= 5 ? 2 * enc_cnt : 0;
+   }
 
 
