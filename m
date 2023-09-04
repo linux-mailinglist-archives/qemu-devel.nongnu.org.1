@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAB67919C8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 214087919CC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:39:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAhP-0002Ds-BH; Mon, 04 Sep 2023 10:37:07 -0400
+	id 1qdAhP-0002EE-PN; Mon, 04 Sep 2023 10:37:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhL-00028M-Aw
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhN-0002CV-Rn
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhG-0001jm-I8
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:03 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qdAhI-0001k6-5n
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:37:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693838217;
+ s=mimecast20190719; t=1693838218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RRUv3TJYSlQSHvqP7XHSqrWNIdKcj8zXHIxZPo97yoU=;
- b=BjI7AcxYmzj0voiwm+19PFS4vioVrMTdJAtT5qv3H9zdW97isiMOX9f360BHNmYJqIL+Vo
- Rz66kbPVmvE97uD3+au81EjU67pFQL9Htv18NK9j5JT2xqeUqvHm8vV8bBAL0Vm7V2ULUh
- BO+5nLNa1CLQw5tmIPyvxaVUiU+wEBg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-437-YMfz4o7gPCeDarZh7pBXWQ-1; Mon, 04 Sep 2023 10:36:54 -0400
-X-MC-Unique: YMfz4o7gPCeDarZh7pBXWQ-1
+ bh=vp42tg2077UKS8yn6t4e4+7kfeg7DlOQpeRnLhc8MKk=;
+ b=Fsui+Ov5fqlESIa/Q+jHSwiRo7SzmXCSjKmr3IXZXZ36FxOYImA4udn45txPC1uwLmP+si
+ jh9UhpG1VIFtmd0vwdzDolRHmUQFuIopPIghuzR0exrPioeAKQ7vDUQzYGO4vBa5L4Hzgp
+ PwYfZD5HyAnoaqNn/jPzDZgGFZOJKHY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-286-xq6vZ4lRPQmz8EMb1qJgtg-1; Mon, 04 Sep 2023 10:36:55 -0400
+X-MC-Unique: xq6vZ4lRPQmz8EMb1qJgtg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4D22E1817904;
- Mon,  4 Sep 2023 14:36:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 203C93803906;
+ Mon,  4 Sep 2023 14:36:55 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.211])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B2114400F54;
- Mon,  4 Sep 2023 14:36:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8445C400F5A;
+ Mon,  4 Sep 2023 14:36:54 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 06/14] block/iscsi: Document why we use raw malloc()
-Date: Mon,  4 Sep 2023 16:36:35 +0200
-Message-ID: <20230904143643.259916-7-kwolf@redhat.com>
+Subject: [PULL 07/14] block: Be more verbose in create fallback
+Date: Mon,  4 Sep 2023 16:36:36 +0200
+Message-ID: <20230904143643.259916-8-kwolf@redhat.com>
 In-Reply-To: <20230904143643.259916-1-kwolf@redhat.com>
 References: <20230904143643.259916-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -76,33 +76,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Hanna Czenczek <hreitz@redhat.com>
 
-In block/iscsi.c we use a raw malloc() call, which is unusual
-given the project standard is to use the glib memory allocation
-functions. Document why we do so, to avoid it being converted
-to g_malloc() by mistake.
+For image creation code, we have central fallback code for protocols
+that do not support creating new images (like NBD or iscsi).  So for
+them, you can only specify existing paths/exports that are overwritten
+to make clean new images.  In such a case, if the given path cannot be
+opened (assuming a pre-existing image there), we print an error message
+that tries to describe what is going on: That with this protocol, you
+cannot create new images, but only overwrite existing ones; and the
+given path could not be opened as a pre-existing image.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20230727150705.2664464-1-peter.maydell@linaro.org>
+However, the current message is confusing, because it does not say that
+the protocol in question does not support creating new images, but
+instead that "image creation" is unsupported.  This can be interpreted
+to mean that `qemu-img create` will not work in principle, which is not
+true.  Be more verbose for clarity.
+
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2217204
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-ID: <20230720140024.46836-1-hreitz@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/iscsi.c | 1 +
- 1 file changed, 1 insertion(+)
+ block.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/block/iscsi.c b/block/iscsi.c
-index 34f97ab646..5640c8b565 100644
---- a/block/iscsi.c
-+++ b/block/iscsi.c
-@@ -1058,6 +1058,7 @@ static BlockAIOCB *iscsi_aio_ioctl(BlockDriverState *bs,
-         return NULL;
+diff --git a/block.c b/block.c
+index b79b1ce7fe..1a5cb554a8 100644
+--- a/block.c
++++ b/block.c
+@@ -661,8 +661,10 @@ int coroutine_fn bdrv_co_create_opts_simple(BlockDriver *drv,
+     blk = blk_co_new_open(filename, NULL, options,
+                           BDRV_O_RDWR | BDRV_O_RESIZE, errp);
+     if (!blk) {
+-        error_prepend(errp, "Protocol driver '%s' does not support image "
+-                      "creation, and opening the image failed: ",
++        error_prepend(errp, "Protocol driver '%s' does not support creating "
++                      "new images, so an existing image must be selected as "
++                      "the target; however, opening the given target as an "
++                      "existing image failed: ",
+                       drv->format_name);
+         return -EINVAL;
      }
- 
-+    /* Must use malloc(): this is freed via scsi_free_scsi_task() */
-     acb->task = malloc(sizeof(struct scsi_task));
-     if (acb->task == NULL) {
-         error_report("iSCSI: Failed to allocate task for scsi command. %s",
 -- 
 2.41.0
 
