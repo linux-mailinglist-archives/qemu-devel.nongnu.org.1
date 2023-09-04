@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76669791695
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F06791692
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:57:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8AN-0003uM-Uz; Mon, 04 Sep 2023 07:54:52 -0400
+	id 1qd8AP-0004UZ-5l; Mon, 04 Sep 2023 07:54:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd89q-0003Q3-Ki
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:54:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qd8A0-0003ng-67
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:54:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd89o-0008U1-75
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:54:18 -0400
+ id 1qd89x-0008W9-0C
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:54:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828455;
+ s=mimecast20190719; t=1693828462;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5hRDAfmk3NJflNLFML/RaKbqS0nIVKE/TBiTSoxHrVI=;
- b=fos7DQf6cRn0ZsLzJrkTaHSDAjGzLuSWe8B0qhFq3ptSNQwxgVHKKrBC3k72V/PclGYIOP
- slrAKe2kvLSHEFrzAXOfISH+nSzbIOLZCcMLpVJFgAaILgjNSLVMhbvktCplAjTiLqc9k/
- 3yEbQwTK0ORq/9BwceNsSEclJ4KtcC4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-456-s6ukda_nOfKHNXqW0BoETQ-1; Mon, 04 Sep 2023 07:54:14 -0400
-X-MC-Unique: s6ukda_nOfKHNXqW0BoETQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=7NUYymtfm45Q9J6UHwQZHTSqfBewE0YOcr1sRCaqdAg=;
+ b=d6Sp9DQ993UEgzKsssWTfiLV1EPzyhYepXDoPZR8+/W80XZz4DUlYIT8EbdC9xy/9a7ukk
+ csMgAV9Ta9ZWWUxXlDyG9Ov3g48rBdmd83IxH+wXYjA1Gb2R3et6Pp+iUXaymW6WthEys5
+ z7v8sot+51MguMQuLkCAKVyv4l481FU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-67-HdRwvCCiOjuHPtLym7Q9DQ-1; Mon, 04 Sep 2023 07:54:21 -0400
+X-MC-Unique: HdRwvCCiOjuHPtLym7Q9DQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8AD929DD98D
- for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:54:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3BF86811C32
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:54:21 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 817B5C124A;
- Mon,  4 Sep 2023 11:54:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7929E2013570;
+ Mon,  4 Sep 2023 11:54:20 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 20/52] ui/console: instantiate a specific console type
-Date: Mon,  4 Sep 2023 15:52:17 +0400
-Message-ID: <20230904115251.4161397-21-marcandre.lureau@redhat.com>
+Subject: [PULL 22/52] ui/console: remove new_console()
+Date: Mon,  4 Sep 2023 15:52:19 +0400
+Message-ID: <20230904115251.4161397-23-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,182 +83,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This will allow to move code/data to the specific console types.
+The constructor helper isn't of much used now.
 
-Replace console_type_t with object type check.
-
-QemuConsole can be abstract.
+"head" is only specified for graphic console (and default to 0), and we
+are going to move it to QemuGraphicConsole next.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230830093843.3531473-21-marcandre.lureau@redhat.com>
+Message-Id: <20230830093843.3531473-23-marcandre.lureau@redhat.com>
 ---
- ui/console.c | 47 +++++++++++++++++++----------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
+ ui/console.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
 diff --git a/ui/console.c b/ui/console.c
-index 4ca5064cc9..dd8e8db525 100644
+index 02a24eaf5d..e0e4f980d7 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -71,17 +71,10 @@ enum TTYState {
-     TTY_STATE_CSI,
- };
+@@ -1414,16 +1414,6 @@ qemu_fixed_text_console_init(Object *obj)
+ {
+ }
  
--typedef enum {
--    GRAPHIC_CONSOLE,
--    TEXT_CONSOLE,
--    TEXT_CONSOLE_FIXED_SIZE
--} console_type_t;
+-static QemuConsole *new_console(const char *typename,
+-                                uint32_t head)
+-{
+-    QemuConsole *c = QEMU_CONSOLE(object_new(typename));
 -
- struct QemuConsole {
-     Object parent;
+-    c->head = head;
+-
+-    return c;
+-}
+-
+ #ifdef WIN32
+ void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
+                                           HANDLE h, uint32_t offset)
+@@ -2163,7 +2153,7 @@ DisplayState *init_displaystate(void)
+     QemuConsole *con;
  
-     int index;
--    console_type_t console_type;
-     DisplayState *ds;
-     DisplaySurface *surface;
-     DisplayScanout scanout;
-@@ -126,7 +119,7 @@ struct QemuConsole {
-     QTAILQ_ENTRY(QemuConsole) next;
- };
- 
--OBJECT_DEFINE_TYPE(QemuConsole, qemu_console, QEMU_CONSOLE, OBJECT)
-+OBJECT_DEFINE_ABSTRACT_TYPE(QemuConsole, qemu_console, QEMU_CONSOLE, OBJECT)
- 
- typedef struct QemuGraphicConsole {
-     QemuConsole parent;
-@@ -1156,7 +1149,7 @@ void kbd_put_keysym_console(QemuConsole *s, int keysym)
-     int c;
-     uint32_t num_free;
- 
--    if (!s || (s->console_type == GRAPHIC_CONSOLE))
-+    if (!s || QEMU_IS_GRAPHIC_CONSOLE(s))
-         return;
- 
-     switch(keysym) {
-@@ -1258,7 +1251,7 @@ static void text_console_invalidate(void *opaque)
- {
-     QemuConsole *s = (QemuConsole *) opaque;
- 
--    if (s->console_type == TEXT_CONSOLE) {
-+    if (QEMU_IS_TEXT_CONSOLE(s) && !QEMU_IS_FIXED_TEXT_CONSOLE(s)) {
-         text_console_resize(s);
-     }
-     console_refresh(s);
-@@ -1294,20 +1287,19 @@ static void text_console_update(void *opaque, console_ch_t *chardata)
- }
- 
- static void
--qemu_console_register(QemuConsole *c, console_type_t console_type)
-+qemu_console_register(QemuConsole *c)
- {
-     int i;
- 
--    if (!active_console || ((active_console->console_type != GRAPHIC_CONSOLE) &&
--                            (console_type == GRAPHIC_CONSOLE))) {
-+    if (!active_console || (!QEMU_IS_GRAPHIC_CONSOLE(active_console) &&
-+                            QEMU_IS_GRAPHIC_CONSOLE(c))) {
-         active_console = c;
-     }
--    c->console_type = console_type;
- 
-     if (QTAILQ_EMPTY(&consoles)) {
-         c->index = 0;
-         QTAILQ_INSERT_TAIL(&consoles, c, next);
--    } else if (console_type != GRAPHIC_CONSOLE || phase_check(PHASE_MACHINE_READY)) {
-+    } else if (!QEMU_IS_GRAPHIC_CONSOLE(c) || phase_check(PHASE_MACHINE_READY)) {
-         QemuConsole *last = QTAILQ_LAST(&consoles);
-         c->index = last->index + 1;
-         QTAILQ_INSERT_TAIL(&consoles, c, next);
-@@ -1320,11 +1312,10 @@ qemu_console_register(QemuConsole *c, console_type_t console_type)
-          */
-         QemuConsole *it = QTAILQ_FIRST(&consoles);
- 
--        while (QTAILQ_NEXT(it, next) != NULL &&
--               it->console_type == GRAPHIC_CONSOLE) {
-+        while (QTAILQ_NEXT(it, next) != NULL && QEMU_IS_GRAPHIC_CONSOLE(it)) {
-             it = QTAILQ_NEXT(it, next);
-         }
--        if (it->console_type == GRAPHIC_CONSOLE) {
-+        if (QEMU_IS_GRAPHIC_CONSOLE(it)) {
-             /* have no text consoles */
-             c->index = it->index + 1;
-             QTAILQ_INSERT_AFTER(&consoles, it, c, next);
-@@ -1422,14 +1413,14 @@ qemu_fixed_text_console_init(Object *obj)
- {
- }
- 
--static QemuConsole *new_console(console_type_t console_type,
-+static QemuConsole *new_console(const char *typename,
-                                 uint32_t head)
- {
--    QemuConsole *c = QEMU_CONSOLE(object_new(TYPE_QEMU_CONSOLE));
-+    QemuConsole *c = QEMU_CONSOLE(object_new(typename));
- 
-     c->head = head;
-     /* TODO: move to console_init() once there is a type hierarchy */
--    qemu_console_register(c, console_type);
-+    qemu_console_register(c);
- 
-     return c;
- }
-@@ -2211,7 +2202,7 @@ QemuConsole *graphic_console_init(DeviceState *dev, uint32_t head,
+     QTAILQ_FOREACH(con, &consoles, next) {
+-        /* Hook up into the qom tree here (not in new_console()), once
++        /* Hook up into the qom tree here (not in object_new()), once
+          * all QemuConsoles are created and the order / numbering
+          * doesn't change any more */
+         name = g_strdup_printf("console[%d]", con->index);
+@@ -2201,7 +2191,8 @@ QemuConsole *graphic_console_init(DeviceState *dev, uint32_t head,
          height = qemu_console_get_height(s, 0);
      } else {
          trace_console_gfx_new();
--        s = new_console(GRAPHIC_CONSOLE, head);
-+        s = new_console(TYPE_QEMU_GRAPHIC_CONSOLE, head);
+-        s = new_console(TYPE_QEMU_GRAPHIC_CONSOLE, head);
++        s = (QemuConsole *)object_new(TYPE_QEMU_GRAPHIC_CONSOLE);
++        s->head = head;
          s->ui_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
                                     dpy_set_ui_info_timer, s);
      }
-@@ -2345,7 +2336,7 @@ bool qemu_console_is_graphic(QemuConsole *con)
-     if (con == NULL) {
-         con = active_console;
-     }
--    return con && (con->console_type == GRAPHIC_CONSOLE);
-+    return con && QEMU_IS_GRAPHIC_CONSOLE(con);
- }
- 
- bool qemu_console_is_fixedsize(QemuConsole *con)
-@@ -2353,7 +2344,7 @@ bool qemu_console_is_fixedsize(QemuConsole *con)
-     if (con == NULL) {
-         con = active_console;
-     }
--    return con && (con->console_type != TEXT_CONSOLE);
-+    return con && (QEMU_IS_GRAPHIC_CONSOLE(con) || QEMU_IS_FIXED_TEXT_CONSOLE(con));
- }
- 
- bool qemu_console_is_gl_blocked(QemuConsole *con)
-@@ -2389,7 +2380,7 @@ bool qemu_console_is_multihead(DeviceState *dev)
- 
- char *qemu_console_get_label(QemuConsole *con)
- {
--    if (con->console_type == GRAPHIC_CONSOLE) {
-+    if (QEMU_IS_GRAPHIC_CONSOLE(con)) {
-         if (con->device) {
-             DeviceState *dev;
-             bool multihead;
-@@ -2588,9 +2579,9 @@ static void vc_chr_open(Chardev *chr,
+@@ -2578,9 +2569,9 @@ static void vc_chr_open(Chardev *chr,
  
      trace_console_txt_new(width, height);
      if (width == 0 || height == 0) {
--        s = new_console(TEXT_CONSOLE, 0);
-+        s = new_console(TYPE_QEMU_TEXT_CONSOLE, 0);
+-        s = new_console(TYPE_QEMU_TEXT_CONSOLE, 0);
++        s = (QemuConsole *)object_new(TYPE_QEMU_TEXT_CONSOLE);
      } else {
--        s = new_console(TEXT_CONSOLE_FIXED_SIZE, 0);
-+        s = new_console(TYPE_QEMU_FIXED_TEXT_CONSOLE, 0);
+-        s = new_console(TYPE_QEMU_FIXED_TEXT_CONSOLE, 0);
++        s = (QemuConsole *)object_new(TYPE_QEMU_FIXED_TEXT_CONSOLE);
          s->scanout.kind = SCANOUT_SURFACE;
          s->surface = qemu_create_displaysurface(width, height);
      }
-@@ -2610,7 +2601,7 @@ void qemu_console_resize(QemuConsole *s, int width, int height)
- {
-     DisplaySurface *surface = qemu_console_surface(s);
- 
--    assert(s->console_type == GRAPHIC_CONSOLE);
-+    assert(QEMU_IS_GRAPHIC_CONSOLE(s));
- 
-     if ((s->scanout.kind != SCANOUT_SURFACE ||
-          (surface && surface->flags & QEMU_ALLOCATED_FLAG)) &&
 -- 
 2.41.0
 
