@@ -2,69 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41D07912F0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1EA7912E6
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 10:05:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd4bz-00023B-DQ; Mon, 04 Sep 2023 04:07:07 -0400
+	id 1qd4ZK-0008Sg-5w; Mon, 04 Sep 2023 04:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qd4bw-0001zF-4f
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:07:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qd4bt-0006Wq-Q5
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:07:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693814821;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cdJyzro/1PW1wpTBijWjAZMD3UPhZ9MGOFDP+xuEvXk=;
- b=Qbe4nkw+lvP6YcAG+qdRdQuC0JK2ietyHiN4sWV8BNjRNeIdlgi63ryFDfEQkk4clftK4b
- OlWpzt1WDKrNx0tVXQmepOaDuZnnuI6DXvzq8uU7jvMTZ4Z9gVvUle6ZW1WPEg8ae/+DRU
- qTyKdkQLAg2ocUpmdlVelgwJcv6OmOw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-594-fRGHcY_WMvqyLpc1b289WA-1; Mon, 04 Sep 2023 04:05:36 -0400
-X-MC-Unique: fRGHcY_WMvqyLpc1b289WA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C953F3804519;
- Mon,  4 Sep 2023 08:05:35 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.53])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 271A740C6CCC;
- Mon,  4 Sep 2023 08:05:32 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
- jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
-Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
- philmd@linaro.org
-Subject: [PATCH 13/13] vfio: Remove 64-bit IOVA address space assumption
-Date: Mon,  4 Sep 2023 10:03:56 +0200
-Message-ID: <20230904080451.424731-14-eric.auger@redhat.com>
-In-Reply-To: <20230904080451.424731-1-eric.auger@redhat.com>
-References: <20230904080451.424731-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd4ZI-0008SO-FH
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:04:20 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd4ZG-0005Su-82
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 04:04:20 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-99bcf2de59cso175670066b.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 01:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693814656; x=1694419456; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HBHAsX5v/kg5jXEKrOZ528UDCH4yVEwRiuDz1d09WgI=;
+ b=czBic2jCJ7bfisWaDQRs3i2FmKp4UMfE3ahcaTG/rOtXkdKbDKziNcVs4Lm3k2PxMi
+ aThwDAAB/NFVZdC6Heu+4RFoo1jU1nCraMCF+Pd2g2ry3jes7uL6EnFHwOjRneCnIA9o
+ Na7r2mlvzw+z8siRT6WfCgVXptPDKUTgcasHnwGG68YxhFnJ3l7qdFhlh8/ePVtHwY27
+ Sx/lKBy4jA9ygz+DUJiN99juHJqrmfc0kJliOMX77K0LRk6AC5nH57MgSzwEc5Mya3sk
+ eMI1v7+ArPqALzbaIE4IK//WBvkNmR1XEHAvaMGCz9dTnbWjuvnJTmkJ+wBErLwtQxjk
+ G8wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693814656; x=1694419456;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HBHAsX5v/kg5jXEKrOZ528UDCH4yVEwRiuDz1d09WgI=;
+ b=WrCFv+Cvo7KsoGsueMDzmHxLCONrKduuuizPhBT8HYkg9mJL6fim7xy6r/8bOj8ufY
+ 90NT4KFvZXR6WVt+dkzOU7BYB3U5Pl6EolNtmf36vj3yKOnzN9JLfQhbClaNKygn29Ue
+ enLRo4YkjU0Nec+GBslQP6k7JeG/y8BddrvO0mmj0gHR1r2EkDFwiqr9fcR+B1OFlDdz
+ +8rX12DikLPyATDxrC6+0FlAvyOtp0NAX2Sg6OrAokDyi8+vPqLT9mshxhkEQHEEJG/q
+ 0ORL12PRwjPef1qCSLAWwMdejdmA+STSlC29gfzT+a3N32rU05eypFNzBdoyXcK5wBgR
+ p+Mw==
+X-Gm-Message-State: AOJu0YwQM6p0P51c5ffOylJq1ZSJ9TO3HIxvPRNc2SVGyKsYsJfT7ARQ
+ MikDpDQOgWdtLiuHXzykFmFvZg==
+X-Google-Smtp-Source: AGHT+IHpMtrbngf+icQZZ41Q51ZmGEmZR3KMHkNWtWqegRlvSP7S5mKlfI6+H58TsNgsV5KxRhKYBw==
+X-Received: by 2002:a17:907:7717:b0:9a1:c2fe:41d9 with SMTP id
+ kw23-20020a170907771700b009a1c2fe41d9mr5802970ejc.47.1693814656603; 
+ Mon, 04 Sep 2023 01:04:16 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
+ by smtp.gmail.com with ESMTPSA id
+ z10-20020a170906714a00b0099364d9f0e9sm5788973ejj.102.2023.09.04.01.04.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 01:04:16 -0700 (PDT)
+Message-ID: <1ce87cd5-d3d5-759c-b718-8ba02f71bc9d@linaro.org>
+Date: Mon, 4 Sep 2023 10:04:14 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v9 14/20] target/riscv: make CPUCFG() macro public
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
+ <20230901194627.1214811-15-dbarboza@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230901194627.1214811-15-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,70 +95,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we retrieve the usable IOVA ranges from the host,
-let's remove the assumption of 64b IOVA space when calling
-vfio_host_win_add().
+On 1/9/23 21:46, Daniel Henrique Barboza wrote:
+> The RISC-V KVM driver uses a CPUCFG() macro that calculates the offset
+> of a certain field in the struct RISCVCPUConfig. We're going to use this
+> macro in target/riscv/cpu.c as well in the next patches. Make it public.
+> 
+> Rename it to CPU_CFG_OFFSET() for more clarity while we're at it.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> ---
+>   target/riscv/cpu.c | 2 +-
+>   target/riscv/cpu.h | 2 ++
+>   target/riscv/kvm.c | 8 +++-----
+>   3 files changed, 6 insertions(+), 6 deletions(-)
 
-Make sure the vfio_find_hostwin() gets called after we get
-a chance to call set_iova_regions and resize the IOMMU MR
-according to the actual physical GAW.
-
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- hw/vfio/common.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
-
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 26da38de05..40cac1ca91 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1112,13 +1112,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
- #endif
-     }
- 
--    hostwin = vfio_find_hostwin(container, iova, end);
--    if (!hostwin) {
--        error_setg(&err, "Container %p can't map guest IOVA region"
--                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
--        goto fail;
--    }
--
-     memory_region_ref(section->mr);
- 
-     if (memory_region_is_iommu(section->mr)) {
-@@ -1177,6 +1170,14 @@ static void vfio_listener_region_add(MemoryListener *listener,
-         return;
-     }
- 
-+    hostwin = vfio_find_hostwin(container, iova, end);
-+    if (!hostwin) {
-+        error_setg(&err, "Container %p can't map guest IOVA region"
-+                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
-+        goto fail;
-+    }
-+
-+
-     /* Here we assume that memory_region_is_ram(section->mr)==true */
- 
-     /*
-@@ -2594,12 +2595,10 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-         vfio_get_iommu_info_migration(container, info);
-         g_free(info);
- 
--        /*
--         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
--         * information to get the actual window extent rather than assume
--         * a 64-bit IOVA address space.
--         */
--        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
-+        g_assert(container->nr_iovas);
-+        vfio_host_win_add(container, 0,
-+                          container->iova_ranges[container->nr_iovas - 1].end,
-+                          container->pgsizes);
- 
-         break;
-     }
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
