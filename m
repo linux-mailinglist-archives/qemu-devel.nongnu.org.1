@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F39979168F
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 990807916C6
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:02:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8Ba-0000pn-Lc; Mon, 04 Sep 2023 07:56:06 -0400
+	id 1qd8Bd-0000sh-C7; Mon, 04 Sep 2023 07:56:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8BQ-0000ZA-8W
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qd8BZ-0000ph-8T
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:56:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd8BO-0000oP-1a
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:55:55 -0400
+ id 1qd8BX-0000qq-2Z
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:56:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828553;
+ s=mimecast20190719; t=1693828562;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4tZfSsnhfezWbR25O9bGbK3oCf6AjZ5e+y9iHI+/Jts=;
- b=S374vXqeh41dRfqu100DJdgn6n9uKLMXR5gmhJFjsNGytyNtsT256Hn9Z+giBn9TP18JLz
- lVQ607IV3nhlbsw8hklTVJZD2A+/nZoZr0IBB9ttkNkfMmaghweAm8a2NCVK5hWCa36xG5
- 2K5N678PnfaAR3Dp9onPAn44fMDNmX4=
+ bh=tjGC2ML3L2cd08LhzVrXNPJbEDWvTfhWKeJntBP1e6U=;
+ b=BtSFcIkV6D72tnZuWGhrHHEAFRAHIxiaTVVntT7DCzdczvhKezbMditRjiyd/iR36crUtK
+ JQdVA+w8Rkmk0rb2EThcWkblLWSbiNUOQSJPBx//qTG/p6b8Ssyb1wo4dK56yKoBBzkjJN
+ A8g70T13C10DAJhRj+ulWixaUJmK0JM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-343-rYUzNEOlPr-rtncGciB39A-1; Mon, 04 Sep 2023 07:55:51 -0400
-X-MC-Unique: rYUzNEOlPr-rtncGciB39A-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-88-NbbM8DGbNgu22cgBSfmu8Q-1; Mon, 04 Sep 2023 07:56:01 -0400
+X-MC-Unique: NbbM8DGbNgu22cgBSfmu8Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7981184AF9D;
- Mon,  4 Sep 2023 11:55:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0427410264C1;
+ Mon,  4 Sep 2023 11:56:01 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8E186493110;
- Mon,  4 Sep 2023 11:55:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 318AA2013570;
+ Mon,  4 Sep 2023 11:55:59 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 45/52] ui/spice-display: Avoid dynamic stack allocation
-Date: Mon,  4 Sep 2023 15:52:42 +0400
-Message-ID: <20230904115251.4161397-46-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 46/52] ui/vnc-enc-hextile: Use static rather than dynamic
+ length stack array
+Date: Mon,  4 Sep 2023 15:52:43 +0400
+Message-ID: <20230904115251.4161397-47-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,8 +84,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Use an autofree heap allocation instead of a variable-length
-array on the stack in qemu_spice_create_update().
+In the send_hextile_tile_* function we create a variable length array
+data[].  In fact we know that the client_pf.bytes_per_pixel is at
+most 4 (enforced by set_pixel_format()), so we can make the array a
+compile-time fixed length of 1536 bytes.
 
 The codebase has very few VLAs, and if we can get rid of them all we
 can make the compiler error on new additions.  This is a defensive
@@ -93,33 +96,49 @@ isn't correctly size-checked (e.g.  CVE-2021-3527).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230818151057.1541189-2-peter.maydell@linaro.org>
+[ Marc-André - rename BPP to MAX_BYTES_PER_PIXEL ]
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20230818151057.1541189-3-peter.maydell@linaro.org>
 ---
- ui/spice-display.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ ui/vnc-enc-hextile-template.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 3f3f8013d8..0e2fbfb17c 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -189,7 +189,7 @@ static void qemu_spice_create_update(SimpleSpiceDisplay *ssd)
- {
-     static const int blksize = 32;
-     int blocks = DIV_ROUND_UP(surface_width(ssd->ds), blksize);
--    int dirty_top[blocks];
-+    g_autofree int *dirty_top = NULL;
-     int y, yoff1, yoff2, x, xoff, blk, bw;
-     int bpp = surface_bytes_per_pixel(ssd->ds);
-     uint8_t *guest, *mirror;
-@@ -198,6 +198,7 @@ static void qemu_spice_create_update(SimpleSpiceDisplay *ssd)
-         return;
-     };
+diff --git a/ui/vnc-enc-hextile-template.h b/ui/vnc-enc-hextile-template.h
+index 0c56262aff..8ee92086ac 100644
+--- a/ui/vnc-enc-hextile-template.h
++++ b/ui/vnc-enc-hextile-template.h
+@@ -7,6 +7,8 @@
+ #define NAME BPP
+ #endif
  
-+    dirty_top = g_new(int, blocks);
-     for (blk = 0; blk < blocks; blk++) {
-         dirty_top[blk] = -1;
++#define MAX_BYTES_PER_PIXEL 4
++
+ static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
+                                              int x, int y, int w, int h,
+                                              void *last_bg_,
+@@ -25,10 +27,13 @@ static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
+     int bg_count = 0;
+     int fg_count = 0;
+     int flags = 0;
+-    uint8_t data[(vs->client_pf.bytes_per_pixel + 2) * 16 * 16];
++    uint8_t data[(MAX_BYTES_PER_PIXEL + 2) * 16 * 16];
+     int n_data = 0;
+     int n_subtiles = 0;
+ 
++    /* Enforced by set_pixel_format() */
++    assert(vs->client_pf.bytes_per_pixel <= MAX_BYTES_PER_PIXEL);
++
+     for (j = 0; j < h; j++) {
+         for (i = 0; i < w; i++) {
+             switch (n_colors) {
+@@ -205,6 +210,7 @@ static void CONCAT(send_hextile_tile_, NAME)(VncState *vs,
      }
+ }
+ 
++#undef MAX_BYTES_PER_PIXEL
+ #undef NAME
+ #undef pixel_t
+ #undef CONCAT_I
 -- 
 2.41.0
 
