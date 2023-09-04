@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C236E791473
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0DE791483
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:12:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5Z4-0004ed-QC; Mon, 04 Sep 2023 05:08:10 -0400
+	id 1qd5ZR-0005Zm-9T; Mon, 04 Sep 2023 05:08:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Yw-000418-QD; Mon, 04 Sep 2023 05:08:04 -0400
+ id 1qd5Z1-0004Os-1u; Mon, 04 Sep 2023 05:08:07 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Yt-0003wQ-Rj; Mon, 04 Sep 2023 05:08:02 -0400
+ id 1qd5Yx-0003xW-3E; Mon, 04 Sep 2023 05:08:06 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN8F4BFkz4x2Z;
- Mon,  4 Sep 2023 19:07:57 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN8J5mR9z4x2Y;
+ Mon,  4 Sep 2023 19:08:00 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN8C1g7cz4wy9;
- Mon,  4 Sep 2023 19:07:54 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN8G0n5kz4wy9;
+ Mon,  4 Sep 2023 19:07:57 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Maksim Kostin <maksim.kostin@ispras.ru>,
- Vitaly Cheptsov <cheptsov@ispras.ru>, Nicholas Piggin <npiggin@gmail.com>,
+ jianchunfu <chunfu.jian@shingroup.cn>,
+ Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 30/35] hw/ppc/e500: fix broken snapshot replay
-Date: Mon,  4 Sep 2023 11:06:25 +0200
-Message-ID: <20230904090630.725952-31-clg@kaod.org>
+Subject: [PULL 31/35] target/ppc: Fix the order of kvm_enable judgment about
+ kvmppc_set_interrupt()
+Date: Mon,  4 Sep 2023 11:06:26 +0200
+Message-ID: <20230904090630.725952-32-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904090630.725952-1-clg@kaod.org>
 References: <20230904090630.725952-1-clg@kaod.org>
@@ -64,40 +65,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Maksim Kostin <maksim.kostin@ispras.ru>
+From: jianchunfu <chunfu.jian@shingroup.cn>
 
-ppce500_reset_device_tree is registered for system reset, but after
-c4b075318eb1 this function rerandomizes rng-seed via
-qemu_guest_getrandom_nofail. And when loading a snapshot, it tries to read
-EVENT_RANDOM that doesn't exist, so we have an error:
+It's unnecessary for non-KVM accelerators(TCG, for example),
+to call this function, so change the order of kvm_enable() judgment.
 
-  qemu-system-ppc: Missing random event in the replay log
+The static inline function that returns -1 directly does not work
+ in TCG's situation.
 
-To fix this, use qemu_register_reset_nosnapshotload instead of
-qemu_register_reset.
-
-Reported-by: Vitaly Cheptsov <cheptsov@ispras.ru>
-Fixes: c4b075318eb1 ("hw/ppc: pass random seed to fdt ")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1634
-Signed-off-by: Maksim Kostin <maksim.kostin@ispras.ru>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: jianchunfu <chunfu.jian@shingroup.cn>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/ppc/e500.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ppc/ppc.c     | 8 ++++++--
+ target/ppc/kvm.c | 2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 67793a86f11f..d5b6820d1dc9 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -712,7 +712,7 @@ static int ppce500_prep_device_tree(PPCE500MachineState *machine,
-     p->kernel_base = kernel_base;
-     p->kernel_size = kernel_size;
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 87df91460026..c70882649a7d 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -59,7 +59,9 @@ void ppc_set_irq(PowerPCCPU *cpu, int irq, int level)
  
--    qemu_register_reset(ppce500_reset_device_tree, p);
-+    qemu_register_reset_nosnapshotload(ppce500_reset_device_tree, p);
-     p->notifier.notify = ppce500_init_notify;
-     qemu_add_machine_init_done_notifier(&p->notifier);
+     if (old_pending != env->pending_interrupts) {
+         ppc_maybe_interrupt(env);
+-        kvmppc_set_interrupt(cpu, irq, level);
++        if (kvm_enabled()) {
++            kvmppc_set_interrupt(cpu, irq, level);
++        }
+     }
+ 
+     trace_ppc_irq_set_exit(env, irq, level, env->pending_interrupts,
+@@ -1533,5 +1535,7 @@ void ppc_irq_reset(PowerPCCPU *cpu)
+     CPUPPCState *env = &cpu->env;
+ 
+     env->irq_input_state = 0;
+-    kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
++    if (kvm_enabled()) {
++        kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
++    }
+ }
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 769850174385..51112bd3670d 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -1320,7 +1320,7 @@ int kvmppc_set_interrupt(PowerPCCPU *cpu, int irq, int level)
+         return 0;
+     }
+ 
+-    if (!kvm_enabled() || !cap_interrupt_unset) {
++    if (!cap_interrupt_unset) {
+         return 0;
+     }
  
 -- 
 2.41.0
