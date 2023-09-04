@@ -2,78 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744DE79100A
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 04:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552177910CA
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 07:13:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qcz88-0003oD-Hg; Sun, 03 Sep 2023 22:15:56 -0400
+	id 1qd1ss-0001DO-Oz; Mon, 04 Sep 2023 01:12:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qcz84-0003n7-Bs; Sun, 03 Sep 2023 22:15:52 -0400
-Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd1sr-0001CZ-3b
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 01:12:21 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qcz7y-0003Ex-2A; Sun, 03 Sep 2023 22:15:52 -0400
-Received: by mail-vk1-xa33.google.com with SMTP id
- 71dfb90a1353d-48d0ff94bc0so168990e0c.2; 
- Sun, 03 Sep 2023 19:15:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd1sn-0000ms-LT
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 01:12:20 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9a21b6d105cso145720766b.3
+ for <qemu-devel@nongnu.org>; Sun, 03 Sep 2023 22:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693793738; x=1694398538; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qYah1mBzln76Ym4KG0Irtf1slMWFci9QuKRrgUFJt1A=;
- b=MJK53hGuHIQOsCqvyInaA/AdrmY5i9S5x75o4IzRUvWW8teLXYXk4bcurig0bh8EIr
- Ya/AF61eOhA5cgSwv96VmPQzmq80iVXAi0uGzkbbAbFdsgvkVONAaK5Ei2GrkXbPjm+v
- 4CjWwAfCronVVl3AzharrFY6BDQuBC++uPoLEkXP0cvIzq2omPTXsbb47DWDSGfdzQmK
- zcB7MNlIyO6quiGBwUO7/o2bStUrmWPiM788HEuOg9QbE1JbuJEja1n87MD6qRc+2K7G
- d3iGmpr2qcORVqdaPuiR9PtZrsKcymKo1kGhP9shVaVgTZlaW9ObKKpjOi3Fa0ry6eQR
- xuBQ==
+ d=linaro.org; s=google; t=1693804334; x=1694409134; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NiA1VuA4y4Hb5mu8pl1p+1zSWDEvOlvH/dn8f2wlrZM=;
+ b=eVlH8RyYQhMyw5WpHzG+2l5zbJKncTpoMd9tQJPrVytnArfDoIeIFuA1asLem4Txct
+ WDg7JijxojuEqSsWsFMZiBLyd2+Cxg0bPLjmWiQKGxsnYuSYPO7Mr5xaZSh6ELZWH2mR
+ E4Alg7IGsBVzZVJGpZ8Nyr8WZy+ff/Yj/MB8SdSgq66y6HTgOX8ewjpEWiGLaKJ40gU6
+ BarVwsXzVhauMHmNZSV7cAJ1J6nfeeqhlcC6uaJf8ctb/WA93s4j6EMyrIIHq4tjO/ap
+ MS/INV4bDMs7z90gBlirssXBPYW2r859aOykPL3V3GHsM48DaINEUHkMMZPd/C52knO0
+ af3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693793738; x=1694398538;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qYah1mBzln76Ym4KG0Irtf1slMWFci9QuKRrgUFJt1A=;
- b=E67ASwcS9Fm/pWlhWyVTOQeEQlDFbHvx1YKXSFu3Ywqkn+kbzLrPNuIC/iPmnV9Onx
- 3LNUqpCGXKvDVHbxwucOvaO0CCgWRoDhsJZRaqyzYF5KeY37FVOc1euwtezyq268HOyG
- fRh+VN06OdbEc18wkBU6A6cYp93in1bLTzChpVjqjXTxnx8oismwAll8NGlUVA9NSOcR
- fv5ERgVBvi3Iqx36xIn0aoiDZpiErbLnIOUq1E7PrHjXjuvPv0xiKG1dS4wWQuU/aCyy
- GnKzcRML06tIq1JqQ/JT82W2LNRytcY22oJVhQ1pV0YBU//nNe4ivIrnoKRmGc9IPbVy
- gfiQ==
-X-Gm-Message-State: AOJu0YwP4Zi4VeYhaLiTGkt/4jsyHE2+rO6CIBAJCg8Mf/ZIrGJaNz/z
- ZJsYtL+r+TGmCfZy7qVpm7vaGcP39G4ckDx8XA4=
-X-Google-Smtp-Source: AGHT+IEWYrb36PdKBag9nv7umgVIk7G1bTldHchuOPfvROLSmBUu/NAVg8VDJpg5RlmqqjygOHylbjZp7FvBGQl3oDc=
-X-Received: by 2002:a1f:df83:0:b0:487:d56f:fc82 with SMTP id
- w125-20020a1fdf83000000b00487d56ffc82mr5999148vkg.6.1693793737962; Sun, 03
- Sep 2023 19:15:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693804334; x=1694409134;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NiA1VuA4y4Hb5mu8pl1p+1zSWDEvOlvH/dn8f2wlrZM=;
+ b=U6AEFRB7gbI3+KuDd9GgFYYkef5AuZiqbqWx2LqwxRJknNgfd+hURowIH5yBdOyX7g
+ Ebp+AeJfw5CaSsZIK7+DnPUmsZzYy/2aXtLroXUvwSCkZ0w984Z6Wyhvw/itOfO4IW80
+ X9ARfyRKiP8Q4rYviGHG9CcosjyqdbOMnUTT7yFed+h+F4g1lKNaoGQPW/rmBfYR5lIp
+ TsInMmmVfRwOqTg2joU3tHuGPXFhafWg/RMJr17+iBlIthpGADfT0q3GdBwqrSWE06jA
+ Kdzp/47pt7CgVF/j6zUkoFgcJgM86jrPDXKEb2Ooc/Aq4HCW7F8+7eePrbtyW2tmUiof
+ pLgg==
+X-Gm-Message-State: AOJu0Yx/B115DtUS9z2x5yb4Jx5b436yrtPP+htFiXVR26uSJFqf59f6
+ VOp/YKUTe1xvYBMZ/7KGX1cB6g==
+X-Google-Smtp-Source: AGHT+IEUwGy+hzqjPiyzrBlcBR21kILVgmFzGfQycBlvcjIQmkguNSH4VGLwr4WmB1jJx4QsfJqrYg==
+X-Received: by 2002:a17:906:2921:b0:9a5:b8c1:916c with SMTP id
+ v1-20020a170906292100b009a5b8c1916cmr6518430ejd.30.1693804333672; 
+ Sun, 03 Sep 2023 22:12:13 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
+ by smtp.gmail.com with ESMTPSA id
+ x2-20020aa7dac2000000b005272523b162sm5238593eds.69.2023.09.03.22.12.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 03 Sep 2023 22:12:13 -0700 (PDT)
+Message-ID: <a69633a4-54a1-8dcf-6e87-fa43623dbfe6@linaro.org>
+Date: Mon, 4 Sep 2023 07:12:09 +0200
 MIME-Version: 1.0
-References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
- <20230901194627.1214811-9-dbarboza@ventanamicro.com>
-In-Reply-To: <20230901194627.1214811-9-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 4 Sep 2023 12:15:11 +1000
-Message-ID: <CAKmqyKPmMjs5qL8Mzg1CAcjgTREvTZVOe-fa-vopsSOXpPD8Jw@mail.gmail.com>
-Subject: Re: [PATCH v9 08/20] target/riscv/cpu.c: add
- riscv_cpu_add_kvm_unavail_prop_array()
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, ajones@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa33.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 4/8] hw/core/cpu: Return static value with gdb_arch_name()
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
+ "open list:PowerPC TCG CPUs" <qemu-ppc@nongnu.org>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
+ "open list:S390 TCG CPUs" <qemu-s390x@nongnu.org>
+References: <20230903043030.20708-1-akihiko.odaki@daynix.com>
+ <20230903043030.20708-5-akihiko.odaki@daynix.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230903043030.20708-5-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,71 +115,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Sep 2, 2023 at 5:50=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Use a helper in riscv_cpu_add_kvm_properties() to eliminate some of its
-> code repetition.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+On 3/9/23 06:30, Akihiko Odaki wrote:
+> All implementations of gdb_arch_name() returns dynamic duplicates of
+> static strings. It's also unlikely that there will be an implementation
+> of gdb_arch_name() that returns a truly dynamic value due to the nature
+> of the function returning a well-known identifiers. Qualify the value
+> gdb_arch_name() with const and make all of its implementations return
+> static strings.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->  target/riscv/cpu.c | 24 +++++++++++++-----------
->  1 file changed, 13 insertions(+), 11 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index d484d63bcd..8cd19a9b9c 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1978,6 +1978,16 @@ static void riscv_cpu_add_kvm_unavail_prop(Object =
-*obj, const char *prop_name)
->                          NULL, (void *)prop_name);
->  }
->
-> +static void riscv_cpu_add_kvm_unavail_prop_array(Object *obj,
-> +                                                 Property *array)
-> +{
-> +    g_assert(array);
-> +
-> +    for (Property *prop =3D array; prop && prop->name; prop++) {
-> +        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
-> +    }
-> +}
-> +
->  static void riscv_cpu_add_kvm_properties(Object *obj)
->  {
->      Property *prop;
-> @@ -1986,17 +1996,9 @@ static void riscv_cpu_add_kvm_properties(Object *o=
-bj)
->      kvm_riscv_init_user_properties(obj);
->      riscv_cpu_add_misa_properties(obj);
->
-> -    for (prop =3D riscv_cpu_extensions; prop && prop->name; prop++) {
-> -        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
-> -    }
-> -
-> -    for (prop =3D riscv_cpu_vendor_exts; prop && prop->name; prop++) {
-> -        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
-> -    }
-> -
-> -    for (prop =3D riscv_cpu_experimental_exts; prop && prop->name; prop+=
-+) {
-> -        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
-> -    }
-> +    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_extensions);
-> +    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_vendor_exts);
-> +    riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_ext=
-s);
->
->      for (prop =3D riscv_cpu_options; prop && prop->name; prop++) {
->          /* Check if KVM created the property already */
-> --
-> 2.41.0
->
->
+>   include/hw/core/cpu.h  | 2 +-
+>   target/ppc/internal.h  | 2 +-
+>   gdbstub/gdbstub.c      | 4 +---
+>   target/arm/cpu.c       | 6 +++---
+>   target/arm/cpu64.c     | 4 ++--
+>   target/i386/cpu.c      | 6 +++---
+>   target/loongarch/cpu.c | 4 ++--
+>   target/ppc/gdbstub.c   | 6 +++---
+>   target/riscv/cpu.c     | 6 +++---
+>   target/s390x/cpu.c     | 4 ++--
+>   target/tricore/cpu.c   | 4 ++--
+>   11 files changed, 23 insertions(+), 25 deletions(-)
+
+Nice.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
