@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0DE791483
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3676791486
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:12:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5ZR-0005Zm-9T; Mon, 04 Sep 2023 05:08:33 -0400
+	id 1qd5Z6-0004yT-HG; Mon, 04 Sep 2023 05:08:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Z1-0004Os-1u; Mon, 04 Sep 2023 05:08:07 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qd5Z2-0004YY-Qd; Mon, 04 Sep 2023 05:08:09 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5Yx-0003xW-3E; Mon, 04 Sep 2023 05:08:06 -0400
+ id 1qd5Yz-0003yF-J4; Mon, 04 Sep 2023 05:08:08 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN8J5mR9z4x2Y;
- Mon,  4 Sep 2023 19:08:00 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN8M1Gbgz4x09;
+ Mon,  4 Sep 2023 19:08:03 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN8G0n5kz4wy9;
- Mon,  4 Sep 2023 19:07:57 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN8K2MPsz4wy9;
+ Mon,  4 Sep 2023 19:08:01 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- jianchunfu <chunfu.jian@shingroup.cn>,
- Gautam Menghani <gautam@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 31/35] target/ppc: Fix the order of kvm_enable judgment about
- kvmppc_set_interrupt()
-Date: Mon,  4 Sep 2023 11:06:26 +0200
-Message-ID: <20230904090630.725952-32-clg@kaod.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: [PULL 32/35] ppc/xive: Use address_space routines to access the
+ machine RAM
+Date: Mon,  4 Sep 2023 11:06:27 +0200
+Message-ID: <20230904090630.725952-33-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904090630.725952-1-clg@kaod.org>
 References: <20230904090630.725952-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=kZzc=EU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,59 +65,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: jianchunfu <chunfu.jian@shingroup.cn>
+to log an error in case of bad configuration of the XIVE tables by the FW.
 
-It's unnecessary for non-KVM accelerators(TCG, for example),
-to call this function, so change the order of kvm_enable() judgment.
-
-The static inline function that returns -1 directly does not work
- in TCG's situation.
-
-Signed-off-by: jianchunfu <chunfu.jian@shingroup.cn>
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/ppc/ppc.c     | 8 ++++++--
- target/ppc/kvm.c | 2 +-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ hw/intc/pnv_xive.c  | 27 +++++++++++++++++++++++----
+ hw/intc/pnv_xive2.c | 27 +++++++++++++++++++++++----
+ 2 files changed, 46 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 87df91460026..c70882649a7d 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -59,7 +59,9 @@ void ppc_set_irq(PowerPCCPU *cpu, int irq, int level)
+diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+index e536b3ec26e5..b2bafd61b157 100644
+--- a/hw/intc/pnv_xive.c
++++ b/hw/intc/pnv_xive.c
+@@ -242,12 +242,20 @@ static int pnv_xive_vst_read(PnvXive *xive, uint32_t type, uint8_t blk,
+ {
+     const XiveVstInfo *info = &vst_infos[type];
+     uint64_t addr = pnv_xive_vst_addr(xive, type, blk, idx);
++    MemTxResult result;
  
-     if (old_pending != env->pending_interrupts) {
-         ppc_maybe_interrupt(env);
--        kvmppc_set_interrupt(cpu, irq, level);
-+        if (kvm_enabled()) {
-+            kvmppc_set_interrupt(cpu, irq, level);
-+        }
+     if (!addr) {
+         return -1;
      }
  
-     trace_ppc_irq_set_exit(env, irq, level, env->pending_interrupts,
-@@ -1533,5 +1535,7 @@ void ppc_irq_reset(PowerPCCPU *cpu)
-     CPUPPCState *env = &cpu->env;
- 
-     env->irq_input_state = 0;
--    kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
-+    if (kvm_enabled()) {
-+        kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
+-    cpu_physical_memory_read(addr, data, info->size);
++    result = address_space_read(&address_space_memory, addr,
++                                MEMTXATTRS_UNSPECIFIED, data,
++                                info->size);
++    if (result != MEMTX_OK) {
++        xive_error(xive, "VST: read failed at @0x%" HWADDR_PRIx
++                   " for VST %s %x/%x\n", addr, info->name, blk, idx);
++        return -1;
 +    }
+     return 0;
  }
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 769850174385..51112bd3670d 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -1320,7 +1320,7 @@ int kvmppc_set_interrupt(PowerPCCPU *cpu, int irq, int level)
-         return 0;
+ 
+@@ -258,16 +266,27 @@ static int pnv_xive_vst_write(PnvXive *xive, uint32_t type, uint8_t blk,
+ {
+     const XiveVstInfo *info = &vst_infos[type];
+     uint64_t addr = pnv_xive_vst_addr(xive, type, blk, idx);
++    MemTxResult result;
+ 
+     if (!addr) {
+         return -1;
      }
  
--    if (!kvm_enabled() || !cap_interrupt_unset) {
-+    if (!cap_interrupt_unset) {
-         return 0;
+     if (word_number == XIVE_VST_WORD_ALL) {
+-        cpu_physical_memory_write(addr, data, info->size);
++        result = address_space_write(&address_space_memory, addr,
++                                     MEMTXATTRS_UNSPECIFIED, data,
++                                     info->size);
+     } else {
+-        cpu_physical_memory_write(addr + word_number * 4,
+-                                  data + word_number * 4, 4);
++        result = address_space_write(&address_space_memory,
++                                     addr + word_number * 4,
++                                     MEMTXATTRS_UNSPECIFIED,
++                                     data + word_number * 4, 4);
++    }
++
++    if (result != MEMTX_OK) {
++        xive_error(xive, "VST: write failed at @0x%" HWADDR_PRIx
++                    "for VST %s %x/%x\n", addr, info->name, blk, idx);
++        return -1;
+     }
+     return 0;
+ }
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index bbb44a533cff..4b8d0a5d8120 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -240,12 +240,20 @@ static int pnv_xive2_vst_read(PnvXive2 *xive, uint32_t type, uint8_t blk,
+ {
+     const XiveVstInfo *info = &vst_infos[type];
+     uint64_t addr = pnv_xive2_vst_addr(xive, type, blk, idx);
++    MemTxResult result;
+ 
+     if (!addr) {
+         return -1;
      }
  
+-    cpu_physical_memory_read(addr, data, info->size);
++    result = address_space_read(&address_space_memory, addr,
++                                MEMTXATTRS_UNSPECIFIED, data,
++                                info->size);
++    if (result != MEMTX_OK) {
++        xive2_error(xive, "VST: read failed at @0x%" HWADDR_PRIx
++                   " for VST %s %x/%x\n", addr, info->name, blk, idx);
++        return -1;
++    }
+     return 0;
+ }
+ 
+@@ -256,16 +264,27 @@ static int pnv_xive2_vst_write(PnvXive2 *xive, uint32_t type, uint8_t blk,
+ {
+     const XiveVstInfo *info = &vst_infos[type];
+     uint64_t addr = pnv_xive2_vst_addr(xive, type, blk, idx);
++    MemTxResult result;
+ 
+     if (!addr) {
+         return -1;
+     }
+ 
+     if (word_number == XIVE_VST_WORD_ALL) {
+-        cpu_physical_memory_write(addr, data, info->size);
++        result = address_space_write(&address_space_memory, addr,
++                                     MEMTXATTRS_UNSPECIFIED, data,
++                                     info->size);
+     } else {
+-        cpu_physical_memory_write(addr + word_number * 4,
+-                                  data + word_number * 4, 4);
++        result = address_space_write(&address_space_memory,
++                                     addr + word_number * 4,
++                                     MEMTXATTRS_UNSPECIFIED,
++                                     data + word_number * 4, 4);
++    }
++
++    if (result != MEMTX_OK) {
++        xive2_error(xive, "VST: write failed at @0x%" HWADDR_PRIx
++                   "for VST %s %x/%x\n", addr, info->name, blk, idx);
++        return -1;
+     }
+     return 0;
+ }
 -- 
 2.41.0
 
