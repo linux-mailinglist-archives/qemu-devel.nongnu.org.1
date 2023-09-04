@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E188791B62
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5B7791B63
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCI8-0003ls-FT; Mon, 04 Sep 2023 12:19:08 -0400
+	id 1qdCIT-000422-D6; Mon, 04 Sep 2023 12:19:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdCHw-0003kC-TX
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:19:03 -0400
+ id 1qdCIM-0003uN-Oy
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:19:22 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdCHr-0000Qu-WB
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:18:56 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfYgt6jXfz67Nsw;
- Tue,  5 Sep 2023 00:17:30 +0800 (CST)
+ id 1qdCIK-0000T1-IC
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:19:22 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfYjt0vCkz6K6Zs;
+ Tue,  5 Sep 2023 00:19:14 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 4 Sep 2023 17:18:47 +0100
+ 15.1.2507.31; Mon, 4 Sep 2023 17:19:18 +0100
 To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
  <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>
 CC: Dave Jiang <dave.jiang@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  <linuxarm@huawei.com>
-Subject: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
-Date: Mon, 4 Sep 2023 17:18:44 +0100
-Message-ID: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 1/3] tests/acpi: Allow update of DSDT.cxl
+Date: Mon, 4 Sep 2023 17:18:45 +0100
+Message-ID: <20230904161847.18468-2-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
+References: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -66,39 +68,21 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2 updates:
-- Edit of patch description to not confuse matters by mentioning
-  switches.
-- Associated ACPI test updates.
+Addition of QTG in following patch requires an update to the test
+data.
 
-CXL platforms may support the concept of QoS Thottling groups (QTG).
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Typically you want to associate devices with similar performance
-with the same QTG. As there is no standard way of understanding the
-relationship between expected performance and appropriate QTG
-the platform firmware provides a query mechanism via ACPI Device
-Specific Method (DSM) with parameters of the performance numbers
-that returns the appropriate QTG ID.
-
-This support is basically stubbing out that function so that it always
-returns 0. For now that is sufficient for current CXL emulation usecases.
-
-Based on: [PATCH 0/4] hw/cxl: Minor CXL emulation fixes and cleanup
-Based on: Message ID: 20230904132806.6094-1-Jonathan.Cameron@huawei.com
-
-Dave Jiang (1):
-  hw/cxl: Add QTG _DSM support for ACPI0017 device
-
-Jonathan Cameron (2):
-  tests/acpi: Allow update of DSDT.cxl
-  tests/acpi: Update DSDT.cxl with QTG DSM
-
- include/hw/acpi/cxl.h        |   1 +
- hw/acpi/cxl.c                |  57 +++++++++++++++++++++++++++++++++++
- hw/i386/acpi-build.c         |   1 +
- tests/data/acpi/q35/DSDT.cxl | Bin 9655 -> 9723 bytes
- 4 files changed, 59 insertions(+)
-
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..9ce0f596cc 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/q35/DSDT.cxl",
 -- 
 2.39.2
 
