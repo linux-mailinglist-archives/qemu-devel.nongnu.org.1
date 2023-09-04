@@ -2,96 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D767916ED
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A247916FE
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:18:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8TZ-0003kt-Fb; Mon, 04 Sep 2023 08:14:41 -0400
+	id 1qd8WW-0005Zh-4l; Mon, 04 Sep 2023 08:17:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qd8TN-0003g5-Cu
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:14:32 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8WU-0005ZZ-NX
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:17:42 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qd8TK-0005oh-CU
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:14:29 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-313e742a787so859852f8f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:14:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd8WS-0006ej-Ab
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:17:42 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-99bcfe28909so202002066b.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693829664; x=1694434464; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ahc379zCbdl/RcY1MR0nIuwS4psQzOv2ITAHPGcEYtU=;
- b=R/prggUZ0U/81AiJTw20NnpPXZCpqxLqwSIopkiYQWNzFvmb8iOKmRS95ooNB5p86k
- qd1nxy9eiFA206j1qrzeyJnPdA7bmImQTG+nD1PWLZEGWM/Hi0z625qo8N/Nbuy2EqBO
- S96g/tXyyuJQxmVXHwhlpyZ0sWenrRqDhp+z3yC7P3jt9VrJjb/0p6vMGgzeuVN9WKEs
- jtkf6W6tpA+S9eRVArztjmQ1iScmcMYUBKNN7L4XecRLQHfyTjFWWXCQVZX9G+36cKUL
- VpIX/HbAoIzshR9ORrIQpS48DaNOQ5Q1JQRgQfKEPjCHY+M1mi1hdkIwAbEvWtg3AhXt
- u+EQ==
+ d=linaro.org; s=google; t=1693829859; x=1694434659; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JTtM7XOZ1r/iBc4hWPftr7NRzFwdU9CwaJVGZA36fhY=;
+ b=IKuR/nL6vJn+ph9y2JYEhG6QhBUnKg9PTjUUpM3MenZ8Ynbdm4GrqiljXun5mlxmh9
+ 6w+8IzAbNlqLCWs0Vh6tzqEbel9HSW1pFb7VmuBra9yGQVRjUMavkf+XVPl/ygvVxb9K
+ W3RKJHaIHoHKMbvHJRdCTr7AvNNBI35lAUEK4MWwOScyczl37+r4nNyUjbTokjo2/gx9
+ EviW2HdXdiS2b6/wODd0Qai1wQNpo3naBKHtzbm8W7xntPbOSeJlONfsILOZRIFTceMM
+ w9Zujy0KJhiUqHd41rGwhA+rMlHsNNfZxjp/kcyfTTYTwpXH+J1xqhoXU4DD2b236feW
+ ehWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693829664; x=1694434464;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ahc379zCbdl/RcY1MR0nIuwS4psQzOv2ITAHPGcEYtU=;
- b=gELyYcHs+PFUT7JPOMmOCRFDsDBhCOJF4a+cQ80ni31fJ3TlAvmVhffhOB+JakO5ay
- duVoWF8G0IsjhZ67rYbKDBmXdmD4CBOVgR7p03yfECITx9x1lcKEbbzWo+wCsoRGLvyY
- LWzFgqudDiBtQAiBc4z/ykgvaBrUnRgD9q7U8GnPCBJ5DyaTnjOBqG2njdhEMMpr2DMm
- UsPJc7R2knaRPok1wZFynr012q2y1SkCITVlA+dudi0L9IE3rInibwk5XXY51Z1rTIuW
- XH5+IMqE89+FECMuVr27sOYuYgeITTe2PlgheqaueZI0HZUhuCYNUWBA7X/afoIG1Uti
- vgwg==
-X-Gm-Message-State: AOJu0YyqUpc/sTKWvoNE+L+8cFk3SFyobcN37AT/3XB7YM4x8vkZBaXo
- DDCSADogczw74iDI29kvLLR51w==
-X-Google-Smtp-Source: AGHT+IEHoGKIIhUNYY1Bit2MzwW5SVmEWTPPUuK4MU/RnCRYE/M2DY9hkvFkjeiOYiJnfcfpSN6Fag==
-X-Received: by 2002:adf:ebcd:0:b0:319:6ca9:7c38 with SMTP id
- v13-20020adfebcd000000b003196ca97c38mr6771425wrn.22.1693829664109; 
- Mon, 04 Sep 2023 05:14:24 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693829859; x=1694434659;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JTtM7XOZ1r/iBc4hWPftr7NRzFwdU9CwaJVGZA36fhY=;
+ b=MaSltqnUyIq6JhNkmXcc2vKzmphx3hxPoLLdzeOqhChoMO3hMGqXoACrU+I94nqRa+
+ ckS1ke9NSSiaLspahNF8Toyx9X7l97s3IiaylntVOajlSZHzyNSz904BFNjwRQHU8xqg
+ 6CFhtl2HRWog/irudXWMbZ0OcO+arKXA11EY3PVfe0ZTlVMmCkuevy3ktVOs1a4pold+
+ EJQzEq4L7rqqFVM4cKI9LgnTuibIBs8/rWy8X7SSpRWO3KeWol9/M8NRKIgGtKEdpNfV
+ j1RECZowh7fDG5hJCXLVD/0Fi3F/kKTS/EvJR1MH8X/FLuAuUOgrkDjhH9KgfGBQC/eD
+ L0dw==
+X-Gm-Message-State: AOJu0YyxD+N+jzXQPXVQjbW31J26lONX51Pi89RXnJ6uGrJFpOTQd9Fz
+ F9qgzI/ZfAVjXI/aaxAVq5Axgg==
+X-Google-Smtp-Source: AGHT+IE6dkpx9En4+Zf9EIqXar89zgsUq3+bWP2/QB7Hzt5InprNzm5O5EgkvdlHbNeHuVG5kDCrWA==
+X-Received: by 2002:a17:907:2cc8:b0:99d:de25:89bb with SMTP id
+ hg8-20020a1709072cc800b0099dde2589bbmr6651532ejc.0.1693829858705; 
+ Mon, 04 Sep 2023 05:17:38 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- m24-20020adfa3d8000000b0031753073abcsm9857602wrb.36.2023.09.04.05.14.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 05:14:23 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 171F11FFBB;
- Mon,  4 Sep 2023 13:14:23 +0100 (BST)
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <4b115410-9c0e-96aa-2f62-e82b7897ede5@t-online.de>
- <0ghxq.3r60jgujq0t@linaro.org>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: Volker =?utf-8?Q?R=C3=BC?= melin <vr_qemu@t-online.de>,
- qemu-devel@nongnu.org, Igor
- Skalkin <Igor.Skalkin@opensynergy.com>, Anton Yakovlev
- <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "ichael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, =?utf-8?Q?Daniel_P=2E_Berr?=
- =?utf-8?Q?ang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, =?utf-8?Q?M?=
- =?utf-8?Q?arc-Andr=C3=A9?=
- Lureau <marcandre.lureau@redhat.com>, =?utf-8?B?S8WRIHbDoSBnw7MgLCBab2x0?=
- =?utf-8?B?w6Egbg==?=
- <DirtY.iCE.hu@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v8 00/12] Add VIRTIO sound card
-Date: Mon, 04 Sep 2023 13:11:16 +0100
-In-reply-to: <0ghxq.3r60jgujq0t@linaro.org>
-Message-ID: <875y4qjftt.fsf@linaro.org>
+ o13-20020a1709061d4d00b0098733a40bb7sm6063902ejh.155.2023.09.04.05.17.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 05:17:38 -0700 (PDT)
+Message-ID: <837a910c-2f45-4aeb-0ed6-fd934e270e35@linaro.org>
+Date: Mon, 4 Sep 2023 14:17:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v8 03/12] virtio-sound: handle control messages and streams
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "chael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr_=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Volker_R_=c3=bc_melin?= <vr_qemu@t-online.de>,
+ =?UTF-8?B?S8WRIHbDoSBnw7MgLCBab2x0w6Egbg==?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?Q?Alex_Benn_=c3=a9_e?= <alex.bennee@linaro.org>
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <e3e57dd125611eeb5e563eb7fab8eb89194ed50e.1693252037.git.manos.pitsidianakis@linaro.org>
+ <198a502c-d7bb-5e83-08b4-f29222dd4d83@linaro.org>
+ <0gk8g.5plunv7mgoh9@linaro.org>
+ <df5e9f4e-9985-6c06-916e-48bd7b7a2dcb@linaro.org>
+ <0gmex.y2a8jrzqq435@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <0gmex.y2a8jrzqq435@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -109,79 +107,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-
-> Hello Volker :)
->
-> On Mon, 04 Sep 2023 10:20, Volker R=C3=BCmelin <vr_qemu@t-online.de> wrot=
-e:
->>All qemu_log_mask() format strings need a trailing \n.
->
-> Thank you, will fix it!
->
->> I still hear a lot of playback dropouts. I had planned to look at
->> the playback code, but I didn't have the time until now.
+On 4/9/23 13:46, Manos Pitsidianakis wrote:
+> On Mon, 04 Sep 2023 14:30, Philippe Mathieu-Daudé <philmd@linaro.org> 
+> wrote:
+>> On 4/9/23 13:00, Manos Pitsidianakis wrote:
+>>> On Mon, 04 Sep 2023 13:46, Philippe Mathieu-Daudé <philmd@linaro.org> 
+>>> wrote:
+>>>>> +    size_t sz = iov_to_buf(cmd->elem->out_sg,
+>>>>> +                           cmd->elem->out_num,
+>>>>> +                           0,
+>>>>> +                           &cmd->ctrl,
+>>>>> +                           sizeof(cmd->ctrl));
+>>>>> +    if (sz != sizeof(cmd->ctrl)) {
+>>>>> +        qemu_log_mask(LOG_GUEST_ERROR,
+>>>>> +                "%s: virtio-snd command size incorrect %zu vs \
+>>>>> +                %zu\n", __func__, sz, sizeof(cmd->ctrl));
+>>>>> +        return;
+>>>>> +    }
+>>>>> +
+>>>>> +    trace_virtio_snd_handle_code(cmd->ctrl.code,
+>>>>
+>>>> IIUC the spec, this structure is in little endian, is that right?
+>>>> So shouldn't swap various fields in this series?
+>>>
+>>> Not sure about the answer to this. Need input from someone more 
+>>> knowledgeable in virtio.
 >>
->> Compared to v6 audio recording has improved but there are bugs. When
->> I start QEMU with -audiodev
->> pipewire,out.frequency=3D48000,in.frequency=3D48000,id=3Daudio0 there are
->> two either uninitialized or stale samples every 25ms in the recorded
->> audio stream.
->>
->> To reproduce the issue start audacity on the host and generate a 2s
->> square wave tone with 315Hz and an amplitude of 0.8. Use pavucontrol
->> to select the monitor of your host playback device as QEMU recording
->> device. In the guest start recording with audacity. Start playback
->> of the generated square wave on the host. Stop recording in the
->> guest and have a look at a 200ms sequence of the recorded square
->> wave and notice the wrong samples every 25ms.
->
-> We've noticed this and decided to fix it in the future. I think the
-> problem lies when PCM release is called from the guest. Quoting the
-> spec:
->
->  The device MUST complete all pending I/O messages for the specified
->  stream ID.
->  The device MUST NOT complete the control request while there are
->  pending I/O messages for the specified stream ID.
->
-> When RELEASE is received, buffers are simply dropped. This is pure
-> conjecture but I think creating an in-device buffer could solve this.
-> Unless the bug is found to be caused by something else, I settled on
-> accepting it for this patch series because it is spec conformant.
+>> You can test running a big-endian guest (m68k, s390x, sparc64) on your
+>> little-endian host.
+> 
+> The linux driver uses le{32,64}_to_cpu for reading fields, if there's 
+> any problem then it would be with the host?
 
-Volker,
+Ah right. Since using a BE guest is often simpler for most developers
+than accessing a BE host -- in particular to test recent kernel -- I was
+hoping this would be an easy enough suggestion.
 
-Can you run with:
-
-  -d trace:virtio_snd\*
-
-to confirm you are seeing the same behaviour. The experience I had with
-ogg123 in an emulated guest was it would work fine but then the next run
-I would get audio corruption. You can see this if you see lots of
-START/STOP/RELEASE messages constantly restarting things. If you are
-getting corruption without this pattern that is something else which we
-should investigate before merging.
-
->
->> When I start QEMU with -audiodev
->> pipewire,out.mixing-engine=3Doff,in.mixing-engine=3Doff,id=3Daudio0 audio
->> recording starts but the recorded stream immediately stalls.
->
-> Can you elaborate? Do you mean you repeat the same process as before,
-> but the stall happens immediately? I personally rarely get any drops I
-> could notice, only one or two for many minutes of playback / capture.
-> I also could not reproduce exactly the same behavior you had in the
-> previous version. The bugs *were* there but it was not as severe.
-> Maybe it's a hardware performance issue? Can someone else test this
-> too? It'd be helpful.
->
-> Thank you very much for your help,
-> Manos
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Anyhow Linux swapping the fields confirms the virtio-sound model has to
+do the same.
 
