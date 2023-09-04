@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E961791B60
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B81791B56
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 18:17:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdCEL-0006Rg-Nh; Mon, 04 Sep 2023 12:15:15 -0400
+	id 1qdCEh-0007HN-R6; Mon, 04 Sep 2023 12:15:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDn-00064Z-5n
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:40 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDp-0006Mx-NG
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:43 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDf-0007nU-VN
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:38 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-52a49a42353so2351736a12.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:14:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdCDm-0007oE-CU
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 12:14:40 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2bcc846fed0so24824821fa.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 09:14:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693844070; x=1694448870; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693844076; x=1694448876; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4GNi2AOj7YBZidVqMdiMTsl/wL7uqVeokPItco5CZ1w=;
- b=h21mdo5jeZ3kRCvq2SP/f6C4WDo/xWOTeLsY9vOo0fq7vH54j9u/J07N+NWmXchhHN
- ZTiRWPsFxHTh8v3VINzmFvAAtays/Rjr45UyTx+r1Lf33C4H92RDTJsYkXwEbIR6EBMR
- i7psqeEOfECjjOa/XdfQvjZ6G1VyBX+HSBqAxaX/7QM5xBic188TwNJySItNXTArry7l
- tifaZmKOeb5Xtm37Osl6Ah1NxMIQUxab+7AgSiB6say7qhYKH55t96S6+enpJGbGTdte
- ImbwqcMYAZPSF3BXerkWDmf+MoCWWxOap2OxuHMNBlJ9yYdCDlAdhmpZFKu29o5dd6MT
- 3kWA==
+ bh=Bvkfrc224yUF6DF6DTCqAYqVQw+ygdwws/3+78VrLoI=;
+ b=acI2z3s3au07RftiPtQGrY/MtiI/7MaaawUW9yLXUFwLCfJrUX39c11gTVG1Qi8iGV
+ kbCWCcIfvA87LPXEB6a45SL3Wx/Rj1GXV1Y8p7JHKVzPnEiNBqUOwQJ9EhXdJ3BZpac8
+ weJK13x562VxCKxeQ2TsyIyRmrJ+slg/25sMB05f6NEJZ/lY61g7nWrQ4T/6uFPzFLp/
+ RUdmLycVPhiHsV4zW580LhXWKM3T7Ag/IVsE4vG6ZsyHObJe81++nJD3GoYVDxksc6s6
+ CTJiTwVVmhrKvwpWp9cCmv+3RNemsACe+wIkZQ+Fi5d/MlnQSYz68aGjea3MLMprzfcC
+ 22+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693844070; x=1694448870;
+ d=1e100.net; s=20221208; t=1693844076; x=1694448876;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4GNi2AOj7YBZidVqMdiMTsl/wL7uqVeokPItco5CZ1w=;
- b=EzPmxLry/Qd+26QPzNAbyZB2QiC1Jn8x8/Qz8r80vDd+mkSRNi3Zj0qott+yleFHrP
- pmWbzssrBvZT55Un1IfSdzHuwRifmVYu1gMUF3OptBWssI+CSZVPMm3SkKweXOOlFJpU
- 1e7Z6EcTCx92fsaq1EbP4bflfdsjYDhcUaZUNb+hx5QiLZqsI6RRICu1busvkfTpu2Ss
- dAkDFtpPs3XVCAQMz5Qtxgo1lBFppw8L5LSdyztJDACFa4fzYbMNiW0y74tLtuNlSIvN
- yintusgDDWs53PByQl9dY63t9983tGJfP4Dk9Bs0zWkB/0jIC9UzSo/aGf6xC33lsvXb
- CqXw==
-X-Gm-Message-State: AOJu0Yykd12bG7bCHSizhfk1SAvKvpA7PNfnOxLuY2rmpGzUexUU6L0Y
- 1odnqv6wLB/VQp1loSaMkclcNw==
-X-Google-Smtp-Source: AGHT+IEe5clzyXiqNTTYljrRgwNpvMiouZd3Gr1Q4mi6qCK8BCnIBeXcwy5swf33GYUHZbmD9S/JHQ==
-X-Received: by 2002:a05:6402:3202:b0:52e:585a:e95 with SMTP id
- g2-20020a056402320200b0052e585a0e95mr452717eda.2.1693844070498; 
- Mon, 04 Sep 2023 09:14:30 -0700 (PDT)
+ bh=Bvkfrc224yUF6DF6DTCqAYqVQw+ygdwws/3+78VrLoI=;
+ b=LcVoWXp9bMd8Qms/BEMssaDYDCGR52O3jIjVgQVNE3vHOfmUpOFNlduCXr0LcmIxKr
+ CqR+HAIRRNGoL2o4nFMRqv/Jc2JYrbihEnEGP/JUYrYh6J8zXTDOu6kOaF+HZe7Pj0Xh
+ yXi9QxMOf+mmelu3bXI+mPC1SixxattA0yoPZX31I1QW3aT2xFDE6nfciR27k4HsU7Nz
+ GbZXqp0vPFBjDeyvsDJR7BgRQi0qHx/2nSRZb46dtHwauq3SJm6x7yiXQ1JV+5lq+YTG
+ T2fEfTs+g6tED5VBpH/L7UI2ykycIYz7RZ+NWBzeUILdpWS0c31I+32YSlhdVJznH0f0
+ ubrw==
+X-Gm-Message-State: AOJu0Yyse1+mZ9fSi3NDGO5Iao4FyfmLg6xmB/MiS/X1wmt3NITWdf73
+ T69JjdfTqVBpBEvWlBsY/bITnQ==
+X-Google-Smtp-Source: AGHT+IEesCMWtIBNelqvTphhVlDDQaXrJ1066j6qk+ks7u0QsJMZ9CqW0zTh4LUp1QnyOBTENyeq6Q==
+X-Received: by 2002:a2e:81cc:0:b0:2bb:9fcf:6f64 with SMTP id
+ s12-20020a2e81cc000000b002bb9fcf6f64mr7227876ljg.28.1693844076054; 
+ Mon, 04 Sep 2023 09:14:36 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.227])
  by smtp.gmail.com with ESMTPSA id
- c21-20020aa7df15000000b005254b41f507sm6024930edy.32.2023.09.04.09.14.29
+ qc8-20020a170906d8a800b0099275c59bc9sm6345022ejb.33.2023.09.04.09.14.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Sep 2023 09:14:30 -0700 (PDT)
+ Mon, 04 Sep 2023 09:14:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Markus Armbruster <armbru@redhat.com>,
 	qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- David Gibson <david@gibson.dropbear.id.au>
-Subject: [PATCH v2 20/22] sysemu/device_tree: Clean up local variable shadowing
-Date: Mon,  4 Sep 2023 18:12:32 +0200
-Message-ID: <20230904161235.84651-21-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 21/22] softmmu/memory: Clean up local variable shadowing
+Date: Mon,  4 Sep 2023 18:12:33 +0200
+Message-ID: <20230904161235.84651-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904161235.84651-1-philmd@linaro.org>
 References: <20230904161235.84651-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +96,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  hw/mips/boston.c:472:5: error: declaration shadows a local variable [-Werror,-Wshadow]
-    qemu_fdt_setprop_cells(fdt, name, "reg", reg_base, reg_size);
-    ^
-  include/sysemu/device_tree.h:129:13: note: expanded from macro 'qemu_fdt_setprop_cells'
-        int i;
-            ^
-  hw/mips/boston.c:461:9: note: previous declaration is here
-    int i;
-        ^
+  softmmu/memory.c: In function ‘mtree_print_mr’:
+  softmmu/memory.c:3236:27: warning: declaration of ‘ml’ shadows a previous local [-Wshadow=compatible-local]
+   3236 |         MemoryRegionList *ml;
+        |                           ^~
+  softmmu/memory.c:3213:32: note: shadowed declaration is here
+   3213 |     MemoryRegionList *new_ml, *ml, *next_ml;
+        |                                ^~
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/sysemu/device_tree.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ softmmu/memory.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/sysemu/device_tree.h b/include/sysemu/device_tree.h
-index ca5339beae..8eab395934 100644
---- a/include/sysemu/device_tree.h
-+++ b/include/sysemu/device_tree.h
-@@ -126,10 +126,8 @@ int qemu_fdt_add_path(void *fdt, const char *path);
- #define qemu_fdt_setprop_cells(fdt, node_path, property, ...)                 \
-     do {                                                                      \
-         uint32_t qdt_tmp[] = { __VA_ARGS__ };                                 \
--        int i;                                                                \
--                                                                              \
--        for (i = 0; i < ARRAY_SIZE(qdt_tmp); i++) {                           \
--            qdt_tmp[i] = cpu_to_be32(qdt_tmp[i]);                             \
-+        for (unsigned i_ = 0; i_ < ARRAY_SIZE(qdt_tmp); i_++) {               \
-+            qdt_tmp[i_] = cpu_to_be32(qdt_tmp[i_]);                           \
-         }                                                                     \
-         qemu_fdt_setprop(fdt, node_path, property, qdt_tmp,                   \
-                          sizeof(qdt_tmp));                                    \
+diff --git a/softmmu/memory.c b/softmmu/memory.c
+index 7d9494ce70..bf48350438 100644
+--- a/softmmu/memory.c
++++ b/softmmu/memory.c
+@@ -3233,7 +3233,6 @@ static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
+     }
+ 
+     if (mr->alias) {
+-        MemoryRegionList *ml;
+         bool found = false;
+ 
+         /* check if the alias is already in the queue */
 -- 
 2.41.0
 
