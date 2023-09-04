@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D17F791964
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2E679197E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 16:12:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdAE0-0004bC-RP; Mon, 04 Sep 2023 10:06:44 -0400
+	id 1qdAIq-0007Kc-0Z; Mon, 04 Sep 2023 10:11:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdADt-0004ZX-SI
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:06:38 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdADo-00018u-OC
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:06:36 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-99bcf2de59cso228052266b.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 07:06:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693836389; x=1694441189; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RwyMHhZeSZclptVm/lKpxcxHNUhunHMxC2rmEIIQW3w=;
- b=CjHN4oEvNdgZfmpsSZZqDOWstPs3WrBkvi9fbUBBZl8onw/7eo6Z09gpZpscppBX5F
- e0t9yaMpodW6Tcwwx8ACGjIQY47QVmH07BTdfhV5/Av2392oS8dIYOLBL92fvrAJuNE/
- +bF1l4cwQWquWzpCXdniSlGcIMRMa1WklK9UedoBfD6XLo8+0m3a46XqcOkaPy/Eca6H
- qCttPR/PjgAUkMknc19TAKqSREXxsY6Y8KW2Z/XP1ZDd58QUVg9BuwQnI5aqbl7hJOwN
- KQG3AkosH72NlhKrq90MkW44DUBNVHNloxOBYhhNN8NkTWew4Dnp2oahTFF4tAKDhAzT
- v+3w==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qdAIl-0007KH-93
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:11:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qdAIi-0002Nq-JU
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 10:11:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693836693;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5IGZNp0VSnxBuZS8Zt4S0mX7v7XYANR/mB2vF8dlU90=;
+ b=DprZeXloLv4MJYAyCAvPPmL2dDsyKp9f4EUBCibwygpUtQeTIIHrAd59ivHnvHRsl0itGD
+ gptr6KY9RhLvcpZtdjGE4rcPbBjZinkCp3IvkmwbhxxlfkE92rJxf+L/48b/kXOkElpqLX
+ bfCFUTCwzLpowQQH+VpWrZOQgN+CBHA=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-226-W8IWbyRZPJKS9IUG6h6BHw-1; Mon, 04 Sep 2023 10:11:32 -0400
+X-MC-Unique: W8IWbyRZPJKS9IUG6h6BHw-1
+Received: by mail-il1-f198.google.com with SMTP id
+ e9e14a558f8ab-34deff589bbso10026835ab.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 07:11:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693836389; x=1694441189;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RwyMHhZeSZclptVm/lKpxcxHNUhunHMxC2rmEIIQW3w=;
- b=MPSSEeHUZp1YuQdif9JHyPie0NPR02C37CcDVBVk3pEGkz21h+5/6LrNvQytqIKcsP
- Dv2+svLTd4qvdVg6+umHCtsjqnzX6ST6AP7nGSdmUuMDWhOjHWRD/4qYE2XDeUArW7s8
- ftwGQ8NxZYWWLkHcyy4ruiiI0Y0LA9k4y6aXEhEJlwP88PYoO5tYhb9f4gBf2Vg+5kQW
- Ms26Nd2JVUSU9Y3MNojNI0QYh5ROb8ynsXUqtrGwTW3e75jvko6DCJyLNgzpxFdRIotT
- d96D9BeCa0gQwQlPFLkR7CzvxddbdSQXdjChS7FtmH2mSwOxoc5qULenPVaouG28JAzo
- Tc9Q==
-X-Gm-Message-State: AOJu0YwPXNmXnusr3nn5LSXvu0FN/8jdZirnkx7hMLxulTCrznKMJhQ5
- Wz9sd0AI3rx3//Tn0ujZZ39nsg==
-X-Google-Smtp-Source: AGHT+IFBey0D0jWlV1oyH91a0YPB68bH0wGhoTEie4JT8nL7N5g5lP9cBQRyZ95U4FLD2OGoZDNq4A==
-X-Received: by 2002:a17:906:6988:b0:99d:f560:5d3c with SMTP id
- i8-20020a170906698800b0099df5605d3cmr6900592ejr.23.1693836389281; 
- Mon, 04 Sep 2023 07:06:29 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.209.227])
- by smtp.gmail.com with ESMTPSA id
- s1-20020a170906960100b00992d122af63sm6208298ejx.89.2023.09.04.07.06.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 07:06:28 -0700 (PDT)
-Message-ID: <d136124b-ab5e-9868-8637-6cf3edb8ca54@linaro.org>
-Date: Mon, 4 Sep 2023 16:06:26 +0200
+ d=1e100.net; s=20221208; t=1693836691; x=1694441491;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5IGZNp0VSnxBuZS8Zt4S0mX7v7XYANR/mB2vF8dlU90=;
+ b=HxhWONPO133iKNkUPcZJycsiqJ39UCbiSTq/0gvpYHRwIrmpq4E53S88/ZxI8MWV6Q
+ /IkMpqV3Er1tS57h1T13RUeS/dBLautWFomRNIizKDqX/Ek2+NwJgNsLUM81//2LCiC2
+ xvH0Pd02cCGjbnJdkdopoRtGFnyfWm080hXZAvd7bfJ3uRiAhCh9of0bayhQRmQKrFVI
+ OswvAk0cBkTr4LsyqIqeTL8Nav/lJR4QBGQy1xk63L/iMoW1zFMNpw1UPww4hB3P5etX
+ Y/uQ8WDYhp+98sNHiqzplcjzj/QsU4cf5ljvuhr7DBadZ1G/k+505qSQ0sn02w0zgjaS
+ BDTQ==
+X-Gm-Message-State: AOJu0Ywziv36CxsBem/UHbFyZQVJhHRC9hqCIkeTT/mrDfHQ08s3+O1w
+ H4KWfJTQqOhXKf5XDfphuBePS1U9/yfA6GKF0U+rOa9SWdxCQcR052N26ttkJQxYz29lOdhQk1L
+ ibpx6+OpUOu1oNhE=
+X-Received: by 2002:a92:c20e:0:b0:34c:e4c6:c522 with SMTP id
+ j14-20020a92c20e000000b0034ce4c6c522mr9630841ilo.27.1693836691474; 
+ Mon, 04 Sep 2023 07:11:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGjj3HmA2Cmf8lH0Qo/M4oKhlb9aG5POFMuISggaRfYaJ9ABKJrE5At7BFV7/6lcxHxFwEuWQ==
+X-Received: by 2002:a92:c20e:0:b0:34c:e4c6:c522 with SMTP id
+ j14-20020a92c20e000000b0034ce4c6c522mr9630819ilo.27.1693836691195; 
+ Mon, 04 Sep 2023 07:11:31 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ c4-20020a92dc84000000b003493fcfaef1sm3349756iln.67.2023.09.04.07.11.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Sep 2023 07:11:30 -0700 (PDT)
+Date: Mon, 4 Sep 2023 08:11:29 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@gmail.com>
+Cc: "Kim, Dongwon" <dongwon.kim@intel.com>, Philippe =?UTF-8?B?TWF0aGll?=
+ =?UTF-8?B?dS1EYXVkw6k=?= <philmd@linaro.org>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com
+Subject: Re: [PATCH for-8.1] vfio/display: Fix missing update to set backing
+ fields
+Message-ID: <20230904081129.3908c083.alex.williamson@redhat.com>
+In-Reply-To: <CAJ+F1C+YiDgRuyWcGeUPhaNO4SdjOSFSHKBY1wBS3dJFLO-k2w@mail.gmail.com>
+References: <20230816215550.1723696-1-alex.williamson@redhat.com>
+ <a3a6f8ec-ca61-4472-45b4-1077dd27bb52@linaro.org>
+ <acddfb4a-fe42-ba8c-e920-edc7e9ff5268@intel.com>
+ <CAJ+F1C+YiDgRuyWcGeUPhaNO4SdjOSFSHKBY1wBS3dJFLO-k2w@mail.gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 02/11] target/arm: Clean up local variable shadowing
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- qemu-arm@nongnu.org, qemu-block@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>, Alexander Graf <agraf@csgraf.de>
-References: <20230831225607.30829-1-philmd@linaro.org>
- <20230831225607.30829-3-philmd@linaro.org>
- <CAFEAcA_e+fU6JKtS+W63wr9cCJ6btu_hT_ydZWOwC0kBkDYYYQ@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_e+fU6JKtS+W63wr9cCJ6btu_hT_ydZWOwC0kBkDYYYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,158 +105,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/23 12:46, Peter Maydell wrote:
-> On Thu, 31 Aug 2023 at 23:56, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Fix:
->>
->>    target/arm/tcg/translate-m-nocp.c:509:18: error: declaration shadows a local variable [-Werror,-Wshadow]
->>          TCGv_i32 tmp = load_cpu_field(v7m.fpdscr[M_REG_NS]);
->>                   ^
->>    target/arm/tcg/translate-m-nocp.c:433:14: note: previous declaration is here
->>      TCGv_i32 tmp;
->>               ^
->>    target/arm/tcg/mve_helper.c:2463:17: error: declaration shadows a local variable [-Werror,-Wshadow]
->>          int64_t extval = sextract64(src << shift, 0, 48);
->>                  ^
->>    target/arm/tcg/mve_helper.c:2443:18: note: previous declaration is here
->>      int64_t val, extval;
->>                   ^
->>    target/arm/hvf/hvf.c:1936:13: error: declaration shadows a local variable [-Werror,-Wshadow]
->>          int ret = 0;
->>              ^
->>    target/arm/hvf/hvf.c:1807:9: note: previous declaration is here
->>      int ret;
->>          ^
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/arm/hvf/hvf.c              | 1 -
->>   target/arm/tcg/mve_helper.c       | 8 ++++----
->>   target/arm/tcg/translate-m-nocp.c | 2 +-
->>   3 files changed, 5 insertions(+), 6 deletions(-)
->>
->> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
->> index 486f90be1d..20d534faef 100644
->> --- a/target/arm/hvf/hvf.c
->> +++ b/target/arm/hvf/hvf.c
->> @@ -1933,7 +1933,6 @@ int hvf_vcpu_exec(CPUState *cpu)
->>           uint32_t rt = (syndrome >> 5) & 0x1f;
->>           uint32_t reg = syndrome & SYSREG_MASK;
->>           uint64_t val;
->> -        int ret = 0;
->>
->>           if (isread) {
->>               ret = hvf_sysreg_read(cpu, reg, rt);
-> 
-> I'm not sure this is correct.
-> 
-> The hvf_vcpu_exec() function is not documented, but in practice
-> its caller expects it to return either EXCP_DEBUG (for "this was
-> a guest debug exception you need to deal with") or something else
-> (presumably the intention being 0 for OK).
-> 
-> The hvf_sysreg_read() and hvf_sysreg_write() functions are also not
-> documented, but they return 0 on success, or 1 for a completely
-> unrecognized sysreg where we've raised the UNDEF exception (but
-> not if we raised an UNDEF exception for an unrecognized GIC sysreg --
-> I think this is a bug). We use this return value to decide whether
-> we need to advance the PC past the insn or not. It's not the same
-> as the return value we want to return from hvf_vcpu_exec().
+On Mon, 4 Sep 2023 15:06:21 +0400
+Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> wrote:
 
-Indeed.
+> Hi
+>=20
+> On Thu, Aug 17, 2023 at 8:29=E2=80=AFPM Kim, Dongwon <dongwon.kim@intel.c=
+om> wrote:
+> >
+> > Ok, this regression happened not just because of renaming. Originally
+> > width and height were representing the size of whole surface that guest
+> > shares while scanout width and height are for the each scanout. We
+> > realized backing_width/height are more commonly used to specify the size
+> > of the whole guest surface so put them in the place of width/height then
+> > replaced scanout_width/height as well with normal width/height.
+> >
+> > On 8/16/2023 3:31 PM, Philippe Mathieu-Daud=C3=A9 wrote: =20
+> > > On 16/8/23 23:55, Alex Williamson wrote: =20
+> > >> The below referenced commit renames scanout_width/height to
+> > >> backing_width/height, but also promotes these fields in various port=
+ions
+> > >> of the egl interface.  Meanwhile vfio dmabuf support has never used =
+the
+> > >> previous scanout fields and is therefore missed in the update. This
+> > >> results in a black screen when transitioning from ramfb to dmabuf
+> > >> display
+> > >> when using Intel vGPU with these features. =20
+> > >
+> > > Referenced commit isn't trivial. Maybe because it is too late here.
+> > > I'd have tried to split it. Anyhow, too late (again).
+> > >
+> > > Is vhost-user-gpu also affected? (see VHOST_USER_GPU_DMABUF_SCANOUT
+> > > in vhost_user_gpu_handle_display()). =20
+> >
+> > Yeah, backing_width/height should be programmed with plane.width/height
+> > as well in vhost_user_gpu_handle_display().
+> >
+> > Link: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg02726.ht=
+ml =20
+> > >> Fixes: 9ac06df8b684 ("virtio-gpu-udmabuf: correct naming of
+> > >> QemuDmaBuf size properties")
+> > >> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> > >> ---
+> > >>
+> > >> This fixes a regression in dmabuf/EGL support for Intel GVT-g and
+> > >> potentially the mbochs mdev driver as well.  Once validated by those
+> > >> that understand dmabuf/EGL integration, I'd welcome QEMU maintainers=
+ to
+> > >> take this directly for v8.1 or queue it as soon as possible for v8.1=
+.1.
+> > >>
+> > >>   hw/vfio/display.c | 2 ++
+> > >>   1 file changed, 2 insertions(+)
+> > >>
+> > >> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> > >> index bec864f482f4..837d9e6a309e 100644
+> > >> --- a/hw/vfio/display.c
+> > >> +++ b/hw/vfio/display.c
+> > >> @@ -243,6 +243,8 @@ static VFIODMABuf
+> > >> *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+> > >>       dmabuf->dmabuf_id  =3D plane.dmabuf_id;
+> > >>       dmabuf->buf.width  =3D plane.width;
+> > >>       dmabuf->buf.height =3D plane.height; =20
+> >
+> > One thing to note here is the normal width and height in the QemuDmaBuf
+> > are of a scanout, which could be just a partial area of the guest plane
+> > here. So we should not use those as normal width and height of the
+> > QemuDmaBuf unless it is guaranteed the given guest surface (plane in
+> > this case) is always of single display's.
+> >
+> > https://lists.gnu.org/archive/html/qemu-devel/2021-09/msg04737.html
+> > =20
+> > >> +    dmabuf->buf.backing_width =3D plane.width;
+> > >> +    dmabuf->buf.backing_height =3D plane.height;
+> > >>       dmabuf->buf.stride =3D plane.stride;
+> > >>       dmabuf->buf.fourcc =3D plane.drm_format;
+> > >>       dmabuf->buf.modifier =3D plane.drm_format_mod; =20
+> > > =20
+> > =20
+>=20
+> I agree with what Kim said. Alex, are you sending a new patch?
 
-> So I think the correct fix here is to retain the variable as
-> locally scoped but give it a name that doesn't clash with the
-> other function-scoped variable.
+What would be different?
 
-OK.
-
->> diff --git a/target/arm/tcg/mve_helper.c b/target/arm/tcg/mve_helper.c
->> index 403b345ea3..32087b6f0a 100644
->> --- a/target/arm/tcg/mve_helper.c
->> +++ b/target/arm/tcg/mve_helper.c
->> @@ -924,8 +924,8 @@ DO_1OP_IMM(vorri, DO_ORRI)
->>           bool qc = false;                                                \
->>           for (e = 0; e < 16 / ESIZE; e++, mask >>= ESIZE) {              \
->>               bool sat = false;                                           \
->> -            TYPE r = FN(n[H##ESIZE(e)], m[H##ESIZE(e)], &sat);          \
->> -            mergemask(&d[H##ESIZE(e)], r, mask);                        \
->> +            TYPE r_ = FN(n[H##ESIZE(e)], m[H##ESIZE(e)], &sat);         \
->> +            mergemask(&d[H##ESIZE(e)], r_, mask);                       \
->>               qc |= sat & mask & 1;                                       \
->>           }                                                               \
->>           if (qc) {                                                       \
-> 
-> The commit message doesn't list an error message relating to
-> this change and it's not immediately obvious to me what 'r'
-> would be shadowing here.
-
-Full error:
-
-target/arm/tcg/mve_helper.c: In function ‘helper_mve_vqshlsb’:
-target/arm/tcg/mve_helper.c:1259:19: warning: declaration of ‘r’ shadows 
-a previous local [-Wshadow=compatible-local]
-  1259 |         typeof(N) r = FN(N, (int8_t)(M), sizeof(N) * 8, ROUND, 
-&su32);  \
-       |                   ^
-target/arm/tcg/mve_helper.c:1267:5: note: in expansion of macro 
-‘WRAP_QRSHL_HELPER’
-  1267 |     WRAP_QRSHL_HELPER(do_sqrshl_bhs, N, M, false, satp)
-       |     ^~~~~~~~~~~~~~~~~
-target/arm/tcg/mve_helper.c:927:22: note: in expansion of macro 
-‘DO_SQSHL_OP’
-   927 |             TYPE r = FN(n[H##ESIZE(e)], m[H##ESIZE(e)], &sat); 
-         \
-       |                      ^~
-target/arm/tcg/mve_helper.c:945:5: note: in expansion of macro ‘DO_2OP_SAT’
-   945 |     DO_2OP_SAT(OP##b, 1, int8_t, FN)            \
-       |     ^~~~~~~~~~
-target/arm/tcg/mve_helper.c:1277:1: note: in expansion of macro 
-‘DO_2OP_SAT_S’
-  1277 | DO_2OP_SAT_S(vqshls, DO_SQSHL_OP)
-       | ^~~~~~~~~~~~
-
-So 'r' comes from:
-
-#define WRAP_QRSHL_HELPER(FN, N, M, ROUND, satp) \
-     ({                                           \
-         uint32_t su32 = 0;                       \
-         typeof(N) r = FN(N, (int8_t)(M), sizeof(N) * 8, ROUND, &su32); \
-         if (su32) {                              \
-             *satp = true;                        \
-         }                                        \
-         r;                                       \
-     })
-
-I'll rename this one as 'qrshl_ret', and the previous one
-'vqdmladh_ret'.
-
->> @@ -2460,7 +2460,7 @@ static inline int64_t do_sqrshl48_d(int64_t src, int64_t shift,
->>               return extval;
->>           }
->>       } else if (shift < 48) {
->> -        int64_t extval = sextract64(src << shift, 0, 48);
->> +        extval = sextract64(src << shift, 0, 48);
->>           if (!sat || src == (extval >> shift)) {
->>               return extval;
->>           }
->> @@ -2492,7 +2492,7 @@ static inline uint64_t do_uqrshl48_d(uint64_t src, int64_t shift,
->>               return extval;
->>           }
->>       } else if (shift < 48) {
->> -        uint64_t extval = extract64(src << shift, 0, 48);
->> +        extval = extract64(src << shift, 0, 48);
->>           if (!sat || src == (extval >> shift)) {
->>               return extval;
->>           }
-> 
-> These two parts are good, but one of them is missing from the
-> listed error messages in the commit message.
-
-I'll record both.
+struct vfio_device_gfx_plane_info {
+        __u32 argsz;
+        __u32 flags;
+#define VFIO_GFX_PLANE_TYPE_PROBE (1 << 0)
+#define VFIO_GFX_PLANE_TYPE_DMABUF (1 << 1)
+#define VFIO_GFX_PLANE_TYPE_REGION (1 << 2)
+        /* in */
+        __u32 drm_plane_type;   /* type of plane: DRM_PLANE_TYPE_* */
+        /* out */
+        __u32 drm_format;       /* drm format of plane */
+        __u64 drm_format_mod;   /* tiled mode */
+        __u32 width;    /* width of plane */
+        __u32 height;   /* height of plane */
+        __u32 stride;   /* stride of plane */
+        __u32 size;     /* size of plane in bytes, align on page*/
+        __u32 x_pos;    /* horizontal position of cursor plane */
+        __u32 y_pos;    /* vertical position of cursor plane*/
+        __u32 x_hot;    /* horizontal position of cursor hotspot */
+        __u32 y_hot;    /* vertical position of cursor hotspot */
+        union {
+                __u32 region_index;     /* region index */
+                __u32 dmabuf_id;        /* dma-buf id */
+        };
+};
 
 Thanks,
+Alex
 
-Phil.
 
