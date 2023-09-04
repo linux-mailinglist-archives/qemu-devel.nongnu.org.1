@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82248791700
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2619479174F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 14:43:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd8XA-0005oX-Vh; Mon, 04 Sep 2023 08:18:32 -0400
+	id 1qd8uf-0000aW-JV; Mon, 04 Sep 2023 08:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qd8Ww-0005nI-LR
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:18:10 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qd8Ws-0006mf-UL
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:18:10 -0400
-Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8CxruvzyvVkLeIeAA--.59824S3;
- Mon, 04 Sep 2023 20:17:56 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxLCPxyvVkRzFrAA--.42919S3; 
- Mon, 04 Sep 2023 20:17:54 +0800 (CST)
-Subject: Re: [PATCH] roms: Support compile the efi bios for loongarch
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Chao Li <lichao@loongson.cn>
-References: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
- <41a215d5-4ae6-dfa3-a61e-c21fd8ca311d@linaro.org>
- <0cc3d20d-e849-9e2d-7560-fd694a412032@loongson.cn>
- <c9f1e257-0875-21cf-4bbb-f678aab6b60c@loongson.cn>
- <lx3zo3f2ox5d4cgi2rhce2mikiiqetdngvzhfaxx5tnsz65vtr@al2euj2s7m6j>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <e086fca3-39c1-cf8d-afed-65dba64d2dcc@loongson.cn>
-Date: Mon, 4 Sep 2023 20:17:53 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qd8uU-0000ZB-T4
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:42:30 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qd8uR-0004VQ-Qh
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 08:42:30 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-3a81154c570so697785b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 05:42:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693831346; x=1694436146; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cw3HIM5514WF/cylQUG43aOl2e22OtvqyjpBZvKGGVA=;
+ b=JR1bBpIPESrVg0A9gRlPmA3+74fYbFETJnZnmv9c8/dfO0PS0k7L23JusancWxUgWN
+ OiRFk/jSOCZlxRjYzS/vCT3Jfqb/ziHN5V2B1op3+siikpOpuAe/5MZ+luypQdHGUX5E
+ B4S6vJg7EZxguwvM15Riw7jrR3wGliM0gEqJmmOnpUp/53LUjrnMWWndV4A0+gz7Rs1d
+ 9DSJCaw8jmbgCWxPJqSRkjuXUR+vtA0ZOhA2HNB16SVTFNfcUL1CVTdWq/hz4BLKMvI2
+ H1LuGZojOahEC8wHKtIqSJNkanOCrEdbMBXIXJKZxdqNO6cagJvczm4KJMDhGXk88lkf
+ 4KMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693831346; x=1694436146;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cw3HIM5514WF/cylQUG43aOl2e22OtvqyjpBZvKGGVA=;
+ b=MfQxjQTsl74epNDQjdtzUtJzFeRyy8zq3Y5KzzqJqpuRoMBjNE8s6S3YdVBJkql65Z
+ cZBcPJQP8i/gWS6hvoS2FWiTAZuXY+l8G7IOHAc47ESjStc2Pe+h/3EaFcRxXWK6+yk0
+ mM0m89fKzkXDTzLDD8kAH8y2GWP8L+un/hqGLNKMboBP42wAlB2FwZULTCfZIW3MKOsc
+ gYrEc1YwbK9No4CYveTHA+kHjozaOg/v7DT1RQxVXA82cjvVMvt2LYyRBPNqbGt8tdJA
+ NB9V1mha1VpBXATQtEabO8ErHmFlJ2lk+oR+rU1qgwm01L7ir8xp2STrSOb0MDNUq9fm
+ wP8A==
+X-Gm-Message-State: AOJu0YxMIfVNPzz4C3HX06XasYRjKgJe4mD0kxupMFs6ixo+ABewf/HR
+ ifGRhaR89I7MXgh+FRxu8c5H4M6Kkr5SXpm7YM8=
+X-Google-Smtp-Source: AGHT+IExK6K4sq5iWpUcyUsLakJHUzWYLIHB8K9QbXCGN/kym8oQ+ofY/5E+SBDemqSmMw4cdElyw9PR0RUQ4uhh65M=
+X-Received: by 2002:a05:6808:64a:b0:3a7:4802:c3f with SMTP id
+ z10-20020a056808064a00b003a748020c3fmr8174608oih.52.1693831345957; Mon, 04
+ Sep 2023 05:42:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <lx3zo3f2ox5d4cgi2rhce2mikiiqetdngvzhfaxx5tnsz65vtr@al2euj2s7m6j>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8CxLCPxyvVkRzFrAA--.42919S3
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tFWkJw48Kr4UCr1DXF1DJwc_yoW8Ww4kpF
- 9aywsrJF48KryvqrWkGa48Xa1DZ34fGrn2vF4UXr18C3s8XrWru3srtFZYgF9rJw1vvFyU
- ury093yqg3WDZagCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUBab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
- z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
- 8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE
- 2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
- xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
- 7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07URKZXUUUUU=
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-46-marcandre.lureau@redhat.com>
+ <96a49f28-d92c-4910-9f24-b031212ccfc2@daynix.com>
+In-Reply-To: <96a49f28-d92c-4910-9f24-b031212ccfc2@daynix.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 4 Sep 2023 16:42:14 +0400
+Message-ID: <CAJ+F1CLCeOgjpS9Wm-V7xNg9QcP8TFcWz86_f9uxsLFpRREQsw@mail.gmail.com>
+Subject: Re: [PATCH 45/67] ui/vc: remove kby_put_keysym() and update function
+ calls
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-oi1-x236.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,58 +91,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
-On 9/4/23 7:42 PM, Gerd Hoffmann wrote:
->    Hi,
+On Thu, Aug 31, 2023 at 12:59=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
 >
->> The loongarch cross-compilation tool on the fedora38 operating system is a
->> bit old,
-> The gcc 12 -> 13 update for the cross compilers landed meanwhile,
-> right now we have:
+> On 2023/08/30 18:38, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > The function calls to `kbd_put_keysym` have been updated to now call
+> > `kbd_put_keysym_console` with a NULL console parameter.
+> >
+> > Like most console functions, NULL argument is now for the active consol=
+e.
+> >
+> > This will allow to rename the text console functions in a consistent ma=
+nner.
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >   include/ui/console.h |  1 -
+> >   ui/console.c         | 14 ++++++------
+> >   ui/curses.c          |  2 +-
+> >   ui/vnc.c             | 54 ++++++++++++++++++++++---------------------=
+-
+> >   ui/cocoa.m           |  2 +-
+> >   5 files changed, 36 insertions(+), 37 deletions(-)
+> >
+> > diff --git a/include/ui/console.h b/include/ui/console.h
+> > index 1ccd432b4d..9c362f0e87 100644
+> > --- a/include/ui/console.h
+> > +++ b/include/ui/console.h
+> > @@ -115,7 +115,6 @@ bool qemu_mouse_set(int index, Error **errp);
+> >   void kbd_put_keysym_console(QemuTextConsole *s, int keysym);
+> >   bool kbd_put_qcode_console(QemuTextConsole *s, int qcode, bool ctrl);
+> >   void kbd_put_string_console(QemuTextConsole *s, const char *str, int =
+len);
+> > -void kbd_put_keysym(int keysym);
+> >
+> >   /* Touch devices */
+> >   typedef struct touch_slot {
+> > diff --git a/ui/console.c b/ui/console.c
+> > index a98adbb1b2..6068e02928 100644
+> > --- a/ui/console.c
+> > +++ b/ui/console.c
+> > @@ -1141,6 +1141,13 @@ void kbd_put_keysym_console(QemuTextConsole *s, =
+int keysym)
+> >       int c;
+> >       uint32_t num_free;
+> >
+> > +    if (!s) {
+> > +        if (!QEMU_IS_TEXT_CONSOLE(active_console)) {
+> > +            return;
+> > +        }
+> > +        s =3D QEMU_TEXT_CONSOLE(active_console);
+> > +    }
+> > +
+> >       switch(keysym) {
+> >       case QEMU_KEY_CTRL_UP:
+> >           console_scroll(s, -1);
+> > @@ -1231,13 +1238,6 @@ void kbd_put_string_console(QemuTextConsole *s, =
+const char *str, int len)
+> >       }
+> >   }
+> >
+> > -void kbd_put_keysym(int keysym)
+> > -{
+> > -    if (QEMU_IS_TEXT_CONSOLE(active_console)) {
+> > -        kbd_put_keysym_console(QEMU_TEXT_CONSOLE(active_console), keys=
+ym);
+> > -    }
+> > -}
+> > -
+> >   static void text_console_invalidate(void *opaque)
+> >   {
+> >       QemuTextConsole *s =3D QEMU_TEXT_CONSOLE(opaque);
+> > diff --git a/ui/curses.c b/ui/curses.c
+> > index de962faa7c..4ddbbae7cd 100644
+> > --- a/ui/curses.c
+> > +++ b/ui/curses.c
+> > @@ -400,7 +400,7 @@ static void curses_refresh(DisplayChangeListener *d=
+cl)
+> >               if (keysym =3D=3D -1)
+> >                   keysym =3D chr;
+> >
+> > -            kbd_put_keysym(keysym);
+> > +            kbd_put_keysym_console(NULL, keysym);
+> >           }
+> >       }
+> >   }
+> > diff --git a/ui/vnc.c b/ui/vnc.c
+> > index 92964dcc0c..1fa4456744 100644
+> > --- a/ui/vnc.c
+> > +++ b/ui/vnc.c
+> > @@ -1945,88 +1945,88 @@ static void do_key_event(VncState *vs, int down=
+, int keycode, int sym)
+> >               case 0xb8:                          /* Right ALT */
+> >                   break;
+> >               case 0xc8:
+> > -                kbd_put_keysym(QEMU_KEY_UP);
+> > +                kbd_put_keysym_console(NULL, QEMU_KEY_UP);
 >
->      binutils-loongarch64-linux-gnu.x86_64 2.39-4.fc38    @updates
->      gcc-loongarch64-linux-gnu.x86_64      13.2.1-1.fc38  @updates
-
-Compile with the compiler of the above version to compile UEFI normally,
-
-but there are some problems running on qemu,
-
-which require a later version of binutils to solve.
-
-It means that we need UEFI compiled by the following version
-
-of the compiler to run properly on qemu:
-
-binutils-loongarch64-linux-gnu-2.40-3.fc39.x86_64
-gcc-loongarch64-linux-gnu-13.2.1-1.fc39.x86_64
-
+> vs->vd->dcl.con should be used instead. There may be VNC connections for
+> consoles other than the "active console" and in such a case
+> vs->vd->dcl.con !=3D NULL. Unfortunately it seems that ui/vnc is very
+> buggy in such a situation.
 >
-> Trying to build the loongarch firmware throws errors
-> (edk2/edk2-platforms repos, master branch, checkout
-> being a few days old):
->
-> build.py...
-> /home/kraxel/projects/edk2-platforms/Platform/Loongson/LoongArchQemuPkg/Loongson.dsc(...): error 4000: Instance of library class [AcpiPlatformLib] is not found
-> 	in [/home/kraxel/projects/edk2/OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf] [LOONGARCH64]
-> 	consumed by module [/home/kraxel/projects/edk2/OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf]
 
-This compilation error is caused by a change in the AcpiPlatformLib 
-position in edk2, which is referenced by loongarch's UEFI.
+That's not how the console & VNC server code works. VNC server will
+send the key event to the hw anyway. But if the active_console is
+text/vc, then it also sends (some) of the key events to it. There is
+no "per-client" console either, the console switch is global
+(console_select()).
 
-We have already submitted the patch to the edk2 community and may need a 
-day or two to merge.
+Anyway, this patch is quite systematic. Further complicated changes
+should be done later. please ack/r-b
 
-You can get the corresponding submission from the link below:
-
-https://github.com/tianocore/edk2-platforms/pull/94/files
+thanks
 
 
-Thanks,
 
-xianglai
-
-
-> take care,
->    Gerd
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
