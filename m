@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF7F791685
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C718979167C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 13:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd89c-0002gt-BC; Mon, 04 Sep 2023 07:54:04 -0400
+	id 1qd89b-0002dC-Ja; Mon, 04 Sep 2023 07:54:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd89T-0002Aw-3U
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:56 -0400
+ id 1qd89W-0002PJ-8p
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qd89N-0008Nv-5g
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:51 -0400
+ id 1qd89S-0008OH-NV
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 07:53:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693828427;
+ s=mimecast20190719; t=1693828431;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/32oFS7TQEmf4bW88aD4JYqrEDtlekpiFzmkgf6R/9s=;
- b=JlOUbV5YqQi8Fj8u+A+JMKHQiTzYQQxInfG0zdCXrAnSVk5MeTBEmYxVlTmcHxsIMWGlCc
- qSMaSHo3cYHninFw0vIn88O43CjhXq4UdtmcYGLmBAYWCLY5i7LdAbeR2KntHyZ1YcvqvF
- cDFWfSztbZiCO+J1sPmA/TQxz1ecrUo=
+ bh=96Uyc1t2XsaTuT7+HdEGqagaVU5D7+hfz4wBBG5J9wo=;
+ b=ZrSTHvL68+UesajD9/s2GmwAryXlMIa3ZQq+HAG9Mz3+WTtiictYwwcN1OOIHZc5KIzucg
+ QTVo5I6Kfi7/varTs7Cwc8RjQKBMw6WiWD3krg+BMEDqRZI8Y/2QYSzFwrYQZt3ncAtgMY
+ 05AtRQcUjVYqLahDsBJm/K/h+Q6K0F0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-599-vziKJJXaPBOPSu5PJYQidA-1; Mon, 04 Sep 2023 07:53:46 -0400
-X-MC-Unique: vziKJJXaPBOPSu5PJYQidA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-657-24vfBL_YO2S76j1sBYJMqA-1; Mon, 04 Sep 2023 07:53:50 -0400
+X-MC-Unique: 24vfBL_YO2S76j1sBYJMqA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 086EA1C29799
- for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:53:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 421ED3810D23
+ for <qemu-devel@nongnu.org>; Mon,  4 Sep 2023 11:53:50 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.42])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C568D2026D4B;
- Mon,  4 Sep 2023 11:53:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 13D0C400F5A;
+ Mon,  4 Sep 2023 11:53:48 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 13/52] ui/vc: replace variable with static text attributes
- default
-Date: Mon,  4 Sep 2023 15:52:10 +0400
-Message-ID: <20230904115251.4161397-14-marcandre.lureau@redhat.com>
+Subject: [PULL 14/52] ui/vc: fold text_update_xy()
+Date: Mon,  4 Sep 2023 15:52:11 +0400
+Message-ID: <20230904115251.4161397-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 References: <20230904115251.4161397-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -86,116 +85,42 @@ From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230830093843.3531473-14-marcandre.lureau@redhat.com>
+Message-Id: <20230830093843.3531473-15-marcandre.lureau@redhat.com>
 ---
- ui/console.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ ui/console.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/ui/console.c b/ui/console.c
-index 5c8e3ad1df..d1855f3fcf 100644
+index d1855f3fcf..405aedfcbd 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -52,6 +52,11 @@ typedef struct TextAttributes {
-     uint8_t unvisible:1;
- } TextAttributes;
- 
-+#define TEXT_ATTRIBUTES_DEFAULT ((TextAttributes) { \
-+    .fgcol = QEMU_COLOR_WHITE,                      \
-+    .bgcol = QEMU_COLOR_BLACK                       \
-+})
-+
- typedef struct TextCell {
-     uint8_t ch;
-     TextAttributes t_attrib;
-@@ -104,7 +109,6 @@ struct QemuConsole {
-     int x_saved, y_saved;
-     int y_displayed;
-     int y_base;
--    TextAttributes t_attrib_default; /* default text attributes */
-     TextAttributes t_attrib; /* currently active text attributes */
-     TextCell *cells;
-     int text_x[2], text_y[2], cursor_invalidate;
-@@ -413,7 +417,7 @@ static void text_console_resize(QemuConsole *s)
-         }
-         for(x = w1; x < s->width; x++) {
-             c->ch = ' ';
--            c->t_attrib = s->t_attrib_default;
-+            c->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-             c++;
-         }
-     }
-@@ -486,7 +490,7 @@ static void console_show_cursor(QemuConsole *s, int show)
-     if (y < s->height) {
-         c = &s->cells[y1 * s->width + x];
-         if (show && cursor_visible_phase) {
--            TextAttributes t_attrib = s->t_attrib_default;
-+            TextAttributes t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-             t_attrib.invers = !(t_attrib.invers); /* invert fg and bg */
-             vga_putcharxy(s, x, y, c->ch, &t_attrib);
-         } else {
-@@ -577,7 +581,7 @@ static void console_put_lf(QemuConsole *s)
-         c = &s->cells[y1 * s->width];
-         for(x = 0; x < s->width; x++) {
-             c->ch = ' ';
--            c->t_attrib = s->t_attrib_default;
-+            c->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-             c++;
-         }
-         if (s->y_displayed == s->y_base) {
-@@ -591,7 +595,7 @@ static void console_put_lf(QemuConsole *s)
-                        (s->height - 1) * FONT_HEIGHT);
-             vga_fill_rect(s, 0, (s->height - 1) * FONT_HEIGHT,
-                           s->width * FONT_WIDTH, FONT_HEIGHT,
--                          color_table_rgb[0][s->t_attrib_default.bgcol]);
-+                          color_table_rgb[0][TEXT_ATTRIBUTES_DEFAULT.bgcol]);
-             s->update_x0 = 0;
-             s->update_y0 = 0;
-             s->update_x1 = s->width * FONT_WIDTH;
-@@ -611,7 +615,7 @@ static void console_handle_escape(QemuConsole *s)
-     for (i=0; i<s->nb_esc_params; i++) {
-         switch (s->esc_params[i]) {
-             case 0: /* reset all console attributes to default */
--                s->t_attrib = s->t_attrib_default;
-+                s->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-                 break;
-             case 1:
-                 s->t_attrib.bold = 1;
-@@ -705,7 +709,7 @@ static void console_clear_xy(QemuConsole *s, int x, int y)
-     }
-     TextCell *c = &s->cells[y1 * s->width + x];
-     c->ch = ' ';
--    c->t_attrib = s->t_attrib_default;
-+    c->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-     update_xy(s, x, y);
+@@ -425,14 +425,6 @@ static void text_console_resize(QemuConsole *s)
+     s->cells = cells;
  }
  
-@@ -2419,16 +2423,8 @@ static void text_console_do_init(Chardev *chr)
-     s->hw_ops = &text_console_ops;
-     s->hw = s;
+-static inline void text_update_xy(QemuConsole *s, int x, int y)
+-{
+-    s->text_x[0] = MIN(s->text_x[0], x);
+-    s->text_x[1] = MAX(s->text_x[1], x);
+-    s->text_y[0] = MIN(s->text_y[0], y);
+-    s->text_y[1] = MAX(s->text_y[1], y);
+-}
+-
+ static void invalidate_xy(QemuConsole *s, int x, int y)
+ {
+     if (!qemu_console_is_visible(s)) {
+@@ -453,7 +445,10 @@ static void update_xy(QemuConsole *s, int x, int y)
+     TextCell *c;
+     int y1, y2;
  
--    /* Set text attribute defaults */
--    s->t_attrib_default.bold = 0;
--    s->t_attrib_default.uline = 0;
--    s->t_attrib_default.blink = 0;
--    s->t_attrib_default.invers = 0;
--    s->t_attrib_default.unvisible = 0;
--    s->t_attrib_default.fgcol = QEMU_COLOR_WHITE;
--    s->t_attrib_default.bgcol = QEMU_COLOR_BLACK;
-     /* set current text attributes to default */
--    s->t_attrib = s->t_attrib_default;
-+    s->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-     text_console_resize(s);
+-    text_update_xy(s, x, y);
++    s->text_x[0] = MIN(s->text_x[0], x);
++    s->text_x[1] = MAX(s->text_x[1], x);
++    s->text_y[0] = MIN(s->text_y[0], y);
++    s->text_y[1] = MAX(s->text_y[1], y);
  
-     if (chr->label) {
-@@ -2438,7 +2434,7 @@ static void text_console_do_init(Chardev *chr)
-         msg = g_strdup_printf("%s console\r\n", chr->label);
-         qemu_chr_write(chr, (uint8_t *)msg, strlen(msg), true);
-         g_free(msg);
--        s->t_attrib = s->t_attrib_default;
-+        s->t_attrib = TEXT_ATTRIBUTES_DEFAULT;
-     }
- 
-     qemu_chr_be_event(chr, CHR_EVENT_OPENED);
+     y1 = (s->y_base + y) % s->total_height;
+     y2 = y1 - s->y_displayed;
 -- 
 2.41.0
 
