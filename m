@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C11679146A
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CB2791480
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 11:12:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd5YY-0002zZ-V7; Mon, 04 Sep 2023 05:07:38 -0400
+	id 1qd5Yc-0003Co-9p; Mon, 04 Sep 2023 05:07:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5YW-0002tR-Db; Mon, 04 Sep 2023 05:07:36 -0400
+ id 1qd5YY-00032C-Gr; Mon, 04 Sep 2023 05:07:38 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
- id 1qd5YS-0003qU-DE; Mon, 04 Sep 2023 05:07:35 -0400
+ id 1qd5YU-0003qr-Jx; Mon, 04 Sep 2023 05:07:38 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN7j0j10z4wxW;
- Mon,  4 Sep 2023 19:07:29 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfN7m22Q5z4x2Z;
+ Mon,  4 Sep 2023 19:07:32 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN7g1w1Tz4x2D;
- Mon,  4 Sep 2023 19:07:27 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfN7j4NLpz4x2W;
+ Mon,  4 Sep 2023 19:07:29 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
+ Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 20/35] hw/ppc: Read time only once to perform decrementer write
-Date: Mon,  4 Sep 2023 11:06:15 +0200
-Message-ID: <20230904090630.725952-21-clg@kaod.org>
+Subject: [PULL 21/35] target/ppc: Fix CPU reservation migration for
+ record-replay
+Date: Mon,  4 Sep 2023 11:06:16 +0200
+Message-ID: <20230904090630.725952-22-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230904090630.725952-1-clg@kaod.org>
 References: <20230904090630.725952-1-clg@kaod.org>
@@ -66,226 +68,131 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Reading the time more than once to perform an operation always increases
-complexity and fragility due to introduced deltas. Simplify the
-decrementer write by reading the clock once for the operation.
+ppc only migrates reserve_addr, so the destination machine can get a
+valid reservation with an incorrect reservation value of 0. Prior to
+commit 392d328abe753 ("target/ppc: Ensure stcx size matches larx"),
+this could permit a stcx. to incorrectly succeed. That commit
+inadvertently fixed that bug because the target machine starts with an
+impossible reservation size of 0, so any stcx. will fail.
 
+This behaviour is permitted by the ISA because reservation loss may
+have implementation-dependent cause. What's more, with KVM machines it
+is impossible save or reasonably restore reservation state. However if
+the vmstate is being used for record-replay, the reservation must be
+saved and restored exactly in order for execution from snapshot to
+match the record.
+
+This patch deprecates the existing incomplete reserve_addr vmstate,
+and adds a new vmstate subsection with complete reservation state.
+The new vmstate is needed only when record-replay mode is active.
+
+Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/ppc/ppc.c | 84 +++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 53 insertions(+), 31 deletions(-)
+ target/ppc/cpu.h       |  2 ++
+ target/ppc/machine.c   | 26 ++++++++++++++++++++++++--
+ target/ppc/translate.c |  4 ++++
+ 3 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index f391acc39e11..a0ee064b1dba 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -708,13 +708,13 @@ bool ppc_decr_clear_on_delivery(CPUPPCState *env)
-     return ((tb_env->flags & flags) == PPC_DECR_UNDERFLOW_TRIGGERED);
- }
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 7e7a60f68f79..77113521acfd 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1121,7 +1121,9 @@ struct CPUArchState {
+     target_ulong reserve_addr;   /* Reservation address */
+     target_ulong reserve_length; /* Reservation larx op size (bytes) */
+     target_ulong reserve_val;    /* Reservation value */
++#if defined(TARGET_PPC64)
+     target_ulong reserve_val2;
++#endif
  
--static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
-+static inline int64_t __cpu_ppc_load_decr(CPUPPCState *env, int64_t now,
-+                                          uint64_t next)
+     /* These are used in supervisor mode only */
+     target_ulong msr;      /* machine state register */
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index 8a190c485363..ad7b4f633827 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -10,6 +10,7 @@
+ #include "qemu/main-loop.h"
+ #include "kvm_ppc.h"
+ #include "power8-pmu.h"
++#include "sysemu/replay.h"
+ 
+ static void post_load_update_msr(CPUPPCState *env)
  {
-     ppc_tb_t *tb_env = env->tb_env;
--    uint64_t now, n;
-+    uint64_t n;
-     int64_t decr;
- 
--    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     n = ns_to_tb(tb_env->decr_freq, now);
-     if (next > n && tb_env->flags & PPC_TIMER_BOOKE) {
-         decr = 0;
-@@ -727,16 +727,12 @@ static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
-     return decr;
- }
- 
--target_ulong cpu_ppc_load_decr(CPUPPCState *env)
-+static target_ulong _cpu_ppc_load_decr(CPUPPCState *env, int64_t now)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-     uint64_t decr;
- 
--    if (kvm_enabled()) {
--        return env->spr[SPR_DECR];
--    }
--
--    decr = _cpu_ppc_load_decr(env, tb_env->decr_next);
-+    decr = __cpu_ppc_load_decr(env, now, tb_env->decr_next);
- 
-     /*
-      * If large decrementer is enabled then the decrementer is signed extened
-@@ -750,14 +746,23 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
-     return (uint32_t) decr;
- }
- 
--target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
-+target_ulong cpu_ppc_load_decr(CPUPPCState *env)
-+{
-+    if (kvm_enabled()) {
-+        return env->spr[SPR_DECR];
-+    } else {
-+        return _cpu_ppc_load_decr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
-+    }
-+}
-+
-+static target_ulong _cpu_ppc_load_hdecr(CPUPPCState *env, int64_t now)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-     ppc_tb_t *tb_env = env->tb_env;
-     uint64_t hdecr;
- 
--    hdecr =  _cpu_ppc_load_decr(env, tb_env->hdecr_next);
-+    hdecr =  __cpu_ppc_load_decr(env, now, tb_env->hdecr_next);
- 
-     /*
-      * If we have a large decrementer (POWER9 or later) then hdecr is sign
-@@ -771,6 +776,11 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
-     return (uint32_t) hdecr;
- }
- 
-+target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
-+{
-+    return _cpu_ppc_load_hdecr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
-+}
-+
- uint64_t cpu_ppc_load_purr (CPUPPCState *env)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-@@ -815,7 +825,7 @@ static inline void cpu_ppc_hdecr_lower(PowerPCCPU *cpu)
-     ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
- }
- 
--static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
-+static void __cpu_ppc_store_decr(PowerPCCPU *cpu, int64_t now, uint64_t *nextp,
-                                  QEMUTimer *timer,
-                                  void (*raise_excp)(void *),
-                                  void (*lower_excp)(PowerPCCPU *),
-@@ -824,7 +834,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
- {
-     CPUPPCState *env = &cpu->env;
-     ppc_tb_t *tb_env = env->tb_env;
--    uint64_t now, next;
-+    uint64_t next;
-     int64_t signed_value;
-     int64_t signed_decr;
- 
-@@ -836,18 +846,12 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
- 
-     trace_ppc_decr_store(nr_bits, decr, value);
- 
--    if (kvm_enabled()) {
--        /* KVM handles decrementer exceptions, we don't need our own timer */
--        return;
--    }
--
-     /*
-      * Calculate the next decrementer event and set a timer.
-      * decr_next is in timebase units to keep rounding simple. Note it is
-      * not adjusted by tb_offset because if TB changes via tb_offset changing,
-      * decrementer does not change, so not directly comparable with TB.
-      */
--    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     next = ns_to_tb(tb_env->decr_freq, now) + value;
-     *nextp = next; /* nextp is in timebase units */
- 
-@@ -876,12 +880,13 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
-     timer_mod(timer, tb_to_ns_round_up(tb_env->decr_freq, next));
- }
- 
--static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, target_ulong decr,
--                                       target_ulong value, int nr_bits)
-+static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, int64_t now,
-+                                       target_ulong decr, target_ulong value,
-+                                       int nr_bits)
- {
-     ppc_tb_t *tb_env = cpu->env.tb_env;
- 
--    __cpu_ppc_store_decr(cpu, &tb_env->decr_next, tb_env->decr_timer,
-+    __cpu_ppc_store_decr(cpu, now, &tb_env->decr_next, tb_env->decr_timer,
-                          tb_env->decr_timer->cb, &cpu_ppc_decr_lower,
-                          tb_env->flags, decr, value, nr_bits);
- }
-@@ -890,13 +895,22 @@ void cpu_ppc_store_decr(CPUPPCState *env, target_ulong value)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-+    int64_t now;
-+    target_ulong decr;
-     int nr_bits = 32;
- 
-+    if (kvm_enabled()) {
-+        /* KVM handles decrementer exceptions, we don't need our own timer */
-+        return;
-+    }
-+
-     if (env->spr[SPR_LPCR] & LPCR_LD) {
-         nr_bits = pcc->lrg_decr_bits;
+@@ -690,6 +691,27 @@ static const VMStateDescription vmstate_compat = {
      }
+ };
  
--    _cpu_ppc_store_decr(cpu, cpu_ppc_load_decr(env), value, nr_bits);
-+    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    decr = _cpu_ppc_load_decr(env, now);
-+    _cpu_ppc_store_decr(cpu, now, decr, value, nr_bits);
- }
- 
- static void cpu_ppc_decr_cb(void *opaque)
-@@ -906,14 +920,15 @@ static void cpu_ppc_decr_cb(void *opaque)
-     cpu_ppc_decr_excp(cpu);
- }
- 
--static inline void _cpu_ppc_store_hdecr(PowerPCCPU *cpu, target_ulong hdecr,
--                                        target_ulong value, int nr_bits)
-+static inline void _cpu_ppc_store_hdecr(PowerPCCPU *cpu, int64_t now,
-+                                        target_ulong hdecr, target_ulong value,
-+                                        int nr_bits)
- {
-     ppc_tb_t *tb_env = cpu->env.tb_env;
- 
-     if (tb_env->hdecr_timer != NULL) {
-         /* HDECR (Book3S 64bit) is edge-based, not level like DECR */
--        __cpu_ppc_store_decr(cpu, &tb_env->hdecr_next, tb_env->hdecr_timer,
-+        __cpu_ppc_store_decr(cpu, now, &tb_env->hdecr_next, tb_env->hdecr_timer,
-                              tb_env->hdecr_timer->cb, &cpu_ppc_hdecr_lower,
-                              PPC_DECR_UNDERFLOW_TRIGGERED,
-                              hdecr, value, nr_bits);
-@@ -924,9 +939,12 @@ void cpu_ppc_store_hdecr(CPUPPCState *env, target_ulong value)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-+    int64_t now;
-+    target_ulong hdecr;
- 
--    _cpu_ppc_store_hdecr(cpu, cpu_ppc_load_hdecr(env), value,
--                         pcc->lrg_decr_bits);
-+    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    hdecr = _cpu_ppc_load_hdecr(env, now);
-+    _cpu_ppc_store_hdecr(cpu, now, hdecr, value, pcc->lrg_decr_bits);
- }
- 
- static void cpu_ppc_hdecr_cb(void *opaque)
-@@ -936,12 +954,16 @@ static void cpu_ppc_hdecr_cb(void *opaque)
-     cpu_ppc_hdecr_excp(cpu);
- }
- 
--void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
-+static void _cpu_ppc_store_purr(CPUPPCState *env, int64_t now, uint64_t value)
- {
-     ppc_tb_t *tb_env = env->tb_env;
- 
--    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                     &tb_env->purr_offset, value);
-+    cpu_ppc_store_tb(tb_env, now, &tb_env->purr_offset, value);
++static bool reservation_needed(void *opaque)
++{
++    return (replay_mode != REPLAY_MODE_NONE);
 +}
 +
-+void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
-+{
-+    _cpu_ppc_store_purr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), value);
- }
++static const VMStateDescription vmstate_reservation = {
++    .name = "cpu/reservation",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = reservation_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINTTL(env.reserve_addr, PowerPCCPU),
++        VMSTATE_UINTTL(env.reserve_length, PowerPCCPU),
++        VMSTATE_UINTTL(env.reserve_val, PowerPCCPU),
++#if defined(TARGET_PPC64)
++        VMSTATE_UINTTL(env.reserve_val2, PowerPCCPU),
++#endif
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ const VMStateDescription vmstate_ppc_cpu = {
+     .name = "cpu",
+     .version_id = 5,
+@@ -711,8 +733,7 @@ const VMStateDescription vmstate_ppc_cpu = {
+         VMSTATE_UINTTL_ARRAY(env.spr, PowerPCCPU, 1024),
+         VMSTATE_UINT64(env.spe_acc, PowerPCCPU),
  
- static void timebase_save(PPCTimebase *tb)
+-        /* Reservation */
+-        VMSTATE_UINTTL(env.reserve_addr, PowerPCCPU),
++        VMSTATE_UNUSED(sizeof(target_ulong)), /* was env.reserve_addr */
+ 
+         /* Supervisor mode architected state */
+         VMSTATE_UINTTL(env.msr, PowerPCCPU),
+@@ -741,6 +762,7 @@ const VMStateDescription vmstate_ppc_cpu = {
+         &vmstate_tlbemb,
+         &vmstate_tlbmas,
+         &vmstate_compat,
++        &vmstate_reservation,
+         NULL
+     }
+ };
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index b8c7f38ccdec..4a60aefd8fd9 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -77,7 +77,9 @@ static TCGv cpu_xer, cpu_so, cpu_ov, cpu_ca, cpu_ov32, cpu_ca32;
+ static TCGv cpu_reserve;
+ static TCGv cpu_reserve_length;
+ static TCGv cpu_reserve_val;
++#if defined(TARGET_PPC64)
+ static TCGv cpu_reserve_val2;
++#endif
+ static TCGv cpu_fpscr;
+ static TCGv_i32 cpu_access_type;
+ 
+@@ -151,9 +153,11 @@ void ppc_translate_init(void)
+     cpu_reserve_val = tcg_global_mem_new(cpu_env,
+                                          offsetof(CPUPPCState, reserve_val),
+                                          "reserve_val");
++#if defined(TARGET_PPC64)
+     cpu_reserve_val2 = tcg_global_mem_new(cpu_env,
+                                           offsetof(CPUPPCState, reserve_val2),
+                                           "reserve_val2");
++#endif
+ 
+     cpu_fpscr = tcg_global_mem_new(cpu_env,
+                                    offsetof(CPUPPCState, fpscr), "fpscr");
 -- 
 2.41.0
 
