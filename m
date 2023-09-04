@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792097915D0
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0817915BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 12:35:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd73V-0007cM-Gh; Mon, 04 Sep 2023 06:43:41 -0400
+	id 1qd6ur-00052q-AV; Mon, 04 Sep 2023 06:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qd73R-0007bz-NJ
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:43:37 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd6uf-00050E-IC
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:34:34 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qd73M-0008OH-SH
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:43:35 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-401f503b529so12796775e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:43:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qd6ub-00064Y-Pr
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 06:34:31 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51a52a7d859so4610442a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 03:34:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693824211; x=1694429011; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=c0IDn+/TdfOj4MStmiHlZl7lnESFMn0ElrgHyzQexRk=;
- b=Y/sc1zQobtVWi5/T0X/K4f2WlpkGX/c2VzTEsQj6vTT6V7kxHW0sCUHBOrPSe1J/cn
- KcntFDDHp4+UWEzjN02mhDRBb2Il8WLUT/C+XvH5HtEEsF7jgkiSRCO1rWSPG2AO9FTB
- gEFWt63k80JRmNV81PcjCUdwZ+IY7+rldp9o8f++QRLmyasKnln+iUBlDjBIQtU26Zqb
- tHVaKCOmuniR+eQWFUDKJpIsEpb2e4WfwRup/wRASepMxDFE0sLu/CBSbCzvaEVt0HPP
- Psy7uDFXWUQtc6cIrGly+CrPAFlzsMGj5CJnIgHsvGipOXlYcq6VscmoZtNOHAfg9wLg
- hAGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693824211; x=1694429011;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ d=linaro.org; s=google; t=1693823668; x=1694428468; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=c0IDn+/TdfOj4MStmiHlZl7lnESFMn0ElrgHyzQexRk=;
- b=QRyaaFzZ/cLwZPFWu9bjcoXm8alTFWxm8obZWk2qKJW2qkDbQ17GOK9q4DCpAL/FsO
- Mpw0BMulTs/GlOW6IMSAl3OdnixpN+8pzpc/5MzyPMxqds6kS/Z2K4/WeDL2h7iQYXxc
- JyYtwLSLLZoBJGpfQr0LCrUZyqliOKu2qcp0DQUppn7Xm+z3JNtkwiOG86BH/jWFZoxo
- AOQDmsk3StVg/Hvt0XuU/qa2muskOhgdsHD8xwDcODxXHILOrAMVhmn2NdyQc5pfCCdM
- wkfncK7uuMs/EAJf1s0BVoUa7lzDX07eyF8dxWfa93LBrkMh6z9uGVrszkwV+0U05WkU
- Gf3A==
-X-Gm-Message-State: AOJu0Yxn50M6hDz+pPhj4Fbh4CzzelTvzgQmJ20FA+wrNlgNcqurV9hR
- fo5Mrv20uHhxdm29X26Uw4zmrA==
-X-Google-Smtp-Source: AGHT+IFYHjQ4G7OYdgJ/Y+O4gCb9Aw/qtYiCQYApJ/h2Jvr8cUONLuJwhKNEwnHxrz02SR7AGitxDg==
-X-Received: by 2002:adf:e647:0:b0:31a:ea9f:1aa6 with SMTP id
- b7-20020adfe647000000b0031aea9f1aa6mr6927424wrn.47.1693824211182; 
- Mon, 04 Sep 2023 03:43:31 -0700 (PDT)
-Received: from meli.delivery (adsl-170.109.242.226.tellas.gr.
- [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- g7-20020a5d46c7000000b0031accc7228asm14073423wrs.34.2023.09.04.03.43.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Sep 2023 03:43:30 -0700 (PDT)
-Date: Mon, 04 Sep 2023 13:34:12 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "ichael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
- "K=?UTF-8?B?xZE=?= v=?UTF-8?B?w6E=?= g=?UTF-8?B?w7M=?= ,
- Zolt=?UTF-8?B?w6E=?= n" <DirtY.iCE.hu@gmail.com>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
-Subject: Re: [PATCH v8 10/12] virtio-sound: implement audio output (TX)
-User-Agent: meli 0.8.0
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <c94a9c1e65bb6bb43c58e5ccb982948424a3f3f2.1693252037.git.manos.pitsidianakis@linaro.org>
- <3e844c1a-4f44-7a99-cc7f-810881335e45@linaro.org>
-In-Reply-To: <3e844c1a-4f44-7a99-cc7f-810881335e45@linaro.org>
-Message-ID: <0gj4g.pagm7im4jud8@linaro.org>
+ bh=t4WeJUIB3h4B9ENqbpR1l0GRNpSh9pA0Ed9HJWM8pMo=;
+ b=yXDtg3ifa4XwQbpZQ3vCljdrPXsUtWZAcFVsJnU0EOE8dRb3XPtUuY0xSuHfqoQvuB
+ OuiqUw9WlRhrZL2DU91Vq9RyauWy3le5ox+khTSPo27ALlKxEuaLTC1Bz2Qvi2npjIJ7
+ dC2JN7BXwaux9NvXahgizKs0jcLv+4J7mSRrfWuuWIFPbrsXaJJz1rDPikcCGJfOyugw
+ b09bpK0aBUajQ3p8BItbleqIVbSQ8gaEv2WTfxyO9pcJ8WKY/3B9cca9fBo1VVBZt74F
+ OMCEBUI2uZoEr4LpHj+NqoV6yUR8o/rFdEXvrfd+h8WcevywoaULRa9pGHsAePJE7nfz
+ nY/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693823668; x=1694428468;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t4WeJUIB3h4B9ENqbpR1l0GRNpSh9pA0Ed9HJWM8pMo=;
+ b=iZWEycCpd7TwYBUIwy8E67S8z7huqeNxkO0ZPwDZNdbVlvbWox2woTtWCEayvZeaWs
+ hRV5JYFEfz9WdzVh3nJ7iFMTs3Z6DcfSz/yaKA7RMwwqQywjIld5BZESNNE7c81scM1W
+ yycNO9PjZ/9w1x+HHmSAQ+p9Bj/RA6AKookLctDSJPMqpiCAj2kh1FgbcYHVttdgDqnr
+ aAczkVA4nVb6OFqVVijYTCvac3+KdW5UyaFLu5IVPPhiEyyjK9ve1jbdKK+oBh6W+D7k
+ LWAWgOVjQ5H3gDYML7ATC/NXLEcZGsU1QPiuZI1CHlCeORinYqNtiy0LQeri0DRYpvZg
+ YxvQ==
+X-Gm-Message-State: AOJu0YzfYukcioGLf65FvTZ+DvIiY4bWmEgGfTaKA6eDUAvgKefHp21G
+ oRYDMSY/rTCR6uQDV7YPTAyEGA==
+X-Google-Smtp-Source: AGHT+IFE4WCKubwLFg0Zz8Dn4lWv3LUBQzb2ZF+GspABjsArUPUEakvktnGWRCroMvMZ7SY3Uo6W6A==
+X-Received: by 2002:a05:6402:3449:b0:523:37f0:2d12 with SMTP id
+ l9-20020a056402344900b0052337f02d12mr10514414edc.17.1693823668047; 
+ Mon, 04 Sep 2023 03:34:28 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
+ by smtp.gmail.com with ESMTPSA id
+ v19-20020aa7d653000000b0052540e85390sm5602257edr.43.2023.09.04.03.34.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Sep 2023 03:34:27 -0700 (PDT)
+Message-ID: <2fdf3391-bef5-7d86-d066-1f687cec1285@linaro.org>
+Date: Mon, 4 Sep 2023 12:34:25 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [RFC PATCH 1/3] Python: Drop support for Python 3.7
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: jsnow@redhat.com, armbru@redhat.com, peter.maydell@linaro.org,
+ berrange@redhat.com
+References: <20230904095720.154738-1-pbonzini@redhat.com>
+ <20230904095720.154738-2-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230904095720.154738-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,120 +94,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 04 Sep 2023 13:26, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>   /*
->> - * Handles VIRTIO_SND_R_PCM_RELEASE. Releases the buffer resources allocated to
->> - * a stream.
->> + * Returns the number of I/O messages that are being processed.
->> + *
->> + * @stream: VirtIOSoundPCMStream
->> + */
->> +static size_t virtio_snd_pcm_get_pending_io_msgs(VirtIOSoundPCMStream *stream)
->> +{
->> +    VirtIOSoundPCMBlock *block;
->> +    VirtIOSoundPCMBlock *next;
->> +    size_t size = 0;
->> +
->> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
->> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
->> +            size += 1;
->
->Can you add a comment explaining this magic size?
+On 4/9/23 11:57, Paolo Bonzini wrote:
+> Debian 10 is not anymore a supported distro, since Debian 12 was
+> released on June 10, 2023.  Our supported build platforms as of today
+> all support at least 3.8 (and all of them except for Ubuntu 20.04
+> support 3.9):
+> 
+> openSUSE Leap 15.5: 3.6.15 (3.11.2)
+> CentOS Stream 8:    3.6.8  (3.8.13, 3.9.16, 3.11.4)
+> CentOS Stream 9:    3.9.17 (3.11.4)
+> Fedora 37:          3.11.4
+> Fedora 38:          3.11.4
+> Debian 11:          3.9.2
+> Debian 12:          3.11.2
+> Alpine 3.14, 3.15:  3.9.16
+> Alpine 3.16, 3.17:  3.10.10
+> Ubuntu 20.04 LTS:   3.8.10
+> Ubuntu 22.04 LTS:   3.10.12
+> NetBSD 9.3:         3.9.13*
+> FreeBSD 12.4:       3.9.16
+> FreeBSD 13.1:       3.9.18
+> OpenBSD 7.2:        3.9.17
+> 
+> Note: NetBSD does not appear to have a default meta-package, but offers
+> several options, the lowest of which is 3.7.15. However, "python39"
+> appears to be a pre-requisite to one of the other packages we request
+> in tests/vm/netbsd.
+> 
+> Since it is safe to under our supported platform policy, bump our
 
-It's not magic, it's simply how many messages there are as explained in 
-the function doc comment. This was previously bytes hence `size`. I will 
-change the variable name to `count`.
+Is 'under' a verb? This sentence is not obvious to me.
 
->> +static void virtio_snd_handle_tx(VirtIODevice *vdev, VirtQueue *vq)
->> +{
->> +    VirtIOSound *s = VIRTIO_SND(vdev);
->> +    VirtIOSoundPCMStream *stream = NULL;
->> +    VirtQueueElement *elem;
->> +    size_t sz;
->> +    virtio_snd_pcm_xfer hdr;
->> +    virtio_snd_pcm_status resp = { 0 };
->
->virtio_snd_pcm_status has multiple fields, so better zero-initialize
->all of them with '{ }'.
+> minimum supported version of Python to 3.8.  The two most interesting
+> features to have by default include:
+> 
+> - the importlib.metadata module, whose lack is responsible for over 100
+>    lines of code in mkvenv.py
+> 
+> - improvements to asyncio, for example asyncio.CancelledError
+>    inherits from BaseException rather than Exception
+> 
+> In addition, code can now use the assignment operator ':='
+> 
+> Because mypy now learns about importlib.metadata, a small change to
+> mkvenv.py is needed to pass type checking.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   configure                | 8 ++++----
+>   python/Makefile          | 8 ++++----
+>   python/scripts/mkvenv.py | 5 ++++-
+>   python/setup.cfg         | 7 +++----
+>   python/tests/minreqs.txt | 2 +-
+>   scripts/qapi/mypy.ini    | 2 +-
+>   6 files changed, 17 insertions(+), 15 deletions(-)
 
-I don't understand why, virtio_snd_pcm_status has two int fields hence { 
-0 } zero-initializes all of them.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->> +/*
->> + * AUD_* output callback.
->> + *
->> + * @data: VirtIOSoundPCMStream stream
->> + * @available: number of bytes that can be written with AUD_write()
->> + */
->> +static void virtio_snd_pcm_out_cb(void *data, int available)
->> +{
->> +    VirtIOSoundPCMStream *stream = data;
->> +    VirtIOSoundPCMBlock *block;
->> +    VirtIOSoundPCMBlock *next;
->> +    size_t size;
->> +
->> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
->> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
->> +            for (;;) {
->> +                size = MIN(block->size, available);
->> +                size = AUD_write(stream->voice.out,
->> +                        block->data + block->offset,
->> +                        size);
->
->If AUD_write() returns 0, is this an infinite loop?
-
-Hm since we have available > 0 bytes this wouldn't theoretically happen, 
-but I see there are code paths that return 0 on bugs/failures, I will 
-add the check.
-
->> +                block->size -= size;
->> +                block->offset += size;
->> +                if (!block->size) {
->> +                    virtqueue_push(block->vq,
->> +                            block->elem,
->> +                            sizeof(block->elem));
->> +                    virtio_notify(VIRTIO_DEVICE(stream->s),
->> +                            block->vq);
->> +                    QSIMPLEQ_REMOVE_HEAD(&stream->queue, entry);
->> +                    g_free(block);
->> +                    available -= size;
->> +                    break;
->> +                }
->> +
->> +                available -= size;
->> +                if (!available) {
->> +                    break;
->> +                }
->> +            }
->> +            if (!available) {
->> +                break;
->> +            }
->> +        }
->> +    }
->> +}
->> +
->> +/*
->> + * Flush all buffer data from this stream's queue into the driver's virtual
->> + * queue.
->> + *
->> + * @stream: VirtIOSoundPCMStream *stream
->> + */
->> +static void virtio_snd_pcm_flush(VirtIOSoundPCMStream *stream)
->> +{
->> +    VirtIOSoundPCMBlock *block;
->> +    VirtIOSoundPCMBlock *next;
->> +
->> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
->> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
->> +            AUD_write(stream->voice.out, block->data + block->offset, block->size);
->
->Is it OK to ignore AUD_write() returning < block->size?
->If so, can you add a comment please?
-
-This is a flush event with a timeout so it should complete asap. As 
-mentioned in another reply it might be better to copy the data to a 
-buffer in order not to lose any audio bytes.
-
-Thank you for the feedback,
-Manos
 
