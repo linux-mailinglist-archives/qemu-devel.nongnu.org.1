@@ -2,99 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7596B7918D4
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB307918D5
 	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:42:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9oh-0006OO-Gl; Mon, 04 Sep 2023 09:40:35 -0400
+	id 1qd9pp-00073a-MR; Mon, 04 Sep 2023 09:41:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qd9oY-0006NN-Hx
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:40:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qd9oU-0003Os-Jn
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:40:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693834821;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ybX7f7bAE82t3NvaDRdD2Bv2sV2dup/rJ1RYllQVyTI=;
- b=TzbYwjEqCNIZZWSud5trCCiebrf3jc8bR/JNrK7SYVlg4l8D7RqsHKD5uRHXNDTkWtCfaY
- yfnqwCPmWvkv82mtVPyY3GReRdPWEGPgd/S+Yr9s3llXe/VJf0fT0G/eGWsxAK/QixBEqo
- yPcojAvUoDqUnpxzJTCm1pqE9caYhLM=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-Ha-zXdFLN2y343q18sWUWw-1; Mon, 04 Sep 2023 09:40:17 -0400
-X-MC-Unique: Ha-zXdFLN2y343q18sWUWw-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-500ac71f353so1523966e87.2
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 06:40:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qd9pm-0006yj-3y
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:41:42 -0400
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qd9pg-0003cn-GI
+ for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:41:41 -0400
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-41205469f4eso5478151cf.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 06:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1693834895; x=1694439695; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HqPv8TFWPh2gl+iqgwBGWkgSr/ap2i+gwaKgPg8ano4=;
+ b=Cd78wXQxXbo0+Wh1pG33SAcKhV4YCxw8wladwjvkX6tg/e+7ogjB2W+oW5S2JRedW7
+ bb2S5gsHP2Js97ZjX4zhTrd+LAi/jTpIKkuwFzC/k5qJhkTzhp+5na2zV2jAHfUFYhcP
+ 5djr0Kt+yUPwuBRhdm0IcG2EYYDhMrX0oDnh7GMhGbl5Yo7pD51B1Ey010b2eCPodun+
+ lEiQPe9mSK1aGyh200Aedr5xVAV6tBk4fwn6BryQjJENMbDyV4qJDwy0fWx8LIpjl62u
+ xuELLxWtyvXx8N1fTZU1vnr9+1PHWLiLer2kvgMkwq6Vk4YY7OZ0VaKAkRwQeC8uBvdR
+ TJtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693834816; x=1694439616;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ybX7f7bAE82t3NvaDRdD2Bv2sV2dup/rJ1RYllQVyTI=;
- b=EwqjHdLOUwEietj7EN/cpDajgo+K2T2QA10DbHXXvm3Mkl99bj9OQju8V8uANXVG2Z
- FSV5GQAZmw4U1jFi+7wDdI1zqCvSXV+nCwS1F0TJpqN7ChPCZEWuiTXNaNLiS2Q73UEy
- Aoh2kT82+tCmCBQ+SSYb1JB2rpVgvJV+IFlQWpWShrGp281VLsaJfddX1st70lU0wwmQ
- jBWhD0vZf7/Dr7DxEvmRx3TjH2xhudmoo27XUEPYmhpaxso4WPajPRS6SvMrijfsMZSn
- pWtBAYOd6zcdDEuZgkSmoL/MBdDCndAaez+XiIlPz+bPglQiLRFcZuebFvEzprY/8wRG
- p5CA==
-X-Gm-Message-State: AOJu0YxPb+V+iHFCMXG2CQ4yWsULouLmwLH0TtuMdJvM4yT5w7S/K9zc
- rSJF0cFL5pjjDMA7uNKXB9I/YdbBUqS8G/uFkrr74QiJeqdwJA2zNEkrVE8fz6/Wb6w/zCLii6C
- 7O+63G2rDMirSDqQ=
-X-Received: by 2002:a19:761a:0:b0:500:a368:a962 with SMTP id
- c26-20020a19761a000000b00500a368a962mr5727649lff.43.1693834816043; 
- Mon, 04 Sep 2023 06:40:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2/XtxuVlxB4/EWyheU+X5EwxV5jHkgwv144yyWkMy25vIixUm43Z48pPaZRSoxXwX4P36TA==
-X-Received: by 2002:a19:761a:0:b0:500:a368:a962 with SMTP id
- c26-20020a19761a000000b00500a368a962mr5727636lff.43.1693834815650; 
- Mon, 04 Sep 2023 06:40:15 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
- ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.googlemail.com with ESMTPSA id
- n10-20020adffe0a000000b003140f47224csm14482451wrr.15.2023.09.04.06.40.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Sep 2023 06:40:14 -0700 (PDT)
-Message-ID: <4b7bb33a-625d-5ad4-2110-c575b173aad9@redhat.com>
-Date: Mon, 4 Sep 2023 15:40:13 +0200
+ d=1e100.net; s=20221208; t=1693834895; x=1694439695;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HqPv8TFWPh2gl+iqgwBGWkgSr/ap2i+gwaKgPg8ano4=;
+ b=CIhVABUW5bDsUI6LqZQp/H5+MC05eptQCKPWnOBPYc77lHhOVKscdWlPDn8oHNMLER
+ /rRsLBdxEG9Eg7q4zIuOuCrIbgKu4N5Lzk7gZOzAaE/kbWGZpB/inCJikUynnbPA5t9+
+ A9p6VCmV+acZhNpDnvuFmZt4CXEXRCcY4uMmEKiR0WlIycqKlcSrDoivgkXToK8U3GTD
+ 4FMq44YzH5yOz2FWVstPw+7rAyHb21jbT+iMcVZFL9YVgjODbiy9fOTykUY374t4gNzc
+ 1fnmLaBYYkDpJmM6DQuTjf/IaGrh2vvzDzQ//ffiH/RwwMkhNPIOcei7wQcbU06cI8tJ
+ LIHA==
+X-Gm-Message-State: AOJu0YxfydQ3GysPEB47yaNJk/upMzH5CL57PwZ5Ay/ogUx9vWc6TUYo
+ qpOs4fp9JMyDFLXILBn+oA/WCEid+EGMilmTwm4=
+X-Google-Smtp-Source: AGHT+IE+bWOFv/HV2s3XNTdtBP1JdZk53DjwT8wNfD4s6Q97+XtN2bMIdi/dwU6iM4SY630cYW/Ak++jyg1LYFvGPcc=
+X-Received: by 2002:a05:622a:4d1:b0:3f9:aa80:b48a with SMTP id
+ q17-20020a05622a04d100b003f9aa80b48amr14531141qtx.8.1693834894611; Mon, 04
+ Sep 2023 06:41:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 07/13] target/i386: Allow elision of kvm_enable_x2apic()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, kvm@vger.kernel.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20230904124325.79040-1-philmd@linaro.org>
- <20230904124325.79040-8-philmd@linaro.org>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230904124325.79040-8-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
+ <20230830093843.3531473-55-marcandre.lureau@redhat.com>
+ <ZPIfJd0h6h5zeiMa@redhat.com>
+In-Reply-To: <ZPIfJd0h6h5zeiMa@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 4 Sep 2023 17:41:23 +0400
+Message-ID: <CAJ+F1C+ZAzG16vaPoDgzUybSbnk0sWjDhH0nSjU7P71btp2d9g@mail.gmail.com>
+Subject: Re: [PATCH 54/67] ui/vc: console-vc requires PIXMAN
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x836.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,92 +88,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/4/23 14:43, Philippe Mathieu-Daudé wrote:
-> Call kvm_enabled() before kvm_enable_x2apic() to
-> let the compiler elide its call.
-> 
-> Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/i386/intel_iommu.c      | 2 +-
->   hw/i386/x86.c              | 2 +-
->   target/i386/kvm/kvm-stub.c | 7 -------
->   3 files changed, 2 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index 3ca71df369..c9961ef752 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -4053,7 +4053,7 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
->               error_setg(errp, "eim=on requires accel=kvm,kernel-irqchip=split");
->               return false;
->           }
-> -        if (!kvm_enable_x2apic()) {
-> +        if (kvm_enabled() && !kvm_enable_x2apic()) {
->               error_setg(errp, "eim=on requires support on the KVM side"
->                                "(X2APIC_API, first shipped in v4.7)");
->               return false;
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index a88a126123..d2920af792 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -136,7 +136,7 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
->        * With KVM's in-kernel lapic: only if X2APIC API is enabled.
->        */
->       if (x86ms->apic_id_limit > 255 && !xen_enabled() &&
-> -        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
-> +        kvm_enabled() && (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+Hi
 
-This "!xen && kvm" expression can be simplified.
+On Fri, Sep 1, 2023 at 9:28=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@re=
+dhat.com> wrote:
+>
+> On Wed, Aug 30, 2023 at 01:38:28PM +0400, marcandre.lureau@redhat.com wro=
+te:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > Add stubs for the fallback paths.
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >  ui/console-vc-stubs.c | 59 +++++++++++++++++++++++++++++++++++++++++++
+> >  ui/meson.build        |  2 +-
+> >  2 files changed, 60 insertions(+), 1 deletion(-)
+> >  create mode 100644 ui/console-vc-stubs.c
+> >
+> > diff --git a/ui/console-vc-stubs.c b/ui/console-vc-stubs.c
+> > new file mode 100644
+> > index 0000000000..76ea880d27
+> > --- /dev/null
+> > +++ b/ui/console-vc-stubs.c
+> > @@ -0,0 +1,59 @@
+> > +/*
+> > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > + * QEMU VC stubs
+> > + */
+> > +#include "qemu/osdep.h"
+> > +
+> > +#include "qapi/error.h"
+> > +#include "qemu/error-report.h"
+> > +#include "qemu/option.h"
+> > +#include "chardev/char.h"
+> > +#include "ui/console-priv.h"
+> > +
+> > +void qemu_text_console_select(QemuTextConsole *c)
+> > +{
+> > +}
+> > +
+> > +const char * qemu_text_console_get_label(QemuTextConsole *c)
+> > +{
+> > +    return NULL;
+> > +}
+> > +
+> > +void qemu_text_console_update_cursor(void)
+> > +{
+> > +}
+> > +
+> > +void qemu_text_console_handle_keysym(QemuTextConsole *s, int keysym)
+> > +{
+> > +}
+> > +
+> > +#define TYPE_CHARDEV_VC "chardev-vc"
+> > +
+> > +static void vc_chr_parse(QemuOpts *opts, ChardevBackend *backend, Erro=
+r **errp)
+> > +{
+> > +    const char *id =3D qemu_opts_id(opts);
+> > +
+> > +    warn_report("%s: this is a dummy VC driver. "
+> > +                "Use '-nographic' or a different chardev.", id);
+> > +}
+>
+> Why should this be an error_setg() call given we have a errp
+> parameter, so make this unsupportable config into an error ?
+> Ignoring invalid user configs is not desirable in general.
 
-I am queuing the series with this squashed in:
+This was to keep starting as default, regardless of pixman support.
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index d2920af792d..3e86cf3060f 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -129,14 +129,11 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
-                                                        ms->smp.max_cpus - 1) + 1;
-  
-      /*
--     * Can we support APIC ID 255 or higher?
--     *
--     * Under Xen: yes.
--     * With userspace emulated lapic: no
--     * With KVM's in-kernel lapic: only if X2APIC API is enabled.
-+     * Can we support APIC ID 255 or higher?  With KVM, that requires
-+     * both in-kernel lapic and X2APIC userspace API.
-       */
--    if (x86ms->apic_id_limit > 255 && !xen_enabled() &&
--        kvm_enabled() && (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
-+    if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
-+        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
-          error_report("current -smp configuration requires kernel "
-                       "irqchip and X2APIC API support.");
-          exit(EXIT_FAILURE);
+Since, by default, QEMU will create the following VCs (vl.c):
 
-Paolo
+            add_device_config(DEV_SERIAL, "vc:80Cx24C");
+            add_device_config(DEV_PARALLEL, "vc:80Cx24C");
+            monitor_parse("vc:80Cx24C", "readline", false);
 
->           error_report("current -smp configuration requires kernel "
->                        "irqchip and X2APIC API support.");
->           exit(EXIT_FAILURE);
-> diff --git a/target/i386/kvm/kvm-stub.c b/target/i386/kvm/kvm-stub.c
-> index f985d9a1d3..62cccebee4 100644
-> --- a/target/i386/kvm/kvm-stub.c
-> +++ b/target/i386/kvm/kvm-stub.c
-> @@ -12,13 +12,6 @@
->   #include "qemu/osdep.h"
->   #include "kvm_i386.h"
->   
-> -#ifndef __OPTIMIZE__
-> -bool kvm_enable_x2apic(void)
-> -{
-> -    return false;
-> -}
-> -#endif
-> -
->   bool kvm_hv_vpindex_settable(void)
->   {
->       return false;
+With SDL or VNC, this will associate the QemuTextConsole(s), which is
+disabled without pixman. Maybe we shouldn't create those VC by default
+when the backend doesn't support it (but to null instead).
 
+Yes, if the user supplied -chardev vc manually, we should error out
+instead. I'll try to update the patch.
+
+
+
+(btw, I agree with you it would have been nice to make VC an abstract
+base chardev, and only allow final types)
+
+>
+> > +
+> > +static void char_vc_class_init(ObjectClass *oc, void *data)
+> > +{
+> > +    ChardevClass *cc =3D CHARDEV_CLASS(oc);
+> > +
+> > +    cc->parse =3D vc_chr_parse;
+> > +}
+> > +
+> > +static const TypeInfo char_vc_type_info =3D {
+> > +    .name =3D TYPE_CHARDEV_VC,
+> > +    .parent =3D TYPE_CHARDEV,
+> > +    .class_init =3D char_vc_class_init,
+> > +};
+> > +
+> > +void qemu_console_early_init(void)
+> > +{
+> > +    /* set the default vc driver */
+> > +    if (!object_class_by_name(TYPE_CHARDEV_VC)) {
+> > +        type_register(&char_vc_type_info);
+> > +    }
+> > +}
+> > diff --git a/ui/meson.build b/ui/meson.build
+> > index 0a1e8272a3..3085e10a72 100644
+> > --- a/ui/meson.build
+> > +++ b/ui/meson.build
+> > @@ -6,7 +6,6 @@ system_ss.add(png)
+> >  system_ss.add(files(
+> >    'clipboard.c',
+> >    'console.c',
+> > -  'console-vc.c',
+> >    'cursor.c',
+> >    'input-keymap.c',
+> >    'input-legacy.c',
+> > @@ -19,6 +18,7 @@ system_ss.add(files(
+> >    'ui-qmp-cmds.c',
+> >    'util.c',
+> >  ))
+> > +system_ss.add(when: pixman, if_true: files('console-vc.c'), if_false: =
+files('console-vc-stubs.c'))
+> >  if dbus_display
+> >    system_ss.add(files('dbus-module.c'))
+> >  endif
+> > --
+> > 2.41.0
+> >
+> >
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
