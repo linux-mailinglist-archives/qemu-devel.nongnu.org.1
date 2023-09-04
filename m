@@ -2,54 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D51E791822
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A7B791830
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Sep 2023 15:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qd9fE-00018A-0J; Mon, 04 Sep 2023 09:30:49 -0400
+	id 1qd9gW-0001g1-E3; Mon, 04 Sep 2023 09:32:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qd9el-0000ko-DK
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:30:21 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
+ id 1qd9fk-0001ZD-9N; Mon, 04 Sep 2023 09:31:25 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qd9ed-0001M7-Ax
- for qemu-devel@nongnu.org; Mon, 04 Sep 2023 09:30:14 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfTxJ1vs1z6D957;
- Mon,  4 Sep 2023 21:28:52 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 4 Sep 2023 14:30:09 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>
-CC: Li Zhijian <lizhijian@cn.fujitsu.com>, Dave Jiang <dave.jiang@intel.com>, 
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <linuxarm@huawei.com>
-Subject: [PATCH 4/4] docs/cxl: Change to lowercase as others
-Date: Mon, 4 Sep 2023 14:28:06 +0100
-Message-ID: <20230904132806.6094-5-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
-References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <SRS0=kZzc=EU=kaod.org=clg@ozlabs.org>)
+ id 1qd9fd-0001fx-17; Mon, 04 Sep 2023 09:31:19 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RfTzs6MHQz4wxW;
+ Mon,  4 Sep 2023 23:31:05 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RfTzn6064z4wb0;
+ Mon,  4 Sep 2023 23:31:01 +1000 (AEST)
+Message-ID: <e32cdddb-8455-7bae-3280-4ab7d33d4a57@kaod.org>
+Date: Mon, 4 Sep 2023 15:30:57 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 05/19] host-utils: Add muldiv64_round_up
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230808042001.411094-1-npiggin@gmail.com>
+ <20230808042001.411094-6-npiggin@gmail.com>
+ <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
+ <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
+ <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=kZzc=EU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,56 +73,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@cn.fujitsu.com>
+On 9/4/23 15:07, Nicholas Piggin wrote:
+> On Sat Sep 2, 2023 at 3:02 AM AEST, Richard Henderson wrote:
+>> On 9/1/23 04:51, Cédric Le Goater wrote:
+>>> Adding more reviewers since this patch is modifying a common service.
+>>>
+>>> Thanks,
+>>>
+>>> C.
+>>>
+>>>
+>>> On 8/8/23 06:19, Nicholas Piggin wrote:
+>>>> This will be used for converting time intervals in different base units
+>>>> to host units, for the purpose of scheduling timers to emulate target
+>>>> timers. Timers typically must not fire before their requested expiry
+>>>> time but may fire some time afterward, so rounding up is the right way
+>>>> to implement these.
+>>>>
+>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>> ---
+>>>>    include/qemu/host-utils.h | 21 ++++++++++++++++++++-
+>>>>    1 file changed, 20 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
+>>>> index 011618373e..e2a50a567f 100644
+>>>> --- a/include/qemu/host-utils.h
+>>>> +++ b/include/qemu/host-utils.h
+>>>> @@ -56,6 +56,11 @@ static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>>>>        return (__int128_t)a * b / c;
+>>>>    }
+>>>> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
+>>>> +{
+>>>> +    return ((__int128_t)a * b + c - 1) / c;
+>>>> +}
+>>>> +
+>>>>    static inline uint64_t divu128(uint64_t *plow, uint64_t *phigh,
+>>>>                                   uint64_t divisor)
+>>>>    {
+>>>> @@ -83,7 +88,8 @@ void mulu64(uint64_t *plow, uint64_t *phigh, uint64_t a, uint64_t b);
+>>>>    uint64_t divu128(uint64_t *plow, uint64_t *phigh, uint64_t divisor);
+>>>>    int64_t divs128(uint64_t *plow, int64_t *phigh, int64_t divisor);
+>>>> -static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>>>> +static inline uint64_t __muldiv64(uint64_t a, uint32_t b, uint32_t c,
+>>>> +                                  bool round_up)
+>>
+>> Perhaps better avoiding the reserved name: muldiv64_internal?
+> 
+> Thanks, that would be okay. Or could be muldiv64_rounding?
+> 
+>>
+>> Otherwise,
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Using the same style as elsewhere for topology / topo
+oh, and I already sent the PR with the Rb of Richard ... :/
+Sorry about that. Can we fix it later ? Or I will respin with
+the update.
 
-Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
-Link: https://lore.kernel.org/r/20230519085802.2106900-2-lizhijian@cn.fujitsu.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- docs/system/devices/cxl.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Someone really ought to take over PPC. Daniel and I are real
+busy on other subsystems. Volunteers ?
 
-diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-index f12011e230..b742120657 100644
---- a/docs/system/devices/cxl.rst
-+++ b/docs/system/devices/cxl.rst
-@@ -157,7 +157,7 @@ responsible for allocating appropriate ranges from within the CFMWs
- and exposing those via normal memory configurations as would be done
- for system RAM.
- 
--Example system Topology. x marks the match in each decoder level::
-+Example system topology. x marks the match in each decoder level::
- 
-   |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
-   |    __________   __________________________________   __________    |
-@@ -187,8 +187,8 @@ Example system Topology. x marks the match in each decoder level::
-        ___________|___   __________|__   __|_________   ___|_________
-    (3)|  Root Port 0  | | Root Port 1 | | Root Port 2| | Root Port 3 |
-       |  Appears in   | | Appears in  | | Appears in | | Appear in   |
--      |  PCI topology | | PCI Topology| | PCI Topo   | | PCI Topo    |
--      |  As 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
-+      |  PCI topology | | PCI topology| | PCI topo   | | PCI topo    |
-+      |  as 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
-       |_______________| |_____________| |____________| |_____________|
-             |                  |               |              |
-             |                  |               |              |
-@@ -272,7 +272,7 @@ Example topology involving a switch::
-       |  Root Port 0  |
-       |  Appears in   |
-       |  PCI topology |
--      |  As 0c:00.0   |
-+      |  as 0c:00.0   |
-       |___________x___|
-                   |
-                   |
--- 
-2.39.2
+Thanks,
+
+C.
+
+>>
+>>
+>> r~
+>>
+>>
+>>>>    {
+>>>>        union {
+>>>>            uint64_t ll;
+>>>> @@ -99,12 +105,25 @@ static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>>>>        u.ll = a;
+>>>>        rl = (uint64_t)u.l.low * (uint64_t)b;
+>>>> +    if (round_up) {
+>>>> +        rl += c - 1;
+>>>> +    }
+>>>>        rh = (uint64_t)u.l.high * (uint64_t)b;
+>>>>        rh += (rl >> 32);
+>>>>        res.l.high = rh / c;
+>>>>        res.l.low = (((rh % c) << 32) + (rl & 0xffffffff)) / c;
+>>>>        return res.ll;
+>>>>    }
+>>>> +
+>>>> +static inline uint64_t muldiv64(uint64_t a, uint32_t b, uint32_t c)
+>>>> +{
+>>>> +    return __muldiv64(a, b, c, false);
+>>>> +}
+>>>> +
+>>>> +static inline uint64_t muldiv64_round_up(uint64_t a, uint32_t b, uint32_t c)
+>>>> +{
+>>>> +    return __muldiv64(a, b, c, true);
+>>>> +}
+>>>>    #endif
+>>>>    /**
+>>>
+>>>
+> 
 
 
