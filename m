@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5A279212A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 10:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D853179212B
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 10:51:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdRkH-0008KZ-GJ; Tue, 05 Sep 2023 04:49:13 -0400
+	id 1qdRlW-0000hB-Ve; Tue, 05 Sep 2023 04:50:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRk5-0008JC-4s
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:49:02 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRlU-0000ds-FB
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:50:28 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRk2-0005Q3-GW
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:49:00 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4018af103bcso14412795e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 01:48:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRlS-0005wU-9J
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:50:28 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fef56f7223so21038995e9.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 01:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693903736; x=1694508536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693903824; x=1694508624; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4gvuu+n42szEBpyOL3PLFtjXB9ZXWCf1x5xn2iFhGvI=;
- b=OeBcS/po8tfaWsat1bPkFM1tjFRWl4vvS31R7kFA+HXOegEj2l4sf54brAbYmEiz2R
- RoHzAsErxYqoJk0c/oWR/TPx9mit8ypQVyg+rS44VdBe3ExI8OYFuFkK0KHHZzrOWrNc
- wliQ7FPti0WeVqIeqsP3OHq9bMoVA3A1SHXAIN5LhpNYHXOc3MvPPwiLbYGSZMZjySDp
- C2cEabQc4huRsoBeU7bK+/hl3GYXbPPL42O1K2VHH3rG8UvRQefj28E5zfMgERMnlADS
- KOdg5m9NiSr5Ng8K2Bx/w9QNvCePE36+pLBQTbHgsc8IY0gkjiqiIqCr9SRbkmNeiRDt
- Ocbw==
+ bh=JUEikI+8UdqOc2VGNOxBHLnl97oOfIXpCxawdnlEDMo=;
+ b=VqWNloxSjSsDcBLKiuJnNr/9unsJXh/QGCM/ld5jG312XIvja67S3wm7Pb4uMFFGdC
+ 5SFJVDfPsjd45i9j0QXTKj1LEf9DH12euInkBLvnmYIk0CS7edbfQPYFsTGZTKuPtPFN
+ 9PcxPn2vi2t0mefbM9Mx4p7NSo6eCpalAycBEQET3mzX6svRGxWd85ba4JwnWvYjzNiU
+ BWoAivJ64wdgKhzubT4SCQcUbABoZ+MaQuQh6i98X03PDjq2NLvLL0H0XJUe7em5t2UM
+ fJzIf3nyttA8yTGpnjUBhmde4UL2XHXBSH3/GMC2VqEDWtSKNxz/a5u0aRzC6q6nI5px
+ 1INA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693903736; x=1694508536;
+ d=1e100.net; s=20221208; t=1693903824; x=1694508624;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4gvuu+n42szEBpyOL3PLFtjXB9ZXWCf1x5xn2iFhGvI=;
- b=LcmtkWPOS0n0WIz6VG1W/WgNIUyYHSXuGiSL15DyzFecqaCgeovGE20Svjx5EiDrdQ
- rMupUTRTlPIxrAu9duMFjxdb5U/FuTooE9euZBdJpac5/B2wPfbEkPm4ZEibb6yP15aN
- m38Po/QMcFa6d52/Ovl8boAls3AmUY7HfixnJsTF6bTyqOukOTGAGGhYrsNYlwGo/D0e
- txmzk7x2sxiea4LiPLwMfZtXEDVT/We5reVcFxK46PbDw2HIU9AxGO/0cd45RV3N2UPj
- oFA4JzRZezW43CVltnYkwGgOxVciv/xsHDmUYdKWHirEmBxEbw1d+tQZq7AYhmvxMAIY
- A3dg==
-X-Gm-Message-State: AOJu0YxMgOs7SmFGVe+vL+GdOkE8jfvE7D2WHwOBKSCAReeC9u2l8Fgu
- HK+Gm8I+uPImbmEENCCnH1k1tw==
-X-Google-Smtp-Source: AGHT+IG2H8+WGOu/SYUEp+7oYi2OkfupVCJKA01NZ7bYZIfOp6mpcNc8N/FmY44RFF2V27J17Wbk2g==
-X-Received: by 2002:a05:600c:c6:b0:401:c717:ec6d with SMTP id
- u6-20020a05600c00c600b00401c717ec6dmr12114419wmm.15.1693903736677; 
- Tue, 05 Sep 2023 01:48:56 -0700 (PDT)
+ bh=JUEikI+8UdqOc2VGNOxBHLnl97oOfIXpCxawdnlEDMo=;
+ b=hgWGuFll3bFtZArhcjsFuvuUN5tfsAVnufY1lrSPtbAqUuBI/l9MYQfXC9cWcE+KkE
+ xJSX844481PKiu1VIKixKYr1sopMsrlSzfbTTRk2YF/89mRVps8CphpvPXN6FsvHaaIS
+ IIG6q8QKdWvmyhaA2lTWCvF2HlDHedljsoz63k+R7SrYAR+GH8PEPwjNCC2cWWHUycue
+ v/WckWKGrrx2BsDD1vYHDCjUniQ+B71XA1aR1tvpElLxPK6UcY1InxxK9xQrgKHvKi5Y
+ HPcjbiYwTOxUsC/pVW5gcN7ssLZGkT3OH9G3JN/pSCQrfBoY0Y6XZ+zpmG+tvlH5MOwQ
+ YHFQ==
+X-Gm-Message-State: AOJu0YzJHRemLdsB3wRekT5JmWEdUtxMvE8hwXzJLXdkUu2wJiFack9z
+ QOSBN5EJVjFpt1az/hswKp+GtQ==
+X-Google-Smtp-Source: AGHT+IF515yTQ3QeVgzlMYcGEwnuspTWSQLI57f4UYmKfRt8JV1Og5XzZHHbXtor8Un5dILqoPHJBg==
+X-Received: by 2002:a05:600c:2283:b0:401:b53e:6c57 with SMTP id
+ 3-20020a05600c228300b00401b53e6c57mr9928368wmf.9.1693903824586; 
+ Tue, 05 Sep 2023 01:50:24 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
  [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c249100b003fbc30825fbsm16127067wms.39.2023.09.05.01.48.55
+ y21-20020a05600c365500b003fed7fa6c00sm19490210wmq.7.2023.09.05.01.50.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 01:48:56 -0700 (PDT)
-Message-ID: <ba7d895f-72d0-8a11-34ad-b5ca75f482bb@linaro.org>
-Date: Tue, 5 Sep 2023 10:48:54 +0200
+ Tue, 05 Sep 2023 01:50:24 -0700 (PDT)
+Message-ID: <da23f1ce-ce6d-4634-5340-11972a1ecc79@linaro.org>
+Date: Tue, 5 Sep 2023 10:50:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] hw/pci-bridge/cxl-upstream: Add serial number extended
- capability support
+Subject: Re: [PATCH 1/5] cxl/mailbox: move mailbox effect definitions to a
+ header
 Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- linux-cxl@vger.kernel.org
-Cc: linuxarm@huawei.com
-References: <20230904175752.17927-1-Jonathan.Cameron@huawei.com>
+To: Gregory Price <gourry.memverge@gmail.com>, qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ junhee.ryu@sk.com, kwangjin.ko@sk.com,
+ Gregory Price <gregory.price@memverge.com>
+References: <20230901012914.226527-1-gregory.price@memverge.com>
+ <20230901012914.226527-2-gregory.price@memverge.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230904175752.17927-1-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20230901012914.226527-2-gregory.price@memverge.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,84 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
-
-On 4/9/23 19:57, Jonathan Cameron wrote:
-> Will be needed so there is a defined serial number for
-> information queries via the Switch CCI.
+On 1/9/23 03:29, Gregory Price wrote:
+> Preparation for allowing devices to define their own CCI commands
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Gregory Price <gregory.price@memverge.com>
 > ---
-> No ordering dependencies wrt to other CXL patch sets.
-> 
-> Whilst we 'need' it for the Switch CCI set it is valid without
-> it and aligns with existing EP serial number support. Seems sensible
-> to upstream this first and reduce my out of tree backlog a little!
-> 
->   hw/pci-bridge/cxl_upstream.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-> index 2b9cf0cc97..15c4d84a56 100644
-> --- a/hw/pci-bridge/cxl_upstream.c
-> +++ b/hw/pci-bridge/cxl_upstream.c
-> @@ -14,6 +14,11 @@
->   #include "hw/pci/msi.h"
->   #include "hw/pci/pcie.h"
->   #include "hw/pci/pcie_port.h"
-> +/*
-> + * Null value of all Fs suggested by IEEE RA guidelines for use of
-> + * EU, OUI and CID
-> + */
-> +#define UI64_NULL (~0ULL)
+>   hw/cxl/cxl-mailbox-utils.c   | 35 +++++++++++++++++++----------------
+>   include/hw/cxl/cxl_mailbox.h | 18 ++++++++++++++++++
+>   2 files changed, 37 insertions(+), 16 deletions(-)
+>   create mode 100644 include/hw/cxl/cxl_mailbox.h
 
-Already defined in hw/mem/cxl_type3.c, can we move it to some common
-CXL header? Or include/qemu/units.h?
-
->   #define CXL_UPSTREAM_PORT_MSI_NR_VECTOR 2
->   
-> @@ -30,6 +35,7 @@ typedef struct CXLUpstreamPort {
->       /*< public >*/
->       CXLComponentState cxl_cstate;
->       DOECap doe_cdat;
-> +    uint64_t sn;
->   } CXLUpstreamPort;
->   
->   CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp)
-> @@ -326,8 +332,12 @@ static void cxl_usp_realize(PCIDevice *d, Error **errp)
->       if (rc) {
->           goto err_cap;
->       }
-> -
-> -    cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET;
-> +    if (usp->sn != UI64_NULL) {
-> +        pcie_dev_ser_num_init(d, CXL_UPSTREAM_PORT_DVSEC_OFFSET, usp->sn);
-> +        cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET + 0x0c;
-
-Could it be clearer to have:
-
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-@@ -23,2 +23,2 @@
--#define CXL_UPSTREAM_PORT_DVSEC_OFFSET \
--    (CXL_UPSTREAM_PORT_AER_OFFSET + PCI_ERR_SIZEOF)
-+#define CXL_UPSTREAM_PORT_DVSEC_OFFSET(offset) \
-+    (CXL_UPSTREAM_PORT_AER_OFFSET + PCI_ERR_SIZEOF + offset)
-
-?
-
-> +    } else {
-> +        cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET;
-> +    }
->       cxl_cstate->pdev = d;
->       build_dvsecs(cxl_cstate);
->       cxl_component_register_block_init(OBJECT(d), cxl_cstate, TYPE_CXL_USP);
-> @@ -366,6 +376,7 @@ static void cxl_usp_exitfn(PCIDevice *d)
->   }
->   
->   static Property cxl_upstream_props[] = {
-> +    DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
->       DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.filename),
->       DEFINE_PROP_END_OF_LIST()
->   };
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
