@@ -2,86 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B0D79206D
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 08:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14D579206E
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 08:03:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdP79-0007Ru-EG; Tue, 05 Sep 2023 02:00:39 -0400
+	id 1qdP9u-0000S0-FG; Tue, 05 Sep 2023 02:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdP76-0007Qz-R9
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:00:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdP9r-0000RT-Ea
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:03:27 -0400
+Received: from mailout01.t-online.de ([194.25.134.80])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdP74-0003VS-E5
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:00:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693893633;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+Q15gsoXB4jZg6t6m2ioP1nIcgUWDAZ71tljX7UIjA0=;
- b=UPnwfI535RM1m0G7WFfudJDJykTevkh/kSwz2PXOICfkDHgRxkau01qjs7v7zAP34ra6S/
- CzKOrykQ0JHkHGqrAOB1oOAaYN8cTETy40WiJ8y4CVaHanVeQ6rNOVJ8v9EMZixDVGHWFb
- Y7cM7Eu/5BR9k+O379GJtt4kyXn6lno=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-86FHeNlZNcGn8MRqcsPh4g-1; Tue, 05 Sep 2023 02:00:31 -0400
-X-MC-Unique: 86FHeNlZNcGn8MRqcsPh4g-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-7a4ee7d28cfso701418241.0
- for <qemu-devel@nongnu.org>; Mon, 04 Sep 2023 23:00:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693893630; x=1694498430;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+Q15gsoXB4jZg6t6m2ioP1nIcgUWDAZ71tljX7UIjA0=;
- b=fHr044qC80qtZeT01QGqYszXNiMjCCy34EQNKlMIJBGUoFUOaHXHKu5g8YybMjKqxc
- YBAOkMLu9KP0mpcPeaa7mXW+pt8a2l/DM/wJmCqUHpYzxdf+SoxSQQmxyXhhiRqo/gsH
- cIADJP71MukQQpYInt21Gwoy2O5BUcXf6n0AsO6SV9LFKWRZAHh+d6PhwGTNUphgk18m
- C0Gn+SVWSXS8O1eigFMEfb0l4PRo57K6uGKFEHRkvA8VPFqGSCmW8HmdMOJeJmY4zs51
- D5MOYydSI3p7taqlzbT+0AIQ3DPnyNKBjV9ENFDRg+Ovo4pfNWOUlPY7BBtsK6fHHg11
- NmTQ==
-X-Gm-Message-State: AOJu0Yx8BM9HKdAOUdJ1nsLmhR7LSWGtSy+eUOmFJAiVt/C7hVd0KmmQ
- pEj6oveH4TsHRGVZA+2Mpu1oKKAR++jHkzRGzgikhApYIlv+m9m4dMAD7+DtoDtklVvPaABdutZ
- T4jfPGDtjxixJi6EZZMqTVwi7PayOGEHDtR72niA=
-X-Received: by 2002:a67:f7d4:0:b0:44d:482a:5444 with SMTP id
- a20-20020a67f7d4000000b0044d482a5444mr10074463vsp.21.1693893630424; 
- Mon, 04 Sep 2023 23:00:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6adQJrq0FM0UDkva9k4N5ylFKPuw1C9uUfc6/80WiRQeKr0x7EbvlbNeQGkzfe6F7c7CMzVLHN4v8q9HLnAY=
-X-Received: by 2002:a67:f7d4:0:b0:44d:482a:5444 with SMTP id
- a20-20020a67f7d4000000b0044d482a5444mr10074457vsp.21.1693893630232; Mon, 04
- Sep 2023 23:00:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdP9o-0003wU-Hx
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:03:27 -0400
+Received: from fwd76.aul.t-online.de (fwd76.aul.t-online.de [10.223.144.102])
+ by mailout01.t-online.de (Postfix) with SMTP id 257C911F3D;
+ Tue,  5 Sep 2023 08:03:20 +0200 (CEST)
+Received: from [192.168.211.200] ([79.208.25.148]) by fwd76.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1qdP9h-2EM4fJ0; Tue, 5 Sep 2023 08:03:17 +0200
+Message-ID: <cc871c41-549b-bfd9-652b-83154edfa37a@t-online.de>
+Date: Tue, 5 Sep 2023 08:03:16 +0200
 MIME-Version: 1.0
-References: <20230904095720.154738-1-pbonzini@redhat.com>
- <20230904095720.154738-2-pbonzini@redhat.com>
- <2fdf3391-bef5-7d86-d066-1f687cec1285@linaro.org>
-In-Reply-To: <2fdf3391-bef5-7d86-d066-1f687cec1285@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 5 Sep 2023 08:00:00 +0200
-Message-ID: <CABgObfa-65y-y1u=ztQ9RdaP7ub7VZAoDjm9e+q8xmCwkxgtSw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] Python: Drop support for Python 3.7
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, John Snow <jsnow@redhat.com>, 
- "Armbruster, Markus" <armbru@redhat.com>, "Maydell,
- Peter" <peter.maydell@linaro.org>, 
- "P. Berrange, Daniel" <berrange@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000001e1fb3060496586c"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v8 00/12] Add VIRTIO sound card
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <4b115410-9c0e-96aa-2f62-e82b7897ede5@t-online.de>
+ <0ghxq.3r60jgujq0t@linaro.org> <875y4qjftt.fsf@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <875y4qjftt.fsf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1693893797-457FB5E3-806526D1/0/0 CLEAN NORMAL
+X-TOI-MSGID: 1ed2dedc-d82b-49a3-8e1e-097e95ad02da
+Received-SPF: none client-ip=194.25.134.80; envelope-from=vr_qemu@t-online.de;
+ helo=mailout01.t-online.de
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,106 +75,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001e1fb3060496586c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Il lun 4 set 2023, 12:34 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> ha
-scritto:
-
-> > Since it is safe to under our supported platform policy, bump our
+Am 04.09.23 um 14:11 schrieb Alex Bennée:
+> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 >
-> Is 'under' a verb? This sentence is not obvious to me.
+>> Hello Volker :)
+>>
+>> On Mon, 04 Sep 2023 10:20, Volker Rümelin <vr_qemu@t-online.de> wrote:
+>>> All qemu_log_mask() format strings need a trailing \n.
+>> Thank you, will fix it!
+>>
+>>> I still hear a lot of playback dropouts. I had planned to look at
+>>> the playback code, but I didn't have the time until now.
+>>>
+>>> Compared to v6 audio recording has improved but there are bugs. When
+>>> I start QEMU with -audiodev
+>>> pipewire,out.frequency=48000,in.frequency=48000,id=audio0 there are
+>>> two either uninitialized or stale samples every 25ms in the recorded
+>>> audio stream.
+>>>
+>>> To reproduce the issue start audacity on the host and generate a 2s
+>>> square wave tone with 315Hz and an amplitude of 0.8. Use pavucontrol
+>>> to select the monitor of your host playback device as QEMU recording
+>>> device. In the guest start recording with audacity. Start playback
+>>> of the generated square wave on the host. Stop recording in the
+>>> guest and have a look at a 200ms sequence of the recorded square
+>>> wave and notice the wrong samples every 25ms.
+>> We've noticed this and decided to fix it in the future. I think the
+>> problem lies when PCM release is called from the guest. Quoting the
+>> spec:
+>>
+>>   The device MUST complete all pending I/O messages for the specified
+>>   stream ID.
+>>   The device MUST NOT complete the control request while there are
+>>   pending I/O messages for the specified stream ID.
+>>
+>> When RELEASE is received, buffers are simply dropped. This is pure
+>> conjecture but I think creating an in-device buffer could solve this.
+>> Unless the bug is found to be caused by something else, I settled on
+>> accepting it for this patch series because it is spec conformant.
+> Volker,
 >
-
-No, just drop "to".
-
-Paolo
-
-
-> > minimum supported version of Python to 3.8.  The two most interesting
-> > features to have by default include:
-> >
-> > - the importlib.metadata module, whose lack is responsible for over 100
-> >    lines of code in mkvenv.py
-> >
-> > - improvements to asyncio, for example asyncio.CancelledError
-> >    inherits from BaseException rather than Exception
-> >
-> > In addition, code can now use the assignment operator ':=3D'
-> >
-> > Because mypy now learns about importlib.metadata, a small change to
-> > mkvenv.py is needed to pass type checking.
-> >
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >   configure                | 8 ++++----
-> >   python/Makefile          | 8 ++++----
-> >   python/scripts/mkvenv.py | 5 ++++-
-> >   python/setup.cfg         | 7 +++----
-> >   python/tests/minreqs.txt | 2 +-
-> >   scripts/qapi/mypy.ini    | 2 +-
-> >   6 files changed, 17 insertions(+), 15 deletions(-)
+> Can you run with:
 >
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>    -d trace:virtio_snd\*
 >
+> to confirm you are seeing the same behaviour. The experience I had with
+> ogg123 in an emulated guest was it would work fine but then the next run
+> I would get audio corruption. You can see this if you see lots of
+> START/STOP/RELEASE messages constantly restarting things. If you are
+> getting corruption without this pattern that is something else which we
+> should investigate before merging.
+
+Hi Alex,
+
+I only see a START message when I start recording with audacity and a 
+STOP message approximately 5s after I stop recording. This is when guest 
+PulseAudio disables the virtio-sound device.
+
+9881@1693892230.558732:virtio_snd_handle_ctrl snd 0x55ac9e6eb590: handle 
+ctrl event for queue 0x55ac9e6f4160
+9881@1693892230.558780:virtio_snd_handle_code ctrl code msg val = 257 == 
+VIRTIO_SND_R_PCM_SET_PARAMS
+9881@1693892230.558797:virtio_snd_handle_pcm_set_params 
+VIRTIO_SND_PCM_SET_PARAMS called for stream 1
+9881@1693892230.559132:virtio_snd_handle_ctrl snd 0x55ac9e6eb590: handle 
+ctrl event for queue 0x55ac9e6f4160
+9881@1693892230.559158:virtio_snd_handle_code ctrl code msg val = 258 == 
+VIRTIO_SND_R_PCM_PREPARE
+9881@1693892230.562202:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892230.562365:virtio_snd_handle_ctrl snd 0x55ac9e6eb590: handle 
+ctrl event for queue 0x55ac9e6f4160
+9881@1693892230.562395:virtio_snd_handle_code ctrl code msg val = 260 == 
+VIRTIO_SND_R_PCM_START
+9881@1693892230.562411:virtio_snd_handle_pcm_start_stop 
+VIRTIO_SND_R_PCM_START called for stream 1
+9881@1693892230.562557:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892230.810029:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892230.840194:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892230.860279:virtio_snd_handle_rx_xfer rx queue callback called
+
+... a lot of 'virtio_snd_handle_rx_xfer rx queue callback called' 
+messages every 20ms - 30ms
+
+9881@1693892238.510774:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892238.530895:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892238.561123:virtio_snd_handle_rx_xfer rx queue callback called
+9881@1693892238.566280:virtio_snd_handle_ctrl snd 0x55ac9e6eb590: handle 
+ctrl event for queue 0x55ac9e6f4160
+9881@1693892238.566290:virtio_snd_handle_code ctrl code msg val = 261 == 
+VIRTIO_SND_R_PCM_STOP
+9881@1693892238.566293:virtio_snd_handle_pcm_start_stop 
+VIRTIO_SND_R_PCM_STOP called for stream 1
+9881@1693892238.566415:virtio_snd_handle_ctrl snd 0x55ac9e6eb590: handle 
+ctrl event for queue 0x55ac9e6f4160
+9881@1693892238.566424:virtio_snd_handle_code ctrl code msg val = 259 == 
+VIRTIO_SND_R_PCM_RELEASE
+9881@1693892238.566428:virtio_snd_handle_pcm_release 
+VIRTIO_SND_PCM_RELEASE called for stream 1
+
+With best regards,
+Volker
+
+>>> When I start QEMU with -audiodev
+>>> pipewire,out.mixing-engine=off,in.mixing-engine=off,id=audio0 audio
+>>> recording starts but the recorded stream immediately stalls.
+>> Can you elaborate? Do you mean you repeat the same process as before,
+>> but the stall happens immediately? I personally rarely get any drops I
+>> could notice, only one or two for many minutes of playback / capture.
+>> I also could not reproduce exactly the same behavior you had in the
+>> previous version. The bugs *were* there but it was not as severe.
+>> Maybe it's a hardware performance issue? Can someone else test this
+>> too? It'd be helpful.
+>>
+>> Thank you very much for your help,
+>> Manos
 >
-
---0000000000001e1fb3060496586c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il lun 4 set 2023, 12:34 Philippe Mathieu-Daud=C3=A9 &=
-lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; ha scritt=
-o:</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border=
--left:1px #ccc solid;padding-left:1ex">
-&gt; Since it is safe to under our supported platform policy, bump our<br>
-<br>
-Is &#39;under&#39; a verb? This sentence is not obvious to me.<br></blockqu=
-ote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">No, just drop=
- &quot;to&quot;.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</=
-div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote=
-"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
-1px #ccc solid;padding-left:1ex">
-<br>
-&gt; minimum supported version of Python to 3.8.=C2=A0 The two most interes=
-ting<br>
-&gt; features to have by default include:<br>
-&gt; <br>
-&gt; - the importlib.metadata module, whose lack is responsible for over 10=
-0<br>
-&gt;=C2=A0 =C2=A0 lines of code in mkvenv.py<br>
-&gt; <br>
-&gt; - improvements to asyncio, for example asyncio.CancelledError<br>
-&gt;=C2=A0 =C2=A0 inherits from BaseException rather than Exception<br>
-&gt; <br>
-&gt; In addition, code can now use the assignment operator &#39;:=3D&#39;<b=
-r>
-&gt; <br>
-&gt; Because mypy now learns about importlib.metadata, a small change to<br=
->
-&gt; mkvenv.py is needed to pass type checking.<br>
-&gt; <br>
-&gt; Signed-off-by: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com=
-" target=3D"_blank" rel=3D"noreferrer">pbonzini@redhat.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0configure=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 | 8 ++++----<br>
-&gt;=C2=A0 =C2=A0python/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 8 ++++=
-----<br>
-&gt;=C2=A0 =C2=A0python/scripts/mkvenv.py | 5 ++++-<br>
-&gt;=C2=A0 =C2=A0python/setup.cfg=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 7 +++-=
----<br>
-&gt;=C2=A0 =C2=A0python/tests/minreqs.txt | 2 +-<br>
-&gt;=C2=A0 =C2=A0scripts/qapi/mypy.ini=C2=A0 =C2=A0 | 2 +-<br>
-&gt;=C2=A0 =C2=A06 files changed, 17 insertions(+), 15 deletions(-)<br>
-<br>
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
-o.org" target=3D"_blank" rel=3D"noreferrer">philmd@linaro.org</a>&gt;<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000001e1fb3060496586c--
 
 
