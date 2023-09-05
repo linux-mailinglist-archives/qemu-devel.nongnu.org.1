@@ -2,67 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13F479238E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 16:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E5179238F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 16:35:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdX8Y-0006ge-SC; Tue, 05 Sep 2023 10:34:38 -0400
+	id 1qdX8r-0006jZ-Lv; Tue, 05 Sep 2023 10:34:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qdX8W-0006gI-U7
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 10:34:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdX8p-0006jN-0d; Tue, 05 Sep 2023 10:34:55 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qdX8U-0001eG-Su
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 10:34:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693924473;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BB5l/DAVXhfnD/OF9olzp46gAz7/ydEmjw511PH+qfk=;
- b=YAUa4Bv9lcbmznNoF2yKtXI2NhL40U84Os+yZBEof/XWs1IdKEjB1sRqYcJrQS2kFOI2mC
- QY0uLis3LGsLurLr23b7mWzeY7K/wbBTdcjLP1JsJEFXz1Xqxr6zGb74fBkFzoKXeeaCsU
- V2yZcmSgqPNKlld35Mnm7kSB7i8A7BA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-516-wlhclYU8NJ-N6SixRMUZMg-1; Tue, 05 Sep 2023 10:34:28 -0400
-X-MC-Unique: wlhclYU8NJ-N6SixRMUZMg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F65A927A04;
- Tue,  5 Sep 2023 14:34:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5031E1121314;
- Tue,  5 Sep 2023 14:34:26 +0000 (UTC)
-Date: Tue, 5 Sep 2023 09:34:24 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/8] move softmmu options processing from os-posix.c to
- vl.c
-Message-ID: <o3rmycpwfp23iilafd2wsgt7mqorzvuu3yh4iofvoezwn2ichq@5cw4amwrupff>
-References: <20230901101302.3618955-1-mjt@tls.msk.ru>
- <20230901214442.83554-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdX8m-0001er-AA; Tue, 05 Sep 2023 10:34:54 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rg7KC5D08z6HJ5h;
+ Tue,  5 Sep 2023 22:33:19 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 5 Sep
+ 2023 15:34:39 +0100
+Date: Tue, 5 Sep 2023 15:34:38 +0100
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+CC: qemu-arm <qemu-arm@nongnu.org>, qemu-devel <qemu-devel@nongnu.org>,
+ gregory.price <gregory.price@memverge.com>
+Subject: Re: CXL Namespaces of ACPI disappearing in Qemu demo
+Message-ID: <20230905153438.000075ff@huawei.com>
+In-Reply-To: <2023090518450211126476@phytium.com.cn>
+References: <2023082215220191352877@phytium.com.cn>
+ <2023090518450211126476@phytium.com.cn>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230901214442.83554-1-pbonzini@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,20 +61,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 01, 2023 at 11:44:42PM +0200, Paolo Bonzini wrote:
-> Queued, thanks.
+On Tue, 5 Sep 2023 18:45:02 +0800
+Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+
+> Hi, Jonathan
+> On 2023-09-04 20:43,  jonathan.cameron wrote:
+> > 
+> > At the system design level, MMIO space of Root complex register space via RCRB
+> > does not map in a similar fashion to PCIE MMIO space (which is handled via
+> > address decoding in the PCIE fabric). It is much more similar to MMIO for platform
+> > devices - as such the implementation handles in like a platform device (well 16 of
+> > them which seemed enough for any sane usecase).
+> > 
+> >   
 > 
-> Paolo
+> Oh,thanks! According to above, therefore, the core factor is the implementation of RCRB.
+> 
+> > 
+> > So in theory we could make some space for the CXL root bridge RCRB registers
+> > but it would make various generic paths more complex.  In a real system
+> > those registers are likely to be far from the PCI MMIO space anyway so the
+> > way it's modeled is probably more realistic than pushing the RCRB into the
+> > existing allocation.
+> >   
+> 
+> Here implies that all CXL root bridge will use RCRB registers.
+> 
+> From Table 8-17 and Figure 9-14 in CXL3.0 specification, I understood that only RCH DP &
+> RCD UP will use RCRBs, and CXL host bridges VH mode will use other way to realize
+> the CHBCR. I had tried to find more explanation in CXL spec, but I haven't found. Hence 
+> this is why I am confused.
 
-I also had these on my plate for an upcoming NBD pull request; I'm
-fine whichever tree they show up through.
+Ah. That distinction is a bit messy.  Both an RCRB and CHBCR (CXL Host Bridge Component
+Registers) are similar in the sense that they are mapped in host memory space. 
+As I understand it the distinction is more about the format / contents of that memory
+than how you access them. As an aside, they are described by a static ACPI table,
+so they can't be in the MMIO space used for BARs etc.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Jonathan
+
+
+> 
+> Many thanks
+> Yuquan
 
 
