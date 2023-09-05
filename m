@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8CE79295D
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD9579295E
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdZGD-000175-4b; Tue, 05 Sep 2023 12:50:41 -0400
+	id 1qdZGE-00018N-FN; Tue, 05 Sep 2023 12:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.purdie@linuxfoundation.org>)
- id 1qdZGA-00016G-Ts
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:50:38 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZGC-00017I-D5
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:50:40 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.purdie@linuxfoundation.org>)
- id 1qdZG8-0003x1-Ar
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:50:38 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-402be83929eso27191685e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:50:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZGA-0003x9-4d
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:50:40 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-50091b91a83so4540399e87.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:50:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linuxfoundation.org; s=google; t=1693932634; x=1694537434; darn=nongnu.org; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=C8jKaWGbu4PyvRot4KpDeunpx2CrrqY5SPj3zqIwQRw=;
- b=Duqpx9IwxtuPN20Ifyj2ZyFI+Fpjqw4hWJOcaeNC8gOJw5L5tibcKewmKiTxitGZpD
- VZVzdJk/llV3X05O2h4SmSHCegOj+/lP5ZORQyGlV2SUwZDbcVPLl6lUkPJBzD+pvUJK
- qSuxs0fmivrdmyP74H2kpY7jTSgSLAfnA8S/o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693932634; x=1694537434;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ d=linaro.org; s=google; t=1693932636; x=1694537436; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=C8jKaWGbu4PyvRot4KpDeunpx2CrrqY5SPj3zqIwQRw=;
- b=KC/5XcD3bh9HDJB/U6QaIJiH8K+2RRqebiRriIGc9IeL0iIo8zNziPEyeM8pNvemzf
- 1MUnqDWI6oZkgK/Vwsd2izeenKq4IwM6O/RARNcgN3WwvGGbJF4jBhR3N7tPdCw99Oov
- tSws6htsqjFjwUPgdAXJQGgzvzPmM+U4wry6fXbxob88gQfVwrU4/HCyaFjqSWu2VS8z
- YVB9gKT/TFLZm8+D5dkMf8hfmUVa+r71ApC4k+MOc/Tjqf6fWh5UIhz3QEbaX/kyONuc
- Pi02xHHpEaTrnl83M3BqOkepOlSgy02DcrX4A6P46PlmCvRaHipDUAM21qwaKfB5O1Gp
- 6YXw==
-X-Gm-Message-State: AOJu0Yxbme8XC632GD4NHMUNPkfSivYw8LSZVDJZ72dECFUoq9gOxpRq
- A5StLvzvOgfF64vC3MyzMrOx5A==
-X-Google-Smtp-Source: AGHT+IHzaaMFe87uP2rFVdCRVWrUNUjJUqh8OgLhmoY3G6CVQJm5nya5ib7NsS/23YuKZUH6ikYyaQ==
-X-Received: by 2002:a7b:ca48:0:b0:401:b53e:6c54 with SMTP id
- m8-20020a7bca48000000b00401b53e6c54mr244312wml.7.1693932634455; 
- Tue, 05 Sep 2023 09:50:34 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:9cbb:8ec6:1cb5:104e?
- ([2001:8b0:aba:5f3c:9cbb:8ec6:1cb5:104e])
- by smtp.gmail.com with ESMTPSA id
- ay23-20020a5d6f17000000b003143add4396sm9246127wrb.22.2023.09.05.09.50.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 09:50:33 -0700 (PDT)
-Message-ID: <5fb4ebef7387b58a83377b2ec679c62bac57f31c.camel@linuxfoundation.org>
-Subject: Re: mips system emulation failure with virtio
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Alex
- =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>, Jiaxun
- Yang <jiaxun.yang@flygoat.com>, Aleksandar Rikalo
- <aleksandar.rikalo@syrmia.com>,  Richard Henderson
- <richard.henderson@linaro.org>
-Date: Tue, 05 Sep 2023 17:50:33 +0100
-In-Reply-To: <932ee6f0-f8bb-f9eb-49bd-3ffee7afd265@linaro.org>
-References: <4f2a4b734b20b80857d56af986335f78a92a0fff.camel@linuxfoundation.org>
- <87pm2whfyn.fsf@linaro.org>
- <0cbd86af5501f18007a926598c6e2232af240d00.camel@linuxfoundation.org>
- <d35f5c16-e75c-fc7f-57cb-c6f7a5e696fc@linaro.org>
- <58b3aa9437ac94d7665e7b93f4868f7e7d3f71b3.camel@linuxfoundation.org>
- <932ee6f0-f8bb-f9eb-49bd-3ffee7afd265@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+ bh=Xyx8dhvICNG2imFMfltLdNZeGf7fNxfpF2tddSVvQxY=;
+ b=BDdbOZYL8fDyqLQAO7JjfwI2rWxi2D0403MRfGAfpJcQGVQR/HRwZXfoXQfB3odiqe
+ 8VqnX2mlv5b0YnjhwabsYdC9nTTc3CxMN0zcX040+v3icxZ8hH6lf6ep2RQLqrQZV8as
+ l4Y1xWc3lsn9+OkkC3CS3/NEtJOoYOJsxPgSNbQpSG/1htrZ7a+7fb4tgHqst8+6O/OD
+ yoDTI6+GKjuTejQPFHpwoBZmcM3+pOpqvKZXgR7E7hbwPV3Gl0Wu3766fIn20JZFisY/
+ T7uLcqtpU+lAB0v/CiHh63o5eXlxZ0y8owug04H1NmLUWP6Rkw8m6Y87TRcxYcTjNRJI
+ IyPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693932636; x=1694537436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xyx8dhvICNG2imFMfltLdNZeGf7fNxfpF2tddSVvQxY=;
+ b=TpIUwwcDFJAE2oK8osZbifIFCxPATfBzoO6Y1u+g041p0GlrkGroVJ7lRo7WmTdHC6
+ mSbFjFtoxYhacdsKR5OmtbxRHGZY7S1Y1JCIN4dcVz9uO3q7NbbG59SUWLIvTc3RRabA
+ VsgHUEH33VkjcggJHSvYq1LmLMBBr17vBD6cHp285VWfdG2jv7j6pYQi3sidGdgmS2zL
+ VQUHnOejjHR7CfkRniHwdMUm+u89Z+BQ63moqB99bIbsSf6qZTV7jZkQD0xf+hUtlugg
+ G06T4fGiv4Ez3wilP9oTj6cmkXXUE4geT0bER2pg9jhLAZz5YaGocVOxFsOKDnSQV3T4
+ H7JQ==
+X-Gm-Message-State: AOJu0Yzb3JjcbjhAk/PVw51txA0YtnbhlCco+jTEkXtlvXpLMrK2ZMKw
+ LwXZ82gs5EbuDdhOcqoaYvRvpg==
+X-Google-Smtp-Source: AGHT+IE3mk4kxaYoB6C5+A2wFg/NUmj5GY00RFF/eZsLoon08eBX7sscIRJGIJ4/JF77nfEXCuKTyg==
+X-Received: by 2002:a05:6512:2393:b0:500:b5db:990b with SMTP id
+ c19-20020a056512239300b00500b5db990bmr317967lfv.47.1693932636380; 
+ Tue, 05 Sep 2023 09:50:36 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
+ [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
+ p5-20020a7bcc85000000b003fe1a96845bsm20670457wma.2.2023.09.05.09.50.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 09:50:36 -0700 (PDT)
+Message-ID: <ba47753d-2b9f-4ef9-d715-7624a4be5172@linaro.org>
+Date: Tue, 5 Sep 2023 18:50:34 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.purdie@linuxfoundation.org;
- helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] iothread: Set the GSource "name" field
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
+References: <20230904144811.4218-1-farosas@suse.de> <ZPdNCkLk4icmtxf0@x1n>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ZPdNCkLk4icmtxf0@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,35 +92,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-09-05 at 18:46 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> On 5/9/23 17:53, Richard Purdie wrote:
-> > On Tue, 2023-09-05 at 17:12 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> > > Hi Richard,
-> > >=20
-> > > On 5/9/23 16:50, Richard Purdie wrote:
-> > > > On Tue, 2023-09-05 at 14:59 +0100, Alex Benn=C3=A9e wrote:
-> > > > > Richard Purdie <richard.purdie@linuxfoundation.org> writes:
-> > > > >=20
-> > > > > > With qemu 8.1.0 we see boot hangs fox x86-64 targets.
-> > > > > >=20
-> > > > > > These are fixed by 0d58c660689f6da1e3feff8a997014003d928b3b (so=
-ftmmu:
-> > > > > > Use async_run_on_cpu in tcg_commit) but if I add that commit, m=
-ips and
-> > > > > > mips64 break, hanging at boot unable to find a rootfs.
-> > >=20
-> > > Are you testing mipsel / mips64el?
-> >=20
-> > No, it was mips/mips64, i.e. big endian.
->=20
-> Sorry my question was not clear. I meant: Do you also
-> test mipsel / mips64el guests, and if so, do they work?
-> (IOW, is this bug only big-endian guest specific?)
+On 5/9/23 17:45, Peter Xu wrote:
+> On Mon, Sep 04, 2023 at 11:48:11AM -0300, Fabiano Rosas wrote:
+>> @@ -189,11 +193,14 @@ static void iothread_init(EventLoopBase *base, Error **errp)
+>>           return;
+>>       }
+>>   
+>> +    thread_name = g_strdup_printf("IO %s",
+>> +                        object_get_canonical_path_component(OBJECT(base)));
+>> +
+>>       /*
+>>        * Init one GMainContext for the iothread unconditionally, even if
+>>        * it's not used
+>>        */
+>> -    iothread_init_gcontext(iothread);
+>> +    iothread_init_gcontext(iothread, thread_name);
+>>   
+>>       iothread_set_aio_context_params(base, &local_error);
+>>       if (local_error) {
+> 
+> I think thread_name might be leaked if error here.  Thanks,
 
-Sorry, I misunderstood. We don't test mipsel/mips64el so I don't know
-if that is working or not unfortunately.
-
-Cheers,
-
-Richard
+Oops, good catch. Better switch to g_autofree.
 
