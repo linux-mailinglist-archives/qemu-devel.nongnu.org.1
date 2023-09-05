@@ -2,93 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3A9792558
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757B479256F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:22:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdYgZ-0007ex-O6; Tue, 05 Sep 2023 12:13:51 -0400
+	id 1qdYnt-0002yD-Oy; Tue, 05 Sep 2023 12:21:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qdYgY-0007en-4L
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:13:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdYnj-0002v1-17
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:21:15 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qdYgV-0004Cz-Tx
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:13:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693930426;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z9BoQghM8rrXH3S2GSqyc8YmdaV1j9zKJU6WP4CdmRQ=;
- b=ictUm5VJaM6WAYYq+dc3/6lw4w6Lhl0mPNPJV3j0mYYDrepg5LrRimdZlAWgAHSX54hacp
- 5E84BFZpBKLwgfHaoS9Ra+hPwnVqmjPog8cZpF+LctYBMTuAuveb2mdIkdo3fbhierofmk
- ZKjiAHbOFjow8RLZX6a51yKaWTi1xLM=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-D2sBQvYPOpGTuZ3T0uYi1A-1; Tue, 05 Sep 2023 12:13:45 -0400
-X-MC-Unique: D2sBQvYPOpGTuZ3T0uYi1A-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2bbc1d8011dso30035161fa.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:13:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693930424; x=1694535224;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z9BoQghM8rrXH3S2GSqyc8YmdaV1j9zKJU6WP4CdmRQ=;
- b=KgJauIekuesZGD6ZWoO5MVA0pgw5Isp8+K6YJWSEBi0vu+TMd9nRHFBCqKUNZqyW3G
- lK3gcWIQlDIz5xVnd+t3vOjl7B6z8hpO+1E4/t3i/7Q9XNmVW2DZKDnu+OGlKK48ScXc
- UDnW7bcnhMwDLh/IdakG6nKMxi+4HY+4/Pq1Tbpn12QzHU8ehzTs1Q4NvINxEywQ8fq7
- l8iKWBiAOSVYmEV8yfetweb2BMK+6/xV1MfLTHvqpiz7g9uRPdCNhkMPemYtIKVbW72a
- lMgRs41OnSwj819JCoPCB8ud9gLyEy62ra2w1FC7vBU2ycTWcESvrILTu1KpAG6xeBc5
- ZiSQ==
-X-Gm-Message-State: AOJu0Yylk1qaYO/1FDbCWkJuvXiZs9elx0GzblutdCh+/il+tBbd317c
- ZS92zrzAENo6htmTxe6CR3HrZCOFfbqK3eK229AZKG2kArTiNwUP0y3YbPLKH2RB96G17Ybq7V4
- 9QfaKSUnyxlq2HlU=
-X-Received: by 2002:a2e:8417:0:b0:2bb:9894:c3dc with SMTP id
- z23-20020a2e8417000000b002bb9894c3dcmr184167ljg.4.1693930424021; 
- Tue, 05 Sep 2023 09:13:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5nmmGNPssCXiUHz+4HeZYG2tFpXgqUgbQX9WoPCZl9ble/Z7h6HdwKZ2owecmD+f1ygTN2w==
-X-Received: by 2002:a2e:8417:0:b0:2bb:9894:c3dc with SMTP id
- z23-20020a2e8417000000b002bb9894c3dcmr184152ljg.4.1693930423698; 
- Tue, 05 Sep 2023 09:13:43 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- z8-20020a05600c220800b003fe29dc0ff2sm17514883wml.21.2023.09.05.09.13.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 09:13:43 -0700 (PDT)
-Message-ID: <94038246-216c-3304-3f8b-1fb6f6ed684d@redhat.com>
-Date: Tue, 5 Sep 2023 18:13:42 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdYnf-0005om-HY
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:21:14 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rg9jN3fjrz6K5lX;
+ Wed,  6 Sep 2023 00:20:56 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 5 Sep
+ 2023 17:21:03 +0100
+Date: Tue, 5 Sep 2023 17:21:02 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>,
+ <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>
+Subject: Re: [PATCH] hw/pci-bridge/cxl-upstream: Add serial number extended
+ capability support
+Message-ID: <20230905172102.00006736@huawei.com>
+In-Reply-To: <20230905045849-mutt-send-email-mst@kernel.org>
+References: <20230904175752.17927-1-Jonathan.Cameron@huawei.com>
+ <ba7d895f-72d0-8a11-34ad-b5ca75f482bb@linaro.org>
+ <20230905045849-mutt-send-email-mst@kernel.org>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 3/5] migration: Add .save_prepare() handler to struct
- SaveVMHandlers
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>, Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Yanghang Liu <yanghliu@redhat.com>
-References: <20230831125702.11263-1-avihaih@nvidia.com>
- <20230831125702.11263-4-avihaih@nvidia.com> <ZPIIEYhcwPJLg2Lj@x1n>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <ZPIIEYhcwPJLg2Lj@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,35 +66,121 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/1/23 17:49, Peter Xu wrote:
-> On Thu, Aug 31, 2023 at 03:57:00PM +0300, Avihai Horon wrote:
->> Add a new .save_prepare() handler to struct SaveVMHandlers. This handler
->> is called early, even before migration starts, and can be used by
->> devices to perform early checks.
->>
->> Suggested-by: Peter Xu <peterx@redhat.com>
->> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-> 
-> Shouldn't be hard to unify the two call sites for qmp migrate and save
-> snapshot, but we can leave that for later:
+On Tue, 5 Sep 2023 05:02:47 -0400
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-yes. It could be called from migrate_init() with minor changes.
+> On Tue, Sep 05, 2023 at 10:48:54AM +0200, Philippe Mathieu-Daud=E9 wrote:
+> > Hi Jonathan,
+> >=20
+> > On 4/9/23 19:57, Jonathan Cameron wrote: =20
+> > > Will be needed so there is a defined serial number for
+> > > information queries via the Switch CCI.
+> > >=20
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > > No ordering dependencies wrt to other CXL patch sets.
+> > >=20
+> > > Whilst we 'need' it for the Switch CCI set it is valid without
+> > > it and aligns with existing EP serial number support. Seems sensible
+> > > to upstream this first and reduce my out of tree backlog a little!
+> > >=20
+> > >   hw/pci-bridge/cxl_upstream.c | 15 +++++++++++++--
+> > >   1 file changed, 13 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstrea=
+m.c
+> > > index 2b9cf0cc97..15c4d84a56 100644
+> > > --- a/hw/pci-bridge/cxl_upstream.c
+> > > +++ b/hw/pci-bridge/cxl_upstream.c
+> > > @@ -14,6 +14,11 @@
+> > >   #include "hw/pci/msi.h"
+> > >   #include "hw/pci/pcie.h"
+> > >   #include "hw/pci/pcie_port.h"
+> > > +/*
+> > > + * Null value of all Fs suggested by IEEE RA guidelines for use of
+> > > + * EU, OUI and CID
+> > > + */
+> > > +#define UI64_NULL (~0ULL) =20
+> >=20
+> > Already defined in hw/mem/cxl_type3.c, can we move it to some common
+> > CXL header? Or include/qemu/units.h? =20
+>=20
+> not the last one I think - this is a cxl specific hack to detect that
+> user has changed the property.
 
-We could probably move :
+The chosen default is also the one that the relevant specifications says
+means 'NULL' for a EUI64 code so is at least a valid hack...
+https://standards.ieee.org/wp-content/uploads/import/documents/tutorials/eu=
+i.pdf
+"Unassigned and NULL EUI values"
+specifically recommend NULL values in that section.
 
-     memset(&mig_stats, 0, sizeof(mig_stats));
-     memset(&compression_counters, 0, sizeof(compression_counters));
-     migration_reset_vfio_bytes_transferred();
+However, it's obscure enough that we probably don't want it in a generic
+header.
 
-under migrate_init() also. Anyhow,
+>=20
+>=20
+> I think we really should have a variant of DEFINE_PROP_XXX that sets a
+> flag allowing us to detect whether a property has been set manually.
+> This would be a generalization of DEFINE_PROP_ON_OFF_AUTO.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Agreed that would be generally useful but here there is a reasonable
+default value so I don't think we need this.
 
-Thanks,
-
-C.
+>=20
+>=20
+> > >   #define CXL_UPSTREAM_PORT_MSI_NR_VECTOR 2
+> > > @@ -30,6 +35,7 @@ typedef struct CXLUpstreamPort {
+> > >       /*< public >*/
+> > >       CXLComponentState cxl_cstate;
+> > >       DOECap doe_cdat;
+> > > +    uint64_t sn;
+> > >   } CXLUpstreamPort;
+> > >   CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp)
+> > > @@ -326,8 +332,12 @@ static void cxl_usp_realize(PCIDevice *d, Error =
+**errp)
+> > >       if (rc) {
+> > >           goto err_cap;
+> > >       }
+> > > -
+> > > -    cxl_cstate->dvsec_offset =3D CXL_UPSTREAM_PORT_DVSEC_OFFSET;
+> > > +    if (usp->sn !=3D UI64_NULL) {
+> > > +        pcie_dev_ser_num_init(d, CXL_UPSTREAM_PORT_DVSEC_OFFSET, usp=
+->sn);
+> > > +        cxl_cstate->dvsec_offset =3D CXL_UPSTREAM_PORT_DVSEC_OFFSET =
++ 0x0c; =20
+> >=20
+> > Could it be clearer to have:
+> >=20
+> > diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+> > @@ -23,2 +23,2 @@
+> > -#define CXL_UPSTREAM_PORT_DVSEC_OFFSET \
+> > -    (CXL_UPSTREAM_PORT_AER_OFFSET + PCI_ERR_SIZEOF)
+> > +#define CXL_UPSTREAM_PORT_DVSEC_OFFSET(offset) \
+> > +    (CXL_UPSTREAM_PORT_AER_OFFSET + PCI_ERR_SIZEOF + offset)
+> >=20
+> > ?
+> >  =20
+> > > +    } else {
+> > > +        cxl_cstate->dvsec_offset =3D CXL_UPSTREAM_PORT_DVSEC_OFFSET;
+> > > +    }
+> > >       cxl_cstate->pdev =3D d;
+> > >       build_dvsecs(cxl_cstate);
+> > >       cxl_component_register_block_init(OBJECT(d), cxl_cstate, TYPE_C=
+XL_USP);
+> > > @@ -366,6 +376,7 @@ static void cxl_usp_exitfn(PCIDevice *d)
+> > >   }
+> > >   static Property cxl_upstream_props[] =3D {
+> > > +    DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
+> > >       DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.fil=
+ename),
+> > >       DEFINE_PROP_END_OF_LIST()
+> > >   }; =20
+>=20
 
 
