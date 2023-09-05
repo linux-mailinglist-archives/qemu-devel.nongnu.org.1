@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4E3793038
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 22:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52724793065
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 22:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdcvf-0002YL-8j; Tue, 05 Sep 2023 16:45:43 -0400
+	id 1qdd1r-0005Mi-LI; Tue, 05 Sep 2023 16:52:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdcvZ-0002Xz-O0
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:45:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdd1p-0005MN-TG
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:52:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdcvX-0001HG-69
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:45:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdd1n-0002Yp-ED
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:52:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693946734;
+ s=mimecast20190719; t=1693947121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gbw/uy0XD1sTwB2IrQAqn+1Wh/2UzB5st2kl2B4wp60=;
- b=AFJ2G2HLKDpb4xQ7YB/qsgAy5h83kPvOiUwM1P5cru3g6VXrKVmCAWd5TMhF66unJeJFvj
- mkcovfAouaD3235QfpQSSdXimZ0S2yNsfDTy3VytxfZ1glA5bysDLeTnZMBXfn3+DHIDwr
- 6scFRb+k+1hL4Fnsyas1zYUfw34gs4E=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XGnAiobMGJLQSeZP5L07JWqXlIsjBFywJcjrqYjcPm0=;
+ b=P29dY2BsQG/rzty9M6IuMuXuvy7bFa7AOC2ubgt5pgR06nAr5EI5xIFRCV3vQLMjqAYjAM
+ blUoKCUELDIfwuWVKdSKYDom+ixNcNc3bXaLP9YI+zg9jaIIOzfVoUQ8VQzQFEDZohS6cv
+ PNa17KjYhKFLmtLbk5RJj3T9GQ/EMw8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-4LribBW5MVWbDg72m924ww-1; Tue, 05 Sep 2023 16:45:32 -0400
-X-MC-Unique: 4LribBW5MVWbDg72m924ww-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-51a5296eb8eso2134554a12.2
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 13:45:32 -0700 (PDT)
+ us-mta-688-2OEmTbwsO_GI7Arxf_SfZQ-1; Tue, 05 Sep 2023 16:52:00 -0400
+X-MC-Unique: 2OEmTbwsO_GI7Arxf_SfZQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-52e3bada3d9so1779953a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 13:52:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693946731; x=1694551531;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gbw/uy0XD1sTwB2IrQAqn+1Wh/2UzB5st2kl2B4wp60=;
- b=QX/Q2XCQbXczwVrIrq0DBeAwSZ1jRJG84Lupy8ecm6+dzREsDdvUnGOvl5Ze5IlglC
- zf1ZmiEEgd1FOPA3NqvQAE/ZvTJXLONqiMkMP/YQClClc12DQ4e1RLlQqm+I3q7ixm5s
- j8IQZSSk5+t0RkGAq1gRI54JdBoHY/W6WPHd7IaOKsgyctNAuJM/+6Cmg1X6HTFw896b
- HN/C4M1fMdlZ+EPrNBOFgfUBHI0fWUKhR+qAsvT7fQ0vudp8gr9vJUEk4B1CBZs+LFh9
- 8oGHJUIh2WwHobaUVKVrfr2/Lxp55ylxBjdttjzUDsZaZ0Q/+TzoNrCbuqHpUcZCMRgL
- IzOA==
-X-Gm-Message-State: AOJu0Yw+vANm/4KDO3mVE5he4rWH9EZ5f7skJIK5fW7xbOw7yS6HUXF2
- FdWBqGdeKZe8J+I+ATIssE7wQxHvInrXBFtH68SA8JM0pX3f3BZwDZCQmmvwCJa+B1SCFsCOSd7
- l1JtlrQBC2pWyQHU=
-X-Received: by 2002:a05:6402:124b:b0:522:ae79:3ee8 with SMTP id
- l11-20020a056402124b00b00522ae793ee8mr775259edw.5.1693946731584; 
- Tue, 05 Sep 2023 13:45:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3eYYMvX3xMGJf/Jq6kFEL4sDn0ajAu/5kbCr1DMsfLUyjxhiDgpezhm4JzdGzqh0exwa03w==
-X-Received: by 2002:a05:6402:124b:b0:522:ae79:3ee8 with SMTP id
- l11-20020a056402124b00b00522ae793ee8mr775250edw.5.1693946731274; 
- Tue, 05 Sep 2023 13:45:31 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693947119; x=1694551919;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XGnAiobMGJLQSeZP5L07JWqXlIsjBFywJcjrqYjcPm0=;
+ b=YEvcWB4ReOouVC8X/tBPP595Pt0zUcMHJqAhyMo2dDapLsTR0d3mwazpiXILFxQmLE
+ MVLFszsHSuuzKI+8TMMfWqhZfzX+tVgwjV/9p4fE4AK+2BtEx/59zV4UC9HK5c5WDzc1
+ VFbwTZL3cumO0ZqTYm4fDb2uSwH+70/wDo7s/KXtiwrlthMmR/84FCjyFvD2x4P5tmqv
+ n2xYYSLbUVixv3UJ0OBMqLXAL3s66F0owgSOrNNYppVM7I9xCl6H5UrPnfhYKd3GvF9S
+ osroscLdjFwuXgQgX9zFCxixZntSGU8gNO8RuexZs9Wbi8ZYmy0Yt4+R5W1xgP8EolwY
+ TjTw==
+X-Gm-Message-State: AOJu0Yyv4i6A3DF2YRou8lCA+XRwfymoDDpfAOW00/ZvOV33QmfUOL37
+ iBOOciuYoQUgSaEY+VWjH9sDxxA6IVb8hior08f+srWO1R3CQNBx7o8ElXVp8Q4DkCdR/Egf/8Y
+ iz2Txg/myP5VA4r4=
+X-Received: by 2002:a17:906:2009:b0:9a1:be50:ae61 with SMTP id
+ 9-20020a170906200900b009a1be50ae61mr671992ejo.69.1693947119325; 
+ Tue, 05 Sep 2023 13:51:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdTzn1srygv5VAWmXV9ruxD3+eXcQbea1dCIHCcrYpC2z1Tst3aTHwZuAWDlg91LPcKZh7eQ==
+X-Received: by 2002:a17:906:2009:b0:9a1:be50:ae61 with SMTP id
+ 9-20020a170906200900b009a1be50ae61mr671984ejo.69.1693947119006; 
+ Tue, 05 Sep 2023 13:51:59 -0700 (PDT)
 Received: from redhat.com ([2.52.23.134]) by smtp.gmail.com with ESMTPSA id
- f24-20020aa7d858000000b0052544441babsm7606659eds.72.2023.09.05.13.45.29
+ pw9-20020a17090720a900b0098884f86e41sm7917963ejb.123.2023.09.05.13.51.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 13:45:30 -0700 (PDT)
-Date: Tue, 5 Sep 2023 16:45:26 -0400
+ Tue, 05 Sep 2023 13:51:58 -0700 (PDT)
+Date: Tue, 5 Sep 2023 16:51:43 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, kraxel@redhat.com,
- cohuck@redhat.com, Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v5 0/4] Virtio shared dma-buf
-Message-ID: <20230905164451-mutt-send-email-mst@kernel.org>
-References: <20230802090824.91688-1-aesteve@redhat.com>
- <CADSE00JRMvQ6Ye445xon0GoCDSsp7oAY_B--rABooabMTraoaQ@mail.gmail.com>
+To: John Snow <jsnow@redhat.com>
+Cc: andychiu <andychiu@synology.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Subject: Re: [Qemu-devel] [PATCH] ahci: enable pci bus master MemoryRegion
+ before loading ahci engines
+Message-ID: <20230905164647-mutt-send-email-mst@kernel.org>
+References: <1568049517-10261-1-git-send-email-andychiu@synology.com>
+ <20190910025404-mutt-send-email-mst@kernel.org>
+ <9f402933-7256-75da-af77-2e47b656ab27@redhat.com>
+ <20190910095329-mutt-send-email-mst@kernel.org>
+ <a4a39c82-e5bc-71e9-28e8-25a0c68e2d6e@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADSE00JRMvQ6Ye445xon0GoCDSsp7oAY_B--rABooabMTraoaQ@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <a4a39c82-e5bc-71e9-28e8-25a0c68e2d6e@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,101 +100,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I was hoping for some acks from Gerd or anyone else with a clue
-about graphics, but as that doesn't seem to happen I'll merge.
-Thanks!
+On Tue, Sep 10, 2019 at 10:08:20AM -0400, John Snow wrote:
+> 
+> 
+> On 9/10/19 9:58 AM, Michael S. Tsirkin wrote:
+> > On Tue, Sep 10, 2019 at 09:50:41AM -0400, John Snow wrote:
+> >>
+> >>
+> >> On 9/10/19 3:04 AM, Michael S. Tsirkin wrote:
+> >>> On Tue, Sep 10, 2019 at 01:18:37AM +0800, andychiu wrote:
+> >>>> If Windows 10 guests have enabled 'turn off hard disk after idle'
+> >>>> option in power settings, and the guest has a SATA disk plugged in,
+> >>>> the SATA disk will be turned off after a specified idle time.
+> >>>> If the guest is live migrated or saved/loaded with its SATA disk
+> >>>> turned off, the following error will occur:
+> >>>>
+> >>>> qemu-system-x86_64: AHCI: Failed to start FIS receive engine: bad FIS receive buffer address
+> >>>> qemu-system-x86_64: Failed to load ich9_ahci:ahci
+> >>>> qemu-system-x86_64: error while loading state for instance 0x0 of device '0000:00:1a.0/ich9_ahci'
+> >>>> qemu-system-x86_64: load of migration failed: Operation not permitted
+> >>>>
+> >>>> Observation from trace logs shows that a while after Windows 10 turns off
+> >>>> a SATA disk (IDE disks don't have the following behavior),
+> >>>> it will disable the PCI_COMMAND_MASTER flag of the pci device containing
+> >>>> the ahci device. When the the disk is turning back on,
+> >>>> the PCI_COMMAND_MASTER flag will be restored first.
+> >>>> But if the guest is migrated or saved/loaded while the disk is off,
+> >>>> the post_load callback of ahci device, ahci_state_post_load(), will fail
+> >>>> at ahci_cond_start_engines() if the MemoryRegion
+> >>>> pci_dev->bus_master_enable_region is not enabled, with pci_dev pointing
+> >>>> to the PCIDevice struct containing the ahci device.
+> >>>>
+> >>>> This patch enables pci_dev->bus_master_enable_region before calling
+> >>>> ahci_cond_start_engines() in ahci_state_post_load(), and restore the
+> >>>> MemoryRegion to its original state afterwards.
+> >>>>
+> >>>> Signed-off-by: andychiu <andychiu@synology.com>
+> >>>
+> >>> Poking at PCI device internals like this seems fragile.  And force
+> >>> enabling bus master can lead to unpleasantness like corrupting guest
+> >>> memory, unhandled interrupts, etc.  E.g. it's quite reasonable,
+> >>> spec-wise, for the guest to move thing in memory around while bus
+> >>> mastering is off.
+> >>>
+> >>> Can you teach ahci that region being disabled
+> >>> during migration is ok, and recover from it?
+> >>
+> >> That's what I'm wondering.
+> >>
+> >> I could try to just disable the FIS RX engine if the mapping fails, but
+> >> that will require a change to guest visible state.
+> >>
+> >> My hunch, though, is that when windows re-enables the device it will
+> >> need to re-program the address registers anyway, so it might cope well
+> >> with the FIS RX bit getting switched off.
+> >>
+> >> (I'm wondering if it isn't a mistake that QEMU is trying to re-map this
+> >> address in the first place. Is it legal that the PCI device has pci bus
+> >> master disabled but we've held on to a mapping?
+> > 
+> > If you are poking at guest memory when bus master is off, then most likely yes.
+> > 
+> >> Should there be some
+> >> callback where AHCI knows to invalidate mappings at that point...?)
+> > 
+> > ATM the callback is the config write, you check
+> > proxy->pci_dev.config[PCI_COMMAND] & PCI_COMMAND_MASTER
+> > and if disabled invalidate the mapping.
+> > 
+> > virtio at least has code that pokes at
+> > proxy->pci_dev.config[PCI_COMMAND] too, I'm quite
+> > open to a function along the lines of
+> > pci_is_bus_master_enabled()
+> > that will do this.
+> > 
+> 
+> Well, that's not a callback. I don't think it's right to check the
+> PCI_COMMAND register *every* time AHCI does anything at all to see if
+> its mappings are still valid.
+> 
+> AHCI makes a mapping *once* when FIS RX is turned on, and it unmaps it
+> when it's turned off. It assumes it remains valid that whole time. When
+> we migrate, it checks to see if it was running, and performs the
+> mappings again to re-boot the state machine.
+> 
+> What I'm asking is; what are the implications of a guest disabling
+> PCI_COMMAND_MASTER? (I don't know PCI as well as you do.)
 
-On Mon, Aug 21, 2023 at 02:37:56PM +0200, Albert Esteve wrote:
-> Hi all,
+The implication is that no reads or writes must be initiated by device:
+either memory or IO reads, or sending MSI. INT#x is unaffected.
+writes into device memory are unaffected. whether reads from
+device memory are affected kind of depends, but maybe not.
+
+Whether device caches anything internally has nothing to do
+with PCI_COMMAND_MASTER and PCI spec says nothing about it.
+Windows uses PCI_COMMAND_MASTER to emulate surprise removal
+so there's that.
+
+
+> What should that mean for the AHCI state machine?
 > 
-> A little bump for this patch, sorry for the extra noise.
-> 
-> Regards,
-> Albert
-> 
-> 
-> On Wed, Aug 2, 2023 at 11:08 AM Albert Esteve <aesteve@redhat.com> wrote:
-> 
->     v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/
->     msg00598.html
->     v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/
->     msg04530.html
->     v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/
->     msg06126.html
->     v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/
->     msg05174.html
->     v4 -> v5:
->     - Allow shared table to hold pointers for vhost devices, in a struct that
->     defines the types that the table can store
->     - New message VHOST_USER_GET_SHARED_OBJECT to retrieve objects stored in
->     vhost backends
->     - Minor additions to support the previous items (e.g. new test usecases).
-> 
->     This patch covers the required steps to add support for virtio cross-device
->     resource sharing[1],
->     which support is already available in the kernel.
-> 
->     The main usecase will be sharing dma buffers from virtio-gpu devices (as
->     the exporter
->     -see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under
->     discussion)
->     devices (as the buffer-user or importer). Therefore, even though virtio
->     specs talk about
->     resources or objects[3], this patch adds the infrastructure with dma-bufs
->     in mind.
->     Note that virtio specs let the devices themselves define what a vitio
->     object is.
-> 
->     These are the main parts that are covered in the patch:
-> 
->     - Add hash function to uuid module
->     - Shared resources table, to hold all resources that can be shared in the
->     host and their assigned UUID,
->       or pointers to the backend holding the resource
->     - Internal shared table API for virtio devices to add, lookup and remove
->     resources
->     - Unit test to verify the API
->     - New messages to the vhost-user protocol to allow backend to interact with
->     the shared
->       table API through the control socket
->     - New vhost-user feature bit to enable shared objects feature
-> 
->     Applies cleanly to 38a6de80b917b2a822cff0e38d83563ab401c890
-> 
->     [1] - https://lwn.net/Articles/828988/
->     [2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/
->     virtio-v1.2-csd01.html#x1-3730006
->     [3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/
->     virtio-v1.2-csd01.html#x1-10500011
-> 
->     Albert Esteve (4):
->       uuid: add a hash function
->       virtio-dmabuf: introduce virtio-dmabuf
->       vhost-user: add shared_object msg
->       vhost-user: refactor send_resp code
-> 
->      MAINTAINERS                               |   7 +
->      docs/interop/vhost-user.rst               |  57 +++++++
->      hw/display/meson.build                    |   1 +
->      hw/display/virtio-dmabuf.c                | 136 +++++++++++++++++
->      hw/virtio/vhost-user.c                    | 174 ++++++++++++++++++++--
->      include/hw/virtio/vhost-backend.h         |   3 +
->      include/hw/virtio/virtio-dmabuf.h         | 103 +++++++++++++
->      include/qemu/uuid.h                       |   2 +
->      subprojects/libvhost-user/libvhost-user.c | 118 +++++++++++++++
->      subprojects/libvhost-user/libvhost-user.h |  55 ++++++-
->      tests/unit/meson.build                    |   1 +
->      tests/unit/test-uuid.c                    |  27 ++++
->      tests/unit/test-virtio-dmabuf.c           | 137 +++++++++++++++++
->      util/uuid.c                               |  14 ++
->      14 files changed, 821 insertions(+), 14 deletions(-)
->      create mode 100644 hw/display/virtio-dmabuf.c
->      create mode 100644 include/hw/virtio/virtio-dmabuf.h
->      create mode 100644 tests/unit/test-virtio-dmabuf.c
-> 
->     --
->     2.40.0
-> 
-> 
+> Does this *necessarily* invalidate the mappings?
+> (In which case -- it's an error that AHCI held on to them after Windows
+> disabled the card, even if AHCI isn't being engaged by the guest
+> anymore. Essentially, we were turned off but didn't clean up a dangling
+> pointer, but we need the event that tells us to clean the dangling mapping.)
+
+It does not have to but it must stop memory accesses through the mappings.
+
+-- 
+MST
 
 
