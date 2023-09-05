@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D853179212B
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 10:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B019B792137
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 10:59:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdRlW-0000hB-Ve; Tue, 05 Sep 2023 04:50:30 -0400
+	id 1qdRsb-0002Kr-1r; Tue, 05 Sep 2023 04:57:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRlU-0000ds-FB
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:50:28 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRsY-0002Ij-JI
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:57:46 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRlS-0005wU-9J
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:50:28 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fef56f7223so21038995e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 01:50:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdRsV-0008TD-42
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:57:46 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3ff1c397405so22763815e9.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 01:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693903824; x=1694508624; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693904261; x=1694509061; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JUEikI+8UdqOc2VGNOxBHLnl97oOfIXpCxawdnlEDMo=;
- b=VqWNloxSjSsDcBLKiuJnNr/9unsJXh/QGCM/ld5jG312XIvja67S3wm7Pb4uMFFGdC
- 5SFJVDfPsjd45i9j0QXTKj1LEf9DH12euInkBLvnmYIk0CS7edbfQPYFsTGZTKuPtPFN
- 9PcxPn2vi2t0mefbM9Mx4p7NSo6eCpalAycBEQET3mzX6svRGxWd85ba4JwnWvYjzNiU
- BWoAivJ64wdgKhzubT4SCQcUbABoZ+MaQuQh6i98X03PDjq2NLvLL0H0XJUe7em5t2UM
- fJzIf3nyttA8yTGpnjUBhmde4UL2XHXBSH3/GMC2VqEDWtSKNxz/a5u0aRzC6q6nI5px
- 1INA==
+ bh=v79Vp67t0wu7INzTM9V9wUXCXrocS2Y+HNPF9qPRgWk=;
+ b=vLt4VLf2yirYV7546rFpWsMMRzih5vt3eTFBq+yQuoYXBWXh0ZWs9WKFG6D/mO2ihf
+ XEtf+ndAzlYrdgcSI3ODnSZWifzaS+amfnYPeFxrsB198c18/gRc3shvc1oOZBXfbCjR
+ axdAvzzcKq0f1kdMXc8ojN0+cZMXy9aadB/GGj7onM71hYF5GK6sz+Ym4gJkpQVMzpe4
+ tTQJ43X3femgTvPbGmyFFc+Kd4zvk97h+yWZrZ3gZwF6y2GwDZ4Flca8flOgp5DDZsUw
+ 4iQf7z2C4NN0h9uoa/z7OvdGetrpPsI2fd3vJAJGh+5+zFJF7C2XjV2isMuK3hnFoIx2
+ JCOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693903824; x=1694508624;
+ d=1e100.net; s=20221208; t=1693904261; x=1694509061;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JUEikI+8UdqOc2VGNOxBHLnl97oOfIXpCxawdnlEDMo=;
- b=hgWGuFll3bFtZArhcjsFuvuUN5tfsAVnufY1lrSPtbAqUuBI/l9MYQfXC9cWcE+KkE
- xJSX844481PKiu1VIKixKYr1sopMsrlSzfbTTRk2YF/89mRVps8CphpvPXN6FsvHaaIS
- IIG6q8QKdWvmyhaA2lTWCvF2HlDHedljsoz63k+R7SrYAR+GH8PEPwjNCC2cWWHUycue
- v/WckWKGrrx2BsDD1vYHDCjUniQ+B71XA1aR1tvpElLxPK6UcY1InxxK9xQrgKHvKi5Y
- HPcjbiYwTOxUsC/pVW5gcN7ssLZGkT3OH9G3JN/pSCQrfBoY0Y6XZ+zpmG+tvlH5MOwQ
- YHFQ==
-X-Gm-Message-State: AOJu0YzJHRemLdsB3wRekT5JmWEdUtxMvE8hwXzJLXdkUu2wJiFack9z
- QOSBN5EJVjFpt1az/hswKp+GtQ==
-X-Google-Smtp-Source: AGHT+IF515yTQ3QeVgzlMYcGEwnuspTWSQLI57f4UYmKfRt8JV1Og5XzZHHbXtor8Un5dILqoPHJBg==
-X-Received: by 2002:a05:600c:2283:b0:401:b53e:6c57 with SMTP id
- 3-20020a05600c228300b00401b53e6c57mr9928368wmf.9.1693903824586; 
- Tue, 05 Sep 2023 01:50:24 -0700 (PDT)
+ bh=v79Vp67t0wu7INzTM9V9wUXCXrocS2Y+HNPF9qPRgWk=;
+ b=D+sXjkXdc7/nOU/bCGiFxlh2jgPh8rAU7+Ls9hMoQq9ewIRoa69gBAXQnKXWJxkusk
+ TwQPgAVOldqDAqkBRSW6pfRpEd32WKoo8OAxDEqoChTPN9B4kKUrfnwIyUFh9p0/PIVy
+ OmFkukjlmK2Dve5QXpTc80Rpc3LRrkNOhwjMSuUnIv+UiFxUgjIfyh9Br4dcrUY1mSd9
+ RbJvGRXVqIXarKHAPXH6ii/8dBakKwj34HG39eTtMCAJ68fSaInAysTkqXdKWq6VrmZk
+ +B6nxA2q/xtkga2eG4w6+z/A1lY5iWANWyAukMnZo6eb7BgzJX9iKBNcbf8IIxztPSoJ
+ Oi3w==
+X-Gm-Message-State: AOJu0YxE1BbIXjGbr6DPtKR2u051vTmMdQAJroXs5134x5FQlxNJjrY8
+ vYsRYp2B9ysRDDhfBlk+SCMnghhPxbnyfqubcBU=
+X-Google-Smtp-Source: AGHT+IE3+mJ69nsks5sMq/kErs7OpOTeV9r2todNYkVk8DOjR9SXuZgA/BQYX7CysP4wbODCajNPtw==
+X-Received: by 2002:a05:6512:234a:b0:500:b872:7899 with SMTP id
+ p10-20020a056512234a00b00500b8727899mr10427134lfu.62.1693903865146; 
+ Tue, 05 Sep 2023 01:51:05 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
  [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
- y21-20020a05600c365500b003fed7fa6c00sm19490210wmq.7.2023.09.05.01.50.23
+ m18-20020a7bce12000000b00401dc20a070sm19330903wmc.43.2023.09.05.01.51.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 01:50:24 -0700 (PDT)
-Message-ID: <da23f1ce-ce6d-4634-5340-11972a1ecc79@linaro.org>
-Date: Tue, 5 Sep 2023 10:50:22 +0200
+ Tue, 05 Sep 2023 01:51:04 -0700 (PDT)
+Message-ID: <0318a8c1-2c04-1a7b-ccbf-892946cf29b8@linaro.org>
+Date: Tue, 5 Sep 2023 10:51:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 1/5] cxl/mailbox: move mailbox effect definitions to a
- header
+Subject: Re: [PATCH 2/5] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
+ read/write functions
 Content-Language: en-US
 To: Gregory Price <gourry.memverge@gmail.com>, qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
  junhee.ryu@sk.com, kwangjin.ko@sk.com,
  Gregory Price <gregory.price@memverge.com>
 References: <20230901012914.226527-1-gregory.price@memverge.com>
- <20230901012914.226527-2-gregory.price@memverge.com>
+ <20230901012914.226527-3-gregory.price@memverge.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230901012914.226527-2-gregory.price@memverge.com>
+In-Reply-To: <20230901012914.226527-3-gregory.price@memverge.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,14 +97,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/9/23 03:29, Gregory Price wrote:
-> Preparation for allowing devices to define their own CCI commands
+> Call CXL_TYPE3 once at top of function to avoid multiple invocations.
 > 
 > Signed-off-by: Gregory Price <gregory.price@memverge.com>
 > ---
->   hw/cxl/cxl-mailbox-utils.c   | 35 +++++++++++++++++++----------------
->   include/hw/cxl/cxl_mailbox.h | 18 ++++++++++++++++++
->   2 files changed, 37 insertions(+), 16 deletions(-)
->   create mode 100644 include/hw/cxl/cxl_mailbox.h
+>   hw/mem/cxl_type3.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
