@@ -2,50 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A987922B7
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 14:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A60A7922BD
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 14:43:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdVLC-00035a-FJ; Tue, 05 Sep 2023 08:39:34 -0400
+	id 1qdVOY-0006cQ-AC; Tue, 05 Sep 2023 08:43:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qdVL8-00035R-Vm
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:39:30 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qdVL4-0003Tw-R9
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:39:30 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxIvBxIfdkApQfAA--.63020S3;
- Tue, 05 Sep 2023 20:39:13 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxJ81uIfdk7OZsAA--.64018S2; 
- Tue, 05 Sep 2023 20:39:12 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, c@jia.je, philmd@linaro.org,
- maobibo@loongson.cn, yangxiaojuan@loongson.cn
-Subject: [PATCH v1 1/1] target/loongarch: Add preldx instruction
-Date: Tue,  5 Sep 2023 20:39:10 +0800
-Message-Id: <20230905123910.3052023-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdVOV-0006cB-Iv
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:42:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdVOS-0004Pd-Sz
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:42:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693917774;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=syV/FwlhZ8GavKAKNN92BvjVA6CcqF96Xwd87qlPgEg=;
+ b=hlXTcPlK2DyF+WEt/OLaEd685z6ZaCUqU27DQ8yyVtwl66GVstbYHcpV/0kwpDgJC00XJJ
+ P2+k+iJ3q368ePU/9RUYeeD1bCVdzL7UdpyJX0q89eIJHzN1CmO+kVG2pzBlCvm5lZeboS
+ boqPEMzBhN4YRU3WrvMmTTErzJbqenE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-246-zB1Gy92ANlStTfI2aPY_Vg-1; Tue, 05 Sep 2023 08:42:50 -0400
+X-MC-Unique: zB1Gy92ANlStTfI2aPY_Vg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D7D81C0782D;
+ Tue,  5 Sep 2023 12:42:50 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.134])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0A0A946F523;
+ Tue,  5 Sep 2023 12:42:48 +0000 (UTC)
+Date: Tue, 5 Sep 2023 13:42:46 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Mads Ynddal <mads@ynddal.dk>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Mads Ynddal <m.ynddal@samsung.com>
+Subject: Re: [PATCH v4 12/14] simpletrace: added simplified Analyzer2 class
+Message-ID: <ZPciRnEvDK0IPNEA@redhat.com>
+References: <20230823085429.20519-1-mads@ynddal.dk>
+ <20230823085429.20519-13-mads@ynddal.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxJ81uIfdk7OZsAA--.64018S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230823085429.20519-13-mads@ynddal.dk>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,97 +78,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolve the issue of starting the Loongnix 20.5[1] system failure.
+On Wed, Aug 23, 2023 at 10:54:27AM +0200, Mads Ynddal wrote:
+> From: Mads Ynddal <m.ynddal@samsung.com>
+> 
+> By moving the dynamic argument construction to keyword-arguments,
+> we can remove all of the specialized handling, and streamline it.
+> If a tracing method wants to access these, they can define the
+> kwargs, or ignore it be placing `**kwargs` at the end of the
+> function's arguments list.
+> 
+> Added deprecation warning to Analyzer class to make users aware
+> of the Analyzer2 class. No removal date is planned.
 
-Logs:
-    Loading Linux 4.19.0-19-loongson-3 ...
-    Loading initial ramdisk ...
-    PROGRESS CODE: V02010004 I0
-    PROGRESS CODE: V03101019 I0
-    Error: unknown opcode. 90000000003a3e6c: 0x382c6d82
+AFAIK, we don't consider simpletrace.py python code to be a
+supported public API, just a command line tool.
 
-[1] http://pkg.loongnix.cn/loongnix/isos/Loongnix-20.5/Loongnix-20.5.cartoon.gui.loongarch64.en.qcow2
+IOW, we can change the python code at will, as long as the
+command line doesn't alter its behaviour. Thus I don't see
+a need to add new classes, just change the existing ones.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/insns.decode                  | 3 +++
- target/loongarch/disas.c                       | 7 +++++++
- target/loongarch/insn_trans/trans_memory.c.inc | 5 +++++
- 3 files changed, 15 insertions(+)
 
-diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index c9c3bc2c73..56db653603 100644
---- a/target/loongarch/insns.decode
-+++ b/target/loongarch/insns.decode
-@@ -24,6 +24,7 @@
- &rrr          rd rj rk
- &rr_i         rd rj imm
- &hint_r_i     hint rj imm
-+&hint_rr      hint rj rk
- &rrr_sa       rd rj rk sa
- &rr_ms_ls     rd rj ms ls
- &ff           fd fj
-@@ -69,6 +70,7 @@
- @rr_i16                     .... .. imm:s16 rj:5 rd:5    &rr_i
- @rr_i16s2         .... ..  ................ rj:5 rd:5    &rr_i imm=%offs16
- @hint_r_i12           .... ...... imm:s12 rj:5 hint:5    &hint_r_i
-+@hint_rr         .... ........ ..... rk:5 rj:5 hint:5    &hint_rr
- @rrr_sa2p1        .... ........ ... .. rk:5 rj:5 rd:5    &rrr_sa  sa=%sa2p1
- @rrr_sa2        .... ........ ... sa:2 rk:5 rj:5 rd:5    &rrr_sa
- @rrr_sa3         .... ........ .. sa:3 rk:5 rj:5 rd:5    &rrr_sa
-@@ -228,6 +230,7 @@ ldx_bu          0011 10000010 00000 ..... ..... .....    @rrr
- ldx_hu          0011 10000010 01000 ..... ..... .....    @rrr
- ldx_wu          0011 10000010 10000 ..... ..... .....    @rrr
- preld           0010 101011 ............ ..... .....     @hint_r_i12
-+preldx          0011 10000010 11000 ..... ..... .....    @hint_rr
- dbar            0011 10000111 00100 ...............      @i15
- ibar            0011 10000111 00101 ...............      @i15
- ldptr_w         0010 0100 .............. ..... .....     @rr_i14s2
-diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 5c402d944d..d5ea8f7140 100644
---- a/target/loongarch/disas.c
-+++ b/target/loongarch/disas.c
-@@ -190,6 +190,12 @@ static void output_hint_r_i(DisasContext *ctx, arg_hint_r_i *a,
-     output(ctx, mnemonic, "%d, r%d, %d", a->hint, a->rj, a->imm);
- }
- 
-+static void output_hint_rr(DisasContext *ctx, arg_hint_rr *a,
-+                           const char *mnemonic)
-+{
-+    output(ctx, mnemonic, "%d, r%d, r%d", a->hint, a->rj, a->rk);
-+}
-+
- static void output_i(DisasContext *ctx, arg_i *a, const char *mnemonic)
- {
-     output(ctx, mnemonic, "%d", a->imm);
-@@ -549,6 +555,7 @@ INSN(ld_bu,        rr_i)
- INSN(ld_hu,        rr_i)
- INSN(ld_wu,        rr_i)
- INSN(preld,        hint_r_i)
-+INSN(preldx,       hint_rr)
- INSN(fld_s,        fr_i)
- INSN(fst_s,        fr_i)
- INSN(fld_d,        fr_i)
-diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
-index d9d062235a..ca7378c79d 100644
---- a/target/loongarch/insn_trans/trans_memory.c.inc
-+++ b/target/loongarch/insn_trans/trans_memory.c.inc
-@@ -110,6 +110,11 @@ static bool trans_preld(DisasContext *ctx, arg_preld *a)
-     return true;
- }
- 
-+static bool trans_preldx(DisasContext *ctx, arg_preldx * a)
-+{
-+    return true;
-+}
-+
- static bool trans_dbar(DisasContext *ctx, arg_dbar * a)
- {
-     tcg_gen_mb(TCG_BAR_SC | TCG_MO_ALL);
+With regards,
+Daniel
 -- 
-2.39.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
