@@ -2,85 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF007920FB
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 10:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3F3792119
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 10:40:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdRL2-0000WO-IM; Tue, 05 Sep 2023 04:23:08 -0400
+	id 1qdRat-0002w1-EA; Tue, 05 Sep 2023 04:39:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1qdRKy-0000Vn-RL
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:23:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qdRaF-0002tR-1r; Tue, 05 Sep 2023 04:38:51 -0400
+Received: from wout3-smtp.messagingengine.com ([64.147.123.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1qdRKw-0007xD-BD
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 04:23:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693902181;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UVjPD8AoT+QrHLRRbYATUsSdnhXkyoiXkwqydo/QK3E=;
- b=fFV8BfmUCJ60eJiw1QMR80lycfNRKQ75KzwTQoSyjdgkCRjr8L9AR67Df3zTvdlNDcz8Ac
- /v7H2eEkzsPaiuCO/xrXn/Jpqq16WRjQK+DU0CJkAVNMJ/CSw2QUcHTdoctK1k8os/3Uj3
- SDjnJnXMtKx/TPoWRlrI+TxRF8FbtFY=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-B5HD8L0uO9WgUrfMXggAZg-1; Tue, 05 Sep 2023 04:22:59 -0400
-X-MC-Unique: B5HD8L0uO9WgUrfMXggAZg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-50076a3fd35so2190120e87.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 01:22:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693902178; x=1694506978;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UVjPD8AoT+QrHLRRbYATUsSdnhXkyoiXkwqydo/QK3E=;
- b=hCb5KWqA8sE791ChINXldduGDbsPyuk6uW/dR31pDbYJ/LjG/dbNUwkDF7uewp7VqF
- cfd/+6J1bToWql7roHc0kzJM9Snd96qN5PS5qs58L3O+zlABO3wlw3ZYMXW7DFAp0qs7
- A1Bqj6kaE1d8qGcinnRb3EKVSXxQ+zEzgjrZREE8yWX3aXk67uZWWL6uJp32xcBbZGKf
- dKoyA5x5XH0Bgx6PL3GlckCwi0gqdwRuy997ZVdLWErl6595At6oqibtpzIasZ6I8nDE
- GDresN+qkHZQRyJaoDL92OpJggRwsKxSaO1Zi8slN06O/u4/2PJv3PfSxqNjX29Kgz/o
- mS+w==
-X-Gm-Message-State: AOJu0YyPt/OXRZu1Va/BNi/8IpSmOiioAekatVGAhWuxcKL6lETh/3aQ
- vIwLiMfDKyrwYuHLFVJKAITmt3qZf34wqx2pAWM9jQIA64D8IhOQhH705VfuXcFPE2ezveHKWe2
- 0w3fHgkclhfSY5Was6w2wUNJL86l56L8=
-X-Received: by 2002:a05:6512:3a94:b0:4fd:fedc:2ce5 with SMTP id
- q20-20020a0565123a9400b004fdfedc2ce5mr9237673lfu.36.1693902177936; 
- Tue, 05 Sep 2023 01:22:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgFex1xlctuIGvf3YeKFI6em5V1OVktnNgZTi8N+zhiESsv2i+gKtTDTKO6R5sEtRS+P7a4tdH52cxxqcAaz4=
-X-Received: by 2002:a05:6512:3a94:b0:4fd:fedc:2ce5 with SMTP id
- q20-20020a0565123a9400b004fdfedc2ce5mr9237517lfu.36.1693902172779; Tue, 05
- Sep 2023 01:22:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qdRaB-0002ft-Q6; Tue, 05 Sep 2023 04:38:50 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id E18CF3200903;
+ Tue,  5 Sep 2023 04:38:42 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute2.internal (MEProxy); Tue, 05 Sep 2023 04:38:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1693903122; x=
+ 1693989522; bh=5rOMuVjk2MxgTUN7h7BeAoEki+VsmHKrN7uWoeNu8uY=; b=B
+ DTSOzzfpqzG7vSDdKRNSuZU3Y4NscvTUBNbbYXWj5ISM64VN1+wRdTvKCqQGf4DY
+ VqCSRoLfNmkge6NTnawB8v1kun60GFJzBqXqAyxADe6c+HconvxZBSWdfcVBch/e
+ oFHcspdHJ/g4bRPD1icU0TaeA0twKdIPq/EePLgb713GMJOJZN95BjUKoaPdrpWT
+ xkYrCSOgrB81/V6tTEXPXAaiE1ReJqfVCLHbY4o3B+T6x16jnE3nIbzYe1F72MSW
+ QW1DxAYe8lbuUrxWAMYVmEGH167j1KAKnHFQ7kgM4Iyimy/a+n9PRYuYRfoFHnz8
+ STAIDyd2yuBHI/I2HTL8A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+ :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+ :x-me-sender:x-sasl-enc; s=fm1; t=1693903122; x=1693989522; bh=5
+ rOMuVjk2MxgTUN7h7BeAoEki+VsmHKrN7uWoeNu8uY=; b=zh5FGecb7oneQgoXv
+ 2WyCPCDkAItpIDDB+4+XaiADBYV8MYKXJeSGGNK+LHi18VQGypHz/cyd1gvqqf4N
+ FlI9Zj/ntl5DJ7DK4dHYabyPZXeMVSK8LFcvJtrzxGum4OqKoGzLr9kkgNtaCtLC
+ TVjcCldzOZsMIWrqgf68T39/DpgUlWU27LZGU+pXYqctt20JQPuTfN7w661enX0m
+ yI6WHvsIUL4v4PT70s2bh77pBVIcpvZRJwdruNRd472rOAWL2pVrBxwwnlN+CnvO
+ aUfaUz2dR24zFRgv0WjM82vgxy6oOk2FLXP01sJF2M47vILHauD3SgMzsP81YTiW
+ 28fKw==
+X-ME-Sender: <xms:EOn2ZPqUBklY9bUZSoB1GSvluQQiJgOlGUjnmEEihBkCX3kfJ0QbCA>
+ <xme:EOn2ZJomFGxEs-hTxwGdTUXePSl8stxZrAGygpIwvZ03MQ-9LxUuUw_jlYq1FkGxA
+ wCkwViy-VmuZj2WUCI>
+X-ME-Received: <xmr:EOn2ZMMjmzhdNRDP4vHUfMNyas9W1j9rRmlLl_guYc3s0tSnkUKXTqAjDw7bqceqYrArq-xq3GegtMdHR8bid6VFhhfN4BN_oyc2EcjE3KXp5enZxhb-wVe3QYMGgf3l2Ix33zkBDIbcKSQ_>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehtddgtdehucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpedvfeetudekgfdtteduueeukedugfeigeelgfdttdekhffggfelveeuffehuddt
+ veenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenucevlh
+ hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhr
+ vghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:EOn2ZC7Y1tIXTOKMO_0L9_VpBzJTopxSEGK0lLTZ4MfEMsztN-Ml5Q>
+ <xmx:EOn2ZO4jXzaCMoE6qnSdfFQZgpXwLUdac3lsY7SfvEuxmEwOFhjT-Q>
+ <xmx:EOn2ZKi8GKU6-pCMvUVy3AMJ3SwyWjzfzB1ewmx1PFJ42KP-d1fWzw>
+ <xmx:Eun2ZBIM3L2b5aOU-iG-nHisvAyilEVe5gwZSuaGBxXwByBM8ywv_Q>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 5 Sep 2023 04:38:39 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+Subject: [PATCH v5 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management
+ interface model
+Date: Tue, 05 Sep 2023 10:38:31 +0200
+Message-Id: <20230905-nmi-i2c-v5-0-0001d372a728@samsung.com>
 MIME-Version: 1.0
-References: <20230904080451.424731-1-eric.auger@redhat.com>
-In-Reply-To: <20230904080451.424731-1-eric.auger@redhat.com>
-From: YangHang Liu <yanghliu@redhat.com>
-Date: Tue, 5 Sep 2023 16:22:41 +0800
-Message-ID: <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
-Subject: Re: [PATCH 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org, 
- mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org, 
- peterx@redhat.com, david@redhat.com, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=yanghliu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAfp9mQC/z3MQQ7CIBCF4as0sxZDplCJK+9humhh2s4CaqAST
+ cPdxSa6/F9evh0SRaYE12aHSJkTr6GGPjVglyHMJNjVBpTYSoMogmfBaIUzUpHTI12og/p+RJr
+ 4dUj3vvbCaVvj+4Cz+q4/o/0bWQkpcJST6ahKqG9p8OkZ5rNdPfSllA9mXOXYoAAAAA==
+To: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>, 
+ Keith Busch <kbusch@kernel.org>
+Cc: Lior Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>, 
+ Matt Johnston <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, qemu-block@nongnu.org, 
+ Klaus Jensen <k.jensen@samsung.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2562; i=k.jensen@samsung.com; 
+ h=from:subject:message-id;
+ bh=sgcXdAGP8l8kBLZ8CsxZV1DNoVN5Bki9pO/V+L770Tg=; 
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGT26Q65W8FfjH6TcMdrxevXPyjvoPimpyy+B
+ uDd50jtxNM0FokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk9ukOAAoJEE3hrzFt
+ Tw3p2N8H/RqajECxU/LwCmZuXNKbkvGq8v6/Sc3xgx5higGuQhqBlmLI2JdHPIpwVNhv0QB2DDk
+ kHybGc9WHsmhFIkg+zGS/18KABjmwqOw3QGJsmNx2M/VSUFT5aT6ecZ/zn++CRZk/HuNdrz5r4w
+ 9evfAIhCkc0TOQq3oUZBQAI47DPo2ZksB7GEUCj5K9eRByg0MX0S6liIVf6WWEf6U0CR70H51cd
+ Snx6LCp/k1A5YudMKTquEeFRthYqMUeGnLBlddIpwV4kLkCJoIY2NUMiLwNzB9Ol8QWdrPuyElb
+ KcyWfqJT4K8i08vC7ikh7DhBlMgSx1dEFmax1R4YHevh/mXa1LX3xazU
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Received-SPF: pass client-ip=64.147.123.19; envelope-from=its@irrelevant.dk;
+ helo=wout3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,94 +122,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I have runned the following two tests, but both tests failed:
-[1] start a VM with virtio-iommu + 2 ice PFs only via qemu-kvm 8.1.5
-Test result : the qemu-kvm keeps throwing the error:  VFIO_MAP_DMA
-failed: File exists. vfio_dma_map(0x56443d20fbe0, 0xffffe000, 0x1000,
-0x7fb545709000) =3D -17 (File exists)
-[2] start a VM with virtio-iommu + 2 ice PFs via libvirt-9.5 + qemu-kvm 8.1=
-.5
-Test result: the qemu-kvm core dump with
-ERROR:../qom/object.c:1198:object_unref: assertion failed: (obj->ref >
-0). Bail out! ERROR:../qom/object.c:1198:object_unref: assertion
-failed: (obj->ref > 0)
+This adds a generic MCTP endpoint model that other devices may derive
+from.
 
-After removing the 2 PF from the VM, both tests passed.
+Also included is a very basic implementation of an NVMe-MI device,
+supporting only a small subset of the required commands.
 
-Tested-by: Yanghang Liu <yanghliu@redhat.com>
+Since this all relies on i2c target mode, this can currently only be
+used with an SoC that includes the Aspeed I2C controller.
 
-Best Regards,
-YangHang Liu
+The easiest way to get up and running with this, is to grab my buildroot
+overlay[1] (aspeed_ast2600evb_nmi_defconfig). It includes modified a
+modified dts as well as a couple of required packages.
 
+QEMU can then be launched along these lines:
 
-On Mon, Sep 4, 2023 at 4:08=E2=80=AFPM Eric Auger <eric.auger@redhat.com> w=
-rote:
->
-> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
-> we encounter the case where the guest tries to map IOVAs beyond 48b
-> whereas the physical VTD IOMMU only supports 48b. This ends up with
-> VFIO_MAP_DMA failures at qemu level because at kernel level,
-> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
->
-> This is due to the fact the virtio-iommu currently unconditionally
-> exposes an IOVA range of 64b through its config input range fields.
->
-> This series removes this assumption by retrieving the usable IOVA
-> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
-> a VFIO device is attached. This info is communicated to the
-> virtio-iommu memory region, transformed into the inversed info, ie.
-> the host reserved IOVA regions. Then those latter are combined with the
-> reserved IOVA regions set though the virtio-iommu reserved-regions
-> property. That way, the guest virtio-iommu driver, unchanged, is
-> able to probe the whole set of reserved regions and prevent any IOVA
-> belonging to those ranges from beeing used, achieving the original goal.
->
-> Best Regards
->
-> Eric
->
-> This series can be found at:
-> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v1
->
-> Eric Auger (13):
->   memory: Let ReservedRegion use Range
->   memory: Introduce memory_region_iommu_set_iova_ranges
->   vfio: Collect container iova range info
->   virtio-iommu: Rename reserved_regions into prop_resv_regions
->   virtio-iommu: Introduce per IOMMUDevice reserved regions
->   range: Introduce range_inverse_array()
->   virtio-iommu: Implement set_iova_ranges() callback
->   range: Make range_compare() public
->   util/reserved-region: Add new ReservedRegion helpers
->   virtio-iommu: Consolidate host reserved regions and property set ones
->   test: Add some tests for range and resv-mem helpers
->   virtio-iommu: Resize memory region according to the max iova info
->   vfio: Remove 64-bit IOVA address space assumption
->
->  include/exec/memory.h            |  30 ++++-
->  include/hw/vfio/vfio-common.h    |   2 +
->  include/hw/virtio/virtio-iommu.h |   7 +-
->  include/qemu/range.h             |   9 ++
->  include/qemu/reserved-region.h   |  32 +++++
->  hw/core/qdev-properties-system.c |   9 +-
->  hw/vfio/common.c                 |  70 ++++++++---
->  hw/virtio/virtio-iommu-pci.c     |   8 +-
->  hw/virtio/virtio-iommu.c         |  85 +++++++++++--
->  softmmu/memory.c                 |  15 +++
->  tests/unit/test-resv-mem.c       | 198 +++++++++++++++++++++++++++++++
->  util/range.c                     |  41 ++++++-
->  util/reserved-region.c           |  94 +++++++++++++++
->  hw/virtio/trace-events           |   1 +
->  tests/unit/meson.build           |   1 +
->  util/meson.build                 |   1 +
->  16 files changed, 562 insertions(+), 41 deletions(-)
->  create mode 100644 include/qemu/reserved-region.h
->  create mode 100644 tests/unit/test-resv-mem.c
->  create mode 100644 util/reserved-region.c
->
-> --
-> 2.41.0
->
->
+  qemu-system-arm \
+    -nographic \
+    -M ast2600-evb \
+    -kernel output/images/zImage \
+    -initrd output/images/rootfs.cpio \
+    -dtb output/images/aspeed-ast2600-evb-nmi.dtb \
+    -nic user,hostfwd=tcp::2222-:22 \
+    -device nmi-i2c,address=0x3a \
+    -serial mon:stdio
+
+From within the booted system,
+
+  mctp addr add 8 dev mctpi2c15
+  mctp link set mctpi2c15 up
+  mctp route add 9 via mctpi2c15
+  mctp neigh add 9 dev mctpi2c15 lladdr 0x3a
+  mi-mctp 1 9 info
+
+Comments are very welcome!
+
+  [1]: https://github.com/birkelund/hwtests/tree/main/br2-external
+
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+Changes in v5:
+- Added a nmi_scratch_append() that asserts available space in the
+  scratch buffer. This is a similar defensive strategy as used in
+  hw/i2c/mctp.c
+- Various small fixups in response to review (Jonathan)
+- Link to v4: https://lore.kernel.org/r/20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com
+
+---
+Klaus Jensen (3):
+      hw/i2c: add smbus pec utility function
+      hw/i2c: add mctp core
+      hw/nvme: add nvme management interface model
+
+ MAINTAINERS                   |   7 +
+ hw/arm/Kconfig                |   1 +
+ hw/i2c/Kconfig                |   4 +
+ hw/i2c/mctp.c                 | 432 ++++++++++++++++++++++++++++++++++++++++++
+ hw/i2c/meson.build            |   1 +
+ hw/i2c/smbus_master.c         |  26 +++
+ hw/i2c/trace-events           |  13 ++
+ hw/nvme/Kconfig               |   4 +
+ hw/nvme/meson.build           |   1 +
+ hw/nvme/nmi-i2c.c             | 424 +++++++++++++++++++++++++++++++++++++++++
+ hw/nvme/trace-events          |   6 +
+ include/hw/i2c/mctp.h         | 125 ++++++++++++
+ include/hw/i2c/smbus_master.h |   2 +
+ include/net/mctp.h            |  35 ++++
+ 14 files changed, 1081 insertions(+)
+---
+base-commit: 17780edd81d27fcfdb7a802efc870a99788bd2fc
+change-id: 20230822-nmi-i2c-d804ed5be7e6
+
+Best regards,
+-- 
+Klaus Jensen <k.jensen@samsung.com>
 
 
