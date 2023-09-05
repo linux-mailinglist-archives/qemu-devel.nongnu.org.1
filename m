@@ -2,71 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39781792098
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 08:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F214C79209F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 08:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdPp9-0003tD-Aw; Tue, 05 Sep 2023 02:46:07 -0400
+	id 1qdPzk-00087t-9R; Tue, 05 Sep 2023 02:57:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qdPp5-0003sF-9x
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:46:04 -0400
-Received: from mgamail.intel.com ([192.55.52.151])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdPzh-00086p-FT
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:57:01 -0400
+Received: from mailout05.t-online.de ([194.25.134.82])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qdPp1-00047m-TB
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:46:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1693896359; x=1725432359;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=O+dEPCQnL+2wSg5Nn7VYYX0xrekGwi8H664sI7YtD1g=;
- b=PV6jeR0iKsI4lVWXBJC4mybcLKqjaXpiv/MY1q2DFVYPol/DszXrCwxe
- bz+nMNJWtLgIfW5Thu3TQDGNN+ESlLKRyFqXW/i+B5nWjVkRz/FsYmzp+
- pltSm/ydD6l59Bc7shERwlj07yKSrSLrRzuyMiK1iGvAbiQa01HUrjesY
- TU0ABkZ5BY7akzY1dAsyQCBzlc/c5OJPooG8+7ZB3xIqZvO9slJBM/OnL
- 3OYnU/e3/f6yoEn6Ajzzc3pqYFKxli5rgJKgtPxaV9q5lr6GHLe8hz3uA
- 3rmWGvXFeJoGPMLpQedZ9mO6KJFNjy0knz9AteTzzhoFI3+alOUMqChJt A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="357031007"
-X-IronPort-AV: E=Sophos;i="6.02,228,1688454000"; d="scan'208";a="357031007"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2023 23:45:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="884210038"
-X-IronPort-AV: E=Sophos;i="6.02,228,1688454000"; d="scan'208";a="884210038"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga001.fm.intel.com with ESMTP; 04 Sep 2023 23:45:41 -0700
-Date: Tue, 5 Sep 2023 14:56:46 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
-Message-ID: <ZPbRLtS6Txn0a2LX@liuzhao-OptiPlex-7080>
-References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
- <663cf3d4-47ea-262d-36b3-cf826f870ef0@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdPze-0005yQ-QO
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 02:57:01 -0400
+Received: from fwd77.aul.t-online.de (fwd77.aul.t-online.de [10.223.144.103])
+ by mailout05.t-online.de (Postfix) with SMTP id AD7B1484D;
+ Tue,  5 Sep 2023 08:56:53 +0200 (CEST)
+Received: from [192.168.211.200] ([79.208.25.148]) by fwd77.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1qdPzU-2lIdwv0; Tue, 5 Sep 2023 08:56:48 +0200
+Message-ID: <217d86c3-fb74-6bae-8394-927da0d9ef0e@t-online.de>
+Date: Tue, 5 Sep 2023 08:56:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <663cf3d4-47ea-262d-36b3-cf826f870ef0@tls.msk.ru>
-Received-SPF: none client-ip=192.55.52.151;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v8 00/12] Add VIRTIO sound card
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <4b115410-9c0e-96aa-2f62-e82b7897ede5@t-online.de>
+ <0ghxq.3r60jgujq0t@linaro.org>
+From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <0ghxq.3r60jgujq0t@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1693897008-1281C931-43A80420/0/0 CLEAN NORMAL
+X-TOI-MSGID: 487fd9ef-75c3-47a3-97da-228b9be6ec77
+Received-SPF: none client-ip=194.25.134.82; envelope-from=vr_qemu@t-online.de;
+ helo=mailout05.t-online.de
+X-Spam_score_int: -40
+X-Spam_score: -4.1
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,62 +76,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+Am 04.09.23 um 12:01 schrieb Manos Pitsidianakis:
+> Hello Volker :)
+>
+> On Mon, 04 Sep 2023 10:20, Volker Rümelin <vr_qemu@t-online.de> wrote:
+>> All qemu_log_mask() format strings need a trailing \n.
+>
+> Thank you, will fix it!
+>
+>> I still hear a lot of playback dropouts. I had planned to look at the 
+>> playback code, but I didn't have the time until now.
+>>
+>> Compared to v6 audio recording has improved but there are bugs. When 
+>> I start QEMU with -audiodev 
+>> pipewire,out.frequency=48000,in.frequency=48000,id=audio0 there are 
+>> two either uninitialized or stale samples every 25ms in the recorded 
+>> audio stream.
+>>
+>> To reproduce the issue start audacity on the host and generate a 2s 
+>> square wave tone with 315Hz and an amplitude of 0.8. Use pavucontrol 
+>> to select the monitor of your host playback device as QEMU recording 
+>> device. In the guest start recording with audacity. Start playback of 
+>> the generated square wave on the host. Stop recording in the guest 
+>> and have a look at a 200ms sequence of the recorded square wave and 
+>> notice the wrong samples every 25ms.
+>
+> We've noticed this and decided to fix it in the future. I think the 
+> problem lies when PCM release is called from the guest. Quoting the spec:
+>
+>  The device MUST complete all pending I/O messages for the specified 
+>  stream ID.
+>  The device MUST NOT complete the control request while there are 
+>  pending I/O messages for the specified stream ID.
+>
+> When RELEASE is received, buffers are simply dropped. This is pure 
+> conjecture but I think creating an in-device buffer could solve this.
+> Unless the bug is found to be caused by something else, I settled on 
+> accepting it for this patch series because it is spec conformant.
+>
+>> When I start QEMU with -audiodev 
+>> pipewire,out.mixing-engine=off,in.mixing-engine=off,id=audio0 audio 
+>> recording starts but the recorded stream immediately stalls.
+>
+> Can you elaborate? Do you mean you repeat the same process as before, 
+> but the stall happens immediately? I personally rarely get any drops I 
+> could notice, only one or two for many minutes of playback / capture. 
+> I also could not reproduce exactly the same behavior you had in the 
+> previous version. The bugs *were* there but it was not as severe. 
+> Maybe it's a hardware performance issue? Can someone else test this 
+> too? It'd be helpful.
 
-On Fri, Sep 01, 2023 at 12:55:33PM +0300, Michael Tokarev wrote:
-> Date: Fri, 1 Sep 2023 12:55:33 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
-> 
-> 25.08.2023 06:36, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Hi all,
-> > 
-> > This patchset is the follow up tests of previous topology fixes in
-> > smbios [1].
-> > 
-> > In this patchset, add these test cases:
-> > 
-> > 1. Add the case to test 2 newly added topology helpers (patch 1):
-> >     * machine_topo_get_cores_per_socket()
-> >     * machine_topo_get_threads_per_socket()
-> > 
-> > 2. Add the cases in bios-tables-test.c to:
-> >     * test smbios type4 table count (patch 2-4).
-> >     * test smbios type4 core count field (patch 5-7).
-> >     * update the test of smbios type4 core count2 field (patch 8-10).
-> >     * test smbios type4 thread count (patch 11-13).
-> >     * test smbios type4 thread count2 (patch 14-16).
-> > 
-> > With the above new cases, cover all commits of [1] in test.
-> > 
-> > [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
-> 
-> Hmm.  I definitely didn't expect such a large patchset..  I asked for just
-> a small, maybe manual (from command-line) reproducer of the original issue,
-> so I can verify it is fixed before applying the change in question to qemu
-> stable trees. 
+For this test I only start QEMU with the mixing engine disabled. When I 
+start recording with audacity, audacity reports 'Recording' in the 
+status line but it actually doesn't record. The recording marker in the 
+tracks window stays a 0.
 
-Since these issues are found by coding reading, they are "byproducts" of
-other topology-related work I've been woring on, not directly identified
-by any anomaly...
+I don't think it's a hardware performance issue. Other QEMU audio 
+devices don't show this behaviour.
 
-...So I'm not quite sure what the consequences of these few misuses of
-topology fields are, and how they might manifest themselves.
+With best regards,
+Volker
 
-> It is a large work.  Lemme at least give it a try in the
-> gitlab CI...
+>
+> Thank you very much for your help,
+> Manos
 
-The test cases are the ones that clearly define the relevant topology
-issues.
-
-
-Thanks,
-Zhao
-
-> 
-> Philippe, can you pick this up for the misc tree?
-> 
-> /mjt
 
