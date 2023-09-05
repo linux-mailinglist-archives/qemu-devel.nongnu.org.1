@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5587E792F98
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 22:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B90C792FC0
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 22:16:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdcKy-0002Yx-BP; Tue, 05 Sep 2023 16:07:48 -0400
+	id 1qdcRe-0004sk-6O; Tue, 05 Sep 2023 16:14:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qdcKx-0002Yp-Db
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:07:47 -0400
-Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ (Exim 4.90_1) (envelope-from <strahinjapjankovic@gmail.com>)
+ id 1qdcRc-0004sI-M4; Tue, 05 Sep 2023 16:14:40 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qdcKv-00026Z-Bw
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:07:47 -0400
-Received: by mail-qt1-x82f.google.com with SMTP id
- d75a77b69052e-41205469f4eso1348311cf.0
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 13:07:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <strahinjapjankovic@gmail.com>)
+ id 1qdcRa-00037N-C5; Tue, 05 Sep 2023 16:14:40 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-5007c8308c3so4688279e87.0; 
+ Tue, 05 Sep 2023 13:14:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693944464; x=1694549264; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9aRAXt+ECrlaHhlCgYZb491ZS13e3fbXJXvD215Zmqc=;
- b=ARyqx0SzfuWhxt3Ahiiw5qqSr5etl0hGH1iRS0PIbY65SyBUEaeoAIJfTl3GEQgsjp
- Rq6zysNCJ4r7a8Gv2vVPRIqlv3u4oyCkVguP9KBueP2+6naFa3p84o11aji2PCoy8xfk
- RcNXQlQa6OYQNpLSghE7z/Xz3IgdmZ7NFDVx4Ydm/YezT9DHXIs0cmA7JwJk3+uqr2nO
- wkJxgCC6LCCnh56dEqXk6nK5pY/dwY2FH6KB25XOQ4VupsbPdFAV9/WUFtDsHBz3xnDv
- 8FhzoQw0FBuNkY3Y8cN2ZTGs0PfgQNjuJQEQu/lB8M1K6W92ZhjLPSSjymK02xLHV7mu
- bzjQ==
+ d=gmail.com; s=20221208; t=1693944875; x=1694549675; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8y2tTveHgptTrcnfgnWm3x/FwZdnV+E+gcbaUOc76YU=;
+ b=R0fqOLrrMcpCTielUURch/Gq4aj+ZEAjDgzg6KaNilo2oydE87F2yNLBk4QP1M9yfj
+ XqLMnV0OdScp+NcNnr7cvqw6mz9hyLISJzg/bW0OJqW2FbTm2zjC7eP2wRFCGvpZS3WW
+ kyhc6PQojkcltUwR/5x1IBU+pik0bYkZy1cHCrWSlor9f/YWyuwLw+S+Tw9ezLw/Buau
+ y9/fByG6k38WHChd23dDf7xsUnptbUCnUZDT4+wBOshL/SPOaBx3p+rs4zefHORyLuLD
+ ia7FBg+NR5hXaFPb4NMYkjU82lmsepyFbgfx23QdAlZ9ZPK+lMY+/Vozf9ZI942/nbRV
+ t8rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693944464; x=1694549264;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9aRAXt+ECrlaHhlCgYZb491ZS13e3fbXJXvD215Zmqc=;
- b=cwx76sSjdhKKKO8Rex5uLgi2DlVlo6R08D9KaN8N2Tw9d2sBzwBf9kzxXmqIiEX9CM
- mAz8unrIyvwk2Z51e97k7k2n+1x86oHEQz3UBCpv2vC3eu9iMA8pJ5PGXJqm6MBdgykX
- Y5Tm+24dHD0sBXOyf98lE8BPCXn86z3vhilzXUcwgQPZvgfIdW4+8VUVnhGAd/y7p05S
- JUkZIHVOZsZfOjakU4/ogAuXViA3RjSvxKGnjlbvq/OEg3MlOeWm6bFz8aMxndU3k47l
- FDd+IZO4WysZpZZ9Q6amtaMa4tVyT9GwK78e/e/3KTquwdD6htyjaP2qcKyhu1B/pTDQ
- BZkQ==
-X-Gm-Message-State: AOJu0Yyd5ia//62xjUgMin3fHDotZ44vQzLZtWoSkdJmr+KWyHGh2jn1
- +YeMP1U/JP3i+9fCJ7KSPZL8IXWzcKKqECn6aGM=
-X-Google-Smtp-Source: AGHT+IGiJAPPfJwW5JVliuSdhnShZhacN8Ax1l5thE2P58X74+XcPoz/SL3lbqagAYU1xOW/CEKmaj2aP3KgwK7Oduw=
-X-Received: by 2002:a05:622a:1055:b0:403:abf5:6865 with SMTP id
- f21-20020a05622a105500b00403abf56865mr20134241qte.18.1693944464044; Tue, 05
- Sep 2023 13:07:44 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693944875; x=1694549675;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8y2tTveHgptTrcnfgnWm3x/FwZdnV+E+gcbaUOc76YU=;
+ b=Wptp+dfCqDyS+lF/3Z7J9ZiZwsnSJqRYAdBT5ON3XxpncAhEg/K7GqVQ1tRz7Tm0EK
+ VSvKLpGDl9nd05sym21YpGR1DyLBF4wUbKCoS14gOm2gjRN4dXbMvvnUH1NyRbkZThWD
+ j8h4NNA+yKtFXsbIRXGuByQvSLr0/f0Ul8X04VfLtcOQXpVbr3Gal4aIq/yzNVeD1mwz
+ dZT6+oh+LLD9szPdCP06Ws7s50maF2jFGyryG+N3Z1g5yIHsiUp2IOgNU+xjn2RBD+IE
+ o/+0txTPIbcNed3xeaph3JrWWWkNDEmbu2zqL34P5oyAnjXvrsS5fu+pMH1mlpTQGiS4
+ lWJA==
+X-Gm-Message-State: AOJu0YwV6RmiexckkkNmhgSurcIXpqpVnaPTjfIEvHDfViHIELjuYIcH
+ n8qbweAPTIOc0WzBkl6tmSwjF22wd/5wPA==
+X-Google-Smtp-Source: AGHT+IFDttP+bobjvqr7HwVs1eHgP1BFUrb2lsH77Ro0oo8YMuJKSKCzq9VtoXI9RJskK1s16FAtzg==
+X-Received: by 2002:a05:6512:2212:b0:4fa:5e76:7ad4 with SMTP id
+ h18-20020a056512221200b004fa5e767ad4mr934608lfu.10.1693944875061; 
+ Tue, 05 Sep 2023 13:14:35 -0700 (PDT)
+Received: from localhost.localdomain (81-233-187-21-no600.tbcn.telia.com.
+ [81.233.187.21]) by smtp.gmail.com with ESMTPSA id
+ b25-20020ac25e99000000b004ff725d1a27sm2489811lfq.234.2023.09.05.13.14.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Sep 2023 13:14:34 -0700 (PDT)
+From: Strahinja Jankovic <strahinjapjankovic@gmail.com>
+X-Google-Original-From: Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+Subject: [RFC Patch 0/5] Allwinner A10 input/output peripherals
+Date: Tue,  5 Sep 2023 22:14:20 +0200
+Message-Id: <20230905201425.118918-1-strahinja.p.jankovic@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-66-marcandre.lureau@redhat.com>
- <cb0e2856-afdc-294b-d111-28be168eeed2@eik.bme.hu>
-In-Reply-To: <cb0e2856-afdc-294b-d111-28be168eeed2@eik.bme.hu>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 6 Sep 2023 00:07:32 +0400
-Message-ID: <CAJ+F1CLxP7-8AS-4zSNLYtNVX_ZgR1rEBHzxgmCv3oJOiNU22g@mail.gmail.com>
-Subject: Re: [PATCH 65/67] ppc/kconfig: make SAM460EX depend on PPC & PIXMAN
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=strahinjapjankovic@gmail.com; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,33 +89,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+This patch set adds minimal support for PS2 input and HDMI output for
+Allwinner A10 and Cubieboard.
 
-On Wed, Aug 30, 2023 at 4:35=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu>=
- wrote:
->
-> On Wed, 30 Aug 2023, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > SM501 is going to depend on PIXMAN next.
->
-> Why is this patch needed when SM501 is the one that depends on PIXMAN and
-> should pull in the dependency? Also what's the change in default.mak?
+For the display part, minimal emulation of HDMI, MALI GPU, Display
+Engine Backend and LCD controller is added.
 
-(see Paolo answer)
+For the PS2 both keyboard and mouse support is added and attached to the
+two PS2 contollers present in Allwinner A10.
 
-> ati-vga also uses pixman and currently has no fall back.
+Functionality has been tested with custom Yocto image.
 
-Indeed, and it is disabled not by Kconfig but by meson:
-system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true:
-files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
+This is sent as RFC for now, since there might be some use cases which
+have not been tested.
 
 
-> The sm501 already
-> has fallback when pixman fails so could work without pixman too, see
-> x-pixman property in sm501.c.
+Strahinja Jankovic (5):
+  hw/display: Allwinner A10 HDMI controller emulation
+  hw/display: Allwinner basic MALI GPU emulation
+  hw/display: Allwinner A10 Display Engine Backend emulation
+  hw/display: Allwinner A10 LCDC emulation
+  hw/input: Add Allwinner-A10 PS2 emulation
 
-Correct, I have changed it to conditionally compile x-pixman related code.
+ hw/arm/allwinner-a10.c                  |  51 ++++
+ hw/display/allwinner-a10-debe.c         | 229 ++++++++++++++++
+ hw/display/allwinner-a10-hdmi.c         | 214 +++++++++++++++
+ hw/display/allwinner-a10-lcdc.c         | 275 +++++++++++++++++++
+ hw/display/allwinner-gpu.c              | 212 +++++++++++++++
+ hw/display/meson.build                  |   5 +
+ hw/display/trace-events                 |  17 ++
+ hw/input/allwinner-a10-ps2.c            | 345 ++++++++++++++++++++++++
+ hw/input/meson.build                    |   2 +
+ include/hw/arm/allwinner-a10.h          |  11 +
+ include/hw/display/allwinner-a10-debe.h |  71 +++++
+ include/hw/display/allwinner-a10-hdmi.h |  69 +++++
+ include/hw/display/allwinner-a10-lcdc.h |  77 ++++++
+ include/hw/display/allwinner-gpu.h      |  64 +++++
+ include/hw/input/allwinner-a10-ps2.h    |  96 +++++++
+ 15 files changed, 1738 insertions(+)
+ create mode 100644 hw/display/allwinner-a10-debe.c
+ create mode 100644 hw/display/allwinner-a10-hdmi.c
+ create mode 100644 hw/display/allwinner-a10-lcdc.c
+ create mode 100644 hw/display/allwinner-gpu.c
+ create mode 100644 hw/input/allwinner-a10-ps2.c
+ create mode 100644 include/hw/display/allwinner-a10-debe.h
+ create mode 100644 include/hw/display/allwinner-a10-hdmi.h
+ create mode 100644 include/hw/display/allwinner-a10-lcdc.h
+ create mode 100644 include/hw/display/allwinner-gpu.h
+ create mode 100644 include/hw/input/allwinner-a10-ps2.h
 
-thanks
+-- 
+2.34.1
+
 
