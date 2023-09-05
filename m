@@ -2,104 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CAE79215F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE249792161
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdSC9-0004KZ-HN; Tue, 05 Sep 2023 05:18:01 -0400
+	id 1qdSDU-0005bp-Ch; Tue, 05 Sep 2023 05:19:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qdSBs-0004IT-TK
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:17:46 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qdSBp-0004vh-1I
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:17:44 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c34c9cc9b9so4390655ad.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693905458; x=1694510258;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XO2+yXar5HP/Nvv10RVpzWvUXgBqEg4olN/cjiB+X1I=;
- b=J72OxGy2NdrX7LgUQerfgxvEz3IN/TiLqWoQWhm0Fz0xhRyREeqOo1Rbjwgk7ZzWPi
- CxcqK5ghbFOY8g4V0XLdh9vLPyATXnQGPbzBuEmtJFWrofrsdMJiIbUf2n+VKt7CdPqA
- bNol81nGFI7p1Z/RO7IYbfxf9JPeWH+A+KttkusSXKKu++sigjDH3QlU9AClLpITzJbt
- WBNBBdqIqc9f5HwftSoywUg2xoxwNUUJqea63hxYGmpTptKi3ViQzrb0vjJe57jqL8hu
- 3yoKgA+qCUcEY3aMBA2fC6Gaah5va5D1DrezwOQnm7vBp4KhXsJLrE+7a0pj9LN4s7+D
- 7nwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693905458; x=1694510258;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XO2+yXar5HP/Nvv10RVpzWvUXgBqEg4olN/cjiB+X1I=;
- b=BEZtx/aFejSGjf5uJboc1z5gdBkHz2ijJ9RsXH/Y01j8ytsPduAvUj2Jo2teVmcP6y
- +HbI3KfLm1bEDeng2hGN2Y/Q5r6D3CeG3i+TtSfFTzndO/1SZd4aHmCZFsbZOlL4Jmt0
- 8hUh4Db8/styQuFyLqa+EH7tsipHYlD80QDAW1pbpy3JRFuCmnWw3zNCuqg8E4rUIo0p
- Z+sphP6YjwnKRRbNH9FTvqqZ1e2ZVXqZx+AHDq/3n+u53DAHRhdPk6Kvnr+GHWdpR32G
- 3t18s1xECLwgi1WcLVUtaxmiUB0kz7cDkonaB/5+JEnYebA1mjpnvss2uTt4COEznbWx
- lWkQ==
-X-Gm-Message-State: AOJu0Yyhp9qlrdalKQ3TmbdF085ciLK/K3GEnQpcZQckRWk8Xsxy3noE
- i5e2mO2ZIimaOz6nhYj3Agbjtg==
-X-Google-Smtp-Source: AGHT+IHmdsTj3NWf+kJXTqNa0KpZXSsejtq0BJ85YRdCU9SkqxFyfpvDRx0WQ9z097JuwTP/N0j0PA==
-X-Received: by 2002:a17:903:228a:b0:1bd:a22a:d40a with SMTP id
- b10-20020a170903228a00b001bda22ad40amr12216472plh.2.1693905458526; 
- Tue, 05 Sep 2023 02:17:38 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
- by smtp.gmail.com with ESMTPSA id
- d10-20020a170902654a00b001bde877a7casm8982684pln.264.2023.09.05.02.17.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 02:17:38 -0700 (PDT)
-Message-ID: <2ec5929b-eb79-4848-8ab4-517c89f6b476@daynix.com>
-Date: Tue, 5 Sep 2023 18:17:32 +0900
+ (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
+ id 1qdSDS-0005bd-I2
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:19:22 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
+ id 1qdSDP-0005Ov-Vt
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:19:22 -0400
+Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rg0Lj2lNNz6FH7y;
+ Tue,  5 Sep 2023 17:19:09 +0800 (CST)
+Received: from DESKTOP-0LHM7NF.huawei.com (10.199.58.101) by
+ lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 5 Sep 2023 10:19:12 +0100
+To: <qemu-devel@nongnu.org>
+CC: <yong.huang@smartx.com>, <quintela@redhat.com>, <peterx@redhat.com>,
+ <leobras@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>, Andrei Gudkov
+ <gudkov.andrei@huawei.com>
+Subject: [PATCH] migration/dirtyrate: use QEMU_CLOCK_HOST to report start-time
+Date: Tue, 5 Sep 2023 12:18:39 +0300
+Message-ID: <399861531e3b24a1ecea2ba453fb2c3d129fb03a.1693905328.git.gudkov.andrei@huawei.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v4 07/13] softmmu/memory: enable automatic
- deallocation of memory regions
-Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-8-ray.huang@amd.com>
- <b988f9d4-69d7-4cc4-b13e-3e697acf9fe9@daynix.com> <ZPbvyDsikvvzierv@amd.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ZPbvyDsikvvzierv@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.58.101]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ lhrpeml500004.china.huawei.com (7.191.163.9)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,94 +60,119 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Andrei Gudkov <gudkov.andrei@huawei.com>
+From:  Andrei Gudkov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/05 18:07, Huang Rui wrote:
-> On Thu, Aug 31, 2023 at 06:10:08PM +0800, Akihiko Odaki wrote:
->> On 2023/08/31 18:32, Huang Rui wrote:
->>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->>>
->>> When the memory region has a different life-cycle from that of her parent,
->>> could be automatically released, once has been unparent and once all of her
->>> references have gone away, via the object's free callback.
->>>
->>> However, currently, references to the memory region are held by its owner
->>> without first incrementing the memory region object's reference count.
->>> As a result, the automatic deallocation of the object, not taking into
->>> account those references, results in use-after-free memory corruption.
->>>
->>> This patch increases the reference count of the memory region object on
->>> each memory_region_ref() and decreases it on each memory_region_unref().
->>>
->>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->>> Signed-off-by: Huang Rui <ray.huang@amd.com>
->>> ---
->>>
->>> New patch
->>>
->>>    softmmu/memory.c | 19 +++++++++++++++++--
->>>    1 file changed, 17 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/softmmu/memory.c b/softmmu/memory.c
->>> index 7d9494ce70..0fdd5eebf9 100644
->>> --- a/softmmu/memory.c
->>> +++ b/softmmu/memory.c
->>> @@ -1797,6 +1797,15 @@ Object *memory_region_owner(MemoryRegion *mr)
->>>    
->>>    void memory_region_ref(MemoryRegion *mr)
->>>    {
->>> +    if (!mr) {
->>> +        return;
->>> +    }
->>> +
->>> +    /* Obtain a reference to prevent the memory region object
->>> +     * from being released under our feet.
->>> +     */
->>> +    object_ref(OBJECT(mr));
->>> +
->>>        /* MMIO callbacks most likely will access data that belongs
->>>         * to the owner, hence the need to ref/unref the owner whenever
->>>         * the memory region is in use.
->>> @@ -1807,16 +1816,22 @@ void memory_region_ref(MemoryRegion *mr)
->>>         * Memory regions without an owner are supposed to never go away;
->>>         * we do not ref/unref them because it slows down DMA sensibly.
->>>         */
->>
->> The collapsed comment says:
->>   > The memory region is a child of its owner.  As long as the
->>   > owner doesn't call unparent itself on the memory region,
->>   > ref-ing the owner will also keep the memory region alive.
->>   > Memory regions without an owner are supposed to never go away;
->>   > we do not ref/unref them because it slows down DMA sensibly.
->>
->> It contradicts with this patch.
-> 
-> The reason that we modify it is because we would like to address the memory
-> leak issue in the original codes. Please see below, we find the memory
-> region will be crashed once we free(unref) the simple resource, because the
-> region will be freed in object_finalize() after unparent and the ref count
-> is to 0. Then the VM will be crashed with this.
-> 
-> In virgl_cmd_resource_map_blob():
->      memory_region_init_ram_device_ptr(res->region, OBJECT(g), NULL, size, data);
->      OBJECT(res->region)->free = g_free;
->      memory_region_add_subregion(&b->hostmem, mblob.offset, res->region);
->      memory_region_set_enabled(res->region, true);
-> 
-> In virtio_gpu_virgl_resource_unmap():
->      memory_region_set_enabled(res->region, false);
->      memory_region_del_subregion(&b->hostmem, res->region);
->      object_unparent(OBJECT(res->region));
->      res->region = NULL;
-> 
-> I spent a bit more time to understand your point, do you want me to update
-> corresponding comments or you have some concern about this change?
+Currently query-dirty-rate uses QEMU_CLOCK_REALTIME as
+the source for start-time field. This translates to
+clock_gettime(CLOCK_MONOTONIC), i.e. number of seconds
+since host boot. This is not very useful. The only
+reasonable use case of start-time I can imagine is to
+check whether previously completed measurements are
+too old or not. But this makes sense only if start-time
+is reported as host wall-clock time.
 
-As the comment says ref-ing memory regions without an owner will slow 
-down DMA, you should avoid that. More concretely, you should check 
-mr->owner before doing object_ref(OBJECT(mr)).
+This patch replaces source of start-time from
+QEMU_CLOCK_REALTIME to QEMU_CLOCK_HOST.
 
-Regards,
-Akihiko Odaki
+Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
+---
+ qapi/migration.json   |  4 ++--
+ migration/dirtyrate.c | 15 ++++++---------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8843e74b59..63deb8e387 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1941,12 +1941,12 @@
+ # 1. Measurement is in progress:
+ #
+ # <- {"status": "measuring", "sample-pages": 512,
+-#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
++#     "mode": "page-sampling", "start-time": 1693900454, "calc-time": 10}
+ #
+ # 2. Measurement has been completed:
+ #
+ # <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
+-#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
++#     "mode": "page-sampling", "start-time": 1693900454, "calc-time": 10}
+ ##
+ { 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
+ 
+diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+index bccb3515e3..0510d68765 100644
+--- a/migration/dirtyrate.c
++++ b/migration/dirtyrate.c
+@@ -259,11 +259,10 @@ static struct DirtyRateInfo *query_dirty_rate_info(void)
+     return info;
+ }
+ 
+-static void init_dirtyrate_stat(int64_t start_time,
+-                                struct DirtyRateConfig config)
++static void init_dirtyrate_stat(struct DirtyRateConfig config)
+ {
+     DirtyStat.dirty_rate = -1;
+-    DirtyStat.start_time = start_time;
++    DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+     DirtyStat.calc_time = config.sample_period_seconds;
+     DirtyStat.sample_pages = config.sample_pages_per_gigabytes;
+ 
+@@ -600,7 +599,7 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
+     record_dirtypages_bitmap(&dirty_pages, true);
+ 
+     start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+-    DirtyStat.start_time = start_time / 1000;
++    DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+ 
+     msec = config.sample_period_seconds * 1000;
+     msec = dirty_stat_wait(msec, start_time);
+@@ -628,7 +627,7 @@ static void calculate_dirtyrate_dirty_ring(struct DirtyRateConfig config)
+     /* start log sync */
+     global_dirty_log_change(GLOBAL_DIRTY_DIRTY_RATE, true);
+ 
+-    DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 1000;
++    DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+ 
+     /* calculate vcpu dirtyrate */
+     duration = vcpu_calculate_dirtyrate(config.sample_period_seconds * 1000,
+@@ -657,6 +656,7 @@ static void calculate_dirtyrate_sample_vm(struct DirtyRateConfig config)
+ 
+     rcu_read_lock();
+     initial_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+     if (!record_ramblock_hash_info(&block_dinfo, config, &block_count)) {
+         goto out;
+     }
+@@ -664,7 +664,6 @@ static void calculate_dirtyrate_sample_vm(struct DirtyRateConfig config)
+ 
+     msec = config.sample_period_seconds * 1000;
+     msec = dirty_stat_wait(msec, initial_time);
+-    DirtyStat.start_time = initial_time / 1000;
+     DirtyStat.calc_time = msec / 1000;
+ 
+     rcu_read_lock();
+@@ -727,7 +726,6 @@ void qmp_calc_dirty_rate(int64_t calc_time,
+     static struct DirtyRateConfig config;
+     QemuThread thread;
+     int ret;
+-    int64_t start_time;
+ 
+     /*
+      * If the dirty rate is already being measured, don't attempt to start.
+@@ -799,8 +797,7 @@ void qmp_calc_dirty_rate(int64_t calc_time,
+      **/
+     dirtyrate_mode = mode;
+ 
+-    start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 1000;
+-    init_dirtyrate_stat(start_time, config);
++    init_dirtyrate_stat(config);
+ 
+     qemu_thread_create(&thread, "get_dirtyrate", get_dirtyrate_thread,
+                        (void *)&config, QEMU_THREAD_DETACHED);
+-- 
+2.30.2
+
 
