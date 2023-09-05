@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870E9792289
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 14:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CC479228D
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 14:23:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdV4b-0003XG-04; Tue, 05 Sep 2023 08:22:25 -0400
+	id 1qdV4a-0003XU-WD; Tue, 05 Sep 2023 08:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdV40-0003Kc-Jp
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:21:50 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdV46-0003Ph-0V
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:21:56 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdV3y-0000n7-G7
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:21:48 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2bd0bc8b429so40691671fa.2
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 05:21:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdV43-0000ow-KR
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:21:53 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2b974031aeaso39986071fa.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 05:21:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693916504; x=1694521304; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vo1aRaoDGIJk9TkLkiwceh/LZhlV95aaWzCdG9GKBDU=;
- b=oHbVlAYfvg15mzg/brfOPiddiEB8dVQU2AFF4StMLykirdeluSnvpq55jxiDUsP4DN
- DyODNI2rJ+BoEDvETxGj6A7C1Y6wcGwLkFK2D1cGnw69JBk/3gyVkgW/gkTYqBadTfDR
- MOnO0qxIsOSQxBHKe5ZORQL2Le9uTt6K/+qIcYIdXdp5Etj96S/rPmF6E7+Bjk/kwFlQ
- YuxiY/vxF1w137EhOW1DNF/h6VzHcfe1o4Z96NjQf3FCWX20oAcpWoFAgfZ3MlfnKuYF
- vwZHaZaOhlVXr4P+r24vrvQMPvJna6OVdy7Zzc7p+vQaJZQjsrHRjcptfmYp/z/c2GNe
- g0wQ==
+ d=linaro.org; s=google; t=1693916509; x=1694521309; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fom2vgYtrw2N7/lqmr4BnBWCA2ps570z0kqcY4sB1MA=;
+ b=cHDpqXUPyr+Q5wrDdjumlIBWyv18b1CTKyLENihgkQNWEeFsAydztskW5r/vmOeyPk
+ qZiVwwuY8I5l0OxGkslhg3iQkoSPzNOQgkv1VsDvB+1r2+W6c6NhvkA6e/Edlig+1R1W
+ OdSaWCvHVaeBSJ+qnaT/fjzLI3rfGiZPt36JQIt9fj0Z4QBIWzWf1mht8FHuS3ExZHvr
+ Vxtkvvhqgp8dvcoRYYGK0m6dFKdFrIxXE9VyNgX2hi8zHRSyr6zZzCgbmI3NHi2RTtlg
+ amfObPcHkK9x0ZUhU+Bi2fP68Ma44HsdHSY4gXuXJymhp2CUaBc9OUONMAjLx8BP4u3h
+ VQUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693916504; x=1694521304;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vo1aRaoDGIJk9TkLkiwceh/LZhlV95aaWzCdG9GKBDU=;
- b=a2ObDEprjz7g6Roo3wNA7iRyLnomlbSu3R+/5kC1sh8I+iXu+n3Z5LQfQVAbLhRxZv
- HcPfcwxbehZcjJnCIiDYcRNlGwKJPO8mOe3j+c9hbenP/VW600A/ZKPvZQizeKTL4jq0
- 2Zc7H/kWzmsH8+ol4/fgZbkTV8uWV7vYFzvpxnQgsx0totzF99FXI0DsNGUQ7CBqJ5iU
- l+JWNuXG4srza24m9xHDv8Akoqq4vHTf/THsuVOgmawAp540U5zvbU/lxDyrivkK/IM8
- TjjrwCK+ZpqrAKige6H5uGDnnuRFIu79m5A/tN+HWhwoWBm0NH9+5jf6JuX+1iv/hA4L
- bQhA==
-X-Gm-Message-State: AOJu0Yz59KAMt1nmrimQXGtRVKxCz1d56T8A8xgsWKRTjje+YECeBGhy
- P86k+ajGX6CpcFz/yeoMCnRFLUvkwPwoekqer68=
-X-Google-Smtp-Source: AGHT+IGHceR0DxOo08btZrf4dHcOI+V5se4WRpPBquf7QOLcWBYqYSVeTEjv9tLfnWmKk2ZrPPRgjg==
-X-Received: by 2002:a2e:9c06:0:b0:2bc:b8f5:aaf1 with SMTP id
- s6-20020a2e9c06000000b002bcb8f5aaf1mr8949290lji.35.1693916504432; 
- Tue, 05 Sep 2023 05:21:44 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693916509; x=1694521309;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fom2vgYtrw2N7/lqmr4BnBWCA2ps570z0kqcY4sB1MA=;
+ b=hPKF2Hn22fdOmOtNNw201Iv1uLImEddw1FVAS3HX7VBdB6YPu0q++QAQYAejnReFtc
+ nMLa/sZeq1MffQH/KcwzkdfSqdhKWS+QrYnj5zxG4VypiK/ueM3EtcZoepJBhCED86Lw
+ 8uTU1T5Ar5tZEiKcOOMvfdNN+7CUDzjykz0fRtlGnTri/YvW76wlWRsFtRnUaXTo5bOo
+ tZEJtx5vIZ0lQkm7Abqj9RUJ5YHF+h7wrEfsrx38Fd67cBKVnEkPqL+D/TtRGloxYXcl
+ 9WtCS4FjCY0Ze7rkGt79i3Xht2fRiOmAbz8d/iOSMbBXYY/ojbKeh26rPoRA2GOcyKQQ
+ snrQ==
+X-Gm-Message-State: AOJu0YzDQIxFoa8NlgS/N8c8xwa5kV3XIpVqNH+f+k/UQq8xU+zEsVTb
+ y0uiElIUsZKmVrpafnFlzAV95qymKzBTj52d3qE=
+X-Google-Smtp-Source: AGHT+IGMdsgf/s9WMe8CesBc8Ve0lvCwfg45DPh1IToTH7tHvHwDiyDho3ZmRnkrYkRDDX1PPf9pqQ==
+X-Received: by 2002:a2e:b045:0:b0:2bc:df55:eec7 with SMTP id
+ d5-20020a2eb045000000b002bcdf55eec7mr9131145ljl.40.1693916509654; 
+ Tue, 05 Sep 2023 05:21:49 -0700 (PDT)
 Received: from localhost.localdomain ([37.69.27.38])
  by smtp.gmail.com with ESMTPSA id
- c20-20020a7bc854000000b003feef5b0bb7sm16637862wml.40.2023.09.05.05.21.43
+ j22-20020a05600c1c1600b00402be2666bcsm12497901wms.6.2023.09.05.05.21.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Sep 2023 05:21:44 -0700 (PDT)
+ Tue, 05 Sep 2023 05:21:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
  xen-devel@lists.xenproject.org, Anthony Perard <anthony.perard@citrix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/3] sysemu/accel: Simplify sysemu/xen.h
-Date: Tue,  5 Sep 2023 14:21:39 +0200
-Message-ID: <20230905122142.5939-1-philmd@linaro.org>
+Subject: [PATCH 1/3] sysemu/xen: Remove unuseful CONFIG_USER_ONLY header guard
+Date: Tue,  5 Sep 2023 14:21:40 +0200
+Message-ID: <20230905122142.5939-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230905122142.5939-1-philmd@linaro.org>
+References: <20230905122142.5939-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,17 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trivial cleanups which simplify "sysemu/xen.h".
+In commit da278d58a0 ("accel: Move Xen accelerator code under
+accel/xen/") we used include/sysemu/kvm.h as a template for
+include/sysemu/xen.h, using the CONFIG_USER_ONLY header guard.
+In retrospective, it is not used / useful, so remove it.
 
-Philippe Mathieu-Daudé (3):
-  sysemu/xen: Remove unuseful CONFIG_USER_ONLY header guard
-  sysemu/xen: Remove unreachable xen_ram_alloc() code
-  sysemu/xen: Allow elision of xen_hvm_modified_memory()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/sysemu/xen.h | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
- include/exec/ram_addr.h |  8 ++++++--
- include/sysemu/xen.h    | 24 +++---------------------
- 2 files changed, 9 insertions(+), 23 deletions(-)
-
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index bc13ad5692..9b2d0b21ff 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -26,16 +26,14 @@ extern bool xen_allowed;
+ 
+ #define xen_enabled()           (xen_allowed)
+ 
+-#ifndef CONFIG_USER_ONLY
+ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length);
+ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+                    struct MemoryRegion *mr, Error **errp);
+-#endif
+ 
+ #else /* !CONFIG_XEN_IS_POSSIBLE */
+ 
+ #define xen_enabled() 0
+-#ifndef CONFIG_USER_ONLY
++
+ static inline void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
+ {
+     /* nothing */
+@@ -45,7 +43,6 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+ {
+     g_assert_not_reached();
+ }
+-#endif
+ 
+ #endif /* CONFIG_XEN_IS_POSSIBLE */
+ 
 -- 
 2.41.0
 
