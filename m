@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39C67923CC
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 17:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCE57923D1
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 17:12:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdXgI-0001t4-6B; Tue, 05 Sep 2023 11:09:30 -0400
+	id 1qdXj6-0004YX-09; Tue, 05 Sep 2023 11:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdXgD-0001qe-Pg
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:09:25 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdXj4-0004YN-8j
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:12:22 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdXgB-00005G-Ht
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:09:25 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9a2a4a5472dso753602166b.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 08:09:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdXj1-0000bM-QC
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:12:22 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2ba1e9b1fa9so42995531fa.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 08:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693926561; x=1694531361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693926738; x=1694531538; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vkAxuP5OyfvLfdtuBcobTOfxLs5IK+p1+Txl4Ty5Xqc=;
- b=vJOYf7mbw6sn4CHoBZc6PbJ9kga6iupKSe5WFSix892o7hlUp2kqhdvQeell7AiYV8
- MQoUa7SlLo8oYuHqPaG2Y2YYos1RcpHnUaRWsjq63y4k8YIuJYyaiJ7O8GkIRDFPNoGN
- URbKbJiBTkfbMSjzaemYEzBVbnZnSBCjgK/LZr347vlAptAdd1mJknWHnKlD9wdPOIzY
- 23gQKIoOcJafBwnQzRPYzBbQx9oyf4n0S0ip3G+hvxWOce+CuHyvGohdnUQbReRNmPa7
- KfepX9DKeVh44t1hH3weqcqBX5XeDee1It0cCqZtU9XLW8uzbUcUk8I5RZD/4o1lNDRF
- sgPg==
+ bh=h39soRfdAayIxxTx5C264UCtstamu32pHt1DXWWWyng=;
+ b=KNufGV5KVhGGeSCzjChnLmLgzTEx/5hicN2wzEIgPDSGwLD/tfoh+6FKnwEHQX6eeR
+ W2gIk5yd+Lb9Zqra96mHoPmpVY92vD3mfJ8zrc849oLfa5PJ4ifwbKUk1D9cQareOTln
+ leIoqBPEFLe6CNoh/Xf5gs1xqwuJ1bF9lJrjILgKKw8j1QRexf83/KNJQNs8P1w6/0ml
+ nK9GEzFS+SixmVi9QJUvy7QTH6RxsFg6uNhMsQyRkwGF9FlfTysJD+J1INlyqN4pAF+I
+ PFYWZm3wcU4xCxPRTGUKNQ121P5yBHNd5t9tj+q3C4NMynT5j3UCl3oN+43gFsRIC4IQ
+ K2YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693926561; x=1694531361;
+ d=1e100.net; s=20221208; t=1693926738; x=1694531538;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vkAxuP5OyfvLfdtuBcobTOfxLs5IK+p1+Txl4Ty5Xqc=;
- b=PcmDS4ofqZV8znAbApoLtSfyyutvvqmeSFiX1R6zrZtvzqUpY9O7y/O1XEAlMrYNZu
- syAuhbEydNqP8hECUBImtaEYSitjVL2YBG7Z9xHUjkDLv3TDIKw9eQSSdEuEAaqhppDI
- pD/0OC577OcioMgbAgNLzbK/xDuTO5CJirwG6CVa0a12OvzPW6FkCpSjOp7s2QLYiuxE
- lXf2GLDKN5LuKSaixUZw/Qosj3Oh2IWPzO/drtazwYF6b0L1CnFHiSUIJq48cGq+e7Lp
- WCt5Ysm6LUkrqEsknTcvZhxGQuQP2LKOsUvVFc+IYFWbZQH9i9crm08sZRq1tyDFhHAW
- 4+bw==
-X-Gm-Message-State: AOJu0Yy5HbDq58Jef5cIWFzrRo8LRp63Yr8dHBqaVa0jFk1iURD5khC5
- zD77urv13tq9W0cq23W9A4T5Uw==
-X-Google-Smtp-Source: AGHT+IHm2e0TQ+z6IZuP5nqpTBNS5LQC410CoJBfaZbpDRAtaMdKGJPNt4OXntbTDVbbMBTCvHTJnA==
-X-Received: by 2002:a17:907:72d5:b0:9a5:7d34:e68a with SMTP id
- du21-20020a17090772d500b009a57d34e68amr86240ejc.28.1693926560863; 
- Tue, 05 Sep 2023 08:09:20 -0700 (PDT)
+ bh=h39soRfdAayIxxTx5C264UCtstamu32pHt1DXWWWyng=;
+ b=OS4WqkuSlpcUkVg6gp6csrBPAYwQWxfabfnaVopzxFl/qUiWLvrZ0RCNmJWQ1uyp/B
+ FxrAJ67g1ZQbJQ39v/uYmWx2cLLiEm8KIa4qhN+3xj/5W/hfu3D/jWDfX4Wl7FSfXpf/
+ 1VDTqa/gffVUY/g5OKR/pABw+Bp/bNHwXmKwLmqZYavUXSWYWHoKQ/fs37WPUPEW/c0n
+ 2TeG4cNjM2TjPaJ5d60mabBhPJt3Aajhd48N8ODdeARO0GZ7dK+DkwvdfatlbGrb2fy+
+ wZjaJ1CuzZgNIPoJBO+Ly5rz+XBnhX2nuUvWUXntvbwLNa1+Q5E/4V5H5ZDSAO56rKRO
+ 9a5Q==
+X-Gm-Message-State: AOJu0Ywxbl7V/V2M+4VsyoyqKTWyg+dtSVLX91t3Q3JebpSP5Wcd9tvs
+ xoFM0QUKRpxDCwOxl5Bu7YUfmGKYqTRp7nrydYY=
+X-Google-Smtp-Source: AGHT+IEzYrHeqLtUk6g5z/hKgzv2MgiHYaTDG0q8+MvMTL7LYuU0KMcX94lzB11Im0uQW0CiHdvGDQ==
+X-Received: by 2002:a2e:b0e7:0:b0:2bc:c557:84a0 with SMTP id
+ h7-20020a2eb0e7000000b002bcc55784a0mr36507ljl.30.1693926737830; 
+ Tue, 05 Sep 2023 08:12:17 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
  [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
- v26-20020a170906489a00b0099cc36c4681sm7665759ejq.157.2023.09.05.08.09.19
+ v12-20020a05600c214c00b003fbe791a0e8sm17273292wml.0.2023.09.05.08.12.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 08:09:20 -0700 (PDT)
-Message-ID: <0d882c9c-a95c-3c0b-8e95-da729ad16b32@linaro.org>
-Date: Tue, 5 Sep 2023 17:09:18 +0200
+ Tue, 05 Sep 2023 08:12:17 -0700 (PDT)
+Message-ID: <d35f5c16-e75c-fc7f-57cb-c6f7a5e696fc@linaro.org>
+Date: Tue, 5 Sep 2023 17:12:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: PCI Hotplug ACPI device names only 3 characters long
+Subject: Re: mips system emulation failure with virtio
 Content-Language: en-US
-To: Marcello Sylverster Bauer <sylv@sylv.io>, qemu-devel@nongnu.org
-Cc: mst@redhat.com, imammedo@redhat.com, ani@anisinha.ca,
- Patrick Rudolph <patrick.rudolph@9elements.com>
-References: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <4f2a4b734b20b80857d56af986335f78a92a0fff.camel@linuxfoundation.org>
+ <87pm2whfyn.fsf@linaro.org>
+ <0cbd86af5501f18007a926598c6e2232af240d00.camel@linuxfoundation.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
+In-Reply-To: <0cbd86af5501f18007a926598c6e2232af240d00.camel@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -93,46 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marcello,
+Hi Richard,
 
-On 5/9/23 17:05, Marcello Sylverster Bauer wrote:
-> Greetings,
-> 
-> I'm currently working on a project to support Intel IPU6 in QEMU via 
-> VFIO so that the guest system can access the camera. This requires 
-> extending the ACPI device definition so that the guest knows how to 
-> access the camera.
-> 
-> However, I cannot extend the PCI devices because their names are not 4 
-> characters long and therefore do not follow the ACPI specification.
-> 
-> When I use '-acpitable' to include my own SSDT for the IPU6 PCI device, 
-> it does not allow me to declare the device as an External Object because 
-> it automatically adds padding underscores.
-> 
-> e.g.
-> Before:
-> ```
-> External(_SB.PCI0.S18.SA0, DeviceObj)
-> ```
-> After:
-> ```
-> External(_SB.PCI0.S18_.SA0_, DeviceObj)
-> ```
+On 5/9/23 16:50, Richard Purdie wrote:
+> On Tue, 2023-09-05 at 14:59 +0100, Alex Bennée wrote:
+>> Richard Purdie <richard.purdie@linuxfoundation.org> writes:
+>>
+>>> With qemu 8.1.0 we see boot hangs fox x86-64 targets.
+>>>
+>>> These are fixed by 0d58c660689f6da1e3feff8a997014003d928b3b (softmmu:
+>>> Use async_run_on_cpu in tcg_commit) but if I add that commit, mips and
+>>> mips64 break, hanging at boot unable to find a rootfs.
 
-What do you mean by "before" / "after"?
+Are you testing mipsel / mips64el?
 
-> Adding the underscore padding is hard coded in iASL and also in QEMU 
-> when parsing an ASL file. (see: build_append_nameseg())
-> 
-> So here are my questions:
-> 1. Is there a solution to extend the ACPI PCI device using '-acpitable' 
-> without having to patch iASL or QEMU?
-> 2. Are there any plans to change the names to comply with the ACPI spec? 
-> (e.g. use "S%.03X" format string instead)
-> 
-> Thanks
-> Marcello
-> 
+>>> We use virtio for network and disk and both of those change in the
+>>> bootlog from messages like:
+>>>
+>>> [    1.726118] virtio-pci 0000:00:13.0: enabling device (0000 -> 0003)
+>>> [    1.728864] virtio-pci 0000:00:14.0: enabling device (0000 -> 0003)
+>>> [    1.729948] virtio-pci 0000:00:15.0: enabling device (0000 -> 0003)
+>>> ...
+>>> [    2.162148] virtio_blk virtio2: 1/0/0 default/read/poll queues
+>>> [    2.168311] virtio_blk virtio2: [vda] 1184242 512-byte logical
+>>>
+>>> to:
+>>>
+>>> [    1.777051] virtio-pci 0000:00:13.0: enabling device (0000 -> 0003)
+>>> [    1.779822] virtio-pci 0000:00:14.0: enabling device (0000 -> 0003)
+>>> [    1.780926] virtio-pci 0000:00:15.0: enabling device (0000 -> 0003)
+>>> ...
+>>> [    1.894852] virtio_rng: probe of virtio1 failed with error -28
+>>> ...
+>>> [    2.063553] virtio_blk virtio2: 1/0/0 default/read/poll queues
+>>> [    2.064260] virtio_blk: probe of virtio2 failed with error -28
+>>> [    2.069080] virtio_net: probe of virtio0 failed with error -28
+>>>
+>>>
+>>> i.e. the virtio drivers no longer work.
+>>
+>> Interesting, as you say this seems to be VirtIO specific as the baseline
+>> tests (using IDE) work fine:
+>>
+>>    ➜  ./tests/venv/bin/avocado run ./tests/avocado/tuxrun_baselines.py:test_mips64
+>>    JOB ID     : 71f3e3b7080164b78ef1c8c1bb6bc880932d8c9b
+>>    JOB LOG    : /home/alex/avocado/job-results/job-2023-09-05T15.01-71f3e3b/job.log
+>>     (1/2) ./tests/avocado/tuxrun_baselines.py:TuxRunBaselineTest.test_mips64: PASS (12.19 s)
+>>     (2/2) ./tests/avocado/tuxrun_baselines.py:TuxRunBaselineTest.test_mips64el: PASS (11.78 s)
+>>    RESULTS    : PASS 2 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+>>    JOB TIME   : 24.79 s
+>>
+>>> I tested with current qemu master
+>>> (17780edd81d27fcfdb7a802efc870a99788bd2fc) and mips is still broken
+>>> there.
 
 
