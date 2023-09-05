@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD9579295E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB2A7929B8
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:57:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdZGE-00018N-FN; Tue, 05 Sep 2023 12:50:42 -0400
+	id 1qdZKw-00034H-M2; Tue, 05 Sep 2023 12:55:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZGC-00017I-D5
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:50:40 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZKt-00033X-IS
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:55:31 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZGA-0003x9-4d
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:50:40 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-50091b91a83so4540399e87.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:50:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZKp-0004ac-JB
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:55:31 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-99c136ee106so420840166b.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:55:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693932636; x=1694537436; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693932925; x=1694537725; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Xyx8dhvICNG2imFMfltLdNZeGf7fNxfpF2tddSVvQxY=;
- b=BDdbOZYL8fDyqLQAO7JjfwI2rWxi2D0403MRfGAfpJcQGVQR/HRwZXfoXQfB3odiqe
- 8VqnX2mlv5b0YnjhwabsYdC9nTTc3CxMN0zcX040+v3icxZ8hH6lf6ep2RQLqrQZV8as
- l4Y1xWc3lsn9+OkkC3CS3/NEtJOoYOJsxPgSNbQpSG/1htrZ7a+7fb4tgHqst8+6O/OD
- yoDTI6+GKjuTejQPFHpwoBZmcM3+pOpqvKZXgR7E7hbwPV3Gl0Wu3766fIn20JZFisY/
- T7uLcqtpU+lAB0v/CiHh63o5eXlxZ0y8owug04H1NmLUWP6Rkw8m6Y87TRcxYcTjNRJI
- IyPw==
+ bh=3AlzI1/zUkgHjINPB/60Bhf/bsRfn38JsFwy+xis2jA=;
+ b=hE7HWfDc0p3N0Bpq01wmeLvFAobgntV39leHjafhjwmmCRz5t6wz7P4lKNJoHpS/te
+ zeiLkaQeJ8N1yhdHsj4B4dF1qF/B6vb9E3XEKt4Bm1Y/3lL/Lmu3vj2cQw1+xzI3K9Ce
+ 31lmrfoZ8N9c3bUsFM4U45PP4f19qLHQPAPH5c3jVctH+Y67LEizVK4KAIbZC8idLz00
+ wXyP10lkhi+u1/vEHIdQxlcCcgrHyjtaWaaelqqjHeIUk3Hqz0Xpk9ZN/jxciXf+3TdW
+ c3GwRz186Gy0ANEG1LWNJr2fKU3nYbkLMfSmp46Jz7yNfXCtZlVAlmKuYdDjrRj1Z58B
+ 7Hvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693932636; x=1694537436;
+ d=1e100.net; s=20221208; t=1693932925; x=1694537725;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xyx8dhvICNG2imFMfltLdNZeGf7fNxfpF2tddSVvQxY=;
- b=TpIUwwcDFJAE2oK8osZbifIFCxPATfBzoO6Y1u+g041p0GlrkGroVJ7lRo7WmTdHC6
- mSbFjFtoxYhacdsKR5OmtbxRHGZY7S1Y1JCIN4dcVz9uO3q7NbbG59SUWLIvTc3RRabA
- VsgHUEH33VkjcggJHSvYq1LmLMBBr17vBD6cHp285VWfdG2jv7j6pYQi3sidGdgmS2zL
- VQUHnOejjHR7CfkRniHwdMUm+u89Z+BQ63moqB99bIbsSf6qZTV7jZkQD0xf+hUtlugg
- G06T4fGiv4Ez3wilP9oTj6cmkXXUE4geT0bER2pg9jhLAZz5YaGocVOxFsOKDnSQV3T4
- H7JQ==
-X-Gm-Message-State: AOJu0Yzb3JjcbjhAk/PVw51txA0YtnbhlCco+jTEkXtlvXpLMrK2ZMKw
- LwXZ82gs5EbuDdhOcqoaYvRvpg==
-X-Google-Smtp-Source: AGHT+IE3mk4kxaYoB6C5+A2wFg/NUmj5GY00RFF/eZsLoon08eBX7sscIRJGIJ4/JF77nfEXCuKTyg==
-X-Received: by 2002:a05:6512:2393:b0:500:b5db:990b with SMTP id
- c19-20020a056512239300b00500b5db990bmr317967lfv.47.1693932636380; 
- Tue, 05 Sep 2023 09:50:36 -0700 (PDT)
+ bh=3AlzI1/zUkgHjINPB/60Bhf/bsRfn38JsFwy+xis2jA=;
+ b=J+HB2AXQZrbmyr/WS33nWloe8xHGXZ2mzeMHEcTmBv2/R+PZFzSC16N4+GIG1wCWuG
+ x+wBC34laKsMncHyHZKntnKwUVoFRelSre6066N3EKJPGuZB1OcXjzJXHofKbowrBYh4
+ hsZyeqVpETskO7XNCPisXmxspvBrVlnpA5NK9THDt43k/4/pVooUFJmoni5a8MtcOw3B
+ zJbstzRVsLRCoUryvwBXD3gS03LLRBV7Si0a35abIGK0frHeVWnvPbb+dzRCD/RWVBFF
+ SO6me/mXMbR0NMBToUI2rmXB29Lq4W35fp7P8QSt0fgbeFlbf6rYfsOBjZt4eOa0miIV
+ zeQA==
+X-Gm-Message-State: AOJu0Yxjuh+CiB6dhVBKxaxWO6z5c48d1wJV5F55EjtCtaX0EMrKcuLx
+ mspi6CfTy3G/36enJ2ms6rghKA==
+X-Google-Smtp-Source: AGHT+IGJjFvazhbzDO72qsjE+5oyOKiJjYH9aNw64nxL/uDLtKPe8WhesihAPOy2FRDrol1fvQtvSQ==
+X-Received: by 2002:a17:907:7893:b0:99b:d580:546c with SMTP id
+ ku19-20020a170907789300b0099bd580546cmr369290ejc.23.1693932925378; 
+ Tue, 05 Sep 2023 09:55:25 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
  [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
- p5-20020a7bcc85000000b003fe1a96845bsm20670457wma.2.2023.09.05.09.50.35
+ f3-20020a170906824300b009786c8249d6sm7898364ejx.175.2023.09.05.09.55.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 09:50:36 -0700 (PDT)
-Message-ID: <ba47753d-2b9f-4ef9-d715-7624a4be5172@linaro.org>
-Date: Tue, 5 Sep 2023 18:50:34 +0200
+ Tue, 05 Sep 2023 09:55:24 -0700 (PDT)
+Message-ID: <d3e6506a-b553-d292-9428-25e784be0d4f@linaro.org>
+Date: Tue, 5 Sep 2023 18:55:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] iothread: Set the GSource "name" field
+Subject: Re: [PATCH 1/2] hw/cxl: Add utility functions decoder interleave ways
+ and target count.
 Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230904144811.4218-1-farosas@suse.de> <ZPdNCkLk4icmtxf0@x1n>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Jonathan Cameron via <qemu-devel@nongnu.org>
+Cc: Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
+ linux-cxl@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
+ linuxarm@huawei.com
+References: <20230904164704.18739-1-Jonathan.Cameron@huawei.com>
+ <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
+ <89d5477c-ece0-b738-c64f-056242619d92@linaro.org>
+ <20230905155639.00000b3a@huawei.com> <20230905160607.0000366f@huawei.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ZPdNCkLk4icmtxf0@x1n>
+In-Reply-To: <20230905160607.0000366f@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -92,26 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/9/23 17:45, Peter Xu wrote:
-> On Mon, Sep 04, 2023 at 11:48:11AM -0300, Fabiano Rosas wrote:
->> @@ -189,11 +193,14 @@ static void iothread_init(EventLoopBase *base, Error **errp)
->>           return;
->>       }
->>   
->> +    thread_name = g_strdup_printf("IO %s",
->> +                        object_get_canonical_path_component(OBJECT(base)));
->> +
->>       /*
->>        * Init one GMainContext for the iothread unconditionally, even if
->>        * it's not used
->>        */
->> -    iothread_init_gcontext(iothread);
->> +    iothread_init_gcontext(iothread, thread_name);
->>   
->>       iothread_set_aio_context_params(base, &local_error);
->>       if (local_error) {
+On 5/9/23 17:06, Jonathan Cameron wrote:
+> On Tue, 5 Sep 2023 15:56:39 +0100
+> Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
 > 
-> I think thread_name might be leaked if error here.  Thanks,
+>> On Mon, 4 Sep 2023 20:26:59 +0200
+>> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>>> On 4/9/23 18:47, Jonathan Cameron wrote:
+>>>> As an encoded version of these key configuration parameters is
+>>>> a register, provide functions to extract it again so as to avoid
+>>>> the need for duplicating the storage.
+>>>>
+>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>> ---
+>>>>    include/hw/cxl/cxl_component.h | 14 ++++++++++++++
+>>>>    hw/cxl/cxl-component-utils.c   | 17 +++++++++++++++++
+>>>>    2 files changed, 31 insertions(+)
+>>>>
+>>>> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+>>>> index 42c7e581a7..f0ad9cf7de 100644
+>>>> --- a/include/hw/cxl/cxl_component.h
+>>>> +++ b/include/hw/cxl/cxl_component.h
+>>>> @@ -238,7 +238,21 @@ static inline int cxl_decoder_count_enc(int count)
+>>>>        return 0;
+>>>>    }
+>>>>    
+>>>> +static inline int cxl_decoder_count_dec(int enc_cnt)
+>>>> +{
+>>>> +    switch (enc_cnt) {
+>>>> +    case 0: return 1;
+>>>> +    case 1: return 2;
+>>>> +    case 2: return 4;
+>>>> +    case 3: return 6;
+>>>> +    case 4: return 8;
+>>>> +    case 5: return 10;
+>>>> +    }
+>>>> +    return 0;
+>>>> +}
+>>>
+>>> Why inline?
+>>>    
+>>
+>> Bad habit.
+> Nope. I'm being slow.  This is in a header so if I don't
+> mark it inline I get a bunch of defined but not used warnings.
+> 
+> Obviously I could move the implementation of this and the matching
+> encoding routines out of the header. I haven't done so for now.
 
-Oops, good catch. Better switch to g_autofree.
+Inlined function in hw/ are hardly justifiable. They make the headers
+and debugging sessions harder to read in my experience. Compilers are
+becoming clever and clever, and we have LTO, so I rather privilege
+code maintainability. My 2 cents :)
+
+>>> Alternatively:
+>>>
+>>>     unsigned cxl_decoder_count_dec(unsigned enc_cnt)
+>>>     {
+>>>         return enc_cnt <= 5 ? 2 * enc_cnt : 0;
+>>
+>> It gets a little more fiddly than the code I'm proposing implies.
+>> For Switches and Host Bridges larger values are defined
+>> (we just don't emulate them yet and may never do so) and those
+>> don't have a sensible mapping.
+>>
+>> I guess there is no harm in adding the full decode however
+>> which will make it more obvious why it was a switch statement.
+
+Right, no problem.
+
+Preferably having this tiny function not inlined:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
