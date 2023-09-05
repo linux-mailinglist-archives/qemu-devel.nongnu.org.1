@@ -2,67 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35AC7921F6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 12:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEB17921FC
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 12:50:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdTac-0007Eq-Dc; Tue, 05 Sep 2023 06:47:24 -0400
+	id 1qdTce-0001Lh-TI; Tue, 05 Sep 2023 06:49:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1qdTaG-00079G-6R
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:47:05 -0400
-Received: from ms11p00im-qufo17282001.me.com ([17.58.38.57])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qdTcc-0001L6-Dp
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:49:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1qdTaA-0005IT-05
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:46:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1693910810; bh=NAnQzMFdGNa/+GlIQux0X5+78jPdAA+TnTYtaHb4MCc=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
- b=M25eNrYB53DtMk6mt4faLWdYKqHKGeNXUnNITbYVk6Czp/TbKpGjf78EAPUmwjZbS
- KbeZDFnFiH6f2khkIfoU4WT5Z71W9RehtY5p/0wxLoMZW3zeMXbuxZWN3kmxwMM4wi
- HIZG0pbicDeo6ULFcfkc/v0ABqUBlnq15JaCHZ6NQhlbxe6glpBaja9rBjELt1uEGZ
- 44KxNBD7JSjV1+tXHeRKmznSf26jf+CK+mBWIRCjvUwWQToQXw2d4XcYT9GQpQ1oKa
- wyDWetLWpt8GesOXMdQFXJOEroV/hwGCSBzkIG0ZegFJwhVeUqL0aZ/Km1TwJHMDJ+
- 3BJm7FluhEqig==
-Received: from smtpclient.apple (ms11p00im-dlb-asmtpmailmevip.me.com
- [17.57.154.19])
- by ms11p00im-qufo17282001.me.com (Postfix) with ESMTPSA id 150DA1E00EB;
- Tue,  5 Sep 2023 10:46:48 +0000 (UTC)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [PATCH v4 00/14] simpletrace: refactor and general improvements
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20230823085429.20519-1-mads@ynddal.dk>
-Date: Tue, 5 Sep 2023 12:46:36 +0200
-Cc: qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qdTcZ-0005kE-Ou
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:49:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693910961;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=auviijGTnvOn7CdDLLZ6JIiGQHDT3hn9DMbRuwR3FSQ=;
+ b=HjSw5JfvtvbRJ39/k82pLQWpz/4ucKtV/UAtTyfjO5yGBtFEMkwokCYkfn3NLjx1eGY8X4
+ qsoC6OMt4e7JuRLMYy+x5l8sVynMvSClB8X1oqo020AIkyHUW6JOz9zJEsVgl6X5J/1PZC
+ KkefpM9MHs9PSytNS7pgWYbaOI5VOJ0=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-376-qevSu5rbNqqAnoVqmF1XoA-1; Tue, 05 Sep 2023 06:49:19 -0400
+X-MC-Unique: qevSu5rbNqqAnoVqmF1XoA-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-44ea3b36cb9so597172137.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 03:49:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693910959; x=1694515759;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=auviijGTnvOn7CdDLLZ6JIiGQHDT3hn9DMbRuwR3FSQ=;
+ b=dGmnGPSXLgVoiXH8bcKE0IJlTgXRe+b/Y+PUk1YJ1tp5zA9pBHLcqVs7o5y86OK1oW
+ wNDrtjcuoMGytIRg6Lqj14kQHYhgW/Ktq27oj1MAzfeTNJ2Y7LNCo+HtZsIHVtH6Nq6t
+ b7JIr+OSjsXPGAZeuDMgWf0PMDp0LnxvM3Aqr4hN8q00uxZjtJ1HF0JM4o4KurlaQMoZ
+ 55sVWucn6n6LC7TneK4Mwn3E8I7mIvguZhIRL+dI19UFCNM0ZTL+gv+Tm2SMESG+2EOw
+ /r9vEMCpNs8JQGoPAZEt6dbxbV2l/IDJUxQeaZTX0HnnY4eBYIuIAVMTkOQm0Y5dtXoR
+ fG7g==
+X-Gm-Message-State: AOJu0YzGjaTJW5Go/5IyAxqX6iTlQ64qwBY7Pd6c+DbAvDL3eKXNfmcQ
+ BwcMDWYkEmm43+p+BOX1+5g7gkF26sTBO7+kmQdOoPzio7j5bFqa4rkrutIxm/9ydaP4ZCR9CZe
+ tth60p9tHxIe5V/RbyJNzPshtcleNSBc=
+X-Received: by 2002:a67:ec55:0:b0:44e:8ef9:3371 with SMTP id
+ z21-20020a67ec55000000b0044e8ef93371mr11216031vso.8.1693910959018; 
+ Tue, 05 Sep 2023 03:49:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGusEYRP2WIxFb5UglwkDslzNCmDX2HRzgcz7kbDu6UaMqwhf36g95sHzaYO+3uHMj6WzdrrwqzXqXQWNNUexk=
+X-Received: by 2002:a67:ec55:0:b0:44e:8ef9:3371 with SMTP id
+ z21-20020a67ec55000000b0044e8ef93371mr11216027vso.8.1693910958767; Tue, 05
+ Sep 2023 03:49:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <eac059f4-72e2-d1fe-27b2-9657d1777e45@ventanamicro.com>
+ <CABgObfYPYH=78UV3gk1m7xv8_=F7KwVxyj9J=uHZ8fCAA6FHmA@mail.gmail.com>
+In-Reply-To: <CABgObfYPYH=78UV3gk1m7xv8_=F7KwVxyj9J=uHZ8fCAA6FHmA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 5 Sep 2023 12:49:07 +0200
+Message-ID: <CABgObfZGDrKoMZ9oOWHw-Xp0z+Z033bYqW0qyh97h6_h5eno2Q@mail.gmail.com>
+Subject: Re: 'check-avocado' fails after c03f57fd5b ("Revert "tests: Use
+ separate ...")
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CC2B194B-06EE-42A1-B0CB-0AF72652EC8D@ynddal.dk>
-References: <CGME20230823085439eucas1p2d351b168833b9206cee2bbc8af9df1ac@eucas1p2.samsung.com>
- <20230823085429.20519-1-mads@ynddal.dk>
-To: John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-Proofpoint-GUID: IdF7sxMv59fu7c0Kny-ybTGGDsobjkhO
-X-Proofpoint-ORIG-GUID: IdF7sxMv59fu7c0Kny-ybTGGDsobjkhO
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.0.605.474.0000000_definitions?=
- =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2020-01-23?=
- =?UTF-8?Q?=5F02_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- malwarescore=0 clxscore=1030
- mlxlogscore=552 suspectscore=0 spamscore=0 phishscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2309050096
-Received-SPF: pass client-ip=17.58.38.57; envelope-from=mads@ynddal.dk;
- helo=ms11p00im-qufo17282001.me.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,71 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Sep 5, 2023 at 12:39=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+> > /home/danielhb/work/test/qemu/build/pyvenv/bin/python3 -B python/script=
+s/mkvenv.py ensuregroup --online /home/danielhb/work/test/qemu/pythondeps.t=
+oml avocado
+> > mkvenv: checking for avocado-framework(>=3D88.1, <93.0)
+> > mkvenv: checking for pycdlib>=3D1.11.0
+> >    AVOCADO tests/avocado
+> > /home/danielhb/work/test/qemu/build/pyvenv/bin/python3: No module named=
+ avocado.__main__; 'avocado' is a package and cannot be directly executed
+> > make: *** [/home/danielhb/work/test/qemu/tests/Makefile.include:139: ch=
+eck-avocado] Error 1
+>
+> Can you run it with "V=3D1" and also "cat
+> /home/danielhb/work/test/qemu/build/pyvenv/bin/avocado" please?
 
-> On 23 Aug 2023, at 10.54, Mads Ynddal <mads@ynddal.dk> wrote:
->=20
-> From: Mads Ynddal <m.ynddal@samsung.com>
->=20
-> I wanted to use simpletrace.py for an internal project, so I tried to =
-update
-> and polish the code. Some of the commits resolve specific issues, =
-while some
-> are more subjective.
->=20
-> I've tried to divide it into commits so we can discuss the
-> individual changes, and I'm ready to pull things out, if it isn't =
-needed.
->=20
-> v4:
-> * Added missing Analyzer2 to __all__
-> * Rebased with master
-> v3:
-> * Added __all__ with public interface
-> * Added comment about magic numbers and structs from Stefan Hajnoczi
-> * Reintroduced old interface for process, run and Analyzer
-> * Added comment about Python 3.6 in ref. to getfullargspec
-> * process now accepts events as file-like objects
-> * Updated context-manager code for Analyzer
-> * Moved logic of event processing to Analyzer class
-> * Moved logic of process into _process function
-> * Added new Analyzer2 class with kwarg event-processing
-> * Reverted changes to process-call in =
-scripts/analyse-locks-simpletrace.py
-> v2:
-> * Added myself as maintainer of simpletrace.py
-> * Improve docstring on `process`
-> * Changed call to `process` in scripts/analyse-locks-simpletrace.py to =
-reflect new argument types
-> * Replaced `iteritems()` with `items()` in =
-scripts/analyse-locks-simpletrace.py to support Python 3
->=20
-> Mads Ynddal (14):
->  simpletrace: add __all__ to define public interface
->  simpletrace: annotate magic constants from QEMU code
->  simpletrace: improve parsing of sys.argv; fix files never closed.
->  simpletrace: changed naming of edict and idtoname to improve
->    readability
->  simpletrace: update code for Python 3.11
->  simpletrace: improved error handling on struct unpack
->  simpletrace: define exception and add handling
->  simpletrace: made Analyzer into context-manager
->  simpletrace: refactor to separate responsibilities
->  simpletrace: move logic of process into internal function
->  simpletrace: move event processing to Analyzer class
->  simpletrace: added simplified Analyzer2 class
->  MAINTAINERS: add maintainer of simpletrace.py
->  scripts/analyse-locks-simpletrace.py: changed iteritems() to items()
->=20
-> MAINTAINERS                          |   6 +
-> scripts/analyse-locks-simpletrace.py |   2 +-
-> scripts/simpletrace-benchmark.zip    | Bin 0 -> 4809 bytes
-> scripts/simpletrace.py               | 362 ++++++++++++++++++---------
-> 4 files changed, 247 insertions(+), 123 deletions(-)
-> create mode 100644 scripts/simpletrace-benchmark.zip
->=20
-> --=20
-> 2.38.1
->=20
+Also:
 
-Ping :)=
+1) run the following under the pyvenv/bin/python3 REPL:
+
+from importlib.metadata import distribution
+avocado =3D distribution('avocado-framework')
+next((x for x in avocado.entry_points if x.name =3D=3D 'avocado'))
+
+FWIW here with a similar system I get
+
+EntryPoint(name=3D'avocado', value=3D'avocado.core.main:main',
+group=3D'console_scripts')
+
+2) try running "pyvenv/bin/avocado --help" and see if it works
+
+Paolo
+
 
