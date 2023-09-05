@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357797925C6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5D37925D4
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:24:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdYq9-00056Q-CZ; Tue, 05 Sep 2023 12:23:45 -0400
+	id 1qdYqD-00058V-HV; Tue, 05 Sep 2023 12:23:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdYq7-00055U-Ll
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:23:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdYqB-000588-5M
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:23:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdYq5-00064x-1n
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:23:43 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdYq8-00065z-WA
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:23:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693931020;
+ s=mimecast20190719; t=1693931024;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=itPguxkiBWkiGfVju4cdVWS3JiDjTmliW6gC+4lTFqw=;
- b=aQnwchQte8livT8wmf8AfziYqLy/pFPS7AgR/XVXXIP8e6KoB7whCQ5BXApdGD4HY1cD+W
- Qh9kYfvIFzs2Km2Kr6iXCj4kSIIC66MM6LZbLcI1XSwZG7TQSpiT2U3f4DGf94LcvVolsX
- bze9aThN4LJFhw9RQpe8e2SEZmdUkIA=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6lR+hCOuaFaVDCurD30WyUh0YxgEa01KD4gK5yHl/+c=;
+ b=KOtfbBBWfaQf8V2cUMerCIPWZKl9Z8Bbpno5Ux/aEVZPdM5IGTK7qSHhabHnycL8Z2dPY7
+ mO06T8mDGroZZJ1HDhq2qOjXeXbgAd9M5RzER0jFCP32kbcRxhYI9I1T0inY4TuL8QrCZb
+ NG+N7imVndKktgO1PqHfW50dpbDSkak=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-ZobFSsZLOPu0MWvKLB6lOA-1; Tue, 05 Sep 2023 12:23:38 -0400
-X-MC-Unique: ZobFSsZLOPu0MWvKLB6lOA-1
-Received: by mail-ua1-f71.google.com with SMTP id
- a1e0cc1a2514c-7a4ff742b97so225506241.0
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:23:38 -0700 (PDT)
+ us-mta-70-xiyYTeBtMWCAl9Rh5FMJ2A-1; Tue, 05 Sep 2023 12:23:40 -0400
+X-MC-Unique: xiyYTeBtMWCAl9Rh5FMJ2A-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-44eb5726e2eso79344137.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:23:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693931018; x=1694535818;
+ d=1e100.net; s=20221208; t=1693931019; x=1694535819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=itPguxkiBWkiGfVju4cdVWS3JiDjTmliW6gC+4lTFqw=;
- b=Cz53tFiBSW9CeeP20KQcdN3Vk0ZYbdy4zwBTI99EdIsCvIrkZCg/2rB2+SPasy1qtZ
- C6nj0g+6hmQX6osQDdTE/CykaK04xp+vAJsjfrvHZRcxLvEwNkKqr86Tmq5ASlJZypMj
- CU00jl4mpATty1fHq0Huo3D382r23jHGGXmjmh8DRw4dT+h8yIb2/d5FU0GQE/oKthYS
- K+pfOOIa7KpnbS6r7kLAxCVOqLUjwSpowhnAfW8x7lKuvia/F3wxrpV/qzYApr8m46So
- 3ITspwu38RhG7z8Dvy1MY3Cp4CCnqohNN7jGDDkN4JH/lyKaNUe+W458a9SGT3Xzhdtm
- /Yyg==
-X-Gm-Message-State: AOJu0YzgAJnag7BYJuVfjayHMkn+OKKJ6+TbhGP24Gc7PHEl9wcWIpBu
- ST9+klYXEP2j4lDidfybwxFhO/2mJ3Ad+rTYj40ybYJ+yKG0yckzdduPGKF3NEjwZotiurYg0pX
- rcctJposkWgVbRANtt+xMyviJ8bfYvq5F9+jC9gOFd+3N1dd5Pr4yXU/KG6snBEFYx+Q7CMxI
-X-Received: by 2002:a1f:2797:0:b0:48f:d0ca:b4a3 with SMTP id
- n145-20020a1f2797000000b0048fd0cab4a3mr9192567vkn.1.1693931018166; 
- Tue, 05 Sep 2023 09:23:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYZ7n7eWKUVCz/Sm83ZqVShL46tKGWkgJ6ujNd3FftjXcwMm0VCX1nHV6RzkhOtftvjaJ/bQ==
-X-Received: by 2002:a1f:2797:0:b0:48f:d0ca:b4a3 with SMTP id
- n145-20020a1f2797000000b0048fd0cab4a3mr9192542vkn.1.1693931017818; 
- Tue, 05 Sep 2023 09:23:37 -0700 (PDT)
+ bh=6lR+hCOuaFaVDCurD30WyUh0YxgEa01KD4gK5yHl/+c=;
+ b=GJRfnHA/LSik2xn+SqsrHt1qvMJtXsFuXwoWJfe/KhLdNPS2/7sUhR37HAwLvA//qy
+ wr3BaVhadYFkQ//BHkFFJ97G4bgA2VnbZY2P7WtHrKLglxpby53COOg237+hKF8ChrAT
+ ImSWCX77bvr1+CH42q7NDJTbJR2N9HKyD7E8PRzTh7tBZfVL3pRUKx/jlaMde2ji62gl
+ n/1f3JfzxVG6RCUTXs1aWFBEWgxwpOdb21qXoWrLgMap0Xx8uv3zFrivI9qgmzVAsZQ+
+ QMIaT4367wutogdeLObkgn+7OCjMoGpiVMONtQBlAW9Iv/aR9O7KbThKWWwQcaoFxxek
+ 8uFw==
+X-Gm-Message-State: AOJu0YxT5LXwINOP1PXDf8pTu3zQsLowpxDSuzB4/I57cT7YnYGY0a+u
+ YApHIDTGzjx8SbcO9Kt9kwsx2MaKfMrpkZEA+fOc0eFVstExfVShtYo+B2VsKz7jrFse3Rx40px
+ lmBchfaedEPuLZtwkxu4URR8SFYhXHQLPiPkrXe8pH/LFTiCnvSaTvMno2RorK3MvMlZ7SaRF
+X-Received: by 2002:a67:fb4c:0:b0:44d:37a4:8991 with SMTP id
+ e12-20020a67fb4c000000b0044d37a48991mr9005818vsr.1.1693931019425; 
+ Tue, 05 Sep 2023 09:23:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElqV7PxhkcnWo1QrDgH5omkO/qAeEuOgI7c3+ZI8Mx+NpZx4qyhgaxwHvSGNiJLMd0AdpkhQ==
+X-Received: by 2002:a67:fb4c:0:b0:44d:37a4:8991 with SMTP id
+ e12-20020a67fb4c000000b0044d37a48991mr9005793vsr.1.1693931019016; 
+ Tue, 05 Sep 2023 09:23:39 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- u16-20020a0cf1d0000000b0063d281e22f1sm4581675qvl.17.2023.09.05.09.23.36
+ u16-20020a0cf1d0000000b0063d281e22f1sm4581675qvl.17.2023.09.05.09.23.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 09:23:37 -0700 (PDT)
+ Tue, 05 Sep 2023 09:23:38 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, peterx@redhat.com,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-stable@nongnu.org
-Subject: [PATCH v3 1/4] migration/qmp: Fix crash on setting tls-authz with null
-Date: Tue,  5 Sep 2023 12:23:32 -0400
-Message-ID: <20230905162335.235619-2-peterx@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH v3 2/4] tests/migration-test: Add a test for null parameter
+ setups
+Date: Tue,  5 Sep 2023 12:23:33 -0400
+Message-ID: <20230905162335.235619-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230905162335.235619-1-peterx@redhat.com>
 References: <20230905162335.235619-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,52 +103,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU will crash if anyone tries to set tls-authz (which is a type
-StrOrNull) with 'null' value.  Fix it in the easy way by converting it to
-qstring just like the other two tls parameters.
+Add a test for StrOrNull parameters (tls-*).
 
-Cc: qemu-stable@nongnu.org # v4.0+
-Fixes: d2f1d29b95 ("migration: add support for a "tls-authz" migration parameter")
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/qtest/migration-test.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index 1d1e1321b0..6bbfd4853d 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -1408,20 +1408,25 @@ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
- {
-     MigrationParameters tmp;
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 62d3f37021..ff86838ec3 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -1471,6 +1471,27 @@ static void test_postcopy_preempt_all(void)
  
--    /* TODO Rewrite "" to null instead */
-+    /* TODO Rewrite "" to null instead for all three tls_* parameters */
-     if (params->tls_creds
-         && params->tls_creds->type == QTYPE_QNULL) {
-         qobject_unref(params->tls_creds->u.n);
-         params->tls_creds->type = QTYPE_QSTRING;
-         params->tls_creds->u.s = strdup("");
-     }
--    /* TODO Rewrite "" to null instead */
-     if (params->tls_hostname
-         && params->tls_hostname->type == QTYPE_QNULL) {
-         qobject_unref(params->tls_hostname->u.n);
-         params->tls_hostname->type = QTYPE_QSTRING;
-         params->tls_hostname->u.s = strdup("");
-     }
-+    if (params->tls_authz
-+        && params->tls_authz->type == QTYPE_QNULL) {
-+        qobject_unref(params->tls_authz->u.n);
-+        params->tls_authz->type = QTYPE_QSTRING;
-+        params->tls_authz->u.s = strdup("");
+ #endif
+ 
++/*
++ * We have a few parameters that allows null as input, test them to make
++ * sure they won't crash (where some used to).
++ */
++static void test_null_parameters(void)
++{
++    static const char *allow_null_params[] = {
++        "tls-authz", "tls-hostname", "tls-creds"
++    };
++    QTestState *vm = qtest_init("");
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(allow_null_params); i++) {
++        qtest_qmp_assert_success(vm, "{ 'execute': 'migrate-set-parameters',"
++                                 "'arguments': { %s: null } }",
++                                 allow_null_params[i]);
 +    }
++
++    qtest_quit(vm);
++}
++
+ static void test_baddest(void)
+ {
+     MigrateStart args = {
+@@ -2827,6 +2848,7 @@ int main(int argc, char **argv)
+         }
+     }
  
-     migrate_params_test_apply(params, &tmp);
- 
++    qtest_add_func("/migration/null_parameters", test_null_parameters);
+     qtest_add_func("/migration/bad_dest", test_baddest);
+     qtest_add_func("/migration/precopy/unix/plain", test_precopy_unix_plain);
+     qtest_add_func("/migration/precopy/unix/xbzrle", test_precopy_unix_xbzrle);
 -- 
 2.41.0
 
