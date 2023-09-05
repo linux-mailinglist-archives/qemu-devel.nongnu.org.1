@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87878793034
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 22:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4E3793038
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 22:46:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdcu8-0001HA-S0; Tue, 05 Sep 2023 16:44:08 -0400
+	id 1qdcvf-0002YL-8j; Tue, 05 Sep 2023 16:45:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdcu7-0001Gg-5O
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:44:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdcvZ-0002Xz-O0
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:45:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdcu3-0000mD-2v
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:44:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdcvX-0001HG-69
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 16:45:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693946641;
+ s=mimecast20190719; t=1693946734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jJnWyERjpXcZTAMTv8MbDjaow04MVwSMqfbZSI0pog4=;
- b=BESrU++Hbqx/l/VrCVAvgZ5uEFYSKWibjIIX415IhgexTC5cCyGzdLmPNJVYDw6k66ogDv
- BF/yzqes/CYDrBANAxOOENWtRocf1h6unSvOSqKPvcsvMLkR0OGxfLFz1fEZRvUiCx8UVy
- /gRoMlzfX1T546ZMVA92vckcnbyvB2c=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gbw/uy0XD1sTwB2IrQAqn+1Wh/2UzB5st2kl2B4wp60=;
+ b=AFJ2G2HLKDpb4xQ7YB/qsgAy5h83kPvOiUwM1P5cru3g6VXrKVmCAWd5TMhF66unJeJFvj
+ mkcovfAouaD3235QfpQSSdXimZ0S2yNsfDTy3VytxfZ1glA5bysDLeTnZMBXfn3+DHIDwr
+ 6scFRb+k+1hL4Fnsyas1zYUfw34gs4E=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-KJm1HXaHNUOXk8nWe9zvyw-1; Tue, 05 Sep 2023 16:44:00 -0400
-X-MC-Unique: KJm1HXaHNUOXk8nWe9zvyw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-500b5641eeaso3149544e87.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 13:44:00 -0700 (PDT)
+ us-mta-175-4LribBW5MVWbDg72m924ww-1; Tue, 05 Sep 2023 16:45:32 -0400
+X-MC-Unique: 4LribBW5MVWbDg72m924ww-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51a5296eb8eso2134554a12.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 13:45:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693946639; x=1694551439;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jJnWyERjpXcZTAMTv8MbDjaow04MVwSMqfbZSI0pog4=;
- b=k6HKLqyXmmn/g2+Hld7MenYCohAMIJvSVW1EQTDjJU7RBKyohec94k4uNOf5FxBJvT
- grnBd0IC2ZebHS4FRynJbt7EyN82h5aOMO8bkPV0rfX0flBMkkrgVU1f6nLW63fPNxqQ
- qOVr8O63+SmwotuqXgolRUW5WXWiUoftJ2XQRQUhhNAiMd7psxvQZYS0EU5X5AePY2bF
- tt5bArTEw2IK1VWX21RdiMgx8GaYMH6nGiK++YT28xPvpsP6oNKxKHpzsqKkRE5oY8Uj
- BHOgrDixvlygopXrP40Xmmg7W4tNqFZO5LoS7PClEHk3Xe7oyfOmzNoAgIOocdLmcic1
- fF0w==
-X-Gm-Message-State: AOJu0YxYvQm2SZ7yIzeLRIEEsxjYoLnnFSoBMnnNqU+8LlBfhN9esWu9
- VhWyIN7+SKn3J+HEPQwhfyjBzPWBMwX2nZ4EP0TCikkXd+LbnA6+6puor5h/aswbotuIXsvudjj
- 0zUKh4u4ah3v9vyc=
-X-Received: by 2002:a19:2d4c:0:b0:500:b7ed:105a with SMTP id
- t12-20020a192d4c000000b00500b7ed105amr582903lft.29.1693946639065; 
- Tue, 05 Sep 2023 13:43:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnL41Xxx1YeqPUIEA4QvibMnyDvFNiyTmB6SxKksTkLbDW9Fcdqxd11huwMJWqJwuoXV/BGA==
-X-Received: by 2002:a19:2d4c:0:b0:500:b7ed:105a with SMTP id
- t12-20020a192d4c000000b00500b7ed105amr582888lft.29.1693946638696; 
- Tue, 05 Sep 2023 13:43:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693946731; x=1694551531;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gbw/uy0XD1sTwB2IrQAqn+1Wh/2UzB5st2kl2B4wp60=;
+ b=QX/Q2XCQbXczwVrIrq0DBeAwSZ1jRJG84Lupy8ecm6+dzREsDdvUnGOvl5Ze5IlglC
+ zf1ZmiEEgd1FOPA3NqvQAE/ZvTJXLONqiMkMP/YQClClc12DQ4e1RLlQqm+I3q7ixm5s
+ j8IQZSSk5+t0RkGAq1gRI54JdBoHY/W6WPHd7IaOKsgyctNAuJM/+6Cmg1X6HTFw896b
+ HN/C4M1fMdlZ+EPrNBOFgfUBHI0fWUKhR+qAsvT7fQ0vudp8gr9vJUEk4B1CBZs+LFh9
+ 8oGHJUIh2WwHobaUVKVrfr2/Lxp55ylxBjdttjzUDsZaZ0Q/+TzoNrCbuqHpUcZCMRgL
+ IzOA==
+X-Gm-Message-State: AOJu0Yw+vANm/4KDO3mVE5he4rWH9EZ5f7skJIK5fW7xbOw7yS6HUXF2
+ FdWBqGdeKZe8J+I+ATIssE7wQxHvInrXBFtH68SA8JM0pX3f3BZwDZCQmmvwCJa+B1SCFsCOSd7
+ l1JtlrQBC2pWyQHU=
+X-Received: by 2002:a05:6402:124b:b0:522:ae79:3ee8 with SMTP id
+ l11-20020a056402124b00b00522ae793ee8mr775259edw.5.1693946731584; 
+ Tue, 05 Sep 2023 13:45:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3eYYMvX3xMGJf/Jq6kFEL4sDn0ajAu/5kbCr1DMsfLUyjxhiDgpezhm4JzdGzqh0exwa03w==
+X-Received: by 2002:a05:6402:124b:b0:522:ae79:3ee8 with SMTP id
+ l11-20020a056402124b00b00522ae793ee8mr775250edw.5.1693946731274; 
+ Tue, 05 Sep 2023 13:45:31 -0700 (PDT)
 Received: from redhat.com ([2.52.23.134]) by smtp.gmail.com with ESMTPSA id
- b4-20020aa7c6c4000000b00523653295f9sm7455175eds.94.2023.09.05.13.43.56
+ f24-20020aa7d858000000b0052544441babsm7606659eds.72.2023.09.05.13.45.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 13:43:57 -0700 (PDT)
-Date: Tue, 5 Sep 2023 16:43:54 -0400
+ Tue, 05 Sep 2023 13:45:30 -0700 (PDT)
+Date: Tue, 5 Sep 2023 16:45:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Marcello Sylverster Bauer <sylv@sylv.io>
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com, ani@anisinha.ca,
- Patrick Rudolph <patrick.rudolph@9elements.com>
-Subject: Re: PCI Hotplug ACPI device names only 3 characters long
-Message-ID: <20230905163919-mutt-send-email-mst@kernel.org>
-References: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
- <20230905123447-mutt-send-email-mst@kernel.org>
- <bfd8c202-0ceb-47c2-8e9c-9547bd4bdd5f@sylv.io>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, kraxel@redhat.com,
+ cohuck@redhat.com, Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH v5 0/4] Virtio shared dma-buf
+Message-ID: <20230905164451-mutt-send-email-mst@kernel.org>
+References: <20230802090824.91688-1-aesteve@redhat.com>
+ <CADSE00JRMvQ6Ye445xon0GoCDSsp7oAY_B--rABooabMTraoaQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bfd8c202-0ceb-47c2-8e9c-9547bd4bdd5f@sylv.io>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADSE00JRMvQ6Ye445xon0GoCDSsp7oAY_B--rABooabMTraoaQ@mail.gmail.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -97,99 +98,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 05, 2023 at 07:45:12PM +0200, Marcello Sylverster Bauer wrote:
-> Hi Michael,
-> 
-> On 9/5/23 18:44, Michael S. Tsirkin wrote:
-> > On Tue, Sep 05, 2023 at 05:05:33PM +0200, Marcello Sylverster Bauer wrote:
-> > > Greetings,
-> > > 
-> > > I'm currently working on a project to support Intel IPU6 in QEMU via VFIO so
-> > > that the guest system can access the camera. This requires extending the
-> > > ACPI device definition so that the guest knows how to access the camera.
-> > > 
-> > > However, I cannot extend the PCI devices because their names are not 4
-> > > characters long and therefore do not follow the ACPI specification.
-> > > 
-> > > When I use '-acpitable' to include my own SSDT for the IPU6 PCI device, it
-> > > does not allow me to declare the device as an External Object because it
-> > > automatically adds padding underscores.
-> > > 
-> > > e.g.
-> > > Before:
-> > > ```
-> > > External(_SB.PCI0.S18.SA0, DeviceObj)
-> > > ```
-> > > After:
-> > > ```
-> > > External(_SB.PCI0.S18_.SA0_, DeviceObj)
-> > > ```
-> > > 
-> > > Adding the underscore padding is hard coded in iASL and also in QEMU when
-> > > parsing an ASL file. (see: build_append_nameseg())
-> > > 
-> > > So here are my questions:
-> > > 1. Is there a solution to extend the ACPI PCI device using '-acpitable'
-> > > without having to patch iASL or QEMU?
-> > > 2. Are there any plans to change the names to comply with the ACPI spec?
-> > > (e.g. use "S%.03X" format string instead)
-> > > 
-> > > Thanks
-> > > Marcello
-> > 
-> > 
-> > 1.  All names in ACPI are always exactly 4 characters long. _ is a legal character
-> >      but names beginning with _ are reserved.
-> 
-> Exactly, which is why I want to address this issue here. Currently, Qemu
-> generates ACPI device names with only 3 characters. (See
-> build_append_pci_bus_devices() in hw/i386/acpi-build.c).
-> For example, the device I want to append entries to has the path
-> "_SB.PCI0.S18.SA0", but I can't because of the two auto-generated devices
-> with only 3 characters in their names.
+I was hoping for some acks from Gerd or anyone else with a clue
+about graphics, but as that doesn't seem to happen I'll merge.
+Thanks!
 
-They are 4 characters otherwise OSPMs wouldn't work.
-In your example the path is _SB.PCI0.S18_.SA0_ - you disassembler probably
-just helpfully hides it for readability.
-
-> > There's no rule in ACPI
-> >      spec that says they need to follow S%.03X or any other specific format.
-> >      I'm pretty sure we do follow the ACPI specification in this but feel free to
-> >      prove me wrong.
+On Mon, Aug 21, 2023 at 02:37:56PM +0200, Albert Esteve wrote:
+> Hi all,
 > 
-> You have misunderstood me. Currently, Qemu uses the following format to
-> create PCI ACPI devices:
+> A little bump for this patch, sorry for the extra noise.
 > 
-> ```
-> aml_name("S%.02X", devfn)
-> ```
+> Regards,
+> Albert
 > 
-> My question is whether we should change it to something that results in a 4
-> character name like "S%.03X" or "S%.02X_".
-
-I think you misunderstand the code. Look at build_append_nameseg and you will
-see that the name is always ACPI_NAMESEG_LEN characters which equals 4.
-
-> I have tested it and it works fine as long as any hardcoded path references
-> are adjusted. But I'm not 100% sure if this could cause any regressions.
 > 
-> > 2.  You can probably add something to existing ACPI devices using Scope().
+> On Wed, Aug 2, 2023 at 11:08 AM Albert Esteve <aesteve@redhat.com> wrote:
 > 
-> I'm pretty sure the external object is required when loading a separate
-> SSDT, but I'll try by just using scopes.
+>     v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/
+>     msg00598.html
+>     v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/
+>     msg04530.html
+>     v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/
+>     msg06126.html
+>     v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/
+>     msg05174.html
+>     v4 -> v5:
+>     - Allow shared table to hold pointers for vhost devices, in a struct that
+>     defines the types that the table can store
+>     - New message VHOST_USER_GET_SHARED_OBJECT to retrieve objects stored in
+>     vhost backends
+>     - Minor additions to support the previous items (e.g. new test usecases).
 > 
-> >      I would not advise relying on this - current names are not a stable
-> >      interface that we guarantee across QEMU versions.
-> >      If adding this functionality is desirable, I think we'll need some new interface
-> >      to set a stable ACPI name. Maybe using aliases.
+>     This patch covers the required steps to add support for virtio cross-device
+>     resource sharing[1],
+>     which support is already available in the kernel.
 > 
-> Currently I'm just working on a PoW to get IPU6 working in QEMU, so
-> instability is fine.
+>     The main usecase will be sharing dma buffers from virtio-gpu devices (as
+>     the exporter
+>     -see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under
+>     discussion)
+>     devices (as the buffer-user or importer). Therefore, even though virtio
+>     specs talk about
+>     resources or objects[3], this patch adds the infrastructure with dma-bufs
+>     in mind.
+>     Note that virtio specs let the devices themselves define what a vitio
+>     object is.
 > 
-> Thanks,
-> Marcello
+>     These are the main parts that are covered in the patch:
 > 
-> > 
-> > 
+>     - Add hash function to uuid module
+>     - Shared resources table, to hold all resources that can be shared in the
+>     host and their assigned UUID,
+>       or pointers to the backend holding the resource
+>     - Internal shared table API for virtio devices to add, lookup and remove
+>     resources
+>     - Unit test to verify the API
+>     - New messages to the vhost-user protocol to allow backend to interact with
+>     the shared
+>       table API through the control socket
+>     - New vhost-user feature bit to enable shared objects feature
+> 
+>     Applies cleanly to 38a6de80b917b2a822cff0e38d83563ab401c890
+> 
+>     [1] - https://lwn.net/Articles/828988/
+>     [2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/
+>     virtio-v1.2-csd01.html#x1-3730006
+>     [3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/
+>     virtio-v1.2-csd01.html#x1-10500011
+> 
+>     Albert Esteve (4):
+>       uuid: add a hash function
+>       virtio-dmabuf: introduce virtio-dmabuf
+>       vhost-user: add shared_object msg
+>       vhost-user: refactor send_resp code
+> 
+>      MAINTAINERS                               |   7 +
+>      docs/interop/vhost-user.rst               |  57 +++++++
+>      hw/display/meson.build                    |   1 +
+>      hw/display/virtio-dmabuf.c                | 136 +++++++++++++++++
+>      hw/virtio/vhost-user.c                    | 174 ++++++++++++++++++++--
+>      include/hw/virtio/vhost-backend.h         |   3 +
+>      include/hw/virtio/virtio-dmabuf.h         | 103 +++++++++++++
+>      include/qemu/uuid.h                       |   2 +
+>      subprojects/libvhost-user/libvhost-user.c | 118 +++++++++++++++
+>      subprojects/libvhost-user/libvhost-user.h |  55 ++++++-
+>      tests/unit/meson.build                    |   1 +
+>      tests/unit/test-uuid.c                    |  27 ++++
+>      tests/unit/test-virtio-dmabuf.c           | 137 +++++++++++++++++
+>      util/uuid.c                               |  14 ++
+>      14 files changed, 821 insertions(+), 14 deletions(-)
+>      create mode 100644 hw/display/virtio-dmabuf.c
+>      create mode 100644 include/hw/virtio/virtio-dmabuf.h
+>      create mode 100644 tests/unit/test-virtio-dmabuf.c
+> 
+>     --
+>     2.40.0
+> 
+> 
 
 
