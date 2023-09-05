@@ -2,97 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE02A7921D6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 12:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBFD7921CC
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 12:08:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdTAr-0001N2-PM; Tue, 05 Sep 2023 06:20:45 -0400
+	id 1qdSyf-0004wL-FC; Tue, 05 Sep 2023 06:08:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qdTAd-0001M2-AP
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:20:31 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qdTAT-00007R-HO
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:20:31 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-402d0eda361so15238175e9.0
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 03:20:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693909220; x=1694514020; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iLAvvAZgDqDrAheBxaxmnPyPUu7z5u2uvapTCYrrRso=;
- b=cft0HnVqkg+rHqHkDLC653/ZAuZbZ1ufm1b+4R9zJN5SSs/0KfsNRowFQ6eO30/Aiw
- UQNW1hhnNJBQbCPINnM1Cm6g1JCTTrnRKfGjTAW/4dW7YoVxeZIHNx9rFFwl9EAeue9d
- PlNZtZZL0Jx9Ao6BofBFsYBIK0F6QcRQHbYem934yvRWAKcSmDumDIb8ziftSpKRl8Mi
- xoEqPMpKTspvFRU95WnJO6j79fT2NCWuWbegfeQpCEKafOr0ZPGvDLCmGHGO7tJgsNMd
- 33+A/dpsus6QLPMT+5XJ0snQ7q6ICmj0ARAefe45rxN1tpTKx5+2oGq4+ThaWs1hGfq3
- WuFw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qdSye-0004vy-2U
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:08:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qdSya-00068k-DU
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:08:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693908483;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=458i95STMVj0xZ58IBgIeQG9A3svePa5DHdd5rQPov0=;
+ b=MPHWPZSVhvLWbdKQ88o4p2S2dYaQQy7RIj74hc2aDAq3/83ff+WU/wAjXb4DsSZeiKiIXK
+ 0McDeDdPDZkluxDpG8zNXntuIWCMOaZIYfB2cjBxl087X90uvWxH8ZwQDRXy1UanBkRjPe
+ IbrdFdnncIDt3FBLSv2rFssqoAcNais=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-TGDlcXmMOBuv5w5su0hdSQ-1; Tue, 05 Sep 2023 06:08:01 -0400
+X-MC-Unique: TGDlcXmMOBuv5w5su0hdSQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30e3ee8a42eso1218481f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 03:08:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693909220; x=1694514020;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=iLAvvAZgDqDrAheBxaxmnPyPUu7z5u2uvapTCYrrRso=;
- b=VtGqM0PC9pJi6u+byqgnYvWFQslSbrngbcI4Dq6iGXxpvTq7JaDsTfheIAvwSu4OOc
- XNxrmUUOwt8PavZldyR9V3rLMYfaBU4jbsebFoehPpu7KdXL8CdFMn5RHk11OY5l7eQM
- xaFWH4fkz5c3CglRNZqzn8ExwtK0FRx09CW8mqb1GZKZrvEk8AUd3rWBR+LIHmjY64/S
- q4y1PlVwXxumRGiFkY1CsyfUUVJyEGTztZn9whfGLhLR6IqQw7jyZceObMXu7niVemen
- fIO1qjZW3JLYHUgLr2N2BX+e9IMPdLm/aPXX911q5lU+fb8HbbaRZR2PbpvEUqIJ/1g8
- gfBw==
-X-Gm-Message-State: AOJu0YwhYGfUBBCX0TDabu0F34vt6zTcCQUaBNo9WvAy1CO5YKVQKi+m
- Qjo2iLzHclTfhm48qC+tR23MrA==
-X-Google-Smtp-Source: AGHT+IFekvr/SFOvIRA6BcCxn5lTVXkbuuY6klPIZwbkqkINlw9lLdBRRyJNKV2x8vEl/9zRIANMtA==
-X-Received: by 2002:a05:600c:2981:b0:3fe:1db2:5179 with SMTP id
- r1-20020a05600c298100b003fe1db25179mr9371957wmd.19.1693909219763; 
- Tue, 05 Sep 2023 03:20:19 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1693908480; x=1694513280;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=458i95STMVj0xZ58IBgIeQG9A3svePa5DHdd5rQPov0=;
+ b=bzD9y5Cj6615tUKGdOZY/r4lN5T4PIuP18X6UJ4wRVKMnupeSjNx/1kunaqEOci96Z
+ kMWa78MbJPUYSzCNzUUdT3ZKgcXhiVIovrXq4m/AS4PEQr5GTeGTAjXFA60jNd/Fqy2F
+ iE8JslmcmReN79FqvlDg/pZgVnQMS6emVES3iWNuEAd44bhSswKuNYk/gH7eML0fS1KR
+ kc2LNdmQLVFH7rdM6JpUs5zuW4rW4Z9y8NxYDjsEfxdfSwAqGVDm46i3nT+BMatalc/d
+ ugzsh4UGciEIS0ZDL6bkAT9cHMU3U5WzSoaZkffREXoxpc8dU+BP9tG4ryPwBGRDFq0b
+ oyfw==
+X-Gm-Message-State: AOJu0Ywbx54uFJz6tZEF6AHTml/fhaJtUoBkMLUChPNHtmnJekfNRaFy
+ r9YrqHK12+KYBfyXvfvWQzYCOJi1peoG+93EsuqdrHx2cU5vYPFp56SESjs4KwOoXQ8IY5+B5Xw
+ oolqNoyy8ViWzPy+sMxYha+wZYfnY3wpZP29znPxjMRou/KvXYxlSnelZr+0RV8vJAFWRl4omBI
+ 0=
+X-Received: by 2002:a5d:490a:0:b0:314:1270:8fc with SMTP id
+ x10-20020a5d490a000000b00314127008fcmr8984902wrq.0.1693908480095; 
+ Tue, 05 Sep 2023 03:08:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVfr6NpavIVMsBt5v+M+9Bhmty10ZViSW14k67eljROvof2M9i2TSAaWWnPL4zBOXX6lBt9g==
+X-Received: by 2002:a5d:490a:0:b0:314:1270:8fc with SMTP id
+ x10-20020a5d490a000000b00314127008fcmr8984883wrq.0.1693908479689; 
+ Tue, 05 Sep 2023 03:07:59 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- e16-20020a05600c219000b003fe2a40d287sm16545398wme.1.2023.09.05.03.20.19
+ y8-20020adff148000000b00317c742ca9asm16781575wro.43.2023.09.05.03.07.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 03:20:19 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A79C61FFBB;
- Tue,  5 Sep 2023 11:20:18 +0100 (BST)
-References: <87y1hspiyh.fsf@linaro.org>
- <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
- <CAFEAcA8Ziov9vA9dW+4vzFE=KkSUqfMNNMZOtvQhqCXyjRytzQ@mail.gmail.com>
- <87cyz3pmgz.fsf@linaro.org>
- <CAFEAcA-m8G1kfTw52kOGPEvQwWPph0NWc0URVY1aQ2WwVeB_OQ@mail.gmail.com>
- <799b1754-7529-0538-1b5a-d94a362eb74d@amd.com>
-User-agent: mu4e 1.11.16; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ayan Kumar Halder <ayankuma@amd.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Stefano Stabellini
- <sstabellini@kernel.org>, Xen-devel <xen-devel@lists.xenproject.org>,
- Stewart Hildebrand <stewart.hildebrand@amd.com>, Viresh Kumar
- <viresh.kumar@linaro.org>, Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- Sergiy Kibrik <Sergiy_Kibrik@epam.com>, QEMU Developers
- <qemu-devel@nongnu.org>, Vikram Garhwal <vikram.garhwal@amd.com>, Stefano
- Stabellini <stefano.stabellini@amd.com>, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, Bill Mills <bill.mills@linaro.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: QEMU features useful for Xen development?
-Date: Tue, 05 Sep 2023 10:55:20 +0100
-In-reply-to: <799b1754-7529-0538-1b5a-d94a362eb74d@amd.com>
-Message-ID: <87tts8hqfx.fsf@linaro.org>
+ Tue, 05 Sep 2023 03:07:58 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+Subject: [PATCH] docs/system/replay: do not show removed command line option
+Date: Tue,  5 Sep 2023 12:07:57 +0200
+Message-ID: <20230905100757.298689-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,67 +97,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Cc: qemu-trivial@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ docs/system/replay.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ayan Kumar Halder <ayankuma@amd.com> writes:
+diff --git a/docs/system/replay.rst b/docs/system/replay.rst
+index 3105327423c..ca7c17c63da 100644
+--- a/docs/system/replay.rst
++++ b/docs/system/replay.rst
+@@ -181,7 +181,7 @@ Audio data is recorded and replay automatically. The command line for recording
+ and replaying must contain identical specifications of audio hardware, e.g.:
+ 
+ .. parsed-literal::
+-    -soundhw ac97
++    -audio pa,model=ac97
+ 
+ Serial ports
+ ------------
+-- 
+2.41.0
 
-> Hi Peter/Alex,
->
-> Appreciate your help. :)
->
-> On 31/08/2023 11:03, Peter Maydell wrote:
->> On Thu, 31 Aug 2023 at 10:53, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
->>>
->>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>
->>>> On Thu, 31 Aug 2023 at 01:57, Stefano Stabellini <sstabellini@kernel.o=
-rg> wrote:
->>>>> As Xen is gaining R52 and R82 support, it would be great to be able to
->>>>> use QEMU for development and testing there as well, but I don't think
->>>>> QEMU can emulate EL2 properly for the Cortex-R architecture. We would
->>>>> need EL2 support in the GIC/timer for R52/R82 as well.
->>>> We do actually have a Cortex-R52 model which at least in theory
->>>> should include EL2 support, though as usual with newer QEMU
->>>> stuff it quite likely has lurking bugs; I'm not sure how much
->>>> testing it's had. Also there is currently no board model which
->>>> will work with the Cortex-R52 so it's a bit tricky to use in practice.
->>>> (What sort of board model would Xen want to use it with?)
->>> We already model a bunch of the mps2/mps3 images so I'm assuming adding
->>> the mps3-an536 would be a fairly simple step to do (mps2tz.c is mostly
->>> tweaking config values). The question is would it be a useful target for
->>> Xen?
->> All our MPS2/MPS3 boards are M-profile. That means we have the
->> device models for all the interesting devices on the board, but
->> it would be simpler to write the an536 board model separately.
->> (In particular, the M-profile boards are wrappers around an
->> "ARMSSE" sort-of-like-an-SoC component; there's no equivalent
->> for the Cortex-R52.)
->>
->>>    https://developer.arm.com/documentation/dai0536/latest/
->
-> Yes, it will be helpful if Qemu can model this board. We have a
-> downstream port of Xen on R52 (upstreaming is in progress).
->
-> So, we can test the Qemu model with Xen.
->
-> Also if all works fine, we might consider adding this to the upstream
-> Xen CI docker.
->
-> Out of curiosity, are you planning to add Qemu R52 SoC support to Zephyr ?
-
-Generally enabling other software platforms is out of scope for the QEMU
-team as we have plenty enough to do in QEMU itself. However its
-certainly useful to have images we can test with.
-
-Eyeballing the Zephyr docs it looks like it already supports some
-R-profile cores on various boards, including CPU_CORTEX_R52 for the
-NXPS32Z/E board. The BSP sections mostly look like config fragments but
-I'm not really familiar with how Zephyr goes together.
-
-I can ask our micro-controller experts what might be missing and need
-implementing but I can't commit them to work on it ;-)
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
