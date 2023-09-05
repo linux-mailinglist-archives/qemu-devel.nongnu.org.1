@@ -2,66 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343AB7921A4
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CE97921AA
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:50:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdSdy-0005mM-1P; Tue, 05 Sep 2023 05:46:46 -0400
+	id 1qdShT-00075M-2g; Tue, 05 Sep 2023 05:50:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1qdSdr-0005lp-Cv
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:46:39 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qdShQ-000755-Jo
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:50:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1qdSdn-0002d0-4n
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:46:39 -0400
-Received: from lhrpeml100002.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rg0wj1fY4z6D8rK;
- Tue,  5 Sep 2023 17:45:09 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- lhrpeml100002.china.huawei.com (7.191.160.241) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 5 Sep 2023 10:46:28 +0100
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.031; 
- Tue, 5 Sep 2023 10:46:28 +0100
-To: Dov Murik <dovmurik@linux.ibm.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra
- <ashish.kalra@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Steve Rutherford <srutherford@google.com>, "James
- Bottomley" <jejb@linux.ibm.com>, Juan Quintela <quintela@redhat.com>, "Dr.
- David Alan Gilbert" <dgilbert@redhat.com>, Hubertus Franke
- <frankeh@us.ibm.com>, Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>
-Subject: RE: [RFC PATCH v2 00/12] Confidential guest-assisted live migration
-Thread-Topic: [RFC PATCH v2 00/12] Confidential guest-assisted live migration
-Thread-Index: AQHXmCrdmtYNxw+JD0qvlDM8Ae9oHLAQhwYg
-Date: Tue, 5 Sep 2023 09:46:28 +0000
-Message-ID: <5d02265589dd4b0a9072fc29b53a096a@huawei.com>
-References: <20210823141636.65975-1-dovmurik@linux.ibm.com>
-In-Reply-To: <20210823141636.65975-1-dovmurik@linux.ibm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.227.178]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qdShN-0003Fs-OY
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:50:20 -0400
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-207-S62RRQ0gMD2weKfNa7x_gQ-1; Tue, 05 Sep 2023 05:50:15 -0400
+X-MC-Unique: S62RRQ0gMD2weKfNa7x_gQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-31dc8f0733dso1162327f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:50:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693907414; x=1694512214;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IIyPiU3SGizoQEzrYTb1AqPw/vH1eVycuDo31fRpA9Y=;
+ b=AQIn8UOr4Tkdp3ifIko99mMIck1B6APp0ZQGYKsB1hK2nHP1HqPLdhOr5XGUIWFudS
+ n0ichl4e0xINO5v3+qinChl/ZLhGkKbar5wse13GqzbdRnl0fPAtm/Z1rKNH3m1SXgfo
+ hOVi3rhjqcEWNjfabjGDToyQBjmdq48qqZNayciRrg0lN7ncm6OYKmfjF4YAs3DWOQJP
+ yMXyI3YZv3P2s8zzN7W/8jANaFhoUKJVIcQYT2ZAWnvUgATKCuVzbmG4EsmKg6F5kNoY
+ B9Tzc5liiJCcvmXGlxA1VUCaI8dYDGI/VqRY8I0BRTreZWncLeV9ixvxs3hw7OyFcq69
+ 6eaQ==
+X-Gm-Message-State: AOJu0YynyzM3yBWJpneaLLmIWYLw/Na76n86l4UvEW6/A0Uy1EDTPMLf
+ R6hMKkxViS3W7n2A3h0O7S+K9gA2nHXBo1p1rued39crYvwq43bLUs6sQqbzaQLA5PxpNn7VOCW
+ fcMUCQ8OBvdR/DU4=
+X-Received: by 2002:a5d:6690:0:b0:317:3deb:a899 with SMTP id
+ l16-20020a5d6690000000b003173deba899mr9179639wru.1.1693907414201; 
+ Tue, 05 Sep 2023 02:50:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0VR70RIxx+42qFvbQ2IpIg3vI14rtvxIx5mx88VWidO7S+RXVoia5RGX+25Rkjgaz/RJkfw==
+X-Received: by 2002:a5d:6690:0:b0:317:3deb:a899 with SMTP id
+ l16-20020a5d6690000000b003173deba899mr9179622wru.1.1693907413886; 
+ Tue, 05 Sep 2023 02:50:13 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ d9-20020a5d4f89000000b0031c5b380291sm17027815wru.110.2023.09.05.02.50.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 02:50:12 -0700 (PDT)
+Message-ID: <5757bc33-fd76-345d-ca28-1aa382472b84@redhat.com>
+Date: Tue, 5 Sep 2023 11:50:06 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+Content-Language: en-US
+To: YangHang Liu <yanghliu@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org,
+ mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org,
+ peterx@redhat.com, david@redhat.com, philmd@linaro.org
+References: <20230904080451.424731-1-eric.auger@redhat.com>
+ <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,186 +93,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
-> -----Original Message-----
-> From: Qemu-devel
-> [mailto:qemu-devel-bounces+shameerali.kolothum.thodi=3Dhuawei.com@nong
-> nu.org] On Behalf Of Dov Murik
-> Sent: 23 August 2021 15:16
-> To: qemu-devel@nongnu.org
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>; Ashish Kalra
-> <ashish.kalra@amd.com>; Brijesh Singh <brijesh.singh@amd.com>; Michael
-> S. Tsirkin <mst@redhat.com>; Steve Rutherford <srutherford@google.com>;
-> James Bottomley <jejb@linux.ibm.com>; Juan Quintela
-> <quintela@redhat.com>; Dr. David Alan Gilbert <dgilbert@redhat.com>; Dov
-> Murik <dovmurik@linux.ibm.com>; Hubertus Franke <frankeh@us.ibm.com>;
-> Tobin Feldman-Fitzthum <tobin@linux.ibm.com>; Paolo Bonzini
-> <pbonzini@redhat.com>
-> Subject: [RFC PATCH v2 00/12] Confidential guest-assisted live migration
->=20
-> This is an RFC series for fast migration of confidential guests using an
-> in-guest migration helper that lives in OVMF.  QEMU VM live migration
-> needs to read source VM's RAM and write it in the target VM; this
-> mechanism doesn't work when the guest memory is encrypted or QEMU is
-> prevented from reading it in another way.  In order to support live
-> migration in such scenarios, we introduce an in-guest migration helper
-> which can securely extract RAM content from the guest in order to send
-> it to the target.  The migration helper is implemented as part of the
-> VM's firmware in OVMF.
->=20
-> We've implemented and tested this on AMD SEV, but expect most of the
-> processes can be used with other technologies that prevent direct access
-> of hypervisor to the guest's memory.  Specifically, we don't use SEV's
-> PSP migration commands (SEV_SEND_START, SEV_RECEIVE_START, etc) at all;
-> but note that the mirror VM relies on
-> KVM_CAP_VM_COPY_ENC_CONTEXT_FROM
-> to shared the SEV ASID with the main VM.
+On 9/5/23 10:22, YangHang Liu wrote:
+> I have runned the following two tests, but both tests failed:
+> [1] start a VM with virtio-iommu + 2 ice PFs only via qemu-kvm 8.1.5
+> Test result : the qemu-kvm keeps throwing the error:  VFIO_MAP_DMA
+> failed: File exists. vfio_dma_map(0x56443d20fbe0, 0xffffe000, 0x1000,
+> 0x7fb545709000) = -17 (File exists)
+> [2] start a VM with virtio-iommu + 2 ice PFs via libvirt-9.5 + qemu-kvm 8.1.5
+> Test result: the qemu-kvm core dump with
+> ERROR:../qom/object.c:1198:object_unref: assertion failed: (obj->ref >
+> 0). Bail out! ERROR:../qom/object.c:1198:object_unref: assertion
+> failed: (obj->ref > 0)
+This latter issue is introduced by patch
+[PATCH 12/13] virtio-iommu: Resize memory region according to the max
+iova info
+and especially the call to
 
-Hi Dov,
+memory_region_set_size(&mr->parent_obj, max_iova + 1);
 
-Sorry if I missed out, but just to check if there are any updates to or rev=
-ised
-one to this series? This guest-assisted method seems to be a good generic
-approach for live migration and just wondering whether it is worth taking a
-look for ARM CCA as well(I am not sure ARM RMM spec will have any=20
-specific proposal for live migration or not, but couldn't find anything
-public yet).
+I don't really get why at the moment but I will investigate ... Eric
 
-Please let me know if you plan to re-spin or there are any concerns with
-this approach. Appreciate if you can point me to any relevant discussion
-threads.
-
-Thanks,
-Shameer
-
->=20
-> Corresponding RFC patches for OVMF have been posted by Tobin
-> Feldman-Fitzthum on edk2-devel [1].  Those include the crux of the
-> migration helper: a mailbox protocol over a shared memory page which
-> allows communication between QEMU and the migration helper.  In the
-> source VM this is used to read a page and encrypt it for transport; in
-> the target it is used to decrypt the incoming page and storing the
-> content in the correct address in the guest memory.  All encryption and
-> decryption operations occur inside the trusted context in the VM, and
-> therefore the VM's memory plaintext content is never accessible to the
-> hosts participating in the migration.
->=20
-> In order to allow OVMF to run the migration helper in parallel to the
-> guest OS, we use a mirror VM [3], which shares the same memory mapping
-> and SEV ASID as the main VM but has its own run loop.  To start the
-> mirror vcpu and the migration handler, we added a temporary
-> start-migration-handler QMP command; this will be removed in a future
-> version to run as part of the migrate QMP command.
->=20
-> In the target VM we need the migration handler running to receive
-> incoming RAM pages; to achieve that, we boot the VM into OVMF with a
-> special fw_cfg value that causes OVMF to not boot the guest OS; we then
-> allow QEMU to receive an incoming migration by issuing a new
-> start-migrate-incoming QMP command.
->=20
-> The confidential RAM migration requires checking whether a given guest
-> RAM page is encrypted or not.  This is achieved using SEV shared regions
-> list tracking, which is implemented as part the SEV live migration patch
-> series [2].  This feature tracks hypercalls from OVMF and guest Linux to
-> report changes of page encryption status so that QEMU has an up-to-date
-> view of which memory regions are shared and which are encrypted.
->=20
-> We left a few unfinished edges in this RFC but decided to publish it to
-> start the commmunity discussion.  TODOs:
->=20
-> 1. QMP commands start-migration-handler and start-migrate-incoming are
->    developer tools and should be performed automatically.
-> 2. The entry point address of the in-guest migration handler and its GDT
->    are currently hard-coded in QEMU (patch 8); instead they should be
->    discovered using pc_system_ovmf_table_find.  Same applies for the
->    mailbox address (patch 1).
-> 3. For simplicity, this patch series forces the use of the
->    guest-assisted migration instead of the SEV PSP-based migration.
->    Ideally we might want the user to choose the desired mode using
->    migrate-set-parameters or a similar mechanism.
-> 4. There is currently no discovery protocol between QEMU and OVMF to
->    verify that OVMF indeed supports in-guest migration handler.
->=20
->=20
-> List of patches in this series:
->=20
-> 1-3: introduce new confidtial RAM migration functions which communicate
->      with the migration helper.
-> 4-6: use the new MH communication functions when migrating encrypted
-> RAM
->      pages
-> 7-9: allow starting migration handler on mirror vcpu with QMP command
->      start-migration-handler
-> 10:  introduce the start-migrate-incoming QMP command to switch the
->      target into accepting the incoming migration.
-> 11:  fix devices issues when loading state into a live VM
-> 12:  add documentation
->=20
->=20
-> This patch series is based on top of:
->=20
-> 1. Add SEV guest live migration support, from Ashish Kalra [2]
-> 2. Support for mirror VM, from Ashish Kalra [3]
->=20
-> [1] https://edk2.groups.io/g/devel/message/79517
-> [2]
-> https://lore.kernel.org/qemu-devel/cover.1628076205.git.ashish.kalra@amd
-> .com/
-> [3]
-> https://lore.kernel.org/qemu-devel/cover.1629118207.git.ashish.kalra@amd
-> .com/
->=20
->=20
-> Changes from RFC v1:
->  - Use the an SEV mirror VM for the migation handler (instead of
->    auxilliary vcpus)
->=20
-> RFC v1:
-> https://lore.kernel.org/qemu-devel/20210302204822.81901-1-dovmurik@li
-> nux.vnet.ibm.com/
->=20
->=20
-> Dov Murik (12):
->   migration: Add helpers to save confidential RAM
->   migration: Add helpers to load confidential RAM
->   migration: Introduce gpa_inside_migration_helper_shared_area
->   migration: Save confidential guest RAM using migration helper
->   migration: Load confidential guest RAM using migration helper
->   migration: Skip ROM, non-RAM, and vga.vram memory region during RAM
->     migration
->   i386/kvm: Exclude mirror vcpu in kvm_synchronize_all_tsc
->   migration: Allow resetting the mirror vcpu to the MH entry point
->   migration: Add QMP command start-migration-handler
->   migration: Add start-migrate-incoming QMP command
->   hw/isa/lpc_ich9: Allow updating an already-running VM
->   docs: Add confidential guest live migration documentation
->=20
->  docs/confidential-guest-live-migration.rst | 145 +++++++++
->  docs/confidential-guest-support.txt        |   5 +
->  docs/index.rst                             |   1 +
->  qapi/migration.json                        |  38 +++
->  include/sysemu/sev.h                       |   1 +
->  migration/confidential-ram.h               |  23 ++
->  hw/isa/lpc_ich9.c                          |   3 +-
->  migration/confidential-ram.c               | 339
-> +++++++++++++++++++++
->  migration/migration.c                      |  29 ++
->  migration/ram.c                            | 133 +++++++-
->  target/i386/kvm/kvm.c                      |   4 +-
->  migration/meson.build                      |   2 +-
->  migration/trace-events                     |   4 +
->  13 files changed, 714 insertions(+), 13 deletions(-)
->  create mode 100644 docs/confidential-guest-live-migration.rst
->  create mode 100644 migration/confidential-ram.h
->  create mode 100644 migration/confidential-ram.c
->=20
-> --
-> 2.20.1
->=20
+>
+> After removing the 2 PF from the VM, both tests passed.
+>
+> Tested-by: Yanghang Liu <yanghliu@redhat.com>
+>
+> Best Regards,
+> YangHang Liu
+>
+>
+> On Mon, Sep 4, 2023 at 4:08 PM Eric Auger <eric.auger@redhat.com> wrote:
+>> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
+>> we encounter the case where the guest tries to map IOVAs beyond 48b
+>> whereas the physical VTD IOMMU only supports 48b. This ends up with
+>> VFIO_MAP_DMA failures at qemu level because at kernel level,
+>> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
+>>
+>> This is due to the fact the virtio-iommu currently unconditionally
+>> exposes an IOVA range of 64b through its config input range fields.
+>>
+>> This series removes this assumption by retrieving the usable IOVA
+>> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
+>> a VFIO device is attached. This info is communicated to the
+>> virtio-iommu memory region, transformed into the inversed info, ie.
+>> the host reserved IOVA regions. Then those latter are combined with the
+>> reserved IOVA regions set though the virtio-iommu reserved-regions
+>> property. That way, the guest virtio-iommu driver, unchanged, is
+>> able to probe the whole set of reserved regions and prevent any IOVA
+>> belonging to those ranges from beeing used, achieving the original goal.
+>>
+>> Best Regards
+>>
+>> Eric
+>>
+>> This series can be found at:
+>> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v1
+>>
+>> Eric Auger (13):
+>>   memory: Let ReservedRegion use Range
+>>   memory: Introduce memory_region_iommu_set_iova_ranges
+>>   vfio: Collect container iova range info
+>>   virtio-iommu: Rename reserved_regions into prop_resv_regions
+>>   virtio-iommu: Introduce per IOMMUDevice reserved regions
+>>   range: Introduce range_inverse_array()
+>>   virtio-iommu: Implement set_iova_ranges() callback
+>>   range: Make range_compare() public
+>>   util/reserved-region: Add new ReservedRegion helpers
+>>   virtio-iommu: Consolidate host reserved regions and property set ones
+>>   test: Add some tests for range and resv-mem helpers
+>>   virtio-iommu: Resize memory region according to the max iova info
+>>   vfio: Remove 64-bit IOVA address space assumption
+>>
+>>  include/exec/memory.h            |  30 ++++-
+>>  include/hw/vfio/vfio-common.h    |   2 +
+>>  include/hw/virtio/virtio-iommu.h |   7 +-
+>>  include/qemu/range.h             |   9 ++
+>>  include/qemu/reserved-region.h   |  32 +++++
+>>  hw/core/qdev-properties-system.c |   9 +-
+>>  hw/vfio/common.c                 |  70 ++++++++---
+>>  hw/virtio/virtio-iommu-pci.c     |   8 +-
+>>  hw/virtio/virtio-iommu.c         |  85 +++++++++++--
+>>  softmmu/memory.c                 |  15 +++
+>>  tests/unit/test-resv-mem.c       | 198 +++++++++++++++++++++++++++++++
+>>  util/range.c                     |  41 ++++++-
+>>  util/reserved-region.c           |  94 +++++++++++++++
+>>  hw/virtio/trace-events           |   1 +
+>>  tests/unit/meson.build           |   1 +
+>>  util/meson.build                 |   1 +
+>>  16 files changed, 562 insertions(+), 41 deletions(-)
+>>  create mode 100644 include/qemu/reserved-region.h
+>>  create mode 100644 tests/unit/test-resv-mem.c
+>>  create mode 100644 util/reserved-region.c
+>>
+>> --
+>> 2.41.0
+>>
+>>
 
 
