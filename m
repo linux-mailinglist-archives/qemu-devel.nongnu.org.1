@@ -2,98 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A2779236F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 16:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC2A79237E
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 16:26:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdWv4-0001Rd-AP; Tue, 05 Sep 2023 10:20:42 -0400
+	id 1qdWz8-000356-Dh; Tue, 05 Sep 2023 10:24:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
- id 1qdWv2-0001R6-Gb
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 10:20:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qdWz5-00031N-W4
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 10:24:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
- id 1qdWur-0007dN-Gn
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 10:20:40 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qdWz3-0008ES-Hv
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 10:24:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693923627;
+ s=mimecast20190719; t=1693923888;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8/TEqKun8ZTfmcuAYj6AtPR6+tr3PQu8Ezq0n9A3YPw=;
- b=NjxTZe0CbCZY7Dd7iROAL5WJN2zdQwk51EXn9Yj/lh7X+ZTy4BxP3E2JkEt3WEColHwmO7
- Al/K9pVUZtav7gohZpaRPCSSdbWeYfDk7juTlz/oOz9T8gNzdjtLZJ7fxXpSIK1tcKGjpT
- O/IwpBqhg/EYMCEG3fnpOEz5jj4QuIU=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-WOldPrbvMIS1B2HDUKakPg-1; Tue, 05 Sep 2023 10:19:22 -0400
-X-MC-Unique: WOldPrbvMIS1B2HDUKakPg-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3a9e0160cdbso2861538b6e.2
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 07:19:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693923561; x=1694528361;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8/TEqKun8ZTfmcuAYj6AtPR6+tr3PQu8Ezq0n9A3YPw=;
- b=lCHIf9+AaH07q17A54xduboWBS0va1sZPxhDK55ua26vlVfTI7A0SGCt9YVmzL/E7p
- G1pgDvqEQj2WZAcu8ZwMQztuH3jCEJVc1qGiGlDMcg327WIKJlOnRCw941ISZks4dARC
- nMo+DsgYmRn5PIFQ0q2zGvpcdTC0+YuJGvChXuZT4EDko/5YmeCTVny53QRrS0PznXmh
- jFPfuzdLy/pTHNqHJh3RGDu6dUAOpQqrOvuasLSl4FJACpkdPQz5I+ls5YVcFSaoRHem
- G3N5Rml46bY8I8kMRlwJ1iC+gN9SeQ/Pt7zFrFm7O5veyegyYzeZ0/dlFyEok9oyXexF
- yqyw==
-X-Gm-Message-State: AOJu0Yx51IP5Uy6yd7Tlh/6JTfzlhJ/4wYqtt9wk6vUGzEpA6G41ONMY
- vv285CkRTZYHlGnATGm4AtJgfMbZdohBT4g9TyKuhLAw14LEmJbvWqqIniXt6IpCZznh2EnZl7o
- FYIIyttVZ8sCYe5M=
-X-Received: by 2002:a05:6808:220c:b0:3a8:5502:35aa with SMTP id
- bd12-20020a056808220c00b003a8550235aamr16205510oib.14.1693923561060; 
- Tue, 05 Sep 2023 07:19:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEys/0X3NKwNoiVWr1CDZeEdKx2bsJuMHhj/AtMY83qaQOkNOZXAAtyopyJszrIakl0yWJDbQ==
-X-Received: by 2002:a05:6808:220c:b0:3a8:5502:35aa with SMTP id
- bd12-20020a056808220c00b003a8550235aamr16205482oib.14.1693923560800; 
- Tue, 05 Sep 2023 07:19:20 -0700 (PDT)
-Received: from fedora ([2a01:e0a:257:8c60:80f1:cdf8:48d0:b0a1])
- by smtp.gmail.com with ESMTPSA id
- t26-20020ac8531a000000b0040324785e4csm4342687qtn.13.2023.09.05.07.19.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 07:19:20 -0700 (PDT)
-Date: Tue, 5 Sep 2023 16:19:15 +0200
-From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
- virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH v3 07/20] virtio: add vhost-user-base and a generic
- vhost-user-device
-Message-ID: <ZPc44//qJCPNAOXE@fedora>
-References: <20230710153522.3469097-1-alex.bennee@linaro.org>
- <20230710153522.3469097-8-alex.bennee@linaro.org>
+ bh=VI7pwGuac7i6G68mhyuN+JzX2tT8evEIk2spaZ49J4w=;
+ b=TUK+0uVJXDcpno4CNha3VtsqQp55lIWjL7ZL4gvvFgkusNmE0WUDSBP7JtJ9vvKJawNMdE
+ 4TrbU7ybAJF2Du8AuNviKBpvP6MUYplcq9K2ZybmuZe17NoOIb+bMBSw7m/9O2a7KGwF2a
+ e61ek/Jicw1VRdhwuWTFUlATSBCDFb0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-511-niqZ14BSN0CtIc6DqZnpTw-1; Tue, 05 Sep 2023 10:24:42 -0400
+X-MC-Unique: niqZ14BSN0CtIc6DqZnpTw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A76CD3C1014C;
+ Tue,  5 Sep 2023 14:24:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 98C136B5AA;
+ Tue,  5 Sep 2023 14:24:37 +0000 (UTC)
+Date: Tue, 5 Sep 2023 09:24:35 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ peter.maydell@linaro.com
+Subject: Re: [PATCH v6 04/17] nbd: Prepare for 64-bit request effect lengths
+Message-ID: <54b6a72ltz7uvb2lyhlyi4aptz2oaxyb7d5egsj24t7ueibqjb@tds7ps6lfvis>
+References: <20230829175826.377251-19-eblake@redhat.com>
+ <20230829175826.377251-23-eblake@redhat.com>
+ <3a136ddb-2ea7-ef26-d9b8-7f55f068996c@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230710153522.3469097-8-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvaralar@redhat.com;
+In-Reply-To: <3a136ddb-2ea7-ef26-d9b8-7f55f068996c@yandex-team.ru>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -117,325 +80,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 04:35:09PM +0100, Alex Bennée wrote:
-> In theory we shouldn't need to repeat so much boilerplate to support
-> vhost-user backends. This provides a generic vhost-user-base QOM
-> object and a derived vhost-user-device for which the user needs to
-> provide the few bits of information that aren't currently provided by
-> the vhost-user protocol. This should provide a baseline implementation
-> from which the other vhost-user stub can specialise.
+On Mon, Sep 04, 2023 at 07:15:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 29.08.23 20:58, Eric Blake wrote:
+> > Widen the length field of NBDRequest to 64-bits, although we can
+> > assert that all current uses are still under 32 bits: either because
+> > of NBD_MAX_BUFFER_SIZE which is even smaller (and where size_t can
+> > still be appropriate, even on 32-bit platforms), or because nothing
+> > ever puts us into NBD_MODE_EXTENDED yet (and while future patches will
+> > allow larger transactions, the lengths in play here are still capped
+> > at 32-bit).  There are no semantic changes, other than a typo fix in a
+> > couple of error messages.
+> > 
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> > ---
+> > 
+> > v6: fix sign extension bug
+> > 
+> > v5: tweak commit message, adjust a few more spots [Vladimir]
+> > 
+> > v4: split off enum changes to earlier patches [Vladimir]
 > 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> [..]
 > 
-> ---
-> v2
->   - split into vub and vud
-> ---
->  include/hw/virtio/vhost-user-device.h |  45 ++++
->  hw/virtio/vhost-user-device.c         | 324 ++++++++++++++++++++++++++
->  hw/virtio/meson.build                 |   2 +
->  3 files changed, 371 insertions(+)
->  create mode 100644 include/hw/virtio/vhost-user-device.h
->  create mode 100644 hw/virtio/vhost-user-device.c
+> > --- a/nbd/server.c
+> > +++ b/nbd/server.c
+> > @@ -1165,7 +1165,7 @@ static int nbd_negotiate_options(NBDClient *client, Error **errp)
+> >           client->optlen = length;
+> > 
+> >           if (length > NBD_MAX_BUFFER_SIZE) {
+> > -            error_setg(errp, "len (%" PRIu32" ) is larger than max len (%u)",
+> > +            error_setg(errp, "len (%" PRIu32 ") is larger than max len (%u)",
+> >                          length, NBD_MAX_BUFFER_SIZE);
+> >               return -EINVAL;
+> >           }
+> > @@ -1441,7 +1441,7 @@ static int coroutine_fn nbd_receive_request(NBDClient *client, NBDRequest *reque
+> >       request->type   = lduw_be_p(buf + 6);
+> >       request->cookie = ldq_be_p(buf + 8);
+> >       request->from   = ldq_be_p(buf + 16);
+> > -    request->len    = ldl_be_p(buf + 24);
+> > +    request->len    = (uint32_t)ldl_be_p(buf + 24); /* widen 32 to 64 bits */
 > 
-> diff --git a/include/hw/virtio/vhost-user-device.h b/include/hw/virtio/vhost-user-device.h
-> new file mode 100644
-> index 0000000000..9105011e25
-> --- /dev/null
-> +++ b/include/hw/virtio/vhost-user-device.h
-> @@ -0,0 +1,45 @@
-> +/*
-> + * Vhost-user generic virtio device
-> + *
-> + * Copyright (c) 2023 Linaro Ltd
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef QEMU_VHOST_USER_DEVICE_H
-> +#define QEMU_VHOST_USER_DEVICE_H
-> +
-> +#include "hw/virtio/vhost.h"
-> +#include "hw/virtio/vhost-user.h"
-> +
-> +#define TYPE_VHOST_USER_BASE "vhost-user-base"
-> +
-> +OBJECT_DECLARE_TYPE(VHostUserBase, VHostUserBaseClass, VHOST_USER_BASE)
-> +
-> +struct VHostUserBase {
-> +    VirtIODevice parent;
-> +    /* Properties */
-> +    CharBackend chardev;
-> +    uint16_t virtio_id;
-> +    uint32_t num_vqs;
-> +    /* State tracking */
-> +    VhostUserState vhost_user;
-> +    struct vhost_virtqueue *vhost_vq;
-> +    struct vhost_dev vhost_dev;
-> +    GPtrArray *vqs;
-> +    bool connected;
-> +};
-> +
-> +    /* needed so we can use the base realize after specialisation
-> +       tweaks */
-> +struct VHostUserBaseClass {
-> +    /*< private >*/
-> +    VirtioDeviceClass parent_class;
-> +    /*< public >*/
-> +    DeviceRealize parent_realize;
-> +};
-> +
-> +/* shared for the benefit of the derived pci class */
-> +#define TYPE_VHOST_USER_DEVICE "vhost-user-device"
-> +
-> +#endif /* QEMU_VHOST_USER_DEVICE_H */
-> diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
-> new file mode 100644
-> index 0000000000..b0239fa033
-> --- /dev/null
-> +++ b/hw/virtio/vhost-user-device.c
-> @@ -0,0 +1,324 @@
-> +/*
-> + * Generic vhost-user stub. This can be used to connect to any
-> + * vhost-user backend. All configuration details must be handled by
-> + * the vhost-user daemon itself
-> + *
-> + * Copyright (c) 2023 Linaro Ltd
-> + * Author: Alex Bennée <alex.bennee@linaro.org>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/virtio/virtio-bus.h"
-> +#include "hw/virtio/vhost-user-device.h"
-> +#include "qemu/error-report.h"
-> +
-> +static void vub_start(VirtIODevice *vdev)
-> +{
-> +    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-> +    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +    int ret, i;
-> +
-> +    if (!k->set_guest_notifiers) {
-> +        error_report("binding does not support guest notifiers");
-> +        return;
-> +    }
-> +
-> +    ret = vhost_dev_enable_notifiers(&vub->vhost_dev, vdev);
-> +    if (ret < 0) {
-> +        error_report("Error enabling host notifiers: %d", -ret);
-> +        return;
-> +    }
-> +
-> +    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, true);
-> +    if (ret < 0) {
-> +        error_report("Error binding guest notifier: %d", -ret);
-> +        goto err_host_notifiers;
-> +    }
-> +
-> +    vub->vhost_dev.acked_features = vdev->guest_features;
-> +
-> +    ret = vhost_dev_start(&vub->vhost_dev, vdev, true);
-> +    if (ret < 0) {
-> +        error_report("Error starting vhost-user-device: %d", -ret);
-> +        goto err_guest_notifiers;
-> +    }
-> +
-> +    /*
-> +     * guest_notifier_mask/pending not used yet, so just unmask
-> +     * everything here. virtio-pci will do the right thing by
-> +     * enabling/disabling irqfd.
-> +     */
-> +    for (i = 0; i < vub->vhost_dev.nvqs; i++) {
-> +        vhost_virtqueue_mask(&vub->vhost_dev, vdev, i, false);
-> +    }
-> +
-> +    return;
-> +
-> +err_guest_notifiers:
-> +    k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
-> +err_host_notifiers:
-> +    vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
-> +}
-> +
-> +static void vub_stop(VirtIODevice *vdev)
-> +{
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-> +    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-> +    int ret;
-> +
-> +    if (!k->set_guest_notifiers) {
-> +        return;
-> +    }
-> +
-> +    vhost_dev_stop(&vub->vhost_dev, vdev, true);
-> +
-> +    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
-> +    if (ret < 0) {
-> +        error_report("vhost guest notifier cleanup failed: %d", ret);
-> +        return;
-> +    }
-> +
-> +    vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
-> +}
-> +
-> +static void vub_set_status(VirtIODevice *vdev, uint8_t status)
-> +{
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +    bool should_start = virtio_device_should_start(vdev, status);
-> +
-> +    if (vhost_dev_is_started(&vub->vhost_dev) == should_start) {
-> +        return;
-> +    }
-> +
-> +    if (should_start) {
-> +        vub_start(vdev);
-> +    } else {
-> +        vub_stop(vdev);
-> +    }
-> +}
-> +
-> +/*
-> + * For an implementation where everything is delegated to the backend
-> + * we don't do anything other than return the full feature set offered
-> + * by the daemon (module the reserved feature bit).
-> + */
-> +static uint64_t vub_get_features(VirtIODevice *vdev,
-> +                                 uint64_t requested_features, Error **errp)
-> +{
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +    /* This should be set when the vhost connection initialises */
-> +    g_assert(vub->vhost_dev.features);
-> +    return vub->vhost_dev.features & ~(1ULL << VHOST_USER_F_PROTOCOL_FEATURES);
-> +}
-> +
-> +static void vub_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-> +{
-> +    /*
-> +     * Not normally called; it's the daemon that handles the queue;
-> +     * however virtio's cleanup path can call this.
-> +     */
-> +}
-> +
-> +static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserBase *vub)
-> +{
-> +    vhost_user_cleanup(&vub->vhost_user);
-> +
-> +    for (int i = 0; i < vub->num_vqs; i++) {
-> +        VirtQueue *vq = g_ptr_array_index(vub->vqs, i);
-> +        virtio_delete_queue(vq);
-> +    }
-> +
-> +    virtio_cleanup(vdev);
-> +}
-> +
-> +static int vub_connect(DeviceState *dev)
-> +{
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +
-> +    if (vub->connected) {
-> +        return 0;
-> +    }
-> +    vub->connected = true;
-> +
-> +    /* restore vhost state */
-> +    if (virtio_device_started(vdev, vdev->status)) {
-> +        vub_start(vdev);
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static void vub_disconnect(DeviceState *dev)
-> +{
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +
-> +    if (!vub->connected) {
-> +        return;
-> +    }
-> +    vub->connected = false;
-> +
-> +    if (vhost_dev_is_started(&vub->vhost_dev)) {
-> +        vub_stop(vdev);
-> +    }
-> +}
-> +
-> +static void vub_event(void *opaque, QEMUChrEvent event)
-> +{
-> +    DeviceState *dev = opaque;
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +
-> +    switch (event) {
-> +    case CHR_EVENT_OPENED:
-> +        if (vub_connect(dev) < 0) {
-> +            qemu_chr_fe_disconnect(&vub->chardev);
-> +            return;
-> +        }
-> +        break;
-> +    case CHR_EVENT_CLOSED:
-> +        vub_disconnect(dev);
-> +        break;
-> +    case CHR_EVENT_BREAK:
-> +    case CHR_EVENT_MUX_IN:
-> +    case CHR_EVENT_MUX_OUT:
-> +        /* Ignore */
-> +        break;
-> +    }
-> +}
-> +
-> +static void vub_device_realize(DeviceState *dev, Error **errp)
-> +{
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserBase *vub = VHOST_USER_BASE(dev);
-> +    int ret;
-> +
-> +    if (!vub->chardev.chr) {
-> +        error_setg(errp, "vhost-user-device: missing chardev");
-> +        return;
-> +    }
-> +
-> +    if (!vub->virtio_id) {
-> +        error_setg(errp, "vhost-user-device: need to define device id");
-> +        return;
-> +    }
-> +
-> +    if (!vub->num_vqs) {
-> +        vub->num_vqs = 1; /* reasonable default? */
-> +    }
-> +
-> +    if (!vhost_user_init(&vub->vhost_user, &vub->chardev, errp)) {
-> +        return;
-> +    }
-> +
-> +    virtio_init(vdev, vub->virtio_id, 0);
-> +
-> +    /*
-> +     * Disable guest notifiers, by default all notifications will be via the
-> +     * asynchronous vhost-user socket.
-> +     */
-> +    vdev->use_guest_notifier_mask = false;
-> +
-> +    /* Allocate queues */
-> +    vub->vqs = g_ptr_array_sized_new(vub->num_vqs);
-> +    for (int i = 0; i < vub->num_vqs; i++) {
-> +        g_ptr_array_add(vub->vqs,
-> +                        virtio_add_queue(vdev, 4, vub_handle_output));
-> +    }
-> +
+> should it be "(uint64_t)" ?
 
-Hello Alex, apologies if someone already asked this. If I understand
-correctly, the second parameter of virtio_add_queue() is the len of the
-queue. Why have you chosen "4" as its value? Shall qemu query the len of
-the queue from the vhost-user device instead?
+No. ldl_be_p() returns an int.  Widening int to 64 bits sign-extends;
+we have to first make it unsigned (by casting to uint32_t) so that we
+then have an unsigned value that widens by zero-extension.
 
-Matias
+Maybe we should fix ldl_bd_p() and friends to favor unsigned values.
+'git grep ldul_be' has zero hits; even though Peter just touched the
+docs patch claiming it exists:
+
+https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00645.html
+
+
+> 
+> > 
+> >       trace_nbd_receive_request(magic, request->flags, request->type,
+> >                                 request->from, request->len);
+> > @@ -1899,7 +1899,7 @@ static int coroutine_fn nbd_co_send_simple_reply(NBDClient *client,
+> >                                                    NBDRequest *request,
+> >                                                    uint32_t error,
+> >                                                    void *data,
+> > -                                                 size_t len,
+> > +                                                 uint64_t len,
+> >                                                    Error **errp)
+> >   {
+> >       NBDSimpleReply reply;
+> > @@ -1910,6 +1910,7 @@ static int coroutine_fn nbd_co_send_simple_reply(NBDClient *client,
+> >       };
+> > 
+> >       assert(!len || !nbd_err);
+> > +    assert(len <= NBD_MAX_STRING_SIZE);
+> 
+> NBD_MAX_BUFFER_SIZE ?
+
+No. MAX_STRING_SIZE is 4k, MAX_BUFFER_SIZE is 32M.  The smaller size
+is the correct bound here (an error message has to be transmitted as a
+single string, and the recipient does not expect more than a 4k error
+message).
+
+> 
+> with that fixed:
+> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> 
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
