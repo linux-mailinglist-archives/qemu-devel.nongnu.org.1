@@ -2,50 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589E2792156
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D087792157
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdS7e-00025S-NH; Tue, 05 Sep 2023 05:13:22 -0400
+	id 1qdSAB-0003Ue-Aa; Tue, 05 Sep 2023 05:15:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1qdS7c-00024e-7z; Tue, 05 Sep 2023 05:13:20 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qdSA5-0003Tl-Mw
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:15:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1qdS7V-0003xN-E1; Tue, 05 Sep 2023 05:13:19 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rg0Cd50gpz689yQ;
- Tue,  5 Sep 2023 17:13:01 +0800 (CST)
-Received: from A2006125610.china.huawei.com (10.202.227.178) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 5 Sep 2023 10:13:03 +0100
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: <peter.maydell@linaro.org>, <gshan@redhat.com>, <ricarkol@google.com>,
- <jonathan.cameron@huawei.com>, <kvm@vger.kernel.org>, <linuxarm@huawei.com>
-Subject: [PATCH v4] arm/kvm: Enable support for
- KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
-Date: Tue, 5 Sep 2023 10:12:46 +0100
-Message-ID: <20230905091246.1931-1-shameerali.kolothum.thodi@huawei.com>
-X-Mailer: git-send-email 2.12.0.windows.1
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qdSA3-0004bJ-2J
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:15:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693905348;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WQ0UxSlZiBSY1y9/4HeAknNre1JVBLbWoe1nygen67I=;
+ b=felHu9J+syanEXKmU8Ffu4lHVl8/pNu0pWvw0g/ywua40i7YqEJCWRjUI/7hdVNu3bM3c6
+ l9vMKik/nYMzcav/npem+2En0O7/hLFTGdZsSMnfypgUnbXBs/CnOJ1OR4Mu0s4BDVuQn3
+ 50SQtHI3TNOwLxs2nyboi3BP+SaENv0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-W713G7XOOUq6PVruYqKUtQ-1; Tue, 05 Sep 2023 05:15:47 -0400
+X-MC-Unique: W713G7XOOUq6PVruYqKUtQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-401db2550e0so16346615e9.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:15:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693905346; x=1694510146;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WQ0UxSlZiBSY1y9/4HeAknNre1JVBLbWoe1nygen67I=;
+ b=Y4aK0f0gWdu1eo/gWfG+0rSphnmOUWdUh6LMGRDxn/h2euqYxUH4wZ6HR48AuchbJs
+ A9rqvur6s7hhhaqtrgyvDHw47yiYSKVOySvoucxAt+wFABMm1ltbdK7J1D9SMV2TKLPD
+ zF6JNGSRtSdEYLgugKaRpQ5eozBESTfUWhgaG/8c/nwoizLeHiA1kKnQ9BP9xMG51K85
+ Y3QKl7wF75uB7Lq48o0rQDyFjo5R5hr4hAz/ZvZHPVFQLzsedacJzX56teh+VMWpfIyI
+ DqzuIOFmatFKOWPq8LDnhe6En7U7uJs23NKP9NOhVPCVxlle9JNDCb948t6rKLmmLqtp
+ czQw==
+X-Gm-Message-State: AOJu0YxMMH/OtOxrnyqZAEdXgBFSRyxTlngZr+bb1S9fqvFxB5McV2YF
+ oq0S6Guj+2yz9Mmy/QzBQdgJShXQnzgBLUF3bNTV0uj7O2zBtt71/OSwOs6xTuEHXc7K1JpPrtR
+ Q+uqWF8GcXBCqkpY=
+X-Received: by 2002:a7b:cd0a:0:b0:3fe:795:712a with SMTP id
+ f10-20020a7bcd0a000000b003fe0795712amr8876322wmj.27.1693905346521; 
+ Tue, 05 Sep 2023 02:15:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKKpQ/Ysvnt3iNTCGAn77xZn7nQ5it320TwUra/CUmTYbNDXS3h60OgggUQLSqJCIAXb+5/w==
+X-Received: by 2002:a7b:cd0a:0:b0:3fe:795:712a with SMTP id
+ f10-20020a7bcd0a000000b003fe0795712amr8876303wmj.27.1693905346145; 
+ Tue, 05 Sep 2023 02:15:46 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ x3-20020adff643000000b003188358e08esm16734090wrp.42.2023.09.05.02.15.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 02:15:45 -0700 (PDT)
+Message-ID: <6ce3daf9-b2c8-bd6e-a502-0870f8b17913@redhat.com>
+Date: Tue, 5 Sep 2023 11:15:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.202.227.178]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) AC_FROM_MANY_DOTS=0.001, BAYES_00=-1.9,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+Content-Language: en-US
+To: YangHang Liu <yanghliu@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org,
+ mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org,
+ peterx@redhat.com, david@redhat.com, philmd@linaro.org
+References: <20230904080451.424731-1-eric.auger@redhat.com>
+ <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,183 +106,119 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-From:  Shameer Kolothum via <qemu-devel@nongnu.org>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have Eager Page Split support added for ARM in the kernel,
-enable it in Qemu. This adds,
- -eager-split-size to -accel sub-options to set the eager page split chunk size.
- -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
+Hi Yanghang,
 
-The chunk size specifies how many pages to break at a time, using a
-single allocation. Bigger the chunk size, more pages need to be
-allocated ahead of time.
+On 9/5/23 10:22, YangHang Liu wrote:
+> I have runned the following two tests, but both tests failed:
+> [1] start a VM with virtio-iommu + 2 ice PFs only via qemu-kvm 8.1.5
+> Test result : the qemu-kvm keeps throwing the error:  VFIO_MAP_DMA
+> failed: File exists. vfio_dma_map(0x56443d20fbe0, 0xffffe000, 0x1000,
+> 0x7fb545709000) = -17 (File exists)
+> [2] start a VM with virtio-iommu + 2 ice PFs via libvirt-9.5 + qemu-kvm 8.1.5
+> Test result: the qemu-kvm core dump with
+> ERROR:../qom/object.c:1198:object_unref: assertion failed: (obj->ref >
+> 0). Bail out! ERROR:../qom/object.c:1198:object_unref: assertion
+> failed: (obj->ref > 0)
+>
+> After removing the 2 PF from the VM, both tests passed.
+> Tested-by: Yanghang Liu <yanghliu@redhat.com>
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
----
-Changes:
-v3: https://lore.kernel.org/qemu-devel/20230830114818.641-1-shameerali.kolothum.thodi@huawei.com/
-   -Added R-by by Gavin and replaced kvm_arm_eager_split_size_valid()
-    with a direct check.
-v2: https://lore.kernel.org/qemu-devel/20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com/
-   -Addressed commenst from Gavin.
-RFC v1: https://lore.kernel.org/qemu-devel/20230725150002.621-1-shameerali.kolothum.thodi@huawei.com/
-  -Updated qemu-options.hx with description
-  -Addressed review comments from Peter and Gavin(Thanks).
----
- accel/kvm/kvm-all.c      |  1 +
- include/sysemu/kvm_int.h |  1 +
- qemu-options.hx          | 15 ++++++++++
- target/arm/kvm.c         | 61 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 78 insertions(+)
+thank you for testing. If my understanding is correct you still
+encountered some issues with/after the series. If this is correct you
+shall not offer your Tested-by which means you tested the series and it
+works fine for you/fixes your issue.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 2ba7521695..ff1578bb32 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3763,6 +3763,7 @@ static void kvm_accel_instance_init(Object *obj)
-     /* KVM dirty ring is by default off */
-     s->kvm_dirty_ring_size = 0;
-     s->kvm_dirty_ring_with_bitmap = false;
-+    s->kvm_eager_split_size = 0;
-     s->notify_vmexit = NOTIFY_VMEXIT_OPTION_RUN;
-     s->notify_window = 0;
-     s->xen_version = 0;
-diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-index 511b42bde5..a5b9122cb8 100644
---- a/include/sysemu/kvm_int.h
-+++ b/include/sysemu/kvm_int.h
-@@ -116,6 +116,7 @@ struct KVMState
-     uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
-     uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
-     bool kvm_dirty_ring_with_bitmap;
-+    uint64_t kvm_eager_split_size;  /* Eager Page Splitting chunk size */
-     struct KVMDirtyRingReaper reaper;
-     NotifyVmexitOption notify_vmexit;
-     uint32_t notify_window;
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 29b98c3d4c..2e70704ee8 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -186,6 +186,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-     "                split-wx=on|off (enable TCG split w^x mapping)\n"
-     "                tb-size=n (TCG translation block cache size)\n"
-     "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
-+    "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
-     "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
-     "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
- SRST
-@@ -244,6 +245,20 @@ SRST
-         is disabled (dirty-ring-size=0).  When enabled, KVM will instead
-         record dirty pages in a bitmap.
- 
-+    ``eager-split-size=n``
-+        KVM implements dirty page logging at the PAGE_SIZE granularity and
-+        enabling dirty-logging on a huge-page requires breaking it into
-+        PAGE_SIZE pages in the first place. KVM on ARM does this splitting
-+        lazily by default. There are performance benefits in doing huge-page
-+        split eagerly, especially in situations where TLBI costs associated
-+        with break-before-make sequences are considerable and also if guest
-+        workloads are read intensive. The size here specifies how many pages
-+        to break at a time and needs to be a valid block size which is
-+        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
-+        respectively. Be wary of specifying a higher size as it will have an
-+        impact on the memory. By default, this feature is disabled
-+        (eager-split-size=0).
-+
-     ``notify-vmexit=run|internal-error|disable,notify-window=n``
-         Enables or disables notify VM exit support on x86 host and specify
-         the corresponding notify window to trigger the VM exit if enabled.
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 23aeb09949..b66b936a95 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -30,6 +30,7 @@
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/irq.h"
-+#include "qapi/visitor.h"
- #include "qemu/log.h"
- 
- const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-@@ -287,6 +288,26 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
-     }
- 
-+    if (s->kvm_eager_split_size) {
-+        uint32_t sizes;
-+
-+        sizes = kvm_vm_check_extension(s, KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES);
-+        if (!sizes) {
-+            s->kvm_eager_split_size = 0;
-+            warn_report("Eager Page Split support not available");
-+        } else if (!(s->kvm_eager_split_size & sizes)) {
-+            error_report("Eager Page Split requested chunk size not valid");
-+            ret = -EINVAL;
-+        } else {
-+            ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
-+                                    s->kvm_eager_split_size);
-+            if (ret < 0) {
-+                error_report("Enabling of Eager Page Split failed: %s",
-+                             strerror(-ret));
-+            }
-+        }
-+    }
-+
-     kvm_arm_init_debug(s);
- 
-     return ret;
-@@ -1069,6 +1090,46 @@ bool kvm_arch_cpu_check_are_resettable(void)
-     return true;
- }
- 
-+static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
-+                                          const char *name, void *opaque,
-+                                          Error **errp)
-+{
-+    KVMState *s = KVM_STATE(obj);
-+    uint64_t value = s->kvm_eager_split_size;
-+
-+    visit_type_size(v, name, &value, errp);
-+}
-+
-+static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
-+                                          const char *name, void *opaque,
-+                                          Error **errp)
-+{
-+    KVMState *s = KVM_STATE(obj);
-+    uint64_t value;
-+
-+    if (s->fd != -1) {
-+        error_setg(errp, "Unable to set early-split-size after KVM has been initialized");
-+        return;
-+    }
-+
-+    if (!visit_type_size(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    if (value && !is_power_of_2(value)) {
-+        error_setg(errp, "early-split-size must be a power of two");
-+        return;
-+    }
-+
-+    s->kvm_eager_split_size = value;
-+}
-+
- void kvm_arch_accel_class_init(ObjectClass *oc)
- {
-+    object_class_property_add(oc, "eager-split-size", "size",
-+                              kvm_arch_get_eager_split_size,
-+                              kvm_arch_set_eager_split_size, NULL, NULL);
-+
-+    object_class_property_set_description(oc, "eager-split-size",
-+        "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
- }
--- 
-2.34.1
+Coming back to the above mentionned issues:
+
+1) the File Exists issue is known and is linked to the replay. This will
+be handled separately, ie.I need to resume working on it as my first
+approach was flawed: See
+https://lore.kernel.org/all/20221207133646.635760-1-eric.auger@redhat.com/
+This is unrelated to this series. Note this shouldn't prevent your
+passthroughed device from working. Those should be just spurious
+warnings that need to be removed.
+
+2) the object_unref assertion most probaly is linked to that series and
+I will to investigate asap.
+
+Thank you again!
+
+Eric
+>
+> Best Regards,
+> YangHang Liu
+>
+>
+> On Mon, Sep 4, 2023 at 4:08 PM Eric Auger <eric.auger@redhat.com> wrote:
+>> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
+>> we encounter the case where the guest tries to map IOVAs beyond 48b
+>> whereas the physical VTD IOMMU only supports 48b. This ends up with
+>> VFIO_MAP_DMA failures at qemu level because at kernel level,
+>> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
+>>
+>> This is due to the fact the virtio-iommu currently unconditionally
+>> exposes an IOVA range of 64b through its config input range fields.
+>>
+>> This series removes this assumption by retrieving the usable IOVA
+>> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
+>> a VFIO device is attached. This info is communicated to the
+>> virtio-iommu memory region, transformed into the inversed info, ie.
+>> the host reserved IOVA regions. Then those latter are combined with the
+>> reserved IOVA regions set though the virtio-iommu reserved-regions
+>> property. That way, the guest virtio-iommu driver, unchanged, is
+>> able to probe the whole set of reserved regions and prevent any IOVA
+>> belonging to those ranges from beeing used, achieving the original goal.
+>>
+>> Best Regards
+>>
+>> Eric
+>>
+>> This series can be found at:
+>> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v1
+>>
+>> Eric Auger (13):
+>>   memory: Let ReservedRegion use Range
+>>   memory: Introduce memory_region_iommu_set_iova_ranges
+>>   vfio: Collect container iova range info
+>>   virtio-iommu: Rename reserved_regions into prop_resv_regions
+>>   virtio-iommu: Introduce per IOMMUDevice reserved regions
+>>   range: Introduce range_inverse_array()
+>>   virtio-iommu: Implement set_iova_ranges() callback
+>>   range: Make range_compare() public
+>>   util/reserved-region: Add new ReservedRegion helpers
+>>   virtio-iommu: Consolidate host reserved regions and property set ones
+>>   test: Add some tests for range and resv-mem helpers
+>>   virtio-iommu: Resize memory region according to the max iova info
+>>   vfio: Remove 64-bit IOVA address space assumption
+>>
+>>  include/exec/memory.h            |  30 ++++-
+>>  include/hw/vfio/vfio-common.h    |   2 +
+>>  include/hw/virtio/virtio-iommu.h |   7 +-
+>>  include/qemu/range.h             |   9 ++
+>>  include/qemu/reserved-region.h   |  32 +++++
+>>  hw/core/qdev-properties-system.c |   9 +-
+>>  hw/vfio/common.c                 |  70 ++++++++---
+>>  hw/virtio/virtio-iommu-pci.c     |   8 +-
+>>  hw/virtio/virtio-iommu.c         |  85 +++++++++++--
+>>  softmmu/memory.c                 |  15 +++
+>>  tests/unit/test-resv-mem.c       | 198 +++++++++++++++++++++++++++++++
+>>  util/range.c                     |  41 ++++++-
+>>  util/reserved-region.c           |  94 +++++++++++++++
+>>  hw/virtio/trace-events           |   1 +
+>>  tests/unit/meson.build           |   1 +
+>>  util/meson.build                 |   1 +
+>>  16 files changed, 562 insertions(+), 41 deletions(-)
+>>  create mode 100644 include/qemu/reserved-region.h
+>>  create mode 100644 tests/unit/test-resv-mem.c
+>>  create mode 100644 util/reserved-region.c
+>>
+>> --
+>> 2.41.0
+>>
+>>
 
 
