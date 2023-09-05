@@ -2,52 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B92D7920A6
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 09:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F807920A7
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 09:12:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdQ91-0002iO-0B; Tue, 05 Sep 2023 03:06:39 -0400
+	id 1qdQCz-0004aR-BY; Tue, 05 Sep 2023 03:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1qdQ8y-0002iF-HC
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 03:06:36 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdQCv-0004a6-QI
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 03:10:41 -0400
+Received: from mailout10.t-online.de ([194.25.134.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1qdQ8u-0007Og-Lz
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 03:06:36 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RfxNx3mQYz6FGxR;
- Tue,  5 Sep 2023 15:05:53 +0800 (CST)
-Received: from DESKTOP-0LHM7NF.huawei.com (10.199.58.101) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 5 Sep 2023 08:05:55 +0100
-To: <qemu-devel@nongnu.org>
-CC: <yong.huang@smartx.com>, <quintela@redhat.com>, <peterx@redhat.com>,
- <leobras@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>, Andrei Gudkov
- <gudkov.andrei@huawei.com>
-Subject: [PATCH v3] migration/calc-dirty-rate: millisecond-granularity period
-Date: Tue, 5 Sep 2023 10:05:43 +0300
-Message-ID: <d802e6b8053eb60fbec1a784cf86f67d9528e0a8.1693895970.git.gudkov.andrei@huawei.com>
-X-Mailer: git-send-email 2.30.2
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qdQCt-00089N-1l
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 03:10:41 -0400
+Received: from fwd88.aul.t-online.de (fwd88.aul.t-online.de [10.223.144.114])
+ by mailout10.t-online.de (Postfix) with SMTP id 5AE7A3CAFC;
+ Tue,  5 Sep 2023 09:10:35 +0200 (CEST)
+Received: from [192.168.211.200] ([79.208.25.148]) by fwd88.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1qdQCo-3MbWJF0; Tue, 5 Sep 2023 09:10:35 +0200
+Message-ID: <72287877-9785-879d-b8bb-6d4a9ef59cd7@t-online.de>
+Date: Tue, 5 Sep 2023 09:10:34 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v8 10/12] virtio-sound: implement audio output (TX)
+Content-Language: en-US
+From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud_=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?B?S8WRdsOhZ8OzICwgWm9sdMOhbg==?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
+ <c94a9c1e65bb6bb43c58e5ccb982948424a3f3f2.1693252037.git.manos.pitsidianakis@linaro.org>
+ <3e844c1a-4f44-7a99-cc7f-810881335e45@linaro.org>
+ <0gj4g.pagm7im4jud8@linaro.org>
+ <dbc4b65f-364b-02cc-b182-9c2f592d2ff5@t-online.de>
+In-Reply-To: <dbc4b65f-364b-02cc-b182-9c2f592d2ff5@t-online.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.58.101]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- lhrpeml500004.china.huawei.com (7.191.163.9)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+X-TOI-EXPURGATEID: 150726::1693897835-EBFF2029-BC475598/0/0 CLEAN NORMAL
+X-TOI-MSGID: c2608c2a-b365-49d1-abde-ea4c42cd6c6a
+Received-SPF: none client-ip=194.25.134.21; envelope-from=vr_qemu@t-online.de;
+ helo=mailout10.t-online.de
+X-Spam_score_int: -40
+X-Spam_score: -4.1
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,472 +76,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Andrei Gudkov <gudkov.andrei@huawei.com>
-From:  Andrei Gudkov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch allows to measure dirty page rate for
-sub-second intervals of time. An optional argument is
-introduced -- calc-time-unit. For example:
-{"execute": "calc-dirty-rate", "arguments":
-  {"calc-time": 500, "calc-time-unit": "millisecond"} }
+Am 04.09.23 um 23:34 schrieb Volker Rümelin:
+> Am 04.09.23 um 12:34 schrieb Manos Pitsidianakis:
+>> On Mon, 04 Sep 2023 13:26, Philippe Mathieu-Daudé <philmd@linaro.org> 
+>> wrote:
+>>
+>>>> +/*
+>>>> + * AUD_* output callback.
+>>>> + *
+>>>> + * @data: VirtIOSoundPCMStream stream
+>>>> + * @available: number of bytes that can be written with AUD_write()
+>>>> + */
+>>>> +static void virtio_snd_pcm_out_cb(void *data, int available)
+>>>> +{
+>>>> +    VirtIOSoundPCMStream *stream = data;
+>>>> +    VirtIOSoundPCMBlock *block;
+>>>> +    VirtIOSoundPCMBlock *next;
+>>>> +    size_t size;
+>>>> +
+>>>> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
+>>>> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
+>>>> +            for (;;) {
+>>>> +                size = MIN(block->size, available);
+>>>> +                size = AUD_write(stream->voice.out,
+>>>> +                        block->data + block->offset,
+>>>> +                        size);
+>>>
+>>> If AUD_write() returns 0, is this an infinite loop?
+>>
+>> Hm since we have available > 0 bytes this wouldn't theoretically 
+>> happen, but I see there are code paths that return 0 on 
+>> bugs/failures, I will add the check.
+>
+> Before QEMU 8.0.0 it was possible that AUD_write() couldn't write the 
+> last audio frame and sometimes 'available' was just miscalculated. 
+> Since commit e1e6a6fcc9 ("audio: handle leftover audio frame from 
+> upsampling") AUD_write() writes all 'available' bytes.
+>
 
-Millisecond granularity allows to make predictions whether
-migration will succeed or not. To do this, calculate dirty
-rate with calc-time set to max allowed downtime (e.g. 300ms),
-convert measured rate into volume of dirtied memory,
-and divide by network throughput. If the value is lower
-than max allowed downtime, then migration will converge.
+I thought about this again. The error check is necessary.
 
-Measurement results for single thread randomly writing to
-a 1/4/24GiB memory region:
-
-+----------------+-----------------------------------------------+
-| calc-time      |                dirty rate MiB/s               |
-| (milliseconds) +----------------+---------------+--------------+
-|                | theoretical    | page-sampling | dirty-bitmap |
-|                | (at 3M wr/sec) |               |              |
-+----------------+----------------+---------------+--------------+
-|                               1GiB                             |
-+----------------+----------------+---------------+--------------+
-|            100 |           6996 |          7100 |         3192 |
-|            200 |           4606 |          4660 |         2655 |
-|            300 |           3305 |          3280 |         2371 |
-|            400 |           2534 |          2525 |         2154 |
-|            500 |           2041 |          2044 |         1871 |
-|            750 |           1365 |          1341 |         1358 |
-|           1000 |           1024 |          1052 |         1025 |
-|           1500 |            683 |           678 |          684 |
-|           2000 |            512 |           507 |          513 |
-+----------------+----------------+---------------+--------------+
-|                               4GiB                             |
-+----------------+----------------+---------------+--------------+
-|            100 |          10232 |          8880 |         4070 |
-|            200 |           8954 |          8049 |         3195 |
-|            300 |           7889 |          7193 |         2881 |
-|            400 |           6996 |          6530 |         2700 |
-|            500 |           6245 |          5772 |         2312 |
-|            750 |           4829 |          4586 |         2465 |
-|           1000 |           3865 |          3780 |         2178 |
-|           1500 |           2694 |          2633 |         2004 |
-|           2000 |           2041 |          2031 |         1789 |
-+----------------+----------------+---------------+--------------+
-|                               24GiB                            |
-+----------------+----------------+---------------+--------------+
-|            100 |          11495 |          8640 |         5597 |
-|            200 |          11226 |          8616 |         3527 |
-|            300 |          10965 |          8386 |         2355 |
-|            400 |          10713 |          8370 |         2179 |
-|            500 |          10469 |          8196 |         2098 |
-|            750 |           9890 |          7885 |         2556 |
-|           1000 |           9354 |          7506 |         2084 |
-|           1500 |           8397 |          6944 |         2075 |
-|           2000 |           7574 |          6402 |         2062 |
-+----------------+----------------+---------------+--------------+
-
-Theoretical values are computed according to the following formula:
-size * (1 - (1-(4096/size))^(time*wps)) / (time * 2^20),
-where size is in bytes, time is in seconds, and wps is number of
-writes per second.
-
-Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
----
- qapi/migration.json   |  58 ++++++++++++++++++-----
- migration/dirtyrate.h |  12 +++--
- migration/dirtyrate.c | 107 +++++++++++++++++++++++++++++-------------
- 3 files changed, 128 insertions(+), 49 deletions(-)
-
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8843e74b59..1717aa4bbd 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1836,6 +1836,21 @@
- { 'enum': 'DirtyRateMeasureMode',
-   'data': ['page-sampling', 'dirty-ring', 'dirty-bitmap'] }
- 
-+##
-+# @TimeUnit:
-+#
-+# Specifies unit in which time-related value is specified.
-+#
-+# @second: value is in seconds
-+#
-+# @millisecond: value is in milliseconds
-+#
-+# Since 8.2
-+#
-+##
-+{ 'enum': 'TimeUnit',
-+  'data': ['second', 'millisecond'] }
-+
- ##
- # @DirtyRateInfo:
- #
-@@ -1848,8 +1863,10 @@
- #
- # @start-time: start time in units of second for calculation
- #
--# @calc-time: time period for which dirty page rate was measured
--#     (in seconds)
-+# @calc-time: time period for which dirty page rate was measured,
-+#     expressed and rounded down to @calc-time-unit.
-+#
-+# @calc-time-unit: time unit of @calc-time  (Since 8.2)
- #
- # @sample-pages: number of sampled pages per GiB of guest memory.
- #     Valid only in page-sampling mode (Since 6.1)
-@@ -1866,6 +1883,7 @@
-            'status': 'DirtyRateStatus',
-            'start-time': 'int64',
-            'calc-time': 'int64',
-+           'calc-time-unit': 'TimeUnit',
-            'sample-pages': 'uint64',
-            'mode': 'DirtyRateMeasureMode',
-            '*vcpu-dirty-rate': [ 'DirtyRateVcpu' ] } }
-@@ -1901,12 +1919,16 @@
- #    This mode tracks page modification per each vCPU separately.  It
- #    requires that KVM accelerator property "dirty-ring-size" is set.
- #
--# @calc-time: time period in units of second for which dirty page rate
--#     is calculated.  Note that larger @calc-time values will
--#     typically result in smaller dirty page rates because page
--#     dirtying is a one-time event.  Once some page is counted as
--#     dirty during @calc-time period, further writes to this page will
--#     not increase dirty page rate anymore.
-+# @calc-time: time period for which dirty page rate is calculated.
-+#     By default it is specified in seconds, but the unit can be set
-+#     explicitly with @calc-time-unit.  Note that larger @calc-time
-+#     values will typically result in smaller dirty page rates because
-+#     page dirtying is a one-time event.  Once some page is counted
-+#     as dirty during @calc-time period, further writes to this page
-+#     will not increase dirty page rate anymore.
-+#
-+# @calc-time-unit: time unit in which @calc-time is specified.
-+#     By default it is seconds. (Since 8.2)
- #
- # @sample-pages: number of sampled pages per each GiB of guest memory.
- #     Default value is 512.  For 4KiB guest pages this corresponds to
-@@ -1924,8 +1946,16 @@
- # -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 1,
- #                                                 'sample-pages': 512} }
- # <- { "return": {} }
-+#
-+# Measure dirty rate using dirty bitmap for 500 milliseconds:
-+#
-+# -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 500,
-+#     "calc-time-unit": "millisecond", "mode": "dirty-bitmap"} }
-+#
-+# <- { "return": {} }
- ##
- { 'command': 'calc-dirty-rate', 'data': {'calc-time': 'int64',
-+                                         '*calc-time-unit': 'TimeUnit',
-                                          '*sample-pages': 'int',
-                                          '*mode': 'DirtyRateMeasureMode'} }
- 
-@@ -1934,6 +1964,9 @@
- #
- # Query results of the most recent invocation of @calc-dirty-rate.
- #
-+# @calc-time-unit: time unit in which to report calculation time.
-+#     By default it is reported in seconds. (Since 8.2)
-+#
- # Since: 5.2
- #
- # Examples:
-@@ -1941,14 +1974,17 @@
- # 1. Measurement is in progress:
- #
- # <- {"status": "measuring", "sample-pages": 512,
--#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
-+#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10,
-+#     "calc-time-unit": "second"}
- #
- # 2. Measurement has been completed:
- #
- # <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
--#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
-+#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10,
-+#     "calc-time-unit": "second"}
- ##
--{ 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
-+{ 'command': 'query-dirty-rate', 'data': {'*calc-time-unit': 'TimeUnit' },
-+                                 'returns': 'DirtyRateInfo' }
- 
- ##
- # @DirtyLimitInfo:
-diff --git a/migration/dirtyrate.h b/migration/dirtyrate.h
-index 594a5c0bb6..869c060941 100644
---- a/migration/dirtyrate.h
-+++ b/migration/dirtyrate.h
-@@ -31,10 +31,12 @@
- #define MIN_RAMBLOCK_SIZE                         128
- 
- /*
-- * Take 1s as minimum time for calculation duration
-+ * Allowed range for dirty page rate calculation (in milliseconds).
-+ * Lower limit relates to the smallest realistic downtime it
-+ * makes sense to impose on migration.
-  */
--#define MIN_FETCH_DIRTYRATE_TIME_SEC              1
--#define MAX_FETCH_DIRTYRATE_TIME_SEC              60
-+#define MIN_CALC_TIME_MS                          50
-+#define MAX_CALC_TIME_MS                       60000
- 
- /*
-  * Take 1/16 pages in 1G as the maxmum sample page count
-@@ -44,7 +46,7 @@
- 
- struct DirtyRateConfig {
-     uint64_t sample_pages_per_gigabytes; /* sample pages per GB */
--    int64_t sample_period_seconds; /* time duration between two sampling */
-+    int64_t calc_time_ms; /* desired calculation time (in milliseconds) */
-     DirtyRateMeasureMode mode; /* mode of dirtyrate measurement */
- };
- 
-@@ -73,7 +75,7 @@ typedef struct SampleVMStat {
- struct DirtyRateStat {
-     int64_t dirty_rate; /* dirty rate in MB/s */
-     int64_t start_time; /* calculation start time in units of second */
--    int64_t calc_time; /* time duration of two sampling in units of second */
-+    int64_t calc_time_ms; /* actual calculation time (in milliseconds) */
-     uint64_t sample_pages; /* sample pages per GB */
-     union {
-         SampleVMStat page_sampling;
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index bccb3515e3..a461b28bb5 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -189,10 +189,9 @@ retry:
-     return duration;
- }
- 
--static bool is_sample_period_valid(int64_t sec)
-+static bool is_calc_time_valid(int64_t msec)
- {
--    if (sec < MIN_FETCH_DIRTYRATE_TIME_SEC ||
--        sec > MAX_FETCH_DIRTYRATE_TIME_SEC) {
-+    if ((msec < MIN_CALC_TIME_MS) || (msec > MAX_CALC_TIME_MS)) {
-         return false;
-     }
- 
-@@ -216,7 +215,39 @@ static int dirtyrate_set_state(int *state, int old_state, int new_state)
-     }
- }
- 
--static struct DirtyRateInfo *query_dirty_rate_info(void)
-+/* Decimal power of given time unit relative to one second */
-+static int time_unit_to_power(TimeUnit time_unit)
-+{
-+    switch (time_unit) {
-+    case TIME_UNIT_SECOND:
-+        return 0;
-+    case TIME_UNIT_MILLISECOND:
-+        return -3;
-+    default:
-+        assert(false); /* unreachable */
-+        return 0;
-+    }
-+}
-+
-+static int64_t convert_time_unit(int64_t value, TimeUnit unit_from,
-+                                 TimeUnit unit_to)
-+{
-+    int power = time_unit_to_power(unit_from) -
-+                time_unit_to_power(unit_to);
-+    while (power < 0) {
-+        value /= 10;
-+        power += 1;
-+    }
-+    while (power > 0) {
-+        value *= 10;
-+        power -= 1;
-+    }
-+    return value;
-+}
-+
-+
-+static struct DirtyRateInfo *
-+query_dirty_rate_info(TimeUnit calc_time_unit)
- {
-     int i;
-     int64_t dirty_rate = DirtyStat.dirty_rate;
-@@ -225,7 +256,10 @@ static struct DirtyRateInfo *query_dirty_rate_info(void)
- 
-     info->status = CalculatingState;
-     info->start_time = DirtyStat.start_time;
--    info->calc_time = DirtyStat.calc_time;
-+    info->calc_time = convert_time_unit(DirtyStat.calc_time_ms,
-+                                        TIME_UNIT_MILLISECOND,
-+                                        calc_time_unit);
-+    info->calc_time_unit = calc_time_unit;
-     info->sample_pages = DirtyStat.sample_pages;
-     info->mode = dirtyrate_mode;
- 
-@@ -264,7 +298,7 @@ static void init_dirtyrate_stat(int64_t start_time,
- {
-     DirtyStat.dirty_rate = -1;
-     DirtyStat.start_time = start_time;
--    DirtyStat.calc_time = config.sample_period_seconds;
-+    DirtyStat.calc_time_ms = config.calc_time_ms;
-     DirtyStat.sample_pages = config.sample_pages_per_gigabytes;
- 
-     switch (config.mode) {
-@@ -574,7 +608,6 @@ static inline void dirtyrate_manual_reset_protect(void)
- 
- static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
- {
--    int64_t msec = 0;
-     int64_t start_time;
-     DirtyPageRecord dirty_pages;
- 
-@@ -602,9 +635,7 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
-     start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-     DirtyStat.start_time = start_time / 1000;
- 
--    msec = config.sample_period_seconds * 1000;
--    msec = dirty_stat_wait(msec, start_time);
--    DirtyStat.calc_time = msec / 1000;
-+    DirtyStat.calc_time_ms = dirty_stat_wait(config.calc_time_ms, start_time);
- 
-     /*
-      * do two things.
-@@ -615,12 +646,12 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
- 
-     record_dirtypages_bitmap(&dirty_pages, false);
- 
--    DirtyStat.dirty_rate = do_calculate_dirtyrate(dirty_pages, msec);
-+    DirtyStat.dirty_rate = do_calculate_dirtyrate(dirty_pages,
-+                                                  DirtyStat.calc_time_ms);
- }
- 
- static void calculate_dirtyrate_dirty_ring(struct DirtyRateConfig config)
- {
--    int64_t duration;
-     uint64_t dirtyrate = 0;
-     uint64_t dirtyrate_sum = 0;
-     int i = 0;
-@@ -631,12 +662,10 @@ static void calculate_dirtyrate_dirty_ring(struct DirtyRateConfig config)
-     DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 1000;
- 
-     /* calculate vcpu dirtyrate */
--    duration = vcpu_calculate_dirtyrate(config.sample_period_seconds * 1000,
--                                        &DirtyStat.dirty_ring,
--                                        GLOBAL_DIRTY_DIRTY_RATE,
--                                        true);
--
--    DirtyStat.calc_time = duration / 1000;
-+    DirtyStat.calc_time_ms = vcpu_calculate_dirtyrate(config.calc_time_ms,
-+                                                      &DirtyStat.dirty_ring,
-+                                                      GLOBAL_DIRTY_DIRTY_RATE,
-+                                                      true);
- 
-     /* calculate vm dirtyrate */
-     for (i = 0; i < DirtyStat.dirty_ring.nvcpu; i++) {
-@@ -652,7 +681,6 @@ static void calculate_dirtyrate_sample_vm(struct DirtyRateConfig config)
- {
-     struct RamblockDirtyInfo *block_dinfo = NULL;
-     int block_count = 0;
--    int64_t msec = 0;
-     int64_t initial_time;
- 
-     rcu_read_lock();
-@@ -662,17 +690,16 @@ static void calculate_dirtyrate_sample_vm(struct DirtyRateConfig config)
-     }
-     rcu_read_unlock();
- 
--    msec = config.sample_period_seconds * 1000;
--    msec = dirty_stat_wait(msec, initial_time);
-+    DirtyStat.calc_time_ms = dirty_stat_wait(config.calc_time_ms,
-+                                             initial_time);
-     DirtyStat.start_time = initial_time / 1000;
--    DirtyStat.calc_time = msec / 1000;
- 
-     rcu_read_lock();
-     if (!compare_page_hash_info(block_dinfo, block_count)) {
-         goto out;
-     }
- 
--    update_dirtyrate(msec);
-+    update_dirtyrate(DirtyStat.calc_time_ms);
- 
- out:
-     rcu_read_unlock();
-@@ -718,6 +745,8 @@ void *get_dirtyrate_thread(void *arg)
- }
- 
- void qmp_calc_dirty_rate(int64_t calc_time,
-+                         bool has_calc_time_unit,
-+                         TimeUnit calc_time_unit,
-                          bool has_sample_pages,
-                          int64_t sample_pages,
-                          bool has_mode,
-@@ -737,10 +766,15 @@ void qmp_calc_dirty_rate(int64_t calc_time,
-         return;
-     }
- 
--    if (!is_sample_period_valid(calc_time)) {
--        error_setg(errp, "calc-time is out of range[%d, %d].",
--                         MIN_FETCH_DIRTYRATE_TIME_SEC,
--                         MAX_FETCH_DIRTYRATE_TIME_SEC);
-+    int64_t calc_time_ms = convert_time_unit(
-+        calc_time,
-+        has_calc_time_unit ? calc_time_unit : TIME_UNIT_SECOND,
-+        TIME_UNIT_MILLISECOND
-+    );
-+
-+    if (!is_calc_time_valid(calc_time_ms)) {
-+        error_setg(errp, "Calculation time is out of range [%dms, %dms].",
-+                         MIN_CALC_TIME_MS, MAX_CALC_TIME_MS);
-         return;
-     }
- 
-@@ -787,7 +821,7 @@ void qmp_calc_dirty_rate(int64_t calc_time,
-         return;
-     }
- 
--    config.sample_period_seconds = calc_time;
-+    config.calc_time_ms = calc_time_ms;
-     config.sample_pages_per_gigabytes = sample_pages;
-     config.mode = mode;
- 
-@@ -806,14 +840,18 @@ void qmp_calc_dirty_rate(int64_t calc_time,
-                        (void *)&config, QEMU_THREAD_DETACHED);
- }
- 
--struct DirtyRateInfo *qmp_query_dirty_rate(Error **errp)
-+
-+struct DirtyRateInfo *qmp_query_dirty_rate(bool has_calc_time_unit,
-+                                           TimeUnit calc_time_unit,
-+                                           Error **errp)
- {
--    return query_dirty_rate_info();
-+    return query_dirty_rate_info(
-+        has_calc_time_unit ? calc_time_unit : TIME_UNIT_SECOND);
- }
- 
- void hmp_info_dirty_rate(Monitor *mon, const QDict *qdict)
- {
--    DirtyRateInfo *info = query_dirty_rate_info();
-+    DirtyRateInfo *info = query_dirty_rate_info(TIME_UNIT_SECOND);
- 
-     monitor_printf(mon, "Status: %s\n",
-                    DirtyRateStatus_str(info->status));
-@@ -873,8 +911,11 @@ void hmp_calc_dirty_rate(Monitor *mon, const QDict *qdict)
-         mode = DIRTY_RATE_MEASURE_MODE_DIRTY_RING;
-     }
- 
--    qmp_calc_dirty_rate(sec, has_sample_pages, sample_pages, true,
--                        mode, &err);
-+    qmp_calc_dirty_rate(sec, /* calc-time */
-+                        false, TIME_UNIT_SECOND, /* calc-time-unit */
-+                        has_sample_pages, sample_pages,
-+                        true, mode,
-+                        &err);
-     if (err) {
-         hmp_handle_error(mon, err);
-         return;
--- 
-2.30.2
+> With best regards,
+> Volker
+>
+>>
+>>>> +                block->size -= size;
+>>>> +                block->offset += size;
+>>>> +                if (!block->size) {
+>>>> +                    virtqueue_push(block->vq,
+>>>> +                            block->elem,
+>>>> +                            sizeof(block->elem));
+>>>> + virtio_notify(VIRTIO_DEVICE(stream->s),
+>>>> +                            block->vq);
+>>>> + QSIMPLEQ_REMOVE_HEAD(&stream->queue, entry);
+>>>> +                    g_free(block);
+>>>> +                    available -= size;
+>>>> +                    break;
+>>>> +                }
+>>>> +
+>>>> +                available -= size;
+>>>> +                if (!available) {
+>>>> +                    break;
+>>>> +                }
+>>>> +            }
+>>>> +            if (!available) {
+>>>> +                break;
+>>>> +            }
+>>>> +        }
+>>>> +    }
+>>>> +}
+>>>> +
+>>>> +/*
+>>>> + * Flush all buffer data from this stream's queue into the 
+>>>> driver's virtual
+>>>> + * queue.
+>>>> + *
+>>>> + * @stream: VirtIOSoundPCMStream *stream
+>>>> + */
+>>>> +static void virtio_snd_pcm_flush(VirtIOSoundPCMStream *stream)
+>>>> +{
+>>>> +    VirtIOSoundPCMBlock *block;
+>>>> +    VirtIOSoundPCMBlock *next;
+>>>> +
+>>>> +    WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
+>>>> +        QSIMPLEQ_FOREACH_SAFE(block, &stream->queue, entry, next) {
+>>>> +            AUD_write(stream->voice.out, block->data + 
+>>>> block->offset, block->size);
+>>>
+>
 
 
