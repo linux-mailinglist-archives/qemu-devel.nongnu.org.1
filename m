@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B6C79222D
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 13:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64773792230
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 13:38:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdUK9-0001gi-Rx; Tue, 05 Sep 2023 07:34:25 -0400
+	id 1qdUND-0002lr-Cu; Tue, 05 Sep 2023 07:37:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdUK8-0001gU-8C
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 07:34:24 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdUN7-0002lU-Lv
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 07:37:29 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdUK5-0007TG-Tr
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 07:34:24 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-401bbfc05fcso25276825e9.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 04:34:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdUN5-00087q-G7
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 07:37:29 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4fe15bfb1adso3993494e87.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 04:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693913660; x=1694518460; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693913845; x=1694518645; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uWzDT0xz5Hyqzdf2DafqgSHjqZD67O1iyc/mwXN+YZM=;
- b=my8Pn6lkEgoTNaTz+sP4Rkv8MjlH3GAMYTVRlvRg+9ixr8B2GmlmoAwdAthISxuuaU
- yY/yQIZ2O0ncXTK8evIGZ8oCFeWQviimh9QrF66BiDodRhFOoy5Y7ghBcnYV81Rbhv5b
- B3rkR0fcCB/CQJtx9y+oe8d9Au2BvfUbUNSZXRMBgke+6AW9PLomD+VmJkLT0kpFwTSv
- unt4bT3ILDYYTopyN4NkZvmPLfRYWB7nm99hS+8el49v8NJvI059zAWgNm1m6CHc1/Xg
- GQImu+kf27k2zjLzlHY/vvUTZIJGv9HgmyFvPROX7VF9U7WZt0zP0O/n7iTLWAdac8F9
- oAFQ==
+ bh=8cA4LaZPYdX2qA/FRnn2B//GAlzcmxN1oP7iyNSnrps=;
+ b=N+igbgzWJAmZ+YMyGkdg7756Hy9QeP4Y43j76H8F7RMoEiWDWAuyLnpC2eqQ9Ajulb
+ Tl7x0FV5TQGfNo4ArxhCSVDYYCaGQfwFQ/fzCuc3OaR+cKk9vVRu0lZO1RPypK76YmF4
+ X5PqnsgVFCk6kil86ZTDKGhcsvU9Ix7WVuqu+awV3+LILGO15zLy+/bqIOiBq7WSB5Wr
+ z9kMoSfImpLdNuFchjWaWtjW6VLuQzbtaOmKqmv+ZskyP12Sgi/0E7vne+lw8jctTW4f
+ F//qfUFrsglm7JLAH7JXTu0b9bxTODgtd7OHkOWrhvAHlmXyRhFApVke4cxCj8jrxZwp
+ Ot+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693913660; x=1694518460;
+ d=1e100.net; s=20221208; t=1693913845; x=1694518645;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uWzDT0xz5Hyqzdf2DafqgSHjqZD67O1iyc/mwXN+YZM=;
- b=JTq2tTm4Am2GRLlj1j5CN5QW1lbGncK4ETS8c/GFb+Js/dwJvfkFEO5dETPqCf9r4L
- /en5HnYgsvyPtsliK4SctLBZS7ap62rEFjtV2ho706Z079WgC9FpqQdxzv74HB2ADia7
- K/xellG+QX0HoM5PSUwXpOqQNIoudYRWp+p2i32dXQIUUjwRcMC0Phh6YB49zGbm5mvc
- LWQ1nuTS6MApAdz1lgjsD2/VL706zqe2NzhguJ5qtqMnGMLWmAJF/isC+S7DHAYR2VvX
- yBlCwbELvz9xeGgBxDvZZNs4E+yU8cLg0u6kabnp0vocLC/kEGVchoWL/DO8kpjFiLQZ
- 60bQ==
-X-Gm-Message-State: AOJu0Yxo4onTJeORYOZokXF+aYK+iMnWWNpFakHwzWFXwfzfeD0mdFvh
- DwMEQidEpewxUXjL2OA1SsOxXg==
-X-Google-Smtp-Source: AGHT+IF84xYseUBqCwQ6Q8BmZOkQrw7ymgj5JBr2reKx4dcZgGwx2Pg/iULJxwX204TxtMnG9xZzcA==
-X-Received: by 2002:a05:600c:a388:b0:401:eb0:a974 with SMTP id
- hn8-20020a05600ca38800b004010eb0a974mr9137048wmb.3.1693913660391; 
- Tue, 05 Sep 2023 04:34:20 -0700 (PDT)
+ bh=8cA4LaZPYdX2qA/FRnn2B//GAlzcmxN1oP7iyNSnrps=;
+ b=a2Ra5mpl62DkLYvRlPelhQOgsVGbLDqcdSFaw8miFAqxA6oj4ecugwrrY60br2847m
+ UziSLII/J6m+kmKzdunPrX4YMe/VCXxCYqFykXSsUjeyBS+VbdxmUEKsJ++ZyAW1ZI9v
+ O3KXV/iU8l4HyVzDaQJucarXroUgmePGRkk06nDnyoh4nuw8Bh0IUmpnGDh8R1dVutcq
+ XYUGwL1iyK/bXqij2wjFQGrk5oFOMOMvP9qsNq+H43aaRw8PKawxUghk80Ia3zss+Y/v
+ wgpC9Ea/VtjXl+HKqTe5g4pyqGEeOeORoy1bal2y5MGwhIQ/2aj7wegXywGAYIKCSIYc
+ jbQg==
+X-Gm-Message-State: AOJu0Ywd1fI9iheqFZ/NIqp8/GyC8ZNiHHcs2BaI1wdWLaAKwb2w2QNt
+ 0qgWtL+/NJoYIZUd/azZfUATWg==
+X-Google-Smtp-Source: AGHT+IE4f81fVQh64kzpcGjQpVlYzkTfB+xBsaXcFNorM7xNmmTaAbhJ4tQ5bT/72TGZvJPmX3AOGQ==
+X-Received: by 2002:a19:711a:0:b0:500:9de4:5966 with SMTP id
+ m26-20020a19711a000000b005009de45966mr6724579lfc.62.1693913845412; 
+ Tue, 05 Sep 2023 04:37:25 -0700 (PDT)
 Received: from [192.168.1.34] ([37.69.27.38]) by smtp.gmail.com with ESMTPSA id
- l7-20020a1c7907000000b003fed8e12d62sm16697019wme.27.2023.09.05.04.34.19
+ f7-20020a1c6a07000000b003fe407ca05bsm19842822wmc.37.2023.09.05.04.37.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 04:34:19 -0700 (PDT)
-Message-ID: <fc52bf2d-ac51-5137-9add-c529b3c39043@linaro.org>
-Date: Tue, 5 Sep 2023 13:34:18 +0200
+ Tue, 05 Sep 2023 04:37:25 -0700 (PDT)
+Message-ID: <f301930f-b5c3-0ea8-a584-789bfa978a35@linaro.org>
+Date: Tue, 5 Sep 2023 13:37:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v4 06/14] simpletrace: improved error handling on struct
- unpack
+Subject: Re: [PATCH v4 11/14] simpletrace: move event processing to Analyzer
+ class
 Content-Language: en-US
 To: Mads Ynddal <mads@ynddal.dk>, qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Mads Ynddal <m.ynddal@samsung.com>
 References: <20230823085429.20519-1-mads@ynddal.dk>
- <20230823085429.20519-7-mads@ynddal.dk>
+ <20230823085429.20519-12-mads@ynddal.dk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230823085429.20519-7-mads@ynddal.dk>
+In-Reply-To: <20230823085429.20519-12-mads@ynddal.dk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,16 +97,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 23/8/23 10:54, Mads Ynddal wrote:
 > From: Mads Ynddal <m.ynddal@samsung.com>
 > 
-> A failed call to `read_header` wouldn't be handled the same for the two
-> different code paths (one path would try to use `None` as a list).
-> Changed to raise exception to be handled centrally. This also allows for
-> easier unpacking, as errors has been filtered out.
+> Moved event processing to the Analyzer class to separate specific analyzer
+
+"Move"
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> logic (like caching and function signatures) from the _process function.
+> This allows for new types of Analyzer-based subclasses without changing
+> the core code.
+> 
+> Note, that the fn_cache is important for performance in cases where the
+> analyzer is branching away from the catch-all a lot. The cache has no
+> measurable performance penalty.
 > 
 > Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
 > ---
->   scripts/simpletrace.py | 41 ++++++++++++++++-------------------------
->   1 file changed, 16 insertions(+), 25 deletions(-)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>   scripts/simpletrace.py | 60 +++++++++++++++++++++++++-----------------
+>   1 file changed, 36 insertions(+), 24 deletions(-)
 
 
