@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A34792C5B
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB4B792C9E
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:41:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdZo2-0001ZL-Cn; Tue, 05 Sep 2023 13:25:38 -0400
+	id 1qda1c-0007X8-BT; Tue, 05 Sep 2023 13:39:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qdZny-0001Yq-45
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:25:35 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qdZnv-0001qe-PV
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:25:33 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 902D51FF48;
- Tue,  5 Sep 2023 17:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1693934728; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qda1Y-0007PM-Dl
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:39:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qda1T-0004K1-PE
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:39:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693935569;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dwV3dlz14yGJex4eZZKnQ/gyoWGbLEBhyf32kV2h9Dk=;
- b=Fzj89QwWrHOgYxpZJbkcDCbGLRaTG9T4xCTQnJRhW1vRcKSSf2TllKPpu2qhmGgXp7PRcL
- mWWc7qvIoPc7ZX8nRFlGcmA7r92dx1zatJx4OvyArdMCkChWV0qvGiGPznlEnLkt5ArSaS
- 69cRM8lDyhvVrQCD2N3f1yDV2114YtM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1693934728;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dwV3dlz14yGJex4eZZKnQ/gyoWGbLEBhyf32kV2h9Dk=;
- b=BR1yAFMmTvTfYh/Y573UqpEyng162ABTl5rrSVZvIyX49ag8unOnjK9Cbx7Bouw9HXmCXT
- ruhHjuXcR9P+UCCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ bh=zCxp3prKBIMhn0wr2sTTvuKHXcv4EeTeUQzxqsn96b4=;
+ b=WECecZAVIecN73PPjje4vbpIuks7ipYicOl6F/oiUFofF37XuN8OG3t1lV+7uSU2a6wU70
+ TO5wun6Tkqyel4nuuwtgJCPaClhF3K7GARtmg7w5P8eMt65l/g5+cRosJh90HeefZgKp6h
+ H8EZsxx/TN5wy3C/B+yoDZEuUCq1aFs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-423-HtWgVSV6P4KDQyFUIAeIkQ-1; Tue, 05 Sep 2023 13:39:27 -0400
+X-MC-Unique: HtWgVSV6P4KDQyFUIAeIkQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2278513911;
- Tue,  5 Sep 2023 17:25:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id ij6fN4dk92QyOAAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 05 Sep 2023 17:25:27 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82688928E6E;
+ Tue,  5 Sep 2023 17:39:26 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.134])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 32CE31121314;
+ Tue,  5 Sep 2023 17:39:25 +0000 (UTC)
+Date: Tue, 5 Sep 2023 18:39:23 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Wei Wang
- <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>, Lukas Straub
- <lukasstraub2@web.de>
-Subject: Re: [PATCH v5 8/8] migration: Add a wrapper to cleanup migration files
-In-Reply-To: <ZPdKcfjGEfFKU6gV@x1n>
-References: <20230831183916.13203-1-farosas@suse.de>
- <20230831183916.13203-9-farosas@suse.de> <ZPILtYXBVVCKDlWX@x1n>
- <878r9pagrk.fsf@suse.de> <ZPdKcfjGEfFKU6gV@x1n>
-Date: Tue, 05 Sep 2023 14:25:25 -0300
-Message-ID: <87il8own0a.fsf@suse.de>
+Cc: "Wang, Lei" <lei4.wang@intel.com>, qemu-devel@nongnu.org,
+ Zhiyi Guo <zhguo@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Chensheng Dong <chdong@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH for-8.2 v2 2/2] migration: Allow user to specify
+ migration switchover bandwidth
+Message-ID: <ZPdny79vGypN+Sz0@redhat.com>
+References: <20230803155344.11450-1-peterx@redhat.com>
+ <20230803155344.11450-3-peterx@redhat.com>
+ <8bb36b56-e2f6-ece8-0d8f-90b87a3b5c40@intel.com>
+ <ZPGizMa52LF7Qek1@redhat.com> <ZPdbS1pyl5Pzjh4T@x1n>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZPdbS1pyl5Pzjh4T@x1n>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,66 +88,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Tue, Sep 05, 2023 at 12:46:03PM -0400, Peter Xu wrote:
+> On Fri, Sep 01, 2023 at 09:37:32AM +0100, Daniel P. Berrangé wrote:
+> > > > When the user wants to have migration only use 5Gbps out of that 10Gbps,
+> > > > one can set max-bandwidth to 5Gbps, along with max-switchover-bandwidth to
+> > > > 5Gbps so it'll never use over 5Gbps too (so the user can have the rest
+> > > 
+> > > Hi Peter. I'm curious if we specify max-switchover-bandwidth to 5Gbps over a
+> > > 10Gbps network, in the completion stage will it send the remaining data in 5Gbps
+> > > using downtime_limit time or in 10Gbps (saturate the network) using the
+> > > downtime_limit / 2 time? Seems this parameter won't rate limit the final stage:)
+> > 
+> > Effectively the mgmt app is telling QEMU to assume that this
+> > much bandwidth is available for use during switchover. If QEMU
+> > determines that, given this available bandwidth, the remaining
+> > data can be sent over the link within the downtime limit, it
+> > will perform the switchover. When sending this sitchover data,
+> > it will actually transmit the data at full line rate IIUC.
+> 
+> I'm right at reposting this patch, but then I found that the
+> max-available-bandwidth is indeed confusing (as Lei's question shows).
+> 
+> We do have all the bandwidth throttling values in the pattern of
+> max-*-bandwidth and this one will start to be the outlier that it won't
+> really throttle the network.
+> 
+> If the old name "available-bandwidth" is too general, I'm now considering
+> "avail-switchover-bandwidth" just to leave max- out of the name to
+> differenciate, if some day we want to add a real throttle for switchover we
+> can still have a sane name.
+> 
+> Any objections before I repost?
 
-> On Fri, Sep 01, 2023 at 03:29:51PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Aug 31, 2023 at 03:39:16PM -0300, Fabiano Rosas wrote:
->> >> @@ -1166,16 +1183,9 @@ static void migrate_fd_cleanup(MigrationState *s)
->> >>          qemu_mutex_lock_iothread();
->> >>  
->> >>          multifd_save_cleanup();
->> >> -        qemu_mutex_lock(&s->qemu_file_lock);
->> >> -        tmp = s->to_dst_file;
->> >> -        s->to_dst_file = NULL;
->> >> -        qemu_mutex_unlock(&s->qemu_file_lock);
->> >> -        /*
->> >> -         * Close the file handle without the lock to make sure the
->> >> -         * critical section won't block for long.
->> >> -         */
->> >> -        migration_ioc_unregister_yank_from_file(tmp);
->> >> -        qemu_fclose(tmp);
->> >> +
->> >> +        migration_ioc_unregister_yank_from_file(s->to_dst_file);
->> >
->> > I think you suggested that we should always take the file lock when
->> > operating on them, so this is slightly going backwards to not hold any lock
->> > when doing it. But doing so in migrate_fd_cleanup() is probably fine (as it
->> > serializes with bql on all the rest qmp commands, neither should migration
->> > thread exist at this point).  Your call; it's still much cleaner.
->> 
->> I think I was mistaken. We need the lock on the thread that clears the
->> pointer so that we can safely dereference it on another thread under the
->> lock.
->> 
->> Here we're accessing it from the same thread that later does the
->> clearing. So that's a slightly different problem.
->
-> But this is not the only place to clear it, so you still need to justify
-> why the other call sites (e.g., postcopy_pause() won't happen in parallel
-> with this call site.
->
-> The good thing about your proposal (of always taking that lock) is we avoid
-> those justifications, as you said before. :)
->
+I think the 'avail-' prefix is good given the confusion Lei pointed out.
 
-Yes, I should probably try harder to keep it under the lock.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-The issue is that without using the QIOChannel reference count or
-keeping a flag there's no way to pair the register/unregister of the
-yank. Because 1) we'll never be sure whether the yank was previously
-registered when calling the unregister and 2) we don't store the ioc, so
-we need to access it from the QEMUFile, but then several QEMUFiles can
-have the same ioc.
-
-The easiest way to keep it under the lock would be to add a flag:
-
-migration_file_release(QEMUFile **file, bool unregister_yank);
-
-... and only set it when we're sure the yank has been registered. It is
-still a bit hand-wavy though.
 
