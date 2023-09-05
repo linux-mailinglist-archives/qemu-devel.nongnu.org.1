@@ -2,141 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA28792150
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B1379214F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdS4F-0000tV-Ge; Tue, 05 Sep 2023 05:09:51 -0400
+	id 1qdS3a-0000IO-3f; Tue, 05 Sep 2023 05:09:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qdS4C-0000t1-UC
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:09:48 -0400
-Received: from mail-bn7nam10on20631.outbound.protection.outlook.com
- ([2a01:111:f400:7e8a::631]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qdS49-0002yP-Ma
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:09:48 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Dw+7Z2rufoHOvxkm5h2MIUjhyEvxVXCijO6kmfYMFlR5jt1wvGPC86bctkMKDyASkM3Zylws3kztKMGOoyIK+AUz2PSoirZZlMzDi978b686r1c9Xz9hvcRoo5WFsJx/Ck/5W55qLnBAWBVkgcoDH13jDx+8CVyO3U3iq4rLIGoKMNN5WjyVjTlXgNTiCzaoLptxpkPo0a0HRkGZc+018ABiNSAjZXyUYALQ1v9S/XlLc4s0Y9BknGMin0jJD5ot094RHZMM6ljvejhGldOQHAoVH8peToq0uM38n8I3Dx1IdTEpI8YvjnGtsrISNbDA0xkXdTrSHDFPGtCKW1trCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UZTlXoNoNczrtqNBYxQZRjvScQ5LFRngZk2YbfQs9n8=;
- b=fj4qJa1o9AJ/+6/TJmLn9BJX+qEog8Q6JlraYYy24zgJ+u4jEJR1B3XmCubWgCWp8fYHfw1twV5ZRsEQwPLt9V4YcDoWMkRM1KTq38C/cblXIRCf2ibfn0AJiWMxa9snovy3W7EcU5O9P+KsXXzwOsw4mg+6stAkhbPKTZ9aTHLZrtu8kRqTf4qM24aIHr3urZfnfVmHRqBtUmQu8oJg0AaYZazhZ4nf2GMjsajMOiKvyjlvIAmIve1UdwkKZCTwL0FXrk9T7M2TSIMN5KlIyk4aAiNdkdymgb2cSuhZ/xx3rc/g95YryObQB/t5FdWOcTk3CUUK+LY7TeXNmSUtVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UZTlXoNoNczrtqNBYxQZRjvScQ5LFRngZk2YbfQs9n8=;
- b=xT75Y/YHP5wpNAVqUgCUZBVNQ/xaKE3hKWZCC9YEHocXg8FvxdFyvscRvN3E99r+BHVdc0Ob01hTYxOdFQ4nGs7q70Mx+/p2Dc+ZOEoAPgeJZcaVRebuGW2I2R45tcI9BjUn6BYJ0M4EfBurUrPcaOD8N7iw0JCW7I750y57OjY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by DS0PR12MB9037.namprd12.prod.outlook.com (2603:10b6:8:f1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Tue, 5 Sep
- 2023 09:09:08 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::da13:5f6:45:fa40]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::da13:5f6:45:fa40%4]) with mapi id 15.20.6745.030; Tue, 5 Sep 2023
- 09:09:08 +0000
-Date: Tue, 5 Sep 2023 17:08:40 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Subject: Re: [QEMU PATCH v4 09/13] virtio-gpu: Handle resource blob commands
-Message-ID: <ZPbwGA3apjQTtCeu@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-10-ray.huang@amd.com>
- <ba478789-5db0-4011-bed1-7dd6901eccd6@daynix.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ba478789-5db0-4011-bed1-7dd6901eccd6@daynix.com>
-X-ClientProxiedBy: SI2PR06CA0016.apcprd06.prod.outlook.com
- (2603:1096:4:186::22) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdS3Y-0000ID-Fv
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:09:08 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdS3U-0002sm-Rp
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:09:08 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-99357737980so342670266b.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693904943; x=1694509743; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lmBE03n+OdAQpOsoL4oHLidAEn4H/1VynMMog9vFdno=;
+ b=IFFRL/nXlJdXt00/ur5xjiPK1zTA9zI8AHKFkWVJS/9sj2BcMaQ9uGEta2tjs/Qe2W
+ CbO5Xqw++/JhrHrIIQwU/VUS/9NE+25nmmuJyL+MhHjFu2T3gSLh4lGdiecI5zxhMOjU
+ bPa0pruHRTKxymOIDo3WvTALQRNQlr8IDju7vxDnMnHHOnWfkKOISest8CLKF0/lPHrL
+ O9VSvTeQ/+WKhvuIECzQUw9UOU6XyptnHG3EwEoMAUebgAZBlLHJe9YX0LQGqhxCslyW
+ UHhz3qrDAfC7D5azUx12DRjlxgNfas3bkpwDDh/FgRKJ6JTC+bK1ijBs/dARrbwHjvP5
+ chnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693904943; x=1694509743;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lmBE03n+OdAQpOsoL4oHLidAEn4H/1VynMMog9vFdno=;
+ b=U5VYhzaubS2oPjBU3h/qnXMAXhgxfOgjlS0R1QjCjANmJokb7Sv1EVnfnJfyYsr+NF
+ l32uEOyKhYM+MIPAcnIhNrjiGFbc3lmiSzNFSaMrTKuHizF/DlIgPEZ7LAd+VVk/wuMW
+ IK+AWz2OmbaO7PinC+qy7tHD83e0LzF4I1hSwExtAFZCGzCacmaVkHyWeWiRfQtCVeFG
+ AFdHzUbAjkumgWqZHa6vmJnCS63EDA3mhCqklz4Tw09NxBlqDCaWNcReeR0rgNadpPUW
+ oG0FaKAs4h3QAZgIXLRZoxuvg1r9e1OVdvY9PIapTWq9VUNgIMnGP6VSTD40v8BuF4UM
+ PMUg==
+X-Gm-Message-State: AOJu0Yzg/NsA40tgizAzrMXGtNOubWO1DLvquewe73g6BD16lrLN9jZk
+ TSMl4qrxdfGBWQUQvf9gAGbjLA==
+X-Google-Smtp-Source: AGHT+IEmQIesrYVlEzL/UQRef/or2fp6ZaVht+8KM76YKB13QJr6rlFYSdWMhanH0wYJ3v6wMmMB9w==
+X-Received: by 2002:a17:906:530c:b0:9a5:c3f9:c89d with SMTP id
+ h12-20020a170906530c00b009a5c3f9c89dmr9188553ejo.24.1693904943014; 
+ Tue, 05 Sep 2023 02:09:03 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
+ [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
+ dk24-20020a170906f0d800b00992d0de8762sm7321502ejb.216.2023.09.05.02.09.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 02:09:02 -0700 (PDT)
+Message-ID: <66fc116f-0090-1f57-32c3-523bd3f1baf4@linaro.org>
+Date: Tue, 5 Sep 2023 11:09:00 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|DS0PR12MB9037:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5043260b-d012-4cef-9fd3-08dbadefc2ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: NTfLOFdUbE5l7BKnZbsye5yHF8lGVuc/YGOPFJ6TNlM7k22mtPmPPbPJTGmFnDahCl+g0JCOKQNUD7LpeBkkS2UQqklEkvXm7Ulh7Fq3Aul7JapOiP/Q/8h051sFLHuFdWUMekfspxpUhKy+LzcD5hpFsTFaQ0hYo/+JRAROdLuGgJgmNcZ00jdcBj6aZpj+x3Lp9ya18n0U2D8Wa6qe1Kqrb/vsYhodlLD/jm27ngoXDoBBNR7ChQlG0D2apv1ltvR5dKcGxKjToYV/jcysme7Au//o+yJk5L9ptkQ0wouArJVNrzNtqRhtAKlp3fukBxU5sGOU2fyUapsBxDf/fo/S3RVy0xQ6crwTO2Mv9OB2DWmk4dxePXEOxw/UI8iPu3GiiJ7CGBcyemnCcO0EUL/KdpRyOcsWV5GeHVjQ0tzBz3S2JQBmqxtRH37B5w1skyb/+MTHkpmFI/s9M/XCFjL/PL8ZrIe3QodDNB7XxKLaLAFpASbQ8OYuz8RQHNq+AQmdFysPNuYxRJRU/KYI015AK9byWoGQswCmkfoa0FqgXuG9YQ1/rSdWGa025wBw
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(136003)(396003)(366004)(376002)(39860400002)(1800799009)(451199024)(186009)(5660300002)(8936002)(66476007)(7416002)(41300700001)(54906003)(66556008)(6916009)(66946007)(316002)(2906002)(6666004)(53546011)(6486002)(6506007)(6512007)(4326008)(2616005)(8676002)(478600001)(26005)(83380400001)(38100700002)(36756003)(86362001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?t4ScbwmUmMsg3wGMGZXm885PiOTavLXn6973NLXYLysBo0mAvJiceYp0uBS/?=
- =?us-ascii?Q?kBrwWK0SFh5VH80mivcccQgM8nlU8ravOt1Xnzhao3Ss6vh3Qd7shUyBzTs7?=
- =?us-ascii?Q?ZQfeAzJLnN3c9F3G7btPvN2/QNy7kUYx3samc3Y9m1P+3rBT0Rt2zJBF06j8?=
- =?us-ascii?Q?Lb9HetNrjcbfY7dEu36wLtuPD6Yg4H3pgzt6nTpQ5TvLZ7KmB0rnbWea+9x4?=
- =?us-ascii?Q?N41AoRUfn1P5lF4Yb0BBGCI+ZZtVT6DXUw2GI9yb1H5XWpWjEvz2h6bmVKYm?=
- =?us-ascii?Q?thYIM2cw0ZMn+C1Av6/kdShR/+iMtO9NM1oGeuIdcZhKDEUUOjQMX7HWOd4z?=
- =?us-ascii?Q?u0I6GskIZWPY+rJ3zwDzHlQOauW2bNbn+2WDkbyPOiqXiC+6Yd5RK8mzaooB?=
- =?us-ascii?Q?9lZi/VJDzFapKNRgsD+bFdYdZ102lZ6Boxp3cvHO3P/3URJArEf8Gesst/c1?=
- =?us-ascii?Q?wz0z6SXjNH47ham8GUBeIm4vaulQvB2SMkshSgj0XZuk69kiOwvmQc7ymYgB?=
- =?us-ascii?Q?pqPQ5IvK3rGcKMXighV13dmrg0SozryJjkQ/0YNSXNT8VAdGeB4vGkb4gtfS?=
- =?us-ascii?Q?rmPk7b02eADkphBvgQv76nSOUoNDYtW4aNX+DYhNiJff7ZDQVogSo1EJZiE3?=
- =?us-ascii?Q?C1UB3kKktyt9Y17xOqngnlZ6XN61iUoKtC/mFc3adaeUgHAqUXOKqFj7OTQA?=
- =?us-ascii?Q?5q2hpCffHr5cn2ZeHCK0lX70jOgwRGL/tg/9Pe7qxZFy4I0kW7Nshf1c+Fs7?=
- =?us-ascii?Q?bOMWthe1Pa1Drx4SENLGTLtNgYI2QdByhKRA3KNPdiDIPJrSCFfSyOD7JCAX?=
- =?us-ascii?Q?x4eah1WpADA7icUQa2NZgRAxYGL3YjYFzv0Sw4k3DnQHCLTxJx1BcwJm1rsc?=
- =?us-ascii?Q?8NuB7Ps6mtwNo1t/bfCTAx+pYGGPIu+/ZzzmljKdwWYd9WckPTHLjrjLIpI9?=
- =?us-ascii?Q?IZXDkBmETzDnjoMZN40TdmjDbVm16mhwGq4T/ULIuJAL/ZK2Hr8Q6NZicK+d?=
- =?us-ascii?Q?g9c9CUj/p63Skr4zsKtLYi1fzFdbeyg1xNcISuycUFkO5cZEJfGWkcND1dud?=
- =?us-ascii?Q?oBd0odLKhPY3/MqskVNxyxW7RWnx+Rj8YjvXrIh8SczHT0EmlZfaB471z9ZM?=
- =?us-ascii?Q?ODXq+iC8nqa55PDdmeCM2pM/n9XG/6UqQRdt1rcx6/ka4GR1y6/W24ltbUVR?=
- =?us-ascii?Q?/fJzWX3pFBHPbrrgza9TPVbNyh+uXrdkrNZNYzD9wY69kRX9/HFFRBaGzLwk?=
- =?us-ascii?Q?/hHHbwUd05XSD/8GoBYBcnl1VCPAnLOqbJcgHLlWzrPamwY3BBSLUyTNqV5F?=
- =?us-ascii?Q?bvlDGTqNAMcnBSsPASuVqLlJXK9BZ361btpYi/GXqAYVIBX6XoythnH3HURc?=
- =?us-ascii?Q?jIlEiJXMYj0H8zdh0Tu7XglKRIrOXVhoZqk486PyGLsnR69d9IsLB9/e0Hlw?=
- =?us-ascii?Q?T6gI/4EXNxEnePp0L/P0np2zZsj7xPPRISQphN6pWmqRN4bhn9VzJwX74Oj3?=
- =?us-ascii?Q?m7bAlZcGhXHlBmaatvm0319Osg4/7wVm7NlWnSBdQNvXALMBfnghUxKUKius?=
- =?us-ascii?Q?fFnuzs5cWgiuS6VfB/N0mmLBVzWEFkb/t4HN3D/J?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5043260b-d012-4cef-9fd3-08dbadefc2ee
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2023 09:09:08.4066 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4ByG8U//hxwOawf/ILm4+TKFK+q9rwYDHt5hGloIp+syzC/mgSBj24D8Pt1fL+RztNrDBkH/FTKtXyiqHMvzqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9037
-Received-SPF: softfail client-ip=2a01:111:f400:7e8a::631;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v2 05/19] host-utils: Add muldiv64_round_up
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230808042001.411094-1-npiggin@gmail.com>
+ <20230808042001.411094-6-npiggin@gmail.com>
+ <ef43cbed-ac93-4be1-2a0a-54ffb608871a@kaod.org>
+ <52695ffb-9294-f6ad-85e2-da4c3841682b@linaro.org>
+ <CVA5N2UCW62Q.1XROBBZ9RWCER@wheely>
+ <e32cdddb-8455-7bae-3280-4ab7d33d4a57@kaod.org>
+ <CVAOJDUN9ZX3.1WW9S8M3AWBQY@wheely>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CVAOJDUN9ZX3.1WW9S8M3AWBQY@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,243 +105,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 06:24:32PM +0800, Akihiko Odaki wrote:
-> On 2023/08/31 18:32, Huang Rui wrote:
-> > From: Antonio Caggiano <antonio.caggiano@collabora.com>
-> > 
-> > Support BLOB resources creation, mapping and unmapping by calling the
-> > new stable virglrenderer 0.10 interface. Only enabled when available and
-> > via the blob config. E.g. -device virtio-vga-gl,blob=true
-> > 
-> > Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> > Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> > Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
-> > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > ---
-> > 
-> > v1->v2:
-> >      - Remove unused #include "hw/virtio/virtio-iommu.h"
-> > 
-> >      - Add a local function, called virgl_resource_destroy(), that is used
-> >        to release a vgpu resource on error paths and in resource_unref.
-> > 
-> >      - Remove virtio_gpu_virgl_resource_unmap from virtio_gpu_cleanup_mapping(),
-> >        since this function won't be called on blob resources and also because
-> >        blob resources are unmapped via virgl_cmd_resource_unmap_blob().
-> > 
-> >      - In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
-> >        and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
-> >        has been fully initialized.
-> > 
-> >      - Memory region has a different life-cycle from virtio gpu resources
-> >        i.e. cannot be released synchronously along with the vgpu resource.
-> >        So, here the field "region" was changed to a pointer that will be
-> >        released automatically once the memory region is unparented and all
-> >        of its references have been released.
-> >        Also, since the pointer can be used to indicate whether the blob
-> >        is mapped, the explicit field "mapped" was removed.
-> > 
-> >      - In virgl_cmd_resource_map_blob(), add check on the value of
-> >        res->region, to prevent beeing called twice on the same resource.
-> > 
-> >      - Remove direct references to parent_obj.
-> > 
-> >      - Separate declarations from code.
-> > 
-> >   hw/display/virtio-gpu-virgl.c  | 213 +++++++++++++++++++++++++++++++++
-> >   hw/display/virtio-gpu.c        |   4 +-
-> >   include/hw/virtio/virtio-gpu.h |   5 +
-> >   meson.build                    |   4 +
-> >   4 files changed, 225 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> > index 312953ec16..17b634d4ee 100644
-> > --- a/hw/display/virtio-gpu-virgl.c
-> > +++ b/hw/display/virtio-gpu-virgl.c
-> > @@ -17,6 +17,7 @@
-> >   #include "trace.h"
-> >   #include "hw/virtio/virtio.h"
-> >   #include "hw/virtio/virtio-gpu.h"
-> > +#include "hw/virtio/virtio-gpu-bswap.h"
-> >   
-> >   #include "ui/egl-helpers.h"
-> >   
-> > @@ -78,9 +79,24 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
-> >       virgl_renderer_resource_create(&args, NULL, 0);
-> >   }
-> >   
-> > +static void virgl_resource_destroy(VirtIOGPU *g,
-> > +                                   struct virtio_gpu_simple_resource *res)
-> > +{
-> > +    if (!res)
-> > +        return;
-> > +
-> > +    QTAILQ_REMOVE(&g->reslist, res, next);
-> > +
-> > +    virtio_gpu_cleanup_mapping_iov(g, res->iov, res->iov_cnt);
-> > +    g_free(res->addrs);
-> > +
-> > +    g_free(res);
-> > +}
-> > +
-> >   static void virgl_cmd_resource_unref(VirtIOGPU *g,
-> >                                        struct virtio_gpu_ctrl_command *cmd)
-> >   {
-> > +    struct virtio_gpu_simple_resource *res;
-> >       struct virtio_gpu_resource_unref unref;
-> >       struct iovec *res_iovs = NULL;
-> >       int num_iovs = 0;
-> > @@ -88,13 +104,22 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
-> >       VIRTIO_GPU_FILL_CMD(unref);
-> >       trace_virtio_gpu_cmd_res_unref(unref.resource_id);
-> >   
-> > +    res = virtio_gpu_find_resource(g, unref.resource_id);
-> > +
-> >       virgl_renderer_resource_detach_iov(unref.resource_id,
-> >                                          &res_iovs,
-> >                                          &num_iovs);
-> >       if (res_iovs != NULL && num_iovs != 0) {
-> >           virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
-> > +        if (res) {
-> > +            res->iov = NULL;
-> > +            res->iov_cnt = 0;
-> > +        }
-> >       }
-> > +
-> >       virgl_renderer_resource_unref(unref.resource_id);
-> > +
-> > +    virgl_resource_destroy(g, res);
-> >   }
-> >   
-> >   static void virgl_cmd_context_create(VirtIOGPU *g,
-> > @@ -426,6 +451,183 @@ static void virgl_cmd_get_capset(VirtIOGPU *g,
-> >       g_free(resp);
-> >   }
-> >   
-> > +#ifdef HAVE_VIRGL_RESOURCE_BLOB
-> > +
-> > +static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
-> > +                                           struct virtio_gpu_ctrl_command *cmd)
-> > +{
-> > +    struct virtio_gpu_simple_resource *res;
-> > +    struct virtio_gpu_resource_create_blob cblob;
-> > +    struct virgl_renderer_resource_create_blob_args virgl_args = { 0 };
-> > +    int ret;
-> > +
-> > +    VIRTIO_GPU_FILL_CMD(cblob);
-> > +    virtio_gpu_create_blob_bswap(&cblob);
-> > +    trace_virtio_gpu_cmd_res_create_blob(cblob.resource_id, cblob.size);
-> > +
-> > +    if (cblob.resource_id == 0) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
-> > +                      __func__);
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +
-> > +    res = virtio_gpu_find_resource(g, cblob.resource_id);
-> > +    if (res) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already exists %d\n",
-> > +                      __func__, cblob.resource_id);
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +
-> > +    res = g_new0(struct virtio_gpu_simple_resource, 1);
-> > +    if (!res) {
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
-> > +        return;
-> > +    }
-> > +
-> > +    res->resource_id = cblob.resource_id;
-> > +    res->blob_size = cblob.size;
-> > +
-> > +    if (cblob.blob_mem != VIRTIO_GPU_BLOB_MEM_HOST3D) {
-> > +        ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
-> > +                                            cmd, &res->addrs, &res->iov,
-> > +                                            &res->iov_cnt);
-> > +        if (!ret) {
-> > +            g_free(res);
-> > +            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-> > +            return;
-> > +        }
-> > +    }
-> > +
-> > +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
-> > +
-> > +    virgl_args.res_handle = cblob.resource_id;
-> > +    virgl_args.ctx_id = cblob.hdr.ctx_id;
-> > +    virgl_args.blob_mem = cblob.blob_mem;
-> > +    virgl_args.blob_id = cblob.blob_id;
-> > +    virgl_args.blob_flags = cblob.blob_flags;
-> > +    virgl_args.size = cblob.size;
-> > +    virgl_args.iovecs = res->iov;
-> > +    virgl_args.num_iovs = res->iov_cnt;
-> > +
-> > +    ret = virgl_renderer_resource_create_blob(&virgl_args);
-> > +    if (ret) {
-> > +        virgl_resource_destroy(g, res);
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: virgl blob create error: %s\n",
-> > +                      __func__, strerror(-ret));
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-> > +    }
-> > +}
-> > +
-> > +static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
-> > +                                        struct virtio_gpu_ctrl_command *cmd)
-> > +{
-> > +    struct virtio_gpu_simple_resource *res;
-> > +    struct virtio_gpu_resource_map_blob mblob;
-> > +    int ret;
-> > +    void *data;
-> > +    uint64_t size;
-> > +    struct virtio_gpu_resp_map_info resp;
-> > +    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
-> > +
-> > +    VIRTIO_GPU_FILL_CMD(mblob);
-> > +    virtio_gpu_map_blob_bswap(&mblob);
-> > +
-> > +    if (mblob.resource_id == 0) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
-> > +                      __func__);
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +
-> > +    res = virtio_gpu_find_resource(g, mblob.resource_id);
-> > +    if (!res) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
-> > +                      __func__, mblob.resource_id);
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +    if (res->region) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already mapped %d\n",
-> > +		      __func__, mblob.resource_id);
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +
-> > +    ret = virgl_renderer_resource_map(res->resource_id, &data, &size);
-> > +    if (ret) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource map error: %s\n",
-> > +                      __func__, strerror(-ret));
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-> > +        return;
-> > +    }
-> > +
-> > +    res->region = g_new0(MemoryRegion, 1);
-> > +    if (!res->region) {
-> > +        virgl_renderer_resource_unmap(res->resource_id);
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
-> > +        return;
-> > +    }
-> > +    memory_region_init_ram_device_ptr(res->region, OBJECT(g), NULL, size, data);
+On 5/9/23 05:56, Nicholas Piggin wrote:
+> On Mon Sep 4, 2023 at 11:30 PM AEST, Cédric Le Goater wrote:
+
+>> Someone really ought to take over PPC. Daniel and I are real
+>> busy on other subsystems. Volunteers ?
 > 
-> I think memory_region_init_ram_ptr() should be used instead.
+> I suppose I should. I could try do the next PR after this one
+> is merged.
 
-Would you mind to explain the reason?
+Thanks a lot for volunteering!
 
-Thanks,
-Ray
+Phil.
+
 
