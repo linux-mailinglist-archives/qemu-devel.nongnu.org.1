@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D427923C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 17:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00957923C7
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 17:06:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdXcg-0005wj-LF; Tue, 05 Sep 2023 11:05:46 -0400
+	id 1qdXdO-0006fP-Ja; Tue, 05 Sep 2023 11:06:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sylv@sylv.io>) id 1qdXce-0005wX-Ay
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:05:44 -0400
-Received: from mout-p-102.mailbox.org ([80.241.56.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <sylv@sylv.io>) id 1qdXcb-0007gQ-Lc
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:05:44 -0400
-Received: from smtp102.mailbox.org (smtp102.mailbox.org
- [IPv6:2001:67c:2050:b231:465::102])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4Rg82S4PhDz9sqj;
- Tue,  5 Sep 2023 17:05:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
- t=1693926336;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=YlBCCz0zPoCGXu2vuJhM3+iDuUcAs5XoG4ghB/B72K8=;
- b=ds2Z1z0CMTRym+Go6g0HVriwMzsH0PTP5Px9nWCXwsrQ2tBgxvNGYCSbvBUyWDW7ulOw4n
- eXetK2w1hRq+EAmTytpbnxfeP8NtLwZtVeLDomAjsaJ69mXk0poICNZoI1i/Roon3wJZim
- YFscvlfoZBN8ZJ0zakd+fSBQej/KyVNlfujUj1rg90giKoZ8xl7RPyF27b+DTJtypRO6ij
- M2NTopx+BTrYF8xnCDr937Po4wwO+BAGEVERSvcKLO8pSp2F8xGRKfPOOxasdFGvmMohgd
- 68Xx5qwcpOkNzDK9iFIanzCXS/PGhQdpoLqEfYi1G63RvlnxIGPRhV2DVPrnSg==
-Message-ID: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
-Date: Tue, 5 Sep 2023 17:05:33 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdXdD-0006Ui-95
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:06:20 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qdXd9-0007mc-Vx
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 11:06:18 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rg7xw5BF6z67y8J;
+ Tue,  5 Sep 2023 23:01:40 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 5 Sep
+ 2023 16:06:08 +0100
+Date: Tue, 5 Sep 2023 16:06:07 +0100
+To: Jonathan Cameron via <qemu-devel@nongnu.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Michael Tsirkin
+ <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH 1/2] hw/cxl: Add utility functions decoder interleave
+ ways and target count.
+Message-ID: <20230905160607.0000366f@huawei.com>
+In-Reply-To: <20230905155639.00000b3a@huawei.com>
+References: <20230904164704.18739-1-Jonathan.Cameron@huawei.com>
+ <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
+ <89d5477c-ece0-b738-c64f-056242619d92@linaro.org>
+ <20230905155639.00000b3a@huawei.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Language: en-US, de-DE
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, imammedo@redhat.com, ani@anisinha.ca,
- Patrick Rudolph <patrick.rudolph@9elements.com>
-From: Marcello Sylverster Bauer <sylv@sylv.io>
-Subject: PCI Hotplug ACPI device names only 3 characters long
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4Rg82S4PhDz9sqj
-Received-SPF: pass client-ip=80.241.56.152; envelope-from=sylv@sylv.io;
- helo=mout-p-102.mailbox.org
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,42 +68,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Greetings,
+On Tue, 5 Sep 2023 15:56:39 +0100
+Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
 
-I'm currently working on a project to support Intel IPU6 in QEMU via 
-VFIO so that the guest system can access the camera. This requires 
-extending the ACPI device definition so that the guest knows how to 
-access the camera.
+> On Mon, 4 Sep 2023 20:26:59 +0200
+> Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+>=20
+> > On 4/9/23 18:47, Jonathan Cameron wrote: =20
+> > > As an encoded version of these key configuration parameters is
+> > > a register, provide functions to extract it again so as to avoid
+> > > the need for duplicating the storage.
+> > >=20
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >   include/hw/cxl/cxl_component.h | 14 ++++++++++++++
+> > >   hw/cxl/cxl-component-utils.c   | 17 +++++++++++++++++
+> > >   2 files changed, 31 insertions(+)
+> > >=20
+> > > diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_comp=
+onent.h
+> > > index 42c7e581a7..f0ad9cf7de 100644
+> > > --- a/include/hw/cxl/cxl_component.h
+> > > +++ b/include/hw/cxl/cxl_component.h
+> > > @@ -238,7 +238,21 @@ static inline int cxl_decoder_count_enc(int coun=
+t)
+> > >       return 0;
+> > >   }
+> > >  =20
+> > > +static inline int cxl_decoder_count_dec(int enc_cnt)
+> > > +{
+> > > +    switch (enc_cnt) {
+> > > +    case 0: return 1;
+> > > +    case 1: return 2;
+> > > +    case 2: return 4;
+> > > +    case 3: return 6;
+> > > +    case 4: return 8;
+> > > +    case 5: return 10;
+> > > +    }
+> > > +    return 0;
+> > > +}   =20
+> >=20
+> > Why inline?
+> >  =20
+>=20
+> Bad habit.
+Nope. I'm being slow.  This is in a header so if I don't
+mark it inline I get a bunch of defined but not used warnings.
 
-However, I cannot extend the PCI devices because their names are not 4 
-characters long and therefore do not follow the ACPI specification.
+Obviously I could move the implementation of this and the matching
+encoding routines out of the header. I haven't done so for now.
 
-When I use '-acpitable' to include my own SSDT for the IPU6 PCI device, 
-it does not allow me to declare the device as an External Object because 
-it automatically adds padding underscores.
 
-e.g.
-Before:
-```
-External(_SB.PCI0.S18.SA0, DeviceObj)
-```
-After:
-```
-External(_SB.PCI0.S18_.SA0_, DeviceObj)
-```
+>=20
+>=20
+> > Alternatively:
+> >=20
+> >    unsigned cxl_decoder_count_dec(unsigned enc_cnt)
+> >    {
+> >        return enc_cnt <=3D 5 ? 2 * enc_cnt : 0; =20
+>=20
+> It gets a little more fiddly than the code I'm proposing implies.
+> For Switches and Host Bridges larger values are defined
+> (we just don't emulate them yet and may never do so) and those
+> don't have a sensible mapping.=20
+>=20
+> I guess there is no harm in adding the full decode however
+> which will make it more obvious why it was a switch statement.
+>=20
+> >    }
+> >=20
+> >  =20
+>=20
+>=20
+>=20
 
-Adding the underscore padding is hard coded in iASL and also in QEMU 
-when parsing an ASL file. (see: build_append_nameseg())
-
-So here are my questions:
-1. Is there a solution to extend the ACPI PCI device using '-acpitable' 
-without having to patch iASL or QEMU?
-2. Are there any plans to change the names to comply with the ACPI spec? 
-(e.g. use "S%.03X" format string instead)
-
-Thanks
-Marcello
 
