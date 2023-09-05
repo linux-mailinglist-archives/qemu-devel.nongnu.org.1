@@ -2,62 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF4D792CB5
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1A2792CB6
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:47:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qda7H-00036j-T3; Tue, 05 Sep 2023 13:45:31 -0400
+	id 1qda8f-00041Y-6n; Tue, 05 Sep 2023 13:46:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sylv@sylv.io>) id 1qda7G-00036X-2N
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:45:30 -0400
-Received: from mout-p-202.mailbox.org ([80.241.56.172])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <sylv@sylv.io>) id 1qda7B-0005k0-BE
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:45:29 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org
- [IPv6:2001:67c:2050:b231:465::1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qda8S-0003yL-Ky
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:46:44 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qda8Q-0006MZ-8j
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:46:44 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4RgCZh1BCsz9t4h;
- Tue,  5 Sep 2023 19:45:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
- t=1693935916;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PC0Z0ZM4FZL9hk6Q8shpjCEYbOy8Zid7j13xamUcIq8=;
- b=aaEgaOCcUBCEfNTzQNwqqKB4fMO4MAs+NvQSbnlRGsPU7AH77OeNm2u0BhlByFj1jrNS7P
- C0M4OVPtrurMDLdsR4PJ/+7G97IWfTUzi7k8gjtQmSo9fs2NFrwp1Fqf31ioqPe/C0naum
- zTEc4Cy0+bAerrsvS0qIk8ikNpTrUBh/oapDv1TpwefV5yiOKrz5/S4JIQ31UFYktPCVsH
- tY03UiXwDqpk/jx+cl6EVr5rzxqB7qBa0lpz3tSIXSTUlPOX/Vu11sDL3TgTTt6Fl0xbmv
- 2ZbfGTdG6a53nxxruZS/sLwCjFnbiVMo4HZ0AXUuI0XeTHuca4JZLkh7Cz4HKQ==
-Message-ID: <bfd8c202-0ceb-47c2-8e9c-9547bd4bdd5f@sylv.io>
-Date: Tue, 5 Sep 2023 19:45:12 +0200
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 96A0F1FF64;
+ Tue,  5 Sep 2023 17:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1693935999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=L/WAEDSFNLpsb5m9BlWlLp+qgIbutuYimcNiIgtUEIE=;
+ b=Y2/IjpQFdT1QoVpWIX6FFaIhbZUYVstRSt2aFDQYLemcrJEsJ4i9+/xg7ipSwEzG9ZXcYG
+ qM+5bjyj3zpvE0UhJ1YhBTGrPebp2iYxqiz+D5eUodO0wdXSndKEBLtTgROecQOwMW82/I
+ q2Cca4xKGp2iBUep5chUv7/CUK9qEsE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1693935999;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=L/WAEDSFNLpsb5m9BlWlLp+qgIbutuYimcNiIgtUEIE=;
+ b=sqDwnR5T8QSHM4r8jzf9TieJaRBpk6EaUBuTByIO5ppNMHQJGUrYgmB6ANhAzCFpqLC/sA
+ XIk8FhWyYH2+y4Bw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 49EDC13499;
+ Tue,  5 Sep 2023 17:46:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id +dhEBX5p92SFQgAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 05 Sep 2023 17:46:38 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] iothread: Set the GSource "name" field
+Date: Tue,  5 Sep 2023 14:46:35 -0300
+Message-Id: <20230905174635.10112-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Language: en-US, de-DE
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com, ani@anisinha.ca,
- Patrick Rudolph <patrick.rudolph@9elements.com>
-References: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
- <20230905123447-mutt-send-email-mst@kernel.org>
-From: Marcello Sylverster Bauer <sylv@sylv.io>
-Subject: Re: PCI Hotplug ACPI device names only 3 characters long
-In-Reply-To: <20230905123447-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4RgCZh1BCsz9t4h
-Received-SPF: pass client-ip=80.241.56.172; envelope-from=sylv@sylv.io;
- helo=mout-p-202.mailbox.org
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,91 +79,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+Having a name in the source helps with debugging core dumps when one
+might not have access to TLS data to cross-reference AioContexts with
+their addresses.
 
-On 9/5/23 18:44, Michael S. Tsirkin wrote:
-> On Tue, Sep 05, 2023 at 05:05:33PM +0200, Marcello Sylverster Bauer wrote:
->> Greetings,
->>
->> I'm currently working on a project to support Intel IPU6 in QEMU via VFIO so
->> that the guest system can access the camera. This requires extending the
->> ACPI device definition so that the guest knows how to access the camera.
->>
->> However, I cannot extend the PCI devices because their names are not 4
->> characters long and therefore do not follow the ACPI specification.
->>
->> When I use '-acpitable' to include my own SSDT for the IPU6 PCI device, it
->> does not allow me to declare the device as an External Object because it
->> automatically adds padding underscores.
->>
->> e.g.
->> Before:
->> ```
->> External(_SB.PCI0.S18.SA0, DeviceObj)
->> ```
->> After:
->> ```
->> External(_SB.PCI0.S18_.SA0_, DeviceObj)
->> ```
->>
->> Adding the underscore padding is hard coded in iASL and also in QEMU when
->> parsing an ASL file. (see: build_append_nameseg())
->>
->> So here are my questions:
->> 1. Is there a solution to extend the ACPI PCI device using '-acpitable'
->> without having to patch iASL or QEMU?
->> 2. Are there any plans to change the names to comply with the ACPI spec?
->> (e.g. use "S%.03X" format string instead)
->>
->> Thanks
->> Marcello
-> 
-> 
-> 1.  All names in ACPI are always exactly 4 characters long. _ is a legal character
->      but names beginning with _ are reserved.
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+v2:
+used g_autofree where appropriate
+---
+ iothread.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Exactly, which is why I want to address this issue here. Currently, Qemu 
-generates ACPI device names with only 3 characters. (See 
-build_append_pci_bus_devices() in hw/i386/acpi-build.c).
-For example, the device I want to append entries to has the path 
-"_SB.PCI0.S18.SA0", but I can't because of the two auto-generated 
-devices with only 3 characters in their names.
+diff --git a/iothread.c b/iothread.c
+index b41c305bd9..78ac1153ac 100644
+--- a/iothread.c
++++ b/iothread.c
+@@ -138,12 +138,14 @@ static void iothread_instance_finalize(Object *obj)
+     qemu_sem_destroy(&iothread->init_done_sem);
+ }
+ 
+-static void iothread_init_gcontext(IOThread *iothread)
++static void iothread_init_gcontext(IOThread *iothread, char *thread_name)
+ {
+     GSource *source;
++    g_autofree char *name = g_strdup_printf("%s aio-context", thread_name);
+ 
+     iothread->worker_context = g_main_context_new();
+     source = aio_get_g_source(iothread_get_aio_context(iothread));
++    g_source_set_name(source, name);
+     g_source_attach(source, iothread->worker_context);
+     g_source_unref(source);
+     iothread->main_loop = g_main_loop_new(iothread->worker_context, TRUE);
+@@ -180,7 +182,7 @@ static void iothread_init(EventLoopBase *base, Error **errp)
+ {
+     Error *local_error = NULL;
+     IOThread *iothread = IOTHREAD(base);
+-    char *thread_name;
++    g_autofree char *thread_name = NULL;
+ 
+     iothread->stopping = false;
+     iothread->running = true;
+@@ -189,11 +191,14 @@ static void iothread_init(EventLoopBase *base, Error **errp)
+         return;
+     }
+ 
++    thread_name = g_strdup_printf("IO %s",
++                        object_get_canonical_path_component(OBJECT(base)));
++
+     /*
+      * Init one GMainContext for the iothread unconditionally, even if
+      * it's not used
+      */
+-    iothread_init_gcontext(iothread);
++    iothread_init_gcontext(iothread, thread_name);
+ 
+     iothread_set_aio_context_params(base, &local_error);
+     if (local_error) {
+@@ -206,11 +211,8 @@ static void iothread_init(EventLoopBase *base, Error **errp)
+     /* This assumes we are called from a thread with useful CPU affinity for us
+      * to inherit.
+      */
+-    thread_name = g_strdup_printf("IO %s",
+-                        object_get_canonical_path_component(OBJECT(base)));
+     qemu_thread_create(&iothread->thread, thread_name, iothread_run,
+                        iothread, QEMU_THREAD_JOINABLE);
+-    g_free(thread_name);
+ 
+     /* Wait for initialization to complete */
+     while (iothread->thread_id == -1) {
+-- 
+2.35.3
 
-> There's no rule in ACPI
->      spec that says they need to follow S%.03X or any other specific format.
->      I'm pretty sure we do follow the ACPI specification in this but feel free to
->      prove me wrong.
-
-You have misunderstood me. Currently, Qemu uses the following format to 
-create PCI ACPI devices:
-
-```
-aml_name("S%.02X", devfn)
-```
-
-My question is whether we should change it to something that results in 
-a 4 character name like "S%.03X" or "S%.02X_".
-
-I have tested it and it works fine as long as any hardcoded path 
-references are adjusted. But I'm not 100% sure if this could cause any 
-regressions.
-
-> 2.  You can probably add something to existing ACPI devices using Scope().
-
-I'm pretty sure the external object is required when loading a separate 
-SSDT, but I'll try by just using scopes.
-
->      I would not advise relying on this - current names are not a stable
->      interface that we guarantee across QEMU versions.
->      If adding this functionality is desirable, I think we'll need some new interface
->      to set a stable ACPI name. Maybe using aliases.
-
-Currently I'm just working on a PoW to get IPU6 working in QEMU, so 
-instability is fine.
-
-Thanks,
-Marcello
-
-> 
-> 
 
