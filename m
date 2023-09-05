@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB447792F50
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 21:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E585792F4F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 21:51:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdc3y-0001gQ-07; Tue, 05 Sep 2023 15:50:14 -0400
+	id 1qdc4A-0001ib-Jf; Tue, 05 Sep 2023 15:50:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qdc3r-0001fP-DG
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 15:50:07 -0400
+ id 1qdc41-0001hO-HK
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 15:50:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qdc3o-0007Df-7R
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 15:50:06 -0400
+ id 1qdc3x-0007I4-UN
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 15:50:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693943403;
+ s=mimecast20190719; t=1693943412;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XScpzLc8agw3aaYccrT5LahnsjsNTTsv3y/XOx+z70U=;
- b=Sy9ZxbhATYvGSpeJNLSQctREhvQnSj6dfE3Jtwiw45U624NBMe+bv3qrVK7GWVGarSJoTb
- elDqBOQOYZMWdtRk+xzjb0myHtUfvXYfY3wAJlm7N5QDuRtdbMcs+mdsmHn//7Qf2C1UHV
- HGA/RFm985Dbrjtu/xWBHnkSPcaP/OI=
+ bh=/CX3HILOE0Qo2KK51ms6vVDBgW2XfXCWSH/n5xpBS1s=;
+ b=R7DYICsQ9+Uivv1ncqLOh2Jis5ZDVNwf+rRLK8jpWZx//DfO5bNqI9QrbfgRL4nxMEM7uD
+ FxM5vanZoCy7+PcmO30Cvzoyqdyu4E51520doHtDdMOYAfSIhOmj7ZQiSHgXg+LWom47y3
+ 1LY7n00Dch/Z0ACWWNR6upiWQBn+u4M=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-678-D6Oacq4YNwGPScW7zFLWBQ-1; Tue, 05 Sep 2023 15:48:54 -0400
-X-MC-Unique: D6Oacq4YNwGPScW7zFLWBQ-1
+ us-mta-263-o8UNIzV7MGK2RxNY64SNeA-1; Tue, 05 Sep 2023 15:48:56 -0400
+X-MC-Unique: o8UNIzV7MGK2RxNY64SNeA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7B4180E99F
- for <qemu-devel@nongnu.org>; Tue,  5 Sep 2023 19:48:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E92798015AA
+ for <qemu-devel@nongnu.org>; Tue,  5 Sep 2023 19:48:55 +0000 (UTC)
 Received: from tapioca.wind3.hub (unknown [10.45.225.142])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BB590C15BB8;
- Tue,  5 Sep 2023 19:48:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0B14BC15BB8;
+ Tue,  5 Sep 2023 19:48:54 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
 	John Snow <jsnow@redhat.com>
-Subject: [PATCH v1 5/7] qapi: fix example of set-vcpu-dirty-limit command
-Date: Tue,  5 Sep 2023 21:48:44 +0200
-Message-ID: <20230905194846.169530-6-victortoso@redhat.com>
+Subject: [PATCH v1 6/7] qapi: fix example of calc-dirty-rate command
+Date: Tue,  5 Sep 2023 21:48:45 +0200
+Message-ID: <20230905194846.169530-7-victortoso@redhat.com>
 In-Reply-To: <20230905194846.169530-1-victortoso@redhat.com>
 References: <20230905194846.169530-1-victortoso@redhat.com>
 MIME-Version: 1.0
@@ -78,7 +78,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Example output has extra end curly bracket. Remove it.
+Example output has property name with single quotes. Fix it.
 
 Signed-off-by: Victor Toso <victortoso@redhat.com>
 ---
@@ -86,18 +86,18 @@ Signed-off-by: Victor Toso <victortoso@redhat.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 9385b9f87c..2658cdbcbe 100644
+index 2658cdbcbe..45dac41f67 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -1986,7 +1986,7 @@
- #
+@@ -1922,7 +1922,7 @@
  # Example:
  #
--# -> {"execute": "set-vcpu-dirty-limit"}
-+# -> {"execute": "set-vcpu-dirty-limit",
- #     "arguments": { "dirty-rate": 200,
- #                    "cpu-index": 1 } }
+ # -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 1,
+-#                                                 'sample-pages': 512} }
++#                                                 "sample-pages": 512} }
  # <- { "return": {} }
+ ##
+ { 'command': 'calc-dirty-rate', 'data': {'calc-time': 'int64',
 -- 
 2.41.0
 
