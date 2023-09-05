@@ -2,88 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB2A7929B8
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A51E7792B66
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:05:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdZKw-00034H-M2; Tue, 05 Sep 2023 12:55:34 -0400
+	id 1qdZTk-0002Gt-29; Tue, 05 Sep 2023 13:04:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZKt-00033X-IS
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:55:31 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qdZTi-0002Gh-Jr
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:04:38 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdZKp-0004ac-JB
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:55:31 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-99c136ee106so420840166b.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:55:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qdZTg-0006ap-0Q
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:04:38 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-402d0eda361so19514385e9.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 10:04:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693932925; x=1694537725; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3AlzI1/zUkgHjINPB/60Bhf/bsRfn38JsFwy+xis2jA=;
- b=hE7HWfDc0p3N0Bpq01wmeLvFAobgntV39leHjafhjwmmCRz5t6wz7P4lKNJoHpS/te
- zeiLkaQeJ8N1yhdHsj4B4dF1qF/B6vb9E3XEKt4Bm1Y/3lL/Lmu3vj2cQw1+xzI3K9Ce
- 31lmrfoZ8N9c3bUsFM4U45PP4f19qLHQPAPH5c3jVctH+Y67LEizVK4KAIbZC8idLz00
- wXyP10lkhi+u1/vEHIdQxlcCcgrHyjtaWaaelqqjHeIUk3Hqz0Xpk9ZN/jxciXf+3TdW
- c3GwRz186Gy0ANEG1LWNJr2fKU3nYbkLMfSmp46Jz7yNfXCtZlVAlmKuYdDjrRj1Z58B
- 7Hvw==
+ d=linaro.org; s=google; t=1693933473; x=1694538273; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ekx867mHXd66kuN1xrBjKNaFWHlYvLgGYX8Lg7d62g0=;
+ b=ZYPkKfz2IdOH74H0G07JnX/b7UqJvXvv/IfgFlxsY/snwyazTWGsarHmfWcaOTMvZP
+ 9sr2H0yFRDDfBOwi6vhSYGxpusWp5/CaxuvIQvJgtdsNZT05/S/z+OT2jSJxwFkstp99
+ A+Gqtyee93jZjO6LIOfdIzYPzUuIXErsVUhDeX/TqfKo/tNRK5VDacOhJbrrPBmaDD6n
+ rymP9tkn7GXX6UB3/kKtkgpgrKOrnCedIeDamQzejdEcM9qbqkyKOZSHww/uLfqXYliy
+ jXfw7dnMi3N5ngSbt9Hz/SXhCtkbsKVElMtv94ownEk95iB6tF9vi00+FCPaB8yrUooC
+ jCrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693932925; x=1694537725;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3AlzI1/zUkgHjINPB/60Bhf/bsRfn38JsFwy+xis2jA=;
- b=J+HB2AXQZrbmyr/WS33nWloe8xHGXZ2mzeMHEcTmBv2/R+PZFzSC16N4+GIG1wCWuG
- x+wBC34laKsMncHyHZKntnKwUVoFRelSre6066N3EKJPGuZB1OcXjzJXHofKbowrBYh4
- hsZyeqVpETskO7XNCPisXmxspvBrVlnpA5NK9THDt43k/4/pVooUFJmoni5a8MtcOw3B
- zJbstzRVsLRCoUryvwBXD3gS03LLRBV7Si0a35abIGK0frHeVWnvPbb+dzRCD/RWVBFF
- SO6me/mXMbR0NMBToUI2rmXB29Lq4W35fp7P8QSt0fgbeFlbf6rYfsOBjZt4eOa0miIV
- zeQA==
-X-Gm-Message-State: AOJu0Yxjuh+CiB6dhVBKxaxWO6z5c48d1wJV5F55EjtCtaX0EMrKcuLx
- mspi6CfTy3G/36enJ2ms6rghKA==
-X-Google-Smtp-Source: AGHT+IGJjFvazhbzDO72qsjE+5oyOKiJjYH9aNw64nxL/uDLtKPe8WhesihAPOy2FRDrol1fvQtvSQ==
-X-Received: by 2002:a17:907:7893:b0:99b:d580:546c with SMTP id
- ku19-20020a170907789300b0099bd580546cmr369290ejc.23.1693932925378; 
- Tue, 05 Sep 2023 09:55:25 -0700 (PDT)
-Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
- [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
- f3-20020a170906824300b009786c8249d6sm7898364ejx.175.2023.09.05.09.55.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 09:55:24 -0700 (PDT)
-Message-ID: <d3e6506a-b553-d292-9428-25e784be0d4f@linaro.org>
-Date: Tue, 5 Sep 2023 18:55:23 +0200
+ d=1e100.net; s=20221208; t=1693933473; x=1694538273;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ekx867mHXd66kuN1xrBjKNaFWHlYvLgGYX8Lg7d62g0=;
+ b=iHmut5mPnWHe0Oef8XwS6OI97tK94d+xQEX0EpzJvxx3tlotca+VgFSQfuzOaFIJ6v
+ W0tfqOG9w40ZIt3ytu++sYpdvHgnIwzUUEp55bqWTijjYQ/1NjuBEohfOSIlOqVnP0Kz
+ Wm/wR/atpSvyLjFl4H4sKRup3evTKlpL4+gKgv14Rsv9G93BmodxOTLRgEUqLsLutmWE
+ OPejyoahkf0Cf/OGotaWoQhKxZ7Q8Kc5j0RmF97OKDi6Xw2fibq2Wt/Rd7MghwiCPQHD
+ clil0QKhlu2CmxsUcNP5Ygxz08p2IUwbKX4rHwCgjJg2sp9GuAedCGW8Lz+HC+mFBJHD
+ JmAA==
+X-Gm-Message-State: AOJu0Yw6Aac/X8LEj7BL0p6Y+a/h2bwGF/Cbf7puOFmKdIQJjmuZzwZf
+ +4b7ztZ6eXjK5vGJKq6EIeu96w==
+X-Google-Smtp-Source: AGHT+IFJxsC3rYi0Gm8vwrYAI6LeQhzedFqbbXrdw1aqnAWwgxe1ooMUdLesqaruRWd4WDCx2GnIug==
+X-Received: by 2002:a05:600c:21c5:b0:3fc:dd9:91fd with SMTP id
+ x5-20020a05600c21c500b003fc0dd991fdmr291847wmj.40.1693933473280; 
+ Tue, 05 Sep 2023 10:04:33 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n26-20020a05600c3b9a00b00402c0a8a084sm12145575wms.17.2023.09.05.10.04.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Sep 2023 10:04:33 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 7C6F41FFBB;
+ Tue,  5 Sep 2023 18:04:32 +0100 (BST)
+References: <20230710153522.3469097-1-alex.bennee@linaro.org>
+ <20230710153522.3469097-8-alex.bennee@linaro.org>
+ <ZPc44//qJCPNAOXE@fedora>
+User-agent: mu4e 1.11.16; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+Cc: qemu-devel@nongnu.org, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Kevin Wolf <kwolf@redhat.com>, Markus
+ Armbruster <armbru@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Mathieu
+ Poirier <mathieu.poirier@linaro.org>, Hanna Reitz <hreitz@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>, "Gonglei (Arei)"
+ <arei.gonglei@huawei.com>, Eduardo Habkost <eduardo@habkost.net>, Fam
+ Zheng <fam@euphon.net>, virtio-fs@redhat.com, Stefan Hajnoczi
+ <stefanha@redhat.com>
+Subject: Re: [PATCH v3 07/20] virtio: add vhost-user-base and a generic
+ vhost-user-device
+Date: Tue, 05 Sep 2023 18:01:56 +0100
+In-reply-to: <ZPc44//qJCPNAOXE@fedora>
+Message-ID: <87ledkh7q7.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 1/2] hw/cxl: Add utility functions decoder interleave ways
- and target count.
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Jonathan Cameron via <qemu-devel@nongnu.org>
-Cc: Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- linux-cxl@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
- linuxarm@huawei.com
-References: <20230904164704.18739-1-Jonathan.Cameron@huawei.com>
- <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
- <89d5477c-ece0-b738-c64f-056242619d92@linaro.org>
- <20230905155639.00000b3a@huawei.com> <20230905160607.0000366f@huawei.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230905160607.0000366f@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,78 +112,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/9/23 17:06, Jonathan Cameron wrote:
-> On Tue, 5 Sep 2023 15:56:39 +0100
-> Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
-> 
->> On Mon, 4 Sep 2023 20:26:59 +0200
->> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->>> On 4/9/23 18:47, Jonathan Cameron wrote:
->>>> As an encoded version of these key configuration parameters is
->>>> a register, provide functions to extract it again so as to avoid
->>>> the need for duplicating the storage.
->>>>
->>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>> ---
->>>>    include/hw/cxl/cxl_component.h | 14 ++++++++++++++
->>>>    hw/cxl/cxl-component-utils.c   | 17 +++++++++++++++++
->>>>    2 files changed, 31 insertions(+)
->>>>
->>>> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
->>>> index 42c7e581a7..f0ad9cf7de 100644
->>>> --- a/include/hw/cxl/cxl_component.h
->>>> +++ b/include/hw/cxl/cxl_component.h
->>>> @@ -238,7 +238,21 @@ static inline int cxl_decoder_count_enc(int count)
->>>>        return 0;
->>>>    }
->>>>    
->>>> +static inline int cxl_decoder_count_dec(int enc_cnt)
->>>> +{
->>>> +    switch (enc_cnt) {
->>>> +    case 0: return 1;
->>>> +    case 1: return 2;
->>>> +    case 2: return 4;
->>>> +    case 3: return 6;
->>>> +    case 4: return 8;
->>>> +    case 5: return 10;
->>>> +    }
->>>> +    return 0;
->>>> +}
->>>
->>> Why inline?
->>>    
->>
->> Bad habit.
-> Nope. I'm being slow.  This is in a header so if I don't
-> mark it inline I get a bunch of defined but not used warnings.
-> 
-> Obviously I could move the implementation of this and the matching
-> encoding routines out of the header. I haven't done so for now.
 
-Inlined function in hw/ are hardly justifiable. They make the headers
-and debugging sessions harder to read in my experience. Compilers are
-becoming clever and clever, and we have LTO, so I rather privilege
-code maintainability. My 2 cents :)
+Matias Ezequiel Vara Larsen <mvaralar@redhat.com> writes:
 
->>> Alternatively:
->>>
->>>     unsigned cxl_decoder_count_dec(unsigned enc_cnt)
->>>     {
->>>         return enc_cnt <= 5 ? 2 * enc_cnt : 0;
->>
->> It gets a little more fiddly than the code I'm proposing implies.
->> For Switches and Host Bridges larger values are defined
->> (we just don't emulate them yet and may never do so) and those
->> don't have a sensible mapping.
->>
->> I guess there is no harm in adding the full decode however
->> which will make it more obvious why it was a switch statement.
+> On Mon, Jul 10, 2023 at 04:35:09PM +0100, Alex Benn=C3=A9e wrote:
+>> In theory we shouldn't need to repeat so much boilerplate to support
+>> vhost-user backends. This provides a generic vhost-user-base QOM
+>> object and a derived vhost-user-device for which the user needs to
+>> provide the few bits of information that aren't currently provided by
+>> the vhost-user protocol. This should provide a baseline implementation
+>> from which the other vhost-user stub can specialise.
+>>=20
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>=20
+>> ---
+>> v2
+>>   - split into vub and vud
+<snip>
+>> +
+>> +    /*
+>> +     * Disable guest notifiers, by default all notifications will be vi=
+a the
+>> +     * asynchronous vhost-user socket.
+>> +     */
+>> +    vdev->use_guest_notifier_mask =3D false;
+>> +
+>> +    /* Allocate queues */
+>> +    vub->vqs =3D g_ptr_array_sized_new(vub->num_vqs);
+>> +    for (int i =3D 0; i < vub->num_vqs; i++) {
+>> +        g_ptr_array_add(vub->vqs,
+>> +                        virtio_add_queue(vdev, 4, vub_handle_output));
+>> +    }
+>> +
+>
+> Hello Alex, apologies if someone already asked this. If I understand
+> correctly, the second parameter of virtio_add_queue() is the len of the
+> queue. Why have you chosen "4" as its value? Shall qemu query the len of
+> the queue from the vhost-user device instead?
 
-Right, no problem.
+Hmm yeah that is inherited from the virtio-rng backend which has a
+pretty short queue. I don't think it is intrinsic to the device
+implementation (although I guess that depends if a device will have
+multiple requests in flight).
 
-Preferably having this tiny function not inlined:
+I propose making is some useful ^2 (like 64) and adding a config knob to
+increase it if needed.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
