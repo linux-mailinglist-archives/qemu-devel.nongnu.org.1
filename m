@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10E07928B9
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D68C79290E
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 18:47:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdZAI-0004rp-7z; Tue, 05 Sep 2023 12:44:34 -0400
+	id 1qdZCG-0006Ul-Aj; Tue, 05 Sep 2023 12:46:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdZAG-0004rc-RP
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:44:32 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdZCB-0006UE-MJ
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:46:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qdZAE-0002Vg-JJ
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:44:32 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdZC9-00031e-El
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 12:46:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693932269;
+ s=mimecast20190719; t=1693932388;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LWiNG9xo2MYcQ+ufwl/m6pBkdSlQtwXixbzbGN9VQrw=;
- b=jUxZk1Iky+J2SD4yTh4ybpixxcOsenG1YocAuUvP2ls5UDlkq+HUsbOlb+3jezAv2fmuxI
- Ye5DbztSiMq1J0Wb+QqnX0oeSYwQB07pAx0w0Whx+Ag2Gs3XA+aByZRERhfScEsFKJXhNb
- wPWOYUZNfzO+zU0+lyNr2AEmg1wsC60=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7P0o1pV4ay4osDtu6EHBSK5iw9vixaEzfAafQzYyRY4=;
+ b=UbnMpm6aF1vBjvBifXHyQ1kwlF0Mtzu5mOo+nkJnJwSZGYQ4CiYEzfq8RhC6Vga7r9BpaM
+ YMcCael5h5W7BAVUKg/tLZI5W8lgmPjZcIlSNgYOrFRAY6SI0kAH52SEY+A3ozOVqS7Axb
+ H4t3gbyDKligVSaszpGFGMklrLx4F2U=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-KSKJpuszNBWJK9FO-1-kMA-1; Tue, 05 Sep 2023 12:44:27 -0400
-X-MC-Unique: KSKJpuszNBWJK9FO-1-kMA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-500b95c69c3so2680584e87.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:44:25 -0700 (PDT)
+ us-mta-304-0NnlwZ3TPLKjx8kJGRJfaw-1; Tue, 05 Sep 2023 12:46:22 -0400
+X-MC-Unique: 0NnlwZ3TPLKjx8kJGRJfaw-1
+Received: by mail-oo1-f70.google.com with SMTP id
+ 006d021491bc7-5733de62ca4so304706eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 09:46:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693932264; x=1694537064;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LWiNG9xo2MYcQ+ufwl/m6pBkdSlQtwXixbzbGN9VQrw=;
- b=XbR/o2uDlv3fKgNn7SMVZPYXfR33oUR7WWeqjC95OJ7GBaEqxOwwn4YTdNh7p0pB1D
- X6aXwoNH4lfBBRMeeOqjxXTEsxnIQkyGVRhB+0pvYfytDPKHSMx7jFV7W94NBMSrdg+H
- buFzJY54d3bHszaZDl6wNjf63Bh7NhPMdxhrS2c1O4MOKH5OA6IBXbOLzzp4zOpJ+iTU
- EZZ7355kgtXdEIxPnNVgj7y9u8JIMhlgQ9r5+3CjRbk7r4+RVp3cobraq3TPsFlChdnu
- lr9Y3wu0bk6RLNA23LWkmN74bvNpbnfKihQJwaykmrd9xAzG1WVO6bqxdZ7ZQ4ORHIG0
- 4eEQ==
-X-Gm-Message-State: AOJu0YzcxL6x+dxu6VwvqhogpKgBuSoM7ggpOZ+JFZ4kvirmkX8S4LFB
- ZJOvP+/MCUApNPDLAvvDFu6w7ZY8CjzBc9qAfau3+KpzmW5eddsOfAR3Dmlt6sfsGz5dSOGm7zo
- Vp3qMirGEpAynPXA=
-X-Received: by 2002:a19:7710:0:b0:500:bd75:77d1 with SMTP id
- s16-20020a197710000000b00500bd7577d1mr242859lfc.63.1693932264620; 
- Tue, 05 Sep 2023 09:44:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXtMqpheYZgg1FLKcoyXCG3RwNTSuqoIqQ690AiFH7gNSW5WMtrcbAuYXGhMlrdrSpINvUlQ==
-X-Received: by 2002:a19:7710:0:b0:500:bd75:77d1 with SMTP id
- s16-20020a197710000000b00500bd7577d1mr242845lfc.63.1693932264259; 
- Tue, 05 Sep 2023 09:44:24 -0700 (PDT)
-Received: from redhat.com ([2.52.23.134]) by smtp.gmail.com with ESMTPSA id
- n13-20020a05640206cd00b0052a1a623267sm7307774edy.62.2023.09.05.09.44.22
+ d=1e100.net; s=20221208; t=1693932367; x=1694537167;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7P0o1pV4ay4osDtu6EHBSK5iw9vixaEzfAafQzYyRY4=;
+ b=Kfh41ibbQuTziPIn28c9XZGms46XAARKRGelCGZjZ5tDYoSnUNLPnEv8pM4bf+g6RN
+ 7ZaXKgoNLbNe0b2WBTzdlyu7yODDND2Zxoy6ibW1KY7fdnA4vv/IEJMQdWEAd83rjJ3m
+ wjOUJzBnnDss1n+BK9tWki4/Ncls/Y0WWWv3/OAs75RO9IiyKgIOmop3qo2vHzQQtPf/
+ EOMjizvRDNjPzND/Ax78U1wB1zcZDxMhHgYmp+meAIY48jE12L5s3EZH2F9qZkmWQOAB
+ Z0I1fpjRbQ714SKzQTqcbaNzF/OQ59nufEadjKn2anxvEkCEPvb3+bKGhp7VUwa/i+4V
+ 7Zhg==
+X-Gm-Message-State: AOJu0YwJW+CUQystgI5S3tW4FVhQ9RVNYDLwyl6HKnT1rv1uvR2AZWFc
+ T1aHlobKKuUUaMCu+KQ282/tCWFp+N2eOLkLs/PUWw/kga4Z1tZK2aK30W5LevlzQaeExzn76Fh
+ fJcEDTDhxlh5o8a8=
+X-Received: by 2002:a05:6808:6542:b0:3a9:ef9f:c4c1 with SMTP id
+ fn2-20020a056808654200b003a9ef9fc4c1mr12682567oib.3.1693932367081; 
+ Tue, 05 Sep 2023 09:46:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFO0s9TJyZiA94Gsg9B25hUUZ8afAWhi9uqrlNmIQZhVQIeKtzNaIfF0HVLJO369XVGhzpdGw==
+X-Received: by 2002:a05:6808:6542:b0:3a9:ef9f:c4c1 with SMTP id
+ fn2-20020a056808654200b003a9ef9fc4c1mr12682551oib.3.1693932366867; 
+ Tue, 05 Sep 2023 09:46:06 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ h16-20020ac846d0000000b0040ff387de83sm4502892qto.45.2023.09.05.09.46.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Sep 2023 09:44:23 -0700 (PDT)
-Date: Tue, 5 Sep 2023 12:44:20 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Marcello Sylverster Bauer <sylv@sylv.io>
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com, ani@anisinha.ca,
- Patrick Rudolph <patrick.rudolph@9elements.com>
-Subject: Re: PCI Hotplug ACPI device names only 3 characters long
-Message-ID: <20230905123447-mutt-send-email-mst@kernel.org>
-References: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
+ Tue, 05 Sep 2023 09:46:06 -0700 (PDT)
+Date: Tue, 5 Sep 2023 12:46:03 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: "Wang, Lei" <lei4.wang@intel.com>, qemu-devel@nongnu.org,
+ Zhiyi Guo <zhguo@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Chensheng Dong <chdong@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH for-8.2 v2 2/2] migration: Allow user to specify
+ migration switchover bandwidth
+Message-ID: <ZPdbS1pyl5Pzjh4T@x1n>
+References: <20230803155344.11450-1-peterx@redhat.com>
+ <20230803155344.11450-3-peterx@redhat.com>
+ <8bb36b56-e2f6-ece8-0d8f-90b87a3b5c40@intel.com>
+ <ZPGizMa52LF7Qek1@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZPGizMa52LF7Qek1@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -95,56 +107,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 05, 2023 at 05:05:33PM +0200, Marcello Sylverster Bauer wrote:
-> Greetings,
+On Fri, Sep 01, 2023 at 09:37:32AM +0100, Daniel P. Berrangé wrote:
+> > > When the user wants to have migration only use 5Gbps out of that 10Gbps,
+> > > one can set max-bandwidth to 5Gbps, along with max-switchover-bandwidth to
+> > > 5Gbps so it'll never use over 5Gbps too (so the user can have the rest
+> > 
+> > Hi Peter. I'm curious if we specify max-switchover-bandwidth to 5Gbps over a
+> > 10Gbps network, in the completion stage will it send the remaining data in 5Gbps
+> > using downtime_limit time or in 10Gbps (saturate the network) using the
+> > downtime_limit / 2 time? Seems this parameter won't rate limit the final stage:)
 > 
-> I'm currently working on a project to support Intel IPU6 in QEMU via VFIO so
-> that the guest system can access the camera. This requires extending the
-> ACPI device definition so that the guest knows how to access the camera.
-> 
-> However, I cannot extend the PCI devices because their names are not 4
-> characters long and therefore do not follow the ACPI specification.
-> 
-> When I use '-acpitable' to include my own SSDT for the IPU6 PCI device, it
-> does not allow me to declare the device as an External Object because it
-> automatically adds padding underscores.
-> 
-> e.g.
-> Before:
-> ```
-> External(_SB.PCI0.S18.SA0, DeviceObj)
-> ```
-> After:
-> ```
-> External(_SB.PCI0.S18_.SA0_, DeviceObj)
-> ```
-> 
-> Adding the underscore padding is hard coded in iASL and also in QEMU when
-> parsing an ASL file. (see: build_append_nameseg())
-> 
-> So here are my questions:
-> 1. Is there a solution to extend the ACPI PCI device using '-acpitable'
-> without having to patch iASL or QEMU?
-> 2. Are there any plans to change the names to comply with the ACPI spec?
-> (e.g. use "S%.03X" format string instead)
-> 
-> Thanks
-> Marcello
+> Effectively the mgmt app is telling QEMU to assume that this
+> much bandwidth is available for use during switchover. If QEMU
+> determines that, given this available bandwidth, the remaining
+> data can be sent over the link within the downtime limit, it
+> will perform the switchover. When sending this sitchover data,
+> it will actually transmit the data at full line rate IIUC.
 
+I'm right at reposting this patch, but then I found that the
+max-available-bandwidth is indeed confusing (as Lei's question shows).
 
-1.  All names in ACPI are always exactly 4 characters long. _ is a legal character
-    but names beginning with _ are reserved. There's no rule in ACPI
-    spec that says they need to follow S%.03X or any other specific format.
-    I'm pretty sure we do follow the ACPI specification in this but feel free to
-    prove me wrong.
-2.  You can probably add something to existing ACPI devices using Scope().
-    I would not advise relying on this - current names are not a stable
-    interface that we guarantee across QEMU versions.
-    If adding this functionality is desirable, I think we'll need some new interface
-    to set a stable ACPI name. Maybe using aliases.
+We do have all the bandwidth throttling values in the pattern of
+max-*-bandwidth and this one will start to be the outlier that it won't
+really throttle the network.
 
+If the old name "available-bandwidth" is too general, I'm now considering
+"avail-switchover-bandwidth" just to leave max- out of the name to
+differenciate, if some day we want to add a real throttle for switchover we
+can still have a sane name.
+
+Any objections before I repost?
+
+Thanks,
 
 -- 
-MST
+Peter Xu
 
 
