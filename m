@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CE97921AA
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF36D7921B8
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:57:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdShT-00075M-2g; Tue, 05 Sep 2023 05:50:23 -0400
+	id 1qdSnX-0000QY-MY; Tue, 05 Sep 2023 05:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qdShQ-000755-Jo
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:50:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qdSnV-0000N9-7R
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:56:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qdShN-0003Fs-OY
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:50:20 -0400
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qdSnS-0004Jy-GY
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:56:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693907793;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bml7IUDxn/YAQeTCVdXyHjhAYUj3HUP9WvNxUGl4p5s=;
+ b=HprLS7/hYGYUd95acsvSlB5KA3OQopQwXUJUNBcHLT1s2KpUwWjbg1w4EhE3LUYv3RjdpA
+ AHLOyeSvnPGfjN5bIBaUSeZKqKeFHLHs/yNQNh5T3PiSdFju382/5jUhr//ymwlaR/34DY
+ sM4cIRkEuv2UzaaCriJjACJnxK+G/HM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-207-S62RRQ0gMD2weKfNa7x_gQ-1; Tue, 05 Sep 2023 05:50:15 -0400
-X-MC-Unique: S62RRQ0gMD2weKfNa7x_gQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31dc8f0733dso1162327f8f.3
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:50:15 -0700 (PDT)
+ us-mta-59-67_OPD8pNzG8NW3h-NtYLA-1; Tue, 05 Sep 2023 05:56:31 -0400
+X-MC-Unique: 67_OPD8pNzG8NW3h-NtYLA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-402c46c4a04so14403635e9.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:56:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693907414; x=1694512214;
+ d=1e100.net; s=20221208; t=1693907789; x=1694512589;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IIyPiU3SGizoQEzrYTb1AqPw/vH1eVycuDo31fRpA9Y=;
- b=AQIn8UOr4Tkdp3ifIko99mMIck1B6APp0ZQGYKsB1hK2nHP1HqPLdhOr5XGUIWFudS
- n0ichl4e0xINO5v3+qinChl/ZLhGkKbar5wse13GqzbdRnl0fPAtm/Z1rKNH3m1SXgfo
- hOVi3rhjqcEWNjfabjGDToyQBjmdq48qqZNayciRrg0lN7ncm6OYKmfjF4YAs3DWOQJP
- yMXyI3YZv3P2s8zzN7W/8jANaFhoUKJVIcQYT2ZAWnvUgATKCuVzbmG4EsmKg6F5kNoY
- B9Tzc5liiJCcvmXGlxA1VUCaI8dYDGI/VqRY8I0BRTreZWncLeV9ixvxs3hw7OyFcq69
- 6eaQ==
-X-Gm-Message-State: AOJu0YynyzM3yBWJpneaLLmIWYLw/Na76n86l4UvEW6/A0Uy1EDTPMLf
- R6hMKkxViS3W7n2A3h0O7S+K9gA2nHXBo1p1rued39crYvwq43bLUs6sQqbzaQLA5PxpNn7VOCW
- fcMUCQ8OBvdR/DU4=
-X-Received: by 2002:a5d:6690:0:b0:317:3deb:a899 with SMTP id
- l16-20020a5d6690000000b003173deba899mr9179639wru.1.1693907414201; 
- Tue, 05 Sep 2023 02:50:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH0VR70RIxx+42qFvbQ2IpIg3vI14rtvxIx5mx88VWidO7S+RXVoia5RGX+25Rkjgaz/RJkfw==
-X-Received: by 2002:a5d:6690:0:b0:317:3deb:a899 with SMTP id
- l16-20020a5d6690000000b003173deba899mr9179622wru.1.1693907413886; 
- Tue, 05 Sep 2023 02:50:13 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bml7IUDxn/YAQeTCVdXyHjhAYUj3HUP9WvNxUGl4p5s=;
+ b=ehUvjEdpMjmmP1WH+H4xKV8vn7gBYDqptH4CpwjDb7/zxQkFeU4WpZzZGRPm67Keuk
+ xv1C8OEqGz+L8mhOwIawfZGLhHSgaP1l49D0c2zoxk3mwh0eN/VB2WbofHpYuN0C5xGk
+ SG0MBdpHlN0DVlmJ2wpmfWIrFmgX5NIErn/lQpkJ67clgOCDipnqQpFQiWzTH8m3Pp3N
+ HqGi8Pg4sWCtditqci9c/NMihIvD2uANYdGRN/L3/mbT+zGvn9kdZalgtvlkPY2PNtJ8
+ RpxZJOazzE2WstMogUtF/Drt+jp2Xk0rps6c0fG9JPXxgYxJG4XTNgm/7ttndsitQtjC
+ p6rw==
+X-Gm-Message-State: AOJu0Yx8Kt6dxzJkXdujMOBQa0UAsjFijrgaIitTWcAGlsmmWNmnjXps
+ NCtoGaHah5BYGCZVxpzBaTJgKVqO0OrWwt8hOeV8CZ0Yihf/oZFvezPKvK6dWfI2gkHxDKam4d/
+ yzPN1DYJLzf9wBto=
+X-Received: by 2002:a05:600c:2114:b0:3fe:d630:f568 with SMTP id
+ u20-20020a05600c211400b003fed630f568mr8412170wml.39.1693907789696; 
+ Tue, 05 Sep 2023 02:56:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG8MDdO9bfkXT4W/MDeM1Q+VRDiivhYmbuBJA5vFlQ5SCQsgGGAqa4bis/YMwovvZzxcwNy8Q==
+X-Received: by 2002:a05:600c:2114:b0:3fe:d630:f568 with SMTP id
+ u20-20020a05600c211400b003fed630f568mr8412163wml.39.1693907789412; 
+ Tue, 05 Sep 2023 02:56:29 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-5.web.vodafone.de. [109.43.176.5])
  by smtp.gmail.com with ESMTPSA id
- d9-20020a5d4f89000000b0031c5b380291sm17027815wru.110.2023.09.05.02.50.11
+ p5-20020a7bcc85000000b003fe1a96845bsm19644283wma.2.2023.09.05.02.56.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 02:50:12 -0700 (PDT)
-Message-ID: <5757bc33-fd76-345d-ca28-1aa382472b84@redhat.com>
-Date: Tue, 5 Sep 2023 11:50:06 +0200
+ Tue, 05 Sep 2023 02:56:28 -0700 (PDT)
+Message-ID: <e6a845f3-4308-370b-e062-f34106daaad2@redhat.com>
+Date: Tue, 5 Sep 2023 11:56:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+ Thunderbird/102.14.0
+Subject: Re: [risu PATCH 2/4] s390x: Add simple s390x.risu file
 Content-Language: en-US
-To: YangHang Liu <yanghliu@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org,
- mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org,
- peterx@redhat.com, david@redhat.com, philmd@linaro.org
-References: <20230904080451.424731-1-eric.auger@redhat.com>
- <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+References: <20230904140040.33153-1-thuth@redhat.com>
+ <20230904140040.33153-3-thuth@redhat.com>
+ <b25fa578d588f29a7dc3f7817f0e6ea253647b11.camel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <b25fa578d588f29a7dc3f7817f0e6ea253647b11.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,107 +102,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On 04/09/2023 16.20, Ilya Leoshkevich wrote:
+> On Mon, 2023-09-04 at 16:00 +0200, Thomas Huth wrote:
+>> This only adds a limited set of s390x instructions for initial
+>> testing.
+>> More instructions will be added later.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   s390x.risu | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 48 insertions(+)
+>>   create mode 100644 s390x.risu
+> 
+> Can this be somehow automatically derived from
+> target/s390x/tcg/insn-data.h.inc?
 
-On 9/5/23 10:22, YangHang Liu wrote:
-> I have runned the following two tests, but both tests failed:
-> [1] start a VM with virtio-iommu + 2 ice PFs only via qemu-kvm 8.1.5
-> Test result : the qemu-kvm keeps throwing the error:  VFIO_MAP_DMA
-> failed: File exists. vfio_dma_map(0x56443d20fbe0, 0xffffe000, 0x1000,
-> 0x7fb545709000) = -17 (File exists)
-> [2] start a VM with virtio-iommu + 2 ice PFs via libvirt-9.5 + qemu-kvm 8.1.5
-> Test result: the qemu-kvm core dump with
-> ERROR:../qom/object.c:1198:object_unref: assertion failed: (obj->ref >
-> 0). Bail out! ERROR:../qom/object.c:1198:object_unref: assertion
-> failed: (obj->ref > 0)
-This latter issue is introduced by patch
-[PATCH 12/13] virtio-iommu: Resize memory region according to the max
-iova info
-and especially the call to
+Hmm, maybe ... OTOH, if something is wrong in that file, you won't find the 
+bug with RISU is you used the same source, I guess...
 
-memory_region_set_size(&mr->parent_obj, max_iova + 1);
+> Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
-I don't really get why at the moment but I will investigate ... Eric
+Thanks!
 
->
-> After removing the 2 PF from the VM, both tests passed.
->
-> Tested-by: Yanghang Liu <yanghliu@redhat.com>
->
-> Best Regards,
-> YangHang Liu
->
->
-> On Mon, Sep 4, 2023 at 4:08 PM Eric Auger <eric.auger@redhat.com> wrote:
->> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
->> we encounter the case where the guest tries to map IOVAs beyond 48b
->> whereas the physical VTD IOMMU only supports 48b. This ends up with
->> VFIO_MAP_DMA failures at qemu level because at kernel level,
->> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
->>
->> This is due to the fact the virtio-iommu currently unconditionally
->> exposes an IOVA range of 64b through its config input range fields.
->>
->> This series removes this assumption by retrieving the usable IOVA
->> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
->> a VFIO device is attached. This info is communicated to the
->> virtio-iommu memory region, transformed into the inversed info, ie.
->> the host reserved IOVA regions. Then those latter are combined with the
->> reserved IOVA regions set though the virtio-iommu reserved-regions
->> property. That way, the guest virtio-iommu driver, unchanged, is
->> able to probe the whole set of reserved regions and prevent any IOVA
->> belonging to those ranges from beeing used, achieving the original goal.
->>
->> Best Regards
->>
->> Eric
->>
->> This series can be found at:
->> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v1
->>
->> Eric Auger (13):
->>   memory: Let ReservedRegion use Range
->>   memory: Introduce memory_region_iommu_set_iova_ranges
->>   vfio: Collect container iova range info
->>   virtio-iommu: Rename reserved_regions into prop_resv_regions
->>   virtio-iommu: Introduce per IOMMUDevice reserved regions
->>   range: Introduce range_inverse_array()
->>   virtio-iommu: Implement set_iova_ranges() callback
->>   range: Make range_compare() public
->>   util/reserved-region: Add new ReservedRegion helpers
->>   virtio-iommu: Consolidate host reserved regions and property set ones
->>   test: Add some tests for range and resv-mem helpers
->>   virtio-iommu: Resize memory region according to the max iova info
->>   vfio: Remove 64-bit IOVA address space assumption
->>
->>  include/exec/memory.h            |  30 ++++-
->>  include/hw/vfio/vfio-common.h    |   2 +
->>  include/hw/virtio/virtio-iommu.h |   7 +-
->>  include/qemu/range.h             |   9 ++
->>  include/qemu/reserved-region.h   |  32 +++++
->>  hw/core/qdev-properties-system.c |   9 +-
->>  hw/vfio/common.c                 |  70 ++++++++---
->>  hw/virtio/virtio-iommu-pci.c     |   8 +-
->>  hw/virtio/virtio-iommu.c         |  85 +++++++++++--
->>  softmmu/memory.c                 |  15 +++
->>  tests/unit/test-resv-mem.c       | 198 +++++++++++++++++++++++++++++++
->>  util/range.c                     |  41 ++++++-
->>  util/reserved-region.c           |  94 +++++++++++++++
->>  hw/virtio/trace-events           |   1 +
->>  tests/unit/meson.build           |   1 +
->>  util/meson.build                 |   1 +
->>  16 files changed, 562 insertions(+), 41 deletions(-)
->>  create mode 100644 include/qemu/reserved-region.h
->>  create mode 100644 tests/unit/test-resv-mem.c
->>  create mode 100644 util/reserved-region.c
->>
->> --
->> 2.41.0
->>
->>
+  Thomas
+
 
 
