@@ -2,98 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D087792157
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CAE79215F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 11:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdSAB-0003Ue-Aa; Tue, 05 Sep 2023 05:15:59 -0400
+	id 1qdSC9-0004KZ-HN; Tue, 05 Sep 2023 05:18:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qdSA5-0003Tl-Mw
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:15:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qdSA3-0004bJ-2J
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:15:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693905348;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WQ0UxSlZiBSY1y9/4HeAknNre1JVBLbWoe1nygen67I=;
- b=felHu9J+syanEXKmU8Ffu4lHVl8/pNu0pWvw0g/ywua40i7YqEJCWRjUI/7hdVNu3bM3c6
- l9vMKik/nYMzcav/npem+2En0O7/hLFTGdZsSMnfypgUnbXBs/CnOJ1OR4Mu0s4BDVuQn3
- 50SQtHI3TNOwLxs2nyboi3BP+SaENv0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-W713G7XOOUq6PVruYqKUtQ-1; Tue, 05 Sep 2023 05:15:47 -0400
-X-MC-Unique: W713G7XOOUq6PVruYqKUtQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-401db2550e0so16346615e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:15:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693905346; x=1694510146;
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qdSBs-0004IT-TK
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:17:46 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qdSBp-0004vh-1I
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 05:17:44 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c34c9cc9b9so4390655ad.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 02:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1693905458; x=1694510258;
+ darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WQ0UxSlZiBSY1y9/4HeAknNre1JVBLbWoe1nygen67I=;
- b=Y4aK0f0gWdu1eo/gWfG+0rSphnmOUWdUh6LMGRDxn/h2euqYxUH4wZ6HR48AuchbJs
- A9rqvur6s7hhhaqtrgyvDHw47yiYSKVOySvoucxAt+wFABMm1ltbdK7J1D9SMV2TKLPD
- zF6JNGSRtSdEYLgugKaRpQ5eozBESTfUWhgaG/8c/nwoizLeHiA1kKnQ9BP9xMG51K85
- Y3QKl7wF75uB7Lq48o0rQDyFjo5R5hr4hAz/ZvZHPVFQLzsedacJzX56teh+VMWpfIyI
- DqzuIOFmatFKOWPq8LDnhe6En7U7uJs23NKP9NOhVPCVxlle9JNDCb948t6rKLmmLqtp
- czQw==
-X-Gm-Message-State: AOJu0YxMMH/OtOxrnyqZAEdXgBFSRyxTlngZr+bb1S9fqvFxB5McV2YF
- oq0S6Guj+2yz9Mmy/QzBQdgJShXQnzgBLUF3bNTV0uj7O2zBtt71/OSwOs6xTuEHXc7K1JpPrtR
- Q+uqWF8GcXBCqkpY=
-X-Received: by 2002:a7b:cd0a:0:b0:3fe:795:712a with SMTP id
- f10-20020a7bcd0a000000b003fe0795712amr8876322wmj.27.1693905346521; 
- Tue, 05 Sep 2023 02:15:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKKpQ/Ysvnt3iNTCGAn77xZn7nQ5it320TwUra/CUmTYbNDXS3h60OgggUQLSqJCIAXb+5/w==
-X-Received: by 2002:a7b:cd0a:0:b0:3fe:795:712a with SMTP id
- f10-20020a7bcd0a000000b003fe0795712amr8876303wmj.27.1693905346145; 
- Tue, 05 Sep 2023 02:15:46 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XO2+yXar5HP/Nvv10RVpzWvUXgBqEg4olN/cjiB+X1I=;
+ b=J72OxGy2NdrX7LgUQerfgxvEz3IN/TiLqWoQWhm0Fz0xhRyREeqOo1Rbjwgk7ZzWPi
+ CxcqK5ghbFOY8g4V0XLdh9vLPyATXnQGPbzBuEmtJFWrofrsdMJiIbUf2n+VKt7CdPqA
+ bNol81nGFI7p1Z/RO7IYbfxf9JPeWH+A+KttkusSXKKu++sigjDH3QlU9AClLpITzJbt
+ WBNBBdqIqc9f5HwftSoywUg2xoxwNUUJqea63hxYGmpTptKi3ViQzrb0vjJe57jqL8hu
+ 3yoKgA+qCUcEY3aMBA2fC6Gaah5va5D1DrezwOQnm7vBp4KhXsJLrE+7a0pj9LN4s7+D
+ 7nwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693905458; x=1694510258;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XO2+yXar5HP/Nvv10RVpzWvUXgBqEg4olN/cjiB+X1I=;
+ b=BEZtx/aFejSGjf5uJboc1z5gdBkHz2ijJ9RsXH/Y01j8ytsPduAvUj2Jo2teVmcP6y
+ +HbI3KfLm1bEDeng2hGN2Y/Q5r6D3CeG3i+TtSfFTzndO/1SZd4aHmCZFsbZOlL4Jmt0
+ 8hUh4Db8/styQuFyLqa+EH7tsipHYlD80QDAW1pbpy3JRFuCmnWw3zNCuqg8E4rUIo0p
+ Z+sphP6YjwnKRRbNH9FTvqqZ1e2ZVXqZx+AHDq/3n+u53DAHRhdPk6Kvnr+GHWdpR32G
+ 3t18s1xECLwgi1WcLVUtaxmiUB0kz7cDkonaB/5+JEnYebA1mjpnvss2uTt4COEznbWx
+ lWkQ==
+X-Gm-Message-State: AOJu0Yyhp9qlrdalKQ3TmbdF085ciLK/K3GEnQpcZQckRWk8Xsxy3noE
+ i5e2mO2ZIimaOz6nhYj3Agbjtg==
+X-Google-Smtp-Source: AGHT+IHmdsTj3NWf+kJXTqNa0KpZXSsejtq0BJ85YRdCU9SkqxFyfpvDRx0WQ9z097JuwTP/N0j0PA==
+X-Received: by 2002:a17:903:228a:b0:1bd:a22a:d40a with SMTP id
+ b10-20020a170903228a00b001bda22ad40amr12216472plh.2.1693905458526; 
+ Tue, 05 Sep 2023 02:17:38 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
  by smtp.gmail.com with ESMTPSA id
- x3-20020adff643000000b003188358e08esm16734090wrp.42.2023.09.05.02.15.44
+ d10-20020a170902654a00b001bde877a7casm8982684pln.264.2023.09.05.02.17.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 02:15:45 -0700 (PDT)
-Message-ID: <6ce3daf9-b2c8-bd6e-a502-0870f8b17913@redhat.com>
-Date: Tue, 5 Sep 2023 11:15:43 +0200
+ Tue, 05 Sep 2023 02:17:38 -0700 (PDT)
+Message-ID: <2ec5929b-eb79-4848-8ab4-517c89f6b476@daynix.com>
+Date: Tue, 5 Sep 2023 18:17:32 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v4 07/13] softmmu/memory: enable automatic
+ deallocation of memory regions
 Content-Language: en-US
-To: YangHang Liu <yanghliu@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org,
- mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org,
- peterx@redhat.com, david@redhat.com, philmd@linaro.org
-References: <20230904080451.424731-1-eric.auger@redhat.com>
- <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <CAGYh1E9+odNLWuuPQdb4RqcSh-uDHW0DiVCKVJH=oA56BqqPtw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+To: Huang Rui <ray.huang@amd.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+References: <20230831093252.2461282-1-ray.huang@amd.com>
+ <20230831093252.2461282-8-ray.huang@amd.com>
+ <b988f9d4-69d7-4cc4-b13e-3e697acf9fe9@daynix.com> <ZPbvyDsikvvzierv@amd.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <ZPbvyDsikvvzierv@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,119 +112,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Yanghang,
+On 2023/09/05 18:07, Huang Rui wrote:
+> On Thu, Aug 31, 2023 at 06:10:08PM +0800, Akihiko Odaki wrote:
+>> On 2023/08/31 18:32, Huang Rui wrote:
+>>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>>
+>>> When the memory region has a different life-cycle from that of her parent,
+>>> could be automatically released, once has been unparent and once all of her
+>>> references have gone away, via the object's free callback.
+>>>
+>>> However, currently, references to the memory region are held by its owner
+>>> without first incrementing the memory region object's reference count.
+>>> As a result, the automatic deallocation of the object, not taking into
+>>> account those references, results in use-after-free memory corruption.
+>>>
+>>> This patch increases the reference count of the memory region object on
+>>> each memory_region_ref() and decreases it on each memory_region_unref().
+>>>
+>>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
+>>> ---
+>>>
+>>> New patch
+>>>
+>>>    softmmu/memory.c | 19 +++++++++++++++++--
+>>>    1 file changed, 17 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/softmmu/memory.c b/softmmu/memory.c
+>>> index 7d9494ce70..0fdd5eebf9 100644
+>>> --- a/softmmu/memory.c
+>>> +++ b/softmmu/memory.c
+>>> @@ -1797,6 +1797,15 @@ Object *memory_region_owner(MemoryRegion *mr)
+>>>    
+>>>    void memory_region_ref(MemoryRegion *mr)
+>>>    {
+>>> +    if (!mr) {
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    /* Obtain a reference to prevent the memory region object
+>>> +     * from being released under our feet.
+>>> +     */
+>>> +    object_ref(OBJECT(mr));
+>>> +
+>>>        /* MMIO callbacks most likely will access data that belongs
+>>>         * to the owner, hence the need to ref/unref the owner whenever
+>>>         * the memory region is in use.
+>>> @@ -1807,16 +1816,22 @@ void memory_region_ref(MemoryRegion *mr)
+>>>         * Memory regions without an owner are supposed to never go away;
+>>>         * we do not ref/unref them because it slows down DMA sensibly.
+>>>         */
+>>
+>> The collapsed comment says:
+>>   > The memory region is a child of its owner.  As long as the
+>>   > owner doesn't call unparent itself on the memory region,
+>>   > ref-ing the owner will also keep the memory region alive.
+>>   > Memory regions without an owner are supposed to never go away;
+>>   > we do not ref/unref them because it slows down DMA sensibly.
+>>
+>> It contradicts with this patch.
+> 
+> The reason that we modify it is because we would like to address the memory
+> leak issue in the original codes. Please see below, we find the memory
+> region will be crashed once we free(unref) the simple resource, because the
+> region will be freed in object_finalize() after unparent and the ref count
+> is to 0. Then the VM will be crashed with this.
+> 
+> In virgl_cmd_resource_map_blob():
+>      memory_region_init_ram_device_ptr(res->region, OBJECT(g), NULL, size, data);
+>      OBJECT(res->region)->free = g_free;
+>      memory_region_add_subregion(&b->hostmem, mblob.offset, res->region);
+>      memory_region_set_enabled(res->region, true);
+> 
+> In virtio_gpu_virgl_resource_unmap():
+>      memory_region_set_enabled(res->region, false);
+>      memory_region_del_subregion(&b->hostmem, res->region);
+>      object_unparent(OBJECT(res->region));
+>      res->region = NULL;
+> 
+> I spent a bit more time to understand your point, do you want me to update
+> corresponding comments or you have some concern about this change?
 
-On 9/5/23 10:22, YangHang Liu wrote:
-> I have runned the following two tests, but both tests failed:
-> [1] start a VM with virtio-iommu + 2 ice PFs only via qemu-kvm 8.1.5
-> Test result : the qemu-kvm keeps throwing the error:  VFIO_MAP_DMA
-> failed: File exists. vfio_dma_map(0x56443d20fbe0, 0xffffe000, 0x1000,
-> 0x7fb545709000) = -17 (File exists)
-> [2] start a VM with virtio-iommu + 2 ice PFs via libvirt-9.5 + qemu-kvm 8.1.5
-> Test result: the qemu-kvm core dump with
-> ERROR:../qom/object.c:1198:object_unref: assertion failed: (obj->ref >
-> 0). Bail out! ERROR:../qom/object.c:1198:object_unref: assertion
-> failed: (obj->ref > 0)
->
-> After removing the 2 PF from the VM, both tests passed.
-> Tested-by: Yanghang Liu <yanghliu@redhat.com>
+As the comment says ref-ing memory regions without an owner will slow 
+down DMA, you should avoid that. More concretely, you should check 
+mr->owner before doing object_ref(OBJECT(mr)).
 
-thank you for testing. If my understanding is correct you still
-encountered some issues with/after the series. If this is correct you
-shall not offer your Tested-by which means you tested the series and it
-works fine for you/fixes your issue.
-
-Coming back to the above mentionned issues:
-
-1) the File Exists issue is known and is linked to the replay. This will
-be handled separately, ie.I need to resume working on it as my first
-approach was flawed: See
-https://lore.kernel.org/all/20221207133646.635760-1-eric.auger@redhat.com/
-This is unrelated to this series. Note this shouldn't prevent your
-passthroughed device from working. Those should be just spurious
-warnings that need to be removed.
-
-2) the object_unref assertion most probaly is linked to that series and
-I will to investigate asap.
-
-Thank you again!
-
-Eric
->
-> Best Regards,
-> YangHang Liu
->
->
-> On Mon, Sep 4, 2023 at 4:08 PM Eric Auger <eric.auger@redhat.com> wrote:
->> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
->> we encounter the case where the guest tries to map IOVAs beyond 48b
->> whereas the physical VTD IOMMU only supports 48b. This ends up with
->> VFIO_MAP_DMA failures at qemu level because at kernel level,
->> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
->>
->> This is due to the fact the virtio-iommu currently unconditionally
->> exposes an IOVA range of 64b through its config input range fields.
->>
->> This series removes this assumption by retrieving the usable IOVA
->> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
->> a VFIO device is attached. This info is communicated to the
->> virtio-iommu memory region, transformed into the inversed info, ie.
->> the host reserved IOVA regions. Then those latter are combined with the
->> reserved IOVA regions set though the virtio-iommu reserved-regions
->> property. That way, the guest virtio-iommu driver, unchanged, is
->> able to probe the whole set of reserved regions and prevent any IOVA
->> belonging to those ranges from beeing used, achieving the original goal.
->>
->> Best Regards
->>
->> Eric
->>
->> This series can be found at:
->> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v1
->>
->> Eric Auger (13):
->>   memory: Let ReservedRegion use Range
->>   memory: Introduce memory_region_iommu_set_iova_ranges
->>   vfio: Collect container iova range info
->>   virtio-iommu: Rename reserved_regions into prop_resv_regions
->>   virtio-iommu: Introduce per IOMMUDevice reserved regions
->>   range: Introduce range_inverse_array()
->>   virtio-iommu: Implement set_iova_ranges() callback
->>   range: Make range_compare() public
->>   util/reserved-region: Add new ReservedRegion helpers
->>   virtio-iommu: Consolidate host reserved regions and property set ones
->>   test: Add some tests for range and resv-mem helpers
->>   virtio-iommu: Resize memory region according to the max iova info
->>   vfio: Remove 64-bit IOVA address space assumption
->>
->>  include/exec/memory.h            |  30 ++++-
->>  include/hw/vfio/vfio-common.h    |   2 +
->>  include/hw/virtio/virtio-iommu.h |   7 +-
->>  include/qemu/range.h             |   9 ++
->>  include/qemu/reserved-region.h   |  32 +++++
->>  hw/core/qdev-properties-system.c |   9 +-
->>  hw/vfio/common.c                 |  70 ++++++++---
->>  hw/virtio/virtio-iommu-pci.c     |   8 +-
->>  hw/virtio/virtio-iommu.c         |  85 +++++++++++--
->>  softmmu/memory.c                 |  15 +++
->>  tests/unit/test-resv-mem.c       | 198 +++++++++++++++++++++++++++++++
->>  util/range.c                     |  41 ++++++-
->>  util/reserved-region.c           |  94 +++++++++++++++
->>  hw/virtio/trace-events           |   1 +
->>  tests/unit/meson.build           |   1 +
->>  util/meson.build                 |   1 +
->>  16 files changed, 562 insertions(+), 41 deletions(-)
->>  create mode 100644 include/qemu/reserved-region.h
->>  create mode 100644 tests/unit/test-resv-mem.c
->>  create mode 100644 util/reserved-region.c
->>
->> --
->> 2.41.0
->>
->>
-
+Regards,
+Akihiko Odaki
 
