@@ -2,81 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F567922B6
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A987922B7
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 14:40:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdVL4-000357-RI; Tue, 05 Sep 2023 08:39:26 -0400
+	id 1qdVLC-00035a-FJ; Tue, 05 Sep 2023 08:39:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdVL1-00034o-QE
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:39:23 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdVKx-0003UZ-Sd
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:39:21 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31aec0a1a8bso1618750f8f.0
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 05:39:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693917558; x=1694522358; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HwtR8ST5C2gT9QZH0W0hWxDT0SVcL1yuloYQ+/FZKU8=;
- b=enHfNXJ6/G/OSApqsrXuy5z56B1krSQo4K4MHrR6zvbGl/kqU8CEq19jnJSqaP9Yqf
- XFGZgjwJSInsRsA2GscyXatRYMv0TF7Tl2Hi7VJXPeS0Fnh+0k3oE1/Vj2Rnd6oFKS7k
- Fc3syAr6W9Zz65bTZ0h8LOutckH0QyK66AdiViMcTiv70L7R8kwbxCj/JByJqRQRGbhn
- OxXFlrRkSyY2NNxYWtW3z6GUQUE0+w1ttWE7Lk0j5sz2ABpiitywr8qnHf789N0Pyfim
- duyF+mtwU6aavMBsvKJhv+BzXRRbbwinLmeb51TQkWhYWkrTJjhgfSdnAdDUbt/zFByf
- u49w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693917558; x=1694522358;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HwtR8ST5C2gT9QZH0W0hWxDT0SVcL1yuloYQ+/FZKU8=;
- b=eAMnIl1Ys+2GCiJ7Kr0e3mN+D3XVLPxqMXdH272I2Vv+x0IKDX6g5Jbs5uRA7+UY3F
- f/1xTs3zmFM6uPDjUniIa7eLwooKRpQR3l1IXYze7sQ/7zr3wHuUwcMgWu/+VQWMV/5m
- iT02qOkEOMf1trqJmpTI4oPJx/IxDZZToAfrJwidugi1s9kcquEvvDsYEXWrRtFZOl/b
- DLm1e5Yg2dFkY0PGs2q5Aoof9EOaOOM3mgnC2c9LVYjTvXPoEmkUWrU36xpoBtTaHV7B
- LufqnXnZmpV9R8AtJZplJRgEh0HsA/T7ZfvzVtqnI82RkmffWcBivZAkg2tra/yKupEv
- se9g==
-X-Gm-Message-State: AOJu0YxO8bhNbcBm07NjqFQmAsYgOwnYyhXM0utZKfHH0ZVnrpcLOoYh
- 6PzJ8PJPVQrnQ82IFshNiCg9yMzrVwJTWUIxEf8=
-X-Google-Smtp-Source: AGHT+IHjtynQsibAxHHekZngWfgK1CqFG8o73F0HzryQaZvImD9LI005+xJy4OmITbPd1s9w45melQ==
-X-Received: by 2002:a5d:4f0d:0:b0:317:e68f:e1af with SMTP id
- c13-20020a5d4f0d000000b00317e68fe1afmr12500415wru.20.1693917557770; 
- Tue, 05 Sep 2023 05:39:17 -0700 (PDT)
-Received: from localhost.localdomain ([37.69.27.38])
- by smtp.gmail.com with ESMTPSA id
- x2-20020adff0c2000000b0031971ab70c9sm17402964wro.73.2023.09.05.05.39.16
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 05 Sep 2023 05:39:17 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qdVL8-00035R-Vm
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:39:30 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qdVL4-0003Tw-R9
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 08:39:30 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxIvBxIfdkApQfAA--.63020S3;
+ Tue, 05 Sep 2023 20:39:13 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxJ81uIfdk7OZsAA--.64018S2; 
+ Tue, 05 Sep 2023 20:39:12 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Cameron Esfahani <dirty@apple.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] sysemu/kvm: Restrict hvf_get_supported_cpuid() to x86
- targets
-Date: Tue,  5 Sep 2023 14:39:06 +0200
-Message-ID: <20230905123906.6880-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230905123906.6880-1-philmd@linaro.org>
-References: <20230905123906.6880-1-philmd@linaro.org>
+Cc: richard.henderson@linaro.org, c@jia.je, philmd@linaro.org,
+ maobibo@loongson.cn, yangxiaojuan@loongson.cn
+Subject: [PATCH v1 1/1] target/loongarch: Add preldx instruction
+Date: Tue,  5 Sep 2023 20:39:10 +0800
+Message-Id: <20230905123910.3052023-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CM-TRANSID: AQAAf8DxJ81uIfdk7OZsAA--.64018S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,66 +61,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hvf_get_supported_cpuid() is only defined for x86 targets
-(in target/i386/hvf/x86_cpuid.c).
-Its declaration is pointless on all other targets.
+Resolve the issue of starting the Loongnix 20.5[1] system failure.
 
-All the calls to it in target/i386/cpu.c are guarded by
-a call on hvf_enabled(), so are elided when HVF is not
-built in. Therefore we can remove the unnecessary function
-stub.
+Logs:
+    Loading Linux 4.19.0-19-loongson-3 ...
+    Loading initial ramdisk ...
+    PROGRESS CODE: V02010004 I0
+    PROGRESS CODE: V03101019 I0
+    Error: unknown opcode. 90000000003a3e6c: 0x382c6d82
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[1] http://pkg.loongnix.cn/loongnix/isos/Loongnix-20.5/Loongnix-20.5.cartoon.gui.loongarch64.en.qcow2
+
+Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- include/sysemu/hvf.h       | 3 ---
- target/i386/hvf/hvf-i386.h | 2 ++
- target/i386/cpu.c          | 1 +
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ target/loongarch/insns.decode                  | 3 +++
+ target/loongarch/disas.c                       | 7 +++++++
+ target/loongarch/insn_trans/trans_memory.c.inc | 5 +++++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
-index 4037cd6a73..4a7c6af3a5 100644
---- a/include/sysemu/hvf.h
-+++ b/include/sysemu/hvf.h
-@@ -20,13 +20,10 @@
- #include "cpu.h"
+diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
+index c9c3bc2c73..56db653603 100644
+--- a/target/loongarch/insns.decode
++++ b/target/loongarch/insns.decode
+@@ -24,6 +24,7 @@
+ &rrr          rd rj rk
+ &rr_i         rd rj imm
+ &hint_r_i     hint rj imm
++&hint_rr      hint rj rk
+ &rrr_sa       rd rj rk sa
+ &rr_ms_ls     rd rj ms ls
+ &ff           fd fj
+@@ -69,6 +70,7 @@
+ @rr_i16                     .... .. imm:s16 rj:5 rd:5    &rr_i
+ @rr_i16s2         .... ..  ................ rj:5 rd:5    &rr_i imm=%offs16
+ @hint_r_i12           .... ...... imm:s12 rj:5 hint:5    &hint_r_i
++@hint_rr         .... ........ ..... rk:5 rj:5 hint:5    &hint_rr
+ @rrr_sa2p1        .... ........ ... .. rk:5 rj:5 rd:5    &rrr_sa  sa=%sa2p1
+ @rrr_sa2        .... ........ ... sa:2 rk:5 rj:5 rd:5    &rrr_sa
+ @rrr_sa3         .... ........ .. sa:3 rk:5 rj:5 rd:5    &rrr_sa
+@@ -228,6 +230,7 @@ ldx_bu          0011 10000010 00000 ..... ..... .....    @rrr
+ ldx_hu          0011 10000010 01000 ..... ..... .....    @rrr
+ ldx_wu          0011 10000010 10000 ..... ..... .....    @rrr
+ preld           0010 101011 ............ ..... .....     @hint_r_i12
++preldx          0011 10000010 11000 ..... ..... .....    @hint_rr
+ dbar            0011 10000111 00100 ...............      @i15
+ ibar            0011 10000111 00101 ...............      @i15
+ ldptr_w         0010 0100 .............. ..... .....     @rr_i14s2
+diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
+index 5c402d944d..d5ea8f7140 100644
+--- a/target/loongarch/disas.c
++++ b/target/loongarch/disas.c
+@@ -190,6 +190,12 @@ static void output_hint_r_i(DisasContext *ctx, arg_hint_r_i *a,
+     output(ctx, mnemonic, "%d, r%d, %d", a->hint, a->rj, a->imm);
+ }
  
- #ifdef CONFIG_HVF
--uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
--                                 int reg);
- extern bool hvf_allowed;
- #define hvf_enabled() (hvf_allowed)
- #else /* !CONFIG_HVF */
- #define hvf_enabled() 0
--#define hvf_get_supported_cpuid(func, idx, reg) 0
- #endif /* !CONFIG_HVF */
- 
- #endif /* NEED_CPU_H */
-diff --git a/target/i386/hvf/hvf-i386.h b/target/i386/hvf/hvf-i386.h
-index 243bc111cc..e99c02cd4b 100644
---- a/target/i386/hvf/hvf-i386.h
-+++ b/target/i386/hvf/hvf-i386.h
-@@ -16,6 +16,8 @@
- #ifndef HVF_I386_H
- #define HVF_I386_H
- 
-+uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx, int reg);
++static void output_hint_rr(DisasContext *ctx, arg_hint_rr *a,
++                           const char *mnemonic)
++{
++    output(ctx, mnemonic, "%d, r%d, r%d", a->hint, a->rj, a->rk);
++}
 +
- void hvf_handle_io(CPUArchState *, uint16_t, void *, int, int, int);
+ static void output_i(DisasContext *ctx, arg_i *a, const char *mnemonic)
+ {
+     output(ctx, mnemonic, "%d", a->imm);
+@@ -549,6 +555,7 @@ INSN(ld_bu,        rr_i)
+ INSN(ld_hu,        rr_i)
+ INSN(ld_wu,        rr_i)
+ INSN(preld,        hint_r_i)
++INSN(preldx,       hint_rr)
+ INSN(fld_s,        fr_i)
+ INSN(fst_s,        fr_i)
+ INSN(fld_d,        fr_i)
+diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
+index d9d062235a..ca7378c79d 100644
+--- a/target/loongarch/insn_trans/trans_memory.c.inc
++++ b/target/loongarch/insn_trans/trans_memory.c.inc
+@@ -110,6 +110,11 @@ static bool trans_preld(DisasContext *ctx, arg_preld *a)
+     return true;
+ }
  
- /* Host specific functions */
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 00f913b638..6789384bec 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -26,6 +26,7 @@
- #include "tcg/helper-tcg.h"
- #include "sysemu/reset.h"
- #include "sysemu/hvf.h"
-+#include "hvf/hvf-i386.h"
- #include "kvm/kvm_i386.h"
- #include "sev.h"
- #include "qapi/error.h"
++static bool trans_preldx(DisasContext *ctx, arg_preldx * a)
++{
++    return true;
++}
++
+ static bool trans_dbar(DisasContext *ctx, arg_dbar * a)
+ {
+     tcg_gen_mb(TCG_BAR_SC | TCG_MO_ALL);
 -- 
-2.41.0
+2.39.1
 
 
