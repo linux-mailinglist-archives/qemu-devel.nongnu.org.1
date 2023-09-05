@@ -2,94 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FA3792200
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 12:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D92EE792218
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 13:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdTjB-0003Ip-V6; Tue, 05 Sep 2023 06:56:13 -0400
+	id 1qdUBq-0006u5-R0; Tue, 05 Sep 2023 07:25:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdTj6-0003IH-It
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:56:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qdUBm-0006tQ-Ix; Tue, 05 Sep 2023 07:25:46 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdTj2-0007ZM-CU
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 06:56:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693911363;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3JfNd+iTX3VoLrEVRVi0H1UohDpK1DEnxbGYtgu0rB8=;
- b=SpS0liLQakT9SF2yv3YaIzbx6LopSVQ/KGZZUcYS/ojNCrql9J3+sUju2APqEIyulnT5Ae
- 3EzPKV1xOen1mIiZYr0F8edVa/Z24+7bus9n4wYK6BTHqcuBGebbldzRh7ehIoAn9FsMYX
- Vx0oKXQggBvFQilkKDhrMq6IinIgVPk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-bn_pkGMsPw6eH3KbUInVOg-1; Tue, 05 Sep 2023 06:56:01 -0400
-X-MC-Unique: bn_pkGMsPw6eH3KbUInVOg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31f49c34d1fso893571f8f.0
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 03:56:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693911360; x=1694516160;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3JfNd+iTX3VoLrEVRVi0H1UohDpK1DEnxbGYtgu0rB8=;
- b=mI4boX3BCFMnhPZvsjVoBbp798a/6LcnGEY/V0RO51DJq/inttEtzNMS51popZRxS8
- cOm5WO7nxwbL57KjrFsx31NATHok8zNmyDbaXhLb8Lp+EZ+QkUAMDARNy6VHyeBkJEs2
- JiRw91nMAVKUsSEIW4J14dqQamFtj2alyoxX43VJdjTC+GhdyCVkkcttwMw4WqDugl85
- doo5cpct2BvMWmCOwB4RjtQcgYHvDLtaLZnfkP8+OgdHNTR14kA4dq644mHxj9EdsV6N
- Pis1f7eQp6EeIBxElQP7z3k3H4GPHBRFJYz0V+hV3NFqHUfTNkjdL4nvPZSs+mNdHNFS
- wBtw==
-X-Gm-Message-State: AOJu0YxrGGH7jthhnIFGEbDuzWFjm840BqpU7RJf40mVyW5syGsGa5yU
- rw7NVTWmxpjGKosPPdjIiLtimH/mEtBLBgwpLefg4oe36T+LwbkVc7E1D35A0kc0oK/Zdhg+NIt
- QcGt5oB16gR6YVZ8=
-X-Received: by 2002:a5d:6a47:0:b0:317:6263:1ae2 with SMTP id
- t7-20020a5d6a47000000b0031762631ae2mr8753988wrw.63.1693911360065; 
- Tue, 05 Sep 2023 03:56:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXzQ25BjKqPT6EXm/XvvYrYCMbM1/ykbTLr2lZsuZKBBoBXaElNf9Uhm2xl5wYbd2d1Q0I6A==
-X-Received: by 2002:a5d:6a47:0:b0:317:6263:1ae2 with SMTP id
- t7-20020a5d6a47000000b0031762631ae2mr8753977wrw.63.1693911359753; 
- Tue, 05 Sep 2023 03:55:59 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
- ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.googlemail.com with ESMTPSA id
- x2-20020adff0c2000000b0031971ab70c9sm17157635wro.73.2023.09.05.03.55.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 03:55:59 -0700 (PDT)
-Message-ID: <4c044b4c-87cd-c81b-6d4e-e7c8b8622098@redhat.com>
-Date: Tue, 5 Sep 2023 12:55:58 +0200
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qdUBj-0005xV-T8; Tue, 05 Sep 2023 07:25:46 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 1E5104219C;
+ Tue,  5 Sep 2023 13:25:41 +0200 (CEST)
+Message-ID: <6387bfcd-3161-a016-b69b-9da4b1fb18c1@proxmox.com>
+Date: Tue, 5 Sep 2023 13:25:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] audio: remove QEMU_AUDIO_* and -audio-help support
+ Thunderbird/102.15.0
+Subject: Re: deadlock when using iothread during backup_clean()
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-References: <20230905101944.307701-1-pbonzini@redhat.com>
- <12deb1fe-5a9d-ba44-8867-62f674ecfdf4@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <12deb1fe-5a9d-ba44-8867-62f674ecfdf4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
+In-Reply-To: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,21 +59,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/5/23 12:39, Thomas Huth wrote:
->>
->> +        dolog("Device %s: audiodev default parameter is deprecated, 
->> please "
->> +              "specify audiodev=%s\n", name,
->> +              QTAILQ_FIRST(&audio_states)->dev->id);
+Am 05.09.23 um 12:01 schrieb Fiona Ebner:
 > 
-> You said that you removed the default handling ... so this log message 
-> looks suspicious ... is this code block still required?
+> Can we assume block_job_remove_all_bdrv() to always hold the job's
+> AioContext? And if yes, can we just tell bdrv_graph_wrlock() that it
+> needs to release that before polling to fix the deadlock?
+> 
 
-I was referring to the ".can_be_default" argument, maybe I should change 
-"default audio backend" to "default audio driver" in the commit message? 
-  Unfortunately this code (which is a separate entry in deprecated.rst) 
-cannot be removed because of non-qdevified soundcards.
+I tried a doing something similar as a proof-of-concept
 
-Paolo
+> diff --git a/blockjob.c b/blockjob.c
+> index 58c5d64539..1a696241a0 100644
+> --- a/blockjob.c
+> +++ b/blockjob.c
+> @@ -198,19 +198,19 @@ void block_job_remove_all_bdrv(BlockJob *job)
+>       * one to make sure that such a concurrent access does not attempt
+>       * to process an already freed BdrvChild.
+>       */
+> -    bdrv_graph_wrlock(NULL);
+>      while (job->nodes) {
+>          GSList *l = job->nodes;
+>          BdrvChild *c = l->data;
+>  
+>          job->nodes = l->next;
+>  
+> +        bdrv_graph_wrlock(c->bs);
+>          bdrv_op_unblock_all(c->bs, job->blocker);
+>          bdrv_root_unref_child(c);
+> +        bdrv_graph_wrunlock();
+>  
+>          g_slist_free_1(l);
+>      }
+> -    bdrv_graph_wrunlock();
+>  }
+
+and while it did get slightly further, I ran into another deadlock with
+
+> #0  0x00007f1941155136 in __ppoll (fds=0x55992068fb20, nfds=2, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
+> #1  0x000055991c6a1a3f in qemu_poll_ns (fds=0x55992068fb20, nfds=2, timeout=-1) at ../util/qemu-timer.c:339
+> #2  0x000055991c67ed6c in fdmon_poll_wait (ctx=0x55991f058810, ready_list=0x7ffda8c987b0, timeout=-1) at ../util/fdmon-poll.c:79
+> #3  0x000055991c67e6a8 in aio_poll (ctx=0x55991f058810, blocking=true) at ../util/aio-posix.c:670
+> #4  0x000055991c50a763 in bdrv_graph_wrlock (bs=0x0) at ../block/graph-lock.c:145
+> #5  0x000055991c4daf85 in bdrv_close (bs=0x55991fff2f30) at ../block.c:5166
+> #6  0x000055991c4dc050 in bdrv_delete (bs=0x55991fff2f30) at ../block.c:5606
+> #7  0x000055991c4df205 in bdrv_unref (bs=0x55991fff2f30) at ../block.c:7173
+> #8  0x000055991c4fb8ca in bdrv_cbw_drop (bs=0x55991fff2f30) at ../block/copy-before-write.c:566
+> #9  0x000055991c4f9685 in backup_clean (job=0x55992016d0b0) at ../block/backup.c:105
 
 
