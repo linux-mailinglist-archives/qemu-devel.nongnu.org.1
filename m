@@ -2,58 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69297922D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 15:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B55B7922D5
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 15:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdVoh-0005ut-7f; Tue, 05 Sep 2023 09:10:03 -0400
+	id 1qdVpu-00071H-7I; Tue, 05 Sep 2023 09:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1qdVoe-0005uO-Md
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 09:10:00 -0400
-Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1qdVob-0001gw-W8
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 09:10:00 -0400
-Received: from [IPV6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b] (unknown
- [IPv6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b])
- by apollo.dupie.be (Postfix) with ESMTPSA id 199871520BEF;
- Tue,  5 Sep 2023 15:09:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1693919394;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wvDc7cO/p+zZ4MZ64cNv605qeJxL1KUrHo/oezl1FF4=;
- b=RWqsoJ9o5/ucWVvRjGeD817OIz9+GYNfoqE4tq0BiKwc1Q27ulRTsWN9PCMPhqfcedS/qE
- 2g5Q/8t5fMS+yj3F1XPW3oJIyeVBzhp1mK34qIc3g6XTdg2OdIeFqTrWVNnWoTxeMDB/rB
- kuqbb+K56OXKYycKHwN98Q4VFVn5ad1s756SUzfxvA2SAw2mofKd2KhCuR6RDvOs4QfyI+
- wVpuAYL1JU+wj9dw6CIm6X983Pia2twLYZV5pF71+RnX2Y1cNUAfc0D7jKclTn5ag+3nmW
- pRBJtuIS3UZ+G2ZhEGjHl/ewJQ2B3ZAmbpJNR/ElDmC5DfT1eXjNRnhvQxX1Pw==
-Message-ID: <0da4b866-bcb0-46ec-89bc-d17aa87dc36d@dupond.be>
-Date: Tue, 5 Sep 2023 15:09:53 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdVpr-0006zR-9U
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 09:11:15 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdVpn-00020D-76
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 09:11:14 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-401bbfc05fcso26281835e9.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 06:11:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693919469; x=1694524269; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xfV8wtfuDKI/NA9AcdFoGCyfZyf59zkBatLeFk7ol/o=;
+ b=Ond6wo7mvcbK0sp66DCWfytun9odqAJmTb1jdX+XI7DUE16w8nTGxUov4h/6sm0wsv
+ OFlK3Wtak90l//+/GKtkLqLjyUhTxKqJsAFCmwqNGXFNnWWmnEaFObFULIMH2h2NsOAn
+ 82RE3GmAb2dxSQ0w9PQnekOY/p/kGeoGnSQka/3Tv2BWYoxnJ69R3ILzDmzwzeG1i1zf
+ tv+rFzeMWuWeNXgaWL/K9m8huwpob85vqOqAEpdH8w2Tw9OTGCyxAqm13J/xGk0y4BRp
+ VdYlZFh7l43M2C0GPXeamDtBKJR+GlwJmE6inJV1TtNiIqMdi2SdPOw3kBZ6yTwfvpNf
+ hsiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693919469; x=1694524269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xfV8wtfuDKI/NA9AcdFoGCyfZyf59zkBatLeFk7ol/o=;
+ b=GmeDI0/ZBf41OeGGM9C8Fnb1BvEYC3pTJU8EXn10EAmZKLo4ThZf5uqsEXOIVaiXxV
+ DIYOgF6ujD/Fh8iQ4E4mqF1FrsA89FCUllzGNVtrKuHM58NxInZy0crgwC+Emxa+eNJE
+ dhwsLyACnmzBZht4Gmep5LkCzXgsGgTOUMyhEyhZyF5lbx9ZxvWDYDErhdcdygDT07ZD
+ a461ZietDh+uaqu+bV048ZnngWx7eZ3zyAkg9Hn1dZJmRBwdoMnTHFRl3e47fkizSnN9
+ SIAhFY5aHOPnVCdgQ6soif9vhCX5JIL0iG//0omBqRs5772KJVwz1toHB8jq+HRXm/dG
+ YOjg==
+X-Gm-Message-State: AOJu0YxlChJFlTNHMuxXtif2iPl1FXcziVjHsaRuSHHMVEDFnplk4qlY
+ oez0he1SUS1Cmwk69i8idx43bQ==
+X-Google-Smtp-Source: AGHT+IGAOUcEzdfYZhtbC81vInYi9aff18FsxJlD1AYXD8zOSWg99r72UQi96gK5DC5pffRzZ7HLTg==
+X-Received: by 2002:a5d:4ccb:0:b0:317:3b13:94c3 with SMTP id
+ c11-20020a5d4ccb000000b003173b1394c3mr8805587wrt.41.1693919469391; 
+ Tue, 05 Sep 2023 06:11:09 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-79.dsl.sta.abo.bbox.fr.
+ [176.184.47.79]) by smtp.gmail.com with ESMTPSA id
+ c7-20020a5d4147000000b0031de43fe9bfsm17638113wrq.0.2023.09.05.06.11.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 06:11:08 -0700 (PDT)
+Message-ID: <d606dac8-5fa3-0717-8921-dd0688642e07@linaro.org>
+Date: Tue, 5 Sep 2023 15:11:07 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qcow2: keep reference on zeroize with discard-no-unref
- enabled
-To: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com
-References: <20230904150958.823365-1-jean-louis@dupond.be>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v1 1/1] target/loongarch: Add preldx instruction
 Content-Language: en-US
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <20230904150958.823365-1-jean-louis@dupond.be>
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, c@jia.je, maobibo@loongson.cn,
+ yangxiaojuan@loongson.cn
+References: <20230905123910.3052023-1-gaosong@loongson.cn>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230905123910.3052023-1-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
- envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,68 +93,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replaced by PATCH v2.
-
-On 4/09/2023 17:09, Jean-Louis Dupond wrote:
-> When the discard-no-unref flag is enabled, we keep the reference for
-> normal discard requests.
-> But when a discard is executed on a snapshot/qcow2 image with backing,
-> the discards are saved as zero clusters in the snapshot image.
->
-> When committing the snapshot to the backing file, not
-> discard_in_l2_slice is called but zero_in_l2_slice. Which did not had
-> any logic to keep the reference when discard-no-unref is enabled.
->
-> Therefor we add logic in the zero_in_l2_slice call to keep the reference
-> on commit.
->
-> Next to that we also revert some logic from 42a2890a and just call
-> qcow2_free_any_cluster. As this will just decrease the refcount but not
-> remove the reference itself. And it will also send the discard further
-> to the lower layer.
->
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
-> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+On 5/9/23 14:39, Song Gao wrote:
+> Resolve the issue of starting the Loongnix 20.5[1] system failure.
+> 
+> Logs:
+>      Loading Linux 4.19.0-19-loongson-3 ...
+>      Loading initial ramdisk ...
+>      PROGRESS CODE: V02010004 I0
+>      PROGRESS CODE: V03101019 I0
+>      Error: unknown opcode. 90000000003a3e6c: 0x382c6d82
+> 
+> [1] http://pkg.loongnix.cn/loongnix/isos/Loongnix-20.5/Loongnix-20.5.cartoon.gui.loongarch64.en.qcow2
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   block/qcow2-cluster.c | 18 +++++++-----------
->   1 file changed, 7 insertions(+), 11 deletions(-)
->
-> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
-> index f4f6cd6ad0..48532ca3c2 100644
-> --- a/block/qcow2-cluster.c
-> +++ b/block/qcow2-cluster.c
-> @@ -1975,16 +1975,7 @@ static int discard_in_l2_slice(BlockDriverState *bs, uint64_t offset,
->           if (has_subclusters(s)) {
->               set_l2_bitmap(s, l2_slice, l2_index + i, new_l2_bitmap);
->           }
-> -        if (!keep_reference) {
-> -            /* Then decrease the refcount */
-> -            qcow2_free_any_cluster(bs, old_l2_entry, type);
-> -        } else if (s->discard_passthrough[type] &&
-> -                   (cluster_type == QCOW2_CLUSTER_NORMAL ||
-> -                    cluster_type == QCOW2_CLUSTER_ZERO_ALLOC)) {
-> -            /* If we keep the reference, pass on the discard still */
-> -            bdrv_pdiscard(s->data_file, old_l2_entry & L2E_OFFSET_MASK,
-> -                          s->cluster_size);
-> -       }
-> +        qcow2_free_any_cluster(bs, old_l2_entry, type);
->       }
->   
->       qcow2_cache_put(s->l2_table_cache, (void **) &l2_slice);
-> @@ -2062,9 +2053,14 @@ zero_in_l2_slice(BlockDriverState *bs, uint64_t offset,
->           QCow2ClusterType type = qcow2_get_cluster_type(bs, old_l2_entry);
->           bool unmap = (type == QCOW2_CLUSTER_COMPRESSED) ||
->               ((flags & BDRV_REQ_MAY_UNMAP) && qcow2_cluster_is_allocated(type));
-> -        uint64_t new_l2_entry = unmap ? 0 : old_l2_entry;
-> +        uint64_t new_l2_entry = old_l2_entry;
->           uint64_t new_l2_bitmap = old_l2_bitmap;
->   
-> +        if (unmap &&
-> +            !(s->discard_no_unref && type != QCOW2_CLUSTER_COMPRESSED)) {
-> +            new_l2_entry = 0;
-> +        }
-> +
->           if (has_subclusters(s)) {
->               new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
->           } else {
+>   target/loongarch/insns.decode                  | 3 +++
+>   target/loongarch/disas.c                       | 7 +++++++
+>   target/loongarch/insn_trans/trans_memory.c.inc | 5 +++++
+>   3 files changed, 15 insertions(+)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
