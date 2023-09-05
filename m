@@ -2,80 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB4B792C9E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF4D792CB5
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Sep 2023 19:47:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qda1c-0007X8-BT; Tue, 05 Sep 2023 13:39:40 -0400
+	id 1qda7H-00036j-T3; Tue, 05 Sep 2023 13:45:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qda1Y-0007PM-Dl
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:39:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qda1T-0004K1-PE
- for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:39:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693935569;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ (Exim 4.90_1) (envelope-from <sylv@sylv.io>) id 1qda7G-00036X-2N
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:45:30 -0400
+Received: from mout-p-202.mailbox.org ([80.241.56.172])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
+ (Exim 4.90_1) (envelope-from <sylv@sylv.io>) id 1qda7B-0005k0-BE
+ for qemu-devel@nongnu.org; Tue, 05 Sep 2023 13:45:29 -0400
+Received: from smtp1.mailbox.org (smtp1.mailbox.org
+ [IPv6:2001:67c:2050:b231:465::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4RgCZh1BCsz9t4h;
+ Tue,  5 Sep 2023 19:45:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sylv.io; s=MBO0001;
+ t=1693935916;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zCxp3prKBIMhn0wr2sTTvuKHXcv4EeTeUQzxqsn96b4=;
- b=WECecZAVIecN73PPjje4vbpIuks7ipYicOl6F/oiUFofF37XuN8OG3t1lV+7uSU2a6wU70
- TO5wun6Tkqyel4nuuwtgJCPaClhF3K7GARtmg7w5P8eMt65l/g5+cRosJh90HeefZgKp6h
- H8EZsxx/TN5wy3C/B+yoDZEuUCq1aFs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-423-HtWgVSV6P4KDQyFUIAeIkQ-1; Tue, 05 Sep 2023 13:39:27 -0400
-X-MC-Unique: HtWgVSV6P4KDQyFUIAeIkQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82688928E6E;
- Tue,  5 Sep 2023 17:39:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.134])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 32CE31121314;
- Tue,  5 Sep 2023 17:39:25 +0000 (UTC)
-Date: Tue, 5 Sep 2023 18:39:23 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: "Wang, Lei" <lei4.wang@intel.com>, qemu-devel@nongnu.org,
- Zhiyi Guo <zhguo@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
- Chensheng Dong <chdong@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>
-Subject: Re: [PATCH for-8.2 v2 2/2] migration: Allow user to specify
- migration switchover bandwidth
-Message-ID: <ZPdny79vGypN+Sz0@redhat.com>
-References: <20230803155344.11450-1-peterx@redhat.com>
- <20230803155344.11450-3-peterx@redhat.com>
- <8bb36b56-e2f6-ece8-0d8f-90b87a3b5c40@intel.com>
- <ZPGizMa52LF7Qek1@redhat.com> <ZPdbS1pyl5Pzjh4T@x1n>
+ bh=PC0Z0ZM4FZL9hk6Q8shpjCEYbOy8Zid7j13xamUcIq8=;
+ b=aaEgaOCcUBCEfNTzQNwqqKB4fMO4MAs+NvQSbnlRGsPU7AH77OeNm2u0BhlByFj1jrNS7P
+ C0M4OVPtrurMDLdsR4PJ/+7G97IWfTUzi7k8gjtQmSo9fs2NFrwp1Fqf31ioqPe/C0naum
+ zTEc4Cy0+bAerrsvS0qIk8ikNpTrUBh/oapDv1TpwefV5yiOKrz5/S4JIQ31UFYktPCVsH
+ tY03UiXwDqpk/jx+cl6EVr5rzxqB7qBa0lpz3tSIXSTUlPOX/Vu11sDL3TgTTt6Fl0xbmv
+ 2ZbfGTdG6a53nxxruZS/sLwCjFnbiVMo4HZ0AXUuI0XeTHuca4JZLkh7Cz4HKQ==
+Message-ID: <bfd8c202-0ceb-47c2-8e9c-9547bd4bdd5f@sylv.io>
+Date: Tue, 5 Sep 2023 19:45:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZPdbS1pyl5Pzjh4T@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Language: en-US, de-DE
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, imammedo@redhat.com, ani@anisinha.ca,
+ Patrick Rudolph <patrick.rudolph@9elements.com>
+References: <66949448-1577-444a-b6d2-d907f9870765@sylv.io>
+ <20230905123447-mutt-send-email-mst@kernel.org>
+From: Marcello Sylverster Bauer <sylv@sylv.io>
+Subject: Re: PCI Hotplug ACPI device names only 3 characters long
+In-Reply-To: <20230905123447-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4RgCZh1BCsz9t4h
+Received-SPF: pass client-ip=80.241.56.172; envelope-from=sylv@sylv.io;
+ helo=mout-p-202.mailbox.org
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,49 +71,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 05, 2023 at 12:46:03PM -0400, Peter Xu wrote:
-> On Fri, Sep 01, 2023 at 09:37:32AM +0100, Daniel P. Berrangé wrote:
-> > > > When the user wants to have migration only use 5Gbps out of that 10Gbps,
-> > > > one can set max-bandwidth to 5Gbps, along with max-switchover-bandwidth to
-> > > > 5Gbps so it'll never use over 5Gbps too (so the user can have the rest
-> > > 
-> > > Hi Peter. I'm curious if we specify max-switchover-bandwidth to 5Gbps over a
-> > > 10Gbps network, in the completion stage will it send the remaining data in 5Gbps
-> > > using downtime_limit time or in 10Gbps (saturate the network) using the
-> > > downtime_limit / 2 time? Seems this parameter won't rate limit the final stage:)
-> > 
-> > Effectively the mgmt app is telling QEMU to assume that this
-> > much bandwidth is available for use during switchover. If QEMU
-> > determines that, given this available bandwidth, the remaining
-> > data can be sent over the link within the downtime limit, it
-> > will perform the switchover. When sending this sitchover data,
-> > it will actually transmit the data at full line rate IIUC.
-> 
-> I'm right at reposting this patch, but then I found that the
-> max-available-bandwidth is indeed confusing (as Lei's question shows).
-> 
-> We do have all the bandwidth throttling values in the pattern of
-> max-*-bandwidth and this one will start to be the outlier that it won't
-> really throttle the network.
-> 
-> If the old name "available-bandwidth" is too general, I'm now considering
-> "avail-switchover-bandwidth" just to leave max- out of the name to
-> differenciate, if some day we want to add a real throttle for switchover we
-> can still have a sane name.
-> 
-> Any objections before I repost?
+Hi Michael,
 
-I think the 'avail-' prefix is good given the confusion Lei pointed out.
+On 9/5/23 18:44, Michael S. Tsirkin wrote:
+> On Tue, Sep 05, 2023 at 05:05:33PM +0200, Marcello Sylverster Bauer wrote:
+>> Greetings,
+>>
+>> I'm currently working on a project to support Intel IPU6 in QEMU via VFIO so
+>> that the guest system can access the camera. This requires extending the
+>> ACPI device definition so that the guest knows how to access the camera.
+>>
+>> However, I cannot extend the PCI devices because their names are not 4
+>> characters long and therefore do not follow the ACPI specification.
+>>
+>> When I use '-acpitable' to include my own SSDT for the IPU6 PCI device, it
+>> does not allow me to declare the device as an External Object because it
+>> automatically adds padding underscores.
+>>
+>> e.g.
+>> Before:
+>> ```
+>> External(_SB.PCI0.S18.SA0, DeviceObj)
+>> ```
+>> After:
+>> ```
+>> External(_SB.PCI0.S18_.SA0_, DeviceObj)
+>> ```
+>>
+>> Adding the underscore padding is hard coded in iASL and also in QEMU when
+>> parsing an ASL file. (see: build_append_nameseg())
+>>
+>> So here are my questions:
+>> 1. Is there a solution to extend the ACPI PCI device using '-acpitable'
+>> without having to patch iASL or QEMU?
+>> 2. Are there any plans to change the names to comply with the ACPI spec?
+>> (e.g. use "S%.03X" format string instead)
+>>
+>> Thanks
+>> Marcello
+> 
+> 
+> 1.  All names in ACPI are always exactly 4 characters long. _ is a legal character
+>      but names beginning with _ are reserved.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Exactly, which is why I want to address this issue here. Currently, Qemu 
+generates ACPI device names with only 3 characters. (See 
+build_append_pci_bus_devices() in hw/i386/acpi-build.c).
+For example, the device I want to append entries to has the path 
+"_SB.PCI0.S18.SA0", but I can't because of the two auto-generated 
+devices with only 3 characters in their names.
 
+> There's no rule in ACPI
+>      spec that says they need to follow S%.03X or any other specific format.
+>      I'm pretty sure we do follow the ACPI specification in this but feel free to
+>      prove me wrong.
+
+You have misunderstood me. Currently, Qemu uses the following format to 
+create PCI ACPI devices:
+
+```
+aml_name("S%.02X", devfn)
+```
+
+My question is whether we should change it to something that results in 
+a 4 character name like "S%.03X" or "S%.02X_".
+
+I have tested it and it works fine as long as any hardcoded path 
+references are adjusted. But I'm not 100% sure if this could cause any 
+regressions.
+
+> 2.  You can probably add something to existing ACPI devices using Scope().
+
+I'm pretty sure the external object is required when loading a separate 
+SSDT, but I'll try by just using scopes.
+
+>      I would not advise relying on this - current names are not a stable
+>      interface that we guarantee across QEMU versions.
+>      If adding this functionality is desirable, I think we'll need some new interface
+>      to set a stable ACPI name. Maybe using aliases.
+
+Currently I'm just working on a PoW to get IPU6 working in QEMU, so 
+instability is fine.
+
+Thanks,
+Marcello
+
+> 
+> 
 
