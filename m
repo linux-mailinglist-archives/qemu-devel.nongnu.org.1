@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778BE7940D0
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C17D7940CB
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:55:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdure-0006U9-IT; Wed, 06 Sep 2023 11:54:46 -0400
+	id 1qdurh-0006X3-NQ; Wed, 06 Sep 2023 11:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurU-0006Pr-Hu; Wed, 06 Sep 2023 11:54:37 -0400
+ id 1qdurV-0006Pv-HG; Wed, 06 Sep 2023 11:54:39 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurC-0003nF-MM; Wed, 06 Sep 2023 11:54:36 -0400
+ id 1qdurD-0003nU-1p; Wed, 06 Sep 2023 11:54:37 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qduo6-007ME4-11;
+ (envelope-from <den@openvz.org>) id 1qduo6-007ME4-2H;
  Wed, 06 Sep 2023 17:54:05 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, stefanha@gmail.com,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL 17/18] iotests: Fix test 131 after repair was added to
- parallels_open()
-Date: Wed,  6 Sep 2023 17:54:12 +0200
-Message-Id: <20230906155413.656644-8-den@openvz.org>
+Subject: [PULL 18/18] iotests: Add test for data_off check
+Date: Wed,  6 Sep 2023 17:54:13 +0200
+Message-Id: <20230906155413.656644-9-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906155413.656644-1-den@openvz.org>
 References: <20230906154942.656537-1-den@openvz.org>
@@ -59,63 +58,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
-Images repairing in parallels_open() was added, thus parallels tests fail.
-Access to an image leads to repairing the image. Further image check don't
-detect any corruption. Remove reads after image creation in test 131.
+Write a pattern to the first cluster. Corrupt the data_off field and check
+if the field was repaired on image opening and the pattern has not changed.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- tests/qemu-iotests/131     |  6 ++----
- tests/qemu-iotests/131.out | 15 ++-------------
- 2 files changed, 4 insertions(+), 17 deletions(-)
+ tests/qemu-iotests/tests/parallels-checks     | 15 +++++++++++++++
+ tests/qemu-iotests/tests/parallels-checks.out | 10 ++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/tests/qemu-iotests/131 b/tests/qemu-iotests/131
-index 72f6535581..304bbb3f61 100755
---- a/tests/qemu-iotests/131
-+++ b/tests/qemu-iotests/131
-@@ -69,11 +69,9 @@ echo == check that there is no trash after written ==
- echo == check that there is no trash before written ==
- { $QEMU_IO -c "read -P 0 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
+index 8a63c3daf4..a7a1b357b5 100755
+--- a/tests/qemu-iotests/tests/parallels-checks
++++ b/tests/qemu-iotests/tests/parallels-checks
+@@ -44,6 +44,7 @@ _supported_os Linux
+ SIZE=$((4 * 1024 * 1024))
+ IMGFMT=parallels
+ CLUSTER_SIZE_OFFSET=28
++DATA_OFF_OFFSET=48
+ BAT_OFFSET=64
  
--echo "== Corrupt image =="
-+echo "== corrupt image =="
- poke_file "$TEST_IMG" "$inuse_offset" "\x59\x6e\x6f\x74"
--{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
--_check_test_img
--_check_test_img -r all
-+echo "== read corrupted image with repairing =="
- { $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ _make_test_img $SIZE
+@@ -124,6 +125,20 @@ printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
+ echo "== check second cluster on host =="
+ printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
  
- echo "== allocate with backing =="
-diff --git a/tests/qemu-iotests/131.out b/tests/qemu-iotests/131.out
-index 98017a067e..d2904578df 100644
---- a/tests/qemu-iotests/131.out
-+++ b/tests/qemu-iotests/131.out
-@@ -21,20 +21,9 @@ read 524288/524288 bytes at offset 2621440
- == check that there is no trash before written ==
- read 524288/524288 bytes at offset 0
- 512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--== Corrupt image ==
--qemu-io: can't open device TEST_DIR/t.parallels: parallels: Image was not closed correctly; cannot be opened read/write
--ERROR image was not closed correctly
--
--1 errors were found on the image.
--Data may be corrupted, or further writes to the image may corrupt it.
-+== corrupt image ==
-+== read corrupted image with repairing ==
- Repairing image was not closed correctly
--The following inconsistencies were found and repaired:
--
--    0 leaked clusters
--    1 corruptions
--
--Double checking the fixed image now...
--No errors were found on the image.
- read 1048576/1048576 bytes at offset 1048576
- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- == allocate with backing ==
++# Clear image
++_make_test_img $SIZE
++
++echo "== TEST DATA_OFF CHECK =="
++
++echo "== write pattern to first cluster =="
++{ $QEMU_IO -c "write -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== spoil data_off field =="
++poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
++
++echo "== check first cluster =="
++{ $QEMU_IO -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
+ # success, all done
+ echo "*** done"
+ rm -f $seq.full
+diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
+index b747bba1f3..98a3a7f55e 100644
+--- a/tests/qemu-iotests/tests/parallels-checks.out
++++ b/tests/qemu-iotests/tests/parallels-checks.out
+@@ -62,4 +62,14 @@ read 1048576/1048576 bytes at offset 1048576
+ content: 0x11
+ == check second cluster on host ==
+ content: 0x11
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
++== TEST DATA_OFF CHECK ==
++== write pattern to first cluster ==
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== spoil data_off field ==
++== check first cluster ==
++Repairing data_off field has incorrect value
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ *** done
 -- 
 2.34.1
 
