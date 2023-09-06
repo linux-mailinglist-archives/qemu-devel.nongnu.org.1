@@ -2,79 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABE67944CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 22:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FC479451B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 23:31:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdzWr-0007f8-Ih; Wed, 06 Sep 2023 16:53:37 -0400
+	id 1qe05r-0000oY-Hr; Wed, 06 Sep 2023 17:29:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qdzWp-0007er-Fx
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:53:35 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qdzWl-0004Yx-7p
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:53:34 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40061928e5aso2988975e9.3
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 13:53:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1qe05p-0000oL-00
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 17:29:45 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1qe05m-0005Yc-0E
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 17:29:44 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 386LFZT5000458; Wed, 6 Sep 2023 21:29:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=KCCS5P6q5UtucoAeyA11j4Kl1MTWgAeyg6MJM4DYUOA=;
+ b=LvK7RC8sTlRADmxTijC7lX1nL8g7k72ekI6ET3pbKqEZaDuXjvTC8SHoWvGznFbumGYo
+ WbS1lmxUEfMhrGpIlht1kDKYlZgvzVzhWxSGTYFPFtG2rm0ZRrHspf0f3IwZ66JV5MpB
+ ctqCViGDGYaYsGgOsw7+QXY3M39zFrpsQT1I3PqFHlHFV+nxpstOIeV0zMa2Fm8wtNui
+ B0V++0rTt1MVeOHJ3VX2PBTRFsYkbcmNORh0va8dBzAjJBvaVVtLxqVtAK54rT4XxlZ6
+ pRNiS7Ziqtmy7mxg/HwicTMoJtr9ptubcs5bAiAf9oXeFKwSQDNt1kSDqul4szgXt8wo Zw== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sy16580vx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 06 Sep 2023 21:29:38 +0000
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 386L0Q53028174; Wed, 6 Sep 2023 21:29:38 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2174.outbound.protection.outlook.com [104.47.56.174])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3suug6ue3y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 06 Sep 2023 21:29:37 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VtO+WoDcA1tIsHHY9GYjeDcnCwm6eVJvobS6I8Cc1Yx7s4UTjHMo/2KgqehdSip1ahEAasQ6+PlGRf3MmfHE4iGwcPeBELdr6xdX2zG4mNzZF90Ks3CRQnH3P33iSw4k58wY5mhE7HrQoGnAiPwja5WmxN1G+3QMo25irFvyCceXL5Yvu92YpZ3ooHTjBJtOaR2N1VfokmA5QjtsjVC2OpUdBOBuv8j19IZ4hL2FlYm1Von5bET0WU8V+6nQNGS1w/+d3EjcGmA1TmwHHOfAJhTpOGUTB1j56XXJbG8e+qL+h+ckP6hHnfCWSFueQCnq1ktIy7Pfqency99+h33Evg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KCCS5P6q5UtucoAeyA11j4Kl1MTWgAeyg6MJM4DYUOA=;
+ b=QAsIQBDspuYWi8m8JM+U1IZ9AnIVmQDi3LhABmTw4IXPaVGgYjOtLbIbrIH30NEo2a+Yc99jnHtpqTMN9SxwsoqmiZJn9eIjJ9xfbnWJcPnyNnVniTsW5Enpicpawn1F53XvTpkJd6OI89QjZPpZTrBOIpzN51oTOKRDJBTW3yt54+wtcwAqluGUQjdHN3FkRomQPwLdvAeWl0FXRsARc150Uck/TAQj/eUGZL85xOnKb3q5D0F2T3gHQF3SkRxdzRKtFeN87azSO08oOsyAaaO7LIvwUwr7PCNVoehM49y6J8Miko5j373ByqbbVyGBMp5L7AkQUx89rVzG4DTSmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1694033608; x=1694638408; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ljeWiOBK1YRJqpbJLOZI5OE5Eu/gk5L+xw9UUP2Stp4=;
- b=NnZXxX8mD53QPf0TYNBQt2pZd4Ch4/5sxDIkfAl6o49A19R5F1MTSzHSlBZeMHRI1Z
- EbIxGEBmydN+P9fNluPNj9dWmgwqxaWYVxc22fxWpPi+nUGcienyrJZPZf7ES3eGPGt9
- N6OXSkUDOlrrtFhjMQGIvFlvk7+iXwqBvIxHb66bjEKEhig+NsF9Ngp0KSCKE9mLeIPz
- VfZayt7BX9rVZBXLTUiUV38gmTpL05eU24L2bQkbIs87CFvgS5BUIa+SnYlVek3LAk6N
- viFFgzAWntqKYg+zcXoVS6bJ2cD2xhaDK0S3hQQUX4MNKKBkPJ8JWsvw6B4N4GtWmyHI
- t7BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694033608; x=1694638408;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ljeWiOBK1YRJqpbJLOZI5OE5Eu/gk5L+xw9UUP2Stp4=;
- b=TcJ9nwmB3kbuFWiqFKn7c0geFRNu/c9vXYe9/E9W6u7p5cgS9/Z2AU8qx4j5ZFXVrc
- kyOYTYWCjdEf3QWpinakJxd7m7fxyr3xV+ju1NTIP4J0vUy6+37EbDktPc9tJg8bhP25
- J55dtaFyPmtr7MUhyFBOAK2YlXHyYDqfFqDvrzrlM2PCjeSF/w1BLZ2G0w04GxnHHz9U
- mf4pRjoZgaE1hwXRBvWSA4asHAbKYiHwF1srbZQlOByEk0lZeCay9KEM4NIUPoszBEZu
- ae4TPBufK0w2/vgE40+qVOUwYrj562s/GM2FKi+fZfgYAUpaadocsdUz5oJlOYElVmfo
- uu/Q==
-X-Gm-Message-State: AOJu0Yx1ux+ezmrRCN0WrcwwPBMxk4IZBdAC2x87mu4ON6da4MVmPSRM
- IYFBpqX51BAFa64L07g4Q5vW7/jwXVSaf2uwwI3bEAXCP+I0IyiGGfsKqw==
-X-Google-Smtp-Source: AGHT+IHuWOmsSdQeVdS2BkFK1xjvYkGdPyPhBwwwm9Qzh2jk2oZNmBnDSgTceK8zXeK1dWQRnsUyU1YUZYYZy/ZbAiY=
-X-Received: by 2002:adf:ef83:0:b0:31d:1833:4130 with SMTP id
- d3-20020adfef83000000b0031d18334130mr3200290wro.71.1694033608091; Wed, 06 Sep
- 2023 13:53:28 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KCCS5P6q5UtucoAeyA11j4Kl1MTWgAeyg6MJM4DYUOA=;
+ b=jUWSgL4gery5KqI/jWtKgPw66qyld9WXTZ+wsCA14pvOCoYZT1ZJs8+U4FXdBgc7N793Eq9gsoxAI8saIa2G9B3e0Fv4O/Ptba5JWwe75PRbiU9wU+s7gCTU9KGwhsWt+VX3ntW1HkovCZuajqrap0vz/tphPPB99dmEX79C+gY=
+Received: from PH0PR10MB5481.namprd10.prod.outlook.com (2603:10b6:510:ea::5)
+ by LV8PR10MB7871.namprd10.prod.outlook.com (2603:10b6:408:1ed::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
+ 2023 21:29:35 +0000
+Received: from PH0PR10MB5481.namprd10.prod.outlook.com
+ ([fe80::a3a4:998b:966b:41ac]) by PH0PR10MB5481.namprd10.prod.outlook.com
+ ([fe80::a3a4:998b:966b:41ac%3]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
+ 21:29:35 +0000
+Message-ID: <3968a8e5-4010-0c97-7e1b-0dcba64ade01@oracle.com>
+Date: Wed, 6 Sep 2023 23:29:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 1/1] migration: skip poisoned memory pages on "ram saving"
+ phase
+Content-Language: en-US, fr
+To: Peter Xu <peterx@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20230906135951.795581-1-william.roche@oracle.com>
+ <20230906135951.795581-2-william.roche@oracle.com>
+ <e2adce18-7aef-5445-352a-01e789619fac@oracle.com> <ZPiX4YLAT5HjxUAJ@x1n>
+From: William Roche <william.roche@oracle.com>
+In-Reply-To: <ZPiX4YLAT5HjxUAJ@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P195CA0013.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e2::16) To PH0PR10MB5481.namprd10.prod.outlook.com
+ (2603:10b6:510:ea::5)
 MIME-Version: 1.0
-References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
- <20230626114916.45355529@mobian.usb.local>
- <20230626100819.vtkuuvzg376hktk2@begin>
- <CAJt6XFpDwuim-FF7a5MMibQvJa1YJ=X165n43XEtQaF4356r9w@mail.gmail.com>
- <20230720145415.w7s3ystkrf5gc66y@begin>
- <CAJt6XFosqX8xH_QWX1xZmHPg7vYB8r=m+ERgxQtKzhYT4W0urg@mail.gmail.com>
- <CAJt6XFqW4zUvWy6=3WZihkmbp6N-RVczR+5kpLtpxDtLXUBAXQ@mail.gmail.com>
-In-Reply-To: <CAJt6XFqW4zUvWy6=3WZihkmbp6N-RVczR+5kpLtpxDtLXUBAXQ@mail.gmail.com>
-From: Felix Wu <flwu@google.com>
-Date: Wed, 6 Sep 2023 13:53:16 -0700
-Message-ID: <CAJt6XFp35uMO=KXeghE8khMCcs15pW1CsKNFuhcrSd5AqAJHxA@mail.gmail.com>
-Subject: Re: Tips for local testing guestfwd
-To: Samuel Thibault <samuel.thibault@gnu.org>
-Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org, 
- Jason Wang <jasowang@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000007360490604b6ef55"
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=flwu@google.com; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5481:EE_|LV8PR10MB7871:EE_
+X-MS-Office365-Filtering-Correlation-Id: d80d5ccf-1c77-4c7c-1b18-08dbaf205dce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: MbaE357OzKdIrEKVTNPzN96u6srAVa4IU96Rn6rqmdHJOwXS3BQvJkj9Xqr9dqEhoR7gErmAE4t9m4TprgMG/BS+qPIIbZ6Mtk7w2weR/4nOLgf3PD1RTB9R3f+cTKR+Rof0dKkQfarg/SSvNmIiA5TPI7RSwv5u1XXsyPZZoOPtjPjYkuDoxHqtBItyNKRf7EHHAR2v5HnVSQ7rHTaG22SF4/x91Zym4AN3d5HuCVWrREZEuNjJ0f3z2AFzpLBojsEwaOyLMUVRD5IntOIr1bLg4htYdfyubONbVBk/IHOpO81Jb69wRq5ZEGnkSHACDAd40wIwEUz0Sk5PlNpohC3TZtfHsmHvBcP9n1yAj8NPgXv3Ilcy1qWvufm9B2VVFZ4XUM/hrV0bxc4SGx9W36i94uXF/DJi3HXKUOK0EBhGUiUUka0PezRuckn6mQ5lm9FJQekjfP2oUdinmeztok427sRvQLWqZqpJFfR6w0AiYiJ09JbwYD+jF1RaYDEE+SnBZQDDcgKV9tAxypJxsMNg+c7Wppi5m3kxi+LiPgvyVsW6LFPPsLgvoHfEVFe/FzhDTpU4wiMRatvdpXevCtXwIjgLRixjHDxB6/L9aglua1+HOi484jren8XZiWiiGjxyhXjMFOLAsrN4N8vi2g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB5481.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(39860400002)(136003)(396003)(346002)(376002)(451199024)(1800799009)(186009)(6666004)(6486002)(6512007)(6506007)(53546011)(478600001)(83380400001)(107886003)(26005)(2906002)(4326008)(44832011)(66476007)(41300700001)(54906003)(6916009)(66556008)(8936002)(5660300002)(316002)(66946007)(8676002)(86362001)(31696002)(2616005)(36756003)(38100700002)(31686004)(66899024)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Vm1tUUc3bUlJQ0llaGRwMEhrS1VQMDMyZWFXUDlJMncwclBCQUxGZUh4RStH?=
+ =?utf-8?B?UEJLUEdGYS9kdEhRS0FwTG85RTF4b3ltU2hUcE8reVlHWnplNGVOaUFObHlw?=
+ =?utf-8?B?aGUySzVhUjV3VTJQaU80OUh5SnpUWUFLWFIvNDRtSmErVCsxYzcxYURqU0I1?=
+ =?utf-8?B?SFBtU3hFb0RQeFluRFFMQ0Y1bjR2RFhvMEIrUU1jL015V0JUWFhOMVB2Q0RQ?=
+ =?utf-8?B?UHV6UzVEa0NsaU44dzVKOWFvbEJ3OFpOOXh1TFdxdGd2Vk0zem0xUzhjZkRj?=
+ =?utf-8?B?WWJTSm1nUTNxTzB4aERGU2NSbWlDVVFDNUhpWGR4MGdIWERyU3BKTnNaMXEw?=
+ =?utf-8?B?S0J0NDNxMWh1akJ6aERONWZDaFZVY2JZZVhRQ3p0SGhKMkl5SkE5R0c4T0lq?=
+ =?utf-8?B?RkVZTDRuS0Y2YnNTVlIycVpDR01CbzNhSGo0K3k2cVlVTExvTHdTTnowc21M?=
+ =?utf-8?B?Y21kUzZFR0RHWHM1R0lmUzdkS3Z3djBIUWFOc0hVeExWMlJpRXNWSUxwZ2FQ?=
+ =?utf-8?B?SnJTNmVVOHBHMnZSd0JNMk5KTzR1UnhFZkI0bzBOeVJSRFkydnIxT1V1dXFQ?=
+ =?utf-8?B?WmhYM3NwM2ZVTTIwTG5HVy9yakF6VFk1R2ZPS1R0NkEwL0hGZVpyNkhTQkFC?=
+ =?utf-8?B?dVk5MHZFbFJ2a2RDc29sOXUyYkxjdnVQazRBT01OUGl2OHVNWG1pelN3dUs3?=
+ =?utf-8?B?MWlEUWcycjZYbTYzbXhvTUlZc3loMUlnVm1lbm8rbTQ4UjQ2anBya1ZNNmpv?=
+ =?utf-8?B?ZTRzN1hISVNFNi9pZTZMdWJPbUxpaGFraVpraGRqY1lPL3U1dDFJVEpHMUtm?=
+ =?utf-8?B?UU42Nm10SStwbEZMYWppakZVQ09sUkdJV0tzKzlTU0tlc2oyQmNrS0dlT3Jo?=
+ =?utf-8?B?MWEycFpsbWZ6alhLQ3RqcWtEVjJrTUVkWjdnRkRmKzArekNiU1J0dVhqbWlo?=
+ =?utf-8?B?Z2dDMElDWnArT1JQTHJWWU92ZzhEMzJsd1gvRGgxRzdWRnpJRWJvdTJUSXd0?=
+ =?utf-8?B?SmNkNTd6MjBZbUl3VkpqMVlkQTJNbDVNVzNidUxVWSsxOXBaeGErRzJ6eXpy?=
+ =?utf-8?B?OFMzdEV3OWJMWlBROVhOZ3ZaeE1HZjg2ODB2anhLUjZHbnRHWVNxUGhXVXdK?=
+ =?utf-8?B?cWs4aHdub3U0ek51ajNRSzdGZ1dUekJhUWlJQit2WlczQmk1dC9qQjE5WnNU?=
+ =?utf-8?B?ZGZrVWdlb3psWFZzbXZvcndMNG16MmVyRHVtRUtOaDJURS9rS2NubXVLbDhq?=
+ =?utf-8?B?WHRVRmdFU1hkYnlvQ2xDV1V6dCt5NXJ2UTU4WHM5MHA3Ylk3dXhEK3Z0MFFN?=
+ =?utf-8?B?emlZYnplRnp6aERXRHpvSkNGNHROeG5ydXNaaVd4MlFqQi9ndmNxUjdLZVF4?=
+ =?utf-8?B?bEcvTWJVeUQrZXozT2pzWFBWQnQvUmx5SU1uZG0vcy9XK2xBU2tCdXFQR2J5?=
+ =?utf-8?B?M3Yvb0Y1UytOem5Mclh4S292S0JOUnowYkdVRlBMdEhGNVp5Um1IV3hockRD?=
+ =?utf-8?B?cUs2V3hxQUhZeGFSbjVtZ3Z5NHRhRFZ6eHRDdm1ZVUpVbWdWM3JYeE85Um96?=
+ =?utf-8?B?TStzeExnRk9HcGxQT0lYa1FuMXdkUjJNNXVrdFhxTXhTMHVlWjMvYU5jekFj?=
+ =?utf-8?B?VFBhTzhYWm5ZeSt0dC96R1lJWHd1U0pWaCs0YVlqR1k4YTRFVUx5RXJaMFdQ?=
+ =?utf-8?B?MTE5NVYxWmh4bm9qMUZ0NE5WSWhnU04zL3hycGcvRTZxOE9rNHNDZ0VuOG9X?=
+ =?utf-8?B?SEZEYzErTFQwc0YrbVdXWk5NUzYxdnJvdDZ1UGhBb3huOUZmQzlnbGF0WG1s?=
+ =?utf-8?B?d1JBejBhY2huKzZoMDExcXJYMUE2T0xnOFZPN08wZk11UkZMS25mSTVMTW0z?=
+ =?utf-8?B?MmozaXZmc3JtaHNMQlR3bWU4ek50bE8zT3FkTFdjVStqNWdEUEw3d3hkcmRO?=
+ =?utf-8?B?cmc2ajJqNkY5Vlp0V0hWaGFjbjRhVmo0d2ZlRENjZS93bkRMVFVhaGJWQkVJ?=
+ =?utf-8?B?Z3h1NER0cFBzMkxQOWlWR0JMbUp2Wm1lUktTQm1kOXd3VFBNT2o3R05KWDds?=
+ =?utf-8?B?dnN3SkdsODU3cXhkMFlnT0ZRUDBsL1FKeVZXdTYvVVhmeHNKbmtGMVM4U2Jv?=
+ =?utf-8?B?alJORHN0U2VXWVF4Q0kwakh6cUx4dm1SYk9OcUVVSTZxaFcrVURtQS9xN0Z3?=
+ =?utf-8?B?Vmc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: ETBPgCIvTWaRIeWc+ruU75H12ktjzsEodVgg1B1NIYrNCrsLXZbFUQ0n4GgBlyRhkXGiYwGA8vSoXh6bKN+cj/SoJLKwy8qcUnBCppNzd6kL7bq+/e6Ub6OkD2suGtLLGeFXHcuhk75Dq49D27A5oHxOiH3Dtjdz0HsFKZrYtCVlVPo5DfMMUK0Ew327IBCevgL5bkJu4JpqFJMp8QCrV6sGrP/rSpRjJKrnPrlANkt4gIIfnK6luQX5BHecZ3dhQ5NdtwKDQ26QdrQwJLUoWhvbebTBb9HXlZi1QgNAZZ8p98aHxoYPC0qj4kfPcFIpuGnfSQDS0jw4V7AcZcVLyKRVmEzmj5S6NdKgMiwPxPthRlls/s7oVj5CnTgK/M/lFlDI7lZsjwl+v2lp9BJ7yzW9YZBR67jaxFuNC/EuwF7djiSQHmMFEEtcGlbCz6EoQvzPjcfbvBvWLTiwGkqd9pqWOp3kGGItnCAiGhUbgnE4DIZ7aclMhBJ9pTMQLU4QzNSK2C1YU46P8t5Eyw7wdFK5FORlDAnp37yrzfA9rsknQg57K1RsbUfb1yWRe4KgN6tGO+UuclyjxBN5e5UX4HgWeg4lQPfEj1VVo02c6FLku+oaEB1rKf3LMdy6R0666mclB4MX6AA6KlQGdAnVIaR5v2UDAFiLUz56u78au5ollKeXiJ0WivbPavyC5v8Zvjqujr3+j+yzhrb6rwEwCFTxpLOO61o4AB8VtOqLE16z5NJ3LDyycQZxV0o4J9QANHcs10Ghkz20owomS8dF3g==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d80d5ccf-1c77-4c7c-1b18-08dbaf205dce
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5481.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 21:29:35.3097 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fpGHCqC+eKH0lGBGUjkk1GpVA0Jgj6Ao4oFc1MaO2jWhKaVxaAJrQ8+AmZcGKtJPp79lX8osy2hWIawHGtqFBH6jXerj+KB5+x4p+g7rKhw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR10MB7871
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-06_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999
+ adultscore=0 phishscore=0 bulkscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309060186
+X-Proofpoint-ORIG-GUID: hCU67dACXo_2qc8p0_O-dpAfWoUV-M74
+X-Proofpoint-GUID: hCU67dACXo_2qc8p0_O-dpAfWoUV-M74
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=william.roche@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,405 +187,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000007360490604b6ef55
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 9/6/23 17:16, Peter Xu wrote:
+> 
+> Just a note..
+> 
+> Probably fine for now to reuse block page size, but IIUC the right thing to
+> do is to fetch it from the signal info (in QEMU's sigbus_handler()) of
+> kernel_siginfo.si_addr_lsb.
+> 
+> At least for x86 I think that stores the "shift" of covered poisoned page
+> (one needs to track the Linux handling of VM_FAULT_HWPOISON_LARGE for a
+> huge page, though.. not aware of any man page for that).  It'll then work
+> naturally when Linux huge pages will start to support sub-huge-page-size
+> poisoning someday.  We can definitely leave that for later.
+> 
 
-Hi,
-I noticed why the chardev socket backend disconnects, and I would like to
-make this a RFC to see how I should fix it.
-Current scenario after boot-up:
+I totally agree with that !
 
-   1. tcp_chr_read_poll keeps polling the slirp_socket_can_recv, and
-   slirp_socket_can_recv returns 0 since slirp_find_ctl_socket couldn't
-   find the guestfwd socket.
-   2. The returned 0 in step 1 was assigned to the s->max_size (s is
-SocketChardev
-   *), and the socket chardev handler won't read since readable size is 0.
-   3. When the 1st request is sent, the guestfwd socket is added into the
-   slirp's socket list, instead of 0, tcp_chr_read_poll will return the
-   result of sopreprbuf > 0.
-   4. tcp_chr_read reads the thing.
-   5. tcp_chr_read_poll still returns things > 0, which is the output of
-   sopreprbuf.
-   6. tcp_chr_read reads the thing again, but there's nothing in the
-   buffer, so it's unhappy, and closes the connection.
-   7. any follow-up requests won't be handled.
 
-These tcp_chr* functions are in fle [1], and slirp_* are in fle [2].
+>>> --- a/migration/ram.c
+>>> +++ b/migration/ram.c
+>>> @@ -1145,7 +1145,8 @@ static int save_zero_page_to_file(PageSearchStatus *pss, QEMUFile *file,
+>>>       uint8_t *p = block->host + offset;
+>>>       int len = 0;
+>>>   
+>>> -    if (buffer_is_zero(p, TARGET_PAGE_SIZE)) {
+>>> +    if ((kvm_enabled() && kvm_hwpoisoned_page(block, (void *)offset)) ||
+> 
+> Can we move this out of zero page handling?  Zero detection is not
+> guaranteed to always be the 1st thing to do when processing a guest page.
+> Currently it'll already skip either rdma or when compression enabled, so
+> it'll keep crashing there.
+> 
+> Perhaps at the entry of ram_save_target_page_legacy()?
 
-My questions:
-1. Since this thing doesn't work on 2nd and later requests, I want to know
-how this thing is supposed to work, and to avoid asking people vaguely, I
-will provide my though following and please correct me if I am wrong:
-a. The state machine in chardev socket should maintain a connected
-state (s->state
-=3D=3D TCP_CHARDEV_STATE_CONNECTED), this means no change in [1].
-b. slirp_socket_can_recv should return 0 once all data is read instead of
-outcome from sopreprbuf. This means I need to remove the socket or change
-its state to no file descriptor [3], namely somehow reset it.
-c. When a new request comes in, it will need to add the socket back to this
-slirp instance's socket list, populate its file descriptor, and establish
-the connection.
+Right, as expected, using migration compression with poisoned pages 
+crashes even with this fix...
 
-b and c sounds convoluted so I want to check.
+The difficulty I see to place the poisoned page verification on the
+entry of ram_save_target_page_legacy() is what to do to skip the found 
+poison page(s) if any ?
 
-2. What is the outcome of sopreprbuf function [3]?
-Since it's returned to the tcp_chr_read_poll function, I thought it's the
-readable bytes in the socket, but in my test I noticed following thing:
+Should I continue to treat them as zero pages written with 
+save_zero_page_to_file ? Or should I consider the case of an ongoing 
+compression use and create a new code compressing an empty page with 
+save_compress_page() ?
 
-tcp_chr_read_poll_size : s->max_size: 132480
-tcp_chr_read : size: 2076
-tcp_chr_read_poll_size : s->max_size: 129600
-tcp_chr_read : size: 0
+And what about an RDMA memory region impacted by a memory error ?
+This is an important aspect.
+Does anyone know how this situation is dealt with ? And how it should be 
+handled in Qemu ?
 
-Even there's not remaining things in the buffer (read size 0), it's still
-non-zero, and thus the read function keeps reading it until it becomes
-unhappy.
-Also, 132480-129600 =3D 2880 vs 2076, the read byte doesn't match.
-
-Either I need to go with the way in question 1, b.c. steps, or I don't need
-to delete the socket, but the sopreprbuf wasn't proper to be used there and
-I need to correct it.
-Also updated https://gitlab.com/qemu-project/qemu/-/issues/1835.
-
-Any feedback will be appreciated, thanks!
-Felix
-
-[1].
-https://gitlab.com/qemu-project/qemu/-/blob/master/chardev/char-socket.c#L1=
-41
-[2].
-https://gitlab.freedesktop.org/slirp/libslirp/-/blob/master/src/slirp.c#L15=
-82
-[3].
-https://gitlab.freedesktop.org/slirp/libslirp/-/blob/master/src/socket.h#L2=
-21
-
-On Wed, Aug 23, 2023 at 10:27=E2=80=AFAM Felix Wu <flwu@google.com> wrote:
-
-> Update on debugging this thing (already updated
-> https://gitlab.com/qemu-project/qemu/-/issues/1835):
-> I saw that `tcp_chr_free_connection` was called after the first response
-> being successfully sent:
-> ```
->
-> slirp_guestfwd_write guestfwd_write: size 80tcp_chr_write tcp_chr_write: =
-s->state:2tcp_chr_write tcp_chr_write: len:80qemu_chr_write_parameter len: =
-80 // tracking qemu_chr_writeqemu_chr_write_res len: 80 // same thingtcp_ch=
-r_free_connection tcp_chr_free_connection: state: 2, changing it to disconn=
-ecttcp_chr_change_state tcp_chr_change_state: state: 2, next state: 0 // st=
-ate 2=3D=3Dconnected, 0=3D=3Ddisconnected.
->
-> ```
-> And after that, the state of `SocketChardev` remained disconnected, and
-> when the 2nd request came in, the `tcp_chr_write` dropped it directly.
-> Maybe this state machine should be reset after every connection? Not sure=
-.
->
-> On Thu, Aug 17, 2023 at 11:58=E2=80=AFAM Felix Wu <flwu@google.com> wrote=
-:
->
->> Hi Samuel,
->>
->> Thanks for the clarification! I missed the email so didn't reply in time=
-,
->> but was able to figure it out.
->>
->> Hi everyone,
->> IPv6 guestfwd works in my local test but it has a weird bug: if you send
->> two requests, the first one gets the correct response, but the second on=
-e
->> gets stuck.
->> I am using a simple http server for this test, and just noticed this bug
->> also exists in IPv4 guestfwd. I've documented it in
->> https://gitlab.com/qemu-project/qemu/-/issues/1835.
->>
->> Just want to check if anyone has seen the same issue before.
->>
->> Thanks! Felix
->>
->> On Thu, Jul 20, 2023 at 7:54=E2=80=AFAM Samuel Thibault <samuel.thibault=
-@gnu.org>
->> wrote:
->>
->>> Hello,
->>>
->>> Felix Wu, le mar. 18 juil. 2023 18:12:16 -0700, a ecrit:
->>> > 02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (looki=
-ng
->>> into packet
->>> > dump provided by QEMU invocation)
->>>
->>> Which packet dump?
->>>
->>> > I added multiple prints inside slirp and confirmed the ipv6 version o=
-f
->>> [1] was
->>> > reached.
->>> > in tcp_output function [2], I got following print:
->>> > qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D
->>> > fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190
->>> > qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105,
->>> port =3D 54322
->>> > It looks like there should be something being sent back to the guest,
->>>
->>> That's what it is.
->>>
->>> > unless my understanding of tcp_output is wrong.
->>>
->>> It looks so.
->>>
->>> > To understand the datapath of guestfwd better, I have the following
->>> questions:
->>> > 1. What's the meaning of tcp_input and tcp_output? My guess is the
->>> following
->>> > graph, but I would like to confirm.
->>>
->>> No, tcp_input is for packets that come from the guest, and tcp_output i=
-s
->>> for packets that are send to the guest. So it's like that:
->>>
->>> >         tcp_input    write_cb          host send()
->>> > QEMU --------> slirp -----------> QEMU --------------------> host
->>> >     <--------        <---------         <-----------------
->>> >          tcp_output  slirp_socket_recv    host recv()
->>>
->>> > 2. I don't see port 6655 in the above process. How does slirp know
->>> 6655 is the
->>> > port that needs to be visited on the host side?
->>>
->>> Slirp itself *doesn't* know that port. The guestfwd piece just calls th=
-e
->>> SlirpWriteCb when it has data coming from the guest. See the
->>> documentation:
->>>
->>> /* Set up port forwarding between a port in the guest network and a
->>>  * callback that will receive the data coming from the port */
->>> SLIRP_EXPORT
->>> int slirp_add_guestfwd(Slirp *slirp, SlirpWriteCb write_cb, void *opaqu=
-e,
->>>                        struct in_addr *guest_addr, int guest_port);
->>>
->>> and
->>>
->>> /* This is called by the application for a guestfwd, to provide the dat=
-a
->>> to be
->>>  * sent on the forwarded port */
->>> SLIRP_EXPORT
->>> void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int
->>> guest_port,
->>>                        const uint8_t *buf, int size);
->>>
->>> Samuel
->>>
->>
-
---0000000000007360490604b6ef55
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi,<div>I noticed why the chardev socket backend disconnec=
-ts, and I would like to make this a RFC to see how I should fix it.</div><d=
-iv>Current scenario=C2=A0after boot-up:</div><div><ol><li><code>tcp_chr_rea=
-d_poll</code>=C2=A0keeps polling the <code>slirp_socket_can_recv</code>, an=
-d <code>slirp_socket_can_recv</code> returns 0 since <code>slirp_find_ctl_s=
-ocket</code> couldn&#39;t find the guestfwd socket.</li>
-<li>The returned 0 in step 1 was assigned to the s-&gt;max_size (s is <code=
->SocketChardev *</code>), and the socket chardev handler won&#39;t read sin=
-ce readable size is 0.</li>
-<li>When the 1st request is sent, the guestfwd socket is added into the sli=
-rp&#39;s socket list, instead of 0, <code>tcp_chr_read_poll</code> will ret=
-urn the result of <code>sopreprbuf</code> &gt; 0.</li>
-<li>
-<code>tcp_chr_read</code> reads the thing.</li>
-<li>
-<code>tcp_chr_read_poll</code> still returns things &gt; 0, which is the ou=
-tput of <code>sopreprbuf</code>.</li>
-<li>
-<code>tcp_chr_read</code> reads the thing again, but there&#39;s nothing in=
- the buffer, so it&#39;s unhappy, and closes the connection.</li>
-<li>any follow-up requests won&#39;t be handled.</li></ol><div>These=C2=A0<=
-span style=3D"font-family:monospace">tcp_chr*=C2=A0</span>functions are in =
-fle [1], and=C2=A0<span style=3D"font-family:monospace">slirp_*=C2=A0</span=
->are in fle [2].</div></div><div><br></div><div>My questions:</div><div>1. =
-Since this thing doesn&#39;t=C2=A0work on 2nd and later requests, I want to=
- know how this thing is supposed to work, and to avoid asking people vaguel=
-y, I will provide my though following and please correct me if I am wrong:<=
-/div><div>a. The state machine in chardev socket should maintain a connecte=
-d state (<font face=3D"monospace">s-&gt;state =3D=3D TCP_CHARDEV_STATE_CONN=
-ECTED</font>), this means no change in [1].</div><div>b.=C2=A0<span style=
-=3D"font-family:monospace">slirp_socket_can_recv </span><font face=3D"arial=
-, sans-serif">should return 0 once all data is read instead of outcome from=
-=C2=A0</font><font face=3D"monospace">sopreprbuf</font>. This means I need =
-to remove the socket or change its state to no file descriptor [3], namely =
-somehow reset it.</div><div>c. When a new request comes in, it will need to=
- add the socket back to this slirp instance&#39;s socket list, populate its=
- file descriptor, and establish the connection.</div><div><br></div><div>b =
-and c sounds convoluted so I want to check.</div><div><br></div><div>2. Wha=
-t is the outcome of <font face=3D"monospace">sopreprbuf</font>=C2=A0functio=
-n [3]?</div><div>Since it&#39;s returned to the=C2=A0<span style=3D"font-fa=
-mily:monospace">tcp_chr_read_poll </span><font face=3D"arial, sans-serif">f=
-unction, I thought it&#39;s the readable bytes in the socket, but in my tes=
-t I noticed following thing:</font></div><div><font face=3D"arial, sans-ser=
-if"><br></font></div><font face=3D"monospace">tcp_chr_read_poll_size : s-&g=
-t;max_size: 132480<br>tcp_chr_read : size: 2076</font><div><font face=3D"mo=
-nospace">tcp_chr_read_poll_size : s-&gt;max_size: 129600</font></div><div><=
-span style=3D"font-family:monospace">tcp_chr_read : size: 0</span><font fac=
-e=3D"monospace"><br></font><div><br></div><div>Even there&#39;s not remaini=
-ng things in the buffer (read size 0), it&#39;s still non-zero, and thus th=
-e read function keeps reading it until it becomes unhappy.</div><div>Also,=
-=C2=A0<span style=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-seri=
-f;font-size:13px;letter-spacing:0.185714px">132480-129600 =3D 2880 vs 2076,=
- the read byte doesn&#39;t match.</span></div><div><span style=3D"color:rgb=
-(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-spacin=
-g:0.185714px"><br></span></div><div><span style=3D"color:rgb(32,33,36);font=
--family:Roboto,Arial,sans-serif;font-size:13px;letter-spacing:0.185714px">E=
-ither I need to go with the way in question 1, b.c. steps, or I don&#39;t n=
-eed to delete the socket, but the=C2=A0</span><span style=3D"font-family:mo=
-nospace">sopreprbuf </span><font face=3D"arial, sans-serif">wasn&#39;t prop=
-er to be used there and I need to correct it.</font></div><div>Also updated=
-=C2=A0<a rel=3D"nofollow noreferrer noopener" href=3D"https://gitlab.com/qe=
-mu-project/qemu/-/issues/1835" target=3D"_blank">https://gitlab.com/qemu-pr=
-oject/qemu/-/issues/1835</a>.<font face=3D"arial, sans-serif"><br></font></=
-div><div><br></div><div><font face=3D"arial, sans-serif">Any feedback will =
-be appreciated, thanks!</font></div><div><font face=3D"arial, sans-serif">F=
-elix</font></div><div><br><div>[1].=C2=A0<a href=3D"https://gitlab.com/qemu=
--project/qemu/-/blob/master/chardev/char-socket.c#L141">https://gitlab.com/=
-qemu-project/qemu/-/blob/master/chardev/char-socket.c#L141</a></div><div>[2=
-].=C2=A0<a href=3D"https://gitlab.freedesktop.org/slirp/libslirp/-/blob/mas=
-ter/src/slirp.c#L1582">https://gitlab.freedesktop.org/slirp/libslirp/-/blob=
-/master/src/slirp.c#L1582</a></div><div>[3].=C2=A0<a href=3D"https://gitlab=
-.freedesktop.org/slirp/libslirp/-/blob/master/src/socket.h#L221">https://gi=
-tlab.freedesktop.org/slirp/libslirp/-/blob/master/src/socket.h#L221</a></di=
-v></div></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Wed, Aug 23, 2023 at 10:27=E2=80=AFAM Felix Wu &lt;<a hr=
-ef=3D"mailto:flwu@google.com">flwu@google.com</a>&gt; wrote:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr">Update on deb=
-ugging=C2=A0this thing (already updated=C2=A0<a rel=3D"nofollow noreferrer =
-noopener" href=3D"https://gitlab.com/qemu-project/qemu/-/issues/1835" targe=
-t=3D"_blank">https://gitlab.com/qemu-project/qemu/-/issues/1835</a>):<div>I=
- saw that `tcp_chr_free_connection` was called after the first response bei=
-ng successfully sent:</div><div>```</div><div><pre lang=3D"plaintext"><span=
- lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC1">slirp_guestfwd_w=
-rite guestfwd_write: size 80</span>
-<span lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC2">tcp_chr_wri=
-te tcp_chr_write: s-&gt;state:2</span>
-<span lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC3">tcp_chr_wri=
-te tcp_chr_write: len:80</span>
-<span lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC4">qemu_chr_wr=
-ite_parameter len: 80 // tracking qemu_chr_write</span>
-<span lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC5">qemu_chr_wr=
-ite_res len: 80 // same thing</span>
-<span lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC6">tcp_chr_fre=
-e_connection tcp_chr_free_connection: state: 2, changing it to disconnect</=
-span>
-<span lang=3D"plaintext" id=3D"m_-6822987951129619377gmail-LC7">tcp_chr_cha=
-nge_state tcp_chr_change_state: state: 2, next state: 0 // state 2=3D=3Dcon=
-nected, 0=3D=3Ddisconnected.</span>
-</pre></div><div>```</div><div>And after that, the state of `SocketChardev`=
- remained disconnected, and when the 2nd request came in, the `tcp_chr_writ=
-e` dropped it directly.</div><div>Maybe this state machine should be reset =
-after every connection? Not sure.</div></div><br><div class=3D"gmail_quote"=
-><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Aug 17, 2023 at 11:58=E2=80=
-=AFAM Felix Wu &lt;<a href=3D"mailto:flwu@google.com" target=3D"_blank">flw=
-u@google.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex"><div dir=3D"ltr">Hi Samuel,<div><br></div><div>Thanks for the c=
-larification! I missed the email so didn&#39;t reply in time, but was able =
-to figure it out.</div><div><br></div><div>Hi everyone,</div><div>IPv6 gues=
-tfwd works in my local test but it has a weird bug: if you send two request=
-s, the first one gets the correct response, but the second one gets stuck.<=
-/div><div>I am using a simple http server for this test, and just noticed t=
-his bug also=C2=A0exists in=C2=A0IPv4 guestfwd. I&#39;ve documented it in=
-=C2=A0<a rel=3D"nofollow noreferrer noopener" href=3D"https://gitlab.com/qe=
-mu-project/qemu/-/issues/1835" target=3D"_blank">https://gitlab.com/qemu-pr=
-oject/qemu/-/issues/1835</a>.</div><div><br></div><div>Just want to check i=
-f anyone has seen the same issue before.</div><div><br></div><div>Thanks! F=
-elix</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gm=
-ail_attr">On Thu, Jul 20, 2023 at 7:54=E2=80=AFAM Samuel Thibault &lt;<a hr=
-ef=3D"mailto:samuel.thibault@gnu.org" target=3D"_blank">samuel.thibault@gnu=
-.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">Hello,<br>
-<br>
-Felix Wu, le mar. 18 juil. 2023 18:12:16 -0700, a ecrit:<br>
-&gt; 02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (lookin=
-g into packet<br>
-&gt; dump provided by QEMU invocation)<br>
-<br>
-Which packet dump?<br>
-<br>
-&gt; I added multiple prints inside slirp and confirmed the ipv6 version of=
- [1] was<br>
-&gt; reached.<br>
-&gt; in tcp_output function [2], I got following print:<br>
-&gt; qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D<br>
-&gt; fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190<br>
-&gt; qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105, p=
-ort =3D 54322<br>
-&gt; It looks like there should be something being sent back to the guest,<=
-br>
-<br>
-That&#39;s what it is.<br>
-<br>
-&gt; unless my understanding of tcp_output is wrong.<br>
-<br>
-It looks so.<br>
-<br>
-&gt; To understand the datapath of guestfwd better, I have the following qu=
-estions:<br>
-&gt; 1. What&#39;s the meaning of tcp_input and tcp_output? My guess is the=
- following<br>
-&gt; graph, but I would like to confirm.<br>
-<br>
-No, tcp_input is for packets that come from the guest, and tcp_output is<br=
->
-for packets that are send to the guest. So it&#39;s like that:<br>
-<br>
-&gt; =C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0tcp_input=C2=A0 =C2=A0 write_cb=C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 host send()<br>
-&gt; QEMU --------&gt; slirp -----------&gt; QEMU --------------------&gt; =
-host<br>
-&gt; =C2=A0 =C2=A0 &lt;-------- =C2=A0=C2=A0 =C2=A0 =C2=A0 &lt;---------=C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;-----------------<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tcp_output =C2=A0slirp_socket_recv=
-=C2=A0 =C2=A0 host recv()<br>
-<br>
-&gt; 2.=C2=A0I don&#39;t see port 6655 in the above=C2=A0process. How does =
-slirp know 6655 is the<br>
-&gt; port that needs to be visited on the host side?<br>
-<br>
-Slirp itself *doesn&#39;t* know that port. The guestfwd piece just calls th=
-e<br>
-SlirpWriteCb when it has data coming from the guest. See the<br>
-documentation:<br>
-<br>
-/* Set up port forwarding between a port in the guest network and a<br>
-=C2=A0* callback that will receive the data coming from the port */<br>
-SLIRP_EXPORT<br>
-int slirp_add_guestfwd(Slirp *slirp, SlirpWriteCb write_cb, void *opaque,<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0struct in_addr *guest_addr, int guest_port);<br>
-<br>
-and <br>
-<br>
-/* This is called by the application for a guestfwd, to provide the data to=
- be<br>
-=C2=A0* sent on the forwarded port */<br>
-SLIRP_EXPORT<br>
-void slirp_socket_recv(Slirp *slirp, struct in_addr guest_addr, int guest_p=
-ort,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0const uint8_t *buf, int size);<br>
-<br>
-Samuel<br>
-</blockquote></div>
-</blockquote></div>
-</blockquote></div>
-
---0000000000007360490604b6ef55--
+--
+Thanks,
+William.
 
