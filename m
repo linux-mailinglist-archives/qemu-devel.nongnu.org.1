@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F147937DD
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C007937DA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:17:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdoey-0002xp-TU; Wed, 06 Sep 2023 05:17:16 -0400
+	id 1qdoeP-0002Ro-EB; Wed, 06 Sep 2023 05:16:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qdoen-0002jH-Ba
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:17:06 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdoeL-0002Nq-LE
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:16:37 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qdoeh-0005bq-2U
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:17:03 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6bf298ef1f5so2574839a34.0
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 02:16:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdoeI-0005Xd-MM
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:16:37 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-501bd7711e8so2912270e87.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 02:16:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1693991817; x=1694596617; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oFl+a2Kq0b0p8yaPzRI+x2lm+P3JwkJ8h7I1Xdl+LTo=;
- b=J7fB+XfOUvArqxJLCvWgdG6ruB1fr75AG2yfiJ8RtOYCOhG9AnKsPvrV/07GZFUa+d
- 1N83cKHTxnkkXaNKxvPMmq+9oZdYX9XxM5Bn57eOmbEvyHhiq42pWz85xYKo/95IQfyS
- XglBXHHa+pdO6jry8U+cKUeAYCR1PEY2U4peUF2g/MchFcEMFeEKyWN6feIFHF0kNyqw
- zcOHJdVI8wl8f1HcVOQWP7xkgLj3FYg0FiKGa/KqkBay/BksVpiJx2ItEDNMWDpFI2nU
- ksvSCwfW3P08DrxjzlSOU+LVfhFce+gugJzB1/3moxf0Su04x9p1yq424dXNlA1lQDlz
- LQgQ==
+ d=linaro.org; s=google; t=1693991792; x=1694596592; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xGd39gv0uJeOo6HcThBWjEYjPgZB6zCH8FBMkj+cjbY=;
+ b=t7BQpFawfDwhitWAxHIImNZ1DamBivGCfIfS/ScFT5z2M7DFsvtOnVIY1rjcxEtczN
+ S8ST4HtkYRLC5a2fE0BhSY1GdSlYS0+PeV6ZuxtYmLkGTxmZ8UxvputGc8LlSsrHjzXy
+ rKs6By2KOF8LxjP204gnvTBG+jKYFjpUnJJ0Aqz2/UkRxLm8q1mhMZIBJTGgtrgAg99Y
+ wF0DYO4lG9xAgJQllTgBvDHWeMxnD0KlKtnwbKm7QH0RIczGXuYw9ndfnsvqou23zKv8
+ zkEn/Dqk0M6/GTSNf+sEKdVfNqZ3NXWveB207KdxXITVl8n7e8yECibC6m7Sj2pKgH/i
+ ZW9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693991817; x=1694596617;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oFl+a2Kq0b0p8yaPzRI+x2lm+P3JwkJ8h7I1Xdl+LTo=;
- b=PtXNqDnztIqFAgK9xiGYf4ch9cPIjlI2/WYG6tXIG4zTNq3tR07LpEUwGAeFqzAuA+
- Mkygfyd9qKgi9KO3JE31hN/sw7iO6B7WhnPW1B1hyfTL4LyNgsVZUA0MxGu48vJ90l4r
- 1pbBdv+hdfyb5tpiRD0sdvMR3O6ReUqbEkKqAijPHoPrDRE70ToCcfk0HkgFTWEB6tX4
- ghT28IHAc0Mnpjnxrw5qdK+85LXRyy+pZwiSsxQ2aWwIDGl75CHgzBL+iUP6BpYWO04e
- Lm/iaut8sYqNctdWddX4kkORGm9wDXvpq75dFYOEaXXyphT/MUVY2K8vfKXKll01D8Hj
- hgWg==
-X-Gm-Message-State: AOJu0YyM/lo1Wp8wocg48tX+ogxzxg8AZ9dlzt7igFBPFexhBXQIonTn
- oFyfkK+ab+KXPl5g8YNajChxhsSl+a/390FksMI=
-X-Google-Smtp-Source: AGHT+IHhQxV2Lv5ABkIeJa+9VxQYE+0tk6eZltI2ZEs2jyq67O0cJhd87e68kgI9MxVntTxzeg3ilA==
-X-Received: by 2002:a9d:7486:0:b0:6bf:1444:966d with SMTP id
- t6-20020a9d7486000000b006bf1444966dmr13991975otk.1.1693991817579; 
- Wed, 06 Sep 2023 02:16:57 -0700 (PDT)
-Received: from grind.. ([177.94.15.194]) by smtp.gmail.com with ESMTPSA id
- n21-20020a9d6f15000000b006b75242d6c3sm6229228otq.38.2023.09.06.02.16.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Sep 2023 02:16:57 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com, philmd@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 01/19] target/riscv: introduce TCG AccelCPUClass
-Date: Wed,  6 Sep 2023 06:16:28 -0300
-Message-ID: <20230906091647.1667171-2-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
-References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20221208; t=1693991792; x=1694596592;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xGd39gv0uJeOo6HcThBWjEYjPgZB6zCH8FBMkj+cjbY=;
+ b=gGSCVSXyTHLiJIY1SA6ESmYQKyO2bij1tgGUOeOgqGDKtNAXaWP+RyzAZkISAQY3gU
+ N41od3BSZ7qZWUebZ4/aEpQr4sNCIgDPdam6gPdzCU8q4H/WyILs0ieSEl6Q8NntYmNz
+ Xm6MRGQU2A2DTLb9C8gM+8EEAPiRLyjbca26IcjiUXN+BBkbTa6iyhlHX2JppsPGmIdR
+ q9N6zoBU6aFmziNt2lchptE8KK9v5PFiV6phCCHuLiTB6Ec7hnIlaBhoko3OKXgAKgej
+ 55tTU+eBxHbldTAaU52ek4AosY1zDBTxbIAK8Zwq7cVW0fvUqVakR1Ybwqf11kjTiPgL
+ 3UHw==
+X-Gm-Message-State: AOJu0Yyp/MBBjSnfMUcajgd6xEfncarxhFlcXILMJKrckJFe9tzOcjAH
+ 46yLZaSbyns3yR4Qwx6ZWdJgQpFehwJy2i9YsN8=
+X-Google-Smtp-Source: AGHT+IEROj017BiQnJaiWUBWwR/zsKcHLqSkJCskrREznMuyoTa6swqmEF5YrZ5LObtgYyM/IUQg4Q==
+X-Received: by 2002:a05:6512:3713:b0:500:b8bc:bd9a with SMTP id
+ z19-20020a056512371300b00500b8bcbd9amr1685231lfr.49.1693991792396; 
+ Wed, 06 Sep 2023 02:16:32 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ d19-20020a05640208d300b00523b1335618sm7977025edz.97.2023.09.06.02.16.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 02:16:31 -0700 (PDT)
+Message-ID: <579322f6-be00-f030-1eec-8c051c6c93fc@linaro.org>
+Date: Wed, 6 Sep 2023 11:16:29 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v5 2/4] virtio-dmabuf: introduce virtio-dmabuf
+Content-Language: en-US
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, kraxel@redhat.com,
+ cohuck@redhat.com, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230802090824.91688-1-aesteve@redhat.com>
+ <20230802090824.91688-3-aesteve@redhat.com>
+ <e6b6abb1-921b-43d7-054a-71042b0f4e38@linaro.org>
+ <CADSE00KS0KTXTdq+AdAd57qwz-ZNQRxSqhizhs+qaJ8MpGRChA@mail.gmail.com>
+ <CADSE00Jq9iJDD7ojjth4eyU=fxVvjexWp8AYKZyDZT8ZrJyDHQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CADSE00Jq9iJDD7ojjth4eyU=fxVvjexWp8AYKZyDZT8ZrJyDHQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,166 +98,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-target/riscv/cpu.c needs to handle all possible accelerators (TCG and
-KVM at this moment) during both init() and realize() time. This forces
-us to resort to a lot of "if tcg" and "if kvm" throughout the code,
-which isn't wrong, but can get cluttered over time. Splitting
-acceleration specific code from cpu.c to its own file will help to
-declutter the existing code and it will also make it easier to support
-KVM/TCG only builds in the future.
+On 6/9/23 10:45, Albert Esteve wrote:
 
-We'll start by adding a new subdir called 'tcg' and a new file called
-'tcg-cpu.c'. This file will be used to introduce a new accelerator class
-for TCG acceleration in RISC-V, allowing us to center all TCG exclusive
-code in its file instead of using 'cpu.c' for everything. This design is
-inpired by the work Claudio Fontana did in x86 a few years ago in commit
-f5cc5a5c1 ("i386: split cpu accelerators from cpu.c, using
-AccelCPUClass").
+>          > diff --git a/include/hw/virtio/virtio-dmabuf.h
+>         b/include/hw/virtio/virtio-dmabuf.h
+>          > new file mode 100644
+>          > index 0000000000..536e622555
+>          > --- /dev/null
+>          > +++ b/include/hw/virtio/virtio-dmabuf.h
+>          > @@ -0,0 +1,103 @@
+>          > +/*
+>          > + * Virtio Shared dma-buf
+>          > + *
+>          > + * Copyright Red Hat, Inc. 2023
+>          > + *
+>          > + * Authors:
+>          > + *     Albert Esteve <aesteve@redhat.com
+>         <mailto:aesteve@redhat.com>>
+>          > + *
+>          > + * This work is licensed under the terms of the GNU GPL,
+>         version 2.
+>          > + * See the COPYING file in the top-level directory.
+>          > + */
+>          > +
+>          > +#ifndef VIRTIO_DMABUF_H
+>          > +#define VIRTIO_DMABUF_H
+>          > +
+>          > +#include "qemu/osdep.h"
+>          > +
+>          > +#include <glib.h>
+>          > +#include "qemu/uuid.h"
+>          > +#include "vhost.h"
+>          > +
+>          > +enum SharedObjectType {
+>          > +    TYPE_INVALID = 0,
+>          > +    TYPE_DMABUF,
+>          > +    TYPE_VHOST_DEV,
+>          > +};
+>          > +
+> 
+>         Please declare a
+> 
+>         typedef
+> 
+>          > +struct VirtioSharedObject {
+>          > +    enum SharedObjectType type;
+>          > +    gpointer value;
+>          > +};
+> 
+>         VirtioSharedObject;
+> 
+>         and use it instead of 'struct VirtioSharedObject'.
+> 
+> 
+>     You mean making the struct anonymous and typedefing?
+> 
+> 
+> So after re-reading your comment and looking for more examples in the 
+> codebase, I see
+> it is not uncommon to have a named struct also typedef in the same 
+> declaration.
+> So I will typedef, but not make it anonymous, same for the enum.
 
-To avoid moving too much code at once we'll start by adding the new file
-and TCG AccelCPUClass declaration. The 'class_init' from the accel class
-will init 'tcg_ops', relieving the common riscv_cpu_class_init() from
-doing it.
+Correct (see https://qemu-project.gitlab.io/qemu/devel/style.html#typedefs
 
-'riscv_tcg_ops' is being exported from 'cpu.c' for now to avoid having
-to deal with moving code and files around right now. We'll focus on
-decoupling the realize() logic first.
+>     Should I do the same with the enum? In other files I see enums are
+>     typedef too, but not anonymous (e.g., block/qcow2.h).
+>     So I could do the same here.
+> 
+>     For the rest... Ack!
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- target/riscv/cpu.c           |  5 +---
- target/riscv/cpu.h           |  4 +++
- target/riscv/meson.build     |  2 ++
- target/riscv/tcg/meson.build |  2 ++
- target/riscv/tcg/tcg-cpu.c   | 58 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 67 insertions(+), 4 deletions(-)
- create mode 100644 target/riscv/tcg/meson.build
- create mode 100644 target/riscv/tcg/tcg-cpu.c
+Thanks!
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index be1c028095..2c6972fa0d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2290,9 +2290,7 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
- };
- #endif
- 
--#include "hw/core/tcg-cpu-ops.h"
--
--static const struct TCGCPUOps riscv_tcg_ops = {
-+const struct TCGCPUOps riscv_tcg_ops = {
-     .initialize = riscv_translate_init,
-     .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-     .restore_state_to_opc = riscv_restore_state_to_opc,
-@@ -2451,7 +2449,6 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
- #endif
-     cc->gdb_arch_name = riscv_gdb_arch_name;
-     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
--    cc->tcg_ops = &riscv_tcg_ops;
- 
-     object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
-                               cpu_set_mvendorid, NULL, NULL);
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 577abcd724..b84b62f84e 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -707,6 +707,10 @@ enum riscv_pmu_event_idx {
-     RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS = 0x10021,
- };
- 
-+/* Export tcg_ops until we move everything to tcg/tcg-cpu.c */
-+#include "hw/core/tcg-cpu-ops.h"
-+extern const struct TCGCPUOps riscv_tcg_ops;
-+
- /* CSR function table */
- extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
- 
-diff --git a/target/riscv/meson.build b/target/riscv/meson.build
-index 660078bda1..f0486183fa 100644
---- a/target/riscv/meson.build
-+++ b/target/riscv/meson.build
-@@ -38,5 +38,7 @@ riscv_system_ss.add(files(
-   'riscv-qmp-cmds.c',
- ))
- 
-+subdir('tcg')
-+
- target_arch += {'riscv': riscv_ss}
- target_softmmu_arch += {'riscv': riscv_system_ss}
-diff --git a/target/riscv/tcg/meson.build b/target/riscv/tcg/meson.build
-new file mode 100644
-index 0000000000..061df3d74a
---- /dev/null
-+++ b/target/riscv/tcg/meson.build
-@@ -0,0 +1,2 @@
-+riscv_ss.add(when: 'CONFIG_TCG', if_true: files(
-+  'tcg-cpu.c'))
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-new file mode 100644
-index 0000000000..0326cead0d
---- /dev/null
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -0,0 +1,58 @@
-+/*
-+ * riscv TCG cpu class initialization
-+ *
-+ * Copyright (c) 2023 Ventana Micro Systems Inc.
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "cpu.h"
-+#include "qemu/accel.h"
-+#include "hw/core/accel-cpu.h"
-+
-+static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
-+{
-+    /*
-+     * All cpus use the same set of operations.
-+     * riscv_tcg_ops is being imported from cpu.c for now.
-+     */
-+    cc->tcg_ops = &riscv_tcg_ops;
-+}
-+
-+static void tcg_cpu_class_init(CPUClass *cc)
-+{
-+    cc->init_accel_cpu = tcg_cpu_init_ops;
-+}
-+
-+static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
-+{
-+    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
-+
-+    acc->cpu_class_init = tcg_cpu_class_init;
-+}
-+
-+static const TypeInfo tcg_cpu_accel_type_info = {
-+    .name = ACCEL_CPU_NAME("tcg"),
-+
-+    .parent = TYPE_ACCEL_CPU,
-+    .class_init = tcg_cpu_accel_class_init,
-+    .abstract = true,
-+};
-+
-+static void tcg_cpu_accel_register_types(void)
-+{
-+    type_register_static(&tcg_cpu_accel_type_info);
-+}
-+type_init(tcg_cpu_accel_register_types);
--- 
-2.41.0
+Phil.
 
 
