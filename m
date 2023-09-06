@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79DB793D6D
+	by mail.lfdr.de (Postfix) with ESMTPS id E4297793D6E
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:09:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdsGQ-0007L2-NS; Wed, 06 Sep 2023 09:08:10 -0400
+	id 1qdsGU-0007OG-Kp; Wed, 06 Sep 2023 09:08:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qdsGN-0007Ix-1O
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:08:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qdsGS-0007Nf-B2
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:08:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qdsGK-0003x0-Ob
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:08:06 -0400
+ id 1qdsGP-0003yc-UJ
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:08:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694005681;
+ s=mimecast20190719; t=1694005688;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=naFlvFHURz+lqyq9nCxHrPDr+MkN+KLXCyJ7gnHnlF8=;
- b=hdIgoEq9awkpy35GQX+gxd6Wc6euwglxNKUO4HdlN4vwnruST7eKtwxKTO4Q5OzIIEJUtc
- s/FGqeY+QOOvxp8VcKquCEIOQjX28gQKvnT9W7Gx3YGtlzMShFUrINaGBeY8o7XD/0UuL6
- BdnWZQxEwVtfTIssSx1rJZ/AjnrnQEc=
+ bh=b41wk96HMFXs7MBCesnZ8KY/vMtIRKpzK/hgkYRIyp8=;
+ b=JvjucGz2goWGCdPZkLAXQPqxsDLSlgUCXcTByTtWKsp+Epx8K/tlZkMG35Y7RndXvCOk2r
+ AdFl2edp84lO1wbNJBNXiZIUdj651IeC8HwQ19fq5RwwFCKqtA/ARwBAHqlWZm87CL4MRY
+ Y2zPA/5ZRsg99ZienB3tkOJ8YzQwIiE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-75-tweKENI2NDOrti5Go-fxqA-1; Wed, 06 Sep 2023 09:07:59 -0400
-X-MC-Unique: tweKENI2NDOrti5Go-fxqA-1
+ us-mta-82-_VRbEv_QP_m6gaQKt6a6QQ-1; Wed, 06 Sep 2023 09:08:06 -0400
+X-MC-Unique: _VRbEv_QP_m6gaQKt6a6QQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F0393C100AE
- for <qemu-devel@nongnu.org>; Wed,  6 Sep 2023 13:07:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8DEF61C0CCAE
+ for <qemu-devel@nongnu.org>; Wed,  6 Sep 2023 13:08:06 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.43])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0DB4B21D4F3F;
- Wed,  6 Sep 2023 13:07:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D250D20BAE37;
+ Wed,  6 Sep 2023 13:08:05 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: kraxel@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH] virtio-gpu/win32: set the destroy function on load
-Date: Wed,  6 Sep 2023 17:07:55 +0400
-Message-ID: <20230906130755.596952-1-marcandre.lureau@redhat.com>
+Subject: [PATCH] virtio-gpu: block migration of VMs with blob=true
+Date: Wed,  6 Sep 2023 17:08:03 +0400
+Message-ID: <20230906130803.597185-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,30 +80,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Don't forget to unmap the resource memory.
+"blob" resources don't have an associated pixman image:
 
-Fixes: commit 9462ff469 ("virtio-gpu/win32: allocate shareable 2d resources/images")
+#0  pixman_image_get_stride (image=0x0) at ../pixman/pixman-image.c:921
+#1  0x0000562327c25236 in virtio_gpu_save (f=0x56232bb13b00, opaque=0x56232b555a60, size=0, field=0x5623289ab6c8 <__compound_literal.3+104>, vmdesc=0x56232ab59fe0) at ../hw/display/virtio-gpu.c:1225
+
+Related to:
+https://bugzilla.redhat.com/show_bug.cgi?id=2236353
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/display/virtio-gpu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/display/virtio-gpu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index e77187a610..fdb7b25a70 100644
+index fdb7b25a70..2f991789ed 100644
 --- a/hw/display/virtio-gpu.c
 +++ b/hw/display/virtio-gpu.c
-@@ -1275,7 +1275,9 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-             g_free(res);
-             return -EINVAL;
-         }
--
-+#ifdef WIN32
-+        pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
-+#endif
+@@ -27,6 +27,7 @@
+ #include "hw/virtio/virtio-gpu-pixman.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/qdev-properties.h"
++#include "migration/blocker.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "qapi/error.h"
+@@ -45,6 +46,8 @@ static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
+                                        struct virtio_gpu_simple_resource *res);
+ static void virtio_gpu_reset_bh(void *opaque);
  
-         res->addrs = g_new(uint64_t, res->iov_cnt);
-         res->iov = g_new(struct iovec, res->iov_cnt);
++static Error *blob_mig_blocker;
++
+ void virtio_gpu_update_cursor_data(VirtIOGPU *g,
+                                    struct virtio_gpu_scanout *s,
+                                    uint32_t resource_id)
+@@ -1368,6 +1371,14 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+             error_setg(errp, "blobs and virgl are not compatible (yet)");
+             return;
+         }
++
++        if (!blob_mig_blocker) {
++            error_setg(&blob_mig_blocker,
++                       "virtio-gpu blob VMs are currently not migratable.");
++        }
++        if (migrate_add_blocker(blob_mig_blocker, errp)) {
++            return;
++        }
+     }
+ 
+     if (!virtio_gpu_base_device_realize(qdev,
+@@ -1394,6 +1405,9 @@ static void virtio_gpu_device_unrealize(DeviceState *qdev)
+ {
+     VirtIOGPU *g = VIRTIO_GPU(qdev);
+ 
++    if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
++        migrate_del_blocker(blob_mig_blocker);
++    }
+     g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
+     g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
+     g_clear_pointer(&g->reset_bh, qemu_bh_delete);
 -- 
 2.41.0
 
