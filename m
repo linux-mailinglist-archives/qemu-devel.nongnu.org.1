@@ -2,82 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7087934B7
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 07:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C857934C2
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 07:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdklH-0005Kj-6h; Wed, 06 Sep 2023 01:07:31 -0400
+	id 1qdkoi-0006ef-GV; Wed, 06 Sep 2023 01:11:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkky-0005AV-Kv
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 01:07:12 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <yui.washidu@gmail.com>)
+ id 1qdkog-0006eX-Ij
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 01:11:02 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkkk-0000nI-AE
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 01:07:12 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-99357737980so493789566b.2
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 22:06:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yui.washidu@gmail.com>)
+ id 1qdkod-0001j9-A8
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 01:11:01 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-26d1e5f2c35so2300335a91.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 22:10:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693976816; x=1694581616; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=gmail.com; s=20221208; t=1693977056; x=1694581856; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=GBBpneu0JSf+P2LW9fiT+KslmEwyFkoFwG2GAdzZ518=;
- b=cnpQdF1UGXwz4LKwijnWKzZoRwKgwSHyo3zjbn4uhTz2ogJvaryXDrw+uLyWflcWT0
- y21UZfw4UtNQ3M6fzRyyCGPZmFQCzsiwaWQb96t3GuR9qXY3r0cRlhebSGbHFtfa/p1w
- RSv4kAZ8R06QgU2sZ7JyeNycCDhkrdfnG1GrGiTvmNUWo9kut41X4U/HPFYjlBkfC5Wm
- I8VobL7e9CqL0prtBYfKEc+8NU+Ru+X3vQlL/tqGWWNwDeBALEmBX6qyUVdqzdP0NSnp
- jlqU2fqs/0Np6MNDIKcText2FkrNlZT6cf2YBz3m6UWoEd/zS0HlG7qG4Q/m9GpmQiGV
- CxsQ==
+ bh=+BMPnUg5qvjg/f97r4/a7aJVne6KIKStu+5piLk/UFE=;
+ b=fcN5Tobem/xsTeBjMd4jR4uquQSrgP+lNvZvmD3/Z7ap4+LSl8uehokq8xElqKGLIz
+ ZZ36OP+mDdZdmvHIa6MstRezR2AqM7Yo9lRBO9osy+cy0Vak7O0tKagYjWcWC0BzkjZg
+ Lfdye9iTgp7FB6Es+JqK0Ft6Baub3c9T/dUc9NIBwzYCsKhhSzqcnUIwbPczc//hYC9d
+ 6sQSfVIb7wTmrXD7jrogOJGOr1hRAEzidQBZ43B6yP51Fsdfwy9D+JKTP6V/4+FF5FeC
+ 7LkMof0GG3cFS7zR0KtzVRqgMqmMFaHTYy31uxePYeyS8sHtzTKRgV2wzhW/XiggBVDU
+ 0BHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693976816; x=1694581616;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1693977056; x=1694581856;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GBBpneu0JSf+P2LW9fiT+KslmEwyFkoFwG2GAdzZ518=;
- b=ApsHi0NIVynFQ4CL+dierJfbPPfALGXui7bV8G7TtPQp/x7dkXeMiQCHuZ5NpV4HL2
- 8kb9lLpcjynkowXdodh4iMBBT2moh3awMp9cZv5c0o5WpWIQQzCGQDqEUBl91uvAF1FY
- iSWHxjS/ukc1SQtt93f+0F9ELesfgNUqkFz5zxCyLmxD25UIfWyCnJhAdsOYgRxIjtek
- xzNG6QiskS2W4WuFkyb/qLwtVwPNkQ/0dEdGjFM+DTNXLBIkRwSFp/UDQ2kfivKuWXFU
- BjHA6IMKm+UaA7EaaWsueoKIJQSkd0ek/IDuOvvKOmZp6zS8Tt2kAiZUY0vr+k0pJAwW
- BdEw==
-X-Gm-Message-State: AOJu0YxeGUj+3LLv0c8W8F27piKLuNvBN0tCWfX4wErXw3FWvXAz/qD4
- R30EEOOd/W5MNLOX0h7Jw+12Bw==
-X-Google-Smtp-Source: AGHT+IE9/xMa6ep9Tui39YLAyrolf5l4xleh1sdlh/4nSihdfODdHReSe/zohJATyEaEf859ujnPcg==
-X-Received: by 2002:a17:907:774d:b0:9a1:bd53:b23 with SMTP id
- kx13-20020a170907774d00b009a1bd530b23mr1470518ejc.14.1693976816185; 
- Tue, 05 Sep 2023 22:06:56 -0700 (PDT)
-Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
- [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
- e7-20020a170906248700b0099cc15f09a0sm8418555ejb.55.2023.09.05.22.06.54
+ bh=+BMPnUg5qvjg/f97r4/a7aJVne6KIKStu+5piLk/UFE=;
+ b=lmIiQl+M75xUyqBRn33P1O4MphmfveDGagT3FgLJvU4pDfPdbq7rm7HqdjlwxSmO+F
+ K8nXtQTpUpRT6K5jZEbjYW3CWdj3cgRvSbAyr3sJZZRqROSMnEyJNGRxarDsMnOUEkYz
+ /Wg6gYtMSqp40fgPp8VaUebvlHjOPs7LFvxmgDi8csWug93M0i/4/Y+oiGXiVYXsm2q3
+ OBjlrYLhlVOfQmfHIIh8fsPdVLxmWCDqCmbmWvrXsVlsgdSt2HwCPLTLMBWNhRJob9Lu
+ XEaJQHMmQex108ApGcQj1EcyoHcGTpgsOHamSQWZP/nWvTjJcN1QIMEq1H0NPlzByqNu
+ 4xAg==
+X-Gm-Message-State: AOJu0Yx9JQC1Iv0Km8dbJb+9f2z7xTIH6M7EXOXVFjyyQugdeKZ+zLCF
+ gYSzqE3YMo/Q9pGsDUPwyBg=
+X-Google-Smtp-Source: AGHT+IHhrQWINe0Nw86LDPwlscUfyfW1OD6G9VDFNMNMBZ0ii1AyThSaEXLGgEALmZFk3N16qWFqNw==
+X-Received: by 2002:a17:90b:1e4e:b0:268:46fb:df32 with SMTP id
+ pi14-20020a17090b1e4e00b0026846fbdf32mr13928115pjb.34.1693977055868; 
+ Tue, 05 Sep 2023 22:10:55 -0700 (PDT)
+Received: from [192.168.179.18] (KD106154145120.au-net.ne.jp.
+ [106.154.145.120]) by smtp.gmail.com with ESMTPSA id
+ em23-20020a17090b015700b002739282db53sm3393497pjb.32.2023.09.05.22.10.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 22:06:55 -0700 (PDT)
-Message-ID: <f4d924de-9098-cc9d-7e2f-4ab2bb07c693@linaro.org>
-Date: Wed, 6 Sep 2023 07:06:53 +0200
+ Tue, 05 Sep 2023 22:10:55 -0700 (PDT)
+Message-ID: <e3f8b39f-742f-481b-b640-d6efb3437aa1@gmail.com>
+Date: Wed, 6 Sep 2023 14:09:34 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v5 1/4] uuid: add a hash function
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/1] virtio-net: add support for SR-IOV emulation
 Content-Language: en-US
-To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@gmail.com, kraxel@redhat.com, cohuck@redhat.com,
- Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230802090824.91688-1-aesteve@redhat.com>
- <20230802090824.91688-2-aesteve@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230802090824.91688-2-aesteve@redhat.com>
+From: Yui Washizu <yui.washidu@gmail.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, akihiko.odaki@daynix.com,
+ yvugenfi@redhat.com, ybendito@redhat.com, mapfelba@redhat.com,
+ marcel@redhat.com, ghammer@redhat.com, mdean@redhat.com
+References: <1689731808-3009-1-git-send-email-yui.washidu@gmail.com>
+ <CACGkMEv9yVCherC89W5ihyP-iZZHDhn1xZy-8aOd4ZSs+1Dk_Q@mail.gmail.com>
+ <ef14eb09-e739-3a3a-ebda-13b385a85d8e@gmail.com>
+ <CACGkMEtUUq6988VJoZuPhfdODMeyMsZUkm4Pq6u4NYzEZo3zeQ@mail.gmail.com>
+ <e16a6dc9-fa72-4ff6-9dd4-fbd6e36eec82@gmail.com>
+In-Reply-To: <e16a6dc9-fa72-4ff6-9dd4-fbd6e36eec82@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=yui.washidu@gmail.com; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,107 +99,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/8/23 11:08, Albert Esteve wrote:
-> Add hash function to uuid module using the
-> djb2 hash algorithm.
 
-^ This info ...
+Hi Jason,
 
-> Add a couple simple unit tests for the hash
-> function, checking collisions for similar UUIDs.
-> 
-> Signed-off-by: Albert Esteve <aesteve@redhat.com>
-> ---
->   include/qemu/uuid.h    |  2 ++
->   tests/unit/test-uuid.c | 27 +++++++++++++++++++++++++++
->   util/uuid.c            | 14 ++++++++++++++
->   3 files changed, 43 insertions(+)
-> 
-> diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
-> index dc40ee1fc9..e24a1099e4 100644
-> --- a/include/qemu/uuid.h
-> +++ b/include/qemu/uuid.h
-> @@ -96,4 +96,6 @@ int qemu_uuid_parse(const char *str, QemuUUID *uuid);
->   
->   QemuUUID qemu_uuid_bswap(QemuUUID uuid);
->   
-> +uint32_t qemu_uuid_hash(const void *uuid);
-> +
->   #endif
-> diff --git a/tests/unit/test-uuid.c b/tests/unit/test-uuid.c
-> index c111de5fc1..aedc125ae9 100644
-> --- a/tests/unit/test-uuid.c
-> +++ b/tests/unit/test-uuid.c
-> @@ -171,6 +171,32 @@ static void test_uuid_unparse_strdup(void)
->       }
->   }
->   
-> +static void test_uuid_hash(void)
-> +{
-> +    QemuUUID uuid;
-> +    int i;
-> +
-> +    for (i = 0; i < 100; i++) {
-> +        qemu_uuid_generate(&uuid);
-> +        /* Obtain the UUID hash */
-> +        uint32_t hash_a = qemu_uuid_hash(&uuid);
-> +        int data_idx = g_random_int_range(0, 15);
-> +        /* Change a single random byte of the UUID */
-> +        if (uuid.data[data_idx] < 0xFF) {
-> +            uuid.data[data_idx]++;
-> +        } else {
-> +            uuid.data[data_idx]--;
-> +        }
-> +        /* Obtain the UUID hash again */
-> +        uint32_t hash_b = qemu_uuid_hash(&uuid);
-> +        /*
-> +         * Both hashes shall be different (avoid collision)
-> +         * for any change in the UUID fields
-> +         */
-> +        g_assert_cmpint(hash_a, !=, hash_b);
-> +    }
-> +}
-> +
->   int main(int argc, char **argv)
->   {
->       g_test_init(&argc, &argv, NULL);
-> @@ -179,6 +205,7 @@ int main(int argc, char **argv)
->       g_test_add_func("/uuid/parse", test_uuid_parse);
->       g_test_add_func("/uuid/unparse", test_uuid_unparse);
->       g_test_add_func("/uuid/unparse_strdup", test_uuid_unparse_strdup);
-> +    g_test_add_func("/uuid/hash", test_uuid_hash);
->   
->       return g_test_run();
->   }
-> diff --git a/util/uuid.c b/util/uuid.c
-> index b1108dde78..64eaf2e208 100644
-> --- a/util/uuid.c
-> +++ b/util/uuid.c
-> @@ -116,3 +116,17 @@ QemuUUID qemu_uuid_bswap(QemuUUID uuid)
->       bswap16s(&uuid.fields.time_high_and_version);
->       return uuid;
->   }
 
-... would be more useful as a comment here.
+On 2023/08/30 14:28, Yui Washizu wrote:
+>
+> On 2023/07/24 15:58, Jason Wang wrote:
+>> On Mon, Jul 24, 2023 at 10:32 AM Yui Washizu <yui.washidu@gmail.com> 
+>> wrote:
+>>>
+>>> On 2023/07/20 11:20, Jason Wang wrote:
+>>>> On Wed, Jul 19, 2023 at 9:59 AM Yui Washizu <yui.washidu@gmail.com> 
+>>>> wrote:
+>>>>> This patch series is the first step towards enabling
+>>>>> hardware offloading of the L2 packet switching feature on 
+>>>>> virtio-net device to host machine.
+>>>>> We are considering that this hardware offloading enables
+>>>>> the use of high-performance networks in virtual infrastructures,
+>>>>> such as container infrastructures on VMs.
+>>>>>
+>>>>> To enable L2 packet switching by SR-IOV VFs, we are considering 
+>>>>> the following:
+>>>>> - making the guest recognize virtio-net devices as SR-IOV PF devices
+>>>>>     (archived with this patch series)
+>>>>> - allowing virtio-net devices to connect SR-IOV VFs to the backend 
+>>>>> networks,
+>>>>>     leaving the L2 packet switching feature to the management 
+>>>>> layer like libvirt
+>>>> Could you please show the qemu command line you want to propose here?
+>>>
+>>> I am considering how to specify the properties of VFs to connect SR-IOV
+>>> VFs to the backend networks.
+>>>
+>>>
+>>> For example:
+>>>
+>>>
+>>> qemu-system-x86_64 -device
+>>> pcie-root-port,port=8,chassis=8,id=pci.8,bus=pcie.0,multifunction=on
+>>>                      -netdev tap,id=hostnet0,vhost=on
+>>>                      -netdev tap,id=vfnet1,vhost=on # backend 
+>>> network for
+>>> SR-IOV VF 1
+>>>                      -netdev tap,id=vfnet2,vhost=on # backend 
+>>> network for
+>>> SR-IOV VF 2
+>>>                      -device
+>>> virtio-net-pci,netdev=hostnet0,sriov_max_vfs=2,sriov_netdev=vfnet1:vfnet2,... 
+>>>
+>>>
+>>>
+>>> In this example, we can specify multiple backend networks to the VFs
+>>> by adding "sriov_netdev" and separating them with ":".
+>> This seems what is in my mind as well, more below
+>>
+>>> Additionally, when passing properties like "rx_queue_size" to VFs, we
+>>> can utilize new properties,
+>>> such as "sriov_rx_queue_size_per_vfs," to ensure that the same value is
+>>> passed to all VFs.
+>> Or we can introduce new device like:
+>>
+>> -netdev tap,id=hn0 \
+>> -device virtio-net-pci,netdev=hn0,id=vnet_pf \
+>> -netdev tap,netdev=hn1 \
+>> -device 
+>> virtio-net-pci-vf,netdev=hn1,id=vf0,pf=vnet_pf,rx_queue_size=XYZ ... \
+>>
+>> This allows us to reuse the codes for configuring vf parameters. But
+>> note that rx_queue_size doesn't make too much sense to vhost-vDPA, as
+>> qemu can perform nothing more than a simple sanity test.
+>>
+>> Thanks
+>
+>
+> Thanks for proposing this new way.
+>
+> I have considered how to implement this.
+>
+>
+> As virtio-net-pci-vf device should show up
+>
+> on the guest only when the guest OS creates a VF,
+>
+> the guest must not be able to see the VF device on PCI bus when qemu 
+> starts.
+>
+> However, it's hard to realize this without overcomplicating
+>
+> relevant code due to current qemu implementation.
+>
+> It's because qdev_device_add_from_qdict,
+>
+> a function which is called when devices are specified
+>
+> with "-device" option of qemu startup command,
+>
+> always create devices by qdev_new and qdev_realize.
+>
+> It might be possible that we fix it
+>
+> so that qdev_new/qdev_realize aren't triggered for virtio-net-pci-vf 
+> devices,
+>
+> but It seems that we need to special case the device in very generic code
+>
+> like qdev_device_add_from_qdict(), qdev_device_add(),
+>
+> device_init_func() or their caller function.
+>
+>
+> Given my current ideas,
+>
+> it seems like this PATCH could become complex.
+>
+> Woule you have any suggestions
+>
+> for achieving this in more simple way possible ?
+>
+>
 
-/* djb2 hash algorithm */
+I was wondering if you could give me some feedback.
+Best regard.
 
-Anyhow,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +uint32_t qemu_uuid_hash(const void *uuid)
-> +{
-> +    QemuUUID *qid = (QemuUUID *) uuid;
-> +    uint32_t h = 5381;
-> +    int i;
-> +
-> +    for (i = 0; i < ARRAY_SIZE(qid->data); i++) {
-> +        h = (h << 5) + h + qid->data[i];
-> +    }
-> +
-> +    return h;
-> +}
-> +
-
+>
+>>> I'm still considering about how to specify it, so please give me any
+>>> comments if you have any.
+>>>
+>>>
+>>>>>     - This makes hardware offloading of L2 packet switching possible.
+>>>>>       For example, when using vDPA devices, it allows the guest
+>>>>>       to utilize SR-IOV NIC embedded switch of hosts.
+>>>> This would be interesting.
+>>>>
+>>>> Thanks
+>>>>
+>>>>> This patch series aims to enable SR-IOV emulation on virtio-net 
+>>>>> devices.
+>>>>> With this series, the guest can identify the virtio-net device as 
+>>>>> an SR-IOV PF device.
+>>>>> The newly added property 'sriov_max_vfs' allows us to enable the 
+>>>>> SR-IOV feature
+>>>>> on the virtio-net device.
+>>>>> Currently, we are unable to specify the properties of a VF created 
+>>>>> from the guest.
+>>>>> The properties are set to their default values.
+>>>>> In the future, we plan to allow users to set the properties.
+>>>>>
+>>>>> qemu-system-x86_64 --device virtio-net,sriov_max_vfs=<num>
+>>>>> # when 'sriov_max_vfs' is present, the SR-IOV feature will be 
+>>>>> automatically enabled
+>>>>> # <num> means the max number of VF on guest
+>>>>>
+>>>>> Example commands to create VFs in virtio-net device from the guest:
+>>>>>
+>>>>> guest% readlink -f /sys/class/net/eth1/device
+>>>>> /sys/devices/pci0000:00/0000:00:02.0/0000:01:00.0/virtio1
+>>>>> guest% echo "2" > 
+>>>>> /sys/devices/pci0000:00/0000:00:02.0/0000:01:00.0/sriov_numvfs
+>>>>> guest% ip link show
+>>>>>    eth0: ....
+>>>>>    eth1: ....
+>>>>>    eth2: .... #virtual VF created
+>>>>>    eth3: .... #virtual VF created
+>>>>>
+>>>>> Please note that communication between VF and PF/VF is not 
+>>>>> possible by this patch series itself.
+>>>>>
+>>>>> Yui Washizu (1):
+>>>>>     virtio-pci: add SR-IOV capability
+>>>>>
+>>>>>    hw/pci/msix.c                  |  8 +++--
+>>>>>    hw/pci/pci.c                   |  4 +++
+>>>>>    hw/virtio/virtio-pci.c         | 62 
+>>>>> ++++++++++++++++++++++++++++++----
+>>>>>    include/hw/virtio/virtio-pci.h |  1 +
+>>>>>    4 files changed, 66 insertions(+), 9 deletions(-)
+>>>>>
+>>>>> -- 
+>>>>> 2.39.3
+>>>>>
 
