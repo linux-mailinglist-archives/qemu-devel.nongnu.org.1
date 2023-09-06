@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003DF7940D6
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 009547940CC
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:55:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdure-0006UK-TT; Wed, 06 Sep 2023 11:54:46 -0400
+	id 1qdurf-0006VR-JS; Wed, 06 Sep 2023 11:54:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurU-0006Ps-Ia; Wed, 06 Sep 2023 11:54:37 -0400
+ id 1qdurV-0006Pw-L9; Wed, 06 Sep 2023 11:54:39 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurC-0003mk-8G; Wed, 06 Sep 2023 11:54:36 -0400
+ id 1qdurD-0003mm-4W; Wed, 06 Sep 2023 11:54:37 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qduo4-007ME4-2O;
- Wed, 06 Sep 2023 17:54:03 +0200
+ (envelope-from <den@openvz.org>) id 1qduo5-007ME4-0S;
+ Wed, 06 Sep 2023 17:54:04 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, stefanha@gmail.com,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL 13/18] iotests: Add leak check test for parallels format
-Date: Wed,  6 Sep 2023 17:54:08 +0200
-Message-Id: <20230906155413.656644-4-den@openvz.org>
+Subject: [PULL 14/18] iotests: Add test for BAT entries duplication check
+Date: Wed,  6 Sep 2023 17:54:09 +0200
+Message-Id: <20230906155413.656644-5-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906155413.656644-1-den@openvz.org>
 References: <20230906154942.656537-1-den@openvz.org>
@@ -58,85 +58,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
-Write a pattern to the last cluster, extend the image by 1 claster, repair
-and check that the last cluster still has the same pattern.
+Fill a parallels image with a pattern and write another pattern to the
+second cluster. Corrupt the image and check if the pattern changes. Repair
+the image and check the patterns on guest and host sides.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- tests/qemu-iotests/tests/parallels-checks     | 27 +++++++++++++++++++
- tests/qemu-iotests/tests/parallels-checks.out | 22 +++++++++++++++
- 2 files changed, 49 insertions(+)
+ tests/qemu-iotests/tests/parallels-checks     | 32 +++++++++++++++++++
+ tests/qemu-iotests/tests/parallels-checks.out | 31 ++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
 diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
-index 055ce34766..8be282fabe 100755
+index 8be282fabe..8a63c3daf4 100755
 --- a/tests/qemu-iotests/tests/parallels-checks
 +++ b/tests/qemu-iotests/tests/parallels-checks
-@@ -65,6 +65,33 @@ poke_file "$TEST_IMG" "$BAT_OFFSET" "\x$cluster\x00\x00\x00"
- echo "== read corrupted image with repairing =="
- { $QEMU_IO -c "read -P 0x00 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+@@ -92,6 +92,38 @@ echo "file size: $file_size"
+ echo "== check last cluster =="
+ { $QEMU_IO -c "read -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
 +# Clear image
 +_make_test_img $SIZE
 +
-+echo "== TEST LEAK CHECK =="
++echo "== TEST DUPLICATION CHECK =="
 +
-+echo "== write pattern to last cluster =="
-+echo "write -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE"
-+{ $QEMU_IO -c "write -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++echo "== write pattern to whole image =="
++{ $QEMU_IO -c "write -P 0x11 0 $SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+file_size=`stat --printf="%s" "$TEST_IMG"`
-+echo "file size: $file_size"
++echo "== write another pattern to second cluster =="
++{ $QEMU_IO -c "write -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+echo "== extend image by 1 cluster =="
-+fallocate -xl $((file_size + CLUSTER_SIZE)) "$TEST_IMG"
++echo "== check second cluster =="
++{ $QEMU_IO -c "read -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+file_size=`stat --printf="%s" "$TEST_IMG"`
-+echo "file size: $file_size"
++echo "== corrupt image =="
++poke_file "$TEST_IMG" "$(($BAT_OFFSET + 4))" "\x01\x00\x00\x00"
++
++echo "== check second cluster =="
++{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
 +echo "== repair image =="
 +_check_test_img -r all
 +
-+file_size=`stat --printf="%s" "$TEST_IMG"`
-+echo "file size: $file_size"
++echo "== check second cluster =="
++{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+echo "== check last cluster =="
-+{ $QEMU_IO -c "read -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++echo "== check first cluster on host =="
++printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
++
++echo "== check second cluster on host =="
++printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
 +
  # success, all done
  echo "*** done"
  rm -f $seq.full
 diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
-index ea4dcef0a6..f2cb6dde85 100644
+index f2cb6dde85..b747bba1f3 100644
 --- a/tests/qemu-iotests/tests/parallels-checks.out
 +++ b/tests/qemu-iotests/tests/parallels-checks.out
-@@ -9,4 +9,26 @@ wrote 4194304/4194304 bytes at offset 0
- Repairing cluster 0 is outside image
- read 1048576/1048576 bytes at offset 0
+@@ -31,4 +31,35 @@ file size: 2097152
+ == check last cluster ==
+ read 1048576/1048576 bytes at offset 3145728
  1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
 +Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
-+== TEST LEAK CHECK ==
-+== write pattern to last cluster ==
-+write -P 0x11 3145728 1048576
-+wrote 1048576/1048576 bytes at offset 3145728
++== TEST DUPLICATION CHECK ==
++== write pattern to whole image ==
++wrote 4194304/4194304 bytes at offset 0
++4 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== write another pattern to second cluster ==
++wrote 1048576/1048576 bytes at offset 1048576
 +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+file size: 2097152
-+== extend image by 1 cluster ==
-+file size: 3145728
++== check second cluster ==
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== corrupt image ==
++== check second cluster ==
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
 +== repair image ==
-+Repairing space leaked at the end of the image 1048576
++Repairing duplicate offset in BAT entry 1
 +The following inconsistencies were found and repaired:
 +
-+    1 leaked clusters
-+    0 corruptions
++    0 leaked clusters
++    1 corruptions
 +
 +Double checking the fixed image now...
 +No errors were found on the image.
-+file size: 2097152
-+== check last cluster ==
-+read 1048576/1048576 bytes at offset 3145728
++== check second cluster ==
++read 1048576/1048576 bytes at offset 1048576
 +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check first cluster on host ==
++content: 0x11
++== check second cluster on host ==
++content: 0x11
  *** done
 -- 
 2.34.1
