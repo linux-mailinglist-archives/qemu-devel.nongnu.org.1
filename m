@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637BF794380
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B19679437E
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 21:03:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdxmu-0006Cu-DV; Wed, 06 Sep 2023 15:02:04 -0400
+	id 1qdxmq-0006C1-6n; Wed, 06 Sep 2023 15:02:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qdxmm-0006BY-PR
+ id 1qdxmm-0006BM-5A
  for qemu-devel@nongnu.org; Wed, 06 Sep 2023 15:01:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qdxmj-0008A0-AV
+ id 1qdxmj-0008A4-Gf
  for qemu-devel@nongnu.org; Wed, 06 Sep 2023 15:01:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694026912;
+ s=mimecast20190719; t=1694026913;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DCK+lnfLAYtw1mOtOApL/BAriyzaovAFIXtqHAPBx7E=;
- b=UR/YYC4MefkayGtPdGINbBaadX1I/DGoWbk6x7FoEAdKxdgq7frK+M9RjAIeB1zne3i6D9
- ArTUv0v7TGecTvMHyCraDz2KSkeZux3+7reA7+jVxvuY18ECAxtyYFzqDwfGfnVBDV77qn
- dtZlgE6s5FKj5c1A9dF9mH7BkL3/RKY=
+ bh=/5Q+q6yNqAxBk6g6i9jyTzPE/hWWcqQrxs+KLHIhU8E=;
+ b=ax5EJdDe1MPsmkCD7YpiXYnFm3vVOQIA0nWgFGCGy149f6U2vVNte6LYFd86hSaBX+gSBA
+ gpjwlFOm7dxfRetqiJJt8HxRQ9ZECHk6rkasXmP1FngqmsJm7Q4GDxG3hCdCB0TtrdWNlt
+ 2gcWik6rn13rgK59GPimlwgrBdMcXks=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-556-GEOy8nXNO9aTyOXA76zMLA-1; Wed, 06 Sep 2023 15:01:49 -0400
-X-MC-Unique: GEOy8nXNO9aTyOXA76zMLA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-594-iwzTqUN_NG2GJF4aKSkC1g-1; Wed, 06 Sep 2023 15:01:49 -0400
+X-MC-Unique: iwzTqUN_NG2GJF4aKSkC1g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 611B61C0754F;
- Wed,  6 Sep 2023 19:01:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3296A1C07557;
+ Wed,  6 Sep 2023 19:01:49 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.221])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E1DA2140E964;
- Wed,  6 Sep 2023 19:01:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AF352202869C;
+ Wed,  6 Sep 2023 19:01:48 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
@@ -50,14 +50,14 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  kwolf@redhat.com, Maxim Levitsky <mlevitsk@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [RFC 2/3] rcu: add drain_call_rcu_co() API
-Date: Wed,  6 Sep 2023 15:01:40 -0400
-Message-ID: <20230906190141.1286893-3-stefanha@redhat.com>
+Subject: [RFC 3/3] qmp: make qmp_device_add() a coroutine
+Date: Wed,  6 Sep 2023 15:01:41 -0400
+Message-ID: <20230906190141.1286893-4-stefanha@redhat.com>
 In-Reply-To: <20230906190141.1286893-1-stefanha@redhat.com>
 References: <20230906190141.1286893-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,190 +82,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-call_drain_rcu() has limitations that make it unsuitable for use in
-qmp_device_add(). Introduce a new coroutine version of drain_call_rcu()
-with the same functionality but that does not drop the BQL. The next
-patch will use it to fix qmp_device_add().
+It is not safe to call drain_call_rcu() from qmp_device_add() because
+some call stacks are not prepared for drain_call_rcu() to drop the Big
+QEMU Lock (BQL).
 
+For example, device emulation code is protected by the BQL but when it
+calls aio_poll() -> ... -> qmp_device_add() -> drain_call_rcu() then the
+BQL is dropped. See bz#2215192 below for a concrete bug of this type.
+
+Another limitation of drain_call_rcu() is that it cannot be invoked
+within an RCU read-side critical section since the reclamation phase
+cannot complete until the end of the critical section. Unfortunately,
+call stacks have been seen where this happens (see bz#2214985 below).
+
+Switch to call_drain_rcu_co() to avoid these problems. This requires
+making qmp_device_add() a coroutine. qdev_device_add() is not designed
+to be called from coroutines, so it must be invoked from a BH and then
+switch back to the coroutine.
+
+Fixes: 7bed89958bfbf40df9ca681cefbdca63abdde39d ("device_core: use drain_call_rcu in in qmp_device_add")
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215192
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2214985
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- MAINTAINERS         |  2 ++
- docs/devel/rcu.txt  | 21 +++++++++++++++++
- include/qemu/rcu.h  |  1 +
- util/rcu-internal.h |  8 +++++++
- util/rcu-co.c       | 55 +++++++++++++++++++++++++++++++++++++++++++++
- util/rcu.c          |  3 ++-
- util/meson.build    |  2 +-
- 7 files changed, 90 insertions(+), 2 deletions(-)
- create mode 100644 util/rcu-internal.h
- create mode 100644 util/rcu-co.c
+ qapi/qdev.json         |  1 +
+ include/monitor/qdev.h |  3 ++-
+ monitor/qmp-cmds.c     |  2 +-
+ softmmu/qdev-monitor.c | 34 ++++++++++++++++++++++++++++++----
+ hmp-commands.hx        |  1 +
+ 5 files changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3b29568ed4..7f98253bda 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2908,6 +2908,8 @@ F: include/qemu/rcu*.h
- F: tests/unit/rcutorture.c
- F: tests/unit/test-rcu-*.c
- F: util/rcu.c
-+F: util/rcu-co.c
-+F: util/rcu-internal.h
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index 6bc5a733b8..78e9d7f7b8 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -79,6 +79,7 @@
+ ##
+ { 'command': 'device_add',
+   'data': {'driver': 'str', '*bus': 'str', '*id': 'str'},
++  'coroutine': true,
+   'gen': false, # so we can get the additional arguments
+   'features': ['json-cli', 'json-cli-hotplug'] }
  
- Human Monitor (HMP)
- M: Dr. David Alan Gilbert <dave@treblig.org>
-diff --git a/docs/devel/rcu.txt b/docs/devel/rcu.txt
-index 2e6cc607a1..344764527f 100644
---- a/docs/devel/rcu.txt
-+++ b/docs/devel/rcu.txt
-@@ -130,6 +130,27 @@ The core RCU API is small:
+diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
+index 1d57bf6577..1fed9eb9ea 100644
+--- a/include/monitor/qdev.h
++++ b/include/monitor/qdev.h
+@@ -5,7 +5,8 @@
  
-             g_free_rcu(&foo, rcu);
+ void hmp_info_qtree(Monitor *mon, const QDict *qdict);
+ void hmp_info_qdm(Monitor *mon, const QDict *qdict);
+-void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp);
++void coroutine_fn
++qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp);
  
-+     void coroutine_fn drain_call_rcu_co(void);
-+
-+        drain_call_rcu_co() yields until the reclamation phase is finished.
-+        Reclaimer functions previously submitted with call_rcu1() in this
-+        thread will have finished by the time drain_call_rcu_co() returns.
-+
-+     void drain_call_rcu(void);
-+
-+        drain_call_rcu() releases the Big QEMU Lock (BQL), if held, waits until
-+        the reclamation phase is finished, and then re-acquires the BQL, if
-+        previously held.  Reclaimer functions previously submitted with
-+        call_rcu1() in this thread will have finished by the time
-+        drain_call_rcu() returns.
-+
-+        drain_call_rcu() has the following limitations:
-+        1. It deadlocks when called within an RCU read-side critical section.
-+        2. All functions on the call stack must be designed to handle dropping
-+           the BQL.
-+
-+        Prefer drain_call_rcu_co() over drain_call_rcu().
-+
-      typeof(*p) qatomic_rcu_read(p);
+ int qdev_device_help(QemuOpts *opts);
+ DeviceState *qdev_device_add(QemuOpts *opts, Error **errp);
+diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
+index b0f948d337..a7419226fe 100644
+--- a/monitor/qmp-cmds.c
++++ b/monitor/qmp-cmds.c
+@@ -202,7 +202,7 @@ static void __attribute__((__constructor__)) monitor_init_qmp_commands(void)
+     qmp_init_marshal(&qmp_commands);
  
-         qatomic_rcu_read() is similar to qatomic_load_acquire(), but it makes
-diff --git a/include/qemu/rcu.h b/include/qemu/rcu.h
-index fea058aa9f..53055df1dc 100644
---- a/include/qemu/rcu.h
-+++ b/include/qemu/rcu.h
-@@ -141,6 +141,7 @@ struct rcu_head {
- };
+     qmp_register_command(&qmp_commands, "device_add",
+-                         qmp_device_add, 0, 0);
++                         qmp_device_add, QCO_COROUTINE, 0);
  
- void call_rcu1(struct rcu_head *head, RCUCBFunc *func);
-+void coroutine_fn drain_call_rcu_co(void);
- void drain_call_rcu(void);
+     QTAILQ_INIT(&qmp_cap_negotiation_commands);
+     qmp_register_command(&qmp_cap_negotiation_commands, "qmp_capabilities",
+diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+index 74f4e41338..85ae62f7cf 100644
+--- a/softmmu/qdev-monitor.c
++++ b/softmmu/qdev-monitor.c
+@@ -839,8 +839,28 @@ void hmp_info_qdm(Monitor *mon, const QDict *qdict)
+     qdev_print_devinfos(true);
+ }
  
- /* The operands of the minus operator must have the same type,
-diff --git a/util/rcu-internal.h b/util/rcu-internal.h
-new file mode 100644
-index 0000000000..7d85366d54
---- /dev/null
-+++ b/util/rcu-internal.h
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: LGPL-2.1-or-later */
-+
-+#ifndef RCU_INTERNAL_H
-+#define RCU_INTERNAL_H
-+
-+extern int in_drain_call_rcu;
-+
-+#endif /* RCU_INTERNAL_H */
-diff --git a/util/rcu-co.c b/util/rcu-co.c
-new file mode 100644
-index 0000000000..920fcacb7a
---- /dev/null
-+++ b/util/rcu-co.c
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: LGPL-2.1-or-later */
-+/*
-+ * RCU APIs for coroutines
-+ *
-+ * The RCU coroutine APIs are kept separate from the main RCU code to avoid
-+ * depending on AioContext APIs in rcu.c. This is necessary because at least
-+ * tests/unit/ptimer-test.c has replacement functions for AioContext APIs that
-+ * conflict with the real functions.
-+ *
-+ * It's also nice to logically separate the core RCU code from the coroutine
-+ * APIs :).
-+ */
-+#include "qemu/osdep.h"
-+#include "block/aio.h"
-+#include "qemu/atomic.h"
-+#include "qemu/coroutine.h"
-+#include "qemu/rcu.h"
-+#include "rcu-internal.h"
-+
+-void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
 +typedef struct {
-+    struct rcu_head rcu;
 +    Coroutine *co;
-+} RcuDrainCo;
++    QemuOpts *opts;
++    Error **errp;
++    DeviceState *dev;
++} QmpDeviceAdd;
 +
-+static void drain_call_rcu_co_bh(void *opaque)
-+{
-+    RcuDrainCo *data = opaque;
++static void qmp_device_add_bh(void *opaque)
+ {
++    QmpDeviceAdd *data = opaque;
 +
-+    /* Re-enter drain_call_rcu_co() where it yielded */
++    data->dev = qdev_device_add(data->opts, data->errp);
 +    aio_co_wake(data->co);
 +}
 +
-+static void drain_call_rcu_co_cb(struct rcu_head *node)
++void coroutine_fn
++qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
 +{
-+    RcuDrainCo *data = container_of(node, RcuDrainCo, rcu);
-+    AioContext *ctx = qemu_coroutine_get_aio_context(data->co);
-+
-+    /*
-+     * drain_call_rcu_co() might still be running in its thread, so schedule a
-+     * BH in its thread. The BH only runs after the coroutine has yielded.
-+     */
-+    aio_bh_schedule_oneshot(ctx, drain_call_rcu_co_bh, data);
-+}
-+
-+void coroutine_fn drain_call_rcu_co(void)
-+{
-+    RcuDrainCo data = {
++    QmpDeviceAdd data = {
 +        .co = qemu_coroutine_self(),
++        .errp = errp,
 +    };
+     QemuOpts *opts;
+     DeviceState *dev;
+ 
+@@ -852,7 +872,13 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+         qemu_opts_del(opts);
+         return;
+     }
+-    dev = qdev_device_add(opts, errp);
 +
-+    qatomic_inc(&in_drain_call_rcu);
-+    call_rcu1(&data.rcu, drain_call_rcu_co_cb);
-+    qemu_coroutine_yield(); /* wait for drain_rcu_co_bh() */
-+    qatomic_dec(&in_drain_call_rcu);
-+}
-diff --git a/util/rcu.c b/util/rcu.c
-index e587bcc483..2519bd7d5c 100644
---- a/util/rcu.c
-+++ b/util/rcu.c
-@@ -32,6 +32,7 @@
- #include "qemu/thread.h"
- #include "qemu/main-loop.h"
- #include "qemu/lockable.h"
-+#include "rcu-internal.h"
- #if defined(CONFIG_MALLOC_TRIM)
- #include <malloc.h>
- #endif
-@@ -46,7 +47,7 @@
- unsigned long rcu_gp_ctr = RCU_GP_LOCKED;
++    /* Perform qdev_device_add() call outside coroutine context */
++    data.opts = opts;
++    aio_bh_schedule_oneshot(qemu_coroutine_get_aio_context(data.co),
++                            qmp_device_add_bh, &data);
++    qemu_coroutine_yield();
++    dev = data.dev;
  
- QemuEvent rcu_gp_event;
--static int in_drain_call_rcu;
-+int in_drain_call_rcu;
- static QemuMutex rcu_registry_lock;
- static QemuMutex rcu_sync_lock;
+     /*
+      * Drain all pending RCU callbacks. This is done because
+@@ -863,7 +889,7 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+      * will finish its job completely once qmp command returns result
+      * to the user
+      */
+-    drain_call_rcu();
++    drain_call_rcu_co();
  
-diff --git a/util/meson.build b/util/meson.build
-index a375160286..849d56f756 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -43,7 +43,7 @@ util_ss.add(files('keyval.c'))
- util_ss.add(files('crc32c.c'))
- util_ss.add(files('uuid.c'))
- util_ss.add(files('getauxval.c'))
--util_ss.add(files('rcu.c'))
-+util_ss.add(files('rcu.c', 'rcu-co.c'))
- if have_membarrier
-   util_ss.add(files('sys_membarrier.c'))
- endif
+     if (!dev) {
+         qemu_opts_del(opts);
+@@ -956,7 +982,7 @@ void qmp_device_del(const char *id, Error **errp)
+     }
+ }
+ 
+-void hmp_device_add(Monitor *mon, const QDict *qdict)
++void coroutine_fn hmp_device_add(Monitor *mon, const QDict *qdict)
+ {
+     Error *err = NULL;
+ 
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 2cbd0f77a0..c737d1fd64 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -695,6 +695,7 @@ ERST
+         .params     = "driver[,prop=value][,...]",
+         .help       = "add device, like -device on the command line",
+         .cmd        = hmp_device_add,
++        .coroutine  = true,
+         .command_completion = device_add_completion,
+     },
+ 
 -- 
 2.41.0
 
