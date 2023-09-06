@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC2E793474
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 06:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D26179347F
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 06:52:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdkN1-0008B5-Iw; Wed, 06 Sep 2023 00:42:27 -0400
+	id 1qdkVS-0001x8-On; Wed, 06 Sep 2023 00:51:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkMz-0008Ag-5N
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 00:42:25 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkVQ-0001wZ-Av
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 00:51:08 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkMv-0004UQ-Gk
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 00:42:24 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-977e0fbd742so461607566b.2
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 21:42:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkVM-000628-01
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 00:51:08 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-99bc9e3cbf1so115146866b.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 21:51:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1693975340; x=1694580140; darn=nongnu.org;
+ d=linaro.org; s=google; t=1693975862; x=1694580662; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Oqwc24ccP+oBUY1vMLfScj/oed8totdGzIYgf16jGSY=;
- b=PCgzy/nINsZpIMtRzpy/S4rN/cTdxjyP28k5BeDQ6L9nJfmnx90anbDi09JoFil6Te
- epK3sl6wsNlhFT4zPM0ul9w3udefeCsJ8xaUskn3Te3+12D8VMk1Lv4D0JK/vdMiObxG
- EYHOftmrvC9DuarEp3p0jfO3K9sVH+yLuCtBIo3m+QK+HFH0lvdNawFEcUWwWAlmui+z
- 6VOXjYSigZE6doVxydHqKv73PvYoN8fkNi5z7I7FSpvt0eqS1PaBSCxSio4PMkrHUQ6h
- euyChJhC4mDEBTrVP6gN0ICdkvz7uf9nxjwal2Rp04MyJcjl9Z9P6t3jPaDvps79aCNy
- yJPg==
+ bh=GJF3UY/JuLIz2OU5+2WU5a/vhYsEmegpdXsjok268SM=;
+ b=lQZLT265k72onWqi/RSk8rZZnB3sMcl3mcUoEq6xWGDuQRkN8Ajqh2s+p9JM5vF29o
+ Cljh/IY2mV6ynalZQ6rnxOFeAmMbcUfZtStLIPoXt7z0CPD8uwShSJ4DXX0gnFVo66RU
+ E0POPPdDHnElCl45OOF+nhfzYE0/91Npu6o1BEjMqOhYrLB6OPsGTTDYI2npSaxbyoYz
+ iJP9cCcwtSg6l8qkJ4ffCzSgPV1iYywjg39FsD2671vzlXi4crqhVcC33DSW4+JsAGn+
+ kK0oUYeAo7QVRedEsamxav+h3Q3vqZklE/XyMr2dK3X5jgvPMIbLVyCyxJrT125NNVrD
+ VoXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693975340; x=1694580140;
+ d=1e100.net; s=20221208; t=1693975862; x=1694580662;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Oqwc24ccP+oBUY1vMLfScj/oed8totdGzIYgf16jGSY=;
- b=f5I8kCWAd4vUsgZnCQfsjClZN879b+DUXC+AscYMgvuLr0wNF/4zkMizw3+VmhQZI8
- OlS3fpsPeQkjvbsO5DCiqB3deRABf9u17L7RWvvQtEEMgtAXV6+ZRXWpKtFuvmG6q6t8
- SitIOuO+kB6/6cf5a8EDtAUQU8dfnN1f5r2oJNL3qtvhyc23B52QV7IxlxwwNcl9RuZm
- SSQhycUhAxe5Nxwj4vHzaDa1VfizNp8p/lQQ5x6zLfRm2ZdVmDcMoVI0CUBg6Z8RrAn9
- M+97XcSHvcCNbzdxrKhiQG7HH3ctsBHGewCWbDDdUhFj/62OoPMdYuv12L7TOoYDUasK
- mP0w==
-X-Gm-Message-State: AOJu0YwClFoQiZH2sbAZmVS4/oVqosGM9pZxqBC0ROIxEjvjuYz0xtxh
- Yv5bIyWgRIftt9HLh+963e+X/g==
-X-Google-Smtp-Source: AGHT+IE7PkJqtrtHYbz8yYIlhkHT1jEYuIgVKIFLZwCMC5v1Y9Uc70SpcejSmSWZhviQ1rgwkgh6Mw==
-X-Received: by 2002:a17:906:73ce:b0:9a1:edb0:2a8c with SMTP id
- n14-20020a17090673ce00b009a1edb02a8cmr1167473ejl.39.1693975339791; 
- Tue, 05 Sep 2023 21:42:19 -0700 (PDT)
+ bh=GJF3UY/JuLIz2OU5+2WU5a/vhYsEmegpdXsjok268SM=;
+ b=kOeN8tJVB6M77NaDnvDDizlxIB1GsQlh9igtxDn9bUYSO8gYoIF/Hio42C4v2FyxpC
+ qO209To0nBjpNlp6YKE5QOTxiHqb5gS0YsexUHBx7woaHsFC4KYarZD4B6w2C7+iyQ5H
+ ueBbgM1NhoKOMPsqPGqd7y0PjpwfIaGU3kenvWZqBsNFJuSSMJOncz09gjuM29Y0Dr6R
+ iAVHDbJM4rrodEB+uPVVeDHyoymT7hZ3Br3QZFiTG12FtBLn0Z2TzaZRg63oFc8gaun2
+ SZWXlZ5OAiDrAPeF/82xo9cGB59fIKUD+/UZAQpZIfCeDtUlAtaoGlrS5PZIerXYx1id
+ mBLQ==
+X-Gm-Message-State: AOJu0YxpGUMJzOpKzuphlc+smCzwEMebR8SpAnPr6jEHjKQ0xDWr1TqH
+ YZ/oE+PjAYoBXSvREW6yke8Ej9dXiTqJat2hX+k=
+X-Google-Smtp-Source: AGHT+IE90Fj3P4ktfM1qnz5bn8tiXMTJ40VSnR7eCWMh3z1mXvKhCmuFnURDNPqEJQ1LyOpTRNwtAw==
+X-Received: by 2002:a17:907:97c6:b0:9a5:962c:cb6c with SMTP id
+ js6-20020a17090797c600b009a5962ccb6cmr1849581ejc.31.1693975861712; 
+ Tue, 05 Sep 2023 21:51:01 -0700 (PDT)
 Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
  [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
- g3-20020a170906594300b0099cf44adf2csm8327024ejr.46.2023.09.05.21.42.18
+ d19-20020a1709067f1300b0098748422178sm8402417ejr.56.2023.09.05.21.51.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Sep 2023 21:42:19 -0700 (PDT)
-Message-ID: <c5937e59-e267-519a-cf57-bf051b07304f@linaro.org>
-Date: Wed, 6 Sep 2023 06:42:16 +0200
+ Tue, 05 Sep 2023 21:51:00 -0700 (PDT)
+Message-ID: <8539de89-6a8b-ebac-a82c-2d09ae58202c@linaro.org>
+Date: Wed, 6 Sep 2023 06:50:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 4/4] migration/qapi: Drop @MigrationParameter enum
+Subject: Re: [RFC Patch 1/5] hw/display: Allwinner A10 HDMI controller
+ emulation
 Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230905162335.235619-1-peterx@redhat.com>
- <20230905162335.235619-5-peterx@redhat.com>
+To: Strahinja Jankovic <strahinjapjankovic@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+References: <20230905201425.118918-1-strahinja.p.jankovic@gmail.com>
+ <20230905201425.118918-2-strahinja.p.jankovic@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230905162335.235619-5-peterx@redhat.com>
+In-Reply-To: <20230905201425.118918-2-strahinja.p.jankovic@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,104 +96,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/9/23 18:23, Peter Xu wrote:
-> Drop the enum in qapi because it is never used in QMP APIs.  Instead making
-> it an internal definition for QEMU so that we can decouple it from QAPI,
-> and also we can deduplicate the QAPI documentations.
+Hi Strahinja,
+
+On 5/9/23 22:14, Strahinja Jankovic wrote:
+> This patch adds basic Allwinner A10 HDMI controller support.
+> Emulated HDMI component will always show that a display is connected and
+> provide default EDID info.
 > 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
 > ---
->   qapi/migration.json            | 179 ---------------------------------
->   migration/options.h            |  47 +++++++++
->   migration/migration-hmp-cmds.c |   3 +-
->   migration/options.c            |  51 ++++++++++
->   4 files changed, 100 insertions(+), 180 deletions(-)
+>   hw/arm/allwinner-a10.c                  |   7 +
+>   hw/display/allwinner-a10-hdmi.c         | 214 ++++++++++++++++++++++++
+>   hw/display/meson.build                  |   2 +
+>   hw/display/trace-events                 |   4 +
+>   include/hw/arm/allwinner-a10.h          |   2 +
+>   include/hw/display/allwinner-a10-hdmi.h |  69 ++++++++
+>   6 files changed, 298 insertions(+)
+>   create mode 100644 hw/display/allwinner-a10-hdmi.c
+>   create mode 100644 include/hw/display/allwinner-a10-hdmi.h
 
 
-> diff --git a/migration/options.h b/migration/options.h
-> index 124a5d450f..4591545c62 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -66,6 +66,53 @@ bool migrate_cap_set(int cap, bool value, Error **errp);
->   
->   /* parameters */
->   
-> +typedef enum {
-> +    MIGRATION_PARAMETER_ANNOUNCE_INITIAL,
-> +    MIGRATION_PARAMETER_ANNOUNCE_MAX,
-> +    MIGRATION_PARAMETER_ANNOUNCE_ROUNDS,
-> +    MIGRATION_PARAMETER_ANNOUNCE_STEP,
-> +    MIGRATION_PARAMETER_COMPRESS_LEVEL,
-> +    MIGRATION_PARAMETER_COMPRESS_THREADS,
-> +    MIGRATION_PARAMETER_DECOMPRESS_THREADS,
-> +    MIGRATION_PARAMETER_COMPRESS_WAIT_THREAD,
-> +    MIGRATION_PARAMETER_THROTTLE_TRIGGER_THRESHOLD,
-> +    MIGRATION_PARAMETER_CPU_THROTTLE_INITIAL,
-> +    MIGRATION_PARAMETER_CPU_THROTTLE_INCREMENT,
-> +    MIGRATION_PARAMETER_CPU_THROTTLE_TAILSLOW,
-> +    MIGRATION_PARAMETER_TLS_CREDS,
-> +    MIGRATION_PARAMETER_TLS_HOSTNAME,
-> +    MIGRATION_PARAMETER_TLS_AUTHZ,
-> +    MIGRATION_PARAMETER_MAX_BANDWIDTH,
-> +    MIGRATION_PARAMETER_DOWNTIME_LIMIT,
-> +    MIGRATION_PARAMETER_X_CHECKPOINT_DELAY,
-> +    MIGRATION_PARAMETER_BLOCK_INCREMENTAL,
-> +    MIGRATION_PARAMETER_MULTIFD_CHANNELS,
-> +    MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE,
-> +    MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH,
-> +    MIGRATION_PARAMETER_MAX_CPU_THROTTLE,
-> +    MIGRATION_PARAMETER_MULTIFD_COMPRESSION,
-> +    MIGRATION_PARAMETER_MULTIFD_ZLIB_LEVEL,
-> +    MIGRATION_PARAMETER_MULTIFD_ZSTD_LEVEL,
-> +    MIGRATION_PARAMETER_BLOCK_BITMAP_MAPPING,
-> +    MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD,
-> +    MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT,
-> +    MIGRATION_PARAMETER__MAX,
+> diff --git a/hw/display/allwinner-a10-hdmi.c b/hw/display/allwinner-a10-hdmi.c
+> new file mode 100644
+> index 0000000000..0f046e3cc7
+> --- /dev/null
+> +++ b/hw/display/allwinner-a10-hdmi.c
 
-MIGRATION_PARAMETER__MAX is not part of the enum, so:
 
-    #define MIGRATION_PARAMETER__MAX \
-        (MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT + 1)
-
-> +} MigrationParameter;
+> +#define REG_INDEX(offset)    (offset / sizeof(uint32_t))
 > +
-> +extern const char *MigrationParameter_string[MIGRATION_PARAMETER__MAX];
-> +#define  MigrationParameter_str(p)  MigrationParameter_string[p]
-
-Hmm this is only used once by HMP. Following our style I suggest here:
-
-  const char *const MigrationParameter_string(enum MigrationParameter 
-param);
-
-And in options.c:
-
-  static const char *const 
-MigrationParameter_str[MIGRATION_PARAMETER__MAX] = {
-     ...
-  };
-
-  const char *const MigrationParameter_string(enum MigrationParameter param)
-  {
-      return MigrationParameter_str[param];
-  }
-
+> +static uint64_t allwinner_a10_hdmi_read(void *opaque, hwaddr offset,
+> +                                       unsigned size)
+> +{
+> +    AwA10HdmiState *s = AW_A10_HDMI(opaque);
+> +    const uint32_t idx = REG_INDEX(offset);
+> +    uint32_t val = s->regs[idx];
 > +
-> +/**
-> + * @MigrationParameter_from_str(): Parse string into a MigrationParameter
-> + *
-> + * @param: input string
-> + * @errp: error message if failed to parse the string
-> + *
-> + * Returns MigrationParameter enum (>=0) if succeed, or negative otherwise
-> + * which will always setup @errp.
-> + */
-> +int MigrationParameter_from_str(const char *param, Error **errp);
-> +
->   const BitmapMigrationNodeAliasList *migrate_block_bitmap_mapping(void);
->   bool migrate_has_block_bitmap_mapping(void);
+> +    switch (offset) {
+> +    case REG_HPD:
+> +        val = FIELD_HPD_HOTPLUG_DET_HIGH;
+> +        break;
 
-With the changes:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +}
+> +
+> +static void allwinner_a10_hdmi_write(void *opaque, hwaddr offset,
+> +                                   uint64_t val, unsigned size)
+> +{
+> +    AwA10HdmiState *s = AW_A10_HDMI(opaque);
+> +    const uint32_t idx = REG_INDEX(offset);
+> +
+> +    switch (offset) {
+> +    case REG_DDC_CTRL:
+> +        if (val & FIELD_DDC_CTRL_SW_RST) {
+> +            val &= ~FIELD_DDC_CTRL_SW_RST;
+> +        }
+
+
+> +    s->regs[idx] = (uint32_t) val;
+> +}
+> +
+> +static const MemoryRegionOps allwinner_a10_hdmi_ops = {
+> +    .read = allwinner_a10_hdmi_read,
+> +    .write = allwinner_a10_hdmi_write,
+> +    .endianness = DEVICE_NATIVE_ENDIAN,
+> +    .valid = {
+> +        .min_access_size = 1,
+> +        .max_access_size = 4,
+> +    },
+> +    .impl.min_access_size = 1,
+
+Per REG_INDEX() you have .impl.min/max = 4.
+
+Otherwise your patch LGTM :)
+
+> +};
 
 
