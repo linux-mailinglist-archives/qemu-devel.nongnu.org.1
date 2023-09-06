@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8966E79353E
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 08:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BDC793564
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 08:33:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdlzH-0005Sc-4O; Wed, 06 Sep 2023 02:26:03 -0400
+	id 1qdm5C-0007IF-Ps; Wed, 06 Sep 2023 02:32:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qdlz8-0005SC-2E
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 02:25:54 -0400
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdm55-0007Hx-GA
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 02:32:04 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qdlz5-00087q-Jf
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 02:25:53 -0400
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-41243a67b62so22513851cf.2
- for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 23:25:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdm4w-0000hH-SY
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 02:32:03 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-500c7796d8eso5270128e87.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 23:31:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1693981550; x=1694586350; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=h+Iwid3XyiaRNLUM8EVMUG/09fGCNsZblDGZ5opM6gc=;
- b=pR/64VGxWkHouQV3BwsEIRSJWdKbd5ao9sAKeIMgYT3TLV7T593WemBMhV7FzKf68S
- HU3NZ3UQ7aB5jL1YE7i3Lj+DqPB/C5WtHGYEAidyN2zxKoSTvREct/YMKYqMS67SvgfO
- N0n3cHS+KoZllwfYzHKJApRY6acHJES2hcDKL4wZyGLqJfK/ksLDWACQfYNuLcr9QUXt
- eEucdqXtygePTOcKqBSOmftpq/ToDi0v/YIorfoFNzFEDT3n/K1/zGL0I4fS61ArND8L
- hntH8ZNr1iQY+Z5fPxVJYa8OkqofaFGQUxJfOR5xeQIkU/+FsalBoj5qA9+qLFiyy69H
- /0ZA==
+ d=linaro.org; s=google; t=1693981912; x=1694586712; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sbJ3B31mT7QVAKybkYJocxFvR5YfB2qUjPbHDxZikT8=;
+ b=P6qrye7JAr72bLyuhyWdlX0oQwYXOgkZxJVcVd3Y8WSYLQ+Wk8HfY8IGHvwc6uD3gO
+ 6u8Lek/IaCxUbVB8MxL7FNx0OlvX8b9R7waDTBH+7PQKFXOyBs9nm9gW7m25CqjaVHYD
+ jSF+DtAvdCG0HnyPeDdAm2unILaHAfhBCNAIGZv0Wnd3ISpASenZYqvCZc1jHelUV4bM
+ MaI2OZ3WfXRTrKfPU2SHXpsC678GF6LaH2A0ndlkujeKZ4UT8RlQVf1oUSODoJAXTk/v
+ hC4H32fHfuJPYTS7dpgSVWS49X8f+TgaIAvDE/lBqEZDKYdKmnB+ZmVn6bD9D4O3itBS
+ KpRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693981550; x=1694586350;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=h+Iwid3XyiaRNLUM8EVMUG/09fGCNsZblDGZ5opM6gc=;
- b=CaZD4d9+H8ipTZBAFclBTZv/If+UVkAlHFIv0FnXagi6OV+HlgCvo7CJf46+vpvXY8
- 6h+LRJhI2Qy4Gp0A+jTkT049ROjnWTD+54IKY3AOcWdnP3xsB+hixDmXo14F6QDGZZJ8
- xjM3bsxzZQQ3v0Mp2FhYn3Ox4DZYT8U6GXp5BIJvBa1fDSxaiWGfLliKq8xu03k4zRWY
- yebtvyzHGimP/7gNZBYHeNLgbpykfsO9KCwP5y9cjvljfDvMaTKnlwzlw1EUHS6TszWr
- 6D1WX/Ym5Kh1B6IsdQrAmg0GY8/HcD7RwVeJ3SmYtHBSVreSmB4b/KaFlpYm0Jxb6NRr
- xfqw==
-X-Gm-Message-State: AOJu0Yyt5Ig6I3Qt0nosirJOah7ORmT8YnjNsWKHuHtCVMD/SoXr82Tz
- t8d0st4GlOesjnhXZa8jCcffkjd2+3Nu5KKFn3I=
-X-Google-Smtp-Source: AGHT+IHYABo0mC1ucJkMWid7Tqf/TdM2xHhOijFHMnyXCl9bszcRdKD9lAVnuSyfpJJxzXA4x/o6cVrLiW6AtxF76gE=
-X-Received: by 2002:a05:622a:110:b0:412:6db3:eda9 with SMTP id
- u16-20020a05622a011000b004126db3eda9mr20891754qtw.58.1693981550570; Tue, 05
- Sep 2023 23:25:50 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1693981912; x=1694586712;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sbJ3B31mT7QVAKybkYJocxFvR5YfB2qUjPbHDxZikT8=;
+ b=Nh1iUb6jzjbzQJN4RWDZL8Ov8om1BTTeCKFvpOOKTjlUhlmAt1bdjWZ6bbSRvjReRw
+ QK6tFGzoy0Fu0ngFA7CJCof0EYW0tfjgGD5uoCTbZeQ3R6BV928kcS7BvNZL6q40PCk7
+ IuCpIE3w03iREiUlgwU4WJ/zOLSa4yQJx46w5AEpPLZd7RBY0+4aNUz9WS7le0q63xCG
+ zuBpARAQUbC2CksQQdZOXIg0BUQJe8kQp8K9L7XjWLnjck/gnvLW057ctlj0KlBC8Wuw
+ dR5hYvF5Y1k8wDYX1gxEZGJrP4tgfgeB2SaQHQdNeH3JIiXBrCo3h5dwdvpfjOuHA6zQ
+ Yy5w==
+X-Gm-Message-State: AOJu0YwZQexuMjAU4eSPBxrWPIfvl7iMz/eTp2Abs+eJ9zkn4HEmg23H
+ onTY9XpFGlnf59WsNikJLAWSXLCkfT42xBv4mCY=
+X-Google-Smtp-Source: AGHT+IFMAf3niq96MOY9rO2HkyQ2usk1VSyzWy4uqwm9w0sF01dywAsDrIl+/dCnL8QH0hf2xcp1/w==
+X-Received: by 2002:a19:3850:0:b0:500:b8a3:1bf1 with SMTP id
+ d16-20020a193850000000b00500b8a31bf1mr1269251lfj.43.1693981912075; 
+ Tue, 05 Sep 2023 23:31:52 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ v12-20020a05600c214c00b003fbe791a0e8sm18891600wml.0.2023.09.05.23.31.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 23:31:51 -0700 (PDT)
+Message-ID: <1d971e7a-f6b6-3647-7cb7-5620d4f1532a@linaro.org>
+Date: Wed, 6 Sep 2023 08:31:49 +0200
 MIME-Version: 1.0
-References: <20230829003629.410-1-gurchetansingh@chromium.org>
- <ZO/6JXmYm/lW9dSZ@amd.com>
- <CAAfnVBmxaAbEX-0wVVwE94cKrGtoCRWKv58X73P+_hKM8-_hkQ@mail.gmail.com>
-In-Reply-To: <CAAfnVBmxaAbEX-0wVVwE94cKrGtoCRWKv58X73P+_hKM8-_hkQ@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 6 Sep 2023 10:25:39 +0400
-Message-ID: <CAJ+F1CJk9CTusH4t0pPMzSiN5B0we_zVje+j=azbSXoVzUR+Fw@mail.gmail.com>
-Subject: Re: [PATCH v13 0/9] rutabaga_gfx + gfxstream
-To: Gurchetan Singh <gurchetansingh@chromium.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Huang Rui <ray.huang@amd.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "akihiko.odaki@gmail.com" <akihiko.odaki@gmail.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, 
- "shentey@gmail.com" <shentey@gmail.com>, "hi@alyssa.is" <hi@alyssa.is>, 
- "ernunes@redhat.com" <ernunes@redhat.com>, 
- "manos.pitsidianakis@linaro.org" <manos.pitsidianakis@linaro.org>,
- "philmd@linaro.org" <philmd@linaro.org>, 
- "mark.cave-ayland@ilande.co.uk" <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 0/6] hw/virtio: Build vhost-vdpa.o once for all targets
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+References: <20230710094931.84402-1-philmd@linaro.org>
+ <ad508b5a-6cff-7138-1350-62a5bc513299@linaro.org>
+In-Reply-To: <ad508b5a-6cff-7138-1350-62a5bc513299@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,62 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Wed, Sep 6, 2023 at 5:22=E2=80=AFAM Gurchetan Singh
-<gurchetansingh@chromium.org> wrote:
->
->
->
-> On Wed, Aug 30, 2023 at 7:26=E2=80=AFPM Huang Rui <ray.huang@amd.com> wro=
-te:
+On 30/8/23 15:35, Philippe Mathieu-Daudé wrote:
+> Hi Michael,
+> 
+> This series is now fully reviewed.
+> 
+> On 10/7/23 11:49, Philippe Mathieu-Daudé wrote:
+>> Missing review: patch #4
 >>
->> On Tue, Aug 29, 2023 at 08:36:20AM +0800, Gurchetan Singh wrote:
->> > From: Gurchetan Singh <gurchetansingh@google.com>
->> >
->> > Changes since v12:
->> > - Added r-b tags from Antonio Caggiano and Akihiko Odaki
->> > - Removed review version from commit messages
->> > - I think we're good to merge since we've had multiple people test and=
- review this series??
->> >
->> > How to build both rutabaga and gfxstream guest/host libs:
->> >
->> > https://crosvm.dev/book/appendix/rutabaga_gfx.html
->> >
->> > Branch containing this patch series:
->> >
->> > https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v13
->> >
->> > Antonio Caggiano (2):
->> >   virtio-gpu: CONTEXT_INIT feature
->> >   virtio-gpu: blob prep
->> >
->> > Dr. David Alan Gilbert (1):
->> >   virtio: Add shared memory capability
->> >
->> > Gerd Hoffmann (1):
->> >   virtio-gpu: hostmem
+>> Since v2:
+>> - Added R-b tags
+>> - Addressed Richard's review comment: page_mask = -page_size
 >>
->> Patch 1 -> 4 are
->>
->> Acked-and-Tested-by: Huang Rui <ray.huang@amd.com>
->
->
-> Thanks Ray, I've rebased https://gitlab.com/gurchetansingh/qemu/-/commits=
-/qemu-gfxstream-v13 and added the additional acks in the commit message.
->
-> UI/gfx maintainers, since everything is reviewed and there hasn't been an=
-y additional review comments, may we merge the gfxstream + rutabaga_gfx ser=
-ies?  Thank you!
->
+>> Philippe Mathieu-Daudé (6):
+>>    hw/virtio: Propagate page_mask to
+>>      vhost_vdpa_listener_skipped_section()
+>>    hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
+>>    hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
+>>    hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
+>>    hw/virtio: Build vhost-vdpa.o once
+>>    hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
 
-I can take it, or Michael (since Gerd is not focused on QEMU atm).
+Michael, I have another series unifying virtio endianness blocked
+by this one. I can merge it if you provide your Ack-by.
 
-Michael, are you prepping a virtio PR?
+Thanks,
 
-thanks
-
---=20
-Marc-Andr=C3=A9 Lureau
+Phil.
 
