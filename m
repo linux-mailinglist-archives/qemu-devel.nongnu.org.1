@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0383A793854
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7576579384E
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdoto-0000X9-Qo; Wed, 06 Sep 2023 05:32:36 -0400
+	id 1qdotp-0000Zh-Fw; Wed, 06 Sep 2023 05:32:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotY-0008MJ-JE; Wed, 06 Sep 2023 05:32:20 -0400
+ id 1qdotZ-0008OD-Fv; Wed, 06 Sep 2023 05:32:22 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotT-0000fU-AI; Wed, 06 Sep 2023 05:32:19 -0400
+ id 1qdotT-0000fY-MT; Wed, 06 Sep 2023 05:32:21 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qdoqN-005qCB-14;
+ (envelope-from <den@openvz.org>) id 1qdoqN-005qCB-2Q;
  Wed, 06 Sep 2023 11:32:02 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 7/8] qemu-nbd: document -v behavior in respect to --fork in man
-Date: Wed,  6 Sep 2023 11:32:09 +0200
-Message-Id: <20230906093210.339585-8-den@openvz.org>
+Subject: [PATCH 8/8] qemu-nbd: fix formatting in main()
+Date: Wed,  6 Sep 2023 11:32:10 +0200
+Message-Id: <20230906093210.339585-9-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906093210.339585-1-den@openvz.org>
 References: <20230906093210.339585-1-den@openvz.org>
@@ -55,28 +55,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Just a formatting, no functional changes.
+
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- docs/tools/qemu-nbd.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Do not really sure that this patch is mandatory, just stabs my eye. Feel free
+to drop if this is too useless.
 
-diff --git a/docs/tools/qemu-nbd.rst b/docs/tools/qemu-nbd.rst
-index faf6349ea5..5c48ee7345 100644
---- a/docs/tools/qemu-nbd.rst
-+++ b/docs/tools/qemu-nbd.rst
-@@ -197,7 +197,9 @@ driver options if :option:`--image-opts` is specified.
- 
- .. option:: -v, --verbose
- 
--  Display extra debugging information.
-+  Display extra debugging information. This option also keeps opened original
-+  *STDERR* stream if ``qemu-nbd`` process is daemonized due to other options
-+  like :option:`--fork` or :option:`-c`.
- 
- .. option:: -h, --help
- 
+ qemu-nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index b9c74ce77c..8eb1d1f40b 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -581,7 +581,8 @@ int main(int argc, char **argv)
+     pthread_t client_thread;
+     const char *fmt = NULL;
+     Error *local_err = NULL;
+-    BlockdevDetectZeroesOptions detect_zeroes = BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
++    BlockdevDetectZeroesOptions detect_zeroes =
++                                            BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
+     QDict *options = NULL;
+     const char *export_name = NULL; /* defaults to "" later for server mode */
+     const char *export_description = NULL;
 -- 
 2.34.1
 
