@@ -2,106 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6521A793F0E
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE40793F10
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtf6-0006hG-6G; Wed, 06 Sep 2023 10:37:44 -0400
+	id 1qdtfu-000873-7K; Wed, 06 Sep 2023 10:38:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdtf4-0006aM-6y
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:37:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdtf1-0006LN-U4
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:37:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694011059;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lg2fMO06PnQXvtf+z6WSmsHkPqrM9ZYU8QTTgt0YWXQ=;
- b=ERKRAldWV71Crxd7M/NHhpJUzk0VS8YnWPA76b/rO9+FyNw9zk1ohVsD8cIPt/yU5H/lXt
- RBIA1KaKNQ0x2vM9nNEGR0IW8RHJKfKdgI+YL3AcXNq0E9XtUTrgVFnyZIU8ExSbB3TpBC
- xaTmVExdPRWkwLjsVhTCwcA/FVrp2H0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-Koxi_cTTPgygDHGGdVaYGA-1; Wed, 06 Sep 2023 10:37:37 -0400
-X-MC-Unique: Koxi_cTTPgygDHGGdVaYGA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-31c879c41f4so2081239f8f.2
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:37:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qdtfr-00082n-MF
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:38:31 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qdtfo-0006O8-85
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:38:31 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1c26bb27feeso2854478fac.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:38:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1694011105; x=1694615905; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mbX0nONM8qgoPZvtAu/UDvzjCKl5Co97jKzyjqjp66Q=;
+ b=R2EYM9uaD6149ZPBT5vq85XiIGojpGFRVzMFBlJXcQSj9ROXGjMU8uuBxNTc3o6m0G
+ mxa7UP4X/Rqx6042MqPGti2Qnvbfh8uu+JRAmJ0560TFR9jFi8xDVt4vMACOuwFe+wxz
+ xM8a0+7+Ftb5+/fKkzTqjhpfZ3k0iy9YiBrbXjkCmDJm859pH5bMaHbPy+BXNrJbpvab
+ 0sIdqDE18K5IPJWonA39c4bPMRvKJOWosqEPdDJE7jRTHuQxhOSZ6wjhfqy+N4RtdUcJ
+ hg5mij8otD57Am+BVNfQRdpMxlAKXQ2kckyHMlzhFrSrO/okWLaCs19wqpj1kxazS6Yo
+ sE1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694011056; x=1694615856;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lg2fMO06PnQXvtf+z6WSmsHkPqrM9ZYU8QTTgt0YWXQ=;
- b=PLHKXwbqYKDlFyouHGETfU3SgFXtE/7E3XpWJqAvHhpZHqy3IfmrvvEXPofnZqSPJB
- 2EgeWXZXdpvqeeH2eeJPqhoCZgDVqfW7qdSFK+IDJ++bqP0mhrtNAae9fE2xuteOuQS2
- Doh99nkUnfd6MqlOZtYPGaAbDd4rXkjuTvlt0A+2dJ+/sap+8NxqA/7ffEM5t7jbgG+d
- RLJKkVhcYZF73cTFuOFc0oMpUcMS5gm5T5M3SVST83PXCtdPe5Pz7ozaO60t293NaWv3
- FXlueyyHwgDHRfZMLcnONuJnhS63EoDthD4ep7YOQLpn+s9/qm2HIBEadWauYygqjVzb
- XJpg==
-X-Gm-Message-State: AOJu0Yxn/u9Z7CiJ1mcHC0iokP4r/qRqrR/hhKVS9dLAAt/o17xccVv/
- VYPVvAp+JbEjWe7KJY2kqHMUau7SmWS58dwD9fIfm/aSzfMgiICndqvxf6Sq47breveem38DzZY
- 5okWVzOF0AD6ZEZ8=
-X-Received: by 2002:adf:dc8c:0:b0:317:5351:e428 with SMTP id
- r12-20020adfdc8c000000b003175351e428mr2259895wrj.4.1694011056322; 
- Wed, 06 Sep 2023 07:37:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6FP2trIpa9SyMRqQVDHpkv6KR2bWRmBHizszpCaWuoC2c7TXCDXjhpfQSjz/N58+wSW/0iw==
-X-Received: by 2002:adf:dc8c:0:b0:317:5351:e428 with SMTP id
- r12-20020adfdc8c000000b003175351e428mr2259886wrj.4.1694011055968; 
- Wed, 06 Sep 2023 07:37:35 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70c:6c00:92a4:6f8:ff7e:6853?
- (p200300cbc70c6c0092a406f8ff7e6853.dip0.t-ipconnect.de.
- [2003:cb:c70c:6c00:92a4:6f8:ff7e:6853])
+ d=1e100.net; s=20221208; t=1694011105; x=1694615905;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mbX0nONM8qgoPZvtAu/UDvzjCKl5Co97jKzyjqjp66Q=;
+ b=LyfjaH7CH6ZDkfxeiBJBAuqW7T5JFYnDwOmS7QenpFlRmqhwLmVL1Qk++VtQBVZZ1f
+ tQIS54p29Q4A45VFU+lQhgauix7ryp3/uCSnMPdQQkEnMf1C7TiBFmt3JQ6E/78LyKns
+ iSUPd2WWC5R7jM0cko7Y2VLTT3KH+Z97CHi7xoSGY5KppwmZro90pWReMD4HATJ0j8pe
+ 6bsZExwX8cdDwPFo0xdUIVzJ+xKMPcvomA3LzyTumNbWCXomQRPAHzqIwfUrA3A9VL5G
+ 8TU4DpLpXAY6jRCJ1inqEYt2/LX6QHlk56iierigoSwFUe1LrV+ipxQ+pF8t651JXmdu
+ 4ufQ==
+X-Gm-Message-State: AOJu0Yz2j04OklIKtBcV0vlWuuAslaepPlPRMfB5+SUBRLdhOT56LfOC
+ LrFKgDBXZhJxFQh9xMs77nW0dA==
+X-Google-Smtp-Source: AGHT+IGrFcSco9bx5oGBD/apPv2xUGGUO3fmFg/X4/cvea40mMi8fnqyH1M84icBV4t2zwvzm7DAcg==
+X-Received: by 2002:a05:6870:249d:b0:1b0:57f8:dab4 with SMTP id
+ s29-20020a056870249d00b001b057f8dab4mr19183230oaq.24.1694011105369; 
+ Wed, 06 Sep 2023 07:38:25 -0700 (PDT)
+Received: from [192.168.68.108] ([177.94.15.194])
  by smtp.gmail.com with ESMTPSA id
- j17-20020a5d5651000000b003197efd1e7bsm20671464wrw.114.2023.09.06.07.37.34
+ o20-20020a056870911400b001d1358a6435sm5858763oae.1.2023.09.06.07.38.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 07:37:35 -0700 (PDT)
-Message-ID: <de45c2d4-13b6-d022-e32a-ea5296e04b1d@redhat.com>
-Date: Wed, 6 Sep 2023 16:37:34 +0200
+ Wed, 06 Sep 2023 07:38:24 -0700 (PDT)
+Message-ID: <dfeec126-304f-c4a4-77fb-7bf0927dbd31@ventanamicro.com>
+Date: Wed, 6 Sep 2023 11:38:20 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 04/16] kvm: Return number of free memslots
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+Subject: Re: [PATCH v2 0/6] target/riscv: Add RISC-V Virtual IRQs and IRQ
+ filtering support
+To: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
  qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
-References: <20230825132149.366064-1-david@redhat.com>
- <20230825132149.366064-5-david@redhat.com>
- <1d68ca74-ce92-ca5f-2c8b-e4567265e2fc@linaro.org>
- <ee1bbc2b-3180-ab79-4f0d-6159577b2164@redhat.com>
-Organization: Red Hat
-In-Reply-To: <ee1bbc2b-3180-ab79-4f0d-6159577b2164@redhat.com>
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com,
+ apatel@ventanamicro.com
+References: <20230526162308.22892-1-rkanwal@rivosinc.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230526162308.22892-1-rkanwal@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,52 +98,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.09.23 16:14, David Hildenbrand wrote:
-> On 29.08.23 00:26, Philippe Mathieu-Daudé wrote:
->> On 25/8/23 15:21, David Hildenbrand wrote:
->>> Let's return the number of free slots instead of only checking if there
->>> is a free slot. While at it, check all address spaces, which will also
->>> consider SMM under x86 correctly.
->>>
->>> Make the stub return UINT_MAX, such that we can call the function
->>> unconditionally.
->>>
->>> This is a preparation for memory devices that consume multiple memslots.
->>>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>     accel/kvm/kvm-all.c      | 33 ++++++++++++++++++++-------------
->>>     accel/stubs/kvm-stub.c   |  4 ++--
->>>     hw/mem/memory-device.c   |  2 +-
->>>     include/sysemu/kvm.h     |  2 +-
->>>     include/sysemu/kvm_int.h |  1 +
->>>     5 files changed, 25 insertions(+), 17 deletions(-)
->>
->>
->>> diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
->>> index 235dc661bc..f39997d86e 100644
->>> --- a/accel/stubs/kvm-stub.c
->>> +++ b/accel/stubs/kvm-stub.c
->>> @@ -109,9 +109,9 @@ int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
->>>         return -ENOSYS;
->>>     }
->>>     
->>> -bool kvm_has_free_slot(MachineState *ms)
->>> +unsigned int kvm_get_free_memslots(void)
->>>     {
->>> -    return false;
->>> +    return UINT_MAX;
->>
->> Isn't it clearer returning 0 here and keeping kvm_enabled() below?
+Hey,
+
+
+What's the latest on this work? It seems that all patches are acked:
+
+https://lore.kernel.org/qemu-riscv/20230526162308.22892-1-rkanwal@rivosinc.com/
+
+
+It'll probably conflict with current Alistair's riscv-to-apply.next though, so
+perhaps Rajnesh could gather the acks and send a rebased version.
+
+
+Thanks,
+
+Daniel
+
+
+On 5/26/23 13:23, Rajnesh Kanwal wrote:
+> This series adds M and HS-mode virtual interrupt and IRQ filtering support.
+> This allows inserting virtual interrupts from M/HS-mode into S/VS-mode
+> using mvien/hvien and mvip/hvip csrs. IRQ filtering is a use case of
+> this change, i-e M-mode can stop delegating an interrupt to S-mode and
+> instead enable it in MIE and receive those interrupts in M-mode and then
+> selectively inject the interrupt using mvien and mvip.
+>              
+> Also, the spec doesn't mandate the interrupt to be actually supported
+> in hardware. Which allows M/HS-mode to assert virtual interrupts to
+> S/VS-mode that have no connection to any real interrupt events.
+>               
+> This is defined as part of the AIA specification [0], "5.3 Interrupt
+> filtering and virtual interrupts for supervisor level" and "6.3.2 Virtual
+> interrupts for VS level".
 > 
-> I tried doing it similarly to vhost_has_free_slot().
+> Most of the testing is done by hacking around OpenSBI and linux host.
+> The changes for those can be found at [1] and [2].
 > 
-
-I'll leave the kvm_enabled() check in place, looks cleaner.
-
--- 
-Cheers,
-
-David / dhildenb
-
+> It's my first touch on RISC-V qemu IRQ subsystem. Any feedback would
+> be much appreciated.
+> 
+> The change can also be found on github [3].
+> 
+> TODO: This change doesn't support delegating virtual interrupts injected
+> by M-mode to VS-mode by the Hypervisor. This is true for bits 13:63 only.
+> 
+> Thanks
+> Rajnesh
+> 
+> [0]: https://github.com/riscv/riscv-aia/releases/download/1.0-RC4/riscv-interrupts-1.0-RC4.pdf
+> [1]: https://github.com/rajnesh-kanwal/opensbi/tree/dev/rkanwal/irq_filter
+> [2]: https://github.com/rajnesh-kanwal/linux/commits/dev/rkanwal/aia_irq_filter
+> [3]: https://github.com/rajnesh-kanwal/qemu/tree/dev/rkanwal/riscv_irq_filter
+> 
+> v2:
+>   * Move RISCV_EXCP_SEMIHOST to switch case and remove special handling.
+>   * Fix linux-user build.
+> 
+> Rajnesh Kanwal (6):
+>    target/riscv: Without H-mode mask all HS mode inturrupts in mie.
+>    target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
+>    target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
+>    target/riscv: Split interrupt logic from riscv_cpu_update_mip.
+>    target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
+>    target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
+> 
+>   target/riscv/cpu.c        |   9 +-
+>   target/riscv/cpu.h        |  23 ++
+>   target/riscv/cpu_bits.h   |   6 +
+>   target/riscv/cpu_helper.c |  99 +++++---
+>   target/riscv/csr.c        | 477 ++++++++++++++++++++++++++++++++++----
+>   target/riscv/machine.c    |   6 +
+>   6 files changed, 546 insertions(+), 74 deletions(-)
+> 
 
