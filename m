@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD78F7944E3
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 23:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4AE7944CC
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 22:54:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdzc7-0001UP-1W; Wed, 06 Sep 2023 16:59:03 -0400
+	id 1qdzXK-0007jM-Vp; Wed, 06 Sep 2023 16:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
- id 1qdzc3-0001UC-Fe
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:58:59 -0400
-Received: from mail-sn1nam02on2059.outbound.protection.outlook.com
- ([40.107.96.59] helo=NAM02-SN1-obe.outbound.protection.outlook.com)
+ id 1qdzXH-0007ix-IL
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:54:03 -0400
+Received: from mail-mw2nam10on20610.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::610]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
- id 1qdzby-0006L8-Tm
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:58:59 -0400
+ id 1qdzXE-0004jX-Iz
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:54:03 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZbeAf4vpo/O79C2DVtbPHHho4x8E7QcAFXlkumAPmiiHLWFeZF7z92Ldok15Y3fT8NxDCe99/3fdqJc+nfyn1Du+8DlAAIEXO5oeyNGBbwOX1qQcXIfC8fyZUdEFVDtyzlcNiYut3ryEfq6Dfr97OXKriw7/E1k4WQqMaL8fjvydhLr9hDTwgKrWz37QeJ8gtHuOkjF/UIup9QJ7LHPriwC2tgpdrh0XvK6Q87+PQbZ5qxh1xitVeh+V0RvWfNpWwEsSOBlGPlZ7zzqoKt9S3VOBltZX88ToNivSVR9Yhw//UeotsEeWBTrlmOTzQ0A6lfIBwdnpAwMrr3SpJqIB4g==
+ b=K/BdeHvhByTBrz+6ooLDNAIBIxoMjWpx4M9HIvYnglmiSap3hn0kzyUMXVLp/APRIVqf4OGA1zDpGCwSeoFPyPiJxsONqLa8ysX26xMtPOnTAq+OtKAouyi1xaT/w8CfZ73F3b+5Edqk+UE9ahBDLjI3GAV4Jmy3yjzm7K8XiiHz8Rpv+f+Y5+Gc5dKRZKLgzVX1BXbQDGowJuYygfNKgIkxYINNM/I7m3kLYfwwwar8RZitId06FJkQdWz0t9BkxDq8hRQ02bo84p70OdI8/kHmSHSP8Vk89KLaOSes2pK9klX06OB5Ska1saotUYCtiWo8/nVZ8Cu/EtMVw+lAQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DGl1gcmwPwCsiPvs008ffcmp90KOoKwu2XMHv13uOE8=;
- b=MP3sqr1655qvZ2rJfPx6LfZk/Of2JQMvh9QbdsB5qGkHbKtDn+aWUcy0G57M0j8DE86eoIH3CnsuLfezDeqNV6bsRxoNKi/0X9Zyo/V+JlEX/G9tKppHln76YwD30ZsmX7gzpZZYpUekwgyU/L3mdt11WkOcJkWOzm5RGxUkU0XmKGVz0uJE/GHr5g+d8zyd2CEOHbA922S/vwC91bug2A+477i2N7K15l4IU1o6cZNaUp0zDqtfoEy4mpgk9OXNhO8d1xkWu+fFOFML7gS6WWtwPYxOoj3CNssV3Q+ceFArdfwYeTJeQBFWj4Xjrw80Os87/Rf8J5mYg3wP2tNsaQ==
+ bh=/C7fobXGhVgySTbQ1/Rnt3NjdU6sbnvHrLR37KNjdDU=;
+ b=HgRJ6wl1JekW24DpSigLYG5IvHx02aI4Jg1pHXlpBjCpK0hn0Ta7Q65pyJ0+cto5V7VreVDRKvDn9x/CUB0+PIqMs4O0PRXpk0HdBXvGktYa6+71rxsSqgazylh62QfzAZkW1P8SkteBzx3f6lhXCpILaX6+HcnAeqGpcTtVcHDJbMvHSpNn9+NkE/ZM36ZvlWhR9E57XfGfhOfia3k+nTHUFD/Y4vFLL65Ti1wNnyMCwxPUxNLyQsOF3Hh+FMmhC/yQoQglSEyw0CJ2RnZE+7pEHfMgb48r3eYLGp9fSHmZIPadGYocAUCdUyE0WhgsiCbETdGED6XUcgx+R4tnsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DGl1gcmwPwCsiPvs008ffcmp90KOoKwu2XMHv13uOE8=;
- b=spw88F1Aspybrc+DqMBUdPfPievmXMRlX6pX2QYOdlaJ9sXluKvK30/sPmb1Bq9acgCeonHpPYzoemn2i95DzCoWUmkCYxUMhpdZJzU25YDrHfl5/p6V+ApH+ObaPyGTzgeGZK+0T/sBRabAdmuNtYmGsTqdkzG06YJinhUtmsQ=
-Received: from DM5PR07CA0073.namprd07.prod.outlook.com (2603:10b6:4:ad::38) by
- CH3PR12MB8331.namprd12.prod.outlook.com (2603:10b6:610:12f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Wed, 6 Sep
- 2023 20:53:49 +0000
-Received: from CY4PEPF0000EDD0.namprd03.prod.outlook.com
- (2603:10b6:4:ad:cafe::bc) by DM5PR07CA0073.outlook.office365.com
- (2603:10b6:4:ad::38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34 via Frontend
- Transport; Wed, 6 Sep 2023 20:53:48 +0000
+ bh=/C7fobXGhVgySTbQ1/Rnt3NjdU6sbnvHrLR37KNjdDU=;
+ b=5W8k3AbjChAb8E+184iDxzirK0dI8oDQuvV/S1TXUSMz3ILdN2N4D8i6En4qjwd0EBITjRAqPXlTcZjPIUBeHFJaMMOUSLkbqTnyA6Xg/SzzpyjfnC5NePF9pX7L9Zaqyo5cxa5mgebu00V8MLwh/Gs4e5kBZPIHAkPu8zu949U=
+Received: from CY5PR19CA0089.namprd19.prod.outlook.com (2603:10b6:930:83::14)
+ by PH8PR12MB7136.namprd12.prod.outlook.com (2603:10b6:510:22b::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20; Wed, 6 Sep
+ 2023 20:53:52 +0000
+Received: from CY4PEPF0000EDD3.namprd03.prod.outlook.com
+ (2603:10b6:930:83:cafe::43) by CY5PR19CA0089.outlook.office365.com
+ (2603:10b6:930:83::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.35 via Frontend
+ Transport; Wed, 6 Sep 2023 20:53:52 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,22 +52,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD0.mail.protection.outlook.com (10.167.241.204) with Microsoft
+ CY4PEPF0000EDD3.mail.protection.outlook.com (10.167.241.207) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6768.25 via Frontend Transport; Wed, 6 Sep 2023 20:53:48 +0000
+ 15.20.6768.25 via Frontend Transport; Wed, 6 Sep 2023 20:53:52 +0000
 Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 6 Sep
- 2023 15:53:47 -0500
+ 2023 15:53:51 -0500
 From: John Allen <john.allen@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <yazen.ghannam@amd.com>, <michael.roth@amd.com>, <babu.moger@amd.com>,
  <william.roche@oracle.com>, <joao.m.martins@oracle.com>,
- <pbonzini@redhat.com>, <richard.henderson@linaro.org>, <eduardo@habkost.net>, 
- John Allen <john.allen@amd.com>
-Subject: [PATCH v3 1/3] i386: Fix MCE support for AMD hosts
-Date: Wed, 6 Sep 2023 20:53:06 +0000
-Message-ID: <20230906205308.50334-2-john.allen@amd.com>
+ <pbonzini@redhat.com>, <richard.henderson@linaro.org>, <eduardo@habkost.net>
+Subject: [PATCH v3 2/3] i386: Explicitly ignore unsupported BUS_MCEERR_AO MCE
+ on AMD guest
+Date: Wed, 6 Sep 2023 20:53:07 +0000
+Message-ID: <20230906205308.50334-3-john.allen@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230906205308.50334-1-john.allen@amd.com>
 References: <20230906205308.50334-1-john.allen@amd.com>
@@ -78,35 +79,35 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD0:EE_|CH3PR12MB8331:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51ed36d4-d5c6-44a9-d81e-08dbaf1b5e8a
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD3:EE_|PH8PR12MB7136:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60fb7738-1732-47ec-a636-08dbaf1b60ae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QrcIHaLgJ7W4aVrSuI48qaQE2LibGrneH3dZ/xf8Fy2WYYNAlisFZgd/lLrNqB0AAcSmNdeNKikmmSRkiZuczV9Wbn+guLCTyC2g7OzY2wpsJB3lM8jDoyi7EVxtSSvUksYWOG3X0QSYnsTuGdG4ziLhHtqjSzRb6br9Hjr+4APrxsxQxoUT6CJK2ZR1VyPVW4WIAPdtlQJGX8036s2sK9RVHkyS5zJMTO8t5ZaWr9XQtMCGv4kiaue5ghSjhiX79KR9RQ59SD/44cntdaMNjFUBP9O88JTQ87NBgYC1rDlJngVbYZkMGGixRjNoPQZz/mdVDZXFncEfrNoDUfVcY7XubEmkDVp9Yu4zk4cb5AAiNJ7f5BjkSl0syL8jgtx7m54oe7I8U0e8GwU76OryHd5RmMOLH/iE1QcZA8sAhGCa0vAnvv1jf/sLU/l1ny1kjPkbT7Qq3SJubue+mDhRr9hUId5pk/NJVGLuOeJrZGb7LmvKo3L3A8TtNBiOvoYfZVBCNd9Q056EmfXImkOigH8+E4l6hvgLwL78zemE/Qa6P9qEyFelcdBQgQQ6pDcFklmkXwSq0qXezTUQpsnyOdfcaYkukOPWON7Im6y+uPnQseeMabsgPvMUA8enA90pOtEzI6inixxZLIJPxjoBVs9iCwAh7swjbevEd7OhWEj1EGSiT7qQtbZb/y5vYEu6/3GB/9xmKWdLNjWzoGGHF9LCaeIChGojs/VcyFadUcrS+7Pmgp0YViBYqysAKXdf7I7T/HoeE2X1tFoswIa1Ww==
+X-Microsoft-Antispam-Message-Info: MNe/0wLZr+gav1PXt+Y2AHm4BbrZ9I1aukhU7QdEqf4U2G1wz/2rdCuxqnRcR7SHf05AIOUh22p8f9FDE3+HMX9/xiY37jkYk1UxvcTZyfRvdmxl02jHkLLZ0MDoN5+K0nC3dhWqN5/MfqRnx1rqcBlGtljfgQIJ7gkoBixJ6d0Xjvykqye4s2rl73p3jGHTTGUKfnfeNdjMf+BUX7227ieNb/6j6Jzif6oPkmwgyEyU5ZAFsmcjQwE4BaMP5wyd+lWaRUjacSXJWgiiWaeL1cb4+eoF3XkE073DuGT6KDN6bTuMXih2ZHIJjfoUI32h9+REzFlc7WSyTNxGXRUzq7liOnGYQwX/lhoo0v2r7UQL1xsnWc4EgXY7nBXVs+TcdtofnpLOPiOODNR040udX78OTuX9YnUdN5pvTwH5kzrcOylGXT0ny+g7iHLzo+OWjDpGxqg4/XntFtCr0AXIRmAPOEFvniWXgni3jkrNU1fBnmlv4/iFo+Vy+riiAGBas28ZtdnxF1wCYIXvvVi0DSRKws+mjpl6Hj95yWEFW9xjKMqK4wREGrwRNuOq1PLOdSEBzpjS/NzIwYQrgR06H+EvxBil4ktbrKE3X+t7q78zj3BP+WPie2LRL6iPYYiJddxiz9NNfGqjYTwX/iSBHybcOmPZxgYi7qL6V34NntNWoVhf/cnC/ahtZOANeicsqca822rU57ftbPYvyvbS7q8fcB0sF9oCBufk1UoK2U6D5uMAnslfG0qWl/8Fl64xL8nxFs22AMSBVAT+bHZk5D3HMMpa5GYmvdzSynsmFvU=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(346002)(396003)(136003)(376002)(39860400002)(82310400011)(451199024)(186009)(1800799009)(46966006)(36840700001)(40470700004)(2906002)(40460700003)(2616005)(86362001)(336012)(426003)(26005)(1076003)(16526019)(6666004)(478600001)(7696005)(36756003)(36860700001)(82740400003)(356005)(81166007)(83380400001)(47076005)(40480700001)(316002)(6916009)(44832011)(5660300002)(41300700001)(4326008)(8676002)(8936002)(54906003)(70586007)(70206006)(36900700001);
+ SFS:(13230031)(4636009)(346002)(396003)(376002)(39860400002)(136003)(451199024)(82310400011)(186009)(1800799009)(40470700004)(36840700001)(46966006)(66899024)(426003)(1076003)(70206006)(81166007)(36756003)(44832011)(86362001)(2906002)(82740400003)(5660300002)(40460700003)(336012)(356005)(40480700001)(36860700001)(4326008)(83380400001)(41300700001)(8936002)(47076005)(54906003)(16526019)(316002)(26005)(7696005)(8676002)(2616005)(6916009)(70586007)(6666004)(478600001)(21314003)(36900700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 20:53:48.7098 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51ed36d4-d5c6-44a9-d81e-08dbaf1b5e8a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 20:53:52.2218 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60fb7738-1732-47ec-a636-08dbaf1b60ae
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD0.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD3.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8331
-Received-SPF: softfail client-ip=40.107.96.59; envelope-from=John.Allen@amd.com;
- helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7136
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::610;
+ envelope-from=John.Allen@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,70 +123,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the most part, AMD hosts can use the same MCE injection code as Intel but,
-there are instances where the qemu implementation is Intel specific. First, MCE
-deliviery works differently on AMD and does not support broadcast. Second,
-kvm_mce_inject generates MCEs that include a number of Intel specific status
-bits. Modify kvm_mce_inject to properly generate MCEs on AMD platforms.
+From: William Roche <william.roche@oracle.com>
 
-Reported-by: William Roche <william.roche@oracle.com>
-Signed-off-by: John Allen <john.allen@amd.com>
+AMD guests can't currently deal with BUS_MCEERR_AO MCE injection
+as it panics the VM kernel. We filter this event and provide a
+warning message.
+
+Signed-off-by: William Roche <william.roche@oracle.com>
 ---
 v3:
-  - Update to latest qemu code that introduces using MCG_STATUS_RIPV in the
-    case of a BUS_MCEERR_AR on a non-AMD machine.
+  - New patch
 ---
- target/i386/helper.c  |  4 ++++
- target/i386/kvm/kvm.c | 17 +++++++++++------
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ target/i386/kvm/kvm.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 89aa696c6d..9547e2b09d 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -91,6 +91,10 @@ int cpu_x86_support_mca_broadcast(CPUX86State *env)
-     int family = 0;
-     int model = 0;
- 
-+    if (IS_AMD_CPU(env)) {
-+        return 0;
-+    }
-+
-     cpu_x86_version(env, &family, &model);
-     if ((family == 6 && model >= 14) || family > 6) {
-         return 1;
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 639a242ad8..5fce74aac5 100644
+index 5fce74aac5..4d42d3ed4c 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -590,16 +590,21 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
-     CPUState *cs = CPU(cpu);
-     CPUX86State *env = &cpu->env;
-     uint64_t status = MCI_STATUS_VAL | MCI_STATUS_UC | MCI_STATUS_EN |
--                      MCI_STATUS_MISCV | MCI_STATUS_ADDRV | MCI_STATUS_S;
-+                      MCI_STATUS_MISCV | MCI_STATUS_ADDRV;
-     uint64_t mcg_status = MCG_STATUS_MCIP;
-     int flags = 0;
- 
--    if (code == BUS_MCEERR_AR) {
--        status |= MCI_STATUS_AR | 0x134;
--        mcg_status |= MCG_STATUS_RIPV | MCG_STATUS_EIPV;
-+    if (!IS_AMD_CPU(env)) {
-+        status |= MCI_STATUS_S;
-+        if (code == BUS_MCEERR_AR) {
-+            status |= MCI_STATUS_AR | 0x134;
-+            mcg_status |= MCG_STATUS_RIPV | MCG_STATUS_EIPV;
-+        } else {
-+            status |= 0xc0;
-+            mcg_status |= MCG_STATUS_RIPV;
-+        }
+@@ -604,6 +604,10 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
+             mcg_status |= MCG_STATUS_RIPV;
+         }
      } else {
--        status |= 0xc0;
--        mcg_status |= MCG_STATUS_RIPV;
-+        mcg_status |= MCG_STATUS_EIPV | MCG_STATUS_RIPV;
++        if (code == BUS_MCEERR_AO) {
++            /* XXX we don't support BUS_MCEERR_AO injection on AMD yet */
++            return;
++        }
+         mcg_status |= MCG_STATUS_EIPV | MCG_STATUS_RIPV;
      }
  
-     flags = cpu_x86_support_mca_broadcast(env) ? MCE_INJECT_BROADCAST : 0;
+@@ -655,7 +659,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+         if (ram_addr != RAM_ADDR_INVALID &&
+             kvm_physical_memory_addr_from_host(c->kvm_state, addr, &paddr)) {
+             kvm_hwpoison_page_add(ram_addr);
+-            kvm_mce_inject(cpu, paddr, code);
++            if (!IS_AMD_CPU(env) || code != BUS_MCEERR_AO) {
++                kvm_mce_inject(cpu, paddr, code);
++            }
+ 
+             /*
+              * Use different logging severity based on error type.
+@@ -668,8 +674,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+                     addr, paddr, "BUS_MCEERR_AR");
+             } else {
+                  warn_report("Guest MCE Memory Error at QEMU addr %p and "
+-                     "GUEST addr 0x%" HWADDR_PRIx " of type %s injected",
+-                     addr, paddr, "BUS_MCEERR_AO");
++                     "GUEST addr 0x%" HWADDR_PRIx " of type %s %s",
++                     addr, paddr, "BUS_MCEERR_AO",
++                     IS_AMD_CPU(env) ? "ignored on AMD guest" : "injected");
+             }
+ 
+             return;
 -- 
 2.39.3
 
