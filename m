@@ -2,57 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3358793D6C
+	by mail.lfdr.de (Postfix) with ESMTPS id C79DB793D6D
 	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:09:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdsGF-00074l-Ei; Wed, 06 Sep 2023 09:08:01 -0400
+	id 1qdsGQ-0007L2-NS; Wed, 06 Sep 2023 09:08:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qdsFx-00072X-FB
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:07:41 -0400
-Received: from out-228.mta0.migadu.com ([91.218.175.228])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qdsGN-0007Ix-1O
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:08:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qdsFt-0003jc-HK
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:07:41 -0400
-Message-ID: <5e6b1bbd-bc0a-cff5-119c-639a9d15e72a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1694005649;
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qdsGK-0003x0-Ob
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:08:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694005681;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IGoDnKeHLbn6LihaQjYmsdl+qed6fld3ewWmJXgDQDU=;
- b=xa084eLAUybsKxGSZqgPfzGKgn30InWq1ZMFDYcOHLf7JVDhr74CnZnDqTaxo/XVhmOTZw
- 07mKD8SjLlIBHr3n7KO5VYB06CUz5CV/7jElBYg+dnb1qMccnOY/3d5AZIjjcTQjxRUvRE
- 41W9qWxSxddUwzkzS2a7G/zUWErcZ74=
-Date: Wed, 6 Sep 2023 21:07:16 +0800
+ content-transfer-encoding:content-transfer-encoding;
+ bh=naFlvFHURz+lqyq9nCxHrPDr+MkN+KLXCyJ7gnHnlF8=;
+ b=hdIgoEq9awkpy35GQX+gxd6Wc6euwglxNKUO4HdlN4vwnruST7eKtwxKTO4Q5OzIIEJUtc
+ s/FGqeY+QOOvxp8VcKquCEIOQjX28gQKvnT9W7Gx3YGtlzMShFUrINaGBeY8o7XD/0UuL6
+ BdnWZQxEwVtfTIssSx1rJZ/AjnrnQEc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-75-tweKENI2NDOrti5Go-fxqA-1; Wed, 06 Sep 2023 09:07:59 -0400
+X-MC-Unique: tweKENI2NDOrti5Go-fxqA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F0393C100AE
+ for <qemu-devel@nongnu.org>; Wed,  6 Sep 2023 13:07:59 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.43])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0DB4B21D4F3F;
+ Wed,  6 Sep 2023 13:07:57 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH] virtio-gpu/win32: set the destroy function on load
+Date: Wed,  6 Sep 2023 17:07:55 +0400
+Message-ID: <20230906130755.596952-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Subject: Re: [Virtio-fs] Status of DAX for virtio-fs/virtiofsd?
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-Cc: virtio-fs@redhat.com, Erik Schilling <erik.schilling@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>
-References: <87v8grlzu9.fsf@linaro.org>
- <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Hao Xu <hao.xu@linux.dev>
-In-Reply-To: <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=91.218.175.228; envelope-from=hao.xu@linux.dev;
- helo=out-228.mta0.migadu.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,23 +78,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-On 5/18/23 00:26, Stefan Hajnoczi wrote:
-> On Wed, 17 May 2023 at 11:54, Alex Bennée <alex.bennee@linaro.org> wrote:
-> Hi Alex,
-> There were two unresolved issues:
->
-> 1. How to inject SIGBUS when the guest accesses a page that's beyond
-> the end-of-file.
+Don't forget to unmap the resource memory.
 
-Hi Stefan,
-Does this SIGBUS issue exist if the guest kernel can be trusted? Since in
+Fixes: commit 9462ff469 ("virtio-gpu/win32: allocate shareable 2d resources/images")
 
-that case, we can check the offset value in guest kernel.
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ hw/display/virtio-gpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-
-Thanks,
-
-Hao
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index e77187a610..fdb7b25a70 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1275,7 +1275,9 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+             g_free(res);
+             return -EINVAL;
+         }
+-
++#ifdef WIN32
++        pixman_image_set_destroy_function(res->image, win32_pixman_image_destroy, res->handle);
++#endif
+ 
+         res->addrs = g_new(uint64_t, res->iov_cnt);
+         res->iov = g_new(struct iovec, res->iov_cnt);
+-- 
+2.41.0
 
 
