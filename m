@@ -2,95 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9079C793EA1
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2ECC793EA7
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:22:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtPM-0003mQ-Lv; Wed, 06 Sep 2023 10:21:28 -0400
+	id 1qdtPo-0003qi-Vs; Wed, 06 Sep 2023 10:21:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qdtPK-0003mH-9F
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:21:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qdtPH-0003B0-Lc
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:21:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694010082;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=imVa++X5OLO/WkaedTsNde12Gxj6LUkJlnCs9HiFpzE=;
- b=NjZghHsPIxVOgKnhvYZ409RXW181BDl/BAfpgKMdvBMSg6udGCZco99/HcgPVvhzHVZ7/o
- Hg6cpQdBDJqSeaBXu0mncBEcUnocmNeRdWnJY/1L2wghSCiTU2Xkkmo0f5pgjz4nEqaTpO
- 8entBS0zrzQkKtQ4tJgeviYlTsAijLg=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-X08guzTiO_uguYPmlOBYKg-1; Wed, 06 Sep 2023 10:21:21 -0400
-X-MC-Unique: X08guzTiO_uguYPmlOBYKg-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6b9d3ce1a56so3577795a34.1
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:21:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdtPZ-0003os-Rb
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:21:42 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdtPU-0003C9-EK
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:21:39 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcd4db4c0so2227790a12.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694010095; x=1694614895; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=loA6p7ewRgoInrzBZwsV2T/2uT7kXiuE4wiTsrqbzaM=;
+ b=PL/d14V5/qP9arm0vXrP4kQwC0YVyXlXL7aeTqSoDiaIMg/7YygvMtjfWxvTrzVKLm
+ EQNRbbwhWuvxAf4AC7ihH1P5M+fy0jesBGqlvsULouydIu2zeW+FerMom74melF5nKOX
+ xn4KWGs4d7KNmKjnYiAMZ33EHOrzXRriBbC787ikpffZrMKdj3QeJHCp73PscVm361wL
+ thuYlAh1OojRcljtqv1Kp3GkZjPiPkGPijzBkg4v66JG42dWmXbIX1E4eLmQsSt1yAWy
+ Cbqndl06v+d2/K9EEtJDkhOwIfBIHoZbfQYztcxO0rG7vCcS/dEWw8qDWp3CHldJrRoq
+ CK7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694010080; x=1694614880;
+ d=1e100.net; s=20221208; t=1694010095; x=1694614895;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=imVa++X5OLO/WkaedTsNde12Gxj6LUkJlnCs9HiFpzE=;
- b=SerulzAvMDqiUCEEn+n9yRnuDystF1UkJUHl0pkbtH4bULcaYS+w5XjMzO+DLP7CGc
- zim+PZpqE7A/z7ybzLGGHOajiLo+MY6V0Une6ASG+XbycudypjBvDWVnEH0sTHu5dds/
- 3pyy3dbaHS6Gw1ZrBFcSQVdosVCODr+yFLvWz/JadEGgDU6qQzVsJ70PXHbR4epV1KoG
- I5mJraR3dnc4dTdbwyGbskgk7ZOnhWin2PlSyLAUwRzVS4dnuXvqzfpiYtzzqEVp6Mvy
- fMHx0gm3bHH9K5+dQ5DNVFyafJ6kVUAo4sO3c6zyQhpYdAiETA3Ne7rmX5UeClAa7x2V
- 8rkA==
-X-Gm-Message-State: AOJu0Yz58C60Ev4Htfh3qerDdt5ft+0TxAEN5wYNYZA2fI5mFqcli7YU
- LzHhBMhpbRYDQaYkmBjGD5siDNvsws+2JQuBOqX1TTSUVm2C8rkR6n7tonxE7xBqRW6/86iNeDv
- OlPD9XY6oWcnbV3A=
-X-Received: by 2002:a05:6358:262a:b0:139:cd0a:989a with SMTP id
- l42-20020a056358262a00b00139cd0a989amr3659388rwc.16.1694010080340; 
- Wed, 06 Sep 2023 07:21:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3l4x0n1E/B0ROuiYc2zgelBUcQIxc6iBM/1T/EB9REY8v3Jg3PtJBIT/lvSS+PshuWCuFaQ==
-X-Received: by 2002:a05:6358:262a:b0:139:cd0a:989a with SMTP id
- l42-20020a056358262a00b00139cd0a989amr3659356rwc.16.1694010079991; 
- Wed, 06 Sep 2023 07:21:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- q18-20020a0cf5d2000000b0064743dd0633sm5478610qvm.106.2023.09.06.07.21.18
+ bh=loA6p7ewRgoInrzBZwsV2T/2uT7kXiuE4wiTsrqbzaM=;
+ b=Rl5nNWVx2PDvwZFBvOvslJLfKMre21PzBsUF/pi3VDTbCWffW8Qx/KVG2ExLT+9TPy
+ jfI/IzGf5U94Q+TvV/d/BBsGMsCpvi45F2PGhkZYZHfyNAnZD0n1fd+EwpN9Z0va4AkI
+ E+5BAIAmgzvvF8Py53ckhdx1X4R8C7IghJ2HS6oRuFfhKmrR4gkj8op5bTRYHGX3+2s9
+ 3Dq/s5KNzKoaVy/AwYMUL5ZFB0oEXszBvssx7u8VuvRnzzI4SmDKRXRFWe9m8qZZRXmV
+ H69/2haVlf05jr7SRl3WM50yySGthu44uhmlabrrJ+bl0yOJR6N7HiaG6HrUuOwMLG82
+ cRWQ==
+X-Gm-Message-State: AOJu0Yy2UxUYCz5kqSRID6R48I90DXSwRIaZeu2KxQ6zX2yzdHOCZYq5
+ Go5Ds4d3X8/jtcXqapQz/6O86Q==
+X-Google-Smtp-Source: AGHT+IEyeIRwwiss80ecavjxE2lCQkLUGIDLRUkbl4cHnmEKBUpfCmpuvzYRGustDg8J+fkf+a+R6g==
+X-Received: by 2002:aa7:ca49:0:b0:52a:38c3:1b4b with SMTP id
+ j9-20020aa7ca49000000b0052a38c31b4bmr3068266edt.15.1694010094804; 
+ Wed, 06 Sep 2023 07:21:34 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ w4-20020aa7da44000000b0052241b8fd0bsm8474442eds.29.2023.09.06.07.21.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 07:21:19 -0700 (PDT)
-Message-ID: <574d6c53-5c5b-b0bf-bc89-dfd097a2cff9@redhat.com>
-Date: Wed, 6 Sep 2023 16:21:16 +0200
+ Wed, 06 Sep 2023 07:21:34 -0700 (PDT)
+Message-ID: <c53f4cae-7014-066a-de3d-09f47b27dbc6@linaro.org>
+Date: Wed, 6 Sep 2023 16:21:31 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 3/5] migration: Add .save_prepare() handler to struct
- SaveVMHandlers
-To: Avihai Horon <avihaih@nvidia.com>, Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Yanghang Liu <yanghliu@redhat.com>
-References: <20230831125702.11263-1-avihaih@nvidia.com>
- <20230831125702.11263-4-avihaih@nvidia.com> <ZPIIEYhcwPJLg2Lj@x1n>
- <94038246-216c-3304-3f8b-1fb6f6ed684d@redhat.com>
- <c0a9c367-457f-f55e-df8b-d8542916039c@nvidia.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v6 2/3] virtio-dmabuf: introduce virtio-dmabuf
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
+ cohuck@redhat.com, kraxel@redhat.com, marcandre.lureau@gmail.com
+References: <20230906111549.357178-1-aesteve@redhat.com>
+ <20230906111549.357178-3-aesteve@redhat.com>
 Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <c0a9c367-457f-f55e-df8b-d8542916039c@nvidia.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230906111549.357178-3-aesteve@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,40 +94,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/6/23 16:11, Avihai Horon wrote:
+On 6/9/23 13:15, Albert Esteve wrote:
+> This API manages objects (in this iteration,
+> dmabuf fds) that can be shared along different
+> virtio devices, associated to a UUID.
 > 
-> On 05/09/2023 19:13, Cédric Le Goater wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> On 9/1/23 17:49, Peter Xu wrote:
->>> On Thu, Aug 31, 2023 at 03:57:00PM +0300, Avihai Horon wrote:
->>>> Add a new .save_prepare() handler to struct SaveVMHandlers. This handler
->>>> is called early, even before migration starts, and can be used by
->>>> devices to perform early checks.
->>>>
->>>> Suggested-by: Peter Xu <peterx@redhat.com>
->>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
->>>
->>> Shouldn't be hard to unify the two call sites for qmp migrate and save
->>> snapshot, but we can leave that for later:
->>
->> yes. It could be called from migrate_init() with minor changes.
->>
->> We could probably move :
->>
->>     memset(&mig_stats, 0, sizeof(mig_stats));
->>     memset(&compression_counters, 0, sizeof(compression_counters));
->>     migration_reset_vfio_bytes_transferred();
->>
->> under migrate_init() also.
+> The API allows the different devices to add,
+> remove and/or retrieve the objects by simply
+> invoking the public functions that reside in the
+> virtio-dmabuf file.
 > 
-> I will send v3 with the above changes shortly.
+> For vhost backends, the API stores the pointer
+> to the backend holding the object.
+> 
+> Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+>   MAINTAINERS                       |   7 ++
+>   hw/display/meson.build            |   1 +
+>   hw/display/virtio-dmabuf.c        | 134 +++++++++++++++++++++++++++++
+>   include/hw/virtio/virtio-dmabuf.h | 103 ++++++++++++++++++++++
+>   tests/unit/meson.build            |   1 +
+>   tests/unit/test-virtio-dmabuf.c   | 137 ++++++++++++++++++++++++++++++
+>   6 files changed, 383 insertions(+)
+>   create mode 100644 hw/display/virtio-dmabuf.c
+>   create mode 100644 include/hw/virtio/virtio-dmabuf.h
+>   create mode 100644 tests/unit/test-virtio-dmabuf.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3b29568ed4..fb0f7b823f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2150,6 +2150,13 @@ T: git https://gitlab.com/cohuck/qemu.git s390-next
+>   T: git https://github.com/borntraeger/qemu.git s390-next
+>   L: qemu-s390x@nongnu.org
+>   
+> +virtio-dmabuf
+> +M: Albert Esteve <aesteve@redhat.com>
+> +S: Supported
+> +F: hw/display/virtio-dmabuf.c
+> +F: include/hw/virtio/virtio-dmabuf.h
+> +F: tests/unit/test-virtio-dmabuf.c
+> +
+>   virtiofs
+>   M: Stefan Hajnoczi <stefanha@redhat.com>
+>   S: Supported
+> diff --git a/hw/display/meson.build b/hw/display/meson.build
+> index 413ba4ab24..05619c6968 100644
+> --- a/hw/display/meson.build
+> +++ b/hw/display/meson.build
+> @@ -37,6 +37,7 @@ system_ss.add(when: 'CONFIG_MACFB', if_true: files('macfb.c'))
+>   system_ss.add(when: 'CONFIG_NEXTCUBE', if_true: files('next-fb.c'))
+>   
+>   system_ss.add(when: 'CONFIG_VGA', if_true: files('vga.c'))
+> +system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('virtio-dmabuf.c'))
+>   
+>   if (config_all_devices.has_key('CONFIG_VGA_CIRRUS') or
+>       config_all_devices.has_key('CONFIG_VGA_PCI') or
+> diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
+> new file mode 100644
+> index 0000000000..268ffe81ec
+> --- /dev/null
+> +++ b/hw/display/virtio-dmabuf.c
+> @@ -0,0 +1,134 @@
+> +/*
+> + * Virtio Shared dma-buf
+> + *
+> + * Copyright Red Hat, Inc. 2023
+> + *
+> + * Authors:
+> + *     Albert Esteve <aesteve@redhat.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "hw/virtio/virtio-dmabuf.h"
+> +
+> +
+> +static GMutex lock;
+> +static GHashTable *resource_uuids;
+> +
+> +/*
+> + * uuid_equal_func: wrapper for UUID is_equal function to
+> + * satisfy g_hash_table_new expected parameters signatures.
+> + */
+> +static int uuid_equal_func(const void *lhv, const void *rhv)
+> +{
+> +    return qemu_uuid_is_equal(lhv, rhv);
+> +}
+> +
+> +static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
+> +{
+> +    bool result;
+> +    g_mutex_lock(&lock);
+> +    if (resource_uuids == NULL) {
+> +        resource_uuids = g_hash_table_new_full(
+> +            qemu_uuid_hash, uuid_equal_func, NULL, g_free);
+> +    }
+> +    if (g_hash_table_lookup(resource_uuids, uuid) != NULL) {
+> +        g_mutex_unlock(&lock);
+> +        return false;
+> +    }
+> +    result = g_hash_table_insert(resource_uuids, uuid, value);
+> +    g_mutex_unlock(&lock);
+> +
+> +    return result;
+> +}
 
-Good timing. I was going to start working on downstream.
+Alternatively same logic, but simpler / safer:
 
-Thanks !
+static bool virtio_add_resource(...)
+{
+     bool result = false;
 
-C.
+     g_mutex_lock(&lock);
+     if (resource_uuids == NULL) {
+         resource_uuids = g_hash_table_new_full(qemu_uuid_hash,
+                                                uuid_equal_func,
+                                                NULL,
+                                                g_free);
+     }
+     if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
+        result = g_hash_table_insert(resource_uuids, uuid, value);
+     }
+     g_mutex_unlock(&lock);
+
+     return result;
+}
+
+> +static VirtioSharedObject *get_shared_object(const QemuUUID *uuid)
+> +{
+> +    g_mutex_lock(&lock);
+> +    if (resource_uuids == NULL) {
+> +        g_mutex_unlock(&lock);
+> +        return NULL;
+> +    }
+> +    gpointer lookup_res = g_hash_table_lookup(resource_uuids, uuid);
+> +    g_mutex_unlock(&lock);
+> +    return (VirtioSharedObject*) lookup_res;
+> +}
+
+Similarly:
+
+static VirtioSharedObject *get_shared_object(const QemuUUID *uuid)
+{
+     gpointer lookup_res = NULL;
+
+     g_mutex_lock(&lock);
+     if (resource_uuids != NULL) {
+         lookup_res = g_hash_table_lookup(resource_uuids, uuid);
+     }
+     g_mutex_unlock(&lock);
+
+     return (VirtioSharedObject *)lookup_res;
+}
+
+> +int main(int argc, char **argv)
+> +{
+> +    g_test_init(&argc, &argv, NULL);
+> +    g_test_add_func("/virtio-dmabuf/add_rm_res", test_add_remove_resources);
+> +        g_test_add_func("/virtio-dmabuf/add_rm_dev", test_add_remove_dev);
+
+Mis-indent.
+
+> +    g_test_add_func("/virtio-dmabuf/rm_invalid_res",
+> +                    test_remove_invalid_resource);
+> +    g_test_add_func("/virtio-dmabuf/add_invalid_res",
+> +                    test_add_invalid_resource);
+> +    g_test_add_func("/virtio-dmabuf/free_res", test_free_resources);
+> +
+> +    return g_test_run();
+> +}
+
+Thanks for updating, LGTM!
 
 
