@@ -2,74 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377727937C6
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8696C7937CA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:11:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdoXy-0007Ee-Hv; Wed, 06 Sep 2023 05:10:02 -0400
+	id 1qdoYf-0007kx-09; Wed, 06 Sep 2023 05:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qdoXr-0007D2-Pt
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:09:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qdoYc-0007ic-90
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:10:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qdoXp-0003ux-6d
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:09:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qdoYa-0004h5-97
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:10:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693991381;
+ s=mimecast20190719; t=1693991439;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MF+SQN72Pjp8JgdvgSXa+5sZftxISo7gA3fnpKO9ZAs=;
- b=XJwQf0gYp9epl9oYqGjSR+k/HuaD73HAfwushWvVWKl7dLlpinvcJJdNd1joZyuCzxsTB5
- z77cGZo36NenyWa9KHj+u+kxyO23O+Ik4NLkmHYAklkBQhrHWaP3RAdgN3RFjkRwUI2Acr
- YTsGyH8U1dYLO0S2YO9HMaJD0Pk1RPU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-pzsnbhGnNPaleFT8Vdb48w-1; Wed, 06 Sep 2023 05:09:38 -0400
-X-MC-Unique: pzsnbhGnNPaleFT8Vdb48w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2C3B803470;
- Wed,  6 Sep 2023 09:09:37 +0000 (UTC)
-Received: from [10.39.193.110] (unknown [10.39.193.110])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4D3341121314;
- Wed,  6 Sep 2023 09:09:36 +0000 (UTC)
-Message-ID: <64c3ff9a-12d4-c33e-c2a9-5602e4cd060a@redhat.com>
-Date: Wed, 6 Sep 2023 11:09:35 +0200
+ bh=FoKeGWUnutd/9mI6FB+QpcAQUG9ZXbLAn2pLmAg+HKM=;
+ b=eRfhaj2Uu4CiVPl8sEtpN9TPTysSQ+b2tG4kGEqbx0Xr8FJpztJIIYHuYFWxg/tdeJQ5Xu
+ 0mRo0PbfMnrzLDdk1+iGb2KDPuYWTMiya8LE7ltJiKWy1H2iZUzzmTNcLi47CDO5tUY5z5
+ 7DOXYy4W05F6VrVv3jXWIMMLCDSs0iI=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-265-5EfttBYZNAWzaR28xzoTjA-1; Wed, 06 Sep 2023 05:10:37 -0400
+X-MC-Unique: 5EfttBYZNAWzaR28xzoTjA-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2bcc5098038so38610141fa.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 02:10:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693991436; x=1694596236;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FoKeGWUnutd/9mI6FB+QpcAQUG9ZXbLAn2pLmAg+HKM=;
+ b=Ky0Y0Ucr618dPci2Zyz6q8wqMOUETftiJ6ndoZfEYJQmehKqZTjse+w4j9AUn103Um
+ u7wC2bW3sO6D2511gcvGI+uZH5ivesln3RN5sk8hoIhKs66H1RGhIDJIEL7XJWclVKIu
+ X11yLQmF+f9evoLg7ALDWg5VVcr10Wo7IvNC1bY9bXhprh9ht+hwcAyrSepK1jvvlUg1
+ wqhkevHWBPOiCqBaWDe6qNdY8AYJRgwG2lc2G/eqzGfyCapNlbDFBKQyO+Mfquf6ty3b
+ IMCvOaaemOzqmQeQOHABr2ZQvCJvrQuxK4YEUQJ3I2xMxX4c/B1jleZzl0pBQ1fh38nc
+ rqWA==
+X-Gm-Message-State: AOJu0Yxo4CW9Gorr9L+nsyefhWkZfr5sdmQNsDVW9hfadk24Q+AXrEbu
+ 293yBVGJUkEHGYOEYM9gZXAAG+8GanYM82nAZwkh36pbPFMXxQi+GFNMq41/t/OW534thMqu2Ky
+ uSZ/yGZsLt2cEuPA=
+X-Received: by 2002:a2e:7d0c:0:b0:2bc:da4a:4649 with SMTP id
+ y12-20020a2e7d0c000000b002bcda4a4649mr1840262ljc.22.1693991436343; 
+ Wed, 06 Sep 2023 02:10:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE43p5TU7/mW5ls38sUmKEcEBP8143LDuLK6N0yDNc2SF2xeEdkqkGPH+h5P5K333j2l3toFA==
+X-Received: by 2002:a2e:7d0c:0:b0:2bc:da4a:4649 with SMTP id
+ y12-20020a2e7d0c000000b002bcda4a4649mr1840236ljc.22.1693991435981; 
+ Wed, 06 Sep 2023 02:10:35 -0700 (PDT)
+Received: from [10.33.192.187] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ bi6-20020a05600c3d8600b00401bbfb9b2bsm326618wmb.0.2023.09.06.02.10.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 02:10:35 -0700 (PDT)
+Message-ID: <dd727caa-5fad-6013-dcf8-780faf539aae@redhat.com>
+Date: Wed, 6 Sep 2023 11:10:34 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/7] vhost-user: strip superfluous whitespace
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v22 09/20] machine: adding s390 topology to query-cpu-fast
 Content-Language: en-US
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>,
- Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230830134055.106812-1-lersek@redhat.com>
- <20230830134055.106812-2-lersek@redhat.com>
- <ce2b4c96-8a6b-247c-14eb-b3a6c81973f0@redhat.com>
- <CADSE00+9s4etckQFqGbxc3xB281tffTRPs5CAO5b7J9PeQsyrA@mail.gmail.com>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <CADSE00+9s4etckQFqGbxc3xB281tffTRPs5CAO5b7J9PeQsyrA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
+References: <20230901155812.2696560-1-nsg@linux.ibm.com>
+ <20230901155812.2696560-10-nsg@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230901155812.2696560-10-nsg@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,124 +114,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/6/23 09:12, Albert Esteve wrote:
+On 01/09/2023 17.58, Nina Schoetterl-Glausch wrote:
+> From: Pierre Morel <pmorel@linux.ibm.com>
 > 
+> S390x provides two more topology attributes, entitlement and dedication.
 > 
-> On Thu, Aug 31, 2023 at 9:14 AM Laszlo Ersek <lersek@redhat.com
-> <mailto:lersek@redhat.com>> wrote:
+> Let's add these CPU attributes to the QAPI command query-cpu-fast.
 > 
->     On 8/30/23 15:40, Laszlo Ersek wrote:
->     > Cc: "Michael S. Tsirkin" <mst@redhat.com <mailto:mst@redhat.com>>
->     (supporter:vhost)
->     > Cc: Eugenio Perez Martin <eperezma@redhat.com
->     <mailto:eperezma@redhat.com>>
->     > Cc: German Maglione <gmaglione@redhat.com
->     <mailto:gmaglione@redhat.com>>
->     > Cc: Liu Jiang <gerry@linux.alibaba.com
->     <mailto:gerry@linux.alibaba.com>>
->     > Cc: Sergio Lopez Pascual <slp@redhat.com <mailto:slp@redhat.com>>
->     > Cc: Stefano Garzarella <sgarzare@redhat.com
->     <mailto:sgarzare@redhat.com>>
->     > Signed-off-by: Laszlo Ersek <lersek@redhat.com
->     <mailto:lersek@redhat.com>>
->     > Reviewed-by: Stefano Garzarella <sgarzare@redhat.com
->     <mailto:sgarzare@redhat.com>>
->     > ---
->     >
->     > Notes:
->     >     v2:
->     >     
->     >     - pick up Stefano's R-b
->     >
->     >  hw/virtio/vhost-user.c | 2 +-
->     >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
->     This has been
-> 
->     Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org
->     <mailto:philmd@linaro.org>>
-> 
->     under the (identical) v1 posting:
-> 
->     http://mid.mail-archive.com/cd0604a1-6826-ac6c-6c47-dcb6def64b28@linaro.org <http://mid.mail-archive.com/cd0604a1-6826-ac6c-6c47-dcb6def64b28@linaro.org>
-> 
->     Thanks, Phil! (and sorry that I posted v2 too quickly -- I forgot that
->     sometimes reviewers split a review over multiple days.)
-> 
->     Laszlo
-> 
->     >
->     > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->     > index 8dcf049d422b..b4b677c1ce66 100644
->     > --- a/hw/virtio/vhost-user.c
->     > +++ b/hw/virtio/vhost-user.c
->     > @@ -398,7 +398,7 @@ static int vhost_user_write(struct vhost_dev
->     *dev, VhostUserMsg *msg,
->     >       * operations such as configuring device memory mappings or
->     issuing device
->     >       * resets, which affect the whole device instead of
->     individual VQs,
->     >       * vhost-user messages should only be sent once.
->     > -     *
->     > +     *
->     >       * Devices with multiple vhost_devs are given an associated
->     dev->vq_index
->     >       * so per_device requests are only sent if vq_index is 0.
->     >       */
->     >
-> 
-> 
-> Thanks for the series!
-> I had a timeout problem with a virtio device I am developing, and I was
-> not sure yet what was going on.
-> Your description of the problem seemed to fit mine, in my case the
-> driver sent a command through the data plane
-> right after the feature negotiation that reached the backend too soon.
-> Adding delays alleviated the issue, so it
-> already hinted me to a race condition.
-> 
-> I tested using this patch series and according to my experiments, it
-> really lowers the chances to get the deadlock.
-> Sadly, I do still get the issue sometimes, though (not frequently)...
-> However, I think probably the solution comes not
-> from the Qemu side, but from the rust-vmm vhost-user-backend crate. I am
-> looking for that solution on my side.
-> 
-> But that does not invalidate this patch, which I think is a necessary
-> improvement, and in my tests it really
-> helps a lot with the described issue. Therefore:
-> 
-> Tested-by: Albert Esteve <aesteve@redhat.com <mailto:aesteve@redhat.com>>
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 
-Thank you for the testing and the feedback!
 
-My problem with relegating the fix to rust-vmm/vhost -- i.e. with
-calling the hang a bug inside rust-vmm/vhost -- is that rust-vmm/vhost
-is *unfixable* as long as the vhost-user specification says what it
-says. As soon as the guest is permitted to issue a data plane operation,
-without forcing it to await completion of an earlier control plane
-operation, the cat is out of the bag. Those operations travel through
-independent channels, and the vhost-user spec currently requires the
-backend to listen to both channels at the same time. There's no way to
-restore the original order after both operations have been submitted
-effectively in parallel from the guest side.
-
-The guest cannot limit itself, the virtio operations it needs to do (on
-the control plane) are described in the virtio spec, in "driver
-requirements" sections, and most of those steps are inherently
-treated/specified as synchronous. The guest already thinks those steps
-are synchronous.
-
-So it really is a spec problem. I see the big problem in the switch from
-vhost-net to the generic vhost-user protocol. My understanding from the
-virtio-networking series in the RH Developer Blog is that vhost-net was
-entirely ioctl() based, and consequently totally synchronous. That was
-lost when the protocol was rebased to unix domain sockets, without
-upholding the explicit request-response pattern in all operations.
-
-I'm worried we can't get this unstuck until Michael answers Stefan's
-question, concerning the spec.
-
-Laszlo
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
