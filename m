@@ -2,195 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD395793439
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 05:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF107934E3
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 07:32:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdjWn-00046b-1j; Tue, 05 Sep 2023 23:48:29 -0400
+	id 1qdl8C-0002fJ-09; Wed, 06 Sep 2023 01:31:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qdjWj-00046B-1s; Tue, 05 Sep 2023 23:48:25 -0400
-Received: from esa6.fujitsucc.c3s2.iphmx.com ([68.232.159.83])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qdl88-0002eq-Pg; Wed, 06 Sep 2023 01:31:08 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qdjWf-00049a-Jc; Tue, 05 Sep 2023 23:48:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
- t=1693972101; x=1725508101;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=bpBP0SCNVBN2dnjUTUDUlSjAYUO+VNOZmIXw3uJFKBw=;
- b=rb/sUma7+f2Bhf9hfsCHtmNdckycuTuvXr2NYO6ACjQ7gYLeK6GHLl9g
- x6oKoK+5mQVUokqoCcIk3BmJLlpnP3dO/eozNIjJfWWhlNYRfIREwQcuH
- jCWv6NYtA8L0kXeRuoVlALnID6vhb1GLgSfZ2JIb5wjF2fQSI5ywdrFSG
- VBBMtAItzotE0XMwiL4SWf3kWsvCZhFDIqdomXGsmZS+7B7WFBreDucNw
- uc6tVe63A+0uxfcVXDI9w7tWyODwuhTqJnyfhIfQdU6dPjO/jDcYbnDlf
- 9LiSZ/AC7tPen6TNYBCLWitJQ7gdXz4PLoGh5HoY60F9VGVSaAXsa/aX8 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="94290858"
-X-IronPort-AV: E=Sophos;i="6.02,231,1688396400"; d="scan'208";a="94290858"
-Received: from mail-tycjpn01lp2169.outbound.protection.outlook.com (HELO
- JPN01-TYC-obe.outbound.protection.outlook.com) ([104.47.23.169])
- by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Sep 2023 12:48:09 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KtwHCt2h5m5qLpPP/0fgyouDOPRJQ/aHZRDl1twllczK6onlfuLgvzll8ZwgkhUPC+2n/YURa1VrVlRtXgoMTM1NEMaQuLsHaiTLlEB7LNM1g0sOMAjq8FwQnzMe8QOAS9de/54D+lgrtePTbuOFUKbwjF6p6W6vrS1+xLOpKF09dVwGHe5PzfWJYL5uhAg95MBn/WzIATDPZ/YR+I2fL6DoiwSl10kgUgxfvTtdywGpCTnn4CxrMwIvtjfrPjbYkQHA6AEOyV8P8h9Fpd76+lZjJCEtu8/4292uARFY5QsjsMrRfjdwSqte2xnsXTQPBbOKKL4Ej8iP4fvFwZ+tVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bpBP0SCNVBN2dnjUTUDUlSjAYUO+VNOZmIXw3uJFKBw=;
- b=cbbZ4XNHrP9Ero922b8ykV/kRLzFavw1YF5jnCINfGV30ZT6yg/Gpvx/XRSklMIxhc4ifSkuh3+CtNQqbXB2RO/kHJyXxArgIl1sNtheZWNv+L+MgGW4L6/aUv/OC8AM+rj/6jnkxOmMLj98HxJu5b0dZcqN7KhIUU9TsOb8VIqaH94B5zS/9xP5fYF/q91p9FlUofX5u3gAGvo6DhRyBQ+LyWTshkgDROE4agu/GdGoEBH+lKtXBqhZnUV/2Li8do6EcnMpBeuuho2c48dQr3vmTe5nEN1KjlIueqfXuKbTHxlR8tPUWjUVQ6+eDIIYkX0d4X5wBxJihYzEz5i87g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
- by TY3PR01MB11496.jpnprd01.prod.outlook.com (2603:1096:400:371::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Wed, 6 Sep
- 2023 03:48:06 +0000
-Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
- ([fe80::6996:50d0:fd3d:15f1]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
- ([fe80::6996:50d0:fd3d:15f1%4]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
- 03:48:05 +0000
-From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-To: Markus Armbruster <armbru@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "kwolf@redhat.com" <kwolf@redhat.com>, "hreitz@redhat.com"
- <hreitz@redhat.com>, "eblake@redhat.com" <eblake@redhat.com>,
- "vsementsov@yandex-team.ru" <vsementsov@yandex-team.ru>, "jsnow@redhat.com"
- <jsnow@redhat.com>, "idryomov@gmail.com" <idryomov@gmail.com>, "pl@kamp.de"
- <pl@kamp.de>, "sw@weilnetz.de" <sw@weilnetz.de>, "sstabellini@kernel.org"
- <sstabellini@kernel.org>, "anthony.perard@citrix.com"
- <anthony.perard@citrix.com>, "paul@xen.org" <paul@xen.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "marcandre.lureau@redhat.com"
- <marcandre.lureau@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>,
- "thuth@redhat.com" <thuth@redhat.com>, "philmd@linaro.org"
- <philmd@linaro.org>, "stefanha@redhat.com" <stefanha@redhat.com>,
- "fam@euphon.net" <fam@euphon.net>, "quintela@redhat.com"
- <quintela@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>, "kraxel@redhat.com"
- <kraxel@redhat.com>, "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/7] migration/rdma: Fix save_page method to fail on
- polling error
-Thread-Topic: [PATCH 1/7] migration/rdma: Fix save_page method to fail on
- polling error
-Thread-Index: AQHZ3A7oCOHOGe53IUCQTH8HwpnDB7ANMcMA
-Date: Wed, 6 Sep 2023 03:48:05 +0000
-Message-ID: <b363efe3-76ba-14f1-503f-c2ca36864253@fujitsu.com>
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-2-armbru@redhat.com>
-In-Reply-To: <20230831132546.3525721-2-armbru@redhat.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|TY3PR01MB11496:EE_
-x-ms-office365-filtering-correlation-id: d1a31b88-242e-465f-bcfe-08dbae8c140a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 2niVXsa41CVKxjTq/ZP1RetlSyhUI5YRYDuhVKRpffd6AXG7PP8nVwSOXkqyN/qymvZVhREKCq518l5n52n5NF79O6nA16XtlhqkZIxhUfAMfn1JQ34nTtJulIwfYt1sQVbOEHCzThyOcldim9TovfWaDPHytnSDyGPH7WJVYoN4tfrnk9FmfPxhLFBIMXcDBSejHddx9jbEVMP+KZmt0E1Ht/OhpMh98zASwRypMMgcRnQAKyxiknYbDXZUpxIXjx83R2NNDMgf5VPQ1EHbOVIaQMwRPK7HfpWq+HIPo0AR4JpdG04G0zD+6PC3bXuK6/vYBDvOLwc1T3kFiTUT5DoJxkjJMQP2cZa08W2zAS8b81euGraiKCyR6VUQFzG2m3dNbfOzejc5K++5HP7djo2vO+4ZGPx57C769/E9OkAMWsdIKJAC0XU60LfmPt/nIxChZKzgy2Raom+Qkiv6y6fStl002J3NDTRZAPS3wClW56HFZcZEZXGo6MDkXs6gQrjtb2SslX9Q2qwN0LnS882ueZVZ2tKlafePnkBOIYsrX1+HiDG/kLL6FYSyFjpXC/zG/haMhLDkNo49d6/aq3dK4EC4gTMb3SiH5Q6hZfFDzUTAckRU8ogkhcZeVcBmghdXYVG9Ulluct/wdGwXpGGwMpvjXx2VbMiI+pcBuBcEDyP7QUkeAreqqraBCJKxKpVj/qEYPA5id01xEPwaCQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(136003)(366004)(346002)(376002)(39860400002)(1590799021)(186009)(1800799009)(451199024)(31686004)(1580799018)(71200400001)(53546011)(6486002)(6506007)(6512007)(85182001)(36756003)(82960400001)(31696002)(86362001)(38100700002)(122000001)(38070700005)(2616005)(2906002)(26005)(83380400001)(478600001)(110136005)(91956017)(66946007)(8676002)(316002)(8936002)(4326008)(76116006)(5660300002)(66556008)(7416002)(54906003)(66476007)(41300700001)(66446008)(64756008)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?S1dZYnFnTnFkQ2YwTENvZDExakR1ZURRZkMwb0FxVlpQblI1ZDduekNkNFJv?=
- =?utf-8?B?ZFk0TzZRSTRHcmIzVlZoYzduYWhOUWZwVmxQaS9RekREaEJydEJzb0FybHFm?=
- =?utf-8?B?VnY1TmgzOGRaVUpnSmN5VVJRalZaOXVNZTQ2MXEvbzV5UjhMUmd3Rk9pSEIy?=
- =?utf-8?B?aXpZMWFHOHZkSU1XcXQrQnJpbUtjYVJERnZZVGlRSlk5R015NE1JSFpYM2s1?=
- =?utf-8?B?dzEvUm53bS9ZQytnbG5KZjlWdDBFS1VoY2NpOTdxNW82WGNMUzcyQnhhZEI2?=
- =?utf-8?B?dURoNmFKenhpTUROU2R0dFRtOGl4OVI3TUtGeXB1ZWl6cCtUM1hYRDkwekRO?=
- =?utf-8?B?dVNjYllGVTh5bUZGdUZnS2VGcXVOOWJjY0RmZTBCQy93UVRpWnRLallBOGVO?=
- =?utf-8?B?OXdJOU4xOXltQ08zRWp2WjlNUkdsZGd1ajRaTFBEZXp1UHVFZFNPWitscnJR?=
- =?utf-8?B?Z2QveTBPMG91eUJxbXBIMlRSOWIrUGc2UTR6SFE3QUF1V2dYbzF4cXZETzRM?=
- =?utf-8?B?cDdNL0dZYm92MXY0b3RhY3NsU21QZG1NVmlmSFlDYlRJL25yY1hrdnNVY056?=
- =?utf-8?B?aEl2N3RvaDQwSmx2alZ4SlBOeVdxOTZrTTRlczlveE1PMHhKZjJaWUtKQW9u?=
- =?utf-8?B?MmRxUzF1NlNUN25Yb05EbWlaeXdjM0FLeHd6dWlFcjVnZVhHR0NjRUxtMmdT?=
- =?utf-8?B?aFpOYUovU1lrNW11VTRJRkVpaHJBTHNYL3F4NkxIQXVnNm1oZ2szTzdxQ0Vo?=
- =?utf-8?B?dWh3RDUyZFU0dkZZNU55YTB2QW5pazZ1M3F6dlZ0S2VveVBpcEZtd2s3NTVR?=
- =?utf-8?B?N0pYTjZaTzFkZlBHcGRjZDQ1UWVVQmlYbUF6NXlIdXVyaXRiRFR2bTByWW9y?=
- =?utf-8?B?REpBbUtrM2pyTWRNVlBHVUJmQmtZK21CZThjNlpiSG8xcHJ2dUVkY0RtSVIr?=
- =?utf-8?B?K2NBZ2RhVjZCSnRaQnFLSW8xbTNKK0YwcUVEOWVSOExlanNWVFVKYUZCdTNu?=
- =?utf-8?B?V05zelRSbkUyWFlpQ2hHNnVCcDBvSVFTN3lDWlUvSVQ5VXlDR0hycVlLcUdC?=
- =?utf-8?B?dTdtKzVNeFpTZXNZejZJK3NyVk5SYzkrTzM0WkdTVnh2clE2N3dMRmtHYnZ2?=
- =?utf-8?B?WFU5MlFxUm9jczE2RXRreTQycGJla2NoTkcycUpYVlRyT2hqT2dZTFhvTmlP?=
- =?utf-8?B?aXhreXBsb2F2S1hvMHBmUzB2aE0yOVMyUUFhWEY0TkJjK29VQ1NoeDlFa3BC?=
- =?utf-8?B?MlNPSnIzejExcHlQNzgzN25PbWgyaHZMbjBJZ3hGT3BlVVVzTVhtQndPUFdk?=
- =?utf-8?B?bzdkbkV1K0Y1dGQ0Y3NJb3pTTmF3MVZGNVNwTkRBdjdMUzB1QnZvano2SE4x?=
- =?utf-8?B?VzBORzhPczlWTUkzZTZSS2NkbUswVFprMmt6ME9EeEVLSkZBQVRzbzJYUnJy?=
- =?utf-8?B?MGpzUDZWd0hNVkV5TmZaNWFPNHZ3V1plbHdySTQwSGNDZGg2UldRQmIwVlV1?=
- =?utf-8?B?SmlSc1dlZm84MWljdmx2THlUbm9JN3kvVm1zbG5sMTZUSGxOZnZDaHJTaVpO?=
- =?utf-8?B?S0xxMHAvYXZPQnAvZ1JHUjhqQi9tSUUzb0hvdzRvVU83b1lIOHZzdy9ENnJ3?=
- =?utf-8?B?ZnYyM2YyZ2F6dG1CY1dNc2tNTkxoY3lOL2UxWWRJcjNYWjhtNE1lZkpXeWNw?=
- =?utf-8?B?MEJDVXpjVmpycUs4NkJwTUQydUpGc0o5c3pieWwrOVRYWWFMcE03ZEMySXBV?=
- =?utf-8?B?dEp4K2ZMbUo0dGxqWWFGRTNubzRYeGI2MW1QWmpzbnZ4bENXaytJb3hrTWpz?=
- =?utf-8?B?RGpvNVY4WHUrMDdnK1JuM3BPQ0dXVmlnRzdPK2RYTGxoSGllVVFmOU5jdjBB?=
- =?utf-8?B?RFNoUGFKVkxpN1pWVnV6dTBFNFZySmUwVVFhVDdNRlY5NzUxSGVNRUlPZmdW?=
- =?utf-8?B?OXVzTEY1SDNvNXhwU0Y4NmlqdFBld09vdEdkSmlEWTJCemJ4V2IzOE5XZk1r?=
- =?utf-8?B?REFFNzJKeHNYT3p6R1JFVS82Z2JCc1NvZTYwMmNSUmdtOVMyM1J3Q2JlajYz?=
- =?utf-8?B?QUUyTWtLb2wwc0U5a3RXcFpuTlpKN0k2U28vdVRoYW5aY2orQk43Z2JmU3Zq?=
- =?utf-8?B?bWh4NGNHK1Nmc0NrNktwMUJOVUhtVmpPOUlOTkRYalphTE5EWUdIMDdoakUr?=
- =?utf-8?B?cHc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <215BB8D900A32D48BEF9A0DFCD72C7B7@jpnprd01.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qdl84-0006B3-2c; Wed, 06 Sep 2023 01:31:08 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3865QKAj008961; Wed, 6 Sep 2023 05:30:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=sRcEnPxr4v/9AaaBdiWUHpayxX77nn1+JtvnsbIonrc=;
+ b=IvJnxIGihztxjkvMsDrVm4WAi6PRPLgxCdkbtOclFUumfEwqc1p69PMbDJDiZdvnV4IK
+ F/dS/pt2mADGrz6hu+TBpg0RPuRR+kawyXYGOzt82mj3xnw8nhFQYme77KKxkjLk13nz
+ kLBbiFqjbD7FjoJJdHsKxOnVyMHlqd5ttC+/9c2iLiWOX2/kwdzwf/BHKLzP29i7nZEq
+ WasEgvFIvfeBc1TRi2YutNSGOScVHoGR4gdJ9QAA5hIWfvTRTWi8CXDjhzArozB1WopU
+ 7zzpJ5EbKakw0/tMIvD0EuL/VWX6anYhxWvo4/1W/LwFURH2CzB5604xu5ACwO4glzsp eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxk9a02we-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Sep 2023 05:30:59 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3865U7dO020753;
+ Wed, 6 Sep 2023 05:30:58 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxk9a02tp-9
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Sep 2023 05:30:58 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3863N93R006651; Wed, 6 Sep 2023 04:33:47 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgvkg13t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Sep 2023 04:33:47 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3864Xiwo18809408
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Sep 2023 04:33:44 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1069820040;
+ Wed,  6 Sep 2023 04:33:44 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2771D20043;
+ Wed,  6 Sep 2023 04:33:42 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
+ [9.109.242.129])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Sep 2023 04:33:41 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: npiggin@gmail.com, danielhb413@gmail.com, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
+ jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
+Subject: [PATCH 00/15] Nested PAPR API (KVM on PowerVM)
+Date: Wed,  6 Sep 2023 10:03:18 +0530
+Message-Id: <20230906043333.448244-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: G717h7l2nxkTdJONzJKSkRA_xwVshLXZ
+X-Proofpoint-GUID: 2e4-aBMDEDHQDRQTHdT4d_9j9tMX7l7W
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?UVZhb2NpT1VRSEIrZmFOOUx6VVJjdnZkcHNRbjNrbGZvaERhbENHMXFIejkx?=
- =?utf-8?B?Q2czYUZGZmZlN3hhVG9KZkgzUWdxNzNZcTFqa0Y2cFlHRzNzc2Q5YTNSbU1a?=
- =?utf-8?B?eng4cFhyaG9EN2Mzai80RVpUeU5Tb1dlb3dsMWVERGo3dkNyY3hsckJDZDBE?=
- =?utf-8?B?bHNhUFR5SnJUZXBjOHBFT0o3OWJZR21mOFZYQ1dQaVlRVzJ0cmcyeGpwWHlF?=
- =?utf-8?B?QXlQRDBMcDV6K0JEaUI1akJNelVtUGtYblZkNzFmbVdvQjVwVDJzLzc0UHh5?=
- =?utf-8?B?QnJHc1lYT1RLWFdncGs5ZkdBMXVqeTl3VGw2TnlmL1R0RkZLYVNmcDRvWmlR?=
- =?utf-8?B?TExjTm44Qi9CQWJQUzcwOGxsdE9IY1hlb21YOHRyS3lnWnBuM1lZSlA1SVB5?=
- =?utf-8?B?WFExNld3ZkJ5VXF6UGFSRnhoRGFROUNpT05MZE9GUWMrREVSQ1hjZ3Z0ckxr?=
- =?utf-8?B?eEN2WlB4RC9vdzVUVEJpUi8yWmdlb1cvN1VRRXh0Yks0UVMzSHpadkc1aU5p?=
- =?utf-8?B?UDRYMHBsRzdoSzRHSFBMU1hUMmtIdW9TdnFqTWRPUVB6bTlaUCtkcVJ0NXB0?=
- =?utf-8?B?bEVDVnhmaEtpVUp5d3ZlM1Q4Zkg0QlRaQWQ2a3htK1BTRnoya3FIbVMyNFZW?=
- =?utf-8?B?UXFLUmJRLzYxNGdDL0JhU015ZXluVFBhMVJnSVhiRFBkazNKYWloZHR3WWlq?=
- =?utf-8?B?Nis4aUZaSm9SclhoYW5RUFlSbFlLN25NYURpdndOTWFNSk9tTi91cjkzYzdL?=
- =?utf-8?B?bjF4c1BuZ3IyTWdyNEU2Z1ZYTlN2SXRPK2lsV0V2YmhZSWQ0REVIM1dLVGgz?=
- =?utf-8?B?cWtiM1ZUYTIrNm1pc2RSNXNuRm9EQUh0U2ZsQ3prYjZQa1RrSWx1U2hZLyt1?=
- =?utf-8?B?OStpVnZnNzFqQWtzbXNZclZnOHl3Vk5nSEhMUG5MWFBCQnhuNFpHcEpCbHNH?=
- =?utf-8?B?ZE9kWkRtWC9LWWlIYWV1aWxkQXlyT1psU0loNkVmWHl3YUVueCt2aWJEb0k0?=
- =?utf-8?B?OVZNK1JkMlM5c3F5OWJ3RFpPUURUN0RDc2RIbjhraTdhbnl5NVMxNnp4cmFr?=
- =?utf-8?B?TTlSQzU4UEtCam82RlR1WEcxd2o1UjV4U0dPNEorTmxRU2JNc1VIMnU2MHVD?=
- =?utf-8?B?MjFKYld0UjNZcElzSmFvUnpvckYxVHVmN3laUTFoU2kvakJZOFAzdUtpZi9N?=
- =?utf-8?B?MDJrdzJvSjVxLzNydHZzclNkdUlXS29lUzFXdGlSb1liY3BZdTNMQm5EdEZL?=
- =?utf-8?B?b0JXWGlqa2lpYlJud3A3Z3NhenhKandBQnU0NVRUQWNaN2kzbk8xdHNUOXhk?=
- =?utf-8?B?OVhwRVhqVW14aGwzbm03K3RHTjFVL0ljR1puL1g3T0o0RnJDZzJySmtLUnIv?=
- =?utf-8?B?N1g3MXdDRTVYdUxkVHVGYUViMHZVSU45ZUJocWtjSkdOUTJWbStWN0w1VWFl?=
- =?utf-8?B?SjBIc0d2YVoyWkhkNDNkeHBqdTVvUDd6SFo5VjR6MWpIdDhsUUxWL0NlNU5F?=
- =?utf-8?Q?tLd71Q=3D?=
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1a31b88-242e-465f-bcfe-08dbae8c140a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Sep 2023 03:48:05.7810 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pa1IIalk7dWWCHf/i6eHcdJf+iw7VbsOff5+cZXQg2ByPfIKhBA8b0lVjMAXnjDYI9Cv2ApqvlGec3LlpckDsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11496
-Received-SPF: pass client-ip=68.232.159.83; envelope-from=lizhijian@fujitsu.com;
- helo=esa6.fujitsucc.c3s2.iphmx.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-05_13,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 bulkscore=0 mlxlogscore=669 mlxscore=0
+ phishscore=0 lowpriorityscore=0 spamscore=0 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309060045
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -206,34 +110,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCk9uIDMxLzA4LzIwMjMgMjE6MjUsIE1hcmt1cyBBcm1icnVzdGVyIHdyb3RlOg0KPiBxZW11
-X3JkbWFfc2F2ZV9wYWdlKCkgcmVwb3J0cyBwb2xsaW5nIGVycm9yIHdpdGggZXJyb3JfcmVwb3J0
-KCksIHRoZW4NCj4gc3VjY2VlZHMgYW55d2F5LiAgVGhpcyBpcyBiZWNhdXNlIHRoZSB2YXJpYWJs
-ZSBob2xkaW5nIHRoZSBwb2xsaW5nDQo+IHN0YXR1cyAqc2hhZG93cyogdGhlIHZhcmlhYmxlIHRo
-ZSBmdW5jdGlvbiByZXR1cm5zLiAgVGhlIGxhdHRlcg0KPiByZW1haW5zIHplcm8uDQo+IA0KPiBC
-cm9rZW4gc2luY2UgZGF5IG9uZSwgYW5kIGR1cGxpY2F0ZWQgbW9yZSByZWNlbnRseS4NCj4gDQo+
-IEZpeGVzOiAyZGE3NzZkYjQ4NDYgKHJkbWE6IGNvcmUgbG9naWMpDQo+IEZpeGVzOiBiMzkwYWZk
-OGM1MGIgKG1pZ3JhdGlvbi9yZG1hOiBGaXggb3V0IG9mIG9yZGVyIHdyaWQpDQoNClRoYW5rcyBm
-b3IgdGhlIGZpeGVzDQoNCg0KPiBTaWduZWQtb2ZmLWJ5OiBNYXJrdXMgQXJtYnJ1c3RlciA8YXJt
-YnJ1QHJlZGhhdC5jb20+DQoNCg0KUmV2aWV3ZWQtYnk6IExpIFpoaWppYW4gPGxpemhpamlhbkBm
-dWppdHN1LmNvbT4NCg0KDQoNCg0KPiAtLS0NCj4gICBtaWdyYXRpb24vcmRtYS5jIHwgNiArKysr
-LS0NCj4gICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0K
-PiANCj4gZGlmZiAtLWdpdCBhL21pZ3JhdGlvbi9yZG1hLmMgYi9taWdyYXRpb24vcmRtYS5jDQo+
-IGluZGV4IGNhNDMwZDMxOWQuLmIyZTg2OWFjZWQgMTAwNjQ0DQo+IC0tLSBhL21pZ3JhdGlvbi9y
-ZG1hLmMNCj4gKysrIGIvbWlncmF0aW9uL3JkbWEuYw0KPiBAQCAtMzI4MSw3ICszMjgxLDggQEAg
-c3RhdGljIHNpemVfdCBxZW11X3JkbWFfc2F2ZV9wYWdlKFFFTVVGaWxlICpmLA0KPiAgICAgICAg
-Ki8NCj4gICAgICAgd2hpbGUgKDEpIHsNCj4gICAgICAgICAgIHVpbnQ2NF90IHdyX2lkLCB3cl9p
-ZF9pbjsNCj4gLSAgICAgICAgaW50IHJldCA9IHFlbXVfcmRtYV9wb2xsKHJkbWEsIHJkbWEtPnJl
-Y3ZfY3EsICZ3cl9pZF9pbiwgTlVMTCk7DQo+ICsgICAgICAgIHJldCA9IHFlbXVfcmRtYV9wb2xs
-KHJkbWEsIHJkbWEtPnJlY3ZfY3EsICZ3cl9pZF9pbiwgTlVMTCk7DQo+ICsNCj4gICAgICAgICAg
-IGlmIChyZXQgPCAwKSB7DQo+ICAgICAgICAgICAgICAgZXJyb3JfcmVwb3J0KCJyZG1hIG1pZ3Jh
-dGlvbjogcG9sbGluZyBlcnJvciEgJWQiLCByZXQpOw0KPiAgICAgICAgICAgICAgIGdvdG8gZXJy
-Ow0KPiBAQCAtMzI5Niw3ICszMjk3LDggQEAgc3RhdGljIHNpemVfdCBxZW11X3JkbWFfc2F2ZV9w
-YWdlKFFFTVVGaWxlICpmLA0KPiAgIA0KPiAgICAgICB3aGlsZSAoMSkgew0KPiAgICAgICAgICAg
-dWludDY0X3Qgd3JfaWQsIHdyX2lkX2luOw0KPiAtICAgICAgICBpbnQgcmV0ID0gcWVtdV9yZG1h
-X3BvbGwocmRtYSwgcmRtYS0+c2VuZF9jcSwgJndyX2lkX2luLCBOVUxMKTsNCj4gKyAgICAgICAg
-cmV0ID0gcWVtdV9yZG1hX3BvbGwocmRtYSwgcmRtYS0+c2VuZF9jcSwgJndyX2lkX2luLCBOVUxM
-KTsNCj4gKw0KPiAgICAgICAgICAgaWYgKHJldCA8IDApIHsNCj4gICAgICAgICAgICAgICBlcnJv
-cl9yZXBvcnQoInJkbWEgbWlncmF0aW9uOiBwb2xsaW5nIGVycm9yISAlZCIsIHJldCk7DQo+ICAg
-ICAgICAgICAgICAgZ290byBlcnI7
+There is an existing Nested-HV API to enable nested guests on powernv
+machines. However, that is not supported on pseries/PowerVM LPARs.
+This patch series implements required hcall interfaces to enable nested
+guests with KVM on PowerVM.
+Unlike Nested-HV, with this API, entire L2 state is retained by L0
+during guest entry/exit and uses pre-defined Guest State Buffer (GSB)
+format to communicate guest state between L1 and L2 via L0.
+
+L0 here refers to the phyp/PowerVM, or launching a Qemu TCG L0 with the
+newly introduced option cap-nested-papr=true (refer patch 5/15).
+L1 refers to the LPAR host on PowerVM or Linux booted on Qemu TCG with
+above mentioned option cap-nested-papr=true.
+L2 refers to nested guest running on top of L1 using KVM.
+No SW changes needed for Qemu running in L1 Linux as well as L2 Kernel.
+
+There is a Linux Kernel side patch series to enable support for Nested
+PAPR in L1 and same can be found at below url:
+
+Linux Kernel RFC PATCH v4:
+- https://lore.kernel.org/linuxppc-dev/20230905034658.82835-1-jniethe5@gmail.com/
+
+For more details, documentation can be referred in either of patch
+series.
+
+There are scripts available to assist in setting up an environment for
+testing nested guests at https://github.com/mikey/kvm-powervm-test
+
+Thanks to Michael Neuling, Shivaprasad Bhat, Kautuk Consul, Vaibhav Jain
+and Jordan Niethe.
+
+PS: This is a resend of patch series after rebasing to upstream master.
+
+Harsh Prateek Bora (15):
+  ppc: spapr: Introduce Nested PAPR API related macros
+  ppc: spapr: Add new/extend structs to support Nested PAPR API
+  ppc: spapr: Use SpaprMachineStateNested's ptcr instead of nested_ptcr
+  ppc: spapr: Start using nested.api for nested kvm-hv api
+  ppc: spapr: Introduce cap-nested-papr for nested PAPR API
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_GET_CAPABILITIES
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_SET_CAPABILITIES
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_CREATE
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_CREATE_VCPU
+  ppc: spapr: Initialize the GSB Elements lookup table.
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_[GET|SET]_STATE
+  ppc: spapr: Use correct source for parttbl info for nested PAPR API.
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_RUN_VCPU
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_DELETE
+  ppc: spapr: Document Nested PAPR API
+
+ docs/devel/nested-papr.txt      |  500 ++++++++++
+ hw/ppc/spapr.c                  |   28 +-
+ hw/ppc/spapr_caps.c             |   50 +
+ hw/ppc/spapr_hcall.c            |    1 +
+ hw/ppc/spapr_nested.c           | 1504 +++++++++++++++++++++++++++++--
+ include/hw/ppc/ppc.h            |    2 +
+ include/hw/ppc/spapr.h          |   35 +-
+ include/hw/ppc/spapr_cpu_core.h |    7 +-
+ include/hw/ppc/spapr_nested.h   |  378 ++++++++
+ target/ppc/cpu.h                |    2 +
+ 10 files changed, 2433 insertions(+), 74 deletions(-)
+ create mode 100644 docs/devel/nested-papr.txt
+
+-- 
+2.39.3
+
 
