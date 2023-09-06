@@ -2,34 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C51793851
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0383A793854
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdotq-0000aT-Nj; Wed, 06 Sep 2023 05:32:38 -0400
+	id 1qdoto-0000X9-Qo; Wed, 06 Sep 2023 05:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotZ-0008Mv-BL; Wed, 06 Sep 2023 05:32:22 -0400
+ id 1qdotY-0008MJ-JE; Wed, 06 Sep 2023 05:32:20 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotT-0000fR-JR; Wed, 06 Sep 2023 05:32:21 -0400
+ id 1qdotT-0000fU-AI; Wed, 06 Sep 2023 05:32:19 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qdoqM-005qCB-33;
- Wed, 06 Sep 2023 11:32:01 +0200
+ (envelope-from <den@openvz.org>) id 1qdoqN-005qCB-14;
+ Wed, 06 Sep 2023 11:32:02 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
-Cc: den@openvz.org, Kevin Wolf <kwolf@redhat.com>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>
-Subject: [PATCH 6/8] qemu-nbd: Restore "qemu-nbd -v --fork" output
-Date: Wed,  6 Sep 2023 11:32:08 +0200
-Message-Id: <20230906093210.339585-7-den@openvz.org>
+Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH 7/8] qemu-nbd: document -v behavior in respect to --fork in man
+Date: Wed,  6 Sep 2023 11:32:09 +0200
+Message-Id: <20230906093210.339585-8-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906093210.339585-1-den@openvz.org>
 References: <20230906093210.339585-1-den@openvz.org>
@@ -57,99 +55,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Closing stderr earlier is good for daemonized qemu-nbd under ssh
-earlier, but breaks the case where -v is being used to track what is
-happening in the server, as in iotest 233.
-
-When we know we are verbose, we should preserve original stderr and
-restore it once the setup stage is done. This commit restores the
-original behavior with -v option. In this case original output
-inside the test is kept intact.
-
-Reported-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: Hanna Reitz <hreitz@redhat.com>
-CC: Mike Maslenkin <mike.maslenkin@gmail.com>
-Fixes: 5c56dd27a2 ("qemu-nbd: fix regression with qemu-nbd --fork run over ssh")
 ---
- qemu-nbd.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ docs/tools/qemu-nbd.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 9f28e3ebda..b9c74ce77c 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -255,18 +255,23 @@ struct NbdClientOpts {
-     char *device;
-     char *srcpath;
-     SocketAddress *saddr;
-+    int stderr;
-     bool fork_process;
-     bool verbose;
- };
+diff --git a/docs/tools/qemu-nbd.rst b/docs/tools/qemu-nbd.rst
+index faf6349ea5..5c48ee7345 100644
+--- a/docs/tools/qemu-nbd.rst
++++ b/docs/tools/qemu-nbd.rst
+@@ -197,7 +197,9 @@ driver options if :option:`--image-opts` is specified.
  
--static void nbd_client_release_pipe(void)
-+static void nbd_client_release_pipe(int old_stderr)
- {
-     /* Close stderr so that the qemu-nbd process exits.  */
--    if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
-+    if (dup2(old_stderr, STDERR_FILENO) < 0) {
-         error_report("Could not release pipe to parent: %s",
-                      strerror(errno));
-         exit(EXIT_FAILURE);
-     }
-+    if (old_stderr != STDOUT_FILENO && close(old_stderr) < 0) {
-+        error_report("Could not release qemu-nbd: %s", strerror(errno));
-+        exit(EXIT_FAILURE);
-+    }
- }
+ .. option:: -v, --verbose
  
- #if HAVE_NBD_DEVICE
-@@ -332,7 +337,7 @@ static void *nbd_client_thread(void *arg)
-         fprintf(stderr, "NBD device %s is now connected to %s\n",
-                 opts->device, opts->srcpath);
-     } else {
--        nbd_client_release_pipe();
-+        nbd_client_release_pipe(opts->stderr);
-     }
+-  Display extra debugging information.
++  Display extra debugging information. This option also keeps opened original
++  *STDERR* stream if ``qemu-nbd`` process is daemonized due to other options
++  like :option:`--fork` or :option:`-c`.
  
-     if (nbd_client(fd) < 0) {
-@@ -597,6 +602,7 @@ int main(int argc, char **argv)
-         .device = NULL,
-         .srcpath = NULL,
-         .saddr = NULL,
-+        .stderr = STDOUT_FILENO,
-     };
+ .. option:: -h, --help
  
- #ifdef CONFIG_POSIX
-@@ -951,6 +957,16 @@ int main(int argc, char **argv)
- 
-             close(stderr_fd[0]);
- 
-+            /* Remember parent's stderr if we will be restoring it. */
-+            if (opts.verbose /* fork_process is set */) {
-+                opts.stderr = dup(STDERR_FILENO);
-+                if (opts.stderr < 0) {
-+                    error_report("Could not dup original stderr: %s",
-+                                 strerror(errno));
-+                    exit(EXIT_FAILURE);
-+                }
-+            }
-+
-             ret = qemu_daemon(1, 0);
-             saved_errno = errno;    /* dup2 will overwrite error below */
- 
-@@ -1181,7 +1197,7 @@ int main(int argc, char **argv)
-     }
- 
-     if (opts.fork_process) {
--        nbd_client_release_pipe();
-+        nbd_client_release_pipe(opts.stderr);
-     }
- 
-     state = RUNNING;
 -- 
 2.34.1
 
