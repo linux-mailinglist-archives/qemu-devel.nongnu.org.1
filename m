@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7387479384F
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE06E793850
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdott-0000gc-9x; Wed, 06 Sep 2023 05:32:41 -0400
+	id 1qdoto-0000TO-1Z; Wed, 06 Sep 2023 05:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotY-0008MK-JU; Wed, 06 Sep 2023 05:32:20 -0400
+ id 1qdotY-0008MI-JB; Wed, 06 Sep 2023 05:32:20 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotT-0000f6-96; Wed, 06 Sep 2023 05:32:19 -0400
+ id 1qdotT-0000f9-8K; Wed, 06 Sep 2023 05:32:19 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qdoqL-005qCB-2C;
+ (envelope-from <den@openvz.org>) id 1qdoqM-005qCB-0C;
  Wed, 06 Sep 2023 11:32:00 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 3/8] qemu-nbd: move srcpath into struct NbdClientOpts
-Date: Wed,  6 Sep 2023 11:32:05 +0200
-Message-Id: <20230906093210.339585-4-den@openvz.org>
+Subject: [PATCH 4/8] qemu-nbd: put saddr into into struct NbdClientOpts
+Date: Wed,  6 Sep 2023 11:32:06 +0200
+Message-Id: <20230906093210.339585-5-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906093210.339585-1-den@openvz.org>
 References: <20230906093210.339585-1-den@openvz.org>
@@ -62,80 +62,68 @@ Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qemu-nbd.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ qemu-nbd.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/qemu-nbd.c b/qemu-nbd.c
-index ebfae4d0b6..de6c2be590 100644
+index de6c2be590..d0f8d8bad2 100644
 --- a/qemu-nbd.c
 +++ b/qemu-nbd.c
 @@ -73,7 +73,6 @@
  
  #define MBR_SIZE 512
  
--static char *srcpath;
- static SocketAddress *saddr;
+-static SocketAddress *saddr;
  static int persistent = 0;
  static enum { RUNNING, TERMINATE, TERMINATED } state;
+ static int shared = 1;
 @@ -255,6 +254,7 @@ static int qemu_nbd_client_list(SocketAddress *saddr, QCryptoTLSCreds *tls,
- 
  struct NbdClientOpts {
      char *device;
-+    char *srcpath;
+     char *srcpath;
++    SocketAddress *saddr;
      bool fork_process;
      bool verbose;
  };
-@@ -320,7 +320,7 @@ static void *nbd_client_thread(void *arg)
+@@ -289,7 +289,7 @@ static void *nbd_client_thread(void *arg)
  
-     if (opts->verbose && !opts->fork_process) {
-         fprintf(stderr, "NBD device %s is now connected to %s\n",
--                opts->device, srcpath);
-+                opts->device, opts->srcpath);
-     } else {
-         /* Close stderr so that the qemu-nbd process exits.  */
-         if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
-@@ -590,6 +590,7 @@ int main(int argc, char **argv)
-         .fork_process = false,
+     sioc = qio_channel_socket_new();
+     if (qio_channel_socket_connect_sync(sioc,
+-                                        saddr,
++                                        opts->saddr,
+                                         &local_error) < 0) {
+         error_report_err(local_error);
+         goto out;
+@@ -591,6 +591,7 @@ int main(int argc, char **argv)
          .verbose = false,
          .device = NULL,
-+        .srcpath = NULL,
+         .srcpath = NULL,
++        .saddr = NULL,
      };
  
  #ifdef CONFIG_POSIX
-@@ -1059,19 +1060,19 @@ int main(int argc, char **argv)
-     bdrv_init();
-     atexit(qemu_nbd_shutdown);
- 
--    srcpath = argv[optind];
-+    opts.srcpath = argv[optind];
-     if (imageOpts) {
--        QemuOpts *opts;
-+        QemuOpts *o;
-         if (fmt) {
-             error_report("--image-opts and -f are mutually exclusive");
-             exit(EXIT_FAILURE);
-         }
--        opts = qemu_opts_parse_noisily(&file_opts, srcpath, true);
--        if (!opts) {
-+        o = qemu_opts_parse_noisily(&file_opts, opts.srcpath, true);
-+        if (!o) {
-             qemu_opts_reset(&file_opts);
-             exit(EXIT_FAILURE);
-         }
--        options = qemu_opts_to_qdict(opts, NULL);
-+        options = qemu_opts_to_qdict(o, NULL);
-         qemu_opts_reset(&file_opts);
-         blk = blk_new_open(NULL, NULL, options, flags, &local_err);
-     } else {
-@@ -1079,7 +1080,7 @@ int main(int argc, char **argv)
-             options = qdict_new();
-             qdict_put_str(options, "driver", fmt);
-         }
--        blk = blk_new_open(srcpath, NULL, options, flags, &local_err);
-+        blk = blk_new_open(opts.srcpath, NULL, options, flags, &local_err);
+@@ -892,8 +893,8 @@ int main(int argc, char **argv)
      }
  
-     if (!blk) {
+     if (list) {
+-        saddr = nbd_build_socket_address(sockpath, bindto, port);
+-        return qemu_nbd_client_list(saddr, tlscreds,
++        opts.saddr = nbd_build_socket_address(sockpath, bindto, port);
++        return qemu_nbd_client_list(opts.saddr, tlscreds,
+                                     tlshostname ? tlshostname : bindto);
+     }
+ 
+@@ -1024,8 +1025,8 @@ int main(int argc, char **argv)
+             exit(EXIT_FAILURE);
+         }
+ #endif
+-        saddr = nbd_build_socket_address(sockpath, bindto, port);
+-        if (qio_net_listener_open_sync(server, saddr, backlog,
++        opts.saddr = nbd_build_socket_address(sockpath, bindto, port);
++        if (qio_net_listener_open_sync(server, opts.saddr, backlog,
+                                        &local_err) < 0) {
+             object_unref(OBJECT(server));
+             error_report_err(local_err);
 -- 
 2.34.1
 
