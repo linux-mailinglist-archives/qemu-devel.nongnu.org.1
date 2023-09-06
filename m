@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE40793F10
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E535E793F18
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:41:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtfu-000873-7K; Wed, 06 Sep 2023 10:38:34 -0400
+	id 1qdtht-0000mA-Un; Wed, 06 Sep 2023 10:40:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qdtfr-00082n-MF
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:38:31 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdthr-0000m1-Sc
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:40:35 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qdtfo-0006O8-85
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:38:31 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-1c26bb27feeso2854478fac.0
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:38:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdthp-0006qB-EA
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:40:35 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-401da71b85eso35597205e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694011105; x=1694615905; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1694011230; x=1694616030; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=mbX0nONM8qgoPZvtAu/UDvzjCKl5Co97jKzyjqjp66Q=;
- b=R2EYM9uaD6149ZPBT5vq85XiIGojpGFRVzMFBlJXcQSj9ROXGjMU8uuBxNTc3o6m0G
- mxa7UP4X/Rqx6042MqPGti2Qnvbfh8uu+JRAmJ0560TFR9jFi8xDVt4vMACOuwFe+wxz
- xM8a0+7+Ftb5+/fKkzTqjhpfZ3k0iy9YiBrbXjkCmDJm859pH5bMaHbPy+BXNrJbpvab
- 0sIdqDE18K5IPJWonA39c4bPMRvKJOWosqEPdDJE7jRTHuQxhOSZ6wjhfqy+N4RtdUcJ
- hg5mij8otD57Am+BVNfQRdpMxlAKXQ2kckyHMlzhFrSrO/okWLaCs19wqpj1kxazS6Yo
- sE1g==
+ bh=qWsSqoKKxXIkk/U2ijcNmwCsSUowIUUvLPrv0bANexk=;
+ b=DYEWXXqZsHQtpi6d9wapXhvMkUa083Wftjz3FIpIFKIvCKTC3Ej4HNrYlaNk3k9mky
+ 9pzBiKt/FSJRgefmbQ67py9K+VNQwcpci517uZyI3CH9Np1H1GkxTp2VZldaNNc/TRj/
+ zbjUlFfF5v6HQ5NfP4r4/1cGaqsauK0Dgl14OsJT4KCWP3ErFEqMrbfZOYo13zO5A1EQ
+ goYG1qPNe2ym796dhNd2SowWpA1gclF209C+znHhe9PZ8HbCGAYF53yd08sAPpO4HkVu
+ 0Tae1SNLpqyJMH7Wu4d/PD7wz2M/o8gX1MuMAK7NJ0KeIsfURbwVnm59I1o2i+T4613/
+ 9e4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694011105; x=1694615905;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1694011230; x=1694616030;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mbX0nONM8qgoPZvtAu/UDvzjCKl5Co97jKzyjqjp66Q=;
- b=LyfjaH7CH6ZDkfxeiBJBAuqW7T5JFYnDwOmS7QenpFlRmqhwLmVL1Qk++VtQBVZZ1f
- tQIS54p29Q4A45VFU+lQhgauix7ryp3/uCSnMPdQQkEnMf1C7TiBFmt3JQ6E/78LyKns
- iSUPd2WWC5R7jM0cko7Y2VLTT3KH+Z97CHi7xoSGY5KppwmZro90pWReMD4HATJ0j8pe
- 6bsZExwX8cdDwPFo0xdUIVzJ+xKMPcvomA3LzyTumNbWCXomQRPAHzqIwfUrA3A9VL5G
- 8TU4DpLpXAY6jRCJ1inqEYt2/LX6QHlk56iierigoSwFUe1LrV+ipxQ+pF8t651JXmdu
- 4ufQ==
-X-Gm-Message-State: AOJu0Yz2j04OklIKtBcV0vlWuuAslaepPlPRMfB5+SUBRLdhOT56LfOC
- LrFKgDBXZhJxFQh9xMs77nW0dA==
-X-Google-Smtp-Source: AGHT+IGrFcSco9bx5oGBD/apPv2xUGGUO3fmFg/X4/cvea40mMi8fnqyH1M84icBV4t2zwvzm7DAcg==
-X-Received: by 2002:a05:6870:249d:b0:1b0:57f8:dab4 with SMTP id
- s29-20020a056870249d00b001b057f8dab4mr19183230oaq.24.1694011105369; 
- Wed, 06 Sep 2023 07:38:25 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.15.194])
- by smtp.gmail.com with ESMTPSA id
- o20-20020a056870911400b001d1358a6435sm5858763oae.1.2023.09.06.07.38.22
+ bh=qWsSqoKKxXIkk/U2ijcNmwCsSUowIUUvLPrv0bANexk=;
+ b=aPFvqnj96j7RFEY/0L3chgyNzhcade9px1rSKpn9mxerWz78DUnWXHNsH9mqMm0tCr
+ lKo+qmSvcaHX2I1S8PEknDCW6SdXU8emaI+k6luvdoD1bRhAOLv6cf/rNnZF5Gjl391J
+ KGuY+wbMaR2bwpy8+WAo7ratQaRclm4UA/EtebOia1YxGUsWHhyop0fNN1IFKBoIJfWS
+ osiQg11N0IflXPyDfgRZkAN93OAptCQ0Ra0+72K98YyPUcv35Mr2nxNpRpligStmQESF
+ kbiSbNhe3mIkgFpTb0mdFG1eEX5HAAId23aYAwWXDKTdRRocb8T0coaiIb4tBtMgAKLV
+ 0NsQ==
+X-Gm-Message-State: AOJu0YwR8EMopPNgMJv7+yyRIknCJLZ54qPVJvLyc7IgM6IY5pD5bjLi
+ x5T8Rc65nNAqSKqPtH8erssydQ==
+X-Google-Smtp-Source: AGHT+IHkgAdS29xGamrMeyFf4sBXX0dfkogo9LM6hMbDcJe5mtFbsqp6qy7U4ferikvcdA8ypcKFBA==
+X-Received: by 2002:a05:600c:218b:b0:402:906:1e87 with SMTP id
+ e11-20020a05600c218b00b0040209061e87mr2518976wme.31.1694011230592; 
+ Wed, 06 Sep 2023 07:40:30 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ q12-20020adffecc000000b00316eb7770b8sm20849421wrs.5.2023.09.06.07.40.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 07:38:24 -0700 (PDT)
-Message-ID: <dfeec126-304f-c4a4-77fb-7bf0927dbd31@ventanamicro.com>
-Date: Wed, 6 Sep 2023 11:38:20 -0300
+ Wed, 06 Sep 2023 07:40:30 -0700 (PDT)
+Message-ID: <91209058-915c-1284-e521-4b3fe0813293@linaro.org>
+Date: Wed, 6 Sep 2023 16:40:27 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 0/6] target/riscv: Add RISC-V Virtual IRQs and IRQ
- filtering support
-To: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com,
- apatel@ventanamicro.com
-References: <20230526162308.22892-1-rkanwal@rivosinc.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230526162308.22892-1-rkanwal@rivosinc.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, Zhao Liu <zhao1.liu@linux.intel.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org
+Cc: Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
+ <663cf3d4-47ea-262d-36b3-cf826f870ef0@tls.msk.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <663cf3d4-47ea-262d-36b3-cf826f870ef0@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,76 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hey,
-
-
-What's the latest on this work? It seems that all patches are acked:
-
-https://lore.kernel.org/qemu-riscv/20230526162308.22892-1-rkanwal@rivosinc.com/
-
-
-It'll probably conflict with current Alistair's riscv-to-apply.next though, so
-perhaps Rajnesh could gather the acks and send a rebased version.
-
-
-Thanks,
-
-Daniel
-
-
-On 5/26/23 13:23, Rajnesh Kanwal wrote:
-> This series adds M and HS-mode virtual interrupt and IRQ filtering support.
-> This allows inserting virtual interrupts from M/HS-mode into S/VS-mode
-> using mvien/hvien and mvip/hvip csrs. IRQ filtering is a use case of
-> this change, i-e M-mode can stop delegating an interrupt to S-mode and
-> instead enable it in MIE and receive those interrupts in M-mode and then
-> selectively inject the interrupt using mvien and mvip.
->              
-> Also, the spec doesn't mandate the interrupt to be actually supported
-> in hardware. Which allows M/HS-mode to assert virtual interrupts to
-> S/VS-mode that have no connection to any real interrupt events.
->               
-> This is defined as part of the AIA specification [0], "5.3 Interrupt
-> filtering and virtual interrupts for supervisor level" and "6.3.2 Virtual
-> interrupts for VS level".
+On 1/9/23 11:55, Michael Tokarev wrote:
+> 25.08.2023 06:36, Zhao Liu wrote:
+>> From: Zhao Liu <zhao1.liu@intel.com>
+>>
+>> Hi all,
+>>
+>> This patchset is the follow up tests of previous topology fixes in
+>> smbios [1].
+>>
+>> In this patchset, add these test cases:
+>>
+>> 1. Add the case to test 2 newly added topology helpers (patch 1):
+>>     * machine_topo_get_cores_per_socket()
+>>     * machine_topo_get_threads_per_socket()
+>>
+>> 2. Add the cases in bios-tables-test.c to:
+>>     * test smbios type4 table count (patch 2-4).
+>>     * test smbios type4 core count field (patch 5-7).
+>>     * update the test of smbios type4 core count2 field (patch 8-10).
+>>     * test smbios type4 thread count (patch 11-13).
+>>     * test smbios type4 thread count2 (patch 14-16).
+>>
+>> With the above new cases, cover all commits of [1] in test.
+>>
+>> [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
 > 
-> Most of the testing is done by hacking around OpenSBI and linux host.
-> The changes for those can be found at [1] and [2].
+> Hmm.  I definitely didn't expect such a large patchset..  I asked for just
+> a small, maybe manual (from command-line) reproducer of the original issue,
+> so I can verify it is fixed before applying the change in question to qemu
+> stable trees.  It is a large work.  Lemme at least give it a try in the
+> gitlab CI...
 > 
-> It's my first touch on RISC-V qemu IRQ subsystem. Any feedback would
-> be much appreciated.
-> 
-> The change can also be found on github [3].
-> 
-> TODO: This change doesn't support delegating virtual interrupts injected
-> by M-mode to VS-mode by the Hypervisor. This is true for bits 13:63 only.
-> 
-> Thanks
-> Rajnesh
-> 
-> [0]: https://github.com/riscv/riscv-aia/releases/download/1.0-RC4/riscv-interrupts-1.0-RC4.pdf
-> [1]: https://github.com/rajnesh-kanwal/opensbi/tree/dev/rkanwal/irq_filter
-> [2]: https://github.com/rajnesh-kanwal/linux/commits/dev/rkanwal/aia_irq_filter
-> [3]: https://github.com/rajnesh-kanwal/qemu/tree/dev/rkanwal/riscv_irq_filter
-> 
-> v2:
->   * Move RISCV_EXCP_SEMIHOST to switch case and remove special handling.
->   * Fix linux-user build.
-> 
-> Rajnesh Kanwal (6):
->    target/riscv: Without H-mode mask all HS mode inturrupts in mie.
->    target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
->    target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
->    target/riscv: Split interrupt logic from riscv_cpu_update_mip.
->    target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
->    target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
-> 
->   target/riscv/cpu.c        |   9 +-
->   target/riscv/cpu.h        |  23 ++
->   target/riscv/cpu_bits.h   |   6 +
->   target/riscv/cpu_helper.c |  99 +++++---
->   target/riscv/csr.c        | 477 ++++++++++++++++++++++++++++++++++----
->   target/riscv/machine.c    |   6 +
->   6 files changed, 546 insertions(+), 74 deletions(-)
-> 
+> Philippe, can you pick this up for the misc tree?
+
+This area have well defined maintainers:
+
+$ ./scripts/get_maintainer.pl -f tests/data/acpi/
+"Michael S. Tsirkin" <mst@redhat.com> (supporter:ACPI/SMBIOS)
+Igor Mammedov <imammedo@redhat.com> (supporter:ACPI/SMBIOS)
+Ani Sinha <anisinha@redhat.com> (reviewer:ACPI/SMBIOS)
+
+So I'll pass ;)
+
 
