@@ -2,106 +2,173 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B54E793E8D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B99D793EAC
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:23:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtKu-0000fe-B3; Wed, 06 Sep 2023 10:16:52 -0400
+	id 1qdtRF-0006US-PZ; Wed, 06 Sep 2023 10:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qdtKm-0000cL-C6
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:16:44 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qdtKi-0002Kk-Pw
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:16:44 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c35ee3b0d2so6568855ad.2
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:16:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qdtRD-0006Te-Os
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:23:23 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qdtRA-0003QW-HV
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:23:23 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 386E55Wn032407; Wed, 6 Sep 2023 14:23:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : references : cc : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=1/mxkWvQLeAMN7T/ifm5nBX01wOpuW+Kt/DjbWyEg3M=;
+ b=CVhzt+20dYPjGAZX4N11nvtJV1OnBN7a3kPizo34tqT5OQCwVjd/SKC9X3g+5XmxICAQ
+ wm5Dpespxacmaef8m+Za2/ut/1DnK1WCAMGwIW8ed+vRKVzrk5O8V0ILlob8h4aSzD+V
+ Kj/Se0tJDsRo7EElFwWqUTVcvfC91uiHBeAfSHDqOFyoSqU1ljLvcSBYcWazReushLfm
+ pTQCSLFMtYU0WlexExMtffP3W5n6q0lWlLhHAa4R6hv7SXgmF53JXxK/+rkH6vx56v0v
+ I8AL/9lWX3DV50sIX9mt2EFoF6c5e/E6jRK+n+rZ+LDkyTqUbhWoqEnmz5uxKrw77L4r gg== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sxtvc02bp-6
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 06 Sep 2023 14:23:16 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 386DXUg2037080; Wed, 6 Sep 2023 14:19:53 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3suugcjbty-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 06 Sep 2023 14:19:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cUR9Mts71Rjxc6PKGQyYCEUeuna8FNeAJF5D5vp318vjWAdwmy/9dIaD10pjx+GAFuk7bDC9jnzDG4JkJB5S8o0g4ZKEyg8xQ4t8SiGbbBhw1AZXoZvrXlknOggwVQ1GSWsIdDk7myK2jmqmrM7nlDhxv/CFyWkFLzJn9AYeZgisL2D6CVSf8kjTgUQcMnNrHeIM1Whb2X+pvarFIL9C5lokyzujilvi81o9Px4dziaLgiCQNcEKhF/zpxe8hl0Rp7vhXHeFDYGQ1H2fgumfWYvpkdK97IdZFk5smOD3D1CxOi8MObepfTkVf7EcCn9VFJMrSHI8TzlwFYlqbPDNbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1/mxkWvQLeAMN7T/ifm5nBX01wOpuW+Kt/DjbWyEg3M=;
+ b=oXD13oe9u/+QTQfLxQts5zpjUGWZIqq1MuVebMamQCvN0YfLbOX/DpZ1iATHxWe3dv31KlLrQNOcAv7YGw5bSJ3NEIyvunm6GPMDWnzI1HL2Qa0I9Mao3+6fQqcnsfucYJ4agPf/gXKNFeZDU/aDZGn9EN++o3AYRO/r5zEY+NwwMc6ITK3IclaEzxsT6q/O7cackg2Tsif9v4y5Gcs1rQLc0Q94jBnpT1m2nhBlIbLo/C7CknWQTzcgVatbUGVVxGB96G9FnwOVHaaOAwmTe+hQGEWy4ebMbLJ+fv7jl7WP68IqaS9LVVEM4cNhQD8deSQpXJqDPRzXFed7YtVJag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694009799; x=1694614599;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oPhfXB0+xtVI5sfW6SQMWjPWh0SJW5yl2FvAZ8mTD4c=;
- b=sBhIRulbJMCdQaOd84FgOLrOBAToe5L/Ee9C3iNrT9aODqHba+DX3tmz3PGAy5IVY3
- 6it0jxK4tAWwy0cGvAbnPw5FbvXkahnQpy87YYDHjUpanXt+5aGKDau4BzeqTyPxWpKv
- Yd/423RxQ99cPm+Dyj1dT4DiFVzfjIpDz1t+Ka+fMNJQNj8puaEHRtQ+qeHBxYqHEQKt
- WzSaGUsSDoPESvQRNDj9JbZaBqxGUMXODLL+o+piwUj/dPHFeqs0KpiDNJZDdUz+cVx/
- LQsFjyXYawl++M3/8e3fuvACeYk4Pu1WFf+EuixsQ1Ni8WD37oPXXB4vqebEUd/IG3ds
- r64Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694009799; x=1694614599;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oPhfXB0+xtVI5sfW6SQMWjPWh0SJW5yl2FvAZ8mTD4c=;
- b=D0pZ9CKu/KEVrle+krha53vf1VIQuZvTeJdfapzag1hNJGwiD523XcKJuME6btfY6P
- b3iu/PzsVj7stcOLSZWCSdY5DWeT0evxBR4SiAvYu/7EYI8YbJZXADkxFNTgs7I/16eJ
- s+QFzgJThHSRvpxecT5/0OHQNhtrk8mF54szBkzrTWbwjO5ibnfDgvjBKowtWfbUNPlJ
- 1J9IZx/33+sbzPng1A1fCILdk0fEcZcIi/NUd+Evma3Rd313+BCsD4NfDiQ8jS7J5k00
- NwcX0EN4pn1ka1mofC9f+TbkNoZiWv3YVwYR9FOjn+Inomyth4ec7GotqR62I+/OTiEp
- L9KA==
-X-Gm-Message-State: AOJu0YzSzjHdtspyJkn1QlebiE694u0PKB6y/D+2+aWP9AUt6ng5DR5s
- S8f2MUm4/K8piASfUt07ECOVsQ==
-X-Google-Smtp-Source: AGHT+IFSwfDanQxY4jQ5BvI9U/JVyRy1EbjHe/TlH/Qvmyt/YqomZzQpH00GcypBSN5fy4Z5/J3Tsg==
-X-Received: by 2002:a17:902:930a:b0:1bd:e5e7:4845 with SMTP id
- bc10-20020a170902930a00b001bde5e74845mr11723462plb.26.1694009798952; 
- Wed, 06 Sep 2023 07:16:38 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- jo6-20020a170903054600b001c1f0b3e900sm11149485plb.229.2023.09.06.07.16.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 07:16:38 -0700 (PDT)
-Message-ID: <9d25f151-9b02-4332-8664-ba3cf81412f3@daynix.com>
-Date: Wed, 6 Sep 2023 23:16:33 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v4 09/13] virtio-gpu: Handle resource blob commands
-To: Huang Rui <ray.huang@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-10-ray.huang@amd.com>
- <ba478789-5db0-4011-bed1-7dd6901eccd6@daynix.com> <ZPbwGA3apjQTtCeu@amd.com>
- <053ecca7-f76d-4289-9189-0c3600d4804b@daynix.com> <ZPftWfuwLKafLPah@amd.com>
- <9d883490-3c82-4016-a290-6570f682908a@daynix.com> <ZPgwnMR5YM9rFLtK@amd.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1/mxkWvQLeAMN7T/ifm5nBX01wOpuW+Kt/DjbWyEg3M=;
+ b=CrsmcXcMNDS+7SumI0EWvR13kF8PSwU7kpTD+DvS7CXb2B86tWYzSPRgYG7KuPJqCj9niFpMvUnPbpeh5/ovoH9unwaK9EdxiDSoc7Q6ycgPQRl65uuvknZPCj51IAKqrumTjQmPbdr6hYOqeLlSpgWouEpam5pH5/g8uZWd3iE=
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
+ by SJ2PR10MB7758.namprd10.prod.outlook.com (2603:10b6:a03:56f::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
+ 2023 14:19:37 +0000
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::2867:4d71:252b:7a67]) by BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::2867:4d71:252b:7a67%7]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
+ 14:19:37 +0000
+Message-ID: <e2adce18-7aef-5445-352a-01e789619fac@oracle.com>
+Date: Wed, 6 Sep 2023 15:19:32 +0100
+Subject: Re: [PATCH 1/1] migration: skip poisoned memory pages on "ram saving"
+ phase
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ZPgwnMR5YM9rFLtK@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+To: William Roche <william.roche@oracle.com>
+References: <20230906135951.795581-1-william.roche@oracle.com>
+ <20230906135951.795581-2-william.roche@oracle.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-devel@nongnu.org
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <20230906135951.795581-2-william.roche@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P123CA0425.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18b::16) To BLAPR10MB4835.namprd10.prod.outlook.com
+ (2603:10b6:208:331::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|SJ2PR10MB7758:EE_
+X-MS-Office365-Filtering-Correlation-Id: c33cc9ab-d078-4602-2cd6-08dbaee44d1a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mVSy5nFsy5tweCyVd9FRly/r2p7gPn4uQq3qQTvgSoHJhrqO6ujakTbWMmBp40zbZNzPctTjidNv79bfMp9YhPGDWqCmkIv7an4JRIOsOt0/fUE74PhUkWaRGv0vXBeitnCYfjVXZcFpRzb0Xyod+UcsxiuoqC6x8fVeu6Shf5zNwMSG+i+42xwlYwuQSx1fiMGQ3sddwGGbKRuFW4od35OUDDqQlvzP/OIru5WTmqMQt1nBc+ZdWtNd5WeVVaHe7JOhw5e06N/TQlyEY2AG+nq7yKCgHKwB+mV7sD1qx4B2NYvE5hnSJV0ph/m/0qyo+UYIZ0HsmextQNQd4RHCtqPvaActW6nYtrPDi1ZbPYvjgwqY0h/Jne6TQlszxtCbaPGqB6vU5ueRMI09ooowij+Wi6ZyFXPHAHBi7LsrlkujyogOWwWSL/i8/DoeMpkkMtTq5GB0PXRZPpONu3JtFqAw1uwon0VhgBcLCLOiYolO/rpE4fwMzNDM/yhp8vJ1P4SaLh6xF2ojsa/UIQoapiKJGFDUbgYhjFKsktH/ewRLT5ULh8tSs0gkiwZP9vPxWvYCgLsIV3+Dhr3THXLkv6Xe9CNyAP6MZv79DWC4nt+CsbosResK/EaVrMsgY5FK
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(136003)(376002)(396003)(346002)(366004)(451199024)(1800799009)(186009)(6666004)(6486002)(6506007)(6512007)(53546011)(83380400001)(478600001)(2906002)(26005)(66476007)(6636002)(37006003)(54906003)(41300700001)(66556008)(2616005)(4326008)(316002)(66946007)(6862004)(8936002)(8676002)(5660300002)(31696002)(86362001)(36756003)(38100700002)(31686004)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXpzd0xPaTJ2R2h6TzkxZ1Y3em9kMWVkblA3ODVJbW1sN20vR21HdUozelZu?=
+ =?utf-8?B?VHdRWE9md3I4Qmlid0d1aWxjMEdmS21jMzlZRWNMQWJ3TEFNUzdaTDZoejNS?=
+ =?utf-8?B?RjRmNjFadmpJNTl2TjRqV0xrcEJyeDhMSUpmT3k0MWRhbVc4YVVGbnVaUTZ6?=
+ =?utf-8?B?MmhTOWs0aGRJTWF6YWo4TVBOYmVmRjU4MFFHV3FUNGNMaDljZE9BSm1nL0tS?=
+ =?utf-8?B?QmVQbExqYU5saHNmaWN5RlZyMFl0TVdoeU9OM1R6S0hlRTFHc1JiVGJHNXpL?=
+ =?utf-8?B?L2ZvakE5dmtSbVo3TEwxNzAxTVJHbmdHeWQxbVhlVkdIbFZORXdWRDVpMGtn?=
+ =?utf-8?B?UDZYOFVrQ0pydXdsSUcrNlRkRlpuT3NlQXFSaUpBR3NKUUZoRFZYY3ZRVlFD?=
+ =?utf-8?B?aTk5VDBBbUZaOFhiOWovR0pzaFBjczlRb0NZbFRpaWVzQllrVTR4ak9ldVpr?=
+ =?utf-8?B?SU1VL3ZBR3UrcDRFVHFOTk9aTVNSM0xGWkFBM0E0WTBkWmdLT2tENFF2cnBa?=
+ =?utf-8?B?N3hqMUFzRzNqNmd4bVNmN3lUMGI3bkh1Q1FVTDZaV3NJWFpWYXRPejZyZ3lP?=
+ =?utf-8?B?OGhJbnpiQ3E1LytpZmdsZ2JvSXUvYTFSMzNIbUlIWHZxazBHRUVBeXd1U1d0?=
+ =?utf-8?B?dndkTktLREc4cStXUDh2OENkRXQzZDBudUxLajJrbHhBcnkzaWFGRmk1bGEy?=
+ =?utf-8?B?SEZ1MGN5Rzh1VGxydVIxQldEMEc3czV6TlBMV1Zkb3dueUErcjJFSXkzOE5N?=
+ =?utf-8?B?S2YvdFpaVURJSURwcWlJNXBtUDVBbC9zZTZJVE1zbWhpTUoyMVBqeHE2b0RN?=
+ =?utf-8?B?dzlmTUlWZWoyeVg3WldGYVBLM2JBUmhKc3hYbzBNMC9mRndMczd4UnR3Z3JH?=
+ =?utf-8?B?ZVUyRHE3U3gya2puZDRrNzBnOVRjNjFkSElsY3VRa2RiZ0RMa29xMHFodjNw?=
+ =?utf-8?B?OXRReGRwc0F4T0x1elA2TXNHOWgzdEh2cEp1OVI2MWFacllmTkxveFhWamhr?=
+ =?utf-8?B?M3VROVpaWjAxL0xlVDBNRkRWRS9mMGN6UkZURE1lY3ZOZWNLV3ZjancyMHF2?=
+ =?utf-8?B?RkhUNWI2bVVDbUFxVGpQdTFjNTN6cTNyLzkrWFBTZEt3V29HSlI2OFlhQmJJ?=
+ =?utf-8?B?cCtKR1o3aHBWSkQvL1dZWXVIa0g2WS9sNFNaVE5WQ1ozREk4UmZCUDF4aUJy?=
+ =?utf-8?B?QXVWS1gvSk9za1ZLS2xrZGsxNU5hZEVyMy9jTkNiWDhqalFJNHNCeTBRc0Y5?=
+ =?utf-8?B?RThLZDRiNzB2eGtvNlc3dG9yS25mUFdqVFRRSkZiT2Q5Zi9tMGIraDd2TjZQ?=
+ =?utf-8?B?TllxZUptRGJnbkcwaGpqRXcyRWNHc0NjYkxmejJjQ1pGNmxRRytXTjMxQzI3?=
+ =?utf-8?B?WDNZcDN4SHNhL0V3c210bUpkTWdDclFTS0VBS0ZZeW9nK0J4aWlzcGFCMDRM?=
+ =?utf-8?B?OWM3eVhzMGY4ZXM5TzNSR2hXbmFhZzZucm9sZGR0akcvZlhMVXplV290emt0?=
+ =?utf-8?B?MTJQOElEWVFnVjVUdzl2MWN1UkpBek9uSFRxM3NMTUR3ZnhtemZ5eG9sTXd1?=
+ =?utf-8?B?ZEozR0ZsOUNaVlFqMExXWGtiVXN1OGU0bEozcWg1YkErNDVycXN1WjFUZ3E3?=
+ =?utf-8?B?Uy9XUjE2QnNnM2tmYWR5VzNwbHF0dE41cWl6WGw3RWptN0FWWXRVdUlGSEN3?=
+ =?utf-8?B?VEVRWEVHVkJ5TUlWcVBXUlpjOUpSdEZNR2t5RU5UcGpHYmY5SHlUQmgrb2di?=
+ =?utf-8?B?K3ZiaHFVMzRqWWRVbXBsYnpwUjB5NDE1UGRwQWpUeWQ0Q21FY3dPcmZiK2Ix?=
+ =?utf-8?B?Z3c2L2JNWVk1VHpPR1FORHpXQldyelJrQTVUN3RCTkNDTlVsWTFtMHdDOXYv?=
+ =?utf-8?B?eHVIMmIrR0NpbGdBYmpnNDBaN2RLS2Rjbi9tRWVxTW9LTUliR0RPL2s0bEhx?=
+ =?utf-8?B?blRIZFBKWnZjamFSTEl0YjRpV2VUVXNqZTJZRi96QUl2Vi9tRGVCam1jbzg4?=
+ =?utf-8?B?dlByOXU1RGxqSzBwaDBDN0NWcEFiODJhNVoyei9YRVI4Y3c0TEFNanJETDZU?=
+ =?utf-8?B?bUpKdmR0ZEJEdEFtRnRmOHd3dTVxVkRtVGNaUUZ4S2FoRndHbjhObFoxV3hY?=
+ =?utf-8?B?QjZCdlVCUklEZzFtRDNXT2c4bHpVd25VYTVnb1lMMUxKRFZuMUROdFdQcTRx?=
+ =?utf-8?B?WHc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: OLhLVgPUstRcltRnnIb9b6SJfoc1RSJtjr+QuYtZWWZqceAe/Ota72ofaQyDCgFURdE5jaCu8MlSkbVvuVq3J2mYNT5FmKkK7Z1+lKgYBS8drTjcoJZR0z2Pb/MYE+j9Bp1rz9GjpIgn+Z/sm8rzF5YGccerXw808mbNiuTFzKZ9Ws6DTj/4s2nSJ6zyx4a938fduwyeJjmnVp4A3EGvJ86G3fpqNPV+LAeVRwf+5zXGLY36jcInPCt7s8ShMdQa2chpOSY4AY/CZ594IdPkiSvpZXwjgsTsfIuBvHEiV5HwOIXtpRraUcLxB+x4WUUMgRU74iqz6EOk9QUvPYzhcw0lHbQtGHYhm0rIXgrmrcXoVrx/6pM0J+D0jVzOTZYZV9aqBK66BZ/mIJmTlIGraSBPONIT1AC3GDPKutSkKb4zx772fiHDFW92t+AvIQZhMQD3Dh65NUjWn0p2Tf30E5JeNb3IJVff74EEfV9ijpCQQrZr8BnqPGTFfx7Cbs3q8mjWPseu0WtiJD7tbs3jdYh2cqmIj3znfJiniTr8PXTdgPgCa6nyxKz+CUoIG7A/8btteFnLmIpNk1H4a/rm/vcq6BsGQkZ/n/57sMG2XRc4qcC24YDI0lMl/elVz2+Mm17nZdMuWKppobuY+NTDIC/m7XOpOm16i3QnbKRAhB5xOboCS8gzuTt6/0MQaV2f+a5byET/w3cr3tlPoKfonUEv7P5cEhHCEmvs5pPwy9O1RADMdoP/LEMiZXd47n4WhzuCDyOpKy5BiYXLtK7ovA==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c33cc9ab-d078-4602-2cd6-08dbaee44d1a
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 14:19:37.4354 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aQbv/D0BvQqcsS2TusZgLJVjed/tv8tbZvvvLv7G7vm/NdBEp9zPoePQ/PiX9se+JdosJDdbtFgCHMfvDaT8tkf5t+Inq07ZUlPi6KrZi7A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7758
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-06_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxscore=0 adultscore=0
+ mlxlogscore=999 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309060124
+X-Proofpoint-GUID: obNU9ZeW9ncrcMl1VE4usLBLMtfp0jDf
+X-Proofpoint-ORIG-GUID: obNU9ZeW9ncrcMl1VE4usLBLMtfp0jDf
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,314 +184,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/06 16:56, Huang Rui wrote:
-> On Wed, Sep 06, 2023 at 11:39:09AM +0800, Akihiko Odaki wrote:
->> On 2023/09/06 12:09, Huang Rui wrote:
->>> On Tue, Sep 05, 2023 at 05:20:43PM +0800, Akihiko Odaki wrote:
->>>> On 2023/09/05 18:08, Huang Rui wrote:
->>>>> On Thu, Aug 31, 2023 at 06:24:32PM +0800, Akihiko Odaki wrote:
->>>>>> On 2023/08/31 18:32, Huang Rui wrote:
->>>>>>> From: Antonio Caggiano <antonio.caggiano@collabora.com>
->>>>>>>
->>>>>>> Support BLOB resources creation, mapping and unmapping by calling the
->>>>>>> new stable virglrenderer 0.10 interface. Only enabled when available and
->>>>>>> via the blob config. E.g. -device virtio-vga-gl,blob=true
->>>>>>>
->>>>>>> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
->>>>>>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->>>>>>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->>>>>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
->>>>>>> ---
->>>>>>>
->>>>>>> v1->v2:
->>>>>>>         - Remove unused #include "hw/virtio/virtio-iommu.h"
->>>>>>>
->>>>>>>         - Add a local function, called virgl_resource_destroy(), that is used
->>>>>>>           to release a vgpu resource on error paths and in resource_unref.
->>>>>>>
->>>>>>>         - Remove virtio_gpu_virgl_resource_unmap from virtio_gpu_cleanup_mapping(),
->>>>>>>           since this function won't be called on blob resources and also because
->>>>>>>           blob resources are unmapped via virgl_cmd_resource_unmap_blob().
->>>>>>>
->>>>>>>         - In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
->>>>>>>           and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
->>>>>>>           has been fully initialized.
->>>>>>>
->>>>>>>         - Memory region has a different life-cycle from virtio gpu resources
->>>>>>>           i.e. cannot be released synchronously along with the vgpu resource.
->>>>>>>           So, here the field "region" was changed to a pointer that will be
->>>>>>>           released automatically once the memory region is unparented and all
->>>>>>>           of its references have been released.
->>>>>>>           Also, since the pointer can be used to indicate whether the blob
->>>>>>>           is mapped, the explicit field "mapped" was removed.
->>>>>>>
->>>>>>>         - In virgl_cmd_resource_map_blob(), add check on the value of
->>>>>>>           res->region, to prevent beeing called twice on the same resource.
->>>>>>>
->>>>>>>         - Remove direct references to parent_obj.
->>>>>>>
->>>>>>>         - Separate declarations from code.
->>>>>>>
->>>>>>>      hw/display/virtio-gpu-virgl.c  | 213 +++++++++++++++++++++++++++++++++
->>>>>>>      hw/display/virtio-gpu.c        |   4 +-
->>>>>>>      include/hw/virtio/virtio-gpu.h |   5 +
->>>>>>>      meson.build                    |   4 +
->>>>>>>      4 files changed, 225 insertions(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
->>>>>>> index 312953ec16..17b634d4ee 100644
->>>>>>> --- a/hw/display/virtio-gpu-virgl.c
->>>>>>> +++ b/hw/display/virtio-gpu-virgl.c
->>>>>>> @@ -17,6 +17,7 @@
->>>>>>>      #include "trace.h"
->>>>>>>      #include "hw/virtio/virtio.h"
->>>>>>>      #include "hw/virtio/virtio-gpu.h"
->>>>>>> +#include "hw/virtio/virtio-gpu-bswap.h"
->>>>>>>      
->>>>>>>      #include "ui/egl-helpers.h"
->>>>>>>      
->>>>>>> @@ -78,9 +79,24 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
->>>>>>>          virgl_renderer_resource_create(&args, NULL, 0);
->>>>>>>      }
->>>>>>>      
->>>>>>> +static void virgl_resource_destroy(VirtIOGPU *g,
->>>>>>> +                                   struct virtio_gpu_simple_resource *res)
->>>>>>> +{
->>>>>>> +    if (!res)
->>>>>>> +        return;
->>>>>>> +
->>>>>>> +    QTAILQ_REMOVE(&g->reslist, res, next);
->>>>>>> +
->>>>>>> +    virtio_gpu_cleanup_mapping_iov(g, res->iov, res->iov_cnt);
->>>>>>> +    g_free(res->addrs);
->>>>>>> +
->>>>>>> +    g_free(res);
->>>>>>> +}
->>>>>>> +
->>>>>>>      static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>>>>>>                                           struct virtio_gpu_ctrl_command *cmd)
->>>>>>>      {
->>>>>>> +    struct virtio_gpu_simple_resource *res;
->>>>>>>          struct virtio_gpu_resource_unref unref;
->>>>>>>          struct iovec *res_iovs = NULL;
->>>>>>>          int num_iovs = 0;
->>>>>>> @@ -88,13 +104,22 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>>>>>>          VIRTIO_GPU_FILL_CMD(unref);
->>>>>>>          trace_virtio_gpu_cmd_res_unref(unref.resource_id);
->>>>>>>      
->>>>>>> +    res = virtio_gpu_find_resource(g, unref.resource_id);
->>>>>>> +
->>>>>>>          virgl_renderer_resource_detach_iov(unref.resource_id,
->>>>>>>                                             &res_iovs,
->>>>>>>                                             &num_iovs);
->>>>>>>          if (res_iovs != NULL && num_iovs != 0) {
->>>>>>>              virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
->>>>>>> +        if (res) {
->>>>>>> +            res->iov = NULL;
->>>>>>> +            res->iov_cnt = 0;
->>>>>>> +        }
->>>>>>>          }
->>>>>>> +
->>>>>>>          virgl_renderer_resource_unref(unref.resource_id);
->>>>>>> +
->>>>>>> +    virgl_resource_destroy(g, res);
->>>>>>>      }
->>>>>>>      
->>>>>>>      static void virgl_cmd_context_create(VirtIOGPU *g,
->>>>>>> @@ -426,6 +451,183 @@ static void virgl_cmd_get_capset(VirtIOGPU *g,
->>>>>>>          g_free(resp);
->>>>>>>      }
->>>>>>>      
->>>>>>> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
->>>>>>> +
->>>>>>> +static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
->>>>>>> +                                           struct virtio_gpu_ctrl_command *cmd)
->>>>>>> +{
->>>>>>> +    struct virtio_gpu_simple_resource *res;
->>>>>>> +    struct virtio_gpu_resource_create_blob cblob;
->>>>>>> +    struct virgl_renderer_resource_create_blob_args virgl_args = { 0 };
->>>>>>> +    int ret;
->>>>>>> +
->>>>>>> +    VIRTIO_GPU_FILL_CMD(cblob);
->>>>>>> +    virtio_gpu_create_blob_bswap(&cblob);
->>>>>>> +    trace_virtio_gpu_cmd_res_create_blob(cblob.resource_id, cblob.size);
->>>>>>> +
->>>>>>> +    if (cblob.resource_id == 0) {
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
->>>>>>> +                      __func__);
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    res = virtio_gpu_find_resource(g, cblob.resource_id);
->>>>>>> +    if (res) {
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already exists %d\n",
->>>>>>> +                      __func__, cblob.resource_id);
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    res = g_new0(struct virtio_gpu_simple_resource, 1);
->>>>>>> +    if (!res) {
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    res->resource_id = cblob.resource_id;
->>>>>>> +    res->blob_size = cblob.size;
->>>>>>> +
->>>>>>> +    if (cblob.blob_mem != VIRTIO_GPU_BLOB_MEM_HOST3D) {
->>>>>>> +        ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
->>>>>>> +                                            cmd, &res->addrs, &res->iov,
->>>>>>> +                                            &res->iov_cnt);
->>>>>>> +        if (!ret) {
->>>>>>> +            g_free(res);
->>>>>>> +            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>>>>>> +            return;
->>>>>>> +        }
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
->>>>>>> +
->>>>>>> +    virgl_args.res_handle = cblob.resource_id;
->>>>>>> +    virgl_args.ctx_id = cblob.hdr.ctx_id;
->>>>>>> +    virgl_args.blob_mem = cblob.blob_mem;
->>>>>>> +    virgl_args.blob_id = cblob.blob_id;
->>>>>>> +    virgl_args.blob_flags = cblob.blob_flags;
->>>>>>> +    virgl_args.size = cblob.size;
->>>>>>> +    virgl_args.iovecs = res->iov;
->>>>>>> +    virgl_args.num_iovs = res->iov_cnt;
->>>>>>> +
->>>>>>> +    ret = virgl_renderer_resource_create_blob(&virgl_args);
->>>>>>> +    if (ret) {
->>>>>>> +        virgl_resource_destroy(g, res);
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: virgl blob create error: %s\n",
->>>>>>> +                      __func__, strerror(-ret));
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->>>>>>> +    }
->>>>>>> +}
->>>>>>> +
->>>>>>> +static void virgl_cmd_resource_map_blob(VirtIOGPU *g,
->>>>>>> +                                        struct virtio_gpu_ctrl_command *cmd)
->>>>>>> +{
->>>>>>> +    struct virtio_gpu_simple_resource *res;
->>>>>>> +    struct virtio_gpu_resource_map_blob mblob;
->>>>>>> +    int ret;
->>>>>>> +    void *data;
->>>>>>> +    uint64_t size;
->>>>>>> +    struct virtio_gpu_resp_map_info resp;
->>>>>>> +    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
->>>>>>> +
->>>>>>> +    VIRTIO_GPU_FILL_CMD(mblob);
->>>>>>> +    virtio_gpu_map_blob_bswap(&mblob);
->>>>>>> +
->>>>>>> +    if (mblob.resource_id == 0) {
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource id 0 is not allowed\n",
->>>>>>> +                      __func__);
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    res = virtio_gpu_find_resource(g, mblob.resource_id);
->>>>>>> +    if (!res) {
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
->>>>>>> +                      __func__, mblob.resource_id);
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +    if (res->region) {
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource already mapped %d\n",
->>>>>>> +		      __func__, mblob.resource_id);
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    ret = virgl_renderer_resource_map(res->resource_id, &data, &size);
->>>>>>> +    if (ret) {
->>>>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource map error: %s\n",
->>>>>>> +                      __func__, strerror(-ret));
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +
->>>>>>> +    res->region = g_new0(MemoryRegion, 1);
->>>>>>> +    if (!res->region) {
->>>>>>> +        virgl_renderer_resource_unmap(res->resource_id);
->>>>>>> +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>> +    memory_region_init_ram_device_ptr(res->region, OBJECT(g), NULL, size, data);
->>>>>>
->>>>>> I think memory_region_init_ram_ptr() should be used instead.
->>>>>
->>>>> Would you mind to explain the reason?
->>>>
->>>> The documentation comment of memory_region_init_ram_device_ptr() says:
->>>>    > A RAM device represents a mapping to a physical device, such as to a
->>>>    > PCI MMIO BAR of an vfio-pci assigned device.  The memory region may be
->>>>    > mapped into the VM address space and access to the region will modify
->>>>    > memory directly.  However, the memory region should not be included in
->>>>    > a memory dump (device may not be enabled/mapped at the time of the
->>>>    > dump), and operations incompatible with manipulating MMIO should be
->>>>    > avoided.  Replaces skip_dump flag.
->>>>
->>>> In my understanding it's not MMIO so memory_region_init_ram_ptr() should
->>>> be used instead.
->>>>
->>>
->>> It actually maybe the video memory (mmio) or system memory here. :-)
->>>
->>> We will get the host memory for blob from host with
->>> virgl_renderer_resource_map() in virglrenderer. In virglrenderer, there are two
->>> types of VIRGL_RESOURCE_FD_DMABUF and VIRGL_RESOURCE_FD_SHM to indicate the
->>> memory types. The shmem is the system memory that won't need GPU
->>> accessible, and dmabuf is the memory that required GPU accessible. Host
->>> kernel amdgpu driver will register dma-buf to export the resource buffer
->>> for sharing, and here, it may have video memory that exposed by amdgpu pcie
->>> bar0 in the dma-buf buffers. And we also have system memory(gtt) that can
->>> be mapped as gpu page tables for gpu accessible.
->>>
->>> 07:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Renoir (rev c1) (prog-if 00 [VGA controller])
->>>           Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Renoir
->>>           Flags: bus master, fast devsel, latency 0, IRQ 56
->>>           Memory at fcc0000000 (64-bit, prefetchable) [size=256M]
->>>           Memory at fcd0000000 (64-bit, prefetchable) [size=2M]
->>>           I/O ports at 1000 [size=256]
->>>           Memory at d0400000 (32-bit, non-prefetchable) [size=512K]
->>>           Capabilities: <access denied>
->>>           Kernel driver in use: amdgpu
->>>           Kernel modules: amdgpu
->>
->> In my understanding it is not relevant if the memory is backed by device
->> or not. Here MMIO means memory-mapping I/O registers that has
->> side-effects during accesses. Reading such a register may acknowledge an
->> interrupt for example and the unit of writes may also matter.
->> memory_region_init_ram_device_ptr() ensures no supurious memory read
->> will not happen and word accesses are preserved.
->>
->> They do not matter for video memory even if it lies in a separate device
->> memory. In this sense the name "memory_region_init_ram_device_ptr" is
->> somewhat misnomer.
->>
+On 06/09/2023 14:59, “William Roche wrote:
+> From: William Roche <william.roche@oracle.com>
 > 
-> OK. Thanks for the clarification.
+> A memory page poisoned from the hypervisor level is no longer readable.
+> Thus, it is now treated as a zero-page for the ram saving migration phase.
 > 
-> After traced the code, if memory_region_init_ram_device_ptr(), it will use
-> memory_region_dispatch_write() to call into memory_region_ram_device_write()
-> which registered as ram_device_mem_ops to write ram_block->host with offset
-> dword by dword. And if we use memory_region_init_ram_ptr(), the
-> flatview_write_continue() will use memmove() to write buf into ramblock while
-> we write the blob memory. May I know whether you mean the "memmove" may have an
-> interrupt or supurious memory access?
+> The migration of a VM will crash Qemu when it tries to read the
+> memory address space and stumbles on the poisoned page with a similar
+> stack trace:
+> 
+> Program terminated with signal SIGBUS, Bus error.
+> #0  _mm256_loadu_si256
+> #1  buffer_zero_avx2
+> #2  select_accel_fn
+> #3  buffer_is_zero
+> #4  save_zero_page_to_file
+> #5  save_zero_page
+> #6  ram_save_target_page_legacy
+> #7  ram_save_host_page
+> #8  ram_find_and_save_block
+> #9  ram_save_iterate
+> #10 qemu_savevm_state_iterate
+> #11 migration_iteration_run
+> #12 migration_thread
+> #13 qemu_thread_start
+> 
+> Fix it by considering poisoned pages as if they were zero-pages for
+> the migration copy. This fix also works with underlying large pages,
+> taking into account the RAMBlock segment "page-size".
+> 
+> Signed-off-by: William Roche <william.roche@oracle.com>
 
-memmove can split one word write into smaller writes and that is 
-implementation dependent.
+You forgot to CC the maintainers; Adding them now
 
-git blame is your friend if you want to know more. Particularly commits 
-21e00fa55f ("memory: Replace skip_dump flag with "ram_device"") and 
-4a2e242bbb ("memory: Don't use memcpy for ram_device regions" [the 
-memmove call was used to be memcpy) may interest you.
+./scripts/get_maintainer.pl is your friend for the next version :)
 
-Regards,
-Akihiko Odaki
+> ---
+>  accel/kvm/kvm-all.c    | 14 ++++++++++++++
+>  accel/stubs/kvm-stub.c |  5 +++++
+>  include/sysemu/kvm.h   | 10 ++++++++++
+>  migration/ram.c        |  3 ++-
+>  4 files changed, 31 insertions(+), 1 deletion(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 2ba7521695..24a7709495 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -1152,6 +1152,20 @@ static void kvm_unpoison_all(void *param)
+>      }
+>  }
+>  
+> +bool kvm_hwpoisoned_page(RAMBlock *block, void *offset)
+> +{
+> +    HWPoisonPage *pg;
+> +    ram_addr_t ram_addr = (ram_addr_t) offset;
+> +
+> +    QLIST_FOREACH(pg, &hwpoison_page_list, list) {
+> +        if ((ram_addr >= pg->ram_addr) &&
+> +            (ram_addr - pg->ram_addr < block->page_size)) {
+> +            return true;
+> +        }
+> +    }
+> +    return false;
+> +}
+> +
+>  void kvm_hwpoison_page_add(ram_addr_t ram_addr)
+>  {
+>      HWPoisonPage *page;
+> diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+> index 235dc661bc..c0a31611df 100644
+> --- a/accel/stubs/kvm-stub.c
+> +++ b/accel/stubs/kvm-stub.c
+> @@ -133,3 +133,8 @@ uint32_t kvm_dirty_ring_size(void)
+>  {
+>      return 0;
+>  }
+> +
+> +bool kvm_hwpoisoned_page(RAMBlock *block, void *ram_addr)
+> +{
+> +    return false;
+> +}
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index ebdca41052..a2196e9e6b 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -580,4 +580,14 @@ bool kvm_arch_cpu_check_are_resettable(void);
+>  bool kvm_dirty_ring_enabled(void);
+>  
+>  uint32_t kvm_dirty_ring_size(void);
+> +
+> +/**
+> + * kvm_hwpoisoned_page - indicate if the given page is poisoned
+> + * @block: memory block of the given page
+> + * @ram_addr: offset of the page
+> + *
+> + * Returns: true: page is poisoned
+> + *          false: page not yet poisoned
+> + */
+> +bool kvm_hwpoisoned_page(RAMBlock *block, void *ram_addr);
+>  #endif
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 9040d66e61..48d875b12d 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -1145,7 +1145,8 @@ static int save_zero_page_to_file(PageSearchStatus *pss, QEMUFile *file,
+>      uint8_t *p = block->host + offset;
+>      int len = 0;
+>  
+> -    if (buffer_is_zero(p, TARGET_PAGE_SIZE)) {
+> +    if ((kvm_enabled() && kvm_hwpoisoned_page(block, (void *)offset)) ||
+> +        buffer_is_zero(p, TARGET_PAGE_SIZE)) {
+>          len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
+>          qemu_put_byte(file, 0);
+>          len += 1;
 
