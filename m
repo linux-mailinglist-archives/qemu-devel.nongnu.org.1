@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE06E793850
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 683E879384B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdoto-0000TO-1Z; Wed, 06 Sep 2023 05:32:36 -0400
+	id 1qdotl-00008H-Vi; Wed, 06 Sep 2023 05:32:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotY-0008MI-JB; Wed, 06 Sep 2023 05:32:20 -0400
+ id 1qdotY-0008MH-Ib; Wed, 06 Sep 2023 05:32:20 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdotT-0000f9-8K; Wed, 06 Sep 2023 05:32:19 -0400
+ id 1qdotT-0000fD-9d; Wed, 06 Sep 2023 05:32:19 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qdoqM-005qCB-0C;
- Wed, 06 Sep 2023 11:32:00 +0200
+ (envelope-from <den@openvz.org>) id 1qdoqM-005qCB-1R;
+ Wed, 06 Sep 2023 11:32:01 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 4/8] qemu-nbd: put saddr into into struct NbdClientOpts
-Date: Wed,  6 Sep 2023 11:32:06 +0200
-Message-Id: <20230906093210.339585-5-den@openvz.org>
+Subject: [PATCH 5/8] qemu-nbd: invent nbd_client_release_pipe() helper
+Date: Wed,  6 Sep 2023 11:32:07 +0200
+Message-Id: <20230906093210.339585-6-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906093210.339585-1-den@openvz.org>
 References: <20230906093210.339585-1-den@openvz.org>
@@ -55,75 +55,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We pass other parameters into nbd_client_thread() in this way. This patch
-makes the code more consistent.
+Move the code from main() and nbd_client_thread() into the specific
+helper. This code is going to be grown.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qemu-nbd.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ qemu-nbd.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/qemu-nbd.c b/qemu-nbd.c
-index de6c2be590..d0f8d8bad2 100644
+index d0f8d8bad2..9f28e3ebda 100644
 --- a/qemu-nbd.c
 +++ b/qemu-nbd.c
-@@ -73,7 +73,6 @@
- 
- #define MBR_SIZE 512
- 
--static SocketAddress *saddr;
- static int persistent = 0;
- static enum { RUNNING, TERMINATE, TERMINATED } state;
- static int shared = 1;
-@@ -255,6 +254,7 @@ static int qemu_nbd_client_list(SocketAddress *saddr, QCryptoTLSCreds *tls,
- struct NbdClientOpts {
-     char *device;
-     char *srcpath;
-+    SocketAddress *saddr;
-     bool fork_process;
+@@ -259,6 +259,16 @@ struct NbdClientOpts {
      bool verbose;
  };
-@@ -289,7 +289,7 @@ static void *nbd_client_thread(void *arg)
  
-     sioc = qio_channel_socket_new();
-     if (qio_channel_socket_connect_sync(sioc,
--                                        saddr,
-+                                        opts->saddr,
-                                         &local_error) < 0) {
-         error_report_err(local_error);
-         goto out;
-@@ -591,6 +591,7 @@ int main(int argc, char **argv)
-         .verbose = false,
-         .device = NULL,
-         .srcpath = NULL,
-+        .saddr = NULL,
-     };
- 
- #ifdef CONFIG_POSIX
-@@ -892,8 +893,8 @@ int main(int argc, char **argv)
++static void nbd_client_release_pipe(void)
++{
++    /* Close stderr so that the qemu-nbd process exits.  */
++    if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
++        error_report("Could not release pipe to parent: %s",
++                     strerror(errno));
++        exit(EXIT_FAILURE);
++    }
++}
++
+ #if HAVE_NBD_DEVICE
+ static void *show_parts(void *arg)
+ {
+@@ -322,12 +332,7 @@ static void *nbd_client_thread(void *arg)
+         fprintf(stderr, "NBD device %s is now connected to %s\n",
+                 opts->device, opts->srcpath);
+     } else {
+-        /* Close stderr so that the qemu-nbd process exits.  */
+-        if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
+-            error_report("Could not release pipe to parent: %s",
+-                         strerror(errno));
+-            exit(EXIT_FAILURE);
+-        }
++        nbd_client_release_pipe();
      }
  
-     if (list) {
--        saddr = nbd_build_socket_address(sockpath, bindto, port);
--        return qemu_nbd_client_list(saddr, tlscreds,
-+        opts.saddr = nbd_build_socket_address(sockpath, bindto, port);
-+        return qemu_nbd_client_list(opts.saddr, tlscreds,
-                                     tlshostname ? tlshostname : bindto);
+     if (nbd_client(fd) < 0) {
+@@ -1176,11 +1181,7 @@ int main(int argc, char **argv)
      }
  
-@@ -1024,8 +1025,8 @@ int main(int argc, char **argv)
-             exit(EXIT_FAILURE);
-         }
- #endif
--        saddr = nbd_build_socket_address(sockpath, bindto, port);
--        if (qio_net_listener_open_sync(server, saddr, backlog,
-+        opts.saddr = nbd_build_socket_address(sockpath, bindto, port);
-+        if (qio_net_listener_open_sync(server, opts.saddr, backlog,
-                                        &local_err) < 0) {
-             object_unref(OBJECT(server));
-             error_report_err(local_err);
+     if (opts.fork_process) {
+-        if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
+-            error_report("Could not release pipe to parent: %s",
+-                         strerror(errno));
+-            exit(EXIT_FAILURE);
+-        }
++        nbd_client_release_pipe();
+     }
+ 
+     state = RUNNING;
 -- 
 2.34.1
 
