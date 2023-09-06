@@ -2,78 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E41793A8D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 13:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF85793AE4
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 13:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdqH8-0002em-TS; Wed, 06 Sep 2023 07:00:46 -0400
+	id 1qdqVx-0001JB-PA; Wed, 06 Sep 2023 07:16:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdqH7-0002eT-Bw
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 07:00:45 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qdqVv-0001Ic-FD
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 07:16:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdqH2-0001d6-GI
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 07:00:42 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qdqVq-0005Mq-Vl
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 07:16:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693998038;
+ s=mimecast20190719; t=1693998955;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8jW5NboON/sBt4qhdphcskFFj7m6AhgAMih/indWa/c=;
- b=VbRIAett6yNxgp4j1TH3lMJCOx2TatcRdmFMUM36C8/90fzuJm900rKyNxHTBdtSIi1z7y
- 371b7Wcdq90Er4wnNdoC7hDDn6Vp47PCGrwgRB2eXWT0PwylRZZYZXUwmA4ob5IVsTNnl4
- /xzE28XZ1WWAT5TQADSCX/7rYmCFQns=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-FOorD1_ZMhCnuIo_YeiJvA-1; Wed, 06 Sep 2023 07:00:36 -0400
-X-MC-Unique: FOorD1_ZMhCnuIo_YeiJvA-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-7a2627791d4so788556241.0
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 04:00:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693998036; x=1694602836;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8jW5NboON/sBt4qhdphcskFFj7m6AhgAMih/indWa/c=;
- b=g0+baN6Wn5XhMdhsoLWl9nFUoBdkK72CnLIXdhEZlsD3Kc1Gf+xt7tv8sguihklmO4
- hcWSeq8Ow4N2Aa+Op92dgCcb0VeKI+7lCrsfOgSUV86igrwMVPylP/PkDIQYPuIsK+2r
- OhUzylOugzkIfKRTpgVuXlt00pbl/KganfWuvW2WQQ4IuWzW+uUZB2gs4FAEiiSSB5kC
- oAjUsdt5z6NZtnD4DUjAkKo3q/KtmQsnWv3M0gUV6/mi1mJ7+skswP5LJKRmp+EKo8Ov
- pnf9aXLeN9MwZzwua/rHFDllKa++Yy0LOjNeTgChWYigefNmcSh7ZmUKdk4DHXiCGBhI
- d7Xw==
-X-Gm-Message-State: AOJu0Ywc5EWU2S+sN41EJC3EkKrsm7WQ2l1ksrZQd03KacPBbu403gUz
- WK8hksqnaXdF+YbV+YSX1nAaPCCoJcHfU6SNAcnI11HytBgXlrZEb3F1iF4Wgtja9BXK0w1gfv0
- Voci52PVmJ2Mut/jB+L8HavqufeqXv3E=
-X-Received: by 2002:a05:6102:7b7:b0:44e:a3e9:68d4 with SMTP id
- x23-20020a05610207b700b0044ea3e968d4mr2215627vsg.30.1693998036169; 
- Wed, 06 Sep 2023 04:00:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEE8si+Sr/TLA3qpscNz2A71xJqxCMRc/TiXZtVlMe6kTOUl+m0z9PktW8MDSWkpaIuQHD98if3FTGGWpyamrw=
-X-Received: by 2002:a05:6102:7b7:b0:44e:a3e9:68d4 with SMTP id
- x23-20020a05610207b700b0044ea3e968d4mr2215619vsg.30.1693998035931; Wed, 06
- Sep 2023 04:00:35 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GFjKDLTljm7fhWfEWZ6zxarvq8K8uRX2/BWVSbIzWys=;
+ b=aj2Ayw63Sl9K1MeD1R99WnoPqdwlQ/l2fOU1PDFiQTM09fqKaqMY7Mkoq0DJ1DQBxfuign
+ mT3qngnBAKtLXbMnHpScrY51KaGezzbXufJ3rlSUXDWcdAuoLd2S8jHN2o+ljymlycBjGE
+ Fc34aXJ2b6NUNvv2ZcKe3l9hvgFsYnk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-668-TQMgI2r6PkGVCRksOcZNBA-1; Wed, 06 Sep 2023 07:15:52 -0400
+X-MC-Unique: TQMgI2r6PkGVCRksOcZNBA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 247B529AB3E2;
+ Wed,  6 Sep 2023 11:15:52 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.49])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 36D0E2012F37;
+ Wed,  6 Sep 2023 11:15:50 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, cohuck@redhat.com,
+ Albert Esteve <aesteve@redhat.com>, kraxel@redhat.com,
+ marcandre.lureau@gmail.com
+Subject: [PATCH v6 0/3] Virtio shared dma-buf
+Date: Wed,  6 Sep 2023 13:15:46 +0200
+Message-ID: <20230906111549.357178-1-aesteve@redhat.com>
 MIME-Version: 1.0
-References: <20230830093843.3531473-1-marcandre.lureau@redhat.com>
- <20230830093843.3531473-66-marcandre.lureau@redhat.com>
- <cb0e2856-afdc-294b-d111-28be168eeed2@eik.bme.hu>
- <CAJ+F1CLxP7-8AS-4zSNLYtNVX_ZgR1rEBHzxgmCv3oJOiNU22g@mail.gmail.com>
-In-Reply-To: <CAJ+F1CLxP7-8AS-4zSNLYtNVX_ZgR1rEBHzxgmCv3oJOiNU22g@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 6 Sep 2023 13:00:24 +0200
-Message-ID: <CABgObfYM02WRf4Q-JFCd5bRMo29tbnN-63NOXGtRKRe=3MPiEQ@mail.gmail.com>
-Subject: Re: [PATCH 65/67] ppc/kconfig: make SAM460EX depend on PPC & PIXMAN
-To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org, 
- Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,16 +78,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 5, 2023 at 10:07=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@gmail.com> wrote:
-> Indeed, and it is disabled not by Kconfig but by meson:
-> system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true:
-> files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
+v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
+v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
+v5 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
+v5 -> v6:
+- Unified shared table API mutex usage
+- Typedef VirtioSharedObject struct
+- Squashed refactor commit to fix compilation issue on patch#3
 
-It's better to add a "depends on", so that it fails to compile with
---disable-pixman.  Without it, you're left with possible runtime
-failures where boards expect ATI_VGA to be there.
+This patch covers the required steps to add support for virtio cross-device resource sharing[1],
+which support is already available in the kernel.
 
-Paolo
+The main usecase will be sharing dma buffers from virtio-gpu devices (as the exporter
+-see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under discussion)
+devices (as the buffer-user or importer). Therefore, even though virtio specs talk about
+resources or objects[3], this patch adds the infrastructure with dma-bufs in mind.
+Note that virtio specs let the devices themselves define what a vitio object is.
+
+These are the main parts that are covered in the patch:
+
+- Add hash function to uuid module
+- Shared resources table, to hold all resources that can be shared in the host and their assigned UUID,
+  or pointers to the backend holding the resource
+- Internal shared table API for virtio devices to add, lookup and remove resources
+- Unit test to verify the API
+- New messages to the vhost-user protocol to allow backend to interact with the shared
+  table API through the control socket
+- New vhost-user feature bit to enable shared objects feature
+
+Applies cleanly to 2d8fbcb1eecd8d39171f457e583428758321d69d
+
+[1] - https://lwn.net/Articles/828988/
+[2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-3730006
+[3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-10500011
+
+Albert Esteve (3):
+  uuid: add a hash function
+  virtio-dmabuf: introduce virtio-dmabuf
+  vhost-user: add shared_object msg
+
+ MAINTAINERS                               |   7 +
+ docs/interop/vhost-user.rst               |  57 +++++++
+ hw/display/meson.build                    |   1 +
+ hw/display/virtio-dmabuf.c                | 134 +++++++++++++++++
+ hw/virtio/vhost-user.c                    | 174 ++++++++++++++++++++--
+ include/hw/virtio/vhost-backend.h         |   3 +
+ include/hw/virtio/virtio-dmabuf.h         | 103 +++++++++++++
+ include/qemu/uuid.h                       |   2 +
+ subprojects/libvhost-user/libvhost-user.c | 118 +++++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  55 ++++++-
+ tests/unit/meson.build                    |   1 +
+ tests/unit/test-uuid.c                    |  27 ++++
+ tests/unit/test-virtio-dmabuf.c           | 137 +++++++++++++++++
+ util/uuid.c                               |  15 ++
+ 14 files changed, 820 insertions(+), 14 deletions(-)
+ create mode 100644 hw/display/virtio-dmabuf.c
+ create mode 100644 include/hw/virtio/virtio-dmabuf.h
+ create mode 100644 tests/unit/test-virtio-dmabuf.c
+
+-- 
+2.41.0
 
 
