@@ -2,103 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434EA793DEB
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCA0793E39
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:59:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdso0-0000n2-4u; Wed, 06 Sep 2023 09:42:52 -0400
+	id 1qdt2X-00074s-Ui; Wed, 06 Sep 2023 09:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qdsnx-0000mo-MD; Wed, 06 Sep 2023 09:42:49 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qdsnu-0002Iv-Sm; Wed, 06 Sep 2023 09:42:49 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 386DXvkW018015; Wed, 6 Sep 2023 13:42:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=utCYaSnmHbv/UwgQ/r89M64gnfKcXlWVSZODoE7eI0o=;
- b=GFY5hJBKlROFvaNUQ0NjwfJTOrz9/rrvXlYkm5CPVL0L33+2BAZemu2V2xNYGlsajD+C
- gpY5QcwGfBKR8NIq4OFz0isTRRL4lhYZy8o9uK1YgX51J1hRLxH2CaLkiB+DyXEWJQjA
- ft2LHJ4bEIb8ursCJdVQK6sE5QhHv/luA3mzL71L2dXUuFP311UECqLMSGabTzreczXb
- vq5c6giDUWiED9BOGRYU+e0UbAb7HLsHqm47WFtMH2FhupulXtDWR8/681DPkM8vjmxg
- ASxfcPj9oHqtOGj571nozk2avKEFN8QzteMQzOwJypp2kQEWr/1ZPwIYado8tDDmEXDT 7w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxtdtrmxs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Sep 2023 13:42:34 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 386DY5th018854;
- Wed, 6 Sep 2023 13:42:06 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxtdtrkhf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Sep 2023 13:42:05 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 386DbP7o026818; Wed, 6 Sep 2023 13:41:21 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgcnk6cf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Sep 2023 13:41:21 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 386DfHnn17826330
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Sep 2023 13:41:18 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D518E20049;
- Wed,  6 Sep 2023 13:41:17 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6632120040;
- Wed,  6 Sep 2023 13:41:17 +0000 (GMT)
-Received: from [9.171.93.132] (unknown [9.171.93.132])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  6 Sep 2023 13:41:17 +0000 (GMT)
-Message-ID: <b32fe1b9-e05d-971b-41d7-0ab925853014@linux.ibm.com>
-Date: Wed, 6 Sep 2023 15:41:17 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qdt2V-00074X-RR
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:57:51 -0400
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qdt2R-0006rN-3q
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:57:51 -0400
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-57354433a7dso1995425eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 06:57:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694008665; x=1694613465; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=S2Smp2aBwuIRNZtLWcjlS8jG1YQykyl/Y7n9k5HqWmI=;
+ b=OP5AxoyWDvwkSE6k2cjyYpiKIM/n8+HNYL8LkdkNhjB1Xrdat72mjtvJ/PFOY2t3uW
+ YW/EoewtlLqQiEMuicj3fAjtDIOghche0NqoMA3OCTTVw8JH0b5KOVFRNcFpL98Up3oU
+ r6PjQrzoE+iSj9YKrsFwL/j1rusxZIBi+Q+VSIHePMdOdzSo6mVAxy+RlNwbfrUHQnCk
+ pqXxS1lylbl6XwBBjHdMhoqfvoWwk8yKBDdetm95Qn/bOcOLicMakZBI1AiXcIE21Pk2
+ Bljdmb4RgYL3cUwhQXSCXVJMS6TIjFTODUgO6jZYE4926gTq6fLX4CZC8rG8gJar56fb
+ l2cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694008665; x=1694613465;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=S2Smp2aBwuIRNZtLWcjlS8jG1YQykyl/Y7n9k5HqWmI=;
+ b=BplbFMeTylAqjLyHmadzTafHXKt40eOROYkkOfksU5MKBrgjT+Fc3iTdVbasxuDlkO
+ zZTFXmCKD6ACOb7I19DhIfNtxbzSq99Ypn/5KGvynZxD8BGh+yzyW1FBQTkUHUyPE3rO
+ uOYdjfGAlDO87GbHm48iC6P/8eyVNtkyCuagexpZQBFtC6drMYvOajmi959X3d9W1Pes
+ 71zI/6SdNDonl9ydBsIUtX1jbLmhJHiGCQpSViKcI5v8q3JnYjDOxy3dEYepiAK0lmEp
+ yzvbkvoGgDTtH5uEpyd40ySKV7a0CMwRj3Jc/KEW9TkH5zSeNfcPGqEunMuqet0Bx61J
+ AoYA==
+X-Gm-Message-State: AOJu0YyjuonCM7l+g2Vs6ECcgyFu7DG4OZZqi8Xv26h7AQgC0EqDb/w+
+ jz+fmAYV6m/Z0ONrBN8SSrj245yUBD+o8I3PE5o=
+X-Google-Smtp-Source: AGHT+IFpSCC4SxoIZJ7m6xPj2BMky4w2nU+wdFvqtzwnQmFwXpCxHSAvQS5MhQ1iW7pQGur1T+w1H5TrbF2d+YPR9tk=
+X-Received: by 2002:a4a:314b:0:b0:56c:cd04:9083 with SMTP id
+ v11-20020a4a314b000000b0056ccd049083mr13802709oog.1.1694008665228; Wed, 06
+ Sep 2023 06:57:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] s390x: do a subsystem reset before the unprotect on reboot
-To: Janosch Frank <frankja@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, seiden@linux.ibm.com, mhartmay@linux.ibm.com,
- thuth@redhat.com, david@redhat.com, mimu@linux.ibm.com
-References: <80b007e8-91d7-8298-f628-77c30616f0f4@linux.ibm.com>
- <20230901114851.154357-1-frankja@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20230901114851.154357-1-frankja@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: G0b1vk-anP-pOTjEUXD1pM0XNLa5dCda
-X-Proofpoint-ORIG-GUID: v1qnsHuzeILXbn71eBpGA-dVFOeZORsx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-06_06,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- suspectscore=0 phishscore=0 malwarescore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309060117
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <87v8grlzu9.fsf@linaro.org>
+ <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
+ <5e6b1bbd-bc0a-cff5-119c-639a9d15e72a@linux.dev>
+In-Reply-To: <5e6b1bbd-bc0a-cff5-119c-639a9d15e72a@linux.dev>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 6 Sep 2023 09:57:33 -0400
+Message-ID: <CAJSP0QUZ51y4bBTRgp_g6AO_6iEFamhOqMbcfFi5UiWBCkJQJQ@mail.gmail.com>
+Subject: Re: [Virtio-fs] Status of DAX for virtio-fs/virtiofsd?
+To: Hao Xu <hao.xu@linux.dev>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ virtio-fs@redhat.com, Erik Schilling <erik.schilling@linaro.org>, 
+ QEMU Developers <qemu-devel@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,57 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, 6 Sept 2023 at 09:07, Hao Xu <hao.xu@linux.dev> wrote:
+> On 5/18/23 00:26, Stefan Hajnoczi wrote:
+> > On Wed, 17 May 2023 at 11:54, Alex Benn=C3=A9e <alex.bennee@linaro.org>=
+ wrote:
+> > Hi Alex,
+> > There were two unresolved issues:
+> >
+> > 1. How to inject SIGBUS when the guest accesses a page that's beyond
+> > the end-of-file.
+>
+> Hi Stefan,
+> Does this SIGBUS issue exist if the guest kernel can be trusted? Since in
+>
+> that case, we can check the offset value in guest kernel.
 
+The scenario is:
+1. A guest userspace process has a DAX file mmapped.
+2. The host or another guest that is also sharing the directory
+truncates the file. The pages mmapped by our guest are no longer
+valid.
+3. The guest loads from an mmapped page and a vmexit occurs.
+4. Now the host must inject a SIGBUS into the guest. There is
+currently no way to do this.
 
-Am 01.09.23 um 13:48 schrieb Janosch Frank:
-> Bound APQNs have to be reset before tearing down the secure config via
-> s390_machine_unprotect(). Otherwise the Ultravisor will return a error
-> code.
-> 
-> So let's do a subsystem_reset() which includes a AP reset before the
-> unprotect call. We'll do a full device_reset() afterwards which will
-> reset some devices twice. That's ok since we can't move the
-> device_reset() before the unprotect as it includes a CPU clear reset
-> which the Ultravisor does not expect at that point in time.
-> 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+I believe this scenario doesn't happen within a single guest, because
+the guest kernel will raise SIGBUS itself without a vmexit if another
+process inside that same guest truncates the file.
 
-Makes sense.
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Another scenario is when the guest kernel access the DAX pages. A
+vmexit can occur here too.
 
-> ---
-> 
-> I'm not able to test this for the PV AP case right new, that has to
-> wait to early next week. However Marc told me that the non-AP PV test
-> works fine now.
-> 
-> ---
->   hw/s390x/s390-virtio-ccw.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 3dd0b2372d..2d75f2131f 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -438,10 +438,20 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
->       switch (reset_type) {
->       case S390_RESET_EXTERNAL:
->       case S390_RESET_REIPL:
-> +        /*
-> +         * Reset the subsystem which includes a AP reset. If a PV
-> +         * guest had APQNs attached the AP reset is a prerequisite to
-> +         * unprotecting since the UV checks if all APQNs are reset.
-> +         */
-> +        subsystem_reset();
->           if (s390_is_pv()) {
->               s390_machine_unprotect(ms);
->           }
->   
-> +        /*
-> +         * Device reset includes CPU clear resets so this has to be
-> +         * done AFTER the unprotect call above.
-> +         */
->           qemu_devices_reset(reason);
->           s390_crypto_reset();
->   
+If you trust the host and all guests sharing the directory not to
+truncate files that are mmapped, then this issue will not occur.
+
+Stefan
 
