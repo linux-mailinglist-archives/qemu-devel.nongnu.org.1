@@ -2,126 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D09794156
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 18:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FC379412B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 18:08:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdvGS-00014J-HD; Wed, 06 Sep 2023 12:20:24 -0400
+	id 1qdv3G-0001lA-4A; Wed, 06 Sep 2023 12:06:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qdvGN-00013P-5b
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 12:20:20 -0400
-Received: from mail-dm6nam11on2059.outbound.protection.outlook.com
- ([40.107.223.59] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qdvGJ-0000gU-C7
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 12:20:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QPQ4TlFXIKanv0wU4S+fke5RHTi6V1v9XBOJ3ljrVC5WYU9Q2aYZFnIGYMcqUFM6UU0qhqmZfUHkO4lPhfgyQC3jh96EtyxWkNyvOm1ddIWOjw5KGRB3MPHbJfn0qVcgg7dvBKAp1MhFcjPVNRXintlvGrkPayRZT12l19MygRg2uD4S/XwE2PNr2QXv+KeNi4xb9UCsYohJX0V1ONZTcD5M6ICyzqamM09EtgZVxvmKLSmfb1rEjD9lY4jm2GwD4u/FZeoTNHkm5oVm4LtwrSOrV8Lt1bEXb+MpU7M2mw+U9/iOtI4BAOUF7zaGcXtsCpMdI9OUZ2nqmSRCOoFS+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2bYS/ZunbqVoTm0zqs0PHV3JSeSRAqJYFbmJoYbcRmY=;
- b=GJqi2suw+ZpquCKYpMxmIHWtwgVAkq6dMJ8vipzJcLZ1O2hfnrGuMEVZa/zPyivxPf4TLkVCkKfv0FgglrhEK/1NNS5GVgLGqCLE1cH/b55GeQWmB3U9mYETEnB60UH/fS+G07q2RpqFN9tEelDuqHBYU3i0Hv3chn72+wYuhDw3dr4bJ+52tU0FIcPoubrHgkpkD9ccprfKU25g66rbqABvbu8UEFuuYCHhczYH19kXcrhCil/xgtMAo87u8U2LDzbwe1AdPokBBCfRdtLCdUEVy4/TtSvgaNHBJt/Q0PghAjyibdgzM051JbmQh+ooFLPxLgrkT1caiv3GolGwiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2bYS/ZunbqVoTm0zqs0PHV3JSeSRAqJYFbmJoYbcRmY=;
- b=SRLi8t8TmwSRzrQpimfzAVvEZetj4bgTmIVVEVcZAp+IBpha61svsFo1nSaOa2a6Z4sp/4thhAhSZ5cLDWSmdJ2gbsI+/vv2dR70Xzr+cQCh3UuidkKd3WHFqNT4t4Nz1bzt5rFsE0A8eRqEDCfn9hgMEATXjZSVMHkO5LcBC54=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by BY5PR17MB4081.namprd17.prod.outlook.com (2603:10b6:a03:233::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
- 2023 16:15:01 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::94b1:abab:838f:650e]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::94b1:abab:838f:650e%4]) with mapi id 15.20.6745.030; Wed, 6 Sep 2023
- 16:15:01 +0000
-Date: Tue, 5 Sep 2023 12:04:29 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org, junhee.ryu@sk.com, kwangjin.ko@sk.com
-Subject: Re: [PATCH 5/5] cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
-Message-ID: <ZPdRjVjbbe9DkHW5@memverge.com>
-References: <20230901012914.226527-1-gregory.price@memverge.com>
- <20230901012914.226527-6-gregory.price@memverge.com>
- <20230906140445.00002acd@Huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906140445.00002acd@Huawei.com>
-X-ClientProxiedBy: BY3PR04CA0030.namprd04.prod.outlook.com
- (2603:10b6:a03:217::35) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdv3A-0001kg-Fx
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 12:06:40 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdv35-0006Em-AO
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 12:06:39 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9a5e1812378so603138866b.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 09:06:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694016393; x=1694621193; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=CYl56d3Rr0xXl75o9KExaMUEcGUCUwZ4s1ox1DRCjPU=;
+ b=hzvDvyug92+k2sXcNN1CBmw4amA8JntQ7nddAYXBDH9KLkOpImqxNyQzC2LGVtrkr2
+ sC6rBPtLaG9pvHDvUKzw6pR4YE1Mz/+tWjGk9XvEWBbkZKyurkzmS9Fixh0iiygc3WNh
+ Qi2ibAQnJGnFI85wzx53ux1Q1fYQF3McnxJvlVC25CCIQKwxLyiBPLzns3Xz0hPqaQZt
+ XAFQ/nzhh/UiDrmEdchR/yDLGnPKWy2x8TOdJTXNEu4JBa+YMCqs46WnCj/c7tPqo95H
+ 10WsneQ/G/BUYR0x3MM9zVoJ+SFmNuiVxG/Dis+RzgTklHQ3nwnjDcOLhxstacrU8LGt
+ TYfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694016393; x=1694621193;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CYl56d3Rr0xXl75o9KExaMUEcGUCUwZ4s1ox1DRCjPU=;
+ b=H018fX6imXYhvAhYIgYGyhlqHOgo9eQZhMrE1lk+Ez8dLaoisADxemkBcniHNBx3aS
+ VjiRjRknpljU5ZMfKo1rwS0Aig3tdPJxkBzOJFuzLzhHE9gowJhxMK2fNWAmaOIh9P0/
+ o6QXHKdfxCsnbzLmsriqgFqbSgkS79LsfEA2oQlswVzrx4CM94eqn+jhyDdZweEk++Qw
+ XhMPDYJqVz+3sXz/15pvZb99yl+iK+lpNCuLnLthpj0nnwlHukMX7gyQIbsFYHn1Sgvm
+ 3TpH14QYJI3VuCk2EALEAX+wX3Y8ILX3dI6HNQ0uR6G0/COzM9hou+q5mIv59fMrl3ib
+ FEtQ==
+X-Gm-Message-State: AOJu0Ywew1chlffnDI3wnPmO2ExUXajhdrA8Egq94xo/zOI0+RCKZ9c2
+ hrIlW47wR9nGIBJqPnu+5dH2+A==
+X-Google-Smtp-Source: AGHT+IH63AHAxh35TtojkVxGExF1G7A+biupiaqyfauaSZN5p4pt8fElfiGVetNi7NNBoy9+5bo+AA==
+X-Received: by 2002:a17:906:76da:b0:9a1:b5fc:8c5f with SMTP id
+ q26-20020a17090676da00b009a1b5fc8c5fmr2859808ejn.49.1694016393584; 
+ Wed, 06 Sep 2023 09:06:33 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ s14-20020a17090699ce00b0099bccb03eadsm9059144ejn.205.2023.09.06.09.06.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 09:06:33 -0700 (PDT)
+Message-ID: <6c956b90-5a13-db96-9c02-9834a512fe6f@linaro.org>
+Date: Wed, 6 Sep 2023 18:06:30 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|BY5PR17MB4081:EE_
-X-MS-Office365-Filtering-Correlation-Id: 527c3034-c942-4de8-2e76-08dbaef46bc1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EHOWCGxPQhpwtORShJo5mEF/53SikNDf3F/7i/h+gtfIN9jrqeJMP0cQQ0n9u9S0PhKr3w6rnkweHfKOCt6n+hRdW0DsVq8y+6bvuG+5dqozS0+vGtgu5t8Baekcwa8mBeeYSPTCGWBFCqlg+ecAB9gGbootUT7HOR7MOi7UWK/c/R8VIaXYqfzyAGdM0yqb7HiwlFl+yRjOcZIokyhKa3A+2jb1uwBvSkMlxUqWd/+cjtn6+LZEnno+5hfRBkmhaj+OchPg+8YvU1F7E0mbWgBZMNfCmXlZwXGg4svswZjUnzUdzL7jllHI+GrXzrmD6RAxnpLFmBunepd3Fsqb0SiUw4AFTbTbaCSl21IdoUYah1I0QB04VfSFL+NoK8ZZLxh2MFqZHV2/aTUEbYTQYpGiyEMmp5LbaGbYqUN75/lTeGOzKBtHn/uMIm1lQ2SsaSj+lQ2AjQsgcoNKH9Gs3UcXoliqQGOGjPfRt7a+XmZC5YvCyxKDwcbfpaRBcA0z2Yqdsh4ngA1E4X8OUKxfSL3tw6Its7awz066tLe/pIW2iwZ8w+aidukil3NZBkza
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(376002)(396003)(39830400003)(346002)(136003)(186009)(1800799009)(451199024)(41300700001)(26005)(6666004)(478600001)(86362001)(83380400001)(38100700002)(2616005)(6512007)(6486002)(6506007)(66946007)(8676002)(66556008)(2906002)(316002)(6916009)(66476007)(36756003)(8936002)(5660300002)(44832011)(4326008);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eezMfX97lcnuSnXtZ+2z/W7H2KtPJ0QoUsZaW/qTqWIPjIFXwjyow5pFMiUr?=
- =?us-ascii?Q?3/oJz6e2ndTV1Jnoi3aLEmAv4+e+TNQVW4wO09SV18F+JLtWZLt+rxRN4k1Q?=
- =?us-ascii?Q?yH4dTCV3gBoxZRvrmup3aCXcKJczmO3sE+g+jImtvX/BxyzUvg4Dg6SzjJ6u?=
- =?us-ascii?Q?i98fi/Eckp+DbOACQuy8uO2UW65YNWXYZx7zmGfx4OBRBxuZLe6EJ7V/rioQ?=
- =?us-ascii?Q?pfY+k9Vawh5pNSR16BAv8t07tiAOO6KYhMe0nFHFlPaCYo35KtIjIS+n5JRU?=
- =?us-ascii?Q?9W25BKATUgawlyoJRDZ46C5MPO3Yovf3v3xxL0aapFiWOgeCoDSHQ4TLXs8G?=
- =?us-ascii?Q?uTFl1bLiB1SqYZqSGXM+IMaQKAcJBhDajuzWUn6erBdRgA1aXWzFBOepJ/gN?=
- =?us-ascii?Q?PBvJgEGFXH1rDL26kcYHsOGQhu3LmwM7RB42TImYXL2+KtSOY6GgBbSIO1g9?=
- =?us-ascii?Q?QET+ALm8WkNX5E1GuH7Xi+lcfBd4nzLEuncsbHzfn4jVkKGgwK0PunB8hMvD?=
- =?us-ascii?Q?RkDGXX7KHyNb7GSWwDnFFGZxQ4B4f2NoqtMIMZiVrXApDlznpTKt+olcyUG1?=
- =?us-ascii?Q?/y3c9hxTERKcBbj5QWO/+5w81swehve+btBzI3pyZKwj8q30bx5+RZZS9A9F?=
- =?us-ascii?Q?ZK/C1i44xLV1y7tmW4f2O/Dv31MuLjMayOoEC55Q8FcmX6NT9HXmYq6GdMc4?=
- =?us-ascii?Q?Cn16L3MAhyUVh9dP/+eRPZBhyOzBqq2Nd8JaWl2HEzVguFD+tVFraLEWZZZO?=
- =?us-ascii?Q?Q4+8ZeCcU1HbJZD7izSjxFpQtmM3OD0FETj396sKtqhCB6BhMBG5tsFDclmq?=
- =?us-ascii?Q?5nwaxlMUtrMZZWn3zov7g5Cdf1R1GSMyKLgBil/PEMjudoXGNBISY76DhOUO?=
- =?us-ascii?Q?nIXV07MRKA24wCsOZasjEDuGJfhuyWzchuV2n4UwQCdRss+et/je+p5JqGK7?=
- =?us-ascii?Q?psUVYX4xcAtDCLcpu2XVkiGCN8vCMAiBmfBS974gKM1XbDzLwZLWWP8d33mB?=
- =?us-ascii?Q?ytD7ifcmst05HaI6ctnubeJtorOu5OhV6l1qah2RZ1FWF8018N95IXD+udBM?=
- =?us-ascii?Q?vJWycOEdxvBnimNHm68hts1uwwlo8TEpoHfAvQMuoAMtqmK573wD2gErnTD4?=
- =?us-ascii?Q?9SW7YKg9pA5aIi1cWyFmpNGfSkEq2q65FSokxwoW0h9sJysX4AgDwEum55Jt?=
- =?us-ascii?Q?iCUoh9KJwKWeoX8Fd6B5Gp0odsUMOS9fhMU+zjbj8FP+/TEGtS4fDfOA69MQ?=
- =?us-ascii?Q?mUAjS3fbEfjZAApXY/aMUa3cDdpQxCqFSsi1wJ3vsnaaeNiUnX9hFRFxbadx?=
- =?us-ascii?Q?ISWNU6fSS5fvSKUgFw7b3T0h/gYRuKU59JhglsBdulCFwt4JVWezoyTIw+DP?=
- =?us-ascii?Q?Y1j6K25aNX1XfAtP6AwC2XveUc1UZ/U1xlcNMi14RcY79CNsKqO4x09Nr2nP?=
- =?us-ascii?Q?za5ps8X+crit8d6aD5+N6UqO4XqnqLX8x5GA5OvzNLHQ8HUFcTNqOLnst5vk?=
- =?us-ascii?Q?7w+gMI1VEajmDyGRO28SCt26fyuu1G6cfSTQUjee3IK0iduS+szbR2l25uM3?=
- =?us-ascii?Q?cHmvacsd9QZ4ERpq8itPjgBl+m5Nln4QYgFPiG5N210+71stZRhZjtAvJ7Fl?=
- =?us-ascii?Q?2A=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 527c3034-c942-4de8-2e76-08dbaef46bc1
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 16:15:01.1316 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pzqk3R8rT/W0tpo2qAwvzLfQ1fmJ6zyy88kgs1z9V/LEtYdcbr3xvvHTec09uP2VyNuujoS2yDkMu/OVOVJYVWVvvC7QMxvu4Pz28esBbfw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR17MB4081
-Received-SPF: none client-ip=40.107.223.59;
- envelope-from=gregory.price@memverge.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: 2
-X-Spam_score: 0.2
-X-Spam_bar: /
-X-Spam_report: (0.2 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: mips system emulation failure with virtio
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <4f2a4b734b20b80857d56af986335f78a92a0fff.camel@linuxfoundation.org>
+ <87pm2whfyn.fsf@linaro.org>
+ <0cbd86af5501f18007a926598c6e2232af240d00.camel@linuxfoundation.org>
+ <67d4c8dc-24d7-afa3-27b1-d6e756a597b9@linaro.org>
+Content-Language: en-US
+In-Reply-To: <67d4c8dc-24d7-afa3-27b1-d6e756a597b9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -137,93 +101,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 06, 2023 at 02:04:45PM +0100, Jonathan Cameron wrote:
-> On Thu, 31 Aug 2023 21:29:14 -0400
-> Gregory Price <gourry.memverge@gmail.com> wrote:
+On 6/9/23 17:50, Philippe Mathieu-Daudé wrote:
+> +rth/pm215/dhildenb
 > 
-> Hi Gregory,
+> On 5/9/23 16:50, Richard Purdie wrote:
+>> On Tue, 2023-09-05 at 14:59 +0100, Alex Bennée wrote:
+>>> Richard Purdie <richard.purdie@linuxfoundation.org> writes:
+>>>
+>>>> With qemu 8.1.0 we see boot hangs fox x86-64 targets.
+>>>>
+>>>> These are fixed by 0d58c660689f6da1e3feff8a997014003d928b3b (softmmu:
+>>>> Use async_run_on_cpu in tcg_commit) but if I add that commit, mips and
+>>>> mips64 break, hanging at boot unable to find a rootfs.
+>>>
+>>> (Widen CC list)
+>>>
+>>>>
+>>>> We use virtio for network and disk and both of those change in the
+>>>> bootlog from messages like:
+>>>>
+>>>> [    1.726118] virtio-pci 0000:00:13.0: enabling device (0000 -> 0003)
+>>>> [    1.728864] virtio-pci 0000:00:14.0: enabling device (0000 -> 0003)
+>>>> [    1.729948] virtio-pci 0000:00:15.0: enabling device (0000 -> 0003)
+>>>> ...
+>>>> [    2.162148] virtio_blk virtio2: 1/0/0 default/read/poll queues
+>>>> [    2.168311] virtio_blk virtio2: [vda] 1184242 512-byte logical
+>>>>
+>>>> to:
+>>>>
+>>>> [    1.777051] virtio-pci 0000:00:13.0: enabling device (0000 -> 0003)
+>>>> [    1.779822] virtio-pci 0000:00:14.0: enabling device (0000 -> 0003)
+>>>> [    1.780926] virtio-pci 0000:00:15.0: enabling device (0000 -> 0003)
+>>>> ...
+>>>> [    1.894852] virtio_rng: probe of virtio1 failed with error -28
+>>>> ...
+>>>> [    2.063553] virtio_blk virtio2: 1/0/0 default/read/poll queues
+>>>> [    2.064260] virtio_blk: probe of virtio2 failed with error -28
+>>>> [    2.069080] virtio_net: probe of virtio0 failed with error -28
+>>>>
+>>>>
+>>>> i.e. the virtio drivers no longer work.
+>>>
+>>> Interesting, as you say this seems to be VirtIO specific as the baseline
+>>> tests (using IDE) work fine:
+>>>
+>>>    ➜  ./tests/venv/bin/avocado run 
+>>> ./tests/avocado/tuxrun_baselines.py:test_mips64
+>>>    JOB ID     : 71f3e3b7080164b78ef1c8c1bb6bc880932d8c9b
+>>>    JOB LOG    : 
+>>> /home/alex/avocado/job-results/job-2023-09-05T15.01-71f3e3b/job.log
+>>>     (1/2) 
+>>> ./tests/avocado/tuxrun_baselines.py:TuxRunBaselineTest.test_mips64: 
+>>> PASS (12.19 s)
+>>>     (2/2) 
+>>> ./tests/avocado/tuxrun_baselines.py:TuxRunBaselineTest.test_mips64el: 
+>>> PASS (11.78 s)
+>>>    RESULTS    : PASS 2 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | 
+>>> INTERRUPT 0 | CANCEL 0
+>>>    JOB TIME   : 24.79 s
+>>>
+>>>> I tested with current qemu master
+>>>> (17780edd81d27fcfdb7a802efc870a99788bd2fc) and mips is still broken
+>>>> there.
+>>>>
+>>>> Is this issue known about?
+>>>
+>>> Could you raise a bug at:
+>>>
+>>>    https://gitlab.com/qemu-project/qemu/-/issues
+>>
+>> Done, https://gitlab.com/qemu-project/qemu/-/issues/1866
+>>
+>>> I'm curious why MIPS VirtIO is affected but nothing else is...
+>>
+>> Me too, it seems there is a real code issue somewhere in this...
 > 
-> Some comments inline, but I'm happy to add this to my staging tree in the meantime
-> as it stands (might be a few days until I push a new branch though).
+> This seems to fix the issue for me, but I'm not really sure what
+> I'm doing after various hours debugging, so sharing here before
+> I take some rest:
 > 
-
-I'm going to do one a quick v3 today with the feedback and some cleanup
-in spots i noticed.
-
-> > Signed-off-by: Gregory Price <gregory.price@memverge.com>
-> > Signed-off-by: Junhee Ryu <junhee.ryu@sk.com>
-> > Signed-off-by: Kwangjin Ko <kwangjin.ko@sk.com>
+> -- >8 --
+> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+> index 18277ddd67..ec31ebcb56 100644
+> --- a/softmmu/physmem.c
+> +++ b/softmmu/physmem.c
+> @@ -2517,7 +2517,7 @@ static void tcg_commit(MemoryListener *listener)
+>        * That said, the listener is also called during realize, before
+>        * all of the tcg machinery for run-on is initialized: thus 
+> halt_cond.
+>        */
+> -    if (cpu->halt_cond) {
+> +    if (cpu->halt_cond && !qemu_cpu_is_self(cpu)) {
+>           async_run_on_cpu(cpu, tcg_commit_cpu, 
+> RUN_ON_CPU_HOST_PTR(cpuas));
+>       } else {
+>           tcg_commit_cpu(cpu, RUN_ON_CPU_HOST_PTR(cpuas));
+> ---
 > 
-> The SoB chain needs cleaning up.  Is this a co-developed situation?
-> If it is use the rules in the kernel documentation as I don't think those
-> are yet clearly stated in QEMU docs (and they are confusing so I won't try
-> to restate them here).
+> That said, the same logic moved generically to async_run_on_cpu()
+> also works ...:
 > 
-
-TL;DR: They gave me the command list, I wrote the model.  We got
-approval to release the model, but I wasn't sure how to capture the
-copyright/SoB list.  I suppose the copyright covers SKh, but since I
-authored the model, it only requires my SoB?
-
-After reading, I'm still not sure how to capture this lol.
-
-Should I just switch the skh folks to Co-developed-by?
-
+> -- >8 --
+> diff --git a/cpus-common.c b/cpus-common.c
+> index 45c745ecf6..b0539c4fb8 100644
+> --- a/cpus-common.c
+> +++ b/cpus-common.c
+> @@ -167,6 +167,9 @@ void do_run_on_cpu(CPUState *cpu, run_on_cpu_func 
+> func, run_on_cpu_data data,
 > 
-> > diff --git a/hw/cxl/vendor/skhynix/meson.build b/hw/cxl/vendor/skhynix/meson.build
-> > new file mode 100644
-> > index 0000000000..4e57db65f1
-> > --- /dev/null
-> > +++ b/hw/cxl/vendor/skhynix/meson.build
-> > @@ -0,0 +1 @@
-> > +system_ss.add(when: 'CONFIG_CXL_VENDOR', if_true: files('skhynix_niagara.c',))
-> > diff --git a/hw/cxl/vendor/skhynix/skhynix_niagara.c b/hw/cxl/vendor/skhynix/skhynix_niagara.c
-> > new file mode 100644
-> > index 0000000000..88e53cc6cc
-> > --- /dev/null
-> > +++ b/hw/cxl/vendor/skhynix/skhynix_niagara.c
-> > @@ -0,0 +1,516 @@
-> > +/*
-> > + * SPDX-License-Identifier: GPL-2.0-or-later
-> > + *
-> > + * Copyright (c) 2023 MemVerge Inc.
-> > + * Copyright (c) 2023 SK hynix Inc.
-> > + */
-> > +
-> > +#include <sys/shm.h>
+>   void async_run_on_cpu(CPUState *cpu, run_on_cpu_func func, 
+> run_on_cpu_data data)
+>   {
+> +    if (qemu_cpu_is_self(cpu)) {
+> +        return func(cpu, data);
+> +    }
+>       struct qemu_work_item *wi;
 > 
-> This will need some osdep.h magic.  There is some there
-> already but it will need relaxing (unless you want to run only on sparc ;)
-> and we may need to make this device linux host only.
-> 
-> 
+>       wi = g_new0(struct qemu_work_item, 1);
+> ---
 
-Good point, I had not considered osdep issues.  Do you know of any
-examples of linux-only devices I can use to do a quick patch-up? I 
-can come back around on this issue later.
+Ah, this is what commit c978b31687 removed:
 
-> 
-> > +
-> > +enum {
-> > +    NIAGARA_MHD = 0x55,
-> > +        #define GET_MHD_INFO 0x0
-> 
-> Is this standard as it's in the normal space?
-> If it is then I'd like the implementation pushed down to the
-> type3 implementation (with some callbacks or similar.)
-> 
+commit c978b3168727d3a76ffcb18462ea972f50b53634
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Wed Aug 31 18:03:39 2016 +0200
 
-:thinking_face:
+     cpus-common: always defer async_run_on_cpu work items
 
-maybe a similar pattern to the callback from before? I suppose I could
-push this down into type3 and add an mhd callback in the class and have
-niagara fill that in with the callback.
+     async_run_on_cpu is only called from the I/O thread, not from
+     CPU threads, so it doesn't make any difference.  It will make
+     a difference however for async_safe_run_on_cpu.
 
-That *feels* right, so i'll go ahead with it.
+So adding:
 
+-- >8 --
+diff --git a/cpus-common.c b/cpus-common.c
+index 45c745ecf6..8554e3f7a1 100644
+--- a/cpus-common.c
++++ b/cpus-common.c
+@@ -169,6 +169,8 @@ void async_run_on_cpu(CPUState *cpu, run_on_cpu_func 
+func, run_on_cpu_data data)
+  {
+      struct qemu_work_item *wi;
 
++    g_assert(!qemu_cpu_is_self(cpu));
++
+      wi = g_new0(struct qemu_work_item, 1);
+      wi->func = func;
+      wi->data = data;
+---
 
-If I misunderstood anything, let me know
+We get:
 
-~Gregory
+* thread #4, stop reason = signal SIGABRT
+   * frame #0: 0x00000001887d8764 libsystem_kernel.dylib`__pthread_kill + 8
+     frame #1: 0x000000018880fc28 libsystem_pthread.dylib`pthread_kill + 288
+     frame #2: 0x000000018871dae8 libsystem_c.dylib`abort + 180
+     frame #3: 0x0000000101efdddc 
+libglib-2.0.0.dylib`g_assertion_message + 464
+     frame #4: 0x0000000101efde50 
+libglib-2.0.0.dylib`g_assertion_message_expr + 116
+     frame #5: 0x000000010000f6a8 
+qemu-system-mips`async_run_on_cpu(cpu=0x0000000104815a00, 
+func=(qemu-system-mips`tcg_commit_cpu at physmem.c:2490), data=(host_int 
+= 61900768, host_ulong = 105553178167264, host_ptr = 0x0000600003b087e0, 
+target_ptr = 105553178167264)) at cpus-common.c:172:5
+     frame #6: 0x00000001004d469c 
+qemu-system-mips`tcg_commit(listener=0x0000600003b087f8) at physmem.c:2521:9
+     frame #7: 0x00000001004c4b70 
+qemu-system-mips`memory_region_transaction_commit at memory.c:1126:13
+     frame #8: 0x000000010020f620 
+qemu-system-mips`gt64120_isd_mapping(s=0x0000000104875c00) at 
+gt64120.c:318:5
+     frame #9: 0x000000010020dbe4 
+qemu-system-mips`gt64120_writel(opaque=0x0000000104875c00, addr=104, 
+val=223, size=4) at gt64120.c:502:9
+     frame #10: 0x00000001004c638c 
+qemu-system-mips`memory_region_write_accessor(mr=0x0000000104877600, 
+addr=104, value=0x000000016ff9e2f0, size=4, shift=0, mask=4294967295, 
+attrs=MemTxAttrs @ 0x000000016ff9e21c) at memory.c:493:5
+     frame #11: 0x00000001004c6160 
+qemu-system-mips`access_with_adjusted_size(addr=104, 
+value=0x000000016ff9e2f0, size=4, access_size_min=4, access_size_max=4, 
+access_fn=(qemu-system-mips`memory_region_write_accessor at 
+memory.c:483), mr=0x0000000104877600, attrs=MemTxAttrs @ 
+0x000000016ff9e2a8) at memory.c:564:18
+     frame #12: 0x00000001004c5cd0 
+qemu-system-mips`memory_region_dispatch_write(mr=0x0000000104877600, 
+addr=104, data=3741319168, op=MO_32, attrs=MemTxAttrs @ 
+0x000000016ff9e2e8) at memory.c:1533:16
+     frame #13: 0x00000001004decc0 
+qemu-system-mips`flatview_write_continue(fv=0x00006000017151c0, 
+addr=335544424, attrs=MemTxAttrs @ 0x000000016ff9e384, 
+ptr=0x000000016ff9e450, len=4, addr1=104, l=4, mr=0x0000000104877600) at 
+physmem.c:2677:23
+     frame #14: 0x00000001004db090 
+qemu-system-mips`flatview_write(fv=0x00006000017151c0, addr=335544424, 
+attrs=MemTxAttrs @ 0x000000016ff9e3e0, buf=0x000000016ff9e450, len=4) at 
+physmem.c:2719:12
+     frame #15: 0x00000001004e2f54 
+qemu-system-mips`subpage_write(opaque=0x0000000104907400, addr=104, 
+value=3741319168, len=4, attrs=MemTxAttrs @ 0x000000016ff9e44c) at 
+physmem.c:2328:12
+     frame #16: 0x00000001004c64dc 
+qemu-system-mips`memory_region_write_with_attrs_accessor(mr=0x0000000104907400, 
+addr=104, value=0x000000016ff9e5a0, size=4, shift=0, mask=4294967295, 
+attrs=MemTxAttrs @ 0x000000016ff9e4cc) at memory.c:514:12
+     frame #17: 0x00000001004c6160 
+qemu-system-mips`access_with_adjusted_size(addr=104, 
+value=0x000000016ff9e5a0, size=4, access_size_min=1, access_size_max=8, 
+access_fn=(qemu-system-mips`memory_region_write_with_attrs_accessor at 
+memory.c:504), mr=0x0000000104907400, attrs=MemTxAttrs @ 
+0x000000016ff9e558) at memory.c:564:18
+     frame #18: 0x00000001004c5d14 
+qemu-system-mips`memory_region_dispatch_write(mr=0x0000000104907400, 
+addr=104, data=3741319168, op=MO_32, attrs=MemTxAttrs @ 
+0x000000016ff9e598) at memory.c:1540:13
+     frame #19: 0x000000010054f5c8 
+qemu-system-mips`io_writex(env=0x0000000104818260, 
+full=0x0000000104828000, mmu_idx=3, val=223, addr=3019898984, 
+retaddr=10737419088, op=MO_32) at cputlb.c:1449:13
+     frame #20: 0x000000010054f9a4 
+qemu-system-mips`do_st_mmio_leN(env=0x0000000104818260, 
+full=0x0000000104828000, val_le=223, addr=3019898984, size=4, mmu_idx=3, 
+ra=10737419088) at cputlb.c:2756:13
+     frame #21: 0x00000001005500bc 
+qemu-system-mips`do_st_4(env=0x0000000104818260, p=0x000000016ff9e760, 
+val=223, mmu_idx=3, memop=226, ra=10737419088) at cputlb.c:2922:9
+     frame #22: 0x000000010053dff0 
+qemu-system-mips`do_st4_mmu(env=0x0000000104818260, addr=3019898984, 
+val=223, oi=3619, ra=10737419088) at cputlb.c:3007:9
+     frame #23: 0x000000010053df44 
+qemu-system-mips`helper_stl_mmu(env=0x0000000104818260, addr=3019898984, 
+val=223, oi=3619, retaddr=10737419088) at cputlb.c:3023:5
+     frame #24: 0x0000000280000624
+     frame #25: 0x0000000100522e70 
+qemu-system-mips`cpu_tb_exec(cpu=0x0000000104815a00, 
+itb=0x0000000118000200, tb_exit=0x000000016ff9ee24) at cpu-exec.c:457:11
+     frame #26: 0x0000000100525714 
+qemu-system-mips`cpu_loop_exec_tb(cpu=0x0000000104815a00, 
+tb=0x0000000118000200, pc=3217032576, last_tb=0x000000016ff9ee28, 
+tb_exit=0x000000016ff9ee24) at cpu-exec.c:919:10
+     frame #27: 0x0000000100524d3c 
+qemu-system-mips`cpu_exec_loop(cpu=0x0000000104815a00, 
+sc=0x000000016ff9eea0) at cpu-exec.c:1040:13
+     frame #28: 0x000000010052366c 
+qemu-system-mips`cpu_exec_setjmp(cpu=0x0000000104815a00, 
+sc=0x000000016ff9eea0) at cpu-exec.c:1057:12
+     frame #29: 0x0000000100523340 
+qemu-system-mips`cpu_exec(cpu=0x0000000104815a00) at cpu-exec.c:1083:11
+     frame #30: 0x00000001005569bc 
+qemu-system-mips`tcg_cpus_exec(cpu=0x0000000104815a00) at 
+tcg-accel-ops.c:75:11
+     frame #31: 0x00000001005575c4 
+qemu-system-mips`mttcg_cpu_thread_fn(arg=0x0000000104815a00) at 
+tcg-accel-ops-mttcg.c:95:17
+     frame #32: 0x00000001007d86c8 
+qemu-system-mips`qemu_thread_start(args=0x000060000022e400) at 
+qemu-thread-posix.c:541:9
+     frame #33: 0x000000018880ffa8 
+libsystem_pthread.dylib`_pthread_start + 148
+
+(in case that helps catching other similar issues).
 
