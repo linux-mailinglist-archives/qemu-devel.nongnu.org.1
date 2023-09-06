@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B26793D76
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09D4793D75
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:11:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdsIj-0002Aw-IY; Wed, 06 Sep 2023 09:10:33 -0400
+	id 1qdsIm-0002Jv-HY; Wed, 06 Sep 2023 09:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qdsI7-00023A-4p; Wed, 06 Sep 2023 09:09:55 -0400
+ id 1qdsI5-00022b-D6; Wed, 06 Sep 2023 09:09:54 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qdsI2-0004M2-Q6; Wed, 06 Sep 2023 09:09:54 -0400
+ id 1qdsI1-0004M8-PG; Wed, 06 Sep 2023 09:09:53 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A755E42B25;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id C529442B26;
  Wed,  6 Sep 2023 15:09:38 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
@@ -25,13 +25,14 @@ Cc: jsnow@redhat.com, thuth@redhat.com, lvivier@redhat.com,
  pbonzini@redhat.com, srowe@mose.org.uk, mike.maslenkin@gmail.com,
  qemu-block@nongnu.org, t.lamprecht@proxmox.com, a.lauterer@proxmox.com,
  philmd@linaro.org, kwolf@redhat.com
-Subject: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
- resetting state
-Date: Wed,  6 Sep 2023 15:09:21 +0200
-Message-Id: <20230906130922.142845-1-f.ebner@proxmox.com>
+Subject: [PATCH v2 2/2] tests/qtest: ahci-test: add test exposing reset issue
+ with pending callback
+Date: Wed,  6 Sep 2023 15:09:22 +0200
+Message-Id: <20230906130922.142845-2-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230906130922.142845-1-f.ebner@proxmox.com>
+References: <20230906130922.142845-1-f.ebner@proxmox.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
  helo=proxmox-new.maurer-it.com
@@ -55,105 +56,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If there is a pending DMA operation during ide_bus_reset(), the fact
-that the IDEState is already reset before the operation is canceled
-can be problematic. In particular, ide_dma_cb() might be called and
-then use the reset IDEState which contains the signature after the
-reset. When used to construct the IO operation this leads to
-ide_get_sector() returning 0 and nsector being 1. This is particularly
-bad, because a write command will thus destroy the first sector which
-often contains a partition table or similar.
+Before commit "hw/ide: reset: cancel async DMA operation before
+resetting state", this test would fail, because a reset with a
+pending write operation would lead to an unsolicited write to the
+first sector of the disk.
 
-Traces showing the unsolicited write happening with IDEState
-0x5595af6949d0 being used after reset:
-
-> ahci_port_write ahci(0x5595af6923f0)[0]: port write [reg:PxSCTL] @ 0x2c: 0x00000300
-> ahci_reset_port ahci(0x5595af6923f0)[0]: reset port
-> ide_reset IDEstate 0x5595af6949d0
-> ide_reset IDEstate 0x5595af694da8
-> ide_bus_reset_aio aio_cancel
-> dma_aio_cancel dbs=0x7f64600089a0
-> dma_blk_cb dbs=0x7f64600089a0 ret=0
-> dma_complete dbs=0x7f64600089a0 ret=0 cb=0x5595acd40b30
-> ahci_populate_sglist ahci(0x5595af6923f0)[0]
-> ahci_dma_prepare_buf ahci(0x5595af6923f0)[0]: prepare buf limit=512 prepared=512
-> ide_dma_cb IDEState 0x5595af6949d0; sector_num=0 n=1 cmd=DMA WRITE
-> dma_blk_io dbs=0x7f6420802010 bs=0x5595ae2c6c30 offset=0 to_dev=1
-> dma_blk_cb dbs=0x7f6420802010 ret=0
-
-> (gdb) p *qiov
-> $11 = {iov = 0x7f647c76d840, niov = 1, {{nalloc = 1, local_iov = {iov_base = 0x0,
->       iov_len = 512}}, {__pad = "\001\000\000\000\000\000\000\000\000\000\000",
->       size = 512}}}
-> (gdb) bt
-> #0  blk_aio_pwritev (blk=0x5595ae2c6c30, offset=0, qiov=0x7f6420802070, flags=0,
->     cb=0x5595ace6f0b0 <dma_blk_cb>, opaque=0x7f6420802010)
->     at ../block/block-backend.c:1682
-> #1  0x00005595ace6f185 in dma_blk_cb (opaque=0x7f6420802010, ret=<optimized out>)
->     at ../softmmu/dma-helpers.c:179
-> #2  0x00005595ace6f778 in dma_blk_io (ctx=0x5595ae0609f0,
->     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->     io_func=io_func@entry=0x5595ace6ee30 <dma_blk_write_io_func>,
->     io_func_opaque=io_func_opaque@entry=0x5595ae2c6c30,
->     cb=0x5595acd40b30 <ide_dma_cb>, opaque=0x5595af6949d0,
->     dir=DMA_DIRECTION_TO_DEVICE) at ../softmmu/dma-helpers.c:244
-> #3  0x00005595ace6f90a in dma_blk_write (blk=0x5595ae2c6c30,
->     sg=sg@entry=0x5595af694d00, offset=offset@entry=0, align=align@entry=512,
->     cb=cb@entry=0x5595acd40b30 <ide_dma_cb>, opaque=opaque@entry=0x5595af6949d0)
->     at ../softmmu/dma-helpers.c:280
-> #4  0x00005595acd40e18 in ide_dma_cb (opaque=0x5595af6949d0, ret=<optimized out>)
->     at ../hw/ide/core.c:953
-> #5  0x00005595ace6f319 in dma_complete (ret=0, dbs=0x7f64600089a0)
->     at ../softmmu/dma-helpers.c:107
-> #6  dma_blk_cb (opaque=0x7f64600089a0, ret=0) at ../softmmu/dma-helpers.c:127
-> #7  0x00005595ad12227d in blk_aio_complete (acb=0x7f6460005b10)
->     at ../block/block-backend.c:1527
-> #8  blk_aio_complete (acb=0x7f6460005b10) at ../block/block-backend.c:1524
-> #9  blk_aio_write_entry (opaque=0x7f6460005b10) at ../block/block-backend.c:1594
-> #10 0x00005595ad258cfb in coroutine_trampoline (i0=<optimized out>,
->     i1=<optimized out>) at ../util/coroutine-ucontext.c:177
+The test writes a pattern to the beginning of the disk and verifies
+that it is still intact after a reset with a pending operation. It
+also checks that the pending operation actually completes correctly.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
 
 Changes in v2:
-    * Fix typo in commit title (reseting -> resetting).
+    * Move variable declarations to the beginning of the function.
+    * Use g_autofree for malloced buffers.
+    * Group toghether with other reset test (hope I did it correctly).
+    * Use ahci_boot_and_enable() and enable throttling to make test
+      work independently of environment.
 
- hw/ide/core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tests/qtest/ahci-test.c | 86 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 85 insertions(+), 1 deletion(-)
 
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index ee116891ed..c8af89785e 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -2515,19 +2515,19 @@ static void ide_dummy_transfer_stop(IDEState *s)
+diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
+index abab761c26..2615c9f65c 100644
+--- a/tests/qtest/ahci-test.c
++++ b/tests/qtest/ahci-test.c
+@@ -1424,6 +1424,89 @@ static void test_reset(void)
+     ahci_shutdown(ahci);
+ }
  
- void ide_bus_reset(IDEBus *bus)
- {
--    bus->unit = 0;
--    bus->cmd = 0;
--    ide_reset(&bus->ifs[0]);
--    ide_reset(&bus->ifs[1]);
--    ide_clear_hob(bus);
--
--    /* pending async DMA */
-+    /* pending async DMA - needs the IDEState before it is reset */
-     if (bus->dma->aiocb) {
-         trace_ide_bus_reset_aio();
-         blk_aio_cancel(bus->dma->aiocb);
-         bus->dma->aiocb = NULL;
-     }
- 
-+    bus->unit = 0;
-+    bus->cmd = 0;
-+    ide_reset(&bus->ifs[0]);
-+    ide_reset(&bus->ifs[1]);
-+    ide_clear_hob(bus);
++static void test_reset_pending_callback(void)
++{
++    AHCIQState *ahci;
++    AHCICommand *cmd;
++    uint8_t port;
++    uint64_t ptr1;
++    uint64_t ptr2;
 +
-     /* reset dma provider too */
-     if (bus->dma->ops->reset) {
-         bus->dma->ops->reset(bus->dma);
++    int bufsize = 4 * 1024;
++    int speed = bufsize + (bufsize / 2);
++    int offset1 = 0;
++    int offset2 = bufsize / AHCI_SECTOR_SIZE;
++
++    g_autofree unsigned char *tx1 = g_malloc(bufsize);
++    g_autofree unsigned char *tx2 = g_malloc(bufsize);
++    g_autofree unsigned char *rx1 = g_malloc0(bufsize);
++    g_autofree unsigned char *rx2 = g_malloc0(bufsize);
++
++    /* Uses throttling to make test independent of specific environment. */
++    ahci = ahci_boot_and_enable("-drive if=none,id=drive0,file=%s,"
++                                "cache=writeback,format=%s,"
++                                "throttling.bps-write=%d "
++                                "-M q35 "
++                                "-device ide-hd,drive=drive0 ",
++                                tmp_path, imgfmt, speed);
++
++    port = ahci_port_select(ahci);
++    ahci_port_clear(ahci, port);
++
++    ptr1 = ahci_alloc(ahci, bufsize);
++    ptr2 = ahci_alloc(ahci, bufsize);
++
++    g_assert(ptr1 && ptr2);
++
++    /* Need two different patterns. */
++    do {
++        generate_pattern(tx1, bufsize, AHCI_SECTOR_SIZE);
++        generate_pattern(tx2, bufsize, AHCI_SECTOR_SIZE);
++    } while (memcmp(tx1, tx2, bufsize) == 0);
++
++    qtest_bufwrite(ahci->parent->qts, ptr1, tx1, bufsize);
++    qtest_bufwrite(ahci->parent->qts, ptr2, tx2, bufsize);
++
++    /* Write to beginning of disk to check it wasn't overwritten later. */
++    ahci_guest_io(ahci, port, CMD_WRITE_DMA_EXT, ptr1, bufsize, offset1);
++
++    /* Issue asynchronously to get a pending callback during reset. */
++    cmd = ahci_command_create(CMD_WRITE_DMA_EXT);
++    ahci_command_adjust(cmd, offset2, ptr2, bufsize, 0);
++    ahci_command_commit(ahci, cmd, port);
++    ahci_command_issue_async(ahci, cmd);
++
++    ahci_set(ahci, AHCI_GHC, AHCI_GHC_HR);
++
++    ahci_command_free(cmd);
++
++    /* Wait for throttled write to finish. */
++    sleep(1);
++
++    /* Start again. */
++    ahci_clean_mem(ahci);
++    ahci_pci_enable(ahci);
++    ahci_hba_enable(ahci);
++    port = ahci_port_select(ahci);
++    ahci_port_clear(ahci, port);
++
++    /* Read and verify. */
++    ahci_guest_io(ahci, port, CMD_READ_DMA_EXT, ptr1, bufsize, offset1);
++    qtest_bufread(ahci->parent->qts, ptr1, rx1, bufsize);
++    g_assert_cmphex(memcmp(tx1, rx1, bufsize), ==, 0);
++
++    ahci_guest_io(ahci, port, CMD_READ_DMA_EXT, ptr2, bufsize, offset2);
++    qtest_bufread(ahci->parent->qts, ptr2, rx2, bufsize);
++    g_assert_cmphex(memcmp(tx2, rx2, bufsize), ==, 0);
++
++    ahci_free(ahci, ptr1);
++    ahci_free(ahci, ptr2);
++
++    ahci_clean_mem(ahci);
++
++    ahci_shutdown(ahci);
++}
++
+ static void test_ncq_simple(void)
+ {
+     AHCIQState *ahci;
+@@ -1945,7 +2028,8 @@ int main(int argc, char **argv)
+     qtest_add_func("/ahci/migrate/dma/halted", test_migrate_halted_dma);
+ 
+     qtest_add_func("/ahci/max", test_max);
+-    qtest_add_func("/ahci/reset", test_reset);
++    qtest_add_func("/ahci/reset/simple", test_reset);
++    qtest_add_func("/ahci/reset/pending_callback", test_reset_pending_callback);
+ 
+     qtest_add_func("/ahci/io/ncq/simple", test_ncq_simple);
+     qtest_add_func("/ahci/migrate/ncq/simple", test_migrate_ncq);
 -- 
 2.39.2
 
