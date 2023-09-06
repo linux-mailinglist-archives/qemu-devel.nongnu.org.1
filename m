@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009547940CC
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BEB7940D2
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:55:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdurf-0006VR-JS; Wed, 06 Sep 2023 11:54:47 -0400
+	id 1qdurd-0006Qt-Nx; Wed, 06 Sep 2023 11:54:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurV-0006Pw-L9; Wed, 06 Sep 2023 11:54:39 -0400
+ id 1qdurS-0006PJ-26; Wed, 06 Sep 2023 11:54:35 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurD-0003mm-4W; Wed, 06 Sep 2023 11:54:37 -0400
+ id 1qdurC-0003mo-1O; Wed, 06 Sep 2023 11:54:33 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qduo5-007ME4-0S;
+ (envelope-from <den@openvz.org>) id 1qduo5-007ME4-1i;
  Wed, 06 Sep 2023 17:54:04 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, stefanha@gmail.com,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL 14/18] iotests: Add test for BAT entries duplication check
-Date: Wed,  6 Sep 2023 17:54:09 +0200
-Message-Id: <20230906155413.656644-5-den@openvz.org>
+Subject: [PULL 15/18] iotests: Refactor tests of parallels images checks (131)
+Date: Wed,  6 Sep 2023 17:54:10 +0200
+Message-Id: <20230906155413.656644-6-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906155413.656644-1-den@openvz.org>
 References: <20230906154942.656537-1-den@openvz.org>
@@ -58,101 +58,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
-Fill a parallels image with a pattern and write another pattern to the
-second cluster. Corrupt the image and check if the pattern changes. Repair
-the image and check the patterns on guest and host sides.
+Replace hardcoded numbers by variables.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- tests/qemu-iotests/tests/parallels-checks     | 32 +++++++++++++++++++
- tests/qemu-iotests/tests/parallels-checks.out | 31 ++++++++++++++++++
- 2 files changed, 63 insertions(+)
+ tests/qemu-iotests/131 | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
-index 8be282fabe..8a63c3daf4 100755
---- a/tests/qemu-iotests/tests/parallels-checks
-+++ b/tests/qemu-iotests/tests/parallels-checks
-@@ -92,6 +92,38 @@ echo "file size: $file_size"
- echo "== check last cluster =="
- { $QEMU_IO -c "read -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+diff --git a/tests/qemu-iotests/131 b/tests/qemu-iotests/131
+index a847692b4c..601546c84c 100755
+--- a/tests/qemu-iotests/131
++++ b/tests/qemu-iotests/131
+@@ -44,31 +44,34 @@ _supported_os Linux
+ inuse_offset=$((0x2c))
  
-+# Clear image
-+_make_test_img $SIZE
+ size=$((64 * 1024 * 1024))
+-CLUSTER_SIZE=64k
++CLUSTER_SIZE=$((64 * 1024))
+ IMGFMT=parallels
+ _make_test_img $size
+ 
++CLUSTER_HALF_SIZE=$((CLUSTER_SIZE / 2))
++CLUSTER_DBL_SIZE=$((CLUSTER_SIZE * 2))
 +
-+echo "== TEST DUPLICATION CHECK =="
-+
-+echo "== write pattern to whole image =="
-+{ $QEMU_IO -c "write -P 0x11 0 $SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+
-+echo "== write another pattern to second cluster =="
-+{ $QEMU_IO -c "write -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+
-+echo "== check second cluster =="
-+{ $QEMU_IO -c "read -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+
-+echo "== corrupt image =="
-+poke_file "$TEST_IMG" "$(($BAT_OFFSET + 4))" "\x01\x00\x00\x00"
-+
-+echo "== check second cluster =="
+ echo == read empty image ==
+-{ $QEMU_IO -c "read -P 0 32k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0 $CLUSTER_HALF_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ echo == write more than 1 block in a row ==
+-{ $QEMU_IO -c "write -P 0x11 32k 128k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "write -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ echo == read less than block ==
+-{ $QEMU_IO -c "read -P 0x11 32k 32k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ echo == read exactly 1 block ==
+-{ $QEMU_IO -c "read -P 0x11 64k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+
-+echo "== repair image =="
-+_check_test_img -r all
-+
-+echo "== check second cluster =="
+ echo == read more than 1 block ==
+-{ $QEMU_IO -c "read -P 0x11 32k 128k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ echo == check that there is no trash after written ==
+-{ $QEMU_IO -c "read -P 0 160k 32k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0 $((CLUSTER_HALF_SIZE + CLUSTER_DBL_SIZE)) $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ echo == check that there is no trash before written ==
+-{ $QEMU_IO -c "read -P 0 0 32k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ 
+ echo "== Corrupt image =="
+ poke_file "$TEST_IMG" "$inuse_offset" "\x59\x6e\x6f\x74"
+-{ $QEMU_IO -c "read -P 0x11 64k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+
-+echo "== check first cluster on host =="
-+printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
-+
-+echo "== check second cluster on host =="
-+printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
-+
+ _check_test_img
+ _check_test_img -r all
+-{ $QEMU_IO -c "read -P 0x11 64k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ 
+ echo "== allocate with backing =="
+ # Verify that allocating clusters works fine even when there is a backing image.
+@@ -83,7 +86,7 @@ TEST_IMG="$TEST_IMG.base" _make_test_img $size
+ 
+ # Write some data to the base image (which would trigger an assertion failure if
+ # interpreted as a QEMUIOVector)
+-$QEMU_IO -c 'write -P 42 0 64k' "$TEST_IMG.base" | _filter_qemu_io
++$QEMU_IO -c "write -P 42 0 $CLUSTER_SIZE" "$TEST_IMG.base" | _filter_qemu_io
+ 
+ # Parallels does not seem to support storing a backing filename in the image
+ # itself, so we need to build our backing chain on the command line
+@@ -99,8 +102,8 @@ QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT \
+ QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT \
+     $QEMU_IO --image-opts "$imgopts" \
+     -c 'read -P 1 0 64' \
+-    -c "read -P 42 64 $((64 * 1024 - 64))" \
+-    -c "read -P 0 64k $((size - 64 * 1024))" \
++    -c "read -P 42 64 $((CLUSTER_SIZE - 64))" \
++    -c "read -P 0 $CLUSTER_SIZE $((size - CLUSTER_SIZE))" \
+     | _filter_qemu_io
+ 
  # success, all done
- echo "*** done"
- rm -f $seq.full
-diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
-index f2cb6dde85..b747bba1f3 100644
---- a/tests/qemu-iotests/tests/parallels-checks.out
-+++ b/tests/qemu-iotests/tests/parallels-checks.out
-@@ -31,4 +31,35 @@ file size: 2097152
- == check last cluster ==
- read 1048576/1048576 bytes at offset 3145728
- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
-+== TEST DUPLICATION CHECK ==
-+== write pattern to whole image ==
-+wrote 4194304/4194304 bytes at offset 0
-+4 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+== write another pattern to second cluster ==
-+wrote 1048576/1048576 bytes at offset 1048576
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+== check second cluster ==
-+read 1048576/1048576 bytes at offset 1048576
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+== corrupt image ==
-+== check second cluster ==
-+read 1048576/1048576 bytes at offset 1048576
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+== repair image ==
-+Repairing duplicate offset in BAT entry 1
-+The following inconsistencies were found and repaired:
-+
-+    0 leaked clusters
-+    1 corruptions
-+
-+Double checking the fixed image now...
-+No errors were found on the image.
-+== check second cluster ==
-+read 1048576/1048576 bytes at offset 1048576
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+== check first cluster on host ==
-+content: 0x11
-+== check second cluster on host ==
-+content: 0x11
- *** done
 -- 
 2.34.1
 
