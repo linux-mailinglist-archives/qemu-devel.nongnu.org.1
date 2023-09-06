@@ -2,84 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815F77944BB
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 22:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C234C7944E4
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 23:00:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdzR8-0006TH-LH; Wed, 06 Sep 2023 16:47:42 -0400
+	id 1qdzcK-0001W2-7W; Wed, 06 Sep 2023 16:59:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdzQw-0006Sy-CG
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:47:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
+ id 1qdzcB-0001Vm-V7
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:59:08 -0400
+Received: from mail-dm6nam12on2079.outbound.protection.outlook.com
+ ([40.107.243.79] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qdzQt-0003e9-MK
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:47:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694033246;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=IwFMv21/nxVgEUsuqIWGDIm1BDNEGQrw0h9JZmvZgDc=;
- b=Ve4xq5El4V/LoIcOczzhErsO3Arc/TT5rmdM8O3VXYD5SF6oXzWNrhVPiyJ4nz8V1HhqQf
- C/1tjP6FR9h4LLb2TaWWd7Dhmf0V19cTMbOM/bzNxb7ZzwMLbihjJAFVKsfDO6CoL/k9j/
- Lhd3D7zljb7vhzBVwW37FS1VRSyRsTI=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-5DRlddxwOl6B7TYhGrtZBA-1; Wed, 06 Sep 2023 16:47:25 -0400
-X-MC-Unique: 5DRlddxwOl6B7TYhGrtZBA-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-637948b24bdso559836d6.1
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 13:47:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694033244; x=1694638044;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IwFMv21/nxVgEUsuqIWGDIm1BDNEGQrw0h9JZmvZgDc=;
- b=ltrp029xHv1uWK9k5gHcsi6mX9CS9vpU63IUgD9nD3nUZYsx3AVzcZkh/xhDBZGsvo
- UqJ12Z2xgFkFEGC0EhjYw9om++ffoweOd9OIAWYptkXCihWewDXt371ART3DNSoVtmuR
- 8ETLFIGprPb91fsKnY0eUM1yH7jbP1lmaa9th+/v7HSSn/ojljKRXtvl1Q7WP5NkgwZC
- /gLx0YMasird1gNQE6nKZ5FurTaTVRRpCASf/4juH/0VvguvqyZ3+ENDE5ofJDK0mrMs
- Exww7gmcm+9+b8R3wRU7kQh/EXhbuxM1m1Bz3C4HVxPBsFx07LUEuVwGSVImeexz/WmE
- NMLA==
-X-Gm-Message-State: AOJu0Ywl64UXJg6iBs0dap8EKNyeY1Y3foQobLpnwrxLT8ajijBkca3Z
- qStwz7NqkU5sJbOL74NlqX70G8Bd22zaRaa8hVTedPa6HgHJqDfI31IjdC0MT/2EhGsfarzIYql
- UqXsmdPZwKfW5SwaWMZreDjStpqRygmQy2QUVUfzG/ea5nMhgiYjVKJ2UJjtr5DhHqR8AivJP
-X-Received: by 2002:a05:6214:23cc:b0:649:5f43:245c with SMTP id
- hr12-20020a05621423cc00b006495f43245cmr19557134qvb.4.1694033244542; 
- Wed, 06 Sep 2023 13:47:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNnxmq+2/PTwzYpvRffwyBvl+uUSDwhIqVBSqgUNwwolKwazMPBDwMI9JZFCDoYXmIqqXLsg==
-X-Received: by 2002:a05:6214:23cc:b0:649:5f43:245c with SMTP id
- hr12-20020a05621423cc00b006495f43245cmr19557112qvb.4.1694033244084; 
- Wed, 06 Sep 2023 13:47:24 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- t19-20020a0cde13000000b0064f5aeda9ddsm5704542qvk.29.2023.09.06.13.47.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Sep 2023 13:47:23 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Juan Quintela <quintela@redhat.com>
-Subject: [PATCH] migration: Unify and trace vmstate field_exists() checks
-Date: Wed,  6 Sep 2023 16:47:22 -0400
-Message-ID: <20230906204722.514474-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
+ id 1qdzbx-0006Ku-2I
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 16:59:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HMB/xy+F9ISSmWcVXlT7ZvFrwfvmlNSbZJEH5CA19dsXJqEiHyfa51LmVzNSsWIkKzmdYMVSdjyEiv+HTYXlYKtVd69wltws3if79rTqVCfumFpPwsokw0iQuKfEJeNespZX/Bqn1OyiF1jl7GPtR59HDAN1T4ekM3SEf+rWH5EYZVW/aDwNZauh8+/R6c1PqJvbQqkMvgQZkuu0zJT2+r9J6U9DMieyMShZN7efoZR8C+Cr+Z1ZLVHpUh24NOz/IKlWIvoQtdOJjKjPqrb1v84Qf62/FlrRSZCLwYfbGPdNSC3vJIiTORBsYkAs1r3Z7scQiFFESTfZj8aZ2TmLUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=srSK2FmT8J41t5nSBlH6qrseOyQJoUBFB5lP4LKVv7I=;
+ b=LeGIEcJIVpU3GL4uMXrmAq3+586MypkETBWS1LePBOm3IkoQNKSautgsAAJb19V9kwUgA96zWGxInOi5GKahgUZednaMbG77Ko1gEXp3R3Db8a5I2d8aACjM/7+HB360YQ01rWUm+k7H+9sGPFWkTBOBIkCLX44ns2KhUBKCTFy7G8nsrbFDzlMSOv+XvsoZpopqcdXoIIl94luiMduZwem//eZiTUbAW9COaMH8AsU8ssOpttcE76Pfsfn33Y7/QdMG89t18yggVmdwYQIby45RLiCDifLz+9C+/4162vaEIHofwnxWSrXMrnwMX2PM502C8EgP1iMoDzu/Fhqfbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=srSK2FmT8J41t5nSBlH6qrseOyQJoUBFB5lP4LKVv7I=;
+ b=jgAJpKTKUpBv1fJx+Ax1PSmex+Rrp/iiDpLtN1ddi58318Dn4T19Nkt7dbY7PAZqy3jaNT2elxfMaLEcFL0RRbpIM1xv9HeJqAlvH4rJBNkGUsu79Xp50goLUMn6YVl3eQofrstVk5eKCJ5AoIjb1pDFrouR2tlTw1KNzU9/h4I=
+Received: from DM5PR07CA0064.namprd07.prod.outlook.com (2603:10b6:4:ad::29) by
+ SJ0PR12MB6968.namprd12.prod.outlook.com (2603:10b6:a03:47b::6) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.33; Wed, 6 Sep 2023 20:53:45 +0000
+Received: from CY4PEPF0000EDD0.namprd03.prod.outlook.com
+ (2603:10b6:4:ad:cafe::ff) by DM5PR07CA0064.outlook.office365.com
+ (2603:10b6:4:ad::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36 via Frontend
+ Transport; Wed, 6 Sep 2023 20:53:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD0.mail.protection.outlook.com (10.167.241.204) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6768.25 via Frontend Transport; Wed, 6 Sep 2023 20:53:44 +0000
+Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 6 Sep
+ 2023 15:53:41 -0500
+From: John Allen <john.allen@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <yazen.ghannam@amd.com>, <michael.roth@amd.com>, <babu.moger@amd.com>,
+ <william.roche@oracle.com>, <joao.m.martins@oracle.com>,
+ <pbonzini@redhat.com>, <richard.henderson@linaro.org>, <eduardo@habkost.net>, 
+ John Allen <john.allen@amd.com>
+Subject: [PATCH v3 0/3] Fix MCE handling on AMD hosts
+Date: Wed, 6 Sep 2023 20:53:05 +0000
+Message-ID: <20230906205308.50334-1-john.allen@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD0:EE_|SJ0PR12MB6968:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46c895ca-73e8-400b-5a7e-08dbaf1b5c21
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: aVK6yczukH44v3yl7Lra1sVcKSaIBBIVnnGJxuQfuFoJAoe8oRzg3lCCHCb2vio8ymmt4/qwe+A27RCKqSHDyCcfhB2UYmLJIzVwDS0bfkmKAZJqFORZ/kbXRwhl2MX9I8B4vSZRc1SgbBqrAwyq0RFHVFkPvyfOxwcff+96NrshhHhYVWG5IgWpt8B863vgJ37+Ykb/LcpxPh0x00KkWGVeledpQLV18XHoxc01aA/5QW5y3XoE9ggI+sLcfi2a0JacDgvoTmYp8Ey8lb1PcCcaaGNYYB7x4ZjubIVcB45SiTl9V9ADsR9ZmZUuQnD4BAUNi6SwzngoTkmTcnmifiXiFXr9gxW30xw5YlwuqRbB2yB2or1f4qIzQ3txbH6dKQGRmA/IOjx1OZ59yVgFFdic5VX8mobo7AHFUwc+1kJk8VCnjUscd3c/4aQxZDQ/Mu84Uxoa79NIr+oqgobHHVO1w+TPei4AeVHZoSSaYP5fIp5hL80e38+J8yQ5Z37vPPbNRJdapPC/nYb0/6bOQC1wO/mMLEXZ74IUkJh8hchNMcjrFxDfJO5QXTQlYl/trwWxFFO643/0j+W334ogwSRKps6NoRcvGdqJLfh0pFM5A4pSIDSYzTRhlUG+b+h7zo4ydZgJ0ehIfpXLH1LuNbp5r46qmb3wLegduIG5jL0hvHs19WYZfKHGrDv8v4l3V7kwYFjed17sGJpWc6leAMai1xPKWn9UZB6QvDF0m+p46l/pQVUS101GzZPJ3+PHomtq8gCSsOh0vWivzPs9Hw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(376002)(346002)(396003)(39860400002)(1800799009)(186009)(451199024)(82310400011)(36840700001)(40470700004)(46966006)(356005)(478600001)(36756003)(81166007)(16526019)(336012)(41300700001)(47076005)(54906003)(70206006)(7696005)(2616005)(426003)(36860700001)(316002)(6916009)(83380400001)(6666004)(82740400003)(70586007)(1076003)(26005)(44832011)(5660300002)(4326008)(8676002)(2906002)(8936002)(40460700003)(40480700001)(66899024)(86362001)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 20:53:44.6629 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46c895ca-73e8-400b-5a7e-08dbaf1b5c21
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD0.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6968
+Received-SPF: softfail client-ip=40.107.243.79;
+ envelope-from=John.Allen@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,98 +120,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For both save/load we actually share the logic on deciding whether a field
-should exist.  Merge the checks into a helper and use it for both save and
-load.  When doing so, add documentations and reformat the code to make it
-much easier to read.
+In the event that a guest process attempts to access memory that has
+been poisoned in response to a deferred uncorrected MCE, an AMD system
+will currently generate a SIGBUS error which will result in the entire
+guest being shutdown. Ideally, we only want to kill the guest process
+that accessed poisoned memory in this case.
 
-The real benefit here (besides code cleanups) is we add a trace-point for
-this; this is a known spot where we can easily break migration
-compatibilities between binaries, and this trace point will be critical for
-us to identify such issues.
+This support has been included in qemu for Intel hosts for a long time,
+but there are a couple of changes needed for AMD hosts. First, we will
+need to expose the SUCCOR cpuid bit to guests. Second, we need to modify
+the MCE injection code to avoid Intel specific behavior when we are
+running on an AMD host.
 
-For example, this will be handy when debugging things like:
+v2:
+  - Add "succor" feature word.
+  - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
 
-https://gitlab.com/qemu-project/qemu/-/issues/932
+v3:
+  - Reorder series. Only enable SUCCOR after bugs have been fixed.
+  - Introduce new patch ignoring AO errors.
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/vmstate.c    | 34 ++++++++++++++++++++++++++--------
- migration/trace-events |  1 +
- 2 files changed, 27 insertions(+), 8 deletions(-)
+John Allen (2):
+  i386: Fix MCE support for AMD hosts
+  i386: Add support for SUCCOR feature
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 31842c3afb..73e74ddea0 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -25,6 +25,30 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
- static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
-                                    void *opaque);
- 
-+/* Whether this field should exist for either save or load the VM? */
-+static bool
-+vmstate_field_exists(const VMStateDescription *vmsd, const VMStateField *field,
-+                     void *opaque, int version_id)
-+{
-+    bool result;
-+
-+    if (field->field_exists) {
-+        /* If there's the function checker, that's the solo truth */
-+        result = field->field_exists(opaque, version_id);
-+        trace_vmstate_field_exists(vmsd->name, field->name, field->version_id,
-+                                   version_id, result);
-+    } else {
-+        /*
-+         * Otherwise, we only save/load if field version is same or older.
-+         * For example, when loading from an old binary with old version,
-+         * we ignore new fields with newer version_ids.
-+         */
-+        result = field->version_id <= version_id;
-+    }
-+
-+    return result;
-+}
-+
- static int vmstate_n_elems(void *opaque, const VMStateField *field)
- {
-     int n_elems = 1;
-@@ -104,10 +128,7 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
-     }
-     while (field->name) {
-         trace_vmstate_load_state_field(vmsd->name, field->name);
--        if ((field->field_exists &&
--             field->field_exists(opaque, version_id)) ||
--            (!field->field_exists &&
--             field->version_id <= version_id)) {
-+        if (vmstate_field_exists(vmsd, field, opaque, version_id)) {
-             void *first_elem = opaque + field->offset;
-             int i, n_elems = vmstate_n_elems(opaque, field);
-             int size = vmstate_size(opaque, field);
-@@ -342,10 +363,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-     }
- 
-     while (field->name) {
--        if ((field->field_exists &&
--             field->field_exists(opaque, version_id)) ||
--            (!field->field_exists &&
--             field->version_id <= version_id)) {
-+        if (vmstate_field_exists(vmsd, field, opaque, version_id)) {
-             void *first_elem = opaque + field->offset;
-             int i, n_elems = vmstate_n_elems(opaque, field);
-             int size = vmstate_size(opaque, field);
-diff --git a/migration/trace-events b/migration/trace-events
-index 4666f19325..446db0b7ce 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -66,6 +66,7 @@ vmstate_save_state_loop(const char *name, const char *field, int n_elems) "%s/%s
- vmstate_save_state_top(const char *idstr) "%s"
- vmstate_subsection_save_loop(const char *name, const char *sub) "%s/%s"
- vmstate_subsection_save_top(const char *idstr) "%s"
-+vmstate_field_exists(const char *vmsd, const char *name, int field_version, int version, int result) "%s:%s field_version %d version %d result %d"
- 
- # vmstate-types.c
- get_qtailq(const char *name, int version_id) "%s v%d"
+William Roche (1):
+  i386: Explicitly ignore unsupported BUS_MCEERR_AO MCE on AMD guest
+
+ target/i386/cpu.c     | 18 +++++++++++++++++-
+ target/i386/cpu.h     |  4 ++++
+ target/i386/helper.c  |  4 ++++
+ target/i386/kvm/kvm.c | 34 ++++++++++++++++++++++++----------
+ 4 files changed, 49 insertions(+), 11 deletions(-)
+
 -- 
-2.41.0
+2.39.3
 
 
