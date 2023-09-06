@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AF7793E63
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DAB793E62
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtDq-0002Tj-TJ; Wed, 06 Sep 2023 10:09:38 -0400
+	id 1qdtDm-0002TV-TU; Wed, 06 Sep 2023 10:09:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdtDg-0002TB-MX; Wed, 06 Sep 2023 10:09:24 -0400
+ id 1qdtDg-0002T3-F8; Wed, 06 Sep 2023 10:09:24 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdtDe-0000fI-80; Wed, 06 Sep 2023 10:09:24 -0400
+ id 1qdtDe-0000fH-By; Wed, 06 Sep 2023 10:09:24 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qdtAV-006xz5-1w;
- Wed, 06 Sep 2023 16:09:06 +0200
+ (envelope-from <den@openvz.org>) id 1qdtAW-006xz5-0K;
+ Wed, 06 Sep 2023 16:09:07 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: den@openvz.org, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 0/3] separated wanted and unwanted skips in QEMU iotests
-Date: Wed,  6 Sep 2023 16:09:14 +0200
-Message-Id: <20230906140917.559129-1-den@openvz.org>
+Subject: [PATCH 1/3] iotests: use TEST_IMG_FILE instead of TEST_IMG in
+ _require_large_file
+Date: Wed,  6 Sep 2023 16:09:15 +0200
+Message-Id: <20230906140917.559129-2-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230906140917.559129-1-den@openvz.org>
+References: <20230906140917.559129-1-den@openvz.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
@@ -54,26 +57,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some time ago there was a discussion in the QEMU mailing list about
-the situation when some IO tests were not run and thus the patch
-has added a regression, namely
-    https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg02381.html
+We need to check that we are able to create large enough file which is
+used as an export base rather than connection URL. Unfortunately, there
+are cases when the TEST_IMG_FILE is not defined. We should fallback to
+TEST_IMG in that case.
 
-This series contains a possible answer to the problem. Let us separate
-intentional and unwanted skipping of the testcase. This patch adds new
-state - 'skipped' and that state is considered as a normal skip. In the
-other case we do not want that.
-
-The series also contains some fixes which were revealed once the feature
-was implemented.
-
-Hope this would not be too bad :)
+This problem has been detected when running
+    ./check -nbd 5
+The test should be able to run while it does not.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Kevin Wolf <kwolf@redhat.com>
 CC: Hanna Reitz <hreitz@redhat.com>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ tests/qemu-iotests/common.rc | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+index d145f08201..95c12577dd 100644
+--- a/tests/qemu-iotests/common.rc
++++ b/tests/qemu-iotests/common.rc
+@@ -979,10 +979,15 @@ _require_drivers()
+ #
+ _require_large_file()
+ {
+-    if ! truncate --size="$1" "$TEST_IMG"; then
++    if [ -z "$TEST_IMG_FILE" ]; then
++        FILENAME="$TEST_IMG"
++    else
++        FILENAME="$TEST_IMG_FILE"
++    fi
++    if ! truncate --size="$1" "$FILENAME"; then
+         _notrun "file system on $TEST_DIR does not support large enough files"
+     fi
+-    rm "$TEST_IMG"
++    rm "$FILENAME"
+ }
+ 
+ # Check that a set of devices is available in the QEMU binary
+-- 
+2.34.1
 
 
