@@ -2,101 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455237934B2
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 07:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC2E793474
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 06:44:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdkfm-0005gQ-Jk; Wed, 06 Sep 2023 01:01:50 -0400
+	id 1qdkN1-0008B5-Iw; Wed, 06 Sep 2023 00:42:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qdkf0-0005Jj-9U; Wed, 06 Sep 2023 01:01:02 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qdkeu-00086r-TK; Wed, 06 Sep 2023 01:01:00 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3864pKVk026001; Wed, 6 Sep 2023 05:00:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=ozjIqm8Mp5T4QPHbB3deNz0IbaVBGo3HYz4gLtK6Tyc=;
- b=Y9TucUPz/MfD9CWiiSdGH/sPgzFQM6cJrMt0/8a7UPr8XWFBX44LbQYKuyxGD8AZQpYr
- b8iZ8ZB7PM94rKoJB6NpO2wyTO+jp24U0A6BsV1X3sl994VQK2JbKIPS6enX3x9Oe7SV
- GCEL8xgUQyFHSmAhdBGEFA0TfLqGQEBRWkulMkKWqd/T1oAzZP+YIRbTxy4QAuJrZVl4
- kNfinnd5tcef/QKKnQEkna2VCmncc+ZvKR/dqOZcKGTOi9PumIw3P+n94Jzh6XFJemO6
- y1EWZDdoYzHWexU0PNjP3FyuXaoIhQ5/ywltRKBONuv0EdeFwKs7sievaN+OEMzEAlV2 Wg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxjrer6wg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Sep 2023 05:00:52 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3864pOUB026323;
- Wed, 6 Sep 2023 05:00:52 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxjrer6rm-10
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Sep 2023 05:00:52 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3862u6nQ026759; Wed, 6 Sep 2023 04:34:20 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgcng6e1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Sep 2023 04:34:20 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3864YHRd42205920
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Sep 2023 04:34:17 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2BFE20043;
- Wed,  6 Sep 2023 04:34:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C520620040;
- Wed,  6 Sep 2023 04:34:15 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
- [9.109.242.129])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  6 Sep 2023 04:34:15 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: npiggin@gmail.com, danielhb413@gmail.com, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
- jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
-Subject: [PATCH RESEND 14/15] ppc: spapr: Implement nested PAPR hcall -
- H_GUEST_DELETE
-Date: Wed,  6 Sep 2023 10:03:32 +0530
-Message-Id: <20230906043333.448244-15-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230906043333.448244-1-harshpb@linux.ibm.com>
-References: <20230906043333.448244-1-harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkMz-0008Ag-5N
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 00:42:25 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdkMv-0004UQ-Gk
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 00:42:24 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-977e0fbd742so461607566b.2
+ for <qemu-devel@nongnu.org>; Tue, 05 Sep 2023 21:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1693975340; x=1694580140; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Oqwc24ccP+oBUY1vMLfScj/oed8totdGzIYgf16jGSY=;
+ b=PCgzy/nINsZpIMtRzpy/S4rN/cTdxjyP28k5BeDQ6L9nJfmnx90anbDi09JoFil6Te
+ epK3sl6wsNlhFT4zPM0ul9w3udefeCsJ8xaUskn3Te3+12D8VMk1Lv4D0JK/vdMiObxG
+ EYHOftmrvC9DuarEp3p0jfO3K9sVH+yLuCtBIo3m+QK+HFH0lvdNawFEcUWwWAlmui+z
+ 6VOXjYSigZE6doVxydHqKv73PvYoN8fkNi5z7I7FSpvt0eqS1PaBSCxSio4PMkrHUQ6h
+ euyChJhC4mDEBTrVP6gN0ICdkvz7uf9nxjwal2Rp04MyJcjl9Z9P6t3jPaDvps79aCNy
+ yJPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693975340; x=1694580140;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Oqwc24ccP+oBUY1vMLfScj/oed8totdGzIYgf16jGSY=;
+ b=f5I8kCWAd4vUsgZnCQfsjClZN879b+DUXC+AscYMgvuLr0wNF/4zkMizw3+VmhQZI8
+ OlS3fpsPeQkjvbsO5DCiqB3deRABf9u17L7RWvvQtEEMgtAXV6+ZRXWpKtFuvmG6q6t8
+ SitIOuO+kB6/6cf5a8EDtAUQU8dfnN1f5r2oJNL3qtvhyc23B52QV7IxlxwwNcl9RuZm
+ SSQhycUhAxe5Nxwj4vHzaDa1VfizNp8p/lQQ5x6zLfRm2ZdVmDcMoVI0CUBg6Z8RrAn9
+ M+97XcSHvcCNbzdxrKhiQG7HH3ctsBHGewCWbDDdUhFj/62OoPMdYuv12L7TOoYDUasK
+ mP0w==
+X-Gm-Message-State: AOJu0YwClFoQiZH2sbAZmVS4/oVqosGM9pZxqBC0ROIxEjvjuYz0xtxh
+ Yv5bIyWgRIftt9HLh+963e+X/g==
+X-Google-Smtp-Source: AGHT+IE7PkJqtrtHYbz8yYIlhkHT1jEYuIgVKIFLZwCMC5v1Y9Uc70SpcejSmSWZhviQ1rgwkgh6Mw==
+X-Received: by 2002:a17:906:73ce:b0:9a1:edb0:2a8c with SMTP id
+ n14-20020a17090673ce00b009a1edb02a8cmr1167473ejl.39.1693975339791; 
+ Tue, 05 Sep 2023 21:42:19 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ g3-20020a170906594300b0099cf44adf2csm8327024ejr.46.2023.09.05.21.42.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Sep 2023 21:42:19 -0700 (PDT)
+Message-ID: <c5937e59-e267-519a-cf57-bf051b07304f@linaro.org>
+Date: Wed, 6 Sep 2023 06:42:16 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 4/4] migration/qapi: Drop @MigrationParameter enum
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-5-peterx@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230905162335.235619-5-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5oKypm2iIC1tcMTaJnoiK0mRa2KO1M1G
-X-Proofpoint-ORIG-GUID: 5AkJ-wH4NtFAY4KkyYKkV_BhadVhytyq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-05_13,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=803
- impostorscore=0 phishscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309060040
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,79 +95,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This hcall is used by L1 to delete a guest entry in L0 or can also be
-used to delete all guests if needed (usually in shutdown scenarios).
+On 5/9/23 18:23, Peter Xu wrote:
+> Drop the enum in qapi because it is never used in QMP APIs.  Instead making
+> it an internal definition for QEMU so that we can decouple it from QAPI,
+> and also we can deduplicate the QAPI documentations.
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   qapi/migration.json            | 179 ---------------------------------
+>   migration/options.h            |  47 +++++++++
+>   migration/migration-hmp-cmds.c |   3 +-
+>   migration/options.c            |  51 ++++++++++
+>   4 files changed, 100 insertions(+), 180 deletions(-)
 
-Signed-off-by: Michael Neuling <mikey@neuling.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- hw/ppc/spapr_nested.c         | 32 ++++++++++++++++++++++++++++++++
- include/hw/ppc/spapr_nested.h |  1 +
- 2 files changed, 33 insertions(+)
 
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index 3605f27115..5afdad4990 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -1692,6 +1692,37 @@ static void exit_process_output_buffer(PowerPCCPU *cpu,
-     return;
- }
- 
-+static target_ulong h_guest_delete(PowerPCCPU *cpu,
-+                                   SpaprMachineState *spapr,
-+                                   target_ulong opcode,
-+                                   target_ulong *args)
-+{
-+    target_ulong flags = args[0];
-+    target_ulong lpid = args[1];
-+    struct SpaprMachineStateNestedGuest *guest;
-+
-+    if (!spapr_get_cap(spapr, SPAPR_CAP_NESTED_PAPR)) {
-+        return H_FUNCTION;
-+    }
-+
-+    /* handle flag deleteAllGuests, remaining bits reserved */
-+    if (flags & ~H_GUEST_DELETE_ALL_MASK) {
-+        return H_UNSUPPORTED_FLAG;
-+    } else if (flags & H_GUEST_DELETE_ALL_MASK) {
-+        g_hash_table_destroy(spapr->nested.guests);
-+        return H_SUCCESS;
-+    }
-+
-+    guest = g_hash_table_lookup(spapr->nested.guests, GINT_TO_POINTER(lpid));
-+    if (!guest) {
-+        return H_P2;
-+    }
-+
-+    g_hash_table_remove(spapr->nested.guests, GINT_TO_POINTER(lpid));
-+
-+    return H_SUCCESS;
-+}
-+
- void spapr_register_nested(void)
- {
-     spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
-@@ -1709,6 +1740,7 @@ void spapr_register_nested_phyp(void)
-     spapr_register_hypercall(H_GUEST_SET_STATE       , h_guest_set_state);
-     spapr_register_hypercall(H_GUEST_GET_STATE       , h_guest_get_state);
-     spapr_register_hypercall(H_GUEST_RUN_VCPU        , h_guest_run_vcpu);
-+    spapr_register_hypercall(H_GUEST_DELETE          , h_guest_delete);
- }
- 
- #else
-diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
-index ca5d28c06e..9eb43778ad 100644
---- a/include/hw/ppc/spapr_nested.h
-+++ b/include/hw/ppc/spapr_nested.h
-@@ -209,6 +209,7 @@
- #define H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE 0x8000000000000000 /* BE in GSB */
- #define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
- #define GUEST_STATE_REQUEST_SET              0x2
-+#define H_GUEST_DELETE_ALL_MASK              0x8000000000000000ULL
- 
- #define GUEST_STATE_ELEMENT(i, sz, s, f, ptr, c) { \
-     .id = (i),                                     \
--- 
-2.39.3
+> diff --git a/migration/options.h b/migration/options.h
+> index 124a5d450f..4591545c62 100644
+> --- a/migration/options.h
+> +++ b/migration/options.h
+> @@ -66,6 +66,53 @@ bool migrate_cap_set(int cap, bool value, Error **errp);
+>   
+>   /* parameters */
+>   
+> +typedef enum {
+> +    MIGRATION_PARAMETER_ANNOUNCE_INITIAL,
+> +    MIGRATION_PARAMETER_ANNOUNCE_MAX,
+> +    MIGRATION_PARAMETER_ANNOUNCE_ROUNDS,
+> +    MIGRATION_PARAMETER_ANNOUNCE_STEP,
+> +    MIGRATION_PARAMETER_COMPRESS_LEVEL,
+> +    MIGRATION_PARAMETER_COMPRESS_THREADS,
+> +    MIGRATION_PARAMETER_DECOMPRESS_THREADS,
+> +    MIGRATION_PARAMETER_COMPRESS_WAIT_THREAD,
+> +    MIGRATION_PARAMETER_THROTTLE_TRIGGER_THRESHOLD,
+> +    MIGRATION_PARAMETER_CPU_THROTTLE_INITIAL,
+> +    MIGRATION_PARAMETER_CPU_THROTTLE_INCREMENT,
+> +    MIGRATION_PARAMETER_CPU_THROTTLE_TAILSLOW,
+> +    MIGRATION_PARAMETER_TLS_CREDS,
+> +    MIGRATION_PARAMETER_TLS_HOSTNAME,
+> +    MIGRATION_PARAMETER_TLS_AUTHZ,
+> +    MIGRATION_PARAMETER_MAX_BANDWIDTH,
+> +    MIGRATION_PARAMETER_DOWNTIME_LIMIT,
+> +    MIGRATION_PARAMETER_X_CHECKPOINT_DELAY,
+> +    MIGRATION_PARAMETER_BLOCK_INCREMENTAL,
+> +    MIGRATION_PARAMETER_MULTIFD_CHANNELS,
+> +    MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE,
+> +    MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH,
+> +    MIGRATION_PARAMETER_MAX_CPU_THROTTLE,
+> +    MIGRATION_PARAMETER_MULTIFD_COMPRESSION,
+> +    MIGRATION_PARAMETER_MULTIFD_ZLIB_LEVEL,
+> +    MIGRATION_PARAMETER_MULTIFD_ZSTD_LEVEL,
+> +    MIGRATION_PARAMETER_BLOCK_BITMAP_MAPPING,
+> +    MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD,
+> +    MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT,
+> +    MIGRATION_PARAMETER__MAX,
+
+MIGRATION_PARAMETER__MAX is not part of the enum, so:
+
+    #define MIGRATION_PARAMETER__MAX \
+        (MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT + 1)
+
+> +} MigrationParameter;
+> +
+> +extern const char *MigrationParameter_string[MIGRATION_PARAMETER__MAX];
+> +#define  MigrationParameter_str(p)  MigrationParameter_string[p]
+
+Hmm this is only used once by HMP. Following our style I suggest here:
+
+  const char *const MigrationParameter_string(enum MigrationParameter 
+param);
+
+And in options.c:
+
+  static const char *const 
+MigrationParameter_str[MIGRATION_PARAMETER__MAX] = {
+     ...
+  };
+
+  const char *const MigrationParameter_string(enum MigrationParameter param)
+  {
+      return MigrationParameter_str[param];
+  }
+
+> +
+> +/**
+> + * @MigrationParameter_from_str(): Parse string into a MigrationParameter
+> + *
+> + * @param: input string
+> + * @errp: error message if failed to parse the string
+> + *
+> + * Returns MigrationParameter enum (>=0) if succeed, or negative otherwise
+> + * which will always setup @errp.
+> + */
+> +int MigrationParameter_from_str(const char *param, Error **errp);
+> +
+>   const BitmapMigrationNodeAliasList *migrate_block_bitmap_mapping(void);
+>   bool migrate_has_block_bitmap_mapping(void);
+
+With the changes:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
