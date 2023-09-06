@@ -2,52 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF452793F0D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6521A793F0E
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtee-0006Iq-Bv; Wed, 06 Sep 2023 10:37:16 -0400
+	id 1qdtf6-0006hG-6G; Wed, 06 Sep 2023 10:37:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=4aKV=EW=kaod.org=clg@ozlabs.org>)
- id 1qdteY-0006Ib-Kn; Wed, 06 Sep 2023 10:37:10 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdtf4-0006aM-6y
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:37:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=4aKV=EW=kaod.org=clg@ozlabs.org>)
- id 1qdteT-0006En-Fw; Wed, 06 Sep 2023 10:37:09 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RglM01v6jz4x2n;
- Thu,  7 Sep 2023 00:37:00 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RglLy2Z9cz4x09;
- Thu,  7 Sep 2023 00:36:58 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-ppc@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL v2 00/35] ppc queue
-Date: Wed,  6 Sep 2023 16:36:52 +0200
-Message-ID: <20230906143653.54709-1-clg@kaod.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdtf1-0006LN-U4
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:37:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694011059;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lg2fMO06PnQXvtf+z6WSmsHkPqrM9ZYU8QTTgt0YWXQ=;
+ b=ERKRAldWV71Crxd7M/NHhpJUzk0VS8YnWPA76b/rO9+FyNw9zk1ohVsD8cIPt/yU5H/lXt
+ RBIA1KaKNQ0x2vM9nNEGR0IW8RHJKfKdgI+YL3AcXNq0E9XtUTrgVFnyZIU8ExSbB3TpBC
+ xaTmVExdPRWkwLjsVhTCwcA/FVrp2H0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-459-Koxi_cTTPgygDHGGdVaYGA-1; Wed, 06 Sep 2023 10:37:37 -0400
+X-MC-Unique: Koxi_cTTPgygDHGGdVaYGA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-31c879c41f4so2081239f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:37:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694011056; x=1694615856;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :from:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lg2fMO06PnQXvtf+z6WSmsHkPqrM9ZYU8QTTgt0YWXQ=;
+ b=PLHKXwbqYKDlFyouHGETfU3SgFXtE/7E3XpWJqAvHhpZHqy3IfmrvvEXPofnZqSPJB
+ 2EgeWXZXdpvqeeH2eeJPqhoCZgDVqfW7qdSFK+IDJ++bqP0mhrtNAae9fE2xuteOuQS2
+ Doh99nkUnfd6MqlOZtYPGaAbDd4rXkjuTvlt0A+2dJ+/sap+8NxqA/7ffEM5t7jbgG+d
+ RLJKkVhcYZF73cTFuOFc0oMpUcMS5gm5T5M3SVST83PXCtdPe5Pz7ozaO60t293NaWv3
+ FXlueyyHwgDHRfZMLcnONuJnhS63EoDthD4ep7YOQLpn+s9/qm2HIBEadWauYygqjVzb
+ XJpg==
+X-Gm-Message-State: AOJu0Yxn/u9Z7CiJ1mcHC0iokP4r/qRqrR/hhKVS9dLAAt/o17xccVv/
+ VYPVvAp+JbEjWe7KJY2kqHMUau7SmWS58dwD9fIfm/aSzfMgiICndqvxf6Sq47breveem38DzZY
+ 5okWVzOF0AD6ZEZ8=
+X-Received: by 2002:adf:dc8c:0:b0:317:5351:e428 with SMTP id
+ r12-20020adfdc8c000000b003175351e428mr2259895wrj.4.1694011056322; 
+ Wed, 06 Sep 2023 07:37:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6FP2trIpa9SyMRqQVDHpkv6KR2bWRmBHizszpCaWuoC2c7TXCDXjhpfQSjz/N58+wSW/0iw==
+X-Received: by 2002:adf:dc8c:0:b0:317:5351:e428 with SMTP id
+ r12-20020adfdc8c000000b003175351e428mr2259886wrj.4.1694011055968; 
+ Wed, 06 Sep 2023 07:37:35 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70c:6c00:92a4:6f8:ff7e:6853?
+ (p200300cbc70c6c0092a406f8ff7e6853.dip0.t-ipconnect.de.
+ [2003:cb:c70c:6c00:92a4:6f8:ff7e:6853])
+ by smtp.gmail.com with ESMTPSA id
+ j17-20020a5d5651000000b003197efd1e7bsm20671464wrw.114.2023.09.06.07.37.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 07:37:35 -0700 (PDT)
+Message-ID: <de45c2d4-13b6-d022-e32a-ea5296e04b1d@redhat.com>
+Date: Wed, 6 Sep 2023 16:37:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 04/16] kvm: Return number of free memslots
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
+References: <20230825132149.366064-1-david@redhat.com>
+ <20230825132149.366064-5-david@redhat.com>
+ <1d68ca74-ce92-ca5f-2c8b-e4567265e2fc@linaro.org>
+ <ee1bbc2b-3180-ab79-4f0d-6159577b2164@redhat.com>
+Organization: Red Hat
+In-Reply-To: <ee1bbc2b-3180-ab79-4f0d-6159577b2164@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=4aKV=EW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,117 +117,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 2d8fbcb1eecd8d39171f457e583428758321d69d:
+On 06.09.23 16:14, David Hildenbrand wrote:
+> On 29.08.23 00:26, Philippe Mathieu-Daudé wrote:
+>> On 25/8/23 15:21, David Hildenbrand wrote:
+>>> Let's return the number of free slots instead of only checking if there
+>>> is a free slot. While at it, check all address spaces, which will also
+>>> consider SMM under x86 correctly.
+>>>
+>>> Make the stub return UINT_MAX, such that we can call the function
+>>> unconditionally.
+>>>
+>>> This is a preparation for memory devices that consume multiple memslots.
+>>>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>     accel/kvm/kvm-all.c      | 33 ++++++++++++++++++++-------------
+>>>     accel/stubs/kvm-stub.c   |  4 ++--
+>>>     hw/mem/memory-device.c   |  2 +-
+>>>     include/sysemu/kvm.h     |  2 +-
+>>>     include/sysemu/kvm_int.h |  1 +
+>>>     5 files changed, 25 insertions(+), 17 deletions(-)
+>>
+>>
+>>> diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+>>> index 235dc661bc..f39997d86e 100644
+>>> --- a/accel/stubs/kvm-stub.c
+>>> +++ b/accel/stubs/kvm-stub.c
+>>> @@ -109,9 +109,9 @@ int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
+>>>         return -ENOSYS;
+>>>     }
+>>>     
+>>> -bool kvm_has_free_slot(MachineState *ms)
+>>> +unsigned int kvm_get_free_memslots(void)
+>>>     {
+>>> -    return false;
+>>> +    return UINT_MAX;
+>>
+>> Isn't it clearer returning 0 here and keeping kvm_enabled() below?
+> 
+> I tried doing it similarly to vhost_has_free_slot().
+> 
 
-  Merge tag 'pull-request-2023-08-31' of https://gitlab.com/thuth/qemu into staging (2023-09-05 09:22:13 -0400)
+I'll leave the kvm_enabled() check in place, looks cleaner.
 
-are available in the Git repository at:
+-- 
+Cheers,
 
-  https://github.com/legoater/qemu/ tags/pull-ppc-20230906
+David / dhildenb
 
-for you to fetch changes up to b68147b7a5bf6ea2c2b8a8830465e7e90bb2a77c:
-
-  ppc/xive: Add support for the PC MMIOs (2023-09-06 11:19:33 +0200)
-
-----------------------------------------------------------------
-ppc queue :
-
-* debug facility improvements
-* timebase and decrementer fixes
-* record-replay fixes
-* TCG fixes
-* XIVE model improvements for multichip
-
-
-Changes since v1:
-
-* renamed __muldiv64() to muldiv64_rounding()
-* removed extra cpu and pcc variables shadowing local variables
-* checkpatch.pl fixes
-
-----------------------------------------------------------------
-Cédric Le Goater (4):
-      ppc/xive: Use address_space routines to access the machine RAM
-      ppc/xive: Introduce a new XiveRouter end_notify() handler
-      ppc/xive: Handle END triggers between chips with MMIOs
-      ppc/xive: Add support for the PC MMIOs
-
-Joel Stanley (1):
-      ppc: Add stub implementation of TRIG SPRs
-
-Maksim Kostin (1):
-      hw/ppc/e500: fix broken snapshot replay
-
-Nicholas Piggin (26):
-      target/ppc: Remove single-step suppression inside 0x100-0xf00
-      target/ppc: Improve book3s branch trace interrupt for v2.07S
-      target/ppc: Suppress single step interrupts on rfi-type instructions
-      target/ppc: Implement breakpoint debug facility for v2.07S
-      target/ppc: Implement watchpoint debug facility for v2.07S
-      spapr: implement H_SET_MODE debug facilities
-      ppc/vhyp: reset exception state when handling vhyp hcall
-      ppc/vof: Fix missed fields in VOF cleanup
-      hw/ppc/ppc.c: Tidy over-long lines
-      hw/ppc: Introduce functions for conversion between timebase and nanoseconds
-      host-utils: Add muldiv64_round_up
-      hw/ppc: Round up the decrementer interval when converting to ns
-      hw/ppc: Avoid decrementer rounding errors
-      target/ppc: Sign-extend large decrementer to 64-bits
-      hw/ppc: Always store the decrementer value
-      target/ppc: Migrate DECR SPR
-      hw/ppc: Reset timebase facilities on machine reset
-      hw/ppc: Read time only once to perform decrementer write
-      target/ppc: Fix CPU reservation migration for record-replay
-      target/ppc: Fix timebase reset with record-replay
-      spapr: Fix machine reset deadlock from replay-record
-      spapr: Fix record-replay machine reset consuming too many events
-      tests/avocado: boot ppc64 pseries replay-record test to Linux VFS mount
-      tests/avocado: reverse-debugging cope with re-executing breakpoints
-      tests/avocado: ppc64 reverse debugging tests for pseries and powernv
-      target/ppc: Fix LQ, STQ register-pair order for big-endian
-
-Richard Henderson (1):
-      target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
-
-Shawn Anastasio (1):
-      target/ppc: Generate storage interrupts for radix RC changes
-
-jianchunfu (1):
-      target/ppc: Fix the order of kvm_enable judgment about kvmppc_set_interrupt()
-
- hw/intc/pnv_xive_regs.h                    |   1 +
- include/hw/ppc/ppc.h                       |   3 +-
- include/hw/ppc/spapr.h                     |   2 +
- include/hw/ppc/xive.h                      |   2 +
- include/qemu/host-utils.h                  |  21 ++-
- target/ppc/cpu.h                           |  12 ++
- target/ppc/helper.h                        |   4 +
- target/ppc/internal.h                      |   3 +
- target/ppc/spr_common.h                    |   3 +
- hw/intc/pnv_xive.c                         | 170 +++++++++++++++-----
- hw/intc/pnv_xive2.c                        |  27 +++-
- hw/intc/xive.c                             |  28 ++--
- hw/ppc/e500.c                              |   2 +-
- hw/ppc/mac_oldworld.c                      |   1 +
- hw/ppc/pegasos2.c                          |   1 +
- hw/ppc/pnv_core.c                          |   2 +
- hw/ppc/ppc.c                               | 243 +++++++++++++++++++----------
- hw/ppc/prep.c                              |   1 +
- hw/ppc/spapr.c                             |  32 +++-
- hw/ppc/spapr_cpu_core.c                    |   2 +
- hw/ppc/spapr_hcall.c                       |  57 +++++++
- hw/ppc/vof.c                               |   2 +
- target/ppc/compat.c                        |  19 +++
- target/ppc/cpu.c                           |  87 +++++++++++
- target/ppc/cpu_init.c                      |  21 ++-
- target/ppc/excp_helper.c                   | 111 ++++++++++++-
- target/ppc/kvm.c                           |   2 +-
- target/ppc/machine.c                       |  45 +++++-
- target/ppc/misc_helper.c                   |  15 ++
- target/ppc/mmu-radix64.c                   |  74 ++++++---
- target/ppc/translate.c                     |  64 ++++++--
- target/ppc/translate/fixedpoint-impl.c.inc |  16 +-
- tests/avocado/replay_kernel.py             |   3 +-
- tests/avocado/reverse_debugging.py         |  54 ++++++-
- 34 files changed, 925 insertions(+), 205 deletions(-)
 
