@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9082E79387D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0371A7938B4
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:45:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdp0V-0001ZG-JG; Wed, 06 Sep 2023 05:39:31 -0400
+	id 1qdp4h-0003jN-I8; Wed, 06 Sep 2023 05:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qdp0Q-0001UU-KS
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:39:26 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdp4c-0003iO-Fp
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:43:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qdp0O-00020R-5c
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:39:26 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdp4a-0002xv-8y
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:43:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693993162;
+ s=mimecast20190719; t=1693993423;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sFvvF3kxrlURkIX/sYTTEmWgywT5VGmuhY+QMQ/4sfM=;
- b=ToKHmWSfuCzfBrq9RB4VZ50C02Xt1Kgli/5PEGImNtnvPMHk3ZQeA8ww8BVbx6DetT/bMl
- DwF6IIBfFY8BrT/HVqCBoC6mA5tvGFiEkJZbm6VxqJ/YunIR2r4hPg87RdoTttg6OPav0J
- EttZ5/VrNIHApy+4zLLgLDIwKhm+w28=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7vefdYlMR/8ArdCua+cW/iz5J210AzDO/E5mu7BSKJE=;
+ b=ccTVjIZIYvmAgfsUXB5CjQ4BNq1ExBrYt6AfFF0Rljo6vOcy8x34KPf74N/cfBXdsN61dH
+ FxlC4qxpQmmUL8AgI0ny2DcwqEYGx4ygc4jdRC94RONMHYRSm9fKIhXHo/6hN7JvT83SmB
+ UEQJrQh2mDHhqQGXIRIQWeFgO3YzaTo=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-wnGTZk45Px2WlEjjGGTL6w-1; Wed, 06 Sep 2023 05:39:20 -0400
-X-MC-Unique: wnGTZk45Px2WlEjjGGTL6w-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-570096f51acso861224a12.0
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 02:39:20 -0700 (PDT)
+ us-mta-581-xTsPfm51PR2tozrFdRZ7Dw-1; Wed, 06 Sep 2023 05:43:41 -0400
+X-MC-Unique: xTsPfm51PR2tozrFdRZ7Dw-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-5009ee2287aso3768978e87.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 02:43:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693993159; x=1694597959;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1693993420; x=1694598220;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=sFvvF3kxrlURkIX/sYTTEmWgywT5VGmuhY+QMQ/4sfM=;
- b=E8GcqNUUJNquwgPeY9qB9NbYGKY1zu7cdkjrmoeFLNfQgdPaNWHiEcNcnP48xeNx36
- Ls6NB6Vg6L794Qe7xFN/J8uVUuPN/tppaKHcieSl0qGn6I2F1zDSDLT0oTmjlsHW8NCA
- 6OUNocnlRl8P+EK4abL82qZbnjw/77r+86W4XAxPrF0T6V+zBeAnl3D+DsQEtGdzqXuD
- ZywCKltwxQUF0OC/Jq3QSxPbKVRrtMXoWgxrYpMytZPYda9I5dLZQYMJvhiixqDpYCmX
- HOJmgwDAef6E4wnYduOnCE4sduc0/rjvfnRaKVraPMOO1JxVrMujy+KL//CbbnOkwogO
- e5MQ==
-X-Gm-Message-State: AOJu0YyaikolWNNdZyHWPtxlz0s6vZw8oVEBl1nP8IGL6Nn1GHCBprtU
- VtuG+DGfuDRa0DKfW77xve+0yUHhjUFN0YhA8yMJpgtJt9q6zT0a+hQ7XmVNLVwEPNvoW/qqjPm
- Qvi04FSWkVnKsIz48wFEufVPv++6caeI=
-X-Received: by 2002:a05:6a20:dd88:b0:14c:7b5d:1fe0 with SMTP id
- kw8-20020a056a20dd8800b0014c7b5d1fe0mr15539797pzb.3.1693993159357; 
- Wed, 06 Sep 2023 02:39:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQxWtZw182ibMvxIOyq1a+SrmUm6kO0zJHCcGKt2xXmhWygLHe7GT9+JT3BQESaupAG4JgEGO0N87A2syEUqs=
-X-Received: by 2002:a05:6a20:dd88:b0:14c:7b5d:1fe0 with SMTP id
- kw8-20020a056a20dd8800b0014c7b5d1fe0mr15539777pzb.3.1693993159012; Wed, 06
- Sep 2023 02:39:19 -0700 (PDT)
+ bh=7vefdYlMR/8ArdCua+cW/iz5J210AzDO/E5mu7BSKJE=;
+ b=S7rVtZ/LpxiXE1i1DC7hTAOfQm5RvwCuRkV0U/kiAiXIO5BrZmqRsZzC7Sf8YORllm
+ YoI/sl1TUSh3EPfK23/jz0FerDfUi4B3w5XDVc7VeDv0BQUOb+PpXj0tulpQ2lloMYJg
+ fX3OYKrCQQZJc4w2/e+uh5Xi2ZKYLvZEJglH/VgbJoPIovL3E80TvmZkLme/6dDEQLd1
+ rZZ8HMaJKp/wCkooIHrfAecUig2IHtdwlduQ2drneNj6zjXRj8S9lKqLrqY/k60GFX/V
+ ufAqjz9gpSu1OSxKEt8AQQHpeedPlWwINrk6teR8uWVgmluqsC2SEwwiSrbOCi4FDnSN
+ /DMg==
+X-Gm-Message-State: AOJu0Yyy+CIjf4/4ayR+spkP8x0BIcP1JMVhhK/LZcqdewm4pMvMb6u4
+ ZIlSjdeIRewsq/KGN+1PB8fL8uolES2AYyXtGoDtXDZHPctP4Gh+phQ0dD+Q5b4L8j7r99PB74C
+ m76HjmZqkc0bCZS8jX/fshbs=
+X-Received: by 2002:a05:6512:3b95:b0:501:bee7:487b with SMTP id
+ g21-20020a0565123b9500b00501bee7487bmr2207166lfv.11.1693993420462; 
+ Wed, 06 Sep 2023 02:43:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+kyCh8ge5omnOO19l81ywndCSnl3vv4iOpfU70qjIprwIBa/mvZhLPu1h129TM4P09QBp6g==
+X-Received: by 2002:a05:6512:3b95:b0:501:bee7:487b with SMTP id
+ g21-20020a0565123b9500b00501bee7487bmr2207152lfv.11.1693993420099; 
+ Wed, 06 Sep 2023 02:43:40 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70c:6c00:92a4:6f8:ff7e:6853?
+ (p200300cbc70c6c0092a406f8ff7e6853.dip0.t-ipconnect.de.
+ [2003:cb:c70c:6c00:92a4:6f8:ff7e:6853])
+ by smtp.gmail.com with ESMTPSA id
+ fj15-20020a05600c0c8f00b003fe2bea77ccsm19856818wmb.5.2023.09.06.02.43.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 02:43:39 -0700 (PDT)
+Message-ID: <12cb4d92-948b-d87b-8fe6-57e3bbcee248@redhat.com>
+Date: Wed, 6 Sep 2023 11:43:38 +0200
 MIME-Version: 1.0
-References: <20230802090824.91688-1-aesteve@redhat.com>
- <CADSE00JRMvQ6Ye445xon0GoCDSsp7oAY_B--rABooabMTraoaQ@mail.gmail.com>
- <20230905164451-mutt-send-email-mst@kernel.org>
- <2b6df154-de47-ab4c-d315-a541935d1276@linaro.org>
-In-Reply-To: <2b6df154-de47-ab4c-d315-a541935d1276@linaro.org>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 6 Sep 2023 11:39:07 +0200
-Message-ID: <CADSE00LRBomBNM9tKRgaRH_T7Xj6p9_Nz2y1mNFF_AZ8ivQbfA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] Virtio shared dma-buf
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- marcandre.lureau@gmail.com, 
- kraxel@redhat.com, cohuck@redhat.com, Fam Zheng <fam@euphon.net>
-Content-Type: multipart/alternative; boundary="0000000000007ecb730604ad84be"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 3/3] sysemu/xen: Allow elision of xen_hvm_modified_memory()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, xen-devel@lists.xenproject.org,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Peter Xu <peterx@redhat.com>
+References: <20230905122142.5939-1-philmd@linaro.org>
+ <20230905122142.5939-4-philmd@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230905122142.5939-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,86 +110,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000007ecb730604ad84be
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 05.09.23 14:21, Philippe Mathieu-Daudé wrote:
+> Call xen_enabled() before xen_hvm_modified_memory() to let
+> the compiler elide its call.
+> 
+> Have xen_enabled() return a boolean to match its declaration
+> in the CONFIG_XEN_IS_POSSIBLE case.
+> 
+> Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
 
-On Wed, Sep 6, 2023 at 8:13=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd@=
-linaro.org>
-wrote:
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-> Hi Michael,
->
-> On 5/9/23 22:45, Michael S. Tsirkin wrote:
-> > I was hoping for some acks from Gerd or anyone else with a clue
-> > about graphics, but as that doesn't seem to happen I'll merge.
-> > Thanks!
->
-> I made few late comments. Patch #3 doesn't build (thus
-> break git-bisections). I also have some concern about locking.
-> I'd rather see a v6, do you mind dropping v5 from your queue?
->
-> Thanks,
->
-> Phil.
->
+-- 
+Cheers,
 
-I have the v6 ready. I will wait for Michael response and post it,
-to ensure that I do not step on his toes.
-Thank you both!
-
-
->
-> > On Mon, Aug 21, 2023 at 02:37:56PM +0200, Albert Esteve wrote:
-> >> Hi all,
-> >>
-> >> A little bump for this patch, sorry for the extra noise.
-> >>
-> >> Regards,
-> >> Albert
->
->
-
---0000000000007ecb730604ad84be
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
-ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Sep 6, 2023 at 8:13=
-=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro=
-.org">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">Hi Michael,<br>
-<br>
-On 5/9/23 22:45, Michael S. Tsirkin wrote:<br>
-&gt; I was hoping for some acks from Gerd or anyone else with a clue<br>
-&gt; about graphics, but as that doesn&#39;t seem to happen I&#39;ll merge.=
-<br>
-&gt; Thanks!<br>
-<br>
-I made few late comments. Patch #3 doesn&#39;t build (thus<br>
-break git-bisections). I also have some concern about locking.<br>
-I&#39;d rather see a v6, do you mind dropping v5 from your queue?<br>
-<br>
-Thanks,<br>
-<br>
-Phil.<br></blockquote><div><br></div><div>I have the v6 ready. I will wait =
-for Michael response and post it,</div><div>to ensure that I do not step on=
- his toes.</div><div>Thank=C2=A0you both!</div><div>=C2=A0</div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; On Mon, Aug 21, 2023 at 02:37:56PM +0200, Albert Esteve wrote:<br>
-&gt;&gt; Hi all,<br>
-&gt;&gt;<br>
-&gt;&gt; A little bump for this patch, sorry for the extra noise.<br>
-&gt;&gt;<br>
-&gt;&gt; Regards,<br>
-&gt;&gt; Albert<br>
-<br>
-</blockquote></div></div>
-
---0000000000007ecb730604ad84be--
+David / dhildenb
 
 
