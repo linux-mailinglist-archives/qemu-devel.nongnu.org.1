@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BEB7940D2
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BA07940D5
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:56:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdurd-0006Qt-Nx; Wed, 06 Sep 2023 11:54:45 -0400
+	id 1qdurf-0006Uw-6q; Wed, 06 Sep 2023 11:54:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurS-0006PJ-26; Wed, 06 Sep 2023 11:54:35 -0400
+ id 1qdurT-0006Pc-NB; Wed, 06 Sep 2023 11:54:37 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdurC-0003mo-1O; Wed, 06 Sep 2023 11:54:33 -0400
+ id 1qdurC-0003nG-MW; Wed, 06 Sep 2023 11:54:35 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qduo5-007ME4-1i;
+ (envelope-from <den@openvz.org>) id 1qduo5-007ME4-31;
  Wed, 06 Sep 2023 17:54:04 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, stefanha@gmail.com,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL 15/18] iotests: Refactor tests of parallels images checks (131)
-Date: Wed,  6 Sep 2023 17:54:10 +0200
-Message-Id: <20230906155413.656644-6-den@openvz.org>
+Subject: [PULL 16/18] iotests: Fix cluster size in parallels images tests (131)
+Date: Wed,  6 Sep 2023 17:54:11 +0200
+Message-Id: <20230906155413.656644-7-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906155413.656644-1-den@openvz.org>
 References: <20230906154942.656537-1-den@openvz.org>
@@ -58,84 +58,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
-Replace hardcoded numbers by variables.
+In this test cluster size is 64k, but modern tools generate images with
+cluster size 1M. Calculate cluster size using track field from image header.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- tests/qemu-iotests/131 | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ tests/qemu-iotests/131     |  5 ++++-
+ tests/qemu-iotests/131.out | 44 +++++++++++++++++++-------------------
+ 2 files changed, 26 insertions(+), 23 deletions(-)
 
 diff --git a/tests/qemu-iotests/131 b/tests/qemu-iotests/131
-index a847692b4c..601546c84c 100755
+index 601546c84c..72f6535581 100755
 --- a/tests/qemu-iotests/131
 +++ b/tests/qemu-iotests/131
-@@ -44,31 +44,34 @@ _supported_os Linux
+@@ -44,10 +44,13 @@ _supported_os Linux
  inuse_offset=$((0x2c))
  
  size=$((64 * 1024 * 1024))
--CLUSTER_SIZE=64k
-+CLUSTER_SIZE=$((64 * 1024))
+-CLUSTER_SIZE=$((64 * 1024))
  IMGFMT=parallels
  _make_test_img $size
  
-+CLUSTER_HALF_SIZE=$((CLUSTER_SIZE / 2))
-+CLUSTER_DBL_SIZE=$((CLUSTER_SIZE * 2))
-+
- echo == read empty image ==
--{ $QEMU_IO -c "read -P 0 32k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0 $CLUSTER_HALF_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- echo == write more than 1 block in a row ==
--{ $QEMU_IO -c "write -P 0x11 32k 128k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "write -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- echo == read less than block ==
--{ $QEMU_IO -c "read -P 0x11 32k 32k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- echo == read exactly 1 block ==
--{ $QEMU_IO -c "read -P 0x11 64k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- echo == read more than 1 block ==
--{ $QEMU_IO -c "read -P 0x11 32k 128k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- echo == check that there is no trash after written ==
--{ $QEMU_IO -c "read -P 0 160k 32k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0 $((CLUSTER_HALF_SIZE + CLUSTER_DBL_SIZE)) $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- echo == check that there is no trash before written ==
--{ $QEMU_IO -c "read -P 0 0 32k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++# get cluster size in sectors from "tracks" header field
++CLUSTER_SIZE_OFFSET=28
++CLUSTER_SIZE=$(peek_file_le $TEST_IMG $CLUSTER_SIZE_OFFSET 4)
++CLUSTER_SIZE=$((CLUSTER_SIZE * 512))
+ CLUSTER_HALF_SIZE=$((CLUSTER_SIZE / 2))
+ CLUSTER_DBL_SIZE=$((CLUSTER_SIZE * 2))
  
- echo "== Corrupt image =="
- poke_file "$TEST_IMG" "$inuse_offset" "\x59\x6e\x6f\x74"
--{ $QEMU_IO -c "read -P 0x11 64k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- _check_test_img
- _check_test_img -r all
--{ $QEMU_IO -c "read -P 0x11 64k 64k" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
-+{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+diff --git a/tests/qemu-iotests/131.out b/tests/qemu-iotests/131.out
+index de5ef7a8f5..98017a067e 100644
+--- a/tests/qemu-iotests/131.out
++++ b/tests/qemu-iotests/131.out
+@@ -1,26 +1,26 @@
+ QA output created by 131
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ == read empty image ==
+-read 65536/65536 bytes at offset 32768
+-64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 1048576/1048576 bytes at offset 524288
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == write more than 1 block in a row ==
+-wrote 131072/131072 bytes at offset 32768
+-128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 2097152/2097152 bytes at offset 524288
++2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == read less than block ==
+-read 32768/32768 bytes at offset 32768
+-32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 524288/524288 bytes at offset 524288
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == read exactly 1 block ==
+-read 65536/65536 bytes at offset 65536
+-64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == read more than 1 block ==
+-read 131072/131072 bytes at offset 32768
+-128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 2097152/2097152 bytes at offset 524288
++2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == check that there is no trash after written ==
+-read 32768/32768 bytes at offset 163840
+-32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 524288/524288 bytes at offset 2621440
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == check that there is no trash before written ==
+-read 32768/32768 bytes at offset 0
+-32 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 524288/524288 bytes at offset 0
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == Corrupt image ==
+ qemu-io: can't open device TEST_DIR/t.parallels: parallels: Image was not closed correctly; cannot be opened read/write
+ ERROR image was not closed correctly
+@@ -35,19 +35,19 @@ The following inconsistencies were found and repaired:
  
- echo "== allocate with backing =="
- # Verify that allocating clusters works fine even when there is a backing image.
-@@ -83,7 +86,7 @@ TEST_IMG="$TEST_IMG.base" _make_test_img $size
- 
- # Write some data to the base image (which would trigger an assertion failure if
- # interpreted as a QEMUIOVector)
--$QEMU_IO -c 'write -P 42 0 64k' "$TEST_IMG.base" | _filter_qemu_io
-+$QEMU_IO -c "write -P 42 0 $CLUSTER_SIZE" "$TEST_IMG.base" | _filter_qemu_io
- 
- # Parallels does not seem to support storing a backing filename in the image
- # itself, so we need to build our backing chain on the command line
-@@ -99,8 +102,8 @@ QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT \
- QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT \
-     $QEMU_IO --image-opts "$imgopts" \
-     -c 'read -P 1 0 64' \
--    -c "read -P 42 64 $((64 * 1024 - 64))" \
--    -c "read -P 0 64k $((size - 64 * 1024))" \
-+    -c "read -P 42 64 $((CLUSTER_SIZE - 64))" \
-+    -c "read -P 0 $CLUSTER_SIZE $((size - CLUSTER_SIZE))" \
-     | _filter_qemu_io
- 
- # success, all done
+ Double checking the fixed image now...
+ No errors were found on the image.
+-read 65536/65536 bytes at offset 65536
+-64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == allocate with backing ==
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=67108864
+-wrote 65536/65536 bytes at offset 0
+-64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ wrote 64/64 bytes at offset 0
+ 64 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ read 64/64 bytes at offset 0
+ 64 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-read 65472/65472 bytes at offset 64
+-63.938 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-read 67043328/67043328 bytes at offset 65536
+-63.938 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 1048512/1048512 bytes at offset 64
++1023.938 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 66060288/66060288 bytes at offset 1048576
++63 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ *** done
 -- 
 2.34.1
 
