@@ -2,45 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71227793DE2
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 434EA793DEB
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:43:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdska-0007LH-Kd; Wed, 06 Sep 2023 09:39:20 -0400
+	id 1qdso0-0000n2-4u; Wed, 06 Sep 2023 09:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qdskY-0007L3-QO
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:39:18 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1qdsnx-0000mo-MD; Wed, 06 Sep 2023 09:42:49 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qdskV-0001en-Va
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:39:18 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4683042B26
- for <qemu-devel@nongnu.org>; Wed,  6 Sep 2023 15:39:13 +0200 (CEST)
-Message-ID: <d13ac082-358b-1fc4-03b2-a638eac98aa5@proxmox.com>
-Date: Wed, 6 Sep 2023 15:39:12 +0200
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1qdsnu-0002Iv-Sm; Wed, 06 Sep 2023 09:42:49 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 386DXvkW018015; Wed, 6 Sep 2023 13:42:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=utCYaSnmHbv/UwgQ/r89M64gnfKcXlWVSZODoE7eI0o=;
+ b=GFY5hJBKlROFvaNUQ0NjwfJTOrz9/rrvXlYkm5CPVL0L33+2BAZemu2V2xNYGlsajD+C
+ gpY5QcwGfBKR8NIq4OFz0isTRRL4lhYZy8o9uK1YgX51J1hRLxH2CaLkiB+DyXEWJQjA
+ ft2LHJ4bEIb8ursCJdVQK6sE5QhHv/luA3mzL71L2dXUuFP311UECqLMSGabTzreczXb
+ vq5c6giDUWiED9BOGRYU+e0UbAb7HLsHqm47WFtMH2FhupulXtDWR8/681DPkM8vjmxg
+ ASxfcPj9oHqtOGj571nozk2avKEFN8QzteMQzOwJypp2kQEWr/1ZPwIYado8tDDmEXDT 7w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxtdtrmxs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Sep 2023 13:42:34 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 386DY5th018854;
+ Wed, 6 Sep 2023 13:42:06 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sxtdtrkhf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Sep 2023 13:42:05 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 386DbP7o026818; Wed, 6 Sep 2023 13:41:21 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgcnk6cf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Sep 2023 13:41:21 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 386DfHnn17826330
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Sep 2023 13:41:18 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D518E20049;
+ Wed,  6 Sep 2023 13:41:17 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6632120040;
+ Wed,  6 Sep 2023 13:41:17 +0000 (GMT)
+Received: from [9.171.93.132] (unknown [9.171.93.132])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Sep 2023 13:41:17 +0000 (GMT)
+Message-ID: <b32fe1b9-e05d-971b-41d7-0ab925853014@linux.ibm.com>
+Date: Wed, 6 Sep 2023 15:41:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: strace showing QEMU process doing >99% ppoll
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] s390x: do a subsystem reset before the unprotect on reboot
+To: Janosch Frank <frankja@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, seiden@linux.ibm.com, mhartmay@linux.ibm.com,
+ thuth@redhat.com, david@redhat.com, mimu@linux.ibm.com
+References: <80b007e8-91d7-8298-f628-77c30616f0f4@linux.ibm.com>
+ <20230901114851.154357-1-frankja@linux.ibm.com>
 Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: QEMU Developers <qemu-devel@nongnu.org>
-References: <db5140a2-6947-564b-afba-e0edda31c515@proxmox.com>
-In-Reply-To: <db5140a2-6947-564b-afba-e0edda31c515@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20230901114851.154357-1-frankja@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: G0b1vk-anP-pOTjEUXD1pM0XNLa5dCda
+X-Proofpoint-ORIG-GUID: v1qnsHuzeILXbn71eBpGA-dVFOeZORsx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-06_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ suspectscore=0 phishscore=0 malwarescore=0 clxscore=1011
+ priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2309060117
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
 X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,44 +115,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 10.07.23 um 14:34 schrieb Fiona Ebner:
-> Hi,
-> since a while we have about a dozen people reporting [0] VMs rarely
-> getting stuck with the QEMU process looping and just doing ppoll() and
-> not much else (example strace [1] output and stacktrace [2]).
+
+
+Am 01.09.23 um 13:48 schrieb Janosch Frank:
+> Bound APQNs have to be reset before tearing down the secure config via
+> s390_machine_unprotect(). Otherwise the Ultravisor will return a error
+> code.
 > 
-> Just wanted to ask if anybody here has seen something similar or ideas
-> what could go wrong? There seem to be at least two different issues:
+> So let's do a subsystem_reset() which includes a AP reset before the
+> unprotect call. We'll do a full device_reset() afterwards which will
+> reset some devices twice. That's ok since we can't move the
+> device_reset() before the unprotect as it includes a CPU clear reset
+> which the Ultravisor does not expect at that point in time.
 > 
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 
-If anybody else stumbles upon this:
+Makes sense.
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-> 1. QEMU process looping calling only ppoll, guest completely
-> non-responsive. I think QMP still working normally, but I had no debug
-> access to these unfortunately.
+> ---
 > 
-
-We did have debug access in the mean time and couldn't tell much, just
-that all the vCPUs where spinning, QEMU itself seemed to run like usual.
-In the end, it turned out to be a KVM bug, fixed in v6.1 by [0] and in
-v6.3+ unknowingly by a refactoring.
-
-> 2. Also QEMU looping around ppool, but the PLT (process linkage table)
-> is corrupted [3]. I did have debug access to such a machine and saw the
-> jump to the wrong address first hand. Call into _ppoll() results landing
-> in the middle of internal_fallocate64 instead and the vCPU threads end
-> up in preadv64v2() (note that the flags=44672 very much looks like
-> KVM_RUN being AE80 in hex). AFAIU that memory should be read-only so
-> maybe a kernel bug (the machine I debugged was running on host kernel 5.15)?
+> I'm not able to test this for the PV AP case right new, that has to
+> wait to early next week. However Marc told me that the non-AP PV test
+> works fine now.
 > 
-
-No Idea about this one, but we never saw other reports again, so I
-suspect some stable backport fixed it too.
-
-Best Regards,
-Fiona
-
-[0]:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.51&id=82d811ff566594de3676f35808e8a9e19c5c864c
-
+> ---
+>   hw/s390x/s390-virtio-ccw.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+> index 3dd0b2372d..2d75f2131f 100644
+> --- a/hw/s390x/s390-virtio-ccw.c
+> +++ b/hw/s390x/s390-virtio-ccw.c
+> @@ -438,10 +438,20 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
+>       switch (reset_type) {
+>       case S390_RESET_EXTERNAL:
+>       case S390_RESET_REIPL:
+> +        /*
+> +         * Reset the subsystem which includes a AP reset. If a PV
+> +         * guest had APQNs attached the AP reset is a prerequisite to
+> +         * unprotecting since the UV checks if all APQNs are reset.
+> +         */
+> +        subsystem_reset();
+>           if (s390_is_pv()) {
+>               s390_machine_unprotect(ms);
+>           }
+>   
+> +        /*
+> +         * Device reset includes CPU clear resets so this has to be
+> +         * done AFTER the unprotect call above.
+> +         */
+>           qemu_devices_reset(reason);
+>           s390_crypto_reset();
+>   
 
