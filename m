@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8E3793D65
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3358793D6C
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:09:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdsDM-000501-1o; Wed, 06 Sep 2023 09:05:00 -0400
+	id 1qdsGF-00074l-Ei; Wed, 06 Sep 2023 09:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdsDG-0004zX-DH
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:04:54 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qdsFx-00072X-FB
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:07:41 -0400
+Received: from out-228.mta0.migadu.com ([91.218.175.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qdsDC-0002wf-Er
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:04:54 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RgjGz6Y3Fz67Nsw;
- Wed,  6 Sep 2023 21:03:23 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 6 Sep
- 2023 14:04:46 +0100
-Date: Wed, 6 Sep 2023 14:04:45 +0100
-To: Gregory Price <gourry.memverge@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
- <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
-Subject: Re: [PATCH 5/5] cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
-Message-ID: <20230906140445.00002acd@Huawei.com>
-In-Reply-To: <20230901012914.226527-6-gregory.price@memverge.com>
-References: <20230901012914.226527-1-gregory.price@memverge.com>
- <20230901012914.226527-6-gregory.price@memverge.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qdsFt-0003jc-HK
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:07:41 -0400
+Message-ID: <5e6b1bbd-bc0a-cff5-119c-639a9d15e72a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1694005649;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IGoDnKeHLbn6LihaQjYmsdl+qed6fld3ewWmJXgDQDU=;
+ b=xa084eLAUybsKxGSZqgPfzGKgn30InWq1ZMFDYcOHLf7JVDhr74CnZnDqTaxo/XVhmOTZw
+ 07mKD8SjLlIBHr3n7KO5VYB06CUz5CV/7jElBYg+dnb1qMccnOY/3d5AZIjjcTQjxRUvRE
+ 41W9qWxSxddUwzkzS2a7G/zUWErcZ74=
+Date: Wed, 6 Sep 2023 21:07:16 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+Subject: Re: [Virtio-fs] Status of DAX for virtio-fs/virtiofsd?
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@gmail.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+Cc: virtio-fs@redhat.com, Erik Schilling <erik.schilling@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>
+References: <87v8grlzu9.fsf@linaro.org>
+ <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Hao Xu <hao.xu@linux.dev>
+In-Reply-To: <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=91.218.175.228; envelope-from=hao.xu@linux.dev;
+ helo=out-228.mta0.migadu.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,300 +65,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 21:29:14 -0400
-Gregory Price <gourry.memverge@gmail.com> wrote:
 
-> Create a new device to emulate the SK hynix Niagara MHSLD platform.
-> 
-> This device has custom CCI commands that allow for applying isolation
-> to each memory block between hosts. This enables an early form of
-> dynamic capacity, whereby the NUMA node maps the entire region, but
-> the host is responsible for asking the device which memory blocks
-> are allocated to it, and therefore may be onlined.
-> 
-> To instantiate:
-> 
-> -device cxl-skh-niagara,cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0,sn=66666,mhd-head=0,mhd-shmid=0
-> 
-> The linux kernel will require raw CXL commands enabled to allow for
-> passing through of Niagara CXL commands via the CCI mailbox.
-> 
-> The Niagara MH-SLD has a shared memory region that must be initialized
-> using the 'init_niagara' tool located in the vendor subdirectory
-> 
-> usage: init_niagara <heads> <sections> <section_size> <shmid>
->         heads         : number of heads on the device
->         sections      : number of sections
->         section_size  : size of a section in 128mb increments
->         shmid         : shmid produced by ipcmk
-> 
-> Example:
-> $shmid1=ipcmk -M 131072
-> ./init_niagara 4 32 1 $shmid1
-> 
-Hi Gregory,
+On 5/18/23 00:26, Stefan Hajnoczi wrote:
+> On Wed, 17 May 2023 at 11:54, Alex Bennée <alex.bennee@linaro.org> wrote:
+> Hi Alex,
+> There were two unresolved issues:
+>
+> 1. How to inject SIGBUS when the guest accesses a page that's beyond
+> the end-of-file.
 
-Some comments inline, but I'm happy to add this to my staging tree in the meantime
-as it stands (might be a few days until I push a new branch though).
+Hi Stefan,
+Does this SIGBUS issue exist if the guest kernel can be trusted? Since in
 
-> Signed-off-by: Gregory Price <gregory.price@memverge.com>
-> Signed-off-by: Junhee Ryu <junhee.ryu@sk.com>
-> Signed-off-by: Kwangjin Ko <kwangjin.ko@sk.com>
-
-The SoB chain needs cleaning up.  Is this a co-developed situation?
-If it is use the rules in the kernel documentation as I don't think those
-are yet clearly stated in QEMU docs (and they are confusing so I won't try
-to restate them here).
+that case, we can check the offset value in guest kernel.
 
 
-> diff --git a/hw/cxl/vendor/skhynix/meson.build b/hw/cxl/vendor/skhynix/meson.build
-> new file mode 100644
-> index 0000000000..4e57db65f1
-> --- /dev/null
-> +++ b/hw/cxl/vendor/skhynix/meson.build
-> @@ -0,0 +1 @@
-> +system_ss.add(when: 'CONFIG_CXL_VENDOR', if_true: files('skhynix_niagara.c',))
-> diff --git a/hw/cxl/vendor/skhynix/skhynix_niagara.c b/hw/cxl/vendor/skhynix/skhynix_niagara.c
-> new file mode 100644
-> index 0000000000..88e53cc6cc
-> --- /dev/null
-> +++ b/hw/cxl/vendor/skhynix/skhynix_niagara.c
-> @@ -0,0 +1,516 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Copyright (c) 2023 MemVerge Inc.
-> + * Copyright (c) 2023 SK hynix Inc.
-> + */
-> +
-> +#include <sys/shm.h>
+Thanks,
 
-This will need some osdep.h magic.  There is some there
-already but it will need relaxing (unless you want to run only on sparc ;)
-and we may need to make this device linux host only.
-
-
-
-> +#include "qemu/osdep.h"
-> +#include "hw/irq.h"
-> +#include "migration/vmstate.h"
-> +#include "qapi/error.h"
-> +#include "hw/cxl/cxl.h"
-> +#include "hw/cxl/cxl_mailbox.h"
-> +#include "hw/cxl/cxl_device.h"
-> +#include "hw/pci/pcie.h"
-> +#include "hw/pci/pcie_port.h"
-> +#include "hw/qdev-properties.h"
-> +#include "skhynix_niagara.h"
-> +
-> +#define TYPE_CXL_NIAGARA "cxl-skh-niagara"
-> +OBJECT_DECLARE_TYPE(CXLNiagaraState, CXLNiagaraClass, CXL_NIAGARA)
-
-...
-> +
-> +static void niagara_alloc_build_output(NiagaraAllocOutput *output,
-> +                                       size_t *len_out,
-> +                                       uint32_t *section_ids,
-> +                                       uint32_t section_count)
-> +{
-> +    uint32_t extents;
-> +    uint32_t previous;
-> +    uint32_t i;
-> +
-> +    /* Build the output */
-> +    output->section_count = section_count;
-> +    extents = 0;
-> +    previous = 0;
-> +    for (i = 0; i < section_count; i++) {
-> +        if (i == 0) {
-> +            /* start the first extent */
-> +            output->extents[extents].start_section_id = section_ids[i];
-> +            output->extents[extents].section_count = 1;
-> +            extents++;
-> +        } else if (section_ids[i] == (previous + 1)) {
-> +            /* increment the current extent */
-> +            output->extents[extents - 1].section_count++;
-> +        } else {
-> +            /* start a new extent */
-> +            output->extents[extents].start_section_id = section_ids[i];
-> +            output->extents[extents].section_count = 1;
-> +            extents++;
-> +        }
-> +        previous = section_ids[i];
-> +    }
-> +    output->extent_count = extents;
-> +    *len_out = (8 + (16 * extents));
-
-Too many brackets.
-
-> +    return;
-> +}
-> +
-
-> +static CXLRetCode cmd_niagara_get_section_map(const struct cxl_cmd *cmd,
-> +                                              uint8_t *payload_in,
-> +                                              size_t len_in,
-> +                                              uint8_t *payload_out,
-> +                                              size_t *len_out,
-> +                                              CXLCCI *cci)
-> +{
-> +    CXLNiagaraState *s = CXL_NIAGARA(cci->d);
-> +    NiagaraSharedState *nss = s->mhd_state;
-> +    NiagaraGetSectionMapInput *input = (void *)payload_in;
-> +    NiagaraGetSectionMapOutput *output = (void *)payload_out;
-> +    uint32_t *sections = &nss->sections[0];
-> +    uint8_t query_type = input->query_type;
-> +    uint32_t i;
-> +    uint32_t bytes;
-> +
-> +    if ((query_type != NIAGARA_GSM_QUERY_FREE) &&
-> +        (query_type != NIAGARA_GSM_QUERY_ALLOCATED)) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    output->ttl_section_count = nss->total_sections;
-> +    output->qry_section_count = 0;
-> +    bytes = (output->ttl_section_count / 8);
-> +    if (output->ttl_section_count % 8) {
-> +        bytes += 1;
-> +    }
-> +
-> +    for (i = 0; i < bytes; i++) {
-> +        output->bitset[i] = 0x0;
-> +    }
-> +
-> +    /* Iterate the the section list and check the bits */
-> +    for (i = 0; (i < nss->total_sections); i++) {
-> +        uint32_t section = sections[i];
-> +
-> +        if (((query_type == NIAGARA_GSM_QUERY_FREE) && (!section)) ||
-> +            ((query_type == NIAGARA_GSM_QUERY_ALLOCATED) &&
-> +             (section & (1 << s->mhd_head)))) {
-> +            uint32_t byte = i / 8;
-> +            uint8_t bit = (1 << (i % 8));
-
-Too many brackets
-
-> +
-> +            output->bitset[byte] |= bit;
-> +            output->qry_section_count++;
-> +        }
-> +    }
-> +
-> +    *len_out = (8 + bytes);
-
-No need for brackets.
-
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
-> +static bool mhdsld_access_valid(PCIDevice *d,
-> +                                uint64_t dpa_offset,
-> +                                unsigned int size)
-> +{
-> +    CXLNiagaraState *s = CXL_NIAGARA(d);
-> +    NiagaraSharedState *nss = s->mhd_state;
-> +    uint32_t section = (dpa_offset / NIAGARA_MIN_MEMBLK);
-> +
-> +    if (!(nss->sections[section] & (1 << s->mhd_head))) {
-> +        return false;
-> +    }
-> +    return true;
-
-    return nss->sections[section] & (1 << s->mhd_head);
-
-> +}
-...
-
-> +
-> +static void cxl_niagara_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    PCIDeviceClass *pc = PCI_DEVICE_CLASS(klass);
-> +
-> +    pc->realize = cxl_niagara_realize;
-> +    pc->exit = cxl_niagara_exit;
-> +    dc->reset = cxl_niagara_reset;
-> +    device_class_set_props(dc, cxl_niagara_props);
-
-As mentioned in previous patch, probably want to set your extra callback
-for verification here as well.
-
-> +}
-
-> diff --git a/hw/cxl/vendor/skhynix/skhynix_niagara.h b/hw/cxl/vendor/skhynix/skhynix_niagara.h
-> new file mode 100644
-> index 0000000000..0489102f38
-> --- /dev/null
-> +++ b/hw/cxl/vendor/skhynix/skhynix_niagara.h
-> @@ -0,0 +1,169 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Copyright (c) 2023 MemVerge Inc.
-> + * Copyright (c) 2023 SK hynix Inc.
-> + */
-> +
-> +#ifndef CXL_SKH_NIAGARA_H
-> +#define CXL_SKH_NIAGARA_H
-> +#include <stdint.h>
-> +#include "hw/cxl/cxl.h"
-> +#include "hw/cxl/cxl_mailbox.h"
-> +#include "hw/cxl/cxl_device.h"
-> +
-> +#define NIAGARA_MIN_MEMBLK (1024 * 1024 * 128)
-
-128 * MiB (include/qemu/units.h)
-
-> +
-> +enum {
-> +    NIAGARA_MHD = 0x55,
-> +        #define GET_MHD_INFO 0x0
-
-Is this standard as it's in the normal space?
-If it is then I'd like the implementation pushed down to the
-type3 implementation (with some callbacks or similar.)
-
-> +    NIAGARA_CMD = 0xC0
-
-These are in the vendor space so having them in this
-device directly is fine.
-
-> +        #define GET_SECTION_STATUS 0x0
-> +        #define SET_SECTION_ALLOC 0x1
-> +        #define SET_SECTION_RELEASE 0x2
-> +        #define SET_SECTION_SIZE 0x3
-> +        /* Future: MOVE_DATA 0x4 */
-> +        #define GET_SECTION_MAP 0x5
-> +        /* Future: CLEAR_SECTION 0x99 */
-> +};
-> +
-> +typedef struct NiagaraExtent {
-> +    uint32_t start_section_id;
-> +    uint32_t section_count;
-> +    uint8_t reserved[8];
-> +} QEMU_PACKED NiagaraExtent;
-
-...
-
-> +/*
-> + * Niagara Get Section Map Command
-> + * query type:
-> + *     Free - Map of free sections
-> + *     Allocted - What sections are allocated for this head
-
-allocated
-
-> + * Returns a map of the requested type of sections
-> + */
-> +#define NIAGARA_GSM_QUERY_FREE 0
-> +#define NIAGARA_GSM_QUERY_ALLOCATED 1
-
-...
+Hao
 
 
