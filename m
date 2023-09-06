@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E670793ECB
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD887793EFC
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 16:34:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdtWT-0000iY-WB; Wed, 06 Sep 2023 10:28:50 -0400
+	id 1qdtb9-00038P-Qa; Wed, 06 Sep 2023 10:33:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdtWS-0000iN-Ny
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:28:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdtWP-0004GC-Bc
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:28:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694010524;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YKIPd5Ze1GQZkD3aCLCPRJZa+r3tFr8jLkOMZGBfLYo=;
- b=jS6c4eHF+cxOqsrsfLUvqxmh0dDm9ry6s4+42mk8HEb5gCR0PfP8Gl6z2rSdua38vIt8Bg
- Io8ijFOc3S//YbnPQ0jiFljp4DV9P+QodZQG8/i1mETUm2t/cDFkCLM1VB8N07qyVt6mpv
- TUupaUGr+Ten5EGVKtRmxva7W1u67Xk=
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
- [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-xGNAZ2ILM0eAjW5hThffqA-1; Wed, 06 Sep 2023 10:28:42 -0400
-X-MC-Unique: xGNAZ2ILM0eAjW5hThffqA-1
-Received: by mail-vs1-f72.google.com with SMTP id
- ada2fe7eead31-44e894b0e06so1066168137.3
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:28:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdtb6-000386-Gq
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:33:36 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qdtb4-0005Ml-8D
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 10:33:36 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-401d24f1f27so36094815e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 07:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694010812; x=1694615612; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=51xO//K+ASA5oXknpG86fGOhSmVBfG4239E1iNml3nM=;
+ b=C1bR0dUK/Z42W789RT/MbFKD0qR3e9hIUk4AVRcQlaVKxQavXyNNh53nRHW8myVrjk
+ Yvxj8t4Cex/jNejsOzFvvyv9QMp4E+CE0eeVdkzexK/eqNjV+RffU9wKfa+ZMIIL2xzT
+ UvO1iTZZV0JJFOIlfKG3TzGYr2W4DybEG4iYToJ91YUk9HgbYJHcys8jeMXpRz6N9eXl
+ z4XOYiqx6xseDQmkTShw9BTnQyYfFsfmD6j5xfEMjAe39v2ih/bsHTsev6GBOLsjjfGe
+ LvytWe+GynT0EF6DkgJVSyXx/XayJXmjR2yRt9tJYR/M5IEVYXWmFMtOe+TYgTmQKUL6
+ ngcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694010520; x=1694615320;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YKIPd5Ze1GQZkD3aCLCPRJZa+r3tFr8jLkOMZGBfLYo=;
- b=QNk8jv3Kkx8iTNkSCz6vMBE62ImGS1U/ePYibj64fs0ArZKu78qu5ILj6xQQ6F0ZPn
- Zu0Vw+hnzQGx2wtlDZFZiLVR5dqpjgioMOAS7QHKt61zRvKbSuyZTWnPlzFGWKBnY+Y7
- laGCcuLf6gmNQ82sDHMqOF0VarNczKJvGPOZoW/jeq717F2K6wL2ZzOdChzwW8zpeAKV
- J07oobrYI3Hryma86V32ErZ/9VnX4xXGAkLwVqoXSDVIU3Dxair3Sl8mZfow8Ye6I0Dk
- X8GalOthi8iRsZx5+sHN4/xxzqgrVBRMJGZPkChnJXYWaPx34QVH8Ka6iFnEPhWIm6YS
- UnvA==
-X-Gm-Message-State: AOJu0YymJmm3QBbQ3wUBmtP+3/AoJhMOxAk6d25ESWplMoE8GM5lBLk3
- vu2v3Z+gu9YavTb14rx9PjwBuPFMoGqAg5768kb+Ecd7fp8orMiRlUAVSkv7te9yww56p4+HoIr
- 2Td5ZHYG1xg0UMtrzZG/PlMo/UJ0mdgI=
-X-Received: by 2002:a67:fc8f:0:b0:44e:9709:c11a with SMTP id
- x15-20020a67fc8f000000b0044e9709c11amr2815024vsp.14.1694010520565; 
- Wed, 06 Sep 2023 07:28:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMZJi+RjuzwBDSUcqKXoqEzPXCM5btHTKXG/VPw9psn7yerr+LMYzR0j6FiGg94Lu6gZP9XcBaw81fc8s8eBA=
-X-Received: by 2002:a67:fc8f:0:b0:44e:9709:c11a with SMTP id
- x15-20020a67fc8f000000b0044e9709c11amr2815019vsp.14.1694010520344; Wed, 06
- Sep 2023 07:28:40 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1694010812; x=1694615612;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=51xO//K+ASA5oXknpG86fGOhSmVBfG4239E1iNml3nM=;
+ b=GgwMLPBqsTKuuEsdMeQL7/+Ya+J9FzYpcGwxt5utbX3H9tJw6rsak0sNSAVwNG5fSn
+ PKhiFeM0hTMbS6hI8NfH4SQlE5XEsemkRdVlN+/hHoEsJzFoUdZEpgHYx7inIjybJ9Rt
+ JtO8HlIasvusZ5qBys+0IGV/yGiu+u81BWwX3Dlel14avv/Z3lsE97h+1s9YB76yi7K7
+ PmxogXsd4VkmNtMAfzFht+mZLjHuV075DaRE0uyoEtjKJ5CtBeGEM2HYZf2XAtKvZJbX
+ UgkiHA+vgbMK44UxI4cVufD2T6B6YZyGC6jLTM6KzTkTw+Tch3NjdF+tw2AAIJgOQgux
+ H7oQ==
+X-Gm-Message-State: AOJu0Yz1bOSH/8UquxiXbi8UZlbIne63t4lZXoN+qmWf689CC65fDzxp
+ YJKFpnAbsP5KvxcbqRApn9hBsUYAZ67ytU9QM3s=
+X-Google-Smtp-Source: AGHT+IFUArq0tbjlr+gTDJwZ8z3+ospBc/u03ZvSgHAHFz7t3Rs43ZeyLuNtd1NC7AkNVbY3f5at/Q==
+X-Received: by 2002:a05:6000:108a:b0:317:6c19:6445 with SMTP id
+ y10-20020a056000108a00b003176c196445mr2622427wrw.39.1694010811920; 
+ Wed, 06 Sep 2023 07:33:31 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-51-223.dsl.sta.abo.bbox.fr.
+ [176.172.51.223]) by smtp.gmail.com with ESMTPSA id
+ u6-20020a5d5146000000b00317f3fd21b7sm20480650wrt.80.2023.09.06.07.33.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 07:33:31 -0700 (PDT)
+Message-ID: <fb2ee793-9b1b-93b9-5228-6c205be1b374@linaro.org>
+Date: Wed, 6 Sep 2023 16:33:29 +0200
 MIME-Version: 1.0
-References: <20230906104529.401824-1-pbonzini@redhat.com>
- <npcr4k2cnmjgrr242jls3l3fmt6wucceu4euqcfrlj4ir264pi@urufyyqfbnc5>
-In-Reply-To: <npcr4k2cnmjgrr242jls3l3fmt6wucceu4euqcfrlj4ir264pi@urufyyqfbnc5>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 6 Sep 2023 16:28:28 +0200
-Message-ID: <CABgObfajZna+kPpuXJh3RP=XXsocCn4F3Sbw8mCz8wpnaBJ84Q@mail.gmail.com>
-Subject: Re: [PATCH] subprojects: add wrap file for libblkio
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 2/4] target/i386: Translate feature_word_info to xml
+Content-Language: en-US
+To: Tim Wiederhake <twiederh@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230811135011.23343-1-twiederh@redhat.com>
+ <20230811135011.23343-3-twiederh@redhat.com> <ZN3/fUEyC7sSqWy7@redhat.com>
+ <37b9e75a96188b6e2693ae6b2128e7a31b76bb82.camel@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <37b9e75a96188b6e2693ae6b2128e7a31b76bb82.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,27 +95,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 6, 2023 at 4:22=E2=80=AFPM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
->        out =3D subprocess.check_output(["cargo", "read-manifest"])
->              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->      File "/usr/lib64/python3.11/subprocess.py", line 466, in check_outpu=
-t
->        return run(*popenargs, stdout=3DPIPE, timeout=3Dtimeout, check=3DT=
-rue,
->               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->      File "/usr/lib64/python3.11/subprocess.py", line 548, in run
->        with Popen(*popenargs, **kwargs) as process:
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
->      File "/usr/lib64/python3.11/subprocess.py", line 1026, in __init__
->        self._execute_child(args, executable, preexec_fn, close_fds,
->      File "/usr/lib64/python3.11/subprocess.py", line 1950, in _execute_c=
-hild
->        raise child_exception_type(errno_num, err_msg, err_filename)
->    FileNotFoundError: [Errno 2] No such file or directory: 'cargo'
+On 21/8/23 11:54, Tim Wiederhake wrote:
+> On Thu, 2023-08-17 at 12:07 +0100, Daniel P. Berrangé wrote:
+>> On Fri, Aug 11, 2023 at 03:50:09PM +0200, Tim Wiederhake wrote:
+>>> This is the data file that will be used to generate the C code.
+>>> All information, including the comments, is preserved.
+>>>
+>>> Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
+>>> ---
+>>>   target/i386/feature_word_info.xml | 1607
+>>> +++++++++++++++++++++++++++++
+>>>   1 file changed, 1607 insertions(+)
+>>>   create mode 100644 target/i386/feature_word_info.xml
+>>>
+>>> diff --git a/target/i386/feature_word_info.xml
+>>> b/target/i386/feature_word_info.xml
+>>> new file mode 100644
+>>> index 0000000000..ff741b9f5a
+>>> --- /dev/null
+>>> +++ b/target/i386/feature_word_info.xml
+>>> @@ -0,0 +1,1607 @@
+>>> +<feature_words>
+>>
+>> I think adding data formats based on XML is pretty undesirable
+>> for QEMU. AFAIK, the only place we've used XML is where we
+>> needed to have interoperability with an external tool.
+>>
+>> Can we not just do this using JSON instead, which would avoid
+>> the need to write python parsing code as we can directly load
+>> it into a python object.
+>>
+>> With regards,
+>> Daniel
+> 
+> I thought of json as well, but that has some drawbacks over xml here:
+> 
+> Integer values, e.g. "eax=0x80000008", would need to be stored in
+> either decimal form or as a string. Both solutions are not desirable in
+> my opinion.
+> 
+> Additionally, preserving the comments is not as straight forward.
+> Comments in json are a non-standard extension and not understood by all
+> parsers, e.g. python's json module. This would require some regex-
+> preprocessing that comes with its own problems.
 
-I think this can be fixed in libblkio instead.  I'll take a look.
-
-Paolo
+Would YAML work?
 
 
