@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9814793C3A
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 14:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64285793C3B
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 14:06:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdrHv-0003kF-OY; Wed, 06 Sep 2023 08:05:44 -0400
+	id 1qdrIB-0003lS-EG; Wed, 06 Sep 2023 08:05:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdrHc-0003fY-JN
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 08:05:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdrHj-0003k9-I3
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 08:05:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdrHa-0006lg-5w
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 08:05:20 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qdrHe-0006mB-Ef
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 08:05:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694001917;
+ s=mimecast20190719; t=1694001921;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OYmUdM9xnUxYUikMjy3S8zQ+vg85pGF8BhztC9qJ42Y=;
- b=Bbb+bccix/rh+XAdhZugEMVYJL5pGMU7TadjtJQXoZDAG1F1iy0kV0OPfPXu/xEbQavAW/
- ZHKiASJdoypaCgC5Fo5/XxS2EJx/o+s/7CoTSQtgmAHG65xFHLeRtMmHpBIiQcRauuBQ5H
- gMTsMmUWVzlYNewIwLedF776krt3QRw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-218-Ob4T9TtSN2uGEVeMRVmatQ-1; Wed, 06 Sep 2023 08:05:12 -0400
-X-MC-Unique: Ob4T9TtSN2uGEVeMRVmatQ-1
+ bh=RvADynsRCcLELfBA9hRsHU6+5w/kGbW2WMQyYIAEizc=;
+ b=izWubAK9/no9HuVu1OJQ7q2INv9SoKHHQeNhptt28BIe4qQaTDoXBF3E005H+xPRBlTrU1
+ oygEH0yy5c83U/64pDiGhqJx6etgF/nOFKJ1KwpblXxIcIg/xVtTshbcg4BgV2TW2kTPkl
+ Ajk1HAo0BNOUlZx3TSIpr0s9cx2eo0s=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-687-DQ4vFkpmO0m08_SiR0KsRw-1; Wed, 06 Sep 2023 08:05:17 -0400
+X-MC-Unique: DQ4vFkpmO0m08_SiR0KsRw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B81FA8AA803;
- Wed,  6 Sep 2023 12:05:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B95911C09CCE;
+ Wed,  6 Sep 2023 12:05:16 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AB274493112;
- Wed,  6 Sep 2023 12:05:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 01EDD493110;
+ Wed,  6 Sep 2023 12:05:10 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -56,16 +56,16 @@ Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Greg Kurz <groug@kaod.org>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 01/11] nvdimm: Reject writing label data to ROM instead of
- crashing QEMU
-Date: Wed,  6 Sep 2023 14:04:53 +0200
-Message-ID: <20230906120503.359863-2-david@redhat.com>
+Subject: [PATCH v4 02/11] softmmu/physmem: Distinguish between file access
+ mode and mmap protection
+Date: Wed,  6 Sep 2023 14:04:54 +0200
+Message-ID: <20230906120503.359863-3-david@redhat.com>
 In-Reply-To: <20230906120503.359863-1-david@redhat.com>
 References: <20230906120503.359863-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,169 +89,242 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, when using a true R/O NVDIMM (ROM memory backend) with a label
-area, the VM can easily crash QEMU by trying to write to the label area,
-because the ROM memory is mmap'ed without PROT_WRITE.
+There is a difference between how we open a file and how we mmap it,
+and we want to support writable private mappings of readonly files. Let's
+define RAM_READONLY and RAM_READONLY_FD flags, to replace the single
+"readonly" parameter for file-related functions.
 
-    [root@vm-0 ~]# ndctl disable-region region0
-    disabled 1 region
-    [root@vm-0 ~]# ndctl zero-labels nmem0
-    -> QEMU segfaults
+In memory_region_init_ram_from_fd() and memory_region_init_ram_from_file(),
+initialize mr->readonly based on the new RAM_READONLY flag.
 
-Let's remember whether we have a ROM memory backend and properly
-reject the write request:
+While at it, add some RAM_* flags we missed to add to the list of accepted
+flags in the documentation of some functions.
 
-    [root@vm-0 ~]# ndctl disable-region region0
-    disabled 1 region
-    [root@vm-0 ~]# ndctl zero-labels nmem0
-    zeroed 0 nmem
+No change in functionality intended. We'll make use of both flags next
+and start setting them independently for memory-backend-file.
 
-In comparison, on a system with a R/W NVDIMM:
-
-    [root@vm-0 ~]# ndctl disable-region region0
-    disabled 1 region
-    [root@vm-0 ~]# ndctl zero-labels nmem0
-    zeroed 1 nmem
-
-For ACPI, just return "unsupported", like if no label exists. For spapr,
-return "H_P2", similar to when no label area exists.
-
-Could we rely on the "unarmed" property? Maybe, but it looks cleaner to
-only disallow what certainly cannot work.
-
-After all "unarmed=on" primarily means: cannot accept persistent writes. In
-theory, there might be setups where devices with "unarmed=on" set could
-be used to host non-persistent data (temporary files, system RAM, ...); for
-example, in Linux, admins can overwrite the "readonly" setting and still
-write to the device -- which will work as long as we're not using ROM.
-Allowing writing label data in such configurations can make sense.
-
-Fixes: dbd730e85987 ("nvdimm: check -object memory-backend-file, readonly=on option")
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/acpi/nvdimm.c        | 11 ++++++++---
- hw/mem/nvdimm.c         | 10 +++++++---
- hw/ppc/spapr_nvdimm.c   |  3 ++-
- include/hw/mem/nvdimm.h |  6 ++++++
- 4 files changed, 23 insertions(+), 7 deletions(-)
+ backends/hostmem-file.c |  4 ++--
+ include/exec/memory.h   | 14 ++++++++++----
+ include/exec/ram_addr.h |  8 ++++----
+ softmmu/memory.c        |  8 ++++----
+ softmmu/physmem.c       | 21 ++++++++++-----------
+ 5 files changed, 30 insertions(+), 25 deletions(-)
 
-diff --git a/hw/acpi/nvdimm.c b/hw/acpi/nvdimm.c
-index a3b25a92f3..3cbd41629d 100644
---- a/hw/acpi/nvdimm.c
-+++ b/hw/acpi/nvdimm.c
-@@ -670,7 +670,8 @@ static void nvdimm_dsm_label_size(NVDIMMDevice *nvdimm, hwaddr dsm_mem_addr)
+diff --git a/backends/hostmem-file.c b/backends/hostmem-file.c
+index b4335a80e6..ef2d5533af 100644
+--- a/backends/hostmem-file.c
++++ b/backends/hostmem-file.c
+@@ -55,13 +55,13 @@ file_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
+ 
+     name = host_memory_backend_get_name(backend);
+     ram_flags = backend->share ? RAM_SHARED : 0;
++    ram_flags |= fb->readonly ? RAM_READONLY | RAM_READONLY_FD : 0;
+     ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
+     ram_flags |= fb->is_pmem ? RAM_PMEM : 0;
+     ram_flags |= RAM_NAMED_FILE;
+     memory_region_init_ram_from_file(&backend->mr, OBJECT(backend), name,
+                                      backend->size, fb->align, ram_flags,
+-                                     fb->mem_path, fb->offset, fb->readonly,
+-                                     errp);
++                                     fb->mem_path, fb->offset, errp);
+     g_free(name);
+ #endif
  }
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 68284428f8..cc68249eda 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -235,6 +235,12 @@ typedef struct IOMMUTLBEvent {
+ /* RAM is an mmap-ed named file */
+ #define RAM_NAMED_FILE (1 << 9)
  
- static uint32_t nvdimm_rw_label_data_check(NVDIMMDevice *nvdimm,
--                                           uint32_t offset, uint32_t length)
-+                                           uint32_t offset, uint32_t length,
-+                                           bool is_write)
- {
-     uint32_t ret = NVDIMM_DSM_RET_STATUS_INVALID;
- 
-@@ -690,6 +691,10 @@ static uint32_t nvdimm_rw_label_data_check(NVDIMMDevice *nvdimm,
-         return ret;
-     }
- 
-+    if (is_write && nvdimm->readonly) {
-+        return NVDIMM_DSM_RET_STATUS_UNSUPPORT;
-+    }
++/* RAM is mmap-ed read-only */
++#define RAM_READONLY (1 << 10)
 +
-     return NVDIMM_DSM_RET_STATUS_SUCCESS;
- }
++/* RAM FD is opened read-only */
++#define RAM_READONLY_FD (1 << 11)
++
+ static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
+                                        IOMMUNotifierFlag flags,
+                                        hwaddr start, hwaddr end,
+@@ -1331,10 +1337,10 @@ void memory_region_init_resizeable_ram(MemoryRegion *mr,
+  * @align: alignment of the region base address; if 0, the default alignment
+  *         (getpagesize()) will be used.
+  * @ram_flags: RamBlock flags. Supported flags: RAM_SHARED, RAM_PMEM,
+- *             RAM_NORESERVE,
++ *             RAM_NORESERVE, RAM_PROTECTED, RAM_NAMED_FILE, RAM_READONLY,
++ *             RAM_READONLY_FD
+  * @path: the path in which to allocate the RAM.
+  * @offset: offset within the file referenced by path
+- * @readonly: true to open @path for reading, false for read/write.
+  * @errp: pointer to Error*, to store an error if it happens.
+  *
+  * Note that this function does not do anything to cause the data in the
+@@ -1348,7 +1354,6 @@ void memory_region_init_ram_from_file(MemoryRegion *mr,
+                                       uint32_t ram_flags,
+                                       const char *path,
+                                       ram_addr_t offset,
+-                                      bool readonly,
+                                       Error **errp);
  
-@@ -713,7 +718,7 @@ static void nvdimm_dsm_get_label_data(NVDIMMDevice *nvdimm, NvdimmDsmIn *in,
-                                  get_label_data->length);
- 
-     status = nvdimm_rw_label_data_check(nvdimm, get_label_data->offset,
--                                        get_label_data->length);
-+                                        get_label_data->length, false);
-     if (status != NVDIMM_DSM_RET_STATUS_SUCCESS) {
-         nvdimm_dsm_no_payload(status, dsm_mem_addr);
-         return;
-@@ -752,7 +757,7 @@ static void nvdimm_dsm_set_label_data(NVDIMMDevice *nvdimm, NvdimmDsmIn *in,
-                                   set_label_data->length);
- 
-     status = nvdimm_rw_label_data_check(nvdimm, set_label_data->offset,
--                                        set_label_data->length);
-+                                        set_label_data->length, true);
-     if (status != NVDIMM_DSM_RET_STATUS_SUCCESS) {
-         nvdimm_dsm_no_payload(status, dsm_mem_addr);
-         return;
-diff --git a/hw/mem/nvdimm.c b/hw/mem/nvdimm.c
-index 31080c22c9..1631a7d13f 100644
---- a/hw/mem/nvdimm.c
-+++ b/hw/mem/nvdimm.c
-@@ -154,6 +154,9 @@ static void nvdimm_prepare_memory_region(NVDIMMDevice *nvdimm, Error **errp)
-                    object_get_canonical_path_component(OBJECT(hostmem)));
-         return;
-     }
-+    if (memory_region_is_rom(mr)) {
-+        nvdimm->readonly = true;
-+    }
- 
-     nvdimm->nvdimm_mr = g_new(MemoryRegion, 1);
-     memory_region_init_alias(nvdimm->nvdimm_mr, OBJECT(dimm),
-@@ -207,15 +210,16 @@ static void nvdimm_unrealize(PCDIMMDevice *dimm)
-  * label read/write functions.
+ /**
+@@ -1360,7 +1365,8 @@ void memory_region_init_ram_from_file(MemoryRegion *mr,
+  * @name: the name of the region.
+  * @size: size of the region.
+  * @ram_flags: RamBlock flags. Supported flags: RAM_SHARED, RAM_PMEM,
+- *             RAM_NORESERVE, RAM_PROTECTED.
++ *             RAM_NORESERVE, RAM_PROTECTED, RAM_NAMED_FILE, RAM_READONLY,
++ *             RAM_READONLY_FD
+  * @fd: the fd to mmap.
+  * @offset: offset within the file referenced by fd
+  * @errp: pointer to Error*, to store an error if it happens.
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 9f2e3893f5..90676093f5 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -108,10 +108,10 @@ long qemu_maxrampagesize(void);
+  *  @size: the size in bytes of the ram block
+  *  @mr: the memory region where the ram block is
+  *  @ram_flags: RamBlock flags. Supported flags: RAM_SHARED, RAM_PMEM,
+- *              RAM_NORESERVE.
++ *              RAM_NORESERVE, RAM_PROTECTED, RAM_NAMED_FILE, RAM_READONLY,
++ *              RAM_READONLY_FD
+  *  @mem_path or @fd: specify the backing file or device
+  *  @offset: Offset into target file
+- *  @readonly: true to open @path for reading, false for read/write.
+  *  @errp: pointer to Error*, to store an error if it happens
+  *
+  * Return:
+@@ -120,10 +120,10 @@ long qemu_maxrampagesize(void);
   */
- static void nvdimm_validate_rw_label_data(NVDIMMDevice *nvdimm, uint64_t size,
--                                        uint64_t offset)
-+                                        uint64_t offset, bool is_write)
+ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+                                    uint32_t ram_flags, const char *mem_path,
+-                                   off_t offset, bool readonly, Error **errp);
++                                   off_t offset, Error **errp);
+ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+                                  uint32_t ram_flags, int fd, off_t offset,
+-                                 bool readonly, Error **errp);
++                                 Error **errp);
+ 
+ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
+                                   MemoryRegion *mr, Error **errp);
+diff --git a/softmmu/memory.c b/softmmu/memory.c
+index 7d9494ce70..2cb60ec9b8 100644
+--- a/softmmu/memory.c
++++ b/softmmu/memory.c
+@@ -1620,18 +1620,17 @@ void memory_region_init_ram_from_file(MemoryRegion *mr,
+                                       uint32_t ram_flags,
+                                       const char *path,
+                                       ram_addr_t offset,
+-                                      bool readonly,
+                                       Error **errp)
  {
-     assert((nvdimm->label_size >= size + offset) && (offset + size > offset));
-+    assert(!is_write || !nvdimm->readonly);
- }
- 
- static void nvdimm_read_label_data(NVDIMMDevice *nvdimm, void *buf,
-                                    uint64_t size, uint64_t offset)
- {
--    nvdimm_validate_rw_label_data(nvdimm, size, offset);
-+    nvdimm_validate_rw_label_data(nvdimm, size, offset, false);
- 
-     memcpy(buf, nvdimm->label_data + offset, size);
- }
-@@ -229,7 +233,7 @@ static void nvdimm_write_label_data(NVDIMMDevice *nvdimm, const void *buf,
-                                             "pmem", NULL);
-     uint64_t backend_offset;
- 
--    nvdimm_validate_rw_label_data(nvdimm, size, offset);
-+    nvdimm_validate_rw_label_data(nvdimm, size, offset, true);
- 
-     if (!is_pmem) {
-         memcpy(nvdimm->label_data + offset, buf, size);
-diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-index a8688243a6..60d6d0acc0 100644
---- a/hw/ppc/spapr_nvdimm.c
-+++ b/hw/ppc/spapr_nvdimm.c
-@@ -320,7 +320,8 @@ static target_ulong h_scm_write_metadata(PowerPCCPU *cpu,
- 
-     nvdimm = NVDIMM(drc->dev);
-     if ((offset + len < offset) ||
--        (nvdimm->label_size < len + offset)) {
-+        (nvdimm->label_size < len + offset) ||
-+        nvdimm->readonly) {
-         return H_P2;
+     Error *err = NULL;
+     memory_region_init(mr, owner, name, size);
+     mr->ram = true;
+-    mr->readonly = readonly;
++    mr->readonly = !!(ram_flags & RAM_READONLY);
+     mr->terminates = true;
+     mr->destructor = memory_region_destructor_ram;
+     mr->align = align;
+     mr->ram_block = qemu_ram_alloc_from_file(size, mr, ram_flags, path,
+-                                             offset, readonly, &err);
++                                             offset, &err);
+     if (err) {
+         mr->size = int128_zero();
+         object_unparent(OBJECT(mr));
+@@ -1651,10 +1650,11 @@ void memory_region_init_ram_from_fd(MemoryRegion *mr,
+     Error *err = NULL;
+     memory_region_init(mr, owner, name, size);
+     mr->ram = true;
++    mr->readonly = !!(ram_flags & RAM_READONLY);
+     mr->terminates = true;
+     mr->destructor = memory_region_destructor_ram;
+     mr->ram_block = qemu_ram_alloc_from_fd(size, mr, ram_flags, fd, offset,
+-                                           false, &err);
++                                           &err);
+     if (err) {
+         mr->size = int128_zero();
+         object_unparent(OBJECT(mr));
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 18277ddd67..7e03ed7e3e 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -1350,7 +1350,6 @@ static int file_ram_open(const char *path,
+ static void *file_ram_alloc(RAMBlock *block,
+                             ram_addr_t memory,
+                             int fd,
+-                            bool readonly,
+                             bool truncate,
+                             off_t offset,
+                             Error **errp)
+@@ -1408,7 +1407,7 @@ static void *file_ram_alloc(RAMBlock *block,
+         perror("ftruncate");
      }
  
-diff --git a/include/hw/mem/nvdimm.h b/include/hw/mem/nvdimm.h
-index acf887c83d..d3b763453a 100644
---- a/include/hw/mem/nvdimm.h
-+++ b/include/hw/mem/nvdimm.h
-@@ -77,6 +77,12 @@ struct NVDIMMDevice {
-      */
-     bool unarmed;
+-    qemu_map_flags = readonly ? QEMU_MAP_READONLY : 0;
++    qemu_map_flags = (block->flags & RAM_READONLY) ? QEMU_MAP_READONLY : 0;
+     qemu_map_flags |= (block->flags & RAM_SHARED) ? QEMU_MAP_SHARED : 0;
+     qemu_map_flags |= (block->flags & RAM_PMEM) ? QEMU_MAP_SYNC : 0;
+     qemu_map_flags |= (block->flags & RAM_NORESERVE) ? QEMU_MAP_NORESERVE : 0;
+@@ -1876,7 +1875,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+ #ifdef CONFIG_POSIX
+ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+                                  uint32_t ram_flags, int fd, off_t offset,
+-                                 bool readonly, Error **errp)
++                                 Error **errp)
+ {
+     RAMBlock *new_block;
+     Error *local_err = NULL;
+@@ -1884,7 +1883,8 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
  
-+    /*
-+     * Whether our DIMM is backed by ROM, and even label data cannot be
-+     * written. If set, implies that "unarmed" is also set.
-+     */
-+    bool readonly;
-+
-     /*
-      * The PPC64 - spapr requires each nvdimm device have a uuid.
-      */
+     /* Just support these ram flags by now. */
+     assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
+-                          RAM_PROTECTED | RAM_NAMED_FILE)) == 0);
++                          RAM_PROTECTED | RAM_NAMED_FILE | RAM_READONLY |
++                          RAM_READONLY_FD)) == 0);
+ 
+     if (xen_enabled()) {
+         error_setg(errp, "-mem-path not supported with Xen");
+@@ -1919,8 +1919,8 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+     new_block->used_length = size;
+     new_block->max_length = size;
+     new_block->flags = ram_flags;
+-    new_block->host = file_ram_alloc(new_block, size, fd, readonly,
+-                                     !file_size, offset, errp);
++    new_block->host = file_ram_alloc(new_block, size, fd, !file_size, offset,
++                                     errp);
+     if (!new_block->host) {
+         g_free(new_block);
+         return NULL;
+@@ -1939,20 +1939,19 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+ 
+ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+                                    uint32_t ram_flags, const char *mem_path,
+-                                   off_t offset, bool readonly, Error **errp)
++                                   off_t offset, Error **errp)
+ {
+     int fd;
+     bool created;
+     RAMBlock *block;
+ 
+-    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
+-                       errp);
++    fd = file_ram_open(mem_path, memory_region_name(mr),
++                       !!(ram_flags & RAM_READONLY_FD), &created, errp);
+     if (fd < 0) {
+         return NULL;
+     }
+ 
+-    block = qemu_ram_alloc_from_fd(size, mr, ram_flags, fd, offset, readonly,
+-                                   errp);
++    block = qemu_ram_alloc_from_fd(size, mr, ram_flags, fd, offset, errp);
+     if (!block) {
+         if (created) {
+             unlink(mem_path);
 -- 
 2.41.0
 
