@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DC9793A2F
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 12:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D2C793A30
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 12:47:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdq2Y-0006dQ-Ri; Wed, 06 Sep 2023 06:45:42 -0400
+	id 1qdq3R-0007cv-Qi; Wed, 06 Sep 2023 06:46:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdq2W-0006cV-5G
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 06:45:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdq3J-0007WN-2T
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 06:46:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qdq2T-0007C7-PG
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 06:45:39 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qdq3F-0007L2-Rl
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 06:46:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693997134;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=KivVqRpe5KN2+Ci3kMr9KmNlhmNtvTwUcH6R6cGFsIU=;
- b=O5PcBsNgBUECcwywwlyAE8849g432XwSd7hVb/0lrS4v7ybctzBo3RTVHRGcQQmj71g2Ye
- qg74oGnporWPAG9Zqz3hPOLNY4auGeeUP8W+S9jPivYNawV9yCvouXFbH/jahR86muLP/H
- jisXSI2i6LBwkr0XZaJvx+5OZzfI6+Y=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-haj5-nTFPxKkNi73tYECoA-1; Wed, 06 Sep 2023 06:45:33 -0400
-X-MC-Unique: haj5-nTFPxKkNi73tYECoA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2bbbaa6001dso45683481fa.3
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 03:45:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1693997131; x=1694601931;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KivVqRpe5KN2+Ci3kMr9KmNlhmNtvTwUcH6R6cGFsIU=;
- b=GuF6jU1bK1TVJxWqEq1gLOyyDzvUFAlYmUud3pufk69kUFnNuCSWBpjyiieO7JHA8/
- sspO0lMV5D82e+QjQSNa5cr628g1baw629SxzbaHUsLAnwb4f1TfG1/k2LC/f/gkHpdZ
- NJUC3JvrXU52Mtyb/vnFSOGdHurJDluG7W0K4D48jqz0AF85cbHdjQNpKJ8jFtByEF5b
- cJb87QKpFSvfYGQu306lRDD5XdWrtmxo/wrpRbEN65WC8AjgxVvtTrZBiILMnkjcS60Q
- 25/zHTx7fq0H1MlWNqB6S07W8vASAAFGHvSvMpw7qvV5PgwyrHyZIMUDV9JAv1GRCruC
- rgKA==
-X-Gm-Message-State: AOJu0YyPNf+/BHcB4MSwNomROakdwJWt8cCItZQS0innEGdBouztR3Sl
- 1wAPsqxe8LXAj9mrRUbFxJ7Ax/ZMY/IVLdLSY9y5QVgIw92RYeKVHFt0Rs1b15LSY3pTlPW/JIa
- s5QRlPHgi0/ESqjZTZ2YFYKdOtNVgtMjLyfdkwagIAxspkcLRNBk/9pgDqWMiYZ0epJfaDVcSn1
- 0=
-X-Received: by 2002:a2e:7302:0:b0:2bc:e221:676c with SMTP id
- o2-20020a2e7302000000b002bce221676cmr1918590ljc.0.1693997131258; 
- Wed, 06 Sep 2023 03:45:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGyPIClLV66XAnsLlMl1xx1aJQ6pDs9pu9YbAbZ4jV39MN1PmCh5SgVcjSztp7ghabWil33jQ==
-X-Received: by 2002:a2e:7302:0:b0:2bc:e221:676c with SMTP id
- o2-20020a2e7302000000b002bce221676cmr1918561ljc.0.1693997130791; 
- Wed, 06 Sep 2023 03:45:30 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- ay30-20020a5d6f1e000000b0031f65cdd271sm1019784wrb.100.2023.09.06.03.45.29
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Sep 2023 03:45:29 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] subprojects: add wrap file for libblkio
-Date: Wed,  6 Sep 2023 12:45:29 +0200
-Message-ID: <20230906104529.401824-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ s=mimecast20190719; t=1693997185;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0MpFgV4WHywhWdM5SnYO7w2kcF3nd4t5RAnz0sToFrY=;
+ b=fajvy36ZTGiHgQQyXkXdSvMmfZ2fPuVJNMkDsD3pl6epOH6sXW16zP0rIvq5Hn1Z4xVfSz
+ Y84ym9EVw/xsPeW6JmekfU8b0v7oWHpxZhITDL3BfiO3AtlRyGOUZK32VtMWz9McPOYlO4
+ pJ1g1A7MCybNqMTQYMzS06GYAGAJuhk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-230-tmGTc_-mOUeEia2eSDF1lA-1; Wed, 06 Sep 2023 06:46:19 -0400
+X-MC-Unique: tmGTc_-mOUeEia2eSDF1lA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A37A805BFB;
+ Wed,  6 Sep 2023 10:46:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.47])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C7DF140E950;
+ Wed,  6 Sep 2023 10:46:18 +0000 (UTC)
+Date: Wed, 6 Sep 2023 11:46:16 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v3 4/4] migration/qapi: Drop @MigrationParameter enum
+Message-ID: <ZPhYeLjiOV3eq/4f@redhat.com>
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-5-peterx@redhat.com>
+ <c5937e59-e267-519a-cf57-bf051b07304f@linaro.org>
+ <ZPg/xagpvBW62h4w@redhat.com>
+ <2edd3a6f-f23d-9a77-db47-4288fe3dbb44@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+In-Reply-To: <2edd3a6f-f23d-9a77-db47-4288fe3dbb44@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,31 +86,159 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows building libblkio at the same time as QEMU, if QEMU is
-configured with --enable-blkio --enable-download.
+On Wed, Sep 06, 2023 at 12:14:54PM +0200, Philippe Mathieu-Daudé wrote:
+> On 6/9/23 11:00, Daniel P. Berrangé wrote:
+> > On Wed, Sep 06, 2023 at 06:42:16AM +0200, Philippe Mathieu-Daudé wrote:
+> > > On 5/9/23 18:23, Peter Xu wrote:
+> > > > Drop the enum in qapi because it is never used in QMP APIs.  Instead making
+> > > > it an internal definition for QEMU so that we can decouple it from QAPI,
+> > > > and also we can deduplicate the QAPI documentations.
+> > > > 
+> > > > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> > > > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > > > ---
+> > > >    qapi/migration.json            | 179 ---------------------------------
+> > > >    migration/options.h            |  47 +++++++++
+> > > >    migration/migration-hmp-cmds.c |   3 +-
+> > > >    migration/options.c            |  51 ++++++++++
+> > > >    4 files changed, 100 insertions(+), 180 deletions(-)
+> > > 
+> > > 
+> > > > diff --git a/migration/options.h b/migration/options.h
+> > > > index 124a5d450f..4591545c62 100644
+> > > > --- a/migration/options.h
+> > > > +++ b/migration/options.h
+> > > > @@ -66,6 +66,53 @@ bool migrate_cap_set(int cap, bool value, Error **errp);
+> > > >    /* parameters */
+> > > > +typedef enum {
+> > > > +    MIGRATION_PARAMETER_ANNOUNCE_INITIAL,
+> > > > +    MIGRATION_PARAMETER_ANNOUNCE_MAX,
+> > > > +    MIGRATION_PARAMETER_ANNOUNCE_ROUNDS,
+> > > > +    MIGRATION_PARAMETER_ANNOUNCE_STEP,
+> > > > +    MIGRATION_PARAMETER_COMPRESS_LEVEL,
+> > > > +    MIGRATION_PARAMETER_COMPRESS_THREADS,
+> > > > +    MIGRATION_PARAMETER_DECOMPRESS_THREADS,
+> > > > +    MIGRATION_PARAMETER_COMPRESS_WAIT_THREAD,
+> > > > +    MIGRATION_PARAMETER_THROTTLE_TRIGGER_THRESHOLD,
+> > > > +    MIGRATION_PARAMETER_CPU_THROTTLE_INITIAL,
+> > > > +    MIGRATION_PARAMETER_CPU_THROTTLE_INCREMENT,
+> > > > +    MIGRATION_PARAMETER_CPU_THROTTLE_TAILSLOW,
+> > > > +    MIGRATION_PARAMETER_TLS_CREDS,
+> > > > +    MIGRATION_PARAMETER_TLS_HOSTNAME,
+> > > > +    MIGRATION_PARAMETER_TLS_AUTHZ,
+> > > > +    MIGRATION_PARAMETER_MAX_BANDWIDTH,
+> > > > +    MIGRATION_PARAMETER_DOWNTIME_LIMIT,
+> > > > +    MIGRATION_PARAMETER_X_CHECKPOINT_DELAY,
+> > > > +    MIGRATION_PARAMETER_BLOCK_INCREMENTAL,
+> > > > +    MIGRATION_PARAMETER_MULTIFD_CHANNELS,
+> > > > +    MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE,
+> > > > +    MIGRATION_PARAMETER_MAX_POSTCOPY_BANDWIDTH,
+> > > > +    MIGRATION_PARAMETER_MAX_CPU_THROTTLE,
+> > > > +    MIGRATION_PARAMETER_MULTIFD_COMPRESSION,
+> > > > +    MIGRATION_PARAMETER_MULTIFD_ZLIB_LEVEL,
+> > > > +    MIGRATION_PARAMETER_MULTIFD_ZSTD_LEVEL,
+> > > > +    MIGRATION_PARAMETER_BLOCK_BITMAP_MAPPING,
+> > > > +    MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD,
+> > > > +    MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT,
+> > > > +    MIGRATION_PARAMETER__MAX,
+> > > 
+> > > MIGRATION_PARAMETER__MAX is not part of the enum, so:
+> > > 
+> > >     #define MIGRATION_PARAMETER__MAX \
+> > >         (MIGRATION_PARAMETER_VCPU_DIRTY_LIMIT + 1)
+> > 
+> > IMHO the way it currently is written is better, because the
+> > __MAX value is guaranteed to always have the right max value
+> > without needing to be manually changed when new params are
+> > added. Note this matches the code style used by the QAPI
+> > enum generator too.
+> 
+> This concern comes from a previous discussion with Richard (which I
+> can't find now in the archives) where he explained to me __MAX is not
+> part of the enum set, thus reduces the coverage of compiler sanitizers
+> / optimizers, and could introduce subtle bugs.
+> 
+> This motivated this series:
+> https://lore.kernel.org/qemu-devel/20230315112811.22355-4-philmd@linaro.org/
+> which should have changed that generated QAPI enum.
+> 
+> (I didn't respin that series because I couldn't find an easy way to
+>  handle conditionals, see
+>  https://lore.kernel.org/qemu-devel/87sfdyaq0m.fsf@pond.sub.org/)
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- subprojects/libblkio.wrap | 6 ++++++
- 1 file changed, 6 insertions(+)
- create mode 100644 subprojects/libblkio.wrap
+Oh, I completely forgot about that series.
 
-diff --git a/subprojects/libblkio.wrap b/subprojects/libblkio.wrap
-new file mode 100644
-index 00000000000..f77af72210c
---- /dev/null
-+++ b/subprojects/libblkio.wrap
-@@ -0,0 +1,6 @@
-+[wrap-git]
-+url = https://gitlab.com/libblkio/libblkio
-+revision = f84cc963a444e4cb34813b2dcfc5bf8526947dc0
-+
-+[provide]
-+blkio = libblkio_dep
+So the original problem is that with '-Wswitch' present, if  the
+switched variable is an enum type, the compiler complains if you
+don't list all possible enum values, or have a default: clause.
+
+Thus the existance of __MAX forces use to add case ...__MAX, or
+have a default, and you wanted to eliminate that requirement.
+
+Or the surface that sounds reasonable, but I actually think that
+is the conceptually wrong approach from a robustness POV.
+
+C (and some other languages) are terrible wrt enum declared
+constants vs actual stored values.
+
+You can have a variable declared KeyValueKind and it can store
+absolutely any integer value at all, whether intentionally,
+or by a code mistake or by data corruption.
+
+In your example you modified:
+
+        switch (key->key->type) {
+        case KEY_VALUE_KIND_NUMBER:
+            qcode = qemu_input_key_number_to_qcode(key->key->u.number.data);
+            name = QKeyCode_str(qcode);
+            trace_input_event_key_number(idx, key->key->u.number.data,
+                                         name, key->down);
+            break;
+        case KEY_VALUE_KIND_QCODE:
+            name = QKeyCode_str(key->key->u.qcode.data);
+            trace_input_event_key_qcode(idx, name, key->down);
+            break;
+        case KEY_VALUE_KIND__MAX:
+            /* keep gcc happy */
+            break;
+        }
+
+to remove KEY_VALUE_KIND__MAX.
+
+What we should actually do IMHO is to either change it to
+
+   default:
+       g_assert_not_reached();
+
+Or get extra paranoid and  -Wswitch-enum too and list both
+together
+
+   case KEY_VALUE_KIND__MAX:
+   default:
+       g_assert_not_reached();
+
+This forces us to validate every enum case, and also protect
+against out of range values.
+
+This is a little more verbose to code, but I can't say it
+has been a maint problem in libvirt where we've followed
+this approach with -Wswitch-enum and _MAX constants.
+
+> Back to this patch, I don't object to having MIGRATION_PARAMETER__MAX
+> in the enum, but I'd rather have the suggestion below considered.
+
+I just prefer to see consistency in approach across the codebase, and
+currently we use __MAX approach.
+
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
