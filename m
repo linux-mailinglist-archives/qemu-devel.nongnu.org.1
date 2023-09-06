@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832567940BB
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2787940B9
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 17:51:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdumw-0007CX-Dn; Wed, 06 Sep 2023 11:49:54 -0400
+	id 1qdumw-0007CT-8A; Wed, 06 Sep 2023 11:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdums-0007Ag-8B; Wed, 06 Sep 2023 11:49:50 -0400
+ id 1qdumu-0007BH-9s; Wed, 06 Sep 2023 11:49:52 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qdump-0002xv-8m; Wed, 06 Sep 2023 11:49:49 -0400
+ id 1qdump-0002y3-Gf; Wed, 06 Sep 2023 11:49:52 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qduji-007L3X-1Y;
+ (envelope-from <den@openvz.org>) id 1qduji-007L3X-2x;
  Wed, 06 Sep 2023 17:49:33 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, stefanha@gmail.com,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  "Denis V . Lunev" <den@openvz.org>
-Subject: [PULL 04/18] parallels: Check if data_end greater than the file size
-Date: Wed,  6 Sep 2023 17:49:37 +0200
-Message-Id: <20230906154942.656537-5-den@openvz.org>
+Subject: [PULL 05/18] parallels: Add "explicit" argument to
+ parallels_check_leak()
+Date: Wed,  6 Sep 2023 17:49:38 +0200
+Message-Id: <20230906154942.656537-6-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230906154942.656537-1-den@openvz.org>
 References: <20230906154942.656537-1-den@openvz.org>
@@ -57,32 +58,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 
-Initially data_end is set to the data_off image header field and must not
-be greater than the file size.
+In the on of the next patches we need to repair leaks without changing
+leaks and leaks_fixed info in res. Also we don't want to print any warning
+about leaks. Add "explicit" argument to skip info changing if the argument
+is false.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- block/parallels.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ block/parallels.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 3c0dca3dbf..6a3d41373a 100644
+index 6a3d41373a..8bb5d115fc 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -874,6 +874,11 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-          */
-         s->header_size = size;
-     }
-+    if (s->data_end > file_nb_sectors) {
-+        error_setg(errp, "Invalid image: incorrect data_off field");
-+        ret = -EINVAL;
-+        goto fail;
-+    }
+@@ -488,7 +488,7 @@ parallels_check_outside_image(BlockDriverState *bs, BdrvCheckResult *res,
  
-     ret = bdrv_pread(bs->file, 0, s->header_size, s->header, 0);
-     if (ret < 0) {
+ static int coroutine_fn GRAPH_RDLOCK
+ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
+-                     BdrvCheckMode fix)
++                     BdrvCheckMode fix, bool explicit)
+ {
+     BDRVParallelsState *s = bs->opaque;
+     int64_t size;
+@@ -503,10 +503,13 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
+     if (size > res->image_end_offset) {
+         int64_t count;
+         count = DIV_ROUND_UP(size - res->image_end_offset, s->cluster_size);
+-        fprintf(stderr, "%s space leaked at the end of the image %" PRId64 "\n",
+-                fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR",
+-                size - res->image_end_offset);
+-        res->leaks += count;
++        if (explicit) {
++            fprintf(stderr,
++                    "%s space leaked at the end of the image %" PRId64 "\n",
++                    fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR",
++                    size - res->image_end_offset);
++            res->leaks += count;
++        }
+         if (fix & BDRV_FIX_LEAKS) {
+             Error *local_err = NULL;
+ 
+@@ -521,7 +524,9 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
+                 res->check_errors++;
+                 return ret;
+             }
+-            res->leaks_fixed += count;
++            if (explicit) {
++                res->leaks_fixed += count;
++            }
+         }
+     }
+ 
+@@ -574,7 +579,7 @@ parallels_co_check(BlockDriverState *bs, BdrvCheckResult *res,
+             return ret;
+         }
+ 
+-        ret = parallels_check_leak(bs, res, fix);
++        ret = parallels_check_leak(bs, res, fix, true);
+         if (ret < 0) {
+             return ret;
+         }
 -- 
 2.34.1
 
