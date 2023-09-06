@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267AB796DBE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 01:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F50B796DB8
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 01:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe2Fg-0006Av-NI; Wed, 06 Sep 2023 19:48:04 -0400
+	id 1qe2Fw-0006D0-O3; Wed, 06 Sep 2023 19:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qe2Ff-0006Am-8d
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 19:48:03 -0400
+ id 1qe2Fp-0006CX-7W
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 19:48:13 -0400
 Received: from mail-yw1-x1142.google.com ([2607:f8b0:4864:20::1142])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qe2Fc-0006a9-TB
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 19:48:03 -0400
+ id 1qe2Ff-0006ad-5m
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 19:48:05 -0400
 Received: by mail-yw1-x1142.google.com with SMTP id
- 00721157ae682-58d9ba95c78so4135957b3.1
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 16:48:00 -0700 (PDT)
+ 00721157ae682-58caaedb20bso4146307b3.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 16:48:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694044079; x=1694648879; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=J4nG8OGAmHGIu2LAdsS8Gsh+p3EeoyBi8CsqSTMWnPc=;
- b=kL8ZQjjqfroHBOdkvOAIMisYkYhhMKO//W5lOEpa9rE+1Jt6pVDrG9Zwe4BaOkVShN
- HiWhaDHYq996D46tJiwR2x0vrwKoKum5356cmHuE4posUm0Vn6cOS9ONxZcZL7OU713T
- uG3OSXlWZet5q1uxMqEdC3XmmDLlCvb34h23YKXpXebB66Ghx/D8pS/mcHCo3ZLH8f4Q
- sYNzEjhibTTJ51qWCj2u7cBHlj3bPmmfOoxyP4lUBE9iQ7PxzNSRXyIcZVlfZ0vVf2nn
- MFo4UKMEKH07AdRTx2iWX5OAlL0vUKWs5y/p6TSWBeINOklG3JeOe64OKnOlTkA25xQw
- vkIA==
+ d=gmail.com; s=20221208; t=1694044082; x=1694648882; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VgAxgcyqhu59qzleb8BoU1mSJXsud8avyAYb65wFNbg=;
+ b=HOz1iFPF7cG8pyYeHk9yG6rleTU1r982oVwutLJ9I1/U1rDXZswAkyuFN7hptVNxGU
+ CIJDC2C0+CDJUOK8EqYG130LT361F6Eeef7f++AqTfWdQsQVyKHhyw2JrGyU6lWw0BwE
+ vxxxYDY9GS2tZH1o0HXZ06Wvp3S392OE8FNSTZ6HzzuA+QN0FdqAxTdejPCTrd6lAfd2
+ aBfJJJegamKdwXnjxLR2dxQI//xhJ4QGpqDzkDHmLSJ11XUImthx5jNpgzYadatvyGHg
+ cb5TdXzuXlpiKWwrs3VSOOTplmaCifI2NS5IITEYfYs0ttbk+jbpac9zQXZT+Zps8Ddh
+ 4uZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694044079; x=1694648879;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=J4nG8OGAmHGIu2LAdsS8Gsh+p3EeoyBi8CsqSTMWnPc=;
- b=QzkEHu69k4KMGnqotuVILd5RAJpYU0N7FawL2JuJfZY6XaoVZPX++JN1GlOnZQBffy
- AIRTdGNfH9RAjJvOR+pB/PzZXUVrwlQokN2iTXCdsXonT006kLJRJvraXX5jehoN9zLI
- 5JqHXTna8Q2vEwJ5+Tuhq0tF9VtXgCwxRgalviXjYRzNY14Z7HBRmekwON72LJJtmz6Q
- OINO6vdawdi+8yAiSp+y7XKlV4hDs5fewLUPdWNi3DdxtS6qVXbSfbY15P2JpPgC7Q+r
- oZyjkNgMg45psEcBgD1+VkiZc83XiU0PkSV0/IEa2c6ZCWPvsPW9B+rt+oUIwu1RtrvX
- 7YsQ==
-X-Gm-Message-State: AOJu0YyoLjFEzAFApZ4imzBA2i7MmmMNfrE0KklfvoNTz7Q5wxs/hvWx
- PHKPZearqPrexxKMoEl0d8qKfPPDmXSM
-X-Google-Smtp-Source: AGHT+IHNvSjGbR2p4qbJK2NnbStjC57wh6s06URj06y93LD9nrT9T7veSbE7+WSF9cr17bT6hWq7hg==
-X-Received: by 2002:a0d:d341:0:b0:58c:b8b4:2785 with SMTP id
- v62-20020a0dd341000000b0058cb8b42785mr17413200ywd.45.1694044078966; 
- Wed, 06 Sep 2023 16:47:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1694044082; x=1694648882;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VgAxgcyqhu59qzleb8BoU1mSJXsud8avyAYb65wFNbg=;
+ b=HKloWWwRq4FkUKD+Ucb1tydR2F7BF6kJSBdnoLuwl4rYtw517O1tP50Avk9QHdrlT5
+ SMgPSyfXdBJl+pqCHuRylImpt2rDDiQQtNpm3ZE7FEdTKG3oVW5zKITehIQ4BC/8kL65
+ 35SzbArXy+cbgFzoTML3v1aheamjst8ZaxZTnRNlj8tBCvFsd9nrG8GLTQ1Qowcit3R4
+ P7cdRnMiSVHFudDtX2PaxI2xBR3T2dlY/gbHOtsD6v3w5aMlK/d65V+LarCsBHNnUbFq
+ udM9SVdaTCkeACAtcYq8QRBcN6dNaq+KfaQehEuJEJSa1+CDnrroFjkY+PLarUMZMBa2
+ i0qw==
+X-Gm-Message-State: AOJu0YyBg/F0wCjabD3MgM/NEc9KogmkD3fIKfMtx1MVeMplyenW7Tz2
+ PrE+yJD/Gi9QoVlYkmuGu5cqUD3tXyKG
+X-Google-Smtp-Source: AGHT+IG7TM90ao+H0jLLHLoLY2F8QLdO3dNzNL314exMSR7c96TkW346HHyt7WL7ljuPYg3r1oEH6Q==
+X-Received: by 2002:a81:8287:0:b0:57a:2e83:4daf with SMTP id
+ s129-20020a818287000000b0057a2e834dafmr20616492ywf.32.1694044080372; 
+ Wed, 06 Sep 2023 16:48:00 -0700 (PDT)
 Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
  [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
- v191-20020a8148c8000000b005832fe29034sm332107ywa.89.2023.09.06.16.47.58
+ v191-20020a8148c8000000b005832fe29034sm332107ywa.89.2023.09.06.16.47.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Sep 2023 16:47:58 -0700 (PDT)
+ Wed, 06 Sep 2023 16:48:00 -0700 (PDT)
 From: Gregory Price <gourry.memverge@gmail.com>
 X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org, junhee.ryu@sk.com,
  kwangjin.ko@sk.com, Gregory Price <gregory.price@memverge.com>
-Subject: [PATCH v3 0/6] CXL: SK hynix Niagara MHSLD Device
-Date: Tue,  5 Sep 2023 20:15:11 -0400
-Message-Id: <20230906001517.324380-1-gregory.price@memverge.com>
+Subject: [PATCH v3 1/6] cxl/mailbox: move mailbox effect definitions to a
+ header
+Date: Tue,  5 Sep 2023 20:15:12 -0400
+Message-Id: <20230906001517.324380-2-gregory.price@memverge.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230906001517.324380-1-gregory.price@memverge.com>
+References: <20230906001517.324380-1-gregory.price@memverge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::1142;
@@ -90,73 +94,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-- 6 patch series, first 5 are pull-aheads that can be merged separately
-- cci: added MHD back into main mailbox, but implemented a callback
-       pattern.  type-3 devices leave the callback null by default and
-       report unsupported if nothing implements it.
-- cleanup and formatting
-
-v2:
-- 5 patch series, first 4 are pull-aheads that can be merged separately
-- cci: rebased on 8-30 branch from jic23, dropped cci patches
-- mailbox: dropped MHD commands, integrated into niagara (for now)
-- mailbox: refactor CCI defines to avoid redefinition in niagara
-- type3: cleanup duplicate typecasting
-- type3: expose ct3 functions so inheriting devices may access them
-- type3: add optional mhd validation function for memory access
-- niagara: refactor to make niagara inherit type3 and override behavior
-- niagara: refactor command definitions and types into header to make
-           understanding the device a bit easier for users
-- style and formatting
-
-This patch set includes an emulation of the SK hynix Niagara MHSLD 
-platform with custom CCI commands that allow for isolation of memory
-blocks between attached hosts.
-
-This device allows hosts to request memory blocks directly from the
-device, rather than requiring full the DCD command set.  As a matter
-of simplicity, this is beneficial to for testing and applications of
-dynamic memory pooling on top of the 1.1 and 2.0 specification.
-
-Note that these CCI commands are not servicable without a proper
-driver or the kernel allowing raw CXL commands to be passed through
-the mailbox driver, so users should enable
-`CONFIG_CXL_MEM_RAW_COMMANDS=y` on the kernel of their QEMU instance
-if they wish to test it.
+Preparation for allowing devices to define their own CCI commands
 
 Signed-off-by: Gregory Price <gregory.price@memverge.com>
-
-
-Gregory Price (6):
-  cxl/mailbox: move mailbox effect definitions to a header
-  cxl/type3: Cleanup multiple CXL_TYPE3() calls in read/write functions
-  cxl/type3: Expose ct3 functions so that inheriters can call them
-  cxl/type3: add an optional mhd validation function for memory accesses
-  cxl/mailbox,type3: Implement MHD get info command callback
-  cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
-
- hw/cxl/Kconfig                          |   4 +
- hw/cxl/cxl-mailbox-utils.c              |  51 ++-
- hw/cxl/meson.build                      |   2 +
- hw/cxl/vendor/meson.build               |   1 +
- hw/cxl/vendor/skhynix/.gitignore        |   1 +
- hw/cxl/vendor/skhynix/init_niagara.c    |  99 +++++
- hw/cxl/vendor/skhynix/meson.build       |   1 +
- hw/cxl/vendor/skhynix/skhynix_niagara.c | 514 ++++++++++++++++++++++++
- hw/cxl/vendor/skhynix/skhynix_niagara.h | 161 ++++++++
- hw/mem/cxl_type3.c                      |  32 +-
- include/hw/cxl/cxl_device.h             |  13 +
- include/hw/cxl/cxl_mailbox.h            |  18 +
- 12 files changed, 873 insertions(+), 24 deletions(-)
- create mode 100644 hw/cxl/vendor/meson.build
- create mode 100644 hw/cxl/vendor/skhynix/.gitignore
- create mode 100644 hw/cxl/vendor/skhynix/init_niagara.c
- create mode 100644 hw/cxl/vendor/skhynix/meson.build
- create mode 100644 hw/cxl/vendor/skhynix/skhynix_niagara.c
- create mode 100644 hw/cxl/vendor/skhynix/skhynix_niagara.h
+---
+ hw/cxl/cxl-mailbox-utils.c   | 30 +++++++++++++-----------------
+ include/hw/cxl/cxl_mailbox.h | 18 ++++++++++++++++++
+ 2 files changed, 31 insertions(+), 17 deletions(-)
  create mode 100644 include/hw/cxl/cxl_mailbox.h
 
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 4e8651ebe2..b64bbdf45d 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -12,6 +12,7 @@
+ #include "hw/pci/msix.h"
+ #include "hw/cxl/cxl.h"
+ #include "hw/cxl/cxl_events.h"
++#include "hw/cxl/cxl_mailbox.h"
+ #include "hw/pci/pci.h"
+ #include "hw/pci-bridge/cxl_upstream_port.h"
+ #include "qemu/cutils.h"
+@@ -1561,28 +1562,21 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+     return CXL_MBOX_SUCCESS;
+ }
+ 
+-#define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+-#define IMMEDIATE_DATA_CHANGE (1 << 2)
+-#define IMMEDIATE_POLICY_CHANGE (1 << 3)
+-#define IMMEDIATE_LOG_CHANGE (1 << 4)
+-#define SECURITY_STATE_CHANGE (1 << 5)
+-#define BACKGROUND_OPERATION (1 << 6)
+-
+ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+     [EVENTS][GET_RECORDS] = { "EVENTS_GET_RECORDS",
+         cmd_events_get_records, 1, 0 },
+     [EVENTS][CLEAR_RECORDS] = { "EVENTS_CLEAR_RECORDS",
+-        cmd_events_clear_records, ~0, IMMEDIATE_LOG_CHANGE },
++        cmd_events_clear_records, ~0, CXL_MBOX_IMMEDIATE_LOG_CHANGE },
+     [EVENTS][GET_INTERRUPT_POLICY] = { "EVENTS_GET_INTERRUPT_POLICY",
+                                       cmd_events_get_interrupt_policy, 0, 0 },
+     [EVENTS][SET_INTERRUPT_POLICY] = { "EVENTS_SET_INTERRUPT_POLICY",
+                                       cmd_events_set_interrupt_policy,
+-                                      ~0, IMMEDIATE_CONFIG_CHANGE },
++                                      ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE },
+     [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
+         cmd_firmware_update_get_info, 0, 0 },
+     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+     [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 8,
+-                         IMMEDIATE_POLICY_CHANGE },
++                         CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
+     [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0, 0 },
+     [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+     [IDENTIFY][MEMORY_DEVICE] = { "IDENTIFY_MEMORY_DEVICE",
+@@ -1591,9 +1585,11 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+         cmd_ccls_get_partition_info, 0, 0 },
+     [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
+     [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
+-        ~0, IMMEDIATE_CONFIG_CHANGE | IMMEDIATE_DATA_CHANGE },
++        ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE | CXL_MBOX_IMMEDIATE_DATA_CHANGE },
+     [SANITIZE][OVERWRITE] = { "SANITIZE_OVERWRITE", cmd_sanitize_overwrite, 0,
+-        IMMEDIATE_DATA_CHANGE | SECURITY_STATE_CHANGE | BACKGROUND_OPERATION },
++        (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
++         CXL_MBOX_SECURITY_STATE_CHANGE |
++         CXL_MBOX_BACKGROUND_OPERATION)},
+     [PERSISTENT_MEM][GET_SECURITY_STATE] = { "GET_SECURITY_STATE",
+         cmd_get_security_state, 0, 0 },
+     [MEDIA_AND_POISON][GET_POISON_LIST] = { "MEDIA_AND_POISON_GET_POISON_LIST",
+@@ -1612,10 +1608,10 @@ static const struct cxl_cmd cxl_cmd_set_dcd[256][256] = {
+         8, 0 },
+     [DCD_CONFIG][ADD_DYN_CAP_RSP] = {
+         "ADD_DCD_DYNAMIC_CAPACITY_RESPONSE", cmd_dcd_add_dyn_cap_rsp,
+-        ~0, IMMEDIATE_DATA_CHANGE },
++        ~0, CXL_MBOX_IMMEDIATE_DATA_CHANGE },
+     [DCD_CONFIG][RELEASE_DYN_CAP] = {
+         "RELEASE_DCD_DYNAMIC_CAPACITY", cmd_dcd_release_dyn_cap,
+-        ~0, IMMEDIATE_DATA_CHANGE },
++        ~0, CXL_MBOX_IMMEDIATE_DATA_CHANGE },
+ };
+ 
+ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+@@ -1628,7 +1624,7 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+      */
+     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+     [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 8,
+-                         IMMEDIATE_POLICY_CHANGE },
++                         CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
+     [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0,
+                               0 },
+     [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+@@ -1670,7 +1666,7 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+     }
+ 
+     /* Only one bg command at a time */
+-    if ((cxl_cmd->effect & BACKGROUND_OPERATION) &&
++    if ((cxl_cmd->effect & CXL_MBOX_BACKGROUND_OPERATION) &&
+         cci->bg.runtime > 0) {
+         return CXL_MBOX_BUSY;
+     }
+@@ -1691,7 +1687,7 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+     }
+ 
+     ret = (*h)(cxl_cmd, pl_in, len_in, pl_out, len_out, cci);
+-    if ((cxl_cmd->effect & BACKGROUND_OPERATION) &&
++    if ((cxl_cmd->effect & CXL_MBOX_BACKGROUND_OPERATION) &&
+         ret == CXL_MBOX_BG_STARTED) {
+         *bg_started = true;
+     } else {
+diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
+new file mode 100644
+index 0000000000..beb048052e
+--- /dev/null
++++ b/include/hw/cxl/cxl_mailbox.h
+@@ -0,0 +1,18 @@
++/*
++ * QEMU CXL Mailbox
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2. See the
++ * COPYING file in the top-level directory.
++ */
++
++#ifndef CXL_MAILBOX_H
++#define CXL_MAILBOX_H
++
++#define CXL_MBOX_IMMEDIATE_CONFIG_CHANGE (1 << 1)
++#define CXL_MBOX_IMMEDIATE_DATA_CHANGE (1 << 2)
++#define CXL_MBOX_IMMEDIATE_POLICY_CHANGE (1 << 3)
++#define CXL_MBOX_IMMEDIATE_LOG_CHANGE (1 << 4)
++#define CXL_MBOX_SECURITY_STATE_CHANGE (1 << 5)
++#define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
++
++#endif
 -- 
 2.39.1
 
