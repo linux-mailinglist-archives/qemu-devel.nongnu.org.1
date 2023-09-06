@@ -2,71 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6154B793D88
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71227793DE2
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:40:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdsQP-0006Z2-K1; Wed, 06 Sep 2023 09:18:29 -0400
+	id 1qdska-0007LH-Kd; Wed, 06 Sep 2023 09:39:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qdsQN-0006YS-LX; Wed, 06 Sep 2023 09:18:27 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qdsQL-00063E-5Q; Wed, 06 Sep 2023 09:18:27 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-57325fcd970so2217038eaf.1; 
- Wed, 06 Sep 2023 06:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694006303; x=1694611103; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7ln3jkPRfqjn/9IeLfH2kXlZgY4yfO9d/YJEDmoDxsY=;
- b=E49pX1knadMH5++JhCSujAv+RViFsz4QSXbgiPvCkyDriGvHil/A+kEvpc3s6X6yYZ
- zciMdgFa9MHtGPmnUiDS36nEc5+tQg8VNwBSZX/6UWTG2ZlCPaeRRrSNJOZBSPI4hxei
- 2YK/iiZruD72YQtXO1m1mJDNhMmiOYnWohU/C6+5sqRW+fGiFv/rHWYw6EnY0Z7VXSSk
- t+zhussVa380MiQQBcitJtYGAr35d/O769wqCS2ZQJv2Adc4xHaLpoonMQVHOL1Hjiax
- MRvaFEIzTDOOnA6sEUqDNpVxGq5NfGmgv3f0xVcq9S6CvYWBHuzNaegTKphJN7xEwTVS
- zEyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694006303; x=1694611103;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7ln3jkPRfqjn/9IeLfH2kXlZgY4yfO9d/YJEDmoDxsY=;
- b=J9xgX8FbogT3kt8ZJdiDhzOYJtALwr7B7OEv00ol/AG5ZUBrF873xK1o8tuQC/a7mW
- mDd+eCKRvD+/nZzgEOYOebMDBPIc/ZvoXhLRe8YWUVmaPI5IYgndggi//mKdwHqBGkqx
- tlOfD3OZR2jRhjL554LH58luokSMiD9tdST7MsIoFISEsfnJMbSB9f+VoKim1hC9+rg8
- FKfe5YpJOuiziyfRV1c2Ihzv9TmU/TcfC9mS7hhG1P+UcGWk4IYaHT9von450sPf+3VQ
- LkcmRlBRHgQiWlOKW5pGTsE5nhSYBBstT6nSu0rsF03kM3wYi64+B/i1og60uUcdEbTw
- JQ4w==
-X-Gm-Message-State: AOJu0YxUYrRyHkaMlxdbkDvYFAXbo90C0CIom5w6GpOBgnruztCbQut6
- v1YvuGZudrdnDnwKEenxA9blrF9KnoyvUWxH7/E=
-X-Google-Smtp-Source: AGHT+IFj5bScXJ3iw/AOL7dnYjohAn25D4lh04b26s6WI2QUCFiR3t1ARYZJdJMLWt2rsNOAk+cpcRqiqCi6A21g3o8=
-X-Received: by 2002:a4a:6c11:0:b0:571:aceb:26d0 with SMTP id
- q17-20020a4a6c11000000b00571aceb26d0mr14383178ooc.2.1694006303318; Wed, 06
- Sep 2023 06:18:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qdskY-0007L3-QO
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:39:18 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qdskV-0001en-Va
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 09:39:18 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4683042B26
+ for <qemu-devel@nongnu.org>; Wed,  6 Sep 2023 15:39:13 +0200 (CEST)
+Message-ID: <d13ac082-358b-1fc4-03b2-a638eac98aa5@proxmox.com>
+Date: Wed, 6 Sep 2023 15:39:12 +0200
 MIME-Version: 1.0
-References: <20230901081804.31377-1-hreitz@redhat.com>
-In-Reply-To: <20230901081804.31377-1-hreitz@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 6 Sep 2023 09:18:10 -0400
-Message-ID: <CAJSP0QV4-dR2-2r+4E0N+yWHdzNF0A+FkHGU7Q3uiEg3wxR5Fg@mail.gmail.com>
-Subject: Re: [PULL 00/14] Block patches
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc29.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: strace showing QEMU process doing >99% ppoll
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: QEMU Developers <qemu-devel@nongnu.org>
+References: <db5140a2-6947-564b-afba-e0edda31c515@proxmox.com>
+In-Reply-To: <db5140a2-6947-564b-afba-e0edda31c515@proxmox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,71 +56,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 1 Sept 2023 at 04:18, Hanna Czenczek <hreitz@redhat.com> wrote:
->
-> The following changes since commit f5fe7c17ac4e309e47e78f0f9761aebc8d2f2c81:
->
->   Merge tag 'pull-tcg-20230823-2' of https://gitlab.com/rth7680/qemu into staging (2023-08-28 16:07:04 -0400)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/hreitz/qemu.git tags/pull-block-2023-09-01
+Am 10.07.23 um 14:34 schrieb Fiona Ebner:
+> Hi,
+> since a while we have about a dozen people reporting [0] VMs rarely
+> getting stuck with the QEMU process looping and just doing ppoll() and
+> not much else (example strace [1] output and stacktrace [2]).
+> 
+> Just wanted to ask if anybody here has seen something similar or ideas
+> what could go wrong? There seem to be at least two different issues:
+> 
 
-Hi Hanna,
-Please push a signed tag (git tag -s). Thanks!
+If anybody else stumbles upon this:
 
-Stefan
+> 1. QEMU process looping calling only ppoll, guest completely
+> non-responsive. I think QMP still working normally, but I had no debug
+> access to these unfortunately.
+> 
 
->
-> for you to fetch changes up to 380448464dd89291cf7fd7434be6c225482a334d:
->
->   tests/file-io-error: New test (2023-08-29 13:01:24 +0200)
->
-> ----------------------------------------------------------------
-> Block patches
->
-> - Fix for file-posix's zoning code crashing on I/O errors
-> - Throttling refactoring
->
-> ----------------------------------------------------------------
-> Hanna Czenczek (5):
->   file-posix: Clear bs->bl.zoned on error
->   file-posix: Check bs->bl.zoned for zone info
->   file-posix: Fix zone update in I/O error path
->   file-posix: Simplify raw_co_prw's 'out' zone code
->   tests/file-io-error: New test
->
-> Zhenwei Pi (9):
->   throttle: introduce enum ThrottleDirection
->   test-throttle: use enum ThrottleDirection
->   throttle: support read-only and write-only
->   test-throttle: test read only and write only
->   cryptodev: use NULL throttle timer cb for read direction
->   throttle: use enum ThrottleDirection instead of bool is_write
->   throttle: use THROTTLE_MAX/ARRAY_SIZE for hard code
->   fsdev: Use ThrottleDirection instread of bool is_write
->   block/throttle-groups: Use ThrottleDirection instread of bool is_write
->
->  fsdev/qemu-fsdev-throttle.h                |   4 +-
->  include/block/throttle-groups.h            |   6 +-
->  include/qemu/throttle.h                    |  16 +-
->  backends/cryptodev.c                       |  12 +-
->  block/block-backend.c                      |   4 +-
->  block/file-posix.c                         |  42 +++---
->  block/throttle-groups.c                    | 163 +++++++++++----------
->  block/throttle.c                           |   8 +-
->  fsdev/qemu-fsdev-throttle.c                |  18 ++-
->  hw/9pfs/cofile.c                           |   4 +-
->  tests/unit/test-throttle.c                 |  76 +++++++++-
->  util/throttle.c                            |  84 +++++++----
->  tests/qemu-iotests/tests/file-io-error     | 119 +++++++++++++++
->  tests/qemu-iotests/tests/file-io-error.out |  33 +++++
->  14 files changed, 418 insertions(+), 171 deletions(-)
->  create mode 100755 tests/qemu-iotests/tests/file-io-error
->  create mode 100644 tests/qemu-iotests/tests/file-io-error.out
->
-> --
-> 2.41.0
->
->
+We did have debug access in the mean time and couldn't tell much, just
+that all the vCPUs where spinning, QEMU itself seemed to run like usual.
+In the end, it turned out to be a KVM bug, fixed in v6.1 by [0] and in
+v6.3+ unknowingly by a refactoring.
+
+> 2. Also QEMU looping around ppool, but the PLT (process linkage table)
+> is corrupted [3]. I did have debug access to such a machine and saw the
+> jump to the wrong address first hand. Call into _ppoll() results landing
+> in the middle of internal_fallocate64 instead and the vCPU threads end
+> up in preadv64v2() (note that the flags=44672 very much looks like
+> KVM_RUN being AE80 in hex). AFAIU that memory should be read-only so
+> maybe a kernel bug (the machine I debugged was running on host kernel 5.15)?
+> 
+
+No Idea about this one, but we never saw other reports again, so I
+suspect some stable backport fixed it too.
+
+Best Regards,
+Fiona
+
+[0]:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.51&id=82d811ff566594de3676f35808e8a9e19c5c864c
+
 
