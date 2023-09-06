@@ -2,44 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09D4793D75
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6154B793D88
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 15:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdsIm-0002Jv-HY; Wed, 06 Sep 2023 09:10:36 -0400
+	id 1qdsQP-0006Z2-K1; Wed, 06 Sep 2023 09:18:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qdsI5-00022b-D6; Wed, 06 Sep 2023 09:09:54 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qdsI1-0004M8-PG; Wed, 06 Sep 2023 09:09:53 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id C529442B26;
- Wed,  6 Sep 2023 15:09:38 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: jsnow@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, srowe@mose.org.uk, mike.maslenkin@gmail.com,
- qemu-block@nongnu.org, t.lamprecht@proxmox.com, a.lauterer@proxmox.com,
- philmd@linaro.org, kwolf@redhat.com
-Subject: [PATCH v2 2/2] tests/qtest: ahci-test: add test exposing reset issue
- with pending callback
-Date: Wed,  6 Sep 2023 15:09:22 +0200
-Message-Id: <20230906130922.142845-2-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230906130922.142845-1-f.ebner@proxmox.com>
-References: <20230906130922.142845-1-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qdsQN-0006YS-LX; Wed, 06 Sep 2023 09:18:27 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qdsQL-00063E-5Q; Wed, 06 Sep 2023 09:18:27 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-57325fcd970so2217038eaf.1; 
+ Wed, 06 Sep 2023 06:18:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694006303; x=1694611103; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=7ln3jkPRfqjn/9IeLfH2kXlZgY4yfO9d/YJEDmoDxsY=;
+ b=E49pX1knadMH5++JhCSujAv+RViFsz4QSXbgiPvCkyDriGvHil/A+kEvpc3s6X6yYZ
+ zciMdgFa9MHtGPmnUiDS36nEc5+tQg8VNwBSZX/6UWTG2ZlCPaeRRrSNJOZBSPI4hxei
+ 2YK/iiZruD72YQtXO1m1mJDNhMmiOYnWohU/C6+5sqRW+fGiFv/rHWYw6EnY0Z7VXSSk
+ t+zhussVa380MiQQBcitJtYGAr35d/O769wqCS2ZQJv2Adc4xHaLpoonMQVHOL1Hjiax
+ MRvaFEIzTDOOnA6sEUqDNpVxGq5NfGmgv3f0xVcq9S6CvYWBHuzNaegTKphJN7xEwTVS
+ zEyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694006303; x=1694611103;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7ln3jkPRfqjn/9IeLfH2kXlZgY4yfO9d/YJEDmoDxsY=;
+ b=J9xgX8FbogT3kt8ZJdiDhzOYJtALwr7B7OEv00ol/AG5ZUBrF873xK1o8tuQC/a7mW
+ mDd+eCKRvD+/nZzgEOYOebMDBPIc/ZvoXhLRe8YWUVmaPI5IYgndggi//mKdwHqBGkqx
+ tlOfD3OZR2jRhjL554LH58luokSMiD9tdST7MsIoFISEsfnJMbSB9f+VoKim1hC9+rg8
+ FKfe5YpJOuiziyfRV1c2Ihzv9TmU/TcfC9mS7hhG1P+UcGWk4IYaHT9von450sPf+3VQ
+ LkcmRlBRHgQiWlOKW5pGTsE5nhSYBBstT6nSu0rsF03kM3wYi64+B/i1og60uUcdEbTw
+ JQ4w==
+X-Gm-Message-State: AOJu0YxUYrRyHkaMlxdbkDvYFAXbo90C0CIom5w6GpOBgnruztCbQut6
+ v1YvuGZudrdnDnwKEenxA9blrF9KnoyvUWxH7/E=
+X-Google-Smtp-Source: AGHT+IFj5bScXJ3iw/AOL7dnYjohAn25D4lh04b26s6WI2QUCFiR3t1ARYZJdJMLWt2rsNOAk+cpcRqiqCi6A21g3o8=
+X-Received: by 2002:a4a:6c11:0:b0:571:aceb:26d0 with SMTP id
+ q17-20020a4a6c11000000b00571aceb26d0mr14383178ooc.2.1694006303318; Wed, 06
+ Sep 2023 06:18:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <20230901081804.31377-1-hreitz@redhat.com>
+In-Reply-To: <20230901081804.31377-1-hreitz@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 6 Sep 2023 09:18:10 -0400
+Message-ID: <CAJSP0QV4-dR2-2r+4E0N+yWHdzNF0A+FkHGU7Q3uiEg3wxR5Fg@mail.gmail.com>
+Subject: Re: [PULL 00/14] Block patches
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc29.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -56,134 +82,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before commit "hw/ide: reset: cancel async DMA operation before
-resetting state", this test would fail, because a reset with a
-pending write operation would lead to an unsolicited write to the
-first sector of the disk.
+On Fri, 1 Sept 2023 at 04:18, Hanna Czenczek <hreitz@redhat.com> wrote:
+>
+> The following changes since commit f5fe7c17ac4e309e47e78f0f9761aebc8d2f2c81:
+>
+>   Merge tag 'pull-tcg-20230823-2' of https://gitlab.com/rth7680/qemu into staging (2023-08-28 16:07:04 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/hreitz/qemu.git tags/pull-block-2023-09-01
 
-The test writes a pattern to the beginning of the disk and verifies
-that it is still intact after a reset with a pending operation. It
-also checks that the pending operation actually completes correctly.
+Hi Hanna,
+Please push a signed tag (git tag -s). Thanks!
 
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
+Stefan
 
-Changes in v2:
-    * Move variable declarations to the beginning of the function.
-    * Use g_autofree for malloced buffers.
-    * Group toghether with other reset test (hope I did it correctly).
-    * Use ahci_boot_and_enable() and enable throttling to make test
-      work independently of environment.
-
- tests/qtest/ahci-test.c | 86 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 85 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
-index abab761c26..2615c9f65c 100644
---- a/tests/qtest/ahci-test.c
-+++ b/tests/qtest/ahci-test.c
-@@ -1424,6 +1424,89 @@ static void test_reset(void)
-     ahci_shutdown(ahci);
- }
- 
-+static void test_reset_pending_callback(void)
-+{
-+    AHCIQState *ahci;
-+    AHCICommand *cmd;
-+    uint8_t port;
-+    uint64_t ptr1;
-+    uint64_t ptr2;
-+
-+    int bufsize = 4 * 1024;
-+    int speed = bufsize + (bufsize / 2);
-+    int offset1 = 0;
-+    int offset2 = bufsize / AHCI_SECTOR_SIZE;
-+
-+    g_autofree unsigned char *tx1 = g_malloc(bufsize);
-+    g_autofree unsigned char *tx2 = g_malloc(bufsize);
-+    g_autofree unsigned char *rx1 = g_malloc0(bufsize);
-+    g_autofree unsigned char *rx2 = g_malloc0(bufsize);
-+
-+    /* Uses throttling to make test independent of specific environment. */
-+    ahci = ahci_boot_and_enable("-drive if=none,id=drive0,file=%s,"
-+                                "cache=writeback,format=%s,"
-+                                "throttling.bps-write=%d "
-+                                "-M q35 "
-+                                "-device ide-hd,drive=drive0 ",
-+                                tmp_path, imgfmt, speed);
-+
-+    port = ahci_port_select(ahci);
-+    ahci_port_clear(ahci, port);
-+
-+    ptr1 = ahci_alloc(ahci, bufsize);
-+    ptr2 = ahci_alloc(ahci, bufsize);
-+
-+    g_assert(ptr1 && ptr2);
-+
-+    /* Need two different patterns. */
-+    do {
-+        generate_pattern(tx1, bufsize, AHCI_SECTOR_SIZE);
-+        generate_pattern(tx2, bufsize, AHCI_SECTOR_SIZE);
-+    } while (memcmp(tx1, tx2, bufsize) == 0);
-+
-+    qtest_bufwrite(ahci->parent->qts, ptr1, tx1, bufsize);
-+    qtest_bufwrite(ahci->parent->qts, ptr2, tx2, bufsize);
-+
-+    /* Write to beginning of disk to check it wasn't overwritten later. */
-+    ahci_guest_io(ahci, port, CMD_WRITE_DMA_EXT, ptr1, bufsize, offset1);
-+
-+    /* Issue asynchronously to get a pending callback during reset. */
-+    cmd = ahci_command_create(CMD_WRITE_DMA_EXT);
-+    ahci_command_adjust(cmd, offset2, ptr2, bufsize, 0);
-+    ahci_command_commit(ahci, cmd, port);
-+    ahci_command_issue_async(ahci, cmd);
-+
-+    ahci_set(ahci, AHCI_GHC, AHCI_GHC_HR);
-+
-+    ahci_command_free(cmd);
-+
-+    /* Wait for throttled write to finish. */
-+    sleep(1);
-+
-+    /* Start again. */
-+    ahci_clean_mem(ahci);
-+    ahci_pci_enable(ahci);
-+    ahci_hba_enable(ahci);
-+    port = ahci_port_select(ahci);
-+    ahci_port_clear(ahci, port);
-+
-+    /* Read and verify. */
-+    ahci_guest_io(ahci, port, CMD_READ_DMA_EXT, ptr1, bufsize, offset1);
-+    qtest_bufread(ahci->parent->qts, ptr1, rx1, bufsize);
-+    g_assert_cmphex(memcmp(tx1, rx1, bufsize), ==, 0);
-+
-+    ahci_guest_io(ahci, port, CMD_READ_DMA_EXT, ptr2, bufsize, offset2);
-+    qtest_bufread(ahci->parent->qts, ptr2, rx2, bufsize);
-+    g_assert_cmphex(memcmp(tx2, rx2, bufsize), ==, 0);
-+
-+    ahci_free(ahci, ptr1);
-+    ahci_free(ahci, ptr2);
-+
-+    ahci_clean_mem(ahci);
-+
-+    ahci_shutdown(ahci);
-+}
-+
- static void test_ncq_simple(void)
- {
-     AHCIQState *ahci;
-@@ -1945,7 +2028,8 @@ int main(int argc, char **argv)
-     qtest_add_func("/ahci/migrate/dma/halted", test_migrate_halted_dma);
- 
-     qtest_add_func("/ahci/max", test_max);
--    qtest_add_func("/ahci/reset", test_reset);
-+    qtest_add_func("/ahci/reset/simple", test_reset);
-+    qtest_add_func("/ahci/reset/pending_callback", test_reset_pending_callback);
- 
-     qtest_add_func("/ahci/io/ncq/simple", test_ncq_simple);
-     qtest_add_func("/ahci/migrate/ncq/simple", test_migrate_ncq);
--- 
-2.39.2
-
-
+>
+> for you to fetch changes up to 380448464dd89291cf7fd7434be6c225482a334d:
+>
+>   tests/file-io-error: New test (2023-08-29 13:01:24 +0200)
+>
+> ----------------------------------------------------------------
+> Block patches
+>
+> - Fix for file-posix's zoning code crashing on I/O errors
+> - Throttling refactoring
+>
+> ----------------------------------------------------------------
+> Hanna Czenczek (5):
+>   file-posix: Clear bs->bl.zoned on error
+>   file-posix: Check bs->bl.zoned for zone info
+>   file-posix: Fix zone update in I/O error path
+>   file-posix: Simplify raw_co_prw's 'out' zone code
+>   tests/file-io-error: New test
+>
+> Zhenwei Pi (9):
+>   throttle: introduce enum ThrottleDirection
+>   test-throttle: use enum ThrottleDirection
+>   throttle: support read-only and write-only
+>   test-throttle: test read only and write only
+>   cryptodev: use NULL throttle timer cb for read direction
+>   throttle: use enum ThrottleDirection instead of bool is_write
+>   throttle: use THROTTLE_MAX/ARRAY_SIZE for hard code
+>   fsdev: Use ThrottleDirection instread of bool is_write
+>   block/throttle-groups: Use ThrottleDirection instread of bool is_write
+>
+>  fsdev/qemu-fsdev-throttle.h                |   4 +-
+>  include/block/throttle-groups.h            |   6 +-
+>  include/qemu/throttle.h                    |  16 +-
+>  backends/cryptodev.c                       |  12 +-
+>  block/block-backend.c                      |   4 +-
+>  block/file-posix.c                         |  42 +++---
+>  block/throttle-groups.c                    | 163 +++++++++++----------
+>  block/throttle.c                           |   8 +-
+>  fsdev/qemu-fsdev-throttle.c                |  18 ++-
+>  hw/9pfs/cofile.c                           |   4 +-
+>  tests/unit/test-throttle.c                 |  76 +++++++++-
+>  util/throttle.c                            |  84 +++++++----
+>  tests/qemu-iotests/tests/file-io-error     | 119 +++++++++++++++
+>  tests/qemu-iotests/tests/file-io-error.out |  33 +++++
+>  14 files changed, 418 insertions(+), 171 deletions(-)
+>  create mode 100755 tests/qemu-iotests/tests/file-io-error
+>  create mode 100644 tests/qemu-iotests/tests/file-io-error.out
+>
+> --
+> 2.41.0
+>
+>
 
