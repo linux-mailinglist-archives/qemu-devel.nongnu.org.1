@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2DF7937D8
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 414717937FF
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:22:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdods-0001lF-Ng; Wed, 06 Sep 2023 05:16:08 -0400
+	id 1qdoeu-0002lW-J9; Wed, 06 Sep 2023 05:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qdodl-0001ky-Oa
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:16:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qdodh-0005WR-Tz
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:16:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1693991757;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=k71gOEgcOsPJQzlqU/34ZyJqps+xRnRFGTrUdNtBoVM=;
- b=ButbOXPD/1UIC5wRptBN4IuiQU8fiEQ0sYIOkyR6TqT/oa+J2BmJ8oXa9Ev6VjIBIx6OiM
- 8Bju9nZwAnU65xca39++shutJWEqazxUUPMMtVvVFRdsDB63C4k6imOmJvSb9oFx4zg43O
- GOPN1EFyrwwDt7+y8l2/Tbm3wrZvzj8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-577-6X73lOBeNsSamS7QmwOZJg-1; Wed, 06 Sep 2023 05:15:55 -0400
-X-MC-Unique: 6X73lOBeNsSamS7QmwOZJg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 201563801BC5
- for <qemu-devel@nongnu.org>; Wed,  6 Sep 2023 09:15:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.47])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 42CB8C03292;
- Wed,  6 Sep 2023 09:15:54 +0000 (UTC)
-Date: Wed, 6 Sep 2023 10:15:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v1 1/7] qapi: scripts: add a generator for qapi's examples
-Message-ID: <ZPhDSD+qn66GmS0i@redhat.com>
-References: <20230905194846.169530-1-victortoso@redhat.com>
- <20230905194846.169530-2-victortoso@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qdoej-0002e2-GP
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:17:03 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qdoed-0005bP-Th
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:17:01 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6c0828c3c2dso1898759a34.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 02:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1693991814; x=1694596614; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zlOwNIRM0PbqstbbSmabZYb/WTRjrOsuhxAOr8eqItQ=;
+ b=Ne0tSZZr0/j8iCE6D7S9NFAdwGL3Nh4G/Mk8FJnA7+cfpeg7JUJ3m8kOPC3aE9bpNr
+ TvX2Ni4+PGOcgSIXnIFI0ffl7NAFvZziiJegqv+FUUxog6OkXL+RqfxbsTgzZCgTyT8c
+ RMEIXqZgJSg6r6YALLEsGSFIpvnBTf8XmSqS1e8QyHO6xs8Sv4mga7Fvo5NJh12PomIc
+ FU5ODO/5UiIEmGM5/GKgH0wDucvujmpGoqt0fL4BqfIt+kxSjW7vIPMEdnZShlzgSIo1
+ sa2KJkIpruoPZXCTKQtitrlj9kzoKxzZ8G5J56ZcjjScLFss5Wqvuc/BmGglnDG1FPYv
+ tKTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1693991814; x=1694596614;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zlOwNIRM0PbqstbbSmabZYb/WTRjrOsuhxAOr8eqItQ=;
+ b=btlQZmLYwlh1nQAOmC+g04C939xX/8u26yFMqN1WUXy1etoEgMZzEqgkkQxOlC8fq+
+ AaNgSHSVFKnDSzaLRE+Lu/fOtVj3ZPsXHB1PUqWtJe2rzcmgaS+SeZ1XkyOKUuFsV6Gg
+ OXYtqWGvBjpstxx2/TRxie7oFcgRWqWUIgwoGCNNY5UOdevnTyCcJDg8yFkvFMkKBdXl
+ HEEdYQpQYrtixM+4Q3nFbeA8twA0UbgwZMPRR6HKaQne8iJsrEt2WrK2CfuJt8HX0ZoR
+ pxlVmzVTOES3kpfySSP6EtmXQsXXGd9P9eBge24nWTOeO9xFyWjNm+pOTX4gpQ+rh6cD
+ Vejg==
+X-Gm-Message-State: AOJu0YyscZQvJ9w5fPFAdnhw4E5l2Bn+LcDGISaD6w4BLo4mHZvTTRo5
+ gOrbtOjrPswmsak2B/iDPViquSc8Jx+96Fa2Vuo=
+X-Google-Smtp-Source: AGHT+IGXLPJAEUfrAPuvn7hcFmZtHLwCTHZqaHVLwnUpUBI29cSrSOdYeqDxh5w/0ooaWqcCWuGVhQ==
+X-Received: by 2002:a9d:6845:0:b0:6b9:1917:b2f3 with SMTP id
+ c5-20020a9d6845000000b006b91917b2f3mr15989713oto.33.1693991813852; 
+ Wed, 06 Sep 2023 02:16:53 -0700 (PDT)
+Received: from grind.. ([177.94.15.194]) by smtp.gmail.com with ESMTPSA id
+ n21-20020a9d6f15000000b006b75242d6c3sm6229228otq.38.2023.09.06.02.16.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Sep 2023 02:16:53 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, philmd@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 00/19] riscv: split TCG/KVM accelerators from cpu.c
+Date: Wed,  6 Sep 2023 06:16:27 -0300
+Message-ID: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230905194846.169530-2-victortoso@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,321 +88,120 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 05, 2023 at 09:48:40PM +0200, Victor Toso wrote:
-> This generator has two goals:
->  1. Mechanical validation of QAPI examples
->  2. Generate the examples in a JSON format to be consumed for extra
->     validation.
-> 
-> The generator iterates over every Example section, parsing both server
-> and client messages. The generator prints any inconsistency found, for
-> example:
-> 
->  |  Error: Extra data: line 1 column 39 (char 38)
->  |  Location: cancel-vcpu-dirty-limit at qapi/migration.json:2017
->  |  Data: {"execute": "cancel-vcpu-dirty-limit"},
->  |      "arguments": { "cpu-index": 1 } }
-> 
-> The generator will output other JSON file with all the examples in the
-> QAPI module that they came from. This can be used to validate the
-> introspection between QAPI/QMP to language bindings, for example:
-> 
->  | { "examples": [
->  |   {
->  |     "id": "ksuxwzfayw",
->  |     "client": [
->  |     {
->  |       "sequence-order": 1
->  |       "message-type": "command",
->  |       "message":
->  |       { "arguments":
->  |         { "device": "scratch", "size": 1073741824 },
->  |         "execute": "block_resize"
->  |       },
->  |    } ],
->  |    "server": [
->  |    {
->  |      "sequence-order": 2
->  |      "message-type": "return",
->  |      "message": { "return": {} },
->  |    } ]
->  |    }
->  |  ] }
-> 
-> Note that the order matters, as read by the Example section and
-> translated into "sequence-order". A language binding project can then
-> consume this files to Marshal and Unmarshal, comparing if the results
-> are what is to be expected.
-> 
-> RFC discussion:
->     https://lists.gnu.org/archive/html/qemu-devel/2022-08/msg04641.html
-> 
-> Signed-off-by: Victor Toso <victortoso@redhat.com>
-> ---
->  scripts/qapi/dumpexamples.py | 194 +++++++++++++++++++++++++++++++++++
->  scripts/qapi/main.py         |   2 +
->  2 files changed, 196 insertions(+)
->  create mode 100644 scripts/qapi/dumpexamples.py
-> 
-> diff --git a/scripts/qapi/dumpexamples.py b/scripts/qapi/dumpexamples.py
-> new file mode 100644
-> index 0000000000..c14ed11774
-> --- /dev/null
-> +++ b/scripts/qapi/dumpexamples.py
-> @@ -0,0 +1,194 @@
-> +"""
-> +Dump examples for Developers
-> +"""
-> +# Copyright (c) 2022 Red Hat Inc.
-> +#
-> +# Authors:
-> +#  Victor Toso <victortoso@redhat.com>
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2.
-> +# See the COPYING file in the top-level directory.
-> +
-> +# Just for type hint on self
-> +from __future__ import annotations
-> +
-> +import os
-> +import json
-> +import random
-> +import string
-> +
-> +from typing import Dict, List, Optional
-> +
-> +from .schema import (
-> +    QAPISchema,
-> +    QAPISchemaType,
-> +    QAPISchemaVisitor,
-> +    QAPISchemaEnumMember,
-> +    QAPISchemaFeature,
-> +    QAPISchemaIfCond,
-> +    QAPISchemaObjectType,
-> +    QAPISchemaObjectTypeMember,
-> +    QAPISchemaVariants,
-> +)
-> +from .source import QAPISourceInfo
-> +
-> +
-> +def gen_examples(schema: QAPISchema,
-> +                 output_dir: str,
-> +                 prefix: str) -> None:
-> +    vis = QAPISchemaGenExamplesVisitor(prefix)
-> +    schema.visit(vis)
-> +    vis.write(output_dir)
-> +
-> +
-> +def get_id(random, size: int) -> str:
-> +    letters = string.ascii_lowercase
-> +    return ''.join(random.choice(letters) for i in range(size))
-> +
-> +
-> +def next_object(text, start, end, context) -> Dict:
-> +    # Start of json object
-> +    start = text.find("{", start)
-> +    end = text.rfind("}", start, end+1)
-> +
-> +    # try catch, pretty print issues
-> +    try:
-> +        ret = json.loads(text[start:end+1])
-> +    except Exception as e:
-> +        print("Error: {}\nLocation: {}\nData: {}\n".format(
-> +              str(e), context, text[start:end+1]))
+Based-on: 20230901194627.1214811-1-dbarboza@ventanamicro.com
+("[PATCH v9 00/20] riscv: 'max' CPU, detect user choice in TCG")
 
-This prints an error, but the caller ignores this and carries on
-as normal.
+Hi,
 
-After applying this series, we still have multiple errors being
-printed on console
+This v2 contains changes suggested by Drew and Phil in v1.
 
-Error: Expecting ',' delimiter: line 12 column 19 (char 336)
-Location: query-blockstats at ../storage-daemon/qapi/../../qapi/block-core.json:1259
+The series is now focused in the task at hand (split the accelerators),
+avoid changing existing behavior.
 
-Error: Expecting property name enclosed in double quotes: line 7 column 19 (char 264)
-Location: query-rocker-of-dpa-flows at ../qapi/rocker.json:256
+The following v1 patches were dropped:
 
-Error: Expecting value: line 28 column 15 (char 775)
-Location: query-spice at ../qapi/ui.json:372
+- patches 5 and 6: the idea of having fine grained CPU behavior defined
+  via class properties is too much for what we have today (generic CPUs,
+  vendor CPUs and the 'host' KVM CPU). If we decide to add a forth CPU
+  stereotype we can revisit this design
+
+- patches 19 and 20: partially for the same reason as we dropped patches
+  5 and 6. Second reason is that the design change disallowing vendor
+  CPU support in KVM is too much to be tackled in this series and it
+  deserves its separated thread
+
+Patch 13 was folded into patch 14. The forementioned changes left patch
+13 with little changes to justify its own patch.
+
+Extra patches were created to attend suggestions that were a bit too
+much to do in the same patch.
+
+Patches missing acks: 5, 9, 10, 11, 14, 16
+
+Changes from v1:
+- Dropped v1 patches: 5,6,19,20
+- patch 13 from v1 folded patch 14 from v1, now known as patch 13.
+  Commit msg from patch 14 was kept
+- patch 1:
+  - added blank line after tcg_cpu_accel_type_info
+- patch 3:
+  - added blank lines after each 'if' in riscv_cpu_validate_v() after
+    moving it
+- patch 4:
+  - removed "riscv_tcg_ops is being imported from cpu.c for now" comment
+  - changed riscv_tcg_ops back to 'static'
+- patch 7 (former 9):
+  - replaced "to minimize changes in the future" with "because they
+    should not be modified at runtime" in the commit msg
+- patch 9 (new):
+  - make riscv_add_satp_mode_properties() callable from kvm.c
+- patch 10 (new):
+  - remove target/riscv/kvm-stub.c
+  - add non-KVM stubs for APIs in kvm_riscv.h
+- patch 11:
+  - remove the 'if kvm_enabled' block from
+    riscv_cpu_add_user_properties()
+- patch 13 (former 14):
+  - squashed together with patch 13 from v1. Commit msg from patch 14
+    was kept
+  - make misa_bits[] zero-terminated
+- patch 14 (new):
+  - export set_misa() as riscv_cpu_set_misa()
+- patch 16 (new):
+  - make misa_ext_cfg[] const
+- patch 18 (former 17):
+  - remove the 'make it const' reference in commit msg
+- v1 link:
+  https://lore.kernel.org/qemu-riscv/20230901194627.1214811-1-dbarboza@ventanamicro.com/
 
 
-If we have errors detected, we need to terminate the build by
-making the generator exit, to force fixing of the problems.
+Daniel Henrique Barboza (19):
+  target/riscv: introduce TCG AccelCPUClass
+  target/riscv: move riscv_cpu_realize_tcg() to TCG::cpu_realizefn()
+  target/riscv: move riscv_cpu_validate_set_extensions() to tcg-cpu.c
+  target/riscv: move riscv_tcg_ops to tcg-cpu.c
+  target/riscv/cpu.c: add .instance_post_init()
+  target/riscv: move 'host' CPU declaration to kvm.c
+  target/riscv/cpu.c: mark extensions arrays as 'const'
+  target/riscv: move riscv_cpu_add_kvm_properties() to kvm.c
+  target/riscv: make riscv_add_satp_mode_properties() public
+  target/riscv: remove kvm-stub.c
+  target/riscv: introduce KVM AccelCPUClass
+  target/riscv: move KVM only files to kvm subdir
+  target/riscv/kvm: do not use riscv_cpu_add_misa_properties()
+  target/riscv/cpu.c: export set_misa()
+  target/riscv/tcg: introduce tcg_cpu_instance_init()
+  target/riscv/cpu.c: make misa_ext_cfgs[] 'const'
+  target/riscv/tcg: move riscv_cpu_add_misa_properties() to tcg-cpu.c
+  target/riscv/cpu.c: export isa_edata_arr[]
+  target/riscv/cpu: move priv spec functions to tcg-cpu.c
 
-This patch then needs to be moved to the end of the series, as
-we need all the fixes applied to the schemas, before we enable
-validation, to avoid breaking 'git bisect' build tests.
+ hw/intc/riscv_aplic.c                 |   2 +-
+ hw/riscv/virt.c                       |   2 +-
+ target/riscv/cpu.c                    | 990 ++------------------------
+ target/riscv/cpu.h                    |  30 +-
+ target/riscv/csr.c                    |   1 +
+ target/riscv/kvm-stub.c               |  30 -
+ target/riscv/{kvm.c => kvm/kvm-cpu.c} | 120 +++-
+ target/riscv/{ => kvm}/kvm_riscv.h    |  27 +-
+ target/riscv/kvm/meson.build          |   1 +
+ target/riscv/meson.build              |   4 +-
+ target/riscv/tcg/meson.build          |   2 +
+ target/riscv/tcg/tcg-cpu.c            | 881 +++++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.h            |  28 +
+ 13 files changed, 1138 insertions(+), 980 deletions(-)
+ delete mode 100644 target/riscv/kvm-stub.c
+ rename target/riscv/{kvm.c => kvm/kvm-cpu.c} (91%)
+ rename target/riscv/{ => kvm}/kvm_riscv.h (64%)
+ create mode 100644 target/riscv/kvm/meson.build
+ create mode 100644 target/riscv/tcg/meson.build
+ create mode 100644 target/riscv/tcg/tcg-cpu.c
+ create mode 100644 target/riscv/tcg/tcg-cpu.h
 
-
-> +        return {}
-> +    else:
-> +        return ret
-> +
-> +
-> +def parse_text_to_dicts(text: str, context: str) -> List[Dict]:
-> +    examples, clients, servers = [], [], []
-> +
-> +    count = 1
-> +    c, s = text.find("->"), text.find("<-")
-> +    while c != -1 or s != -1:
-> +        if c == -1 or (s != -1 and s < c):
-> +            start, target = s, servers
-> +        else:
-> +            start, target = c, clients
-> +
-> +        # Find the client and server, if any
-> +        if c != -1:
-> +            c = text.find("->", start + 1)
-> +        if s != -1:
-> +            s = text.find("<-", start + 1)
-> +
-> +        # Find the limit of current's object.
-> +        # We first look for the next message, either client or server. If none
-> +        # is avaible, we set the end of the text as limit.
-> +        if c == -1 and s != -1:
-> +            end = s
-> +        elif c != -1 and s == -1:
-> +            end = c
-> +        elif c != -1 and s != -1:
-> +            end = (c < s) and c or s
-> +        else:
-> +            end = len(text) - 1
-> +
-> +        message = next_object(text, start, end, context)
-> +        if len(message) > 0:
-> +            message_type = "return"
-> +            if "execute" in message:
-> +                message_type = "command"
-> +            elif "event" in message:
-> +                message_type = "event"
-> +
-> +            target.append({
-> +                "sequence-order": count,
-> +                "message-type": message_type,
-> +                "message": message
-> +            })
-> +            count += 1
-> +
-> +    examples.append({"client": clients, "server": servers})
-> +    return examples
-> +
-> +
-> +def parse_examples_of(self: QAPISchemaGenExamplesVisitor,
-> +                      name: str):
-> +
-> +    assert(name in self.schema._entity_dict)
-> +    obj = self.schema._entity_dict[name]
-> +    assert((obj.doc is not None))
-> +    module_name = obj._module.name
-> +
-> +    # We initialize random with the name so that we get consistent example
-> +    # ids over different generations. The ids of a given example might
-> +    # change when adding/removing examples, but that's acceptable as the
-> +    # goal is just to grep $id to find what example failed at a given test
-> +    # with minimum chorn over regenerating.
-> +    random.seed(name, version=2)
-> +
-> +    for s in obj.doc.sections:
-> +        if s.name != "Example":
-> +            continue
-> +
-> +        if module_name not in self.target:
-> +            self.target[module_name] = []
-> +
-> +        context = f'''{name} at {obj.info.fname}:{obj.info.line}'''
-> +        examples = parse_text_to_dicts(s.text, context)
-> +        for example in examples:
-> +            self.target[module_name].append({
-> +                    "id": get_id(random, 10),
-> +                    "client": example["client"],
-> +                    "server": example["server"]
-> +            })
-> +
-> +
-> +class QAPISchemaGenExamplesVisitor(QAPISchemaVisitor):
-> +
-> +    def __init__(self, prefix: str):
-> +        super().__init__()
-> +        self.target = {}
-> +        self.schema = None
-> +
-> +    def visit_begin(self, schema):
-> +        self.schema = schema
-> +
-> +    def visit_end(self):
-> +        self.schema = None
-> +
-> +    def write(self: QAPISchemaGenExamplesVisitor,
-> +              output_dir: str) -> None:
-> +        for filename, content in self.target.items():
-> +            pathname = os.path.join(output_dir, "examples", filename)
-> +            odir = os.path.dirname(pathname)
-> +            os.makedirs(odir, exist_ok=True)
-> +            result = {"examples": content}
-> +
-> +            with open(pathname, "w") as outfile:
-> +                outfile.write(json.dumps(result, indent=2, sort_keys=True))
-> +
-> +    def visit_command(self: QAPISchemaGenExamplesVisitor,
-> +                      name: str,
-> +                      info: Optional[QAPISourceInfo],
-> +                      ifcond: QAPISchemaIfCond,
-> +                      features: List[QAPISchemaFeature],
-> +                      arg_type: Optional[QAPISchemaObjectType],
-> +                      ret_type: Optional[QAPISchemaType],
-> +                      gen: bool,
-> +                      success_response: bool,
-> +                      boxed: bool,
-> +                      allow_oob: bool,
-> +                      allow_preconfig: bool,
-> +                      coroutine: bool) -> None:
-> +
-> +        if gen:
-> +            parse_examples_of(self, name)
-> +
-> +    def visit_event(self: QAPISchemaGenExamplesVisitor,
-> +                    name: str,
-> +                    info: Optional[QAPISourceInfo],
-> +                    ifcond: QAPISchemaIfCond,
-> +                    features: List[QAPISchemaFeature],
-> +                    arg_type: Optional[QAPISchemaObjectType],
-> +                    boxed: bool):
-> +
-> +        parse_examples_of(self, name)
-> diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
-> index 316736b6a2..cf9beac3c9 100644
-> --- a/scripts/qapi/main.py
-> +++ b/scripts/qapi/main.py
-> @@ -13,6 +13,7 @@
->  
->  from .commands import gen_commands
->  from .common import must_match
-> +from .dumpexamples import gen_examples
->  from .error import QAPIError
->  from .events import gen_events
->  from .introspect import gen_introspect
-> @@ -54,6 +55,7 @@ def generate(schema_file: str,
->      gen_events(schema, output_dir, prefix)
->      gen_introspect(schema, output_dir, prefix, unmask)
->  
-> +    gen_examples(schema, output_dir, prefix)
->  
->  def main() -> int:
->      """
-> -- 
-> 2.41.0
-> 
-> 
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.41.0
 
 
