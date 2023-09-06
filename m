@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F0B7937AE
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 377727937C6
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Sep 2023 11:10:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qdoTZ-0004X3-RL; Wed, 06 Sep 2023 05:05:29 -0400
+	id 1qdoXy-0007Ee-Hv; Wed, 06 Sep 2023 05:10:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qdoTY-0004W1-17
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:05:28 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qdoXr-0007D2-Pt
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:09:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qdoTV-0003Bs-5e
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:05:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=1W2HlbO0LStYmWEs+r+HN1/v/nxuxkDws3VwtTVhUsA=; b=Fl+3QjhoZFIFs7xUm8Cx4HieGo
- UflBR3y4jY2nac6N0BCywBIaiH0kRiY9ghPKZfRZ3Dpp+rqG0F4stZHeIWi7ZJLT3X47nN3GAa87e
- /sV+lAzjCQ6m/vGoYp9cczdHKKi7gZKRTQx0Kg34MreN0AWxgejsIpNeEoIbew9Yox++rRI5tY7p8
- we7HWsT/VdSG3gXfZnbFDFRnOYcnpo5DLRPSgZKa7rNNUIIVkkTiT41XYVLRJWu8Nk1TnAPo0zZ7u
- gqUemecpr5fKQCmxJJe0FXhr5rROgkUQ2fdws/5n2WRYNq3EgIbiTF6bO0zfi+LtM0Dlx2gTYqnQW
- 9ulLPrtc/3Cs2aE73KHCzo2lx2GGOG2AtBVAxp+2aWfzKjDjlDY685YT2QtSWfsHShIiMtuJwKZRx
- KVQBUCT5cMhSW+FUt15CLmeNvBjRkU6IAgeAd/2sQW4G8n0QEF+FQYjev1bTjT8RfGgTbCIJRVeuX
- EOr/blVEDTyEC6v1XJdeFUAID5ilBGexNXm2aXt67w65Wk/Bpp6YwsBjCTUN0z/BZv7k/Sx1ctRUX
- eM7sVOIg9xtilKfWmhHNC+m+h0KiEpN+aXnVx+Sp2hc+JqnsepA21fchRkJ3iQZf7ltkx6Haw/hRG
- CjKfeUxq6usxe4Q03IxRs7XnWPzRoaq5Wqq5+9SWk=;
-Received: from host81-158-188-207.range81-158.btcentralplus.com
- ([81.158.188.207] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qdoSp-0004kC-MU; Wed, 06 Sep 2023 10:04:47 +0100
-Message-ID: <ad47feac-e843-82d0-919f-e0ab44bfb33c@ilande.co.uk>
-Date: Wed, 6 Sep 2023 10:05:12 +0100
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qdoXp-0003ux-6d
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 05:09:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1693991381;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MF+SQN72Pjp8JgdvgSXa+5sZftxISo7gA3fnpKO9ZAs=;
+ b=XJwQf0gYp9epl9oYqGjSR+k/HuaD73HAfwushWvVWKl7dLlpinvcJJdNd1joZyuCzxsTB5
+ z77cGZo36NenyWa9KHj+u+kxyO23O+Ik4NLkmHYAklkBQhrHWaP3RAdgN3RFjkRwUI2Acr
+ YTsGyH8U1dYLO0S2YO9HMaJD0Pk1RPU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-518-pzsnbhGnNPaleFT8Vdb48w-1; Wed, 06 Sep 2023 05:09:38 -0400
+X-MC-Unique: pzsnbhGnNPaleFT8Vdb48w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2C3B803470;
+ Wed,  6 Sep 2023 09:09:37 +0000 (UTC)
+Received: from [10.39.193.110] (unknown [10.39.193.110])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4D3341121314;
+ Wed,  6 Sep 2023 09:09:36 +0000 (UTC)
+Message-ID: <64c3ff9a-12d4-c33e-c2a9-5602e4cd060a@redhat.com>
+Date: Wed, 6 Sep 2023 11:09:35 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>,
- =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <cover.1693252037.git.manos.pitsidianakis@linaro.org>
- <8de966a86bc21358528eeee66ffe74f8a82bb687.1693252037.git.manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH v2 1/7] vhost-user: strip superfluous whitespace
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <8de966a86bc21358528eeee66ffe74f8a82bb687.1693252037.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>,
+ Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230830134055.106812-1-lersek@redhat.com>
+ <20230830134055.106812-2-lersek@redhat.com>
+ <ce2b4c96-8a6b-247c-14eb-b3a6c81973f0@redhat.com>
+ <CADSE00+9s4etckQFqGbxc3xB281tffTRPs5CAO5b7J9PeQsyrA@mail.gmail.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <CADSE00+9s4etckQFqGbxc3xB281tffTRPs5CAO5b7J9PeQsyrA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 81.158.188.207
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v8 02/12] Add virtio-sound-pci device
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,182 +85,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/08/2023 20:54, Emmanouil Pitsidianakis wrote:
-
-Hi Emmanouil,
-
-> This patch adds a PCI wrapper device for the virtio-sound device.
-> It is necessary to instantiate a virtio-snd device in a guest.
-> All sound logic will be added to the virtio-snd device in the following
-> commits.
+On 9/6/23 09:12, Albert Esteve wrote:
 > 
-> To add this device with a guest, you'll need a >=5.13 kernel compiled
-> with CONFIG_SND_VIRTIO=y, which at the time of writing most distros have
-> off by default.
 > 
-> Use with following flags in the invocation:
+> On Thu, Aug 31, 2023 at 9:14 AM Laszlo Ersek <lersek@redhat.com
+> <mailto:lersek@redhat.com>> wrote:
 > 
-> Pulseaudio:
->    -audio driver=pa,model=virtio
->    or
->    -audio driver=pa,model=virtio,server=/run/user/1000/pulse/native
-> sdl:
->    -audio driver=sdl,model=virtio
-> coreaudio (macos/darwin):
->    -audio driver=coreaudio,model=virtio
-> etc.
+>     On 8/30/23 15:40, Laszlo Ersek wrote:
+>     > Cc: "Michael S. Tsirkin" <mst@redhat.com <mailto:mst@redhat.com>>
+>     (supporter:vhost)
+>     > Cc: Eugenio Perez Martin <eperezma@redhat.com
+>     <mailto:eperezma@redhat.com>>
+>     > Cc: German Maglione <gmaglione@redhat.com
+>     <mailto:gmaglione@redhat.com>>
+>     > Cc: Liu Jiang <gerry@linux.alibaba.com
+>     <mailto:gerry@linux.alibaba.com>>
+>     > Cc: Sergio Lopez Pascual <slp@redhat.com <mailto:slp@redhat.com>>
+>     > Cc: Stefano Garzarella <sgarzare@redhat.com
+>     <mailto:sgarzare@redhat.com>>
+>     > Signed-off-by: Laszlo Ersek <lersek@redhat.com
+>     <mailto:lersek@redhat.com>>
+>     > Reviewed-by: Stefano Garzarella <sgarzare@redhat.com
+>     <mailto:sgarzare@redhat.com>>
+>     > ---
+>     >
+>     > Notes:
+>     >     v2:
+>     >     
+>     >     - pick up Stefano's R-b
+>     >
+>     >  hw/virtio/vhost-user.c | 2 +-
+>     >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9c7b40a8e603f4da92471
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
-> Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->   hw/virtio/meson.build      |  1 +
->   hw/virtio/virtio-snd-pci.c | 97 ++++++++++++++++++++++++++++++++++++++
->   softmmu/qdev-monitor.c     |  1 +
->   3 files changed, 99 insertions(+)
->   create mode 100644 hw/virtio/virtio-snd-pci.c
+>     This has been
 > 
-> diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-> index 120d4bfa0a..5e5a83a4ee 100644
-> --- a/hw/virtio/meson.build
-> +++ b/hw/virtio/meson.build
-> @@ -63,6 +63,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_SERIAL', if_true: files('virtio-serial-pc
->   virtio_pci_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem-pci.c'))
->   virtio_pci_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu-pci.c'))
->   virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem-pci.c'))
-> +virtio_pci_ss.add(when: 'CONFIG_VIRTIO_SND', if_true: files('virtio-snd-pci.c'))
->   virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'))
->   virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-md-pci.c'))
->   
-> diff --git a/hw/virtio/virtio-snd-pci.c b/hw/virtio/virtio-snd-pci.c
-> new file mode 100644
-> index 0000000000..a6a530d161
-> --- /dev/null
-> +++ b/hw/virtio/virtio-snd-pci.c
-> @@ -0,0 +1,97 @@
-> +/*
-> + * VIRTIO Sound Device PCI Bindings
-> + *
-> + * Copyright (c) 2023 Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or
-> + * (at your option) any later version.  See the COPYING file in the
-> + * top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "hw/audio/soundhw.h"
-> +#include "hw/virtio/virtio-pci.h"
-> +#include "hw/virtio/virtio-snd.h"
-> +
-> +typedef struct VirtIOSoundPCI VirtIOSoundPCI;
+>     Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org
+>     <mailto:philmd@linaro.org>>
+> 
+>     under the (identical) v1 posting:
+> 
+>     http://mid.mail-archive.com/cd0604a1-6826-ac6c-6c47-dcb6def64b28@linaro.org <http://mid.mail-archive.com/cd0604a1-6826-ac6c-6c47-dcb6def64b28@linaro.org>
+> 
+>     Thanks, Phil! (and sorry that I posted v2 too quickly -- I forgot that
+>     sometimes reviewers split a review over multiple days.)
+> 
+>     Laszlo
+> 
+>     >
+>     > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>     > index 8dcf049d422b..b4b677c1ce66 100644
+>     > --- a/hw/virtio/vhost-user.c
+>     > +++ b/hw/virtio/vhost-user.c
+>     > @@ -398,7 +398,7 @@ static int vhost_user_write(struct vhost_dev
+>     *dev, VhostUserMsg *msg,
+>     >       * operations such as configuring device memory mappings or
+>     issuing device
+>     >       * resets, which affect the whole device instead of
+>     individual VQs,
+>     >       * vhost-user messages should only be sent once.
+>     > -     *
+>     > +     *
+>     >       * Devices with multiple vhost_devs are given an associated
+>     dev->vq_index
+>     >       * so per_device requests are only sent if vq_index is 0.
+>     >       */
+>     >
+> 
+> 
+> Thanks for the series!
+> I had a timeout problem with a virtio device I am developing, and I was
+> not sure yet what was going on.
+> Your description of the problem seemed to fit mine, in my case the
+> driver sent a command through the data plane
+> right after the feature negotiation that reached the backend too soon.
+> Adding delays alleviated the issue, so it
+> already hinted me to a race condition.
+> 
+> I tested using this patch series and according to my experiments, it
+> really lowers the chances to get the deadlock.
+> Sadly, I do still get the issue sometimes, though (not frequently)...
+> However, I think probably the solution comes not
+> from the Qemu side, but from the rust-vmm vhost-user-backend crate. I am
+> looking for that solution on my side.
+> 
+> But that does not invalidate this patch, which I think is a necessary
+> improvement, and in my tests it really
+> helps a lot with the described issue. Therefore:
+> 
+> Tested-by: Albert Esteve <aesteve@redhat.com <mailto:aesteve@redhat.com>>
 
-You can drop the typedef here.
+Thank you for the testing and the feedback!
 
-> +/*
-> + * virtio-snd-pci: This extends VirtioPCIProxy.
-> + */
-> +#define TYPE_VIRTIO_SND_PCI "virtio-sound-pci"
-> +DECLARE_INSTANCE_CHECKER(VirtIOSoundPCI, VIRTIO_SND_PCI,
-> +                         TYPE_VIRTIO_SND_PCI)
+My problem with relegating the fix to rust-vmm/vhost -- i.e. with
+calling the hang a bug inside rust-vmm/vhost -- is that rust-vmm/vhost
+is *unfixable* as long as the vhost-user specification says what it
+says. As soon as the guest is permitted to issue a data plane operation,
+without forcing it to await completion of an earlier control plane
+operation, the cat is out of the bag. Those operations travel through
+independent channels, and the vhost-user spec currently requires the
+backend to listen to both channels at the same time. There's no way to
+restore the original order after both operations have been submitted
+effectively in parallel from the guest side.
 
-and you should be able to use OBJECT_DECLARE_SIMPLE_TYPE() here instead.
+The guest cannot limit itself, the virtio operations it needs to do (on
+the control plane) are described in the virtio spec, in "driver
+requirements" sections, and most of those steps are inherently
+treated/specified as synchronous. The guest already thinks those steps
+are synchronous.
 
-> +struct VirtIOSoundPCI {
-> +    VirtIOPCIProxy parent;
+So it really is a spec problem. I see the big problem in the switch from
+vhost-net to the generic vhost-user protocol. My understanding from the
+virtio-networking series in the RH Developer Blog is that vhost-net was
+entirely ioctl() based, and consequently totally synchronous. That was
+lost when the protocol was rebased to unix domain sockets, without
+upholding the explicit request-response pattern in all operations.
 
-This should be parent_obj, followed by an empty line (see 
-https://qemu.readthedocs.io/en/master/devel/style.html#qemu-object-model-declarations).
+I'm worried we can't get this unstuck until Michael answers Stefan's
+question, concerning the spec.
 
-> +    VirtIOSound vdev;
-> +};
-> +
-> +static Property virtio_snd_pci_properties[] = {
-> +    DEFINE_AUDIO_PROPERTIES(VirtIOSoundPCI, vdev.card),
-> +    DEFINE_PROP_BIT("ioeventfd", VirtIOPCIProxy, flags,
-> +                    VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT, true),
-> +    DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
-> +                       DEV_NVECTORS_UNSPECIFIED),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +static void virtio_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-> +{
-> +    VirtIOSoundPCI *dev = VIRTIO_SND_PCI(vpci_dev);
-> +    DeviceState *vdev = DEVICE(&dev->vdev);
-> +
-> +    if (vpci_dev->nvectors == DEV_NVECTORS_UNSPECIFIED) {
-> +        vpci_dev->nvectors = 2;
-> +    }
-> +
-> +    virtio_pci_force_virtio_1(vpci_dev);
-> +    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
-> +}
-> +
-> +static void virtio_snd_pci_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    VirtioPCIClass *vpciklass = VIRTIO_PCI_CLASS(klass);
-> +
-> +    device_class_set_props(dc, virtio_snd_pci_properties);
-> +    dc->desc = "Virtio Sound";
-> +    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
-> +
-> +    vpciklass->realize = virtio_snd_pci_realize;
-> +}
-> +
-> +static void virtio_snd_pci_instance_init(Object *obj)
-> +{
-> +    VirtIOSoundPCI *dev = VIRTIO_SND_PCI(obj);
-> +
-> +    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
-> +                                TYPE_VIRTIO_SND);
-> +}
-> +
-> +static const VirtioPCIDeviceTypeInfo virtio_snd_pci_info = {
-> +    .generic_name  = TYPE_VIRTIO_SND_PCI,
-> +    .instance_size = sizeof(VirtIOSoundPCI),
-> +    .instance_init = virtio_snd_pci_instance_init,
-> +    .class_init    = virtio_snd_pci_class_init,
-> +};
-> +
-> +/* Create a Virtio Sound PCI device, so '-audio driver,model=virtio' works. */
-> +static int virtio_snd_pci_init(PCIBus *bus, const char *audiodev)
-> +{
-> +    DeviceState *dev;
-> +
-> +    dev = qdev_new(TYPE_VIRTIO_SND_PCI);
-> +    qdev_prop_set_string(dev, "audiodev", audiodev);
-> +    qdev_realize_and_unref(dev, BUS(bus), &error_fatal);
-> +    return 0;
-> +}
-> +
-> +static void virtio_snd_pci_register(void)
-> +{
-> +    virtio_pci_types_register(&virtio_snd_pci_info);
-> +    pci_register_soundhw("virtio", "Virtio Sound", virtio_snd_pci_init);
-> +}
-> +
-> +type_init(virtio_snd_pci_register);
-> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-> index 74f4e41338..2e9835ad88 100644
-> --- a/softmmu/qdev-monitor.c
-> +++ b/softmmu/qdev-monitor.c
-> @@ -108,6 +108,7 @@ static const QDevAlias qdev_alias_table[] = {
->       { "virtio-serial-device", "virtio-serial", QEMU_ARCH_VIRTIO_MMIO },
->       { "virtio-serial-ccw", "virtio-serial", QEMU_ARCH_VIRTIO_CCW },
->       { "virtio-serial-pci", "virtio-serial", QEMU_ARCH_VIRTIO_PCI},
-> +    { "virtio-sound-pci", "virtio-sound", QEMU_ARCH_VIRTIO_PCI},
->       { "virtio-tablet-device", "virtio-tablet", QEMU_ARCH_VIRTIO_MMIO },
->       { "virtio-tablet-ccw", "virtio-tablet", QEMU_ARCH_VIRTIO_CCW },
->       { "virtio-tablet-pci", "virtio-tablet", QEMU_ARCH_VIRTIO_PCI },
-
-
-ATB,
-
-Mark.
+Laszlo
 
 
