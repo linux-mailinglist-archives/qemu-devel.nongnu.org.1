@@ -2,75 +2,166 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D43796EDA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 04:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3790796EDB
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 04:28:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe4iw-0006WX-7R; Wed, 06 Sep 2023 22:26:26 -0400
+	id 1qe4kf-0007OQ-3Y; Wed, 06 Sep 2023 22:28:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qe4iu-0006WJ-Rf; Wed, 06 Sep 2023 22:26:24 -0400
-Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qe4is-0006Q4-11; Wed, 06 Sep 2023 22:26:24 -0400
-Received: by mail-vk1-xa31.google.com with SMTP id
- 71dfb90a1353d-48d0c7bfc49so264463e0c.0; 
- Wed, 06 Sep 2023 19:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694053580; x=1694658380; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=juxRsCDNkFTEVk1uQaqw1S8oUpN8LdE7T5F+iUXxlx4=;
- b=B8rA56CN2traCKO0eW+oSzIDDQNasQMHfMJKrg4Bc3KrdEN41/KvP+pL6DqhtKx3KS
- rfD6yMeNgfs2UNbUh/u24lcR9i5zZz6NfEQMJ5VM6Mr77zDvpuwj1m3Rr1uKJeChqox/
- +11rfVfoDK51ss2DjlnVfiGCj5D85MHVfitPC5jE/1/ttXrp1ojc8fg8Tf4GjCU4cjam
- 1ZP7YXZKA+ShomlSmam36R2NThJc2Ms8XWZ2u6M66kWPYca5vAGfiyJZzLsbOpOJVoLi
- n0RWOkonRztL/sGEZwVcaDa2pV2YWrc8wujg8q3o3r0aNb3DnB842CZAO21eNiEpPyEh
- 0Jwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694053580; x=1694658380;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=juxRsCDNkFTEVk1uQaqw1S8oUpN8LdE7T5F+iUXxlx4=;
- b=HHZQCcH4LdN5il67XljZJDDl/ud1u0At44rJ7SsTkRlSfkKUytrB87JZ0sf8WH8Tdz
- Uat78PaGn2KvjCAnhNLBpvt5QcpmGmwUo1OBN23nWENai1Bnwikbk4g+4uljFomJy+9o
- LWZ12DTRwTucUyobqFhAUxqZYb5ffnKFwKJjB/e/GgZpgG8O9ojkERc41gvvQxqEQpNB
- 0+aedBAQx/ePuCS0bWVp5189I37lID1ZB+yiwr1sETjon6RNzpoaDqyEM2JvXyhuA7FL
- IZrRHI2tgzSN2aqNW8nHaRtc7RsFvduJAhpibxaz6r2h7e6EDLnREUC0X8a3huak2m6r
- yznA==
-X-Gm-Message-State: AOJu0YzlDz54kz+2zH/1hVaEmfdgYbEsqGjjRAVdeWvwZOk2PdPvER6a
- pTgVRlQkDm82dwUOxv39Cuzups6Ba/qLdWWryfo=
-X-Google-Smtp-Source: AGHT+IHfIpXHrha2VGr3FO1amMbQZxs/mcM2jDW1EPczkpGnWuP759UjeH1XPcKFjFmnjkQDpTm5Btwjty7gsPzPzLg=
-X-Received: by 2002:a05:6122:250d:b0:48d:969:af8b with SMTP id
- cl13-20020a056122250d00b0048d0969af8bmr1187798vkb.1.1694053579751; Wed, 06
- Sep 2023 19:26:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230726120706.335340-2-ajones@ventanamicro.com>
-In-Reply-To: <20230726120706.335340-2-ajones@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 7 Sep 2023 12:25:52 +1000
-Message-ID: <CAKmqyKNobj=Lqvrv8epQdqA1YX5DF_zgOhpZruc9FgdJHvoYTw@mail.gmail.com>
-Subject: Re: [PATCH] docs/devel: Add cross-compiling doc
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- palmer@dabbelt.com, bin.meng@windriver.com, peter.maydell@linaro.org, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qe4kd-0007O6-2q
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 22:28:11 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qe4kZ-0006fP-T8
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 22:28:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1694053687; x=1725589687;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=umfmbh2NxFydBW83yMSBZ4rDc3mdGiAtPtagNm6p1YM=;
+ b=bcEAWiiakNDN4dvXgJc/uN68XZr7PDO/ePKFL7j3rQ8PBQO7Uy2kLURj
+ LBrHShnyP/BuvCYeAz0SdocxH3YLrlWDS79j24KV+x9q1dDSVUxTpZXVw
+ 2a4J9bYeguaIXX062eTxE9sMDklGy0JUUmM6YTW7kmbmhgNM47HmPDHHw
+ 0ADAuQIFhoxpX6pchdYvxk0WXI6czrJ6pbMR033LjzdRPAjrf9pgkp5W9
+ 9MTDDyrO7nyksPAtIosa106GCgW2RCU0QrnXdSxqvKxPg5s0TlYmcm2sW
+ e5GNLWgOAgrAYDrmgXIASbLSAs8o3iNSRMjRI2AJf0Kr+sAQZbpXA6zUI A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="356720896"
+X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; d="scan'208";a="356720896"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Sep 2023 19:28:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="865412276"
+X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; d="scan'208";a="865412276"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 06 Sep 2023 19:28:03 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 6 Sep 2023 19:28:02 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Wed, 6 Sep 2023 19:28:02 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.104)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Wed, 6 Sep 2023 19:28:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ILux8oKRz7OODlTrrDPq2vKm9CoUbGnAJWKPGCEDYKWOGkwtdPqHnZU7vpkI13ArPlT86gRQCBS6SM4BVVfJKOvWCWvqBOilo0MQCk2kXXbaOhHubX1btY7MrNVCqjCX88UG1G/AE6q+tCOCVRsleNFNOXAUFLvCgbb4AS9iI6+5fDDnAfZXyuE6sHAHoqIJUIysBEHjz3n6h8zVMKgRjypnjhk8REYp+MoJL+kRQ4PYzXw58iMnKPVs1Ohm39IaHbv/AvgqOYQ+UY1AHG7fD1RGAiGCs1mAMWtcYtCrvG1v512ylwm8CMsik4r0aQFCZ27jj8OPGSnI0rBWp9WaYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GWouzHrF+12vB/VGIylza3q9htiS8uLtJBpt7s74wg4=;
+ b=IgPFHsjYL7pabtMYx6cl2VabRz5scUcjBdAe6epm7Ixph7101Xx10w3sdsw0A9sxfBhbqMQqXoP3Wq14kvaRsLHT2gG7mzyJk6iNQiRn30etEaNv6Y02eETINV49yPtAQdqMZ+ln2LZRZkPi7OFASpAZoD2/ke4JgDnfLaPAMXcyOXPjuZ7WYxQW7xpeAh9Yh1jm5IoiR7W8XoNb51mGXLqZ6wErQ5gyvd+rP98Ww1A3Qd48Lorl/901rdmRKQJfEmOwNVU3DuJ0oD7Ca1EcraH80aBKataLbOpwpWXBxG9cXttU0HQc4+HdXmakU4Ni7XNRmbIsoeBljSBCMAaKCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by SA1PR11MB6944.namprd11.prod.outlook.com (2603:10b6:806:2bb::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Thu, 7 Sep
+ 2023 02:27:59 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::cac7:3146:4b74:8adb]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::cac7:3146:4b74:8adb%6]) with mapi id 15.20.6745.030; Thu, 7 Sep 2023
+ 02:27:58 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>, Alex Williamson
+ <alex.williamson@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "clg@redhat.com"
+ <clg@redhat.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Martins,
+ Joao" <joao.m.martins@oracle.com>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
+ <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
+Subject: RE: [PATCH v1 21/22] vfio/pci: Allow the selection of a given iommu
+ backend
+Thread-Topic: [PATCH v1 21/22] vfio/pci: Allow the selection of a given iommu
+ backend
+Thread-Index: AQHZ2zBOkPXW84M/B0Sug6FqvYMFeLAOJIGAgAAQbACAAGTuAIAAELyw
+Date: Thu, 7 Sep 2023 02:27:58 +0000
+Message-ID: <SJ0PR11MB674457317F85A20959199F4F92EEA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-22-zhenzhong.duan@intel.com>
+ <ZPjAn1Asi5ZE9yzB@nvidia.com>
+ <20230906130926.5c66f9d6.alex.williamson@redhat.com>
+ <ZPkjEGZF1D/fLk9w@nvidia.com>
+In-Reply-To: <ZPkjEGZF1D/fLk9w@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SA1PR11MB6944:EE_
+x-ms-office365-filtering-correlation-id: 690c663c-10db-4f27-d31d-08dbaf4a0d38
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: dQY+S5+k2cxFmiX93HSc5xMwCJJCEY+nU1Jv9UNzPcbVuX1vNXaMzMdKHeR1bFLIpp194kq1X2g0+vH/D13nU4psg38dGlU4Y5xnE5UcmRmWbICH5usWEamDzhwN6Bv3aI6+1+4OyEthoOPP6OsThS9vlUZVf7BWvJi+zGgkjp29rTPz+E6y0YWI+bKVr9VR9jk1xvEVdzer5EvJkpwL3Q4OPDnsLCT0ovnSsw9INe3UAK0tECjDutsJXXHRane6ugm7z9b3MJ9TiRUgJn/u+2HIFjEIaHbFsFsyJE8IAweeQdfIJI7EWkqF7ZoqPRxszNYoAizl/ZLHL7N5S+qiT2ZU1BT/AOJ1eK+Rixh/007izeC4XzmTL0SpwfEbjK0c3ScmvtZO0aZvBap+PU3dGti76YVY5iTPXedXRcdXfd/J2217/u0VBwDaHu/pcebH/qdXVqCsWxtZZVPDLg4vkQPS7mni0EPI3reHwL3nrpx4wGByY9GKJYLXsGJtjnSxSLv6RCtdJoIiXSxxEpObvG7qZnFLPEcrUlvhSX1+AlG6F9aga6ivxjLeihUst3J6YEeZKQ0FrIh1MOZwM4Stwiz7liRtnpyU7np0pQ/MRZ1z+F7AiQAXNP6SLoku8SEU8CmdQcg977IzCmgwmA4QzxBQky/6b0uSdfPt+5J+Tbo=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(39860400002)(366004)(396003)(376002)(136003)(186009)(1800799009)(451199024)(82960400001)(122000001)(38100700002)(26005)(38070700005)(107886003)(7696005)(6506007)(9686003)(55016003)(83380400001)(4326008)(66446008)(478600001)(8676002)(8936002)(110136005)(66946007)(66556008)(76116006)(5660300002)(66476007)(33656002)(86362001)(52536014)(54906003)(316002)(64756008)(2906002)(41300700001)(71200400001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Xj4FzrKnNfeRqQEW6/d42yXmmqpsbfTuJoePB2OCBzsOV6dL2Wx5hQjxX3ii?=
+ =?us-ascii?Q?T5vRQhGo1dFyWuciiwVC3/WUIoKiV+T/3RZlmx//Bjb0RjGw+jEVCgj2plzO?=
+ =?us-ascii?Q?xQAaDy56Dv+Ao/Cb7ramtrw1ey/to8FD9hdVq20lx0VogEnivaecjfpvJOGB?=
+ =?us-ascii?Q?u2BPUHTxYBiesHuaQRqez3jmZmzDIKkni9CLIxdyLwnY7tMbwjBj4LwjWed1?=
+ =?us-ascii?Q?eNqabj8pNwHZi7z/RtXtvLn5n6jfkry7mbxhXA1yCxgdGdPpCe9p0N6slZoE?=
+ =?us-ascii?Q?aOZWEsQDDuHPE6yVMpYcUIGvMffdxr4wzmiUCJIMhsnwUCpCVj789SGYzN/h?=
+ =?us-ascii?Q?yL3kLAXTq14mpHlrV2yG40G/A9+nmaoKNSAl1ufMRXhYA/xBdWgLWiWoKnie?=
+ =?us-ascii?Q?p59eCy2BDSVWAO6qddEek4gRXWPCq3nD/McP+AuSMIpr7DtAgA9G8S4D5/8R?=
+ =?us-ascii?Q?Eo+1aO3QLNDnrozyrg63uaeEArgq7dZl/Cbu/h0hh52WsoiG6m1OM9tFERit?=
+ =?us-ascii?Q?xGCg/K7uQ3bWF/nUYIMlTASg924ZHlrxd+VbhqMc0iU0N8fgB98IxCJyxMct?=
+ =?us-ascii?Q?r+B8h21zBhbOrxulpasEHxXcU0CSewEun6wjlejJLv7QtHGNn4C0y1icwcr3?=
+ =?us-ascii?Q?ZCDDLI6TI71isaNahw7XE+RLehCJoZoV1rlw7YNxfrHJhyTV9bU1Jm3rfPo+?=
+ =?us-ascii?Q?ykLmSHm1qDLHYV5h+oMwlK37FjxUwasdsHjcMD/fEdAhlscmOs6OCKztW8OI?=
+ =?us-ascii?Q?0Zo38igbkQCwGL4Si6TiSVPxuFNL+ENC0HNROvIrwY6CJrQMJPUWmqJoQAgR?=
+ =?us-ascii?Q?UMy8Pqe7itULXEir8GwxDv4ey141nTRthlUprCPC/OxbpZr7NsXluAnPI3DN?=
+ =?us-ascii?Q?UvOGGLD7thvSFg8uIQM71o4s6rb8qAE4Czh6SpE93VX+S2e5Yqyxx0LcqqPZ?=
+ =?us-ascii?Q?3WV7WaPQuX89JI11KZ+PGXdeUWwnvurx/0xBWq5GBk17dR+ETqMuE3nSOs9E?=
+ =?us-ascii?Q?6Jjc3lezc6aYF1uWTuEEAu2HiQOlX3hAAet1GRp2Gz0L0abUxniAUS3ZDqXL?=
+ =?us-ascii?Q?XIOR4YMjCRqsIolokq4imsc1am1m1Spjy7YLcdGjDOtR2qTxjcyBHj4h4IUP?=
+ =?us-ascii?Q?dBfK6zMo7w59F3MaU/0iLOMdPXpWB47aaOBgv9QnipwSIORkQ0xnrnKiwPCP?=
+ =?us-ascii?Q?W2GUw3yUCLWfzTk59j6rHIqDErzwTJ1oEAg/fX0lkvakYetRU7yk0Khfjf/H?=
+ =?us-ascii?Q?atPHqjdYJidiY5oN3Il488hr0lYMYbXHcsQ1ND+KBrw9Wr19WGAWL2HEQVjB?=
+ =?us-ascii?Q?ifFFgLci6VfrlFF6F8gMdRgoTf8QF8R39ac5oyWUPGEC870Y2Oc2L7uq58UL?=
+ =?us-ascii?Q?0B5ncB6YGJLxPnzfQpUDcKYr0Y1O/udkBHE3YVkxn9JuMhlq9pl5ffRzQqDK?=
+ =?us-ascii?Q?nGvsNMb9G6xEAvYwopIOKahBuyX9yaEq4vtKKZIvbN2rFJgRw9VD147ciPeZ?=
+ =?us-ascii?Q?ivLgsUb/DliV6qE9ITJp54+Vgd2qd/r/szzzEeJjEddERpcGRnvwHFZICAbH?=
+ =?us-ascii?Q?0TNUZsZ+vzOic/DddNciAxGHg/FooxOAnI1W0Nck?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 690c663c-10db-4f27-d31d-08dbaf4a0d38
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2023 02:27:58.6753 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: p6OscLcnq+8bErzplAq0Jj3xl1uojvQeFdpm8A8+hA1ImB7oyf+SEXJ49E0TpUgfYhWem1dFwp52sa1wytGiIIpJDAxzWDrdE865ALY/mS0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6944
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.136;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,275 +178,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 26, 2023 at 10:08=E2=80=AFPM Andrew Jones <ajones@ventanamicro.=
-com> wrote:
->
-> Add instructions for how to cross-compile QEMU for RISC-V. The
-> file is named generically because there's no reason not to collect
-> other architectures steps into the same file, especially because
-> several subsections like those for cross-compiling QEMU dependencies
-> using meson and a cross-file could be shared. Additionally, other
-> approaches to creating sysroots, such as with debootstrap, may be
-> documented in this file in the future.
->
-> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-Alistair
+>-----Original Message-----
+>From: Jason Gunthorpe <jgg@nvidia.com>
+>Sent: Thursday, September 7, 2023 9:11 AM
+>To: Alex Williamson <alex.williamson@redhat.com>
+>Subject: Re: [PATCH v1 21/22] vfio/pci: Allow the selection of a given iom=
+mu
+>backend
+>
+>On Wed, Sep 06, 2023 at 01:09:26PM -0600, Alex Williamson wrote:
+>> On Wed, 6 Sep 2023 15:10:39 -0300
+>> Jason Gunthorpe <jgg@nvidia.com> wrote:
+>>
+>> > On Wed, Aug 30, 2023 at 06:37:53PM +0800, Zhenzhong Duan wrote:
+>> > > Note the /dev/iommu device may have been pre-opened by a
+>> > > management tool such as libvirt. This mode is no more considered
+>> > > for the legacy backend. So let's remove the "TODO" comment.
+>> >
+>> > Can you show an example of that syntax too?
+>>
+>> Unless you're just looking for something in the commit log,
+>
+>Yeah, I was thinking the commit log
+>
+>> patch 16/ added the following to the qemu help output:
+>>
+>> +#ifdef CONFIG_IOMMUFD
+>> +    ``-object iommufd,id=3Did[,fd=3Dfd]``
+>> +        Creates an iommufd backend which allows control of DMA mapping
+>> +        through the /dev/iommu device.
+>> +
+>> +        The ``id`` parameter is a unique ID which frontends (such as
+>> +        vfio-pci of vdpa) will use to connect withe the iommufd backend=
+.
+>> +
+>> +        The ``fd`` parameter is an optional pre-opened file descriptor
+>> +        resulting from /dev/iommu opening. Usually the iommufd is share=
+d
+>> +        accross all subsystems, bringing the benefit of centralized
+>> +        reference counting.
+>> +#endif
 
-> ---
->  docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
->  1 file changed, 221 insertions(+)
->  create mode 100644 docs/devel/cross-compiling.rst
+Thanks for point out this issue.
+I can think of two choices:
+1. squash this patch to PATCH16
+2. keep this patch separate and to pull fd passing related change from PATC=
+H16 into this one
+Please kindly suggest which way is preferred in community.
+
+Btw: I only enable fd passing for vfio pci device, let me know if it's pref=
+erred
+to include all other vfio devices in this series, then I'll add them.
+
+>>
+>> > Also, the vfio device should be openable externally as well
+>>
+>> Appears to be added in the very next patch in the series.  Thanks,
 >
-> diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.=
-rst
-> new file mode 100644
-> index 000000000000..1b988ba54e4c
-> --- /dev/null
-> +++ b/docs/devel/cross-compiling.rst
-> @@ -0,0 +1,221 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +Cross-compiling QEMU
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Cross-compiling QEMU first requires the preparation of a cross-toolchain
-> +and the cross-compiling of QEMU's dependencies. While the steps will be
-> +similar across architectures, each architecture will have its own specif=
-ic
-> +recommendations. This document collects architecture-specific procedures
-> +and hints that may be used to cross-compile QEMU, where typically the ho=
-st
-> +environment is x86.
-> +
-> +RISC-V
-> +=3D=3D=3D=3D=3D=3D
-> +
-> +Toolchain
-> +---------
-> +
-> +Select a root directory for the cross environment
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Export an environment variable pointing to a root directory
-> +for the cross environment. For example, ::
-> +
-> +  $ export PREFIX=3D"$HOME/opt/riscv"
-> +
-> +Create a work directory
-> +^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Tools and several components will need to be downloaded and built. Creat=
-e
-> +a directory for all the work, ::
-> +
-> +  $ export WORK_DIR=3D"$HOME/work/xqemu"
-> +  $ mkdir -p "$WORK_DIR"
-> +
-> +Select and prepare the toolchain
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Select a toolchain such as [riscv-toolchain]_ and follow its instruction=
-s
-> +for building and installing it to ``$PREFIX``, e.g. ::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://github.com/riscv/riscv-gnu-toolchain
-> +  $ cd riscv-gnu-toolchain
-> +  $ ./configure --prefix=3D"$PREFIX"
-> +  $ make -j$(nproc) linux
-> +
-> +Set the ``$CROSS_COMPILE`` environment variable to the prefix of the cro=
-ss
-> +tools and add the tools to ``$PATH``, ::
-> +
-> +$ export CROSS_COMPILE=3Driscv64-unknown-linux-gnu-
-> +$ export PATH=3D"$PREFIX/bin:$PATH"
-> +
-> +Also set ``$SYSROOT``, where all QEMU cross-compiled dependencies will b=
-e
-> +installed. The toolchain installation likely created a 'sysroot' directo=
-ry
-> +at ``$PREFIX/sysroot``, which is the default location for most cross
-> +tools, making it a good location, ::
-> +
-> +  $ mkdir -p "$PREFIX/sysroot"
-> +  $ export SYSROOT=3D"$PREFIX/sysroot"
-> +
-> +Create a pkg-config wrapper
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +The build processes of QEMU and some of its dependencies depend on
-> +pkg-config. Create a wrapper script for it which works for the cross
-> +environment: ::
-> +
-> +  $ cat <<EOF >"$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-> +  #!/bin/sh
-> +
-> +  [ "\$SYSROOT" ] || exit 1
-> +
-> +  export PKG_CONFIG_PATH=3D
-> +  export PKG_CONFIG_LIBDIR=3D"\${SYSROOT}/usr/lib/pkgconfig:\${SYSROOT}/=
-usr/lib64/pkgconfig:\${SYSROOT}/usr/share/pkgconfig"
-> +
-> +  exec pkg-config "\$@"
-> +  EOF
-> +  $ chmod +x "$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-> +
-> +Create a cross-file for meson builds
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +meson setup, used by some of QEMU's dependencies, needs a "cross-file" t=
-o
-> +configure the cross environment. Create one, ::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ cat <<EOF >cross_file.txt
-> +  [host_machine]
-> +  system =3D 'linux'
-> +  cpu_family =3D 'riscv64'
-> +  cpu =3D 'riscv64'
-> +  endian =3D 'little'
-> +
-> +  [binaries]
-> +  c =3D '${CROSS_COMPILE}gcc'
-> +  cpp =3D '${CROSS_COMPILE}g++'
-> +  ar =3D '${CROSS_COMPILE}ar'
-> +  ld =3D '${CROSS_COMPILE}ld'
-> +  objcopy =3D '${CROSS_COMPILE}objcopy'
-> +  strip =3D '${CROSS_COMPILE}strip'
-> +  pkgconfig =3D '${CROSS_COMPILE}pkg-config'
-> +  EOF
-> +
-> +Cross-compile dependencies
-> +--------------------------
-> +
-> +glibc
-> +^^^^^
-> +
-> +If [riscv-toolchain]_ was selected for the toolchain then this step is
-> +already complete and glibc has already been installed into ``$SYSROOT``.
-> +Otherwise, cross-compile glibc and install it to ``$SYSROOT``.
-> +
-> +libffi
-> +^^^^^^
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.freedesktop.org/gstreamer/meson-ports/libff=
-i.git
-> +  $ cd libffi
-> +  $ meson setup --cross-file ../cross_file.txt --prefix=3D"$SYSROOT/usr"=
- _build
-> +  $ ninja -C _build
-> +  $ ninja -C _build install
-> +
-> +*Building libffi seperately avoids a compilation error generated when
-> +building it as a subproject of glib.*
-> +
-> +glib
-> +^^^^
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://github.com/GNOME/glib.git
-> +  $ cd glib
-> +  $ meson setup --cross-file ../cross_file.txt --prefix=3D"$SYSROOT/usr"=
- _build
-> +  $ ninja -C _build
-> +  $ ninja -C _build install
-> +
-> +libslirp [optional]
-> +^^^^^^^^^^^^^^^^^^^
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.com/qemu-project/libslirp.git
-> +  $ cd libslirp
-> +  $ meson setup --cross-file ../cross_file.txt --prefix=3D"$SYSROOT/usr"=
- _build
-> +  $ ninja -C _build
-> +  $ ninja -C _build install
-> +
-> +pixman
-> +^^^^^^
-> +
-> +First ensure the 'libtool' package is installed, e.g.
-> +``sudo dnf install libtool`` or ``sudo apt install libtool``
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.freedesktop.org/pixman/pixman
-> +  $ cd pixman
-> +  $ ./autogen.sh
-> +  $ ./configure --prefix=3D"$SYSROOT/usr" --host=3Driscv64-unknown-linux=
--gnu
-> +  $ make -j$(nproc)
-> +  $ make install
-> +
-> +Cross-compile QEMU
-> +------------------
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.com/qemu-project/qemu.git
-> +  $ cd qemu
-> +  $ mkdir -p build/install_dir
-> +  $ cd build
-> +  $ ../configure --target-list=3Driscv64-softmmu --cross-prefix=3D$CROSS=
-_COMPILE --prefix=3D"$PWD/install_dir"
-> +  $ make -j$(nproc)
-> +  $ make install
-> +
-> +*Cross-compiling QEMU with different configurations may require more
-> +dependencies to be built and installed in the sysroot.*
-> +
-> +Running QEMU
-> +------------
-> +
-> +``build/install_dir`` may now be copied to the target and its bin
-> +directory may be added to the target user's PATH. Prior to running
-> +QEMU, ensure all the libraries it depends on are present, ::
-> +
-> +  $ ldd /path/to/bin/qemu-system-riscv64
-> +
-> +For example, it may necessary to install zlib libraries, e.g.
-> +``sudo dnf install zlib-devel`` or ``sudo apt install zlib1g-dev``
-> +
-> +Subsequent QEMU Cross-compiling
-> +-------------------------------
-> +
-> +Unless it's necessary to update and recompile the toolchain or
-> +dependencies, then most steps do not need to be repeated for subsequent
-> +compiles. Simply ensure the toolchain is in ``$PATH``, ``$SYSROOT`` poin=
-ts
-> +at the sysroot, and then follow the QEMU cross-compile steps in
-> +"Cross-compile QEMU". For example, ::
-> +
-> +  $ export PATH=3D"$HOME/opt/riscv/bin:$PATH"
-> +  $ export SYSROOT=3D"$HOME/opt/riscv/sysroot"
-> +  $ cd /path/to/qemu
-> +  $ mkdir -p build/install_dir
-> +  $ cd build
-> +  $ ../configure --target-list=3Driscv64-softmmu --cross-prefix=3Driscv6=
-4-unknown-linux-gnu- --prefix=3D"$PWD/install_dir"
-> +  $ make -j
-> +  $ make install
-> +
-> +References
-> +----------
-> +
-> +.. [riscv-toolchain] https://github.com/riscv/riscv-gnu-toolchain
-> --
-> 2.41.0
->
->
+>Indeed, I got confused because this removed the TODO - that could
+>reasonably be pushed to the next patch and include a bit more detail
+>in the commit message
+
+Good idea, will fix.
+
+Thanks
+Zhenzhong
 
