@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258C17970A9
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB83379709E
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:10:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeA5A-0003v7-NU; Thu, 07 Sep 2023 04:09:44 -0400
+	id 1qeA5B-0003yd-KR; Thu, 07 Sep 2023 04:09:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeA4t-0003ub-5f
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:27 -0400
+ id 1qeA4v-0003vE-Va
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeA4p-0003L3-12
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:26 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qeA4p-0003L4-5t
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:29 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxVugvhflkQzQhAA--.31073S3;
+ by gateway (Coremail) with SMTP id _____8AxDOsvhflkRzQhAA--.60899S3;
  Thu, 07 Sep 2023 16:09:19 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxviMthflkXE1wAA--.31585S4; 
+ AQAAf8DxviMthflkXE1wAA--.31585S5; 
  Thu, 07 Sep 2023 16:09:18 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH v5 02/57] target/loongarch: Implement gvec_*_vl functions
-Date: Thu,  7 Sep 2023 16:08:21 +0800
-Message-Id: <20230907080916.3974502-3-gaosong@loongson.cn>
+Subject: [PATCH v5 03/57] target/loongarch: Use gen_helper_gvec_4_ptr for 4OP
+ + env vector instructions
+Date: Thu,  7 Sep 2023 16:08:22 +0800
+Message-Id: <20230907080916.3974502-4-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230907080916.3974502-1-gaosong@loongson.cn>
 References: <20230907080916.3974502-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxviMthflkXE1wAA--.31585S4
+X-CM-TRANSID: AQAAf8DxviMthflkXE1wAA--.31585S5
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,126 +64,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using gvec_*_vl functions hides oprsz. We can use gvec_v* for oprsz 16.
-and gvec_v* for oprsz 32.
-
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/insn_trans/trans_vec.c.inc | 68 +++++++++++++--------
- 1 file changed, 44 insertions(+), 24 deletions(-)
+ target/loongarch/helper.h                   | 16 +++++-----
+ target/loongarch/vec_helper.c               | 12 +++----
+ target/loongarch/insn_trans/trans_vec.c.inc | 35 ++++++++++++++++-----
+ 3 files changed, 41 insertions(+), 22 deletions(-)
 
+diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
+index ffb1e0b0bf..ead16567c2 100644
+--- a/target/loongarch/helper.h
++++ b/target/loongarch/helper.h
+@@ -528,14 +528,14 @@ DEF_HELPER_4(vfmul_d, void, env, i32, i32, i32)
+ DEF_HELPER_4(vfdiv_s, void, env, i32, i32, i32)
+ DEF_HELPER_4(vfdiv_d, void, env, i32, i32, i32)
+ 
+-DEF_HELPER_5(vfmadd_s, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfmadd_d, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfmsub_s, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfmsub_d, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfnmadd_s, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfnmadd_d, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfnmsub_s, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfnmsub_d, void, env, i32, i32, i32, i32)
++DEF_HELPER_FLAGS_6(vfmadd_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfmadd_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfmsub_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfmsub_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfnmadd_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfnmadd_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfnmsub_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
++DEF_HELPER_FLAGS_6(vfnmsub_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, env, i32)
+ 
+ DEF_HELPER_4(vfmax_s, void, env, i32, i32, i32)
+ DEF_HELPER_4(vfmax_d, void, env, i32, i32, i32)
+diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
+index 73f0974744..3a7a620227 100644
+--- a/target/loongarch/vec_helper.c
++++ b/target/loongarch/vec_helper.c
+@@ -2129,14 +2129,14 @@ DO_3OP_F(vfmina_s, 32, UW, float32_minnummag)
+ DO_3OP_F(vfmina_d, 64, UD, float64_minnummag)
+ 
+ #define DO_4OP_F(NAME, BIT, E, FN, flags)                                    \
+-void HELPER(NAME)(CPULoongArchState *env,                                    \
+-                  uint32_t vd, uint32_t vj, uint32_t vk, uint32_t va)        \
++void HELPER(NAME)(void *vd, void *vj, void *vk, void *va,                    \
++                  CPULoongArchState *env, uint32_t desc)                     \
+ {                                                                            \
+     int i;                                                                   \
+-    VReg *Vd = &(env->fpr[vd].vreg);                                         \
+-    VReg *Vj = &(env->fpr[vj].vreg);                                         \
+-    VReg *Vk = &(env->fpr[vk].vreg);                                         \
+-    VReg *Va = &(env->fpr[va].vreg);                                         \
++    VReg *Vd = (VReg *)vd;                                                   \
++    VReg *Vj = (VReg *)vj;                                                   \
++    VReg *Vk = (VReg *)vk;                                                   \
++    VReg *Va = (VReg *)va;                                                   \
+                                                                              \
+     vec_clear_cause(env);                                                    \
+     for (i = 0; i < LSX_LEN/BIT; i++) {                                      \
 diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index aed5bac5bc..aeeb2df41c 100644
+index aeeb2df41c..85bc8670a7 100644
 --- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -76,34 +76,58 @@ static bool gen_cv(DisasContext *ctx, arg_cv *a,
-     return true;
- }
+@@ -15,6 +15,25 @@
+ #define CHECK_SXE
+ #endif
  
-+static bool gvec_vvv_vl(DisasContext *ctx, arg_vvv *a,
-+                        uint32_t oprsz, MemOp mop,
-+                        void (*func)(unsigned, uint32_t, uint32_t,
-+                                     uint32_t, uint32_t, uint32_t))
++static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
++                            gen_helper_gvec_4_ptr *fn)
 +{
-+    uint32_t vd_ofs = vec_full_offset(a->vd);
-+    uint32_t vj_ofs = vec_full_offset(a->vj);
-+    uint32_t vk_ofs = vec_full_offset(a->vk);
-+
-+    func(mop, vd_ofs, vj_ofs, vk_ofs, oprsz, ctx->vl / 8);
++    tcg_gen_gvec_4_ptr(vec_full_offset(a->vd),
++                       vec_full_offset(a->vj),
++                       vec_full_offset(a->vk),
++                       vec_full_offset(a->va),
++                       cpu_env,
++                       oprsz, ctx->vl / 8, oprsz, fn);
 +    return true;
 +}
 +
- static bool gvec_vvv(DisasContext *ctx, arg_vvv *a, MemOp mop,
-                      void (*func)(unsigned, uint32_t, uint32_t,
-                                   uint32_t, uint32_t, uint32_t))
- {
--    uint32_t vd_ofs, vj_ofs, vk_ofs;
--
-     CHECK_SXE;
-+    return gvec_vvv_vl(ctx, a, 16, mop, func);
-+}
- 
--    vd_ofs = vec_full_offset(a->vd);
--    vj_ofs = vec_full_offset(a->vj);
--    vk_ofs = vec_full_offset(a->vk);
- 
--    func(mop, vd_ofs, vj_ofs, vk_ofs, 16, ctx->vl/8);
-+static bool gvec_vv_vl(DisasContext *ctx, arg_vv *a,
-+                       uint32_t oprsz, MemOp mop,
-+                       void (*func)(unsigned, uint32_t, uint32_t,
-+                                    uint32_t, uint32_t))
++static bool gen_vvvv_ptr(DisasContext *ctx, arg_vvvv *a,
++                         gen_helper_gvec_4_ptr *fn)
 +{
-+    uint32_t vd_ofs = vec_full_offset(a->vd);
-+    uint32_t vj_ofs = vec_full_offset(a->vj);
++    CHECK_SXE;
++    return gen_vvvv_ptr_vl(ctx, a, 16, fn);
++}
 +
-+    func(mop, vd_ofs, vj_ofs, oprsz, ctx->vl / 8);
-     return true;
- }
+ static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a,
+                      void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32,
+                                   TCGv_i32, TCGv_i32))
+@@ -3634,14 +3653,14 @@ TRANS(vfmul_d, LSX, gen_vvv, gen_helper_vfmul_d)
+ TRANS(vfdiv_s, LSX, gen_vvv, gen_helper_vfdiv_s)
+ TRANS(vfdiv_d, LSX, gen_vvv, gen_helper_vfdiv_d)
  
-+
- static bool gvec_vv(DisasContext *ctx, arg_vv *a, MemOp mop,
-                     void (*func)(unsigned, uint32_t, uint32_t,
-                                  uint32_t, uint32_t))
- {
--    uint32_t vd_ofs, vj_ofs;
--
-     CHECK_SXE;
-+    return gvec_vv_vl(ctx, a, 16, mop, func);
-+}
+-TRANS(vfmadd_s, LSX, gen_vvvv, gen_helper_vfmadd_s)
+-TRANS(vfmadd_d, LSX, gen_vvvv, gen_helper_vfmadd_d)
+-TRANS(vfmsub_s, LSX, gen_vvvv, gen_helper_vfmsub_s)
+-TRANS(vfmsub_d, LSX, gen_vvvv, gen_helper_vfmsub_d)
+-TRANS(vfnmadd_s, LSX, gen_vvvv, gen_helper_vfnmadd_s)
+-TRANS(vfnmadd_d, LSX, gen_vvvv, gen_helper_vfnmadd_d)
+-TRANS(vfnmsub_s, LSX, gen_vvvv, gen_helper_vfnmsub_s)
+-TRANS(vfnmsub_d, LSX, gen_vvvv, gen_helper_vfnmsub_d)
++TRANS(vfmadd_s, LSX, gen_vvvv_ptr, gen_helper_vfmadd_s)
++TRANS(vfmadd_d, LSX, gen_vvvv_ptr, gen_helper_vfmadd_d)
++TRANS(vfmsub_s, LSX, gen_vvvv_ptr, gen_helper_vfmsub_s)
++TRANS(vfmsub_d, LSX, gen_vvvv_ptr, gen_helper_vfmsub_d)
++TRANS(vfnmadd_s, LSX, gen_vvvv_ptr, gen_helper_vfnmadd_s)
++TRANS(vfnmadd_d, LSX, gen_vvvv_ptr, gen_helper_vfnmadd_d)
++TRANS(vfnmsub_s, LSX, gen_vvvv_ptr, gen_helper_vfnmsub_s)
++TRANS(vfnmsub_d, LSX, gen_vvvv_ptr, gen_helper_vfnmsub_d)
  
--    vd_ofs = vec_full_offset(a->vd);
--    vj_ofs = vec_full_offset(a->vj);
-+static bool gvec_vv_i_vl(DisasContext *ctx, arg_vv_i *a,
-+                         uint32_t oprsz, MemOp mop,
-+                         void (*func)(unsigned, uint32_t, uint32_t,
-+                                      int64_t, uint32_t, uint32_t))
-+{
-+    uint32_t vd_ofs = vec_full_offset(a->vd);
-+    uint32_t vj_ofs = vec_full_offset(a->vj);
- 
--    func(mop, vd_ofs, vj_ofs, 16, ctx->vl/8);
-+    func(mop, vd_ofs, vj_ofs, a->imm, oprsz, ctx->vl / 8);
-     return true;
- }
- 
-@@ -111,28 +135,24 @@ static bool gvec_vv_i(DisasContext *ctx, arg_vv_i *a, MemOp mop,
-                       void (*func)(unsigned, uint32_t, uint32_t,
-                                    int64_t, uint32_t, uint32_t))
- {
--    uint32_t vd_ofs, vj_ofs;
--
-     CHECK_SXE;
-+    return gvec_vv_i_vl(ctx, a, 16, mop, func);
-+}
- 
--    vd_ofs = vec_full_offset(a->vd);
--    vj_ofs = vec_full_offset(a->vj);
-+static bool gvec_subi_vl(DisasContext *ctx, arg_vv_i *a,
-+                         uint32_t oprsz, MemOp mop)
-+{
-+    uint32_t vd_ofs = vec_full_offset(a->vd);
-+    uint32_t vj_ofs = vec_full_offset(a->vj);
- 
--    func(mop, vd_ofs, vj_ofs, a->imm , 16, ctx->vl/8);
-+    tcg_gen_gvec_addi(mop, vd_ofs, vj_ofs, -a->imm, oprsz, ctx->vl / 8);
-     return true;
- }
- 
- static bool gvec_subi(DisasContext *ctx, arg_vv_i *a, MemOp mop)
- {
--    uint32_t vd_ofs, vj_ofs;
--
-     CHECK_SXE;
--
--    vd_ofs = vec_full_offset(a->vd);
--    vj_ofs = vec_full_offset(a->vj);
--
--    tcg_gen_gvec_addi(mop, vd_ofs, vj_ofs, -a->imm, 16, ctx->vl/8);
--    return true;
-+    return gvec_subi_vl(ctx, a, 16, mop);
- }
- 
- TRANS(vadd_b, LSX, gvec_vvv, MO_8, tcg_gen_gvec_add)
+ TRANS(vfmax_s, LSX, gen_vvv, gen_helper_vfmax_s)
+ TRANS(vfmax_d, LSX, gen_vvv, gen_helper_vfmax_d)
 -- 
 2.39.1
 
