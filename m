@@ -2,85 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5018C796E31
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0DD796E62
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 03:08:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe39F-0004zE-PQ; Wed, 06 Sep 2023 20:45:29 -0400
+	id 1qe3Tv-0002L3-AN; Wed, 06 Sep 2023 21:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe391-0004Y8-7c
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:45:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1qe3Tr-0002K4-NA
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 21:06:47 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe38x-0003mj-8A
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:45:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694047510;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5MaAI4QaueGmh2GOqWg63+CJNCCKsD3mxcIbrX6dw+c=;
- b=DG3HwzAnPOgPugdiZqIsXOevqVrLu2KKHIyqSy+YaDN39k9LnDu7lwzeuYRHpqCUFIDL29
- e4saYj6H+1XH52nPQitM0i/Sl1MMT+bS0M71nfSepwUeFSGH7vDhmjXrIymfqwPdi0s+Ox
- uh5NIm7mR0lhrRHwra+Wsk85GTn9f3I=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-132-AWicWxSUPyO4E1PC8tLffQ-1; Wed, 06 Sep 2023 20:45:04 -0400
-X-MC-Unique: AWicWxSUPyO4E1PC8tLffQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25A6E8015AA;
- Thu,  7 Sep 2023 00:45:02 +0000 (UTC)
-Received: from gshan.redhat.com (unknown [10.64.136.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6069DC03295;
- Thu,  7 Sep 2023 00:44:47 +0000 (UTC)
-From: Gavin Shan <gshan@redhat.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, imp@bsdimp.com, kevans@freebsd.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, peter.maydell@linaro.org, b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
- wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
- quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- richard.henderson@linaro.org, mrolnik@gmail.com, edgar.iglesias@gmail.com,
- bcain@quicinc.com, gaosong@loongson.cn, yangxiaojuan@loongson.cn,
- aurelien@aurel32.net, jiaxun.yang@flygoat.com,
- aleksandar.rikalo@syrmia.com, chenhuacai@kernel.org, crwulff@gmail.com,
- marex@denx.de, shorne@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
- groug@kaod.org, npiggin@gmail.com, ysato@users.sourceforge.jp,
- david@redhat.com, thuth@redhat.com, iii@linux.ibm.com,
- mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
- kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
- imammedo@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v3 32/32] hw/riscv/shakti_c: Check CPU type in
- machine_run_board_init()
-Date: Thu,  7 Sep 2023 10:35:53 +1000
-Message-ID: <20230907003553.1636896-33-gshan@redhat.com>
-In-Reply-To: <20230907003553.1636896-1-gshan@redhat.com>
-References: <20230907003553.1636896-1-gshan@redhat.com>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1qe3To-00040V-U2
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 21:06:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
+ :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+ :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+ Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+ :List-Post:List-Owner:List-Archive;
+ bh=387ThNv0NJNupRSguKSTeA5ySM7dKB8pJVeQ+n3vrLs=; b=pRnwhrK0lkOpttJJYPPPvMLv3d
+ 40obDs2RO22TKgkzXGCumIODQt1uqivRw7O4fJY8Dz2Qe8v9M2U62sX0HrhKIeybXHQiEqk2Sfe3K
+ dQgqF1dqqz0zFq43rN3PPUzS8B4Eep95JYwd2Z0/+sGgJlBf5rhk4Dlfs6Lq0DbWcPwOx2+A66vuT
+ 1cQlPAqZL/TfWxB2HUbICMspBIx+kC5ZtFcNizKTWRbVk8FY2JxRVcXz2yJnIPrxJolsAV7ePTTqi
+ ztwgbwOOSCKOsM7BuAOAciKo/LqBWE/E7uQQAdD6lEHZCenpwi7x96wjwfwFgetjq2YvlzHUfN7Vm
+ 6Y1gMIbA==;
+Received: from dg by mx.treblig.org with local (Exim 4.94.2)
+ (envelope-from <dg@treblig.org>)
+ id 1qe3Tj-00ALNX-Ud; Thu, 07 Sep 2023 01:06:39 +0000
+Date: Thu, 7 Sep 2023 01:06:39 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ pbonzini@redhat.com, Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
+ Maxim Levitsky <mlevitsk@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [RFC 1/3] hmp: avoid the nested event loop in handle_hmp_command()
+Message-ID: <ZPkiH4WvSs1k43RQ@gallifrey>
+References: <20230906190141.1286893-1-stefanha@redhat.com>
+ <20230906190141.1286893-2-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20230906190141.1286893-2-stefanha@redhat.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/5.10.0-23-amd64 (x86_64)
+X-Uptime: 00:59:19 up 62 days, 10:30,  2 users,  load average: 0.00, 0.01, 0.00
+User-Agent: Mutt/2.0.5 (2021-01-21)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,52 +75,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set mc->valid_cpu_types so that the user specified CPU type can
-be validated in machine_run_board_init(). We needn't to do it
-by ourselves.
+* Stefan Hajnoczi (stefanha@redhat.com) wrote:
+> Coroutine HMP commands currently run to completion in a nested event
+> loop with the Big QEMU Lock (BQL) held. The call_rcu thread also uses
+> the BQL and cannot process work while the coroutine monitor command is
+> running. A deadlock occurs when monitor commands attempt to wait for
+> call_rcu work to finish.
 
-Signed-off-by: Gavin Shan <gshan@redhat.com>
----
- hw/riscv/shakti_c.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+I hate to think if there's anywhere else that ends up doing that
+other than the monitors.
 
-diff --git a/hw/riscv/shakti_c.c b/hw/riscv/shakti_c.c
-index 12ea74b032..fc83ed4db4 100644
---- a/hw/riscv/shakti_c.c
-+++ b/hw/riscv/shakti_c.c
-@@ -28,6 +28,10 @@
- #include "exec/address-spaces.h"
- #include "hw/riscv/boot.h"
- 
-+static const char * const valid_cpu_types[] = {
-+    RISCV_CPU_TYPE_NAME("shakti-c"),
-+    NULL
-+};
- 
- static const struct MemmapEntry {
-     hwaddr base;
-@@ -47,12 +51,6 @@ static void shakti_c_machine_state_init(MachineState *mstate)
-     ShaktiCMachineState *sms = RISCV_SHAKTI_MACHINE(mstate);
-     MemoryRegion *system_memory = get_system_memory();
- 
--    /* Allow only Shakti C CPU for this platform */
--    if (strcmp(mstate->cpu_type, TYPE_RISCV_CPU_SHAKTI_C) != 0) {
--        error_report("This board can only be used with Shakti C CPU");
--        exit(1);
--    }
--
-     /* Initialize SoC */
-     object_initialize_child(OBJECT(mstate), "soc", &sms->soc,
-                             TYPE_RISCV_SHAKTI_SOC);
-@@ -85,6 +83,7 @@ static void shakti_c_machine_class_init(ObjectClass *klass, void *data)
-     mc->desc = "RISC-V Board compatible with Shakti SDK";
-     mc->init = shakti_c_machine_state_init;
-     mc->default_cpu_type = TYPE_RISCV_CPU_SHAKTI_C;
-+    mc->valid_cpu_types = valid_cpu_types;
-     mc->default_ram_id = "riscv.shakti.c.ram";
- }
- 
+But, not knowing the semantics of the rcu code, it looks kind of OK to
+me from the monitor.
+
+(Do you ever get anything like qemu quitting from one of the other
+monitors while this coroutine hasn't been run?)
+
+Dave
+
+> This patch refactors the HMP monitor to use the existing event loop
+> instead of creating a nested event loop. This will allow the next
+> patches to rely on draining call_rcu work.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  monitor/hmp.c | 28 +++++++++++++++-------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/monitor/hmp.c b/monitor/hmp.c
+> index 69c1b7e98a..6cff2810aa 100644
+> --- a/monitor/hmp.c
+> +++ b/monitor/hmp.c
+> @@ -1111,15 +1111,17 @@ typedef struct HandleHmpCommandCo {
+>      Monitor *mon;
+>      const HMPCommand *cmd;
+>      QDict *qdict;
+> -    bool done;
+>  } HandleHmpCommandCo;
+>  
+> -static void handle_hmp_command_co(void *opaque)
+> +static void coroutine_fn handle_hmp_command_co(void *opaque)
+>  {
+>      HandleHmpCommandCo *data = opaque;
+> +
+>      handle_hmp_command_exec(data->mon, data->cmd, data->qdict);
+>      monitor_set_cur(qemu_coroutine_self(), NULL);
+> -    data->done = true;
+> +    qobject_unref(data->qdict);
+> +    monitor_resume(data->mon);
+> +    g_free(data);
+>  }
+>  
+>  void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
+> @@ -1157,20 +1159,20 @@ void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
+>          Monitor *old_mon = monitor_set_cur(qemu_coroutine_self(), &mon->common);
+>          handle_hmp_command_exec(&mon->common, cmd, qdict);
+>          monitor_set_cur(qemu_coroutine_self(), old_mon);
+> +        qobject_unref(qdict);
+>      } else {
+> -        HandleHmpCommandCo data = {
+> -            .mon = &mon->common,
+> -            .cmd = cmd,
+> -            .qdict = qdict,
+> -            .done = false,
+> -        };
+> -        Coroutine *co = qemu_coroutine_create(handle_hmp_command_co, &data);
+> +        HandleHmpCommandCo *data; /* freed by handle_hmp_command_co() */
+> +
+> +        data = g_new(HandleHmpCommandCo, 1);
+> +        data->mon = &mon->common;
+> +        data->cmd = cmd;
+> +        data->qdict = qdict; /* freed by handle_hmp_command_co() */
+> +
+> +        Coroutine *co = qemu_coroutine_create(handle_hmp_command_co, data);
+> +        monitor_suspend(&mon->common); /* resumed by handle_hmp_command_co() */
+>          monitor_set_cur(co, &mon->common);
+>          aio_co_enter(qemu_get_aio_context(), co);
+> -        AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
+>      }
+> -
+> -    qobject_unref(qdict);
+>  }
+>  
+>  static void cmd_completion(MonitorHMP *mon, const char *name, const char *list)
+> -- 
+> 2.41.0
+> 
+> 
 -- 
-2.41.0
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
