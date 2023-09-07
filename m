@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD38796E15
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BC5796E16
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:41:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe34o-0005tb-68; Wed, 06 Sep 2023 20:40:54 -0400
+	id 1qe351-0006BG-JE; Wed, 06 Sep 2023 20:41:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34l-0005s0-G4
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:40:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34x-00069O-KJ
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:41:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34j-0001qD-2P
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:40:51 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34v-0001tM-5S
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:41:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694047248;
+ s=mimecast20190719; t=1694047260;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KJ3ZX76U634nIvhP7SZ8lESzSWQxOs38powANobbcpg=;
- b=ROd42SKO/whJ1dYj08t5pQvUc3oDXK9fjb55N/2x5vOIJ2jv8J/i/WASgTjnmoETvKUTzx
- 3oUMvQ/ozHsKvJWQnF2j32EFU6eQwM54lENP9dVH3E0pcGLrHRtbRspsb+TF2t3txnvfIx
- ZZQGfuSaNd+O8KxRxFsr7LW1czrsZCc=
+ bh=jKDsmqdKXW/52OHgWrNIrks6OR99NisUwEAqLjed2eQ=;
+ b=XYcgJvMzSK8b0PvPbMRWnAeix8kFHq8l854egnRAlDkLOUFp5mYauGo+MpjvA4lAUWYfER
+ VqIvThbaoXMCK+5RB8bnzgOb6n26HNXlKZg5J/K0b88GjgmfqTdVGObKvKIxEBpxlDQwqJ
+ Sw3NaaLaojk0ABHqIP4F49BJ2+wLjC4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-148-KqEXUMoCObO4KuAAGjga-Q-1; Wed, 06 Sep 2023 20:40:42 -0400
-X-MC-Unique: KqEXUMoCObO4KuAAGjga-Q-1
+ us-mta-125-Zrx_wl5zOQCtWyT1uYgbyA-1; Wed, 06 Sep 2023 20:40:55 -0400
+X-MC-Unique: Zrx_wl5zOQCtWyT1uYgbyA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E8094181792D;
- Thu,  7 Sep 2023 00:40:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 290BD181792B;
+ Thu,  7 Sep 2023 00:40:53 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3E099C03295;
- Thu,  7 Sep 2023 00:40:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6C8CAC03295;
+ Thu,  7 Sep 2023 00:40:38 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,17 +62,17 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
  kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
  imammedo@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v3 15/32] target/s390x: Use generic helper to show CPU model
+Subject: [PATCH v3 16/32] target/sh4: Use generic helper to show CPU model
  names
-Date: Thu,  7 Sep 2023 10:35:36 +1000
-Message-ID: <20230907003553.1636896-16-gshan@redhat.com>
+Date: Thu,  7 Sep 2023 10:35:37 +1000
+Message-ID: <20230907003553.1636896-17-gshan@redhat.com>
 In-Reply-To: <20230907003553.1636896-1-gshan@redhat.com>
 References: <20230907003553.1636896-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,58 +96,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For target/s390x, the CPU type name is always the combination of the
-CPU modle name and suffix. The CPU model names have been correctly
-shown in s390_print_cpu_model_list_entry() and create_cpu_model_list().
+For target/sh4, the CPU type name can be: (1) the combination of the
+CPU model name and suffix; (2) TYPE_SH7750R_CPU when the CPU model
+name is "any". The CPU model names have been correctly shown in
+superh_cpu_list_entry().
 
-Use generic helper cpu_model_from_type() to show the CPU model names
-in the above two functions. Besides, we need validate the CPU class
-in s390_cpu_class_by_name(), as other targets do.
+Use generic helper cpu_model_from_type() to show the CPU model name
+in the above function. Besides, superh_cpu_class_by_name() is improved
+by avoiding "goto out" and validating the CPU class.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/s390x/cpu_models.c        | 18 +++++++++++-------
- target/s390x/cpu_models_sysemu.c |  9 ++++-----
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ target/sh4/cpu.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 91ce896491..103e9072b8 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -338,7 +338,8 @@ static void s390_print_cpu_model_list_entry(gpointer data, gpointer user_data)
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index 61769ffdfa..ca06e2ce99 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -125,9 +125,10 @@ static void superh_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
+ static void superh_cpu_list_entry(gpointer data, gpointer user_data)
  {
-     const S390CPUClass *scc = S390_CPU_CLASS((ObjectClass *)data);
-     CPUClass *cc = CPU_CLASS(scc);
--    char *name = g_strdup(object_class_get_name((ObjectClass *)data));
-+    const char *typename = object_class_get_name((ObjectClass *)data);
+     const char *typename = object_class_get_name(OBJECT_CLASS(data));
+-    int len = strlen(typename) - strlen(SUPERH_CPU_TYPE_SUFFIX);
 +    char *model = cpu_model_from_type(typename);
-     g_autoptr(GString) details = g_string_new("");
  
-     if (scc->is_static) {
-@@ -355,14 +356,12 @@ static void s390_print_cpu_model_list_entry(gpointer data, gpointer user_data)
-         g_string_truncate(details, details->len - 2);
-     }
- 
--    /* strip off the -s390x-cpu */
--    g_strrstr(name, "-" TYPE_S390_CPU)[0] = 0;
-     if (details->len) {
--        qemu_printf("s390 %-15s %-35s (%s)\n", name, scc->desc, details->str);
-+        qemu_printf("s390 %-15s %-35s (%s)\n", model, scc->desc, details->str);
-     } else {
--        qemu_printf("s390 %-15s %-35s\n", name, scc->desc);
-+        qemu_printf("s390 %-15s %-35s\n", model, scc->desc);
-     }
--    g_free(name);
+-    qemu_printf("%.*s\n", len, typename);
++    qemu_printf("  %s\n", model);
 +    g_free(model);
  }
  
- static gint s390_cpu_list_compare(gconstpointer a, gconstpointer b)
-@@ -916,7 +915,12 @@ ObjectClass *s390_cpu_class_by_name(const char *name)
+ void sh4_cpu_list(void)
+@@ -135,6 +136,7 @@ void sh4_cpu_list(void)
+     GSList *list;
  
+     list = object_class_get_list_sorted(TYPE_SUPERH_CPU, false);
++    qemu_printf("Available CPUs:\n");
+     g_slist_foreach(list, superh_cpu_list_entry, NULL);
+     g_slist_free(list);
+ }
+@@ -146,20 +148,20 @@ static ObjectClass *superh_cpu_class_by_name(const char *cpu_model)
+ 
+     s = g_ascii_strdown(cpu_model, -1);
+     if (strcmp(s, "any") == 0) {
+-        oc = object_class_by_name(TYPE_SH7750R_CPU);
+-        goto out;
++        typename = g_strdup(TYPE_SH7750R_CPU);
++    } else {
++        typename = g_strdup_printf(SUPERH_CPU_TYPE_NAME("%s"), s);
+     }
+ 
+-    typename = g_strdup_printf(SUPERH_CPU_TYPE_NAME("%s"), s);
      oc = object_class_by_name(typename);
+-    if (oc != NULL && object_class_is_abstract(oc)) {
+-        oc = NULL;
+-    }
+-
+-out:
+     g_free(s);
      g_free(typename);
 -    return oc;
-+    if (object_class_dynamic_cast(oc, TYPE_S390_CPU) &&
++    if (object_class_dynamic_cast(oc, TYPE_SUPERH_CPU) &&
 +        !object_class_is_abstract(oc)) {
 +        return oc;
 +    }
@@ -155,33 +164,7 @@ index 91ce896491..103e9072b8 100644
 +    return NULL;
  }
  
- static const TypeInfo qemu_s390_cpu_type_info = {
-diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-index 63981bf36b..c41af253d3 100644
---- a/target/s390x/cpu_models_sysemu.c
-+++ b/target/s390x/cpu_models_sysemu.c
-@@ -55,17 +55,16 @@ static void create_cpu_model_list(ObjectClass *klass, void *opaque)
-     struct CpuDefinitionInfoListData *cpu_list_data = opaque;
-     CpuDefinitionInfoList **cpu_list = &cpu_list_data->list;
-     CpuDefinitionInfo *info;
--    char *name = g_strdup(object_class_get_name(klass));
-+    const char *typename = object_class_get_name(klass);
-+    char *model = cpu_model_from_type(typename);
-     S390CPUClass *scc = S390_CPU_CLASS(klass);
- 
--    /* strip off the -s390x-cpu */
--    g_strrstr(name, "-" TYPE_S390_CPU)[0] = 0;
-     info = g_new0(CpuDefinitionInfo, 1);
--    info->name = name;
-+    info->name = model;
-     info->has_migration_safe = true;
-     info->migration_safe = scc->is_migration_safe;
-     info->q_static = scc->is_static;
--    info->q_typename = g_strdup(object_class_get_name(klass));
-+    info->q_typename = g_strdup(typename);
-     /* check for unavailable features */
-     if (cpu_list_data->model) {
-         Object *obj;
+ static void sh7750r_cpu_initfn(Object *obj)
 -- 
 2.41.0
 
