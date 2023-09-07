@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27164796EB3
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 03:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEE3796EC6
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 04:04:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe4Ck-0002Vo-JG; Wed, 06 Sep 2023 21:53:10 -0400
+	id 1qe4Ll-0006CH-VS; Wed, 06 Sep 2023 22:02:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe4Ci-0002Vb-AX; Wed, 06 Sep 2023 21:53:08 -0400
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ id 1qe4Li-0006BQ-FV; Wed, 06 Sep 2023 22:02:26 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe4Cf-0000Pv-IY; Wed, 06 Sep 2023 21:53:08 -0400
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3aa1446066aso299775b6e.1; 
- Wed, 06 Sep 2023 18:53:04 -0700 (PDT)
+ id 1qe4Le-0005DJ-1b; Wed, 06 Sep 2023 22:02:24 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-68bec3a9bdbso382147b3a.3; 
+ Wed, 06 Sep 2023 19:02:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694051584; x=1694656384; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20221208; t=1694052140; x=1694656940; darn=nongnu.org;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fn3DarLtvFlHVjCxbcb0VSjV5omNE9INNAIGMmIbZj8=;
- b=f0lnP5f5vruIdAQA7tCb33+9zB7c5Fc46qjGZR43xTe+Q6RHt5jpYQJVEBCKILkiwh
- yAlxCemhO1U/iligK4NgHyhL+7Z4XpE2ox4Ez2uOQVT/gy5XhbpjKvX9CYJZa7aB98f/
- gTMETU6y9eYLMh8qn5vqjBYAMJ14fP1qWHUnqjfTi1IOy8BZUJ7t573WfU4pZ/ZZDsqz
- Nsvs1xb7xquL3KGfWXTiIzgjrsWqK9th1B30RAQB2EYpqCUibACNII04mGbFwAL0jrv1
- EYufWdzNlj88+qiafkIm5rx9E+hMcsc2gLcFOq9CS8PJZIT/QHlMVn8VaHvTv1hVKIUq
- 1Nyg==
+ bh=H+hvhqjhKigGmZH4qJV9cZE2xsQyILuftKamgK73EJ8=;
+ b=l0fiJ336QPCpS4242opl2XBe9M+oNkP6LrPVD061sMyQsnQiCShv2VO07vKqNn4921
+ 0agMjLNO4U2bh0EHW1H62lHAmQ5PDYcG2qKEWCYy+AZsmycH6K8PRp3EgtXkbhjBfzpg
+ ay3ogpXBnCW6z/g2BTn8hbFW1ve2l9pHsg11fioG2awoSAvzOrAEI5jIl/RdC+UYXEUi
+ Y70Z98X7HcOEfm4HwdkQK3dqs5ejWwwAzr3nD8Sr5kQu8AWO0p5JXRj85wNb7Fs+Hf7L
+ nDXhOCBS2G09JpVDL62bSFKxI7Ynw5NVbX8k0NMz8VkBrIBhin6W4/Ams9lLx3mgWEQ7
+ faaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694051584; x=1694656384;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20221208; t=1694052140; x=1694656940;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=fn3DarLtvFlHVjCxbcb0VSjV5omNE9INNAIGMmIbZj8=;
- b=j2RX7+XT3vmupqGIUoFu31DuspCz3kwhS4cpgpPV3FwKHNsmuDvvQejF1xVQ/Ei/9O
- ZIcZGg6x/YV29Z+RcE74yHk04CdJM2hvfjMvoHk3q61+M7KpcjY3psaOLIke3PMTPjo5
- 0aO3P0Wbk5XrmWk68wFJZngdzIqvEEPtH2BIzvj/TqgTjerLcfPE95ox8Iyqq1EHMfln
- 2aTGZNEIRzzvmM+Ye2+HYCWAzpAW03iuxMquofhu80HQLGp9DlQOvHcitaqz4DVGyR1w
- 67oBzkGv/FIHAP/xJuOsEs241NAYY6DW4RNR+WxjYNLb+bnCvz6z0E3zwbLyvMhT1rsv
- qbzw==
-X-Gm-Message-State: AOJu0YzOjW86nEEhv2zypNDshxlv6nS5cU6BgSoQJxBiDJzDWbw0xt7b
- 0KM73eMOh63dgqhxh0Kplto=
-X-Google-Smtp-Source: AGHT+IGXmfXSQJ/wbnxxZ8mCbAjr7gnIeoimOXf4Y5QwW4za7mT1M35sW4sJrk0fNlHeMw35oggjJQ==
-X-Received: by 2002:a05:6358:2820:b0:132:d42f:8e19 with SMTP id
- k32-20020a056358282000b00132d42f8e19mr5021012rwb.31.1694051583787; 
- Wed, 06 Sep 2023 18:53:03 -0700 (PDT)
+ bh=H+hvhqjhKigGmZH4qJV9cZE2xsQyILuftKamgK73EJ8=;
+ b=d4TnUhc0jG4m8i6F9EqvdRYagnRmI6h0RlLFWs9Jpv8XemgYErUtGtVkuYRuhnofpE
+ HnzBDmtDWNtedLXGMjqUARNvA8d4DWjbSSO8jYVSm8J1UQgUYbXX3inCknnY2u1fZI+C
+ uhKeM8goXZYJ/UFNsChruSApKjjz4pRHMR5ZHafkS5DwsmC60ec3ynG1rpjYHGWorH1Q
+ 1gyDCOG7yA7MkcMEsWJq2P050nMSB6Zj0iDD1C88yaL7vxqzSpWfNGfYwLtac3a0CrH+
+ zn3RRLbsN9EuyvEo52WvquYOfK8YJrxHDA69Nl7UMrvcDVXJFg0fKAys/KDD0uHnVZ5U
+ 3HdQ==
+X-Gm-Message-State: AOJu0YzCZeC0KA3mL7SCUlsWAMfwwQL5R7mobro2j6FSFZkFpfN6NWYR
+ bvNHFohMxHE/lSk7GZvprZ0=
+X-Google-Smtp-Source: AGHT+IGOe0c+NLxzNH6yj2gYv4SJbuA27Vfk/optMIJgwo46Nk8j+bXqIY5ZElAoCFNuYjsyg/oPwA==
+X-Received: by 2002:a05:6a20:e117:b0:152:1ce8:ce3a with SMTP id
+ kr23-20020a056a20e11700b001521ce8ce3amr13566562pzb.18.1694052140227; 
+ Wed, 06 Sep 2023 19:02:20 -0700 (PDT)
 Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
  by smtp.gmail.com with ESMTPSA id
- o6-20020a639206000000b005642a68a508sm6911245pgd.35.2023.09.06.18.53.00
+ e22-20020aa78256000000b0068bc6a75848sm11337699pfn.156.2023.09.06.19.02.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 18:53:03 -0700 (PDT)
+ Wed, 06 Sep 2023 19:02:19 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Sep 2023 11:52:58 +1000
-Message-Id: <CVCB5ZAL2PP1.G3HM71BNC39T@wheely>
-Cc: <qemu-devel@nongnu.org>, <mikey@neuling.org>, <vaibhav@linux.ibm.com>,
- <jniethe5@gmail.com>, <sbhat@linux.ibm.com>, <kconsul@linux.vnet.ibm.com>
-Subject: Re: [PATCH RESEND 05/15] ppc: spapr: Introduce cap-nested-papr for
- nested PAPR API
+Date: Thu, 07 Sep 2023 12:02:14 +1000
+Message-Id: <CVCBD2TBTMXJ.LYNCAVMT7LYB@wheely>
+Subject: Re: [PATCH RESEND 06/15] ppc: spapr: Implement nested PAPR hcall -
+ H_GUEST_GET_CAPABILITIES
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <danielhb413@gmail.com>,
  <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, <mikey@neuling.org>, <vaibhav@linux.ibm.com>,
+ <jniethe5@gmail.com>, <sbhat@linux.ibm.com>, <kconsul@linux.vnet.ibm.com>
 X-Mailer: aerc 0.15.2
 References: <20230906043333.448244-1-harshpb@linux.ibm.com>
- <20230906043333.448244-6-harshpb@linux.ibm.com>
-In-Reply-To: <20230906043333.448244-6-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x234.google.com
+ <20230906043333.448244-7-harshpb@linux.ibm.com>
+In-Reply-To: <20230906043333.448244-7-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,156 +95,153 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
-> This patch introduces a new cmd line option cap-nested-papr to enable
-> support for nested PAPR API by setting the nested.api version accordingly=
-.
-> It requires the user to launch the L0 Qemu in TCG mode and then L1 Linux
-> can then launch the nested guest in KVM mode. Unlike cap-nested-hv,
-> this is meant for nested guest on pseries (PowerVM) where L0 retains
-> whole state of the nested guest. Both APIs are thus mutually exclusive.
-> Support for related hcalls is being added in next set of patches.
+> This patch implements nested PAPR hcall H_GUEST_GET_CAPABILITIES and
+> also enables registration of nested PAPR hcalls whenever an L0 is
+> launched with cap-nested-papr=3Dtrue. The common registration routine
+> shall be used by future patches for registration of related hcall
+> support
+> being added. This hcall is used by L1 kernel to get the set of guest
+> capabilities that are supported by L0 (Qemu TCG).
 
-Oh, this should be about the final patch too, when you have built
-the code to actually support said capability.
+Changelog can drop "This patch". Probably don't have to be so
+detailed here either -- we already established that PAPR hcalls can
+be used with cap-nested-papr in the last patch, we know that L1
+kernels make the hcalls to the vhyp, etc.
 
-Thanks,
-Nick
+"Introduce the nested PAPR hcall H_GUEST_GET_CAPABILITIES which
+is used to query the capabilities of the API and the L2 guests
+it provides."
+
+I would squash this with set.
 
 >
 > Signed-off-by: Michael Neuling <mikey@neuling.org>
 > Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 > ---
->  hw/ppc/spapr.c         |  2 ++
->  hw/ppc/spapr_caps.c    | 48 ++++++++++++++++++++++++++++++++++++++++++
->  include/hw/ppc/spapr.h |  5 ++++-
->  3 files changed, 54 insertions(+), 1 deletion(-)
+>  hw/ppc/spapr_caps.c           |  1 +
+>  hw/ppc/spapr_nested.c         | 35 +++++++++++++++++++++++++++++++++++
+>  include/hw/ppc/spapr_nested.h |  6 ++++++
+>  3 files changed, 42 insertions(+)
 >
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 0aa9f21516..cbab7a825f 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2092,6 +2092,7 @@ static const VMStateDescription vmstate_spapr =3D {
->          &vmstate_spapr_cap_fwnmi,
->          &vmstate_spapr_fwnmi,
->          &vmstate_spapr_cap_rpt_invalidate,
-> +        &vmstate_spapr_cap_nested_papr,
->          NULL
->      }
->  };
-> @@ -4685,6 +4686,7 @@ static void spapr_machine_class_init(ObjectClass *o=
-c, void *data)
->      smc->default_caps.caps[SPAPR_CAP_IBS] =3D SPAPR_CAP_WORKAROUND;
->      smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] =3D 16; /* 64kiB *=
-/
->      smc->default_caps.caps[SPAPR_CAP_NESTED_KVM_HV] =3D SPAPR_CAP_OFF;
-> +    smc->default_caps.caps[SPAPR_CAP_NESTED_PAPR] =3D SPAPR_CAP_OFF;
->      smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] =3D SPAPR_CAP_ON=
-;
->      smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] =3D SPAPR_CAP_ON;
->      smc->default_caps.caps[SPAPR_CAP_FWNMI] =3D SPAPR_CAP_ON;
 > diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-> index a3a790b026..d3b9f107aa 100644
+> index d3b9f107aa..cbe53a79ec 100644
 > --- a/hw/ppc/spapr_caps.c
 > +++ b/hw/ppc/spapr_caps.c
-> @@ -491,6 +491,44 @@ static void cap_nested_kvm_hv_apply(SpaprMachineStat=
-e *spapr,
->      }
+> @@ -511,6 +511,7 @@ static void cap_nested_papr_apply(SpaprMachineState *=
+spapr,
+>              return;
+>          }
+>          spapr->nested.api =3D NESTED_API_PAPR;
+> +        spapr_register_nested_phyp();
+>      } else if (kvm_enabled()) {
+>          /*
+>           * this gets executed in L1 qemu when L2 is launched,
+
+Hmm, this doesn't match nested HV registration. If you want to register
+the hcalls in the cap apply, can you move spapr_register_nested()
+there first? It may make more sense to go in as a dummy function with
+the cap patch first, since you don't introduce all hcalls together.
+
+Also phyp->papr. Scrub for phyp please.
+
+> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+> index a669470f1a..37f3a49be2 100644
+> --- a/hw/ppc/spapr_nested.c
+> +++ b/hw/ppc/spapr_nested.c
+> @@ -6,6 +6,7 @@
+>  #include "hw/ppc/spapr.h"
+>  #include "hw/ppc/spapr_cpu_core.h"
+>  #include "hw/ppc/spapr_nested.h"
+> +#include "cpu-models.h"
+> =20
+>  #ifdef CONFIG_TCG
+>  #define PRTS_MASK      0x1f
+> @@ -375,6 +376,29 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+>      address_space_unmap(CPU(cpu)->as, regs, len, len, true);
 >  }
 > =20
-> +static void cap_nested_papr_apply(SpaprMachineState *spapr,
-> +                                    uint8_t val, Error **errp)
+> +static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
+> +                                             SpaprMachineState *spapr,
+> +                                             target_ulong opcode,
+> +                                             target_ulong *args)
 > +{
-> +    ERRP_GUARD();
-> +    PowerPCCPU *cpu =3D POWERPC_CPU(first_cpu);
 > +    CPUPPCState *env =3D &cpu->env;
+> +    target_ulong flags =3D args[0];
 > +
-> +    if (!val) {
-> +        /* capability disabled by default */
-> +        return;
+> +    if (flags) { /* don't handle any flags capabilities for now */
+> +        return H_PARAMETER;
 > +    }
 > +
-> +    if (tcg_enabled()) {
-> +        if (!(env->insns_flags2 & PPC2_ISA300)) {
-> +            error_setg(errp, "Nested-PAPR only supported on POWER9 and l=
-ater");
-> +            error_append_hint(errp,
-> +                              "Try appending -machine cap-nested-papr=3D=
-off\n");
-> +            return;
-> +        }
-> +        spapr->nested.api =3D NESTED_API_PAPR;
-> +    } else if (kvm_enabled()) {
-> +        /*
-> +         * this gets executed in L1 qemu when L2 is launched,
-> +         * needs kvm-hv support in L1 kernel.
-> +         */
-> +        if (!kvmppc_has_cap_nested_kvm_hv()) {
-> +            error_setg(errp,
-> +                       "KVM implementation does not support Nested-HV");
-> +            error_append_hint(errp,
-> +                              "Try appending -machine cap-nested-hv=3Dof=
-f\n");
-> +        } else if (kvmppc_set_cap_nested_kvm_hv(val) < 0) {
-> +            error_setg(errp, "Error enabling cap-nested-hv with KVM");
-> +            error_append_hint(errp,
-> +                              "Try appending -machine cap-nested-hv=3Dof=
-f\n");
-> +        }
-> +    }
+> +    if ((env->spr[SPR_PVR] & CPU_POWERPC_POWER_SERVER_MASK) =3D=3D
+> +        (CPU_POWERPC_POWER9_BASE))
+> +        env->gpr[4] =3D H_GUEST_CAPABILITIES_P9_MODE;
+> +
+> +    if ((env->spr[SPR_PVR] & CPU_POWERPC_POWER_SERVER_MASK) =3D=3D
+> +        (CPU_POWERPC_POWER10_BASE))
+> +        env->gpr[4] =3D H_GUEST_CAPABILITIES_P10_MODE;
+> +
+> +    return H_SUCCESS;
 > +}
 > +
->  static void cap_large_decr_apply(SpaprMachineState *spapr,
->                                   uint8_t val, Error **errp)
+>  void spapr_register_nested(void)
 >  {
-> @@ -736,6 +774,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] =
-=3D {
->          .type =3D "bool",
->          .apply =3D cap_nested_kvm_hv_apply,
->      },
-> +    [SPAPR_CAP_NESTED_PAPR] =3D {
-> +        .name =3D "nested-papr",
-> +        .description =3D "Allow Nested PAPR (Phyp)",
-> +        .index =3D SPAPR_CAP_NESTED_PAPR,
-> +        .get =3D spapr_cap_get_bool,
-> +        .set =3D spapr_cap_set_bool,
-> +        .type =3D "bool",
-> +        .apply =3D cap_nested_papr_apply,
-> +    },
->      [SPAPR_CAP_LARGE_DECREMENTER] =3D {
->          .name =3D "large-decr",
->          .description =3D "Allow Large Decrementer",
-> @@ -920,6 +967,7 @@ SPAPR_CAP_MIG_STATE(sbbc, SPAPR_CAP_SBBC);
->  SPAPR_CAP_MIG_STATE(ibs, SPAPR_CAP_IBS);
->  SPAPR_CAP_MIG_STATE(hpt_maxpagesize, SPAPR_CAP_HPT_MAXPAGESIZE);
->  SPAPR_CAP_MIG_STATE(nested_kvm_hv, SPAPR_CAP_NESTED_KVM_HV);
-> +SPAPR_CAP_MIG_STATE(nested_papr, SPAPR_CAP_NESTED_PAPR);
->  SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
->  SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
->  SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index c8b42af430..8a6e9ce929 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -81,8 +81,10 @@ typedef enum {
->  #define SPAPR_CAP_RPT_INVALIDATE        0x0B
->  /* Support for AIL modes */
->  #define SPAPR_CAP_AIL_MODE_3            0x0C
-> +/* Nested PAPR */
-> +#define SPAPR_CAP_NESTED_PAPR           0x0D
->  /* Num Caps */
-> -#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
-> +#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_PAPR + 1)
+>      spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
+> @@ -382,6 +406,12 @@ void spapr_register_nested(void)
+>      spapr_register_hypercall(KVMPPC_H_TLB_INVALIDATE, h_tlb_invalidate);
+>      spapr_register_hypercall(KVMPPC_H_COPY_TOFROM_GUEST, h_copy_tofrom_g=
+uest);
+>  }
+> +
+> +void spapr_register_nested_phyp(void)
+> +{
+> +    spapr_register_hypercall(H_GUEST_GET_CAPABILITIES, h_guest_get_capab=
+ilities);
+> +}
+> +
+>  #else
+>  void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+>  {
+> @@ -392,4 +422,9 @@ void spapr_register_nested(void)
+>  {
+>      /* DO NOTHING */
+>  }
+> +
+> +void spapr_register_nested_phyp(void)
+> +{
+> +    /* DO NOTHING */
+> +}
+>  #endif
+> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
+h
+> index f8db31075b..ce198e9f70 100644
+> --- a/include/hw/ppc/spapr_nested.h
+> +++ b/include/hw/ppc/spapr_nested.h
+> @@ -189,6 +189,11 @@
+>  /* End of list of Guest State Buffer Element IDs */
+>  #define GSB_LAST                GSB_VCPU_SPR_ASDR
 > =20
->  /*
->   * Capability Values
-> @@ -1005,6 +1007,7 @@ extern const VMStateDescription vmstate_spapr_cap_s=
-bbc;
->  extern const VMStateDescription vmstate_spapr_cap_ibs;
->  extern const VMStateDescription vmstate_spapr_cap_hpt_maxpagesize;
->  extern const VMStateDescription vmstate_spapr_cap_nested_kvm_hv;
-> +extern const VMStateDescription vmstate_spapr_cap_nested_papr;
->  extern const VMStateDescription vmstate_spapr_cap_large_decr;
->  extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
->  extern const VMStateDescription vmstate_spapr_cap_fwnmi;
+> +/* Bit masks to be used in nested PAPR API */
+> +#define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
+> +#define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
+> +#define H_GUEST_CAPABILITIES_P10_MODE 0x2000000000000000
+
+See introducing these defines with the patch that uses them isn't so
+bad :)
+
+Thanks,
+Nick
+
+> +
+>  typedef struct SpaprMachineStateNestedGuest {
+>      unsigned long vcpus;
+>      struct SpaprMachineStateNestedGuestVcpu *vcpu;
+> @@ -331,6 +336,7 @@ struct nested_ppc_state {
+>  };
+> =20
+>  void spapr_register_nested(void);
+> +void spapr_register_nested_phyp(void);
+>  void spapr_exit_nested(PowerPCCPU *cpu, int excp);
+> =20
+>  #endif /* HW_SPAPR_NESTED_H */
 
 
