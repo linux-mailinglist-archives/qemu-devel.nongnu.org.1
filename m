@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579BA7972C6
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8807972B3
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEla-0001bt-ID; Thu, 07 Sep 2023 09:09:50 -0400
+	id 1qeElj-0002j7-Qn; Thu, 07 Sep 2023 09:09:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qeElX-0001SL-JN
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:09:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qeEle-0002Hz-TL
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:09:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qeElV-0001wH-37
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:09:47 -0400
+ id 1qeElY-0001wp-2j
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:09:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694092182;
+ s=mimecast20190719; t=1694092186;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=4UZQj2g5BgGhxEiVV5NBR7+2VGRgVS3K7B1EO+hrmFs=;
- b=hQv9QwQv0YDfvJboq+nmr4s6IiEmGRlHrWRWJA9ydVv7oNmvnhacRRLSAX4nENk15zVFdB
- XPFtkqflSnywQvPv5SB7UobpwOqOifvaictLqPG0YiLf/MnP0sMkWobjfK+Oa+Ap0QJ8XN
- n0trlkt80l5grOeOCTmpsuR/4YBBPV0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-542-hFwT-pkVNyyqBWp9e05gjQ-1; Thu, 07 Sep 2023 09:09:40 -0400
-X-MC-Unique: hFwT-pkVNyyqBWp9e05gjQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5WQbyEMLbxN6n9Kmk+rdiZnzh6a00nnw+SDImXP96eM=;
+ b=aAQ//KjJ6v2dO6vwYMf6UV9E0EWjoSGLdr3pDTVm3e67C4ECnaTqe459YUFEn4mK6sy5uL
+ SaOakcfl/MWucm9MVhKT94LEfmSfHAmMjRsWoxIw8PGuGxCOJf5wb3eTpt/btlNmTagOLB
+ TGEoKYbAZG1pX42uZWaeeLQGXXHlSTE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-541-P63GlNnZOm2mIMe1-1hnng-1; Thu, 07 Sep 2023 09:09:44 -0400
+X-MC-Unique: P63GlNnZOm2mIMe1-1hnng-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FD82917843
- for <qemu-devel@nongnu.org>; Thu,  7 Sep 2023 13:09:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55D471C18C63
+ for <qemu-devel@nongnu.org>; Thu,  7 Sep 2023 13:09:44 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.43])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A3A1263F6C;
- Thu,  7 Sep 2023 13:09:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6D583C03293;
+ Thu,  7 Sep 2023 13:09:43 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 0/5] virtio-gpu: add blob migration support
-Date: Thu,  7 Sep 2023 17:09:31 +0400
-Message-ID: <20230907130936.767722-1-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 1/5] virtio-gpu: block migration of VMs with blob=true
+Date: Thu,  7 Sep 2023 17:09:32 +0400
+Message-ID: <20230907130936.767722-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20230907130936.767722-1-marcandre.lureau@redhat.com>
+References: <20230907130936.767722-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -60,7 +63,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,26 +82,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+"blob" resources don't have an associated pixman image:
 
-This is a follow-up of the previous patch "[PATCH] virtio-gpu: block migration
-of VMs with blob=true". Now that migration support is implemented, we can decide
-to drop the migration blocker patch, or apply and revert it, so that
-backporting of a quick fix is made easier.
+#0  pixman_image_get_stride (image=0x0) at ../pixman/pixman-image.c:921
+#1  0x0000562327c25236 in virtio_gpu_save (f=0x56232bb13b00, opaque=0x56232b555a60, size=0, field=0x5623289ab6c8 <__compound_literal.3+104>, vmdesc=0x56232ab59fe0) at ../hw/display/virtio-gpu.c:1225
 
-Fixes:
+Related to:
 https://bugzilla.redhat.com/show_bug.cgi?id=2236353
 
-Marc-André Lureau (5):
-  virtio-gpu: block migration of VMs with blob=true
-  virtio-gpu: factor out restore mapping
-  virtio-gpu: move scanout restoration to post_load
-  virtio-gpu: add virtio-gpu/blob vmstate subsection
-  Revert "virtio-gpu: block migration of VMs with blob=true"
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ hw/display/virtio-gpu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
- hw/display/virtio-gpu.c | 174 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 146 insertions(+), 28 deletions(-)
-
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index bbd5c6561a..d6909bfa97 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -26,6 +26,7 @@
+ #include "hw/virtio/virtio-gpu-pixman.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/qdev-properties.h"
++#include "migration/blocker.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "qapi/error.h"
+@@ -44,6 +45,8 @@ static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
+                                        struct virtio_gpu_simple_resource *res);
+ static void virtio_gpu_reset_bh(void *opaque);
+ 
++static Error *blob_mig_blocker;
++
+ void virtio_gpu_update_cursor_data(VirtIOGPU *g,
+                                    struct virtio_gpu_scanout *s,
+                                    uint32_t resource_id)
+@@ -1374,6 +1377,14 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+             error_setg(errp, "blobs and virgl are not compatible (yet)");
+             return;
+         }
++
++        if (!blob_mig_blocker) {
++            error_setg(&blob_mig_blocker,
++                       "virtio-gpu blob VMs are currently not migratable.");
++        }
++        if (migrate_add_blocker(blob_mig_blocker, errp)) {
++            return;
++        }
+     }
+ 
+     if (!virtio_gpu_base_device_realize(qdev,
+@@ -1400,6 +1411,9 @@ static void virtio_gpu_device_unrealize(DeviceState *qdev)
+ {
+     VirtIOGPU *g = VIRTIO_GPU(qdev);
+ 
++    if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
++        migrate_del_blocker(blob_mig_blocker);
++    }
+     g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
+     g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
+     g_clear_pointer(&g->reset_bh, qemu_bh_delete);
 -- 
 2.41.0
 
