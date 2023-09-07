@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BD67973C8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 17:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17997973F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 17:34:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeGxe-0004r1-IO; Thu, 07 Sep 2023 11:30:26 -0400
+	id 1qeH1a-0007YN-37; Thu, 07 Sep 2023 11:34:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qeGxV-0004oH-A4
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:30:18 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+ id 1qeH1S-0007Xn-9J
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:34:23 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qeGxR-0003S6-5X
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:30:17 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-57128297bd7so667051eaf.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 08:30:11 -0700 (PDT)
+ id 1qeH1O-00060c-Kq
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:34:21 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-573249e73f8so646878eaf.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 08:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694100610; x=1694705410; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694100857; x=1694705657; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bu5xAVI86a78zIuRpJMIl7yUpkIIIks1oQwtFGLvG/4=;
- b=GCkfHs2vVU6p/Yhg1NuFe4JE4oWmtoc2C9K7zzwE71P/UNWriVXz7chh+ZY2eZIzkl
- tpWItxVdksO77f/7mmhXchNURRnDKmtuPbOA2kKklexRt6ox49KXPW7OhpLMOQkmooCY
- A/9vB5UYtKrRrBZCEZ5nuq5k8wF+UonCrqbP4Z83PzCVV1foBCT4skmU67ye3v+A559g
- IKr+XzEqO2DscastXgY5RaFZNiNyzTBE/swbETnpHHo4VIRcvIUAIShd49C9f4Ey3yga
- Ek+wx/wn4E0+xXoxED5TCBP/d1JAF9Vzsx0bi/XQLrTZL6pU7aKAk2sauLoOCTVKq9VM
- /cMw==
+ bh=17wXHI0sTEFeymlLjgViNPVQkk0U2VhLz+vzqFch7mc=;
+ b=dMJs7MdXDLWHM0lwSra6quYEMVkVk4zuycZuAyLxBJlCwvUnWTCmMTUL/CdQ5r6LUd
+ R5UkSiL6mK8eHcC5WrJzgEVL2R6cncuTh8PfXnuTFDCXSHwZzWsnaD3qA7rdZ422ixSM
+ 5Lpz1DuZcGlcnlkEOc+cuwKCkZ40l3YPLwWLy2oGPXA55c4T5CK/OPGUdCgLoN+9+/PN
+ bMYXoQnGGNZDrD82fkvUVbNADNqGCiOIcSlk4u99kECJh2ZvzwQVIy3S9b/RohnQ+zZz
+ GqVNmyyFoCPdtfLnn3bgd87kPno9Cr8GwASxHZ93xrMWsAZ2NCN0xVRhfOftZFtKY8rl
+ BGZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694100610; x=1694705410;
+ d=1e100.net; s=20221208; t=1694100857; x=1694705657;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bu5xAVI86a78zIuRpJMIl7yUpkIIIks1oQwtFGLvG/4=;
- b=H+4sllXkYmVuOA5BLsGVaiTaOHEUhlamcXKWiYXBeFynZjGCsWIkT8PGUAdzTiwKF7
- jIvwksw3f26eTT3W0sKNpo+o1jQjL+vAqOjXNyNRk+S4xqriPLxwtR9Zib+oEmhYcuXb
- sWkUGUsVmwCyVFHpntk+OwgoZtk3sfV/mSA13D7s+7rPmBEPIa7o7kP23nL/VATdaX6k
- Vg6aIqnVsezGLCiAC7H2u+wywRj4ztdVyEcVY2UCNnIagdQHrZygYUYQLUlPAb9eaxCK
- vDQOmd3cKzQCSqNPgbwXQVH7523QOu3Km4zUkAsJ5v2yGFgYGeN+C9gucA6dNq/y3152
- G+Pg==
-X-Gm-Message-State: AOJu0YzohyMIPVoZFAd3OI7fF8txU/v5h9azWL2JSrjJGvB4MtMhmr76
- TPVA4HDwvHOikG7FEq96+MG7+mHACKGE6cCEF24=
-X-Google-Smtp-Source: AGHT+IFL27HCzZnxkANJPiNOYHR9CkJugPRgpcND65q81whVaooXT5cNMMMMt9wYdwLkZn3px6dj7UtokKyK5Y6/6mg=
-X-Received: by 2002:a4a:840f:0:b0:571:28d5:2c71 with SMTP id
- l15-20020a4a840f000000b0057128d52c71mr15427854oog.2.1694100610028; Thu, 07
- Sep 2023 08:30:10 -0700 (PDT)
+ bh=17wXHI0sTEFeymlLjgViNPVQkk0U2VhLz+vzqFch7mc=;
+ b=D+RsFB4r7tjYlZ37OignEk9hCw0KssD7yYohO2HorWytTcck8FMTWrEPWuPQo/zLXG
+ SFhVpJeLc0etZCNWt0n4A4UPfdM2wO5smR8ZHkv3Q2PlJugosxHPjao9WguEYRyvhGpf
+ R7s2SjLcjY5mjLrJ7PiYqER0gEN38PxJJSZTOGLVsILyY8n33txDXWIps49i5shuCYwX
+ unu9Oa4q/7DVBpscY3EJQDWmmwr275aZmXLr86Q/T0lD9HfKwMHZaCP1bGUPvtZ6+Bqw
+ 4+EO/t7CcIR1lgMRPI/WMPajQ30pSnEjOZB+s5f7wJe04EA1SQnYXQp5AaP7Vo0vOLLB
+ zU1Q==
+X-Gm-Message-State: AOJu0Yyf+DvDFeeUKz0NG5g23IQo8Qf6b8pprQGCWY6UPQ7Ep/uJYKi3
+ zFVWCEoVshqinQ/Na5mGbmdDq4an6wjuYqCd0O4=
+X-Google-Smtp-Source: AGHT+IEn6PL7Cbvuv3v6TthfeNRtAs4zbEXxoWccIJd7xhDVJ1PwbRnRyNb88XmakAhHTunv3EvOAg6Qv021DPzNvxg=
+X-Received: by 2002:a4a:2553:0:b0:56e:5a8e:654f with SMTP id
+ v19-20020a4a2553000000b0056e5a8e654fmr18790248ooe.8.1694100857299; Thu, 07
+ Sep 2023 08:34:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230906190141.1286893-1-stefanha@redhat.com>
- <1fa3ad95-c335-7e97-42f0-00dca5c5ba48@redhat.com>
- <20230907140006.GA1363873@fedora>
- <CABgObfZXE+AupVGZTbm-W4RXbQPBiqSAgo+U4k1Eza=U1sortA@mail.gmail.com>
-In-Reply-To: <CABgObfZXE+AupVGZTbm-W4RXbQPBiqSAgo+U4k1Eza=U1sortA@mail.gmail.com>
+ <20230906190141.1286893-2-stefanha@redhat.com>
+ <ZPkiH4WvSs1k43RQ@gallifrey> <20230907140428.GB1363873@fedora>
+ <ZPnZCbnpzS2QsEYO@gallifrey>
+In-Reply-To: <ZPnZCbnpzS2QsEYO@gallifrey>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 7 Sep 2023 11:29:57 -0400
-Message-ID: <CAJSP0QUZXcHKQKka1LEM8OcBp1L2FQp0TZfvLNe3ZVy-HnkPzw@mail.gmail.com>
-Subject: Re: [RFC 0/3] qmp: make qmp_device_add() a coroutine
-To: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 7 Sep 2023 11:34:05 -0400
+Message-ID: <CAJSP0QWGi4y0aanPKs7S0HuOD=Vp4GZ2YURMZovgO9_zDSucng@mail.gmail.com>
+Subject: Re: [RFC 1/3] hmp: avoid the nested event loop in handle_hmp_command()
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
+ Eduardo Habkost <eduardo@habkost.net>, pbonzini@redhat.com, 
  Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  kwolf@redhat.com, Maxim Levitsky <mlevitsk@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,64 +93,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Sept 2023 at 10:26, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Thu, 7 Sept 2023 at 10:07, Dr. David Alan Gilbert <dave@treblig.org> wro=
+te:
 >
-> On Thu, Sep 7, 2023 at 4:00=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
-om> wrote:
-> > While I agree that the issue would not happen if monitor commands only
-> > ran in the iohandler AioContext, I don't think we can change that.
-> > When Kevin implemented coroutine commands in commit 9ce44e2ce267 ("qmp:
-> > Move dispatcher to a coroutine"), he used qemu_get_aio_context()
-> > deliberately so that AIO_WAIT_WHILE() can make progress.
->
-> Ah, you are referring to
->
-> +        /*
-> +         * Move the coroutine from iohandler_ctx to qemu_aio_context for
-> +         * executing the command handler so that it can make progress if=
- it
-> +         * involves an AIO_WAIT_WHILE().
-> +         */
-> +        aio_co_schedule(qemu_get_aio_context(), qmp_dispatcher_co);
-> +        qemu_coroutine_yield();
->
-> > I'm not clear on the exact scenario though, because coroutines shouldn'=
+> * Stefan Hajnoczi (stefanha@redhat.com) wrote:
+> > On Thu, Sep 07, 2023 at 01:06:39AM +0000, Dr. David Alan Gilbert wrote:
+> > > * Stefan Hajnoczi (stefanha@redhat.com) wrote:
+> > > > Coroutine HMP commands currently run to completion in a nested even=
 t
-> > call AIO_WAIT_WHILE().
+> > > > loop with the Big QEMU Lock (BQL) held. The call_rcu thread also us=
+es
+> > > > the BQL and cannot process work while the coroutine monitor command=
+ is
+> > > > running. A deadlock occurs when monitor commands attempt to wait fo=
+r
+> > > > call_rcu work to finish.
+> > >
+> > > I hate to think if there's anywhere else that ends up doing that
+> > > other than the monitors.
+> >
+> > Luckily drain_call_rcu() has few callers: just
+> > xen_block_device_destroy() and qmp_device_add(). We only need to worry
+> > about their call stacks.
+> >
+> > I haven't looked at the Xen code.
+> >
+> > >
+> > > But, not knowing the semantics of the rcu code, it looks kind of OK t=
+o
+> > > me from the monitor.
+> > >
+> > > (Do you ever get anything like qemu quitting from one of the other
+> > > monitors while this coroutine hasn't been run?)
+> >
+> > Not sure what you mean?
 >
-> I think he meant "so that an AIO_WAIT_WHILE() invoked through a bottom
-> half will make progress on the coroutine as well".
->
-> However I am not sure the comment applies here, because
-> do_qmp_dispatch_bh() only applies to non-coroutine commands; that
-> commit allowed monitor commands to run in vCPU threads when they
-> previously weren't.
->
-> Thinking more about it, I don't like that the
->
->     if (!!(cmd->options & QCO_COROUTINE) =3D=3D qemu_in_coroutine()) {
->     }
->
-> check is in qmp_dispatch() rather than monitor_qmp_dispatch().
->
-> Any caller of qmp_dispatch() knows if it is in a coroutine or not.
-> qemu-ga uses neither a coroutine dispatcher nor coroutine commands.
-> QEMU uses non-coroutine dispatch for out-of-band commands (and we can
-> forbid coroutine + allow-oob at the same time), and coroutine dispatch
-> for the others.
->
-> So, moving out of coroutine context (through a bottom half) should be
-> done by monitor_qmp_dispatch(), and likewise moving temporarily out of
-> the iohandler context in the case of coroutine commands. In the case
-> of !req_obj->req you don't need to do either of those. qmp_dispatch()
-> can still assert that the coroutine-ness of the command matches the
-> context in which qmp_dispatch() is called.
->
-> Once this is done, I think moving out of coroutine context can use a
-> BH that runs in the iohandler context.
+> Imagine that just after you create your coroutine, a vCPU does a
+> shutdown and qemu is configured to quit, or on another monitor someone
+> does a quit;  does your coroutine get executed or not?
 
-I'll wait for Kevin's input and will then revisit the patches based on
-the conclusion we come to.
+I think the answer is that it depends.
+
+A coroutine can run for a while and then yield while waiting for a
+timer, BH, fd handler, etc. If the coroutine has yielded then I think
+QEMU could terminate.
+
+The behavior of entering a coroutine for the first time depends on the
+API that is used (e.g. qemu_coroutine_enter()/aio_co_enter()/etc).
+qemu_coroutine_enter() is immediate but aio_co_enter() contains
+indirect code paths like scheduling a BH.
+
+To summarize: =C2=AF\_(=E3=83=84)_/=C2=AF
 
 Stefan
+
+>
+> Dave
+>
+> > Stefan
+> >
+> > >
+> > > Dave
+> > >
+> > > > This patch refactors the HMP monitor to use the existing event loop
+> > > > instead of creating a nested event loop. This will allow the next
+> > > > patches to rely on draining call_rcu work.
+> > > >
+> > > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > > ---
+> > > >  monitor/hmp.c | 28 +++++++++++++++-------------
+> > > >  1 file changed, 15 insertions(+), 13 deletions(-)
+> > > >
+> > > > diff --git a/monitor/hmp.c b/monitor/hmp.c
+> > > > index 69c1b7e98a..6cff2810aa 100644
+> > > > --- a/monitor/hmp.c
+> > > > +++ b/monitor/hmp.c
+> > > > @@ -1111,15 +1111,17 @@ typedef struct HandleHmpCommandCo {
+> > > >      Monitor *mon;
+> > > >      const HMPCommand *cmd;
+> > > >      QDict *qdict;
+> > > > -    bool done;
+> > > >  } HandleHmpCommandCo;
+> > > >
+> > > > -static void handle_hmp_command_co(void *opaque)
+> > > > +static void coroutine_fn handle_hmp_command_co(void *opaque)
+> > > >  {
+> > > >      HandleHmpCommandCo *data =3D opaque;
+> > > > +
+> > > >      handle_hmp_command_exec(data->mon, data->cmd, data->qdict);
+> > > >      monitor_set_cur(qemu_coroutine_self(), NULL);
+> > > > -    data->done =3D true;
+> > > > +    qobject_unref(data->qdict);
+> > > > +    monitor_resume(data->mon);
+> > > > +    g_free(data);
+> > > >  }
+> > > >
+> > > >  void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
+> > > > @@ -1157,20 +1159,20 @@ void handle_hmp_command(MonitorHMP *mon, co=
+nst char *cmdline)
+> > > >          Monitor *old_mon =3D monitor_set_cur(qemu_coroutine_self()=
+, &mon->common);
+> > > >          handle_hmp_command_exec(&mon->common, cmd, qdict);
+> > > >          monitor_set_cur(qemu_coroutine_self(), old_mon);
+> > > > +        qobject_unref(qdict);
+> > > >      } else {
+> > > > -        HandleHmpCommandCo data =3D {
+> > > > -            .mon =3D &mon->common,
+> > > > -            .cmd =3D cmd,
+> > > > -            .qdict =3D qdict,
+> > > > -            .done =3D false,
+> > > > -        };
+> > > > -        Coroutine *co =3D qemu_coroutine_create(handle_hmp_command=
+_co, &data);
+> > > > +        HandleHmpCommandCo *data; /* freed by handle_hmp_command_c=
+o() */
+> > > > +
+> > > > +        data =3D g_new(HandleHmpCommandCo, 1);
+> > > > +        data->mon =3D &mon->common;
+> > > > +        data->cmd =3D cmd;
+> > > > +        data->qdict =3D qdict; /* freed by handle_hmp_command_co()=
+ */
+> > > > +
+> > > > +        Coroutine *co =3D qemu_coroutine_create(handle_hmp_command=
+_co, data);
+> > > > +        monitor_suspend(&mon->common); /* resumed by handle_hmp_co=
+mmand_co() */
+> > > >          monitor_set_cur(co, &mon->common);
+> > > >          aio_co_enter(qemu_get_aio_context(), co);
+> > > > -        AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
+> > > >      }
+> > > > -
+> > > > -    qobject_unref(qdict);
+> > > >  }
+> > > >
+> > > >  static void cmd_completion(MonitorHMP *mon, const char *name, cons=
+t char *list)
+> > > > --
+> > > > 2.41.0
+> > > >
+> > > >
+> > > --
+> > >  -----Open up your eyes, open up your mind, open up your code -------
+> > > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  =
+\
+> > > \        dave @ treblig.org |                               | In Hex =
+/
+> > >  \ _________________________|_____ http://www.treblig.org   |_______/
+> > >
+>
+>
+> --
+>  -----Open up your eyes, open up your mind, open up your code -------
+> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \
+> \        dave @ treblig.org |                               | In Hex /
+>  \ _________________________|_____ http://www.treblig.org   |_______/
+>
 
