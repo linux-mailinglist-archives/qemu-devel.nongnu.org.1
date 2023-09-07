@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C67979725F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CD7797261
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:38:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEFa-0000Vz-A3; Thu, 07 Sep 2023 08:36:46 -0400
+	id 1qeEGl-00026r-6A; Thu, 07 Sep 2023 08:37:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qeEFQ-0000Vb-Fb
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:36:36 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qeEGj-00026f-18
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:37:57 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qeEFO-0002hh-2c
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:36:36 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2bb9a063f26so16141501fa.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:36:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qeEGf-00032b-DY
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:37:56 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3aa139a0ab2so605728b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:37:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694090192; x=1694694992; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=URPI3ewrlqRSlnGa6Jr4RVOXCwSPxiiPxFVsL0rbVws=;
- b=l4FSu3aYlRGnrkSu7iHc4cnmROsj9q7lfuGzoIEE65bNWnGsWCP/W0tw2niB3D47OR
- Ms20YMj98WQPQ4QvW8S4XvTyfwkfKkZD8dje2Qol+Crz+8Mm5JKh7UZMi35w656wlmot
- oehuOFDQqdOrJ53e3bYQRud9pEmI5pv+uXa11J7FAmZNt16JJ9Yrp6NqfP+PHkWw3iBK
- NEAN9YKV04rAhIKWz8IwI4UQS2KUWI5Aj1G/y/YDe2ElPILlTIQ01BhebInOkCzirZVT
- clOuqEQBQNazluePfIge/xfz64Mxb8pDci8Dw2+2lFJIzoD7BiyHRWIkP1weAGRujV//
- uTCw==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1694090271; x=1694695071;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=OxZECmNJzLrjVrY3MBHxgtzSD0rX3BAFoAvCwyZ8YAo=;
+ b=BiTLctoOcmzWEL0C767YSckA49s9pU7fvOEPjdxn2JF2AOY4jVS9v30cwoD5gME4js
+ 6gOh2CPlEXT4vKcL2BaSx72eQXusP2DbINjX4N28bMa8ZYKCghSgDQn16N1qnfw7apDK
+ fQVSrLIgX1cVJGvv9NHP2yVfbTBD2x2ynXXXTayib/mnKCDdrct5Cci2wYoAwTnnqPTv
+ Y8AVOFBuE5RuxN3Jl8vgheh8MG7HqSK54gau7sXuT7ODOsAHuMdtoCXorwRGZC8YW+El
+ D1BuZYHGXTMpeqk9wMLpwOAdxtVPEHmpCtjmnn4GMzyvcxpGcIu4s2TBvnyU9qywjpBf
+ ZKNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694090192; x=1694694992;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=URPI3ewrlqRSlnGa6Jr4RVOXCwSPxiiPxFVsL0rbVws=;
- b=ZxhLMsFRpx1nuslYes/aLMIL2AsCDQdmCMxrnjQQNuDddyBVu0A7wTUnYC263t4LQ4
- znzixdyZW896CP3YluD0xypqasF9z/FXCZhwV0igqdFVY9a5cpjxkiW1yIbeWg4Rlxij
- 5qvuhA+CZvmhLGl9FcX1fTo+/zcuzBD6uibMrsExq2+c0lXMgUTNQbL/z3makV3E8Bm2
- jW4Q7MsB/3114J6ZkGyH/h9Mq/Xs/3M/nVNr02Kc8PJEdQs0bE/JJUZZb7SgVJ2oXt3G
- EcfrtM2yI1716t3Si5ZXGxlj6yjcM2B+2kdTR6dJA/kVi4vqrspdlRd6fzKyh5zcU4Ig
- Lrvw==
-X-Gm-Message-State: AOJu0YzDZuq9QrarGCgb2WfTvya5z1dT0pJNGmNpfbgOLqOdRFKNO8Wr
- Xj+5jnsC803u92Ys380lsVkJpQ==
-X-Google-Smtp-Source: AGHT+IGg6qudx3fnNhyo0LxAAdyBTR3oWamzBPLSGP41vkYabBFH45O0YqFTnTonTetC099bYZLrvg==
-X-Received: by 2002:a2e:900e:0:b0:2bc:de11:453b with SMTP id
- h14-20020a2e900e000000b002bcde11453bmr4901230ljg.1.1694090191188; 
- Thu, 07 Sep 2023 05:36:31 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c230c00b00401e32b25adsm2425218wmo.4.2023.09.07.05.36.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 05:36:30 -0700 (PDT)
-Date: Thu, 7 Sep 2023 14:36:29 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, palmer@dabbelt.com, 
- bin.meng@windriver.com, peter.maydell@linaro.org, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] docs/devel: Add cross-compiling doc
-Message-ID: <20230907-d272560607f40c00538e4e3f@orel>
-References: <20230907084604.253347-2-ajones@ventanamicro.com>
- <87sf7q1djr.fsf@linaro.org>
- <20230907-6262b40a0a352bdce53999e3@orel>
+ d=1e100.net; s=20221208; t=1694090271; x=1694695071;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OxZECmNJzLrjVrY3MBHxgtzSD0rX3BAFoAvCwyZ8YAo=;
+ b=Xm5YfxYxY7Ioq+IYAiI7iVcNibugxVtMsoA4FbvZ6WGyb/unJqlXgEnaivV8QAIk2k
+ sGyolWbl2jaBCRWwnnlTxScpuFyjpvh35Jqb1JK84bGlPggjeeMWhgfn3rW2IZ5X7hyy
+ xRSUDV9N3+ZzUq6pETaEfg5OuupE14szD7Zs0/a+U2IQWXKn446b/IGrj2HUkDznV6d1
+ hIHGsenitS/dgAMoRBjIYS+JBDTVe6JFnKh3lAV9LiqIcqFbNn27XMFACqFSPYuP4Wph
+ MnV9CEMpUZkDhG4Z2KQWdyfTpu/JdUE58HgkDS4kbU3BDrAu3hzEOuFXCL4i6jUIPwRN
+ /feg==
+X-Gm-Message-State: AOJu0YxBF6vETPTn28Gt+0uTcbYbywhdr4sNJLCMFtpAo55oTRPpTJma
+ 9C7V4KdJpoH5/aY758m6kijV+Y4Vwk1bwMxXvGM11A==
+X-Google-Smtp-Source: AGHT+IENcDKx3InjAfWiyyBaRgr0kSMEK2KBiC8l9J/IsfMsmGQ614qnNG1+DHRH83du5iAVPhU38mk4bzWolEd0t7k=
+X-Received: by 2002:a54:4485:0:b0:3a7:9837:7148 with SMTP id
+ v5-20020a544485000000b003a798377148mr17219350oiv.58.1694090271633; Thu, 07
+ Sep 2023 05:37:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230907-6262b40a0a352bdce53999e3@orel>
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20230823092905.2259418-1-mnissler@rivosinc.com>
+ <20230823092905.2259418-2-mnissler@rivosinc.com> <ZOZDQVgboMaiZ4x6@x1n>
+ <CAGNS4TY2-scz3pu16tUF1bA-FEk+pe86QsgjW8L=qjidw5TqOQ@mail.gmail.com>
+ <ZOZx7vMqFRfaIwSp@x1n> <20230824133245.GA1412804@fedora>
+ <87edjixb6n.fsf@pond.sub.org>
+ <CAGNS4TaEL1CapL3NoM4XYVMLOH-heOs=2WHMLHNEz072fcxNfw@mail.gmail.com>
+ <ZPcxD+lqtt8PFwCl@x1n>
+In-Reply-To: <ZPcxD+lqtt8PFwCl@x1n>
+From: Mattias Nissler <mnissler@rivosinc.com>
+Date: Thu, 7 Sep 2023 14:37:40 +0200
+Message-ID: <CAGNS4TbYk=Xj0hnD6EVipSxZ3VSa9dHJvGV55hzMMsEXrxMgMw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] softmmu: Support concurrent bounce buffers
+To: Peter Xu <peterx@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ john.levon@nutanix.com, Jagannathan Raman <jag.raman@oracle.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=mnissler@rivosinc.com; helo=mail-oi1-x22c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,82 +97,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 07, 2023 at 02:31:20PM +0200, Andrew Jones wrote:
-> On Thu, Sep 07, 2023 at 11:20:55AM +0100, Alex Bennée wrote:
-> > 
-> > Andrew Jones <ajones@ventanamicro.com> writes:
-> > 
-> > > Add instructions for how to cross-compile QEMU for RISC-V. The
-> > > file is named generically because there's no reason not to collect
-> > > other architectures steps into the same file, especially because
-> > > several subsections like those for cross-compiling QEMU dependencies
-> > > using meson and a cross-file could be shared. Additionally, other
-> > > approaches to creating sysroots, such as with debootstrap, may be
-> > > documented in this file in the future.
-> > >
-> > > Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-> > > ---
-> > >  docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
-> > >  docs/devel/index-build.rst     |   1 +
-> > >  2 files changed, 222 insertions(+)
-> > >  create mode 100644 docs/devel/cross-compiling.rst
-> > >
-> > > diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.rst
-> > > new file mode 100644
-> > > index 000000000000..1b988ba54e4c
-> > > --- /dev/null
-> > > +++ b/docs/devel/cross-compiling.rst
-> > > @@ -0,0 +1,221 @@
-> > > +.. SPDX-License-Identifier: GPL-2.0-or-later
-> > > +
-> > > +====================
-> > > +Cross-compiling QEMU
-> > > +====================
-> > > +
-> > > +Cross-compiling QEMU first requires the preparation of a cross-toolchain
-> > > +and the cross-compiling of QEMU's dependencies. While the steps will be
-> > > +similar across architectures, each architecture will have its own specific
-> > > +recommendations.
-> > 
-> > "some architectures" - most of the cross compile stuff is hidden away by
-> > the build system on systems with appropriate development libraries
-> > installed. I think we would be remiss if we didn't just outline the
-> > common case:
-> > 
-> >    ../configure --cross-prefix=riscv64-linux-gnu-
-> > 
-> > I think we could make it clearer that in most cases you don't need to
-> > prepare and cross-compile a bunch of dependencies lest we send
-> > developers down a rabbit hole.
-> > 
-> > Maybe build-system.rst be updated and this reference it for the common
-> > case?
-> > 
-> 
-> Hi Alex,
-> 
-> tl;dr, I'd welcome instructions helping people get cross-arch development
-> libraries installed without having to build them. I wouldn't make a good
-> author for those instructions, though, since I don't know how.
-> 
-> I'm guessing the dependencies can be installed with a distro's package
-> management, assuming the package management supports cross-arch
-> installation and installing to a specified root directory. I'm on Fedora,
-> so I just tried
-> 
->  $ sudo dnf install --forcearch=aarch64 --installroot=$SYSROOT --releasever=36 glib2-devel
-> 
-> but it wanted to install a huge number of packages, which most people
-> probably wouldn't want to do. Maybe that command isn't what you had in
-> mind or other distros can manage this better. I'm all ears.
+On Tue, Sep 5, 2023 at 3:45=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
 >
+> On Tue, Sep 05, 2023 at 09:38:39AM +0200, Mattias Nissler wrote:
+> > It would be nice to use a property on the device that originates the
+> > DMA operation to configure this. However, I don't see how to do this
+> > in a reasonable way without bigger changes: A typical call path is
+> > pci_dma_map -> dma_memory_map -> address_space_map. While pci_dma_map
+> > has a PCIDevice*, address_space_map only receives the AddressSpace*.
+> > So, we'd probably have to pass through a new QObject parameter to
+> > address_space_map that indicates the originator and pass that through?
+> > Or is there a better alternative to supply context information to
+> > address_space map? Let me know if any of these approaches sound
+> > appropriate and I'll be happy to explore them further.
+>
+> Should be possible to do. The pci address space is not shared but
+> per-device by default (even if there is no vIOMMU intervention).  See
+> do_pci_register_device():
+>
+>     address_space_init(&pci_dev->bus_master_as,
+>                        &pci_dev->bus_master_container_region, pci_dev->na=
+me);
 
-Ah, I just saw your other reply on the original posting. The magic is in
-docker stuff.
+Ah, thanks for that hint! This works, and it probably even makes more
+sense to treat bounce buffering as a concept tied to AddressSpace
+rather than a global thing.
 
-I'll look into it, but I'd also make a poor author for anything regarding
-docker :-)
-
-Thanks,
-drew
+I'll send an updated series shortly, with the configuration parameter
+attached to the PCI device, so it can be specified as a -device option
+on the command line. In that light, I decided to keep the default at
+4096 bytes though, since we now have the ability for each device model
+to choose its default independently.
 
