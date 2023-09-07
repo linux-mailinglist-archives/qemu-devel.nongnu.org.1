@@ -2,54 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76F0797EAA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 00:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AB6797F44
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 01:37:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeNI1-0002DX-QV; Thu, 07 Sep 2023 18:15:53 -0400
+	id 1qeOY0-0003bv-Tu; Thu, 07 Sep 2023 19:36:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
- id 1qeNHz-0002Ch-Ea; Thu, 07 Sep 2023 18:15:51 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qeOXw-0003bM-N4
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 19:36:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
- id 1qeNHw-0003Qd-4G; Thu, 07 Sep 2023 18:15:51 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RhYTp2D3gz4x80;
- Fri,  8 Sep 2023 08:15:42 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RhYTm59Rbz4x5w;
- Fri,  8 Sep 2023 08:15:40 +1000 (AEST)
-Message-ID: <ad943b46-0652-8fd1-49a4-c86dd6214827@kaod.org>
-Date: Fri, 8 Sep 2023 00:15:36 +0200
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qeOXr-0007N2-Rj
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 19:36:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694129778;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zu2K1dMy8vm8K0rvVM1RHy2lhBh8qmZ9yitufa0eHac=;
+ b=eqkQKAjdcr6YLVHrLZTEsLGc+RYIPTDM2sRx0/m1x57+PFJ2J8ySXugLPCSGbT5HegtQAu
+ U8XVqMEaz2ibTG1Ve368YuMK974u4/xa8ZkTirOB0MQtv9MpNaS/016g89q4hu6Z8HAVdz
+ 39o+rMMEczFTfGErxQddhuQ2fXwACz0=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-258-cekuCw62OdKwW_PeUwqzvQ-1; Thu, 07 Sep 2023 19:36:16 -0400
+X-MC-Unique: cekuCw62OdKwW_PeUwqzvQ-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-26f9107479bso1908948a91.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 16:36:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694129775; x=1694734575;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zu2K1dMy8vm8K0rvVM1RHy2lhBh8qmZ9yitufa0eHac=;
+ b=WZyXMIRpaVFcE3oU9MDCQ7AFtEhpm3n/B34WIcwaBabuXNH3b76EjnhhTUEGzKetVh
+ sr8EnsO9TRC1YxHSnNqX0NzcUtJ77qGOJocpkj6p847XnInnh5UFPHv6uL7gkXyflMUI
+ OXUJaMDXyhDG+Y10OwWKghxV5R26ww6gBIYEG2WsJsnTZCAfdDLt7mrS5IXUuoZ7Uivs
+ 576JZ3U2/PBQaAivNBJruDZHvbMEpvJ39mJ8HVwJcNUgvNYueEcZuTxKb8j0Kjf1BKtw
+ pc6SZ8R94bAVcmLGUQk9+OWlN1yYZDGarbj9jnQibnMAp3Q/HJprE+WKW+SbQ3uVjbSa
+ 8nQQ==
+X-Gm-Message-State: AOJu0Ywgr/5L2IbM2gxXCUcFgK9umEs1KbkfSJzHr0OOI9UJG0gpbSWm
+ 1ADx9mMw/Au6yAAJPf2E2iN6ISshMSzECKQRtYTz9aoQ81G9lgPg1QlkDC/czzjTerpduUbEdWR
+ nLes3QLgjg2kZ/BM=
+X-Received: by 2002:a17:90a:660d:b0:269:13f0:4b9a with SMTP id
+ l13-20020a17090a660d00b0026913f04b9amr1080050pjj.7.1694129775648; 
+ Thu, 07 Sep 2023 16:36:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1p9RUVJQfxeRch1CBtV4WfYlMDTCp1B+3LTylA16aABKxq3TMkdwR9L/z6DMWql7iF3ZWIQ==
+X-Received: by 2002:a17:90a:660d:b0:269:13f0:4b9a with SMTP id
+ l13-20020a17090a660d00b0026913f04b9amr1080022pjj.7.1694129775359; 
+ Thu, 07 Sep 2023 16:36:15 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
+ by smtp.gmail.com with ESMTPSA id
+ mj11-20020a17090b368b00b0026fb228fafasm1929825pjb.18.2023.09.07.16.35.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Sep 2023 16:36:14 -0700 (PDT)
+Message-ID: <6ae8a82d-44ee-f002-ea44-d3f0f5808c1c@redhat.com>
+Date: Fri, 8 Sep 2023 09:35:55 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL v2 00/35] ppc queue
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>
-References: <20230906143653.54709-1-clg@kaod.org>
- <2b6c3dd1-430a-2e60-ea73-29c507d631d8@tls.msk.ru>
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 01/32] cpu: Add helper cpu_model_from_type()
 Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <2b6c3dd1-430a-2e60-ea73-29c507d631d8@tls.msk.ru>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, imp@bsdimp.com, kevans@freebsd.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ peter.maydell@linaro.org, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
+ wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
+ quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org, laurent@vivier.eu,
+ vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
+ mrolnik@gmail.com, edgar.iglesias@gmail.com, bcain@quicinc.com,
+ gaosong@loongson.cn, yangxiaojuan@loongson.cn, aurelien@aurel32.net,
+ jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, crwulff@gmail.com, marex@denx.de, shorne@gmail.com,
+ clg@kaod.org, david@gibson.dropbear.id.au, groug@kaod.org,
+ npiggin@gmail.com, ysato@users.sourceforge.jp, david@redhat.com,
+ thuth@redhat.com, iii@linux.ibm.com, mark.cave-ayland@ilande.co.uk,
+ atar4qemu@gmail.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
+ pbonzini@redhat.com, imammedo@redhat.com, shan.gavin@gmail.com
+References: <20230907003553.1636896-1-gshan@redhat.com>
+ <20230907003553.1636896-2-gshan@redhat.com>
+ <923ad3bf-4663-248a-aaf2-cd596d5ec0b2@linaro.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <923ad3bf-4663-248a-aaf2-cd596d5ec0b2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=XW8m=EX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,95 +122,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/7/23 21:10, Michael Tokarev wrote:
-> 06.09.2023 17:36, Cédric Le Goater wrote:
-> ...
->> ppc queue :
+On 9/7/23 18:54, Philippe Mathieu-Daudé wrote:
+> On 7/9/23 02:35, Gavin Shan wrote:
+>> Add helper cpu_model_from_type() to extract the CPU model name from
+>> the CPU type name in two circumstances: (1) The CPU type name is the
+>> combination of the CPU model name and suffix. (2) The CPU type name
+>> is same to the CPU model name.
 >>
->> * debug facility improvements
->> * timebase and decrementer fixes
->> * record-replay fixes
->> * TCG fixes
->> * XIVE model improvements for multichip
->>
->> ----------------------------------------------------------------
->> Cédric Le Goater (4):
->>        ppc/xive: Use address_space routines to access the machine RAM
->>        ppc/xive: Introduce a new XiveRouter end_notify() handler
->>        ppc/xive: Handle END triggers between chips with MMIOs
->>        ppc/xive: Add support for the PC MMIOs
->>
->> Joel Stanley (1):
->>        ppc: Add stub implementation of TRIG SPRs
->>
->> Maksim Kostin (1):
->>        hw/ppc/e500: fix broken snapshot replay
->>
->> Nicholas Piggin (26):
->>        target/ppc: Remove single-step suppression inside 0x100-0xf00
->>        target/ppc: Improve book3s branch trace interrupt for v2.07S
->>        target/ppc: Suppress single step interrupts on rfi-type instructions
->>        target/ppc: Implement breakpoint debug facility for v2.07S
->>        target/ppc: Implement watchpoint debug facility for v2.07S
->>        spapr: implement H_SET_MODE debug facilities
->>        ppc/vhyp: reset exception state when handling vhyp hcall
->>        ppc/vof: Fix missed fields in VOF cleanup
->>        hw/ppc/ppc.c: Tidy over-long lines
->>        hw/ppc: Introduce functions for conversion between timebase and nanoseconds
->>        host-utils: Add muldiv64_round_up
->>        hw/ppc: Round up the decrementer interval when converting to ns
->>        hw/ppc: Avoid decrementer rounding errors
->>        target/ppc: Sign-extend large decrementer to 64-bits
->>        hw/ppc: Always store the decrementer value
->>        target/ppc: Migrate DECR SPR
->>        hw/ppc: Reset timebase facilities on machine reset
->>        hw/ppc: Read time only once to perform decrementer write
->>        target/ppc: Fix CPU reservation migration for record-replay
->>        target/ppc: Fix timebase reset with record-replay
->>        spapr: Fix machine reset deadlock from replay-record
->>        spapr: Fix record-replay machine reset consuming too many events
->>        tests/avocado: boot ppc64 pseries replay-record test to Linux VFS mount
->>        tests/avocado: reverse-debugging cope with re-executing breakpoints
->>        tests/avocado: ppc64 reverse debugging tests for pseries and powernv
->>        target/ppc: Fix LQ, STQ register-pair order for big-endian
->>
->> Richard Henderson (1):
->>        target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
->>
->> Shawn Anastasio (1):
->>        target/ppc: Generate storage interrupts for radix RC changes
->>
->> jianchunfu (1):
->>        target/ppc: Fix the order of kvm_enable judgment about kvmppc_set_interrupt()
+>> The helper will be used in the subsequent patches to conver the
 > 
-> Is there anything in there worth to pick for -stable?
-> Like, for example, some decrementer fixes, 
-
-The decrementer fixes are good candidates but there are quite a few
-patches and you might encounter conflicts.
-
-> or some of these:
+> "patches to conver" -> "commits to convert"
 > 
->   ppc/vof: Fix missed fields in VOF cleanup
->   spapr: Fix machine reset deadlock from replay-record
->   hw/ppc/e500: fix broken snapshot replay
 
-I can not tell if replay-record is important for stable. Nick ?
-  
-> or something else?
+Thanks, it will be fixed in next respin.
 
-These are :
-
-   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
-   target/ppc: Fix LQ, STQ register-pair order for big-endian
+>> CPU type name to the CPU model name.
+>>
+>> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>>   cpu.c                 | 16 ++++++++++++++++
+>>   include/hw/core/cpu.h | 12 ++++++++++++
+>>   2 files changed, 28 insertions(+)
+> 
 
 Thanks,
-
-C.
-
-
-> Thanks!
-> 
-> /mjt
+Gavin
 
 
