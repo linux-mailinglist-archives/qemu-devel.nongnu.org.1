@@ -2,82 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0698A7971C0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0067971BE
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:28:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeDAO-0004YT-WE; Thu, 07 Sep 2023 07:27:21 -0400
+	id 1qeDAl-0004y5-Jw; Thu, 07 Sep 2023 07:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qeDAA-0004Ig-Rc
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:27:08 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qeDA1-00064i-Kj
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:27:06 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31ae6bf91a9so821627f8f.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 04:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1694086016; x=1694690816; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fu41ZOpFY0zs51s8MJh4JeufHQBx0Nq8Vnk2TTW6oVM=;
- b=ZkY8u4wv0NdM/JrrgmPLhF7D8kA6FgyYvRMOS4YH0c8guMueWye5bfte+yOchQBPsz
- b9oqIBXFtmIbBs77co3hBWjX8W0XMxGcc42hNFSdUytsqW1lPLXrDe7wVMCYQFpkebK8
- DBY4mcbEo0oUtnV5mlAOM3sYtP3rmaFfYzygx4MUeQAFxtSIHeWZI0VAC7CmI3TT7G2T
- O3eWQnE9PRgUITi4rsukhgw08bPXthHYcx47ksm8Cafjzrp2NBigWMNNLA4PoAtKK1OQ
- 9SuBoJIq+/CBgk+VAw7sdd6q735LgyRmGVYIN6baKD5H08GoxyC5xoCifvoke7Ksad09
- j2ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694086016; x=1694690816;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Fu41ZOpFY0zs51s8MJh4JeufHQBx0Nq8Vnk2TTW6oVM=;
- b=k1gwEOtQ5oRcKBKgF6Fnwj2FCxyn7oetv8FPIpMy4TFOcvfAZM7DOba2biR7i+btkG
- vqrYuN9HrYSccbqaBk03/JOz7WD/9QlpfOTEnENyglZq9ftkBuSMUfalNry+qpmASkHl
- ESJ3cCaiFl/zVvmAtp/EPvhNy1JS2qmkKZ8feX5rA7gL53k6eKPlDAN/s7/meS5EBuQy
- hFgHbsu8sve08HCcO2zmvjjCfUKEx6HfB3ILnUp3le926iEAZyKZLLno7rrWcozfZ02T
- nk8vPMew/FadIXl1hAvoS7I//lO9ykw1KjwvAqSetc2hUieAO30MIoRABe3oMR1IFvOx
- W4DA==
-X-Gm-Message-State: AOJu0Yyi2UbudWcyHkHy+ns3NOqmbNPJDSMET4u8NnJhqiR2CK/dclqM
- +6Il2TlJq5iF3bzbQfywKCDYQfi59yQFgdLL1gY=
-X-Google-Smtp-Source: AGHT+IEJqRXiB+k5LX7rlKRtwSCHUX4SNWWixyVPROKKppXlICbCoai53J7FiVh8rmQ/91WufF0uLA==
-X-Received: by 2002:a5d:42d2:0:b0:318:e4c4:4981 with SMTP id
- t18-20020a5d42d2000000b00318e4c44981mr3923446wrr.20.1694086016044; 
- Thu, 07 Sep 2023 04:26:56 -0700 (PDT)
-Received: from chigot-Dell.home ([2a01:cb15:8123:8100:c2c3:52c5:8306:a161])
- by smtp.gmail.com with ESMTPSA id
- y3-20020adfe6c3000000b00317909f9985sm22998755wrm.113.2023.09.07.04.26.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 04:26:55 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, peter.maydell@linaro.org, alistair23@gmail.com,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH v3 5/5] gdbstub: replace exit calls with proper shutdown for
- softmmu
-Date: Thu,  7 Sep 2023 13:26:40 +0200
-Message-Id: <20230907112640.292104-6-chigot@adacore.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230907112640.292104-1-chigot@adacore.com>
-References: <20230907112640.292104-1-chigot@adacore.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qeDAi-0004qx-Q7
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:27:40 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qeDAa-00068P-Sh
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:27:40 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RhH5c2scjz6FBlH;
+ Thu,  7 Sep 2023 19:27:16 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 7 Sep
+ 2023 12:27:29 +0100
+Date: Thu, 7 Sep 2023 12:27:28 +0100
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+CC: Jonathan Cameron via <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, <linuxarm@huawei.com>
+Subject: Re: [PATCH 1/2] hw/cxl: Add utility functions decoder interleave
+ ways and target count.
+Message-ID: <20230907122728.00006968@huawei.com>
+In-Reply-To: <d3e6506a-b553-d292-9428-25e784be0d4f@linaro.org>
+References: <20230904164704.18739-1-Jonathan.Cameron@huawei.com>
+ <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
+ <89d5477c-ece0-b738-c64f-056242619d92@linaro.org>
+ <20230905155639.00000b3a@huawei.com>
+ <20230905160607.0000366f@huawei.com>
+ <d3e6506a-b553-d292-9428-25e784be0d4f@linaro.org>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=chigot@adacore.com; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,97 +69,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replaces the exit calls by shutdown requests, ensuring a proper
-cleanup of Qemu. Features like net/vhost-vdpa.c are expecting
-qemu_cleanup to be called to remove their last residuals.
+On Tue, 5 Sep 2023 18:55:23 +0200
+Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
----
- gdbstub/gdbstub.c          | 5 +++--
- gdbstub/softmmu.c          | 6 ++++++
- gdbstub/user.c             | 6 ++++++
- include/gdbstub/syscalls.h | 9 +++++++++
- 4 files changed, 24 insertions(+), 2 deletions(-)
+> On 5/9/23 17:06, Jonathan Cameron wrote:
+> > On Tue, 5 Sep 2023 15:56:39 +0100
+> > Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
+> >  =20
+> >> On Mon, 4 Sep 2023 20:26:59 +0200
+> >> Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+> >> =20
+> >>> On 4/9/23 18:47, Jonathan Cameron wrote: =20
+> >>>> As an encoded version of these key configuration parameters is
+> >>>> a register, provide functions to extract it again so as to avoid
+> >>>> the need for duplicating the storage.
+> >>>>
+> >>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>> ---
+> >>>>    include/hw/cxl/cxl_component.h | 14 ++++++++++++++
+> >>>>    hw/cxl/cxl-component-utils.c   | 17 +++++++++++++++++
+> >>>>    2 files changed, 31 insertions(+)
+> >>>>
+> >>>> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_com=
+ponent.h
+> >>>> index 42c7e581a7..f0ad9cf7de 100644
+> >>>> --- a/include/hw/cxl/cxl_component.h
+> >>>> +++ b/include/hw/cxl/cxl_component.h
+> >>>> @@ -238,7 +238,21 @@ static inline int cxl_decoder_count_enc(int cou=
+nt)
+> >>>>        return 0;
+> >>>>    }
+> >>>>   =20
+> >>>> +static inline int cxl_decoder_count_dec(int enc_cnt)
+> >>>> +{
+> >>>> +    switch (enc_cnt) {
+> >>>> +    case 0: return 1;
+> >>>> +    case 1: return 2;
+> >>>> +    case 2: return 4;
+> >>>> +    case 3: return 6;
+> >>>> +    case 4: return 8;
+> >>>> +    case 5: return 10;
+> >>>> +    }
+> >>>> +    return 0;
+> >>>> +} =20
+> >>>
+> >>> Why inline?
+> >>>     =20
+> >>
+> >> Bad habit. =20
+> > Nope. I'm being slow.  This is in a header so if I don't
+> > mark it inline I get a bunch of defined but not used warnings.
+> >=20
+> > Obviously I could move the implementation of this and the matching
+> > encoding routines out of the header. I haven't done so for now. =20
+>=20
+> Inlined function in hw/ are hardly justifiable. They make the headers
+> and debugging sessions harder to read in my experience. Compilers are
+> becoming clever and clever, and we have LTO, so I rather privilege
+> code maintainability. My 2 cents :)
+>=20
+> >>> Alternatively:
+> >>>
+> >>>     unsigned cxl_decoder_count_dec(unsigned enc_cnt)
+> >>>     {
+> >>>         return enc_cnt <=3D 5 ? 2 * enc_cnt : 0; =20
+> >>
+> >> It gets a little more fiddly than the code I'm proposing implies.
+> >> For Switches and Host Bridges larger values are defined
+> >> (we just don't emulate them yet and may never do so) and those
+> >> don't have a sensible mapping.
+> >>
+> >> I guess there is no harm in adding the full decode however
+> >> which will make it more obvious why it was a switch statement. =20
+>=20
+> Right, no problem.
+>=20
+> Preferably having this tiny function not inlined
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 349d348c7b..1cb6d65306 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1327,7 +1327,7 @@ static void handle_v_kill(GArray *params, void *user_ctx)
-     gdb_put_packet("OK");
-     error_report("QEMU: Terminated via GDBstub");
-     gdb_exit(0);
--    exit(0);
-+    gdb_qemu_exit(0);
- }
- 
- static const GdbCmdParseEntry gdb_v_commands_table[] = {
-@@ -1846,7 +1846,8 @@ static int gdb_handle_packet(const char *line_buf)
-         /* Kill the target */
-         error_report("QEMU: Terminated via GDBstub");
-         gdb_exit(0);
--        exit(0);
-+        gdb_qemu_exit(0);
-+        break;
-     case 'D':
-         {
-             static const GdbCmdParseEntry detach_cmd_desc = {
-diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-index 9f0b8b5497..a5d6e04c79 100644
---- a/gdbstub/softmmu.c
-+++ b/gdbstub/softmmu.c
-@@ -435,6 +435,12 @@ void gdb_exit(int code)
-     qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
- }
- 
-+void gdb_qemu_exit(int code)
-+{
-+    qemu_system_shutdown_request_with_code(SHUTDOWN_CAUSE_GUEST_SHUTDOWN,
-+                                           code);
-+}
-+
- /*
-  * Memory access
-  */
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 7ab6e5d975..dbe1d9b887 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -113,6 +113,12 @@ void gdb_exit(int code)
-         gdb_put_packet(buf);
-         gdbserver_state.allow_stop_reply = false;
-     }
-+
-+}
-+
-+void gdb_qemu_exit(int code)
-+{
-+    exit(code);
- }
- 
- int gdb_handlesig(CPUState *cpu, int sig)
-diff --git a/include/gdbstub/syscalls.h b/include/gdbstub/syscalls.h
-index 243eaf8ce4..54ff7245a1 100644
---- a/include/gdbstub/syscalls.h
-+++ b/include/gdbstub/syscalls.h
-@@ -110,4 +110,13 @@ int use_gdb_syscalls(void);
-  */
- void gdb_exit(int code);
- 
-+/**
-+ * gdb_qemu_exit: ask qemu to exit
-+ * @code: exit code reported
-+ *
-+ * This requests qemu to exit. This function is allowed to return as
-+ * the exit request might be processed asynchronously by qemu backend.
-+ */
-+void gdb_qemu_exit(int code);
-+
- #endif /* _SYSCALLS_H_ */
--- 
-2.25.1
+I'll push this and the enc() version down into the cxl-component-utils.c
+as a precursor patch.
+
+>=20
+> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+>=20
+>=20
+Thanks, but the changes to do make these non inline, and include
+the larger decode and encode values are big enough I won't pick up
+the RB - too much changing (that I might mess up ;)
+
+
+Jonathan
+
 
 
