@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D933B79727D
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254407972BB
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:14:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEdM-0003B6-T2; Thu, 07 Sep 2023 09:01:20 -0400
+	id 1qeEdH-000350-BF; Thu, 07 Sep 2023 09:01:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEcp-0002mF-PJ
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:00:47 -0400
+ id 1qeEcr-0002mj-B7
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:00:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEcm-0007Fp-Cb
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:00:47 -0400
+ id 1qeEco-0007GF-0b
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:00:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091643;
+ s=mimecast20190719; t=1694091645;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yioP/nXneuDSCiJJHSA9x2f5GhZOCJ1auXXR4f8hYLQ=;
- b=iH/Rvv/vych0AUgX+p00qTe9KDIvT7GsoRaxvYZ3pceQjQWuiHgo4Co1BM+idGH0sH3jGh
- 1BPLoHRQ3p9ZfYfhzgHW1AaXTuiM5FrUtQXtTNS0kr6ZnTDIuoRU3o47hXmnmTmNa1/7IH
- s+25503/tv2yUgyK7lj9jJbIwAYZ+Pw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bSigBqSUZKr66KwDywctiPhcrHXhPWqZwNq20QZJZus=;
+ b=Az111191J5oG4W8hQyFnkiK18AFy03RQ7DXpPsMykFVvhLUOqk1jeJPxLiA1ZD3TUMMb/w
+ egww/dMb0/R3rQbNEMkJgabVAFAsAr1IKUDoPIKFKRfsYtH1opia7FRhO2qIOSihlAlBMF
+ ybvc+2B2w+NO3GAwoY4kKZ2ORA2eBCE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-8fzqgCMrNRuDN0ZptZ4iRw-1; Thu, 07 Sep 2023 09:00:39 -0400
-X-MC-Unique: 8fzqgCMrNRuDN0ZptZ4iRw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fbdf341934so6557765e9.3
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:00:35 -0700 (PDT)
+ us-mta-679-Ln_UjslVODiEEULfI2WAyQ-1; Thu, 07 Sep 2023 09:00:42 -0400
+X-MC-Unique: Ln_UjslVODiEEULfI2WAyQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-31dc8f0733dso575102f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:00:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694091633; x=1694696433;
+ d=1e100.net; s=20221208; t=1694091635; x=1694696435;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yioP/nXneuDSCiJJHSA9x2f5GhZOCJ1auXXR4f8hYLQ=;
- b=C7WmnOg+6DL/YAJr1ONPLLQg5vv+oh5k5xWu7aNJgO7bzMZIh9qOWCc57S4tNkKY41
- acgvbwTCKmJej3v7mVYMUWP09EIvr8gdwm0jMDrjBZSkKFJQSttWy1hlXpVNyivnjsWi
- GXjqspR5hwdOVwwVoSyssSvoDiVMb+fDTb6DoAscClsPuyMFUe7NGOgqeUt9gztEU35n
- Ifk+ZDh/Jfk+Ix6uCXr1pllKIUQUJlb9x9dp95lTIWytVmAkrSpe9k+zetGwo3hBxpHy
- Xmt1y2hlEWhAfR7Gr+UJGrCy0xUPOeG++Moz9/fvV/u1jY4SYXPfP41lQZT7Zk0f2Brw
- Lv8g==
-X-Gm-Message-State: AOJu0YxNN4+WprK/w/DwzgoHLQLsZnJ7Zi6XEA9bhSN8f0/HDvSnbmNy
- ZKq30le+io09dgF+Wl13O+Bdpu9e2qo4/lJ4Zj2MAaP7ARonn0ve79TRZU9SuNnLDCRIikAAdH8
- JcrGAnPw0dPCoW91wl5xvetbek8g5DuFtSBSX4+JcpY/QKRP3s6CUc4sWatJsjYGl6u6wFW8ocJ
- k=
-X-Received: by 2002:a05:600c:2308:b0:401:d803:6243 with SMTP id
- 8-20020a05600c230800b00401d8036243mr4759848wmo.32.1694091633454; 
- Thu, 07 Sep 2023 06:00:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHl/Z8wWWHXS2yIejoFGXn95eJWfaY6Dtg953tIGUZGRTxLxDdolIRrOKRIuKp+QCtKqUYmtw==
-X-Received: by 2002:a05:600c:2308:b0:401:d803:6243 with SMTP id
- 8-20020a05600c230800b00401d8036243mr4759820wmo.32.1694091633083; 
- Thu, 07 Sep 2023 06:00:33 -0700 (PDT)
+ bh=bSigBqSUZKr66KwDywctiPhcrHXhPWqZwNq20QZJZus=;
+ b=SPXlz/tkTiKxsx93SYMekxURFhj3GLnvduevwJXCwr9kHM+DMsRXHlDl0UObY7i/PR
+ 25yChc2+41jlPVSHb7g6ccbTML049IrG1zUyAg1pBkf6AlmXu7bw7gnR4J2CqnV2Zc6Q
+ JDephEomoDv4jnLI0yyzYhvABOeQIREtDLvJywQ5PhG/dhRbOEE+d4gJr0ZnBU03Ksjs
+ Kc0/cmG4Va0cyKIUeSBXfab8hLCspdoBEf6r7yAdGGIcwNJMGiWyWA85rlTR+Jmc04rB
+ /95och4UqMiJ0k/6BuQckDZJ2+McNLiL20FpqyrN5ok4aLHTF4tXkixvYX6M87aajApj
+ 42Pw==
+X-Gm-Message-State: AOJu0YxN3//Rt6Vz8KFoGeh0bpJXcfWuZdbiIfTiyP07RQGkQ2Epvw08
+ Oa5jJK6/JZoMG25VGbBrG2eQHU2Nvsm/haIac4bT2wv1211dE9QCx7Qq9092aEC+UnNoRw32CpS
+ pjUiXQcJSTbDBRNx6yYVTVRlOYes5kHYd89kubJexG8k/hwIFeW5ya4TD9YE7UnSyZh/vbRBqtR
+ E=
+X-Received: by 2002:a5d:63cb:0:b0:317:6e62:b124 with SMTP id
+ c11-20020a5d63cb000000b003176e62b124mr4924878wrw.18.1694091635361; 
+ Thu, 07 Sep 2023 06:00:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdkoqSw/pENJqQKOCcfvpRD8kqP1NZYQV3K5cc2Cz+jiZJzu3PRjx6102Op20iDDybqF0NCA==
+X-Received: by 2002:a5d:63cb:0:b0:317:6e62:b124 with SMTP id
+ c11-20020a5d63cb000000b003176e62b124mr4924854wrw.18.1694091635001; 
+ Thu, 07 Sep 2023 06:00:35 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- a21-20020a05600c225500b003fed78b03b4sm2459592wmm.20.2023.09.07.06.00.32
+ j14-20020adfe50e000000b0031c52e81490sm23264417wrm.72.2023.09.07.06.00.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 06:00:32 -0700 (PDT)
+ Thu, 07 Sep 2023 06:00:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>,
 	Eric Blake <eblake@redhat.com>
-Subject: [PULL 12/51] softmmu/vl.c: inline include/qemu/qemu-options.h into
- vl.c
-Date: Thu,  7 Sep 2023 14:59:21 +0200
-Message-ID: <20230907130004.500601-13-pbonzini@redhat.com>
+Subject: [PULL 13/51] util/async-teardown.c: move to softmmu/,
+ only build it when system build is requested
+Date: Thu,  7 Sep 2023 14:59:22 +0200
+Message-ID: <20230907130004.500601-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
@@ -104,98 +104,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
-qemu-options.h just includes qemu-options.def with some #defines.
-We already do this in vl.c in other place. Since no other file
-includes qemu-options.h anymore, just inline it in vl.c.
-
-This effectively reverts second half of commit 59a5264b99434.
-
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20230901101302.3618955-8-mjt@tls.msk.ru>
+Message-ID: <20230901101302.3618955-9-mjt@tls.msk.ru>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/qemu-options.h | 41 -------------------------------------
- softmmu/vl.c                | 11 +++++++++-
- 2 files changed, 10 insertions(+), 42 deletions(-)
- delete mode 100644 include/qemu/qemu-options.h
+ {util => softmmu}/async-teardown.c | 0
+ softmmu/meson.build                | 1 +
+ util/meson.build                   | 1 -
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+ rename {util => softmmu}/async-teardown.c (100%)
 
-diff --git a/include/qemu/qemu-options.h b/include/qemu/qemu-options.h
-deleted file mode 100644
-index 4a62c83c453..00000000000
---- a/include/qemu/qemu-options.h
-+++ /dev/null
-@@ -1,41 +0,0 @@
--/*
-- * qemu-options.h
-- *
-- * Defines needed for command line argument processing.
-- *
-- * Copyright (c) 2003-2008 Fabrice Bellard
-- * Copyright (c) 2010 Jes Sorensen <Jes.Sorensen@redhat.com>
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-- * THE SOFTWARE.
-- */
--
--#ifndef QEMU_OPTIONS_H
--#define QEMU_OPTIONS_H
--
--enum {
--
--#define DEF(option, opt_arg, opt_enum, opt_help, arch_mask)     \
--    opt_enum,
--#define DEFHEADING(text)
--#define ARCHHEADING(text, arch_mask)
--
--#include "qemu-options.def"
--};
--
--#endif
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index 0a74810ca32..78b6570f19c 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -91,7 +91,6 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qemu/option.h"
- #include "qemu/config-file.h"
--#include "qemu/qemu-options.h"
- #include "qemu/main-loop.h"
- #ifdef CONFIG_VIRTFS
- #include "fsdev/qemu-fsdev.h"
-@@ -894,6 +893,16 @@ static void help(int exitcode)
-     exit(exitcode);
- }
+diff --git a/util/async-teardown.c b/softmmu/async-teardown.c
+similarity index 100%
+rename from util/async-teardown.c
+rename to softmmu/async-teardown.c
+diff --git a/softmmu/meson.build b/softmmu/meson.build
+index ea5603f0218..c18b7ad7382 100644
+--- a/softmmu/meson.build
++++ b/softmmu/meson.build
+@@ -37,3 +37,4 @@ endif
  
-+enum {
-+
-+#define DEF(option, opt_arg, opt_enum, opt_help, arch_mask)     \
-+    opt_enum,
-+#define DEFHEADING(text)
-+#define ARCHHEADING(text, arch_mask)
-+
-+#include "qemu-options.def"
-+};
-+
- #define HAS_ARG 0x0001
- 
- typedef struct QEMUOption {
+ system_ss.add(when: seccomp, if_true: files('qemu-seccomp.c'))
+ system_ss.add(when: fdt, if_true: files('device_tree.c'))
++system_ss.add(when: 'CONFIG_LINUX', if_true: files('async-teardown.c'))
+diff --git a/util/meson.build b/util/meson.build
+index a3751602869..c4827fd70aa 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -3,7 +3,6 @@ util_ss.add(files('thread-context.c'), numa)
+ if not config_host_data.get('CONFIG_ATOMIC64')
+   util_ss.add(files('atomic64.c'))
+ endif
+-util_ss.add(when: 'CONFIG_LINUX', if_true: files('async-teardown.c'))
+ util_ss.add(when: 'CONFIG_POSIX', if_true: files('aio-posix.c'))
+ util_ss.add(when: 'CONFIG_POSIX', if_true: files('fdmon-poll.c'))
+ if config_host_data.get('CONFIG_EPOLL_CREATE1')
 -- 
 2.41.0
 
